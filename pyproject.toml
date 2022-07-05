@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "monarch-api"
+version = "0.1.0"
+description = "Monarch Initiative API"
+authors = ["glass-ships <glass.ships@outlook.com>, kevin schaper <kevin@tislab.org>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+fastapi = "^0.78.0"
+pysolr = "^3.9.0"
+
+[tool.poetry.dev-dependencies]
+uvicorn = {extras = ["standard"], version = "^0.18.2"}
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
