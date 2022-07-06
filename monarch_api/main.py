@@ -1,17 +1,11 @@
 from fastapi import FastAPI
-
-#import requests as r
-import pysolr
+#from monarch_api import entity
+import requests
 
 app = FastAPI()
 
-solr = pysolr.Solr(
-    'http://localhost:8983/solr/', 
-    #always_commit=True, 
-    #[timeout=10], 
-    #[auth=<type of authentication>]
-)
-solr.ping()
+solr = 'http://localhost:8983/solr'
+
 
 @app.get("/")
 async def root():
@@ -20,3 +14,15 @@ async def root():
 @app.get("/api")
 async def api():
     return {"data": "This wil eventually be the API home page"}
+
+# For dev purposes. can get rid of later
+@app.get("/solr")
+async def test():
+    r = requests.get(solr)
+    return {"SOLR Connection status": f"{r.status_code}"}
+
+@app.get("/api/entity/{id}")
+async def test(id):
+    url = f"{solr}/entity/get?id={id}"
+    r = requests.get(url)
+    return {"Entity": f"{r.json()['doc']}"}
