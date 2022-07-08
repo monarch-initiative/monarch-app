@@ -1,11 +1,21 @@
-from fastapi import FastAPI
-#from monarch_api import entity
+from fastapi import FastAPI, Depends
 import requests
 
+from monarch_api.utils import *
+from monarch_api import entity, association
+
 app = FastAPI()
+app.include_router(entity.router)
+app.include_router(association.router)
 
-solr = 'http://localhost:8983/solr'
+base_url = 'http://localhost:8983/solr'
 
+
+@app.get("/solr")
+async def test():
+    """For dev purposes. can get rid of later"""
+    r = requests.get(base_url)
+    return {"SOLR Connection status": f"{r.status_code}"}
 
 @app.get("/")
 async def root():
@@ -13,16 +23,4 @@ async def root():
 
 @app.get("/api")
 async def api():
-    return {"data": "This wil eventually be the API home page"}
-
-# For dev purposes. can get rid of later
-@app.get("/solr")
-async def test():
-    r = requests.get(solr)
-    return {"SOLR Connection status": f"{r.status_code}"}
-
-@app.get("/api/entity/{id}")
-async def test(id):
-    url = f"{solr}/entity/get?id={id}"
-    r = requests.get(url)
-    return {"Entity": f"{r.json()['doc']}"}
+    return f"For API documentation, see {base_url}/docs"
