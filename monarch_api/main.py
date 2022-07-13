@@ -11,16 +11,10 @@ app.include_router(association.router)
 base_url = 'http://localhost:8983/solr'
 
 
-@app.get("/solr")
-async def test():
-    """For dev purposes. can get rid of later"""
-    r = requests.get(base_url)
-    return {"SOLR Connection status": f"{r.status_code}"}
-
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return f"Monarch API - for API documentation, see {base_url}/docs"
 
 @app.get("/api")
 async def api():
-    return f"For API documentation, see {base_url}/docs"
+    return f"Monarch API - for API documentation, see {base_url}/docs"

@@ -13,19 +13,16 @@ router = APIRouter(
 )
 
 @router.get("/{id}")
-async def test(
+async def get_entity(
         id, 
-        fetch_objects: bool=False,
         get_association_counts: bool=False,
-        unselect_evidence: bool=False,
-        exclude_automatic_assertions: bool=False,
-        use_compact_associations: bool=False,
-        rows: int=None
         ):
     url = f"{solr_url}/entity/get?id={id}"
     r = requests.get(url)
     entity = r.json()['doc']
-    results = {"entity": entity}
+    strip_json(entity, "_version_")
+
+    results = entity
     
     if get_association_counts:
         association_counts = get_entity_association_counts(id)

@@ -12,13 +12,40 @@ router = APIRouter(
     }
 )
 
-@router.get("/{id}")
-async def test(
-        id, 
-        ):
-    url = f"{solr_url}/association/get?id={id}"
-    r = requests.get(url)
-    association = r.json()['doc']
-    results = {"association": association}
-    
+@router.get("/all")
+async def get_all_associations(
+    category: str = None,
+    predicate: str = None,
+    offset: int = 0,
+    limit: int = 20,
+    subject: str = None,
+    object: str = None,
+    entity: str = None, # return nodes where entity is subject or object
+    between: str = None # strip by comma and check associations in both directions
+):
+    results = get_associations(
+        category=category,
+        predicate=predicate,
+        offset=offset,
+        limit=limit,
+        subject=subject,
+        object=object,
+        entity=entity,
+        between=between
+    )
     return results
+
+@router.get("/to/{subject}")
+async def get_association_to(subject):
+    pass
+
+@router.get("/from/{object}")
+async def get_association_from(object):
+    pass
+
+@router.get("/between/{subject}/{object}")
+async def get_association_between(subject, object):
+    pass
+
+async def get_association_find(subject_category, object_category = None):
+    pass
