@@ -1,8 +1,7 @@
 from fastapi import APIRouter
-import requests
-import pysolr
 
-from monarch_api.utils import *
+from monarch_api.utils.helper import *
+from monarch_api.utils.entity import *
 
 router = APIRouter(
     prefix="/api/entity",
@@ -13,19 +12,11 @@ router = APIRouter(
 )
 
 @router.get("/{id}")
-async def get_entity(
+async def _get_entity(
         id, 
         get_association_counts: bool=False,
         ):
-    url = f"{solr_url}/entity/get?id={id}"
-    r = requests.get(url)
-    entity = r.json()['doc']
-    strip_json(entity, "_version_")
 
-    results = entity
-    
-    if get_association_counts:
-        association_counts = get_entity_association_counts(id)
-        results["association_counts"] = association_counts
-
+    results = get_entity(id, get_association_counts)
     return results
+

@@ -2,7 +2,8 @@ from fastapi import APIRouter
 import requests
 import pysolr
 
-from monarch_api.utils import *
+from monarch_api.utils.helper import *
+from monarch_api.utils.association import *
 
 router = APIRouter(
     prefix="/api/association",
@@ -13,7 +14,7 @@ router = APIRouter(
 )
 
 @router.get("/all")
-async def get_all_associations(
+async def _get_all_associations(
     category: str = None,
     predicate: str = None,
     offset: int = 0,
@@ -36,16 +37,16 @@ async def get_all_associations(
     return results
 
 @router.get("/to/{subject}")
-async def get_association_to(subject):
+async def _get_association_to(subject):
     pass
 
 @router.get("/from/{object}")
-async def get_association_from(object):
+async def _get_association_from(object):
     pass
 
 @router.get("/between/{subject}/{object}")
-async def get_association_between(subject, object):
+async def _get_association_between(subject, object):
     pass
 
-async def get_association_find(subject_category, object_category = None):
+async def _get_association_find(subject_category, object_category = None):
     pass
