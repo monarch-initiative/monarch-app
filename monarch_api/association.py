@@ -1,6 +1,5 @@
-from fastapi import APIRouter
-import requests
-import pysolr
+from fastapi import APIRouter, Depends
+from models import PaginationParams
 
 from monarch_api.utils.helper import *
 from monarch_api.utils.association import *
@@ -15,10 +14,9 @@ router = APIRouter(
 
 @router.get("/all")
 async def _get_all_associations(
+    pagination: PaginationParams = Depends(),
     category: str = None,
     predicate: str = None,
-    offset: int = 0,
-    limit: int = 20,
     subject: str = None,
     object: str = None,
     entity: str = None, # return nodes where entity is subject or object
@@ -27,8 +25,8 @@ async def _get_all_associations(
     results = get_associations(
         category=category,
         predicate=predicate,
-        offset=offset,
-        limit=limit,
+        offset=pagination.offset,
+        limit=pagination.limit,
         subject=subject,
         object=object,
         entity=entity,
@@ -37,15 +35,15 @@ async def _get_all_associations(
     return results
 
 @router.get("/to/{subject}")
-async def _get_association_to(subject):
+async def _get_association_to(subject: str, pagination: PaginationParams = Depends()):
     pass
 
 @router.get("/from/{object}")
-async def _get_association_from(object):
+async def _get_association_from(object: str, pagination: PaginationParams = Depends()):
     pass
 
 @router.get("/between/{subject}/{object}")
-async def _get_association_between(subject, object):
+async def _get_association_between(subject: str, object: str, pagination: PaginationParams = Depends()):
     pass
 
 async def _get_association_find(subject_category, object_category = None):
