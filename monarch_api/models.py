@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 class PaginationParams(BaseModel):
     request: Request
-    limit: int = 20
+    limit: int = Query(default=20, ge=0)
     offset: int = Query(default=1, ge=1)
 
     class Config:

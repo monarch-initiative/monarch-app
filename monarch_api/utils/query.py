@@ -11,7 +11,7 @@ def build_association_query(args: dict) -> str:
         query += f"&start={args['offset']}"
 
     for i in filter_params:
-        if args[i] == None:
+        if args[i] is None:
             pass
         elif i == 'entity':
             query += f'&fq=(subject:"{i}" OR object:"{i}")'
