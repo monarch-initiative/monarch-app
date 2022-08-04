@@ -1,4 +1,22 @@
-Planning board:
+#### Running the API:
+
+Local development:
+
+- Connect to and expose the SOLR database:
+`gcloud compute ssh monarch-solr-dev -- -L 8983:localhost:8983`
+
+- Start the uvicorn server:
+`cd <path-to>/monarch-api && uvicorn main:app --reload`
+
+GCP deployment:
+
+- First, connect to the GCP SOLR machine:
+`gcloud compute ssh monarch-api-dev -- -L 8000:localhost:8000`
+
+- Then, start the uvicorn server:
+`nohup uvicorn main:app --reload --host 0.0.0.0 &`
+
+#### Planning board:
 
 base_url = https://monarch-initiative.org/api
 
