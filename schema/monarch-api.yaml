@@ -1,0 +1,75 @@
+id: https://w3id.org/monarch/monarch-api
+name: MonarchApi
+description: Data model for Monarch API
+default_prefix: monarch-api
+classes:
+  node:
+    slots:
+      - id
+      - label
+      - iri
+      - category
+      - clinical_modifiers
+      - replaced by
+      - deprecated
+      - consider
+      - xrefs
+      - synonyms
+      - taxon
+      - inheritance
+      - association_counts
+    slot_usage:
+      id:
+        required: true
+  inheritance:
+    slots:
+      - id
+      - pred
+      - xrefs
+  synonym:
+    slots:
+      - id
+      - label
+      - iri
+  taxon:
+    slots:
+      - id
+      - label
+  association_count:
+    slots:
+      - id
+      - counts
+      - counts_by_taxon
+slots:
+  - category:
+      designates_type: true
+  - clinical_modifiers
+  - consider
+  - counts:
+      required: false
+  - counts_by_taxon:
+      required: false
+  - deprecated
+  - id:
+      identifier: true
+  - inheritance:
+      range: inheritance
+      inlined: true
+  - iri:
+  - label
+  - pred
+  - replaced by
+  - synonyms:
+      range: synonym
+      multivalued: true
+      inlined: true
+      inlined_as_list: true
+  - xrefs
+  - taxon:
+      range: taxon
+      inlined: true
+  - association_counts:
+      range: association_count
+      multivalued: true
+      inlined: true
+      inlined_as_list: false
