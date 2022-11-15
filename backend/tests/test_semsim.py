@@ -8,5 +8,6 @@ oi = SqlImplementation(resource)
 
 def test_oak():
     print(oi.label("HP:0000498"))
-    sim = oi.termset_pairwise_similarity(["HP:0001036"], ["HP:0002583"])
-    pprint(sim)
+    sim = oi.termset_pairwise_similarity(["HP:0001036"],
+                                         ["HP:0002583"])
+    assert sim.subject_best_matches["HP:0001036"]
