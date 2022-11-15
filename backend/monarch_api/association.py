@@ -1,8 +1,6 @@
 from fastapi import APIRouter, Depends
 from monarch_api.additional_models import PaginationParams
 
-from monarch_api.utils.association import *
-
 router = APIRouter(
     prefix="/api/association",
     tags=["association"],
@@ -21,17 +19,7 @@ async def _get_all_associations(
     entity: str = None, # return nodes where entity is subject or object
     between: str = None # strip by comma and check associations in both directions
 ):
-    results = get_associations(
-        category=category,
-        predicate=predicate,
-        offset=pagination.offset,
-        limit=pagination.limit,
-        subject=subject,
-        object=object,
-        entity=entity,
-        between=between
-    )
-    return results
+    pass
 
 @router.get("/to/{subject}")
 async def _get_association_to(subject: str, pagination: PaginationParams = Depends()):
