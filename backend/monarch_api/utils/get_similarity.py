@@ -1,19 +1,23 @@
+import oaklib.datamodels.ontology_metadata as omd
 from oaklib import OntologyResource
 from oaklib.implementations.sqldb.sql_implementation import SqlImplementation
 
-HP_DB_PATH = "../../hp.db"
+# TODO: download this and check to see if it exists
+HP_DB_PATH = "hp.db"
+
+IS_A = omd.slots.subClassOf.curie
 
 def termlist_similarity(
     offset: int = 0,
     limit: int = 20,
-    subjlist=None,
-    objlist=None,
-    predicate="i,p",
+    subjlist=[""],
+    objlist=[""],
+    predicates=[IS_A, "BFO:0000050"],
     ):
 
-    oi = SqlImplementation(OntologyResource(slug=f'sqlite:///input/go-nucleus.db'))
+    oi = SqlImplementation(OntologyResource(slug=HP_DB_PATH))
 
-    results = 
+    results = oi.termset_pairwise_similarity(subjlist,objlist,predicates)
 
     return results
 

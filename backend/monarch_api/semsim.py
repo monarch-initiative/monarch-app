@@ -16,12 +16,15 @@ async def _get_termlist_similarity(
     pagination: PaginationParams = Depends(),
     subjlist: str = "",
     objlist: str = "",
-    predicate: str = "i,p",
+    predicates: str = "",
 ):
+
+    # TODO: process string values to lists
+
     results = termlist_similarity(
         subjlist=subjlist,
         objlist=objlist,
-        predicate=predicate,
+        predicates=predicates,
         offset=pagination.offset,
         limit=pagination.limit,
     )
