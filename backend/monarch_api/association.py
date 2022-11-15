@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from monarch_api.models import PaginationParams
+from monarch_api.additional_models import PaginationParams
 
 from monarch_api.utils.association import *
 
