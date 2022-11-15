@@ -1,5 +1,3 @@
-import requests
-
 from monarch_api.utils.helper import *
 
 def get_entity(id, get_association_counts: bool = False):

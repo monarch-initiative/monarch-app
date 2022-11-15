@@ -1,8 +1,7 @@
-from fastapi import FastAPI, Depends
-import requests
+from fastapi import FastAPI
 
-from monarch_api.utils.helper import *
-from monarch_api import entity, association
+from monarch_api import association
+from monarch_api import entity
 import uvicorn
 
 app = FastAPI()

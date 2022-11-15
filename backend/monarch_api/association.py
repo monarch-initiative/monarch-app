@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends
-from models import PaginationParams
+from monarch_api.additional_models import PaginationParams
 
-from monarch_api.utils.helper import *
 from monarch_api.utils.association import *
 
 router = APIRouter(

@@ -2,6 +2,7 @@ from fastapi import Query, Request
 from pydantic import BaseModel
 
 
+# todo: convert this to linkml and add it to the schema
 class PaginationParams(BaseModel):
     request: Request
     limit: int = Query(default=20, ge=0)
