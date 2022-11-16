@@ -799,7 +799,7 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "monarch-py"
-version = "0.1.0"
+version = "0.1.1"
 description = "Monarch Initiative data access library"
 category = "main"
 optional = false
@@ -2563,8 +2563,8 @@ mdurl = [
     {file = "mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba"},
 ]
 monarch-py = [
-    {file = "monarch_py-0.1.0-py3-none-any.whl", hash = "sha256:d6d9777433f73e659c5b91e0deca083b82cf514f083ab0ea042c8ca28947bb3c"},
-    {file = "monarch_py-0.1.0.tar.gz", hash = "sha256:21aba097b56ea6d2b5bc376636483d53ad42fdf748d9c96b3eea734180d87ffa"},
+    {file = "monarch_py-0.1.1-py3-none-any.whl", hash = "sha256:ecf33d01babdfba8b4e667b150f8f83c0d5eeac67439d45b605a1210e4779cd6"},
+    {file = "monarch_py-0.1.1.tar.gz", hash = "sha256:dd0fb7e7dd87e18ce2d37931a895c90859ac133776af2021f73611ad0dc81f06"},
 ]
 more-click = [
     {file = "more_click-0.1.1-py3-none-any.whl", hash = "sha256:ff68c7e874fd409ce501903be3177363499aa9c2662607a3b66568f766dea527"},
