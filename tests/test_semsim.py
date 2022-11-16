@@ -1,14 +1,23 @@
 from oaklib import OntologyResource
 from oaklib.implementations.sqldb.sql_implementation import SqlImplementation
-HP_DB_URL = "phenio.db"
+from unittest import TestCase
 
-resource = OntologyResource(slug=HP_DB_URL)
-oi = SqlImplementation(resource)
+DB_PATH = "tests/resources/bfo.db"
 
+class TestSemsim(TestCase):
 
-def test_oak():
-    print(oi.label("HP:0000498"))
+    def setUp(self) -> None:
+        self.oi = SqlImplementation(OntologyResource(slug=DB_PATH))
+        self.test_node = "BFO:0000001"
 
-    sim = oi.termset_pairwise_similarity(["HP:0001036"],
-                                         ["HP:0002583"])
-    assert sim.subject_best_matches["HP:0001036"]
+    def test_semsim(self):
+        label = self.oi.label(self.test_node)
+
+        sim = self.oi.termset_pairwise_similarity([self.test_node],
+                                                  ["BFO:0000002"])
+        
+        score = sim.subject_best_matches[self.test_node].score
+
+        self.assertEqual(label, "entity")
+        self.assertGreaterEqual(len(sim), 7)
+        self.assertGreater(score, 0.04)
