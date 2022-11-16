@@ -1430,7 +1430,7 @@ docs = ["furo[docs] (>=2022.9.29,<2023.0.0)", "myst-parser[docs] (>=0.18.1,<0.19
 type = "git"
 url = "https://github.com/INCATools/oakx-grape.git"
 reference = "semsim-linking"
-resolved_reference = "c704a49229200a1fdf709d909dbd585be4ce023b"
+resolved_reference = "cb1c6bd18676b8dfbf0e492f95d74e1c76ff1d53"
 
 [[package]]
 name = "ols-client"
