@@ -1,14 +1,15 @@
 from oaklib import OntologyResource
+from oakx_grape.grape_implementation import GrapeImplementation
 from oaklib.implementations.sqldb.sql_implementation import SqlImplementation
 from unittest import TestCase
 
-DB_PATH = "tests/resources/bfo.db"
+DB_PATH = "sqlite:obo:bfo"
 
-# grape:sqlite:obo
+
 class TestSemsim(TestCase):
 
     def setUp(self) -> None:
-        self.oi = SqlImplementation(OntologyResource(slug=DB_PATH))
+        self.oi = GrapeImplementation(OntologyResource(slug=DB_PATH))
         self.test_node = "BFO:0000001"
 
     def test_semsim(self):
