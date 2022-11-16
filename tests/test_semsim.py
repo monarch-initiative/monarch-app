@@ -4,6 +4,7 @@ from unittest import TestCase
 
 DB_PATH = "tests/resources/bfo.db"
 
+# grape:sqlite:obo
 class TestSemsim(TestCase):
 
     def setUp(self) -> None:
