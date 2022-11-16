@@ -2,7 +2,9 @@ import pytest
 from oaklib import OntologyResource
 from oaklib.implementations.sqldb.sql_implementation import SqlImplementation
 from pprint import pprint
-resource = OntologyResource(slug=f"sqlite:///phenio.db")
+HP_DB_URL = "https://s3.amazonaws.com/bbop-sqlite/hp.db.gz"
+
+resource = OntologyResource(slug=HP_DB_URL)
 oi = SqlImplementation(resource)
 
 
