@@ -1406,24 +1406,31 @@ gilda = ["gilda (>=0.10.1,<0.11.0)"]
 
 [[package]]
 name = "oakx-grape"
-version = "0.1.1"
+version = "0.1.0"
 description = "oakx-grape"
 category = "main"
 optional = false
 python-versions = ">=3.9,<3.12"
+develop = false
 
 [package.dependencies]
-bioregistry = ">=0.5.136,<0.6.0"
-click = ">=8.1.3,<9.0.0"
+bioregistry = "^0.5.136"
+click = "^8.1.3"
 ensmallen = "0.8.28"
 grape = "*"
-importlib = ">=1.0.4,<2.0.0"
-oaklib = ">=0.1.43,<0.2.0"
-scipy = ">=1.9.0,<2.0.0"
-tox = ">=3.25.1,<4.0.0"
+importlib = "^1.0.4"
+oaklib = "^0.1.43"
+scipy = "^1.9.0"
+tox = "^3.25.1"
 
 [package.extras]
 docs = ["furo[docs] (>=2022.9.29,<2023.0.0)", "myst-parser[docs] (>=0.18.1,<0.19.0)", "sphinx-autodoc-typehints[docs] (>=1.19.4,<2.0.0)", "sphinx-click[docs] (>=4.3.0,<5.0.0)", "sphinx[docs] (>=5.3.0,<6.0.0)"]
+
+[package.source]
+type = "git"
+url = "https://github.com/INCATools/oakx-grape.git"
+reference = "semsim-linking"
+resolved_reference = "c704a49229200a1fdf709d909dbd585be4ce023b"
 
 [[package]]
 name = "ols-client"
@@ -2829,7 +2836,7 @@ docs = ["sphinx", "sphinx-rtd-theme", "sphinx-autodoc-typehints", "sphinx-click"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<3.12"
-content-hash = "bdb3536cbefb31bdf2630fa22c5349212d0867f11f6fbd703cb746d552400026"
+content-hash = "2e72103c120b5d8b9b42acdc468c8b58fbf3862a73f9589aed95e0f853d891f6"
 
 [metadata.files]
 aiohttp = [
@@ -3795,10 +3802,7 @@ oaklib = [
     {file = "oaklib-0.1.53-py3-none-any.whl", hash = "sha256:e6644b912f991928a98e6870dba8bfea0a32af10dd93ef4f5ea6cefc86c1cfb5"},
     {file = "oaklib-0.1.53.tar.gz", hash = "sha256:a04a74fb6a71ccecb680642c5ebabea97cef2efc92ec6d46a79ce33e5664b283"},
 ]
-oakx-grape = [
-    {file = "oakx_grape-0.1.1-py3-none-any.whl", hash = "sha256:9d5d1ac82c7315e1a884103677c96eb8df9c34d3bf56602731d5ca068c93ee2b"},
-    {file = "oakx_grape-0.1.1.tar.gz", hash = "sha256:8e97271f216f803a51206087f795952381d5cc528803bfa4ccd1293d801b6c5b"},
-]
+oakx-grape = []
 ols-client = [
     {file = "ols_client-0.1.2-py3-none-any.whl", hash = "sha256:880a41aa99fd1dbcda95f408356e1c4307ad7c34dfa75c959b54973c85d9fa6e"},
     {file = "ols_client-0.1.2.tar.gz", hash = "sha256:f495a608ca81475a3ba17d67d768f5e64973d5d415588b683be2067cc28ab2b9"},
