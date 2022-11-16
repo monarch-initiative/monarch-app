@@ -14,6 +14,15 @@ monarch-py = "^0.1.0"
 oaklib = "^0.1.53"
 pytest = "^7.2.0"
 oakx-grape = "*"
+tox = "^3.25.1"
+click = "^8.1.3"
+importlib = "^1.0.4"
+sphinx = {version = "^5.3.0", extras = ["docs"]}
+sphinx-rtd-theme = {version = "^1.0.0", extras = ["docs"]}
+sphinx-autodoc-typehints = {version = "^1.19.4", extras = ["docs"]}
+sphinx-click = {version = "^4.3.0", extras = ["docs"]}
+myst-parser = {version = "^0.18.1", extras = ["docs"]}
+
 
 [tool.poetry.dev-dependencies]
 uvicorn = {extras = ["standard"], version = "^0.18.2"}
@@ -21,3 +30,32 @@ uvicorn = {extras = ["standard"], version = "^0.18.2"}
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry-dynamic-versioning]
+enable = true
+vcs = "git"
+style = "pep440"
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
+build-backend = "poetry_dynamic_versioning.backend"
+
+[tool.poetry.extras]
+docs = [
+    "sphinx",
+    "sphinx-rtd-theme",
+    "sphinx-autodoc-typehints",
+    "sphinx-click",
+    "myst-parser"
+    ]
+
+[tool.black]
+line-length = 100
+target-version = ["py38", "py39", "py310"]
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 100
+include_trailing_comma = true
+reverse_relative = true
