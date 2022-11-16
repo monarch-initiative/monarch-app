@@ -13,6 +13,7 @@ pydantic = "^1.10.2"
 monarch-py = "^0.1.0"
 oaklib = "^0.1.53"
 pytest = "^7.2.0"
+oakx-grape = "*"
 
 [tool.poetry.dev-dependencies]
 uvicorn = {extras = ["standard"], version = "^0.18.2"}
