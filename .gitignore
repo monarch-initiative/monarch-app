@@ -1,4 +1,5 @@
 **pycache**
 api-env/
+*.db
 .idea
 .venv
