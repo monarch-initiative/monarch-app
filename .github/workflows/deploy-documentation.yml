@@ -1,4 +1,4 @@
-                                                       name: Sphinx Documentation
+name: Sphinx Documentation for Monarch-API
 on:
   push:
     branches: [ main ]
