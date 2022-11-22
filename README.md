@@ -1,6 +1,6 @@
-#### Running the API:
+### Running the API:
 
-Local development:
+#### Local development:
 
 - Connect to and expose the SOLR database:
 `gcloud compute ssh monarch-solr-dev -- -L 8983:localhost:8983`
@@ -8,13 +8,21 @@ Local development:
 - Start the uvicorn server:
 `cd <path-to>/monarch-api && uvicorn main:app --reload`
 
-GCP deployment:
+#### GCP deployment:
 
 - First, connect to the GCP SOLR machine:
 `gcloud compute ssh monarch-api-dev -- -L 8000:localhost:8000`
 
 - Then, start the uvicorn server:
 `nohup uvicorn main:app --reload --host 0.0.0.0 &`
+
+#### Building and using the Docker image:
+
+- Build the docker image:
+`docker build --rm --tag us-central1-docker.pkg.dev/monarch-initiative/monarch-initiative/monarch-api:0.1 . `
+
+- Push the docker image:
+`docker push us-central1-docker.pkg.dev/monarch-initiative/monarch-initiative/monarch-api:0.1`
 
 #### Planning board:
 
