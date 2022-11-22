@@ -1,47 +1,47 @@
-name: Monarch API QC
+name: Monarch API QC tests
 
+# Controls when the action will run.
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
+  # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches: [ main ]
   pull_request:
     types: [opened, synchronize, reopened]
+
+  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    types: trigger-run-tests
 
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  # This workflow contains a single job called "build"
   build:
-
-    runs-on: ${{ matrix.os }}
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.9", "3.10"]
-        os: [ ubuntu-latest ]
-        #os: [ ubuntu-latest, windows-latest ]
+        python: [ "3.8", "3.9", "3.10" ]
 
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
 
-    #----------------------------------------------
-    #          install & configure poetry
-    #----------------------------------------------
-    - name: Install Poetry
-      uses: snok/install-poetry@v1.3
-    
+      - uses: actions/setup-python@v2
+        name: setup python environment
+        with:
+          python-version: ${{ matrix.python }}
 
-    #----------------------------------------------
-    #    install your root project, if required 
-    #----------------------------------------------      
-    - name: Install library
-      run: poetry install --no-interaction
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install poetry
+          poetry install
 
-    #----------------------------------------------
-    #              run tox
-    #----------------------------------------------
-    #- name: Lint with flake8
-    #  run: poetry run tox -e flake8
-    - name: Test with pytest
-      run: poetry run tox -e py
+      #----------------------------------------------
+      #              run tox
+      #----------------------------------------------
+      #- name: Lint with flake8
+      #  run: poetry run tox -e flake8
+      - name: Test with pytest
+        run: poetry run tox -e py
