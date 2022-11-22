@@ -2830,7 +2830,7 @@ docs = ["sphinx", "sphinx-rtd-theme", "sphinx-autodoc-typehints", "sphinx-click"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<3.12"
-content-hash = "659c0693fdb55cf467ccd3d3949459d0c8a6db513c09552d4454839621b1b225"
+content-hash = "e768192321ccea1bccfe8657012770b99b71d5792bf842be6822498b289be4bb"
 
 [metadata.files]
 aiohttp = [
