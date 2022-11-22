@@ -6,7 +6,6 @@ Welcome to Monarch-API's documentation!
    :caption: Contents:
 
    intro/intro
-   modules
 
 Indices and tables
 ==================

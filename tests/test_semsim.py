@@ -21,6 +21,6 @@ class TestSemsim(TestCase):
 
         score = sim.subject_best_matches[self.test_node].score
 
-        self.assertEqual(label, "entity")
+        self.assertEqual(label, "spatial region")
         self.assertGreaterEqual(len(sim), 7)
         self.assertGreater(score, 0.04)
