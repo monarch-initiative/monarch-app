@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from monarch_py.implementations.solr.solr_implentation import SolrImplementation
-from monarch_api.model import Node, AssociationCount
+
+from monarch_api.model import AssociationCount, Node
 
 router = APIRouter(
     prefix="/api/entity", tags=["entity"], responses={404: {"description": "Not Found"}}

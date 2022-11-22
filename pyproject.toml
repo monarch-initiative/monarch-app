@@ -21,7 +21,7 @@ sphinx-rtd-theme = {version = "^1.0.0", extras = ["docs"]}
 sphinx-autodoc-typehints = {version = "^1.19.4", extras = ["docs"]}
 sphinx-click = {version = "^4.3.0", extras = ["docs"]}
 myst-parser = {version = "^0.18.1", extras = ["docs"]}
-oakx-grape = {git = "https://github.com/INCATools/oakx-grape.git", rev = "semsim-linking"}
+oakx-grape = "*"
 
 
 [tool.poetry.dev-dependencies]

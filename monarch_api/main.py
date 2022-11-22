@@ -1,8 +1,7 @@
+import uvicorn
 from fastapi import FastAPI
 
-from monarch_api import association
-from monarch_api import entity
-import uvicorn
+from monarch_api import association, entity
 
 app = FastAPI()
 app.include_router(entity.router)
