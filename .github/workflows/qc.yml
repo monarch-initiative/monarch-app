@@ -43,5 +43,5 @@ jobs:
     #----------------------------------------------
     #- name: Lint with flake8
     #  run: poetry run tox -e flake8
-    - name: Test with pytest
-      run: poetry run tox -e py
+    - name: Test with unittest
+      run: poetry run python -u -m unittest discover
