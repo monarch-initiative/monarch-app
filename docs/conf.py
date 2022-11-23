@@ -9,10 +9,12 @@ import sys
 from datetime import date
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+sys.path.insert(0, os.path.abspath('../'))
 
 project = 'monarch_api'
 copyright = f"{date.today().year}, Monarch Initiative"
 author = 'Monarch Initiative'
+
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
