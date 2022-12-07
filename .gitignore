@@ -3,3 +3,4 @@ api-env/
 *.db
 .idea
 .venv
+schema/monarch-py.yaml
