@@ -1,5 +1,5 @@
-from oaklib.implementations.sqldb.sql_implementation import SqlImplementation
 from unittest import TestCase
+
 from oaklib import OntologyResource
 from oakx_grape.grape_implementation import GrapeImplementation
 
@@ -16,8 +16,7 @@ class TestSemsim(TestCase):
     def test_semsim(self):
         label = self.oi.label(self.test_node)
 
-        sim = self.oi.termset_pairwise_similarity([self.test_node],
-                                                  ["BFO:0000002"])
+        sim = self.oi.termset_pairwise_similarity([self.test_node], ["BFO:0000002"])
 
         score = sim.subject_best_matches[self.test_node].score
 

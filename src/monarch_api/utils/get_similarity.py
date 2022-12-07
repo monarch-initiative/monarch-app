@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import oaklib.datamodels.ontology_metadata as omd
 from oaklib import OntologyResource
 from oaklib.constants import OAKLIB_MODULE

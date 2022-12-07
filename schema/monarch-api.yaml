@@ -2,74 +2,42 @@ id: https://w3id.org/monarch/monarch-api
 name: MonarchApi
 description: Data model for Monarch API
 default_prefix: monarch-api
+prefixes:
+  linkml: https://w3id.org/linkml/
+imports:
+  - monarch-py
 classes:
-  node:
+  Node:
+    is_a: Entity
     slots:
-      - id
-      - label
-      - iri
-      - category
-      - clinical_modifiers
-      - replaced by
-      - deprecated
-      - consider
-      - xrefs
-      - synonyms
       - taxon
       - inheritance
       - association_counts
     slot_usage:
       id:
         required: true
-  inheritance:
-    slots:
-      - id
-      - pred
-      - xrefs
-  synonym:
+  Inheritance:
+    is_a: Association
+  Taxon:
     slots:
       - id
       - label
-      - iri
-  taxon:
+  AssociationCount:
     slots:
-      - id
       - label
-  association_count:
-    slots:
-      - id
-      - counts
-      - counts_by_taxon
+      - count
 slots:
-  - category:
-      designates_type: true
-  - clinical_modifiers
-  - consider
-  - counts:
-      required: false
-  - counts_by_taxon:
-      required: false
-  - deprecated
-  - id:
-      identifier: true
+  - count:
+      range: integer
   - inheritance:
-      range: inheritance
+      range: Inheritance
       inlined: true
-  - iri:
   - label
-  - pred
-  - replaced by
-  - synonyms:
-      range: synonym
-      multivalued: true
-      inlined: true
-      inlined_as_list: true
-  - xrefs
   - taxon:
-      range: taxon
+      range: Taxon
       inlined: true
   - association_counts:
-      range: association_count
+      range: AssociationCount
       multivalued: true
       inlined: true
       inlined_as_list: false
