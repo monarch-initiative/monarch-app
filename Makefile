@@ -3,7 +3,7 @@ RUN = poetry run
 schema/monarch-py.yaml:
 	poetry run monarch schema > $@
 
-monarch_api/model.py: schema/monarch-api.yaml schema/monarch-py.yaml
+src/monarch_api/model.py: schema/monarch-api.yaml schema/monarch-py.yaml
 	poetry run gen-pydantic $< > $@
 
 #todo: remove the pipe grep cleaning bits after the next linkml update
@@ -18,7 +18,7 @@ clobber:
 
 .PHONY: dev-backend
 dev-backend: monarch_api/main.py
-	poetry run uvicorn monarch_api.main:app --reload
+	poetry run uvicorn src.monarch_api.main:app --reload
 
 .PHONY: clean
 clean:

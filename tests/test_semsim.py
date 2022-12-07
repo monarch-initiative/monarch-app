@@ -1,4 +1,3 @@
-from oaklib.implementations.sqldb.sql_implementation import SqlImplementation
 from unittest import TestCase
 from oaklib import OntologyResource
 from oakx_grape.grape_implementation import GrapeImplementation

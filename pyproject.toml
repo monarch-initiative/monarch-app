@@ -4,6 +4,10 @@ version = "0.2.0"
 description = "Monarch Initiative API"
 authors = ["glass-ships <glass.ships@outlook.com>, kevin schaper <kevin@tislab.org>"]
 
+packages = [
+    { include = "monarch_api", from = "src"}
+]
+
 [tool.poetry.dependencies]
 python = ">=3.9,<3.12"
 fastapi = "^0.87.0"
@@ -20,12 +24,13 @@ sphinx-click = {version = "^4.3.0", extras = ["docs"]}
 myst-parser = {version = "^0.18.1", extras = ["docs"]}
 oakx-grape = "^0.1.2"
 
-
-[tool.poetry.dev-dependencies]
-uvicorn = {extras = ["standard"], version = "^0.20.0"}
-
 [tool.poetry.group.dev.dependencies]
-autoflake = "^2.0.0"
+pytest = "^7.1.3"
+black = "^22.10.0"
+isort = "^5.10.1"
+flake8 = "^5.0.4"
+autoflake = "^1.7.7"
+uvicorn = {extras = ["standard"], version = "^0.20.0"}
 
 [build-system]
 requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
@@ -44,3 +49,6 @@ docs = [
     "sphinx-click",
     "myst-parser"
     ]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]

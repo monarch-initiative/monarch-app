@@ -47,4 +47,4 @@ FROM builder-base as production
 COPY . /opt/monarch-api
 WORKDIR /opt/monarch-api
 
-CMD ["/opt/poetry/bin/poetry", "run", "uvicorn", "monarch_api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["/opt/poetry/bin/poetry", "run", "uvicorn", "src.monarch_api.main:app", "--host", "0.0.0.0", "--port", "8000"]
