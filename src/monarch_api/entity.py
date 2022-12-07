@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
-from monarch_api.model import Node, AssociationCount
+
+from monarch_api.model import Node
 
 router = APIRouter(
     prefix="/api/entity", tags=["entity"], responses={404: {"description": "Not Found"}}
@@ -23,10 +24,14 @@ async def _get_entity(
     node = Node(**response.__dict__)
 
     if "biolink:Disease" in node.category:
-        mode_of_inheritance_associations = solr.get_associations(subject=id, predicate="biolink:has_mode_of_inheritance", offset=0)
-        if mode_of_inheritance_associations is not None and len(mode_of_inheritance_associations.associations) == 1:
+        mode_of_inheritance_associations = solr.get_associations(
+            subject=id, predicate="biolink:has_mode_of_inheritance", offset=0
+        )
+        if (
+            mode_of_inheritance_associations is not None
+            and len(mode_of_inheritance_associations.associations) == 1
+        ):
             node.inheritance = mode_of_inheritance_associations.associations[0]
-
 
     # todo: move association_counts query to it's own separate request
     # need a monarch-py facet api
