@@ -16,6 +16,17 @@ async def _get_termlist_similarity(
     objlist: str = "",
     predicates: str = "",
 ):
+    """_summary_
+
+    Args:
+        pagination (PaginationParams, optional): _description_. Defaults to Depends().
+        subjlist (str, optional): _description_. Defaults to "".
+        objlist (str, optional): _description_. Defaults to "".
+        predicates (str, optional): _description_. Defaults to "".
+
+    Returns:
+        _type_: _description_
+    """
 
     # Process string values to lists
     for list_type in [subjlist, objlist, predicates]:
