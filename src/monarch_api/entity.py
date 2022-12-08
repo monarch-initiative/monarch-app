@@ -13,6 +13,18 @@ async def _get_entity(
     id,
     get_association_counts: bool = False,
 ) -> Node:
+    """Retrieves the entity with the specified id
+
+    Args:
+        id (_type_): _description_
+        get_association_counts (bool, optional): _description_. Defaults to False.
+
+    Raises:
+        HTTPException: _description_
+
+    Returns:
+        Node: _description_
+    """
     solr = SolrImplementation()
     response = solr.get_entity(id)
 
