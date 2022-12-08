@@ -1,5 +1,9 @@
 RUN = poetry run
 
+.PHONY: install
+install:
+	poetry install
+
 schema/monarch-py.yaml:
 	poetry run monarch schema > $@
 
@@ -19,6 +23,11 @@ clobber:
 .PHONY: dev-backend
 dev-backend: monarch_api/main.py
 	poetry run uvicorn src.monarch_api.main:app --reload
+
+.PHONY: generate-docs
+generate-docs: install
+	$(RUN) gen-doc -d docs/Data-Model/ schema/monarch-api.yaml
+
 
 .PHONY: clean
 clean:
