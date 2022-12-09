@@ -25,7 +25,7 @@ dev-backend: monarch_api/main.py
 	poetry run uvicorn src.monarch_api.main:app --reload
 
 .PHONY: generate-docs
-generate-docs: install
+generate-docs: install schema/monarch-py.yaml
 	$(RUN) gen-doc -d docs/Data-Model/ schema/monarch-api.yaml
 
 
