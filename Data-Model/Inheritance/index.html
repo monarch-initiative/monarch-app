@@ -206,18 +206,6 @@
   
 
 
-  <li class="md-tabs__item">
-    <a href="../../model/" class="md-tabs__link">
-      Data Model
-    </a>
-  </li>
-
-      
-        
-  
-  
-
-
   
   
   
@@ -318,37 +306,22 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../../model/" class="md-nav__link">
-        Data Model
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
     
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
       
       
       
       
-        <label class="md-nav__link" for="__nav_3">
+        <label class="md-nav__link" for="__nav_2">
           API Reference
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="API Reference" data-md-level="1">
-        <label class="md-nav__title" for="__nav_3">
+        <label class="md-nav__title" for="__nav_2">
           <span class="md-nav__icon md-icon"></span>
           API Reference
         </label>
@@ -429,18 +402,18 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
       
       
       
       
-        <label class="md-nav__link" for="__nav_4">
+        <label class="md-nav__link" for="__nav_3">
           Data Model
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Data Model" data-md-level="1">
-        <label class="md-nav__title" for="__nav_4">
+        <label class="md-nav__title" for="__nav_3">
           <span class="md-nav__icon md-icon"></span>
           Data Model
         </label>
@@ -1608,32 +1581,14 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="../subject_label/">subject_label</a></td>
+<td><a href="../source/">source</a></td>
 <td>0..1 <br/> <a href="xsd:string">xsd:string</a></td>
 <td></td>
 <td><a href="../Association/">Association</a></td>
 </tr>
 <tr>
-<td><a href="../original_object/">original_object</a></td>
+<td><a href="../object/">object</a></td>
 <td>0..1 <br/> <a href="xsd:string">xsd:string</a></td>
-<td></td>
-<td><a href="../Association/">Association</a></td>
-</tr>
-<tr>
-<td><a href="../provided_by/">provided_by</a></td>
-<td>0..1 <br/> <a href="xsd:string">xsd:string</a></td>
-<td></td>
-<td><a href="../Association/">Association</a></td>
-</tr>
-<tr>
-<td><a href="../id/">id</a></td>
-<td>1..1 <br/> <a href="xsd:string">xsd:string</a></td>
-<td></td>
-<td><a href="../Association/">Association</a></td>
-</tr>
-<tr>
-<td><a href="../subject_category/">subject_category</a></td>
-<td>0..* <br/> NONE</td>
 <td></td>
 <td><a href="../Association/">Association</a></td>
 </tr>
@@ -1644,25 +1599,31 @@
 <td><a href="../Association/">Association</a></td>
 </tr>
 <tr>
-<td><a href="../object_label/">object_label</a></td>
+<td><a href="../frequency_qualifier/">frequency_qualifier</a></td>
 <td>0..1 <br/> <a href="xsd:string">xsd:string</a></td>
 <td></td>
 <td><a href="../Association/">Association</a></td>
 </tr>
 <tr>
-<td><a href="../aggregator_knowledge_source/">aggregator_knowledge_source</a></td>
-<td>0..* <br/> NONE</td>
+<td><a href="../sex_qualifier/">sex_qualifier</a></td>
+<td>0..1 <br/> <a href="xsd:string">xsd:string</a></td>
 <td></td>
 <td><a href="../Association/">Association</a></td>
 </tr>
 <tr>
-<td><a href="../object_closure/">object_closure</a></td>
-<td>0..* <br/> NONE</td>
+<td><a href="../original_subject/">original_subject</a></td>
+<td>0..1 <br/> <a href="xsd:string">xsd:string</a></td>
 <td></td>
 <td><a href="../Association/">Association</a></td>
 </tr>
 <tr>
-<td><a href="../subject_closure/">subject_closure</a></td>
+<td><a href="../relation/">relation</a></td>
+<td>0..1 <br/> <a href="xsd:string">xsd:string</a></td>
+<td></td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../subject_category/">subject_category</a></td>
 <td>0..* <br/> NONE</td>
 <td></td>
 <td><a href="../Association/">Association</a></td>
@@ -1674,13 +1635,79 @@
 <td><a href="../Association/">Association</a></td>
 </tr>
 <tr>
+<td><a href="../original_object/">original_object</a></td>
+<td>0..1 <br/> <a href="xsd:string">xsd:string</a></td>
+<td></td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../object_label/">object_label</a></td>
+<td>0..1 <br/> <a href="xsd:string">xsd:string</a></td>
+<td></td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../subject_namespace/">subject_namespace</a></td>
+<td>0..1 <br/> <a href="xsd:string">xsd:string</a></td>
+<td></td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../subject_closure_label/">subject_closure_label</a></td>
+<td>0..* <br/> NONE</td>
+<td></td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../subject/">subject</a></td>
+<td>0..1 <br/> <a href="xsd:string">xsd:string</a></td>
+<td></td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
 <td><a href="../object_closure_label/">object_closure_label</a></td>
 <td>0..* <br/> NONE</td>
 <td></td>
 <td><a href="../Association/">Association</a></td>
 </tr>
 <tr>
+<td><a href="../subject_label/">subject_label</a></td>
+<td>0..1 <br/> <a href="xsd:string">xsd:string</a></td>
+<td></td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../primary_knowledge_source/">primary_knowledge_source</a></td>
+<td>0..* <br/> NONE</td>
+<td></td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../knowledge_source/">knowledge_source</a></td>
+<td>0..* <br/> NONE</td>
+<td></td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
 <td><a href="../has_evidence/">has_evidence</a></td>
+<td>0..1 <br/> <a href="xsd:string">xsd:string</a></td>
+<td></td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../onset_qualifier/">onset_qualifier</a></td>
+<td>0..1 <br/> <a href="xsd:string">xsd:string</a></td>
+<td></td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../provided_by/">provided_by</a></td>
+<td>0..1 <br/> <a href="xsd:string">xsd:string</a></td>
+<td></td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../object_namespace/">object_namespace</a></td>
 <td>0..1 <br/> <a href="xsd:string">xsd:string</a></td>
 <td></td>
 <td><a href="../Association/">Association</a></td>
@@ -1698,79 +1725,31 @@
 <td><a href="../Association/">Association</a></td>
 </tr>
 <tr>
-<td><a href="../onset_qualifier/">onset_qualifier</a></td>
-<td>0..1 <br/> <a href="xsd:string">xsd:string</a></td>
-<td></td>
-<td><a href="../Association/">Association</a></td>
-</tr>
-<tr>
-<td><a href="../object_namespace/">object_namespace</a></td>
-<td>0..1 <br/> <a href="xsd:string">xsd:string</a></td>
-<td></td>
-<td><a href="../Association/">Association</a></td>
-</tr>
-<tr>
-<td><a href="../original_subject/">original_subject</a></td>
-<td>0..1 <br/> <a href="xsd:string">xsd:string</a></td>
-<td></td>
-<td><a href="../Association/">Association</a></td>
-</tr>
-<tr>
-<td><a href="../frequency_qualifier/">frequency_qualifier</a></td>
-<td>0..1 <br/> <a href="xsd:string">xsd:string</a></td>
-<td></td>
-<td><a href="../Association/">Association</a></td>
-</tr>
-<tr>
-<td><a href="../knowledge_source/">knowledge_source</a></td>
-<td>0..* <br/> NONE</td>
-<td></td>
-<td><a href="../Association/">Association</a></td>
-</tr>
-<tr>
 <td><a href="../category/">category</a></td>
 <td>0..* <br/> NONE</td>
 <td></td>
 <td><a href="../Association/">Association</a></td>
 </tr>
 <tr>
-<td><a href="../object/">object</a></td>
-<td>0..1 <br/> <a href="xsd:string">xsd:string</a></td>
+<td><a href="../negated/">negated</a></td>
+<td>0..1 <br/> <a href="xsd:boolean">xsd:boolean</a></td>
 <td></td>
 <td><a href="../Association/">Association</a></td>
 </tr>
 <tr>
-<td><a href="../subject_closure_label/">subject_closure_label</a></td>
-<td>0..* <br/> NONE</td>
-<td></td>
-<td><a href="../Association/">Association</a></td>
-</tr>
-<tr>
-<td><a href="../sex_qualifier/">sex_qualifier</a></td>
-<td>0..1 <br/> <a href="xsd:string">xsd:string</a></td>
-<td></td>
-<td><a href="../Association/">Association</a></td>
-</tr>
-<tr>
-<td><a href="../subject/">subject</a></td>
-<td>0..1 <br/> <a href="xsd:string">xsd:string</a></td>
-<td></td>
-<td><a href="../Association/">Association</a></td>
-</tr>
-<tr>
-<td><a href="../subject_namespace/">subject_namespace</a></td>
-<td>0..1 <br/> <a href="xsd:string">xsd:string</a></td>
-<td></td>
-<td><a href="../Association/">Association</a></td>
-</tr>
-<tr>
-<td><a href="../primary_knowledge_source/">primary_knowledge_source</a></td>
-<td>0..* <br/> NONE</td>
+<td><a href="../id/">id</a></td>
+<td>1..1 <br/> <a href="xsd:string">xsd:string</a></td>
 <td></td>
 <td><a href="../Association/">Association</a></td>
 </tr>
 <tr>
 <td><a href="../qualifiers/">qualifiers</a></td>
+<td>0..* <br/> NONE</td>
+<td></td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../object_closure/">object_closure</a></td>
 <td>0..* <br/> NONE</td>
 <td></td>
 <td><a href="../Association/">Association</a></td>
@@ -1782,20 +1761,14 @@
 <td><a href="../Association/">Association</a></td>
 </tr>
 <tr>
-<td><a href="../negated/">negated</a></td>
-<td>0..1 <br/> <a href="xsd:boolean">xsd:boolean</a></td>
+<td><a href="../subject_closure/">subject_closure</a></td>
+<td>0..* <br/> NONE</td>
 <td></td>
 <td><a href="../Association/">Association</a></td>
 </tr>
 <tr>
-<td><a href="../relation/">relation</a></td>
-<td>0..1 <br/> <a href="xsd:string">xsd:string</a></td>
-<td></td>
-<td><a href="../Association/">Association</a></td>
-</tr>
-<tr>
-<td><a href="../source/">source</a></td>
-<td>0..1 <br/> <a href="xsd:string">xsd:string</a></td>
+<td><a href="../aggregator_knowledge_source/">aggregator_knowledge_source</a></td>
+<td>0..* <br/> NONE</td>
 <td></td>
 <td><a href="../Association/">Association</a></td>
 </tr>
