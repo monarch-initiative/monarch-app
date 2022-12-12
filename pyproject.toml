@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "monarch-api"
-version = "0.2.0"
+version = "0.3.0"
 description = "Monarch Initiative API"
 authors = [
     "glass-ships <glass.ships@outlook.com>",
