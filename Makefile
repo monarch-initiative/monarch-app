@@ -1,4 +1,5 @@
 RUN = poetry run
+VERSION=$(shell poetry version -s)
 
 .PHONY: install
 install:
@@ -52,3 +53,11 @@ format:
 		--in-place src tests
 	$(RUN) isort src tests
 	$(RUN) black src tests
+
+.PHONY: docker-build
+docker-build:
+	docker build --rm --tag us-central1-docker.pkg.dev/monarch-initiative/monarch-initiative/monarch-api:$(VERSION) .
+
+.PHONY: docker-push
+docker-push:
+	docker push us-central1-docker.pkg.dev/monarch-initiative/monarch-initiative/monarch-api:$(VERSION)
