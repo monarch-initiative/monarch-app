@@ -13,11 +13,10 @@ classes:
       - taxon
       - inheritance
       - association_counts
+      - node_hierarchy
     slot_usage:
       id:
         required: true
-  Inheritance:
-    is_a: Association
   Taxon:
     slots:
       - id
@@ -26,11 +25,16 @@ classes:
     slots:
       - label
       - count
+  NodeHierarchy:
+    slots:
+      - super_classes
+      - equivalent_classes
+      - sub_classes
 slots:
   - count:
       range: integer
   - inheritance:
-      range: Inheritance
+      range: Entity
       inlined: true
   - label
   - taxon:
@@ -41,3 +45,21 @@ slots:
       multivalued: true
       inlined: true
       inlined_as_list: false
+  - node_hierarchy:
+      range: NodeHierarchy
+      inlined: true
+  - super_classes:
+        range: Entity
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+  - equivalent_classes:
+        range: Entity
+        multivalued: true
+        inlined: true
+        inlined_as_list: true
+  - sub_classes:
+        range: Entity
+        multivalued: true
+        inlined: true
+        inlined_as_list: true

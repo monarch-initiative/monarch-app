@@ -1,7 +1,8 @@
 from fastapi import APIRouter, HTTPException
+from monarch_api.utils.entity_utils import get_associated_entity
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
-from monarch_api.model import Node
+from monarch_api.model import Node, NodeHierarchy
 
 router = APIRouter(
     prefix="/api/entity", tags=["entity"], responses={404: {"description": "Not Found"}}
@@ -43,7 +44,9 @@ async def _get_entity(
             mode_of_inheritance_associations is not None
             and len(mode_of_inheritance_associations.associations) == 1
         ):
-            node.inheritance = mode_of_inheritance_associations.associations[0]
+            node.inheritance = get_associated_entity(mode_of_inheritance_associations.associations[0])
+
+    # todo: add hierarchy
 
     # todo: move association_counts query to it's own separate request
     # need a monarch-py facet api
