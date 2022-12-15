@@ -5,21 +5,18 @@ VERSION=$(shell poetry version -s)
 install:
 	poetry install
 
-schema/monarch-py.yaml:
-	poetry run monarch schema > $@
 
-src/monarch_api/model.py: schema/monarch-api.yaml schema/monarch-py.yaml
-	poetry run gen-pydantic $< > $@
-
-#todo: remove the pipe grep cleaning bits after the next linkml update
-frontend/src/api/interfaces.ts: schema/monarch-api.yaml schema/monarch-py.yaml
-	poetry run gen-typescript $< | grep -v "\*" | grep -v -e '^[[:space:]]*$$' > $@
+.PHONY: generate-model
+generate-model:
+	poetry run monarch schema > schema/monarch-py.yaml
+	poetry run gen-pydantic schema/monarch-api.yaml > src/monarch_api/model.py
+	poetry run gen-typescript schema/monarch-api.yaml > frontend/src/api/interfaces.ts
 
 .PHONY: clobber
 clobber:
-	rm schema/monarch-py.yaml
-	rm monarch_api/model.py
-	rm frontend/src/api/interfaces.ts
+	rm schema/monarch-py.yaml || true
+	rm monarch_api/model.py || true
+	rm frontend/src/api/interfaces.ts || true
 
 .PHONY: dev-backend
 dev-backend: monarch_api/main.py

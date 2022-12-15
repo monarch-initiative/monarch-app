@@ -36,43 +36,14 @@ class AssociationCount(ConfiguredBaseModel):
     count: Optional[int] = Field(None)
 
 
+class NodeHierarchy(ConfiguredBaseModel):
+
+    super_classes: Optional[List[Entity]] = Field(default_factory=list)
+    equivalent_classes: Optional[List[Entity]] = Field(default_factory=list)
+    sub_classes: Optional[List[Entity]] = Field(default_factory=list)
+
+
 class Association(ConfiguredBaseModel):
-
-    aggregator_knowledge_source: Optional[List[str]] = Field(default_factory=list)
-    id: Optional[str] = Field(None)
-    subject: Optional[str] = Field(None)
-    original_subject: Optional[str] = Field(None)
-    subject_namespace: Optional[str] = Field(None)
-    subject_category: Optional[List[str]] = Field(default_factory=list)
-    subject_closure: Optional[List[str]] = Field(default_factory=list)
-    subject_label: Optional[str] = Field(None)
-    subject_closure_label: Optional[List[str]] = Field(default_factory=list)
-    predicate: Optional[str] = Field(None)
-    object: Optional[str] = Field(None)
-    original_object: Optional[str] = Field(None)
-    object_namespace: Optional[str] = Field(None)
-    object_category: Optional[List[str]] = Field(default_factory=list)
-    object_closure: Optional[List[str]] = Field(default_factory=list)
-    object_label: Optional[str] = Field(None)
-    object_closure_label: Optional[List[str]] = Field(default_factory=list)
-    knowledge_source: Optional[List[str]] = Field(default_factory=list)
-    primary_knowledge_source: Optional[List[str]] = Field(default_factory=list)
-    category: Optional[List[str]] = Field(default_factory=list)
-    negated: Optional[bool] = Field(None)
-    provided_by: Optional[str] = Field(None)
-    publications: Optional[List[str]] = Field(default_factory=list)
-    qualifiers: Optional[List[str]] = Field(default_factory=list)
-    frequency_qualifier: Optional[str] = Field(None)
-    has_evidence: Optional[str] = Field(None)
-    onset_qualifier: Optional[str] = Field(None)
-    sex_qualifier: Optional[str] = Field(None)
-    source: Optional[str] = Field(None)
-    stage_qualifier: Optional[str] = Field(None)
-    pathway: Optional[str] = Field(None)
-    relation: Optional[str] = Field(None)
-
-
-class Inheritance(Association):
 
     aggregator_knowledge_source: Optional[List[str]] = Field(default_factory=list)
     id: Optional[str] = Field(None)
@@ -126,8 +97,9 @@ class Entity(ConfiguredBaseModel):
 class Node(Entity):
 
     taxon: Optional[Taxon] = Field(None)
-    inheritance: Optional[Inheritance] = Field(None)
+    inheritance: Optional[Entity] = Field(None)
     association_counts: Optional[List[AssociationCount]] = Field(default_factory=list)
+    node_hierarchy: Optional[NodeHierarchy] = Field(None)
     id: str = Field(None)
     category: Optional[List[str]] = Field(default_factory=list)
     name: Optional[str] = Field(None)
@@ -168,8 +140,8 @@ class EntityResults(Results):
 # see https://pydantic-docs.helpmanual.io/usage/postponed_annotations/
 Taxon.update_forward_refs()
 AssociationCount.update_forward_refs()
+NodeHierarchy.update_forward_refs()
 Association.update_forward_refs()
-Inheritance.update_forward_refs()
 Entity.update_forward_refs()
 Node.update_forward_refs()
 Results.update_forward_refs()
