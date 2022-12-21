@@ -27,15 +27,13 @@ RUN apt-get update -y && \
     apt-get install --no-install-recommends -y \
     curl build-essential apt-utils
 
-# install poetry - respects $POETRY_VERSION & $POETRY_HOME
-RUN curl -sSL https://install.python-poetry.org | python3  
-
 # copy project requirement files here to ensure they will be cached.
 WORKDIR $PYSETUP_PATH
 COPY poetry.lock pyproject.toml ./
 
 # install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
-RUN poetry self update \
+RUN curl -sSL https://install.python-poetry.org | python3 && \
+    poetry self update && \
     poetry install
 
 ###############################################
