@@ -47,3 +47,6 @@ WORKDIR /opt/monarch-api
 RUN poetry install
 
 CMD ["/opt/poetry/bin/poetry", "run", "uvicorn", "src.monarch_api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+# us-central1-docker.pkg.dev/monarch-initiative/monarch-initiative/monarch-api-test:0.1 
+# us-central1-docker.pkg.dev/monarch-initiative/monarch-initiative/monarch-api:0.1
