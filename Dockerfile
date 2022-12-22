@@ -29,21 +29,21 @@ RUN apt-get update -y && \
 
 # copy project requirement files here to ensure they will be cached.
 WORKDIR $PYSETUP_PATH
-COPY ./* ./
+COPY . /opt/monarch-api
+# COPY ./* ./
 
 # install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
 RUN curl -sSL https://install.python-poetry.org | python3 && \
-    poetry self update && \
-    poetry install
+    poetry self update 
 
 ###############################################
 # Production Image
 ###############################################
 
-#FROM python-base as production
 FROM builder-base as production
 
-COPY . /opt/monarch-api
 WORKDIR /opt/monarch-api
+
+RUN poetry install
 
 CMD ["/opt/poetry/bin/poetry", "run", "uvicorn", "src.monarch_api.main:app", "--host", "0.0.0.0", "--port", "8000"]
