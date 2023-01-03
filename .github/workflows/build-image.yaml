@@ -20,7 +20,7 @@ jobs:
           gcloud_service_key: ${{ secrets.GCLOUD_SERVICE_KEY }} # can be base64 encoded or plain text || not needed if you use google-github-actions/auth
           registry: us-central1-docker.pkg.dev
           project_id: monarch-initiative
-          image_name: monarch-api
+          image_name: monarch-api/monarch-api
           image_tag: latest,0.2
           dockerfile: ./Dockerfile
 
