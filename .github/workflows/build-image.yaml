@@ -23,7 +23,9 @@ jobs:
           service_account: 'github-actions@monarch-initiative.iam.gserviceaccount.com'
 
       - name: Build and Push to GCP
-        run: make docker-build && make docker-push
+        run: |
+          pip install poetry
+          make docker-build && make docker-push
 
 # jobs:
 #   build-and-push-to-gcr:
