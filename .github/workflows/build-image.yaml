@@ -5,6 +5,7 @@ on:
 
 jobs:
   job_id:
+    runs-on: ubuntu-latest
     permissions:
       contents: 'read'
       id-token: 'write'
@@ -40,4 +41,3 @@ jobs:
 #           image_tag: latest,0.2
 #           dockerfile: ./Dockerfile
 
-# us-central1-docker.pkg.dev/monarch-initiative/monarch-initiative/monarch-api:0.1
