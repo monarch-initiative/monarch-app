@@ -15,7 +15,7 @@ jobs:
         id: get-tag
         run: |
           pip install poetry
-          echo "IMAGE_TAG=$(poetry version -s) >> $GITHUB_OUTPUT
+          echo "IMAGE_TAG=$(poetry version -s)" >> $GITHUB_OUTPUT
 
       - uses: RafikFarhad/push-to-gcr-github-action@v5-beta
         with:
