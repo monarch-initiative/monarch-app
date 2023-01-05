@@ -4,7 +4,7 @@ on:
     branches: [ main, dockerfile ]
 
 jobs:
-  job_id:
+  build-and-push-to-gcp:
     runs-on: ubuntu-latest
     permissions:
       contents: 'read'
