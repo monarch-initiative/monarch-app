@@ -1,7 +1,7 @@
 name: Docker Build and Push to GCR
 on: 
   push:
-    branches: [ main, dockerfile ]
+    branches: [ main ]
 
 # This job uses RafikFarhad's GitHub action to pu
 jobs:
