@@ -3,43 +3,54 @@ on:
   push:
     branches: [ main, dockerfile ]
 
+# This job uses RafikFarhad's GitHub action to pu
 jobs:
-  build-and-push-to-gcp:
+  build-and-push-to-gcr:
     runs-on: ubuntu-latest
-    permissions:
-      contents: 'read'
-      id-token: 'write'
-
-    steps:
-
+    steps:      
       - name: Checkout
-        uses: 'actions/checkout@v3'
+        uses: actions/checkout@v3
 
-      - name: 'Authenticate to Google Cloud'
-        id: 'auth'
-        uses: 'google-github-actions/auth@v1'
-        with:
-          workload_identity_provider: projects/1032453560151/locations/global/workloadIdentityPools/monarch-github-actions/providers/monarch-github-wip
-          service_account: 'github-actions@monarch-initiative.iam.gserviceaccount.com'
-
-      - name: Build and Push to GCP
+      - name: Generate Image Tag
+        id: get-tag
         run: |
           pip install poetry
-          make docker-build && make docker-push
+          echo "IMAGE_TAG=$(poetry version -s) >> $GITHUB_OUTPUT
 
+      - uses: RafikFarhad/push-to-gcr-github-action@v5-beta
+        with:
+          gcloud_service_key: ${{ secrets.GCLOUD_SERVICE_KEY }} # can be base64 encoded or plain text || not needed if you use google-github-actions/auth
+          registry: us-central1-docker.pkg.dev
+          project_id: monarch-initiative
+          image_name: monarch-api/monarch-api
+          image_tag: latest, ${{ steps.get-tag.outputs.IMAGE_TAG }}
+          dockerfile: ./Dockerfile
+
+# This version uses Google's authentication Action directly, 
+# and makes use of this repository's Makefile. 
+# It currently fails at the push step.
+#
 # jobs:
-#   build-and-push-to-gcr:
+#   build-and-push-to-gcp:
 #     runs-on: ubuntu-latest
-#     steps:      
+#     permissions:
+#       contents: 'read'
+#       id-token: 'write'
+
+#     steps:
+
 #       - name: Checkout
-#         uses: actions/checkout@v3
+#         uses: 'actions/checkout@v3'
 
-#       - uses: RafikFarhad/push-to-gcr-github-action@v5-beta
+#       - name: 'Authenticate to Google Cloud'
+#         id: 'auth'
+#         uses: 'google-github-actions/auth@v1'
 #         with:
-#           gcloud_service_key: ${{ secrets.GCLOUD_SERVICE_KEY }} # can be base64 encoded or plain text || not needed if you use google-github-actions/auth
-#           registry: us-central1-docker.pkg.dev
-#           project_id: monarch-initiative
-#           image_name: monarch-api/monarch-api
-#           image_tag: latest,0.2
-#           dockerfile: ./Dockerfile
+#           workload_identity_provider: projects/1032453560151/locations/global/workloadIdentityPools/monarch-github-actions/providers/monarch-github-wip
+#           service_account: 'github-actions@monarch-initiative.iam.gserviceaccount.com'
 
+#       - name: Build and Push to GCP
+#         run: |
+#           pip install poetry
+#           make docker-build
+#           make docker-push
