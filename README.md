@@ -19,10 +19,10 @@
 #### Building and using the Docker image:
 
 - Build the docker image:
-`docker build --rm --tag us-central1-docker.pkg.dev/monarch-initiative/monarch-initiative/monarch-api:0.1 . `
+`docker build --rm --tag us-central1-docker.pkg.dev/monarch-initiative/monarch-api/monarch-api:{VERSION} . `
 
 - Push the docker image:
-`docker push us-central1-docker.pkg.dev/monarch-initiative/monarch-initiative/monarch-api:0.1`
+`docker push us-central1-docker.pkg.dev/monarch-initiative/monarch-api/monarch-api:{VERSION}`
 
 #### Planning board:
 

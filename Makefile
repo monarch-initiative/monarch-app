@@ -53,8 +53,8 @@ format:
 
 .PHONY: docker-build
 docker-build:
-	docker build --rm --tag us-central1-docker.pkg.dev/monarch-initiative/monarch-initiative/monarch-api:$(VERSION) .
+	docker build --rm --tag us-central1-docker.pkg.dev/monarch-initiative/monarch-api/monarch-api:$(VERSION) .
 
 .PHONY: docker-push
 docker-push:
-	docker push us-central1-docker.pkg.dev/monarch-initiative/monarch-initiative/monarch-api:$(VERSION)
+	docker push us-central1-docker.pkg.dev/monarch-initiative/monarch-api/monarch-api:$(VERSION)
