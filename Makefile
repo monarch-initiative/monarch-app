@@ -15,7 +15,7 @@ generate-model:
 .PHONY: clobber
 clobber:
 	rm schema/monarch-py.yaml || true
-	rm monarch_api/model.py || true
+	rm src/monarch_api/model.py || true
 	rm frontend/src/api/interfaces.ts || true
 
 .PHONY: dev-backend
@@ -23,7 +23,7 @@ dev-backend: monarch_api/main.py
 	poetry run uvicorn src.monarch_api.main:app --reload
 
 .PHONY: generate-docs
-generate-docs: install schema/monarch-py.yaml
+generate-docs: install generate-model
 	$(RUN) gen-doc -d docs/Data-Model/ schema/monarch-api.yaml
 
 
