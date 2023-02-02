@@ -30,7 +30,6 @@ RUN apt-get update -y && \
 # copy project requirement files here to ensure they will be cached.
 WORKDIR $PYSETUP_PATH
 COPY . /opt/monarch-api
-# COPY ./* ./
 
 # install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
 RUN curl -sSL https://install.python-poetry.org | python3 && \
@@ -48,5 +47,7 @@ RUN poetry install
 
 CMD ["/opt/poetry/bin/poetry", "run", "uvicorn", "src.monarch_api.main:app", "--host", "0.0.0.0", "--port", "8000"]
 
-# us-central1-docker.pkg.dev/monarch-initiative/monarch-initiative/monarch-api-test:0.1 
-# us-central1-docker.pkg.dev/monarch-initiative/monarch-initiative/monarch-api:0.1
+### Image URLs for reference ###
+#
+#   us-central1-docker.pkg.dev/monarch-initiative/monarch-initiative/monarch-api-test:0.1 
+#   us-central1-docker.pkg.dev/monarch-initiative/monarch-initiative/monarch-api:0.1
