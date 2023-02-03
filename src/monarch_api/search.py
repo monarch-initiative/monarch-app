@@ -1,17 +1,19 @@
-from fastapi import APIRouter, Depends
-from monarch_py.implementations.solr.solr_implementation import SolrImplementation
+from fastapi import APIRouter#, Depends
 
-from monarch_api.additional_models import PaginationParams
+from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 from monarch_api.model import EntityResults
+# from monarch_api.additional_models import PaginationParams
+
 
 router = APIRouter(
-    prefix="/api/search",
+    prefix="/api",
     tags=["search"],
     responses={404: {"description": "Not Found"}},
 )
 
-@router.get()
-async def _search(
+
+@router.get("/search")
+async def search(
     q: str = "*:*",
     category: str = None,
     taxon: str = None,
@@ -21,11 +23,11 @@ async def _search(
     """Search for entities by label, with optional filters
 
     Args:
-        q (str, optional): _description_. Defaults to "*:*".
-        category (str, optional): _description_. Defaults to None.
-        taxon (str, optional): _description_. Defaults to None.
-        offset (int, optional): _description_. Defaults to 0.
-        limit (int, optional): _description_. Defaults to 20.
+        q (str, optional): TODO. Defaults to "*:*".
+        category (str, optional): TODO. Defaults to None.
+        taxon (str, optional): TODO. Defaults to None.
+        offset (int, optional): Offset for pagination. Defaults to 0.
+        limit (int, optional): Limit results. Defaults to 20.
 
     Returns:
         EntityResults
