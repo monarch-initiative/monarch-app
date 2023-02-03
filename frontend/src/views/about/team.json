@@ -1,0 +1,325 @@
+[
+  {
+    "name": "University of Colorado",
+    "link": "https://medschool.cuanschutz.edu/",
+    "members": [
+      {
+        "name": "Melissa Haendel",
+        "role": "Monarch PI",
+        "link": "https://tislab.org/members/melissa-haendel.html"
+      },
+      {
+        "name": "Monica Munoz-Torres",
+        "role": "Program Director",
+        "link": "https://tislab.org/members/monica-munoz-torres.html"
+      },
+      {
+        "name": "Tim Putman",
+        "role": "Technical Director",
+        "link": "https://tislab.org/members/tim-putman.html"
+      },
+      {
+        "name": "Julie McMurry",
+        "role": "Project Manager",
+        "link": "https://tislab.org/members/julie-mcmurry.html"
+      },
+      {
+        "name": "Nicole Vasilevsky",
+        "role": "Lead Biocurator",
+        "link": "https://tislab.org/members/nicole-vasilevsky.html"
+      },
+      {
+        "name": "Sabrina Toro",
+        "role": "Biocurator",
+        "link": "https://tislab.org/members/sabrina-toro.html"
+      },
+      {
+        "name": "Kevin Schaper",
+        "role": "Scientific Software Engineer",
+        "link": "https://tislab.org/members/kevin-schaper.html"
+      },
+      {
+        "name": "Glass Elsarboukh",
+        "role": "Scientific Software Engineer",
+        "link": "https://tislab.org/members/glass-elsarboukh.html"
+      },
+      {
+        "name": "Vincent Rubinetti",
+        "role": "Frontend and UI/UX Dev",
+        "link": "https://greenelab.com/members/vincent-rubinetti.html"
+      },
+      {
+        "name": "Faisal Alquaddoomi",
+        "role": "Full Stack Dev and Dev Ops",
+        "link": "https://github.com/falquaddoomi"
+      },
+      {
+        "name": "Anne Thessen",
+        "role": "Biodiversity Informaticist",
+        "link": "https://tislab.org/members/anne-thessen.html"
+      },
+      {
+        "name": "Matthew Brush",
+        "role": "Ontologist",
+        "link": "https://tislab.org/members/matthew-brush.html"
+      },
+      {
+        "name": "Shahim Essaid",
+        "role": "Ontologist",
+        "link": "https://tislab.org/members/shahim-essaid.html"
+      },
+      {
+        "name": "Bryan Laraway",
+        "role": "Data Wrangler"
+      }
+    ]
+  },
+  {
+    "name": "The Jackson Laboratory",
+    "link": "https://www.jax.org/",
+    "members": [
+      {
+        "name": "Peter Robinson",
+        "link": "https://www.jax.org/research-and-faculty/faculty/peter-robinson",
+        "role": "Monarch PI"
+      },
+      {
+        "name": "Leigh Carmody",
+        "role": "Scientific Curator"
+      },
+      {
+        "name": "Hannah Blau",
+        "role": "Research Software Engineer",
+        "link": "https://www.jax.org/people/hannah-blau"
+      },
+      {
+        "name": "Michael Gargano",
+        "role": "Software Engineer",
+        "link": "https://www.jax.org/people/michael-gargano"
+      }
+    ]
+  },
+  {
+    "name": "Lawrence Berkeley National Laboratory",
+    "link": "http://lbl.gov/",
+    "members": [
+      {
+        "name": "Chris Mungall",
+        "role": "Monarch PI",
+        "link": "https://bids.berkeley.edu/people/chris-mungall"
+      },
+      {
+        "name": "Seth Carbon",
+        "role": "Software engineer",
+        "link": "https://scholar.google.com/citations?hl=en&user=Ypz4s1UAAAAJ"
+      },
+      {
+        "name": "Nomi Harris",
+        "role": "Program Manager"
+      },
+      {
+        "name": "Sierra Taylor Moxon",
+        "role": "Software developer",
+        "link": "http://github.com/sierra-moxon"
+      },
+      {
+        "name": "Justin Reese",
+        "role": "Software developer",
+        "link": "http://github.com/justaddcoffee"
+      },
+      {
+        "name": "J. Harry Caufield",
+        "role": "Data Scientist",
+        "link": "https://harrycaufield.net/"
+      }
+    ]
+  },
+  {
+    "name": "Ada Health",
+    "link": "https://ada.com/",
+    "members": [
+      {
+        "name": "Sebastian Köhler",
+        "role": "Bioinformatician & Developer"
+      }
+    ]
+  },
+  {
+    "name": "Queen Mary University of London",
+    "link": "http://www.qmul.ac.uk/",
+    "members": [
+      {
+        "name": "Damian Smedley",
+        "role": "Senior Scientific Manager",
+        "link": "https://www.qmul.ac.uk/whri/people/academic-staff/items/smedleydamian.html"
+      },
+      {
+        "name": "Jules Jacobsen",
+        "role": "Bioinformatician"
+      }
+    ]
+  },
+  {
+    "name": "Renaissance Computing Institute",
+    "link": "http://renci.org/",
+    "members": [
+      {
+        "name": "Jim Balhoff",
+        "role": "Senior Research Scientist",
+        "link": "https://renci.org/staff/james-balhoff/"
+      }
+    ]
+  },
+  {
+    "name": "European Bioinformatics Institute",
+    "link": "https://www.ebi.ac.uk/",
+    "members": [
+      {
+        "name": "David Osumi-Sutherland",
+        "role": "Monarch PI",
+        "link": "https://www.ebi.ac.uk/about/people/david-osumi-sutherland"
+      },
+      {
+        "name": "Nicolas Matentzoglu",
+        "role": "Semantic Web Developer"
+      }
+    ]
+  },
+  {
+    "name": "Semanticly",
+    "members": [
+      {
+        "name": "Nicolas Matentzoglu",
+        "role": "Semantic Web Developer"
+      }
+    ]
+  },
+  {
+    "name": "Alumni Members",
+    "members": [
+      {
+        "name": "Kent Shefchek",
+        "role": "Bioinformatics Software Engineer"
+      },
+      {
+        "name": "Victoria Alexandra Soesanto",
+        "role": "Scientific Software Engineer"
+      },
+      {
+        "name": "Vida Ravanmehr",
+        "role": "Postdoctoral Associate",
+        "link": "https://www.jax.org/people/vida-ravanmehr"
+      },
+      {
+        "name": "Deepak Unni",
+        "role": "Bioinformatics Software Developer"
+      },
+      {
+        "name": "Eric Douglass",
+        "role": "Software developer"
+      },
+      {
+        "name": "Sarah Kim",
+        "role": "Web Developer/Designer"
+      },
+      {
+        "name": "Suzanna Lewis",
+        "role": "Genomics",
+        "link": "https://scholar.google.com/citations?user=mS3mpAgAAAAJ&hl=en"
+      },
+      {
+        "name": "Jeremy Nguyen Xuan",
+        "role": "Software Engineer"
+      },
+      {
+        "name": "Nicole Washington",
+        "role": "Lead Bioinformatician"
+      },
+      {
+        "name": "Tomasz Konopka",
+        "role": "Bioinformatician"
+      },
+      {
+        "name": "Pilar Cacheiro",
+        "role": "Computational Biologist",
+        "link": "https://www.qmul.ac.uk/c4tb/our-team/profiles/pilar-cacheiro.html"
+      },
+      {
+        "name": "Jen Martin",
+        "role": "Scientific Software Engineer"
+      },
+      {
+        "name": "Tom Conlin",
+        "role": "Bioinformaticist"
+      },
+      {
+        "name": "Daniel Keith",
+        "role": "Bioinformatics Semantic Engineer",
+        "link": "https://doctorbud.com/"
+      },
+      {
+        "name": "Lilly Winfree",
+        "role": "Science and Data Analyst"
+      },
+      {
+        "name": "Tudor Groza",
+        "role": "Phenomics Team Leader"
+      },
+      {
+        "name": "Craig McNamara",
+        "role": "Developer"
+      },
+      {
+        "name": "Edwin Zhang",
+        "role": "Developer"
+      },
+      {
+        "name": "Harry Hochheiser",
+        "role": "Monarch PI",
+        "link": "https://www.dbmi.pitt.edu/person/harry-hochheiser-phd"
+      },
+      {
+        "name": "Michael Davis",
+        "role": "Software Developer",
+        "link": "https://www.dbmi.pitt.edu/node/1902"
+      },
+      {
+        "name": "Zhou (Joe) Yuan",
+        "role": "Web Application Developer",
+        "link": "https://www.dbmi.pitt.edu/node/3778"
+      },
+      {
+        "name": "Charles Borromeo",
+        "role": "Interface Architect",
+        "link": "https://www.dbmi.pitt.edu/person/charles-borromeo"
+      },
+      {
+        "name": "Jeremy Espino",
+        "role": "Senior Research Scientist",
+        "link": "https://www.dbmi.pitt.edu/person/jeremy-espino-md-ms-0"
+      }
+    ]
+  },
+  {
+    "name": "Alumni Groups",
+    "type": "groups",
+    "members": [
+      {
+        "name": "Oregon State University",
+        "link": "https://oregonstate.edu/"
+      },
+      {
+        "name": "Oregon Health & Science University",
+        "link": "https://www.ohsu.edu/"
+      },
+      {
+        "name": "Garvan Institute",
+        "link": "http://garvan.org.au/"
+      },
+      {
+        "name": "University of Pittsburgh",
+        "link": "http://pitt.edu/"
+      }
+    ]
+  }
+]

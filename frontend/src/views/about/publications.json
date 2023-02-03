@@ -1,0 +1,703 @@
+[
+  {
+    "year": 2021,
+    "list": [
+      {
+        "title": "Knowledge Beacons: Web services for data harvesting of distributed biomedical knowledge",
+        "authors": "Hannestad LM, Dancík V, Godden M, Suen IW, Huellas-Bruskiewicz KC, Good BM, Mungall CJ, Bruskiewich RM",
+        "journal": "PLoS One",
+        "issue": "16(3):e0231916",
+        "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/33755673/)"
+      },
+      {
+        "title": "The Human Phenotype Ontology in 2021",
+        "authors": "Köhler S, Gargano M, Matentzoglu N, Carmody LC, Lewis-Smith D, Vasilevsky NA, Danis D, Balagura G, Baynam G, Brower AM, Callahan TJ, Chute CG, Est JL, Galer PD, Ganesan S, Griese M, Haimel M, Pazmandi J, Hanauer M, Harris NL, Hartnett MJ, Hastreiter M, Hauck F, He Y, Jeske T, Kearney H, Kindle G, Klein C, Knoflach K, Krause R, Lagorce D, McMurry JA, Miller JA, Munoz-Torres MC, Peters RL, Rapp CK, Rath AM, Rind SA, Rosenberg AZ, Segal MM, Seidel MG, Smedley D, Talmy T, Thomas Y, Wiafe SA, Xian J, Yüksel Z, Helbig I, Mungall CJ, Haendel MA, Robinson PN",
+        "journal": "Nucleic Acids Research",
+        "issue": "49(D1):D1207-D1217",
+        "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/33264411/)"
+      },
+      {
+        "title": "PhenoTagger: A Hybrid Method for Phenotype Concept Recognition using Human Phenotype Ontology",
+        "authors": "Luo L, Yan S, Lai PT, Veltri D, Oler A, Xirasagar S, Ghosh R, Similuk M, Robinson PN, Lu Z",
+        "journal": "Bioinformatics",
+        "issue": "btab019",
+        "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/33471061/)"
+      },
+      {
+        "title": "KG-COVID-19: A Framework to Produce Customized Knowledge Graphs for COVID-19 Response",
+        "authors": "Reese JT, Unni D, Callahan TJ, Cappelletti L, Ravanmehr V, Carbon S, Shefchek KA, Good BM, Balhoff JP, Fontana T, Blau H, Matentzoglu N, Harris NL, Munoz-Torres MC, Haendel MA, Robinson PN, Joachimiak MP, Mungall CJ",
+        "journal": "Patterns (N Y)",
+        "issue": "2(1):100155",
+        "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/33196056/)"
+      },
+      {
+        "title": "Is authorship sufficient for today's collaborative research? A call for contributor roles",
+        "authors": "Vasilevsky NA, Hosseini M, Teplitzky S, Ilik V, Mohammadi E, Schneider J, Kern B, Colomb J, Edmunds SC, Gutzman K, Himmelstein DS, White M, Smith B, O'Keefe L, Haendel M, Holmes KL",
+        "journal": "Account Res",
+        "issue": "28(1):23-43",
+        "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/32602379/)"
+      }
+    ]
+  },
+  {
+    "year": 2020,
+    "list": [
+      {
+        "title": "Significantly different clinical phenotypes associated with mutations in synthesis and transamidase+remodeling glycosylphosphatidylinositol (GPI)-anchor biosynthesis genes",
+        "authors": "Carmody LC, Blau H, Danis D, Zhang XA, Gourdine JP, Vasilevsky N, Krawitz P, Thompson MD, Robinson PN",
+        "journal": "Orphanet J Rare Dis",
+        "issue": "15(1):40",
+        "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/32019583/)"
+      },
+      {
+        "title": "Phenotate: crowdsourcing phenotype annotations as exercises in undergraduate classes",
+        "authors": "Chang WH, Mashouri P, Lozano AX, Johnstone B, Husic M, Olry A, Maiella S, Balci TB, Sawyer SL, Robinson PN, Rath A, Brudno M",
+        "journal": "Genet Med",
+        "issue": "22(8):1391-1400",
+        "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/32366968/)"
+      },
+      {
+        "title": "An Improved Phenotype-Driven Tool for Rare Mendelian Variant Prioritization: Benchmarking Exomiser on Real Patient Whole-Exome Data",
+        "authors": "Cipriani V, Pontikos N, Arno G, Sergouniotis PI, Lenassi E, Thawong P, Danis D, Michaelides M, Webster AR, Moore AT, Robinson PN, Jacobsen JOB, Smedley D",
+        "journal": "Genes (Basel)",
+        "issue": "11(4):460",
+        "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/32340307/)"
+      },
+      {
+        "title": "Structuring, reuse and analysis of electronic dental data using the Oral Health and Disease Ontology",
+        "authors": "Duncan WD, Thyvalikakath T, Haendel M, Torniai C, Hernandez P, Song M, Acharya A, Caplan DJ, Schleyer T, Ruttenberg A",
+        "journal": "J Biomed Semantics",
+        "issue": "11(1):8",
+        "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/32819435/)"
+      },
+      {
+        "title": "Supplementation of the ESID registry working definitions for the clinical diagnosis of inborn errors of immunity with encoded human phenotype ontology (HPO) terms",
+        "authors": "Gasteiger LM, Robinson PN, Pazmandi J, Boztug K, Seppänen MRJ, Seidel MG; Registry Working Party of the European Society for Immunodeficiencies (ESID)",
+        "journal": "J Allergy Clin Immunol Pract",
+        "issue": "8(5):1778",
+        "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/32389282/)"
+      },
+      {
+        "title": "How many rare diseases are there?",
+        "authors": "Haendel M, Vasilevsky N, Unni D, Bologa C, Harris N, Rehm H, Hamosh A, Baynam G, Groza T, McMurry J, Dawkins H, Rath A, Thaxon C, Bocci G, Joachimiak MP, Köhler S, Robinson PN, Mungall C, Oprea TI",
+        "journal": "Nat Rev Drug Discov",
+        "issue": "19(2):77-78",
+        "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/32020066/)"
+      },
+      {
+        "title": "HBA-DEALS: accurate and simultaneous identification of differential expression and splicing using hierarchical Bayesian analysis",
+        "authors": "Karlebach G, Hansen P, Veiga DF, Steinhaus R, Danis D, Li S, Anczukow O, Robinson PN",
+        "journal": "Genome Biol",
+        "issue": "21(1):171",
+        "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/32660516/)"
+      },
+      {
+        "title": "Modelling kidney disease using ontology: insights from the Kidney Precision Medicine Project",
+        "authors": "Ong E, Wang LL, Schaub J, O'Toole JF, Steck B, Rosenberg AZ, Dowd F, Hansen J, Barisoni L, Jain S, de Boer IH, Valerius MT, Waikar SS, Park C, Crawford DC, Alexandrov T, Anderton CR, Stoeckert C, Weng C, Diehl AD, Mungall CJ, Haendel M, Robinson PN, Himmelfarb J, Iyengar R, Kretzler M, Mooney S, He Y",
+        "journal": "Nat Rev Nephrol",
+        "issue": "16(11):686-696",
+        "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/32939051/)"
+      },
+      {
+        "title": "parSMURF, a high-performance computing tool for the genome-wide detection of pathogenic variants",
+        "authors": "Petrini A, Mesiti M, Schubach M, Frasca M, Danis D, Re M, Grossi G, Cappelletti L, Castrignanò T, Robinson PN, Valentini G",
+        "journal": "Gigascience",
+        "issue": "9(5):giaa052",
+        "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/32444882/)"
+      },
+      {
+        "title": "Ontologies, Knowledge Representation, and Machine Learning for Translational Research: Recent Contributions",
+        "authors": "Robinson PN, Haendel MA",
+        "journal": "Yearb Med Inform",
+        "issue": "29(1):159-162",
+        "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/32823310/)"
+      },
+      {
+        "title": "Interpretable Clinical Genomics with a Likelihood Ratio Paradigm",
+        "authors": "Robinson PN, Ravanmehr V, Jacobsen JOB, Danis D, Zhang XA, Carmody LC, Gargano MA, Thaxton CL, Karlebach G, Reese J, Holtgrewe M, Köhler S, McMurry JA, Haendel MA, Smedley D",
+        "journal": "Am J Hum Genet",
+        "issue": "107(3):403-417",
+        "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/32755546/)"
+      },
+      {
+        "title": "The case for open science: rare diseases",
+        "authors": "Rubinstein YR, Robinson PN, Gahl WA, Avillach P, Baynam G, Cederroth H, Goodwin RM, Groft SC, Hansson MG, Harris NL, Huser V, Mascalzoni D, McMurry JA, Might M, Nellaker C, Mons B, Paltoo DN, Pevsner J, Posada M, Rockett-Frase AP, Roos M, Rubinstein TB, Taruscio D, van Enckevort E, Haendel MA",
+        "journal": "JAMIA Open",
+        "issue": "3(3):472-486",
+        "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/33426479/)"
+      },
+      {
+        "title": "The Monarch Initiative in 2019: an integrative data and analytic platform connecting phenotypes to genotypes across species",
+        "authors": "Shefchek KA, Harris NL, Gargano M, Matentzoglu N, Unni D, Brush M, Keith D, Conlin T, Vasilevsky N, Zhang XA, Balhoff JP, Babb L, Bello SM, Blau H, Bradford Y, Carbon S, Carmody L, Chan LE, Cipriani V, Cuzick A, Della Rocca M, Dunn N, Essaid S, Fey P, Grove C, Gourdine JP, Hamosh A, Harris M, Helbig I, Hoatlin M, Joachimiak M, Jupp S, Lett KB, Lewis SE, McNamara C, Pendlington ZM, Pilgrim C, Putman T, Ravanmehr V, Reese J, Riggs E, Robb S, Roncaglia P, Seager J, Segerdell E, Similuk M, Storm AL, Thaxon C, Thessen A, Jacobsen JOB, McMurry JA, Groza T, Köhler S, Smedley D, Robinson PN, Mungall CJ, Haendel MA, Munoz-Torres MC, Osumi-Sutherland D",
+        "journal": "Nucleic Acids Res",
+        "issue": "48(D1):D704-D715",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/31701156)"
+      },
+      {
+        "title": "A phenome-wide association study of 26 mendelian genes reveals phenotypic expressivity of common and rare variants within the general population",
+        "authors": "Tcheandjieu C, Aguirre M, Gustafsson S, Saha P, Potiny P, Haendel M, Ingelsson E, Rivas MA, Priest JR",
+        "journal": "PLoS Genet",
+        "issue": "16(11):e1008802",
+        "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/33226994/)"
+      },
+      {
+        "title": "Transforming the study of organisms: Phenomic data models and knowledge bases",
+        "authors": "Thessen AE, Walls RL, Vogt L, Singer J, Warren R, Buttigieg PL, Balhoff JP, Mungall CJ, McGuinness DL, Stucky BJ, Yoder MJ, Haendel MA",
+        "journal": "PLoS Comput Biol",
+        "issue": "16(11):e1008376",
+        "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/33232313/)"
+      },
+      {
+        "title": "A harmonized meta-knowledgebase of clinical interpretations of somatic genomic variants in cancer",
+        "authors": "Wagner AH, Walsh B, Mayfield G, Tamborero D, Sonkin D, Krysiak K, Deu-Pons J, Duren RP, Gao J, McMurry J, Patterson S, Del Vecchio Fitz C, Pitel BA, Sezerman OU, Ellrott K, Warner JL, Rieke DT, Aittokallio T, Cerami E, Ritter DI, Schriml LM, Freimuth RR, Haendel M, Raca G, Madhavan S, Baudis M, Beckmann JS, Dienstmann R, Chakravarty D, Li XS, Mockus S, Elemento O, Schultz N, Lopez-Bigas N, Lawler M, Goecks J, Griffith M, Griffith OL, Margolin AA",
+        "journal": "Nat Genet",
+        "issue": "52(4):448-457",
+        "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/32246132/)"
+      }
+    ]
+  },
+  {
+    "year": 2019,
+    "list": [
+      {
+        "title": "Clinical Data: Sources and Types, Regulatory Constraints, Applications",
+        "authors": "Ahalt SC, Chute CG, Fecho K, Glusman G, Hadlock J, Taylor CO, Pfaff ER, Robinson PN, Solbrig H, Ta C, Tatonetti N, Weng C; Biomedical Data Translator Consortium",
+        "journal": "Clin Transl Sci",
+        "issue": "12(4):329-333",
+        "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/31074176/)"
+      },
+      {
+        "title": "Assessment of Bones Deficient in Fibrillin-1 Microfibrils Reveals Pronounced Sex Differences",
+        "authors": "Altinbas L, Bormann N, Lehmann D, Jeuthe S, Wulsten D, Kornak U, Robinson PN, Wildemann B, Kararigas G",
+        "journal": "Int J Mol Sci",
+        "issue": "20(23):6059",
+        "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/31805661)"
+      },
+      {
+        "title": "New models for human disease from the International Mouse Phenotyping Consortium",
+        "authors": "Cacheiro P, Haendel MA, Smedley D; International Mouse Phenotyping Consortium and the Monarch Initiative",
+        "journal": "Mamm Genome",
+        "issue": "30(5-6):143-150",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/31127358)"
+      },
+      {
+        "title": "An analysis and metric of reusable data licensing practices for biomedical resources",
+        "authors": "Carbon S, Champieux R, McMurry JA, Winfree L, Wyatt LR, Haendel MA",
+        "journal": "PLoS One",
+        "issue": "14(3):e0213090",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/30917137)"
+      },
+      {
+        "title": "Representing glycophenotypes: semantic unification of glycobiology resources for disease discovery",
+        "authors": "Gourdine JF, Brush MH, Vasilevsky NA, Shefchek K, Köhler S, Matentzoglu N, Munoz-Torres MC, McMurry JA, Zhang XA, Robinson PN, Haendel MA",
+        "journal": "Database (Oxford)",
+        "issue": "baz114",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/31735951)"
+      },
+      {
+        "title": "ROBOT: A Tool for Automating Ontology Workflows",
+        "authors": "Jackson RC, Balhoff JP, Douglass E, Harris NL, Mungall CJ, Overton JA",
+        "journal": "BMC Bioinformatics",
+        "issue": "20(1):407",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/31357927)"
+      },
+      {
+        "title": "Expansion of the Human Phenotype Ontology (HPO) knowledge base and resources",
+        "authors": "Köhler S, Carmody L, Vasilevsky N, Jacobsen JOB, Danis D, Gourdine JP, Gargano M, Harris NL, Matentzoglu N, McMurry JA, Osumi-Sutherland D, Cipriani V, Balhoff JP, Conlin T, Blau H, Baynam G, Palmer R, Gratian D, Dawkins H, Segal M, Jansen AC, Muaz A, Chang WH, Bergerson J, Laulederkind SJF, Yüksel Z, Beltran S, Freeman AF, Sergouniotis PI, Durkin D, Storm AL, Hanauer M, Brudno M, Bello SM, Sincan M, Rageth K, Wheeler MT, Oegema R, Lourghi H, Della Rocca MG, Thompson R, Castellanos F, Priest J, Cunningham-Rundles C, Hegde A, Lovering RC, Hajek C, Olry A, Notarangelo L, Similuk M, Zhang XA, Gómez-Andrés D, Lochmüller H, Dollfus H, Rosenzweig S, Marwaha S, Rath A, Sullivan K, Smith C, Milner JD, Leroux D, Boerkoel CF, Klion A, Carter MC, Groza T, Smedley D, Haendel MA, Mungall C, Robinson PN",
+        "journal": "Nucleic Acids Res",
+        "issue": "47(D1):D1018-D1027",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/30476213)"
+      },
+      {
+        "title": "Encoding Clinical Data with the Human Phenotype Ontology for Computational Differential Diagnostics",
+        "authors": "Köhler S, Øien NC, Buske OJ, Groza T, Jacobsen JOB, McNamara C, Vasilevsky N, Carmody LC, Gourdine JP, Gargano M, McMurry JA, Danis D, Mungall CJ, Smedley D, Haendel M, Robinson PN",
+        "journal": "Curr Protoc Hum Gene",
+        "issue": "103(1):e92",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/31479590)"
+      },
+      {
+        "title": "Enabling Global Clinical Collaborations on Identifiable Patient Data: The Minerva Initiative",
+        "authors": "Nellåker C, Alkuraya FS, Baynam G, Bernier RA, Bernier FPJ, Boulanger V, Brudno M, Brunner HG, Clayton-Smith J, Cogné B, Dawkins HJS, deVries BBA, Douzgou S, Dudding-Byth T, Eichler EE, Ferlaino M, Fieggen K, Firth HV, FitzPatrick DR, Gration D, Groza T, Haendel M, Hallowell N, Hamosh A, Hehir-Kwa J, Hitz MP, Hughes M, Kini U, Kleefstra T, Kooy RF, Krawitz P, Küry S, Lees M, Lyon GJ, Lyonnet S, Marcadier JL, Meyn S, Moslerová V, Politei JM, Poulton CC, Raymond FL, Reijnders MRF, Robinson PN, Romano C, Rose CM, Sainsbury DCG, Schofield L, Sutton VR, Turnovec M, Van Dijck A, Van Esch H, Wilkie AOM; Minerva Consortium",
+        "journal": "Front Genet",
+        "issue": "10:611",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/31417602)"
+      },
+      {
+        "title": "An ontological foundation for ocular phenotypes and rare eye diseases",
+        "authors": "Sergouniotis PI, Maxime E, Leroux D, Olry A, Thompson R, Rath A, Robinson PN, Dollfus H; ERN-EYE Ontology Study Group",
+        "journal": "Orphanet J Rare Dis",
+        "issue": "14(1):8",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/30626441)"
+      },
+      {
+        "title": "The Sickle Cell Disease Ontology: enabling universal sickle cell-based knowledge representation",
+        "authors": "Sickle Cell Disease Ontology Working Group",
+        "journal": "Database (Oxford)",
+        "issue": "",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/31769834)"
+      },
+      {
+        "title": "The Pediatric Cell Atlas: Defining the Growth Phase of Human Development at Single-Cell Resolution",
+        "authors": "Taylor DM, Aronow BJ, Tan K, Bernt K, Salomonis N, Greene CS, Frolova A, Henrickson SE, Wells A, Pei L, Jaiswal JK, Whitsett J, Hamilton KE, MacParland SA, Kelsen J, Heuckeroth RO, Potter SS, Vella LA, Terry NA, Ghanem LR, Kennedy BC, Helbig I, Sullivan KE, Castelo-Soccio L, Kreigstein A, Herse F, Nawijn MC, Koppelman GH, Haendel M, Harris NL, Rokita JL, Zhang Y, Regev A, Rozenblatt-Rosen O, Rood JE, Tickle TL, Vento-Tormo R, Alimohamed S, Lek M, Mar JC, Loomes KM, Barrett DM, Uapinyoying P, Beggs AH, Agrawal PB, Chen YW, Muir AB, Garmire LX, Snapper SB, Nazarian J, Seeholzer SH, Fazelinia H, Singh LN, Faryabi RB, Raman P, Dawany N, Xie HM, Devkota B, Diskin SJ, Anderson SA, Rappaport EF, Peranteau W, Wikenheiser-Brokamp KA, Teichmann S, Wallace D, Peng T, Ding YY, Kim MS, Xing Y, Kong SW, Bönnemann CG, Mandl KD, White PS",
+        "journal": "Dev Cell",
+        "issue": "49(1):10-29",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/30930166)"
+      },
+      {
+        "title": "The Plant Ontology Facilitates Comparisons of Plant Development Stages Across Species",
+        "authors": "Walls RL, Cooper L, Elser J, Gandolfo MA, Mungall CJ, Smith B, Stevenson DW, Jaiswal P",
+        "journal": "Front Plant Sci",
+        "issue": "10:631",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/31214208)"
+      },
+      {
+        "title": "Semantic integration of clinical laboratory tests from electronic health records for deep phenotyping and biomarker discovery",
+        "authors": "Zhang XA, Yates A, Vasilevsky N, Gourdine JP, Callahan TJ, Carmody LC, Danis D, Joachimiak MP, Ravanmehr V, Pfaff ER, Champion J, Robasky K, Xu H, Fecho K, Walton NA, Zhu RL, Ramsdill J, Mungall CJ, Köhler S, Haendel MA, McDonald CJ, Vreeman DJ, Peden DB, Bennett TD, Feinstein JA, Martin B, Stefanski AL, Hunter LE, Chute CG, Robinson PN",
+        "journal": "NPJ Digit Med",
+        "issue": "2:32",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/31119199)"
+      }
+    ]
+  },
+  {
+    "year": 2018,
+    "list": [
+      {
+        "title": "Classification, Ontology, and Precision Medicine (2018)",
+        "authors": "Haendel MA, Chute CG, Robinson PN 2018",
+        "journal": "N Engl J Med",
+        "issue": "379(15):1452-1462",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/30304648)"
+      },
+      {
+        "title": "Harmonising phenomics information for a better Interoperability in the rare disease field",
+        "authors": "Maiella S, Olry A, Hanauer M, Lanneau V, Lourghi H, Donadille B, Rodwell C, Köhler S, Seelow D, Jupp S, Parkinson H, Groza T, Brudno M, Robinson PN, Rath A",
+        "journal": "Eur J Med Genet",
+        "issue": "61(11):706-714",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/30304648)"
+      },
+      {
+        "title": "Classification, Ontology, and Precision Medicine",
+        "authors": "Muñoz-Fuentes V, Cacheiro P, Meehan TF, Aguilar-Pimentel JA, Brown SDM, Flenniken AM, Flicek P, Galli A, Mashhadi HH, Hrabe de Angelis M, Kim JK, Lloyd KCK, McKerlie C, Morgan H, Murray SA, Nutter LMJ, Reilly PT, Seavitt JR, Seong JK, Simon M, Wardle-Jones H, Mallon AM, Smedley D, Parkinson HE; IMPC consortium",
+        "journal": "Conserv Genet",
+        "issue": "19(4):995-1005",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/30100824)"
+      },
+      {
+        "title": "Plain-language medical vocabulary for precision diagnosis",
+        "authors": "Vasilevsky NA, Foster ED, Engelstad ME, Carmody L, Might M, Chambers C, Dawkins HJS, Lewis J, Della Rocca MG, Snyder M, Boerkoel CF, Rath A, Terry SF, Kent A, Searle B, Baynam G, Jones E, Gavin P, Bamshad M, Chong J, Groza T, Adams D, Resnick AC, Heath AP, Mungall C, Holm IA, Rageth K, Brownstein CA, Shefchek K, McMurry JA, Robinson PN, Köhler S, Haendel MA.(2018)",
+        "journal": "Nat Genet",
+        "issue": "50(4):474-476",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/29632381)"
+      }
+    ]
+  },
+  {
+    "year": 2017,
+    "list": [
+      {
+        "title": "The Monarch Initiative: An Integrative Data and Analytic Platform Connecting Phenotypes to Genotypes across Species",
+        "authors": "Mungall CJ, McMurry JA, Köhler S, Balhoff JP, Borromeo C, Brush M, Carbon S, Conlin T, Dunn N, Engelstad M, Foster E, Gourdine JP, Jacobsen JO, Keith D, Laraway B, Lewis SE, NguyenXuan J, Shefchek K, Vasilevsky N, Yuan Z,Washington N, Hochheiser H, Groza T, Smedley D, Robinson PN, Haendel MA",
+        "journal": "Nucleic Acids Research",
+        "issue": "45(D1):D712–22",
+        "link": "[pubmed](https://www.ncbi.nlm.nih.gov/pubmed/27899636)"
+      },
+      {
+        "title": "The Human Phenotype Ontology in 2017",
+        "authors": "Köhler S, Vasilevsky NA, Engelstad M, Foster E, McMurry J, Aymé S, Baynam G, Bello SM, Boerkoel CF, Boycott KM, Brudno M, Buske OJ, Chinnery PF, Cipriani V, Connell LE, Dawkins HJ, DeMare LE, Devereau AD, de Vries BB, Firth HV, Freson K, Greene D, Hamosh A, Helbig I, Hum C, Jähn JA, James R, Krause R, F Laulederkind SJ, Lochmüller H, Lyon GJ, Ogishima S, Olry A, Ouwehand WH, Pontikos N, Rath A, Schaefer F, Scott RH, Segal M, Sergouniotis PI, Sever R, Smith CL, Straub V, Thompson R, Turner C, Turro E, Veltman MW, Vulliamy T, Yu J, von Ziegenweidt J, Zankl A, Züchner S, Zemojtel T, Jacobsen JO, Groza T, Smedley D, Mungall CJ, Haendel M, Robinson PN",
+        "journal": "Nucleic Acids Research",
+        "issue": "45(D1): D865–76",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/27899602)"
+      },
+      {
+        "title": "Identifiers for the 21st Century: How to Design, Provision, and Reuse Persistent Identifiers to Maximize Utility and Impact of Life Science Data",
+        "authors": "McMurry JA, Juty N, Blomberg N, Burdett T, Conlin T, Conte N, Courtot M, Deck J, Dumontier M, Fellows DK, Gonzalez-Beltran A, Gormanns P, Grethe J, Hastings J, Hériché JK, Hermjakob H, Ison JC, Jimenez RC, Jupp S, Kunze J, Laibe C, Le Novère N, Malone J, Martin MJ, McEntyre JR, Morris C, Muilu J, Müller W, Rocca-Serra P, Sansone SA, Sariyar M, Snoep JL, Soiland-Reyes S, Stanford NJ, Swainston N, Washington N, Williams AR, Wimalaratne SM, Winfree LM, Wolstencroft K, Goble C, Mungall CJ, Haendel MA, Parkinson H",
+        "journal": "PLoS Biology",
+        "issue": "15(6):e2001414",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/28662064)"
+      },
+      {
+        "title": "Disease model discovery from 3,328 gene knockouts by The International Mouse Phenotyping Consortium",
+        "authors": "Meehan TF, Conte N, West DB, Jacobsen JO, Mason J, Warren J, Chen CK, Tudose I, Relac M, Matthews P, Karp N, Santos L, Fiegel T, Ring N, Westerberg H, Greenaway S, Sneddon D, Morgan H, Codner GF, Stewart ME, Brown J, Horner N; International Mouse Phenotyping Consortium, Haendel M, Washington N, Mungall CJ, Reynolds CL, Gallegos J, Gailus-Durner V, Sorg T, Pavlovic G, Bower LR, Moore M, Morse I, Gao X, Tocchini-Valentini GP, Obata Y, Cho SY, Seong JK, Seavitt J, Beaudet AL, Dickinson ME, Herault Y, Wurst W, de Angelis MH, Lloyd KCK, Flenniken AM, Nutter LMJ, Newbigging S, McKerlie C, Justice MJ, Murray SA, Svenson KL, Braun RE, White JK, Bradley A, Flicek P, Wells S, Skarnes WC, Adams DJ, Parkinson H, Mallon AM, Brown SDM, Smedley D",
+        "journal": "Nat Genet",
+        "issue": "49(8):1231-1238",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/28650483)"
+      },
+      {
+        "title": "Once Doesn't Count: Phenotype-Driven Gene Hunting in Cohorts",
+        "authors": "Robinson PN",
+        "journal": "Human Mutat",
+        "issue": "38(5):469",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/28425197)"
+      },
+      {
+        "title": "International Cooperation to Enable the Diagnosis of All Rare Genetic Diseases",
+        "authors": "Boycott KM, Rath A, Chong JX, Hartley T, Alkuraya FS, Baynam G, Brookes AJ, Brudno M, Carracedo A, den Dunnen JT, Dyke SOM, Estivill X, Goldblatt J, Gonthier C, Groft SC, Gut I, Hamosh A, Hieter P, Höhn S, Hurles ME, Kaufmann P, Knoppers BM, Krischer JP, Macek M Jr, Matthijs G, Olry A, Parker S, Paschall J, Philippakis AA, Rehm HL, Robinson PN, Sham PC, Stefanov R, Taruscio D, Unni D, Vanstone MR, Zhang F, Brunner H, Bamshad MJ, Lochmüller H",
+        "journal": "Am J Hum Genet",
+        "issue": "100(5):695-705",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/28475856)"
+      },
+      {
+        "title": "Defining Disease, Diagnosis, and Translational Medicine within a Homeostatic Perturbation Paradigm: The National Institutes of Health Undiagnosed Diseases Program Experience",
+        "authors": "Gall T, Valkanas E, Bello C, Markello T, Adams C, Bone WP, Brandt AJ, Brazill JM, Carmichael L, Davids M, Davis J, Diaz-Perez Z, Draper D, Elson J, Flynn ED, Godfrey R, Groden C, Hsieh CK, Fischer R, Golas GA, Guzman J, Huang Y, Kane MS, Lee E, Li C, Links AE, Maduro V, Malicdan MCV, Malik FS, Nehrebecky M, Park J, Pemberton P, Schaffer K, Simeonov D, Sincan M, Smedley D, Valivullah Z, Wahl C, Washington N, Wolfe LA, Xu K, Zhu Y, Gahl WA, Tifft CJ, Toro C, Adams DR, He M, Robinson PN, Haendel MA, Zhai RG, Boerkoel CF",
+        "journal": "Front Med (Lausanne)",
+        "issue": "4:62",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/28603714)"
+      },
+      {
+        "title": "From SNOMED CT to Uberon: Transferability of Evaluation Methodology between Similarly Structured Ontologies",
+        "authors": "Elhanan G, Ochs C, Mejino JLV Jr, Liu H, Mungall CJ, Perl Y",
+        "journal": "Artif Intell Med",
+        "issue": "79:9-14",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/28532962)"
+      },
+      {
+        "title": "\"Opposite-of\"-Information Improves Similarity Calculations in Phenotype Ontologies",
+        "authors": "Koehler S, Robinson PN, Mungall CJ",
+        "journal": "bioRxiv",
+        "issue": "doi:10.1101/108977",
+        "link": "[bioRxiv](https://www.biorxiv.org/content/10.1101/108977v1)"
+      },
+      {
+        "title": "Ontobee: A linked ontology data server to support ontology term dereferencing, linkage, query and integration",
+        "authors": "Ong E, Xiang Z, Zhao B, Liu Y, Lin Y, Zheng J, Mungall C, Courtot M, Ruttenberg A, He Y",
+        "journal": "Nucleic Acids Res",
+        "issue": "45(D1):D347-D352",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/27733503)"
+      }
+    ]
+  },
+  {
+    "year": 2016,
+    "list": [
+      {
+        "title": "Navigating the Phenotype Frontier: The Monarch Initiative",
+        "authors": "McMurry JA, Köhler S, Washington NL, Balhoff JP, Borromeo C, Brush M, Carbon S, Conlin T, Dunn N, Engelstad M, Foster E, Gourdine JP, Jacobsen JO, Keith D, Laraway B, Xuan JN, Shefchek K, Vasilevsky NA, Yuan Z, Lewis SE, Hochheiser H, Groza T, Smedley D, Robinson PN, Mungall CJ, Haendel MA",
+        "journal": "Genetics",
+        "issue": "203(4):1491-5",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/27516611)"
+      },
+      {
+        "title": "The health care and life sciences community profile for dataset descriptions",
+        "authors": "Dumontier M, Gray AJG, Marshall MS, Alexiev V, Ansell P, Bader G, Baran J, Bolleman JT, Callahan A, Cruz-Toledo J, Gaudet P, Gombocz EA, Gonzalez-Beltran AN, Groth P, Haendel M, Ito M, Jupp S, Juty N, Katayama T, Kobayashi N, Krishnaswami K, Laibe C, Le Novère N, Lin S, Malone J, Miller M, Mungall CJ, Rietveld L, Wimalaratne SM, Yamaguchi A",
+        "journal": "PeerJ",
+        "issue": "4:e2331",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/27602295)"
+      },
+      {
+        "title": "Reproducible and reusable research: are journal data sharing policies meeting the mark?",
+        "authors": "Vasilevsky NA, Minnier J, Haendel MA, Champieux RE",
+        "journal": "PeerJ",
+        "issue": "5:e3208",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/28462024)"
+      },
+      {
+        "title": "Distributed Cognition and Process Management Enabling Individualized Translational Research: The NIH Undiagnosed Diseases Program Experience",
+        "authors": "Links AE, Draper D, Lee E, Guzman J, Valivullah Z, Maduro V, Lebedev V, Didenko M, Tomlin G, Brudno M, Girdea M, Dumitriu S, Haendel MA, Mungall CJ, Smedley D, Hochheiser H, Arnold AM, Coessens B, Verhoeven S, Bone W, Adams D, Boerkoel CF, Gahl WA, Sincan M",
+        "journal": "Front Med (Lausanne)",
+        "issue": "3:39",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/27785453)"
+      },
+      {
+        "title": "K-BOOM: A Bayesian Approach to Ontology Structure Inference, with Applications in Disease Ontology Construction",
+        "authors": "Mungall CJ, Koehler S, Robinson P, Holmes I, Haendel M",
+        "journal": "bioRxiv",
+        "issue": "doi:10.1101/048843",
+        "link": "[bioRxiv](https://www.biorxiv.org/content/10.1101/048843v3)"
+      },
+      {
+        "title": "The Ontology for Biomedical Investigations",
+        "authors": "Bandrowski A, Brinkman R, Brochhausen M, Brush MH, Bug B, Chibucos MC, Clancy K, Courtot M, Derom D, Dumontier M, Fan L, Fostel J, Fragoso G, Gibson F, Gonzalez-Beltran A, Haendel MA, He Y, Heiskanen M, Hernandez-Boussard T, Jensen M, Lin Y, Lister AL, Lord P, Malone J, Manduchi E, McGee M, Morrison N, Overton JA, Parkinson H, Peters B, Rocca-Serra P, Ruttenberg A, Sansone SA, Scheuermann RH, Schober D, Smith B, Soldatova LN, Stoeckert CJ Jr, Taylor CF, Torniai C, Turner JA, Vita R, Whetzel PL, Zheng J",
+        "journal": "PLoS One",
+        "issue": "11(4):e0154556",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/27128319)"
+      },
+      {
+        "title": "The Cell Ontology 2016: enhanced content, modularization, and ontology interoperability",
+        "authors": "Diehl AD, Meehan TF, Bradford YM, Brush MH, Dahdul WM, Dougall DS, He Y, Osumi-Sutherland D, Ruttenberg A, Sarntivijai S, Van Slyke CE, Vasilevsky NA, Haendel MA, Blake JA, Mungall CJ",
+        "journal": "J Biomed Semantics",
+        "issue": "7(1):44",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/27377652)"
+      },
+      {
+        "title": "The digital revolution in phenotyping",
+        "authors": "Oellrich A, Collier N, Groza T, Rebholz-Schuhmann D, Shah N, Bodenreider O, Boland MR, Georgiev I, Liu H, Livingston K, Luna A, Mallon AM, Manda P, Robinson PN, Rustici G, Simon M, Wang L, Winnenburg R, Dumontier M",
+        "journal": "Brief Bioinform",
+        "issue": "17(5):819-30",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/26420780)"
+      },
+      {
+        "title": "A Whole-Genome Analysis Framework for Effective Identification of Pathogenic Regulatory Variants in Mendelian Disease",
+        "authors": "Smedley D, Schubach M, Jacobsen JOB, Köhler S, Zemojtel T, Spielmann M, Jäger M, Hochheiser H, Washington NL, McMurry JA, Haendel MA, Mungall CJ, Lewis SE, Groza T, Valentini G, Robinson PN",
+        "journal": "Am J Hum Genet",
+        "issue": "99(3):595-606",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/27569544)"
+      },
+      {
+        "title": "Computational evaluation of exome sequence data using human and model organism phenotypes improves diagnostic efficiency",
+        "authors": "Bone WP, Washington NL, Buske OJ, Adams DR, Davis J, Draper D, Flynn ED, Girdea M, Godfrey R, Golas G, Groden C, Jacobsen J, Köhler S, Lee EM, Links AE, Markello TC, Mungall CJ, Nehrebecky M, Robinson PN, Sincan M, Soldatos AG, Tifft CJ, Toro C, Trang H, Valkanas E, Vasilevsky N, Wahl C, Wolfe LA, Boerkoel CF, Brudno M, Haendel MA, Gahl WA, Smedley D",
+        "journal": "Genet Med",
+        "issue": "18(6):608-17",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/26562225)"
+      },
+      {
+        "title": "Next-generation diagnostics and disease-gene discovery with the Exomiser",
+        "authors": "Smedley D, Jacobsen JO, Jäger M, Köhler S, Holtgrewe M, Schubach M, Siragusa E, Zemojtel T, Buske OJ, Washington NL, Bone WP, Haendel MA, Robinson PN",
+        "journal": "Nat Protoc",
+        "issue": "10(12):2004-15",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/26562621)"
+      }
+    ]
+  },
+  {
+    "year": 2015,
+    "list": [
+      {
+        "title": "Human genotype-phenotype databases: aims, challenges and opportunities",
+        "authors": "Brookes AJ, Robinson PN",
+        "journal": "Nature Rev Genet",
+        "issue": "16(12):702-15",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/26553330)"
+      },
+      {
+        "title": "The digital revolution in phenotyping",
+        "authors": "Oellrich A, Collier N, Groza T, Rebholz-Schuhmann D, Shah N, Bodenreider O, Boland MR, Georgiev I, Liu H, Livingston K, Luna A, Mallon AM, Manda P, Robinson PN, Rustici G, Simon M, Wang L, Winnenburg R, Dumontier M",
+        "journal": "Brief Bioinform",
+        "issue": "17(5):819-30",
+        "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/26420780/)"
+      },
+      {
+        "title": "Phenotype-driven strategies for exome prioritization of human Mendelian disease genes",
+        "authors": "Smedley D, Robinson PN",
+        "journal": "Genome Med",
+        "issue": "7(1):81",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/26229552)"
+      },
+      {
+        "title": "Phenolyzer: phenotype-based prioritization of candidate genes for human diseases",
+        "authors": "Yang H, Robinson PN, Wang K",
+        "journal": "Nat Methods",
+        "issue": "12(9):841-3",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/26192085)"
+      },
+      {
+        "title": "The Human Phenotype Ontology: Semantic Unification of Common and Rare Disease",
+        "authors": "Groza T, Köhler S, Moldenhauer D, Vasilevsky N, Baynam G, Zemojtel T, Schriml LM, Kibbe WA, Schofield PN, Beck T, Vasant D, Brookes AJ, Zankl A, Washington NL, Mungall CJ, Lewis SE, Haendel MA, Parkinson H, Robinson PN",
+        "journal": "Am J Hum Genet",
+        "issue": "97(1):111-24",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/26119816)"
+      },
+      {
+        "title": "Disease insights through cross-species phenotype comparisons",
+        "authors": "Haendel MA, Vasilevsky N, Brush M, Hochheiser HS, Jacobsen J, Oellrich A, Mungall CJ, Washington N, Köhler S, Lewis SE, Robinson PN, Smedley D",
+        "journal": "Mamm Genome",
+        "issue": "26(9-10):548-55",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/26092691)"
+      },
+      {
+        "title": "Finding our way through phenotypes",
+        "authors": "Deans AR, Lewis SE, Huala E, Anzaldo SS, Ashburner M, Balhoff JP, Blackburn DC, Blake JA, Burleigh JG, Chanet B, Cooper LD, Courtot M, Csösz S, Cui H, Dahdul W, Das S, Dececchi TA, Dettai A, Diogo R, Druzinsky RE, Dumontier M, Franz NM,Friedrich F, Gkoutos GV, Haendel M, Harmon LJ, Hayamizu TF, He Y, Hines HM, Ibrahim N, Jackson LM, Jaiswal P, James-Zorn C, Köhler S, Lecointre G, Lapp H, Lawrence CJ, Le Novère N, Lundberg JG, Macklin J, Mast AR, Midford PE, Mikó I, Mungall CJ, Oellrich A, Osumi-Sutherland D, Parkinson H, Ramírez MJ, Richter S, Robinson PN, Ruttenberg A, Schulz KS, Segerdell E, Seltmann KC, Sharkey MJ, Smith AD, Smith B, Specht CD, Squires RB, Thacker RW, Thessen A, Fernandez-Triana J, Vihinen M, Vize PD, Vogt L, Wall CE, Walls RL, Westerfeld M, Wharton RA, Wirkner CS, Woolley JB, Yoder MJ, Zorn AM, Mabee P",
+        "journal": "PLoS Biol",
+        "issue": "13(1):e1002033",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/25562316)"
+      }
+    ]
+  },
+  {
+    "year": 2014,
+    "list": [
+      {
+        "title": "Deletions of chromosomal regulatory boundaries are associated with congenital disease",
+        "authors": "Ibn-Salem J, Köhler S, Love MI, Chung H-R, Huang N, Hurles ME, Haendel M, Washington NL, Smedley D, Mungall CJ, Lewis SE, Ott C-E, Bauer S, Schofield PN, Mundlos S, Spielmann M and Robinson PN",
+        "journal": "Genome Biol",
+        "issue": "15(9):423",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/25315429)"
+      },
+      {
+        "title": "Effective diagnosis of genetic disease by computational phenotype analysis of the disease-associated genome",
+        "authors": "Zemojtel T, Kohler S, Mackenroth L, Jager M, Hecht J, Krawitz P, Graul-Neumann L, Doelken S, Ehmke N, Spielmann M, Oien NC, Schweiger MR, Kruger U, Frommer G, Fischer B, Kornak U, Flottmann R, Ardeshirdavani A, Moreau Y, Lewis SE, Haendel M, Smedley D, Horn D, Mundlos S, Robinson PN",
+        "journal": "Sci Transl Med",
+        "issue": "6(252):252ra123",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/25186178)"
+      },
+      {
+        "title": "Nose to tail, roots to shoots: spatial descriptors for phenotypic diversity in the Biological Spatial Ontology",
+        "authors": "Dahdul WM, Cui H, Mabee PM, Mungall CJ, Osumi-Sutherland D, Walls RL, Haendel MA",
+        "journal": "J Biomed Semantics",
+        "issue": "5:34",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/25140222)"
+      },
+      {
+        "title": "CLO: The cell line ontology",
+        "authors": "Sarntivijai S., Lin Y, Xiang Z., Meehan TF, Diehl AD, Vempati UD, Schurer SC, Pang C, Malone J, Parkinson H, Liu Y, Takatsuki T, Saijo K, Masuy H, Nakamura Y, Brush MH, Haendel MA, Zheng J, Stoeckert CJ, Peters B, Mungall CJ, Carey TE, States DJ, Athey BD, He Y. (2014)",
+        "journal": "J Biomed Semantics",
+        "issue": "5(1):37",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/25852852)"
+      },
+      {
+        "title": "Walking the interactome for candidate prioritization in exome sequencing studies of Mendelian diseases",
+        "authors": "Smedley D, Kohler S, Czeschik JC, Amberger J, Bocchini C, Hamosh A, Veldboer J, Zemojtel T, Robinson PN",
+        "journal": "Bioinformatics",
+        "issue": "30(22):3215-22",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/25078397)"
+      },
+      {
+        "title": "The influence of disease categories on gene candidate predictions from model organism phenotypes",
+        "authors": "Oellrich A, Koehler S, Washington N; Sanger Mouse Genetic Project, Mungall C, Lewis S, Haendel M, Robinson PN, Smedley D",
+        "journal": "J Biomed Semantics",
+        "issue": "5(Suppl 1 Proceedings of the Bio-Ontologies Spec Interest G):S4. [ pubmed",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/25093073)"
+      },
+      {
+        "title": "Improved exome prioritization of disease genes through cross-species phenotype comparison",
+        "authors": "Robinson PN, Kohler S, Oellrich A, Sanger Mouse Genetics Project, Wang K, Mungall CJ, Lewis SE, Washington N, Bauer S, Seelow D, Krawitz P, Gilissen C, Haendel M, Smedley D",
+        "journal": "Genome Res",
+        "issue": "24(2):340-8",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/24162188)"
+      },
+      {
+        "title": "The zebrafish anatomy and stage ontologies: representing the anatomy and development of Danio rerio",
+        "authors": "Van Slyke CE, Bradford YM, Westerfield M, Haendel MA",
+        "journal": "J Biomed Semantics",
+        "issue": "5(1):12",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/24568621)"
+      },
+      {
+        "title": "The Human Phenotype Ontology project: linking molecular biology and disease through phenotype data",
+        "authors": "Köhler S, Doelken SC, Mungall CJ, Bauer S, Firth HV, Bailleul-Forestier I, Black GC, Brown DL, Brudno M, Campbell J, FitzPatrick DR, Eppig JT, Jackson AP, Freson K, Girdea M, Helbig I, Hurst JA, JÃ¤hn J, Jackson LG, Kelly AM, Ledbetter DH, Mansour S, Martin CL, Moss C, Mumford A, Ouwehand WH, Park SM, Riggs ER, Scott RH, Sisodiya S, Van Vooren S, Wapner RJ, Wilkie AO, Wright CF, Vulto-van Silfhout AT, de Leeuw N, de Vries BB, Washingthon NL, Smith CL, Westerfield M, Schofield P, Ruef BJ, Gkoutos GV, Haendel M, Smedley D, Lewis SE, Robinson PN",
+        "journal": "Nucleic Acids Res",
+        "issue": "42(Database issue):D966-74",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/24217912)"
+      }
+    ]
+  },
+  {
+    "year": 2013,
+    "list": [
+      {
+        "title": "An overview of the BioCreative 2012 Workshop Track III: interactive text mining task",
+        "authors": "Arighi CN, Carterette B, Cohen KB, Krallinger M, Wilbur WJ, Fey P, Dodson R, Cooper L, Van Slyke CE, Dahdul W, Mabee P, Li D, Harris B, Gillespie M, Jimenez S, Roberts P, Matthews L, Becker K, Drabkin H, Bello S, Licata L,Chatr-aryamontri A, Schaeffer ML, Park J, Haendel M, Van Auken K, Li Y, Chan J, Muller HM, Cui H, Balhoff JP, Chi-Yang Wu J, Lu Z, Wei CH, Tudor CO, Raja K, Subramani S, Natarajan J, Cejuela JM, Dubey P, Wu C",
+        "journal": "Database (Oxford)",
+        "issue": "2013:bas056",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/23327936)"
+      },
+      {
+        "title": "The environment ontology: contextualising biological and biomedical entities",
+        "authors": "Buttigieg PL, Morrison N, Smith B, Mungall CJ, Lewis SE; ENVO Consortium",
+        "journal": "J Biomed Semantics",
+        "issue": "4(1):43",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/24330602)"
+      },
+      {
+        "title": "Phenotypic overlap in the contribution of individual genes to CNV pathogenicity revealed by cross-species computational analysis of single-gene mutations in humans, mice and zebrafish",
+        "authors": "Doelken SC, Kohler S, Mungall CJ, Gkoutos GV, Ruef BJ, Smith C, Smedley D, Bauer S, Klopocki E, Schofield PN, Westerfield M, Robinson PN, Lewis SE",
+        "journal": "Dis Model Mech",
+        "issue": "6(2):358-72",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/23104991)"
+      },
+      {
+        "title": "What is an anatomy ontology?",
+        "authors": "Druzinsky R, Mungall C, Haendel M, Lapp H, Mabee P",
+        "journal": "Anat Rec (Hoboken)",
+        "issue": "296(12):1797-9",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/24127438)"
+      },
+      {
+        "title": "Estimating exome genotyping accuracy by comparing to data from large scale sequencing projects",
+        "authors": "Heinrich V, Kamphans T, Stange J, Parkhomchuk D, Hecht J, Dickhaus T, Robinson PN, Krawitz PM (2013)",
+        "journal": "Genome Med",
+        "issue": "5(7):69",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/23902830)"
+      },
+      {
+        "title": "Construction and accessibility of a cross-species phenotype ontology along with gene annotations for biomedical research",
+        "authors": "Kohler S, Doelken SC, Ruef BJ, Bauer S, Washington N, Westerfield M, Gkoutos G, Schofield P, Smedley D, Lewis SE, Robinson PN, Mungall CJ",
+        "journal": "F1000Res",
+        "issue": "2:30",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/24358873)"
+      },
+      {
+        "title": "A case of paroxysmal nocturnal hemoglobinuria caused by a germline mutation and a somatic mutation in PIGT",
+        "authors": "Krawitz PM, Hochsmann B, Murakami Y, Teubner B, Kruger U, Klopocki E, Neitzel H, Hoellein A, Schneider C, Parkhomchuk D, Hecht J, Robinson PN, Mundlos S, Kinoshita T, Schrezenmeier H",
+        "journal": "Blood",
+        "issue": "122(7):1312-5",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/23733340)"
+      },
+      {
+        "title": "A knowledge based approach to matching human neurodegenerative disease and animal models (2013)",
+        "authors": "Maynard SM, Mungall CJ, Lewis SE, Imam FT, Martone ME",
+        "journal": "Front Neuroinform",
+        "issue": "7:7",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/23717278)"
+      },
+      {
+        "title": "Ontology based molecular signatures for immune cell types via gene expression analysis (2013)",
+        "authors": "Meehan TF, Vasilevsky NA, Mungall CJ, Dougall DS, Haendel MA, Blake JA, Diehl AD",
+        "journal": "BMC Bioinformatics",
+        "issue": "14:263",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/24004649)"
+      },
+      {
+        "title": "A systematic large-scale phenotypic analysis of de novo and inherited copy number variation (2013)",
+        "authors": "Robinson PN",
+        "journal": "Hum Mutat",
+        "issue": "34(12):v",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/24227377)"
+      },
+      {
+        "title": "The Gene Ontology (GO) Cellular Component Ontology: integration with SAO (Subcellular Anatomy Ontology) and other recent developments",
+        "authors": "Roncaglia P, Martone ME, Hill DP, Berardini TZ, Foulger RE, Imam FT, Drabkin H, Mungall CJ, Lomax J",
+        "journal": "J Biomed Semantics",
+        "issue": "4(1):20",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/24093723)"
+      },
+      {
+        "title": "PhenoDigm: analyzing curated annotations to associate animal models with human diseases",
+        "authors": "Smedley D, Oellrich A, Kohler S, Ruef B; Sanger Mouse Genetics Project, Westerfield M, Robinson P, Lewis S, Mungall C",
+        "journal": "Database (Oxford)",
+        "issue": "2013:bat025",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/23660285)"
+      }
+    ]
+  },
+  {
+    "year": 2012,
+    "list": [
+      {
+        "title": "MouseFinder: Candidate disease genes from mouse phenotype data",
+        "authors": "Chen CK, Mungall CJ, Gkoutos GV, Doelken SC, Kohler S, Ruef BJ, Smith C, Westerfield M, Robinson PN, Lewis SE, Schofield PN, Smedley D",
+        "journal": "Hum Mutat",
+        "issue": "33(5):858-66",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/22331800)"
+      },
+      {
+        "title": "A unified anatomy ontology of the vertebrate skeletal system",
+        "authors": "Dahdul WM, Balhoff JP, Blackburn DC, Diehl AD, Haendel MA, Hall BK, Lapp H, Lundberg JG, Mungall CJ, Ringwald M, Segerdell E, Van Slyke CE, Vickaryous MK, Westerfield M, Mabee PM",
+        "journal": "PLoS One",
+        "issue": "7(12):e51070",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/23251424)"
+      },
+      {
+        "title": "Uberon, an integrative multi-species anatomy ontology",
+        "authors": "Mungall CJ, Torniai C, Gkoutos GV, Lewis SE, Haendel MA",
+        "journal": "Genome Biol",
+        "issue": "13(1):R5",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/22293552)"
+      },
+      {
+        "title": "A strategy for building neuroanatomy ontologies",
+        "authors": "Osumi-Sutherland D, Reeve S, Mungall CJ, Neuhaus F, Ruttenberg A, Jefferis GS, Armstrong JD",
+        "journal": "Bioinformatics",
+        "issue": "28(9):1262-9",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/22402613)"
+      },
+      {
+        "title": "On the Use of Gene Ontology Annotations to Assess Functional Similarity among Orthologs and Paralogs: A Short Report",
+        "authors": "Thomas PD, Wood V, Mungall CJ, Lewis SE, Blake JA, Gene Ontology Consortium",
+        "journal": "PLoS Comput Biol",
+        "issue": "8(2):e1002386",
+        "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/22359495)"
+      }
+    ]
+  }
+]

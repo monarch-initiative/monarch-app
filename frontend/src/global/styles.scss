@@ -1,0 +1,261 @@
+/** normalize.css also installed */
+
+/** document */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $sans;
+  line-height: $spacing;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+}
+
+/** headings */
+
+h1 {
+  width: 100%;
+  margin: 0;
+  padding: 10px 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 1px;
+  /** text-transform: uppercase; */
+}
+
+h2 {
+  width: 100%;
+  margin: 0;
+  padding: 10px 0;
+  font-size: 1.3rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+h3 {
+  width: 100%;
+  margin: 0;
+  margin-bottom: -20px;
+  padding: 10px 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-align: left;
+}
+
+/** elements */
+
+svg {
+  overflow: visible;
+}
+
+p,
+blockquote {
+  margin: 0;
+  padding: 0;
+  text-align: justify;
+  line-height: $spacing + 0.3;
+}
+
+img {
+  max-width: 100%;
+}
+
+a {
+  color: $theme;
+  transition: color $fast;
+  text-underline-offset: 1px;
+
+  &:hover {
+    color: currentColor;
+  }
+}
+
+button {
+  appearance: none;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: currentColor;
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+input,
+textarea {
+  appearance: none;
+  border: none;
+  outline: none;
+  min-width: 0;
+}
+
+[disabled] {
+  pointer-events: none;
+  opacity: 0.35;
+  filter: saturate(0);
+}
+
+ol,
+ul {
+  margin: 0;
+  padding: 0;
+  padding-left: 20px;
+  text-align: left;
+  line-height: $spacing;
+}
+
+li {
+  margin: 10px 0;
+  padding: 0;
+  padding-left: 10px;
+}
+
+hr {
+  width: 100%;
+  height: 2px;
+  margin: 20px 0;
+  border: none;
+  background: $light-gray;
+}
+
+blockquote {
+  padding: 20px;
+  width: 100%;
+  background: $light-gray;
+  text-align: left;
+}
+
+code {
+  padding: 3px 5px;
+  background: $off-black;
+  color: $white;
+  font-family: $mono;
+}
+
+b {
+  font-weight: 500;
+}
+
+strong {
+  font-weight: 600;
+  margin: 0 2px;
+}
+
+/** notification dot */
+
+[data-notification="true"] {
+  position: relative;
+}
+
+[data-notification="true"]:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: $error;
+}
+
+/** tooltips */
+
+.tippy-box {
+  max-width: min(600px, 90vw) !important;
+  padding: 8px 12px !important;
+  background: $off-black !important;
+  color: $white !important;
+  font-size: 1rem !important;
+
+  @each $placement in ("top", "right", "bottom", "left") {
+    &[data-placement^="#{$placement}"] > .tippy-arrow:before {
+      border-#{$placement}-color: $off-black !important;
+    }
+  }
+
+  li {
+    margin: 0;
+  }
+}
+
+.tippy-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+  padding: 0 !important;
+}
+
+/** useless tippy wrapper span that sometimes appears */
+.tippy-content > span {
+  display: contents !important; /** effectively take out of dom */
+}
+
+/** for spans of text (not clickable, not links, not buttons) with tooltips */
+[data-tooltip="true"] {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 2px;
+  cursor: help;
+}
+
+/** util */
+
+.truncate:not(:focus) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+@for $i from 1 through 10 {
+  .truncate-#{$i}:focus {
+    outline: solid 2px $black;
+  }
+
+  .truncate-#{$i}:not(:focus) {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $i;
+    overflow: hidden;
+    max-width: 100%;
+  }
+
+  .truncate-#{$i}:not(:focus)[tabindex="0"] {
+    cursor: zoom-in;
+  }
+}
+
+/** transitions */
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}

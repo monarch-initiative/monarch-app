@@ -1,0 +1,56 @@
+{
+  "a": {
+    "option": {
+      "id": "MGI:2683546",
+      "name": "Ssh3",
+      "highlight": "<em class=\"hilite\">Ssh3</em>",
+      "icon": "category-gene",
+      "info": "Mus musculus"
+    },
+    "options": [
+      {
+        "id": "MP:0010771",
+        "name": "integument phenotype"
+      },
+      {
+        "id": "MP:0002169",
+        "name": "no abnormal phenotype detected"
+      },
+      {
+        "id": "MP:0005391",
+        "name": "vision/eye phenotype"
+      },
+      {
+        "id": "MP:0005389",
+        "name": "reproductive system phenotype"
+      },
+      {
+        "id": "MP:0005367",
+        "name": "renal/urinary system phenotype"
+      }
+    ]
+  },
+  "b": {
+    "option": {
+      "id": "RGD:621382",
+      "name": "Plod1",
+      "highlight": "<em class=\"hilite\">Plod1</em>",
+      "icon": "category-gene",
+      "info": "Rattus norvegicus"
+    },
+    "options": [
+      {
+        "id": "HP:0004325",
+        "name": "Decreased body weight"
+      },
+      {
+        "id": "HP:0000093",
+        "name": "Proteinuria"
+      },
+      {
+        "id": "MP:0006144",
+        "name": "increased systemic arterial systolic blood pressure"
+      }
+    ]
+  }
+}

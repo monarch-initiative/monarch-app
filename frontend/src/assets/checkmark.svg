@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 100 100">
+  <path
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="15"
+    d="
+      M -30 0
+      L -10 20
+      L 10 0
+      L 30 -20
+    "
+  />
+</svg>

@@ -14,9 +14,10 @@ generate-model:
 
 .PHONY: clobber
 clobber:
-	rm schema/monarch-py.yaml || true
-	rm src/monarch_api/model.py || true
-	rm frontend/src/api/interfaces.ts || true
+	rm -f schema/monarch-py.yaml
+	rm -f src/monarch_api/model.py
+	rm -f frontend/src/api/interfaces.ts
+
 
 .PHONY: dev-backend
 dev-backend: monarch_api/main.py

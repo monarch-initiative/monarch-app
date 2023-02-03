@@ -1,0 +1,36 @@
+/** color palette */
+$theme-dark: #00838f;
+$theme: #00acc1;
+$theme-mid: #80deea;
+$theme-light: #b2ebf2;
+$white: #ffffff;
+$off-white: #fafafa;
+$light-gray: #eeeeee;
+$gray: #b0b0b0;
+$dark-gray: #808080;
+$off-black: #404040;
+$black: #000000;
+$success: #4caf50;
+$error: #f44336;
+
+/** transitions */
+$fast: 0.2s ease;
+
+/** fonts */
+$sans: "Poppins", sans-serif;
+$mono: "Courier Prime", monospace;
+
+/** font sizes */
+/** 0.9rem to 2.0rem in 0.1rem increments */
+
+/** line spacing */
+$spacing: 1.5;
+
+/** width of main content column on page */
+$section: 800px;
+$section-big: 1200px;
+
+/** effects */
+$rounded: 5px;
+$outline: 0 0 0 2px $theme;
+$shadow: 0 2px 4px #00000030;
