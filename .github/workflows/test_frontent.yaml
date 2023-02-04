@@ -8,13 +8,14 @@ env:
     ~/.cache/Cypress
     node_modules
 
+defaults:
+  run:
+    working-directory: ./frontend
+
 jobs:
   # only install yarn packages once for rest of jobs
   install-cache:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./frontend
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -40,9 +41,6 @@ jobs:
   test-build:
     runs-on: ubuntu-latest
     needs: install-cache
-    defaults:
-      run:
-        working-directory: ./frontend
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -58,9 +56,6 @@ jobs:
   test-lint:
     runs-on: ubuntu-latest
     needs: install-cache
-    defaults:
-      run:
-        working-directory: ./frontend
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -76,9 +71,6 @@ jobs:
   test-unit:
     runs-on: ubuntu-latest
     needs: install-cache
-    defaults:
-      run:
-        working-directory: ./frontend
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -95,9 +87,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: install-cache
     timeout-minutes: 5
-    defaults:
-      run:
-        working-directory: ./frontend
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -111,13 +100,10 @@ jobs:
 
     # run accessibility tests
   
-  # run accessibility test
+  # run accessibility tests
   test-accessibility:
     runs-on: ubuntu-latest
     needs: install-cache
-    defaults:
-      run:
-        working-directory: ./frontend
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -128,4 +114,3 @@ jobs:
           key: ${{ needs.install-cache.outputs.cache-key }}
       - name: Run test
         run: yarn test:axe
-
