@@ -1,0 +1,131 @@
+# workflow that tests and quality-checks app on pull requests
+name: Test
+
+on: pull_request
+
+env:
+  CACHE_PATH: |
+    ~/.cache/Cypress
+    node_modules
+
+jobs:
+  # only install yarn packages once for rest of jobs
+  install-cache:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+          cache: yarn
+      - name: Install packages
+        run: yarn install
+      - name: Define cache key
+        id: define-key
+        run: echo "::set-output name=key::tests-cache-key-$(date '+%s')"
+      - name: Store cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.CACHE_PATH }}
+          key: ${{ steps.define-key.outputs.key }}
+    outputs:
+      cache-key: ${{ steps.define-key.outputs.key }}
+
+  # test that app can build without issues
+  test-build:
+    runs-on: ubuntu-latest
+    needs: install-cache
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Restore cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.CACHE_PATH }}
+          key: ${{ needs.install-cache.outputs.cache-key }}
+      - name: Run test
+        run: yarn build
+
+  # test that app is properly formatted and linted
+  test-lint:
+    runs-on: ubuntu-latest
+    needs: install-cache
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Restore cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.CACHE_PATH }}
+          key: ${{ needs.install-cache.outputs.cache-key }}
+      - name: Run test
+        run: yarn test:lint
+
+  # run unit tests
+  test-unit:
+    runs-on: ubuntu-latest
+    needs: install-cache
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Restore cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.CACHE_PATH }}
+          key: ${{ needs.install-cache.outputs.cache-key }}
+      - name: Run test
+        run: yarn test:unit
+
+  # run end to end integration tests
+  test-e2e:
+    runs-on: ubuntu-latest
+    needs: install-cache
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Restore cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.CACHE_PATH }}
+          key: ${{ needs.install-cache.outputs.cache-key }}
+      - name: Run test
+        run: yarn test:e2e
+
+    # run accessibility tests
+  
+  # run accessibility test
+  test-accessibility:
+    runs-on: ubuntu-latest
+    needs: install-cache
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Restore cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.CACHE_PATH }}
+          key: ${{ needs.install-cache.outputs.cache-key }}
+      - name: Run test
+        run: yarn test:axe
+
