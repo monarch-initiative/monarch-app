@@ -1,8 +1,3 @@
-# Frontend ignores
-*/node_modules
-
-
-
 # Ignore generated credentials from google-github-actions/auth
 gha-creds-*.json
 
@@ -13,3 +8,35 @@ schema/monarch-py.yaml
 .idea
 .venv
 **pycache**
+
+
+### Frontend Ignores
+
+/frontend/.DS_Store
+/frontend/node_modules
+/frontend/dist
+
+/frontend/tests/e2e/videos/
+/frontend/tests/e2e/screenshots/
+/frontend/cypress
+
+/frontend/mockServiceWorker.js
+
+# local env files
+/frontend/.env.local
+/frontend/.env.*.local
+
+# Log files
+/frontend/npm-debug.log*
+/frontend/yarn-debug.log*
+/frontend/yarn-error.log*
+/frontend/pnpm-debug.log*
+
+# Editor directories and files
+/frontend/.idea
+/frontend/.vscode
+/frontend/*.suo
+/frontend/*.ntvs*
+/frontend/*.njsproj
+/frontend/*.sln
+/frontend/*.sw?

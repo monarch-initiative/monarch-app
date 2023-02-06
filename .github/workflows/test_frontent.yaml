@@ -10,7 +10,7 @@ env:
 
 defaults:
   run:
-    working-directory: ./frontend
+    working-directory: /frontend
 
 jobs:
   # only install yarn packages once for rest of jobs
