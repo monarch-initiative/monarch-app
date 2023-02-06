@@ -186,7 +186,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import AppTabs from "@/components/AppTabs.vue";
-import AppHighlight from "@/components/AppHighlight.vue";
+// import AppHighlight from "@/components/AppHighlight.vue";
 import AppPost from "@/components/AppPost.vue";
 import AppTile from "@/components/AppTile.vue";
 import tabs from "./explore/tabs.json";
