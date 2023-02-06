@@ -13,6 +13,7 @@ defaults:
     working-directory: ./frontend
 
 jobs:
+
   # only install yarn packages once for rest of jobs
   check-env:
     runs-on: ubuntu-latest
@@ -20,35 +21,34 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Check working directory
-        # working-directory: ./frontend
         run: |
           echo "CURRENT DIR: $(pwd)"
           ls -al
           echo "CACHE_PATH: ${CACHE_PATH}"
 
-  # install-cache:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
-  #     - name: Set up Node
-  #       uses: actions/setup-node@v2
-  #       with:
-  #         node-version: "14"
-  #         cache: yarn
-  #         cache-dependency-path: frontend/yarn.lock
-  #     - name: Install packages
-  #       run: yarn install
-  #     - name: Define cache key
-  #       id: define-key
-  #       run: echo "::set-output name=key::tests-cache-key-$(date '+%s')"
-  #     - name: Store cache
-  #       uses: actions/cache@v2
-  #       with:
-  #         path: ${{ env.CACHE_PATH }}
-  #         key: ${{ steps.define-key.outputs.key }}
-  #   outputs:
-  #     cache-key: ${{ steps.define-key.outputs.key }}
+  install-cache:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+          cache: yarn
+          cache-dependency-path: frontend/yarn.lock
+      - name: Install packages
+        run: yarn install
+      - name: Define cache key
+        id: define-key
+        run: echo "::set-output name=key::tests-cache-key-$(date '+%s')"
+      - name: Store cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.CACHE_PATH }}
+          key: ${{ steps.define-key.outputs.key }}
+    outputs:
+      cache-key: ${{ steps.define-key.outputs.key }}
 
   # # test that app can build without issues
   # test-build:
