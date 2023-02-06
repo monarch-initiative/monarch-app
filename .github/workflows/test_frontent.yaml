@@ -6,11 +6,11 @@ on: pull_request
 env:
   CACHE_PATH: |
     ~/.cache/Cypress
-    /frontend/node_modules
+    ./frontend/node_modules
 
 defaults:
   run:
-    working-directory: /frontend
+    working-directory: ./frontend
 
 jobs:
   # only install yarn packages once for rest of jobs
