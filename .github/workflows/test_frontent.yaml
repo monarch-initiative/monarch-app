@@ -1,5 +1,5 @@
 # workflow that tests and quality-checks app on pull requests
-name: Test
+name: Test Frontend
 
 on: pull_request
 
@@ -14,6 +14,11 @@ defaults:
 
 jobs:
   # only install yarn packages once for rest of jobs
+  check-env:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check working directory
+        run: pwd
   install-cache:
     runs-on: ubuntu-latest
     steps:
