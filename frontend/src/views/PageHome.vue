@@ -86,7 +86,11 @@
     <AppButton to="/about" text="Learn more" icon="arrow-right" />
   </AppSection>
 
-  <!-- specific feature demos -->
+  <!-- specific feature demos 
+  
+    Commenting this section until we can reduce file size of the videos 
+    or find a better way to host them
+
   <AppSection>
     <AppHeading>Highlights</AppHeading>
 
@@ -114,6 +118,7 @@
       between them, and view the evidence for those associations.
     </AppHighlight>
   </AppSection>
+  -->
 
   <!-- news -->
   <AppSection>
