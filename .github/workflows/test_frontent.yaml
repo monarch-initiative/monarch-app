@@ -22,8 +22,10 @@ jobs:
       - name: Check working directory
         # working-directory: ./frontend
         run: |
-          pwd
+          echo "CURRENT DIR: $(pwd)"
           ls -al
+          echo "CACHE_PATH: ${CACHE_PATH}"
+
   # install-cache:
   #   runs-on: ubuntu-latest
   #   steps:
