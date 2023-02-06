@@ -3,10 +3,10 @@ name: Test Frontend
 
 on: pull_request
 
-env:
-  CACHE_PATH: |
-    ~/.cache/Cypress
-    frontend/node_modules
+# env:
+#   CACHE_PATH: |
+#     ~/.cache/Cypress
+#     frontend/node_modules
 
 defaults:
   run:
