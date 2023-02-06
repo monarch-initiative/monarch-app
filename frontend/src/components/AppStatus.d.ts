@@ -8,4 +8,4 @@ export const Codes = [
   "unknown",
 ] as const;
 
-export type Code = typeof Codes[number];
+export type Code = (typeof Codes)[number];
