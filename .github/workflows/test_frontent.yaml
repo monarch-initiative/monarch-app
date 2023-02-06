@@ -3,14 +3,14 @@ name: Test Frontend
 
 on: pull_request
 
-# env:
-#   CACHE_PATH: |
-#     ~/.cache/Cypress
-#     frontend/node_modules
+env:
+  CACHE_PATH: |
+    ~/.cache/Cypress
+    frontend/node_modules
 
 defaults:
   run:
-    working-directory: frontend
+    working-directory: /monarch-api/frontend
 
 jobs:
   # only install yarn packages once for rest of jobs
