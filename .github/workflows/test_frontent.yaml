@@ -8,9 +8,9 @@ on: pull_request
 #     ~/.cache/Cypress
 #     frontend/node_modules
 
-# defaults:
-#   run:
-#     working-directory: frontend
+defaults:
+  run:
+    working-directory: ./frontend
 
 jobs:
   # only install yarn packages once for rest of jobs
@@ -20,7 +20,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Check working directory
-        working-directory: ./frontend
+        # working-directory: ./frontend
         run: |
           pwd
           ls -al
