@@ -1,4 +1,4 @@
-RUN = poetry --directory backend/ run
+RUN = poetry -C backend/ run
 VERSION = $(shell cd backend && poetry version -s)
 ROOTDIR = $(shell pwd)
 
@@ -62,6 +62,7 @@ model: install-frontend
 	$(RUN) monarch schema > schema/monarch-py.yaml
 	$(RUN) gen-pydantic schema/monarch-api.yaml > backend/src/monarch_api/model.py
 	$(RUN) gen-typescript schema/monarch-api.yaml > frontend/src/api/model.ts
+	$(RUN) black backend/src/monarch_api/model.py
 	cd frontend && \
 		npx prettier -w src/api/model.ts
 
@@ -90,7 +91,8 @@ dev-backend: backend/src/monarch_api/main.py
 
 .PHONY: docker-build
 docker-build:
-	docker build --rm --tag us-central1-docker.pkg.dev/monarch-initiative/monarch-api/monarch-api:$(VERSION) $(ROOTDIR)/backend/Dockerfile
+	cd backend && \
+		docker build --rm --tag us-central1-docker.pkg.dev/monarch-initiative/monarch-api/monarch-api:$(VERSION) .
 
 .PHONY: docker-push
 docker-push:
@@ -126,8 +128,8 @@ lint-frontend: install-frontend
 .PHONY: lint-backend
 lint-backend: install-backend
 	$(RUN) flake8 --exit-zero --max-line-length 120 backend/src backend/tests
-	$(RUN) black --check --diff backend/src backend/tests
 	$(RUN) isort --check-only --diff backend/src backend/tests
+	$(RUN) black --check --diff backend/src backend/tests
 
 
 .PHONY: format
@@ -151,5 +153,4 @@ format-backend: install-backend
 format-frontend: install-frontend
 	cd frontend && \
 		npx prettier -w src
-
 
