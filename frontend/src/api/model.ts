@@ -1,5 +1,41 @@
+export type NodeId = string;
+export type TaxonId = string;
 export type AssociationId = string;
 export type EntityId = string;
+
+export interface Node extends Entity {
+  taxon?: Taxon;
+  inheritance?: Entity;
+  association_counts?: AssociationCount[];
+  node_hierarchy?: NodeHierarchy;
+  id?: string;
+  category?: string;
+  name?: string;
+  description?: string;
+  xref?: string;
+  provided_by?: string;
+  in_taxon?: string;
+  source?: string;
+  symbol?: string;
+  type?: string;
+  synonym?: string;
+}
+
+export interface Taxon {
+  id?: string;
+  label?: string;
+}
+
+export interface AssociationCount {
+  label?: string;
+  count?: number;
+}
+
+export interface NodeHierarchy {
+  super_classes?: Entity[];
+  equivalent_classes?: Entity[];
+  sub_classes?: Entity[];
+}
 
 export interface Association {
   aggregator_knowledge_source?: string;

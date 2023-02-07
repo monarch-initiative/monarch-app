@@ -1,4 +1,4 @@
-RUN = poetry run
+RUN = poetry --directory backend/ run
 VERSION = $(shell cd backend && poetry version -s)
 ROOTDIR = $(shell pwd)
 
@@ -32,6 +32,12 @@ help:
 
 ### Installation and Setup ###
 
+.PHONY: fresh
+fresh: clean clobber all
+
+
+.PHONY: all
+all: install model docs
 
 
 .PHONY: install
@@ -53,26 +59,17 @@ install-frontend:
 .PHONY: model
 model: install-frontend
 	mkdir -p schema
-	cd backend && \
-		$(RUN) monarch schema > $(ROOTDIR)/schema/monarch-py.yaml && \
-		$(RUN) gen-pydantic $(ROOTDIR)/schema/monarch-api.yaml > src/monarch_api/model.py && \
-		$(RUN) gen-typescript $(ROOTDIR)/schema/monarch-api.yaml > $(ROOTDIR)/frontend/src/api/model.ts
+	$(RUN) monarch schema > schema/monarch-py.yaml
+	$(RUN) gen-pydantic schema/monarch-api.yaml > backend/src/monarch_api/model.py
+	$(RUN) gen-typescript schema/monarch-api.yaml > frontend/src/api/model.ts
 	cd frontend && \
 		npx prettier -w src/api/model.ts
-
-
-.PHONY: clobber
-clobber:
-	rm -f schema/monarch-py.yaml
-	rm -f backend/src/monarch_api/model.py
-	rm -f frontend/src/api/model.ts
 
 
 # Documentation
 .PHONY: docs
 docs: install model
-	cd backend && \
-		$(RUN) gen-doc -d $(ROOTDIR)/docs/Data-Model/ $(ROOTDIR)/schema/monarch-py.yaml
+	$(RUN) gen-doc -d $(ROOTDIR)/docs/Data-Model/ $(ROOTDIR)/schema/monarch-api.yaml
 
 
 ### Development ###
@@ -93,7 +90,7 @@ dev-backend: backend/src/monarch_api/main.py
 
 .PHONY: docker-build
 docker-build:
-	docker build --rm --tag us-central1-docker.pkg.dev/monarch-initiative/monarch-api/monarch-api:$(VERSION) backend/Dockerfile
+	docker build --rm --tag us-central1-docker.pkg.dev/monarch-initiative/monarch-api/monarch-api:$(VERSION) $(ROOTDIR)/backend/Dockerfile
 
 .PHONY: docker-push
 docker-push:
@@ -101,7 +98,6 @@ docker-push:
 
 ### Linting, Formatting, and Cleaning ###
 
-# TODO: add linting and formatting for frontend?
 .PHONY: clean
 clean:
 	rm -rf `find . -name __pycache__`
@@ -110,24 +106,50 @@ clean:
 	rm -rf dist
 
 
+.PHONY: clobber
+clobber:
+	rm -f schema/monarch-py.yaml \
+		backend/src/monarch_api/model.py \
+		frontend/src/api/model.ts
+
+
 .PHONY: lint
-lint: install
-	cd backend && \
-		$(RUN) flake8 --exit-zero --max-line-length 120 src tests/
-		$(RUN) black --check --diff src tests
-		$(RUN) isort --check-only --diff src tests
+lint: install lint-frontend lint-backend
+
+
+.PHONY: lint-frontend
+lint-frontend: install-frontend
 	cd frontend && \
-		npx prettier --check src/api/model.ts
+		npx prettier --check src
+
+
+.PHONY: lint-backend
+lint-backend: install-backend
+	$(RUN) flake8 --exit-zero --max-line-length 120 backend/src backend/tests
+	$(RUN) black --check --diff backend/src backend/tests
+	$(RUN) isort --check-only --diff backend/src backend/tests
 
 
 .PHONY: format
-format: 
+format: format-frontend format-backend
+
+
+.PHONY: format-backend
+format-backend: install-backend
 	$(RUN) autoflake \
 		--recursive \
 		--remove-all-unused-imports \
 		--remove-unused-variables \
 		--ignore-init-module-imports \
-		--in-place backend/src backend/tests
+		--in-place \
+		backend/src backend/tests
 	$(RUN) isort backend/src backend/tests
 	$(RUN) black backend/src backend/tests
+
+
+.PHONY: format-frontend
+format-frontend: install-frontend
+	cd frontend && \
+		npx prettier -w src
+
 

@@ -20,6 +20,28 @@ class ConfiguredBaseModel(WeakRefShimBaseModel,
     pass                    
 
 
+class Taxon(ConfiguredBaseModel):
+    
+    id: Optional[str] = Field(None)
+    label: Optional[str] = Field(None)
+    
+
+
+class AssociationCount(ConfiguredBaseModel):
+    
+    label: Optional[str] = Field(None)
+    count: Optional[int] = Field(None)
+    
+
+
+class NodeHierarchy(ConfiguredBaseModel):
+    
+    super_classes: Optional[List[Entity]] = Field(default_factory=list)
+    equivalent_classes: Optional[List[Entity]] = Field(default_factory=list)
+    sub_classes: Optional[List[Entity]] = Field(default_factory=list)
+    
+
+
 class Association(ConfiguredBaseModel):
     
     aggregator_knowledge_source: Optional[List[str]] = Field(default_factory=list)
@@ -73,6 +95,26 @@ class Entity(ConfiguredBaseModel):
     
 
 
+class Node(Entity):
+    
+    taxon: Optional[Taxon] = Field(None)
+    inheritance: Optional[Entity] = Field(None)
+    association_counts: Optional[List[AssociationCount]] = Field(default_factory=list)
+    node_hierarchy: Optional[NodeHierarchy] = Field(None)
+    id: str = Field(None)
+    category: Optional[List[str]] = Field(default_factory=list)
+    name: Optional[str] = Field(None)
+    description: Optional[str] = Field(None)
+    xref: Optional[List[str]] = Field(default_factory=list)
+    provided_by: Optional[str] = Field(None)
+    in_taxon: Optional[str] = Field(None)
+    source: Optional[str] = Field(None)
+    symbol: Optional[str] = Field(None)
+    type: Optional[str] = Field(None)
+    synonym: Optional[List[str]] = Field(default_factory=list)
+    
+
+
 class Results(ConfiguredBaseModel):
     
     limit: Optional[int] = Field(None)
@@ -102,8 +144,12 @@ class EntityResults(Results):
 
 # Update forward refs
 # see https://pydantic-docs.helpmanual.io/usage/postponed_annotations/
+Taxon.update_forward_refs()
+AssociationCount.update_forward_refs()
+NodeHierarchy.update_forward_refs()
 Association.update_forward_refs()
 Entity.update_forward_refs()
+Node.update_forward_refs()
 Results.update_forward_refs()
 AssociationResults.update_forward_refs()
 EntityResults.update_forward_refs()
