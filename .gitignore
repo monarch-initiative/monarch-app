@@ -9,32 +9,32 @@ gha-creds-*.json
 
 ### Frontend Ignores
 
-/frontend/.DS_Store
-/frontend/node_modules
-/frontend/dist
+.DS_Store
+node_modules
+dist
 
-/frontend/tests/e2e/videos/
-/frontend/tests/e2e/screenshots/
-/frontend/cypress
+tests/e2e/videos/
+tests/e2e/screenshots/
+cypress
 
-/frontend/mockServiceWorker.js
+mockServiceWorker.js
 
 # local env files
-/frontend/.env.local
-/frontend/.env.*.local
+.env.local
+.env.*.local
 
 # Log files
-/frontend/npm-debug.log*
-/frontend/yarn-debug.log*
-/frontend/yarn-error.log*
-/frontend/pnpm-debug.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
 # Editor directories and files
-/frontend/.idea
-/frontend/.vscode
-/frontend/*.suo
-/frontend/*.ntvs*
-/frontend/*.njsproj
-/frontend/*.sln
-/frontend/*.sw?
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
