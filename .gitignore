@@ -1,14 +1,11 @@
 # Ignore generated credentials from google-github-actions/auth
 gha-creds-*.json
 
-api-env/
-schema/monarch-py.yaml
-
 *.db
 .idea
 .venv
 **pycache**
-
+.pytest_cache
 
 ### Frontend Ignores
 

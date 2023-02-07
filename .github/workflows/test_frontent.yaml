@@ -14,18 +14,19 @@ defaults:
 
 jobs:
 
-  # only install yarn packages once for rest of jobs
-  check-env:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Check working directory
-        run: |
-          echo "CURRENT DIR: $(pwd)"
-          ls -al
-          echo "CACHE_PATH: ${CACHE_PATH}"
+  # check-env:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
+  #     - name: Check working directory
+  #       run: |
+  #         echo "CURRENT DIR: $(pwd)"
+  #         ls -al
+  #         echo "CACHE_PATH: ${CACHE_PATH}"
 
+
+  # Build cache of yarn packages for rest of jobs
   install-cache:
     runs-on: ubuntu-latest
     steps:
@@ -50,6 +51,7 @@ jobs:
     outputs:
       cache-key: ${{ steps.define-key.outputs.key }}
 
+
   # test that app can build without issues
   test-build:
     runs-on: ubuntu-latest
@@ -63,7 +65,10 @@ jobs:
           path: ${{ env.CACHE_PATH }}
           key: ${{ needs.install-cache.outputs.cache-key }}
       - name: Run test
-        run: yarn build
+        run: |
+          npx update-browserslist-db@latest
+          yarn build
+
 
   # test that app is properly formatted and linted
   test-lint:
@@ -78,7 +83,10 @@ jobs:
           path: ${{ env.CACHE_PATH }}
           key: ${{ needs.install-cache.outputs.cache-key }}
       - name: Run test
-        run: yarn test:lint
+        run: |
+          npx update-browserslist-db@latest
+          yarn test:lint
+
 
   # run unit tests
   test-unit:
@@ -96,6 +104,7 @@ jobs:
         run: |
           npx update-browserslist-db@latest
           yarn test:unit
+
 
   # run end to end integration tests
   test-e2e:
@@ -129,4 +138,6 @@ jobs:
           path: ${{ env.CACHE_PATH }}
           key: ${{ needs.install-cache.outputs.cache-key }}
       - name: Run test
-        run: yarn test:axe
+        run: |
+          npx update-browserslist-db@latest
+          yarn test:axe
