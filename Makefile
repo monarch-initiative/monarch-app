@@ -32,6 +32,8 @@ help:
 
 ### Installation and Setup ###
 
+
+
 .PHONY: install
 install: install-backend install-frontend
 
@@ -68,7 +70,7 @@ clobber:
 
 # Documentation
 .PHONY: docs
-docs: install generate-model
+docs: install model
 	cd backend && \
 		$(RUN) gen-doc -d $(ROOTDIR)/docs/Data-Model/ $(ROOTDIR)/schema/monarch-py.yaml
 

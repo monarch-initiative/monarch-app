@@ -6,6 +6,10 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+defaults:
+  run:
+    working-directory: ./backend
+
 jobs:
   build-docs:
     runs-on: ubuntu-latest
@@ -28,5 +32,5 @@ jobs:
 
     - name: Build and Deploy Documentation.
       run: |
-        make generate-docs
-        poetry run mkdocs gh-deploy --force
+        cd .. && make docs
+        cd - && poetry run mkdocs gh-deploy --force
