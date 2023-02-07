@@ -55,8 +55,8 @@ model: install-frontend
 	mkdir -p schema
 	cd backend && \
 		$(RUN) monarch schema > $(ROOTDIR)/schema/monarch-py.yaml && \
-		$(RUN) gen-pydantic $(ROOTDIR)/schema/monarch-py.yaml > src/monarch_api/model.py && \
-		$(RUN) gen-typescript $(ROOTDIR)/schema/monarch-py.yaml > $(ROOTDIR)/frontend/src/api/model.ts
+		$(RUN) gen-pydantic $(ROOTDIR)/schema/monarch-api.yaml > src/monarch_api/model.py && \
+		$(RUN) gen-typescript $(ROOTDIR)/schema/monarch-api.yaml > $(ROOTDIR)/frontend/src/api/model.ts
 	cd frontend && \
 		npx prettier -w src/api/model.ts
 
