@@ -11,7 +11,7 @@
     "test": "yarn test:lint && yarn test:unit && yarn test:e2e && yarn test:axe",
     "test:axe": "vue-cli-service test:unit /axe",
     "test:gui": "vue-cli-service test:e2e --browser=chrome --e2e",
-    "test:lint": "vue-cli-service lint --no-fix && prettier --ignore-path .gitignore --check \"**/*.{scss,js,ts,json,vue,svg,yaml}\" --no-error-on-unmatched-pattern"
+    "test:lint": "vue-cli-service lint --no-fix && prettier --ignore-path .prettierignore --check \"**/*.{scss,js,ts,json,vue,svg,yaml}\" --no-error-on-unmatched-pattern"
   },
   "dependencies": {
     "@floating-ui/dom": "^1.0.0",
