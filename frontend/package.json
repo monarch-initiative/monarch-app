@@ -6,7 +6,7 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit /unit",
     "test:e2e": "vue-cli-service test:e2e --browser=chrome --headless --e2e",
-    "lint": "vue-cli-service lint && prettier --ignore-path .gitignore --write \"**/*.{scss,js,ts,json,vue,svg,yaml}\" --no-error-on-unmatched-pattern",
+    "lint": "vue-cli-service lint && prettier --ignore-path .prettierignore --write \"**/*.{scss,js,ts,json,vue,svg,yaml}\" --no-error-on-unmatched-pattern",
     "fresh": "yarn cache clean && rm -rf node_modules yarn.lock && yarn install",
     "test": "yarn test:lint && yarn test:unit && yarn test:e2e && yarn test:axe",
     "test:axe": "vue-cli-service test:unit /axe",
