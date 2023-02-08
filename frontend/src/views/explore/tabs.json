@@ -1,0 +1,20 @@
+[
+  {
+    "id": "node-search",
+    "text": "Node Search",
+    "icon": "search",
+    "tooltip": "Search our knowledge graph for genes, diseases, phenotypes, and more, then see rich information and relational data between them"
+  },
+  {
+    "id": "text-annotator",
+    "text": "Text Annotator",
+    "icon": "subscript",
+    "tooltip": "Search full text for references to nodes in our knowledge graph"
+  },
+  {
+    "id": "phenotype-explorer",
+    "text": "Phenotype Explorer",
+    "icon": "bars-progress",
+    "tooltip": "Construct two sets of phenotypes and see comparisons between them"
+  }
+]

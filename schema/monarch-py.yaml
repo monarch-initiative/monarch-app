@@ -1,0 +1,169 @@
+id: https://w3id.org/monarch/monarch-py
+name: monarch-py
+prefixes:
+  linkml: https://w3id.org/linkml/
+description: Data datamodels for the Monarch Initiative data access library
+imports:
+- linkml:types
+default_range: string
+classes:
+  Association:
+    slots:
+    - aggregator_knowledge_source
+    - id
+    - subject
+    - original_subject
+    - subject_namespace
+    - subject_category
+    - subject_closure
+    - subject_label
+    - subject_closure_label
+    - predicate
+    - object
+    - original_object
+    - object_namespace
+    - object_category
+    - object_closure
+    - object_label
+    - object_closure_label
+    - knowledge_source
+    - primary_knowledge_source
+    - category
+    - negated
+    - provided_by
+    - publications
+    - qualifiers
+    - frequency_qualifier
+    - has_evidence
+    - onset_qualifier
+    - sex_qualifier
+    - source
+    - stage_qualifier
+    - pathway
+    - relation
+  AssociationResults:
+    is_a: Results
+    slots:
+    - associations
+  Entity:
+    slots:
+    - id
+    - category
+    - name
+    - description
+    - xref
+    - provided_by
+    - in_taxon
+    - source
+    - symbol
+    - type
+    - synonym
+  EntityResults:
+    is_a: Results
+    slots:
+    - entities
+  Results:
+    abstract: true
+    slots:
+    - limit
+    - offset
+    - total
+slots:
+  aggregator_knowledge_source:
+    multivalued: true
+  associations:
+    inlined: true
+    inlined_as_list: true
+    multivalued: true
+    range: Association
+  category:
+    multivalued: true
+  description:
+    range: string
+  entities:
+    inlined: true
+    inlined_as_list: true
+    multivalued: true
+    range: Entity
+  frequency_qualifier:
+    range: string
+  has_evidence:
+    range: string
+  id:
+    identifier: true
+    range: string
+  in_taxon:
+    range: string
+  knowledge_source:
+    multivalued: true
+  limit:
+    range: integer
+  name:
+    range: string
+  negated:
+    range: boolean
+  object:
+    range: string
+  object_category:
+    multivalued: true
+  object_closure:
+    multivalued: true
+  object_closure_label:
+    multivalued: true
+  object_label:
+    range: string
+  object_namespace:
+    range: string
+  offset:
+    range: integer
+  onset_qualifier:
+    range: string
+  original_object:
+    range: string
+  original_subject:
+    range: string
+  pathway:
+    range: string
+  predicate:
+    multivalued: false
+    range: string
+  primary_knowledge_source:
+    multivalued: true
+  provided_by:
+    range: string
+  publications:
+    multivalued: true
+  qualifiers:
+    multivalued: true
+  relation:
+    range: string
+  sex_qualifier:
+    range: string
+  source:
+    range: string
+  stage_qualifier:
+    range: string
+  subject:
+    range: string
+  subject_category:
+    multivalued: true
+  subject_closure:
+    multivalued: true
+  subject_closure_label:
+    multivalued: true
+  subject_label:
+    range: string
+  subject_namespace:
+    range: string
+  symbol:
+    range: string
+  synonym:
+    multivalued: true
+  total:
+    range: integer
+  type:
+    range: string
+  xref:
+    multivalued: true
+    range: string
+
