@@ -1,6 +1,9 @@
-/** base biolink url */
+/**
+ * base biolink url, plus new monarch-api url. TODO: eventually we'll only have
+ * monarch-api
+ */
 export const biolink = "https://api.monarchinitiative.org/api";
-
+export const monarch = "http://api-dev.monarchinitiative.org/api";
 /**
  * key/value object for request query parameters. use primitive for single, e.g.
  * evidence=true. use array for multiple/duplicate, e.g. id=abc&id=def&id=ghi
