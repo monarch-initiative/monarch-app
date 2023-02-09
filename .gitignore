@@ -7,6 +7,10 @@ gha-creds-*.json
 **pycache**
 .pytest_cache
 
+### Backend Ignores
+site
+docs/Data-Model
+
 ### Frontend Ignores
 
 .DS_Store

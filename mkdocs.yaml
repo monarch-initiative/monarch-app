@@ -36,7 +36,7 @@ plugins:
   - mkdocstrings:
       handlers:
         python:
-          paths: [src]
+          paths: [ ./backend ]
           import:
           - https://docs.python.org/3/objects.inv
           - https://mkdocstrings.github.io/objects.inv

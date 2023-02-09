@@ -2,9 +2,9 @@
 
 `monarch-api` is a FastAPI for browsing the knowledge graph produced by the Monarch Initiative.
 
-[API Reference](./API_Reference/index.md)
+[API Reference](./API-Reference/index.md)
 
-[Data Response Model](./model.md)
+[Data Response Model](./Data-Model/index.md)
 
 
 ### For developers
