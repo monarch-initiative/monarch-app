@@ -6,10 +6,6 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-defaults:
-  run:
-    working-directory: ./backend
-
 jobs:
   build-docs:
     runs-on: ubuntu-latest
@@ -28,9 +24,9 @@ jobs:
       uses: snok/install-poetry@main
 
     - name: Install Dependencies
-      run: poetry install
+      run: poetry -C backend install
 
     - name: Build and Deploy Documentation.
       run: |
-        cd .. && make docs
-        cd - && poetry run mkdocs gh-deploy --force
+        make docs
+        poetry -C backend run mkdocs gh-deploy --force
