@@ -36,7 +36,7 @@ export const handlers = [
     res(ctx.status(200), ctx.json(uptime))
   ),
 
-  rest.get(/entity/i, (req, res, ctx) =>
+  rest.get(/api\/entity\/\w+:/i, (req, res, ctx) =>
     res(ctx.status(200), ctx.json(entity))
   ),
 
