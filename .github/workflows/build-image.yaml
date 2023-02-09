@@ -3,6 +3,10 @@ on:
   push:
     branches: [ main, fix-tests ]
 
+defaults:
+  run:
+    working-directory: ./backend
+
 # This job uses RafikFarhad's GitHub action to build and 
 # push a docker image to a specified GCP repository
 jobs:
@@ -25,7 +29,7 @@ jobs:
           project_id: monarch-initiative
           image_name: monarch-api/monarch-api
           image_tag: latest, ${{ steps.get-tag.outputs.IMAGE_TAG }}
-          dockerfile: backend/Dockerfile
+          dockerfile: ./Dockerfile
 
 # This version uses Google's authentication Action directly, 
 # and makes use of this repository's Makefile. 
