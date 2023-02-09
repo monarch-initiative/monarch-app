@@ -1,8 +1,6 @@
 {
   "id": "MONDO:0005439",
-  "category": [
-    "biolink:Disease"
-  ],
+  "category": ["biolink:Disease"],
   "name": "familial hypercholesterolemia",
   "description": "An inheritable form of hyperlipidemia, in which there are excess lipids in the blood.",
   "xref": [],
@@ -19,9 +17,7 @@
     "super_classes": [
       {
         "id": "MONDO:0037748",
-        "category": [
-          "biolink:Disease"
-        ],
+        "category": ["biolink:Disease"],
         "name": "hyperlipoproteinemia",
         "description": null,
         "xref": [],
@@ -34,9 +30,7 @@
       },
       {
         "id": "MONDO:0001336",
-        "category": [
-          "biolink:Disease"
-        ],
+        "category": ["biolink:Disease"],
         "name": "familial hyperlipidemia",
         "description": null,
         "xref": [],
@@ -52,9 +46,7 @@
     "sub_classes": [
       {
         "id": "MONDO:0007750",
-        "category": [
-          "biolink:Disease"
-        ],
+        "category": ["biolink:Disease"],
         "name": "hypercholesterolemia, familial, 1",
         "description": null,
         "xref": [],
@@ -67,9 +59,7 @@
       },
       {
         "id": "MONDO:0007751",
-        "category": [
-          "biolink:Disease"
-        ],
+        "category": ["biolink:Disease"],
         "name": "hypercholesterolemia, autosomal dominant, type B",
         "description": null,
         "xref": [],
@@ -82,9 +72,7 @@
       },
       {
         "id": "MONDO:0011369",
-        "category": [
-          "biolink:Disease"
-        ],
+        "category": ["biolink:Disease"],
         "name": "hypercholesterolemia, autosomal dominant, 3",
         "description": null,
         "xref": [],
@@ -97,9 +85,7 @@
       },
       {
         "id": "MONDO:0016203",
-        "category": [
-          "biolink:Disease"
-        ],
+        "category": ["biolink:Disease"],
         "name": "hypercholesterolemia due to cholesterol 7alpha-hydroxylase deficiency",
         "description": null,
         "xref": [],
@@ -112,9 +98,7 @@
       },
       {
         "id": "MONDO:0018328",
-        "category": [
-          "biolink:Disease"
-        ],
+        "category": ["biolink:Disease"],
         "name": "homozygous familial hypercholesterolemia",
         "description": null,
         "xref": [],

@@ -7,7 +7,6 @@ import { getHierarchy } from "@/api/node-hierarchy";
 import { getSummaries } from "@/api/publications";
 import { compareSetToSet } from "@/api/phenotype-explorer";
 import { getEntity } from "@/api/entity";
-import {p} from "msw/lib/glossary-297d38ba";
 
 /**
  * tests for api functions. only test that request is constructed correctly,
@@ -134,20 +133,19 @@ test("Phenotype explorer requests correctly", async () => {
   expect(
     JSON.parse(requestSpy.mock.lastCall[2]?.body as string).is_feature_set
   ).toBe(false);
-
 });
 
 test("Get entity requests correctly", async () => {
   await getEntity("MONDO:0007038");
-  expect(requestSpy.mock.lastCall[0]?.split('/').slice(-1)[0]).toBe("MONDO:0007038");
+  expect(requestSpy.mock.lastCall[0]?.split("/").slice(-1)[0]).toBe(
+    "MONDO:0007038"
+  );
 });
 
 test("Get entity returns correct fixture data", async () => {
-  const entity = await getEntity("MONDO:0005439")
-
+  const entity = await getEntity("MONDO:0005439");
   expect(entity.id).toBe("MONDO:0005439");
   expect(entity.name).toBe("familial hypercholesterolemia");
   expect(entity.node_hierarchy?.super_classes?.length).toBe(2);
   expect(entity.node_hierarchy?.sub_classes?.length).toBe(5);
-
 });

@@ -37,7 +37,7 @@ export const handlers = [
   ),
 
   rest.get(/entity/i, (req, res, ctx) =>
-      res(ctx.status(200), ctx.json(entity))
+    res(ctx.status(200), ctx.json(entity))
   ),
 
   /** submit feedback form */
