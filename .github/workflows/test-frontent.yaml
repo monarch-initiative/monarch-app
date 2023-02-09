@@ -123,6 +123,12 @@ jobs:
         run: |
           npx update-browserslist-db@latest
           yarn test:e2e
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: ./frontend/tests/e2e/screenshots
 
 
   # run accessibility tests
