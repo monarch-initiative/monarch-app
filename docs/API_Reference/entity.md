@@ -1,3 +1,3 @@
 # Entity Endpoints
 
-::: src.monarch_api.entity
+::: backend.src.monarch_api.entity

@@ -1,3 +1,3 @@
 # Association Endpoints
 
-::: src.monarch_api.association
+::: backend.src.monarch_api.association
