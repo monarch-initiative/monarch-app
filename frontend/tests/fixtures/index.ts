@@ -5,6 +5,7 @@ import { biolink } from "@/api";
 import datasets from "./datasets.json";
 import ontologies from "./ontologies.json";
 import uptime from "./uptime.json";
+import entity from "./entity.json";
 import feedback from "./feedback.json";
 import nodeAutocomplete from "./node-autocomplete.json";
 import nodeSearch from "./node-search.json";
@@ -33,6 +34,10 @@ export const handlers = [
   /** api status monitoring on /help */
   rest.post(/api\.uptimerobot\.com/i, (req, res, ctx) =>
     res(ctx.status(200), ctx.json(uptime))
+  ),
+
+  rest.get(/api\/entity\/\w+:/i, (req, res, ctx) =>
+    res(ctx.status(200), ctx.json(entity))
   ),
 
   /** submit feedback form */

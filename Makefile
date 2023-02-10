@@ -127,7 +127,7 @@ lint: install lint-frontend lint-backend
 .PHONY: lint-frontend
 lint-frontend: install-frontend
 	cd frontend && \
-		npx prettier --check src
+		npx prettier --check src tests
 
 
 .PHONY: lint-backend
@@ -157,5 +157,5 @@ format-backend: install-backend
 .PHONY: format-frontend
 format-frontend: install-frontend
 	cd frontend && \
-		npx prettier -w src
+		npx prettier -w src tests
 
