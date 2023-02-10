@@ -8,27 +8,32 @@ ROOTDIR = $(shell pwd)
 .PHONY: help
 help:
 	@echo "╭───────────────────────────────────────────────────────────╮"
-	@echo "│ Makefile for monarch─api                                  │"
-	@echo "│                                                           │"
+	@echo "│ Makefile for Monarch API                                  │"
 	@echo "│ Usage:                                                    │"
 	@echo "│     make <target>                                         │"
 	@echo "│                                                           │"
 	@echo "│ Targets:                                                  │"
-	@echo "│     install:             install dependencies             │"
-	@echo "│     install─backend:     install backend dependencies     │"
-	@echo "│     install─frontend:    install frontend dependencies    │"
-	@echo "│     model:               generate model files             │"
-	@echo "│     clobber:             remove generated model files     │"
-	@echo "│     docs:                generate documentation           │"
-	@echo "│     dev─frontend:        run frontend in development mode │"
-	@echo "│     dev─backend:         run backend in development mode  │"
-	@echo "│     docker─build:        build docker image               │"
-	@echo "│     docker─push:         push docker image                │"
-	@echo "│     clean:               remove temporary files           │"
-	@echo "│     lint:                lint code                        │"
-	@echo "│     format:              format code                      │"
+	@echo "│     fresh               Clean and install everything      │"
+	@echo "│     all                 Install everything                │"
+	@echo "│     install             Install backend and frontend      │"
+	@echo "│     install-backend     Install backend                   │"
+	@echo "│     install-frontend    Install frontend                  │"
+	@echo "│     model               Generate model files              │"
+	@echo "│     docs                Generate documentation            │"
+	@echo "│     dev-frontend        Run frontend in development mode  │"
+	@echo "│     dev-backend         Run backend in development mode   │"
+	@echo "│     docker-build        Build docker image                │"
+	@echo "│     docker-push         Push docker image                 │"
+	@echo "│     clean               Clean up build artifacts          │"
+	@echo "│     clobber             Clean up generated files          │"
+	@echo "│     lint                Lint all code                     │"
+	@echo "│     lint-backend        Lint backend code                 │"
+	@echo "│     lint-frontend       Lint frontend code                │"
+	@echo "│     format              Format all code                   │"
+	@echo "│     format-backend      Format backend code               │"
+	@echo "│     format-frontend     Format frontend code              │"
+	@echo "│     help                Print this help message           │"
 	@echo "╰───────────────────────────────────────────────────────────╯"
-
 
 ### Installation and Setup ###
 
@@ -69,7 +74,7 @@ model: install-frontend
 
 # Documentation
 .PHONY: docs
-docs: install model
+docs: install-backend model
 	$(RUN) gen-doc -d $(ROOTDIR)/docs/Data-Model/ $(ROOTDIR)/schema/monarch-api.yaml
 
 
