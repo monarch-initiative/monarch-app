@@ -24,7 +24,7 @@ jobs:
 
       - uses: RafikFarhad/push-to-gcr-github-action@v5-beta
         with:
-          gcloud_service_key: ${{ secrets.GCLOUD_SERVICE_KEY }} # can be base64 encoded or plain text || not needed if you use google-github-actions/auth
+          gcloud_service_key: ${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }} # can be base64 encoded or plain text || not needed if you use google-github-actions/auth
           registry: us-central1-docker.pkg.dev
           project_id: monarch-initiative
           image_name: monarch-api/monarch-api
