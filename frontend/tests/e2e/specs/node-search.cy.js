@@ -29,13 +29,15 @@ it("Recent/frequent results show", () => {
     cy.get("input").type(search);
     /** dispatch textbox change event which triggers search and records it */
     cy.get("input").trigger("change");
-    cy.wait(100);
+    /** wait for results */
+    cy.get("p.description", { timeout: 4000 }).should("be.visible");
     cy.get(".textbox button").trigger("click");
   }
 
   /** go to node page, which should also get added to search history */
   cy.visit("/disease/MONDO:12345");
-  cy.wait(100);
+  /** wait for page to load */
+  cy.get("#overview", { timeout: 4000 }).should("be.visible");
   cy.visit("/explore");
 
   /** focus search box to show list of results */
