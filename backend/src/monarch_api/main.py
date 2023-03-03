@@ -7,7 +7,7 @@ app = FastAPI()
 app.include_router(entity.router)
 app.include_router(association.router)
 
-base_url = "http://localhost:8983/solr"
+base_url = "http://127.0.0.1:8983/solr"
 
 
 @app.get("/")
