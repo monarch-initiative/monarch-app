@@ -1,16 +1,14 @@
-import pytest
 from unittest.mock import Mock
 
+import pytest
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
-from monarch_api.model import EntityResults
+
 # from monarch_py.datamodels.model import AssociationResults, Entity
-from monarch_api.search import search
+
 
 @pytest.mark.parametrize(
     "q, category, taxon, offset, limit",
-    [
-        ("MONDO:012933", None, None, None, None)
-    ],
+    [("MONDO:012933", None, None, None, None)],
 )
 def test_search(q, category, taxon, offset, limit):
     """
@@ -18,10 +16,6 @@ def test_search(q, category, taxon, offset, limit):
     """
     si = Mock(spec=SolrImplementation)
     response = si.search(
-        q=q,
-        category=category,
-        taxon=taxon,
-        offset=offset,
-        limit=limit
+        q=q, category=category, taxon=taxon, offset=offset, limit=limit
     )
     assert response

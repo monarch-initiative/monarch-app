@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Depends
-from monarch_py.implementations.solr.solr_implementation import SolrImplementation
-
 from monarch_api.additional_models import PaginationParams
 from monarch_api.config import settings
 from monarch_api.model import AssociationResults
+from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
 router = APIRouter(
     prefix="/api/association",

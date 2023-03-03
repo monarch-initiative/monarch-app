@@ -1,10 +1,7 @@
-from fastapi import APIRouter#, Depends
-
-from monarch_py.implementations.solr.solr_implementation import SolrImplementation
-
+from fastapi import APIRouter  # , Depends
 from monarch_api.config import settings
 from monarch_api.model import EntityResults
-
+from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
 router = APIRouter(
     prefix="/api",
@@ -19,8 +16,8 @@ async def search(
     category: str = None,
     taxon: str = None,
     offset: int = 0,
-    limit: int = 20
-    ) -> EntityResults:
+    limit: int = 20,
+) -> EntityResults:
     """Search for entities by label, with optional filters
 
     Args:
@@ -35,11 +32,7 @@ async def search(
     """
     si = SolrImplementation(base_url=settings.solr_url)
     response = si.search(
-        q=q,
-        category=category,
-        taxon=taxon,
-        ofsfet=offset,
-        limit=limit
+        q=q, category=category, taxon=taxon, ofsfet=offset, limit=limit
     )
 
     return response
