@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
-from monarch_py.implementations.solr.solr_implementation import SolrImplementation
-
 from monarch_api.additional_models import PaginationParams
+from monarch_api.config import settings
 from monarch_api.model import AssociationResults
+from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
 router = APIRouter(
     prefix="/api/association",
@@ -34,7 +34,7 @@ async def _get_all_associations(
     Returns:
         AssociationResults: _description_
     """
-    si = SolrImplementation()
+    si = SolrImplementation(base_url=settings.solr_url)
     response = si.get_associations(
         category=category,
         predicate=predicate,
@@ -62,7 +62,7 @@ async def _get_association_to(
     Returns:
         AssociationResults: _description_
     """
-    si = SolrImplementation()
+    si = SolrImplementation(base_url=settings.solr_url)
     response = si.get_associations(
         subject=subject, offset=pagination.offset, limit=pagination.limit
     )
@@ -81,7 +81,7 @@ async def _get_association_from(object: str, pagination: PaginationParams = Depe
     Returns:
         _type_: _description_
     """
-    si = SolrImplementation()
+    si = SolrImplementation(base_url=settings.solr_url)
     response = si.get_associations(
         object=object, offset=pagination.offset, limit=pagination.limit
     )
@@ -103,7 +103,7 @@ async def _get_association_between(
     Returns:
         AssociationResults: _description_
     """
-    si = SolrImplementation()
+    si = SolrImplementation(base_url=settings.solr_url)
     response = si.get_associations(
         subject=subject, object=object, offset=pagination.offset, limit=pagination.limit
     )

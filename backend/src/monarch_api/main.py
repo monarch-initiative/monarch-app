@@ -7,17 +7,15 @@ app = FastAPI()
 app.include_router(entity.router)
 app.include_router(association.router)
 
-base_url = "http://127.0.0.1:8983/solr"
-
 
 @app.get("/")
 async def _root():
-    return f"Monarch API - for API documentation, see {base_url}/docs"
+    return f"Monarch API - for API documentation, see /docs"
 
 
 @app.get("/api")
 async def _api():
-    return f"Monarch API - for API documentation, see {base_url}/docs"
+    return f"Monarch API - for API documentation, see /docs"
 
 
 if __name__ == "__main__":

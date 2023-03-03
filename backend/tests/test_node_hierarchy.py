@@ -1,11 +1,10 @@
 # write a test that uses mocking to test the get_node_hierarchy function
 from unittest.mock import Mock
 
-from monarch_py.datamodels.model import AssociationResults, Entity
-from monarch_py.implementations.solr.solr_implementation import SolrImplementation
-
 from monarch_api.model import Entity
 from monarch_api.utils.entity_utils import get_node_hierarchy
+from monarch_py.datamodels.model import AssociationResults, Entity
+from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
 
 def test_get_node_hierarchy():

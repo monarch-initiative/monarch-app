@@ -1,8 +1,7 @@
 from typing import List
 
-from monarch_py.implementations.solr.solr_implementation import SolrImplementation
-
 from monarch_api.model import Association, Entity, NodeHierarchy
+from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
 
 def get_associated_entity(association: Association, this_entity: Entity) -> Entity:

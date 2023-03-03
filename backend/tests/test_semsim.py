@@ -1,12 +1,14 @@
 from unittest import TestCase, skip
 
 from oaklib import OntologyResource
+
 # commented out until we bring oakx-grape back in
 # from oakx_grape.grape_implementation import GrapeImplementation
 
 DB_PATH = "sqlite:obo:bfo"
 # DB_PATH = "sqlite:///tests/data/go-nucleus.db"
 # move to go-nucleus, add tests/input dir
+
 
 class TestSemsim(TestCase):
     def setUp(self) -> None:

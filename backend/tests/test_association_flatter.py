@@ -1,5 +1,4 @@
 import pytest
-
 from monarch_api.model import Association, Entity
 from monarch_api.utils.entity_utils import get_associated_entity
 
