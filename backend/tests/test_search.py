@@ -13,7 +13,6 @@ from monarch_api.search import search
     ],
 )
 def test_search(q, category, taxon, offset, limit):
-    # q="*:*", category=None, taxon=None, offset=None, limit=None):
     """
     Test that search calls search from monarch_py
     """

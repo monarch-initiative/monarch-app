@@ -1,8 +1,9 @@
 from fastapi import APIRouter#, Depends
 
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
+
+from monarch_api.config import settings
 from monarch_api.model import EntityResults
-# from monarch_api.additional_models import PaginationParams
 
 
 router = APIRouter(
@@ -32,7 +33,7 @@ async def search(
     Returns:
         EntityResults
     """
-    si = SolrImplementation()
+    si = SolrImplementation(base_url=settings.solr_url)
     response = si.search(
         q=q,
         category=category,
