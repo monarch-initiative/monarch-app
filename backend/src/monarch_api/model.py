@@ -1,9 +1,9 @@
 from __future__ import annotations
-
-from typing import List, Optional
-
-from pydantic import BaseModel as BaseModel
-from pydantic import Field
+from datetime import datetime, date
+from enum import Enum
+from typing import List, Dict, Optional, Any, Union, Literal
+from pydantic import BaseModel as BaseModel, Field
+from linkml_runtime.linkml_model import Decimal
 
 metamodel_version = "None"
 version = "None"
@@ -28,12 +28,6 @@ class Taxon(ConfiguredBaseModel):
 
     id: Optional[str] = Field(None)
     label: Optional[str] = Field(None)
-
-
-class AssociationCount(ConfiguredBaseModel):
-
-    label: Optional[str] = Field(None)
-    count: Optional[int] = Field(None)
 
 
 class NodeHierarchy(ConfiguredBaseModel):
@@ -62,7 +56,6 @@ class Association(ConfiguredBaseModel):
     object_closure: Optional[List[str]] = Field(default_factory=list)
     object_label: Optional[str] = Field(None)
     object_closure_label: Optional[List[str]] = Field(default_factory=list)
-    knowledge_source: Optional[List[str]] = Field(default_factory=list)
     primary_knowledge_source: Optional[List[str]] = Field(default_factory=list)
     category: Optional[List[str]] = Field(default_factory=list)
     negated: Optional[bool] = Field(None)
@@ -98,9 +91,39 @@ class Node(Entity):
 
     taxon: Optional[Taxon] = Field(None)
     inheritance: Optional[Entity] = Field(None)
-    association_counts: Optional[List[AssociationCount]] = Field(default_factory=list)
+    association_counts: Optional[Dict[str, AssociationCount]] = Field(
+        default_factory=dict
+    )
     node_hierarchy: Optional[NodeHierarchy] = Field(None)
     id: str = Field(None)
+    category: Optional[List[str]] = Field(default_factory=list)
+    name: Optional[str] = Field(None)
+    description: Optional[str] = Field(None)
+    xref: Optional[List[str]] = Field(default_factory=list)
+    provided_by: Optional[str] = Field(None)
+    in_taxon: Optional[str] = Field(None)
+    source: Optional[str] = Field(None)
+    symbol: Optional[str] = Field(None)
+    type: Optional[str] = Field(None)
+    synonym: Optional[List[str]] = Field(default_factory=list)
+
+
+class HistoPheno(ConfiguredBaseModel):
+
+    id: Optional[str] = Field(None)
+    items: Optional[List[AssociationCount]] = Field(
+        default_factory=list,
+        description="""A collection of items, with the type to be overriden by slot_usage""",
+    )
+
+
+class SearchResult(Entity):
+
+    highlight: Optional[str] = Field(
+        None, description="""matching text snippet containing html tags"""
+    )
+    score: Optional[float] = Field(None)
+    id: Optional[str] = Field(None)
     category: Optional[List[str]] = Field(default_factory=list)
     name: Optional[str] = Field(None)
     description: Optional[str] = Field(None)
@@ -118,32 +141,83 @@ class Results(ConfiguredBaseModel):
     limit: Optional[int] = Field(None)
     offset: Optional[int] = Field(None)
     total: Optional[int] = Field(None)
+    items: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""A collection of items, with the type to be overriden by slot_usage""",
+    )
 
 
 class AssociationResults(Results):
 
-    associations: Optional[List[Association]] = Field(default_factory=list)
     limit: Optional[int] = Field(None)
     offset: Optional[int] = Field(None)
     total: Optional[int] = Field(None)
+    items: Optional[List[Association]] = Field(
+        default_factory=list,
+        description="""A collection of items, with the type to be overriden by slot_usage""",
+    )
 
 
 class EntityResults(Results):
 
-    entities: Optional[List[Entity]] = Field(default_factory=list)
     limit: Optional[int] = Field(None)
     offset: Optional[int] = Field(None)
     total: Optional[int] = Field(None)
+    items: Optional[List[Entity]] = Field(
+        default_factory=list,
+        description="""A collection of items, with the type to be overriden by slot_usage""",
+    )
+
+
+class SearchResults(Results):
+
+    facet_fields: Optional[Dict[str, FacetField]] = Field(default_factory=dict)
+    facet_queries: Optional[Dict[str, FacetValue]] = Field(default_factory=dict)
+    limit: Optional[int] = Field(None)
+    offset: Optional[int] = Field(None)
+    total: Optional[int] = Field(None)
+    items: Optional[List[SearchResult]] = Field(
+        default_factory=list,
+        description="""A collection of items, with the type to be overriden by slot_usage""",
+    )
+
+
+class FacetValue(ConfiguredBaseModel):
+
+    label: Optional[str] = Field(None)
+    count: Optional[int] = Field(
+        None, description="""number of items a this facet value"""
+    )
+
+
+class AssociationCount(FacetValue):
+
+    id: Optional[str] = Field(None)
+    label: Optional[str] = Field(None)
+    count: Optional[int] = Field(
+        None, description="""number of items a this facet value"""
+    )
+
+
+class FacetField(ConfiguredBaseModel):
+
+    label: Optional[str] = Field(None)
+    facet_values: Optional[Dict[str, FacetValue]] = Field(default_factory=dict)
 
 
 # Update forward refs
 # see https://pydantic-docs.helpmanual.io/usage/postponed_annotations/
 Taxon.update_forward_refs()
-AssociationCount.update_forward_refs()
 NodeHierarchy.update_forward_refs()
 Association.update_forward_refs()
 Entity.update_forward_refs()
 Node.update_forward_refs()
+HistoPheno.update_forward_refs()
+SearchResult.update_forward_refs()
 Results.update_forward_refs()
 AssociationResults.update_forward_refs()
 EntityResults.update_forward_refs()
+SearchResults.update_forward_refs()
+FacetValue.update_forward_refs()
+AssociationCount.update_forward_refs()
+FacetField.update_forward_refs()
