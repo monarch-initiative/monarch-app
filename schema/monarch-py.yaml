@@ -26,7 +26,6 @@ classes:
     - object_closure
     - object_label
     - object_closure_label
-    - knowledge_source
     - primary_knowledge_source
     - category
     - negated
@@ -41,10 +40,17 @@ classes:
     - stage_qualifier
     - pathway
     - relation
+  AssociationCount:
+    is_a: FacetValue
+    slots:
+      - id
   AssociationResults:
     is_a: Results
-    slots:
-    - associations
+    slots: 
+      - items
+    slot_usage:
+      items:
+        range: Association
   Entity:
     slots:
     - id
@@ -60,14 +66,52 @@ classes:
     - synonym
   EntityResults:
     is_a: Results
+    slots: 
+      - items
+    slot_usage:
+      items:
+        range: Entity
+  HistoPheno:
     slots:
-    - entities
+      - id
+      - items
+    slot_usage:
+      items:
+        range: AssociationCount
+  SearchResult:
+    is_a: Entity
+    slots:
+      - highlight
+      - score
+  SearchResults:
+    is_a: Results
+    slots:
+      - items
+      - facet_fields
+      - facet_queries
+    slot_usage:
+        items:
+          range: SearchResult
   Results:
     abstract: true
     slots:
-    - limit
-    - offset
-    - total
+      - limit
+      - offset
+      - total
+  FacetValue:
+    slots:
+      - label
+      - count
+    slot_usage:
+        label:
+            identifier: true
+  FacetField:
+    slots:
+      - label
+      - facet_values
+    slot_usage:
+      label:
+        identifier: true
 slots:
   aggregator_knowledge_source:
     multivalued: true
@@ -78,16 +122,35 @@ slots:
     range: Association
   category:
     multivalued: true
+  count:
+    description: number of items a this facet value
+    range: integer
   description:
     range: string
-  entities:
+  items:
+    description: A collection of items, with the type to be overriden by slot_usage
+    range: linkml:Any
     inlined: true
     inlined_as_list: true
     multivalued: true
-    range: Entity
+  facet_fields:
+    inlined: true
+    multivalued: true
+    range: FacetField
+  facet_queries:
+    inlined: true
+    multivalued: true
+    range: FacetValue
+  facet_values:
+    inlined: true
+    multivalued: true
+    range: FacetValue
   frequency_qualifier:
     range: string
   has_evidence:
+    range: string
+  highlight:
+    description: matching text snippet containing html tags
     range: string
   id:
     identifier: true
@@ -96,6 +159,8 @@ slots:
     range: string
   knowledge_source:
     multivalued: true
+  label:
+    range: string
   limit:
     range: integer
   name:
@@ -137,6 +202,8 @@ slots:
     multivalued: true
   relation:
     range: string
+  score:
+    range: float
   sex_qualifier:
     range: string
   source:
@@ -166,4 +233,5 @@ slots:
   xref:
     multivalued: true
     range: string
+
 

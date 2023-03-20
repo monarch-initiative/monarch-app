@@ -1,5 +1,9 @@
 import { sortBy } from "lodash";
-import { biolink, request } from "./index";
+import { biolink } from "./index";
+import { request } from "./index";
+
+// import { monarch, request } from "./index";
+// import { HistoPheno } from "./model";
 
 /** histo-pheno data (from backend) */
 interface _HistoPheno {
@@ -9,8 +13,15 @@ interface _HistoPheno {
   };
 }
 
+/** histo-pheno data (for frontend) */
+type Histogram = Array<{
+  id: string;
+  name: string;
+  count: number;
+}>;
+
 /** get data for histo-pheno (node page visualization of phenotypes for disease) */
-export const getHistoPheno = async (disease: string): Promise<HistoPheno> => {
+export const getHistoPheno = async (disease: string): Promise<Histogram> => {
   const params = {
     rows: 0,
     facet: true,
@@ -40,9 +51,33 @@ export const getHistoPheno = async (disease: string): Promise<HistoPheno> => {
     .reverse();
 };
 
-/** histo-pheno data (for frontend) */
-type HistoPheno = Array<{
-  id: string;
-  name: string;
-  count: number;
-}>;
+// STUB for new histo-pheno endpoint
+// export const getHistoPheno_NEW = async (disease: string): Promise<HistoPheno> => {
+//   const params = {
+//     rows: 0,
+//     facet: true,
+//     unselect_evidence: false,
+//     exclude_automatic_assertions: false,
+//     fetch_objects: false,
+//     use_compact_associations: false,
+//     direct: false,
+//     direct_taxon: false,
+//   };
+
+//   const url = `${monarch}/histopheno/${disease}`;
+
+//   const response = await request<_HistoPheno>(url, params);
+//
+//   return sortBy(
+//     Object.entries(response.facet_counts.closure_bin).map(
+//       ([name, count], index) => ({
+//         id: Object.keys(response.facet_counts.object_closure)[index],
+//         name,
+//         count,
+//       })
+//     ),
+//     "count"
+//   )
+//     .filter(({ count }) => count)
+//     .reverse();
+// }

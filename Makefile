@@ -87,7 +87,7 @@ dev-frontend: frontend/src/api/model.ts
 
 
 .PHONY: dev-backend
-dev-backend: backend/src/monarch_api/main.py
+dev-backend: install-backend model
 	cd backend && \
 		poetry run uvicorn src.monarch_api.main:app --reload
 

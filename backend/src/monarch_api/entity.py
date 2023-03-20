@@ -17,8 +17,8 @@ async def _get_entity(
     """Retrieves the entity with the specified id
 
     Args:
-        id (_type_): _description_
-        get_association_counts (bool, optional): _description_. Defaults to False.
+        id (str): ID for the entity to retrieve
+        get_association_counts (bool, optional): Whether to retrieve association counts for the entity. Defaults to False.
 
     Raises:
         HTTPException: _description_
