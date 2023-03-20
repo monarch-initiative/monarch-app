@@ -1,6 +1,5 @@
 import uvicorn
 from fastapi import FastAPI
-
 from monarch_api import association, entity, histopheno
 
 app = FastAPI()
@@ -17,6 +16,7 @@ async def _root():
 @app.get("/api")
 async def _api():
     return f"Monarch API - for API documentation, see /docs"
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)

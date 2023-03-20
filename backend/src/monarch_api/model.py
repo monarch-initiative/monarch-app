@@ -1,9 +1,9 @@
 from __future__ import annotations
-from datetime import datetime, date
-from enum import Enum
-from typing import List, Dict, Optional, Any, Union, Literal
-from pydantic import BaseModel as BaseModel, Field
-from linkml_runtime.linkml_model import Decimal
+
+from typing import Dict, List, Optional
+
+from pydantic import BaseModel as BaseModel
+from pydantic import Field
 
 metamodel_version = "None"
 version = "None"
@@ -141,45 +141,41 @@ class Results(ConfiguredBaseModel):
     limit: Optional[int] = Field(None)
     offset: Optional[int] = Field(None)
     total: Optional[int] = Field(None)
-    items: Optional[List[str]] = Field(
-        default_factory=list,
-        description="""A collection of items, with the type to be overriden by slot_usage""",
-    )
 
 
 class AssociationResults(Results):
 
-    limit: Optional[int] = Field(None)
-    offset: Optional[int] = Field(None)
-    total: Optional[int] = Field(None)
     items: Optional[List[Association]] = Field(
         default_factory=list,
         description="""A collection of items, with the type to be overriden by slot_usage""",
     )
+    limit: Optional[int] = Field(None)
+    offset: Optional[int] = Field(None)
+    total: Optional[int] = Field(None)
 
 
 class EntityResults(Results):
 
-    limit: Optional[int] = Field(None)
-    offset: Optional[int] = Field(None)
-    total: Optional[int] = Field(None)
     items: Optional[List[Entity]] = Field(
         default_factory=list,
         description="""A collection of items, with the type to be overriden by slot_usage""",
     )
+    limit: Optional[int] = Field(None)
+    offset: Optional[int] = Field(None)
+    total: Optional[int] = Field(None)
 
 
 class SearchResults(Results):
 
+    items: Optional[List[SearchResult]] = Field(
+        default_factory=list,
+        description="""A collection of items, with the type to be overriden by slot_usage""",
+    )
     facet_fields: Optional[Dict[str, FacetField]] = Field(default_factory=dict)
     facet_queries: Optional[Dict[str, FacetValue]] = Field(default_factory=dict)
     limit: Optional[int] = Field(None)
     offset: Optional[int] = Field(None)
     total: Optional[int] = Field(None)
-    items: Optional[List[SearchResult]] = Field(
-        default_factory=list,
-        description="""A collection of items, with the type to be overriden by slot_usage""",
-    )
 
 
 class FacetValue(ConfiguredBaseModel):

@@ -1,15 +1,14 @@
 from fastapi import APIRouter, HTTPException
-
 from monarch_api.config import settings
+from monarch_api.model import HistoPheno
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
-from monarch_api.model import HistoPheno 
-
 router = APIRouter(
-    prefix="/api/histopheno", 
-    # tags=["histopheno"], 
-    responses={404: {"description": "Not Found"}}
+    prefix="/api/histopheno",
+    # tags=["histopheno"],
+    responses={404: {"description": "Not Found"}},
 )
+
 
 @router.get("/{id}")
 async def _get_histopheno(id) -> HistoPheno:
