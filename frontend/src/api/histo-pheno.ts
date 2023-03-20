@@ -1,9 +1,9 @@
 import { sortBy } from "lodash";
 import { biolink } from "./index";
+import { request } from "./index";
 
-import { monarch, request } from "./index";
-import { HistoPheno } from "./model";
-
+// import { monarch, request } from "./index";
+// import { HistoPheno } from "./model";
 
 /** histo-pheno data (from backend) */
 interface _HistoPheno {
@@ -13,14 +13,12 @@ interface _HistoPheno {
   };
 }
 
-
 /** histo-pheno data (for frontend) */
 type Histogram = Array<{
   id: string;
   name: string;
   count: number;
 }>;
-
 
 /** get data for histo-pheno (node page visualization of phenotypes for disease) */
 export const getHistoPheno = async (disease: string): Promise<Histogram> => {
@@ -52,7 +50,6 @@ export const getHistoPheno = async (disease: string): Promise<Histogram> => {
     .filter(({ count }) => count)
     .reverse();
 };
-
 
 // STUB for new histo-pheno endpoint
 // export const getHistoPheno_NEW = async (disease: string): Promise<HistoPheno> => {
