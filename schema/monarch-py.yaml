@@ -46,6 +46,8 @@ classes:
       - id
   AssociationResults:
     is_a: Results
+    slots: 
+      - items
     slot_usage:
       items:
         range: Association
@@ -64,6 +66,8 @@ classes:
     - synonym
   EntityResults:
     is_a: Results
+    slots: 
+      - items
     slot_usage:
       items:
         range: Entity
@@ -81,19 +85,19 @@ classes:
       - score
   SearchResults:
     is_a: Results
+    slots:
+      - items
+      - facet_fields
+      - facet_queries
     slot_usage:
         items:
           range: SearchResult
-    slots:
-      - facet_fields
-      - facet_queries
   Results:
     abstract: true
     slots:
       - limit
       - offset
       - total
-      - items
   FacetValue:
     slots:
       - label
@@ -125,6 +129,7 @@ slots:
     range: string
   items:
     description: A collection of items, with the type to be overriden by slot_usage
+    range: linkml:Any
     inlined: true
     inlined_as_list: true
     multivalued: true
