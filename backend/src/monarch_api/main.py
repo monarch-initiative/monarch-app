@@ -1,10 +1,11 @@
 import uvicorn
 from fastapi import FastAPI
-from monarch_api import association, entity, histopheno
+from monarch_api import association, entity, histopheno, search
 
 app = FastAPI()
 app.include_router(entity.router)
 app.include_router(association.router)
+app.include_router(search.router)
 app.include_router(histopheno.router)
 
 
