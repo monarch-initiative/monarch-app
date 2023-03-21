@@ -45,7 +45,8 @@ async def _get_entity(
             and len(mode_of_inheritance_associations.items) == 1
         ):
             node.inheritance = get_associated_entity(
-                mode_of_inheritance_associations.items[0]
+                mode_of_inheritance_associations.items[0],
+                node
             )
 
     node.node_hierarchy = get_node_hierarchy(node, solr)
