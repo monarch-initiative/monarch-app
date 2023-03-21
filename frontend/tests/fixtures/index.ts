@@ -2,24 +2,25 @@ import { rest } from "msw";
 
 import { biolink } from "@/api";
 
+import associationEvidence from "./association-evidence.json";
 import datasets from "./datasets.json";
-import ontologies from "./ontologies.json";
-import uptime from "./uptime.json";
 import entity from "./entity.json";
 import feedback from "./feedback.json";
-import nodeAutocomplete from "./node-autocomplete.json";
-import nodeSearch from "./node-search.json";
-import textAnnotator from "./text-annotator.json";
-import phenotypeExplorerSearch from "./phenotype-explorer-search.json";
-import phenotypeExplorerCompare from "./phenotype-explorer-compare.json";
-import nodeLookup from "./node-lookup.json";
-import nodeGene from "./node-gene.json";
-import nodePublicationSummary from "./node-publication-summary.json";
-import nodePublicationAbstract from "./node-publication-abstract.json";
-import nodeHierarchy from "./node-hierarchy.json";
+import histopheno from "./histopheno.json";
 import nodeAssociations from "./node-associations.json";
-import associationEvidence from "./association-evidence.json";
+import nodeAutocomplete from "./node-autocomplete.json";
+import nodeGene from "./node-gene.json";
+import nodeHierarchy from "./node-hierarchy.json";
+import nodeLookup from "./node-lookup.json";
+import nodePublicationAbstract from "./node-publication-abstract.json";
+import nodePublicationSummary from "./node-publication-summary.json";
+import nodeSearch from "./node-search.json";
 import ontolIdentifier from "./ontol-identifier.json";
+import ontologies from "./ontologies.json";
+import phenotypeExplorerCompare from "./phenotype-explorer-compare.json";
+import phenotypeExplorerSearch from "./phenotype-explorer-search.json";
+import textAnnotator from "./text-annotator.json";
+import uptime from "./uptime.json";
 
 /** api calls to be mocked with fixture data */
 export const handlers = [
@@ -27,6 +28,7 @@ export const handlers = [
   rest.get(/metadata\/datasets/i, (req, res, ctx) =>
     res(ctx.status(200), ctx.json(datasets))
   ),
+
   rest.get(/obo.+ontologies/i, (req, res, ctx) =>
     res(ctx.status(200), ctx.json(ontologies))
   ),
@@ -38,6 +40,10 @@ export const handlers = [
 
   rest.get(/api\/entity\/\w+:/i, (req, res, ctx) =>
     res(ctx.status(200), ctx.json(entity))
+  ),
+
+  rest.get(/api\/histopheno\/\w+:/i, (req, res, ctx) =>
+    res(ctx.status(200), ctx.json(histopheno))
   ),
 
   /** submit feedback form */
@@ -64,6 +70,7 @@ export const handlers = [
   rest.get(/sim\/search/i, (req, res, ctx) =>
     res(ctx.status(200), ctx.json(phenotypeExplorerSearch))
   ),
+
   rest.post(/sim\/compare/i, (req, res, ctx) =>
     res(ctx.status(200), ctx.json(phenotypeExplorerCompare))
   ),
@@ -114,6 +121,7 @@ export const handlers = [
   rest.get(/esummary\.fcgi/i, (req, res, ctx) =>
     res(ctx.status(200), ctx.json(nodePublicationSummary))
   ),
+
   rest.get(/efetch\.fcgi/i, (req, res, ctx) =>
     res(ctx.status(200), ctx.json(nodePublicationAbstract.abstract))
   ),
