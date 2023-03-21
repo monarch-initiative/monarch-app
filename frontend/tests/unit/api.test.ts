@@ -7,6 +7,7 @@ import { getHierarchy } from "@/api/node-hierarchy";
 import { getSummaries } from "@/api/publications";
 import { compareSetToSet } from "@/api/phenotype-explorer";
 import { getEntity } from "@/api/entity";
+import { getHistoPheno } from "@/api/histo-pheno_NEW";
 
 /**
  * tests for api functions. only test that request is constructed correctly,
@@ -149,3 +150,11 @@ test("Get entity returns correct fixture data", async () => {
   expect(entity.node_hierarchy?.super_classes?.length).toBe(2);
   expect(entity.node_hierarchy?.sub_classes?.length).toBe(5);
 });
+
+test("Get HistoPheno requests correctly", async () => {
+  const histopheno = await getHistoPheno("MONDO:0020121");
+  expect(histopheno.id).toBe("MONDO:0020121");
+  expect(histopheno.items?.length).toBe(20);
+  // expect(requestSpy.mock.lastCall[1]?.q).toBe("MONDO:0020121"); ?????? copilot suggestion
+  }
+);
