@@ -156,5 +156,4 @@ test("Get HistoPheno requests correctly", async () => {
   expect(histopheno.id).toBe("MONDO:0020121");
   expect(histopheno.items?.length).toBe(20);
   // expect(requestSpy.mock.lastCall[1]?.q).toBe("MONDO:0020121"); ?????? copilot suggestion
-  }
-);
+});

@@ -92,7 +92,7 @@ const {
       {
         name: "phenotypes",
         // data: data.map((d) => ({ x: d.name, y: d.count })),
-        data: data
+        data: data,
       },
     ];
   },

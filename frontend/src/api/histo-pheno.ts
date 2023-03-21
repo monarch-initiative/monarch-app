@@ -46,4 +46,3 @@ export const getHistoPheno = async (disease: string): Promise<Histogram> => {
     .filter(({ count }) => count)
     .reverse();
 };
-
