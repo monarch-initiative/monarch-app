@@ -1,7 +1,7 @@
 import { sortBy } from "lodash";
 import { biolink, request } from "./index";
 
-/** histo-pheno data (from backend) */
+/** histopheno data (from backend) */
 interface _HistoPheno {
   facet_counts: {
     object_closure: Record<string, number>;
@@ -9,14 +9,14 @@ interface _HistoPheno {
   };
 }
 
-/** histo-pheno data (for frontend) */
+/** histopheno data (for frontend) */
 type Histogram = Array<{
   id: string;
   name: string;
   count: number;
 }>;
 
-/** get data for histo-pheno (node page visualization of phenotypes for disease) */
+/** get data for histopheno (node page visualization of phenotypes for disease) */
 export const getHistoPheno = async (disease: string): Promise<Histogram> => {
   const params = {
     rows: 0,
