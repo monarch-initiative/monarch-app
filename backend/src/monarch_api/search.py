@@ -33,7 +33,12 @@ async def search(
     facet_fields = ["category", "in_taxon"]
     si = SolrImplementation(base_url=settings.solr_url)
     response = si.search(
-        q=q, category=category, taxon=taxon, offset=offset, limit=limit, facet_fields=facet_fields
+        q=q,
+        category=category,
+        taxon=taxon,
+        offset=offset,
+        limit=limit,
+        facet_fields=facet_fields,
     )
 
     return response
