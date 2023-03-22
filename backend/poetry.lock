@@ -1825,14 +1825,14 @@ mkdocstrings = ">=0.19"
 
 [[package]]
 name = "monarch-py"
-version = "0.4.2"
+version = "0.4.4"
 description = "Monarch Initiative data access library"
 category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "monarch_py-0.4.2-py3-none-any.whl", hash = "sha256:410e31f21566a691b72db865f57de1fd0456b69915d9465aa22348578984d9d9"},
-    {file = "monarch_py-0.4.2.tar.gz", hash = "sha256:7c401e6018f38ad3aa47d4feb3e9dec0cf90d70728f4e6121f3eea3caa325fa6"},
+    {file = "monarch_py-0.4.4-py3-none-any.whl", hash = "sha256:b76c57bb5c9229107795e1c056197f64a5f999278e9d6a93b504eab4938a8620"},
+    {file = "monarch_py-0.4.4.tar.gz", hash = "sha256:5932b86337ac988b2d6eaefe1aac6dfd77db57fbcd6220f64926451cb65bb18a"},
 ]
 
 [package.dependencies]
@@ -4200,4 +4200,4 @@ docs = []
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.12"
-content-hash = "a9a78cc93ea39902d8baa05e4fc71ffd0b236e8a3687b4d9deddee33b38a984f"
+content-hash = "40fb58730dd2be623eb9d56f69adc47c9bf9a67fd4a0f1f9991849f2f3ca5d21"
