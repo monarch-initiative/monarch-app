@@ -2,37 +2,47 @@ RUN = poetry -C backend/ run
 VERSION = $(shell cd backend && poetry version -s)
 ROOTDIR = $(shell pwd)
 
-
 ### Help ###
-
 .PHONY: help
 help:
 	@echo "╭───────────────────────────────────────────────────────────╮"
 	@echo "│ Makefile for Monarch API                                  │"
+	@echo "│ ────────────────────────                                  │"
 	@echo "│ Usage:                                                    │"
 	@echo "│     make <target>                                         │"
 	@echo "│                                                           │"
 	@echo "│ Targets:                                                  │"
-	@echo "│     fresh               Clean and install everything      │"
+	@echo "│                                                           │"
+	@echo "│     help                Print this help message           │"
 	@echo "│     all                 Install everything                │"
+	@echo "│     fresh               Clean and install everything      │"
+	@echo "│     clean               Clean up build artifacts          │"
+	@echo "│     clobber             Clean up generated files          │"
+	@echo "│                                                           │"
+	@echo "│     docs                Generate documentation            │"
+	@echo "│     model               Generate model files              │"
+	@echo "│                                                           │"
 	@echo "│     install             Install backend and frontend      │"
 	@echo "│     install-backend     Install backend                   │"
 	@echo "│     install-frontend    Install frontend                  │"
-	@echo "│     model               Generate model files              │"
-	@echo "│     docs                Generate documentation            │"
+	@echo "│                                                           │"
+	@echo "│     test                Run all tests                     │"
+	@echo "│     test-backend        Run backend tests                 │"
+	@echo "│     test-frontend       Run frontend tests                │"
+	@echo "│                                                           │"
 	@echo "│     dev-frontend        Run frontend in development mode  │"
 	@echo "│     dev-backend         Run backend in development mode   │"
+	@echo "│                                                           │"
 	@echo "│     docker-build        Build docker image                │"
 	@echo "│     docker-push         Push docker image                 │"
-	@echo "│     clean               Clean up build artifacts          │"
-	@echo "│     clobber             Clean up generated files          │"
+	@echo "│                                                           │"
 	@echo "│     lint                Lint all code                     │"
 	@echo "│     lint-backend        Lint backend code                 │"
 	@echo "│     lint-frontend       Lint frontend code                │"
+	@echo "│                                                           │"
 	@echo "│     format              Format all code                   │"
 	@echo "│     format-backend      Format backend code               │"
 	@echo "│     format-frontend     Format frontend code              │"
-	@echo "│     help                Print this help message           │"
 	@echo "╰───────────────────────────────────────────────────────────╯"
 
 ### Installation and Setup ###
@@ -58,6 +68,7 @@ install-backend:
 .PHONY: install-frontend
 install-frontend:
 	cd frontend && \
+		npx update-browserslist-db@latest && \
 		yarn install
 
 
@@ -76,6 +87,27 @@ model: install-frontend
 .PHONY: docs
 docs: install-backend model
 	$(RUN) gen-doc -d $(ROOTDIR)/docs/Data-Model/ $(ROOTDIR)/schema/monarch-api.yaml
+
+
+### Testing ###
+
+.PHONY: test
+test: test-backend test-frontend
+
+.PHONY: test-backend
+test-backend: install-backend model
+	$(RUN) pytest backend/tests
+
+.PHONY: test-frontend
+test-frontend: install-frontend
+	cd frontend && \
+		npx update-browserslist-db@latest && \
+		yarn build && \
+		yarn test:unit --detectOpenHandles  # && \
+		# yarn test:lint && \
+		# yarn test:axe && \
+		# yarn test:e2e && \
+
 
 
 ### Development ###

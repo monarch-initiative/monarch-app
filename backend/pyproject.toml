@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "monarch-api"
-version = "0.4.2"
+version = "0.4.3"
 description = "Monarch Initiative API"
 authors = [
     "glass-ships <glass.ships@outlook.com>",
@@ -41,15 +41,6 @@ build-backend = "poetry_dynamic_versioning.backend"
 enable = false
 vcs = "git"
 style = "pep440"
-
-[tool.poetry.extras]
-docs = [
-    "sphinx",
-    "sphinx-rtd-theme",
-    "sphinx-autodoc-typehints",
-    "sphinx-click",
-    "myst-parser"
-    ]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
