@@ -42,14 +42,5 @@ enable = true
 vcs = "git"
 style = "pep440"
 
-[tool.poetry.extras]
-docs = [
-    "sphinx",
-    "sphinx-rtd-theme",
-    "sphinx-autodoc-typehints",
-    "sphinx-click",
-    "myst-parser"
-    ]
-
 [tool.pytest.ini_options]
 pythonpath = ["src"]
