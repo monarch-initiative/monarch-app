@@ -8,7 +8,6 @@
 <script setup lang="ts">
 import { Node } from "@/api/node-lookup";
 import HistoPheno from "./HistoPheno.vue";
-
 // import HistoPheno from "./HistoPheno_NEW.vue";
 
 interface Props {

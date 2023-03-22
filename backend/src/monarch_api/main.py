@@ -1,5 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from monarch_api import association, entity, histopheno, search
 
@@ -9,6 +10,14 @@ app.include_router(association.router)
 app.include_router(search.router)
 app.include_router(histopheno.router)
 
+# Allow CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 async def _root():
