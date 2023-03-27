@@ -78,6 +78,14 @@ classes:
     slot_usage:
       items:
         range: AssociationCount
+  MetaObject:
+    class_uri: linkml:Any
+  Results:
+    abstract: true
+    slots:
+      - limit
+      - offset
+      - total
   SearchResult:
     is_a: Entity
     slots:
@@ -92,12 +100,7 @@ classes:
     slot_usage:
         items:
           range: SearchResult
-  Results:
-    abstract: true
-    slots:
-      - limit
-      - offset
-      - total
+  
   FacetValue:
     slots:
       - label
@@ -129,7 +132,7 @@ slots:
     range: string
   items:
     description: A collection of items, with the type to be overriden by slot_usage
-    range: linkml:Any
+    range: MetaObject
     inlined: true
     inlined_as_list: true
     multivalued: true
@@ -233,5 +236,6 @@ slots:
   xref:
     multivalued: true
     range: string
+
 
 
