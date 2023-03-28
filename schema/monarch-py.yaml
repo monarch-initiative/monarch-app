@@ -98,7 +98,6 @@ classes:
     slot_usage:
         items:
           range: SearchResult
-  
   FacetValue:
     slots:
       - label
@@ -234,3 +233,4 @@ slots:
   xref:
     multivalued: true
     range: string
+

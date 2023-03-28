@@ -75,7 +75,7 @@ install-frontend:
 .PHONY: model
 model: install-frontend
 	mkdir -p schema
-	# $(RUN) monarch schema > schema/monarch-py.yaml
+	$(RUN) monarch schema > schema/monarch-py.yaml
 	$(RUN) gen-pydantic schema/monarch-api.yaml > backend/src/monarch_api/model.py
 	$(RUN) gen-typescript schema/monarch-api.yaml > frontend/src/api/model.ts
 	$(RUN) black backend/src/monarch_api/model.py
@@ -143,6 +143,7 @@ clean:
 	rm -f `find . -type f -name '*.py[co]' `
 	rm -rf .pytest_cache
 	rm -rf dist
+	rm -rf backend/.venv
 
 
 .PHONY: clobber

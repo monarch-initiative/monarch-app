@@ -1825,14 +1825,14 @@ mkdocstrings = ">=0.19"
 
 [[package]]
 name = "monarch-py"
-version = "0.5.1"
+version = "0.5.2"
 description = "Monarch Initiative data access library"
 category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "monarch_py-0.5.1-py3-none-any.whl", hash = "sha256:1d9d61f04beb8c16673637e6344b082d06eefa7ca9cae3a33f53bcdaffa91fef"},
-    {file = "monarch_py-0.5.1.tar.gz", hash = "sha256:60429b1aa7f534e9ced9682e5d248520d147fed1793acc0b7f548452b5518db2"},
+    {file = "monarch_py-0.5.2-py3-none-any.whl", hash = "sha256:4e21410390d6877ddf71594cb4b453958f620e02d23556102930db9e8cde411f"},
+    {file = "monarch_py-0.5.2.tar.gz", hash = "sha256:d36ae48699f4f00d54c8c4b9c4c482cd528333052b10290beb93d9b8044f2bae"},
 ]
 
 [package.dependencies]
@@ -3079,14 +3079,14 @@ SQLAlchemy-Utils = ">=0.38.2,<0.39.0"
 
 [[package]]
 name = "setuptools"
-version = "67.6.0"
+version = "67.6.1"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "setuptools-67.6.0-py3-none-any.whl", hash = "sha256:b78aaa36f6b90a074c1fa651168723acbf45d14cb1196b6f02c0fd07f17623b2"},
-    {file = "setuptools-67.6.0.tar.gz", hash = "sha256:2ee892cd5f29f3373097f5a814697e397cf3ce313616df0af11231e2ad118077"},
+    {file = "setuptools-67.6.1-py3-none-any.whl", hash = "sha256:e728ca814a823bf7bf60162daf9db95b93d532948c4c0bea762ce62f60189078"},
+    {file = "setuptools-67.6.1.tar.gz", hash = "sha256:257de92a9d50a60b8e22abfcbb771571fde0dbf3ec234463212027a4eeecbe9a"},
 ]
 
 [package.extras]
@@ -4205,4 +4205,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.12"
-content-hash = "a3d724790572d3321424f213dbd49443cea5a8d1623f0110f77c22efa6a3d008"
+content-hash = "5ddb148cedeb34ea2bb4b8acce05f19aa25f86a8256ddc206c8977fc2fe97e9b"
