@@ -132,7 +132,11 @@ slots:
     range: string
   items:
     description: A collection of items, with the type to be overriden by slot_usage
+<<<<<<< Updated upstream
     range: MetaObject
+=======
+    range: string
+>>>>>>> Stashed changes
     inlined: true
     inlined_as_list: true
     multivalued: true
