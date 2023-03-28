@@ -110,8 +110,6 @@ export interface HistoPheno {
   /** A collection of items, with the type to be overriden by slot_usage */ items?: AssociationCount[];
 }
 
-export interface MetaObject {}
-
 export interface Results {
   limit?: number;
   offset?: number;
