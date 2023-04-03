@@ -99,7 +99,7 @@ test-backend: install-backend model
 	$(RUN) pytest backend/tests
 
 .PHONY: test-frontend
-test-frontend: install-frontend
+test-frontend: install-frontend model
 	cd frontend && \
 		npx update-browserslist-db@latest && \
 		yarn build && \
