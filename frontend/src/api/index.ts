@@ -3,7 +3,7 @@
  * monarch-api
  */
 export const biolink = "https://api.monarchinitiative.org/api";
-export const monarch = "http://api-dev.monarchinitiative.org/api";
+export const monarch = "https://api-dev.monarchinitiative.org/api";
 // export const monarch = "http://127.0.0.1:8000/api";
 
 /**
