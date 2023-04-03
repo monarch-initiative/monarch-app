@@ -7,7 +7,7 @@ import { getHierarchy } from "@/api/node-hierarchy";
 import { getSummaries } from "@/api/publications";
 import { compareSetToSet } from "@/api/phenotype-explorer";
 import { getEntity } from "@/api/entity";
-import { getHistoPheno } from "@/api/histopheno_NEW";
+import { getHistoPheno } from "@/api/histopheno";
 
 /**
  * tests for api functions. only test that request is constructed correctly,
