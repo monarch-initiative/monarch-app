@@ -117,25 +117,6 @@ class HistoPheno(ConfiguredBaseModel):
     )
 
 
-class SearchResult(Entity):
-
-    highlight: Optional[str] = Field(
-        None, description="""matching text snippet containing html tags"""
-    )
-    score: Optional[float] = Field(None)
-    id: Optional[str] = Field(None)
-    category: Optional[List[str]] = Field(default_factory=list)
-    name: Optional[str] = Field(None)
-    description: Optional[str] = Field(None)
-    xref: Optional[List[str]] = Field(default_factory=list)
-    provided_by: Optional[str] = Field(None)
-    in_taxon: Optional[str] = Field(None)
-    source: Optional[str] = Field(None)
-    symbol: Optional[str] = Field(None)
-    type: Optional[str] = Field(None)
-    synonym: Optional[List[str]] = Field(default_factory=list)
-
-
 class Results(ConfiguredBaseModel):
 
     limit: Optional[int] = Field(None)
@@ -163,6 +144,25 @@ class EntityResults(Results):
     limit: Optional[int] = Field(None)
     offset: Optional[int] = Field(None)
     total: Optional[int] = Field(None)
+
+
+class SearchResult(Entity):
+
+    highlight: Optional[str] = Field(
+        None, description="""matching text snippet containing html tags"""
+    )
+    score: Optional[float] = Field(None)
+    id: Optional[str] = Field(None)
+    category: Optional[List[str]] = Field(default_factory=list)
+    name: Optional[str] = Field(None)
+    description: Optional[str] = Field(None)
+    xref: Optional[List[str]] = Field(default_factory=list)
+    provided_by: Optional[str] = Field(None)
+    in_taxon: Optional[str] = Field(None)
+    source: Optional[str] = Field(None)
+    symbol: Optional[str] = Field(None)
+    type: Optional[str] = Field(None)
+    synonym: Optional[List[str]] = Field(default_factory=list)
 
 
 class SearchResults(Results):
@@ -209,10 +209,10 @@ Association.update_forward_refs()
 Entity.update_forward_refs()
 Node.update_forward_refs()
 HistoPheno.update_forward_refs()
-SearchResult.update_forward_refs()
 Results.update_forward_refs()
 AssociationResults.update_forward_refs()
 EntityResults.update_forward_refs()
+SearchResult.update_forward_refs()
 SearchResults.update_forward_refs()
 FacetValue.update_forward_refs()
 AssociationCount.update_forward_refs()

@@ -78,6 +78,12 @@ classes:
     slot_usage:
       items:
         range: AssociationCount
+  Results:
+    abstract: true
+    slots:
+      - limit
+      - offset
+      - total
   SearchResult:
     is_a: Entity
     slots:
@@ -92,12 +98,6 @@ classes:
     slot_usage:
         items:
           range: SearchResult
-  Results:
-    abstract: true
-    slots:
-      - limit
-      - offset
-      - total
   FacetValue:
     slots:
       - label
@@ -127,12 +127,6 @@ slots:
     range: integer
   description:
     range: string
-  items:
-    description: A collection of items, with the type to be overriden by slot_usage
-    range: linkml:Any
-    inlined: true
-    inlined_as_list: true
-    multivalued: true
   facet_fields:
     inlined: true
     multivalued: true
@@ -157,6 +151,12 @@ slots:
     range: string
   in_taxon:
     range: string
+  items:
+    description: A collection of items, with the type to be overriden by slot_usage
+    range: string
+    inlined: true
+    inlined_as_list: true
+    multivalued: true
   knowledge_source:
     multivalued: true
   label:
@@ -233,5 +233,4 @@ slots:
   xref:
     multivalued: true
     range: string
-
 
