@@ -99,7 +99,7 @@ test-backend: install-backend model
 	$(RUN) pytest backend/tests
 
 .PHONY: test-frontend
-test-frontend: install-frontend
+test-frontend: install-frontend model
 	cd frontend && \
 		npx update-browserslist-db@latest && \
 		yarn build && \
@@ -143,6 +143,7 @@ clean:
 	rm -f `find . -type f -name '*.py[co]' `
 	rm -rf .pytest_cache
 	rm -rf dist
+	rm -rf backend/.venv
 
 
 .PHONY: clobber

@@ -1,10 +1,8 @@
 <template>
   <!-- status -->
-  <AppStatus v-if="isLoading" code="loading"
-    >Loading histo-pheno data</AppStatus
-  >
+  <AppStatus v-if="isLoading" code="loading">Loading histopheno data</AppStatus>
   <AppStatus v-else-if="isError" code="error"
-    >Error loading histo-pheno data</AppStatus
+    >Error loading histopheno data</AppStatus
   >
 
   <!-- results -->
@@ -14,7 +12,7 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import Apex from "vue3-apexcharts";
-import { getHistoPheno } from "@/api/histo-pheno";
+import { getHistoPheno } from "@/api/histopheno";
 import { Node } from "@/api/node-lookup";
 import { useQuery } from "@/util/composables";
 import { computed, watch } from "vue";
@@ -33,7 +31,7 @@ const props = defineProps<Props>();
 /** chart options */
 const options = computed(() => ({
   chart: {
-    id: "histo-pheno",
+    id: "histopheno",
     type: "bar",
     redrawOnParentResize: true,
     width: "100%",
@@ -86,14 +84,10 @@ const {
   isError,
 } = useQuery(
   async function () {
-    const data = await getHistoPheno(props.node.id);
+    const histopheno = await getHistoPheno(props.node.id);
+    const data = histopheno.items?.map((d) => ({ x: d.label, y: d.count }));
 
-    return [
-      {
-        name: "phenotypes",
-        data: data.map((d) => ({ x: d.name, y: d.count })),
-      },
-    ];
+    return [{ name: "phenotypes", data: data }];
   },
 
   /** default value */
