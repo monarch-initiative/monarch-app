@@ -19,6 +19,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.get("/")
 async def _root():
     return f"Monarch API - for API documentation, see /docs"
