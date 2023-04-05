@@ -1,5 +1,7 @@
 import * as api from "@/api";
 import { postFeedback } from "@/api/feedback";
+import { getAutocomplete } from "@/api/search";
+import { getSearch } from "@/api/search";
 import { getSearchResults } from "@/api/node-search";
 import { getTabulatedAssociations } from "@/api/node-associations";
 import { getGene } from "@/api/genes";
@@ -156,4 +158,14 @@ test("Get HistoPheno requests correctly", async () => {
   expect(histopheno.id).toBe("MONDO:0020121");
   expect(histopheno.items?.length).toBe(20);
   // expect(requestSpy.mock.lastCall[1]?.q).toBe("MONDO:0020121"); ?????? copilot suggestion
+});
+
+test("Get autocomplete request correctly", async () => {
+  const autocomplete = await getAutocomplete("marfan");
+  expect(autocomplete.total).toBeGreaterThan(3);
+});
+
+test("Get search results request correctly", async () => {
+  const searchResults = await getSearchResults("fanconi");
+  expect(searchResults.count).toBeGreaterThan(3);
 });

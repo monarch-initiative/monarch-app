@@ -36,9 +36,9 @@ async def search(
         q=q,
         category=category,
         taxon=taxon,
+        facet_fields=facet_fields,
         offset=offset,
         limit=limit,
-        facet_fields=facet_fields,
     )
 
     return response
