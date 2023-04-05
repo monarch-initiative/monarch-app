@@ -3,6 +3,7 @@ import { rest } from "msw";
 import { biolink } from "@/api";
 
 import associationEvidence from "./association-evidence.json";
+import autocomplete from "./autocomplete.json";
 import datasets from "./datasets.json";
 import entity from "./entity.json";
 import feedback from "./feedback.json";
@@ -19,6 +20,7 @@ import ontolIdentifier from "./ontol-identifier.json";
 import ontologies from "./ontologies.json";
 import phenotypeExplorerCompare from "./phenotype-explorer-compare.json";
 import phenotypeExplorerSearch from "./phenotype-explorer-search.json";
+import search from "./search.json";
 import textAnnotator from "./text-annotator.json";
 import uptime from "./uptime.json";
 
@@ -51,14 +53,27 @@ export const handlers = [
     res(ctx.status(200), ctx.json(feedback))
   ),
 
-  /** node autocomplete */
+  /**
+   * node autocomplete TODO: remove when autocomplete below is hooked up to
+   * components
+   */
   rest.get(/search\/entity\/autocomplete/i, (req, res, ctx) =>
     res(ctx.status(200), ctx.json(nodeAutocomplete))
   ),
 
-  /** node search */
+  /** autocomplete */
+  rest.get(/autocomplete?/i, (req, res, ctx) =>
+    res(ctx.status(200), ctx.json(autocomplete))
+  ),
+
+  /** node search - TODO: remove when new search below is hooked up to components */
   rest.get(/search\/entity/i, (req, res, ctx) =>
     res(ctx.status(200), ctx.json(nodeSearch))
+  ),
+
+  /** search * */
+  rest.get(/api\/search?/i, (req, res, ctx) =>
+    res(ctx.status(200), ctx.json(search))
   ),
 
   /** text annotator */

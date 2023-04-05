@@ -36,9 +36,25 @@ async def search(
         q=q,
         category=category,
         taxon=taxon,
+        facet_fields=facet_fields,
         offset=offset,
         limit=limit,
-        facet_fields=facet_fields,
     )
+
+    return response
+
+
+@router.get("/autocomplete")
+async def autocomplete(q: str) -> SearchResults:
+    """Autocomplete for entities by label
+
+    Args:
+        q (str): Query string to autocomplete against
+
+    Returns:
+        SearchResults
+    """
+    si = SolrImplementation(base_url=settings.solr_url)
+    response = si.autocomplete(q=q)
 
     return response
