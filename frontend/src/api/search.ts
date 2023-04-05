@@ -12,7 +12,7 @@ export const getSearch = async (q: string): Promise<SearchResults> => {
 
 export const getAutocomplete = async (q: string): Promise<SearchResults> => {
   /** make query */
-  const url = `${monarch}/autcomplete?q=${q}`;
+  const url = `${monarch}/autocomplete?q=${q}`;
   const response: SearchResults = await request<SearchResults>(url);
 
   return response;
