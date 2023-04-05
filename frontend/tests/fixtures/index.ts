@@ -72,7 +72,7 @@ export const handlers = [
   ),
 
   /** search * */
-  rest.get(/search?/i, (req, res, ctx) =>
+  rest.get(/api\/search?/i, (req, res, ctx) =>
     res(ctx.status(200), ctx.json(search))
   ),
 
