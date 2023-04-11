@@ -50,6 +50,8 @@ async def _get_entity(
 
     node.node_hierarchy = get_node_hierarchy(node, solr)
 
+    node.association_counts = solr.get_association_counts(id)
+
     # todo: move association_counts query to it's own separate request
     # need a monarch-py facet api
     # for label in result["association_counts"]:

@@ -20,6 +20,7 @@ async def _get_all_associations(
     object: str = None,
     entity: str = None,  # return nodes where entity is subject or object
     between: str = None,  # strip by comma and check associations in both directions
+    association_label: str = None,
 ) -> AssociationResults:
     """Retrieves all associations for a given entity, or between two entities
 
@@ -30,7 +31,8 @@ async def _get_all_associations(
         subject (str, optional): _description_. Defaults to None.
         object (str, optional): _description_. Defaults to None.
         entity (str, optional): _description_. Defaults to None.
-
+        between (str, optional): Find associations between two entities, comma separated. Defaults to None.
+        association_label (str, optional): Find associations grouped under the given association label. Defaults to None.
     Returns:
         AssociationResults: _description_
     """
@@ -42,6 +44,7 @@ async def _get_all_associations(
         object=object,
         entity=entity,
         between=between,
+        association_label=association_label,
         offset=pagination.offset,
         limit=pagination.limit,
     )

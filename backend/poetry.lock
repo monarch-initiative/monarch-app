@@ -1825,23 +1825,19 @@ mkdocstrings = ">=0.19"
 
 [[package]]
 name = "monarch-py"
-version = "0.5.5"
+version = "0.6.0"
 description = "Monarch Initiative data access library"
 category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "monarch_py-0.5.5-py3-none-any.whl", hash = "sha256:2f2c5cb705689f2abc9593a15864bbdc873ff73802676c3b5b30b8751e4fb8f4"},
-    {file = "monarch_py-0.5.5.tar.gz", hash = "sha256:194f77a5a2c00e0778b91d71df397a93eaa61b0c45c24b31eaece716f7e3134f"},
+    {file = "monarch_py-0.6.0-py3-none-any.whl", hash = "sha256:da1b8874e5589226b21dc44fbff532b84aae9f09303c9307af387706493a2aba"},
+    {file = "monarch_py-0.6.0.tar.gz", hash = "sha256:e9f2e702b9674def0070785adf9ef6e073e45bf56d385ccec0fa3e24ece10728"},
 ]
 
 [package.dependencies]
 docker = ">=6.0.1,<7.0.0"
-linkml = ">=1.3.14,<2.0.0"
 loguru = "*"
-mkdocs = ">=1.4.2,<2.0.0"
-mkdocs-material = ">=8.5.10,<9.0.0"
-mkdocstrings = {version = ">=0.19.0,<0.20.0", extras = ["python"]}
 pydantic = ">=1.9.1,<2.0.0"
 pystow = ">=0.5.0"
 requests = ">=2.28.1,<3.0.0"
@@ -4206,4 +4202,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.12"
-content-hash = "9423d4703ecd1d5a1a6fd28f81170dc4d2077976ef74442885f5f40851f91404"
+content-hash = "df0c29c804270e7f92e6a9b07c67aaf44124a7e08586b592d42365dcb76cb049"

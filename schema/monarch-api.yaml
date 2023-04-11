@@ -22,10 +22,6 @@ classes:
     slots:
       - id
       - label
-  AssociationCount:
-    slots:
-      - label
-      - count
   NodeHierarchy:
     slots:
       - super_classes
@@ -42,10 +38,10 @@ slots:
       range: Taxon
       inlined: true
   - association_counts:
-      range: AssociationCount
+      range: FacetValue
       multivalued: true
       inlined: true
-      inlined_as_list: false
+      inlined_as_list: true
   - node_hierarchy:
       range: NodeHierarchy
       inlined: true

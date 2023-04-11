@@ -1,9 +1,9 @@
 from __future__ import annotations
-
-from typing import Dict, List, Optional
-
-from pydantic import BaseModel as BaseModel
-from pydantic import Field
+from datetime import datetime, date
+from enum import Enum
+from typing import List, Dict, Optional, Any, Union, Literal
+from pydantic import BaseModel as BaseModel, Field
+from linkml_runtime.linkml_model import Decimal
 
 metamodel_version = "None"
 version = "None"
@@ -22,6 +22,20 @@ class ConfiguredBaseModel(
     arbitrary_types_allowed=True,
 ):
     pass
+
+
+class AssociationLabel(str, Enum):
+
+    disease_phenotype = "disease_phenotype"
+    gene_phenotype = "gene_phenotype"
+    gene_interaction = "gene_interaction"
+    gene_pathway = "gene_pathway"
+    gene_expression = "gene_expression"
+    gene_orthology = "gene_orthology"
+    chemical_pathway = "chemical_pathway"
+    gene_function = "gene_function"
+    gene_associated_with_disease = "gene_associated_with_disease"
+    gene_affects_risk_for_disease = "gene_affects_risk_for_disease"
 
 
 class Taxon(ConfiguredBaseModel):
@@ -91,9 +105,7 @@ class Node(Entity):
 
     taxon: Optional[Taxon] = Field(None)
     inheritance: Optional[Entity] = Field(None)
-    association_counts: Optional[Dict[str, AssociationCount]] = Field(
-        default_factory=dict
-    )
+    association_counts: Optional[List[FacetValue]] = Field(default_factory=list)
     node_hierarchy: Optional[NodeHierarchy] = Field(None)
     id: str = Field(None)
     category: Optional[List[str]] = Field(default_factory=list)
