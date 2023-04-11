@@ -1,6 +1,8 @@
 {
   "id": "MONDO:0005439",
-  "category": ["biolink:Disease"],
+  "category": [
+    "biolink:Disease"
+  ],
   "name": "familial hypercholesterolemia",
   "description": "An inheritable form of hyperlipidemia, in which there are excess lipids in the blood.",
   "xref": [],
@@ -12,12 +14,113 @@
   "synonym": [],
   "taxon": null,
   "inheritance": null,
-  "association_counts": [],
+  "association_counts": [
+    {
+      "label": "disease_phenotype",
+      "count": 15
+    },
+    {
+      "label": "gene_associated_with_disease",
+      "count": 4
+    }
+  ],
   "node_hierarchy": {
     "super_classes": [
       {
+        "id": "MONDO:0001336",
+        "category": [
+          "biolink:Disease"
+        ],
+        "name": "familial hyperlipidemia",
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "source": null,
+        "symbol": null,
+        "type": null,
+        "synonym": []
+      },
+      {
+        "id": "MONDO:0005439",
+        "category": [
+          "biolink:Disease"
+        ],
+        "name": "familial hypercholesterolemia",
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "source": null,
+        "symbol": null,
+        "type": null,
+        "synonym": []
+      },
+      {
+        "id": "MONDO:0005439",
+        "category": [
+          "biolink:Disease"
+        ],
+        "name": "familial hypercholesterolemia",
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "source": null,
+        "symbol": null,
+        "type": null,
+        "synonym": []
+      },
+      {
+        "id": "MONDO:0005439",
+        "category": [
+          "biolink:Disease"
+        ],
+        "name": "familial hypercholesterolemia",
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "source": null,
+        "symbol": null,
+        "type": null,
+        "synonym": []
+      },
+      {
+        "id": "MONDO:0005439",
+        "category": [
+          "biolink:Disease"
+        ],
+        "name": "familial hypercholesterolemia",
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "source": null,
+        "symbol": null,
+        "type": null,
+        "synonym": []
+      },
+      {
+        "id": "MONDO:0005439",
+        "category": [
+          "biolink:Disease"
+        ],
+        "name": "familial hypercholesterolemia",
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "source": null,
+        "symbol": null,
+        "type": null,
+        "synonym": []
+      },
+      {
         "id": "MONDO:0037748",
-        "category": ["biolink:Disease"],
+        "category": [
+          "biolink:Disease"
+        ],
         "name": "hyperlipoproteinemia",
         "description": null,
         "xref": [],
@@ -29,9 +132,11 @@
         "synonym": []
       },
       {
-        "id": "MONDO:0001336",
-        "category": ["biolink:Disease"],
-        "name": "familial hyperlipidemia",
+        "id": "MONDO:0019218",
+        "category": [
+          "biolink:Disease"
+        ],
+        "name": "inborn disorder of bile acid synthesis",
         "description": null,
         "xref": [],
         "provided_by": null,
@@ -45,9 +150,11 @@
     "equivalent_classes": [],
     "sub_classes": [
       {
-        "id": "MONDO:0007750",
-        "category": ["biolink:Disease"],
-        "name": "hypercholesterolemia, familial, 1",
+        "id": "MONDO:0005439",
+        "category": [
+          "biolink:Disease"
+        ],
+        "name": "familial hypercholesterolemia",
         "description": null,
         "xref": [],
         "provided_by": null,
@@ -58,9 +165,11 @@
         "synonym": []
       },
       {
-        "id": "MONDO:0007751",
-        "category": ["biolink:Disease"],
-        "name": "hypercholesterolemia, autosomal dominant, type B",
+        "id": "MONDO:0005439",
+        "category": [
+          "biolink:Disease"
+        ],
+        "name": "familial hypercholesterolemia",
         "description": null,
         "xref": [],
         "provided_by": null,
@@ -71,9 +180,11 @@
         "synonym": []
       },
       {
-        "id": "MONDO:0011369",
-        "category": ["biolink:Disease"],
-        "name": "hypercholesterolemia, autosomal dominant, 3",
+        "id": "MONDO:0005439",
+        "category": [
+          "biolink:Disease"
+        ],
+        "name": "familial hypercholesterolemia",
         "description": null,
         "xref": [],
         "provided_by": null,
@@ -84,9 +195,11 @@
         "synonym": []
       },
       {
-        "id": "MONDO:0016203",
-        "category": ["biolink:Disease"],
-        "name": "hypercholesterolemia due to cholesterol 7alpha-hydroxylase deficiency",
+        "id": "MONDO:0005439",
+        "category": [
+          "biolink:Disease"
+        ],
+        "name": "familial hypercholesterolemia",
         "description": null,
         "xref": [],
         "provided_by": null,
@@ -97,9 +210,11 @@
         "synonym": []
       },
       {
-        "id": "MONDO:0018328",
-        "category": ["biolink:Disease"],
-        "name": "homozygous familial hypercholesterolemia",
+        "id": "MONDO:0005439",
+        "category": [
+          "biolink:Disease"
+        ],
+        "name": "familial hypercholesterolemia",
         "description": null,
         "xref": [],
         "provided_by": null,
