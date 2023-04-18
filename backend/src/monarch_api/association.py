@@ -5,7 +5,6 @@ from monarch_api.model import AssociationResults
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
 router = APIRouter(
-    prefix="/api/association",
     tags=["association"],
     responses={404: {"description": "Not Found"}},
 )

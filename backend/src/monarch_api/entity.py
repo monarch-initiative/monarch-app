@@ -5,7 +5,8 @@ from monarch_api.utils.entity_utils import get_associated_entity, get_node_hiera
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
 router = APIRouter(
-    prefix="/api/entity", tags=["entity"], responses={404: {"description": "Not Found"}}
+    tags=["entity"], 
+    responses={404: {"description": "Not Found"}}
 )
 
 
