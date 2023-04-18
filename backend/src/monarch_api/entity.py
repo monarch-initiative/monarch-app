@@ -52,12 +52,4 @@ async def _get_entity(
 
     node.association_counts = solr.get_association_counts(id)
 
-    # todo: move association_counts query to it's own separate request
-    # need a monarch-py facet api
-    # for label in result["association_counts"]:
-    #     association_count = AssociationCount(
-    #         id=label, counts=result["association_counts"][label]
-    #     )
-    #     node.association_counts.append(association_count)
-
     return node
