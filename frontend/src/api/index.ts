@@ -2,7 +2,7 @@
  * base biolink url, plus new monarch-api url. TODO: eventually we'll only have
  * monarch-api
  */
-export const biolink = "https://api.monarchinitiative.org/v3/api";
+export const biolink = "https://api.monarchinitiative.org/api";
 export const monarch = "https://api-dev.monarchinitiative.org/v3/api";
 // export const monarch = "http://127.0.0.1:8000/v3/api";
 
