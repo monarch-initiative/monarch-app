@@ -13,22 +13,21 @@
 import { useRoute } from "vue-router";
 import Apex from "vue3-apexcharts";
 import { getHistoPheno } from "@/api/histopheno";
-import { Node } from "@/api/node-lookup";
+import type { Node } from "@/api/node-lookup";
 import { useQuery } from "@/util/composables";
 import { computed, watch } from "vue";
-import theme from "@/global/variables.module.scss";
 
-/** route info */
+/** Route info */
 const route = useRoute();
 
-interface Props {
-  /** current node */
+type Props = {
+  /** Current node */
   node: Node;
-}
+};
 
 const props = defineProps<Props>();
 
-/** chart options */
+/** Chart options */
 const options = computed(() => ({
   chart: {
     id: "histopheno",
@@ -40,7 +39,7 @@ const options = computed(() => ({
   title: {
     text: `Breakdown of phenotypes associated with ${props.node.name}`,
   },
-  colors: [theme.theme],
+  colors: ["#00acc1"],
   plotOptions: {
     bar: {
       horizontal: true,
@@ -76,7 +75,7 @@ const options = computed(() => ({
   },
 }));
 
-/** get chart data */
+/** Get chart data */
 const {
   query: getData,
   data: series,
@@ -90,11 +89,11 @@ const {
     return [{ name: "phenotypes", data: data }];
   },
 
-  /** default value */
+  /** Default value */
   []
 );
 
-/** when path (not hash or query) changed, get new chart data */
+/** When path (not hash or query) changed, get new chart data */
 watch([() => route.path, () => props.node.id], getData, { immediate: true });
 </script>
 

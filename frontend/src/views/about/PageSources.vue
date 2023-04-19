@@ -73,9 +73,9 @@
 
         <!-- row of picture, description, and other summary info -->
         <img
-          v-if="getSrc(source.image)"
+          v-if="source.image"
           class="image"
-          :src="getSrc(source.image)"
+          :src="source.image"
           :alt="source.name"
         />
         <p v-if="source.description" v-html="source.description" />
@@ -137,26 +137,16 @@ import AppCheckbox from "@/components/AppCheckbox.vue";
 import AppAccordion from "@/components/AppAccordion.vue";
 import { getDatasets } from "@/api/datasets";
 import { getOntologies } from "@/api/ontologies";
-import { Source } from "@/api/source";
+import type { Source } from "@/api/source";
 import { breakUrl } from "@/util/string";
 import { useQuery } from "@/util/composables";
 
-/** whether to show dataset sources */
+/** Whether to show dataset sources */
 const showDatasets = ref(true);
-/** whether to show ontology sources */
+/** Whether to show ontology sources */
 const showOntologies = ref(true);
 
-/** get source img src */
-function getSrc(image = "") {
-  try {
-    if (image.startsWith("http")) return image;
-    else return require(`@/assets/sources/${image}`);
-  } catch (error) {
-    return "";
-  }
-}
-
-/** get filename from full path */
+/** Get filename from full path */
 function getFilename(path = "") {
   return path
     .split("/")
@@ -170,14 +160,14 @@ const {
   isLoading,
   isError,
 } = useQuery(async function () {
-  /** get sources from apis */
+  /** Get sources from apis */
   const datasets = await getDatasets();
   const ontologies = await getOntologies();
 
-  /** combine sources */
+  /** Combine sources */
   const sources = [...datasets, ...ontologies];
 
-  /** sort sources alphabetically by name or id */
+  /** Sort sources alphabetically by name or id */
   sources.sort((a: Source, b: Source) => {
     if (
       (a?.name || a?.id || "").toLowerCase() <
@@ -187,12 +177,25 @@ const {
     else return 1;
   });
 
+  /** Import images */
+  Promise.all(
+    sources.map(async (source) => {
+      try {
+        if (source.image?.startsWith("http")) return;
+        const path = (await import(`@/assets/sources/${source.image}`)).default;
+        source.image = path;
+      } catch (error) {
+        console.error(error);
+      }
+    })
+  );
+
   return sources;
 }, []);
 
 onMounted(getSources);
 
-/** shown sources */
+/** Shown sources */
 const filteredSources = computed(
   (): Array<Source> =>
     sources.value.filter(
@@ -202,13 +205,13 @@ const filteredSources = computed(
     )
 );
 
-/** number of dataset sources */
+/** Number of dataset sources */
 const datasetCount = computed(
   (): number =>
     sources.value.filter((source) => source.type === "dataset").length
 );
 
-/** number of ontology sources */
+/** Number of ontology sources */
 const ontologyCount = computed(
   (): number =>
     sources.value.filter((source) => source.type === "ontology").length

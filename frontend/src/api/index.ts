@@ -1,10 +1,8 @@
 /**
- * base biolink url, plus new monarch-api url. TODO: eventually we'll only have
- * monarch-api
+ * base api url
  */
 export const biolink = "https://api.monarchinitiative.org/api";
 export const monarch = "https://api-dev.monarchinitiative.org/api";
-// export const monarch = "http://127.0.0.1:8000/api";
 
 /**
  * key/value object for request query parameters. use primitive for single, e.g.
@@ -54,7 +52,7 @@ export const request = async <T>(
   let response = await cache.match(request);
 
   /** log details for debugging (except don't clutter logs when running tests) */
-  if (process.env.NODE_ENV !== "test") {
+  if (import.meta.env.NODE_ENV !== "test") {
     console.groupCollapsed(
       response ? "Using cached request" : "Making new request",
       endpoint
@@ -94,7 +92,7 @@ export const request = async <T>(
       : await response.json();
 
   /** log details for debugging (except don't clutter logs when running tests) */
-  if (process.env.NODE_ENV !== "test") {
+  if (import.meta.env.NODE_ENV !== "test") {
     console.groupCollapsed("Response", endpoint);
     console.info({ parsed, response });
     console.groupEnd();

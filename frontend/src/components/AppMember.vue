@@ -17,29 +17,33 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { watch, ref } from "vue";
 import { kebabCase, deburr } from "lodash";
 
-interface Props {
-  /** member name */
+type Props = {
+  /** Member name */
   name: string;
-  /** their role */
+  /** Their role */
   role?: string;
-  /** link to bio */
+  /** Link to bio */
   link?: string;
-}
+};
 
 const props = defineProps<Props>();
 
-/** get member img src with fallback if not found */
-const src = computed(() => {
-  const image = kebabCase(deburr((props.name || "").toLowerCase()));
-  try {
-    return require(`@/assets/team/members/${image}.jpg`);
-  } catch (error) {
-    return require(`@/assets/team/_member.jpg`);
+/** Get member img src with fallback if not found */
+const src = ref("");
+watch(
+  () => props.name,
+  async () => {
+    const image = kebabCase(deburr((props.name || "").toLowerCase()));
+    try {
+      src.value = (await import(`@/assets/team/members/${image}.jpg`)).default;
+    } catch (error) {
+      src.value = (await import(`@/assets/team/_member.jpg`)).default;
+    }
   }
-});
+);
 </script>
 
 <style lang="scss" scoped>

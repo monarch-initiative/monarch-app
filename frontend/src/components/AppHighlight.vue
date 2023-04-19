@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-interface Props {
+type Props = {
   /** source of video */
   src: string;
 }

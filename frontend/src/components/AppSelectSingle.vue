@@ -72,144 +72,160 @@
   </div>
 </template>
 
+<script lang="ts">
+export type Option = {
+  /** Unique id used in state of select */
+  id: string;
+  /** Icon name */
+  icon?: string;
+  /** Display name */
+  name?: string;
+  /** Count col */
+  count?: number;
+  /** Tooltip on hover */
+  tooltip?: string;
+};
+
+export type Options = Array<Option>;
+</script>
+
 <script setup lang="ts">
 import { nextTick, ref, watch } from "vue";
 import { uniqueId } from "lodash";
-import { Option, Options } from "./AppSelectSingle";
 import { wrap } from "@/util/math";
 import { useFloating } from "@/util/composables";
 
-interface Props {
-  /** two-way bound selected item state */
+type Props = {
+  /** Two-way bound selected item state */
   modelValue?: Option;
-  /** name of the field */
+  /** Name of the field */
   name: string;
-  /** list of options to show */
+  /** List of options to show */
   options: Options;
-}
+};
 
 const props = defineProps<Props>();
 
 interface Emits {
-  /** two-way bound selected item state */
+  /** Two-way bound selected item state */
   (event: "update:modelValue", value: Option): void;
 }
 
 const emit = defineEmits<Emits>();
 
-/** unique id for instance of component */
+/** Unique id for instance of component */
 const id = ref(uniqueId());
-/** whether dropdown is open */
+/** Whether dropdown is open */
 const expanded = ref(false);
-/** index of option that is selected */
+/** Index of option that is selected */
 const selected = ref(getSelected());
-/** index of option that is highlighted */
+/** Index of option that is highlighted */
 const highlighted = ref(0);
 
-/** target element */
+/** Target element */
 const target = ref();
-/** dropdown element */
+/** Dropdown element */
 const dropdown = ref();
-/** get dropdown position */
+/** Get dropdown position */
 const { calculate, style } = useFloating(target, dropdown);
-/** recompute position after opened */
+/** Recompute position after opened */
 watch(expanded, async () => {
   await nextTick();
   if (expanded.value) calculate();
 });
 
-/** open dropdown */
+/** Open dropdown */
 function open() {
   expanded.value = true;
-  /** auto highlight selected option */
+  /** Auto highlight selected option */
   highlighted.value = selected.value;
 }
 
-/** close dropdown */
+/** Close dropdown */
 function close() {
   expanded.value = false;
 }
 
-/** when button clicked */
+/** When button clicked */
 function onClick() {
-  /** toggle dropdown */
+  /** Toggle dropdown */
   expanded.value ? close() : open();
   /** https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#clicking_and_focus */
   (document.querySelector(`#select-${id.value}`) as HTMLElement)?.focus();
 }
 
-/** when button blurred */
+/** When button blurred */
 function onBlur() {
   close();
 }
 
-/** when user presses key on button */
+/** When user presses key on button */
 function onKeydown(event: KeyboardEvent) {
-  /** arrow/home/end keys */
+  /** Arrow/home/end keys */
   if (["ArrowUp", "ArrowDown", "Home", "End"].includes(event.key)) {
-    /** prevent page scroll */
+    /** Prevent page scroll */
     event.preventDefault();
 
     /**
-     * if dropdown open, control highlighted option. if dropdown closed, control
+     * If dropdown open, control highlighted option. if dropdown closed, control
      * selected option.
      */
     let index = expanded.value ? highlighted.value : selected.value;
 
-    /** move value up/down */
+    /** Move value up/down */
     if (event.key === "ArrowUp") index--;
     if (event.key === "ArrowDown") index++;
     if (event.key === "Home") index = 0;
     if (event.key === "End") index = props.options.length - 1;
 
-    /** update value, wrapping beyond 0 or options length */
+    /** Update value, wrapping beyond 0 or options length */
     index = wrap(index, 0, props.options.length - 1);
     if (expanded.value) highlighted.value = index;
     else selected.value = index;
   }
 
-  /** enter key to select highlighted option */
+  /** Enter key to select highlighted option */
   if (expanded.value && (event.key === "Enter" || event.key === " ")) {
-    /** prevent browser re-clicking open button */
+    /** Prevent browser re-clicking open button */
     event.preventDefault();
     selected.value = highlighted.value;
   }
 
-  /** esc key to close dropdown */
+  /** Esc key to close dropdown */
   if (expanded.value && event.key === "Escape") close();
 }
 
-/** get selected option index from model */
+/** Get selected option index from model */
 function getSelected() {
   return props.options.findIndex(
     (option) => option?.id === props.modelValue?.id
   );
 }
 
-/** when model changes */
+/** When model changes */
 watch(
   () => props.modelValue,
   () =>
-    /** update selected index */
+    /** Update selected index */
     (selected.value = getSelected())
 );
 
-/** when selected index changes */
+/** When selected index changes */
 watch(selected, () => {
-  /** emit updated model */
+  /** Emit updated model */
   emit("update:modelValue", props.options[selected.value]);
   close();
 });
 
-/** when highlighted index changes */
+/** When highlighted index changes */
 watch(highlighted, () =>
-  /** scroll to highlighted in dropdown */
+  /** Scroll to highlighted in dropdown */
   document
     .querySelector(`#option-${id.value}-${highlighted.value}`)
     ?.scrollIntoView({ block: "nearest" })
 );
 
-/** auto-select first option as fallback */
+/** Auto-select first option as fallback */
 watch(
   () => props.options,
   () => {

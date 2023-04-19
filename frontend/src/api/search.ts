@@ -1,4 +1,4 @@
-import { SearchResults } from "@/api/model";
+import type { SearchResults } from "@/api/model";
 import { monarch, request } from "./index";
 
 export const getSearch = async (q: string): Promise<SearchResults> => {

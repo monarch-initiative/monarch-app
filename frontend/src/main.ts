@@ -11,7 +11,7 @@ import router from "@/router";
 import "@/global/meta";
 
 /** log env variables for debugging */
-console.info(process.env);
+console.info(import.meta.env);
 
 /** create main app object */
 let app = createApp(App);
@@ -24,7 +24,7 @@ for (const [name, Component] of Object.entries(components))
   app = app.component(name, Component);
 
 /** track errors with Sentry */
-if (process.env.NODE_ENV === "production")
+if (import.meta.env.NODE_ENV === "production")
   Sentry.init({
     app,
     dsn: "https://122020f2154c48fa9ebbc53b98afdcf8@o1351894.ingest.sentry.io/6632682",
@@ -35,26 +35,24 @@ if (process.env.NODE_ENV === "production")
     ],
     tracesSampleRate: 1.0,
     logErrors: true,
-    environment: process.env.NODE_ENV,
+    environment: import.meta.env.NODE_ENV,
   });
 
 /** hotjar analytics */
 app.use(Hotjar, {
   id: "3100256",
-  isProduction: process.env.NODE_ENV === "production",
+  isProduction: import.meta.env.NODE_ENV === "production",
 });
 
 /** google analytics */
-if (process.env.NODE_ENV === "production")
+if (import.meta.env.NODE_ENV === "production")
   app.use(VueGtag, { config: { id: "G-RDNWN51PE8" } }, router);
 
 (async () => {
   /** mock api for local development */
-  // if (process.env.NODE_ENV === "development") {
-  //   const { setupWorker } = await import("msw");
-  //   const { handlers } = await import("../tests/fixtures");
-  //   await setupWorker(...handlers).start();
-  // }
+  // const { setupWorker } = await import("msw");
+  // const { handlers } = await import("../tests/fixtures");
+  // await setupWorker(...handlers).start();
 
   /** start app */
   app.mount("#app");

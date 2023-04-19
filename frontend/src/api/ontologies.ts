@@ -1,12 +1,12 @@
 import { request } from ".";
 import staticData from "./ontologies.json";
 import { mergeArrays } from "@/util/object";
-import { Source } from "./source";
+import type { Source } from "./source";
 
-/** source for ontology metadata */
+/** Source for ontology metadata */
 const obo = "https://obofoundry.org/registry/ontologies.jsonld";
 
-/** knowledge graph ontologies (from backend) */
+/** Knowledge graph ontologies (from backend) */
 interface _Ontologies {
   ontologies: Array<{
     id: string;
@@ -18,11 +18,11 @@ interface _Ontologies {
   }>;
 }
 
-/** get metadata of all ontologies listed on obo */
+/** Get metadata of all ontologies listed on obo */
 export const getOntologies = async (): Promise<Ontologies> => {
   const response = await request<_Ontologies>(obo);
 
-  /** convert results to desired format */
+  /** Convert results to desired format */
   let ontologies = response.ontologies.map(
     (ontology): Source => ({
       id: ontology.id,
@@ -35,16 +35,16 @@ export const getOntologies = async (): Promise<Ontologies> => {
   );
 
   /**
-   * merge static (manually entered) data in with dynamic (fetched) data (but
+   * Merge static (manually entered) data in with dynamic (fetched) data (but
    * only including entries in static)
    */
   ontologies = mergeArrays(staticData, ontologies, true);
 
-  /** tag as ontology type of source */
+  /** Tag as ontology type of source */
   ontologies.forEach((ontology) => (ontology.type = "ontology"));
 
   return ontologies;
 };
 
-/** knowledge graph ontologies (for frontend) */
+/** Knowledge graph ontologies (for frontend) */
 type Ontologies = Array<Source>;

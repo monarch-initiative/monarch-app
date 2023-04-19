@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-interface Props {
+type Props = {
   /** src of image */
   image?: string;
   /** post details */

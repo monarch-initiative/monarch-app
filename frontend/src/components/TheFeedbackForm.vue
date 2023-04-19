@@ -93,7 +93,7 @@ import { useQuery } from "@/util/composables";
 /** route info */
 const route = useRoute();
 
-interface Props {
+type Props = {
   /** whether form is inside a modal */
   modal?: boolean;
 }

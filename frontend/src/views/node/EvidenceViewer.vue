@@ -175,28 +175,28 @@ import AppDetail from "@/components/AppDetail.vue";
 import AppTable from "@/components/AppTable.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppRelationBadge from "@/components/AppRelationBadge.vue";
-import { Node } from "@/api/node-lookup";
+import type { Node } from "@/api/node-lookup";
 import { scrollToElement } from "@/router";
 import { getAssociationEvidence } from "@/api/association-evidence";
 import { breakUrl } from "@/util/string";
 import { appendToBody } from "@/global/tooltip";
 import { waitFor } from "@/util/dom";
-import { Association } from "@/api/node-associations";
+import type { Association } from "@/api/node-associations";
 import { useQuery } from "@/util/composables";
-import { snackbar } from "@/components/TheSnackbar";
+import { snackbar } from "@/components/TheSnackbar.vue";
 import { downloadJson } from "@/util/download";
-import { Cols } from "@/components/AppTable";
+import type { Cols } from "@/components/AppTable.vue";
 
-interface Props {
-  /** current node */
+type Props = {
+  /** Current node */
   node: Node;
-  /** selected association id */
+  /** Selected association id */
   selectedAssociation: Association;
-}
+};
 
 const props = defineProps<Props>();
 
-/** mode tabs */
+/** Mode tabs */
 const tabs = [
   {
     id: "summary",
@@ -213,7 +213,7 @@ const tabs = [
 ];
 const tab = ref(tabs[0].id);
 
-/** table columns */
+/** Table columns */
 const cols: Cols = [
   {
     id: "subject",
@@ -257,7 +257,7 @@ const cols: Cols = [
   },
 ];
 
-/** get evidence data */
+/** Get evidence data */
 const {
   query: getEvidence,
   data: evidence,
@@ -265,10 +265,10 @@ const {
   isError,
 } = useQuery(
   async function () {
-    /** scroll to evidence section */
+    /** Scroll to evidence section */
     waitFor("#evidence", scrollToElement);
 
-    /** get evidence data */
+    /** Get evidence data */
     const response = await getAssociationEvidence(
       props.selectedAssociation?.id
     );
@@ -276,13 +276,13 @@ const {
     return response;
   },
 
-  /** default value */
+  /** Default value */
   { summary: { codes: [], publications: [], sources: [] }, table: [] }
 );
 
-/** download table data */
+/** Download table data */
 async function download() {
-  /** warn user */
+  /** Warn user */
   snackbar(
     `Downloading data for ${evidence.value.table.length} table entries.`
   );

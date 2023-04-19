@@ -91,124 +91,142 @@
   </div>
 </template>
 
+<script lang="ts">
+export type OptionsFunc = (search: string) => Promise<Options>;
+
+export type Options = Array<Option>;
+
+export type Option = {
+  /** Icon name */
+  icon?: string;
+  /** Display name */
+  name: string;
+  /** Highlighting html */
+  highlight?: string;
+  /** Info col */
+  info?: string;
+  /** Tooltip on hover */
+  tooltip?: string;
+};
+</script>
+
 <script setup lang="ts">
 import { ref, watch, nextTick, computed } from "vue";
 import { uniqueId } from "lodash";
-import { OptionsFunc } from "./AppSelectAutocomplete";
 import { wrap } from "@/util/math";
 import { useFloating, useQuery } from "@/util/composables";
 import AppTextbox from "./AppTextbox.vue";
 
-interface Props {
-  /** two-way bound search state */
+type Props = {
+  /** Two-way bound search state */
   modelValue?: string;
-  /** name of the field */
+  /** Name of the field */
   name: string;
-  /** placeholder string when nothing typed in */
+  /** Placeholder string when nothing typed in */
   placeholder?: string;
-  /** async function that returns list of options to show */
+  /** Async function that returns list of options to show */
   options: OptionsFunc;
-  /** description to show below box */
+  /** Description to show below box */
   description?: string;
-}
+};
 
 const props = defineProps<Props>();
 
 interface Emits {
-  /** two-way bound search state */
+  /** Two-way bound search state */
   (event: "update:modelValue", value: string): void;
-  /** when input focused */
+  /** When input focused */
   (event: "focus"): void;
-  /** when input value change "submitted"/"committed" by user */
+  /** When input value change "submitted"/"committed" by user */
   (event: "change", value: string): void;
-  /** when user wants to delete an entry */
+  /** When user wants to delete an entry */
   (event: "delete", value: string): void;
 }
 
 const emit = defineEmits<Emits>();
 
-/** unique id for instance of component */
+/** Unique id for instance of component */
 const id = ref(uniqueId());
-/** currently searched text */
+/** Currently searched text */
 const search = ref("");
-/** index of option that is highlighted */
+/** Index of option that is highlighted */
 const highlighted = ref(0);
-/** whether input box focused and dropdown expanded */
+/** Whether input box focused and dropdown expanded */
 const expanded = ref(false);
 
-/** open results dropdown */
+/** Open results dropdown */
 async function open() {
   expanded.value = true;
   highlighted.value = -1;
   await getResults();
 }
 
-/** close results dropdown */
+/** Close results dropdown */
 function close() {
   expanded.value = false;
   highlighted.value = -1;
   results.value = [];
 }
 
-/** when user focuses box */
+/** When user focuses box */
 function onFocus() {
   emit("focus");
   open();
 }
 
-/** when user blurs box */
+/** When user blurs box */
 async function onBlur() {
   close();
 }
 
-/** when user types some text, after a delay */
+/** When user types some text, after a delay */
 async function onDebounce() {
   await getResults();
 }
 
-/** when user "commits" change to value, e.g. pressing enter, de-focusing, etc */
+/** When user "commits" change to value, e.g. pressing enter, de-focusing, etc */
 function onChange(value: string) {
   select(value);
 }
 
-/** when user presses key in input */
+/** When user presses key in input */
 async function onKeydown(event: KeyboardEvent) {
-  /** reopen if previously submitted */
+  /** Reopen if previously submitted */
   expanded.value = true;
 
-  /** arrow/home/end keys */
+  /** Arrow/home/end keys */
   if (["ArrowUp", "ArrowDown", "Home", "End"].includes(event.key)) {
-    /** prevent page scroll */
+    /** Prevent page scroll */
     event.preventDefault();
 
-    /** move value up/down */
+    /** Move value up/down */
     let index = highlighted.value;
     if (event.key === "ArrowUp") index--;
     if (event.key === "ArrowDown") index++;
     if (event.key === "Home") index = 0;
     if (event.key === "End") index = results.value.length - 1;
 
-    /** update highlighted, wrapping beyond 0 or results length */
+    /** Update highlighted, wrapping beyond 0 or results length */
     highlighted.value = wrap(index, 0, results.value.length - 1);
   }
 
-  /** enter key to select highlighted result */
+  /** Enter key to select highlighted result */
   if (event.key === "Enter" && highlighted.value >= 0) {
     event.stopPropagation();
     select(results.value[highlighted.value].name);
   }
 
-  /** delete key to delete the highlighted result */
+  /** Delete key to delete the highlighted result */
   if (event.key === "Delete" && event.shiftKey) {
     emit("delete", results.value[highlighted.value].name);
     await getResults();
   }
 
-  /** esc key to close dropdown */
+  /** Esc key to close dropdown */
   if (event.key === "Escape") close();
 }
 
-/** select an option */
+/** Select an option */
 async function select(value: string) {
   search.value = value;
   emit("change", value);
@@ -221,47 +239,47 @@ const {
   isLoading,
   isError,
 } = useQuery(
-  /** get list of results */
+  /** Get list of results */
   async function () {
-    /** get results */
+    /** Get results */
     return await props.options(search.value);
   },
 
-  /** default value */
+  /** Default value */
   []
 );
 
-/** target element */
+/** Target element */
 const target = ref();
-/** dropdown element */
+/** Dropdown element */
 const dropdown = ref();
-/** get dropdown position */
+/** Get dropdown position */
 const { calculate, style } = useFloating(
   computed(() => target.value?.textbox),
   dropdown,
   true
 );
-/** recompute position when length of results changes */
+/** Recompute position when length of results changes */
 watch([expanded, results], async () => {
   await nextTick();
   if (expanded.value) calculate();
 });
 
-/** when model changes, update search */
+/** When model changes, update search */
 watch(
   () => props.modelValue,
   () => (search.value = props.modelValue || ""),
   { immediate: true }
 );
 
-/** when search changes, update model */
+/** When search changes, update model */
 watch(search, () => {
   emit("update:modelValue", search.value);
 });
 
-/** when highlighted index changes */
+/** When highlighted index changes */
 watch(highlighted, () => {
-  /** scroll to highlighted in dropdown */
+  /** Scroll to highlighted in dropdown */
   document
     .querySelector(`#option-${id.value}-${highlighted.value} > *`)
     ?.scrollIntoView({ block: "nearest" });

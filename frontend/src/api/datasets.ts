@@ -1,7 +1,7 @@
 import { biolink, request } from ".";
 import staticData from "./datasets.json";
 import { mergeArrays } from "@/util/object";
-import { Source } from "./source";
+import type { Source } from "./source";
 import { getXrefLink } from "./xrefs";
 
 /** knowledge graph datasets (from backend) */

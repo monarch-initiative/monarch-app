@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
-    <!-- basic tags -->
+    <!-- basic -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <!-- realfavicongenerator.net -->
+    <!-- favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link
       rel="icon"
@@ -19,25 +18,27 @@
     <meta name="msapplication-TileColor" content="#00838f" />
     <meta name="theme-color" content="#ffffff" />
 
-    <!-- metatags.io -->
-    <title><%= VUE_APP_TITLE %></title>
-    <meta name="title" content="<%= VUE_APP_TITLE %>" />
-    <meta name="description" content="<%= VUE_APP_DESCRIPTION %>" />
+    <!-- basic -->
+    <title>%VITE_TITLE%</title>
+    <meta name="title" content="%VITE_TITLE%" />
+    <meta name="description" content="%VITE_DESCRIPTION" />
 
+    <!-- open graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="<%= VUE_APP_URL %>" />
-    <meta property="og:title" content="<%= VUE_APP_TITLE %>" />
-    <meta property="og:description" content="<%= VUE_APP_DESCRIPTION %>" />
+    <meta property="og:url" content="%VITE_URL%" />
+    <meta property="og:title" content="%VITE_TITLE%" />
+    <meta property="og:description" content="%VITE_DESCRIPTION" />
     <meta property="og:image" content="share-thumbnail.jpg" />
 
+    <!-- twitter -->
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="<%= VUE_APP_URL %>" />
-    <meta property="twitter:title" content="<%= VUE_APP_TITLE %>" />
-    <meta property="twitter:description" content="<%= VUE_APP_DESCRIPTION %>" />
+    <meta property="twitter:url" content="%VITE_URL%" />
+    <meta property="twitter:title" content="%VITE_TITLE%" />
+    <meta property="twitter:description" content="%VITE_DESCRIPTION" />
     <meta property="twitter:image" content="share-thumbnail.jpg" />
 
-    <!-- extra tags -->
-    <link rel="canonical" href="<%= VUE_APP_URL %>" />
+    <!-- extra -->
+    <link rel="canonical" href="%VITE_URL%" />
     <meta name="robots" content="index, follow" />
 
     <!-- fonts -->
@@ -51,23 +52,20 @@
       href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap"
       rel="stylesheet"
     />
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
-      integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm"
-      crossorigin="anonymous"
-    />
+
+    <script>
+      /** phenogrid fix */
+      window.global = window;
+    </script>
   </head>
 
   <body>
     <noscript>
       Sorry, this website doesn't work without JavaScript enabled.
     </noscript>
-    <!--[if IE]>
-      Sorry, this website isn't designed for Internet Explorer. Please use a
-      supported browser such as Chrome, Firefox, Safari, or Edge.
-    <![endif]-->
+
     <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
 
     <!-- json linked data spec -->
     <script type="application/ld+json" v-html="jsonld">
@@ -90,5 +88,10 @@
         }
       ]
     </script>
+
+    <!--[if IE]>
+      Sorry, this website isn't designed for Internet Explorer. Please use a
+      supported browser such as Chrome, Firefox, Safari, or Edge.
+    <![endif]-->
   </body>
 </html>

@@ -14,27 +14,31 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { ref, watch } from "vue";
 import { kebabCase, deburr } from "lodash";
 
-interface Props {
-  /** group name */
+type Props = {
+  /** Group name */
   name: string;
-  /** link to site */
+  /** Link to site */
   link?: string;
-}
+};
 
 const props = defineProps<Props>();
 
-/** get group img src */
-const src = computed(() => {
-  const image = kebabCase(deburr((props.name || "").toLowerCase()));
-  try {
-    return require(`@/assets/team/groups/${image}.png`);
-  } catch (error) {
-    return "";
+/** Get group img src */
+const src = ref("");
+watch(
+  () => props.name,
+  async () => {
+    const image = kebabCase(deburr((props.name || "").toLowerCase()));
+    try {
+      src.value = (await import(`@/assets/team/groups/${image}.png`)).default;
+    } catch (error) {
+      console.error(error);
+    }
   }
-});
+);
 </script>
 
 <style lang="scss" scoped>

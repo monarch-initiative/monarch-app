@@ -192,42 +192,79 @@
   </div>
 </template>
 
+<script lang="ts">
+/** Table column */
+export interface Col {
+  /**
+   * Unique id, used to identify/match for sorting, filtering, and named slots.
+   * use "divider" to create vertical divider to separate cols
+   */
+  id: string;
+  /** What item in row object to access as raw cell value */
+  key?: string;
+  /** Header display text */
+  heading?: string;
+  /** How to align column contents (both header and body) horizontally */
+  align?: "left" | "center" | "end";
+  /**
+   * Width to apply to heading cell, in any valid css grid col width (px, fr,
+   * auto, minmax, etc)
+   */
+  width?: string;
+  /** Whether to allow sorting of column */
+  sortable?: boolean;
+}
+
+/** Object with arbitrary keys */
+// eslint-disable-next-line
+export type Row = Record<string | number, any>;
+
+/** Arrays of rows and cols */
+export type Cols = Array<Col>;
+export type Rows = Array<Row>;
+
+/** Sort prop */
+export type Sort = {
+  id: string;
+  direction: "up" | "down";
+} | null;
+</script>
+
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, nextTick } from "vue";
 import { useResizeObserver, useScroll } from "@vueuse/core";
-import { Col, Cols, Rows, Sort } from "./AppTable";
 import AppTextbox from "./AppTextbox.vue";
 import AppSelectMulti from "./AppSelectMulti.vue";
 import AppSelectSingle from "./AppSelectSingle.vue";
-import { Options } from "./AppSelectMulti";
-import { Filters } from "@/api/facets";
-import { closeToc } from "./TheTableOfContents";
+import type { Options } from "./AppSelectMulti.vue";
+import type { Filters } from "@/api/facets";
+import { closeToc } from "./TheTableOfContents.vue";
 
-interface Props {
-  /** info for each column of table */
+type Props = {
+  /** Info for each column of table */
   cols: Cols;
-  /** list of table rows, i.e. the table data */
+  /** List of table rows, i.e. the table data */
   rows: Rows;
-  /** sort key and direction */
+  /** Sort key and direction */
   sort?: Sort;
-  /** filters */
+  /** Filters */
   availableFilters?: Filters;
   activeFilters?: Filters;
-  /** items per page (two-way bound) */
+  /** Items per page (two-way bound) */
   perPage?: number;
-  /** starting item index (two-way bound) */
+  /** Starting item index (two-way bound) */
   start?: number;
-  /** total number of items */
+  /** Total number of items */
   total?: number;
-  /** text being searched (two-way bound) */
+  /** Text being searched (two-way bound) */
   search?: string;
   /**
-   * whether to show certain controls (temp solution, needed b/c this is a
+   * Whether to show certain controls (temp solution, needed b/c this is a
    * controlled component and cannot paginate/search/etc on its own where needed
    * yet)
    */
   showControls?: boolean;
-}
+};
 
 const props = withDefaults(defineProps<Props>(), {
   sort: undefined,
@@ -241,31 +278,31 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 interface Emits {
-  /** when sort changes */
+  /** When sort changes */
   (event: "sort", sort: Sort): void;
-  /** when filter changes */
+  /** When filter changes */
   (event: "filter", colId: Col["id"], value: Options): void;
-  /** when per page changes (two-way bound) */
+  /** When per page changes (two-way bound) */
   (event: "update:perPage", value: number): void;
-  /** when start row changes (two-way bound) */
+  /** When start row changes (two-way bound) */
   (event: "update:start", row: number): void;
-  /** when search changes (two-way bound) */
+  /** When search changes (two-way bound) */
   (event: "update:search", value: string): void;
-  /** when user requests download */
+  /** When user requests download */
   (event: "download"): void;
 }
 
 const emit = defineEmits<Emits>();
 
-/** whether table is expanded to be full width */
+/** Whether table is expanded to be full width */
 const expanded = ref(false);
-/** table reference */
+/** Table reference */
 const table = ref<HTMLElement | null>(null);
 
-/** table scroll state */
+/** Table scroll state */
 const { arrivedState } = useScroll(table, { offset: { left: 10, right: 10 } });
 
-/** force table scroll to update */
+/** Force table scroll to update */
 async function updateScroll() {
   await nextTick();
   table.value?.dispatchEvent(new Event("scroll"));
@@ -274,36 +311,36 @@ onMounted(updateScroll);
 watch(expanded, updateScroll);
 useResizeObserver(table, updateScroll);
 
-/** close table of contents when expanding */
+/** Close table of contents when expanding */
 watch(expanded, () => {
   if (expanded.value) closeToc();
 });
 
-/** when user clicks to first page */
+/** When user clicks to first page */
 function clickFirst() {
   emit("update:start", 0);
 }
 
-/** when user clicks to previous page */
+/** When user clicks to previous page */
 function clickPrev() {
   emit("update:start", props.start - props.perPage);
 }
 
-/** when user clicks to next page */
+/** When user clicks to next page */
 function clickNext() {
   emit("update:start", props.start + props.perPage);
 }
 
-/** when user clicks to last page */
+/** When user clicks to last page */
 function clickLast() {
   emit("update:start", Math.floor(props.total / props.perPage) * props.perPage);
 }
 
-/** when user clicks a sort button */
+/** When user clicks a sort button */
 function emitSort(col: Col) {
   let newSort: Sort;
 
-  /** toggle sort direction */
+  /** Toggle sort direction */
   if (props.sort?.id === col.id) {
     if (props.sort?.direction === "down")
       newSort = { id: col.id, direction: "up" };
@@ -319,37 +356,37 @@ function emitSort(col: Col) {
   emit("sort", newSort);
 }
 
-/** when user changes a filter */
+/** When user changes a filter */
 function emitFilter(colId: Col["id"], value: Options) {
   emit("filter", colId, value);
 }
 
-/** when user changes rows per page */
+/** When user changes rows per page */
 function emitPerPage(value: string) {
   emit("update:perPage", Number(value));
   emit("update:start", 0);
 }
 
-/** when user types in search */
+/** When user types in search */
 function emitSearch(value: string) {
   emit("update:search", value);
   emit("update:start", 0);
 }
 
-/** when user clicks download */
+/** When user clicks download */
 function emitDownload() {
   emit("download");
 }
 
-/** ending item index */
+/** Ending item index */
 const end = computed((): number => props.start + props.rows.length);
 
-/** grid column template widths */
+/** Grid column template widths */
 const widths = computed((): string =>
   props.cols.map((col) => col.width || "auto").join(" ")
 );
 
-/** aria sort direction attribute */
+/** Aria sort direction attribute */
 const ariaSort = computed(() => {
   if (props.sort?.direction === "up") return "ascending";
   if (props.sort?.direction === "down") return "descending";

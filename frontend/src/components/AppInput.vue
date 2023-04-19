@@ -19,7 +19,7 @@
 import { debounce } from "lodash";
 import { onBeforeUnmount, ref } from "vue";
 
-interface Props {
+type Props = {
   /** two-way bound text state */
   modelValue?: string;
   /** whether field is multi-line */

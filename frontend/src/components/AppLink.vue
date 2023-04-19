@@ -39,7 +39,7 @@ import { mapValues } from "lodash";
 import { isExternal, isAbsolute } from "@/util/url";
 import { stringify } from "@/util/object";
 
-interface Props {
+type Props = {
   /** location to link to */
   to: string;
   /**

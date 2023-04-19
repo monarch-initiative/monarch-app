@@ -20,43 +20,49 @@
   </Teleport>
 </template>
 
+<script lang="ts">
+/** Push a notification to snackbar */
+export const snackbar = (message: string): unknown =>
+  window.dispatchEvent(new CustomEvent("snackbar", { detail: message }));
+</script>
+
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { restartAnimations } from "@/util/dom";
 import { useEventListener, useTimeoutFn } from "@vueuse/core";
 
-/** current notification text */
+/** Current notification text */
 const text = ref("");
-/** notification element */
+/** Notification element */
 const element = ref<Element>();
 
 /**
- * make hide delay longer for longer messages
+ * Make hide delay longer for longer messages
  * https://ux.stackexchange.com/questions/22520/how-long-does-it-take-to-read-x-number-of-characters
  */
 const delay = computed(() => 1500 + text.value.length * 100);
-/** timer */
+/** Timer */
 const { start, stop } = useTimeoutFn(() => (text.value = ""), delay);
 
-/** on push notification event */
+/** On push notification event */
 function onPush(event: Event) {
-  /** flash notification */
+  /** Flash notification */
   if (element.value) restartAnimations(element.value);
 
-  /** set notification text */
+  /** Set notification text */
   text.value = (event as CustomEvent).detail;
 
-  /** set timer to close */
+  /** Set timer to close */
   start();
 }
 
-/** when user clicks notification */
+/** When user clicks notification */
 function onClick() {
   stop();
   text.value = "";
 }
 
-/** listen for push notification event */
+/** Listen for push notification event */
 useEventListener(window, "snackbar", onPush);
 </script>
 

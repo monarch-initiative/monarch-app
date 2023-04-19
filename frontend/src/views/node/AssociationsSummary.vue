@@ -69,29 +69,30 @@
 import { watch, onMounted } from "vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppRelationBadge from "@/components/AppRelationBadge.vue";
-import { Node } from "@/api/node-lookup";
-import { getTopAssociations, Association } from "@/api/node-associations";
+import type { Node } from "@/api/node-lookup";
+import type { Association } from "@/api/node-associations";
+import { getTopAssociations } from "@/api/node-associations";
 import { useQuery } from "@/util/composables";
 
-interface Props {
-  /** current node */
+type Props = {
+  /** Current node */
   node: Node;
-  /** selected association category */
+  /** Selected association category */
   selectedCategory: string;
-  /** selected association id */
+  /** Selected association id */
   selectedAssociation?: Association;
-}
+};
 
 const props = defineProps<Props>();
 
 interface Emits {
-  /** change selected association */
+  /** Change selected association */
   (event: "select", value?: Association): void;
 }
 
 const emit = defineEmits<Emits>();
 
-/** get summary association data */
+/** Get summary association data */
 const {
   query: getAssociations,
   data: associations,
@@ -99,11 +100,11 @@ const {
   isError,
 } = useQuery(
   async function () {
-    /** catch case where no association categories available */
+    /** Catch case where no association categories available */
     if (!props.node.associationCounts.length)
       throw new Error("No association info available");
 
-    /** get association data */
+    /** Get association data */
     return await getTopAssociations(
       props.node.id,
       props.node.category,
@@ -111,14 +112,14 @@ const {
     );
   },
 
-  /** default value */
+  /** Default value */
   []
 );
 
-/** get associations when category changes */
+/** Get associations when category changes */
 watch(() => props.selectedCategory, getAssociations);
 
-/** get associations on load */
+/** Get associations on load */
 onMounted(getAssociations);
 </script>
 

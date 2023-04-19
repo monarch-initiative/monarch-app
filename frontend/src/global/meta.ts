@@ -8,16 +8,16 @@ import { ref, watch } from "vue";
  */
 
 /** multi-part page title. array. gets joined with a | separator. */
-export const appTitle = ref([process.env.VUE_APP_TITLE]);
+export const appTitle = ref([import.meta.env.VITE_TITLE]);
 /** page meta description */
-export const appDescription = ref(process.env.VUE_APP_DESCRIPTION);
+export const appDescription = ref(import.meta.env.VITE_DESCRIPTION);
 /** page canonical url meta */
-export const appUrl = ref(process.env.VUE_APP_DESCRIPTION);
+export const appUrl = ref(import.meta.env.VITE_DESCRIPTION);
 
 /** update document title meta tags */
 watch(appTitle, () => {
   const title = appTitle.value
-    .concat([process.env.VUE_APP_TITLE])
+    .concat([import.meta.env.VITE_TITLE])
     .filter((part) => part)
     .join(" | ");
 

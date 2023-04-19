@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-interface Props {
+type Props = {
   /** tag */
   tag: string;
   /** wrap */

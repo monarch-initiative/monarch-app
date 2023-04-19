@@ -56,6 +56,12 @@
   </AppFlex>
 </template>
 
+<script lang="ts">
+/** Close the table of contents panel */
+export const closeToc = (): unknown =>
+  window.dispatchEvent(new CustomEvent("closetoc"));
+</script>
+
 <script setup lang="ts">
 import { ref, watch, onMounted, nextTick } from "vue";
 import {
@@ -73,53 +79,53 @@ type Entries = Array<{
   text: string;
 }>;
 
-/** toc entries */
+/** Toc entries */
 const entries = ref<Entries>([]);
-/** whether toc is open or not */
+/** Whether toc is open or not */
 const expanded = ref(window.innerWidth > 1400);
-/** how much to push downward to make room for header if in view */
+/** How much to push downward to make room for header if in view */
 const nudge = ref(0);
-/** whether to only show one section at a time */
+/** Whether to only show one section at a time */
 const oneAtATime = ref(false);
-/** active (in view or selected) section */
+/** Active (in view or selected) section */
 const active = ref(0);
 
-/** table of contents panel element */
+/** Table of contents panel element */
 const toc = ref<HTMLElement>();
 
-/** listen for close event */
+/** Listen for close event */
 useEventListener(window, "closetoc", () => (expanded.value = false));
 
-/** update toc position */
+/** Update toc position */
 async function updatePosition() {
-  /** wait for rendering to finish */
+  /** Wait for rendering to finish */
   await nextTick();
 
-  /** get dimensions of header and "sub-header" (e.g. first section on node page) */
+  /** Get dimensions of header and "sub-header" (e.g. first section on node page) */
   const headerEl = document?.querySelector("header");
   const subHeaderEl = document?.querySelector("main > section:first-child");
   if (!headerEl || !subHeaderEl) return;
   const header = headerEl.getBoundingClientRect();
   const subHeader = subHeaderEl.getBoundingClientRect();
 
-  /** calculate nudge */
+  /** Calculate nudge */
   nudge.value = Math.max(
     header.top + header.height,
     subHeader.top + subHeader.height
   );
 
-  /** find in view section */
+  /** Find in view section */
   if (!oneAtATime.value)
     active.value = firstInView(entries.value.map(({ section }) => section));
 }
 
-/** update toc entries */
+/** Update toc entries */
 function updateEntries() {
   entries.value = Array.from(
-    /** get all headings except top level one */
+    /** Get all headings except top level one */
     document?.querySelectorAll("h2[id], h3[id]") || []
   ).map((element) =>
-    /** get relevant props from heading */
+    /** Get relevant props from heading */
     ({
       section: (element.closest("section") as HTMLElement) || null,
       id: element.getAttribute("id") || "",
@@ -130,7 +136,7 @@ function updateEntries() {
   );
 }
 
-/** hide/show sections based on active */
+/** Hide/show sections based on active */
 function hideShow() {
   for (const [index, { section }] of Object.entries(entries.value))
     if (section)
@@ -138,7 +144,7 @@ function hideShow() {
         active.value === Number(index) || !oneAtATime.value ? "" : "none";
 }
 
-/** when user clicks "off" of toc panel */
+/** When user clicks "off" of toc panel */
 onClickOutside(toc, () => {
   if (expanded.value && window.innerWidth < 1240) expanded.value = false;
 });
@@ -147,7 +153,7 @@ watch(oneAtATime, hideShow);
 
 watch(active, hideShow);
 
-/** run update on: page load, scroll, resize, reflow, etc. */
+/** Run update on: page load, scroll, resize, reflow, etc. */
 onMounted(updateEntries);
 onMounted(updatePosition);
 useEventListener(window, "scroll", updatePosition);

@@ -1,6 +1,6 @@
 import { mapValues } from "lodash";
-import { Params } from ".";
-import { Options } from "@/components/AppSelectMulti.d";
+import type { Params } from ".";
+import type { Options } from "@/components/AppSelectMulti.vue";
 import { getIdsFromLabels } from "./taxons";
 import { renameKey } from "@/util/object";
 

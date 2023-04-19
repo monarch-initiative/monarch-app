@@ -52,7 +52,7 @@ export default {
 import { ref } from "vue";
 import AppInput from "./AppInput.vue";
 
-interface Props {
+type Props = {
   /** two-way bound text state */
   modelValue?: string;
   /** whether field is multi-line */

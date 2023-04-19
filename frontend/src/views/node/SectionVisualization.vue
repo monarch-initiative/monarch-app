@@ -6,13 +6,13 @@
 </template>
 
 <script setup lang="ts">
-import { Node } from "@/api/node-lookup";
+import type { Node } from "@/api/node-lookup";
 import HistoPheno from "./HistoPheno.vue";
 
-interface Props {
-  /** current node */
+type Props = {
+  /** Current node */
   node: Node;
-}
+};
 
 defineProps<Props>();
 </script>

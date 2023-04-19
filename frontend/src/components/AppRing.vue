@@ -17,7 +17,7 @@ import { computed } from "vue";
 import { clamp } from "lodash";
 import { sin, cos } from "@/util/math";
 
-interface Props {
+type Props = {
   /** value to show in center of ring */
   score?: number;
   /** range of score for normalization */

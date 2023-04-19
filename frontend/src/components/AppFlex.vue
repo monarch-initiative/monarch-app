@@ -28,7 +28,7 @@ const alignMap = {
   stretch: "stretch",
 };
 
-interface Props {
+type Props = {
   /** flex display (whether container takes up full width) */
   flow?: "inline" | "block";
   /** horizontal or vertical */

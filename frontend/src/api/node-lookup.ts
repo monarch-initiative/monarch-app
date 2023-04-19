@@ -2,10 +2,11 @@ import { sortBy } from "lodash";
 import { biolink, request } from ".";
 import { categories, mapCategory } from "./categories";
 import { getXrefLink } from "./xrefs";
-import { getGene, Gene } from "./genes";
+import { getGene } from "./genes";
+import type { Gene } from "./genes";
 import { getPublication } from "./publications";
 
-/** node lookup info (from backend) */
+/** Node lookup info (from backend) */
 interface _Node {
   id: string;
   label: string;
@@ -43,23 +44,23 @@ interface _Node {
   xrefs: Array<string>;
 }
 
-/** lookup metadata for a node id */
+/** Lookup metadata for a node id */
 export const lookupNode = async (id = "", category = ""): Promise<Node> => {
-  /** set flags */
+  /** Set flags */
   const params = {
     fetch_objects: false,
     unselect_evidence: true,
     exclude_automatic_assertions: true,
     use_compact_associations: false,
-    get_association_counts: true /** missing in biolink docs, but essential */,
+    get_association_counts: true /** Missing in biolink docs, but essential */,
     rows: 1,
   };
 
-  /** make query */
+  /** Make query */
   const url = `${biolink}/bioentity/${category ? category + "/" : ""}${id}`;
   const response = await request<_Node>(url, params);
 
-  /** convert into desired result format */
+  /** Convert into desired result format */
   const metadata: Node = {
     id: response.id,
     originalId: id,
@@ -86,21 +87,21 @@ export const lookupNode = async (id = "", category = ""): Promise<Node> => {
 
     associationCounts: sortBy(
       Object.entries(response.association_counts || {})
-        /** don't include other facets */
+        /** Don't include other facets */
         .filter(([, data]) => data.counts !== undefined)
-        /** only include categories supported by app */
+        /** Only include categories supported by app */
         .filter(([category]) => categories.includes(category))
         .map(([category, data]) => ({
           id: category || "",
           count: data.counts || 0,
           countByTaxon: data.counts_by_taxon,
         })),
-      /** sort by specific order, and put unmatched at end */
+      /** Sort by specific order, and put unmatched at end */
       (category) => categories.indexOf(category.id) + 1 || Infinity
     ),
   };
 
-  /** supplement gene with metadata from mygene */
+  /** Supplement gene with metadata from mygene */
   if (category === "gene" || category === "variant") {
     try {
       const gene = await getGene(id);
@@ -112,7 +113,7 @@ export const lookupNode = async (id = "", category = ""): Promise<Node> => {
     }
   }
 
-  /** supplement publication with metadata from entrez */
+  /** Supplement publication with metadata from entrez */
   if (category === "publication") {
     try {
       const publication = await getPublication(id);
@@ -130,59 +131,59 @@ export const lookupNode = async (id = "", category = ""): Promise<Node> => {
   return metadata;
 };
 
-/** node (for frontend). structure/order mirrors sections on node page. */
+/** Node (for frontend). structure/order mirrors sections on node page. */
 export interface Node {
-  /** title section */
+  /** Title section */
   id: string;
-  /** title section */
+  /** Title section */
   originalId: string;
-  /** title section */
+  /** Title section */
   name: string;
-  /** title section */
+  /** Title section */
   category: string;
 
-  /** overview section */
+  /** Overview section */
   synonyms: Array<string>;
-  /** overview section */
+  /** Overview section */
   description: string;
 
-  /** details section */
+  /** Details section */
   iri: string;
-  /** details section */
+  /** Details section */
   inheritance: Array<{
     id: string;
     name: string;
     link: string;
   }>;
-  /** details section */
+  /** Details section */
   modifiers: Array<string>;
-  /** details section */
+  /** Details section */
   xrefs: Array<{
     id: string;
     link: string;
   }>;
 
-  /** details section (gene specific) */
+  /** Details section (gene specific) */
   taxon?: {
     id?: string;
     name?: string;
     link?: string;
   };
-  /** details section (gene specific) */
+  /** Details section (gene specific) */
   symbol?: string;
-  /** details section (gene specific) */
+  /** Details section (gene specific) */
   genome?: Gene["genome"];
 
-  /** details section (publication specific) */
+  /** Details section (publication specific) */
   authors?: Array<string>;
-  /** details section (publication specific) */
+  /** Details section (publication specific) */
   date?: Date;
-  /** details section (publication specific) */
+  /** Details section (publication specific) */
   doi?: string;
-  /** details section (publication specific) */
+  /** Details section (publication specific) */
   journal?: string;
 
-  /** associations section */
+  /** Associations section */
   associationCounts: Array<{
     id: string;
     count: number;

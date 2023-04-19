@@ -167,6 +167,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { omit } from "lodash";
+import type { Filters } from "@/api/facets";
 import AppButton from "@/components/AppButton.vue";
 import AppInput from "@/components/AppInput.vue";
 import AppRing from "@/components/AppRing.vue";
@@ -174,18 +175,17 @@ import AppSelectAutocomplete from "@/components/AppSelectAutocomplete.vue";
 import AppSelectMulti from "@/components/AppSelectMulti.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
+import type { Cols, Rows, Sort } from "@/components/AppTable.vue";
 import AppTable from "@/components/AppTable.vue";
 import AppTabs from "@/components/AppTabs.vue";
 import AppTextbox from "@/components/AppTextbox.vue";
-import { Cols, Rows, Sort } from "@/components/AppTable";
 import { sleep } from "@/util/debug";
-import { Filters } from "@/api/facets";
 
 const input = ref("");
 
 type ButtonProps = InstanceType<typeof AppButton>["$props"];
 
-/** enumerate permutations of button options */
+/** Enumerate permutations of button options */
 const buttons = ref<Array<Array<ButtonProps>>>([]);
 for (const design of ["normal", "circle", "small"]) {
   for (const color of ["primary", "secondary"]) {
@@ -201,7 +201,7 @@ for (const design of ["normal", "circle", "small"]) {
   }
 }
 
-/** single select */
+/** Single select */
 const singleSelectOptions = ref([
   { id: "apple", icon: "lightbulb" },
   { id: "banana", icon: "lightbulb" },
@@ -214,7 +214,7 @@ const singleSelectOptions = ref([
 ]);
 const singleSelectValue = ref({ id: "durian" });
 
-/** multi select */
+/** Multi select */
 const multiSelectOptions = ref([
   { id: "fruits", count: 0 },
   { id: "vegetables", count: 7 },
@@ -226,9 +226,9 @@ const multiSelectOptions = ref([
 ]);
 const multiSelectValue = ref([{ id: "vegetables" }]);
 
-/** tags select */
+/** Tags select */
 const tagsSelectOptions = ref(async (search = "") => {
-  await sleep(500); /** test loading spinner */
+  await sleep(500); /** Test loading spinner */
   return {
     options: [
       { id: "ice cream", icon: "home" },
@@ -244,9 +244,9 @@ const tagsSelectValue = ref([
   { id: "candy", icon: "database", count: "8 phenotypes" },
 ]);
 
-/** autocomplete select */
+/** Autocomplete select */
 const autocompleteSelectOptions = ref(async () => {
-  await sleep(500); /** test loading spinner */
+  await sleep(500); /** Test loading spinner */
   return [
     { icon: "home", name: "Cat" },
     { name: "Dog", info: "good dog" },
@@ -254,7 +254,7 @@ const autocompleteSelectOptions = ref(async () => {
   ];
 });
 
-/** tabs */
+/** Tabs */
 const tabs = [
   { id: "apple", text: "Apple", icon: "asterisk" },
   { id: "banana", text: "Banana", icon: "cogs" },
@@ -263,10 +263,10 @@ const tabs = [
   { id: "elderberry", text: "Elderberry", icon: "tools" },
 ];
 
-/** selected tab */
+/** Selected tab */
 const tab = ref(tabs[0].id);
 
-/** table input props */
+/** Table input props */
 const table = ref({
   cols: [
     {
@@ -314,6 +314,6 @@ const table = ref({
   activeFilters: { score: [{ id: "numbers" }] } as Filters,
 });
 
-/** util */
+/** Util */
 const log = console.info;
 </script>

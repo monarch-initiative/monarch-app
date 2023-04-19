@@ -1,4 +1,4 @@
-import { Node } from "./model";
+import type { Node } from "./model";
 import { monarch, request } from "./index";
 
 export const getEntity = async (id: string): Promise<Node> => {

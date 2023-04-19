@@ -38,11 +38,11 @@
 import { watch } from "vue";
 import { useRoute } from "vue-router";
 import { breadcrumbs, updateBreadcrumbs } from "@/global/breadcrumbs";
-import { Node } from "@/api/node-lookup";
+import type { Node } from "@/api/node-lookup";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppRelationBadge from "@/components/AppRelationBadge.vue";
 
-interface Props {
+type Props = {
   /** current node */
   node: Node;
 }

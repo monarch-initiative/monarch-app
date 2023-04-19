@@ -42,7 +42,7 @@ import { ref, nextTick, onUpdated, onBeforeUpdate } from "vue";
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import { useEventListener } from "@vueuse/core";
 
-interface Props {
+type Props = {
   /** two-way bound open state */
   modelValue?: boolean;
   /** modal aria label */
