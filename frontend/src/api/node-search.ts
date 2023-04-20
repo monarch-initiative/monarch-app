@@ -19,13 +19,12 @@ type _SearchResults = {
     taxon?: string;
     taxon_label?: string;
   }[];
-  facet_counts: Record<string, Record<string, number>>;
-  highlighting: Record<
-    string,
-    {
+  facet_counts: { [key: string]: { [key: string]: number } };
+  highlighting: {
+    [key: string]: {
       highlight?: string;
-    }
-  >;
+    };
+  };
 };
 
 /** Search for node with text and filters */

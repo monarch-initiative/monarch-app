@@ -136,8 +136,8 @@ const page = ref(0);
 /** Results per page */
 const perPage = ref(10);
 /** Filters (facets) for search */
-const availableFilters = ref<Record<string, MultiOptions>>({});
-const activeFilters = ref<Record<string, MultiOptions>>({});
+const availableFilters = ref<{ [key: string]: MultiOptions }>({});
+const activeFilters = ref<{ [key: string]: MultiOptions }>({});
 
 /** When user focuses text box */
 async function onFocus() {
@@ -319,7 +319,7 @@ watch(
 /** When search changes */
 watch(search, async () => {
   /** Update url */
-  const query: Record<string, string> = {};
+  const query: { [key: string]: string } = {};
   if (search.value) query.search = search.value;
   await router.push({ ...route, name: "Explore", query });
 });

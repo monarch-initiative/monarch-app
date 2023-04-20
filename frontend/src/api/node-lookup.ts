@@ -34,13 +34,12 @@ type _Node = {
     id: string;
     label: string;
   };
-  association_counts: Record<
-    string,
-    {
+  association_counts: {
+    [key: string]: {
       counts?: number;
       counts_by_taxon?: number;
-    }
-  >;
+    };
+  };
   xrefs: string[];
 };
 

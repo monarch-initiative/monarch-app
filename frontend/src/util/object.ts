@@ -11,7 +11,7 @@ export const mergeArrays = (
   exclusive = false
 ): Obj[] => {
   /** store to keep id-deduped list of entries */
-  const result: Record<string, Obj> = {};
+  const result: { [key: string]:  Obj } = {};
 
   /** merge func */
   const mergeWithResult =
@@ -34,7 +34,7 @@ export const mergeArrays = (
 
 /** rename key in object in place */
 export const renameKey = (
-  object: Record<string, unknown>,
+  object: { [key: string]:  unknown },
   oldKey: string,
   newKey: string
 ): void => {

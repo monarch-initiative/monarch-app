@@ -217,7 +217,7 @@ export type Col = {
 
 /** Object with arbitrary keys */
 // eslint-disable-next-line
-export type Row = Record<string | number, any>;
+export type Row = { [key: string | number]:  any };
 
 /** Arrays of rows and cols */
 export type Cols = Col[];

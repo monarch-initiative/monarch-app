@@ -25,7 +25,7 @@ export const getXrefLink = (identifier: string): string => {
  * hard coded map of external reference urls based on identifier prefix. keep
  * sorted. https://r37r0m0d3l.github.io/json_sort/
  */
-const map: Record<string, Record<string, string>> = {
+const map: { [key: string]: { [key: string]: string } } = {
   animalqtldb: {
     AQTLPub:
       "https://www.animalgenome.org/cgi-bin/QTLdb/BT/qabstract?PUBMED_ID=[ID]",

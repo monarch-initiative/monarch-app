@@ -5,7 +5,7 @@ import { request } from "./";
  * http://docs.mygene.info/en/latest/doc/data.html#species
  * http://docs.mygene.info/en/latest/doc/query_service.html#available-fields
  */
-const map: Record<string, { replace: string; species: string }> = {
+const map: { [key: string]:  { replace: string; species: string } } = {
   "NCBIGene:": { replace: "", species: "all" },
   "OMIM:": { replace: "mim:", species: "9606" },
   "MGI:": { replace: "mgi:MGI\\:", species: "10090" },

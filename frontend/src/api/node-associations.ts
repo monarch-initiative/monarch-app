@@ -57,7 +57,7 @@ type _Associations = {
       label?: string;
     };
   }[];
-  facet_counts: Record<string, Record<string, number>>;
+  facet_counts: { [key: string]: { [key: string]: number } };
 };
 
 /** Get associations between a node and a category */
@@ -224,7 +224,7 @@ export type Association = {
   };
 
   /** Evidence info supporting this association */
-  evidence: Record<string, unknown>[];
+  evidence: { [key: string]: unknown }[];
 
   /** Mixed-type total of pieces of supporting evidence */
   supportCount: number;

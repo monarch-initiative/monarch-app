@@ -5,13 +5,13 @@ import type { Params } from "./";
 import { getIdsFromLabels } from "./taxons";
 
 /** format of facet counts returned from biolink */
-export type Facets = Record<string, Record<string, number>>;
+export type Facets = { [key: string]: { [key: string]: number } };
 
 /** set of filters compatible with select options list */
-export type Filters = Record<string, Options>;
+export type Filters = { [key: string]: Options };
 
 /** simplified filter format for passing to api funcs */
-export type Query = Record<string, string[]>;
+export type Query = { [key: string]: string[] };
 
 /**
  * convert backend facets into filters (set of options) compatible with select

@@ -2,7 +2,7 @@ import { values } from "lodash";
 import { biolink, request } from "./index";
 
 /** taxon ids (from backend) */
-type _Ids = Record<string, string[]>;
+type _Ids = { [key: string]:  string[] };
 
 /** from list of taxon labels, get list of matching taxon ids */
 export const getIdsFromLabels = async (ids: string[]): Promise<Ids> => {

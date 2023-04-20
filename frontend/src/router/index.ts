@@ -160,7 +160,7 @@ routes.forEach(
   (route) =>
     (route.meta = {
       description:
-        (descriptions as Record<string, string>)[String(route.name || "")] ||
+        (descriptions as { [key: string]:  string })[String(route.name || "")] ||
         import.meta.env.VITE_DESCRIPTION,
     })
 );

@@ -7,7 +7,7 @@ export const monarch = "https://api-dev.monarchinitiative.org/api";
  * evidence=true. use array for multiple/duplicate, e.g. id=abc&id=def&id=ghi
  */
 type Param = string | number | boolean | undefined | null;
-export type Params = Record<string, Param | Param[]>;
+export type Params = { [key: string]:  Param | Param[] };
 
 /**
  * generic fetch request wrapper
