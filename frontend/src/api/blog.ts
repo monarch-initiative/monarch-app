@@ -1,5 +1,5 @@
-import { request } from ".";
 import { stripHtml } from "@/util/string";
+import { request } from "./";
 
 /** rss of monarch medium feed */
 const monarchRss =

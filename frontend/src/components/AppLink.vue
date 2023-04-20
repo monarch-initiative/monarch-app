@@ -36,8 +36,8 @@
 <script setup lang="ts">
 import { computed, useSlots } from "vue";
 import { mapValues } from "lodash";
-import { isExternal, isAbsolute } from "@/util/url";
 import { stringify } from "@/util/object";
+import { isAbsolute, isExternal } from "@/util/url";
 
 type Props = {
   /** location to link to */

@@ -175,13 +175,13 @@ export type Option = {
 </script>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick } from "vue";
-import { uniqueId, isEqual, uniqBy } from "lodash";
-import { wrap } from "@/util/math";
-import { snackbar } from "./TheSnackbar.vue";
-import { sleep } from "@/util/debug";
+import { computed, nextTick, ref, watch } from "vue";
+import { isEqual, uniqBy, uniqueId } from "lodash";
 import { useFloating, useQuery } from "@/util/composables";
+import { sleep } from "@/util/debug";
+import { wrap } from "@/util/math";
 import AppInput from "./AppInput.vue";
+import { snackbar } from "./TheSnackbar.vue";
 
 type Props = {
   /** Two-way bound selected items state */

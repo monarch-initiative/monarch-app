@@ -1,10 +1,10 @@
-import { getXrefLink } from "./xrefs";
-import { biolink, request } from ".";
-import { facetsToFilters, queryToParams } from "./facets";
-import type { Filters, Query } from "./facets";
-import { getSummaries } from "./publications";
-import { mapCategory, getAssociationEndpoint } from "./categories";
 import type { Sort } from "@/components/AppTable.vue";
+import { biolink, request } from "./";
+import { getAssociationEndpoint, mapCategory } from "./categories";
+import type { Filters, Query } from "./facets";
+import { facetsToFilters, queryToParams } from "./facets";
+import { getSummaries } from "./publications";
+import { getXrefLink } from "./xrefs";
 
 /** Node associations (from backend) */
 interface _Associations {

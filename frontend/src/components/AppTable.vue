@@ -231,13 +231,13 @@ export type Sort = {
 </script>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, nextTick } from "vue";
+import { computed, nextTick, onMounted, ref, watch } from "vue";
 import { useResizeObserver, useScroll } from "@vueuse/core";
-import AppTextbox from "./AppTextbox.vue";
+import type { Filters } from "@/api/facets";
+import type { Options } from "./AppSelectMulti.vue";
 import AppSelectMulti from "./AppSelectMulti.vue";
 import AppSelectSingle from "./AppSelectSingle.vue";
-import type { Options } from "./AppSelectMulti.vue";
-import type { Filters } from "@/api/facets";
+import AppTextbox from "./AppTextbox.vue";
 import { closeToc } from "./TheTableOfContents.vue";
 
 type Props = {

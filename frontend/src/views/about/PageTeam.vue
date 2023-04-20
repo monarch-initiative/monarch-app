@@ -86,7 +86,7 @@
 
 <script setup lang="ts">
 import { kebabCase } from "lodash";
+import AppGroup from "@/components/AppGroup.vue";
 import AppMember from "@/components/AppMember.vue";
 import team from "./team.json";
-import AppGroup from "@/components/AppGroup.vue";
 </script>

@@ -1,6 +1,6 @@
-import { biolink, request } from ".";
-import { facetsToFilters, queryToParams } from "./facets";
+import { biolink, request } from "./";
 import type { Filters, Query } from "./facets";
+import { facetsToFilters, queryToParams } from "./facets";
 
 /** Remove any special characters that would screw up backend search */
 const encode = (string: string) => string.replaceAll(/[^a-zA-Z0-9]/g, " ");

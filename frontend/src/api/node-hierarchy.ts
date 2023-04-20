@@ -1,7 +1,7 @@
 import { uniqBy } from "lodash";
-import { biolink, request } from ".";
-import { mapCategory } from "./categories";
 import type { Association } from "@/api/node-associations";
+import { biolink, request } from "./";
+import { mapCategory } from "./categories";
 
 /** graph info to construct hierarchy (from backend) */
 interface _Hierarchy {

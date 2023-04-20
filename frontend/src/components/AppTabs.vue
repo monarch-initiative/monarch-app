@@ -38,8 +38,8 @@
 
 <script setup lang="ts">
 import { onMounted, ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { uniqueId } from "lodash";
-import { useRouter, useRoute } from "vue-router";
 import { wrap } from "@/util/math";
 
 /** Route info */

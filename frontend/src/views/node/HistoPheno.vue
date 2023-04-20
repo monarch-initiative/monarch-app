@@ -10,12 +10,12 @@
 </template>
 
 <script setup lang="ts">
+import { computed, watch } from "vue";
 import { useRoute } from "vue-router";
 import Apex from "vue3-apexcharts";
 import { getHistoPheno } from "@/api/histopheno";
 import type { Node } from "@/api/node-lookup";
 import { useQuery } from "@/util/composables";
-import { computed, watch } from "vue";
 
 /** Route info */
 const route = useRoute();

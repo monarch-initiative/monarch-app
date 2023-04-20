@@ -16,8 +16,8 @@
 </template>
 
 <script setup lang="ts">
-import { debounce } from "lodash";
 import { onBeforeUnmount, ref } from "vue";
+import { debounce } from "lodash";
 
 type Props = {
   /** two-way bound text state */

@@ -63,14 +63,14 @@ export const closeToc = (): unknown =>
 </script>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, nextTick } from "vue";
+import { nextTick, onMounted, ref, watch } from "vue";
 import {
+  onClickOutside,
   useEventListener,
   useMutationObserver,
-  onClickOutside,
 } from "@vueuse/core";
-import AppCheckbox from "./AppCheckbox.vue";
 import { firstInView } from "@/util/dom";
+import AppCheckbox from "./AppCheckbox.vue";
 
 type Entries = Array<{
   section: HTMLElement;

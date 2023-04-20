@@ -1,6 +1,6 @@
-import { biolink, request } from ".";
+import { flatMap, uniq, uniqBy } from "lodash";
+import { biolink, request } from "./";
 import { mapCategory } from "./categories";
-import { uniq, flatMap, uniqBy } from "lodash";
 import { getXrefLink } from "./xrefs";
 
 interface _EvidenceType {

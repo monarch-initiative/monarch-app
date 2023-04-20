@@ -1,5 +1,5 @@
-import { request } from ".";
 import type { Code } from "@/components/AppStatus.vue";
+import { request } from "./";
 
 /** https://uptimerobot.com/api/ */
 

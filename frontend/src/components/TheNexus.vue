@@ -7,15 +7,15 @@
 </template>
 
 <script setup lang="ts">
-import { debounce } from "lodash";
-import { sin, cos, dist, project, getMidpoint } from "@/util/math";
-import type { Point3d, Point2d } from "@/util/math";
 import { onMounted } from "vue";
+import { debounce } from "lodash";
 import {
   useEventListener,
-  useResizeObserver,
   useIntervalFn,
+  useResizeObserver,
 } from "@vueuse/core";
+import type { Point2d, Point3d } from "@/util/math";
+import { cos, dist, getMidpoint, project, sin } from "@/util/math";
 
 /** Settings shared across functions */
 

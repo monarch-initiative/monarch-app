@@ -27,9 +27,9 @@ export const snackbar = (message: string): unknown =>
 </script>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import { restartAnimations } from "@/util/dom";
+import { computed, ref } from "vue";
 import { useEventListener, useTimeoutFn } from "@vueuse/core";
+import { restartAnimations } from "@/util/dom";
 
 /** Current notification text */
 const text = ref("");

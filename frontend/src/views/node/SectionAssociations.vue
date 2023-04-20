@@ -60,15 +60,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
-import { useRouter, useRoute } from "vue-router";
-import AppSelectSingle from "@/components/AppSelectSingle.vue";
-import type { Option, Options } from "@/components/AppSelectSingle.vue";
-import AppTabs from "@/components/AppTabs.vue";
-import AppNodeBadge from "@/components/AppNodeBadge.vue";
-import type { Node } from "@/api/node-lookup";
+import { computed, ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { getAssociationLabel } from "@/api/categories";
 import type { Association } from "@/api/node-associations";
+import type { Node } from "@/api/node-lookup";
+import AppNodeBadge from "@/components/AppNodeBadge.vue";
+import type { Option, Options } from "@/components/AppSelectSingle.vue";
+import AppSelectSingle from "@/components/AppSelectSingle.vue";
+import AppTabs from "@/components/AppTabs.vue";
 import AssociationsSummary from "./AssociationsSummary.vue";
 import AssociationsTable from "./AssociationsTable.vue";
 import EvidenceViewer from "./EvidenceViewer.vue";

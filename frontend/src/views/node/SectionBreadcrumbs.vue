@@ -37,10 +37,10 @@
 <script setup lang="ts">
 import { watch } from "vue";
 import { useRoute } from "vue-router";
-import { breadcrumbs, updateBreadcrumbs } from "@/global/breadcrumbs";
 import type { Node } from "@/api/node-lookup";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppRelationBadge from "@/components/AppRelationBadge.vue";
+import { breadcrumbs, updateBreadcrumbs } from "@/global/breadcrumbs";
 
 type Props = {
   /** current node */

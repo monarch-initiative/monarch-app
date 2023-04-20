@@ -1,5 +1,5 @@
-import type { Node } from "./model";
 import { monarch, request } from "./index";
+import type { Node } from "./model";
 
 export const getEntity = async (id: string): Promise<Node> => {
   /** make query */

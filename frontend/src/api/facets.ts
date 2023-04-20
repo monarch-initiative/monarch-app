@@ -1,8 +1,8 @@
 import { mapValues } from "lodash";
-import type { Params } from ".";
 import type { Options } from "@/components/AppSelectMulti.vue";
-import { getIdsFromLabels } from "./taxons";
 import { renameKey } from "@/util/object";
+import type { Params } from "./";
+import { getIdsFromLabels } from "./taxons";
 
 /** format of facet counts returned from biolink */
 export type Facets = Record<string, Record<string, number>>;

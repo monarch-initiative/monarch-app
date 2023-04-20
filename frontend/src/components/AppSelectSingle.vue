@@ -92,8 +92,8 @@ export type Options = Array<Option>;
 <script setup lang="ts">
 import { nextTick, ref, watch } from "vue";
 import { uniqueId } from "lodash";
-import { wrap } from "@/util/math";
 import { useFloating } from "@/util/composables";
+import { wrap } from "@/util/math";
 
 type Props = {
   /** Two-way bound selected item state */

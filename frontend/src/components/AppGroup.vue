@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import { kebabCase, deburr } from "lodash";
+import { deburr, kebabCase } from "lodash";
 
 type Props = {
   /** Group name */
@@ -33,11 +33,10 @@ watch(
   async () => {
     const image = kebabCase(deburr((props.name || "").toLowerCase()));
     try {
-      src.value = (await import(`@/assets/team/groups/${image}.png`)).default;
-    } catch (error) {
-      console.error(error);
-    }
-  }
+      src.value = (await import(`../assets/team/groups/${image}.png`)).default;
+    } catch (error) {}
+  },
+  { immediate: true }
 );
 </script>
 

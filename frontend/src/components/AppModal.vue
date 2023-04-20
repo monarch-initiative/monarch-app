@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick, onUpdated, onBeforeUpdate } from "vue";
+import { nextTick, onBeforeUpdate, onUpdated, ref } from "vue";
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import { useEventListener } from "@vueuse/core";
 

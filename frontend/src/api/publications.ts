@@ -1,5 +1,5 @@
 import { mapKeys, mapValues } from "lodash";
-import { request } from ".";
+import { request } from "./";
 
 /** entrez endpoint for getting publication metadata */
 const entrez = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils";

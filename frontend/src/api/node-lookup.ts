@@ -1,10 +1,10 @@
 import { sortBy } from "lodash";
-import { biolink, request } from ".";
+import { biolink, request } from "./";
 import { categories, mapCategory } from "./categories";
-import { getXrefLink } from "./xrefs";
-import { getGene } from "./genes";
 import type { Gene } from "./genes";
+import { getGene } from "./genes";
 import { getPublication } from "./publications";
+import { getXrefLink } from "./xrefs";
 
 /** Node lookup info (from backend) */
 interface _Node {

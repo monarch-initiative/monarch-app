@@ -23,8 +23,8 @@
 </template>
 
 <script setup lang="ts">
+import { kebabCase, startCase } from "lodash";
 import type { Node } from "@/api/node-lookup";
-import { startCase, kebabCase } from "lodash";
 import { breadcrumbs } from "@/global/breadcrumbs";
 
 type Props = {

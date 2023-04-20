@@ -1,8 +1,8 @@
 import type { CSSProperties, Ref } from "vue";
 import { ref, shallowRef } from "vue";
+import { debounce } from "lodash";
 import { computePosition, flip, shift, size } from "@floating-ui/dom";
 import { useEventListener } from "@vueuse/core";
-import { debounce } from "lodash";
 
 /**
  * Inspired by react-query. simple query manager/wrapper for making queries in

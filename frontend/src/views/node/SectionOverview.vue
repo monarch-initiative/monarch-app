@@ -45,8 +45,8 @@
 
 <script setup lang="ts">
 import type { Node } from "@/api/node-lookup";
-import AppDetails from "@/components/AppDetails.vue";
 import AppDetail from "@/components/AppDetail.vue";
+import AppDetails from "@/components/AppDetails.vue";
 
 type Props = {
   /** Current node */

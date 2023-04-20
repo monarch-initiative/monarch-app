@@ -1,4 +1,4 @@
-import { request } from ".";
+import { request } from "./";
 
 /** serverless endpoint to make post on helpdesk with github api */
 const api =

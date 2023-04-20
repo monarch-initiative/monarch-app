@@ -97,20 +97,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from "vue";
-import AppTable from "@/components/AppTable.vue";
-import type { Col, Cols, Sort } from "@/components/AppTable.vue";
-import AppNodeBadge from "@/components/AppNodeBadge.vue";
-import AppRelationBadge from "@/components/AppRelationBadge.vue";
-import type { Node } from "@/api/node-lookup";
-import type { Association } from "@/api/node-associations";
-import { getTabulatedAssociations } from "@/api/node-associations";
-import { downloadJson } from "@/util/download";
-import { snackbar } from "@/components/TheSnackbar.vue";
+import { computed, onMounted, ref, watch } from "vue";
 import type { Filters } from "@/api/facets";
 import { filtersToQuery } from "@/api/facets";
+import type { Association } from "@/api/node-associations";
+import { getTabulatedAssociations } from "@/api/node-associations";
+import type { Node } from "@/api/node-lookup";
+import AppNodeBadge from "@/components/AppNodeBadge.vue";
+import AppRelationBadge from "@/components/AppRelationBadge.vue";
 import type { Options } from "@/components/AppSelectMulti.vue";
+import type { Col, Cols, Sort } from "@/components/AppTable.vue";
+import AppTable from "@/components/AppTable.vue";
+import { snackbar } from "@/components/TheSnackbar.vue";
 import { useQuery } from "@/util/composables";
+import { downloadJson } from "@/util/download";
 
 type Props = {
   /** Current node */

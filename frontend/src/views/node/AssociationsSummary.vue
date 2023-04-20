@@ -66,12 +66,12 @@
 </template>
 
 <script setup lang="ts">
-import { watch, onMounted } from "vue";
-import AppNodeBadge from "@/components/AppNodeBadge.vue";
-import AppRelationBadge from "@/components/AppRelationBadge.vue";
-import type { Node } from "@/api/node-lookup";
+import { onMounted, watch } from "vue";
 import type { Association } from "@/api/node-associations";
 import { getTopAssociations } from "@/api/node-associations";
+import type { Node } from "@/api/node-lookup";
+import AppNodeBadge from "@/components/AppNodeBadge.vue";
+import AppRelationBadge from "@/components/AppRelationBadge.vue";
 import { useQuery } from "@/util/composables";
 
 type Props = {

@@ -111,10 +111,10 @@ export type Option = {
 </script>
 
 <script setup lang="ts">
-import { ref, watch, nextTick, computed } from "vue";
+import { computed, nextTick, ref, watch } from "vue";
 import { uniqueId } from "lodash";
-import { wrap } from "@/util/math";
 import { useFloating, useQuery } from "@/util/composables";
+import { wrap } from "@/util/math";
 import AppTextbox from "./AppTextbox.vue";
 
 type Props = {

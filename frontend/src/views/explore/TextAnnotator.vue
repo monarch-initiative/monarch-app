@@ -75,15 +75,15 @@
 
 <script setup lang="ts">
 import { onMounted } from "vue";
-import { useLocalStorage } from "@vueuse/core";
 import { kebabCase, uniqBy } from "lodash";
+import { useLocalStorage } from "@vueuse/core";
+import { annotateText } from "@/api/text-annotator";
 import AppTextbox from "@/components/AppTextbox.vue";
 import AppUpload from "@/components/AppUpload.vue";
-import example from "./text-annotator.json";
-import { annotateText } from "@/api/text-annotator";
-import { downloadJson } from "@/util/download";
 import { appendToBody } from "@/global/tooltip";
 import { useQuery } from "@/util/composables";
+import { downloadJson } from "@/util/download";
+import example from "./text-annotator.json";
 
 /** text content */
 const content = useLocalStorage("annotations-content", "");

@@ -1,7 +1,7 @@
-import { biolink, request } from ".";
-import { getSearchResults } from "./node-search";
 import type { Options, OptionsFunc } from "@/components/AppSelectTags.vue";
 import { stringify } from "@/util/object";
+import { biolink, request } from "./";
+import { getSearchResults } from "./node-search";
 
 /** Search individual phenotypes or gene/disease phenotypes */
 export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {

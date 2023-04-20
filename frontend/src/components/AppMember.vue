@@ -17,8 +17,8 @@
 </template>
 
 <script setup lang="ts">
-import { watch, ref } from "vue";
-import { kebabCase, deburr } from "lodash";
+import { ref, watch } from "vue";
+import { deburr, kebabCase } from "lodash";
 
 type Props = {
   /** Member name */
@@ -38,11 +38,12 @@ watch(
   async () => {
     const image = kebabCase(deburr((props.name || "").toLowerCase()));
     try {
-      src.value = (await import(`@/assets/team/members/${image}.jpg`)).default;
+      src.value = (await import(`../assets/team/members/${image}.jpg`)).default;
     } catch (error) {
-      src.value = (await import(`@/assets/team/_member.jpg`)).default;
+      src.value = (await import(`../assets/team/_member.jpg`)).default;
     }
-  }
+  },
+  { immediate: true }
 );
 </script>
 

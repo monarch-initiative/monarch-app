@@ -1,13 +1,13 @@
 import { createApp } from "vue";
-import * as Sentry from "@sentry/vue";
-import { BrowserTracing } from "@sentry/tracing";
 import VueGtag from "vue-gtag";
 import Hotjar from "vue-hotjar";
-import "wicg-inert";
+import { BrowserTracing } from "@sentry/tracing";
+import * as Sentry from "@sentry/vue";
 import App from "@/App.vue";
 import components from "@/global/components";
 import plugins from "@/global/plugins";
 import router from "@/router";
+import "wicg-inert";
 import "@/global/meta";
 
 /** log env variables for debugging */

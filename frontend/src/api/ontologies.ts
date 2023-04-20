@@ -1,6 +1,6 @@
-import { request } from ".";
-import staticData from "./ontologies.json";
 import { mergeArrays } from "@/util/object";
+import { request } from "./";
+import staticData from "./ontologies.json";
 import type { Source } from "./source";
 
 /** Source for ontology metadata */

@@ -1,5 +1,5 @@
-import { biolink, request } from "./index";
 import { mapCategory } from "./categories";
+import { biolink, request } from "./index";
 
 /** annotations (from backend) */
 interface _Annotations {

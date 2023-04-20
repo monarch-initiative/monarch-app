@@ -1,4 +1,5 @@
 import { sleep } from "@/util/debug";
+
 /** restart an element's CSS animations programmatically */
 export const restartAnimations = (element: Element): void => {
   if (element instanceof Element)

@@ -1,4 +1,4 @@
-import { request } from ".";
+import { request } from "./";
 
 /**
  * map our id prefixes to prefixes that mygene expects

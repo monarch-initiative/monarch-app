@@ -168,24 +168,24 @@
 </template>
 
 <script setup lang="ts">
-import { watch, onMounted, ref } from "vue";
-import AppTabs from "@/components/AppTabs.vue";
-import AppDetails from "@/components/AppDetails.vue";
+import { onMounted, ref, watch } from "vue";
+import { getAssociationEvidence } from "@/api/association-evidence";
+import type { Association } from "@/api/node-associations";
+import type { Node } from "@/api/node-lookup";
 import AppDetail from "@/components/AppDetail.vue";
-import AppTable from "@/components/AppTable.vue";
+import AppDetails from "@/components/AppDetails.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppRelationBadge from "@/components/AppRelationBadge.vue";
-import type { Node } from "@/api/node-lookup";
-import { scrollToElement } from "@/router";
-import { getAssociationEvidence } from "@/api/association-evidence";
-import { breakUrl } from "@/util/string";
-import { appendToBody } from "@/global/tooltip";
-import { waitFor } from "@/util/dom";
-import type { Association } from "@/api/node-associations";
-import { useQuery } from "@/util/composables";
-import { snackbar } from "@/components/TheSnackbar.vue";
-import { downloadJson } from "@/util/download";
 import type { Cols } from "@/components/AppTable.vue";
+import AppTable from "@/components/AppTable.vue";
+import AppTabs from "@/components/AppTabs.vue";
+import { snackbar } from "@/components/TheSnackbar.vue";
+import { appendToBody } from "@/global/tooltip";
+import { scrollToElement } from "@/router";
+import { useQuery } from "@/util/composables";
+import { waitFor } from "@/util/dom";
+import { downloadJson } from "@/util/download";
+import { breakUrl } from "@/util/string";
 
 type Props = {
   /** Current node */

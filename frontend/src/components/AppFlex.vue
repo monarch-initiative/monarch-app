@@ -18,6 +18,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+
 /** map nice human align names to css flex align names */
 const alignMap = {
   left: "flex-start",

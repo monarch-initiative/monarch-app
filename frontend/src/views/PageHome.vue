@@ -185,14 +185,14 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import AppTabs from "@/components/AppTabs.vue";
+import { getBlogPosts } from "@/api/blog";
 // import AppHighlight from "@/components/AppHighlight.vue";
 import AppPost from "@/components/AppPost.vue";
+import AppTabs from "@/components/AppTabs.vue";
 import AppTile from "@/components/AppTile.vue";
-import tabs from "./explore/tabs.json";
-import NodeSearch from "./explore/NodeSearch.vue";
 import { useQuery } from "@/util/composables";
-import { getBlogPosts } from "@/api/blog";
+import NodeSearch from "./explore/NodeSearch.vue";
+import tabs from "./explore/tabs.json";
 
 /** selected tab state */
 const tab = ref(tabs[0].id);

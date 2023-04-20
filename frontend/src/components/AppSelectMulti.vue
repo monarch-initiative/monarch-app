@@ -139,10 +139,10 @@ export type Options = Array<Option>;
 </script>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick } from "vue";
+import { computed, nextTick, ref, watch } from "vue";
 import { isEqual, uniqueId } from "lodash";
-import { wrap } from "@/util/math";
 import { useFloating } from "@/util/composables";
+import { wrap } from "@/util/math";
 
 type Props = {
   /** Two-way bound selected items state */

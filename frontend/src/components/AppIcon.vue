@@ -26,10 +26,10 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { findIconDefinition } from "@fortawesome/fontawesome-svg-core";
-import type { IconPrefix, IconName } from "@fortawesome/fontawesome-svg-core";
 import InlineSvg from "vue-inline-svg";
+import type { IconName, IconPrefix } from "@fortawesome/fontawesome-svg-core";
+import { findIconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 type Props = {
   /**
@@ -47,11 +47,10 @@ watch(
   () => props.icon,
   async () => {
     try {
-      custom.value = (await import(`@/assets/icons/${props.icon}.svg`)).default;
-    } catch (error) {
-      console.error(error);
-    }
-  }
+      custom.value = (await import(`../assets/icons/${props.icon}.svg`)).default;
+    } catch (error) {}
+  },
+  { immediate: true }
 );
 
 /** Find font awesome icon with matching name, if there is one */
