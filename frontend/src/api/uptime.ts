@@ -4,7 +4,7 @@ import { request } from "./";
 /** https://uptimerobot.com/api/ */
 
 /** Uptimerobot api endpoint */
-const uptimeRobot = "https://api.uptimerobot.com/v2/getMonitors";
+export const uptimeRobot = "https://api.uptimerobot.com/v2/getMonitors";
 /** Read-only api key, safe to be distributed */
 const key = "ur1488940-1c05ba09e0aef926989d6593";
 /** Uptimerobot.org page for statuses */

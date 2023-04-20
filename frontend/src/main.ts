@@ -50,9 +50,9 @@ if (import.meta.env.NODE_ENV === "production")
 
 (async () => {
   /** mock api for local development */
-  // const { setupWorker } = await import("msw");
-  // const { handlers } = await import("../tests/fixtures");
-  // await setupWorker(...handlers).start();
+  const { setupWorker } = await import("msw");
+  const { handlers } = await import("../fixtures");
+  await setupWorker(...handlers).start();
 
   /** start app */
   app.mount("#app");

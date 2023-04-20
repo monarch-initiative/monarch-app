@@ -87,7 +87,6 @@ const id = ref(uniqueId());
 
 /** When user clicks on button */
 async function onClick(id: string) {
-  console.log(id);
   emit("update:modelValue", id);
 }
 

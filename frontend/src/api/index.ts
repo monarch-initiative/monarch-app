@@ -1,6 +1,6 @@
 /** base api url */
 export const biolink = "https://api.monarchinitiative.org/api";
-export const monarch = "https://api-dev.monarchinitiative.org/api";
+export const monarch = "https://api-dev.monarchinitiative.org/v3/api";
 
 /**
  * key/value object for request query parameters. use primitive for single, e.g.

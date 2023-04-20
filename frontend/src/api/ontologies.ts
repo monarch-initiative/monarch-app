@@ -4,7 +4,7 @@ import staticData from "./ontologies.json";
 import type { Source } from "./source";
 
 /** Source for ontology metadata */
-const obo = "https://obofoundry.org/registry/ontologies.jsonld";
+export const obo = "https://obofoundry.org/registry/ontologies.jsonld";
 
 /** Knowledge graph ontologies (from backend) */
 type _Ontologies = {

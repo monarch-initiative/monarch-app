@@ -1,5 +1,7 @@
 import { request } from "./";
 
+export const mygeneinfo = "https://mygene.info/v3/query";
+
 /**
  * map our id prefixes to prefixes that mygene expects
  * http://docs.mygene.info/en/latest/doc/data.html#species
@@ -45,8 +47,8 @@ export const getGene = async (id = ""): Promise<Gene> => {
     fields: "summary,genomic_pos,name,symbol,taxid",
     species,
   };
-  const url = "https://mygene.info/v3/query";
-  const { hits } = await request<_Gene>(url, params);
+
+  const { hits } = await request<_Gene>(mygeneinfo, params);
 
   /** take first result */
   const hit = hits[0] || {};

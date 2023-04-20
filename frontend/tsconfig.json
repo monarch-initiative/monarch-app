@@ -10,12 +10,5 @@
     {
       "path": "./tsconfig.vitest.json"
     }
-  ],
-  "compilerOptions": {
-    "target": "esnext",
-    "lib": ["esnext"],
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "esModuleInterop": true
-  }
+  ]
 }

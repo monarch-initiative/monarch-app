@@ -1,8 +1,10 @@
 import { mapKeys, mapValues } from "lodash";
 import { request } from "./";
 
-/** entrez endpoint for getting publication metadata */
+/** entrez endpoints for getting publication metadata */
 const entrez = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils";
+export const esummary = `${entrez}/esummary.fcgi`;
+export const efetch = `${entrez}/efetch.fcgi`;
 
 /** get metadata of publication from entrez */
 export const getPublication = async (id = ""): Promise<Publication> => {
@@ -52,8 +54,7 @@ export const getSummaries = async (ids: string[]): Promise<Summaries> => {
 
   /** make query */
   const params = { db: "pubmed", retmode: "json", id: ids.join(",") };
-  const url = `${entrez}/esummary.fcgi`;
-  const { result } = await request<_Summary>(url, params);
+  const { result } = await request<_Summary>(esummary, params);
 
   /** convert into desired result format */
   let publications = mapValues(result, (publication) => ({
@@ -79,8 +80,7 @@ export const getAbstract = async (id = ""): Promise<Abstract> => {
 
   /** make query */
   const params = { db: "pubmed", retmode: "text", rettype: "abstract", id };
-  const url = `${entrez}/efetch.fcgi`;
-  return await request<string>(url, params, {}, "text");
+  return await request<string>(efetch, params, {}, "text");
 };
 
 type Summaries = {
