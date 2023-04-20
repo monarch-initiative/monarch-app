@@ -87,6 +87,7 @@ const id = ref(uniqueId());
 
 /** When user clicks on button */
 async function onClick(id: string) {
+  console.log(id);
   emit("update:modelValue", id);
 }
 
@@ -130,8 +131,10 @@ watch(
     // button?.focus();
 
     /** Update hash in url and nav if applicable */
-    if (props.route) await router.replace({ name: props.route });
-    else if (props.url) await router.push({ hash: "#" + props.modelValue });
+    await router.push({
+      name: props.route ? props.route : undefined,
+      hash: props.url ? "#" + props.modelValue : undefined,
+    });
   }
 );
 
