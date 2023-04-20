@@ -9,7 +9,7 @@ type Breadcrumb = {
 }
 
 /** Breadcrumbs object for breadcrumbs section on node page */
-export const breadcrumbs = ref<Array<Breadcrumb>>([]);
+export const breadcrumbs = ref<Breadcrumb[]>([]);
 
 /** Keep breadcrumbs global variable in sync with history.state.breadcrumbs */
 export const updateBreadcrumbs = () =>

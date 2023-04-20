@@ -20,16 +20,16 @@ type _Summary = {
       pubdate: string;
       epubdate: string;
       source: string;
-      authors: Array<{ name: string }>;
+      authors: { name: string }[];
       title: string;
       volume: string;
       issue: string;
       pages: string;
-      lang: Array<string>;
+      lang: string[];
       issn: string;
       essn: string;
-      pubtype: Array<string>;
-      articleids: Array<{ idtype: string; value: string }>;
+      pubtype: string[];
+      articleids: { idtype: string; value: string }[];
       fulljournalname: string;
       elocationid: string;
       doctype: string;
@@ -38,10 +38,10 @@ type _Summary = {
       publishername: string;
     };
   };
-}
+};
 
 /** get summary information of publication(s) from entrez */
-export const getSummaries = async (ids: Array<string>): Promise<Summaries> => {
+export const getSummaries = async (ids: string[]): Promise<Summaries> => {
   /** strip prefix as entrez expects */
   ids = ids
     .map((id) => id.replace("PMID:", ""))
@@ -87,12 +87,12 @@ type Summaries = {
   [key: string]: {
     id: string;
     title: string;
-    authors: Array<string>;
+    authors: string[];
     date: Date;
     doi: string;
     journal: string;
   };
-}
+};
 
 type Abstract = string;
 
@@ -100,9 +100,9 @@ type Abstract = string;
 type Publication = {
   id: string;
   title: string;
-  authors: Array<string>;
+  authors: string[];
   date: Date;
   doi: string;
   journal: string;
   abstract: string;
-}
+};

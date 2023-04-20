@@ -86,7 +86,7 @@ export type Option = {
   tooltip?: string;
 };
 
-export type Options = Array<Option>;
+export type Options = Option[];
 </script>
 
 <script setup lang="ts">

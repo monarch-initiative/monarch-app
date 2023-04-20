@@ -55,7 +55,7 @@ type Tab = {
   description?: string;
   tooltip?: string;
 };
-type Tabs = Array<Tab>;
+type Tabs = Tab[];
 
 type Props = {
   /** Two-way bound selected tab state */

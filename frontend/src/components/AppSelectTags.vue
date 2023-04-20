@@ -150,7 +150,7 @@ export type OptionsFunc = (search: string) => Promise<{
   message?: string;
 }>;
 
-export type Options = Array<Option>;
+export type Options = Option[];
 
 export type Option = {
   /** Unique id used in state of select */

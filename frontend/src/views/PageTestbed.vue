@@ -186,7 +186,7 @@ const input = ref("");
 type ButtonProps = InstanceType<typeof AppButton>["$props"];
 
 /** Enumerate permutations of button options */
-const buttons = ref<Array<Array<ButtonProps>>>([]);
+const buttons = ref<ButtonProps[][]>([]);
 for (const design of ["normal", "circle", "small"]) {
   for (const color of ["primary", "secondary"]) {
     const row = [];

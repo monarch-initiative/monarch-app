@@ -62,8 +62,8 @@ let canvas = null as HTMLCanvasElement | null;
 let ctx = null as CanvasRenderingContext2D | null;
 let width = 0;
 let height = 0;
-let dots: Array<Dot> = [];
-let links: Array<Link> = [];
+let dots: Dot[] = [];
+let links: Link[] = [];
 
 /** Resize canvas */
 function resize() {

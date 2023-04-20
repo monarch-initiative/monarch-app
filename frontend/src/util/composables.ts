@@ -9,7 +9,7 @@ import { useEventListener } from "@vueuse/core";
  * components. reduces repetitive boilerplate code for loading/error states,
  * try/catch blocks, de-duplicating requests, etc.
  */
-export const useQuery = <Data, Args extends Array<unknown>>(
+export const useQuery = <Data, Args extends unknown[]>(
   /**
    * Main async func that returns data. should be side-effect free to avoid race
    * conditions, because multiple can be running at same time.

@@ -72,12 +72,12 @@ import {
 import { firstInView } from "@/util/dom";
 import AppCheckbox from "./AppCheckbox.vue";
 
-type Entries = Array<{
+type Entries = {
   section: HTMLElement;
   id: string;
   icon: string;
   text: string;
-}>;
+}[];
 
 /** Toc entries */
 const entries = ref<Entries>([]);

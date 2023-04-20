@@ -96,7 +96,7 @@ const route = useRoute();
 type Props = {
   /** whether form is inside a modal */
   modal?: boolean;
-}
+};
 
 withDefaults(defineProps<Props>(), { modal: false });
 
@@ -115,7 +115,7 @@ const details = computed(() => {
   const { browser, device, os, engine, cpu } = parser();
 
   /** filter and join strings together */
-  const concat = (...array: Array<string | undefined>) =>
+  const concat = (...array: (string | undefined)[]) =>
     array.filter((e) => e && e !== "()").join(" ");
 
   /** make map of desired properties in desired stringified format */

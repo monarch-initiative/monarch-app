@@ -11,5 +11,5 @@ export type Source = {
   description?: string;
   usage?: string;
   vocabulary?: string;
-  files?: Array<string>;
+  files?: string[];
 }

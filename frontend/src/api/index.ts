@@ -1,6 +1,4 @@
-/**
- * base api url
- */
+/** base api url */
 export const biolink = "https://api.monarchinitiative.org/api";
 export const monarch = "https://api-dev.monarchinitiative.org/api";
 
@@ -9,7 +7,7 @@ export const monarch = "https://api-dev.monarchinitiative.org/api";
  * evidence=true. use array for multiple/duplicate, e.g. id=abc&id=def&id=ghi
  */
 type Param = string | number | boolean | undefined | null;
-export type Params = Record<string, Param | Array<Param>>;
+export type Params = Record<string, Param | Param[]>;
 
 /**
  * generic fetch request wrapper
@@ -118,7 +116,7 @@ type _Error = {
   error: {
     message: string;
   };
-}
+};
 
 /**
  * create dummy caches interface. only really needed for local mobile testing so

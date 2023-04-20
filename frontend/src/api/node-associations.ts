@@ -9,14 +9,14 @@ import { getXrefLink } from "./xrefs";
 /** Node associations (from backend) */
 type _Associations = {
   numFound: number;
-  associations: Array<{
+  associations: {
     id: string;
     type?: string;
     subject: {
       id: string;
       label: string;
       iri: string;
-      category?: Array<string> | null;
+      category?: string[] | null;
       taxon: {
         id: null;
         label: null;
@@ -26,7 +26,7 @@ type _Associations = {
       id: string;
       label: string;
       iri: string;
-      category?: Array<string> | null;
+      category?: string[] | null;
       taxon?: {
         id: null;
         label: null;
@@ -36,18 +36,18 @@ type _Associations = {
       id: string;
       label: string;
       iri: string;
-      category?: Array<string> | null;
+      category?: string[] | null;
       inverse: boolean;
     };
-    evidence_types?: Array<{
+    evidence_types?: {
       id: string;
       label: string;
-    }>;
-    provided_by?: Array<string>;
-    publications?: Array<{
+    }[];
+    provided_by?: string[];
+    publications?: {
       id: string;
       label: string;
-    }>;
+    }[];
     frequency?: {
       id?: string;
       label?: string;
@@ -56,9 +56,9 @@ type _Associations = {
       id?: string;
       label?: string;
     };
-  }>;
+  }[];
   facet_counts: Record<string, Record<string, number>>;
-}
+};
 
 /** Get associations between a node and a category */
 export const getTabulatedAssociations = async (
@@ -224,7 +224,7 @@ export type Association = {
   };
 
   /** Evidence info supporting this association */
-  evidence: Array<Record<string, unknown>>;
+  evidence: Record<string, unknown>[];
 
   /** Mixed-type total of pieces of supporting evidence */
   supportCount: number;
@@ -252,15 +252,15 @@ export type Association = {
   year?: string;
   /** Publication publisher */
   publisher?: string;
-}
+};
 
 /** Node associations (for frontend) */
 export type Associations = {
   count: number;
-  associations: Array<Association>;
+  associations: Association[];
 
   facets: Filters;
-}
+};
 
 /** Get top few associations */
 export const getTopAssociations = async (

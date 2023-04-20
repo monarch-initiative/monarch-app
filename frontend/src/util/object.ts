@@ -5,11 +5,11 @@ type Obj = { id?: string };
 
 /** merge two arrays of objects by id */
 export const mergeArrays = (
-  arrayA: Array<Obj>,
-  arrayB: Array<Obj>,
+  arrayA: Obj[],
+  arrayB: Obj[],
   /** only include entries that are in array A */
   exclusive = false
-): Array<Obj> => {
+): Obj[] => {
   /** store to keep id-deduped list of entries */
   const result: Record<string, Obj> = {};
 

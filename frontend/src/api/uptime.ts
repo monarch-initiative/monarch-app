@@ -12,12 +12,12 @@ const page = "https://stats.uptimerobot.com/XPRo9s4BJ5";
 
 /** Uptime responses (from backend) */
 type _Uptimes = {
-  monitors?: Array<{
+  monitors?: {
     id?: string;
     friendly_name?: string;
     status?: _Code;
-  }>;
-}
+  }[];
+};
 
 /** Possible status codes (from backend) */
 enum _Code {
@@ -59,8 +59,8 @@ export const getUptimes = async (): Promise<Uptimes> => {
 };
 
 /** Uptimes (for frontend) */
-export type Uptimes = Array<{
+export type Uptimes = {
   code: Code;
   text: string;
   link: string;
-}>;
+}[];

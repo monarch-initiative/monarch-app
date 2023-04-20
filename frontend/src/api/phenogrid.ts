@@ -7,8 +7,8 @@ import { biolink } from "./";
 /** mount phenogrid to dom element with options */
 export const mountPhenogrid = async (
   selector: string,
-  xAxis: Array<{ id?: string; name?: string }>,
-  yAxis: Array<{ id?: string; name?: string }>,
+  xAxis: { id?: string; name?: string }[],
+  yAxis: { id?: string; name?: string }[],
   mode = "compare"
 ): Promise<void> => {
   /**
@@ -52,16 +52,16 @@ export type PhenogridDefinition = {
       appURL: string;
       gridSkeletonData: {
         title: string;
-        xAxis: Array<{ groupId: string; groupName: string } | Array<string>>;
-        yAxis: Array<{ id: string; term: string }>;
+        xAxis: ({ groupId: string; groupName: string } | string[])[];
+        yAxis: { id: string; term: string }[];
       };
       selectedCalculation: number;
       selectedSort: string;
-      geneList: Array<{ groupId: string; groupName: string } | Array<string>>;
+      geneList: ({ groupId: string; groupName: string } | string[])[];
       owlSimFunction: string;
     }
   ) => void;
-}
+};
 
 /** fix incorrect svg sizing */
 const patchSvg = (svg: Element, padding = 20) => {

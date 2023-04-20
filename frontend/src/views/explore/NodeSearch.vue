@@ -265,7 +265,7 @@ const to = computed(
 );
 
 /** Pages of results */
-const pages = computed((): Array<Array<number>> => {
+const pages = computed((): number[][] => {
   /** Get full list of pages */
   const pages = Array(Math.ceil(results.value.count / perPage.value))
     .fill(0)
@@ -292,7 +292,7 @@ const pages = computed((): Array<Array<number>> => {
   list = uniq(list).filter((page) => page >= 0 && page <= pages.length - 1);
 
   /** Split into sub lists where page numbers are not sequential */
-  const splitList: Array<Array<number>> = [[]];
+  const splitList: number[][] = [[]];
   for (let index = 0; index < list.length; index++) {
     if (list[index - 1] && list[index] - list[index - 1] > 1)
       splitList.push([]);

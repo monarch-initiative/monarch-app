@@ -8,17 +8,17 @@ const encode = (string: string) => string.replaceAll(/[^a-zA-Z0-9]/g, " ");
 /** Search results (from backend) */
 type _SearchResults = {
   numFound: number;
-  docs: Array<{
+  docs: {
     id: string;
-    category?: Array<string>;
-    equivalent_curie?: Array<string>;
-    definition?: Array<string>;
-    label?: Array<string>;
+    category?: string[];
+    equivalent_curie?: string[];
+    definition?: string[];
+    label?: string[];
     score?: number;
     prefix?: string;
     taxon?: string;
     taxon_label?: string;
-  }>;
+  }[];
   facet_counts: Record<string, Record<string, number>>;
   highlighting: Record<
     string,
@@ -26,7 +26,7 @@ type _SearchResults = {
       highlight?: string;
     }
   >;
-}
+};
 
 /** Search for node with text and filters */
 export const getSearchResults = async (
@@ -98,11 +98,11 @@ export const getSearchResults = async (
 /** Search results (for frontend) */
 export type SearchResults = {
   count: number;
-  results: Array<{
+  results: {
     id: string;
     name?: string;
-    altIds?: Array<string>;
-    altNames?: Array<string>;
+    altIds?: string[];
+    altNames?: string[];
     category?: string;
     description?: string;
     score?: number;
@@ -112,9 +112,9 @@ export type SearchResults = {
       id: string;
       name: string;
     };
-  }>;
+  }[];
   facets: Filters;
-}
+};
 
 /** Autocomplete results (from backend) */
 type _Autocomplete = {
@@ -124,7 +124,7 @@ type _Autocomplete = {
       highlight?: string;
     }
   ];
-}
+};
 
 /** Search for quick autocomplete matches to query string */
 export const getAutocompleteResults = async (
@@ -141,7 +141,7 @@ export const getAutocompleteResults = async (
 };
 
 /** Autocomplete results (for frontend) */
-type Autocomplete = Array<{
+type Autocomplete = {
   name: string;
   highlight: string;
-}>;
+}[];

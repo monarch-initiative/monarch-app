@@ -135,7 +135,7 @@ export type Option = {
   tooltip?: string;
 };
 
-export type Options = Array<Option>;
+export type Options = Option[];
 </script>
 
 <script setup lang="ts">
@@ -155,7 +155,7 @@ type Props = {
   showCounts?: boolean;
   /** Visual design */
   design?: "normal" | "small";
-}
+};
 
 const props = withDefaults(defineProps<Props>(), {
   showCounts: true,
@@ -169,7 +169,7 @@ type Emits = {
   (event: "input"): void;
   /** When value change "submitted"/"committed" by user */
   (event: "change", value: Options): void;
-}
+};
 
 const emit = defineEmits<Emits>();
 
@@ -178,9 +178,9 @@ const id = ref(uniqueId());
 /** Whether dropdown is open */
 const expanded = ref(false);
 /** Array of indices of selected options */
-const selected = ref<Array<number>>([]);
+const selected = ref<number[]>([]);
 /** Selected state when dropdown was opened */
-const original = ref<Array<number>>([]);
+const original = ref<number[]>([]);
 /** Index of option that is highlighted */
 const highlighted = ref(0);
 
@@ -263,7 +263,7 @@ function onKeydown(event: KeyboardEvent) {
 }
 
 /** Get new selected option indices from model value */
-function getSelected(): Array<number> {
+function getSelected(): number[] {
   return props.options
     .map((option, index) =>
       props.modelValue.find((model) => option.id === model.id) ? index : -1

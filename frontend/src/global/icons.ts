@@ -5,7 +5,7 @@ import * as fas from "@fortawesome/free-solid-svg-icons";
 
 /** Create collection/"palette" of useable icons */
 
-const icons: Array<IconDefinition> = [
+const icons: IconDefinition[] = [
   fab.faGithub,
   fab.faMedium,
   fab.faTwitter,

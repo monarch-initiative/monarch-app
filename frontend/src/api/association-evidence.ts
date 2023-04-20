@@ -6,23 +6,23 @@ import { getXrefLink } from "./xrefs";
 type _EvidenceType = {
   id: string;
   label?: string;
-}
+};
 
 type _Publication = {
   id: string;
   label?: string;
-}
+};
 
 /** evidence associations (from backend) */
 type _Evidences = {
-  associations: Array<{
+  associations: {
     id: string;
     type?: string;
     subject: {
       id: string;
       label: string;
       iri: string;
-      category?: Array<string> | null;
+      category?: string[] | null;
       taxon: {
         id: null;
         label: null;
@@ -32,7 +32,7 @@ type _Evidences = {
       id: string;
       label: string;
       iri: string;
-      category?: Array<string> | null;
+      category?: string[] | null;
       taxon?: {
         id: null;
         label: null;
@@ -42,16 +42,16 @@ type _Evidences = {
       id: string;
       label: string;
       iri: string;
-      category?: Array<string> | null;
+      category?: string[] | null;
       inverse: boolean;
     };
-    evidence_types?: Array<_EvidenceType>;
-    provided_by?: Array<string>;
-    publications?: Array<_Publication>;
-    object_eq?: Array<string>;
-    subject_eq?: Array<string>;
-  }>;
-}
+    evidence_types?: _EvidenceType[];
+    provided_by?: string[];
+    publications?: _Publication[];
+    object_eq?: string[];
+    subject_eq?: string[];
+  }[];
+};
 
 /** convert evidence code into desired format */
 const mapCode = (code: _EvidenceType) => ({
@@ -141,16 +141,16 @@ export const getAssociationEvidence = async (
 
 /** summary/overview of evidence */
 type Summary = {
-  codes: Array<{
+  codes: {
     name: string;
     link: string;
-  }>;
-  publications: Array<{
+  }[];
+  publications: {
     name: string;
     link: string;
-  }>;
-  sources: Array<string>;
-}
+  }[];
+  sources: string[];
+};
 
 /** singular evidence */
 type Evidence = {
@@ -180,35 +180,35 @@ type Evidence = {
   };
 
   /** evidence codes (add explanation of meaning) */
-  codes: Array<{
+  codes: {
     name: string;
     link: string;
-  }>;
+  }[];
 
   /** publications (add explanation of meaning) */
-  publications: Array<{
+  publications: {
     name: string;
     link: string;
-  }>;
+  }[];
 
   /** sources (add explanation of meaning) */
-  sources: Array<{
+  sources: {
     name: string;
     link: string;
-  }>;
+  }[];
 
   /** references (add explanation of meaning) */
-  references: Array<{
+  references: {
     name: string;
     link: string;
-  }>;
-}
+  }[];
+};
 
 /** detailed data of evidence */
-type Table = Array<Evidence>;
+type Table = Evidence[];
 
 /** plural evidence (for frontend) */
 export type Evidences = {
   summary: Summary;
   table: Table;
-}
+};

@@ -94,7 +94,7 @@
 <script lang="ts">
 export type OptionsFunc = (search: string) => Promise<Options>;
 
-export type Options = Array<Option>;
+export type Options = Option[];
 
 export type Option = {
   /** Icon name */

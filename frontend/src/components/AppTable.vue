@@ -220,8 +220,8 @@ export type Col = {
 export type Row = Record<string | number, any>;
 
 /** Arrays of rows and cols */
-export type Cols = Array<Col>;
-export type Rows = Array<Row>;
+export type Cols = Col[];
+export type Rows = Row[];
 
 /** Sort prop */
 export type Sort = {

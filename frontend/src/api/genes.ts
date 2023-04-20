@@ -17,7 +17,7 @@ const map: Record<string, { replace: string; species: string }> = {
 
 /** gene (from backend) */
 type _Gene = {
-  hits: Array<{
+  hits: {
     name: string;
     summary: string;
     symbol: string;
@@ -29,8 +29,8 @@ type _Gene = {
       ensemblgene: string;
       strand: number;
     };
-  }>;
-}
+  }[];
+};
 
 /** get metadata of gene from mygene */
 export const getGene = async (id = ""): Promise<Gene> => {
@@ -72,4 +72,4 @@ export type Gene = {
     strand: number;
     ensemblgene: string;
   };
-}
+};

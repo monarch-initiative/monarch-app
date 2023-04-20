@@ -49,13 +49,13 @@ export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
 
 /** Phenotype associations with gene/disease (from backend) */
 type _PhenotypeAssociations = {
-  associations: Array<{
+  associations: {
     object: {
       id: string;
       label: string;
     };
-  }>;
-}
+  }[];
+};
 
 /** Get phenotypes associated with gene/disease */
 const getPhenotypeAssociations = async (
@@ -85,7 +85,7 @@ const getPhenotypeAssociations = async (
 
 /** Results of phenotype comparison (from backend) */
 type _Comparison = {
-  matches: Array<{
+  matches: {
     id: string;
     label: string;
     type: string;
@@ -96,13 +96,13 @@ type _Comparison = {
     rank: string;
     score: number;
     significance: string;
-  }>;
-}
+  }[];
+};
 
 /** Compare a set of phenotypes to another set of phenotypes */
 export const compareSetToSet = async (
-  aPhenotypes: Array<string>,
-  bPhenotypes: Array<string>
+  aPhenotypes: string[],
+  bPhenotypes: string[]
 ): Promise<Comparison> => {
   /** Make request options */
   const headers = new Headers();
@@ -128,7 +128,7 @@ export const compareSetToSet = async (
 
 /** Compare a set of phenotypes to a gene or disease taxon id */
 export const compareSetToTaxon = async (
-  phenotypes: Array<string>,
+  phenotypes: string[],
   taxon: string
 ): Promise<Comparison> => {
   /** Endpoint settings */
@@ -161,13 +161,13 @@ const mapMatches = (response: _Comparison) => {
 
 /** Results of phenotype comparison (for frontend) */
 export type Comparison = {
-  matches: Array<{
+  matches: {
     id: string;
     name: string;
     score: number;
     category: string;
     taxon: string;
-  }>;
+  }[];
   minScore?: number;
   maxScore?: number;
-}
+};

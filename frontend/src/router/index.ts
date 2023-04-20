@@ -26,7 +26,7 @@ import PageTestbed from "@/views/PageTestbed.vue";
 
 /** List of routes and corresponding components. */
 /** KEEP IN SYNC WITH PUBLIC/SITEMAP.XML */
-export const routes: Array<RouteRecordRaw> = [
+export const routes: RouteRecordRaw[] = [
   /** Home page */
   {
     path: "/",

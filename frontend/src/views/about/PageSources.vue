@@ -200,7 +200,7 @@ onMounted(getSources);
 
 /** Shown sources */
 const filteredSources = computed(
-  (): Array<Source> =>
+  (): Source[] =>
     sources.value.filter(
       (source: Source) =>
         (source.type === "dataset" && showDatasets.value) ||

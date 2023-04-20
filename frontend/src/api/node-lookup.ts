@@ -11,25 +11,25 @@ type _Node = {
   id: string;
   label: string;
   iri: string;
-  category?: Array<string> | null;
+  category?: string[] | null;
   description: string | null;
-  types: Array<string>;
-  inheritance?: Array<{
+  types: string[];
+  inheritance?: {
     id: string;
     label: string;
     iri: string;
-  }>;
+  }[];
   synonyms?: [
     {
       val: string;
       pred: string;
-      xrefs: Array<string>;
+      xrefs: string[];
     }
   ];
-  clinical_modifiers?: Array<{ label: string }>;
+  clinical_modifiers?: { label: string }[];
   deprecated: true;
-  replaced_by: Array<string>;
-  consider: Array<string>;
+  replaced_by: string[];
+  consider: string[];
   taxon?: {
     id: string;
     label: string;
@@ -41,8 +41,8 @@ type _Node = {
       counts_by_taxon?: number;
     }
   >;
-  xrefs: Array<string>;
-}
+  xrefs: string[];
+};
 
 /** Lookup metadata for a node id */
 export const lookupNode = async (id = "", category = ""): Promise<Node> => {
@@ -143,25 +143,25 @@ export type Node = {
   category: string;
 
   /** Overview section */
-  synonyms: Array<string>;
+  synonyms: string[];
   /** Overview section */
   description: string;
 
   /** Details section */
   iri: string;
   /** Details section */
-  inheritance: Array<{
+  inheritance: {
     id: string;
     name: string;
     link: string;
-  }>;
+  }[];
   /** Details section */
-  modifiers: Array<string>;
+  modifiers: string[];
   /** Details section */
-  xrefs: Array<{
+  xrefs: {
     id: string;
     link: string;
-  }>;
+  }[];
 
   /** Details section (gene specific) */
   taxon?: {
@@ -175,7 +175,7 @@ export type Node = {
   genome?: Gene["genome"];
 
   /** Details section (publication specific) */
-  authors?: Array<string>;
+  authors?: string[];
   /** Details section (publication specific) */
   date?: Date;
   /** Details section (publication specific) */
@@ -184,9 +184,9 @@ export type Node = {
   journal?: string;
 
   /** Associations section */
-  associationCounts: Array<{
+  associationCounts: {
     id: string;
     count: number;
     countByTaxon?: number;
-  }>;
-}
+  }[];
+};

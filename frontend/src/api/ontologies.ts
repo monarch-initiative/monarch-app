@@ -8,15 +8,15 @@ const obo = "https://obofoundry.org/registry/ontologies.jsonld";
 
 /** Knowledge graph ontologies (from backend) */
 type _Ontologies = {
-  ontologies: Array<{
+  ontologies: {
     id: string;
     title?: string;
     homepage?: string;
     license?: { url?: string };
     depicted_by?: string;
     description?: string;
-  }>;
-}
+  }[];
+};
 
 /** Get metadata of all ontologies listed on obo */
 export const getOntologies = async (): Promise<Ontologies> => {
@@ -47,4 +47,4 @@ export const getOntologies = async (): Promise<Ontologies> => {
 };
 
 /** Knowledge graph ontologies (for frontend) */
-type Ontologies = Array<Source>;
+type Ontologies = Source[];

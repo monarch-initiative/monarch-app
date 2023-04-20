@@ -10,7 +10,7 @@ type _Hierarchy = {
       id: string;
       lbl: string;
       meta?: {
-        category?: Array<string>;
+        category?: string[];
       };
     }
   ];
@@ -54,9 +54,9 @@ export const getHierarchy = async (
   id = "",
   category = ""
 ): Promise<Hierarchy> => {
-  const superClasses: Array<Class> = [];
-  const equivalentClasses: Array<Class> = [];
-  const subClasses: Array<Class> = [];
+  const superClasses: Class[] = [];
+  const equivalentClasses: Class[] = [];
+  const subClasses: Class[] = [];
 
   /** make query params */
   const params = {
@@ -119,7 +119,7 @@ type Class = {
 
 /** hierarchy (for frontend) */
 export type Hierarchy = {
-  superClasses: Array<Class>;
-  equivalentClasses: Array<Class>;
-  subClasses: Array<Class>;
+  superClasses: Class[];
+  equivalentClasses: Class[];
+  subClasses: Class[];
 }

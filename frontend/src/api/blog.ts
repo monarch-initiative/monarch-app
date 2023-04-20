@@ -7,16 +7,16 @@ const monarchRss =
 
 /** items (from backend) */
 type _BlogItems = {
-  items: Array<{
+  items: {
     title?: string;
     pubDate?: string;
     link?: string;
     thumbnail?: string;
     description?: string;
     content?: string;
-    categories?: Array<string>;
-  }>;
-}
+    categories?: string[];
+  }[];
+};
 
 /** get "blog" entries from monarch on medium.com */
 export const getBlogPosts = async (): Promise<BlogItems> => {
@@ -33,11 +33,11 @@ export const getBlogPosts = async (): Promise<BlogItems> => {
 };
 
 /** items (for frontend) */
-type BlogItems = Array<{
+type BlogItems = {
   title: string;
   date: Date;
   link: string;
   thumbnail: string;
   description: string;
-  tags: Array<string>;
-}>;
+  tags: string[];
+}[];

@@ -11,7 +11,7 @@ export type Facets = Record<string, Record<string, number>>;
 export type Filters = Record<string, Options>;
 
 /** simplified filter format for passing to api funcs */
-export type Query = Record<string, Array<string>>;
+export type Query = Record<string, string[]>;
 
 /**
  * convert backend facets into filters (set of options) compatible with select

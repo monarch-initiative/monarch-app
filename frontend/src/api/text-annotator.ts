@@ -4,17 +4,17 @@ import { biolink, request } from "./index";
 /** annotations (from backend) */
 type _Annotations = {
   content: string;
-  spans: Array<{
+  spans: {
     start: number;
     end: number;
     text: string;
-    token: Array<{
+    token: {
       id: string;
-      category: Array<string>;
-      terms: Array<string>;
-    }>;
-  }>;
-}
+      category: string[];
+      terms: string[];
+    }[];
+  }[];
+};
 
 /** get annotations from full text */
 export const annotateText = async (content = ""): Promise<Annotations> => {
@@ -42,7 +42,7 @@ export const annotateText = async (content = ""): Promise<Annotations> => {
   if (!spans.length) return [];
 
   /** get ordered, de-duped list of string indices, including start and end */
-  const indices: Array<[number, number]> = [
+  const indices: [number, number][] = [
     0,
     ...new Set(spans.map(({ start, end }) => [start, end]).flat()),
     content.length - 1,
@@ -71,11 +71,11 @@ export const annotateText = async (content = ""): Promise<Annotations> => {
 };
 
 /** annotations (for frontend) */
-export type Annotations = Array<{
+export type Annotations = {
   text: string;
-  tokens: Array<{
+  tokens: {
     id: string;
     name: string;
     category: string;
-  }>;
-}>;
+  }[];
+}[];

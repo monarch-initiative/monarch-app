@@ -6,18 +6,18 @@ import { getXrefLink } from "./xrefs";
 
 /** knowledge graph datasets (from backend) */
 type _Datasets = {
-  nodes: Array<{
+  nodes: {
     id: string;
     meta: {
-      "http://purl.org/dc/terms/created": Array<string>;
+      "http://purl.org/dc/terms/created": string[];
     };
-  }>;
-  edges: Array<{
+  }[];
+  edges: {
     sub: string;
     obj: string;
     pred: string;
-  }>;
-}
+  }[];
+};
 
 /**
  * get metadata of all datasets used in monarch from biolink, in format of
@@ -64,4 +64,4 @@ export const getDatasets = async (): Promise<Datasets> => {
 };
 
 /** knowledge graph datasets (for frontend) */
-type Datasets = Array<Source>;
+type Datasets = Source[];
