@@ -132,7 +132,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-interface Emits {
+type Emits = {
   /** Two-way bound search state */
   (event: "update:modelValue", value: string): void;
   /** When input focused */

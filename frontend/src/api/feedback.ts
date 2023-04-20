@@ -4,11 +4,11 @@ import { request } from "./";
 const api =
   "https://us-central1-monarch-initiative.cloudfunctions.net/monarch-gh-issue-post";
 
-interface _Success {
+type _Success = {
   html_url: string;
 }
 
-interface _Error {
+type _Error = {
   error: string;
   next_request: string;
 }

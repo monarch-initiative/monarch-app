@@ -4,7 +4,7 @@ import { biolink, request } from "./";
 import { mapCategory } from "./categories";
 
 /** graph info to construct hierarchy (from backend) */
-interface _Hierarchy {
+type _Hierarchy = {
   nodes: [
     {
       id: string;
@@ -118,7 +118,7 @@ type Class = {
 };
 
 /** hierarchy (for frontend) */
-export interface Hierarchy {
+export type Hierarchy = {
   superClasses: Array<Class>;
   equivalentClasses: Array<Class>;
   subClasses: Array<Class>;

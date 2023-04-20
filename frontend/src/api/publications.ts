@@ -13,7 +13,7 @@ export const getPublication = async (id = ""): Promise<Publication> => {
 };
 
 /** publication summary info (from backend) */
-interface _Summary {
+type _Summary = {
   result: {
     [key: string]: {
       uid: string;
@@ -83,7 +83,7 @@ export const getAbstract = async (id = ""): Promise<Abstract> => {
   return await request<string>(url, params, {}, "text");
 };
 
-interface Summaries {
+type Summaries = {
   [key: string]: {
     id: string;
     title: string;
@@ -97,7 +97,7 @@ interface Summaries {
 type Abstract = string;
 
 /** publication (for frontend) */
-interface Publication {
+type Publication = {
   id: string;
   title: string;
   authors: Array<string>;

@@ -7,7 +7,7 @@ import { getPublication } from "./publications";
 import { getXrefLink } from "./xrefs";
 
 /** Node lookup info (from backend) */
-interface _Node {
+type _Node = {
   id: string;
   label: string;
   iri: string;
@@ -132,7 +132,7 @@ export const lookupNode = async (id = "", category = ""): Promise<Node> => {
 };
 
 /** Node (for frontend). structure/order mirrors sections on node page. */
-export interface Node {
+export type Node = {
   /** Title section */
   id: string;
   /** Title section */

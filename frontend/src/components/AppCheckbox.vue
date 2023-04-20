@@ -28,7 +28,7 @@ type Props = {
 
 defineProps<Props>();
 
-interface Emits {
+type Emits = {
   /** two-way bound checked state */
   (event: "update:modelValue", checked: boolean): void;
 }

@@ -162,7 +162,7 @@ const props = withDefaults(defineProps<Props>(), {
   design: "normal",
 });
 
-interface Emits {
+type Emits = {
   /** Two-way bound selected items state */
   (event: "update:modelValue", value: Options): void;
   /** When value changed */

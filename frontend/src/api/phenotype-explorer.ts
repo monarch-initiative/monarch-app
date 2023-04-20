@@ -48,7 +48,7 @@ export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
 };
 
 /** Phenotype associations with gene/disease (from backend) */
-interface _PhenotypeAssociations {
+type _PhenotypeAssociations = {
   associations: Array<{
     object: {
       id: string;
@@ -84,7 +84,7 @@ const getPhenotypeAssociations = async (
 };
 
 /** Results of phenotype comparison (from backend) */
-interface _Comparison {
+type _Comparison = {
   matches: Array<{
     id: string;
     label: string;
@@ -160,7 +160,7 @@ const mapMatches = (response: _Comparison) => {
 };
 
 /** Results of phenotype comparison (for frontend) */
-export interface Comparison {
+export type Comparison = {
   matches: Array<{
     id: string;
     name: string;

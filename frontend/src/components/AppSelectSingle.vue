@@ -106,7 +106,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-interface Emits {
+type Emits = {
   /** Two-way bound selected item state */
   (event: "update:modelValue", value: Option): void;
 }

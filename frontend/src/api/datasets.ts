@@ -5,7 +5,7 @@ import type { Source } from "./source";
 import { getXrefLink } from "./xrefs";
 
 /** knowledge graph datasets (from backend) */
-interface _Datasets {
+type _Datasets = {
   nodes: Array<{
     id: string;
     meta: {

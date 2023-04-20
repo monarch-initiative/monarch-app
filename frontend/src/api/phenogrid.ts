@@ -43,7 +43,7 @@ export const mountPhenogrid = async (
 /** SHIMS FOR PHENOGRID */
 
 /** typescript definition */
-export interface PhenogridDefinition {
+export type PhenogridDefinition = {
   createPhenogridForElement: (
     element: HTMLElement | null,
     options: {

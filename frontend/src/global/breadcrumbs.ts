@@ -3,7 +3,7 @@ import type { Association } from "@/api/node-associations";
 import type { Node } from "@/api/node-lookup";
 import { parse } from "@/util/object";
 
-interface Breadcrumb {
+type Breadcrumb = {
   node: Node;
   relation: Association["relation"];
 }

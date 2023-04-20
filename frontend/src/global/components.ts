@@ -32,7 +32,7 @@ export default globalComponents;
 
 /** typescript hints so editors can warn when you haven't supplied props properly */
 declare module "@vue/runtime-core" {
-  export interface GlobalComponents {
+  export type GlobalComponents = {
     AppButton: typeof AppButton;
     AppFlex: typeof AppFlex;
     AppGallery: typeof AppGallery;

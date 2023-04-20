@@ -200,7 +200,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-interface Emits {
+type Emits = {
   /** Two-way bound selected items state */
   (event: "update:modelValue", value: Options): void;
   /** When an option's spreadOptions func has been called */

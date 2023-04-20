@@ -85,7 +85,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-interface Emits {
+type Emits = {
   /** Change selected association */
   (event: "select", value?: Association): void;
 }

@@ -3,18 +3,18 @@ import { biolink, request } from "./";
 import { mapCategory } from "./categories";
 import { getXrefLink } from "./xrefs";
 
-interface _EvidenceType {
+type _EvidenceType = {
   id: string;
   label?: string;
 }
 
-interface _Publication {
+type _Publication = {
   id: string;
   label?: string;
 }
 
 /** evidence associations (from backend) */
-interface _Evidences {
+type _Evidences = {
   associations: Array<{
     id: string;
     type?: string;
@@ -140,7 +140,7 @@ export const getAssociationEvidence = async (
 };
 
 /** summary/overview of evidence */
-interface Summary {
+type Summary = {
   codes: Array<{
     name: string;
     link: string;
@@ -153,7 +153,7 @@ interface Summary {
 }
 
 /** singular evidence */
-interface Evidence {
+type Evidence = {
   /** subject of association */
   subject: {
     id: string;
@@ -208,7 +208,7 @@ interface Evidence {
 type Table = Array<Evidence>;
 
 /** plural evidence (for frontend) */
-export interface Evidences {
+export type Evidences = {
   summary: Summary;
   table: Table;
 }

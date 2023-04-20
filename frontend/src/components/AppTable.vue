@@ -194,7 +194,7 @@
 
 <script lang="ts">
 /** Table column */
-export interface Col {
+export type Col = {
   /**
    * Unique id, used to identify/match for sorting, filtering, and named slots.
    * use "divider" to create vertical divider to separate cols
@@ -277,7 +277,7 @@ const props = withDefaults(defineProps<Props>(), {
   showControls: true,
 });
 
-interface Emits {
+type Emits = {
   /** When sort changes */
   (event: "sort", sort: Sort): void;
   /** When filter changes */

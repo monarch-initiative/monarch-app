@@ -179,7 +179,7 @@ const bTaxonHuman = taxons[0];
 const bTaxonOptions = taxons.slice(1);
 
 /** Example data */
-interface GeneratedFrom {
+type GeneratedFrom = {
   /** The option (gene/disease/phenotype) that the phenotypes came from */
   option?: Option;
   /** The phenotypes themselves */

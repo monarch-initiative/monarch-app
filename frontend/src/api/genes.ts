@@ -16,7 +16,7 @@ const map: Record<string, { replace: string; species: string }> = {
 };
 
 /** gene (from backend) */
-interface _Gene {
+type _Gene = {
   hits: Array<{
     name: string;
     summary: string;
@@ -61,7 +61,7 @@ export const getGene = async (id = ""): Promise<Gene> => {
 };
 
 /** gene (for frontend) */
-export interface Gene {
+export type Gene = {
   name: string;
   description: string;
   symbol: string;

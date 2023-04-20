@@ -75,7 +75,7 @@ const props = withDefaults(defineProps<Props>(), {
   route: undefined,
 });
 
-interface Emits {
+type Emits = {
   /** Two-way bound selected tab state */
   (event: "update:modelValue", selected: string): void;
 }

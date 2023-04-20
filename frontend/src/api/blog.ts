@@ -6,7 +6,7 @@ const monarchRss =
   "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@monarchinit";
 
 /** items (from backend) */
-interface _BlogItems {
+type _BlogItems = {
   items: Array<{
     title?: string;
     pubDate?: string;

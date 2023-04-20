@@ -6,7 +6,7 @@ import { facetsToFilters, queryToParams } from "./facets";
 const encode = (string: string) => string.replaceAll(/[^a-zA-Z0-9]/g, " ");
 
 /** Search results (from backend) */
-interface _SearchResults {
+type _SearchResults = {
   numFound: number;
   docs: Array<{
     id: string;
@@ -96,7 +96,7 @@ export const getSearchResults = async (
 };
 
 /** Search results (for frontend) */
-export interface SearchResults {
+export type SearchResults = {
   count: number;
   results: Array<{
     id: string;
@@ -117,7 +117,7 @@ export interface SearchResults {
 }
 
 /** Autocomplete results (from backend) */
-interface _Autocomplete {
+type _Autocomplete = {
   docs: [
     {
       match?: string;

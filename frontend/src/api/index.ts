@@ -114,7 +114,7 @@ const initCache = async () => {
 };
 
 /** possible biolink error */
-interface _Error {
+type _Error = {
   error: {
     message: string;
   };

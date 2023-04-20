@@ -51,7 +51,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-interface Emits {
+type Emits = {
   /** two-way bound open state */
   (event: "update:modelValue", value: boolean): void;
 }

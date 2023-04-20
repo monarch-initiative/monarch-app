@@ -18,12 +18,12 @@ export const wrap = (value: number, min: number, max: number): number => {
 /** STUFF ONLY USED FOR HEADER VISUALIZATION */
 
 /** point tuple types */
-export interface Point3d {
+export type Point3d = {
   x: number;
   y: number;
   z: number;
 }
-export interface Point2d {
+export type Point2d = {
   x: number;
   y: number;
 }

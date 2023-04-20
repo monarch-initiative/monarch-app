@@ -7,7 +7,7 @@ import { getSummaries } from "./publications";
 import { getXrefLink } from "./xrefs";
 
 /** Node associations (from backend) */
-interface _Associations {
+type _Associations = {
   numFound: number;
   associations: Array<{
     id: string;
@@ -191,7 +191,7 @@ export const getTabulatedAssociations = async (
 };
 
 /** Single association */
-export interface Association {
+export type Association = {
   /** Allow arbitrary key access */
   [key: string]: unknown;
 
@@ -255,7 +255,7 @@ export interface Association {
 }
 
 /** Node associations (for frontend) */
-export interface Associations {
+export type Associations = {
   count: number;
   associations: Array<Association>;
 

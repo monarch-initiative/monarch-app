@@ -73,7 +73,7 @@ type Props = {
 
 defineProps<Props>();
 
-interface Emits {
+type Emits = {
   /** two-way bound text state */
   (event: "update:modelValue", value: string): void;
   /** when user types in box, after some delay */

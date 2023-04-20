@@ -38,7 +38,7 @@ let ryTarget = 0;
 /** Efficient rgb tuple format */
 type Color = [number, number, number];
 
-interface Dot {
+type Dot = {
   /** Position in 3d space */
   point: Point3d;
   /** 3d position projected into 2d for canvas rendering */
@@ -48,7 +48,7 @@ interface Dot {
   colorTarget: Color;
 }
 
-interface Link {
+type Link = {
   /** Dots to link together */
   from: Dot;
   to: Dot;

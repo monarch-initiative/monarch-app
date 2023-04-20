@@ -7,7 +7,7 @@ import type { Source } from "./source";
 const obo = "https://obofoundry.org/registry/ontologies.jsonld";
 
 /** Knowledge graph ontologies (from backend) */
-interface _Ontologies {
+type _Ontologies = {
   ontologies: Array<{
     id: string;
     title?: string;

@@ -11,7 +11,7 @@ const key = "ur1488940-1c05ba09e0aef926989d6593";
 const page = "https://stats.uptimerobot.com/XPRo9s4BJ5";
 
 /** Uptime responses (from backend) */
-interface _Uptimes {
+type _Uptimes = {
   monitors?: Array<{
     id?: string;
     friendly_name?: string;
