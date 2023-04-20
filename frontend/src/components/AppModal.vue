@@ -11,6 +11,7 @@
       <div
         v-if="modelValue"
         class="overlay"
+        aria-hidden="true"
         @mousedown="close"
         @touchstart="close"
       >

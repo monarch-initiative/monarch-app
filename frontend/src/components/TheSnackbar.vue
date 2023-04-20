@@ -5,6 +5,8 @@
 <template>
   <Teleport to="body">
     <Transition name="fade">
+      <!-- no-static-element-interactions rule is wrong here -->
+      <!-- eslint-disable-next-line -->
       <div
         v-if="text"
         ref="element"
@@ -12,7 +14,6 @@
         aria-live="polite"
         class="snackbar"
         @click="onClick"
-        @keydown="() => null"
       >
         {{ text }}
       </div>

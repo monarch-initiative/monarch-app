@@ -34,7 +34,9 @@ watch(
     const image = kebabCase(deburr((props.name || "").toLowerCase()));
     try {
       src.value = (await import(`../assets/team/groups/${image}.png`)).default;
-    } catch (error) {}
+    } catch (error) {
+      //
+    }
   },
   { immediate: true }
 );

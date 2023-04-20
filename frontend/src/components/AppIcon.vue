@@ -50,7 +50,9 @@ watch(
       custom.value = (
         await import(`../assets/icons/${props.icon}.svg`)
       ).default;
-    } catch (error) {}
+    } catch (error) {
+      //
+    }
   },
   { immediate: true }
 );
