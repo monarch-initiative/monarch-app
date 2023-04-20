@@ -1,7 +1,7 @@
 import { createApp } from "vue";
 import VueGtag from "vue-gtag";
 import Hotjar from "vue-hotjar";
-import { BrowserTracing } from "@sentry/tracing";
+import { BrowserTracing } from "@sentry/browser";
 import * as Sentry from "@sentry/vue";
 import App from "@/App.vue";
 import components from "@/global/components";

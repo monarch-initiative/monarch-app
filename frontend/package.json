@@ -21,7 +21,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/vue-fontawesome": "^3.0.0-5",
-    "@sentry/tracing": "^7.9.0",
+    "@sentry/browser": "^7.49.0",
     "@sentry/vue": "^7.9.0",
     "@vueuse/core": "^9.1.1",
     "apexcharts": "^3.35.4",
