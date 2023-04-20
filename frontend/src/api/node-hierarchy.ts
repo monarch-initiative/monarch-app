@@ -21,7 +21,7 @@ type _Hierarchy = {
       obj: string;
     }
   ];
-}
+};
 
 /** "part of" relationship type */
 const partOf = "BFO:0000050";
@@ -122,4 +122,4 @@ export type Hierarchy = {
   superClasses: Class[];
   equivalentClasses: Class[];
   subClasses: Class[];
-}
+};

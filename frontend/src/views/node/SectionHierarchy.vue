@@ -88,7 +88,7 @@ const route = useRoute();
 type Props = {
   /** current node */
   node: Node;
-}
+};
 
 const props = defineProps<Props>();
 

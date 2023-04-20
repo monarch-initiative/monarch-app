@@ -109,7 +109,7 @@ const props = defineProps<Props>();
 type Emits = {
   /** Two-way bound selected item state */
   (event: "update:modelValue", value: Option): void;
-}
+};
 
 const emit = defineEmits<Emits>();
 

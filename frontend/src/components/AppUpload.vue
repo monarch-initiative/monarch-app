@@ -31,7 +31,7 @@ import { ref } from "vue";
 
 type Emits = {
   (event: "upload", content: string, filename: string): void;
-}
+};
 
 const emit = defineEmits<Emits>();
 

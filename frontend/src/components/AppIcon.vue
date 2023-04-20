@@ -47,7 +47,9 @@ watch(
   () => props.icon,
   async () => {
     try {
-      custom.value = (await import(`../assets/icons/${props.icon}.svg`)).default;
+      custom.value = (
+        await import(`../assets/icons/${props.icon}.svg`)
+      ).default;
     } catch (error) {}
   },
   { immediate: true }

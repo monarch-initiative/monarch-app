@@ -15,7 +15,7 @@
 type Props = {
   /** source of video */
   src: string;
-}
+};
 
 defineProps<Props>();
 </script>

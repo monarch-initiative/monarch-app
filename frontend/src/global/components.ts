@@ -44,5 +44,5 @@ declare module "@vue/runtime-core" {
     AppSection: typeof AppSection;
     AppStatus: typeof AppStatus;
     AppTile: typeof AppTile;
-  }
+  };
 }

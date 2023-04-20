@@ -69,7 +69,7 @@ type Props = {
   required?: boolean;
   /** delay for debounce in ms */
   debounce?: number;
-}
+};
 
 defineProps<Props>();
 
@@ -84,7 +84,7 @@ type Emits = {
   (event: "focus"): void;
   /** when input blurred */
   (event: "blur"): void;
-}
+};
 
 const emit = defineEmits<Emits>();
 

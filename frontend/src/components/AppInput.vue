@@ -26,7 +26,7 @@ type Props = {
   multi?: boolean;
   /** delay for debounce in ms */
   debounce?: number;
-}
+};
 
 const props = defineProps<Props>();
 
@@ -41,7 +41,7 @@ type Emits = {
   (event: "focus"): void;
   /** when input blurred */
   (event: "blur"): void;
-}
+};
 
 const emit = defineEmits<Emits>();
 

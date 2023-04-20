@@ -6,7 +6,7 @@ import { parse } from "@/util/object";
 type Breadcrumb = {
   node: Node;
   relation: Association["relation"];
-}
+};
 
 /** Breadcrumbs object for breadcrumbs section on node page */
 export const breadcrumbs = ref<Breadcrumb[]>([]);

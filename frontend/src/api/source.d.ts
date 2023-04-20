@@ -12,4 +12,4 @@ export type Source = {
   usage?: string;
   vocabulary?: string;
   files?: string[];
-}
+};

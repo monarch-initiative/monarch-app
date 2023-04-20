@@ -199,13 +199,12 @@ const {
 onMounted(getSources);
 
 /** Shown sources */
-const filteredSources = computed(
-  (): Source[] =>
-    sources.value.filter(
-      (source: Source) =>
-        (source.type === "dataset" && showDatasets.value) ||
-        (source.type === "ontology" && showOntologies.value)
-    )
+const filteredSources = computed((): Source[] =>
+  sources.value.filter(
+    (source: Source) =>
+      (source.type === "dataset" && showDatasets.value) ||
+      (source.type === "ontology" && showOntologies.value)
+  )
 );
 
 /** Number of dataset sources */

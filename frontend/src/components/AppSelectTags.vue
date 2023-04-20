@@ -196,7 +196,7 @@ type Props = {
   tooltip?: string;
   /** Description to show below box */
   description?: string;
-}
+};
 
 const props = defineProps<Props>();
 
@@ -205,7 +205,7 @@ type Emits = {
   (event: "update:modelValue", value: Options): void;
   /** When an option's spreadOptions func has been called */
   (event: "spreadOptions", option: Option, options: Options): void;
-}
+};
 
 const emit = defineEmits<Emits>();
 

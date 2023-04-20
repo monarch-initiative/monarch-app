@@ -45,7 +45,7 @@ import { breadcrumbs, updateBreadcrumbs } from "@/global/breadcrumbs";
 type Props = {
   /** current node */
   node: Node;
-}
+};
 
 defineProps<Props>();
 

@@ -6,12 +6,12 @@ const api =
 
 type _Success = {
   html_url: string;
-}
+};
 
 type _Error = {
   error: string;
   next_request: string;
-}
+};
 
 /** status response (from backend) */
 type _Response = _Success | _Error;

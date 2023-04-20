@@ -16,7 +16,7 @@ type Props = {
   source: string;
   /** what component to wrap source in */
   component?: string;
-}
+};
 
 const props = withDefaults(defineProps<Props>(), { component: "div" });
 

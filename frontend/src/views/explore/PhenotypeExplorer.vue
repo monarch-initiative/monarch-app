@@ -184,7 +184,7 @@ type GeneratedFrom = {
   option?: Option;
   /** The phenotypes themselves */
   options?: Options;
-}
+};
 
 /** First set of phenotypes */
 const aPhenotypes = ref([] as Options);

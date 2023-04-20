@@ -47,14 +47,14 @@ type Props = {
   modelValue?: boolean;
   /** modal aria label */
   label: string;
-}
+};
 
 const props = defineProps<Props>();
 
 type Emits = {
   /** two-way bound open state */
   (event: "update:modelValue", value: boolean): void;
-}
+};
 
 const emit = defineEmits<Emits>();
 

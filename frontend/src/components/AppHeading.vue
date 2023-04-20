@@ -35,7 +35,7 @@ type Props = {
   icon?: string;
   /** fall back icon */
   fallbackIcon?: string;
-}
+};
 
 const props = defineProps<Props>();
 

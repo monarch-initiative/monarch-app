@@ -78,7 +78,7 @@ const props = withDefaults(defineProps<Props>(), {
 type Emits = {
   /** Two-way bound selected tab state */
   (event: "update:modelValue", selected: string): void;
-}
+};
 
 const emit = defineEmits<Emits>();
 

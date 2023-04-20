@@ -47,7 +47,7 @@ type Props = {
   blank?: boolean;
   /** whether info block is full width or not */
   big?: boolean;
-}
+};
 
 withDefaults(defineProps<Props>(), {
   icon: "",

@@ -213,11 +213,11 @@ export type Col = {
   width?: string;
   /** Whether to allow sorting of column */
   sortable?: boolean;
-}
+};
 
 /** Object with arbitrary keys */
 // eslint-disable-next-line
-export type Row = { [key: string | number]:  any };
+export type Row = { [key: string | number]: any };
 
 /** Arrays of rows and cols */
 export type Cols = Col[];
@@ -290,7 +290,7 @@ type Emits = {
   (event: "update:search", value: string): void;
   /** When user requests download */
   (event: "download"): void;
-}
+};
 
 const emit = defineEmits<Emits>();
 

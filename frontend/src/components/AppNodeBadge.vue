@@ -38,7 +38,7 @@ type Props = {
    * Breadcrumb object to add list when badge clicked on. include node that user
    * came from and relation between that node and this node.
    */
-  breadcrumb?: { [key: string]:  unknown };
+  breadcrumb?: { [key: string]: unknown };
 };
 
 withDefaults(defineProps<Props>(), {

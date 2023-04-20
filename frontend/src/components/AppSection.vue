@@ -15,7 +15,7 @@ type Props = {
   width?: "full" | "medium" | "big";
   /** visual design */
   design?: "normal" | "fill";
-}
+};
 
 withDefaults(defineProps<Props>(), { width: "medium", design: "normal" });
 </script>

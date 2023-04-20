@@ -68,7 +68,7 @@ import AppDetails from "@/components/AppDetails.vue";
 type Props = {
   /** current node */
   node: Node;
-}
+};
 
 defineProps<Props>();
 </script>

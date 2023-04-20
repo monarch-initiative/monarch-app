@@ -25,7 +25,7 @@ type Props = {
   authors?: string;
   /** journal, issue, date, or other misc info */
   details?: string[];
-}
+};
 
 const props = defineProps<Props>();
 

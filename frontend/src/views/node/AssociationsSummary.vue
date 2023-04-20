@@ -88,7 +88,7 @@ const props = defineProps<Props>();
 type Emits = {
   /** Change selected association */
   (event: "select", value?: Association): void;
-}
+};
 
 const emit = defineEmits<Emits>();
 

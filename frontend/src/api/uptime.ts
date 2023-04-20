@@ -40,7 +40,7 @@ export const getUptimes = async (): Promise<Uptimes> => {
    * Map uptimerobot status codes to our simplified status codes in status
    * component
    */
-  const codeMap: { [key: _Code | number]:  Code } = {
+  const codeMap: { [key: _Code | number]: Code } = {
     [_Code.paused]: "paused",
     [_Code.unchecked]: "unknown",
     [_Code.up]: "success",

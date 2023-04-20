@@ -22,7 +22,7 @@ type Props = {
   relation: Pick<Association["relation"], "iri" | "name" | "inverse">;
   /** whether to display arrows vertically */
   vertical?: boolean;
-}
+};
 
 const props = defineProps<Props>();
 

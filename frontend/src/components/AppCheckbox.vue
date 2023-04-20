@@ -24,14 +24,14 @@ type Props = {
   text: string;
   /** icon to show in label */
   icon?: string;
-}
+};
 
 defineProps<Props>();
 
 type Emits = {
   /** two-way bound checked state */
   (event: "update:modelValue", checked: boolean): void;
-}
+};
 
 const emit = defineEmits<Emits>();
 

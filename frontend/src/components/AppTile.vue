@@ -30,7 +30,7 @@ type Props = {
   subtitle?: string;
   /** visual design */
   design?: "small" | "big";
-}
+};
 
 withDefaults(defineProps<Props>(), { to: "", subtitle: "", design: "big" });
 </script>

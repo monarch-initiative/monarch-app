@@ -15,7 +15,7 @@ type Props = {
   tag: string;
   /** wrap */
   wrap: boolean;
-}
+};
 
 defineProps<Props>();
 </script>

@@ -46,10 +46,10 @@ type Props = {
    * state data to attach on navigation. object/array values get stringified.
    * https://developer.mozilla.org/en-US/docs/Web/API/History/pushState
    */
-  state?: { [key: string]:  unknown };
+  state?: { [key: string]: unknown };
   /** whether to forcibly forgo external icon when link is external */
   noIcon?: boolean;
-}
+};
 
 const props = withDefaults(defineProps<Props>(), {
   noIcon: false,

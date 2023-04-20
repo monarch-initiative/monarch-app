@@ -22,11 +22,11 @@ export type Point3d = {
   x: number;
   y: number;
   z: number;
-}
+};
 export type Point2d = {
   x: number;
   y: number;
-}
+};
 
 /** rotate a point in 3d about the x axis */
 export const rotateX = ({ x, y, z }: Point3d, angle = 0): Point3d => ({

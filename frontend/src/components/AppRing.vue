@@ -23,7 +23,7 @@ type Props = {
   /** range of score for normalization */
   min?: number;
   max?: number;
-}
+};
 
 const props = withDefaults(defineProps<Props>(), {
   score: 50,

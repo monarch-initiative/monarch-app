@@ -40,7 +40,7 @@ type Props = {
   hAlign?: "left" | "center" | "right" | "stretch";
   /** vertical alignment */
   vAlign?: "top" | "center" | "bottom" | "stretch";
-}
+};
 
 const props = withDefaults(defineProps<Props>(), {
   flow: "block",

@@ -35,7 +35,7 @@ type Props = {
   link: string;
   title: string;
   description: string;
-}
+};
 
 defineProps<Props>();
 </script>

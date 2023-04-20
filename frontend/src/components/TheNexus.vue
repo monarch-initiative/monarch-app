@@ -46,7 +46,7 @@ type Dot = {
   /** Target and actual color */
   color: Color;
   colorTarget: Color;
-}
+};
 
 type Link = {
   /** Dots to link together */
@@ -55,7 +55,7 @@ type Link = {
   /** Target and actual color (in efficient rgb tuple format) */
   color: Color;
   colorTarget: Color;
-}
+};
 
 /** Globals */
 let canvas = null as HTMLCanvasElement | null;

@@ -40,7 +40,7 @@ type Props = {
   copy?: boolean;
   /** html button type attribute */
   type?: string;
-}
+};
 
 const props = withDefaults(defineProps<Props>(), {
   text: "",

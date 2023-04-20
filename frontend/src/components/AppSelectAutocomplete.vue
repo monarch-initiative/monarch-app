@@ -141,7 +141,7 @@ type Emits = {
   (event: "change", value: string): void;
   /** When user wants to delete an entry */
   (event: "delete", value: string): void;
-}
+};
 
 const emit = defineEmits<Emits>();
 
