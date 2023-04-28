@@ -89,7 +89,7 @@ export const handlers = [
   ),
 
   /** node search - TODO: remove when new search below is hooked up to components */
-  rest.get(regex(biolink, "/search/entity/autocomplete"), (req, res, ctx) =>
+  rest.get(regex(biolink, "/search/entity"), (req, res, ctx) =>
     res(ctx.status(200), ctx.json(nodeSearch))
   ),
 
@@ -190,7 +190,7 @@ export const handlers = [
   rest.get(
     new RegExp(`^(?!(${escapeRegex(biolink)}|${escapeRegex(monarch)})).+`),
     (req) => {
-      console.info("Non-mocked request", req.url.href);
+      // console.info("Non-mocked request", req.url.href);
       return req.passthrough();
     }
   ),

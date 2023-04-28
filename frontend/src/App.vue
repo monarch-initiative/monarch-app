@@ -46,6 +46,7 @@ watch(
 
     /** update canonical url */
     appUrl.value = window.location.href;
-  }
+  },
+  { immediate: true }
 );
 </script>

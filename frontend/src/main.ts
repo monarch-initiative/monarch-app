@@ -13,6 +13,9 @@ import "@/global/meta";
 /** log env variables for debugging */
 console.info(import.meta.env);
 
+/** environment mode */
+const mode = import.meta.env.MODE;
+
 /** create main app object */
 let app = createApp(App);
 
@@ -24,7 +27,7 @@ for (const [name, Component] of Object.entries(components))
   app = app.component(name, Component);
 
 /** track errors with Sentry */
-if (import.meta.env.NODE_ENV === "production")
+if (mode === "production")
   Sentry.init({
     app,
     dsn: "https://122020f2154c48fa9ebbc53b98afdcf8@o1351894.ingest.sentry.io/6632682",
@@ -35,24 +38,33 @@ if (import.meta.env.NODE_ENV === "production")
     ],
     tracesSampleRate: 1.0,
     logErrors: true,
-    environment: import.meta.env.NODE_ENV,
+    environment: mode,
   });
 
 /** hotjar analytics */
 app.use(Hotjar, {
   id: "3100256",
-  isProduction: import.meta.env.NODE_ENV === "production",
+  isProduction: mode === "production",
 });
 
 /** google analytics */
-if (import.meta.env.NODE_ENV === "production")
+if (mode === "production")
   app.use(VueGtag, { config: { id: "G-RDNWN51PE8" } }, router);
 
+/** whether to mock api responses, based on env */
+const mock: { [key: string]: boolean } = {
+  development: true,
+  test: true,
+  production: false,
+};
+
 (async () => {
-  /** mock api for local development */
-  const { setupWorker } = await import("msw");
-  const { handlers } = await import("../fixtures");
-  await setupWorker(...handlers).start();
+  /** mock api */
+  if (mock[mode]) {
+    const { setupWorker } = await import("msw");
+    const { handlers } = await import("../fixtures");
+    await setupWorker(...handlers).start();
+  }
 
   /** start app */
   app.mount("#app");
