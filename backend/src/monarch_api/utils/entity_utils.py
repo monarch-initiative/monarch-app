@@ -21,13 +21,15 @@ def get_associated_entity(association: Association, this_entity: Entity) -> Enti
     Returns:
         Entity: A limited representation of the entity associated with `this_entity`
     """
-    if association.subject == this_entity.id:
+    # if association.subject == this_entity.id:
+    if this_entity.id in association.subject_closure:
         entity = Entity(
             id=association.object,
             name=association.object_label,
             category=association.object_category,
         )
-    elif association.object == this_entity.id:
+    # elif association.object == this_entity.id:
+    elif this_entity.id in association.object_closure:
         entity = Entity(
             id=association.subject,
             name=association.subject_label,
@@ -59,12 +61,15 @@ def get_associated_entities(
         predicate (str, optional): a predicate value. Defaults to None.
         object (str, optional): an entity ID occurring in the object. Defaults to None.
     """
-    return [
-        get_associated_entity(association, this_entity)
-        for association in si.get_associations(
-            entity=entity, subject=subject, predicate=predicate, object=object, offset=0
-        ).items
-    ]
+    associated_entities = []
+    for association in si.get_associations(
+        entity=entity, subject=subject, predicate=predicate, object=object, offset=0
+        ).items:
+        associated_entity = get_associated_entity(association, this_entity)
+        if associated_entity not in associated_entities:
+            associated_entities.append(associated_entity)
+
+    return associated_entities
 
 
 def get_node_hierarchy(entity: Entity, si: SolrImplementation) -> NodeHierarchy:
