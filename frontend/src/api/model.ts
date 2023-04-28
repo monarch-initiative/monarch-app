@@ -1,7 +1,7 @@
 export type NodeId = string;
 export type TaxonId = string;
-export type AssociationCountId = string;
 export type AssociationId = string;
+export type AssociationCountId = string;
 export type EntityId = string;
 export type HistoPhenoId = string;
 export type SearchResultId = string;
@@ -11,7 +11,7 @@ export type FacetFieldLabel = string;
 export interface Node extends Entity {
   taxon?: Taxon;
   inheritance?: Entity;
-  association_counts?: { [index: AssociationCountId]: AssociationCount };
+  association_counts?: AssociationCount[];
   node_hierarchy?: NodeHierarchy;
   id?: string;
   category?: string;
@@ -29,12 +29,6 @@ export interface Node extends Entity {
 export interface Taxon {
   id?: string;
   label?: string;
-}
-
-export interface AssociationCount extends FacetValue {
-  id?: string;
-  label?: string;
-  /** number of items a this facet value */ count?: number;
 }
 
 export interface NodeHierarchy {
@@ -75,6 +69,12 @@ export interface Association {
   stage_qualifier?: string;
   pathway?: string;
   relation?: string;
+}
+
+export interface AssociationCount extends FacetValue {
+  id?: string;
+  label?: string;
+  /** number of items a this facet value */ count?: number;
 }
 
 export interface AssociationResults extends Results {

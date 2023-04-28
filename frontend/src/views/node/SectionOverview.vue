@@ -8,8 +8,8 @@
 
     <AppDetails>
       <!-- synonyms -->
-      <AppDetail :blank="!node.synonyms.length" title="Also Known As">
-        <p>{{ node.synonyms.join(" | ") }}</p>
+      <AppDetail :blank="!node.synonym" title="Also Known As">
+        <p>{{ node.synonym }}</p>
       </AppDetail>
 
       <!-- symbol (gene specific) -->
@@ -22,12 +22,8 @@
       </AppDetail>
 
       <!-- authors (publication specific) -->
-      <AppDetail
-        v-if="node.category === 'publication'"
-        :blank="!node.authors?.length"
-        title="Authors"
-      >
-        <p>{{ node.authors?.join(", ") }}</p>
+      <AppDetail :blank="!node.provided_by" title="Provided By">
+        <p>{{ node.provided_by }}</p>
       </AppDetail>
 
       <!-- paragraph description -->
@@ -36,7 +32,7 @@
           v-tooltip="'Click to expand'"
           class="description truncate-10"
           tabindex="0"
-          v-html="node.description.trim()"
+          v-html="node.description?.trim()"
         ></p>
       </AppDetail>
     </AppDetails>
@@ -44,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { Node } from "@/api/node-lookup";
+import { Node } from "@/api/model";
 import AppDetails from "@/components/AppDetails.vue";
 import AppDetail from "@/components/AppDetail.vue";
 
@@ -52,7 +48,6 @@ interface Props {
   /** current node */
   node: Node;
 }
-
 defineProps<Props>();
 </script>
 

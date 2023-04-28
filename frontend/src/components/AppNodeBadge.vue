@@ -12,7 +12,7 @@
     />
     <AppLink
       v-if="link"
-      :to="`/${node.category}/${node.id}`"
+      :to="`/node/${node.id}`"
       :state="
         breadcrumb ? { breadcrumbs: [...breadcrumbs, breadcrumb] } : undefined
       "
@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { Node } from "@/api/node-lookup";
+import { Node } from "@/api/model";
 import { startCase, kebabCase } from "lodash";
 import { breadcrumbs } from "@/global/breadcrumbs";
 

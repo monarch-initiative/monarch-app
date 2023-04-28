@@ -30,8 +30,8 @@
     <SectionDetails :node="node" />
     <SectionHierarchy :node="node" />
     <SectionVisualization :node="node" />
-    <SectionAssociations :node="node" />
-    <SectionBreadcrumbs :node="node" />
+    <!-- <SectionAssociations :node="node" /> -->
+    <!-- <SectionBreadcrumbs :node="node" />  -->
 
     <Teleport to="body">
       <TheTableOfContents />
@@ -40,19 +40,20 @@
 </template>
 
 <script setup lang="ts">
-import { watch, onMounted, nextTick } from "vue";
-import { useRoute } from "vue-router";
-import { kebabCase } from "lodash";
-import { lookupNode } from "@/api/node-lookup";
 import TheTableOfContents from "@/components/TheTableOfContents.vue";
 import SectionTitle from "./SectionTitle.vue";
 import SectionOverview from "./SectionOverview.vue";
 import SectionDetails from "./SectionDetails.vue";
 import SectionHierarchy from "./SectionHierarchy.vue";
 import SectionVisualization from "./SectionVisualization.vue";
-import SectionAssociations from "./SectionAssociations.vue";
-import SectionBreadcrumbs from "./SectionBreadcrumbs.vue";
+// import SectionAssociations from "./SectionAssociations.vue";
+// import SectionBreadcrumbs from "./SectionBreadcrumbs.vue";
+import { getEntity } from "@/api/entity";
+// import { lookupNode } from "@/api/node-lookup";
 import { scrollToHash } from "@/router";
+import { watch, onMounted, nextTick } from "vue";
+import { useRoute } from "vue-router";
+import { kebabCase } from "lodash";
 import { useQuery } from "@/util/composables";
 import { appDescription, appTitle } from "@/global/meta";
 import { addEntry } from "@/global/history";
@@ -72,7 +73,10 @@ const {
     const { id = "", category = "" } = route.params;
 
     /** get node information */
-    return await lookupNode(id as string, category as string);
+    const node_info = await getEntity(id as string);
+    // const old_info = await lookupNode(id as string, category as string);
+    // const association_counts_old = old_info.associationCounts;
+    return node_info;
   },
 
   /** default value */

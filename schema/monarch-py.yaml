@@ -2,10 +2,58 @@ id: https://w3id.org/monarch/monarch-py
 name: monarch-py
 prefixes:
   linkml: https://w3id.org/linkml/
+  biolink: https://w3id.org/biolink/
 description: Data datamodels for the Monarch Initiative data access library
 imports:
 - linkml:types
 default_range: string
+enums:
+  AssociationLabel:
+    description: >-
+      A grouping label for associations, which are not necessarily 1:1 with
+      biolink categories or predicates
+    permissible_values:
+      disease_phenotype:
+        description: >-
+          Any association between a disease and a phenotype
+        meaning: biolink:GeneToDiseaseAssociation
+      gene_phenotype:
+          description: >-
+              Any association between a gene and a phenotype
+          meaning: biolink:GeneToPhenotypicFeatureAssociation
+      gene_interaction:
+          description: >-
+              Any association between two genes
+          meaning: biolink:PairwiseGeneToGeneInteraction
+      gene_pathway:
+          description: >-
+              Any association between a gene and a pathway
+          meaning: biolink:GeneToPathwayAssociation
+      gene_expression:
+          description: >-
+              Expression association between a gene and an expression site
+          meaning: biolink:GeneToExpressionSiteAssociation
+      gene_orthology:
+          description: >-
+              Any association between two genes based on orthology
+          meaning: biolink:PairwiseGeneToGeneOrthologyAssociation
+      chemical_pathway:
+          description: >-
+              Any association between a chemical and a pathway
+          meaning: biolink:ChemicalToPathwayAssociation
+      gene_function:
+          description: >-
+              Any association between a gene and molecular activity
+          meaning: biolink:MacromolecularMachineToMolecularActivityAssociation
+      gene_associated_with_disease:
+        description: >-
+          Association between a gene and a disease that is not known to affect risk
+        meaning: biolink:gene_associated_with_disease
+      gene_affects_risk_for_disease:
+          description: >-
+              Association between a gene and a disease that is known to affect risk
+          meaning: biolink:affects_risk_for
+
 classes:
   Association:
     slots:
@@ -44,6 +92,9 @@ classes:
     is_a: FacetValue
     slots:
       - id
+    slot_usage:
+      label:
+        identifier: false
   AssociationResults:
     is_a: Results
     slots: 
