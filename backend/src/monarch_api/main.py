@@ -16,7 +16,7 @@ app.include_router(histopheno.router, prefix=f"{PREFIX}/histopheno")
 # Allow CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*", "http://127.0.0.1:8000/", "http://localhost:8080"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
