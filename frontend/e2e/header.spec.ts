@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 test("Header nav bar collapses on small screens", async ({ page }) => {
   /** setup */

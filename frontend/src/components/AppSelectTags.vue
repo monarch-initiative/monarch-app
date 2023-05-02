@@ -46,7 +46,7 @@
           @blur="close"
           @debounce="getResults"
           @keydown="onKeydown"
-          @paste="onPaste"
+          @paste="getResults"
         />
 
         <div class="controls">
@@ -178,7 +178,6 @@ export type Option = {
 import { computed, nextTick, ref, watch } from "vue";
 import { isEqual, uniqBy, uniqueId } from "lodash";
 import { useFloating, useQuery } from "@/util/composables";
-import { sleep } from "@/util/debug";
 import { wrap } from "@/util/math";
 import AppInput from "./AppInput.vue";
 import { snackbar } from "./TheSnackbar.vue";
@@ -266,17 +265,6 @@ function onKeydown(event: KeyboardEvent) {
 
   /** Esc key to close dropdown */
   if (event.key === "Escape") close();
-}
-
-/** When user pastes text */
-async function onPaste() {
-  /**
-   * Wait for pasted value to take effect but don't use nextTick because by then
-   * search.value will be reset
-   */
-  await sleep();
-  /** Immediately auto-accept results */
-  await getResults();
 }
 
 /** Select an option or array of options */

@@ -7,9 +7,9 @@
     "*/**/*.json",
     "fixtures/**/*"
   ],
-  "exclude": ["src/**/__tests__/*"],
+  "exclude": [],
   "compilerOptions": {
-    "composite": true,
+    // "composite": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]

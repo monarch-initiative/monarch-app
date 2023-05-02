@@ -50,13 +50,11 @@ const input = ref();
 
 /** when user focuses box */
 function onFocus() {
-  onDebounce.cancel();
   emit("focus");
 }
 
 /** when user blurs box */
 function onBlur() {
-  onDebounce.cancel();
   emit("blur");
 }
 
@@ -73,7 +71,6 @@ const onDebounce = debounce(function (value: string) {
 
 /** when user "commits" change (pressing enter, blurring, etc) */
 async function onChange() {
-  onDebounce.cancel();
   emit("change", input.value.value);
 }
 

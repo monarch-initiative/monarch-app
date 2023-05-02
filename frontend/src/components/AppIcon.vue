@@ -16,7 +16,13 @@
     :data-icon="icon"
     aria-hidden="true"
   />
-  <svg v-else-if="initials" viewBox="-10 -10 120 120" class="initials">
+  <svg
+    v-else-if="initials"
+    viewBox="-10 -10 120 120"
+    class="initials"
+    :data-debug1="fa"
+    :data-debug2="custom"
+  >
     <circle cx="50" cy="50" r="55" />
     <text x="50" y="54">
       {{ initials }}
@@ -67,7 +73,7 @@ const fa = computed(() => {
     if (match) return match;
   }
 
-  return null;
+  return undefined;
 });
 
 /** Initials as fallback */

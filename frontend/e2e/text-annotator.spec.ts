@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import example from "../src/views/explore/text-annotator.json";
 
 test("Basic search results show", async ({ page }) => {

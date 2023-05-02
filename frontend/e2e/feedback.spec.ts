@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 test("Feedback form can open and close", async ({ page }) => {
   /** setup */

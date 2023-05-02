@@ -1,5 +1,5 @@
+import { expect, test } from "@playwright/test";
 import { sleep } from "../src/util/debug";
-import { test, expect } from "@playwright/test";
 
 test("Document title updates on navigation", async ({ page }) => {
   /** pages to test */

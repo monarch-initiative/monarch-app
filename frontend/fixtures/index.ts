@@ -1,14 +1,11 @@
 import { rest } from "msw";
-
 /** url bases */
-import { biolink } from "@/api";
-import { monarch } from "@/api";
-import { obo } from "@/api/ontologies";
-import { uptimeRobot } from "@/api/uptime";
+import { biolink, monarch } from "@/api";
 import { feedbackEndpoint } from "@/api/feedback";
 import { mygeneinfo } from "@/api/genes";
+import { obo } from "@/api/ontologies";
 import { efetch, esummary } from "@/api/publications";
-
+import { uptimeRobot } from "@/api/uptime";
 import associationEvidence from "./association-evidence.json";
 import autocomplete from "./autocomplete.json";
 import datasets from "./datasets.json";

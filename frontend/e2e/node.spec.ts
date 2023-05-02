@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 test("Table of contents works", async ({ page }) => {
   await page.goto("/disease/MONDO:0007947");
