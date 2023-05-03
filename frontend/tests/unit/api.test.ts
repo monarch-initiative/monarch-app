@@ -149,6 +149,8 @@ test("Get entity returns correct fixture data", async () => {
   const entity = await getEntity("MONDO:0007947");
   expect(entity.id).toBe("MONDO:0007947");
   expect(entity.name).toBe("Marfan syndrome");
+  expect(entity.inheritance?.name).toBe("Autosomal dominant inheritance (HPO)");
+  expect(entity.association_counts?.length).toBe(3);
   expect(entity.node_hierarchy?.super_classes?.length).toBe(4);
   expect(entity.node_hierarchy?.sub_classes?.length).toBe(1);
 });
