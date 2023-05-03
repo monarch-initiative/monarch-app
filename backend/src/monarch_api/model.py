@@ -24,6 +24,20 @@ class ConfiguredBaseModel(
     pass
 
 
+class AssociationTypeEnum(str, Enum):
+
+    disease_phenotype = "disease_phenotype"
+    gene_phenotype = "gene_phenotype"
+    gene_interaction = "gene_interaction"
+    gene_pathway = "gene_pathway"
+    gene_expression = "gene_expression"
+    gene_orthology = "gene_orthology"
+    chemical_pathway = "chemical_pathway"
+    gene_function = "gene_function"
+    correlated_gene = "correlated_gene"
+    causal_gene = "causal_gene"
+
+
 class Taxon(ConfiguredBaseModel):
 
     id: Optional[str] = Field(None)
@@ -91,9 +105,7 @@ class Node(Entity):
 
     taxon: Optional[Taxon] = Field(None)
     inheritance: Optional[Entity] = Field(None)
-    association_counts: Optional[Dict[str, AssociationCount]] = Field(
-        default_factory=dict
-    )
+    association_counts: Optional[List[AssociationCount]] = Field(default_factory=list)
     node_hierarchy: Optional[NodeHierarchy] = Field(None)
     id: str = Field(None)
     category: Optional[List[str]] = Field(default_factory=list)
@@ -186,19 +198,54 @@ class FacetValue(ConfiguredBaseModel):
     )
 
 
+class FacetField(ConfiguredBaseModel):
+
+    label: Optional[str] = Field(None)
+    facet_values: Optional[Dict[str, FacetValue]] = Field(default_factory=dict)
+
+
+class AssociationTypeMapping(ConfiguredBaseModel):
+    """
+    A data class to hold the necessary information to produce association type counts for given  entities with appropriate directional labels
+    """
+
+    association_type: Optional[AssociationTypeEnum] = Field(None)
+    subject_label: Optional[str] = Field(
+        None,
+        description="""A label to describe the subjects of the association type as a whole for use in the UI""",
+    )
+    object_label: Optional[str] = Field(
+        None,
+        description="""A label to describe the objects of the association type as a whole for use in the UI""",
+    )
+    category: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""The biolink categories to use in queries for this association type, assuming OR semantics""",
+    )
+    predicate: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""The biolink predicate to use in queries for this association type, assuming OR semantics""",
+    )
+
+
 class AssociationCount(FacetValue):
 
-    id: Optional[str] = Field(None)
+    association_type: Optional[AssociationTypeEnum] = Field(None)
     label: Optional[str] = Field(None)
     count: Optional[int] = Field(
         None, description="""number of items a this facet value"""
     )
 
 
-class FacetField(ConfiguredBaseModel):
+class AssociationCountList(ConfiguredBaseModel):
+    """
+    Container class for a list of association counts
+    """
 
-    label: Optional[str] = Field(None)
-    facet_values: Optional[Dict[str, FacetValue]] = Field(default_factory=dict)
+    items: Optional[List[AssociationCount]] = Field(
+        default_factory=list,
+        description="""A collection of items, with the type to be overriden by slot_usage""",
+    )
 
 
 # Update forward refs
@@ -215,5 +262,7 @@ EntityResults.update_forward_refs()
 SearchResult.update_forward_refs()
 SearchResults.update_forward_refs()
 FacetValue.update_forward_refs()
-AssociationCount.update_forward_refs()
 FacetField.update_forward_refs()
+AssociationTypeMapping.update_forward_refs()
+AssociationCount.update_forward_refs()
+AssociationCountList.update_forward_refs()
