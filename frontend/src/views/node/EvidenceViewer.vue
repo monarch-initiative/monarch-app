@@ -86,22 +86,22 @@
         @download="download"
       >
         <!-- "subject" -->
-        <template #subject="{ cell }">
+        <template #subject="{ cell }: { cell: Evidence['subject'] }">
           <AppNodeBadge :node="cell" />
         </template>
 
         <!-- relation -->
-        <template #relation="{ cell }">
+        <template #relation="{ cell }: { cell: Evidence['relation'] }">
           <AppRelationBadge :relation="cell" />
         </template>
 
         <!-- "object" -->
-        <template #object="{ cell }">
+        <template #object="{ cell }: { cell: Evidence['object'] }">
           <AppNodeBadge :node="cell" />
         </template>
 
         <!-- evidence codes -->
-        <template #codes="{ cell }">
+        <template #codes="{ cell }: { cell: Evidence['codes'] }">
           <AppFlex direction="col" gap="small" h-align="left">
             <AppLink
               v-for="(code, index) in cell"
@@ -114,7 +114,7 @@
         </template>
 
         <!-- publications -->
-        <template #publications="{ cell }">
+        <template #publications="{ cell }: { cell: Evidence['publications'] }">
           <AppFlex direction="col" gap="small" h-align="left">
             <AppLink
               v-for="(publication, index) in cell.slice(0, 1)"
@@ -142,7 +142,7 @@
         </template>
 
         <!-- sources -->
-        <template #sources="{ cell }">
+        <template #sources="{ cell }: { cell: Evidence['sources'] }">
           <AppLink
             v-for="(code, index) in cell"
             :key="index"
@@ -153,7 +153,7 @@
         </template>
 
         <!-- references -->
-        <template #references="{ cell }">
+        <template #references="{ cell }: { cell: Evidence['references'] }">
           <AppLink
             v-for="(code, index) in cell"
             :key="index"
@@ -169,6 +169,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref, watch } from "vue";
+import type { Evidence } from "@/api/association-evidence";
 import { getAssociationEvidence } from "@/api/association-evidence";
 import type { Association } from "@/api/node-associations";
 import type { Node } from "@/api/node-lookup";

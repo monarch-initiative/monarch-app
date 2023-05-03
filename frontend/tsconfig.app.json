@@ -4,16 +4,15 @@
     "env.d.ts",
     "src/**/*",
     "src/**/*.vue",
-    "*/**/*.json",
-    "fixtures/**/*"
+    "src/**/*.json",
+    "package.json"
   ],
-  "exclude": [],
   "compilerOptions": {
-    // "composite": true,
+    "composite": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
-    "lib": ["ESNext", "dom"]
+    "lib": ["ES2021", "DOM"]
   }
 }

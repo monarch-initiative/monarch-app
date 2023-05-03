@@ -23,7 +23,7 @@
         <AppSelectMulti
           v-if="filter.length"
           v-model="activeFilters[name]"
-          v-tooltip="`${startCase(name)} filter`"
+          v-tooltip="`${startCase(String(name))} filter`"
           :name="`${name}`"
           :options="availableFilters[name]"
           :show-counts="showCounts"

@@ -216,7 +216,6 @@ export type Col = {
 };
 
 /** Object with arbitrary keys */
-// eslint-disable-next-line
 export type Row = { [key: string | number]: any };
 
 /** Arrays of rows and cols */
@@ -297,7 +296,7 @@ const emit = defineEmits<Emits>();
 /** Whether table is expanded to be full width */
 const expanded = ref(false);
 /** Table reference */
-const table = ref<HTMLElement | null>(null);
+const table = ref<HTMLElement>();
 
 /** Table scroll state */
 const { arrivedState } = useScroll(table, { offset: { left: 10, right: 10 } });

@@ -153,7 +153,7 @@ type Summary = {
 };
 
 /** singular evidence */
-type Evidence = {
+export type Evidence = {
   /** subject of association */
   subject: {
     id: string;

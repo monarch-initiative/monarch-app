@@ -7,7 +7,7 @@
     "playwright.config.*"
   ],
   "compilerOptions": {
-    // "composite": true,
+    "composite": true,
     "types": ["node"]
   }
 }

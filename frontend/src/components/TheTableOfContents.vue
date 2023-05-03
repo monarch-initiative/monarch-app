@@ -116,7 +116,10 @@ async function updatePosition() {
 
   /** Find in view section */
   if (!oneAtATime.value)
-    active.value = firstInView(entries.value.map(({ section }) => section));
+    active.value = firstInView(
+      /** typescript bug */
+      entries.value.map((entry) => entry.section as HTMLElement)
+    );
 }
 
 /** Update toc entries */
