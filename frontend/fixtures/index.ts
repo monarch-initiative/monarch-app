@@ -180,15 +180,30 @@ export const handlers = [
     res(ctx.status(200), ctx.json(ontolIdentifier))
   ),
 
-  /**
-   * any other request that's not biolink, pass through (ignore) without warning
-   * https://stackoverflow.com/questions/406230/regular-expression-to-match-a-line-that-doesnt-contain-a-word
-   */
-  rest.get(
-    new RegExp(`^(?!(${escapeRegex(biolink)}|${escapeRegex(monarch)})).+`),
-    (req) => {
-      // console.info("Non-mocked request", req.url.href);
+  /** any other request */
+  rest.get(/.*/, (req, res, ctx) => {
+    /** for certain exceptions, passthrough (let browser make a real request) */
+    const exceptions = [
+      ".svg",
+      ".png",
+      ".jpg",
+      ".jpeg",
+      ".gif",
+      ".bmp",
+      ".tiff",
+      ".woff",
+      ".json",
+      ".jsonld",
+      ".txt",
+      "medium.com",
+    ];
+    if (exceptions.some((exception) => req.url.href.includes(exception)))
       return req.passthrough();
-    }
-  ),
+
+    /**
+     * otherwise, throw error to make sure we never hit any api when mocking is
+     * enabled
+     */
+    return res(ctx.status(500, "Non-mocked request"));
+  }),
 ];

@@ -4,9 +4,9 @@
     "env.d.ts",
     "src/**/*",
     "src/**/*.vue",
-    "src/**/*.json",
     "package.json",
-    "fixtures/*"
+    "fixtures/*",
+    "**/*.json"
   ],
   "compilerOptions": {
     "composite": true,
