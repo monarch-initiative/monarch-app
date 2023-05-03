@@ -1,8 +1,10 @@
 {
-  "id": "MONDO:0005439",
-  "category": ["biolink:Disease"],
-  "name": "familial hypercholesterolemia",
-  "description": "An inheritable form of hyperlipidemia, in which there are excess lipids in the blood.",
+  "id": "MONDO:0007947",
+  "category": [
+    "biolink:Disease"
+  ],
+  "name": "Marfan syndrome",
+  "description": "A disorder of the connective tissue. Connective tissue provides strength and flexibility to structures throughout the body such as bones, ligaments, muscles, walls of blood vessels, and heart valves. Marfan syndrome affects most organs and tissues, especially the skeleton, lungs, eyes, heart, and the large blood vessel that distributes blood from the heart to the rest of the body (the aorta). It is caused by mutations in the FBN1 gene, which provides instructions for making a protein called fibrillin-1. Marfan syndrome is inherited in an autosomal dominant pattern. At least 25% of cases are due to a new (de novo) mutation. Treatment is based on the signs and symptoms in each person.",
   "xref": [],
   "provided_by": "phenio_nodes",
   "in_taxon": null,
@@ -11,14 +13,46 @@
   "type": null,
   "synonym": [],
   "taxon": null,
-  "inheritance": null,
-  "association_counts": [],
+  "inheritance": {
+    "id": "HP:0000006",
+    "category": [
+      "biolink:GeneticInheritance"
+    ],
+    "name": "Autosomal dominant inheritance (HPO)",
+    "description": null,
+    "xref": [],
+    "provided_by": null,
+    "in_taxon": null,
+    "source": null,
+    "symbol": null,
+    "type": null,
+    "synonym": []
+  },
+  "association_counts": [
+    {
+      "label": "Phenotypes",
+      "count": 204,
+      "association_type": "disease_phenotype"
+    },
+    {
+      "label": "Causal Genes",
+      "count": 1,
+      "association_type": "causal_gene"
+    },
+    {
+      "label": "Correlated Genes",
+      "count": 2,
+      "association_type": "correlated_gene"
+    }
+  ],
   "node_hierarchy": {
     "super_classes": [
       {
-        "id": "MONDO:0037748",
-        "category": ["biolink:Disease"],
-        "name": "hyperlipoproteinemia",
+        "id": "MONDO:0017310",
+        "category": [
+          "biolink:Disease"
+        ],
+        "name": "Marfan and Marfan-related disorder",
         "description": null,
         "xref": [],
         "provided_by": null,
@@ -29,9 +63,41 @@
         "synonym": []
       },
       {
-        "id": "MONDO:0001336",
-        "category": ["biolink:Disease"],
-        "name": "familial hyperlipidemia",
+        "id": "MONDO:0800091",
+        "category": [
+          "biolink:Disease"
+        ],
+        "name": "overgrowth or tall stature syndrome with skeletal involvement",
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "source": null,
+        "symbol": null,
+        "type": null,
+        "synonym": []
+      },
+      {
+        "id": "MONDO:0000426",
+        "category": [
+          "biolink:Disease"
+        ],
+        "name": "autosomal dominant disease",
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "source": null,
+        "symbol": null,
+        "type": null,
+        "synonym": []
+      },
+      {
+        "id": "MONDO:0002254",
+        "category": [
+          "biolink:Disease"
+        ],
+        "name": "syndromic disease",
         "description": null,
         "xref": [],
         "provided_by": null,
@@ -45,61 +111,11 @@
     "equivalent_classes": [],
     "sub_classes": [
       {
-        "id": "MONDO:0007750",
-        "category": ["biolink:Disease"],
-        "name": "hypercholesterolemia, familial, 1",
-        "description": null,
-        "xref": [],
-        "provided_by": null,
-        "in_taxon": null,
-        "source": null,
-        "symbol": null,
-        "type": null,
-        "synonym": []
-      },
-      {
-        "id": "MONDO:0007751",
-        "category": ["biolink:Disease"],
-        "name": "hypercholesterolemia, autosomal dominant, type B",
-        "description": null,
-        "xref": [],
-        "provided_by": null,
-        "in_taxon": null,
-        "source": null,
-        "symbol": null,
-        "type": null,
-        "synonym": []
-      },
-      {
-        "id": "MONDO:0011369",
-        "category": ["biolink:Disease"],
-        "name": "hypercholesterolemia, autosomal dominant, 3",
-        "description": null,
-        "xref": [],
-        "provided_by": null,
-        "in_taxon": null,
-        "source": null,
-        "symbol": null,
-        "type": null,
-        "synonym": []
-      },
-      {
-        "id": "MONDO:0016203",
-        "category": ["biolink:Disease"],
-        "name": "hypercholesterolemia due to cholesterol 7alpha-hydroxylase deficiency",
-        "description": null,
-        "xref": [],
-        "provided_by": null,
-        "in_taxon": null,
-        "source": null,
-        "symbol": null,
-        "type": null,
-        "synonym": []
-      },
-      {
-        "id": "MONDO:0018328",
-        "category": ["biolink:Disease"],
-        "name": "homozygous familial hypercholesterolemia",
+        "id": "MONDO:0017309",
+        "category": [
+          "biolink:Disease"
+        ],
+        "name": "neonatal Marfan syndrome",
         "description": null,
         "xref": [],
         "provided_by": null,
