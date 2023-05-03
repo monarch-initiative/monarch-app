@@ -182,8 +182,7 @@ const scrollBehavior: RouterScrollBehavior = async (
   if (element)
     return { el: getTarget(element), top: getOffset(), behavior: "smooth" };
 
-  /** Otherwise just scroll to top */
-  return { top: 0, left: 0 };
+  /** Otherwise don't change scroll */
 };
 
 /** Given element, get (possibly) modified target */
