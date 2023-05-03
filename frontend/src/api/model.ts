@@ -151,20 +151,20 @@ export interface FacetField {
 export interface AssociationTypeMapping {
   association_type?: string;
   /**
-   * A label to describe the subjects of the association type as a whole for use
-   * in the UI
+   * A label to describe the subjects of the association type as a whole for
+   * use in the UI
    */ subject_label?: string;
   /**
-   * A label to describe the objects of the association type as a whole for use
-   * in the UI
+   * A label to describe the objects of the association type as a whole for
+   * use in the UI
    */ object_label?: string;
   /**
    * The biolink categories to use in queries for this association type,
    * assuming OR semantics
    */ category?: string;
   /**
-   * The biolink predicate to use in queries for this association type, assuming
-   * OR semantics
+   * The biolink predicate to use in queries for this association type,
+   * assuming OR semantics
    */ predicate?: string;
 }
 

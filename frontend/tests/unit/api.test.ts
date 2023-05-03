@@ -146,11 +146,11 @@ test("Get entity requests correctly", async () => {
 });
 
 test("Get entity returns correct fixture data", async () => {
-  const entity = await getEntity("MONDO:0005439");
-  expect(entity.id).toBe("MONDO:0005439");
-  expect(entity.name).toBe("familial hypercholesterolemia");
-  expect(entity.node_hierarchy?.super_classes?.length).toBe(2);
-  expect(entity.node_hierarchy?.sub_classes?.length).toBe(5);
+  const entity = await getEntity("MONDO:0007947");
+  expect(entity.id).toBe("MONDO:0007947");
+  expect(entity.name).toBe("Marfan syndrome");
+  expect(entity.node_hierarchy?.super_classes?.length).toBe(4);
+  expect(entity.node_hierarchy?.sub_classes?.length).toBe(1);
 });
 
 test("Get HistoPheno requests correctly", async () => {
