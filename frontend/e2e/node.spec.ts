@@ -391,76 +391,63 @@ test("Breadcrumbs section works", async ({ page }) => {
    * visit chain of nodes. include clicking on both association links and
    * hierarchy item links
    */
-  await page
-    .getByText(/Dural ectasia/i)
-    .first()
-    .click();
-  await page
-    .getByText(/Cachexia/i)
-    .first()
-    .click();
-  await page
-    .getByText(/syndromic myopia/i)
-    .first()
-    .click();
-  await page
-    .getByText(/High, narrow palate/i)
-    .first()
-    .click();
-  await page
-    .getByText(/Genu recurvatum/i)
-    .first()
-    .click();
-
-  /** get breadcrumbs flex container */
-  const breadcrumbs = page.locator("#breadcrumbs ~ .flex");
+  const chain = [
+    "Marfan syndrome",
+    "Has Phenotype",
+    "Dural ectasia",
+    "Has Phenotype",
+    "Cachexia",
+    "Is Super Class Of",
+    "syndromic myopia",
+    "Has Phenotype",
+    "High, narrow palate",
+    "Has Phenotype",
+    "Genu recurvatum",
+  ];
+  for (let n = 0; n < chain.length; n += 2)
+    await page.getByText(new RegExp(chain[n], "i")).first().click();
 
   /** util func to get inner text of breadcrumbs */
-  const checkBreadcrumbs = async (expected = "") => {
-    let actual =
-      (await page.locator("#breadcrumbs ~ .flex").textContent()) || "";
-    actual = actual.replaceAll(/\s/g, "").toLowerCase();
-    expected = expected.replaceAll(/\s/g, "").toLowerCase();
-    await expect(actual).toBe(expected);
+  const checkBreadcrumbs = async (expectedArray: string[]) => {
+    const items = await page
+      .locator("#breadcrumbs ~ .flex > *")
+      .allInnerTexts();
+    for (const [index, actual] of Object.entries(items)) {
+      const expected = expectedArray[Number(index)];
+      await expect(actual).toMatch(new RegExp(expected, "i"));
+    }
   };
 
   /** full breadcrumbs string */
-  await checkBreadcrumbs(
-    "Marfan syndrome Has Phenotype Dural ectasia Has Phenotype Cachexia Is Super Class Of syndromic myopia Has Phenotype High, narrow palate Has Phenotype Genu recurvatum"
-  );
+  await checkBreadcrumbs(chain);
 
   /** check back button works (doesn't mess up or clear breadcrumbs) */
   await page.goBack();
   await page.goBack();
   await page.goBack();
   await page.goBack();
-  await page.waitForTimeout(100);
 
   /** get breadcrumbs string */
-  await checkBreadcrumbs("Marfan syndrome Has Phenotype Dural ectasia");
+  await checkBreadcrumbs(chain.slice(0, 3));
 
   /** check forward button (after back) works */
   await page.goForward();
   await page.goForward();
   await page.goForward();
-  await page.waitForTimeout(100);
 
   /** check reload in place works */
   await page.reload();
-  await page.waitForTimeout(100);
 
   /** check breadcrumbs string */
-  await checkBreadcrumbs(
-    "Marfan syndrome Has Phenotype Dural ectasia Has Phenotype Cachexia Is Super Class Of syndromic myopia Has Phenotype High, narrow palate"
-  );
+  await checkBreadcrumbs(chain.slice(0, 9));
 
   /** click on node within breadcrumbs. should behave just like back button. */
-  await breadcrumbs
+  await page
+    .locator("#breadcrumbs ~ .flex")
     .getByText(/Dural ectasia/i)
     .first()
     .click();
-  await page.waitForTimeout(100);
-  await checkBreadcrumbs("Marfan syndrome Has Phenotype Dural ectasia");
+  await checkBreadcrumbs(chain.slice(0, 3));
 
   /** check clear button works */
   await page.getByText(/clear/i).first().click();

@@ -59,7 +59,7 @@ test("Phenotype set vs gene/disease works", async ({ page }) => {
     .click();
 
   /** paste specific dummy phenotypes */
-  await paste(page, page.locator("input"), "HP:0004970,HP:0004933,HP:0004927");
+  await paste(page.locator("input"), "HP:0004970,HP:0004933,HP:0004927");
 
   /** run analysis, and look for expected results */
   await page
@@ -79,15 +79,10 @@ test("Phenotype set vs phenotype set works", async ({ page }) => {
 
   /** paste specific dummy phenotypes */
   await paste(
-    page,
     page.locator("input").first(),
     "HP:0004970,HP:0004933,HP:0004927"
   );
-  await paste(
-    page,
-    page.locator("input").last(),
-    "HP:0004970,HP:0004933,HP:0004927"
-  );
+  await paste(page.locator("input").last(), "HP:0004970,HP:0004933,HP:0004927");
 
   /** run analysis, and look for expected results */
   await page

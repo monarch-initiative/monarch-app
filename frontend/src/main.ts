@@ -8,7 +8,10 @@ import components from "@/global/components";
 import plugins from "@/global/plugins";
 import router from "@/router";
 import "wicg-inert";
+import "@/global/icons";
 import "@/global/meta";
+import "normalize.css";
+import "@/global/styles.scss"; /** keep these last so they take priority */
 
 /** log env variables for debugging */
 console.info(import.meta.env);

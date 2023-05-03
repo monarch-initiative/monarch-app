@@ -20,9 +20,6 @@ import TheFloatButtons from "@/components/TheFloatButtons.vue";
 import TheFooter from "@/components/TheFooter.vue";
 import TheHeader from "@/components/TheHeader.vue";
 import { appDescription, appTitle, appUrl } from "@/global/meta";
-import "normalize.css";
-import "@/global/icons";
-import "@/global/styles.scss"; /** keep these last so they take priority */
 import TheBanner from "./components/TheBanner.vue";
 import TheSnackbar from "./components/TheSnackbar.vue";
 

@@ -4,8 +4,7 @@ test("Redirects to explore page from home page", async ({ page }) => {
   /** go to homepage and focus search box */
   await page.goto("/");
   await page.locator("input").focus();
-  const loc = new URL(page.url());
-  expect(loc.pathname).toBe("/explore");
+  await page.waitForURL(/explore/);
 
   /** go to homepage and click one of tabs */
   await page.goto("/");
@@ -13,8 +12,7 @@ test("Redirects to explore page from home page", async ({ page }) => {
     .getByText(/Text Annotator/)
     .first()
     .click();
-  const { pathname } = new URL(page.url());
-  expect(pathname).toBe("/explore");
+  await page.waitForURL(/explore/);
 });
 
 test("Recent/frequent results show", async ({ page }) => {

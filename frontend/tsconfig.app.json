@@ -5,7 +5,8 @@
     "src/**/*",
     "src/**/*.vue",
     "src/**/*.json",
-    "package.json"
+    "package.json",
+    "fixtures/*"
   ],
   "compilerOptions": {
     "composite": true,
