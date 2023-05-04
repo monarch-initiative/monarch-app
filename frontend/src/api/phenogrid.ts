@@ -1,14 +1,14 @@
+import Phenogrid from "phenogrid";
 import { waitFor } from "@/util/dom";
-import { biolink } from ".";
 /** import "phenogrid/dist/phenogrid-bundle.css"; */
 import "./phenogrid.css";
-import Phenogrid from "phenogrid";
+import { biolink } from "./";
 
 /** mount phenogrid to dom element with options */
 export const mountPhenogrid = async (
   selector: string,
-  xAxis: Array<{ id?: string; name?: string }>,
-  yAxis: Array<{ id?: string; name?: string }>,
+  xAxis: { id?: string; name?: string }[],
+  yAxis: { id?: string; name?: string }[],
   mode = "compare"
 ): Promise<void> => {
   /**
@@ -40,10 +40,10 @@ export const mountPhenogrid = async (
   await waitFor("#phenogrid_svg", patchSvg);
 };
 
-/** SHIMS FOR PHENOGRID */
+/** sHIMS FOR PHENOGRID */
 
 /** typescript definition */
-export interface PhenogridDefinition {
+export type PhenogridDefinition = {
   createPhenogridForElement: (
     element: HTMLElement | null,
     options: {
@@ -52,16 +52,16 @@ export interface PhenogridDefinition {
       appURL: string;
       gridSkeletonData: {
         title: string;
-        xAxis: Array<{ groupId: string; groupName: string } | Array<string>>;
-        yAxis: Array<{ id: string; term: string }>;
+        xAxis: ({ groupId: string; groupName: string } | string[])[];
+        yAxis: { id: string; term: string }[];
       };
       selectedCalculation: number;
       selectedSort: string;
-      geneList: Array<{ groupId: string; groupName: string } | Array<string>>;
+      geneList: ({ groupId: string; groupName: string } | string[])[];
       owlSimFunction: string;
     }
   ) => void;
-}
+};
 
 /** fix incorrect svg sizing */
 const patchSvg = (svg: Element, padding = 20) => {

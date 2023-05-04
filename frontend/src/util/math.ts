@@ -15,18 +15,18 @@ export const wrap = (value: number, min: number, max: number): number => {
   return value;
 };
 
-/** STUFF ONLY USED FOR HEADER VISUALIZATION */
+/** sTUFF ONLY USED FOR HEADER VISUALIZATION */
 
 /** point tuple types */
-export interface Point3d {
+export type Point3d = {
   x: number;
   y: number;
   z: number;
-}
-export interface Point2d {
+};
+export type Point2d = {
   x: number;
   y: number;
-}
+};
 
 /** rotate a point in 3d about the x axis */
 export const rotateX = ({ x, y, z }: Point3d, angle = 0): Point3d => ({

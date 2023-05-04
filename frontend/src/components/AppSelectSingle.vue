@@ -72,28 +72,44 @@
   </div>
 </template>
 
+<script lang="ts">
+export type Option = {
+  /** unique id used in state of select */
+  id: string;
+  /** icon name */
+  icon?: string;
+  /** display name */
+  name?: string;
+  /** count col */
+  count?: number;
+  /** tooltip on hover */
+  tooltip?: string;
+};
+
+export type Options = Option[];
+</script>
+
 <script setup lang="ts">
 import { nextTick, ref, watch } from "vue";
 import { uniqueId } from "lodash";
-import { Option, Options } from "./AppSelectSingle";
-import { wrap } from "@/util/math";
 import { useFloating } from "@/util/composables";
+import { wrap } from "@/util/math";
 
-interface Props {
+type Props = {
   /** two-way bound selected item state */
   modelValue?: Option;
   /** name of the field */
   name: string;
   /** list of options to show */
   options: Options;
-}
+};
 
 const props = defineProps<Props>();
 
-interface Emits {
+type Emits = {
   /** two-way bound selected item state */
   (event: "update:modelValue", value: Option): void;
-}
+};
 
 const emit = defineEmits<Emits>();
 

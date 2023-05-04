@@ -31,12 +31,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, nextTick } from "vue";
+import { nextTick, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import {
+  useActiveElement,
   useEventListener,
   useMutationObserver,
-  useActiveElement,
 } from "@vueuse/core";
 import AppModal from "@/components/AppModal.vue";
 import TheFeedbackForm from "@/components/TheFeedbackForm.vue";

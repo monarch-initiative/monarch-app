@@ -1,23 +1,23 @@
-import { biolink, request } from ".";
-import staticData from "./datasets.json";
 import { mergeArrays } from "@/util/object";
-import { Source } from "./source";
+import { biolink, request } from "./";
+import staticData from "./datasets.json";
+import type { Source } from "./source";
 import { getXrefLink } from "./xrefs";
 
 /** knowledge graph datasets (from backend) */
-interface _Datasets {
-  nodes: Array<{
+type _Datasets = {
+  nodes: {
     id: string;
     meta: {
-      "http://purl.org/dc/terms/created": Array<string>;
+      "http://purl.org/dc/terms/created": string[];
     };
-  }>;
-  edges: Array<{
+  }[];
+  edges: {
     sub: string;
     obj: string;
     pred: string;
-  }>;
-}
+  }[];
+};
 
 /**
  * get metadata of all datasets used in monarch from biolink, in format of
@@ -64,4 +64,4 @@ export const getDatasets = async (): Promise<Datasets> => {
 };
 
 /** knowledge graph datasets (for frontend) */
-type Datasets = Array<Source>;
+type Datasets = Source[];

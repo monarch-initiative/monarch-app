@@ -15,15 +15,15 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { clamp } from "lodash";
-import { sin, cos } from "@/util/math";
+import { cos, sin } from "@/util/math";
 
-interface Props {
+type Props = {
   /** value to show in center of ring */
   score?: number;
   /** range of score for normalization */
   min?: number;
   max?: number;
-}
+};
 
 const props = withDefaults(defineProps<Props>(), {
   score: 50,

@@ -46,7 +46,7 @@
           @blur="close"
           @debounce="getResults"
           @keydown="onKeydown"
-          @paste="onPaste"
+          @paste="getResults"
         />
 
         <div class="controls">
@@ -135,17 +135,54 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, computed, watch, nextTick } from "vue";
-import { uniqueId, isEqual, uniqBy } from "lodash";
-import { Option, Options, OptionsFunc } from "./AppSelectTags";
-import { wrap } from "@/util/math";
-import { snackbar } from "./TheSnackbar";
-import { sleep } from "@/util/debug";
-import { useFloating, useQuery } from "@/util/composables";
-import AppInput from "./AppInput.vue";
+<script lang="ts">
+/**
+ * instead of providing a static list of options, you can provide this function
+ * that receives the user-typed search string and dynamically returns a list of
+ * options to display to user for selection or auto-select.
+ */
+export type OptionsFunc = (search: string) => Promise<{
+  /** list of options to return */
+  options: Options;
+  /** whether to auto-select these options, or display to user for selection */
+  autoAccept?: boolean;
+  /** snackbar message to show when auto-accepting */
+  message?: string;
+}>;
 
-interface Props {
+export type Options = Option[];
+
+export type Option = {
+  /** unique id used in state of select */
+  id: string;
+  /** icon name */
+  icon?: string;
+  /** display name */
+  name?: string;
+  /** highlighting html */
+  highlight?: string;
+  /** info col */
+  info?: string;
+  /** tooltip on hover */
+  tooltip?: string;
+  /**
+   * allows returning multiple options instead when selecting this option, e.g.
+   * clicking a gene result and getting/selecting its 8 associated phenotypes
+   * instead
+   */
+  spreadOptions?: () => Promise<Options>;
+};
+</script>
+
+<script setup lang="ts">
+import { computed, nextTick, ref, watch } from "vue";
+import { isEqual, uniqBy, uniqueId } from "lodash";
+import { useFloating, useQuery } from "@/util/composables";
+import { wrap } from "@/util/math";
+import AppInput from "./AppInput.vue";
+import { snackbar } from "./TheSnackbar.vue";
+
+type Props = {
   /** two-way bound selected items state */
   modelValue: Options;
   /** name of the field */
@@ -158,16 +195,16 @@ interface Props {
   tooltip?: string;
   /** description to show below box */
   description?: string;
-}
+};
 
 const props = defineProps<Props>();
 
-interface Emits {
+type Emits = {
   /** two-way bound selected items state */
   (event: "update:modelValue", value: Options): void;
   /** when an option's spreadOptions func has been called */
   (event: "spreadOptions", option: Option, options: Options): void;
-}
+};
 
 const emit = defineEmits<Emits>();
 
@@ -228,17 +265,6 @@ function onKeydown(event: KeyboardEvent) {
 
   /** esc key to close dropdown */
   if (event.key === "Escape") close();
-}
-
-/** when user pastes text */
-async function onPaste() {
-  /**
-   * wait for pasted value to take effect but don't use nextTick because by then
-   * search.value will be reset
-   */
-  await sleep();
-  /** immediately auto-accept results */
-  await getResults();
 }
 
 /** select an option or array of options */

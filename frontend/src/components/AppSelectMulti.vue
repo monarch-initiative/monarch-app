@@ -123,14 +123,28 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, computed, watch, nextTick } from "vue";
-import { isEqual, uniqueId } from "lodash";
-import { Options } from "./AppSelectMulti";
-import { wrap } from "@/util/math";
-import { useFloating } from "@/util/composables";
+<script lang="ts">
+export type Option = {
+  /** unique id used in state of select */
+  id: string;
+  /** display name */
+  name?: string;
+  /** count col */
+  count?: number;
+  /** tooltip on hover */
+  tooltip?: string;
+};
 
-interface Props {
+export type Options = Option[];
+</script>
+
+<script setup lang="ts">
+import { computed, nextTick, ref, watch } from "vue";
+import { isEqual, uniqueId } from "lodash";
+import { useFloating } from "@/util/composables";
+import { wrap } from "@/util/math";
+
+type Props = {
   /** two-way bound selected items state */
   modelValue: Options;
   /** name of the field */
@@ -141,21 +155,21 @@ interface Props {
   showCounts?: boolean;
   /** visual design */
   design?: "normal" | "small";
-}
+};
 
 const props = withDefaults(defineProps<Props>(), {
   showCounts: true,
   design: "normal",
 });
 
-interface Emits {
+type Emits = {
   /** two-way bound selected items state */
   (event: "update:modelValue", value: Options): void;
   /** when value changed */
   (event: "input"): void;
   /** when value change "submitted"/"committed" by user */
   (event: "change", value: Options): void;
-}
+};
 
 const emit = defineEmits<Emits>();
 
@@ -164,9 +178,9 @@ const id = ref(uniqueId());
 /** whether dropdown is open */
 const expanded = ref(false);
 /** array of indices of selected options */
-const selected = ref<Array<number>>([]);
+const selected = ref<number[]>([]);
 /** selected state when dropdown was opened */
-const original = ref<Array<number>>([]);
+const original = ref<number[]>([]);
 /** index of option that is highlighted */
 const highlighted = ref(0);
 
@@ -249,7 +263,7 @@ function onKeydown(event: KeyboardEvent) {
 }
 
 /** get new selected option indices from model value */
-function getSelected(): Array<number> {
+function getSelected(): number[] {
   return props.options
     .map((option, index) =>
       props.modelValue.find((model) => option.id === model.id) ? index : -1

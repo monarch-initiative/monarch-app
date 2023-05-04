@@ -21,9 +21,9 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { snackbar } from "./TheSnackbar";
+import { snackbar } from "./TheSnackbar.vue";
 
-interface Props {
+type Props = {
   /** text to show */
   text?: string;
   /** icon to show */
@@ -40,7 +40,7 @@ interface Props {
   copy?: boolean;
   /** html button type attribute */
   type?: string;
-}
+};
 
 const props = withDefaults(defineProps<Props>(), {
   text: "",

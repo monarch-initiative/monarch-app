@@ -1,10 +1,10 @@
 <svg
   xmlns="http://www.w3.org/2000/svg"
   viewBox="-50 -50 100 100"
-  id="loading-spinner"
+  class="loading-spinner"
 >
   <style>
-    #loading-spinner {
+    .loading-spinner {
       animation: spin 2s linear infinite forwards;
     }
 

@@ -1,14 +1,15 @@
-import { CSSProperties, Ref, ref, shallowRef } from "vue";
+import type { CSSProperties, Ref } from "vue";
+import { ref, shallowRef } from "vue";
+import { debounce } from "lodash";
 import { computePosition, flip, shift, size } from "@floating-ui/dom";
 import { useEventListener } from "@vueuse/core";
-import { debounce } from "lodash";
 
 /**
  * inspired by react-query. simple query manager/wrapper for making queries in
  * components. reduces repetitive boilerplate code for loading/error states,
  * try/catch blocks, de-duplicating requests, etc.
  */
-export const useQuery = <Data, Args extends Array<unknown>>(
+export const useQuery = <Data, Args extends unknown[]>(
   /**
    * main async func that returns data. should be side-effect free to avoid race
    * conditions, because multiple can be running at same time.

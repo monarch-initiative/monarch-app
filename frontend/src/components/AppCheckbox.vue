@@ -17,21 +17,21 @@
 </template>
 
 <script setup lang="ts">
-interface Props {
+type Props = {
   /** two-way bound checked state */
   modelValue?: boolean;
   /** text to show in label */
   text: string;
   /** icon to show in label */
   icon?: string;
-}
+};
 
 defineProps<Props>();
 
-interface Emits {
+type Emits = {
   /** two-way bound checked state */
   (event: "update:modelValue", checked: boolean): void;
-}
+};
 
 const emit = defineEmits<Emits>();
 

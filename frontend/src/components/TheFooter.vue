@@ -14,6 +14,12 @@
       <AppLink v-tooltip="'Twitter'" to="https://twitter.com/MonarchInit">
         <AppIcon icon="twitter" />
       </AppLink>
+      <AppLink
+        v-tooltip="'Mastodon'"
+        to="https://genomic.social/@monarch_initiative"
+      >
+        <AppIcon icon="mastodon" />
+      </AppLink>
     </div>
     <div class="license">
       <span>Monarch Intiative {{ new Date().getFullYear() }}</span>

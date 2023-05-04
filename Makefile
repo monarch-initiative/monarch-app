@@ -68,8 +68,8 @@ install-backend:
 .PHONY: install-frontend
 install-frontend:
 	cd frontend && \
-		npx update-browserslist-db@latest && \
-		yarn install
+		yarn install && \
+		npx playwright install
 
 
 .PHONY: model
@@ -79,8 +79,6 @@ model: install-frontend
 	$(RUN) gen-pydantic schema/monarch-api.yaml > backend/src/monarch_api/model.py
 	$(RUN) gen-typescript schema/monarch-api.yaml > frontend/src/api/model.ts
 	$(RUN) black backend/src/monarch_api/model.py
-	cd frontend && \
-		npx prettier -w src/api/model.ts
 
 
 # Documentation
@@ -94,20 +92,16 @@ docs: install-backend model
 .PHONY: test
 test: test-backend test-frontend
 
+
 .PHONY: test-backend
 test-backend: install-backend model
 	$(RUN) pytest backend/tests
 
+
 .PHONY: test-frontend
 test-frontend: install-frontend model
 	cd frontend && \
-		npx update-browserslist-db@latest && \
-		yarn build && \
-		yarn test:unit --detectOpenHandles  # && \
-		# yarn test:lint && \
-		# yarn test:axe && \
-		# yarn test:e2e && \
-
+		yarn test
 
 
 ### Development ###
@@ -115,7 +109,7 @@ test-frontend: install-frontend model
 .PHONY: dev-frontend
 dev-frontend: frontend/src/api/model.ts
 	cd frontend && \
-		yarn serve
+		yarn dev
 
 
 .PHONY: dev-backend
@@ -131,9 +125,11 @@ docker-build:
 	cd backend && \
 		docker build --rm --tag us-central1-docker.pkg.dev/monarch-initiative/monarch-api/monarch-api:$(VERSION) .
 
+
 .PHONY: docker-push
 docker-push:
 	docker push us-central1-docker.pkg.dev/monarch-initiative/monarch-api/monarch-api:$(VERSION)
+
 
 ### Linting, Formatting, and Cleaning ###
 
@@ -160,7 +156,7 @@ lint: install lint-frontend lint-backend
 .PHONY: lint-frontend
 lint-frontend: install-frontend
 	cd frontend && \
-		npx prettier --check src tests
+		yarn test:lint
 
 
 .PHONY: lint-backend
@@ -190,5 +186,5 @@ format-backend: install-backend
 .PHONY: format-frontend
 format-frontend: install-frontend
 	cd frontend && \
-		npx prettier -w src tests
-
+		yarn lint && \
+		yarn imports

@@ -1,31 +1,31 @@
-import { biolink, request } from ".";
-import { Filters, Query, facetsToFilters, queryToParams } from "./facets";
+import { biolink, request } from "./";
+import type { Filters, Query } from "./facets";
+import { facetsToFilters, queryToParams } from "./facets";
 
 /** remove any special characters that would screw up backend search */
 const encode = (string: string) => string.replaceAll(/[^a-zA-Z0-9]/g, " ");
 
 /** search results (from backend) */
-interface _SearchResults {
+type _SearchResults = {
   numFound: number;
-  docs: Array<{
+  docs: {
     id: string;
-    category?: Array<string>;
-    equivalent_curie?: Array<string>;
-    definition?: Array<string>;
-    label?: Array<string>;
+    category?: string[];
+    equivalent_curie?: string[];
+    definition?: string[];
+    label?: string[];
     score?: number;
     prefix?: string;
     taxon?: string;
     taxon_label?: string;
-  }>;
-  facet_counts: Record<string, Record<string, number>>;
-  highlighting: Record<
-    string,
-    {
+  }[];
+  facet_counts: { [key: string]: { [key: string]: number } };
+  highlighting: {
+    [key: string]: {
       highlight?: string;
-    }
-  >;
-}
+    };
+  };
+};
 
 /** search for node with text and filters */
 export const getSearchResults = async (
@@ -95,13 +95,13 @@ export const getSearchResults = async (
 };
 
 /** search results (for frontend) */
-export interface SearchResults {
+export type SearchResults = {
   count: number;
-  results: Array<{
+  results: {
     id: string;
     name?: string;
-    altIds?: Array<string>;
-    altNames?: Array<string>;
+    altIds?: string[];
+    altNames?: string[];
     category?: string;
     description?: string;
     score?: number;
@@ -111,19 +111,19 @@ export interface SearchResults {
       id: string;
       name: string;
     };
-  }>;
+  }[];
   facets: Filters;
-}
+};
 
 /** autocomplete results (from backend) */
-interface _Autocomplete {
+type _Autocomplete = {
   docs: [
     {
       match?: string;
       highlight?: string;
     }
   ];
-}
+};
 
 /** search for quick autocomplete matches to query string */
 export const getAutocompleteResults = async (
@@ -140,7 +140,7 @@ export const getAutocompleteResults = async (
 };
 
 /** autocomplete results (for frontend) */
-type Autocomplete = Array<{
+type Autocomplete = {
   name: string;
   highlight: string;
-}>;
+}[];

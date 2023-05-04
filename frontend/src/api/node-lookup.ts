@@ -1,47 +1,47 @@
 import { sortBy } from "lodash";
-import { biolink, request } from ".";
+import { biolink, request } from "./";
 import { categories, mapCategory } from "./categories";
-import { getXrefLink } from "./xrefs";
-import { getGene, Gene } from "./genes";
+import type { Gene } from "./genes";
+import { getGene } from "./genes";
 import { getPublication } from "./publications";
+import { getXrefLink } from "./xrefs";
 
 /** node lookup info (from backend) */
-interface _Node {
+type _Node = {
   id: string;
   label: string;
   iri: string;
-  category?: Array<string> | null;
+  category?: string[] | null;
   description: string | null;
-  types: Array<string>;
-  inheritance?: Array<{
+  types: string[];
+  inheritance?: {
     id: string;
     label: string;
     iri: string;
-  }>;
+  }[];
   synonyms?: [
     {
       val: string;
       pred: string;
-      xrefs: Array<string>;
+      xrefs: string[];
     }
   ];
-  clinical_modifiers?: Array<{ label: string }>;
+  clinical_modifiers?: { label: string }[];
   deprecated: true;
-  replaced_by: Array<string>;
-  consider: Array<string>;
+  replaced_by: string[];
+  consider: string[];
   taxon?: {
     id: string;
     label: string;
   };
-  association_counts: Record<
-    string,
-    {
+  association_counts: {
+    [key: string]: {
       counts?: number;
       counts_by_taxon?: number;
-    }
-  >;
-  xrefs: Array<string>;
-}
+    };
+  };
+  xrefs: string[];
+};
 
 /** lookup metadata for a node id */
 export const lookupNode = async (id = "", category = ""): Promise<Node> => {
@@ -131,7 +131,7 @@ export const lookupNode = async (id = "", category = ""): Promise<Node> => {
 };
 
 /** node (for frontend). structure/order mirrors sections on node page. */
-export interface Node {
+export type Node = {
   /** title section */
   id: string;
   /** title section */
@@ -142,25 +142,25 @@ export interface Node {
   category: string;
 
   /** overview section */
-  synonyms: Array<string>;
+  synonyms: string[];
   /** overview section */
   description: string;
 
   /** details section */
   iri: string;
   /** details section */
-  inheritance: Array<{
+  inheritance: {
     id: string;
     name: string;
     link: string;
-  }>;
+  }[];
   /** details section */
-  modifiers: Array<string>;
+  modifiers: string[];
   /** details section */
-  xrefs: Array<{
+  xrefs: {
     id: string;
     link: string;
-  }>;
+  }[];
 
   /** details section (gene specific) */
   taxon?: {
@@ -174,7 +174,7 @@ export interface Node {
   genome?: Gene["genome"];
 
   /** details section (publication specific) */
-  authors?: Array<string>;
+  authors?: string[];
   /** details section (publication specific) */
   date?: Date;
   /** details section (publication specific) */
@@ -183,9 +183,9 @@ export interface Node {
   journal?: string;
 
   /** associations section */
-  associationCounts: Array<{
+  associationCounts: {
     id: string;
     count: number;
     countByTaxon?: number;
-  }>;
-}
+  }[];
+};

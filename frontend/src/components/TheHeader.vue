@@ -64,12 +64,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { onClickOutside } from "@vueuse/core";
-import TheNexus from "./TheNexus.vue";
 import TheLogo from "@/assets/TheLogo.vue";
 import app from "../../package.json";
+import TheNexus from "./TheNexus.vue";
 
 /** route info */
 const route = useRoute();

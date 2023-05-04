@@ -73,9 +73,9 @@
 
         <!-- row of picture, description, and other summary info -->
         <img
-          v-if="getSrc(source.image)"
+          v-if="source.image"
           class="image"
-          :src="getSrc(source.image)"
+          :src="source.image"
           :alt="source.name"
         />
         <p v-if="source.description" v-html="source.description" />
@@ -132,29 +132,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
-import AppCheckbox from "@/components/AppCheckbox.vue";
-import AppAccordion from "@/components/AppAccordion.vue";
+import { computed, onMounted, ref } from "vue";
 import { getDatasets } from "@/api/datasets";
 import { getOntologies } from "@/api/ontologies";
-import { Source } from "@/api/source";
-import { breakUrl } from "@/util/string";
+import type { Source } from "@/api/source";
+import AppAccordion from "@/components/AppAccordion.vue";
+import AppCheckbox from "@/components/AppCheckbox.vue";
 import { useQuery } from "@/util/composables";
+import { breakUrl } from "@/util/string";
 
 /** whether to show dataset sources */
 const showDatasets = ref(true);
 /** whether to show ontology sources */
 const showOntologies = ref(true);
-
-/** get source img src */
-function getSrc(image = "") {
-  try {
-    if (image.startsWith("http")) return image;
-    else return require(`@/assets/sources/${image}`);
-  } catch (error) {
-    return "";
-  }
-}
 
 /** get filename from full path */
 function getFilename(path = "") {
@@ -187,19 +177,34 @@ const {
     else return 1;
   });
 
+  /** import images */
+  for (const source of sources) {
+    try {
+      if (!source.image) {
+        source.image = "";
+        continue;
+      }
+      if (source.image?.startsWith("http")) continue;
+      source.image = (
+        await import(`../../assets/sources/${source.image}.png`)
+      ).default;
+    } catch (error) {
+      //
+    }
+  }
+
   return sources;
 }, []);
 
 onMounted(getSources);
 
 /** shown sources */
-const filteredSources = computed(
-  (): Array<Source> =>
-    sources.value.filter(
-      (source: Source) =>
-        (source.type === "dataset" && showDatasets.value) ||
-        (source.type === "ontology" && showOntologies.value)
-    )
+const filteredSources = computed((): Source[] =>
+  sources.value.filter(
+    (source: Source) =>
+      (source.type === "dataset" && showDatasets.value) ||
+      (source.type === "ontology" && showOntologies.value)
+  )
 );
 
 /** number of dataset sources */

@@ -40,22 +40,22 @@
 </template>
 
 <script setup lang="ts">
-import { watch, onMounted, nextTick } from "vue";
+import { nextTick, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import { kebabCase } from "lodash";
 import { lookupNode } from "@/api/node-lookup";
 import TheTableOfContents from "@/components/TheTableOfContents.vue";
-import SectionTitle from "./SectionTitle.vue";
-import SectionOverview from "./SectionOverview.vue";
-import SectionDetails from "./SectionDetails.vue";
-import SectionHierarchy from "./SectionHierarchy.vue";
-import SectionVisualization from "./SectionVisualization.vue";
-import SectionAssociations from "./SectionAssociations.vue";
-import SectionBreadcrumbs from "./SectionBreadcrumbs.vue";
+import { addEntry } from "@/global/history";
+import { appDescription, appTitle } from "@/global/meta";
 import { scrollToHash } from "@/router";
 import { useQuery } from "@/util/composables";
-import { appDescription, appTitle } from "@/global/meta";
-import { addEntry } from "@/global/history";
+import SectionAssociations from "./SectionAssociations.vue";
+import SectionBreadcrumbs from "./SectionBreadcrumbs.vue";
+import SectionDetails from "./SectionDetails.vue";
+import SectionHierarchy from "./SectionHierarchy.vue";
+import SectionOverview from "./SectionOverview.vue";
+import SectionTitle from "./SectionTitle.vue";
+import SectionVisualization from "./SectionVisualization.vue";
 
 /** route info */
 const route = useRoute();

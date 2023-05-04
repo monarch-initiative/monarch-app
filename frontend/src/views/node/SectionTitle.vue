@@ -42,12 +42,12 @@
 
 <script setup lang="ts">
 import { kebabCase } from "lodash";
-import { Node } from "@/api/node-lookup";
+import type { Node } from "@/api/node-lookup";
 
-interface Props {
+type Props = {
   /** current node */
   node: Node;
-}
+};
 
 defineProps<Props>();
 </script>

@@ -75,20 +75,20 @@
 <script setup lang="ts">
 import { watch } from "vue";
 import { useRoute } from "vue-router";
-import { Node } from "@/api/node-lookup";
 import { getHierarchy } from "@/api/node-hierarchy";
-import AppDetails from "@/components/AppDetails.vue";
+import type { Node } from "@/api/node-lookup";
 import AppDetail from "@/components/AppDetail.vue";
+import AppDetails from "@/components/AppDetails.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import { useQuery } from "@/util/composables";
 
 /** route info */
 const route = useRoute();
 
-interface Props {
+type Props = {
   /** current node */
   node: Node;
-}
+};
 
 const props = defineProps<Props>();
 

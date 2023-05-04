@@ -15,14 +15,14 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { startCase } from "lodash";
-import { Association } from "@/api/node-associations";
+import type { Association } from "@/api/node-associations";
 
-interface Props {
+type Props = {
   /** current relation */
   relation: Pick<Association["relation"], "iri" | "name" | "inverse">;
   /** whether to display arrows vertically */
   vertical?: boolean;
-}
+};
 
 const props = defineProps<Props>();
 

@@ -16,7 +16,13 @@
     :data-icon="icon"
     aria-hidden="true"
   />
-  <svg v-else-if="initials" viewBox="-10 -10 120 120" class="initials">
+  <svg
+    v-else-if="initials"
+    viewBox="-10 -10 120 120"
+    class="initials"
+    :data-debug1="fa"
+    :data-debug2="custom"
+  >
     <circle cx="50" cy="50" r="55" />
     <text x="50" y="54">
       {{ initials }}
@@ -25,33 +31,37 @@
 </template>
 
 <script setup lang="ts">
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import {
-  findIconDefinition,
-  IconPrefix,
-  IconName,
-} from "@fortawesome/fontawesome-svg-core";
+import { computed, ref, watch } from "vue";
 import InlineSvg from "vue-inline-svg";
-import { computed } from "vue";
+import type { IconName, IconPrefix } from "@fortawesome/fontawesome-svg-core";
+import { findIconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-interface Props {
+type Props = {
   /**
    * kebab-case name of icon to show. for font awesome, without fas/far/etc
    * prefix. for custom icon, match filename, without extension.
    */
   icon?: string;
-}
+};
 
 const props = defineProps<Props>();
 
 /** find custom icon with matching name, if there is one */
-const custom = computed((): string => {
-  try {
-    return require(`@/assets/icons/${props.icon}.svg`);
-  } catch (error) {
-    return "";
-  }
-});
+const custom = ref("");
+watch(
+  () => props.icon,
+  async () => {
+    try {
+      custom.value = (
+        await import(`../assets/icons/${props.icon}.svg`)
+      ).default;
+    } catch (error) {
+      //
+    }
+  },
+  { immediate: true }
+);
 
 /** find font awesome icon with matching name, if there is one */
 const fa = computed(() => {
@@ -63,7 +73,7 @@ const fa = computed(() => {
     if (match) return match;
   }
 
-  return null;
+  return undefined;
 });
 
 /** initials as fallback */

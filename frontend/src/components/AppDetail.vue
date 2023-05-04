@@ -33,7 +33,7 @@
  * exists, but pass "blank" prop to indicate that no data available
  */
 
-interface Props {
+type Props = {
   /** title of info block */
   title: string;
   /** icon next to title */
@@ -47,7 +47,7 @@ interface Props {
   blank?: boolean;
   /** whether info block is full width or not */
   big?: boolean;
-}
+};
 
 withDefaults(defineProps<Props>(), {
   icon: "",

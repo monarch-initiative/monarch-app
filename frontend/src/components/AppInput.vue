@@ -16,21 +16,21 @@
 </template>
 
 <script setup lang="ts">
-import { debounce } from "lodash";
 import { onBeforeUnmount, ref } from "vue";
+import { debounce } from "lodash";
 
-interface Props {
+type Props = {
   /** two-way bound text state */
   modelValue?: string;
   /** whether field is multi-line */
   multi?: boolean;
   /** delay for debounce in ms */
   debounce?: number;
-}
+};
 
 const props = defineProps<Props>();
 
-interface Emits {
+type Emits = {
   /** two-way bound text state */
   (event: "update:modelValue", value: string): void;
   /** when user types in box, after some delay */
@@ -41,7 +41,7 @@ interface Emits {
   (event: "focus"): void;
   /** when input blurred */
   (event: "blur"): void;
-}
+};
 
 const emit = defineEmits<Emits>();
 
@@ -50,13 +50,11 @@ const input = ref();
 
 /** when user focuses box */
 function onFocus() {
-  onDebounce.cancel();
   emit("focus");
 }
 
 /** when user blurs box */
 function onBlur() {
-  onDebounce.cancel();
   emit("blur");
 }
 
@@ -73,7 +71,6 @@ const onDebounce = debounce(function (value: string) {
 
 /** when user "commits" change (pressing enter, blurring, etc) */
 async function onChange() {
-  onDebounce.cancel();
   emit("change", input.value.value);
 }
 

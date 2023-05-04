@@ -1,24 +1,17 @@
+/* eslint-env node */
+require("@rushstack/eslint-patch/modern-module-resolution");
+
 module.exports = {
   root: true,
-
-  env: {
-    node: true,
-    "vue/setup-compiler-macros": true,
-  },
-
-  plugins: ["vuejs-accessibility"],
-
   extends: [
     "plugin:vue/vue3-recommended",
     "plugin:vuejs-accessibility/recommended",
     "eslint:recommended",
-    "@vue/typescript/recommended",
-    "@vue/prettier",
-    "@vue/prettier/@typescript-eslint",
+    "@vue/eslint-config-typescript",
+    "@vue/eslint-config-prettier/skip-formatting",
   ],
-
   parserOptions: {
-    ecmaVersion: 2020,
+    ecmaVersion: "latest",
   },
 
   /** rule overrides (KEEP THIS AS MINIMAL AS POSSIBLE) */
@@ -50,20 +43,4 @@ module.exports = {
     "vue/no-v-html": ["off"],
     "vue/no-v-text-v-html-on-component": ["off"],
   },
-
-  /** don't lint certain files */
-  ignorePatterns: [],
-
-  /** is this needed? */
-  overrides: [
-    {
-      files: [
-        "**/tests/unit/**/*.test.ts",
-        "**/tests/accessibility/**/*.test.ts",
-      ],
-      env: {
-        jest: true,
-      },
-    },
-  ],
 };

@@ -1,15 +1,13 @@
-import { Plugin } from "vue";
-import router from "@/router";
-import store from "@/store";
+import type { Plugin } from "vue";
 import tippy from "vue-tippy";
+import router from "@/router";
 import "tippy.js/dist/tippy.css";
 import "tippy.js/dist/border.css";
 import { options } from "./tooltip";
 
 /** list of global plugins and their options */
-const plugins: Array<[Plugin, unknown]> = [
+const plugins: [Plugin, unknown][] = [
   [router, {}],
-  [store, {}],
   [tippy, options],
 ];
 

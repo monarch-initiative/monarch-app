@@ -26,7 +26,7 @@
 import { onMounted, onUpdated, ref } from "vue";
 import { kebabCase } from "lodash";
 
-interface Props {
+type Props = {
   /** manually specified heading id */
   id?: string;
   /** manually specified heading level */
@@ -35,7 +35,7 @@ interface Props {
   icon?: string;
   /** fall back icon */
   fallbackIcon?: string;
-}
+};
 
 const props = defineProps<Props>();
 

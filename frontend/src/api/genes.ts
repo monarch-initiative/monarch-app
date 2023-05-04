@@ -1,11 +1,13 @@
-import { request } from ".";
+import { request } from "./";
+
+export const mygeneinfo = "https://mygene.info/v3/query";
 
 /**
  * map our id prefixes to prefixes that mygene expects
  * http://docs.mygene.info/en/latest/doc/data.html#species
  * http://docs.mygene.info/en/latest/doc/query_service.html#available-fields
  */
-const map: Record<string, { replace: string; species: string }> = {
+const map: { [key: string]: { replace: string; species: string } } = {
   "NCBIGene:": { replace: "", species: "all" },
   "OMIM:": { replace: "mim:", species: "9606" },
   "MGI:": { replace: "mgi:MGI\\:", species: "10090" },
@@ -16,8 +18,8 @@ const map: Record<string, { replace: string; species: string }> = {
 };
 
 /** gene (from backend) */
-interface _Gene {
-  hits: Array<{
+type _Gene = {
+  hits: {
     name: string;
     summary: string;
     symbol: string;
@@ -29,8 +31,8 @@ interface _Gene {
       ensemblgene: string;
       strand: number;
     };
-  }>;
-}
+  }[];
+};
 
 /** get metadata of gene from mygene */
 export const getGene = async (id = ""): Promise<Gene> => {
@@ -45,8 +47,8 @@ export const getGene = async (id = ""): Promise<Gene> => {
     fields: "summary,genomic_pos,name,symbol,taxid",
     species,
   };
-  const url = "https://mygene.info/v3/query";
-  const { hits } = await request<_Gene>(url, params);
+
+  const { hits } = await request<_Gene>(mygeneinfo, params);
 
   /** take first result */
   const hit = hits[0] || {};
@@ -61,7 +63,7 @@ export const getGene = async (id = ""): Promise<Gene> => {
 };
 
 /** gene (for frontend) */
-export interface Gene {
+export type Gene = {
   name: string;
   description: string;
   symbol: string;
@@ -72,4 +74,4 @@ export interface Gene {
     strand: number;
     ensemblgene: string;
   };
-}
+};

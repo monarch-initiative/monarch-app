@@ -1,10 +1,7 @@
 import { useLocalStorage } from "@vueuse/core";
 
 /** raw, in-order node search/visit history */
-export const history = useLocalStorage<Array<string>>(
-  "node-search-history",
-  []
-);
+export const history = useLocalStorage<string[]>("node-search-history", []);
 
 /** add entry to node search/visit history */
 export const addEntry = (value?: string) => {

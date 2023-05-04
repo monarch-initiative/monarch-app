@@ -18,14 +18,14 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-interface Props {
+type Props = {
   /** work title */
   title?: string;
   /** list of authors */
   authors?: string;
   /** journal, issue, date, or other misc info */
-  details?: Array<string>;
-}
+  details?: string[];
+};
 
 const props = defineProps<Props>();
 

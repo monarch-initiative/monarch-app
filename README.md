@@ -1,27 +1,22 @@
-# Monarch API
+# Monarch App
 
-![](https://github.com/monarch-initiative/monarch-api/actions/workflows/test-backend.yaml/badge.svg)
-![](https://github.com/monarch-initiative/monarch-api/actions/workflows/test-frontend.yaml/badge.svg)
-![](https://github.com/monarch-initiative/monarch-api/actions/workflows/deploy-documentation.yaml/badge.svg)
-![](https://github.com/monarch-initiative/monarch-api/actions/workflows/build-image.yaml/badge.svg)
+![](https://github.com/monarch-initiative/monarch-app/actions/workflows/test-backend.yaml/badge.svg)
+![](https://github.com/monarch-initiative/monarch-app/actions/workflows/test-frontend.yaml/badge.svg)
+![](https://github.com/monarch-initiative/monarch-app/actions/workflows/deploy-documentation.yaml/badge.svg)
+![](https://github.com/monarch-initiative/monarch-app/actions/workflows/build-image.yaml/badge.svg)
 
-`monarch-api` is a FastAPI for browsing the knowledge graph produced by the Monarch Initiative.
+This repo contains the source code for the website (frontend) and API (backend) for the Monarch Initiative.
 
-[Documentation](https://monarch-initiative.github.io/monarch-api/)
-
+[The Website](https://monarch-initiative.github.io/monarch-app/)
+[Documentation](https://monarch-initiative.github.io/monarch-app/docs)
 
 ### For developers
 
-You can install monarch-api from GitHub as follows:
+To get started with this repo:
 
 ```
-# clone the repo
-git clone https://github.com/monarch-initiative/monarch-api
-
-# cd into the folder
-cd monarch-api
-
-# install
-poetry -C backend/ install
-cd frontend && yarn build
+git clone https://github.com/monarch-initiative/monarch-appr
+cd monarch-app
 ```
+
+Then see `Makefile` or the individual `/frontend` and `/backend` folders for how you can install, develop, build, test, lint, or format the frontend or backend.

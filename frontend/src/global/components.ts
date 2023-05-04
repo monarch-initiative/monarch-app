@@ -29,20 +29,3 @@ const globalComponents = {
 };
 
 export default globalComponents;
-
-/** typescript hints so editors can warn when you haven't supplied props properly */
-declare module "@vue/runtime-core" {
-  export interface GlobalComponents {
-    AppButton: typeof AppButton;
-    AppFlex: typeof AppFlex;
-    AppGallery: typeof AppGallery;
-    AppHeading: typeof AppHeading;
-    AppIcon: typeof AppIcon;
-    AppLink: typeof AppLink;
-    AppMarkdown: typeof AppMarkdown;
-    AppPlaceholder: typeof AppPlaceholder;
-    AppSection: typeof AppSection;
-    AppStatus: typeof AppStatus;
-    AppTile: typeof AppTile;
-  }
-}

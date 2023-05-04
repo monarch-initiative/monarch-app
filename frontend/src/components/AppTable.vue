@@ -192,18 +192,54 @@
   </div>
 </template>
 
+<script lang="ts">
+/** table column */
+export type Col = {
+  /**
+   * unique id, used to identify/match for sorting, filtering, and named slots.
+   * use "divider" to create vertical divider to separate cols
+   */
+  id: string;
+  /** what item in row object to access as raw cell value */
+  key?: string;
+  /** header display text */
+  heading?: string;
+  /** how to align column contents (both header and body) horizontally */
+  align?: "left" | "center" | "end";
+  /**
+   * width to apply to heading cell, in any valid css grid col width (px, fr,
+   * auto, minmax, etc)
+   */
+  width?: string;
+  /** whether to allow sorting of column */
+  sortable?: boolean;
+};
+
+/** object with arbitrary keys */
+export type Row = { [key: string | number]: any };
+
+/** arrays of rows and cols */
+export type Cols = Col[];
+export type Rows = Row[];
+
+/** sort prop */
+export type Sort = {
+  id: string;
+  direction: "up" | "down";
+} | null;
+</script>
+
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, nextTick } from "vue";
+import { computed, nextTick, onMounted, ref, watch } from "vue";
 import { useResizeObserver, useScroll } from "@vueuse/core";
-import { Col, Cols, Rows, Sort } from "./AppTable";
-import AppTextbox from "./AppTextbox.vue";
+import type { Filters } from "@/api/facets";
+import type { Options } from "./AppSelectMulti.vue";
 import AppSelectMulti from "./AppSelectMulti.vue";
 import AppSelectSingle from "./AppSelectSingle.vue";
-import { Options } from "./AppSelectMulti";
-import { Filters } from "@/api/facets";
-import { closeToc } from "./TheTableOfContents";
+import AppTextbox from "./AppTextbox.vue";
+import { closeToc } from "./TheTableOfContents.vue";
 
-interface Props {
+type Props = {
   /** info for each column of table */
   cols: Cols;
   /** list of table rows, i.e. the table data */
@@ -227,7 +263,7 @@ interface Props {
    * yet)
    */
   showControls?: boolean;
-}
+};
 
 const props = withDefaults(defineProps<Props>(), {
   sort: undefined,
@@ -240,7 +276,7 @@ const props = withDefaults(defineProps<Props>(), {
   showControls: true,
 });
 
-interface Emits {
+type Emits = {
   /** when sort changes */
   (event: "sort", sort: Sort): void;
   /** when filter changes */
@@ -253,14 +289,14 @@ interface Emits {
   (event: "update:search", value: string): void;
   /** when user requests download */
   (event: "download"): void;
-}
+};
 
 const emit = defineEmits<Emits>();
 
 /** whether table is expanded to be full width */
 const expanded = ref(false);
 /** table reference */
-const table = ref<HTMLElement | null>(null);
+const table = ref<HTMLElement>();
 
 /** table scroll state */
 const { arrivedState } = useScroll(table, { offset: { left: 10, right: 10 } });

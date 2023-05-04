@@ -1,22 +1,22 @@
-import { request } from ".";
 import { stripHtml } from "@/util/string";
+import { request } from "./";
 
 /** rss of monarch medium feed */
 const monarchRss =
   "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@monarchinit";
 
 /** items (from backend) */
-interface _BlogItems {
-  items: Array<{
+type _BlogItems = {
+  items: {
     title?: string;
     pubDate?: string;
     link?: string;
     thumbnail?: string;
     description?: string;
     content?: string;
-    categories?: Array<string>;
-  }>;
-}
+    categories?: string[];
+  }[];
+};
 
 /** get "blog" entries from monarch on medium.com */
 export const getBlogPosts = async (): Promise<BlogItems> => {
@@ -33,11 +33,11 @@ export const getBlogPosts = async (): Promise<BlogItems> => {
 };
 
 /** items (for frontend) */
-type BlogItems = Array<{
+type BlogItems = {
   title: string;
   date: Date;
   link: string;
   thumbnail: string;
   description: string;
-  tags: Array<string>;
-}>;
+  tags: string[];
+}[];

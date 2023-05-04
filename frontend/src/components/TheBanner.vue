@@ -3,7 +3,7 @@
 -->
 
 <template>
-  <aside class="banner">
+  <aside v-if="open" class="banner">
     <div>
       This web app is a <strong>WORK IN PROGRESS</strong> successor to the
       <a href="https://monarchinitiative.org/">old web app here</a>, and is

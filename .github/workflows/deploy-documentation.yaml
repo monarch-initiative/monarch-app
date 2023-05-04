@@ -29,4 +29,4 @@ jobs:
     - name: Build and Deploy Documentation.
       run: |
         make docs
-        poetry -C backend run mkdocs gh-deploy --force
+        poetry -C backend run mkdocs gh-deploy --site-dir /docs --force

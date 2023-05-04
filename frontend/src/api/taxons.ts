@@ -2,10 +2,10 @@ import { values } from "lodash";
 import { biolink, request } from "./index";
 
 /** taxon ids (from backend) */
-type _Ids = Record<string, Array<string>>;
+type _Ids = { [key: string]: string[] };
 
 /** from list of taxon labels, get list of matching taxon ids */
-export const getIdsFromLabels = async (ids: Array<string>): Promise<Ids> => {
+export const getIdsFromLabels = async (ids: string[]): Promise<Ids> => {
   const url = `${biolink}/ontol/identifier`;
   const params = { label: ids };
   const options = { method: "POST" };
@@ -27,4 +27,4 @@ export const getIdsFromLabels = async (ids: Array<string>): Promise<Ids> => {
 };
 
 /** taxon ids (for frontend) */
-type Ids = Array<string>;
+type Ids = string[];

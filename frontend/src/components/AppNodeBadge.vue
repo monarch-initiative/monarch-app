@@ -23,11 +23,11 @@
 </template>
 
 <script setup lang="ts">
-import { Node } from "@/api/node-lookup";
-import { startCase, kebabCase } from "lodash";
+import { kebabCase, startCase } from "lodash";
+import type { Node } from "@/api/node-lookup";
 import { breadcrumbs } from "@/global/breadcrumbs";
 
-interface Props {
+type Props = {
   /** node represented by badge */
   node: Pick<Node, "id" | "name" | "category">;
   /** whether to include icon */
@@ -38,8 +38,8 @@ interface Props {
    * breadcrumb object to add list when badge clicked on. include node that user
    * came from and relation between that node and this node.
    */
-  breadcrumb?: Record<string, unknown>;
-}
+  breadcrumb?: { [key: string]: unknown };
+};
 
 withDefaults(defineProps<Props>(), {
   icon: true,

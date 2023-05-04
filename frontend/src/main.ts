@@ -1,17 +1,23 @@
 import { createApp } from "vue";
-import * as Sentry from "@sentry/vue";
-import { BrowserTracing } from "@sentry/tracing";
 import VueGtag from "vue-gtag";
 import Hotjar from "vue-hotjar";
-import "wicg-inert";
+import { BrowserTracing } from "@sentry/browser";
+import * as Sentry from "@sentry/vue";
 import App from "@/App.vue";
 import components from "@/global/components";
 import plugins from "@/global/plugins";
 import router from "@/router";
+import "wicg-inert";
+import "@/global/icons";
 import "@/global/meta";
+import "normalize.css";
+import "@/global/styles.scss"; /** keep these last so they take priority */
 
 /** log env variables for debugging */
-console.info(process.env);
+console.info(import.meta.env);
+
+/** environment mode */
+const mode = import.meta.env.MODE;
 
 /** create main app object */
 let app = createApp(App);
@@ -24,7 +30,7 @@ for (const [name, Component] of Object.entries(components))
   app = app.component(name, Component);
 
 /** track errors with Sentry */
-if (process.env.NODE_ENV === "production")
+if (mode === "production")
   Sentry.init({
     app,
     dsn: "https://122020f2154c48fa9ebbc53b98afdcf8@o1351894.ingest.sentry.io/6632682",
@@ -35,26 +41,33 @@ if (process.env.NODE_ENV === "production")
     ],
     tracesSampleRate: 1.0,
     logErrors: true,
-    environment: process.env.NODE_ENV,
+    environment: mode,
   });
 
 /** hotjar analytics */
 app.use(Hotjar, {
   id: "3100256",
-  isProduction: process.env.NODE_ENV === "production",
+  isProduction: mode === "production",
 });
 
 /** google analytics */
-if (process.env.NODE_ENV === "production")
+if (mode === "production")
   app.use(VueGtag, { config: { id: "G-RDNWN51PE8" } }, router);
 
+/** whether to mock api responses, based on env */
+const mock: { [key: string]: boolean } = {
+  development: true,
+  test: true,
+  production: false,
+};
+
 (async () => {
-  /** mock api for local development */
-  // if (process.env.NODE_ENV === "development") {
-  //   const { setupWorker } = await import("msw");
-  //   const { handlers } = await import("../tests/fixtures");
-  //   await setupWorker(...handlers).start();
-  // }
+  /** mock api */
+  if (mock[mode]) {
+    const { setupWorker } = await import("msw");
+    const { handlers } = await import("../fixtures");
+    await setupWorker(...handlers).start();
+  }
 
   /** start app */
   app.mount("#app");

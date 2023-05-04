@@ -1,16 +1,16 @@
 import { uniqBy } from "lodash";
-import { biolink, request } from ".";
+import type { Association } from "@/api/node-associations";
+import { biolink, request } from "./";
 import { mapCategory } from "./categories";
-import { Association } from "@/api/node-associations";
 
 /** graph info to construct hierarchy (from backend) */
-interface _Hierarchy {
+type _Hierarchy = {
   nodes: [
     {
       id: string;
       lbl: string;
       meta?: {
-        category?: Array<string>;
+        category?: string[];
       };
     }
   ];
@@ -21,7 +21,7 @@ interface _Hierarchy {
       obj: string;
     }
   ];
-}
+};
 
 /** "part of" relationship type */
 const partOf = "BFO:0000050";
@@ -54,9 +54,9 @@ export const getHierarchy = async (
   id = "",
   category = ""
 ): Promise<Hierarchy> => {
-  const superClasses: Array<Class> = [];
-  const equivalentClasses: Array<Class> = [];
-  const subClasses: Array<Class> = [];
+  const superClasses: Class[] = [];
+  const equivalentClasses: Class[] = [];
+  const subClasses: Class[] = [];
 
   /** make query params */
   const params = {
@@ -118,8 +118,8 @@ type Class = {
 };
 
 /** hierarchy (for frontend) */
-export interface Hierarchy {
-  superClasses: Array<Class>;
-  equivalentClasses: Array<Class>;
-  subClasses: Array<Class>;
-}
+export type Hierarchy = {
+  superClasses: Class[];
+  equivalentClasses: Class[];
+  subClasses: Class[];
+};

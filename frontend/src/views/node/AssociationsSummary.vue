@@ -66,28 +66,29 @@
 </template>
 
 <script setup lang="ts">
-import { watch, onMounted } from "vue";
+import { onMounted, watch } from "vue";
+import type { Association } from "@/api/node-associations";
+import { getTopAssociations } from "@/api/node-associations";
+import type { Node } from "@/api/node-lookup";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppRelationBadge from "@/components/AppRelationBadge.vue";
-import { Node } from "@/api/node-lookup";
-import { getTopAssociations, Association } from "@/api/node-associations";
 import { useQuery } from "@/util/composables";
 
-interface Props {
+type Props = {
   /** current node */
   node: Node;
   /** selected association category */
   selectedCategory: string;
   /** selected association id */
   selectedAssociation?: Association;
-}
+};
 
 const props = defineProps<Props>();
 
-interface Emits {
+type Emits = {
   /** change selected association */
   (event: "select", value?: Association): void;
-}
+};
 
 const emit = defineEmits<Emits>();
 
