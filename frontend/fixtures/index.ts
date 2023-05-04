@@ -197,7 +197,9 @@ export const handlers = [
       ".json",
       ".jsonld",
       ".txt",
+      "site.webmanifest",
       "medium.com",
+      "fonts.googleapis.com",
     ];
     if (exceptions.some((exception) => req.url.href.includes(exception)))
       return req.passthrough();
