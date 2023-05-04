@@ -3,15 +3,9 @@ name: Test Backend
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
-    paths:
-      - "/backend/*"
+    types: [opened, synchronize, reopened]
   workflow_dispatch:
 
 defaults:

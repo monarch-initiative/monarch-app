@@ -1,9 +1,6 @@
 name: Test Frontend
 
-on:
-  pull_request:
-    paths:
-      - "/frontend/*"
+on: pull_request
 
 env:
   CACHE_PATH: |
