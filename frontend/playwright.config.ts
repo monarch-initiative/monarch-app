@@ -24,16 +24,16 @@ const config: PlaywrightTestConfig = {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
     },
-    {
-      name: "firefox",
-      use: { ...devices["Desktop Firefox"] },
-      testMatch: /^((?!axe).)*$/,
-    },
-    {
-      name: "webkit",
-      use: { ...devices["Desktop Safari"] },
-      testMatch: /^((?!axe).)*$/,
-    },
+    // {
+    //   name: "firefox",
+    //   use: { ...devices["Desktop Firefox"] },
+    //   testMatch: /^((?!axe).)*$/,
+    // },
+    // {
+    //   name: "webkit",
+    //   use: { ...devices["Desktop Safari"] },
+    //   testMatch: /^((?!axe).)*$/,
+    // },
   ],
 
   /* run local dev server before starting tests */

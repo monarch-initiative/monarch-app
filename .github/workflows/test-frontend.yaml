@@ -125,7 +125,7 @@ jobs:
           key: ${{ needs.install-cache.outputs.cache-key }}
 
       - name: Install Playwright
-        run: npx playwright install
+        run: npx playwright install --with-deps
 
       - name: Run test
         run: yarn test:e2e
