@@ -13,10 +13,10 @@ You can install monarch-api from GitHub as follows:
 
 ```
 # clone the repo
-git clone https://github.com/monarch-initiative/monarch-api
+git clone https://github.com/monarch-initiative/monarch-app
 
 # cd into the folder
-cd monarch-api
+cd monarch-app
 
 # install
 poetry install

@@ -2,7 +2,7 @@
 
 This is a FastAPI for browsing the knowledge graph produced by the Monarch Initiative.
 
-[Documentation](https://monarch-initiative.github.io/monarch-api/)
+[Documentation](https://monarch-initiative.github.io/monarch-app)
 
 ### Running the API:
 

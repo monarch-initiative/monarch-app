@@ -1,14 +1,14 @@
 # Monarch App
 
-![](https://github.com/monarch-initiative/monarch-api/actions/workflows/test-backend.yaml/badge.svg)
-![](https://github.com/monarch-initiative/monarch-api/actions/workflows/test-frontend.yaml/badge.svg)
-![](https://github.com/monarch-initiative/monarch-api/actions/workflows/deploy-documentation.yaml/badge.svg)
-![](https://github.com/monarch-initiative/monarch-api/actions/workflows/build-image.yaml/badge.svg)
+![](https://github.com/monarch-initiative/monarch-app/actions/workflows/test-backend.yaml/badge.svg)
+![](https://github.com/monarch-initiative/monarch-app/actions/workflows/test-frontend.yaml/badge.svg)
+![](https://github.com/monarch-initiative/monarch-app/actions/workflows/deploy-documentation.yaml/badge.svg)
+![](https://github.com/monarch-initiative/monarch-app/actions/workflows/build-image.yaml/badge.svg)
 
 This repo contains the source code for the website (frontend) and API (backend) for the Monarch Initiative.
 
-[The Website](https://monarch-initiative.github.io/monarch-api/)
-[Documentation](https://monarch-initiative.github.io/monarch-api/docs)
+[The Website](https://monarch-initiative.github.io/monarch-app/)
+[Documentation](https://monarch-initiative.github.io/monarch-app/docs)
 
 ### For developers
 
