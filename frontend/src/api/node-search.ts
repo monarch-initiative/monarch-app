@@ -2,10 +2,10 @@ import { biolink, request } from "./";
 import type { Filters, Query } from "./facets";
 import { facetsToFilters, queryToParams } from "./facets";
 
-/** Remove any special characters that would screw up backend search */
+/** remove any special characters that would screw up backend search */
 const encode = (string: string) => string.replaceAll(/[^a-zA-Z0-9]/g, " ");
 
-/** Search results (from backend) */
+/** search results (from backend) */
 type _SearchResults = {
   numFound: number;
   docs: {
@@ -27,7 +27,7 @@ type _SearchResults = {
   };
 };
 
-/** Search for node with text and filters */
+/** search for node with text and filters */
 export const getSearchResults = async (
   search = "",
   availableFilters: Query = {},
@@ -36,10 +36,10 @@ export const getSearchResults = async (
 ): Promise<SearchResults> => {
   const empty = { count: 0, results: [], facets: {} };
 
-  /** If nothing searched, return empty */
+  /** if nothing searched, return empty */
   if (!search.trim()) return empty;
 
-  /** Other params */
+  /** other params */
   const params = {
     ...(await queryToParams(availableFilters, activeFilters)),
     boost_q: [
@@ -55,7 +55,7 @@ export const getSearchResults = async (
     start,
   };
 
-  /** Make query */
+  /** make query */
   const url = `${biolink}/search/entity/${encode(search)}`;
   const response = await request<_SearchResults>(url, params);
   const {
@@ -65,7 +65,7 @@ export const getSearchResults = async (
     highlighting = {},
   } = response;
 
-  /** Convert into desired result format */
+  /** convert into desired result format */
   const results = docs.map((doc) => ({
     id: doc.id || "",
     name: (doc.label || [])[0] || "",
@@ -85,16 +85,16 @@ export const getSearchResults = async (
         : undefined,
   }));
 
-  /** Empty error status */
+  /** empty error status */
   if (!results.length) return empty;
 
-  /** Get facets for select options */
+  /** get facets for select options */
   const facets = facetsToFilters(facet_counts);
 
   return { count, results, facets };
 };
 
-/** Search results (for frontend) */
+/** search results (for frontend) */
 export type SearchResults = {
   count: number;
   results: {
@@ -115,7 +115,7 @@ export type SearchResults = {
   facets: Filters;
 };
 
-/** Autocomplete results (from backend) */
+/** autocomplete results (from backend) */
 type _Autocomplete = {
   docs: [
     {
@@ -125,21 +125,21 @@ type _Autocomplete = {
   ];
 };
 
-/** Search for quick autocomplete matches to query string */
+/** search for quick autocomplete matches to query string */
 export const getAutocompleteResults = async (
   search = ""
 ): Promise<Autocomplete> => {
   const url = `${biolink}/search/entity/autocomplete/${encode(search)}`;
   const response = await request<_Autocomplete>(url);
 
-  /** Transform into desired format */
+  /** transform into desired format */
   return response.docs.map((result) => ({
     name: result.match || "",
     highlight: result.highlight || "",
   }));
 };
 
-/** Autocomplete results (for frontend) */
+/** autocomplete results (for frontend) */
 type Autocomplete = {
   name: string;
   highlight: string;

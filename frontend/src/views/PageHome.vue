@@ -189,6 +189,10 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { getBlogPosts } from "@/api/blog";
+import nodePage from "@/assets/demos/node-page.mp4";
+import nodeSearch from "@/assets/demos/node-search.mp4";
+import phenotypeExplorer from "@/assets/demos/phenotype-explorer.mp4";
+import textAnnotator from "@/assets/demos/text-annotator.mp4";
 import AppHighlight from "@/components/AppHighlight.vue";
 import AppPost from "@/components/AppPost.vue";
 import AppTabs from "@/components/AppTabs.vue";
@@ -196,10 +200,6 @@ import AppTile from "@/components/AppTile.vue";
 import { useQuery } from "@/util/composables";
 import NodeSearch from "./explore/NodeSearch.vue";
 import tabs from "./explore/tabs.json";
-import nodeSearch from "@/assets/demos/node-search.mp4";
-import textAnnotator from "@/assets/demos/text-annotator.mp4";
-import phenotypeExplorer from "@/assets/demos/phenotype-explorer.mp4";
-import nodePage from "@/assets/demos/node-page.mp4";
 
 /** selected tab state */
 const tab = ref(tabs[0].id);

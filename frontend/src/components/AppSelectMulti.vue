@@ -125,13 +125,13 @@
 
 <script lang="ts">
 export type Option = {
-  /** Unique id used in state of select */
+  /** unique id used in state of select */
   id: string;
-  /** Display name */
+  /** display name */
   name?: string;
-  /** Count col */
+  /** count col */
   count?: number;
-  /** Tooltip on hover */
+  /** tooltip on hover */
   tooltip?: string;
 };
 
@@ -145,15 +145,15 @@ import { useFloating } from "@/util/composables";
 import { wrap } from "@/util/math";
 
 type Props = {
-  /** Two-way bound selected items state */
+  /** two-way bound selected items state */
   modelValue: Options;
-  /** Name of the field */
+  /** name of the field */
   name: string;
-  /** List of options to show */
+  /** list of options to show */
   options: Options;
-  /** Whether to show count col */
+  /** whether to show count col */
   showCounts?: boolean;
-  /** Visual design */
+  /** visual design */
   design?: "normal" | "small";
 };
 
@@ -163,106 +163,106 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 type Emits = {
-  /** Two-way bound selected items state */
+  /** two-way bound selected items state */
   (event: "update:modelValue", value: Options): void;
-  /** When value changed */
+  /** when value changed */
   (event: "input"): void;
-  /** When value change "submitted"/"committed" by user */
+  /** when value change "submitted"/"committed" by user */
   (event: "change", value: Options): void;
 };
 
 const emit = defineEmits<Emits>();
 
-/** Unique id for instance of component */
+/** unique id for instance of component */
 const id = ref(uniqueId());
-/** Whether dropdown is open */
+/** whether dropdown is open */
 const expanded = ref(false);
-/** Array of indices of selected options */
+/** array of indices of selected options */
 const selected = ref<number[]>([]);
-/** Selected state when dropdown was opened */
+/** selected state when dropdown was opened */
 const original = ref<number[]>([]);
-/** Index of option that is highlighted */
+/** index of option that is highlighted */
 const highlighted = ref(0);
 
-/** Anchor element */
+/** anchor element */
 const anchor = ref();
-/** Dropdown element */
+/** dropdown element */
 const dropdown = ref();
-/** Get dropdown position */
+/** get dropdown position */
 const { calculate, style } = useFloating(
   computed(() => anchor.value?.button || anchor.value),
   dropdown
 );
-/** Recompute position after opened */
+/** recompute position after opened */
 watch(expanded, async () => {
   await nextTick();
   if (expanded.value) calculate();
 });
 
 function open() {
-  /** Open dropdown */
+  /** open dropdown */
   expanded.value = true;
-  /** Auto highlight first selected option */
+  /** auto highlight first selected option */
   highlighted.value = selected.value[0] || 0;
-  /** Remember selected state when opened */
+  /** remember selected state when opened */
   original.value = [...selected.value];
 }
 
 function close() {
-  /** Close dropdown */
+  /** close dropdown */
   expanded.value = false;
-  /** Emit change, if value is different from when dropdown first opened */
+  /** emit change, if value is different from when dropdown first opened */
   if (!isEqual(selected.value, original.value)) emit("change", getModel());
-  /** Also update original value here in case e.g. user presses esc then blurs */
+  /** also update original value here in case e.g. user presses esc then blurs */
   original.value = [...selected.value];
 }
 
-/** When button clicked */
+/** when button clicked */
 function onClick() {
-  /** Toggle dropdown */
+  /** toggle dropdown */
   expanded.value ? close() : open();
   /** https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#clicking_and_focus */
   (document.querySelector(`#select-${id.value}`) as HTMLElement)?.focus();
 }
 
-/** When button blurred */
+/** when button blurred */
 function onBlur() {
   close();
 }
 
-/** When user presses key on button */
+/** when user presses key on button */
 function onKeydown(event: KeyboardEvent) {
-  /** Arrow/home/end keys */
+  /** arrow/home/end keys */
   if (
     ["ArrowUp", "ArrowDown", "Home", "End"].includes(event.key) &&
     expanded.value
   ) {
-    /** Prevent page scroll */
+    /** prevent page scroll */
     event.preventDefault();
 
-    /** Move value up/down */
+    /** move value up/down */
     let index = highlighted.value;
     if (event.key === "ArrowUp") index--;
     if (event.key === "ArrowDown") index++;
     if (event.key === "Home") index = 0;
     if (event.key === "End") index = props.options.length - 1;
 
-    /** Update highlighted, wrapping beyond -1 or options length */
+    /** update highlighted, wrapping beyond -1 or options length */
     highlighted.value = wrap(index, -1, props.options.length - 1);
   }
 
-  /** Enter key to de/select highlighted option */
+  /** enter key to de/select highlighted option */
   if (expanded.value && (event.key === "Enter" || event.key === " ")) {
-    /** Prevent browser re-clicking open button */
+    /** prevent browser re-clicking open button */
     event.preventDefault();
     toggleSelect(highlighted.value);
   }
 
-  /** Esc key to close dropdown */
+  /** esc key to close dropdown */
   if (expanded.value && event.key === "Escape") close();
 }
 
-/** Get new selected option indices from model value */
+/** get new selected option indices from model value */
 function getSelected(): number[] {
   return props.options
     .map((option, index) =>
@@ -271,14 +271,14 @@ function getSelected(): number[] {
     .filter((index) => index !== -1);
 }
 
-/** Get new model value from selected option indices */
+/** get new model value from selected option indices */
 function getModel(): Options {
   return props.options.filter((_, index) => selected.value.includes(index));
 }
 
-/** Select or deselect option(s) */
+/** select or deselect option(s) */
 function toggleSelect(index = -1, shift = false) {
-  /** Toggle all */
+  /** toggle all */
   if (index === -1) {
     if (allSelected.value) selected.value = [];
     else
@@ -286,47 +286,47 @@ function toggleSelect(index = -1, shift = false) {
         .fill(0)
         .map((_, index) => index);
   } else if (shift) {
-    /** Solo/un-solo one */
+    /** solo/un-solo one */
     if (isEqual(selected.value, [index]))
       selected.value = Array(props.options.length)
         .fill(0)
         .map((_, index) => index);
     else selected.value = [index];
   } else {
-    /** Toggle one */
+    /** toggle one */
     if (selected.value.includes(index))
       selected.value = selected.value.filter((value) => value !== index);
     else selected.value.push(index);
   }
 
-  /** Keep in order for easy comparison */
+  /** keep in order for easy comparison */
   selected.value.sort();
-  /** Emit input event for listening for only user-originated inputs */
+  /** emit input event for listening for only user-originated inputs */
   emit("input");
 }
 
-/** When model changes, update selected indices */
+/** when model changes, update selected indices */
 watch(
   () => props.modelValue,
   () => {
-    /** Avoid infinite rerenders */
+    /** avoid infinite rerenders */
     if (!isEqual(selected.value, getSelected())) selected.value = getSelected();
   },
   { deep: true, immediate: true }
 );
 
-/** When selected index changes, update model */
+/** when selected index changes, update model */
 watch(selected, () => emit("update:modelValue", getModel()), { deep: true });
 
-/** When highlighted index changes */
+/** when highlighted index changes */
 watch(highlighted, () =>
-  /** Scroll to highlighted in dropdown */
+  /** scroll to highlighted in dropdown */
   document
     .querySelector(`#option-${id.value}-${highlighted.value} > *`)
     ?.scrollIntoView({ block: "nearest" })
 );
 
-/** Are all options selected */
+/** are all options selected */
 const allSelected = computed(
   () => selected.value.length === props.options.length
 );

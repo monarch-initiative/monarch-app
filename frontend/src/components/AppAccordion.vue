@@ -24,15 +24,15 @@
 import { ref } from "vue";
 
 type Props = {
-  /** Text to show in title button */
+  /** text to show in title button */
   text: string;
-  /** Icon to show in title button */
+  /** icon to show in title button */
   icon?: string;
 };
 
 defineProps<Props>();
 
-/** Whether accordion is open or not */
+/** whether accordion is open or not */
 const expanded = ref(false);
 </script>
 

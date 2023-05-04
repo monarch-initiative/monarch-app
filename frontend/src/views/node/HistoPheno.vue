@@ -17,17 +17,17 @@ import { getHistoPheno } from "@/api/histopheno";
 import type { Node } from "@/api/node-lookup";
 import { useQuery } from "@/util/composables";
 
-/** Route info */
+/** route info */
 const route = useRoute();
 
 type Props = {
-  /** Current node */
+  /** current node */
   node: Node;
 };
 
 const props = defineProps<Props>();
 
-/** Chart options */
+/** chart options */
 const options = computed(() => ({
   chart: {
     id: "histopheno",
@@ -75,7 +75,7 @@ const options = computed(() => ({
   },
 }));
 
-/** Get chart data */
+/** get chart data */
 const {
   query: getData,
   data: series,
@@ -89,11 +89,11 @@ const {
     return [{ name: "phenotypes", data: data }];
   },
 
-  /** Default value */
+  /** default value */
   []
 );
 
-/** When path (not hash or query) changed, get new chart data */
+/** when path (not hash or query) changed, get new chart data */
 watch([() => route.path, () => props.node.id], getData, { immediate: true });
 </script>
 

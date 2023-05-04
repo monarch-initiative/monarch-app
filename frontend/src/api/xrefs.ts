@@ -11,7 +11,7 @@ export const getXrefLink = (identifier: string): string => {
   const prefix = identifier.split(":")[0] || "";
   let id = identifier.split(":")[1] || "";
 
-  /** OMIM:1234.123 -> OMIM:1234#123 */
+  /** oMIM:1234.123 -> OMIM:1234#123 */
   if (prefix === "OMIM") id = id.replace(".", "#");
 
   /** get link template from map */

@@ -93,7 +93,7 @@ export type Association = {
 };
 
 export type AssociationResults = Results & {
-  /** A collection of items, with the type to be overriden by slot_usage */
+  /** a collection of items, with the type to be overriden by slot_usage */
   items?: Association[];
   limit?: number;
   offset?: number;
@@ -101,7 +101,7 @@ export type AssociationResults = Results & {
 };
 
 export type EntityResults = Results & {
-  /** A collection of items, with the type to be overriden by slot_usage */
+  /** a collection of items, with the type to be overriden by slot_usage */
   items?: Entity[];
   limit?: number;
   offset?: number;
@@ -110,7 +110,7 @@ export type EntityResults = Results & {
 
 export type HistoPheno = {
   id?: string;
-  /** A collection of items, with the type to be overriden by slot_usage */
+  /** a collection of items, with the type to be overriden by slot_usage */
   items?: AssociationCount[];
 };
 
@@ -138,7 +138,7 @@ export type SearchResult = Entity & {
 };
 
 export type SearchResults = Results & {
-  /** A collection of items, with the type to be overriden by slot_usage */
+  /** a collection of items, with the type to be overriden by slot_usage */
   items?: SearchResult[];
   facet_fields?: { [index: FacetFieldLabel]: FacetField };
   facet_queries?: { [index: FacetValueLabel]: FacetValue };

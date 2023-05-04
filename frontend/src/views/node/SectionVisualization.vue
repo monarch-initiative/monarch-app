@@ -10,7 +10,7 @@ import type { Node } from "@/api/node-lookup";
 import HistoPheno from "./HistoPheno.vue";
 
 type Props = {
-  /** Current node */
+  /** current node */
   node: Node;
 };
 

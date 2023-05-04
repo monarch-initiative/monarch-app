@@ -6,7 +6,7 @@ import { facetsToFilters, queryToParams } from "./facets";
 import { getSummaries } from "./publications";
 import { getXrefLink } from "./xrefs";
 
-/** Node associations (from backend) */
+/** node associations (from backend) */
 type _Associations = {
   numFound: number;
   associations: {
@@ -60,7 +60,7 @@ type _Associations = {
   facet_counts: { [key: string]: { [key: string]: number } };
 };
 
-/** Get associations between a node and a category */
+/** get associations between a node and a category */
 export const getTabulatedAssociations = async (
   nodeId = "",
   nodeCategory = "",
@@ -72,12 +72,12 @@ export const getTabulatedAssociations = async (
   availableFilters: Query = {},
   activeFilters: Query = {}
 ): Promise<Associations> => {
-  /** Get causal/correlated param */
+  /** get causal/correlated param */
   let type = "both";
   if (associationCategory.startsWith("causal-")) type = "causal";
   if (associationCategory.startsWith("correlated-")) type = "non_causal";
 
-  /** Make query params */
+  /** make query params */
   const params = {
     rows,
     start,
@@ -90,13 +90,13 @@ export const getTabulatedAssociations = async (
     ...(await queryToParams(availableFilters, activeFilters)),
   };
 
-  /** Make query */
+  /** make query */
   const url = `${biolink}/bioentity/${nodeCategory}/${nodeId}/${getAssociationEndpoint(
     associationCategory
   )}`;
   const response = await request<_Associations>(url, params);
 
-  /** Convert into desired result format */
+  /** convert into desired result format */
   const associations: Associations["associations"] = response.associations.map(
     (association) =>
       ({
@@ -158,24 +158,24 @@ export const getTabulatedAssociations = async (
       } as Association)
   );
 
-  /** Supplement publication with metadata from entrez */
+  /** supplement publication with metadata from entrez */
   try {
-    /** Get list of publication ids */
+    /** get list of publication ids */
     const ids = associations
       .filter((association) => association.object.category === "publication")
       .map((association) => association.object.id);
 
-    /** Get summaries for all ids at same time */
+    /** get summaries for all ids at same time */
     const summaries = await getSummaries(ids);
 
     for (const [id, publication] of Object.entries(summaries)) {
-      /** Find original association */
+      /** find original association */
       const association = associations.find(
         (association) => association.object.id === id
       );
       if (!association) continue;
 
-      /** Incorporate response data back into associations */
+      /** incorporate response data back into associations */
       association.author = publication.authors[0] || "";
       association.year = String(publication.date?.getFullYear() || "");
       association.publisher = publication.journal;
@@ -184,21 +184,21 @@ export const getTabulatedAssociations = async (
     console.warn("Couldn't get publication-specific metadata");
   }
 
-  /** Get facets for filters */
+  /** get facets for filters */
   const facets = facetsToFilters(response.facet_counts);
 
   return { count: response.numFound || 0, associations, facets };
 };
 
-/** Single association */
+/** single association */
 export type Association = {
-  /** Allow arbitrary key access */
+  /** allow arbitrary key access */
   [key: string]: unknown;
 
-  /** Unique id of association */
+  /** unique id of association */
   id: string;
 
-  /** Subject of association, i.e. current node */
+  /** subject of association, i.e. current node */
   subject: {
     id: string;
     name: string;
@@ -206,7 +206,7 @@ export type Association = {
     category: string;
   };
 
-  /** Object of association, i.e. what current node has association with */
+  /** object of association, i.e. what current node has association with */
   object: {
     id: string;
     name: string;
@@ -214,7 +214,7 @@ export type Association = {
     category: string;
   };
 
-  /** Info about the association */
+  /** info about the association */
   relation: {
     id: string;
     name: string;
@@ -223,38 +223,38 @@ export type Association = {
     inverse: boolean;
   };
 
-  /** Evidence info supporting this association */
+  /** evidence info supporting this association */
   evidence: { [key: string]: unknown }[];
 
-  /** Mixed-type total of pieces of supporting evidence */
+  /** mixed-type total of pieces of supporting evidence */
   supportCount: number;
 
-  /** Taxon/species (gene/genotype/model/variant/homolog/ortholog) */
+  /** taxon/species (gene/genotype/model/variant/homolog/ortholog) */
   taxon?: {
     id: string;
     name: string;
   };
 
-  /** Phenotype frequency */
+  /** phenotype frequency */
   frequency?: {
     name: string;
     link: string;
   };
-  /** Phenotype onset */
+  /** phenotype onset */
   onset?: {
     name: string;
     link: string;
   };
 
-  /** Publication author */
+  /** publication author */
   author?: string;
-  /** Publication year */
+  /** publication year */
   year?: string;
-  /** Publication publisher */
+  /** publication publisher */
   publisher?: string;
 };
 
-/** Node associations (for frontend) */
+/** node associations (for frontend) */
 export type Associations = {
   count: number;
   associations: Association[];
@@ -262,7 +262,7 @@ export type Associations = {
   facets: Filters;
 };
 
-/** Get top few associations */
+/** get top few associations */
 export const getTopAssociations = async (
   nodeId = "",
   nodeCategory = "",

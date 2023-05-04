@@ -97,15 +97,15 @@ export type OptionsFunc = (search: string) => Promise<Options>;
 export type Options = Option[];
 
 export type Option = {
-  /** Icon name */
+  /** icon name */
   icon?: string;
-  /** Display name */
+  /** display name */
   name: string;
-  /** Highlighting html */
+  /** highlighting html */
   highlight?: string;
-  /** Info col */
+  /** info col */
   info?: string;
-  /** Tooltip on hover */
+  /** tooltip on hover */
   tooltip?: string;
 };
 </script>
@@ -118,115 +118,115 @@ import { wrap } from "@/util/math";
 import AppTextbox from "./AppTextbox.vue";
 
 type Props = {
-  /** Two-way bound search state */
+  /** two-way bound search state */
   modelValue?: string;
-  /** Name of the field */
+  /** name of the field */
   name: string;
-  /** Placeholder string when nothing typed in */
+  /** placeholder string when nothing typed in */
   placeholder?: string;
-  /** Async function that returns list of options to show */
+  /** async function that returns list of options to show */
   options: OptionsFunc;
-  /** Description to show below box */
+  /** description to show below box */
   description?: string;
 };
 
 const props = defineProps<Props>();
 
 type Emits = {
-  /** Two-way bound search state */
+  /** two-way bound search state */
   (event: "update:modelValue", value: string): void;
-  /** When input focused */
+  /** when input focused */
   (event: "focus"): void;
-  /** When input value change "submitted"/"committed" by user */
+  /** when input value change "submitted"/"committed" by user */
   (event: "change", value: string): void;
-  /** When user wants to delete an entry */
+  /** when user wants to delete an entry */
   (event: "delete", value: string): void;
 };
 
 const emit = defineEmits<Emits>();
 
-/** Unique id for instance of component */
+/** unique id for instance of component */
 const id = ref(uniqueId());
-/** Currently searched text */
+/** currently searched text */
 const search = ref("");
-/** Index of option that is highlighted */
+/** index of option that is highlighted */
 const highlighted = ref(0);
-/** Whether input box focused and dropdown expanded */
+/** whether input box focused and dropdown expanded */
 const expanded = ref(false);
 
-/** Open results dropdown */
+/** open results dropdown */
 async function open() {
   expanded.value = true;
   highlighted.value = -1;
   await getResults();
 }
 
-/** Close results dropdown */
+/** close results dropdown */
 function close() {
   expanded.value = false;
   highlighted.value = -1;
   results.value = [];
 }
 
-/** When user focuses box */
+/** when user focuses box */
 function onFocus() {
   emit("focus");
   open();
 }
 
-/** When user blurs box */
+/** when user blurs box */
 async function onBlur() {
   close();
 }
 
-/** When user types some text, after a delay */
+/** when user types some text, after a delay */
 async function onDebounce() {
   await getResults();
 }
 
-/** When user "commits" change to value, e.g. pressing enter, de-focusing, etc */
+/** when user "commits" change to value, e.g. pressing enter, de-focusing, etc */
 function onChange(value: string) {
   select(value);
 }
 
-/** When user presses key in input */
+/** when user presses key in input */
 async function onKeydown(event: KeyboardEvent) {
-  /** Reopen if previously submitted */
+  /** reopen if previously submitted */
   expanded.value = true;
 
-  /** Arrow/home/end keys */
+  /** arrow/home/end keys */
   if (["ArrowUp", "ArrowDown", "Home", "End"].includes(event.key)) {
-    /** Prevent page scroll */
+    /** prevent page scroll */
     event.preventDefault();
 
-    /** Move value up/down */
+    /** move value up/down */
     let index = highlighted.value;
     if (event.key === "ArrowUp") index--;
     if (event.key === "ArrowDown") index++;
     if (event.key === "Home") index = 0;
     if (event.key === "End") index = results.value.length - 1;
 
-    /** Update highlighted, wrapping beyond 0 or results length */
+    /** update highlighted, wrapping beyond 0 or results length */
     highlighted.value = wrap(index, 0, results.value.length - 1);
   }
 
-  /** Enter key to select highlighted result */
+  /** enter key to select highlighted result */
   if (event.key === "Enter" && highlighted.value >= 0) {
     event.stopPropagation();
     select(results.value[highlighted.value].name);
   }
 
-  /** Delete key to delete the highlighted result */
+  /** delete key to delete the highlighted result */
   if (event.key === "Delete" && event.shiftKey) {
     emit("delete", results.value[highlighted.value].name);
     await getResults();
   }
 
-  /** Esc key to close dropdown */
+  /** esc key to close dropdown */
   if (event.key === "Escape") close();
 }
 
-/** Select an option */
+/** select an option */
 async function select(value: string) {
   search.value = value;
   emit("change", value);
@@ -239,47 +239,47 @@ const {
   isLoading,
   isError,
 } = useQuery(
-  /** Get list of results */
+  /** get list of results */
   async function () {
-    /** Get results */
+    /** get results */
     return await props.options(search.value);
   },
 
-  /** Default value */
+  /** default value */
   []
 );
 
-/** Target element */
+/** target element */
 const target = ref();
-/** Dropdown element */
+/** dropdown element */
 const dropdown = ref();
-/** Get dropdown position */
+/** get dropdown position */
 const { calculate, style } = useFloating(
   computed(() => target.value?.textbox),
   dropdown,
   true
 );
-/** Recompute position when length of results changes */
+/** recompute position when length of results changes */
 watch([expanded, results], async () => {
   await nextTick();
   if (expanded.value) calculate();
 });
 
-/** When model changes, update search */
+/** when model changes, update search */
 watch(
   () => props.modelValue,
   () => (search.value = props.modelValue || ""),
   { immediate: true }
 );
 
-/** When search changes, update model */
+/** when search changes, update model */
 watch(search, () => {
   emit("update:modelValue", search.value);
 });
 
-/** When highlighted index changes */
+/** when highlighted index changes */
 watch(highlighted, () => {
-  /** Scroll to highlighted in dropdown */
+  /** scroll to highlighted in dropdown */
   document
     .querySelector(`#option-${id.value}-${highlighted.value} > *`)
     ?.scrollIntoView({ block: "nearest" });

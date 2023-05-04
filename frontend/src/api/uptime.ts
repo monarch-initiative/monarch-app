@@ -3,14 +3,14 @@ import { request } from "./";
 
 /** https://uptimerobot.com/api/ */
 
-/** Uptimerobot api endpoint */
+/** uptimerobot api endpoint */
 export const uptimeRobot = "https://api.uptimerobot.com/v2/getMonitors";
-/** Read-only api key, safe to be distributed */
+/** read-only api key, safe to be distributed */
 const key = "ur1488940-1c05ba09e0aef926989d6593";
-/** Uptimerobot.org page for statuses */
+/** uptimerobot.org page for statuses */
 const page = "https://stats.uptimerobot.com/XPRo9s4BJ5";
 
-/** Uptime responses (from backend) */
+/** uptime responses (from backend) */
 type _Uptimes = {
   monitors?: {
     id?: string;
@@ -19,7 +19,7 @@ type _Uptimes = {
   }[];
 };
 
-/** Possible status codes (from backend) */
+/** possible status codes (from backend) */
 enum _Code {
   paused = 0,
   unchecked = 1,
@@ -28,16 +28,16 @@ enum _Code {
   down = 9,
 }
 
-/** Get list of uptimerobot monitors and their statuses, names, and other info */
+/** get list of uptimerobot monitors and their statuses, names, and other info */
 export const getUptimes = async (): Promise<Uptimes> => {
-  /** Get data from endpoint */
+  /** get data from endpoint */
   const params = { api_key: key };
   const options = { method: "POST" };
   const response = await request<_Uptimes>(uptimeRobot, params, options);
   const { monitors = [] } = response;
 
   /**
-   * Map uptimerobot status codes to our simplified status codes in status
+   * map uptimerobot status codes to our simplified status codes in status
    * component
    */
   const codeMap: { [key: _Code | number]: Code } = {
@@ -48,7 +48,7 @@ export const getUptimes = async (): Promise<Uptimes> => {
     [_Code.down]: "error",
   };
 
-  /** Convert results to desired format */
+  /** convert results to desired format */
   const results = monitors.map((monitor) => ({
     code: codeMap[Number(monitor.status)] || "unknown",
     text: monitor.friendly_name || "",
@@ -58,7 +58,7 @@ export const getUptimes = async (): Promise<Uptimes> => {
   return results;
 };
 
-/** Uptimes (for frontend) */
+/** uptimes (for frontend) */
 export type Uptimes = {
   code: Code;
   text: string;

@@ -75,24 +75,24 @@ import AppRelationBadge from "@/components/AppRelationBadge.vue";
 import { useQuery } from "@/util/composables";
 
 type Props = {
-  /** Current node */
+  /** current node */
   node: Node;
-  /** Selected association category */
+  /** selected association category */
   selectedCategory: string;
-  /** Selected association id */
+  /** selected association id */
   selectedAssociation?: Association;
 };
 
 const props = defineProps<Props>();
 
 type Emits = {
-  /** Change selected association */
+  /** change selected association */
   (event: "select", value?: Association): void;
 };
 
 const emit = defineEmits<Emits>();
 
-/** Get summary association data */
+/** get summary association data */
 const {
   query: getAssociations,
   data: associations,
@@ -100,11 +100,11 @@ const {
   isError,
 } = useQuery(
   async function () {
-    /** Catch case where no association categories available */
+    /** catch case where no association categories available */
     if (!props.node.associationCounts.length)
       throw new Error("No association info available");
 
-    /** Get association data */
+    /** get association data */
     return await getTopAssociations(
       props.node.id,
       props.node.category,
@@ -112,14 +112,14 @@ const {
     );
   },
 
-  /** Default value */
+  /** default value */
   []
 );
 
-/** Get associations when category changes */
+/** get associations when category changes */
 watch(() => props.selectedCategory, getAssociations);
 
-/** Get associations on load */
+/** get associations on load */
 onMounted(getAssociations);
 </script>
 

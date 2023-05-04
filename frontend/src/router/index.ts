@@ -27,40 +27,40 @@ import PageTestbed from "@/views/PageTestbed.vue";
 /** environment mode */
 const mode = import.meta.env.MODE;
 
-/** List of routes and corresponding components. */
-/** KEEP IN SYNC WITH PUBLIC/SITEMAP.XML */
+/** list of routes and corresponding components. */
+/** kEEP IN SYNC WITH PUBLIC/SITEMAP.XML */
 export const routes: RouteRecordRaw[] = [
-  /** Home page */
+  /** home page */
   {
     path: "/",
     name: "Home",
     component: PageHome,
     beforeEnter: (async () => {
-      /** Look for redirect in session storage (saved from public/404.html page) */
+      /** look for redirect in session storage (saved from public/404.html page) */
       const redirect = window.sessionStorage.redirect;
       let redirectState = parse(window.sessionStorage.redirectState, {});
 
-      /** After consuming, remove storage values */
+      /** after consuming, remove storage values */
       window.sessionStorage.removeItem("redirect");
       window.sessionStorage.removeItem("redirectState");
 
-      /** Log for debugging */
+      /** log for debugging */
       if (mode !== "test") {
         console.info("Redirecting to:", redirect);
         console.info("With state:", redirectState);
       }
 
       /**
-       * Only keep state added by app, as to not interfere with built-in browser
+       * only keep state added by app, as to not interfere with built-in browser
        * nav
        */
       redirectState = pick(redirectState, ["phenotypes", "breadcrumbs"]);
 
-      /** Apply state to current route */
+      /** apply state to current route */
       if (!isEmpty(redirectState))
         window.history.replaceState(redirectState, "");
 
-      /** Go to appropriate route */
+      /** go to appropriate route */
       if (redirect) return redirect;
     }) as NavigationGuard,
   },
@@ -69,7 +69,7 @@ export const routes: RouteRecordRaw[] = [
     redirect: "/",
   },
 
-  /** Top level pages */
+  /** top level pages */
   {
     path: "/explore",
     name: "Explore",
@@ -86,7 +86,7 @@ export const routes: RouteRecordRaw[] = [
     component: PageHelp,
   },
 
-  /** About pages */
+  /** about pages */
   {
     path: "/overview",
     name: "Overview",
@@ -118,14 +118,14 @@ export const routes: RouteRecordRaw[] = [
     component: PageTerms,
   },
 
-  /** Help pages */
+  /** help pages */
   {
     path: "/feedback",
     name: "Feedback",
     component: PageFeedback,
   },
 
-  /** Node pages */
+  /** node pages */
   {
     path: "/:category/:id",
     name: "Node",
@@ -136,7 +136,7 @@ export const routes: RouteRecordRaw[] = [
     name: "NodeRaw",
     component: PageHome,
     beforeEnter: (async (to) => {
-      /** Try to lookup node id and infer category */
+      /** try to lookup node id and infer category */
       const id = to.path.slice(1) as string;
       if (id) {
         const node = await lookupNode(id);
@@ -145,14 +145,14 @@ export const routes: RouteRecordRaw[] = [
     }) as NavigationGuard,
   },
 
-  /** Test pages (comment this out when we release app) */
+  /** test pages (comment this out when we release app) */
   {
     path: "/testbed",
     name: "Testbed",
     component: PageTestbed,
   },
 
-  /** If no other route match found (404) */
+  /** if no other route match found (404) */
   {
     path: "/:pathMatch(.*)*",
     name: "NotFound",
@@ -160,7 +160,7 @@ export const routes: RouteRecordRaw[] = [
   },
 ];
 
-/** Merge in route descriptions */
+/** merge in route descriptions */
 routes.forEach(
   (route) =>
     (route.meta = {
@@ -170,7 +170,7 @@ routes.forEach(
     })
 );
 
-/** Vue-router's scroll behavior handler */
+/** vue-router's scroll behavior handler */
 const scrollBehavior: RouterScrollBehavior = async (
   to,
   from,
@@ -179,27 +179,27 @@ const scrollBehavior: RouterScrollBehavior = async (
   /** https://github.com/vuejs/vue-router-next/issues/1147 */
   await sleep();
 
-  /** Scroll to previous position if exists */
+  /** scroll to previous position if exists */
   if (savedPosition) return savedPosition;
 
-  /** Scroll to element corresponding to hash */
+  /** scroll to element corresponding to hash */
   const element = document?.getElementById(to.hash.slice(1));
   if (element)
     return { el: getTarget(element), top: getOffset(), behavior: "smooth" };
 
-  /** Otherwise don't change scroll */
+  /** otherwise don't change scroll */
 };
 
-/** Given element, get (possibly) modified target */
+/** given element, get (possibly) modified target */
 const getTarget = (element: Element): Element => {
-  /** Move target to parent section element if first child */
+  /** move target to parent section element if first child */
   if (
     element.parentElement?.tagName === "SECTION" &&
     element.matches(":first-child")
   )
     return element.parentElement;
 
-  /** Move target to previous horizontal rule */
+  /** move target to previous horizontal rule */
   if (
     element.previousElementSibling instanceof HTMLElement &&
     element.previousElementSibling?.tagName === "HR"
@@ -209,10 +209,10 @@ const getTarget = (element: Element): Element => {
   return element;
 };
 
-/** Get offset to account for header */
+/** get offset to account for header */
 const getOffset = () => document?.querySelector("header")?.clientHeight || 0;
 
-/** Scroll to element */
+/** scroll to element */
 export const scrollToElement = async (element?: Element | null) => {
   if (!element) return;
 
@@ -225,21 +225,21 @@ export const scrollToElement = async (element?: Element | null) => {
   });
 };
 
-/** Scroll to hash */
+/** scroll to hash */
 export const scrollToHash = () =>
   scrollToElement(document?.getElementById(window.location.hash.slice(1)));
 
-/** Navigation history object */
+/** navigation history object */
 export const history = createWebHistory(import.meta.env.BASE_URL);
 
-/** Router object */
+/** router object */
 const router = createRouter({
   history,
   routes,
   scrollBehavior,
 });
 
-/** Close any open tooltips on route change */
+/** close any open tooltips on route change */
 router.beforeEach(() => {
   hideAll();
 });

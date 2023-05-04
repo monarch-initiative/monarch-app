@@ -3,10 +3,10 @@ import { stringify } from "@/util/object";
 import { biolink, request } from "./";
 import { getSearchResults } from "./node-search";
 
-/** Search individual phenotypes or gene/disease phenotypes */
+/** search individual phenotypes or gene/disease phenotypes */
 export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
   /**
-   * Detect pasted list of phenotype ids. deliberately don't detect single id.
+   * detect pasted list of phenotype ids. deliberately don't detect single id.
    * handle that with regular search.
    */
   const ids = search.split(/\s*,\s*/);
@@ -19,21 +19,21 @@ export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
         : 'One or more pasted IDs were not valid HPO phenotype IDs (starting with "HP:")',
     };
 
-  /** Otherwise perform string search for phenotypes/genes/diseases */
+  /** otherwise perform string search for phenotypes/genes/diseases */
   const { results } = await getSearchResults(
     search,
     {},
     { category: ["phenotype", "gene", "disease"] }
   );
 
-  /** Convert into desired result format */
+  /** convert into desired result format */
   return {
     options: results.map((result) => ({
       id: result.id,
       name: result.name,
       spreadOptions:
         /**
-         * If gene/disease, provide function to get associated phenotypes upon
+         * if gene/disease, provide function to get associated phenotypes upon
          * select
          */
         result.category === "phenotype" || !result.category
@@ -47,7 +47,7 @@ export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
   };
 };
 
-/** Phenotype associations with gene/disease (from backend) */
+/** phenotype associations with gene/disease (from backend) */
 type _PhenotypeAssociations = {
   associations: {
     object: {
@@ -57,33 +57,33 @@ type _PhenotypeAssociations = {
   }[];
 };
 
-/** Get phenotypes associated with gene/disease */
+/** get phenotypes associated with gene/disease */
 const getPhenotypeAssociations = async (
   id = "",
   category = ""
 ): Promise<Options> => {
-  /** Short circuit if no id or valid category */
+  /** short circuit if no id or valid category */
   if (!id || !category || !(category === "gene" || category === "disease"))
     throw new Error(`Invalid gene/disease id or category`);
 
-  /** Endpoint settings */
+  /** endpoint settings */
   const params = {
     direct: true,
     unselect_evidence: true,
   };
 
-  /** Make query */
+  /** make query */
   const url = `${biolink}/bioentity/${category}/${id}/phenotypes`;
   const { associations } = await request<_PhenotypeAssociations>(url, params);
 
-  /** Convert into desired result format */
+  /** convert into desired result format */
   return associations.map(({ object }) => ({
     id: object.id,
     name: object.label,
   }));
 };
 
-/** Results of phenotype comparison (from backend) */
+/** results of phenotype comparison (from backend) */
 type _Comparison = {
   matches: {
     id: string;
@@ -99,12 +99,12 @@ type _Comparison = {
   }[];
 };
 
-/** Compare a set of phenotypes to another set of phenotypes */
+/** compare a set of phenotypes to another set of phenotypes */
 export const compareSetToSet = async (
   aPhenotypes: string[],
   bPhenotypes: string[]
 ): Promise<Comparison> => {
-  /** Make request options */
+  /** make request options */
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   headers.append("Accept", "application/json");
@@ -119,32 +119,32 @@ export const compareSetToSet = async (
     body: stringify(body),
   };
 
-  /** Make query */
+  /** make query */
   const url = `${biolink}/sim/compare`;
   const response = await request<_Comparison>(url, {}, options);
 
   return mapMatches(response);
 };
 
-/** Compare a set of phenotypes to a gene or disease taxon id */
+/** compare a set of phenotypes to a gene or disease taxon id */
 export const compareSetToTaxon = async (
   phenotypes: string[],
   taxon: string
 ): Promise<Comparison> => {
-  /** Endpoint settings */
+  /** endpoint settings */
   const params = {
     id: phenotypes,
     taxon: taxon,
   };
 
-  /** Make query */
+  /** make query */
   const url = `${biolink}/sim/search`;
   const response = await request<_Comparison>(url, params);
 
   return mapMatches(response);
 };
 
-/** Convert comparison matches into desired result format */
+/** convert comparison matches into desired result format */
 const mapMatches = (response: _Comparison) => {
   const matches = response.matches.map((match) => ({
     id: match.id,
@@ -159,7 +159,7 @@ const mapMatches = (response: _Comparison) => {
   return { matches, minScore, maxScore };
 };
 
-/** Results of phenotype comparison (for frontend) */
+/** results of phenotype comparison (for frontend) */
 export type Comparison = {
   matches: {
     id: string;

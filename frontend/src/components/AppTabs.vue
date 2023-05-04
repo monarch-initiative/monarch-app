@@ -42,14 +42,14 @@ import { useRoute, useRouter } from "vue-router";
 import { uniqueId } from "lodash";
 import { wrap } from "@/util/math";
 
-/** Route info */
+/** route info */
 const router = useRouter();
 const route = useRoute();
 
 type Tab = {
-  /** Page-wide unique id of tab */
+  /** page-wide unique id of tab */
   id: string;
-  /** Tab button props */
+  /** tab button props */
   text?: string;
   icon?: string;
   description?: string;
@@ -58,15 +58,15 @@ type Tab = {
 type Tabs = Tab[];
 
 type Props = {
-  /** Two-way bound selected tab state */
+  /** two-way bound selected tab state */
   modelValue: string;
-  /** List of tabs with info */
+  /** list of tabs with info */
   tabs: Tabs;
-  /** Name of tab group */
+  /** name of tab group */
   name: string;
-  /** Whether to sync active tab with url hash */
+  /** whether to sync active tab with url hash */
   url?: boolean;
-  /** Route name to navigate to on change */
+  /** route name to navigate to on change */
   route?: string;
 };
 
@@ -76,34 +76,34 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 type Emits = {
-  /** Two-way bound selected tab state */
+  /** two-way bound selected tab state */
   (event: "update:modelValue", selected: string): void;
 };
 
 const emit = defineEmits<Emits>();
 
-/** Unique id for instance of component */
+/** unique id for instance of component */
 const id = ref(uniqueId());
 
-/** When user clicks on button */
+/** when user clicks on button */
 async function onClick(id: string) {
   emit("update:modelValue", id);
 }
 
-/** When user presses key on button */
+/** when user presses key on button */
 async function onKeydown(event: KeyboardEvent) {
   if (["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) {
-    /** Prevent page scroll */
+    /** prevent page scroll */
     event.preventDefault();
 
-    /** Move selected tab */
+    /** move selected tab */
     let index = props.tabs.findIndex((tab) => tab.id === props.modelValue);
     if (event.key === "ArrowLeft") index--;
     if (event.key === "ArrowRight") index++;
     if (event.key === "Home") index = 0;
     if (event.key === "End") index = props.tabs.length - 1;
 
-    /** Update selected, wrapping beyond -1 or options length */
+    /** update selected, wrapping beyond -1 or options length */
     emit(
       "update:modelValue",
       props.tabs[wrap(index, 0, props.tabs.length - 1)].id
@@ -111,25 +111,25 @@ async function onKeydown(event: KeyboardEvent) {
   }
 }
 
-/** Get appropriate tab from url hash */
+/** get appropriate tab from url hash */
 function getHash() {
-  /** Set selected tab to id in hash */
+  /** set selected tab to id in hash */
   const hash = route?.hash?.slice(1) || "";
-  /** If there is a tab with name equal to hash, return that one */
+  /** if there is a tab with name equal to hash, return that one */
   if (props.tabs.find((tab) => tab.id === hash)) return hash;
   else return "";
 }
 
-/** When selected tab changes */
+/** when selected tab changes */
 watch(
   () => props.modelValue,
   async () => {
-    /** Focus the selected tab */
+    /** focus the selected tab */
     // const selector = `#tab-${id.value}-${props.modelValue}`;
     // const button = document?.querySelector(selector) as HTMLButtonElement;
     // button?.focus();
 
-    /** Update hash in url and nav if applicable */
+    /** update hash in url and nav if applicable */
     const newRoute = { ...route };
     if (props.route) newRoute.name = props.route;
     if (props.url) newRoute.hash = "#" + props.modelValue;
@@ -137,7 +137,7 @@ watch(
   }
 );
 
-/** Update state */
+/** update state */
 function updateState() {
   if (props.url && getHash()) emit("update:modelValue", getHash());
 }

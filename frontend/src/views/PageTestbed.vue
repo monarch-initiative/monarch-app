@@ -185,7 +185,7 @@ const input = ref("");
 
 type ButtonProps = InstanceType<typeof AppButton>["$props"];
 
-/** Enumerate permutations of button options */
+/** enumerate permutations of button options */
 const buttons = ref<ButtonProps[][]>([]);
 for (const design of ["normal", "circle", "small"]) {
   for (const color of ["primary", "secondary"]) {
@@ -201,7 +201,7 @@ for (const design of ["normal", "circle", "small"]) {
   }
 }
 
-/** Single select */
+/** single select */
 const singleSelectOptions = ref([
   { id: "apple", icon: "lightbulb" },
   { id: "banana", icon: "lightbulb" },
@@ -214,7 +214,7 @@ const singleSelectOptions = ref([
 ]);
 const singleSelectValue = ref({ id: "durian" });
 
-/** Multi select */
+/** multi select */
 const multiSelectOptions = ref([
   { id: "fruits", count: 0 },
   { id: "vegetables", count: 7 },
@@ -226,9 +226,9 @@ const multiSelectOptions = ref([
 ]);
 const multiSelectValue = ref([{ id: "vegetables" }]);
 
-/** Tags select */
+/** tags select */
 const tagsSelectOptions = ref(async (search = "") => {
-  await sleep(500); /** Test loading spinner */
+  await sleep(500); /** test loading spinner */
   return {
     options: [
       { id: "ice cream", icon: "home" },
@@ -244,9 +244,9 @@ const tagsSelectValue = ref([
   { id: "candy", icon: "database", count: "8 phenotypes" },
 ]);
 
-/** Autocomplete select */
+/** autocomplete select */
 const autocompleteSelectOptions = ref(async () => {
-  await sleep(500); /** Test loading spinner */
+  await sleep(500); /** test loading spinner */
   return [
     { icon: "home", name: "Cat" },
     { name: "Dog", info: "good dog" },
@@ -254,7 +254,7 @@ const autocompleteSelectOptions = ref(async () => {
   ];
 });
 
-/** Tabs */
+/** tabs */
 const tabs = [
   { id: "apple", text: "Apple", icon: "asterisk" },
   { id: "banana", text: "Banana", icon: "cogs" },
@@ -263,10 +263,10 @@ const tabs = [
   { id: "elderberry", text: "Elderberry", icon: "tools" },
 ];
 
-/** Selected tab */
+/** selected tab */
 const tab = ref(tabs[0].id);
 
-/** Table input props */
+/** table input props */
 const table = ref({
   cols: [
     {
@@ -314,6 +314,6 @@ const table = ref({
   activeFilters: { score: [{ id: "numbers" }] } as Filters,
 });
 
-/** Util */
+/** util */
 const log = console.info;
 </script>

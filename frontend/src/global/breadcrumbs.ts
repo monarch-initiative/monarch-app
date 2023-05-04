@@ -8,9 +8,9 @@ type Breadcrumb = {
   relation: Association["relation"];
 };
 
-/** Breadcrumbs object for breadcrumbs section on node page */
+/** breadcrumbs object for breadcrumbs section on node page */
 export const breadcrumbs = ref<Breadcrumb[]>([]);
 
-/** Keep breadcrumbs global variable in sync with history.state.breadcrumbs */
+/** keep breadcrumbs global variable in sync with history.state.breadcrumbs */
 export const updateBreadcrumbs = () =>
   (breadcrumbs.value = parse(window.history.state?.breadcrumbs, []));

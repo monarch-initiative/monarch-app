@@ -18,15 +18,15 @@ import { ref, watch } from "vue";
 import { deburr, kebabCase } from "lodash";
 
 type Props = {
-  /** Group name */
+  /** group name */
   name: string;
-  /** Link to site */
+  /** link to site */
   link?: string;
 };
 
 const props = defineProps<Props>();
 
-/** Get group img src */
+/** get group img src */
 const src = ref("");
 watch(
   () => props.name,

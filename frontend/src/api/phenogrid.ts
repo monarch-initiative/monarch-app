@@ -40,7 +40,7 @@ export const mountPhenogrid = async (
   await waitFor("#phenogrid_svg", patchSvg);
 };
 
-/** SHIMS FOR PHENOGRID */
+/** sHIMS FOR PHENOGRID */
 
 /** typescript definition */
 export type PhenogridDefinition = {

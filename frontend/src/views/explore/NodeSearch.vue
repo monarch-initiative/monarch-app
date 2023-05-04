@@ -125,59 +125,59 @@ import { addEntry, deleteEntry, history } from "@/global/history";
 import { appTitle } from "@/global/meta";
 import { useQuery } from "@/util/composables";
 
-/** Route info */
+/** route info */
 const router = useRouter();
 const route = useRoute();
 
-/** Submitted search text */
+/** submitted search text */
 const search = ref(String(route.query.search || ""));
-/** Current page number */
+/** current page number */
 const page = ref(0);
-/** Results per page */
+/** results per page */
 const perPage = ref(10);
-/** Filters (facets) for search */
+/** filters (facets) for search */
 const availableFilters = ref<{ [key: string]: MultiOptions }>({});
 const activeFilters = ref<{ [key: string]: MultiOptions }>({});
 
-/** When user focuses text box */
+/** when user focuses text box */
 async function onFocus() {
-  /** Navigate to explore page */
+  /** navigate to explore page */
   await router.push({ ...route, name: "Explore" });
-  /** Refocus box */
+  /** refocus box */
   document?.querySelector("input")?.focus();
 }
 
-/** When user "submits" text box */
+/** when user "submits" text box */
 function onChange(value: string) {
   search.value = value;
   page.value = 0;
 }
 
-/** When user deletes entry in textbox */
+/** when user deletes entry in textbox */
 function onDelete(value: string) {
   deleteEntry(value);
 }
 
-/** When user changes active filters */
+/** when user changes active filters */
 function onFilterChange() {
   page.value = 0;
   getResults(false);
 }
 
-/** Get autocomplete results */
+/** get autocomplete results */
 async function getAutocomplete(search: string): Promise<AutocompleteOptions> {
-  /** If something typed in, get autocomplete options from backend */
+  /** if something typed in, get autocomplete options from backend */
   if (search.trim()) return await getAutocompleteResults(search);
 
   /**
-   * Otherwise, if search box focused and nothing typed in, show some useful
+   * otherwise, if search box focused and nothing typed in, show some useful
    * entries
    */
 
-  /** Show top N entries in each category */
+  /** show top N entries in each category */
   const top = 5;
 
-  /** Recent searches */
+  /** recent searches */
   const recent = uniq([...history.value].reverse())
     .slice(0, top)
     .map((search) => ({
@@ -186,7 +186,7 @@ async function getAutocomplete(search: string): Promise<AutocompleteOptions> {
       tooltip: "One of your recent node searches",
     }));
 
-  /** Most popular searches */
+  /** most popular searches */
   const popular = sortBy(
     Object.entries(groupBy(history.value)).map(([search, matches]) => ({
       search,
@@ -203,7 +203,7 @@ async function getAutocomplete(search: string): Promise<AutocompleteOptions> {
       tooltip: "One of your frequent node searches",
     }));
 
-  /** Example searches */
+  /** example searches */
   const examples = [
     "Marfan syndrome",
     "SSH",
@@ -217,7 +217,7 @@ async function getAutocomplete(search: string): Promise<AutocompleteOptions> {
   return [...recent, ...popular, ...examples];
 }
 
-/** Get search results */
+/** get search results */
 const {
   query: getResults,
   data: results,
@@ -226,12 +226,12 @@ const {
 } = useQuery(
   async function (
     /**
-     * Whether to perform "fresh" search, without filters/pagination/etc. true
+     * whether to perform "fresh" search, without filters/pagination/etc. true
      * when search text changes, false when filters/pagination/etc change.
      */
     fresh: boolean
   ): Promise<SearchResults> {
-    /** Get results from api */
+    /** get results from api */
     const response = await getSearchResults(
       search.value,
       fresh ? undefined : filtersToQuery(availableFilters.value),
@@ -242,18 +242,18 @@ const {
     return response;
   },
 
-  /** Default value */
+  /** default value */
   { count: 0, results: [], facets: {} },
 
-  /** On success */
+  /** on success */
   (response, [fresh]) => {
-    /** Update filters from facets returned from api, if a "fresh" search */
+    /** update filters from facets returned from api, if a "fresh" search */
     if (fresh) {
       availableFilters.value = { ...response.facets };
       activeFilters.value = { ...response.facets };
     }
 
-    /** Add search to history */
+    /** add search to history */
     addEntry(search.value);
   }
 );
@@ -264,34 +264,34 @@ const to = computed(
   (): number => from.value + results.value.results.length - 1
 );
 
-/** Pages of results */
+/** pages of results */
 const pages = computed((): number[][] => {
-  /** Get full list of pages */
+  /** get full list of pages */
   const pages = Array(Math.ceil(results.value.count / perPage.value))
     .fill(0)
     .map((_, i) => i);
 
-  /** Make shorter pages list */
+  /** make shorter pages list */
   let list = [
-    /** First few pages */
+    /** first few pages */
     0,
     1,
     2,
-    /** Current few pages */
+    /** current few pages */
     page.value - 1,
     page.value,
     page.value + 1,
-    /** Last few pages */
+    /** last few pages */
     pages.length - 3,
     pages.length - 2,
     pages.length - 1,
   ];
 
-  /** Sort, deduplicate, and clamp list */
+  /** sort, deduplicate, and clamp list */
   list.sort((a, b) => a - b);
   list = uniq(list).filter((page) => page >= 0 && page <= pages.length - 1);
 
-  /** Split into sub lists where page numbers are not sequential */
+  /** split into sub lists where page numbers are not sequential */
   const splitList: number[][] = [[]];
   for (let index = 0; index < list.length; index++) {
     if (list[index - 1] && list[index] - list[index - 1] > 1)
@@ -302,33 +302,33 @@ const pages = computed((): number[][] => {
   return splitList;
 });
 
-/** When route changes */
+/** when route changes */
 watch(
   () => route.query.search,
   async () => {
-    /** Update search text from route */
+    /** update search text from route */
     search.value = String(route.query.search || "");
-    /** Update document title */
+    /** update document title */
     if (search.value) appTitle.value = [`"${search.value}"`];
-    /** Refetch search */
+    /** refetch search */
     await getResults(true);
   },
   { immediate: true, flush: "post" }
 );
 
-/** When search changes */
+/** when search changes */
 watch(search, async () => {
-  /** Update url */
+  /** update url */
   const query: { [key: string]: string } = {};
   if (search.value) query.search = search.value;
   await router.push({ ...route, name: "Explore", query });
 });
 
-/** When start page changes */
+/** when start page changes */
 watch(from, () => getResults(false));
 
 /**
- * Hide counts in filter dropdowns if any filtering being done. see
+ * hide counts in filter dropdowns if any filtering being done. see
  * https://github.com/monarch-initiative/monarch-ui-new/issues/87
  */
 const showCounts = computed(() =>

@@ -45,7 +45,7 @@ import { kebabCase } from "lodash";
 import type { Node } from "@/api/node-lookup";
 
 type Props = {
-  /** Current node */
+  /** current node */
   node: Node;
 };
 

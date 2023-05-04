@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-/** Push a notification to snackbar */
+/** push a notification to snackbar */
 export const snackbar = (message: string): unknown =>
   window.dispatchEvent(new CustomEvent("snackbar", { detail: message }));
 </script>
@@ -32,38 +32,38 @@ import { computed, ref } from "vue";
 import { useEventListener, useTimeoutFn } from "@vueuse/core";
 import { restartAnimations } from "@/util/dom";
 
-/** Current notification text */
+/** current notification text */
 const text = ref("");
-/** Notification element */
+/** notification element */
 const element = ref<Element>();
 
 /**
- * Make hide delay longer for longer messages
+ * make hide delay longer for longer messages
  * https://ux.stackexchange.com/questions/22520/how-long-does-it-take-to-read-x-number-of-characters
  */
 const delay = computed(() => 1500 + text.value.length * 100);
-/** Timer */
+/** timer */
 const { start, stop } = useTimeoutFn(() => (text.value = ""), delay);
 
-/** On push notification event */
+/** on push notification event */
 function onPush(event: Event) {
-  /** Flash notification */
+  /** flash notification */
   if (element.value) restartAnimations(element.value);
 
-  /** Set notification text */
+  /** set notification text */
   text.value = (event as CustomEvent).detail;
 
-  /** Set timer to close */
+  /** set timer to close */
   start();
 }
 
-/** When user clicks notification */
+/** when user clicks notification */
 function onClick() {
   stop();
   text.value = "";
 }
 
-/** Listen for push notification event */
+/** listen for push notification event */
 useEventListener(window, "snackbar", onPush);
 </script>
 

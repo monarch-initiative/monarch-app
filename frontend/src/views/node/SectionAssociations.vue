@@ -73,18 +73,18 @@ import AssociationsSummary from "./AssociationsSummary.vue";
 import AssociationsTable from "./AssociationsTable.vue";
 import EvidenceViewer from "./EvidenceViewer.vue";
 
-/** Route info */
+/** route info */
 const router = useRouter();
 const route = useRoute();
 
 type Props = {
-  /** Current node */
+  /** current node */
   node: Node;
 };
 
 const props = defineProps<Props>();
 
-/** Mode tabs */
+/** mode tabs */
 const tabs = [
   {
     id: "summary",
@@ -101,12 +101,12 @@ const tabs = [
 ];
 const tab = ref(tabs[0].id);
 
-/** Selected category of associations to show */
+/** selected category of associations to show */
 const category = ref<Option>();
-/** Selected association id */
+/** selected association id */
 const association = ref<Association>();
 
-/** List of options for dropdown */
+/** list of options for dropdown */
 const categoryOptions = computed(
   (): Options =>
     props.node.associationCounts.map((association) => ({
@@ -117,10 +117,10 @@ const categoryOptions = computed(
     }))
 );
 
-/** Deselect association when selected category changes */
+/** deselect association when selected category changes */
 watch(category, () => (association.value = undefined));
 
-/** Update url from selected category */
+/** update url from selected category */
 watch(
   category,
   () => {
@@ -129,11 +129,11 @@ watch(
       query: { associations: category.value?.id },
     });
   },
-  /** Avoid extra triggering of watch functions */
+  /** avoid extra triggering of watch functions */
   { flush: "post" }
 );
 
-/** Update selected category from url */
+/** update selected category from url */
 watch(
   () => route.query.associations,
   () => {

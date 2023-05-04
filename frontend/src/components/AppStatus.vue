@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-/** Possible status codes */
+/** possible status codes */
 export const Codes = [
   "loading",
   "success",
@@ -34,7 +34,7 @@ export type Code = (typeof Codes)[number];
 <script setup lang="ts">
 import { computed } from "vue";
 
-/** Icons for status codes */
+/** icons for status codes */
 const icons: Record<Code, string> = {
   loading: "loading",
   paused: "pause-circle",
@@ -45,15 +45,15 @@ const icons: Record<Code, string> = {
 };
 
 type Props = {
-  /** Status code */
+  /** status code */
   code: Code;
-  /** Link */
+  /** link */
   link?: string;
 };
 
 const props = defineProps<Props>();
 
-/** Icon to show, associated with a status */
+/** icon to show, associated with a status */
 const icon = computed(() => icons[props.code]);
 </script>
 

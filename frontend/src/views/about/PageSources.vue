@@ -141,12 +141,12 @@ import AppCheckbox from "@/components/AppCheckbox.vue";
 import { useQuery } from "@/util/composables";
 import { breakUrl } from "@/util/string";
 
-/** Whether to show dataset sources */
+/** whether to show dataset sources */
 const showDatasets = ref(true);
-/** Whether to show ontology sources */
+/** whether to show ontology sources */
 const showOntologies = ref(true);
 
-/** Get filename from full path */
+/** get filename from full path */
 function getFilename(path = "") {
   return path
     .split("/")
@@ -160,14 +160,14 @@ const {
   isLoading,
   isError,
 } = useQuery(async function () {
-  /** Get sources from apis */
+  /** get sources from apis */
   const datasets = await getDatasets();
   const ontologies = await getOntologies();
 
-  /** Combine sources */
+  /** combine sources */
   const sources = [...datasets, ...ontologies];
 
-  /** Sort sources alphabetically by name or id */
+  /** sort sources alphabetically by name or id */
   sources.sort((a: Source, b: Source) => {
     if (
       (a?.name || a?.id || "").toLowerCase() <
@@ -177,7 +177,7 @@ const {
     else return 1;
   });
 
-  /** Import images */
+  /** import images */
   for (const source of sources) {
     try {
       if (!source.image) {
@@ -198,7 +198,7 @@ const {
 
 onMounted(getSources);
 
-/** Shown sources */
+/** shown sources */
 const filteredSources = computed((): Source[] =>
   sources.value.filter(
     (source: Source) =>
@@ -207,13 +207,13 @@ const filteredSources = computed((): Source[] =>
   )
 );
 
-/** Number of dataset sources */
+/** number of dataset sources */
 const datasetCount = computed(
   (): number =>
     sources.value.filter((source) => source.type === "dataset").length
 );
 
-/** Number of ontology sources */
+/** number of ontology sources */
 const ontologyCount = computed(
   (): number =>
     sources.value.filter((source) => source.type === "ontology").length

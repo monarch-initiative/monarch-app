@@ -49,7 +49,7 @@ import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
 
 type Props = {
-  /** Current node */
+  /** current node */
   node: Node;
 };
 

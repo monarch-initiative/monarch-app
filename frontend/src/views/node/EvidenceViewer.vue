@@ -189,15 +189,15 @@ import { downloadJson } from "@/util/download";
 import { breakUrl } from "@/util/string";
 
 type Props = {
-  /** Current node */
+  /** current node */
   node: Node;
-  /** Selected association id */
+  /** selected association id */
   selectedAssociation: Association;
 };
 
 const props = defineProps<Props>();
 
-/** Mode tabs */
+/** mode tabs */
 const tabs = [
   {
     id: "summary",
@@ -214,7 +214,7 @@ const tabs = [
 ];
 const tab = ref(tabs[0].id);
 
-/** Table columns */
+/** table columns */
 const cols: Cols = [
   {
     id: "subject",
@@ -258,7 +258,7 @@ const cols: Cols = [
   },
 ];
 
-/** Get evidence data */
+/** get evidence data */
 const {
   query: getEvidence,
   data: evidence,
@@ -266,10 +266,10 @@ const {
   isError,
 } = useQuery(
   async function () {
-    /** Scroll to evidence section */
+    /** scroll to evidence section */
     waitFor("#evidence", scrollToElement);
 
-    /** Get evidence data */
+    /** get evidence data */
     const response = await getAssociationEvidence(
       props.selectedAssociation?.id
     );
@@ -277,13 +277,13 @@ const {
     return response;
   },
 
-  /** Default value */
+  /** default value */
   { summary: { codes: [], publications: [], sources: [] }, table: [] }
 );
 
-/** Download table data */
+/** download table data */
 async function download() {
-  /** Warn user */
+  /** warn user */
   snackbar(
     `Downloading data for ${evidence.value.table.length} table entries.`
   );

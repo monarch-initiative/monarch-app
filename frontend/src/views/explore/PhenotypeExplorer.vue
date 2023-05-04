@@ -145,7 +145,7 @@ import { useQuery } from "@/util/composables";
 import { parse } from "@/util/object";
 import examples from "./phenotype-explorer.json";
 
-/** Common tooltip explaining how to use multi-select component */
+/** common tooltip explaining how to use multi-select component */
 const multiTooltip = `In this box, you can select phenotypes in 3 ways:<br>
   <ol>
     <li>Search for individual phenotypes</li>
@@ -153,7 +153,7 @@ const multiTooltip = `In this box, you can select phenotypes in 3 ways:<br>
     <li>Paste comma-separated phenotype IDs</li>
   </ol>`;
 
-/** Options for mode of second set */
+/** options for mode of second set */
 const bModeOptions = [
   { id: "these phenotypes ..." },
   { id: "phenotypes from all genes of ..." },
@@ -161,7 +161,7 @@ const bModeOptions = [
 ];
 
 /**
- * Small hard-coded list of taxon options, just for phenotype explorer, so no
+ * small hard-coded list of taxon options, just for phenotype explorer, so no
  * backend querying needed
  */
 const taxons = [
@@ -175,31 +175,31 @@ const taxons = [
 
 const bTaxonHuman = taxons[0];
 
-/** Taxon options for second set */
+/** taxon options for second set */
 const bTaxonOptions = taxons.slice(1);
 
-/** Example data */
+/** example data */
 type GeneratedFrom = {
-  /** The option (gene/disease/phenotype) that the phenotypes came from */
+  /** the option (gene/disease/phenotype) that the phenotypes came from */
   option?: Option;
-  /** The phenotypes themselves */
+  /** the phenotypes themselves */
   options?: Options;
 };
 
-/** First set of phenotypes */
+/** first set of phenotypes */
 const aPhenotypes = ref([] as Options);
 /** "generated from" helpers after selecting gene or disease */
 const aGeneratedFrom = ref({} as GeneratedFrom);
-/** Selected mode of second set */
+/** selected mode of second set */
 const bMode = ref(bModeOptions[0]);
-/** Selected taxon for second set */
+/** selected taxon for second set */
 const bTaxon = ref(bTaxonOptions[0]);
-/** Second set of phenotypes */
+/** second set of phenotypes */
 const bPhenotypes = ref([] as Options);
 /** "generated from" helpers after selecting gene or disease */
 const bGeneratedFrom = ref({} as GeneratedFrom);
 
-/** Example phenotype set comparison */
+/** example phenotype set comparison */
 function doExample() {
   aPhenotypes.value = examples.a.options;
   bPhenotypes.value = examples.b.options;
@@ -207,7 +207,7 @@ function doExample() {
   bGeneratedFrom.value = examples.b;
 }
 
-/** Comparison analysis */
+/** comparison analysis */
 const {
   query: runAnalysis,
   data: comparison,
@@ -215,7 +215,7 @@ const {
   isError,
 } = useQuery(
   async function () {
-    /** Run appropriate analysis based on selected mode */
+    /** run appropriate analysis based on selected mode */
     if (bMode.value.id.includes("these phenotypes"))
       return await compareSetToSet(
         aPhenotypes.value.map(({ id }) => id),
@@ -228,32 +228,32 @@ const {
       );
   },
 
-  /** Default value */
+  /** default value */
   { matches: [] }
 );
 
-/** When multi select component runs spread options function */
+/** when multi select component runs spread options function */
 function spreadOptions(option: Option, options: Options, set: string) {
-  /** Notify */
+  /** notify */
   if (options.length === 0) snackbar("No associated phenotypes found");
   else snackbar(`Selected ${options.length} phenotypes`);
 
-  /** Set "generated from" helpers */
+  /** set "generated from" helpers */
   if (set === "a") aGeneratedFrom.value = { option, options };
   else if (set === "b") bGeneratedFrom.value = { option, options };
 }
 
-/** Show phenogrid results */
+/** show phenogrid results */
 function runPhenogrid() {
-  /** Which biolink /sim endpoint to use */
+  /** which biolink /sim endpoint to use */
   const mode = bMode.value.id.includes("these phenotypes")
     ? "compare"
     : "search";
 
-  /** Use first group of phenotypes for y axis */
+  /** use first group of phenotypes for y axis */
   const yAxis = aPhenotypes.value;
 
-  /** Use second taxon id or group of phenotypes as x axis */
+  /** use second taxon id or group of phenotypes as x axis */
   let xAxis = [];
   if (mode === "compare") xAxis = bPhenotypes.value;
   else {
@@ -262,11 +262,11 @@ function runPhenogrid() {
       : bTaxon.value;
     xAxis = [{ id: taxon.id, name: taxon.scientific }];
   }
-  /** Call phenogrid */
+  /** call phenogrid */
   mountPhenogrid("#phenogrid", xAxis, yAxis, mode);
 }
 
-/** Run phenogrid, attach to div container */
+/** run phenogrid, attach to div container */
 watch(
   () => comparison.value,
   () => {
@@ -274,22 +274,22 @@ watch(
   }
 );
 
-/** Clear/reset results */
+/** clear/reset results */
 function clearResults() {
   comparison.value = { matches: [] };
 }
 
-/** Get description to show below phenotypes select box */
+/** get description to show below phenotypes select box */
 function description(
   phenotypes: Options,
   generatedFrom: GeneratedFrom
 ): string {
   const description = [];
 
-  /** Number of phenotypes */
+  /** number of phenotypes */
   description.push(`${phenotypes.length} selected`);
 
-  /** To avoid misleading text, only show if lists match exactly */
+  /** to avoid misleading text, only show if lists match exactly */
   if (isEqual(generatedFrom.options, phenotypes))
     description.push(
       `generated from "${
@@ -299,10 +299,10 @@ function description(
   return `(${description.join(", ")})`;
 }
 
-/** Clear results when inputs are changed to avoid de-sync */
+/** clear results when inputs are changed to avoid de-sync */
 watch([aPhenotypes, bMode, bTaxon, bPhenotypes], clearResults, { deep: true });
 
-/** Fill in phenotype ids from text annotator */
+/** fill in phenotype ids from text annotator */
 onMounted(() => {
   if (window.history.state.phenotypes) {
     const phenotypes = parse(window.history.state.phenotypes, []) as Options;

@@ -21,17 +21,17 @@ import { ref, watch } from "vue";
 import { deburr, kebabCase } from "lodash";
 
 type Props = {
-  /** Member name */
+  /** member name */
   name: string;
-  /** Their role */
+  /** their role */
   role?: string;
-  /** Link to bio */
+  /** link to bio */
   link?: string;
 };
 
 const props = defineProps<Props>();
 
-/** Get member img src with fallback if not found */
+/** get member img src with fallback if not found */
 const src = ref("");
 watch(
   () => props.name,

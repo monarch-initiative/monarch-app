@@ -193,36 +193,36 @@
 </template>
 
 <script lang="ts">
-/** Table column */
+/** table column */
 export type Col = {
   /**
-   * Unique id, used to identify/match for sorting, filtering, and named slots.
+   * unique id, used to identify/match for sorting, filtering, and named slots.
    * use "divider" to create vertical divider to separate cols
    */
   id: string;
-  /** What item in row object to access as raw cell value */
+  /** what item in row object to access as raw cell value */
   key?: string;
-  /** Header display text */
+  /** header display text */
   heading?: string;
-  /** How to align column contents (both header and body) horizontally */
+  /** how to align column contents (both header and body) horizontally */
   align?: "left" | "center" | "end";
   /**
-   * Width to apply to heading cell, in any valid css grid col width (px, fr,
+   * width to apply to heading cell, in any valid css grid col width (px, fr,
    * auto, minmax, etc)
    */
   width?: string;
-  /** Whether to allow sorting of column */
+  /** whether to allow sorting of column */
   sortable?: boolean;
 };
 
-/** Object with arbitrary keys */
+/** object with arbitrary keys */
 export type Row = { [key: string | number]: any };
 
-/** Arrays of rows and cols */
+/** arrays of rows and cols */
 export type Cols = Col[];
 export type Rows = Row[];
 
-/** Sort prop */
+/** sort prop */
 export type Sort = {
   id: string;
   direction: "up" | "down";
@@ -240,25 +240,25 @@ import AppTextbox from "./AppTextbox.vue";
 import { closeToc } from "./TheTableOfContents.vue";
 
 type Props = {
-  /** Info for each column of table */
+  /** info for each column of table */
   cols: Cols;
-  /** List of table rows, i.e. the table data */
+  /** list of table rows, i.e. the table data */
   rows: Rows;
-  /** Sort key and direction */
+  /** sort key and direction */
   sort?: Sort;
-  /** Filters */
+  /** filters */
   availableFilters?: Filters;
   activeFilters?: Filters;
-  /** Items per page (two-way bound) */
+  /** items per page (two-way bound) */
   perPage?: number;
-  /** Starting item index (two-way bound) */
+  /** starting item index (two-way bound) */
   start?: number;
-  /** Total number of items */
+  /** total number of items */
   total?: number;
-  /** Text being searched (two-way bound) */
+  /** text being searched (two-way bound) */
   search?: string;
   /**
-   * Whether to show certain controls (temp solution, needed b/c this is a
+   * whether to show certain controls (temp solution, needed b/c this is a
    * controlled component and cannot paginate/search/etc on its own where needed
    * yet)
    */
@@ -277,31 +277,31 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 type Emits = {
-  /** When sort changes */
+  /** when sort changes */
   (event: "sort", sort: Sort): void;
-  /** When filter changes */
+  /** when filter changes */
   (event: "filter", colId: Col["id"], value: Options): void;
-  /** When per page changes (two-way bound) */
+  /** when per page changes (two-way bound) */
   (event: "update:perPage", value: number): void;
-  /** When start row changes (two-way bound) */
+  /** when start row changes (two-way bound) */
   (event: "update:start", row: number): void;
-  /** When search changes (two-way bound) */
+  /** when search changes (two-way bound) */
   (event: "update:search", value: string): void;
-  /** When user requests download */
+  /** when user requests download */
   (event: "download"): void;
 };
 
 const emit = defineEmits<Emits>();
 
-/** Whether table is expanded to be full width */
+/** whether table is expanded to be full width */
 const expanded = ref(false);
-/** Table reference */
+/** table reference */
 const table = ref<HTMLElement>();
 
-/** Table scroll state */
+/** table scroll state */
 const { arrivedState } = useScroll(table, { offset: { left: 10, right: 10 } });
 
-/** Force table scroll to update */
+/** force table scroll to update */
 async function updateScroll() {
   await nextTick();
   table.value?.dispatchEvent(new Event("scroll"));
@@ -310,36 +310,36 @@ onMounted(updateScroll);
 watch(expanded, updateScroll);
 useResizeObserver(table, updateScroll);
 
-/** Close table of contents when expanding */
+/** close table of contents when expanding */
 watch(expanded, () => {
   if (expanded.value) closeToc();
 });
 
-/** When user clicks to first page */
+/** when user clicks to first page */
 function clickFirst() {
   emit("update:start", 0);
 }
 
-/** When user clicks to previous page */
+/** when user clicks to previous page */
 function clickPrev() {
   emit("update:start", props.start - props.perPage);
 }
 
-/** When user clicks to next page */
+/** when user clicks to next page */
 function clickNext() {
   emit("update:start", props.start + props.perPage);
 }
 
-/** When user clicks to last page */
+/** when user clicks to last page */
 function clickLast() {
   emit("update:start", Math.floor(props.total / props.perPage) * props.perPage);
 }
 
-/** When user clicks a sort button */
+/** when user clicks a sort button */
 function emitSort(col: Col) {
   let newSort: Sort;
 
-  /** Toggle sort direction */
+  /** toggle sort direction */
   if (props.sort?.id === col.id) {
     if (props.sort?.direction === "down")
       newSort = { id: col.id, direction: "up" };
@@ -355,37 +355,37 @@ function emitSort(col: Col) {
   emit("sort", newSort);
 }
 
-/** When user changes a filter */
+/** when user changes a filter */
 function emitFilter(colId: Col["id"], value: Options) {
   emit("filter", colId, value);
 }
 
-/** When user changes rows per page */
+/** when user changes rows per page */
 function emitPerPage(value: string) {
   emit("update:perPage", Number(value));
   emit("update:start", 0);
 }
 
-/** When user types in search */
+/** when user types in search */
 function emitSearch(value: string) {
   emit("update:search", value);
   emit("update:start", 0);
 }
 
-/** When user clicks download */
+/** when user clicks download */
 function emitDownload() {
   emit("download");
 }
 
-/** Ending item index */
+/** ending item index */
 const end = computed((): number => props.start + props.rows.length);
 
-/** Grid column template widths */
+/** grid column template widths */
 const widths = computed((): string =>
   props.cols.map((col) => col.width || "auto").join(" ")
 );
 
-/** Aria sort direction attribute */
+/** aria sort direction attribute */
 const ariaSort = computed(() => {
   if (props.sort?.direction === "up") return "ascending";
   if (props.sort?.direction === "down") return "descending";

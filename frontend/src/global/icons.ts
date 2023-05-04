@@ -3,7 +3,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import * as fab from "@fortawesome/free-brands-svg-icons";
 import * as fas from "@fortawesome/free-solid-svg-icons";
 
-/** Create collection/"palette" of useable icons */
+/** create collection/"palette" of useable icons */
 
 const icons: IconDefinition[] = [
   fab.faGithub,

@@ -137,36 +137,36 @@
 
 <script lang="ts">
 /**
- * Instead of providing a static list of options, you can provide this function
+ * instead of providing a static list of options, you can provide this function
  * that receives the user-typed search string and dynamically returns a list of
  * options to display to user for selection or auto-select.
  */
 export type OptionsFunc = (search: string) => Promise<{
-  /** List of options to return */
+  /** list of options to return */
   options: Options;
-  /** Whether to auto-select these options, or display to user for selection */
+  /** whether to auto-select these options, or display to user for selection */
   autoAccept?: boolean;
-  /** Snackbar message to show when auto-accepting */
+  /** snackbar message to show when auto-accepting */
   message?: string;
 }>;
 
 export type Options = Option[];
 
 export type Option = {
-  /** Unique id used in state of select */
+  /** unique id used in state of select */
   id: string;
-  /** Icon name */
+  /** icon name */
   icon?: string;
-  /** Display name */
+  /** display name */
   name?: string;
-  /** Highlighting html */
+  /** highlighting html */
   highlight?: string;
-  /** Info col */
+  /** info col */
   info?: string;
-  /** Tooltip on hover */
+  /** tooltip on hover */
   tooltip?: string;
   /**
-   * Allows returning multiple options instead when selecting this option, e.g.
+   * allows returning multiple options instead when selecting this option, e.g.
    * clicking a gene result and getting/selecting its 8 associated phenotypes
    * instead
    */
@@ -183,50 +183,50 @@ import AppInput from "./AppInput.vue";
 import { snackbar } from "./TheSnackbar.vue";
 
 type Props = {
-  /** Two-way bound selected items state */
+  /** two-way bound selected items state */
   modelValue: Options;
-  /** Name of the field */
+  /** name of the field */
   name: string;
-  /** Placeholder string when nothing typed in */
+  /** placeholder string when nothing typed in */
   placeholder?: string;
-  /** Async function that returns list of options to show */
+  /** async function that returns list of options to show */
   options: OptionsFunc;
-  /** Tooltip when hovering input */
+  /** tooltip when hovering input */
   tooltip?: string;
-  /** Description to show below box */
+  /** description to show below box */
   description?: string;
 };
 
 const props = defineProps<Props>();
 
 type Emits = {
-  /** Two-way bound selected items state */
+  /** two-way bound selected items state */
   (event: "update:modelValue", value: Options): void;
-  /** When an option's spreadOptions func has been called */
+  /** when an option's spreadOptions func has been called */
   (event: "spreadOptions", option: Option, options: Options): void;
 };
 
 const emit = defineEmits<Emits>();
 
-/** Unique id for instance of component */
+/** unique id for instance of component */
 const id = ref(uniqueId());
-/** Array of selected options */
+/** array of selected options */
 const selected = ref<Options>([]);
-/** Currently searched text */
+/** currently searched text */
 const search = ref("");
-/** Index of option that is highlighted */
+/** index of option that is highlighted */
 const highlighted = ref(0);
-/** Whether input box focused and dropdown expanded */
+/** whether input box focused and dropdown expanded */
 const expanded = ref(false);
 
-/** Open results dropdown */
+/** open results dropdown */
 async function open() {
   expanded.value = true;
   highlighted.value = -1;
   await getResults();
 }
 
-/** Close results dropdown */
+/** close results dropdown */
 function close() {
   expanded.value = false;
   search.value = "";
@@ -234,78 +234,78 @@ function close() {
   highlighted.value = -1;
 }
 
-/** When user presses key in input */
+/** when user presses key in input */
 function onKeydown(event: KeyboardEvent) {
-  /** Arrow/home/end keys */
+  /** arrow/home/end keys */
   if (["ArrowUp", "ArrowDown", "Home", "End"].includes(event.key)) {
-    /** Prevent page scroll */
+    /** prevent page scroll */
     event.preventDefault();
 
-    /** Move value up/down */
+    /** move value up/down */
     let index = highlighted.value;
     if (event.key === "ArrowUp") index--;
     if (event.key === "ArrowDown") index++;
     if (event.key === "Home") index = 0;
     if (event.key === "End") index = availableResults.value.length - 1;
 
-    /** Update highlighted, wrapping beyond 0 or results length */
+    /** update highlighted, wrapping beyond 0 or results length */
     highlighted.value = wrap(index, 0, availableResults.value.length - 1);
   }
 
-  /** Backspace key to deselect last-selected option */
+  /** backspace key to deselect last-selected option */
   if (event.key === "Backspace") {
     if (search.value === "") deselect();
   }
 
-  /** Enter key to de/select highlighted result */
+  /** enter key to de/select highlighted result */
   if (event.key === "Enter" && highlighted.value >= 0) {
     event.preventDefault();
     select(availableResults.value[highlighted.value]);
   }
 
-  /** Esc key to close dropdown */
+  /** esc key to close dropdown */
   if (event.key === "Escape") close();
 }
 
-/** Select an option or array of options */
+/** select an option or array of options */
 async function select(options: Option | Options) {
-  /** Make array if single option */
+  /** make array if single option */
   if (!Array.isArray(options)) options = [options];
 
-  /** Array of options to select */
+  /** array of options to select */
   const toSelect: Options = [];
 
   for (const option of options) {
-    /** Run func to get options to select */
+    /** run func to get options to select */
     if (option.spreadOptions) {
       const options = await option.spreadOptions();
       toSelect.push(...options);
       /**
-       * Notify parent that dynamic options were added. provide option selected
+       * notify parent that dynamic options were added. provide option selected
        * and options added.
        */
       emit("spreadOptions", option, options);
     } else toSelect.push(option);
-    /** Otherwise just select option */
+    /** otherwise just select option */
   }
 
-  /** Select options */
+  /** select options */
   selected.value.push(...toSelect);
 }
 
-/** Deselect a specific option or last-selected option */
+/** deselect a specific option or last-selected option */
 function deselect(option?: Option) {
   if (option)
     selected.value = selected.value.filter((model) => model.id !== option.id);
   else selected.value.pop();
 }
 
-/** Clear all selected */
+/** clear all selected */
 function clear() {
   selected.value = [];
 }
 
-/** Copy selected ids to clipboard */
+/** copy selected ids to clipboard */
 async function copy() {
   await window.navigator.clipboard?.writeText(
     selected.value.map(({ id }) => id).join(",")
@@ -319,34 +319,34 @@ const {
   isLoading,
   isError,
 } = useQuery(
-  /** Get list of results */
+  /** get list of results */
   async function () {
-    /** Reset highlighted */
+    /** reset highlighted */
     highlighted.value = 0;
 
-    /** Get results */
+    /** get results */
     return await props.options(search.value);
   },
 
-  /** Default value */
+  /** default value */
   { options: [] },
 
-  /** On success */
+  /** on success */
   (result) => {
     if (result.autoAccept) {
-      /** Auto select */
+      /** auto select */
       select(result.options);
 
-      /** Display message */
+      /** display message */
       if (result.message) snackbar(result.message);
 
-      /** Reset */
+      /** reset */
       close();
     }
   }
 );
 
-/** List of unselected results to show */
+/** list of unselected results to show */
 const availableResults = computed(() =>
   results.value.autoAccept
     ? []
@@ -355,43 +355,43 @@ const availableResults = computed(() =>
       )
 );
 
-/** Target element */
+/** target element */
 const target = ref();
-/** Dropdown element */
+/** dropdown element */
 const dropdown = ref();
-/** Get dropdown position */
+/** get dropdown position */
 const { calculate, style } = useFloating(target, dropdown, true);
-/** Recompute position when length of results changes */
+/** recompute position when length of results changes */
 watch([expanded, availableResults], async () => {
   await nextTick();
   if (expanded.value) calculate();
 });
 
-/** When model changes */
+/** when model changes */
 watch(
   () => props.modelValue,
   () => {
-    /** Avoid infinite rerenders */
+    /** avoid infinite rerenders */
     if (!isEqual(selected.value, props.modelValue))
-      /** Update (de-duplicated) selected value */
+      /** update (de-duplicated) selected value */
       selected.value = uniqBy(props.modelValue, "id");
   },
   { deep: true, immediate: true }
 );
 
-/** When selected value changes */
+/** when selected value changes */
 watch(
   selected,
   () => {
-    /** Emit (deduplicated) updated model */
+    /** emit (deduplicated) updated model */
     emit("update:modelValue", uniqBy(selected.value, "id"));
   },
   { deep: true }
 );
 
-/** When highlighted index changes */
+/** when highlighted index changes */
 watch(highlighted, () => {
-  /** Scroll to highlighted in dropdown */
+  /** scroll to highlighted in dropdown */
   document
     .querySelector(`#option-${id.value}-${highlighted.value} > *`)
     ?.scrollIntoView({ block: "nearest" });

@@ -28,14 +28,14 @@ import type { Node } from "@/api/node-lookup";
 import { breadcrumbs } from "@/global/breadcrumbs";
 
 type Props = {
-  /** Node represented by badge */
+  /** node represented by badge */
   node: Pick<Node, "id" | "name" | "category">;
-  /** Whether to include icon */
+  /** whether to include icon */
   icon?: boolean;
-  /** Whether to include link */
+  /** whether to include link */
   link?: boolean;
   /**
-   * Breadcrumb object to add list when badge clicked on. include node that user
+   * breadcrumb object to add list when badge clicked on. include node that user
    * came from and relation between that node and this node.
    */
   breadcrumb?: { [key: string]: unknown };

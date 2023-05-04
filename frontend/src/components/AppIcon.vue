@@ -39,7 +39,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 type Props = {
   /**
-   * Kebab-case name of icon to show. for font awesome, without fas/far/etc
+   * kebab-case name of icon to show. for font awesome, without fas/far/etc
    * prefix. for custom icon, match filename, without extension.
    */
   icon?: string;
@@ -47,7 +47,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-/** Find custom icon with matching name, if there is one */
+/** find custom icon with matching name, if there is one */
 const custom = ref("");
 watch(
   () => props.icon,
@@ -63,7 +63,7 @@ watch(
   { immediate: true }
 );
 
-/** Find font awesome icon with matching name, if there is one */
+/** find font awesome icon with matching name, if there is one */
 const fa = computed(() => {
   for (const prefix of ["fas", "far", "fab"]) {
     const match = findIconDefinition({
@@ -76,7 +76,7 @@ const fa = computed(() => {
   return undefined;
 });
 
-/** Initials as fallback */
+/** initials as fallback */
 const initials = computed(() =>
   props.icon
     ?.replace(/^category-/, "")

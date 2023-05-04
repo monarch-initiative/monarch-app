@@ -5,7 +5,7 @@ import "tippy.js/dist/tippy.css";
 import "tippy.js/dist/border.css";
 import { options } from "./tooltip";
 
-/** List of global plugins and their options */
+/** list of global plugins and their options */
 const plugins: [Plugin, unknown][] = [
   [router, {}],
   [tippy, options],

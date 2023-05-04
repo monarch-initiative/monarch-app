@@ -7,11 +7,10 @@ const config: PlaywrightTestConfig = {
   expect: {
     timeout: 5000,
   },
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  // https://github.com/microsoft/playwright/issues/19408
   reporter: "html",
 
-  /* Shared settings for all projects below */
+  /* shared settings for all projects below */
   use: {
     actionTimeout: 0,
     baseURL: "http://localhost:5173",
@@ -19,7 +18,7 @@ const config: PlaywrightTestConfig = {
     headless: true || !!process.env.CI,
   },
 
-  /* Major browsers */
+  /* major browsers */
   projects: [
     {
       name: "chromium",
@@ -37,10 +36,10 @@ const config: PlaywrightTestConfig = {
     },
   ],
 
-  /* Run local dev server before starting tests */
+  /* run local dev server before starting tests */
   webServer: {
     /**
-     * Use the dev server by default for faster feedback loop. Use the preview
+     * use the dev server by default for faster feedback loop. Use the preview
      * server on CI for more realistic testing
      */
     command: process.env.CI
