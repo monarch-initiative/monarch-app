@@ -1,6 +1,9 @@
 name: Test Frontend
 
-on: pull_request
+on:
+  pull_request:
+    paths:
+      - "/frontend/*"
 
 env:
   CACHE_PATH: |
@@ -123,6 +126,9 @@ jobs:
         with:
           path: ${{ env.CACHE_PATH }}
           key: ${{ needs.install-cache.outputs.cache-key }}
+
+      - name: Install Playwright
+        run: npx playwright install
 
       - name: Run test
         run: yarn test:e2e
