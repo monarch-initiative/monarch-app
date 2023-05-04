@@ -1,34 +1,34 @@
-# name: Deploy Frontend
+name: Deploy Frontend
 
-# on:
-#   push:
-#     branches:
-#       - main
+on:
+  push:
+    branches:
+      - main
 
-# permissions:
-#   contents: write
+permissions:
+  contents: write
 
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v3
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-#       - name: Set up Node
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: "18"
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
 
-#       - name: Install packages
-#         run: yarn install
+      - name: Install packages
+        run: yarn install
 
-#       - name: Build app
-#         run: yarn build
+      - name: Build app
+        run: yarn build
 
-#       - name: Deploy to gh-pages
-#         uses: JamesIves/github-pages-deploy-action@v4
-#         with:
-#           clean: true
-#           folder: frontend/dist
-#           clean-exclude: docs
+      - name: Deploy to gh-pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          clean: true
+          folder: frontend/dist
+          clean-exclude: docs

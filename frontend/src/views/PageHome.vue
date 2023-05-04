@@ -172,14 +172,14 @@
         to="https://twitter.com/MonarchInit"
         icon="twitter"
         title="Twitter"
-        subtitle="Quick updates and musings"
+        subtitle="Musings and news"
         design="small"
       />
       <AppTile
         to="https://genomic.social/@monarch_initiative"
         icon="mastodon"
         title="Mastodon"
-        subtitle="Quick updates and musings"
+        subtitle="News and musings"
         design="small"
       />
     </AppFlex>
