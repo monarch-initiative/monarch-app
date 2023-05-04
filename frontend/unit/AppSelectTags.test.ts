@@ -1,8 +1,8 @@
 import { nextTick } from "vue";
 import { expect, test } from "vitest";
 import AppSelectTags from "@/components/AppSelectTags.vue";
-import { emitted, mount } from "./setup";
 import { sleep } from "@/util/debug";
+import { emitted, mount } from "./setup";
 
 /** some example props for each test */
 const props = {

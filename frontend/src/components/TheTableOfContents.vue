@@ -1,59 +1,63 @@
 <template>
-  <AppFlex
-    ref="toc"
-    flow="inline"
-    direction="col"
-    gap="none"
-    h-align="stretch"
-    class="toc"
-    :style="{ top: nudge + 'px' }"
-    :data-expanded="expanded"
-    role="doc-toc"
-    aria-label="Page table of contents"
-    @click.stop
-  >
-    <!-- toggle button -->
-    <div class="title">
-      <button
-        v-tooltip="
-          expanded ? 'Close table of contents' : 'Expand table of contents'
-        "
-        class="title-button"
-        :aria-expanded="expanded"
-        @click="expanded = !expanded"
-      >
-        <AppIcon :icon="expanded ? 'times' : 'bars'" />
-      </button>
-      <span v-if="expanded" class="title-text truncate">Table of Contents</span>
-    </div>
+  <aside aria-label="table of contents">
+    <AppFlex
+      ref="toc"
+      flow="inline"
+      direction="col"
+      gap="none"
+      h-align="stretch"
+      class="toc"
+      :style="{ top: nudge + 'px' }"
+      :data-expanded="expanded"
+      role="doc-toc"
+      aria-label="Page table of contents"
+      @click.stop
+    >
+      <!-- toggle button -->
+      <div class="title">
+        <button
+          v-tooltip="
+            expanded ? 'Close table of contents' : 'Expand table of contents'
+          "
+          class="title-button"
+          :aria-expanded="expanded"
+          @click="expanded = !expanded"
+        >
+          <AppIcon :icon="expanded ? 'times' : 'bars'" />
+        </button>
+        <span v-if="expanded" class="title-text truncate"
+          >Table of Contents</span
+        >
+      </div>
 
-    <template v-if="expanded">
-      <div class="spacer"></div>
+      <template v-if="expanded">
+        <div class="spacer"></div>
 
-      <!-- entries -->
-      <AppLink
-        v-for="(entry, index) in entries"
-        :key="index"
-        :to="'#' + entry.id"
-        class="entry"
-        :data-active="active === index"
-        :aria-current="active === index"
-        @click="active = index"
-      >
-        <AppIcon :icon="entry.icon" class="entry-icon" />
-        <span class="entry-text truncate">{{ entry.text }}</span>
-      </AppLink>
+        <!-- entries -->
+        <AppLink
+          v-for="(entry, index) in entries"
+          :key="index"
+          :to="'#' + entry.id"
+          class="entry"
+          :data-active="active === index"
+          :aria-current="active === index"
+          @click="active = index"
+        >
+          <AppIcon :icon="entry.icon" class="entry-icon" />
+          <span class="entry-text truncate">{{ entry.text }}</span>
+        </AppLink>
 
-      <div class="spacer"></div>
+        <div class="spacer"></div>
 
-      <!-- options -->
-      <AppCheckbox
-        v-model="oneAtATime"
-        v-tooltip="'Only show one section at a time'"
-        text="Show single section"
-      />
-    </template>
-  </AppFlex>
+        <!-- options -->
+        <AppCheckbox
+          v-model="oneAtATime"
+          v-tooltip="'Only show one section at a time'"
+          text="Show single section"
+        />
+      </template>
+    </AppFlex>
+  </aside>
 </template>
 
 <script lang="ts">

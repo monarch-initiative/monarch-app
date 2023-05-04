@@ -1,7 +1,0 @@
-{
-  "extends": "@vue/tsconfig/tsconfig.node.json",
-  "include": ["./**/*"],
-  "compilerOptions": {
-    "lib": ["ESNext"]
-  }
-}

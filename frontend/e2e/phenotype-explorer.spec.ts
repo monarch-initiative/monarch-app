@@ -1,5 +1,11 @@
+import type { Locator } from "@playwright/test";
 import { expect, test } from "@playwright/test";
-import { paste } from "./util";
+
+// https://github.com/microsoft/playwright/issues/8114
+export const paste = async (locator: Locator, value: string) => {
+  await locator.fill(value);
+  await locator.dispatchEvent("paste");
+};
 
 test("Populating example works", async ({ page }) => {
   await page.goto("/explore#phenotype-explorer");

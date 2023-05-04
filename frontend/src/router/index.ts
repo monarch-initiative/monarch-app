@@ -24,6 +24,9 @@ import PageNode from "@/views/node/PageNode.vue";
 import PageHome from "@/views/PageHome.vue";
 import PageTestbed from "@/views/PageTestbed.vue";
 
+/** environment mode */
+const mode = import.meta.env.MODE;
+
 /** List of routes and corresponding components. */
 /** KEEP IN SYNC WITH PUBLIC/SITEMAP.XML */
 export const routes: RouteRecordRaw[] = [
@@ -42,8 +45,10 @@ export const routes: RouteRecordRaw[] = [
       window.sessionStorage.removeItem("redirectState");
 
       /** Log for debugging */
-      console.info("Redirecting to:", redirect);
-      console.info("With state:", redirectState);
+      if (mode !== "test") {
+        console.info("Redirecting to:", redirect);
+        console.info("With state:", redirectState);
+      }
 
       /**
        * Only keep state added by app, as to not interfere with built-in browser
