@@ -4,7 +4,6 @@ from monarch_api.model import SearchResults
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
 router = APIRouter(
-    prefix="/api",
     tags=["search"],
     responses={404: {"description": "Not Found"}},
 )

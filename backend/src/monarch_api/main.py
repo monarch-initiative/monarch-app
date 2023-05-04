@@ -1,14 +1,17 @@
 import uvicorn
 from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from monarch_api import association, entity, histopheno, search
 
-app = FastAPI()
-app.include_router(entity.router)
-app.include_router(association.router)
-app.include_router(search.router)
-app.include_router(histopheno.router)
+PREFIX = "/v3/api"
+app = FastAPI(docs_url='/v3/docs', redoc_url=None)
+# app = FastAPI(docs_url=None, redoc_url='/v3/docs')
+app.include_router(entity.router, prefix=f"{PREFIX}/entity")
+app.include_router(association.router, prefix=f"{PREFIX}/association")
+app.include_router(search.router, prefix=PREFIX)
+app.include_router(histopheno.router, prefix=f"{PREFIX}/histopheno")
 
 # Allow CORS
 app.add_middleware(
@@ -22,12 +25,12 @@ app.add_middleware(
 
 @app.get("/")
 async def _root():
-    return f"Monarch API - for API documentation, see /docs"
+    return RedirectResponse(url="/v3/docs")
 
 
 @app.get("/api")
 async def _api():
-    return f"Monarch API - for API documentation, see /docs"
+    return RedirectResponse(url="/v3/docs")
 
 
 if __name__ == "__main__":
