@@ -38,7 +38,9 @@ type Test = Parameters<typeof test>[1];
 /** generic page axe test */
 const checkPage =
   (path: string, selector?: string): Test =>
-  async ({ page }) => {
+  async ({ page, browserName }) => {
+    test.skip(browserName !== "chromium", "Only test Axe on chromium");
+
     /** navigate to page */
     await page.goto(path);
     await page.waitForSelector("main");
@@ -57,7 +59,7 @@ const checkPage =
     /** axe check */
     const violations = await getViolations(page);
 
-    if (violations.length) throw Error(JSON.stringify(violations, null, 2));
+    if (violations.length) console.error(JSON.stringify(violations, null, 2));
 
     expect(violations.length).toBe(0);
   };

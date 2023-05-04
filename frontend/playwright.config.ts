@@ -1,14 +1,40 @@
 import type { PlaywrightTestConfig } from "@playwright/test";
 import { devices } from "@playwright/test";
 
+/** browsers to test when running locally */
+const browsersLocal = [
+  /* major browsers */
+  {
+    name: "chromium",
+    use: { ...devices["Desktop Chrome"] },
+  },
+  {
+    name: "webkit",
+    use: { ...devices["Desktop Safari"] },
+  },
+  {
+    name: "firefox",
+    use: { ...devices["Desktop Firefox"] },
+  },
+];
+
+/** browsers to test on CI */
+const browsersCI = [
+  {
+    name: "chromium",
+    use: { ...devices["Desktop Chrome"] },
+  },
+];
+
 const config: PlaywrightTestConfig = {
   testDir: "./e2e",
   timeout: 30 * 1000,
   expect: {
     timeout: 5000,
   },
-  // https://github.com/microsoft/playwright/issues/19408
   reporter: "html",
+  // https://github.com/microsoft/playwright/issues/19408#issuecomment-1347341819
+  workers: process.env.CI ? 2 : undefined,
 
   /* shared settings for all projects below */
   use: {
@@ -18,33 +44,12 @@ const config: PlaywrightTestConfig = {
     headless: true || !!process.env.CI,
   },
 
-  /* major browsers */
-  projects: [
-    {
-      name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
-    },
-    // {
-    //   name: "firefox",
-    //   use: { ...devices["Desktop Firefox"] },
-    //   testMatch: /^((?!axe).)*$/,
-    // },
-    // {
-    //   name: "webkit",
-    //   use: { ...devices["Desktop Safari"] },
-    //   testMatch: /^((?!axe).)*$/,
-    // },
-  ],
+  /* browsers to test on */
+  projects: process.env.CI ? browsersCI : browsersLocal,
 
   /* run local dev server before starting tests */
   webServer: {
-    /**
-     * use the dev server by default for faster feedback loop. Use the preview
-     * server on CI for more realistic testing
-     */
-    command: process.env.CI
-      ? "vite preview --port 5173 --mode test"
-      : "vite dev --mode test",
+    command: "vite dev --mode test",
     port: 5173,
     reuseExistingServer: !process.env.CI,
   },

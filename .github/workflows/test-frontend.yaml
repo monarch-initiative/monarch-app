@@ -12,7 +12,7 @@ defaults:
     working-directory: ./frontend
 
 jobs:
-  # Build cache of yarn packages for rest of jobs
+  # build cache for rest of jobs
   install-cache:
     runs-on: ubuntu-latest
     steps:
@@ -23,15 +23,16 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "18"
-          cache: yarn
-          cache-dependency-path: frontend/yarn.lock
 
       - name: Install packages
         run: yarn install
 
+      - name: Install Playwright
+        run: npx playwright install
+
       - name: Define cache key
         id: define-key
-        run: echo "key=tests-cache-key-$(date '+%s')" >> $GITHUB_OUTPUT
+        run: echo "key=${{ hashFiles('yarn.lock') }}" >> $GITHUB_OUTPUT
 
       - name: Store cache
         uses: actions/cache@v3
@@ -123,9 +124,6 @@ jobs:
         with:
           path: ${{ env.CACHE_PATH }}
           key: ${{ needs.install-cache.outputs.cache-key }}
-
-      - name: Install Playwright
-        run: npx playwright install --with-deps
 
       - name: Run test
         run: yarn test:e2e
