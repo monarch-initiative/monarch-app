@@ -9,10 +9,12 @@ def example_association():
         subject="MONDO:0007947",
         subject_label="Marfan syndrome",
         subject_category=["biolink:Disease"],
+        subject_closure=["MONDO:0007947", "MONDO:0000001"],
         predicate="biolink:has_mode_of_inheritance",
         object="HP:0000006",
         object_label="Autosomal dominant inheritance",
         object_category=["biolink:ModeOfInheritance"],
+        object_closure=["HP:0000006", "HP:0000005"],
     )
 
 

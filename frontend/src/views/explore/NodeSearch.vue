@@ -57,10 +57,7 @@
           :icon="`category-${kebabCase(result.category)}`"
           class="type"
         />
-        <AppLink
-          :to="`/${kebabCase(result.category)}/${result.id}`"
-          class="name"
-        >
+        <AppLink :to="`/node/${result.id}`" class="name">
           <span v-html="result.highlight"></span>
         </AppLink>
         <AppButton

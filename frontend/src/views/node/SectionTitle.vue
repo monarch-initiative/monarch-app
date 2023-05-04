@@ -5,10 +5,7 @@
 <template>
   <AppSection design="fill" class="section">
     <AppFlex dir="column" gap="small">
-      <AppHeading
-        class="heading"
-        :icon="`category-${kebabCase(node.category)}`"
-      >
+      <AppHeading class="heading" :icon="`category-${getCategory(node)}`">
         {{ node.name }}
       </AppHeading>
       <AppFlex>
@@ -16,7 +13,7 @@
           v-tooltip="'The category/type of this node'"
           design="small"
           color="secondary"
-          :text="node.category"
+          :text="getCategory(node)"
         />
         <AppButton
           v-tooltip="'The ID of this node. Click to copy.'"
@@ -26,7 +23,7 @@
           :text="node.id"
           :copy="true"
         />
-        <span
+        <!-- <span
           v-if="node.id !== node.originalId"
           v-tooltip="
             'The original ID you visited, which resolved to a different ID.'
@@ -34,7 +31,7 @@
           class="original-id"
         >
           {{ node.originalId }}
-        </span>
+        </span> -->
       </AppFlex>
     </AppFlex>
   </AppSection>
@@ -42,7 +39,14 @@
 
 <script setup lang="ts">
 import { kebabCase } from "lodash";
-import { Node } from "@/api/node-lookup";
+import { Node } from "@/api/model";
+import { ensure } from "@/util/object";
+
+// function to get first entry in node's category array
+function getCategory(node: Node): string {
+  const categories = ensure(node.category);
+  return kebabCase(categories[0]);
+}
 
 interface Props {
   /** current node */

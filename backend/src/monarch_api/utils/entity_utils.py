@@ -21,13 +21,15 @@ def get_associated_entity(association: Association, this_entity: Entity) -> Enti
     Returns:
         Entity: A limited representation of the entity associated with `this_entity`
     """
-    if association.subject == this_entity.id:
+    # if association.subject == this_entity.id:
+    if this_entity.id in association.subject_closure:
         entity = Entity(
             id=association.object,
             name=association.object_label,
             category=association.object_category,
         )
-    elif association.object == this_entity.id:
+    # elif association.object == this_entity.id:
+    elif this_entity.id in association.object_closure:
         entity = Entity(
             id=association.subject,
             name=association.subject_label,

@@ -13,8 +13,9 @@
 import { useRoute } from "vue-router";
 import Apex from "vue3-apexcharts";
 import { getHistoPheno } from "@/api/histopheno";
-import { Node } from "@/api/node-lookup";
+import { Node } from "@/api/model";
 import { useQuery } from "@/util/composables";
+import { ensure } from "@/util/object";
 import { computed, watch } from "vue";
 import theme from "@/global/variables.module.scss";
 
@@ -25,7 +26,6 @@ interface Props {
   /** current node */
   node: Node;
 }
-
 const props = defineProps<Props>();
 
 /** chart options */
@@ -84,7 +84,9 @@ const {
   isError,
 } = useQuery(
   async function () {
-    const histopheno = await getHistoPheno(props.node.id);
+    console.log(`Getting HistoPheno for ${props.node}`);
+    const node_id = ensure(props.node.id);
+    const histopheno = await getHistoPheno(ensure(node_id));
     const data = histopheno.items?.map((d) => ({ x: d.label, y: d.count }));
 
     return [{ name: "phenotypes", data: data }];

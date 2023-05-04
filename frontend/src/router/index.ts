@@ -21,7 +21,6 @@ import PageFeedback from "@/views/help/PageFeedback.vue";
 import PageNode from "@/views/node/PageNode.vue";
 import PageTestbed from "@/views/PageTestbed.vue";
 import { sleep } from "@/util/debug";
-import { lookupNode } from "@/api/node-lookup";
 import { parse } from "@/util/object";
 import descriptions from "@/router/descriptions.json";
 
@@ -123,7 +122,7 @@ export const routes: Array<RouteRecordRaw> = [
 
   /** node pages */
   {
-    path: "/:category/:id",
+    path: "/node/:id",
     name: "Node",
     component: PageNode,
   },
@@ -135,8 +134,7 @@ export const routes: Array<RouteRecordRaw> = [
       /** try to lookup node id and infer category */
       const id = to.path.slice(1) as string;
       if (id) {
-        const node = await lookupNode(id);
-        return `/${node.category}/${id}`;
+        return `/node/${id}`;
       }
     }) as NavigationGuard,
   },

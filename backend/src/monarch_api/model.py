@@ -54,7 +54,7 @@ class NodeHierarchy(ConfiguredBaseModel):
 class Association(ConfiguredBaseModel):
 
     aggregator_knowledge_source: Optional[List[str]] = Field(default_factory=list)
-    id: Optional[str] = Field(None)
+    id: str = Field(None)
     subject: Optional[str] = Field(None)
     original_subject: Optional[str] = Field(None)
     subject_namespace: Optional[str] = Field(None)
@@ -88,7 +88,7 @@ class Association(ConfiguredBaseModel):
 
 class Entity(ConfiguredBaseModel):
 
-    id: Optional[str] = Field(None)
+    id: str = Field(None)
     category: Optional[List[str]] = Field(default_factory=list)
     name: Optional[str] = Field(None)
     description: Optional[str] = Field(None)
@@ -122,7 +122,7 @@ class Node(Entity):
 
 class HistoPheno(ConfiguredBaseModel):
 
-    id: Optional[str] = Field(None)
+    id: str = Field(None)
     items: Optional[List[HistoBin]] = Field(
         default_factory=list,
         description="""A collection of items, with the type to be overriden by slot_usage""",
@@ -164,7 +164,7 @@ class SearchResult(Entity):
         None, description="""matching text snippet containing html tags"""
     )
     score: Optional[float] = Field(None)
-    id: Optional[str] = Field(None)
+    id: str = Field(None)
     category: Optional[List[str]] = Field(default_factory=list)
     name: Optional[str] = Field(None)
     description: Optional[str] = Field(None)
@@ -200,7 +200,7 @@ class FacetValue(ConfiguredBaseModel):
 
 class HistoBin(FacetValue):
 
-    id: Optional[str] = Field(None)
+    id: str = Field(None)
     label: Optional[str] = Field(None)
     count: Optional[int] = Field(
         None, description="""number of items a this facet value"""

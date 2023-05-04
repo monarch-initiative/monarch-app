@@ -134,29 +134,22 @@ export const lookupNode = async (id = "", category = ""): Promise<Node> => {
 export interface Node {
   /** title section */
   id: string;
-  /** title section */
   originalId: string;
-  /** title section */
   name: string;
-  /** title section */
   category: string;
 
   /** overview section */
   synonyms: Array<string>;
-  /** overview section */
   description: string;
 
   /** details section */
   iri: string;
-  /** details section */
   inheritance: Array<{
     id: string;
     name: string;
     link: string;
   }>;
-  /** details section */
   modifiers: Array<string>;
-  /** details section */
   xrefs: Array<{
     id: string;
     link: string;
@@ -168,18 +161,13 @@ export interface Node {
     name?: string;
     link?: string;
   };
-  /** details section (gene specific) */
   symbol?: string;
-  /** details section (gene specific) */
   genome?: Gene["genome"];
 
   /** details section (publication specific) */
   authors?: Array<string>;
-  /** details section (publication specific) */
   date?: Date;
-  /** details section (publication specific) */
   doi?: string;
-  /** details section (publication specific) */
   journal?: string;
 
   /** associations section */
