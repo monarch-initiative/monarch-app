@@ -1,8 +1,6 @@
 {
   "id": "MONDO:0007947",
-  "category": [
-    "biolink:Disease"
-  ],
+  "category": ["biolink:Disease"],
   "name": "Marfan syndrome",
   "description": "A disorder of the connective tissue. Connective tissue provides strength and flexibility to structures throughout the body such as bones, ligaments, muscles, walls of blood vessels, and heart valves. Marfan syndrome affects most organs and tissues, especially the skeleton, lungs, eyes, heart, and the large blood vessel that distributes blood from the heart to the rest of the body (the aorta). It is caused by mutations in the FBN1 gene, which provides instructions for making a protein called fibrillin-1. Marfan syndrome is inherited in an autosomal dominant pattern. At least 25% of cases are due to a new (de novo) mutation. Treatment is based on the signs and symptoms in each person.",
   "xref": [],
@@ -15,9 +13,7 @@
   "taxon": null,
   "inheritance": {
     "id": "HP:0000006",
-    "category": [
-      "biolink:GeneticInheritance"
-    ],
+    "category": ["biolink:GeneticInheritance"],
     "name": "Autosomal dominant inheritance (HPO)",
     "description": null,
     "xref": [],
@@ -49,9 +45,7 @@
     "super_classes": [
       {
         "id": "MONDO:0017310",
-        "category": [
-          "biolink:Disease"
-        ],
+        "category": ["biolink:Disease"],
         "name": "Marfan and Marfan-related disorder",
         "description": null,
         "xref": [],
@@ -64,9 +58,7 @@
       },
       {
         "id": "MONDO:0800091",
-        "category": [
-          "biolink:Disease"
-        ],
+        "category": ["biolink:Disease"],
         "name": "overgrowth or tall stature syndrome with skeletal involvement",
         "description": null,
         "xref": [],
@@ -79,9 +71,7 @@
       },
       {
         "id": "MONDO:0000426",
-        "category": [
-          "biolink:Disease"
-        ],
+        "category": ["biolink:Disease"],
         "name": "autosomal dominant disease",
         "description": null,
         "xref": [],
@@ -94,9 +84,7 @@
       },
       {
         "id": "MONDO:0002254",
-        "category": [
-          "biolink:Disease"
-        ],
+        "category": ["biolink:Disease"],
         "name": "syndromic disease",
         "description": null,
         "xref": [],
@@ -112,9 +100,7 @@
     "sub_classes": [
       {
         "id": "MONDO:0017309",
-        "category": [
-          "biolink:Disease"
-        ],
+        "category": ["biolink:Disease"],
         "name": "neonatal Marfan syndrome",
         "description": null,
         "xref": [],

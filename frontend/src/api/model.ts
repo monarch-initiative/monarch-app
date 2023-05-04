@@ -3,6 +3,7 @@ export type TaxonId = string;
 export type AssociationId = string;
 export type EntityId = string;
 export type HistoPhenoId = string;
+export type HistoBinId = string;
 export type SearchResultId = string;
 export type FacetValueLabel = string;
 export type FacetFieldLabel = string;
@@ -101,7 +102,13 @@ export interface EntityResults extends Results {
 
 export interface HistoPheno {
   id?: string;
-  /** A collection of items, with the type to be overriden by slot_usage */ items?: AssociationCount[];
+  /** A collection of items, with the type to be overriden by slot_usage */ items?: HistoBin[];
+}
+
+export interface HistoBin extends FacetValue {
+  id?: string;
+  label?: string;
+  /** number of items a this facet value */ count?: number;
 }
 
 export interface Results {

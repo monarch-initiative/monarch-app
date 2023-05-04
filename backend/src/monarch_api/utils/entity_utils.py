@@ -62,7 +62,12 @@ def get_associated_entities(
     return [
         get_associated_entity(association, this_entity)
         for association in si.get_associations(
-            entity=entity, subject=subject, predicate=predicate, object=object, direct=True, offset=0
+            entity=entity,
+            subject=subject,
+            predicate=predicate,
+            object=object,
+            direct=True,
+            offset=0,
         ).items
     ]
 

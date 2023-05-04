@@ -1825,14 +1825,14 @@ mkdocstrings = ">=0.19"
 
 [[package]]
 name = "monarch-py"
-version = "0.7.0"
+version = "0.7.1"
 description = "Monarch Initiative data access library"
 category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "monarch_py-0.7.0-py3-none-any.whl", hash = "sha256:32fa8ae86e7ffb02e4ff0cafcbbdc6c2e3c5bb6008a8a67702bab52dc79afc69"},
-    {file = "monarch_py-0.7.0.tar.gz", hash = "sha256:d76c69821d71b55947021e08cac5d2c1e447befee58f90ff1965de7fca747e25"},
+    {file = "monarch_py-0.7.1-py3-none-any.whl", hash = "sha256:b7c17762937923ab8f57389b9ade6fa5881271582e425424ed8a98f832f14d78"},
+    {file = "monarch_py-0.7.1.tar.gz", hash = "sha256:de3e2f1a5e4e3a966d2dcaaad56425670db8051c3eded64dc741092f093fa004"},
 ]
 
 [package.dependencies]
@@ -4202,4 +4202,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.12"
-content-hash = "2c5eb6dbd9cb8505e1c1ba9c8bef06f02f8077112ce5092536ef0b523cb121c5"
+content-hash = "0ebc398f22a9b13d4ff69a5596c557d155c8ab767521cfde33723c5537e497d8"

@@ -123,7 +123,7 @@ class Node(Entity):
 class HistoPheno(ConfiguredBaseModel):
 
     id: Optional[str] = Field(None)
-    items: Optional[List[AssociationCount]] = Field(
+    items: Optional[List[HistoBin]] = Field(
         default_factory=list,
         description="""A collection of items, with the type to be overriden by slot_usage""",
     )
@@ -198,6 +198,15 @@ class FacetValue(ConfiguredBaseModel):
     )
 
 
+class HistoBin(FacetValue):
+
+    id: Optional[str] = Field(None)
+    label: Optional[str] = Field(None)
+    count: Optional[int] = Field(
+        None, description="""number of items a this facet value"""
+    )
+
+
 class FacetField(ConfiguredBaseModel):
 
     label: Optional[str] = Field(None)
@@ -262,6 +271,7 @@ EntityResults.update_forward_refs()
 SearchResult.update_forward_refs()
 SearchResults.update_forward_refs()
 FacetValue.update_forward_refs()
+HistoBin.update_forward_refs()
 FacetField.update_forward_refs()
 AssociationTypeMapping.update_forward_refs()
 AssociationCount.update_forward_refs()
