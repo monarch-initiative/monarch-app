@@ -98,19 +98,19 @@
       recent and frequent searches.
     </AppHighlight>
 
-    <AppHighlight :src="nodeSearch">
+    <AppHighlight :src="textAnnotator">
       Easily search our knowledge graph for multiple nodes from free text.
       Download the results or send them to the phenotype explorer tool for
       analysis.
     </AppHighlight>
 
-    <AppHighlight :src="nodeSearch">
+    <AppHighlight :src="phenotypeExplorer">
       Compare a set of phenotypes to another set of phenotypes, or to all
       genes/diseases of a species. See a rich comparison of the overlap between
       the two sets.
     </AppHighlight>
 
-    <AppHighlight :src="nodeSearch">
+    <AppHighlight :src="nodePage">
       See rich details about each node. Traverse between nodes via associations
       between them, and view the evidence for those associations.
     </AppHighlight>
