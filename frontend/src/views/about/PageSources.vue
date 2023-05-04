@@ -189,7 +189,7 @@ const {
         await import(`../../assets/sources/${source.image}.png`)
       ).default;
     } catch (error) {
-      console.info(error);
+      //
     }
   }
 

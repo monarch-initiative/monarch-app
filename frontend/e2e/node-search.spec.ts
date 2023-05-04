@@ -96,7 +96,7 @@ test("Basic search results show", async ({ page }) => {
     .getByRole("link")
     .filter({ hasText: /neonatal marfan syndrome/i })
     .first();
-  await expect(result).toHaveAttribute("href", "/disease/MONDO:0017309");
+  await expect(result).toHaveAttribute("href", /disease\/MONDO:0017309/i);
 });
 
 test("Pagination works", async ({ page }) => {

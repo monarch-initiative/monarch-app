@@ -1,11 +1,10 @@
-# workflow that tests and quality-checks app on pull requests
 name: Test Frontend
 
 on: pull_request
 
 env:
   CACHE_PATH: |
-    ~/.cache/Cypress
+    ~/.cache/ms-playwright
     frontend/node_modules
 
 defaults:
@@ -13,48 +12,35 @@ defaults:
     working-directory: ./frontend
 
 jobs:
-
-  # check-env:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v3
-  #     - name: Check working directory
-  #       run: |
-  #         echo "CURRENT DIR: $(pwd)"
-  #         ls -al
-  #         echo "CACHE_PATH: ${CACHE_PATH}"
-
-
   # Build cache of yarn packages for rest of jobs
   install-cache:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
+
       - name: Set up Node
         uses: actions/setup-node@v3
         with:
           node-version: "18"
           cache: yarn
           cache-dependency-path: frontend/yarn.lock
-      
+
       - name: Install packages
         run: yarn install
-      
+
       - name: Define cache key
         id: define-key
         run: echo "key=tests-cache-key-$(date '+%s')" >> $GITHUB_OUTPUT
-      
+
       - name: Store cache
         uses: actions/cache@v3
         with:
           path: ${{ env.CACHE_PATH }}
           key: ${{ steps.define-key.outputs.key }}
+
     outputs:
       cache-key: ${{ steps.define-key.outputs.key }}
-
 
   # test that app can build without issues
   test-build:
@@ -63,18 +49,32 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
+
       - name: Restore cache
         uses: actions/cache@v3
         with:
           path: ${{ env.CACHE_PATH }}
           key: ${{ needs.install-cache.outputs.cache-key }}
-      
-      - name: Run test
-        run: |
-          npx update-browserslist-db@latest
-          yarn build
 
+      - name: Run test
+        run: yarn build
+
+  # test that app has no typescript errors
+  test-types:
+    runs-on: ubuntu-latest
+    needs: install-cache
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Restore cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.CACHE_PATH }}
+          key: ${{ needs.install-cache.outputs.cache-key }}
+
+      - name: Run test
+        run: yarn test:types
 
   # test that app is properly formatted and linted
   test-lint:
@@ -83,81 +83,46 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
+
       - name: Restore cache
         uses: actions/cache@v3
         with:
           path: ${{ env.CACHE_PATH }}
           key: ${{ needs.install-cache.outputs.cache-key }}
-      
-      - name: Run test
-        run: |
-          npx update-browserslist-db@latest
-          yarn test:lint
 
+      - name: Run test
+        run: yarn test:lint
 
   # run unit tests
   test-unit:
     runs-on: ubuntu-latest
     needs: install-cache
     steps:
-      
       - name: Checkout code
         uses: actions/checkout@v3
-      
+
       - name: Restore cache
         uses: actions/cache@v3
         with:
           path: ${{ env.CACHE_PATH }}
           key: ${{ needs.install-cache.outputs.cache-key }}
-      
-      - name: Run test
-        run: |
-          npx update-browserslist-db@latest
-          yarn test:unit
 
+      - name: Run test
+        run: yarn test:unit
 
   # run end to end integration tests
   test-e2e:
     runs-on: ubuntu-latest
     needs: install-cache
-    timeout-minutes: 5
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
+
       - name: Restore cache
         uses: actions/cache@v3
         with:
           path: ${{ env.CACHE_PATH }}
           key: ${{ needs.install-cache.outputs.cache-key }}
-      
-      - name: Run test
-        run: |
-          npx update-browserslist-db@latest
-          yarn test:e2e
-      - name: Upload screenshots
-        uses: actions/upload-artifact@v2
-        if: failure()
-        with:
-          name: cypress-screenshots
-          path: ./frontend/tests/e2e/screenshots
 
-
-  # run accessibility tests
-  test-accessibility:
-    runs-on: ubuntu-latest
-    needs: install-cache
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      
-      - name: Restore cache
-        uses: actions/cache@v3
-        with:
-          path: ${{ env.CACHE_PATH }}
-          key: ${{ needs.install-cache.outputs.cache-key }}
       - name: Run test
-        run: |
-          npx update-browserslist-db@latest
-          yarn test:axe
+        run: yarn test:e2e
