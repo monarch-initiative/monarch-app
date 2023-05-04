@@ -86,39 +86,35 @@
     <AppButton to="/about" text="Learn more" icon="arrow-right" />
   </AppSection>
 
-  <!-- specific feature demos 
-  
-    Commenting this section until we can reduce file size of the videos 
-    or find a better way to host them
+  <!-- specific feature demos  -->
 
   <AppSection>
     <AppHeading>Highlights</AppHeading>
 
     <p>Some cool things you can do on this website.</p>
 
-    <AppHighlight :src="require('@/assets/demos/node-search.mp4')">
+    <AppHighlight :src="nodeSearch">
       Quickly and easily browse nodes. Filter by category and taxon. See your
       recent and frequent searches.
     </AppHighlight>
 
-    <AppHighlight :src="require('@/assets/demos/text-annotator.mp4')">
+    <AppHighlight :src="nodeSearch">
       Easily search our knowledge graph for multiple nodes from free text.
       Download the results or send them to the phenotype explorer tool for
       analysis.
     </AppHighlight>
 
-    <AppHighlight :src="require('@/assets/demos/phenotype-explorer.mp4')">
+    <AppHighlight :src="nodeSearch">
       Compare a set of phenotypes to another set of phenotypes, or to all
       genes/diseases of a species. See a rich comparison of the overlap between
       the two sets.
     </AppHighlight>
 
-    <AppHighlight :src="require('@/assets/demos/node-page.mp4')">
+    <AppHighlight :src="nodeSearch">
       See rich details about each node. Traverse between nodes via associations
       between them, and view the evidence for those associations.
     </AppHighlight>
   </AppSection>
-  -->
 
   <!-- news -->
   <AppSection>
@@ -179,6 +175,13 @@
         subtitle="Quick updates and musings"
         design="small"
       />
+      <AppTile
+        to="https://genomic.social/@monarch_initiative"
+        icon="mastodon"
+        title="Mastodon"
+        subtitle="Quick updates and musings"
+        design="small"
+      />
     </AppFlex>
   </AppSection>
 </template>
@@ -186,13 +189,17 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { getBlogPosts } from "@/api/blog";
-// import AppHighlight from "@/components/AppHighlight.vue";
+import AppHighlight from "@/components/AppHighlight.vue";
 import AppPost from "@/components/AppPost.vue";
 import AppTabs from "@/components/AppTabs.vue";
 import AppTile from "@/components/AppTile.vue";
 import { useQuery } from "@/util/composables";
 import NodeSearch from "./explore/NodeSearch.vue";
 import tabs from "./explore/tabs.json";
+import nodeSearch from "@/assets/demos/node-search.mp4";
+import textAnnotator from "@/assets/demos/text-annotator.mp4";
+import phenotypeExplorer from "@/assets/demos/phenotype-explorer.mp4";
+import nodePage from "@/assets/demos/node-page.mp4";
 
 /** selected tab state */
 const tab = ref(tabs[0].id);

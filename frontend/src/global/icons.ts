@@ -7,6 +7,7 @@ import * as fas from "@fortawesome/free-solid-svg-icons";
 
 const icons: IconDefinition[] = [
   fab.faGithub,
+  fab.faMastodon,
   fab.faMedium,
   fab.faTwitter,
   fas.faAngleDoubleLeft,

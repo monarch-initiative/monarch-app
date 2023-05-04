@@ -184,6 +184,8 @@ export const handlers = [
   rest.get(/.*/, (req, res, ctx) => {
     /** for certain exceptions, passthrough (let browser make a real request) */
     const exceptions = [
+      ".vue",
+      ".mp4",
       ".svg",
       ".png",
       ".jpg",

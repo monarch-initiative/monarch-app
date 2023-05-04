@@ -10,3 +10,5 @@ gha-creds-*.json
 ### Backend Ignores
 site
 docs/Data-Model
+
+.DS_Store
