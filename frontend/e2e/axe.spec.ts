@@ -58,10 +58,8 @@ const checkPage =
 
     /** axe check */
     const violations = await getViolations(page);
-
-    if (violations.length) console.error(JSON.stringify(violations, null, 2));
-
-    expect(violations.length).toBe(0);
+    const violationsMessage = JSON.stringify(violations, null, 2);
+    expect(violationsMessage).toBe("[]");
   };
 
 /** check all pages */

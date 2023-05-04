@@ -32,7 +32,7 @@ jobs:
 
       - name: Define cache key
         id: define-key
-        run: echo "key=${{ hashFiles('yarn.lock') }}" >> $GITHUB_OUTPUT
+        run: echo "key=${{ hashFiles('frontend/yarn.lock') }}" >> $GITHUB_OUTPUT
 
       - name: Store cache
         uses: actions/cache@v3
