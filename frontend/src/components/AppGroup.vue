@@ -35,7 +35,7 @@ watch(
     try {
       src.value = (await import(`../assets/team/groups/${image}.png`)).default;
     } catch (error) {
-      //
+      console.error("failed to load team group image", error);
     }
   },
   { immediate: true }

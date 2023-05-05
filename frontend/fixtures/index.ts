@@ -185,6 +185,7 @@ export const handlers = [
     /** for certain exceptions, passthrough (let browser make a real request) */
     const exceptions = [
       ".vue",
+      ".js" /** vite seems to turn dynamic import of images into .js */,
       ".mp4",
       ".svg",
       ".png",
@@ -208,6 +209,6 @@ export const handlers = [
      * otherwise, throw error to make sure we never hit any api when mocking is
      * enabled
      */
-    return res(ctx.status(500, "Non-mocked request"));
+    return res(ctx.status(500, "Non-mocked request " + req.url.pathname));
   }),
 ];

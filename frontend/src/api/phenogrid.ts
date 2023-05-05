@@ -1,6 +1,5 @@
-import Phenogrid from "phenogrid";
+import "phenogrid/dist/phenogrid-bundle.js";
 import { waitFor } from "@/util/dom";
-/** import "phenogrid/dist/phenogrid-bundle.css"; */
 import "./phenogrid.css";
 import { biolink } from "./";
 
@@ -40,10 +39,30 @@ export const mountPhenogrid = async (
   await waitFor("#phenogrid_svg", patchSvg);
 };
 
-/** sHIMS FOR PHENOGRID */
+/** fix incorrect svg sizing */
+const patchSvg = (svg: Element, padding = 20) => {
+  const { x, y, width, height } = (svg as SVGSVGElement).getBBox();
+  /** set view box to bbox, essentially fitting view to content */
+  const viewBox = [
+    x - padding,
+    y - padding,
+    width + padding * 2,
+    height + padding * 2,
+  ]
+    .map((v) => Math.round(v))
+    .join(" ");
 
-/** typescript definition */
-export type PhenogridDefinition = {
+  svg.setAttribute("viewBox", viewBox);
+  svg.removeAttribute("width");
+  svg.removeAttribute("height");
+};
+
+declare global {
+  const Phenogrid: PhenogridType;
+}
+
+/** typescript definition for phenogrid */
+type PhenogridType = {
   createPhenogridForElement: (
     element: HTMLElement | null,
     options: {
@@ -61,22 +80,4 @@ export type PhenogridDefinition = {
       owlSimFunction: string;
     }
   ) => void;
-};
-
-/** fix incorrect svg sizing */
-const patchSvg = (svg: Element, padding = 20) => {
-  const { x, y, width, height } = (svg as SVGSVGElement).getBBox();
-  /** set view box to bbox, essentially fitting view to content */
-  const viewBox = [
-    x - padding,
-    y - padding,
-    width + padding * 2,
-    height + padding * 2,
-  ]
-    .map((v) => Math.round(v))
-    .join(" ");
-
-  svg.setAttribute("viewBox", viewBox);
-  svg.removeAttribute("width");
-  svg.removeAttribute("height");
 };

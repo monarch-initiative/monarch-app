@@ -28,7 +28,7 @@ const route = useRoute();
 
 /** when route changes, update document meta data. see https://metatags.io/ */
 watch(
-  () => route.fullPath,
+  () => route,
   async () => {
     /**
      * meta vars set in components should override this, since this component is
@@ -36,7 +36,7 @@ watch(
      */
 
     /** update document title from route */
-    appTitle.value = [String(route.name)];
+    appTitle.value = [route.name || ""];
 
     /** update description */
     appDescription.value = route.meta.description as string;
@@ -44,6 +44,6 @@ watch(
     /** update canonical url */
     appUrl.value = window.location.href;
   },
-  { immediate: true }
+  { immediate: true, deep: true }
 );
 </script>
