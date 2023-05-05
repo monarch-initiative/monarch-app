@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from enum import Enum
 from typing import Dict, List, Optional
 
 from pydantic import BaseModel as BaseModel
@@ -24,10 +25,24 @@ class ConfiguredBaseModel(
     pass
 
 
+class AssociationTypeEnum(str, Enum):
+
+    disease_phenotype = "disease_phenotype"
+    gene_phenotype = "gene_phenotype"
+    gene_interaction = "gene_interaction"
+    gene_pathway = "gene_pathway"
+    gene_expression = "gene_expression"
+    gene_orthology = "gene_orthology"
+    chemical_pathway = "chemical_pathway"
+    gene_function = "gene_function"
+    correlated_gene = "correlated_gene"
+    causal_gene = "causal_gene"
+
+
 class Taxon(ConfiguredBaseModel):
 
-    id: Optional[str] = Field(None)
-    label: Optional[str] = Field(None)
+    id: str = Field(None)
+    label: str = Field(None)
 
 
 class NodeHierarchy(ConfiguredBaseModel):
@@ -40,7 +55,7 @@ class NodeHierarchy(ConfiguredBaseModel):
 class Association(ConfiguredBaseModel):
 
     aggregator_knowledge_source: Optional[List[str]] = Field(default_factory=list)
-    id: Optional[str] = Field(None)
+    id: str = Field(None)
     subject: Optional[str] = Field(None)
     original_subject: Optional[str] = Field(None)
     subject_namespace: Optional[str] = Field(None)
@@ -74,7 +89,7 @@ class Association(ConfiguredBaseModel):
 
 class Entity(ConfiguredBaseModel):
 
-    id: Optional[str] = Field(None)
+    id: str = Field(None)
     category: Optional[List[str]] = Field(default_factory=list)
     name: Optional[str] = Field(None)
     description: Optional[str] = Field(None)
@@ -91,9 +106,7 @@ class Node(Entity):
 
     taxon: Optional[Taxon] = Field(None)
     inheritance: Optional[Entity] = Field(None)
-    association_counts: Optional[Dict[str, AssociationCount]] = Field(
-        default_factory=dict
-    )
+    association_counts: Optional[List[AssociationCount]] = Field(default_factory=list)
     node_hierarchy: Optional[NodeHierarchy] = Field(None)
     id: str = Field(None)
     category: Optional[List[str]] = Field(default_factory=list)
@@ -110,8 +123,8 @@ class Node(Entity):
 
 class HistoPheno(ConfiguredBaseModel):
 
-    id: Optional[str] = Field(None)
-    items: Optional[List[AssociationCount]] = Field(
+    id: str = Field(None)
+    items: List[HistoBin] = Field(
         default_factory=list,
         description="""A collection of items, with the type to be overriden by slot_usage""",
     )
@@ -119,31 +132,31 @@ class HistoPheno(ConfiguredBaseModel):
 
 class Results(ConfiguredBaseModel):
 
-    limit: Optional[int] = Field(None)
-    offset: Optional[int] = Field(None)
-    total: Optional[int] = Field(None)
+    limit: int = Field(None, description="""number of items to return in a response""")
+    offset: int = Field(None, description="""offset into the total number of items""")
+    total: int = Field(None, description="""total number of items matching a query""")
 
 
 class AssociationResults(Results):
 
-    items: Optional[List[Association]] = Field(
+    items: List[Association] = Field(
         default_factory=list,
         description="""A collection of items, with the type to be overriden by slot_usage""",
     )
-    limit: Optional[int] = Field(None)
-    offset: Optional[int] = Field(None)
-    total: Optional[int] = Field(None)
+    limit: int = Field(None, description="""number of items to return in a response""")
+    offset: int = Field(None, description="""offset into the total number of items""")
+    total: int = Field(None, description="""total number of items matching a query""")
 
 
 class EntityResults(Results):
 
-    items: Optional[List[Entity]] = Field(
+    items: List[Entity] = Field(
         default_factory=list,
         description="""A collection of items, with the type to be overriden by slot_usage""",
     )
-    limit: Optional[int] = Field(None)
-    offset: Optional[int] = Field(None)
-    total: Optional[int] = Field(None)
+    limit: int = Field(None, description="""number of items to return in a response""")
+    offset: int = Field(None, description="""offset into the total number of items""")
+    total: int = Field(None, description="""total number of items matching a query""")
 
 
 class SearchResult(Entity):
@@ -152,9 +165,9 @@ class SearchResult(Entity):
         None, description="""matching text snippet containing html tags"""
     )
     score: Optional[float] = Field(None)
-    id: Optional[str] = Field(None)
-    category: Optional[List[str]] = Field(default_factory=list)
-    name: Optional[str] = Field(None)
+    id: str = Field(None)
+    category: List[str] = Field(default_factory=list)
+    name: str = Field(None)
     description: Optional[str] = Field(None)
     xref: Optional[List[str]] = Field(default_factory=list)
     provided_by: Optional[str] = Field(None)
@@ -167,38 +180,82 @@ class SearchResult(Entity):
 
 class SearchResults(Results):
 
-    items: Optional[List[SearchResult]] = Field(
+    items: List[SearchResult] = Field(
         default_factory=list,
         description="""A collection of items, with the type to be overriden by slot_usage""",
     )
-    facet_fields: Optional[Dict[str, FacetField]] = Field(default_factory=dict)
-    facet_queries: Optional[Dict[str, FacetValue]] = Field(default_factory=dict)
-    limit: Optional[int] = Field(None)
-    offset: Optional[int] = Field(None)
-    total: Optional[int] = Field(None)
+    facet_fields: Optional[Dict[str, FacetField]] = Field(
+        default_factory=dict,
+        description="""Collection of facet field responses with the field values and counts""",
+    )
+    facet_queries: Optional[Dict[str, FacetValue]] = Field(
+        default_factory=dict,
+        description="""Collection of facet query responses with the query string values and counts""",
+    )
+    limit: int = Field(None, description="""number of items to return in a response""")
+    offset: int = Field(None, description="""offset into the total number of items""")
+    total: int = Field(None, description="""total number of items matching a query""")
 
 
 class FacetValue(ConfiguredBaseModel):
 
-    label: Optional[str] = Field(None)
-    count: Optional[int] = Field(
-        None, description="""number of items a this facet value"""
+    label: str = Field(None)
+    count: Optional[int] = Field(None, description="""count of documents""")
+
+
+class HistoBin(FacetValue):
+
+    id: str = Field(None)
+    label: str = Field(None)
+    count: Optional[int] = Field(None, description="""count of documents""")
+
+
+class FacetField(ConfiguredBaseModel):
+
+    label: str = Field(None)
+    facet_values: Optional[Dict[str, FacetValue]] = Field(default_factory=dict)
+
+
+class AssociationTypeMapping(ConfiguredBaseModel):
+    """
+    A data class to hold the necessary information to produce association type counts for given  entities with appropriate directional labels
+    """
+
+    association_type: Optional[AssociationTypeEnum] = Field(None)
+    subject_label: Optional[str] = Field(
+        None,
+        description="""A label to describe the subjects of the association type as a whole for use in the UI""",
+    )
+    object_label: Optional[str] = Field(
+        None,
+        description="""A label to describe the objects of the association type as a whole for use in the UI""",
+    )
+    category: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""The biolink categories to use in queries for this association type, assuming OR semantics""",
+    )
+    predicate: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""The biolink predicate to use in queries for this association type, assuming OR semantics""",
     )
 
 
 class AssociationCount(FacetValue):
 
-    id: Optional[str] = Field(None)
-    label: Optional[str] = Field(None)
-    count: Optional[int] = Field(
-        None, description="""number of items a this facet value"""
+    association_type: Optional[AssociationTypeEnum] = Field(None)
+    label: str = Field(None)
+    count: Optional[int] = Field(None, description="""count of documents""")
+
+
+class AssociationCountList(ConfiguredBaseModel):
+    """
+    Container class for a list of association counts
+    """
+
+    items: List[AssociationCount] = Field(
+        default_factory=list,
+        description="""A collection of items, with the type to be overriden by slot_usage""",
     )
-
-
-class FacetField(ConfiguredBaseModel):
-
-    label: Optional[str] = Field(None)
-    facet_values: Optional[Dict[str, FacetValue]] = Field(default_factory=dict)
 
 
 # Update forward refs
@@ -215,5 +272,8 @@ EntityResults.update_forward_refs()
 SearchResult.update_forward_refs()
 SearchResults.update_forward_refs()
 FacetValue.update_forward_refs()
-AssociationCount.update_forward_refs()
+HistoBin.update_forward_refs()
 FacetField.update_forward_refs()
+AssociationTypeMapping.update_forward_refs()
+AssociationCount.update_forward_refs()
+AssociationCountList.update_forward_refs()

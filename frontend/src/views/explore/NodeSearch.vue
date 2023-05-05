@@ -225,8 +225,8 @@ const {
   isError,
 } = useQuery(
   async function (): /**
-   * whether to perform "fresh" search, without filters/pagination/etc. true
-   * when search text changes, false when filters/pagination/etc change.
+   * whether to perform "fresh" search, without filters/pagination/etc. true when
+   * search text changes, false when filters/pagination/etc change.
    */
   Promise<SearchResults> {
     /** get results from api */
