@@ -1,11 +1,59 @@
 id: https://w3id.org/monarch/monarch-py
 name: monarch-py
+description: Data datamodels for the Monarch Initiative data access library
 prefixes:
   linkml: https://w3id.org/linkml/
-description: Data datamodels for the Monarch Initiative data access library
+  biolink: https://w3id.org/biolink/
 imports:
-- linkml:types
+  - linkml:types
 default_range: string
+
+enums:
+  AssociationTypeEnum:
+    description: >-
+      A grouping label for association types, which are not necessarily 1:1 with
+      biolink categories or predicates
+    permissible_values:
+      disease_phenotype:
+        description: >-
+          Any association between a disease and a phenotype
+        meaning: biolink:GeneToDiseaseAssociation
+      gene_phenotype:
+          description: >-
+              Any association between a gene and a phenotype
+          meaning: biolink:GeneToPhenotypicFeatureAssociation
+      gene_interaction:
+          description: >-
+              Any association between two genes
+          meaning: biolink:PairwiseGeneToGeneInteraction
+      gene_pathway:
+          description: >-
+              Any association between a gene and a pathway
+          meaning: biolink:GeneToPathwayAssociation
+      gene_expression:
+          description: >-
+              Expression association between a gene and an expression site
+          meaning: biolink:GeneToExpressionSiteAssociation
+      gene_orthology:
+          description: >-
+              Any association between two genes based on orthology
+          meaning: biolink:PairwiseGeneToGeneOrthologyAssociation
+      chemical_pathway:
+          description: >-
+              Any association between a chemical and a pathway
+          meaning: biolink:ChemicalToPathwayAssociation
+      gene_function:
+          description: >-
+              Any association between a gene and molecular activity
+          meaning: biolink:MacromolecularMachineToMolecularActivityAssociation
+      correlated_gene:
+        description: >-
+          Association between a gene and a disease that has not been established to be causal
+      causal_gene:
+          description: >-
+              Association between a gene and a disease that is known to be causal
+          meaning: biolink:causal
+
 classes:
   Association:
     slots:
@@ -40,10 +88,6 @@ classes:
     - stage_qualifier
     - pathway
     - relation
-  AssociationCount:
-    is_a: FacetValue
-    slots:
-      - id
   AssociationResults:
     is_a: Results
     slots: 
@@ -77,7 +121,14 @@ classes:
       - items
     slot_usage:
       items:
-        range: AssociationCount
+        range: HistoBin
+  HistoBin:
+    is_a: FacetValue
+    slots:
+      - id
+    slot_usage:
+      label:
+        identifier: false
   Results:
     abstract: true
     slots:
@@ -89,6 +140,12 @@ classes:
     slots:
       - highlight
       - score
+    slot_usage:
+      category:
+        required: true
+      name:
+        required: true
+
   SearchResults:
     is_a: Results
     slots:
@@ -112,26 +169,58 @@ classes:
     slot_usage:
       label:
         identifier: true
+  AssociationTypeMapping:
+    description: >-
+      A data class to hold the necessary information to produce association type counts for given 
+      entities with appropriate directional labels
+    slots:
+      - association_type
+      - subject_label
+      - object_label
+      - category
+      - predicate
+    slot_usage:
+      subject_label:
+        description: A label to describe the subjects of the association type as a whole for use in the UI
+      object_label:
+        description: A label to describe the objects of the association type as a whole for use in the UI
+      category:
+        description: The biolink categories to use in queries for this association type, assuming OR semantics
+        multivalued: true
+      predicate:
+        description: The biolink predicate to use in queries for this association type, assuming OR semantics
+        multivalued: true
+  AssociationCount:
+    is_a: FacetValue
+    slots:
+      - association_type
+  AssociationCountList:
+    description: Container class for a list of association counts
+    slots:
+      - items
+    slot_usage:
+      items:
+        range: AssociationCount
+
 slots:
   aggregator_knowledge_source:
     multivalued: true
-  associations:
-    inlined: true
-    inlined_as_list: true
-    multivalued: true
-    range: Association
+  association_type:
+    range: AssociationTypeEnum
   category:
     multivalued: true
   count:
-    description: number of items a this facet value
+    description: count of documents
     range: integer
   description:
     range: string
   facet_fields:
+    description: Collection of facet field responses with the field values and counts
     inlined: true
     multivalued: true
     range: FacetField
   facet_queries:
+    description: Collection of facet query responses with the query string values and counts
     inlined: true
     multivalued: true
     range: FacetValue
@@ -149,6 +238,7 @@ slots:
   id:
     identifier: true
     range: string
+    required: true
   in_taxon:
     range: string
   items:
@@ -157,12 +247,16 @@ slots:
     inlined: true
     inlined_as_list: true
     multivalued: true
+    required: true
   knowledge_source:
     multivalued: true
   label:
     range: string
+    required: true
   limit:
+    description: number of items to return in a response
     range: integer
+    required: true
   name:
     range: string
   negated:
@@ -180,7 +274,9 @@ slots:
   object_namespace:
     range: string
   offset:
+    description: offset into the total number of items
     range: integer
+    required: true
   onset_qualifier:
     range: string
   original_object:
@@ -227,7 +323,9 @@ slots:
   synonym:
     multivalued: true
   total:
+    description: total number of items matching a query
     range: integer
+    required: true
   type:
     range: string
   xref:

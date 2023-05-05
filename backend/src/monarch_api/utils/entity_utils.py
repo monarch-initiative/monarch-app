@@ -48,7 +48,7 @@ def get_associated_entities(
     object: str = None,
 ) -> List[Entity]:
     """
-    Get a list of entities associated with this_entity fetched from associations
+    Get a list of entities directly associated with this_entity fetched from associations
     in the Solr index
 
     Args:
@@ -62,7 +62,12 @@ def get_associated_entities(
     return [
         get_associated_entity(association, this_entity)
         for association in si.get_associations(
-            entity=entity, subject=subject, predicate=predicate, object=object, offset=0
+            entity=entity,
+            subject=subject,
+            predicate=predicate,
+            object=object,
+            direct=True,
+            offset=0,
         ).items
     ]
 

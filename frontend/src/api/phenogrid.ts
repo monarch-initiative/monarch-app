@@ -1,5 +1,5 @@
-import "phenogrid/dist/phenogrid-bundle.js";
 import { waitFor } from "@/util/dom";
+import "phenogrid/dist/phenogrid-bundle.js";
 import "./phenogrid.css";
 import { biolink } from "./";
 
