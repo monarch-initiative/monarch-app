@@ -70,7 +70,8 @@ const {
 } = useQuery(
   async function () {
     /** get node from route params */
-    const { id = "", category = "" } = route.params;
+    const { id = "" } = route.params;
+    // const { id = "", category = "" } = route.params;
 
     /** get node information */
     const node_info = await getEntity(id as string);
