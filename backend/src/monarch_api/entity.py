@@ -4,10 +4,7 @@ from monarch_api.model import Node
 from monarch_api.utils.entity_utils import get_associated_entity, get_node_hierarchy
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
-router = APIRouter(
-    tags=["entity"], 
-    responses={404: {"description": "Not Found"}}
-)
+router = APIRouter(tags=["entity"], responses={404: {"description": "Not Found"}})
 
 
 @router.get("/{id}")
@@ -51,12 +48,6 @@ async def _get_entity(
 
     node.node_hierarchy = get_node_hierarchy(node, solr)
 
-    # todo: move association_counts query to it's own separate request
-    # need a monarch-py facet api
-    # for label in result["association_counts"]:
-    #     association_count = AssociationCount(
-    #         id=label, counts=result["association_counts"][label]
-    #     )
-    #     node.association_counts.append(association_count)
+    node.association_counts = solr.get_association_counts(id)
 
     return node
