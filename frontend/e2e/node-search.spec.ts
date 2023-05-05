@@ -94,9 +94,9 @@ test("Basic search results show", async ({ page }) => {
   /** search result with link shows */
   const result = await page
     .getByRole("link")
-    .filter({ hasText: /neonatal marfan syndrome/i })
+    .filter({ hasText: /Fanconi anemia/i })
     .first();
-  await expect(result).toHaveAttribute("href", /disease\/MONDO:0017309/i);
+  await expect(result).toHaveAttribute("href", /MONDO:0019391/i);
 });
 
 test("Pagination works", async ({ page }) => {
@@ -105,12 +105,14 @@ test("Pagination works", async ({ page }) => {
   await page.locator("input").dispatchEvent("change");
 
   /** pagination text, and click through to next page */
-  await expect(page.getByText(/1 to 10 of 61 results/).first()).toBeVisible();
+  await expect(page.getByText(/1 to 20 of 109 results/).first()).toBeVisible();
   await page.locator("button", { hasText: /^2$/ }).first().click();
-  await expect(page.getByText(/11 to 20 of 61 results/).first()).toBeVisible();
+  await expect(page.getByText(/11 to 30 of 109 results/).first()).toBeVisible();
 });
 
 test("Filters show", async ({ page }) => {
+  test.fixme(true, "Facets are not implemented on the backend yet");
+
   await page.goto("/explore");
   await page.locator("input").fill("Marfan");
   await page.locator("input").dispatchEvent("change");

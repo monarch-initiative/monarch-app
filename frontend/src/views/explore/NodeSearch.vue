@@ -113,7 +113,6 @@
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { groupBy, isEqual, kebabCase, sortBy, startCase, uniq } from "lodash";
-import { filtersToQuery } from "@/api/facets";
 import { getAutocompleteResults } from "@/api/node-search";
 import type { SearchResults } from "@/api/model";
 import { getSearch } from "@/api/search";
@@ -162,7 +161,7 @@ function onDelete(value: string) {
 /** when user changes active filters */
 function onFilterChange() {
   page.value = 0;
-  getResults(false);
+  getResults();
 }
 
 /** get autocomplete results */
@@ -225,13 +224,11 @@ const {
   isLoading,
   isError,
 } = useQuery(
-  async function (
-    /**
-     * whether to perform "fresh" search, without filters/pagination/etc. true
-     * when search text changes, false when filters/pagination/etc change.
-     */
-    fresh: boolean
-  ): Promise<SearchResults> {
+  async function (): /**
+   * whether to perform "fresh" search, without filters/pagination/etc. true
+   * when search text changes, false when filters/pagination/etc change.
+   */
+  Promise<SearchResults> {
     /** get results from api */
     const response = await getSearch(search.value, from.value, perPage.value);
 
@@ -242,7 +239,7 @@ const {
   { total: 0, items: [], limit: 0, offset: 0 },
 
   /** on success */
-  (response, [fresh]) => {
+  () => {
     /** update filters from facets returned from api, if a "fresh" search */
     // if (fresh) {
     //   availableFilters.value = { ...response.facets };
@@ -305,7 +302,7 @@ watch(
     /** update document title */
     if (search.value) appTitle.value = [`"${search.value}"`];
     /** refetch search */
-    await getResults(true);
+    await getResults();
   },
   { immediate: true, flush: "post" }
 );
@@ -319,7 +316,7 @@ watch(search, async () => {
 });
 
 /** when start page changes */
-watch(from, () => getResults(false));
+watch(from, () => getResults());
 
 /**
  * hide counts in filter dropdowns if any filtering being done. see

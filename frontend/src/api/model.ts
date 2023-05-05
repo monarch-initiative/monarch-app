@@ -134,7 +134,7 @@ export interface SearchResult extends Entity {
 }
 
 export interface SearchResults extends Results {
-  /** A collection of items, with the type to be overriden by slot_usage */ 
+  /** A collection of items, with the type to be overriden by slot_usage */
   items: SearchResult[];
   facet_fields?: { [index: FacetFieldLabel]: FacetField };
   facet_queries?: { [index: FacetValueLabel]: FacetValue };
