@@ -24,7 +24,7 @@ export interface Node extends Entity {
   source?: string;
   symbol?: string;
   type?: string;
-  synonym?: string[];
+  synonym?: string;
 }
 
 export interface Taxon {
@@ -78,6 +78,7 @@ export interface Association {
   relation?: string;
 }
 
+
 export interface AssociationResults extends Results {
   /** A collection of items, with the type to be overriden by slot_usage */ items?: Association[];
   limit?: number;
@@ -120,6 +121,7 @@ export interface Results {
 export interface SearchResult extends Entity {
   /** matching text snippet containing html tags */
   highlight?: string;
+
   score?: number;
   id?: string;
   category?: string;
@@ -131,6 +133,7 @@ export interface SearchResult extends Entity {
   source?: string;
   symbol?: string;
   type?: string;
+
   synonym?: string[];
 }
 
@@ -157,3 +160,4 @@ export interface FacetField {
   label?: string;
   facet_values?: { [index: FacetValueLabel]: FacetValue };
 }
+
