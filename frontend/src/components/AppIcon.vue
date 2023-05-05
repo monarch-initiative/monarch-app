@@ -57,7 +57,7 @@ watch(
         await import(`../assets/icons/${props.icon}.svg`)
       ).default;
     } catch (error) {
-      //
+      /** don't log error, many failures expected */
     }
   },
   { immediate: true }
