@@ -37,7 +37,6 @@ watch(
 
     /** update document title from route */
     appTitle.value = [route.name || ""];
-    console.log(route.name);
 
     /** update description */
     appDescription.value = route.meta.description as string;
