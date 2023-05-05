@@ -49,7 +49,9 @@ const config: PlaywrightTestConfig = {
 
   /* run local dev server before starting tests */
   webServer: {
-    command: "vite dev --mode test",
+    command: process.env.CI
+      ? "vite build && vite preview --port 5173 --mode test"
+      : "vite dev --mode test",
     port: 5173,
     reuseExistingServer: !process.env.CI,
   },

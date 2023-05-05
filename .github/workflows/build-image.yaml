@@ -1,14 +1,15 @@
 name: Docker Build and Push to GCR
-on: 
+on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
-# This job uses RafikFarhad's GitHub action to build and 
+# This job uses RafikFarhad's GitHub action to build and
 # push a docker image to a specified GCP repository
 jobs:
   build-and-push-to-gcr:
     runs-on: ubuntu-latest
-    steps:      
+    steps:
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -28,9 +29,8 @@ jobs:
           image_name: monarch-api/monarch-api
           image_tag: latest, ${{ steps.get-tag.outputs.IMAGE_TAG }}
           dockerfile: ./backend/Dockerfile
-
-# This version uses Google's authentication Action directly, 
-# and makes use of this repository's Makefile. 
+# This version uses Google's authentication Action directly,
+# and makes use of this repository's Makefile.
 # It currently fails at the push step.
 #
 # jobs:

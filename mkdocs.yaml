@@ -1,20 +1,21 @@
-site_name: 'Monarch API Documentation'
-repo_name: 'monarch-api'
-repo_url: 'https://github.com/monarch-initiative/monarch-app/'
-site_url: 'https://monarch-app.monarchinitiative.org/docs/'
+site_name: "Monarch API Documentation"
+repo_name: "monarch-api"
+repo_url: "https://github.com/monarch-initiative/monarch-app/"
+site_url: "https://monarch-app.monarchinitiative.org/docs/"
+site_dir: "docs"
 
 theme:
-    name: 'material'
-    docs_dir: docs/
-    logo: 'images/monarch-initiative.png'
-    favicon: 'images/favicon.ico'
-    features:
-        - navigation.expand
-        - navigation.instant
-        - navigation.tracking
-        - navigation.tabs
-        - navigation.tabs.sticky
-    palette:
+  name: "material"
+  docs_dir: docs/
+  logo: "images/monarch-initiative.png"
+  favicon: "images/favicon.ico"
+  features:
+    - navigation.expand
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
+  palette:
     - scheme: default
       primary: indigo
       accent: indigo
@@ -27,21 +28,20 @@ theme:
       toggle:
         icon: material/brightness-7
         name: Switch to light mode
-    font:
-        text: 'Source Sans Pro'
-        code: 'Source Sans Pro Mono'
-
+  font:
+    text: "Source Sans Pro"
+    code: "Source Sans Pro Mono"
 
 plugins:
   - search
   - mkdocstrings:
       handlers:
         python:
-          paths: [ ./backend ]
+          paths: [./backend]
           import:
-          - https://docs.python.org/3/objects.inv
-          - https://mkdocstrings.github.io/objects.inv
-          - https://mkdocstrings.github.io/griffe/objects.inv
+            - https://docs.python.org/3/objects.inv
+            - https://mkdocstrings.github.io/objects.inv
+            - https://mkdocstrings.github.io/griffe/objects.inv
           options:
             docstring_style: google
             docstring_options:
@@ -55,7 +55,6 @@ plugins:
             filters:
               - "!^_[^_]"
               - "^_[^_]"
-
 
 markdown_extensions:
   - admonition
@@ -73,14 +72,11 @@ markdown_extensions:
   - pymdownx.tabbed:
       alternate_style: true
 
-
 extra:
   social:
-    - icon: 'fontawesome/solid/house'
-      link: 'https://monarchinitiative.org'
-    - icon: 'fontawesome/brands/github-alt'
-      link: 'https://github.com/monarch-initiative/'
-
-
+    - icon: "fontawesome/solid/house"
+      link: "https://monarchinitiative.org"
+    - icon: "fontawesome/brands/github-alt"
+      link: "https://github.com/monarch-initiative/"
 # copyright: 'Copyright &copy; 2020 - 2022 [Glass](glass-ships.com)'
 

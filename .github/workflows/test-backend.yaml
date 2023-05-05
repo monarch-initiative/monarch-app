@@ -1,11 +1,7 @@
 name: Test Backend
 
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
   pull_request:
-    types: [opened, synchronize, reopened]
   workflow_dispatch:
 
 defaults:
@@ -18,38 +14,36 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.9", "3.10", "3.11"]
-        os: [ ubuntu-latest ]
+        os: [ubuntu-latest]
         #os: [ ubuntu-latest, windows-latest ]
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
 
-    #----------------------------------------------
-    #          install & configure poetry
-    #----------------------------------------------
-    - name: Install Poetry
-      uses: snok/install-poetry@v1
-    
+      #----------------------------------------------
+      #          install & configure poetry
+      #----------------------------------------------
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
 
-    #----------------------------------------------
-    #    install your root project, if required 
-    #----------------------------------------------      
-    - name: Install library
-      run: poetry install --no-interaction
+      #----------------------------------------------
+      #    install your root project, if required
+      #----------------------------------------------
+      - name: Install library
+        run: poetry install --no-interaction
 
-    #----------------------------------------------
-    #              run tox
-    #----------------------------------------------
-    #- name: Lint with flake8
-    #  run: poetry run tox -e flake8
-
-    #----------------------------------------------
-    #              run pytest
-    #----------------------------------------------
-    - name: Test with unittest
-      run: poetry run pytest tests/
-      # run: poetry run python -u -m unittest discover
+      #----------------------------------------------
+      #              run tox
+      #----------------------------------------------
+      #- name: Lint with flake8
+      #  run: poetry run tox -e flake8
+      #----------------------------------------------
+      #              run pytest
+      #----------------------------------------------
+      - name: Test with unittest
+        run: poetry run pytest tests/
+        # run: poetry run python -u -m unittest discover
