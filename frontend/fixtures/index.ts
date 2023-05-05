@@ -185,7 +185,7 @@ export const handlers = [
     /** for certain exceptions, passthrough (let browser make a real request) */
     const exceptions = [
       ".vue",
-      ".js" /** vite seems to turn dynamic import of images into .js */,
+      ".js", /** vite seems to turn dynamic import of images/assets into .js */
       ".mp4",
       ".svg",
       ".png",

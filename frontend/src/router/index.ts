@@ -28,7 +28,7 @@ import PageTestbed from "@/views/PageTestbed.vue";
 const mode = import.meta.env.MODE;
 
 /** list of routes and corresponding components. */
-/** kEEP IN SYNC WITH PUBLIC/SITEMAP.XML */
+/** KEEP IN SYNC WITH PUBLIC/SITEMAP.XML */
 export const routes: RouteRecordRaw[] = [
   /** home page */
   {

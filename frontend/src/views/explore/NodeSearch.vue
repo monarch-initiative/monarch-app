@@ -39,13 +39,13 @@
     <AppStatus v-else-if="isError" code="error"
       >Error loading results</AppStatus
     >
-    <AppStatus v-else-if="!results.results.length" code="warning"
+    <AppStatus v-else-if="!results.items.length" code="warning"
       >No results</AppStatus
     >
 
     <!-- results -->
     <AppFlex
-      v-for="(result, index) in results.results"
+      v-for="(result, index) in results.items"
       :key="index"
       direction="col"
       gap="small"
@@ -61,7 +61,7 @@
           :to="`/${kebabCase(result.category)}/${result.id}`"
           class="name"
         >
-          <span v-html="result.highlight"></span>
+          <span v-html="result.name"></span>
         </AppLink>
         <AppButton
           v-tooltip="'Node ID (click to copy)'"
@@ -76,19 +76,19 @@
       <p class="description truncate-3" tabindex="0">
         {{ result.description || "No description available" }}
       </p>
-      <p v-if="result.altNames?.length" class="names truncate-1" tabindex="0">
-        {{ result.altNames.join(" &nbsp; ") }}
+      <p v-if="result.synonym?.length" class="names truncate-1" tabindex="0">
+        {{ result.synonym.join(" &nbsp; ") }}
       </p>
-      <p v-if="result.altIds?.length" class="ids truncate-1" tabindex="0">
-        {{ result.altIds.join(" &nbsp; ") }}
+      <p v-if="result.xref?.length" class="ids truncate-1" tabindex="0">
+        {{ result.xref.join(" &nbsp; ") }}
       </p>
     </AppFlex>
 
     <!-- results nav -->
-    <AppFlex v-if="results.results.length" direction="col">
+    <AppFlex v-if="results.items.length" direction="col">
       <div>
         <strong>{{ from + 1 }}</strong> to <strong>{{ to + 1 }}</strong> of
-        <strong>{{ results.count }}</strong> results
+        <strong>{{ results.total }}</strong> results
       </div>
       <AppFlex gap="small">
         <template v-for="(list, index) of pages" :key="index">
@@ -114,8 +114,9 @@ import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { groupBy, isEqual, kebabCase, sortBy, startCase, uniq } from "lodash";
 import { filtersToQuery } from "@/api/facets";
-import type { SearchResults } from "@/api/node-search";
-import { getAutocompleteResults, getSearchResults } from "@/api/node-search";
+import { getAutocompleteResults } from "@/api/node-search";
+import type { SearchResults } from "@/api/model";
+import { getSearch } from "@/api/search";
 import type { Options as AutocompleteOptions } from "@/components/AppSelectAutocomplete.vue";
 import AppSelectAutocomplete from "@/components/AppSelectAutocomplete.vue";
 import type { Options as MultiOptions } from "@/components/AppSelectMulti.vue";
@@ -232,26 +233,21 @@ const {
     fresh: boolean
   ): Promise<SearchResults> {
     /** get results from api */
-    const response = await getSearchResults(
-      search.value,
-      fresh ? undefined : filtersToQuery(availableFilters.value),
-      fresh ? undefined : filtersToQuery(activeFilters.value),
-      fresh ? undefined : from.value
-    );
+    const response = await getSearch(search.value, from.value, perPage.value);
 
     return response;
   },
 
   /** default value */
-  { count: 0, results: [], facets: {} },
+  { total: 0, items: [], limit: 0, offset: 0 },
 
   /** on success */
   (response, [fresh]) => {
     /** update filters from facets returned from api, if a "fresh" search */
-    if (fresh) {
-      availableFilters.value = { ...response.facets };
-      activeFilters.value = { ...response.facets };
-    }
+    // if (fresh) {
+    //   availableFilters.value = { ...response.facets };
+    //   activeFilters.value = { ...response.facets };
+    // }
 
     /** add search to history */
     addEntry(search.value);
@@ -260,14 +256,12 @@ const {
 
 /** "x of n" pages */
 const from = computed((): number => page.value * perPage.value);
-const to = computed(
-  (): number => from.value + results.value.results.length - 1
-);
+const to = computed((): number => from.value + results.value.items.length - 1);
 
 /** pages of results */
 const pages = computed((): number[][] => {
   /** get full list of pages */
-  const pages = Array(Math.ceil(results.value.count / perPage.value))
+  const pages = Array(Math.ceil(results.value.total / perPage.value))
     .fill(0)
     .map((_, i) => i);
 

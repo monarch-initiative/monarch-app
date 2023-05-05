@@ -17,13 +17,13 @@ export interface Node extends Entity {
   category?: string;
   name?: string;
   description?: string;
-  xref?: string;
+  xref?: string[];
   provided_by?: string;
   in_taxon?: string;
   source?: string;
   symbol?: string;
   type?: string;
-  synonym?: string;
+  synonym?: string[];
 }
 
 export interface Taxon {
@@ -89,13 +89,13 @@ export interface Entity {
   category?: string;
   name?: string;
   description?: string;
-  xref?: string;
+  xref?: string[];
   provided_by?: string;
   in_taxon?: string;
   source?: string;
   symbol?: string;
   type?: string;
-  synonym?: string;
+  synonym?: string[];
 }
 
 export interface EntityResults extends Results {
@@ -117,33 +117,39 @@ export interface Results {
 }
 
 export interface SearchResult extends Entity {
-  /** matching text snippet containing html tags */ highlight?: string;
+  /** matching text snippet containing html tags */
+  highlight?: string;
   score?: number;
   id?: string;
   category?: string;
   name?: string;
   description?: string;
-  xref?: string;
+  xref?: string[];
   provided_by?: string;
   in_taxon?: string;
   source?: string;
   symbol?: string;
   type?: string;
-  synonym?: string;
+  synonym?: string[];
 }
 
 export interface SearchResults extends Results {
-  /** A collection of items, with the type to be overriden by slot_usage */ items?: SearchResult[];
+  /** A collection of items, with the type to be overriden by slot_usage */ 
+  items: SearchResult[];
   facet_fields?: { [index: FacetFieldLabel]: FacetField };
   facet_queries?: { [index: FacetValueLabel]: FacetValue };
-  limit?: number;
-  offset?: number;
-  total?: number;
+  /** number of items per page */
+  limit: number;
+  /** starting entry of the page */
+  offset: number;
+  /** total number of hits */
+  total: number;
 }
 
 export interface FacetValue {
   label?: string;
-  /** number of items a this facet value */ count?: number;
+  /** number of items a this facet value */
+  count?: number;
 }
 
 export interface FacetField {
