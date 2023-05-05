@@ -49,6 +49,7 @@ const config: PlaywrightTestConfig = {
 
   /* run local dev server before starting tests */
   webServer: {
+    /** on CI, build app to more closely match production */
     command: process.env.CI
       ? "vite build && vite preview --port 5173 --mode test"
       : "vite dev --mode test",
