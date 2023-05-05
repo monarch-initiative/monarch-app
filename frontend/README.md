@@ -9,10 +9,10 @@ This project was scaffolded using Vite (`yarn create vite` → `Vue` → `create
 - ESLint (code quality)
 - Prettier (code formatting)
 
-## Approaches
+Techniques/approaches used:
 
 - Vue 3
-- Composition API (not Options API)
+- Composition API
 - `<script setup>` syntax
 - `<style lang="scss" scoped>` styles
 
