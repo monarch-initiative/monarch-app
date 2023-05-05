@@ -9,10 +9,10 @@
 </template>
 
 <script setup lang="ts">
-interface Props {
+type Props = {
   /** size of items in gallery */
   size?: "small" | "medium" | "big";
-}
+};
 
 withDefaults(defineProps<Props>(), { size: "medium" });
 </script>

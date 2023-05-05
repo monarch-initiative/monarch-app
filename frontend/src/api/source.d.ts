@@ -1,5 +1,5 @@
 /** possible properties of a source on the sources page */
-export interface Source {
+export type Source = {
   id?: string;
   name?: string;
   type?: "dataset" | "ontology";
@@ -11,5 +11,5 @@ export interface Source {
   description?: string;
   usage?: string;
   vocabulary?: string;
-  files?: Array<string>;
-}
+  files?: string[];
+};

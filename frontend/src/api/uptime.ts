@@ -1,23 +1,23 @@
-import { request } from ".";
-import { Code } from "@/components/AppStatus";
+import type { Code } from "@/components/AppStatus.vue";
+import { request } from "./";
 
 /** https://uptimerobot.com/api/ */
 
 /** uptimerobot api endpoint */
-const uptimeRobot = "https://api.uptimerobot.com/v2/getMonitors";
+export const uptimeRobot = "https://api.uptimerobot.com/v2/getMonitors";
 /** read-only api key, safe to be distributed */
 const key = "ur1488940-1c05ba09e0aef926989d6593";
 /** uptimerobot.org page for statuses */
 const page = "https://stats.uptimerobot.com/XPRo9s4BJ5";
 
 /** uptime responses (from backend) */
-interface _Uptimes {
-  monitors?: Array<{
+type _Uptimes = {
+  monitors?: {
     id?: string;
     friendly_name?: string;
     status?: _Code;
-  }>;
-}
+  }[];
+};
 
 /** possible status codes (from backend) */
 enum _Code {
@@ -40,7 +40,7 @@ export const getUptimes = async (): Promise<Uptimes> => {
    * map uptimerobot status codes to our simplified status codes in status
    * component
    */
-  const codeMap: Record<_Code | number, Code> = {
+  const codeMap: { [key: _Code | number]: Code } = {
     [_Code.paused]: "paused",
     [_Code.unchecked]: "unknown",
     [_Code.up]: "success",
@@ -59,8 +59,8 @@ export const getUptimes = async (): Promise<Uptimes> => {
 };
 
 /** uptimes (for frontend) */
-export type Uptimes = Array<{
+export type Uptimes = {
   code: Code;
   text: string;
   link: string;
-}>;
+}[];

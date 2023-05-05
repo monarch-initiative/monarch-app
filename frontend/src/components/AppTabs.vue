@@ -38,15 +38,15 @@
 
 <script setup lang="ts">
 import { onMounted, ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { uniqueId } from "lodash";
-import { useRouter, useRoute } from "vue-router";
 import { wrap } from "@/util/math";
 
 /** route info */
 const router = useRouter();
 const route = useRoute();
 
-interface Tab {
+type Tab = {
   /** page-wide unique id of tab */
   id: string;
   /** tab button props */
@@ -54,10 +54,10 @@ interface Tab {
   icon?: string;
   description?: string;
   tooltip?: string;
-}
-type Tabs = Array<Tab>;
+};
+type Tabs = Tab[];
 
-interface Props {
+type Props = {
   /** two-way bound selected tab state */
   modelValue: string;
   /** list of tabs with info */
@@ -68,17 +68,17 @@ interface Props {
   url?: boolean;
   /** route name to navigate to on change */
   route?: string;
-}
+};
 
 const props = withDefaults(defineProps<Props>(), {
   url: true,
   route: undefined,
 });
 
-interface Emits {
+type Emits = {
   /** two-way bound selected tab state */
   (event: "update:modelValue", selected: string): void;
-}
+};
 
 const emit = defineEmits<Emits>();
 
@@ -130,8 +130,10 @@ watch(
     // button?.focus();
 
     /** update hash in url and nav if applicable */
-    if (props.route) await router.replace({ name: props.route });
-    else if (props.url) await router.push({ hash: "#" + props.modelValue });
+    const newRoute = { ...route };
+    if (props.route) newRoute.name = props.route;
+    if (props.url) newRoute.hash = "#" + props.modelValue;
+    await router.push(newRoute);
   }
 );
 

@@ -1,17 +1,17 @@
-/**
- * base biolink url, plus new monarch-api url. TODO: eventually we'll only have
- * monarch-api
- */
+/** base api url */
 export const biolink = "https://api.monarchinitiative.org/api";
-// export const monarch = "https://api-dev.monarchinitiative.org/v3/api";
-export const monarch = "http://127.0.0.1:8000/v3/api";
+export const monarch = "https://api-dev.monarchinitiative.org/v3/api";
+// export const monarch = "http://127.0.0.1:8000/v3/api";
+
+/** environment mode */
+const mode = import.meta.env.MODE;
 
 /**
  * key/value object for request query parameters. use primitive for single, e.g.
  * evidence=true. use array for multiple/duplicate, e.g. id=abc&id=def&id=ghi
  */
 type Param = string | number | boolean | undefined | null;
-export type Params = Record<string, Param | Array<Param>>;
+export type Params = { [key: string]: Param | Param[] };
 
 /**
  * generic fetch request wrapper
@@ -45,7 +45,13 @@ export const request = async <T>(
   /** assemble url to query */
   const paramsString = "?" + paramsObject.toString();
   const url = path + paramsString;
-  const endpoint = path.replace(biolink, "");
+
+  /** endpoint for logging */
+  let endpoint = path;
+  if (endpoint.startsWith(biolink))
+    endpoint = endpoint.replace(biolink, "biolink ");
+  if (endpoint.startsWith(monarch))
+    endpoint = endpoint.replace(monarch, "monarch ");
 
   /** make request object */
   const request = new Request(url, options);
@@ -54,9 +60,9 @@ export const request = async <T>(
   let response = await cache.match(request);
 
   /** log details for debugging (except don't clutter logs when running tests) */
-  if (process.env.NODE_ENV !== "test") {
+  if (mode !== "test") {
     console.groupCollapsed(
-      response ? "Using cached request" : "Making new request",
+      response ? "📞 Request (cached)" : "📞 Request (new)",
       endpoint
     );
     console.info({ params, options, request });
@@ -94,8 +100,8 @@ export const request = async <T>(
       : await response.json();
 
   /** log details for debugging (except don't clutter logs when running tests) */
-  if (process.env.NODE_ENV !== "test") {
-    console.groupCollapsed("Response", endpoint);
+  if (mode !== "test") {
+    console.groupCollapsed("📣 Response", endpoint);
     console.info({ parsed, response });
     console.groupEnd();
   }
@@ -116,11 +122,11 @@ const initCache = async () => {
 };
 
 /** possible biolink error */
-interface _Error {
+type _Error = {
   error: {
     message: string;
   };
-}
+};
 
 /**
  * create dummy caches interface. only really needed for local mobile testing so

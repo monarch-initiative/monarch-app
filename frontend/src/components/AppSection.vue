@@ -10,12 +10,12 @@
 </template>
 
 <script setup lang="ts">
-interface Props {
+type Props = {
   /** width of section */
   width?: "full" | "medium" | "big";
   /** visual design */
   design?: "normal" | "fill";
-}
+};
 
 withDefaults(defineProps<Props>(), { width: "medium", design: "normal" });
 </script>

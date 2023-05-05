@@ -128,19 +128,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from "vue";
-import { startCase, kebabCase, isEqual } from "lodash";
-import AppSelectTags from "@/components/AppSelectTags.vue";
-import AppSelectSingle from "@/components/AppSelectSingle.vue";
-import AppRing from "@/components/AppRing.vue";
+import { onMounted, ref, watch } from "vue";
+import { isEqual, kebabCase, startCase } from "lodash";
+import { mountPhenogrid } from "@/api/phenogrid";
 import {
-  compareSetToTaxon,
   compareSetToSet,
+  compareSetToTaxon,
   getPhenotypes,
 } from "@/api/phenotype-explorer";
-import { Option, Options } from "@/components/AppSelectTags";
-import { snackbar } from "@/components/TheSnackbar";
-import { mountPhenogrid } from "@/api/phenogrid";
+import AppRing from "@/components/AppRing.vue";
+import AppSelectSingle from "@/components/AppSelectSingle.vue";
+import type { Option, Options } from "@/components/AppSelectTags.vue";
+import AppSelectTags from "@/components/AppSelectTags.vue";
+import { snackbar } from "@/components/TheSnackbar.vue";
 import { useQuery } from "@/util/composables";
 import { parse } from "@/util/object";
 import examples from "./phenotype-explorer.json";
@@ -179,12 +179,12 @@ const bTaxonHuman = taxons[0];
 const bTaxonOptions = taxons.slice(1);
 
 /** example data */
-interface GeneratedFrom {
+type GeneratedFrom = {
   /** the option (gene/disease/phenotype) that the phenotypes came from */
   option?: Option;
   /** the phenotypes themselves */
   options?: Options;
-}
+};
 
 /** first set of phenotypes */
 const aPhenotypes = ref([] as Options);

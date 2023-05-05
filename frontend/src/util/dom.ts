@@ -1,4 +1,5 @@
 import { sleep } from "@/util/debug";
+
 /** restart an element's CSS animations programmatically */
 export const restartAnimations = (element: Element): void => {
   if (element instanceof Element)
@@ -30,7 +31,7 @@ export const waitFor = async (
 };
 
 /** find index of first element "in view". model behavior off of wikiwand.com. */
-export const firstInView = (elements: Array<HTMLElement>): number => {
+export const firstInView = (elements: HTMLElement[]): number => {
   const offset = document.querySelector("header")?.clientHeight || 0;
   for (let index = elements.length - 1; index >= 0; index--)
     if (elements[index].getBoundingClientRect().top < offset + 100)

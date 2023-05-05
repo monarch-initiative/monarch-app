@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.app.json",
+  "include": ["unit/**/*", "src/api/*", "src/components/*"],
+  "compilerOptions": {
+    "composite": true,
+    "types": ["node", "jsdom"]
+  }
+}

@@ -1,7 +1,7 @@
-import { biolink, request } from ".";
-import { getSearchResults } from "./node-search";
-import { Options, OptionsFunc } from "@/components/AppSelectTags.d";
+import type { Options, OptionsFunc } from "@/components/AppSelectTags.vue";
 import { stringify } from "@/util/object";
+import { biolink, request } from "./";
+import { getSearchResults } from "./node-search";
 
 /** search individual phenotypes or gene/disease phenotypes */
 export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
@@ -48,14 +48,14 @@ export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
 };
 
 /** phenotype associations with gene/disease (from backend) */
-interface _PhenotypeAssociations {
-  associations: Array<{
+type _PhenotypeAssociations = {
+  associations: {
     object: {
       id: string;
       label: string;
     };
-  }>;
-}
+  }[];
+};
 
 /** get phenotypes associated with gene/disease */
 const getPhenotypeAssociations = async (
@@ -84,8 +84,8 @@ const getPhenotypeAssociations = async (
 };
 
 /** results of phenotype comparison (from backend) */
-interface _Comparison {
-  matches: Array<{
+type _Comparison = {
+  matches: {
     id: string;
     label: string;
     type: string;
@@ -96,13 +96,13 @@ interface _Comparison {
     rank: string;
     score: number;
     significance: string;
-  }>;
-}
+  }[];
+};
 
 /** compare a set of phenotypes to another set of phenotypes */
 export const compareSetToSet = async (
-  aPhenotypes: Array<string>,
-  bPhenotypes: Array<string>
+  aPhenotypes: string[],
+  bPhenotypes: string[]
 ): Promise<Comparison> => {
   /** make request options */
   const headers = new Headers();
@@ -128,7 +128,7 @@ export const compareSetToSet = async (
 
 /** compare a set of phenotypes to a gene or disease taxon id */
 export const compareSetToTaxon = async (
-  phenotypes: Array<string>,
+  phenotypes: string[],
   taxon: string
 ): Promise<Comparison> => {
   /** endpoint settings */
@@ -160,14 +160,14 @@ const mapMatches = (response: _Comparison) => {
 };
 
 /** results of phenotype comparison (for frontend) */
-export interface Comparison {
-  matches: Array<{
+export type Comparison = {
+  matches: {
     id: string;
     name: string;
     score: number;
     category: string;
     taxon: string;
-  }>;
+  }[];
   minScore?: number;
   maxScore?: number;
-}
+};

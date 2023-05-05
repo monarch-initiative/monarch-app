@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
 import { kebabCase } from "lodash";
-import { Node } from "@/api/model";
+import type { Node } from "@/api/model";
 import { ensure } from "@/util/object";
 
 // function to get first entry in node's category array
@@ -48,10 +48,10 @@ function getCategory(node: Node): string {
   return kebabCase(categories[0]);
 }
 
-interface Props {
+type Props = {
   /** current node */
   node: Node;
-}
+};
 
 defineProps<Props>();
 </script>

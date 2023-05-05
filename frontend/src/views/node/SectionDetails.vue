@@ -52,14 +52,14 @@
 </template>
 
 <script setup lang="ts">
-import { Node } from "@/api/model";
+import type { Node } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
 
-interface Props {
+type Props = {
   /** current node */
   node: Node;
-}
+};
 
 defineProps<Props>();
 </script>

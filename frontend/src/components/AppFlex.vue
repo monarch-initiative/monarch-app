@@ -18,6 +18,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+
 /** map nice human align names to css flex align names */
 const alignMap = {
   left: "flex-start",
@@ -28,7 +29,7 @@ const alignMap = {
   stretch: "stretch",
 };
 
-interface Props {
+type Props = {
   /** flex display (whether container takes up full width) */
   flow?: "inline" | "block";
   /** horizontal or vertical */
@@ -39,7 +40,7 @@ interface Props {
   hAlign?: "left" | "center" | "right" | "stretch";
   /** vertical alignment */
   vAlign?: "top" | "center" | "bottom" | "stretch";
-}
+};
 
 const props = withDefaults(defineProps<Props>(), {
   flow: "block",

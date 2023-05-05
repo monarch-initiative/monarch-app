@@ -7,13 +7,13 @@
 </template>
 
 <script setup lang="ts">
-import { Node } from "@/api/model";
+import type { Node } from "@/api/model";
 import HistoPheno from "./HistoPheno.vue";
 
-interface Props {
+type Props = {
   /** current node */
   node: Node;
-}
+};
 
 defineProps<Props>();
 </script>

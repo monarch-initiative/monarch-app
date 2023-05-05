@@ -1,22 +1,22 @@
-import { request } from ".";
-import staticData from "./ontologies.json";
 import { mergeArrays } from "@/util/object";
-import { Source } from "./source";
+import { request } from "./";
+import staticData from "./ontologies.json";
+import type { Source } from "./source";
 
 /** source for ontology metadata */
-const obo = "https://obofoundry.org/registry/ontologies.jsonld";
+export const obo = "https://obofoundry.org/registry/ontologies.jsonld";
 
 /** knowledge graph ontologies (from backend) */
-interface _Ontologies {
-  ontologies: Array<{
+type _Ontologies = {
+  ontologies: {
     id: string;
     title?: string;
     homepage?: string;
     license?: { url?: string };
     depicted_by?: string;
     description?: string;
-  }>;
-}
+  }[];
+};
 
 /** get metadata of all ontologies listed on obo */
 export const getOntologies = async (): Promise<Ontologies> => {
@@ -47,4 +47,4 @@ export const getOntologies = async (): Promise<Ontologies> => {
 };
 
 /** knowledge graph ontologies (for frontend) */
-type Ontologies = Array<Source>;
+type Ontologies = Source[];

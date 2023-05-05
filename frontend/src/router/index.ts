@@ -1,32 +1,35 @@
-import {
-  createRouter,
-  createWebHistory,
+import type {
+  NavigationGuard,
   RouteRecordRaw,
   RouterScrollBehavior,
-  NavigationGuard,
 } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import { isEmpty, pick } from "lodash";
 import { hideAll } from "tippy.js";
-import PageHome from "@/views/PageHome.vue";
-import PageExplore from "@/views/explore/PageExplore.vue";
-import PageAbout from "@/views/about/PageAbout.vue";
-import PageOverview from "@/views/about/PageOverview.vue";
-import PageSources from "@/views/about/PageSources.vue";
-import PageCite from "@/views/about/PageCite.vue";
-import PageTeam from "@/views/about/PageTeam.vue";
-import PagePublications from "@/views/about/PagePublications.vue";
-import PageTerms from "@/views/about/PageTerms.vue";
-import PageHelp from "@/views/help/PageHelp.vue";
-import PageFeedback from "@/views/help/PageFeedback.vue";
-import PageNode from "@/views/node/PageNode.vue";
-import PageTestbed from "@/views/PageTestbed.vue";
+// import { lookupNode } from "@/api/node-lookup";
+import descriptions from "@/router/descriptions.json";
 import { sleep } from "@/util/debug";
 import { parse } from "@/util/object";
-import descriptions from "@/router/descriptions.json";
+import PageAbout from "@/views/about/PageAbout.vue";
+import PageCite from "@/views/about/PageCite.vue";
+import PageOverview from "@/views/about/PageOverview.vue";
+import PagePublications from "@/views/about/PagePublications.vue";
+import PageSources from "@/views/about/PageSources.vue";
+import PageTeam from "@/views/about/PageTeam.vue";
+import PageTerms from "@/views/about/PageTerms.vue";
+import PageExplore from "@/views/explore/PageExplore.vue";
+import PageFeedback from "@/views/help/PageFeedback.vue";
+import PageHelp from "@/views/help/PageHelp.vue";
+import PageNode from "@/views/node/PageNode.vue";
+import PageHome from "@/views/PageHome.vue";
+import PageTestbed from "@/views/PageTestbed.vue";
+
+/** environment mode */
+const mode = import.meta.env.MODE;
 
 /** list of routes and corresponding components. */
-/** KEEP IN SYNC WITH PUBLIC/SITEMAP.XML */
-export const routes: Array<RouteRecordRaw> = [
+/** kEEP IN SYNC WITH PUBLIC/SITEMAP.XML */
+export const routes: RouteRecordRaw[] = [
   /** home page */
   {
     path: "/",
@@ -42,8 +45,10 @@ export const routes: Array<RouteRecordRaw> = [
       window.sessionStorage.removeItem("redirectState");
 
       /** log for debugging */
-      console.info("Redirecting to:", redirect);
-      console.info("With state:", redirectState);
+      if (mode !== "test") {
+        console.info("Redirecting to:", redirect);
+        console.info("With state:", redirectState);
+      }
 
       /**
        * only keep state added by app, as to not interfere with built-in browser
@@ -159,8 +164,8 @@ routes.forEach(
   (route) =>
     (route.meta = {
       description:
-        (descriptions as Record<string, string>)[String(route.name || "")] ||
-        process.env.VUE_APP_DESCRIPTION,
+        (descriptions as { [key: string]: string })[String(route.name || "")] ||
+        import.meta.env.VITE_DESCRIPTION,
     })
 );
 
@@ -181,8 +186,7 @@ const scrollBehavior: RouterScrollBehavior = async (
   if (element)
     return { el: getTarget(element), top: getOffset(), behavior: "smooth" };
 
-  /** otherwise just scroll to top */
-  return { top: 0, left: 0 };
+  /** otherwise don't change scroll */
 };
 
 /** given element, get (possibly) modified target */
@@ -225,7 +229,7 @@ export const scrollToHash = () =>
   scrollToElement(document?.getElementById(window.location.hash.slice(1)));
 
 /** navigation history object */
-export const history = createWebHistory(process.env.BASE_URL);
+export const history = createWebHistory(import.meta.env.BASE_URL);
 
 /** router object */
 const router = createRouter({

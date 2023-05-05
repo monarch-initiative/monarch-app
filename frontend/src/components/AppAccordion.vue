@@ -23,12 +23,12 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-interface Props {
+type Props = {
   /** text to show in title button */
   text: string;
   /** icon to show in title button */
   icon?: string;
-}
+};
 
 defineProps<Props>();
 

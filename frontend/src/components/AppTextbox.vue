@@ -52,7 +52,7 @@ export default {
 import { ref } from "vue";
 import AppInput from "./AppInput.vue";
 
-interface Props {
+type Props = {
   /** two-way bound text state */
   modelValue?: string;
   /** whether field is multi-line */
@@ -69,11 +69,11 @@ interface Props {
   required?: boolean;
   /** delay for debounce in ms */
   debounce?: number;
-}
+};
 
 defineProps<Props>();
 
-interface Emits {
+type Emits = {
   /** two-way bound text state */
   (event: "update:modelValue", value: string): void;
   /** when user types in box, after some delay */
@@ -84,7 +84,7 @@ interface Emits {
   (event: "focus"): void;
   /** when input blurred */
   (event: "blur"): void;
-}
+};
 
 const emit = defineEmits<Emits>();
 

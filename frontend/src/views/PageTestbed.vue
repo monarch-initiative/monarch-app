@@ -167,6 +167,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { omit } from "lodash";
+import type { Filters } from "@/api/facets";
 import AppButton from "@/components/AppButton.vue";
 import AppInput from "@/components/AppInput.vue";
 import AppRing from "@/components/AppRing.vue";
@@ -174,19 +175,18 @@ import AppSelectAutocomplete from "@/components/AppSelectAutocomplete.vue";
 import AppSelectMulti from "@/components/AppSelectMulti.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
+import type { Cols, Rows, Sort } from "@/components/AppTable.vue";
 import AppTable from "@/components/AppTable.vue";
 import AppTabs from "@/components/AppTabs.vue";
 import AppTextbox from "@/components/AppTextbox.vue";
-import { Cols, Rows, Sort } from "@/components/AppTable";
 import { sleep } from "@/util/debug";
-import { Filters } from "@/api/facets";
 
 const input = ref("");
 
 type ButtonProps = InstanceType<typeof AppButton>["$props"];
 
 /** enumerate permutations of button options */
-const buttons = ref<Array<Array<ButtonProps>>>([]);
+const buttons = ref<ButtonProps[][]>([]);
 for (const design of ["normal", "circle", "small"]) {
   for (const color of ["primary", "secondary"]) {
     const row = [];

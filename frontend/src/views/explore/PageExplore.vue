@@ -21,11 +21,11 @@ import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { startCase } from "lodash";
 import AppTabs from "@/components/AppTabs.vue";
-import NodeSearch from "./NodeSearch.vue";
-import TextAnnotator from "./TextAnnotator.vue";
-import PhenotypeExplorer from "./PhenotypeExplorer.vue";
 import { appTitle } from "@/global/meta";
+import NodeSearch from "./NodeSearch.vue";
+import PhenotypeExplorer from "./PhenotypeExplorer.vue";
 import tabs from "./tabs.json";
+import TextAnnotator from "./TextAnnotator.vue";
 
 /** route info */
 const route = useRoute();

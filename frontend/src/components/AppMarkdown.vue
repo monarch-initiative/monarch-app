@@ -11,12 +11,12 @@
 import { computed } from "vue";
 import { micromark } from "micromark";
 
-interface Props {
+type Props = {
   /** markdown input source */
   source: string;
   /** what component to wrap source in */
   component?: string;
-}
+};
 
 const props = withDefaults(defineProps<Props>(), { component: "div" });
 

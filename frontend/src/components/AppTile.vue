@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-interface Props {
+type Props = {
   /** where to link to */
   to?: string;
   /** icon to show in button */
@@ -30,7 +30,7 @@ interface Props {
   subtitle?: string;
   /** visual design */
   design?: "small" | "big";
-}
+};
 
 withDefaults(defineProps<Props>(), { to: "", subtitle: "", design: "big" });
 </script>

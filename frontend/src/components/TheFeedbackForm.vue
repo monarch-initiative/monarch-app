@@ -82,21 +82,21 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useRoute } from "vue-router";
-import { useLocalStorage } from "@vueuse/core";
 import { truncate } from "lodash";
 import parser from "ua-parser-js";
-import AppTextbox from "@/components/AppTextbox.vue";
-import { collapse } from "@/util/string";
+import { useLocalStorage } from "@vueuse/core";
 import { postFeedback } from "@/api/feedback";
+import AppTextbox from "@/components/AppTextbox.vue";
 import { useQuery } from "@/util/composables";
+import { collapse } from "@/util/string";
 
 /** route info */
 const route = useRoute();
 
-interface Props {
+type Props = {
   /** whether form is inside a modal */
   modal?: boolean;
-}
+};
 
 withDefaults(defineProps<Props>(), { modal: false });
 
@@ -115,7 +115,7 @@ const details = computed(() => {
   const { browser, device, os, engine, cpu } = parser();
 
   /** filter and join strings together */
-  const concat = (...array: Array<string | undefined>) =>
+  const concat = (...array: (string | undefined)[]) =>
     array.filter((e) => e && e !== "()").join(" ");
 
   /** make map of desired properties in desired stringified format */

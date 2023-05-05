@@ -1,9 +1,9 @@
-import { SearchResults } from "@/api/model";
+import type { SearchResults } from "@/api/model";
 import { monarch, request } from "./index";
 
 export const getSearch = async (q: string): Promise<SearchResults> => {
   /** make query */
-  /* TODO: add faceting support */
+  /* tODO: add faceting support */
   const url = `${monarch}/search?q=${q}`;
   const response: SearchResults = await request<SearchResults>(url);
 

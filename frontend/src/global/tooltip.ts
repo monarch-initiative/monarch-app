@@ -1,4 +1,4 @@
-import { Instance } from "tippy.js";
+import type { Instance } from "tippy.js";
 
 /** when tippy instances attached to element */
 const update = (instance: Instance): void => {

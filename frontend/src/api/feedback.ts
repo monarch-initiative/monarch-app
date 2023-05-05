@@ -1,17 +1,17 @@
-import { request } from ".";
+import { request } from "./";
 
 /** serverless endpoint to make post on helpdesk with github api */
-const api =
+export const feedbackEndpoint =
   "https://us-central1-monarch-initiative.cloudfunctions.net/monarch-gh-issue-post";
 
-interface _Success {
+type _Success = {
   html_url: string;
-}
+};
 
-interface _Error {
+type _Error = {
   error: string;
   next_request: string;
-}
+};
 
 /** status response (from backend) */
 type _Response = _Success | _Error;
@@ -26,7 +26,7 @@ export const postFeedback = async (
 
   /** post to api endpoint which posts new github issue */
   const data = await request<_Response>(
-    api,
+    feedbackEndpoint,
     { title, body },
     { method: "POST" }
   );

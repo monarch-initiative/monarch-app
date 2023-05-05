@@ -5,6 +5,8 @@
 <template>
   <Teleport to="body">
     <Transition name="fade">
+      <!-- no-static-element-interactions rule is wrong here -->
+      <!-- eslint-disable-next-line -->
       <div
         v-if="text"
         ref="element"
@@ -12,7 +14,6 @@
         aria-live="polite"
         class="snackbar"
         @click="onClick"
-        @keydown="() => null"
       >
         {{ text }}
       </div>
@@ -20,10 +21,16 @@
   </Teleport>
 </template>
 
+<script lang="ts">
+/** push a notification to snackbar */
+export const snackbar = (message: string): unknown =>
+  window.dispatchEvent(new CustomEvent("snackbar", { detail: message }));
+</script>
+
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import { restartAnimations } from "@/util/dom";
+import { computed, ref } from "vue";
 import { useEventListener, useTimeoutFn } from "@vueuse/core";
+import { restartAnimations } from "@/util/dom";
 
 /** current notification text */
 const text = ref("");

@@ -7,22 +7,15 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from "vue";
 import { debounce } from "lodash";
 import {
-  sin,
-  cos,
-  dist,
-  Point3d,
-  Point2d,
-  project,
-  getMidpoint,
-} from "@/util/math";
-import { onMounted } from "vue";
-import {
   useEventListener,
-  useResizeObserver,
   useIntervalFn,
+  useResizeObserver,
 } from "@vueuse/core";
+import type { Point2d, Point3d } from "@/util/math";
+import { cos, dist, getMidpoint, project, sin } from "@/util/math";
 
 /** settings shared across functions */
 
@@ -45,7 +38,7 @@ let ryTarget = 0;
 /** efficient rgb tuple format */
 type Color = [number, number, number];
 
-interface Dot {
+type Dot = {
   /** position in 3d space */
   point: Point3d;
   /** 3d position projected into 2d for canvas rendering */
@@ -53,24 +46,24 @@ interface Dot {
   /** target and actual color */
   color: Color;
   colorTarget: Color;
-}
+};
 
-interface Link {
+type Link = {
   /** dots to link together */
   from: Dot;
   to: Dot;
   /** target and actual color (in efficient rgb tuple format) */
   color: Color;
   colorTarget: Color;
-}
+};
 
 /** globals */
 let canvas = null as HTMLCanvasElement | null;
 let ctx = null as CanvasRenderingContext2D | null;
 let width = 0;
 let height = 0;
-let dots: Array<Dot> = [];
-let links: Array<Link> = [];
+let dots: Dot[] = [];
+let links: Link[] = [];
 
 /** resize canvas */
 function resize() {

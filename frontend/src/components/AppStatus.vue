@@ -17,9 +17,22 @@
   </AppLink>
 </template>
 
+<script lang="ts">
+/** possible status codes */
+export const Codes = [
+  "loading",
+  "success",
+  "warning",
+  "error",
+  "paused",
+  "unknown",
+] as const;
+
+export type Code = (typeof Codes)[number];
+</script>
+
 <script setup lang="ts">
 import { computed } from "vue";
-import { Code } from "./AppStatus";
 
 /** icons for status codes */
 const icons: Record<Code, string> = {
@@ -31,12 +44,12 @@ const icons: Record<Code, string> = {
   unknown: "question-circle",
 };
 
-interface Props {
+type Props = {
   /** status code */
   code: Code;
   /** link */
   link?: string;
-}
+};
 
 const props = defineProps<Props>();
 

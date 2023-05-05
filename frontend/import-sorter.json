@@ -1,0 +1,7 @@
+{
+  "autoFormat": "off",
+  "emptyLinesBetweenGroups": 0,
+  "formatExports": false,
+  "wrappingStyle": "prettier",
+  "groupRules": ["^vue", "^\\w", "^@\\w", "^@\\/", { "flags": "scripts" }]
+}

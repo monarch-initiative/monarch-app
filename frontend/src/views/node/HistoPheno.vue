@@ -10,22 +10,24 @@
 </template>
 
 <script setup lang="ts">
+import { computed, watch } from "vue";
 import { useRoute } from "vue-router";
 import Apex from "vue3-apexcharts";
 import { getHistoPheno } from "@/api/histopheno";
-import { Node } from "@/api/model";
+import type { Node } from "@/api/model";
 import { useQuery } from "@/util/composables";
 import { ensure } from "@/util/object";
-import { computed, watch } from "vue";
-import theme from "@/global/variables.module.scss";
+
+// import theme from "@/global/variables.module.scss";
 
 /** route info */
 const route = useRoute();
 
-interface Props {
+type Props = {
   /** current node */
   node: Node;
-}
+};
+
 const props = defineProps<Props>();
 
 /** chart options */
@@ -40,7 +42,7 @@ const options = computed(() => ({
   title: {
     text: `Breakdown of phenotypes associated with ${props.node.name}`,
   },
-  colors: [theme.theme],
+  colors: ["#00acc1"],
   plotOptions: {
     bar: {
       horizontal: true,

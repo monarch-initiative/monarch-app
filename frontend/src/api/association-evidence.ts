@@ -1,28 +1,28 @@
-import { biolink, request } from ".";
+import { flatMap, uniq, uniqBy } from "lodash";
+import { biolink, request } from "./";
 import { mapCategory } from "./categories";
-import { uniq, flatMap, uniqBy } from "lodash";
 import { getXrefLink } from "./xrefs";
 
-interface _EvidenceType {
+type _EvidenceType = {
   id: string;
   label?: string;
-}
+};
 
-interface _Publication {
+type _Publication = {
   id: string;
   label?: string;
-}
+};
 
 /** evidence associations (from backend) */
-interface _Evidences {
-  associations: Array<{
+type _Evidences = {
+  associations: {
     id: string;
     type?: string;
     subject: {
       id: string;
       label: string;
       iri: string;
-      category?: Array<string> | null;
+      category?: string[] | null;
       taxon: {
         id: null;
         label: null;
@@ -32,7 +32,7 @@ interface _Evidences {
       id: string;
       label: string;
       iri: string;
-      category?: Array<string> | null;
+      category?: string[] | null;
       taxon?: {
         id: null;
         label: null;
@@ -42,16 +42,16 @@ interface _Evidences {
       id: string;
       label: string;
       iri: string;
-      category?: Array<string> | null;
+      category?: string[] | null;
       inverse: boolean;
     };
-    evidence_types?: Array<_EvidenceType>;
-    provided_by?: Array<string>;
-    publications?: Array<_Publication>;
-    object_eq?: Array<string>;
-    subject_eq?: Array<string>;
-  }>;
-}
+    evidence_types?: _EvidenceType[];
+    provided_by?: string[];
+    publications?: _Publication[];
+    object_eq?: string[];
+    subject_eq?: string[];
+  }[];
+};
 
 /** convert evidence code into desired format */
 const mapCode = (code: _EvidenceType) => ({
@@ -140,20 +140,20 @@ export const getAssociationEvidence = async (
 };
 
 /** summary/overview of evidence */
-interface Summary {
-  codes: Array<{
+type Summary = {
+  codes: {
     name: string;
     link: string;
-  }>;
-  publications: Array<{
+  }[];
+  publications: {
     name: string;
     link: string;
-  }>;
-  sources: Array<string>;
-}
+  }[];
+  sources: string[];
+};
 
 /** singular evidence */
-interface Evidence {
+export type Evidence = {
   /** subject of association */
   subject: {
     id: string;
@@ -180,35 +180,35 @@ interface Evidence {
   };
 
   /** evidence codes (add explanation of meaning) */
-  codes: Array<{
+  codes: {
     name: string;
     link: string;
-  }>;
+  }[];
 
   /** publications (add explanation of meaning) */
-  publications: Array<{
+  publications: {
     name: string;
     link: string;
-  }>;
+  }[];
 
   /** sources (add explanation of meaning) */
-  sources: Array<{
+  sources: {
     name: string;
     link: string;
-  }>;
+  }[];
 
   /** references (add explanation of meaning) */
-  references: Array<{
+  references: {
     name: string;
     link: string;
-  }>;
-}
+  }[];
+};
 
 /** detailed data of evidence */
-type Table = Array<Evidence>;
+type Table = Evidence[];
 
 /** plural evidence (for frontend) */
-export interface Evidences {
+export type Evidences = {
   summary: Summary;
   table: Table;
-}
+};

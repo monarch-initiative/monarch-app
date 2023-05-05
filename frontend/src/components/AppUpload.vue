@@ -29,9 +29,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-interface Emits {
+type Emits = {
   (event: "upload", content: string, filename: string): void;
-}
+};
 
 const emit = defineEmits<Emits>();
 

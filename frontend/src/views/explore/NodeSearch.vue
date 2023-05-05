@@ -23,7 +23,7 @@
         <AppSelectMulti
           v-if="filter.length"
           v-model="activeFilters[name]"
-          v-tooltip="`${startCase(name)} filter`"
+          v-tooltip="`${startCase(String(name))} filter`"
           :name="`${name}`"
           :options="availableFilters[name]"
           :show-counts="showCounts"
@@ -107,23 +107,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
-import { groupBy, isEqual, kebabCase, sortBy, startCase, uniq } from "lodash";
-import AppSelectAutocomplete from "@/components/AppSelectAutocomplete.vue";
-import { Options as AutocompleteOptions } from "@/components/AppSelectAutocomplete";
-import AppWrapper from "@/components/AppWrapper.vue";
-import {
-  getAutocompleteResults,
-  getSearchResults,
-  SearchResults,
-} from "@/api/node-search";
-import AppSelectMulti from "@/components/AppSelectMulti.vue";
-import { Options as MultiOptions } from "@/components/AppSelectMulti";
+import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { groupBy, isEqual, kebabCase, sortBy, startCase, uniq } from "lodash";
 import { filtersToQuery } from "@/api/facets";
-import { useQuery } from "@/util/composables";
+import type { SearchResults } from "@/api/node-search";
+import { getAutocompleteResults, getSearchResults } from "@/api/node-search";
+import type { Options as AutocompleteOptions } from "@/components/AppSelectAutocomplete.vue";
+import AppSelectAutocomplete from "@/components/AppSelectAutocomplete.vue";
+import type { Options as MultiOptions } from "@/components/AppSelectMulti.vue";
+import AppSelectMulti from "@/components/AppSelectMulti.vue";
+import AppWrapper from "@/components/AppWrapper.vue";
+import { addEntry, deleteEntry, history } from "@/global/history";
 import { appTitle } from "@/global/meta";
-import { history, addEntry, deleteEntry } from "@/global/history";
+import { useQuery } from "@/util/composables";
 
 /** route info */
 const router = useRouter();
@@ -136,8 +133,8 @@ const page = ref(0);
 /** results per page */
 const perPage = ref(10);
 /** filters (facets) for search */
-const availableFilters = ref<Record<string, MultiOptions>>({});
-const activeFilters = ref<Record<string, MultiOptions>>({});
+const availableFilters = ref<{ [key: string]: MultiOptions }>({});
+const activeFilters = ref<{ [key: string]: MultiOptions }>({});
 
 /** when user focuses text box */
 async function onFocus() {
@@ -265,7 +262,7 @@ const to = computed(
 );
 
 /** pages of results */
-const pages = computed((): Array<Array<number>> => {
+const pages = computed((): number[][] => {
   /** get full list of pages */
   const pages = Array(Math.ceil(results.value.count / perPage.value))
     .fill(0)
@@ -292,7 +289,7 @@ const pages = computed((): Array<Array<number>> => {
   list = uniq(list).filter((page) => page >= 0 && page <= pages.length - 1);
 
   /** split into sub lists where page numbers are not sequential */
-  const splitList: Array<Array<number>> = [[]];
+  const splitList: number[][] = [[]];
   for (let index = 0; index < list.length; index++) {
     if (list[index - 1] && list[index] - list[index - 1] > 1)
       splitList.push([]);
@@ -319,7 +316,7 @@ watch(
 /** when search changes */
 watch(search, async () => {
   /** update url */
-  const query: Record<string, string> = {};
+  const query: { [key: string]: string } = {};
   if (search.value) query.search = search.value;
   await router.push({ ...route, name: "Explore", query });
 });

@@ -11,6 +11,7 @@
       <div
         v-if="modelValue"
         class="overlay"
+        aria-hidden="true"
         @mousedown="close"
         @touchstart="close"
       >
@@ -38,23 +39,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick, onUpdated, onBeforeUpdate } from "vue";
+import { nextTick, onBeforeUpdate, onUpdated, ref } from "vue";
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import { useEventListener } from "@vueuse/core";
 
-interface Props {
+type Props = {
   /** two-way bound open state */
   modelValue?: boolean;
   /** modal aria label */
   label: string;
-}
+};
 
 const props = defineProps<Props>();
 
-interface Emits {
+type Emits = {
   /** two-way bound open state */
   (event: "update:modelValue", value: boolean): void;
-}
+};
 
 const emit = defineEmits<Emits>();
 

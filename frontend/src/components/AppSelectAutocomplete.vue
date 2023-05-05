@@ -91,15 +91,33 @@
   </div>
 </template>
 
+<script lang="ts">
+export type OptionsFunc = (search: string) => Promise<Options>;
+
+export type Options = Option[];
+
+export type Option = {
+  /** icon name */
+  icon?: string;
+  /** display name */
+  name: string;
+  /** highlighting html */
+  highlight?: string;
+  /** info col */
+  info?: string;
+  /** tooltip on hover */
+  tooltip?: string;
+};
+</script>
+
 <script setup lang="ts">
-import { ref, watch, nextTick, computed } from "vue";
+import { computed, nextTick, ref, watch } from "vue";
 import { uniqueId } from "lodash";
-import { OptionsFunc } from "./AppSelectAutocomplete";
-import { wrap } from "@/util/math";
 import { useFloating, useQuery } from "@/util/composables";
+import { wrap } from "@/util/math";
 import AppTextbox from "./AppTextbox.vue";
 
-interface Props {
+type Props = {
   /** two-way bound search state */
   modelValue?: string;
   /** name of the field */
@@ -110,11 +128,11 @@ interface Props {
   options: OptionsFunc;
   /** description to show below box */
   description?: string;
-}
+};
 
 const props = defineProps<Props>();
 
-interface Emits {
+type Emits = {
   /** two-way bound search state */
   (event: "update:modelValue", value: string): void;
   /** when input focused */
@@ -123,7 +141,7 @@ interface Emits {
   (event: "change", value: string): void;
   /** when user wants to delete an entry */
   (event: "delete", value: string): void;
-}
+};
 
 const emit = defineEmits<Emits>();
 

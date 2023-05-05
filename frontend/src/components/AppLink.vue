@@ -36,20 +36,20 @@
 <script setup lang="ts">
 import { computed, useSlots } from "vue";
 import { mapValues } from "lodash";
-import { isExternal, isAbsolute } from "@/util/url";
 import { stringify } from "@/util/object";
+import { isAbsolute, isExternal } from "@/util/url";
 
-interface Props {
+type Props = {
   /** location to link to */
   to: string;
   /**
    * state data to attach on navigation. object/array values get stringified.
    * https://developer.mozilla.org/en-US/docs/Web/API/History/pushState
    */
-  state?: Record<string, unknown>;
+  state?: { [key: string]: unknown };
   /** whether to forcibly forgo external icon when link is external */
   noIcon?: boolean;
-}
+};
 
 const props = withDefaults(defineProps<Props>(), {
   noIcon: false,

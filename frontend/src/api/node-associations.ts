@@ -1,21 +1,22 @@
-import { getXrefLink } from "./xrefs";
-import { biolink, request } from ".";
-import { Filters, Query, facetsToFilters, queryToParams } from "./facets";
+import type { Sort } from "@/components/AppTable.vue";
+import { biolink, request } from "./";
+import { getAssociationEndpoint, mapCategory } from "./categories";
+import type { Filters, Query } from "./facets";
+import { facetsToFilters, queryToParams } from "./facets";
 import { getSummaries } from "./publications";
-import { mapCategory, getAssociationEndpoint } from "./categories";
-import { Sort } from "@/components/AppTable";
+import { getXrefLink } from "./xrefs";
 
 /** node associations (from backend) */
-interface _Associations {
+type _Associations = {
   numFound: number;
-  associations: Array<{
+  associations: {
     id: string;
     type?: string;
     subject: {
       id: string;
       label: string;
       iri: string;
-      category?: Array<string> | null;
+      category?: string[] | null;
       taxon: {
         id: null;
         label: null;
@@ -25,7 +26,7 @@ interface _Associations {
       id: string;
       label: string;
       iri: string;
-      category?: Array<string> | null;
+      category?: string[] | null;
       taxon?: {
         id: null;
         label: null;
@@ -35,18 +36,18 @@ interface _Associations {
       id: string;
       label: string;
       iri: string;
-      category?: Array<string> | null;
+      category?: string[] | null;
       inverse: boolean;
     };
-    evidence_types?: Array<{
+    evidence_types?: {
       id: string;
       label: string;
-    }>;
-    provided_by?: Array<string>;
-    publications?: Array<{
+    }[];
+    provided_by?: string[];
+    publications?: {
       id: string;
       label: string;
-    }>;
+    }[];
     frequency?: {
       id?: string;
       label?: string;
@@ -55,9 +56,9 @@ interface _Associations {
       id?: string;
       label?: string;
     };
-  }>;
-  facet_counts: Record<string, Record<string, number>>;
-}
+  }[];
+  facet_counts: { [key: string]: { [key: string]: number } };
+};
 
 /** get associations between a node and a category */
 export const getTabulatedAssociations = async (
@@ -190,7 +191,7 @@ export const getTabulatedAssociations = async (
 };
 
 /** single association */
-export interface Association {
+export type Association = {
   /** allow arbitrary key access */
   [key: string]: unknown;
 
@@ -223,7 +224,7 @@ export interface Association {
   };
 
   /** evidence info supporting this association */
-  evidence: Array<Record<string, unknown>>;
+  evidence: { [key: string]: unknown }[];
 
   /** mixed-type total of pieces of supporting evidence */
   supportCount: number;
@@ -251,15 +252,15 @@ export interface Association {
   year?: string;
   /** publication publisher */
   publisher?: string;
-}
+};
 
 /** node associations (for frontend) */
-export interface Associations {
+export type Associations = {
   count: number;
-  associations: Array<Association>;
+  associations: Association[];
 
   facets: Filters;
-}
+};
 
 /** get top few associations */
 export const getTopAssociations = async (
