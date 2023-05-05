@@ -7,10 +7,11 @@ description: Data datamodels for the Monarch Initiative data access library
 imports:
 - linkml:types
 default_range: string
+
 enums:
-  AssociationLabel:
+  AssociationTypeEnum:
     description: >-
-      A grouping label for associations, which are not necessarily 1:1 with
+      A grouping label for association types, which are not necessarily 1:1 with
       biolink categories or predicates
     permissible_values:
       disease_phenotype:
@@ -45,14 +46,13 @@ enums:
           description: >-
               Any association between a gene and molecular activity
           meaning: biolink:MacromolecularMachineToMolecularActivityAssociation
-      gene_associated_with_disease:
+      correlated_gene:
         description: >-
-          Association between a gene and a disease that is not known to affect risk
-        meaning: biolink:gene_associated_with_disease
-      gene_affects_risk_for_disease:
+          Association between a gene and a disease that has not been established to be causal
+      causal_gene:
           description: >-
-              Association between a gene and a disease that is known to affect risk
-          meaning: biolink:affects_risk_for
+              Association between a gene and a disease that is known to be causal
+          meaning: biolink:causal
 
 classes:
   Association:
@@ -88,13 +88,6 @@ classes:
     - stage_qualifier
     - pathway
     - relation
-  AssociationCount:
-    is_a: FacetValue
-    slots:
-      - id
-    slot_usage:
-      label:
-        identifier: false
   AssociationResults:
     is_a: Results
     slots: 
@@ -128,7 +121,14 @@ classes:
       - items
     slot_usage:
       items:
-        range: AssociationCount
+        range: HistoBin
+  HistoBin:
+    is_a: FacetValue
+    slots:
+      - id
+    slot_usage:
+      label:
+        identifier: false
   Results:
     abstract: true
     slots:
@@ -163,14 +163,44 @@ classes:
     slot_usage:
       label:
         identifier: true
+  AssociationTypeMapping:
+    description: >-
+      A data class to hold the necessary information to produce association type counts for given 
+      entities with appropriate directional labels
+    slots:
+      - association_type
+      - subject_label
+      - object_label
+      - category
+      - predicate
+    slot_usage:
+      subject_label:
+        description: A label to describe the subjects of the association type as a whole for use in the UI
+      object_label:
+        description: A label to describe the objects of the association type as a whole for use in the UI
+      category:
+        description: The biolink categories to use in queries for this association type, assuming OR semantics
+        multivalued: true
+      predicate:
+        description: The biolink predicate to use in queries for this association type, assuming OR semantics
+        multivalued: true
+  AssociationCount:
+    is_a: FacetValue
+    slots:
+      - association_type
+  AssociationCountList:
+    description: Container class for a list of association counts
+    slots:
+      - items
+    slot_usage:
+      items:
+        range: AssociationCount
+
 slots:
   aggregator_knowledge_source:
     multivalued: true
-  associations:
-    inlined: true
-    inlined_as_list: true
-    multivalued: true
-    range: Association
+  association_type:
+    range: AssociationTypeEnum
   category:
     multivalued: true
   count:

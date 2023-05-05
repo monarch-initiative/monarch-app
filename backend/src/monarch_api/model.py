@@ -20,11 +20,12 @@ class ConfiguredBaseModel(
     underscore_attrs_are_private=True,
     extra="forbid",
     arbitrary_types_allowed=True,
+    use_enum_values=True,
 ):
     pass
 
 
-class AssociationLabel(str, Enum):
+class AssociationTypeEnum(str, Enum):
 
     disease_phenotype = "disease_phenotype"
     gene_phenotype = "gene_phenotype"
@@ -34,8 +35,8 @@ class AssociationLabel(str, Enum):
     gene_orthology = "gene_orthology"
     chemical_pathway = "chemical_pathway"
     gene_function = "gene_function"
-    gene_associated_with_disease = "gene_associated_with_disease"
-    gene_affects_risk_for_disease = "gene_affects_risk_for_disease"
+    correlated_gene = "correlated_gene"
+    causal_gene = "causal_gene"
 
 
 class Taxon(ConfiguredBaseModel):
@@ -123,7 +124,7 @@ class Node(Entity):
 class HistoPheno(ConfiguredBaseModel):
 
     id: str = Field(None)
-    items: Optional[List[AssociationCount]] = Field(
+    items: Optional[List[HistoBin]] = Field(
         default_factory=list,
         description="""A collection of items, with the type to be overriden by slot_usage""",
     )
@@ -198,7 +199,7 @@ class FacetValue(ConfiguredBaseModel):
     )
 
 
-class AssociationCount(FacetValue):
+class HistoBin(FacetValue):
 
     id: str = Field(None)
     label: Optional[str] = Field(None)
@@ -211,6 +212,50 @@ class FacetField(ConfiguredBaseModel):
 
     label: Optional[str] = Field(None)
     facet_values: Optional[Dict[str, FacetValue]] = Field(default_factory=dict)
+
+
+class AssociationTypeMapping(ConfiguredBaseModel):
+    """
+    A data class to hold the necessary information to produce association type counts for given  entities with appropriate directional labels
+    """
+
+    association_type: Optional[AssociationTypeEnum] = Field(None)
+    subject_label: Optional[str] = Field(
+        None,
+        description="""A label to describe the subjects of the association type as a whole for use in the UI""",
+    )
+    object_label: Optional[str] = Field(
+        None,
+        description="""A label to describe the objects of the association type as a whole for use in the UI""",
+    )
+    category: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""The biolink categories to use in queries for this association type, assuming OR semantics""",
+    )
+    predicate: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""The biolink predicate to use in queries for this association type, assuming OR semantics""",
+    )
+
+
+class AssociationCount(FacetValue):
+
+    association_type: Optional[AssociationTypeEnum] = Field(None)
+    label: Optional[str] = Field(None)
+    count: Optional[int] = Field(
+        None, description="""number of items a this facet value"""
+    )
+
+
+class AssociationCountList(ConfiguredBaseModel):
+    """
+    Container class for a list of association counts
+    """
+
+    items: Optional[List[AssociationCount]] = Field(
+        default_factory=list,
+        description="""A collection of items, with the type to be overriden by slot_usage""",
+    )
 
 
 # Update forward refs
@@ -227,5 +272,8 @@ EntityResults.update_forward_refs()
 SearchResult.update_forward_refs()
 SearchResults.update_forward_refs()
 FacetValue.update_forward_refs()
-AssociationCount.update_forward_refs()
+HistoBin.update_forward_refs()
 FacetField.update_forward_refs()
+AssociationTypeMapping.update_forward_refs()
+AssociationCount.update_forward_refs()
+AssociationCountList.update_forward_refs()

@@ -1,12 +1,13 @@
 export type NodeId = string;
 export type TaxonId = string;
 export type AssociationId = string;
-export type AssociationCountId = string;
 export type EntityId = string;
 export type HistoPhenoId = string;
+export type HistoBinId = string;
 export type SearchResultId = string;
 export type FacetValueLabel = string;
 export type FacetFieldLabel = string;
+export type AssociationCountLabel = string;
 
 export interface Node extends Entity {
   taxon?: Taxon;
@@ -71,12 +72,6 @@ export interface Association {
   relation?: string;
 }
 
-export interface AssociationCount extends FacetValue {
-  id?: string;
-  label?: string;
-  /** number of items a this facet value */ count?: number;
-}
-
 export interface AssociationResults extends Results {
   /** A collection of items, with the type to be overriden by slot_usage */ items?: Association[];
   limit?: number;
@@ -107,7 +102,13 @@ export interface EntityResults extends Results {
 
 export interface HistoPheno {
   id?: string;
-  /** A collection of items, with the type to be overriden by slot_usage */ items?: AssociationCount[];
+  /** A collection of items, with the type to be overriden by slot_usage */ items?: HistoBin[];
+}
+
+export interface HistoBin extends FacetValue {
+  id?: string;
+  label?: string;
+  /** number of items a this facet value */ count?: number;
 }
 
 export interface Results {
@@ -149,4 +150,37 @@ export interface FacetValue {
 export interface FacetField {
   label?: string;
   facet_values?: { [index: FacetValueLabel]: FacetValue };
+}
+/**
+ * A data class to hold the necessary information to produce association type
+ * counts for given entities with appropriate directional labels
+ */
+export interface AssociationTypeMapping {
+  association_type?: string;
+  /**
+   * A label to describe the subjects of the association type as a whole for
+   * use in the UI
+   */ subject_label?: string;
+  /**
+   * A label to describe the objects of the association type as a whole for
+   * use in the UI
+   */ object_label?: string;
+  /**
+   * The biolink categories to use in queries for this association type,
+   * assuming OR semantics
+   */ category?: string;
+  /**
+   * The biolink predicate to use in queries for this association type,
+   * assuming OR semantics
+   */ predicate?: string;
+}
+
+export interface AssociationCount extends FacetValue {
+  association_type?: string;
+  label?: string;
+  /** number of items a this facet value */ count?: number;
+}
+/** Container class for a list of association counts */
+export interface AssociationCountList {
+  /** A collection of items, with the type to be overriden by slot_usage */ items?: AssociationCount[];
 }
