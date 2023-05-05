@@ -50,7 +50,7 @@ def get_associated_entities(
     object: str = None,
 ) -> List[Entity]:
     """
-    Get a list of entities associated with this_entity fetched from associations
+    Get a list of entities directly associated with this_entity fetched from associations
     in the Solr index
 
     Args:
@@ -61,15 +61,17 @@ def get_associated_entities(
         predicate (str, optional): a predicate value. Defaults to None.
         object (str, optional): an entity ID occurring in the object. Defaults to None.
     """
-    associated_entities = []
-    for association in si.get_associations(
-        entity=entity, subject=subject, predicate=predicate, object=object, offset=0
-        ).items:
-        associated_entity = get_associated_entity(association, this_entity)
-        if associated_entity not in associated_entities:
-            associated_entities.append(associated_entity)
-
-    return associated_entities
+    return [
+        get_associated_entity(association, this_entity)
+        for association in si.get_associations(
+            entity=entity,
+            subject=subject,
+            predicate=predicate,
+            object=object,
+            direct=True,
+            offset=0,
+        ).items
+    ]
 
 
 def get_node_hierarchy(entity: Entity, si: SolrImplementation) -> NodeHierarchy:

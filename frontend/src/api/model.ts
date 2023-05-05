@@ -74,9 +74,9 @@ export interface Association {
 
 export interface AssociationResults extends Results {
   /** A collection of items, with the type to be overriden by slot_usage */ items?: Association[];
-  limit?: number;
-  offset?: number;
-  total?: number;
+  /** number of items to return in a response */ limit?: number;
+  /** offset into the total number of items */ offset?: number;
+  /** total number of items matching a query */ total?: number;
 }
 
 export interface Entity {
@@ -95,9 +95,9 @@ export interface Entity {
 
 export interface EntityResults extends Results {
   /** A collection of items, with the type to be overriden by slot_usage */ items?: Entity[];
-  limit?: number;
-  offset?: number;
-  total?: number;
+  /** number of items to return in a response */ limit?: number;
+  /** offset into the total number of items */ offset?: number;
+  /** total number of items matching a query */ total?: number;
 }
 
 export interface HistoPheno {
@@ -108,13 +108,13 @@ export interface HistoPheno {
 export interface HistoBin extends FacetValue {
   id?: string;
   label?: string;
-  /** number of items a this facet value */ count?: number;
+  /** count of documents */ count?: number;
 }
 
 export interface Results {
-  limit?: number;
-  offset?: number;
-  total?: number;
+  /** number of items to return in a response */ limit?: number;
+  /** offset into the total number of items */ offset?: number;
+  /** total number of items matching a query */ total?: number;
 }
 
 export interface SearchResult extends Entity {
@@ -135,16 +135,21 @@ export interface SearchResult extends Entity {
 
 export interface SearchResults extends Results {
   /** A collection of items, with the type to be overriden by slot_usage */ items?: SearchResult[];
-  facet_fields?: { [index: FacetFieldLabel]: FacetField };
-  facet_queries?: { [index: FacetValueLabel]: FacetValue };
-  limit?: number;
-  offset?: number;
-  total?: number;
+  /** Collection of facet field responses with the field values and counts */ facet_fields?: {
+    [index: FacetFieldLabel]: FacetField;
+  };
+  /**
+   * Collection of facet query responses with the query string values and
+   * counts
+   */ facet_queries?: { [index: FacetValueLabel]: FacetValue };
+  /** number of items to return in a response */ limit?: number;
+  /** offset into the total number of items */ offset?: number;
+  /** total number of items matching a query */ total?: number;
 }
 
 export interface FacetValue {
   label?: string;
-  /** number of items a this facet value */ count?: number;
+  /** count of documents */ count?: number;
 }
 
 export interface FacetField {
@@ -158,27 +163,27 @@ export interface FacetField {
 export interface AssociationTypeMapping {
   association_type?: string;
   /**
-   * A label to describe the subjects of the association type as a whole for use
-   * in the UI
+   * A label to describe the subjects of the association type as a whole for
+   * use in the UI
    */ subject_label?: string;
   /**
-   * A label to describe the objects of the association type as a whole for use
-   * in the UI
+   * A label to describe the objects of the association type as a whole for
+   * use in the UI
    */ object_label?: string;
   /**
    * The biolink categories to use in queries for this association type,
    * assuming OR semantics
    */ category?: string;
   /**
-   * The biolink predicate to use in queries for this association type, assuming
-   * OR semantics
+   * The biolink predicate to use in queries for this association type,
+   * assuming OR semantics
    */ predicate?: string;
 }
 
 export interface AssociationCount extends FacetValue {
   association_type?: string;
   label?: string;
-  /** number of items a this facet value */ count?: number;
+  /** count of documents */ count?: number;
 }
 /** Container class for a list of association counts */
 export interface AssociationCountList {

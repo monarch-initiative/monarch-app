@@ -1,11 +1,11 @@
 id: https://w3id.org/monarch/monarch-py
 name: monarch-py
+description: Data datamodels for the Monarch Initiative data access library
 prefixes:
   linkml: https://w3id.org/linkml/
   biolink: https://w3id.org/biolink/
-description: Data datamodels for the Monarch Initiative data access library
 imports:
-- linkml:types
+  - linkml:types
 default_range: string
 
 enums:
@@ -140,6 +140,12 @@ classes:
     slots:
       - highlight
       - score
+    slot_usage:
+      category:
+        required: true
+      name:
+        required: true
+
   SearchResults:
     is_a: Results
     slots:
@@ -204,15 +210,17 @@ slots:
   category:
     multivalued: true
   count:
-    description: number of items a this facet value
+    description: count of documents
     range: integer
   description:
     range: string
   facet_fields:
+    description: Collection of facet field responses with the field values and counts
     inlined: true
     multivalued: true
     range: FacetField
   facet_queries:
+    description: Collection of facet query responses with the query string values and counts
     inlined: true
     multivalued: true
     range: FacetValue
@@ -230,6 +238,7 @@ slots:
   id:
     identifier: true
     range: string
+    required: true
   in_taxon:
     range: string
   items:
@@ -238,12 +247,16 @@ slots:
     inlined: true
     inlined_as_list: true
     multivalued: true
+    required: true
   knowledge_source:
     multivalued: true
   label:
     range: string
+    required: true
   limit:
+    description: number of items to return in a response
     range: integer
+    required: true
   name:
     range: string
   negated:
@@ -261,7 +274,9 @@ slots:
   object_namespace:
     range: string
   offset:
+    description: offset into the total number of items
     range: integer
+    required: true
   onset_qualifier:
     range: string
   original_object:
@@ -308,7 +323,9 @@ slots:
   synonym:
     multivalued: true
   total:
+    description: total number of items matching a query
     range: integer
+    required: true
   type:
     range: string
   xref:

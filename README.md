@@ -7,8 +7,8 @@
 
 This repo contains the source code for the website (frontend) and API (backend) for the Monarch Initiative.
 
-[The Website](https://monarch-initiative.github.io/monarch-app/)
-[Documentation](https://monarch-initiative.github.io/monarch-app/docs)
+[The Website](https://monarch-app.monarchinitiative.org)
+[Documentation](https://monarch-app.monarchinitiative.org/docs)
 
 ### For developers
 

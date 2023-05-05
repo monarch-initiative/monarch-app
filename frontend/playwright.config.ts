@@ -49,9 +49,16 @@ const config: PlaywrightTestConfig = {
 
   /* run local dev server before starting tests */
   webServer: {
-    command: "vite dev --mode test",
+    /**
+     * vite uses esbuild for dev but parcel for build. results should be the
+     * same except for very rare cases (like the very old phenogrid). cover both
+     * situations w/ local and CI. of the two, build should be more reflective
+     * of actual production app.
+     */
+    command: process.env.CI
+      ? "vite build --mode test && vite preview --port 5173"
+      : "vite dev --mode test",
     port: 5173,
-    reuseExistingServer: !process.env.CI,
   },
 };
 
