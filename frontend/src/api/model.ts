@@ -1,17 +1,18 @@
 export type NodeId = string;
 export type TaxonId = string;
-export type AssociationCountId = string;
 export type AssociationId = string;
 export type EntityId = string;
 export type HistoPhenoId = string;
+export type HistoBinId = string;
 export type SearchResultId = string;
 export type FacetValueLabel = string;
 export type FacetFieldLabel = string;
+export type AssociationCountLabel = string;
 
 export interface Node extends Entity {
   taxon?: Taxon;
   inheritance?: Entity;
-  association_counts?: { [index: AssociationCountId]: AssociationCount };
+  association_counts?: AssociationCount[];
   node_hierarchy?: NodeHierarchy;
   id?: string;
   category?: string;
