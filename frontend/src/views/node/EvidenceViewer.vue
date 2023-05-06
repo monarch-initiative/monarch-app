@@ -172,7 +172,7 @@ import { onMounted, ref, watch } from "vue";
 import type { Evidence } from "@/api/association-evidence";
 import { getAssociationEvidence } from "@/api/association-evidence";
 import type { Association } from "@/api/node-associations";
-import type { Node } from "@/api/node-lookup";
+import type { Node } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";

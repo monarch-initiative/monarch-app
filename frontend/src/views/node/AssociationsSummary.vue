@@ -67,9 +67,9 @@
 
 <script setup lang="ts">
 import { onMounted, watch } from "vue";
-import type { Association } from "@/api/node-associations";
+import type { Association } from "@/api/model";
 import { getTopAssociations } from "@/api/node-associations";
-import type { Node } from "@/api/node-lookup";
+import type { Node } from "@/api/model";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppRelationBadge from "@/components/AppRelationBadge.vue";
 import { useQuery } from "@/util/composables";
@@ -101,7 +101,7 @@ const {
 } = useQuery(
   async function () {
     /** catch case where no association categories available */
-    if (!props.node.associationCounts.length)
+    if (!props.node.association_counts?.length)
       throw new Error("No association info available");
 
     /** get association data */

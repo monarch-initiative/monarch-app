@@ -1,11 +1,9 @@
-<!--
-  node page title section, at top, below header. basic identifying info of node.
--->
+<!-- node page title section, at top, below header. basic identifying info of node. -->
 
 <template>
   <AppSection design="fill" class="section">
     <AppFlex dir="column" gap="small">
-      <AppHeading class="heading" :icon="`category-${getCategory(node)}`">
+      <AppHeading class="heading" :icon="`category-${kebabCase(node.category?.[0])}`">
         {{ node.name }}
       </AppHeading>
       <AppFlex>
@@ -13,7 +11,7 @@
           v-tooltip="'The category/type of this node'"
           design="small"
           color="secondary"
-          :text="getCategory(node)"
+          :text="kebabCase(node.category?.[0])"
         />
         <AppButton
           v-tooltip="'The ID of this node. Click to copy.'"
@@ -23,6 +21,7 @@
           :text="node.id"
           :copy="true"
         />
+        <!-- Remove or re-implement? -->
         <!-- <span
           v-if="node.id !== node.originalId"
           v-tooltip="
@@ -40,13 +39,7 @@
 <script setup lang="ts">
 import { kebabCase } from "lodash";
 import type { Node } from "@/api/model";
-import { ensure } from "@/util/object";
 
-// function to get first entry in node's category array
-function getCategory(node: Node): string {
-  const categories = ensure(node.category);
-  return kebabCase(categories[0]);
-}
 
 type Props = {
   /** current node */

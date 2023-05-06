@@ -63,8 +63,8 @@
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { getAssociationLabel } from "@/api/categories";
-import type { Association } from "@/api/node-associations";
-import type { Node } from "@/api/node-lookup";
+// import type { Association } from "@/api/node-associations";
+import type { Association, Node } from "@/api/model";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import type { Option, Options } from "@/components/AppSelectSingle.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
@@ -109,10 +109,10 @@ const association = ref<Association>();
 /** list of options for dropdown */
 const categoryOptions = computed(
   (): Options =>
-    props.node.associationCounts.map((association) => ({
-      id: association.id,
-      name: getAssociationLabel(association.id),
-      icon: `category-${association.id}`,
+    props.node.association_counts.map((association) => ({
+      id: association.label || "",
+      name: getAssociationLabel(association.label),
+      icon: `category-${association.label}`,
       count: association.count,
     }))
 );

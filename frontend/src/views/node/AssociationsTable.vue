@@ -102,7 +102,7 @@ import type { Filters } from "@/api/facets";
 import { filtersToQuery } from "@/api/facets";
 import type { Association } from "@/api/node-associations";
 import { getTabulatedAssociations } from "@/api/node-associations";
-import type { Node } from "@/api/node-lookup";
+import type { Node } from "@/api/model";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppRelationBadge from "@/components/AppRelationBadge.vue";
 import type { Options } from "@/components/AppSelectMulti.vue";
@@ -265,7 +265,7 @@ const {
     fresh: boolean
   ) {
     /** catch case where no association categories available */
-    if (!props.node.associationCounts.length)
+    if (!props.node.association_counts?.length)
       throw new Error("No association info available");
 
     /** get association data */

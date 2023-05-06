@@ -37,7 +37,7 @@
 <script setup lang="ts">
 import { watch } from "vue";
 import { useRoute } from "vue-router";
-import type { Node } from "@/api/node-lookup";
+import type { Node } from "@/api/model";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppRelationBadge from "@/components/AppRelationBadge.vue";
 import { breadcrumbs, updateBreadcrumbs } from "@/global/breadcrumbs";

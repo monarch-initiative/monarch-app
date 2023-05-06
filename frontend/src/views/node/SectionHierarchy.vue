@@ -80,8 +80,6 @@ import type { Node, NodeHierarchy } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
-// import type { Node } from "@/api/node-lookup";
-// import { getHierarchy } from "@/api/node-hierarchy";
 import { useQuery } from "@/util/composables";
 
 /** route info */

@@ -9,7 +9,7 @@
     <AppDetails>
       <!-- synonyms -->
       <AppDetail :blank="!node.synonym" title="Also Known As">
-        <p>{{ node.synonym }}</p>
+        <p>{{ node.synonym?.length ? node.synonym : "No synonyms found" }}</p>
       </AppDetail>
 
       <!-- symbol (gene specific) -->

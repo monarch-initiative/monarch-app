@@ -1,10 +1,9 @@
 from __future__ import annotations
-
+from datetime import datetime, date
 from enum import Enum
-from typing import Dict, List, Optional
-
-from pydantic import BaseModel as BaseModel
-from pydantic import Field
+from typing import List, Dict, Optional, Any, Union, Literal
+from pydantic import BaseModel as BaseModel, Field
+from linkml_runtime.linkml_model import Decimal
 
 metamodel_version = "None"
 version = "None"
@@ -125,11 +124,7 @@ class Node(Entity):
 class HistoPheno(ConfiguredBaseModel):
 
     id: str = Field(None)
-<<<<<<< HEAD
-    items: Optional[List[HistoBin]] = Field(
-=======
     items: List[HistoBin] = Field(
->>>>>>> main
         default_factory=list,
         description="""A collection of items, with the type to be overriden by slot_usage""",
     )
@@ -171,13 +166,8 @@ class SearchResult(Entity):
     )
     score: Optional[float] = Field(None)
     id: str = Field(None)
-<<<<<<< HEAD
-    category: Optional[List[str]] = Field(default_factory=list)
-    name: Optional[str] = Field(None)
-=======
     category: List[str] = Field(default_factory=list)
     name: str = Field(None)
->>>>>>> main
     description: Optional[str] = Field(None)
     xref: Optional[List[str]] = Field(default_factory=list)
     provided_by: Optional[str] = Field(None)
@@ -250,7 +240,7 @@ class AssociationTypeMapping(ConfiguredBaseModel):
     )
 
 
-class HistoBin(FacetValue):
+class AssociationCount(FacetValue):
 
     association_type: Optional[AssociationTypeEnum] = Field(None)
     label: str = Field(None)

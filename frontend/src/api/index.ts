@@ -1,7 +1,7 @@
 /** base api url */
 export const biolink = "https://api.monarchinitiative.org/api";
-export const monarch = "https://api-dev.monarchinitiative.org/v3/api";
-// export const monarch = "http://127.0.0.1:8000/v3/api";
+export const monarch =
+  import.meta.env.MONARCH_API || "https://api-dev.monarchinitiative.org/v3/api";
 
 /** environment mode */
 const mode = import.meta.env.MODE;

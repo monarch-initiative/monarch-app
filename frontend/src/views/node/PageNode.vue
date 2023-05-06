@@ -31,7 +31,7 @@
     <SectionHierarchy :node="node" />
     <SectionVisualization :node="node" />
     <!-- <SectionAssociations :node="node" /> -->
-    <!-- <SectionBreadcrumbs :node="node" />  -->
+    <SectionBreadcrumbs :node="node" /> 
 
     <Teleport to="body">
       <TheTableOfContents />
@@ -43,15 +43,14 @@
 import { nextTick, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import { kebabCase } from "lodash";
-// import SectionAssociations from "./SectionAssociations.vue";
-// import SectionBreadcrumbs from "./SectionBreadcrumbs.vue";
 import { getEntity } from "@/api/entity";
 import TheTableOfContents from "@/components/TheTableOfContents.vue";
-// import { lookupNode } from "@/api/node-lookup";
 import { addEntry } from "@/global/history";
 import { appDescription, appTitle } from "@/global/meta";
 import { scrollToHash } from "@/router";
 import { useQuery } from "@/util/composables";
+// import SectionAssociations from "./SectionAssociations.vue";
+import SectionBreadcrumbs from "./SectionBreadcrumbs.vue";
 import SectionDetails from "./SectionDetails.vue";
 import SectionHierarchy from "./SectionHierarchy.vue";
 import SectionOverview from "./SectionOverview.vue";
@@ -71,12 +70,8 @@ const {
   async function () {
     /** get node from route params */
     const { id = "" } = route.params;
-    // const { id = "", category = "" } = route.params;
-
-    /** get node information */
     const node_info = await getEntity(id as string);
-    // const old_info = await lookupNode(id as string, category as string);
-    // const association_counts_old = old_info.associationCounts;
+
     return node_info;
   },
 

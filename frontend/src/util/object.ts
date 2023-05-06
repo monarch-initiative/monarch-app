@@ -69,14 +69,3 @@ export const parse = (value: string, defaultValue: unknown = null) => {
     return defaultValue;
   }
 };
-
-/** function to ensure that argument is not null or undefined * */
-export const ensure = <T>(
-  argument: T | undefined | null,
-  message = "This value was promised to be there."
-): T => {
-  if (argument === undefined || argument === null) {
-    throw new TypeError(message);
-  }
-  return argument;
-};
