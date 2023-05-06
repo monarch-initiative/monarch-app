@@ -31,7 +31,7 @@
     <SectionHierarchy :node="node" />
     <SectionVisualization :node="node" />
     <!-- <SectionAssociations :node="node" /> -->
-    <SectionBreadcrumbs :node="node" /> 
+    <SectionBreadcrumbs :node="node" />
 
     <Teleport to="body">
       <TheTableOfContents />

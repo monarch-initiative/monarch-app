@@ -3,7 +3,10 @@
 <template>
   <AppSection design="fill" class="section">
     <AppFlex dir="column" gap="small">
-      <AppHeading class="heading" :icon="`category-${kebabCase(node.category?.[0])}`">
+      <AppHeading
+        class="heading"
+        :icon="`category-${kebabCase(node.category?.[0])}`"
+      >
         {{ node.name }}
       </AppHeading>
       <AppFlex>
@@ -39,7 +42,6 @@
 <script setup lang="ts">
 import { kebabCase } from "lodash";
 import type { Node } from "@/api/model";
-
 
 type Props = {
   /** current node */

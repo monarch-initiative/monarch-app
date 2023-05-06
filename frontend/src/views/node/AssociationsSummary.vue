@@ -67,9 +67,8 @@
 
 <script setup lang="ts">
 import { onMounted, watch } from "vue";
-import type { Association } from "@/api/model";
+import type { Association, Node } from "@/api/model";
 import { getTopAssociations } from "@/api/node-associations";
-import type { Node } from "@/api/model";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppRelationBadge from "@/components/AppRelationBadge.vue";
 import { useQuery } from "@/util/composables";
