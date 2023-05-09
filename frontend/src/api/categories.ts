@@ -24,7 +24,7 @@ export const getAssociationEndpoint = (category = ""): string => {
   if (category === "function") return category;
 
   /** regular pluralized (most cases) */
-  return `${category}s`;
+  return `${category}`;
 };
 
 /** from a category name, get how it should be labeled when viewing associations */
@@ -39,8 +39,7 @@ export const getAssociationLabel = (category = ""): string => {
   if (category === "causal-gene") return "Causal Genes";
   if (category === "correlated-gene") return "Correlated Genes";
 
-  /** regular pluralized (most cases) */
-  return `${startCase(category)}s`;
+  return `${startCase(category)}`;
 };
 
 /**

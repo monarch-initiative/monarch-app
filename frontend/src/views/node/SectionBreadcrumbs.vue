@@ -15,8 +15,8 @@
           @click.prevent.capture="$router.go(-breadcrumbs.length + index)"
         />
 
-        <!-- relation -->
-        <AppRelationBadge :relation="breadcrumb.relation" :vertical="true" />
+        <!-- predicate -->
+        <AppPredicateBadge :predicate="{id: breadcrumb.node.id, name: breadcrumb.predicate}" :vertical="true" />
       </template>
 
       <!-- ending/current node -->
@@ -39,7 +39,7 @@ import { watch } from "vue";
 import { useRoute } from "vue-router";
 import type { Node } from "@/api/model";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
-import AppRelationBadge from "@/components/AppRelationBadge.vue";
+import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
 import { breadcrumbs, updateBreadcrumbs } from "@/global/breadcrumbs";
 
 type Props = {

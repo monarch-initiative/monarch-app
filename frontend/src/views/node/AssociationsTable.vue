@@ -18,8 +18,8 @@
     v-model:start="start"
     v-model:search="search"
     :cols="cols"
-    :rows="associations.associations"
-    :total="associations.count"
+    :rows="associations.items"
+    :total="associations.total"
     :sort="sort"
     :available-filters="availableFilters"
     :active-filters="activeFilters"
@@ -33,15 +33,15 @@
     </template>
 
     <!-- type of association/relation -->
-    <template #relation="{ cell }">
-      <AppRelationBadge :relation="cell" />
+    <template #predicate="{ cell }">
+      <AppPredicateBadge :predicate="cell" />
     </template>
 
     <!-- "object" (what current node has an association with) -->
     <template #object="{ cell, row }">
       <AppNodeBadge
         :node="cell"
-        :breadcrumb="{ node, relation: row.relation }"
+        :breadcrumb="{ node, relation: row.predicate }"
       />
     </template>
 
@@ -99,12 +99,12 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
 import type { Filters } from "@/api/facets";
-import { filtersToQuery } from "@/api/facets";
-import type { Node } from "@/api/model";
-import type { Association } from "@/api/node-associations";
-import { getTabulatedAssociations } from "@/api/node-associations";
+// import { filtersToQuery } from "@/api/facets";
+import type { Association, Node } from "@/api/model";
+import { getTabulatedAssociations } from "@/api/associations";
+// import { getTabulatedAssociations } from "@/api/node-associations";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
-import AppRelationBadge from "@/components/AppRelationBadge.vue";
+import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
 import type { Options } from "@/components/AppSelectMulti.vue";
 import type { Col, Cols, Sort } from "@/components/AppTable.vue";
 import AppTable from "@/components/AppTable.vue";
@@ -145,13 +145,13 @@ const cols = computed((): Cols => {
     {
       id: "subject",
       key: "subject",
-      heading: props.node.category,
+      heading: props.node.category?.[0],
       width: "max-content",
       sortable: true,
     },
     {
-      id: "relation",
-      key: "relation",
+      id: "predicate",
+      key: "predicate",
       heading: "Association",
       width: "max-content",
       sortable: true,
@@ -176,13 +176,13 @@ const cols = computed((): Cols => {
   const extraCols: Cols = [];
 
   /** taxon column. exists for many categories, so just add if any row has taxon. */
-  if (associations.value.associations.some((association) => association.taxon))
-    extraCols.push({
-      id: "taxon",
-      key: "taxon",
-      heading: "Taxon",
-      width: "max-content",
-    });
+  // if (associations.value.items.some((association) => association.taxon))
+  //   extraCols.push({
+  //     id: "taxon",
+  //     key: "taxon",
+  //     heading: "Taxon",
+  //     width: "max-content",
+  //   });
 
   /** phenotype specific columns */
   if (props.selectedCategory === "phenotype") {
@@ -226,15 +226,10 @@ const cols = computed((): Cols => {
       }
     );
 
-  /**
-   * filter out extra columns with nothing in them (all rows for that col
-   * falsey)
-   */
-  /*
-  extraCols = extraCols.filter((col) =>
-    associations.value.some((association) => association[col.key || ""])
-  );
-  */
+  /** filter out extra columns with nothing in them (all rows for that col falsey) */
+  // extraCols = extraCols.filter((col) =>
+  //   associations.value.some((association) => association[col.key || ""])
+  // );
 
   /** put divider to separate base cols from extra cols */
   if (extraCols[0]) extraCols.unshift({ id: "divider" });
@@ -265,34 +260,31 @@ const {
     fresh: boolean
   ) {
     /** catch case where no association categories available */
-    if (!props.node.association_counts?.length)
+    if (!props.node.association_counts.length)
       throw new Error("No association info available");
 
-    /** get association data */
     const response = await getTabulatedAssociations(
       props.node.id,
-      props.node.category,
       props.selectedCategory,
       perPage.value,
       start.value,
-      search.value,
-      sort.value,
-      fresh ? undefined : filtersToQuery(availableFilters.value),
-      fresh ? undefined : filtersToQuery(activeFilters.value)
+      // search.value,
+      // sort.value,
+      // fresh ? undefined : filtersToQuery(availableFilters.value),
+      // fresh ? undefined : filtersToQuery(activeFilters.value)
     );
-
     return response;
   },
 
   /** default value */
-  { count: 0, associations: [], facets: {} },
+  { total: 0, items: [], limit: 0, offset: 1},
 
   /** on success */
   (response, [fresh]) => {
     /** update filters from facets returned from api, if a "fresh" search */
     if (fresh) {
-      availableFilters.value = { ...response.facets };
-      activeFilters.value = { ...response.facets };
+      // availableFilters.value = { ...response.facets };
+      // activeFilters.value = { ...response.facets };
     }
   }
 );
@@ -305,19 +297,17 @@ async function download() {
   /** warn user */
   snackbar(
     `Downloading data for ${Math.min(
-      associations.value.count,
+      associations.value.total,
       max
     )} table entries.` +
-      (associations.value.count >= 100 ? " This may take a minute." : "")
+      (associations.value.total >= 100 ? " This may take a minute." : "")
   );
 
   /** attempt to request all rows */
   const response = await getTabulatedAssociations(
     props.node.id,
-    props.node.category,
     props.selectedCategory,
     max,
-    0
   );
   downloadJson(response);
 }

@@ -30,7 +30,7 @@
 
       <!-- taxon (gene specific)-->
       <AppDetail
-        v-if="node.category === 'gene'"
+        v-if="node.category?.includes('biolink:Gene')"
         :blank="!node.taxon?.id"
         title="Taxon"
       >

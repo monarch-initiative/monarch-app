@@ -6,9 +6,9 @@
   <span class="node">
     <AppIcon
       v-if="icon"
-      v-tooltip="startCase(node.category)"
+      v-tooltip="startCase(node.category?.[0])"
       class="icon"
-      :icon="`category-${kebabCase(node.category)}`"
+      :icon="`category-${kebabCase(node.category?.[0].replace('biolink:', ''))}`"
     />
     <AppLink
       v-if="link"
@@ -25,7 +25,6 @@
 <script setup lang="ts">
 import { kebabCase, startCase } from "lodash";
 import type { Node } from "@/api/model";
-// import type { Node } from "@/api/node-lookup";
 import { breadcrumbs } from "@/global/breadcrumbs";
 
 type Props = {

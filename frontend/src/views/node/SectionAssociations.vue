@@ -63,10 +63,9 @@
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { getAssociationLabel } from "@/api/categories";
-// import type { Association } from "@/api/node-associations";
 import type { Association, Node } from "@/api/model";
-import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import type { Option, Options } from "@/components/AppSelectSingle.vue";
+import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import AppTabs from "@/components/AppTabs.vue";
 import AssociationsSummary from "./AssociationsSummary.vue";
@@ -74,8 +73,8 @@ import AssociationsTable from "./AssociationsTable.vue";
 import EvidenceViewer from "./EvidenceViewer.vue";
 
 /** route info */
-const router = useRouter();
 const route = useRoute();
+const router = useRouter();
 
 type Props = {
   /** current node */
@@ -109,11 +108,11 @@ const association = ref<Association>();
 /** list of options for dropdown */
 const categoryOptions = computed(
   (): Options =>
-    props.node.association_counts.map((association) => ({
-      id: association.label || "",
-      name: getAssociationLabel(association.label),
-      icon: `category-${association.label}`,
-      count: association.count,
+    props.node.association_counts.map((association_count) => ({
+      id: association_count.association_type || "",
+      name: getAssociationLabel(association_count.label),
+      icon: `category-${association_count.label.toLocaleLowerCase()}`,
+      count: association_count.count,
     }))
 );
 

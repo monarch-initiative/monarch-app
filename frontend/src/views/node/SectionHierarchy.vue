@@ -19,7 +19,7 @@
       <AppDetail
         title="Super-classes"
         icon="angle-up"
-        :blank="!hierarchy.super_classes?.length"
+        :blank="!hierarchy.super_classes.length"
         :big="true"
         :v-tooltip="`Nodes that are &quot;parents&quot; of this node`"
       >
@@ -30,7 +30,6 @@
             :node="_class"
             :breadcrumb="{ node }"
           />
-          <!-- :breadcrumb="{ node, relation: _class.relation }" -->
         </AppFlex>
       </AppDetail>
 
@@ -38,7 +37,7 @@
       <AppDetail
         title="Equivalent classes"
         icon="equals"
-        :blank="!hierarchy.equivalent_classes?.length"
+        :blank="!hierarchy.equivalent_classes.length"
         :big="true"
         :v-tooltip="`Nodes that are &quot;siblings&quot; of this node`"
       >
@@ -56,7 +55,7 @@
       <AppDetail
         title="Sub-classes"
         icon="angle-down"
-        :blank="!hierarchy.sub_classes?.length"
+        :blank="!hierarchy.sub_classes.length"
         :big="true"
         :v-tooltip="`Nodes that are &quot;children&quot; of this node`"
       >

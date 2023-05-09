@@ -25,10 +25,10 @@
         <!-- primary result info -->
         <div class="title">
           <AppNodeBadge :node="node" :link="false" />&nbsp;
-          <AppRelationBadge :relation="association.relation" />&nbsp;
+          <AppRelationBadge :relation="association.predicate" />&nbsp;
           <AppNodeBadge
             :node="association.object"
-            :breadcrumb="{ node, relation: association.relation }"
+            :breadcrumb="{ node, relation: association.predicate }"
           />
         </div>
 
@@ -69,6 +69,7 @@
 import { onMounted, watch } from "vue";
 import type { Association, Node } from "@/api/model";
 import { getTopAssociations } from "@/api/node-associations";
+import { getTabulatedAssociations } from "@/api/associations";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppRelationBadge from "@/components/AppRelationBadge.vue";
 import { useQuery } from "@/util/composables";
@@ -104,15 +105,17 @@ const {
       throw new Error("No association info available");
 
     /** get association data */
-    return await getTopAssociations(
+    const response = await getTabulatedAssociations(
       props.node.id,
-      props.node.category,
-      props.selectedCategory
+      props.selectedCategory,
+      5
     );
+    return response.items;
   },
 
   /** default value */
-  []
+  [],
+  // { total: 0, items: [], limit: 5, offset: 0 }
 );
 
 /** get associations when category changes */

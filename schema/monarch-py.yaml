@@ -145,7 +145,6 @@ classes:
         required: true
       name:
         required: true
-
   SearchResults:
     is_a: Results
     slots:
@@ -263,6 +262,7 @@ slots:
     range: boolean
   object:
     range: string
+    required: true
   object_category:
     multivalued: true
   object_closure:
@@ -288,6 +288,7 @@ slots:
   predicate:
     multivalued: false
     range: string
+    required: true
   primary_knowledge_source:
     multivalued: true
   provided_by:
@@ -308,6 +309,7 @@ slots:
     range: string
   subject:
     range: string
+    required: true
   subject_category:
     multivalued: true
   subject_closure:

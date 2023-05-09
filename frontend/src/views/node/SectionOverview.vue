@@ -9,12 +9,14 @@
     <AppDetails>
       <!-- synonyms -->
       <AppDetail :blank="!node.synonym" title="Also Known As">
-        <p>{{ node.synonym?.length ? node.synonym : "No synonyms found" }}</p>
+        <p
+          v-html="node.synonym?.join(',\n&nbsp;')"
+        ></p>
       </AppDetail>
 
       <!-- symbol (gene specific) -->
       <AppDetail
-        v-if="node.category === 'gene'"
+        v-if="node.category?.includes('biolink:Gene')"
         :blank="!node.symbol"
         title="Symbol"
       >

@@ -30,8 +30,8 @@
     <SectionDetails :node="node" />
     <SectionHierarchy :node="node" />
     <SectionVisualization :node="node" />
-    <!-- <SectionAssociations :node="node" /> -->
-    <SectionBreadcrumbs :node="node" />
+    <SectionAssociations :node="node" />
+    <!-- <SectionBreadcrumbs :node="node" /> -->
 
     <Teleport to="body">
       <TheTableOfContents />
@@ -49,8 +49,8 @@ import { addEntry } from "@/global/history";
 import { appDescription, appTitle } from "@/global/meta";
 import { scrollToHash } from "@/router";
 import { useQuery } from "@/util/composables";
-// import SectionAssociations from "./SectionAssociations.vue";
-import SectionBreadcrumbs from "./SectionBreadcrumbs.vue";
+import SectionAssociations from "./SectionAssociations.vue";
+// import SectionBreadcrumbs from "./SectionBreadcrumbs.vue";
 import SectionDetails from "./SectionDetails.vue";
 import SectionHierarchy from "./SectionHierarchy.vue";
 import SectionOverview from "./SectionOverview.vue";
