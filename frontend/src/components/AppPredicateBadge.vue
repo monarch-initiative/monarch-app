@@ -5,9 +5,7 @@
 <template>
     <span class="relation">
       <AppIcon class="arrow" :icon="`arrow-${arrowDirection}-long`" />
-      <AppLink :to="predicate.id" :no-icon="true">{{
-        startCase(predicate.name)
-      }}</AppLink>
+      <AppLink :to="predicate.id" :no-icon="true">{{startCase(predicate.name)}}</AppLink>
       <AppIcon class="arrow" :icon="`arrow-${arrowDirection}-long`" />
     </span>
   </template>
