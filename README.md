@@ -15,7 +15,7 @@ This repo contains the source code for the website (frontend) and API (backend) 
 To get started with this repo:
 
 ```
-git clone https://github.com/monarch-initiative/monarch-appr
+git clone https://github.com/monarch-initiative/monarch-app
 cd monarch-app
 ```
 
