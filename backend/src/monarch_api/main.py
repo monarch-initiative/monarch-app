@@ -8,7 +8,9 @@ PREFIX = "/v3/api"
 app = FastAPI(docs_url="/v3/docs", redoc_url=None)
 # app = FastAPI(docs_url=None, redoc_url='/v3/docs')
 app.include_router(entity.router, prefix=f"{PREFIX}/entity")
-app.include_router(association.router, prefix=f"{PREFIX}/association")
+app.include_router(association.router, prefix=f"{PREFIX}/associations")
+# Temporarily hang on to the singular association/all endpoint for now, but hide it
+app.include_router(association.router, prefix=f"{PREFIX}/association", include_in_schema=False)
 app.include_router(search.router, prefix=PREFIX)
 app.include_router(histopheno.router, prefix=f"{PREFIX}/histopheno")
 

@@ -5,12 +5,13 @@ from monarch_api.model import AssociationResults
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
 router = APIRouter(
-    tags=["association"],
+    tags=["associations"],
     responses={404: {"description": "Not Found"}},
 )
 
 
-@router.get("/all")
+@router.get("/")
+@router.get("/all", include_in_schema=False) # Hang on to singular association/all endpoint for now, but hide it
 async def _get_all_associations(
     pagination: PaginationParams = Depends(),
     category: str = None,
@@ -47,64 +48,3 @@ async def _get_all_associations(
 
     return response
 
-
-@router.get("/to/{subject}")
-async def _get_association_to(
-    subject: str, pagination: PaginationParams = Depends()
-) -> AssociationResults:
-    """Retrieves all associations to an entity as the subject
-
-    Args:
-        subject (str): _description_
-        pagination (PaginationParams, optional): _description_. Defaults to Depends().
-
-    Returns:
-        AssociationResults: _description_
-    """
-    si = SolrImplementation(base_url=settings.solr_url)
-    response = si.get_associations(
-        subject=subject, offset=pagination.offset, limit=pagination.limit
-    )
-
-    return response
-
-
-@router.get("/from/{object}")
-async def _get_association_from(object: str, pagination: PaginationParams = Depends()):
-    """Retrieves all associations from an entity as the object
-
-    Args:
-        object (str): _description_
-        pagination (PaginationParams, optional): _description_. Defaults to Depends().
-
-    Returns:
-        _type_: _description_
-    """
-    si = SolrImplementation(base_url=settings.solr_url)
-    response = si.get_associations(
-        object=object, offset=pagination.offset, limit=pagination.limit
-    )
-
-    return response
-
-
-@router.get("/between/{subject}/{object}")
-async def _get_association_between(
-    subject: str, object: str, pagination: PaginationParams = Depends()
-) -> AssociationResults:
-    """Retrieves all associations from an object to a subject
-
-    Args:
-        subject (str): _description_
-        object (str): _description_
-        pagination (PaginationParams, optional): _description_. Defaults to Depends().
-
-    Returns:
-        AssociationResults: _description_
-    """
-    si = SolrImplementation(base_url=settings.solr_url)
-    response = si.get_associations(
-        subject=subject, object=object, offset=pagination.offset, limit=pagination.limit
-    )
-
-    return response
