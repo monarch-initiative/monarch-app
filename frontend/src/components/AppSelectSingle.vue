@@ -25,7 +25,7 @@
       @blur="onBlur"
     >
       <AppIcon v-if="modelValue?.icon" :icon="modelValue?.icon" />
-      <span class="box-label">{{ modelValue?.name || modelValue?.id }}</span>
+      <span class="box-label">{{ modelValue?.label || modelValue?.id }}</span>
       <AppIcon :icon="expanded ? 'angle-up' : 'angle-down'" />
     </button>
 
@@ -61,7 +61,7 @@
         >
           <AppIcon v-if="option.icon" :icon="option.icon" class="option-icon" />
           <span class="option-label truncate">
-            {{ option.name || option.id }}
+            {{ option.label || option.id }}
           </span>
           <span v-if="option.count" class="option-count">{{
             option.count
@@ -78,8 +78,8 @@ export type Option = {
   id: string;
   /** icon name */
   icon?: string;
-  /** display name */
-  name?: string;
+  /** display label */
+  label?: string;
   /** count col */
   count?: number;
   /** tooltip on hover */

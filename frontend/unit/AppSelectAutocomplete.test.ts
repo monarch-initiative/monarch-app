@@ -7,11 +7,11 @@ const props = {
   name: "Autocomplete select",
   options: (search: string) =>
     [
-      { name: "fruits" },
-      { name: "vegetables", count: 7 },
-      { name: "colors", count: 42 },
-      { name: "animals" },
-    ].filter((entry) => entry.name.includes(search)),
+      { label: "fruits" },
+      { label: "vegetables", count: 7 },
+      { label: "colors", count: 42 },
+      { label: "animals" },
+    ].filter((entry) => entry.label.includes(search)),
 };
 
 /** expected type of emitted update:modelValue events */

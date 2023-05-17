@@ -111,7 +111,7 @@ const categoryOptions = computed(
   (): Options =>
     props.node.associationCounts.map((association) => ({
       id: association.id,
-      name: getAssociationLabel(association.id),
+      label: getAssociationLabel(association.id),
       icon: `category-${association.id}`,
       count: association.count,
     }))

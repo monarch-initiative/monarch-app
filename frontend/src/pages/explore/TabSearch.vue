@@ -9,7 +9,7 @@
     <!-- search box -->
     <AppSelectAutocomplete
       :model-value="search"
-      name="Node search"
+      name="Search"
       placeholder="Search for a gene, disease, phenotype, etc."
       :options="getAutocomplete"
       @focus="onFocus"
@@ -17,17 +17,16 @@
       @delete="onDelete"
     />
 
-    <!-- filters -->
-    <AppFlex v-if="Object.keys(availableFilters).length">
-      <template v-for="(filter, name, index) in availableFilters" :key="index">
+    <!-- facet dropdown filters -->
+    <AppFlex v-if="Object.keys(facets).length">
+      <template v-for="(facet, id, index) in facets" :key="index">
         <AppSelectMulti
-          v-if="filter.length"
-          v-model="activeFilters[name]"
-          v-tooltip="`${startCase(String(name))} filter`"
-          :name="`${name}`"
-          :options="availableFilters[name]"
-          :show-counts="showCounts"
-          @change="onFilterChange"
+          v-if="Object.keys(facet.facet_values || {}).length"
+          v-model="dropdownsSelected[id]"
+          v-tooltip="`${facet.label} filter`"
+          :name="`${facet.label}`"
+          :options="dropdownsOptions[id]"
+          @change="onSelectedChange"
         />
       </template>
     </AppFlex>
@@ -112,10 +111,9 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { groupBy, isEqual, kebabCase, sortBy, startCase, uniq } from "lodash";
-import { getAutocompleteResults } from "@/api/node-search";
+import { groupBy, kebabCase, mapValues, sortBy, startCase, uniq } from "lodash";
 import type { SearchResults } from "@/api/model";
-import { getSearch } from "@/api/search";
+import { getAutocompleteResults, getSearchResults } from "@/api/search";
 import type { Options as AutocompleteOptions } from "@/components/AppSelectAutocomplete.vue";
 import AppSelectAutocomplete from "@/components/AppSelectAutocomplete.vue";
 import type { Options as MultiOptions } from "@/components/AppSelectMulti.vue";
@@ -135,9 +133,12 @@ const search = ref(String(route.query.search || ""));
 const page = ref(0);
 /** results per page */
 const perPage = ref(10);
-/** filters (facets) for search */
-const availableFilters = ref<{ [key: string]: MultiOptions }>({});
-const activeFilters = ref<{ [key: string]: MultiOptions }>({});
+/** facets returned from search */
+const facets = ref<NonNullable<SearchResults["facet_fields"]>>({});
+/** dropdowns all options */
+const dropdownsOptions = ref<{ [key: string]: MultiOptions }>({});
+/** dropdowns selected options */
+const dropdownsSelected = ref<{ [key: string]: MultiOptions }>({});
 
 /** when user focuses text box */
 async function onFocus() {
@@ -158,20 +159,25 @@ function onDelete(value: string) {
   deleteEntry(value);
 }
 
-/** when user changes active filters */
-function onFilterChange() {
+/** when user changes selected options */
+function onSelectedChange() {
   page.value = 0;
-  getResults();
+  getSearch(false);
 }
 
 /** get autocomplete results */
 async function getAutocomplete(search: string): Promise<AutocompleteOptions> {
   /** if something typed in, get autocomplete options from backend */
-  if (search.trim()) return await getAutocompleteResults(search);
+  if (search.trim())
+    return (await getAutocompleteResults(search)).items.map((item) => ({
+      label: item.name,
+      icon: "category-" + item.category,
+      tooltip: "",
+    }));
 
   /**
-   * otherwise, if search box focused and nothing typed in, show some useful
-   * entries
+   * otherwise, if search box focused and nothing is typed in yet, show some
+   * useful entries
    */
 
   /** show top N entries in each category */
@@ -181,7 +187,7 @@ async function getAutocomplete(search: string): Promise<AutocompleteOptions> {
   const recent = uniq([...history.value].reverse())
     .slice(0, top)
     .map((search) => ({
-      name: search,
+      label: search,
       icon: "clock-rotate-left",
       tooltip: "One of your recent node searches",
     }));
@@ -198,7 +204,7 @@ async function getAutocomplete(search: string): Promise<AutocompleteOptions> {
     .reverse()
     .slice(0, top)
     .map(({ search }) => ({
-      name: search,
+      label: search,
       icon: "person-running",
       tooltip: "One of your frequent node searches",
     }));
@@ -209,7 +215,7 @@ async function getAutocomplete(search: string): Promise<AutocompleteOptions> {
     "SSH",
     "Multicystic kidney dysplasia",
   ].map((search) => ({
-    name: search,
+    label: search,
     icon: "lightbulb",
     tooltip: "Example search",
   }));
@@ -219,18 +225,30 @@ async function getAutocomplete(search: string): Promise<AutocompleteOptions> {
 
 /** get search results */
 const {
-  query: getResults,
+  query: getSearch,
   data: results,
   isLoading,
   isError,
 } = useQuery(
-  async function (): /**
-   * whether to perform "fresh" search, without filters/pagination/etc. true when
-   * search text changes, false when filters/pagination/etc change.
-   */
-  Promise<SearchResults> {
+  async function (
+    /**
+     * whether to perform "fresh" search, without filters/pagination/etc. true
+     * when search text changes, false when filters/pagination/etc change.
+     */
+    fresh: boolean
+  ) {
     /** get results from api */
-    const response = await getSearch(search.value, from.value, perPage.value);
+    const response = await getSearchResults(
+      search.value,
+      from.value,
+      perPage.value,
+      /** transform dropdown selected options into filters to search for */
+      fresh
+        ? undefined
+        : mapValues(dropdownsSelected.value, (dropdown) =>
+            dropdown.map((option) => option.id)
+          )
+    );
 
     return response;
   },
@@ -239,12 +257,21 @@ const {
   { total: 0, items: [], limit: 0, offset: 0 },
 
   /** on success */
-  () => {
-    /** update filters from facets returned from api, if a "fresh" search */
-    // if (fresh) {
-    //   availableFilters.value = { ...response.facets };
-    //   activeFilters.value = { ...response.facets };
-    // }
+  (response, [fresh]) => {
+    /** update dropdowns from facets returned from api, if a "fresh" search */
+    if (fresh) {
+      facets.value = response.facet_fields || {};
+      /** convert facets into dropdown options */
+      const options = mapValues(response.facet_fields || {}, (facet) =>
+        Object.entries(facet.facet_values || {}).map(([key, value]) => ({
+          id: key,
+          label: value.label,
+          count: value.count,
+        }))
+      );
+      dropdownsOptions.value = { ...options };
+      dropdownsSelected.value = { ...options };
+    }
 
     /** add search to history */
     addEntry(search.value);
@@ -302,7 +329,7 @@ watch(
     /** update document title */
     if (search.value) appTitle.value = [`"${search.value}"`];
     /** refetch search */
-    await getResults();
+    await getSearch(true);
   },
   { immediate: true, flush: "post" }
 );
@@ -316,15 +343,7 @@ watch(search, async () => {
 });
 
 /** when start page changes */
-watch(from, () => getResults());
-
-/**
- * hide counts in filter dropdowns if any filtering being done. see
- * https://github.com/monarch-initiative/monarch-ui-new/issues/87
- */
-const showCounts = computed(() =>
-  isEqual(activeFilters.value, availableFilters.value)
-);
+watch(from, () => getSearch(false));
 </script>
 
 <style lang="scss" scoped>

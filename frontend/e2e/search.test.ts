@@ -80,15 +80,15 @@ test("Recent/frequent results show", async ({ page }) => {
 test("Autocomplete results show", async ({ page }) => {
   /** type something in search box for regular backend autocomplete results */
   await page.goto("/explore");
-  await page.locator("input").fill("Marfan");
+  await page.locator("input").fill("Fanconi");
   await expect(
-    page.getByText(/Marfan and Marfan-related disorder/).first()
+    page.getByText(/Fanconi renotubular syndrome/i).first()
   ).toBeVisible();
 });
 
 test("Basic search results show", async ({ page }) => {
   await page.goto("/explore");
-  await page.locator("input").fill("Marfan");
+  await page.locator("input").fill("Fanconi");
   await page.locator("input").dispatchEvent("change");
 
   /** search result with link shows */
@@ -101,7 +101,7 @@ test("Basic search results show", async ({ page }) => {
 
 test("Pagination works", async ({ page }) => {
   await page.goto("/explore");
-  await page.locator("input").fill("Marfan");
+  await page.locator("input").fill("Fanconi");
   await page.locator("input").dispatchEvent("change");
 
   /** pagination text, and click through to next page */
@@ -114,7 +114,7 @@ test("Filters show", async ({ page }) => {
   test.fixme(true, "Facets are not implemented on the backend yet");
 
   await page.goto("/explore");
-  await page.locator("input").fill("Marfan");
+  await page.locator("input").fill("Fanconi");
   await page.locator("input").dispatchEvent("change");
 
   /** filters show */

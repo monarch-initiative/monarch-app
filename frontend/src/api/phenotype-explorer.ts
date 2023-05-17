@@ -1,7 +1,7 @@
 import type { Options, OptionsFunc } from "@/components/AppSelectTags.vue";
 import { stringify } from "@/util/object";
 import { biolink, request } from "./";
-import { getSearchResults } from "./node-search";
+import { getSearchResults } from "./search";
 
 /** search individual phenotypes or gene/disease phenotypes */
 export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
@@ -20,29 +20,26 @@ export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
     };
 
   /** otherwise perform string search for phenotypes/genes/diseases */
-  const { results } = await getSearchResults(
-    search,
-    {},
-    { category: ["phenotype", "gene", "disease"] }
-  );
+  const { items } = await getSearchResults(search, 0, 20, {
+    category: ["phenotype", "gene", "disease"],
+  });
 
   /** convert into desired result format */
   return {
-    options: results.map((result) => ({
-      id: result.id,
-      name: result.name,
+    options: items.map((item) => ({
+      id: item.id,
+      name: item.name,
       spreadOptions:
         /**
          * if gene/disease, provide function to get associated phenotypes upon
          * select
          */
-        result.category === "phenotype" || !result.category
+        item.category === "phenotype" || !item.category
           ? undefined
-          : async () =>
-              await getPhenotypeAssociations(result.id, result.category),
-      highlight: result.highlight,
-      icon: "category-" + result.category,
-      info: result.taxon?.name || result.taxon?.id || result.id,
+          : async () => await getPhenotypeAssociations(item.id, item.category),
+      highlight: item.highlight,
+      icon: "category-" + item.category,
+      info: item.in_taxon || "",
     })),
   };
 };

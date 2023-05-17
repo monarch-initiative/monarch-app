@@ -2,7 +2,7 @@ import type { Sort } from "@/components/AppTable.vue";
 import { biolink, request } from "./";
 import { getAssociationEndpoint, mapCategory } from "./categories";
 import type { Filters, Query } from "./facets";
-import { facetsToFilters, queryToParams } from "./facets";
+import { biolinkFacetsToFilters, queryToParams } from "./facets";
 import { getSummaries } from "./publications";
 import { getXrefLink } from "./xrefs";
 
@@ -185,7 +185,7 @@ export const getTabulatedAssociations = async (
   }
 
   /** get facets for filters */
-  const facets = facetsToFilters(response.facet_counts);
+  const facets = biolinkFacetsToFilters(response.facet_counts);
 
   return { count: response.numFound || 0, associations, facets };
 };

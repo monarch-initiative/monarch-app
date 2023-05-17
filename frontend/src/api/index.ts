@@ -17,7 +17,8 @@ export type Params = { [key: string]: Param | Param[] };
  * generic fetch request wrapper
  *
  * @param path request url
- * @param params url params
+ * @param params url params. { param: [1,2,3] } becomes ?param=1&param=2&param=3
+ *   { param: "1,2,3" } stays ?param=1,2,3
  * @param options fetch() options
  * @param parse parse response mode
  */

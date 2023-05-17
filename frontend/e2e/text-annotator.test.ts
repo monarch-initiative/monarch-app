@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import example from "../src/views/explore/text-annotator.json";
+import example from "../src/pages/explore/text-annotator.json";
 
 test("Basic search results show", async ({ page }) => {
   await page.goto("/explore#text-annotator");
