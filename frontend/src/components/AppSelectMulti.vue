@@ -21,7 +21,7 @@
       :aria-expanded="expanded"
       :aria-controls="`list-${id}`"
       aria-haspopup="listbox"
-      :data-notification="!allSelected"
+      :data-notification="!allSelected && !noneSelected"
       icon="filter"
       design="small"
       @click="onClick"
@@ -112,9 +112,12 @@
             class="option-icon"
           />
           <span class="option-label truncate">
-            {{ option.name || option.id }}
+            {{ option.label || option.id }}
           </span>
-          <span v-if="showCounts && option.count" class="option-count">
+          <span
+            v-if="option.count && (allSelected || noneSelected)"
+            class="option-count"
+          >
             {{ option.count }}
           </span>
         </div>
@@ -127,8 +130,8 @@
 export type Option = {
   /** unique id used in state of select */
   id: string;
-  /** display name */
-  name?: string;
+  /** display label */
+  label?: string;
   /** count col */
   count?: number;
   /** tooltip on hover */
@@ -151,14 +154,11 @@ type Props = {
   name: string;
   /** list of options to show */
   options: Options;
-  /** whether to show count col */
-  showCounts?: boolean;
   /** visual design */
   design?: "normal" | "small";
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  showCounts: true,
   design: "normal",
 });
 
@@ -330,6 +330,9 @@ watch(highlighted, () =>
 const allSelected = computed(
   () => selected.value.length === props.options.length
 );
+
+/** are no options selected */
+const noneSelected = computed(() => !selected.value.length);
 </script>
 
 <style lang="scss" scoped>

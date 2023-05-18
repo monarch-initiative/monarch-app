@@ -2,7 +2,7 @@ import { startCase } from "lodash";
 
 /** from list of categories, get single category to label/display */
 export const mapCategory = (category: string[] = []): string =>
-  category[0] || "unknown";
+  category[0]?.replace("biolink:", "")?.toLowerCase() || "unknown";
 
 /**
  * from a category name, get its pluralized form, for querying association

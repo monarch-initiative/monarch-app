@@ -22,7 +22,7 @@
         :key="index"
         v-tooltip="`Deselect ${option.id}`"
         design="circle"
-        :text="option.name || option.id"
+        :text="option.label || option.id"
         icon="xmark"
         class="selected"
         :aria-label="`Deselect ${option.id}`"
@@ -120,7 +120,7 @@
           </span>
           <span
             class="option-label truncate"
-            v-html="option.highlight || option.name || option.id"
+            v-html="option.highlight || option.label || option.id"
           >
           </span>
           <span v-if="option.info" class="option-info truncate">{{
@@ -157,8 +157,8 @@ export type Option = {
   id: string;
   /** icon name */
   icon?: string;
-  /** display name */
-  name?: string;
+  /** display label */
+  label?: string;
   /** highlighting html */
   highlight?: string;
   /** info col */

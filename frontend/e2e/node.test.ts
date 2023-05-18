@@ -253,14 +253,14 @@ test("Association table has extra metadata columns", async ({ page }) => {
     .click();
   await page
     .getByRole("option")
-    .filter({ hasText: /Variants/ })
+    .filter({ hasText: /Variants/i })
     .first()
     .click();
   await expect(
-    page.locator("td", { hasText: /Mus musculus/ }).first()
+    page.locator("td", { hasText: /Mus musculus/i }).first()
   ).toBeVisible();
   await page
-    .locator("th", { hasText: /Taxon/ })
+    .locator("th", { hasText: /Taxon/i })
     .first()
     .locator("button")
     .click();
@@ -300,7 +300,7 @@ test("Evidence summary viewer works", async ({ page }) => {
 
   /** click first evidence button (in first association in summary mode) */
   await page
-    .locator("button", { hasText: /Evidence/ })
+    .locator("button", { hasText: /Evidence/i })
     .first()
     .click();
 

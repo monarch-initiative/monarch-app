@@ -13,13 +13,11 @@ import entity from "./entity.json";
 import feedback from "./feedback.json";
 import histopheno from "./histopheno.json";
 import nodeAssociations from "./node-associations.json";
-import nodeAutocomplete from "./node-autocomplete.json";
 import nodeGene from "./node-gene.json";
 import nodeHierarchy from "./node-hierarchy.json";
 import nodeLookup from "./node-lookup.json";
 import nodePublicationAbstract from "./node-publication-abstract.json";
 import nodePublicationSummary from "./node-publication-summary.json";
-import nodeSearch from "./node-search.json";
 import ontolIdentifier from "./ontol-identifier.json";
 import ontologies from "./ontologies.json";
 import phenotypeExplorerCompare from "./phenotype-explorer-compare.json";
@@ -72,22 +70,9 @@ export const handlers = [
     res(ctx.status(200), ctx.json(feedback))
   ),
 
-  /**
-   * node autocomplete TODO: remove when autocomplete below is hooked up to
-   * components
-   */
-  rest.get(regex(biolink, "/search/entity/autocomplete"), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(nodeAutocomplete))
-  ),
-
   /** autocomplete */
   rest.get(regex(monarch, "/autocomplete"), (req, res, ctx) =>
     res(ctx.status(200), ctx.json(autocomplete))
-  ),
-
-  /** node search - TODO: remove when new search below is hooked up to components */
-  rest.get(regex(biolink, "/search/entity"), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(nodeSearch))
   ),
 
   /** search * */
@@ -122,7 +107,7 @@ export const handlers = [
      */
     const [, category = "", id = ""] =
       req.url.pathname.match(/\/bioentity\/(\w+)\/(.+)\\?/) || [];
-    const labels: Record<string, string> = {
+    const labels: { [key: string]: string } = {
       "MONDO:0007947": "Marfan syndrome",
       "HP:0100775": "Dural ectasia",
       "HP:0003179": "Protrusio acetabuli",
@@ -185,7 +170,7 @@ export const handlers = [
     /** for certain exceptions, passthrough (let browser make a real request) */
     const exceptions = [
       ".vue",
-      ".js" /** vite seems to turn dynamic import of images into .js */,
+      ".js" /** vite seems to turn dynamic import of images/assets into .js */,
       ".mp4",
       ".svg",
       ".png",

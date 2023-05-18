@@ -6,7 +6,7 @@
   <!-- dive right in -->
   <AppSection design="fill">
     <AppTabs v-model="tab" name="Explore Mode" :tabs="tabs" route="Explore" />
-    <NodeSearch />
+    <TabSearch />
   </AppSection>
 
   <AppSection>
@@ -93,7 +93,7 @@
 
     <p>Some cool things you can do on this website.</p>
 
-    <AppHighlight :src="nodeSearch">
+    <AppHighlight :src="search">
       Quickly and easily browse nodes. Filter by category and taxon. See your
       recent and frequent searches.
     </AppHighlight>
@@ -190,16 +190,16 @@
 import { onMounted, ref } from "vue";
 import { getBlogPosts } from "@/api/blog";
 import nodePage from "@/assets/demos/node-page.mp4";
-import nodeSearch from "@/assets/demos/node-search.mp4";
 import phenotypeExplorer from "@/assets/demos/phenotype-explorer.mp4";
+import search from "@/assets/demos/search.mp4";
 import textAnnotator from "@/assets/demos/text-annotator.mp4";
 import AppHighlight from "@/components/AppHighlight.vue";
 import AppPost from "@/components/AppPost.vue";
 import AppTabs from "@/components/AppTabs.vue";
 import AppTile from "@/components/AppTile.vue";
 import { useQuery } from "@/util/composables";
-import NodeSearch from "./explore/NodeSearch.vue";
 import tabs from "./explore/tabs.json";
+import TabSearch from "./explore/TabSearch.vue";
 
 /** selected tab state */
 const tab = ref(tabs[0].id);

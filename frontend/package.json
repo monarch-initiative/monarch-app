@@ -7,7 +7,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.cjs,.mjs,.ts --fix && prettier --write \"**/*.{scss,js,ts,json,vue,svg,yaml}\" --no-error-on-unmatched-pattern",
-    "imports": "npx format-imports --config ./import-sorter.json --log ./src",
+    "imports": "npx format-imports --config format-imports.json --log ./",
     "test": "yarn test:types && yarn test:lint && yarn test:unit && yarn test:e2e",
     "test:types": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
     "test:lint": "eslint . --ext .vue,.js,.cjs,.mjs,.ts && prettier --check \"**/*.{scss,js,ts,json,vue,svg,yaml}\" --no-error-on-unmatched-pattern",

@@ -165,12 +165,12 @@ const bModeOptions = [
  * backend querying needed
  */
 const taxons = [
-  { id: "9606", name: "human", scientific: "Homo sapiens" },
-  { id: "10090", name: "mouse", scientific: "Mus musculus" },
-  { id: "7955", name: "zebrafish", scientific: "Danio rerio" },
-  { id: "7227", name: "fruitfly", scientific: "Drosophila melanogaster" },
-  { id: "6239", name: "worm", scientific: "Caenorhabditis elegans" },
-  { id: "8353", name: "frog", scientific: "Xenopus" },
+  { id: "9606", label: "human", scientific: "Homo sapiens" },
+  { id: "10090", label: "mouse", scientific: "Mus musculus" },
+  { id: "7955", label: "zebrafish", scientific: "Danio rerio" },
+  { id: "7227", label: "fruitfly", scientific: "Drosophila melanogaster" },
+  { id: "6239", label: "worm", scientific: "Caenorhabditis elegans" },
+  { id: "8353", label: "frog", scientific: "Xenopus" },
 ];
 
 const bTaxonHuman = taxons[0];
@@ -260,7 +260,7 @@ function runPhenogrid() {
     const taxon = bMode.value.id.includes("diseases")
       ? bTaxonHuman
       : bTaxon.value;
-    xAxis = [{ id: taxon.id, name: taxon.scientific }];
+    xAxis = [{ id: taxon.id, label: taxon.scientific }];
   }
   /** call phenogrid */
   mountPhenogrid("#phenogrid", xAxis, yAxis, mode);
@@ -293,7 +293,7 @@ function description(
   if (isEqual(generatedFrom.options, phenotypes))
     description.push(
       `generated from "${
-        generatedFrom.option?.name || generatedFrom.option?.id
+        generatedFrom.option?.label || generatedFrom.option?.id
       }"`
     );
   return `(${description.join(", ")})`;
