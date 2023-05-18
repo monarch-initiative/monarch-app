@@ -1,6 +1,7 @@
 export type NodeId = string;
 export type TaxonId = string;
 export type AssociationId = string;
+export type DirectionalAssociationId = string;
 export type EntityId = string;
 export type HistoPhenoId = string;
 export type HistoBinId = string;
@@ -71,9 +72,56 @@ export interface Association {
   pathway?: string;
   relation?: string;
 }
+/** An association that gives it's direction relative to a specified entity */
+export interface DirectionalAssociation extends Association {
+  /**
+   * The directionality of the association relative to a given entity for an
+   * association_count. If the entity is the subject or in the subject
+   * closure, the direction is forwards, if it is the object or in the object
+   * closure, the direction is backwards.
+   */ direction?: string;
+  aggregator_knowledge_source?: string;
+  id?: string;
+  subject?: string;
+  original_subject?: string;
+  subject_namespace?: string;
+  subject_category?: string;
+  subject_closure?: string;
+  subject_label?: string;
+  subject_closure_label?: string;
+  predicate?: string;
+  object?: string;
+  original_object?: string;
+  object_namespace?: string;
+  object_category?: string;
+  object_closure?: string;
+  object_label?: string;
+  object_closure_label?: string;
+  primary_knowledge_source?: string;
+  category?: string;
+  negated?: boolean;
+  provided_by?: string;
+  publications?: string;
+  qualifiers?: string;
+  frequency_qualifier?: string;
+  has_evidence?: string;
+  onset_qualifier?: string;
+  sex_qualifier?: string;
+  source?: string;
+  stage_qualifier?: string;
+  pathway?: string;
+  relation?: string;
+}
 
 export interface AssociationResults extends Results {
   /** A collection of items, with the type to be overriden by slot_usage */ items?: Association[];
+  /** number of items to return in a response */ limit?: number;
+  /** offset into the total number of items */ offset?: number;
+  /** total number of items matching a query */ total?: number;
+}
+
+export interface AssociationTableResults extends Results {
+  /** A collection of items, with the type to be overriden by slot_usage */ items?: DirectionalAssociation[];
   /** number of items to return in a response */ limit?: number;
   /** offset into the total number of items */ offset?: number;
   /** total number of items matching a query */ total?: number;
@@ -170,6 +218,10 @@ export interface AssociationTypeMapping {
    * A label to describe the objects of the association type as a whole for
    * use in the UI
    */ object_label?: string;
+  /**
+   * Whether the association type is symmetric, meaning that the subject and
+   * object labels should be interchangeable
+   */ symmetric?: boolean;
   /**
    * The biolink categories to use in queries for this association type,
    * assuming OR semantics

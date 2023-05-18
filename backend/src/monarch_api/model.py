@@ -21,8 +21,15 @@ class ConfiguredBaseModel(
     underscore_attrs_are_private=True,
     extra="forbid",
     arbitrary_types_allowed=True,
+    use_enum_values=True,
 ):
     pass
+
+
+class AssociationDirectionEnum(str, Enum):
+
+    incoming = "incoming"
+    outgoing = "outgoing"
 
 
 class AssociationTypeEnum(str, Enum):
@@ -56,15 +63,57 @@ class Association(ConfiguredBaseModel):
 
     aggregator_knowledge_source: Optional[List[str]] = Field(default_factory=list)
     id: str = Field(None)
-    subject: Optional[str] = Field(None)
+    subject: str = Field(None)
     original_subject: Optional[str] = Field(None)
     subject_namespace: Optional[str] = Field(None)
     subject_category: Optional[List[str]] = Field(default_factory=list)
     subject_closure: Optional[List[str]] = Field(default_factory=list)
     subject_label: Optional[str] = Field(None)
     subject_closure_label: Optional[List[str]] = Field(default_factory=list)
-    predicate: Optional[str] = Field(None)
-    object: Optional[str] = Field(None)
+    predicate: str = Field(None)
+    object: str = Field(None)
+    original_object: Optional[str] = Field(None)
+    object_namespace: Optional[str] = Field(None)
+    object_category: Optional[List[str]] = Field(default_factory=list)
+    object_closure: Optional[List[str]] = Field(default_factory=list)
+    object_label: Optional[str] = Field(None)
+    object_closure_label: Optional[List[str]] = Field(default_factory=list)
+    primary_knowledge_source: Optional[List[str]] = Field(default_factory=list)
+    category: Optional[List[str]] = Field(default_factory=list)
+    negated: Optional[bool] = Field(None)
+    provided_by: Optional[str] = Field(None)
+    publications: Optional[List[str]] = Field(default_factory=list)
+    qualifiers: Optional[List[str]] = Field(default_factory=list)
+    frequency_qualifier: Optional[str] = Field(None)
+    has_evidence: Optional[str] = Field(None)
+    onset_qualifier: Optional[str] = Field(None)
+    sex_qualifier: Optional[str] = Field(None)
+    source: Optional[str] = Field(None)
+    stage_qualifier: Optional[str] = Field(None)
+    pathway: Optional[str] = Field(None)
+    relation: Optional[str] = Field(None)
+
+
+class DirectionalAssociation(Association):
+    """
+    An association that gives it's direction relative to a specified entity
+    """
+
+    direction: AssociationDirectionEnum = Field(
+        None,
+        description="""The directionality of the association relative to a given entity for an association_count. If the entity is the subject or in the subject closure, the direction is forwards, if it is the object or in the object closure, the direction is backwards.""",
+    )
+    aggregator_knowledge_source: Optional[List[str]] = Field(default_factory=list)
+    id: str = Field(None)
+    subject: str = Field(None)
+    original_subject: Optional[str] = Field(None)
+    subject_namespace: Optional[str] = Field(None)
+    subject_category: Optional[List[str]] = Field(default_factory=list)
+    subject_closure: Optional[List[str]] = Field(default_factory=list)
+    subject_label: Optional[str] = Field(None)
+    subject_closure_label: Optional[List[str]] = Field(default_factory=list)
+    predicate: str = Field(None)
+    object: str = Field(None)
     original_object: Optional[str] = Field(None)
     object_namespace: Optional[str] = Field(None)
     object_category: Optional[List[str]] = Field(default_factory=list)
@@ -140,6 +189,17 @@ class Results(ConfiguredBaseModel):
 class AssociationResults(Results):
 
     items: List[Association] = Field(
+        default_factory=list,
+        description="""A collection of items, with the type to be overriden by slot_usage""",
+    )
+    limit: int = Field(None, description="""number of items to return in a response""")
+    offset: int = Field(None, description="""offset into the total number of items""")
+    total: int = Field(None, description="""total number of items matching a query""")
+
+
+class AssociationTableResults(Results):
+
+    items: List[DirectionalAssociation] = Field(
         default_factory=list,
         description="""A collection of items, with the type to be overriden by slot_usage""",
     )
@@ -230,11 +290,15 @@ class AssociationTypeMapping(ConfiguredBaseModel):
         None,
         description="""A label to describe the objects of the association type as a whole for use in the UI""",
     )
+    symmetric: bool = Field(
+        False,
+        description="""Whether the association type is symmetric, meaning that the subject and object labels should be interchangeable""",
+    )
     category: Optional[List[str]] = Field(
         default_factory=list,
         description="""The biolink categories to use in queries for this association type, assuming OR semantics""",
     )
-    predicate: Optional[List[str]] = Field(
+    predicate: List[str] = Field(
         default_factory=list,
         description="""The biolink predicate to use in queries for this association type, assuming OR semantics""",
     )
@@ -263,11 +327,13 @@ class AssociationCountList(ConfiguredBaseModel):
 Taxon.update_forward_refs()
 NodeHierarchy.update_forward_refs()
 Association.update_forward_refs()
+DirectionalAssociation.update_forward_refs()
 Entity.update_forward_refs()
 Node.update_forward_refs()
 HistoPheno.update_forward_refs()
 Results.update_forward_refs()
 AssociationResults.update_forward_refs()
+AssociationTableResults.update_forward_refs()
 EntityResults.update_forward_refs()
 SearchResult.update_forward_refs()
 SearchResults.update_forward_refs()
