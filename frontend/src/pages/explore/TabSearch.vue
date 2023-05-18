@@ -1,5 +1,5 @@
 <!--
-  node search tab on explore page
+  search tab on explore page
 
   search for nodes in knowledge graph
 -->
@@ -189,7 +189,7 @@ async function getAutocomplete(search: string): Promise<AutocompleteOptions> {
     .map((search) => ({
       label: search,
       icon: "clock-rotate-left",
-      tooltip: "One of your recent node searches",
+      tooltip: "One of your recent searches",
     }));
 
   /** most popular searches */

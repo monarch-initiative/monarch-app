@@ -107,7 +107,6 @@ export const handlers = [
      */
     const [, category = "", id = ""] =
       req.url.pathname.match(/\/bioentity\/(\w+)\/(.+)\\?/) || [];
-    console.log(category, id);
     const labels: { [key: string]: string } = {
       "MONDO:0007947": "Marfan syndrome",
       "HP:0100775": "Dural ectasia",

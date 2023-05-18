@@ -1,9 +1,9 @@
 import { expect, test } from "vitest";
-import { biolinkFacetsToFilters, queryToParams } from "@/api/facets";
+import { facetsToFilters, queryToParams } from "@/api/facets";
 
 test("Facets to filters works", () => {
   expect(
-    biolinkFacetsToFilters({
+    facetsToFilters({
       facetA: {
         entryA: 12,
         entryB: 34,
