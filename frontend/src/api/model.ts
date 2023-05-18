@@ -76,9 +76,9 @@ export interface Association {
 export interface DirectionalAssociation extends Association {
   /**
    * The directionality of the association relative to a given entity for an
-   * association_count. If the entity is the subject or in the subject
-   * closure, the direction is forwards, if it is the object or in the object
-   * closure, the direction is backwards.
+   * association_count. If the entity is the subject or in the subject closure,
+   * the direction is forwards, if it is the object or in the object closure,
+   * the direction is backwards.
    */ direction?: string;
   aggregator_knowledge_source?: string;
   id?: string;
@@ -186,10 +186,9 @@ export interface SearchResults extends Results {
   /** Collection of facet field responses with the field values and counts */ facet_fields?: {
     [index: FacetFieldLabel]: FacetField;
   };
-  /**
-   * Collection of facet query responses with the query string values and
-   * counts
-   */ facet_queries?: { [index: FacetValueLabel]: FacetValue };
+  /** Collection of facet query responses with the query string values and counts */ facet_queries?: {
+    [index: FacetValueLabel]: FacetValue;
+  };
   /** number of items to return in a response */ limit?: number;
   /** offset into the total number of items */ offset?: number;
   /** total number of items matching a query */ total?: number;
@@ -211,12 +210,12 @@ export interface FacetField {
 export interface AssociationTypeMapping {
   association_type?: string;
   /**
-   * A label to describe the subjects of the association type as a whole for
-   * use in the UI
+   * A label to describe the subjects of the association type as a whole for use
+   * in the UI
    */ subject_label?: string;
   /**
-   * A label to describe the objects of the association type as a whole for
-   * use in the UI
+   * A label to describe the objects of the association type as a whole for use
+   * in the UI
    */ object_label?: string;
   /**
    * Whether the association type is symmetric, meaning that the subject and
@@ -227,8 +226,8 @@ export interface AssociationTypeMapping {
    * assuming OR semantics
    */ category?: string;
   /**
-   * The biolink predicate to use in queries for this association type,
-   * assuming OR semantics
+   * The biolink predicate to use in queries for this association type, assuming
+   * OR semantics
    */ predicate?: string;
 }
 
