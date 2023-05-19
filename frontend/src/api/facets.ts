@@ -4,6 +4,8 @@ import { renameKey } from "@/util/object";
 import type { Params } from "./";
 import { getIdsFromLabels } from "./taxons";
 
+/** phase this file and these functions out over time */
+
 /** format of facet counts returned from biolink */
 export type Facets = { [key: string]: { [key: string]: number } };
 
@@ -14,16 +16,15 @@ export type Filters = { [key: string]: Options };
 export type Query = { [key: string]: string[] };
 
 /**
- * convert backend facets into filters (set of options) compatible with select
- * components
+ * (biolink) convert backend facets into filters (set of options) compatible
+ * with select components
  */
 export const facetsToFilters = (facets: Facets): Filters => {
   const filters: Filters = {};
   for (const [name, facet] of Object.entries(facets)) {
     filters[name] = [];
-    for (const [id, count] of Object.entries(facet)) {
+    for (const [id, count] of Object.entries(facet))
       filters[name].push({ id, count });
-    }
   }
 
   /** delete certain facets (explicitly, opt-out) that we don't want to show */

@@ -9,11 +9,11 @@
     <AppTabs v-model="tab" name="Explore Mode" :tabs="tabs" />
   </AppSection>
 
-  <NodeSearch v-if="tab === 'node-search'" />
+  <TabSearch v-if="tab === 'search'" />
 
-  <TextAnnotator v-if="tab === 'text-annotator'" />
+  <TabTextAnnotator v-if="tab === 'text-annotator'" />
 
-  <PhenotypeExplorer v-if="tab === 'phenotype-explorer'" />
+  <TabPhenotypeExplorer v-if="tab === 'phenotype-explorer'" />
 </template>
 
 <script setup lang="ts">
@@ -22,10 +22,10 @@ import { useRoute } from "vue-router";
 import { startCase } from "lodash";
 import AppTabs from "@/components/AppTabs.vue";
 import { appTitle } from "@/global/meta";
-import NodeSearch from "./NodeSearch.vue";
-import PhenotypeExplorer from "./PhenotypeExplorer.vue";
+import TabPhenotypeExplorer from "./TabPhenotypeExplorer.vue";
 import tabs from "./tabs.json";
-import TextAnnotator from "./TextAnnotator.vue";
+import TabSearch from "./TabSearch.vue";
+import TabTextAnnotator from "./TabTextAnnotator.vue";
 
 /** route info */
 const route = useRoute();

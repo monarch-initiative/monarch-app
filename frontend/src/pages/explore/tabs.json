@@ -1,7 +1,7 @@
 [
   {
-    "id": "node-search",
-    "text": "Node Search",
+    "id": "search",
+    "text": "Search",
     "icon": "search",
     "tooltip": "Search our knowledge graph for genes, diseases, phenotypes, and more, then see rich information and relational data between them"
   },

@@ -248,9 +248,9 @@ const tagsSelectValue = ref([
 const autocompleteSelectOptions = ref(async () => {
   await sleep(500); /** test loading spinner */
   return [
-    { icon: "home", name: "Cat" },
-    { name: "Dog", info: "good dog" },
-    { icon: "download", name: "Zebra" },
+    { icon: "home", label: "Cat" },
+    { label: "Dog", info: "good dog" },
+    { icon: "download", label: "Zebra" },
   ];
 });
 

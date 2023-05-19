@@ -1,19 +1,45 @@
+import { mapCategory } from "@/api/categories";
 import type { SearchResults } from "@/api/model";
 import { monarch, request } from "./index";
 
-export const getSearch = async (q: string): Promise<SearchResults> => {
-  /** make query */
-  /* tODO: add faceting support */
-  const url = `${monarch}/search?q=${q}`;
-  const response: SearchResults = await request<SearchResults>(url);
+export type Filters = { [key: string]: string[] };
 
-  return response;
+export const getSearchResults = async (
+  q: string,
+  offset?: number,
+  limit?: number,
+  filters?: Filters
+) => {
+  const url = `${monarch}/search`;
+  const response = await request<SearchResults>(url, {
+    q,
+    offset,
+    limit,
+    ...filters,
+  });
+
+  const transformedResponse = {
+    ...response,
+    items: response.items.map((item) => ({
+      ...item,
+      category: mapCategory(item.category),
+    })),
+  };
+
+  return transformedResponse;
 };
 
-export const getAutocomplete = async (q: string): Promise<SearchResults> => {
-  /** make query */
-  const url = `${monarch}/autocomplete?q=${q}`;
-  const response: SearchResults = await request<SearchResults>(url);
+export const getAutocompleteResults = async (q: string) => {
+  const url = `${monarch}/autocomplete`;
+  const response = await request<SearchResults>(url, { q });
 
-  return response;
+  const transformedResponse = {
+    ...response,
+    items: response.items.map((item) => ({
+      ...item,
+      category: mapCategory(item.category),
+    })),
+  };
+
+  return transformedResponse;
 };

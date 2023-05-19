@@ -108,12 +108,12 @@ const association = ref<Association>();
 /** list of options for dropdown */
 const categoryOptions = computed(
   (): Options =>
-    props.node.association_counts.map((association_count) => ({
+    props.node.association_counts?.map((association_count) => ({
       id: association_count.association_type || "",
       name: getAssociationLabel(association_count.label),
       icon: `category-${association_count.label.toLocaleLowerCase()}`,
       count: association_count.count,
-    }))
+    })) || []
 );
 
 /** deselect association when selected category changes */

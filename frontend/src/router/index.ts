@@ -6,29 +6,28 @@ import type {
 import { createRouter, createWebHistory } from "vue-router";
 import { isEmpty, pick } from "lodash";
 import { hideAll } from "tippy.js";
-// import { lookupNode } from "@/api/node-lookup";
+import PageAbout from "@/pages/about/PageAbout.vue";
+import PageCite from "@/pages/about/PageCite.vue";
+import PageOverview from "@/pages/about/PageOverview.vue";
+import PagePublications from "@/pages/about/PagePublications.vue";
+import PageSources from "@/pages/about/PageSources.vue";
+import PageTeam from "@/pages/about/PageTeam.vue";
+import PageTerms from "@/pages/about/PageTerms.vue";
+import PageExplore from "@/pages/explore/PageExplore.vue";
+import PageFeedback from "@/pages/help/PageFeedback.vue";
+import PageHelp from "@/pages/help/PageHelp.vue";
+import PageNode from "@/pages/node/PageNode.vue";
+import PageHome from "@/pages/PageHome.vue";
+import PageTestbed from "@/pages/PageTestbed.vue";
 import descriptions from "@/router/descriptions.json";
 import { sleep } from "@/util/debug";
 import { parse } from "@/util/object";
-import PageAbout from "@/views/about/PageAbout.vue";
-import PageCite from "@/views/about/PageCite.vue";
-import PageOverview from "@/views/about/PageOverview.vue";
-import PagePublications from "@/views/about/PagePublications.vue";
-import PageSources from "@/views/about/PageSources.vue";
-import PageTeam from "@/views/about/PageTeam.vue";
-import PageTerms from "@/views/about/PageTerms.vue";
-import PageExplore from "@/views/explore/PageExplore.vue";
-import PageFeedback from "@/views/help/PageFeedback.vue";
-import PageHelp from "@/views/help/PageHelp.vue";
-import PageNode from "@/views/node/PageNode.vue";
-import PageHome from "@/views/PageHome.vue";
-import PageTestbed from "@/views/PageTestbed.vue";
 
 /** environment mode */
 const mode = import.meta.env.MODE;
 
 /** list of routes and corresponding components. */
-/** kEEP IN SYNC WITH PUBLIC/SITEMAP.XML */
+/** KEEP IN SYNC WITH PUBLIC/SITEMAP.XML */
 export const routes: RouteRecordRaw[] = [
   /** home page */
   {

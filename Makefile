@@ -73,8 +73,7 @@ install-frontend:
 
 
 .PHONY: model
-model: install-frontend
-	mkdir -p schema
+model: mkdir -p schema
 	$(RUN) monarch schema > schema/monarch-py.yaml
 	$(RUN) gen-pydantic schema/monarch-api.yaml > backend/src/monarch_api/model.py
 	$(RUN) gen-typescript schema/monarch-api.yaml > frontend/src/api/model.ts
@@ -85,6 +84,7 @@ model: install-frontend
 .PHONY: docs
 docs: install-backend model
 	$(RUN) gen-doc -d $(ROOTDIR)/docs/Data-Model/ $(ROOTDIR)/schema/monarch-api.yaml
+	$(RUN) mkdocs build
 
 
 ### Testing ###
