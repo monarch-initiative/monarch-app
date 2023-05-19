@@ -67,7 +67,7 @@
           :aria-selected="true"
           :data-highlighted="index === highlighted"
           tabindex="0"
-          @click.prevent="() => select(option.name)"
+          @click.prevent="() => select(option.label)"
           @mouseenter.capture="highlighted = index"
           @mousedown.prevent=""
           @focusin="() => null"
@@ -76,7 +76,7 @@
           <AppIcon v-if="option.icon" :icon="option.icon" class="option-icon" />
           <span
             class="option-label truncate"
-            v-html="option.highlight || option.name"
+            v-html="option.highlight || option.label"
           >
           </span>
           <span v-if="option.info" class="option-info truncate">{{
@@ -99,8 +99,8 @@ export type Options = Option[];
 export type Option = {
   /** icon name */
   icon?: string;
-  /** display name */
-  name: string;
+  /** display label */
+  label: string;
   /** highlighting html */
   highlight?: string;
   /** info col */
@@ -213,12 +213,12 @@ async function onKeydown(event: KeyboardEvent) {
   /** enter key to select highlighted result */
   if (event.key === "Enter" && highlighted.value >= 0) {
     event.stopPropagation();
-    select(results.value[highlighted.value].name);
+    select(results.value[highlighted.value].label);
   }
 
   /** delete key to delete the highlighted result */
   if (event.key === "Delete" && event.shiftKey) {
-    emit("delete", results.value[highlighted.value].name);
+    emit("delete", results.value[highlighted.value].label);
     await getResults();
   }
 

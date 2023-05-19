@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import PageHelp from "@/views/help/PageHelp.vue";
+import PageHelp from "../src/pages/help/PageHelp.vue";
 import { apiCall, mount } from "./setup";
 
 test("Help page renders uptimerobot statuses", async () => {

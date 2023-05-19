@@ -2,7 +2,6 @@ site_name: "Monarch API Documentation"
 repo_name: "monarch-api"
 repo_url: "https://github.com/monarch-initiative/monarch-app/"
 site_url: "https://monarch-app.monarchinitiative.org/docs/"
-site_dir: "docs"
 
 theme:
   name: "material"

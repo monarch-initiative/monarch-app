@@ -16,6 +16,8 @@ module.exports = {
 
   /** rule overrides (KEEP THIS AS MINIMAL AS POSSIBLE) */
   rules: {
+    "prettier/prettier": "warn",
+
     /**
      * count v-tooltip (which adds an accessible aria-label attribute) as
      * accessible

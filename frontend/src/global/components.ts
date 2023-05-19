@@ -29,3 +29,23 @@ const globalComponents = {
 };
 
 export default globalComponents;
+
+/**
+ * declare global typescript definitions for these components since they are not
+ * explicitly imported
+ */
+declare module "@vue/runtime-core" {
+  export interface GlobalComponents {
+    AppButton: typeof AppButton;
+    AppFlex: typeof AppFlex;
+    AppGallery: typeof AppGallery;
+    AppHeading: typeof AppHeading;
+    AppIcon: typeof AppIcon;
+    AppLink: typeof AppLink;
+    AppMarkdown: typeof AppMarkdown;
+    AppPlaceholder: typeof AppPlaceholder;
+    AppSection: typeof AppSection;
+    AppStatus: typeof AppStatus;
+    AppTile: typeof AppTile;
+  }
+}
