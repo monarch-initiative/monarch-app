@@ -6,10 +6,7 @@
   <!-- status -->
   <template v-if="isLoading || isError">
     <AppSection design="fill" class="section">
-      <AppHeading
-        class="heading"
-        :icon="`category-${kebabCase(String($route.params.category))}`"
-      >
+      <AppHeading class="heading" icon="category-unknown">
         {{ $route.params.id }}
       </AppHeading>
     </AppSection>
@@ -31,8 +28,6 @@
     <SectionHierarchy :node="node" />
     <SectionVisualization :node="node" />
     <SectionAssociations :node="node" />
-    <!-- <SectionBreadcrumbs :node="node" /> -->
-
     <Teleport to="body">
       <TheTableOfContents />
     </Teleport>
@@ -42,15 +37,13 @@
 <script setup lang="ts">
 import { nextTick, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
-import { kebabCase } from "lodash";
-import { getEntity } from "@/api/entity";
+import { getNode } from "@/api/node";
 import TheTableOfContents from "@/components/TheTableOfContents.vue";
 import { addEntry } from "@/global/history";
 import { appDescription, appTitle } from "@/global/meta";
 import { scrollToHash } from "@/router";
 import { useQuery } from "@/util/composables";
 import SectionAssociations from "./SectionAssociations.vue";
-// import SectionBreadcrumbs from "./SectionBreadcrumbs.vue";
 import SectionDetails from "./SectionDetails.vue";
 import SectionHierarchy from "./SectionHierarchy.vue";
 import SectionOverview from "./SectionOverview.vue";
@@ -62,7 +55,7 @@ const route = useRoute();
 
 /** get new node data */
 const {
-  query: getNode,
+  query: runGetNode,
   data: node,
   isLoading,
   isError,
@@ -70,7 +63,7 @@ const {
   async function () {
     /** get node from route params */
     const { id = "" } = route.params;
-    const node_info = await getEntity(id as string);
+    const node_info = await getNode(id as string);
 
     return node_info;
   },
@@ -97,7 +90,7 @@ const {
 );
 
 /** when path (not hash or query) changed, get new node data */
-watch(() => route.path, getNode);
+watch(() => route.path, runGetNode);
 
 /** update document title */
 watch(
@@ -119,7 +112,7 @@ watch([() => node.value?.name], () => addEntry(node.value?.name), {
 });
 
 /** get new node data on load */
-onMounted(getNode);
+onMounted(runGetNode);
 </script>
 
 <style lang="scss" scoped>

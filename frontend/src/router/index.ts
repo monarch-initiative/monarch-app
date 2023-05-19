@@ -130,18 +130,6 @@ export const routes: RouteRecordRaw[] = [
     name: "Node",
     component: PageNode,
   },
-  {
-    path: "/:id",
-    name: "NodeRaw",
-    component: PageHome,
-    beforeEnter: (async (to) => {
-      /** try to lookup node id and infer category */
-      const id = to.path.slice(1) as string;
-      if (id) {
-        return `/node/${id}`;
-      }
-    }) as NavigationGuard,
-  },
 
   /** test pages (comment this out when we release app) */
   {

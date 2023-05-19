@@ -40,7 +40,7 @@ test("Recent/frequent results show", async ({ page }) => {
   }
 
   /** go to node page, which should also get added to search history */
-  await page.goto("/disease/MONDO:12345");
+  await page.goto("/node/MONDO:12345");
   /** wait for page to load */
   await expect(page.locator("#overview")).toBeVisible();
   await page.goto("/explore");
@@ -53,7 +53,7 @@ test("Recent/frequent results show", async ({ page }) => {
   await expect(
     options
       .nth(0)
-      .getByText(/marfan syndrome/i)
+      .getByText(/familial hypercholesterolemia/i)
       .first()
   ).toBeVisible();
   await expect(

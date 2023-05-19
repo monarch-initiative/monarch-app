@@ -5,20 +5,20 @@
 -->
 
 <template>
-  <AppWrapper tag="AppSection" :wrap="$route.name !== 'Home'">
+  <AppWrapper tag="AppSection" :wrap="!home">
     <!-- search box -->
     <AppSelectAutocomplete
       :model-value="search"
       name="Search"
       placeholder="Search for a gene, disease, phenotype, etc."
-      :options="getAutocomplete"
+      :options="runGetAutocomplete"
       @focus="onFocus"
       @change="onChange"
       @delete="onDelete"
     />
 
     <!-- facet dropdown filters -->
-    <AppFlex v-if="Object.keys(facets).length">
+    <AppFlex v-if="!home && Object.keys(facets).length">
       <template v-for="(facet, id, index) in facets" :key="index">
         <AppSelectMulti
           v-if="Object.keys(facet.facet_values || {}).length"
@@ -32,7 +32,7 @@
     </AppFlex>
   </AppWrapper>
 
-  <AppSection v-if="$route.name !== 'Home'">
+  <AppSection v-if="!home">
     <!-- status -->
     <AppStatus v-if="isLoading" code="loading">Loading results</AppStatus>
     <AppStatus v-else-if="isError" code="error"
@@ -52,11 +52,11 @@
     >
       <div class="title">
         <AppIcon
-          v-tooltip="startCase(result.category)"
-          :icon="`category-${kebabCase(result.category)}`"
+          v-tooltip="result.category_label || 'Unknown'"
+          :icon="`category-${result.category_label || 'unknown'}`"
           class="type"
         />
-        <AppLink :to="`/${result.id}`" class="name">
+        <AppLink :to="`/node/${result.id}`" class="name">
           <span v-html="result.name"></span>
         </AppLink>
         <AppButton
@@ -108,9 +108,9 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { groupBy, kebabCase, mapValues, sortBy, startCase, uniq } from "lodash";
+import { groupBy, mapValues, sortBy, uniq } from "lodash";
 import type { SearchResults } from "@/api/model";
-import { getAutocompleteResults, getSearchResults } from "@/api/search";
+import { getAutocomplete, getSearch } from "@/api/search";
 import type { Options as AutocompleteOptions } from "@/components/AppSelectAutocomplete.vue";
 import AppSelectAutocomplete from "@/components/AppSelectAutocomplete.vue";
 import type { Options as MultiOptions } from "@/components/AppSelectMulti.vue";
@@ -119,6 +119,13 @@ import AppWrapper from "@/components/AppWrapper.vue";
 import { addEntry, deleteEntry, history } from "@/global/history";
 import { appTitle } from "@/global/meta";
 import { useQuery } from "@/util/composables";
+
+type Props = {
+  /** whether to show pared down version for home page */
+  home: boolean;
+};
+
+defineProps<Props>();
 
 /** route info */
 const router = useRouter();
@@ -159,14 +166,16 @@ function onDelete(value: string) {
 /** when user changes selected options */
 function onSelectedChange() {
   page.value = 0;
-  getSearch(false);
+  runGetSearch(false);
 }
 
 /** get autocomplete results */
-async function getAutocomplete(search: string): Promise<AutocompleteOptions> {
+async function runGetAutocomplete(
+  search: string
+): Promise<AutocompleteOptions> {
   /** if something typed in, get autocomplete options from backend */
   if (search.trim())
-    return (await getAutocompleteResults(search)).items.map((item) => ({
+    return (await getAutocomplete(search)).items.map((item) => ({
       label: item.name,
       icon: "category-" + item.category,
       tooltip: "",
@@ -222,7 +231,7 @@ async function getAutocomplete(search: string): Promise<AutocompleteOptions> {
 
 /** get search results */
 const {
-  query: getSearch,
+  query: runGetSearch,
   data: results,
   isLoading,
   isError,
@@ -235,7 +244,7 @@ const {
     fresh: boolean
   ) {
     /** get results from api */
-    const response = await getSearchResults(
+    const response = await getSearch(
       search.value,
       from.value,
       perPage.value,
@@ -326,7 +335,7 @@ watch(
     /** update document title */
     if (search.value) appTitle.value = [`"${search.value}"`];
     /** refetch search */
-    await getSearch(true);
+    await runGetSearch(true);
   },
   { immediate: true, flush: "post" }
 );
@@ -340,7 +349,7 @@ watch(search, async () => {
 });
 
 /** when start page changes */
-watch(from, () => getSearch(false));
+watch(from, () => runGetSearch(false));
 </script>
 
 <style lang="scss" scoped>

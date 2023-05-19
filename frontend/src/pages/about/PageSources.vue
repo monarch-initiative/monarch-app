@@ -155,7 +155,7 @@ function getFilename(path = "") {
 }
 
 const {
-  query: getSources,
+  query: runGetSources,
   data: sources,
   isLoading,
   isError,
@@ -196,7 +196,7 @@ const {
   return sources;
 }, []);
 
-onMounted(getSources);
+onMounted(runGetSources);
 
 /** shown sources */
 const filteredSources = computed((): Source[] =>

@@ -1,6 +1,9 @@
+<!-- 
+  list of sections for special visualizations.
+-->
+
 <template>
-  <!-- <AppSection v-if="node.category === 'disease'"> -->
-  <AppSection>
+  <AppSection v-if="node.category_label === 'Disease'">
     <AppHeading icon="chart-bar">HistoPheno</AppHeading>
     <HistoPheno :node="node" />
   </AppSection>

@@ -1,13 +1,13 @@
-export type NodeId = string
-export type TaxonId = string
-export type AssociationId = string
-export type EntityId = string
-export type HistoPhenoId = string
-export type HistoBinId = string
-export type SearchResultId = string
-export type FacetValueLabel = string
-export type FacetFieldLabel = string
-export type AssociationCountLabel = string
+export type NodeId = string;
+export type TaxonId = string;
+export type AssociationId = string;
+export type EntityId = string;
+export type HistoPhenoId = string;
+export type HistoBinId = string;
+export type SearchResultId = string;
+export type FacetValueLabel = string;
+export type FacetFieldLabel = string;
+export type AssociationCountLabel = string;
 
 export interface Node extends Entity {
   taxon?: Taxon;
@@ -16,6 +16,7 @@ export interface Node extends Entity {
   node_hierarchy?: NodeHierarchy;
   id: string;
   category?: string[];
+  category_label?: string;
   name?: string;
   description?: string;
   xref?: string[];
@@ -27,16 +28,17 @@ export interface Node extends Entity {
   synonym?: string[];
 }
 
+
 export interface Taxon {
   id: string;
   label: string;
 }
 
 export interface NodeHierarchy {
-    super_classes: Entity[],
-    equivalent_classes: Entity[],
-    sub_classes: Entity[],
-};
+  super_classes: Entity[];
+  equivalent_classes: Entity[];
+  sub_classes: Entity[];
+}
 
 export interface Association {
   aggregator_knowledge_source?: string[];
@@ -86,6 +88,7 @@ export interface AssociationResults extends Results {
 export interface Entity {
   id: string;
   category?: string[];
+  category_label?: string;
   name?: string;
   description?: string;
   xref?: string[];
@@ -136,6 +139,7 @@ export interface SearchResult extends Entity {
   score?: number;
   id: string;
   category: string[];
+  category_label?: string;
   name: string;
   description?: string;
   xref?: string[];
@@ -152,10 +156,7 @@ export interface SearchResults extends Results {
   items: SearchResult[];
   /** Collection of facet field responses with the field values and counts */
   facet_fields?: { [index: FacetFieldLabel]: FacetField };
-  /**
-   * Collection of facet query responses with the query string values and
-   * counts
-   */
+  /** Collection of facet query responses with the query string values and counts */
   facet_queries?: { [index: FacetValueLabel]: FacetValue };
   /** number of items to return in a response */
   limit: number;
@@ -176,18 +177,19 @@ export interface FacetField {
   facet_values?: { [index: FacetValueLabel]: FacetValue };
 }
 /**
- * A data class to hold the necessary information to produce association type counts for given  entities with appropriate directional labels
+ * A data class to hold the necessary information to produce association type
+ * counts for given entities with appropriate directional labels
  */
 export interface AssociationTypeMapping {
   association_type?: string;
   /**
-   * A label to describe the subjects of the association type as a whole for
-   * use in the UI
+   * A label to describe the subjects of the association type as a whole for use
+   * in the UI
    */
   subject_label?: string;
   /**
-   * A label to describe the objects of the association type as a whole for
-   * use in the UI
+   * A label to describe the objects of the association type as a whole for use
+   * in the UI
    */
   object_label?: string;
   /**
@@ -196,8 +198,8 @@ export interface AssociationTypeMapping {
    */
   category?: string[];
   /**
-   * The biolink predicate to use in queries for this association type,
-   * assuming OR semantics
+   * The biolink predicate to use in queries for this association type, assuming
+   * OR semantics
    */
   predicate?: string[];
 }

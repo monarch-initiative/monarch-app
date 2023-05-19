@@ -28,49 +28,20 @@
         :tabs="tabs"
         name="Association viewing mode"
         :url="false"
-        @update:model-value="association = undefined" />
-
-      <!-- summary view of associations -->
-      <template v-if="tab === 'summary'">
-        <AssociationsSummary
-          :node="node"
-          :selected-category="category.id"
-          :selected-association="association"
-          @select="(value) => (association = value)"
-        />
-      </template>
-
-      <!-- table view of associations -->
-      <template v-if="tab === 'table'">
-        <AssociationsTable
-          :node="node"
-          :selected-category="category.id"
-          :selected-association="association"
-          @select="(value) => (association = value)"
-        /> </template
-    ></template>
+        @update:model-value="association = undefined"
+      />
+    </template>
   </AppSection>
-
-  <!-- evidence viewer of association -->
-  <EvidenceViewer
-    v-if="association"
-    :node="node"
-    :selected-association="association"
-  />
 </template>
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { getAssociationLabel } from "@/api/categories";
 import type { Association, Node } from "@/api/model";
-import type { Option, Options } from "@/components/AppSelectSingle.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
+import type { Option, Options } from "@/components/AppSelectSingle.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import AppTabs from "@/components/AppTabs.vue";
-import AssociationsSummary from "./AssociationsSummary.vue";
-import AssociationsTable from "./AssociationsTable.vue";
-import EvidenceViewer from "./EvidenceViewer.vue";
 
 /** route info */
 const route = useRoute();
@@ -110,8 +81,8 @@ const categoryOptions = computed(
   (): Options =>
     props.node.association_counts?.map((association_count) => ({
       id: association_count.association_type || "",
-      name: getAssociationLabel(association_count.label),
-      icon: `category-${association_count.label.toLocaleLowerCase()}`,
+      label: association_count.label,
+      icon: `category-${association_count.label || "unknown"}`,
       count: association_count.count,
     })) || []
 );

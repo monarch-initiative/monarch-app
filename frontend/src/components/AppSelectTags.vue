@@ -44,9 +44,9 @@
           aria-autocomplete="list"
           @focus="open"
           @blur="close"
-          @debounce="getResults"
+          @debounce="runGetResults"
           @keydown="onKeydown"
-          @paste="getResults"
+          @paste="runGetResults"
         />
 
         <div class="controls">
@@ -223,7 +223,7 @@ const expanded = ref(false);
 async function open() {
   expanded.value = true;
   highlighted.value = -1;
-  await getResults();
+  await runGetResults();
 }
 
 /** close results dropdown */
@@ -314,7 +314,7 @@ async function copy() {
 }
 
 const {
-  query: getResults,
+  query: runGetResults,
   data: results,
   isLoading,
   isError,

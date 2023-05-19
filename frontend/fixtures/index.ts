@@ -2,23 +2,16 @@ import { rest } from "msw";
 /** url bases */
 import { biolink, monarch } from "@/api";
 import { feedbackEndpoint } from "@/api/feedback";
-import { mygeneinfo } from "@/api/genes";
 import { obo } from "@/api/ontologies";
 import { efetch, esummary } from "@/api/publications";
 import { uptimeRobot } from "@/api/uptime";
-import associationEvidence from "./association-evidence.json";
 import autocomplete from "./autocomplete.json";
 import datasets from "./datasets.json";
-import entity from "./entity.json";
 import feedback from "./feedback.json";
 import histopheno from "./histopheno.json";
-import nodeAssociations from "./node-associations.json";
-import nodeGene from "./node-gene.json";
-import nodeHierarchy from "./node-hierarchy.json";
-import nodeLookup from "./node-lookup.json";
 import nodePublicationAbstract from "./node-publication-abstract.json";
 import nodePublicationSummary from "./node-publication-summary.json";
-import ontolIdentifier from "./ontol-identifier.json";
+import node from "./node.json";
 import ontologies from "./ontologies.json";
 import phenotypeExplorerCompare from "./phenotype-explorer-compare.json";
 import phenotypeExplorerSearch from "./phenotype-explorer-search.json";
@@ -45,7 +38,6 @@ export const handlers = [
   rest.get(regex(biolink, "/metadata/datasets"), (req, res, ctx) =>
     res(ctx.status(200), ctx.json(datasets))
   ),
-
   rest.get(regex(obo), (req, res, ctx) =>
     res(ctx.status(200), ctx.json(ontologies))
   ),
@@ -53,11 +45,6 @@ export const handlers = [
   /** api status monitoring on /help */
   rest.post(regex(uptimeRobot), (req, res, ctx) =>
     res(ctx.status(200), ctx.json(uptime))
-  ),
-
-  /** entity lookup */
-  rest.get(regex(monarch, "/entity"), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(entity))
   ),
 
   /** histopheno data */
@@ -70,14 +57,14 @@ export const handlers = [
     res(ctx.status(200), ctx.json(feedback))
   ),
 
-  /** autocomplete */
-  rest.get(regex(monarch, "/autocomplete"), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(autocomplete))
-  ),
-
   /** search * */
   rest.get(regex(monarch, "/search"), (req, res, ctx) =>
     res(ctx.status(200), ctx.json(search))
+  ),
+
+  /** autocomplete */
+  rest.get(regex(monarch, "/autocomplete"), (req, res, ctx) =>
+    res(ctx.status(200), ctx.json(autocomplete))
   ),
 
   /** text annotator */
@@ -89,80 +76,87 @@ export const handlers = [
   rest.get(regex(biolink, "/sim/search"), (req, res, ctx) =>
     res(ctx.status(200), ctx.json(phenotypeExplorerSearch))
   ),
-
   rest.post(regex(biolink, "/sim/compare"), (req, res, ctx) =>
     res(ctx.status(200), ctx.json(phenotypeExplorerCompare))
   ),
 
-  /** raw node search (without provided category) */
-  rest.get(regex(biolink, /\/bioentity\/[^/]+$/), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(nodeLookup))
-  ),
-
-  /** node search */
-  rest.get(regex(biolink, /\/bioentity\/\w+\/[^/]+$/), (req, res, ctx) => {
+  /** node lookup */
+  rest.get(regex(monarch, "/entity"), (req, res, ctx) => {
     /**
      * change fixture data based on request so we can see UI that is conditional
      * on name/category/etc
      */
-    const [, category = "", id = ""] =
-      req.url.pathname.match(/\/bioentity\/(\w+)\/(.+)\\?/) || [];
-    const labels: { [key: string]: string } = {
-      "MONDO:0007947": "Marfan syndrome",
-      "HP:0100775": "Dural ectasia",
-      "HP:0003179": "Protrusio acetabuli",
-      "HP:0001083": "Ectopia lentis",
-      "HP:0000501": "Glaucoma",
-      "HP:0002705": "High, narrow palate",
-      "HP:0004382": "Mitral valve calcification",
-      "HP:0004326": "Cachexia",
-      "HP:0002816": "Genu recurvatum",
-      "HP:0004298": "Abnormality of the abdominal wall",
-      "HP:0002996": "Limited elbow movement",
-      "MONDO:0020208": "syndromic myopia",
+    const id = req.url.pathname.match(/\/entity\/(.*)/)?.[1] || "";
+
+    const replace: {
+      [key: string]: { name?: string; category_label?: string };
+    } = {
+      "MONDO:0007947": {
+        name: "Marfan syndrome",
+        category_label: "Disease",
+      },
+      "HP:0100775": {
+        name: "Dural ectasia",
+        category_label: "Disease",
+      },
+      "HP:0003179": {
+        name: "Protrusio acetabuli",
+        category_label: "Disease",
+      },
+      "HP:0001083": {
+        name: "Ectopia lentis",
+        category_label: "Disease",
+      },
+      "HP:0000501": {
+        name: "Glaucoma",
+        category_label: "Disease",
+      },
+      "HP:0002705": {
+        name: "High, narrow palate",
+        category_label: "Disease",
+      },
+      "HP:0004382": {
+        name: "Mitral valve calcification",
+        category_label: "Disease",
+      },
+      "HP:0004326": {
+        name: "Cachexia",
+        category_label: "Disease",
+      },
+      "HP:0002816": {
+        name: "Genu recurvatum",
+        category_label: "Disease",
+      },
+      "HP:0004298": {
+        name: "Abnormality of the abdominal wall",
+        category_label: "Disease",
+      },
+      "HP:0002996": {
+        name: "Limited elbow movement",
+        category_label: "Disease",
+      },
+      "MONDO:0020208": {
+        name: "syndromic myopia",
+        category_label: "Disease",
+      },
+      "PMID:25614286": {
+        category_label: "Publication",
+      },
     };
-    nodeLookup.label = labels[id] || "Marfan syndrome";
-    nodeLookup.category = [category];
-    /**
-     * note that this will show (in yarn test:gui) silly things like "Marfan
-     * syndrome: gene", because only the category field is changed
-     */
+    const { name, category_label } = replace[id] || {};
+    node.id = id;
+    if (name) node.name = name;
+    if (category_label) node.category_label = category_label;
 
-    return res(ctx.status(200), ctx.json(nodeLookup));
+    return res(ctx.status(200), ctx.json(node));
   }),
-
-  /** node gene info */
-  rest.get(regex(mygeneinfo), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(nodeGene))
-  ),
 
   /** node publication info */
   rest.get(regex(esummary), (req, res, ctx) =>
     res(ctx.status(200), ctx.json(nodePublicationSummary))
   ),
-
   rest.get(regex(efetch), (req, res, ctx) =>
     res(ctx.status(200), ctx.json(nodePublicationAbstract.abstract))
-  ),
-
-  /** node hierarchy info */
-  rest.get(regex(biolink, "/graph/edges/from"), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(nodeHierarchy))
-  ),
-
-  /** node associations data */
-  rest.get(regex(biolink, /\/bioentity\/\w+\/[^/]+\/\w+.*$/), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(nodeAssociations))
-  ),
-
-  /** association evidence data */
-  rest.get(regex(biolink, "/evidence/graph"), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(associationEvidence))
-  ),
-
-  /** ontol get id from label */
-  rest.post(regex(biolink, "/ontol/identifier"), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(ontolIdentifier))
   ),
 
   /** any other request */

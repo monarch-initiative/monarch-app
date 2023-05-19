@@ -17,8 +17,6 @@ import { getHistoPheno } from "@/api/histopheno";
 import type { Node } from "@/api/model";
 import { useQuery } from "@/util/composables";
 
-// import theme from "@/global/variables.module.scss";
-
 /** route info */
 const route = useRoute();
 
@@ -79,16 +77,14 @@ const options = computed(() => ({
 
 /** get chart data */
 const {
-  query: getData,
+  query: runGetHistoPheno,
   data: series,
   isLoading,
   isError,
 } = useQuery(
   async function () {
-    console.log(`Getting HistoPheno for ${props.node}`);
     const histopheno = await getHistoPheno(props.node.id || "");
     const data = histopheno.items?.map((d) => ({ x: d.label, y: d.count }));
-
     return [{ name: "phenotypes", data: data }];
   },
 
@@ -97,7 +93,9 @@ const {
 );
 
 /** when path (not hash or query) changed, get new chart data */
-watch([() => route.path, () => props.node.id], getData, { immediate: true });
+watch([() => route.path, () => props.node.id], runGetHistoPheno, {
+  immediate: true,
+});
 </script>
 
 <style lang="scss" scoped>

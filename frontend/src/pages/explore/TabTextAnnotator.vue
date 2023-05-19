@@ -92,7 +92,7 @@ const filename = useLocalStorage("annotations-filename", "");
 
 /** annotation results */
 const {
-  query: annotate,
+  query: runAnnotateText,
   data: annotations,
   isLoading,
   isError,
@@ -104,20 +104,20 @@ const {
 async function onUpload(data = "", file = "") {
   content.value = data;
   filename.value = file;
-  await annotate();
+  await runAnnotateText();
 }
 
 /** on textbox change */
 async function onChange() {
   filename.value = "";
-  await annotate();
+  await runAnnotateText();
 }
 
 /** example full text */
 async function doExample() {
   content.value = example.content;
   filename.value = "Example";
-  await annotate();
+  await runAnnotateText();
 }
 
 /** download annotations */
@@ -142,7 +142,7 @@ function getPhenotypes() {
 
 /** run annotations on mount if content loaded from storage */
 onMounted(async () => {
-  if (content.value) await annotate();
+  if (content.value) await runAnnotateText();
 });
 </script>
 

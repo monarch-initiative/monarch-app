@@ -158,7 +158,7 @@ const expanded = ref(false);
 async function open() {
   expanded.value = true;
   highlighted.value = -1;
-  await getResults();
+  await runGetResults();
 }
 
 /** close results dropdown */
@@ -181,7 +181,7 @@ async function onBlur() {
 
 /** when user types some text, after a delay */
 async function onDebounce() {
-  await getResults();
+  await runGetResults();
 }
 
 /** when user "commits" change to value, e.g. pressing enter, de-focusing, etc */
@@ -219,7 +219,7 @@ async function onKeydown(event: KeyboardEvent) {
   /** delete key to delete the highlighted result */
   if (event.key === "Delete" && event.shiftKey) {
     emit("delete", results.value[highlighted.value].label);
-    await getResults();
+    await runGetResults();
   }
 
   /** esc key to close dropdown */
@@ -234,7 +234,7 @@ async function select(value: string) {
 }
 
 const {
-  query: getResults,
+  query: runGetResults,
   data: results,
   isLoading,
   isError,

@@ -27,5 +27,8 @@
 
     <!-- help pages -->
     <loc>https://monarchinitiative.org/feedback</loc>
+
+    <!-- node pages -->
+    <loc>https://monarchinitiative.org/node</loc>
   </url>
 </urlset>

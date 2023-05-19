@@ -1,10 +1,9 @@
-import { mapCategory } from "@/api/categories";
 import type { SearchResults } from "@/api/model";
 import { monarch, request } from "./index";
 
 export type Filters = { [key: string]: string[] };
 
-export const getSearchResults = async (
+export const getSearch = async (
   q: string,
   offset?: number,
   limit?: number,
@@ -17,29 +16,11 @@ export const getSearchResults = async (
     limit,
     ...filters,
   });
-
-  const transformedResponse = {
-    ...response,
-    items: response.items.map((item) => ({
-      ...item,
-      category: mapCategory(item.category),
-    })),
-  };
-
-  return transformedResponse;
+  return response;
 };
 
-export const getAutocompleteResults = async (q: string) => {
+export const getAutocomplete = async (q: string) => {
   const url = `${monarch}/autocomplete`;
   const response = await request<SearchResults>(url, { q });
-
-  const transformedResponse = {
-    ...response,
-    items: response.items.map((item) => ({
-      ...item,
-      category: mapCategory(item.category),
-    })),
-  };
-
-  return transformedResponse;
+  return response;
 };

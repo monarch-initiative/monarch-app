@@ -6,7 +6,7 @@
   <!-- dive right in -->
   <AppSection design="fill">
     <AppTabs v-model="tab" name="Explore Mode" :tabs="tabs" route="Explore" />
-    <TabSearch />
+    <TabSearch :home="true" />
   </AppSection>
 
   <AppSection>
@@ -205,7 +205,7 @@ import TabSearch from "./explore/TabSearch.vue";
 const tab = ref(tabs[0].id);
 
 const {
-  query: getPosts,
+  query: runGetBlogPosts,
   data: blogPosts,
   isLoading,
   isError,
@@ -213,5 +213,5 @@ const {
   return await getBlogPosts();
 }, []);
 
-onMounted(getPosts);
+onMounted(runGetBlogPosts);
 </script>

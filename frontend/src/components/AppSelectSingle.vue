@@ -63,9 +63,9 @@
           <span class="option-label truncate">
             {{ option.label || option.id }}
           </span>
-          <span v-if="option.count" class="option-count">{{
-            option.count
-          }}</span>
+          <span v-if="option.count" class="option-count">
+            {{ option.count }}
+          </span>
         </div>
       </div>
     </Teleport>

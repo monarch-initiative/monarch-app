@@ -1,11 +1,13 @@
-<!-- node page title section, at top, below header. basic identifying info of node. -->
+<!--
+  node page title section, at top, below header. basic identifying info of node.
+-->
 
 <template>
   <AppSection design="fill" class="section">
     <AppFlex dir="column" gap="small">
       <AppHeading
         class="heading"
-        :icon="`category-${kebabCase(node.category?.[0])}`"
+        :icon="`category-${node.category_label || 'unknown'}`"
       >
         {{ node.name }}
       </AppHeading>
@@ -14,7 +16,7 @@
           v-tooltip="'The category/type of this node'"
           design="small"
           color="secondary"
-          :text="kebabCase(node.category?.[0])"
+          :text="node.category_label || 'Unknown'"
         />
         <AppButton
           v-tooltip="'The ID of this node. Click to copy.'"
@@ -24,23 +26,12 @@
           :text="node.id"
           :copy="true"
         />
-        <!-- Remove or re-implement? -->
-        <!-- <span
-          v-if="node.id !== node.originalId"
-          v-tooltip="
-            'The original ID you visited, which resolved to a different ID.'
-          "
-          class="original-id"
-        >
-          {{ node.originalId }}
-        </span> -->
       </AppFlex>
     </AppFlex>
   </AppSection>
 </template>
 
 <script setup lang="ts">
-import { kebabCase } from "lodash";
 import type { Node } from "@/api/model";
 
 type Props = {

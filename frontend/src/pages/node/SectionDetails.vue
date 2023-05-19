@@ -7,11 +7,6 @@
     <AppHeading icon="clipboard-list">Details</AppHeading>
 
     <AppDetails>
-      <!-- main identifier -->
-      <!-- <AppDetail :blank="!node.iri" title="IRI">
-        <AppLink :to="node.iri">{{ node.iri.split("/").pop() }}</AppLink>
-      </AppDetail> -->
-
       <!-- inheritance -->
       <AppDetail :blank="!node.inheritance" title="Heritability">
         <AppFlex h-align="left" gap="small">
@@ -23,14 +18,9 @@
         </AppFlex>
       </AppDetail>
 
-      <!-- modifiers -->
-      <!-- <AppDetail :blank="!node.modifiers.length" title="Clinical Modifiers">
-        <p>{{ node.modifiers.join("&nbsp; | &nbsp;") }}</p>
-      </AppDetail> -->
-
       <!-- taxon (gene specific)-->
       <AppDetail
-        v-if="node.category?.includes('biolink:Gene')"
+        v-if="node.category_label === 'Gene'"
         :blank="!node.taxon?.id"
         title="Taxon"
       >
