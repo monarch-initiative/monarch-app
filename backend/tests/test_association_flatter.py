@@ -6,6 +6,7 @@ from monarch_api.utils.entity_utils import get_associated_entity
 @pytest.fixture()
 def example_association():
     return Association(
+        id="123",
         subject="MONDO:0007947",
         subject_label="Marfan syndrome",
         subject_category=["biolink:Disease"],
