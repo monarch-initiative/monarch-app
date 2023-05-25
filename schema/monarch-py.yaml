@@ -9,6 +9,17 @@ imports:
 default_range: string
 
 enums:
+  AssociationDirectionEnum:
+    description: >-
+      The directionality of an association as it relates to a specified entity, with edges being categorized
+      as incoming or outgoing
+    permissible_values:
+      incoming:
+        description: >-
+          An association for which a specified entity is the object or part of the object closure
+      outgoing:
+        description: >-
+          An association for which a specified entity is the subject or part of the subject closure
   AssociationTypeEnum:
     description: >-
       A grouping label for association types, which are not necessarily 1:1 with
@@ -88,6 +99,12 @@ classes:
     - stage_qualifier
     - pathway
     - relation
+  DirectionalAssociation:
+    is_a: Association
+    description: >-
+      An association that gives it's direction relative to a specified entity
+    slots:
+      - direction
   AssociationResults:
     is_a: Results
     slots: 
@@ -95,6 +112,13 @@ classes:
     slot_usage:
       items:
         range: Association
+  AssociationTableResults:
+    is_a: Results
+    slots:
+      - items
+    slot_usage:
+      items:
+        range: DirectionalAssociation
   Entity:
     slots:
     - id
@@ -145,7 +169,6 @@ classes:
         required: true
       name:
         required: true
-
   SearchResults:
     is_a: Results
     slots:
@@ -177,6 +200,7 @@ classes:
       - association_type
       - subject_label
       - object_label
+      - symmetric
       - category
       - predicate
     slot_usage:
@@ -184,6 +208,12 @@ classes:
         description: A label to describe the subjects of the association type as a whole for use in the UI
       object_label:
         description: A label to describe the objects of the association type as a whole for use in the UI
+      symmetric:
+        description: >-
+          Whether the association type is symmetric, meaning that the subject and object labels should be
+          interchangeable
+        ifabsent: false
+        required: true
       category:
         description: The biolink categories to use in queries for this association type, assuming OR semantics
         multivalued: true
@@ -214,6 +244,13 @@ slots:
     range: integer
   description:
     range: string
+  direction:
+    description: >-
+      The directionality of the association relative to a given entity for an association_count.
+      If the entity is the subject or in the subject closure, the direction is forwards, if it is
+      the object or in the object closure, the direction is backwards.
+    range: AssociationDirectionEnum
+    required: true
   facet_fields:
     description: Collection of facet field responses with the field values and counts
     inlined: true
@@ -263,6 +300,7 @@ slots:
     range: boolean
   object:
     range: string
+    required: true
   object_category:
     multivalued: true
   object_closure:
@@ -288,6 +326,7 @@ slots:
   predicate:
     multivalued: false
     range: string
+    required: true
   primary_knowledge_source:
     multivalued: true
   provided_by:
@@ -308,6 +347,7 @@ slots:
     range: string
   subject:
     range: string
+    required: true
   subject_category:
     multivalued: true
   subject_closure:
@@ -320,6 +360,10 @@ slots:
     range: string
   symbol:
     range: string
+  symmetric:
+    description: >-
+      Whether the association type is symmetric, i.e. the subject and object labels are interchangeable.
+    range: boolean
   synonym:
     multivalued: true
   total:

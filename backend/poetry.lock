@@ -1416,14 +1416,14 @@ regex = ["regex"]
 
 [[package]]
 name = "linkml"
-version = "1.5.0"
+version = "1.5.3"
 description = "Linked Open Data Modeling Language"
 category = "main"
 optional = false
 python-versions = ">=3.7.6,<4.0.0"
 files = [
-    {file = "linkml-1.5.0-py3-none-any.whl", hash = "sha256:8f8d23f7f7bd6a10a5130d28ea576f7ceccd14e123ad4c0365bb53bc58664ba0"},
-    {file = "linkml-1.5.0.tar.gz", hash = "sha256:120fac9dd5a27d3dabc5e45fdeaf0b2fe187fe5f59bf7bc0806ebb5a884e6942"},
+    {file = "linkml-1.5.3-py3-none-any.whl", hash = "sha256:02f23460164b4a7ff0678e5cd88aac1636ce4443a9b72e68d25e2f044f339e28"},
+    {file = "linkml-1.5.3.tar.gz", hash = "sha256:b902df243985fe5f6b4333524406ccc4b12c527e47891260d89713b52425fc6b"},
 ]
 
 [package.dependencies]
@@ -1457,7 +1457,7 @@ tox = ">=3.25.1,<4.0.0"
 watchdog = ">=0.9.0"
 
 [package.extras]
-docs = ["furo[docs] (>=2022.9.29,<2023.0.0)", "sphinx", "sphinxcontrib-mermaid[docs] (>=0.7.1,<0.8.0)"]
+docs = ["furo[docs] (>=2023.03.27,<2024.0.0)", "sphinx", "sphinxcontrib-mermaid[docs] (>=0.7.1,<0.8.0)"]
 
 [[package]]
 name = "linkml-dataops"
@@ -1825,14 +1825,14 @@ mkdocstrings = ">=0.19"
 
 [[package]]
 name = "monarch-py"
-version = "0.7.2"
+version = "0.8.3"
 description = "Monarch Initiative data access library"
 category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "monarch_py-0.7.2-py3-none-any.whl", hash = "sha256:52441fe7d284d4dd776cea3aae56101338736c3cec9b68a77ae287162790b926"},
-    {file = "monarch_py-0.7.2.tar.gz", hash = "sha256:be60b7095ed22182d2aaf4d0d8e2608b18f06fbff8b1cb2b459f4ca260d9ea8b"},
+    {file = "monarch_py-0.8.3-py3-none-any.whl", hash = "sha256:b8135dc2794d5281ad05140e83fbc2e5b0eaf22d0a7d814899592a71b7ba8a48"},
+    {file = "monarch_py-0.8.3.tar.gz", hash = "sha256:2aed8039819a5a2f2b32b0d7f3eeea7933e26f80546920b76d2818771056db4a"},
 ]
 
 [package.dependencies]
@@ -4202,4 +4202,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.12"
-content-hash = "d184274c9bb0ddae5f736987f8204527f84f1a98039ce9018c2aaee4575b74b0"
+content-hash = "c3b9a34f52b81c9784ff91c4d0ea415bf33951040fa18ff0b84031d205544a59"
