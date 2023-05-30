@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter  # , Depends
 from monarch_api.config import settings
 from monarch_api.model import SearchResults
@@ -12,8 +14,8 @@ router = APIRouter(
 @router.get("/search")
 async def search(
     q: str = "*:*",
-    category: str = None,
-    taxon: str = None,
+    category: List[str] = None,
+    taxon: List[str] = None,
     offset: int = 0,
     limit: int = 20,
 ) -> SearchResults:
@@ -34,7 +36,7 @@ async def search(
     response = si.search(
         q=q,
         category=category,
-        taxon=taxon,
+        in_taxon=taxon,
         facet_fields=facet_fields,
         offset=offset,
         limit=limit,
