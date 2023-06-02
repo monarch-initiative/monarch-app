@@ -1825,18 +1825,19 @@ mkdocstrings = ">=0.19"
 
 [[package]]
 name = "monarch-py"
-version = "0.8.3"
+version = "0.9.0"
 description = "Monarch Initiative data access library"
 category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "monarch_py-0.8.3-py3-none-any.whl", hash = "sha256:b8135dc2794d5281ad05140e83fbc2e5b0eaf22d0a7d814899592a71b7ba8a48"},
-    {file = "monarch_py-0.8.3.tar.gz", hash = "sha256:2aed8039819a5a2f2b32b0d7f3eeea7933e26f80546920b76d2818771056db4a"},
+    {file = "monarch_py-0.9.0-py3-none-any.whl", hash = "sha256:87f18aa7c807d67dceec16ec6607f35ed5411e6d7fb98bfe882e907d6c49c915"},
+    {file = "monarch_py-0.9.0.tar.gz", hash = "sha256:cce964890d20f0866ba9daa006ac80f7079d6949e4cff487ce4d74f657956e43"},
 ]
 
 [package.dependencies]
 docker = ">=6.0.1,<7.0.0"
+linkml = ">=1.5.3,<2.0.0"
 loguru = "*"
 pydantic = ">=1.9.1,<2.0.0"
 pystow = ">=0.5.0"
@@ -4202,4 +4203,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.12"
-content-hash = "c3b9a34f52b81c9784ff91c4d0ea415bf33951040fa18ff0b84031d205544a59"
+content-hash = "0ab08ece370fbbf81297d21cef4710345dff46aa0df53dfc9d82a6a8560d487c"

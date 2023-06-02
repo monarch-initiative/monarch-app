@@ -15,9 +15,6 @@ classes:
       - inheritance
       - association_counts
       - node_hierarchy
-    slot_usage:
-      id:
-        required: true
   Taxon:
     slots:
       - id

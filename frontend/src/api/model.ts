@@ -19,32 +19,6 @@ export enum AssociationDirectionEnum {
     /** An association for which a specified entity is the subject or part of the subject closure */
     outgoing = "outgoing",
 };
-/**
-* A grouping label for association types, which are not necessarily 1:1 with biolink categories or predicates
-*/
-export enum AssociationTypeEnum {
-    
-    /** Any association between a disease and a phenotype */
-    disease_phenotype = "disease_phenotype",
-    /** Any association between a gene and a phenotype */
-    gene_phenotype = "gene_phenotype",
-    /** Any association between two genes */
-    gene_interaction = "gene_interaction",
-    /** Any association between a gene and a pathway */
-    gene_pathway = "gene_pathway",
-    /** Expression association between a gene and an expression site */
-    gene_expression = "gene_expression",
-    /** Any association between two genes based on orthology */
-    gene_orthology = "gene_orthology",
-    /** Any association between a chemical and a pathway */
-    chemical_pathway = "chemical_pathway",
-    /** Any association between a gene and molecular activity */
-    gene_function = "gene_function",
-    /** Association between a gene and a disease that has not been established to be causal */
-    correlated_gene = "correlated_gene",
-    /** Association between a gene and a disease that is known to be causal */
-    causal_gene = "causal_gene",
-};
 
 
 
@@ -62,7 +36,6 @@ export interface Node extends Entity {
     in_taxon?: string,
     source?: string,
     symbol?: string,
-    type?: string,
     synonym?: string[],
 };
 
@@ -181,7 +154,6 @@ export interface Entity {
     in_taxon?: string,
     source?: string,
     symbol?: string,
-    type?: string,
     synonym?: string[],
 };
 
@@ -231,7 +203,6 @@ export interface SearchResult extends Entity {
     in_taxon?: string,
     source?: string,
     symbol?: string,
-    type?: string,
     synonym?: string[],
 };
 
@@ -239,9 +210,9 @@ export interface SearchResults extends Results {
     /** A collection of items, with the type to be overriden by slot_usage */
     items: SearchResult[],
     /** Collection of facet field responses with the field values and counts */
-    facet_fields?: {[index: FacetFieldLabel]: FacetField },
+    facet_fields?: FacetField[],
     /** Collection of facet query responses with the query string values and counts */
-    facet_queries?: {[index: FacetValueLabel]: FacetValue },
+    facet_queries?: FacetValue[],
     /** number of items to return in a response */
     limit: number,
     /** offset into the total number of items */
@@ -258,27 +229,25 @@ export interface FacetValue {
 
 export interface FacetField {
     label: string,
-    facet_values?: {[index: FacetValueLabel]: FacetValue },
+    /** Collection of FacetValue label/value instances belonging to a FacetField */
+    facet_values?: FacetValueLabel[],
 };
 /**
  * A data class to hold the necessary information to produce association type counts for given  entities with appropriate directional labels
  */
 export interface AssociationTypeMapping {
-    association_type?: string,
     /** A label to describe the subjects of the association type as a whole for use in the UI */
     subject_label?: string,
     /** A label to describe the objects of the association type as a whole for use in the UI */
     object_label?: string,
     /** Whether the association type is symmetric, meaning that the subject and object labels should be interchangeable */
     symmetric: boolean,
-    /** The biolink categories to use in queries for this association type, assuming OR semantics */
-    category?: string[],
-    /** The biolink predicate to use in queries for this association type, assuming OR semantics */
-    predicate: string[],
+    /** The biolink category to use in queries for this association type */
+    category: string,
 };
 
 export interface AssociationCount extends FacetValue {
-    association_type?: string,
+    category?: string,
     label: string,
     /** count of documents */
     count?: number,
