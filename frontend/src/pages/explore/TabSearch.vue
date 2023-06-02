@@ -18,14 +18,14 @@
     />
 
     <!-- facet dropdown filters -->
-    <AppFlex v-if="Object.keys(facets).length">
-      <template v-for="(facet, id, index) in facets" :key="index">
+    <AppFlex v-if="facets.length">
+      <template v-for="(facet, index) in facets" :key="index">
         <AppSelectMulti
           v-if="Object.keys(facet.facet_values || {}).length"
-          v-model="dropdownsSelected[id]"
+          v-model="dropdownsSelected[facet.label]"
           v-tooltip="`${facet.label} filter`"
           :name="`${facet.label}`"
-          :options="dropdownsOptions[id]"
+          :options="dropdownsOptions[facet.label]"
           @change="onSelectedChange"
         />
       </template>
@@ -134,7 +134,7 @@ const page = ref(0);
 /** results per page */
 const perPage = ref(10);
 /** facets returned from search */
-const facets = ref<NonNullable<SearchResults["facet_fields"]>>({});
+const facets = ref<NonNullable<SearchResults["facet_fields"]>>([]);
 /** dropdowns all options */
 const dropdownsOptions = ref<{ [key: string]: MultiOptions }>({});
 /** dropdowns selected options */
@@ -260,15 +260,17 @@ const {
   (response, [fresh]) => {
     /** update dropdowns from facets returned from api, if a "fresh" search */
     if (fresh) {
-      facets.value = response.facet_fields || {};
+      facets.value = response.facet_fields || [];
       /** convert facets into dropdown options */
-      const options = mapValues(response.facet_fields || {}, (facet) =>
-        Object.entries(facet.facet_values || {}).map(([key, value]) => ({
-          id: key,
-          label: value.label,
-          count: value.count,
-        }))
-      );
+      const options: { [key: string]: MultiOptions } = {};
+      for (const facet of facets.value) {
+        options[facet.label] =
+          facet.facet_values?.map((facet_value, index) => ({
+            id: String(index),
+            ...facet_value,
+          })) || [];
+      }
+
       dropdownsOptions.value = { ...options };
       dropdownsSelected.value = { ...options };
     }
