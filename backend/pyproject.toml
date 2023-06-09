@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "monarch-api"
-version = "0.6.0"
+version = "0.7.0"
 description = "Monarch Initiative API"
 authors = [
     "glass-ships <glass.ships@outlook.com>",
@@ -15,10 +15,10 @@ packages = [
 [tool.poetry.dependencies]
 python = ">=3.9,<3.12"
 fastapi = "^0.87.0"
-monarch-py = "^0.7.3"
-linkml = { git = "https://github.com/glass-ships/linkml.git", branch = "develop" }
+monarch-py = "^0.9.3"
+linkml = "^1.5.5"
 pydantic = "^1.10.2"
-oaklib = "^0.1.72"
+oaklib = "^0.5.10"
 pysolr = "^3.9.0"
 
 [tool.poetry.group.dev.dependencies]

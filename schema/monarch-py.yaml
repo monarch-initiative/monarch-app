@@ -9,50 +9,17 @@ imports:
 default_range: string
 
 enums:
-  AssociationTypeEnum:
+  AssociationDirectionEnum:
     description: >-
-      A grouping label for association types, which are not necessarily 1:1 with
-      biolink categories or predicates
+      The directionality of an association as it relates to a specified entity, with edges being categorized
+      as incoming or outgoing
     permissible_values:
-      disease_phenotype:
+      incoming:
         description: >-
-          Any association between a disease and a phenotype
-        meaning: biolink:GeneToDiseaseAssociation
-      gene_phenotype:
-          description: >-
-              Any association between a gene and a phenotype
-          meaning: biolink:GeneToPhenotypicFeatureAssociation
-      gene_interaction:
-          description: >-
-              Any association between two genes
-          meaning: biolink:PairwiseGeneToGeneInteraction
-      gene_pathway:
-          description: >-
-              Any association between a gene and a pathway
-          meaning: biolink:GeneToPathwayAssociation
-      gene_expression:
-          description: >-
-              Expression association between a gene and an expression site
-          meaning: biolink:GeneToExpressionSiteAssociation
-      gene_orthology:
-          description: >-
-              Any association between two genes based on orthology
-          meaning: biolink:PairwiseGeneToGeneOrthologyAssociation
-      chemical_pathway:
-          description: >-
-              Any association between a chemical and a pathway
-          meaning: biolink:ChemicalToPathwayAssociation
-      gene_function:
-          description: >-
-              Any association between a gene and molecular activity
-          meaning: biolink:MacromolecularMachineToMolecularActivityAssociation
-      correlated_gene:
+          An association for which a specified entity is the object or part of the object closure
+      outgoing:
         description: >-
-          Association between a gene and a disease that has not been established to be causal
-      causal_gene:
-          description: >-
-              Association between a gene and a disease that is known to be causal
-          meaning: biolink:causal
+          An association for which a specified entity is the subject or part of the subject closure
 
 classes:
   Association:
@@ -88,6 +55,12 @@ classes:
     - stage_qualifier
     - pathway
     - relation
+  DirectionalAssociation:
+    is_a: Association
+    description: >-
+      An association that gives it's direction relative to a specified entity
+    slots:
+      - direction
   AssociationResults:
     is_a: Results
     slots: 
@@ -95,6 +68,13 @@ classes:
     slot_usage:
       items:
         range: Association
+  AssociationTableResults:
+    is_a: Results
+    slots:
+      - items
+    slot_usage:
+      items:
+        range: DirectionalAssociation
   Entity:
     slots:
     - id
@@ -106,7 +86,6 @@ classes:
     - in_taxon
     - source
     - symbol
-    - type
     - synonym
   EntityResults:
     is_a: Results
@@ -173,26 +152,32 @@ classes:
       A data class to hold the necessary information to produce association type counts for given 
       entities with appropriate directional labels
     slots:
-      - association_type
       - subject_label
       - object_label
+      - symmetric
       - category
-      - predicate
     slot_usage:
       subject_label:
         description: A label to describe the subjects of the association type as a whole for use in the UI
       object_label:
         description: A label to describe the objects of the association type as a whole for use in the UI
+      symmetric:
+        description: >-
+          Whether the association type is symmetric, meaning that the subject and object labels should be
+          interchangeable
+        ifabsent: false
+        required: true
       category:
-        description: The biolink categories to use in queries for this association type, assuming OR semantics
-        multivalued: true
-      predicate:
-        description: The biolink predicate to use in queries for this association type, assuming OR semantics
-        multivalued: true
+        description: The biolink category to use in queries for this association type
+        required: true
+        multivalued: false
   AssociationCount:
     is_a: FacetValue
     slots:
-      - association_type
+      - category
+    slot_usage:
+      category:
+        multivalued: false
   AssociationCountList:
     description: Container class for a list of association counts
     slots:
@@ -204,27 +189,36 @@ classes:
 slots:
   aggregator_knowledge_source:
     multivalued: true
-  association_type:
-    range: AssociationTypeEnum
   category:
-    multivalued: true
+    multivalued: false
   count:
     description: count of documents
     range: integer
   description:
     range: string
+  direction:
+    description: >-
+      The directionality of the association relative to a given entity for an association_count.
+      If the entity is the subject or in the subject closure, the direction is forwards, if it is
+      the object or in the object closure, the direction is backwards.
+    range: AssociationDirectionEnum
+    required: true
   facet_fields:
     description: Collection of facet field responses with the field values and counts
     inlined: true
+    inlined_as_list: true
     multivalued: true
     range: FacetField
   facet_queries:
     description: Collection of facet query responses with the query string values and counts
     inlined: true
+    inlined_as_list: true
     multivalued: true
     range: FacetValue
   facet_values:
+    description: Collection of FacetValue label/value instances belonging to a FacetField
     inlined: true
+    inlined_as_list: true
     multivalued: true
     range: FacetValue
   frequency_qualifier:
@@ -322,14 +316,16 @@ slots:
     range: string
   symbol:
     range: string
+  symmetric:
+    description: >-
+      Whether the association type is symmetric, i.e. the subject and object labels are interchangeable.
+    range: boolean
   synonym:
     multivalued: true
   total:
     description: total number of items matching a query
     range: integer
     required: true
-  type:
-    range: string
   xref:
     multivalued: true
     range: string
