@@ -190,7 +190,7 @@ slots:
   aggregator_knowledge_source:
     multivalued: true
   category:
-    multivalued: true
+    multivalued: false
   count:
     description: count of documents
     range: integer
@@ -205,16 +205,19 @@ slots:
     required: true
   facet_fields:
     description: Collection of facet field responses with the field values and counts
+    inlined: true
     inlined_as_list: true
     multivalued: true
     range: FacetField
   facet_queries:
     description: Collection of facet query responses with the query string values and counts
+    inlined: true
     inlined_as_list: true
     multivalued: true
     range: FacetValue
   facet_values:
     description: Collection of FacetValue label/value instances belonging to a FacetField
+    inlined: true
     inlined_as_list: true
     multivalued: true
     range: FacetValue

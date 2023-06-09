@@ -1825,14 +1825,14 @@ mkdocstrings = ">=0.19"
 
 [[package]]
 name = "monarch-py"
-version = "0.9.0"
+version = "0.9.2"
 description = "Monarch Initiative data access library"
 category = "main"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "monarch_py-0.9.0-py3-none-any.whl", hash = "sha256:87f18aa7c807d67dceec16ec6607f35ed5411e6d7fb98bfe882e907d6c49c915"},
-    {file = "monarch_py-0.9.0.tar.gz", hash = "sha256:cce964890d20f0866ba9daa006ac80f7079d6949e4cff487ce4d74f657956e43"},
+    {file = "monarch_py-0.9.2-py3-none-any.whl", hash = "sha256:6945e44bd9e029a770fe61c5a52e110c12c768d45eb894f81824d5b556541990"},
+    {file = "monarch_py-0.9.2.tar.gz", hash = "sha256:a32185665a3974aba09aea90f7d78256e417efadaee9ae9a6df0f4927310da72"},
 ]
 
 [package.dependencies]
@@ -2987,7 +2987,8 @@ files = [
     {file = "ruamel.yaml.clib-0.2.7-cp310-cp310-win32.whl", hash = "sha256:763d65baa3b952479c4e972669f679fe490eee058d5aa85da483ebae2009d231"},
     {file = "ruamel.yaml.clib-0.2.7-cp310-cp310-win_amd64.whl", hash = "sha256:d000f258cf42fec2b1bbf2863c61d7b8918d31ffee905da62dede869254d3b8a"},
     {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:045e0626baf1c52e5527bd5db361bc83180faaba2ff586e763d3d5982a876a9e"},
-    {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-macosx_12_6_arm64.whl", hash = "sha256:721bc4ba4525f53f6a611ec0967bdcee61b31df5a56801281027a3a6d1c2daf5"},
+    {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-macosx_13_0_arm64.whl", hash = "sha256:1a6391a7cabb7641c32517539ca42cf84b87b667bad38b78d4d42dd23e957c81"},
+    {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-manylinux2014_aarch64.whl", hash = "sha256:9c7617df90c1365638916b98cdd9be833d31d337dbcd722485597b43c4a215bf"},
     {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl", hash = "sha256:41d0f1fa4c6830176eef5b276af04c89320ea616655d01327d5ce65e50575c94"},
     {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-win32.whl", hash = "sha256:f6d3d39611ac2e4f62c3128a9eed45f19a6608670c5a2f4f07f24e8de3441d38"},
     {file = "ruamel.yaml.clib-0.2.7-cp311-cp311-win_amd64.whl", hash = "sha256:da538167284de58a52109a9b89b8f6a53ff8437dd6dc26d33b57bf6699153122"},
@@ -4203,4 +4204,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.12"
-content-hash = "0ab08ece370fbbf81297d21cef4710345dff46aa0df53dfc9d82a6a8560d487c"
+content-hash = "bb3ddc65bc31d1e99276a77321b77ba0bd20a6c796534622ef28a25ccd3056ba"

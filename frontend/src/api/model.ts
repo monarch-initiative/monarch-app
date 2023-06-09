@@ -28,7 +28,7 @@ export interface Node extends Entity {
     association_counts?: AssociationCount[],
     node_hierarchy?: NodeHierarchy,
     id: string,
-    category?: string[],
+    category?: string,
     name?: string,
     description?: string,
     xref?: string[],
@@ -69,7 +69,7 @@ export interface Association {
     object_label?: string,
     object_closure_label?: string[],
     primary_knowledge_source?: string[],
-    category?: string[],
+    category?: string,
     negated?: boolean,
     provided_by?: string,
     publications?: string[],
@@ -107,7 +107,7 @@ export interface DirectionalAssociation extends Association {
     object_label?: string,
     object_closure_label?: string[],
     primary_knowledge_source?: string[],
-    category?: string[],
+    category?: string,
     negated?: boolean,
     provided_by?: string,
     publications?: string[],
@@ -146,7 +146,7 @@ export interface AssociationTableResults extends Results {
 
 export interface Entity {
     id: string,
-    category?: string[],
+    category?: string,
     name?: string,
     description?: string,
     xref?: string[],
@@ -195,7 +195,7 @@ export interface SearchResult extends Entity {
     highlight?: string,
     score?: number,
     id: string,
-    category: string[],
+    category: string,
     name: string,
     description?: string,
     xref?: string[],
@@ -230,7 +230,7 @@ export interface FacetValue {
 export interface FacetField {
     label: string,
     /** Collection of FacetValue label/value instances belonging to a FacetField */
-    facet_values?: FacetValueLabel[],
+    facet_values?: FacetValue[],
 };
 /**
  * A data class to hold the necessary information to produce association type counts for given  entities with appropriate directional labels

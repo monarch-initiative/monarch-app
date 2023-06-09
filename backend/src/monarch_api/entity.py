@@ -1,5 +1,3 @@
-from typing import List
-
 from fastapi import APIRouter, HTTPException, Query
 from monarch_api.config import settings
 from monarch_api.model import AssociationTableResults, Node
