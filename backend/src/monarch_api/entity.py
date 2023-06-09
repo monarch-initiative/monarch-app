@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, HTTPException, Query
 from monarch_api.config import settings
 from monarch_api.model import AssociationTableResults, Node
@@ -70,16 +72,13 @@ def _association_table(
     query: str = Query(
         None, example="thumb", title="Query string to limit results to a subset"
     ),
-    facet_fields: str = Query(
-        None, example=["subject_label", "object_label"], title="Facet fields to return"
-    ),
 ) -> AssociationTableResults:
     """
     Retrieves association table data for a given entity and association type
 
     Args:
         id (str): ID of the entity to retrieve association table data, ex: MONDO:0019391
-        category (str): Category of association to retrieve association table data for
+        category (str): Category of association to retrieve association table data for, ex: biolink:DiseaseToPhenotypicFeatureAssociation
         query (str, optional): Query string to limit results to a subset. Defaults to None.
     Returns:
         AssociationResults: Association table data for the specified entity and association type

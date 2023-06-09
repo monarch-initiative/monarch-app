@@ -230,7 +230,7 @@ export interface FacetValue {
 export interface FacetField {
     label: string,
     /** Collection of FacetValue label/value instances belonging to a FacetField */
-    facet_values?: FacetValue[],
+    facet_values?: FacetValueLabel[],
 };
 /**
  * A data class to hold the necessary information to produce association type counts for given  entities with appropriate directional labels
