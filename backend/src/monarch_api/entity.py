@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Query
 from monarch_api.config import settings
-from monarch_api.model import AssociationTableResults, AssociationTypeEnum, Node
+from monarch_api.model import AssociationTableResults, Node
 from monarch_api.utils.entity_utils import get_associated_entity, get_node_hierarchy
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
@@ -55,20 +55,23 @@ async def _get_entity(
     return node
 
 
-@router.get("/{id}/{association_type}")
+@router.get("/{id}/{category}")
 def _association_table(
     id: str = Query(
         ...,
         example="MONDO:0019391",
         title="ID of the entity to retrieve association table data for",
     ),
-    association_type: AssociationTypeEnum = Query(
+    category: str = Query(
         ...,
-        example="disease_phenotype",
+        example="biolink:DiseaseToPhenotypicFeatureAssociation",
         title="Type of association to retrieve association table data for",
     ),
     query: str = Query(
         None, example="thumb", title="Query string to limit results to a subset"
+    ),
+    facet_fields: str = Query(
+        None, example=["subject_label", "object_label"], title="Facet fields to return"
     ),
 ) -> AssociationTableResults:
     """
@@ -76,12 +79,12 @@ def _association_table(
 
     Args:
         id (str): ID of the entity to retrieve association table data, ex: MONDO:0019391
-        association_type (AssociationTypeEnum): Type of association to retrieve association table data for
+        category (str): Category of association to retrieve association table data for
         query (str, optional): Query string to limit results to a subset. Defaults to None.
     Returns:
         AssociationResults: Association table data for the specified entity and association type
     """
     solr = SolrImplementation(base_url=settings.solr_url)
-    response = solr.get_association_table(id, association_type, q=query)
+    response = solr.get_association_table(entity=id, category=category, q=query)
 
     return response
