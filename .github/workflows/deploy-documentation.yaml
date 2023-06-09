@@ -28,7 +28,7 @@ jobs:
         run: poetry -C backend install
 
       - name: Build Documentation
-        run: make docs-build
+        run: make docs
 
       - name: Deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@v4

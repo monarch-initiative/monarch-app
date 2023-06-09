@@ -324,275 +324,273 @@
       "score": null
     }
   ],
-  "facet_fields": {
-    "category": {
-      "category_label": "Disease",
+  "facet_fields": [
+    {
       "label": "category",
-      "category_label": "Disease",
-      "facet_values": {
-        "biolink:Gene": {
+      "facet_values": [
+        {
           "label": "biolink:Gene",
           "count": 55
         },
-        "biolink:Disease": {
+        {
           "label": "biolink:Disease",
           "count": 38
         },
-        "biolink:Pathway": {
+        {
           "label": "biolink:Pathway",
           "count": 14
         },
-        "biolink:MacromolecularComplexMixin": {
+        {
           "label": "biolink:MacromolecularComplexMixin",
           "count": 1
         },
-        "biolink:PhenotypicQuality": {
+        {
           "label": "biolink:PhenotypicQuality",
           "count": 1
         },
-        "biolink:AnatomicalEntity": {
+        {
           "label": "biolink:AnatomicalEntity",
           "count": 0
         },
-        "biolink:BiologicalProcess": {
+        {
           "label": "biolink:BiologicalProcess",
           "count": 0
         },
-        "biolink:Cell": {
+        {
           "label": "biolink:Cell",
           "count": 0
         },
-        "biolink:CellularComponent": {
+        {
           "label": "biolink:CellularComponent",
           "count": 0
         },
-        "biolink:ChemicalEntity": {
+        {
           "label": "biolink:ChemicalEntity",
           "count": 0
         },
-        "biolink:ChemicalSubstance": {
+        {
           "label": "biolink:ChemicalSubstance",
           "count": 0
         },
-        "biolink:ClinicalModifier": {
+        {
           "label": "biolink:ClinicalModifier",
           "count": 0
         },
-        "biolink:GeneticInheritance": {
+        {
           "label": "biolink:GeneticInheritance",
           "count": 0
         },
-        "biolink:GrossAnatomicalStructure": {
+        {
           "label": "biolink:GrossAnatomicalStructure",
           "count": 0
         },
-        "biolink:MolecularActivity": {
+        {
           "label": "biolink:MolecularActivity",
           "count": 0
         },
-        "biolink:MolecularEntity": {
+        {
           "label": "biolink:MolecularEntity",
           "count": 0
         },
-        "biolink:NamedThing": {
+        {
           "label": "biolink:NamedThing",
           "count": 0
         },
-        "biolink:Occurrent": {
+        {
           "label": "biolink:Occurrent",
           "count": 0
         },
-        "biolink:Onset": {
+        {
           "label": "biolink:Onset",
           "count": 0
         },
-        "biolink:PathologicalEntityMixin": {
+        {
           "label": "biolink:PathologicalEntityMixin",
           "count": 0
         },
-        "biolink:PhenotypicFeature": {
+        {
           "label": "biolink:PhenotypicFeature",
           "count": 0
         },
-        "biolink:Protein": {
+        {
           "label": "biolink:Protein",
           "count": 0
         },
-        "biolink:RNAProduct": {
+        {
           "label": "biolink:RNAProduct",
           "count": 0
         },
-        "biolink:SmallMolecule": {
+        {
           "label": "biolink:SmallMolecule",
           "count": 0
         },
-        "biolink:affects": {
+        {
           "label": "biolink:affects",
           "count": 0
         },
-        "biolink:affects_localization_of": {
+        {
           "label": "biolink:affects_localization_of",
           "count": 0
         },
-        "biolink:biological_role_mixin": {
+        {
           "label": "biolink:biological_role_mixin",
           "count": 0
         },
-        "biolink:causes": {
+        {
           "label": "biolink:causes",
           "count": 0
         },
-        "biolink:chemical_role_mixin": {
+        {
           "label": "biolink:chemical_role_mixin",
           "count": 0
         },
-        "biolink:close_match": {
+        {
           "label": "biolink:close_match",
           "count": 0
         },
-        "biolink:coexists_with": {
+        {
           "label": "biolink:coexists_with",
           "count": 0
         },
-        "biolink:contributes_to": {
+        {
           "label": "biolink:contributes_to",
           "count": 0
         },
-        "biolink:derives_from": {
+        {
           "label": "biolink:derives_from",
           "count": 0
         },
-        "biolink:disease_has_basis_in": {
+        {
           "label": "biolink:disease_has_basis_in",
           "count": 0
         },
-        "biolink:disease_has_location": {
+        {
           "label": "biolink:disease_has_location",
           "count": 0
         },
-        "biolink:has_attribute": {
+        {
           "label": "biolink:has_attribute",
           "count": 0
         },
-        "biolink:has_part": {
+        {
           "label": "biolink:has_part",
           "count": 0
         },
-        "biolink:increases_degradation_of": {
+        {
           "label": "biolink:increases_degradation_of",
           "count": 0
         },
-        "biolink:is_metabolite_of": {
+        {
           "label": "biolink:is_metabolite_of",
           "count": 0
         },
-        "biolink:located_in": {
+        {
           "label": "biolink:located_in",
           "count": 0
         },
-        "biolink:manifestation_of": {
+        {
           "label": "biolink:manifestation_of",
           "count": 0
         },
-        "biolink:part_of": {
+        {
           "label": "biolink:part_of",
           "count": 0
         },
-        "biolink:related_to": {
+        {
           "label": "biolink:related_to",
           "count": 0
         },
-        "biolink:same_as": {
+        {
           "label": "biolink:same_as",
           "count": 0
         },
-        "biolink:subclass_of": {
+        {
           "label": "biolink:subclass_of",
           "count": 0
         },
-        "biolink:superclass_of": {
+        {
           "label": "biolink:superclass_of",
           "count": 0
         },
-        "biolink:treated_by": {
+        {
           "label": "biolink:treated_by",
           "count": 0
         }
-      }
+      ]
     },
-    "in_taxon": {
+    {
       "label": "in_taxon",
-      "facet_values": {
-        "NCBITaxon:9606": {
+      "facet_values": [
+        {
           "label": "NCBITaxon:9606",
           "count": 21
         },
-        "NCBITaxon:10116": {
+        {
           "label": "NCBITaxon:10116",
           "count": 16
         },
-        "NCBITaxon:10090": {
+        {
           "label": "NCBITaxon:10090",
           "count": 14
         },
-        "NCBITaxon:6239": {
+        {
           "label": "NCBITaxon:6239",
           "count": 5
         },
-        "NCBITaxon:7227": {
+        {
           "label": "NCBITaxon:7227",
           "count": 3
         },
-        "NCBITaxon:7955": {
+        {
           "label": "NCBITaxon:7955",
           "count": 3
         },
-        "NCBITaxon:9031": {
+        {
           "label": "NCBITaxon:9031",
           "count": 2
         },
-        "NCBITaxon:44689": {
+        {
           "label": "NCBITaxon:44689",
           "count": 1
         },
-        "NCBITaxon:8364": {
+        {
           "label": "NCBITaxon:8364",
           "count": 1
         },
-        "NCBITaxon:9615": {
+        {
           "label": "NCBITaxon:9615",
           "count": 1
         },
-        "NCBITaxon:9823": {
+        {
           "label": "NCBITaxon:9823",
           "count": 1
         },
-        "NCBITaxon:9913": {
+        {
           "label": "NCBITaxon:9913",
           "count": 1
         },
-        "NCBITaxon:227321": {
+        {
           "label": "NCBITaxon:227321",
           "count": 0
         },
-        "NCBITaxon:4896": {
+        {
           "label": "NCBITaxon:4896",
           "count": 0
         },
-        "NCBITaxon:4932": {
+        {
           "label": "NCBITaxon:4932",
           "count": 0
         },
-        "NCBITaxon:559292": {
+        {
           "label": "NCBITaxon:559292",
           "count": 0
         },
-        "NCBITaxon:8355": {
+        {
           "label": "NCBITaxon:8355",
           "count": 0
         }
-      }
+      ]
     }
-  },
+  ],
   "facet_queries": {}
 }

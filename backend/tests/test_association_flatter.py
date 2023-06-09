@@ -6,6 +6,7 @@ from monarch_api.utils.entity_utils import get_associated_entity
 @pytest.fixture()
 def example_association():
     return Association(
+        id="123",
         subject="MONDO:0007947",
         subject_label="Marfan syndrome",
         subject_category=["biolink:Disease"],
@@ -26,7 +27,7 @@ def test_get_associated_entity_from_object(example_association):
 
     assert associated_entity.id == "HP:0000006"
     assert associated_entity.name == "Autosomal dominant inheritance"
-    assert associated_entity.category == ["biolink:ModeOfInheritance"]
+    assert associated_entity.category == "biolink:ModeOfInheritance"
 
 
 def test_get_associated_entity_from_subject(example_association):
@@ -37,4 +38,4 @@ def test_get_associated_entity_from_subject(example_association):
 
     assert associated_entity.id == "MONDO:0007947"
     assert associated_entity.name == "Marfan syndrome"
-    assert associated_entity.category == ["biolink:Disease"]
+    assert associated_entity.category == "biolink:Disease"
