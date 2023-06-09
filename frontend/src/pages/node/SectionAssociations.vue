@@ -80,7 +80,7 @@ const association = ref<Association>();
 const categoryOptions = computed(
   (): Options =>
     props.node.association_counts?.map((association_count) => ({
-      id: association_count.association_type || "",
+      id: association_count.category || "",
       label: association_count.label,
       icon: `category-${association_count.label || "unknown"}`,
       count: association_count.count,

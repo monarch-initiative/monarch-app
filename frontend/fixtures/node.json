@@ -1,6 +1,6 @@
 {
   "id": "MONDO:0005439",
-  "category": ["biolink:Disease"],
+  "category": "biolink:Disease",
   "category_label": "Disease",
   "name": "familial hypercholesterolemia",
   "description": "An inheritable form of hyperlipidemia, in which there are excess lipids in the blood.",
@@ -15,17 +15,17 @@
   "inheritance": null,
   "association_counts": [
     {
-      "association_type": "biolink:Disease",
+      "category": "biolink:Disease",
       "label": "Disease",
       "count": 1234
     },
     {
-      "association_type": "biolink:Gene",
+      "category": "biolink:Gene",
       "label": "Gene",
       "count": 123
     },
     {
-      "association_type": "biolink:Phenotype",
+      "category": "biolink:Phenotype",
       "label": "Phenotype",
       "count": 12
     }
