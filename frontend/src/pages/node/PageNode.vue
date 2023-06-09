@@ -6,10 +6,7 @@
   <!-- status -->
   <template v-if="isLoading || isError">
     <AppSection design="fill" class="section">
-      <AppHeading
-        class="heading"
-        :icon="`category-${kebabCase(String($route.params.category))}`"
-      >
+      <AppHeading class="heading" icon="category-unknown">
         {{ $route.params.id }}
       </AppHeading>
     </AppSection>
@@ -31,8 +28,6 @@
     <SectionHierarchy :node="node" />
     <SectionVisualization :node="node" />
     <SectionAssociations :node="node" />
-    <SectionBreadcrumbs :node="node" />
-
     <Teleport to="body">
       <TheTableOfContents />
     </Teleport>
@@ -42,15 +37,13 @@
 <script setup lang="ts">
 import { nextTick, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
-import { kebabCase } from "lodash";
-import { lookupNode } from "@/api/node-lookup";
+import { getNode } from "@/api/node";
 import TheTableOfContents from "@/components/TheTableOfContents.vue";
 import { addEntry } from "@/global/history";
 import { appDescription, appTitle } from "@/global/meta";
 import { scrollToHash } from "@/router";
 import { useQuery } from "@/util/composables";
 import SectionAssociations from "./SectionAssociations.vue";
-import SectionBreadcrumbs from "./SectionBreadcrumbs.vue";
 import SectionDetails from "./SectionDetails.vue";
 import SectionHierarchy from "./SectionHierarchy.vue";
 import SectionOverview from "./SectionOverview.vue";
@@ -62,17 +55,17 @@ const route = useRoute();
 
 /** get new node data */
 const {
-  query: getNode,
+  query: runGetNode,
   data: node,
   isLoading,
   isError,
 } = useQuery(
   async function () {
     /** get node from route params */
-    const { id = "", category = "" } = route.params;
+    const { id = "" } = route.params;
+    const node_info = await getNode(id as string);
 
-    /** get node information */
-    return await lookupNode(id as string, category as string);
+    return node_info;
   },
 
   /** default value */
@@ -97,7 +90,7 @@ const {
 );
 
 /** when path (not hash or query) changed, get new node data */
-watch(() => route.path, getNode);
+watch(() => route.path, runGetNode);
 
 /** update document title */
 watch(
@@ -119,7 +112,7 @@ watch([() => node.value?.name], () => addEntry(node.value?.name), {
 });
 
 /** get new node data on load */
-onMounted(getNode);
+onMounted(runGetNode);
 </script>
 
 <style lang="scss" scoped>

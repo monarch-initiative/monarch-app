@@ -14,7 +14,7 @@ import { computed, watch } from "vue";
 import { useRoute } from "vue-router";
 import Apex from "vue3-apexcharts";
 import { getHistoPheno } from "@/api/histopheno";
-import type { Node } from "@/api/node-lookup";
+import type { Node } from "@/api/model";
 import { useQuery } from "@/util/composables";
 
 /** route info */
@@ -77,15 +77,14 @@ const options = computed(() => ({
 
 /** get chart data */
 const {
-  query: getData,
+  query: runGetHistoPheno,
   data: series,
   isLoading,
   isError,
 } = useQuery(
   async function () {
-    const histopheno = await getHistoPheno(props.node.id);
+    const histopheno = await getHistoPheno(props.node.id || "");
     const data = histopheno.items?.map((d) => ({ x: d.label, y: d.count }));
-
     return [{ name: "phenotypes", data: data }];
   },
 
@@ -94,7 +93,9 @@ const {
 );
 
 /** when path (not hash or query) changed, get new chart data */
-watch([() => route.path, () => props.node.id], getData, { immediate: true });
+watch([() => route.path, () => props.node.id], runGetHistoPheno, {
+  immediate: true,
+});
 </script>
 
 <style lang="scss" scoped>

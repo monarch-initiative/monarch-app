@@ -9,7 +9,7 @@
     <AppTabs v-model="tab" name="Explore Mode" :tabs="tabs" />
   </AppSection>
 
-  <TabSearch v-if="tab === 'search'" />
+  <TabSearch v-if="tab === 'search'" :home="false" />
 
   <TabTextAnnotator v-if="tab === 'text-annotator'" />
 

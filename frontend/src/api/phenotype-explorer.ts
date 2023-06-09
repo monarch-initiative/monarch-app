@@ -1,7 +1,7 @@
 import type { Options, OptionsFunc } from "@/components/AppSelectTags.vue";
 import { stringify } from "@/util/object";
 import { biolink, request } from "./";
-import { getSearchResults } from "./search";
+import { getSearch } from "./search";
 
 /** search individual phenotypes or gene/disease phenotypes */
 export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
@@ -20,7 +20,7 @@ export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
     };
 
   /** otherwise perform string search for phenotypes/genes/diseases */
-  const { items } = await getSearchResults(search, 0, 20, {
+  const { items } = await getSearch(search, 0, 20, {
     category: ["phenotype", "gene", "disease"],
   });
 
@@ -34,7 +34,7 @@ export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
          * if gene/disease, provide function to get associated phenotypes upon
          * select
          */
-        item.category === "phenotype" || !item.category
+        item.category === "biolink:Phenotype"
           ? undefined
           : async () => await getPhenotypeAssociations(item.id, item.category),
       highlight: item.highlight,

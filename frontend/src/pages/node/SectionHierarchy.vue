@@ -6,29 +6,21 @@
   <AppSection>
     <AppHeading icon="sitemap">Hierarchy</AppHeading>
 
-    <!-- status -->
-    <AppStatus v-if="isLoading" code="loading"
-      >Loading hierarchy data</AppStatus
-    >
-    <AppStatus v-else-if="isError" code="error"
-      >Error loading hierarchy data</AppStatus
-    >
-
-    <AppDetails v-else>
+    <AppDetails>
       <!-- nodes that are "parents" of node -->
       <AppDetail
         title="Super-classes"
         icon="angle-up"
-        :blank="!hierarchy.superClasses.length"
+        :blank="!node.node_hierarchy?.super_classes.length"
         :big="true"
         :v-tooltip="`Nodes that are &quot;parents&quot; of this node`"
       >
         <AppFlex class="flex" h-align="left" gap="small">
           <AppNodeBadge
-            v-for="(_class, index) in hierarchy.superClasses"
+            v-for="(_class, index) in node.node_hierarchy?.super_classes"
             :key="index"
             :node="_class"
-            :breadcrumb="{ node, relation: _class.relation }"
+            :breadcrumb="{ node }"
           />
         </AppFlex>
       </AppDetail>
@@ -37,16 +29,16 @@
       <AppDetail
         title="Equivalent classes"
         icon="equals"
-        :blank="!hierarchy.equivalentClasses.length"
+        :blank="!node.node_hierarchy?.equivalent_classes.length"
         :big="true"
         :v-tooltip="`Nodes that are &quot;siblings&quot; of this node`"
       >
         <AppFlex class="flex" h-align="left" gap="small">
           <AppNodeBadge
-            v-for="(_class, index) in hierarchy.equivalentClasses"
+            v-for="(_class, index) in node.node_hierarchy?.equivalent_classes"
             :key="index"
             :node="_class"
-            :breadcrumb="{ node, relation: _class.relation }"
+            :breadcrumb="{ node }"
           />
         </AppFlex>
       </AppDetail>
@@ -55,16 +47,16 @@
       <AppDetail
         title="Sub-classes"
         icon="angle-down"
-        :blank="!hierarchy.subClasses.length"
+        :blank="!node.node_hierarchy?.sub_classes.length"
         :big="true"
         :v-tooltip="`Nodes that are &quot;children&quot; of this node`"
       >
         <AppFlex class="flex" h-align="left" gap="small">
           <AppNodeBadge
-            v-for="(_class, index) in hierarchy.subClasses"
+            v-for="(_class, index) in node.node_hierarchy?.sub_classes"
             :key="index"
             :node="_class"
-            :breadcrumb="{ node, relation: _class.relation }"
+            :breadcrumb="{ node }"
           />
         </AppFlex>
       </AppDetail>
@@ -73,46 +65,17 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from "vue";
-import { useRoute } from "vue-router";
-import { getHierarchy } from "@/api/node-hierarchy";
-import type { Node } from "@/api/node-lookup";
+import type { Node } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
-import { useQuery } from "@/util/composables";
-
-/** route info */
-const route = useRoute();
 
 type Props = {
   /** current node */
   node: Node;
 };
 
-const props = defineProps<Props>();
-
-/** get node hierarchy data */
-const {
-  query: getData,
-  data: hierarchy,
-  isLoading,
-  isError,
-} = useQuery(
-  async function () {
-    return await getHierarchy(props.node.id, props.node.category);
-  },
-
-  /** default value */
-  { superClasses: [], equivalentClasses: [], subClasses: [] }
-);
-
-/** when path (not hash or query) changed, get new node data */
-watch(
-  [() => route.path, () => props.node.id, () => props.node.category],
-  getData,
-  { immediate: true }
-);
+defineProps<Props>();
 </script>
 
 <style lang="scss" scoped>

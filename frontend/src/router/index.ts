@@ -6,7 +6,6 @@ import type {
 import { createRouter, createWebHistory } from "vue-router";
 import { isEmpty, pick } from "lodash";
 import { hideAll } from "tippy.js";
-import { lookupNode } from "@/api/node-lookup";
 import PageAbout from "@/pages/about/PageAbout.vue";
 import PageCite from "@/pages/about/PageCite.vue";
 import PageOverview from "@/pages/about/PageOverview.vue";
@@ -127,22 +126,9 @@ export const routes: RouteRecordRaw[] = [
 
   /** node pages */
   {
-    path: "/:category/:id",
+    path: "/node/:id",
     name: "Node",
     component: PageNode,
-  },
-  {
-    path: "/:id",
-    name: "NodeRaw",
-    component: PageHome,
-    beforeEnter: (async (to) => {
-      /** try to lookup node id and infer category */
-      const id = to.path.slice(1) as string;
-      if (id) {
-        const node = await lookupNode(id);
-        return `/${node.category}/${id}`;
-      }
-    }) as NavigationGuard,
   },
 
   /** test pages (comment this out when we release app) */

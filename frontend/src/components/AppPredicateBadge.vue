@@ -1,12 +1,12 @@
 <!--
-  an icon, text, and link for a relation between nodes in the knowledge graph
+  an icon, text, and link for a predicate between nodes in the knowledge graph
 -->
 
 <template>
-  <span class="relation">
+  <span class="predicate">
     <AppIcon class="arrow" :icon="`arrow-${arrowDirection}-long`" />
-    <AppLink :to="relation.iri" :no-icon="true">{{
-      startCase(relation.name)
+    <AppLink :to="predicate.id" :no-icon="true">{{
+      startCase(predicate.name)
     }}</AppLink>
     <AppIcon class="arrow" :icon="`arrow-${arrowDirection}-long`" />
   </span>
@@ -15,11 +15,10 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { startCase } from "lodash";
-import type { Association } from "@/api/node-associations";
 
 type Props = {
-  /** current relation */
-  relation: Pick<Association["relation"], "iri" | "name" | "inverse">;
+  /** current predicate */
+  predicate: { id: string; name: string };
   /** whether to display arrows vertically */
   vertical?: boolean;
 };
@@ -29,17 +28,17 @@ const props = defineProps<Props>();
 /** direction of arrows */
 const arrowDirection = computed(() => {
   if (props.vertical) {
-    if (props.relation.inverse) return "up";
+    if (props.predicate) return "up";
     else return "down";
   } else {
-    if (props.relation.inverse) return "left";
+    if (props.predicate) return "left";
     else return "right";
   }
 });
 </script>
 
 <style lang="scss" scoped>
-.relation {
+.predicate {
   white-space: nowrap;
 
   & > * {

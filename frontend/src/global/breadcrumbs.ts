@@ -1,11 +1,10 @@
 import { ref } from "vue";
-import type { Association } from "@/api/node-associations";
-import type { Node } from "@/api/node-lookup";
+import type { Association, Node } from "@/api/model";
 import { parse } from "@/util/object";
 
 type Breadcrumb = {
   node: Node;
-  relation: Association["relation"];
+  predicate: Association["predicate"];
 };
 
 /** breadcrumbs object for breadcrumbs section on node page */

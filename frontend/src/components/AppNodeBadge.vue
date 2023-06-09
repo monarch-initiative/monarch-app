@@ -6,13 +6,13 @@
   <span class="node">
     <AppIcon
       v-if="icon"
-      v-tooltip="startCase(node.category)"
+      v-tooltip="getCategoryLabel(node.category)"
       class="icon"
-      :icon="`category-${kebabCase(node.category)}`"
+      :icon="`category-${getCategoryIcon(node.category)}`"
     />
     <AppLink
       v-if="link"
-      :to="`/${node.category}/${node.id}`"
+      :to="`/node/${node.id}`"
       :state="
         breadcrumb ? { breadcrumbs: [...breadcrumbs, breadcrumb] } : undefined
       "
@@ -23,8 +23,8 @@
 </template>
 
 <script setup lang="ts">
-import { kebabCase, startCase } from "lodash";
-import type { Node } from "@/api/node-lookup";
+import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
+import type { Node } from "@/api/model";
 import { breadcrumbs } from "@/global/breadcrumbs";
 
 type Props = {

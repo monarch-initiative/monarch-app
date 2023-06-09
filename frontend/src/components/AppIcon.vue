@@ -31,6 +31,7 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import InlineSvg from "vue-inline-svg";
+import { kebabCase } from "lodash";
 import type {
   IconDefinition,
   IconName,
@@ -74,7 +75,9 @@ watch(
 
     /** otherwise, look for custom icon with matching name */
     try {
-      const src = (await import(`../assets/icons/${props.icon}.svg`)).default;
+      const src = (
+        await import(`../assets/icons/${kebabCase(props.icon || "")}.svg`)
+      ).default;
       _icon.value = { type: "custom", src };
       return;
     } catch (error) {

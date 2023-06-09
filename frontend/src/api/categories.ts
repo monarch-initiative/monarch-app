@@ -1,8 +1,16 @@
-import { startCase } from "lodash";
+import { kebabCase, startCase } from "lodash";
+
+/** get human-readable label from category */
+export const getCategoryLabel = (category?: string) =>
+  startCase(category?.replace("biolink:", "")) || "Unknown";
+
+/** get icon name from category */
+export const getCategoryIcon = (category?: string) =>
+  kebabCase(category?.replace("biolink:", "")) || "unknown";
 
 /** from list of categories, get single category to label/display */
 export const mapCategory = (category: string[] = []): string =>
-  category[0]?.replace("biolink:", "")?.toLowerCase() || "unknown";
+  startCase(category[0]?.replace("biolink:", "")) || "unknown";
 
 /**
  * from a category name, get its pluralized form, for querying association
@@ -24,7 +32,7 @@ export const getAssociationEndpoint = (category = ""): string => {
   if (category === "function") return category;
 
   /** regular pluralized (most cases) */
-  return `${category}s`;
+  return `${category}`;
 };
 
 /** from a category name, get how it should be labeled when viewing associations */
@@ -39,8 +47,7 @@ export const getAssociationLabel = (category = ""): string => {
   if (category === "causal-gene") return "Causal Genes";
   if (category === "correlated-gene") return "Correlated Genes";
 
-  /** regular pluralized (most cases) */
-  return `${startCase(category)}s`;
+  return `${startCase(category)}`;
 };
 
 /**

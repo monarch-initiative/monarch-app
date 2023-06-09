@@ -79,9 +79,14 @@ import { getUptimes } from "@/api/uptime";
 import { useQuery } from "@/util/composables";
 
 /** list of status checks to display */
-const { query, data: uptimes, isLoading, isError } = useQuery(getUptimes, []);
+const {
+  query: runGetUptimes,
+  data: uptimes,
+  isLoading,
+  isError,
+} = useQuery(getUptimes, []);
 
-onMounted(query);
+onMounted(runGetUptimes);
 
 /** clear user localstorage data */
 function clearData() {

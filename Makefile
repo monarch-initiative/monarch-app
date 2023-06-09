@@ -73,8 +73,7 @@ install-frontend:
 
 
 .PHONY: model
-model:
-	mkdir -p schema
+model: schema/
 	$(RUN) monarch schema > schema/monarch-py.yaml
 	$(RUN) gen-pydantic schema/monarch-api.yaml > backend/src/monarch_api/model.py
 	$(RUN) gen-typescript schema/monarch-api.yaml > frontend/src/api/model.ts
@@ -114,7 +113,7 @@ dev-frontend: frontend/src/api/model.ts
 
 
 .PHONY: dev-backend
-dev-backend: install-backend model
+dev-backend: backend/src/monarch_api/model.py
 	cd backend && \
 		poetry run uvicorn src.monarch_api.main:app --reload
 
@@ -187,5 +186,4 @@ format-backend: install-backend
 .PHONY: format-frontend
 format-frontend: install-frontend
 	cd frontend && \
-		yarn lint && \
-		yarn imports
+		yarn lint

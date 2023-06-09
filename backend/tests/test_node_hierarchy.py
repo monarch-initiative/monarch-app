@@ -15,7 +15,9 @@ def test_get_node_hierarchy():
     # create a mock solr implementation
     si = Mock(
         spec=SolrImplementation,
-        get_associations=Mock(return_value=AssociationResults()),
+        get_associations=Mock(
+            return_value=AssociationResults(limit=20, offset=0, total=100)
+        ),
     )
 
     # call get_node_hierarchy and assert that it calls get_associations

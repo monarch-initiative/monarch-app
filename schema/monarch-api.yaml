@@ -1,12 +1,12 @@
 id: https://w3id.org/monarch/monarch-api
 name: monarch-api
 description: Data model for Monarch API
-# default_prefix: monarch-api
-default_range: string
 prefixes:
   linkml: https://w3id.org/linkml/
 imports:
   - monarch-py
+default_range: string
+
 classes:
   Node:
     is_a: Entity
@@ -15,9 +15,6 @@ classes:
       - inheritance
       - association_counts
       - node_hierarchy
-    slot_usage:
-      id:
-        required: true
   Taxon:
     slots:
       - id
@@ -27,6 +24,7 @@ classes:
       - super_classes
       - equivalent_classes
       - sub_classes
+
 slots:
   - label
   - count:
@@ -41,22 +39,26 @@ slots:
       range: AssociationCount
       multivalued: true
       inlined_as_list: true
+      required: true
   - node_hierarchy:
       range: NodeHierarchy
       inlined: true
   - super_classes:
-        range: Entity
-        multivalued: true
-        inlined: true
-        inlined_as_list: true
+      range: Entity
+      multivalued: true
+      inlined: true
+      inlined_as_list: true
+      required: true
   - equivalent_classes:
-        range: Entity
-        multivalued: true
-        inlined: true
-        inlined_as_list: true
+      range: Entity
+      multivalued: true
+      inlined: true
+      inlined_as_list: true
+      required: true
   - sub_classes:
-        range: Entity
-        multivalued: true
-        inlined: true
-        inlined_as_list: true
+      range: Entity
+      multivalued: true
+      inlined: true
+      inlined_as_list: true
+      required: true
 

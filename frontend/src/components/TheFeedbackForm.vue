@@ -135,12 +135,12 @@ async function onSubmit() {
    * https://stackoverflow.com/questions/895171/prevent-users-from-submitting-a-form-by-hitting-enter
    */
   if ((document.activeElement as Element).matches("button[type='submit']"))
-    await submitFeedback();
+    await runPostFeedback();
 }
 
 /** post feedback to backend */
 const {
-  query: submitFeedback,
+  query: runPostFeedback,
   data: link,
   isLoading,
   isError,

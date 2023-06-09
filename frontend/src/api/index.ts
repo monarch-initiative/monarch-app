@@ -22,12 +22,12 @@ export type Params = { [key: string]: Param | Param[] };
  * @param options fetch() options
  * @param parse parse response mode
  */
-export const request = async <T>(
+export const request = async <Response>(
   path = "",
   params: Params = {},
   options: RequestInit = {},
   parse: "text" | "json" = "json"
-): Promise<T> => {
+): Promise<Response> => {
   /** start cache if not already started */
   if (!cache) await initCache();
 
@@ -97,7 +97,7 @@ export const request = async <T>(
   /** parse response */
   const parsed =
     parse === "text"
-      ? ((await response.text()) as unknown as T)
+      ? ((await response.text()) as unknown as Response)
       : await response.json();
 
   /** log details for debugging (except don't clutter logs when running tests) */

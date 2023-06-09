@@ -7,7 +7,7 @@
     <AppFlex dir="column" gap="small">
       <AppHeading
         class="heading"
-        :icon="`category-${kebabCase(node.category)}`"
+        :icon="`category-${getCategoryIcon(node.category)}`"
       >
         {{ node.name }}
       </AppHeading>
@@ -16,7 +16,7 @@
           v-tooltip="'The category/type of this node'"
           design="small"
           color="secondary"
-          :text="node.category"
+          :text="getCategoryLabel(node.category)"
         />
         <AppButton
           v-tooltip="'The ID of this node. Click to copy.'"
@@ -26,23 +26,14 @@
           :text="node.id"
           :copy="true"
         />
-        <span
-          v-if="node.id !== node.originalId"
-          v-tooltip="
-            'The original ID you visited, which resolved to a different ID.'
-          "
-          class="original-id"
-        >
-          {{ node.originalId }}
-        </span>
       </AppFlex>
     </AppFlex>
   </AppSection>
 </template>
 
 <script setup lang="ts">
-import { kebabCase } from "lodash";
-import type { Node } from "@/api/node-lookup";
+import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
+import type { Node } from "@/api/model";
 
 type Props = {
   /** current node */

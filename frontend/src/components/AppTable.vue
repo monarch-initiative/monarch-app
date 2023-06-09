@@ -50,16 +50,12 @@
                 />
                 <AppSelectMulti
                   v-if="
-                    availableFilters &&
-                    activeFilters &&
-                    availableFilters[col.id] &&
-                    activeFilters[col.id] &&
-                    availableFilters[col.id]?.length
+                    selectedFilters?.[col.id] && filterOptions?.[col.id]?.length
                   "
                   v-tooltip="'Filter by ' + col.heading"
                   :name="'Filter by ' + col.heading"
-                  :options="availableFilters[col.id]"
-                  :model-value="activeFilters[col.id]"
+                  :options="filterOptions[col.id]"
+                  :model-value="selectedFilters[col.id]"
                   design="small"
                   @change="(value) => emitFilter(col.id, value)"
                 />
@@ -232,7 +228,6 @@ export type Sort = {
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref, watch } from "vue";
 import { useResizeObserver, useScroll } from "@vueuse/core";
-import type { Filters } from "@/api/facets";
 import type { Options } from "./AppSelectMulti.vue";
 import AppSelectMulti from "./AppSelectMulti.vue";
 import AppSelectSingle from "./AppSelectSingle.vue";
@@ -247,8 +242,8 @@ type Props = {
   /** sort key and direction */
   sort?: Sort;
   /** filters */
-  availableFilters?: Filters;
-  activeFilters?: Filters;
+  filterOptions?: { [key: string]: Options };
+  selectedFilters?: { [key: string]: Options };
   /** items per page (two-way bound) */
   perPage?: number;
   /** starting item index (two-way bound) */
@@ -267,8 +262,8 @@ type Props = {
 
 const props = withDefaults(defineProps<Props>(), {
   sort: undefined,
-  availableFilters: undefined,
-  activeFilters: undefined,
+  filterOptions: undefined,
+  selectedFilters: undefined,
   perPage: 5,
   start: 0,
   total: 0,
@@ -277,16 +272,16 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 type Emits = {
-  /** when sort changes */
-  (event: "sort", sort: Sort): void;
-  /** when filter changes */
-  (event: "filter", colId: Col["id"], value: Options): void;
+  /** when sort changes (two-way bound) */
+  (event: "update:sort", value: Props["sort"]): void;
+  /** when selected filters change (two-way bound) */
+  (event: "update:selectedFilters", value: Props["selectedFilters"]): void;
   /** when per page changes (two-way bound) */
-  (event: "update:perPage", value: number): void;
+  (event: "update:perPage", value: Props["perPage"]): void;
   /** when start row changes (two-way bound) */
-  (event: "update:start", row: number): void;
+  (event: "update:start", value: Props["start"]): void;
   /** when search changes (two-way bound) */
-  (event: "update:search", value: string): void;
+  (event: "update:search", value: Props["search"]): void;
   /** when user requests download */
   (event: "download"): void;
 };
@@ -352,12 +347,12 @@ function emitSort(col: Col) {
     newSort = { id: col.id, direction: "down" };
   }
 
-  emit("sort", newSort);
+  emit("update:sort", newSort);
 }
 
 /** when user changes a filter */
 function emitFilter(colId: Col["id"], value: Options) {
-  emit("filter", colId, value);
+  emit("update:selectedFilters", { ...props.selectedFilters, [colId]: value });
 }
 
 /** when user changes rows per page */

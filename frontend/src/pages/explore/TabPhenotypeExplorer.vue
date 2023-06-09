@@ -93,7 +93,7 @@
                 v-for="(id, idIndex) of match.name.split(' + ')"
                 :key="idIndex"
               >
-                <AppLink :to="`/${kebabCase(match.category)}/${id}`">
+                <AppLink :to="`/node/${id}`">
                   {{ id }}
                 </AppLink>
                 <span v-if="idIndex !== match.name.split(' + ').length - 1">
@@ -104,7 +104,7 @@
 
             <!-- otherwise, just show details as normal -->
             <template v-else>
-              <AppLink :to="`/${kebabCase(match.category)}/${match.id}`">
+              <AppLink :to="`/node/${match.id}`">
                 {{ match.name }}
               </AppLink>
             </template>
@@ -129,7 +129,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref, watch } from "vue";
-import { isEqual, kebabCase, startCase } from "lodash";
+import { isEqual, startCase } from "lodash";
 import { mountPhenogrid } from "@/api/phenogrid";
 import {
   compareSetToSet,

@@ -154,10 +154,9 @@
       v-model:per-page="table.perPage"
       v-model:start="table.start"
       v-model:search="table.search"
-      @sort="(value) => (table.sort = value)"
-      @filter="
-        (colId, value) => ((table.activeFilters || {})[colId] = [...value])
-      "
+      v-model:sort="table.sort"
+      v-model:selectedFilters="table.selectedFilters"
+      :filter-options="table.filterOptions"
     >
       <template #arbitrary>Arbitrary slot content</template>
     </AppTable>
@@ -167,7 +166,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { omit } from "lodash";
-import type { Filters } from "@/api/facets";
 import AppButton from "@/components/AppButton.vue";
 import AppInput from "@/components/AppInput.vue";
 import AppRing from "@/components/AppRing.vue";
@@ -310,8 +308,8 @@ const table = ref({
   end: 11,
   total: 123,
   search: "",
-  availableFilters: { score: [{ id: "numbers" }, { id: "nulls" }] } as Filters,
-  activeFilters: { score: [{ id: "numbers" }] } as Filters,
+  filterOptions: { score: [{ id: "numbers" }, { id: "nulls" }] },
+  selectedFilters: { score: [{ id: "numbers" }] },
 });
 
 /** util */

@@ -14,7 +14,7 @@ const paths = [
   "/publications",
   "/terms",
   "/feedback",
-  "/disease/MONDO:012345",
+  "/node/MONDO:012345",
   "/testbed",
 ];
 
