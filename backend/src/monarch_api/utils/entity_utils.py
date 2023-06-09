@@ -25,13 +25,15 @@ def get_associated_entity(association: Association, this_entity: Entity) -> Enti
         entity = Entity(
             id=association.object,
             name=association.object_label,
-            category=association.object_category,
+            # this will be replaced when category is single valued on associations
+            category=association.object_category[0] if len(association.object_category) == 1 else [],
         )
     elif association.object == this_entity.id:
         entity = Entity(
             id=association.subject,
             name=association.subject_label,
-            category=association.subject_category,
+            # this will be replaced when category is single valued on associations
+            category=association.subject_category[0] if len(association.subject_category) == 1 else [],
         )
     else:
         raise ValueError(f"Association does not contain this_entity: {this_entity.id}")
