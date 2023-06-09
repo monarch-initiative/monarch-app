@@ -1,15 +1,16 @@
 from __future__ import annotations
-from datetime import datetime, date
-from enum import Enum
-from typing import List, Dict, Optional, Any, Union
-from pydantic import BaseModel as BaseModel, Field
-from linkml_runtime.linkml_model import Decimal
+
 import sys
+from enum import Enum
+from typing import List, Optional
+
+from pydantic import BaseModel as BaseModel
+from pydantic import Field
 
 if sys.version_info >= (3, 8):
-    from typing import Literal
+    pass
 else:
-    from typing_extensions import Literal
+    pass
 
 
 metamodel_version = "None"
