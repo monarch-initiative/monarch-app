@@ -11,7 +11,7 @@
         <link rel="canonical" href="https://monarch-app.monarchinitiative.org/docs/Data-Model/">
       
       <link rel="icon" href="../images/favicon.ico">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.10">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-8.5.10">
     
     
       
@@ -594,20 +594,6 @@
   
   
     <li class="md-nav__item">
-      <a href="AssociationTypeEnum/" class="md-nav__link">
-        Enum: AssociationTypeEnum
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
       <a href="AssociationTypeMapping/" class="md-nav__link">
         Class: AssociationTypeMapping
       </a>
@@ -1044,20 +1030,6 @@
     <li class="md-nav__item">
       <a href="association_counts/" class="md-nav__link">
         Slot: association_counts
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="association_type/" class="md-nav__link">
-        Slot: association_type
       </a>
     </li>
   
@@ -1854,20 +1826,6 @@
   
   
     <li class="md-nav__item">
-      <a href="type/" class="md-nav__link">
-        Slot: type
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
       <a href="xref/" class="md-nav__link">
         Slot: xref
       </a>
@@ -1965,8 +1923,8 @@
 
 <h1 id="monarch-api">monarch-api</h1>
 <p>Data model for Monarch API</p>
-<p>URI: <a href="https://w3id.org/monarch/monarch-api">https://w3id.org/monarch/monarch-api</a>
-Name: monarch-api</p>
+<p>URI: <a href="https://w3id.org/monarch/monarch-api">https://w3id.org/monarch/monarch-api</a></p>
+<p>Name: monarch-api</p>
 <h2 id="classes">Classes</h2>
 <table>
 <thead>
@@ -1978,79 +1936,79 @@ Name: monarch-api</p>
 <tbody>
 <tr>
 <td><a href="Association/">Association</a></td>
-<td></td>
+<td>None</td>
 </tr>
 <tr>
-<td><a href="AssociationCount/">AssociationCount</a></td>
-<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="DirectionalAssociation/">DirectionalAssociation</a></td>
+<td>An association that gives it's direction relative to a specified entity</td>
 </tr>
 <tr>
 <td><a href="AssociationCountList/">AssociationCountList</a></td>
 <td>Container class for a list of association counts</td>
 </tr>
 <tr>
-<td><a href="AssociationResults/">AssociationResults</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="AssociationTableResults/">AssociationTableResults</a></td>
-<td></td>
-</tr>
-<tr>
 <td><a href="AssociationTypeMapping/">AssociationTypeMapping</a></td>
-<td>A data class to hold the necessary information to produce association type co...</td>
-</tr>
-<tr>
-<td><a href="DirectionalAssociation/">DirectionalAssociation</a></td>
-<td>An association that gives it's direction relative to a specified entity</td>
+<td>A data class to hold the necessary information to produce association type counts for given  entities with appropriate directional labels</td>
 </tr>
 <tr>
 <td><a href="Entity/">Entity</a></td>
-<td></td>
+<td>None</td>
 </tr>
 <tr>
-<td><a href="EntityResults/">EntityResults</a></td>
-<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="Node/">Node</a></td>
+<td>None</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="SearchResult/">SearchResult</a></td>
+<td>None</td>
 </tr>
 <tr>
 <td><a href="FacetField/">FacetField</a></td>
-<td></td>
+<td>None</td>
 </tr>
 <tr>
 <td><a href="FacetValue/">FacetValue</a></td>
-<td></td>
+<td>None</td>
 </tr>
 <tr>
-<td><a href="HistoBin/">HistoBin</a></td>
-<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="AssociationCount/">AssociationCount</a></td>
+<td>None</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="HistoBin/">HistoBin</a></td>
+<td>None</td>
 </tr>
 <tr>
 <td><a href="HistoPheno/">HistoPheno</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="Node/">Node</a></td>
-<td></td>
+<td>None</td>
 </tr>
 <tr>
 <td><a href="NodeHierarchy/">NodeHierarchy</a></td>
-<td></td>
+<td>None</td>
 </tr>
 <tr>
 <td><a href="Results/">Results</a></td>
-<td></td>
+<td>None</td>
 </tr>
 <tr>
-<td><a href="SearchResult/">SearchResult</a></td>
-<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="AssociationResults/">AssociationResults</a></td>
+<td>None</td>
 </tr>
 <tr>
-<td><a href="SearchResults/">SearchResults</a></td>
-<td></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="AssociationTableResults/">AssociationTableResults</a></td>
+<td>None</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="EntityResults/">EntityResults</a></td>
+<td>None</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="SearchResults/">SearchResults</a></td>
+<td>None</td>
 </tr>
 <tr>
 <td><a href="Taxon/">Taxon</a></td>
-<td></td>
+<td>None</td>
 </tr>
 </tbody>
 </table>
@@ -2069,10 +2027,6 @@ Name: monarch-api</p>
 </tr>
 <tr>
 <td><a href="association_counts/">association_counts</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="association_type/">association_type</a></td>
 <td></td>
 </tr>
 <tr>
@@ -2105,7 +2059,7 @@ Name: monarch-api</p>
 </tr>
 <tr>
 <td><a href="facet_values/">facet_values</a></td>
-<td></td>
+<td>Collection of FacetValue label/value instances belonging to a FacetField</td>
 </tr>
 <tr>
 <td><a href="frequency_qualifier/">frequency_qualifier</a></td>
@@ -2296,10 +2250,6 @@ Name: monarch-api</p>
 <td>total number of items matching a query</td>
 </tr>
 <tr>
-<td><a href="type/">type</a></td>
-<td></td>
-</tr>
-<tr>
 <td><a href="xref/">xref</a></td>
 <td></td>
 </tr>
@@ -2317,10 +2267,6 @@ Name: monarch-api</p>
 <tr>
 <td><a href="AssociationDirectionEnum/">AssociationDirectionEnum</a></td>
 <td>The directionality of an association as it relates to a specified entity, wit...</td>
-</tr>
-<tr>
-<td><a href="AssociationTypeEnum/">AssociationTypeEnum</a></td>
-<td>A grouping label for association types, which are not necessarily 1:1 with bi...</td>
 </tr>
 </tbody>
 </table>
