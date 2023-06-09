@@ -7,7 +7,7 @@
     <AppFlex dir="column" gap="small">
       <AppHeading
         class="heading"
-        :icon="`category-${node.category_label || 'unknown'}`"
+        :icon="`category-${getCategoryIcon(node.category)}`"
       >
         {{ node.name }}
       </AppHeading>
@@ -16,7 +16,7 @@
           v-tooltip="'The category/type of this node'"
           design="small"
           color="secondary"
-          :text="node.category_label || 'Unknown'"
+          :text="getCategoryLabel(node.category)"
         />
         <AppButton
           v-tooltip="'The ID of this node. Click to copy.'"
@@ -32,6 +32,7 @@
 </template>
 
 <script setup lang="ts">
+import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
 import type { Node } from "@/api/model";
 
 type Props = {

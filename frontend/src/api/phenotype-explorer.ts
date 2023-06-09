@@ -34,12 +34,11 @@ export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
          * if gene/disease, provide function to get associated phenotypes upon
          * select
          */
-        item.category_label === "Phenotype"
+        item.category === "biolink:Phenotype"
           ? undefined
-          : async () =>
-              await getPhenotypeAssociations(item.id, item.category_label),
+          : async () => await getPhenotypeAssociations(item.id, item.category),
       highlight: item.highlight,
-      icon: "category-" + item.category_label,
+      icon: "category-" + item.category,
       info: item.in_taxon || "",
     })),
   };

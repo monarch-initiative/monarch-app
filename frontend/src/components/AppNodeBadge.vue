@@ -6,9 +6,9 @@
   <span class="node">
     <AppIcon
       v-if="icon"
-      v-tooltip="node.category_label || 'Unknown'"
+      v-tooltip="getCategoryLabel(node.category)"
       class="icon"
-      :icon="`category-${node.category_label || 'unknown'}`"
+      :icon="`category-${getCategoryIcon(node.category)}`"
     />
     <AppLink
       v-if="link"
@@ -23,12 +23,13 @@
 </template>
 
 <script setup lang="ts">
+import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
 import type { Node } from "@/api/model";
 import { breadcrumbs } from "@/global/breadcrumbs";
 
 type Props = {
   /** node represented by badge */
-  node: Pick<Node, "id" | "name" | "category_label">;
+  node: Pick<Node, "id" | "name" | "category">;
   /** whether to include icon */
   icon?: boolean;
   /** whether to include link */

@@ -14,7 +14,7 @@
 
       <!-- symbol (gene specific) -->
       <AppDetail
-        v-if="node.category_label === 'Gene'"
+        v-if="node.category === 'biolink:Gene'"
         :blank="!node.symbol"
         title="Symbol"
       >

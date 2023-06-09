@@ -186,5 +186,4 @@ format-backend: install-backend
 .PHONY: format-frontend
 format-frontend: install-frontend
 	cd frontend && \
-		yarn lint && \
-		yarn imports
+		yarn lint

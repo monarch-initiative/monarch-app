@@ -89,64 +89,64 @@ export const handlers = [
     const id = req.url.pathname.match(/\/entity\/(.*)/)?.[1] || "";
 
     const replace: {
-      [key: string]: { name?: string; category_label?: string };
+      [key: string]: { name?: string; category?: string };
     } = {
       "MONDO:0007947": {
         name: "Marfan syndrome",
-        category_label: "Disease",
+        category: "biolink:Disease",
       },
       "HP:0100775": {
         name: "Dural ectasia",
-        category_label: "Disease",
+        category: "biolink:Disease",
       },
       "HP:0003179": {
         name: "Protrusio acetabuli",
-        category_label: "Disease",
+        category: "biolink:Disease",
       },
       "HP:0001083": {
         name: "Ectopia lentis",
-        category_label: "Disease",
+        category: "biolink:Disease",
       },
       "HP:0000501": {
         name: "Glaucoma",
-        category_label: "Disease",
+        category: "biolink:Disease",
       },
       "HP:0002705": {
         name: "High, narrow palate",
-        category_label: "Disease",
+        category: "biolink:Disease",
       },
       "HP:0004382": {
         name: "Mitral valve calcification",
-        category_label: "Disease",
+        category: "biolink:Disease",
       },
       "HP:0004326": {
         name: "Cachexia",
-        category_label: "Disease",
+        category: "biolink:Disease",
       },
       "HP:0002816": {
         name: "Genu recurvatum",
-        category_label: "Disease",
+        category: "biolink:Disease",
       },
       "HP:0004298": {
         name: "Abnormality of the abdominal wall",
-        category_label: "Disease",
+        category: "biolink:Disease",
       },
       "HP:0002996": {
         name: "Limited elbow movement",
-        category_label: "Disease",
+        category: "biolink:Disease",
       },
       "MONDO:0020208": {
         name: "syndromic myopia",
-        category_label: "Disease",
+        category: "biolink:Disease",
       },
       "PMID:25614286": {
-        category_label: "Publication",
+        category: "biolink:Publication",
       },
     };
-    const { name, category_label } = replace[id] || {};
+    const { name, category } = replace[id] || {};
     node.id = id;
     if (name) node.name = name;
-    if (category_label) node.category_label = category_label;
+    if (category) node.category = category;
 
     return res(ctx.status(200), ctx.json(node));
   }),

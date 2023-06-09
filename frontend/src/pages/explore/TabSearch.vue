@@ -18,7 +18,7 @@
     />
 
     <!-- facet dropdown filters -->
-    <AppFlex v-if="facets.length">
+    <AppFlex v-if="facets.length && !home">
       <template v-for="(facet, index) in facets" :key="index">
         <AppSelectMulti
           v-if="Object.keys(facet.facet_values || {}).length"
@@ -52,8 +52,8 @@
     >
       <div class="title">
         <AppIcon
-          v-tooltip="result.category_label || 'Unknown'"
-          :icon="`category-${result.category_label || 'unknown'}`"
+          v-tooltip="getCategoryLabel(result.category)"
+          :icon="`category-${getCategoryIcon(result.category)}`"
           class="type"
         />
         <AppLink :to="`/node/${result.id}`" class="name">
@@ -109,6 +109,7 @@
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { groupBy, mapValues, sortBy, uniq } from "lodash";
+import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
 import type { SearchResults } from "@/api/model";
 import { getAutocomplete, getSearch } from "@/api/search";
 import type { Options as AutocompleteOptions } from "@/components/AppSelectAutocomplete.vue";

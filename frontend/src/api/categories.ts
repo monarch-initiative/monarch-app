@@ -1,4 +1,12 @@
-import { startCase } from "lodash";
+import { kebabCase, startCase } from "lodash";
+
+/** get human-readable label from category */
+export const getCategoryLabel = (category?: string) =>
+  startCase(category?.replace("biolink:", "")) || "Unknown";
+
+/** get icon name from category */
+export const getCategoryIcon = (category?: string) =>
+  kebabCase(category?.replace("biolink:", "")) || "unknown";
 
 /** from list of categories, get single category to label/display */
 export const mapCategory = (category: string[] = []): string =>

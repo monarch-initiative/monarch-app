@@ -9,7 +9,7 @@ export const getNode = async (id: string) => {
   const metadata: Metadata & Partial<typeof response> = {};
 
   /** supplement publication with metadata from entrez */
-  if (response.category_label === "Publication") {
+  if (response.category === "biolink:Publication") {
     try {
       const publication = await getPublication(id);
       metadata.name = publication.title;
