@@ -6,9 +6,6 @@ export type EntityId = string;
 export type HistoPhenoId = string;
 export type HistoBinId = string;
 export type SearchResultId = string;
-export type FacetValueLabel = string;
-export type FacetFieldLabel = string;
-export type AssociationCountLabel = string;
 /**
 * The directionality of an association as it relates to a specified entity, with edges being categorized as incoming or outgoing
 */
@@ -34,7 +31,6 @@ export interface Node extends Entity {
     xref?: string[],
     provided_by?: string,
     in_taxon?: string,
-    source?: string,
     symbol?: string,
     synonym?: string[],
 };
@@ -78,7 +74,6 @@ export interface Association {
     has_evidence?: string,
     onset_qualifier?: string,
     sex_qualifier?: string,
-    source?: string,
     stage_qualifier?: string,
     pathway?: string,
     relation?: string,
@@ -116,7 +111,6 @@ export interface DirectionalAssociation extends Association {
     has_evidence?: string,
     onset_qualifier?: string,
     sex_qualifier?: string,
-    source?: string,
     stage_qualifier?: string,
     pathway?: string,
     relation?: string,
@@ -152,7 +146,6 @@ export interface Entity {
     xref?: string[],
     provided_by?: string,
     in_taxon?: string,
-    source?: string,
     symbol?: string,
     synonym?: string[],
 };
@@ -201,7 +194,6 @@ export interface SearchResult extends Entity {
     xref?: string[],
     provided_by?: string,
     in_taxon?: string,
-    source?: string,
     symbol?: string,
     synonym?: string[],
 };

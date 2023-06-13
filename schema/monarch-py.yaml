@@ -51,7 +51,6 @@ classes:
     - has_evidence
     - onset_qualifier
     - sex_qualifier
-    - source
     - stage_qualifier
     - pathway
     - relation
@@ -84,7 +83,6 @@ classes:
     - xref
     - provided_by
     - in_taxon
-    - source
     - symbol
     - synonym
   EntityResults:
@@ -105,9 +103,6 @@ classes:
     is_a: FacetValue
     slots:
       - id
-    slot_usage:
-      label:
-        identifier: false
   Results:
     abstract: true
     slots:
@@ -137,16 +132,10 @@ classes:
     slots:
       - label
       - count
-    slot_usage:
-        label:
-            identifier: true
   FacetField:
     slots:
       - label
       - facet_values
-    slot_usage:
-      label:
-        identifier: true
   AssociationTypeMapping:
     description: >-
       A data class to hold the necessary information to produce association type counts for given 
@@ -296,8 +285,6 @@ slots:
   score:
     range: float
   sex_qualifier:
-    range: string
-  source:
     range: string
   stage_qualifier:
     range: string
