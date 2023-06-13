@@ -1,6 +1,6 @@
-from typing import List
+from typing import List, Union
 
-from fastapi import APIRouter  # , Depends
+from fastapi import APIRouter, Query  # , Depends
 from monarch_api.config import settings
 from monarch_api.model import SearchResults
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
@@ -14,8 +14,8 @@ router = APIRouter(
 @router.get("/search")
 async def search(
     q: str = "*:*",
-    category: List[str] = None,
-    taxon: List[str] = None,
+    category: Union[List[str], None] = Query(default=None),
+    taxon: Union[List[str], None] = Query(default=None),
     offset: int = 0,
     limit: int = 20,
 ) -> SearchResults:
