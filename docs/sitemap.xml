@@ -426,11 +426,6 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/source/</loc>
-         <lastmod>2023-06-13</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/stage_qualifier/</loc>
          <lastmod>2023-06-13</lastmod>
          <changefreq>daily</changefreq>
