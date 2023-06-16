@@ -5,8 +5,7 @@ from fastapi.responses import RedirectResponse
 from monarch_api import association, entity, histopheno, search
 
 PREFIX = "/v3/api"
-app = FastAPI(docs_url="/v3/docs", redoc_url=None)
-# app = FastAPI(docs_url=None, redoc_url='/v3/docs')
+app = FastAPI(docs_url="/v3/docs", redoc_url='/v3/redoc')
 app.include_router(entity.router, prefix=f"{PREFIX}/entity")
 app.include_router(association.router, prefix=f"{PREFIX}/association")
 app.include_router(search.router, prefix=PREFIX)
