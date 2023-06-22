@@ -18,5 +18,5 @@ fixtures = glob(f"{fixtures_dir}/[!_]*.py")
 
 print([_as_module(f) for f in fixtures if "__" not in f])
 pytest_plugins = [
-    _as_module(f) for f in fixtures if "__" not in f
+    _as_module(f).removeprefix("tests.") for f in fixtures if "__" not in f
 ]
