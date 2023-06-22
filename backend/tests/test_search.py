@@ -3,8 +3,6 @@ from unittest.mock import Mock
 import pytest
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
-# from monarch_py.datamodels.model import AssociationResults, Entity
-
 
 @pytest.mark.parametrize(
     "q, category, taxon, offset, limit",
