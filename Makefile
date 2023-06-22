@@ -85,7 +85,7 @@ fixtures: install-backend
 	@echo "Generating fixtures..."
 	@echo "This requires a running instance of Monarch Solr."
 	$(RUN) python scripts/generate_fixtures.py
-	# $(RUN) black backend/src/monarch_api/fixtures.py
+	$(RUN) black backend/tests/fixtures/
 
 # Documentation
 .PHONY: docs
