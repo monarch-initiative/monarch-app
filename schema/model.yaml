@@ -1,12 +1,13 @@
 id: https://w3id.org/monarch/monarch-py
 name: monarch-py
-description: Data datamodels for the Monarch Initiative data access library
+description: Data models for the Monarch Initiative data access library
 prefixes:
   linkml: https://w3id.org/linkml/
   biolink: https://w3id.org/biolink/
 imports:
   - linkml:types
 default_range: string
+
 
 enums:
   AssociationDirectionEnum:
@@ -20,6 +21,7 @@ enums:
       outgoing:
         description: >-
           An association for which a specified entity is the subject or part of the subject closure
+
 
 classes:
   Association:
@@ -54,12 +56,20 @@ classes:
     - stage_qualifier
     - pathway
     - relation
-  DirectionalAssociation:
-    is_a: Association
-    description: >-
-      An association that gives it's direction relative to a specified entity
+  AssociationCount:
+    is_a: FacetValue
     slots:
-      - direction
+      - category
+    slot_usage:
+      category:
+        multivalued: false
+  AssociationCountList:
+    description: Container class for a list of association counts
+    slots:
+      - items
+    slot_usage:
+      items:
+        range: AssociationCount
   AssociationResults:
     is_a: Results
     slots: 
@@ -74,7 +84,38 @@ classes:
     slot_usage:
       items:
         range: DirectionalAssociation
+  AssociationTypeMapping:
+    description: >-
+      A data class to hold the necessary information to produce association type counts for given 
+      entities with appropriate directional labels
+    slots:
+      - subject_label
+      - object_label
+      - symmetric
+      - category
+    slot_usage:
+      subject_label:
+        description: A label to describe the subjects of the association type as a whole for use in the UI
+      object_label:
+        description: A label to describe the objects of the association type as a whole for use in the UI
+      symmetric:
+        description: >-
+          Whether the association type is symmetric, meaning that the subject and object labels should be
+          interchangeable
+        ifabsent: false
+        required: true
+      category:
+        description: The biolink category to use in queries for this association type
+        required: true
+        multivalued: false
+  DirectionalAssociation:
+    is_a: Association
+    description: >-
+      An association that gives it's direction relative to a specified entity
+    slots:
+      - direction
   Entity:
+    description: Represents an Entity in the Monarch KG data model
     slots:
     - id
     - category
@@ -92,6 +133,14 @@ classes:
     slot_usage:
       items:
         range: Entity
+  FacetValue:
+    slots:
+      - label
+      - count
+  FacetField:
+    slots:
+      - label
+      - facet_values
   HistoPheno:
     slots:
       - id
@@ -103,6 +152,20 @@ classes:
     is_a: FacetValue
     slots:
       - id
+  Node:
+    description: UI conatiner class extending Entity with additional information
+    is_a: Entity
+    slots:      
+      - in_taxon
+      - in_taxon_label
+      - inheritance
+      - association_counts
+      - node_hierarchy
+  NodeHierarchy:
+    slots:
+      - super_classes
+      - equivalent_classes
+      - sub_classes
   Results:
     abstract: true
     slots:
@@ -128,56 +191,16 @@ classes:
     slot_usage:
         items:
           range: SearchResult
-  FacetValue:
-    slots:
-      - label
-      - count
-  FacetField:
-    slots:
-      - label
-      - facet_values
-  AssociationTypeMapping:
-    description: >-
-      A data class to hold the necessary information to produce association type counts for given 
-      entities with appropriate directional labels
-    slots:
-      - subject_label
-      - object_label
-      - symmetric
-      - category
-    slot_usage:
-      subject_label:
-        description: A label to describe the subjects of the association type as a whole for use in the UI
-      object_label:
-        description: A label to describe the objects of the association type as a whole for use in the UI
-      symmetric:
-        description: >-
-          Whether the association type is symmetric, meaning that the subject and object labels should be
-          interchangeable
-        ifabsent: false
-        required: true
-      category:
-        description: The biolink category to use in queries for this association type
-        required: true
-        multivalued: false
-  AssociationCount:
-    is_a: FacetValue
-    slots:
-      - category
-    slot_usage:
-      category:
-        multivalued: false
-  AssociationCountList:
-    description: Container class for a list of association counts
-    slots:
-      - items
-    slot_usage:
-      items:
-        range: AssociationCount
+
 
 slots:
   aggregator_knowledge_source:
     multivalued: true
+  association_counts:
+    range: AssociationCount
+    multivalued: true
+    inlined_as_list: true
+    required: true
   category:
     multivalued: false
   count:
@@ -191,6 +214,12 @@ slots:
       If the entity is the subject or in the subject closure, the direction is forwards, if it is
       the object or in the object closure, the direction is backwards.
     range: AssociationDirectionEnum
+    required: true
+  equivalent_classes:
+    range: Entity
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
     required: true
   facet_fields:
     description: Collection of facet field responses with the field values and counts
@@ -222,7 +251,14 @@ slots:
     range: string
     required: true
   in_taxon:
+    description: The biolink taxon that the entity is in the closure of.
     range: string
+  in_taxon_label:
+    description: The label of the biolink taxon that the entity is in the closure of.
+    range: string
+  inheritance:
+    range: Entity
+    inlined: true
   items:
     description: A collection of items, with the type to be overriden by slot_usage
     range: string
@@ -243,6 +279,9 @@ slots:
     range: string
   negated:
     range: boolean
+  node_hierarchy:
+    range: NodeHierarchy
+    inlined: true
   object:
     range: string
     required: true
@@ -301,6 +340,18 @@ slots:
     range: string
   subject_namespace:
     range: string
+  sub_classes:
+    range: Entity
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+    required: true
+  super_classes:
+    range: Entity
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+    required: true
   symbol:
     range: string
   symmetric:

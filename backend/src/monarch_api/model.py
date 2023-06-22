@@ -43,19 +43,6 @@ class AssociationDirectionEnum(str, Enum):
     outgoing = "outgoing"
 
 
-class Taxon(ConfiguredBaseModel):
-
-    id: str = Field(...)
-    label: str = Field(...)
-
-
-class NodeHierarchy(ConfiguredBaseModel):
-
-    super_classes: List[Entity] = Field(default_factory=list)
-    equivalent_classes: List[Entity] = Field(default_factory=list)
-    sub_classes: List[Entity] = Field(default_factory=list)
-
-
 class Association(ConfiguredBaseModel):
 
     aggregator_knowledge_source: Optional[List[str]] = Field(default_factory=list)
@@ -88,6 +75,40 @@ class Association(ConfiguredBaseModel):
     stage_qualifier: Optional[str] = Field(None)
     pathway: Optional[str] = Field(None)
     relation: Optional[str] = Field(None)
+
+
+class AssociationCountList(ConfiguredBaseModel):
+    """
+    Container class for a list of association counts
+    """
+
+    items: List[AssociationCount] = Field(
+        default_factory=list,
+        description="""A collection of items, with the type to be overriden by slot_usage""",
+    )
+
+
+class AssociationTypeMapping(ConfiguredBaseModel):
+    """
+    A data class to hold the necessary information to produce association type counts for given  entities with appropriate directional labels
+    """
+
+    subject_label: Optional[str] = Field(
+        None,
+        description="""A label to describe the subjects of the association type as a whole for use in the UI""",
+    )
+    object_label: Optional[str] = Field(
+        None,
+        description="""A label to describe the objects of the association type as a whole for use in the UI""",
+    )
+    symmetric: bool = Field(
+        False,
+        description="""Whether the association type is symmetric, meaning that the subject and object labels should be interchangeable""",
+    )
+    category: str = Field(
+        ...,
+        description="""The biolink category to use in queries for this association type""",
+    )
 
 
 class DirectionalAssociation(Association):
@@ -132,6 +153,9 @@ class DirectionalAssociation(Association):
 
 
 class Entity(ConfiguredBaseModel):
+    """
+    Represents an Entity in the Monarch KG data model
+    """
 
     id: str = Field(...)
     category: Optional[str] = Field(None)
@@ -139,26 +163,33 @@ class Entity(ConfiguredBaseModel):
     description: Optional[str] = Field(None)
     xref: Optional[List[str]] = Field(default_factory=list)
     provided_by: Optional[str] = Field(None)
-    in_taxon: Optional[str] = Field(None)
+    in_taxon: Optional[str] = Field(
+        None, description="""The biolink taxon that the entity is in the closure of."""
+    )
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)
 
 
-class Node(Entity):
+class FacetValue(ConfiguredBaseModel):
 
-    taxon: Optional[Taxon] = Field(None)
-    inheritance: Optional[Entity] = Field(None)
-    association_counts: List[AssociationCount] = Field(default_factory=list)
-    node_hierarchy: Optional[NodeHierarchy] = Field(None)
-    id: str = Field(...)
+    label: str = Field(...)
+    count: Optional[int] = Field(None, description="""count of documents""")
+
+
+class AssociationCount(FacetValue):
+
     category: Optional[str] = Field(None)
-    name: Optional[str] = Field(None)
-    description: Optional[str] = Field(None)
-    xref: Optional[List[str]] = Field(default_factory=list)
-    provided_by: Optional[str] = Field(None)
-    in_taxon: Optional[str] = Field(None)
-    symbol: Optional[str] = Field(None)
-    synonym: Optional[List[str]] = Field(default_factory=list)
+    label: str = Field(...)
+    count: Optional[int] = Field(None, description="""count of documents""")
+
+
+class FacetField(ConfiguredBaseModel):
+
+    label: str = Field(...)
+    facet_values: Optional[List[FacetValue]] = Field(
+        default_factory=list,
+        description="""Collection of FacetValue label/value instances belonging to a FacetField""",
+    )
 
 
 class HistoPheno(ConfiguredBaseModel):
@@ -168,6 +199,45 @@ class HistoPheno(ConfiguredBaseModel):
         default_factory=list,
         description="""A collection of items, with the type to be overriden by slot_usage""",
     )
+
+
+class HistoBin(FacetValue):
+
+    id: str = Field(...)
+    label: str = Field(...)
+    count: Optional[int] = Field(None, description="""count of documents""")
+
+
+class Node(Entity):
+    """
+    UI conatiner class extending Entity with additional information
+    """
+
+    in_taxon: Optional[str] = Field(
+        None, description="""The biolink taxon that the entity is in the closure of."""
+    )
+    in_taxon_label: Optional[str] = Field(
+        None,
+        description="""The label of the biolink taxon that the entity is in the closure of.""",
+    )
+    inheritance: Optional[Entity] = Field(None)
+    association_counts: List[AssociationCount] = Field(default_factory=list)
+    node_hierarchy: Optional[NodeHierarchy] = Field(None)
+    id: str = Field(...)
+    category: Optional[str] = Field(None)
+    name: Optional[str] = Field(None)
+    description: Optional[str] = Field(None)
+    xref: Optional[List[str]] = Field(default_factory=list)
+    provided_by: Optional[str] = Field(None)
+    symbol: Optional[str] = Field(None)
+    synonym: Optional[List[str]] = Field(default_factory=list)
+
+
+class NodeHierarchy(ConfiguredBaseModel):
+
+    super_classes: List[Entity] = Field(default_factory=list)
+    equivalent_classes: List[Entity] = Field(default_factory=list)
+    sub_classes: List[Entity] = Field(default_factory=list)
 
 
 class Results(ConfiguredBaseModel):
@@ -222,7 +292,9 @@ class SearchResult(Entity):
     description: Optional[str] = Field(None)
     xref: Optional[List[str]] = Field(default_factory=list)
     provided_by: Optional[str] = Field(None)
-    in_taxon: Optional[str] = Field(None)
+    in_taxon: Optional[str] = Field(
+        None, description="""The biolink taxon that the entity is in the closure of."""
+    )
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)
 
@@ -246,87 +318,23 @@ class SearchResults(Results):
     total: int = Field(..., description="""total number of items matching a query""")
 
 
-class FacetValue(ConfiguredBaseModel):
-
-    label: str = Field(...)
-    count: Optional[int] = Field(None, description="""count of documents""")
-
-
-class HistoBin(FacetValue):
-
-    id: str = Field(...)
-    label: str = Field(...)
-    count: Optional[int] = Field(None, description="""count of documents""")
-
-
-class FacetField(ConfiguredBaseModel):
-
-    label: str = Field(...)
-    facet_values: Optional[List[FacetValue]] = Field(
-        default_factory=list,
-        description="""Collection of FacetValue label/value instances belonging to a FacetField""",
-    )
-
-
-class AssociationTypeMapping(ConfiguredBaseModel):
-    """
-    A data class to hold the necessary information to produce association type counts for given  entities with appropriate directional labels
-    """
-
-    subject_label: Optional[str] = Field(
-        None,
-        description="""A label to describe the subjects of the association type as a whole for use in the UI""",
-    )
-    object_label: Optional[str] = Field(
-        None,
-        description="""A label to describe the objects of the association type as a whole for use in the UI""",
-    )
-    symmetric: bool = Field(
-        False,
-        description="""Whether the association type is symmetric, meaning that the subject and object labels should be interchangeable""",
-    )
-    category: str = Field(
-        ...,
-        description="""The biolink category to use in queries for this association type""",
-    )
-
-
-class AssociationCount(FacetValue):
-
-    category: Optional[str] = Field(None)
-    label: str = Field(...)
-    count: Optional[int] = Field(None, description="""count of documents""")
-
-
-class AssociationCountList(ConfiguredBaseModel):
-    """
-    Container class for a list of association counts
-    """
-
-    items: List[AssociationCount] = Field(
-        default_factory=list,
-        description="""A collection of items, with the type to be overriden by slot_usage""",
-    )
-
-
 # Update forward refs
 # see https://pydantic-docs.helpmanual.io/usage/postponed_annotations/
-Taxon.update_forward_refs()
-NodeHierarchy.update_forward_refs()
 Association.update_forward_refs()
+AssociationCountList.update_forward_refs()
+AssociationTypeMapping.update_forward_refs()
 DirectionalAssociation.update_forward_refs()
 Entity.update_forward_refs()
-Node.update_forward_refs()
+FacetValue.update_forward_refs()
+AssociationCount.update_forward_refs()
+FacetField.update_forward_refs()
 HistoPheno.update_forward_refs()
+HistoBin.update_forward_refs()
+Node.update_forward_refs()
+NodeHierarchy.update_forward_refs()
 Results.update_forward_refs()
 AssociationResults.update_forward_refs()
 AssociationTableResults.update_forward_refs()
 EntityResults.update_forward_refs()
 SearchResult.update_forward_refs()
 SearchResults.update_forward_refs()
-FacetValue.update_forward_refs()
-HistoBin.update_forward_refs()
-FacetField.update_forward_refs()
-AssociationTypeMapping.update_forward_refs()
-AssociationCount.update_forward_refs()
-AssociationCountList.update_forward_refs()
