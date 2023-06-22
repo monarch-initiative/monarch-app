@@ -6,7 +6,7 @@ import pytest
 
 from monarch_api.model import AssociationResults, Node, HistoPheno, SearchResults
 
-from .fixtures import autocomplete, histopheno, node, node_associations, search
+# from .fixtures import autocomplete, histopheno, node, node_associations, search
 
 
 def test_autocomplete(autocomplete):

@@ -2,22 +2,21 @@ from glob import glob
 import os
 
 
-# if os.getcwd().endswith("monarch-app"):
-#     fixtures_dir = "backend/tests/fixtures"
-# elif os.getcwd().endswith("backend"):
-#     fixtures_dir = "tests/fixtures"
-# else:
-#     raise Exception("Could not find fixtures directory")
-
-fixtures_dir = "backend/tests/fixtures"
-fixtures = glob(f"{fixtures_dir}/*.py")
+def _as_module(fixture_path: str) -> str:
+    return fixture_path.replace("/", ".").replace("\\", ".").replace(".py", "")
 
 
-def refactor(string: str) -> str:
-    return string.replace("/", ".").replace("\\", ".").replace(".py", "")
+if os.getcwd().endswith("monarch-app"):
+    fixtures_dir = "backend/tests/fixtures"
+elif os.getcwd().endswith("backend"):
+    fixtures_dir = "tests/fixtures"
+else:
+    raise Exception("Could not find fixtures directory")
 
-print([refactor(fixture) for fixture in fixtures if "__" not in fixture])
 
+fixtures = glob(f"{fixtures_dir}/[!_]*.py")
+
+print([_as_module(f) for f in fixtures if "__" not in f])
 pytest_plugins = [
-    refactor(fixture) for fixture in glob(f"{fixtures_dir}/*.py") if "__" not in fixture
+    _as_module(f) for f in fixtures if "__" not in f
 ]
