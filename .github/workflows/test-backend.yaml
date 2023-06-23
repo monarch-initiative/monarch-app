@@ -40,4 +40,4 @@ jobs:
       #              run pytest
       #----------------------------------------------
       - name: Run tests
-        run: make test-backend
+        run: poetry -C backend run pytest backend/tests
