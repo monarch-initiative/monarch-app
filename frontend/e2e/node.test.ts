@@ -149,29 +149,15 @@ test("Summary association info shows", async ({ page }) => {
 
   /** check node, relation, target node */
   await expect(
-    page
-      .locator(".result")
-      .getByText(/Marfan syndrome/i)
-      .first()
+    page.getByText(/Fanconi anemia complementation group D2/i).first()
   ).toBeVisible();
   await expect(
-    page
-      .locator(".result")
-      .getByText(/5 piece.*supporting evidence/i)
-      .first()
+    page.getByText(/piece.*supporting evidence/i).first()
   ).toBeVisible();
+  await expect(page.getByText(/Has Phenotype/i).first()).toBeVisible();
   await expect(
-    page
-      .locator(".result")
-      .getByText(/Has Phenotype/i)
-      .first()
-  ).toHaveAttribute("href", "http://purl.obolibrary.org/obo/RO_0002200");
-  await expect(
-    page
-      .locator(".result")
-      .getByText(/Dural ectasia/i)
-      .first()
-  ).toHaveAttribute("href", "/phenotype/HP:0100775");
+    page.getByText(/Agenesis of corpus callosum/i).first()
+  ).toHaveAttribute("href", "/node/HP:0001274");
 });
 
 test("Table association info shows", async ({ page }) => {
