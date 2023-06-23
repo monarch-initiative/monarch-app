@@ -90,7 +90,7 @@ fixtures: install-backend
 # Documentation
 .PHONY: docs
 docs: install-backend model
-	$(RUN) gen-doc -d $(ROOTDIR)/docs/Data-Model/ $(ROOTDIR)/schema/monarch-api.yaml
+	$(RUN) gen-doc -d $(ROOTDIR)/docs/Data-Model/ $(ROOTDIR)/schema/model.yaml
 	$(RUN) mkdocs build
 
 
