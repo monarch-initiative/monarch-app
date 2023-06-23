@@ -24,7 +24,7 @@ fixtures['autocomplete'] = si.autocomplete("fanc")
 # fixtures['feedback'] = 
 fixtures['histopheno'] = si.get_histopheno(node_id)
 fixtures['node'] = si.get_entity(id = node_id, extra = True)
-fixtures['node-associations'] = si.get_associations(entity = node_id)
+fixtures['associations'] = si.get_associations(entity = node_id)
 # fixtures['node-publication-abstract'] = 
 # fixtures['node-publication-summary'] = 
 # fixtures['ontologies'] = 

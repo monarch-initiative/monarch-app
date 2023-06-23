@@ -91,7 +91,7 @@ test("Overview items show", async ({ page }) => {
 
   /** check for description */
   await expect(
-    page.getByText(/An inheritable form of hyperlipidemia/i).first()
+    page.getByText(/Muscular dystrophy .* refers to a group/i).first()
   ).toBeVisible();
 });
 
@@ -114,13 +114,8 @@ test("Hierarchy items show", async ({ page }) => {
   await page.goto("/node/MONDO:0007947");
 
   /** check super/equiv/sub classes */
-  await expect(page.getByText(/hyperlipoproteinemia/i).first()).toBeVisible();
-  await expect(
-    page.getByText(/familial hyperlipidemia/i).first()
-  ).toBeVisible();
-  await expect(
-    page.getByText(/hypercholesterolemia, familial, 1/i).first()
-  ).toBeVisible();
+  await expect(page.getByText(/myopathy/i).first()).toBeVisible();
+  await expect(page.getByText(/muscular dystrophy/i).first()).toBeVisible();
 });
 
 test("Publication specific info shows", async ({ page }) => {
