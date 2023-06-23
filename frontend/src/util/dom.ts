@@ -14,18 +14,14 @@ export const restartAnimations = (element: Element): void => {
  * with hard limit. when found, return found element and run callback with
  * element
  */
-export const waitFor = async (
+export const waitFor = async <El extends Element>(
   selector = "",
-  callback?: (element: Element) => void,
-  timeout = 1000,
+  timeout = 3000,
   interval = 50
-): Promise<Element | undefined> => {
+): Promise<El | undefined> => {
   for (let check = 0; check < timeout / interval; check++) {
-    const match = document?.querySelector(selector);
-    if (match) {
-      if (callback) callback(match);
-      return match;
-    }
+    const match = document?.querySelector<El>(selector);
+    if (match) return match;
     await sleep(interval);
   }
 };
