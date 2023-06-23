@@ -5,10 +5,7 @@
 <template>
   <AppSection design="fill" class="section">
     <AppFlex dir="column" gap="small">
-      <AppHeading
-        class="heading"
-        :icon="`category-${getCategoryIcon(node.category)}`"
-      >
+      <AppHeading class="heading" :icon="getCategoryIcon(node.category)">
         {{ node.name }}
       </AppHeading>
       <AppFlex>

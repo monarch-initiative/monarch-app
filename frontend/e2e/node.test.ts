@@ -145,8 +145,6 @@ test("Publication specific info shows", async ({ page }) => {
 });
 
 test("Summary association info shows", async ({ page }) => {
-  test.skip();
-
   await page.goto("/node/MONDO:0007947");
 
   /** check node, relation, target node */
