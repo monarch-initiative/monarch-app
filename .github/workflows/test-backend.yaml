@@ -4,9 +4,9 @@ on:
   pull_request:
   workflow_dispatch:
 
-defaults:
-  run:
-    working-directory: ./backend
+# defaults:
+#   run:
+#     working-directory: ./backend
 
 jobs:
   test-backend:
@@ -34,16 +34,10 @@ jobs:
       #    install your root project, if required
       #----------------------------------------------
       - name: Install library
-        run: poetry install --no-interaction
+        run: poetry -C backend install --no-interaction
 
-      #----------------------------------------------
-      #              run tox
-      #----------------------------------------------
-      #- name: Lint with flake8
-      #  run: poetry run tox -e flake8
       #----------------------------------------------
       #              run pytest
       #----------------------------------------------
-      - name: Test with unittest
-        run: poetry run pytest tests/
-        # run: poetry run python -u -m unittest discover
+      - name: Run tests
+        run: make test
