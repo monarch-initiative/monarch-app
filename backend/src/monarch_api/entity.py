@@ -1,7 +1,6 @@
 from fastapi import APIRouter, HTTPException, Query
 from monarch_api.config import settings
 from monarch_api.model import AssociationTableResults, Node
-from monarch_api.utils.entity_utils import get_associated_entity, get_node_hierarchy
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
 router = APIRouter(tags=["entity"], responses={404: {"description": "Not Found"}})
