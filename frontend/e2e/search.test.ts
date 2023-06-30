@@ -53,7 +53,7 @@ test("Recent/frequent results show", async ({ page }) => {
   await expect(
     options
       .nth(0)
-      .getByText(/familial hypercholesterolemia/i)
+      .getByText(/muscular dystrophy/i)
       .first()
   ).toBeVisible();
   await expect(
@@ -105,9 +105,9 @@ test("Pagination works", async ({ page }) => {
   await page.locator("input").dispatchEvent("change");
 
   /** pagination text, and click through to next page */
-  await expect(page.getByText(/1 to 20 of 109 results/).first()).toBeVisible();
+  await expect(page.getByText(/1 to 20 of 110 results/).first()).toBeVisible();
   await page.locator("button", { hasText: /^2$/ }).first().click();
-  await expect(page.getByText(/11 to 30 of 109 results/).first()).toBeVisible();
+  await expect(page.getByText(/11 to 30 of 110 results/).first()).toBeVisible();
 });
 
 test("Filters show", async ({ page }) => {
