@@ -27,9 +27,7 @@ def get_associated_entity(association: Association, this_entity: Entity) -> Enti
             id=association.object,
             name=association.object_label,
             # this will be replaced when category is single valued on associations
-            category=association.object_category[0]
-            if len(association.object_category) == 1
-            else [],
+            category=association.object_category,
         )
     # elif association.object == this_entity.id:
     elif this_entity.id in association.object_closure:
@@ -37,9 +35,7 @@ def get_associated_entity(association: Association, this_entity: Entity) -> Enti
             id=association.subject,
             name=association.subject_label,
             # this will be replaced when category is single valued on associations
-            category=association.subject_category[0]
-            if len(association.subject_category) == 1
-            else [],
+            category=association.subject_category,
         )
     else:
         raise ValueError(f"Association does not contain this_entity: {this_entity.id}")

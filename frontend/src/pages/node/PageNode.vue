@@ -6,7 +6,7 @@
   <!-- status -->
   <template v-if="isLoading || isError">
     <AppSection design="fill" class="section">
-      <AppHeading class="heading" icon="category-unknown">
+      <AppHeading class="heading">
         {{ $route.params.id }}
       </AppHeading>
     </AppSection>

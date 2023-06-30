@@ -53,7 +53,7 @@
       <div class="title">
         <AppIcon
           v-tooltip="getCategoryLabel(result.category)"
-          :icon="`category-${getCategoryIcon(result.category)}`"
+          :icon="getCategoryIcon(result.category)"
           class="type"
         />
         <AppLink :to="`/node/${result.id}`" class="name">
@@ -178,7 +178,7 @@ async function runGetAutocomplete(
   if (search.trim())
     return (await getAutocomplete(search)).items.map((item) => ({
       label: item.name,
-      icon: "category-" + item.category,
+      icon: getCategoryIcon(item.category),
       tooltip: "",
     }));
 

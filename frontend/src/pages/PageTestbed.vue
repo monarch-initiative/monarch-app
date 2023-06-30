@@ -27,7 +27,6 @@
       <AppIcon icon="category-ortholog-phenotype" />
       <AppIcon icon="category-pathway" />
       <AppIcon icon="category-phenotype" />
-      <AppIcon icon="category-unknown" />
       <AppIcon icon="category-variant" />
     </AppFlex>
   </AppSection>

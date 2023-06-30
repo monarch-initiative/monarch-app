@@ -30,6 +30,16 @@
         :url="false"
         @update:model-value="association = undefined"
       />
+
+      <!-- summary view of associations -->
+      <template v-if="tab === 'summary'">
+        <AssociationsSummary
+          :node="node"
+          :selected-category="category.id"
+          :selected-association="association"
+          @select="(value) => (association = value)"
+        />
+      </template>
     </template>
   </AppSection>
 </template>
@@ -37,11 +47,12 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import type { Association, Node } from "@/api/model";
+import type { DirectionalAssociation, Node } from "@/api/model";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import type { Option, Options } from "@/components/AppSelectSingle.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import AppTabs from "@/components/AppTabs.vue";
+import AssociationsSummary from "@/pages/node/AssociationsSummary.vue";
 
 /** route info */
 const route = useRoute();
@@ -74,7 +85,7 @@ const tab = ref(tabs[0].id);
 /** selected category of associations to show */
 const category = ref<Option>();
 /** selected association id */
-const association = ref<Association>();
+const association = ref<DirectionalAssociation>();
 
 /** list of options for dropdown */
 const categoryOptions = computed(
@@ -82,7 +93,6 @@ const categoryOptions = computed(
     props.node.association_counts?.map((association_count) => ({
       id: association_count.category || "",
       label: association_count.label,
-      icon: `category-${association_count.label || "unknown"}`,
       count: association_count.count,
     })) || []
 );

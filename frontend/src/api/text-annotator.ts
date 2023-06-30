@@ -1,4 +1,4 @@
-import { mapCategory } from "./categories";
+import { getCategoryLabel } from "./categories";
 import { biolink, request } from "./index";
 
 /** annotations (from backend) */
@@ -62,7 +62,7 @@ export const annotateText = async (content = ""): Promise<Annotations> => {
         .map((token) => ({
           id: token.id,
           name: token.terms.join(", "),
-          category: mapCategory(token.category),
+          category: getCategoryLabel(token.category),
         })),
     });
   }

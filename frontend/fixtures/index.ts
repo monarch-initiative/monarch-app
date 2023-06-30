@@ -5,6 +5,7 @@ import { feedbackEndpoint } from "@/api/feedback";
 import { obo } from "@/api/ontologies";
 import { efetch, esummary } from "@/api/publications";
 import { uptimeRobot } from "@/api/uptime";
+import associations from "./associations.json";
 import autocomplete from "./autocomplete.json";
 import datasets from "./datasets.json";
 import feedback from "./feedback.json";
@@ -19,18 +20,9 @@ import search from "./search.json";
 import textAnnotator from "./text-annotator.json";
 import uptime from "./uptime.json";
 
-/** allow typing in regular string for basic api url paths */
-/** https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex */
-const escapeRegex = (string = "") =>
-  string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-
 /** make single regex from base url and pattern */
-const regex = (base: string = "", pattern: string | RegExp = "") =>
-  new RegExp(
-    base +
-      (typeof pattern === "string" ? escapeRegex(pattern) : pattern.source),
-    "i"
-  );
+const regex = (base: string = "", pattern: string = "") =>
+  new RegExp(base + pattern.replace(/[/\\]/g, "\\$&"), "i");
 
 /** api calls to be mocked with fixture data */
 export const handlers = [
@@ -80,8 +72,13 @@ export const handlers = [
     res(ctx.status(200), ctx.json(phenotypeExplorerCompare))
   ),
 
+  /** node associations */
+  rest.get(regex(monarch, "/entity/.*/.*"), (req, res, ctx) =>
+    res(ctx.status(200), ctx.json(associations))
+  ),
+
   /** node lookup */
-  rest.get(regex(monarch, "/entity"), (req, res, ctx) => {
+  rest.get(regex(monarch, "/entity/.*"), (req, res, ctx) => {
     /**
      * change fixture data based on request so we can see UI that is conditional
      * on name/category/etc

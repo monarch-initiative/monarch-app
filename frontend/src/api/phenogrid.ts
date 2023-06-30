@@ -1,7 +1,8 @@
-import { waitFor } from "@/util/dom";
 import "phenogrid/dist/phenogrid-bundle.js";
 import "./phenogrid.css";
 import { biolink } from "./";
+import { sleep } from "@/util/debug";
+import { waitFor } from "@/util/dom";
 
 /** mount phenogrid to dom element with options */
 export const mountPhenogrid = async (
@@ -14,7 +15,8 @@ export const mountPhenogrid = async (
    * wait for phenogrid container to render on mount, and clear any previous
    * phenogrid instances from showing
    */
-  await waitFor("#phenogrid", (el) => (el.innerHTML = ""));
+  const container = await waitFor("#phenogrid");
+  if (container) container.innerHTML = "";
 
   /** map in particular way based on mode, per ui 2.0 */
   const modifiedXAxis = xAxis.map(({ id = "", name = "" }) =>
@@ -36,12 +38,22 @@ export const mountPhenogrid = async (
     owlSimFunction: mode,
   });
 
-  await waitFor("#phenogrid_svg", patchSvg);
+  /** wait for phenogrid to load */
+  const svg = await waitFor<SVGSVGElement>("#phenogrid_svg");
+
+  /** fit a few times after, while phenogrid renders elements */
+  patchSvg(svg);
+  for (let repeat = 0; repeat < 5; repeat++) {
+    await sleep(500);
+    patchSvg(svg);
+  }
 };
 
 /** fix incorrect svg sizing */
-const patchSvg = (svg: Element, padding = 20) => {
-  const { x, y, width, height } = (svg as SVGSVGElement).getBBox();
+const patchSvg = (svg: SVGSVGElement | undefined, padding = 20) => {
+  if (!svg) return;
+
+  const { x, y, width, height } = svg.getBBox();
   /** set view box to bbox, essentially fitting view to content */
   const viewBox = [
     x - padding,

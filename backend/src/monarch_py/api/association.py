@@ -1,5 +1,4 @@
 from typing import List, Union
-from typing_extensions import Annotated
 
 from fastapi import APIRouter, Depends, Query
 from monarch_py.api.additional_models import PaginationParams
