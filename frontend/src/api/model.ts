@@ -23,18 +23,28 @@ export interface Association {
     id: string,
     subject: string,
     original_subject?: string,
+    /** The namespace/prefix of the subject entity */
     subject_namespace?: string,
-    subject_category?: string[],
+    /** The category of the subject entity */
+    subject_category?: string,
+    /** Field containing subject id and the ids of all of it's ancestors */
     subject_closure?: string[],
+    /** The name of the subject entity */
     subject_label?: string,
+    /** Field containing subject name and the names of all of it's ancestors */
     subject_closure_label?: string[],
     predicate: string,
     object: string,
     original_object?: string,
+    /** The namespace/prefix of the object entity */
     object_namespace?: string,
-    object_category?: string[],
+    /** The category of the object entity */
+    object_category?: string,
+    /** Field containing object id and the ids of all of it's ancestors */
     object_closure?: string[],
+    /** The name of the object entity */
     object_label?: string,
+    /** Field containing object name and the names of all of it's ancestors */
     object_closure_label?: string[],
     primary_knowledge_source?: string[],
     category?: string,
@@ -49,6 +59,46 @@ export interface Association {
     stage_qualifier?: string,
     pathway?: string,
     relation?: string,
+    /** The name of the frequency_qualifier entity */
+    frequency_qualifier_label?: string,
+    /** The namespace/prefix of the frequency_qualifier entity */
+    frequency_qualifier_namespace?: string,
+    /** The category of the frequency_qualifier entity */
+    frequency_qualifier_category?: string,
+    /** Field containing frequency_qualifier id and the ids of all of it's ancestors */
+    frequency_qualifier_closure?: string[],
+    /** Field containing frequency_qualifier name and the names of all of it's ancestors */
+    frequency_qualifier_closure_label?: string[],
+    /** The name of the onset_qualifier entity */
+    onset_qualifier_label?: string,
+    /** The namespace/prefix of the onset_qualifier entity */
+    onset_qualifier_namespace?: string,
+    /** The category of the onset_qualifier entity */
+    onset_qualifier_category?: string,
+    /** Field containing onset_qualifier id and the ids of all of it's ancestors */
+    onset_qualifier_closure?: string[],
+    /** Field containing onset_qualifier name and the names of all of it's ancestors */
+    onset_qualifier_closure_label?: string[],
+    /** The name of the sex_qualifier entity */
+    sex_qualifier_label?: string,
+    /** The namespace/prefix of the sex_qualifier entity */
+    sex_qualifier_namespace?: string,
+    /** The category of the sex_qualifier entity */
+    sex_qualifier_category?: string,
+    /** Field containing sex_qualifier id and the ids of all of it's ancestors */
+    sex_qualifier_closure?: string[],
+    /** Field containing sex_qualifier name and the names of all of it's ancestors */
+    sex_qualifier_closure_label?: string[],
+    /** The name of the stage_qualifier entity */
+    stage_qualifier_label?: string,
+    /** The namespace/prefix of the stage_qualifier entity */
+    stage_qualifier_namespace?: string,
+    /** The category of the stage_qualifier entity */
+    stage_qualifier_category?: string,
+    /** Field containing stage_qualifier id and the ids of all of it's ancestors */
+    stage_qualifier_closure?: string[],
+    /** Field containing stage_qualifier name and the names of all of it's ancestors */
+    stage_qualifier_closure_label?: string[],
 };
 
 export interface AssociationCount extends FacetValue {
@@ -109,18 +159,28 @@ export interface DirectionalAssociation extends Association {
     id: string,
     subject: string,
     original_subject?: string,
+    /** The namespace/prefix of the subject entity */
     subject_namespace?: string,
-    subject_category?: string[],
+    /** The category of the subject entity */
+    subject_category?: string,
+    /** Field containing subject id and the ids of all of it's ancestors */
     subject_closure?: string[],
+    /** The name of the subject entity */
     subject_label?: string,
+    /** Field containing subject name and the names of all of it's ancestors */
     subject_closure_label?: string[],
     predicate: string,
     object: string,
     original_object?: string,
+    /** The namespace/prefix of the object entity */
     object_namespace?: string,
-    object_category?: string[],
+    /** The category of the object entity */
+    object_category?: string,
+    /** Field containing object id and the ids of all of it's ancestors */
     object_closure?: string[],
+    /** The name of the object entity */
     object_label?: string,
+    /** Field containing object name and the names of all of it's ancestors */
     object_closure_label?: string[],
     primary_knowledge_source?: string[],
     category?: string,
@@ -135,6 +195,46 @@ export interface DirectionalAssociation extends Association {
     stage_qualifier?: string,
     pathway?: string,
     relation?: string,
+    /** The name of the frequency_qualifier entity */
+    frequency_qualifier_label?: string,
+    /** The namespace/prefix of the frequency_qualifier entity */
+    frequency_qualifier_namespace?: string,
+    /** The category of the frequency_qualifier entity */
+    frequency_qualifier_category?: string,
+    /** Field containing frequency_qualifier id and the ids of all of it's ancestors */
+    frequency_qualifier_closure?: string[],
+    /** Field containing frequency_qualifier name and the names of all of it's ancestors */
+    frequency_qualifier_closure_label?: string[],
+    /** The name of the onset_qualifier entity */
+    onset_qualifier_label?: string,
+    /** The namespace/prefix of the onset_qualifier entity */
+    onset_qualifier_namespace?: string,
+    /** The category of the onset_qualifier entity */
+    onset_qualifier_category?: string,
+    /** Field containing onset_qualifier id and the ids of all of it's ancestors */
+    onset_qualifier_closure?: string[],
+    /** Field containing onset_qualifier name and the names of all of it's ancestors */
+    onset_qualifier_closure_label?: string[],
+    /** The name of the sex_qualifier entity */
+    sex_qualifier_label?: string,
+    /** The namespace/prefix of the sex_qualifier entity */
+    sex_qualifier_namespace?: string,
+    /** The category of the sex_qualifier entity */
+    sex_qualifier_category?: string,
+    /** Field containing sex_qualifier id and the ids of all of it's ancestors */
+    sex_qualifier_closure?: string[],
+    /** Field containing sex_qualifier name and the names of all of it's ancestors */
+    sex_qualifier_closure_label?: string[],
+    /** The name of the stage_qualifier entity */
+    stage_qualifier_label?: string,
+    /** The namespace/prefix of the stage_qualifier entity */
+    stage_qualifier_namespace?: string,
+    /** The category of the stage_qualifier entity */
+    stage_qualifier_category?: string,
+    /** Field containing stage_qualifier id and the ids of all of it's ancestors */
+    stage_qualifier_closure?: string[],
+    /** Field containing stage_qualifier name and the names of all of it's ancestors */
+    stage_qualifier_closure_label?: string[],
 };
 /**
  * Represents an Entity in the Monarch KG data model
@@ -148,6 +248,8 @@ export interface Entity {
     provided_by?: string,
     /** The biolink taxon that the entity is in the closure of. */
     in_taxon?: string,
+    /** The label of the biolink taxon that the entity is in the closure of. */
+    in_taxon_label?: string,
     symbol?: string,
     synonym?: string[],
 };
@@ -235,6 +337,8 @@ export interface SearchResult extends Entity {
     provided_by?: string,
     /** The biolink taxon that the entity is in the closure of. */
     in_taxon?: string,
+    /** The label of the biolink taxon that the entity is in the closure of. */
+    in_taxon_label?: string,
     symbol?: string,
     synonym?: string[],
 };

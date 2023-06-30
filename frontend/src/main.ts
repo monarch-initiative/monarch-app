@@ -52,7 +52,7 @@ app.use(Hotjar, {
 
 /** google analytics */
 if (mode === "production")
-  app.use(VueGtag, { config: { id: "G-RDNWN51PE8" } }, router);
+  app.use(VueGtag, { config: { id: "G-TWM5ED4QJB" } }, router);
 
 /** whether to mock api responses, based on env */
 const mock: { [key: string]: boolean } = {
