@@ -28,6 +28,6 @@ def test_node(node):
     assert node.id == "MONDO:0020121"
 
 
-def test_node_associations(node_associations):
-    node_associations = AssociationResults(**node_associations)
-    assert node_associations.total != 0
+def test_node_associations(associations):
+    association_results = AssociationResults(**associations)
+    assert association_results.total != 0
