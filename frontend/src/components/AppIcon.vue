@@ -81,7 +81,9 @@ watch(
       _icon.value = { type: "custom", src };
       return;
     } catch (error) {
-      console.error("couldn't load custom icon", error);
+      console.groupCollapsed("couldn't load custom icon", props.icon);
+      console.error(error);
+      console.groupEnd();
     }
 
     /** last resort, use initials */

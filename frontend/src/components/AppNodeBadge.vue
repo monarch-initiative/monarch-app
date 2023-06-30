@@ -8,7 +8,7 @@
       v-if="icon"
       v-tooltip="getCategoryLabel(node.category)"
       class="icon"
-      :icon="`category-${getCategoryIcon(node.category)}`"
+      :icon="getCategoryIcon(node.category)"
     />
     <AppLink
       v-if="link"

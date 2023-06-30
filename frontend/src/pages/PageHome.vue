@@ -77,7 +77,7 @@
         subtitle="publications"
       />
       <AppTile
-        icon="category-unknown"
+        icon="dna"
         design="small"
         :title="`~${(5000000).toLocaleString()}`"
         subtitle="total nodes"
