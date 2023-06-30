@@ -12,7 +12,6 @@ help:
 	@echo "│     make <target>                                         │"
 	@echo "│                                                           │"
 	@echo "│ Targets:                                                  │"
-	@echo "│                                                           │"
 	@echo "│     help                Print this help message           │"
 	@echo "│     all                 Install everything                │"
 	@echo "│     fresh               Clean and install everything      │"
@@ -21,6 +20,7 @@ help:
 	@echo "│                                                           │"
 	@echo "│     docs                Generate documentation            │"
 	@echo "│     model               Generate model files              │"
+	@echo "|     fixtures            Generate data fixtures            │" 
 	@echo "│                                                           │"
 	@echo "│     install             Install backend and frontend      │"
 	@echo "│     install-backend     Install backend                   │"
@@ -74,16 +74,23 @@ install-frontend:
 
 .PHONY: model
 model: schema/
-	$(RUN) monarch schema > schema/monarch-py.yaml
-	$(RUN) gen-pydantic schema/monarch-api.yaml > backend/src/monarch_api/model.py
-	$(RUN) gen-typescript schema/monarch-api.yaml > frontend/src/api/model.ts
+	$(RUN) monarch schema > schema/model.yaml
+	$(RUN) gen-pydantic schema/model.yaml > backend/src/monarch_api/model.py
+	$(RUN) gen-typescript schema/model.yaml > frontend/src/api/model.ts
 	$(RUN) black backend/src/monarch_api/model.py
 
+
+.PHONY: fixtures
+fixtures: install-backend
+	@echo "Generating fixtures..."
+	@echo "This requires a running instance of Monarch Solr."
+	$(RUN) python scripts/generate_fixtures.py
+	$(RUN) black backend/tests/fixtures/
 
 # Documentation
 .PHONY: docs
 docs: install-backend model
-	$(RUN) gen-doc -d $(ROOTDIR)/docs/Data-Model/ $(ROOTDIR)/schema/monarch-api.yaml
+	$(RUN) gen-doc -d $(ROOTDIR)/docs/Data-Model/ $(ROOTDIR)/schema/model.yaml
 	$(RUN) mkdocs build
 
 

@@ -21,11 +21,11 @@
       <!-- taxon (gene specific)-->
       <AppDetail
         v-if="node.category === 'biolink:Gene'"
-        :blank="!node.taxon?.id"
+        :blank="!node.in_taxon"
         title="Taxon"
       >
-        <AppLink v-tooltip="node?.taxon?.id" :to="node.taxon?.id || ''">{{
-          node.taxon?.label
+        <AppLink v-tooltip="node?.in_taxon" :to="node.in_taxon || ''">{{
+          node.in_taxon_label
         }}</AppLink>
       </AppDetail>
 

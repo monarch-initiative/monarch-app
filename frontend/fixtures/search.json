@@ -1,7 +1,7 @@
 {
   "limit": 20,
   "offset": 0,
-  "total": 109,
+  "total": 110,
   "items": [
     {
       "id": "MONDO:0019391",
@@ -11,9 +11,7 @@
       "xref": [],
       "provided_by": "phenio_nodes",
       "in_taxon": null,
-      "source": null,
       "symbol": null,
-      "type": null,
       "synonym": [],
       "highlight": null,
       "score": null
@@ -26,9 +24,7 @@
       "xref": [],
       "provided_by": "phenio_nodes",
       "in_taxon": null,
-      "source": null,
       "symbol": null,
-      "type": null,
       "synonym": [],
       "highlight": null,
       "score": null
@@ -41,9 +37,7 @@
       "xref": [],
       "provided_by": "phenio_nodes",
       "in_taxon": null,
-      "source": null,
       "symbol": null,
-      "type": null,
       "synonym": [],
       "highlight": null,
       "score": null
@@ -56,9 +50,7 @@
       "xref": [],
       "provided_by": "phenio_nodes",
       "in_taxon": null,
-      "source": null,
       "symbol": null,
-      "type": null,
       "synonym": [],
       "highlight": null,
       "score": null
@@ -71,9 +63,7 @@
       "xref": [],
       "provided_by": "phenio_nodes",
       "in_taxon": null,
-      "source": null,
       "symbol": null,
-      "type": null,
       "synonym": [],
       "highlight": null,
       "score": null
@@ -86,9 +76,7 @@
       "xref": [],
       "provided_by": "phenio_nodes",
       "in_taxon": null,
-      "source": null,
       "symbol": null,
-      "type": null,
       "synonym": [],
       "highlight": null,
       "score": null
@@ -101,9 +89,7 @@
       "xref": [],
       "provided_by": "phenio_nodes",
       "in_taxon": null,
-      "source": null,
       "symbol": null,
-      "type": null,
       "synonym": [],
       "highlight": null,
       "score": null
@@ -116,9 +102,7 @@
       "xref": [],
       "provided_by": "phenio_nodes",
       "in_taxon": null,
-      "source": null,
       "symbol": null,
-      "type": null,
       "synonym": [],
       "highlight": null,
       "score": null
@@ -131,9 +115,7 @@
       "xref": [],
       "provided_by": "phenio_nodes",
       "in_taxon": null,
-      "source": null,
       "symbol": null,
-      "type": null,
       "synonym": [],
       "highlight": null,
       "score": null
@@ -146,9 +128,7 @@
       "xref": [],
       "provided_by": "phenio_nodes",
       "in_taxon": null,
-      "source": null,
       "symbol": null,
-      "type": null,
       "synonym": [],
       "highlight": null,
       "score": null
@@ -161,9 +141,7 @@
       "xref": [],
       "provided_by": "phenio_nodes",
       "in_taxon": null,
-      "source": null,
       "symbol": null,
-      "type": null,
       "synonym": [],
       "highlight": null,
       "score": null
@@ -176,9 +154,7 @@
       "xref": [],
       "provided_by": "phenio_nodes",
       "in_taxon": null,
-      "source": null,
       "symbol": null,
-      "type": null,
       "synonym": [],
       "highlight": null,
       "score": null
@@ -191,9 +167,7 @@
       "xref": [],
       "provided_by": "phenio_nodes",
       "in_taxon": null,
-      "source": null,
       "symbol": null,
-      "type": null,
       "synonym": [],
       "highlight": null,
       "score": null
@@ -206,9 +180,7 @@
       "xref": [],
       "provided_by": "phenio_nodes",
       "in_taxon": null,
-      "source": null,
       "symbol": null,
-      "type": null,
       "synonym": [],
       "highlight": null,
       "score": null
@@ -221,9 +193,7 @@
       "xref": [],
       "provided_by": "phenio_nodes",
       "in_taxon": null,
-      "source": null,
       "symbol": null,
-      "type": null,
       "synonym": [],
       "highlight": null,
       "score": null
@@ -236,9 +206,7 @@
       "xref": [],
       "provided_by": "phenio_nodes",
       "in_taxon": null,
-      "source": null,
       "symbol": null,
-      "type": null,
       "synonym": [],
       "highlight": null,
       "score": null
@@ -251,9 +219,7 @@
       "xref": [],
       "provided_by": "phenio_nodes",
       "in_taxon": null,
-      "source": null,
       "symbol": null,
-      "type": null,
       "synonym": [],
       "highlight": null,
       "score": null
@@ -266,9 +232,7 @@
       "xref": [],
       "provided_by": "phenio_nodes",
       "in_taxon": null,
-      "source": null,
       "symbol": null,
-      "type": null,
       "synonym": [],
       "highlight": null,
       "score": null
@@ -281,9 +245,7 @@
       "xref": [],
       "provided_by": "phenio_nodes",
       "in_taxon": null,
-      "source": null,
       "symbol": null,
-      "type": null,
       "synonym": [],
       "highlight": null,
       "score": null
@@ -296,281 +258,12 @@
       "xref": [],
       "provided_by": "phenio_nodes",
       "in_taxon": null,
-      "source": null,
       "symbol": null,
-      "type": null,
       "synonym": [],
       "highlight": null,
       "score": null
     }
   ],
-  "facet_fields": [
-    {
-      "label": "category",
-      "facet_values": [
-        {
-          "label": "biolink:Gene",
-          "count": 55
-        },
-        {
-          "label": "biolink:Disease",
-          "count": 38
-        },
-        {
-          "label": "biolink:Pathway",
-          "count": 14
-        },
-        {
-          "label": "biolink:MacromolecularComplexMixin",
-          "count": 1
-        },
-        {
-          "label": "biolink:PhenotypicQuality",
-          "count": 1
-        },
-        {
-          "label": "biolink:AnatomicalEntity",
-          "count": 0
-        },
-        {
-          "label": "biolink:BiologicalProcess",
-          "count": 0
-        },
-        {
-          "label": "biolink:Cell",
-          "count": 0
-        },
-        {
-          "label": "biolink:CellularComponent",
-          "count": 0
-        },
-        {
-          "label": "biolink:ChemicalEntity",
-          "count": 0
-        },
-        {
-          "label": "biolink:ChemicalSubstance",
-          "count": 0
-        },
-        {
-          "label": "biolink:ClinicalModifier",
-          "count": 0
-        },
-        {
-          "label": "biolink:GeneticInheritance",
-          "count": 0
-        },
-        {
-          "label": "biolink:GrossAnatomicalStructure",
-          "count": 0
-        },
-        {
-          "label": "biolink:MolecularActivity",
-          "count": 0
-        },
-        {
-          "label": "biolink:MolecularEntity",
-          "count": 0
-        },
-        {
-          "label": "biolink:NamedThing",
-          "count": 0
-        },
-        {
-          "label": "biolink:Occurrent",
-          "count": 0
-        },
-        {
-          "label": "biolink:Onset",
-          "count": 0
-        },
-        {
-          "label": "biolink:PathologicalEntityMixin",
-          "count": 0
-        },
-        {
-          "label": "biolink:PhenotypicFeature",
-          "count": 0
-        },
-        {
-          "label": "biolink:Protein",
-          "count": 0
-        },
-        {
-          "label": "biolink:RNAProduct",
-          "count": 0
-        },
-        {
-          "label": "biolink:SmallMolecule",
-          "count": 0
-        },
-        {
-          "label": "biolink:affects",
-          "count": 0
-        },
-        {
-          "label": "biolink:affects_localization_of",
-          "count": 0
-        },
-        {
-          "label": "biolink:biological_role_mixin",
-          "count": 0
-        },
-        {
-          "label": "biolink:causes",
-          "count": 0
-        },
-        {
-          "label": "biolink:chemical_role_mixin",
-          "count": 0
-        },
-        {
-          "label": "biolink:close_match",
-          "count": 0
-        },
-        {
-          "label": "biolink:coexists_with",
-          "count": 0
-        },
-        {
-          "label": "biolink:contributes_to",
-          "count": 0
-        },
-        {
-          "label": "biolink:derives_from",
-          "count": 0
-        },
-        {
-          "label": "biolink:disease_has_basis_in",
-          "count": 0
-        },
-        {
-          "label": "biolink:disease_has_location",
-          "count": 0
-        },
-        {
-          "label": "biolink:has_attribute",
-          "count": 0
-        },
-        {
-          "label": "biolink:has_part",
-          "count": 0
-        },
-        {
-          "label": "biolink:increases_degradation_of",
-          "count": 0
-        },
-        {
-          "label": "biolink:is_metabolite_of",
-          "count": 0
-        },
-        {
-          "label": "biolink:located_in",
-          "count": 0
-        },
-        {
-          "label": "biolink:manifestation_of",
-          "count": 0
-        },
-        {
-          "label": "biolink:part_of",
-          "count": 0
-        },
-        {
-          "label": "biolink:related_to",
-          "count": 0
-        },
-        {
-          "label": "biolink:same_as",
-          "count": 0
-        },
-        {
-          "label": "biolink:subclass_of",
-          "count": 0
-        },
-        {
-          "label": "biolink:superclass_of",
-          "count": 0
-        },
-        {
-          "label": "biolink:treated_by",
-          "count": 0
-        }
-      ]
-    },
-    {
-      "label": "in_taxon",
-      "facet_values": [
-        {
-          "label": "NCBITaxon:9606",
-          "count": 21
-        },
-        {
-          "label": "NCBITaxon:10116",
-          "count": 16
-        },
-        {
-          "label": "NCBITaxon:10090",
-          "count": 14
-        },
-        {
-          "label": "NCBITaxon:6239",
-          "count": 5
-        },
-        {
-          "label": "NCBITaxon:7227",
-          "count": 3
-        },
-        {
-          "label": "NCBITaxon:7955",
-          "count": 3
-        },
-        {
-          "label": "NCBITaxon:9031",
-          "count": 2
-        },
-        {
-          "label": "NCBITaxon:44689",
-          "count": 1
-        },
-        {
-          "label": "NCBITaxon:8364",
-          "count": 1
-        },
-        {
-          "label": "NCBITaxon:9615",
-          "count": 1
-        },
-        {
-          "label": "NCBITaxon:9823",
-          "count": 1
-        },
-        {
-          "label": "NCBITaxon:9913",
-          "count": 1
-        },
-        {
-          "label": "NCBITaxon:227321",
-          "count": 0
-        },
-        {
-          "label": "NCBITaxon:4896",
-          "count": 0
-        },
-        {
-          "label": "NCBITaxon:4932",
-          "count": 0
-        },
-        {
-          "label": "NCBITaxon:559292",
-          "count": 0
-        },
-        {
-          "label": "NCBITaxon:8355",
-          "count": 0
-        }
-      ]
-    }
-  ],
-  "facet_queries": {}
+  "facet_fields": [],
+  "facet_queries": []
 }

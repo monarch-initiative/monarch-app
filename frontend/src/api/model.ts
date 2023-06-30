@@ -1,10 +1,9 @@
-export type NodeId = string;
-export type TaxonId = string;
 export type AssociationId = string;
 export type DirectionalAssociationId = string;
 export type EntityId = string;
 export type HistoPhenoId = string;
 export type HistoBinId = string;
+export type NodeId = string;
 export type SearchResultId = string;
 /**
 * The directionality of an association as it relates to a specified entity, with edges being categorized as incoming or outgoing
@@ -18,33 +17,6 @@ export enum AssociationDirectionEnum {
 };
 
 
-
-export interface Node extends Entity {
-    taxon?: Taxon,
-    inheritance?: Entity,
-    association_counts: AssociationCount[],
-    node_hierarchy?: NodeHierarchy,
-    id: string,
-    category?: string,
-    name?: string,
-    description?: string,
-    xref?: string[],
-    provided_by?: string,
-    in_taxon?: string,
-    symbol?: string,
-    synonym?: string[],
-};
-
-export interface Taxon {
-    id: string,
-    label: string,
-};
-
-export interface NodeHierarchy {
-    super_classes: Entity[],
-    equivalent_classes: Entity[],
-    sub_classes: Entity[],
-};
 
 export interface Association {
     aggregator_knowledge_source?: string[],
@@ -77,6 +49,55 @@ export interface Association {
     stage_qualifier?: string,
     pathway?: string,
     relation?: string,
+};
+
+export interface AssociationCount extends FacetValue {
+    category?: string,
+    label: string,
+    /** count of documents */
+    count?: number,
+};
+/**
+ * Container class for a list of association counts
+ */
+export interface AssociationCountList {
+    /** A collection of items, with the type to be overriden by slot_usage */
+    items: AssociationCount[],
+};
+
+export interface AssociationResults extends Results {
+    /** A collection of items, with the type to be overriden by slot_usage */
+    items: Association[],
+    /** number of items to return in a response */
+    limit: number,
+    /** offset into the total number of items */
+    offset: number,
+    /** total number of items matching a query */
+    total: number,
+};
+
+export interface AssociationTableResults extends Results {
+    /** A collection of items, with the type to be overriden by slot_usage */
+    items: DirectionalAssociation[],
+    /** number of items to return in a response */
+    limit: number,
+    /** offset into the total number of items */
+    offset: number,
+    /** total number of items matching a query */
+    total: number,
+};
+/**
+ * A data class to hold the necessary information to produce association type counts for given  entities with appropriate directional labels
+ */
+export interface AssociationTypeMapping {
+    /** A label to describe the subjects of the association type as a whole for use in the UI */
+    subject_label?: string,
+    /** A label to describe the objects of the association type as a whole for use in the UI */
+    object_label?: string,
+    /** Whether the association type is symmetric, meaning that the subject and object labels should be interchangeable */
+    symmetric: boolean,
+    /** The biolink category to use in queries for this association type */
+    category: string,
 };
 /**
  * An association that gives it's direction relative to a specified entity
@@ -115,29 +136,9 @@ export interface DirectionalAssociation extends Association {
     pathway?: string,
     relation?: string,
 };
-
-export interface AssociationResults extends Results {
-    /** A collection of items, with the type to be overriden by slot_usage */
-    items: Association[],
-    /** number of items to return in a response */
-    limit: number,
-    /** offset into the total number of items */
-    offset: number,
-    /** total number of items matching a query */
-    total: number,
-};
-
-export interface AssociationTableResults extends Results {
-    /** A collection of items, with the type to be overriden by slot_usage */
-    items: DirectionalAssociation[],
-    /** number of items to return in a response */
-    limit: number,
-    /** offset into the total number of items */
-    offset: number,
-    /** total number of items matching a query */
-    total: number,
-};
-
+/**
+ * Represents an Entity in the Monarch KG data model
+ */
 export interface Entity {
     id: string,
     category?: string,
@@ -145,6 +146,7 @@ export interface Entity {
     description?: string,
     xref?: string[],
     provided_by?: string,
+    /** The biolink taxon that the entity is in the closure of. */
     in_taxon?: string,
     symbol?: string,
     synonym?: string[],
@@ -161,6 +163,18 @@ export interface EntityResults extends Results {
     total: number,
 };
 
+export interface FacetValue {
+    label: string,
+    /** count of documents */
+    count?: number,
+};
+
+export interface FacetField {
+    label: string,
+    /** Collection of FacetValue label/value instances belonging to a FacetField */
+    facet_values?: FacetValue[],
+};
+
 export interface HistoPheno {
     id: string,
     /** A collection of items, with the type to be overriden by slot_usage */
@@ -172,6 +186,32 @@ export interface HistoBin extends FacetValue {
     label: string,
     /** count of documents */
     count?: number,
+};
+/**
+ * UI conatiner class extending Entity with additional information
+ */
+export interface Node extends Entity {
+    /** The biolink taxon that the entity is in the closure of. */
+    in_taxon?: string,
+    /** The label of the biolink taxon that the entity is in the closure of. */
+    in_taxon_label?: string,
+    inheritance?: Entity,
+    association_counts: AssociationCount[],
+    node_hierarchy?: NodeHierarchy,
+    id: string,
+    category?: string,
+    name?: string,
+    description?: string,
+    xref?: string[],
+    provided_by?: string,
+    symbol?: string,
+    synonym?: string[],
+};
+
+export interface NodeHierarchy {
+    super_classes: Entity[],
+    equivalent_classes: Entity[],
+    sub_classes: Entity[],
 };
 
 export interface Results {
@@ -193,6 +233,7 @@ export interface SearchResult extends Entity {
     description?: string,
     xref?: string[],
     provided_by?: string,
+    /** The biolink taxon that the entity is in the closure of. */
     in_taxon?: string,
     symbol?: string,
     synonym?: string[],
@@ -211,44 +252,5 @@ export interface SearchResults extends Results {
     offset: number,
     /** total number of items matching a query */
     total: number,
-};
-
-export interface FacetValue {
-    label: string,
-    /** count of documents */
-    count?: number,
-};
-
-export interface FacetField {
-    label: string,
-    /** Collection of FacetValue label/value instances belonging to a FacetField */
-    facet_values?: FacetValue[],
-};
-/**
- * A data class to hold the necessary information to produce association type counts for given  entities with appropriate directional labels
- */
-export interface AssociationTypeMapping {
-    /** A label to describe the subjects of the association type as a whole for use in the UI */
-    subject_label?: string,
-    /** A label to describe the objects of the association type as a whole for use in the UI */
-    object_label?: string,
-    /** Whether the association type is symmetric, meaning that the subject and object labels should be interchangeable */
-    symmetric: boolean,
-    /** The biolink category to use in queries for this association type */
-    category: string,
-};
-
-export interface AssociationCount extends FacetValue {
-    category?: string,
-    label: string,
-    /** count of documents */
-    count?: number,
-};
-/**
- * Container class for a list of association counts
- */
-export interface AssociationCountList {
-    /** A collection of items, with the type to be overriden by slot_usage */
-    items: AssociationCount[],
 };
 
