@@ -21,7 +21,7 @@
     
     
       
-        <title>monarch-api - Monarch API Documentation</title>
+        <title>monarch-py - Monarch API Documentation</title>
       
     
     
@@ -75,7 +75,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#monarch-api" class="md-skip">
+        <a href="#monarch-py" class="md-skip">
           Skip to content
         </a>
       
@@ -109,7 +109,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              monarch-api
+              monarch-py
             
           </span>
         </div>
@@ -448,12 +448,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          monarch-api
+          monarch-py
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        monarch-api
+        monarch-py
       </a>
       
         
@@ -969,20 +969,6 @@
   
   
     <li class="md-nav__item">
-      <a href="Taxon/" class="md-nav__link">
-        Class: Taxon
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
       <a href="Time/" class="md-nav__link">
         Type: Time
       </a>
@@ -1235,6 +1221,20 @@
   
   
     <li class="md-nav__item">
+      <a href="in_taxon_label/" class="md-nav__link">
+        Slot: in_taxon_label
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="inheritance/" class="md-nav__link">
         Slot: inheritance
       </a>
@@ -1305,8 +1305,8 @@
   
   
     <li class="md-nav__item">
-      <a href="monarch-api/" class="md-nav__link">
-        monarch-api
+      <a href="monarch-py/" class="md-nav__link">
+        monarch-py
       </a>
     </li>
   
@@ -1795,20 +1795,6 @@
   
   
     <li class="md-nav__item">
-      <a href="taxon/" class="md-nav__link">
-        Slot: taxon
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
       <a href="total/" class="md-nav__link">
         Slot: total
       </a>
@@ -1916,10 +1902,10 @@
   
 
 
-<h1 id="monarch-api">monarch-api</h1>
-<p>Data model for Monarch API</p>
-<p>URI: <a href="https://w3id.org/monarch/monarch-api">https://w3id.org/monarch/monarch-api</a></p>
-<p>Name: monarch-api</p>
+<h1 id="monarch-py">monarch-py</h1>
+<p>Data models for the Monarch Initiative data access library</p>
+<p>URI: <a href="https://w3id.org/monarch/monarch-py">https://w3id.org/monarch/monarch-py</a></p>
+<p>Name: monarch-py</p>
 <h2 id="classes">Classes</h2>
 <table>
 <thead>
@@ -1947,11 +1933,11 @@
 </tr>
 <tr>
 <td><a href="Entity/">Entity</a></td>
-<td>None</td>
+<td>Represents an Entity in the Monarch KG data model</td>
 </tr>
 <tr>
 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="Node/">Node</a></td>
-<td>None</td>
+<td>UI conatiner class extending Entity with additional information</td>
 </tr>
 <tr>
 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="SearchResult/">SearchResult</a></td>
@@ -2001,10 +1987,6 @@
 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="SearchResults/">SearchResults</a></td>
 <td>None</td>
 </tr>
-<tr>
-<td><a href="Taxon/">Taxon</a></td>
-<td>None</td>
-</tr>
 </tbody>
 </table>
 <h2 id="slots">Slots</h2>
@@ -2030,7 +2012,7 @@
 </tr>
 <tr>
 <td><a href="count/">count</a></td>
-<td></td>
+<td>count of documents</td>
 </tr>
 <tr>
 <td><a href="description/">description</a></td>
@@ -2074,7 +2056,11 @@
 </tr>
 <tr>
 <td><a href="in_taxon/">in_taxon</a></td>
-<td></td>
+<td>The biolink taxon that the entity is in the closure of</td>
+</tr>
+<tr>
+<td><a href="in_taxon_label/">in_taxon_label</a></td>
+<td>The label of the biolink taxon that the entity is in the closure of</td>
 </tr>
 <tr>
 <td><a href="inheritance/">inheritance</a></td>
@@ -2230,10 +2216,6 @@
 </tr>
 <tr>
 <td><a href="synonym/">synonym</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a href="taxon/">taxon</a></td>
 <td></td>
 </tr>
 <tr>
