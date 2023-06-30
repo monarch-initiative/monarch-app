@@ -1,5 +1,5 @@
-from glob import glob
 import os
+from glob import glob
 
 
 def _as_module(fixture_path: str) -> str:
