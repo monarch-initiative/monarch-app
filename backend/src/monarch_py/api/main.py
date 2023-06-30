@@ -2,7 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
-from monarch_api import association, entity, histopheno, search
+from monarch_py.api import association, entity, histopheno, search
 
 PREFIX = "/v3/api"
 app = FastAPI(docs_url="/v3/docs", redoc_url='/v3/redoc')

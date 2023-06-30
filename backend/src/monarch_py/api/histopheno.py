@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from monarch_api.config import settings
-from monarch_api.model import HistoPheno
+from monarch_py.api.config import settings
+from monarch_py.api.model import HistoPheno
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
 router = APIRouter(

@@ -1,6 +1,8 @@
 RUN = poetry -C backend/ run
 VERSION = $(shell cd backend && poetry version -s)
 ROOTDIR = $(shell pwd)
+SCHEMADIR = $(ROOTDIR)/backend/src/datamodels
+# include backend/Makefile
 
 ### Help ###
 .PHONY: help
@@ -73,17 +75,21 @@ install-frontend:
 
 
 .PHONY: model
-model: schema/
-	$(RUN) monarch schema > schema/model.yaml
-	$(RUN) gen-pydantic schema/model.yaml > backend/src/monarch_api/model.py
-	$(RUN) gen-typescript schema/model.yaml > frontend/src/api/model.ts
+model: install-backend	
+	$(RUN) gen-pydantic $(SCHEMA)/model.yaml > $(SCHEMADIR)/model.py
+	$(RUN) gen-typescript $(SCHEMA) > frontend/src/api/model.ts
 	$(RUN) black backend/src/monarch_api/model.py
 
 
-# Documentation
+### Documentation ###
+
+docs/Data-Model:
+	mkdir -p $@
+
 .PHONY: docs
-docs: install-backend model
-	$(RUN) gen-doc -d $(ROOTDIR)/docs/Data-Model/ $(ROOTDIR)/schema/monarch-api.yaml
+docs: install-backend docs/Data-Model
+	$(RUN) gen-doc -d $(ROOTDIR)/docs/Data-Model/ $(SCHEMADIR)/model.yaml
+	$(RUN) typer src/monarch_py/cli.py utils docs --name monarch --output docs/Usage/CLI.md
 	$(RUN) mkdocs build
 
 
@@ -99,7 +105,7 @@ test-backend: install-backend model
 
 
 .PHONY: test-frontend
-test-frontend: install-frontend model
+test-frontend: install-frontend frontend/src/api/model.ts
 	cd frontend && \
 		yarn test
 
@@ -112,10 +118,10 @@ dev-frontend: frontend/src/api/model.ts
 		yarn dev
 
 
-.PHONY: dev-backend
-dev-backend: backend/src/monarch_api/model.py
+.PHONY: dev-api
+dev-api: 
 	cd backend && \
-		poetry run uvicorn src.monarch_api.main:app --reload
+		poetry run uvicorn src.monarch_py.api.main:app --reload
 
 
 ### Docker ###
@@ -144,8 +150,8 @@ clean:
 
 .PHONY: clobber
 clobber:
-	rm -f schema/monarch-py.yaml \
-		backend/src/monarch_api/model.py \
+	rm -f schema/model.yaml \
+		backend/src/monarch_py/datamodels/model.py \
 		frontend/src/api/model.ts
 
 

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
-from monarch_api.additional_models import PaginationParams
-from monarch_api.utils.get_similarity import *
+from monarch_py.api.additional_models import PaginationParams
+from monarch_py.api.utils.get_similarity import *
 from oaklib.cli import _shorthand_to_pred_curie
 
 router = APIRouter(

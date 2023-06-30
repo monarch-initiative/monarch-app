@@ -1,7 +1,25 @@
-site_name: "Monarch API Documentation"
-repo_name: "monarch-api"
-repo_url: "https://github.com/monarch-initiative/monarch-app/"
+site_name: "Monarch-Py - a Monarch Python API"
+repo_name: "monarch-app"
+repo_url: "https://github.com/monarch-initiative/monarch-app/backend"
 site_url: "https://monarch-app.monarchinitiative.org/docs/"
+
+
+nav:
+  - Welcome: 'index.md'
+  - Usage: 
+    - Usage: 'Usage/index.md'
+    - CLI: 'Usage/CLI.md'
+    - Interfaces: 'Usage/Interfaces/index.md'
+    - Implementations: 'Usage/Implementations/index.md'
+      - Solr: 'Usage/Implementations/Solr.md'
+      - SQL: 'Usage/Implementations/SQL.md'
+      - OAK: 'Usage/Implementations/OAK.md'
+  - FastAPI: 
+    - FastApi: 'FastAPI/index.md'
+    - Endpoints: 'FastAPI/Endpoints/index.md'
+  - API Reference: 'API-Reference/index.md'
+  - Response Data Model: 'Data-Model/index.md'
+
 
 theme:
   name: "material"
@@ -31,6 +49,7 @@ theme:
     text: "Source Sans Pro"
     code: "Source Sans Pro Mono"
 
+
 plugins:
   - search
   - mkdocstrings:
@@ -55,6 +74,7 @@ plugins:
               - "!^_[^_]"
               - "^_[^_]"
 
+
 markdown_extensions:
   - admonition
   - pymdownx.details
@@ -71,11 +91,12 @@ markdown_extensions:
   - pymdownx.tabbed:
       alternate_style: true
 
+
 extra:
   social:
     - icon: "fontawesome/solid/house"
       link: "https://monarchinitiative.org"
     - icon: "fontawesome/brands/github-alt"
       link: "https://github.com/monarch-initiative/"
-# copyright: 'Copyright &copy; 2020 - 2022 [Glass](glass-ships.com)'
+
 

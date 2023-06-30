@@ -1,6 +1,6 @@
 from typing import List
 
-from monarch_api.model import Association, Entity, NodeHierarchy
+from monarch_py.api.model import Association, Entity, NodeHierarchy
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
 

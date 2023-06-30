@@ -1,8 +1,8 @@
 from typing import List, Union
 
 from fastapi import APIRouter, Query  # , Depends
-from monarch_api.config import settings
-from monarch_api.model import SearchResults
+from monarch_py.api.config import settings
+from monarch_py.api.model import SearchResults
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
 router = APIRouter(
