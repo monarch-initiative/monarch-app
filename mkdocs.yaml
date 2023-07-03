@@ -1,7 +1,7 @@
-site_name: "Monarch-Py - a Monarch Python API"
-repo_name: "monarch-app"
-repo_url: "https://github.com/monarch-initiative/monarch-app/backend"
-site_url: "https://monarch-app.monarchinitiative.org/docs/"
+site_name: 'monarch-py'
+repo_name: 'monarch-app/backend'
+repo_url: 'https://github.com/monarch-initiative/monarch-app/tree/main/backend'
+site_url: 'https://monarch-app.monarchinitiative.org/docs/'
 
 
 nav:
@@ -9,23 +9,30 @@ nav:
   - Usage: 
     - Usage: 'Usage/index.md'
     - CLI: 'Usage/CLI.md'
-    - Interfaces: 'Usage/Interfaces/index.md'
-    - Implementations: 'Usage/Implementations/index.md'
+    - Interfaces: 
+      - Overview: 'Usage/Interfaces/index.md'
+      - Entity: 'Usage/Interfaces/Entity.md'
+      - Association: 'Usage/Interfaces/Association.md'
+      - Query: 'Usage/Interfaces/Query.md'
+      - Search: 'Usage/Interfaces/Search.md'
+    - Implementations: 
+      - Overview: 'Usage/Implementations/index.md'
       - Solr: 'Usage/Implementations/Solr.md'
       - SQL: 'Usage/Implementations/SQL.md'
-      - OAK: 'Usage/Implementations/OAK.md'
+      # - OAK: 'Usage/Implementations/OAK.md'
   - FastAPI: 
-    - FastApi: 'FastAPI/index.md'
-    - Endpoints: 'FastAPI/Endpoints/index.md'
+    - Overview: 'FastAPI/index.md'
+    - Endpoints: 
+      - 'FastAPI/Endpoints/index.md'
   - API Reference: 'API-Reference/index.md'
   - Response Data Model: 'Data-Model/index.md'
 
 
 theme:
-  name: "material"
+  name: 'material'
   docs_dir: docs/
-  logo: "images/monarch-initiative.png"
-  favicon: "images/favicon.ico"
+  logo: 'images/monarch-initiative.png'
+  favicon: 'images/favicon.ico'
   features:
     - navigation.expand
     - navigation.instant
@@ -46,8 +53,8 @@ theme:
         icon: material/brightness-7
         name: Switch to light mode
   font:
-    text: "Source Sans Pro"
-    code: "Source Sans Pro Mono"
+    text: 'Source Sans Pro'
+    code: 'Source Sans Pro Mono'
 
 
 plugins:
@@ -63,6 +70,7 @@ plugins:
           options:
             docstring_style: google
             docstring_options:
+              docstring_section_style: table
               ignore_init_summary: yes
             merge_init_into_class: yes
             # separate_signature: yes
@@ -71,8 +79,8 @@ plugins:
             show_root_full_path: no
             show_root_toc_entry: False
             filters:
-              - "!^_[^_]"
-              - "^_[^_]"
+              - '!^_[^_]'
+              # - '^_[^_]'
 
 
 markdown_extensions:
@@ -94,9 +102,9 @@ markdown_extensions:
 
 extra:
   social:
-    - icon: "fontawesome/solid/house"
-      link: "https://monarchinitiative.org"
-    - icon: "fontawesome/brands/github-alt"
-      link: "https://github.com/monarch-initiative/"
+    - icon: 'fontawesome/solid/house'
+      link: 'https://monarchinitiative.org'
+    - icon: 'fontawesome/brands/github-alt'
+      link: 'https://github.com/monarch-initiative/'
 
 

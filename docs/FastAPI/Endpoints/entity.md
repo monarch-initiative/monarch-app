@@ -1,3 +1,3 @@
 # Entity Endpoints
 
-::: src.monarch_api.entity
+::: src.monarch_py.api.entity

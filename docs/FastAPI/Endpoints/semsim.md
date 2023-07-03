@@ -1,3 +1,3 @@
 # SemSim Endpoints
 
-::: src.monarch_api.semsim
+::: src.monarch_py.api.semsim

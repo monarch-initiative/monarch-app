@@ -17,11 +17,13 @@ app.add_typer(sql_cli.sql_app, name="sql")
 def callback(
     ctx: typer.Context,
     version: Annotated[
-        Optional[bool], typer.Option("--version", "-v", is_eager=True)
+        Optional[bool], 
+        typer.Option("--version", "-v", help="Show the currently installed version", is_eager=True)
     ] = None,
     # verbose: Annotated[int, typer.Option("--verbose", "-v", count=True)] = 0,
     quiet: Annotated[
-        bool, typer.Option("--quiet", "-q", help="Set log level to warning")
+        bool, 
+        typer.Option("--quiet", "-q", help="Set log level to warning")
     ] = False,
     debug: Annotated[
         bool, typer.Option("--debug", "-d", help="Set log level to debug")
@@ -64,7 +66,6 @@ def schema():
 
 
 ### "Aliases" for Solr CLI ###
-
 
 @app.command("entity")
 def entity(

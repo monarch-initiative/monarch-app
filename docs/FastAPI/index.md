@@ -7,10 +7,19 @@ It can be installed as an extra of `monarch-py` via pip or pipx:
 pip|pipx install monarch-py[api]
 ```
 
-## Running the API
+## Running the API Server
 
-A local development server can be started using `uvicorn` via the included Makefile:
+A local development server can be started with the command: 
 ```bash
+monarch-api
+```
+
+or using `uvicorn`:
+```bash
+# Using uvicorn directly:
+poetry run uvicorn src.monarch_py.api.main:app --reload
+
+# Using the Makefile shortcut:
 cd <path-to>/monarch-app
 make dev-api
 ```

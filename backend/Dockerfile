@@ -29,7 +29,7 @@ RUN apt-get update -y && \
 
 # copy project requirement files here to ensure they will be cached.
 WORKDIR $PYSETUP_PATH
-COPY . /opt/monarch-api
+COPY . /opt/monarch-app
 
 # install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
 RUN curl -sSL https://install.python-poetry.org | python3 && \
@@ -41,11 +41,11 @@ RUN curl -sSL https://install.python-poetry.org | python3 && \
 
 FROM builder-base as production
 ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
-WORKDIR /opt/monarch-api/backend
+WORKDIR /opt/monarch-app/backend
 
-RUN poetry install
+RUN poetry install -E api
 
-CMD ["/opt/poetry/bin/poetry", "run", "uvicorn", "src.monarch_api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["/opt/poetry/bin/poetry", "run", "uvicorn", "src.monarch_py.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
 
 ### Image URLs for reference ###
 #

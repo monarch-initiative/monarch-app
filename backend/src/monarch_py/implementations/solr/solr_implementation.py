@@ -87,13 +87,13 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
             entity = Entity(
                 id=association.object,
                 name=association.object_label,
-                category=association.object_category,
+                category=association.object_category[0],
             )
         elif this_entity.id in association.object_closure:
             entity = Entity(
                 id=association.subject,
                 name=association.subject_label,
-                category=association.subject_category,
+                category=association.subject_category[0],
             )
         else:
             raise ValueError(
@@ -315,7 +315,22 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         filter_queries: List[str] = None,
         sort: str = None,
     ) -> SearchResults:
-        """Search for entities by label, with optional filters"""
+        """Search for entities by label, with optional filters
+
+        Args:
+            q (str): Query string. Defaults to "*:*".
+            offset (int): Result offset, for pagination. Defaults to 0.
+            limit (int): Limit results to specified number. Defaults to 20.
+            category (List[str]): Filter to only entities matching the specified categories. Defaults to None.
+            in_taxon (List[str]): Filter to only entities matching the specified taxa. Defaults to None.
+            facet_fields (List[str]): List of fields to include facet counts for. Defaults to None.
+            facet_queries (List[str]): List of queries to include facet counts for. Defaults to None.
+            filter_queries (List[str]): List of queries to filter results by. Defaults to None.
+            sort (str): Sort results by the specified field. Defaults to None.
+
+        Returns:
+            SearchResults: Dataclass representing results of a search.
+        """
 
         solr = SolrService(base_url=self.base_url, core=core.ENTITY)
         query = SolrQuery(start=offset, rows=limit, sort=sort)

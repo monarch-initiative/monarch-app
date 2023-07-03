@@ -388,6 +388,7 @@ slots:
   subject_category:
     is_a: category
     description: The category of the subject entity
+    multivalued: true
   subject_closure:
     multivalued: true
     description: Field containing subject id and the ids of all of it's ancestors
@@ -403,6 +404,7 @@ slots:
   object_category:
     is_a: category
     description: The category of the object entity
+    multivalued: true
   object_closure:
     multivalued: true
     description: Field containing object id and the ids of all of it's ancestors

@@ -2,9 +2,11 @@
 
 ## Introduction  
 
-**Monarch-Py** is a Python library for interacting with and querying the  
+**monarch-py** is a Python library for interacting with and querying the  
 Monarch knowledge graph, with implementations for Solr and SQLite backends.  
+
 This means the same API methods can be used regardless of the implementation.  
+
 This library provides a collection of interfaces for graph operations such as retrieving entities and browsing associations. 
 
 ## Installation
@@ -15,6 +17,15 @@ This library is available via pip or pipx:
 ```bash
 pip|pipx install monarch-py 
 ```
+
+A [FastAPI server](./FastAPI/index.md) is also available as an extra:
+```bash
+pip|pipx install monarch-py[api]
+
+# The API server gets its own terminal command:
+monarch-api 
+```
+
 ## Usage
 
 Full usage instructions [here](./Usage/index.md)

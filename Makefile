@@ -1,8 +1,7 @@
-RUN = poetry -C backend/ run
-VERSION = $(shell cd backend && poetry version -s)
+RUN = poetry -C backend run
+VERSION = $(shell poetry -C backend version -s)
 ROOTDIR = $(shell pwd)
-SCHEMADIR = $(ROOTDIR)/backend/src/datamodels
-# include backend/Makefile
+SCHEMADIR = $(ROOTDIR)/backend/src/monarch_py/datamodels
 
 ### Help ###
 .PHONY: help
@@ -64,7 +63,7 @@ install: install-backend install-frontend
 .PHONY: install-backend
 install-backend:
 	cd backend && \
-		poetry install
+		poetry install -E api --with dev
 
 
 .PHONY: install-frontend
@@ -76,9 +75,9 @@ install-frontend:
 
 .PHONY: model
 model: install-backend	
-	$(RUN) gen-pydantic $(SCHEMA)/model.yaml > $(SCHEMADIR)/model.py
-	$(RUN) gen-typescript $(SCHEMA) > frontend/src/api/model.ts
-	$(RUN) black backend/src/monarch_api/model.py
+	$(RUN) gen-pydantic $(SCHEMADIR)/model.yaml > $(SCHEMADIR)/model.py
+	$(RUN) gen-typescript $(SCHEMADIR)/model.yaml > frontend/src/api/model.ts
+	$(RUN) black backend/src/monarch_py/datamodels/model.py
 
 
 ### Documentation ###
@@ -89,7 +88,7 @@ docs/Data-Model:
 .PHONY: docs
 docs: install-backend docs/Data-Model
 	$(RUN) gen-doc -d $(ROOTDIR)/docs/Data-Model/ $(SCHEMADIR)/model.yaml
-	$(RUN) typer src/monarch_py/cli.py utils docs --name monarch --output docs/Usage/CLI.md
+	$(RUN) typer backend/src/monarch_py/cli.py utils docs --name monarch --output docs/Usage/CLI.md
 	$(RUN) mkdocs build
 
 

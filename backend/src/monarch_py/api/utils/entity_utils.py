@@ -1,6 +1,6 @@
 from typing import List
 
-from monarch_py.api.model import Association, Entity, NodeHierarchy
+from monarch_py.datamodels.model import Association, Entity, NodeHierarchy
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
 
@@ -27,7 +27,7 @@ def get_associated_entity(association: Association, this_entity: Entity) -> Enti
             id=association.object,
             name=association.object_label,
             # this will be replaced when category is single valued on associations
-            category=association.object_category,
+            category=association.object_category[0],
         )
     # elif association.object == this_entity.id:
     elif this_entity.id in association.object_closure:
@@ -35,7 +35,7 @@ def get_associated_entity(association: Association, this_entity: Entity) -> Enti
             id=association.subject,
             name=association.subject_label,
             # this will be replaced when category is single valued on associations
-            category=association.subject_category,
+            category=association.subject_category[0],
         )
     else:
         raise ValueError(f"Association does not contain this_entity: {this_entity.id}")

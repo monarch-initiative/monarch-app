@@ -3,7 +3,7 @@ from typing import List, Union
 from fastapi import APIRouter, Depends, Query
 from monarch_py.api.additional_models import PaginationParams
 from monarch_py.api.config import settings
-from monarch_py.api.model import AssociationResults
+from monarch_py.datamodels.model import AssociationResults
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
 router = APIRouter(

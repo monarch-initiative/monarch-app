@@ -1,4 +1,4 @@
-# Monarch API Reference
+# Monarch API Endpoints
 
 This section contains API reference for the various endpoints provided by `monarch-api`.
 
