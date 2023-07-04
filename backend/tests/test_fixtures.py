@@ -3,7 +3,7 @@
 ########################################################################
 
 
-from monarch_api.model import AssociationResults, HistoPheno, Node, SearchResults
+from monarch_py.datamodels.model import AssociationResults, HistoPheno, Node, SearchResults
 
 # from .fixtures import autocomplete, histopheno, node, node_associations, search
 
