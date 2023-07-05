@@ -390,6 +390,8 @@ $ monarch solr download [OPTIONS]
 
 **Options**:
 
+* `--version TEXT`: [default: latest]
+* `--overwrite / --no-overwrite`: [default: no-overwrite]
 * `--help`: Show this message and exit.
 
 ### `monarch solr entity`
