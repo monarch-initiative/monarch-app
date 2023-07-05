@@ -1,0 +1,32 @@
+- subject_label: Diseases
+  object_label: Phenotypes
+  category: "biolink:DiseaseToPhenotypicFeatureAssociation"
+- subject_label: Genes
+  object_label: Phenotypes
+  category: "biolink:GeneToPhenotypicFeatureAssociation"
+- subject_label: Interactions
+  object_label: Interactions
+  symmetric: true
+  category: "biolink:PairwiseGeneToGeneInteraction"
+- subject_label: Genes
+  object_label: Pathways
+  category: "biolink:GeneToPathwayAssociation"
+- subject_label: Genes
+  object_label: Anatomy
+  category: "biolink:GeneToExpressionSiteAssociation"
+- subject_label: Orthologs
+  object_label: Orthologs
+  symmetric: true
+  category: "biolink:GeneToGeneHomologyAssociation"
+- subject_label: Chemicals
+  object_label: Pathways
+  category: "biolink:ChemicalToPathwayAssociation"
+- subject_label: Genes
+  object_label: Molecular Functions
+  category: "biolink:MacromolecularMachineToMolecularActivityAssociation"
+- subject_label: Causal Genes
+  object_label: Causal Diseases
+  category: "biolink:CausalGeneToDiseaseAssociation"
+- subject_label: "Correlated Genes"
+  object_label: "Correlated Diseases"
+  category: "biolink:CorrelatedGeneToDiseaseAssociation"

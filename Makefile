@@ -1,6 +1,7 @@
-RUN = poetry -C backend/ run
-VERSION = $(shell cd backend && poetry version -s)
+RUN = poetry -C backend run
+VERSION = $(shell poetry -C backend version -s)
 ROOTDIR = $(shell pwd)
+SCHEMADIR = $(ROOTDIR)/backend/src/monarch_py/datamodels
 
 ### Help ###
 .PHONY: help
@@ -62,7 +63,7 @@ install: install-backend install-frontend
 .PHONY: install-backend
 install-backend:
 	cd backend && \
-		poetry install
+		poetry install -E api --with dev
 
 
 .PHONY: install-frontend
@@ -73,24 +74,21 @@ install-frontend:
 
 
 .PHONY: model
-model: schema/
-	$(RUN) monarch schema > schema/model.yaml
-	$(RUN) gen-pydantic schema/model.yaml > backend/src/monarch_api/model.py
-	$(RUN) gen-typescript schema/model.yaml > frontend/src/api/model.ts
-	$(RUN) black backend/src/monarch_api/model.py
+model: install-backend	
+	$(RUN) gen-pydantic $(SCHEMADIR)/model.yaml > $(SCHEMADIR)/model.py
+	$(RUN) gen-typescript $(SCHEMADIR)/model.yaml > frontend/src/api/model.ts
+	$(RUN) black backend/src/monarch_py/datamodels/model.py
 
 
-.PHONY: fixtures
-fixtures: install-backend
-	@echo "Generating fixtures..."
-	@echo "This requires a running instance of Monarch Solr."
-	$(RUN) python scripts/generate_fixtures.py
-	$(RUN) black backend/tests/fixtures/
+### Documentation ###
 
-# Documentation
+docs/Data-Model:
+	mkdir -p $@
+
 .PHONY: docs
-docs: install-backend model
-	$(RUN) gen-doc -d $(ROOTDIR)/docs/Data-Model/ $(ROOTDIR)/schema/model.yaml
+docs: install-backend docs/Data-Model
+	$(RUN) gen-doc -d $(ROOTDIR)/docs/Data-Model/ $(SCHEMADIR)/model.yaml
+	$(RUN) typer backend/src/monarch_py/cli.py utils docs --name monarch --output docs/Usage/CLI.md
 	$(RUN) mkdocs build
 
 
@@ -101,15 +99,24 @@ test: test-backend test-frontend
 
 
 .PHONY: test-backend
-test-backend: install-backend model
+test-backend: 
 	$(RUN) pytest backend/tests
 
 
 .PHONY: test-frontend
-test-frontend: install-frontend model
+test-frontend: 
 	cd frontend && \
 		yarn test
 
+
+.PHONY: fixtures
+fixtures: 
+	@echo "Generating fixtures..."
+	@echo "This requires a running instance of Monarch Solr."
+	$(RUN) python scripts/generate_fixtures.py
+	$(RUN) black backend/tests/fixtures/
+	cd frontend && \
+		yarn lint 
 
 ### Development ###
 
@@ -119,10 +126,10 @@ dev-frontend: frontend/src/api/model.ts
 		yarn dev
 
 
-.PHONY: dev-backend
-dev-backend: backend/src/monarch_api/model.py
+.PHONY: dev-api
+dev-api: 
 	cd backend && \
-		poetry run uvicorn src.monarch_api.main:app --reload
+		poetry run uvicorn src.monarch_py.api.main:app --reload
 
 
 ### Docker ###
@@ -151,26 +158,26 @@ clean:
 
 .PHONY: clobber
 clobber:
-	rm -f schema/monarch-py.yaml \
-		backend/src/monarch_api/model.py \
+	rm -f schema/model.yaml \
+		backend/src/monarch_py/datamodels/model.py \
 		frontend/src/api/model.ts
 
 
 .PHONY: lint
-lint: install lint-frontend lint-backend
+lint: lint-frontend lint-backend
 
 
 .PHONY: lint-frontend
-lint-frontend: install-frontend
+lint-frontend: 
 	cd frontend && \
 		yarn test:lint
 
 
 .PHONY: lint-backend
-lint-backend: install-backend
+lint-backend: 
 	$(RUN) flake8 --exit-zero --max-line-length 120 backend/src backend/tests
 	$(RUN) isort --check-only --diff backend/src backend/tests
-	$(RUN) black --check --diff backend/src backend/tests
+	$(RUN) black --check --diff -l 120 backend/src backend/tests
 
 
 .PHONY: format
@@ -178,7 +185,7 @@ format: format-frontend format-backend
 
 
 .PHONY: format-backend
-format-backend: install-backend
+format-backend: 
 	$(RUN) autoflake \
 		--recursive \
 		--remove-all-unused-imports \
@@ -187,10 +194,10 @@ format-backend: install-backend
 		--in-place \
 		backend/src backend/tests
 	$(RUN) isort backend/src backend/tests
-	$(RUN) black backend/src backend/tests
+	$(RUN) black -l 120 backend/src backend/tests
 
 
 .PHONY: format-frontend
-format-frontend: install-frontend
+format-frontend:
 	cd frontend && \
 		yarn lint

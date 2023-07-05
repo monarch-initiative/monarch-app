@@ -1,45 +1,66 @@
 [tool.poetry]
-name = "monarch-api"
-version = "0.7.2"
-description = "Monarch Initiative API"
+name = "monarch-py"
+version = "0.12.0"
+description = "Python package for interacting with Monarch Initiative knowledge graph"
 authors = [
     "glass-ships <glass.ships@outlook.com>",
     "kevin schaper <kevin@tislab.org>",
     "The Monarch Initiative <info@monarchinitiative.org>"
 ]
 
+
 packages = [
-    { include = "monarch_api", from = "src"}
+    { include = "monarch_py", from = "src" }
 ]
 
+
 [tool.poetry.dependencies]
+### Core dependencies
 python = ">=3.9,<3.12"
-fastapi = "^0.87.0"
-monarch-py = "0.12.3"
-linkml = "^1.5.5"
 pydantic = "^1.10.2"
-oaklib = "^0.5.10"
-pysolr = "^3.9.0"
+linkml = "^1.5.5"
+requests = "^2.28.1"
+typer = "^0.7.0"
+typer-cli = "^0.0.13"
+rich = "*"
+docker = "^6.0.1"
+pystow = ">=0.5.0"
+loguru = "*"
+### Optional API dependencies
+fastapi ={ version = "^0.87.0", optional = true }
+oaklib = { version = "^0.5.10", optional = true }
+
+
+[tool.poetry.extras]
+api = ["fastapi", "oaklib"]
+
 
 [tool.poetry.group.dev.dependencies]
+pytest = "^7.2.0"
 mkdocs = ">=1.4.2"
 mkdocs-material = ">=9.1.16"
 mkdocstrings = {extras = ["python"], version = ">=0.22.0"}
-pytest = "^7.2.0"
 black = "^22.10.0"
 isort = "^5.10.1"
 flake8 = "^5.0.4"
 autoflake = "^1.7.7"
 uvicorn = {extras = ["standard"], version = "^0.20.0"}
 
+
+[tool.poetry.scripts]
+monarch = "monarch_py.cli:app"
+monarch-api = { callable = "monarch_py.api.main:run", extras = ["api"] }
+
 [build-system]
 requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
 build-backend = "poetry_dynamic_versioning.backend"
+
 
 [tool.poetry-dynamic-versioning]
 enable = false
 vcs = "git"
 style = "pep440"
+
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]

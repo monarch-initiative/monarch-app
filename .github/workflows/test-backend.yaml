@@ -34,7 +34,7 @@ jobs:
       #    install your root project, if required
       #----------------------------------------------
       - name: Install library
-        run: poetry -C backend install --no-interaction
+        run: poetry -C backend install --no-interaction -E api 
 
       #----------------------------------------------
       #              run pytest

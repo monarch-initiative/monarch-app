@@ -1,0 +1,120 @@
+{
+  "query": {
+    "ids": [
+      {
+        "id": "MP:0002169",
+        "label": "no abnormal phenotype detected"
+      },
+      {
+        "id": "MP:0005391",
+        "label": "vision/eye phenotype"
+      },
+      {
+        "id": "MP:0010771",
+        "label": "integument phenotype"
+      },
+      {
+        "id": "MP:0005389",
+        "label": "reproductive system phenotype"
+      },
+      {
+        "id": "MP:0005367",
+        "label": "renal/urinary system phenotype"
+      }
+    ],
+    "negated_ids": [],
+    "unresolved_ids": [],
+    "target_ids": [
+      [
+        {
+          "id": "HP:0004325",
+          "label": "Decreased body weight"
+        }
+      ],
+      [
+        {
+          "id": "HP:0000093",
+          "label": "Proteinuria"
+        }
+      ],
+      [
+        {
+          "id": "MP:0006144",
+          "label": "increased systemic arterial systolic blood pressure"
+        }
+      ]
+    ],
+    "reference": {
+      "type": "unknown",
+      "taxon": {
+        "id": null,
+        "label": null
+      },
+      "id": "MP:0010771 + MP:0002169 + MP:0005391 + MP:0005389 + MP:0005367",
+      "label": "MP:0010771 + MP:0002169 + MP:0005391 + MP:0005389 + MP:0005367"
+    }
+  },
+  "matches": [
+    {
+      "rank": "NaN",
+      "score": 0,
+      "significance": "NaN",
+      "pairwise_match": [],
+      "type": "phenotype",
+      "taxon": {
+        "id": null,
+        "label": null
+      },
+      "id": "HP:0004325",
+      "label": "Decreased body weight"
+    },
+    {
+      "rank": "NaN",
+      "score": 61,
+      "significance": "NaN",
+      "pairwise_match": [
+        {
+          "reference": {
+            "IC": 3.603874048944942,
+            "id": "MP:0005367",
+            "label": "renal/urinary system phenotype"
+          },
+          "match": {
+            "IC": 6.792512328942218,
+            "id": "HP:0000093",
+            "label": "Proteinuria"
+          },
+          "lcs": {
+            "IC": 3.603874048944942,
+            "id": "MP:0005367",
+            "label": "renal/urinary system phenotype"
+          }
+        }
+      ],
+      "type": "phenotype",
+      "taxon": {
+        "id": null,
+        "label": null
+      },
+      "id": "HP:0000093",
+      "label": "Proteinuria"
+    },
+    {
+      "rank": "NaN",
+      "score": 0,
+      "significance": "NaN",
+      "pairwise_match": [],
+      "type": "phenotype",
+      "taxon": {
+        "id": null,
+        "label": null
+      },
+      "id": "MP:0006144",
+      "label": "increased systemic arterial systolic blood pressure"
+    }
+  ],
+  "metadata": {
+    "max_max_ic": 16.50533
+  }
+}
+
