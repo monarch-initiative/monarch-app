@@ -99,18 +99,18 @@ test: test-backend test-frontend
 
 
 .PHONY: test-backend
-test-backend: install-backend model
+test-backend: 
 	$(RUN) pytest backend/tests
 
 
 .PHONY: test-frontend
-test-frontend: install-frontend frontend/src/api/model.ts
+test-frontend: 
 	cd frontend && \
 		yarn test
 
 
 .PHONY: fixtures
-fixtures: install-backend
+fixtures: 
 	@echo "Generating fixtures..."
 	@echo "This requires a running instance of Monarch Solr."
 	$(RUN) python scripts/generate_fixtures.py
