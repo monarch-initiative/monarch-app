@@ -15,10 +15,14 @@ class SolrService(BaseModel):
 
     def get(self, id):
         url = f"{self.base_url}/{self.core.value}/get?id={id}"
+        logger.debug(f"SolrService.get: {url}")
         response = requests.get(url)
         response.raise_for_status()
         entity = response.json()["doc"]
-        self._strip_json(entity, "_version_")
+        try: 
+            self._strip_json(entity, "_version_")
+        except TypeError:
+                pass # what if entity is None?
         return entity
 
     def query(self, q: SolrQuery) -> SolrQueryResult:

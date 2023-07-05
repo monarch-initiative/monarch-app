@@ -6,7 +6,7 @@ from typing_extensions import Annotated
 
 from monarch_py.datamodels.model import AssociationCountList
 from monarch_py.utils.solr_cli_utils import (
-    check_solr_permissions,
+    ensure_solr,
     get_solr,
     solr_status,
     start_solr,
@@ -46,7 +46,7 @@ def callback(
 @solr_app.command("start")
 def start(update: bool = False):
     """Starts a local Solr container."""
-    check_solr_permissions(update=False)
+    ensure_solr(overwrite=False)
     start_solr()
 
 
@@ -65,9 +65,20 @@ def status():
 
 
 @solr_app.command("download")
-def download():
+def download(
+    version: Annotated[str, typer.Option(
+            "latest",
+            "--version",
+            help="The version of the Solr KG to download (latest, dev, or a specific version)",
+        )] = "latest",
+    overwrite: Annotated[bool, typer.Option(
+            False,
+            "--overwrite",
+            help="Overwrite the existing Solr KG if it exists",
+        )] = False,
+    ):
     """Download the Monarch Solr KG."""
-    get_solr(update=True)
+    ensure_solr(version, overwrite)
     raise typer.Exit()
 
 

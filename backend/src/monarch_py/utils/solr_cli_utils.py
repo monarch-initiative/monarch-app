@@ -7,19 +7,22 @@ import docker
 import pystow
 
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
-from monarch_py.utils.utils import SOLR_DATA_URL, console
+from monarch_py.utils.utils import MONARCH_DATA_URL, console
 
 monarchstow = pystow.module("monarch")
 
 
-def check_solr_permissions(update: bool = False) -> None:
-    """Checks that the solr data directory has the correct permissions."""
+def ensure_solr(
+        version: str = "latest",
+        overwrite: bool = False
+    ) -> None:
+    """Download and unpack the monarch solr kg, and check permissions."""
     data_path = monarchstow.base / "solr" / "data"
     # When untarred solr won't necessarily use the same file names for index segments etc
     # so the untarred path needs to be removed before updating
-    if update:
+    if overwrite:
         shutil.rmtree(data_path, ignore_errors=True)
-    monarchstow.ensure_untar(url=SOLR_DATA_URL, force=update)
+    monarchstow.ensure_untar(url=f"{MONARCH_DATA_URL}/{version}/solr.tar.gz", force=overwrite)
     if sys.platform in ["linux", "linux2", "darwin"]:
         stat_info = os.stat(data_path)
         if stat_info.st_gid != 8983:
@@ -44,7 +47,7 @@ def check_for_solr(dc: docker.DockerClient, quiet: bool = False):
 def get_solr(update: bool = False):
     """Checks for Solr data and container, and returns a SolrImplementation."""
     if update:
-        check_solr_permissions(update)
+        ensure_solr(update)
     if check_for_solr(dc=docker.from_env(), quiet=True):
         return SolrImplementation()
     else:

@@ -15,10 +15,9 @@ from monarch_py.datamodels.model import (
     Results,
 )
 
-SOLR_DATA_URL = "https://data.monarchinitiative.org/monarch-kg-dev/latest/solr.tar.gz"
-SQL_DATA_URL = (
-    "https://data.monarchinitiative.org/monarch-kg-dev/latest/monarch-kg.db.gz"
-)
+MONARCH_DATA_URL = "https://data.monarchinitiative.org/monarch-kg-dev"
+SOLR_DATA_URL = f"{MONARCH_DATA_URL}/latest/solr.tar.gz"
+SQL_DATA_URL = f"{MONARCH_DATA_URL}/latest/monarch-kg.db.gz"
 
 
 console = Console(

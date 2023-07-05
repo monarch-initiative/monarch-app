@@ -26,7 +26,7 @@ export interface Association {
     /** The namespace/prefix of the subject entity */
     subject_namespace?: string,
     /** The category of the subject entity */
-    subject_category?: string[],
+    subject_category?: string,
     /** Field containing subject id and the ids of all of it's ancestors */
     subject_closure?: string[],
     /** The name of the subject entity */
@@ -39,7 +39,7 @@ export interface Association {
     /** The namespace/prefix of the object entity */
     object_namespace?: string,
     /** The category of the object entity */
-    object_category?: string[],
+    object_category?: string,
     /** Field containing object id and the ids of all of it's ancestors */
     object_closure?: string[],
     /** The name of the object entity */
@@ -162,7 +162,7 @@ export interface DirectionalAssociation extends Association {
     /** The namespace/prefix of the subject entity */
     subject_namespace?: string,
     /** The category of the subject entity */
-    subject_category?: string[],
+    subject_category?: string,
     /** Field containing subject id and the ids of all of it's ancestors */
     subject_closure?: string[],
     /** The name of the subject entity */
@@ -175,7 +175,7 @@ export interface DirectionalAssociation extends Association {
     /** The namespace/prefix of the object entity */
     object_namespace?: string,
     /** The category of the object entity */
-    object_category?: string[],
+    object_category?: string,
     /** Field containing object id and the ids of all of it's ancestors */
     object_closure?: string[],
     /** The name of the object entity */

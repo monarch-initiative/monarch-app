@@ -52,8 +52,8 @@ class Association(ConfiguredBaseModel):
     subject_namespace: Optional[str] = Field(
         None, description="""The namespace/prefix of the subject entity"""
     )
-    subject_category: Optional[List[str]] = Field(
-        default_factory=list, description="""The category of the subject entity"""
+    subject_category: Optional[str] = Field(
+        None, description="""The category of the subject entity"""
     )
     subject_closure: Optional[List[str]] = Field(
         default_factory=list,
@@ -72,8 +72,8 @@ class Association(ConfiguredBaseModel):
     object_namespace: Optional[str] = Field(
         None, description="""The namespace/prefix of the object entity"""
     )
-    object_category: Optional[List[str]] = Field(
-        default_factory=list, description="""The category of the object entity"""
+    object_category: Optional[str] = Field(
+        None, description="""The category of the object entity"""
     )
     object_closure: Optional[List[str]] = Field(
         default_factory=list,
@@ -219,8 +219,8 @@ class DirectionalAssociation(Association):
     subject_namespace: Optional[str] = Field(
         None, description="""The namespace/prefix of the subject entity"""
     )
-    subject_category: Optional[List[str]] = Field(
-        default_factory=list, description="""The category of the subject entity"""
+    subject_category: Optional[str] = Field(
+        None, description="""The category of the subject entity"""
     )
     subject_closure: Optional[List[str]] = Field(
         default_factory=list,
@@ -239,8 +239,8 @@ class DirectionalAssociation(Association):
     object_namespace: Optional[str] = Field(
         None, description="""The namespace/prefix of the object entity"""
     )
-    object_category: Optional[List[str]] = Field(
-        default_factory=list, description="""The category of the object entity"""
+    object_category: Optional[str] = Field(
+        None, description="""The category of the object entity"""
     )
     object_closure: Optional[List[str]] = Field(
         default_factory=list,

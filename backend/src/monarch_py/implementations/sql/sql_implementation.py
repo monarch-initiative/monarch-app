@@ -101,7 +101,7 @@ class SQLImplementation(EntityInterface, AssociationInterface):
             entity = Entity(
                 id=association.object,
                 name=association.object_label,
-                category=association.object_category[0]
+                category=association.object_category
                 if len(association.object_category) == 1
                 else [],
             )
@@ -109,7 +109,7 @@ class SQLImplementation(EntityInterface, AssociationInterface):
             entity = Entity(
                 id=association.subject,
                 name=association.subject_label,
-                category=association.subject_category[0]
+                category=association.subject_category
                 if len(association.subject_category) == 1
                 else [],
             )

@@ -162,20 +162,20 @@ clobber:
 
 
 .PHONY: lint
-lint: install lint-frontend lint-backend
+lint: lint-frontend lint-backend
 
 
 .PHONY: lint-frontend
-lint-frontend: install-frontend
+lint-frontend: 
 	cd frontend && \
 		yarn test:lint
 
 
 .PHONY: lint-backend
-lint-backend: install-backend
+lint-backend: 
 	$(RUN) flake8 --exit-zero --max-line-length 120 backend/src backend/tests
 	$(RUN) isort --check-only --diff backend/src backend/tests
-	$(RUN) black --check --diff backend/src backend/tests
+	$(RUN) black --check --diff -l 120 backend/src backend/tests
 
 
 .PHONY: format
@@ -183,7 +183,7 @@ format: format-frontend format-backend
 
 
 .PHONY: format-backend
-format-backend: install-backend
+format-backend: 
 	$(RUN) autoflake \
 		--recursive \
 		--remove-all-unused-imports \
@@ -192,10 +192,10 @@ format-backend: install-backend
 		--in-place \
 		backend/src backend/tests
 	$(RUN) isort backend/src backend/tests
-	$(RUN) black backend/src backend/tests
+	$(RUN) black -l 120 backend/src backend/tests
 
 
 .PHONY: format-frontend
-format-frontend: install-frontend
+format-frontend:
 	cd frontend && \
 		yarn lint
