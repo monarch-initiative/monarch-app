@@ -115,6 +115,8 @@ fixtures:
 	@echo "This requires a running instance of Monarch Solr."
 	$(RUN) python scripts/generate_fixtures.py
 	$(RUN) black backend/tests/fixtures/
+	cd frontend && \
+		yarn lint 
 
 ### Development ###
 
