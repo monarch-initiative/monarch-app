@@ -13,7 +13,5 @@ def test_search(q, category, taxon, offset, limit):
     Test that search calls search from monarch_py
     """
     si = Mock(spec=SolrImplementation)
-    response = si.search(
-        q=q, category=category, taxon=taxon, offset=offset, limit=limit
-    )
+    response = si.search(q=q, category=category, taxon=taxon, offset=offset, limit=limit)
     assert response

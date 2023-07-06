@@ -1,5 +1,4 @@
 import pytest
-
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
 pytestmark = pytest.mark.skipif(
@@ -24,9 +23,7 @@ def test_association_page_limit():
 
 def test_association_category():
     si = SolrImplementation()
-    response = si.get_associations(
-        category="biolink:CorrelatedGeneToDiseaseAssociation"
-    )
+    response = si.get_associations(category="biolink:CorrelatedGeneToDiseaseAssociation")
     assert response
     assert response.total > 6000
     assert "biolink:CorrelatedGeneToDiseaseAssociation" in response.items[0].category
@@ -69,9 +66,4 @@ def test_entity():
     assert response
     assert response.total > 50
     for association in response.items:
-        assert (
-            "MONDO:0007947" in association.subject_closure
-            or "MONDO:0007947" in association.object_closure
-        )
-
-
+        assert "MONDO:0007947" in association.subject_closure or "MONDO:0007947" in association.object_closure

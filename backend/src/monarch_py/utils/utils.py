@@ -3,17 +3,10 @@ import sys
 
 import typer
 import yaml
+from monarch_py.datamodels.model import AssociationCountList, ConfiguredBaseModel, Entity, HistoPheno, Results
 from rich import print_json
 from rich.console import Console
 from rich.table import Table
-
-from monarch_py.datamodels.model import (
-    AssociationCountList,
-    ConfiguredBaseModel,
-    Entity,
-    HistoPheno,
-    Results,
-)
 
 MONARCH_DATA_URL = "https://data.monarchinitiative.org/monarch-kg-dev"
 SOLR_DATA_URL = f"{MONARCH_DATA_URL}/latest/solr.tar.gz"
@@ -56,7 +49,9 @@ def set_log_level(log_level: str):
 
 ### Output conversion methods ###
 
-FMT_INPUT_ERROR_MSG = "Text conversion method only accepts Entity, HistoPheno, AssociationCountList, or Results objects."
+FMT_INPUT_ERROR_MSG = (
+    "Text conversion method only accepts Entity, HistoPheno, AssociationCountList, or Results objects."
+)
 
 
 def get_headers_from_obj(obj: ConfiguredBaseModel) -> list:
@@ -129,11 +124,7 @@ def to_table(obj: ConfiguredBaseModel):
                 row[i] = ", ".join(value)
             elif not isinstance(value, str):
                 row[i] = str(value)
-    title = (
-        f"{obj.__class__.__name__}: {obj.id}"
-        if hasattr(obj, "id")
-        else obj.__class__.__name__
-    )
+    title = f"{obj.__class__.__name__}: {obj.id}" if hasattr(obj, "id") else obj.__class__.__name__
     table = Table(
         title=console.rule(title),
         show_header=True,
@@ -154,11 +145,7 @@ def to_yaml(obj: ConfiguredBaseModel, file: str):
 
     if isinstance(obj, Entity):
         yaml.dump(obj.dict(), fh, indent=4)
-    elif (
-        isinstance(obj, Results)
-        or isinstance(obj, HistoPheno)
-        or isinstance(obj, AssociationCountList)
-    ):
+    elif isinstance(obj, Results) or isinstance(obj, HistoPheno) or isinstance(obj, AssociationCountList):
         yaml.dump([item.dict() for item in obj.items], fh, indent=4)
     else:
         raise TypeError(FMT_INPUT_ERROR_MSG)

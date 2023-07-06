@@ -1,5 +1,4 @@
 import pytest
-
 from monarch_py.datamodels.model import AssociationTypeMapping
 from monarch_py.utils.association_type_utils import (
     get_solr_query_fragment,

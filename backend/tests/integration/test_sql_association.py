@@ -1,5 +1,4 @@
 import pytest
-
 from monarch_py.implementations.sql.sql_implementation import SQLImplementation
 
 pytestmark = pytest.mark.skip("Need to rewrite SQL tests")
@@ -57,10 +56,7 @@ def test_entity():
     assert response
     assert response.total > 50
     for association in response.items:
-        assert (
-            association.subject == "MONDO:0007947"
-            or association.object == "MONDO:0007947"
-        )
+        assert association.subject == "MONDO:0007947" or association.object == "MONDO:0007947"
 
 
 def test_between():
@@ -69,10 +65,7 @@ def test_between():
     assert response
     assert response.total > 0
     for association in response.items:
-        assert (
-            association.subject == "MONDO:0007947"
-            and association.object == "HP:0000098"
-        )
+        assert association.subject == "MONDO:0007947" and association.object == "HP:0000098"
 
 
 def test_between_reversed():
@@ -81,17 +74,12 @@ def test_between_reversed():
     assert response
     assert response.total > 0
     for association in response.items:
-        assert (
-            association.subject == "MONDO:0007947"
-            and association.object == "HP:0000098"
-        )
+        assert association.subject == "MONDO:0007947" and association.object == "HP:0000098"
 
 
 def test_associations_by_type():
     data = SQLImplementation()
-    response = data.get_associations(
-        entity="MONDO:0007947", category="biolink:DiseaseToPhenotypicFeatureAssociation"
-    )
+    response = data.get_associations(entity="MONDO:0007947", category="biolink:DiseaseToPhenotypicFeatureAssociation")
 
     assert response
     assert response.total > 60

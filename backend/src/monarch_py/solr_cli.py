@@ -2,17 +2,10 @@ from typing import List
 
 import pystow
 import typer
-from typing_extensions import Annotated
-
 from monarch_py.datamodels.model import AssociationCountList
-from monarch_py.utils.solr_cli_utils import (
-    ensure_solr,
-    get_solr,
-    solr_status,
-    start_solr,
-    stop_solr,
-)
+from monarch_py.utils.solr_cli_utils import ensure_solr, get_solr, solr_status, start_solr, stop_solr
 from monarch_py.utils.utils import console, format_output, set_log_level
+from typing_extensions import Annotated
 
 solr_app = typer.Typer()
 monarchstow = pystow.module("monarch")
@@ -21,12 +14,8 @@ monarchstow = pystow.module("monarch")
 @solr_app.callback(invoke_without_command=True)
 def callback(
     ctx: typer.Context,
-    quiet: Annotated[
-        bool, typer.Option("--quiet", "-q", help="Set log level to warning")
-    ] = False,
-    debug: Annotated[
-        bool, typer.Option("--debug", "-d", help="Set log level to debug")
-    ] = False,
+    quiet: Annotated[bool, typer.Option("--quiet", "-q", help="Set log level to warning")] = False,
+    debug: Annotated[bool, typer.Option("--debug", "-d", help="Set log level to debug")] = False,
 ):
     if ctx.invoked_subcommand is None:
         typer.secho(
@@ -66,17 +55,23 @@ def status():
 
 @solr_app.command("download")
 def download(
-    version: Annotated[str, typer.Option(
+    version: Annotated[
+        str,
+        typer.Option(
             "latest",
             "--version",
             help="The version of the Solr KG to download (latest, dev, or a specific version)",
-        )] = "latest",
-    overwrite: Annotated[bool, typer.Option(
+        ),
+    ] = "latest",
+    overwrite: Annotated[
+        bool,
+        typer.Option(
             False,
             "--overwrite",
             help="Overwrite the existing Solr KG if it exists",
-        )] = False,
-    ):
+        ),
+    ] = False,
+):
     """Download the Monarch Solr KG."""
     ensure_solr(version, overwrite)
     raise typer.Exit()
@@ -102,9 +97,7 @@ def entity(
         "-f",
         help="The format of the output (json, yaml, tsv, table)",
     ),
-    output: str = typer.Option(
-        None, "--output", "-o", help="The path to the output file"
-    ),
+    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
 ):
     """
     Retrieve an entity by ID
@@ -127,42 +120,26 @@ def entity(
 
 @solr_app.command("associations")
 def associations(
-    category: List[str] = typer.Option(
-        None, "--category", "-c", help="Comma-separated list of categories"
-    ),
-    subject: List[str] = typer.Option(
-        None, "--subject", "-s", help="Comma-separated list of subjects"
-    ),
-    predicate: List[str] = typer.Option(
-        None, "--predicate", "-p", help="Comma-separated list of predicates"
-    ),
-    object: List[str] = typer.Option(
-        None, "--object", "-o", help="Comma-separated list of objects"
-    ),
-    entity: List[str] = typer.Option(
-        None, "--entity", "-e", help="Comma-separated list of entities"
-    ),
+    category: List[str] = typer.Option(None, "--category", "-c", help="Comma-separated list of categories"),
+    subject: List[str] = typer.Option(None, "--subject", "-s", help="Comma-separated list of subjects"),
+    predicate: List[str] = typer.Option(None, "--predicate", "-p", help="Comma-separated list of predicates"),
+    object: List[str] = typer.Option(None, "--object", "-o", help="Comma-separated list of objects"),
+    entity: List[str] = typer.Option(None, "--entity", "-e", help="Comma-separated list of entities"),
     direct: bool = typer.Option(
         False,
         "--direct",
         "-d",
         help="Whether to exclude associations with subject/object as ancestors",
     ),
-    limit: int = typer.Option(
-        20, "--limit", "-l", help="The number of associations to return"
-    ),
-    offset: int = typer.Option(
-        0, "--offset", help="The offset of the first association to be retrieved"
-    ),
+    limit: int = typer.Option(20, "--limit", "-l", help="The number of associations to return"),
+    offset: int = typer.Option(0, "--offset", help="The offset of the first association to be retrieved"),
     fmt: str = typer.Option(
         "json",
         "--format",
         "-f",
         help="The format of the output (json, yaml, tsv, table)",
     ),
-    output: str = typer.Option(
-        None, "--output", "-o", help="The path to the output file"
-    ),
+    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
 ):
     """
     Paginate through associations
@@ -204,9 +181,7 @@ def search(
         "-f",
         help="The format of the output (json, yaml, tsv, table)",
     ),
-    output: str = typer.Option(
-        None, "--output", "-o", help="The path to the output file"
-    ),
+    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
     # sort: str = typer.Option(None, "--sort", "-s"),
 ):
     """
@@ -241,9 +216,7 @@ def autocomplete(
         "-f",
         help="The format of the output (json, yaml, tsv, table)",
     ),
-    output: str = typer.Option(
-        None, "--output", "-o", help="The path to the output file"
-    ),
+    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
 ):
     """
     Return entity autcomplete matches for a query string
@@ -268,9 +241,7 @@ def histopheno(
         "-f",
         help="The format of the output (json, yaml, tsv, table)",
     ),
-    output: str = typer.Option(
-        None, "--output", "-o", help="The path to the output file"
-    ),
+    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
 ):
     """
     Retrieve the histopheno associations for a given subject
@@ -302,9 +273,7 @@ def association_counts(
         "-f",
         help="The format of the output (json, yaml, tsv, table)",
     ),
-    output: str = typer.Option(
-        None, "--output", "-o", help="The path to the output file"
-    ),
+    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
 ):
     """
     Retrieve the association counts for a given entity
@@ -342,12 +311,8 @@ def association_table(
         "-f",
         help="The format of the output (json, yaml, tsv, table)",
     ),
-    output: str = typer.Option(
-        None, "--output", "-o", help="The path to the output file"
-    ),
+    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
 ):
     data = get_solr(update=False)
-    response = data.get_association_table(
-        entity=entity, category=category, q=q, limit=limit, offset=offset
-    )
+    response = data.get_association_table(entity=entity, category=category, q=q, limit=limit, offset=offset)
     format_output(fmt, response, output)

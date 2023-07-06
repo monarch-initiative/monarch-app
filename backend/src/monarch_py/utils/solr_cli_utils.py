@@ -5,17 +5,13 @@ import time
 
 import docker
 import pystow
-
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 from monarch_py.utils.utils import MONARCH_DATA_URL, console
 
 monarchstow = pystow.module("monarch")
 
 
-def ensure_solr(
-        version: str = "latest",
-        overwrite: bool = False
-    ) -> None:
+def ensure_solr(version: str = "latest", overwrite: bool = False) -> None:
     """Download and unpack the monarch solr kg, and check permissions."""
     data_path = monarchstow.base / "solr" / "data"
     # When untarred solr won't necessarily use the same file names for index segments etc
@@ -51,9 +47,7 @@ def get_solr(update: bool = False):
     if check_for_solr(dc=docker.from_env(), quiet=True):
         return SolrImplementation()
     else:
-        console.print(
-            "\nNo Solr container found!\nStart a Solr container with [bold]monarch solr start[/]."
-        )
+        console.print("\nNo Solr container found!\nStart a Solr container with [bold]monarch solr start[/].")
         sys.exit(1)
 
 
@@ -82,9 +76,7 @@ def start_solr():
         try:
             c.start()
         except Exception as e:
-            console.print(
-                f"Error running existing container {c.name} ({c.status}) - {e}"
-            )
+            console.print(f"Error running existing container {c.name} ({c.status}) - {e}")
             raise e
 
 

@@ -3,10 +3,9 @@ from typing import Dict, List
 
 import requests
 from loguru import logger
-from pydantic import BaseModel
-
 from monarch_py.datamodels.solr import SolrQuery, SolrQueryResult, core
 from monarch_py.utils.utils import escape
+from pydantic import BaseModel
 
 
 class SolrService(BaseModel):
@@ -19,10 +18,10 @@ class SolrService(BaseModel):
         response = requests.get(url)
         response.raise_for_status()
         entity = response.json()["doc"]
-        try: 
+        try:
             self._strip_json(entity, "_version_")
         except TypeError:
-                pass # what if entity is None?
+            pass  # what if entity is None?
         return entity
 
     def query(self, q: SolrQuery) -> SolrQueryResult:

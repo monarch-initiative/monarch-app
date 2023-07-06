@@ -7,9 +7,7 @@ class EntityInterface(ABC):
     """Abstract interface for entities in the Monarch KG"""
 
     @abstractmethod
-    def get_entity(
-        self, id: str, get_association_counts: bool = False, get_hierarchy: bool = False
-    ) -> Entity:
+    def get_entity(self, id: str, get_association_counts: bool = False, get_hierarchy: bool = False) -> Entity:
         """Retrieve a specific entity by exact ID match, with optional extras
 
         Args:
