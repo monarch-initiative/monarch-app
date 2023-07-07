@@ -3,9 +3,8 @@ import re
 from typing import List
 
 import yaml
-from pydantic import parse_obj_as
-
 from monarch_py.datamodels.model import AssociationTypeMapping
+from pydantic import parse_obj_as
 
 
 class AssociationTypeMappings:
@@ -13,9 +12,7 @@ class AssociationTypeMappings:
 
     def __init__(self):
         if AssociationTypeMappings.__instance is not None:
-            raise Exception(
-                "AssociationTypeMappings is a singleton class, use getInstance() to get the instance."
-            )
+            raise Exception("AssociationTypeMappings is a singleton class, use getInstance() to get the instance.")
         else:
             AssociationTypeMappings.__instance = self
             self.mappings = None
@@ -35,9 +32,7 @@ class AssociationTypeMappings:
                 return mapping
 
     def load_mappings(self):
-        mapping_data = pkgutil.get_data(
-            __package__, "../association_type_mappings.yaml"
-        )
+        mapping_data = pkgutil.get_data(__package__, "../association_type_mappings.yaml")
         mapping_data = yaml.load(mapping_data, Loader=yaml.FullLoader)
         self.mappings = parse_obj_as(List[AssociationTypeMapping], mapping_data)
 
@@ -57,19 +52,13 @@ def get_association_type_mapping_by_query_string(
     categories = parse_query_string_for_category(query_string)
 
     matching_types = [
-        a_type
-        for a_type in AssociationTypeMappings.get_mappings()
-        if set(a_type.category) == set(categories)
+        a_type for a_type in AssociationTypeMappings.get_mappings() if set(a_type.category) == set(categories)
     ]
 
     if len(matching_types) == 0:
-        raise ValueError(
-            f"No matching association type found for query string: [{query_string}]"
-        )
+        raise ValueError(f"No matching association type found for query string: [{query_string}]")
     elif len(matching_types) > 1:
-        raise ValueError(
-            f"Too many association types found for query string: [{query_string}]"
-        )
+        raise ValueError(f"Too many association types found for query string: [{query_string}]")
     else:
         return matching_types[0]
 

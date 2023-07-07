@@ -1,5 +1,4 @@
 import pytest
-
 from monarch_py.implementations.sql.sql_implementation import SQLImplementation
 
 pytestmark = pytest.mark.skip("all tests still WIP")

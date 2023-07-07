@@ -3,9 +3,7 @@ from monarch_py.api.additional_models import PaginationParams
 from monarch_py.api.utils.get_similarity import *
 from oaklib.cli import _shorthand_to_pred_curie
 
-router = APIRouter(
-    prefix="/api/semsim", tags=["semsim"], responses={404: {"description": "Not Found"}}
-)
+router = APIRouter(prefix="/api/semsim", tags=["semsim"], responses={404: {"description": "Not Found"}})
 
 
 @router.get("/semsim/{subjlist}/{objlist}")

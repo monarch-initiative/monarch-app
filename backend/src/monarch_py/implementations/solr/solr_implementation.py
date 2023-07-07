@@ -3,8 +3,6 @@ from dataclasses import dataclass
 from typing import Dict, List
 
 from loguru import logger
-from pydantic import ValidationError
-
 from monarch_py.datamodels.model import (
     Association,
     AssociationCount,
@@ -33,6 +31,7 @@ from monarch_py.utils.association_type_utils import (
     get_solr_query_fragment,
 )
 from monarch_py.utils.utils import escape
+from pydantic import ValidationError
 
 
 @dataclass
@@ -68,20 +67,13 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
             mode_of_inheritance_associations = self.get_associations(
                 subject=id, predicate="biolink:has_mode_of_inheritance", offset=0
             )
-            if (
-                mode_of_inheritance_associations is not None
-                and len(mode_of_inheritance_associations.items) == 1
-            ):
-                node.inheritance = self._get_associated_entity(
-                    mode_of_inheritance_associations.items[0], node
-                )
+            if mode_of_inheritance_associations is not None and len(mode_of_inheritance_associations.items) == 1:
+                node.inheritance = self._get_associated_entity(mode_of_inheritance_associations.items[0], node)
         node.node_hierarchy = self._get_node_hierarchy(node)
         node.association_counts = self.get_association_counts(id)
         return node
 
-    def _get_associated_entity(
-        self, association: Association, this_entity: Entity
-    ) -> Entity:
+    def _get_associated_entity(self, association: Association, this_entity: Entity) -> Entity:
         """Returns the id, name, and category of the other Entity in an Association given this_entity"""
         if this_entity.id in association.subject_closure:
             entity = Entity(
@@ -96,9 +88,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
                 category=association.subject_category,
             )
         else:
-            raise ValueError(
-                f"Association does not contain this_entity: {this_entity.id}"
-            )
+            raise ValueError(f"Association does not contain this_entity: {this_entity.id}")
 
         return entity
 
@@ -145,15 +135,9 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
             NodeHierarchy: A NodeHierarchy object
         """
 
-        super_classes = self._get_associated_entities(
-            entity, subject=entity.id, predicate="biolink:subclass_of"
-        )
-        equivalent_classes = self._get_associated_entities(
-            entity, entity=entity.id, predicate="biolink:same_as"
-        )
-        sub_classes = self._get_associated_entities(
-            entity, object=entity.id, predicate="biolink:subclass_of"
-        )
+        super_classes = self._get_associated_entities(entity, subject=entity.id, predicate="biolink:subclass_of")
+        equivalent_classes = self._get_associated_entities(entity, entity=entity.id, predicate="biolink:same_as")
+        sub_classes = self._get_associated_entities(entity, object=entity.id, predicate="biolink:subclass_of")
 
         return NodeHierarchy(
             super_classes=super_classes,
@@ -222,9 +206,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
                 logger.error(f"Validation error for {doc}")
                 raise
 
-        results = AssociationResults(
-            items=associations, limit=limit, offset=offset, total=total
-        )
+        results = AssociationResults(items=associations, limit=limit, offset=offset, total=total)
 
         return results
 
@@ -254,34 +236,19 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
             if direct:
                 query.add_field_filter_query("subject", " OR ".join(subject))
             else:
-                query.add_filter_query(
-                    " OR ".join(
-                        [f'subject:"{s}" OR subject_closure:"{s}"' for s in subject]
-                    )
-                )
+                query.add_filter_query(" OR ".join([f'subject:"{s}" OR subject_closure:"{s}"' for s in subject]))
         if subject_closure:
             query.add_field_filter_query("subject_closure", subject_closure)
         if object:
             if direct:
                 query.add_field_filter_query("object", " OR ".join(object))
             else:
-                query.add_filter_query(
-                    " OR ".join(
-                        [f'object:"{o}" OR object_closure:"{o}"' for o in object]
-                    )
-                )
+                query.add_filter_query(" OR ".join([f'object:"{o}" OR object_closure:"{o}"' for o in object]))
         if object_closure:
             query.add_field_filter_query("object_closure", object_closure)
         if entity:
             if direct:
-                query.add_filter_query(
-                    " OR ".join(
-                        [
-                            f'subject:"{escape(e)}" OR object:"{escape(e)}"'
-                            for e in entity
-                        ]
-                    )
-                )
+                query.add_filter_query(" OR ".join([f'subject:"{escape(e)}" OR object:"{escape(e)}"' for e in entity]))
             else:
                 query.add_filter_query(
                     " OR ".join(
@@ -374,12 +341,8 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
             offset=offset,
             total=total,
             items=items,
-            facet_fields=self._convert_facet_fields(
-                query_result.facet_counts.facet_fields
-            ),
-            facet_queries=self._convert_facet_queries(
-                query_result.facet_counts.facet_queries
-            ),
+            facet_fields=self._convert_facet_fields(query_result.facet_counts.facet_fields),
+            facet_queries=self._convert_facet_queries(query_result.facet_counts.facet_queries),
         )
 
         return results
@@ -468,12 +431,8 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
             offset=offset,
             total=total,
             items=[],
-            facet_fields=self._convert_facet_fields(
-                query_result.facet_counts.facet_fields
-            ),
-            facet_queries=self._convert_facet_queries(
-                query_result.facet_counts.facet_queries
-            ),
+            facet_fields=self._convert_facet_fields(query_result.facet_counts.facet_fields),
+            facet_queries=self._convert_facet_queries(query_result.facet_counts.facet_queries),
         )
 
     def get_histopheno(self, subject_closure: str = None) -> HistoPheno:
@@ -532,22 +491,16 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         for k, v in query_result.facet_counts.facet_queries.items():
             if v > 0:
                 if k.endswith(subject_query):
-                    original_query = (
-                        k.replace(f" {subject_query}", "").lstrip("(").rstrip(")")
-                    )
+                    original_query = k.replace(f" {subject_query}", "").lstrip("(").rstrip(")")
                     agm = get_association_type_mapping_by_query_string(original_query)
                     label = agm.object_label
                 elif k.endswith(object_query):
-                    original_query = (
-                        k.replace(f" {object_query}", "").lstrip("(").rstrip(")")
-                    )
+                    original_query = k.replace(f" {object_query}", "").lstrip("(").rstrip(")")
                     agm = get_association_type_mapping_by_query_string(original_query)
                     label = agm.subject_label
                     # always use forward for symmetric association types
                 else:
-                    raise ValueError(
-                        f"Unexpected facet query when building association counts: {k}"
-                    )
+                    raise ValueError(f"Unexpected facet query when building association counts: {k}")
                 # Symmetric associations need to be summed together, since both directions will be returned
                 # when searching for associations by type
                 if label in association_count_dict and agm.symmetric:
@@ -559,9 +512,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
                         category=agm.category,
                     )
 
-        association_counts: List[AssociationCount] = list(
-            association_count_dict.values()
-        )
+        association_counts: List[AssociationCount] = list(association_count_dict.values())
         return association_counts
 
     def get_association_table(
@@ -596,18 +547,13 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
                 logger.error(f"Validation error for {doc}")
                 raise
 
-        results = AssociationResults(
-            items=associations, limit=limit, offset=offset, total=total
-        )
+        results = AssociationResults(items=associations, limit=limit, offset=offset, total=total)
 
         return results
 
-    def _get_association_direction(
-        self, entity: str, document: Dict
-    ) -> AssociationDirectionEnum:
+    def _get_association_direction(self, entity: str, document: Dict) -> AssociationDirectionEnum:
         if document.get("subject") == entity or (
-            document.get("subject_closure")
-            and entity in document.get("subject_closure")
+            document.get("subject_closure") and entity in document.get("subject_closure")
         ):
             direction = AssociationDirectionEnum.outgoing
         elif document.get("object") == entity or (
@@ -635,16 +581,12 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
             ff = FacetField(label=field)
             facet_list = solr_facet_fields[field]
             facet_dict = dict(zip(facet_list[::2], facet_list[1::2]))
-            ff.facet_values = [
-                FacetValue(label=k, count=v) for k, v in facet_dict.items()
-            ]
+            ff.facet_values = [FacetValue(label=k, count=v) for k, v in facet_dict.items()]
             facet_fields.append(ff)
 
         return facet_fields
 
-    def _convert_facet_queries(
-        self, solr_facet_queries: Dict[str, int]
-    ) -> List[FacetValue]:
+    def _convert_facet_queries(self, solr_facet_queries: Dict[str, int]) -> List[FacetValue]:
         """
         Converts a list of raw solr facet queries from the solr response to a list of
         FacetValue instances
@@ -656,9 +598,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
             List[FacetValue]: A list of FacetValue instances
         """
 
-        facet_values = [
-            FacetValue(label=k, count=v) for k, v in solr_facet_queries.items()
-        ]
+        facet_values = [FacetValue(label=k, count=v) for k, v in solr_facet_queries.items()]
         return facet_values
 
     def solr_is_available(self):

@@ -2,7 +2,6 @@ import urllib
 from typing import List
 
 import pytest
-
 from monarch_py.datamodels.solr import SolrQuery
 
 

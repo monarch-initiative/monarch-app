@@ -1,11 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from monarch_py.datamodels.model import (
-    AssociationTableResults,
-    FacetValue,
-    SearchResults,
-)
+from monarch_py.datamodels.model import AssociationTableResults, FacetValue, SearchResults
 
 
 class SearchInterface(ABC):

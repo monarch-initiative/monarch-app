@@ -1,5 +1,4 @@
 import pytest
-
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
 pytestmark = pytest.mark.skipif(

@@ -66,7 +66,10 @@ export const request = async <Response>(
       response ? "📞 Request (cached)" : "📞 Request (new)",
       endpoint
     );
-    console.info({ params, options, request });
+    console.info("Url", url);
+    console.info("Params", params);
+    console.info("Options", options);
+    console.info("Request", request);
     console.groupEnd();
   }
 
@@ -103,7 +106,9 @@ export const request = async <Response>(
   /** log details for debugging (except don't clutter logs when running tests) */
   if (mode !== "test") {
     console.groupCollapsed("📣 Response", endpoint);
-    console.info({ parsed, response });
+    console.info("Url", url);
+    console.info("Parsed", parsed);
+    console.info("Response", response);
     console.groupEnd();
   }
 

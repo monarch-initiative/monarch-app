@@ -60,8 +60,8 @@ function onBlur() {
 
 /** when user types in box */
 function onInput() {
-  emit("update:modelValue", input.value.value);
-  onDebounce(input.value.value);
+  emit("update:modelValue", input.value?.value);
+  onDebounce(input.value?.value);
 }
 
 /** when user types in box, after some delay */
@@ -71,7 +71,7 @@ const onDebounce = debounce(function (value: string) {
 
 /** when user "commits" change (pressing enter, blurring, etc) */
 async function onChange() {
-  emit("change", input.value.value);
+  emit("change", input.value?.value);
 }
 
 /** allow parent to access ref */

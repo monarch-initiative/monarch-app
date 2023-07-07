@@ -2,9 +2,8 @@ import urllib
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
-from pydantic import BaseModel, Field
-
 from monarch_py.utils.utils import escape
+from pydantic import BaseModel, Field
 
 
 class core(Enum):
@@ -66,11 +65,7 @@ class SolrQuery(BaseModel):
 
     def query_string(self):
         return urllib.parse.urlencode(
-            {
-                self._solrize(k): self._solrize(v)
-                for k, v in self.dict().items()
-                if v is not None
-            },
+            {self._solrize(k): self._solrize(v) for k, v in self.dict().items() if v is not None},
             doseq=True,
         )
 
