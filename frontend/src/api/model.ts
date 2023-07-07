@@ -235,7 +235,6 @@ export interface DirectionalAssociation extends Association {
     stage_qualifier_closure?: string[],
     /** Field containing stage_qualifier name and the names of all of it's ancestors */
     stage_qualifier_closure_label?: string[],
-    evidence_count?: number;
 };
 /**
  * Represents an Entity in the Monarch KG data model

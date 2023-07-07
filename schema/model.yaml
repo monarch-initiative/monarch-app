@@ -151,6 +151,7 @@ classes:
     - id
     - category
     - name
+    - full_name
     - description
     - xref
     - provided_by
@@ -275,6 +276,9 @@ slots:
     multivalued: true
     range: FacetValue
   frequency_qualifier:
+    range: string
+  full_name:
+    description: The long form name of an entity
     range: string
   has_evidence:
     range: string
