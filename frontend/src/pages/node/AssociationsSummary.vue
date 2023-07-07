@@ -22,17 +22,23 @@
       class="result"
     >
       <AppFlex direction="col" h-align="left" gap="small" class="details">
-        <!-- primary result info -->
-        <div class="title">
-          <AppNodeBadge :node="association.this_node" :link="false" />&nbsp;
-          <AppPredicateBadge :association="association" />&nbsp;
-          <AppNodeBadge :node="association.other_node" />
-        </div>
-
-        <!-- secondary result info -->
-        <div class="secondary">
-          <span>??? piece(s) of supporting evidence</span>
-        </div>
+        <AppNodeBadge
+          :node="{
+            id: association.subject,
+            name: association.subject_label,
+            category: association.subject_category,
+          }"
+          :link="node.id === association.object"
+        />
+        <AppPredicateBadge :association="association" :vertical="true" />
+        <AppNodeBadge
+          :node="{
+            id: association.object,
+            name: association.object_label,
+            category: association.object_category,
+          }"
+          :link="node.id === association.subject"
+        />
       </AppFlex>
 
       <AppButton
@@ -42,7 +48,7 @@
             : 'View supporting evidence for this association'
         "
         class="evidence"
-        text="Evidence"
+        :text="`Evidence (${association.evidence_count || 0})`"
         :aria-pressed="association.id === selectedAssociation?.id"
         :icon="association.id === selectedAssociation?.id ? 'check' : 'flask'"
         :color="
@@ -66,13 +72,14 @@ import type { DirectionalAssociation, Node } from "@/api/model";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
 import { useQuery } from "@/util/composables";
+import type { Option } from "@/components/AppSelectSingle.vue";
 
 type Props = {
   /** current node */
   node: Node;
   /** selected association category */
-  selectedCategory: string;
-  /** selected association id */
+  selectedCategory: Option;
+  /** selected association */
   selectedAssociation?: DirectionalAssociation;
 };
 
@@ -98,7 +105,7 @@ const {
       throw new Error("No association info available");
 
     /** get association data */
-    return await getTopAssociations(props.node.id, props.selectedCategory);
+    return await getTopAssociations(props.node.id, props.selectedCategory.id);
   },
 
   /** default value */
@@ -134,10 +141,6 @@ onMounted(getAssociations);
   width: 0;
   flex-grow: 1;
   text-align: left;
-}
-
-.secondary {
-  color: $gray;
 }
 
 .evidence {

@@ -35,7 +35,17 @@
       <template v-if="tab === 'summary'">
         <AssociationsSummary
           :node="node"
-          :selected-category="category.id"
+          :selected-category="category"
+          :selected-association="association"
+          @select="(value) => (association = value)"
+        />
+      </template>
+
+      <!-- table view of associations -->
+      <template v-if="tab === 'table'">
+        <AssociationsTable
+          :node="node"
+          :selected-category="category"
           :selected-association="association"
           @select="(value) => (association = value)"
         />
@@ -53,6 +63,7 @@ import type { Option, Options } from "@/components/AppSelectSingle.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import AppTabs from "@/components/AppTabs.vue";
 import AssociationsSummary from "@/pages/node/AssociationsSummary.vue";
+import AssociationsTable from "@/pages/node/AssociationsTable.vue";
 
 /** route info */
 const route = useRoute();
