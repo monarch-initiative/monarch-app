@@ -48,9 +48,7 @@ def _association_table(
         example="biolink:DiseaseToPhenotypicFeatureAssociation",
         title="Type of association to retrieve association table data for",
     ),
-    query: str = Query(
-        None, example="thumb", title="Query string to limit results to a subset"
-    ),
+    query: str = Query(None, example="thumb", title="Query string to limit results to a subset"),
 ) -> AssociationTableResults:
     """
     Retrieves association table data for a given entity and association type

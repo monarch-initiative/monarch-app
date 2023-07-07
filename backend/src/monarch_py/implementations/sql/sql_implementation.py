@@ -3,18 +3,11 @@ from typing import List
 
 import pystow
 from loguru import logger
-from pydantic import ValidationError
-
-from monarch_py.datamodels.model import (
-    Association,
-    AssociationResults,
-    Entity,
-    Node,
-    NodeHierarchy,
-)
+from monarch_py.datamodels.model import Association, AssociationResults, Entity, Node, NodeHierarchy
 from monarch_py.interfaces.association_interface import AssociationInterface
 from monarch_py.interfaces.entity_interface import EntityInterface
 from monarch_py.utils.utils import SQL_DATA_URL, dict_factory
+from pydantic import ValidationError
 
 monarchstow = pystow.module("monarch")
 
@@ -39,9 +32,7 @@ class SQLImplementation(EntityInterface, AssociationInterface):
             Entity: Dataclass representing results of an entity search.
         """
 
-        with monarchstow.ensure_open_sqlite_gz(
-            "sql", url=SQL_DATA_URL, force=update
-        ) as db:
+        with monarchstow.ensure_open_sqlite_gz("sql", url=SQL_DATA_URL, force=update) as db:
             db.row_factory = dict_factory
             cur = db.cursor()
             sql_data = cur.execute(f"SELECT * FROM nodes WHERE id = '{id}'").fetchone()
@@ -50,9 +41,7 @@ class SQLImplementation(EntityInterface, AssociationInterface):
             return None
         results = {
             "id": sql_data["id"],
-            "category": sql_data[
-                "category"
-            ],  # .split("|"), # This will become a list in the future
+            "category": sql_data["category"],  # .split("|"), # This will become a list in the future
             "name": sql_data["name"],
             "description": sql_data["description"],
             "xref": sql_data["xref"].split("|"),
@@ -82,41 +71,28 @@ class SQLImplementation(EntityInterface, AssociationInterface):
             mode_of_inheritance_associations = self.get_associations(
                 subject=id, predicate="biolink:has_mode_of_inheritance", offset=0
             )
-        if (
-            mode_of_inheritance_associations is not None
-            and len(mode_of_inheritance_associations.items) == 1
-        ):
-            node.inheritance = self._get_associated_entity(
-                mode_of_inheritance_associations.items[0], node
-            )
+        if mode_of_inheritance_associations is not None and len(mode_of_inheritance_associations.items) == 1:
+            node.inheritance = self._get_associated_entity(mode_of_inheritance_associations.items[0], node)
         node.node_hierarchy = self._get_node_hierarchy(node)
         ### SQL does not support association counts
         return node
 
-    def _get_associated_entity(
-        self, association: Association, this_entity: Entity
-    ) -> Entity:
+    def _get_associated_entity(self, association: Association, this_entity: Entity) -> Entity:
         """Returns the other Entity in an Association given this_entity"""
         if this_entity.id in association.subject_closure:
             entity = Entity(
                 id=association.object,
                 name=association.object_label,
-                category=association.object_category
-                if len(association.object_category) == 1
-                else [],
+                category=association.object_category if len(association.object_category) == 1 else [],
             )
         elif this_entity.id in association.object_closure:
             entity = Entity(
                 id=association.subject,
                 name=association.subject_label,
-                category=association.subject_category
-                if len(association.subject_category) == 1
-                else [],
+                category=association.subject_category if len(association.subject_category) == 1 else [],
             )
         else:
-            raise ValueError(
-                f"Association does not contain this_entity: {this_entity.id}"
-            )
+            raise ValueError(f"Association does not contain this_entity: {this_entity.id}")
 
         return entity
 
@@ -163,15 +139,9 @@ class SQLImplementation(EntityInterface, AssociationInterface):
             NodeHierarchy: A NodeHierarchy object
         """
 
-        super_classes = self._get_associated_entities(
-            entity, subject=entity.id, predicate="biolink:subclass_of"
-        )
-        equivalent_classes = self._get_associated_entities(
-            entity, entity=entity.id, predicate="biolink:same_as"
-        )
-        sub_classes = self._get_associated_entities(
-            entity, object=entity.id, predicate="biolink:subclass_of"
-        )
+        super_classes = self._get_associated_entities(entity, subject=entity.id, predicate="biolink:subclass_of")
+        equivalent_classes = self._get_associated_entities(entity, entity=entity.id, predicate="biolink:same_as")
+        sub_classes = self._get_associated_entities(entity, object=entity.id, predicate="biolink:subclass_of")
 
         return NodeHierarchy(
             super_classes=super_classes,
@@ -221,37 +191,21 @@ class SQLImplementation(EntityInterface, AssociationInterface):
             if direct:
                 clauses.append(" OR ".join([f"subject = '{s}'" for s in subject]))
             else:
-                clauses.append(
-                    " OR ".join(
-                        [
-                            f"subject = '{s}' OR subject_closure like '%{s}%'"
-                            for s in subject
-                        ]
-                    )
-                )
+                clauses.append(" OR ".join([f"subject = '{s}' OR subject_closure like '%{s}%'" for s in subject]))
         if predicate:
             clauses.append(" OR ".join([f"predicate = '{p}'" for p in predicate]))
         if object:
             if direct:
                 clauses.append(" OR ".join([f"object = '{o}'" for o in object]))
             else:
-                clauses.append(
-                    " OR ".join(
-                        [
-                            f"object = '{o}' OR object_closure like '%{o}%'"
-                            for o in object
-                        ]
-                    )
-                )
+                clauses.append(" OR ".join([f"object = '{o}' OR object_closure like '%{o}%'" for o in object]))
         if subject_closure:
             clauses.append(f"subject_closure like '%{subject_closure}%'")
         if object_closure:
             clauses.append(f"object_closure like '%{object_closure}%'")
         if entity:
             if direct:
-                clauses.append(
-                    " OR ".join([f"subject = '{e}' OR object = '{e}'" for e in entity])
-                )
+                clauses.append(" OR ".join([f"subject = '{e}' OR object = '{e}'" for e in entity]))
             else:
                 clauses.append(
                     " OR ".join(
@@ -287,9 +241,7 @@ class SQLImplementation(EntityInterface, AssociationInterface):
                 "predicate": row["predicate"],
                 "original_object": row["original_object"],
                 "category": row["category"],
-                "aggregator_knowledge_source": row["aggregator_knowledge_source"].split(
-                    "|"
-                ),
+                "aggregator_knowledge_source": row["aggregator_knowledge_source"].split("|"),
                 "primary_knowledge_source": row["primary_knowledge_source"].split("|"),
                 "publications": row["publications"].split("|"),
                 "qualifiers": row["qualifiers"].split("|"),
@@ -313,7 +265,5 @@ class SQLImplementation(EntityInterface, AssociationInterface):
                 logger.error(f"Validation error for {row}")
                 raise
 
-        results = AssociationResults(
-            items=associations, limit=limit, offset=offset, total=total
-        )
+        results = AssociationResults(items=associations, limit=limit, offset=offset, total=total)
         return results
