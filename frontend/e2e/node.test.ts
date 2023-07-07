@@ -157,7 +157,7 @@ test("Summary association info shows", async ({ page }) => {
 });
 
 test("Table association info shows", async ({ page }) => {
-  test.skip(true, "No fixture data yet");
+  test.skip(true, "Fixture data not stable yet");
 
   await page.goto("/node/MONDO:0007947");
 
@@ -183,7 +183,7 @@ test("Table association info shows", async ({ page }) => {
 });
 
 test("Association mode switching works", async ({ page }) => {
-  test.skip(true, "No fixture data yet");
+  test.skip(true, "Fixture data not stable yet");
 
   await page.goto("/node/MONDO:0007947");
   await expect(page).toHaveURL(/associations=phenotype/i);

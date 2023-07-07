@@ -4,9 +4,9 @@
 
 <template>
   <span class="predicate">
-    <AppIcon class="arrow" :icon="`arrow-${arrowDirection}-long`" />
-    {{ startCase(association.predicate.replace("biolink:", "")).toLowerCase() }}
-    <AppIcon class="arrow" :icon="`arrow-${arrowDirection}-long`" />
+    <AppIcon class="arrow" :icon="`arrow-${arrowDirection}`" />
+    {{ startCase(getCategoryLabel(association.predicate)).toLowerCase() }}
+    <AppIcon class="arrow" :icon="`arrow-${arrowDirection}`" />
   </span>
 </template>
 
@@ -14,6 +14,7 @@
 import { computed } from "vue";
 import { startCase } from "lodash";
 import type { DirectionalAssociation } from "@/api/model";
+import { getCategoryLabel } from "@/api/categories";
 
 type Props = {
   /** current predicate */
@@ -25,15 +26,7 @@ type Props = {
 const props = defineProps<Props>();
 
 /** direction of arrows */
-const arrowDirection = computed(() => {
-  if (props.vertical) {
-    if (props.association.direction === "outgoing") return "down";
-    else return "up";
-  } else {
-    if (props.association.direction === "outgoing") return "right";
-    else return "left";
-  }
-});
+const arrowDirection = computed(() => (props.vertical ? "down" : "right"));
 </script>
 
 <style lang="scss" scoped>

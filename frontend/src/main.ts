@@ -56,7 +56,7 @@ if (mode === "production")
 
 /** whether to mock api responses, based on env */
 const mock: { [key: string]: boolean } = {
-  development: true,
+  development: false,
   test: true,
   production: false,
 };

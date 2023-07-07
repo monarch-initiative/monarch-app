@@ -272,8 +272,8 @@ const {
       const options: { [key: string]: MultiOptions } = {};
       for (const facet of facets.value) {
         options[facet.label] =
-          facet.facet_values?.map((facet_value, index) => ({
-            id: String(index),
+          facet.facet_values?.map((facet_value) => ({
+            id: facet_value.label,
             ...facet_value,
           })) || [];
       }
