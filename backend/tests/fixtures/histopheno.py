@@ -6,9 +6,9 @@ def histopheno():
     return {
         "id": "MONDO:0020121",
         "items": [
-            {"label": "musculature", "count": 1751, "id": "HP:0003011"},
+            {"label": "musculature", "count": 1747, "id": "HP:0003011"},
             {"label": "nervous_system", "count": 1118, "id": "HP:0000707"},
-            {"label": "head_neck", "count": 574, "id": "HP:0000152"},
+            {"label": "head_neck", "count": 573, "id": "HP:0000152"},
             {"label": "skeletal_system", "count": 504, "id": "HP:0000924"},
             {"label": "respiratory", "count": 318, "id": "HP:0002086"},
             {"label": "eye", "count": 276, "id": "HP:0000478"},
