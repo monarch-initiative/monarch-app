@@ -77,7 +77,7 @@ install-frontend:
 model: install-backend	
 	$(RUN) gen-pydantic $(SCHEMADIR)/model.yaml > $(SCHEMADIR)/model.py
 	$(RUN) gen-typescript $(SCHEMADIR)/model.yaml > frontend/src/api/model.ts
-	$(RUN) black backend/src/monarch_py/datamodels/model.py
+	$(RUN) black $(SCHEMADIR)/model.py
 
 
 ### Documentation ###

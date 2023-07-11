@@ -19,7 +19,6 @@ export enum AssociationDirectionEnum {
 
 
 export interface Association {
-    aggregator_knowledge_source?: string[],
     id: string,
     subject: string,
     original_subject?: string,
@@ -47,6 +46,7 @@ export interface Association {
     /** Field containing object name and the names of all of it's ancestors */
     object_closure_label?: string[],
     primary_knowledge_source?: string[],
+    aggregator_knowledge_source?: string[],
     category?: string,
     negated?: boolean,
     provided_by?: string,
@@ -57,8 +57,9 @@ export interface Association {
     onset_qualifier?: string,
     sex_qualifier?: string,
     stage_qualifier?: string,
+    /** count of supporting documents, evidence codes, and sources supplying evidence */
+    evidence_count?: number,
     pathway?: string,
-    relation?: string,
     /** The name of the frequency_qualifier entity */
     frequency_qualifier_label?: string,
     /** The namespace/prefix of the frequency_qualifier entity */
@@ -155,7 +156,6 @@ export interface AssociationTypeMapping {
 export interface DirectionalAssociation extends Association {
     /** The directionality of the association relative to a given entity for an association_count. If the entity is the subject or in the subject closure, the direction is forwards, if it is the object or in the object closure, the direction is backwards. */
     direction: string,
-    aggregator_knowledge_source?: string[],
     id: string,
     subject: string,
     original_subject?: string,
@@ -183,6 +183,7 @@ export interface DirectionalAssociation extends Association {
     /** Field containing object name and the names of all of it's ancestors */
     object_closure_label?: string[],
     primary_knowledge_source?: string[],
+    aggregator_knowledge_source?: string[],
     category?: string,
     negated?: boolean,
     provided_by?: string,
@@ -193,8 +194,9 @@ export interface DirectionalAssociation extends Association {
     onset_qualifier?: string,
     sex_qualifier?: string,
     stage_qualifier?: string,
+    /** count of supporting documents, evidence codes, and sources supplying evidence */
+    evidence_count?: number,
     pathway?: string,
-    relation?: string,
     /** The name of the frequency_qualifier entity */
     frequency_qualifier_label?: string,
     /** The namespace/prefix of the frequency_qualifier entity */
@@ -235,7 +237,6 @@ export interface DirectionalAssociation extends Association {
     stage_qualifier_closure?: string[],
     /** Field containing stage_qualifier name and the names of all of it's ancestors */
     stage_qualifier_closure_label?: string[],
-    evidence_count?: number;
 };
 /**
  * Represents an Entity in the Monarch KG data model
@@ -244,6 +245,8 @@ export interface Entity {
     id: string,
     category?: string,
     name?: string,
+    /** The long form name of an entity */
+    full_name?: string,
     description?: string,
     xref?: string[],
     provided_by?: string,
@@ -304,6 +307,8 @@ export interface Node extends Entity {
     id: string,
     category?: string,
     name?: string,
+    /** The long form name of an entity */
+    full_name?: string,
     description?: string,
     xref?: string[],
     provided_by?: string,
@@ -333,6 +338,8 @@ export interface SearchResult extends Entity {
     id: string,
     category: string,
     name: string,
+    /** The long form name of an entity */
+    full_name?: string,
     description?: string,
     xref?: string[],
     provided_by?: string,

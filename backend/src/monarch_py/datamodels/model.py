@@ -46,7 +46,6 @@ class AssociationDirectionEnum(str, Enum):
 
 class Association(ConfiguredBaseModel):
 
-    aggregator_knowledge_source: Optional[List[str]] = Field(default_factory=list)
     id: str = Field(...)
     subject: str = Field(...)
     original_subject: Optional[str] = Field(None)
@@ -76,6 +75,7 @@ class Association(ConfiguredBaseModel):
         description="""Field containing object name and the names of all of it's ancestors""",
     )
     primary_knowledge_source: Optional[List[str]] = Field(default_factory=list)
+    aggregator_knowledge_source: Optional[List[str]] = Field(default_factory=list)
     category: Optional[str] = Field(None)
     negated: Optional[bool] = Field(None)
     provided_by: Optional[str] = Field(None)
@@ -86,8 +86,11 @@ class Association(ConfiguredBaseModel):
     onset_qualifier: Optional[str] = Field(None)
     sex_qualifier: Optional[str] = Field(None)
     stage_qualifier: Optional[str] = Field(None)
+    evidence_count: Optional[int] = Field(
+        None,
+        description="""count of supporting documents, evidence codes, and sources supplying evidence""",
+    )
     pathway: Optional[str] = Field(None)
-    relation: Optional[str] = Field(None)
     frequency_qualifier_label: Optional[str] = Field(None, description="""The name of the frequency_qualifier entity""")
     frequency_qualifier_namespace: Optional[str] = Field(
         None, description="""The namespace/prefix of the frequency_qualifier entity"""
@@ -187,7 +190,6 @@ class DirectionalAssociation(Association):
         ...,
         description="""The directionality of the association relative to a given entity for an association_count. If the entity is the subject or in the subject closure, the direction is forwards, if it is the object or in the object closure, the direction is backwards.""",
     )
-    aggregator_knowledge_source: Optional[List[str]] = Field(default_factory=list)
     id: str = Field(...)
     subject: str = Field(...)
     original_subject: Optional[str] = Field(None)
@@ -217,6 +219,7 @@ class DirectionalAssociation(Association):
         description="""Field containing object name and the names of all of it's ancestors""",
     )
     primary_knowledge_source: Optional[List[str]] = Field(default_factory=list)
+    aggregator_knowledge_source: Optional[List[str]] = Field(default_factory=list)
     category: Optional[str] = Field(None)
     negated: Optional[bool] = Field(None)
     provided_by: Optional[str] = Field(None)
@@ -227,8 +230,11 @@ class DirectionalAssociation(Association):
     onset_qualifier: Optional[str] = Field(None)
     sex_qualifier: Optional[str] = Field(None)
     stage_qualifier: Optional[str] = Field(None)
+    evidence_count: Optional[int] = Field(
+        None,
+        description="""count of supporting documents, evidence codes, and sources supplying evidence""",
+    )
     pathway: Optional[str] = Field(None)
-    relation: Optional[str] = Field(None)
     frequency_qualifier_label: Optional[str] = Field(None, description="""The name of the frequency_qualifier entity""")
     frequency_qualifier_namespace: Optional[str] = Field(
         None, description="""The namespace/prefix of the frequency_qualifier entity"""
@@ -293,6 +299,7 @@ class Entity(ConfiguredBaseModel):
     id: str = Field(...)
     category: Optional[str] = Field(None)
     name: Optional[str] = Field(None)
+    full_name: Optional[str] = Field(None, description="""The long form name of an entity""")
     description: Optional[str] = Field(None)
     xref: Optional[List[str]] = Field(default_factory=list)
     provided_by: Optional[str] = Field(None)
@@ -359,6 +366,7 @@ class Node(Entity):
     id: str = Field(...)
     category: Optional[str] = Field(None)
     name: Optional[str] = Field(None)
+    full_name: Optional[str] = Field(None, description="""The long form name of an entity""")
     description: Optional[str] = Field(None)
     xref: Optional[List[str]] = Field(default_factory=list)
     provided_by: Optional[str] = Field(None)
@@ -420,6 +428,7 @@ class SearchResult(Entity):
     id: str = Field(...)
     category: str = Field(...)
     name: str = Field(...)
+    full_name: Optional[str] = Field(None, description="""The long form name of an entity""")
     description: Optional[str] = Field(None)
     xref: Optional[List[str]] = Field(default_factory=list)
     provided_by: Optional[str] = Field(None)
