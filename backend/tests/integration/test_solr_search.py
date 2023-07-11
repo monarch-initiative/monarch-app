@@ -2,7 +2,6 @@ import pytest
 from monarch_py.datamodels.model import AssociationDirectionEnum
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
-
 pytestmark = pytest.mark.skipif(
     condition=not SolrImplementation().solr_is_available(),
     reason="Solr is not available",
@@ -133,7 +132,9 @@ def test_association_counts_for_phenotype():
     ][0]
     assert disease_phenotype.label == "Diseases"
 
-    gene_phenotype = [ac for ac in association_counts.items if ac.category == "biolink:GeneToPhenotypicFeatureAssociation"][0]
+    gene_phenotype = [
+        ac for ac in association_counts.items if ac.category == "biolink:GeneToPhenotypicFeatureAssociation"
+    ][0]
     assert gene_phenotype.label == "Genes"
 
 

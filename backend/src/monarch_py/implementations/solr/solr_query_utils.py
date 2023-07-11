@@ -1,11 +1,8 @@
 from typing import List
 
-from monarch_py.datamodels.solr import SolrQuery, HistoPhenoKeys
+from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQuery
+from monarch_py.utils.association_type_utils import AssociationTypeMappings, get_solr_query_fragment
 from monarch_py.utils.utils import escape
-from monarch_py.utils.association_type_utils import (
-    AssociationTypeMappings,
-    get_solr_query_fragment,
-)
 
 
 def build_association_query(
@@ -77,18 +74,15 @@ def build_association_counts_query(entity: str) -> SolrQuery:
         for agm in AssociationTypeMappings.get_mappings():
             association_type_query = get_solr_query_fragment(agm)
             facet_queries.append(f"({association_type_query}) {field_query}")
-    query = build_association_query(
-        entity = [entity],
-        facet_queries = facet_queries
-    )
+    query = build_association_query(entity=[entity], facet_queries=facet_queries)
     return query
 
 
 def build_histopheno_query(subject_closure: str) -> SolrQuery:
     query = build_association_query(
         subject_closure=subject_closure,
-        offset = 0,
-        limit = 0,
+        offset=0,
+        limit=0,
     )
     hpkeys = [i.value for i in HistoPhenoKeys]
     query.facet_queries = [f'object_closure:"{i}"' for i in hpkeys]
@@ -138,6 +132,7 @@ def build_autocomplete_query(q: str) -> SolrQuery:
 
 ### Search helper functions ###
 
+
 def entity_boost():
     """Shared boost function between search and autocomplete"""
     disease_boost = 'if(termfreq(category,"biolink:Disease"),10.0,1)'
@@ -151,4 +146,3 @@ def entity_query_fields():
     since the field list and boosts are currently the same
     """
     return "id^100 name^10 name_t^5 name_ac symbol^10 symbol_t^5 symbol_ac synonym synonym_t synonym_ac"
-

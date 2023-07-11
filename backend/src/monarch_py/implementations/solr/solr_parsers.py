@@ -1,29 +1,35 @@
 from typing import Dict, List
 
 from loguru import logger
-from pydantic import ValidationError
-
 from monarch_py.datamodels.model import (
-    Association, AssociationCount, AssociationCountList,
-    AssociationDirectionEnum, AssociationResults, DirectionalAssociation,
-    Entity, Node,
-    HistoBin, HistoPheno,
-    SearchResult, SearchResults,
-    FacetField, FacetValue,
+    Association,
+    AssociationCount,
+    AssociationCountList,
+    AssociationDirectionEnum,
+    AssociationResults,
+    DirectionalAssociation,
+    Entity,
+    FacetField,
+    FacetValue,
+    HistoBin,
+    HistoPheno,
+    SearchResult,
+    SearchResults,
 )
 from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQueryResult
 from monarch_py.utils.association_type_utils import get_association_type_mapping_by_query_string
-
+from pydantic import ValidationError
 
 ####################
 # Parser functions #
 ####################
 
+
 def parse_associations(
     query_result: SolrQueryResult,
     offset: int = 0,
     limit: int = 20,
-    ) -> AssociationResults :
+) -> AssociationResults:
     associations = []
     for doc in query_result.response.docs:
         try:
@@ -33,12 +39,7 @@ def parse_associations(
             logger.error(f"Validation error for {doc}")
             raise
     total = query_result.response.num_found
-    return AssociationResults(
-        items=associations,
-        limit=limit,
-        offset=offset,
-        total=total
-    )
+    return AssociationResults(items=associations, limit=limit, offset=offset, total=total)
 
 
 def parse_association_counts(query_result: SolrQueryResult, entity: str) -> AssociationCountList:
@@ -85,7 +86,7 @@ def parse_association_table(
     entity: str,
     offset: int,
     limit: int,
-    ) -> AssociationResults:
+) -> AssociationResults:
     total = query_result.response.num_found
     associations: List[DirectionalAssociation] = []
     for doc in query_result.response.docs:
@@ -100,10 +101,7 @@ def parse_association_table(
     return results
 
 
-def parse_histopheno(
-    query_result: SolrQueryResult, 
-    subject_closure: str
-    ) -> HistoPheno:
+def parse_histopheno(query_result: SolrQueryResult, subject_closure: str) -> HistoPheno:
     """Parse a SolrQueryResult into a HistoPheno object"""
     bins = []
     for k, v in query_result.facet_counts.facet_queries.items():
@@ -132,12 +130,7 @@ def parse_search(
     facet_fields = convert_facet_fields(query_result.facet_counts.facet_fields)
     facet_queries = convert_facet_queries(query_result.facet_counts.facet_queries)
     return SearchResults(
-        limit=limit,
-        offset=offset,
-        total=total,
-        items=items,
-        facet_fields=facet_fields,
-        facet_queries=facet_queries
+        limit=limit, offset=offset, total=total, items=items, facet_fields=facet_fields, facet_queries=facet_queries
     )
 
 
@@ -157,6 +150,7 @@ def parse_autocomplete(query_result: SolrQueryResult) -> SearchResults:
 ##################
 # Parser Helpers #
 ##################
+
 
 def convert_facet_fields(solr_facet_fields: Dict) -> List[FacetField]:
     """Converts list of raw Solr facet fields FacetField instances"""
@@ -187,4 +181,3 @@ def get_association_direction(entity: str, document: Dict) -> AssociationDirecti
     else:
         raise ValueError(f"Entity {entity} not found in association {document}")
     return direction
-

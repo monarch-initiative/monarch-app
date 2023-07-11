@@ -1,6 +1,5 @@
 import pytest
-
-from monarch_py.datamodels.model import Entity, Association
+from monarch_py.datamodels.model import Association, Entity
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
 
@@ -25,7 +24,7 @@ from monarch_py.implementations.solr.solr_implementation import SolrImplementati
             subject_label="Test Case 2",
             predicate="ASSOC:0000002",
         ),
-    ]
+    ],
 )
 def test_get_associated_entity(association):
     """Test that the get_associated_entity function returns the correct entity"""
@@ -41,6 +40,6 @@ def test_get_associated_entity(association):
     )
     si = SolrImplementation()
     associated_entity = si._get_associated_entity(association, entity_1)
-    assert associated_entity == entity_2, \
-        f"Associated entity is not as expected. Expected: {entity_2}, got: {associated_entity}"
-
+    assert (
+        associated_entity == entity_2
+    ), f"Associated entity is not as expected. Expected: {entity_2}, got: {associated_entity}"

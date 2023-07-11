@@ -1,12 +1,11 @@
 import pytest
-
 from monarch_py.datamodels.model import Node
 from monarch_py.implementations.solr.solr_query_utils import (
-    build_association_query, 
     build_association_counts_query,
+    build_association_query,
     build_autocomplete_query,
-    build_histopheno_query, 
-    build_search_query, 
+    build_histopheno_query,
+    build_search_query,
 )
 from monarch_py.utils.utils import compare_dicts, dict_diff
 
@@ -16,9 +15,9 @@ from monarch_py.utils.utils import compare_dicts, dict_diff
     [
         (True, None, None),
         (False, None, None),
-        (None, ['category', 'predicate'], ['category:DiseaseToPhenotypicFeatureAssociation']),
-        (None, ['category', 'predicate'], ['category:DiseaseToPhenotypicFeatureAssociation'])
-    ]
+        (None, ["category", "predicate"], ["category:DiseaseToPhenotypicFeatureAssociation"]),
+        (None, ["category", "predicate"], ["category:DiseaseToPhenotypicFeatureAssociation"]),
+    ],
 )
 def test_build_association_query(
     direct,
@@ -27,12 +26,12 @@ def test_build_association_query(
     association_query_params,
     association_query_direct,
     association_query_indirect,
-    ):
+):
     query = build_association_query(
-        **association_query_params, 
-        direct = direct,
-        facet_fields = facet_fields,
-        facet_queries = facet_queries,
+        **association_query_params,
+        direct=direct,
+        facet_fields=facet_fields,
+        facet_queries=facet_queries,
     ).dict()
     expected = association_query_direct if direct else association_query_indirect
     if facet_fields:
