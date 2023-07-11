@@ -20,10 +20,10 @@ def test_parse_associations(association_results, associations):
         f"Parsed result is not as expected. Difference: {dict_diff(parsed.dict(), associations)}"
 
 
-def test_parse_association_counts(association_counts_results, association_counts):
+def test_parse_association_counts(association_counts_results, association_counts, node):
     association_counts_results["response"]["numFound"] = association_counts_results["response"].pop("num_found")
     solr_response = SolrQueryResult(**association_counts_results)
-    parsed = parse_associations(solr_response)
+    parsed = parse_association_counts(solr_response, entity=Node(**node).id)
     assert parsed == association_counts, \
         f"Parsed result is not as expected. Difference: {dict_diff(parsed.dict(), association_counts)}"
 
