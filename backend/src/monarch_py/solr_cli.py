@@ -291,8 +291,7 @@ def association_counts(
         raise typer.Exit(1)
     data = get_solr(update=False)
     response = data.get_association_counts(entity)
-    counts = AssociationCountList(items=response)
-    format_output(fmt, counts, output)
+    format_output(fmt, response, output)
 
 
 @solr_app.command("association-table")

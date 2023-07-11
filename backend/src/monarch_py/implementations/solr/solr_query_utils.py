@@ -2,6 +2,11 @@ from typing import List
 
 from monarch_py.datamodels.solr import SolrQuery, HistoPhenoKeys
 from monarch_py.utils.utils import escape
+from monarch_py.utils.association_type_utils import (
+    AssociationTypeMappings,
+    get_solr_query_fragment,
+)
+
 
 def build_association_query(
     category: List[str] = None,
@@ -59,6 +64,24 @@ def build_association_query(
     return query
 
 
+def build_association_counts_query(entity: str) -> SolrQuery:
+    query = build_association_query(
+        entity=[entity],
+
+    )
+    facet_queries = []
+    subject_query = f'AND (subject:"{entity}" OR subject_closure:"{entity}")'
+    object_query = f'AND (object:"{entity}" OR object_closure:"{entity}")'
+    # Run the same facet_queries constrained to matches against either the subject or object
+    # to know which kind of label will be needed in the UI to refer to the opposite side of the association
+    for field_query in [subject_query, object_query]:
+        for agm in AssociationTypeMappings.get_mappings():
+            association_type_query = get_solr_query_fragment(agm)
+            facet_queries.append(f"({association_type_query}) {field_query}")
+    query.facet_queries = facet_queries
+    return query
+
+
 def build_histopheno_query(subject_closure: str) -> SolrQuery:
     """Get SolrQueryResult for a histopheno query"""
     query = build_association_query(
@@ -69,3 +92,62 @@ def build_histopheno_query(subject_closure: str) -> SolrQuery:
     hpkeys = [i.value for i in HistoPhenoKeys]
     query.facet_queries = [f'object_closure:"{i}"' for i in hpkeys]
     return query
+
+
+def build_search_query(
+    q: str = "*:*",
+    offset: int = 0,
+    limit: int = 20,
+    category: List[str] = None,
+    in_taxon: List[str] = None,
+    facet_fields: List[str] = None,
+    facet_queries: List[str] = None,
+    filter_queries: List[str] = None,
+    sort: str = None,
+) -> SolrQuery:
+    query = SolrQuery(start=offset, rows=limit, sort=sort)
+    query.q = q
+    query.def_type = "edismax"
+    query.query_fields = entity_query_fields()
+    query.boost = entity_boost()
+    if category:
+        query.add_filter_query(" OR ".join(f'category:"{cat}"' for cat in category))
+    if in_taxon:
+        query.add_filter_query(" OR ".join([f'in_taxon:"{t}"' for t in in_taxon]))
+    if facet_fields:
+        query.facet_fields = facet_fields
+    if facet_queries:
+        query.facet_queries = facet_queries
+    if filter_queries:
+        query.filter_queries.extend(filter_queries)
+    # Filter out entities that don't have names (required field, but some don't have them)
+    query.add_filter_query("name:*")
+    return query
+
+
+def build_autocomplete_query(q: str) -> SolrQuery:
+    query = SolrQuery(q=q, limit=10, offset=0)
+    query.q = q
+    # match the query fields to start with
+    query.query_fields = entity_query_fields()
+    query.def_type = "edismax"
+    query.boost = entity_boost()
+    return query
+
+
+### Search helper functions ###
+
+def entity_boost():
+    """Shared boost function between search and autocomplete"""
+    disease_boost = 'if(termfreq(category,"biolink:Disease"),10.0,1)'
+    human_gene_boost = 'if(and(termfreq(in_taxon,"NCBITaxon:9606"),termfreq(category,"biolink:Gene")),5.0,1)'
+    return f"product({disease_boost},{human_gene_boost})"
+
+
+def entity_query_fields():
+    """
+    Shared query field list between search and autocomplete,
+    since the field list and boosts are currently the same
+    """
+    return "id^100 name^10 name_t^5 name_ac symbol^10 symbol_t^5 symbol_ac synonym synonym_t synonym_ac"
+

@@ -39,6 +39,11 @@ def dict_factory(cursor, row):
     return {key: value for key, value in zip(fields, row)}
 
 
+def compare_dicts(dict1, dict2):
+    """Compare two dictionaries"""
+    return all([k in dict2 for k in dict1]) and all([dict1[k] == dict2[k] for k in dict2])
+
+
 def dict_diff(d1, d2):
     """Return the difference between two dictionaries"""
     difference = {}
