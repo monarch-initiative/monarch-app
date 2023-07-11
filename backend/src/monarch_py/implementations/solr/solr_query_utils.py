@@ -18,13 +18,13 @@ def build_association_query(
     entity: List[str] = None,
     direct: bool = None,
     q: str = None,
+    facet_fields: List[str] = None,
+    facet_queries: List[str] = None,
     offset: int = 0,
     limit: int = 20,
 ) -> SolrQuery:
     """Populate a SolrQuery object with association filters"""
-
     query = SolrQuery(start=offset, rows=limit)
-
     if category:
         query.add_field_filter_query("category", " OR ".join(category))
     if predicate:
@@ -60,30 +60,31 @@ def build_association_query(
         # the visible fields in an association table plus their ID equivalents and use a wildcard query for substring matching
         query.q = f"*{q}*"
         query.query_fields = "subject subject_label predicate object object_label"
-
+    if facet_fields:
+        query.facet_fields = facet_fields
+    if facet_queries:
+        query.facet_queries = facet_queries
     return query
 
 
 def build_association_counts_query(entity: str) -> SolrQuery:
-    query = build_association_query(
-        entity=[entity],
-
-    )
-    facet_queries = []
     subject_query = f'AND (subject:"{entity}" OR subject_closure:"{entity}")'
     object_query = f'AND (object:"{entity}" OR object_closure:"{entity}")'
     # Run the same facet_queries constrained to matches against either the subject or object
     # to know which kind of label will be needed in the UI to refer to the opposite side of the association
+    facet_queries = []
     for field_query in [subject_query, object_query]:
         for agm in AssociationTypeMappings.get_mappings():
             association_type_query = get_solr_query_fragment(agm)
             facet_queries.append(f"({association_type_query}) {field_query}")
-    query.facet_queries = facet_queries
+    query = build_association_query(
+        entity = [entity],
+        facet_queries = facet_queries
+    )
     return query
 
 
 def build_histopheno_query(subject_closure: str) -> SolrQuery:
-    """Get SolrQueryResult for a histopheno query"""
     query = build_association_query(
         subject_closure=subject_closure,
         offset = 0,

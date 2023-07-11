@@ -2,33 +2,11 @@ import pytest
 
 
 @pytest.fixture
-def association_counts_results():
+def association_response():
     return {
         "responseHeader": {
             "QTime": 0,
             "params": {
-                "facet.query": [
-                    '(category:"biolink:DiseaseToPhenotypicFeatureAssociation") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")',
-                    '(category:"biolink:GeneToPhenotypicFeatureAssociation") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")',
-                    '(category:"biolink:PairwiseGeneToGeneInteraction") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")',
-                    '(category:"biolink:GeneToPathwayAssociation") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")',
-                    '(category:"biolink:GeneToExpressionSiteAssociation") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")',
-                    '(category:"biolink:GeneToGeneHomologyAssociation") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")',
-                    '(category:"biolink:ChemicalToPathwayAssociation") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")',
-                    '(category:"biolink:MacromolecularMachineToMolecularActivityAssociation") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")',
-                    '(category:"biolink:CausalGeneToDiseaseAssociation") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")',
-                    '(category:"biolink:CorrelatedGeneToDiseaseAssociation") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")',
-                    '(category:"biolink:DiseaseToPhenotypicFeatureAssociation") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121")',
-                    '(category:"biolink:GeneToPhenotypicFeatureAssociation") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121")',
-                    '(category:"biolink:PairwiseGeneToGeneInteraction") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121")',
-                    '(category:"biolink:GeneToPathwayAssociation") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121")',
-                    '(category:"biolink:GeneToExpressionSiteAssociation") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121")',
-                    '(category:"biolink:GeneToGeneHomologyAssociation") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121")',
-                    '(category:"biolink:ChemicalToPathwayAssociation") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121")',
-                    '(category:"biolink:MacromolecularMachineToMolecularActivityAssociation") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121")',
-                    '(category:"biolink:CausalGeneToDiseaseAssociation") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121")',
-                    '(category:"biolink:CorrelatedGeneToDiseaseAssociation") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121")',
-                ],
                 "mm": "100%",
                 "q": "*:*",
                 "defType": "edismax",
@@ -3660,29 +3638,5 @@ def association_counts_results():
                 },
             ],
         },
-        "facet_counts": {
-            "facet_fields": {},
-            "facet_queries": {
-                '(category:"biolink:DiseaseToPhenotypicFeatureAssociation") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")': 4011,
-                '(category:"biolink:GeneToPhenotypicFeatureAssociation") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")': 0,
-                '(category:"biolink:PairwiseGeneToGeneInteraction") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")': 0,
-                '(category:"biolink:GeneToPathwayAssociation") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")': 0,
-                '(category:"biolink:GeneToExpressionSiteAssociation") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")': 0,
-                '(category:"biolink:GeneToGeneHomologyAssociation") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")': 0,
-                '(category:"biolink:ChemicalToPathwayAssociation") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")': 0,
-                '(category:"biolink:MacromolecularMachineToMolecularActivityAssociation") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")': 0,
-                '(category:"biolink:CausalGeneToDiseaseAssociation") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")': 0,
-                '(category:"biolink:CorrelatedGeneToDiseaseAssociation") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")': 0,
-                '(category:"biolink:DiseaseToPhenotypicFeatureAssociation") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121")': 0,
-                '(category:"biolink:GeneToPhenotypicFeatureAssociation") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121")': 0,
-                '(category:"biolink:PairwiseGeneToGeneInteraction") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121")': 0,
-                '(category:"biolink:GeneToPathwayAssociation") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121")': 0,
-                '(category:"biolink:GeneToExpressionSiteAssociation") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121")': 0,
-                '(category:"biolink:GeneToGeneHomologyAssociation") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121")': 0,
-                '(category:"biolink:ChemicalToPathwayAssociation") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121")': 0,
-                '(category:"biolink:MacromolecularMachineToMolecularActivityAssociation") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121")': 0,
-                '(category:"biolink:CausalGeneToDiseaseAssociation") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121")': 121,
-                '(category:"biolink:CorrelatedGeneToDiseaseAssociation") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121")': 147,
-            },
-        },
+        "facet_counts": {"facet_fields": {}, "facet_queries": {}},
     }

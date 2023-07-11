@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.fixture
-def histopheno_results():
+def histopheno_response():
     return {
         "responseHeader": {
             "QTime": 0,

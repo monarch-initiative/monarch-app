@@ -53,6 +53,7 @@ frontend_fixtures = Path(f"{root}/frontend/fixtures")
 backend_fixtures = Path(f"{root}/backend/tests/fixtures")
 
 node_id = "MONDO:0020121"
+category = "biolink:DiseaseToPhenotypicFeatureAssociation"
 
 
 ### Generate fixtures
@@ -60,6 +61,7 @@ node_id = "MONDO:0020121"
 fixtures = {}
 fixtures['associations'] = si.get_associations(entity = node_id)
 fixtures['association-counts'] = si.get_association_counts(entity = node_id)
+fixtures['association-table'] = si.get_association_table(entity=node_id, category=category, offset=0, limit=5)
 # fixtures['association-evidence'] = 
 fixtures['autocomplete'] = si.autocomplete("fanc")
 # fixtures['datasets'] = 
@@ -105,12 +107,15 @@ query_fixtures['search-query'] = build_search_query(q = "fanconi")
 
 ### Generate solr doc fixtures
 
-query_result_fixtures = {}
-query_result_fixtures['association-counts-results'] = solr_associations.query(query_fixtures['association-counts-query'])
-query_result_fixtures['association-results'] = solr_associations.query(build_association_query(entity=[node_id]))
-query_result_fixtures['autocomplete-results'] = solr_entities.query(query_fixtures['autocomplete-query'])
-query_result_fixtures['histopheno-results'] = solr_associations.query(query_fixtures['histopheno-query'])
-query_result_fixtures['search-results'] = solr_entities.query(query_fixtures['search-query'])
+query_response_fixtures = {}
+query_response_fixtures['association-response'] = solr_associations.query(build_association_query(entity=[node_id]))
+query_response_fixtures['association-counts-response'] = solr_associations.query(query_fixtures['association-counts-query'])
+query_response_fixtures['association-table-response'] = solr_associations.query(
+    build_association_query(entity=[node_id], category=[category], offset=0, limit=5)
+)
+query_response_fixtures['autocomplete-response'] = solr_entities.query(query_fixtures['autocomplete-query'])
+query_response_fixtures['histopheno-response'] = solr_associations.query(query_fixtures['histopheno-query'])
+query_response_fixtures['search-response'] = solr_entities.query(query_fixtures['search-query'])
 
 ### Write frontend fixtures
 for key, value in fixtures.items():
@@ -122,7 +127,7 @@ for key, value in fixtures.items():
 all_fixtures = {
     **fixtures,
     **query_fixtures,
-    **query_result_fixtures
+    **query_response_fixtures
 }
 for key, value in all_fixtures.items():
     write_backend_fixture(key, value)

@@ -5,7 +5,7 @@ from pydantic import ValidationError
 
 from monarch_py.datamodels.model import (
     Association, AssociationCount, AssociationCountList,
-    AssociationDirectionEnum, AssociationResults,
+    AssociationDirectionEnum, AssociationResults, DirectionalAssociation,
     Entity, Node,
     HistoBin, HistoPheno,
     SearchResult, SearchResults,
@@ -70,6 +70,25 @@ def parse_association_counts(query_result: SolrQueryResult, entity: str) -> Asso
                 )
     return AssociationCountList(items=list(association_count_dict.values()))
 
+
+def parse_association_table(
+    query_result: SolrQueryResult,
+    entity: str,
+    offset: int,
+    limit: int,
+    ) -> AssociationResults:
+    total = query_result.response.num_found
+    associations: List[DirectionalAssociation] = []
+    for doc in query_result.response.docs:
+        try:
+            direction = get_association_direction(entity, doc)
+            association = DirectionalAssociation(**doc, direction=direction)
+            associations.append(association)
+        except ValidationError:
+            logger.error(f"Validation error for {doc}")
+            raise
+    results = AssociationResults(items=associations, limit=limit, offset=offset, total=total)
+    return results
 
 def parse_histopheno(
     query_result: SolrQueryResult, 

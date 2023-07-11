@@ -2,46 +2,26 @@ import pytest
 
 
 @pytest.fixture
-def search_results():
+def autocomplete_response():
     return {
         "responseHeader": {
             "QTime": 0,
             "params": {
                 "mm": "100%",
-                "q": "fanconi",
+                "q": "fanc",
                 "defType": "edismax",
                 "facet_min_count": "1",
                 "qf": "id^100 name^10 name_t^5 name_ac symbol^10 symbol_t^5 symbol_ac synonym synonym_t synonym_ac",
-                "start": "0",
+                "start": "1",
                 "boost": 'product(if(termfreq(category,"biolink:Disease"),10.0,1),if(and(termfreq(in_taxon,"NCBITaxon:9606"),termfreq(category,"biolink:Gene")),5.0,1))',
-                "fq": "name:*",
                 "rows": "20",
                 "facet": "true",
             },
         },
         "response": {
-            "num_found": 92,
-            "start": 0,
+            "num_found": 193,
+            "start": 1,
             "docs": [
-                {
-                    "id": "MONDO:0019391",
-                    "category": "biolink:Disease",
-                    "name": "Fanconi anemia",
-                    "xref": [
-                        "DOID:13636",
-                        "GARD:0006425",
-                        "ICD9:284.09",
-                        "MESH:D005199",
-                        "MedDRA:10055206",
-                        "NCIT:C62505",
-                        "OMIMPS:227650",
-                        "Orphanet:84",
-                        "SCTID:30575002",
-                        "UMLS:C0015625",
-                    ],
-                    "provided_by": "phenio_nodes",
-                    "description": "Fanconi anemia (FA) is a hereditary DNA repair disorder characterized by progressive pancytopenia with bone marrow failure, variable congenital malformations and predisposition to develop hematological or solid tumors.",
-                },
                 {
                     "id": "MONDO:0001083",
                     "category": "biolink:Disease",
@@ -56,6 +36,25 @@ def search_results():
                     ],
                     "provided_by": "phenio_nodes",
                     "description": "A genetic or acquired disorder characterized by impairment of the function of the proximal tubules of the kidney. It results in decreased reabsorption of electrolytes, glucose, amino acids, and other nutrients.",
+                },
+                {
+                    "id": "MONDO:0005668",
+                    "category": "biolink:Disease",
+                    "name": "bird fancier's lung",
+                    "xref": [
+                        "DOID:13891",
+                        "EFO:0007170",
+                        "ICD10CM:J67.2",
+                        "ICD9:495.2",
+                        "MESH:D001716",
+                        "MedDRA:10004941",
+                        "NCIT:C34425",
+                        "Orphanet:99908",
+                        "SCTID:69339004",
+                        "UMLS:C0005592",
+                    ],
+                    "provided_by": "phenio_nodes",
+                    "description": "Hypersensitivity granulomatous pneumonitis caused by the inhalation of avian antigens that are present in the dust of the droppings and feathers of many species of birds. In the acute phase it manifests as fever, chills, dyspnea, cough, and chest tightness. Chronic exposure may lead to interstitial lung fibrosis.",
                 },
                 {
                     "id": "MONDO:0007600",

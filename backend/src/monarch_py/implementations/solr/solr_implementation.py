@@ -32,9 +32,12 @@ from monarch_py.service.solr_service import SolrService
 from monarch_py.implementations.solr.solr_parsers import (
     parse_associations,
     parse_association_counts,
+    parse_association_table,
     parse_autocomplete,
     parse_histopheno,
     parse_search,
+    convert_facet_fields,
+    convert_facet_queries,
 )
 from monarch_py.implementations.solr.solr_query_utils import (
     build_association_query,
@@ -307,8 +310,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
     ) -> SearchResults:
 
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
-        limit = 0
-        offset = 0
+
         query = build_association_query(
             category=[category] if isinstance(category, str) else category,
             predicate=[predicate] if isinstance(predicate, str) else predicate,
@@ -317,23 +319,19 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
             entity=[entity] if isinstance(entity, str) else entity,
             subject_closure=subject_closure,
             object_closure=object_closure,
-            offset=offset,
-            limit=limit,
+            offset=0,
+            limit=0,
+            facet_fields = facet_fields,
+            facet_queries = facet_queries
         )
-
-        query.facet_fields = facet_fields
-        query.facet_queries = facet_queries
-
         query_result = solr.query(query)
-        total = query_result.response.num_found
-
         return SearchResults(
-            limit=limit,
-            offset=offset,
-            total=total,
+            limit=0,
+            offset=0,
+            total=query_result.response.num_found,
             items=[],
-            facet_fields=self._convert_facet_fields(query_result.facet_counts.facet_fields),
-            facet_queries=self._convert_facet_queries(query_result.facet_counts.facet_queries),
+            facet_fields=convert_facet_fields(query_result.facet_counts.facet_fields),
+            facet_queries=convert_facet_queries(query_result.facet_counts.facet_queries),
         )
 
     def get_association_table(
@@ -357,17 +355,4 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         )
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
         query_result = solr.query(query)
-        total = query_result.response.num_found
-        associations: List[DirectionalAssociation] = []
-        for doc in query_result.response.docs:
-            try:
-                direction = self._get_association_direction(entity, doc)
-                association = DirectionalAssociation(**doc, direction=direction)
-                associations.append(association)
-            except ValidationError:
-                logger.error(f"Validation error for {doc}")
-                raise
-
-        results = AssociationResults(items=associations, limit=limit, offset=offset, total=total)
-
-        return results
+        return parse_association_table(query_result, entity, offset, limit)
