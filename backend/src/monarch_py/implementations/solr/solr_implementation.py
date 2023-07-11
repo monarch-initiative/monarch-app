@@ -87,11 +87,8 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
                 len(mode_of_inheritance_associations.items) == 1
                 ):
                 node.inheritance = self._get_associated_entity(mode_of_inheritance_associations.items[0], node)
-
         node.node_hierarchy = self._get_node_hierarchy(node)
-        
         node.association_counts = self.get_association_counts(id).items
-        
         return node
 
     ### Entity helpers ###
