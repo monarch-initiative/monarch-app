@@ -2,7 +2,6 @@ import pytest
 from monarch_py.datamodels.model import AssociationDirectionEnum
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
-# pytestmark = pytest.mark.skip(reason="Solr is not available")
 
 pytestmark = pytest.mark.skipif(
     condition=not SolrImplementation().solr_is_available(),

@@ -7,6 +7,7 @@ from monarch_py.implementations.solr.solr_parsers import (
     parse_associations,
     parse_association_counts,
     parse_association_table,
+    parse_entity,
     parse_histopheno,
     parse_search,
     )
@@ -35,6 +36,15 @@ def test_parse_association_table(association_table_response, association_table, 
     parsed = parse_association_table(solr_response, entity=Node(**node).id, offset=0, limit=5)
     assert parsed == association_table, \
         f"Parsed result is not as expected. Difference: {dict_diff(parsed.dict(), association_table)}"
+
+
+def test_parse_entity(entity_response, node):
+    parsed = parse_entity(entity_response)
+    assert all(
+        parsed.dict()[k] == v 
+        for k, v in parsed.dict().items()
+        if k in node
+    )
 
 
 def test_parse_histopheno(histopheno_response, histopheno, node):

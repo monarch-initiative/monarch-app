@@ -67,6 +67,7 @@ fixtures['autocomplete'] = si.autocomplete("fanc")
 # fixtures['datasets'] = 
 # fixtures['feedback'] = 
 fixtures['histopheno'] = si.get_histopheno(node_id)
+fixtures['entity'] = si.get_entity(id = node_id, extra = False)
 fixtures['node'] = si.get_entity(id = node_id, extra = True)
 # fixtures['node-publication-abstract'] = 
 # fixtures['node-publication-summary'] = 
@@ -114,6 +115,7 @@ query_response_fixtures['association-table-response'] = solr_associations.query(
     build_association_query(entity=[node_id], category=[category], offset=0, limit=5)
 )
 query_response_fixtures['autocomplete-response'] = solr_entities.query(query_fixtures['autocomplete-query'])
+query_response_fixtures['entity-response'] = solr_entities.get(node_id)
 query_response_fixtures['histopheno-response'] = solr_associations.query(query_fixtures['histopheno-query'])
 query_response_fixtures['search-response'] = solr_entities.query(query_fixtures['search-query'])
 

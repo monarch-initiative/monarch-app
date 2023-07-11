@@ -1,27 +1,20 @@
 import os
 from dataclasses import dataclass
 import requests
-from typing import Dict, List
+from typing import List, Union
 
 from loguru import logger
 from pydantic import ValidationError
 
 from monarch_py.datamodels.model import (
     Association,
-    AssociationCount,
     AssociationCountList,
-    AssociationDirectionEnum,
     AssociationResults,
     AssociationTableResults,
-    DirectionalAssociation,
     Entity,
-    FacetField,
-    FacetValue,
-    HistoBin,
     HistoPheno,
     Node,
     NodeHierarchy,
-    SearchResult,
     SearchResults,
 )
 from monarch_py.datamodels.solr import core
@@ -30,10 +23,9 @@ from monarch_py.interfaces.entity_interface import EntityInterface
 from monarch_py.interfaces.search_interface import SearchInterface
 from monarch_py.service.solr_service import SolrService
 from monarch_py.implementations.solr.solr_parsers import (
-    parse_associations,
-    parse_association_counts,
-    parse_association_table,
+    parse_associations, parse_association_counts, parse_association_table,
     parse_autocomplete,
+    parse_entity,
     parse_histopheno,
     parse_search,
     convert_facet_fields,
@@ -44,22 +36,11 @@ from monarch_py.implementations.solr.solr_query_utils import (
     build_association_counts_query,
     build_autocomplete_query,
     build_histopheno_query,
+
     build_search_query,
 )
 # from monarch_py.utils.utils import escape
 
-
-############ Design pattern ################
-# def get_thing():                         #
-#     query = query_util()                 #
-#     result = solr.query(query)           #
-#     thing = parser(result)               #
-#     return thing                         #
-#                                          #
-# testing:                                 #
-#   test_query_util()                      #
-#   test_parser()                          #
-############################################
 
 @dataclass
 class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface):
@@ -78,7 +59,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
     # Implements: EntityInterface #
     ###############################
 
-    def get_entity(self, id: str, extra: bool) -> Node:
+    def get_entity(self, id: str, extra: bool) -> Union[Node, Entity]:
         """Retrieve a specific entity by exact ID match, with optional extras
 
         Args:
@@ -89,23 +70,28 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
             Entity: Dataclass representing results of an entity search.
             Node: Dataclass representing results of an entity search with extra=True.
         """
-
         solr = SolrService(base_url=self.base_url, core=core.ENTITY)
-        solr_document = solr.get(id)
-
+        solr_document = solr.get(id)    
         if not extra:
-            return Entity(**solr_document)
-
+            return parse_entity(solr_document)
+        # Get extra data (this logic is very tricky to test because of the calls to Solr)
         node = Node(**solr_document)
-
         if "biolink:Disease" in node.category:
             mode_of_inheritance_associations = self.get_associations(
-                subject=id, predicate="biolink:has_mode_of_inheritance", offset=0
+                subject = id,
+                predicate = "biolink:has_mode_of_inheritance",
+                offset=0
             )
-            if mode_of_inheritance_associations is not None and len(mode_of_inheritance_associations.items) == 1:
+            if (
+                mode_of_inheritance_associations is not None and 
+                len(mode_of_inheritance_associations.items) == 1
+                ):
                 node.inheritance = self._get_associated_entity(mode_of_inheritance_associations.items[0], node)
+
         node.node_hierarchy = self._get_node_hierarchy(node)
+        
         node.association_counts = self.get_association_counts(id).items
+        
         return node
 
     ### Entity helpers ###

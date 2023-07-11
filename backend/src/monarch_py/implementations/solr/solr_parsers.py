@@ -71,6 +71,15 @@ def parse_association_counts(query_result: SolrQueryResult, entity: str) -> Asso
     return AssociationCountList(items=list(association_count_dict.values()))
 
 
+def parse_entity(solr_document: Dict) -> Entity:
+    try:
+        entity = Entity(**solr_document)
+    except ValidationError:
+        logger.error(f"Validation error for {solr_document}")
+        raise
+    return entity
+
+
 def parse_association_table(
     query_result: SolrQueryResult,
     entity: str,
@@ -89,6 +98,7 @@ def parse_association_table(
             raise
     results = AssociationResults(items=associations, limit=limit, offset=offset, total=total)
     return results
+
 
 def parse_histopheno(
     query_result: SolrQueryResult, 
