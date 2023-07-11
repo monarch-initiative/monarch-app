@@ -26,7 +26,6 @@ enums:
 classes:
   Association:
     slots:
-    - aggregator_knowledge_source
     - id
     - subject
     - original_subject
@@ -44,6 +43,7 @@ classes:
     - object_label
     - object_closure_label
     - primary_knowledge_source
+    - aggregator_knowledge_source
     - category
     - negated
     - provided_by
@@ -54,8 +54,8 @@ classes:
     - onset_qualifier
     - sex_qualifier
     - stage_qualifier
+    - evidence_count
     - pathway
-    - relation
     - subject_label
     - subject_namespace
     - subject_category
@@ -151,6 +151,7 @@ classes:
     - id
     - category
     - name
+    - full_name
     - description
     - xref
     - provided_by
@@ -253,6 +254,9 @@ slots:
     inlined: true
     inlined_as_list: true
     required: true
+  evidence_count:
+    description: count of supporting documents, evidence codes, and sources supplying evidence
+    range: integer
   facet_fields:
     description: Collection of facet field responses with the field values and counts
     inlined: true
@@ -272,6 +276,9 @@ slots:
     multivalued: true
     range: FacetValue
   frequency_qualifier:
+    range: string
+  full_name:
+    description: The long form name of an entity
     range: string
   has_evidence:
     range: string
@@ -469,3 +476,4 @@ slots:
   stage_qualifier_closure_label:
     multivalued: true
     description: Field containing stage_qualifier name and the names of all of it's ancestors
+

@@ -16,7 +16,7 @@ packages = [
 
 [tool.poetry.dependencies]
 ### Core dependencies
-python = ">=3.9,<3.12"
+python = "^3.9"
 pydantic = "^1.10.2"
 linkml = "^1.5.5"
 requests = "^2.28.1"

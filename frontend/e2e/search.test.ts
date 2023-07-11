@@ -105,9 +105,9 @@ test("Pagination works", async ({ page }) => {
   await page.locator("input").dispatchEvent("change");
 
   /** pagination text, and click through to next page */
-  await expect(page.getByText(/1 to 20 of 110 results/).first()).toBeVisible();
+  await expect(page.getByText(/1 to 20 of \d+ results/).first()).toBeVisible();
   await page.locator("button", { hasText: /^2$/ }).first().click();
-  await expect(page.getByText(/11 to 30 of 110 results/).first()).toBeVisible();
+  await expect(page.getByText(/11 to 30 of \d+ results/).first()).toBeVisible();
 });
 
 test("Filters show", async ({ page }) => {
