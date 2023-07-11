@@ -3,6 +3,8 @@ from dataclasses import dataclass
 from typing import Dict, List
 
 from loguru import logger
+from pydantic import ValidationError
+
 from monarch_py.datamodels.model import (
     Association,
     AssociationCount,
@@ -20,7 +22,7 @@ from monarch_py.datamodels.model import (
     SearchResult,
     SearchResults,
 )
-from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQuery, core
+from monarch_py.datamodels.solr import core, HistoPhenoKeys, SolrQuery
 from monarch_py.interfaces.association_interface import AssociationInterface
 from monarch_py.interfaces.entity_interface import EntityInterface
 from monarch_py.interfaces.search_interface import SearchInterface
@@ -30,9 +32,22 @@ from monarch_py.utils.association_type_utils import (
     get_association_type_mapping_by_query_string,
     get_solr_query_fragment,
 )
+from monarch_py.implementations.solr.solr_parsers import parse_histopheno
+from monarch_py.implementations.solr.solr_query_utils import build_association_query, build_histopheno_query
 from monarch_py.utils.utils import escape
-from pydantic import ValidationError
 
+
+############ Design pattern ################
+# def get_thing():                         #
+#     query = query_util()                 #
+#     result = solr.query(query)           #
+#     thing = parser(result)               #
+#     return thing                         #
+#                                          #
+# testing:                                 #
+#   test_query_util()                      #
+#   test_parser()                          #
+############################################
 
 @dataclass
 class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface):
@@ -181,7 +196,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
 
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
 
-        query = self._populate_association_query(
+        query = build_association_query(
             category=[category] if isinstance(category, str) else category,
             predicate=[predicate] if isinstance(predicate, str) else predicate,
             subject=[subject] if isinstance(subject, str) else subject,
@@ -209,62 +224,6 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         results = AssociationResults(items=associations, limit=limit, offset=offset, total=total)
 
         return results
-
-    def _populate_association_query(
-        self,
-        category: List[str] = None,
-        predicate: List[str] = None,
-        subject: List[str] = None,
-        object: List[str] = None,
-        subject_closure: str = None,
-        object_closure: str = None,
-        entity: List[str] = None,
-        direct: bool = None,
-        q: str = None,
-        offset: int = 0,
-        limit: int = 20,
-    ) -> SolrQuery:
-        """Populate a SolrQuery object with association filters"""
-
-        query = SolrQuery(start=offset, rows=limit)
-
-        if category:
-            query.add_field_filter_query("category", " OR ".join(category))
-        if predicate:
-            query.add_field_filter_query("predicate", " OR ".join(predicate))
-        if subject:
-            if direct:
-                query.add_field_filter_query("subject", " OR ".join(subject))
-            else:
-                query.add_filter_query(" OR ".join([f'subject:"{s}" OR subject_closure:"{s}"' for s in subject]))
-        if subject_closure:
-            query.add_field_filter_query("subject_closure", subject_closure)
-        if object:
-            if direct:
-                query.add_field_filter_query("object", " OR ".join(object))
-            else:
-                query.add_filter_query(" OR ".join([f'object:"{o}" OR object_closure:"{o}"' for o in object]))
-        if object_closure:
-            query.add_field_filter_query("object_closure", object_closure)
-        if entity:
-            if direct:
-                query.add_filter_query(" OR ".join([f'subject:"{escape(e)}" OR object:"{escape(e)}"' for e in entity]))
-            else:
-                query.add_filter_query(
-                    " OR ".join(
-                        [
-                            f'subject:"{escape(e)}" OR subject_closure:"{escape(e)}" OR object:"{escape(e)}" OR object_closure:"{escape(e)}"'
-                            for e in entity
-                        ]
-                    )
-                )
-        if q:
-            # We don't yet have tokenization strategies for the association index, initially we'll limit searching to
-            # the visible fields in an association table plus their ID equivalents and use a wildcard query for substring matching
-            query.q = f"*{q}*"
-            query.query_fields = "subject subject_label predicate object object_label"
-
-        return query
 
     ###############################
     # Implements: SearchInterface #
@@ -408,7 +367,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
         limit = 0
         offset = 0
-        query = self._populate_association_query(
+        query = build_association_query(
             category=[category] if isinstance(category, str) else category,
             predicate=[predicate] if isinstance(predicate, str) else predicate,
             subject=[subject] if isinstance(subject, str) else subject,
@@ -436,30 +395,13 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         )
 
     def get_histopheno(self, subject_closure: str = None) -> HistoPheno:
+        """Get histopheno counts for a given subject_closure"""
 
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
-        limit = 0
-        offset = 0
-
-        query = self._populate_association_query(
-            subject_closure=subject_closure,
-            offset=limit,
-            limit=offset,
-        )
-
-        hpkeys = [i.value for i in HistoPhenoKeys]
-
-        query.facet_queries = [f'object_closure:"{i}"' for i in hpkeys]
+        query = build_histopheno_query(subject_closure)
         query_result = solr.query(query)
-
-        bins = []
-        for k, v in query_result.facet_counts.facet_queries.items():
-            id = f"{k.split(':')[1]}:{k.split(':')[2]}".replace('"', "")
-            label = HistoPhenoKeys(id).name
-            bins.append(HistoBin(id=id, label=label, count=v))
-        bins = sorted(bins, key=lambda x: x.count, reverse=True)
-
-        return HistoPheno(id=subject_closure, items=bins)
+        histopheno = parse_histopheno(query_result, subject_closure)
+        return histopheno
 
     def get_association_counts(self, entity: str) -> List[AssociationCount]:
         """
@@ -472,7 +414,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         Returns:
 
         """
-        query = self._populate_association_query(entity=[entity])
+        query = build_association_query(entity=[entity])
         facet_queries = []
         subject_query = f'AND (subject:"{entity}" OR subject_closure:"{entity}")'
         object_query = f'AND (object:"{entity}" OR object_closure:"{entity}")'
@@ -527,7 +469,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         if sort:
             raise NotImplementedError("Sorting is not yet implemented")
 
-        query = self._populate_association_query(
+        query = build_association_query(
             entity=[entity],
             category=[category],
             q=q,

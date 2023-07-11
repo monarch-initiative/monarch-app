@@ -39,6 +39,16 @@ def dict_factory(cursor, row):
     return {key: value for key, value in zip(fields, row)}
 
 
+def dict_diff(d1, d2):
+    """Return the difference between two dictionaries"""
+    difference = {}
+    for k in d1.keys():
+        if d1[k] != d2[k]:
+            difference[f"Dict-1-{k}"] = d1[k]
+            difference[f"Dict-2-{k}"] = d2[k]
+    return difference
+
+
 def set_log_level(log_level: str):
     """Sets the log level for the application."""
     import loguru
