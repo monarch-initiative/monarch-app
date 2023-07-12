@@ -67,6 +67,29 @@ def build_association_query(
     return query
 
 
+def build_association_table_query(entity: str,
+                                  category: str,
+                                  q: str = None,
+                                  offset: int = 0,
+                                  limit: int = 5,
+                                  sort: List[str] = None) -> SolrQuery:
+    if sort is None:
+        sort = ['evidence_count desc',
+                'subject_label asc',
+                'predicate asc',
+                'object_label asc',
+                'primary_knowledge_source asc']
+
+    query = build_association_query(
+        entity=[entity],
+        category=[category],
+        q=q,
+        sort=sort,
+        offset=offset,
+        limit=limit,
+    )
+    return query
+
 def build_association_counts_query(entity: str) -> SolrQuery:
     subject_query = f'AND (subject:"{entity}" OR subject_closure:"{entity}")'
     object_query = f'AND (object:"{entity}" OR object_closure:"{entity}")'

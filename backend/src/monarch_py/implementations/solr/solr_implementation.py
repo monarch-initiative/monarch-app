@@ -32,6 +32,7 @@ from monarch_py.implementations.solr.solr_query_utils import (
     build_autocomplete_query,
     build_histopheno_query,
     build_search_query,
+    build_association_table_query,
 )
 from monarch_py.interfaces.association_interface import AssociationInterface
 from monarch_py.interfaces.entity_interface import EntityInterface
@@ -321,16 +322,9 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         limit=5,
     ) -> AssociationTableResults:
 
-        if sort is None:
-            sort = ['evidence_count desc',
-                    'subject_label asc',
-                    'predicate asc',
-                    'object_label asc',
-                    'primary_knowledge_source asc']
-
-        query = build_association_query(
-            entity=[entity],
-            category=[category],
+        query = build_association_table_query(
+            entity=entity,
+            category=category,
             q=q,
             sort=sort,
             offset=offset,
