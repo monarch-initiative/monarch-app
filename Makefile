@@ -32,7 +32,7 @@ help:
 	@echo "│     test-frontend       Run frontend tests                │"
 	@echo "│                                                           │"
 	@echo "│     dev-frontend        Run frontend in development mode  │"
-	@echo "│     dev-backend         Run backend in development mode   │"
+	@echo "│     dev-api             Run api in development mode       │"
 	@echo "│                                                           │"
 	@echo "│     docker-build        Build docker image                │"
 	@echo "│     docker-push         Push docker image                 │"
