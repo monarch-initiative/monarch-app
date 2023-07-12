@@ -221,6 +221,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         entity: List[str] = None,
         direct: bool = None,
         q: str = None,
+        sort: List[str] = None,
         offset: int = 0,
         limit: int = 20,
     ) -> SolrQuery:
@@ -264,6 +265,8 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
             query.q = f"*{q}*"
             query.query_fields = "subject subject_label predicate object object_label"
 
+        if sort:
+            query.sort = ', '.join(sort)
         return query
 
     ###############################
@@ -520,17 +523,19 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         entity: str,
         category: str,
         q=None,
-        sort=None,
+        sort: List[str] = None,
         offset=0,
         limit=5,
     ) -> AssociationTableResults:
-        if sort:
-            raise NotImplementedError("Sorting is not yet implemented")
+
+        if sort is None:
+            sort = ['evidence_count desc', 'subject_label asc', 'predicate asc', 'object_label asc', 'primary_knowledge_source asc']
 
         query = self._populate_association_query(
             entity=[entity],
             category=[category],
             q=q,
+            sort=sort,
             offset=offset,
             limit=limit,
         )

@@ -46,6 +46,7 @@ from monarch_py.datamodels.solr import SolrQuery
             ),
             ['boost=if(termfreq(category,"biolink:Disease"),10.0,1)'],
         ),
+        (SolrQuery(sort="label asc"), ["sort=label+asc"]),
     ],
 )
 def test_query(query: SolrQuery, query_string_parts: List[str]):
