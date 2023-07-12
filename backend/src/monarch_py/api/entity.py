@@ -1,4 +1,5 @@
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
+from monarch_py.api.additional_models import PaginationParams
 from monarch_py.api.config import settings
 from monarch_py.datamodels.model import AssociationTableResults, Node
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
@@ -49,6 +50,7 @@ def _association_table(
         title="Type of association to retrieve association table data for",
     ),
     query: str = Query(None, example="thumb", title="Query string to limit results to a subset"),
+    pagination: PaginationParams = Depends(),
 ) -> AssociationTableResults:
     """
     Retrieves association table data for a given entity and association type
@@ -61,6 +63,12 @@ def _association_table(
         AssociationResults: Association table data for the specified entity and association type
     """
     solr = SolrImplementation(base_url=settings.solr_url)
-    response = solr.get_association_table(entity=id, category=category, q=query)
+    response = solr.get_association_table(
+        entity=id,
+        category=category,
+        q=query,
+        offset=pagination.offset,
+        limit=pagination.limit
+    )
 
     return response
