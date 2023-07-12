@@ -320,13 +320,19 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         offset=0,
         limit=5,
     ) -> AssociationTableResults:
-        if sort:
-            raise NotImplementedError("Sorting is not yet implemented")
+
+        if sort is None:
+            sort = ['evidence_count desc',
+                    'subject_label asc',
+                    'predicate asc',
+                    'object_label asc',
+                    'primary_knowledge_source asc']
 
         query = build_association_query(
             entity=[entity],
             category=[category],
             q=q,
+            sort=sort,
             offset=offset,
             limit=limit,
         )
