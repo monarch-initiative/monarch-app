@@ -103,13 +103,13 @@ def test_association_counts_for_disease():
     si = SolrImplementation()
     association_counts = si.get_association_counts(entity="MONDO:0007947")
     assert association_counts
-    assert len(association_counts) > 0
+    assert len(association_counts.items) > 0
 
-    causal_genes = [ac for ac in association_counts if ac.category == "biolink:CausalGeneToDiseaseAssociation"][0]
+    causal_genes = [ac for ac in association_counts.items if ac.category == "biolink:CausalGeneToDiseaseAssociation"][0]
     assert causal_genes.label == "Causal Genes"
 
     disease_phenotype = [
-        ac for ac in association_counts if ac.category == "biolink:DiseaseToPhenotypicFeatureAssociation"
+        ac for ac in association_counts.items if ac.category == "biolink:DiseaseToPhenotypicFeatureAssociation"
     ][0]
     assert disease_phenotype.label == "Phenotypes"
 
@@ -118,21 +118,23 @@ def test_association_counts_for_eds():
     si = SolrImplementation()
     association_counts = si.get_association_counts(entity="MONDO:0020066")
     assert association_counts
-    assert len(association_counts) > 0
+    assert len(association_counts.items) > 0
 
 
 def test_association_counts_for_phenotype():
     si = SolrImplementation()
     association_counts = si.get_association_counts(entity="HP:0000707")  # HP:0025096 ?
     assert association_counts
-    assert len(association_counts) > 0
+    assert len(association_counts.items) > 0
 
     disease_phenotype = [
-        ac for ac in association_counts if ac.category == "biolink:DiseaseToPhenotypicFeatureAssociation"
+        ac for ac in association_counts.items if ac.category == "biolink:DiseaseToPhenotypicFeatureAssociation"
     ][0]
     assert disease_phenotype.label == "Diseases"
 
-    gene_phenotype = [ac for ac in association_counts if ac.category == "biolink:GeneToPhenotypicFeatureAssociation"][0]
+    gene_phenotype = [
+        ac for ac in association_counts.items if ac.category == "biolink:GeneToPhenotypicFeatureAssociation"
+    ][0]
     assert gene_phenotype.label == "Genes"
 
 
