@@ -2,7 +2,6 @@ from typing import List
 
 import pystow
 import typer
-from monarch_py.datamodels.model import AssociationCountList
 from monarch_py.utils.solr_cli_utils import ensure_solr, get_solr, solr_status, start_solr, stop_solr
 from monarch_py.utils.utils import console, format_output, set_log_level
 from typing_extensions import Annotated
@@ -291,8 +290,7 @@ def association_counts(
         raise typer.Exit(1)
     data = get_solr(update=False)
     response = data.get_association_counts(entity)
-    counts = AssociationCountList(items=response)
-    format_output(fmt, counts, output)
+    format_output(fmt, response, output)
 
 
 @solr_app.command("association-table")

@@ -100,7 +100,6 @@ classes:
     slot_usage:
       items:
         range: AssociationCount
-
   AssociationResults:
     is_a: Results
     slots: 
