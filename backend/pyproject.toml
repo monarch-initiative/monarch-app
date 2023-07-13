@@ -45,6 +45,7 @@ isort = "^5.10.1"
 flake8 = "^5.0.4"
 autoflake = "^1.7.7"
 uvicorn = {extras = ["standard"], version = "^0.20.0"}
+httpx = "^0.24.1"
 
 
 [tool.poetry.scripts]

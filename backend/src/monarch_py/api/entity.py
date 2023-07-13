@@ -64,11 +64,7 @@ def _association_table(
     """
     solr = SolrImplementation(base_url=settings.solr_url)
     response = solr.get_association_table(
-        entity=id,
-        category=category,
-        q=query,
-        offset=pagination.offset,
-        limit=pagination.limit
+        entity=id, category=category, q=query, offset=pagination.offset, limit=pagination.limit
     )
 
     return response
