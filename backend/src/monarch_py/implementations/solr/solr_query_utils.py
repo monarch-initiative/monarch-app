@@ -15,6 +15,7 @@ def build_association_query(
     entity: List[str] = None,
     direct: bool = None,
     q: str = None,
+    sort: List[str] = None,
     facet_fields: List[str] = None,
     facet_queries: List[str] = None,
     offset: int = 0,
@@ -57,12 +58,37 @@ def build_association_query(
         # the visible fields in an association table plus their ID equivalents and use a wildcard query for substring matching
         query.q = f"*{q}*"
         query.query_fields = "subject subject_label predicate object object_label"
+    if sort:
+        query.sort = ', '.join(sort)
     if facet_fields:
         query.facet_fields = facet_fields
     if facet_queries:
         query.facet_queries = facet_queries
     return query
 
+
+def build_association_table_query(entity: str,
+                                  category: str,
+                                  q: str = None,
+                                  offset: int = 0,
+                                  limit: int = 5,
+                                  sort: List[str] = None) -> SolrQuery:
+    if sort is None:
+        sort = ['evidence_count desc',
+                'subject_label asc',
+                'predicate asc',
+                'object_label asc',
+                'primary_knowledge_source asc']
+
+    query = build_association_query(
+        entity=[entity],
+        category=[category],
+        q=q,
+        sort=sort,
+        offset=offset,
+        limit=limit,
+    )
+    return query
 
 def build_association_counts_query(entity: str) -> SolrQuery:
     subject_query = f'AND (subject:"{entity}" OR subject_closure:"{entity}")'

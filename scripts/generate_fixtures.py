@@ -3,11 +3,12 @@ from pathlib import Path
 
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 from monarch_py.implementations.solr.solr_query_utils import (
-    build_association_query, 
+    build_association_query,
     build_association_counts_query,
     build_autocomplete_query,
-    build_histopheno_query, 
-    build_search_query
+    build_histopheno_query,
+    build_search_query,
+    build_association_table_query
 )
 from monarch_py.service.solr_service import SolrService, core
 from monarch_py.utils.utils import format_output
@@ -112,7 +113,7 @@ query_response_fixtures = {}
 query_response_fixtures['association-response'] = solr_associations.query(build_association_query(entity=[node_id]))
 query_response_fixtures['association-counts-response'] = solr_associations.query(query_fixtures['association-counts-query'])
 query_response_fixtures['association-table-response'] = solr_associations.query(
-    build_association_query(entity=[node_id], category=[category], offset=0, limit=5)
+    build_association_table_query(entity=node_id, category=category)
 )
 query_response_fixtures['autocomplete-response'] = solr_entities.query(query_fixtures['autocomplete-query'])
 query_response_fixtures['entity-response'] = solr_entities.get(node_id)

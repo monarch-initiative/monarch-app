@@ -15,6 +15,7 @@ from monarch_py.datamodels.model import (
     HistoPheno,
     SearchResult,
     SearchResults,
+    AssociationTableResults,
 )
 from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQueryResult
 from monarch_py.utils.association_type_utils import get_association_type_mapping_by_query_string
@@ -86,7 +87,7 @@ def parse_association_table(
     entity: str,
     offset: int,
     limit: int,
-) -> AssociationResults:
+) -> AssociationTableResults:
     total = query_result.response.num_found
     associations: List[DirectionalAssociation] = []
     for doc in query_result.response.docs:
@@ -97,7 +98,7 @@ def parse_association_table(
         except ValidationError:
             logger.error(f"Validation error for {doc}")
             raise
-    results = AssociationResults(items=associations, limit=limit, offset=offset, total=total)
+    results = AssociationTableResults(items=associations, limit=limit, offset=offset, total=total)
     return results
 
 
