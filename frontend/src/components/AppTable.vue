@@ -439,7 +439,7 @@ const ariaSort = computed(() => {
 }
 
 .table {
-  display: grid;
+  display: inline-grid;
   border-collapse: collapse;
 }
 

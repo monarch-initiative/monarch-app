@@ -65,6 +65,7 @@ const icons: IconDefinition[] = [
   fas.faMaximize,
   fas.faMinimize,
   fas.faNewspaper,
+  fas.faNotesMedical,
   fas.faPaperPlane,
   fas.faPauseCircle,
   fas.faPersonRunning,
