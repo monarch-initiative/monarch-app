@@ -35,8 +35,8 @@
       <template v-if="tab === 'summary'">
         <AssociationsSummary
           :node="node"
-          :selected-category="category"
-          :selected-association="association"
+          :category="category"
+          :association="association"
           @select="(value) => (association = value)"
         />
       </template>
@@ -45,13 +45,16 @@
       <template v-if="tab === 'table'">
         <AssociationsTable
           :node="node"
-          :selected-category="category"
-          :selected-association="association"
+          :category="category"
+          :association="association"
           @select="(value) => (association = value)"
         />
       </template>
     </template>
   </AppSection>
+
+  <!-- evidence viewer of association -->
+  <EvidenceViewer v-if="association" :node="node" :association="association" />
 </template>
 
 <script setup lang="ts">
@@ -64,6 +67,7 @@ import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import AppTabs from "@/components/AppTabs.vue";
 import AssociationsSummary from "@/pages/node/AssociationsSummary.vue";
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
+import EvidenceViewer from "@/pages/node/EvidenceViewer.vue";
 
 /** route info */
 const route = useRoute();

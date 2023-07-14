@@ -273,16 +273,10 @@ test("Association table has extra metadata columns", async ({ page }) => {
   await expect(page.getByText(/Publisher/i).first()).toBeVisible();
 });
 
-test("Evidence summary viewer works", async ({ page }) => {
-  test.skip(true, "No fixture data yet");
+test("Evidence viewer works", async ({ page }) => {
+  test.skip(true, "Fixture data not stable yet");
 
   await page.goto("/node/MONDO:0007947");
-
-  /** click first evidence button (in first association in summary mode) */
-  await page
-    .locator("button", { hasText: /Evidence/i })
-    .first()
-    .click();
 
   /** get evidence section */
   const evidence = page.locator("#evidence").locator("..");
@@ -315,55 +309,6 @@ test("Evidence summary viewer works", async ({ page }) => {
       .filter({ hasText: /PMID:10489951/i })
       .first()
   ).toHaveAttribute("href", "http://www.ncbi.nlm.nih.gov/pubmed/10489951");
-});
-
-test("Evidence table viewer works", async ({ page }) => {
-  test.skip(true, "No fixture data yet");
-
-  await page.goto("/node/MONDO:0007947");
-
-  /** go to first association evidence and switch to table mode */
-  await page
-    .locator("button", { hasText: /Evidence/ })
-    .first()
-    .click();
-  await page
-    .locator("#evidence")
-    .locator("..")
-    .getByText(/table/i)
-    .first()
-    .click();
-
-  /** check for all evidence columns */
-  await expect(page.getByText(/Subject/i).first()).toBeVisible();
-  await expect(page.getByText(/Relation/i).first()).toBeVisible();
-  await expect(page.getByText(/Object/i).first()).toBeVisible();
-  await expect(page.getByText(/Evidence Codes/i).first()).toBeVisible();
-  await expect(page.getByText(/Publications/i).first()).toBeVisible();
-  await expect(page.getByText(/Sources/i).first()).toBeVisible();
-  await expect(page.getByText(/References/i).first()).toBeVisible();
-
-  /** check links in cells */
-  await expect(
-    page.getByText(/experimental evidence used in manual assertion/i).first()
-  ).toHaveAttribute("href", "http://purl.obolibrary.org/obo/ECO_0000269");
-  await expect(page.getByText(/#hpoa/i).first()).toHaveAttribute(
-    "href",
-    "https://archive.monarchinitiative.org/#hpoa"
-  );
-  await expect(page.getByText(/PMID:10489951/i).first()).toHaveAttribute(
-    "href",
-    "http://www.ncbi.nlm.nih.gov/pubmed/10489951"
-  );
-
-  /** check that all publications show on hover */
-  await page
-    .getByText(/and 2 more/i)
-    .first()
-    .dispatchEvent("mouseenter");
-  await expect(
-    page.getByText(/PMID:3189335.*Marfan syndrome/i).first()
-  ).toBeVisible();
 });
 
 test("Breadcrumbs section works", async ({ page, browserName }) => {

@@ -17,49 +17,42 @@
 
     <!-- result -->
     <div
-      v-for="(association, index) in associations.items"
+      v-for="(item, index) in associations.items"
       :key="index"
       class="result"
     >
       <AppFlex direction="col" h-align="left" gap="small" class="details">
         <AppNodeBadge
           :node="{
-            id: association.subject,
-            name: association.subject_label,
-            category: association.subject_category,
+            id: item.subject,
+            name: item.subject_label,
+            category: item.subject_category,
           }"
-          :link="node.id === association.object"
+          :link="node.id === item.object"
         />
-        <AppPredicateBadge :association="association" :vertical="true" />
+        <AppPredicateBadge :association="item" :vertical="true" />
         <AppNodeBadge
           :node="{
-            id: association.object,
-            name: association.object_label,
-            category: association.object_category,
+            id: item.object,
+            name: item.object_label,
+            category: item.object_category,
           }"
-          :link="node.id === association.subject"
+          :link="node.id === item.subject"
         />
       </AppFlex>
 
       <AppButton
         v-tooltip="
-          association.id === selectedAssociation?.id
+          item.id === association?.id
             ? 'Viewing supporting evidence. Click again to hide.'
             : 'View supporting evidence for this association'
         "
         class="evidence"
-        :text="`Evidence (${association.evidence_count || 0})`"
-        :aria-pressed="association.id === selectedAssociation?.id"
-        :icon="association.id === selectedAssociation?.id ? 'check' : 'flask'"
-        :color="
-          association.id === selectedAssociation?.id ? 'primary' : 'secondary'
-        "
-        @click="
-          emit(
-            'select',
-            association.id === selectedAssociation?.id ? undefined : association
-          )
-        "
+        :text="`Evidence (${item?.evidence_count || 0})`"
+        :aria-pressed="item.id === association?.id"
+        :icon="item.id === association?.id ? 'check' : 'flask'"
+        :color="item.id === association?.id ? 'primary' : 'secondary'"
+        @click="emit('select', item.id === association?.id ? undefined : item)"
       />
     </div>
   </template>
@@ -78,9 +71,9 @@ type Props = {
   /** current node */
   node: Node;
   /** selected association category */
-  selectedCategory: Option;
+  category: Option;
   /** selected association */
-  selectedAssociation?: DirectionalAssociation;
+  association?: DirectionalAssociation;
 };
 
 const props = defineProps<Props>();
@@ -105,7 +98,7 @@ const {
       throw new Error("No association info available");
 
     /** get association data */
-    return await getTopAssociations(props.node.id, props.selectedCategory.id);
+    return await getTopAssociations(props.node.id, props.category.id);
   },
 
   /** default value */
@@ -113,7 +106,7 @@ const {
 );
 
 /** get associations when category changes */
-watch(() => props.selectedCategory, getAssociations);
+watch(() => props.category, getAssociations);
 
 /** get associations on load */
 onMounted(getAssociations);

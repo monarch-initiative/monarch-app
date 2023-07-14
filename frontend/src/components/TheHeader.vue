@@ -180,6 +180,7 @@ $wrap: 600px;
   letter-spacing: 1px;
   line-height: $spacing - 0.3;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 @media (max-width: $wrap) {

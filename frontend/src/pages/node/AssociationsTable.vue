@@ -57,19 +57,19 @@
     <template #evidence="{ cell, row }">
       <AppButton
         v-tooltip="
-          row.id === selectedAssociation?.id
+          row.id === association?.id
             ? 'Viewing supporting evidence. Click again to hide.'
             : 'View supporting evidence for this association'
         "
         class="evidence"
         :text="String(cell || 0)"
-        :aria-pressed="row.id === selectedAssociation?.id"
-        :icon="row.id === selectedAssociation?.id ? 'check' : 'flask'"
-        :color="row.id === selectedAssociation?.id ? 'primary' : 'secondary'"
+        :aria-pressed="row.id === association?.id"
+        :icon="row.id === association?.id ? 'check' : 'flask'"
+        :color="row.id === association?.id ? 'primary' : 'secondary'"
         @click="
           emit(
             'select',
-            (row.id === selectedAssociation?.id
+            (row.id === association?.id
               ? undefined
               : row) as DirectionalAssociation
           )
@@ -122,9 +122,9 @@ interface Props {
   /** current node */
   node: Node;
   /** selected association category */
-  selectedCategory: Option;
+  category: Option;
   /** selected association */
-  selectedAssociation?: DirectionalAssociation;
+  association?: DirectionalAssociation;
 }
 
 const props = defineProps<Props>();
@@ -191,8 +191,7 @@ const cols = computed((): Cols => {
 
   /** phenotype specific columns */
   if (
-    props.selectedCategory.label ===
-    "biolink:DiseaseToPhenotypicFeatureAssociation"
+    props.category.label === "biolink:DiseaseToPhenotypicFeatureAssociation"
   ) {
     extraCols.push(
       {
@@ -211,7 +210,7 @@ const cols = computed((): Cols => {
   }
 
   /** publication specific columns */
-  if (props.selectedCategory.label === "biolink:Publication")
+  if (props.category.label === "biolink:Publication")
     extraCols.push(
       {
         id: "author",
@@ -271,7 +270,7 @@ const {
     /** get association data */
     const response = await getAssociations(
       props.node.id,
-      props.selectedCategory.id,
+      props.category.id,
       start.value,
       perPage.value,
       search.value
@@ -301,7 +300,7 @@ async function download() {
   /** attempt to request all rows */
   const response = await getAssociations(
     props.node.id,
-    props.selectedCategory.id,
+    props.category.id,
     0,
     max
   );
@@ -310,7 +309,7 @@ async function download() {
 
 /** get associations when category or table state changes */
 watch(
-  () => props.selectedCategory,
+  () => props.category,
   async () => await queryAssociations(true)
 );
 watch(

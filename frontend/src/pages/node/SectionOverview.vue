@@ -15,10 +15,10 @@
       <!-- symbol (gene specific) -->
       <AppDetail
         v-if="node.category === 'biolink:Gene'"
-        :blank="!node.symbol"
-        title="Symbol"
+        :blank="!node.full_name"
+        title="Name"
       >
-        <p>{{ node.symbol }}</p>
+        <p>{{ node.full_name }}</p>
       </AppDetail>
 
       <!-- authors (publication specific) -->
