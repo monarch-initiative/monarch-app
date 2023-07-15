@@ -7,6 +7,7 @@ from monarch_py.datamodels.model import (
     AssociationCountList,
     AssociationDirectionEnum,
     AssociationResults,
+    AssociationTableResults,
     DirectionalAssociation,
     Entity,
     FacetField,
@@ -15,7 +16,6 @@ from monarch_py.datamodels.model import (
     HistoPheno,
     SearchResult,
     SearchResults,
-    AssociationTableResults,
 )
 from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQueryResult
 from monarch_py.utils.association_type_utils import get_association_type_mapping_by_query_string
