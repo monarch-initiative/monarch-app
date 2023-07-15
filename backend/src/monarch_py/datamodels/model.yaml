@@ -34,6 +34,8 @@ classes:
     - subject_closure
     - subject_label
     - subject_closure_label
+    - subject_taxon
+    - subject_taxon_label
     - predicate
     - object
     - original_object
@@ -42,6 +44,8 @@ classes:
     - object_closure
     - object_label
     - object_closure_label
+    - object_taxon
+    - object_taxon_label
     - primary_knowledge_source
     - aggregator_knowledge_source
     - category
@@ -401,6 +405,10 @@ slots:
   subject_closure_label:
     multivalued: true
     description: Field containing subject name and the names of all of it's ancestors
+  subject_taxon:
+    is_a: in_taxon
+  subject_taxon_label:
+    is_a: in_taxon_label
   object_label:
     is_a: name
     description: The name of the object entity
@@ -416,6 +424,10 @@ slots:
   object_closure_label:
     multivalued: true
     description: Field containing object name and the names of all of it's ancestors
+  object_taxon:
+    is_a: in_taxon
+  object_taxon_label:
+    is_a: in_taxon_label
   frequency_qualifier_label:
     is_a: name
     description: The name of the frequency_qualifier entity
