@@ -45,7 +45,7 @@ export interface Association {
     object_label?: string,
     /** Field containing object name and the names of all of it's ancestors */
     object_closure_label?: string[],
-    primary_knowledge_source?: string[],
+    primary_knowledge_source?: string,
     aggregator_knowledge_source?: string[],
     category?: string,
     negated?: boolean,
@@ -53,7 +53,7 @@ export interface Association {
     publications?: string[],
     qualifiers?: string[],
     frequency_qualifier?: string,
-    has_evidence?: string,
+    has_evidence?: string[],
     onset_qualifier?: string,
     sex_qualifier?: string,
     stage_qualifier?: string,
@@ -182,7 +182,7 @@ export interface DirectionalAssociation extends Association {
     object_label?: string,
     /** Field containing object name and the names of all of it's ancestors */
     object_closure_label?: string[],
-    primary_knowledge_source?: string[],
+    primary_knowledge_source?: string,
     aggregator_knowledge_source?: string[],
     category?: string,
     negated?: boolean,
@@ -190,7 +190,7 @@ export interface DirectionalAssociation extends Association {
     publications?: string[],
     qualifiers?: string[],
     frequency_qualifier?: string,
-    has_evidence?: string,
+    has_evidence?: string[],
     onset_qualifier?: string,
     sex_qualifier?: string,
     stage_qualifier?: string,
@@ -294,7 +294,7 @@ export interface HistoBin extends FacetValue {
     count?: number,
 };
 /**
- * UI conatiner class extending Entity with additional information
+ * UI container class extending Entity with additional information
  */
 export interface Node extends Entity {
     /** The biolink taxon that the entity is in the closure of. */

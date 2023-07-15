@@ -185,7 +185,7 @@ classes:
     slots:
       - id
   Node:
-    description: UI conatiner class extending Entity with additional information
+    description: UI container class extending Entity with additional information
     is_a: Entity
     slots:
       - in_taxon
@@ -280,6 +280,7 @@ slots:
     description: The long form name of an entity
     range: string
   has_evidence:
+    multivalued: true
     range: string
   highlight:
     description: matching text snippet containing html tags
@@ -340,7 +341,7 @@ slots:
     range: string
     required: true
   primary_knowledge_source:
-    multivalued: true
+    range: string
   provided_by:
     range: string
   publications:

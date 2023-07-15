@@ -74,7 +74,7 @@ class Association(ConfiguredBaseModel):
         default_factory=list,
         description="""Field containing object name and the names of all of it's ancestors""",
     )
-    primary_knowledge_source: Optional[List[str]] = Field(default_factory=list)
+    primary_knowledge_source: Optional[str] = Field(None)
     aggregator_knowledge_source: Optional[List[str]] = Field(default_factory=list)
     category: Optional[str] = Field(None)
     negated: Optional[bool] = Field(None)
@@ -82,7 +82,7 @@ class Association(ConfiguredBaseModel):
     publications: Optional[List[str]] = Field(default_factory=list)
     qualifiers: Optional[List[str]] = Field(default_factory=list)
     frequency_qualifier: Optional[str] = Field(None)
-    has_evidence: Optional[str] = Field(None)
+    has_evidence: Optional[List[str]] = Field(default_factory=list)
     onset_qualifier: Optional[str] = Field(None)
     sex_qualifier: Optional[str] = Field(None)
     stage_qualifier: Optional[str] = Field(None)
@@ -218,7 +218,7 @@ class DirectionalAssociation(Association):
         default_factory=list,
         description="""Field containing object name and the names of all of it's ancestors""",
     )
-    primary_knowledge_source: Optional[List[str]] = Field(default_factory=list)
+    primary_knowledge_source: Optional[str] = Field(None)
     aggregator_knowledge_source: Optional[List[str]] = Field(default_factory=list)
     category: Optional[str] = Field(None)
     negated: Optional[bool] = Field(None)
@@ -226,7 +226,7 @@ class DirectionalAssociation(Association):
     publications: Optional[List[str]] = Field(default_factory=list)
     qualifiers: Optional[List[str]] = Field(default_factory=list)
     frequency_qualifier: Optional[str] = Field(None)
-    has_evidence: Optional[str] = Field(None)
+    has_evidence: Optional[List[str]] = Field(default_factory=list)
     onset_qualifier: Optional[str] = Field(None)
     sex_qualifier: Optional[str] = Field(None)
     stage_qualifier: Optional[str] = Field(None)
@@ -352,7 +352,7 @@ class HistoBin(FacetValue):
 
 class Node(Entity):
     """
-    UI conatiner class extending Entity with additional information
+    UI container class extending Entity with additional information
     """
 
     in_taxon: Optional[str] = Field(None, description="""The biolink taxon that the entity is in the closure of.""")

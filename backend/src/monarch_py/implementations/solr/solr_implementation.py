@@ -29,10 +29,10 @@ from monarch_py.implementations.solr.solr_parsers import (
 from monarch_py.implementations.solr.solr_query_utils import (
     build_association_counts_query,
     build_association_query,
+    build_association_table_query,
     build_autocomplete_query,
     build_histopheno_query,
     build_search_query,
-    build_association_table_query,
 )
 from monarch_py.interfaces.association_interface import AssociationInterface
 from monarch_py.interfaces.entity_interface import EntityInterface
