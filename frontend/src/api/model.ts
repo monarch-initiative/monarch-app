@@ -32,6 +32,8 @@ export interface Association {
     subject_label?: string,
     /** Field containing subject name and the names of all of it's ancestors */
     subject_closure_label?: string[],
+    subject_taxon?: string,
+    subject_taxon_label?: string,
     predicate: string,
     object: string,
     original_object?: string,
@@ -45,6 +47,8 @@ export interface Association {
     object_label?: string,
     /** Field containing object name and the names of all of it's ancestors */
     object_closure_label?: string[],
+    object_taxon?: string,
+    object_taxon_label?: string,
     primary_knowledge_source?: string,
     aggregator_knowledge_source?: string[],
     category?: string,
@@ -169,6 +173,8 @@ export interface DirectionalAssociation extends Association {
     subject_label?: string,
     /** Field containing subject name and the names of all of it's ancestors */
     subject_closure_label?: string[],
+    subject_taxon?: string,
+    subject_taxon_label?: string,
     predicate: string,
     object: string,
     original_object?: string,
@@ -182,6 +188,8 @@ export interface DirectionalAssociation extends Association {
     object_label?: string,
     /** Field containing object name and the names of all of it's ancestors */
     object_closure_label?: string[],
+    object_taxon?: string,
+    object_taxon_label?: string,
     primary_knowledge_source?: string,
     aggregator_knowledge_source?: string[],
     category?: string,

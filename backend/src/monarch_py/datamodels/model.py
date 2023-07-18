@@ -60,6 +60,8 @@ class Association(ConfiguredBaseModel):
         default_factory=list,
         description="""Field containing subject name and the names of all of it's ancestors""",
     )
+    subject_taxon: Optional[str] = Field(None)
+    subject_taxon_label: Optional[str] = Field(None)
     predicate: str = Field(...)
     object: str = Field(...)
     original_object: Optional[str] = Field(None)
@@ -74,6 +76,8 @@ class Association(ConfiguredBaseModel):
         default_factory=list,
         description="""Field containing object name and the names of all of it's ancestors""",
     )
+    object_taxon: Optional[str] = Field(None)
+    object_taxon_label: Optional[str] = Field(None)
     primary_knowledge_source: Optional[str] = Field(None)
     aggregator_knowledge_source: Optional[List[str]] = Field(default_factory=list)
     category: Optional[str] = Field(None)
@@ -204,6 +208,8 @@ class DirectionalAssociation(Association):
         default_factory=list,
         description="""Field containing subject name and the names of all of it's ancestors""",
     )
+    subject_taxon: Optional[str] = Field(None)
+    subject_taxon_label: Optional[str] = Field(None)
     predicate: str = Field(...)
     object: str = Field(...)
     original_object: Optional[str] = Field(None)
@@ -218,6 +224,8 @@ class DirectionalAssociation(Association):
         default_factory=list,
         description="""Field containing object name and the names of all of it's ancestors""",
     )
+    object_taxon: Optional[str] = Field(None)
+    object_taxon_label: Optional[str] = Field(None)
     primary_knowledge_source: Optional[str] = Field(None)
     aggregator_knowledge_source: Optional[List[str]] = Field(default_factory=list)
     category: Optional[str] = Field(None)
