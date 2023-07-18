@@ -30,22 +30,35 @@ def node():
         "association_counts": [
             {
                 "label": "Phenotypes",
-                "count": 4011,
+                "count": 4312,
                 "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
             },
             {
                 "label": "Causal Genes",
-                "count": 121,
+                "count": 123,
                 "category": "biolink:CausalGeneToDiseaseAssociation",
             },
             {
                 "label": "Correlated Genes",
-                "count": 147,
+                "count": 149,
                 "category": "biolink:CorrelatedGeneToDiseaseAssociation",
             },
         ],
         "node_hierarchy": {
             "super_classes": [
+                {
+                    "id": "MONDO:0005336",
+                    "category": "biolink:Disease",
+                    "name": "myopathy",
+                    "full_name": None,
+                    "description": None,
+                    "xref": [],
+                    "provided_by": None,
+                    "in_taxon": None,
+                    "in_taxon_label": None,
+                    "symbol": None,
+                    "synonym": [],
+                },
                 {
                     "id": "MONDO:0019056",
                     "category": "biolink:Disease",
@@ -63,19 +76,6 @@ def node():
                     "id": "MONDO:0700223",
                     "category": "biolink:Disease",
                     "name": "hereditary skeletal muscle disorder",
-                    "full_name": None,
-                    "description": None,
-                    "xref": [],
-                    "provided_by": None,
-                    "in_taxon": None,
-                    "in_taxon_label": None,
-                    "symbol": None,
-                    "synonym": [],
-                },
-                {
-                    "id": "MONDO:0005336",
-                    "category": "biolink:Disease",
-                    "name": "myopathy",
                     "full_name": None,
                     "description": None,
                     "xref": [],
