@@ -90,13 +90,13 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
 
     def _get_associated_entity(self, association: Association, this_entity: Entity) -> Entity:
         """Returns the id, name, and category of the other Entity in an Association given this_entity"""
-        if this_entity.id in association.subject_closure:
+        if this_entity.id == association.subject:
             entity = Entity(
                 id=association.object,
                 name=association.object_label,
                 category=association.object_category,
             )
-        elif this_entity.id in association.object_closure:
+        elif this_entity.id == association.object:
             entity = Entity(
                 id=association.subject,
                 name=association.subject_label,
