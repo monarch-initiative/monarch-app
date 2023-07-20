@@ -4,8 +4,10 @@ description: Data models for the Monarch Initiative data access library
 prefixes:
   linkml: https://w3id.org/linkml/
   biolink: https://w3id.org/biolink/vocab/
+  oak: https://w3id.org/oak/
 imports:
   - linkml:types
+  - oak:similarity
 default_range: string
 
 
@@ -488,4 +490,3 @@ slots:
   stage_qualifier_closure_label:
     multivalued: true
     description: Field containing stage_qualifier name and the names of all of it's ancestors
-
