@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "monarch-py"
-version = "0.13.5"
+version = "0.13.6"
 description = "Python package for interacting with Monarch Initiative knowledge graph"
 authors = [
     "glass-ships <glass.ships@outlook.com>",
