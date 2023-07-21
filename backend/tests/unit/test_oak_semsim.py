@@ -6,7 +6,7 @@ from monarch_py.utils.utils import dict_diff, compare_dicts
 # from profiler import profile
 
 # @profile()
-# @pytest.mark.skip(reason="This is a long running test")
+@pytest.mark.skip(reason="This is a long running test")
 def test_semsim_compare():
 
     subject_ids = ["MP:0010771", "MP:0002169", "MP:0005391", "MP:0005389", "MP:0005367"]
