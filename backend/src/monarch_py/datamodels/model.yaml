@@ -286,7 +286,7 @@ slots:
     description: The long form name of an entity
     range: string
   has_evidence:
-    multivalued: true
+    # multivalued: true
     range: string
   highlight:
     description: matching text snippet containing html tags
@@ -348,6 +348,7 @@ slots:
     required: true
   primary_knowledge_source:
     range: string
+    multivalued: true
   provided_by:
     range: string
   publications:

@@ -135,13 +135,13 @@ lxml = ["lxml"]
 
 [[package]]
 name = "bioregistry"
-version = "0.9.80"
+version = "0.9.81"
 description = "Integrated registry of biological databases and nomenclatures"
 optional = true
 python-versions = ">=3.8"
 files = [
-    {file = "bioregistry-0.9.80-py3-none-any.whl", hash = "sha256:9be4127360d84a9852a9ef015d37c2b92e794d00847730878b4d8126b37d5705"},
-    {file = "bioregistry-0.9.80.tar.gz", hash = "sha256:06ecd0a25e17807840d095f24668baf0f9e50164fff7753035a4b20b9a5311bb"},
+    {file = "bioregistry-0.9.81-py3-none-any.whl", hash = "sha256:7b531cd02545e6937425c0ad6aa2b2f367c33868f2fee009cd3cc7c568592620"},
+    {file = "bioregistry-0.9.81.tar.gz", hash = "sha256:8528fb043217e0b077f22c41b0a81ae38da4dde34f0f42a15b66c13885a55a70"},
 ]
 
 [package.dependencies]

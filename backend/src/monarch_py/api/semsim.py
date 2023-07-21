@@ -1,39 +1,42 @@
 from fastapi import APIRouter, Depends
-from monarch_py.api.additional_models import PaginationParams
-from monarch_py.api.utils.get_similarity import *
+
 from oaklib.cli import _shorthand_to_pred_curie
 
-router = APIRouter(prefix="/api/semsim", tags=["semsim"], responses={404: {"description": "Not Found"}})
+from monarch_py.api.additional_models import PaginationParams
+from monarch_py.api.utils.get_similarity import compare_termsets
+
+router = APIRouter(
+    tags=["semsim"], 
+    responses={404: {"description": "Not Found"}}
+)
 
 
-@router.get("/semsim/{subjlist}/{objlist}")
-async def _get_termlist_similarity(
-    pagination: PaginationParams = Depends(),
-    subjlist: str = "",
-    objlist: str = "",
+@router.get("/compare/{subjects}/{objects}")
+async def _compare(
+    subjects: str = "",
+    objects: str = "",
     predicates: str = "",
+    pagination: PaginationParams = Depends(),
 ):
-    """_summary_
+    """Get pairwise similarity between two sets of terms
 
     Args:
-        pagination (PaginationParams, optional): _description_. Defaults to Depends().
-        subjlist (str, optional): _description_. Defaults to "".
-        objlist (str, optional): _description_. Defaults to "".
-        predicates (str, optional): _description_. Defaults to "".
+        subjects (str, optional): List of subjects for comparison. Defaults to "".
+        objects (str, optional): List of objects for comparison. Defaults to "".
+        predicates (str, optional): List of predicates for comparison. Defaults to "".
+        pagination (PaginationParams, optional): Pagination parameters. Defaults to Depends().
 
     Returns:
-        _type_: _description_
+        TermSetPairwiseSimilarity: Pairwise similarity between subjects and objects
     """
 
-    # Process string values to lists
-    for list_type in [subjlist, objlist, predicates]:
-        if "," in list_type:
-            list_type = list_type.split(",")
+    for sublist in [subjects, objects, predicates]:
+        sublist = sublist.split(",")
     predicates = [_shorthand_to_pred_curie(p) for p in predicates]
 
-    results = termlist_similarity(
-        subjlist=subjlist,
-        objlist=objlist,
+    results = compare_termsets(
+        subjects=subjects,
+        objects=objects,
         predicates=predicates,
         offset=pagination.offset,
         limit=pagination.limit,

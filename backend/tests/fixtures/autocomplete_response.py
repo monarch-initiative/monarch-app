@@ -5,7 +5,7 @@ import pytest
 def autocomplete_response():
     return {
         "responseHeader": {
-            "QTime": 0,
+            "QTime": 1,
             "params": {
                 "mm": "100%",
                 "q": "fanc",
@@ -19,7 +19,7 @@ def autocomplete_response():
             },
         },
         "response": {
-            "num_found": 195,
+            "num_found": 193,
             "start": 1,
             "docs": [
                 {

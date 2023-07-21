@@ -25,17 +25,17 @@
   "association_counts": [
     {
       "label": "Phenotypes",
-      "count": 4312,
+      "count": 4011,
       "category": "biolink:DiseaseToPhenotypicFeatureAssociation"
     },
     {
       "label": "Causal Genes",
-      "count": 123,
+      "count": 121,
       "category": "biolink:CausalGeneToDiseaseAssociation"
     },
     {
       "label": "Correlated Genes",
-      "count": 149,
+      "count": 147,
       "category": "biolink:CorrelatedGeneToDiseaseAssociation"
     }
   ],
@@ -68,6 +68,19 @@
         "synonym": []
       },
       {
+        "id": "MONDO:0100167",
+        "category": "biolink:Disease",
+        "name": "pulmonary disease, chronic obstructive, susceptibility to",
+        "full_name": null,
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "in_taxon_label": null,
+        "symbol": null,
+        "synonym": []
+      },
+      {
         "id": "MONDO:0700223",
         "category": "biolink:Disease",
         "name": "hereditary skeletal muscle disorder",
@@ -84,9 +97,9 @@
     "equivalent_classes": [],
     "sub_classes": [
       {
-        "id": "MONDO:0008028",
+        "id": "MONDO:0020121",
         "category": "biolink:Disease",
-        "name": "muscular dystrophy, Barnes type",
+        "name": "muscular dystrophy",
         "full_name": null,
         "description": null,
         "xref": [],
@@ -97,9 +110,9 @@
         "synonym": []
       },
       {
-        "id": "MONDO:0010675",
+        "id": "MONDO:0020121",
         "category": "biolink:Disease",
-        "name": "muscular dystrophy, cardiac type",
+        "name": "muscular dystrophy",
         "full_name": null,
         "description": null,
         "xref": [],
@@ -110,9 +123,9 @@
         "synonym": []
       },
       {
-        "id": "MONDO:0010676",
+        "id": "MONDO:0020121",
         "category": "biolink:Disease",
-        "name": "muscular dystrophy, Hemizygous lethal type",
+        "name": "muscular dystrophy",
         "full_name": null,
         "description": null,
         "xref": [],
@@ -123,9 +136,9 @@
         "synonym": []
       },
       {
-        "id": "MONDO:0010677",
+        "id": "MONDO:0020121",
         "category": "biolink:Disease",
-        "name": "muscular dystrophy, Mabry type",
+        "name": "muscular dystrophy",
         "full_name": null,
         "description": null,
         "xref": [],
@@ -136,9 +149,9 @@
         "synonym": []
       },
       {
-        "id": "MONDO:0010678",
+        "id": "MONDO:0020121",
         "category": "biolink:Disease",
-        "name": "muscular dystrophy, progressive Pectorodorsal",
+        "name": "muscular dystrophy",
         "full_name": null,
         "description": null,
         "xref": [],
@@ -149,9 +162,9 @@
         "synonym": []
       },
       {
-        "id": "MONDO:0016106",
+        "id": "MONDO:0020121",
         "category": "biolink:Disease",
-        "name": "progressive muscular dystrophy",
+        "name": "muscular dystrophy",
         "full_name": null,
         "description": null,
         "xref": [],
@@ -162,9 +175,9 @@
         "synonym": []
       },
       {
-        "id": "MONDO:0018949",
+        "id": "MONDO:0020121",
         "category": "biolink:Disease",
-        "name": "distal myopathy",
+        "name": "muscular dystrophy",
         "full_name": null,
         "description": null,
         "xref": [],
@@ -175,9 +188,9 @@
         "synonym": []
       },
       {
-        "id": "MONDO:0019950",
+        "id": "MONDO:0020121",
         "category": "biolink:Disease",
-        "name": "congenital muscular dystrophy",
+        "name": "muscular dystrophy",
         "full_name": null,
         "description": null,
         "xref": [],
@@ -188,9 +201,9 @@
         "synonym": []
       },
       {
-        "id": "MONDO:0023204",
+        "id": "MONDO:0020121",
         "category": "biolink:Disease",
-        "name": "Fukuda-Miyanomae-Nakata syndrome",
+        "name": "muscular dystrophy",
         "full_name": null,
         "description": null,
         "xref": [],
@@ -201,9 +214,9 @@
         "synonym": []
       },
       {
-        "id": "MONDO:0100228",
+        "id": "MONDO:0020121",
         "category": "biolink:Disease",
-        "name": "LAMA2-related muscular dystrophy",
+        "name": "muscular dystrophy",
         "full_name": null,
         "description": null,
         "xref": [],

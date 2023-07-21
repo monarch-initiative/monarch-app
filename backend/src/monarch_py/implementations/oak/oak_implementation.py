@@ -1,8 +1,16 @@
 from dataclasses import dataclass
 
-from oaklib.interfaces.semsim_interface import SemanticSimilarityInterface
+# from oaklib.interfaces.semsim_interface import SemanticSimilarityInterface
 from oaklib.datamodels.similarity import TermSetPairwiseSimilarity
 from oaklib.selector import get_adapter
+
+import oaklib.datamodels.ontology_metadata as omd
+from oaklib import OntologyResource
+from oaklib.constants import OAKLIB_MODULE
+from oaklib.implementations.sqldb.sql_implementation import SqlImplementation
+
+HP_DB_URL = "https://s3.amazonaws.com/bbop-sqlite/hp.db.gz"
+IS_A = omd.slots.subClassOf.curie
 
 
 @dataclass
@@ -10,8 +18,25 @@ from oaklib.selector import get_adapter
 class OakImplementation():
     """Implementation of Monarch Interfaces for OAK"""
 
-    semsim = get_adapter(f"semsimian:sqlite:obo:phenio") 
+    semsim = get_adapter(f"semsim:sqlite:obo:phenio")
+    # semsim = get_adapter(f"semsimian:sqlite:obo:phenio")
 
     def compare(self, ts1, ts2, predicates=None, labels=False) -> TermSetPairwiseSimilarity:
         """Compare two sets of terms using OAK"""
         return self.semsim.termset_pairwise_similarity(ts1, ts2, predicates=predicates, labels=labels)
+
+    def compare_termsets(
+        subjects=[""],
+        objects=[""],
+        predicates=[IS_A, "BFO:0000050"],
+        offset: int = 0,
+        limit: int = 20,
+    ):
+        """Get pairwise similarity between two sets of terms
+        
+        This is from utils/get_similarity.py, not sure what the difference is between this and compare() above
+        """
+        hp_db = OAKLIB_MODULE.ensure_gunzip(url=HP_DB_URL, autoclean=False)
+        oi = SqlImplementation(OntologyResource(slug=hp_db))
+        results = oi.termset_pairwise_similarity(subjects, objects, predicates)
+        return results

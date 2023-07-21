@@ -78,7 +78,9 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         node = Node(**solr_document)
         if "biolink:Disease" in node.category:
             mode_of_inheritance_associations = self.get_associations(
-                subject=id, predicate="biolink:has_mode_of_inheritance", offset=0
+                subject=id, 
+                predicate="biolink:has_mode_of_inheritance", 
+                offset=0
             )
             if mode_of_inheritance_associations is not None and len(mode_of_inheritance_associations.items) == 1:
                 node.inheritance = self._get_associated_entity(mode_of_inheritance_associations.items[0], node)
@@ -90,13 +92,13 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
 
     def _get_associated_entity(self, association: Association, this_entity: Entity) -> Entity:
         """Returns the id, name, and category of the other Entity in an Association given this_entity"""
-        if this_entity.id == association.subject:
+        if this_entity.id in association.subject_closure:
             entity = Entity(
                 id=association.object,
                 name=association.object_label,
                 category=association.object_category,
             )
-        elif this_entity.id == association.object:
+        elif this_entity.id in association.object_closure:
             entity = Entity(
                 id=association.subject,
                 name=association.subject_label,
@@ -226,14 +228,14 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
     def search(
         self,
         q: str = "*:*",
-        offset: int = 0,
-        limit: int = 20,
         category: List[str] = None,
         in_taxon: List[str] = None,
         facet_fields: List[str] = None,
         facet_queries: List[str] = None,
         filter_queries: List[str] = None,
         sort: str = None,
+        offset: int = 0,
+        limit: int = 20,
     ) -> SearchResults:
         """Search for entities by label, with optional filters
 
