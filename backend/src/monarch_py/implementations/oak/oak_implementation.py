@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
-# from oaklib.interfaces.semsim_interface import SemanticSimilarityInterface
 from oaklib.datamodels.similarity import TermSetPairwiseSimilarity
+from oaklib.interfaces.semsim_interface import SemanticSimilarityInterface
 from oaklib.selector import get_adapter
-
+# these imports are from get_similarity.py
 import oaklib.datamodels.ontology_metadata as omd
 from oaklib import OntologyResource
 from oaklib.constants import OAKLIB_MODULE
@@ -15,15 +15,20 @@ IS_A = omd.slots.subClassOf.curie
 
 @dataclass
 # class OakImplementation(SemanticSimilarityInterface):
-class OakImplementation():
+class OakImplementation(SemanticSimilarityInterface):
     """Implementation of Monarch Interfaces for OAK"""
 
-    semsim = get_adapter(f"semsim:sqlite:obo:phenio")
+    semsim = get_adapter(f"sqlite:obo:phenio")
     # semsim = get_adapter(f"semsimian:sqlite:obo:phenio")
 
-    def compare(self, ts1, ts2, predicates=None, labels=False) -> TermSetPairwiseSimilarity:
+    def compare(self, subjects, objects, predicates=None, labels=False) -> TermSetPairwiseSimilarity:
         """Compare two sets of terms using OAK"""
-        return self.semsim.termset_pairwise_similarity(ts1, ts2, predicates=predicates, labels=labels)
+        return self.semsim.termset_pairwise_similarity(
+            subjects=subjects,
+            objects=objects,
+            predicates=predicates,
+            labels=labels,
+        )
 
     def compare_termsets(
         subjects=[""],

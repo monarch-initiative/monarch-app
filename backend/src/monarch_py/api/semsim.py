@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends
 from oaklib.cli import _shorthand_to_pred_curie
 
 from monarch_py.api.additional_models import PaginationParams
-from monarch_py.api.utils.get_similarity import compare_termsets
+from monarch_py.api.config import oak
 
 router = APIRouter(
     tags=["semsim"], 
@@ -16,7 +16,7 @@ async def _compare(
     subjects: str = "",
     objects: str = "",
     predicates: str = "",
-    pagination: PaginationParams = Depends(),
+    # pagination: PaginationParams = Depends(),
 ):
     """Get pairwise similarity between two sets of terms
 
@@ -29,16 +29,14 @@ async def _compare(
     Returns:
         TermSetPairwiseSimilarity: Pairwise similarity between subjects and objects
     """
-
-    for sublist in [subjects, objects, predicates]:
-        sublist = sublist.split(",")
-    predicates = [_shorthand_to_pred_curie(p) for p in predicates]
-
-    results = compare_termsets(
-        subjects=subjects,
-        objects=objects,
-        predicates=predicates,
-        offset=pagination.offset,
-        limit=pagination.limit,
+    print(f"subjects: {subjects.split(',')}")
+    print(f"objects: {objects.split(',')}")
+    print(type(subjects.split(',')), type(objects.split(',')))
+    results = oak.compare(
+        subjects=subjects.split(","),
+        objects=objects.split(","),
+        # predicates=[_shorthand_to_pred_curie(p) for p in predicates.split(",")],
+        # offset=pagination.offset,
+        # limit=pagination.limit,
     )
     return results
