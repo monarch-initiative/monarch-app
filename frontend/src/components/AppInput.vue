@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import { onBeforeUnmount, ref } from "vue";
-import { debounce } from "lodash";
+import { debounce as _debounce } from "lodash";
 
 type Props = {
   /** two-way bound text state */
@@ -65,7 +65,7 @@ function onInput() {
 }
 
 /** when user types in box, after some delay */
-const onDebounce = debounce(function (value: string) {
+const onDebounce = _debounce(function (value: string) {
   emit("debounce", value);
 }, props.debounce || 500);
 

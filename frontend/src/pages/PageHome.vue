@@ -5,7 +5,12 @@
 <template>
   <!-- dive right in -->
   <AppSection design="fill">
-    <AppTabs v-model="tab" name="Explore Mode" :tabs="tabs" route="Explore" />
+    <AppTabs
+      v-model="tab"
+      name="Explore Mode"
+      :tabs="tabs"
+      navigate="Explore"
+    />
     <TabSearch :home="true" />
   </AppSection>
 

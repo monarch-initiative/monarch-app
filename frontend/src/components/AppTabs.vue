@@ -67,12 +67,12 @@ type Props = {
   /** whether to sync active tab with url hash */
   url?: boolean;
   /** route name to navigate to on change */
-  route?: string;
+  navigate?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   url: true,
-  route: undefined,
+  navigate: undefined,
 });
 
 type Emits = {
@@ -131,7 +131,7 @@ watch(
 
     /** update hash in url and nav if applicable */
     const newRoute = { ...route };
-    if (props.route) newRoute.name = props.route;
+    if (props.navigate) newRoute.name = props.navigate;
     if (props.url) newRoute.hash = "#" + props.modelValue;
     await router.push(newRoute);
   },

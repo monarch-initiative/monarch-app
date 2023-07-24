@@ -51,7 +51,6 @@
     "@types/jsdom": "^21.1.1",
     "@types/lodash": "^4.14.195",
     "@types/node": "18",
-    "@types/node-fetch": "^2.6.4",
     "@types/ua-parser-js": "^0.7.36",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vue/eslint-config-prettier": "^8.0.0",
