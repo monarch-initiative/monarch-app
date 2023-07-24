@@ -378,6 +378,7 @@ class Node(Entity):
         description="""The label of the biolink taxon that the entity is in the closure of.""",
     )
     inheritance: Optional[Entity] = Field(None)
+    external_links: Optional[List[ExpandedCurie]] = Field(default_factory=list)
     association_counts: List[AssociationCount] = Field(default_factory=list)
     node_hierarchy: Optional[NodeHierarchy] = Field(None)
     id: str = Field(...)
@@ -385,7 +386,7 @@ class Node(Entity):
     name: Optional[str] = Field(None)
     full_name: Optional[str] = Field(None, description="""The long form name of an entity""")
     description: Optional[str] = Field(None)
-    xref: Optional[List[ExpandedCurie]] = Field(default_factory=list)
+    xref: Optional[List[str]] = Field(default_factory=list)
     provided_by: Optional[str] = Field(None)
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)

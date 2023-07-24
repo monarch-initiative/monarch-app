@@ -78,10 +78,6 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
             return parse_entity(solr_document)
         # Get extra data (this logic is very tricky to test because of the calls to Solr)
 
-        # Move xrefs aside to parse into ExpandedCurie below
-        xrefs = solr_document["xref"] if "xref" in solr_document else []
-        solr_document["xref"] = []
-
         node = Node(**solr_document)
         if "biolink:Disease" in node.category:
             mode_of_inheritance_associations = self.get_associations(
@@ -91,9 +87,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
                 node.inheritance = self._get_associated_entity(mode_of_inheritance_associations.items[0], node)
         node.node_hierarchy = self._get_node_hierarchy(node)
         node.association_counts = self.get_association_counts(id).items
-        node.xref = []
-        for curie in xrefs:
-            node.xref.append(ExpandedCurie(id=curie, url=CurieService().expand(curie)))
+        node.external_links = [ExpandedCurie(id=curie, url=CurieService().expand(curie)) for curie in node.xref]
         return node
 
     ### Entity helpers ###

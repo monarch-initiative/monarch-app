@@ -200,12 +200,9 @@ classes:
       - in_taxon
       - in_taxon_label
       - inheritance
+      - external_links
       - association_counts
       - node_hierarchy
-    slot_usage:
-      xref:
-        range: ExpandedCurie
-        inlined_as_list: true
   NodeHierarchy:
     slots:
       - super_classes
@@ -269,6 +266,10 @@ slots:
   evidence_count:
     description: count of supporting documents, evidence codes, and sources supplying evidence
     range: integer
+  external_links:
+    range: ExpandedCurie
+    multivalued: true
+    inlined_as_list: true
   facet_fields:
     description: Collection of facet field responses with the field values and counts
     inlined: true
