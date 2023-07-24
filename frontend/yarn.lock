@@ -742,6 +742,11 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-2.0.0.tgz#f544a148d3ab35801c1f633a7441fd87c2e484bf"
   integrity sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==
 
+"@tsconfig/node18@^18.2.0":
+  version "18.2.0"
+  resolved "https://registry.yarnpkg.com/@tsconfig/node18/-/node18-18.2.0.tgz#d6b5358b3fa85fe89b13b46cb1e996e4d79d6a07"
+  integrity sha512-yhxwIlFVSVcMym3O31HoMnRXpoenmpIxcj4Yoes2DUpe+xCJnA7ECQP1Vw889V0jTt/2nzvpLQ/UuMYCd3JPIg==
+
 "@types/body-scroll-lock@^3.1.0":
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/@types/body-scroll-lock/-/body-scroll-lock-3.1.0.tgz#435f6abf682bf58640e1c2ee5978320b891970e7"
@@ -820,10 +825,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-18.16.3.tgz#6bda7819aae6ea0b386ebc5b24bdf602f1b42b01"
   integrity sha512-OPs5WnnT1xkCBiuQrZA4+YAV4HEJejmHneyraIaxsbev5yCEr6KMwINNFP9wQeFIw8FWcoTqF3vQsa5CDaI+8Q==
 
-"@types/node@^20.4.4":
-  version "20.4.4"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.4.4.tgz#c79c7cc22c9d0e97a7944954c9e663bcbd92b0cb"
-  integrity sha512-CukZhumInROvLq3+b5gLev+vgpsIqC2D0deQr/yS1WnxvmYLlJXZpaQrQiseMY+6xusl79E04UjWoqyr+t1/Ew==
+"@types/node@18":
+  version "18.17.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.17.0.tgz#35d44267a33dd46b49ee0f73d31b05fd7407e290"
+  integrity sha512-GXZxEtOxYGFchyUzxvKI14iff9KZ2DI+A6a37o6EQevtg6uO9t+aUZKcaC1Te5Ng1OnLM7K9NVVj+FbecD9cJg==
 
 "@types/semver@^7.3.12":
   version "7.3.13"

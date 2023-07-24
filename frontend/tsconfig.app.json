@@ -1,5 +1,5 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.web.json",
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": [
     "env.d.ts",
     "src/**/*",
@@ -14,6 +14,8 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "lib": ["ES2022", "DOM"]
+    "lib": ["ES2022", "DOM"],
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   }
 }
