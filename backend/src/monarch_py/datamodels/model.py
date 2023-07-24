@@ -299,6 +299,15 @@ class DirectionalAssociation(Association):
     )
 
 
+class ExpandedCurie(ConfiguredBaseModel):
+    """
+    A curie bundled along with its expanded url
+    """
+
+    id: str = Field(...)
+    url: Optional[str] = Field(None)
+
+
 class Entity(ConfiguredBaseModel):
     """
     Represents an Entity in the Monarch KG data model
@@ -376,7 +385,7 @@ class Node(Entity):
     name: Optional[str] = Field(None)
     full_name: Optional[str] = Field(None, description="""The long form name of an entity""")
     description: Optional[str] = Field(None)
-    xref: Optional[List[str]] = Field(default_factory=list)
+    xref: Optional[List[ExpandedCurie]] = Field(default_factory=list)
     provided_by: Optional[str] = Field(None)
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)
@@ -474,6 +483,7 @@ Association.update_forward_refs()
 AssociationCountList.update_forward_refs()
 AssociationTypeMapping.update_forward_refs()
 DirectionalAssociation.update_forward_refs()
+ExpandedCurie.update_forward_refs()
 Entity.update_forward_refs()
 FacetValue.update_forward_refs()
 AssociationCount.update_forward_refs()

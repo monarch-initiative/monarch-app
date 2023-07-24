@@ -9,6 +9,7 @@ from monarch_py.datamodels.model import (
     AssociationResults,
     AssociationTableResults,
     Entity,
+    ExpandedCurie,
     HistoPheno,
     Node,
     NodeHierarchy,
@@ -37,6 +38,7 @@ from monarch_py.implementations.solr.solr_query_utils import (
 from monarch_py.interfaces.association_interface import AssociationInterface
 from monarch_py.interfaces.entity_interface import EntityInterface
 from monarch_py.interfaces.search_interface import SearchInterface
+from monarch_py.service.curie_service import CurieService
 from monarch_py.service.solr_service import SolrService
 
 # from monarch_py.utils.utils import escape
@@ -75,6 +77,11 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         if not extra:
             return parse_entity(solr_document)
         # Get extra data (this logic is very tricky to test because of the calls to Solr)
+
+        # Move xrefs aside to parse into ExpandedCurie below
+        xrefs = solr_document["xref"] if "xref" in solr_document else []
+        solr_document["xref"] = []
+
         node = Node(**solr_document)
         if "biolink:Disease" in node.category:
             mode_of_inheritance_associations = self.get_associations(
@@ -84,6 +91,9 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
                 node.inheritance = self._get_associated_entity(mode_of_inheritance_associations.items[0], node)
         node.node_hierarchy = self._get_node_hierarchy(node)
         node.association_counts = self.get_association_counts(id).items
+        node.xref = []
+        for curie in xrefs:
+            node.xref.append(ExpandedCurie(id=curie, url=CurieService().expand(curie)))
         return node
 
     ### Entity helpers ###

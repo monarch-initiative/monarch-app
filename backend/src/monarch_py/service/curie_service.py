@@ -1,13 +1,11 @@
 ### make a singleton class that uses prefixmap and curies to expand curies
 
-from prefixmaps.io.parser import load_multi_context
-from prefixmaps.datamodel.context import Context
+import curies
 from curies import Converter
 
 
 class CurieService:
     _instance = None
-    context: Context
     converter: Converter
 
     def __new__(cls):
@@ -17,12 +15,7 @@ class CurieService:
         return cls._instance
 
     def initialize(self):
-        self.context = load_multi_context(["merged"])
-        # self.converter = self.context.as_converter()
+        self.converter = monarch_converter = curies.get_monarch_converter()
 
     def expand(self, curie: str) -> str:
-        pass
-#        return self.converter.expand(curie)
-
-
-
+        return self.converter.expand(curie)

@@ -148,6 +148,11 @@ classes:
       An association that gives it's direction relative to a specified entity
     slots:
       - direction
+  ExpandedCurie:
+    description: A curie bundled along with its expanded url
+    slots:
+      - id
+      - url
   Entity:
     description: Represents an Entity in the Monarch KG data model
     slots:
@@ -197,6 +202,10 @@ classes:
       - inheritance
       - association_counts
       - node_hierarchy
+    slot_usage:
+      xref:
+        range: ExpandedCurie
+        inlined_as_list: true
   NodeHierarchy:
     slots:
       - super_classes
@@ -389,6 +398,8 @@ slots:
     required: true
   xref:
     multivalued: true
+    range: string
+  url:
     range: string
   subject_label:
     is_a: name
