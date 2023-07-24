@@ -36,7 +36,5 @@ async def _compare(
         subjects=subjects.split(","),
         objects=objects.split(","),
         # predicates=[_shorthand_to_pred_curie(p) for p in predicates.split(",")],
-        # offset=pagination.offset,
-        # limit=pagination.limit,
     )
     return results
