@@ -54,16 +54,12 @@ app.use(Hotjar, {
 if (mode === "production")
   app.use(VueGtag, { config: { id: "G-TWM5ED4QJB" } }, router);
 
-/** whether to mock api responses, based on env */
-const mock: { [key: string]: boolean } = {
-  development: true,
-  test: true,
-  production: false,
-};
-
 (async () => {
   /** mock api */
-  if (mock[mode]) {
+  if (
+    mode === "test" ||
+    new URLSearchParams(window.location.href).get("mock") === "true"
+  ) {
     const { setupWorker } = await import("msw");
     const { handlers } = await import("../fixtures");
     await setupWorker(...handlers).start();
