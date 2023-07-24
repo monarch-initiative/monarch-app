@@ -31,7 +31,6 @@ Techniques/approaches used:
 | `yarn build`             | Build production version of app                   |
 | `yarn preview`           | Serve built version of app (must run build first) |
 | `yarn lint`              | Check linting and formatting, _and fix_           |
-| `yarn imports`           | Sort imports in `.js`/`.ts`/`.vue`/etc. files     |
 | `yarn test`              | Run all tests below sequentially                  |
 | `yarn test:types`        | Type-check codebase                               |
 | `yarn test:lint`         | Check linting and formatting                      |
