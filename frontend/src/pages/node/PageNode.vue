@@ -86,7 +86,7 @@ const {
     appDescription.value = [name, description]
       .filter((part) => part)
       .join(" | ");
-  }
+  },
 );
 
 /** when path (not hash or query) changed, get new node data */
@@ -103,7 +103,7 @@ watch(
     ];
   },
   /** https://github.com/vuejs/vue-router/issues/3393 */
-  { immediate: true, flush: "post" }
+  { immediate: true, flush: "post" },
 );
 
 /** update node history on node visit */

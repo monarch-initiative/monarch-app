@@ -219,17 +219,17 @@ const {
     if (bMode.value.id.includes("these phenotypes"))
       return await compareSetToSet(
         aPhenotypes.value.map(({ id }) => id),
-        bPhenotypes.value.map(({ id }) => id)
+        bPhenotypes.value.map(({ id }) => id),
       );
     else
       return await compareSetToTaxon(
         aPhenotypes.value.map(({ id }) => id),
-        bMode.value.id.includes("diseases") ? bTaxonHuman.id : bTaxon.value.id
+        bMode.value.id.includes("diseases") ? bTaxonHuman.id : bTaxon.value.id,
       );
   },
 
   /** default value */
-  { matches: [] }
+  { matches: [] },
 );
 
 /** when multi select component runs spread options function */
@@ -271,7 +271,7 @@ watch(
   () => comparison.value,
   () => {
     if (comparison.value.matches.length) runPhenogrid();
-  }
+  },
 );
 
 /** clear/reset results */
@@ -282,7 +282,7 @@ function clearResults() {
 /** get description to show below phenotypes select box */
 function description(
   phenotypes: Options,
-  generatedFrom: GeneratedFrom
+  generatedFrom: GeneratedFrom,
 ): string {
   const description = [];
 
@@ -294,7 +294,7 @@ function description(
     description.push(
       `generated from "${
         generatedFrom.option?.label || generatedFrom.option?.id
-      }"`
+      }"`,
     );
   return `(${description.join(", ")})`;
 }

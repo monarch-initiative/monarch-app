@@ -45,13 +45,13 @@ export const getDatasets = async (): Promise<Datasets> => {
       date: node.meta["http://purl.org/dc/terms/created"][0],
       distribution: getXrefLink(
         edges.find(
-          (edge) => edge.sub === node.id && edge.pred === "dcat:distribution"
-        )?.obj || ""
+          (edge) => edge.sub === node.id && edge.pred === "dcat:distribution",
+        )?.obj || "",
       ),
       files: edges
         .filter((edge) => edge.sub === node.id && edge.pred === "dc:source")
         .map((edge) => getXrefLink(edge.obj)),
-    })
+    }),
   );
 
   /** merge static (manually entered) data in with dynamic (fetched) data */

@@ -246,7 +246,7 @@ const {
   },
 
   /** default value */
-  []
+  [],
 );
 
 /** target element */
@@ -257,7 +257,7 @@ const dropdown = ref();
 const { calculate, style } = useFloating(
   computed(() => target.value?.textbox),
   dropdown,
-  true
+  true,
 );
 /** recompute position when length of results changes */
 watch([expanded, results], async () => {
@@ -269,7 +269,7 @@ watch([expanded, results], async () => {
 watch(
   () => props.modelValue,
   () => (search.value = props.modelValue || ""),
-  { immediate: true }
+  { immediate: true },
 );
 
 /** when search changes, update model */

@@ -23,9 +23,9 @@ test("Basic search results show", async ({ page }) => {
     page
       .getByRole("link")
       .filter({ hasText: /HP:0032320/i })
-      .first()
+      .first(),
   ).toHaveAttribute("href", /HP:0032320/i);
   await expect(
-    page.getByText(/acts upstream of or within/i).first()
+    page.getByText(/acts upstream of or within/i).first(),
   ).toBeVisible();
 });

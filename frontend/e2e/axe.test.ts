@@ -68,17 +68,17 @@ for (const path of paths) test("Accessibility check " + path, checkPage(path));
 /** extra testbed component tests */
 test(
   "Accessibility check /testbed (select single)",
-  checkPage("/testbed", ".select-single button")
+  checkPage("/testbed", ".select-single button"),
 );
 test(
   "Accessibility check /testbed (select multi)",
-  checkPage("/testbed", ".select-multi button")
+  checkPage("/testbed", ".select-multi button"),
 );
 test(
   "Accessibility check /testbed (select tags)",
-  checkPage("/testbed", ".select-tags input")
+  checkPage("/testbed", ".select-tags input"),
 );
 test(
   "Accessibility check /testbed (select autocomplete)",
-  checkPage("/testbed", ".select-autocomplete input")
+  checkPage("/testbed", ".select-autocomplete input"),
 );

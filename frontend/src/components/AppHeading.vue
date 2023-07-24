@@ -104,7 +104,9 @@ onUpdated(update);
   font-size: 0.8em;
   text-decoration: none;
   opacity: 0;
-  transition: opacity $fast, color $fast;
+  transition:
+    opacity $fast,
+    color $fast;
 }
 
 .anchor:focus {

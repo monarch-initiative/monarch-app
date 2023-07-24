@@ -92,12 +92,12 @@ onMounted(runGetUptimes);
 function clearData() {
   if (
     window.confirm(
-      "Are you sure you want to clear your local data? This cannot be undone."
+      "Are you sure you want to clear your local data? This cannot be undone.",
     )
   ) {
     window.localStorage.clear();
     window.alert(
-      "Your local data has been cleared. Restart the app for changes to take effect."
+      "Your local data has been cleared. Restart the app for changes to take effect.",
     );
   }
 }

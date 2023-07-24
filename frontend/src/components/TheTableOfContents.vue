@@ -115,14 +115,14 @@ async function updatePosition() {
   /** calculate nudge */
   nudge.value = Math.max(
     header.top + header.height,
-    subHeader.top + subHeader.height
+    subHeader.top + subHeader.height,
   );
 
   /** find in view section */
   if (!oneAtATime.value)
     active.value = firstInView(
       /** typescript bug */
-      entries.value.map((entry) => entry.section as HTMLElement)
+      entries.value.map((entry) => entry.section as HTMLElement),
     );
 }
 
@@ -130,7 +130,7 @@ async function updatePosition() {
 function updateEntries() {
   entries.value = Array.from(
     /** get all headings except top level one */
-    document?.querySelectorAll("h2[id], h3[id]") || []
+    document?.querySelectorAll("h2[id], h3[id]") || [],
   ).map((element) =>
     /** get relevant props from heading */
     ({
@@ -139,7 +139,7 @@ function updateEntries() {
       icon:
         element.querySelector("[data-icon]")?.getAttribute("data-icon") || "",
       text: (element as HTMLElement).innerText || "",
-    })
+    }),
   );
 }
 
@@ -174,7 +174,7 @@ useMutationObserver(
   {
     subtree: true,
     childList: true,
-  }
+  },
 );
 </script>
 

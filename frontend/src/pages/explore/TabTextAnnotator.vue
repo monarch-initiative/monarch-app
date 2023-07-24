@@ -124,7 +124,7 @@ async function doExample() {
 function download() {
   downloadJson(
     annotations.value.filter(({ tokens }) => tokens.length),
-    "annotations"
+    "annotations",
   );
 }
 

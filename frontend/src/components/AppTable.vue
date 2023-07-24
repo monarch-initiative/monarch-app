@@ -377,7 +377,7 @@ const end = computed((): number => props.start + props.rows.length);
 
 /** grid column template widths */
 const widths = computed((): string =>
-  props.cols.map((col) => col.width || "auto").join(" ")
+  props.cols.map((col) => col.width || "auto").join(" "),
 );
 
 /** aria sort direction attribute */

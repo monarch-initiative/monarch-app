@@ -38,7 +38,7 @@
 
     <!-- "predicate" (association/relation) -->
     <template #association="{ row }">
-      <AppPredicateBadge :association="(row as DirectionalAssociation)" />
+      <AppPredicateBadge :association="row as DirectionalAssociation" />
     </template>
 
     <!-- "object" (what current node has an association with) -->
@@ -71,7 +71,7 @@
             'select',
             (row.id === association?.id
               ? undefined
-              : row) as DirectionalAssociation
+              : row) as DirectionalAssociation,
           )
         "
       />
@@ -150,7 +150,7 @@ const cols = computed((): Cols => {
       id: "subject",
       key: "",
       heading: getCategoryLabel(
-        associations.value.items[0]?.subject_category || "Subject"
+        associations.value.items[0]?.subject_category || "Subject",
       ),
       width: "max-content",
     },
@@ -164,7 +164,7 @@ const cols = computed((): Cols => {
       id: "object",
       key: "",
       heading: getCategoryLabel(
-        associations.value.items[0]?.object_category || "Object"
+        associations.value.items[0]?.object_category || "Object",
       ),
       width: "max-content",
     },
@@ -205,7 +205,7 @@ const cols = computed((): Cols => {
         key: "onset_qualifier_label",
         heading: "Onset",
         sortable: true,
-      }
+      },
     );
   }
 
@@ -230,7 +230,7 @@ const cols = computed((): Cols => {
         key: "publisher",
         heading: "Publisher",
         width: "max-content",
-      }
+      },
     );
 
   /**
@@ -261,7 +261,7 @@ const {
      * whether to perform "fresh" search, without filters/pagination/etc. true
      * when search text changes, false when filters/pagination/etc change.
      */
-    fresh: boolean
+    fresh: boolean,
   ) {
     /** catch case where no association categories available */
     if (!props.node.association_counts.length)
@@ -273,14 +273,14 @@ const {
       props.category.id,
       start.value,
       perPage.value,
-      search.value
+      search.value,
     );
 
     return response;
   },
 
   /** default value */
-  { items: [], total: 0, limit: 0, offset: 0 }
+  { items: [], total: 0, limit: 0, offset: 0 },
 );
 
 /** download table data */
@@ -292,9 +292,9 @@ async function download() {
   snackbar(
     `Downloading data for ${Math.min(
       associations.value.total,
-      max
+      max,
     )} table entries.` +
-      (associations.value.total >= 100 ? " This may take a minute." : "")
+      (associations.value.total >= 100 ? " This may take a minute." : ""),
   );
 
   /** attempt to request all rows */
@@ -302,7 +302,7 @@ async function download() {
     props.node.id,
     props.category.id,
     0,
-    max
+    max,
   );
   downloadJson(response);
 }
@@ -310,11 +310,11 @@ async function download() {
 /** get associations when category or table state changes */
 watch(
   () => props.category,
-  async () => await queryAssociations(true)
+  async () => await queryAssociations(true),
 );
 watch(
   [perPage, start, search, sort],
-  async () => await queryAssociations(false)
+  async () => await queryAssociations(false),
 );
 
 /** get associations on load */

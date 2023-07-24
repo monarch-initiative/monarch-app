@@ -43,7 +43,7 @@ watch(
       src.value = (await import(`../assets/team/_member.jpg`)).default;
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
 </script>
 

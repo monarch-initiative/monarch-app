@@ -203,20 +203,20 @@ const filteredSources = computed((): Source[] =>
   sources.value.filter(
     (source: Source) =>
       (source.type === "dataset" && showDatasets.value) ||
-      (source.type === "ontology" && showOntologies.value)
-  )
+      (source.type === "ontology" && showOntologies.value),
+  ),
 );
 
 /** number of dataset sources */
 const datasetCount = computed(
   (): number =>
-    sources.value.filter((source) => source.type === "dataset").length
+    sources.value.filter((source) => source.type === "dataset").length,
 );
 
 /** number of ontology sources */
 const ontologyCount = computed(
   (): number =>
-    sources.value.filter((source) => source.type === "ontology").length
+    sources.value.filter((source) => source.type === "ontology").length,
 );
 </script>
 

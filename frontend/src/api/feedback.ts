@@ -19,7 +19,7 @@ type _Response = _Success | _Error;
 /** create issue on helpdesk on submit of feedback form */
 export const postFeedback = async (
   title = "",
-  body = ""
+  body = "",
 ): Promise<IssueLink> => {
   /** check params */
   if (!title || !body) throw new Error("Title or body not specified");
@@ -28,7 +28,7 @@ export const postFeedback = async (
   const data = await request<_Response>(
     feedbackEndpoint,
     { title, body },
-    { method: "POST" }
+    { method: "POST" },
   );
 
   /** if error */

@@ -97,7 +97,7 @@ watch(
           .join("") || "",
     };
   },
-  { immediate: true }
+  { immediate: true },
 );
 </script>
 

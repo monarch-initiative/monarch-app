@@ -153,14 +153,14 @@ routes.forEach(
       description:
         (descriptions as { [key: string]: string })[String(route.name || "")] ||
         import.meta.env.VITE_DESCRIPTION,
-    })
+    }),
 );
 
 /** vue-router's scroll behavior handler */
 const scrollBehavior: RouterScrollBehavior = async (
   to,
   from,
-  savedPosition
+  savedPosition,
 ) => {
   /** https://github.com/vuejs/vue-router-next/issues/1147 */
   await sleep();

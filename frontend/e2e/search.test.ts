@@ -54,26 +54,26 @@ test("Recent/frequent results show", async ({ page }) => {
     options
       .nth(0)
       .getByText(/muscular dystrophy/i)
-      .first()
+      .first(),
   ).toBeVisible();
   await expect(
     options
       .nth(1)
       .getByText(/abc def/i)
-      .first()
+      .first(),
   ).toBeVisible();
   await expect(options.nth(2).getByText(/123/).first()).toBeVisible();
 
   /** frequent */
   await expect(
-    page.locator("[role='option']").nth(3).getByText(/123/).first()
+    page.locator("[role='option']").nth(3).getByText(/123/).first(),
   ).toBeVisible();
   await expect(
     page
       .locator("[role='option']")
       .nth(4)
       .getByText(/abc def/)
-      .first()
+      .first(),
   ).toBeVisible();
 });
 
@@ -82,7 +82,7 @@ test("Autocomplete results show", async ({ page }) => {
   await page.goto("/explore");
   await page.locator("input").fill("Fanconi");
   await expect(
-    page.getByText(/Fanconi renotubular syndrome/i).first()
+    page.getByText(/Fanconi renotubular syndrome/i).first(),
   ).toBeVisible();
 });
 

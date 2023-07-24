@@ -26,7 +26,7 @@ export const request = async <Response>(
   path = "",
   params: Params = {},
   options: RequestInit = {},
-  parse: "text" | "json" = "json"
+  parse: "text" | "json" = "json",
 ): Promise<Response> => {
   /** start cache if not already started */
   if (!cache) await initCache();
@@ -64,7 +64,7 @@ export const request = async <Response>(
   if (mode !== "test") {
     console.groupCollapsed(
       response ? "📞 Request (cached)" : "📞 Request (new)",
-      endpoint
+      endpoint,
     );
     console.info("Url", url);
     console.info("Params", params);

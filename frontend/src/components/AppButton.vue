@@ -80,7 +80,11 @@ defineExpose({ button });
   max-width: 100%;
   gap: 10px;
   text-decoration: none;
-  transition: color $fast, background $fast, opacity $fast, box-shadow $fast;
+  transition:
+    color $fast,
+    background $fast,
+    opacity $fast,
+    box-shadow $fast;
 
   &[data-design="normal"] {
     min-width: min(200px, calc(100% - 40px));

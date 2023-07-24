@@ -198,7 +198,7 @@ function onKeydown(event: KeyboardEvent) {
 /** get selected option index from model */
 function getSelected() {
   return props.options.findIndex(
-    (option) => option?.id === props.modelValue?.id
+    (option) => option?.id === props.modelValue?.id,
   );
 }
 
@@ -207,7 +207,7 @@ watch(
   () => props.modelValue,
   () =>
     /** update selected index */
-    (selected.value = getSelected())
+    (selected.value = getSelected()),
 );
 
 /** when selected index changes */
@@ -218,11 +218,13 @@ watch(selected, () => {
 });
 
 /** when highlighted index changes */
-watch(highlighted, () =>
-  /** scroll to highlighted in dropdown */
-  document
-    .querySelector(`#option-${id.value}-${highlighted.value}`)
-    ?.scrollIntoView({ block: "nearest" })
+watch(
+  highlighted,
+  () =>
+    /** scroll to highlighted in dropdown */
+    document
+      .querySelector(`#option-${id.value}-${highlighted.value}`)
+      ?.scrollIntoView({ block: "nearest" }),
 );
 
 /** auto-select first option as fallback */
@@ -231,7 +233,7 @@ watch(
   () => {
     if (selected.value === -1 && props.options.length) selected.value = 0;
   },
-  { immediate: true }
+  { immediate: true },
 );
 </script>
 

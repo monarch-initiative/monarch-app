@@ -52,10 +52,10 @@ const props = withDefaults(defineProps<Props>(), {
 
 /** css flex props */
 const justifyContent = computed(() =>
-  props.direction === "col" ? alignMap[props.vAlign] : alignMap[props.hAlign]
+  props.direction === "col" ? alignMap[props.vAlign] : alignMap[props.hAlign],
 );
 const alignItems = computed(() =>
-  props.direction === "col" ? alignMap[props.hAlign] : alignMap[props.vAlign]
+  props.direction === "col" ? alignMap[props.hAlign] : alignMap[props.vAlign],
 );
 </script>
 

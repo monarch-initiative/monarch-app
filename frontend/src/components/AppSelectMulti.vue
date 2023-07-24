@@ -191,7 +191,7 @@ const dropdown = ref();
 /** get dropdown position */
 const { calculate, style } = useFloating(
   computed(() => anchor.value?.button || anchor.value),
-  dropdown
+  dropdown,
 );
 /** recompute position after opened */
 watch(expanded, async () => {
@@ -266,7 +266,7 @@ function onKeydown(event: KeyboardEvent) {
 function getSelected(): number[] {
   return props.options
     .map((option, index) =>
-      props.modelValue.find((model) => option.id === model.id) ? index : -1
+      props.modelValue.find((model) => option.id === model.id) ? index : -1,
     )
     .filter((index) => index !== -1);
 }
@@ -312,23 +312,25 @@ watch(
     /** avoid infinite rerenders */
     if (!isEqual(selected.value, getSelected())) selected.value = getSelected();
   },
-  { deep: true, immediate: true }
+  { deep: true, immediate: true },
 );
 
 /** when selected index changes, update model */
 watch(selected, () => emit("update:modelValue", getModel()), { deep: true });
 
 /** when highlighted index changes */
-watch(highlighted, () =>
-  /** scroll to highlighted in dropdown */
-  document
-    .querySelector(`#option-${id.value}-${highlighted.value} > *`)
-    ?.scrollIntoView({ block: "nearest" })
+watch(
+  highlighted,
+  () =>
+    /** scroll to highlighted in dropdown */
+    document
+      .querySelector(`#option-${id.value}-${highlighted.value} > *`)
+      ?.scrollIntoView({ block: "nearest" }),
 );
 
 /** are all options selected */
 const allSelected = computed(
-  () => selected.value.length === props.options.length
+  () => selected.value.length === props.options.length,
 );
 
 /** are no options selected */

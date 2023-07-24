@@ -308,7 +308,7 @@ function clear() {
 /** copy selected ids to clipboard */
 async function copy() {
   await window.navigator.clipboard?.writeText(
-    selected.value.map(({ id }) => id).join(",")
+    selected.value.map(({ id }) => id).join(","),
   );
   snackbar(`Copied ${selected.value.length} values`);
 }
@@ -343,7 +343,7 @@ const {
       /** reset */
       close();
     }
-  }
+  },
 );
 
 /** list of unselected results to show */
@@ -351,8 +351,8 @@ const availableResults = computed(() =>
   results.value.autoAccept
     ? []
     : results.value.options.filter(
-        (option) => !selected.value.find((model) => model.id === option.id)
-      )
+        (option) => !selected.value.find((model) => model.id === option.id),
+      ),
 );
 
 /** target element */
@@ -376,7 +376,7 @@ watch(
       /** update (de-duplicated) selected value */
       selected.value = uniqBy(props.modelValue, "id");
   },
-  { deep: true, immediate: true }
+  { deep: true, immediate: true },
 );
 
 /** when selected value changes */
@@ -386,7 +386,7 @@ watch(
     /** emit (deduplicated) updated model */
     emit("update:modelValue", uniqBy(selected.value, "id"));
   },
-  { deep: true }
+  { deep: true },
 );
 
 /** when highlighted index changes */

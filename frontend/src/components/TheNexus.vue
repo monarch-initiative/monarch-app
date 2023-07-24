@@ -137,7 +137,7 @@ const generate = debounce(() => {
 
   /** eliminate dots with no links */
   dots = dots.filter((dot) =>
-    links.find(({ from, to }) => dot === from || dot === to)
+    links.find(({ from, to }) => dot === from || dot === to),
   );
 }, 50);
 

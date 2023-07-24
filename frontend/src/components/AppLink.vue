@@ -69,7 +69,7 @@ const plainText = computed(
   () =>
     slots.default &&
     slots.default().length === 1 &&
-    typeof slots.default()[0].children === "string"
+    typeof slots.default()[0].children === "string",
 );
 
 /**

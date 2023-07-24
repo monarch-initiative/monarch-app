@@ -7,7 +7,7 @@ export const getSearch = async (
   q: string,
   offset?: number,
   limit?: number,
-  filters?: Filters
+  filters?: Filters,
 ) => {
   const url = `${monarch}/search`;
   const response = await request<SearchResults>(url, {

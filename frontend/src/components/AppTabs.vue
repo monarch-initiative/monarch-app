@@ -106,7 +106,7 @@ async function onKeydown(event: KeyboardEvent) {
     /** update selected, wrapping beyond -1 or options length */
     emit(
       "update:modelValue",
-      props.tabs[wrap(index, 0, props.tabs.length - 1)].id
+      props.tabs[wrap(index, 0, props.tabs.length - 1)].id,
     );
   }
 }
@@ -134,7 +134,7 @@ watch(
     if (props.route) newRoute.name = props.route;
     if (props.url) newRoute.hash = "#" + props.modelValue;
     await router.push(newRoute);
-  }
+  },
 );
 
 /** update state */

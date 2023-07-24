@@ -102,7 +102,7 @@ const {
   },
 
   /** default value */
-  { items: [], limit: 0, offset: 0, total: 0 }
+  { items: [], limit: 0, offset: 0, total: 0 },
 );
 
 /** get associations when category changes */

@@ -236,7 +236,9 @@ $wrap: 600px;
     height: 2px;
     background: $white;
     content: "";
-    transition: left $fast, right $fast;
+    transition:
+      left $fast,
+      right $fast;
   }
 
   &:hover:after {
