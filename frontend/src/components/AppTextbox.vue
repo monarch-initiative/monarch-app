@@ -106,16 +106,16 @@ defineExpose({ textbox });
 
 <style lang="scss" scoped>
 .label {
+  --height: 40px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
   width: 100%;
-  --height: 40px;
+  gap: 10px;
 }
 
 .title {
-  text-align: left;
   font-weight: 500;
+  text-align: left;
 }
 
 .asterisk {
@@ -128,8 +128,8 @@ defineExpose({ textbox });
 
 .description {
   color: $dark-gray;
-  text-align: left;
   font-size: 0.9rem;
+  text-align: left;
 }
 
 .textbox {
@@ -138,23 +138,23 @@ defineExpose({ textbox });
 }
 
 .icon {
+  display: flex;
   position: absolute;
-  right: 0;
   top: 0;
+  right: 0;
+  align-items: center;
+  justify-content: center;
   width: var(--height);
   height: var(--height);
-  display: flex;
-  justify-content: center;
-  align-items: center;
   color: $gray;
 }
 
 .input {
   width: 100%;
-  background: $white;
   border: solid 2px $off-black;
   border-radius: $rounded;
   outline: none;
+  background: $white;
   transition: box-shadow $fast;
 }
 
@@ -167,8 +167,8 @@ defineExpose({ textbox });
 .input[data-multi="true"] {
   min-width: 100%;
   max-width: 100%;
-  min-height: calc(var(--height) * 2);
   height: calc(var(--height) * 4);
+  min-height: calc(var(--height) * 2);
   padding: calc(var(--height) * 0.25);
   line-height: $spacing;
 }

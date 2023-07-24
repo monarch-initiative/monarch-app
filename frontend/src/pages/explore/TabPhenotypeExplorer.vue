@@ -350,8 +350,8 @@ onMounted(() => {
 @media (max-width: 600px) {
   .match {
     flex-direction: column;
-    gap: 20px;
     margin: 10px 0;
+    gap: 20px;
   }
 
   .details {

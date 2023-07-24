@@ -180,11 +180,11 @@ useMutationObserver(
 
 <style lang="scss" scoped>
 .toc {
+  z-index: 10;
   position: fixed;
   top: 0;
   background: $white;
   box-shadow: $shadow;
-  z-index: 10;
 }
 
 .toc[data-expanded="true"] {
@@ -198,9 +198,9 @@ useMutationObserver(
 }
 
 .title-button {
+  flex-shrink: 0;
   width: 40px;
   height: 40px;
-  flex-shrink: 0;
 }
 
 .title-text {
@@ -209,9 +209,9 @@ useMutationObserver(
 }
 
 .spacer {
-  content: "";
   width: 100%;
   margin: 5px 0;
+  content: "";
 }
 
 .entry {
@@ -231,8 +231,8 @@ useMutationObserver(
 }
 
 .entry-icon {
-  width: 40px;
   flex-shrink: 0;
+  width: 40px;
   color: $gray;
 }
 

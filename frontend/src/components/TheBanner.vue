@@ -29,11 +29,11 @@ const open = ref(true);
 .banner {
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  align-items: center;
   flex-wrap: wrap;
-  gap: 20px;
+  align-items: center;
+  justify-content: center;
   padding: 20px;
+  gap: 20px;
   background: $theme-light;
   text-align: center;
 }

@@ -243,11 +243,11 @@ watch(
 
 .box {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
   width: 100%;
   padding: 5px 10px;
+  gap: 10px;
   border-radius: $rounded;
   background: $light-gray;
 }
@@ -258,6 +258,7 @@ watch(
 }
 
 .list {
+  z-index: 12;
   position: fixed;
   max-width: 90vw;
   max-height: 300px;
@@ -265,15 +266,14 @@ watch(
   overflow-y: auto;
   background: $white;
   box-shadow: $shadow;
-  z-index: 12;
 }
 
 .option {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
   padding: 5px 10px;
+  gap: 10px;
   text-align: left;
   white-space: nowrap;
   cursor: pointer;

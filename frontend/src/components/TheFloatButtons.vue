@@ -101,14 +101,14 @@ useMutationObserver(document?.body, update, {
 .float {
   --spacing: 10px;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-end;
-  gap: var(--spacing);
+  z-index: 20;
   position: fixed;
   right: 0;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
   padding: var(--spacing);
-  z-index: 20;
+  gap: var(--spacing);
 }
 
 .button {

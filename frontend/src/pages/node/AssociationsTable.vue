@@ -105,18 +105,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from "vue";
-import AppTable from "@/components/AppTable.vue";
-import type { Cols, Sort } from "@/components/AppTable.vue";
+import { computed, onMounted, ref, watch } from "vue";
+import { getAssociations } from "@/api/associations";
+import { getCategoryLabel } from "@/api/categories";
+import type { DirectionalAssociation, Node } from "@/api/model";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
-import { getAssociations } from "@/api/associations";
-import { downloadJson } from "@/util/download";
+import type { Option } from "@/components/AppSelectSingle.vue";
+import AppTable from "@/components/AppTable.vue";
+import type { Cols, Sort } from "@/components/AppTable.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
 import { useQuery } from "@/util/composables";
-import type { DirectionalAssociation, Node } from "@/api/model";
-import type { Option } from "@/components/AppSelectSingle.vue";
-import { getCategoryLabel } from "@/api/categories";
+import { downloadJson } from "@/util/download";
 
 interface Props {
   /** current node */

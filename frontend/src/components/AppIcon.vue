@@ -108,12 +108,12 @@ watch(
 
 /** common category icon styles */
 [data-icon^="category-"] {
-  height: 1.2em;
   fill: none;
   stroke: currentColor;
   stroke-width: 5;
   stroke-linecap: round;
   stroke-linejoin: round;
+  height: 1.2em;
 }
 
 .initials {
@@ -127,9 +127,9 @@ watch(
 
   text {
     fill: currentColor;
-    font-size: 50px;
     text-anchor: middle;
     dominant-baseline: middle;
+    font-size: 50px;
   }
 }
 </style>

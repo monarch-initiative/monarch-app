@@ -253,13 +253,13 @@ useIntervalFn(pulse, 10000);
 
 <style lang="scss" scoped>
 #nexus {
+  z-index: -1;
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  z-index: -1;
   animation: fade-in forwards 1s linear;
 }
 

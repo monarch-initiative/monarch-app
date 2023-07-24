@@ -60,8 +60,8 @@ withDefaults(defineProps<Props>(), {
 <style lang="scss" scoped>
 .detail {
   flex-grow: 1;
-  text-align: left;
   line-height: $spacing;
+  text-align: left;
 
   &[data-big="true"] {
     width: 100%;

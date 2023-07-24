@@ -455,9 +455,9 @@ const ariaSort = computed(() => {
 .td {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 5px 10px;
   max-width: 300px;
+  padding: 5px 10px;
+  gap: 10px;
 
   &[data-align="left"] {
     justify-content: flex-start;
@@ -479,9 +479,9 @@ const ariaSort = computed(() => {
   }
 
   &[data-divider="true"] {
-    padding: 0;
     width: 2px;
     margin: 0 5px;
+    padding: 0;
     background: $light-gray;
   }
 }
@@ -505,13 +505,13 @@ const ariaSort = computed(() => {
 .controls {
   display: flex;
   justify-content: space-between;
-  gap: 10px;
   width: 100%;
+  gap: 10px;
 
   & > * {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     gap: 10px;
   }
 

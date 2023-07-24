@@ -364,9 +364,9 @@ watch(from, () => runGetSearch(false));
 }
 
 .type {
-  font-size: 2rem;
-  flex-shrink: 0;
   flex-grow: 0;
+  flex-shrink: 0;
+  font-size: 2rem;
 }
 
 .name {
@@ -386,9 +386,9 @@ watch(from, () => runGetSearch(false));
 
 .names,
 .ids {
-  text-align: left;
-  font-size: 0.9rem;
   color: $dark-gray;
+  font-size: 0.9rem;
+  text-align: left;
 
   span {
     width: 100%;
@@ -398,8 +398,8 @@ watch(from, () => runGetSearch(false));
 .page-button {
   height: 30px;
   padding: 0 3px;
-  color: $theme-dark;
   border-radius: $rounded;
+  color: $theme-dark;
   transition: box-shadow $fast;
 
   &:hover {

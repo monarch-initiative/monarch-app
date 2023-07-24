@@ -1,8 +1,8 @@
 import "phenogrid/dist/phenogrid-bundle.js";
 import "./phenogrid.css";
-import { biolink } from "./";
 import { sleep } from "@/util/debug";
 import { waitFor } from "@/util/dom";
+import { biolink } from "./";
 
 /** mount phenogrid to dom element with options */
 export const mountPhenogrid = async (

@@ -64,8 +64,8 @@ import { getTopAssociations } from "@/api/associations";
 import type { DirectionalAssociation, Node } from "@/api/model";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
-import { useQuery } from "@/util/composables";
 import type { Option } from "@/components/AppSelectSingle.vue";
+import { useQuery } from "@/util/composables";
 
 type Props = {
   /** current node */
@@ -131,8 +131,8 @@ onMounted(getAssociations);
 }
 
 .details {
-  width: 0;
   flex-grow: 1;
+  width: 0;
   text-align: left;
 }
 

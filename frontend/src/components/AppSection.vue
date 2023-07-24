@@ -23,8 +23,8 @@ withDefaults(defineProps<Props>(), { width: "medium", design: "normal" });
 <style lang="scss" scoped>
 .section {
   display: flex;
-  align-items: center;
   flex-direction: column;
+  align-items: center;
   gap: 40px;
   text-align: center;
   transition: background $fast;

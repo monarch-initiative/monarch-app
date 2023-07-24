@@ -63,9 +63,9 @@ const expanded = ref(false);
 .content {
   display: flex;
   flex-direction: column;
-  gap: 20px;
   width: 100%;
   padding: 20px;
+  gap: 20px;
 }
 
 .caret {

@@ -406,16 +406,16 @@ watch(highlighted, () => {
 
 .box {
   display: flex;
-  align-items: center;
   flex-wrap: wrap;
-  gap: 10px;
+  align-items: center;
   width: 100%;
   min-height: 40px;
   padding: 5px 10px;
-  background: $white;
+  gap: 10px;
   border: solid 2px $off-black;
   border-radius: $rounded;
   outline: none;
+  background: $white;
   transition: box-shadow $fast;
 }
 
@@ -435,26 +435,26 @@ watch(highlighted, () => {
 
 .controls {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   gap: 5px;
 }
 
 .list {
+  z-index: 12;
   max-height: 300px;
   overflow-x: auto;
   overflow-y: auto;
   background: $white;
   box-shadow: $shadow;
-  z-index: 12;
 }
 
 .option {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
   padding: 5px 10px;
+  gap: 10px;
   cursor: pointer;
   transition: background $fast;
 }

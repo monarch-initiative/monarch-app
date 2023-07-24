@@ -23,11 +23,11 @@ defineProps<Props>();
 <style lang="scss" scoped>
 .highlight {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 40px;
+  justify-content: center;
   width: 100%;
   margin: 20px 0;
+  gap: 40px;
 
   &:nth-child(even) {
     flex-direction: row-reverse;

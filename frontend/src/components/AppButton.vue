@@ -71,14 +71,14 @@ defineExpose({ button });
 
 <style lang="scss" scoped>
 .button {
-  appearance: none;
   display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  max-width: 100%;
-  gap: 10px;
+  appearance: none;
   flex-grow: 0;
   flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  gap: 10px;
   text-decoration: none;
   transition: color $fast, background $fast, opacity $fast, box-shadow $fast;
 
@@ -86,10 +86,10 @@ defineExpose({ button });
     min-width: min(200px, calc(100% - 40px));
     min-height: 40px;
     padding: 5px 20px;
-    color: $off-black;
     border-radius: $rounded;
-    font-size: 1rem;
+    color: $off-black;
     font-weight: 500;
+    font-size: 1rem;
 
     &[data-color="primary"] {
       background: $theme-light;
@@ -107,8 +107,8 @@ defineExpose({ button });
   }
 
   &[data-design="circle"] {
-    color: $off-black;
     border-radius: 999px;
+    color: $off-black;
 
     &[data-text="true"] {
       min-width: 2em;

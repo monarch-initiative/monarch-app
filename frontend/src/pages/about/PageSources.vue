@@ -229,9 +229,9 @@ const ontologyCount = computed(
 
 .files {
   display: grid;
-  gap: 10px;
   grid-template-columns: 1fr 1fr;
   justify-items: flex-start;
+  gap: 10px;
   text-align: left;
 
   @media (max-width: 600px) {

@@ -304,26 +304,26 @@ watch(highlighted, () => {
 
 .controls {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   gap: 5px;
 }
 
 .list {
+  z-index: 12;
   max-height: 300px;
   overflow-x: auto;
   overflow-y: auto;
   background: $white;
   box-shadow: $shadow;
-  z-index: 12;
 }
 
 .option {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
   padding: 5px 10px;
+  gap: 10px;
   cursor: pointer;
   transition: background $fast;
 }

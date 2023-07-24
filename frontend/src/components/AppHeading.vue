@@ -101,9 +101,9 @@ onUpdated(update);
   display: inline-block;
   width: 0;
   margin-left: 0.75em;
-  opacity: 0;
-  text-decoration: none;
   font-size: 0.8em;
+  text-decoration: none;
+  opacity: 0;
   transition: opacity $fast, color $fast;
 }
 
@@ -134,8 +134,8 @@ h3 {
   h2,
   h3 {
     .icon {
-      color: $theme-dark;
       height: 1.2em;
+      color: $theme-dark;
     }
   }
 }

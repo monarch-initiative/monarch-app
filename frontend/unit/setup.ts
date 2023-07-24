@@ -1,4 +1,4 @@
-import { type Component, type ComponentPublicInstance, nextTick } from "vue";
+import { nextTick, type Component, type ComponentPublicInstance } from "vue";
 import { cloneDeep } from "lodash";
 import { setupServer } from "msw/node";
 import { afterAll, afterEach, beforeAll, beforeEach, vi } from "vitest";

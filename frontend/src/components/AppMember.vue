@@ -51,8 +51,8 @@ watch(
 .member {
   display: inline-flex;
   align-items: center;
-  gap: 30px;
   max-width: 100%;
+  gap: 30px;
   color: $black;
   text-decoration: none;
 }
@@ -62,15 +62,15 @@ a.member:hover {
 }
 
 .image {
+  flex-shrink: 0;
   width: 80px;
   height: 80px;
-  flex-shrink: 0;
 
   .portrait {
     width: 100%;
     height: 100%;
-    border-radius: 999px;
     overflow: hidden;
+    border-radius: 999px;
   }
 
   img {
@@ -85,8 +85,8 @@ a.member:hover {
 }
 
 .name {
-  font-size: 1.1rem;
   font-weight: 500;
+  font-size: 1.1rem;
 }
 
 .name,
