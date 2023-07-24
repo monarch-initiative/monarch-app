@@ -39,7 +39,7 @@
           <AppLink
             v-for="(link, index) of node.external_links"
             :key="index"
-            :to="link.url"
+            :to="link.url || ''"
             >{{ link.id }}</AppLink
           >
         </AppFlex>
