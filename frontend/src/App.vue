@@ -36,10 +36,10 @@ watch(
      */
 
     /** update document title from route */
-    appTitle.value = [route.name || ""];
+    appTitle.value = [String(route.name) || ""];
 
     /** update description */
-    appDescription.value = route.meta.description as string;
+    appDescription.value = String(route.meta.description);
 
     /** update canonical url */
     appUrl.value = window.location.href;

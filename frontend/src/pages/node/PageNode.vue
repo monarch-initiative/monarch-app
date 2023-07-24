@@ -97,7 +97,7 @@ watch(
   [() => route.fullPath, () => node.value?.name],
   () => {
     appTitle.value = [
-      node.value?.name,
+      String(node.value?.name),
       // `${route.params.id} (${route.params.category})`,
       route.query.associations ? `${route.query.associations} assoc.` : "",
     ];
