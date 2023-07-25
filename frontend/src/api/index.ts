@@ -18,8 +18,10 @@ const fromEnv = import.meta.env.VITE_MONARCH_API || "";
 /** ...from param in url */
 const fromParam = new URLSearchParams(url).get("api") || "";
 
-/** final short name of monarch api version to use (highest to lowest override
- * priority) */
+/**
+ * final short name of monarch api version to use (highest to lowest override
+ * priority)
+ */
 export const apiName = fromParam || fromEnv || fromSubdomain;
 
 /** get full api url from short name */

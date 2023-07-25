@@ -26,7 +26,10 @@ for (const [plugin, options] of plugins) app = app.use(plugin, options);
 for (const [name, Component] of Object.entries(components))
   app = app.component(name, Component);
 
-/** init analytics, if on publicly deployed (production-built) instance of frontend */
+/**
+ * init analytics, if on publicly deployed (production-built) instance of
+ * frontend
+ */
 if (new URL(window.location.href).hostname.endsWith("monarchinitiative.org")) {
   /** track errors with Sentry */
   Sentry.init({
