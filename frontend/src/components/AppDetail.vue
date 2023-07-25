@@ -55,6 +55,12 @@ withDefaults(defineProps<Props>(), {
   blank: false,
   big: false,
 });
+
+type Slots = {
+  default?: () => unknown;
+};
+
+defineSlots<Slots>();
 </script>
 
 <style lang="scss" scoped>

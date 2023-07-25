@@ -18,6 +18,12 @@ type Props = {
 };
 
 withDefaults(defineProps<Props>(), { width: "medium", design: "normal" });
+
+type Slots = {
+  default: () => unknown;
+};
+
+defineSlots<Slots>();
 </script>
 
 <style lang="scss" scoped>

@@ -15,6 +15,12 @@ type Props = {
 };
 
 withDefaults(defineProps<Props>(), { size: "medium" });
+
+type Slots = {
+  default: () => unknown;
+};
+
+defineSlots<Slots>();
 </script>
 
 <style lang="scss" scoped>

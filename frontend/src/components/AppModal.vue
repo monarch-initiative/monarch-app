@@ -59,6 +59,12 @@ type Emits = {
 
 const emit = defineEmits<Emits>();
 
+type Slots = {
+  default: () => unknown;
+};
+
+defineSlots<Slots>();
+
 /** element that had focus before modal was opened */
 const originalFocus = ref<HTMLElement | null>(null);
 

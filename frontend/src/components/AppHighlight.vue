@@ -18,6 +18,12 @@ type Props = {
 };
 
 defineProps<Props>();
+
+type Slots = {
+  default: () => unknown;
+};
+
+defineSlots<Slots>();
 </script>
 
 <style lang="scss" scoped>

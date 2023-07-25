@@ -50,6 +50,12 @@ const props = withDefaults(defineProps<Props>(), {
   vAlign: "center",
 });
 
+type Slots = {
+  default: () => unknown;
+};
+
+defineSlots<Slots>();
+
 /** css flex props */
 const justifyContent = computed(() =>
   props.direction === "col" ? alignMap[props.vAlign] : alignMap[props.hAlign],

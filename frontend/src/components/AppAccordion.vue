@@ -32,6 +32,12 @@ type Props = {
 
 defineProps<Props>();
 
+type Slots = {
+  default: () => unknown;
+};
+
+defineSlots<Slots>();
+
 /** whether accordion is open or not */
 const expanded = ref(false);
 </script>

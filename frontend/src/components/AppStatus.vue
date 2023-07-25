@@ -53,6 +53,12 @@ type Props = {
 
 const props = defineProps<Props>();
 
+type Slots = {
+  default: () => unknown;
+};
+
+defineSlots<Slots>();
+
 /** icon to show, associated with a status */
 const icon = computed(() => icons[props.code]);
 </script>

@@ -39,6 +39,12 @@ type Props = {
 
 const props = defineProps<Props>();
 
+type Slots = {
+  default: () => unknown;
+};
+
+defineSlots<Slots>();
+
 /** tag of heading (default to blank to avoid conflict with automatic level) */
 const tag = ref("");
 /** hash link of heading */
