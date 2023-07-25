@@ -32,7 +32,7 @@ const apiMap: { [key: string]: string } = {
   local: "127.0.0.1:8000",
   dev: "https://api-dev.monarchinitiative.org",
   beta: "https://api-beta.monarchinitiative.org",
-  prod: "https://api-v3.monarchinitiative.org",
+  prod: "https://api-dev.monarchinitiative.org/v3/api",
 };
 
 /** base monarch api url */
