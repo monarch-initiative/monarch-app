@@ -1,5 +1,9 @@
 {
-  "plugins": ["prettier-plugin-jsdoc", "@ianvs/prettier-plugin-sort-imports"],
+  "plugins": [
+    "prettier-plugin-jsdoc",
+    "@ianvs/prettier-plugin-sort-imports",
+    "prettier-plugin-css-order"
+  ],
   "importOrder": ["^vue", "^[a-zA-Z]", "^@[a-zA-Z]", "^@/", "^./"],
   "order": "smacss",
   "jsdocCapitalizeDescription": false,
