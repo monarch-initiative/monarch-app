@@ -23,9 +23,6 @@ import descriptions from "@/router/descriptions.json";
 import { sleep } from "@/util/debug";
 import { parse } from "@/util/object";
 
-/** environment mode */
-const mode = import.meta.env.MODE;
-
 /** list of routes and corresponding components. */
 /** KEEP IN SYNC WITH PUBLIC/SITEMAP.XML */
 export const routes: RouteRecordRaw[] = [
@@ -44,7 +41,7 @@ export const routes: RouteRecordRaw[] = [
       window.sessionStorage.removeItem("redirectState");
 
       /** log for debugging */
-      if (mode !== "test") {
+      if (import.meta.env.MODE !== "test") {
         console.info("Redirecting to:", redirect);
         console.info("With state:", redirectState);
       }

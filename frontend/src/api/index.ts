@@ -20,21 +20,18 @@ const fromParam = new URLSearchParams(url).get("api") || "";
 
 /** final short name of monarch api version to use (highest to lowest override
  * priority) */
-const monarchName = fromParam || fromEnv || fromSubdomain;
+export const apiName = fromParam || fromEnv || fromSubdomain;
 
 /** get full api url from short name */
 const apiMap: { [key: string]: string } = {
   local: "127.0.0.1:8000",
   dev: "https://api-dev.monarchinitiative.org",
   beta: "https://api-beta.monarchinitiative.org",
-  prod: "https://api.monarchinitiative.org",
+  prod: "https://api-v3.monarchinitiative.org",
 };
 
 /** base monarch api url */
-export const monarch = apiMap[monarchName] || apiMap.dev;
-
-/** environment mode */
-const mode = import.meta.env.MODE;
+export const monarch = apiMap[apiName] || apiMap.dev;
 
 /**
  * key/value object for request query parameters. use primitive for single, e.g.
@@ -91,7 +88,7 @@ export const request = async <Response>(
   let response = await cache.match(request);
 
   /** log details for debugging (except don't clutter logs when running tests) */
-  if (mode !== "test") {
+  if (import.meta.env.MODE !== "test") {
     console.groupCollapsed(
       response ? "📞 Request (cached)" : "📞 Request (new)",
       endpoint,
@@ -134,7 +131,7 @@ export const request = async <Response>(
       : await response.json();
 
   /** log details for debugging (except don't clutter logs when running tests) */
-  if (mode !== "test") {
+  if (import.meta.env.MODE !== "test") {
     console.groupCollapsed("📣 Response", endpoint);
     console.info("Url", url);
     console.info("Parsed", parsed);
