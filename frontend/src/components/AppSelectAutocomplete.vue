@@ -134,13 +134,13 @@ const props = defineProps<Props>();
 
 type Emits = {
   /** two-way bound search state */
-  (event: "update:modelValue", value: string): void;
+  "update:modelValue": [string];
   /** when input focused */
-  (event: "focus"): void;
+  focus: [];
   /** when input value change "submitted"/"committed" by user */
-  (event: "change", value: string): void;
+  change: [string];
   /** when user wants to delete an entry */
-  (event: "delete", value: string): void;
+  delete: [string];
 };
 
 const emit = defineEmits<Emits>();

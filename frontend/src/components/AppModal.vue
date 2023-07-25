@@ -54,7 +54,7 @@ const props = defineProps<Props>();
 
 type Emits = {
   /** two-way bound open state */
-  (event: "update:modelValue", value: boolean): void;
+  "update:modelValue": [boolean];
 };
 
 const emit = defineEmits<Emits>();

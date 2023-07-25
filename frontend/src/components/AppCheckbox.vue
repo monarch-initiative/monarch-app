@@ -30,7 +30,7 @@ defineProps<Props>();
 
 type Emits = {
   /** two-way bound checked state */
-  (event: "update:modelValue", checked: boolean): void;
+  "update:modelValue": [boolean];
 };
 
 const emit = defineEmits<Emits>();

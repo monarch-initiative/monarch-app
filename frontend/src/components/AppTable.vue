@@ -273,17 +273,17 @@ const props = withDefaults(defineProps<Props>(), {
 
 type Emits = {
   /** when sort changes (two-way bound) */
-  (event: "update:sort", value: Props["sort"]): void;
+  "update:sort": [Props["sort"]];
   /** when selected filters change (two-way bound) */
-  (event: "update:selectedFilters", value: Props["selectedFilters"]): void;
+  "update:selectedFilters": [Props["selectedFilters"]];
   /** when per page changes (two-way bound) */
-  (event: "update:perPage", value: Props["perPage"]): void;
+  "update:perPage": [Props["perPage"]];
   /** when start row changes (two-way bound) */
-  (event: "update:start", value: Props["start"]): void;
+  "update:start": [Props["start"]];
   /** when search changes (two-way bound) */
-  (event: "update:search", value: Props["search"]): void;
+  "update:search": [Props["search"]];
   /** when user requests download */
-  (event: "download"): void;
+  download: [];
 };
 
 const emit = defineEmits<Emits>();

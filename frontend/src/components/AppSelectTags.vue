@@ -201,9 +201,9 @@ const props = defineProps<Props>();
 
 type Emits = {
   /** two-way bound selected items state */
-  (event: "update:modelValue", value: Options): void;
+  "update:modelValue": [Options];
   /** when an option's spreadOptions func has been called */
-  (event: "spreadOptions", option: Option, options: Options): void;
+  spreadOptions: [Option, Options];
 };
 
 const emit = defineEmits<Emits>();

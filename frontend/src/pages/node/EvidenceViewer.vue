@@ -73,12 +73,12 @@ import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
 import { scrollToElement } from "@/router";
 import { waitFor } from "@/util/dom";
 
-interface Props {
+type Props = {
   /** current node */
   node: Node;
   /** selected association */
   association: DirectionalAssociation;
-}
+};
 
 const props = defineProps<Props>();
 

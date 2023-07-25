@@ -118,21 +118,21 @@ import { snackbar } from "@/components/TheSnackbar.vue";
 import { useQuery } from "@/util/composables";
 import { downloadJson } from "@/util/download";
 
-interface Props {
+type Props = {
   /** current node */
   node: Node;
   /** selected association category */
   category: Option;
   /** selected association */
   association?: DirectionalAssociation;
-}
+};
 
 const props = defineProps<Props>();
 
-interface Emits {
+type Emits = {
   /** change selected association */
-  (event: "select", value?: DirectionalAssociation): void;
-}
+  select: [value?: DirectionalAssociation];
+};
 
 const emit = defineEmits<Emits>();
 

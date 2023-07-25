@@ -80,7 +80,7 @@ const props = defineProps<Props>();
 
 type Emits = {
   /** change selected association */
-  (event: "select", value?: DirectionalAssociation): void;
+  select: [value?: DirectionalAssociation];
 };
 
 const emit = defineEmits<Emits>();

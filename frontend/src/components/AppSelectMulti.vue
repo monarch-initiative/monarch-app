@@ -164,11 +164,11 @@ const props = withDefaults(defineProps<Props>(), {
 
 type Emits = {
   /** two-way bound selected items state */
-  (event: "update:modelValue", value: Options): void;
+  "update:modelValue": [Options];
   /** when value changed */
-  (event: "input"): void;
+  input: [];
   /** when value change "submitted"/"committed" by user */
-  (event: "change", value: Options): void;
+  change: [Options];
 };
 
 const emit = defineEmits<Emits>();

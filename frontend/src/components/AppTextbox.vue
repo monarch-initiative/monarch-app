@@ -75,15 +75,15 @@ defineProps<Props>();
 
 type Emits = {
   /** two-way bound text state */
-  (event: "update:modelValue", value: string): void;
+  "update:modelValue": [string];
   /** when user types in box, after some delay */
-  (event: "debounce", value: string): void;
+  debounce: [string];
   /** when user "commits" change (pressing enter, blurring, etc) */
-  (event: "change", value: string): void;
+  change: [string];
   /** when input focused */
-  (event: "focus"): void;
+  focus: [];
   /** when input blurred */
-  (event: "blur"): void;
+  blur: [];
 };
 
 const emit = defineEmits<Emits>();
