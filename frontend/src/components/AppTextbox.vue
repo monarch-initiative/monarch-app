@@ -42,15 +42,11 @@
   </label>
 </template>
 
-<script lang="ts">
-export default {
-  inheritAttrs: false,
-};
-</script>
-
 <script setup lang="ts">
 import { ref } from "vue";
 import AppInput from "./AppInput.vue";
+
+defineOptions({ inheritAttrs: false });
 
 type Props = {
   /** two-way bound text state */
