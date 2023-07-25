@@ -13,7 +13,7 @@ Techniques/approaches used:
 
 - Vue 3
 - Composition API
-- `<script setup>` syntax
+- `<script setup lang="ts">` syntax
 - `<style lang="scss" scoped>` styles
 
 ## Requirements

@@ -6,10 +6,10 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint . --ext .vue,.ts,.js,.cjs,.mjs --fix && prettier --write \"**/*.{vue,ts,js,css,scss,json,yaml,svg,md}\" --no-error-on-unmatched-pattern",
+    "lint": "eslint . --ext .vue,.ts,.js,.cjs,.mjs --fix && prettier --write \"**/*.{vue,ts,js,css,scss,json,yaml,svg,md}\"",
     "test": "yarn test:types && yarn test:lint && yarn test:unit && yarn test:e2e",
     "test:types": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
-    "test:lint": "eslint . --ext .vue,.ts,.js,.cjs,.mjs && prettier --check \"**/*.{vue,ts,js,css,scss,json,yaml,svg,md}\" --no-error-on-unmatched-pattern",
+    "test:lint": "eslint . --ext .vue,.ts,.js,.cjs,.mjs && prettier --check \"**/*.{vue,ts,js,css,scss,json,yaml,svg,md}\"",
     "test:unit": "vitest run",
     "test:e2e": "playwright test"
   },
