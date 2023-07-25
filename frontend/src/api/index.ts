@@ -115,7 +115,7 @@ export const request = async <Response>(
       /** get biolink error message, if there is one */
       let message;
       try {
-        message = ((await response.json()) as _Error).error.message;
+        message = ((await response.json()) as BioLinkError).error.message;
       } catch (error) {
         message = "";
       }
@@ -130,10 +130,8 @@ export const request = async <Response>(
   }
 
   /** parse response */
-  const parsed =
-    parse === "text"
-      ? ((await response.text()) as unknown as Response)
-      : await response.json();
+  const parsed: Response =
+    parse === "text" ? await response.text() : await response.json();
 
   /** log details for debugging (except don't clutter logs when running tests) */
   if (import.meta.env.MODE !== "test") {
@@ -160,7 +158,7 @@ const initCache = async () => {
 };
 
 /** possible biolink error */
-type _Error = {
+type BioLinkError = {
   error: {
     message: string;
   };

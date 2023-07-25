@@ -26,7 +26,7 @@ import TheSnackbar from "./components/TheSnackbar.vue";
 /** route info */
 const route = useRoute();
 
-/** when route changes, update document meta data. see https://metatags.io/ */
+/** when route changes, update document metadata. see https://metatags.io/ */
 watch(
   () => route,
   async () => {
@@ -35,13 +35,13 @@ watch(
      * root and renders first.
      */
 
-    /** update document title from route */
+    /** update document title from current route name */
     appTitle.value = [String(route.name) || ""];
 
-    /** update description */
+    /** update description from current route meta */
     appDescription.value = String(route.meta.description);
 
-    /** update canonical url */
+    /** update canonical url from current url in address bar */
     appUrl.value = window.location.href;
   },
   { immediate: true, deep: true },

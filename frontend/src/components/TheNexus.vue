@@ -58,8 +58,8 @@ type Link = {
 };
 
 /** globals */
-let canvas = null as HTMLCanvasElement | null;
-let ctx = null as CanvasRenderingContext2D | null;
+let canvas: HTMLCanvasElement | null = null;
+let ctx: CanvasRenderingContext2D | null = null;
 let width = 0;
 let height = 0;
 let dots: Dot[] = [];

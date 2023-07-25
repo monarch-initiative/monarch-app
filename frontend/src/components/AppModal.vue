@@ -99,7 +99,7 @@ onUpdated(() => {
     if (modal.value) disableBodyScroll(modal.value);
     /** focus first focusable element in modal */
     const query = "input, textarea, button, select";
-    const focusable = modal.value?.querySelector(query) as HTMLElement;
+    const focusable = modal.value?.querySelector<HTMLElement>(query);
     focusable?.focus();
   }
 });

@@ -77,7 +77,7 @@ import { firstInView } from "@/util/dom";
 import AppCheckbox from "./AppCheckbox.vue";
 
 type Entries = {
-  section: HTMLElement;
+  section: HTMLElement | null;
   id: string;
   icon: string;
   text: string;
@@ -122,7 +122,9 @@ async function updatePosition() {
   if (!oneAtATime.value)
     active.value = firstInView(
       /** typescript bug */
-      entries.value.map((entry) => entry.section as HTMLElement),
+      entries.value
+        .map((entry) => entry.section)
+        .filter(Boolean) as HTMLElement[],
     );
 }
 
@@ -130,15 +132,15 @@ async function updatePosition() {
 function updateEntries() {
   entries.value = Array.from(
     /** get all headings except top level one */
-    document?.querySelectorAll("h2[id], h3[id]") || [],
+    document?.querySelectorAll<HTMLElement>("h2[id], h3[id]") || [],
   ).map((element) =>
     /** get relevant props from heading */
     ({
-      section: (element.closest("section") as HTMLElement) || null,
+      section: element.closest<HTMLElement>("section") || null,
       id: element.getAttribute("id") || "",
       icon:
         element.querySelector("[data-icon]")?.getAttribute("data-icon") || "",
-      text: (element as HTMLElement).innerText || "",
+      text: element.innerText || "",
     }),
   );
 }

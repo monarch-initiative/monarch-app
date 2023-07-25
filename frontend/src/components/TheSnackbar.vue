@@ -46,12 +46,12 @@ const delay = computed(() => 1500 + text.value.length * 100);
 const { start, stop } = useTimeoutFn(() => (text.value = ""), delay);
 
 /** on push notification event */
-function onPush(event: Event) {
+function onPush(event: CustomEvent) {
   /** flash notification */
   if (element.value) restartAnimations(element.value);
 
   /** set notification text */
-  text.value = (event as CustomEvent).detail;
+  text.value = event.detail;
 
   /** set timer to close */
   start();

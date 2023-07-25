@@ -31,7 +31,7 @@ export const routes: RouteRecordRaw[] = [
     path: "/",
     name: "Home",
     component: PageHome,
-    beforeEnter: (async () => {
+    beforeEnter: async () => {
       /** look for redirect in session storage (saved from public/404.html page) */
       const redirect = window.sessionStorage.redirect;
       let redirectState = parse(window.sessionStorage.redirectState, {});
@@ -58,7 +58,7 @@ export const routes: RouteRecordRaw[] = [
 
       /** go to appropriate route */
       if (redirect) return redirect;
-    }) as NavigationGuard,
+    },
   },
   {
     path: "/home",
@@ -143,15 +143,13 @@ export const routes: RouteRecordRaw[] = [
   },
 ];
 
-/** merge in route descriptions */
-routes.forEach(
-  (route) =>
-    (route.meta = {
-      description:
-        (descriptions as { [key: string]: string })[String(route.name || "")] ||
-        import.meta.env.VITE_DESCRIPTION,
-    }),
-);
+/** insert descriptions from imported json into each route's metadata */
+for (const route of routes)
+  route.meta = {
+    description:
+      (descriptions as { [key: string]: string })[String(route.name || "")] ||
+      import.meta.env.VITE_DESCRIPTION,
+  };
 
 /** vue-router's scroll behavior handler */
 const scrollBehavior: RouterScrollBehavior = async (

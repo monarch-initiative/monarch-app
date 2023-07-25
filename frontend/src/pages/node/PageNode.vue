@@ -63,7 +63,7 @@ const {
   async function () {
     /** get node from route params */
     const { id = "" } = route.params;
-    const node_info = await getNode(id as string);
+    const node_info = await getNode(String(id));
 
     return node_info;
   },
@@ -78,7 +78,7 @@ const {
     scrollToHash();
 
     /**
-     * set page description from node meta data. no need to include category and
+     * set page description from node metadata. no need to include category and
      * id, as those should already be in the document title. see
      * https://metatags.io/
      */

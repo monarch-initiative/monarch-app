@@ -151,7 +151,7 @@ function onClick() {
   /** toggle dropdown */
   expanded.value ? close() : open();
   /** https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#clicking_and_focus */
-  (document.querySelector(`#select-${id.value}`) as HTMLElement)?.focus();
+  document.querySelector<HTMLElement>(`#select-${id.value}`)?.focus();
 }
 
 /** when button blurred */

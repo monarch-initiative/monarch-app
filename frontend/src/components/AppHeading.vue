@@ -66,7 +66,7 @@ function getTag() {
   /** heading element */
   const element = heading.value;
   /** section element */
-  const parent = element?.parentElement as HTMLElement;
+  const parent = element?.parentElement;
 
   /** if heading is first in section */
   const firstHeading = element?.matches("*:first-child");

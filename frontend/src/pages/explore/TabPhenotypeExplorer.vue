@@ -187,17 +187,17 @@ type GeneratedFrom = {
 };
 
 /** first set of phenotypes */
-const aPhenotypes = ref([] as Options);
+const aPhenotypes = ref<Options>([]);
 /** "generated from" helpers after selecting gene or disease */
-const aGeneratedFrom = ref({} as GeneratedFrom);
+const aGeneratedFrom = ref<GeneratedFrom>({});
 /** selected mode of second set */
 const bMode = ref(bModeOptions[0]);
 /** selected taxon for second set */
 const bTaxon = ref(bTaxonOptions[0]);
 /** second set of phenotypes */
-const bPhenotypes = ref([] as Options);
+const bPhenotypes = ref<Options>([]);
 /** "generated from" helpers after selecting gene or disease */
-const bGeneratedFrom = ref({} as GeneratedFrom);
+const bGeneratedFrom = ref<GeneratedFrom>({});
 
 /** example phenotype set comparison */
 function doExample() {

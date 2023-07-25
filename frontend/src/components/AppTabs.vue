@@ -126,7 +126,7 @@ watch(
   async () => {
     /** focus the selected tab */
     // const selector = `#tab-${id.value}-${props.modelValue}`;
-    // const button = document?.querySelector(selector) as HTMLButtonElement;
+    // const button = document?.querySelector<HTMLButtonElement>(selector);
     // button?.focus();
 
     /** update hash in url and nav if applicable */

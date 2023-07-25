@@ -1,13 +1,12 @@
 import { ref, watch } from "vue";
 
 /**
- * index.html is statically generated with hard-coded meta data, from
- * environment variables specified in the .env file. convert these values into
- * reactive variables so we can change them and update the document tags during
- * run time
+ * index.html is hard-coded with metadata from the .env file. to change/update
+ * the document metadata tags at runtime, change one of these reactive
+ * variables.
  */
 
-/** multi-part page title. array. gets joined with a | separator. */
+/** multi-part page title as array, gets joined with a | separator */
 export const appTitle = ref<string[]>([import.meta.env.VITE_TITLE]);
 /** page meta description */
 export const appDescription = ref<string>(import.meta.env.VITE_DESCRIPTION);
@@ -43,7 +42,7 @@ watch(appUrl, () => {
   setTag("twitter:url", appUrl.value);
 });
 
-/** set meta data value */
+/** set metadata value */
 const setTag = (property = "", value = "") =>
   document
     .querySelector(`meta[name='${property}'], meta[property='${property}']`)
