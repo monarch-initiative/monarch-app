@@ -12,7 +12,7 @@ def association_query_direct():
         "facet_queries": [],
         "filter_queries": [
             "category:biolink\\:TestCase",
-            "predicate:biolink\\:is_a_test_case OR biolink\\:is_an_example",
+            "predicate:biolink\\:is_a_test_case OR predicate:biolink\\:is_an_example",
             "subject:TEST\\:0000001",
             "subject_closure:TEST\\:0000003",
             "object:TEST\\:0000002",
