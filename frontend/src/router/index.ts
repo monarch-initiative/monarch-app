@@ -1,8 +1,4 @@
-import type {
-  NavigationGuard,
-  RouteRecordRaw,
-  RouterScrollBehavior,
-} from "vue-router";
+import type { RouteRecordRaw, RouterScrollBehavior } from "vue-router";
 import { createRouter, createWebHistory } from "vue-router";
 import { isEmpty, pick } from "lodash";
 import { hideAll } from "tippy.js";
