@@ -1,7 +1,7 @@
 {
   "plugins": [
-    "prettier-plugin-jsdoc",
     "@ianvs/prettier-plugin-sort-imports",
+    "./node_modules/prettier-plugin-jsdoc/dist/index.js",
     "prettier-plugin-css-order"
   ],
   "importOrder": ["^vue", "^[a-zA-Z]", "^@[a-zA-Z]", "^@/", "^./"],
