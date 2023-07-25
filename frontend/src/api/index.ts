@@ -1,28 +1,31 @@
 /** base biolink api url */
 export const biolink = "https://api.monarchinitiative.org/api";
 
-/** served location of frontend, verbatim from browser address bar */
-const url = window.location.href;
+/** served location of webapp, verbatim from browser address bar */
+const url = new URL(window.location.href);
 
 /** get api name to use... */
 
-/** ...from subdomain of url */
-const fromSubdomain =
-  new URL(url).hostname.match(/([/w-]+)?\.?(monarchinitiative)\.org/)?.[1] ||
+/** ...from domain of url */
+const fromDomain =
+  /** when running yarn dev */
+  (url.port && "local") ||
+  /** get from subdomain */
+  url.hostname.match(/([/w-]+)?\.?(monarchinitiative)\.org/)?.[1] ||
   /** prod url has no subdomain */
   "prod";
 
 /** ...from env var */
-const fromEnv = import.meta.env.VITE_MONARCH_API || "";
+const fromEnv = import.meta.env.VITE_API || "";
 
 /** ...from param in url */
-const fromParam = new URLSearchParams(url).get("api") || "";
+const fromParam = new URLSearchParams(url.href).get("api") || "";
 
 /**
  * final short name of monarch api version to use (highest to lowest override
  * priority)
  */
-export const apiName = fromParam || fromEnv || fromSubdomain;
+export const apiName = fromParam || fromEnv || fromDomain;
 
 /** get full api url from short name */
 const apiMap: { [key: string]: string } = {

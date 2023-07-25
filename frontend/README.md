@@ -23,19 +23,19 @@ Techniques/approaches used:
 
 ## Commands
 
-| Command                  | Description                                       |
-| ------------------------ | ------------------------------------------------- |
-| `yarn install`           | Install packages                                  |
-| `npx playwright install` | Install browsers for Playwright                   |
-| `yarn dev`               | Start local dev server with hot-reloading         |
-| `yarn build`             | Build production version of app                   |
-| `yarn preview`           | Serve built version of app (must run build first) |
-| `yarn lint`              | Check linting and formatting, _and fix_           |
-| `yarn test`              | Run all tests below sequentially                  |
-| `yarn test:types`        | Type-check codebase                               |
-| `yarn test:lint`         | Check linting and formatting                      |
-| `yarn test:unit`         | Run unit tests with Vitest                        |
-| `yarn test:e2e`          | Run e2e (and Axe) tests with Playwright           |
+| Command                  | Description                               |
+| ------------------------ | ----------------------------------------- |
+| `yarn install`           | Install packages                          |
+| `yarn dev`               | Start local dev server with hot-reloading |
+| `yarn build`             | Build production version of app           |
+| `yarn preview`           | Serve built version of app                |
+| `yarn lint`              | Check linting and formatting, _and fix_   |
+| `yarn test`              | Run all tests below sequentially          |
+| `yarn test:types`        | Type-check codebase                       |
+| `yarn test:lint`         | Check linting and formatting              |
+| `yarn test:unit`         | Run unit tests with Vitest                |
+| `npx playwright install` | Install browsers for Playwright           |
+| `yarn test:e2e`          | Run e2e (and Axe) tests with Playwright   |
 
 Custom e2e commands:
 
@@ -44,6 +44,37 @@ yarn test:e2e example.spec.ts
 yarn test:e2e --project=chromium
 yarn test:e2e --debug
 ```
+
+## Flags
+
+The frontend has a few "flags" that allow you to easily switch certain high-level development settings.
+
+URL parameter flags can be used to set and override a setting at "run time", when opening the webapp.
+These flags stay until you refresh the page or open a new tab.
+For example, add `?flag=value` to a URL like `monarchinitiative.org/?unrelated-param=123&flag=value`.
+
+Environment variable flags can be used to set/override a setting at "compile time", when building the webapp.
+These flags always have to be prefixed with `VITE_`.
+For example, set an env var before a command like `VITE_FLAG=value yarn dev`, or add it to `.env` or `.env.local` like `VITE_FLAG=value`.
+
+**`api`**
+
+Which version of the Monarch API to utilize in the frontend, e.g.:
+
+URL param: `monarchinitiative.org/?api=dev`  
+Env var: `VITE_API=local`
+
+If not set, inferred from domain of URL.
+See `src/api` for the complete list of short API names, full API urls they map to, and related logic.
+
+**`mock`**
+
+Whether to use a real API, or to use a "mock" API where the data returned for each call is always the same set of hard-coded fake/demo JSON.
+
+URL param: `monarchinitiative.org/?mock=true`  
+Env var: `VITE_MOCK=true`
+
+Defaults to `false`.
 
 ### Style guidelines
 
