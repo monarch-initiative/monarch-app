@@ -1,5 +1,5 @@
 <!--
-  big circular link button with text and sub text
+  big link button with text and sub text
 -->
 
 <template>
