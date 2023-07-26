@@ -582,7 +582,6 @@ const ariaSort = computed(() => {
   }
 
   .search {
-    --height: 30px;
     max-width: 150px;
   }
 }

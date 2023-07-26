@@ -101,8 +101,9 @@ defineExpose({ textbox });
 </script>
 
 <style lang="scss" scoped>
+$height: 40px;
+
 .label {
-  --height: 40px;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -140,8 +141,8 @@ defineExpose({ textbox });
   right: 0;
   align-items: center;
   justify-content: center;
-  width: var(--height);
-  height: var(--height);
+  width: $height;
+  height: $height;
   color: $gray;
 }
 
@@ -155,22 +156,22 @@ defineExpose({ textbox });
 }
 
 .input[data-multi="false"] {
-  height: var(--height);
-  padding: 0 calc(var(--height) * 0.25);
+  height: $height;
+  padding: 0 calc($height * 0.25);
   line-height: $spacing;
 }
 
 .input[data-multi="true"] {
   min-width: 100%;
   max-width: 100%;
-  height: calc(var(--height) * 4);
-  min-height: calc(var(--height) * 2);
-  padding: calc(var(--height) * 0.25);
+  height: calc($height * 4);
+  min-height: calc($height * 2);
+  padding: calc($height * 0.25);
   line-height: $spacing;
 }
 
 .input[data-icon="true"] {
-  padding-right: calc(var(--height) * 0.85);
+  padding-right: calc($height * 0.85);
 }
 
 .input:hover,
