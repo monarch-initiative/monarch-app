@@ -14,15 +14,14 @@
   <!-- results -->
   <AppTable
     v-else
+    v-model:sort="sort"
     v-model:per-page="perPage"
     v-model:start="start"
     v-model:search="search"
     :cols="cols"
     :rows="associations.items"
     :total="associations.total"
-    :sort="sort"
     @download="download"
-    @sort="(value: Sort) => (sort = value)"
   >
     <!-- "subject" (current node) -->
     <template #subject="{ row }">
