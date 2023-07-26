@@ -99,7 +99,6 @@ useMutationObserver(document?.body, update, {
 
 <style lang="scss" scoped>
 .float {
-  --spacing: 10px;
   display: flex;
   z-index: 20;
   position: fixed;
@@ -107,11 +106,13 @@ useMutationObserver(document?.body, update, {
   flex-direction: column;
   align-items: flex-end;
   justify-content: flex-end;
-  padding: var(--spacing);
-  gap: var(--spacing);
+  padding: 10px;
+  gap: 10px;
+  pointer-events: none;
 }
 
 .button {
   font-size: 0.9rem;
+  pointer-events: all;
 }
 </style>

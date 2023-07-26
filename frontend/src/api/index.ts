@@ -9,7 +9,7 @@ const url = new URL(window.location.href);
 /** ...from domain of url */
 const fromDomain =
   /** when running yarn dev */
-  (url.port && "local") ||
+  // (url.port && "local") ||
   /** get from subdomain */
   url.hostname.match(/([/w-]+)?\.?(monarchinitiative)\.org/)?.[1] ||
   /** prod url has no subdomain */

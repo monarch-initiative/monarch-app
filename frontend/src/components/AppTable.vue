@@ -11,86 +11,96 @@
     <!-- table data -->
     <AppFlex direction="col">
       <div
-        ref="table"
         class="wrapper"
         :data-left="arrivedState.left"
         :data-right="arrivedState.right"
         :data-expanded="expanded"
       >
-        <table
-          class="table"
-          :aria-colcount="cols.length"
-          :aria-rowcount="rows.length"
-          :style="{ gridTemplateColumns: widths }"
-        >
-          <!-- head -->
-          <thead class="thead">
-            <tr class="tr">
-              <th
-                v-for="(col, colIndex) in cols"
-                :key="colIndex"
-                class="th"
-                :aria-sort="ariaSort"
-                :data-align="col.align || 'left'"
-                :data-divider="col.id === 'divider'"
-              >
-                <span>
-                  {{ col.heading }}
-                </span>
-                <AppButton
-                  v-if="col.sortable"
-                  v-tooltip="'Sort by ' + col.heading"
-                  :icon="
-                    'arrow-' + (sort?.id === col.id ? sort?.direction : 'down')
-                  "
-                  design="small"
-                  :color="sort?.id === col.id ? 'primary' : 'secondary'"
-                  :style="{ opacity: sort?.id === col.id ? 1 : 0.35 }"
-                  @click.stop="emitSort(col)"
-                />
-                <AppSelectMulti
-                  v-if="
-                    selectedFilters?.[col.id] && filterOptions?.[col.id]?.length
-                  "
-                  v-tooltip="'Filter by ' + col.heading"
-                  :name="'Filter by ' + col.heading"
-                  :options="filterOptions[col.id]"
-                  :model-value="selectedFilters[col.id]"
-                  design="small"
-                  @change="(value) => emitFilter(col.id, value)"
-                />
-              </th>
-            </tr>
-          </thead>
+        <div class="left-scroll">
+          <AppIcon icon="angle-left" />
+        </div>
+        <div class="right-scroll">
+          <AppIcon icon="angle-right" />
+        </div>
 
-          <!-- body -->
-          <tbody class="tbody">
-            <tr v-for="(row, rowIndex) in rows" :key="rowIndex" class="tr">
-              <td
-                v-for="(col, colIndex) in cols"
-                :key="colIndex"
-                class="td"
-                :aria-rowindex="rowIndex + 1"
-                :aria-colindex="colIndex + 1"
-                :data-align="col.align || 'left'"
-                :data-divider="col.id === 'divider'"
-              >
-                <!-- if slot w/ name == col id, use to custom format/template cell -->
-                <slot
-                  v-if="$slots[col.id]"
-                  :name="col.id"
-                  :row="row"
-                  :col="col"
-                  :cell="col.key ? row[col.key] : {}"
-                />
-                <!-- otherwise, just display raw cell value -->
-                <template v-else-if="col.key">
-                  {{ row[col.key] }}
-                </template>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div ref="table" class="scroll">
+          <table
+            class="table"
+            :aria-colcount="cols.length"
+            :aria-rowcount="rows.length"
+            :style="{ gridTemplateColumns: widths }"
+          >
+            <!-- head -->
+            <thead class="thead">
+              <tr class="tr">
+                <th
+                  v-for="(col, colIndex) in cols"
+                  :key="colIndex"
+                  class="th"
+                  :aria-sort="ariaSort"
+                  :data-align="col.align || 'left'"
+                  :data-divider="col.id === 'divider'"
+                >
+                  <span>
+                    {{ col.heading }}
+                  </span>
+                  <AppButton
+                    v-if="col.sortable"
+                    v-tooltip="'Sort by ' + col.heading"
+                    :icon="
+                      'arrow-' +
+                      (sort?.id === col.id ? sort?.direction : 'down')
+                    "
+                    design="small"
+                    :color="sort?.id === col.id ? 'primary' : 'secondary'"
+                    :style="{ opacity: sort?.id === col.id ? 1 : 0.35 }"
+                    @click.stop="emitSort(col)"
+                  />
+                  <AppSelectMulti
+                    v-if="
+                      selectedFilters?.[col.id] &&
+                      filterOptions?.[col.id]?.length
+                    "
+                    v-tooltip="'Filter by ' + col.heading"
+                    :name="'Filter by ' + col.heading"
+                    :options="filterOptions[col.id]"
+                    :model-value="selectedFilters[col.id]"
+                    design="small"
+                    @change="(value) => emitFilter(col.id, value)"
+                  />
+                </th>
+              </tr>
+            </thead>
+
+            <!-- body -->
+            <tbody class="tbody">
+              <tr v-for="(row, rowIndex) in rows" :key="rowIndex" class="tr">
+                <td
+                  v-for="(col, colIndex) in cols"
+                  :key="colIndex"
+                  class="td"
+                  :aria-rowindex="rowIndex + 1"
+                  :aria-colindex="colIndex + 1"
+                  :data-align="col.align || 'left'"
+                  :data-divider="col.id === 'divider'"
+                >
+                  <!-- if slot w/ name == col id, use to custom format/template cell -->
+                  <slot
+                    v-if="$slots[col.id]"
+                    :name="col.id"
+                    :row="row"
+                    :col="col"
+                    :cell="col.key ? row[col.key] : {}"
+                  />
+                  <!-- otherwise, just display raw cell value -->
+                  <template v-else-if="col.key">
+                    {{ row[col.key] }}
+                  </template>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div class="controls">
@@ -394,39 +404,91 @@ const ariaSort = computed(() => {
 }
 
 .wrapper {
+  position: relative;
   width: 100%;
-  overflow-x: auto;
-  transition: mask-image $fast;
 
-  &[data-left="false"][data-right="true"] {
-    --webkit-mask-image: linear-gradient(to left, black 90%, transparent);
-    mask-image: linear-gradient(to left, black 90%, transparent);
+  .left-scroll,
+  .right-scroll {
+    display: flex;
+    z-index: 99;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    width: 0;
+    height: 100%;
+    color: $gray;
+    animation: 0.5s alternate infinite ease-in-out;
+    opacity: 0;
+    transition: opacity $fast;
+
+    svg {
+      transform: scale(1.5);
+    }
+
+    @keyframes nudge-left {
+      to {
+        transform: translateX(-5px);
+      }
+    }
+
+    @keyframes nudge-right {
+      to {
+        transform: translateX(5px);
+      }
+    }
   }
 
-  &[data-right="false"][data-left="true"] {
-    --webkit-mask-image: linear-gradient(to right, black 90%, transparent);
-    mask-image: linear-gradient(to right, black 90%, transparent);
+  .left-scroll {
+    left: 0px;
+    animation-name: nudge-left;
   }
 
-  &[data-left="false"][data-right="false"] {
-    --webkit-mask-image: linear-gradient(
+  .right-scroll {
+    right: 0px;
+    animation-name: nudge-right;
+  }
+
+  .scroll {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  &[data-left="false"] .left-scroll {
+    opacity: 1;
+  }
+
+  &[data-right="false"] .right-scroll {
+    opacity: 1;
+  }
+
+  &[data-left="false"][data-right="true"] .scroll {
+    -webkit-mask-image: linear-gradient(to left, black 75%, transparent);
+    mask-image: linear-gradient(to left, black 75%, transparent);
+  }
+
+  &[data-right="false"][data-left="true"] .scroll {
+    -webkit-mask-image: linear-gradient(to right, black 75%, transparent);
+    mask-image: linear-gradient(to right, black 75%, transparent);
+  }
+
+  &[data-left="false"][data-right="false"] .scroll {
+    -webkit-mask-image: linear-gradient(
       to left,
       transparent,
-      black 10%,
-      black 90%,
+      black 25%,
+      black 75%,
       transparent
     );
     mask-image: linear-gradient(
       to left,
       transparent,
-      black 10%,
-      black 90%,
+      black 25%,
+      black 75%,
       transparent
     );
   }
 
   &[data-expanded="true"] {
-    position: relative;
     left: 0;
     width: calc(100vw - 80px);
     transform: translateX(0);
