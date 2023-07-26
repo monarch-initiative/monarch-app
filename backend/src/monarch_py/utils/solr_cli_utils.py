@@ -22,7 +22,7 @@ def check_for_docker():
             fg=typer.colors.RED,
         )
         typer.secho(
-            f"\tmonarch --help\n",
+            f"\tmonarch solr --help\n",
             fg=typer.colors.WHITE,
             bg=typer.colors.BLACK,
         )
