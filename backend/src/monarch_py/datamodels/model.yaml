@@ -267,6 +267,7 @@ slots:
     description: count of supporting documents, evidence codes, and sources supplying evidence
     range: integer
   external_links:
+    description: Expanded Curie with id and url for xrefs
     range: ExpandedCurie
     multivalued: true
     inlined_as_list: true
