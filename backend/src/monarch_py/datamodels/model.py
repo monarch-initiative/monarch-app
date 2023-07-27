@@ -443,7 +443,9 @@ class Node(Entity):
         description="""The label of the biolink taxon that the entity is in the closure of.""",
     )
     inheritance: Optional[Entity] = Field(None)
-    external_links: Optional[List[ExpandedCurie]] = Field(default_factory=list)
+    external_links: Optional[List[ExpandedCurie]] = Field(
+        default_factory=list, description="""ExpandedCurie with id and url for xrefs"""
+    )
     provided_by_link: Optional[ExpandedCurie] = Field(
         None,
         description="""A link to the docs for the knowledge source that provided the node/edge.""",
