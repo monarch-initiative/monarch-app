@@ -56,6 +56,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
                 Please install Docker to use this service.
                 See: https://docs.docker.com/get-docker/
             """)
+            return None
 
     def solr_is_available(self) -> bool:
         """Check if the Solr instance is available"""
