@@ -5137,11 +5137,6 @@ vue-hotjar@^1.4.0:
   resolved "https://registry.yarnpkg.com/vue-hotjar/-/vue-hotjar-1.4.0.tgz#562f279f55b3ed1fdd54ba493f8077aaad2336ef"
   integrity sha512-C/4lfjB1R3+eXiC+jSpNn3z0GWicpnADeRWpEHLdP2FSIi/AjupoIBikugHvGV334QYGUueXUyVZz6GHr+3eYQ==
 
-vue-inline-svg@^3.1.0:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/vue-inline-svg/-/vue-inline-svg-3.1.2.tgz#bc83ad67aacfda6c7c76364d89775a06e8270136"
-  integrity sha512-K01sLANBnjosObee4JrBu/igXpYIFhQfy4EcEyVWxEWf6nmrxp7Isz6pmeRCsWx6XGrGWfrQH3uNwt4nOmrFdA==
-
 vue-router@^4.1.2:
   version "4.1.6"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-4.1.6.tgz#b70303737e12b4814578d21d68d21618469375a1"
