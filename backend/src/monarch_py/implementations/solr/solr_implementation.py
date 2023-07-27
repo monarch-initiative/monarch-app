@@ -1,4 +1,4 @@
-import os
+import os, sys
 from dataclasses import dataclass
 from typing import List, Union
 
@@ -51,12 +51,11 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         try:
             docker.from_env()
         except docker.errors.DockerException as e:
-            print(f"""
+            sys.exit(f"""
                 Error: Docker not found. 
                 Please install Docker to use this service.
                 See: https://docs.docker.com/get-docker/
             """)
-            return None
 
     def solr_is_available(self) -> bool:
         """Check if the Solr instance is available"""
