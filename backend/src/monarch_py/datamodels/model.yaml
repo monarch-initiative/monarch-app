@@ -51,6 +51,7 @@ classes:
     - category
     - negated
     - provided_by
+    - provided_by_link
     - publications
     - qualifiers
     - frequency_qualifier
@@ -201,6 +202,7 @@ classes:
       - in_taxon_label
       - inheritance
       - external_links
+      - provided_by_link
       - association_counts
       - node_hierarchy
   NodeHierarchy:
@@ -294,7 +296,6 @@ slots:
     description: The long form name of an entity
     range: string
   has_evidence:
-    multivalued: true
     range: string
   highlight:
     description: matching text snippet containing html tags
@@ -356,6 +357,11 @@ slots:
     required: true
   primary_knowledge_source:
     range: string
+    multivalued: true
+  provided_by_link:
+    description: A link to the docs for the knowledge source that provided the node/edge.
+    range: ExpandedCurie
+    inlined: true
   provided_by:
     range: string
   publications:

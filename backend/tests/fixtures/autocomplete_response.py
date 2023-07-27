@@ -19,7 +19,7 @@ def autocomplete_response():
             },
         },
         "response": {
-            "num_found": 195,
+            "num_found": 193,
             "start": 1,
             "docs": [
                 {

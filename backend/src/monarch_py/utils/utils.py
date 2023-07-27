@@ -62,6 +62,13 @@ def set_log_level(log_level: str):
     loguru.logger.add(sys.stderr, level=log_level)
 
 
+def get_provided_by_link(provided_by: str) -> str:
+    """Returns a link to the provided_by resource."""
+    pb = provided_by.replace("_nodes", "").replace("_edges", "").split("_")
+    base_url = "https://monarch-initiative.github.io/monarch-ingest/Sources"
+    slug = f"{pb[0]}/#{'_'.join(pb[1:])}"
+    return f"{base_url}/{slug}"
+
 ### Output conversion methods ###
 
 FMT_INPUT_ERROR_MSG = (
