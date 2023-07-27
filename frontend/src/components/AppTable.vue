@@ -86,11 +86,11 @@
                 >
                   <!-- if slot w/ name == col id, use to custom format/template cell -->
                   <slot
-                    v-if="$slots[col.id]"
+                    v-if="col.key && $slots[col.id]"
                     :name="col.id"
                     :row="row"
                     :col="col"
-                    :cell="col.key ? row[col.key] : {}"
+                    :cell="row[col.key]"
                   />
                   <!-- otherwise, just display raw cell value -->
                   <template v-else-if="col.key">
@@ -200,18 +200,18 @@
 
 <script lang="ts">
 /** table column */
-export type Col = {
+export type Cols<Key extends PropertyKey = PropertyKey> = {
   /**
    * unique id, used to identify/match for sorting, filtering, and named slots.
    * use "divider" to create vertical divider to separate cols
    */
   id: string;
   /** what item in row object to access as raw cell value */
-  key?: string;
+  key?: Key;
   /** header display text */
   heading?: string;
   /** how to align column contents (both header and body) horizontally */
-  align?: "left" | "center" | "end";
+  align?: "left" | "center" | "right";
   /**
    * width to apply to heading cell, in any valid css grid col width (px, fr,
    * auto, minmax, etc)
@@ -219,14 +219,7 @@ export type Col = {
   width?: string;
   /** whether to allow sorting of column */
   sortable?: boolean;
-};
-
-/** object with arbitrary keys */
-export type Row = { [key: string | number]: any };
-
-/** arrays of rows and cols */
-export type Cols = Col[];
-export type Rows = Row[];
+}[];
 
 /** sort prop */
 export type Sort = {
@@ -235,8 +228,8 @@ export type Sort = {
 } | null;
 </script>
 
-<script setup lang="ts">
-import { computed, nextTick, onMounted, ref, watch } from "vue";
+<script setup lang="ts" generic="Datum extends object">
+import { computed, nextTick, onMounted, ref, watch, type VNode } from "vue";
 import { useResizeObserver, useScroll } from "@vueuse/core";
 import type { Options } from "./AppSelectMulti.vue";
 import AppSelectMulti from "./AppSelectMulti.vue";
@@ -246,9 +239,9 @@ import { closeToc } from "./TheTableOfContents.vue";
 
 type Props = {
   /** info for each column of table */
-  cols: Cols;
+  cols: Cols<keyof Datum>;
   /** list of table rows, i.e. the table data */
-  rows: Rows;
+  rows: Datum[];
   /** sort key and direction */
   sort?: Sort;
   /** filters */
@@ -298,6 +291,18 @@ type Emits = {
 
 const emit = defineEmits<Emits>();
 
+type SlotNames = Cols<keyof Datum>[number]["id"];
+
+type SlotProps = {
+  col: Cols<keyof Datum>[number];
+  row: Datum;
+  cell: Datum[keyof Datum];
+};
+
+defineSlots<{
+  [slot in SlotNames]: (props: SlotProps) => VNode;
+}>();
+
 /** whether table is expanded to be full width */
 const expanded = ref(false);
 /** table reference */
@@ -341,7 +346,7 @@ function clickLast() {
 }
 
 /** when user clicks a sort button */
-function emitSort(col: Col) {
+function emitSort(col: Cols[number]) {
   let newSort: Sort;
 
   /** toggle sort direction */
@@ -361,7 +366,7 @@ function emitSort(col: Col) {
 }
 
 /** when user changes a filter */
-function emitFilter(colId: Col["id"], value: Options) {
+function emitFilter(colId: Cols[number]["id"], value: Options) {
   emit("update:selectedFilters", { ...props.selectedFilters, [colId]: value });
 }
 

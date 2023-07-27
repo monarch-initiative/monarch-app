@@ -37,7 +37,7 @@
 
     <!-- "predicate" (association/relation) -->
     <template #association="{ row }">
-      <AppPredicateBadge :association="row as DirectionalAssociation" />
+      <AppPredicateBadge :association="row" />
     </template>
 
     <!-- "object" (what current node has an association with) -->
@@ -65,14 +65,7 @@
         :aria-pressed="row.id === association?.id"
         :icon="row.id === association?.id ? 'check' : 'flask'"
         :color="row.id === association?.id ? 'primary' : 'secondary'"
-        @click="
-          emit(
-            'select',
-            (row.id === association?.id
-              ? undefined
-              : row) as DirectionalAssociation,
-          )
-        "
+        @click="emit('select', row.id === association?.id ? undefined : row)"
       />
     </template>
 
@@ -81,22 +74,12 @@
     <!-- taxon specific -->
     <template #taxon="{ cell }">
       <span class="truncate">
-        {{ cell?.name }}
+        {{ cell }}
       </span>
     </template>
 
     <!-- phenotype specific -->
-    <template #frequency="{ cell }">
-      <AppLink v-if="cell" class="truncate" :to="cell?.link" :no-icon="true">
-        {{ cell?.name }}
-      </AppLink>
-    </template>
-
-    <template #onset="{ cell }">
-      <AppLink v-if="cell" class="truncate" :to="cell?.link" :no-icon="true">
-        {{ cell?.name }}
-      </AppLink>
-    </template>
+    <!-- no template needed because info just plain text -->
 
     <!-- publication specific -->
     <!-- no template needed because info just plain text -->
@@ -141,34 +124,36 @@ const perPage = ref(5);
 const start = ref(0);
 const search = ref("");
 
+type Datum = keyof DirectionalAssociation;
+
 /** table columns */
-const cols = computed((): Cols => {
+const cols = computed((): Cols<Datum> => {
   /** standard columns, always present */
-  const baseCols: Cols = [
+  const baseCols: Cols<Datum> = [
     {
-      id: "subject",
-      key: "",
+      id: "subject" as const,
+      key: "subject_label",
       heading: getCategoryLabel(
         associations.value.items[0]?.subject_category || "Subject",
       ),
       width: "max-content",
     },
     {
-      id: "association",
-      key: "",
+      id: "association" as const,
+      key: "predicate",
       heading: "Association",
       width: "max-content",
     },
     {
-      id: "object",
-      key: "",
+      id: "object" as const,
+      key: "object_label",
       heading: getCategoryLabel(
         associations.value.items[0]?.object_category || "Object",
       ),
       width: "max-content",
     },
     {
-      id: "evidence",
+      id: "evidence" as const,
       key: "evidence_count",
       heading: "Evidence",
       width: "min-content",
@@ -177,13 +162,13 @@ const cols = computed((): Cols => {
   ];
 
   /** extra, supplemental columns for certain association types */
-  let extraCols: Cols = [];
+  let extraCols: Cols<Datum> = [];
 
   /** taxon column. exists for many categories, so just add if any row has taxon. */
   if (associations.value.items.some(() => ""))
     extraCols.push({
-      id: "taxon",
-      key: "taxon",
+      id: "taxon" as const,
+      key: "subject_taxon_label",
       heading: "Taxon",
       width: "max-content",
     });
@@ -194,13 +179,13 @@ const cols = computed((): Cols => {
   ) {
     extraCols.push(
       {
-        id: "frequency",
+        id: "frequency" as const,
         key: "frequency_qualifier_label",
         heading: "Frequency",
         sortable: true,
       },
       {
-        id: "onset",
+        id: "onset" as const,
         key: "onset_qualifier_label",
         heading: "Onset",
         sortable: true,
@@ -209,28 +194,28 @@ const cols = computed((): Cols => {
   }
 
   /** publication specific columns */
-  if (props.category.label === "biolink:Publication")
-    extraCols.push(
-      {
-        id: "author",
-        key: "author",
-        heading: "Author",
-        width: "max-content",
-      },
-      {
-        id: "year",
-        key: "year",
-        heading: "Year",
-        align: "center",
-        width: "max-content",
-      },
-      {
-        id: "publisher",
-        key: "publisher",
-        heading: "Publisher",
-        width: "max-content",
-      },
-    );
+  // if (props.category.label === "biolink:Publication")
+  //   extraCols.push(
+  //     {
+  //       id: "author" as const,
+  //       key: "author",
+  //       heading: "Author",
+  //       width: "max-content",
+  //     },
+  //     {
+  //       id: "year" as const,
+  //       key: "year",
+  //       heading: "Year",
+  //       align: "center",
+  //       width: "max-content",
+  //     },
+  //     {
+  //       id: "publisher" as const,
+  //       key: "publisher",
+  //       heading: "Publisher",
+  //       width: "max-content",
+  //     },
+  //   );
 
   /** filter out extra columns with nothing in them (all rows for that col falsy) */
   // extraCols = extraCols.filter((col) =>

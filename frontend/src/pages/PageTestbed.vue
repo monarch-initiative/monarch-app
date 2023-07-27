@@ -149,12 +149,13 @@
     <AppHeading>Table</AppHeading>
     <span>{{ omit(table, ["cols", "rows"]) }}</span>
     <AppTable
-      v-bind="table"
       v-model:sort="table.sort"
       v-model:selectedFilters="table.selectedFilters"
       v-model:per-page="table.perPage"
       v-model:start="table.start"
       v-model:search="table.search"
+      :cols="table.cols"
+      :rows="table.rows"
       :filter-options="table.filterOptions"
     >
       <template #arbitrary>Arbitrary slot content</template>
@@ -172,7 +173,7 @@ import AppSelectAutocomplete from "@/components/AppSelectAutocomplete.vue";
 import AppSelectMulti from "@/components/AppSelectMulti.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
-import type { Cols, Rows, Sort } from "@/components/AppTable.vue";
+import type { Sort } from "@/components/AppTable.vue";
 import AppTable from "@/components/AppTable.vue";
 import AppTabs from "@/components/AppTabs.vue";
 import AppTextbox from "@/components/AppTextbox.vue";
@@ -268,39 +269,38 @@ const table = ref({
   cols: [
     {
       id: "name",
-      key: "name",
+      key: "name" as const,
       heading: "Name",
-      align: "left",
+      align: "left" as const,
       sortable: true,
     },
     {
       id: "score",
-      key: "score",
+      key: "score" as const,
       heading: "Score",
-
       sortable: true,
     },
     {
       id: "details",
-      key: "details",
+      key: "details" as const,
       heading: "Details",
-      align: "left",
+      align: "left" as const,
       sortable: true,
     },
     {
       id: "arbitrary",
-      key: "arbitrary",
+      key: "arbitrary" as const,
       heading: "Arbitrary",
-      align: "right",
+      align: "right" as const,
     },
-  ] as Cols,
+  ],
   rows: [
-    { name: "abc", score: 9, details: [1, 2] },
+    { name: "abc", score: 9, details: [1, 2], arbitrary: 123 },
     { name: "def", score: -1, details: [2, 1, 3] },
     { name: "def", score: 2, details: [1] },
     { name: "abc", score: 4, details: [2, 1] },
     { name: "ghi", score: NaN, details: [1] },
-  ] as Rows,
+  ],
   sort: { id: "score", direction: "up" } as Sort,
   perPage: 10,
   start: 0,
