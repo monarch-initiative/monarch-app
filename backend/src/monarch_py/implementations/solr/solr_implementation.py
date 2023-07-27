@@ -2,6 +2,7 @@ import os
 from dataclasses import dataclass
 from typing import List, Union
 
+import docker
 import requests
 from monarch_py.datamodels.model import (
     Association,
@@ -38,7 +39,6 @@ from monarch_py.interfaces.association_interface import AssociationInterface
 from monarch_py.interfaces.entity_interface import EntityInterface
 from monarch_py.interfaces.search_interface import SearchInterface
 from monarch_py.service.solr_service import SolrService
-
 # from monarch_py.utils.utils import escape
 
 
@@ -46,7 +46,16 @@ from monarch_py.service.solr_service import SolrService
 class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface):
     """Implementation of Monarch Interfaces for Solr endpoint"""
 
-    base_url: str = os.getenv("MONARCH_SOLR_URL", "http://localhost:8983/solr")
+    def __init__(self, base_url: str = None):
+        self.base_url: str = os.getenv("MONARCH_SOLR_URL", "http://localhost:8983/solr")
+        try:
+            docker.from_env()
+        except docker.errors.DockerException as e:
+            print(f"""
+                Error: Docker not found. 
+                Please install Docker to use this service.
+                See: https://docs.docker.com/get-docker/
+            """)
 
     def solr_is_available(self) -> bool:
         """Check if the Solr instance is available"""
