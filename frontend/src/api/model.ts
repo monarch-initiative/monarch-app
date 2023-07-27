@@ -1,5 +1,6 @@
 export type AssociationId = string;
 export type DirectionalAssociationId = string;
+export type ExpandedCurieId = string;
 export type EntityId = string;
 export type HistoPhenoId = string;
 export type HistoBinId = string;
@@ -247,6 +248,13 @@ export interface DirectionalAssociation extends Association {
     stage_qualifier_closure_label?: string[],
 };
 /**
+ * A curie bundled along with its expanded url
+ */
+export interface ExpandedCurie {
+    id: string,
+    url?: string,
+};
+/**
  * Represents an Entity in the Monarch KG data model
  */
 export interface Entity {
@@ -310,6 +318,8 @@ export interface Node extends Entity {
     /** The label of the biolink taxon that the entity is in the closure of. */
     in_taxon_label?: string,
     inheritance?: Entity,
+    /** Expanded Curie with id and url for xrefs */
+    external_links?: ExpandedCurie[],
     association_counts: AssociationCount[],
     node_hierarchy?: NodeHierarchy,
     id: string,

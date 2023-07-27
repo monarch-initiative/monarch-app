@@ -148,6 +148,11 @@ classes:
       An association that gives it's direction relative to a specified entity
     slots:
       - direction
+  ExpandedCurie:
+    description: A curie bundled along with its expanded url
+    slots:
+      - id
+      - url
   Entity:
     description: Represents an Entity in the Monarch KG data model
     slots:
@@ -195,6 +200,7 @@ classes:
       - in_taxon
       - in_taxon_label
       - inheritance
+      - external_links
       - association_counts
       - node_hierarchy
   NodeHierarchy:
@@ -260,6 +266,11 @@ slots:
   evidence_count:
     description: count of supporting documents, evidence codes, and sources supplying evidence
     range: integer
+  external_links:
+    description: Expanded Curie with id and url for xrefs
+    range: ExpandedCurie
+    multivalued: true
+    inlined_as_list: true
   facet_fields:
     description: Collection of facet field responses with the field values and counts
     inlined: true
@@ -389,6 +400,8 @@ slots:
     required: true
   xref:
     multivalued: true
+    range: string
+  url:
     range: string
   subject_label:
     is_a: name

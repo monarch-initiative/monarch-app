@@ -22,6 +22,48 @@
   "symbol": null,
   "synonym": [],
   "inheritance": null,
+  "external_links": [
+    {
+      "id": "DOID:9884",
+      "url": "http://purl.obolibrary.org/obo/DOID_9884"
+    },
+    {
+      "id": "GARD:0007922",
+      "url": null
+    },
+    {
+      "id": "ICD10CM:G71.0",
+      "url": null
+    },
+    {
+      "id": "ICD9:359.1",
+      "url": null
+    },
+    {
+      "id": "MESH:D009136",
+      "url": "http://purl.obolibrary.org/obo/MESH_D009136"
+    },
+    {
+      "id": "MedDRA:10028356",
+      "url": null
+    },
+    {
+      "id": "NCIT:C84910",
+      "url": "http://purl.obolibrary.org/obo/NCIT_C84910"
+    },
+    {
+      "id": "Orphanet:98473",
+      "url": "http://www.orpha.net/ORDO/Orphanet_98473"
+    },
+    {
+      "id": "SCTID:73297009",
+      "url": null
+    },
+    {
+      "id": "UMLS:C0026850",
+      "url": "http://linkedlifedata.com/resource/umls/id/C0026850"
+    }
+  ],
   "association_counts": [
     {
       "label": "Phenotypes",
