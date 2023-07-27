@@ -24,9 +24,9 @@ def build_association_query(
     """Populate a SolrQuery object with association filters"""
     query = SolrQuery(start=offset, rows=limit)
     if category:
-        query.add_field_filter_query("category", " OR ".join(category))
+        query.add_filter_query(" OR ".join([f"category:{escape(cat)}" for cat in category]))
     if predicate:
-        query.add_field_filter_query("predicate", " OR ".join(predicate))
+        query.add_filter_query(" OR ".join([f"predicate:{escape(pred)}" for pred in predicate]))
     if subject:
         if direct:
             query.add_field_filter_query("subject", " OR ".join(subject))
