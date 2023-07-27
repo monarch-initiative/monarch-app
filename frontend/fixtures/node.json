@@ -64,38 +64,29 @@
       "url": "http://linkedlifedata.com/resource/umls/id/C0026850"
     }
   ],
+  "provided_by_link": {
+    "id": "phenio",
+    "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/phenio/#"
+  },
   "association_counts": [
     {
       "label": "Phenotypes",
-      "count": 4312,
+      "count": 4011,
       "category": "biolink:DiseaseToPhenotypicFeatureAssociation"
     },
     {
       "label": "Causal Genes",
-      "count": 123,
+      "count": 121,
       "category": "biolink:CausalGeneToDiseaseAssociation"
     },
     {
       "label": "Correlated Genes",
-      "count": 149,
+      "count": 147,
       "category": "biolink:CorrelatedGeneToDiseaseAssociation"
     }
   ],
   "node_hierarchy": {
     "super_classes": [
-      {
-        "id": "MONDO:0005336",
-        "category": "biolink:Disease",
-        "name": "myopathy",
-        "full_name": null,
-        "description": null,
-        "xref": [],
-        "provided_by": null,
-        "in_taxon": null,
-        "in_taxon_label": null,
-        "symbol": null,
-        "synonym": []
-      },
       {
         "id": "MONDO:0019056",
         "category": "biolink:Disease",
@@ -113,6 +104,19 @@
         "id": "MONDO:0700223",
         "category": "biolink:Disease",
         "name": "hereditary skeletal muscle disorder",
+        "full_name": null,
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "in_taxon_label": null,
+        "symbol": null,
+        "synonym": []
+      },
+      {
+        "id": "MONDO:0005336",
+        "category": "biolink:Disease",
+        "name": "myopathy",
         "full_name": null,
         "description": null,
         "xref": [],

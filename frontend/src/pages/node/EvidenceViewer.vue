@@ -41,7 +41,9 @@
       </AppDetail>
 
       <AppDetail title="Provided By" icon="notes-medical">
-        <span>{{ association.provided_by }}</span>
+        <AppLink :to="association.provided_by_link?.url || ''">
+          {{ association.provided_by_link?.id || association.provided_by }}
+        </AppLink>
       </AppDetail>
 
       <AppDetail

@@ -21,9 +21,11 @@
         <p>{{ node.full_name }}</p>
       </AppDetail>
 
-      <!-- authors (publication specific) -->
-      <AppDetail :blank="!node.provided_by" title="Provided By">
-        <p>{{ node.provided_by }}</p>
+      <!-- provided by -->
+      <AppDetail :blank="!node.provided_by_link" title="Provided By">
+        <AppLink :to="node.provided_by_link?.url || ''">
+          {{ node.provided_by_link?.id || node.provided_by }}
+        </AppLink>
       </AppDetail>
 
       <!-- paragraph description -->

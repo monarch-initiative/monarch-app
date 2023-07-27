@@ -1,6 +1,8 @@
 from typing import Dict, List
 
 from loguru import logger
+from pydantic import ValidationError
+
 from monarch_py.datamodels.model import (
     Association,
     AssociationCount,
@@ -10,6 +12,7 @@ from monarch_py.datamodels.model import (
     AssociationTableResults,
     DirectionalAssociation,
     Entity,
+    ExpandedCurie,
     FacetField,
     FacetValue,
     HistoBin,
@@ -19,7 +22,7 @@ from monarch_py.datamodels.model import (
 )
 from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQueryResult
 from monarch_py.utils.association_type_utils import get_association_type_mapping_by_query_string
-from pydantic import ValidationError
+from monarch_py.utils.utils import get_provided_by_link
 
 ####################
 # Parser functions #
@@ -35,10 +38,14 @@ def parse_associations(
     for doc in query_result.response.docs:
         try:
             association = Association(**doc)
-            associations.append(association)
         except ValidationError:
             logger.error(f"Validation error for {doc}")
-            raise
+            raise ValidationError
+        association.provided_by_link = ExpandedCurie(
+            id = association.provided_by.replace('_nodes', '').replace('_edges', ''),
+            url = get_provided_by_link(association.provided_by),
+        )
+        associations.append(association)
     total = query_result.response.num_found
     return AssociationResults(items=associations, limit=limit, offset=offset, total=total)
 

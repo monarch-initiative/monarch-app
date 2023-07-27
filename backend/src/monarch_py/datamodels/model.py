@@ -94,6 +94,10 @@ class Association(ConfiguredBaseModel):
     category: Optional[str] = Field(None)
     negated: Optional[bool] = Field(None)
     provided_by: Optional[str] = Field(None)
+    provided_by_link: Optional[ExpandedCurie] = Field(
+        None,
+        description="""A link to the docs for the knowledge source that provided the node/edge.""",
+    )
     publications: Optional[List[str]] = Field(default_factory=list)
     qualifiers: Optional[List[str]] = Field(default_factory=list)
     frequency_qualifier: Optional[str] = Field(None)
@@ -268,6 +272,10 @@ class DirectionalAssociation(Association):
     category: Optional[str] = Field(None)
     negated: Optional[bool] = Field(None)
     provided_by: Optional[str] = Field(None)
+    provided_by_link: Optional[ExpandedCurie] = Field(
+        None,
+        description="""A link to the docs for the knowledge source that provided the node/edge.""",
+    )
     publications: Optional[List[str]] = Field(default_factory=list)
     qualifiers: Optional[List[str]] = Field(default_factory=list)
     frequency_qualifier: Optional[str] = Field(None)
@@ -436,7 +444,11 @@ class Node(Entity):
     )
     inheritance: Optional[Entity] = Field(None)
     external_links: Optional[List[ExpandedCurie]] = Field(
-        default_factory=list, description="""Expanded Curie with id and url for xrefs"""
+        default_factory=list, description="""ExpandedCurie with id and url for xrefs"""
+    )
+    provided_by_link: Optional[ExpandedCurie] = Field(
+        None,
+        description="""A link to the docs for the knowledge source that provided the node/edge.""",
     )
     association_counts: List[AssociationCount] = Field(default_factory=list)
     node_hierarchy: Optional[NodeHierarchy] = Field(None)
