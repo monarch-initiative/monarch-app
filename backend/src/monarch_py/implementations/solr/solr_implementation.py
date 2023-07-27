@@ -1,7 +1,8 @@
-import os
+import os, sys
 from dataclasses import dataclass
 from typing import List, Union
 
+import docker
 import requests
 from monarch_py.datamodels.model import (
     Association,
@@ -43,12 +44,20 @@ from monarch_py.service.solr_service import SolrService
 from monarch_py.utils.utils import get_provided_by_link
 
 
-
 @dataclass
 class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface):
     """Implementation of Monarch Interfaces for Solr endpoint"""
 
-    base_url: str = os.getenv("MONARCH_SOLR_URL", "http://localhost:8983/solr")
+    def __init__(self, base_url: str = None):
+        self.base_url: str = os.getenv("MONARCH_SOLR_URL", "http://localhost:8983/solr")
+        try:
+            docker.from_env()
+        except docker.errors.DockerException as e:
+            sys.exit(f"""
+                Error: Docker not found. 
+                Please install Docker to use this service.
+                See: https://docs.docker.com/get-docker/
+            """)
 
     def solr_is_available(self) -> bool:
         """Check if the Solr instance is available"""
