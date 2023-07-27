@@ -318,6 +318,7 @@ export interface Node extends Entity {
     /** The label of the biolink taxon that the entity is in the closure of. */
     in_taxon_label?: string,
     inheritance?: Entity,
+    /** Expanded Curie with id and url for xrefs */
     external_links?: ExpandedCurie[],
     association_counts: AssociationCount[],
     node_hierarchy?: NodeHierarchy,
