@@ -69,19 +69,6 @@ def node():
         "node_hierarchy": {
             "super_classes": [
                 {
-                    "id": "MONDO:0005336",
-                    "category": "biolink:Disease",
-                    "name": "myopathy",
-                    "full_name": None,
-                    "description": None,
-                    "xref": [],
-                    "provided_by": None,
-                    "in_taxon": None,
-                    "in_taxon_label": None,
-                    "symbol": None,
-                    "synonym": [],
-                },
-                {
                     "id": "MONDO:0019056",
                     "category": "biolink:Disease",
                     "name": "neuromuscular disease",
@@ -95,9 +82,9 @@ def node():
                     "synonym": [],
                 },
                 {
-                    "id": "MONDO:0100167",
+                    "id": "MONDO:0700223",
                     "category": "biolink:Disease",
-                    "name": "pulmonary disease, chronic obstructive, susceptibility to",
+                    "name": "hereditary skeletal muscle disorder",
                     "full_name": None,
                     "description": None,
                     "xref": [],
@@ -108,9 +95,9 @@ def node():
                     "synonym": [],
                 },
                 {
-                    "id": "MONDO:0700223",
+                    "id": "MONDO:0005336",
                     "category": "biolink:Disease",
-                    "name": "hereditary skeletal muscle disorder",
+                    "name": "myopathy",
                     "full_name": None,
                     "description": None,
                     "xref": [],

@@ -298,6 +298,7 @@ slots:
     range: string
   has_evidence:
     range: string
+    multivalued: true
   highlight:
     description: matching text snippet containing html tags
     range: string
@@ -358,7 +359,7 @@ slots:
     required: true
   primary_knowledge_source:
     range: string
-    multivalued: true
+    # multivalued: true
   provided_by_link:
     description: A link to the docs for the knowledge source that provided the node/edge.
     range: ExpandedCurie

@@ -6,7 +6,7 @@ def autocomplete():
     return {
         "limit": 10,
         "offset": 0,
-        "total": 193,
+        "total": 195,
         "items": [
             {
                 "id": "MONDO:0001083",
