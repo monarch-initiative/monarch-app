@@ -466,6 +466,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/provided_by_link/</loc>
+         <lastmod>2023-07-27</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/publications/</loc>
          <lastmod>2023-07-27</lastmod>
          <changefreq>daily</changefreq>
