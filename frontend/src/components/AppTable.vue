@@ -86,11 +86,11 @@
                 >
                   <!-- if slot w/ name == col id, use to custom format/template cell -->
                   <slot
-                    v-if="col.key && $slots[col.id]"
+                    v-if="$slots[col.id]"
                     :name="col.id"
                     :row="row"
                     :col="col"
-                    :cell="row[col.key]"
+                    :cell="col.key ? row[col.key] : null"
                   />
                   <!-- otherwise, just display raw cell value -->
                   <template v-else-if="col.key">
@@ -202,11 +202,14 @@
 /** table column */
 export type Cols<Key extends PropertyKey = PropertyKey> = {
   /**
-   * unique id, used to identify/match for sorting, filtering, and named slots.
-   * use "divider" to create vertical divider to separate cols
+   * unique id name to identify/match named slots. use "divider" to create
+   * vertical divider to separate cols.
    */
   id: string;
-  /** what item in row object to access as raw cell value */
+  /**
+   * what item in row object to access as raw cell value, and which key to use
+   * for sorting and filtering
+   */
   key?: Key;
   /** header display text */
   heading?: string;
@@ -296,7 +299,7 @@ type SlotNames = Cols<keyof Datum>[number]["id"];
 type SlotProps = {
   col: Cols<keyof Datum>[number];
   row: Datum;
-  cell: Datum[keyof Datum];
+  cell: Datum[keyof Datum] | null;
 };
 
 defineSlots<{

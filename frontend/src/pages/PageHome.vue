@@ -174,13 +174,6 @@
         design="small"
       />
       <AppTile
-        to="https://twitter.com/MonarchInit"
-        icon="twitter"
-        title="Twitter"
-        subtitle="Musings and news"
-        design="small"
-      />
-      <AppTile
         to="https://genomic.social/@monarch_initiative"
         icon="mastodon"
         title="Mastodon"

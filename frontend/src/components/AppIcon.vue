@@ -57,9 +57,7 @@ const isCustom = ref(true);
 /** look for custom icon with matching name */
 const customIcon = defineAsyncComponent(async () => {
   try {
-    const result = await import(`../assets/icons/${kebabCase(props.icon)}.svg`);
-    console.log(props.icon, result.render());
-    return result;
+    return await import(`../assets/icons/${kebabCase(props.icon)}.svg`);
   } catch {
     isCustom.value = false;
     return await import(`../assets/icons/loading.svg`);

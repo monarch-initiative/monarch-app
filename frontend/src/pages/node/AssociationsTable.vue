@@ -24,7 +24,7 @@
     @download="download"
   >
     <!-- "subject" (current node) -->
-    <template #subject="{ row }">
+    <template #subject_label="{ row }">
       <AppNodeBadge
         :node="{
           id: row.subject,
@@ -36,12 +36,12 @@
     </template>
 
     <!-- "predicate" (association/relation) -->
-    <template #association="{ row }">
+    <template #predicate="{ row }">
       <AppPredicateBadge :association="row" />
     </template>
 
     <!-- "object" (what current node has an association with) -->
-    <template #object="{ row }">
+    <template #object_label="{ row }">
       <AppNodeBadge
         :node="{
           id: row.object,
@@ -53,7 +53,7 @@
     </template>
 
     <!-- button to show evidence -->
-    <template #evidence="{ cell, row }">
+    <template #evidence_count="{ cell, row }">
       <AppButton
         v-tooltip="
           row.id === association?.id
@@ -72,10 +72,12 @@
     <!-- extra columns -->
 
     <!-- taxon specific -->
-    <template #taxon="{ cell }">
-      <span class="truncate">
-        {{ cell }}
-      </span>
+    <template #taxon="{ row }">
+      {{
+        row.direction === "outgoing"
+          ? row.object_taxon_label
+          : row.subject_taxon_label
+      }}
     </template>
 
     <!-- phenotype specific -->
@@ -131,33 +133,37 @@ const cols = computed((): Cols<Datum> => {
   /** standard columns, always present */
   const baseCols: Cols<Datum> = [
     {
-      id: "subject" as const,
+      id: "subject_label" as const,
       key: "subject_label",
       heading: getCategoryLabel(
         associations.value.items[0]?.subject_category || "Subject",
       ),
       width: "max-content",
+      sortable: true,
     },
     {
-      id: "association" as const,
+      id: "predicate" as const,
       key: "predicate",
       heading: "Association",
       width: "max-content",
+      sortable: true,
     },
     {
-      id: "object" as const,
+      id: "object_label" as const,
       key: "object_label",
       heading: getCategoryLabel(
         associations.value.items[0]?.object_category || "Object",
       ),
       width: "max-content",
+      sortable: true,
     },
     {
-      id: "evidence" as const,
+      id: "evidence_count" as const,
       key: "evidence_count",
       heading: "Evidence",
       width: "min-content",
       align: "center",
+      sortable: true,
     },
   ];
 
@@ -165,10 +171,13 @@ const cols = computed((): Cols<Datum> => {
   let extraCols: Cols<Datum> = [];
 
   /** taxon column. exists for many categories, so just add if any row has taxon. */
-  if (associations.value.items.some(() => ""))
+  if (
+    associations.value.items.some(
+      (item) => item.subject_taxon_label || item.object_taxon_label,
+    )
+  )
     extraCols.push({
       id: "taxon" as const,
-      key: "subject_taxon_label",
       heading: "Taxon",
       width: "max-content",
     });
@@ -179,13 +188,13 @@ const cols = computed((): Cols<Datum> => {
   ) {
     extraCols.push(
       {
-        id: "frequency" as const,
+        id: "frequency_qualifier_label" as const,
         key: "frequency_qualifier_label",
         heading: "Frequency",
         sortable: true,
       },
       {
-        id: "onset" as const,
+        id: "onset_qualifier_label" as const,
         key: "onset_qualifier_label",
         heading: "Onset",
         sortable: true,
@@ -255,6 +264,7 @@ const {
       start.value,
       perPage.value,
       search.value,
+      sort.value,
     );
 
     return response;

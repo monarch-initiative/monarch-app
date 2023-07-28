@@ -108,7 +108,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { groupBy, mapValues, sortBy, uniq } from "lodash";
+import { groupBy, mapValues, sortBy, startCase, uniq } from "lodash";
 import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
 import type { SearchResults } from "@/api/model";
 import { getAutocomplete, getSearch } from "@/api/search";
@@ -271,12 +271,18 @@ const {
       /** convert facets into dropdown options */
       const options: { [key: string]: MultiOptions } = {};
       for (const facet of facets.value) {
-        options[facet.label] =
+        options[facet.label || ""] =
           facet.facet_values?.map((facet_value) => ({
             id: facet_value.label,
-            ...facet_value,
+            label:
+              facet.label === "category"
+                ? getCategoryLabel(facet_value.label)
+                : facet_value.label,
+            count: facet_value.count,
           })) || [];
       }
+
+      console.log({ ...options });
 
       dropdownsOptions.value = { ...options };
       dropdownsSelected.value = { ...options };

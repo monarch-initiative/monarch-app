@@ -65,7 +65,7 @@
         "hereditary skeletal muscle disorder"
       ],
       "subject_taxon": null,
-      "subject_taxon_label": null,
+      "subject_taxon_label": "test subject taxon label",
       "predicate": "biolink:has_phenotype",
       "object": "HP:0002460",
       "original_object": null,
@@ -136,7 +136,7 @@
         "organ system subdivision"
       ],
       "object_taxon": null,
-      "object_taxon_label": null,
+      "object_taxon_label": "test object taxon label",
       "primary_knowledge_source": "infores:hpo-annotations",
       "aggregator_knowledge_source": ["infores:monarchinitiative"],
       "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
