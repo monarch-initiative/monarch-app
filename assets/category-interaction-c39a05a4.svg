@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -10 120 120">
-  <circle cx="50" cy="50" r="55" />
-  <circle cx="50" cy="50" r="10" />
-  <circle cx="50" cy="17" r="5" />
-  <circle cx="80" cy="70" r="5" />
-  <circle cx="20" cy="70" r="5" />
-  <path d="M41.5 55.5L24 67m34.5-11.5L76 67M50 40V22" />
-</svg>
