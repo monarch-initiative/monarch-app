@@ -31,12 +31,12 @@ async def search(
     Returns:
         EntityResults
     """
-    facet_fields = ["category", "in_taxon"]
+    facet_fields = ["category", "in_taxon_label"]
     si = SolrImplementation(base_url=settings.solr_url)
     response = si.search(
         q=q,
         category=category,
-        in_taxon=taxon,
+        in_taxon_label=taxon,
         facet_fields=facet_fields,
         offset=offset,
         limit=limit,

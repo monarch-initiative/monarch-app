@@ -29,9 +29,9 @@ export const apiName = fromParam || fromEnv || fromDomain;
 
 /** get full api url from short name */
 const apiMap: { [key: string]: string } = {
-  local: "127.0.0.1:8000",
-  dev: "https://api-dev.monarchinitiative.org",
-  beta: "https://api-beta.monarchinitiative.org",
+  local: "http://127.0.0.1:8000/v3/api",
+  dev: "https://api-dev.monarchinitiative.org/v3/api",
+  beta: "https://api-beta.monarchinitiative.org/v3/api",
   prod: "https://api-dev.monarchinitiative.org/v3/api",
 };
 
