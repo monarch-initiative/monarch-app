@@ -120,7 +120,7 @@ def build_search_query(
     offset: int = 0,
     limit: int = 20,
     category: List[str] = None,
-    in_taxon: List[str] = None,
+    in_taxon_label: List[str] = None,
     facet_fields: List[str] = None,
     facet_queries: List[str] = None,
     filter_queries: List[str] = None,
@@ -133,8 +133,8 @@ def build_search_query(
     query.boost = entity_boost()
     if category:
         query.add_filter_query(" OR ".join(f'category:"{cat}"' for cat in category))
-    if in_taxon:
-        query.add_filter_query(" OR ".join([f'in_taxon:"{t}"' for t in in_taxon]))
+    if in_taxon_label:
+        query.add_filter_query(" OR ".join([f'in_taxon_label:"{t}"' for t in in_taxon_label]))
     if facet_fields:
         query.facet_fields = facet_fields
     if facet_queries:

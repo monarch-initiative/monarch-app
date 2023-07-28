@@ -69,6 +69,7 @@ def get_provided_by_link(provided_by: str) -> str:
     slug = f"{pb[0]}/#{'_'.join(pb[1:])}"
     return f"{base_url}/{slug}"
 
+
 ### Output conversion methods ###
 
 FMT_INPUT_ERROR_MSG = (
