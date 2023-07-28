@@ -1,5 +1,5 @@
 <!--
-  big circular link button with text and sub text
+  big link button with text and sub text
 -->
 
 <template>
@@ -38,10 +38,10 @@ withDefaults(defineProps<Props>(), { to: "", subtitle: "", design: "big" });
 <style lang="scss" scoped>
 .tile {
   display: inline-flex;
-  align-items: center;
   flex-direction: column;
-  gap: 15px;
+  align-items: center;
   width: 200px;
+  gap: 15px;
 }
 
 .button {
@@ -72,8 +72,8 @@ withDefaults(defineProps<Props>(), { to: "", subtitle: "", design: "big" });
 }
 
 .subtitle {
+  margin-top: -5px;
   color: $off-black;
   line-height: $spacing;
-  margin-top: -5px;
 }
 </style>

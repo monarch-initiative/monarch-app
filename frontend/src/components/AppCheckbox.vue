@@ -30,7 +30,7 @@ defineProps<Props>();
 
 type Emits = {
   /** two-way bound checked state */
-  (event: "update:modelValue", checked: boolean): void;
+  "update:modelValue": [boolean];
 };
 
 const emit = defineEmits<Emits>();
@@ -43,11 +43,11 @@ function onChange(event: Event) {
 
 <style lang="scss" scoped>
 .checkbox {
-  position: relative;
   display: inline-flex;
+  position: relative;
   align-items: center;
-  gap: 10px;
   padding: 10px;
+  gap: 10px;
   border-radius: $rounded;
   cursor: pointer;
   transition: background $fast;

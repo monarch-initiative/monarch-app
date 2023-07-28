@@ -172,7 +172,7 @@ function onSelectedChange() {
 
 /** get autocomplete results */
 async function runGetAutocomplete(
-  search: string
+  search: string,
 ): Promise<AutocompleteOptions> {
   /** if something typed in, get autocomplete options from backend */
   if (search.trim())
@@ -205,7 +205,7 @@ async function runGetAutocomplete(
       search,
       count: matches.length,
     })),
-    "count"
+    "count",
   )
     .filter(({ count }) => count >= 3)
     .reverse()
@@ -242,7 +242,7 @@ const {
      * whether to perform "fresh" search, without filters/pagination/etc. true
      * when search text changes, false when filters/pagination/etc change.
      */
-    fresh: boolean
+    fresh: boolean,
   ) {
     /** get results from api */
     const response = await getSearch(
@@ -253,8 +253,8 @@ const {
       fresh
         ? undefined
         : mapValues(dropdownsSelected.value, (dropdown) =>
-            dropdown.map((option) => option.id)
-          )
+            dropdown.map((option) => option.id),
+          ),
     );
 
     return response;
@@ -284,7 +284,7 @@ const {
 
     /** add search to history */
     addEntry(search.value);
-  }
+  },
 );
 
 /** "x of n" pages */
@@ -340,7 +340,7 @@ watch(
     /** refetch search */
     await runGetSearch(true);
   },
-  { immediate: true, flush: "post" }
+  { immediate: true, flush: "post" },
 );
 
 /** when search changes */
@@ -364,9 +364,9 @@ watch(from, () => runGetSearch(false));
 }
 
 .type {
-  font-size: 2rem;
-  flex-shrink: 0;
   flex-grow: 0;
+  flex-shrink: 0;
+  font-size: 2rem;
 }
 
 .name {
@@ -386,9 +386,9 @@ watch(from, () => runGetSearch(false));
 
 .names,
 .ids {
-  text-align: left;
-  font-size: 0.9rem;
   color: $dark-gray;
+  font-size: 0.9rem;
+  text-align: left;
 
   span {
     width: 100%;
@@ -398,8 +398,8 @@ watch(from, () => runGetSearch(false));
 .page-button {
   height: 30px;
   padding: 0 3px;
-  color: $theme-dark;
   border-radius: $rounded;
+  color: $theme-dark;
   transition: box-shadow $fast;
 
   &:hover {

@@ -39,6 +39,6 @@ watch(
   () => {
     if (route.hash) appTitle.value = [startCase(route.hash)];
   },
-  { immediate: true, flush: "post" }
+  { immediate: true, flush: "post" },
 );
 </script>

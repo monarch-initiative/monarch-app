@@ -53,6 +53,12 @@ type Props = {
 
 const props = defineProps<Props>();
 
+type Slots = {
+  default: () => unknown;
+};
+
+defineSlots<Slots>();
+
 /** icon to show, associated with a status */
 const icon = computed(() => icons[props.code]);
 </script>
@@ -60,10 +66,10 @@ const icon = computed(() => icons[props.code]);
 <style lang="scss" scoped>
 .status {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 20px;
+  justify-content: center;
   padding: 10px;
+  gap: 20px;
   text-decoration: none;
 }
 
@@ -100,9 +106,9 @@ const icon = computed(() => icons[props.code]);
 /** text */
 
 .text {
-  text-align: left;
   color: $off-black;
   line-height: $spacing;
+  text-align: left;
 }
 
 .note {

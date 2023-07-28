@@ -34,13 +34,13 @@ $wrap: 500px;
 
 .footer {
   display: flex;
-  justify-content: space-between;
+  z-index: 10;
   align-items: center;
+  justify-content: space-between;
   padding: 20px;
   background: $theme-dark;
   color: $white;
   font-size: 0.9rem;
-  z-index: 10;
 }
 
 a {
@@ -54,8 +54,8 @@ a {
 
 .social {
   display: flex;
-  font-size: 1.1rem;
   gap: 10px;
+  font-size: 1.1rem;
 }
 
 .social a {
@@ -63,8 +63,8 @@ a {
 }
 
 .license {
-  text-align: center;
   line-height: $spacing;
+  text-align: center;
 }
 
 @media (max-width: $wrap) {

@@ -49,15 +49,15 @@ defineProps<Props>();
 
 @media (max-width: 400px) {
   .post {
-    align-items: center;
     flex-direction: column;
+    align-items: center;
   }
 }
 
 .image {
+  flex-shrink: 0;
   width: 100px;
   height: 100px;
-  flex-shrink: 0;
   overflow: hidden;
 
   &[data-image="true"] {

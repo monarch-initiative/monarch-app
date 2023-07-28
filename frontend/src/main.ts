@@ -16,11 +16,8 @@ import "@/global/styles.scss"; /** keep these last so they take priority */
 /** log env variables for debugging */
 console.info(import.meta.env);
 
-/** environment mode */
-const mode = import.meta.env.MODE;
-
 /** create main app object */
-let app = createApp(App);
+export let app = createApp(App);
 
 /** register plugins/middleware */
 for (const [plugin, options] of plugins) app = app.use(plugin, options);
@@ -29,8 +26,12 @@ for (const [plugin, options] of plugins) app = app.use(plugin, options);
 for (const [name, Component] of Object.entries(components))
   app = app.component(name, Component);
 
-/** track errors with Sentry */
-if (mode === "production")
+/**
+ * init analytics, if on publicly deployed (production-built) instance of
+ * frontend
+ */
+if (new URL(window.location.href).hostname.endsWith("monarchinitiative.org")) {
+  /** track errors with Sentry */
   Sentry.init({
     app,
     dsn: "https://122020f2154c48fa9ebbc53b98afdcf8@o1351894.ingest.sentry.io/6632682",
@@ -41,29 +42,22 @@ if (mode === "production")
     ],
     tracesSampleRate: 1.0,
     logErrors: true,
-    environment: mode,
   });
 
-/** hotjar analytics */
-app.use(Hotjar, {
-  id: "3100256",
-  isProduction: mode === "production",
-});
+  /** hotjar analytics */
+  app.use(Hotjar, { id: "3100256" });
 
-/** google analytics */
-if (mode === "production")
+  /** google analytics */
   app.use(VueGtag, { config: { id: "G-TWM5ED4QJB" } }, router);
-
-/** whether to mock api responses, based on env */
-const mock: { [key: string]: boolean } = {
-  development: true,
-  test: true,
-  production: false,
-};
+}
 
 (async () => {
   /** mock api */
-  if (mock[mode]) {
+  if (
+    import.meta.env.MODE === "test" ||
+    import.meta.env.VITE_MOCK === "true" ||
+    new URLSearchParams(window.location.href).get("mock") === "true"
+  ) {
     const { setupWorker } = await import("msw");
     const { handlers } = await import("../fixtures");
     await setupWorker(...handlers).start();

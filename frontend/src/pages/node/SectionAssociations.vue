@@ -109,7 +109,7 @@ const categoryOptions = computed(
       id: association_count.category || "",
       label: association_count.label,
       count: association_count.count,
-    })) || []
+    })) || [],
 );
 
 /** deselect association when selected category changes */
@@ -125,7 +125,7 @@ watch(
     });
   },
   /** avoid extra triggering of watch functions */
-  { flush: "post" }
+  { flush: "post" },
 );
 
 /** update selected category from url */
@@ -134,10 +134,10 @@ watch(
   () => {
     if (route.query.associations)
       category.value = categoryOptions.value.find(
-        (option) => option.id === route.query.associations
+        (option) => option.id === route.query.associations,
       );
   },
-  { immediate: true }
+  { immediate: true },
 );
 </script>
 

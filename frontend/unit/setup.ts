@@ -1,4 +1,4 @@
-import { type Component, type ComponentPublicInstance, nextTick } from "vue";
+import { nextTick, type Component, type ComponentPublicInstance } from "vue";
 import { cloneDeep } from "lodash";
 import { setupServer } from "msw/node";
 import { afterAll, afterEach, beforeAll, beforeEach, vi } from "vitest";
@@ -43,7 +43,7 @@ export const apiCall = async (): Promise<void> => {
 export const mount = (
   component: Component,
   options: MountingOptions<{ [key: string | number]: unknown }> = {},
-  vModel: { [key: string | number]: unknown } = {}
+  vModel: { [key: string | number]: unknown } = {},
 ) => {
   /** standard globals */
   options.global = { components, plugins, stubs: { teleport: true } };
@@ -76,7 +76,7 @@ export const mount = (
  */
 export const emitted = <T = unknown>(
   wrapper: VueWrapper<ComponentPublicInstance>,
-  event = "update:modelValue"
+  event = "update:modelValue",
 ): Array<T> => {
   try {
     return wrapper.emitted()[event].pop() as Array<T>;

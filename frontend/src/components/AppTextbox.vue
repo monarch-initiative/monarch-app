@@ -42,15 +42,11 @@
   </label>
 </template>
 
-<script lang="ts">
-export default {
-  inheritAttrs: false,
-};
-</script>
-
 <script setup lang="ts">
 import { ref } from "vue";
 import AppInput from "./AppInput.vue";
+
+defineOptions({ inheritAttrs: false });
 
 type Props = {
   /** two-way bound text state */
@@ -75,15 +71,15 @@ defineProps<Props>();
 
 type Emits = {
   /** two-way bound text state */
-  (event: "update:modelValue", value: string): void;
+  "update:modelValue": [string];
   /** when user types in box, after some delay */
-  (event: "debounce", value: string): void;
+  debounce: [string];
   /** when user "commits" change (pressing enter, blurring, etc) */
-  (event: "change", value: string): void;
+  change: [string];
   /** when input focused */
-  (event: "focus"): void;
+  focus: [];
   /** when input blurred */
-  (event: "blur"): void;
+  blur: [];
 };
 
 const emit = defineEmits<Emits>();
@@ -105,17 +101,18 @@ defineExpose({ textbox });
 </script>
 
 <style lang="scss" scoped>
+$height: 40px;
+
 .label {
   display: flex;
   flex-direction: column;
-  gap: 10px;
   width: 100%;
-  --height: 40px;
+  gap: 10px;
 }
 
 .title {
-  text-align: left;
   font-weight: 500;
+  text-align: left;
 }
 
 .asterisk {
@@ -128,8 +125,8 @@ defineExpose({ textbox });
 
 .description {
   color: $dark-gray;
-  text-align: left;
   font-size: 0.9rem;
+  text-align: left;
 }
 
 .textbox {
@@ -138,43 +135,43 @@ defineExpose({ textbox });
 }
 
 .icon {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: var(--height);
-  height: var(--height);
   display: flex;
-  justify-content: center;
+  position: absolute;
+  top: 0;
+  right: 0;
   align-items: center;
+  justify-content: center;
+  width: $height;
+  height: $height;
   color: $gray;
 }
 
 .input {
   width: 100%;
-  background: $white;
   border: solid 2px $off-black;
   border-radius: $rounded;
   outline: none;
+  background: $white;
   transition: box-shadow $fast;
 }
 
 .input[data-multi="false"] {
-  height: var(--height);
-  padding: 0 calc(var(--height) * 0.25);
+  height: $height;
+  padding: 0 calc($height * 0.25);
   line-height: $spacing;
 }
 
 .input[data-multi="true"] {
   min-width: 100%;
   max-width: 100%;
-  min-height: calc(var(--height) * 2);
-  height: calc(var(--height) * 4);
-  padding: calc(var(--height) * 0.25);
+  height: calc($height * 4);
+  min-height: calc($height * 2);
+  padding: calc($height * 0.25);
   line-height: $spacing;
 }
 
 .input[data-icon="true"] {
-  padding-right: calc(var(--height) * 0.85);
+  padding-right: calc($height * 0.85);
 }
 
 .input:hover,

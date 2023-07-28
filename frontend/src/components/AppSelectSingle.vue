@@ -108,7 +108,7 @@ const props = defineProps<Props>();
 
 type Emits = {
   /** two-way bound selected item state */
-  (event: "update:modelValue", value: Option): void;
+  "update:modelValue": [Option];
 };
 
 const emit = defineEmits<Emits>();
@@ -151,7 +151,7 @@ function onClick() {
   /** toggle dropdown */
   expanded.value ? close() : open();
   /** https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#clicking_and_focus */
-  (document.querySelector(`#select-${id.value}`) as HTMLElement)?.focus();
+  document.querySelector<HTMLElement>(`#select-${id.value}`)?.focus();
 }
 
 /** when button blurred */
@@ -198,7 +198,7 @@ function onKeydown(event: KeyboardEvent) {
 /** get selected option index from model */
 function getSelected() {
   return props.options.findIndex(
-    (option) => option?.id === props.modelValue?.id
+    (option) => option?.id === props.modelValue?.id,
   );
 }
 
@@ -207,7 +207,7 @@ watch(
   () => props.modelValue,
   () =>
     /** update selected index */
-    (selected.value = getSelected())
+    (selected.value = getSelected()),
 );
 
 /** when selected index changes */
@@ -218,11 +218,13 @@ watch(selected, () => {
 });
 
 /** when highlighted index changes */
-watch(highlighted, () =>
-  /** scroll to highlighted in dropdown */
-  document
-    .querySelector(`#option-${id.value}-${highlighted.value}`)
-    ?.scrollIntoView({ block: "nearest" })
+watch(
+  highlighted,
+  () =>
+    /** scroll to highlighted in dropdown */
+    document
+      .querySelector(`#option-${id.value}-${highlighted.value}`)
+      ?.scrollIntoView({ block: "nearest" }),
 );
 
 /** auto-select first option as fallback */
@@ -231,7 +233,7 @@ watch(
   () => {
     if (selected.value === -1 && props.options.length) selected.value = 0;
   },
-  { immediate: true }
+  { immediate: true },
 );
 </script>
 
@@ -243,11 +245,11 @@ watch(
 
 .box {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
   width: 100%;
   padding: 5px 10px;
+  gap: 10px;
   border-radius: $rounded;
   background: $light-gray;
 }
@@ -258,6 +260,7 @@ watch(
 }
 
 .list {
+  z-index: 12;
   position: fixed;
   max-width: 90vw;
   max-height: 300px;
@@ -265,15 +268,14 @@ watch(
   overflow-y: auto;
   background: $white;
   box-shadow: $shadow;
-  z-index: 12;
 }
 
 .option {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
   padding: 5px 10px;
+  gap: 10px;
   text-align: left;
   white-space: nowrap;
   cursor: pointer;

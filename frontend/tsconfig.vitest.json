@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig.app.json",
-  "include": ["unit/**/*", "src/api/*", "src/components/*"],
+  "include": ["unit/**/*"],
   "compilerOptions": {
     "composite": true,
     "types": ["node", "jsdom"]

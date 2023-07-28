@@ -28,53 +28,53 @@ const regex = (base: string = "", pattern: string = "") =>
 export const handlers = [
   /** dynamically fetched data on /sources */
   rest.get(regex(biolink, "/metadata/datasets"), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(datasets))
+    res(ctx.status(200), ctx.json(datasets)),
   ),
   rest.get(regex(obo), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(ontologies))
+    res(ctx.status(200), ctx.json(ontologies)),
   ),
 
   /** api status monitoring on /help */
   rest.post(regex(uptimeRobot), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(uptime))
+    res(ctx.status(200), ctx.json(uptime)),
   ),
 
   /** histopheno data */
   rest.get(regex(monarch, "/histopheno"), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(histopheno))
+    res(ctx.status(200), ctx.json(histopheno)),
   ),
 
   /** submit feedback form */
   rest.post(regex(feedbackEndpoint), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(feedback))
+    res(ctx.status(200), ctx.json(feedback)),
   ),
 
   /** search * */
   rest.get(regex(monarch, "/search"), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(search))
+    res(ctx.status(200), ctx.json(search)),
   ),
 
   /** autocomplete */
   rest.get(regex(monarch, "/autocomplete"), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(autocomplete))
+    res(ctx.status(200), ctx.json(autocomplete)),
   ),
 
   /** text annotator */
   rest.post(regex(biolink, "/nlp/annotate"), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(textAnnotator))
+    res(ctx.status(200), ctx.json(textAnnotator)),
   ),
 
   /** phenotype explorer */
   rest.get(regex(biolink, "/sim/search"), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(phenotypeExplorerSearch))
+    res(ctx.status(200), ctx.json(phenotypeExplorerSearch)),
   ),
   rest.post(regex(biolink, "/sim/compare"), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(phenotypeExplorerCompare))
+    res(ctx.status(200), ctx.json(phenotypeExplorerCompare)),
   ),
 
   /** node associations */
   rest.get(regex(monarch, "/entity/.*/.*"), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(associations))
+    res(ctx.status(200), ctx.json(associations)),
   ),
 
   /** node lookup */
@@ -150,10 +150,10 @@ export const handlers = [
 
   /** node publication info */
   rest.get(regex(esummary), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(nodePublicationSummary))
+    res(ctx.status(200), ctx.json(nodePublicationSummary)),
   ),
   rest.get(regex(efetch), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(nodePublicationAbstract.abstract))
+    res(ctx.status(200), ctx.json(nodePublicationAbstract.abstract)),
   ),
 
   /** any other request */

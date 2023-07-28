@@ -58,8 +58,8 @@ type Link = {
 };
 
 /** globals */
-let canvas = null as HTMLCanvasElement | null;
-let ctx = null as CanvasRenderingContext2D | null;
+let canvas: HTMLCanvasElement | null = null;
+let ctx: CanvasRenderingContext2D | null = null;
 let width = 0;
 let height = 0;
 let dots: Dot[] = [];
@@ -137,7 +137,7 @@ const generate = debounce(() => {
 
   /** eliminate dots with no links */
   dots = dots.filter((dot) =>
-    links.find(({ from, to }) => dot === from || dot === to)
+    links.find(({ from, to }) => dot === from || dot === to),
   );
 }, 50);
 
@@ -253,13 +253,13 @@ useIntervalFn(pulse, 10000);
 
 <style lang="scss" scoped>
 #nexus {
+  z-index: -1;
   position: absolute;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  z-index: -1;
   animation: fade-in forwards 1s linear;
 }
 

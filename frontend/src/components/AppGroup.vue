@@ -38,7 +38,7 @@ watch(
       console.error("failed to load team group image", error);
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
 </script>
 

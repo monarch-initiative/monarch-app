@@ -25,8 +25,8 @@ export const useQuery = <Data, Args extends unknown[]>(
     /** response data */
     response: Data,
     /** props passed to main func */
-    props: Args
-  ) => void
+    props: Args,
+  ) => void,
 ) => {
   /** query state/status */
   const isLoading = ref(false);
@@ -88,7 +88,7 @@ export const useQuery = <Data, Args extends unknown[]>(
 export const useFloating = (
   anchor: Ref<HTMLElement>,
   dropdown: Ref<HTMLElement>,
-  fit = false
+  fit = false,
 ) => {
   /** style of dropdown */
   const style = ref<CSSProperties>({
@@ -122,7 +122,7 @@ export const useFloating = (
     const { x, y } = await computePosition(
       anchor.value,
       dropdown.value,
-      options
+      options,
     );
 
     /** set style from position */

@@ -58,6 +58,12 @@ const props = withDefaults(defineProps<Props>(), {
 
 const slots = useSlots();
 
+type Slots = {
+  default: () => unknown;
+};
+
+defineSlots<Slots>();
+
 /** is "to" prop an external url */
 const externalLink = computed(() => isExternal(props.to));
 
@@ -69,7 +75,7 @@ const plainText = computed(
   () =>
     slots.default &&
     slots.default().length === 1 &&
-    typeof slots.default()[0].children === "string"
+    typeof slots.default()[0].children === "string",
 );
 
 /**

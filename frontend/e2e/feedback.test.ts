@@ -15,7 +15,7 @@ test("Feedback form can open and close", async ({ page }) => {
     page
       .locator(".modal")
       .getByText(/Feedback Form/)
-      .first()
+      .first(),
   ).toBeVisible();
 
   /** click in middle of modal, which should not close modal */

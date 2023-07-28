@@ -51,20 +51,20 @@ const d = computed(() => {
 <style lang="scss" scoped>
 .ring {
   position: relative;
-  width: 40px;
-  height: 40px;
   flex-grow: 0;
   flex-shrink: 0;
+  width: 40px;
+  height: 40px;
 
   & > * {
+    display: flex;
     position: absolute;
-    left: 0;
     top: 0;
+    left: 0;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 
   circle {

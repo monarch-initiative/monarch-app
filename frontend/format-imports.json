@@ -1,8 +1,0 @@
-{
-  "autoFormat": "off",
-  "emptyLinesBetweenGroups": 0,
-  "exclude": ["node_modules"],
-  "formatExports": false,
-  "wrappingStyle": "prettier",
-  "groupRules": ["^vue", "^\\w", "^@\\w", "^@\\/", { "flags": "scripts" }]
-}

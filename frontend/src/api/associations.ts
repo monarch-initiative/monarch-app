@@ -7,7 +7,7 @@ export const getAssociations = async (
   associationCategory = "",
   offset = 0,
   limit = 10,
-  search?: string
+  search?: string,
 ) => {
   /** make query params */
   const params = {
@@ -26,5 +26,5 @@ export const getAssociations = async (
 /** get top few associations */
 export const getTopAssociations = async (
   nodeId = "",
-  associationCategory = ""
+  associationCategory = "",
 ) => await getAssociations(nodeId, associationCategory, 0, 5);

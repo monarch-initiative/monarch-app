@@ -31,7 +31,7 @@ const props = defineProps<Props>();
 
 /** joined details as string */
 const detailsString = computed(() =>
-  (props.details || []).filter((e) => e).join("&nbsp; · &nbsp;")
+  (props.details || []).filter((e) => e).join("&nbsp; · &nbsp;"),
 );
 </script>
 

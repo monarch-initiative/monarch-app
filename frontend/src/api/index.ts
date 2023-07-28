@@ -1,10 +1,42 @@
-/** base api url */
+/** base biolink api url */
 export const biolink = "https://api.monarchinitiative.org/api";
-export const monarch =
-  import.meta.env.MONARCH_API || "https://api-dev.monarchinitiative.org/v3/api";
 
-/** environment mode */
-const mode = import.meta.env.MODE;
+/** served location of webapp, verbatim from browser address bar */
+const url = new URL(window.location.href);
+
+/** get api name to use... */
+
+/** ...from domain of url */
+const fromDomain =
+  /** when running yarn dev */
+  // (url.port && "local") ||
+  /** get from subdomain */
+  url.hostname.match(/([/w-]+)?\.?(monarchinitiative)\.org/)?.[1] ||
+  /** prod url has no subdomain */
+  "prod";
+
+/** ...from env var */
+const fromEnv = import.meta.env.VITE_API || "";
+
+/** ...from param in url */
+const fromParam = new URLSearchParams(url.href).get("api") || "";
+
+/**
+ * final short name of monarch api version to use (highest to lowest override
+ * priority)
+ */
+export const apiName = fromParam || fromEnv || fromDomain;
+
+/** get full api url from short name */
+const apiMap: { [key: string]: string } = {
+  local: "127.0.0.1:8000",
+  dev: "https://api-dev.monarchinitiative.org",
+  beta: "https://api-beta.monarchinitiative.org",
+  prod: "https://api-dev.monarchinitiative.org/v3/api",
+};
+
+/** base monarch api url */
+export const monarch = apiMap[apiName] || apiMap.dev;
 
 /**
  * key/value object for request query parameters. use primitive for single, e.g.
@@ -26,7 +58,7 @@ export const request = async <Response>(
   path = "",
   params: Params = {},
   options: RequestInit = {},
-  parse: "text" | "json" = "json"
+  parse: "text" | "json" = "json",
 ): Promise<Response> => {
   /** start cache if not already started */
   if (!cache) await initCache();
@@ -61,10 +93,10 @@ export const request = async <Response>(
   let response = await cache.match(request);
 
   /** log details for debugging (except don't clutter logs when running tests) */
-  if (mode !== "test") {
+  if (import.meta.env.MODE !== "test") {
     console.groupCollapsed(
       response ? "📞 Request (cached)" : "📞 Request (new)",
-      endpoint
+      endpoint,
     );
     console.info("Url", url);
     console.info("Params", params);
@@ -83,7 +115,7 @@ export const request = async <Response>(
       /** get biolink error message, if there is one */
       let message;
       try {
-        message = ((await response.json()) as _Error).error.message;
+        message = ((await response.json()) as BioLinkError).error.message;
       } catch (error) {
         message = "";
       }
@@ -98,13 +130,11 @@ export const request = async <Response>(
   }
 
   /** parse response */
-  const parsed =
-    parse === "text"
-      ? ((await response.text()) as unknown as Response)
-      : await response.json();
+  const parsed: Response =
+    parse === "text" ? await response.text() : await response.json();
 
   /** log details for debugging (except don't clutter logs when running tests) */
-  if (mode !== "test") {
+  if (import.meta.env.MODE !== "test") {
     console.groupCollapsed("📣 Response", endpoint);
     console.info("Url", url);
     console.info("Parsed", parsed);
@@ -128,7 +158,7 @@ const initCache = async () => {
 };
 
 /** possible biolink error */
-type _Error = {
+type BioLinkError = {
   error: {
     message: string;
   };

@@ -46,12 +46,12 @@ const delay = computed(() => 1500 + text.value.length * 100);
 const { start, stop } = useTimeoutFn(() => (text.value = ""), delay);
 
 /** on push notification event */
-function onPush(event: Event) {
+function onPush(event: CustomEvent) {
   /** flash notification */
   if (element.value) restartAnimations(element.value);
 
   /** set notification text */
-  text.value = (event as CustomEvent).detail;
+  text.value = event.detail;
 
   /** set timer to close */
   start();
@@ -69,16 +69,16 @@ useEventListener(window, "snackbar", onPush);
 
 <style lang="scss" scoped>
 .snackbar {
+  z-index: 99;
   position: fixed;
   bottom: 20px;
   left: 50%;
   padding: 10px;
   transform: translateX(-50%);
-  background: $off-black;
-  color: $white;
-  box-shadow: $shadow;
   border-radius: $rounded;
-  z-index: 99;
+  background: $off-black;
+  box-shadow: $shadow;
+  color: $white;
   animation: flash 0.25s linear forwards;
 }
 

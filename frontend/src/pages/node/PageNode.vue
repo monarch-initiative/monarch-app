@@ -63,7 +63,7 @@ const {
   async function () {
     /** get node from route params */
     const { id = "" } = route.params;
-    const node_info = await getNode(id as string);
+    const node_info = await getNode(String(id));
 
     return node_info;
   },
@@ -78,7 +78,7 @@ const {
     scrollToHash();
 
     /**
-     * set page description from node meta data. no need to include category and
+     * set page description from node metadata. no need to include category and
      * id, as those should already be in the document title. see
      * https://metatags.io/
      */
@@ -86,7 +86,7 @@ const {
     appDescription.value = [name, description]
       .filter((part) => part)
       .join(" | ");
-  }
+  },
 );
 
 /** when path (not hash or query) changed, get new node data */
@@ -97,13 +97,13 @@ watch(
   [() => route.fullPath, () => node.value?.name],
   () => {
     appTitle.value = [
-      node.value?.name,
+      String(node.value?.name),
       // `${route.params.id} (${route.params.category})`,
       route.query.associations ? `${route.query.associations} assoc.` : "",
     ];
   },
   /** https://github.com/vuejs/vue-router/issues/3393 */
-  { immediate: true, flush: "post" }
+  { immediate: true, flush: "post" },
 );
 
 /** update node history on node visit */

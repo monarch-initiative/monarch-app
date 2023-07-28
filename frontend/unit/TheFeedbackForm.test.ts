@@ -13,8 +13,8 @@ test("Submits correctly when filled out", async () => {
 
   /** https://github.com/vuejs/vue-test-utils/issues/1932 */
   (
-    (await wrapper.find("button[type='submit']")).element as HTMLButtonElement
-  ).focus();
+    await wrapper.find<HTMLButtonElement>("button[type='submit']")
+  ).element.focus();
   /** submit form */
   await wrapper.find("form").trigger("submit");
 
