@@ -15,10 +15,10 @@ monarchstow = pystow.module("monarch")
 
 def check_for_docker():
     try:
-        client = docker.from_env()
+        docker.from_env()
     except docker.errors.DockerException:
         typer.secho(
-            f"\n\tDocker not found\n\tPlease install Docker, and refer to:", 
+            f"\n\tDocker not found\n\tPlease install Docker, and refer to:",
             fg=typer.colors.RED,
         )
         typer.secho(

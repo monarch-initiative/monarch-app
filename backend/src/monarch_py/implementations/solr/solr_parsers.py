@@ -42,8 +42,8 @@ def parse_associations(
             logger.error(f"Validation error for {doc}")
             raise ValidationError
         association.provided_by_link = ExpandedCurie(
-            id = association.provided_by.replace('_nodes', '').replace('_edges', ''),
-            url = get_provided_by_link(association.provided_by),
+            id=association.provided_by.replace("_nodes", "").replace("_edges", ""),
+            url=get_provided_by_link(association.provided_by),
         )
         associations.append(association)
     total = query_result.response.num_found

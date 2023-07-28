@@ -36,13 +36,8 @@ def callback(
         )
         raise typer.Exit()
     check_for_docker()
-    set_log_level(
-        log_level = "DEBUG" if debug else "WARNING" if quiet else "INFO"
-    )
+    set_log_level(log_level="DEBUG" if debug else "WARNING" if quiet else "INFO")
     return
-
-
-
 
 
 @app.command("test")
