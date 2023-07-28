@@ -1,8 +1,7 @@
-import os, sys
+import os
 from dataclasses import dataclass
 from typing import List, Union
 
-import docker
 import requests
 from monarch_py.datamodels.model import (
     Association,
@@ -47,7 +46,7 @@ from monarch_py.utils.utils import get_provided_by_link
 @dataclass
 class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface):
     """Implementation of Monarch Interfaces for Solr endpoint"""
-    
+
     base_url: str = os.getenv("MONARCH_SOLR_URL", "http://localhost:8983/solr")
 
     def solr_is_available(self) -> bool:
@@ -89,8 +88,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         node.association_counts = self.get_association_counts(id).items
         node.external_links = [ExpandedCurie(id=curie, url=CurieService().expand(curie)) for curie in node.xref]
         node.provided_by_link = ExpandedCurie(
-            id = node.provided_by.replace('_nodes', '').replace('_edges', ''), 
-            url = get_provided_by_link(node.provided_by)
+            id=node.provided_by.replace("_nodes", "").replace("_edges", ""), url=get_provided_by_link(node.provided_by)
         )
         return node
 
@@ -237,7 +235,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         offset: int = 0,
         limit: int = 20,
         category: List[str] = None,
-        in_taxon: List[str] = None,
+        in_taxon_label: List[str] = None,
         facet_fields: List[str] = None,
         facet_queries: List[str] = None,
         filter_queries: List[str] = None,
@@ -250,7 +248,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
             offset (int): Result offset, for pagination. Defaults to 0.
             limit (int): Limit results to specified number. Defaults to 20.
             category (List[str]): Filter to only entities matching the specified categories. Defaults to None.
-            in_taxon (List[str]): Filter to only entities matching the specified taxa. Defaults to None.
+            in_taxon_label (List[str]): Filter to only entities matching the specified taxon label. Defaults to None.
             facet_fields (List[str]): List of fields to include facet counts for. Defaults to None.
             facet_queries (List[str]): List of queries to include facet counts for. Defaults to None.
             filter_queries (List[str]): List of queries to filter results by. Defaults to None.

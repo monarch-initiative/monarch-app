@@ -3,11 +3,10 @@ from pathlib import Path
 from typing import List, Optional
 
 import typer
-from typing_extensions import Annotated
-
 from monarch_py import solr_cli, sql_cli
-from monarch_py.utils.utils import set_log_level
 from monarch_py.utils.solr_cli_utils import check_for_docker
+from monarch_py.utils.utils import set_log_level
+from typing_extensions import Annotated
 
 app = typer.Typer()
 app.add_typer(solr_cli.solr_app, name="solr")
@@ -36,13 +35,8 @@ def callback(
         )
         raise typer.Exit()
     check_for_docker()
-    set_log_level(
-        log_level = "DEBUG" if debug else "WARNING" if quiet else "INFO"
-    )
+    set_log_level(log_level="DEBUG" if debug else "WARNING" if quiet else "INFO")
     return
-
-
-
 
 
 @app.command("test")
