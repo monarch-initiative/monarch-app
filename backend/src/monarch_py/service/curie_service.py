@@ -15,7 +15,7 @@ class CurieService:
         return cls._instance
 
     def initialize(self):
-        self.converter = monarch_converter = curies.get_monarch_converter()
+        self.converter = curies.get_monarch_converter()
 
     def expand(self, curie: str) -> str:
         return self.converter.expand(curie)
