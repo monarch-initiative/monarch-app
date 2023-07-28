@@ -5,7 +5,12 @@
 <template>
   <!-- dive right in -->
   <AppSection design="fill">
-    <AppTabs v-model="tab" name="Explore Mode" :tabs="tabs" route="Explore" />
+    <AppTabs
+      v-model="tab"
+      name="Explore Mode"
+      :tabs="tabs"
+      navigate="Explore"
+    />
     <TabSearch :home="true" />
   </AppSection>
 
@@ -153,7 +158,7 @@
 
     <p>Be the first to know when we have major updates or other fun news.</p>
 
-    <AppFlex>
+    <AppFlex vAlign="top">
       <AppTile
         to="https://medium.com/@MonarchInit"
         icon="medium"

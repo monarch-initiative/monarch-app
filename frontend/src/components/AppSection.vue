@@ -18,13 +18,19 @@ type Props = {
 };
 
 withDefaults(defineProps<Props>(), { width: "medium", design: "normal" });
+
+type Slots = {
+  default: () => unknown;
+};
+
+defineSlots<Slots>();
 </script>
 
 <style lang="scss" scoped>
 .section {
   display: flex;
-  align-items: center;
   flex-direction: column;
+  align-items: center;
   gap: 40px;
   text-align: center;
   transition: background $fast;

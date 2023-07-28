@@ -57,7 +57,7 @@ type _PhenotypeAssociations = {
 /** get phenotypes associated with gene/disease */
 const getPhenotypeAssociations = async (
   id = "",
-  category = ""
+  category = "",
 ): Promise<Options> => {
   /** short circuit if no id or valid category */
   if (!id || !category || !(category === "gene" || category === "disease"))
@@ -99,7 +99,7 @@ type _Comparison = {
 /** compare a set of phenotypes to another set of phenotypes */
 export const compareSetToSet = async (
   aPhenotypes: string[],
-  bPhenotypes: string[]
+  bPhenotypes: string[],
 ): Promise<Comparison> => {
   /** make request options */
   const headers = new Headers();
@@ -126,7 +126,7 @@ export const compareSetToSet = async (
 /** compare a set of phenotypes to a gene or disease taxon id */
 export const compareSetToTaxon = async (
   phenotypes: string[],
-  taxon: string
+  taxon: string,
 ): Promise<Comparison> => {
   /** endpoint settings */
   const params = {

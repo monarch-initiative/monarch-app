@@ -201,9 +201,9 @@ const props = defineProps<Props>();
 
 type Emits = {
   /** two-way bound selected items state */
-  (event: "update:modelValue", value: Options): void;
+  "update:modelValue": [Options];
   /** when an option's spreadOptions func has been called */
-  (event: "spreadOptions", option: Option, options: Options): void;
+  spreadOptions: [Option, Options];
 };
 
 const emit = defineEmits<Emits>();
@@ -308,7 +308,7 @@ function clear() {
 /** copy selected ids to clipboard */
 async function copy() {
   await window.navigator.clipboard?.writeText(
-    selected.value.map(({ id }) => id).join(",")
+    selected.value.map(({ id }) => id).join(","),
   );
   snackbar(`Copied ${selected.value.length} values`);
 }
@@ -343,7 +343,7 @@ const {
       /** reset */
       close();
     }
-  }
+  },
 );
 
 /** list of unselected results to show */
@@ -351,8 +351,8 @@ const availableResults = computed(() =>
   results.value.autoAccept
     ? []
     : results.value.options.filter(
-        (option) => !selected.value.find((model) => model.id === option.id)
-      )
+        (option) => !selected.value.find((model) => model.id === option.id),
+      ),
 );
 
 /** target element */
@@ -376,7 +376,7 @@ watch(
       /** update (de-duplicated) selected value */
       selected.value = uniqBy(props.modelValue, "id");
   },
-  { deep: true, immediate: true }
+  { deep: true, immediate: true },
 );
 
 /** when selected value changes */
@@ -386,7 +386,7 @@ watch(
     /** emit (deduplicated) updated model */
     emit("update:modelValue", uniqBy(selected.value, "id"));
   },
-  { deep: true }
+  { deep: true },
 );
 
 /** when highlighted index changes */
@@ -406,16 +406,16 @@ watch(highlighted, () => {
 
 .box {
   display: flex;
-  align-items: center;
   flex-wrap: wrap;
-  gap: 10px;
+  align-items: center;
   width: 100%;
   min-height: 40px;
   padding: 5px 10px;
-  background: $white;
+  gap: 10px;
   border: solid 2px $off-black;
   border-radius: $rounded;
   outline: none;
+  background: $white;
   transition: box-shadow $fast;
 }
 
@@ -435,26 +435,26 @@ watch(highlighted, () => {
 
 .controls {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   gap: 5px;
 }
 
 .list {
+  z-index: 12;
   max-height: 300px;
   overflow-x: auto;
   overflow-y: auto;
   background: $white;
   box-shadow: $shadow;
-  z-index: 12;
 }
 
 .option {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
   padding: 5px 10px;
+  gap: 10px;
   cursor: pointer;
   transition: background $fast;
 }

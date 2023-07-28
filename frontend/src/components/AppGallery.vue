@@ -15,6 +15,12 @@ type Props = {
 };
 
 withDefaults(defineProps<Props>(), { size: "medium" });
+
+type Slots = {
+  default: () => unknown;
+};
+
+defineSlots<Slots>();
 </script>
 
 <style lang="scss" scoped>
@@ -36,8 +42,8 @@ $cell: minmax(100px, 1fr);
   }
 
   &[data-size="big"] {
-    gap: 40px;
     grid-template-columns: $cell $cell;
+    gap: 40px;
 
     @media (max-width: $one) {
       grid-template-columns: $cell;

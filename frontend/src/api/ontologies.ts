@@ -31,7 +31,7 @@ export const getOntologies = async (): Promise<Ontologies> => {
       license: ontology.license?.url,
       image: ontology.depicted_by,
       description: ontology.description,
-    })
+    }),
   );
 
   /**

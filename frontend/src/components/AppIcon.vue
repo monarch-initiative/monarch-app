@@ -3,40 +3,30 @@
 -->
 
 <template>
-  <FontAwesomeIcon
-    v-if="_icon?.type === 'fa'"
-    :icon="_icon?.definition"
-    :data-icon="icon"
-    aria-hidden="true"
-  />
-  <InlineSvg
-    v-else-if="_icon?.type === 'custom'"
-    :src="_icon?.src"
+  <component
+    :is="customIcon"
+    v-if="isCustom"
     class="icon"
     :data-icon="icon"
     aria-hidden="true"
   />
-  <svg
-    v-else-if="_icon?.type === 'initials'"
-    viewBox="-10 -10 120 120"
-    class="initials"
-  >
+  <FontAwesomeIcon
+    v-else-if="fontAwesome"
+    :icon="fontAwesome"
+    aria-hidden="true"
+  />
+  <svg v-else-if="initials" viewBox="-10 -10 120 120" class="initials">
     <circle cx="50" cy="50" r="55" />
     <text x="50" y="54">
-      {{ _icon?.letters }}
+      {{ initials }}
     </text>
   </svg>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
-import InlineSvg from "vue-inline-svg";
+import { computed, defineAsyncComponent, ref } from "vue";
 import { kebabCase } from "lodash";
-import type {
-  IconDefinition,
-  IconName,
-  IconPrefix,
-} from "@fortawesome/fontawesome-svg-core";
+import type { IconName, IconPrefix } from "@fortawesome/fontawesome-svg-core";
 import { findIconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
@@ -45,59 +35,45 @@ type Props = {
    * kebab-case name of icon to show. for font awesome, without fas/far/etc
    * prefix. for custom icon, match filename, without extension.
    */
-  icon?: string;
+  icon: string;
 };
 
 const props = defineProps<Props>();
 
-type _Icon =
-  | { type: "fa"; definition: IconDefinition }
-  | { type: "custom"; src: string }
-  | { type: "initials"; letters: string };
+/** look for font awesome icon with matching name */
+const fontAwesome = computed(() => {
+  for (const prefix of ["fas", "far", "fab"]) {
+    const match = findIconDefinition({
+      prefix: prefix as IconPrefix,
+      iconName: props.icon as IconName,
+    });
+    if (match) return match;
+  }
+  return null;
+});
 
-/** computed icon */
-const _icon = ref<_Icon>();
+const isCustom = ref(true);
 
-watch(
-  () => props.icon,
-  async () => {
-    /** first look for font awesome icon with matching name */
-    for (const prefix of ["fas", "far", "fab"]) {
-      const match = findIconDefinition({
-        prefix: prefix as IconPrefix,
-        iconName: props.icon as IconName,
-      });
-      if (match) {
-        _icon.value = { type: "fa", definition: match };
-        return;
-      }
-    }
+/** look for custom icon with matching name */
+const customIcon = defineAsyncComponent(async () => {
+  try {
+    const result = await import(`../assets/icons/${kebabCase(props.icon)}.svg`);
+    console.log(props.icon, result.render());
+    return result;
+  } catch {
+    isCustom.value = false;
+    return await import(`../assets/icons/loading.svg`);
+  }
+});
 
-    /** otherwise, look for custom icon with matching name */
-    try {
-      const src = (
-        await import(`../assets/icons/${kebabCase(props.icon || "")}.svg`)
-      ).default;
-      _icon.value = { type: "custom", src };
-      return;
-    } catch (error) {
-      // console.groupCollapsed("couldn't load custom icon", props.icon);
-      // console.error(error);
-      // console.groupEnd();
-    }
-
-    /** last resort, use initials */
-    _icon.value = {
-      type: "initials",
-      letters:
-        props.icon
-          ?.replace(/^category-/, "")
-          .split("-")
-          .map((word) => (word[0] || "").toUpperCase())
-          .join("") || "",
-    };
-  },
-  { immediate: true }
+/** initials */
+const initials = computed(
+  () =>
+    props.icon
+      ?.replace(/^category-/, "")
+      .split("-")
+      .map((word) => (word[0] || "").toUpperCase())
+      .join("") || "",
 );
 </script>
 
@@ -106,14 +82,14 @@ watch(
   height: 1em;
 }
 
-/** common category icon styles */
+/** category icon styles */
 [data-icon^="category-"] {
-  height: 1.2em;
   fill: none;
   stroke: currentColor;
   stroke-width: 5;
   stroke-linecap: round;
   stroke-linejoin: round;
+  height: 1.2em;
 }
 
 .initials {
@@ -127,9 +103,9 @@ watch(
 
   text {
     fill: currentColor;
-    font-size: 50px;
     text-anchor: middle;
     dominant-baseline: middle;
+    font-size: 50px;
   }
 }
 </style>

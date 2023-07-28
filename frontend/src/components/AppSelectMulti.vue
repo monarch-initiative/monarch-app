@@ -164,11 +164,11 @@ const props = withDefaults(defineProps<Props>(), {
 
 type Emits = {
   /** two-way bound selected items state */
-  (event: "update:modelValue", value: Options): void;
+  "update:modelValue": [Options];
   /** when value changed */
-  (event: "input"): void;
+  input: [];
   /** when value change "submitted"/"committed" by user */
-  (event: "change", value: Options): void;
+  change: [Options];
 };
 
 const emit = defineEmits<Emits>();
@@ -191,7 +191,7 @@ const dropdown = ref();
 /** get dropdown position */
 const { calculate, style } = useFloating(
   computed(() => anchor.value?.button || anchor.value),
-  dropdown
+  dropdown,
 );
 /** recompute position after opened */
 watch(expanded, async () => {
@@ -222,7 +222,7 @@ function onClick() {
   /** toggle dropdown */
   expanded.value ? close() : open();
   /** https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#clicking_and_focus */
-  (document.querySelector(`#select-${id.value}`) as HTMLElement)?.focus();
+  document.querySelector<HTMLElement>(`#select-${id.value}`)?.focus();
 }
 
 /** when button blurred */
@@ -266,7 +266,7 @@ function onKeydown(event: KeyboardEvent) {
 function getSelected(): number[] {
   return props.options
     .map((option, index) =>
-      props.modelValue.find((model) => option.id === model.id) ? index : -1
+      props.modelValue.find((model) => option.id === model.id) ? index : -1,
     )
     .filter((index) => index !== -1);
 }
@@ -312,23 +312,25 @@ watch(
     /** avoid infinite rerenders */
     if (!isEqual(selected.value, getSelected())) selected.value = getSelected();
   },
-  { deep: true, immediate: true }
+  { deep: true, immediate: true },
 );
 
 /** when selected index changes, update model */
 watch(selected, () => emit("update:modelValue", getModel()), { deep: true });
 
 /** when highlighted index changes */
-watch(highlighted, () =>
-  /** scroll to highlighted in dropdown */
-  document
-    .querySelector(`#option-${id.value}-${highlighted.value} > *`)
-    ?.scrollIntoView({ block: "nearest" })
+watch(
+  highlighted,
+  () =>
+    /** scroll to highlighted in dropdown */
+    document
+      .querySelector(`#option-${id.value}-${highlighted.value} > *`)
+      ?.scrollIntoView({ block: "nearest" }),
 );
 
 /** are all options selected */
 const allSelected = computed(
-  () => selected.value.length === props.options.length
+  () => selected.value.length === props.options.length,
 );
 
 /** are no options selected */
@@ -344,11 +346,11 @@ const noneSelected = computed(() => !selected.value.length);
 
 .box {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
   width: 100%;
   padding: 5px 10px;
+  gap: 10px;
   border-radius: $rounded;
   background: $light-gray;
 }
@@ -359,26 +361,26 @@ const noneSelected = computed(() => !selected.value.length);
 }
 
 .box-more {
-  color: $dark-gray;
   margin-left: 10px;
+  color: $dark-gray;
 }
 
 .list {
+  z-index: 12;
   max-width: 90vw;
   max-height: 300px;
   overflow-x: auto;
   overflow-y: auto;
   background: $white;
   box-shadow: $shadow;
-  z-index: 12;
 }
 
 .option {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
   padding: 5px 7.5px;
+  gap: 10px;
   cursor: pointer;
   transition: background $fast;
 }

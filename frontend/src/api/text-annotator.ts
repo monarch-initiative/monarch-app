@@ -28,7 +28,7 @@ export const annotateText = async (content = ""): Promise<Annotations> => {
   const headers = new Headers();
   headers.append(
     "Content-Type",
-    "application/x-www-form-urlencoded;charset=UTF-8"
+    "application/x-www-form-urlencoded;charset=UTF-8",
   );
   const body = "content=" + window.encodeURIComponent(content);
   const options = { method: "POST", headers, body };

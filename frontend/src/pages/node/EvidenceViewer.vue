@@ -67,20 +67,20 @@
 
 <script setup lang="ts">
 import { onMounted, watch } from "vue";
-import AppDetails from "@/components/AppDetails.vue";
+import type { DirectionalAssociation, Node } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
+import AppDetails from "@/components/AppDetails.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
-import type { DirectionalAssociation, Node } from "@/api/model";
 import { scrollToElement } from "@/router";
 import { waitFor } from "@/util/dom";
 
-interface Props {
+type Props = {
   /** current node */
   node: Node;
   /** selected association */
   association: DirectionalAssociation;
-}
+};
 
 const props = defineProps<Props>();
 

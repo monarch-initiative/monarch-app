@@ -32,6 +32,12 @@ type Props = {
 
 defineProps<Props>();
 
+type Slots = {
+  default: () => unknown;
+};
+
+defineSlots<Slots>();
+
 /** whether accordion is open or not */
 const expanded = ref(false);
 </script>
@@ -63,9 +69,9 @@ const expanded = ref(false);
 .content {
   display: flex;
   flex-direction: column;
-  gap: 20px;
   width: 100%;
   padding: 20px;
+  gap: 20px;
 }
 
 .caret {

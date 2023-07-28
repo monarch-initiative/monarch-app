@@ -134,13 +134,13 @@ const props = defineProps<Props>();
 
 type Emits = {
   /** two-way bound search state */
-  (event: "update:modelValue", value: string): void;
+  "update:modelValue": [string];
   /** when input focused */
-  (event: "focus"): void;
+  focus: [];
   /** when input value change "submitted"/"committed" by user */
-  (event: "change", value: string): void;
+  change: [string];
   /** when user wants to delete an entry */
-  (event: "delete", value: string): void;
+  delete: [string];
 };
 
 const emit = defineEmits<Emits>();
@@ -246,7 +246,7 @@ const {
   },
 
   /** default value */
-  []
+  [],
 );
 
 /** target element */
@@ -257,7 +257,7 @@ const dropdown = ref();
 const { calculate, style } = useFloating(
   computed(() => target.value?.textbox),
   dropdown,
-  true
+  true,
 );
 /** recompute position when length of results changes */
 watch([expanded, results], async () => {
@@ -269,7 +269,7 @@ watch([expanded, results], async () => {
 watch(
   () => props.modelValue,
   () => (search.value = props.modelValue || ""),
-  { immediate: true }
+  { immediate: true },
 );
 
 /** when search changes, update model */
@@ -304,26 +304,26 @@ watch(highlighted, () => {
 
 .controls {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   gap: 5px;
 }
 
 .list {
+  z-index: 12;
   max-height: 300px;
   overflow-x: auto;
   overflow-y: auto;
   background: $white;
   box-shadow: $shadow;
-  z-index: 12;
 }
 
 .option {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
   padding: 5px 10px;
+  gap: 10px;
   cursor: pointer;
   transition: background $fast;
 }

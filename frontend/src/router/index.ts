@@ -1,8 +1,4 @@
-import type {
-  NavigationGuard,
-  RouteRecordRaw,
-  RouterScrollBehavior,
-} from "vue-router";
+import type { RouteRecordRaw, RouterScrollBehavior } from "vue-router";
 import { createRouter, createWebHistory } from "vue-router";
 import { isEmpty, pick } from "lodash";
 import { hideAll } from "tippy.js";
@@ -23,9 +19,6 @@ import descriptions from "@/router/descriptions.json";
 import { sleep } from "@/util/debug";
 import { parse } from "@/util/object";
 
-/** environment mode */
-const mode = import.meta.env.MODE;
-
 /** list of routes and corresponding components. */
 /** KEEP IN SYNC WITH PUBLIC/SITEMAP.XML */
 export const routes: RouteRecordRaw[] = [
@@ -34,7 +27,7 @@ export const routes: RouteRecordRaw[] = [
     path: "/",
     name: "Home",
     component: PageHome,
-    beforeEnter: (async () => {
+    beforeEnter: async () => {
       /** look for redirect in session storage (saved from public/404.html page) */
       const redirect = window.sessionStorage.redirect;
       let redirectState = parse(window.sessionStorage.redirectState, {});
@@ -44,7 +37,7 @@ export const routes: RouteRecordRaw[] = [
       window.sessionStorage.removeItem("redirectState");
 
       /** log for debugging */
-      if (mode !== "test") {
+      if (import.meta.env.MODE !== "test") {
         console.info("Redirecting to:", redirect);
         console.info("With state:", redirectState);
       }
@@ -61,7 +54,7 @@ export const routes: RouteRecordRaw[] = [
 
       /** go to appropriate route */
       if (redirect) return redirect;
-    }) as NavigationGuard,
+    },
   },
   {
     path: "/home",
@@ -146,21 +139,19 @@ export const routes: RouteRecordRaw[] = [
   },
 ];
 
-/** merge in route descriptions */
-routes.forEach(
-  (route) =>
-    (route.meta = {
-      description:
-        (descriptions as { [key: string]: string })[String(route.name || "")] ||
-        import.meta.env.VITE_DESCRIPTION,
-    })
-);
+/** insert descriptions from imported json into each route's metadata */
+for (const route of routes)
+  route.meta = {
+    description:
+      (descriptions as { [key: string]: string })[String(route.name || "")] ||
+      import.meta.env.VITE_DESCRIPTION,
+  };
 
 /** vue-router's scroll behavior handler */
 const scrollBehavior: RouterScrollBehavior = async (
   to,
   from,
-  savedPosition
+  savedPosition,
 ) => {
   /** https://github.com/vuejs/vue-router-next/issues/1147 */
   await sleep();

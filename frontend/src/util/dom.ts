@@ -17,7 +17,7 @@ export const restartAnimations = (element: Element): void => {
 export const waitFor = async <El extends Element>(
   selector = "",
   timeout = 3000,
-  interval = 50
+  interval = 50,
 ): Promise<El | undefined> => {
   for (let check = 0; check < timeout / interval; check++) {
     const match = document?.querySelector<El>(selector);

@@ -89,7 +89,7 @@ const {
   },
 
   /** default value */
-  []
+  [],
 );
 
 /** when path (not hash or query) changed, get new chart data */

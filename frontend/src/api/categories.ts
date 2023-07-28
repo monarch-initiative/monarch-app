@@ -5,8 +5,8 @@ export const getCategoryLabel = (category?: string | string[]) =>
   startCase(
     (Array.isArray(category) ? category[0] : category)?.replace(
       "biolink:",
-      ""
-    ) || ""
+      "",
+    ) || "",
   );
 
 /** get icon name from category */

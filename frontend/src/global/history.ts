@@ -11,5 +11,5 @@ export const addEntry = (value?: string) => {
 /** delete entry(s) from node search/visit history */
 export const deleteEntry = (value: string) =>
   (history.value = history.value.filter(
-    (entry) => entry.trim() !== value.trim()
+    (entry) => entry.trim() !== value.trim(),
   ));

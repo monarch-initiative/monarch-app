@@ -67,17 +67,17 @@ type Props = {
   /** whether to sync active tab with url hash */
   url?: boolean;
   /** route name to navigate to on change */
-  route?: string;
+  navigate?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   url: true,
-  route: undefined,
+  navigate: undefined,
 });
 
 type Emits = {
   /** two-way bound selected tab state */
-  (event: "update:modelValue", selected: string): void;
+  "update:modelValue": [string];
 };
 
 const emit = defineEmits<Emits>();
@@ -106,7 +106,7 @@ async function onKeydown(event: KeyboardEvent) {
     /** update selected, wrapping beyond -1 or options length */
     emit(
       "update:modelValue",
-      props.tabs[wrap(index, 0, props.tabs.length - 1)].id
+      props.tabs[wrap(index, 0, props.tabs.length - 1)].id,
     );
   }
 }
@@ -126,15 +126,15 @@ watch(
   async () => {
     /** focus the selected tab */
     // const selector = `#tab-${id.value}-${props.modelValue}`;
-    // const button = document?.querySelector(selector) as HTMLButtonElement;
+    // const button = document?.querySelector<HTMLButtonElement>(selector);
     // button?.focus();
 
     /** update hash in url and nav if applicable */
     const newRoute = { ...route };
-    if (props.route) newRoute.name = props.route;
+    if (props.navigate) newRoute.name = props.navigate;
     if (props.url) newRoute.hash = "#" + props.modelValue;
     await router.push(newRoute);
-  }
+  },
 );
 
 /** update state */

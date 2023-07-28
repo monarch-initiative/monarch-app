@@ -7,8 +7,8 @@
 }
 
 body {
-  font-family: $sans;
   line-height: $spacing;
+  font-family: $sans;
 }
 
 #app {
@@ -18,11 +18,11 @@ body {
 }
 
 main {
+  display: flex;
   position: relative;
   flex-grow: 1;
-  display: flex;
-  align-items: stretch;
   flex-direction: column;
+  align-items: stretch;
 }
 
 /** headings */
@@ -31,10 +31,10 @@ h1 {
   width: 100%;
   margin: 0;
   padding: 10px 0;
-  font-size: 1.5rem;
   font-weight: 600;
-  text-align: center;
+  font-size: 1.5rem;
   letter-spacing: 1px;
+  text-align: center;
   /** text-transform: uppercase; */
 }
 
@@ -42,8 +42,8 @@ h2 {
   width: 100%;
   margin: 0;
   padding: 10px 0;
-  font-size: 1.3rem;
   font-weight: 500;
+  font-size: 1.3rem;
   text-align: center;
 }
 
@@ -52,8 +52,8 @@ h3 {
   margin: 0;
   margin-bottom: -20px;
   padding: 10px 0;
-  font-size: 1.1rem;
   font-weight: 500;
+  font-size: 1.1rem;
   text-align: left;
 }
 
@@ -67,8 +67,8 @@ p,
 blockquote {
   margin: 0;
   padding: 0;
-  text-align: justify;
   line-height: $spacing + 0.3;
+  text-align: justify;
 }
 
 img {
@@ -77,8 +77,8 @@ img {
 
 a {
   color: $theme;
-  transition: color $fast;
   text-underline-offset: 1px;
+  transition: color $fast;
 
   &:hover {
     color: currentColor;
@@ -86,30 +86,30 @@ a {
 }
 
 button {
-  appearance: none;
   display: inline-flex;
-  justify-content: center;
+  appearance: none;
   align-items: center;
-  color: currentColor;
-  background: none;
-  border: none;
+  justify-content: center;
   margin: 0;
   padding: 0;
+  border: none;
+  background: none;
+  color: currentColor;
   cursor: pointer;
 }
 
 input,
 textarea {
   appearance: none;
+  min-width: 0;
   border: none;
   outline: none;
-  min-width: 0;
 }
 
 [disabled] {
-  pointer-events: none;
-  opacity: 0.35;
   filter: saturate(0);
+  opacity: 0.35;
+  pointer-events: none;
 }
 
 ol,
@@ -117,8 +117,8 @@ ul {
   margin: 0;
   padding: 0;
   padding-left: 20px;
-  text-align: left;
   line-height: $spacing;
+  text-align: left;
 }
 
 li {
@@ -136,8 +136,8 @@ hr {
 }
 
 blockquote {
-  padding: 20px;
   width: 100%;
+  padding: 20px;
   background: $light-gray;
   text-align: left;
 }
@@ -154,8 +154,8 @@ b {
 }
 
 strong {
-  font-weight: 600;
   margin: 0 2px;
+  font-weight: 600;
 }
 
 /** notification dot */
@@ -165,7 +165,6 @@ strong {
 }
 
 [data-notification="true"]:after {
-  content: "";
   position: absolute;
   top: 0;
   right: 0;
@@ -173,6 +172,7 @@ strong {
   height: 5px;
   border-radius: 999px;
   background: $error;
+  content: "";
 }
 
 /** tooltips */
@@ -198,9 +198,9 @@ strong {
 .tippy-content {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
   width: 100%;
   padding: 0 !important;
+  gap: 10px;
 }
 
 /** useless tippy wrapper span that sometimes appears */
@@ -219,10 +219,10 @@ strong {
 /** util */
 
 .truncate:not(:focus) {
+  max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 100%;
 }
 
 @for $i from 1 through 10 {
@@ -231,11 +231,11 @@ strong {
   }
 
   .truncate-#{$i}:not(:focus) {
-    display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: $i;
-    overflow: hidden;
+    display: -webkit-box;
     max-width: 100%;
+    overflow: hidden;
   }
 
   .truncate-#{$i}:not(:focus)[tabindex="0"] {
