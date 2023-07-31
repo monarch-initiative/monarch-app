@@ -6,7 +6,8 @@
 ![](https://github.com/monarch-initiative/monarch-app/actions/workflows/deploy-documentation.yaml/badge.svg)
 ![](https://github.com/monarch-initiative/monarch-app/actions/workflows/build-image.yaml/badge.svg)
 
-This repo contains the source code for the website (frontend) and API (backend) for the Monarch Initiative.
+This repository contains the source code for the Monarch Initiative website (a Vue TS frontend and FastAPI backend),  
+as well as `monarch-py`, a Python library for interacting with the Monarch Initiative knowledge graph. 
 
 [The New Website](https://monarch-app.monarchinitiative.org)
 
