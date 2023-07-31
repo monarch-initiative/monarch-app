@@ -27,20 +27,20 @@ const props = {
 const vModel = { modelValue: [{ id: "animals" }] };
 
 /** expected type of emitted update:modelValue events */
-type T = Array<unknown>;
+type Emitted = Array<unknown>;
 
 /** nextTick used occasionally here due to useQuery */
 
 test("Buttons click to deselect", async () => {
   const wrapper = mount(AppSelectTags, { props }, vModel);
   await wrapper.find("button").trigger("click");
-  expect(emitted<T>(wrapper)[0].length).toEqual(0);
+  expect(emitted<Emitted>(wrapper)[0].length).toEqual(0);
 });
 
 test("Clear button clicks to deselect", async () => {
   const wrapper = mount(AppSelectTags, { props }, vModel);
   await wrapper.findAll("button")[2].trigger("click");
-  expect(emitted<T>(wrapper)[0].length).toEqual(0);
+  expect(emitted<Emitted>(wrapper)[0].length).toEqual(0);
 });
 
 test("Types to search", async () => {
@@ -67,11 +67,11 @@ test("Clicks to select", async () => {
   await wrapper.find("input").trigger("focus");
   await nextTick();
   await wrapper.findAll("[role='option']").at(0)?.trigger("click");
-  expect(emitted<T>(wrapper)[0].length).toEqual(2);
+  expect(emitted<Emitted>(wrapper)[0].length).toEqual(2);
   await wrapper.findAll("[role='option']").at(0)?.trigger("click");
-  expect(emitted<T>(wrapper)[0].length).toEqual(3);
+  expect(emitted<Emitted>(wrapper)[0].length).toEqual(3);
   await wrapper.findAll("[role='option']").at(0)?.trigger("click");
-  expect(emitted<T>(wrapper)[0].length).toEqual(4);
+  expect(emitted<Emitted>(wrapper)[0].length).toEqual(4);
 });
 
 test("Selects by keyboard", async () => {
@@ -80,8 +80,8 @@ test("Selects by keyboard", async () => {
   await input.trigger("focus");
   await input.trigger("keydown", { key: "ArrowUp" });
   await input.trigger("keydown", { key: "Enter" });
-  expect(emitted<T>(wrapper)[0].length).toEqual(2);
+  expect(emitted<Emitted>(wrapper)[0].length).toEqual(2);
   await input.trigger("keydown", { key: "ArrowUp" });
   await input.trigger("keydown", { key: "Enter" });
-  expect(emitted<T>(wrapper)[0].length).toEqual(3);
+  expect(emitted<Emitted>(wrapper)[0].length).toEqual(3);
 });

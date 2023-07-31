@@ -8,7 +8,7 @@
 
     <AppDetails>
       <!-- synonyms -->
-      <AppDetail :blank="!node.synonym" title="Also Known As">
+      <AppDetail :blank="!node.synonym?.length" title="Also Known As">
         <p v-html="node.synonym?.join(',\n&nbsp;')"></p>
       </AppDetail>
 

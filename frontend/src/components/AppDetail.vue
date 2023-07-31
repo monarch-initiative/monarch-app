@@ -5,13 +5,13 @@
 <template>
   <AppFlex
     ref="cell"
-    h-align="left"
+    align-h="left"
     direction="col"
     gap="small"
     class="detail"
     :data-big="big"
   >
-    <AppFlex gap="small" h-align="left">
+    <AppFlex gap="small" align-h="left">
       <AppIcon v-if="icon" :icon="icon" class="icon" />
       <span class="text">
         {{ title }}

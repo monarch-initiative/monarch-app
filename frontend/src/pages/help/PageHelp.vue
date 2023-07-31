@@ -67,8 +67,7 @@
   <AppSection>
     <p>
       If you still need help, or for general inquires, you can
-      <AppLink to="mailto:info@monarchinitiative.org">email us</AppLink> or
-      <AppLink to="https://twitter.com/MonarchInit">tweet us</AppLink>.
+      <AppLink to="mailto:info@monarchinitiative.org">email us</AppLink>.
     </p>
   </AppSection>
 </template>

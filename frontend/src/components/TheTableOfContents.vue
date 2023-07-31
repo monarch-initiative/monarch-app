@@ -5,7 +5,7 @@
       flow="inline"
       direction="col"
       gap="none"
-      h-align="stretch"
+      align-h="stretch"
       class="toc"
       :style="{ top: nudge + 'px' }"
       :data-expanded="expanded"

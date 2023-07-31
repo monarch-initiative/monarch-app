@@ -37,17 +37,17 @@ type Props = {
   /** spacing between items */
   gap?: "none" | "tiny" | "small" | "medium" | "big";
   /** horizontal alignment */
-  hAlign?: "left" | "center" | "right" | "stretch";
+  alignH?: "left" | "center" | "right" | "stretch";
   /** vertical alignment */
-  vAlign?: "top" | "center" | "bottom" | "stretch";
+  alignV?: "top" | "center" | "bottom" | "stretch";
 };
 
 const props = withDefaults(defineProps<Props>(), {
   flow: "block",
   direction: "row",
   gap: "medium",
-  hAlign: "center",
-  vAlign: "center",
+  alignH: "center",
+  alignV: "center",
 });
 
 type Slots = {
@@ -58,10 +58,10 @@ defineSlots<Slots>();
 
 /** css flex props */
 const justifyContent = computed(() =>
-  props.direction === "col" ? alignMap[props.vAlign] : alignMap[props.hAlign],
+  props.direction === "col" ? alignMap[props.alignV] : alignMap[props.alignH],
 );
 const alignItems = computed(() =>
-  props.direction === "col" ? alignMap[props.hAlign] : alignMap[props.vAlign],
+  props.direction === "col" ? alignMap[props.alignH] : alignMap[props.alignV],
 );
 </script>
 

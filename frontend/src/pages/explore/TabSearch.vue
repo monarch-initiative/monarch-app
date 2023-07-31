@@ -48,7 +48,7 @@
       :key="index"
       direction="col"
       gap="small"
-      h-align="stretch"
+      align-h="stretch"
     >
       <div class="title">
         <AppIcon
@@ -271,12 +271,18 @@ const {
       /** convert facets into dropdown options */
       const options: { [key: string]: MultiOptions } = {};
       for (const facet of facets.value) {
-        options[facet.label] =
+        options[facet.label || ""] =
           facet.facet_values?.map((facet_value) => ({
             id: facet_value.label,
-            ...facet_value,
+            label:
+              facet.label === "category"
+                ? getCategoryLabel(facet_value.label)
+                : facet_value.label,
+            count: facet_value.count,
           })) || [];
       }
+
+      console.log({ ...options });
 
       dropdownsOptions.value = { ...options };
       dropdownsSelected.value = { ...options };

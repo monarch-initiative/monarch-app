@@ -1,15 +1,16 @@
-import { nextTick, type Component, type ComponentPublicInstance } from "vue";
+import { nextTick } from "vue";
+import type { Component } from "vue";
 import { cloneDeep } from "lodash";
 import { setupServer } from "msw/node";
 import { afterAll, afterEach, beforeAll, beforeEach, vi } from "vitest";
-import type { MountingOptions, VueWrapper } from "@vue/test-utils";
+import type { ComponentMountingOptions, VueWrapper } from "@vue/test-utils";
 import { mount as _mount } from "@vue/test-utils";
 import components from "@/global/components";
 import plugins from "@/global/plugins";
 import router from "@/router";
 import { sleep } from "@/util/debug";
-import "@/global/icons";
 import { handlers } from "../fixtures";
+import "@/global/icons";
 
 /** run before each test */
 beforeEach(async () => {
@@ -42,27 +43,29 @@ export const apiCall = async (): Promise<void> => {
 /** mount wrapper with standard options */
 export const mount = (
   component: Component,
-  options: MountingOptions<{ [key: string | number]: unknown }> = {},
-  vModel: { [key: string | number]: unknown } = {},
+  options: ComponentMountingOptions<unknown> = {},
+  vModel: { [key: PropertyKey]: unknown } = {},
 ) => {
   /** standard globals */
   options.global = { components, plugins, stubs: { teleport: true } };
 
   /** deep clone props so nested objects get new instance every mount */
-  options.props = cloneDeep(options.props) || {};
+  options.props = cloneDeep<typeof options.props>(options.props);
 
   /** implement v-model */
   /** https://github.com/vuejs/test-utils/discussions/279 */
-  for (const [prop, value] of Object.entries(vModel)) {
-    options.props[prop] = value;
-    options.props["onUpdate:" + prop] = async (modelValue: unknown) => {
-      await nextTick();
-      await wrapper.setProps({ modelValue });
-    };
+  if (options.props) {
+    for (const [prop, value] of Object.entries(vModel)) {
+      options.props[prop] = value;
+      options.props["onUpdate:" + prop] = async (modelValue: unknown) => {
+        await nextTick();
+        await wrapper.setProps({ modelValue });
+      };
+    }
   }
 
   /** mount */
-  const wrapper = _mount(component as any, options);
+  const wrapper = _mount(component, options);
 
   return wrapper;
 };
@@ -74,12 +77,12 @@ export const mount = (
  * use on components that keep local track of model state and don't rely on
  * parent to do that with v-model.
  */
-export const emitted = <T = unknown>(
-  wrapper: VueWrapper<ComponentPublicInstance>,
+export const emitted = <Event = unknown>(
+  wrapper: VueWrapper,
   event = "update:modelValue",
-): Array<T> => {
+): Array<Event> => {
   try {
-    return wrapper.emitted()[event].pop() as Array<T>;
+    return wrapper.emitted()[event].pop() as Array<Event>;
   } catch (error) {
     throw new Error(`No "${event}" event emitted`);
   }

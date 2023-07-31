@@ -36,7 +36,7 @@
     </template>
 
     <!-- "predicate" (association/relation) -->
-    <template #association="{ row }">
+    <template #predicate="{ row }">
       <AppPredicateBadge :association="row" />
     </template>
 
@@ -72,10 +72,12 @@
     <!-- extra columns -->
 
     <!-- taxon specific -->
-    <template #taxon="{ cell }">
-      <span class="truncate">
-        {{ cell }}
-      </span>
+    <template #taxon="{ row }">
+      {{
+        row.direction === "outgoing"
+          ? row.object_taxon_label
+          : row.subject_taxon_label
+      }}
     </template>
 
     <!-- phenotype specific -->
@@ -131,33 +133,37 @@ const cols = computed((): Cols<Datum> => {
   /** standard columns, always present */
   const baseCols: Cols<Datum> = [
     {
-      id: "subject" as const,
+      slot: "subject",
       key: "subject_label",
       heading: getCategoryLabel(
         associations.value.items[0]?.subject_category || "Subject",
       ),
       width: "max-content",
+      sortable: true,
     },
     {
-      id: "association" as const,
+      slot: "predicate",
       key: "predicate",
       heading: "Association",
       width: "max-content",
+      sortable: true,
     },
     {
-      id: "object" as const,
+      slot: "object",
       key: "object_label",
       heading: getCategoryLabel(
         associations.value.items[0]?.object_category || "Object",
       ),
       width: "max-content",
+      sortable: true,
     },
     {
-      id: "evidence" as const,
+      slot: "evidence",
       key: "evidence_count",
       heading: "Evidence",
       width: "min-content",
       align: "center",
+      sortable: true,
     },
   ];
 
@@ -165,10 +171,13 @@ const cols = computed((): Cols<Datum> => {
   let extraCols: Cols<Datum> = [];
 
   /** taxon column. exists for many categories, so just add if any row has taxon. */
-  if (associations.value.items.some(() => ""))
+  if (
+    associations.value.items.some(
+      (item) => item.subject_taxon_label || item.object_taxon_label,
+    )
+  )
     extraCols.push({
-      id: "taxon" as const,
-      key: "subject_taxon_label",
+      slot: "taxon",
       heading: "Taxon",
       width: "max-content",
     });
@@ -179,13 +188,11 @@ const cols = computed((): Cols<Datum> => {
   ) {
     extraCols.push(
       {
-        id: "frequency" as const,
         key: "frequency_qualifier_label",
         heading: "Frequency",
         sortable: true,
       },
       {
-        id: "onset" as const,
         key: "onset_qualifier_label",
         heading: "Onset",
         sortable: true,
@@ -197,20 +204,17 @@ const cols = computed((): Cols<Datum> => {
   // if (props.category.label === "biolink:Publication")
   //   extraCols.push(
   //     {
-  //       id: "author" as const,
   //       key: "author",
   //       heading: "Author",
   //       width: "max-content",
   //     },
   //     {
-  //       id: "year" as const,
   //       key: "year",
   //       heading: "Year",
   //       align: "center",
   //       width: "max-content",
   //     },
   //     {
-  //       id: "publisher" as const,
   //       key: "publisher",
   //       heading: "Publisher",
   //       width: "max-content",
@@ -219,13 +223,13 @@ const cols = computed((): Cols<Datum> => {
 
   /** filter out extra columns with nothing in them (all rows for that col falsy) */
   // extraCols = extraCols.filter((col) =>
-  //   associations.value.items.some(
-  //     (association) => association[(col.key || "") as keyof typeof association]
-  //   )
+  //   associations.value.items.some((association) =>
+  //     col.key ? association[col.key] : true,
+  //   ),
   // );
 
   /** put divider to separate base cols from extra cols */
-  if (extraCols[0]) extraCols.unshift({ id: "divider" });
+  if (extraCols[0]) extraCols.unshift({ slot: "divider" });
 
   return [...baseCols, ...extraCols];
 });
@@ -255,6 +259,7 @@ const {
       start.value,
       perPage.value,
       search.value,
+      sort.value,
     );
 
     return response;

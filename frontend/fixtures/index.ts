@@ -5,7 +5,7 @@ import { feedbackEndpoint } from "@/api/feedback";
 import { obo } from "@/api/ontologies";
 import { efetch, esummary } from "@/api/publications";
 import { uptimeRobot } from "@/api/uptime";
-import associations from "./associations.json";
+import associations from "./association-table.json";
 import autocomplete from "./autocomplete.json";
 import datasets from "./datasets.json";
 import feedback from "./feedback.json";

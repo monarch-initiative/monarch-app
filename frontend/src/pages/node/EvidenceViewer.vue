@@ -27,7 +27,7 @@
         icon="flask"
         :big="true"
       >
-        <AppFlex gap="small" h-align="left">
+        <AppFlex gap="small" align-h="left">
           <span
             v-for="(source, index) in association.has_evidence"
             :key="index"
@@ -52,7 +52,7 @@
         icon="book"
         :big="true"
       >
-        <AppFlex gap="small" h-align="left">
+        <AppFlex gap="small" align-h="left">
           <span
             v-for="(publication, index) of association.publications"
             :key="index"
