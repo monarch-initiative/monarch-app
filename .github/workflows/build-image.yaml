@@ -17,8 +17,9 @@ jobs:
         id: get-tag
         run: |
           pip install poetry
-          echo "IMAGE_TAG=$(poetry -C backend version -s)"
-          echo "IMAGE_TAG=$(poetry -C backend version -s)" >> $GITHUB_OUTPUT
+
+          echo "IMAGE_TAG=$(git describe --tags --abbrev=0)"
+          echo "IMAGE_TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
 
       - name: Build and Push Image
         uses: RafikFarhad/push-to-gcr-github-action@v5-beta
