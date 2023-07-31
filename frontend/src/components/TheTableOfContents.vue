@@ -5,7 +5,7 @@
       flow="inline"
       direction="col"
       gap="none"
-      h-align="stretch"
+      align-h="stretch"
       class="toc"
       :style="{ top: nudge + 'px' }"
       :data-expanded="expanded"
@@ -77,7 +77,7 @@ import { firstInView } from "@/util/dom";
 import AppCheckbox from "./AppCheckbox.vue";
 
 type Entries = {
-  section: HTMLElement;
+  section: HTMLElement | null;
   id: string;
   icon: string;
   text: string;
@@ -115,14 +115,16 @@ async function updatePosition() {
   /** calculate nudge */
   nudge.value = Math.max(
     header.top + header.height,
-    subHeader.top + subHeader.height
+    subHeader.top + subHeader.height,
   );
 
   /** find in view section */
   if (!oneAtATime.value)
     active.value = firstInView(
       /** typescript bug */
-      entries.value.map((entry) => entry.section as HTMLElement)
+      entries.value
+        .map((entry) => entry.section)
+        .filter(Boolean) as HTMLElement[],
     );
 }
 
@@ -130,16 +132,16 @@ async function updatePosition() {
 function updateEntries() {
   entries.value = Array.from(
     /** get all headings except top level one */
-    document?.querySelectorAll("h2[id], h3[id]") || []
+    document?.querySelectorAll<HTMLElement>("h2[id], h3[id]") || [],
   ).map((element) =>
     /** get relevant props from heading */
     ({
-      section: (element.closest("section") as HTMLElement) || null,
+      section: element.closest<HTMLElement>("section") || null,
       id: element.getAttribute("id") || "",
       icon:
         element.querySelector("[data-icon]")?.getAttribute("data-icon") || "",
-      text: (element as HTMLElement).innerText || "",
-    })
+      text: element.innerText || "",
+    }),
   );
 }
 
@@ -174,17 +176,17 @@ useMutationObserver(
   {
     subtree: true,
     childList: true,
-  }
+  },
 );
 </script>
 
 <style lang="scss" scoped>
 .toc {
+  z-index: 10;
   position: fixed;
   top: 0;
   background: $white;
   box-shadow: $shadow;
-  z-index: 10;
 }
 
 .toc[data-expanded="true"] {
@@ -198,9 +200,9 @@ useMutationObserver(
 }
 
 .title-button {
+  flex-shrink: 0;
   width: 40px;
   height: 40px;
-  flex-shrink: 0;
 }
 
 .title-text {
@@ -209,9 +211,9 @@ useMutationObserver(
 }
 
 .spacer {
-  content: "";
   width: 100%;
   margin: 5px 0;
+  content: "";
 }
 
 .entry {
@@ -231,8 +233,8 @@ useMutationObserver(
 }
 
 .entry-icon {
-  width: 40px;
   flex-shrink: 0;
+  width: 40px;
   color: $gray;
 }
 

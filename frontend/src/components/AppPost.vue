@@ -8,7 +8,7 @@
     <div class="image" :data-image="!!image">
       <img :src="image" alt="" />
     </div>
-    <AppFlex h-align="left" direction="col" gap="small" class="text">
+    <AppFlex align-h="left" direction="col" gap="small" class="text">
       <span class="date">{{
         date.toLocaleDateString(undefined, {
           day: "numeric",
@@ -49,15 +49,15 @@ defineProps<Props>();
 
 @media (max-width: 400px) {
   .post {
-    align-items: center;
     flex-direction: column;
+    align-items: center;
   }
 }
 
 .image {
+  flex-shrink: 0;
   width: 100px;
   height: 100px;
-  flex-shrink: 0;
   overflow: hidden;
 
   &[data-image="true"] {

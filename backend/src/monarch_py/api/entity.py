@@ -4,10 +4,8 @@ from monarch_py.api.additional_models import PaginationParams
 from monarch_py.api.config import solr
 from monarch_py.datamodels.model import AssociationTableResults, Node
 
-router = APIRouter(
-    tags=["entity"],
-    responses={404: {"description": "Not Found"}}
-)
+router = APIRouter(tags=["entity"], responses={404: {"description": "Not Found"}})
+
 
 @router.get("/{id}")
 async def _get_entity(
@@ -31,7 +29,7 @@ async def _get_entity(
     response = solr.get_entity(id, extra=True)
     if response is None:
         raise HTTPException(status_code=404, detail="Entity not found")
-    return Node(**response.__dict__) # This is an odd consequence of how Node extends Entity
+    return Node(**response.__dict__)  # This is an odd consequence of how Node extends Entity
 
 
 @router.get("/{id}/{category}")
@@ -57,15 +55,11 @@ def _association_table(
         category (str): Category of association to retrieve association table data for, ex: biolink:DiseaseToPhenotypicFeatureAssociation
         query (str, optional): Query string to limit results to a subset. Defaults to None.
         pagination (PaginationParams, optional): Pagination parameters. Defaults to Depends().
-        
+
     Returns:
         AssociationResults: Association table data for the specified entity and association type
     """
     response = solr.get_association_table(
-        entity=id, 
-        category=category, 
-        q=query, 
-        offset=pagination.offset, 
-        limit=pagination.limit
+        entity=id, category=category, q=query, offset=pagination.offset, limit=pagination.limit
     )
     return response

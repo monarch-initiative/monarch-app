@@ -9,7 +9,6 @@ const icons: IconDefinition[] = [
   fab.faGithub,
   fab.faMastodon,
   fab.faMedium,
-  fab.faTwitter,
   fas.faAngleDoubleLeft,
   fas.faAngleDoubleRight,
   fas.faAngleDown,

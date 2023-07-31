@@ -3,7 +3,6 @@ from typing import List, Union
 from fastapi import APIRouter, Query  # , Depends
 from monarch_py.api.config import solr
 from monarch_py.datamodels.model import SearchResults
-from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
 router = APIRouter(
     tags=["search"],
@@ -31,15 +30,16 @@ async def search(
     Returns:
         EntityResults
     """
-    facet_fields = ["category", "in_taxon"]
+    facet_fields = ["category", "in_taxon_label"]
     response = solr.search(
         q=q,
         category=category,
-        in_taxon=taxon,
+        in_taxon_label=taxon,
         facet_fields=facet_fields,
         offset=offset,
         limit=limit,
     )
+
     return response
 
 

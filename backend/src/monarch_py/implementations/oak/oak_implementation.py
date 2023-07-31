@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from oaklib.datamodels.similarity import TermSetPairwiseSimilarity
 from oaklib.interfaces.semsim_interface import SemanticSimilarityInterface
 from oaklib.selector import get_adapter
+
 # these imports are from get_similarity.py
 import oaklib.datamodels.ontology_metadata as omd
 from oaklib import OntologyResource
@@ -19,20 +20,20 @@ IS_A = omd.slots.subClassOf.curie
 class OakImplementation(SemanticSimilarityInterface):
     """Implementation of Monarch Interfaces for OAK"""
 
-#    semsim = get_adapter(f"sqlite:obo:phenio")
+    #    semsim = get_adapter(f"sqlite:obo:phenio")
     print("Warming up semsimian")
     start = time.time()
     semsim = get_adapter(f"semsimian:sqlite:obo:phenio")
     subject_ids = ["MP:0010771", "MP:0002169", "MP:0005391", "MP:0005389", "MP:0005367"]
     object_ids = ["HP:0004325", "HP:0000093", "MP:0006144"]
-    semsim.termset_pairwise_similarity(subjects=subject_ids, objects=object_ids, predicates=[IS_A, "BFO:0000050", "UPHENO:0000001"])
+    semsim.termset_pairwise_similarity(
+        subjects=subject_ids, objects=object_ids, predicates=[IS_A, "BFO:0000050", "UPHENO:0000001"]
+    )
     print(f"Done warming up semsimian in {time.time() - start} seconds")
 
-    async def compare(self,
-                subjects,
-                objects,
-                predicates=[IS_A, "BFO:0000050", "UPHENO:0000001"],
-                labels=False) -> TermSetPairwiseSimilarity:
+    async def compare(
+        self, subjects, objects, predicates=[IS_A, "BFO:0000050", "UPHENO:0000001"], labels=False
+    ) -> TermSetPairwiseSimilarity:
         """Compare two sets of terms using OAK"""
         return self.semsim.termset_pairwise_similarity(
             subjects=subjects,
@@ -49,7 +50,7 @@ class OakImplementation(SemanticSimilarityInterface):
         limit: int = 20,
     ):
         """Get pairwise similarity between two sets of terms
-        
+
         This is from utils/get_similarity.py, not sure what the difference is between this and compare() above
         """
         hp_db = OAKLIB_MODULE.ensure_gunzip(url=HP_DB_URL, autoclean=False)

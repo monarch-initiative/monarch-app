@@ -11,86 +11,97 @@
     <!-- table data -->
     <AppFlex direction="col">
       <div
-        ref="table"
         class="wrapper"
         :data-left="arrivedState.left"
         :data-right="arrivedState.right"
         :data-expanded="expanded"
       >
-        <table
-          class="table"
-          :aria-colcount="cols.length"
-          :aria-rowcount="rows.length"
-          :style="{ gridTemplateColumns: widths }"
-        >
-          <!-- head -->
-          <thead class="thead">
-            <tr class="tr">
-              <th
-                v-for="(col, colIndex) in cols"
-                :key="colIndex"
-                class="th"
-                :aria-sort="ariaSort"
-                :data-align="col.align || 'left'"
-                :data-divider="col.id === 'divider'"
-              >
-                <span>
-                  {{ col.heading }}
-                </span>
-                <AppButton
-                  v-if="col.sortable"
-                  v-tooltip="'Sort by ' + col.heading"
-                  :icon="
-                    'arrow-' + (sort?.id === col.id ? sort?.direction : 'down')
-                  "
-                  design="small"
-                  :color="sort?.id === col.id ? 'primary' : 'secondary'"
-                  :style="{ opacity: sort?.id === col.id ? 1 : 0.35 }"
-                  @click.stop="emitSort(col)"
-                />
-                <AppSelectMulti
-                  v-if="
-                    selectedFilters?.[col.id] && filterOptions?.[col.id]?.length
-                  "
-                  v-tooltip="'Filter by ' + col.heading"
-                  :name="'Filter by ' + col.heading"
-                  :options="filterOptions[col.id]"
-                  :model-value="selectedFilters[col.id]"
-                  design="small"
-                  @change="(value) => emitFilter(col.id, value)"
-                />
-              </th>
-            </tr>
-          </thead>
+        <div class="left-scroll">
+          <AppIcon icon="angle-left" />
+        </div>
+        <div class="right-scroll">
+          <AppIcon icon="angle-right" />
+        </div>
 
-          <!-- body -->
-          <tbody class="tbody">
-            <tr v-for="(row, rowIndex) in rows" :key="rowIndex" class="tr">
-              <td
-                v-for="(col, colIndex) in cols"
-                :key="colIndex"
-                class="td"
-                :aria-rowindex="rowIndex + 1"
-                :aria-colindex="colIndex + 1"
-                :data-align="col.align || 'left'"
-                :data-divider="col.id === 'divider'"
-              >
-                <!-- if slot w/ name == col id, use to custom format/template cell -->
-                <slot
-                  v-if="$slots[col.id]"
-                  :name="col.id"
-                  :row="row"
-                  :col="col"
-                  :cell="col.key ? row[col.key] : {}"
-                />
-                <!-- otherwise, just display raw cell value -->
-                <template v-else-if="col.key">
-                  {{ row[col.key] }}
-                </template>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div ref="table" class="scroll">
+          <table
+            class="table"
+            :aria-colcount="cols.length"
+            :aria-rowcount="rows.length"
+            :style="{ gridTemplateColumns: widths }"
+          >
+            <!-- head -->
+            <thead class="thead">
+              <tr class="tr">
+                <th
+                  v-for="(col, colIndex) in cols"
+                  :key="colIndex"
+                  class="th"
+                  :aria-sort="ariaSort"
+                  :data-align="col.align || 'left'"
+                  :data-divider="col.slot === 'divider'"
+                >
+                  <span>
+                    {{ col.heading }}
+                  </span>
+                  <AppButton
+                    v-if="col.sortable"
+                    v-tooltip="'Sort by ' + col.heading"
+                    :icon="
+                      'arrow-' +
+                      (sort?.key === col.key ? sort?.direction : 'down')
+                    "
+                    design="small"
+                    :color="sort?.key === col.key ? 'primary' : 'secondary'"
+                    :style="{ opacity: sort?.key === col.key ? 1 : 0.35 }"
+                    @click.stop="emitSort(col)"
+                  />
+                  <AppSelectMulti
+                    v-if="
+                      col.key &&
+                      selectedFilters?.[col.key] &&
+                      filterOptions?.[col.key]?.length
+                    "
+                    v-tooltip="'Filter by ' + col.heading"
+                    :name="'Filter by ' + col.heading"
+                    :options="filterOptions[col.key]"
+                    :model-value="selectedFilters[col.key]"
+                    design="small"
+                    @change="(value) => emitFilter(col.key, value)"
+                  />
+                </th>
+              </tr>
+            </thead>
+
+            <!-- body -->
+            <tbody class="tbody">
+              <tr v-for="(row, rowIndex) in rows" :key="rowIndex" class="tr">
+                <td
+                  v-for="(col, colIndex) in cols"
+                  :key="colIndex"
+                  class="td"
+                  :aria-rowindex="rowIndex + 1"
+                  :aria-colindex="colIndex + 1"
+                  :data-align="col.align || 'left'"
+                  :data-divider="col.slot === 'divider'"
+                >
+                  <!-- if col has slot name, use to custom format/template cell -->
+                  <slot
+                    v-if="col.slot && $slots[col.slot]"
+                    :name="col.slot"
+                    :row="row"
+                    :col="col"
+                    :cell="col.key ? row[col.key] : null"
+                  />
+                  <!-- otherwise, just display raw cell value -->
+                  <template v-else-if="col.key">
+                    {{ row[col.key] }}
+                  </template>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div class="controls">
@@ -190,18 +201,21 @@
 
 <script lang="ts">
 /** table column */
-export type Col = {
+export type Cols<Key extends string> = {
   /**
-   * unique id, used to identify/match for sorting, filtering, and named slots.
-   * use "divider" to create vertical divider to separate cols
+   * name of slot to use for rendering. use "divider" to create vertical divider
+   * to separate cols.
    */
-  id: string;
-  /** what item in row object to access as raw cell value */
-  key?: string;
+  slot?: string;
+  /**
+   * what item in row object to access as raw cell value, and which key to use
+   * for sorting and filtering
+   */
+  key?: Key;
   /** header display text */
   heading?: string;
   /** how to align column contents (both header and body) horizontally */
-  align?: "left" | "center" | "end";
+  align?: "left" | "center" | "right";
   /**
    * width to apply to heading cell, in any valid css grid col width (px, fr,
    * auto, minmax, etc)
@@ -209,24 +223,17 @@ export type Col = {
   width?: string;
   /** whether to allow sorting of column */
   sortable?: boolean;
-};
-
-/** object with arbitrary keys */
-export type Row = { [key: string | number]: any };
-
-/** arrays of rows and cols */
-export type Cols = Col[];
-export type Rows = Row[];
+}[];
 
 /** sort prop */
-export type Sort = {
-  id: string;
+export type Sort<Key extends string = string> = {
+  key: Key;
   direction: "up" | "down";
 } | null;
 </script>
 
-<script setup lang="ts">
-import { computed, nextTick, onMounted, ref, watch } from "vue";
+<script setup lang="ts" generic="Datum extends object">
+import { computed, nextTick, onMounted, ref, watch, type VNode } from "vue";
 import { useResizeObserver, useScroll } from "@vueuse/core";
 import type { Options } from "./AppSelectMulti.vue";
 import AppSelectMulti from "./AppSelectMulti.vue";
@@ -234,11 +241,14 @@ import AppSelectSingle from "./AppSelectSingle.vue";
 import AppTextbox from "./AppTextbox.vue";
 import { closeToc } from "./TheTableOfContents.vue";
 
+/** possible keys on datum (remove number and symbol from default object type) */
+type Keys = Extract<keyof Datum, string>;
+
 type Props = {
   /** info for each column of table */
-  cols: Cols;
+  cols: Cols<Keys>;
   /** list of table rows, i.e. the table data */
-  rows: Rows;
+  rows: Datum[];
   /** sort key and direction */
   sort?: Sort;
   /** filters */
@@ -273,20 +283,32 @@ const props = withDefaults(defineProps<Props>(), {
 
 type Emits = {
   /** when sort changes (two-way bound) */
-  (event: "update:sort", value: Props["sort"]): void;
+  "update:sort": [Props["sort"]];
   /** when selected filters change (two-way bound) */
-  (event: "update:selectedFilters", value: Props["selectedFilters"]): void;
+  "update:selectedFilters": [Props["selectedFilters"]];
   /** when per page changes (two-way bound) */
-  (event: "update:perPage", value: Props["perPage"]): void;
+  "update:perPage": [Props["perPage"]];
   /** when start row changes (two-way bound) */
-  (event: "update:start", value: Props["start"]): void;
+  "update:start": [Props["start"]];
   /** when search changes (two-way bound) */
-  (event: "update:search", value: Props["search"]): void;
+  "update:search": [Props["search"]];
   /** when user requests download */
-  (event: "download"): void;
+  download: [];
 };
 
 const emit = defineEmits<Emits>();
+
+type SlotNames = string;
+
+type SlotProps = {
+  col: Cols<Keys>[number];
+  row: Datum;
+  cell: Datum[Keys] | null;
+};
+
+defineSlots<{
+  [slot in SlotNames]: (props: SlotProps) => VNode;
+}>();
 
 /** whether table is expanded to be full width */
 const expanded = ref(false);
@@ -331,28 +353,34 @@ function clickLast() {
 }
 
 /** when user clicks a sort button */
-function emitSort(col: Col) {
-  let newSort: Sort;
+function emitSort(col: Cols<Keys>[number]) {
+  let newSort: Sort<Keys>;
+
+  if (!col.key) return;
 
   /** toggle sort direction */
-  if (props.sort?.id === col.id) {
+  if (props.sort?.key === col.key) {
     if (props.sort?.direction === "down")
-      newSort = { id: col.id, direction: "up" };
+      newSort = { key: col.key, direction: "up" };
     else if (props.sort?.direction === "up") {
       newSort = null;
     } else {
-      newSort = { id: col.id, direction: "down" };
+      newSort = { key: col.key, direction: "down" };
     }
   } else {
-    newSort = { id: col.id, direction: "down" };
+    newSort = { key: col.key, direction: "down" };
   }
 
   emit("update:sort", newSort);
 }
 
 /** when user changes a filter */
-function emitFilter(colId: Col["id"], value: Options) {
-  emit("update:selectedFilters", { ...props.selectedFilters, [colId]: value });
+function emitFilter(colKey: Cols<Keys>[number]["key"], value: Options) {
+  if (colKey)
+    emit("update:selectedFilters", {
+      ...props.selectedFilters,
+      [colKey]: value,
+    });
 }
 
 /** when user changes rows per page */
@@ -377,7 +405,7 @@ const end = computed((): number => props.start + props.rows.length);
 
 /** grid column template widths */
 const widths = computed((): string =>
-  props.cols.map((col) => col.width || "auto").join(" ")
+  props.cols.map((col) => col.width || "auto").join(" "),
 );
 
 /** aria sort direction attribute */
@@ -394,39 +422,91 @@ const ariaSort = computed(() => {
 }
 
 .wrapper {
+  position: relative;
   width: 100%;
-  overflow-x: auto;
-  transition: mask-image $fast;
 
-  &[data-left="false"][data-right="true"] {
-    --webkit-mask-image: linear-gradient(to left, black 90%, transparent);
-    mask-image: linear-gradient(to left, black 90%, transparent);
+  .left-scroll,
+  .right-scroll {
+    display: flex;
+    z-index: 99;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    width: 0;
+    height: 100%;
+    color: $gray;
+    animation: 0.5s alternate infinite ease-in-out;
+    opacity: 0;
+    transition: opacity $fast;
+
+    svg {
+      transform: scale(1.5);
+    }
+
+    @keyframes nudge-left {
+      to {
+        transform: translateX(-5px);
+      }
+    }
+
+    @keyframes nudge-right {
+      to {
+        transform: translateX(5px);
+      }
+    }
   }
 
-  &[data-right="false"][data-left="true"] {
-    --webkit-mask-image: linear-gradient(to right, black 90%, transparent);
-    mask-image: linear-gradient(to right, black 90%, transparent);
+  .left-scroll {
+    left: 0px;
+    animation-name: nudge-left;
   }
 
-  &[data-left="false"][data-right="false"] {
-    --webkit-mask-image: linear-gradient(
+  .right-scroll {
+    right: 0px;
+    animation-name: nudge-right;
+  }
+
+  .scroll {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  &[data-left="false"] .left-scroll {
+    opacity: 1;
+  }
+
+  &[data-right="false"] .right-scroll {
+    opacity: 1;
+  }
+
+  &[data-left="false"][data-right="true"] .scroll {
+    -webkit-mask-image: linear-gradient(to left, black 75%, transparent);
+    mask-image: linear-gradient(to left, black 75%, transparent);
+  }
+
+  &[data-right="false"][data-left="true"] .scroll {
+    -webkit-mask-image: linear-gradient(to right, black 75%, transparent);
+    mask-image: linear-gradient(to right, black 75%, transparent);
+  }
+
+  &[data-left="false"][data-right="false"] .scroll {
+    -webkit-mask-image: linear-gradient(
       to left,
       transparent,
-      black 10%,
-      black 90%,
+      black 25%,
+      black 75%,
       transparent
     );
     mask-image: linear-gradient(
       to left,
       transparent,
-      black 10%,
-      black 90%,
+      black 25%,
+      black 75%,
       transparent
     );
   }
 
   &[data-expanded="true"] {
-    position: relative;
     left: 0;
     width: calc(100vw - 80px);
     transform: translateX(0);
@@ -455,9 +535,9 @@ const ariaSort = computed(() => {
 .td {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 5px 10px;
   max-width: 300px;
+  padding: 5px 10px;
+  gap: 10px;
 
   &[data-align="left"] {
     justify-content: flex-start;
@@ -479,9 +559,9 @@ const ariaSort = computed(() => {
   }
 
   &[data-divider="true"] {
-    padding: 0;
     width: 2px;
     margin: 0 5px;
+    padding: 0;
     background: $light-gray;
   }
 }
@@ -505,13 +585,13 @@ const ariaSort = computed(() => {
 .controls {
   display: flex;
   justify-content: space-between;
-  gap: 10px;
   width: 100%;
+  gap: 10px;
 
   & > * {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     gap: 10px;
   }
 
@@ -520,7 +600,6 @@ const ariaSort = computed(() => {
   }
 
   .search {
-    --height: 30px;
     max-width: 150px;
   }
 }

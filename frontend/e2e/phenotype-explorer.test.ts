@@ -16,7 +16,7 @@ test("Populating example works", async ({ page }) => {
     .first()
     .click();
   await expect(
-    await page.locator(".select-tags > .box > button").count()
+    await page.locator(".select-tags > .box > button").count(),
   ).toBeGreaterThan(5);
 });
 
@@ -76,7 +76,7 @@ test("Phenotype set vs gene/disease works", async ({ page }) => {
   await expect(page.getByText(/1600029I14Rik/i).first()).toBeVisible();
   await expect(page.getByText(/Mus musculus/i).first()).toBeVisible();
   await expect(
-    page.locator("svg", { hasText: /Pulmonary artery dilatation/i }).first()
+    page.locator("svg", { hasText: /Pulmonary artery dilatation/i }).first(),
   ).toBeVisible();
 });
 
@@ -86,7 +86,7 @@ test("Phenotype set vs phenotype set works", async ({ page }) => {
   /** paste specific dummy phenotypes */
   await paste(
     page.locator("input").first(),
-    "HP:0004970,HP:0004933,HP:0004927"
+    "HP:0004970,HP:0004933,HP:0004927",
   );
   await paste(page.locator("input").last(), "HP:0004970,HP:0004933,HP:0004927");
 
@@ -98,6 +98,6 @@ test("Phenotype set vs phenotype set works", async ({ page }) => {
   await expect(page.getByText(/0/).first()).toBeVisible();
   await expect(page.getByText(/female sterile/).first()).toBeVisible();
   await expect(
-    page.locator("svg", { hasText: /female sterile/i }).first()
+    page.locator("svg", { hasText: /female sterile/i }).first(),
   ).toBeVisible();
 });

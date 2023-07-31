@@ -15,7 +15,7 @@ const props = {
 };
 
 /** expected type of emitted update:modelValue events */
-type T = Array<unknown>;
+type Emitted = Array<unknown>;
 
 test("Types to search", async () => {
   const wrapper = mount(AppSelectAutocomplete, { props });
@@ -32,12 +32,12 @@ test("Selects by keyboard", async () => {
   await input.trigger("focus");
   await input.trigger("keydown", { key: "ArrowUp" });
   await input.trigger("keydown", { key: "Enter" });
-  expect(emitted<T>(wrapper)[0]).toEqual("animals");
+  expect(emitted<Emitted>(wrapper)[0]).toEqual("animals");
 });
 
 test("Selects by mouse", async () => {
   const wrapper = mount(AppSelectAutocomplete, { props });
   await wrapper.find("input").trigger("focus");
   await wrapper.find("[role='option']").trigger("click");
-  expect(emitted<T>(wrapper)[0]).toEqual("fruits");
+  expect(emitted<Emitted>(wrapper)[0]).toEqual("fruits");
 });

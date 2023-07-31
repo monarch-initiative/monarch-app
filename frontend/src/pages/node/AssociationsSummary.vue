@@ -21,7 +21,7 @@
       :key="index"
       class="result"
     >
-      <AppFlex direction="col" h-align="left" gap="small" class="details">
+      <AppFlex direction="col" align-h="left" gap="small" class="details">
         <AppNodeBadge
           :node="{
             id: item.subject,
@@ -64,8 +64,8 @@ import { getTopAssociations } from "@/api/associations";
 import type { DirectionalAssociation, Node } from "@/api/model";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
-import { useQuery } from "@/util/composables";
 import type { Option } from "@/components/AppSelectSingle.vue";
+import { useQuery } from "@/util/composables";
 
 type Props = {
   /** current node */
@@ -80,7 +80,7 @@ const props = defineProps<Props>();
 
 type Emits = {
   /** change selected association */
-  (event: "select", value?: DirectionalAssociation): void;
+  select: [value?: DirectionalAssociation];
 };
 
 const emit = defineEmits<Emits>();
@@ -102,7 +102,7 @@ const {
   },
 
   /** default value */
-  { items: [], limit: 0, offset: 0, total: 0 }
+  { items: [], limit: 0, offset: 0, total: 0 },
 );
 
 /** get associations when category changes */
@@ -131,8 +131,8 @@ onMounted(getAssociations);
 }
 
 .details {
-  width: 0;
   flex-grow: 1;
+  width: 0;
   text-align: left;
 }
 

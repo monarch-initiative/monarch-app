@@ -24,6 +24,6 @@ const props = withDefaults(defineProps<Props>(), { component: "div" });
 const html = computed(() =>
   micromark(props.source || "")
     .replaceAll("<p>", "")
-    .replaceAll("</p>", "")
+    .replaceAll("</p>", ""),
 );
 </script>

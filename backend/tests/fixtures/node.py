@@ -27,6 +27,28 @@ def node():
         "symbol": None,
         "synonym": [],
         "inheritance": None,
+        "external_links": [
+            {"id": "DOID:9884", "url": "http://purl.obolibrary.org/obo/DOID_9884"},
+            {"id": "GARD:0007922", "url": None},
+            {"id": "ICD10CM:G71.0", "url": None},
+            {"id": "ICD9:359.1", "url": None},
+            {
+                "id": "MESH:D009136",
+                "url": "http://purl.obolibrary.org/obo/MESH_D009136",
+            },
+            {"id": "MedDRA:10028356", "url": None},
+            {"id": "NCIT:C84910", "url": "http://purl.obolibrary.org/obo/NCIT_C84910"},
+            {"id": "Orphanet:98473", "url": "http://www.orpha.net/ORDO/Orphanet_98473"},
+            {"id": "SCTID:73297009", "url": None},
+            {
+                "id": "UMLS:C0026850",
+                "url": "http://linkedlifedata.com/resource/umls/id/C0026850",
+            },
+        ],
+        "provided_by_link": {
+            "id": "phenio",
+            "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/phenio/#",
+        },
         "association_counts": [
             {
                 "label": "Phenotypes",
@@ -63,19 +85,6 @@ def node():
                     "id": "MONDO:0019056",
                     "category": "biolink:Disease",
                     "name": "neuromuscular disease",
-                    "full_name": None,
-                    "description": None,
-                    "xref": [],
-                    "provided_by": None,
-                    "in_taxon": None,
-                    "in_taxon_label": None,
-                    "symbol": None,
-                    "synonym": [],
-                },
-                {
-                    "id": "MONDO:0100167",
-                    "category": "biolink:Disease",
-                    "name": "pulmonary disease, chronic obstructive, susceptibility to",
                     "full_name": None,
                     "description": None,
                     "xref": [],

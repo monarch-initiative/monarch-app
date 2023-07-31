@@ -30,7 +30,7 @@ test("Creates heading links correctly", async () => {
   /** compare expected link to actual rendered link */
   expect(headings.at(1)?.attributes("id")).toContain("123-alphabet-street");
   expect(headings.at(1)?.find("a").attributes("href")).toContain(
-    "#123-alphabet-street"
+    "#123-alphabet-street",
   );
   expect(headings.at(2)?.attributes("id")).toContain("aeo");
   expect(headings.at(2)?.find("a").attributes("href")).toContain("#aeo");

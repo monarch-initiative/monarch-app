@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "monarch-py"
-version = "0.13.6"
+version = "0.0.0"
 description = "Python package for interacting with Monarch Initiative knowledge graph"
 authors = [
     "glass-ships <glass.ships@outlook.com>",
@@ -18,7 +18,9 @@ packages = [
 ### Core dependencies
 python = "^3.9"
 pydantic = "^1.10.2"
+curies = "^0.5.6"
 linkml = "^1.5.5"
+prefixmaps = "^0.1.5"
 requests = "^2.28.1"
 typer = "^0.7.0"
 typer-cli = "^0.0.13"
@@ -32,26 +34,40 @@ oaklib = "0.5.13-rc4"
 semsimian = "0.1.18"
 
 
-[tool.poetry.extras]
-api = ["fastapi", "oaklib"]
-
-
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2.0"
 mkdocs = ">=1.4.2"
 mkdocs-material = ">=9.1.16"
 mkdocstrings = {extras = ["python"], version = ">=0.22.0"}
 black = "^22.10.0"
-isort = "^5.10.1"
-flake8 = "^5.0.4"
-autoflake = "^1.7.7"
+ruff = "*"
+# isort = "^5.10.1"
+# flake8 = "^5.0.4"
+# autoflake = "^1.7.7"
 uvicorn = {extras = ["standard"], version = "^0.20.0"}
 httpx = "^0.24.1"
+
+
+[tool.poetry.extras]
+api = ["fastapi", "oaklib"]
 
 
 [tool.poetry.scripts]
 monarch = "monarch_py.cli:app"
 monarch-api = { callable = "monarch_py.api.main:run", extras = ["api"] }
+
+
+[tool.ruff]
+line-length = 120
+ignore = [
+    "F541", # f-strings with no placeholders
+]
+exclude = [
+    "tests/fixtures/*.py",
+    "src/monarch_py/datamodels/model.py"
+]
+# per-file-ignores = {"" = ""}
+
 
 [build-system]
 requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]

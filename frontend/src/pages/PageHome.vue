@@ -5,7 +5,12 @@
 <template>
   <!-- dive right in -->
   <AppSection design="fill">
-    <AppTabs v-model="tab" name="Explore Mode" :tabs="tabs" route="Explore" />
+    <AppTabs
+      v-model="tab"
+      name="Explore Mode"
+      :tabs="tabs"
+      navigate="Explore"
+    />
     <TabSearch :home="true" />
   </AppSection>
 
@@ -14,7 +19,7 @@
 
     <!-- high level description of monarch as a whole. "elevator pitch" -->
     <!-- eslint-disable-next-line -->
-    <AppFlex gap="big" vAlign="top">
+    <AppFlex gap="big" align-v="top">
       <AppTile
         icon="knowledge-graph"
         title="An extensive, cross-species, semantic knowledge graph"
@@ -47,7 +52,7 @@
         subtitle="diseases"
       />
       <AppTile
-        icon="category-phenotype"
+        icon="category-phenotypic-feature"
         design="small"
         :title="`~${(70000).toLocaleString()}`"
         subtitle="phenotypes"
@@ -153,7 +158,7 @@
 
     <p>Be the first to know when we have major updates or other fun news.</p>
 
-    <AppFlex>
+    <AppFlex align-v="top">
       <AppTile
         to="https://medium.com/@MonarchInit"
         icon="medium"
@@ -166,13 +171,6 @@
         icon="github"
         title="GitHub"
         subtitle="Source code and releases"
-        design="small"
-      />
-      <AppTile
-        to="https://twitter.com/MonarchInit"
-        icon="twitter"
-        title="Twitter"
-        subtitle="Musings and news"
         design="small"
       />
       <AppTile

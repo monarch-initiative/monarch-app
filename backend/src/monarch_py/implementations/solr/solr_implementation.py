@@ -9,6 +9,7 @@ from monarch_py.datamodels.model import (
     AssociationResults,
     AssociationTableResults,
     Entity,
+    ExpandedCurie,
     HistoPheno,
     Node,
     NodeHierarchy,
@@ -37,9 +38,9 @@ from monarch_py.implementations.solr.solr_query_utils import (
 from monarch_py.interfaces.association_interface import AssociationInterface
 from monarch_py.interfaces.entity_interface import EntityInterface
 from monarch_py.interfaces.search_interface import SearchInterface
+from monarch_py.service.curie_service import CurieService
 from monarch_py.service.solr_service import SolrService
-
-# from monarch_py.utils.utils import escape
+from monarch_py.utils.utils import get_provided_by_link
 
 
 @dataclass
@@ -75,17 +76,20 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         if not extra:
             return parse_entity(solr_document)
         # Get extra data (this logic is very tricky to test because of the calls to Solr)
+
         node = Node(**solr_document)
         if "biolink:Disease" in node.category:
             mode_of_inheritance_associations = self.get_associations(
-                subject=id, 
-                predicate="biolink:has_mode_of_inheritance", 
-                offset=0
+                subject=id, predicate="biolink:has_mode_of_inheritance", offset=0
             )
             if mode_of_inheritance_associations is not None and len(mode_of_inheritance_associations.items) == 1:
                 node.inheritance = self._get_associated_entity(mode_of_inheritance_associations.items[0], node)
         node.node_hierarchy = self._get_node_hierarchy(node)
         node.association_counts = self.get_association_counts(id).items
+        node.external_links = [ExpandedCurie(id=curie, url=CurieService().expand(curie)) for curie in node.xref]
+        node.provided_by_link = ExpandedCurie(
+            id=node.provided_by.replace("_nodes", "").replace("_edges", ""), url=get_provided_by_link(node.provided_by)
+        )
         return node
 
     ### Entity helpers ###
@@ -229,7 +233,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         self,
         q: str = "*:*",
         category: List[str] = None,
-        in_taxon: List[str] = None,
+        in_taxon_label: List[str] = None,
         facet_fields: List[str] = None,
         facet_queries: List[str] = None,
         filter_queries: List[str] = None,
@@ -244,7 +248,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
             offset (int): Result offset, for pagination. Defaults to 0.
             limit (int): Limit results to specified number. Defaults to 20.
             category (List[str]): Filter to only entities matching the specified categories. Defaults to None.
-            in_taxon (List[str]): Filter to only entities matching the specified taxa. Defaults to None.
+            in_taxon_label (List[str]): Filter to only entities matching the specified taxon label. Defaults to None.
             facet_fields (List[str]): List of fields to include facet counts for. Defaults to None.
             facet_queries (List[str]): List of queries to include facet counts for. Defaults to None.
             filter_queries (List[str]): List of queries to filter results by. Defaults to None.

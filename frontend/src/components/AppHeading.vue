@@ -39,6 +39,12 @@ type Props = {
 
 const props = defineProps<Props>();
 
+type Slots = {
+  default: () => unknown;
+};
+
+defineSlots<Slots>();
+
 /** tag of heading (default to blank to avoid conflict with automatic level) */
 const tag = ref("");
 /** hash link of heading */
@@ -60,7 +66,7 @@ function getTag() {
   /** heading element */
   const element = heading.value;
   /** section element */
-  const parent = element?.parentElement as HTMLElement;
+  const parent = element?.parentElement;
 
   /** if heading is first in section */
   const firstHeading = element?.matches("*:first-child");
@@ -101,10 +107,12 @@ onUpdated(update);
   display: inline-block;
   width: 0;
   margin-left: 0.75em;
-  opacity: 0;
-  text-decoration: none;
   font-size: 0.8em;
-  transition: opacity $fast, color $fast;
+  text-decoration: none;
+  opacity: 0;
+  transition:
+    opacity $fast,
+    color $fast;
 }
 
 .anchor:focus {
@@ -134,8 +142,8 @@ h3 {
   h2,
   h3 {
     .icon {
-      color: $theme-dark;
       height: 1.2em;
+      color: $theme-dark;
     }
   }
 }

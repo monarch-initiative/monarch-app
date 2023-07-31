@@ -1,7 +1,7 @@
 /** is url absolute (as opposed to relative) */
 export const isAbsolute = (url = ""): boolean =>
   ["http:", "https:", "ftp:", "mailto:"].some((prefix) =>
-    url.startsWith(prefix)
+    url.startsWith(prefix),
   );
 
 /** is url outside of monarch domain */

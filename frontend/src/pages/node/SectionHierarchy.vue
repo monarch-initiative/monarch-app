@@ -15,7 +15,7 @@
         :big="true"
         :v-tooltip="`Nodes that are &quot;parents&quot; of this node`"
       >
-        <AppFlex class="flex" h-align="left" gap="small">
+        <AppFlex class="flex" align-h="left" gap="small">
           <AppNodeBadge
             v-for="(_class, index) in node.node_hierarchy?.super_classes"
             :key="index"
@@ -33,7 +33,7 @@
         :big="true"
         :v-tooltip="`Nodes that are &quot;siblings&quot; of this node`"
       >
-        <AppFlex class="flex" h-align="left" gap="small">
+        <AppFlex class="flex" align-h="left" gap="small">
           <AppNodeBadge
             v-for="(_class, index) in node.node_hierarchy?.equivalent_classes"
             :key="index"
@@ -51,7 +51,7 @@
         :big="true"
         :v-tooltip="`Nodes that are &quot;children&quot; of this node`"
       >
-        <AppFlex class="flex" h-align="left" gap="small">
+        <AppFlex class="flex" align-h="left" gap="small">
           <AppNodeBadge
             v-for="(_class, index) in node.node_hierarchy?.sub_classes"
             :key="index"

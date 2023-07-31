@@ -79,7 +79,7 @@
           :max="comparison.maxScore"
         />
 
-        <AppFlex direction="col" h-align="stretch" gap="small" class="details">
+        <AppFlex direction="col" align-h="stretch" gap="small" class="details">
           <!-- primary match info -->
           <div class="primary truncate">
             <AppIcon
@@ -187,17 +187,17 @@ type GeneratedFrom = {
 };
 
 /** first set of phenotypes */
-const aPhenotypes = ref([] as Options);
+const aPhenotypes = ref<Options>([]);
 /** "generated from" helpers after selecting gene or disease */
-const aGeneratedFrom = ref({} as GeneratedFrom);
+const aGeneratedFrom = ref<GeneratedFrom>({});
 /** selected mode of second set */
 const bMode = ref(bModeOptions[0]);
 /** selected taxon for second set */
 const bTaxon = ref(bTaxonOptions[0]);
 /** second set of phenotypes */
-const bPhenotypes = ref([] as Options);
+const bPhenotypes = ref<Options>([]);
 /** "generated from" helpers after selecting gene or disease */
-const bGeneratedFrom = ref({} as GeneratedFrom);
+const bGeneratedFrom = ref<GeneratedFrom>({});
 
 /** example phenotype set comparison */
 function doExample() {
@@ -219,17 +219,17 @@ const {
     if (bMode.value.id.includes("these phenotypes"))
       return await compareSetToSet(
         aPhenotypes.value.map(({ id }) => id),
-        bPhenotypes.value.map(({ id }) => id)
+        bPhenotypes.value.map(({ id }) => id),
       );
     else
       return await compareSetToTaxon(
         aPhenotypes.value.map(({ id }) => id),
-        bMode.value.id.includes("diseases") ? bTaxonHuman.id : bTaxon.value.id
+        bMode.value.id.includes("diseases") ? bTaxonHuman.id : bTaxon.value.id,
       );
   },
 
   /** default value */
-  { matches: [] }
+  { matches: [] },
 );
 
 /** when multi select component runs spread options function */
@@ -271,7 +271,7 @@ watch(
   () => comparison.value,
   () => {
     if (comparison.value.matches.length) runPhenogrid();
-  }
+  },
 );
 
 /** clear/reset results */
@@ -282,7 +282,7 @@ function clearResults() {
 /** get description to show below phenotypes select box */
 function description(
   phenotypes: Options,
-  generatedFrom: GeneratedFrom
+  generatedFrom: GeneratedFrom,
 ): string {
   const description = [];
 
@@ -294,7 +294,7 @@ function description(
     description.push(
       `generated from "${
         generatedFrom.option?.label || generatedFrom.option?.id
-      }"`
+      }"`,
     );
   return `(${description.join(", ")})`;
 }
@@ -350,8 +350,8 @@ onMounted(() => {
 @media (max-width: 600px) {
   .match {
     flex-direction: column;
-    gap: 20px;
     margin: 10px 0;
+    gap: 20px;
   }
 
   .details {

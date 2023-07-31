@@ -1,6 +1,5 @@
-import pytest
-
 from monarch_py.api.config import oak
+
 # from monarch_py.implementations.oak.oak_implementation import OakImplementation
 # from monarch_py.utils.utils import dict_diff, compare_dicts
 
@@ -15,6 +14,7 @@ def test_semsim_compare():
     # tsps = oak.compare_termsets(subject_ids, object_ids)
 
     import pprint
+
     pp = pprint.PrettyPrinter(indent=2)
     pp.pprint(tsps)
 

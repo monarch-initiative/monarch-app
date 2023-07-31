@@ -13,8 +13,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { startCase } from "lodash";
-import type { DirectionalAssociation } from "@/api/model";
 import { getCategoryLabel } from "@/api/categories";
+import type { DirectionalAssociation } from "@/api/model";
 
 type Props = {
   /** current predicate */

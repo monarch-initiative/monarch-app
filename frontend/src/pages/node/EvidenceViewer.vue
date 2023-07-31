@@ -27,7 +27,7 @@
         icon="flask"
         :big="true"
       >
-        <AppFlex gap="small" h-align="left">
+        <AppFlex gap="small" align-h="left">
           <span
             v-for="(source, index) in association.has_evidence"
             :key="index"
@@ -41,7 +41,9 @@
       </AppDetail>
 
       <AppDetail title="Provided By" icon="notes-medical">
-        <span>{{ association.provided_by }}</span>
+        <AppLink :to="association.provided_by_link?.url || ''">
+          {{ association.provided_by_link?.id || association.provided_by }}
+        </AppLink>
       </AppDetail>
 
       <AppDetail
@@ -50,7 +52,7 @@
         icon="book"
         :big="true"
       >
-        <AppFlex gap="small" h-align="left">
+        <AppFlex gap="small" align-h="left">
           <span
             v-for="(publication, index) of association.publications"
             :key="index"
@@ -65,20 +67,20 @@
 
 <script setup lang="ts">
 import { onMounted, watch } from "vue";
-import AppDetails from "@/components/AppDetails.vue";
+import type { DirectionalAssociation, Node } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
+import AppDetails from "@/components/AppDetails.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
-import type { DirectionalAssociation, Node } from "@/api/model";
 import { scrollToElement } from "@/router";
 import { waitFor } from "@/util/dom";
 
-interface Props {
+type Props = {
   /** current node */
   node: Node;
   /** selected association */
   association: DirectionalAssociation;
-}
+};
 
 const props = defineProps<Props>();
 

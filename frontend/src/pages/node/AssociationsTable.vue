@@ -14,15 +14,14 @@
   <!-- results -->
   <AppTable
     v-else
+    v-model:sort="sort"
     v-model:per-page="perPage"
     v-model:start="start"
     v-model:search="search"
     :cols="cols"
     :rows="associations.items"
     :total="associations.total"
-    :sort="sort"
     @download="download"
-    @sort="(value: Sort) => (sort = value)"
   >
     <!-- "subject" (current node) -->
     <template #subject="{ row }">
@@ -37,8 +36,8 @@
     </template>
 
     <!-- "predicate" (association/relation) -->
-    <template #association="{ row }">
-      <AppPredicateBadge :association="(row as DirectionalAssociation)" />
+    <template #predicate="{ row }">
+      <AppPredicateBadge :association="row" />
     </template>
 
     <!-- "object" (what current node has an association with) -->
@@ -66,38 +65,23 @@
         :aria-pressed="row.id === association?.id"
         :icon="row.id === association?.id ? 'check' : 'flask'"
         :color="row.id === association?.id ? 'primary' : 'secondary'"
-        @click="
-          emit(
-            'select',
-            (row.id === association?.id
-              ? undefined
-              : row) as DirectionalAssociation
-          )
-        "
+        @click="emit('select', row.id === association?.id ? undefined : row)"
       />
     </template>
 
     <!-- extra columns -->
 
     <!-- taxon specific -->
-    <template #taxon="{ cell }">
-      <span class="truncate">
-        {{ cell?.name }}
-      </span>
+    <template #taxon="{ row }">
+      {{
+        row.direction === "outgoing"
+          ? row.object_taxon_label
+          : row.subject_taxon_label
+      }}
     </template>
 
     <!-- phenotype specific -->
-    <template #frequency="{ cell }">
-      <AppLink v-if="cell" class="truncate" :to="cell?.link" :no-icon="true">
-        {{ cell?.name }}
-      </AppLink>
-    </template>
-
-    <template #onset="{ cell }">
-      <AppLink v-if="cell" class="truncate" :to="cell?.link" :no-icon="true">
-        {{ cell?.name }}
-      </AppLink>
-    </template>
+    <!-- no template needed because info just plain text -->
 
     <!-- publication specific -->
     <!-- no template needed because info just plain text -->
@@ -105,34 +89,34 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from "vue";
-import AppTable from "@/components/AppTable.vue";
-import type { Cols, Sort } from "@/components/AppTable.vue";
+import { computed, onMounted, ref, watch } from "vue";
+import { getAssociations } from "@/api/associations";
+import { getCategoryLabel } from "@/api/categories";
+import type { DirectionalAssociation, Node } from "@/api/model";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
-import { getAssociations } from "@/api/associations";
-import { downloadJson } from "@/util/download";
+import type { Option } from "@/components/AppSelectSingle.vue";
+import AppTable from "@/components/AppTable.vue";
+import type { Cols, Sort } from "@/components/AppTable.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
 import { useQuery } from "@/util/composables";
-import type { DirectionalAssociation, Node } from "@/api/model";
-import type { Option } from "@/components/AppSelectSingle.vue";
-import { getCategoryLabel } from "@/api/categories";
+import { downloadJson } from "@/util/download";
 
-interface Props {
+type Props = {
   /** current node */
   node: Node;
   /** selected association category */
   category: Option;
   /** selected association */
   association?: DirectionalAssociation;
-}
+};
 
 const props = defineProps<Props>();
 
-interface Emits {
+type Emits = {
   /** change selected association */
-  (event: "select", value?: DirectionalAssociation): void;
-}
+  select: [value?: DirectionalAssociation];
+};
 
 const emit = defineEmits<Emits>();
 
@@ -142,49 +126,58 @@ const perPage = ref(5);
 const start = ref(0);
 const search = ref("");
 
+type Datum = keyof DirectionalAssociation;
+
 /** table columns */
-const cols = computed((): Cols => {
+const cols = computed((): Cols<Datum> => {
   /** standard columns, always present */
-  const baseCols: Cols = [
+  const baseCols: Cols<Datum> = [
     {
-      id: "subject",
-      key: "",
+      slot: "subject",
+      key: "subject_label",
       heading: getCategoryLabel(
-        associations.value.items[0]?.subject_category || "Subject"
+        associations.value.items[0]?.subject_category || "Subject",
       ),
       width: "max-content",
+      sortable: true,
     },
     {
-      id: "association",
-      key: "",
+      slot: "predicate",
+      key: "predicate",
       heading: "Association",
       width: "max-content",
+      sortable: true,
     },
     {
-      id: "object",
-      key: "",
+      slot: "object",
+      key: "object_label",
       heading: getCategoryLabel(
-        associations.value.items[0]?.object_category || "Object"
+        associations.value.items[0]?.object_category || "Object",
       ),
       width: "max-content",
+      sortable: true,
     },
     {
-      id: "evidence",
+      slot: "evidence",
       key: "evidence_count",
       heading: "Evidence",
       width: "min-content",
       align: "center",
+      sortable: true,
     },
   ];
 
   /** extra, supplemental columns for certain association types */
-  let extraCols: Cols = [];
+  let extraCols: Cols<Datum> = [];
 
   /** taxon column. exists for many categories, so just add if any row has taxon. */
-  if (associations.value.items.some(() => ""))
+  if (
+    associations.value.items.some(
+      (item) => item.subject_taxon_label || item.object_taxon_label,
+    )
+  )
     extraCols.push({
-      id: "taxon",
-      key: "taxon",
+      slot: "taxon",
       heading: "Taxon",
       width: "max-content",
     });
@@ -195,56 +188,48 @@ const cols = computed((): Cols => {
   ) {
     extraCols.push(
       {
-        id: "frequency",
         key: "frequency_qualifier_label",
         heading: "Frequency",
         sortable: true,
       },
       {
-        id: "onset",
         key: "onset_qualifier_label",
         heading: "Onset",
         sortable: true,
-      }
+      },
     );
   }
 
   /** publication specific columns */
-  if (props.category.label === "biolink:Publication")
-    extraCols.push(
-      {
-        id: "author",
-        key: "author",
-        heading: "Author",
-        width: "max-content",
-      },
-      {
-        id: "year",
-        key: "year",
-        heading: "Year",
-        align: "center",
-        width: "max-content",
-      },
-      {
-        id: "publisher",
-        key: "publisher",
-        heading: "Publisher",
-        width: "max-content",
-      }
-    );
+  // if (props.category.label === "biolink:Publication")
+  //   extraCols.push(
+  //     {
+  //       key: "author",
+  //       heading: "Author",
+  //       width: "max-content",
+  //     },
+  //     {
+  //       key: "year",
+  //       heading: "Year",
+  //       align: "center",
+  //       width: "max-content",
+  //     },
+  //     {
+  //       key: "publisher",
+  //       heading: "Publisher",
+  //       width: "max-content",
+  //     },
+  //   );
 
-  /**
-   * filter out extra columns with nothing in them (all rows for that col
-   * falsey)
-   */
+  /** filter out extra columns with nothing in them (all rows for that col falsy) */
   // extraCols = extraCols.filter((col) =>
-  //   associations.value.items.some(
-  //     (association) => association[(col.key || "") as keyof typeof association]
-  //   )
+  //   associations.value.items.some((association) =>
+  //     col.key ? association[col.key] : true,
+  //   ),
   // );
 
   /** put divider to separate base cols from extra cols */
-  if (extraCols[0]) extraCols.unshift({ id: "divider" });
+  if (extraCols[0]) extraCols.unshift({ slot: "divider" });
 
   return [...baseCols, ...extraCols];
 });
@@ -261,7 +246,7 @@ const {
      * whether to perform "fresh" search, without filters/pagination/etc. true
      * when search text changes, false when filters/pagination/etc change.
      */
-    fresh: boolean
+    fresh: boolean,
   ) {
     /** catch case where no association categories available */
     if (!props.node.association_counts.length)
@@ -273,14 +258,15 @@ const {
       props.category.id,
       start.value,
       perPage.value,
-      search.value
+      search.value,
+      sort.value,
     );
 
     return response;
   },
 
   /** default value */
-  { items: [], total: 0, limit: 0, offset: 0 }
+  { items: [], total: 0, limit: 0, offset: 0 },
 );
 
 /** download table data */
@@ -292,9 +278,9 @@ async function download() {
   snackbar(
     `Downloading data for ${Math.min(
       associations.value.total,
-      max
+      max,
     )} table entries.` +
-      (associations.value.total >= 100 ? " This may take a minute." : "")
+      (associations.value.total >= 100 ? " This may take a minute." : ""),
   );
 
   /** attempt to request all rows */
@@ -302,7 +288,7 @@ async function download() {
     props.node.id,
     props.category.id,
     0,
-    max
+    max,
   );
   downloadJson(response);
 }
@@ -310,11 +296,11 @@ async function download() {
 /** get associations when category or table state changes */
 watch(
   () => props.category,
-  async () => await queryAssociations(true)
+  async () => await queryAssociations(true),
 );
 watch(
   [perPage, start, search, sort],
-  async () => await queryAssociations(false)
+  async () => await queryAssociations(false),
 );
 
 /** get associations on load */

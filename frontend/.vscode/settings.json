@@ -1,19 +1,10 @@
 {
   "eslint.debug": true,
   "eslint.format.enable": true,
-  "eslint.packageManager": "yarn",
   "eslint.validate": ["vue", "javascript", "typescript"],
   "eslint.workingDirectories": ["frontend"],
   "files.associations": {
     "*.svg": "html",
     "*.xml": "html"
-  },
-  "tsImportSorter.configuration.autoFormat": "off",
-  "tsImportSorter.configuration.emptyLinesBetweenGroups": 0,
-  "tsImportSorter.configuration.exclude": ["node_modules"],
-  "tsImportSorter.configuration.formatExports": false,
-  "tsImportSorter.configuration.wrappingStyle": "prettier",
-  "tsImportSorter.configuration.groupRules": [
-    ["^vue", "^\\w", "^@\\w", "^@\\/", { "flags": "scripts" }]
-  ]
+  }
 }

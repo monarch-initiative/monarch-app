@@ -6,6 +6,7 @@ gha-creds-*.json
 .venv
 **pycache**
 .pytest_cache
+.ruff_cache
 
 ### Backend Ignores
 site

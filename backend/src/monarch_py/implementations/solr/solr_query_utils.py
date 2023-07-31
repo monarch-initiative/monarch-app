@@ -24,9 +24,9 @@ def build_association_query(
     """Populate a SolrQuery object with association filters"""
     query = SolrQuery(start=offset, rows=limit)
     if category:
-        query.add_field_filter_query("category", " OR ".join(category))
+        query.add_filter_query(" OR ".join([f"category:{escape(cat)}" for cat in category]))
     if predicate:
-        query.add_field_filter_query("predicate", " OR ".join(predicate))
+        query.add_filter_query(" OR ".join([f"predicate:{escape(pred)}" for pred in predicate]))
     if subject:
         if direct:
             query.add_field_filter_query("subject", " OR ".join(subject))
@@ -120,7 +120,7 @@ def build_search_query(
     offset: int = 0,
     limit: int = 20,
     category: List[str] = None,
-    in_taxon: List[str] = None,
+    in_taxon_label: List[str] = None,
     facet_fields: List[str] = None,
     facet_queries: List[str] = None,
     filter_queries: List[str] = None,
@@ -133,8 +133,8 @@ def build_search_query(
     query.boost = entity_boost()
     if category:
         query.add_filter_query(" OR ".join(f'category:"{cat}"' for cat in category))
-    if in_taxon:
-        query.add_filter_query(" OR ".join([f'in_taxon:"{t}"' for t in in_taxon]))
+    if in_taxon_label:
+        query.add_filter_query(" OR ".join([f'in_taxon_label:"{t}"' for t in in_taxon_label]))
     if facet_fields:
         query.facet_fields = facet_fields
     if facet_queries:

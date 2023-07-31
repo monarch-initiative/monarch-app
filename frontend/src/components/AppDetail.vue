@@ -5,13 +5,13 @@
 <template>
   <AppFlex
     ref="cell"
-    h-align="left"
+    align-h="left"
     direction="col"
     gap="small"
     class="detail"
     :data-big="big"
   >
-    <AppFlex gap="small" h-align="left">
+    <AppFlex gap="small" align-h="left">
       <AppIcon v-if="icon" :icon="icon" class="icon" />
       <span class="text">
         {{ title }}
@@ -55,13 +55,19 @@ withDefaults(defineProps<Props>(), {
   blank: false,
   big: false,
 });
+
+type Slots = {
+  default?: () => unknown;
+};
+
+defineSlots<Slots>();
 </script>
 
 <style lang="scss" scoped>
 .detail {
   flex-grow: 1;
-  text-align: left;
   line-height: $spacing;
+  text-align: left;
 
   &[data-big="true"] {
     width: 100%;

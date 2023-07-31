@@ -68,8 +68,8 @@ import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { onClickOutside } from "@vueuse/core";
 import TheLogo from "@/assets/TheLogo.vue";
-import app from "../../package.json";
 import TheNexus from "./TheNexus.vue";
+import app from "../../package.json";
 
 /** route info */
 const route = useRoute();
@@ -102,13 +102,13 @@ $wrap: 600px;
 
 .header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  z-index: 10;
   position: sticky;
   top: 0;
+  align-items: center;
+  justify-content: space-between;
   background: $theme-dark;
   color: $white;
-  z-index: 10;
 }
 
 .header[data-home="true"] {
@@ -136,8 +136,8 @@ $wrap: 600px;
 
 .title {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 }
 
 .button {
@@ -174,11 +174,11 @@ $wrap: 600px;
 
 .text {
   padding: 5px;
-  font-size: 1.1rem;
-  text-align: center;
   font-weight: 400;
-  letter-spacing: 1px;
+  font-size: 1.1rem;
   line-height: $spacing - 0.3;
+  letter-spacing: 1px;
+  text-align: center;
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -207,8 +207,8 @@ $wrap: 600px;
     }
 
     .text {
-      font-size: 1.1rem;
       width: min-content;
+      font-size: 1.1rem;
     }
   }
 }
@@ -217,39 +217,41 @@ $wrap: 600px;
 
 .nav {
   display: flex;
-  gap: 10px;
   padding: 15px;
+  gap: 10px;
 }
 
 .link {
   position: relative;
   padding: 10px;
   color: $white;
-  text-decoration: none;
   text-align: center;
+  text-decoration: none;
 
   &:after {
-    content: "";
     position: absolute;
-    left: 50%;
     right: 50%;
     bottom: 0;
+    left: 50%;
     height: 2px;
     background: $white;
-    transition: left $fast, right $fast;
+    content: "";
+    transition:
+      left $fast,
+      right $fast;
   }
 
   &:hover:after {
-    left: 5px;
     right: 5px;
+    left: 5px;
   }
 }
 
 @media (max-width: $wrap) {
   .nav {
+    position: unset;
     flex-wrap: wrap;
     justify-content: center;
-    position: unset;
     margin-top: -10px;
   }
 

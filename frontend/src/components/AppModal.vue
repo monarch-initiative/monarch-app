@@ -54,10 +54,16 @@ const props = defineProps<Props>();
 
 type Emits = {
   /** two-way bound open state */
-  (event: "update:modelValue", value: boolean): void;
+  "update:modelValue": [boolean];
 };
 
 const emit = defineEmits<Emits>();
+
+type Slots = {
+  default: () => unknown;
+};
+
+defineSlots<Slots>();
 
 /** element that had focus before modal was opened */
 const originalFocus = ref<HTMLElement | null>(null);
@@ -93,7 +99,7 @@ onUpdated(() => {
     if (modal.value) disableBodyScroll(modal.value);
     /** focus first focusable element in modal */
     const query = "input, textarea, button, select";
-    const focusable = modal.value?.querySelector(query) as HTMLElement;
+    const focusable = modal.value?.querySelector<HTMLElement>(query);
     focusable?.focus();
   }
 });
@@ -124,29 +130,29 @@ onBeforeUpdate(async () => {
 <style lang="scss" scoped>
 .overlay {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  background: #000000c0;
   z-index: 99;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  align-items: center;
+  justify-content: center;
+  background: #000000c0;
 }
 
 .modal {
-  position: relative;
   display: flex;
+  z-index: 100;
+  position: relative;
   flex-direction: column;
   align-items: center;
-  gap: 40px;
   max-width: min(800px, calc(100vw - 80px));
   max-height: calc(100vh - 80px);
   padding: 40px;
-  background: $white;
   overflow-y: auto;
-  z-index: 100;
+  gap: 40px;
+  background: $white;
 }
 
 /** close button */

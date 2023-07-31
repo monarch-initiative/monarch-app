@@ -191,9 +191,9 @@ function resetForm() {
 
 <style lang="scss" scoped>
 .heading {
+  font-weight: 600;
   font-size: 1.3rem;
   text-align: center;
-  font-weight: 600;
 }
 
 .form {
@@ -204,8 +204,8 @@ function resetForm() {
 .fields {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 40px;
   width: 100%;
+  gap: 40px;
 }
 
 .feedback {
@@ -225,9 +225,9 @@ function resetForm() {
 .details {
   display: grid;
   grid-template-columns: 100px 1fr 100px 1fr;
-  gap: 10px;
   justify-items: flex-start;
   width: 100%;
+  gap: 10px;
   color: $dark-gray;
   text-align: left;
 

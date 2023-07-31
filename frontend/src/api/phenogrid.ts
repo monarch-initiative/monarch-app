@@ -1,15 +1,15 @@
 import "phenogrid/dist/phenogrid-bundle.js";
 import "./phenogrid.css";
-import { biolink } from "./";
 import { sleep } from "@/util/debug";
 import { waitFor } from "@/util/dom";
+import { biolink } from "./";
 
 /** mount phenogrid to dom element with options */
 export const mountPhenogrid = async (
   selector: string,
   xAxis: { id?: string; name?: string }[],
   yAxis: { id?: string; name?: string }[],
-  mode = "compare"
+  mode = "compare",
 ): Promise<void> => {
   /**
    * wait for phenogrid container to render on mount, and clear any previous
@@ -20,7 +20,7 @@ export const mountPhenogrid = async (
 
   /** map in particular way based on mode, per ui 2.0 */
   const modifiedXAxis = xAxis.map(({ id = "", name = "" }) =>
-    mode === "compare" ? [id] : { groupId: id, groupName: name }
+    mode === "compare" ? [id] : { groupId: id, groupName: name },
   );
 
   Phenogrid.createPhenogridForElement(document?.querySelector(selector), {
@@ -90,6 +90,6 @@ type PhenogridType = {
       selectedSort: string;
       geneList: ({ groupId: string; groupName: string } | string[])[];
       owlSimFunction: string;
-    }
+    },
   ) => void;
 };

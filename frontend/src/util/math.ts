@@ -46,7 +46,7 @@ export const rotateY = ({ x, y, z }: Point3d, angle = 0): Point3d => ({
 export const translate = (
   point: Point3d,
   offset: Point3d,
-  scale = 1
+  scale = 1,
 ): Point3d => ({
   x: point.x + offset.x * scale,
   y: point.y + offset.y * scale,
@@ -59,7 +59,7 @@ export const project = (
   xAngle = 0,
   yAngle = 0,
   offsetX = 0,
-  offsetY = 0
+  offsetY = 0,
 ): Point2d => {
   const offset = { x: offsetX, y: offsetY, z: 0 };
   point = translate(point, offset, -1);
