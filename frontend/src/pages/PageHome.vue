@@ -158,7 +158,7 @@
 
     <p>Be the first to know when we have major updates or other fun news.</p>
 
-    <AppFlex vAlign="top">
+    <AppFlex v-align="top">
       <AppTile
         to="https://medium.com/@MonarchInit"
         icon="medium"

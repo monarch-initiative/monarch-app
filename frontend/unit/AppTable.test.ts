@@ -6,27 +6,27 @@ import { emitted, mount } from "./setup";
 const props = {
   cols: [
     {
-      id: "name",
+      slot: "name",
       key: "name",
       heading: "Name",
       align: "left",
       sortable: true,
     },
     {
-      id: "score",
+      slot: "score",
       key: "score",
       heading: "Score",
       sortable: true,
     },
     {
-      id: "details",
+      slot: "details",
       key: "details",
       heading: "Details",
       align: "left",
       sortable: true,
     },
     {
-      id: "arbitrary",
+      slot: "arbitrary",
       heading: "Arbitrary",
       align: "right",
     },
@@ -38,7 +38,7 @@ const props = {
     { name: "abc", score: 4, details: [2, 1] },
     { name: "ghi", score: NaN, details: [1] },
   ],
-  sort: { id: "score", direction: "up" },
+  sort: { key: "score", direction: "up" },
   perPage: 10,
   start: 1,
   total: 123,
@@ -51,7 +51,7 @@ test("Changes sort", async () => {
   const wrapper = mount(AppTable, { props });
   await wrapper.findAll("thead button").at(0)?.trigger("click");
   expect(emitted(wrapper, "update:sort")[0]).toEqual({
-    id: "name",
+    key: "name",
     direction: "down",
   });
 });

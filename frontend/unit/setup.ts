@@ -62,7 +62,7 @@ export const mount = (
   }
 
   /** mount */
-  const wrapper = _mount(component as any, options);
+  const wrapper = _mount(component, options);
 
   return wrapper;
 };

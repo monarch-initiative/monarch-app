@@ -185,15 +185,15 @@ type ButtonProps = InstanceType<typeof AppButton>["$props"];
 
 /** enumerate permutations of button options */
 const buttons = ref<ButtonProps[][]>([]);
-for (const design of ["normal", "circle", "small"]) {
-  for (const color of ["primary", "secondary"]) {
+for (const design of ["normal", "circle", "small"] as const) {
+  for (const color of ["primary", "secondary"] as const) {
     const row = [];
     for (const [text, icon] of [
       ["Text", ""],
       ["Text", "download"],
       ["", "download"],
     ]) {
-      row.push({ design, color, text, icon } as ButtonProps);
+      row.push({ design, color, text, icon } satisfies ButtonProps);
     }
     buttons.value.push(row);
   }

@@ -17,7 +17,7 @@ export const getAssociations = async (
     limit,
     query: search || "",
     sort: sort
-      ? `${sort.id} ${sort.direction === "up" ? "asc" : "desc"}`
+      ? `${sort.key} ${sort.direction === "up" ? "asc" : "desc"}`
       : null,
   };
 

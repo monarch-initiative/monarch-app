@@ -133,7 +133,7 @@ const cols = computed((): Cols<Datum> => {
   /** standard columns, always present */
   const baseCols: Cols<Datum> = [
     {
-      slot: "subject" as const,
+      slot: "subject",
       key: "subject_label",
       heading: getCategoryLabel(
         associations.value.items[0]?.subject_category || "Subject",
@@ -142,14 +142,14 @@ const cols = computed((): Cols<Datum> => {
       sortable: true,
     },
     {
-      slot: "predicate" as const,
+      slot: "predicate",
       key: "predicate",
       heading: "Association",
       width: "max-content",
       sortable: true,
     },
     {
-      slot: "object" as const,
+      slot: "object",
       key: "object_label",
       heading: getCategoryLabel(
         associations.value.items[0]?.object_category || "Object",
@@ -158,7 +158,7 @@ const cols = computed((): Cols<Datum> => {
       sortable: true,
     },
     {
-      slot: "evidence" as const,
+      slot: "evidence",
       key: "evidence_count",
       heading: "Evidence",
       width: "min-content",
@@ -177,7 +177,7 @@ const cols = computed((): Cols<Datum> => {
     )
   )
     extraCols.push({
-      slot: "taxon" as const,
+      slot: "taxon",
       heading: "Taxon",
       width: "max-content",
     });
