@@ -12,13 +12,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # to get all tags
+        
 
       - name: Generate Image Tag
         id: get-tag
         run: |
-          pip install poetry
-          echo "IMAGE_TAG=$(poetry -C backend version -s)"
-          echo "IMAGE_TAG=$(poetry -C backend version -s)" >> $GITHUB_OUTPUT
+          REV=$(git rev-list --tags --max-count=1)
+          IMAGE_TAG=$(git describe --tags $REV)
+          echo "IMAGE_TAG=${IMAGE_TAG}"
+          echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_OUTPUT
 
       - name: Build and Push Image
         uses: RafikFarhad/push-to-gcr-github-action@v5-beta
