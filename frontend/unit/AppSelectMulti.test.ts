@@ -38,18 +38,18 @@ test("Opens/closes on keyboard", async () => {
 });
 
 /** expected type of emitted update:modelValue events */
-type T = Array<unknown>;
+type Emitted = Array<unknown>;
 
 test("Selects by click", async () => {
   const wrapper = mount(AppSelectMulti, { props }, vModel);
   const button = wrapper.find("button");
   await button.trigger("click");
   await wrapper.findAll("[role='option']").at(1)?.trigger("click");
-  expect(emitted<T>(wrapper)[0].length).toEqual(2);
+  expect(emitted<Emitted>(wrapper)[0].length).toEqual(2);
   await wrapper.findAll("[role='option']").at(3)?.trigger("click");
-  expect(emitted<T>(wrapper)[0].length).toEqual(3);
+  expect(emitted<Emitted>(wrapper)[0].length).toEqual(3);
   await wrapper.findAll("[role='option']").at(4)?.trigger("click");
-  expect(emitted<T>(wrapper)[0].length).toEqual(4);
+  expect(emitted<Emitted>(wrapper)[0].length).toEqual(4);
 });
 
 test("Selects by keyboard", async () => {
@@ -58,14 +58,14 @@ test("Selects by keyboard", async () => {
   await button.trigger("click");
   await button.trigger("keydown", { key: "ArrowUp" });
   await button.trigger("keydown", { key: "Enter" });
-  expect(emitted<T>(wrapper)[0].length).toEqual(2);
+  expect(emitted<Emitted>(wrapper)[0].length).toEqual(2);
   await button.trigger("keydown", { key: "ArrowUp" });
   await button.trigger("keydown", { key: "ArrowUp" });
   await button.trigger("keydown", { key: "Enter" });
-  expect(emitted<T>(wrapper)[0].length).toEqual(3);
+  expect(emitted<Emitted>(wrapper)[0].length).toEqual(3);
   await button.trigger("keydown", { key: "ArrowUp" });
   await button.trigger("keydown", { key: "Enter" });
-  expect(emitted<T>(wrapper)[0].length).toEqual(4);
+  expect(emitted<Emitted>(wrapper)[0].length).toEqual(4);
 });
 
 test("Selects all by click", async () => {
@@ -74,7 +74,7 @@ test("Selects all by click", async () => {
   await button.trigger("click");
   const option = wrapper.find("[role='option']");
   await option.trigger("click");
-  expect(emitted<T>(wrapper)[0].length).toEqual(4);
+  expect(emitted<Emitted>(wrapper)[0].length).toEqual(4);
   await option.trigger("click");
-  expect(emitted<T>(wrapper)[0].length).toEqual(0);
+  expect(emitted<Emitted>(wrapper)[0].length).toEqual(0);
 });

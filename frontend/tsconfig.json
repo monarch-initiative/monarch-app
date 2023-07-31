@@ -1,14 +1,27 @@
 {
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
+  "extends": [
+    "@vue/tsconfig/tsconfig.dom.json",
+    "@tsconfig/node18/tsconfig.json",
+    "@vue/tsconfig/tsconfig.json"
+  ],
+  "include": [
+    "env.d.ts",
+    "src/**/*",
+    "fixtures/**/*",
+    "unit/**/*",
+    "e2e/**/*",
+    "**/*.json"
+  ],
+  "compilerOptions": {
+    "noErrorTruncation": true,
+    "composite": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
     },
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.vitest.json"
-    }
-  ]
+    "lib": ["ES2022", "DOM"],
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "types": ["node", "jsdom"]
+  }
 }
