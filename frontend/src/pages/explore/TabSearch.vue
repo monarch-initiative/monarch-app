@@ -48,7 +48,7 @@
       :key="index"
       direction="col"
       gap="small"
-      h-align="stretch"
+      align-h="stretch"
     >
       <div class="title">
         <AppIcon

@@ -21,7 +21,7 @@
       :key="index"
       class="result"
     >
-      <AppFlex direction="col" h-align="left" gap="small" class="details">
+      <AppFlex direction="col" align-h="left" gap="small" class="details">
         <AppNodeBadge
           :node="{
             id: item.subject,

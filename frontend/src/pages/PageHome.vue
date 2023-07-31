@@ -19,7 +19,7 @@
 
     <!-- high level description of monarch as a whole. "elevator pitch" -->
     <!-- eslint-disable-next-line -->
-    <AppFlex gap="big" vAlign="top">
+    <AppFlex gap="big" align-v="top">
       <AppTile
         icon="knowledge-graph"
         title="An extensive, cross-species, semantic knowledge graph"
@@ -158,7 +158,7 @@
 
     <p>Be the first to know when we have major updates or other fun news.</p>
 
-    <AppFlex v-align="top">
+    <AppFlex align-v="top">
       <AppTile
         to="https://medium.com/@MonarchInit"
         icon="medium"

@@ -79,7 +79,7 @@
           :max="comparison.maxScore"
         />
 
-        <AppFlex direction="col" h-align="stretch" gap="small" class="details">
+        <AppFlex direction="col" align-h="stretch" gap="small" class="details">
           <!-- primary match info -->
           <div class="primary truncate">
             <AppIcon

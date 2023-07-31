@@ -9,7 +9,7 @@
     <AppDetails>
       <!-- inheritance -->
       <AppDetail :blank="!node.inheritance" title="Heritability">
-        <AppFlex h-align="left" gap="small">
+        <AppFlex align-h="left" gap="small">
           <AppLink
             v-tooltip="node.inheritance?.name"
             :to="node.inheritance?.id || ''"
@@ -35,7 +35,7 @@
         title="External References"
         :big="true"
       >
-        <AppFlex h-align="left" gap="small">
+        <AppFlex align-h="left" gap="small">
           <AppLink
             v-for="(link, index) of node.external_links"
             :key="index"
