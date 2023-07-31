@@ -1,8 +1,12 @@
-# Monarch Backend
+# Monarch-Py
 
-This is a FastAPI for browsing the knowledge graph produced by the Monarch Initiative.
+Monarch-Py is a Python library for interfacing with the Monarch Initiative Knowledge graph.  
+It can be used from CLI, as a module, or as a FastAPI app
 
 [Documentation](https://monarch-app.monarchinitiative.org/docs)
+
+
+## For Developers
 
 ### Running the API:
 
@@ -29,22 +33,3 @@ This is a FastAPI for browsing the knowledge graph produced by the Monarch Initi
 
 - Push the docker image:
   `docker push us-central1-docker.pkg.dev/monarch-initiative/monarch-api/monarch-api:{VERSION}`
-
-#### Planning board:
-
-base_url = https://monarch-initiative.org/api
-
-nodes:
-
-- <s>base_url/entity/{id}</s>
-- base_url/entity/{id}/{type of node}
-
-edges:
-
-- ~~base_url/association/{id}~~
-- base_url/association/type/{association_type}
-- base_url/association/to/{object}
-- base_url/association/from/{subject}
-- base_url/association/between/{subject}/{object}
-- base_url/association/find/{subject_category}
-- base_url/association/find/{subject_category}/{object_category}
