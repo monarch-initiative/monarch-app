@@ -24,7 +24,7 @@
     @download="download"
   >
     <!-- "subject" (current node) -->
-    <template #subject_label="{ row }">
+    <template #subject="{ row }">
       <AppNodeBadge
         :node="{
           id: row.subject,
@@ -41,7 +41,7 @@
     </template>
 
     <!-- "object" (what current node has an association with) -->
-    <template #object_label="{ row }">
+    <template #object="{ row }">
       <AppNodeBadge
         :node="{
           id: row.object,
@@ -53,7 +53,7 @@
     </template>
 
     <!-- button to show evidence -->
-    <template #evidence_count="{ cell, row }">
+    <template #evidence="{ cell, row }">
       <AppButton
         v-tooltip="
           row.id === association?.id
@@ -133,7 +133,7 @@ const cols = computed((): Cols<Datum> => {
   /** standard columns, always present */
   const baseCols: Cols<Datum> = [
     {
-      slot: "subject_label" as const,
+      slot: "subject" as const,
       key: "subject_label",
       heading: getCategoryLabel(
         associations.value.items[0]?.subject_category || "Subject",
@@ -149,7 +149,7 @@ const cols = computed((): Cols<Datum> => {
       sortable: true,
     },
     {
-      slot: "object_label" as const,
+      slot: "object" as const,
       key: "object_label",
       heading: getCategoryLabel(
         associations.value.items[0]?.object_category || "Object",
@@ -158,7 +158,7 @@ const cols = computed((): Cols<Datum> => {
       sortable: true,
     },
     {
-      slot: "evidence_count" as const,
+      slot: "evidence" as const,
       key: "evidence_count",
       heading: "Evidence",
       width: "min-content",
@@ -188,13 +188,11 @@ const cols = computed((): Cols<Datum> => {
   ) {
     extraCols.push(
       {
-        slot: "frequency_qualifier_label" as const,
         key: "frequency_qualifier_label",
         heading: "Frequency",
         sortable: true,
       },
       {
-        slot: "onset_qualifier_label" as const,
         key: "onset_qualifier_label",
         heading: "Onset",
         sortable: true,
@@ -206,20 +204,17 @@ const cols = computed((): Cols<Datum> => {
   // if (props.category.label === "biolink:Publication")
   //   extraCols.push(
   //     {
-  //       slot: "author" as const,
   //       key: "author",
   //       heading: "Author",
   //       width: "max-content",
   //     },
   //     {
-  //       slot: "year" as const,
   //       key: "year",
   //       heading: "Year",
   //       align: "center",
   //       width: "max-content",
   //     },
   //     {
-  //       slot: "publisher" as const,
   //       key: "publisher",
   //       heading: "Publisher",
   //       width: "max-content",
@@ -228,9 +223,9 @@ const cols = computed((): Cols<Datum> => {
 
   /** filter out extra columns with nothing in them (all rows for that col falsy) */
   // extraCols = extraCols.filter((col) =>
-  //   associations.value.items.some(
-  //     (association) => association[(col.key || "") as keyof typeof association]
-  //   )
+  //   associations.value.items.some((association) =>
+  //     col.key ? association[col.key] : true,
+  //   ),
   // );
 
   /** put divider to separate base cols from extra cols */
