@@ -6,7 +6,6 @@ import time
 import docker
 import pystow
 import typer
-
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 from monarch_py.utils.utils import MONARCH_DATA_URL, console
 
@@ -15,10 +14,10 @@ monarchstow = pystow.module("monarch")
 
 def check_for_docker():
     try:
-        client = docker.from_env()
+        docker.from_env()
     except docker.errors.DockerException:
         typer.secho(
-            f"\n\tDocker not found\n\tPlease install Docker, and refer to:", 
+            f"\n\tDocker not found\n\tPlease install Docker, and refer to:",
             fg=typer.colors.RED,
         )
         typer.secho(

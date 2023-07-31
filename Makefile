@@ -175,8 +175,7 @@ lint-frontend:
 
 .PHONY: lint-backend
 lint-backend: 
-	$(RUN) flake8 --exit-zero --max-line-length 120 backend/src backend/tests
-	$(RUN) isort --check-only --diff backend/src backend/tests
+	$(RUN) ruff check --diff --exit-zero backend
 	$(RUN) black --check --diff -l 120 backend/src backend/tests
 
 
@@ -186,14 +185,7 @@ format: format-frontend format-backend
 
 .PHONY: format-backend
 format-backend: 
-	$(RUN) autoflake \
-		--recursive \
-		--remove-all-unused-imports \
-		--remove-unused-variables \
-		--ignore-init-module-imports \
-		--in-place \
-		backend/src backend/tests
-	$(RUN) isort backend/src backend/tests
+	$(RUN) ruff check --fix --exit-zero backend
 	$(RUN) black -l 120 backend/src backend/tests
 
 
