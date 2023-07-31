@@ -52,7 +52,7 @@
         subtitle="diseases"
       />
       <AppTile
-        icon="category-phenotype"
+        icon="category-phenotypic-feature"
         design="small"
         :title="`~${(70000).toLocaleString()}`"
         subtitle="phenotypes"

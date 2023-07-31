@@ -133,7 +133,7 @@ const cols = computed((): Cols<Datum> => {
   /** standard columns, always present */
   const baseCols: Cols<Datum> = [
     {
-      id: "subject_label" as const,
+      slot: "subject_label" as const,
       key: "subject_label",
       heading: getCategoryLabel(
         associations.value.items[0]?.subject_category || "Subject",
@@ -142,14 +142,14 @@ const cols = computed((): Cols<Datum> => {
       sortable: true,
     },
     {
-      id: "predicate" as const,
+      slot: "predicate" as const,
       key: "predicate",
       heading: "Association",
       width: "max-content",
       sortable: true,
     },
     {
-      id: "object_label" as const,
+      slot: "object_label" as const,
       key: "object_label",
       heading: getCategoryLabel(
         associations.value.items[0]?.object_category || "Object",
@@ -158,7 +158,7 @@ const cols = computed((): Cols<Datum> => {
       sortable: true,
     },
     {
-      id: "evidence_count" as const,
+      slot: "evidence_count" as const,
       key: "evidence_count",
       heading: "Evidence",
       width: "min-content",
@@ -177,7 +177,7 @@ const cols = computed((): Cols<Datum> => {
     )
   )
     extraCols.push({
-      id: "taxon" as const,
+      slot: "taxon" as const,
       heading: "Taxon",
       width: "max-content",
     });
@@ -188,13 +188,13 @@ const cols = computed((): Cols<Datum> => {
   ) {
     extraCols.push(
       {
-        id: "frequency_qualifier_label" as const,
+        slot: "frequency_qualifier_label" as const,
         key: "frequency_qualifier_label",
         heading: "Frequency",
         sortable: true,
       },
       {
-        id: "onset_qualifier_label" as const,
+        slot: "onset_qualifier_label" as const,
         key: "onset_qualifier_label",
         heading: "Onset",
         sortable: true,
@@ -206,20 +206,20 @@ const cols = computed((): Cols<Datum> => {
   // if (props.category.label === "biolink:Publication")
   //   extraCols.push(
   //     {
-  //       id: "author" as const,
+  //       slot: "author" as const,
   //       key: "author",
   //       heading: "Author",
   //       width: "max-content",
   //     },
   //     {
-  //       id: "year" as const,
+  //       slot: "year" as const,
   //       key: "year",
   //       heading: "Year",
   //       align: "center",
   //       width: "max-content",
   //     },
   //     {
-  //       id: "publisher" as const,
+  //       slot: "publisher" as const,
   //       key: "publisher",
   //       heading: "Publisher",
   //       width: "max-content",
@@ -234,7 +234,7 @@ const cols = computed((): Cols<Datum> => {
   // );
 
   /** put divider to separate base cols from extra cols */
-  if (extraCols[0]) extraCols.unshift({ id: "divider" });
+  if (extraCols[0]) extraCols.unshift({ slot: "divider" });
 
   return [...baseCols, ...extraCols];
 });

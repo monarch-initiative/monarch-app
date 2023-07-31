@@ -268,27 +268,27 @@ const tab = ref(tabs[0].id);
 const table = ref({
   cols: [
     {
-      id: "name",
+      slot: "name",
       key: "name" as const,
       heading: "Name",
       align: "left" as const,
       sortable: true,
     },
     {
-      id: "score",
+      slot: "score",
       key: "score" as const,
       heading: "Score",
       sortable: true,
     },
     {
-      id: "details",
+      slot: "details",
       key: "details" as const,
       heading: "Details",
       align: "left" as const,
       sortable: true,
     },
     {
-      id: "arbitrary",
+      slot: "arbitrary",
       key: "arbitrary" as const,
       heading: "Arbitrary",
       align: "right" as const,
@@ -301,7 +301,7 @@ const table = ref({
     { name: "abc", score: 4, details: [2, 1] },
     { name: "ghi", score: NaN, details: [1] },
   ],
-  sort: { id: "score", direction: "up" } as Sort,
+  sort: { key: "score", direction: "up" } as Sort,
   perPage: 10,
   start: 0,
   end: 11,

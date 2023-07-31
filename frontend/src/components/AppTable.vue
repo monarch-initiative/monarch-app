@@ -39,7 +39,7 @@
                   class="th"
                   :aria-sort="ariaSort"
                   :data-align="col.align || 'left'"
-                  :data-divider="col.id === 'divider'"
+                  :data-divider="col.slot === 'divider'"
                 >
                   <span>
                     {{ col.heading }}
@@ -49,24 +49,25 @@
                     v-tooltip="'Sort by ' + col.heading"
                     :icon="
                       'arrow-' +
-                      (sort?.id === col.id ? sort?.direction : 'down')
+                      (sort?.key === col.key ? sort?.direction : 'down')
                     "
                     design="small"
-                    :color="sort?.id === col.id ? 'primary' : 'secondary'"
-                    :style="{ opacity: sort?.id === col.id ? 1 : 0.35 }"
+                    :color="sort?.key === col.key ? 'primary' : 'secondary'"
+                    :style="{ opacity: sort?.key === col.key ? 1 : 0.35 }"
                     @click.stop="emitSort(col)"
                   />
                   <AppSelectMulti
                     v-if="
-                      selectedFilters?.[col.id] &&
-                      filterOptions?.[col.id]?.length
+                      col.key &&
+                      selectedFilters?.[col.key] &&
+                      filterOptions?.[col.key]?.length
                     "
                     v-tooltip="'Filter by ' + col.heading"
                     :name="'Filter by ' + col.heading"
-                    :options="filterOptions[col.id]"
-                    :model-value="selectedFilters[col.id]"
+                    :options="filterOptions[col.key]"
+                    :model-value="selectedFilters[col.key]"
                     design="small"
-                    @change="(value) => emitFilter(col.id, value)"
+                    @change="(value) => emitFilter(col.key, value)"
                   />
                 </th>
               </tr>
@@ -82,12 +83,12 @@
                   :aria-rowindex="rowIndex + 1"
                   :aria-colindex="colIndex + 1"
                   :data-align="col.align || 'left'"
-                  :data-divider="col.id === 'divider'"
+                  :data-divider="col.slot === 'divider'"
                 >
-                  <!-- if slot w/ name == col id, use to custom format/template cell -->
+                  <!-- if col has slot name, use to custom format/template cell -->
                   <slot
-                    v-if="$slots[col.id]"
-                    :name="col.id"
+                    v-if="col.slot && $slots[col.slot]"
+                    :name="col.slot"
                     :row="row"
                     :col="col"
                     :cell="col.key ? row[col.key] : null"
@@ -200,12 +201,12 @@
 
 <script lang="ts">
 /** table column */
-export type Cols<Key extends PropertyKey = PropertyKey> = {
+export type Cols<Key extends string> = {
   /**
-   * unique id name to identify/match named slots. use "divider" to create
-   * vertical divider to separate cols.
+   * name of slot to use for rendering. use "divider" to create vertical divider
+   * to separate cols.
    */
-  id: string;
+  slot?: string;
   /**
    * what item in row object to access as raw cell value, and which key to use
    * for sorting and filtering
@@ -225,8 +226,8 @@ export type Cols<Key extends PropertyKey = PropertyKey> = {
 }[];
 
 /** sort prop */
-export type Sort = {
-  id: string;
+export type Sort<Key extends string = string> = {
+  key: Key;
   direction: "up" | "down";
 } | null;
 </script>
@@ -240,9 +241,12 @@ import AppSelectSingle from "./AppSelectSingle.vue";
 import AppTextbox from "./AppTextbox.vue";
 import { closeToc } from "./TheTableOfContents.vue";
 
+/** possible keys on datum (remove number and symbol from default object type) */
+type Keys = Extract<keyof Datum, string>;
+
 type Props = {
   /** info for each column of table */
-  cols: Cols<keyof Datum>;
+  cols: Cols<Keys>;
   /** list of table rows, i.e. the table data */
   rows: Datum[];
   /** sort key and direction */
@@ -294,12 +298,12 @@ type Emits = {
 
 const emit = defineEmits<Emits>();
 
-type SlotNames = Cols<keyof Datum>[number]["id"];
+type SlotNames = string;
 
 type SlotProps = {
-  col: Cols<keyof Datum>[number];
+  col: Cols<Keys>[number];
   row: Datum;
-  cell: Datum[keyof Datum] | null;
+  cell: Datum[Keys] | null;
 };
 
 defineSlots<{
@@ -349,28 +353,34 @@ function clickLast() {
 }
 
 /** when user clicks a sort button */
-function emitSort(col: Cols[number]) {
-  let newSort: Sort;
+function emitSort(col: Cols<Keys>[number]) {
+  let newSort: Sort<Keys>;
+
+  if (!col.key) return;
 
   /** toggle sort direction */
-  if (props.sort?.id === col.id) {
+  if (props.sort?.key === col.key) {
     if (props.sort?.direction === "down")
-      newSort = { id: col.id, direction: "up" };
+      newSort = { key: col.key, direction: "up" };
     else if (props.sort?.direction === "up") {
       newSort = null;
     } else {
-      newSort = { id: col.id, direction: "down" };
+      newSort = { key: col.key, direction: "down" };
     }
   } else {
-    newSort = { id: col.id, direction: "down" };
+    newSort = { key: col.key, direction: "down" };
   }
 
   emit("update:sort", newSort);
 }
 
 /** when user changes a filter */
-function emitFilter(colId: Cols[number]["id"], value: Options) {
-  emit("update:selectedFilters", { ...props.selectedFilters, [colId]: value });
+function emitFilter(colKey: Cols<Keys>[number]["key"], value: Options) {
+  if (colKey)
+    emit("update:selectedFilters", {
+      ...props.selectedFilters,
+      [colKey]: value,
+    });
 }
 
 /** when user changes rows per page */
