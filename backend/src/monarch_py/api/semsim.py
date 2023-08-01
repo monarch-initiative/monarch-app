@@ -1,11 +1,13 @@
 from fastapi import APIRouter
-from monarch_py.api.config import oak
+# from monarch_py.api.config import oak
+from monarch_py.implementations.oak.oak_implementation import OakImplementation
 
 router = APIRouter(tags=["semsim"], responses={404: {"description": "Not Found"}})
+oak = OakImplementation().init_semsim()
 
 
 @router.get("/compare/{subjects}/{objects}")
-async def _compare(
+def _compare(
     subjects: str = "",
     objects: str = "",
 ):
@@ -18,9 +20,12 @@ async def _compare(
     Returns:
         TermSetPairwiseSimilarity: Pairwise similarity between subjects and objects
     """
-    print(f"subjects: {subjects.split(',')}")
-    print(f"objects: {objects.split(',')}")
-    print(type(subjects.split(",")), type(objects.split(",")))
+    print(f"""
+    Running semsim compare:          
+        subjects: {subjects.split(',')}
+        objects: {objects.split(',')}
+        {type(subjects.split(","))}: {type(objects.split(","))}
+    """)
     results = oak.compare(
         subjects=subjects.split(","),
         objects=objects.split(","),
