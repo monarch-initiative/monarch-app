@@ -61,19 +61,3 @@ class OakImplementation(SemanticSimilarityInterface):
                 predicates=predicates,
                 labels=labels,
             )
-
-    def compare_termsets(
-        subjects=[""],
-        objects=[""],
-        predicates=[IS_A, "BFO:0000050", "UPHENO:0000001"],
-        offset: int = 0,
-        limit: int = 20,
-    ):
-        """Get pairwise similarity between two sets of terms
-
-        This is from utils/get_similarity.py, not sure what the difference is between this and compare() above
-        """
-        hp_db = OAKLIB_MODULE.ensure_gunzip(url=HP_DB_URL, autoclean=False)
-        oi = SqlImplementation(OntologyResource(slug=hp_db))
-        results = oi.termset_pairwise_similarity(subjects, objects, predicates)
-        return results
