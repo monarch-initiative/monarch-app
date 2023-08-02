@@ -21,7 +21,7 @@ def _compare(
         TermSetPairwiseSimilarity: Pairwise similarity between subjects and objects
     """
     print(f"""
-    Running semsim compare:          
+    Running semsim compare:
         subjects: {subjects.split(',')}
         objects: {objects.split(',')}
     """)
