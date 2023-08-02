@@ -270,7 +270,7 @@ def compare(
         ),
         output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
 ):
-    #oak.init_semsim()
+    """Compare two entities using semantic similarity via OAK"""
     subjects = subjects.split(',')
     objects = objects.split(',')
     response = oak.compare(subjects, objects)

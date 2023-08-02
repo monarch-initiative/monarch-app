@@ -15,12 +15,6 @@ jobs:
         with:
           fetch-depth: 0 # to get all tags
         
-
-      - name: Generate Image Tag
-        id: get-tag
-        run: |
-          echo "IMAGE_TAG=semsim" >> $GITHUB_OUTPUT
-
       - name: Build and Push Image
         uses: RafikFarhad/push-to-gcr-github-action@v5-beta
         with:
@@ -28,5 +22,5 @@ jobs:
           registry: us-central1-docker.pkg.dev
           project_id: monarch-initiative
           image_name: monarch-api/monarch-api
-          image_tag: ${{ steps.get-tag.outputs.IMAGE_TAG }}
+          image_tag: semsim
           dockerfile: ./backend/Dockerfile

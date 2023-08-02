@@ -17,4 +17,3 @@ settings = Settings()
 solr = SolrImplementation(base_url=settings.solr_url)
 
 oak = OakImplementation()
-oak.init_semsim()

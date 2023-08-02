@@ -3,7 +3,7 @@ from fastapi import APIRouter
 from monarch_py.implementations.oak.oak_implementation import OakImplementation
 
 router = APIRouter(tags=["semsim"], responses={404: {"description": "Not Found"}})
-oak = OakImplementation().init_semsim()
+oak = OakImplementation()
 
 
 @router.get("/compare/{subjects}/{objects}")
@@ -24,7 +24,6 @@ def _compare(
     Running semsim compare:          
         subjects: {subjects.split(',')}
         objects: {objects.split(',')}
-        {type(subjects.split(","))}: {type(objects.split(","))}
     """)
     results = oak.compare(
         subjects=subjects.split(","),

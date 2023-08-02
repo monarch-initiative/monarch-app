@@ -1,26 +1,21 @@
 import time
 from dataclasses import dataclass, asdict
+from typing import List
 
 from loguru import logger
 
-from oaklib.datamodels.similarity import TermSetPairwiseSimilarity
+from monarch_py.datamodels.model import TermSetPairwiseSimilarity
 from oaklib.interfaces.semsim_interface import SemanticSimilarityInterface
 from oaklib.selector import get_adapter
-# these imports are from get_similarity.py
-import oaklib.datamodels.ontology_metadata as omd
-from oaklib import OntologyResource
-from oaklib.constants import OAKLIB_MODULE
-from oaklib.implementations.sqldb.sql_implementation import SqlImplementation
-
-HP_DB_URL = "https://s3.amazonaws.com/bbop-sqlite/hp.db.gz"
-IS_A = omd.slots.subClassOf.curie
 
 
 @dataclass
 class OakImplementation(SemanticSimilarityInterface):
     """Implementation of Monarch Interfaces for OAK"""
 
-    semsim: SemanticSimilarityInterface = None # or is it a SqlImplementation?
+    # semsim: SemanticSimilarityInterface = None # or is it a SqlImplementation?
+    semsim = get_adapter(f"semsimian:sqlite:obo:phenio")
+    default_predicates = ["rdfs:subClassOf", "BFO:0000050", "UPHENO:0000001"]
     
     def init_semsim(self):
         if self.semsim is None:
@@ -36,28 +31,26 @@ class OakImplementation(SemanticSimilarityInterface):
             self.semsim.termset_pairwise_similarity(
                 subjects=["MP:0010771"],
                 objects=["HP:0004325"],
-                predicates=[IS_A, "BFO:0000050", "UPHENO:0000001"],
+                predicates=self.default_predicates,
                 labels=False,
             )
             logger.info(f"Semsimian ready, warmup time: {time.time() - start} sec")
             return self
 
     def compare(
-        self, subjects, objects, predicates=[IS_A, "BFO:0000050", "UPHENO:0000001"], labels=False
+        self,
+        subjects: List[str],
+        objects: List[str],
+        predicates: List[str] = None,
+        labels = False
     ) -> TermSetPairwiseSimilarity:
         """Compare two sets of terms using OAK"""
-        try: 
-            return self.semsim.termset_pairwise_similarity(
-                subjects=subjects,
-                objects=objects,
-                predicates=predicates,
-                labels=labels,
-            )
-        except AttributeError:
-            self.init_semsim()
-            return self.semsim.termset_pairwise_similarity(
-                subjects=subjects,
-                objects=objects,
-                predicates=predicates,
-                labels=labels,
-            )
+        predicates = predicates or self.default_predicates
+        logger.debug(f"Comparing {subjects} to {objects} using {predicates}")
+        response = self.semsim.termset_pairwise_similarity(
+            subjects=subjects,
+            objects=objects,
+            predicates=predicates,
+            labels=labels,
+        )
+        return TermSetPairwiseSimilarity(**asdict(response))
