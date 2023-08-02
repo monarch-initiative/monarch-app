@@ -19,7 +19,7 @@ jobs:
       - name: Generate Image Tag
         id: get-tag
         run: |
-          echo "IMAGE_TAG=${semsim}" >> $GITHUB_OUTPUT
+          echo "IMAGE_TAG=semsim" >> $GITHUB_OUTPUT
 
       - name: Build and Push Image
         uses: RafikFarhad/push-to-gcr-github-action@v5-beta
