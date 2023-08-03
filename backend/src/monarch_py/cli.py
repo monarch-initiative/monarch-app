@@ -36,7 +36,9 @@ def callback(
             fg=typer.colors.YELLOW,
         )
         raise typer.Exit()
-    check_for_docker()
+    # if command is not compare, check for docker
+    if ctx.invoked_subcommand != "compare":
+        check_for_docker()
     set_log_level(log_level="DEBUG" if debug else "WARNING" if quiet else "INFO")
     return
 
@@ -61,7 +63,6 @@ def schema():
 
 
 ### "Aliases" for Solr CLI ###
-
 
 @app.command("entity")
 def entity(

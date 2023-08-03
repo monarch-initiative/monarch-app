@@ -19,6 +19,11 @@ def test_autocomplete(autocomplete):
     assert autocomplete.total != 0
 
 
+def test_compare(compare):
+    tsps = TermSetPairwiseSimilarity(**compare)
+    assert len(tsps.subject_best_matches) != 0
+
+
 def test_search(search):
     search = SearchResults(**search)
     assert search.total != 0
@@ -37,8 +42,3 @@ def test_node(node):
 def test_node_associations(associations):
     association_results = AssociationResults(**associations)
     assert association_results.total != 0
-
-
-def test_compare(compare):
-    tsps = TermSetPairwiseSimilarity(**compare)
-    assert len(tsps.subject_best_matches) != 0
