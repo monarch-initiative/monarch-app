@@ -19,7 +19,7 @@ const fromDomain =
 const fromEnv = import.meta.env.VITE_API || "";
 
 /** ...from param in url */
-const fromParam = new URLSearchParams(url.href).get("api") || "";
+const fromParam = new URLSearchParams(url.search).get("api") || "";
 
 /**
  * final short name of monarch api version to use (highest to lowest override
