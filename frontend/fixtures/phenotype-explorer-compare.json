@@ -1,128 +1,106 @@
 {
-  "query": {
-    "ids": [
-      {
-        "id": "HP:0004970",
-        "label": "Ascending tubular aorta aneurysm"
-      },
-      {
-        "id": "HP:0004927",
-        "label": "Pulmonary artery dilatation"
-      },
-      {
-        "id": "HP:0012499",
-        "label": "Descending aortic dissection"
-      },
-      {
-        "id": "HP:0002108",
-        "label": "Spontaneous pneumothorax"
-      },
-      {
-        "id": "HP:0002650",
-        "label": "Scoliosis"
-      },
-      {
-        "id": "HP:0004872",
-        "label": "Incisional hernia"
-      },
-      {
-        "id": "HP:0004933",
-        "label": "Ascending aortic dissection"
-      }
-    ],
-    "negated_ids": [],
-    "unresolved_ids": [],
-    "target_ids": [
-      [
-        {
-          "id": "FBcv:0000366",
-          "label": "female sterile"
-        }
-      ],
-      [
-        {
-          "id": "FBcv:0000439",
-          "label": "chemical resistant"
-        }
-      ],
-      [
-        {
-          "id": "FBcv:0002041",
-          "label": "some die during embryonic stage"
-        }
-      ],
-      [
-        {
-          "id": "FBcv:0002039",
-          "label": "some die during pupal stage"
-        }
-      ]
-    ],
-    "reference": {
-      "type": "unknown",
-      "taxon": {
-        "id": null,
-        "label": null
-      },
-      "id": "HP:0004970 + HP:0004933 + HP:0004927 + HP:0002108 + HP:0004872 + HP:0012499 + HP:0002650",
-      "label": "HP:0004970 + HP:0004933 + HP:0004927 + HP:0002108 + HP:0004872 + HP:0012499 + HP:0002650"
+  "subject_termset": {
+    "MP:0010771": {
+      "id": "MP:0010771",
+      "label": null
+    },
+    "MP:0002169": {
+      "id": "MP:0002169",
+      "label": null
     }
   },
-  "matches": [
-    {
-      "rank": "NaN",
-      "score": 0,
-      "significance": "NaN",
-      "pairwise_match": [],
-      "type": "phenotype",
-      "taxon": {
-        "id": null,
-        "label": null
-      },
-      "id": "FBcv:0000366",
-      "label": "female sterile"
-    },
-    {
-      "rank": "NaN",
-      "score": 0,
-      "significance": "NaN",
-      "pairwise_match": [],
-      "type": "phenotype",
-      "taxon": {
-        "id": null,
-        "label": null
-      },
-      "id": "FBcv:0000439",
-      "label": "chemical resistant"
-    },
-    {
-      "rank": "NaN",
-      "score": 0,
-      "significance": "NaN",
-      "pairwise_match": [],
-      "type": "phenotype",
-      "taxon": {
-        "id": null,
-        "label": null
-      },
-      "id": "FBcv:0002041",
-      "label": "some die during embryonic stage"
-    },
-    {
-      "rank": "NaN",
-      "score": 0,
-      "significance": "NaN",
-      "pairwise_match": [],
-      "type": "phenotype",
-      "taxon": {
-        "id": null,
-        "label": null
-      },
-      "id": "FBcv:0002039",
-      "label": "some die during pupal stage"
+  "object_termset": {
+    "HP:0004325": {
+      "id": "HP:0004325",
+      "label": null
     }
-  ],
-  "metadata": {
-    "max_max_ic": 16.48703
-  }
+  },
+  "subject_best_matches": {
+    "MP:0002169": {
+      "match_source": "MP:0002169",
+      "match_source_label": "Lorem ipsum label",
+      "match_target": "HP:0004325",
+      "match_target_label": "Lorem ipsum label",
+      "score": 1.5616002210519475,
+      "match_subsumer": null,
+      "match_subsumer_label": "Lorem ipsum label",
+      "similarity": {
+        "subject_id": "MP:0002169",
+        "subject_label": "Lorem ipsum label",
+        "subject_source": null,
+        "object_id": "HP:0004325",
+        "object_label": "Lorem ipsum label",
+        "object_source": null,
+        "ancestor_id": "UPHENO:0001003",
+        "ancestor_label": "Lorem ipsum label",
+        "ancestor_source": null,
+        "object_information_content": null,
+        "subject_information_content": null,
+        "ancestor_information_content": 1.5616002210519475,
+        "jaccard_similarity": 0.16216216216216217,
+        "cosine_similarity": null,
+        "dice_similarity": null,
+        "phenodigm_score": 0.5032220864376823
+      }
+    },
+    "MP:0010771": {
+      "match_source": "MP:0010771",
+      "match_source_label": "Lorem ipsum label",
+      "match_target": "HP:0004325",
+      "match_target_label": "Lorem ipsum label",
+      "score": 2.2728188647181566,
+      "match_subsumer": null,
+      "match_subsumer_label": "Lorem ipsum label",
+      "similarity": {
+        "subject_id": "MP:0010771",
+        "subject_label": "Lorem ipsum label",
+        "subject_source": null,
+        "object_id": "HP:0004325",
+        "object_label": "Lorem ipsum label",
+        "object_source": null,
+        "ancestor_id": "UBERON:0000468",
+        "ancestor_label": "Lorem ipsum label",
+        "ancestor_source": null,
+        "object_information_content": null,
+        "subject_information_content": null,
+        "ancestor_information_content": 2.2728188647181566,
+        "jaccard_similarity": 0.325,
+        "cosine_similarity": null,
+        "dice_similarity": null,
+        "phenodigm_score": 0.8594568814276845
+      }
+    }
+  },
+  "object_best_matches": {
+    "HP:0004325": {
+      "match_source": "HP:0004325",
+      "match_source_label": "Lorem ipsum label",
+      "match_target": "MP:0010771",
+      "match_target_label": "Lorem ipsum label",
+      "score": 2.2728188647181566,
+      "match_subsumer": null,
+      "match_subsumer_label": "Lorem ipsum label",
+      "similarity": {
+        "subject_id": "MP:0010771",
+        "subject_label": "Lorem ipsum label",
+        "subject_source": null,
+        "object_id": "HP:0004325",
+        "object_label": "Lorem ipsum label",
+        "object_source": null,
+        "ancestor_id": "UBERON:0000468",
+        "ancestor_label": "Lorem ipsum label",
+        "ancestor_source": null,
+        "object_information_content": null,
+        "subject_information_content": null,
+        "ancestor_information_content": 2.2728188647181566,
+        "jaccard_similarity": 0.325,
+        "cosine_similarity": null,
+        "dice_similarity": null,
+        "phenodigm_score": 0.8594568814276845
+      }
+    }
+  },
+  "average_score": 2.0357459834960867,
+  "best_score": 2.2728188647181566,
+  "metric": null
 }

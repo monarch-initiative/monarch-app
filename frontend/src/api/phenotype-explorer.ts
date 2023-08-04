@@ -1,6 +1,11 @@
+import type {
+  AssociationResults,
+  // SearchResults,
+  TermSetPairwiseSimilarity,
+} from "@/api/model";
 import type { Options, OptionsFunc } from "@/components/AppSelectTags.vue";
 import { stringify } from "@/util/object";
-import { biolink, request } from "./";
+import { biolink, monarch, request } from "./";
 import { getSearch } from "./search";
 
 /** search individual phenotypes or gene/disease phenotypes */
@@ -21,7 +26,12 @@ export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
 
   /** otherwise perform string search for phenotypes/genes/diseases */
   const { items } = await getSearch(search, 0, 20, {
-    category: ["phenotype", "gene", "disease"],
+    category: [
+      "biolink:PhenotypicFeature",
+      "biolink:PhenotypicQuality",
+      "biolink:Gene",
+      "biolink:Disease",
+    ],
   });
 
   /** convert into desired result format */
@@ -34,9 +44,9 @@ export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
          * if gene/disease, provide function to get associated phenotypes upon
          * select
          */
-        item.category === "biolink:Phenotype"
+        item.category.startsWith("biolink:Pheno")
           ? undefined
-          : async () => await getPhenotypeAssociations(item.id, item.category),
+          : async () => await getPhenotypeAssociations(item.id),
       highlight: item.highlight,
       icon: "category-" + item.category,
       info: item.in_taxon || "",
@@ -44,39 +54,27 @@ export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
   };
 };
 
-/** phenotype associations with gene/disease (from backend) */
-type _PhenotypeAssociations = {
-  associations: {
-    object: {
-      id: string;
-      label: string;
-    };
-  }[];
-};
-
 /** get phenotypes associated with gene/disease */
-const getPhenotypeAssociations = async (
-  id = "",
-  category = "",
-): Promise<Options> => {
-  /** short circuit if no id or valid category */
-  if (!id || !category || !(category === "gene" || category === "disease"))
-    throw new Error(`Invalid gene/disease id or category`);
-
+const getPhenotypeAssociations = async (id = ""): Promise<Options> => {
   /** endpoint settings */
   const params = {
+    subject: id,
+    category: [
+      "biolink:GeneToPhenotypicFeatureAssociation",
+      "biolink:DiseaseToPhenotypicFeatureAssociation",
+    ],
+    limit: 1000,
     direct: true,
-    unselect_evidence: true,
   };
 
   /** make query */
-  const url = `${biolink}/bioentity/${category}/${id}/phenotypes`;
-  const { associations } = await request<_PhenotypeAssociations>(url, params);
+  const url = `${monarch}/associations`;
+  const { items } = await request<AssociationResults>(url, params);
 
   /** convert into desired result format */
-  return associations.map(({ object }) => ({
-    id: object.id,
-    name: object.label,
+  return items.map((item) => ({
+    id: item.object,
+    name: item.object_label,
   }));
 };
 
@@ -100,15 +98,14 @@ type _Comparison = {
 export const compareSetToSet = async (
   aPhenotypes: string[],
   bPhenotypes: string[],
-): Promise<Comparison> => {
+) => {
   /** make request options */
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   headers.append("Accept", "application/json");
   const body = {
-    reference_ids: aPhenotypes,
-    query_ids: [bPhenotypes],
-    is_feature_set: aPhenotypes.every((id) => id.startsWith("HP:")),
+    subjects: aPhenotypes,
+    objects: bPhenotypes,
   };
   const options = {
     method: "POST",
@@ -117,10 +114,22 @@ export const compareSetToSet = async (
   };
 
   /** make query */
-  const url = `${biolink}/sim/compare`;
-  const response = await request<_Comparison>(url, {}, options);
+  const url = `${monarch}/semsim/compare`;
+  const response = await request<TermSetPairwiseSimilarity>(url, {}, options);
 
-  return mapMatches(response);
+  const matches = Object.values(response.subject_best_matches || {}).map(
+    (match) => ({
+      source: match.match_source,
+      source_label: match.match_source_label,
+      target: match.match_target,
+      target_label: match.match_target_label,
+      score: match.score,
+    }),
+  );
+
+  matches.sort((a, b) => b.score - a.score);
+
+  return matches;
 };
 
 /** compare a set of phenotypes to a gene or disease taxon id */

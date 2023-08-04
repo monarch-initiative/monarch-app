@@ -5,7 +5,8 @@ import { feedbackEndpoint } from "@/api/feedback";
 import { obo } from "@/api/ontologies";
 import { efetch, esummary } from "@/api/publications";
 import { uptimeRobot } from "@/api/uptime";
-import associations from "./association-table.json";
+import associationsTable from "./association-table.json";
+import associations from "./associations.json";
 import autocomplete from "./autocomplete.json";
 import datasets from "./datasets.json";
 import feedback from "./feedback.json";
@@ -68,13 +69,18 @@ export const handlers = [
   rest.get(regex(biolink, "/sim/search"), (req, res, ctx) =>
     res(ctx.status(200), ctx.json(phenotypeExplorerSearch)),
   ),
-  rest.post(regex(biolink, "/sim/compare"), (req, res, ctx) =>
+  rest.post(regex(monarch, "/semsim/compare"), (req, res, ctx) =>
     res(ctx.status(200), ctx.json(phenotypeExplorerCompare)),
   ),
 
   /** node associations */
-  rest.get(regex(monarch, "/entity/.*/.*"), (req, res, ctx) =>
+  rest.get(regex(monarch, "/associations"), (req, res, ctx) =>
     res(ctx.status(200), ctx.json(associations)),
+  ),
+
+  /** node associations table */
+  rest.get(regex(monarch, "/entity/.*/.*"), (req, res, ctx) =>
+    res(ctx.status(200), ctx.json(associationsTable)),
   ),
 
   /** node lookup */

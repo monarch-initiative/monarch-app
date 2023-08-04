@@ -86,7 +86,7 @@ fixtures['search'] = si.search(q = "fanconi")
 # fixtures['uptime'] = 
 
 ## Leave compare out unless we need it, since it takes a long time to run
-# fixtures['compare'] = oak.compare(subjects = ['MP:0010771', 'MP:0002169'], objects = ['HP:0004325'])
+# fixtures['phenotype-explorer-compare'] = oak.compare(subjects = ['MP:0010771', 'MP:0002169'], objects = ['HP:0004325'])
 
 
 ### Generate query fixtures

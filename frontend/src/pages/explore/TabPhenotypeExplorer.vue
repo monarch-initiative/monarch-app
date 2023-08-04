@@ -16,7 +16,7 @@
       v-model="aPhenotypes"
       name="First set of phenotypes"
       :options="getPhenotypes"
-      placeholder="Select phenotypes"
+      placeholder="Search for phenotypes, genes, or diseases"
       :tooltip="multiTooltip"
       :description="description(aPhenotypes, aGeneratedFrom)"
       @spread-options="(option, options) => spreadOptions(option, options, 'a')"
@@ -24,8 +24,8 @@
 
     <!-- set B -->
     <AppFlex gap="small">
-      <strong>... to</strong>
-      <AppSelectSingle
+      <strong>... to these phenotypes</strong>
+      <!-- <AppSelectSingle
         v-model="bMode"
         name="Second set mode"
         :options="bModeOptions"
@@ -35,7 +35,7 @@
         v-model="bTaxon"
         name="Second set taxon"
         :options="bTaxonOptions"
-      />
+      /> -->
     </AppFlex>
 
     <AppSelectTags
@@ -43,7 +43,7 @@
       v-model="bPhenotypes"
       name="Second set of phenotypes"
       :options="getPhenotypes"
-      placeholder="Select phenotypes"
+      placeholder="Search for phenotypes, genes, or diseases"
       :tooltip="multiTooltip"
       :description="description(bPhenotypes, bGeneratedFrom)"
       @spread-options="(option, options) => spreadOptions(option, options, 'b')"
@@ -59,15 +59,13 @@
     <AppStatus v-if="isError" code="error">Error running analysis</AppStatus>
 
     <!-- analysis top results -->
-    <AppFlex v-else-if="comparison.matches.length">
+    <AppFlex v-else-if="comparison.length">
       <!-- heading -->
-      <strong
-        >Top {{ Math.min(comparison.matches.length, 10) }} match(es)</strong
-      >
+      <strong>Top {{ Math.min(comparison.length, 10) }} match(es)</strong>
 
       <!-- list of comparison results -->
       <div
-        v-for="(match, matchIndex) in comparison.matches.slice(0, 10)"
+        v-for="(match, matchIndex) in comparison.slice(0, 10)"
         :key="matchIndex"
         class="match"
       >
@@ -75,52 +73,26 @@
         <AppRing
           v-tooltip="'Similarity score'"
           :score="match.score"
-          :min="comparison.minScore"
-          :max="comparison.maxScore"
+          :percent="1 - 1 / (1 + match.score)"
         />
+        <!-- for percent, use asymptotic function limited to 1 so we don't need to know max score -->
 
-        <AppFlex direction="col" align-h="stretch" gap="small" class="details">
-          <!-- primary match info -->
-          <div class="primary truncate">
-            <AppIcon
-              v-tooltip="startCase(match.category)"
-              :icon="`category-${match.category}`"
-            />
-
-            <!-- if name of match is + separated list of phenotype ids, link to each one separately -->
-            <template v-if="match.name.includes(' + ')">
-              <template
-                v-for="(id, idIndex) of match.name.split(' + ')"
-                :key="idIndex"
-              >
-                <AppLink :to="`/node/${id}`">
-                  {{ id }}
-                </AppLink>
-                <span v-if="idIndex !== match.name.split(' + ').length - 1">
-                  +
-                </span>
-              </template>
-            </template>
-
-            <!-- otherwise, just show details as normal -->
-            <template v-else>
-              <AppLink :to="`/node/${match.id}`">
-                {{ match.name }}
-              </AppLink>
-            </template>
-          </div>
-
-          <!-- secondary match info -->
-          <div class="secondary truncate">
-            <span>{{ match.id }}</span>
-            <span v-if="match.taxon">&nbsp; | &nbsp;{{ match.taxon }}</span>
-          </div>
+        <AppFlex class="details" align-h="left" gap="small">
+          Source:
+          <AppLink :to="`/node/${match.source}`">
+            {{ match.source_label || match.source }}
+          </AppLink>
+          <AppIcon icon="arrow-right" class="arrow" />
+          Target:
+          <AppLink :to="`/node/${match.target}`">
+            {{ match.target_label || match.target }}
+          </AppLink>
         </AppFlex>
       </div>
     </AppFlex>
 
     <!-- phenogrid results -->
-    <template v-if="comparison.matches.length">
+    <template v-if="comparison.length">
       <strong>Phenotype Similarity Comparison</strong>
       <div id="phenogrid"></div>
     </template>
@@ -129,15 +101,15 @@
 
 <script setup lang="ts">
 import { onMounted, ref, watch } from "vue";
-import { isEqual, startCase } from "lodash";
+import { isEqual } from "lodash";
 import { mountPhenogrid } from "@/api/phenogrid";
 import {
   compareSetToSet,
-  compareSetToTaxon,
+  // compareSetToTaxon,
   getPhenotypes,
 } from "@/api/phenotype-explorer";
 import AppRing from "@/components/AppRing.vue";
-import AppSelectSingle from "@/components/AppSelectSingle.vue";
+// import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import type { Option, Options } from "@/components/AppSelectTags.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
@@ -173,7 +145,7 @@ const taxons = [
   { id: "8353", label: "frog", scientific: "Xenopus" },
 ];
 
-const bTaxonHuman = taxons[0];
+// const bTaxonHuman = taxons[0];
 
 /** taxon options for second set */
 const bTaxonOptions = taxons.slice(1);
@@ -215,21 +187,21 @@ const {
   isError,
 } = useQuery(
   async function () {
-    /** run appropriate analysis based on selected mode */
-    if (bMode.value.id.includes("these phenotypes"))
-      return await compareSetToSet(
-        aPhenotypes.value.map(({ id }) => id),
-        bPhenotypes.value.map(({ id }) => id),
-      );
-    else
-      return await compareSetToTaxon(
-        aPhenotypes.value.map(({ id }) => id),
-        bMode.value.id.includes("diseases") ? bTaxonHuman.id : bTaxon.value.id,
-      );
+    // /** run appropriate analysis based on selected mode */
+    // if (bMode.value.id.includes("these phenotypes"))
+    return await compareSetToSet(
+      aPhenotypes.value.map(({ id }) => id),
+      bPhenotypes.value.map(({ id }) => id),
+    );
+    // else
+    //   return await compareSetToTaxon(
+    //     aPhenotypes.value.map(({ id }) => id),
+    //     bMode.value.id.includes("diseases") ? bTaxonHuman.id : bTaxon.value.id,
+    //   );
   },
 
   /** default value */
-  { matches: [] },
+  [],
 );
 
 /** when multi select component runs spread options function */
@@ -255,13 +227,14 @@ function runPhenogrid() {
 
   /** use second taxon id or group of phenotypes as x axis */
   let xAxis = [];
-  if (mode === "compare") xAxis = bPhenotypes.value;
-  else {
-    const taxon = bMode.value.id.includes("diseases")
-      ? bTaxonHuman
-      : bTaxon.value;
-    xAxis = [{ id: taxon.id, label: taxon.scientific }];
-  }
+  // if (mode === "compare")
+  xAxis = bPhenotypes.value;
+  // else {
+  //   const taxon = bMode.value.id.includes("diseases")
+  //     ? bTaxonHuman
+  //     : bTaxon.value;
+  //   xAxis = [{ id: taxon.id, label: taxon.scientific }];
+  // }
   /** call phenogrid */
   mountPhenogrid("#phenogrid", xAxis, yAxis, mode);
 }
@@ -270,13 +243,13 @@ function runPhenogrid() {
 watch(
   () => comparison.value,
   () => {
-    if (comparison.value.matches.length) runPhenogrid();
+    if (comparison.value.length) runPhenogrid();
   },
 );
 
 /** clear/reset results */
 function clearResults() {
-  comparison.value = { matches: [] };
+  comparison.value = [];
 }
 
 /** get description to show below phenotypes select box */
@@ -331,20 +304,10 @@ onMounted(() => {
 .details {
   flex-grow: 1;
   width: 0;
-  text-align: left;
-
-  svg {
-    margin-right: 10px;
-    vertical-align: middle;
-  }
-}
-.primary {
-  text-align: left;
 }
 
-.secondary {
+.arrow {
   color: $gray;
-  text-align: left;
 }
 
 @media (max-width: 600px) {
