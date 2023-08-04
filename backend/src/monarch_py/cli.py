@@ -36,7 +36,6 @@ def callback(
             fg=typer.colors.YELLOW,
         )
         raise typer.Exit()
-    # if command is not compare, check for docker
     if ctx.invoked_subcommand != "compare":
         check_for_docker()
     set_log_level(log_level="DEBUG" if debug else "WARNING" if quiet else "INFO")
