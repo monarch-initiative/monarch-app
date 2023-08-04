@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter
 # from monarch_py.api.config import oak
 from monarch_py.implementations.oak.oak_implementation import OakImplementation
@@ -30,3 +32,22 @@ def _compare(
         objects=objects.split(","),
     )
     return results
+
+
+@router.post("/compare")
+def _post_compare(
+        subjects: List[str] = None,
+        objects: List[str] = None,
+):
+    """
+    Pairwise similarity between two sets of terms <br>
+    <br>
+    Example: <br>
+<pre>
+{
+  "subjects": ["MP:0010771","MP:0002169","MP:0005391","MP:0005389","MP:0005367"],
+  "objects": ["HP:0004325","HP:0000093","MP:0006144"]
+}
+</pre>
+    """
+    return oak.compare(subjects, objects)
