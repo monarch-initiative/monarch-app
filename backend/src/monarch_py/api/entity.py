@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import APIRouter, Depends, HTTPException, Query
 from monarch_py.api.additional_models import PaginationParams
 from monarch_py.api.config import settings
@@ -50,6 +51,7 @@ def _association_table(
         title="Type of association to retrieve association table data for",
     ),
     query: str = Query(None, example="thumb", title="Query string to limit results to a subset"),
+        sort: List[str] = Query(None, example=["subject_label asc", "predicate asc", "object_label asc"], title="Sort results by a list of field + direction statements"),
     pagination: PaginationParams = Depends(),
 ) -> AssociationTableResults:
     """
@@ -64,7 +66,7 @@ def _association_table(
     """
     solr = SolrImplementation(base_url=settings.solr_url)
     response = solr.get_association_table(
-        entity=id, category=category, q=query, offset=pagination.offset, limit=pagination.limit
+        entity=id, category=category, q=query, sort=sort, offset=pagination.offset, limit=pagination.limit
     )
 
     return response
