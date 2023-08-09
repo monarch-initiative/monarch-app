@@ -24,10 +24,10 @@
         subtitle="How all the pieces of Monarch fit together"
       />
       <AppTile
-        to="https://github.com/monarch-initiative/monarch-app/tree/main/backend"
+        to="https://monarch-app.monarchinitiative.org/docs/"
         icon="code"
         title="API"
-        subtitle="The API behind this website"
+        subtitle="The API serving this website"
       />
       <AppTile
         to="/team"
