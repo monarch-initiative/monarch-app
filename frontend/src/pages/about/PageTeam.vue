@@ -11,12 +11,12 @@
     <p>
       Monarch is made possible thanks to a diverse and dedicated team of
       biologists, scientists, and programmers from various schools and
-      institutes.
+      institutes:
     </p>
     <p>
       <template v-for="(group, index) in team" :key="index">
         <AppLink :to="'#' + kebabCase(group.name)">{{ group.name }}</AppLink>
-        <span v-if="index !== team.length - 1"> · </span>
+        <span v-if="index !== team.length - 1"> | </span>
       </template>
     </p>
   </AppSection>
