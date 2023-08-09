@@ -24,22 +24,10 @@
         subtitle="How all the pieces of Monarch fit together"
       />
       <AppTile
-        to="https://github.com/biolink/biolink-api"
+        to="https://github.com/monarch-initiative/monarch-app/tree/main/backend"
         icon="code"
         title="API"
-        subtitle="The API behind this website, BioLink"
-      />
-      <AppTile
-        to="/sources"
-        icon="database"
-        title="Sources"
-        subtitle="Datasets, ontologies, and downloads"
-      />
-      <AppTile
-        to="/cite"
-        icon="feather-alt"
-        title="Cite"
-        subtitle="How to cite and attribute Monarch"
+        subtitle="The API behind this website"
       />
       <AppTile
         to="/team"
@@ -48,10 +36,28 @@
         subtitle="The people behind Monarch"
       />
       <AppTile
-        to="/publications"
-        icon="newspaper"
-        title="Publications"
-        subtitle="Monarch-related published works"
+        to="/phenomics-first"
+        icon="eye"
+        title="Phenomics First"
+        subtitle="Our approach to disease diagnosis"
+      />
+      <AppTile
+        to="/sources"
+        icon="database"
+        title="Sources"
+        subtitle="Datasets, ontologies, and downloads"
+      />
+      <AppTile
+      to="/publications"
+      icon="newspaper"
+      title="Publications"
+      subtitle="Monarch-related published works"
+      />
+      <AppTile
+        to="/cite"
+        icon="feather-alt"
+        title="Cite"
+        subtitle="How to cite and attribute Monarch"
       />
       <AppTile
         to="/terms"

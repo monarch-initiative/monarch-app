@@ -5,6 +5,7 @@ import { hideAll } from "tippy.js";
 import PageAbout from "@/pages/about/PageAbout.vue";
 import PageCite from "@/pages/about/PageCite.vue";
 import PageOverview from "@/pages/about/PageOverview.vue";
+import PagePhenomicsFirst from "@/pages/about/PagePhenomicsFirst.vue";
 import PagePublications from "@/pages/about/PagePublications.vue";
 import PageSources from "@/pages/about/PageSources.vue";
 import PageTeam from "@/pages/about/PageTeam.vue";
@@ -108,6 +109,11 @@ export const routes: RouteRecordRaw[] = [
     path: "/terms",
     name: "Terms",
     component: PageTerms,
+  },
+  {
+    path: "/phenomics-first",
+    name: "PhenomicsFirst",
+    component: PagePhenomicsFirst,
   },
 
   /** help pages */
