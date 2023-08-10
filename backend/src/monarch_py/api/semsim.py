@@ -1,11 +1,9 @@
 from typing import List
 
 from fastapi import APIRouter
-# from monarch_py.api.config import oak
-from monarch_py.implementations.oak.oak_implementation import OakImplementation
+from monarch_py.api.config import oak
 
 router = APIRouter(tags=["semsim"], responses={404: {"description": "Not Found"}})
-oak = OakImplementation()
 
 
 @router.get("/compare/{subjects}/{objects}")

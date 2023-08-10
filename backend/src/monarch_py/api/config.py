@@ -1,4 +1,5 @@
 import os
+from functools import lru_cache
 
 from pydantic import BaseSettings
 
@@ -16,4 +17,4 @@ settings = Settings()
 
 solr = SolrImplementation(base_url=settings.solr_url)
 
-oak = OakImplementation()
+oak = OakImplementation().init_semsim()

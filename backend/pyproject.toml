@@ -18,7 +18,7 @@ packages = [
 ### Core dependencies
 python = "^3.9"
 pydantic = "^1.10.2"
-curies = "^0.5.6"
+curies = "<1"
 linkml = "^1.5.5"
 prefixmaps = "^0.1.5"
 requests = "^2.28.1"
@@ -30,9 +30,7 @@ pystow = ">=0.5.0"
 loguru = "*"
 ### Optional API dependencies
 fastapi ={ version = "^0.87.0", optional = true }
-oaklib = "0.5.13-rc4"
-semsimian = "0.1.18"
-
+oaklib = "0.5.16-rc1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2.0"

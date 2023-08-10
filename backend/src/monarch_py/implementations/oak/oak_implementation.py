@@ -13,8 +13,7 @@ from oaklib.selector import get_adapter
 class OakImplementation(SemanticSimilarityInterface):
     """Implementation of Monarch Interfaces for OAK"""
 
-    # semsim: SemanticSimilarityInterface = None # or is it a SqlImplementation?
-    semsim = get_adapter(f"semsimian:sqlite:obo:phenio")
+    semsim = None
     default_predicates = ["rdfs:subClassOf", "BFO:0000050", "UPHENO:0000001"]
     
     def init_semsim(self):
