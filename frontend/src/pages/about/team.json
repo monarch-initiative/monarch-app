@@ -24,9 +24,9 @@
         "link": "https://tislab.org/members/julie-mcmurry.html"
       },
       {
-        "name": "Nicole Vasilevsky",
-        "role": "Lead Biocurator",
-        "link": "https://tislab.org/members/nicole-vasilevsky.html"
+        "name": "Sarah Gehrke",
+        "role": "Project Manager",
+        "link": "https://tislab.org/members/sarah-gehrke.html"
       },
       {
         "name": "Sabrina Toro",
@@ -41,7 +41,7 @@
       {
         "name": "Glass Elsarboukh",
         "role": "Scientific Software Engineer",
-        "link": "https://tislab.org/members/glass-elsarboukh.html"
+        "link": "https://github.com/glass-ships"
       },
       {
         "name": "Vincent Rubinetti",
@@ -175,13 +175,9 @@
     "link": "https://www.ebi.ac.uk/",
     "members": [
       {
-        "name": "David Osumi-Sutherland",
+        "name": "James McLaughlin",
         "role": "Monarch PI",
-        "link": "https://www.ebi.ac.uk/about/people/david-osumi-sutherland"
-      },
-      {
-        "name": "Nicolas Matentzoglu",
-        "role": "Semantic Web Developer"
+        "link": "https://github.com/udp"
       }
     ]
   },
@@ -197,6 +193,16 @@
   {
     "name": "Alumni Members",
     "members": [
+      {
+        "name": "Nicole Vasilevsky",
+        "role": "Lead Biocurator",
+        "link": "https://nicolevasilevsky.github.io"
+      },
+      {
+        "name": "David Osumi-Sutherland",
+        "role": "Monarch PI",
+        "link": "https://www.ebi.ac.uk/about/people/david-osumi-sutherland"
+      },
       {
         "name": "Kent Shefchek",
         "role": "Bioinformatics Software Engineer"
