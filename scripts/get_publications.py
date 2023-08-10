@@ -22,14 +22,23 @@ ensure that the correct information is displayed for each publication.
 """
 import json
 from pathlib import Path
+
+import pprint
 from scholarly import scholarly
 
+pp = pprint.PrettyPrinter(indent=2).pprint
 outdir = Path(__file__).parent.parent / 'frontend' / 'src' / 'pages' / 'about'
 print(f"{'-'*80}\nWriting publications to {outdir}")
 
-import pprint
-pp = pprint.PrettyPrinter(indent=2).pprint
 
+def check_missing_fields(pub: dict):
+    """Check for missing fields in the publication"""
+    bib = pub['bib']
+    missing = [j for j in ['title', 'author', 'pub_year'] if j not in bib]      
+    missing.append('journal/publisher' if 'journal' not in bib and 'publisher' not in bib else '')
+    missing.append('pub_url' if 'pub_url' not in pub else '')
+    missing = [j for j in missing if j != '']
+    return missing
 
 ### Search for publications which cite the Monarch Initiative
 author = scholarly.search_author_id(id = 'zmUEDj0AAAAJ')
@@ -44,20 +53,16 @@ for p in publications:
     scholarly.fill(p, sections=['bib'])
     bib = p['bib']
 
-    # Check for missing keys
-    missing = [j for j in ['title', 'author', 'pub_year'] if j not in bib]      
-    missing.append('journal/publisher' if 'journal' not in bib and 'publisher' not in bib else '')
-    missing.append('pub_url' if 'pub_url' not in p else '')
-    missing = [j for j in missing if j != '']
+    missing = check_missing_fields(p)
     
     # Debug info
-    print(f"{'-'*80}\nProcessing publication: {bib['title']}")
+    print(f"Processing publication: {bib['title']}")
     if missing:
-        print(f"Missing keys: {missing}")
+        print(f"\tMissing keys: {', '.join(missing)}")
 
-    link = f"[Link]({p['pub_url']})" if 'pub_url' in p else ''        
-    pub_year = bib['pub_year'] if 'pub_year' in bib else 'N/A'
-    journal = bib['journal'] if 'journal' in bib else bib['publisher'] if 'publisher' in bib else bib['citation'] if 'citation' in bib else 'Unknown'
+    link = f"[Link]({p['pub_url']})" if 'pub_url' in p else 'No link found'        
+    pub_year = bib['pub_year'] if 'pub_year' in bib else 'Unknown'
+    journal = bib['journal'] if 'journal' in bib else bib['publisher'] if 'publisher' in bib else bib['citation'] if 'citation' in bib else 'Journal not found'
     issue = ''
     if 'volume' in bib:
         issue += f"{bib['volume']}"

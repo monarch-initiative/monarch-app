@@ -1162,7 +1162,7 @@
         "journal": "Genome Research",
         "pub_year": 2013,
         "issue": "24(2):340-348",
-        "link": "https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=Improved+exome+prioritization+of+disease+genes+through+cross-species+phenotype+comparison&btnG=&oq=Improved+exome+prioritization+of+disease+genes+through+cross-species+phenotype+comparison"
+        "link": "No link found"
       },
       {
         "title": "What is an anatomy ontology?",
@@ -1309,13 +1309,13 @@
     ]
   },
   {
-    "year": "N/A",
+    "year": "Unknown",
     "items": [
       {
         "title": "An improved phenotype-driven tool for rare mendelian variant prioritization: Benchmarking exomiser on real patient whole-exome data. Genes. 2020; 11 (4)",
         "authors": "V Cipriani, N Pontikos, G Arno, PI Sergouniotis, E Lenassi, P Thawong, D Danis, M Michaelides, AR Webster, AT Moore, PN Robinson, JOB Jacobsen, D Smedley",
         "journal": "",
-        "pub_year": "N/A",
+        "pub_year": "Unknown",
         "issue": "",
         "link": "[Link](https://scholar.google.com/scholar?cluster=15938911972084924389&hl=en&oi=scholarr)"
       },
@@ -1323,7 +1323,7 @@
         "title": "The Monarch Initiative: an integrative data and analytic platform connecting phenotypes to genotypes across species 1: CAS: 528: DC% 2BC1cXhslWhsLk% 3D 10.1093/nar/gkw1128 Nucleic Acids Res., 45 (2017), pp",
         "authors": "CJ Mungall, JA McMurry, S K\u00f6hler, JP Balhoff, C Borromeo, M Brush",
         "journal": "D712-D722",
-        "pub_year": "N/A",
+        "pub_year": "Unknown",
         "issue": "",
         "link": "[Link](https://scholar.google.com/scholar?cluster=15620211287770650727&hl=en&oi=scholarr)"
       },
@@ -1331,7 +1331,7 @@
         "title": "MONDO",
         "authors": "Monarch Initiative",
         "journal": "(No Title)",
-        "pub_year": "N/A",
+        "pub_year": "Unknown",
         "issue": "",
         "link": "[Link](https://cir.nii.ac.jp/crid/1630573749125321216)"
       },
@@ -1339,7 +1339,7 @@
         "title": "International Mouse Phenotyping Consortium and the Monarch Initiative(2019). New models for human disease from the International Mouse Phenotyping Consortium",
         "authors": "P Cacheiro, MA Haendel, D Smedley",
         "journal": "Mamm. Genome",
-        "pub_year": "N/A",
+        "pub_year": "Unknown",
         "issue": "30:143-150",
         "link": "[Link](https://scholar.google.com/scholar?cluster=6614227780042409090&hl=en&oi=scholarr)"
       },
@@ -1347,7 +1347,7 @@
         "title": "SEPIO: A Semantic Model for the Integration and Analysis of Scientific Evidence. in\u200b ICBO",
         "authors": "MH Brush, K Shefchek, M Haendel",
         "journal": "BioCreative",
-        "pub_year": "N/A",
+        "pub_year": "Unknown",
         "issue": "",
         "link": "[Link](https://scholar.google.com/scholar?cluster=16431536651956990214&hl=en&oi=scholarr)"
       },
@@ -1355,7 +1355,7 @@
         "title": "Curating databases en masse: a semantic integration approach for disease discovery",
         "authors": "Melissa A Haendel",
         "journal": "",
-        "pub_year": "N/A",
+        "pub_year": "Unknown",
         "issue": "",
         "link": "[Link](https://scholar.google.com/scholar?cluster=15993358085114936511&hl=en&oi=scholarr)"
       },
@@ -1363,7 +1363,7 @@
         "title": "Environmental Health Language Collaborative (EHLC): a route to environmental health science data harmonization",
         "authors": "Anna Maria Masci, Stephanie Holmgren, Charles Schmitt, Rima Habre, Anne E Thessen, Rebecca Boyles, Carmen Marsit",
         "journal": "",
-        "pub_year": "N/A",
+        "pub_year": "Unknown",
         "issue": "",
         "link": "[Link](https://icbo-conference.github.io/icbo2022/papers/ICBO-2022_paper_6982.pdf)"
       },
@@ -1371,7 +1371,7 @@
         "title": "Uberon: towards a comprehensive multi-species anatomy ontology. 2009",
         "authors": "M Haendel, G Gkoutos, S Lewis, C Mungall",
         "journal": "",
-        "pub_year": "N/A",
+        "pub_year": "Unknown",
         "issue": "",
         "link": "[Link](https://scholar.google.com/scholar?cluster=10112866354224337220&hl=en&oi=scholarr)"
       },
@@ -1379,7 +1379,7 @@
         "title": "Translational Genomics for Rare Disease",
         "authors": "Peter N Robinson",
         "journal": "Mission\u2013Innovation: Telematics, eHealth and High-Definition Medicine in Patient-Centered Acute Medicine",
-        "pub_year": "N/A",
+        "pub_year": "Unknown",
         "issue": ":139",
         "link": "[Link](https://www.researchgate.net/profile/Gunnar-Lachmann/publication/354463722_Mission_-_Innovation/links/6139d9d20397f5523b1273f4/Mission-Innovation.pdf#page=141)"
       },
@@ -1387,7 +1387,7 @@
         "title": "Toggle navigation BBOP home",
         "authors": "GitHub Team Page, Gene Ontology, Monarch Initiative, Phenomics First, NCATS Biomedical, OBO Foundry, Biolink Model, API Biolink, Chado Schema, FANTOM Ontology, Relation Ontology, Chris Mungall PI, Seth Carbon, Harry Caufield, Nomi Harris, Harshad Hegde, Marcin Joachimiak, Patrick Kalita, Mark Miller, Sierra Moxon, Sujay Patil, Justin Reese, Suzanna Lewis",
         "journal": "",
-        "pub_year": "N/A",
+        "pub_year": "Unknown",
         "issue": "",
         "link": "[Link](http://berkeleybop.org/software/apollo/)"
       },
@@ -1395,7 +1395,7 @@
         "title": "OBO Foundry",
         "authors": "GitHub Team Page, Gene Ontology, Monarch Initiative, Phenomics First, NCATS Biomedical",
         "journal": "",
-        "pub_year": "N/A",
+        "pub_year": "Unknown",
         "issue": "",
         "link": "[Link](http://berkeleybop.org/project/obo-foundry/)"
       },
@@ -1403,7 +1403,7 @@
         "title": "K\u00f6 hler S, Balhoff JP, Borromeo C, et al. 2017. The Monarch Initiative: an integrative data and analytic platform connecting phenotypes to genotypes across species",
         "authors": "CJ Mungall, JA McMurry",
         "journal": "Nucleic Acids Res",
-        "pub_year": "N/A",
+        "pub_year": "Unknown",
         "issue": "45:D712-D722",
         "link": "[Link](https://scholar.google.com/scholar?cluster=13556066220408233685&hl=en&oi=scholarr)"
       },
@@ -1411,7 +1411,7 @@
         "title": "an integrative data and analytic platform connecting phenotypes to genotypes across species| Nucleic Acids Research| Oxford Academic",
         "authors": "Monarch Initiative",
         "journal": "",
-        "pub_year": "N/A",
+        "pub_year": "Unknown",
         "issue": "1",
         "link": "[Link](https://scholar.google.com/scholar?cluster=11771280432096084001&hl=en&oi=scholarr)"
       },
@@ -1419,7 +1419,7 @@
         "title": "Monarch Initiative",
         "authors": "GitHub Team Page, Gene Ontology",
         "journal": "",
-        "pub_year": "N/A",
+        "pub_year": "Unknown",
         "issue": "",
         "link": "[Link](http://berkeleybop.github.io/project/monarch/)"
       },
@@ -1427,7 +1427,7 @@
         "title": "Finding Useful Data Across Multiple Biomedical Data Repositories Using Datamed",
         "authors": "NIH Allen Dearry\u2013NIEHS, Helen Berman-Rutgers, Jared Lyle-ICPSR, John Westbrook-Rutgers, Mary Vardigan-ICPSR, Melissa Haendel-Monarch Initiative, Michael Braxenthaler-Roche, Shraddha Thakkar-NCTR FDA, Weida Tong-NCTR FDA, Jessica Scott-GlaxoSmithKline, Julie McMurry-Monarch Initiative, Thomas Radman-NIH, Todd Johnson-UTHealth, Trevor Cohen-UTHealth, Alyson Yao, NIH Anders Garlid, UCLA Anita deWaard",
         "journal": "",
-        "pub_year": "N/A",
+        "pub_year": "Unknown",
         "issue": "",
         "link": "[Link](https://docsbay.net/finding-useful-data-across-multiple-biomedical-data-repositories-using-datamed)"
       }

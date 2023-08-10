@@ -1,7 +1,7 @@
 [
   {
     "year": 2021,
-    "list": [
+    "items": [
       {
         "title": "Knowledge Beacons: Web services for data harvesting of distributed biomedical knowledge",
         "authors": "Hannestad LM, Dancík V, Godden M, Suen IW, Huellas-Bruskiewicz KC, Good BM, Mungall CJ, Bruskiewich RM",
@@ -41,7 +41,7 @@
   },
   {
     "year": 2020,
-    "list": [
+    "items": [
       {
         "title": "Significantly different clinical phenotypes associated with mutations in synthesis and transamidase+remodeling glycosylphosphatidylinositol (GPI)-anchor biosynthesis genes",
         "authors": "Carmody LC, Blau H, Danis D, Zhang XA, Gourdine JP, Vasilevsky N, Krawitz P, Thompson MD, Robinson PN",
@@ -158,7 +158,7 @@
   },
   {
     "year": 2019,
-    "list": [
+    "items": [
       {
         "title": "Clinical Data: Sources and Types, Regulatory Constraints, Applications",
         "authors": "Ahalt SC, Chute CG, Fecho K, Glusman G, Hadlock J, Taylor CO, Pfaff ER, Robinson PN, Solbrig H, Ta C, Tatonetti N, Weng C; Biomedical Data Translator Consortium",
@@ -261,7 +261,7 @@
   },
   {
     "year": 2018,
-    "list": [
+    "items": [
       {
         "title": "Classification, Ontology, and Precision Medicine (2018)",
         "authors": "Haendel MA, Chute CG, Robinson PN 2018",
@@ -294,7 +294,7 @@
   },
   {
     "year": 2017,
-    "list": [
+    "items": [
       {
         "title": "The Monarch Initiative: An Integrative Data and Analytic Platform Connecting Phenotypes to Genotypes across Species",
         "authors": "Mungall CJ, McMurry JA, Köhler S, Balhoff JP, Borromeo C, Brush M, Carbon S, Conlin T, Dunn N, Engelstad M, Foster E, Gourdine JP, Jacobsen JO, Keith D, Laraway B, Lewis SE, NguyenXuan J, Shefchek K, Vasilevsky N, Yuan Z,Washington N, Hochheiser H, Groza T, Smedley D, Robinson PN, Haendel MA",
@@ -369,7 +369,7 @@
   },
   {
     "year": 2016,
-    "list": [
+    "items": [
       {
         "title": "Navigating the Phenotype Frontier: The Monarch Initiative",
         "authors": "McMurry JA, Köhler S, Washington NL, Balhoff JP, Borromeo C, Brush M, Carbon S, Conlin T, Dunn N, Engelstad M, Foster E, Gourdine JP, Jacobsen JO, Keith D, Laraway B, Xuan JN, Shefchek K, Vasilevsky NA, Yuan Z, Lewis SE, Hochheiser H, Groza T, Smedley D, Robinson PN, Mungall CJ, Haendel MA",
@@ -407,7 +407,7 @@
       },
       {
         "title": "The Ontology for Biomedical Investigations",
-        "authors": "Bandrowski A, Brinkman R, Brochhausen M, Brush MH, Bug B, Chibucos MC, Clancy K, Courtot M, Derom D, Dumontier M, Fan L, Fostel J, Fragoso G, Gibson F, Gonzalez-Beltran A, Haendel MA, He Y, Heiskanen M, Hernandez-Boussard T, Jensen M, Lin Y, Lister AL, Lord P, Malone J, Manduchi E, McGee M, Morrison N, Overton JA, Parkinson H, Peters B, Rocca-Serra P, Ruttenberg A, Sansone SA, Scheuermann RH, Schober D, Smith B, Soldatova LN, Stoeckert CJ Jr, Taylor CF, Torniai C, Turner JA, Vita R, Whetzel PL, Zheng J",
+        "authors": "Bandrowski A, Brinkman R, Brochhausen M, Brush MH, Bug B, Chibucos MC, Clancy K, Courtot M, Derom D, Dumontier M, Fan L, Fostel J, Fragoso G, Gibson F, Gonzalez-Beltran A, Haendel MA, He Y, Heiskanen M, Hernandez-Boussard T, Jensen M, Lin Y, itemser AL, Lord P, Malone J, Manduchi E, McGee M, Morrison N, Overton JA, Parkinson H, Peters B, Rocca-Serra P, Ruttenberg A, Sansone SA, Scheuermann RH, Schober D, Smith B, Soldatova LN, Stoeckert CJ Jr, Taylor CF, Torniai C, Turner JA, Vita R, Whetzel PL, Zheng J",
         "journal": "PLoS One",
         "issue": "11(4):e0154556",
         "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/27128319)"
@@ -451,7 +451,7 @@
   },
   {
     "year": 2015,
-    "list": [
+    "items": [
       {
         "title": "Human genotype-phenotype databases: aims, challenges and opportunities",
         "authors": "Brookes AJ, Robinson PN",
@@ -505,7 +505,7 @@
   },
   {
     "year": 2014,
-    "list": [
+    "items": [
       {
         "title": "Deletions of chromosomal regulatory boundaries are associated with congenital disease",
         "authors": "Ibn-Salem J, Köhler S, Love MI, Chung H-R, Huang N, Hurles ME, Haendel M, Washington NL, Smedley D, Mungall CJ, Lewis SE, Ott C-E, Bauer S, Schofield PN, Mundlos S, Spielmann M and Robinson PN",
@@ -573,7 +573,7 @@
   },
   {
     "year": 2013,
-    "list": [
+    "items": [
       {
         "title": "An overview of the BioCreative 2012 Workshop Track III: interactive text mining task",
         "authors": "Arighi CN, Carterette B, Cohen KB, Krallinger M, Wilbur WJ, Fey P, Dodson R, Cooper L, Van Slyke CE, Dahdul W, Mabee P, Li D, Harris B, Gillespie M, Jimenez S, Roberts P, Matthews L, Becker K, Drabkin H, Bello S, Licata L,Chatr-aryamontri A, Schaeffer ML, Park J, Haendel M, Van Auken K, Li Y, Chan J, Muller HM, Cui H, Balhoff JP, Chi-Yang Wu J, Lu Z, Wei CH, Tudor CO, Raja K, Subramani S, Natarajan J, Cejuela JM, Dubey P, Wu C",
@@ -662,7 +662,7 @@
   },
   {
     "year": 2012,
-    "list": [
+    "items": [
       {
         "title": "MouseFinder: Candidate disease genes from mouse phenotype data",
         "authors": "Chen CK, Mungall CJ, Gkoutos GV, Doelken SC, Kohler S, Ruef BJ, Smith C, Westerfield M, Robinson PN, Lewis SE, Schofield PN, Smedley D",
