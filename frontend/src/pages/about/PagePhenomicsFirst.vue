@@ -156,7 +156,6 @@
 
 <script setup lang="ts">
 import AppSection from "@/components/AppSection.vue";
-
 </script>
 
 <style lang="scss" scoped>

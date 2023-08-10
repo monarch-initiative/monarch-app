@@ -62,7 +62,7 @@ for p in publications:
 
     link = f"[Link]({p['pub_url']})" if 'pub_url' in p else 'No link found'        
     pub_year = bib['pub_year'] if 'pub_year' in bib else 'Unknown'
-    journal = bib['journal'] if 'journal' in bib else bib['publisher'] if 'publisher' in bib else bib['citation'] if 'citation' in bib else 'Journal not found'
+    journal = bib['journal'] if 'journal' in bib else bib['publisher'] if 'publisher' in bib else bib['citation'] if 'citation' in bib else 'No journal found'
     issue = ''
     if 'volume' in bib:
         issue += f"{bib['volume']}"
