@@ -27,7 +27,7 @@ class OakImplementation(SemanticSimilarityInterface):
             # for some reason, we need to run a query to get the adapter
             # to initialize properly
             logger.debug("Running query to initialize adapter")
-            self.semsim.termset_pairwise_similarity(
+            self.semsim.termset_pairwise_similarity_score_only(
                 subjects=["MP:0010771"],
                 objects=["HP:0004325"],
                 predicates=self.default_predicates,
@@ -46,7 +46,7 @@ class OakImplementation(SemanticSimilarityInterface):
         """Compare two sets of terms using OAK"""
         predicates = predicates or self.default_predicates
         logger.debug(f"Comparing {subjects} to {objects} using {predicates}")
-        response = self.semsim.termset_pairwise_similarity(
+        response = self.semsim.termset_pairwise_similarity_score_only(
             subjects=subjects,
             objects=objects,
             predicates=predicates,
