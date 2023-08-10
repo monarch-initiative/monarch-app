@@ -24,7 +24,8 @@ import json
 from pathlib import Path
 from scholarly import scholarly
 
-outdir = Path(__file__).parent 
+outdir = Path(__file__).parent.parent / 'frontend' / 'src' / 'pages' / 'about'
+print(f"{'-'*80}\nWriting publications to {outdir}")
 
 import pprint
 pp = pprint.PrettyPrinter(indent=2).pprint
@@ -42,12 +43,20 @@ pubs_by_year = []
 for p in publications:
     scholarly.fill(p, sections=['bib'])
     bib = p['bib']
+
+    # Check for missing keys
+    missing = [j for j in ['title', 'author', 'pub_year'] if j not in bib]      
+    missing.append('journal/publisher' if 'journal' not in bib and 'publisher' not in bib else '')
+    missing.append('pub_url' if 'pub_url' not in p else '')
+    missing = [j for j in missing if j != '']
     
-    # Print the keys of the pub and bib (for now)
-    print(f"{'-'*80}\n{p.keys()}\n{p['bib'].keys()}\n")
+    # Debug info
+    print(f"{'-'*80}\nProcessing publication: {bib['title']}")
+    if missing:
+        print(f"Missing keys: {missing}")
 
     link = f"[Link]({p['pub_url']})" if 'pub_url' in p else ''        
-    pub_year = bib['pub_year'] if 'pub_year' in bib else ''
+    pub_year = bib['pub_year'] if 'pub_year' in bib else 'N/A'
     journal = bib['journal'] if 'journal' in bib else bib['publisher'] if 'publisher' in bib else bib['citation'] if 'citation' in bib else 'Unknown'
     issue = ''
     if 'volume' in bib:
@@ -64,7 +73,8 @@ for p in publications:
             'journal': journal,
             'pub_year': pub_year,
             'issue': issue,
-            'link': f"[Link]({p['pub_url']})" if 'pub_url' in p else f"https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q={bib['title'].replace(' ', '+')}&btnG=&oq={bib['title'].replace(' ', '+')}",
+            'link': link
+            # 'link': f"[Link]({p['pub_url']})" if 'pub_url' in p else f"https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q={bib['title'].replace(' ', '+')}&btnG=&oq={bib['title'].replace(' ', '+')}",
         }
     except KeyError:
         pp(p)

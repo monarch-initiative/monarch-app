@@ -73,7 +73,7 @@
         <div class="col-12 col-lg-6">
           <figure class="ecosystems">
             <img
-              src="../../assets/pfr.png"
+              src="@/assets/pfr.png"
               alt="Phenomics First Resource Overview"
             />
             <figcaption>
@@ -94,7 +94,7 @@
         <div class="col-12 col-lg-6"> -->
           <figure class="ecosystems phenopackets">
             <img
-              src="../../assets/phenopackets-ecosystem.png"
+              src="@/assets/phenopackets-ecosystem.png"
               alt="Phenopackets Ecosystem"
             />
             <figcaption>
@@ -156,6 +156,7 @@
 
 <script setup lang="ts">
 import AppSection from "@/components/AppSection.vue";
+
 </script>
 
 <style lang="scss" scoped>

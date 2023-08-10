@@ -20,7 +20,7 @@
     <AppHeading>{{ group.year }}</AppHeading>
     <AppGallery size="big">
       <AppCitation
-        v-for="(publication, item) in group.list"
+        v-for="(publication, item) in group.items"
         :key="item"
         :title="publication.title"
         :authors="publication.authors"
