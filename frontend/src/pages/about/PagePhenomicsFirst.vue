@@ -73,7 +73,7 @@
         <div class="col-12 col-lg-6">
           <figure class="ecosystems">
             <img
-              src="src/assets/pfr.png"
+              src="../../assets/pfr.png"
               alt="Phenomics First Resource Overview"
             />
             <figcaption>
@@ -94,7 +94,7 @@
         <div class="col-12 col-lg-6"> -->
           <figure class="ecosystems phenopackets">
             <img
-              src="src/assets/phenopackets-ecosystem.png"
+              src="../../assets/phenopackets-ecosystem.png"
               alt="Phenopackets Ecosystem"
             />
             <figcaption>
