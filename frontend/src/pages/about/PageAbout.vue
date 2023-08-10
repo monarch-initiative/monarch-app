@@ -12,6 +12,14 @@
       knowledge graph consists of millions of entities &ndash; genes, diseases,
       phenotypes, and many more &ndash; imported from dozens of sources.
     </p>
+    <iframe
+        width="80%"
+        height="400"
+        src="https://www.youtube-nocookie.com/embed/SuUKqG2tbx0"
+        frameborder="0"
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
   </AppSection>
 
   <!-- main links to sub pages -->
@@ -67,7 +75,7 @@
       />
     </AppFlex>
   </AppSection>
-
+  
   <!-- mission statement -->
   <AppSection>
     <AppHeading>More about us</AppHeading>
