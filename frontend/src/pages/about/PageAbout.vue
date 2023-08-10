@@ -13,13 +13,14 @@
       phenotypes, and many more &ndash; imported from dozens of sources.
     </p>
     <iframe
-        width="80%"
-        height="400"
-        src="https://www.youtube-nocookie.com/embed/SuUKqG2tbx0"
-        frameborder="0"
-        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-      ></iframe>
+      title="Monarch Initiative Overview"
+      width="80%"
+      height="400"
+      src="https://www.youtube-nocookie.com/embed/SuUKqG2tbx0"
+      frameborder="0"
+      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+    ></iframe>
   </AppSection>
 
   <!-- main links to sub pages -->
@@ -56,10 +57,10 @@
         subtitle="Datasets, ontologies, and downloads"
       />
       <AppTile
-      to="/publications"
-      icon="newspaper"
-      title="Publications"
-      subtitle="Monarch-related published works"
+        to="/publications"
+        icon="newspaper"
+        title="Publications"
+        subtitle="Monarch-related published works"
       />
       <AppTile
         to="/cite"
@@ -75,7 +76,7 @@
       />
     </AppFlex>
   </AppSection>
-  
+
   <!-- mission statement -->
   <AppSection>
     <AppHeading>More about us</AppHeading>
