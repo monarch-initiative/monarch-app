@@ -12,7 +12,7 @@ router = APIRouter(
 @router.get("/{id}")
 async def _get_histopheno(id) -> HistoPheno:
     """Retrieves the entity with the specified id"""
-    response = solr.get_histopheno(id)
+    response = solr().get_histopheno(id)
     if response is None:
         raise HTTPException(status_code=404, detail="Entity not found")
 

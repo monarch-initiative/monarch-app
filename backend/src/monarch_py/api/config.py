@@ -15,6 +15,12 @@ class Settings(BaseSettings):
 
 settings = Settings()
 
-solr = SolrImplementation(base_url=settings.solr_url)
 
-oak = OakImplementation().init_semsim()
+@lru_cache(maxsize=1)
+def solr():
+    return SolrImplementation(settings.solr_url)
+
+
+@lru_cache(maxsize=1)
+def oak():
+    return OakImplementation().init_semsim()

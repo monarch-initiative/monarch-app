@@ -3,13 +3,20 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from monarch_py.api import association, entity, histopheno, search, semsim
+from monarch_py.api.config import oak
 
 PREFIX = "/v3/api"
+
 app = FastAPI(
     docs_url="/v3/docs",
     redoc_url="/v3/redoc",
-    on_startup=[],
 )
+
+
+@app.on_event('startup')
+async def initialize_app():
+    oak()
+
 app.include_router(entity.router, prefix=f"{PREFIX}/entity")
 app.include_router(association.router, prefix=f"{PREFIX}/association")
 app.include_router(search.router, prefix=PREFIX)

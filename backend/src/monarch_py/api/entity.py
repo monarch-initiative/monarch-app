@@ -26,7 +26,7 @@ async def _get_entity(
     Returns:
         Node: Entity details for the specified id
     """
-    response = solr.get_entity(id, extra=True)
+    response = solr().get_entity(id, extra=True)
     if response is None:
         raise HTTPException(status_code=404, detail="Entity not found")
     return Node(**response.__dict__)  # This is an odd consequence of how Node extends Entity
@@ -59,7 +59,7 @@ def _association_table(
     Returns:
         AssociationResults: Association table data for the specified entity and association type
     """
-    response = solr.get_association_table(
+    response = solr().get_association_table(
         entity=id, category=category, q=query, offset=pagination.offset, limit=pagination.limit
     )
     return response

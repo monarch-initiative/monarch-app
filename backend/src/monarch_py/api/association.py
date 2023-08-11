@@ -23,7 +23,7 @@ async def _get_associations(
     pagination: PaginationParams = Depends(),
 ) -> AssociationResults:
     """Retrieves all associations for a given entity, or between two entities."""
-    response = solr.get_associations(
+    response = solr().get_associations(
         category=category,
         predicate=predicate,
         subject=subject,

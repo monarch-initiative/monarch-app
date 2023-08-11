@@ -25,7 +25,7 @@ def _compare(
         subjects: {subjects.split(',')}
         objects: {objects.split(',')}
     """)
-    results = oak.compare(
+    results = oak().compare(
         subjects=subjects.split(","),
         objects=objects.split(","),
     )
@@ -48,4 +48,4 @@ def _post_compare(
 }
 </pre>
     """
-    return oak.compare(subjects, objects)
+    return oak().compare(subjects, objects)

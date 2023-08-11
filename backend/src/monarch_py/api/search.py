@@ -31,7 +31,7 @@ async def search(
         EntityResults
     """
     facet_fields = ["category", "in_taxon_label"]
-    response = solr.search(
+    response = solr().search(
         q=q,
         category=category,
         in_taxon_label=taxon,
@@ -53,5 +53,5 @@ async def autocomplete(q: str) -> SearchResults:
     Returns:
         SearchResults
     """
-    response = solr.autocomplete(q=q)
+    response = solr().autocomplete(q=q)
     return response
