@@ -51,7 +51,11 @@ def _association_table(
         title="Type of association to retrieve association table data for",
     ),
     query: str = Query(None, example="thumb", title="Query string to limit results to a subset"),
-        sort: List[str] = Query(None, example=["subject_label asc", "predicate asc", "object_label asc"], title="Sort results by a list of field + direction statements"),
+    sort: List[str] = Query(
+        None,
+        example=["subject_label asc", "predicate asc", "object_label asc"],
+        title="Sort results by a list of field + direction statements",
+    ),
     pagination: PaginationParams = Depends(),
 ) -> AssociationTableResults:
     """
