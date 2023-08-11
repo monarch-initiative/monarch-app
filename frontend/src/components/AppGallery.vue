@@ -24,38 +24,48 @@ defineSlots<Slots>();
 </script>
 
 <style lang="scss" scoped>
-$two: 900px;
-$one: 600px;
-$cell: minmax(100px, 1fr);
+$tablet: 900px;
+$phone: 600px;
+$col: minmax(0, 1fr);
 
 .gallery {
   display: grid;
-  grid-template-columns: $cell $cell $cell;
   justify-items: stretch;
+  width: 100%;
 
   &[data-size="small"] {
+    grid-template-columns: $col $col $col $col $col;
     gap: 20px;
-  }
 
-  &[data-size="medium"] {
-    gap: 40px;
-  }
+    @media (max-width: $tablet) {
+      grid-template-columns: $col $col $col;
+    }
 
-  &[data-size="big"] {
-    grid-template-columns: $cell $cell;
-    gap: 40px;
-
-    @media (max-width: $one) {
-      grid-template-columns: $cell;
+    @media (max-width: $phone) {
+      grid-template-columns: $col $col;
     }
   }
 
-  @media (max-width: $two) {
-    grid-template-columns: $cell $cell;
+  &[data-size="medium"] {
+    grid-template-columns: $col $col $col;
+    gap: 40px;
+
+    @media (max-width: $tablet) {
+      grid-template-columns: $col $col;
+    }
+
+    @media (max-width: $phone) {
+      grid-template-columns: $col;
+    }
   }
 
-  @media (max-width: $one) {
-    grid-template-columns: $cell;
+  &[data-size="big"] {
+    grid-template-columns: $col $col;
+    gap: 40px;
+
+    @media (max-width: $phone) {
+      grid-template-columns: $col;
+    }
   }
 }
 </style>

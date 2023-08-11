@@ -218,7 +218,7 @@ async function runGetAutocomplete(
 
   /** example searches */
   const examples = [
-    "Marfan syndrome",
+    "Ehlers-Danlos hypermobility",
     "SSH",
     "Multicystic kidney dysplasia",
   ].map((search) => ({

@@ -81,7 +81,7 @@ test("Title info shows", async ({ page }) => {
   await page.goto("/node/MONDO:0007947");
 
   /** text info in top section */
-  await expect(page.getByText(/Marfan syndrome/i).first()).toBeVisible();
+  await expect(page.getByText(/Ehlers-Danlos/i).first()).toBeVisible();
   await expect(page.getByText(/Disease/i).first()).toBeVisible();
   await expect(page.getByText(/MONDO:0007947/i).first()).toBeVisible();
 });
@@ -164,7 +164,7 @@ test("Table association info shows", async ({ page }) => {
   /** check node, relation, target node */
   await page.getByText(/Table/i).first().click();
   await expect(
-    page.locator("tr", { hasText: /Marfan syndrome/ }).first(),
+    page.locator("tr", { hasText: /Ehlers-Danlos/ }).first(),
   ).toBeVisible();
   await expect(
     page
@@ -326,7 +326,7 @@ test("Breadcrumbs section works", async ({ page, browserName }) => {
    * hierarchy item links
    */
   const chain = [
-    "Marfan syndrome",
+    "Ehlers-Danlos syndrome, hypermobility type",
     "Has Phenotype",
     "Dural ectasia",
     "Has Phenotype",
