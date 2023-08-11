@@ -135,19 +135,19 @@
       <div>
         <h3>The Mondo Disease Ontology (Mondo)</h3>
         <br />
-        <p>Under construction.</p>
+        <p>Coming Soon....</p>
       </div>
 
       <div>
         <h3>Phenopackets</h3>
         <br />
-        <p>Under construction.</p>
+        <p>Coming Soon....</p>
       </div>
 
       <div>
         <h3>The Phenomics First Resource</h3>
         <br />
-        <p>Under construction.</p>
+        <p>Coming Soon....</p>
       </div>
     </div>
     <!-- end container -->
