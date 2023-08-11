@@ -5,8 +5,6 @@
 <template>
   <AppSection>
     <AppHeading>Phenomics First</AppHeading>
-
-    <div class="container-fluid monarch-view monarch-about-view">
       <div class="col-12">
         <p>
           Understanding genomic variation is key to precision medicine; however,
@@ -46,7 +44,9 @@
           medicine.
         </p>
       </div>
+    </AppSection>
 
+    <AppSection>
       <div class="goals-banner offset-2 col-8">
         <h3 id="our-goals"><strong>Phenomics First Goals</strong></h3>
         <br />
@@ -58,65 +58,65 @@
         <ul>
           <li>
             Create a community-driven framework of interoperable phenotype
-            definitions: The Unified Phenotype Ontology (uPheno)
+            definitions:<br><b>The Unified Phenotype Ontology (uPheno)</b>
           </li>
           <li>
-            Harmonize human disease definitions: the Mondo Disease Ontology
+            Harmonize human disease definitions: the <b>Mondo Disease Ontology</b>
           </li>
           <li>
-            Create a community-wide phenotype exchange standard: Phenopackets
+            Create a community-wide phenotype exchange standard: <b>Phenopackets</b>
           </li>
         </ul>
       </div>
+    </AppSection>
 
-      <div class="row">
-        <div class="col-12 col-lg-6">
-          <figure class="ecosystems">
-            <img
-              src="@/assets/pfr.png"
-              alt="Phenomics First Resource Overview"
-            />
-            <figcaption>
-              Fig 3. The
-              <a href="https://hpo.jax.org" target="__blank"
-                >The Phenomics First Project</a
-              >
-              (HPO) provides a standardized vocabulary of phenotypic
-              abnormalities encountered in human disease.
-              <a
-                href="https://pubmed.ncbi.nlm.nih.gov/30476213/"
-                target="__blank"
-                >More about HPO...</a
-              >
-            </figcaption>
-          </figure>
-          <!-- </div>
-        <div class="col-12 col-lg-6"> -->
-          <figure class="ecosystems phenopackets">
-            <img
-              src="@/assets/phenopackets-ecosystem.png"
-              alt="Phenopackets Ecosystem"
-            />
-            <figcaption>
-              Fig 4.
-              <a href="http://phenopackets.org/" target="__blank"
-                >Phenopackets</a
-              >
-              is a standard exchange format for phenotypes and environmental
-              factors. This packet of phenotype data can be used anywhere, and
-              can be written by anyone. This work is being done in collaboration
-              with the
-              <a href="https://www.ga4gh.org/" target="__blank"
-                >Global Alliance for Genomics and Health (GA4GH)</a
-              >.
-            </figcaption>
-          </figure>
-        </div>
+    <AppSection>
+      <div class="col-12 col-lg-6">
+        <figure class="ecosystems">
+          <img
+            src="@/assets/pfr.png"
+            alt="Phenomics First Resource Overview"
+          />
+          <figcaption>
+            Fig 3. The
+            <a href="https://hpo.jax.org" target="__blank"
+              >The Phenomics First Project</a
+            >
+            (HPO) provides a standardized vocabulary of phenotypic
+            abnormalities encountered in human disease.
+            <a
+              href="https://pubmed.ncbi.nlm.nih.gov/30476213/"
+              target="__blank"
+              >More about HPO...</a
+            >
+          </figcaption>
+        </figure>
+
+        <figure class="ecosystems phenopackets">
+          <img
+            src="@/assets/phenopackets-ecosystem.png"
+            alt="Phenopackets Ecosystem"
+          />
+          <figcaption>
+            Fig 4.
+            <a href="http://phenopackets.org/" target="__blank"
+              >Phenopackets</a
+            >
+            is a standard exchange format for phenotypes and environmental
+            factors. This packet of phenotype data can be used anywhere, and
+            can be written by anyone. This work is being done in collaboration
+            with the
+            <a href="https://www.ga4gh.org/" target="__blank"
+              >Global Alliance for Genomics and Health (GA4GH)</a
+            >.
+          </figcaption>
+        </figure>
       </div>
+    </AppSection>
 
-      <div>
-        <h3>The Unified Phenotype Ontology (uPheno)</h3>
-        <br />
+
+      <AppSection>
+        <AppHeading>The Unified Phenotype Ontology (uPheno)</AppHeading>
         <p>
           The Unified Phenotype Ontology (uPheno) is an effort led by the
           Monarch Initiative to integrate phenotype terminologies across
@@ -130,111 +130,92 @@
             >Phenotype Ontologies Reconciliation Effort</a
           >.
         </p>
-      </div>
+      </AppSection>
 
-      <div>
-        <h3>The Mondo Disease Ontology (Mondo)</h3>
-        <br />
+      <AppSection>
+        <AppHeading>The Mondo Disease Ontology (Mondo)</AppHeading>
         <p>Coming Soon....</p>
-      </div>
+      </AppSection>
 
-      <div>
-        <h3>Phenopackets</h3>
-        <br />
+      <AppSection>
+        <AppHeading>Phenopackets</AppHeading>
         <p>Coming Soon....</p>
-      </div>
+      </AppSection>
 
-      <div>
-        <h3>The Phenomics First Resource</h3>
-        <br />
-        <p>Coming Soon....</p>
-      </div>
-    </div>
-    <!-- end container -->
-  </AppSection>
+      <AppSection>
+        <AppHeading>The Phenomics First Resource</AppHeading>
+        <p>Coming Soon...</p>
+      </AppSection>
+
 </template>
+
 
 <script setup lang="ts">
 import AppSection from "@/components/AppSection.vue";
 </script>
 
+
 <style lang="scss" scoped>
-// @import "@/style/variables";
 
-// variables
-$monarch-bg-color: #2a4d69;
-$monarch-button-color: #0b556b;
 $grid-float-breakpoint: 600px;
+.monarch-hr {
+  border-top-width: 2px;
+  border-top-color: $theme-dark;
+}
 
-.container-fluid.monarch-view.monarch-about-view {
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    clear: both;
-  }
+.goals-banner {
+  height: auto;
+  // margin-top: 25px;
+  padding: 10px 40px;
+  border-radius: 0.5rem;
+  background-color: $theme-dark;
+  color: white;
+  text-align: center;
+}
+figure {
+  margin: 0 auto;
+}
 
-  .monarch-hr {
-    border-top-width: 2px;
-    border-top-color: $monarch-bg-color;
-  }
+figure {
+  display: table;
 
-  .goals-banner {
-    height: auto;
-    margin-top: 25px;
-    padding: 20px;
-    border-radius: 0.5rem;
-    background-color: $monarch-bg-color;
-    color: white;
-    text-align: center;
-  }
-  figure {
-    margin: 0 auto;
-  }
-
-  figure {
-    display: table;
-
-    &.ecosystems {
-      img {
-        max-width: 100%;
-      }
-      &.phenopackets img {
-        max-width: 100%;
-      }
-    }
+  &.ecosystems {
     img {
-      width: 100%;
-      height: auto;
-      padding: 15px;
+      max-width: 100%;
+    }
+    &.phenopackets img {
+      max-width: 100%;
     }
   }
+  img {
+    width: 100%;
+    height: auto;
+    padding: 15px;
+  }
+}
 
-  figcaption {
-    word-wrap: normal;
-    display: table-caption;
-    width: 80%;
-    padding: 0 10px 5px;
-    font-size: 12px;
-    line-height: 16px;
-    text-align: justify;
-    caption-side: bottom;
+figcaption {
+  word-wrap: normal;
+  display: table-caption;
+  width: 80%;
+  padding: 0 10px 5px;
+  font-size: 12px;
+  line-height: 16px;
+  text-align: justify;
+  caption-side: bottom;
+}
+
+table {
+  margin: auto;
+  text-align: center;
+  td a img {
+    max-width: 120px;
+    margin: 5px;
   }
 
-  table {
-    margin: auto;
-    text-align: center;
+  @media (min-width: $grid-float-breakpoint) {
     td a img {
-      max-width: 120px;
-      margin: 5px;
-    }
-
-    @media (min-width: $grid-float-breakpoint) {
-      td a img {
-        max-width: 200px;
-      }
+      max-width: 200px;
     }
   }
 }
