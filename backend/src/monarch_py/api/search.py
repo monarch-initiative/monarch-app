@@ -14,16 +14,16 @@ router = APIRouter(
 async def search(
     q: str = "*:*",
     category: Union[List[str], None] = Query(default=None),
-    taxon: Union[List[str], None] = Query(default=None),
+    in_taxon_label: Union[List[str], None] = Query(default=None),
     offset: int = 0,
     limit: int = 20,
 ) -> SearchResults:
     """Search for entities by label, with optional filters
 
     Args:
-        q (str, optional): TODO. Defaults to "*:*".
-        category (str, optional): TODO. Defaults to None.
-        taxon (str, optional): TODO. Defaults to None.
+        q (str, optional): Query string. Defaults to "*:*".
+        category (str, optional): Filter by biolink model category. Defaults to None.
+        in_taxon_label (str, optional): Filter by taxon label. Defaults to None.
         offset (int, optional): Offset for pagination. Defaults to 0.
         limit (int, optional): Limit results. Defaults to 20.
 
@@ -34,7 +34,7 @@ async def search(
     response = solr().search(
         q=q,
         category=category,
-        in_taxon_label=taxon,
+        in_taxon_label=in_taxon_label,
         facet_fields=facet_fields,
         offset=offset,
         limit=limit,
