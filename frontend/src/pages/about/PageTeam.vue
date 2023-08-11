@@ -13,12 +13,14 @@
       biologists, scientists, and programmers from various schools and
       institutes.
     </p>
-    <p>
-      <template v-for="(group, index) in team" :key="index">
-        <AppLink :to="'#' + kebabCase(group.name)">{{ group.name }}</AppLink>
-        <span v-if="index !== team.length - 1"> · </span>
-      </template>
-    </p>
+    <div class="groups">
+      <AppLink
+        v-for="(group, index) in team"
+        :key="index"
+        :to="'#' + kebabCase(group.name)"
+        >{{ group.name }}</AppLink
+      >
+    </div>
   </AppSection>
 
   <!-- list each group -->
@@ -27,22 +29,24 @@
       {{ group.name }}
     </AppHeading>
     <AppGroup :name="group.name" :link="group.link" />
-    <AppGallery v-if="!group.type">
-      <AppMember
-        v-for="(member, memberIndex) in group.members"
-        :key="memberIndex"
-        :name="member.name"
-        :role="'role' in member ? member.role : ''"
-        :link="member.link"
-      />
-    </AppGallery>
-    <AppGallery v-else>
-      <AppGroup
-        v-for="(member, memberIndex) in group.members"
-        :key="memberIndex"
-        :name="member.name"
-        :link="member.link"
-      />
+    <AppGallery :size="group.name.includes('Alumni') ? 'small' : 'medium'">
+      <template v-if="!group.type">
+        <AppMember
+          v-for="(member, memberIndex) in group.members"
+          :key="memberIndex"
+          :name="member.name"
+          :role="'role' in member ? member.role : ''"
+          :link="member.link"
+        />
+      </template>
+      <template v-else>
+        <AppGroup
+          v-for="(member, memberIndex) in group.members"
+          :key="memberIndex"
+          :name="member.name"
+          :link="member.link"
+        />
+      </template>
     </AppGallery>
   </AppSection>
 
@@ -90,3 +94,22 @@ import AppGroup from "@/components/AppGroup.vue";
 import AppMember from "@/components/AppMember.vue";
 import team from "./team.json";
 </script>
+
+<style lang="scss" scoped>
+$wrap: 800px;
+
+.groups {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: flex-start;
+  width: 100%;
+  gap: 10px;
+  text-align: left;
+}
+
+@media (max-width: $wrap) {
+  .groups {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
