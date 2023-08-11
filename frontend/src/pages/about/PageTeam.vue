@@ -11,7 +11,7 @@
     <p>
       Monarch is made possible thanks to a diverse and dedicated team of
       biologists, scientists, and programmers from various schools and
-      institutes.
+      institutes:
     </p>
     <div class="groups">
       <AppLink
