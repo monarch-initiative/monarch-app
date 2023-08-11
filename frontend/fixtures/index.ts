@@ -88,8 +88,8 @@ export const handlers = [
     const replace: {
       [key: string]: { name?: string; category?: string };
     } = {
-      "MONDO:0007947": {
-        name: "Marfan syndrome",
+      "MONDO:0007523": {
+        name: "Ehlers-Danlos syndrome, hypermobility",
         category: "biolink:Disease",
       },
       "HP:0100775": {
