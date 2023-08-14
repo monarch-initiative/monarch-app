@@ -1,6 +1,8 @@
 from typing import List, Union
 
-from fastapi import APIRouter, Query  # , Depends
+from fastapi import APIRouter, Query, Depends
+
+from monarch_py.api.additional_models import PaginationParams
 from monarch_py.api.config import settings
 from monarch_py.datamodels.model import SearchResults
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
@@ -16,8 +18,7 @@ async def search(
     q: str = "*:*",
     category: Union[List[str], None] = Query(default=None),
     in_taxon_label: Union[List[str], None] = Query(default=None),
-    offset: int = 0,
-    limit: int = 20,
+    pagination: PaginationParams = Depends(),
 ) -> SearchResults:
     """Search for entities by label, with optional filters
 
@@ -38,8 +39,8 @@ async def search(
         category=category,
         in_taxon_label=in_taxon_label,
         facet_fields=facet_fields,
-        offset=offset,
-        limit=limit,
+        offset=pagination.offset,
+        limit=pagination.limit,
     )
 
     return response
