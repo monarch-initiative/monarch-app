@@ -28,7 +28,7 @@
             name: item.subject_label,
             category: item.subject_category,
           }"
-          :link="node.id === item.object"
+          :link="node.id !== item.subject"
         />
         <AppPredicateBadge :association="item" :vertical="true" />
         <AppNodeBadge
@@ -37,7 +37,7 @@
             name: item.object_label,
             category: item.object_category,
           }"
-          :link="node.id === item.subject"
+          :link="node.id !== item.object"
         />
       </AppFlex>
 
