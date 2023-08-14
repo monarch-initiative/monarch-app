@@ -322,10 +322,10 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         self,
         entity: str,
         category: str,
-        q: str =None,
-        sort: List[str]=None,
-        offset: int=0,
-        limit: int =5,
+        q: str = None,
+        sort: List[str] = None,
+        offset: int = 0,
+        limit: int = 5,
     ) -> AssociationTableResults:
 
         query = build_association_table_query(

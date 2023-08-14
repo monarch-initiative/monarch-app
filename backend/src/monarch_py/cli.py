@@ -138,7 +138,7 @@ def associations(
 def search(
     q: str = typer.Option(None, "--query", "-q"),
     category: List[str] = typer.Option(None, "--category", "-c"),
-    in_taxon: str = typer.Option(None, "--in-taxon", "-t"),
+    in_taxon_label: str = typer.Option(None, "--in-taxon-label", "-t"),
     facet_fields: List[str] = typer.Option(None, "--facet-fields", "-ff"),
     facet_queries: List[str] = typer.Option(None, "--facet-queries"),
     limit: int = typer.Option(20, "--limit", "-l"),
@@ -158,7 +158,7 @@ def search(
     Args:
         q: The query string to search for
         category: The category of the entity
-        taxon: The taxon of the entity
+        in_taxon_label: The taxon label to filter by
         limit: The number of entities to return
         offset: The offset of the first entity to be retrieved
         fmt: The format of the output (json, yaml, tsv, table)
