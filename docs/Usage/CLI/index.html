@@ -1319,7 +1319,7 @@
 <p>Args:
     q: The query string to search for
     category: The category of the entity
-    taxon: The taxon of the entity
+    in_taxon_label: The taxon label to filter by
     limit: The number of entities to return
     offset: The offset of the first entity to be retrieved
     fmt: The format of the output (json, yaml, tsv, table)
@@ -1331,7 +1331,7 @@
 <ul>
 <li><code>-q, --query TEXT</code></li>
 <li><code>-c, --category TEXT</code></li>
-<li><code>-t, --in-taxon TEXT</code></li>
+<li><code>-t, --in-taxon-label TEXT</code></li>
 <li><code>-ff, --facet-fields TEXT</code></li>
 <li><code>--facet-queries TEXT</code></li>
 <li><code>-l, --limit INTEGER</code>: [default: 20]</li>
@@ -1510,7 +1510,7 @@
 <p>Optional Args:
     q: The query string to search for
     category: The category of the entity
-    taxon: The taxon of the entity
+    in_taxon_label: The taxon label to filter on
     facet_fields: The fields to facet on
     facet_queries: The queries to facet on
     limit: The number of entities to return
@@ -1524,7 +1524,7 @@
 <ul>
 <li><code>-q, --query TEXT</code></li>
 <li><code>-c, --category TEXT</code></li>
-<li><code>-t, --in-taxon TEXT</code></li>
+<li><code>-t, --in-taxon-label TEXT</code></li>
 <li><code>-ff, --facet-fields TEXT</code></li>
 <li><code>--facet-queries TEXT</code></li>
 <li><code>-l, --limit INTEGER</code>: [default: 20]</li>
