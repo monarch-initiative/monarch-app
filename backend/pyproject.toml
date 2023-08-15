@@ -43,6 +43,8 @@ ruff = "*"
 uvicorn = {extras = ["standard"], version = "^0.20.0"}
 httpx = "^0.24.1"
 scholarly = "*"
+habanero = "*"
+manubot = "*"
 
 
 [tool.poetry.extras]

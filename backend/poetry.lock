@@ -222,7 +222,7 @@ uvloop = ["uvloop (>=0.15.2)"]
 name = "cattrs"
 version = "23.1.2"
 description = "Composable complex class support for attrs and dataclasses."
-optional = true
+optional = false
 python-versions = ">=3.7"
 files = [
     {file = "cattrs-23.1.2-py3-none-any.whl", hash = "sha256:b2bb14311ac17bed0d58785e5a60f022e5431aca3932e3fc5cc8ed8639de50a4"},
@@ -600,6 +600,21 @@ files = [
 ]
 
 [[package]]
+name = "errorhandler"
+version = "2.0.1"
+description = "A logging framework handler that tracks when messages above a certain level have been logged."
+optional = false
+python-versions = "*"
+files = [
+    {file = "errorhandler-2.0.1-py2.py3-none-any.whl", hash = "sha256:dc6c54f5d9a4599e744b57aac2f925cce873188e9b02cae7c0eb120ee08a893f"},
+    {file = "errorhandler-2.0.1.tar.gz", hash = "sha256:7e578ad67af40845bfd044f71627a29f1fc436d53ccb058bbf1792ef31ab6163"},
+]
+
+[package.extras]
+build = ["pkginfo", "setuptools-git", "sphinx", "twine", "wheel"]
+test = ["coveralls", "nose", "nose-cov", "nose-fixes"]
+
+[[package]]
 name = "et-xmlfile"
 version = "1.1.0"
 description = "An implementation of lxml.xmlfile for the standard library"
@@ -631,13 +646,13 @@ dev = ["flake8", "ipython", "mock", "pytest", "pytest-cov", "restview", "setupto
 
 [[package]]
 name = "exceptiongroup"
-version = "1.1.2"
+version = "1.1.3"
 description = "Backport of PEP 654 (exception groups)"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "exceptiongroup-1.1.2-py3-none-any.whl", hash = "sha256:e346e69d186172ca7cf029c8c1d16235aa0e04035e5750b4b95039e65204328f"},
-    {file = "exceptiongroup-1.1.2.tar.gz", hash = "sha256:12c3e887d6485d16943a309616de20ae5582633e0a2eda17f4e10fd61c1e8af5"},
+    {file = "exceptiongroup-1.1.3-py3-none-any.whl", hash = "sha256:343280667a4585d195ca1cf9cef84a4e178c4b6cf2274caef9859782b567d5e3"},
+    {file = "exceptiongroup-1.1.3.tar.gz", hash = "sha256:097acd85d473d75af5bb98e41b61ff7fe35efe6675e4f9370ec6ec5126d160e9"},
 ]
 
 [package.extras]
@@ -900,6 +915,25 @@ files = [
 ]
 
 [[package]]
+name = "habanero"
+version = "1.2.3"
+description = "Low Level Client for Crossref Search API"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "habanero-1.2.3-py2.py3-none-any.whl", hash = "sha256:b95dd0af36893888a2def276a3d5e16a8c133ed8906d08a2772cdaa7d1e7617c"},
+    {file = "habanero-1.2.3.tar.gz", hash = "sha256:196f9e01b42dad2cd829dc5d0bbe466232daf6ad5f1b0ee7098a57927b17e908"},
+]
+
+[package.dependencies]
+requests = ">=2.7.0"
+tqdm = "*"
+
+[package.extras]
+all = ["pytest"]
+test = ["pytest"]
+
+[[package]]
 name = "hbreader"
 version = "0.9.1"
 description = "Honey Badger reader - a generic file/url/string open and read tool"
@@ -1156,6 +1190,17 @@ python-versions = ">=3.7"
 files = [
     {file = "iniconfig-2.0.0-py3-none-any.whl", hash = "sha256:b6a85871a79d2e3b22d2d1b94ac2824226a63c6b741c88f7ae975f18b6778374"},
     {file = "iniconfig-2.0.0.tar.gz", hash = "sha256:2d91e135bf72d31a410b17c16da610a82cb55f6b0477d1a902134b24a455b8b3"},
+]
+
+[[package]]
+name = "isbnlib"
+version = "3.10.14"
+description = "Extract, clean, transform, hyphenate and metadata for ISBNs (International Standard Book Number)."
+optional = false
+python-versions = "*"
+files = [
+    {file = "isbnlib-3.10.14-py2.py3-none-any.whl", hash = "sha256:f885b350fc8e600a919ed46e3b07253062cd604af69885455a25a299217b3fe2"},
+    {file = "isbnlib-3.10.14.tar.gz", hash = "sha256:96f90864c77b01f55fa11e5bfca9fd909501d9842f3bc710d4eab85195d90539"},
 ]
 
 [[package]]
@@ -1612,6 +1657,36 @@ cssselect = ["cssselect (>=0.7)"]
 html5 = ["html5lib"]
 htmlsoup = ["BeautifulSoup4"]
 source = ["Cython (>=0.29.35)"]
+
+[[package]]
+name = "manubot"
+version = "0.5.6"
+description = "\"Python utilities for Manubot: Manuscripts, open and automated\""
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "manubot-0.5.6-py3-none-any.whl", hash = "sha256:f522565e3dc86e7eeff34fdc2bc56f9887cbf7f7c227cf25276e3e608c6d0bcd"},
+    {file = "manubot-0.5.6.tar.gz", hash = "sha256:b0c817e78976d045962d29e4c3db4dcf72d6836d7fb88eab951805273a26df36"},
+]
+
+[package.dependencies]
+errorhandler = "*"
+isbnlib = "*"
+jinja2 = "*"
+jsonschema = ">=3.0.0"
+packaging = "*"
+panflute = "<2.0.3 || >2.0.3,<2.0.4 || >2.0.4"
+pybase62 = "*"
+pyrate-limiter = "*"
+pyyaml = ">=5.1"
+requests = "*"
+requests-cache = "*"
+tomli = {version = "*", markers = "python_version < \"3.11\""}
+
+[package.extras]
+ai-rev = ["manubot-ai-editor (>=0.4.0)"]
+dev = ["portray", "pre-commit", "pytest (>=6.0.0)", "yamllint"]
+webpage = ["opentimestamps-client"]
 
 [[package]]
 name = "markdown"
@@ -2173,6 +2248,26 @@ test = ["hypothesis (>=6.34.2)", "pytest (>=7.3.2)", "pytest-asyncio (>=0.17.0)"
 xml = ["lxml (>=4.6.3)"]
 
 [[package]]
+name = "panflute"
+version = "2.3.0"
+description = "Pythonic Pandoc filters"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "panflute-2.3.0-py3-none-any.whl", hash = "sha256:02673bcbdb521a805f08a2ca0ce864de86ad409ad406a01b3700fcf2aca81635"},
+    {file = "panflute-2.3.0.tar.gz", hash = "sha256:cefd9dfc48ccd9732a53db57610701d22806da397a8a97e5cc8dc070b55865ca"},
+]
+
+[package.dependencies]
+click = ">=6,<9"
+pyyaml = ">=3,<7"
+
+[package.extras]
+dev = ["configparser", "coverage", "flake8", "pandocfilters", "pytest", "pytest-cov", "requests"]
+extras = ["yamlloader (>=1,<2)"]
+pypi = ["Pygments", "docutils", "twine", "wheel"]
+
+[[package]]
 name = "pansql"
 version = "0.0.1"
 description = "sqldf for pandas"
@@ -2308,6 +2403,16 @@ networkx = ">=2.3,<4.0"
 python-dateutil = ">=2.8,<3.0"
 
 [[package]]
+name = "pybase62"
+version = "1.0.0"
+description = "Python module for base62 encoding"
+optional = false
+python-versions = "*"
+files = [
+    {file = "pybase62-1.0.0-py3-none-any.whl", hash = "sha256:60539ad956ec9e9de091bc7ae88c9550bc2fa17f503050cf34d021b75e73cb27"},
+]
+
+[[package]]
 name = "pycparser"
 version = "2.21"
 description = "C parser in Python"
@@ -2427,6 +2532,21 @@ files = [
 
 [package.extras]
 diagrams = ["jinja2", "railroad-diagrams"]
+
+[[package]]
+name = "pyrate-limiter"
+version = "2.10.0"
+description = "Python Rate-Limiter using Leaky-Bucket Algorithm"
+optional = false
+python-versions = ">=3.7,<4.0"
+files = [
+    {file = "pyrate_limiter-2.10.0-py3-none-any.whl", hash = "sha256:a99e52159f5ed5eb58118bed8c645e30818e7c0e0d127a0585c8277c776b0f7f"},
+    {file = "pyrate_limiter-2.10.0.tar.gz", hash = "sha256:98cc52cdbe058458e945ae87d4fd5a73186497ffa545ee6e98372f8599a5bd34"},
+]
+
+[package.extras]
+all = ["filelock (>=3.0)", "redis (>=3.3,<4.0)", "redis-py-cluster (>=2.1.3,<3.0.0)"]
+docs = ["furo (>=2022.3.4,<2023.0.0)", "myst-parser (>=0.17)", "sphinx (>=4.3.0,<5.0.0)", "sphinx-autodoc-typehints (>=1.17,<2.0)", "sphinx-copybutton (>=0.5)", "sphinxcontrib-apidoc (>=0.3,<0.4)"]
 
 [[package]]
 name = "pyshex"
@@ -2892,7 +3012,7 @@ use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 name = "requests-cache"
 version = "1.1.0"
 description = "A persistent cache for python requests"
-optional = true
+optional = false
 python-versions = ">=3.7,<4.0"
 files = [
     {file = "requests_cache-1.1.0-py3-none-any.whl", hash = "sha256:178282bce704b912c59e7f88f367c42bddd6cde6bf511b2a3e3cfb7e5332a92a"},
@@ -3502,13 +3622,13 @@ dev = ["bump2version", "sphinxcontrib-httpdomain", "transifex-client", "wheel"]
 
 [[package]]
 name = "sphinxcontrib-applehelp"
-version = "1.0.6"
+version = "1.0.7"
 description = "sphinxcontrib-applehelp is a Sphinx extension which outputs Apple help books"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "sphinxcontrib_applehelp-1.0.6-py3-none-any.whl", hash = "sha256:c0578efa23cab5a2f3aaa8af5691b952433f4fdfaac255befd3452448e7ea4a4"},
-    {file = "sphinxcontrib_applehelp-1.0.6.tar.gz", hash = "sha256:a59274de7a952a99af36b8a5092352d9249279c0e3280b7dceaae8e15873c942"},
+    {file = "sphinxcontrib_applehelp-1.0.7-py3-none-any.whl", hash = "sha256:094c4d56209d1734e7d252f6e0b3ccc090bd52ee56807a5d9315b19c122ab15d"},
+    {file = "sphinxcontrib_applehelp-1.0.7.tar.gz", hash = "sha256:39fdc8d762d33b01a7d8f026a3b7d71563ea3b72787d5f00ad8465bd9d6dfbfa"},
 ]
 
 [package.dependencies]
@@ -3520,13 +3640,13 @@ test = ["pytest"]
 
 [[package]]
 name = "sphinxcontrib-devhelp"
-version = "1.0.4"
+version = "1.0.5"
 description = "sphinxcontrib-devhelp is a sphinx extension which outputs Devhelp documents"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "sphinxcontrib_devhelp-1.0.4-py3-none-any.whl", hash = "sha256:d4e20a17f78865d4096733989b5efa0d5e7743900e98e1f6ecd6f489380febc8"},
-    {file = "sphinxcontrib_devhelp-1.0.4.tar.gz", hash = "sha256:4fd751c63dc40895ac8740948f26bf1a3c87e4e441cc008672abd1cb2bc8a3d1"},
+    {file = "sphinxcontrib_devhelp-1.0.5-py3-none-any.whl", hash = "sha256:fe8009aed765188f08fcaadbb3ea0d90ce8ae2d76710b7e29ea7d047177dae2f"},
+    {file = "sphinxcontrib_devhelp-1.0.5.tar.gz", hash = "sha256:63b41e0d38207ca40ebbeabcf4d8e51f76c03e78cd61abe118cf4435c73d4212"},
 ]
 
 [package.dependencies]
@@ -3538,13 +3658,13 @@ test = ["pytest"]
 
 [[package]]
 name = "sphinxcontrib-htmlhelp"
-version = "2.0.3"
+version = "2.0.4"
 description = "sphinxcontrib-htmlhelp is a sphinx extension which renders HTML help files"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "sphinxcontrib_htmlhelp-2.0.3-py3-none-any.whl", hash = "sha256:abee4e6c5471203ad2fc40dc6a16ed99884a5d6b15a6f79c9269a7e82cf04149"},
-    {file = "sphinxcontrib_htmlhelp-2.0.3.tar.gz", hash = "sha256:14358d0f88ccf58447f2b54343cdcc0012f32de2f8d27cf934fdbc0b362f9597"},
+    {file = "sphinxcontrib_htmlhelp-2.0.4-py3-none-any.whl", hash = "sha256:8001661c077a73c29beaf4a79968d0726103c5605e27db92b9ebed8bab1359e9"},
+    {file = "sphinxcontrib_htmlhelp-2.0.4.tar.gz", hash = "sha256:6c26a118a05b76000738429b724a0568dbde5b72391a688577da08f11891092a"},
 ]
 
 [package.dependencies]
@@ -3584,13 +3704,13 @@ test = ["flake8", "mypy", "pytest"]
 
 [[package]]
 name = "sphinxcontrib-qthelp"
-version = "1.0.5"
+version = "1.0.6"
 description = "sphinxcontrib-qthelp is a sphinx extension which outputs QtHelp documents"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "sphinxcontrib_qthelp-1.0.5-py3-none-any.whl", hash = "sha256:962730a6ad15d21fd6760b14c9e95c00a097413595aa6ee871dd9dfa4b002a16"},
-    {file = "sphinxcontrib_qthelp-1.0.5.tar.gz", hash = "sha256:d31d1a1beaf3894866bb318fb712f1edc82687f1c06235a01e5b2c50c36d5c40"},
+    {file = "sphinxcontrib_qthelp-1.0.6-py3-none-any.whl", hash = "sha256:bf76886ee7470b934e363da7a954ea2825650013d367728588732c7350f49ea4"},
+    {file = "sphinxcontrib_qthelp-1.0.6.tar.gz", hash = "sha256:62b9d1a186ab7f5ee3356d906f648cacb7a6bdb94d201ee7adf26db55092982d"},
 ]
 
 [package.dependencies]
@@ -3602,13 +3722,13 @@ test = ["pytest"]
 
 [[package]]
 name = "sphinxcontrib-serializinghtml"
-version = "1.1.7"
+version = "1.1.8"
 description = "sphinxcontrib-serializinghtml is a sphinx extension which outputs \"serialized\" HTML files (json and pickle)"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "sphinxcontrib_serializinghtml-1.1.7-py3-none-any.whl", hash = "sha256:424164fc3a8b4355a29d5ea8b7f18199022d160c8f7b96e68bb6c50217729b87"},
-    {file = "sphinxcontrib_serializinghtml-1.1.7.tar.gz", hash = "sha256:ca31afee32e1508cff4034e258060ce2c81a3b1c49e77da60fdb61f0e7a73c22"},
+    {file = "sphinxcontrib_serializinghtml-1.1.8-py3-none-any.whl", hash = "sha256:27849e7227277333d3d32f17c138ee148a51fa01f888a41cd6d4e73bcabe2d06"},
+    {file = "sphinxcontrib_serializinghtml-1.1.8.tar.gz", hash = "sha256:aaf3026335146e688fd209b72320314b1b278320cf232e3cda198f873838511a"},
 ]
 
 [package.dependencies]
@@ -3726,13 +3846,13 @@ url = ["furl (>=0.4.1)"]
 
 [[package]]
 name = "sssom"
-version = "0.3.39"
+version = "0.3.40"
 description = "Operations on SSSOM mapping tables"
 optional = true
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "sssom-0.3.39-py3-none-any.whl", hash = "sha256:9261545a6f3bf6a84fbfe0f8de0d15a3165a02a164ced7d9d375196b70b9f5fd"},
-    {file = "sssom-0.3.39.tar.gz", hash = "sha256:6d97b8a0e9a531279931cfa70bba8ed815c2c378503ff2bc8d77929e8ab9a5be"},
+    {file = "sssom-0.3.40-py3-none-any.whl", hash = "sha256:0aba579aafb329a443bb30b8398a9542368901de0514773c72f018d5948ac206"},
+    {file = "sssom-0.3.40.tar.gz", hash = "sha256:fedba8961593048dc9d78ee44c79c0d5567f52dc0b3382eb80731269a5df3696"},
 ]
 
 [package.dependencies]
@@ -3797,13 +3917,13 @@ files = [
 
 [[package]]
 name = "tqdm"
-version = "4.66.0"
+version = "4.66.1"
 description = "Fast, Extensible Progress Meter"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "tqdm-4.66.0-py3-none-any.whl", hash = "sha256:39d459c7140b7890174e69d4d68d6291bc774a55b4bc5d93c0b760798ac5a03e"},
-    {file = "tqdm-4.66.0.tar.gz", hash = "sha256:cc6e7e52202d894e66632c5c8a9330bd0e3ff35d2965c93ca832114a3d865362"},
+    {file = "tqdm-4.66.1-py3-none-any.whl", hash = "sha256:d302b3c5b53d47bce91fea46679d9c3c6508cf6332229aa1e7d8653723793386"},
+    {file = "tqdm-4.66.1.tar.gz", hash = "sha256:d88e651f9db8d8551a62556d3cff9e3034274ca5d66e93197cf2490e2dcb69c7"},
 ]
 
 [package.dependencies]
@@ -3927,7 +4047,7 @@ dev = ["flake8", "flake8-annotations", "flake8-bandit", "flake8-bugbear", "flake
 name = "url-normalize"
 version = "1.4.3"
 description = "URL normalization for Python"
-optional = true
+optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
 files = [
     {file = "url-normalize-1.4.3.tar.gz", hash = "sha256:d23d3a070ac52a67b83a1c59a0e68f8608d1cd538783b401bc9de2c0fac999b2"},
@@ -4028,19 +4148,24 @@ test = ["Cython (>=0.29.32,<0.30.0)", "aiohttp", "flake8 (>=3.9.2,<3.10.0)", "my
 
 [[package]]
 name = "validators"
-version = "0.20.0"
-description = "Python Data Validation for Humans™."
+version = "0.21.2"
+description = "Python Data Validation for Humans™"
 optional = true
-python-versions = ">=3.4"
+python-versions = ">=3.8"
 files = [
-    {file = "validators-0.20.0.tar.gz", hash = "sha256:24148ce4e64100a2d5e267233e23e7afeb55316b47d30faae7eb6e7292bc226a"},
+    {file = "validators-0.21.2-py3-none-any.whl", hash = "sha256:6ad95131005a9d4c734a69dd4ef08cf66961e61222e60da25a9b5137cecd6fd4"},
+    {file = "validators-0.21.2.tar.gz", hash = "sha256:002ba1552076535176824e43149c18c06f6b611bc8b597ddbcf8770bcf5f9f5c"},
 ]
 
-[package.dependencies]
-decorator = ">=3.4.0"
-
 [package.extras]
-test = ["flake8 (>=2.4.0)", "isort (>=4.2.2)", "pytest (>=2.2.3)"]
+docs-offline = ["myst-parser (>=2.0.0)", "pypandoc-binary (>=1.11)", "sphinx (>=7.1.1)"]
+docs-online = ["mkdocs (>=1.5.2)", "mkdocs-material (>=9.1.21)", "mkdocstrings[python] (>=0.22.0)", "pyaml (>=23.7.0)"]
+hooks = ["pre-commit (>=3.3.3)"]
+runner = ["tox (>=4.6.4)"]
+sast = ["bandit[toml] (>=1.7.5)"]
+testing = ["pytest (>=7.4.0)"]
+tooling = ["black (>=23.7.0)", "pyright (>=1.1.320)", "ruff (>=0.0.280)"]
+tooling-extras = ["pyaml (>=23.7.0)", "pypandoc-binary (>=1.11)", "pytest (>=7.4.0)"]
 
 [[package]]
 name = "watchdog"
@@ -4358,4 +4483,4 @@ api = ["fastapi", "oaklib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "adb521ac7567f0d39c8198e5879bfcad54ba1cffbea755bc2f92fc4a68fd430b"
+content-hash = "b48a2bc08732181608bfa14bab53cf0483208299686a12b8a7dc6ec772330d7f"
