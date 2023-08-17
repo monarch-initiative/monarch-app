@@ -178,13 +178,6 @@
         subtitle="Source code and releases"
         design="small"
       />
-      <AppTile
-        to="https://genomic.social/@monarch_initiative"
-        icon="mastodon"
-        title="Mastodon"
-        subtitle="News and musings"
-        design="small"
-      />
     </AppFlex>
   </AppSection>
 </template>
