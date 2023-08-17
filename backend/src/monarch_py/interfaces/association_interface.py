@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from monarch_py.datamodels.model import AssociationResults
+from monarch_py.datamodels.model import AssociationResults, EntityGroupedAssociationsResults
 
 
 class AssociationInterface(ABC):
@@ -39,4 +39,23 @@ class AssociationInterface(ABC):
         Returns:
             [AssociationResults](): Dataclass representing results of an association search.
         """
+        raise NotImplementedError
+
+    def get_multi_entity_asociations(
+        self, entites: List[str], categories: List[str]
+    ) -> List[EntityGroupedAssociationsResults]:
+        """
+        Retrieve associations for multiple entities, constrained by a category list, grouped by entity and category
+
+        Args:
+            entites (List[str]): List of entity IDs to retrieve associations for
+            categories (List[str]): List of categories to constrain the associations to
+
+        Returns:
+            EntityGroupedAssociationsResults: Dataclass representing results of an association search, grouped by entity
+        Raises:
+            NotImplementedError: Use a specific implementation (see the documentation for a list of implementations)
+
+        """
+
         raise NotImplementedError

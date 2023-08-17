@@ -6,6 +6,7 @@ export type HistoPhenoId = string;
 export type HistoBinId = string;
 export type NodeId = string;
 export type SearchResultId = string;
+export type EntityGroupedAssociationsResultsId = string;
 /**
 * The directionality of an association as it relates to a specified entity, with edges being categorized as incoming or outgoing
 */
@@ -388,5 +389,23 @@ export interface SearchResults extends Results {
     offset: number,
     /** total number of items matching a query */
     total: number,
+};
+
+export interface CategoryGroupedAssociationResults extends Results {
+    /** A collection of items, with the type to be overriden by slot_usage */
+    items: Association[],
+    /** number of items to return in a response */
+    limit: number,
+    /** offset into the total number of items */
+    offset: number,
+    /** total number of items matching a query */
+    total: number,
+};
+
+export interface EntityGroupedAssociationsResults {
+    id: string,
+    name?: string,
+    /** A collection of items, with the type to be overriden by slot_usage */
+    items: CategoryGroupedAssociationResults[],
 };
 

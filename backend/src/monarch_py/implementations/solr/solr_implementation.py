@@ -14,6 +14,8 @@ from monarch_py.datamodels.model import (
     Node,
     NodeHierarchy,
     SearchResults,
+    EntityGroupedAssociationsResults,
+    CategoryGroupedAssociationResults,
 )
 from monarch_py.datamodels.solr import core
 from monarch_py.implementations.solr.solr_parsers import (
@@ -339,3 +341,24 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
         query_result = solr.query(query)
         return parse_association_table(query_result, entity, offset, limit)
+
+    def get_multi_entity_associations(
+        self, entites: List[str], categories: List[str]
+    ) -> List[EntityGroupedAssociationsResults]:
+        """Get associations for a list of entities, grouped by entity, constrained by category"""
+
+        results = []
+
+        # build association query and populate results for each entity and category combination
+        for entity in entites:
+            entity = self.get_entity(entity, extra=False)
+            entity_result = EntityGroupedAssociationsResults(id=entity.id, name=entity.name, categories=[])
+            for category in categories:
+                category_result = CategoryGroupedAssociationResults(
+                    **self.get_association_table(entity, category), category=category
+                )
+                entity_result.categories.append(category_result)
+
+            results.append(result)
+
+        return results

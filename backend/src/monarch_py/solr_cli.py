@@ -2,6 +2,7 @@ from typing import List
 
 import pystow
 import typer
+
 from monarch_py.utils.solr_cli_utils import ensure_solr, get_solr, solr_status, start_solr, stop_solr
 from monarch_py.utils.utils import console, format_output, set_log_level
 from typing_extensions import Annotated
@@ -313,4 +314,31 @@ def association_table(
 ):
     data = get_solr(update=False)
     response = data.get_association_table(entity=entity, category=category, q=q, limit=limit, offset=offset)
+    format_output(fmt, response, output)
+
+
+@solr_app(command="multi-entity-associations")
+def get_multi_entity_associations(
+    entities: List[str] = typer.Argument(..., help="The entities to get associations for"),
+    categories: List[str] = typer.Argument(..., help="The categories to get associations for"),
+    fmt: str = typer.Option(
+        "json",
+        "--format",
+        "-f",
+        help="The format of the output (json, yaml, tsv, table)",
+    ),
+    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
+):
+    """
+    Retrieve associations for multiple entities and categories
+
+    Args:
+        entities (List[str]): The entities to get associations for
+        categories (List[str]): The categories to get associations for
+
+    Returns:
+        List[EntityGroupedAssociationsResults]: A list of EntityGroupedAssociationsResults objects
+    """
+    data = get_solr(update=False)
+    response = data.get_multi_entity_associations(entities=entities, categories=categories)
     format_output(fmt, response, output)

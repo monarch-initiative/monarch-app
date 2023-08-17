@@ -235,6 +235,22 @@ classes:
     slot_usage:
         items:
           range: SearchResult
+  CategoryGroupedAssociationResults:
+    is_a: AssociationTableResults
+    slots:
+      - category
+      - items
+    slot_usage:
+      items:
+        range: Association
+  EntityGroupedAssociationsResults:
+    slots:
+      - id
+      - name
+      - items
+    slot_usage:
+      items:
+        range: CategoryGroupedAssociationResults
 
 
 slots:

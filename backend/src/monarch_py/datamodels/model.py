@@ -1,16 +1,15 @@
 from __future__ import annotations
-
-import sys
+from datetime import datetime, date
 from enum import Enum
-from typing import List, Optional
-
-from pydantic import BaseModel as BaseModel
-from pydantic import Field
+from typing import List, Dict, Optional, Any, Union
+from pydantic import BaseModel as BaseModel, Field
+from linkml_runtime.linkml_model import Decimal
+import sys
 
 if sys.version_info >= (3, 8):
-    pass
+    from typing import Literal
 else:
-    pass
+    from typing_extensions import Literal
 
 
 metamodel_version = "None"
@@ -492,6 +491,27 @@ class SearchResults(Results):
     total: int = Field(..., description="""total number of items matching a query""")
 
 
+class CategoryGroupedAssociationResults(Results):
+
+    items: List[Association] = Field(
+        default_factory=list,
+        description="""A collection of items, with the type to be overriden by slot_usage""",
+    )
+    limit: int = Field(..., description="""number of items to return in a response""")
+    offset: int = Field(..., description="""offset into the total number of items""")
+    total: int = Field(..., description="""total number of items matching a query""")
+
+
+class EntityGroupedAssociationsResults(ConfiguredBaseModel):
+
+    id: str = Field(...)
+    name: Optional[str] = Field(None)
+    items: List[CategoryGroupedAssociationResults] = Field(
+        default_factory=list,
+        description="""A collection of items, with the type to be overriden by slot_usage""",
+    )
+
+
 # Update forward refs
 # see https://pydantic-docs.helpmanual.io/usage/postponed_annotations/
 Association.update_forward_refs()
@@ -513,3 +533,5 @@ AssociationTableResults.update_forward_refs()
 EntityResults.update_forward_refs()
 SearchResult.update_forward_refs()
 SearchResults.update_forward_refs()
+CategoryGroupedAssociationResults.update_forward_refs()
+EntityGroupedAssociationsResults.update_forward_refs()
