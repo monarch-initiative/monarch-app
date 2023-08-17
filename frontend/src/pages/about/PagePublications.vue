@@ -11,8 +11,10 @@
     <AppFlex direction="row" gap="big" align-v="top">
       <!-- citation count metadata as apex chart -->
       <Apex type="bar" :options="options" :series="cites_per_year" />
-      <ul align-h="right" id="section_citations">
-        <li v-for="(item, index) in metadata_table">{{ item.key }}: {{ item.value }}</li>
+      <ul id="section_citations" align-h="right">
+        <li v-for="item in metadata_table" :key="item">
+          {{ item.key }}: {{ item.value }}
+        </li>
       </ul>
     </AppFlex>
   </AppSection>
@@ -21,7 +23,10 @@
     <AppHeading>Publications by Year</AppHeading>
     <!-- row of links to year sections -->
     <p>
-      <template v-for="(group, index) in publications.publications" :key="index">
+      <template
+        v-for="(group, index) in publications.publications"
+        :key="index"
+      >
         <AppLink :to="'#' + group.year">{{ group.year }}</AppLink>
         <span v-if="index !== publications.publications.length - 1"> · </span>
       </template>
@@ -29,7 +34,11 @@
   </AppSection>
 
   <!-- by year -->
-  <AppSection v-for="(group, index) in publications.publications" :key="index" width="big">
+  <AppSection
+    v-for="(group, index) in publications.publications"
+    :key="index"
+    width="big"
+  >
     <AppHeading>{{ group.year }}</AppHeading>
     <AppGallery size="big">
       <AppCitation
@@ -44,11 +53,10 @@
 </template>
 
 <script setup lang="ts">
-import Apex from "vue3-apexcharts";
 import { computed } from "vue";
+import Apex from "vue3-apexcharts";
 import AppCitation from "@/components/AppCitation.vue";
 import publications from "./publications.json";
-import AppTable from "@/components/AppTable.vue";
 
 const metadata = computed(() => publications.metadata);
 
@@ -147,4 +155,3 @@ const options = computed(() => ({
   white-space: nowrap;
 }
 </style>
-

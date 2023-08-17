@@ -130,7 +130,7 @@
 
 <style lang="scss" scoped>
 .video {
-    width: 100%;
-    aspect-ratio: 16 / 9;
+  aspect-ratio: 16 / 9;
+  width: 100%;
 }
 </style>
