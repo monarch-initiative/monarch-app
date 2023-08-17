@@ -1,0 +1,719 @@
+{
+  "metadata": {
+    "total": 12642,
+    "num_publications": 167,
+    "last_5_yrs": 8965,
+    "cites_per_year": {
+      "2009": 43,
+      "2010": 91,
+      "2011": 145,
+      "2012": 238,
+      "2013": 242,
+      "2014": 349,
+      "2015": 694,
+      "2016": 789,
+      "2017": 993,
+      "2018": 1163,
+      "2019": 1382,
+      "2020": 1284,
+      "2021": 1549,
+      "2022": 2107,
+      "2023": 1449
+    },
+    "hindex": 48,
+    "hindex5y": 43,
+    "i10index": 91,
+    "i10index5y": 84
+  },
+  "publications": [
+    {
+      "year": 2023,
+      "items": [
+        {
+          "title": "The Medical Action Ontology: A Tool for Annotating and Analyzing Treatments and Clinical Management of Human Disease",
+          "authors": "Leigh C Carmody, Michael A Gargano, Sabrina Toro, Nicole A Vasilevsky, Margaret P Adam, Hannah Blau, Lauren E Chan, David Gomez-Andres, Rita Horvath, Markus S Ladewig, David Lewis-Smith, Hanns Lochmueller, Nicolas A Matentzoglu, Monica C Munoz-Torres, Catharina Schuetz, Megan L Kraus, Berthold Seitz, Morgan N Similuk, Teresa Sparks, Timmy Strauss, Emilia M Swietlik, Rachel Thompson, Xingmin Aaron Zhang, Christopher J Mungall, Melissa A Haendel, Peter N Robinson",
+          "year": 2023,
+          "journal": "medRxiv",
+          "issue": ":2023.07. 13.23292612",
+          "link": "[Link](https://www.medrxiv.org/content/10.1101/2023.07.13.23292612.abstract)"
+        },
+        {
+          "title": "Predicting nutrition and environmental factors associated with female reproductive disorders using a knowledge graph and random forests",
+          "authors": "Lauren E Chan, Elena Casiraghi, Timothy Putman, Justin Reese, Quaker E Harmon, Kevin Schaper, Harshad Hedge, Giorgio Valentini, Charles Schmitt, Alison Motsinger-Reif, Janet E Hall, Christopher J Mungall, Peter N Robinson, Melissa A Haendel",
+          "year": 2023,
+          "journal": "medRxiv",
+          "issue": ":2023.07. 14.23292679",
+          "link": "[Link](https://www.medrxiv.org/content/10.1101/2023.07.14.23292679.abstract)"
+        },
+        {
+          "title": "On the limitations of large language models in clinical diagnosis",
+          "authors": "Justin Reese, Daniel Danis, J Harry Caufield, Elena Casiraghi, Giorgio Valentini, Christopher J Mungall, Peter N Robinson",
+          "year": 2023,
+          "journal": "medRxiv",
+          "issue": ":2023.07. 13.23292613",
+          "link": "[Link](https://www.medrxiv.org/content/10.1101/2023.07.13.23292613.abstract)"
+        },
+        {
+          "title": "The International Mouse Phenotyping Consortium: comprehensive knockout phenotyping underpinning the study of human disease",
+          "authors": "Tudor Groza, Federico Lopez Gomez, Hamed Haseli Mashhadi, Violeta Mu\u00f1oz-Fuentes, Osman Gunes, Robert Wilson, Pilar Cacheiro, Anthony Frost, Piia Keskivali-Bond, Bora Vardal, Aaron McCoy, Tsz Kwan Cheng, Luis Santos, Sara Wells, Damian Smedley, Ann-Marie Mallon, Helen Parkinson",
+          "year": 2023,
+          "journal": "Nucleic acids research",
+          "issue": "51(D1):D1038-D1045",
+          "link": "[Link](https://academic.oup.com/nar/article-abstract/51/D1/D1038/6777802)"
+        },
+        {
+          "title": "KG-Hub--Building and Exchanging Biological Knowledge Graphs",
+          "authors": "J Harry Caufield, Tim Putman, Kevin Schaper, Deepak R Unni, Harshad Hegde, Tiffany J Callahan, Luca Cappelletti, Sierra AT Moxon, Vida Ravanmehr, Seth Carbon, Lauren E Chan, Katherina Cortes, Kent A Shefchek, James P Balhoff, Tommaso Fontana, Nicolas Matentzoglu, Richard M Bruskiewich, Anne E Thessen, Nomi L Harris, Monica C Munoz-Torres, Melissa A Haendel, Peter N Robinson, Marcin P Joachimiak, Christopher J Mungall, Justin T Reese",
+          "year": 2023,
+          "journal": "arXiv preprint arXiv:2302.10800",
+          "issue": "",
+          "link": "[Link](https://arxiv.org/abs/2302.10800)"
+        },
+        {
+          "title": "GA4GH phenopackets: A practical introduction",
+          "year": 2023,
+          "authors": "Markus S Ladewig, Julius OB Jacobsen, Alex H Wagner, Daniel Danis, Baha El Kassaby, Michael Gargano, Tudor Groza, Michael Baudis, Robin Steinhaus, Dominik Seelow, Nikolaos E Bechrakis, Christopher J Mungall, Paul N Schofield, Olivier Elemento, Lindsay Smith, Julie A McMurry, Monica Munoz\u2010Torres, Melissa A Haendel, Peter N Robinson",
+          "journal": "Advanced Genetics",
+          "issue": "4(1):2200016",
+          "link": "[Link](https://onlinelibrary.wiley.com/doi/abs/10.1002/ggn2.202200016)"
+        },
+        {
+          "title": "Structured prompt interrogation and recursive extraction of semantics (SPIRES): A method for populating knowledge bases using zero-shot learning",
+          "authors": "J Harry Caufield, Harshad Hegde, Vincent Emonet, Nomi L Harris, Marcin P Joachimiak, Nicolas Matentzoglu, HyeongSik Kim, Sierra AT Moxon, Justin T Reese, Melissa A Haendel, Peter N Robinson, Christopher J Mungall",
+          "year": 2023,
+          "journal": "arXiv preprint arXiv:2304.02711",
+          "issue": "",
+          "link": "[Link](https://arxiv.org/abs/2304.02711)"
+        },
+        {
+          "title": "The Ontology of Biological Attributes (OBA)\u2014computational traits for the life sciences",
+          "authors": "Ray Stefancsik, James P Balhoff, Meghan A Balk, Robyn L Ball, Susan M Bello, Anita R Caron, Elissa J Chesler, Vinicius de Souza, Sarah Gehrke, Melissa Haendel, Laura W Harris, Nomi L Harris, Arwa Ibrahim, Sebastian Koehler, Nicolas Matentzoglu, Julie A McMurry, Christopher J Mungall, Monica C Munoz-Torres, Tim Putman, Peter Robinson, Damian Smedley, Elliot Sollis, Anne E Thessen, Nicole Vasilevsky, David O Walton, David Osumi-Sutherland",
+          "year": 2023,
+          "journal": "Mammalian Genome",
+          "issue": ":1-15",
+          "link": "[Link](https://link.springer.com/article/10.1007/s00335-023-09992-1)"
+        },
+        {
+          "title": "Ontologizing health systems data at scale: making translational discovery a reality",
+          "authors": "Tiffany J Callahan, Adrianne L Stefanski, Jordan M Wyrwa, Chenjie Zeng, Anna Ostropolets, Juan M Banda, William A Baumgartner Jr, Richard D Boyce, Elena Casiraghi, Ben D Coleman, Janine H Collins, Sara J Deakyne Davies, James A Feinstein, Asiyah Y Lin, Blake Martin, Nicolas A Matentzoglu, Daniella Meeker, Justin Reese, Jessica Sinclair, Sanya B Taneja, Katy E Trinkley, Nicole A Vasilevsky, Andrew E Williams, Xingmin A Zhang, Joshua C Denny, Patrick B Ryan, George Hripcsak, Tellen D Bennett, Melissa A Haendel, Peter N Robinson, Lawrence E Hunter, Michael G Kahn",
+          "year": 2023,
+          "journal": "NPJ Digital Medicine",
+          "issue": "6(1):89",
+          "link": "[Link](https://www.nature.com/articles/s41746-023-00830-x)"
+        }
+      ]
+    },
+    {
+      "year": 2022,
+      "items": [
+        {
+          "title": "Ranking variant pathogenicity using Exomiser facilitated the identification of the missing second mutation in three recessive cases of congenital myopathy",
+          "authors": "Y Lei, W Yang, HSS Chan",
+          "year": 2022,
+          "journal": "The 20th Asian and Oceanian Myopathy Center (AOMC) Meeting in conjunction with the National Scientific Meeting of Indonesian Neurological Association (PERDOSSI) Jun 9th-12th 2022",
+          "issue": "",
+          "link": "[Link](https://hub.hku.hk/handle/10722/323322)"
+        },
+        {
+          "title": "The bioregistry: Unifying the identification of biomedical entities th rough an integrative, open, community-driven metaregistry",
+          "authors": "Charles Tapley Hoyt, Meghan Balk, Tiffany J Callahan, Daniel Domingo-Fern\u00e1ndez, Melissa A Haendel, Harshad B Hegde, Daniel S Himmelstein, Klas Karis, John Kunze, Tiago Lubiana, N Matentzoglu, J McMurry, Sierra Moxon, Christopher J Mungall, A Rutz, Deepak R Unni, E Willighagen, D Winston, Benjamin M Gyori",
+          "year": 2022,
+          "journal": "bioRxiv",
+          "issue": "",
+          "link": "[Link](https://scholar.archive.org/work/i453tzofz5frzjq3rnmazvwebm/access/wayback/https://www.biorxiv.org/content/biorxiv/early/2022/07/10/2022.07.08.499378.full.pdf)"
+        },
+        {
+          "title": "A Simple Standard for Ontological Mappings 2022: Updates of data model and outlook",
+          "authors": "Nicolas Matentzoglu, Joe Flack, John Graybeal, Nomi L Harris, Harshad B Hegde, Charles T Hoyt, Hyeongsik Kim, Sabrina Toro, Nicole Vasilevsky, Christopher J Mungall",
+          "year": 2022,
+          "journal": "CEUR Workshop Proceedings",
+          "issue": "3324:61-66",
+          "link": "[Link](https://ceur-ws.org/Vol-3324/om2022_LTpaper6.pdf)"
+        },
+        {
+          "title": "What Should be the Minimum Requirements for Making FAIR Ontology Alignments?",
+          "authors": "Cassia Trojahn, Nicolas Matentzoglu",
+          "year": 2022,
+          "journal": "",
+          "issue": "",
+          "link": "[Link](https://ceur-ws.org/Vol-3324/om2022_poster1.pdf)"
+        },
+        {
+          "title": "The Sickle Cell Disease Ontology: Recent development and expansion of the universal sickle cell knowledge representation",
+          "authors": "Gaston K Mazandu, Jade Hotchkiss, Victoria Nembaware, Ambroise Wonkam, Nicola Mulder",
+          "year": 2022,
+          "journal": "Database",
+          "issue": "2022:baac014",
+          "link": "[Link](https://academic.oup.com/database/article-abstract/doi/10.1093/database/baac014/6562127)"
+        },
+        {
+          "title": "Rare-disease data standards",
+          "authors": "Peter N Robinson, Holm Graessner",
+          "year": 2022,
+          "journal": "Bundesgesundheitsblatt, Gesundheitsforschung, Gesundheitsschutz 65 (11), 1126, 2022",
+          "issue": "65(11):1126",
+          "link": "[Link](https://mouseion.jax.org/stfb2022/236/)"
+        },
+        {
+          "title": "Implementation of Zebrafish Ontologies for Toxicology Screening",
+          "authors": "Anne E Thessen, Skylar Marvel, JC Achenbach, Stephan Fischer, Melissa A Haendel, Kimberly Hayward, Nils Kl\u00fcver, Sarah K\u00f6nemann, Jessica Legradi, Pamela Lein, Connor Leong, J Erik Mylroie, Stephanie Padilla, Dante Perone, Antonio Planchart, Rafael Mi\u00f1ana Prieto, Arantza Muriana, Celia Quevedo, David Reif, Kristen Ryan, Evelyn Stinckens, Lisa Truong, Lucia Vergauwen, Colette Vom Berg, Mitch Wilbanks, Bianca Yaghoobi, Jon Hamm",
+          "year": 2022,
+          "journal": "Frontiers in Toxicology",
+          "issue": "4:8",
+          "link": "[Link](https://www.frontiersin.org/articles/10.3389/ftox.2022.817999/full?&utm_source=Email_to_authors_&utm_medium=Email&utm_content=T1_11.5e1_author&utm_campaign=Email_publication&field=&journalName=Frontiers_in_Toxicology&id=817999)"
+        },
+        {
+          "title": "An algorithmic framework for isoform-specific functional analysis",
+          "authors": "Guy Karlebach, Leigh Carmody, Jagadish Chandrabose Sundaramurthi, Elena Casiraghi, Peter Hansen, Justin Reese, Chris J Mungall, Giorgio Valentini, Peter N Robinson",
+          "year": 2022,
+          "journal": "Biorxiv",
+          "issue": ":2022.05. 13.491897",
+          "link": "[Link](https://www.biorxiv.org/content/10.1101/2022.05.13.491897.abstract)"
+        },
+        {
+          "title": "The GA4GH Phenopacket schema defines a computable representation of clinical data",
+          "authors": "Julius OB Jacobsen, Michael Baudis, Gareth S Baynam, Jacques S Beckmann, Sergi Beltran, Orion J Buske, Tiffany J Callahan, Christopher G Chute, M\u00e9lanie Courtot, Daniel Danis, Olivier Elemento, Andrea Essenwanger, Robert R Freimuth, Michael A Gargano, Tudor Groza, Ada Hamosh, Nomi L Harris, Rajaram Kaliyaperumal, Kevin C Kent Lloyd, Aly Khalifa, Peter M Krawitz, Sebastian K\u00f6hler, Brian J Laraway, Heikki Lehv\u00e4slaiho, Leslie Matalonga, Julie A McMurry, Alejandro Metke-Jimenez, Christopher J Mungall, Monica C Munoz-Torres, Soichi Ogishima, Anastasios Papakonstantinou, Davide Piscia, Nikolas Pontikos, N\u00faria Queralt-Rosinach, Marco Roos, Julian Sass, Paul N Schofield, Dominik Seelow, Anastasios Siapos, Damian Smedley, Lindsay D Smith, Robin Steinhaus, Jagadish Chandrabose Sundaramurthi, Emilia M Swietlik, Sylvia Thun, Nicole A Vasilevsky, Alex H Wagner, Jeremy L Warner, Claus Weiland, Melissa A Haendel, Peter N Robinson",
+          "year": 2022,
+          "journal": "Nature biotechnology",
+          "issue": "40(6):817-820",
+          "link": "[Link](https://www.nature.com/articles/s41587-022-01357-4)"
+        },
+        {
+          "title": "Prenatal phenotyping: A community effort to enhance the Human Phenotype Ontology",
+          "authors": "Ferdinand Dhombres, Patricia Morgan, Bimal P Chaudhari, Isabel Filges, Teresa N Sparks, Pablo Lapunzina, Tony Roscioli, Umber Agarwal, Shagun Aggarwal, Claire Beneteau, Pilar Cacheiro, Leigh C Carmody, Sophie Collardeau\u2010Frachon, Esther A Dempsey, Andreas Dufke, Michael Henri Duyzend, Mirna El Ghosh, Jessica L Giordano, Ragnhild Glad, Ieva Grinfelde, Dominic G Iliescu, Markus S Ladewig, Monica C Munoz\u2010Torres, Marzia Pollazzon, Francesca Clementina Radio, Carlota Rodo, Raquel Gouveia Silva, Damian Smedley, Jagadish Chandrabose Sundaramurthi, Sabrina Toro, Irene Valenzuela, Nicole A Vasilevsky, Ronald J Wapner, Roni Zemet, Melissa A Haendel, Peter N Robinson",
+          "year": 2022,
+          "journal": "American Journal of Medical Genetics Part C: Seminars in Medical Genetics",
+          "issue": "190(2):231-242",
+          "link": "[Link](https://onlinelibrary.wiley.com/doi/abs/10.1002/ajmg.c.31989)"
+        },
+        {
+          "title": "The RD\u2010Connect Genome\u2010Phenome Analysis Platform: Accelerating diagnosis, research, and gene discovery for rare diseases",
+          "authors": "Steven Laurie, Davide Piscia, Leslie Matalonga, Alberto Corv\u00f3, Marcos Fern\u00e1ndez\u2010Callejo, Carles Garcia\u2010Linares, Carles Hernandez\u2010Ferrer, Cristina Luengo, In\u00e9s Mart\u00ednez, Anastasios Papakonstantinou, Daniel Pic\u00f3\u2010Amador, Joan Protasio, Rachel Thompson, Raul Tonda, M\u00f2nica Bay\u00e9s, Gemma Bullich, Jordi Camps\u2010Puchadas, Ida Paramonov, Jean\u2010R\u00e9mi Trotta, Angel Alonso, Marcella Attimonelli, Christophe B\u00e9roud, Virginie Bros\u2010Facer, Orion J Buske, Andr\u00e9s Ca\u00f1ada\u2010Pallar\u00e9s, Jos\u00e9 M Fern\u00e1ndez, Mats G Hansson, Rita Horvath, Julius OB Jacobsen, Rajaram Kaliyaperumal, S\u00e9verine Lair\u2010Pr\u00e9terre, Luana Licata, Pedro Lopes, Estrella L\u00f3pez\u2010Mart\u00edn, Deborah Mascalzoni, Lucia Monaco, Luis A P\u00e9rez\u2010Jurado, Manuel Posada de la Paz, Jordi Rambla, Ana Rath, Olaf Riess, Peter N Robinson, David Salgado, Damian Smedley, Dylan Spalding, Peter AC 't Hoen, Ana T\u00f6pf, Irina Zaharieva, Holm Graessner, Ivo G Gut, Hanns Lochm\u00fcller, Sergi Beltran",
+          "year": 2022,
+          "journal": "Human mutation",
+          "issue": "43(6):717-733",
+          "link": "[Link](https://onlinelibrary.wiley.com/doi/abs/10.1002/humu.24353)"
+        },
+        {
+          "title": "The Clinical Variant Analysis Tool: Analyzing the evidence supporting reported genomic variation in clinical practice",
+          "authors": "Hui-Lin Chin, Nour Gazzaz, Stephanie Huynh, Iulia Handra, Lynn Warnock, Ashley Moller-Hansen, Pierre Boerkoel, Julius OB Jacobsen, Christ\u00e8le du Souich, Nan Zhang, Kent Shefchek, Leah M Prentice, Nicole Washington, Melissa Haendel, Linlea Armstrong, Lorne Clarke, Wenhui Laura Li, Damian Smedley, Peter N Robinson, Cornelius F Boerkoel",
+          "year": 2022,
+          "journal": "Genetics in Medicine",
+          "issue": "24(7):1512-1522",
+          "link": "[Link](https://www.sciencedirect.com/science/article/pii/S1098360022007031)"
+        },
+        {
+          "title": "Phenotype\u2010driven approaches to enhance variant prioritization and diagnosis of rare disease",
+          "authors": "Julius OB Jacobsen, Catherine Kelly, Valentina Cipriani, Genomics England Research Consortium, Christopher J Mungall, Justin Reese, Daniel Danis, Peter N Robinson, Damian Smedley",
+          "year": 2022,
+          "journal": "Human mutation 43 (8), 1071-1081, 2022",
+          "issue": "43(8):1071-1081",
+          "link": "[Link](https://onlinelibrary.wiley.com/doi/abs/10.1002/humu.24380)"
+        },
+        {
+          "title": "Progress toward a universal biomedical data translator",
+          "authors": "Karamarie Fecho, Anne E Thessen, Sergio E Baranzini, Chris Bizon, Jennifer J Hadlock, Sui Huang, Ryan T Roper, Noel Southall, Casey Ta, Paul B Watkins, Mark D Williams, Hao Xu, William Byrd, Vlado Dan\u010d\u00edk, Marc P Duby, Michel Dumontier, Gustavo Glusman, Nomi L Harris, Eugene W Hinderer, Greg Hyde, Adam Johs, Andrew I Su, Guangrong Qin, Qian Zhu, Biomedical Data Translator Consortium, Liliana Acevedo, Stanley C Ahalt, John Alden, Ahmed Alkanaq, Nada Amin, Ricardo Avila, Michael Bada, Jim Balhoff, Andrew Baumgartner, William Baumgartner, Basazin Belhu, Mac Kenzie Brandes, Namdi Brandon, Matthew Brush, Richard Bruskiewich, Noel Burtt, Jackson Callaghan, Marco Alvarado Cano, Steven Carrell, J Harry Caufield, Remzi Celebi, James Champion, Zhehuan Chen, Mei\u2010Jan Chen, Lawrence Chung, Paul A Clemons, Kevin Cohen, Tom Conlin, Dan Corkill, Maria Costanzo, Steven Cox, Andrew Crouse, Camerron Crowder, Mary E Crumbley, Cheng Dai, Ricardo De Miranda Azevedo, Eric Deutsch, Jennifer Dougherty, Venkata Duvvuri, Stephen Edwards, Vincent Emonet, Nathaniel Fehrmann, Jason Flannick, Aleksandra M Foksinska, Vicki Gardner, Edgar Gatica, Amy Glen, Prateek Goel, Joseph Gormley, Alon Greyber, Perry Haaland, Melissa A Haendel, Kristina Hanspers, Kaiwen He, Jeff Henrickson, Maureen Hoatlin, Andrew Hoffman, Conrad Huang, Robert Hubal, Kenneth Huellas\u2010Bruskiewicz, Forest B Huls, Lawrence Hunter, Tursynay Issabekova, Matthew Jarrell, Lindsay Jenkins, Arpita Joshi, Jimin Kang, Richa Kanwar, Yaphet Kebede, Keum Joo Kim, Alexandria Kluge, Michael Knowles, Ryan Koesterer, Daniel Korn, David Koslicki, Ashok Krishnamurthy, Lindsey Kvarfordt, Jay Lee, Margaret Leigh, Jason Lin, Zheng Liu, Shaopeng Liu, Chunyu Ma, Andrew Magis, Tarun Mamidi, Meisha Mandal, Michelle Mantilla, Jeffrey Massung, Denise Mauldin, Jason McClelland, Julie McMurry, Philip Mease, Luis Mendoza, Marian Mersmann, Abrar Mesbah, Matthew Might, Kenny Morton, Sierra AT Moxon, Sandrine Muller, Arun Teja Muluka, Christopher J Mungall, John Osborne, Phil Owen, Michael Patton, David B Peden, R Carter Peene, Bria Persaud, Emily Pfaff, Alexander Pico, Elizabeth Pollard, Guthrie Price, Tim Putman, Shruti Raj, Stephen A Ramsey, Jason Reilly, Anders Riutta, Jared Roach, Greg Rosenblatt, Irit Rubin, Sienna Rucka, Nathaniel Rudavsky\u2010Brody, Rayn Sakaguchi, Eugene Santos, Kevin Schaper, Charles P Schmitt",
+          "year": 2022,
+          "journal": "Clinical and Translational Science 15 (8), 1838-1847, 2022",
+          "issue": "15(8):1838-1847",
+          "link": "[Link](https://ascpt.onlinelibrary.wiley.com/doi/abs/10.1111/cts.13301)"
+        },
+        {
+          "title": "Phenotype-aware prioritisation of rare Mendelian disease variants",
+          "authors": "Catherine Kelly, Anita Szabo, Nikolas Pontikos, Gavin Arno, Peter N Robinson, Jules OB Jacobsen, Damian Smedley, Valentina Cipriani",
+          "year": 2022,
+          "journal": "Elsevier Current Trends",
+          "issue": "",
+          "link": "[Link](https://www.cell.com/trends/genetics/fulltext/S0168-9525(22)00179-2?dgcid=raven_jbs_aip_email)"
+        },
+        {
+          "title": "Classifying Animal Breeds with the Vertebrate Breed Ontology (VBO)",
+          "authors": "Sabrina Toro, Nicolas Matentzoglu, Kathleen R Mullen, Nicole Vasilevsky, Halie M Rando, Melissa Haendel, Christopher J Mungall, Zhi-Liang Hu, Gregoire Leroy, Imke Tammen, Frank W Nicholas",
+          "year": 2022,
+          "journal": "International Conference on Biomedical Ontology",
+          "issue": "",
+          "link": "[Link](https://icbo-conference.github.io/icbo2022/papers/ICBO-2022_paper_1882.pdf)"
+        },
+        {
+          "title": "129. Standardization of cancer terminology in the Mondo Disease Ontology",
+          "authors": "Nicole Vasilevsky, Nico Matentzoglu, Sabrina Toro, Joe Flack, Ada Hamosh, Peter Robinson, Melissa Haendel, Chris Mungall",
+          "year": 2022,
+          "journal": "Cancer Genetics",
+          "issue": "268:41",
+          "link": "[Link](https://www.cancergeneticsjournal.org/article/S2210-7762(22)00259-9/abstract)"
+        }
+      ]
+    },
+    {
+      "year": 2021,
+      "items": [
+        {
+          "title": "The Linked Data Modeling Language (LinkML): A General-Purpose Data Modeling Framework Grounded in Machine-Readable Semantics.",
+          "authors": "Sierra AT Moxon, Harold Solbrig, Deepak R Unni, Dazhi Jiao, Richard M Bruskiewich, James P Balhoff, Gaurav Vaidya, William D Duncan, Harshad Hegde, Mark Miller, Matthew H Brush, Nomi L Harris, Melissa A Haendel, Christopher J Mungall",
+          "year": 2021,
+          "journal": "ICBO, 148-151, 2021",
+          "issue": ":148-151",
+          "link": "[Link](https://ceur-ws.org/Vol-3073/paper24.pdf)"
+        },
+        {
+          "title": "Reclassification of Infectious Disease in the Mondo Disease Ontology",
+          "authors": "Nicole Vasilevsky, Sabrina Toro, Nico Matentzoglu, Dazhi Jiao, Melissa Haendel, Peter N Robinson, Chris Mungall",
+          "year": 2021,
+          "journal": "Proceedings http://ceur-ws. org ISSN",
+          "issue": "1613:0073",
+          "link": "[Link](http://ceur-ws.org/Vol-3073/paper14.pdf)"
+        },
+        {
+          "title": "A Semantic Model Leveraging Pattern-based Ontology Terms to Bridge Environmental Exposures and Health Outcomes",
+          "authors": "Lauren E Chan, Nicole A Vasilevsky, Anne Thessen, Nicolas Matentzoglu, William D Duncan, Christopher J Mungall, Melissa A Haendel",
+          "year": 2021,
+          "journal": "Proceedings http://ceur-ws. org ISSN",
+          "issue": "1613:0073",
+          "link": "[Link](http://ceur-ws.org/Vol-3073/paper5.pdf)"
+        },
+        {
+          "title": "KG-Microbe: A Reference Knowledge-Graph and Platform for Harmonized Microbial Information.",
+          "authors": "Marcin P Joachimiak, Harshad Hegde, William D Duncan, Justin T Reese, Luca Cappelletti, Anne E Thessen, Christopher J Mungall",
+          "year": 2021,
+          "journal": "ICBO, 131-133, 2021",
+          "issue": ":131-133",
+          "link": "[Link](http://ceur-ws.org/Vol-3073/paper19.pdf)"
+        },
+        {
+          "title": "From Reductionism to Reintegration: Solving society\u2019s most pressing problems requires building bridges between data types across the life sciences",
+          "authors": "Anne E Thessen, Paul Bogdan, David J Patterson, Theresa M Casey, C\u00e9sar Hinojo-Hinojo, Orlando De Lange, Melissa A Haendel",
+          "year": 2021,
+          "journal": "Public Library of Science",
+          "issue": "19(3):e3001129",
+          "link": "[Link](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3001129)"
+        },
+        {
+          "title": "Catalyzing knowledge-driven discovery in environmental health sciences through a community-driven harmonized language",
+          "authors": "Stephanie D Holmgren, Rebecca R Boyles, Ryan D Cronk, Christopher G Duncan, Richard K Kwok, Ruth M Lunn, Kimberly C Osborn, Anne E Thessen, Charles P Schmitt",
+          "year": 2021,
+          "journal": "International Journal of Environmental Research and Public Health",
+          "issue": "18(17):8985",
+          "link": "[Link](https://www.mdpi.com/1660-4601/18/17/8985)"
+        },
+        {
+          "title": "100,000 genomes pilot on rare-disease diagnosis in health care\u2014preliminary report",
+          "authors": "100, 000 Genomes Project Pilot Investigators",
+          "year": 2021,
+          "journal": "New England Journal of Medicine",
+          "issue": "385(20):1868-1880",
+          "link": "[Link](https://www.nejm.org/doi/full/10.1056/NEJMoa2035790)"
+        },
+        {
+          "title": "The GA4GH Phenopacket schema: A computable representation of clinical data for precision medicine",
+          "year": 2021,
+          "authors": "Julius OB Jacobsen, Michael Baudis, Gareth S Baynam, Jacques S Beckmann, Sergi Beltran, Tiffany J Callahan, Christopher G Chute, M\u00e9lanie Courtot, Daniel Danis, Olivier Elemento, Robert R Freimuth, Michael A Gargano, Tudor Groza, Ada Hamosh, Nomi L Harris, Rajaram Kaliyaperumal, Aly Khalifa, Peter M Krawitz, Sebastian K\u00f6hler, Brian J Laraway, Heikki Lehv\u00e4slaiho, Kent C Lloyd, Leslie Matalonga, Julie A McMurry, Alejandro Metke-Jimenez, Christopher J Mungall, Monica C Munoz-Torres, Soichi Ogishima, Anastasios Papakonstantinou, Davide Piscia, Nikolas Pontikos, N\u00faria Queralt-Rosinach, Marco Roos, Paul N Schofield, Anastasios Siapos, Damian Smedley, Lindsay D Smith, Robin Steinhaus, Jagadish Chandrabose Sundaramurthi, Emilia M Swietlik, Sylvia Thun, Nicole A Vasilevsky, Alex H Wagner, Jeremy L Warner, Claus Weiland, Melissa A Haendel, Peter N Robinson, Consortial authors",
+          "journal": "Nature Research",
+          "issue": ":2021.11. 27.21266944",
+          "link": "[Link](https://www.medrxiv.org/content/10.1101/2021.11.27.21266944.abstract)"
+        }
+      ]
+    },
+    {
+      "year": 2020,
+      "items": [
+        {
+          "title": "Mondo Disease Ontology: harmonizing disease concepts across the world",
+          "authors": "Nicole Vasilevsky, Shahim Essaid, Nico Matentzoglu, Nomi L Harris, Melissa Haendel, Peter Robinson, Christopher J Mungall",
+          "year": 2020,
+          "journal": "CEUR Workshop Proceedings, CEUR-WS",
+          "issue": "2807",
+          "link": "[Link](http://www.informatik.uni-leipzig.de/~loebe/tmp/ICBO2020/abstractY.pdf)"
+        },
+        {
+          "title": "Identification of UBAP1 mutations in juvenile hereditary spastic paraplegia in the 100,000 Genomes Project",
+          "authors": "Thomas Bourinaris, Damian Smedley, Valentina Cipriani, Isabella Sheikh, Alkyoni Athanasiou-Fragkouli, Patrick Chinnery, Huw Morris, Raquel Real, Victoria Harrison, Evan Reid, Nicholas Wood, Genomics England Research Consortium, Jana Vandrovcova, Henry Houlden, Arianna Tucci",
+          "year": 2020,
+          "journal": "European Journal of Human Genetics",
+          "issue": "28(12):1763-1768",
+          "link": "[Link](https://www.nature.com/articles/s41431-020-00720-w)"
+        },
+        {
+          "title": "Community approaches for integrating environmental exposures into human models of disease",
+          "authors": "Anne E Thessen, Cynthia J Grondin, Resham D Kulkarni, Susanne Brander, Lisa Truong, Nicole A Vasilevsky, Tiffany J Callahan, Lauren E Chan, Brian Westra, Mary Willis, Sarah E Rothenberg, Annie M Jarabek, Lyle Burgoon, Susan A Korrick, Melissa A Haendel",
+          "year": 2020,
+          "journal": "Environmental health perspectives",
+          "issue": "128(12):125002",
+          "link": "[Link](https://ehp.niehs.nih.gov/doi/abs/10.1289/EHP7215)"
+        }
+      ]
+    },
+    {
+      "year": 2019,
+      "items": [
+        {
+          "title": "The Human Phenotype Ontology",
+          "authors": "Sebastian K\u00f6hler, M Haendel, P Robinson",
+          "year": 2019,
+          "journal": "",
+          "issue": "",
+          "link": "[Link](https://pdfs.semanticscholar.org/16c0/f040cabbb6da356ccb712635cb37c5146036.pdf)"
+        },
+        {
+          "title": "Ontology-based data integration for advancing toxicological knowledge",
+          "authors": "RR Boyles, AE Thessen, A Waldrop, MA Haendel",
+          "year": 2019,
+          "journal": "Elsevier",
+          "issue": "16:67-74",
+          "link": "[Link](https://www.sciencedirect.com/science/article/pii/S2468202019300051)"
+        },
+        {
+          "title": "Data-driven method to enhance craniofacial and oral phenotype vocabularies",
+          "authors": "Rashmi Mishra, Andrea Burke, Bonnie Gitman, Payal Verma, Mark Engelstad, Melissa A Haendel, Ilias Alevizos, William A Gahl, Michael T Collins, Janice S Lee, Murat Sincan",
+          "year": 2019,
+          "journal": "The Journal of the American Dental Association",
+          "issue": "150(11):933-939. e2",
+          "link": "[Link](https://www.sciencedirect.com/science/article/pii/S000281771930443X)"
+        },
+        {
+          "title": "Proper attribution for curation and maintenance of research collections: metadata recommendations of the RDA/TDWG Working Group",
+          "authors": "Anne E Thessen, Matt Woodburn, Dimitrios Koureas, Deborah Paul, Michael Conlon, David P Shorthouse, Sarah Ramdeen",
+          "year": 2019,
+          "journal": "Data Science Journal",
+          "issue": "18:54-54",
+          "link": "[Link](https://account.datascience.codata.org/index.php/up-j-dsj/article/view/dsj-2019-054)"
+        }
+      ]
+    },
+    {
+      "year": 2018,
+      "items": [
+        {
+          "title": "Phenotype Ontologies Traversing All The Organisms (POTATO) workshop aims to reconcile logical definitions across species. Workshop Report",
+          "authors": "Nicolas Matentzoglu, J Balhoff, S Bello, C Boerkoel, Y Bradford, L Carmody, L Cooper, C Grove, N Harris, Sebastian K\u00f6hler, Marie-Ang\u00e9lique Laporte, S Laulederkind, Raymond Lee, G Mazandu, J McMurry, Chris Mungall, David Osumi-Sutherland, Clare Pilgrim, Kayli Rageth, S Robb, P Robinson, Erik Segerdell, Anne Thessen, Nicole Vasilevsky, X Zhang, M Haendel",
+          "year": 2018,
+          "journal": "",
+          "issue": "",
+          "link": "[Link](https://cgspace.cgiar.org/handle/10568/100816)"
+        },
+        {
+          "title": "Standardizing Ontology Workflows Using ROBOT.",
+          "authors": "Rebecca Tauber, James P Balhoff, Eric Douglass, Chris Mungall, James A Overton",
+          "year": 2018,
+          "journal": "ICBO, 2018",
+          "issue": "",
+          "link": "[Link](https://ceur-ws.org/Vol-2285/ICBO_2018_paper_46.pdf)"
+        },
+        {
+          "title": "Biodiversity informatics",
+          "authors": "Cynthia S Parr, Anne E Thessen",
+          "year": 2018,
+          "journal": "Ecological Informatics: Data Management and Knowledge Discovery",
+          "issue": ":375-399",
+          "link": "[Link](https://link.springer.com/chapter/10.1007/978-3-319-59928-1_17)"
+        },
+        {
+          "title": "Ontology mapping framework with feature extraction and semantic embeddings",
+          "authors": "Mayanka Chandrashekar, Rohithkumar Nagulapati, Yugyung Lee",
+          "year": 2018,
+          "journal": "IEEE",
+          "issue": ":34-42",
+          "link": "[Link](https://ieeexplore.ieee.org/abstract/document/8411678/)"
+        },
+        {
+          "title": "A census of disease ontologies",
+          "authors": "Melissa A Haendel, Julie A McMurry, Rose Relevo, Christopher J Mungall, Peter N Robinson, Christopher G Chute",
+          "year": 2018,
+          "journal": "Annual Reviews",
+          "issue": "1:305-331",
+          "link": "[Link](https://www.annualreviews.org/doi/abs/10.1146/annurev-biodatasci-080917-013459)"
+        },
+        {
+          "title": "matchbox: An open\u2010source tool for patient matching via the Matchmaker Exchange",
+          "authors": "Harindra Arachchi, Monica H Wojcik, Benjamin Weisburd, Julius OB Jacobsen, Elise Valkanas, Samantha Baxter, Alicia B Byrne, Anne H O'Donnell\u2010Luria, Melissa Haendel, Damian Smedley, Daniel G MacArthur, Anthony A Philippakis, Heidi L Rehm",
+          "year": 2018,
+          "journal": "Human mutation",
+          "issue": "39(12):1827-1834",
+          "link": "[Link](https://onlinelibrary.wiley.com/doi/abs/10.1002/humu.23655)"
+        }
+      ]
+    },
+    {
+      "year": 2017,
+      "items": [
+        {
+          "title": "Aligning the Human Phenotype and Mammalian Phenotype Ontology using Dead Simple Ontology Design Patterns.",
+          "authors": "Nicole A Vasilevsky, James P Balhoff, Christopher J Mungall, David Osumi-Sutherland, Sebastian K\u00f6hler, Susan M Bello, Cynthia L Smith, Peter N Robinson, Melissa A Haendel",
+          "year": 2017,
+          "journal": "ICBO, 2017",
+          "issue": "",
+          "link": "[Link](http://ceur-ws.org/Vol-2137/paper_22.pdf)"
+        },
+        {
+          "title": "Gold-standard ontology-based anatomical annotation in the CRAFT Corpus",
+          "authors": "Michael Bada, Nicole Vasilevsky, William A Baumgartner Jr, Melissa Haendel, Lawrence E Hunter",
+          "year": 2017,
+          "journal": "Database",
+          "issue": "2017:bax087",
+          "link": "[Link](https://academic.oup.com/database/article-abstract/doi/10.1093/database/bax087/4780291)"
+        },
+        {
+          "title": "The 24th annual Nucleic Acids Research database issue: a look back and upcoming changes",
+          "authors": "Michael Y Galperin, Xos\u00e9 M Fern\u00e1ndez-Su\u00e1rez, Daniel J Rigden",
+          "year": 2017,
+          "journal": "Nucleic acids research",
+          "issue": "45(D1):D1-D11",
+          "link": "[Link](https://academic.oup.com/nar/article-abstract/45/D1/D1/2770636)"
+        },
+        {
+          "title": "\u201cOpposite-of\u201d-information improves similarity calculations in phenotype ontologies",
+          "authors": "Sebastian K\u00f6hler, Peter N Robinson, Christopher J Mungall",
+          "year": 2017,
+          "journal": "bioRxiv",
+          "issue": ":108977",
+          "link": "[Link](https://www.biorxiv.org/content/10.1101/108977.abstract)"
+        },
+        {
+          "title": "Exomiser and Genomiser",
+          "authors": "Julius OB Jacobsen, Damian Smedley, Peter Robinson",
+          "year": 2017,
+          "journal": "Chapman and Hall/CRC",
+          "issue": ":387-406",
+          "link": "[Link](https://www.taylorfrancis.com/chapters/edit/10.1201/9781315154770-27/exomiser-genomiser-julius-jacobsen-damian-smedley-peter-robinson)"
+        },
+        {
+          "title": "Matchmaker exchange",
+          "authors": "Nara LM Sobreira, Harindra Arachchi, Orion J Buske, Jessica X Chong, Ben Hutton, Julia Foreman, Fran\u00e7ois Schiettecatte, Tudor Groza, Julius OB Jacobsen, Melissa A Haendel, Kym M Boycott, Ada Hamosh, Heidi L Rehm, Matchmaker Exchange Consortium",
+          "year": 2017,
+          "journal": "Current protocols in human genetics",
+          "issue": "95(1):9.31. 1-9.31. 15",
+          "link": "[Link](https://currentprotocols.onlinelibrary.wiley.com/doi/abs/10.1002/cphg.50)"
+        },
+        {
+          "title": "Prediction of Human Phenotype Ontology terms by means of hierarchical ensemble methods",
+          "authors": "Marco Notaro, Max Schubach, Peter N Robinson, Giorgio Valentini",
+          "year": 2017,
+          "journal": "BMC bioinformatics",
+          "issue": "18(1):1-18",
+          "link": "[Link](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1854-y)"
+        },
+        {
+          "title": "Dead simple OWL design patterns",
+          "authors": "David Osumi-Sutherland, Melanie Courtot, James P Balhoff, Christopher Mungall",
+          "year": 2017,
+          "journal": "Journal of biomedical semantics",
+          "issue": "8(1):1-7",
+          "link": "[Link](https://jbiomedsem.biomedcentral.com/articles/10.1186/s13326-017-0126-0?ref=https://githubhelp.com)"
+        }
+      ]
+    },
+    {
+      "year": 2016,
+      "items": [
+        {
+          "title": "The Monarch Initiative: Insights across species reveal human disease mechanisms",
+          "authors": "C Mungall, J McMurry, S Koehler, J Balhoff, C Borromeo, M Brush, S Carbon, T Conlin, N Dunn, M Engelstad",
+          "year": 2016,
+          "journal": "bioRxiv",
+          "issue": "",
+          "doi": "10.1101/055756",
+          "link": "[DOI](https://dx.doi.org/10.1101/055756)"
+        },
+        {
+          "title": "Enhancing the human phenotype ontology for use by the layperson",
+          "authors": "Nicole A Vasilevsky, Mark Engelstad, Erin D Foster, Christopher J Mungall, Peter N Robinson, Sebastian K\u00f6hler, Melissa A Haendel",
+          "year": 2016,
+          "journal": "",
+          "issue": "",
+          "link": "[Link](https://scholarworks.iupui.edu/handle/1805/21027)"
+        },
+        {
+          "title": "Gold-Standard Ontology-Based Annotation of Concepts in Biomedical Text in the CRAFT Corpus: Updates and Extensions.",
+          "authors": "Michael Bada, Nicole A Vasilevsky, Melissa A Haendel, Lawrence Hunter",
+          "year": 2016,
+          "journal": "ICBO/BioCreative, 2016",
+          "issue": "",
+          "link": "[Link](http://ceur-ws.org/Vol-1747/IP08_ICBO2016.pdf)"
+        },
+        {
+          "title": "Innovative approaches to combining genotype, phenotype, epigenetic, and exposure data for precision diagnostics",
+          "authors": "Melissa A Haendel, Maricel G Kann, Nicole L Washington",
+          "year": 2016,
+          "journal": "Biocomputing 2016: Proceedings of the Pacific Symposium, 93-95, 2016",
+          "issue": ":93-95",
+          "link": "[Link](http://psb.stanford.edu/psb-online/proceedings/psb16/intro-innovative.pdf)"
+        },
+        {
+          "title": "SEPIO: A Semantic Model for the Integration and Analysis of Scientific Evidence.",
+          "authors": "Matthew H Brush, Kent A Shefchek, Melissa A Haendel",
+          "year": 2016,
+          "journal": "ICBO/BioCreative, 2016",
+          "issue": "",
+          "link": "[Link](https://ceur-ws.org/Vol-1747/IT605_ICBO2016.pdf)"
+        },
+        {
+          "title": "Tools for exploring mouse models of human disease",
+          "authors": "Melissa Haendel, Irene Papatheodorou, Anika Oellrich, Christopher J Mungall, Nicole Washington, Suzanna E Lewis, Peter N Robinson, Damian Smedley",
+          "year": 2016,
+          "journal": "Elsevier",
+          "issue": "20:21-26",
+          "link": "[Link](https://www.sciencedirect.com/science/article/pii/S1740675717300348)"
+        },
+        {
+          "title": "Laying a community-based foundation for data-driven semantic standards in environmental health sciences",
+          "authors": "Carolyn J Mattingly, Rebecca Boyles, Cindy P Lawler, Astrid C Haugen, Allen Dearry, Melissa Haendel",
+          "year": 2016,
+          "journal": "National Institute of Environmental Health Sciences",
+          "issue": "124(8):1136-1140",
+          "link": "[Link](https://ehp.niehs.nih.gov/doi/abs/10.1289/ehp.1510438)"
+        },
+        {
+          "title": "The environment ontology in 2016: bridging domains with increased scope, semantic density, and interoperation",
+          "authors": "Pier Luigi Buttigieg, Evangelos Pafilis, Suzanna E Lewis, Mark P Schildhauer, Ramona L Walls, Christopher J Mungall",
+          "year": 2016,
+          "journal": "Journal of biomedical semantics",
+          "issue": "7:1-12",
+          "link": "[Link](https://link.springer.com/article/10.1186/s13326-016-0097-6)"
+        }
+      ]
+    },
+    {
+      "year": 2015,
+      "items": [
+        {
+          "title": "Automatic concept recognition using the human phenotype ontology reference and test suite corpora",
+          "authors": "Tudor Groza, Sebastian K\u00f6hler, Sandra Doelken, Nigel Collier, Anika Oellrich, Damian Smedley, Francisco M Couto, Gareth Baynam, Andreas Zankl, Peter N Robinson",
+          "year": 2015,
+          "journal": "Database",
+          "issue": "2015:bav005",
+          "link": "[Link](https://academic.oup.com/database/article-abstract/doi/10.1093/database/bav005/2433137)"
+        },
+        {
+          "title": "Prediction of human gene-phenotype associations by exploiting the hierarchical structure of the human phenotype ontology",
+          "authors": "Giorgio Valentini, Sebastian K\u00f6hler, Matteo Re, Marco Notaro, Peter N Robinson",
+          "year": 2015,
+          "journal": "Springer International Publishing",
+          "issue": ":66-77",
+          "link": "[Link](https://link.springer.com/chapter/10.1007/978-3-319-16483-0_7)"
+        },
+        {
+          "title": "Tudor Groza, Sebastian K\u00f6hler, 3, 25 Dawid Moldenhauer, 3, 4 Nicole Vasilevsky, 5",
+          "authors": "Gareth Baynam, Tomasz Zemojtel, Lynn Marie Schriml, Warren Alden Kibbe, Paul N Schofield, Tim Beck, Drashtti Vasant, Anthony J Brookes, Andreas Zankl, Nicole L Washington, Christopher J Mungall, Suzanna E Lewis, Melissa A Haendel, Helen Parkinson, Peter N Robinson",
+          "year": 2015,
+          "journal": "The American Journal of Human Genetics",
+          "issue": "124(111):97-111",
+          "link": "[Link](https://www.academia.edu/download/52704460/The_Human_Phenotype_Ontology_Semantic_Un20170419-3209-8rzqtj.pdf)"
+        },
+        {
+          "title": "Use of model organism and disease databases to support matchmaking for human disease gene discovery",
+          "authors": "Christopher J Mungall, Nicole L Washington, Jeremy Nguyen\u2010Xuan, Christopher Condit, Damian Smedley, Sebastian K\u00f6hler, Tudor Groza, Kent Shefchek, Harry Hochheiser, Peter N Robinson, Suzanna E Lewis, Melissa A Haendel",
+          "year": 2015,
+          "journal": "Human mutation",
+          "issue": "36(10):979-984",
+          "link": "[Link](https://onlinelibrary.wiley.com/doi/abs/10.1002/humu.22857)"
+        },
+        {
+          "title": "The Matchmaker Exchange: a platform for rare disease gene discovery",
+          "authors": "Anthony A Philippakis, Danielle R Azzariti, Sergi Beltran, Anthony J Brookes, Catherine A Brownstein, Michael Brudno, Han G Brunner, Orion J Buske, Knox Carey, Cassie Doll, Sergiu Dumitriu, Stephanie OM Dyke, Johan T den Dunnen, Helen V Firth, Richard A Gibbs, Marta Girdea, Michael Gonzalez, Melissa A Haendel, Ada Hamosh, Ingrid A Holm, Lijia Huang, Matthew E Hurles, Ben Hutton, Joel B Krier, Andriy Misyura, Christopher J Mungall, Justin Paschall, Benedict Paten, Peter N Robinson, Fran\u00e7ois Schiettecatte, Nara L Sobreira, Ganesh J Swaminathan, Peter E Taschner, Sharon F Terry, Nicole L Washington, Stephan Z\u00fcchner, Kym M Boycott, Heidi L Rehm",
+          "year": 2015,
+          "journal": "Human mutation",
+          "issue": "36(10):915-921",
+          "link": "[Link](https://onlinelibrary.wiley.com/doi/abs/10.1002/humu.22858)"
+        },
+        {
+          "title": "The Matchmaker Exchange API: automating patient matching through the exchange of structured phenotypic and genotypic profiles",
+          "authors": "Orion J Buske, Fran\u00e7ois Schiettecatte, Benjamin Hutton, Sergiu Dumitriu, Andriy Misyura, Lijia Huang, Taila Hartley, Marta Girdea, Nara Sobreira, Chris Mungall, Michael Brudno",
+          "year": 2015,
+          "journal": "Human mutation",
+          "issue": "36(10):922-927",
+          "link": "[Link](https://onlinelibrary.wiley.com/doi/abs/10.1002/humu.22850)"
+        },
+        {
+          "title": "Capturing phenotypes for precision medicine",
+          "authors": "Peter N Robinson, Christopher J Mungall, Melissa Haendel",
+          "year": 2015,
+          "journal": "Molecular Case Studies",
+          "issue": "1(1):a000372",
+          "link": "[Link](https://molecularcasestudies.cshlp.org/content/1/1/a000372.short)"
+        },
+        {
+          "title": "PhenomeCentral: a portal for phenotypic and genotypic matchmaking of patients with rare genetic diseases",
+          "authors": "Orion J Buske, Marta Girdea, Sergiu Dumitriu, Bailey Gallinger, Taila Hartley, Heather Trang, Andriy Misyura, Tal Friedman, Chandree Beaulieu, William P Bone, Amanda E Links, Nicole L Washington, Melissa A Haendel, Peter N Robinson, Cornelius F Boerkoel, David Adams, William A Gahl, Kym M Boycott, Michael Brudno",
+          "year": 2015,
+          "journal": "Human mutation",
+          "issue": "36(10):931-940",
+          "link": "[Link](https://onlinelibrary.wiley.com/doi/abs/10.1002/humu.22851)"
+        },
+        {
+          "title": "Emerging semantics to link phenotype and environment",
+          "authors": "Anne E Thessen, Daniel E Bunker, Pier Luigi Buttigieg, Laurel D Cooper, Wasila M Dahdul, Sami Domisch, Nico M Franz, Pankaj Jaiswal, Carolyn J Lawrence-Dill, Peter E Midford, Christopher J Mungall, Martin J Ramirez, Chelsea D Specht, Lars Vogt, Rutger Aldo Vos, Ramona L Walls, Jeffrey W White, Guanyang Zhang, Andrew R Deans, Eva Huala, Suzanna E Lewis, Paula M Mabee",
+          "year": 2015,
+          "journal": "PeerJ",
+          "issue": "3:e1470",
+          "link": "[Link](https://peerj.com/articles/1470/)"
+        }
+      ]
+    },
+    {
+      "year": 2014,
+      "items": [
+        {
+          "title": "How good is your phenotyping? Methods for quality assessment",
+          "authors": "NL Washington, MA Haendel, S K\u00f6hler, SE Lewis, P Robinson, D Smedley, CJ Mungall",
+          "year": 2014,
+          "journal": "Proceedings of Phenotype Day",
+          "issue": "2014",
+          "doi": "10.5281/zenodo.834091",
+          "link": "[DOI](https://dx.doi.org/10.5281/zenodo.834091)"
+        },
+        {
+          "title": "/releases/2014-03-28/uberon",
+          "authors": "Chris Mungall",
+          "year": 2014,
+          "journal": "Uberon Website",
+          "issue": "",
+          "link": "[Link](http://uberon.github.io/release/2014/03/28/release)"
+        },
+        {
+          "title": "Phenotype ontologies and cross-species analysis for translational research",
+          "authors": "Peter N Robinson, Caleb Webber",
+          "year": 2014,
+          "journal": "Public Library of Science",
+          "issue": "10(4):e1004268",
+          "link": "[Link](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1004268)"
+        },
+        {
+          "title": "Use of animal models for exome prioritization of rare disease genes",
+          "authors": "Damian Smedley, Sebastian Kohler, William Bone, Anika Oellrich, Jules Jacobsen, Sanger Mouse Genetics Project, Kai Wang, Chris Mungall, Nicole Washington, Sebastian Bauer, Dominic Seelow, Peter Krawitz, Cornelius Boerkel, Christian Gilissen, Melissa Haendel, Suzanna E Lewis, Peter N Robinson",
+          "year": 2014,
+          "journal": "Orphanet Journal of Rare Diseases",
+          "issue": "9:1-2",
+          "link": "[Link](https://link.springer.com/article/10.1186/1750-1172-9-S1-O19)"
+        },
+        {
+          "title": "Unification of multi-species vertebrate anatomy ontologies for comparative biology in Uberon",
+          "authors": "Melissa A Haendel, James P Balhoff, Frederic B Bastian, David C Blackburn, Judith A Blake, Yvonne Bradford, Aurelie Comte, Wasila M Dahdul, Thomas A Dececchi, Robert E Druzinsky, Terry F Hayamizu, Nizar Ibrahim, Suzanna E Lewis, Paula M Mabee, Anne Niknejad, Marc Robinson-Rechavi, Paul C Sereno, Christopher J Mungall",
+          "year": 2014,
+          "journal": "Journal of biomedical semantics",
+          "issue": "5:1-13",
+          "link": "[Link](https://link.springer.com/article/10.1186/2041-1480-5-21)"
+        }
+      ]
+    },
+    {
+      "year": 2013,
+      "items": [
+        {
+          "title": "Geoinformatics: Toward an integrative view of Earth as a system",
+          "authors": "A Krishna Sinha, Anne E Thessen, Calvin G Barnes",
+          "year": 2013,
+          "journal": "The Web of Geological Sciences: Advances, Impacts, and Interactions: Geological Society of America Special Paper",
+          "issue": "500:591-604",
+          "link": "[Link](https://www.researchgate.net/profile/A-Sinha-3/publication/231175244_Geoinformatics_Toward_an_integrative_view_of_Earth_as_a_system/links/0c96053cb1367f36d1000000/Geoinformatics-Toward-an-integrative-view-of-Earth-as-a-system.pdf)"
+        },
+        {
+          "title": "Ontology based molecular signatures for immune cell types via gene expression analysis",
+          "authors": "Terrence F Meehan, Nicole A Vasilevsky, Christopher J Mungall, David S Dougall, Melissa A Haendel, Judith A Blake, Alexander D Diehl",
+          "year": 2013,
+          "journal": "BMC bioinformatics",
+          "issue": "14(1):1-15",
+          "link": "[Link](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-263)"
+        }
+      ]
+    }
+  ]
+}

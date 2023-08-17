@@ -32,5 +32,6 @@
 
 <script setup lang="ts">
 import AppCitation from "@/components/AppCitation.vue";
-import publications from "./publications.json";
+// import publications from "./publications.json";
+import publications from "./publications_manual.json";
 </script>
