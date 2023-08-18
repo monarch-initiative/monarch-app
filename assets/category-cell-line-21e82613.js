@@ -1,0 +1,1 @@
+import{o as t,h as o,i as e}from"./index-03e72589.js";const c={xmlns:"http://www.w3.org/2000/svg",viewBox:"-10 -10 120 120"},s=e("circle",{cx:"50",cy:"50",r:"55"},null,-1),n=e("path",{d:"M35 17.5h30M40 25v50c0 5 2.5 10 10 10s10-5 10-10V25m-7 20v25"},null,-1),r=[s,n];function l(a,i){return t(),o("svg",c,r)}const d={render:l};export{d as default,l as render};
