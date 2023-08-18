@@ -86,8 +86,6 @@
     <!-- publication specific -->
     <!-- no template needed because info just plain text -->
   </AppTable>
-
-  search: {{ search }}
 </template>
 
 <script setup lang="ts">
