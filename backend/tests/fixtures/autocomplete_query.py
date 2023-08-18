@@ -6,7 +6,7 @@ def autocomplete_query():
     return {
         "q": "fanc",
         "rows": 20,
-        "start": 1,
+        "start": 0,
         "facet": True,
         "facet_fields": [],
         "facet_queries": [],

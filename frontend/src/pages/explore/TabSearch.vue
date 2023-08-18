@@ -282,8 +282,6 @@ const {
           })) || [];
       }
 
-      console.log({ ...options });
-
       dropdownsOptions.value = { ...options };
       dropdownsSelected.value = { ...options };
     }

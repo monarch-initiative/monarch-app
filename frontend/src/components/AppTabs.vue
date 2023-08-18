@@ -7,23 +7,26 @@
 
 <template>
   <AppFlex role="tablist" :aria-label="name">
-    <AppButton
-      v-for="(tab, index) in tabs"
-      :id="`tab-${id}-${tab.id}`"
-      :key="index"
-      v-tooltip="tab.tooltip"
-      :text="tab.text"
-      :icon="tab.icon"
-      design="circle"
-      :color="modelValue === tab.id ? 'primary' : 'none'"
-      :aria-label="tab.text"
-      :aria-selected="modelValue === tab.id"
-      :aria-controls="`panel-${id}-${tab.id}`"
-      :tabindex="modelValue === tab.id ? 0 : undefined"
-      role="tab"
-      @click="onClick(tab.id)"
-      @keydown="onKeydown"
-    />
+    <template v-for="(tab, index) in tabs" :key="index">
+      <div v-tooltip="tab.disabled ? tab.tooltip : ''">
+        <AppButton
+          :id="`tab-${id}-${tab.id}`"
+          v-tooltip="tab.tooltip"
+          :text="tab.text"
+          :icon="tab.icon"
+          design="circle"
+          :color="modelValue === tab.id ? 'primary' : 'none'"
+          :aria-label="tab.text"
+          :aria-selected="modelValue === tab.id"
+          :aria-controls="`panel-${id}-${tab.id}`"
+          :tabindex="modelValue === tab.id && !tab.disabled ? 0 : undefined"
+          :disabled="tab.disabled"
+          role="tab"
+          @click="onClick(tab.id)"
+          @keydown="onKeydown"
+        />
+      </div>
+    </template>
   </AppFlex>
 
   <!-- hidden element to serve as aria panel -->
@@ -54,6 +57,7 @@ type Tab = {
   icon?: string;
   description?: string;
   tooltip?: string;
+  disabled?: boolean;
 };
 type Tabs = Tab[];
 
@@ -98,10 +102,20 @@ async function onKeydown(event: KeyboardEvent) {
 
     /** move selected tab */
     let index = props.tabs.findIndex((tab) => tab.id === props.modelValue);
-    if (event.key === "ArrowLeft") index--;
-    if (event.key === "ArrowRight") index++;
-    if (event.key === "Home") index = 0;
-    if (event.key === "End") index = props.tabs.length - 1;
+
+    /** go forward until we find a not disabled tab */
+    const forward = (index: number) =>
+      props.tabs.findIndex((tab, i) => i >= index && !tab.disabled) ||
+      props.tabs.length - 1;
+    /** go backward until we find a not disabled tab */
+    const backward = (index: number) =>
+      props.tabs.findLastIndex((tab, i) => i <= index && !tab.disabled) || 0;
+
+    /** handle key strokes */
+    if (event.key === "ArrowLeft") index = backward(index - 1);
+    if (event.key === "ArrowRight") index = forward(index + 1);
+    if (event.key === "Home") index = forward(0);
+    if (event.key === "End") index = backward(props.tabs.length - 1);
 
     /** update selected, wrapping beyond -1 or options length */
     emit(

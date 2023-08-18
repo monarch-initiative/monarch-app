@@ -4,6 +4,32 @@
   "total": 195,
   "items": [
     {
+      "id": "MONDO:0019391",
+      "category": "biolink:Disease",
+      "name": "Fanconi anemia",
+      "full_name": null,
+      "description": "Fanconi anemia (FA) is a hereditary DNA repair disorder characterized by progressive pancytopenia with bone marrow failure, variable congenital malformations and predisposition to develop hematological or solid tumors.",
+      "xref": [
+        "DOID:13636",
+        "GARD:0006425",
+        "ICD9:284.09",
+        "MESH:D005199",
+        "MedDRA:10055206",
+        "NCIT:C62505",
+        "OMIMPS:227650",
+        "Orphanet:84",
+        "SCTID:30575002",
+        "UMLS:C0015625"
+      ],
+      "provided_by": "phenio_nodes",
+      "in_taxon": null,
+      "in_taxon_label": null,
+      "symbol": null,
+      "synonym": [],
+      "highlight": null,
+      "score": null
+    },
+    {
       "id": "MONDO:0001083",
       "category": "biolink:Disease",
       "name": "Fanconi renotubular syndrome",
@@ -324,27 +350,6 @@
         "Orphanet:319462",
         "SCTID:766707003",
         "UMLS:C1838457"
-      ],
-      "provided_by": "phenio_nodes",
-      "in_taxon": null,
-      "in_taxon_label": null,
-      "symbol": null,
-      "synonym": [],
-      "highlight": null,
-      "score": null
-    },
-    {
-      "id": "MONDO:0012186",
-      "category": "biolink:Disease",
-      "name": "Fanconi anemia complementation group I",
-      "full_name": null,
-      "description": "Fanconi anemia caused by mutations in the FANCI gene, encoding Fanconi anemia group I protein.",
-      "xref": [
-        "DOID:0111091",
-        "MESH:C563802",
-        "NCIT:C129026",
-        "OMIM:609053",
-        "UMLS:C1836861"
       ],
       "provided_by": "phenio_nodes",
       "in_taxon": null,

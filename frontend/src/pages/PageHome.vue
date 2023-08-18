@@ -87,7 +87,7 @@
         subtitle="publications"
       />
       <AppTile
-        icon="dna"
+        icon="knowledge-graph"
         design="small"
         :title="`~${(5000000).toLocaleString()}`"
         subtitle="total nodes"

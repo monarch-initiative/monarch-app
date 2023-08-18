@@ -50,7 +50,15 @@
     />
 
     <!-- run analysis -->
-    <AppButton text="Analyze" icon="bars-progress" @click="runAnalysis" />
+    <AppButton
+      v-if="bMode.id.includes('these phenotypes')"
+      text="Analyze"
+      icon="bars-progress"
+      @click="runAnalysis"
+    />
+    <AppAlert v-else
+      >This feature is still being worked on. Check back soon!</AppAlert
+    >
   </AppSection>
 
   <AppSection>
@@ -136,6 +144,7 @@ import {
   compareSetToTaxon,
   getPhenotypes,
 } from "@/api/phenotype-explorer";
+import AppAlert from "@/components/AppAlert.vue";
 import AppRing from "@/components/AppRing.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import type { Option, Options } from "@/components/AppSelectTags.vue";
@@ -205,6 +214,7 @@ function doExample() {
   bPhenotypes.value = examples.b.options;
   aGeneratedFrom.value = examples.a;
   bGeneratedFrom.value = examples.b;
+  bMode.value = bModeOptions[0];
 }
 
 /** comparison analysis */

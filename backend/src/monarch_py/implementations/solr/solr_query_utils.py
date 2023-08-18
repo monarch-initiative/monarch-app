@@ -147,7 +147,7 @@ def build_search_query(
 
 
 def build_autocomplete_query(q: str) -> SolrQuery:
-    query = SolrQuery(q=q, limit=10, offset=0)
+    query = SolrQuery(q=q, limit=10, start=0)
     query.q = q
     # match the query fields to start with
     query.query_fields = entity_query_fields()

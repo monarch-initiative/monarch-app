@@ -9,7 +9,7 @@ test("Redirects to explore page from home page", async ({ page }) => {
   /** go to homepage and click one of tabs */
   await page.goto("/");
   await page
-    .getByText(/Text Annotator/)
+    .getByText(/Phenotype Explorer/i)
     .first()
     .click();
   await page.waitForURL(/explore/);
