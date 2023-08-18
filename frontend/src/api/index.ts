@@ -13,7 +13,7 @@ const fromDomain =
   /** get from subdomain */
   url.hostname.match(/([/w-]+)?\.?(monarchinitiative)\.org/)?.[1] ||
   /** prod url has no subdomain */
-  "prod";
+  "next";
 
 /** ...from env var */
 const fromEnv = import.meta.env.VITE_API || "";
@@ -27,12 +27,14 @@ const fromParam = new URLSearchParams(url.search).get("api") || "";
  */
 export const apiName = fromParam || fromEnv || fromDomain;
 
+console.info({ fromParam, fromEnv, fromDomain, apiName });
+
 /** get full api url from short name */
 const apiMap: { [key: string]: string } = {
   local: "http://127.0.0.1:8000/v3/api",
   dev: "https://api-dev.monarchinitiative.org/v3/api",
   beta: "https://api-beta.monarchinitiative.org/v3/api",
-  prod: "https://api-dev.monarchinitiative.org/v3/api",
+  next: "https://api-next.monarchinitiative.org/v3/api",
 };
 
 /** base monarch api url */
