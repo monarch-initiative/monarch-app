@@ -6,18 +6,20 @@
   <!-- brief overview -->
   <AppSection>
     <AppHeading>About</AppHeading>
+
     <p>
       The Monarch Initiative is an extensive knowledge graph and ecosystem of
       tools made for the benefit of clinicians, researchers, and scientists. The
       knowledge graph consists of millions of entities &ndash; genes, diseases,
       phenotypes, and many more &ndash; imported from dozens of sources.
     </p>
+
     <iframe
       title="Monarch Initiative Overview"
       class="video"
-      src="https://www.youtube-nocookie.com/embed/SuUKqG2tbx0"
+      src="https://www.youtube-nocookie.com/embed/SuUKqG2tbx0?autoplay=1&mute=1"
       frameborder="0"
-      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+      allow="autoplay; picture-in-picture"
       allowfullscreen
     ></iframe>
   </AppSection>
@@ -45,12 +47,12 @@
       />
       <AppTile
         to="/phenomics-first"
-        icon="eye"
+        icon="category-phenotypic-feature"
         title="Phenomics First"
         subtitle="Our approach to disease diagnosis"
       />
       <AppTile
-        to="/sources"
+        to="https://monarch-initiative.github.io/monarch-ingest/Sources"
         icon="database"
         title="Sources"
         subtitle="Datasets, ontologies, and downloads"

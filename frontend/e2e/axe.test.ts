@@ -8,7 +8,6 @@ const paths = [
   "/about",
   "/help",
   "/overview",
-  "/sources",
   "/cite",
   "/team",
   "/publications",

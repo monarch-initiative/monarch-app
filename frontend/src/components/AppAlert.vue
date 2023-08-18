@@ -28,6 +28,8 @@ defineSlots<Slots>();
 .alert {
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 100%;
   padding: 40px;
   gap: 20px;
   border-radius: $rounded;

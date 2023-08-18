@@ -5,22 +5,28 @@
 -->
 
 <template>
-  <AppHeading>Publications</AppHeading>
-
   <AppSection>
-    <AppFlex direction="row" gap="big" align-v="top">
-      <!-- citation count metadata as apex chart -->
-      <Apex type="bar" :options="options" :series="cites_per_year" />
-      <ul id="section_citations" align-h="right">
-        <li v-for="item in metadata_table" :key="item">
-          {{ item.key }}: {{ item.value }}
-        </li>
-      </ul>
-    </AppFlex>
+    <AppHeading>Publications</AppHeading>
+
+    <Apex
+      class="chart"
+      type="bar"
+      :options="options"
+      :series="[citesPerYear]"
+      height="300px"
+    />
+
+    <AppGallery>
+      <p v-for="(item, index) in metadata" :key="index" class="metadata">
+        <strong>{{ item.name }}</strong>
+        <br />
+        <span>{{ publications.metadata[item.key].toLocaleString() }}</span>
+      </p>
+    </AppGallery>
   </AppSection>
 
   <AppSection>
-    <AppHeading>Publications by Year</AppHeading>
+    <AppHeading>Years</AppHeading>
     <!-- row of links to year sections -->
     <p>
       <template
@@ -44,53 +50,46 @@
       <AppCitation
         v-for="(publication, item) in group.items"
         :key="item"
+        :link="publication.link"
         :title="publication.title"
         :authors="publication.authors"
-        :details="[publication.journal, publication.issue, publication.link]"
+        :details="[publication.journal, publication.issue]"
       />
     </AppGallery>
   </AppSection>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+/** https://apexcharts.com/docs/vue-charts/ */
 import Apex from "vue3-apexcharts";
+import type { ApexOptions } from "apexcharts";
 import AppCitation from "@/components/AppCitation.vue";
 import publications from "./publications.json";
 
-const metadata = computed(() => publications.metadata);
+/** data for chart */
+const citesPerYear = {
+  name: "citations",
+  data: Object.entries(publications.metadata.cites_per_year).map(
+    ([year, count]) => ({ x: year, y: count }),
+  ),
+};
 
-/** Make list of citations by year for apex chart */
-const cites_per_year = computed(() => {
-  const cites_per_year = [];
-  for (const [year, count] of Object.entries(metadata.value.cites_per_year)) {
-    cites_per_year.push({ x: year, y: count });
-  }
-  return [{ name: "citations", data: cites_per_year }];
-});
-
-const metadata_table = computed(() => {
-  // const metadata_table = [];
-  const metadata_table = [
-    { key: "Monarch Publications", value: metadata.value.num_publications },
-    { key: "Total Citations", value: metadata.value.total },
-    { key: "Last 5 Years", value: metadata.value.last_5_yrs },
-  ];
-  // for (const [key, value] of Object.entries(metadata.value)) {
-  //   if (key === "cites_per_year") continue;
-  //   metadata_table.push({ key: key, value: value });
-  // }
-  return metadata_table;
-});
+/** extra metadata fields */
+const metadata: {
+  name: string;
+  key: keyof (typeof publications)["metadata"];
+}[] = [
+  { name: "Total publications", key: "num_publications" },
+  { name: "Total citations", key: "total" },
+  { name: "Citations in last 5 years", key: "last_5_yrs" },
+];
 
 /** chart options */
-const options = computed(() => ({
+const options: ApexOptions = {
   chart: {
     id: "citations",
-    type: "histograph",
+    type: "bar",
     redrawOnParentResize: true,
-    width: "100%",
-    height: "100%",
   },
   title: {
     text: `Monarch Citations`,
@@ -98,8 +97,10 @@ const options = computed(() => ({
   colors: ["#00acc1"],
   plotOptions: {
     bar: {
-      // horizontal: true,
       horizontal: false,
+      dataLabels: {
+        orientation: "vertical",
+      },
     },
   },
   tooltip: {
@@ -141,17 +142,14 @@ const options = computed(() => ({
       },
     },
   },
-}));
+};
 </script>
 
 <style scoped lang="scss">
-// #section_citations {
-//   width: 25%;
-// }
-.vue-apexcharts {
-  width: 65%;
+.chart {
 }
-.apexcharts-menu-item {
-  white-space: nowrap;
+
+.metadata {
+  text-align: center;
 }
 </style>

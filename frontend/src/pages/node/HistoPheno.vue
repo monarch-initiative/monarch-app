@@ -12,7 +12,9 @@
 <script setup lang="ts">
 import { computed, watch } from "vue";
 import { useRoute } from "vue-router";
+/** https://apexcharts.com/docs/vue-charts/ */
 import Apex from "vue3-apexcharts";
+import type { ApexOptions } from "apexcharts";
 import { getHistoPheno } from "@/api/histopheno";
 import type { Node } from "@/api/model";
 import { useQuery } from "@/util/composables";
@@ -28,13 +30,11 @@ type Props = {
 const props = defineProps<Props>();
 
 /** chart options */
-const options = computed(() => ({
+const options = computed<ApexOptions>(() => ({
   chart: {
     id: "histopheno",
     type: "bar",
     redrawOnParentResize: true,
-    width: "100%",
-    height: "100%",
   },
   title: {
     text: `Breakdown of phenotypes associated with ${props.node.name}`,
@@ -97,15 +97,3 @@ watch([() => route.path, () => props.node.id], runGetHistoPheno, {
   immediate: true,
 });
 </script>
-
-<style lang="scss" scoped>
-.vue-apexcharts {
-  width: 100%;
-}
-</style>
-
-<style>
-.apexcharts-menu-item {
-  white-space: nowrap;
-}
-</style>

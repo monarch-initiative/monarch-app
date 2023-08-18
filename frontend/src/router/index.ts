@@ -7,7 +7,6 @@ import PageCite from "@/pages/about/PageCite.vue";
 import PageOverview from "@/pages/about/PageOverview.vue";
 import PagePhenomicsFirst from "@/pages/about/PagePhenomicsFirst.vue";
 import PagePublications from "@/pages/about/PagePublications.vue";
-import PageSources from "@/pages/about/PageSources.vue";
 import PageTeam from "@/pages/about/PageTeam.vue";
 import PageTerms from "@/pages/about/PageTerms.vue";
 import PageExplore from "@/pages/explore/PageExplore.vue";
@@ -84,11 +83,6 @@ export const routes: RouteRecordRaw[] = [
     path: "/overview",
     name: "Overview",
     component: PageOverview,
-  },
-  {
-    path: "/sources",
-    name: "Sources",
-    component: PageSources,
   },
   {
     path: "/cite",

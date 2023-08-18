@@ -38,7 +38,7 @@
           "doi": "10.1371/journal.pone.0285433",
           "pmid": "37196000",
           "pmcid": "PMC10191354",
-          "link": "[DOI](https://dx.doi.org/10.1371/journal.pone.0285433)"
+          "link": "https://dx.doi.org/10.1371/journal.pone.0285433"
         },
         {
           "title": "The Ontology of Biological Attributes (OBA) - Computational Traits for the Life Sciences",
@@ -48,7 +48,7 @@
           "issue": "34, 364-378",
           "doi": "10.1007/s00335-023-09992-1",
           "pmid": "37076585",
-          "link": "[DOI](https://dx.doi.org/10.1007/s00335-023-09992-1)"
+          "link": "https://dx.doi.org/10.1007/s00335-023-09992-1"
         },
         {
           "title": "The Environmental Conditions, Treatments, and Exposures Ontology (ECTO): connecting toxicology and exposure to human health and beyond",
@@ -59,7 +59,7 @@
           "doi": "10.1186/s13326-023-00283-x",
           "pmid": "36823605",
           "pmcid": "PMC9951428",
-          "link": "[DOI](https://dx.doi.org/10.1186/s13326-023-00283-x)"
+          "link": "https://dx.doi.org/10.1186/s13326-023-00283-x"
         },
         {
           "title": "COVoc and COVTriage: novel resources to support literature triage",
@@ -70,7 +70,7 @@
           "doi": "10.1093/bioinformatics/btac800",
           "pmid": "36511598",
           "pmcid": "PMC9825781",
-          "link": "[DOI](https://dx.doi.org/10.1093/bioinformatics/btac800)"
+          "link": "https://dx.doi.org/10.1093/bioinformatics/btac800"
         },
         {
           "title": "The NHGRI-EBI GWAS Catalog: knowledgebase and deposition resource",
@@ -81,7 +81,7 @@
           "doi": "10.1093/nar/gkac1010",
           "pmid": "36350656",
           "pmcid": "PMC9825413",
-          "link": "[DOI](https://dx.doi.org/10.1093/nar/gkac1010)"
+          "link": "https://dx.doi.org/10.1093/nar/gkac1010"
         },
         {
           "title": "Generalisable long COVID subtypes: findings from the NIH N3C and RECOVER Programmes",
@@ -92,7 +92,7 @@
           "doi": "10.1016/j.ebiom.2022.104413",
           "pmid": "36563487",
           "pmcid": "PMC9769411",
-          "link": "[DOI](https://dx.doi.org/10.1016/j.ebiom.2022.104413)"
+          "link": "https://dx.doi.org/10.1016/j.ebiom.2022.104413"
         },
         {
           "title": "The Medical Action Ontology: A Tool for Annotating and Analyzing Treatments and Clinical Management of Human Disease",
@@ -100,7 +100,7 @@
           "year": 2023,
           "journal": "medRxiv",
           "issue": ":2023.07. 13.23292612",
-          "link": "[Link](https://www.medrxiv.org/content/10.1101/2023.07.13.23292612.abstract)"
+          "link": "https://www.medrxiv.org/content/10.1101/2023.07.13.23292612.abstract"
         },
         {
           "title": "Predicting nutrition and environmental factors associated with female reproductive disorders using a knowledge graph and random forests",
@@ -108,7 +108,7 @@
           "year": 2023,
           "journal": "medRxiv",
           "issue": ":2023.07. 14.23292679",
-          "link": "[Link](https://www.medrxiv.org/content/10.1101/2023.07.14.23292679.abstract)"
+          "link": "https://www.medrxiv.org/content/10.1101/2023.07.14.23292679.abstract"
         },
         {
           "title": "On the limitations of large language models in clinical diagnosis",
@@ -116,7 +116,7 @@
           "year": 2023,
           "journal": "medRxiv",
           "issue": ":2023.07. 13.23292613",
-          "link": "[Link](https://www.medrxiv.org/content/10.1101/2023.07.13.23292613.abstract)"
+          "link": "https://www.medrxiv.org/content/10.1101/2023.07.13.23292613.abstract"
         },
         {
           "title": "The International Mouse Phenotyping Consortium: comprehensive knockout phenotyping underpinning the study of human disease",
@@ -124,7 +124,7 @@
           "year": 2023,
           "journal": "Nucleic acids research",
           "issue": "51(D1):D1038-D1045",
-          "link": "[Link](https://academic.oup.com/nar/article-abstract/51/D1/D1038/6777802)"
+          "link": "https://academic.oup.com/nar/article-abstract/51/D1/D1038/6777802"
         },
         {
           "title": "KG-Hub--Building and Exchanging Biological Knowledge Graphs",
@@ -132,7 +132,7 @@
           "year": 2023,
           "journal": "arXiv preprint arXiv:2302.10800",
           "issue": "",
-          "link": "[Link](https://arxiv.org/abs/2302.10800)"
+          "link": "https://arxiv.org/abs/2302.10800"
         },
         {
           "title": "GA4GH phenopackets: A practical introduction",
@@ -140,7 +140,7 @@
           "authors": "Markus S Ladewig, Julius OB Jacobsen, Alex H Wagner, Daniel Danis, Baha El Kassaby, Michael Gargano, Tudor Groza, Michael Baudis, Robin Steinhaus, Dominik Seelow, Nikolaos E Bechrakis, Christopher J Mungall, Paul N Schofield, Olivier Elemento, Lindsay Smith, Julie A McMurry, Monica Munoz\u2010Torres, Melissa A Haendel, Peter N Robinson",
           "journal": "Advanced Genetics",
           "issue": "4(1):2200016",
-          "link": "[Link](https://onlinelibrary.wiley.com/doi/abs/10.1002/ggn2.202200016)"
+          "link": "https://onlinelibrary.wiley.com/doi/abs/10.1002/ggn2.202200016"
         },
         {
           "title": "Structured prompt interrogation and recursive extraction of semantics (SPIRES): A method for populating knowledge bases using zero-shot learning",
@@ -148,7 +148,7 @@
           "year": 2023,
           "journal": "arXiv preprint arXiv:2304.02711",
           "issue": "",
-          "link": "[Link](https://arxiv.org/abs/2304.02711)"
+          "link": "https://arxiv.org/abs/2304.02711"
         },
         {
           "title": "The Ontology of Biological Attributes (OBA)\u2014computational traits for the life sciences",
@@ -156,7 +156,7 @@
           "year": 2023,
           "journal": "Mammalian Genome",
           "issue": ":1-15",
-          "link": "[Link](https://link.springer.com/article/10.1007/s00335-023-09992-1)"
+          "link": "https://link.springer.com/article/10.1007/s00335-023-09992-1"
         },
         {
           "title": "Ontologizing health systems data at scale: making translational discovery a reality",
@@ -164,7 +164,7 @@
           "year": 2023,
           "journal": "NPJ Digital Medicine",
           "issue": "6(1):89",
-          "link": "[Link](https://www.nature.com/articles/s41746-023-00830-x)"
+          "link": "https://www.nature.com/articles/s41746-023-00830-x"
         }
       ]
     },
@@ -178,7 +178,7 @@
           "journal": "medRxiv",
           "issue": "",
           "doi": "10.1101/2022.04.13.22273750",
-          "link": "[DOI](https://dx.doi.org/10.1101/2022.04.13.22273750)"
+          "link": "https://dx.doi.org/10.1101/2022.04.13.22273750"
         },
         {
           "title": "Evaluation of phenotype-driven gene prioritization methods for Mendelian diseases",
@@ -188,7 +188,7 @@
           "issue": "23(5)",
           "doi": "10.1093/bib/bbac188",
           "pmid": "35595299",
-          "link": "[DOI](https://dx.doi.org/10.1093/bib/bbac188)"
+          "link": "https://dx.doi.org/10.1093/bib/bbac188"
         },
         {
           "title": "The Xenopus phenotype ontology: bridging model organism phenotype data to human health and development",
@@ -199,7 +199,7 @@
           "doi": "10.1186/s12859-022-04636-8",
           "pmid": "35317743",
           "pmcid": "PMC8939077",
-          "link": "[DOI](https://dx.doi.org/10.1186/s12859-022-04636-8)"
+          "link": "https://dx.doi.org/10.1186/s12859-022-04636-8"
         },
         {
           "title": "Phenotype-driven approaches to enhance variant prioritization and diagnosis of rare disease",
@@ -209,7 +209,7 @@
           "issue": "43, 1071–1081",
           "doi": "10.1002/humu.24380",
           "pmid": "35391505",
-          "link": "[DOI](https://dx.doi.org/10.1002/humu.24380)"
+          "link": "https://dx.doi.org/10.1002/humu.24380"
         },
         {
           "title": "SvAnna: efficient and accurate pathogenicity prediction of coding and regulatory structural variants in long-read genome sequencing",
@@ -219,7 +219,7 @@
           "issue": "14(1):44",
           "doi": "10.1186/s13073-022-01046-6",
           "pmid": "35484572",
-          "link": "[DOI](https://dx.doi.org/10.1186/s13073-022-01046-6)"
+          "link": "https://dx.doi.org/10.1186/s13073-022-01046-6"
         },
         {
           "title": "Deep phenotyping: symptom annotation made simple with SAMS",
@@ -229,7 +229,7 @@
           "issue": "50(W1):W677-W681",
           "doi": "10.1093/nar/gkac329",
           "pmid": "35524573",
-          "link": "[DOI](https://dx.doi.org/10.1093/nar/gkac329)"
+          "link": "https://dx.doi.org/10.1093/nar/gkac329"
         },
         {
           "title": "A Simple Standard for Sharing Ontological Mappings (SSSOM)",
@@ -239,7 +239,7 @@
           "issue": "",
           "doi": "10.1093/database/baac035",
           "pmid": "35616100",
-          "link": "[DOI](https://dx.doi.org/10.1093/database/baac035)"
+          "link": "https://dx.doi.org/10.1093/database/baac035"
         },
         {
           "title": "Biolink Model: A universal schema for knowledge graphs in clinical, biomedical, and translational science",
@@ -248,7 +248,7 @@
           "journal": "Clinical and Translational Science",
           "issue": "15(8):1848-1855",
           "doi": "10.1111/cts.13302",
-          "link": "[DOI](https://dx.doi.org/10.1111/cts.13302)"
+          "link": "https://dx.doi.org/10.1111/cts.13302"
         },
         {
           "title": "Seven years since the launch of the Matchmaker Exchange: The evolution of genomic matchmaking",
@@ -259,7 +259,7 @@
           "doi": "10.1002/humu.24373",
           "pmid": "35537081",
           "pmcid": "PMC9133175",
-          "link": "[DOI](https://dx.doi.org/10.1002/humu.24373)"
+          "link": "https://dx.doi.org/10.1002/humu.24373"
         },
         {
           "title": "Metformin is associated with reduced COVID-19 severity in patients with prediabetes",
@@ -270,7 +270,7 @@
           "doi": "10.1016/j.diabres.2022.110157",
           "pmid": "36400170",
           "pmcid": "PMC9663381",
-          "link": "[DOI](https://dx.doi.org/10.1016/j.diabres.2022.110157)"
+          "link": "https://dx.doi.org/10.1016/j.diabres.2022.110157"
         },
         {
           "title": "Unifying the identification of biomedical entities with the Bioregistry",
@@ -281,7 +281,7 @@
           "doi": "10.1038/s41597-022-01807-3",
           "pmid": "36402838",
           "pmcid": "PMC9675740",
-          "link": "[DOI](https://dx.doi.org/10.1038/s41597-022-01807-3)"
+          "link": "https://dx.doi.org/10.1038/s41597-022-01807-3"
         },
         {
           "title": "Ontology Development Kit: a toolkit for building, maintaining and standardizing biomedical ontologies",
@@ -292,7 +292,7 @@
           "doi": "10.1093/database/baac087",
           "pmid": "36208225",
           "pmcid": "PMC9547537",
-          "link": "[DOI](https://dx.doi.org/10.1093/database/baac087)"
+          "link": "https://dx.doi.org/10.1093/database/baac087"
         },
         {
           "title": "Evaluation of phenotype-driven gene prioritization methods for Mendelian diseases",
@@ -303,7 +303,7 @@
           "doi": "10.1093/bib/bbac188",
           "pmid": "35595299",
           "pmcid": "PMC9487604",
-          "link": "[DOI](https://dx.doi.org/10.1093/bib/bbac188)"
+          "link": "https://dx.doi.org/10.1093/bib/bbac188"
         },
         {
           "title": "BOSC 2022: the first hybrid and 23rd annual Bioinformatics Open Source Conference",
@@ -314,7 +314,7 @@
           "doi": "10.12688/f1000research.125043.1",
           "pmid": "36128559",
           "pmcid": "PMC9468630",
-          "link": "[DOI](https://dx.doi.org/10.12688/f1000research.125043.1)"
+          "link": "https://dx.doi.org/10.12688/f1000research.125043.1"
         },
         {
           "title": "Ranking variant pathogenicity using Exomiser facilitated the identification of the missing second mutation in three recessive cases of congenital myopathy",
@@ -322,7 +322,7 @@
           "year": 2022,
           "journal": "The 20th Asian and Oceanian Myopathy Center (AOMC) Meeting in conjunction with the National Scientific Meeting of Indonesian Neurological Association (PERDOSSI) Jun 9th-12th 2022",
           "issue": "",
-          "link": "[Link](https://hub.hku.hk/handle/10722/323322)"
+          "link": "https://hub.hku.hk/handle/10722/323322"
         },
         {
           "title": "The bioregistry: Unifying the identification of biomedical entities th rough an integrative, open, community-driven metaregistry",
@@ -330,7 +330,7 @@
           "year": 2022,
           "journal": "bioRxiv",
           "issue": "",
-          "link": "[Link](https://scholar.archive.org/work/i453tzofz5frzjq3rnmazvwebm/access/wayback/https://www.biorxiv.org/content/biorxiv/early/2022/07/10/2022.07.08.499378.full.pdf)"
+          "link": "https://scholar.archive.org/work/i453tzofz5frzjq3rnmazvwebm/access/wayback/https://www.biorxiv.org/content/biorxiv/early/2022/07/10/2022.07.08.499378.full.pdf"
         },
         {
           "title": "A Simple Standard for Ontological Mappings 2022: Updates of data model and outlook",
@@ -338,7 +338,7 @@
           "year": 2022,
           "journal": "CEUR Workshop Proceedings",
           "issue": "3324:61-66",
-          "link": "[Link](https://ceur-ws.org/Vol-3324/om2022_LTpaper6.pdf)"
+          "link": "https://ceur-ws.org/Vol-3324/om2022_LTpaper6.pdf"
         },
         {
           "title": "What Should be the Minimum Requirements for Making FAIR Ontology Alignments?",
@@ -346,7 +346,7 @@
           "year": 2022,
           "journal": "",
           "issue": "",
-          "link": "[Link](https://ceur-ws.org/Vol-3324/om2022_poster1.pdf)"
+          "link": "https://ceur-ws.org/Vol-3324/om2022_poster1.pdf"
         },
         {
           "title": "The Sickle Cell Disease Ontology: Recent development and expansion of the universal sickle cell knowledge representation",
@@ -354,7 +354,7 @@
           "year": 2022,
           "journal": "Database",
           "issue": "2022:baac014",
-          "link": "[Link](https://academic.oup.com/database/article-abstract/doi/10.1093/database/baac014/6562127)"
+          "link": "https://academic.oup.com/database/article-abstract/doi/10.1093/database/baac014/6562127"
         },
         {
           "title": "Rare-disease data standards",
@@ -362,7 +362,7 @@
           "year": 2022,
           "journal": "Bundesgesundheitsblatt, Gesundheitsforschung, Gesundheitsschutz 65 (11), 1126, 2022",
           "issue": "65(11):1126",
-          "link": "[Link](https://mouseion.jax.org/stfb2022/236/)"
+          "link": "https://mouseion.jax.org/stfb2022/236/"
         },
         {
           "title": "Implementation of Zebrafish Ontologies for Toxicology Screening",
@@ -370,7 +370,7 @@
           "year": 2022,
           "journal": "Frontiers in Toxicology",
           "issue": "4:8",
-          "link": "[Link](https://www.frontiersin.org/articles/10.3389/ftox.2022.817999/full?&utm_source=Email_to_authors_&utm_medium=Email&utm_content=T1_11.5e1_author&utm_campaign=Email_publication&field=&journalName=Frontiers_in_Toxicology&id=817999)"
+          "link": "https://www.frontiersin.org/articles/10.3389/ftox.2022.817999/full?&utm_source=Email_to_authors_&utm_medium=Email&utm_content=T1_11.5e1_author&utm_campaign=Email_publication&field=&journalName=Frontiers_in_Toxicology&id=817999"
         },
         {
           "title": "An algorithmic framework for isoform-specific functional analysis",
@@ -378,7 +378,7 @@
           "year": 2022,
           "journal": "Biorxiv",
           "issue": ":2022.05. 13.491897",
-          "link": "[Link](https://www.biorxiv.org/content/10.1101/2022.05.13.491897.abstract)"
+          "link": "https://www.biorxiv.org/content/10.1101/2022.05.13.491897.abstract"
         },
         {
           "title": "The GA4GH Phenopacket schema defines a computable representation of clinical data",
@@ -386,7 +386,7 @@
           "year": 2022,
           "journal": "Nature biotechnology",
           "issue": "40(6):817-820",
-          "link": "[Link](https://www.nature.com/articles/s41587-022-01357-4)"
+          "link": "https://www.nature.com/articles/s41587-022-01357-4"
         },
         {
           "title": "Prenatal phenotyping: A community effort to enhance the Human Phenotype Ontology",
@@ -394,7 +394,7 @@
           "year": 2022,
           "journal": "American Journal of Medical Genetics Part C: Seminars in Medical Genetics",
           "issue": "190(2):231-242",
-          "link": "[Link](https://onlinelibrary.wiley.com/doi/abs/10.1002/ajmg.c.31989)"
+          "link": "https://onlinelibrary.wiley.com/doi/abs/10.1002/ajmg.c.31989"
         },
         {
           "title": "The RD\u2010Connect Genome\u2010Phenome Analysis Platform: Accelerating diagnosis, research, and gene discovery for rare diseases",
@@ -402,7 +402,7 @@
           "year": 2022,
           "journal": "Human mutation",
           "issue": "43(6):717-733",
-          "link": "[Link](https://onlinelibrary.wiley.com/doi/abs/10.1002/humu.24353)"
+          "link": "https://onlinelibrary.wiley.com/doi/abs/10.1002/humu.24353"
         },
         {
           "title": "The Clinical Variant Analysis Tool: Analyzing the evidence supporting reported genomic variation in clinical practice",
@@ -410,7 +410,7 @@
           "year": 2022,
           "journal": "Genetics in Medicine",
           "issue": "24(7):1512-1522",
-          "link": "[Link](https://www.sciencedirect.com/science/article/pii/S1098360022007031)"
+          "link": "https://www.sciencedirect.com/science/article/pii/S1098360022007031"
         },
         {
           "title": "Phenotype\u2010driven approaches to enhance variant prioritization and diagnosis of rare disease",
@@ -418,7 +418,7 @@
           "year": 2022,
           "journal": "Human mutation 43 (8), 1071-1081, 2022",
           "issue": "43(8):1071-1081",
-          "link": "[Link](https://onlinelibrary.wiley.com/doi/abs/10.1002/humu.24380)"
+          "link": "https://onlinelibrary.wiley.com/doi/abs/10.1002/humu.24380"
         },
         {
           "title": "Progress toward a universal biomedical data translator",
@@ -426,7 +426,7 @@
           "year": 2022,
           "journal": "Clinical and Translational Science 15 (8), 1838-1847, 2022",
           "issue": "15(8):1838-1847",
-          "link": "[Link](https://ascpt.onlinelibrary.wiley.com/doi/abs/10.1111/cts.13301)"
+          "link": "https://ascpt.onlinelibrary.wiley.com/doi/abs/10.1111/cts.13301"
         },
         {
           "title": "Phenotype-aware prioritisation of rare Mendelian disease variants",
@@ -434,7 +434,7 @@
           "year": 2022,
           "journal": "Elsevier Current Trends",
           "issue": "",
-          "link": "[Link](https://www.cell.com/trends/genetics/fulltext/S0168-9525(22)00179-2?dgcid=raven_jbs_aip_email)"
+          "link": "https://www.cell.com/trends/genetics/fulltext/S0168-9525(22)00179-2?dgcid=raven_jbs_aip_email"
         },
         {
           "title": "Classifying Animal Breeds with the Vertebrate Breed Ontology (VBO)",
@@ -442,7 +442,7 @@
           "year": 2022,
           "journal": "International Conference on Biomedical Ontology",
           "issue": "",
-          "link": "[Link](https://icbo-conference.github.io/icbo2022/papers/ICBO-2022_paper_1882.pdf)"
+          "link": "https://icbo-conference.github.io/icbo2022/papers/ICBO-2022_paper_1882.pdf"
         },
         {
           "title": "129. Standardization of cancer terminology in the Mondo Disease Ontology",
@@ -450,7 +450,7 @@
           "year": 2022,
           "journal": "Cancer Genetics",
           "issue": "268:41",
-          "link": "[Link](https://www.cancergeneticsjournal.org/article/S2210-7762(22)00259-9/abstract)"
+          "link": "https://www.cancergeneticsjournal.org/article/S2210-7762(22)00259-9/abstract"
         }
       ]
     },
@@ -466,7 +466,7 @@
           "doi": "10.1016/j.xgen.2021.100028",
           "pmid": "34820659",
           "pmcid": "PMC8591903",
-          "link": "[DOI](https://dx.doi.org/10.1016/j.xgen.2021.100028)"
+          "link": "https://dx.doi.org/10.1016/j.xgen.2021.100028"
         },
         {
           "title": "OBO Foundry in 2021: operationalizing open data principles to evaluate ontologies",
@@ -477,7 +477,7 @@
           "doi": "10.1093/database/baab069",
           "pmid": "34697637",
           "pmcid": "PMC8546234",
-          "link": "[DOI](https://dx.doi.org/10.1093/database/baab069)"
+          "link": "https://dx.doi.org/10.1093/database/baab069"
         },
         {
           "title": "Interpretable prioritization of splice variants in diagnostic next-generation sequencing",
@@ -487,7 +487,7 @@
           "issue": "108(9):1564-1577",
           "doi": "10.1016/j.ajhg.2021.06.014",
           "pmid": "34289339",
-          "link": "[DOI](https://dx.doi.org/10.1016/j.ajhg.2021.06.014)"
+          "link": "https://dx.doi.org/10.1016/j.ajhg.2021.06.014"
         },
         {
           "title": "100,000 Genomes Pilot on Rare-Disease Diagnosis in Health Care - Preliminary Report",
@@ -497,7 +497,7 @@
           "issue": "385(20):1868–1880",
           "doi": "10.1056/NEJMoa2035790",
           "pmid": "34758253",
-          "link": "[DOI](https://dx.doi.org/10.1056/NEJMoa2035790)"
+          "link": "https://dx.doi.org/10.1056/NEJMoa2035790"
         },
         {
           "title": "Supervised learning with word embeddings derived from PubMed captures latent knowledge about protein kinases and cancer",
@@ -507,14 +507,14 @@
           "issue": "3(4):lqab113",
           "doi": "10.1093/nargab/lqab113",
           "pmcid": "PMC8591903",
-          "link": "[DOI](https://dx.doi.org/10.1093/nargab/lqab113)"
+          "link": "https://dx.doi.org/10.1093/nargab/lqab113"
         },
         {
           "title": "Knowledge Beacons: Web services for data harvesting of distributed biomedical knowledge",
           "authors": "Hannestad LM, Dancík V, Godden M, Suen IW, Huellas-Bruskiewicz KC, Good BM, Mungall CJ, Bruskiewich RM",
           "journal": "PLoS One",
           "issue": "16(3):e0231916",
-          "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/33755673/)",
+          "link": "https://pubmed.ncbi.nlm.nih.gov/33755673/",
           "year": 2021
         },
         {
@@ -522,7 +522,7 @@
           "authors": "Köhler S, Gargano M, Matentzoglu N, Carmody LC, Lewis-Smith D, Vasilevsky NA, Danis D, Balagura G, Baynam G, Brower AM, Callahan TJ, Chute CG, Est JL, Galer PD, Ganesan S, Griese M, Haimel M, Pazmandi J, Hanauer M, Harris NL, Hartnett MJ, Hastreiter M, Hauck F, He Y, Jeske T, Kearney H, Kindle G, Klein C, Knoflach K, Krause R, Lagorce D, McMurry JA, Miller JA, Munoz-Torres MC, Peters RL, Rapp CK, Rath AM, Rind SA, Rosenberg AZ, Segal MM, Seidel MG, Smedley D, Talmy T, Thomas Y, Wiafe SA, Xian J, Yüksel Z, Helbig I, Mungall CJ, Haendel MA, Robinson PN",
           "journal": "Nucleic Acids Research",
           "issue": "49(D1):D1207-D1217",
-          "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/33264411/)",
+          "link": "https://pubmed.ncbi.nlm.nih.gov/33264411/",
           "year": 2021
         },
         {
@@ -530,7 +530,7 @@
           "authors": "Luo L, Yan S, Lai PT, Veltri D, Oler A, Xirasagar S, Ghosh R, Similuk M, Robinson PN, Lu Z",
           "journal": "Bioinformatics",
           "issue": "btab019",
-          "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/33471061/)",
+          "link": "https://pubmed.ncbi.nlm.nih.gov/33471061/",
           "year": 2021
         },
         {
@@ -538,7 +538,7 @@
           "authors": "Reese JT, Unni D, Callahan TJ, Cappelletti L, Ravanmehr V, Carbon S, Shefchek KA, Good BM, Balhoff JP, Fontana T, Blau H, Matentzoglu N, Harris NL, Munoz-Torres MC, Haendel MA, Robinson PN, Joachimiak MP, Mungall CJ",
           "journal": "Patterns (N Y)",
           "issue": "2(1):100155",
-          "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/33196056/)",
+          "link": "https://pubmed.ncbi.nlm.nih.gov/33196056/",
           "year": 2021
         },
         {
@@ -546,7 +546,7 @@
           "authors": "Vasilevsky NA, Hosseini M, Teplitzky S, Ilik V, Mohammadi E, Schneider J, Kern B, Colomb J, Edmunds SC, Gutzman K, Himmelstein DS, White M, Smith B, O'Keefe L, Haendel M, Holmes KL",
           "journal": "Account Res",
           "issue": "28(1):23-43",
-          "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/32602379/)",
+          "link": "https://pubmed.ncbi.nlm.nih.gov/32602379/",
           "year": 2021
         },
         {
@@ -555,7 +555,7 @@
           "year": 2021,
           "journal": "ICBO, 148-151, 2021",
           "issue": ":148-151",
-          "link": "[Link](https://ceur-ws.org/Vol-3073/paper24.pdf)"
+          "link": "https://ceur-ws.org/Vol-3073/paper24.pdf"
         },
         {
           "title": "Reclassification of Infectious Disease in the Mondo Disease Ontology",
@@ -563,7 +563,7 @@
           "year": 2021,
           "journal": "Proceedings http://ceur-ws. org ISSN",
           "issue": "1613:0073",
-          "link": "[Link](http://ceur-ws.org/Vol-3073/paper14.pdf)"
+          "link": "http://ceur-ws.org/Vol-3073/paper14.pdf"
         },
         {
           "title": "A Semantic Model Leveraging Pattern-based Ontology Terms to Bridge Environmental Exposures and Health Outcomes",
@@ -571,7 +571,7 @@
           "year": 2021,
           "journal": "Proceedings http://ceur-ws. org ISSN",
           "issue": "1613:0073",
-          "link": "[Link](http://ceur-ws.org/Vol-3073/paper5.pdf)"
+          "link": "http://ceur-ws.org/Vol-3073/paper5.pdf"
         },
         {
           "title": "KG-Microbe: A Reference Knowledge-Graph and Platform for Harmonized Microbial Information.",
@@ -579,7 +579,7 @@
           "year": 2021,
           "journal": "ICBO, 131-133, 2021",
           "issue": ":131-133",
-          "link": "[Link](http://ceur-ws.org/Vol-3073/paper19.pdf)"
+          "link": "http://ceur-ws.org/Vol-3073/paper19.pdf"
         },
         {
           "title": "From Reductionism to Reintegration: Solving society\u2019s most pressing problems requires building bridges between data types across the life sciences",
@@ -587,7 +587,7 @@
           "year": 2021,
           "journal": "Public Library of Science",
           "issue": "19(3):e3001129",
-          "link": "[Link](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3001129)"
+          "link": "https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3001129"
         },
         {
           "title": "Catalyzing knowledge-driven discovery in environmental health sciences through a community-driven harmonized language",
@@ -595,7 +595,7 @@
           "year": 2021,
           "journal": "International Journal of Environmental Research and Public Health",
           "issue": "18(17):8985",
-          "link": "[Link](https://www.mdpi.com/1660-4601/18/17/8985)"
+          "link": "https://www.mdpi.com/1660-4601/18/17/8985"
         },
         {
           "title": "100,000 genomes pilot on rare-disease diagnosis in health care\u2014preliminary report",
@@ -603,7 +603,7 @@
           "year": 2021,
           "journal": "New England Journal of Medicine",
           "issue": "385(20):1868-1880",
-          "link": "[Link](https://www.nejm.org/doi/full/10.1056/NEJMoa2035790)"
+          "link": "https://www.nejm.org/doi/full/10.1056/NEJMoa2035790"
         },
         {
           "title": "The GA4GH Phenopacket schema: A computable representation of clinical data for precision medicine",
@@ -611,7 +611,7 @@
           "authors": "Julius OB Jacobsen, Michael Baudis, Gareth S Baynam, Jacques S Beckmann, Sergi Beltran, Tiffany J Callahan, Christopher G Chute, M\u00e9lanie Courtot, Daniel Danis, Olivier Elemento, Robert R Freimuth, Michael A Gargano, Tudor Groza, Ada Hamosh, Nomi L Harris, Rajaram Kaliyaperumal, Aly Khalifa, Peter M Krawitz, Sebastian K\u00f6hler, Brian J Laraway, Heikki Lehv\u00e4slaiho, Kent C Lloyd, Leslie Matalonga, Julie A McMurry, Alejandro Metke-Jimenez, Christopher J Mungall, Monica C Munoz-Torres, Soichi Ogishima, Anastasios Papakonstantinou, Davide Piscia, Nikolas Pontikos, N\u00faria Queralt-Rosinach, Marco Roos, Paul N Schofield, Anastasios Siapos, Damian Smedley, Lindsay D Smith, Robin Steinhaus, Jagadish Chandrabose Sundaramurthi, Emilia M Swietlik, Sylvia Thun, Nicole A Vasilevsky, Alex H Wagner, Jeremy L Warner, Claus Weiland, Melissa A Haendel, Peter N Robinson, Consortial authors",
           "journal": "Nature Research",
           "issue": ":2021.11. 27.21266944",
-          "link": "[Link](https://www.medrxiv.org/content/10.1101/2021.11.27.21266944.abstract)"
+          "link": "https://www.medrxiv.org/content/10.1101/2021.11.27.21266944.abstract"
         }
       ]
     },
@@ -623,7 +623,7 @@
           "authors": "Carmody LC, Blau H, Danis D, Zhang XA, Gourdine JP, Vasilevsky N, Krawitz P, Thompson MD, Robinson PN",
           "journal": "Orphanet J Rare Dis",
           "issue": "15(1):40",
-          "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/32019583/)",
+          "link": "https://pubmed.ncbi.nlm.nih.gov/32019583/",
           "year": 2020
         },
         {
@@ -631,7 +631,7 @@
           "authors": "Chang WH, Mashouri P, Lozano AX, Johnstone B, Husic M, Olry A, Maiella S, Balci TB, Sawyer SL, Robinson PN, Rath A, Brudno M",
           "journal": "Genet Med",
           "issue": "22(8):1391-1400",
-          "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/32366968/)",
+          "link": "https://pubmed.ncbi.nlm.nih.gov/32366968/",
           "year": 2020
         },
         {
@@ -639,7 +639,7 @@
           "authors": "Cipriani V, Pontikos N, Arno G, Sergouniotis PI, Lenassi E, Thawong P, Danis D, Michaelides M, Webster AR, Moore AT, Robinson PN, Jacobsen JOB, Smedley D",
           "journal": "Genes (Basel)",
           "issue": "11(4):460",
-          "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/32340307/)",
+          "link": "https://pubmed.ncbi.nlm.nih.gov/32340307/",
           "year": 2020
         },
         {
@@ -647,7 +647,7 @@
           "authors": "Duncan WD, Thyvalikakath T, Haendel M, Torniai C, Hernandez P, Song M, Acharya A, Caplan DJ, Schleyer T, Ruttenberg A",
           "journal": "J Biomed Semantics",
           "issue": "11(1):8",
-          "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/32819435/)",
+          "link": "https://pubmed.ncbi.nlm.nih.gov/32819435/",
           "year": 2020
         },
         {
@@ -655,7 +655,7 @@
           "authors": "Gasteiger LM, Robinson PN, Pazmandi J, Boztug K, Seppänen MRJ, Seidel MG; Registry Working Party of the European Society for Immunodeficiencies (ESID)",
           "journal": "J Allergy Clin Immunol Pract",
           "issue": "8(5):1778",
-          "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/32389282/)",
+          "link": "https://pubmed.ncbi.nlm.nih.gov/32389282/",
           "year": 2020
         },
         {
@@ -663,7 +663,7 @@
           "authors": "Haendel M, Vasilevsky N, Unni D, Bologa C, Harris N, Rehm H, Hamosh A, Baynam G, Groza T, McMurry J, Dawkins H, Rath A, Thaxon C, Bocci G, Joachimiak MP, Köhler S, Robinson PN, Mungall C, Oprea TI",
           "journal": "Nat Rev Drug Discov",
           "issue": "19(2):77-78",
-          "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/32020066/)",
+          "link": "https://pubmed.ncbi.nlm.nih.gov/32020066/",
           "year": 2020
         },
         {
@@ -671,7 +671,7 @@
           "authors": "Karlebach G, Hansen P, Veiga DF, Steinhaus R, Danis D, Li S, Anczukow O, Robinson PN",
           "journal": "Genome Biol",
           "issue": "21(1):171",
-          "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/32660516/)",
+          "link": "https://pubmed.ncbi.nlm.nih.gov/32660516/",
           "year": 2020
         },
         {
@@ -679,7 +679,7 @@
           "authors": "Ong E, Wang LL, Schaub J, O'Toole JF, Steck B, Rosenberg AZ, Dowd F, Hansen J, Barisoni L, Jain S, de Boer IH, Valerius MT, Waikar SS, Park C, Crawford DC, Alexandrov T, Anderton CR, Stoeckert C, Weng C, Diehl AD, Mungall CJ, Haendel M, Robinson PN, Himmelfarb J, Iyengar R, Kretzler M, Mooney S, He Y",
           "journal": "Nat Rev Nephrol",
           "issue": "16(11):686-696",
-          "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/32939051/)",
+          "link": "https://pubmed.ncbi.nlm.nih.gov/32939051/",
           "year": 2020
         },
         {
@@ -687,7 +687,7 @@
           "authors": "Petrini A, Mesiti M, Schubach M, Frasca M, Danis D, Re M, Grossi G, Cappelletti L, Castrignanò T, Robinson PN, Valentini G",
           "journal": "Gigascience",
           "issue": "9(5):giaa052",
-          "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/32444882/)",
+          "link": "https://pubmed.ncbi.nlm.nih.gov/32444882/",
           "year": 2020
         },
         {
@@ -695,7 +695,7 @@
           "authors": "Robinson PN, Haendel MA",
           "journal": "Yearb Med Inform",
           "issue": "29(1):159-162",
-          "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/32823310/)",
+          "link": "https://pubmed.ncbi.nlm.nih.gov/32823310/",
           "year": 2020
         },
         {
@@ -703,7 +703,7 @@
           "authors": "Robinson PN, Ravanmehr V, Jacobsen JOB, Danis D, Zhang XA, Carmody LC, Gargano MA, Thaxton CL, Karlebach G, Reese J, Holtgrewe M, Köhler S, McMurry JA, Haendel MA, Smedley D",
           "journal": "Am J Hum Genet",
           "issue": "107(3):403-417",
-          "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/32755546/)",
+          "link": "https://pubmed.ncbi.nlm.nih.gov/32755546/",
           "year": 2020
         },
         {
@@ -711,7 +711,7 @@
           "authors": "Rubinstein YR, Robinson PN, Gahl WA, Avillach P, Baynam G, Cederroth H, Goodwin RM, Groft SC, Hansson MG, Harris NL, Huser V, Mascalzoni D, McMurry JA, Might M, Nellaker C, Mons B, Paltoo DN, Pevsner J, Posada M, Rockett-Frase AP, Roos M, Rubinstein TB, Taruscio D, van Enckevort E, Haendel MA",
           "journal": "JAMIA Open",
           "issue": "3(3):472-486",
-          "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/33426479/)",
+          "link": "https://pubmed.ncbi.nlm.nih.gov/33426479/",
           "year": 2020
         },
         {
@@ -719,7 +719,7 @@
           "authors": "Shefchek KA, Harris NL, Gargano M, Matentzoglu N, Unni D, Brush M, Keith D, Conlin T, Vasilevsky N, Zhang XA, Balhoff JP, Babb L, Bello SM, Blau H, Bradford Y, Carbon S, Carmody L, Chan LE, Cipriani V, Cuzick A, Della Rocca M, Dunn N, Essaid S, Fey P, Grove C, Gourdine JP, Hamosh A, Harris M, Helbig I, Hoatlin M, Joachimiak M, Jupp S, Lett KB, Lewis SE, McNamara C, Pendlington ZM, Pilgrim C, Putman T, Ravanmehr V, Reese J, Riggs E, Robb S, Roncaglia P, Seager J, Segerdell E, Similuk M, Storm AL, Thaxon C, Thessen A, Jacobsen JOB, McMurry JA, Groza T, Köhler S, Smedley D, Robinson PN, Mungall CJ, Haendel MA, Munoz-Torres MC, Osumi-Sutherland D",
           "journal": "Nucleic Acids Res",
           "issue": "48(D1):D704-D715",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/31701156)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/31701156",
           "year": 2020
         },
         {
@@ -727,7 +727,7 @@
           "authors": "Tcheandjieu C, Aguirre M, Gustafsson S, Saha P, Potiny P, Haendel M, Ingelsson E, Rivas MA, Priest JR",
           "journal": "PLoS Genet",
           "issue": "16(11):e1008802",
-          "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/33226994/)",
+          "link": "https://pubmed.ncbi.nlm.nih.gov/33226994/",
           "year": 2020
         },
         {
@@ -738,14 +738,14 @@
           "issue": "16(11):e1008376",
           "doi": "10.1371/journal.pcbi.1008376",
           "pmid": "33232313",
-          "link": "[DOI](https://dx.doi.org/10.1371/journal.pcbi.1008376)"
+          "link": "https://dx.doi.org/10.1371/journal.pcbi.1008376"
         },
         {
           "title": "A harmonized meta-knowledgebase of clinical interpretations of somatic genomic variants in cancer",
           "authors": "Wagner AH, Walsh B, Mayfield G, Tamborero D, Sonkin D, Krysiak K, Deu-Pons J, Duren RP, Gao J, McMurry J, Patterson S, Del Vecchio Fitz C, Pitel BA, Sezerman OU, Ellrott K, Warner JL, Rieke DT, Aittokallio T, Cerami E, Ritter DI, Schriml LM, Freimuth RR, Haendel M, Raca G, Madhavan S, Baudis M, Beckmann JS, Dienstmann R, Chakravarty D, Li XS, Mockus S, Elemento O, Schultz N, Lopez-Bigas N, Lawler M, Goecks J, Griffith M, Griffith OL, Margolin AA",
           "journal": "Nat Genet",
           "issue": "52(4):448-457",
-          "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/32246132/)",
+          "link": "https://pubmed.ncbi.nlm.nih.gov/32246132/",
           "year": 2020
         },
         {
@@ -754,7 +754,7 @@
           "year": 2020,
           "journal": "CEUR Workshop Proceedings, CEUR-WS",
           "issue": "2807",
-          "link": "[Link](http://www.informatik.uni-leipzig.de/~loebe/tmp/ICBO2020/abstractY.pdf)"
+          "link": "http://www.informatik.uni-leipzig.de/~loebe/tmp/ICBO2020/abstractY.pdf"
         },
         {
           "title": "Identification of UBAP1 mutations in juvenile hereditary spastic paraplegia in the 100,000 Genomes Project",
@@ -762,7 +762,7 @@
           "year": 2020,
           "journal": "European Journal of Human Genetics",
           "issue": "28(12):1763-1768",
-          "link": "[Link](https://www.nature.com/articles/s41431-020-00720-w)"
+          "link": "https://www.nature.com/articles/s41431-020-00720-w"
         },
         {
           "title": "Community approaches for integrating environmental exposures into human models of disease",
@@ -770,7 +770,7 @@
           "year": 2020,
           "journal": "Environmental health perspectives",
           "issue": "128(12):125002",
-          "link": "[Link](https://ehp.niehs.nih.gov/doi/abs/10.1289/EHP7215)"
+          "link": "https://ehp.niehs.nih.gov/doi/abs/10.1289/EHP7215"
         }
       ]
     },
@@ -782,7 +782,7 @@
           "authors": "Ahalt SC, Chute CG, Fecho K, Glusman G, Hadlock J, Taylor CO, Pfaff ER, Robinson PN, Solbrig H, Ta C, Tatonetti N, Weng C; Biomedical Data Translator Consortium",
           "journal": "Clin Transl Sci",
           "issue": "12(4):329-333",
-          "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/31074176/)",
+          "link": "https://pubmed.ncbi.nlm.nih.gov/31074176/",
           "year": 2019
         },
         {
@@ -790,7 +790,7 @@
           "authors": "Altinbas L, Bormann N, Lehmann D, Jeuthe S, Wulsten D, Kornak U, Robinson PN, Wildemann B, Kararigas G",
           "journal": "Int J Mol Sci",
           "issue": "20(23):6059",
-          "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/31805661)",
+          "link": "https://pubmed.ncbi.nlm.nih.gov/31805661",
           "year": 2019
         },
         {
@@ -798,7 +798,7 @@
           "authors": "Cacheiro P, Haendel MA, Smedley D; International Mouse Phenotyping Consortium and the Monarch Initiative",
           "journal": "Mamm Genome",
           "issue": "30(5-6):143-150",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/31127358)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/31127358",
           "year": 2019
         },
         {
@@ -806,7 +806,7 @@
           "authors": "Carbon S, Champieux R, McMurry JA, Winfree L, Wyatt LR, Haendel MA",
           "journal": "PLoS One",
           "issue": "14(3):e0213090",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/30917137)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/30917137",
           "year": 2019
         },
         {
@@ -814,7 +814,7 @@
           "authors": "Gourdine JF, Brush MH, Vasilevsky NA, Shefchek K, Köhler S, Matentzoglu N, Munoz-Torres MC, McMurry JA, Zhang XA, Robinson PN, Haendel MA",
           "journal": "Database (Oxford)",
           "issue": "baz114",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/31735951)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/31735951",
           "year": 2019
         },
         {
@@ -822,7 +822,7 @@
           "authors": "Jackson RC, Balhoff JP, Douglass E, Harris NL, Mungall CJ, Overton JA",
           "journal": "BMC Bioinformatics",
           "issue": "20(1):407",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/31357927)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/31357927",
           "year": 2019
         },
         {
@@ -830,7 +830,7 @@
           "authors": "Köhler S, Carmody L, Vasilevsky N, Jacobsen JOB, Danis D, Gourdine JP, Gargano M, Harris NL, Matentzoglu N, McMurry JA, Osumi-Sutherland D, Cipriani V, Balhoff JP, Conlin T, Blau H, Baynam G, Palmer R, Gratian D, Dawkins H, Segal M, Jansen AC, Muaz A, Chang WH, Bergerson J, Laulederkind SJF, Yüksel Z, Beltran S, Freeman AF, Sergouniotis PI, Durkin D, Storm AL, Hanauer M, Brudno M, Bello SM, Sincan M, Rageth K, Wheeler MT, Oegema R, Lourghi H, Della Rocca MG, Thompson R, Castellanos F, Priest J, Cunningham-Rundles C, Hegde A, Lovering RC, Hajek C, Olry A, Notarangelo L, Similuk M, Zhang XA, Gómez-Andrés D, Lochmüller H, Dollfus H, Rosenzweig S, Marwaha S, Rath A, Sullivan K, Smith C, Milner JD, Leroux D, Boerkoel CF, Klion A, Carter MC, Groza T, Smedley D, Haendel MA, Mungall C, Robinson PN",
           "journal": "Nucleic Acids Res",
           "issue": "47(D1):D1018-D1027",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/30476213)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/30476213",
           "year": 2019
         },
         {
@@ -838,7 +838,7 @@
           "authors": "Köhler S, Øien NC, Buske OJ, Groza T, Jacobsen JOB, McNamara C, Vasilevsky N, Carmody LC, Gourdine JP, Gargano M, McMurry JA, Danis D, Mungall CJ, Smedley D, Haendel M, Robinson PN",
           "journal": "Curr Protoc Hum Gene",
           "issue": "103(1):e92",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/31479590)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/31479590",
           "year": 2019
         },
         {
@@ -846,7 +846,7 @@
           "authors": "Nellåker C, Alkuraya FS, Baynam G, Bernier RA, Bernier FPJ, Boulanger V, Brudno M, Brunner HG, Clayton-Smith J, Cogné B, Dawkins HJS, deVries BBA, Douzgou S, Dudding-Byth T, Eichler EE, Ferlaino M, Fieggen K, Firth HV, FitzPatrick DR, Gration D, Groza T, Haendel M, Hallowell N, Hamosh A, Hehir-Kwa J, Hitz MP, Hughes M, Kini U, Kleefstra T, Kooy RF, Krawitz P, Küry S, Lees M, Lyon GJ, Lyonnet S, Marcadier JL, Meyn S, Moslerová V, Politei JM, Poulton CC, Raymond FL, Reijnders MRF, Robinson PN, Romano C, Rose CM, Sainsbury DCG, Schofield L, Sutton VR, Turnovec M, Van Dijck A, Van Esch H, Wilkie AOM; Minerva Consortium",
           "journal": "Front Genet",
           "issue": "10:611",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/31417602)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/31417602",
           "year": 2019
         },
         {
@@ -854,7 +854,7 @@
           "authors": "Sergouniotis PI, Maxime E, Leroux D, Olry A, Thompson R, Rath A, Robinson PN, Dollfus H; ERN-EYE Ontology Study Group",
           "journal": "Orphanet J Rare Dis",
           "issue": "14(1):8",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/30626441)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/30626441",
           "year": 2019
         },
         {
@@ -862,7 +862,7 @@
           "authors": "Sickle Cell Disease Ontology Working Group",
           "journal": "Database (Oxford)",
           "issue": "",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/31769834)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/31769834",
           "year": 2019
         },
         {
@@ -870,7 +870,7 @@
           "authors": "Taylor DM, Aronow BJ, Tan K, Bernt K, Salomonis N, Greene CS, Frolova A, Henrickson SE, Wells A, Pei L, Jaiswal JK, Whitsett J, Hamilton KE, MacParland SA, Kelsen J, Heuckeroth RO, Potter SS, Vella LA, Terry NA, Ghanem LR, Kennedy BC, Helbig I, Sullivan KE, Castelo-Soccio L, Kreigstein A, Herse F, Nawijn MC, Koppelman GH, Haendel M, Harris NL, Rokita JL, Zhang Y, Regev A, Rozenblatt-Rosen O, Rood JE, Tickle TL, Vento-Tormo R, Alimohamed S, Lek M, Mar JC, Loomes KM, Barrett DM, Uapinyoying P, Beggs AH, Agrawal PB, Chen YW, Muir AB, Garmire LX, Snapper SB, Nazarian J, Seeholzer SH, Fazelinia H, Singh LN, Faryabi RB, Raman P, Dawany N, Xie HM, Devkota B, Diskin SJ, Anderson SA, Rappaport EF, Peranteau W, Wikenheiser-Brokamp KA, Teichmann S, Wallace D, Peng T, Ding YY, Kim MS, Xing Y, Kong SW, Bönnemann CG, Mandl KD, White PS",
           "journal": "Dev Cell",
           "issue": "49(1):10-29",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/30930166)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/30930166",
           "year": 2019
         },
         {
@@ -878,7 +878,7 @@
           "authors": "Walls RL, Cooper L, Elser J, Gandolfo MA, Mungall CJ, Smith B, Stevenson DW, Jaiswal P",
           "journal": "Front Plant Sci",
           "issue": "10:631",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/31214208)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/31214208",
           "year": 2019
         },
         {
@@ -886,7 +886,7 @@
           "authors": "Zhang XA, Yates A, Vasilevsky N, Gourdine JP, Callahan TJ, Carmody LC, Danis D, Joachimiak MP, Ravanmehr V, Pfaff ER, Champion J, Robasky K, Xu H, Fecho K, Walton NA, Zhu RL, Ramsdill J, Mungall CJ, Köhler S, Haendel MA, McDonald CJ, Vreeman DJ, Peden DB, Bennett TD, Feinstein JA, Martin B, Stefanski AL, Hunter LE, Chute CG, Robinson PN",
           "journal": "NPJ Digit Med",
           "issue": "2:32",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/31119199)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/31119199",
           "year": 2019
         },
         {
@@ -895,7 +895,7 @@
           "year": 2019,
           "journal": "",
           "issue": "",
-          "link": "[Link](https://pdfs.semanticscholar.org/16c0/f040cabbb6da356ccb712635cb37c5146036.pdf)"
+          "link": "https://pdfs.semanticscholar.org/16c0/f040cabbb6da356ccb712635cb37c5146036.pdf"
         },
         {
           "title": "Ontology-based data integration for advancing toxicological knowledge",
@@ -903,7 +903,7 @@
           "year": 2019,
           "journal": "Elsevier",
           "issue": "16:67-74",
-          "link": "[Link](https://www.sciencedirect.com/science/article/pii/S2468202019300051)"
+          "link": "https://www.sciencedirect.com/science/article/pii/S2468202019300051"
         },
         {
           "title": "Data-driven method to enhance craniofacial and oral phenotype vocabularies",
@@ -911,7 +911,7 @@
           "year": 2019,
           "journal": "The Journal of the American Dental Association",
           "issue": "150(11):933-939. e2",
-          "link": "[Link](https://www.sciencedirect.com/science/article/pii/S000281771930443X)"
+          "link": "https://www.sciencedirect.com/science/article/pii/S000281771930443X"
         },
         {
           "title": "Proper attribution for curation and maintenance of research collections: metadata recommendations of the RDA/TDWG Working Group",
@@ -919,7 +919,7 @@
           "year": 2019,
           "journal": "Data Science Journal",
           "issue": "18:54-54",
-          "link": "[Link](https://account.datascience.codata.org/index.php/up-j-dsj/article/view/dsj-2019-054)"
+          "link": "https://account.datascience.codata.org/index.php/up-j-dsj/article/view/dsj-2019-054"
         }
       ]
     },
@@ -931,7 +931,7 @@
           "authors": "Haendel MA, Chute CG, Robinson PN 2018",
           "journal": "N Engl J Med",
           "issue": "379(15):1452-1462",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/30304648)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/30304648",
           "year": 2018
         },
         {
@@ -939,7 +939,7 @@
           "authors": "Maiella S, Olry A, Hanauer M, Lanneau V, Lourghi H, Donadille B, Rodwell C, Köhler S, Seelow D, Jupp S, Parkinson H, Groza T, Brudno M, Robinson PN, Rath A",
           "journal": "Eur J Med Genet",
           "issue": "61(11):706-714",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/30304648)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/30304648",
           "year": 2018
         },
         {
@@ -947,7 +947,7 @@
           "authors": "Muñoz-Fuentes V, Cacheiro P, Meehan TF, Aguilar-Pimentel JA, Brown SDM, Flenniken AM, Flicek P, Galli A, Mashhadi HH, Hrabe de Angelis M, Kim JK, Lloyd KCK, McKerlie C, Morgan H, Murray SA, Nutter LMJ, Reilly PT, Seavitt JR, Seong JK, Simon M, Wardle-Jones H, Mallon AM, Smedley D, Parkinson HE; IMPC consortium",
           "journal": "Conserv Genet",
           "issue": "19(4):995-1005",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/30100824)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/30100824",
           "year": 2018
         },
         {
@@ -955,7 +955,7 @@
           "authors": "Vasilevsky NA, Foster ED, Engelstad ME, Carmody L, Might M, Chambers C, Dawkins HJS, Lewis J, Della Rocca MG, Snyder M, Boerkoel CF, Rath A, Terry SF, Kent A, Searle B, Baynam G, Jones E, Gavin P, Bamshad M, Chong J, Groza T, Adams D, Resnick AC, Heath AP, Mungall C, Holm IA, Rageth K, Brownstein CA, Shefchek K, McMurry JA, Robinson PN, Köhler S, Haendel MA.(2018)",
           "journal": "Nat Genet",
           "issue": "50(4):474-476",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/29632381)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/29632381",
           "year": 2018
         },
         {
@@ -964,7 +964,7 @@
           "year": 2018,
           "journal": "",
           "issue": "",
-          "link": "[Link](https://cgspace.cgiar.org/handle/10568/100816)"
+          "link": "https://cgspace.cgiar.org/handle/10568/100816"
         },
         {
           "title": "Standardizing Ontology Workflows Using ROBOT.",
@@ -972,7 +972,7 @@
           "year": 2018,
           "journal": "ICBO, 2018",
           "issue": "",
-          "link": "[Link](https://ceur-ws.org/Vol-2285/ICBO_2018_paper_46.pdf)"
+          "link": "https://ceur-ws.org/Vol-2285/ICBO_2018_paper_46.pdf"
         },
         {
           "title": "Biodiversity informatics",
@@ -980,7 +980,7 @@
           "year": 2018,
           "journal": "Ecological Informatics: Data Management and Knowledge Discovery",
           "issue": ":375-399",
-          "link": "[Link](https://link.springer.com/chapter/10.1007/978-3-319-59928-1_17)"
+          "link": "https://link.springer.com/chapter/10.1007/978-3-319-59928-1_17"
         },
         {
           "title": "Ontology mapping framework with feature extraction and semantic embeddings",
@@ -988,7 +988,7 @@
           "year": 2018,
           "journal": "IEEE",
           "issue": ":34-42",
-          "link": "[Link](https://ieeexplore.ieee.org/abstract/document/8411678/)"
+          "link": "https://ieeexplore.ieee.org/abstract/document/8411678/"
         },
         {
           "title": "A census of disease ontologies",
@@ -996,7 +996,7 @@
           "year": 2018,
           "journal": "Annual Reviews",
           "issue": "1:305-331",
-          "link": "[Link](https://www.annualreviews.org/doi/abs/10.1146/annurev-biodatasci-080917-013459)"
+          "link": "https://www.annualreviews.org/doi/abs/10.1146/annurev-biodatasci-080917-013459"
         },
         {
           "title": "matchbox: An open\u2010source tool for patient matching via the Matchmaker Exchange",
@@ -1004,7 +1004,7 @@
           "year": 2018,
           "journal": "Human mutation",
           "issue": "39(12):1827-1834",
-          "link": "[Link](https://onlinelibrary.wiley.com/doi/abs/10.1002/humu.23655)"
+          "link": "https://onlinelibrary.wiley.com/doi/abs/10.1002/humu.23655"
         }
       ]
     },
@@ -1016,7 +1016,7 @@
           "authors": "Mungall CJ, McMurry JA, Köhler S, Balhoff JP, Borromeo C, Brush M, Carbon S, Conlin T, Dunn N, Engelstad M, Foster E, Gourdine JP, Jacobsen JO, Keith D, Laraway B, Lewis SE, NguyenXuan J, Shefchek K, Vasilevsky N, Yuan Z,Washington N, Hochheiser H, Groza T, Smedley D, Robinson PN, Haendel MA",
           "journal": "Nucleic Acids Research",
           "issue": "45(D1):D712–22",
-          "link": "[pubmed](https://www.ncbi.nlm.nih.gov/pubmed/27899636)",
+          "link": "https://www.ncbi.nlm.nih.gov/pubmed/27899636",
           "year": 2017
         },
         {
@@ -1024,7 +1024,7 @@
           "authors": "Köhler S, Vasilevsky NA, Engelstad M, Foster E, McMurry J, Aymé S, Baynam G, Bello SM, Boerkoel CF, Boycott KM, Brudno M, Buske OJ, Chinnery PF, Cipriani V, Connell LE, Dawkins HJ, DeMare LE, Devereau AD, de Vries BB, Firth HV, Freson K, Greene D, Hamosh A, Helbig I, Hum C, Jähn JA, James R, Krause R, F Laulederkind SJ, Lochmüller H, Lyon GJ, Ogishima S, Olry A, Ouwehand WH, Pontikos N, Rath A, Schaefer F, Scott RH, Segal M, Sergouniotis PI, Sever R, Smith CL, Straub V, Thompson R, Turner C, Turro E, Veltman MW, Vulliamy T, Yu J, von Ziegenweidt J, Zankl A, Züchner S, Zemojtel T, Jacobsen JO, Groza T, Smedley D, Mungall CJ, Haendel M, Robinson PN",
           "journal": "Nucleic Acids Research",
           "issue": "45(D1): D865–76",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/27899602)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/27899602",
           "year": 2017
         },
         {
@@ -1032,7 +1032,7 @@
           "authors": "McMurry JA, Juty N, Blomberg N, Burdett T, Conlin T, Conte N, Courtot M, Deck J, Dumontier M, Fellows DK, Gonzalez-Beltran A, Gormanns P, Grethe J, Hastings J, Hériché JK, Hermjakob H, Ison JC, Jimenez RC, Jupp S, Kunze J, Laibe C, Le Novère N, Malone J, Martin MJ, McEntyre JR, Morris C, Muilu J, Müller W, Rocca-Serra P, Sansone SA, Sariyar M, Snoep JL, Soiland-Reyes S, Stanford NJ, Swainston N, Washington N, Williams AR, Wimalaratne SM, Winfree LM, Wolstencroft K, Goble C, Mungall CJ, Haendel MA, Parkinson H",
           "journal": "PLoS Biology",
           "issue": "15(6):e2001414",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/28662064)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/28662064",
           "year": 2017
         },
         {
@@ -1040,7 +1040,7 @@
           "authors": "Meehan TF, Conte N, West DB, Jacobsen JO, Mason J, Warren J, Chen CK, Tudose I, Relac M, Matthews P, Karp N, Santos L, Fiegel T, Ring N, Westerberg H, Greenaway S, Sneddon D, Morgan H, Codner GF, Stewart ME, Brown J, Horner N; International Mouse Phenotyping Consortium, Haendel M, Washington N, Mungall CJ, Reynolds CL, Gallegos J, Gailus-Durner V, Sorg T, Pavlovic G, Bower LR, Moore M, Morse I, Gao X, Tocchini-Valentini GP, Obata Y, Cho SY, Seong JK, Seavitt J, Beaudet AL, Dickinson ME, Herault Y, Wurst W, de Angelis MH, Lloyd KCK, Flenniken AM, Nutter LMJ, Newbigging S, McKerlie C, Justice MJ, Murray SA, Svenson KL, Braun RE, White JK, Bradley A, Flicek P, Wells S, Skarnes WC, Adams DJ, Parkinson H, Mallon AM, Brown SDM, Smedley D",
           "journal": "Nat Genet",
           "issue": "49(8):1231-1238",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/28650483)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/28650483",
           "year": 2017
         },
         {
@@ -1048,7 +1048,7 @@
           "authors": "Robinson PN",
           "journal": "Human Mutat",
           "issue": "38(5):469",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/28425197)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/28425197",
           "year": 2017
         },
         {
@@ -1056,7 +1056,7 @@
           "authors": "Boycott KM, Rath A, Chong JX, Hartley T, Alkuraya FS, Baynam G, Brookes AJ, Brudno M, Carracedo A, den Dunnen JT, Dyke SOM, Estivill X, Goldblatt J, Gonthier C, Groft SC, Gut I, Hamosh A, Hieter P, Höhn S, Hurles ME, Kaufmann P, Knoppers BM, Krischer JP, Macek M Jr, Matthijs G, Olry A, Parker S, Paschall J, Philippakis AA, Rehm HL, Robinson PN, Sham PC, Stefanov R, Taruscio D, Unni D, Vanstone MR, Zhang F, Brunner H, Bamshad MJ, Lochmüller H",
           "journal": "Am J Hum Genet",
           "issue": "100(5):695-705",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/28475856)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/28475856",
           "year": 2017
         },
         {
@@ -1064,7 +1064,7 @@
           "authors": "Gall T, Valkanas E, Bello C, Markello T, Adams C, Bone WP, Brandt AJ, Brazill JM, Carmichael L, Davids M, Davis J, Diaz-Perez Z, Draper D, Elson J, Flynn ED, Godfrey R, Groden C, Hsieh CK, Fischer R, Golas GA, Guzman J, Huang Y, Kane MS, Lee E, Li C, Links AE, Maduro V, Malicdan MCV, Malik FS, Nehrebecky M, Park J, Pemberton P, Schaffer K, Simeonov D, Sincan M, Smedley D, Valivullah Z, Wahl C, Washington N, Wolfe LA, Xu K, Zhu Y, Gahl WA, Tifft CJ, Toro C, Adams DR, He M, Robinson PN, Haendel MA, Zhai RG, Boerkoel CF",
           "journal": "Front Med (Lausanne)",
           "issue": "4:62",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/28603714)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/28603714",
           "year": 2017
         },
         {
@@ -1072,7 +1072,7 @@
           "authors": "Elhanan G, Ochs C, Mejino JLV Jr, Liu H, Mungall CJ, Perl Y",
           "journal": "Artif Intell Med",
           "issue": "79:9-14",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/28532962)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/28532962",
           "year": 2017
         },
         {
@@ -1080,7 +1080,7 @@
           "authors": "Koehler S, Robinson PN, Mungall CJ",
           "journal": "bioRxiv",
           "issue": "doi:10.1101/108977",
-          "link": "[bioRxiv](https://www.biorxiv.org/content/10.1101/108977v1)",
+          "link": "https://www.biorxiv.org/content/10.1101/108977v1",
           "year": 2017
         },
         {
@@ -1088,7 +1088,7 @@
           "authors": "Ong E, Xiang Z, Zhao B, Liu Y, Lin Y, Zheng J, Mungall C, Courtot M, Ruttenberg A, He Y",
           "journal": "Nucleic Acids Res",
           "issue": "45(D1):D347-D352",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/27733503)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/27733503",
           "year": 2017
         },
         {
@@ -1097,7 +1097,7 @@
           "year": 2017,
           "journal": "ICBO, 2017",
           "issue": "",
-          "link": "[Link](http://ceur-ws.org/Vol-2137/paper_22.pdf)"
+          "link": "http://ceur-ws.org/Vol-2137/paper_22.pdf"
         },
         {
           "title": "Gold-standard ontology-based anatomical annotation in the CRAFT Corpus",
@@ -1105,7 +1105,7 @@
           "year": 2017,
           "journal": "Database",
           "issue": "2017:bax087",
-          "link": "[Link](https://academic.oup.com/database/article-abstract/doi/10.1093/database/bax087/4780291)"
+          "link": "https://academic.oup.com/database/article-abstract/doi/10.1093/database/bax087/4780291"
         },
         {
           "title": "The 24th annual Nucleic Acids Research database issue: a look back and upcoming changes",
@@ -1113,7 +1113,7 @@
           "year": 2017,
           "journal": "Nucleic acids research",
           "issue": "45(D1):D1-D11",
-          "link": "[Link](https://academic.oup.com/nar/article-abstract/45/D1/D1/2770636)"
+          "link": "https://academic.oup.com/nar/article-abstract/45/D1/D1/2770636"
         },
         {
           "title": "\u201cOpposite-of\u201d-information improves similarity calculations in phenotype ontologies",
@@ -1121,7 +1121,7 @@
           "year": 2017,
           "journal": "bioRxiv",
           "issue": ":108977",
-          "link": "[Link](https://www.biorxiv.org/content/10.1101/108977.abstract)"
+          "link": "https://www.biorxiv.org/content/10.1101/108977.abstract"
         },
         {
           "title": "Exomiser and Genomiser",
@@ -1129,7 +1129,7 @@
           "year": 2017,
           "journal": "Chapman and Hall/CRC",
           "issue": ":387-406",
-          "link": "[Link](https://www.taylorfrancis.com/chapters/edit/10.1201/9781315154770-27/exomiser-genomiser-julius-jacobsen-damian-smedley-peter-robinson)"
+          "link": "https://www.taylorfrancis.com/chapters/edit/10.1201/9781315154770-27/exomiser-genomiser-julius-jacobsen-damian-smedley-peter-robinson"
         },
         {
           "title": "Matchmaker exchange",
@@ -1137,7 +1137,7 @@
           "year": 2017,
           "journal": "Current protocols in human genetics",
           "issue": "95(1):9.31. 1-9.31. 15",
-          "link": "[Link](https://currentprotocols.onlinelibrary.wiley.com/doi/abs/10.1002/cphg.50)"
+          "link": "https://currentprotocols.onlinelibrary.wiley.com/doi/abs/10.1002/cphg.50"
         },
         {
           "title": "Prediction of Human Phenotype Ontology terms by means of hierarchical ensemble methods",
@@ -1145,7 +1145,7 @@
           "year": 2017,
           "journal": "BMC bioinformatics",
           "issue": "18(1):1-18",
-          "link": "[Link](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1854-y)"
+          "link": "https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-017-1854-y"
         },
         {
           "title": "Dead simple OWL design patterns",
@@ -1153,7 +1153,7 @@
           "year": 2017,
           "journal": "Journal of biomedical semantics",
           "issue": "8(1):1-7",
-          "link": "[Link](https://jbiomedsem.biomedcentral.com/articles/10.1186/s13326-017-0126-0?ref=https://githubhelp.com)"
+          "link": "https://jbiomedsem.biomedcentral.com/articles/10.1186/s13326-017-0126-0?ref=https://githubhelp.com"
         }
       ]
     },
@@ -1165,7 +1165,7 @@
           "authors": "McMurry JA, Köhler S, Washington NL, Balhoff JP, Borromeo C, Brush M, Carbon S, Conlin T, Dunn N, Engelstad M, Foster E, Gourdine JP, Jacobsen JO, Keith D, Laraway B, Xuan JN, Shefchek K, Vasilevsky NA, Yuan Z, Lewis SE, Hochheiser H, Groza T, Smedley D, Robinson PN, Mungall CJ, Haendel MA",
           "journal": "Genetics",
           "issue": "203(4):1491-5",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/27516611)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/27516611",
           "year": 2016
         },
         {
@@ -1173,7 +1173,7 @@
           "authors": "Dumontier M, Gray AJG, Marshall MS, Alexiev V, Ansell P, Bader G, Baran J, Bolleman JT, Callahan A, Cruz-Toledo J, Gaudet P, Gombocz EA, Gonzalez-Beltran AN, Groth P, Haendel M, Ito M, Jupp S, Juty N, Katayama T, Kobayashi N, Krishnaswami K, Laibe C, Le Novère N, Lin S, Malone J, Miller M, Mungall CJ, Rietveld L, Wimalaratne SM, Yamaguchi A",
           "journal": "PeerJ",
           "issue": "4:e2331",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/27602295)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/27602295",
           "year": 2016
         },
         {
@@ -1181,7 +1181,7 @@
           "authors": "Vasilevsky NA, Minnier J, Haendel MA, Champieux RE",
           "journal": "PeerJ",
           "issue": "5:e3208",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/28462024)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/28462024",
           "year": 2016
         },
         {
@@ -1189,7 +1189,7 @@
           "authors": "Links AE, Draper D, Lee E, Guzman J, Valivullah Z, Maduro V, Lebedev V, Didenko M, Tomlin G, Brudno M, Girdea M, Dumitriu S, Haendel MA, Mungall CJ, Smedley D, Hochheiser H, Arnold AM, Coessens B, Verhoeven S, Bone W, Adams D, Boerkoel CF, Gahl WA, Sincan M",
           "journal": "Front Med (Lausanne)",
           "issue": "3:39",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/27785453)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/27785453",
           "year": 2016
         },
         {
@@ -1197,7 +1197,7 @@
           "authors": "Mungall CJ, Koehler S, Robinson P, Holmes I, Haendel M",
           "journal": "bioRxiv",
           "issue": "doi:10.1101/048843",
-          "link": "[bioRxiv](https://www.biorxiv.org/content/10.1101/048843v3)",
+          "link": "https://www.biorxiv.org/content/10.1101/048843v3",
           "year": 2016
         },
         {
@@ -1205,7 +1205,7 @@
           "authors": "Bandrowski A, Brinkman R, Brochhausen M, Brush MH, Bug B, Chibucos MC, Clancy K, Courtot M, Derom D, Dumontier M, Fan L, Fostel J, Fragoso G, Gibson F, Gonzalez-Beltran A, Haendel MA, He Y, Heiskanen M, Hernandez-Boussard T, Jensen M, Lin Y, itemser AL, Lord P, Malone J, Manduchi E, McGee M, Morrison N, Overton JA, Parkinson H, Peters B, Rocca-Serra P, Ruttenberg A, Sansone SA, Scheuermann RH, Schober D, Smith B, Soldatova LN, Stoeckert CJ Jr, Taylor CF, Torniai C, Turner JA, Vita R, Whetzel PL, Zheng J",
           "journal": "PLoS One",
           "issue": "11(4):e0154556",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/27128319)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/27128319",
           "year": 2016
         },
         {
@@ -1213,7 +1213,7 @@
           "authors": "Diehl AD, Meehan TF, Bradford YM, Brush MH, Dahdul WM, Dougall DS, He Y, Osumi-Sutherland D, Ruttenberg A, Sarntivijai S, Van Slyke CE, Vasilevsky NA, Haendel MA, Blake JA, Mungall CJ",
           "journal": "J Biomed Semantics",
           "issue": "7(1):44",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/27377652)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/27377652",
           "year": 2016
         },
         {
@@ -1221,7 +1221,7 @@
           "authors": "Oellrich A, Collier N, Groza T, Rebholz-Schuhmann D, Shah N, Bodenreider O, Boland MR, Georgiev I, Liu H, Livingston K, Luna A, Mallon AM, Manda P, Robinson PN, Rustici G, Simon M, Wang L, Winnenburg R, Dumontier M",
           "journal": "Brief Bioinform",
           "issue": "17(5):819-30",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/26420780)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/26420780",
           "year": 2016
         },
         {
@@ -1229,7 +1229,7 @@
           "authors": "Smedley D, Schubach M, Jacobsen JOB, Köhler S, Zemojtel T, Spielmann M, Jäger M, Hochheiser H, Washington NL, McMurry JA, Haendel MA, Mungall CJ, Lewis SE, Groza T, Valentini G, Robinson PN",
           "journal": "Am J Hum Genet",
           "issue": "99(3):595-606",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/27569544)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/27569544",
           "year": 2016
         },
         {
@@ -1237,7 +1237,7 @@
           "authors": "Bone WP, Washington NL, Buske OJ, Adams DR, Davis J, Draper D, Flynn ED, Girdea M, Godfrey R, Golas G, Groden C, Jacobsen J, Köhler S, Lee EM, Links AE, Markello TC, Mungall CJ, Nehrebecky M, Robinson PN, Sincan M, Soldatos AG, Tifft CJ, Toro C, Trang H, Valkanas E, Vasilevsky N, Wahl C, Wolfe LA, Boerkoel CF, Brudno M, Haendel MA, Gahl WA, Smedley D",
           "journal": "Genet Med",
           "issue": "18(6):608-17",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/26562225)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/26562225",
           "year": 2016
         },
         {
@@ -1245,7 +1245,7 @@
           "authors": "Smedley D, Jacobsen JO, Jäger M, Köhler S, Holtgrewe M, Schubach M, Siragusa E, Zemojtel T, Buske OJ, Washington NL, Bone WP, Haendel MA, Robinson PN",
           "journal": "Nat Protoc",
           "issue": "10(12):2004-15",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/26562621)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/26562621",
           "year": 2016
         },
         {
@@ -1255,7 +1255,7 @@
           "journal": "bioRxiv",
           "issue": "",
           "doi": "10.1101/055756",
-          "link": "[DOI](https://dx.doi.org/10.1101/055756)"
+          "link": "https://dx.doi.org/10.1101/055756"
         },
         {
           "title": "Enhancing the human phenotype ontology for use by the layperson",
@@ -1263,7 +1263,7 @@
           "year": 2016,
           "journal": "",
           "issue": "",
-          "link": "[Link](https://scholarworks.iupui.edu/handle/1805/21027)"
+          "link": "https://scholarworks.iupui.edu/handle/1805/21027"
         },
         {
           "title": "Gold-Standard Ontology-Based Annotation of Concepts in Biomedical Text in the CRAFT Corpus: Updates and Extensions.",
@@ -1271,7 +1271,7 @@
           "year": 2016,
           "journal": "ICBO/BioCreative, 2016",
           "issue": "",
-          "link": "[Link](http://ceur-ws.org/Vol-1747/IP08_ICBO2016.pdf)"
+          "link": "http://ceur-ws.org/Vol-1747/IP08_ICBO2016.pdf"
         },
         {
           "title": "Innovative approaches to combining genotype, phenotype, epigenetic, and exposure data for precision diagnostics",
@@ -1279,7 +1279,7 @@
           "year": 2016,
           "journal": "Biocomputing 2016: Proceedings of the Pacific Symposium, 93-95, 2016",
           "issue": ":93-95",
-          "link": "[Link](http://psb.stanford.edu/psb-online/proceedings/psb16/intro-innovative.pdf)"
+          "link": "http://psb.stanford.edu/psb-online/proceedings/psb16/intro-innovative.pdf"
         },
         {
           "title": "SEPIO: A Semantic Model for the Integration and Analysis of Scientific Evidence.",
@@ -1287,7 +1287,7 @@
           "year": 2016,
           "journal": "ICBO/BioCreative, 2016",
           "issue": "",
-          "link": "[Link](https://ceur-ws.org/Vol-1747/IT605_ICBO2016.pdf)"
+          "link": "https://ceur-ws.org/Vol-1747/IT605_ICBO2016.pdf"
         },
         {
           "title": "Tools for exploring mouse models of human disease",
@@ -1295,7 +1295,7 @@
           "year": 2016,
           "journal": "Elsevier",
           "issue": "20:21-26",
-          "link": "[Link](https://www.sciencedirect.com/science/article/pii/S1740675717300348)"
+          "link": "https://www.sciencedirect.com/science/article/pii/S1740675717300348"
         },
         {
           "title": "Laying a community-based foundation for data-driven semantic standards in environmental health sciences",
@@ -1303,7 +1303,7 @@
           "year": 2016,
           "journal": "National Institute of Environmental Health Sciences",
           "issue": "124(8):1136-1140",
-          "link": "[Link](https://ehp.niehs.nih.gov/doi/abs/10.1289/ehp.1510438)"
+          "link": "https://ehp.niehs.nih.gov/doi/abs/10.1289/ehp.1510438"
         },
         {
           "title": "The environment ontology in 2016: bridging domains with increased scope, semantic density, and interoperation",
@@ -1311,7 +1311,7 @@
           "year": 2016,
           "journal": "Journal of biomedical semantics",
           "issue": "7:1-12",
-          "link": "[Link](https://link.springer.com/article/10.1186/s13326-016-0097-6)"
+          "link": "https://link.springer.com/article/10.1186/s13326-016-0097-6"
         }
       ]
     },
@@ -1323,7 +1323,7 @@
           "authors": "Brookes AJ, Robinson PN",
           "journal": "Nature Rev Genet",
           "issue": "16(12):702-15",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/26553330)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/26553330",
           "year": 2015
         },
         {
@@ -1331,7 +1331,7 @@
           "authors": "Oellrich A, Collier N, Groza T, Rebholz-Schuhmann D, Shah N, Bodenreider O, Boland MR, Georgiev I, Liu H, Livingston K, Luna A, Mallon AM, Manda P, Robinson PN, Rustici G, Simon M, Wang L, Winnenburg R, Dumontier M",
           "journal": "Brief Bioinform",
           "issue": "17(5):819-30",
-          "link": "[pubmed](https://pubmed.ncbi.nlm.nih.gov/26420780/)",
+          "link": "https://pubmed.ncbi.nlm.nih.gov/26420780/",
           "year": 2015
         },
         {
@@ -1339,7 +1339,7 @@
           "authors": "Smedley D, Robinson PN",
           "journal": "Genome Med",
           "issue": "7(1):81",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/26229552)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/26229552",
           "year": 2015
         },
         {
@@ -1347,7 +1347,7 @@
           "authors": "Yang H, Robinson PN, Wang K",
           "journal": "Nat Methods",
           "issue": "12(9):841-3",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/26192085)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/26192085",
           "year": 2015
         },
         {
@@ -1355,7 +1355,7 @@
           "authors": "Groza T, Köhler S, Moldenhauer D, Vasilevsky N, Baynam G, Zemojtel T, Schriml LM, Kibbe WA, Schofield PN, Beck T, Vasant D, Brookes AJ, Zankl A, Washington NL, Mungall CJ, Lewis SE, Haendel MA, Parkinson H, Robinson PN",
           "journal": "Am J Hum Genet",
           "issue": "97(1):111-24",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/26119816)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/26119816",
           "year": 2015
         },
         {
@@ -1363,7 +1363,7 @@
           "authors": "Haendel MA, Vasilevsky N, Brush M, Hochheiser HS, Jacobsen J, Oellrich A, Mungall CJ, Washington N, Köhler S, Lewis SE, Robinson PN, Smedley D",
           "journal": "Mamm Genome",
           "issue": "26(9-10):548-55",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/26092691)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/26092691",
           "year": 2015
         },
         {
@@ -1371,7 +1371,7 @@
           "authors": "Deans AR, Lewis SE, Huala E, Anzaldo SS, Ashburner M, Balhoff JP, Blackburn DC, Blake JA, Burleigh JG, Chanet B, Cooper LD, Courtot M, Csösz S, Cui H, Dahdul W, Das S, Dececchi TA, Dettai A, Diogo R, Druzinsky RE, Dumontier M, Franz NM,Friedrich F, Gkoutos GV, Haendel M, Harmon LJ, Hayamizu TF, He Y, Hines HM, Ibrahim N, Jackson LM, Jaiswal P, James-Zorn C, Köhler S, Lecointre G, Lapp H, Lawrence CJ, Le Novère N, Lundberg JG, Macklin J, Mast AR, Midford PE, Mikó I, Mungall CJ, Oellrich A, Osumi-Sutherland D, Parkinson H, Ramírez MJ, Richter S, Robinson PN, Ruttenberg A, Schulz KS, Segerdell E, Seltmann KC, Sharkey MJ, Smith AD, Smith B, Specht CD, Squires RB, Thacker RW, Thessen A, Fernandez-Triana J, Vihinen M, Vize PD, Vogt L, Wall CE, Walls RL, Westerfeld M, Wharton RA, Wirkner CS, Woolley JB, Yoder MJ, Zorn AM, Mabee P",
           "journal": "PLoS Biol",
           "issue": "13(1):e1002033",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/25562316)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/25562316",
           "year": 2015
         },
         {
@@ -1380,7 +1380,7 @@
           "year": 2015,
           "journal": "Database",
           "issue": "2015:bav005",
-          "link": "[Link](https://academic.oup.com/database/article-abstract/doi/10.1093/database/bav005/2433137)"
+          "link": "https://academic.oup.com/database/article-abstract/doi/10.1093/database/bav005/2433137"
         },
         {
           "title": "Prediction of human gene-phenotype associations by exploiting the hierarchical structure of the human phenotype ontology",
@@ -1388,7 +1388,7 @@
           "year": 2015,
           "journal": "Springer International Publishing",
           "issue": ":66-77",
-          "link": "[Link](https://link.springer.com/chapter/10.1007/978-3-319-16483-0_7)"
+          "link": "https://link.springer.com/chapter/10.1007/978-3-319-16483-0_7"
         },
         {
           "title": "Tudor Groza, Sebastian K\u00f6hler, 3, 25 Dawid Moldenhauer, 3, 4 Nicole Vasilevsky, 5",
@@ -1396,7 +1396,7 @@
           "year": 2015,
           "journal": "The American Journal of Human Genetics",
           "issue": "124(111):97-111",
-          "link": "[Link](https://www.academia.edu/download/52704460/The_Human_Phenotype_Ontology_Semantic_Un20170419-3209-8rzqtj.pdf)"
+          "link": "https://www.academia.edu/download/52704460/The_Human_Phenotype_Ontology_Semantic_Un20170419-3209-8rzqtj.pdf"
         },
         {
           "title": "Use of model organism and disease databases to support matchmaking for human disease gene discovery",
@@ -1404,7 +1404,7 @@
           "year": 2015,
           "journal": "Human mutation",
           "issue": "36(10):979-984",
-          "link": "[Link](https://onlinelibrary.wiley.com/doi/abs/10.1002/humu.22857)"
+          "link": "https://onlinelibrary.wiley.com/doi/abs/10.1002/humu.22857"
         },
         {
           "title": "The Matchmaker Exchange: a platform for rare disease gene discovery",
@@ -1412,7 +1412,7 @@
           "year": 2015,
           "journal": "Human mutation",
           "issue": "36(10):915-921",
-          "link": "[Link](https://onlinelibrary.wiley.com/doi/abs/10.1002/humu.22858)"
+          "link": "https://onlinelibrary.wiley.com/doi/abs/10.1002/humu.22858"
         },
         {
           "title": "The Matchmaker Exchange API: automating patient matching through the exchange of structured phenotypic and genotypic profiles",
@@ -1420,7 +1420,7 @@
           "year": 2015,
           "journal": "Human mutation",
           "issue": "36(10):922-927",
-          "link": "[Link](https://onlinelibrary.wiley.com/doi/abs/10.1002/humu.22850)"
+          "link": "https://onlinelibrary.wiley.com/doi/abs/10.1002/humu.22850"
         },
         {
           "title": "Capturing phenotypes for precision medicine",
@@ -1428,7 +1428,7 @@
           "year": 2015,
           "journal": "Molecular Case Studies",
           "issue": "1(1):a000372",
-          "link": "[Link](https://molecularcasestudies.cshlp.org/content/1/1/a000372.short)"
+          "link": "https://molecularcasestudies.cshlp.org/content/1/1/a000372.short"
         },
         {
           "title": "PhenomeCentral: a portal for phenotypic and genotypic matchmaking of patients with rare genetic diseases",
@@ -1436,7 +1436,7 @@
           "year": 2015,
           "journal": "Human mutation",
           "issue": "36(10):931-940",
-          "link": "[Link](https://onlinelibrary.wiley.com/doi/abs/10.1002/humu.22851)"
+          "link": "https://onlinelibrary.wiley.com/doi/abs/10.1002/humu.22851"
         },
         {
           "title": "Emerging semantics to link phenotype and environment",
@@ -1444,7 +1444,7 @@
           "year": 2015,
           "journal": "PeerJ",
           "issue": "3:e1470",
-          "link": "[Link](https://peerj.com/articles/1470/)"
+          "link": "https://peerj.com/articles/1470/"
         }
       ]
     },
@@ -1456,7 +1456,7 @@
           "authors": "Ibn-Salem J, Köhler S, Love MI, Chung H-R, Huang N, Hurles ME, Haendel M, Washington NL, Smedley D, Mungall CJ, Lewis SE, Ott C-E, Bauer S, Schofield PN, Mundlos S, Spielmann M and Robinson PN",
           "journal": "Genome Biol",
           "issue": "15(9):423",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/25315429)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/25315429",
           "year": 2014
         },
         {
@@ -1464,7 +1464,7 @@
           "authors": "Zemojtel T, Kohler S, Mackenroth L, Jager M, Hecht J, Krawitz P, Graul-Neumann L, Doelken S, Ehmke N, Spielmann M, Oien NC, Schweiger MR, Kruger U, Frommer G, Fischer B, Kornak U, Flottmann R, Ardeshirdavani A, Moreau Y, Lewis SE, Haendel M, Smedley D, Horn D, Mundlos S, Robinson PN",
           "journal": "Sci Transl Med",
           "issue": "6(252):252ra123",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/25186178)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/25186178",
           "year": 2014
         },
         {
@@ -1472,7 +1472,7 @@
           "authors": "Dahdul WM, Cui H, Mabee PM, Mungall CJ, Osumi-Sutherland D, Walls RL, Haendel MA",
           "journal": "J Biomed Semantics",
           "issue": "5:34",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/25140222)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/25140222",
           "year": 2014
         },
         {
@@ -1480,7 +1480,7 @@
           "authors": "Sarntivijai S., Lin Y, Xiang Z., Meehan TF, Diehl AD, Vempati UD, Schurer SC, Pang C, Malone J, Parkinson H, Liu Y, Takatsuki T, Saijo K, Masuy H, Nakamura Y, Brush MH, Haendel MA, Zheng J, Stoeckert CJ, Peters B, Mungall CJ, Carey TE, States DJ, Athey BD, He Y. (2014)",
           "journal": "J Biomed Semantics",
           "issue": "5(1):37",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/25852852)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/25852852",
           "year": 2014
         },
         {
@@ -1488,7 +1488,7 @@
           "authors": "Smedley D, Kohler S, Czeschik JC, Amberger J, Bocchini C, Hamosh A, Veldboer J, Zemojtel T, Robinson PN",
           "journal": "Bioinformatics",
           "issue": "30(22):3215-22",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/25078397)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/25078397",
           "year": 2014
         },
         {
@@ -1496,7 +1496,7 @@
           "authors": "Oellrich A, Koehler S, Washington N; Sanger Mouse Genetic Project, Mungall C, Lewis S, Haendel M, Robinson PN, Smedley D",
           "journal": "J Biomed Semantics",
           "issue": "5(Suppl 1 Proceedings of the Bio-Ontologies Spec Interest G):S4. [ pubmed",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/25093073)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/25093073",
           "year": 2014
         },
         {
@@ -1504,7 +1504,7 @@
           "authors": "Robinson PN, Kohler S, Oellrich A, Sanger Mouse Genetics Project, Wang K, Mungall CJ, Lewis SE, Washington N, Bauer S, Seelow D, Krawitz P, Gilissen C, Haendel M, Smedley D",
           "journal": "Genome Res",
           "issue": "24(2):340-8",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/24162188)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/24162188",
           "year": 2014
         },
         {
@@ -1512,7 +1512,7 @@
           "authors": "Van Slyke CE, Bradford YM, Westerfield M, Haendel MA",
           "journal": "J Biomed Semantics",
           "issue": "5(1):12",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/24568621)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/24568621",
           "year": 2014
         },
         {
@@ -1520,7 +1520,7 @@
           "authors": "Köhler S, Doelken SC, Mungall CJ, Bauer S, Firth HV, Bailleul-Forestier I, Black GC, Brown DL, Brudno M, Campbell J, FitzPatrick DR, Eppig JT, Jackson AP, Freson K, Girdea M, Helbig I, Hurst JA, JÃ¤hn J, Jackson LG, Kelly AM, Ledbetter DH, Mansour S, Martin CL, Moss C, Mumford A, Ouwehand WH, Park SM, Riggs ER, Scott RH, Sisodiya S, Van Vooren S, Wapner RJ, Wilkie AO, Wright CF, Vulto-van Silfhout AT, de Leeuw N, de Vries BB, Washingthon NL, Smith CL, Westerfield M, Schofield P, Ruef BJ, Gkoutos GV, Haendel M, Smedley D, Lewis SE, Robinson PN",
           "journal": "Nucleic Acids Res",
           "issue": "42(Database issue):D966-74",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/24217912)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/24217912",
           "year": 2014
         },
         {
@@ -1530,7 +1530,7 @@
           "journal": "Proceedings of Phenotype Day",
           "issue": "2014",
           "doi": "10.5281/zenodo.834091",
-          "link": "[DOI](https://dx.doi.org/10.5281/zenodo.834091)"
+          "link": "https://dx.doi.org/10.5281/zenodo.834091"
         },
         {
           "title": "/releases/2014-03-28/uberon",
@@ -1538,7 +1538,7 @@
           "year": 2014,
           "journal": "Uberon Website",
           "issue": "",
-          "link": "[Link](http://uberon.github.io/release/2014/03/28/release)"
+          "link": "http://uberon.github.io/release/2014/03/28/release"
         },
         {
           "title": "Phenotype ontologies and cross-species analysis for translational research",
@@ -1546,7 +1546,7 @@
           "year": 2014,
           "journal": "Public Library of Science",
           "issue": "10(4):e1004268",
-          "link": "[Link](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1004268)"
+          "link": "https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1004268"
         },
         {
           "title": "Use of animal models for exome prioritization of rare disease genes",
@@ -1554,7 +1554,7 @@
           "year": 2014,
           "journal": "Orphanet Journal of Rare Diseases",
           "issue": "9:1-2",
-          "link": "[Link](https://link.springer.com/article/10.1186/1750-1172-9-S1-O19)"
+          "link": "https://link.springer.com/article/10.1186/1750-1172-9-S1-O19"
         },
         {
           "title": "Unification of multi-species vertebrate anatomy ontologies for comparative biology in Uberon",
@@ -1562,7 +1562,7 @@
           "year": 2014,
           "journal": "Journal of biomedical semantics",
           "issue": "5:1-13",
-          "link": "[Link](https://link.springer.com/article/10.1186/2041-1480-5-21)"
+          "link": "https://link.springer.com/article/10.1186/2041-1480-5-21"
         }
       ]
     },
@@ -1574,7 +1574,7 @@
           "authors": "Arighi CN, Carterette B, Cohen KB, Krallinger M, Wilbur WJ, Fey P, Dodson R, Cooper L, Van Slyke CE, Dahdul W, Mabee P, Li D, Harris B, Gillespie M, Jimenez S, Roberts P, Matthews L, Becker K, Drabkin H, Bello S, Licata L,Chatr-aryamontri A, Schaeffer ML, Park J, Haendel M, Van Auken K, Li Y, Chan J, Muller HM, Cui H, Balhoff JP, Chi-Yang Wu J, Lu Z, Wei CH, Tudor CO, Raja K, Subramani S, Natarajan J, Cejuela JM, Dubey P, Wu C",
           "journal": "Database (Oxford)",
           "issue": "2013:bas056",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/23327936)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/23327936",
           "year": 2013
         },
         {
@@ -1582,7 +1582,7 @@
           "authors": "Buttigieg PL, Morrison N, Smith B, Mungall CJ, Lewis SE; ENVO Consortium",
           "journal": "J Biomed Semantics",
           "issue": "4(1):43",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/24330602)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/24330602",
           "year": 2013
         },
         {
@@ -1590,7 +1590,7 @@
           "authors": "Doelken SC, Kohler S, Mungall CJ, Gkoutos GV, Ruef BJ, Smith C, Smedley D, Bauer S, Klopocki E, Schofield PN, Westerfield M, Robinson PN, Lewis SE",
           "journal": "Dis Model Mech",
           "issue": "6(2):358-72",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/23104991)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/23104991",
           "year": 2013
         },
         {
@@ -1598,7 +1598,7 @@
           "authors": "Druzinsky R, Mungall C, Haendel M, Lapp H, Mabee P",
           "journal": "Anat Rec (Hoboken)",
           "issue": "296(12):1797-9",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/24127438)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/24127438",
           "year": 2013
         },
         {
@@ -1606,7 +1606,7 @@
           "authors": "Heinrich V, Kamphans T, Stange J, Parkhomchuk D, Hecht J, Dickhaus T, Robinson PN, Krawitz PM (2013)",
           "journal": "Genome Med",
           "issue": "5(7):69",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/23902830)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/23902830",
           "year": 2013
         },
         {
@@ -1614,7 +1614,7 @@
           "authors": "Kohler S, Doelken SC, Ruef BJ, Bauer S, Washington N, Westerfield M, Gkoutos G, Schofield P, Smedley D, Lewis SE, Robinson PN, Mungall CJ",
           "journal": "F1000Res",
           "issue": "2:30",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/24358873)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/24358873",
           "year": 2013
         },
         {
@@ -1622,7 +1622,7 @@
           "authors": "Krawitz PM, Hochsmann B, Murakami Y, Teubner B, Kruger U, Klopocki E, Neitzel H, Hoellein A, Schneider C, Parkhomchuk D, Hecht J, Robinson PN, Mundlos S, Kinoshita T, Schrezenmeier H",
           "journal": "Blood",
           "issue": "122(7):1312-5",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/23733340)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/23733340",
           "year": 2013
         },
         {
@@ -1630,7 +1630,7 @@
           "authors": "Maynard SM, Mungall CJ, Lewis SE, Imam FT, Martone ME",
           "journal": "Front Neuroinform",
           "issue": "7:7",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/23717278)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/23717278",
           "year": 2013
         },
         {
@@ -1638,7 +1638,7 @@
           "authors": "Meehan TF, Vasilevsky NA, Mungall CJ, Dougall DS, Haendel MA, Blake JA, Diehl AD",
           "journal": "BMC Bioinformatics",
           "issue": "14:263",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/24004649)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/24004649",
           "year": 2013
         },
         {
@@ -1646,7 +1646,7 @@
           "authors": "Robinson PN",
           "journal": "Hum Mutat",
           "issue": "34(12):v",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/24227377)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/24227377",
           "year": 2013
         },
         {
@@ -1654,7 +1654,7 @@
           "authors": "Roncaglia P, Martone ME, Hill DP, Berardini TZ, Foulger RE, Imam FT, Drabkin H, Mungall CJ, Lomax J",
           "journal": "J Biomed Semantics",
           "issue": "4(1):20",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/24093723)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/24093723",
           "year": 2013
         },
         {
@@ -1662,7 +1662,7 @@
           "authors": "Smedley D, Oellrich A, Kohler S, Ruef B; Sanger Mouse Genetics Project, Westerfield M, Robinson P, Lewis S, Mungall C",
           "journal": "Database (Oxford)",
           "issue": "2013:bat025",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/23660285)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/23660285",
           "year": 2013
         },
         {
@@ -1671,7 +1671,7 @@
           "year": 2013,
           "journal": "The Web of Geological Sciences: Advances, Impacts, and Interactions: Geological Society of America Special Paper",
           "issue": "500:591-604",
-          "link": "[Link](https://www.researchgate.net/profile/A-Sinha-3/publication/231175244_Geoinformatics_Toward_an_integrative_view_of_Earth_as_a_system/links/0c96053cb1367f36d1000000/Geoinformatics-Toward-an-integrative-view-of-Earth-as-a-system.pdf)"
+          "link": "https://www.researchgate.net/profile/A-Sinha-3/publication/231175244_Geoinformatics_Toward_an_integrative_view_of_Earth_as_a_system/links/0c96053cb1367f36d1000000/Geoinformatics-Toward-an-integrative-view-of-Earth-as-a-system.pdf"
         },
         {
           "title": "Ontology based molecular signatures for immune cell types via gene expression analysis",
@@ -1679,7 +1679,7 @@
           "year": 2013,
           "journal": "BMC bioinformatics",
           "issue": "14(1):1-15",
-          "link": "[Link](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-263)"
+          "link": "https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-14-263"
         }
       ]
     },
@@ -1691,7 +1691,7 @@
           "authors": "Chen CK, Mungall CJ, Gkoutos GV, Doelken SC, Kohler S, Ruef BJ, Smith C, Westerfield M, Robinson PN, Lewis SE, Schofield PN, Smedley D",
           "journal": "Hum Mutat",
           "issue": "33(5):858-66",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/22331800)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/22331800",
           "year": 2012
         },
         {
@@ -1699,7 +1699,7 @@
           "authors": "Dahdul WM, Balhoff JP, Blackburn DC, Diehl AD, Haendel MA, Hall BK, Lapp H, Lundberg JG, Mungall CJ, Ringwald M, Segerdell E, Van Slyke CE, Vickaryous MK, Westerfield M, Mabee PM",
           "journal": "PLoS One",
           "issue": "7(12):e51070",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/23251424)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/23251424",
           "year": 2012
         },
         {
@@ -1707,7 +1707,7 @@
           "authors": "Mungall CJ, Torniai C, Gkoutos GV, Lewis SE, Haendel MA",
           "journal": "Genome Biol",
           "issue": "13(1):R5",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/22293552)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/22293552",
           "year": 2012
         },
         {
@@ -1715,7 +1715,7 @@
           "authors": "Osumi-Sutherland D, Reeve S, Mungall CJ, Neuhaus F, Ruttenberg A, Jefferis GS, Armstrong JD",
           "journal": "Bioinformatics",
           "issue": "28(9):1262-9",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/22402613)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/22402613",
           "year": 2012
         },
         {
@@ -1723,7 +1723,7 @@
           "authors": "Thomas PD, Wood V, Mungall CJ, Lewis SE, Blake JA, Gene Ontology Consortium",
           "journal": "PLoS Comput Biol",
           "issue": "8(2):e1002386",
-          "link": "[pubmed](http://www.ncbi.nlm.nih.gov/pubmed/22359495)",
+          "link": "http://www.ncbi.nlm.nih.gov/pubmed/22359495",
           "year": 2012
         }
       ]
