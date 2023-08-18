@@ -31,7 +31,7 @@
           name: row.subject_label,
           category: row.subject_category,
         }"
-        :link="node.id === row.object"
+        :link="node.id !== row.subject"
       />
     </template>
 
@@ -48,7 +48,7 @@
           name: row.object_label,
           category: row.object_category,
         }"
-        :link="node.id === row.subject"
+        :link="node.id !== row.object"
       />
     </template>
 

@@ -63,7 +63,7 @@
         "human disease or disorder"
       ],
       "subject_taxon": null,
-      "subject_taxon_label": "test subject taxon label",
+      "subject_taxon_label": null,
       "predicate": "biolink:has_phenotype",
       "object": "HP:0002460",
       "original_object": null,
@@ -134,7 +134,7 @@
         "organ system subdivision"
       ],
       "object_taxon": null,
-      "object_taxon_label": "test object taxon label",
+      "object_taxon_label": null,
       "primary_knowledge_source": "infores:hpo-annotations",
       "aggregator_knowledge_source": ["infores:monarchinitiative"],
       "category": "biolink:DiseaseToPhenotypicFeatureAssociation",

@@ -37,7 +37,7 @@ class HistoPhenoKeys(Enum):
 class SolrQuery(BaseModel):
     q: str = "*:*"
     rows: int = 20
-    start: int = 1
+    start: int = 0
     facet: bool = True
     facet_min_count = 1
     facet_fields: Optional[List[str]] = Field(default_factory=list)
