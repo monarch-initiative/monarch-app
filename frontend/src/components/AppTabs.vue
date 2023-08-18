@@ -43,7 +43,6 @@
 import { onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { uniqueId } from "lodash";
-import AppWrapper from "@/components/AppWrapper.vue";
 import { wrap } from "@/util/math";
 
 /** route info */
