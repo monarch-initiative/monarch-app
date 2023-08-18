@@ -3,7 +3,15 @@
 -->
 
 <template>
-  <TheBanner />
+  <TheBanner>
+    This web app is the
+    <strong v-if="apiName === 'beta'">BETA VERSION</strong
+    ><strong v-if="apiName === 'dev'">DEV VERSION</strong> successor to the
+    <a href="https://monarchinitiative.org/">old web app here</a>. Not all
+    features are implemented yet. Please use the feedback form to tell us what
+    you think!
+  </TheBanner>
+
   <TheHeader />
   <main>
     <router-view />
@@ -16,6 +24,7 @@
 <script setup lang="ts">
 import { watch } from "vue";
 import { useRoute } from "vue-router";
+import { apiName } from "@/api";
 import TheFloatButtons from "@/components/TheFloatButtons.vue";
 import TheFooter from "@/components/TheFooter.vue";
 import TheHeader from "@/components/TheHeader.vue";

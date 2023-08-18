@@ -8,7 +8,7 @@
 <template>
   <AppFlex role="tablist" :aria-label="name">
     <template v-for="(tab, index) in tabs" :key="index">
-      <AppWrapper v-tooltip="tab.tooltip" tag="div" :wrap="!!tab.disabled">
+      <div v-tooltip="tab.disabled ? tab.tooltip : ''">
         <AppButton
           :id="`tab-${id}-${tab.id}`"
           v-tooltip="tab.tooltip"
@@ -25,7 +25,7 @@
           @click="onClick(tab.id)"
           @keydown="onKeydown"
         />
-      </AppWrapper>
+      </div>
     </template>
   </AppFlex>
 
