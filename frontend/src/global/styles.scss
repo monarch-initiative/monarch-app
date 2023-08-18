@@ -64,7 +64,8 @@ svg {
 }
 
 p,
-blockquote {
+blockquote,
+figcaption {
   margin: 0;
   padding: 0;
   line-height: $spacing + 0.3;
@@ -114,6 +115,7 @@ textarea {
 
 ol,
 ul {
+  width: 100%;
   margin: 0;
   padding: 0;
   padding-left: 20px;
@@ -127,6 +129,13 @@ li {
   padding-left: 10px;
 }
 
+figure {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  gap: 20px;
+}
+
 hr {
   width: 100%;
   height: 2px;
@@ -138,6 +147,7 @@ hr {
 blockquote {
   width: 100%;
   padding: 20px;
+  border-radius: $rounded;
   background: $light-gray;
   text-align: left;
 }
@@ -173,6 +183,16 @@ strong {
   border-radius: 999px;
   background: $error;
   content: "";
+}
+
+/** apex charts */
+
+.vue-apexcharts {
+  width: 100%;
+}
+
+.apexcharts-menu-item {
+  white-space: nowrap;
 }
 
 /** tooltips */

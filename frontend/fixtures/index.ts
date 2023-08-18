@@ -2,7 +2,6 @@ import { rest } from "msw";
 /** url bases */
 import { biolink, monarch } from "@/api";
 import { feedbackEndpoint } from "@/api/feedback";
-import { obo } from "@/api/ontologies";
 import { efetch, esummary } from "@/api/publications";
 import { uptimeRobot } from "@/api/uptime";
 import associationsTable from "./association-table.json";
@@ -14,7 +13,6 @@ import histopheno from "./histopheno.json";
 import nodePublicationAbstract from "./node-publication-abstract.json";
 import nodePublicationSummary from "./node-publication-summary.json";
 import node from "./node.json";
-import ontologies from "./ontologies.json";
 import phenotypeExplorerCompare from "./phenotype-explorer-compare.json";
 import phenotypeExplorerSearch from "./phenotype-explorer-search.json";
 import search from "./search.json";
@@ -30,9 +28,6 @@ export const handlers = [
   /** dynamically fetched data on /sources */
   rest.get(regex(biolink, "/metadata/datasets"), (req, res, ctx) =>
     res(ctx.status(200), ctx.json(datasets)),
-  ),
-  rest.get(regex(obo), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(ontologies)),
   ),
 
   /** api status monitoring on /help */
@@ -94,8 +89,8 @@ export const handlers = [
     const replace: {
       [key: string]: { name?: string; category?: string };
     } = {
-      "MONDO:0007947": {
-        name: "Marfan syndrome",
+      "MONDO:0007523": {
+        name: "Ehlers-Danlos syndrome, hypermobility",
         category: "biolink:Disease",
       },
       "HP:0100775": {

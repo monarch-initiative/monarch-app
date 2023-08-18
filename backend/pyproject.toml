@@ -40,11 +40,11 @@ mkdocs-material = ">=9.1.16"
 mkdocstrings = {extras = ["python"], version = ">=0.22.0"}
 black = "^22.10.0"
 ruff = "*"
-# isort = "^5.10.1"
-# flake8 = "^5.0.4"
-# autoflake = "^1.7.7"
 uvicorn = {extras = ["standard"], version = "^0.20.0"}
 httpx = "^0.24.1"
+scholarly = "*"
+habanero = "*"
+manubot = "*"
 
 
 [tool.poetry.extras]

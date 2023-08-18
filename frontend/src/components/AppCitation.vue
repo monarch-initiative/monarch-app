@@ -4,7 +4,9 @@
 
 <template>
   <blockquote class="citation">
-    <div v-if="title" class="truncate-2" tabindex="0">{{ title }}</div>
+    <AppLink v-if="title" :to="link || ''" class="truncate-2">{{
+      title
+    }}</AppLink>
     <div v-if="authors" class="truncate-2" tabindex="0">{{ authors }}</div>
     <AppMarkdown
       v-if="detailsString"
@@ -19,6 +21,8 @@
 import { computed } from "vue";
 
 type Props = {
+  /** work link */
+  link?: string;
   /** work title */
   title?: string;
   /** list of authors */

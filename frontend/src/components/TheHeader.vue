@@ -18,9 +18,12 @@
       >
         <TheLogo class="image" />
         <!-- make logo text the h1 on homepage -->
-        <component :is="home ? 'h1' : 'div'" class="text">
+        <component :is="home ? 'h1' : 'div'" class="name">
           Monarch Initiative
         </component>
+
+        <!-- slogan -->
+        <div v-if="home" class="slogan">Phenotype driven discovery</div>
       </AppLink>
 
       <!-- nav toggle button -->
@@ -172,7 +175,7 @@ $wrap: 600px;
   padding: 5px;
 }
 
-.text {
+.name {
   padding: 5px;
   font-weight: 400;
   font-size: 1.1rem;
@@ -181,6 +184,11 @@ $wrap: 600px;
   text-align: center;
   text-transform: uppercase;
   white-space: nowrap;
+}
+
+.slogan {
+  padding: 5px;
+  font-size: 1rem;
 }
 
 @media (max-width: $wrap) {
@@ -192,9 +200,13 @@ $wrap: 600px;
     height: 40px;
   }
 
-  .text {
+  .name {
     font-size: 1rem;
     text-align: left;
+  }
+
+  .slogan {
+    display: none;
   }
 }
 
@@ -206,7 +218,7 @@ $wrap: 600px;
       height: 70px;
     }
 
-    .text {
+    .name {
       width: min-content;
       font-size: 1.1rem;
     }

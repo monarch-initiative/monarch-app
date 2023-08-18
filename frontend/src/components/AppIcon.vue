@@ -84,7 +84,7 @@ const initials = computed(
 [data-icon^="category-"] {
   fill: none;
   stroke: currentColor;
-  stroke-width: 5;
+  stroke-width: 7;
   stroke-linecap: round;
   stroke-linejoin: round;
   height: 1.2em;

@@ -12,4 +12,7 @@ gha-creds-*.json
 site
 docs/Data-Model
 
+### Script ignores
+scripts/scholarly_*.json
+
 .DS_Store

@@ -1,0 +1,133 @@
+------------------------------------------------------------------------------------------------------------------------
+Found 139 publications in Google Scholar
+------------------------------------------------------------------------------------------------------------------------
+Found (and removed) 3 duplicate publications in scholarly_data:
+
+	GA4GH Phenopackets: A Practical Introduction
+
+	The GA4GH Phenopacket schema: A computable representation of clinical data for precision medicine
+
+	Improved exome prioritization of disease genes through cross-species phenotype comparison
+------------------------------------------------------------------------------------------------------------------------
+Found 2 publications with no link:
+
+	The Monarch Initiative: Insights across species reveal human disease mechanisms
+
+	How good is your phenotyping? Methods for quality assessment
+------------------------------------------------------------------------------------------------------------------------
+Found 57 publications already in publications.json (79 new publications)
+Duplicates:
+
+	The Environmental Conditions, Treatments, and Exposures Ontology (ECTO): connecting toxicology and exposure to human health and beyond
+
+	Phenopacket-tools: Building and validating GA4GH Phenopackets
+
+	The Xenopus phenotype ontology: bridging model organism phenotype data to human health and development
+
+	Unifying the identification of biomedical entities with the Bioregistry
+
+	Evaluation of phenotype-driven gene prioritization methods for Mendelian diseases
+
+	Biolink Model: A universal schema for knowledge graphs in clinical, biomedical, and translational science
+
+	A simple standard for sharing ontological mappings (SSSOM)
+
+	Mondo: Unifying diseases for the world, by the world
+
+	Ontology Development Kit: a toolkit for building, maintaining and standardizing biomedical ontologies
+
+	OBO Foundry in 2021: operationalizing open data principles to evaluate ontologies
+
+	Interpretable prioritization of splice variants in diagnostic next-generation sequencing
+
+	KG-COVID-19: a framework to produce customized knowledge graphs for COVID-19 response
+
+	The human phenotype ontology in 2021
+
+	Transforming the study of organisms: Phenomic data models and knowledge bases
+
+	Modelling kidney disease using ontology: insights from the Kidney Precision Medicine Project
+
+	The case for open science: rare diseases
+
+	Interpretable clinical genomics with a likelihood ratio paradigm
+
+	Ontologies, knowledge representation, and machine learning for translational research: recent contributions
+
+	An improved phenotype-driven tool for rare mendelian variant prioritization: benchmarking exomiser on real patient whole-exome data
+
+	How many rare diseases are there?
+
+	The Monarch Initiative in 2019: an integrative data and analytic platform connecting phenotypes to genotypes across species
+
+	Encoding clinical data with the human phenotype ontology for computational differential diagnostics
+
+	New models for human disease from the International Mouse Phenotyping Consortium
+
+	Semantic integration of clinical laboratory tests from electronic health records for deep phenotyping and biomarker discovery
+
+	Expansion of the Human Phenotype Ontology (HPO) knowledge base and resources
+
+	Representing glycophenotypes: semantic unification of glycobiology resources for disease discovery
+
+	Classification, ontology, and precision medicine
+
+	Plain-language medical vocabulary for precision diagnosis
+
+	Disease model discovery from 3,328 gene knockouts by The International Mouse Phenotyping Consortium
+
+	Identifiers for the 21st century: How to design, provision, and reuse persistent identifiers to maximize utility and impact of life science data
+
+	From SNOMED CT to Uberon: transferability of evaluation methodology between similarly structured ontologies
+
+	The Monarch Initiative: an integrative data and analytic platform connecting phenotypes to genotypes across species
+
+	The human phenotype ontology in 2017
+
+	The Cell Ontology 2016: enhanced content, modularization, and ontology interoperability
+
+	A whole-genome analysis framework for effective identification of pathogenic regulatory variants in Mendelian disease
+
+	Navigating the phenotype frontier: the monarch initiative
+
+	Computational evaluation of exome sequence data using human and model organism phenotypes improves diagnostic efficiency
+
+	k-BOOM: A Bayesian approach to ontology structure inference, with applications in disease ontology construction
+
+	Phenotype-driven strategies for exome prioritization of human Mendelian disease genes
+
+	Next-generation diagnostics and disease-gene discovery with the Exomiser
+
+	Disease insights through cross-species phenotype comparisons
+
+	The human phenotype ontology: semantic unification of common and rare disease
+
+	Finding our way through phenotypes
+
+	Nose to tail, roots to shoots: spatial descriptors for phenotypic diversity in the Biological Spatial Ontology
+
+	The zebrafish anatomy and stage ontologies: representing the anatomy and development of Danio rerio
+
+	CLO: the cell line ontology
+
+	Walking the interactome for candidate prioritization in exome sequencing studies of Mendelian diseases
+
+	Effective diagnosis of genetic disease by computational phenotype analysis of the disease-associated genome
+
+	The influence of disease categories on gene candidate predictions from model organism phenotypes
+
+	Improved exome prioritization of disease genes through cross-species phenotype comparison
+
+	The Human Phenotype Ontology project: linking molecular biology and disease through phenotype data
+
+	The environment ontology: contextualising biological and biomedical entities
+
+	What is an anatomy ontology?
+
+	PhenoDigm: analyzing curated annotations to associate animal models with human diseases
+
+	Construction and accessibility of a cross-species phenotype ontology along with gene annotations for biomedical research
+
+	A unified anatomy ontology of the vertebrate skeletal system
+
+	Uberon, an integrative multi-species anatomy ontology
