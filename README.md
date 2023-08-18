@@ -1,18 +1,17 @@
 # Monarch App
 
-
+[![documentation](https://img.shields.io/badge/-Documentation-purple?logo=read-the-docs&logoColor=white&style=for-the-badge)](https://monarch-initiative.github.io/monarch-app/docs)  
 ![](https://github.com/monarch-initiative/monarch-app/actions/workflows/test-backend.yaml/badge.svg)
 ![](https://github.com/monarch-initiative/monarch-app/actions/workflows/test-frontend.yaml/badge.svg)
 ![](https://github.com/monarch-initiative/monarch-app/actions/workflows/deploy-documentation.yaml/badge.svg)
 ![](https://github.com/monarch-initiative/monarch-app/actions/workflows/build-image.yaml/badge.svg)
 
+[The New Website](https://monarch-app.monarchinitiative.org)
+
 This repository contains the source code for the Monarch Initiative website (a Vue TS frontend),  
 as well as `monarch-py`, a Python library for interacting with the Monarch Initiative knowledge graph,  
 which includes an optional FastAPI module that serves as the website's backend.  
 
-[The New Website](https://monarch-app.monarchinitiative.org)
-
-[Documentation](https://monarch-app.monarchinitiative.org/docs)
 
 ### For developers
 

@@ -86,8 +86,8 @@
       as:
     </p>
     <blockquote>
-      Monarch Consortium. Accessed 2016-09-22. Marfan Syndrome.
-      https://monarchinitiative.org/OMIM:154700
+      Monarch Consortium. Accessed 2016-09-22. Ehlers-Danlos syndrome,
+      hypermobility. https://monarchinitiative.org/OMIM:154700
     </blockquote>
   </AppSection>
 </template>

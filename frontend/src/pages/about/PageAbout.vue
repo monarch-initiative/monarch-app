@@ -6,12 +6,22 @@
   <!-- brief overview -->
   <AppSection>
     <AppHeading>About</AppHeading>
+
     <p>
       The Monarch Initiative is an extensive knowledge graph and ecosystem of
       tools made for the benefit of clinicians, researchers, and scientists. The
       knowledge graph consists of millions of entities &ndash; genes, diseases,
       phenotypes, and many more &ndash; imported from dozens of sources.
     </p>
+
+    <iframe
+      title="Monarch Initiative Overview"
+      class="video"
+      src="https://www.youtube-nocookie.com/embed/SuUKqG2tbx0?autoplay=1&mute=1"
+      frameborder="0"
+      allow="autoplay; picture-in-picture"
+      allowfullscreen
+    ></iframe>
   </AppSection>
 
   <!-- main links to sub pages -->
@@ -24,22 +34,10 @@
         subtitle="How all the pieces of Monarch fit together"
       />
       <AppTile
-        to="https://github.com/biolink/biolink-api"
+        to="https://monarch-app.monarchinitiative.org/docs/"
         icon="code"
         title="API"
-        subtitle="The API behind this website, BioLink"
-      />
-      <AppTile
-        to="/sources"
-        icon="database"
-        title="Sources"
-        subtitle="Datasets, ontologies, and downloads"
-      />
-      <AppTile
-        to="/cite"
-        icon="feather-alt"
-        title="Cite"
-        subtitle="How to cite and attribute Monarch"
+        subtitle="The API serving this website"
       />
       <AppTile
         to="/team"
@@ -48,10 +46,28 @@
         subtitle="The people behind Monarch"
       />
       <AppTile
+        to="/phenomics-first"
+        icon="category-phenotypic-feature"
+        title="Phenomics First"
+        subtitle="Our approach to disease diagnosis"
+      />
+      <AppTile
+        to="https://monarch-initiative.github.io/monarch-ingest/Sources"
+        icon="database"
+        title="Sources"
+        subtitle="Datasets, ontologies, and downloads"
+      />
+      <AppTile
         to="/publications"
         icon="newspaper"
         title="Publications"
         subtitle="Monarch-related published works"
+      />
+      <AppTile
+        to="/cite"
+        icon="feather-alt"
+        title="Cite"
+        subtitle="How to cite and attribute Monarch"
       />
       <AppTile
         to="/terms"
@@ -113,3 +129,10 @@
     </p>
   </AppSection>
 </template>
+
+<style lang="scss" scoped>
+.video {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+}
+</style>

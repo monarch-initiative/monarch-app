@@ -5,9 +5,7 @@
 <template>
   <AppLink :to="link || ''" class="member">
     <div class="image">
-      <div class="portrait">
-        <img :src="src" :alt="name" loading="lazy" />
-      </div>
+      <img class="portrait" :src="src" :alt="name" loading="lazy" />
     </div>
     <div class="text">
       <div class="name">{{ name }}</div>
@@ -49,48 +47,45 @@ watch(
 
 <style lang="scss" scoped>
 .member {
-  display: inline-flex;
-  align-items: center;
-  max-width: 100%;
-  gap: 30px;
-  color: $black;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
   text-decoration: none;
 }
 
-a.member:hover {
-  color: $theme;
-}
-
 .image {
-  flex-shrink: 0;
-  width: 80px;
-  height: 80px;
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  overflow: hidden;
 
   .portrait {
     width: 100%;
     height: 100%;
-    overflow: hidden;
-    border-radius: 999px;
   }
 
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition:
+      transform $fast,
+      filter $fast;
   }
 }
 
+.member:hover img {
+  transform: scale(1.1);
+  filter: saturate(0) sepia(50%) hue-rotate(120deg);
+}
+
 .text {
-  text-align: left;
+  display: flex;
+  flex-direction: column;
 }
 
 .name {
   font-weight: 500;
   font-size: 1.1rem;
-}
-
-.name,
-.role {
-  margin: 10px 0;
 }
 </style>

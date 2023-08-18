@@ -3,13 +3,8 @@
 -->
 
 <template>
-  <AppLink
-    v-if="name && link"
-    :to="link || ''"
-    class="group"
-    :aria-label="name"
-  >
-    <img v-if="src" :src="src" class="image" :alt="name" loading="lazy" />
+  <AppLink v-if="src" :to="link || ''" class="group" :aria-label="name">
+    <img :src="src" class="image" :alt="name" loading="lazy" />
   </AppLink>
 </template>
 
@@ -35,7 +30,7 @@ watch(
     try {
       src.value = (await import(`../assets/team/groups/${image}.png`)).default;
     } catch (error) {
-      console.error("failed to load team group image", error);
+      console.error("failed to load team group image", image);
     }
   },
   { immediate: true },
