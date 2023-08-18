@@ -19,7 +19,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "lib": ["ES2022", "DOM"],
+    "lib": ["ESNext", "DOM"],
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "types": ["node", "jsdom"]

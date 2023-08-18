@@ -9,7 +9,8 @@
     "id": "text-annotator",
     "text": "Text Annotator",
     "icon": "subscript",
-    "tooltip": "Search full text for references to nodes in our knowledge graph"
+    "tooltip": "Coming soon!",
+    "disabled": true
   },
   {
     "id": "phenotype-explorer",

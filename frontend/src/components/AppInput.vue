@@ -60,6 +60,9 @@ function onBlur() {
 
 /** when user types in box */
 function onInput() {
+  /** check if component still mounted */
+  if (!input.value) return;
+
   emit("update:modelValue", input.value?.value);
   onDebounce(input.value?.value);
 }
@@ -71,6 +74,9 @@ const onDebounce = _debounce(function (value: string) {
 
 /** when user "commits" change (pressing enter, blurring, etc) */
 async function onChange() {
+  /** check if component still mounted */
+  if (!input.value) return;
+
   emit("change", input.value?.value);
 }
 
