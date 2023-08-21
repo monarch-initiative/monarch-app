@@ -611,10 +611,6 @@ class TermPairwiseSimilarity(PairwiseSimilarity):
         None,
         description="""The number of concepts in the intersection divided by the number in the union""",
     )
-    cosine_similarity: Optional[float] = Field(
-        None,
-        description="""the dot product of two node embeddings divided by the product of their lengths""",
-    )
     dice_similarity: Optional[float] = Field(None)
     phenodigm_score: Optional[float] = Field(
         None,

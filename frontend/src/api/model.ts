@@ -426,8 +426,6 @@ export interface TermPairwiseSimilarity extends PairwiseSimilarity {
     ancestor_information_content?: string,
     /** The number of concepts in the intersection divided by the number in the union */
     jaccard_similarity?: string,
-    /** the dot product of two node embeddings divided by the product of their lengths */
-    cosine_similarity?: number,
     dice_similarity?: string,
     /** the geometric mean of the jaccard similarity and the information content */
     phenodigm_score?: string,

@@ -4,7 +4,7 @@
 name = "airium"
 version = "0.2.5"
 description = "Easy and quick html builder with natural syntax correspondence (python->html). No templates needed. Serves pure pythonic library with no dependencies."
-optional = false
+optional = true
 python-versions = "*"
 files = [
     {file = "airium-0.2.5-py3-none-any.whl", hash = "sha256:6b4d75a2ff1aca0d9f787bcd3a69df13a189a75806b2fa2c9acda2e30f0ef5be"},
@@ -50,7 +50,7 @@ trio = ["trio (<0.22)"]
 name = "appdirs"
 version = "1.4.4"
 description = "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
-optional = false
+optional = true
 python-versions = "*"
 files = [
     {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
@@ -93,7 +93,7 @@ tests-no-zope = ["cloudpickle", "hypothesis", "mypy (>=1.1.1)", "pympler", "pyte
 name = "bcp47"
 version = "0.0.4"
 description = "Language tags made easy"
-optional = false
+optional = true
 python-versions = "*"
 files = [
     {file = "bcp47-0.0.4-py3-none-any.whl", hash = "sha256:309d3bbaef8d6c9ac59d37ba2167cc6620b4e7467ec8f1e09641b659bb1c0c6d"},
@@ -104,7 +104,7 @@ files = [
 name = "beautifulsoup4"
 version = "4.12.2"
 description = "Screen-scraping library"
-optional = false
+optional = true
 python-versions = ">=3.6.0"
 files = [
     {file = "beautifulsoup4-4.12.2-py3-none-any.whl", hash = "sha256:bd2520ca0d9d7d12694a53d44ac482d181b4ec1888909b035a3dbf40d0f57d4a"},
@@ -157,7 +157,7 @@ uvloop = ["uvloop (>=0.15.2)"]
 name = "cattrs"
 version = "23.1.2"
 description = "Composable complex class support for attrs and dataclasses."
-optional = false
+optional = true
 python-versions = ">=3.7"
 files = [
     {file = "cattrs-23.1.2-py3-none-any.whl", hash = "sha256:b2bb14311ac17bed0d58785e5a60f022e5431aca3932e3fc5cc8ed8639de50a4"},
@@ -301,7 +301,7 @@ files = [
 name = "class-resolver"
 version = "0.4.2"
 description = "Lookup and instantiate classes with style."
-optional = false
+optional = true
 python-versions = ">=3.7"
 files = [
     {file = "class_resolver-0.4.2-py3-none-any.whl", hash = "sha256:da81d1f76ff0dba252794a0cff2c3f68a1ed4375da687eacae9ec78e4bb733cb"},
@@ -404,7 +404,7 @@ dev = ["PyTest", "PyTest-Cov", "bump2version (<1)", "sphinx (<2)", "tox"]
 name = "deprecation"
 version = "2.1.0"
 description = "A library to handle automated deprecations"
-optional = false
+optional = true
 python-versions = "*"
 files = [
     {file = "deprecation-2.1.0-py2.py3-none-any.whl", hash = "sha256:a10811591210e1fb0e768a8c25517cabeabcba6f0bf96564f8ff45189f90b14a"},
@@ -439,7 +439,7 @@ ssh = ["paramiko (>=2.4.3)"]
 name = "editorconfig"
 version = "0.12.3"
 description = "EditorConfig File Locator and Interpreter for Python"
-optional = false
+optional = true
 python-versions = "*"
 files = [
     {file = "EditorConfig-0.12.3-py3-none-any.whl", hash = "sha256:6b0851425aa875b08b16789ee0eeadbd4ab59666e9ebe728e526314c4a2e52c1"},
@@ -461,7 +461,7 @@ files = [
 name = "eutils"
 version = "0.6.0"
 description = "\"Python interface to NCBI's eutilities API\""
-optional = false
+optional = true
 python-versions = ">=3.6"
 files = [
     {file = "eutils-0.6.0-py2.py3-none-any.whl", hash = "sha256:4938c4baff6ca52141204ff3eff3a91ec1e83e52a6c5d92e7163585117b96566"},
@@ -515,7 +515,7 @@ test = ["anyio[trio] (>=3.2.1,<4.0.0)", "black (==22.8.0)", "coverage[toml] (>=6
 name = "fastobo"
 version = "0.12.2"
 description = "Faultless AST for Open Biomedical Ontologies in Python."
-optional = false
+optional = true
 python-versions = ">=3.7"
 files = [
     {file = "fastobo-0.12.2-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:e9fa244d85dea3bb6463124c777f1b529ac28381c4a6bf344d40bf6a16cc7ed7"},
@@ -572,7 +572,7 @@ files = [
 name = "funowl"
 version = "0.2.3"
 description = "Python rendering of the OWL Functional syntax"
-optional = false
+optional = true
 python-versions = ">=3.7"
 files = [
     {file = "funowl-0.2.3-py3-none-any.whl", hash = "sha256:4c4328d03c7815cd61d6691f0fafc78dc9a78ec3dcab4c83afb64d125ad3660e"},
@@ -835,7 +835,7 @@ files = [
 name = "ijson"
 version = "3.2.3"
 description = "Iterative JSON parser with standard Python iterator interfaces"
-optional = false
+optional = true
 python-versions = "*"
 files = [
     {file = "ijson-3.2.3-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:0a4ae076bf97b0430e4e16c9cb635a6b773904aec45ed8dcbc9b17211b8569ba"},
@@ -997,7 +997,7 @@ i18n = ["Babel (>=2.7)"]
 name = "jsbeautifier"
 version = "1.14.9"
 description = "JavaScript unobfuscator and beautifier."
-optional = false
+optional = true
 python-versions = "*"
 files = [
     {file = "jsbeautifier-1.14.9.tar.gz", hash = "sha256:c738ebc36b47bd94e4ca6dd17a9004c3cc74edad582ca1d60e0e5d5945a63cb9"},
@@ -1136,7 +1136,7 @@ referencing = ">=0.28.0"
 name = "kgcl-rdflib"
 version = "0.5.0"
 description = "Schema for the KGCL project."
-optional = false
+optional = true
 python-versions = ">=3.8,<4.0"
 files = [
     {file = "kgcl_rdflib-0.5.0-py3-none-any.whl", hash = "sha256:214c011eac692384dd18397e455af2a7375f6a2f71fa318df245e8826678f454"},
@@ -1151,7 +1151,7 @@ linkml-runtime = ">=1.1.24"
 name = "kgcl-schema"
 version = "0.6.0"
 description = "Schema for the KGCL project."
-optional = false
+optional = true
 python-versions = ">=3.8,<4.0"
 files = [
     {file = "kgcl_schema-0.6.0-py3-none-any.whl", hash = "sha256:c212d459cf98f977c537f025331713c5ecfc9e9065e5cc189b3494beb836036f"},
@@ -1168,7 +1168,7 @@ prefixmaps = ">=0.1.5,<0.2.0"
 name = "lark"
 version = "1.1.7"
 description = "a modern parsing library"
-optional = false
+optional = true
 python-versions = ">=3.6"
 files = [
     {file = "lark-1.1.7-py3-none-any.whl", hash = "sha256:9e5dc5bbf93fa1840083707285262514a0ef8a6613874af7ea1cec60468d6e92"},
@@ -1240,7 +1240,7 @@ linkml-runtime = ">=1.1.6"
 name = "linkml-renderer"
 version = "0.3.0"
 description = "linkml-renderer"
-optional = false
+optional = true
 python-versions = ">=3.8,<4.0"
 files = [
     {file = "linkml_renderer-0.3.0-py3-none-any.whl", hash = "sha256:9b2c0207751c8b5abb814b67fa1ae0f2a4dce80637d56ed770f74a40d4fee614"},
@@ -1301,7 +1301,7 @@ dev = ["Sphinx (==5.3.0)", "colorama (==0.4.5)", "colorama (==0.4.6)", "freezegu
 name = "lxml"
 version = "4.9.3"
 description = "Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API."
-optional = false
+optional = true
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, != 3.4.*"
 files = [
     {file = "lxml-4.9.3-cp27-cp27m-macosx_11_0_x86_64.whl", hash = "sha256:b0a545b46b526d418eb91754565ba5b63b1c0b12f9bd2f808c852d9b4b2f9b5c"},
@@ -1610,7 +1610,7 @@ files = [
 name = "mkdocs-mermaid2-plugin"
 version = "0.6.0"
 description = "A MkDocs plugin for including mermaid graphs in markdown sources"
-optional = false
+optional = true
 python-versions = ">=3.5"
 files = [
     {file = "mkdocs-mermaid2-plugin-0.6.0.tar.gz", hash = "sha256:99cca6db7c6b4a954a701dcb6b507191bc32a7b0b47eacf2885c1bacf77d1af1"},
@@ -1673,7 +1673,7 @@ mkdocstrings = ">=0.20"
 name = "more-click"
 version = "0.1.2"
 description = "More click."
-optional = false
+optional = true
 python-versions = ">=3.7"
 files = [
     {file = "more_click-0.1.2-py3-none-any.whl", hash = "sha256:f6387af37ef7e7423bd94b72a81a53c79c5086a3bfe5cc035da534ff0c2a0a9e"},
@@ -1701,7 +1701,7 @@ files = [
 name = "ndex2"
 version = "3.5.1"
 description = "Nice CX Python includes a client and a data model."
-optional = false
+optional = true
 python-versions = "*"
 files = [
     {file = "ndex2-3.5.1-py2.py3-none-any.whl", hash = "sha256:41a3fa99811edbd3e620adfdd0153cb50c484e33bfe3817529aaff190fce067d"},
@@ -1722,7 +1722,7 @@ urllib3 = ">=1.16"
 name = "networkx"
 version = "3.1"
 description = "Python package for creating and manipulating graphs and networks"
-optional = false
+optional = true
 python-versions = ">=3.8"
 files = [
     {file = "networkx-3.1-py3-none-any.whl", hash = "sha256:4f33f68cb2afcf86f28a45f43efc27a9386b535d567d2127f8f61d51dec58d36"},
@@ -1740,7 +1740,7 @@ test = ["codecov (>=2.1)", "pytest (>=7.2)", "pytest-cov (>=4.0)"]
 name = "numpy"
 version = "1.25.2"
 description = "Fundamental package for array computing in Python"
-optional = false
+optional = true
 python-versions = ">=3.9"
 files = [
     {file = "numpy-1.25.2-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:db3ccc4e37a6873045580d413fe79b68e47a681af8db2e046f1dacfa11f86eb3"},
@@ -1772,14 +1772,12 @@ files = [
 
 [[package]]
 name = "oaklib"
-version = "0.5.16"
+version = "0.0.0"
 description = "Ontology Access Kit: Python library for common ontology operations over a variety of backends"
-optional = false
+optional = true
 python-versions = ">=3.9,<4.0.0"
-files = [
-    {file = "oaklib-0.5.16-py3-none-any.whl", hash = "sha256:f6f90937d9e626f2a9f3442e6b87c707d0f45a0cf33ed043a8d237c668d9c109"},
-    {file = "oaklib-0.5.16.tar.gz", hash = "sha256:685636a012910c9aea0dd5bf70f5f220730d5a6481d30efe48c964a072baeffe"},
-]
+files = []
+develop = false
 
 [package.dependencies]
 airium = ">=0.2.5"
@@ -1794,18 +1792,18 @@ kgcl-schema = "0.6.0"
 lark = ">=1.1.2"
 linkml-renderer = ">=0.3.0"
 linkml-runtime = ">=1.5.3"
-ndex2 = ">=3.5.0,<4.0.0"
+ndex2 = "^3.5.0"
 networkx = ">=2.7.1"
 ols-client = ">=0.1.1"
 ontoportal-client = ">=0.0.3"
 prefixmaps = ">=0.1.2"
 pronto = ">=2.5.0"
 pydantic = "*"
-pysolr = ">=3.9.0,<4.0.0"
+pysolr = "^3.9.0"
 pystow = ">=0.5.0"
 ratelimit = ">=2.2.1"
-requests-cache = ">=1.0.1,<2.0.0"
-semsimian = "0.2.0"
+requests-cache = "^1.0.1"
+semsimian = "0.2.1"
 semsql = ">=0.3.1"
 SPARQLWrapper = "*"
 SQLAlchemy = ">=1.4.32"
@@ -1813,13 +1811,21 @@ sssom = ">=0.3.38"
 sssom-schema = ">=0.11.0"
 
 [package.extras]
+docs = []
 gilda = ["gilda (>=1.0.0)", "urllib3 (<2)"]
+seaborn = []
+
+[package.source]
+type = "git"
+url = "https://github.com/INCATools/ontology-access-kit.git"
+reference = "issue-642"
+resolved_reference = "b6e6dfd9e2f09a48ea1c2b0358471f221c3fdd57"
 
 [[package]]
 name = "ols-client"
 version = "0.1.4"
 description = "A client to the EBI Ontology Lookup Service"
-optional = false
+optional = true
 python-versions = ">=3.7"
 files = [
     {file = "ols_client-0.1.4-py3-none-any.whl", hash = "sha256:7bdca0590042e07cc7ee3ef3fba99c3b6862cde6c8835afb129de31284b3e010"},
@@ -1841,7 +1847,7 @@ tests = ["coverage", "pytest"]
 name = "ontoportal-client"
 version = "0.0.4"
 description = "A client to BioPortal and other OntoPortal instances."
-optional = false
+optional = true
 python-versions = ">=3.7"
 files = [
     {file = "ontoportal_client-0.0.4-py3-none-any.whl", hash = "sha256:0dedd4ce003e0b6c1128fa05101e57bcc128ad79a6c9fcae66037d2447706c4c"},
@@ -1885,7 +1891,7 @@ files = [
 name = "pandas"
 version = "2.0.3"
 description = "Powerful data structures for data analysis, time series, and statistics"
-optional = false
+optional = true
 python-versions = ">=3.8"
 files = [
     {file = "pandas-2.0.3-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:e4c7c9f27a4185304c7caf96dc7d91bc60bc162221152de697c98eb0b2648dd8"},
@@ -1952,7 +1958,7 @@ xml = ["lxml (>=4.6.3)"]
 name = "pansql"
 version = "0.0.1"
 description = "sqldf for pandas"
-optional = false
+optional = true
 python-versions = "*"
 files = [
     {file = "pansql-0.0.1-py3-none-any.whl", hash = "sha256:0c49d8c23e418ac065af767ed350c544c0d6d96dc04e2faa1f8b37851d404988"},
@@ -2070,7 +2076,7 @@ refresh = ["bioregistry[refresh] (>=0.8.0,<0.9.0)", "rdflib[refresh] (>=6.2.0,<7
 name = "pronto"
 version = "2.5.4"
 description = "Python frontend to ontologies."
-optional = false
+optional = true
 python-versions = ">=3.7"
 files = [
     {file = "pronto-2.5.4-py2.py3-none-any.whl", hash = "sha256:38bf005ce7fca572f7e94bb8b68ca73604ad969472e763ca5dae6bf7224ae57e"},
@@ -2238,7 +2244,7 @@ shexjsg = ">=0.8.1"
 name = "pysolr"
 version = "3.9.0"
 description = "Lightweight Python client for Apache Solr"
-optional = false
+optional = true
 python-versions = "*"
 files = [
     {file = "pysolr-3.9.0.tar.gz", hash = "sha256:6ef05feb87c614894243eddc62e9b0a6134a889c159ae868655cf6cd749545e6"},
@@ -2354,7 +2360,7 @@ sortedcontainers = "*"
 name = "pytz"
 version = "2023.3"
 description = "World timezone definitions, modern and historical"
-optional = false
+optional = true
 python-versions = "*"
 files = [
     {file = "pytz-2023.3-py2.py3-none-any.whl", hash = "sha256:a151b3abb88eda1d4e34a9814df37de2a80e301e68ba0fd856fb9b46bfbbbffb"},
@@ -2451,7 +2457,7 @@ pyyaml = "*"
 name = "ratelimit"
 version = "2.2.1"
 description = "API rate limit decorator"
-optional = false
+optional = true
 python-versions = "*"
 files = [
     {file = "ratelimit-2.2.1.tar.gz", hash = "sha256:af8a9b64b821529aca09ebaf6d8d279100d766f19e90b5059ac6a718ca6dee42"},
@@ -2647,7 +2653,7 @@ use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 name = "requests-cache"
 version = "1.1.0"
 description = "A persistent cache for python requests"
-optional = false
+optional = true
 python-versions = ">=3.7,<4.0"
 files = [
     {file = "requests_cache-1.1.0-py3-none-any.whl", hash = "sha256:178282bce704b912c59e7f88f367c42bddd6cde6bf511b2a3e3cfb7e5332a92a"},
@@ -2677,7 +2683,7 @@ yaml = ["pyyaml (>=5.4)"]
 name = "requests-toolbelt"
 version = "1.0.0"
 description = "A utility belt for advanced users of python-requests"
-optional = false
+optional = true
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 files = [
     {file = "requests-toolbelt-1.0.0.tar.gz", hash = "sha256:7681a0a3d047012b5bdc0ee37d7f8f07ebe76ab08caeccfc3921ce23c88d5bc6"},
@@ -2929,7 +2935,7 @@ files = [
 name = "scipy"
 version = "1.9.3"
 description = "Fundamental algorithms for scientific computing in Python"
-optional = false
+optional = true
 python-versions = ">=3.8"
 files = [
     {file = "scipy-1.9.3-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:1884b66a54887e21addf9c16fb588720a8309a57b2e258ae1c7986d4444d3bc0"},
@@ -2965,53 +2971,53 @@ test = ["asv", "gmpy2", "mpmath", "pytest", "pytest-cov", "pytest-xdist", "sciki
 
 [[package]]
 name = "semsimian"
-version = "0.2.0"
+version = "0.2.1"
 description = ""
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "semsimian-0.2.0-cp310-cp310-macosx_10_7_x86_64.whl", hash = "sha256:26d4c9a5fabd3a5028e6f8c7e77ccc544fdce1e837759ec5d9d2fb0eeb8938d8"},
-    {file = "semsimian-0.2.0-cp310-cp310-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:64039923759cf68c7098291329dffa6a138a20e9ce3f6a36be5d899419c146a0"},
-    {file = "semsimian-0.2.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:6640a8cd7de330847b2619972bd726830f4517c7e7994f09967bf673c9d7158e"},
-    {file = "semsimian-0.2.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:100545026dbf07e327a410a844870957473fd8d6bc10846332b35c43b0f48892"},
-    {file = "semsimian-0.2.0-cp310-cp310-musllinux_1_2_aarch64.whl", hash = "sha256:9320f0168a8b9a4ed5f2edc1d426a521e8daedd6b08723bdb6ecc4171810da2f"},
-    {file = "semsimian-0.2.0-cp310-cp310-musllinux_1_2_x86_64.whl", hash = "sha256:7bb569d6ca99a4465ed525d24ca69f8ca7b03ba4f86816cc0fe4a0241af5b5ea"},
-    {file = "semsimian-0.2.0-cp310-none-win_amd64.whl", hash = "sha256:1803d4686546b8c93b1541b30229ee1f88b181a42176fc11e38629885900436d"},
-    {file = "semsimian-0.2.0-cp311-cp311-macosx_10_7_x86_64.whl", hash = "sha256:a3e3a06e9fdac54e5b9bc915b24defcd1d407eaf652557f8f1fd4e5de67b0142"},
-    {file = "semsimian-0.2.0-cp311-cp311-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:99b76f60d897447f864dc9dfa4b0c228cf4a44a78f88cd58ed87d0392865ae90"},
-    {file = "semsimian-0.2.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:24db6e80d9f4349a1cf541219455da36835033254350393633e98e742598be53"},
-    {file = "semsimian-0.2.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:920cd214d10a9838de0b18baacecb0fd5823a7239046918d46c7f7fb67d2f212"},
-    {file = "semsimian-0.2.0-cp311-cp311-musllinux_1_2_aarch64.whl", hash = "sha256:9a512f3e16a93c4d0d811f61cb2203e3106fdf65addb18c1d83258d535820935"},
-    {file = "semsimian-0.2.0-cp311-cp311-musllinux_1_2_x86_64.whl", hash = "sha256:2e28ca852d2c5e5e06640b061d41a09a0f07186a9ce290728ee2b29096cf9e01"},
-    {file = "semsimian-0.2.0-cp311-none-win_amd64.whl", hash = "sha256:75f61ed92057ff20208a08f556332a23300b3a0d437df0d59ed56d5fd3264480"},
-    {file = "semsimian-0.2.0-cp37-cp37m-macosx_10_7_x86_64.whl", hash = "sha256:30467bc7f309991b7ef82318c4faf2b821d57adbab3fe27d6abcb7f3755e5dc6"},
-    {file = "semsimian-0.2.0-cp37-cp37m-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:f3d58e32f69515a01cf11e3003c78df80a884ef1c3ec882a305f13d39283b511"},
-    {file = "semsimian-0.2.0-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:27f2ed796d4e671298041ab01217c8e56029def46765d0c1fec214f5a9432858"},
-    {file = "semsimian-0.2.0-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:6ff79085c47fdec6ce8f43a7d1ea2790cb71a5d4032b567bb8c77c898c0ac478"},
-    {file = "semsimian-0.2.0-cp37-cp37m-musllinux_1_2_aarch64.whl", hash = "sha256:11214eb27b651cecdfbb75d78609691851b45fcefe93aa5cfebb7e7fd2305ccf"},
-    {file = "semsimian-0.2.0-cp37-cp37m-musllinux_1_2_x86_64.whl", hash = "sha256:352c5ffd2e32f025d5de9c24b8dbf4d489f082648958b8fd003f9270bbc03a4a"},
-    {file = "semsimian-0.2.0-cp37-none-win_amd64.whl", hash = "sha256:44b3332ed8f0d2c6e0f3b6b0e013e1fcbc6a8b49bbd565784f5a2ad5ea75a367"},
-    {file = "semsimian-0.2.0-cp38-cp38-macosx_10_7_x86_64.whl", hash = "sha256:f71b5ddfd14f1f693b563b127a6d6adc0a58bacaf949de31eab102d911b5f648"},
-    {file = "semsimian-0.2.0-cp38-cp38-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:6cbe7f1c48bb9d583da729e4a0e32d8c07d61e6d5ec3f8a6b4bbe5a760d7f5b0"},
-    {file = "semsimian-0.2.0-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:de0ad340195b445403f41991d09ed13d4a91dbc850706e50bc1ebe79089ca220"},
-    {file = "semsimian-0.2.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b4db029aa5aa4758f16c57bdc699fc5110264230fa29d2c9c4bbe5f9ebd37bdc"},
-    {file = "semsimian-0.2.0-cp38-cp38-musllinux_1_2_aarch64.whl", hash = "sha256:a336ae396036078e9f620e143ecb25561b41a9f72b28c9668d35f57666fe0bad"},
-    {file = "semsimian-0.2.0-cp38-cp38-musllinux_1_2_x86_64.whl", hash = "sha256:872c94980e46d8d3352710e5c1e1511aa5151ce6ce18b13aa3f67762c8e44bb8"},
-    {file = "semsimian-0.2.0-cp38-none-win_amd64.whl", hash = "sha256:21af46486a4a1416a365a16ba426558121e9fdde152469e7283c1af55628bb4f"},
-    {file = "semsimian-0.2.0-cp39-cp39-macosx_10_7_x86_64.whl", hash = "sha256:deb058836e797e7f4246fa7a0d3c68140c9428307f0bda565dc0f3a8c02584e2"},
-    {file = "semsimian-0.2.0-cp39-cp39-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:ee19369c235fe3ff571e147f24999b0ce517f8c0c55ef409cf4ad051306d0724"},
-    {file = "semsimian-0.2.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:bec3a9ea6c137515ccc7b0b2d405a9dd2a11a0eb59185cba386e7adadfaf6bed"},
-    {file = "semsimian-0.2.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e4fa5c80449542b062830f8c479c31260b8657317cd5948c249ce84a51f5c3ec"},
-    {file = "semsimian-0.2.0-cp39-cp39-musllinux_1_2_aarch64.whl", hash = "sha256:97449f049158111ab9376ef2a750a8168f1f4b56e9beca50f60b7b2be8f4ef0c"},
-    {file = "semsimian-0.2.0-cp39-cp39-musllinux_1_2_x86_64.whl", hash = "sha256:7e0afbe8ef2507189b23834b809d1c4aa6826f2a5c13deda477063a3cb849617"},
-    {file = "semsimian-0.2.0-cp39-none-win_amd64.whl", hash = "sha256:69ff42a9fd3b2c5a1c91c105c8b92c4babb484752950f445724024645a5dc573"},
+    {file = "semsimian-0.2.1-cp310-cp310-macosx_10_7_x86_64.whl", hash = "sha256:9bae2b1023677c0e4a0fb830830418062b82c56ef198f51b92fe745a664f3686"},
+    {file = "semsimian-0.2.1-cp310-cp310-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:8ecc3d871c4c790c1e5ac8cea128f04755a528ff0eb35c16752151cb96649b6e"},
+    {file = "semsimian-0.2.1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:8b6e1aa442173188cbbb2807e934e101cc9f8bac04c02a83c9e2216b09585707"},
+    {file = "semsimian-0.2.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7382a832c14f0e50fd90ad6ca324daa4a0c7bc8a9e6186700d3f1026a519babf"},
+    {file = "semsimian-0.2.1-cp310-cp310-musllinux_1_2_aarch64.whl", hash = "sha256:862c40d534a3dafa755d0cd5d405a0ec7a05362190061e15030ef1dc4afdffc0"},
+    {file = "semsimian-0.2.1-cp310-cp310-musllinux_1_2_x86_64.whl", hash = "sha256:847a909c6781e2134ea2c453fb7fa6342ba7f88167828efe944ad7d4fb3eef9a"},
+    {file = "semsimian-0.2.1-cp310-none-win_amd64.whl", hash = "sha256:a3c2d6b28d052f4a28a549ab04a550027368f92a9394eb1cbccea2f53ee24f35"},
+    {file = "semsimian-0.2.1-cp311-cp311-macosx_10_7_x86_64.whl", hash = "sha256:e1e4157c4643bda16a5264eabac96c170b8dcb2f7ebed8ca9d3842be8c1372a5"},
+    {file = "semsimian-0.2.1-cp311-cp311-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:2fed3c58f2ecd4f20f213fa5fee3cb7853d482e831037374f9019bfe882b5854"},
+    {file = "semsimian-0.2.1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:7cc341ea5575dbeea24d99d111c87ecc7a184069882816d6db45457f6aac9947"},
+    {file = "semsimian-0.2.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1fcc12b328ffdd9f19193e09dfc742921c2602f42fc8eae03d2cbf5bef4ea127"},
+    {file = "semsimian-0.2.1-cp311-cp311-musllinux_1_2_aarch64.whl", hash = "sha256:3e9747baa1b15bf85f55b1be183f4beb5e03a3e1e99a9ed4985a35975341aad2"},
+    {file = "semsimian-0.2.1-cp311-cp311-musllinux_1_2_x86_64.whl", hash = "sha256:62d71c7da78fa0aa659f3cfe40b36fff0d2cecc1e387081c1a33c53d82c78b6a"},
+    {file = "semsimian-0.2.1-cp311-none-win_amd64.whl", hash = "sha256:843624749359c47ddded38c667457dc246cb28df87e7d37c86a82cc927750f13"},
+    {file = "semsimian-0.2.1-cp37-cp37m-macosx_10_7_x86_64.whl", hash = "sha256:f678b1b1ff16f1a00618c0ba43d06b009aaf034f6c449fc2129b361a6c673716"},
+    {file = "semsimian-0.2.1-cp37-cp37m-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:ce32899a12e8d720c4e433b78c47163d831e047cf170150e000eb5cf1f1fd8e5"},
+    {file = "semsimian-0.2.1-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:7a4d057eb75c4f1c434f5015fe80656ab86e76fb655cb80a63d09d7abc88c24f"},
+    {file = "semsimian-0.2.1-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:8a9ece04aebfe3f36830b4e50f4272e71a9d9eb6721109778ab8227997ba92fa"},
+    {file = "semsimian-0.2.1-cp37-cp37m-musllinux_1_2_aarch64.whl", hash = "sha256:a256d815091073d8c81451d81e11b4bbf550e3f83c1ef90a4dc9fae9756aff76"},
+    {file = "semsimian-0.2.1-cp37-cp37m-musllinux_1_2_x86_64.whl", hash = "sha256:ef331045ee8157b434a149493e493503846eed59eb16f2b3511fe22a2a9100bf"},
+    {file = "semsimian-0.2.1-cp37-none-win_amd64.whl", hash = "sha256:d858d2a958830bc206ddbb02899fe631965edd8e907c27bc9edebd22833adc06"},
+    {file = "semsimian-0.2.1-cp38-cp38-macosx_10_7_x86_64.whl", hash = "sha256:e81c6bed28497ba280b2a6b6d089b8c45cb19fde54b2b031136e6fc415c48b62"},
+    {file = "semsimian-0.2.1-cp38-cp38-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:777b1ceb01167a6516743f178410de786176cff55dbdf13c9a3caa0ddadaf4da"},
+    {file = "semsimian-0.2.1-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:9778187a8d85a7984e1e82e04204d2948f1dc4eab5f19ef01900725f2f6043d1"},
+    {file = "semsimian-0.2.1-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0607a1d822434467494b735361791d21a0ea101136e4ffd1ef2560a9fb6bbe06"},
+    {file = "semsimian-0.2.1-cp38-cp38-musllinux_1_2_aarch64.whl", hash = "sha256:8acb08944deebda272e45b98f89cd5a6b3e287a8c794bcdc185de1f45a32a5d4"},
+    {file = "semsimian-0.2.1-cp38-cp38-musllinux_1_2_x86_64.whl", hash = "sha256:5786dec6d2ea9bbc3765925c0726ee861c359f9c607b7be576b0c9c5da55790a"},
+    {file = "semsimian-0.2.1-cp38-none-win_amd64.whl", hash = "sha256:b9ba29ba3198c81431791e4ab36589a6ab6013d32407db6ce9cb182feceb83a8"},
+    {file = "semsimian-0.2.1-cp39-cp39-macosx_10_7_x86_64.whl", hash = "sha256:1b9dd3bcfa22c77dad95b05b39198edd54199a4b1ebe3bdedb17cccb38d36e0b"},
+    {file = "semsimian-0.2.1-cp39-cp39-macosx_10_9_x86_64.macosx_11_0_arm64.macosx_10_9_universal2.whl", hash = "sha256:d8baab2fea8082a8aceae6f896e4b29b3ab101c0009b937f17cf8e706435cd21"},
+    {file = "semsimian-0.2.1-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:716abdb2acc20199145954c3bf80c6bfc3ea172d4c9c21fc930b56f3a3eb8bff"},
+    {file = "semsimian-0.2.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b25d43736c7286f88d67d7a1cfd5b02f5a6e1e38ba6a177b3c455a44c4029dd3"},
+    {file = "semsimian-0.2.1-cp39-cp39-musllinux_1_2_aarch64.whl", hash = "sha256:842337d6fc213ee1070378d1d0254762afb28973459eb9c06ba5ada5818be475"},
+    {file = "semsimian-0.2.1-cp39-cp39-musllinux_1_2_x86_64.whl", hash = "sha256:953a28dd1e1456327a7e9e83b0db1ed52c3ed1700a93f34a49d5b5570474c7d1"},
+    {file = "semsimian-0.2.1-cp39-none-win_amd64.whl", hash = "sha256:b77564df0f96a4898d47086545e711d66c57dc13e674e89389cb3c8ef9837099"},
 ]
 
 [[package]]
 name = "semsql"
 version = "0.3.2"
 description = ""
-optional = false
+optional = true
 python-versions = ">=3.8,<4.0"
 files = [
     {file = "semsql-0.3.2-py3-none-any.whl", hash = "sha256:326ba4247a8ff172d62ac9ce5ff64e86767f2678bb7c8c7425373789e155202f"},
@@ -3101,7 +3107,7 @@ files = [
 name = "soupsieve"
 version = "2.4.1"
 description = "A modern CSS selector implementation for Beautiful Soup."
-optional = false
+optional = true
 python-versions = ">=3.7"
 files = [
     {file = "soupsieve-2.4.1-py3-none-any.whl", hash = "sha256:1c1bfee6819544a3447586c889157365a27e10d88cde3ad3da0cf0ddf646feb8"},
@@ -3226,7 +3232,7 @@ sqlcipher = ["sqlcipher3-binary"]
 name = "sqlalchemy-utils"
 version = "0.38.3"
 description = "Various utility functions for SQLAlchemy."
-optional = false
+optional = true
 python-versions = "~=3.6"
 files = [
     {file = "SQLAlchemy-Utils-0.38.3.tar.gz", hash = "sha256:9f9afba607a40455cf703adfa9846584bf26168a0c5a60a70063b70d65051f4d"},
@@ -3254,7 +3260,7 @@ url = ["furl (>=0.4.1)"]
 name = "sssom"
 version = "0.3.39"
 description = "Operations on SSSOM mapping tables"
-optional = false
+optional = true
 python-versions = ">=3.8,<4.0"
 files = [
     {file = "sssom-0.3.39-py3-none-any.whl", hash = "sha256:9261545a6f3bf6a84fbfe0f8de0d15a3165a02a164ced7d9d375196b70b9f5fd"},
@@ -3281,7 +3287,7 @@ validators = ">=0.20.0"
 name = "sssom-schema"
 version = "0.15.0"
 description = "SSSOM is a Simple Standard for Sharing Ontology Mappings."
-optional = false
+optional = true
 python-versions = ">=3.7.6,<4.0.0"
 files = [
     {file = "sssom_schema-0.15.0-py3-none-any.whl", hash = "sha256:0ba81a0fe76d28a2c65d65a99e0cd17d8dd08274f9735776a70c8d2f3734e901"},
@@ -3392,7 +3398,7 @@ files = [
 name = "tzdata"
 version = "2023.3"
 description = "Provider of IANA time zone data"
-optional = false
+optional = true
 python-versions = ">=2"
 files = [
     {file = "tzdata-2023.3-py2.py3-none-any.whl", hash = "sha256:7e65763eef3120314099b6939b5546db7adce1e7d6f2e179e3df563c70511eda"},
@@ -3417,7 +3423,7 @@ dev = ["flake8", "flake8-annotations", "flake8-bandit", "flake8-bugbear", "flake
 name = "url-normalize"
 version = "1.4.3"
 description = "URL normalization for Python"
-optional = false
+optional = true
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
 files = [
     {file = "url-normalize-1.4.3.tar.gz", hash = "sha256:d23d3a070ac52a67b83a1c59a0e68f8608d1cd538783b401bc9de2c0fac999b2"},
@@ -3517,7 +3523,7 @@ test = ["Cython (>=0.29.32,<0.30.0)", "aiohttp", "flake8 (>=3.9.2,<3.10.0)", "my
 name = "validators"
 version = "0.20.0"
 description = "Python Data Validation for Humans™."
-optional = false
+optional = true
 python-versions = ">=3.4"
 files = [
     {file = "validators-0.20.0.tar.gz", hash = "sha256:24148ce4e64100a2d5e267233e23e7afeb55316b47d30faae7eb6e7292bc226a"},
@@ -3831,4 +3837,4 @@ api = ["fastapi", "oaklib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "fc28803751d9b3813a153c85d6105209b24f933a2872ddc1e12652d7072f517b"
+content-hash = "1a8d47a1120cfee3d9f1876b93017809f76eabf63e8589f20731d95be00aba24"
