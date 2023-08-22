@@ -3,13 +3,7 @@
 ########################################################################
 
 
-from monarch_py.datamodels.model import (
-    AssociationResults,
-    TermSetPairwiseSimilarity,
-    HistoPheno,
-    Node,
-    SearchResults
-)
+from monarch_py.datamodels.model import AssociationResults, TermSetPairwiseSimilarity, HistoPheno, Node, SearchResults
 
 # from .fixtures import autocomplete, histopheno, node, node_associations, search
 

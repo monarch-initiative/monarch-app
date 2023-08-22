@@ -20,11 +20,13 @@ def _compare(
     Returns:
         TermSetPairwiseSimilarity: Pairwise similarity between subjects and objects
     """
-    print(f"""
+    print(
+        f"""
     Running semsim compare:
         subjects: {subjects.split(',')}
         objects: {objects.split(',')}
-    """)
+    """
+    )
     results = oak().compare(
         subjects=subjects.split(","),
         objects=objects.split(","),
@@ -34,18 +36,18 @@ def _compare(
 
 @router.post("/compare")
 def _post_compare(
-        subjects: List[str] = None,
-        objects: List[str] = None,
+    subjects: List[str] = None,
+    objects: List[str] = None,
 ):
     """
-    Pairwise similarity between two sets of terms <br>
-    <br>
-    Example: <br>
-<pre>
-{
-  "subjects": ["MP:0010771","MP:0002169","MP:0005391","MP:0005389","MP:0005367"],
-  "objects": ["HP:0004325","HP:0000093","MP:0006144"]
-}
-</pre>
+        Pairwise similarity between two sets of terms <br>
+        <br>
+        Example: <br>
+    <pre>
+    {
+      "subjects": ["MP:0010771","MP:0002169","MP:0005391","MP:0005389","MP:0005367"],
+      "objects": ["HP:0004325","HP:0000093","MP:0006144"]
+    }
+    </pre>
     """
     return oak().compare(subjects, objects)

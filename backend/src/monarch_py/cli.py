@@ -63,6 +63,7 @@ def schema():
 
 ### "Aliases" for Solr CLI ###
 
+
 @app.command("entity")
 def entity(
     id: str = typer.Argument(None, help="The identifier of the entity to be retrieved"),
@@ -258,23 +259,25 @@ def association_table(
 ):
     solr_cli.association_table(**locals())
 
+
 @app.command("compare")
 def compare(
-        subjects: str = typer.Argument(..., help="Comma separated list of subjects to compare"),
-        objects: str = typer.Argument(..., help="Comma separated list of objects to compare"),
-        fmt: str = typer.Option(
-            "json",
-            "--format",
-            "-f",
-            help="The format of the output (json, yaml, tsv, table)",
-        ),
-        output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
+    subjects: str = typer.Argument(..., help="Comma separated list of subjects to compare"),
+    objects: str = typer.Argument(..., help="Comma separated list of objects to compare"),
+    fmt: str = typer.Option(
+        "json",
+        "--format",
+        "-f",
+        help="The format of the output (json, yaml, tsv, table)",
+    ),
+    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
 ):
     """Compare two entities using semantic similarity via OAK"""
-    subjects = subjects.split(',')
-    objects = objects.split(',')
+    subjects = subjects.split(",")
+    objects = objects.split(",")
     response = oak.compare(subjects, objects)
     format_output(fmt, response, output)
+
 
 if __name__ == "__main__":
     app()

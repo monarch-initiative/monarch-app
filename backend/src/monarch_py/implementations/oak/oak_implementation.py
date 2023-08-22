@@ -1,5 +1,5 @@
 import time
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 from typing import List
 
 from loguru import logger
@@ -17,7 +17,7 @@ class OakImplementation(SemanticSimilarityInterface):
     semsim = None
     json_dumper = JSONDumper()
     default_predicates = ["rdfs:subClassOf", "BFO:0000050", "UPHENO:0000001"]
-    
+
     def init_semsim(self):
         if self.semsim is None:
             logger.info("Warming up semsimian")
@@ -39,11 +39,7 @@ class OakImplementation(SemanticSimilarityInterface):
             return self
 
     def compare(
-        self,
-        subjects: List[str],
-        objects: List[str],
-        predicates: List[str] = None,
-        labels = False
+        self, subjects: List[str], objects: List[str], predicates: List[str] = None, labels=False
     ) -> TermSetPairwiseSimilarity:
         """Compare two sets of terms using OAK"""
         predicates = predicates or self.default_predicates
@@ -59,4 +55,3 @@ class OakImplementation(SemanticSimilarityInterface):
 
         response_dict = self.json_dumper.to_dict(response)
         return TermSetPairwiseSimilarity(**response_dict)
-

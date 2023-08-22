@@ -13,9 +13,10 @@ app = FastAPI(
 )
 
 
-@app.on_event('startup')
+@app.on_event("startup")
 async def initialize_app():
     oak()
+
 
 app.include_router(entity.router, prefix=f"{PREFIX}/entity")
 app.include_router(association.router, prefix=f"{PREFIX}/association")

@@ -6,7 +6,7 @@ from monarch_py.implementations.oak.oak_implementation import OakImplementation
 @pytest.mark.skip(reason="This is a long running test")
 def test_semsim_compare():
 
-    subject_ids = ["MP:0010771" ]
+    subject_ids = ["MP:0010771"]
     object_ids = ["HP:0004325"]
 
     print("Getting oak implementation")

@@ -50,6 +50,7 @@ if not SolrImplementation().solr_is_available():
 ### Define variables
 
 oak = OakImplementation()
+oak.init_semsim()
 si = SolrImplementation()
 solr_url = os.getenv("MONARCH_SOLR_URL", "http://localhost:8983/solr")
 solr_entities = SolrService(base_url=solr_url, core=core.ENTITY)
@@ -66,7 +67,7 @@ CATEGORY = "biolink:DiseaseToPhenotypicFeatureAssociation"
 ### Generate fixtures
 
 fixtures = {}
-fixtures['associations'] = si.get_associations(entity = NODE_ID)
+fixtures['associations'] = si.get_associations(entity = [NODE_ID])
 fixtures['association-counts'] = si.get_association_counts(entity = NODE_ID)
 fixtures['association-table'] = si.get_association_table(entity=NODE_ID, category=CATEGORY, offset=0, limit=5)
 # fixtures['association-evidence'] = 
@@ -79,14 +80,13 @@ fixtures['node'] = si.get_entity(id = NODE_ID, extra = True)
 # fixtures['node-publication-abstract'] = 
 # fixtures['node-publication-summary'] = 
 # fixtures['ontologies'] = 
-# fixtures['phenotype-explorer-compare'] = 
+fixtures['phenotype-explorer-compare'] = oak.compare(subjects = ['MP:0010771', 'MP:0002169'], objects = ['HP:0004325'])
 # fixtures['phenotype-explorer-search'] = 
 fixtures['search'] = si.search(q = "fanconi")
 # fixtures['text-annotator'] = 
 # fixtures['uptime'] = 
 
 ## Leave compare out unless we need it, since it takes a long time to run
-# fixtures['phenotype-explorer-compare'] = oak.compare(subjects = ['MP:0010771', 'MP:0002169'], objects = ['HP:0004325'])
 
 
 ### Generate query fixtures
