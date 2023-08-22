@@ -24,8 +24,8 @@
 
     <!-- set B -->
     <AppFlex gap="small">
-      <strong>... to these phenotypes</strong>
-      <!-- <AppSelectSingle
+      <strong>... to</strong>
+      <AppSelectSingle
         v-model="bMode"
         name="Second set mode"
         :options="bModeOptions"
@@ -35,7 +35,7 @@
         v-model="bTaxon"
         name="Second set taxon"
         :options="bTaxonOptions"
-      /> -->
+      />
     </AppFlex>
 
     <AppSelectTags
@@ -111,14 +111,9 @@
 import { onMounted, ref, watch } from "vue";
 import { isEqual } from "lodash";
 import { mountPhenogrid } from "@/api/phenogrid";
-import {
-  compareSetToSet,
-  // compareSetToTaxon,
-  getPhenotypes,
-} from "@/api/phenotype-explorer";
+import { compareSetToSet, getPhenotypes } from "@/api/phenotype-explorer";
 import AppAlert from "@/components/AppAlert.vue";
 import AppRing from "@/components/AppRing.vue";
-// import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import type { Option, Options } from "@/components/AppSelectTags.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
