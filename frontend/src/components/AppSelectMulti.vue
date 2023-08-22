@@ -174,7 +174,7 @@ type Emits = {
 const emit = defineEmits<Emits>();
 
 /** unique id for instance of component */
-const id = ref(uniqueId());
+const id = uniqueId();
 /** whether dropdown is open */
 const expanded = ref(false);
 /** array of indices of selected options */
@@ -222,7 +222,7 @@ function onClick() {
   /** toggle dropdown */
   expanded.value ? close() : open();
   /** https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#clicking_and_focus */
-  document.querySelector<HTMLElement>(`#select-${id.value}`)?.focus();
+  document.querySelector<HTMLElement>(`#select-${id}`)?.focus();
 }
 
 /** when button blurred */
@@ -324,7 +324,7 @@ watch(
   () =>
     /** scroll to highlighted in dropdown */
     document
-      .querySelector(`#option-${id.value}-${highlighted.value} > *`)
+      .querySelector(`#option-${id}-${highlighted.value} > *`)
       ?.scrollIntoView({ block: "nearest" }),
 );
 

@@ -209,7 +209,7 @@ type Emits = {
 const emit = defineEmits<Emits>();
 
 /** unique id for instance of component */
-const id = ref(uniqueId());
+const id = uniqueId();
 /** array of selected options */
 const selected = ref<Options>([]);
 /** currently searched text */
@@ -393,7 +393,7 @@ watch(
 watch(highlighted, () => {
   /** scroll to highlighted in dropdown */
   document
-    .querySelector(`#option-${id.value}-${highlighted.value} > *`)
+    .querySelector(`#option-${id}-${highlighted.value} > *`)
     ?.scrollIntoView({ block: "nearest" });
 });
 </script>

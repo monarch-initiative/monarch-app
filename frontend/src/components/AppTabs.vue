@@ -87,7 +87,7 @@ type Emits = {
 const emit = defineEmits<Emits>();
 
 /** unique id for instance of component */
-const id = ref(uniqueId());
+const id = uniqueId();
 
 /** when user clicks on button */
 async function onClick(id: string) {
@@ -139,7 +139,7 @@ watch(
   () => props.modelValue,
   async () => {
     /** focus the selected tab */
-    // const selector = `#tab-${id.value}-${props.modelValue}`;
+    // const selector = `#tab-${id}-${props.modelValue}`;
     // const button = document?.querySelector<HTMLButtonElement>(selector);
     // button?.focus();
 
