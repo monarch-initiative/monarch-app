@@ -1,41 +1,53 @@
-from fastapi import APIRouter, Depends
-from monarch_py.api.additional_models import PaginationParams
-from monarch_py.api.utils.get_similarity import termlist_similarity
-from oaklib.cli import _shorthand_to_pred_curie
+from typing import List
 
-router = APIRouter(prefix="/api/semsim", tags=["semsim"], responses={404: {"description": "Not Found"}})
+from fastapi import APIRouter
+from monarch_py.api.config import oak
+
+router = APIRouter(tags=["semsim"], responses={404: {"description": "Not Found"}})
 
 
-@router.get("/semsim/{subjlist}/{objlist}")
-async def _get_termlist_similarity(
-    pagination: PaginationParams = Depends(),
-    subjlist: str = "",
-    objlist: str = "",
-    predicates: str = "",
+@router.get("/compare/{subjects}/{objects}")
+def _compare(
+    subjects: str = "",
+    objects: str = "",
 ):
-    """_summary_
+    """Get pairwise similarity between two sets of terms
 
     Args:
-        pagination (PaginationParams, optional): _description_. Defaults to Depends().
-        subjlist (str, optional): _description_. Defaults to "".
-        objlist (str, optional): _description_. Defaults to "".
-        predicates (str, optional): _description_. Defaults to "".
+        subjects (str, optional): List of subjects for comparison. Defaults to "".
+        objects (str, optional): List of objects for comparison. Defaults to "".
 
     Returns:
-        _type_: _description_
+        TermSetPairwiseSimilarity: Pairwise similarity between subjects and objects
     """
-
-    # Process string values to lists
-    for list_type in [subjlist, objlist, predicates]:
-        if "," in list_type:
-            list_type = list_type.split(",")
-    predicates = [_shorthand_to_pred_curie(p) for p in predicates]
-
-    results = termlist_similarity(
-        subjlist=subjlist,
-        objlist=objlist,
-        predicates=predicates,
-        offset=pagination.offset,
-        limit=pagination.limit,
+    print(
+        f"""
+    Running semsim compare:
+        subjects: {subjects.split(',')}
+        objects: {objects.split(',')}
+    """
+    )
+    results = oak().compare(
+        subjects=subjects.split(","),
+        objects=objects.split(","),
     )
     return results
+
+
+@router.post("/compare")
+def _post_compare(
+    subjects: List[str] = None,
+    objects: List[str] = None,
+):
+    """
+        Pairwise similarity between two sets of terms <br>
+        <br>
+        Example: <br>
+    <pre>
+    {
+      "subjects": ["MP:0010771","MP:0002169","MP:0005391","MP:0005389","MP:0005367"],
+      "objects": ["HP:0004325","HP:0000093","MP:0006144"]
+    }
+    </pre>
+    """
+    return oak().compare(subjects, objects)

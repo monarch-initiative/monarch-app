@@ -1,16 +1,14 @@
 from __future__ import annotations
-
-import sys
+from datetime import datetime, date
 from enum import Enum
-from typing import List, Optional
-
-from pydantic import BaseModel as BaseModel
-from pydantic import Field
+from typing import List, Dict, Optional, Any, Union
+from pydantic import BaseModel as BaseModel, Field
+import sys
 
 if sys.version_info >= (3, 8):
-    pass
+    from typing import Literal
 else:
-    pass
+    from typing_extensions import Literal
 
 
 metamodel_version = "None"
@@ -55,7 +53,7 @@ class Association(ConfiguredBaseModel):
         default_factory=list,
         description="""Field containing subject id and the ids of all of it's ancestors""",
     )
-    subject_label: Optional[str] = Field(None, description="""The name of the subject entity""")
+    subject_label: Optional[str] = Field(None, description="""the label or name for the first entity""")
     subject_closure_label: Optional[List[str]] = Field(
         default_factory=list,
         description="""Field containing subject name and the names of all of it's ancestors""",
@@ -71,7 +69,7 @@ class Association(ConfiguredBaseModel):
         default_factory=list,
         description="""Field containing object id and the ids of all of it's ancestors""",
     )
-    object_label: Optional[str] = Field(None, description="""The name of the object entity""")
+    object_label: Optional[str] = Field(None, description="""the label or name for the second entity""")
     object_closure_label: Optional[List[str]] = Field(
         default_factory=list,
         description="""Field containing object name and the names of all of it's ancestors""",
@@ -207,7 +205,7 @@ class DirectionalAssociation(Association):
         default_factory=list,
         description="""Field containing subject id and the ids of all of it's ancestors""",
     )
-    subject_label: Optional[str] = Field(None, description="""The name of the subject entity""")
+    subject_label: Optional[str] = Field(None, description="""the label or name for the first entity""")
     subject_closure_label: Optional[List[str]] = Field(
         default_factory=list,
         description="""Field containing subject name and the names of all of it's ancestors""",
@@ -223,7 +221,7 @@ class DirectionalAssociation(Association):
         default_factory=list,
         description="""Field containing object id and the ids of all of it's ancestors""",
     )
-    object_label: Optional[str] = Field(None, description="""The name of the object entity""")
+    object_label: Optional[str] = Field(None, description="""the label or name for the second entity""")
     object_closure_label: Optional[List[str]] = Field(
         default_factory=list,
         description="""Field containing object name and the names of all of it's ancestors""",
@@ -456,7 +454,7 @@ class EntityResults(Results):
 class SearchResult(Entity):
 
     highlight: Optional[str] = Field(None, description="""matching text snippet containing html tags""")
-    score: Optional[float] = Field(None)
+    score: Optional[str] = Field(None, description="""Abstract base slot for different kinds of scores""")
     id: str = Field(...)
     category: str = Field(...)
     name: str = Field(...)
@@ -492,6 +490,81 @@ class SearchResults(Results):
     total: int = Field(..., description="""total number of items matching a query""")
 
 
+class PairwiseSimilarity(ConfiguredBaseModel):
+    """
+    Abstract grouping for representing individual pairwise similarities
+    """
+
+    None
+
+
+class TermPairwiseSimilarity(PairwiseSimilarity):
+    """
+    A simple pairwise similarity between two atomic concepts/terms
+    """
+
+    subject_id: str = Field(..., description="""The first of the two entities being compared""")
+    subject_label: Optional[str] = Field(None, description="""the label or name for the first entity""")
+    subject_source: Optional[str] = Field(None, description="""the source for the first entity""")
+    object_id: Optional[str] = Field(None, description="""The second of the two entities being compared""")
+    object_label: Optional[str] = Field(None, description="""the label or name for the second entity""")
+    object_source: Optional[str] = Field(None, description="""the source for the second entity""")
+    ancestor_id: Optional[str] = Field(
+        None,
+        description="""the most recent common ancestor of the two compared entities. If there are multiple MRCAs then the most informative one is selected""",
+    )
+    ancestor_label: Optional[str] = Field(None, description="""the name or label of the ancestor concept""")
+    ancestor_source: Optional[str] = Field(None)
+    object_information_content: Optional[float] = Field(None, description="""The IC of the object""")
+    subject_information_content: Optional[float] = Field(None, description="""The IC of the subject""")
+    ancestor_information_content: Optional[float] = Field(None, description="""The IC of the object""")
+    jaccard_similarity: Optional[float] = Field(
+        None,
+        description="""The number of concepts in the intersection divided by the number in the union""",
+    )
+    cosine_similarity: Optional[float] = Field(
+        None,
+        description="""the dot product of two node embeddings divided by the product of their lengths""",
+    )
+    dice_similarity: Optional[float] = Field(None)
+    phenodigm_score: Optional[float] = Field(
+        None,
+        description="""the geometric mean of the jaccard similarity and the information content""",
+    )
+
+
+class TermSetPairwiseSimilarity(PairwiseSimilarity):
+    """
+    A simple pairwise similarity between two sets of concepts/terms
+    """
+
+    subject_termset: Optional[Dict[str, TermInfo]] = Field(default_factory=dict)
+    object_termset: Optional[Dict[str, TermInfo]] = Field(default_factory=dict)
+    subject_best_matches: Optional[Dict[str, BestMatch]] = Field(default_factory=dict)
+    object_best_matches: Optional[Dict[str, BestMatch]] = Field(default_factory=dict)
+    average_score: Optional[float] = Field(None)
+    best_score: Optional[float] = Field(None)
+    metric: Optional[str] = Field(None)
+
+
+class TermInfo(ConfiguredBaseModel):
+
+    id: str = Field(...)
+    label: Optional[str] = Field(None)
+
+
+class BestMatch(ConfiguredBaseModel):
+
+    match_source: str = Field(...)
+    match_source_label: Optional[str] = Field(None)
+    match_target: Optional[str] = Field(None, description="""the entity matches""")
+    match_target_label: Optional[str] = Field(None)
+    score: float = Field(...)
+    match_subsumer: Optional[str] = Field(None)
+    match_subsumer_label: Optional[str] = Field(None)
+    similarity: TermPairwiseSimilarity = Field(...)
+
+
 # Update forward refs
 # see https://pydantic-docs.helpmanual.io/usage/postponed_annotations/
 Association.update_forward_refs()
@@ -513,3 +586,8 @@ AssociationTableResults.update_forward_refs()
 EntityResults.update_forward_refs()
 SearchResult.update_forward_refs()
 SearchResults.update_forward_refs()
+PairwiseSimilarity.update_forward_refs()
+TermPairwiseSimilarity.update_forward_refs()
+TermSetPairwiseSimilarity.update_forward_refs()
+TermInfo.update_forward_refs()
+BestMatch.update_forward_refs()

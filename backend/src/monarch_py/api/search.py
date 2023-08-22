@@ -3,9 +3,8 @@ from typing import List, Union
 from fastapi import APIRouter, Query, Depends
 
 from monarch_py.api.additional_models import PaginationParams
-from monarch_py.api.config import settings
+from monarch_py.api.config import solr
 from monarch_py.datamodels.model import SearchResults
-from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
 router = APIRouter(
     tags=["search"],
@@ -33,8 +32,7 @@ async def search(
         EntityResults
     """
     facet_fields = ["category", "in_taxon_label"]
-    si = SolrImplementation(base_url=settings.solr_url)
-    response = si.search(
+    response = solr().search(
         q=q,
         category=category,
         in_taxon_label=in_taxon_label,
@@ -56,7 +54,5 @@ async def autocomplete(q: str) -> SearchResults:
     Returns:
         SearchResults
     """
-    si = SolrImplementation(base_url=settings.solr_url)
-    response = si.autocomplete(q=q)
-
+    response = solr().autocomplete(q=q)
     return response

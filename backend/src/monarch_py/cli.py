@@ -4,9 +4,11 @@ from typing import List, Optional
 
 import typer
 from monarch_py import solr_cli, sql_cli
+from monarch_py.api.config import oak
 from monarch_py.utils.solr_cli_utils import check_for_docker
-from monarch_py.utils.utils import set_log_level
+from monarch_py.utils.utils import set_log_level, format_output
 from typing_extensions import Annotated
+
 
 app = typer.Typer()
 app.add_typer(solr_cli.solr_app, name="solr")
@@ -34,7 +36,8 @@ def callback(
             fg=typer.colors.YELLOW,
         )
         raise typer.Exit()
-    check_for_docker()
+    if ctx.invoked_subcommand != "compare":
+        check_for_docker()
     set_log_level(log_level="DEBUG" if debug else "WARNING" if quiet else "INFO")
     return
 
@@ -255,6 +258,25 @@ def association_table(
     output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
 ):
     solr_cli.association_table(**locals())
+
+
+@app.command("compare")
+def compare(
+    subjects: str = typer.Argument(..., help="Comma separated list of subjects to compare"),
+    objects: str = typer.Argument(..., help="Comma separated list of objects to compare"),
+    fmt: str = typer.Option(
+        "json",
+        "--format",
+        "-f",
+        help="The format of the output (json, yaml, tsv, table)",
+    ),
+    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
+):
+    """Compare two entities using semantic similarity via OAK"""
+    subjects = subjects.split(",")
+    objects = objects.split(",")
+    response = oak.compare(subjects, objects)
+    format_output(fmt, response, output)
 
 
 if __name__ == "__main__":

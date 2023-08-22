@@ -3,7 +3,7 @@
 ########################################################################
 
 
-from monarch_py.datamodels.model import AssociationResults, HistoPheno, Node, SearchResults
+from monarch_py.datamodels.model import AssociationResults, TermSetPairwiseSimilarity, HistoPheno, Node, SearchResults
 
 # from .fixtures import autocomplete, histopheno, node, node_associations, search
 
@@ -11,6 +11,11 @@ from monarch_py.datamodels.model import AssociationResults, HistoPheno, Node, Se
 def test_autocomplete(autocomplete):
     autocomplete = SearchResults(**autocomplete)
     assert autocomplete.total != 0
+
+
+def test_compare(compare):
+    tsps = TermSetPairwiseSimilarity(**compare)
+    assert len(tsps.subject_best_matches) != 0
 
 
 def test_search(search):

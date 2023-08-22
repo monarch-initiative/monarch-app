@@ -6,6 +6,8 @@ export type HistoPhenoId = string;
 export type HistoBinId = string;
 export type NodeId = string;
 export type SearchResultId = string;
+export type TermInfoId = string;
+export type BestMatchMatchSource = string;
 /**
 * The directionality of an association as it relates to a specified entity, with edges being categorized as incoming or outgoing
 */
@@ -29,7 +31,7 @@ export interface Association {
     subject_category?: string,
     /** Field containing subject id and the ids of all of it's ancestors */
     subject_closure?: string[],
-    /** The name of the subject entity */
+    /** the label or name for the first entity */
     subject_label?: string,
     /** Field containing subject name and the names of all of it's ancestors */
     subject_closure_label?: string[],
@@ -44,7 +46,7 @@ export interface Association {
     object_category?: string,
     /** Field containing object id and the ids of all of it's ancestors */
     object_closure?: string[],
-    /** The name of the object entity */
+    /** the label or name for the second entity */
     object_label?: string,
     /** Field containing object name and the names of all of it's ancestors */
     object_closure_label?: string[],
@@ -172,7 +174,7 @@ export interface DirectionalAssociation extends Association {
     subject_category?: string,
     /** Field containing subject id and the ids of all of it's ancestors */
     subject_closure?: string[],
-    /** The name of the subject entity */
+    /** the label or name for the first entity */
     subject_label?: string,
     /** Field containing subject name and the names of all of it's ancestors */
     subject_closure_label?: string[],
@@ -187,7 +189,7 @@ export interface DirectionalAssociation extends Association {
     object_category?: string,
     /** Field containing object id and the ids of all of it's ancestors */
     object_closure?: string[],
-    /** The name of the object entity */
+    /** the label or name for the second entity */
     object_label?: string,
     /** Field containing object name and the names of all of it's ancestors */
     object_closure_label?: string[],
@@ -358,7 +360,8 @@ export interface Results {
 export interface SearchResult extends Entity {
     /** matching text snippet containing html tags */
     highlight?: string,
-    score?: number,
+    /** Abstract base slot for different kinds of scores */
+    score?: string,
     id: string,
     category: string,
     name: string,
@@ -388,5 +391,74 @@ export interface SearchResults extends Results {
     offset: number,
     /** total number of items matching a query */
     total: number,
+};
+/**
+ * Abstract grouping for representing individual pairwise similarities
+ */
+export interface PairwiseSimilarity {
+};
+/**
+ * A simple pairwise similarity between two atomic concepts/terms
+ */
+export interface TermPairwiseSimilarity extends PairwiseSimilarity {
+    /** The first of the two entities being compared */
+    subject_id: string,
+    /** the label or name for the first entity */
+    subject_label?: string,
+    /** the source for the first entity */
+    subject_source?: string,
+    /** The second of the two entities being compared */
+    object_id?: string,
+    /** the label or name for the second entity */
+    object_label?: string,
+    /** the source for the second entity */
+    object_source?: string,
+    /** the most recent common ancestor of the two compared entities. If there are multiple MRCAs then the most informative one is selected */
+    ancestor_id?: string,
+    /** the name or label of the ancestor concept */
+    ancestor_label?: string,
+    ancestor_source?: string,
+    /** The IC of the object */
+    object_information_content?: string,
+    /** The IC of the subject */
+    subject_information_content?: string,
+    /** The IC of the object */
+    ancestor_information_content?: string,
+    /** The number of concepts in the intersection divided by the number in the union */
+    jaccard_similarity?: string,
+    /** the dot product of two node embeddings divided by the product of their lengths */
+    cosine_similarity?: number,
+    dice_similarity?: string,
+    /** the geometric mean of the jaccard similarity and the information content */
+    phenodigm_score?: string,
+};
+/**
+ * A simple pairwise similarity between two sets of concepts/terms
+ */
+export interface TermSetPairwiseSimilarity extends PairwiseSimilarity {
+    subject_termset?: {[index: TermInfoId]: TermInfo },
+    object_termset?: {[index: TermInfoId]: TermInfo },
+    subject_best_matches?: {[index: BestMatchMatchSource]: BestMatch },
+    object_best_matches?: {[index: BestMatchMatchSource]: BestMatch },
+    average_score?: number,
+    best_score?: number,
+    metric?: string,
+};
+
+export interface TermInfo {
+    id: string,
+    label?: string,
+};
+
+export interface BestMatch {
+    match_source: string,
+    match_source_label?: string,
+    /** the entity matches */
+    match_target?: string,
+    match_target_label?: string,
+    score: number,
+    match_subsumer?: string,
+    match_subsumer_label?: string,
+    similarity: TermPairwiseSimilarity,
 };
 
