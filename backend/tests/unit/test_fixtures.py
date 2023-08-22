@@ -15,6 +15,8 @@ def test_autocomplete(autocomplete):
 
 def test_compare(compare):
     tsps = TermSetPairwiseSimilarity(**compare)
+    import pprint
+    pprint.PrettyPrinter(indent=2).pprint(tsps.dict())
     assert len(tsps.subject_best_matches) != 0
 
 
