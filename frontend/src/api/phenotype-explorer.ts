@@ -1,6 +1,5 @@
 import type {
   AssociationResults,
-  // SearchResults,
   TermSetPairwiseSimilarity,
 } from "@/api/model";
 import type { Options, OptionsFunc } from "@/components/AppSelectTags.vue";
@@ -97,7 +96,7 @@ type _Comparison = {
 /** compare a set of phenotypes to another set of phenotypes */
 export const compareSetToSet = async (
   aPhenotypes: string[],
-  bPhenotypes: string[],
+  bPhenotypes: string[]
 ) => {
   /** make request options */
   const headers = new Headers();
@@ -124,7 +123,7 @@ export const compareSetToSet = async (
       target: match.match_target,
       target_label: match.match_target_label,
       score: match.score,
-    }),
+    })
   );
 
   matches.sort((a, b) => b.score - a.score);
@@ -135,7 +134,7 @@ export const compareSetToSet = async (
 /** compare a set of phenotypes to a gene or disease taxon id */
 export const compareSetToTaxon = async (
   phenotypes: string[],
-  taxon: string,
+  taxon: string
 ): Promise<Comparison> => {
   /** endpoint settings */
   const params = {

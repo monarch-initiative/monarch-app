@@ -21,7 +21,6 @@ test("Populating example works", async ({ page }) => {
 });
 
 test("Mode switching works", async ({ page }) => {
-  test.skip(true, "Commented out set-to-taxon mode until implemented in API");
 
   await page.goto("/explore#phenotype-explorer");
 
@@ -54,7 +53,7 @@ test("Mode switching works", async ({ page }) => {
  */
 
 test("Phenotype set vs gene/disease works", async ({ page }) => {
-  test.skip(true, "Feature not implemented yet");
+  test.skip(true, "API endpoint not implemented yet");
 
   await page.goto("/explore#phenotype-explorer");
 
