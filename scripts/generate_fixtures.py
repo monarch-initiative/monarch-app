@@ -3,6 +3,7 @@ import os
 import sys
 from pathlib import Path
 
+from monarch_py.implementations.oak.oak_implementation import OakImplementation
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 from monarch_py.implementations.solr.solr_query_utils import (
     build_association_query,

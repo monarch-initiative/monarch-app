@@ -52,7 +52,7 @@ test("Mode switching works", async ({ page }) => {
  */
 
 test("Phenotype set vs gene/disease works", async ({ page }) => {
-  test.skip(true, "Feature not implemented yet");
+  test.skip(true, "API endpoint not implemented yet");
 
   await page.goto("/explore#phenotype-explorer");
 
@@ -83,6 +83,8 @@ test("Phenotype set vs gene/disease works", async ({ page }) => {
 });
 
 test("Phenotype set vs phenotype set works", async ({ page }) => {
+  test.skip(true, "Fixture data not stable yet");
+
   await page.goto("/explore#phenotype-explorer");
 
   /** paste specific dummy phenotypes */

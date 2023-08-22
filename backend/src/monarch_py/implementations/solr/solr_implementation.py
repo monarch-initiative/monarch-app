@@ -96,13 +96,13 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
 
     def _get_associated_entity(self, association: Association, this_entity: Entity) -> Entity:
         """Returns the id, name, and category of the other Entity in an Association given this_entity"""
-        if this_entity.id == association.subject:
+        if this_entity.id in association.subject_closure:
             entity = Entity(
                 id=association.object,
                 name=association.object_label,
                 category=association.object_category,
             )
-        elif this_entity.id == association.object:
+        elif this_entity.id in association.object_closure:
             entity = Entity(
                 id=association.subject,
                 name=association.subject_label,
@@ -232,14 +232,14 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
     def search(
         self,
         q: str = "*:*",
+        category: Union[List[str], None] = None,
+        in_taxon_label: Union[List[str], None] = None,
+        facet_fields: Union[List[str], None] = None,
+        facet_queries: Union[List[str], None] = None,
+        filter_queries: Union[List[str], None] = None,
+        sort: str = None,
         offset: int = 0,
         limit: int = 20,
-        category: List[str] = None,
-        in_taxon_label: List[str] = None,
-        facet_fields: List[str] = None,
-        facet_queries: List[str] = None,
-        filter_queries: List[str] = None,
-        sort: str = None,
     ) -> SearchResults:
         """Search for entities by label, with optional filters
 

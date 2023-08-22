@@ -32,7 +32,7 @@ class AssociationTypeMappings:
                 return mapping
 
     def load_mappings(self):
-        mapping_data = pkgutil.get_data(__package__, "../association_type_mappings.yaml")
+        mapping_data = pkgutil.get_data(__package__, "./association_type_mappings.yaml")
         mapping_data = yaml.load(mapping_data, Loader=yaml.FullLoader)
         self.mappings = parse_obj_as(List[AssociationTypeMapping], mapping_data)
 
