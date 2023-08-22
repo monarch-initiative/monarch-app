@@ -17,6 +17,9 @@ if (url.hostname === "monarchinitiative.org") fromDomain = "production";
 /** running web app locally */
 if (url.hostname === "localhost") fromDomain = "next";
 
+/** netlify pr deploy previews */
+if (url.hostname.endsWith("netlify.app")) fromDomain = "next";
+
 /** specific ip */
 if (url.hostname.match(/\d+\.\d+\.\d+\.\d+/)) fromDomain = "relative";
 
