@@ -7,196 +7,191 @@
 -->
 
 <template>
-  <div class="container">
-    <!-- table data -->
-    <AppFlex direction="col">
-      <div
-        class="wrapper"
-        :data-left="arrivedState.left"
-        :data-right="arrivedState.right"
-        :data-expanded="expanded"
-      >
-        <div class="left-scroll">
-          <AppIcon icon="angle-left" />
-        </div>
-        <div class="right-scroll">
-          <AppIcon icon="angle-right" />
-        </div>
+  <!-- table data -->
+  <AppFlex direction="col" class="container" :data-expanded="expanded">
+    <div
+      class="wrapper"
+      :data-left="arrivedState.left"
+      :data-right="arrivedState.right"
+    >
+      <div class="left-scroll">
+        <AppIcon icon="angle-left" />
+      </div>
+      <div class="right-scroll">
+        <AppIcon icon="angle-right" />
+      </div>
 
-        <div ref="table" class="scroll">
-          <table
-            class="table"
-            :aria-colcount="cols.length"
-            :aria-rowcount="rows.length"
-            :style="{ gridTemplateColumns: widths }"
+      <div ref="table" class="scroll">
+        <table
+          class="table"
+          :aria-colcount="cols.length"
+          :aria-rowcount="rows.length"
+          :style="{ gridTemplateColumns: widths }"
+        >
+          <!-- head -->
+          <thead class="thead">
+            <tr class="tr">
+              <th
+                v-for="(col, colIndex) in cols"
+                :key="colIndex"
+                class="th"
+                :aria-sort="ariaSort"
+                :data-align="col.align || 'left'"
+                :data-divider="col.slot === 'divider'"
+              >
+                <span>
+                  {{ col.heading }}
+                </span>
+                <AppButton
+                  v-if="col.sortable"
+                  v-tooltip="'Sort by ' + col.heading"
+                  :icon="
+                    'arrow-' +
+                    (sort?.key === col.key ? sort?.direction : 'down')
+                  "
+                  design="small"
+                  :color="sort?.key === col.key ? 'primary' : 'secondary'"
+                  :style="{ opacity: sort?.key === col.key ? 1 : 0.35 }"
+                  @click.stop="emitSort(col)"
+                />
+                <AppSelectMulti
+                  v-if="
+                    col.key &&
+                    selectedFilters?.[col.key] &&
+                    filterOptions?.[col.key]?.length
+                  "
+                  v-tooltip="'Filter by ' + col.heading"
+                  :name="'Filter by ' + col.heading"
+                  :options="filterOptions[col.key]"
+                  :model-value="selectedFilters[col.key]"
+                  design="small"
+                  @change="(value) => emitFilter(col.key, value)"
+                />
+              </th>
+            </tr>
+          </thead>
+
+          <!-- body -->
+          <tbody class="tbody">
+            <tr v-for="(row, rowIndex) in rows" :key="rowIndex" class="tr">
+              <td
+                v-for="(col, colIndex) in cols"
+                :key="colIndex"
+                class="td"
+                :aria-rowindex="rowIndex + 1"
+                :aria-colindex="colIndex + 1"
+                :data-align="col.align || 'left'"
+                :data-divider="col.slot === 'divider'"
+              >
+                <!-- if col has slot name, use to custom format/template cell -->
+                <slot
+                  v-if="col.slot && $slots[col.slot]"
+                  :name="col.slot"
+                  :row="row"
+                  :col="col"
+                  :cell="col.key ? row[col.key] : null"
+                />
+                <!-- otherwise, just display raw cell value -->
+                <template v-else-if="col.key">
+                  {{ row[col.key] }}
+                </template>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="controls">
+      <!-- left side controls -->
+      <div>
+        <template v-if="showControls">
+          <span>Per page</span>
+          <AppSelectSingle
+            name="Rows per page"
+            :options="[
+              { id: '5' },
+              { id: '10' },
+              { id: '20' },
+              { id: '50' },
+              { id: '100' },
+              { id: '500' },
+            ]"
+            :model-value="{ id: String(perPage || 5) }"
+            @update:model-value="(value) => emitPerPage(value.id)"
+          />
+        </template>
+      </div>
+
+      <!-- center controls -->
+      <div>
+        <template v-if="showControls">
+          <AppButton
+            v-tooltip="'Go to first page'"
+            :disabled="start <= 0"
+            icon="angle-double-left"
+            design="small"
+            @click="clickFirst"
+          />
+          <AppButton
+            v-tooltip="'Go to previous page'"
+            :disabled="start - perPage < 0"
+            icon="angle-left"
+            design="small"
+            @click="clickPrev"
+          />
+        </template>
+        <template v-if="total > 0">
+          <span v-if="showControls"
+            >{{ start + 1 }} &mdash; {{ end }} of {{ total }}</span
           >
-            <!-- head -->
-            <thead class="thead">
-              <tr class="tr">
-                <th
-                  v-for="(col, colIndex) in cols"
-                  :key="colIndex"
-                  class="th"
-                  :aria-sort="ariaSort"
-                  :data-align="col.align || 'left'"
-                  :data-divider="col.slot === 'divider'"
-                >
-                  <span>
-                    {{ col.heading }}
-                  </span>
-                  <AppButton
-                    v-if="col.sortable"
-                    v-tooltip="'Sort by ' + col.heading"
-                    :icon="
-                      'arrow-' +
-                      (sort?.key === col.key ? sort?.direction : 'down')
-                    "
-                    design="small"
-                    :color="sort?.key === col.key ? 'primary' : 'secondary'"
-                    :style="{ opacity: sort?.key === col.key ? 1 : 0.35 }"
-                    @click.stop="emitSort(col)"
-                  />
-                  <AppSelectMulti
-                    v-if="
-                      col.key &&
-                      selectedFilters?.[col.key] &&
-                      filterOptions?.[col.key]?.length
-                    "
-                    v-tooltip="'Filter by ' + col.heading"
-                    :name="'Filter by ' + col.heading"
-                    :options="filterOptions[col.key]"
-                    :model-value="selectedFilters[col.key]"
-                    design="small"
-                    @change="(value) => emitFilter(col.key, value)"
-                  />
-                </th>
-              </tr>
-            </thead>
-
-            <!-- body -->
-            <tbody class="tbody">
-              <tr v-for="(row, rowIndex) in rows" :key="rowIndex" class="tr">
-                <td
-                  v-for="(col, colIndex) in cols"
-                  :key="colIndex"
-                  class="td"
-                  :aria-rowindex="rowIndex + 1"
-                  :aria-colindex="colIndex + 1"
-                  :data-align="col.align || 'left'"
-                  :data-divider="col.slot === 'divider'"
-                >
-                  <!-- if col has slot name, use to custom format/template cell -->
-                  <slot
-                    v-if="col.slot && $slots[col.slot]"
-                    :name="col.slot"
-                    :row="row"
-                    :col="col"
-                    :cell="col.key ? row[col.key] : null"
-                  />
-                  <!-- otherwise, just display raw cell value -->
-                  <template v-else-if="col.key">
-                    {{ row[col.key] }}
-                  </template>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="controls">
-        <!-- left side controls -->
-        <div>
-          <template v-if="showControls">
-            <span>Per page</span>
-            <AppSelectSingle
-              name="Rows per page"
-              :options="[
-                { id: '5' },
-                { id: '10' },
-                { id: '20' },
-                { id: '50' },
-                { id: '100' },
-                { id: '500' },
-              ]"
-              :model-value="{ id: String(perPage || 5) }"
-              @update:model-value="(value) => emitPerPage(value.id)"
-            />
-          </template>
-        </div>
-
-        <!-- center controls -->
-        <div>
-          <template v-if="showControls">
-            <AppButton
-              v-tooltip="'Go to first page'"
-              :disabled="start <= 0"
-              icon="angle-double-left"
-              design="small"
-              @click="clickFirst"
-            />
-            <AppButton
-              v-tooltip="'Go to previous page'"
-              :disabled="start - perPage < 0"
-              icon="angle-left"
-              design="small"
-              @click="clickPrev"
-            />
-          </template>
-          <template v-if="total > 0">
-            <span v-if="showControls"
-              >{{ start + 1 }} &mdash; {{ end }} of {{ total }}</span
-            >
-            <span v-else>{{ total }} row(s)</span>
-          </template>
-          <span v-else>no data</span>
-          <template v-if="showControls">
-            <AppButton
-              v-tooltip="'Go to next page'"
-              :disabled="start + perPage > total"
-              icon="angle-right"
-              design="small"
-              @click="clickNext"
-            />
-            <AppButton
-              v-tooltip="'Go to last page'"
-              :disabled="start + perPage > total"
-              icon="angle-double-right"
-              design="small"
-              @click="clickLast"
-            />
-          </template>
-        </div>
-
-        <!-- right side controls -->
-        <div>
-          <AppTextbox
-            v-if="showControls"
-            v-tooltip="'Search table data'"
-            class="search"
-            icon="search"
-            :model-value="search"
-            @debounce="emitSearch"
-            @change="emitSearch"
+          <span v-else>{{ total }} row(s)</span>
+        </template>
+        <span v-else>no data</span>
+        <template v-if="showControls">
+          <AppButton
+            v-tooltip="'Go to next page'"
+            :disabled="start + perPage > total"
+            icon="angle-right"
+            design="small"
+            @click="clickNext"
           />
           <AppButton
-            v-tooltip="'Download table data'"
-            icon="download"
+            v-tooltip="'Go to last page'"
+            :disabled="start + perPage > total"
+            icon="angle-double-right"
             design="small"
-            @click="emitDownload"
+            @click="clickLast"
           />
-          <AppButton
-            v-tooltip="
-              expanded ? 'Collapse table' : 'Expand table to full width'
-            "
-            :icon="expanded ? 'minimize' : 'maximize'"
-            design="small"
-            @click="expanded = !expanded"
-          />
-        </div>
+        </template>
       </div>
-    </AppFlex>
-  </div>
+
+      <!-- right side controls -->
+      <div>
+        <AppTextbox
+          v-if="showControls"
+          v-tooltip="'Search table data'"
+          class="search"
+          icon="search"
+          :model-value="search"
+          @debounce="emitSearch"
+          @change="emitSearch"
+        />
+        <AppButton
+          v-tooltip="'Download table data'"
+          icon="download"
+          design="small"
+          @click="emitDownload"
+        />
+        <AppButton
+          v-tooltip="expanded ? 'Collapse table' : 'Expand table to full width'"
+          :icon="expanded ? 'minimize' : 'maximize'"
+          design="small"
+          @click="expanded = !expanded"
+        />
+      </div>
+    </div>
+  </AppFlex>
 </template>
 
 <script lang="ts">
@@ -220,7 +215,7 @@ export type Cols<Key extends string> = {
    * width to apply to heading cell, in any valid css grid col width (px, fr,
    * auto, minmax, etc)
    */
-  width?: string;
+  width?: number;
   /** whether to allow sorting of column */
   sortable?: boolean;
 }[];
@@ -234,7 +229,7 @@ export type Sort<Key extends string = string> = {
 
 <script setup lang="ts" generic="Datum extends object">
 import { computed, nextTick, onMounted, ref, watch, type VNode } from "vue";
-import { useResizeObserver, useScroll } from "@vueuse/core";
+import { useLocalStorage, useResizeObserver, useScroll } from "@vueuse/core";
 import type { Options } from "./AppSelectMulti.vue";
 import AppSelectMulti from "./AppSelectMulti.vue";
 import AppSelectSingle from "./AppSelectSingle.vue";
@@ -245,6 +240,8 @@ import { closeToc } from "./TheTableOfContents.vue";
 type Keys = Extract<keyof Datum, string>;
 
 type Props = {
+  /** unique id for table */
+  id: string;
   /** info for each column of table */
   cols: Cols<Keys>;
   /** list of table rows, i.e. the table data */
@@ -311,7 +308,7 @@ defineSlots<{
 }>();
 
 /** whether table is expanded to be full width */
-const expanded = ref(false);
+const expanded = useLocalStorage(`${props.id}-table-expanded`, false);
 /** table reference */
 const table = ref<HTMLElement>();
 
@@ -405,7 +402,11 @@ const end = computed((): number => props.start + props.rows.length);
 
 /** grid column template widths */
 const widths = computed((): string =>
-  props.cols.map((col) => col.width || "auto").join(" "),
+  props.cols
+    .map((col) =>
+      expanded.value ? `minmax(max-content, 99999px)` : `${col.width || 1}fr`,
+    )
+    .join(" "),
 );
 
 /** aria sort direction attribute */
@@ -419,6 +420,18 @@ const ariaSort = computed(() => {
 <style lang="scss" scoped>
 .container {
   width: 100%;
+
+  &[data-expanded="true"] {
+    left: 0;
+    width: calc(100vw - 80px);
+    transform: translateX(0);
+
+    .td,
+    .th {
+      width: 100%;
+      max-width: unset;
+    }
+  }
 }
 
 .wrapper {
@@ -505,21 +518,11 @@ const ariaSort = computed(() => {
       transparent
     );
   }
-
-  &[data-expanded="true"] {
-    left: 0;
-    width: calc(100vw - 80px);
-    transform: translateX(0);
-
-    .td,
-    .th {
-      max-width: unset;
-    }
-  }
 }
 
 .table {
-  display: inline-grid;
+  display: grid;
+  min-width: $section;
   border-collapse: collapse;
 }
 

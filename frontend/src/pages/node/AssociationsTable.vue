@@ -14,6 +14,7 @@
   <!-- results -->
   <AppTable
     v-else
+    id="associations"
     v-model:sort="sort"
     v-model:per-page="perPage"
     v-model:start="start"
@@ -138,14 +139,14 @@ const cols = computed((): Cols<Datum> => {
       heading: getCategoryLabel(
         associations.value.items[0]?.subject_category || "Subject",
       ),
-      width: "max-content",
+      width: 3,
       sortable: true,
     },
     {
       slot: "predicate",
       key: "predicate",
       heading: "Association",
-      width: "max-content",
+      width: 2,
       sortable: true,
     },
     {
@@ -154,14 +155,14 @@ const cols = computed((): Cols<Datum> => {
       heading: getCategoryLabel(
         associations.value.items[0]?.object_category || "Object",
       ),
-      width: "max-content",
+      width: 3,
       sortable: true,
     },
     {
       slot: "evidence",
       key: "evidence_count",
       heading: "Evidence",
-      width: "min-content",
+      width: 1,
       align: "center",
       sortable: true,
     },
@@ -179,7 +180,7 @@ const cols = computed((): Cols<Datum> => {
     extraCols.push({
       slot: "taxon",
       heading: "Taxon",
-      width: "max-content",
+      width: 2,
     });
 
   /** phenotype specific columns */

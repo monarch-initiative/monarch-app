@@ -149,6 +149,7 @@
     <AppHeading>Table</AppHeading>
     <span>{{ omit(table, ["cols", "rows"]) }}</span>
     <AppTable
+      id="testbed"
       v-model:sort="table.sort"
       v-model:selectedFilters="table.selectedFilters"
       v-model:per-page="table.perPage"
