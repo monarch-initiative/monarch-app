@@ -4,7 +4,7 @@
 name = "airium"
 version = "0.2.5"
 description = "Easy and quick html builder with natural syntax correspondence (python->html). No templates needed. Serves pure pythonic library with no dependencies."
-optional = true
+optional = false
 python-versions = "*"
 files = [
     {file = "airium-0.2.5-py3-none-any.whl", hash = "sha256:6b4d75a2ff1aca0d9f787bcd3a69df13a189a75806b2fa2c9acda2e30f0ef5be"},
@@ -50,7 +50,7 @@ trio = ["trio (<0.22)"]
 name = "appdirs"
 version = "1.4.4"
 description = "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
-optional = true
+optional = false
 python-versions = "*"
 files = [
     {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
@@ -93,7 +93,7 @@ tests-no-zope = ["cloudpickle", "hypothesis", "mypy (>=1.1.1)", "pympler", "pyte
 name = "bcp47"
 version = "0.0.4"
 description = "Language tags made easy"
-optional = true
+optional = false
 python-versions = "*"
 files = [
     {file = "bcp47-0.0.4-py3-none-any.whl", hash = "sha256:309d3bbaef8d6c9ac59d37ba2167cc6620b4e7467ec8f1e09641b659bb1c0c6d"},
@@ -104,7 +104,7 @@ files = [
 name = "beautifulsoup4"
 version = "4.12.2"
 description = "Screen-scraping library"
-optional = true
+optional = false
 python-versions = ">=3.6.0"
 files = [
     {file = "beautifulsoup4-4.12.2-py3-none-any.whl", hash = "sha256:bd2520ca0d9d7d12694a53d44ac482d181b4ec1888909b035a3dbf40d0f57d4a"},
@@ -157,7 +157,7 @@ uvloop = ["uvloop (>=0.15.2)"]
 name = "cattrs"
 version = "23.1.2"
 description = "Composable complex class support for attrs and dataclasses."
-optional = true
+optional = false
 python-versions = ">=3.7"
 files = [
     {file = "cattrs-23.1.2-py3-none-any.whl", hash = "sha256:b2bb14311ac17bed0d58785e5a60f022e5431aca3932e3fc5cc8ed8639de50a4"},
@@ -301,7 +301,7 @@ files = [
 name = "class-resolver"
 version = "0.4.2"
 description = "Lookup and instantiate classes with style."
-optional = true
+optional = false
 python-versions = ">=3.7"
 files = [
     {file = "class_resolver-0.4.2-py3-none-any.whl", hash = "sha256:da81d1f76ff0dba252794a0cff2c3f68a1ed4375da687eacae9ec78e4bb733cb"},
@@ -404,7 +404,7 @@ dev = ["PyTest", "PyTest-Cov", "bump2version (<1)", "sphinx (<2)", "tox"]
 name = "deprecation"
 version = "2.1.0"
 description = "A library to handle automated deprecations"
-optional = true
+optional = false
 python-versions = "*"
 files = [
     {file = "deprecation-2.1.0-py2.py3-none-any.whl", hash = "sha256:a10811591210e1fb0e768a8c25517cabeabcba6f0bf96564f8ff45189f90b14a"},
@@ -439,7 +439,7 @@ ssh = ["paramiko (>=2.4.3)"]
 name = "editorconfig"
 version = "0.12.3"
 description = "EditorConfig File Locator and Interpreter for Python"
-optional = true
+optional = false
 python-versions = "*"
 files = [
     {file = "EditorConfig-0.12.3-py3-none-any.whl", hash = "sha256:6b0851425aa875b08b16789ee0eeadbd4ab59666e9ebe728e526314c4a2e52c1"},
@@ -461,7 +461,7 @@ files = [
 name = "eutils"
 version = "0.6.0"
 description = "\"Python interface to NCBI's eutilities API\""
-optional = true
+optional = false
 python-versions = ">=3.6"
 files = [
     {file = "eutils-0.6.0-py2.py3-none-any.whl", hash = "sha256:4938c4baff6ca52141204ff3eff3a91ec1e83e52a6c5d92e7163585117b96566"},
@@ -515,7 +515,7 @@ test = ["anyio[trio] (>=3.2.1,<4.0.0)", "black (==22.8.0)", "coverage[toml] (>=6
 name = "fastobo"
 version = "0.12.2"
 description = "Faultless AST for Open Biomedical Ontologies in Python."
-optional = true
+optional = false
 python-versions = ">=3.7"
 files = [
     {file = "fastobo-0.12.2-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:e9fa244d85dea3bb6463124c777f1b529ac28381c4a6bf344d40bf6a16cc7ed7"},
@@ -572,7 +572,7 @@ files = [
 name = "funowl"
 version = "0.2.3"
 description = "Python rendering of the OWL Functional syntax"
-optional = true
+optional = false
 python-versions = ">=3.7"
 files = [
     {file = "funowl-0.2.3-py3-none-any.whl", hash = "sha256:4c4328d03c7815cd61d6691f0fafc78dc9a78ec3dcab4c83afb64d125ad3660e"},
@@ -835,7 +835,7 @@ files = [
 name = "ijson"
 version = "3.2.3"
 description = "Iterative JSON parser with standard Python iterator interfaces"
-optional = true
+optional = false
 python-versions = "*"
 files = [
     {file = "ijson-3.2.3-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:0a4ae076bf97b0430e4e16c9cb635a6b773904aec45ed8dcbc9b17211b8569ba"},
@@ -997,7 +997,7 @@ i18n = ["Babel (>=2.7)"]
 name = "jsbeautifier"
 version = "1.14.9"
 description = "JavaScript unobfuscator and beautifier."
-optional = true
+optional = false
 python-versions = "*"
 files = [
     {file = "jsbeautifier-1.14.9.tar.gz", hash = "sha256:c738ebc36b47bd94e4ca6dd17a9004c3cc74edad582ca1d60e0e5d5945a63cb9"},
@@ -1136,7 +1136,7 @@ referencing = ">=0.28.0"
 name = "kgcl-rdflib"
 version = "0.5.0"
 description = "Schema for the KGCL project."
-optional = true
+optional = false
 python-versions = ">=3.8,<4.0"
 files = [
     {file = "kgcl_rdflib-0.5.0-py3-none-any.whl", hash = "sha256:214c011eac692384dd18397e455af2a7375f6a2f71fa318df245e8826678f454"},
@@ -1151,7 +1151,7 @@ linkml-runtime = ">=1.1.24"
 name = "kgcl-schema"
 version = "0.6.0"
 description = "Schema for the KGCL project."
-optional = true
+optional = false
 python-versions = ">=3.8,<4.0"
 files = [
     {file = "kgcl_schema-0.6.0-py3-none-any.whl", hash = "sha256:c212d459cf98f977c537f025331713c5ecfc9e9065e5cc189b3494beb836036f"},
@@ -1168,7 +1168,7 @@ prefixmaps = ">=0.1.5,<0.2.0"
 name = "lark"
 version = "1.1.7"
 description = "a modern parsing library"
-optional = true
+optional = false
 python-versions = ">=3.6"
 files = [
     {file = "lark-1.1.7-py3-none-any.whl", hash = "sha256:9e5dc5bbf93fa1840083707285262514a0ef8a6613874af7ea1cec60468d6e92"},
@@ -1240,7 +1240,7 @@ linkml-runtime = ">=1.1.6"
 name = "linkml-renderer"
 version = "0.3.0"
 description = "linkml-renderer"
-optional = true
+optional = false
 python-versions = ">=3.8,<4.0"
 files = [
     {file = "linkml_renderer-0.3.0-py3-none-any.whl", hash = "sha256:9b2c0207751c8b5abb814b67fa1ae0f2a4dce80637d56ed770f74a40d4fee614"},
@@ -1301,7 +1301,7 @@ dev = ["Sphinx (==5.3.0)", "colorama (==0.4.5)", "colorama (==0.4.6)", "freezegu
 name = "lxml"
 version = "4.9.3"
 description = "Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API."
-optional = true
+optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, != 3.4.*"
 files = [
     {file = "lxml-4.9.3-cp27-cp27m-macosx_11_0_x86_64.whl", hash = "sha256:b0a545b46b526d418eb91754565ba5b63b1c0b12f9bd2f808c852d9b4b2f9b5c"},
@@ -1610,7 +1610,7 @@ files = [
 name = "mkdocs-mermaid2-plugin"
 version = "0.6.0"
 description = "A MkDocs plugin for including mermaid graphs in markdown sources"
-optional = true
+optional = false
 python-versions = ">=3.5"
 files = [
     {file = "mkdocs-mermaid2-plugin-0.6.0.tar.gz", hash = "sha256:99cca6db7c6b4a954a701dcb6b507191bc32a7b0b47eacf2885c1bacf77d1af1"},
@@ -1673,7 +1673,7 @@ mkdocstrings = ">=0.20"
 name = "more-click"
 version = "0.1.2"
 description = "More click."
-optional = true
+optional = false
 python-versions = ">=3.7"
 files = [
     {file = "more_click-0.1.2-py3-none-any.whl", hash = "sha256:f6387af37ef7e7423bd94b72a81a53c79c5086a3bfe5cc035da534ff0c2a0a9e"},
@@ -1701,7 +1701,7 @@ files = [
 name = "ndex2"
 version = "3.5.1"
 description = "Nice CX Python includes a client and a data model."
-optional = true
+optional = false
 python-versions = "*"
 files = [
     {file = "ndex2-3.5.1-py2.py3-none-any.whl", hash = "sha256:41a3fa99811edbd3e620adfdd0153cb50c484e33bfe3817529aaff190fce067d"},
@@ -1722,7 +1722,7 @@ urllib3 = ">=1.16"
 name = "networkx"
 version = "3.1"
 description = "Python package for creating and manipulating graphs and networks"
-optional = true
+optional = false
 python-versions = ">=3.8"
 files = [
     {file = "networkx-3.1-py3-none-any.whl", hash = "sha256:4f33f68cb2afcf86f28a45f43efc27a9386b535d567d2127f8f61d51dec58d36"},
@@ -1740,7 +1740,7 @@ test = ["codecov (>=2.1)", "pytest (>=7.2)", "pytest-cov (>=4.0)"]
 name = "numpy"
 version = "1.25.2"
 description = "Fundamental package for array computing in Python"
-optional = true
+optional = false
 python-versions = ">=3.9"
 files = [
     {file = "numpy-1.25.2-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:db3ccc4e37a6873045580d413fe79b68e47a681af8db2e046f1dacfa11f86eb3"},
@@ -1772,12 +1772,14 @@ files = [
 
 [[package]]
 name = "oaklib"
-version = "0.0.0"
+version = "0.5.17"
 description = "Ontology Access Kit: Python library for common ontology operations over a variety of backends"
-optional = true
+optional = false
 python-versions = ">=3.9,<4.0.0"
-files = []
-develop = false
+files = [
+    {file = "oaklib-0.5.17-py3-none-any.whl", hash = "sha256:1bd3e7ee3277275a6527d5afd40267698d0b519d26a2cf570e0e719c1b310dfa"},
+    {file = "oaklib-0.5.17.tar.gz", hash = "sha256:6784af5ca72882dbb8b4a744035ee78183af078d023d03a07ee892094eda0f75"},
+]
 
 [package.dependencies]
 airium = ">=0.2.5"
@@ -1792,17 +1794,17 @@ kgcl-schema = "0.6.0"
 lark = ">=1.1.2"
 linkml-renderer = ">=0.3.0"
 linkml-runtime = ">=1.5.3"
-ndex2 = "^3.5.0"
+ndex2 = ">=3.5.0,<4.0.0"
 networkx = ">=2.7.1"
 ols-client = ">=0.1.1"
 ontoportal-client = ">=0.0.3"
 prefixmaps = ">=0.1.2"
 pronto = ">=2.5.0"
 pydantic = "*"
-pysolr = "^3.9.0"
+pysolr = ">=3.9.0,<4.0.0"
 pystow = ">=0.5.0"
 ratelimit = ">=2.2.1"
-requests-cache = "^1.0.1"
+requests-cache = ">=1.0.1,<2.0.0"
 semsimian = "0.2.1"
 semsql = ">=0.3.1"
 SPARQLWrapper = "*"
@@ -1811,21 +1813,13 @@ sssom = ">=0.3.38"
 sssom-schema = ">=0.11.0"
 
 [package.extras]
-docs = []
 gilda = ["gilda (>=1.0.0)", "urllib3 (<2)"]
-seaborn = []
-
-[package.source]
-type = "git"
-url = "https://github.com/INCATools/ontology-access-kit.git"
-reference = "issue-642"
-resolved_reference = "b6e6dfd9e2f09a48ea1c2b0358471f221c3fdd57"
 
 [[package]]
 name = "ols-client"
 version = "0.1.4"
 description = "A client to the EBI Ontology Lookup Service"
-optional = true
+optional = false
 python-versions = ">=3.7"
 files = [
     {file = "ols_client-0.1.4-py3-none-any.whl", hash = "sha256:7bdca0590042e07cc7ee3ef3fba99c3b6862cde6c8835afb129de31284b3e010"},
@@ -1847,7 +1841,7 @@ tests = ["coverage", "pytest"]
 name = "ontoportal-client"
 version = "0.0.4"
 description = "A client to BioPortal and other OntoPortal instances."
-optional = true
+optional = false
 python-versions = ">=3.7"
 files = [
     {file = "ontoportal_client-0.0.4-py3-none-any.whl", hash = "sha256:0dedd4ce003e0b6c1128fa05101e57bcc128ad79a6c9fcae66037d2447706c4c"},
@@ -1891,7 +1885,7 @@ files = [
 name = "pandas"
 version = "2.0.3"
 description = "Powerful data structures for data analysis, time series, and statistics"
-optional = true
+optional = false
 python-versions = ">=3.8"
 files = [
     {file = "pandas-2.0.3-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:e4c7c9f27a4185304c7caf96dc7d91bc60bc162221152de697c98eb0b2648dd8"},
@@ -1958,7 +1952,7 @@ xml = ["lxml (>=4.6.3)"]
 name = "pansql"
 version = "0.0.1"
 description = "sqldf for pandas"
-optional = true
+optional = false
 python-versions = "*"
 files = [
     {file = "pansql-0.0.1-py3-none-any.whl", hash = "sha256:0c49d8c23e418ac065af767ed350c544c0d6d96dc04e2faa1f8b37851d404988"},
@@ -2076,7 +2070,7 @@ refresh = ["bioregistry[refresh] (>=0.8.0,<0.9.0)", "rdflib[refresh] (>=6.2.0,<7
 name = "pronto"
 version = "2.5.4"
 description = "Python frontend to ontologies."
-optional = true
+optional = false
 python-versions = ">=3.7"
 files = [
     {file = "pronto-2.5.4-py2.py3-none-any.whl", hash = "sha256:38bf005ce7fca572f7e94bb8b68ca73604ad969472e763ca5dae6bf7224ae57e"},
@@ -2244,7 +2238,7 @@ shexjsg = ">=0.8.1"
 name = "pysolr"
 version = "3.9.0"
 description = "Lightweight Python client for Apache Solr"
-optional = true
+optional = false
 python-versions = "*"
 files = [
     {file = "pysolr-3.9.0.tar.gz", hash = "sha256:6ef05feb87c614894243eddc62e9b0a6134a889c159ae868655cf6cd749545e6"},
@@ -2360,7 +2354,7 @@ sortedcontainers = "*"
 name = "pytz"
 version = "2023.3"
 description = "World timezone definitions, modern and historical"
-optional = true
+optional = false
 python-versions = "*"
 files = [
     {file = "pytz-2023.3-py2.py3-none-any.whl", hash = "sha256:a151b3abb88eda1d4e34a9814df37de2a80e301e68ba0fd856fb9b46bfbbbffb"},
@@ -2457,7 +2451,7 @@ pyyaml = "*"
 name = "ratelimit"
 version = "2.2.1"
 description = "API rate limit decorator"
-optional = true
+optional = false
 python-versions = "*"
 files = [
     {file = "ratelimit-2.2.1.tar.gz", hash = "sha256:af8a9b64b821529aca09ebaf6d8d279100d766f19e90b5059ac6a718ca6dee42"},
@@ -2653,7 +2647,7 @@ use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 name = "requests-cache"
 version = "1.1.0"
 description = "A persistent cache for python requests"
-optional = true
+optional = false
 python-versions = ">=3.7,<4.0"
 files = [
     {file = "requests_cache-1.1.0-py3-none-any.whl", hash = "sha256:178282bce704b912c59e7f88f367c42bddd6cde6bf511b2a3e3cfb7e5332a92a"},
@@ -2683,7 +2677,7 @@ yaml = ["pyyaml (>=5.4)"]
 name = "requests-toolbelt"
 version = "1.0.0"
 description = "A utility belt for advanced users of python-requests"
-optional = true
+optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 files = [
     {file = "requests-toolbelt-1.0.0.tar.gz", hash = "sha256:7681a0a3d047012b5bdc0ee37d7f8f07ebe76ab08caeccfc3921ce23c88d5bc6"},
@@ -2935,7 +2929,7 @@ files = [
 name = "scipy"
 version = "1.9.3"
 description = "Fundamental algorithms for scientific computing in Python"
-optional = true
+optional = false
 python-versions = ">=3.8"
 files = [
     {file = "scipy-1.9.3-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:1884b66a54887e21addf9c16fb588720a8309a57b2e258ae1c7986d4444d3bc0"},
@@ -3017,7 +3011,7 @@ files = [
 name = "semsql"
 version = "0.3.2"
 description = ""
-optional = true
+optional = false
 python-versions = ">=3.8,<4.0"
 files = [
     {file = "semsql-0.3.2-py3-none-any.whl", hash = "sha256:326ba4247a8ff172d62ac9ce5ff64e86767f2678bb7c8c7425373789e155202f"},
@@ -3107,7 +3101,7 @@ files = [
 name = "soupsieve"
 version = "2.4.1"
 description = "A modern CSS selector implementation for Beautiful Soup."
-optional = true
+optional = false
 python-versions = ">=3.7"
 files = [
     {file = "soupsieve-2.4.1-py3-none-any.whl", hash = "sha256:1c1bfee6819544a3447586c889157365a27e10d88cde3ad3da0cf0ddf646feb8"},
@@ -3232,7 +3226,7 @@ sqlcipher = ["sqlcipher3-binary"]
 name = "sqlalchemy-utils"
 version = "0.38.3"
 description = "Various utility functions for SQLAlchemy."
-optional = true
+optional = false
 python-versions = "~=3.6"
 files = [
     {file = "SQLAlchemy-Utils-0.38.3.tar.gz", hash = "sha256:9f9afba607a40455cf703adfa9846584bf26168a0c5a60a70063b70d65051f4d"},
@@ -3260,7 +3254,7 @@ url = ["furl (>=0.4.1)"]
 name = "sssom"
 version = "0.3.39"
 description = "Operations on SSSOM mapping tables"
-optional = true
+optional = false
 python-versions = ">=3.8,<4.0"
 files = [
     {file = "sssom-0.3.39-py3-none-any.whl", hash = "sha256:9261545a6f3bf6a84fbfe0f8de0d15a3165a02a164ced7d9d375196b70b9f5fd"},
@@ -3287,7 +3281,7 @@ validators = ">=0.20.0"
 name = "sssom-schema"
 version = "0.15.0"
 description = "SSSOM is a Simple Standard for Sharing Ontology Mappings."
-optional = true
+optional = false
 python-versions = ">=3.7.6,<4.0.0"
 files = [
     {file = "sssom_schema-0.15.0-py3-none-any.whl", hash = "sha256:0ba81a0fe76d28a2c65d65a99e0cd17d8dd08274f9735776a70c8d2f3734e901"},
@@ -3398,7 +3392,7 @@ files = [
 name = "tzdata"
 version = "2023.3"
 description = "Provider of IANA time zone data"
-optional = true
+optional = false
 python-versions = ">=2"
 files = [
     {file = "tzdata-2023.3-py2.py3-none-any.whl", hash = "sha256:7e65763eef3120314099b6939b5546db7adce1e7d6f2e179e3df563c70511eda"},
@@ -3423,7 +3417,7 @@ dev = ["flake8", "flake8-annotations", "flake8-bandit", "flake8-bugbear", "flake
 name = "url-normalize"
 version = "1.4.3"
 description = "URL normalization for Python"
-optional = true
+optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
 files = [
     {file = "url-normalize-1.4.3.tar.gz", hash = "sha256:d23d3a070ac52a67b83a1c59a0e68f8608d1cd538783b401bc9de2c0fac999b2"},
@@ -3523,7 +3517,7 @@ test = ["Cython (>=0.29.32,<0.30.0)", "aiohttp", "flake8 (>=3.9.2,<3.10.0)", "my
 name = "validators"
 version = "0.20.0"
 description = "Python Data Validation for Humans™."
-optional = true
+optional = false
 python-versions = ">=3.4"
 files = [
     {file = "validators-0.20.0.tar.gz", hash = "sha256:24148ce4e64100a2d5e267233e23e7afeb55316b47d30faae7eb6e7292bc226a"},
@@ -3832,9 +3826,9 @@ docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "rst.link
 testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-ignore-flaky", "pytest-mypy (>=0.9.1)", "pytest-ruff"]
 
 [extras]
-api = ["fastapi", "oaklib"]
+api = ["fastapi"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "1a8d47a1120cfee3d9f1876b93017809f76eabf63e8589f20731d95be00aba24"
+content-hash = "7b3618c6f6dd238f3f75db93362aa0c6801b3d0a145adf6ed5d76ccb069a7738"

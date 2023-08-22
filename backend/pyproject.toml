@@ -30,10 +30,8 @@ pystow = ">=0.5.0"
 loguru = "*"
 ### Optional API dependencies
 fastapi ={ version = "^0.87.0", optional = true }
-#oaklib = { version = "^0.5.16", optional = true }
-oaklib = {git = "https://github.com/INCATools/ontology-access-kit.git", branch="issue-642", optional = true}
+oaklib = { version = ">=0.5.17", optional = true }
 
-semsimian = "^0.2.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2.0"
