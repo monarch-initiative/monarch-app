@@ -56,7 +56,6 @@
           :data-highlighted="index === highlighted"
           tabindex="0"
           @click="selected = index"
-          @mouseenter.capture="highlighted = index"
           @mousedown.prevent=""
           @focusin="() => null"
           @keydown="() => null"
@@ -121,7 +120,7 @@ const id = uniqueId();
 const expanded = ref(false);
 /** index of option that is selected */
 const selected = ref(getSelected());
-/** index of option that is highlighted */
+/** index of option that is highlighted (keyboard controls) */
 const highlighted = ref(0);
 
 /** target element */
@@ -288,6 +287,7 @@ watch(
   background: $theme-light;
 }
 
+.option:hover,
 .option[data-highlighted="true"] {
   background: $light-gray;
 }

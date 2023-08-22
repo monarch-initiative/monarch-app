@@ -68,7 +68,6 @@
           :data-highlighted="index === highlighted"
           tabindex="0"
           @click.prevent="() => select(option.label)"
-          @mouseenter.capture="highlighted = index"
           @mousedown.prevent=""
           @focusin="() => null"
           @keydown="() => null"
@@ -149,7 +148,7 @@ const emit = defineEmits<Emits>();
 const id = uniqueId();
 /** currently searched text */
 const search = ref("");
-/** index of option that is highlighted */
+/** index of option that is highlighted (keyboard controls) */
 const highlighted = ref(0);
 /** whether input box focused and dropdown expanded */
 const expanded = ref(false);
@@ -328,6 +327,7 @@ watch(highlighted, () => {
   transition: background $fast;
 }
 
+.option:hover,
 .option[data-highlighted="true"] {
   background: $light-gray;
 }

@@ -75,7 +75,6 @@
           :data-highlighted="highlighted === -1"
           tabindex="0"
           @click="() => toggleSelect(-1)"
-          @mouseenter="highlighted = -1"
           @mousedown.prevent=""
           @focusin="() => null"
           @keydown="() => null"
@@ -102,7 +101,6 @@
           :data-highlighted="index === highlighted"
           tabindex="0"
           @click="(event) => toggleSelect(index, event.shiftKey)"
-          @mouseenter.capture="highlighted = index"
           @mousedown.prevent=""
           @focusin="() => null"
           @keydown="() => null"
@@ -181,7 +179,7 @@ const expanded = ref(false);
 const selected = ref<number[]>([]);
 /** selected state when dropdown was opened */
 const original = ref<number[]>([]);
-/** index of option that is highlighted */
+/** index of option that is highlighted (keyboard controls) */
 const highlighted = ref(0);
 
 /** anchor element */
@@ -385,6 +383,7 @@ const noneSelected = computed(() => !selected.value.length);
   transition: background $fast;
 }
 
+.option:hover,
 .option[data-highlighted="true"] {
   background: $light-gray;
 }
