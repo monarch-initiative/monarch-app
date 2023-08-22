@@ -4,34 +4,33 @@ export const biolink = "https://api.monarchinitiative.org/api";
 /** served location of webapp, verbatim from browser address bar */
 const url = new URL(window.location.href);
 
-/** get api name/version to use... */
+/** get api name/version to use */
 
-/** ...from domain of url */
+/** infer as best as possible from domain of url */
 let fromDomain =
-  /** ... if has sub domain */
+  /** sub domain */
   url.hostname.match(/([\w\d-]+)?\.?(monarchinitiative)\.org/)?.[1] || "";
 
-/** ... if production url */
+/** production url */
 if (url.hostname === "monarchinitiative.org") fromDomain = "production";
 
-/** ... if running web app locally */
+/** running web app locally */
 if (url.hostname === "localhost") fromDomain = "next";
 
-/** ... if specific IP */
+/** specific ip */
 if (url.hostname.match(/\d+\.\d+\.\d+\.\d+/)) fromDomain = "relative";
 
-/** ...from env var */
+/** last resort fallback */
+if (!fromDomain) fromDomain = "next";
+
+/** from env var */
 const fromEnv = import.meta.env.VITE_API || "";
 
-/** ...from param in url */
+/** from param in url */
 const fromParam = new URLSearchParams(url.search).get("api") || "";
 
-/**
- * name of monarch api version to use. highest to lowest override priority.
- * final entry is last resort fallback (if fromDomain somehow isn't any of the
- * expected formats checked above).
- */
-export const apiName = fromParam || fromEnv || fromDomain || "next";
+/** name of monarch api version to use. highest to lowest override priority. */
+export const apiName = fromParam || fromEnv || fromDomain;
 
 /** api url suffix */
 const suffix = "/v3/api";
@@ -39,14 +38,12 @@ const suffix = "/v3/api";
 /** base monarch api url */
 let monarch = `https://api-${apiName}.monarchinitiative.org${suffix}`;
 
-/** special case(s) */
-
-/** relative to wherever frontend is hosted */
-if (apiName === "relative") monarch = suffix;
-
 /** production version */
 if (apiName === "production")
   monarch = `https://api.monarchinitiative.org${suffix}`;
+
+/** relative to wherever frontend is hosted */
+if (apiName === "relative") monarch = suffix;
 
 export { monarch };
 
