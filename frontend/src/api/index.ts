@@ -15,16 +15,16 @@ let fromDomain =
 if (url.hostname === "monarchinitiative.org") fromDomain = "production";
 
 /** running web app locally */
-if (url.hostname === "localhost") fromDomain = "next";
+if (url.hostname === "localhost") fromDomain = "v3";
 
 /** netlify pr deploy previews */
-if (url.hostname.endsWith("netlify.app")) fromDomain = "next";
+if (url.hostname.endsWith("netlify.app")) fromDomain = "v3";
 
 /** specific ip */
 if (url.hostname.match(/\d+\.\d+\.\d+\.\d+/)) fromDomain = "relative";
 
 /** last resort fallback */
-if (!fromDomain) fromDomain = "next";
+if (!fromDomain) fromDomain = "v3";
 
 /** from env var */
 const fromEnv = import.meta.env.VITE_API || "";
