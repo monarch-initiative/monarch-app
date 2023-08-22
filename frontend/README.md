@@ -64,8 +64,9 @@ Which version of the Monarch API to utilize in the frontend, e.g.:
 URL param: `monarchinitiative.org/?api=dev`  
 Env var: `VITE_API=local`
 
-If not set, inferred from domain of URL.
-See `src/api` for the complete list of short API names, full API urls they map to, and related logic.
+If not set, inferred from URL.
+Flag gets directly inserted into the API URL like `api-beta.monarchinitiative.org`.
+See `src/api/index.ts` for related logic.
 
 **`mock`**
 
