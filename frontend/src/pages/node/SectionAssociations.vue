@@ -60,6 +60,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { startCase } from "lodash";
 import type { DirectionalAssociation, Node } from "@/api/model";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import type { Option, Options } from "@/components/AppSelectSingle.vue";
@@ -107,7 +108,7 @@ const categoryOptions = computed(
   (): Options =>
     props.node.association_counts?.map((association_count) => ({
       id: association_count.category || "",
-      label: association_count.label,
+      label: startCase(association_count.label),
       count: association_count.count,
     })) || [],
 );

@@ -26,7 +26,7 @@
     >
       <AppIcon v-if="modelValue?.icon" :icon="modelValue?.icon" />
       <span class="box-label">{{
-        startCase(modelValue?.label || modelValue?.id || "")
+        modelValue?.label || modelValue?.id || ""
       }}</span>
       <AppIcon :icon="expanded ? 'angle-up' : 'angle-down'" />
     </button>
@@ -93,7 +93,7 @@ export type Options = Option[];
 
 <script setup lang="ts">
 import { nextTick, ref, watch } from "vue";
-import { startCase, uniqueId } from "lodash";
+import { uniqueId } from "lodash";
 import { useFloating } from "@/util/composables";
 import { wrap } from "@/util/math";
 

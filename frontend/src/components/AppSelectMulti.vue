@@ -30,14 +30,14 @@
     >
       <template v-if="design === 'normal'">
         <span class="box-label">
-          {{ startCase(name) }}
+          {{ name }}
           <span class="box-more">
             <template v-if="selected.length === 0">none selected</template>
             <template v-else-if="selected.length === options.length">
               all selected
             </template>
             <template v-else-if="selected.length === 1">
-              {{ options[selected[0]]?.id }}
+              {{ options[selected[0]]?.label || options[selected[0]]?.id }}
             </template>
             <template v-else>{{ selected.length }} selected</template>
           </span>
@@ -143,7 +143,7 @@ export type Options = Option[];
 
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from "vue";
-import { isEqual, startCase, uniqueId } from "lodash";
+import { isEqual, uniqueId } from "lodash";
 import { useFloating } from "@/util/composables";
 import { wrap } from "@/util/math";
 
