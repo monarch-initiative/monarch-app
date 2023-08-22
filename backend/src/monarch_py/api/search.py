@@ -4,6 +4,7 @@ from fastapi import APIRouter, Query, Depends
 
 from monarch_py.api.additional_models import PaginationParams
 from monarch_py.api.config import solr
+from monarch_py.api.config import settings
 from monarch_py.datamodels.model import SearchResults
 
 router = APIRouter(
