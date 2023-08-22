@@ -5,11 +5,11 @@ import pytest
 def phenotype_explorer_compare():
     return {
         "subject_termset": {
-            "MP:0010771": {"id": "MP:0010771", "label": "integument phenotype (MPO)"},
             "MP:0002169": {
                 "id": "MP:0002169",
                 "label": "no abnormal phenotype detected (MPO)",
             },
+            "MP:0010771": {"id": "MP:0010771", "label": "integument phenotype (MPO)"},
         },
         "object_termset": {"HP:0004325": {"id": "HP:0004325", "label": "Decreased body weight (HPO)"}},
         "subject_best_matches": {
@@ -35,6 +35,7 @@ def phenotype_explorer_compare():
                     "subject_information_content": None,
                     "ancestor_information_content": 1.5616002210519475,
                     "jaccard_similarity": 0.16216216216216217,
+                    "cosine_similarity": None,
                     "dice_similarity": None,
                     "phenodigm_score": 0.5032220864376823,
                 },
@@ -61,6 +62,7 @@ def phenotype_explorer_compare():
                     "subject_information_content": None,
                     "ancestor_information_content": 2.2728188647181566,
                     "jaccard_similarity": 0.325,
+                    "cosine_similarity": None,
                     "dice_similarity": None,
                     "phenodigm_score": 0.8594568814276845,
                 },
@@ -89,6 +91,7 @@ def phenotype_explorer_compare():
                     "subject_information_content": None,
                     "ancestor_information_content": 2.2728188647181566,
                     "jaccard_similarity": 0.325,
+                    "cosine_similarity": None,
                     "dice_similarity": None,
                     "phenodigm_score": 0.8594568814276845,
                 },
