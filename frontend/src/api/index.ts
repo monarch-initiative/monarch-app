@@ -1,12 +1,12 @@
 /** base biolink api url */
 export const biolink = "https://api.monarchinitiative.org/api";
 
-/** served location of webapp, verbatim from browser address bar */
+/** served location of web app, verbatim from browser address bar */
 const url = new URL(window.location.href);
 
 /** get api name/version to use */
 
-/** infer as best as possible from domain of url */
+/** infer as best as possible from url */
 let fromDomain =
   /** sub domain */
   url.hostname.match(/([\w\d-]+)?\.?(monarchinitiative)\.org/)?.[1] || "";
@@ -42,7 +42,7 @@ let monarch = `https://api-${apiName}.monarchinitiative.org${suffix}`;
 if (apiName === "production")
   monarch = `https://api.monarchinitiative.org${suffix}`;
 
-/** relative to wherever frontend is hosted */
+/** relative to wherever web app is hosted */
 if (apiName === "relative") monarch = suffix;
 
 export { monarch };

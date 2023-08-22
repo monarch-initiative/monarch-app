@@ -49,11 +49,11 @@ yarn test:e2e --debug
 
 The frontend has a few "flags" that allow you to easily switch certain high-level development settings.
 
-URL parameter flags can be used to set and override a setting at "run time", when opening the webapp.
+URL parameter flags can be used to set and override a setting at "run time", when opening the web app.
 These flags stay until you refresh the page or open a new tab.
 For example, add `?flag=value` to a URL like `monarchinitiative.org/?unrelated-param=123&flag=value`.
 
-Environment variable flags can be used to set/override a setting at "compile time", when building the webapp.
+Environment variable flags can be used to set/override a setting at "compile time", when building the web app.
 These flags always have to be prefixed with `VITE_`.
 For example, set an env var before a command like `VITE_FLAG=value yarn dev`, or add it to `.env` or `.env.local` like `VITE_FLAG=value`.
 
