@@ -21,7 +21,6 @@ test("Populating example works", async ({ page }) => {
 });
 
 test("Mode switching works", async ({ page }) => {
-
   await page.goto("/explore#phenotype-explorer");
 
   /** really just check that all appropriate options show in select */
