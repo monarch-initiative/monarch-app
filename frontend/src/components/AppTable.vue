@@ -324,11 +324,6 @@ onMounted(updateScroll);
 watch(expanded, updateScroll);
 useResizeObserver(table, updateScroll);
 
-/** close table of contents when expanding */
-watch(expanded, () => {
-  if (expanded.value) closeToc();
-});
-
 /** when user clicks to first page */
 function clickFirst() {
   emit("update:start", 0);
@@ -415,15 +410,22 @@ const ariaSort = computed(() => {
   if (props.sort?.direction === "down") return "descending";
   return "none";
 });
+
+/** close table of contents when expanding or starting expanded */
+watch(
+  expanded,
+  () => {
+    if (expanded.value) closeToc();
+  },
+  { immediate: true },
+);
 </script>
 
 <style lang="scss" scoped>
 .container {
-  width: 100%;
-
   &[data-expanded="true"] {
     left: 0;
-    width: calc(100vw - 80px);
+    width: calc(100vw - 100px);
     transform: translateX(0);
 
     .td,
@@ -436,7 +438,7 @@ const ariaSort = computed(() => {
 
 .wrapper {
   position: relative;
-  width: 100%;
+  max-width: 100%;
 
   .left-scroll,
   .right-scroll {
@@ -588,8 +590,7 @@ const ariaSort = computed(() => {
 .controls {
   display: flex;
   justify-content: space-between;
-  width: 100%;
-  gap: 10px;
+  gap: 20px 40px;
 
   & > * {
     display: flex;
@@ -598,7 +599,7 @@ const ariaSort = computed(() => {
     gap: 10px;
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 850px) {
     flex-direction: column;
   }
 
