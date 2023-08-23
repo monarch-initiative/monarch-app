@@ -1,44 +1,57 @@
 /** base biolink api url */
 export const biolink = "https://api.monarchinitiative.org/api";
 
-/** served location of webapp, verbatim from browser address bar */
+/** served location of web app, verbatim from browser address bar */
 const url = new URL(window.location.href);
 
-/** get api name to use... */
+/** get api name/version to use */
 
-/** ...from domain of url */
-const fromDomain =
-  /** when running yarn dev */
-  (url.port && "dev") ||
-  /** get from subdomain */
-  url.hostname.match(/([/w-]+)?\.?(monarchinitiative)\.org/)?.[1] ||
-  /** prod url has no subdomain */
-  "next";
+/** infer as best as possible from url */
+let fromDomain =
+  /** sub domain */
+  url.hostname.match(/([\w\d-]+)?\.?(monarchinitiative)\.org/)?.[1] || "";
 
-/** ...from env var */
+/** production url */
+if (url.hostname === "monarchinitiative.org") fromDomain = "production";
+
+/** running web app locally */
+if (url.hostname === "localhost") fromDomain = "v3";
+
+/** netlify pr deploy previews */
+if (url.hostname.endsWith("netlify.app")) fromDomain = "v3";
+
+/** specific ip */
+if (url.hostname.match(/\d+\.\d+\.\d+\.\d+/)) fromDomain = "relative";
+
+/** last resort fallback */
+if (!fromDomain) fromDomain = "v3";
+
+/** from env var */
 const fromEnv = import.meta.env.VITE_API || "";
 
-/** ...from param in url */
+/** from param in url */
 const fromParam = new URLSearchParams(url.search).get("api") || "";
 
-/**
- * final short name of monarch api version to use (highest to lowest override
- * priority)
- */
+/** name of monarch api version to use. highest to lowest override priority. */
 export const apiName = fromParam || fromEnv || fromDomain;
 
-console.info({ fromParam, fromEnv, fromDomain, apiName });
-
-/** get full api url from short name */
-const apiMap: { [key: string]: string } = {
-  local: "http://127.0.0.1:8000/v3/api",
-  dev: "https://api-dev.monarchinitiative.org/v3/api",
-  beta: "https://api-beta.monarchinitiative.org/v3/api",
-  next: "https://api-v3.monarchinitiative.org/v3/api",
-};
+/** api url suffix */
+const suffix = "/v3/api";
 
 /** base monarch api url */
-export const monarch = apiMap[apiName] || apiMap.dev;
+let monarch = `https://api-${apiName}.monarchinitiative.org${suffix}`;
+
+/** production version */
+if (apiName === "production")
+  monarch = `https://api.monarchinitiative.org${suffix}`;
+
+/** relative to wherever web app is hosted */
+if (apiName === "relative") monarch = suffix;
+
+export { monarch };
+
+/** debug */
+console.info({ fromParam, fromEnv, fromDomain, apiName, monarch });
 
 /**
  * key/value object for request query parameters. use primitive for single, e.g.
