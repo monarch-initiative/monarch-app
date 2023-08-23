@@ -1,8 +1,7 @@
 /** color palette */
-$theme-dark: #00838f;
-$theme: #00acc1;
-$theme-mid: #80deea;
-$theme-light: #b2ebf2;
+$theme: hsl(185, 100%, 30%);
+$theme-mid: hsl(185, 75%, 70%);
+$theme-light: hsl(185, 75%, 80%);
 $white: #ffffff;
 $off-white: #fafafa;
 $light-gray: #eeeeee;
@@ -10,8 +9,8 @@ $gray: #b0b0b0;
 $dark-gray: #808080;
 $off-black: #404040;
 $black: #000000;
-$success: #4caf50;
-$error: #f44336;
+$success: $theme;
+$error: #fe3e5e;
 
 /** transitions */
 $fast: 0.2s ease;

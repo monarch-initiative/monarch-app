@@ -110,7 +110,7 @@ $wrap: 600px;
   top: 0;
   align-items: center;
   justify-content: space-between;
-  background: $theme-dark;
+  background: $theme;
   color: $white;
 }
 

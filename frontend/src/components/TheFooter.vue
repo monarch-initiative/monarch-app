@@ -29,7 +29,7 @@ $wrap: 500px;
   align-items: center;
   justify-content: space-between;
   padding: 20px;
-  background: $theme-dark;
+  background: $theme;
   color: $white;
   font-size: 0.9rem;
 }

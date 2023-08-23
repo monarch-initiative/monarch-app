@@ -404,7 +404,7 @@ watch(from, () => runGetSearch(false));
   height: 30px;
   padding: 0 3px;
   border-radius: $rounded;
-  color: $theme-dark;
+  color: $theme;
   transition: box-shadow $fast;
 
   &:hover {

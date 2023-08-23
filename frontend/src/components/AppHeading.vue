@@ -143,7 +143,7 @@ h3 {
   h3 {
     .icon {
       height: 1.2em;
-      color: $theme-dark;
+      color: $theme;
     }
   }
 }
