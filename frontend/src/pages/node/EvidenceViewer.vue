@@ -9,13 +9,20 @@
 
     <div>
       Evidence for the selected association, <br />
-      <AppNodeBadge :node="node" />&nbsp;
-      <AppPredicateBadge :association="association" />&nbsp;
       <AppNodeBadge
         :node="{
           id: association.subject,
           name: association.subject_label,
           category: association.subject_category,
+          info: association.subject_taxon_label,
+        }"
+      />&nbsp; <AppPredicateBadge :association="association" />&nbsp;
+      <AppNodeBadge
+        :node="{
+          id: association.object,
+          name: association.object_label,
+          category: association.object_category,
+          info: association.object_taxon_label,
         }"
       />
     </div>

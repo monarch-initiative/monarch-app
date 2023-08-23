@@ -31,6 +31,7 @@
           id: row.subject,
           name: row.subject_label,
           category: row.subject_category,
+          info: row.subject_taxon_label,
         }"
         :link="node.id !== row.subject"
       />
@@ -48,6 +49,7 @@
           id: row.object,
           name: row.object_label,
           category: row.object_category,
+          info: row.object_taxon_label,
         }"
         :link="node.id !== row.object"
       />

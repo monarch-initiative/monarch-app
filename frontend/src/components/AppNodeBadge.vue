@@ -19,6 +19,7 @@
       >{{ node.name || node.id }}</AppLink
     >
     <span v-else class="name">{{ node.name }}</span>
+    <span v-if="node.info"> ({{ node.info }})</span>
   </span>
 </template>
 
@@ -29,7 +30,10 @@ import { breadcrumbs } from "@/global/breadcrumbs";
 
 type Props = {
   /** node represented by badge */
-  node: Pick<Node, "id" | "name" | "category">;
+  node: Pick<Node, "id" | "name" | "category"> & {
+    /** extra info to show in parens */
+    info?: string;
+  };
   /** whether to include icon */
   icon?: boolean;
   /** whether to include link */
