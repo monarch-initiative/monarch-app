@@ -41,56 +41,21 @@
 
     <hr />
 
-    <!-- (rough) node counts, just for advertising -->
-    <AppFlex>
-      <!-- http://solr.monarchinitiative.org/solr/search/select?q=*:*&rows=0&facet=true&facet.field=category&wt=json -->
-      <AppTile
+    <!-- node counts, just for advertising -->
+    <AppFlex gap="medium">
+      <!-- node counts -->
+      <AppTile v-for="(item, index) in metadata.node" :key="index"
         icon="category-gene"
+        :title="startCase(item.label.replace(/biolink:/g, ''))"
+        :subtitle="`~${item.count.toLocaleString()}`"
         design="small"
-        :title="`~${(1000000).toLocaleString()}`"
-        subtitle="genes"
       />
-      <AppTile
-        icon="category-disease"
+      <!-- association counts -->
+      <AppTile v-for="(item, index) in metadata.association" :key="index"
+        icon="category-association"
+        :title="startCase(item.label.replace(/biolink:/g, ''))"
+        :subtitle="`~${item.count.toLocaleString()}`"
         design="small"
-        :title="`~${(25000).toLocaleString()}`"
-        subtitle="diseases"
-      />
-      <AppTile
-        icon="category-phenotypic-feature"
-        design="small"
-        :title="`~${(70000).toLocaleString()}`"
-        subtitle="phenotypes"
-      />
-      <AppTile
-        icon="category-variant"
-        design="small"
-        :title="`~${(3000000).toLocaleString()}`"
-        subtitle="variants"
-      />
-      <AppTile
-        icon="category-genotype"
-        design="small"
-        :title="`~${(200000).toLocaleString()}`"
-        subtitle="genotypes"
-      />
-      <AppTile
-        icon="category-anatomy"
-        design="small"
-        :title="`~${(100000).toLocaleString()}`"
-        subtitle="anatomies"
-      />
-      <AppTile
-        icon="category-publication"
-        design="small"
-        :title="`~${(50000).toLocaleString()}`"
-        subtitle="publications"
-      />
-      <AppTile
-        icon="knowledge-graph"
-        design="small"
-        :title="`~${(5000000).toLocaleString()}`"
-        subtitle="total nodes"
       />
     </AppFlex>
     <AppButton to="/about" text="Learn more" icon="arrow-right" />
@@ -184,6 +149,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+import { startCase } from "lodash";
 import { getBlogPosts } from "@/api/blog";
 import nodePage from "@/assets/demos/node-page.mp4";
 import phenotypeExplorer from "@/assets/demos/phenotype-explorer.mp4";
@@ -194,6 +160,7 @@ import AppPost from "@/components/AppPost.vue";
 import AppTabs from "@/components/AppTabs.vue";
 import AppTile from "@/components/AppTile.vue";
 import { useQuery } from "@/util/composables";
+import metadata from "./metadata.json"
 import tabs from "./explore/tabs.json";
 import TabSearch from "./explore/TabSearch.vue";
 

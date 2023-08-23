@@ -17,6 +17,8 @@ from monarch_py.implementations.solr.solr_query_utils import (
 from monarch_py.service.solr_service import SolrService, core
 from monarch_py.utils.utils import format_output
 
+from pprint import pprint as pp
+
 ### Define variables
 oak = OakImplementation()
 oak.init_semsim()
@@ -26,8 +28,8 @@ solr_entities = SolrService(base_url=solr_url, core=core.ENTITY)
 solr_associations = SolrService(base_url=solr_url, core=core.ASSOCIATION)
 
 root = Path(__file__).parent.parent
-frontend_fixture_dir = Path(f"{root}/frontend/fixtures")
-backend_fixture_dir = Path(f"{root}/backend/tests/fixtures")
+frontend_fixture_dir = Path(root) / "frontend" / "fixtures"
+backend_fixture_dir = Path(root) / "backend" / "tests" / "fixtures"
 
 node_id = "MONDO:0020121"
 category = "biolink:DiseaseToPhenotypicFeatureAssociation"
@@ -60,6 +62,24 @@ def {key.replace('-','_')}():
         f.write(file_contents)
 
 
+### Helpers
+def get_fv_label(category: str) -> str:
+    targets = [
+        "biolink:Gene",
+        "biolink:PhenotypicQuality",
+        "biolink:Disease",
+        "biolink:GeneToPhenotypicFeatureAssociation",
+        "biolink:DiseaseToPhenotypicFeatureAssociation",
+        "biolink:CorrelatedGeneToDiseaseAssociation",
+        "biolink:CausalGeneToDiseaseAssociation",
+    ]
+    return "Test Label"
+
+
+def get_fv_icon(category: str) -> str:
+    return "Test Icon"
+
+
 def main(
     backend: bool = False,
     frontend: bool = False,
@@ -81,7 +101,8 @@ def main(
 
     ### Generate metadata fixtures
     if metadata or all_fixtures:
-        print(f"{'*'*120}\n\tGenerating metadata fixtures...")
+        print(f"{'-'*120}\n\tGenerating metadata fixtures...")
+        "Genes | Phenotypes | Diseases | Gene :left_right_arrow: Pheno. | Disease :left_right_arrow: Pheno | Corr. Gene :left_right_arrow: Disease | Caus. Gene :left_right_arrow: Disease"
         targets = [
             "biolink:Gene",
             "biolink:PhenotypicQuality",
@@ -92,17 +113,66 @@ def main(
             "biolink:CausalGeneToDiseaseAssociation",
         ]
         counts = []
+        node_counts = {}
         node_ffs = si.search(q="*:*", facet_fields=["category"], limit=0).facet_fields[0]  # type: ignore
+        node_counts_total = sum([f.count for f in node_ffs.facet_values])  # type: ignore
         for fv in [f for f in node_ffs.facet_values if f.label in targets]:  # type: ignore
-            counts.append({"label": fv.label, "count": fv.count})
+            node_counts[fv.label] = fv.count
+
+        association_counts = {}
         association_ffs = si.get_association_facets(facet_fields=["category"]).facet_fields[0]  # type: ignore
         for fv in [f for f in association_ffs.facet_values if f.label in targets]:  # type: ignore
-            counts.append({"label": fv.label, "count": fv.count})
-        fixtures["metadata"] = counts
+            association_counts[fv.label] = fv.count
+        association_counts_total = sum([f.count for f in association_ffs.facet_values])  # type: ignore
+        gene_to_disease = (
+            association_counts["biolink:CorrelatedGeneToDiseaseAssociation"]
+            + association_counts["biolink:CausalGeneToDiseaseAssociation"]
+        )
+
+        counts = {"node": [], "association": []}
+        for node_count in [
+            {"label": "Genes", "icon": "category-gene", "count": node_counts["biolink:Gene"]},
+            {
+                "label": "Phenotypes",
+                "icon": "category-phenotypic-feature",
+                "count": node_counts["biolink:PhenotypicQuality"],
+            },
+            {"label": "Diseases", "icon": "category-disease", "count": node_counts["biolink:Disease"]},
+            {"label": "Total Nodes", "icon": "Total", "count": node_counts_total},
+        ]:
+            counts["node"].append(node_count)
+
+        for association_count in [
+            {
+                "label": "Gene to Disease",
+                "icon": "category-gene-to-disease-association",
+                "count": gene_to_disease,
+            },
+            {
+                "label": "Gene to Phenotype",
+                "icon": "category-gene-to-phenotype",
+                "count": association_counts["biolink:GeneToPhenotypicFeatureAssociation"],
+            },
+            {
+                "label": "Disease to Phenotype",
+                "icon": "category-disease-to-phenotype",
+                "count": association_counts["biolink:DiseaseToPhenotypicFeatureAssociation"],
+            },
+            {
+                "label": "Total Associations",
+                "icon": "Total",
+                "count": association_counts_total,
+            }
+        ]:
+            counts["association"].append(association_count)
+        # counts = counts["node"] + counts["association"]
+        # pp(counts)
+        with open(root / "frontend" / "src" / "pages" / "metadata.json", "w") as f:
+            json.dump(counts, f, indent=2)
 
     ### Generate core fixtures
     if any([backend, frontend, all_fixtures]):
-        print(f"{'*'*120}\n\tGenerating core fixtures...")
+        print(f"{'-'*120}\n\tGenerating core fixtures...")
         fixtures["associations"] = si.get_associations(entity=[node_id])
         fixtures["association-counts"] = si.get_association_counts(entity=node_id)
         fixtures["association-table"] = si.get_association_table(entity=node_id, category=category, offset=0, limit=5)
@@ -126,7 +196,7 @@ def main(
 
     ### Generate extra backend fixtures
     if backend or all_fixtures:
-        print(f"{'*'*120}\n\tGenerating extra backend fixtures...")
+        print(f"{'-'*120}\n\tGenerating extra backend fixtures...")
         extra_fixtures["association-counts-query"] = build_association_counts_query(entity=node_id)
         extra_fixtures["association-query-params"] = {
             "category": ["biolink:TestCase"],
