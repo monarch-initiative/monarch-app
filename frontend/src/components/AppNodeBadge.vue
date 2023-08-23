@@ -11,7 +11,7 @@
       :icon="getCategoryIcon(node.category)"
     />
     <AppLink
-      v-if="link"
+      v-if="!currentPage"
       :to="`/node/${node.id}`"
       :state="
         breadcrumb ? { breadcrumbs: [...breadcrumbs, breadcrumb] } : undefined
@@ -19,25 +19,25 @@
       >{{ node.name || node.id }}</AppLink
     >
     <span v-else class="name">{{ node.name }}</span>
+    <span v-if="node.in_taxon_label"> ({{ node.info }})</span>
     <span v-if="node.info"> ({{ node.info }})</span>
   </span>
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
 import type { Node } from "@/api/model";
 import { breadcrumbs } from "@/global/breadcrumbs";
 
 type Props = {
   /** node represented by badge */
-  node: Pick<Node, "id" | "name" | "category"> & {
+  node: Partial<Node> & {
     /** extra info to show in parens */
     info?: string;
   };
   /** whether to include icon */
   icon?: boolean;
-  /** whether to include link */
-  link?: boolean;
   /**
    * breadcrumb object to add list when badge clicked on. include node that user
    * came from and relation between that node and this node.
@@ -45,11 +45,16 @@ type Props = {
   breadcrumb?: { [key: string]: unknown };
 };
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   icon: true,
   link: true,
   breadcrumb: undefined,
 });
+
+/** whether we're already on page we're linking to */
+const currentPage = computed(() =>
+  window.location.pathname.endsWith("/node/" + (props.node.id || "")),
+);
 </script>
 
 <style lang="scss" scoped>

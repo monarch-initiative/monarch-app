@@ -9,15 +9,8 @@
     <!-- select -->
     <AppFlex gap="small">
       <span
-        >Associations between &nbsp;<AppNodeBadge
-          :node="{
-            id: node.id,
-            name: node.name,
-            category: node.category,
-            info: node.in_taxon_label,
-          }"
-          :link="false"
-        />&nbsp; and</span
+        >Associations between &nbsp;<AppNodeBadge :node="node" />&nbsp;
+        and</span
       >
       <AppSelectSingle
         v-model="category"
