@@ -13,7 +13,6 @@ import "@/global/meta";
 import "normalize.css";
 import "@/global/styles.scss"; /** keep these last so they take priority */
 
-/** log env variables for debugging */
 console.info(import.meta.env);
 
 /** create main app object */

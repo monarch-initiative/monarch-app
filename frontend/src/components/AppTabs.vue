@@ -120,7 +120,6 @@ async function onKeydown(event: KeyboardEvent) {
     if (event.key === "ArrowRight") index = skip(index + 1, 1);
     if (event.key === "Home") index = skip(0, 1);
     if (event.key === "End") index = skip(props.tabs.length - 1, -1);
-    console.log(index);
 
     /** update selected, wrapping beyond -1 or options length */
     emit(

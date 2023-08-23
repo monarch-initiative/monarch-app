@@ -1,8 +1,8 @@
 /** base biolink api url */
 export const biolink = "https://api.monarchinitiative.org/api";
 
-/** served location of web app, verbatim from browser address bar */
-const url = new URL(window.location.href);
+/** served location of web app, from address bar or storage redirect */
+const url = new URL(window.sessionStorage.redirectHref || window.location.href);
 
 /** get api name/version to use */
 
@@ -50,7 +50,6 @@ if (apiName === "relative") monarch = suffix;
 
 export { monarch };
 
-/** debug */
 console.info({ fromParam, fromEnv, fromDomain, apiName, monarch });
 
 /**
@@ -107,7 +106,6 @@ export const request = async <Response>(
   /** first check if request is cached */
   let response = await cache.match(request);
 
-  /** log details for debugging (except don't clutter logs when running tests) */
   if (import.meta.env.MODE !== "test") {
     console.groupCollapsed(
       response ? "📞 Request (cached)" : "📞 Request (new)",
@@ -148,7 +146,6 @@ export const request = async <Response>(
   const parsed: Response =
     parse === "text" ? await response.text() : await response.json();
 
-  /** log details for debugging (except don't clutter logs when running tests) */
   if (import.meta.env.MODE !== "test") {
     console.groupCollapsed("📣 Response", endpoint);
     console.info("Url", url);
