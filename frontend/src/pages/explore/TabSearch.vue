@@ -278,6 +278,10 @@ const {
               facet.label === "category"
                 ? getCategoryLabel(facet_value.label)
                 : startCase(facet_value.label),
+            icon:
+              facet.label === "category"
+                ? getCategoryIcon(facet_value.label)
+                : "",
             count: facet_value.count,
           })) || [];
       }

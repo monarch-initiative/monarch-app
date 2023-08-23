@@ -79,9 +79,10 @@
           @focusin="() => null"
           @keydown="() => null"
         >
-          <span class="option-icon">
-            <AppIcon :icon="allSelected ? 'square-check' : 'square'" />
-          </span>
+          <AppIcon
+            :icon="allSelected ? 'square-check' : 'square'"
+            class="option-check"
+          />
           <span class="option-label truncate">All</span>
           <span class="option-count"></span>
         </div>
@@ -107,8 +108,9 @@
         >
           <AppIcon
             :icon="selected.includes(index) ? 'square-check' : 'square'"
-            class="option-icon"
+            class="option-check"
           />
+          <AppIcon v-if="option.icon" :icon="option.icon" class="option-icon" />
           <span class="option-label truncate">
             {{ option.label || option.id }}
           </span>
@@ -130,6 +132,8 @@ export type Option = {
   id: string;
   /** display label */
   label?: string;
+  /** icon */
+  icon?: string;
   /** count col */
   count?: number;
   /** tooltip on hover */
@@ -392,9 +396,13 @@ const noneSelected = computed(() => !selected.value.length);
   height: 10px;
 }
 
-.option-icon {
+.option-check {
   color: $theme;
   font-size: 1.2rem;
+}
+
+.option-icon {
+  color: $dark-gray;
 }
 
 .option-label {
