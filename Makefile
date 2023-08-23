@@ -112,7 +112,7 @@ test-frontend:
 .PHONY: fixtures
 fixtures: 
 	@echo "Generating fixtures..."
-	$(RUN) python scripts/generate_fixtures.py
+	$(RUN) python scripts/generate_fixtures.py --all-fixtures
 	$(RUN) black backend/tests/fixtures/
 	cd frontend && \
 		yarn lint 

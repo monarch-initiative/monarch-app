@@ -96,12 +96,7 @@ def association_counts_response():
                     "subject_label": "muscular dystrophy, Barnes type",
                     "object_namespace": "HP",
                     "object_category": "biolink:GeneticInheritance",
-                    "object_closure": [
-                        "HP:0000001",
-                        "HP:0000006",
-                        "HP:0000005",
-                        "HP:0034345",
-                    ],
+                    "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                     "object_closure_label": [
                         "All (HPO)",
                         "Mode of inheritance (HPO)",
@@ -174,12 +169,7 @@ def association_counts_response():
                     "subject_label": "facioscapulohumeral muscular dystrophy 1",
                     "object_namespace": "HP",
                     "object_category": "biolink:GeneticInheritance",
-                    "object_closure": [
-                        "HP:0000001",
-                        "HP:0000006",
-                        "HP:0000005",
-                        "HP:0034345",
-                    ],
+                    "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                     "object_closure_label": [
                         "All (HPO)",
                         "Mode of inheritance (HPO)",
@@ -270,12 +260,7 @@ def association_counts_response():
                     "subject_label": "muscular dystrophy, pseudohypertrophic, with Internalized capillaries",
                     "object_namespace": "HP",
                     "object_category": "biolink:GeneticInheritance",
-                    "object_closure": [
-                        "HP:0000001",
-                        "HP:0000006",
-                        "HP:0000005",
-                        "HP:0034345",
-                    ],
+                    "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                     "object_closure_label": [
                         "All (HPO)",
                         "Mode of inheritance (HPO)",
@@ -340,12 +325,7 @@ def association_counts_response():
                     "subject_label": "myopathy, distal, infantile-onset",
                     "object_namespace": "HP",
                     "object_category": "biolink:GeneticInheritance",
-                    "object_closure": [
-                        "HP:0000001",
-                        "HP:0000006",
-                        "HP:0000005",
-                        "HP:0034345",
-                    ],
+                    "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                     "object_closure_label": [
                         "All (HPO)",
                         "Mode of inheritance (HPO)",
@@ -418,12 +398,7 @@ def association_counts_response():
                     "subject_label": "MYH7-related skeletal myopathy",
                     "object_namespace": "HP",
                     "object_category": "biolink:GeneticInheritance",
-                    "object_closure": [
-                        "HP:0000001",
-                        "HP:0000006",
-                        "HP:0000005",
-                        "HP:0034345",
-                    ],
+                    "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                     "object_closure_label": [
                         "All (HPO)",
                         "Mode of inheritance (HPO)",
@@ -520,12 +495,7 @@ def association_counts_response():
                     "subject_label": "myotonic dystrophy type 1",
                     "object_namespace": "HP",
                     "object_category": "biolink:GeneticInheritance",
-                    "object_closure": [
-                        "HP:0000001",
-                        "HP:0000006",
-                        "HP:0000005",
-                        "HP:0034345",
-                    ],
+                    "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                     "object_closure_label": [
                         "All (HPO)",
                         "Mode of inheritance (HPO)",
@@ -604,12 +574,7 @@ def association_counts_response():
                     "subject_label": "oculopharyngeal muscular dystrophy",
                     "object_namespace": "HP",
                     "object_category": "biolink:GeneticInheritance",
-                    "object_closure": [
-                        "HP:0000001",
-                        "HP:0000006",
-                        "HP:0000005",
-                        "HP:0034345",
-                    ],
+                    "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                     "object_closure_label": [
                         "All (HPO)",
                         "Mode of inheritance (HPO)",
@@ -684,12 +649,7 @@ def association_counts_response():
                     "subject_label": "Ullrich congenital muscular dystrophy 1",
                     "object_namespace": "HP",
                     "object_category": "biolink:GeneticInheritance",
-                    "object_closure": [
-                        "HP:0000001",
-                        "HP:0000006",
-                        "HP:0000005",
-                        "HP:0034345",
-                    ],
+                    "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                     "object_closure_label": [
                         "All (HPO)",
                         "Mode of inheritance (HPO)",
@@ -752,12 +712,7 @@ def association_counts_response():
                     "subject_label": "muscular dystrophy, Hemizygous lethal type",
                     "object_namespace": "HP",
                     "object_category": "biolink:GeneticInheritance",
-                    "object_closure": [
-                        "HP:0000001",
-                        "HP:0000006",
-                        "HP:0000005",
-                        "HP:0034345",
-                    ],
+                    "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                     "object_closure_label": [
                         "All (HPO)",
                         "Mode of inheritance (HPO)",
@@ -840,12 +795,7 @@ def association_counts_response():
                     "subject_label": "tibial muscular dystrophy",
                     "object_namespace": "HP",
                     "object_category": "biolink:GeneticInheritance",
-                    "object_closure": [
-                        "HP:0000001",
-                        "HP:0000006",
-                        "HP:0000005",
-                        "HP:0034345",
-                    ],
+                    "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                     "object_closure_label": [
                         "All (HPO)",
                         "Mode of inheritance (HPO)",
@@ -938,12 +888,7 @@ def association_counts_response():
                     "subject_label": "fibrosis of extraocular muscles, congenital, 3A, with or without extraocular involvement",
                     "object_namespace": "HP",
                     "object_category": "biolink:GeneticInheritance",
-                    "object_closure": [
-                        "HP:0000001",
-                        "HP:0000006",
-                        "HP:0000005",
-                        "HP:0034345",
-                    ],
+                    "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                     "object_closure_label": [
                         "All (HPO)",
                         "Mode of inheritance (HPO)",
@@ -1026,12 +971,7 @@ def association_counts_response():
                     "subject_label": "myotonic dystrophy type 2",
                     "object_namespace": "HP",
                     "object_category": "biolink:GeneticInheritance",
-                    "object_closure": [
-                        "HP:0000001",
-                        "HP:0000006",
-                        "HP:0000005",
-                        "HP:0034345",
-                    ],
+                    "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                     "object_closure_label": [
                         "All (HPO)",
                         "Mode of inheritance (HPO)",
@@ -1118,12 +1058,7 @@ def association_counts_response():
                     "subject_label": "myopathy, myofibrillar, 9, with early respiratory failure",
                     "object_namespace": "HP",
                     "object_category": "biolink:GeneticInheritance",
-                    "object_closure": [
-                        "HP:0000001",
-                        "HP:0000006",
-                        "HP:0000005",
-                        "HP:0034345",
-                    ],
+                    "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                     "object_closure_label": [
                         "All (HPO)",
                         "Mode of inheritance (HPO)",
@@ -1194,12 +1129,7 @@ def association_counts_response():
                     "subject_label": "distal myopathy, Welander type",
                     "object_namespace": "HP",
                     "object_category": "biolink:GeneticInheritance",
-                    "object_closure": [
-                        "HP:0000001",
-                        "HP:0000006",
-                        "HP:0000005",
-                        "HP:0034345",
-                    ],
+                    "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                     "object_closure_label": [
                         "All (HPO)",
                         "Mode of inheritance (HPO)",
@@ -1272,12 +1202,7 @@ def association_counts_response():
                     "subject_label": "autosomal dominant limb-girdle muscular dystrophy type 1F",
                     "object_namespace": "HP",
                     "object_category": "biolink:GeneticInheritance",
-                    "object_closure": [
-                        "HP:0000001",
-                        "HP:0000006",
-                        "HP:0000005",
-                        "HP:0034345",
-                    ],
+                    "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                     "object_closure_label": [
                         "All (HPO)",
                         "Mode of inheritance (HPO)",
@@ -1364,12 +1289,7 @@ def association_counts_response():
                     "subject_label": "myofibrillar myopathy 2",
                     "object_namespace": "HP",
                     "object_category": "biolink:GeneticInheritance",
-                    "object_closure": [
-                        "HP:0000001",
-                        "HP:0000006",
-                        "HP:0000005",
-                        "HP:0034345",
-                    ],
+                    "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                     "object_closure_label": [
                         "All (HPO)",
                         "Mode of inheritance (HPO)",
@@ -1442,12 +1362,7 @@ def association_counts_response():
                     "subject_label": "autosomal dominant limb-girdle muscular dystrophy type 1G",
                     "object_namespace": "HP",
                     "object_category": "biolink:GeneticInheritance",
-                    "object_closure": [
-                        "HP:0000001",
-                        "HP:0000006",
-                        "HP:0000005",
-                        "HP:0034345",
-                    ],
+                    "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                     "object_closure_label": [
                         "All (HPO)",
                         "Mode of inheritance (HPO)",
@@ -1536,12 +1451,7 @@ def association_counts_response():
                     "subject_label": "myofibrillar myopathy 3",
                     "object_namespace": "HP",
                     "object_category": "biolink:GeneticInheritance",
-                    "object_closure": [
-                        "HP:0000001",
-                        "HP:0000006",
-                        "HP:0000005",
-                        "HP:0034345",
-                    ],
+                    "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                     "object_closure_label": [
                         "All (HPO)",
                         "Mode of inheritance (HPO)",
@@ -1632,12 +1542,7 @@ def association_counts_response():
                     "subject_label": "fibrosis of extraocular muscles, congenital, 3c",
                     "object_namespace": "HP",
                     "object_category": "biolink:GeneticInheritance",
-                    "object_closure": [
-                        "HP:0000001",
-                        "HP:0000006",
-                        "HP:0000005",
-                        "HP:0034345",
-                    ],
+                    "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                     "object_closure_label": [
                         "All (HPO)",
                         "Mode of inheritance (HPO)",
@@ -1722,12 +1627,7 @@ def association_counts_response():
                     "subject_label": "myofibrillar myopathy 4",
                     "object_namespace": "HP",
                     "object_category": "biolink:GeneticInheritance",
-                    "object_closure": [
-                        "HP:0000001",
-                        "HP:0000006",
-                        "HP:0000005",
-                        "HP:0034345",
-                    ],
+                    "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                     "object_closure_label": [
                         "All (HPO)",
                         "Mode of inheritance (HPO)",

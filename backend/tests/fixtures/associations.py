@@ -58,12 +58,7 @@ def associations():
                 "original_object": None,
                 "object_namespace": "HP",
                 "object_category": "biolink:GeneticInheritance",
-                "object_closure": [
-                    "HP:0000001",
-                    "HP:0000006",
-                    "HP:0000005",
-                    "HP:0034345",
-                ],
+                "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                 "object_label": "Autosomal dominant inheritance (HPO)",
                 "object_closure_label": [
                     "All (HPO)",
@@ -172,12 +167,7 @@ def associations():
                 "original_object": None,
                 "object_namespace": "HP",
                 "object_category": "biolink:GeneticInheritance",
-                "object_closure": [
-                    "HP:0000001",
-                    "HP:0000006",
-                    "HP:0000005",
-                    "HP:0034345",
-                ],
+                "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                 "object_label": "Autosomal dominant inheritance (HPO)",
                 "object_closure_label": [
                     "All (HPO)",
@@ -304,12 +294,7 @@ def associations():
                 "original_object": None,
                 "object_namespace": "HP",
                 "object_category": "biolink:GeneticInheritance",
-                "object_closure": [
-                    "HP:0000001",
-                    "HP:0000006",
-                    "HP:0000005",
-                    "HP:0034345",
-                ],
+                "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                 "object_label": "Autosomal dominant inheritance (HPO)",
                 "object_closure_label": [
                     "All (HPO)",
@@ -410,12 +395,7 @@ def associations():
                 "original_object": None,
                 "object_namespace": "HP",
                 "object_category": "biolink:GeneticInheritance",
-                "object_closure": [
-                    "HP:0000001",
-                    "HP:0000006",
-                    "HP:0000005",
-                    "HP:0034345",
-                ],
+                "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                 "object_label": "Autosomal dominant inheritance (HPO)",
                 "object_closure_label": [
                     "All (HPO)",
@@ -524,12 +504,7 @@ def associations():
                 "original_object": None,
                 "object_namespace": "HP",
                 "object_category": "biolink:GeneticInheritance",
-                "object_closure": [
-                    "HP:0000001",
-                    "HP:0000006",
-                    "HP:0000005",
-                    "HP:0034345",
-                ],
+                "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                 "object_label": "Autosomal dominant inheritance (HPO)",
                 "object_closure_label": [
                     "All (HPO)",
@@ -662,12 +637,7 @@ def associations():
                 "original_object": None,
                 "object_namespace": "HP",
                 "object_category": "biolink:GeneticInheritance",
-                "object_closure": [
-                    "HP:0000001",
-                    "HP:0000006",
-                    "HP:0000005",
-                    "HP:0034345",
-                ],
+                "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                 "object_label": "Autosomal dominant inheritance (HPO)",
                 "object_closure_label": [
                     "All (HPO)",
@@ -782,12 +752,7 @@ def associations():
                 "original_object": None,
                 "object_namespace": "HP",
                 "object_category": "biolink:GeneticInheritance",
-                "object_closure": [
-                    "HP:0000001",
-                    "HP:0000006",
-                    "HP:0000005",
-                    "HP:0034345",
-                ],
+                "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                 "object_label": "Autosomal dominant inheritance (HPO)",
                 "object_closure_label": [
                     "All (HPO)",
@@ -898,12 +863,7 @@ def associations():
                 "original_object": None,
                 "object_namespace": "HP",
                 "object_category": "biolink:GeneticInheritance",
-                "object_closure": [
-                    "HP:0000001",
-                    "HP:0000006",
-                    "HP:0000005",
-                    "HP:0034345",
-                ],
+                "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                 "object_label": "Autosomal dominant inheritance (HPO)",
                 "object_closure_label": [
                     "All (HPO)",
@@ -1002,12 +962,7 @@ def associations():
                 "original_object": None,
                 "object_namespace": "HP",
                 "object_category": "biolink:GeneticInheritance",
-                "object_closure": [
-                    "HP:0000001",
-                    "HP:0000006",
-                    "HP:0000005",
-                    "HP:0034345",
-                ],
+                "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                 "object_label": "Autosomal dominant inheritance (HPO)",
                 "object_closure_label": [
                     "All (HPO)",
@@ -1126,12 +1081,7 @@ def associations():
                 "original_object": None,
                 "object_namespace": "HP",
                 "object_category": "biolink:GeneticInheritance",
-                "object_closure": [
-                    "HP:0000001",
-                    "HP:0000006",
-                    "HP:0000005",
-                    "HP:0034345",
-                ],
+                "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                 "object_label": "Autosomal dominant inheritance (HPO)",
                 "object_closure_label": [
                     "All (HPO)",
@@ -1260,12 +1210,7 @@ def associations():
                 "original_object": None,
                 "object_namespace": "HP",
                 "object_category": "biolink:GeneticInheritance",
-                "object_closure": [
-                    "HP:0000001",
-                    "HP:0000006",
-                    "HP:0000005",
-                    "HP:0034345",
-                ],
+                "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                 "object_label": "Autosomal dominant inheritance (HPO)",
                 "object_closure_label": [
                     "All (HPO)",
@@ -1384,12 +1329,7 @@ def associations():
                 "original_object": None,
                 "object_namespace": "HP",
                 "object_category": "biolink:GeneticInheritance",
-                "object_closure": [
-                    "HP:0000001",
-                    "HP:0000006",
-                    "HP:0000005",
-                    "HP:0034345",
-                ],
+                "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                 "object_label": "Autosomal dominant inheritance (HPO)",
                 "object_closure_label": [
                     "All (HPO)",
@@ -1512,12 +1452,7 @@ def associations():
                 "original_object": None,
                 "object_namespace": "HP",
                 "object_category": "biolink:GeneticInheritance",
-                "object_closure": [
-                    "HP:0000001",
-                    "HP:0000006",
-                    "HP:0000005",
-                    "HP:0034345",
-                ],
+                "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                 "object_label": "Autosomal dominant inheritance (HPO)",
                 "object_closure_label": [
                     "All (HPO)",
@@ -1624,12 +1559,7 @@ def associations():
                 "original_object": None,
                 "object_namespace": "HP",
                 "object_category": "biolink:GeneticInheritance",
-                "object_closure": [
-                    "HP:0000001",
-                    "HP:0000006",
-                    "HP:0000005",
-                    "HP:0034345",
-                ],
+                "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                 "object_label": "Autosomal dominant inheritance (HPO)",
                 "object_closure_label": [
                     "All (HPO)",
@@ -1738,12 +1668,7 @@ def associations():
                 "original_object": None,
                 "object_namespace": "HP",
                 "object_category": "biolink:GeneticInheritance",
-                "object_closure": [
-                    "HP:0000001",
-                    "HP:0000006",
-                    "HP:0000005",
-                    "HP:0034345",
-                ],
+                "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                 "object_label": "Autosomal dominant inheritance (HPO)",
                 "object_closure_label": [
                     "All (HPO)",
@@ -1866,12 +1791,7 @@ def associations():
                 "original_object": None,
                 "object_namespace": "HP",
                 "object_category": "biolink:GeneticInheritance",
-                "object_closure": [
-                    "HP:0000001",
-                    "HP:0000006",
-                    "HP:0000005",
-                    "HP:0034345",
-                ],
+                "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                 "object_label": "Autosomal dominant inheritance (HPO)",
                 "object_closure_label": [
                     "All (HPO)",
@@ -1980,12 +1900,7 @@ def associations():
                 "original_object": None,
                 "object_namespace": "HP",
                 "object_category": "biolink:GeneticInheritance",
-                "object_closure": [
-                    "HP:0000001",
-                    "HP:0000006",
-                    "HP:0000005",
-                    "HP:0034345",
-                ],
+                "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                 "object_label": "Autosomal dominant inheritance (HPO)",
                 "object_closure_label": [
                     "All (HPO)",
@@ -2110,12 +2025,7 @@ def associations():
                 "original_object": None,
                 "object_namespace": "HP",
                 "object_category": "biolink:GeneticInheritance",
-                "object_closure": [
-                    "HP:0000001",
-                    "HP:0000006",
-                    "HP:0000005",
-                    "HP:0034345",
-                ],
+                "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                 "object_label": "Autosomal dominant inheritance (HPO)",
                 "object_closure_label": [
                     "All (HPO)",
@@ -2242,12 +2152,7 @@ def associations():
                 "original_object": None,
                 "object_namespace": "HP",
                 "object_category": "biolink:GeneticInheritance",
-                "object_closure": [
-                    "HP:0000001",
-                    "HP:0000006",
-                    "HP:0000005",
-                    "HP:0034345",
-                ],
+                "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                 "object_label": "Autosomal dominant inheritance (HPO)",
                 "object_closure_label": [
                     "All (HPO)",
@@ -2368,12 +2273,7 @@ def associations():
                 "original_object": None,
                 "object_namespace": "HP",
                 "object_category": "biolink:GeneticInheritance",
-                "object_closure": [
-                    "HP:0000001",
-                    "HP:0000006",
-                    "HP:0000005",
-                    "HP:0034345",
-                ],
+                "object_closure": ["HP:0000001", "HP:0000006", "HP:0000005", "HP:0034345"],
                 "object_label": "Autosomal dominant inheritance (HPO)",
                 "object_closure_label": [
                     "All (HPO)",

@@ -1,4 +1,5 @@
 import argparse
+import json
 import os
 import sys
 from pathlib import Path
@@ -16,8 +17,9 @@ from monarch_py.implementations.solr.solr_query_utils import (
 from monarch_py.service.solr_service import SolrService, core
 from monarch_py.utils.utils import format_output
 
-
 ### Define variables
+oak = OakImplementation()
+oak.init_semsim()
 si = SolrImplementation()
 solr_url = os.getenv("MONARCH_SOLR_URL", "http://localhost:8983/solr")
 solr_entities = SolrService(base_url=solr_url, core=core.ENTITY)
@@ -32,10 +34,13 @@ category = "biolink:DiseaseToPhenotypicFeatureAssociation"
 
 
 ### Writers
-
-
 def write_frontend_fixture(key, value):
-    format_output("json", value, f"{frontend_fixture_dir}/{key}.json")
+    file = f"{frontend_fixture_dir}/{key}.json"
+    try:
+        format_output("json", value, file)
+    except AttributeError:
+        with open(file, "w") as f:
+            json.dump(value, f, indent=4)
 
 
 def write_backend_fixture(key, value):
@@ -74,8 +79,30 @@ def main(
     fixtures = {}
     extra_fixtures = {}
 
-    ### Generate main fixtures
+    ### Generate metadata fixtures
+    if metadata or all_fixtures:
+        print(f"{'*'*120}\n\tGenerating metadata fixtures...")
+        targets = [
+            "biolink:Gene",
+            "biolink:PhenotypicQuality",
+            "biolink:Disease",
+            "biolink:GeneToPhenotypicFeatureAssociation",
+            "biolink:DiseaseToPhenotypicFeatureAssociation",
+            "biolink:CorrelatedGeneToDiseaseAssociation",
+            "biolink:CausalGeneToDiseaseAssociation",
+        ]
+        counts = []
+        node_ffs = si.search(q="*:*", facet_fields=["category"], limit=0).facet_fields[0]  # type: ignore
+        for fv in [f for f in node_ffs.facet_values if f.label in targets]:  # type: ignore
+            counts.append({"label": fv.label, "count": fv.count})
+        association_ffs = si.get_association_facets(facet_fields=["category"]).facet_fields[0]  # type: ignore
+        for fv in [f for f in association_ffs.facet_values if f.label in targets]:  # type: ignore
+            counts.append({"label": fv.label, "count": fv.count})
+        fixtures["metadata"] = counts
+
+    ### Generate core fixtures
     if any([backend, frontend, all_fixtures]):
+        print(f"{'*'*120}\n\tGenerating core fixtures...")
         fixtures["associations"] = si.get_associations(entity=[node_id])
         fixtures["association-counts"] = si.get_association_counts(entity=node_id)
         fixtures["association-table"] = si.get_association_table(entity=node_id, category=category, offset=0, limit=5)
@@ -89,14 +116,17 @@ def main(
         # fixtures['node-publication-abstract'] =
         # fixtures['node-publication-summary'] =
         # fixtures['ontologies'] =
-        # fixtures['phenotype-explorer-compare'] =
+        fixtures["phenotype-explorer-compare"] = oak.compare(
+            subjects=["MP:0010771", "MP:0002169"], objects=["HP:0004325"]
+        )
         # fixtures['phenotype-explorer-search'] =
         fixtures["search"] = si.search(q="fanconi")
         # fixtures['text-annotator'] =
         # fixtures['uptime'] =
 
     ### Generate extra backend fixtures
-    if backend or all_fixtures:        
+    if backend or all_fixtures:
+        print(f"{'*'*120}\n\tGenerating extra backend fixtures...")
         extra_fixtures["association-counts-query"] = build_association_counts_query(entity=node_id)
         extra_fixtures["association-query-params"] = {
             "category": ["biolink:TestCase"],
@@ -121,9 +151,7 @@ def main(
         extra_fixtures["search-query"] = build_search_query(q="fanconi")
 
         # solr doc fixtures
-        extra_fixtures["association-response"] = solr_associations.query(
-            build_association_query(entity=[node_id])
-        )
+        extra_fixtures["association-response"] = solr_associations.query(build_association_query(entity=[node_id]))
         extra_fixtures["association-counts-response"] = solr_associations.query(
             extra_fixtures["association-counts-query"]
         )
@@ -136,12 +164,12 @@ def main(
         extra_fixtures["search-response"] = solr_entities.query(extra_fixtures["search-query"])
 
     ### Write frontend fixtures
-    if frontend or all_fixtures:
+    if any([frontend, metadata, all_fixtures]):
         for key, value in fixtures.items():
-            format_output("json", value, f"{frontend_fixture_dir}/{key}.json")
+            write_frontend_fixture(key, value)
 
     ### Write backend fixtures
-    if backend or all_fixtures:
+    if any([backend, metadata, all_fixtures]):
         backend_fixtures = {**fixtures, **extra_fixtures}
         for key, value in backend_fixtures.items():
             write_backend_fixture(key, value)
@@ -159,7 +187,7 @@ if __name__ == "__main__":
         "-m", "--metadata", help="Generate metadata fixtures", default=False, action=argparse.BooleanOptionalAction
     )
     parser.add_argument(
-        "-a", "--all", help="Generate all fixtures", default=True, action=argparse.BooleanOptionalAction
+        "-a", "--all-fixtures", help="Generate all fixtures", default=False, action=argparse.BooleanOptionalAction
     )
     args = parser.parse_args()
     main(**vars(args))
