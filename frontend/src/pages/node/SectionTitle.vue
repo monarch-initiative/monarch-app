@@ -4,19 +4,17 @@
 
 <template>
   <AppSection design="fill" class="section">
-    <AppFlex dir="column" gap="small">
+    <AppFlex dir="column">
       <AppHeading class="heading" :icon="getCategoryIcon(node.category)">
         {{ node.name }}
       </AppHeading>
+
       <AppFlex>
+        <span>
+          {{ getCategoryLabel(node.category) }}
+        </span>
         <AppButton
-          v-tooltip="'The category/type of this node'"
-          design="small"
-          color="secondary"
-          :text="getCategoryLabel(node.category)"
-        />
-        <AppButton
-          v-tooltip="'The ID of this node. Click to copy.'"
+          v-tooltip="'ID of this node (click to copy)'"
           design="small"
           color="secondary"
           icon="hashtag"
@@ -24,13 +22,24 @@
           :copy="true"
         />
       </AppFlex>
+
+      <AppButton
+        v-if="fromSearch"
+        icon="arrow-left"
+        :text="`Back to search &quot;${fromSearch}&quot;`"
+        design="small"
+        @click="$router.go(-1)"
+      />
     </AppFlex>
   </AppSection>
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
+import { truncate } from "lodash";
 import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
 import type { Node } from "@/api/model";
+import { parse } from "@/util/object";
 
 type Props = {
   /** current node */
@@ -38,6 +47,11 @@ type Props = {
 };
 
 defineProps<Props>();
+
+/** checking if coming from search */
+const fromSearch = computed(() =>
+  truncate(parse(window.history.state.fromSearch, "")),
+);
 </script>
 
 <style lang="scss" scoped>
@@ -46,11 +60,8 @@ defineProps<Props>();
   padding-bottom: 30px !important;
 }
 
-.button {
-  color: $off-black !important;
-}
-
 .heading {
+  padding: 0;
   font-size: 1.2rem;
 }
 

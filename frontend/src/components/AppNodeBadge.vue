@@ -14,7 +14,9 @@
       v-if="!currentPage"
       :to="`/node/${node.id}`"
       :state="
-        breadcrumb ? { breadcrumbs: [...breadcrumbs, breadcrumb] } : undefined
+        breadcrumb
+          ? { breadcrumbs: [...breadcrumbs, breadcrumb] }
+          : state || undefined
       "
       >{{ node.name || node.id }}</AppLink
     >
@@ -44,12 +46,15 @@ type Props = {
    * came from and relation between that node and this node.
    */
   breadcrumb?: Breadcrumb;
+  /** state data to pass through to link component */
+  state?: { [key: string]: unknown };
 };
 
 const props = withDefaults(defineProps<Props>(), {
   icon: true,
   link: true,
   breadcrumb: undefined,
+  state: undefined,
 });
 
 /** whether we're already on page we're linking to */

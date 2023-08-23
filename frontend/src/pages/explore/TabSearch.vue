@@ -51,14 +51,11 @@
       align-h="stretch"
     >
       <div class="title">
-        <AppIcon
-          v-tooltip="getCategoryLabel(result.category)"
-          :icon="getCategoryIcon(result.category)"
-          class="type"
+        <AppNodeBadge
+          :node="result"
+          :state="{ fromSearch: search }"
+          class="name"
         />
-        <AppLink :to="`/node/${result.id}`" class="name">
-          <span v-html="result.name"></span>
-        </AppLink>
         <AppButton
           v-tooltip="'Node ID (click to copy)'"
           class="id"
@@ -112,6 +109,7 @@ import { groupBy, mapValues, sortBy, startCase, uniq } from "lodash";
 import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
 import type { SearchResults } from "@/api/model";
 import { getAutocomplete, getSearch } from "@/api/search";
+import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import type { Options as AutocompleteOptions } from "@/components/AppSelectAutocomplete.vue";
 import AppSelectAutocomplete from "@/components/AppSelectAutocomplete.vue";
 import type { Options as MultiOptions } from "@/components/AppSelectMulti.vue";
@@ -371,14 +369,13 @@ watch(from, () => runGetSearch(false));
   text-align: left;
 }
 
-.type {
-  flex-grow: 0;
-  flex-shrink: 0;
-  font-size: 2rem;
-}
-
 .name {
   flex-grow: 1;
+  flex-shrink: 0;
+}
+
+.name > :deep(svg) {
+  font-size: 2rem;
 }
 
 .id {

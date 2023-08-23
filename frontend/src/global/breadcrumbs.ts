@@ -12,4 +12,7 @@ export const breadcrumbs = ref<Breadcrumb[]>([]);
 
 /** keep breadcrumbs global variable in sync with history.state.breadcrumbs */
 export const updateBreadcrumbs = () =>
-  (breadcrumbs.value = parse(window.history.state?.breadcrumbs, []));
+  (breadcrumbs.value = parse<Breadcrumb[]>(
+    window.history.state?.breadcrumbs,
+    [],
+  ));

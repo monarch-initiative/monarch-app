@@ -30,7 +30,10 @@ export const routes: RouteRecordRaw[] = [
     beforeEnter: async () => {
       /** look for redirect in session storage (saved from public/404.html page) */
       const redirect = window.sessionStorage.redirect;
-      let redirectState = parse(window.sessionStorage.redirectState, {});
+      let redirectState = parse<{ [key: string]: unknown }>(
+        window.sessionStorage.redirectState,
+        {},
+      );
 
       /** after consuming, remove storage values */
       window.sessionStorage.removeItem("redirect");
