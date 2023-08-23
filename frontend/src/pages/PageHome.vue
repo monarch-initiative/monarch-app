@@ -44,14 +44,18 @@
     <!-- node counts, just for advertising -->
     <AppFlex gap="medium">
       <!-- node counts -->
-      <AppTile v-for="(item, index) in metadata.node" :key="index"
+      <AppTile
+        v-for="(item, index) in metadata.node"
+        :key="index"
         icon="category-gene"
         :title="startCase(item.label.replace(/biolink:/g, ''))"
         :subtitle="`~${item.count.toLocaleString()}`"
         design="small"
       />
       <!-- association counts -->
-      <AppTile v-for="(item, index) in metadata.association" :key="index"
+      <AppTile
+        v-for="(item, index) in metadata.association"
+        :key="index"
         icon="category-association"
         :title="startCase(item.label.replace(/biolink:/g, ''))"
         :subtitle="`~${item.count.toLocaleString()}`"
@@ -160,9 +164,9 @@ import AppPost from "@/components/AppPost.vue";
 import AppTabs from "@/components/AppTabs.vue";
 import AppTile from "@/components/AppTile.vue";
 import { useQuery } from "@/util/composables";
-import metadata from "./metadata.json"
 import tabs from "./explore/tabs.json";
 import TabSearch from "./explore/TabSearch.vue";
+import metadata from "./metadata.json";
 
 /** selected tab state */
 const tab = ref(tabs[0].id);
