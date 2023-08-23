@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { uniqueId } from "lodash";
 import { wrap } from "@/util/math";
