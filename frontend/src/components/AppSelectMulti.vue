@@ -279,23 +279,29 @@ function getModel(): Options {
 }
 
 /** select or deselect option(s) */
-function toggleSelect(index = -1, shift = false) {
-  /** toggle all */
+function toggleSelect(index = -1, solo = false) {
+  /**
+   * if all selected, and individual option clicked, start by selecting just
+   * clicked
+   */
+  if (index !== -1 && allSelected.value) solo = true;
+
+  /** toggle all options */
   if (index === -1) {
     if (allSelected.value) selected.value = [];
     else
       selected.value = Array(props.options.length)
         .fill(0)
         .map((_, index) => index);
-  } else if (shift) {
-    /** solo/un-solo one */
+  } else if (solo) {
+    /** solo/un-solo one option */
     if (isEqual(selected.value, [index]))
       selected.value = Array(props.options.length)
         .fill(0)
         .map((_, index) => index);
     else selected.value = [index];
   } else {
-    /** toggle one */
+    /** toggle one option */
     if (selected.value.includes(index))
       selected.value = selected.value.filter((value) => value !== index);
     else selected.value.push(index);
