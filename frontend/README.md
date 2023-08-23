@@ -49,11 +49,11 @@ yarn test:e2e --debug
 
 The frontend has a few "flags" that allow you to easily switch certain high-level development settings.
 
-URL parameter flags can be used to set and override a setting at "run time", when opening the webapp.
+URL parameter flags can be used to set and override a setting at "run time", when opening the web app.
 These flags stay until you refresh the page or open a new tab.
 For example, add `?flag=value` to a URL like `monarchinitiative.org/?unrelated-param=123&flag=value`.
 
-Environment variable flags can be used to set/override a setting at "compile time", when building the webapp.
+Environment variable flags can be used to set/override a setting at "compile time", when building the web app.
 These flags always have to be prefixed with `VITE_`.
 For example, set an env var before a command like `VITE_FLAG=value yarn dev`, or add it to `.env` or `.env.local` like `VITE_FLAG=value`.
 
@@ -64,8 +64,9 @@ Which version of the Monarch API to utilize in the frontend, e.g.:
 URL param: `monarchinitiative.org/?api=dev`  
 Env var: `VITE_API=local`
 
-If not set, inferred from domain of URL.
-See `src/api` for the complete list of short API names, full API urls they map to, and related logic.
+If not set, inferred from URL.
+Flag gets directly inserted into the API URL like `api-beta.monarchinitiative.org`.
+See `src/api/index.ts` for related logic.
 
 **`mock`**
 
