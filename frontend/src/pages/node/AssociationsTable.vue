@@ -77,7 +77,7 @@
     <!-- taxon specific -->
     <template #taxon="{ row }">
       {{
-        row.direction === "outgoing"
+        row.direction === AssociationDirectionEnum.outgoing
           ? row.object_taxon_label
           : row.subject_taxon_label
       }}
@@ -95,7 +95,11 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { getAssociations } from "@/api/associations";
 import { getCategoryLabel } from "@/api/categories";
-import type { DirectionalAssociation, Node } from "@/api/model";
+import {
+  AssociationDirectionEnum,
+  type DirectionalAssociation,
+  type Node,
+} from "@/api/model";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
 import type { Option } from "@/components/AppSelectSingle.vue";

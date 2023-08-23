@@ -1,10 +1,10 @@
 import { ref } from "vue";
-import type { Association, Node } from "@/api/model";
+import type { DirectionalAssociation, Node } from "@/api/model";
 import { parse } from "@/util/object";
 
-type Breadcrumb = {
-  node: Node;
-  predicate: Association["predicate"];
+export type Breadcrumb = {
+  node: Partial<Node>;
+  association: Partial<DirectionalAssociation>;
 };
 
 /** breadcrumbs object for breadcrumbs section on node page */

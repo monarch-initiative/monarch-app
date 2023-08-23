@@ -28,6 +28,7 @@
     <SectionHierarchy :node="node" />
     <SectionVisualization :node="node" />
     <SectionAssociations :node="node" />
+    <SectionBreadcrumbs :node="node" />
     <Teleport to="body">
       <TheTableOfContents />
     </Teleport>
@@ -41,6 +42,7 @@ import { getNode } from "@/api/node";
 import TheTableOfContents from "@/components/TheTableOfContents.vue";
 import { addEntry } from "@/global/history";
 import { appDescription, appTitle } from "@/global/meta";
+import SectionBreadcrumbs from "@/pages/node/SectionBreadcrumbs.vue";
 import { scrollToHash } from "@/router";
 import { useQuery } from "@/util/composables";
 import SectionAssociations from "./SectionAssociations.vue";

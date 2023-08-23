@@ -29,6 +29,7 @@ import { computed } from "vue";
 import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
 import type { Node } from "@/api/model";
 import { breadcrumbs } from "@/global/breadcrumbs";
+import type { Breadcrumb } from "@/global/breadcrumbs";
 
 type Props = {
   /** node represented by badge */
@@ -42,7 +43,7 @@ type Props = {
    * breadcrumb object to add list when badge clicked on. include node that user
    * came from and relation between that node and this node.
    */
-  breadcrumb?: { [key: string]: unknown };
+  breadcrumb?: Breadcrumb;
 };
 
 const props = withDefaults(defineProps<Props>(), {

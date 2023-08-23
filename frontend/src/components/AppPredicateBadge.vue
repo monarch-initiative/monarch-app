@@ -14,11 +14,14 @@
 import { computed } from "vue";
 import { startCase } from "lodash";
 import { getCategoryLabel } from "@/api/categories";
-import type { DirectionalAssociation } from "@/api/model";
+import {
+  AssociationDirectionEnum,
+  type DirectionalAssociation,
+} from "@/api/model";
 
 type Props = {
-  /** current predicate */
-  association: DirectionalAssociation;
+  /** current association */
+  association: Partial<DirectionalAssociation>;
   /** whether to display arrows vertically */
   vertical?: boolean;
 };
@@ -26,7 +29,15 @@ type Props = {
 const props = defineProps<Props>();
 
 /** direction of arrows */
-const arrowDirection = computed(() => (props.vertical ? "down" : "right"));
+const arrowDirection = computed(() =>
+  props.association.direction === AssociationDirectionEnum.incoming
+    ? props.vertical
+      ? "up"
+      : "left"
+    : props.vertical
+    ? "down"
+    : "right",
+);
 </script>
 
 <style lang="scss" scoped>
