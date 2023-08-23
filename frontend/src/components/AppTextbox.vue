@@ -151,7 +151,6 @@ $height: 40px;
   border: solid 2px $off-black;
   border-radius: $rounded;
   outline: none;
-  background: $white;
   transition: box-shadow $fast;
 }
 
