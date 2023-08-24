@@ -1,4 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -10 120 120">
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="-10 -10 120 120"
+  fill="none"
+  stroke="currentColor"
+>
   <circle cx="50" cy="50" r="55" />
   <path d="M45 25c0 9.615 6.25 16.154 10 20m10 10c3.75 3.846 10 10.385 10 20" />
   <path

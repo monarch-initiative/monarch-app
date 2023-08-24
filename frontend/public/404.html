@@ -10,18 +10,16 @@
        * everything.
        */
 
-      /** turn on "preserve log" in chrome dev tools to still see this after nav */
-      console.info("Redirecting from:", window.location);
-      console.info("With state:", window.history.state);
+      /** turn on "preserve log" in dev tools to still see this after nav */
+      console.info("Redirecting from:", location);
+      console.info("With state:", history.state);
 
-      /** get redirect and state */
-      const { origin, pathname, search, hash } = window.location;
-      const { state } = window.history;
+      /** save redirect and state */
+      sessionStorage.redirect = location.href;
+      sessionStorage.redirectState = JSON.stringify(history.state);
 
-      /** set redirect and state */
-      window.sessionStorage.redirect = pathname + search + hash;
-      window.sessionStorage.redirectState = JSON.stringify(state);
-      window.location = "/";
+      /** navigate */
+      location = "/";
     </script>
   </body>
 </html>

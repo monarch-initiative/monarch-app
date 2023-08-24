@@ -27,6 +27,7 @@
             id: item.subject,
             name: item.subject_label,
             category: item.subject_category,
+            info: item.subject_taxon_label,
           }"
           :link="node.id !== item.subject"
         />
@@ -36,6 +37,7 @@
             id: item.object,
             name: item.object_label,
             category: item.object_category,
+            info: item.object_taxon_label,
           }"
           :link="node.id !== item.object"
         />

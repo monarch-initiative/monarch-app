@@ -6,9 +6,8 @@
       direction="col"
       gap="none"
       align-h="stretch"
-      class="toc"
+      :class="['toc', { expanded }]"
       :style="{ top: nudge + 'px' }"
-      :data-expanded="expanded"
       role="doc-toc"
       aria-label="Page table of contents"
       @click.stop
@@ -38,8 +37,7 @@
           v-for="(entry, index) in entries"
           :key="index"
           :to="'#' + entry.id"
-          class="entry"
-          :data-active="active === index"
+          :class="['entry', { active: active === index }]"
           :aria-current="active === index"
           @click="active = index"
         >
@@ -189,7 +187,7 @@ useMutationObserver(
   box-shadow: $shadow;
 }
 
-.toc[data-expanded="true"] {
+.toc.expanded {
   width: 210px;
   max-width: calc(100vw - 40px);
 }
@@ -224,7 +222,7 @@ useMutationObserver(
   transition: background $fast;
 }
 
-.entry[data-active="true"] {
+.entry.active {
   background: $light-gray;
 }
 

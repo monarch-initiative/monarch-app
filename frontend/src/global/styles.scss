@@ -168,13 +168,18 @@ strong {
   font-weight: 600;
 }
 
+::placeholder {
+  color: currentColor;
+  opacity: 0.5;
+}
+
 /** notification dot */
 
-[data-notification="true"] {
+.notification {
   position: relative;
 }
 
-[data-notification="true"]:after {
+.notification:after {
   position: absolute;
   top: 0;
   right: 0;

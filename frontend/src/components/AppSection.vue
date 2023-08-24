@@ -4,7 +4,7 @@
 -->
 
 <template>
-  <section class="section" :data-width="width" :data-design="design">
+  <section :class="['section', width, design]">
     <slot />
   </section>
 </template>
@@ -35,19 +35,19 @@ defineSlots<Slots>();
   text-align: center;
   transition: background $fast;
 
-  &[data-width="full"] {
+  &.full {
     padding: 50px 40px;
   }
 
-  &[data-width="medium"] {
+  &.medium {
     padding: 50px max(40px, calc((100% - $section) / 2));
   }
 
-  &[data-width="big"] {
+  &.big {
     padding: 50px max(40px, calc((100% - $section-big) / 2));
   }
 
-  &[data-design="normal"] {
+  &.normal {
     &:nth-child(odd) {
       background: $white;
     }
@@ -57,7 +57,7 @@ defineSlots<Slots>();
     }
   }
 
-  &[data-design="fill"] {
+  &.fill {
     background: $theme-light;
   }
 

@@ -11,15 +11,13 @@
     <div ref="textbox" class="textbox">
       <AppInput
         ref="input"
-        class="input"
+        :class="['input', { multi, 'has-icon': icon }]"
         v-bind="$attrs"
         :multi="multi"
         :model-value="modelValue"
         :placeholder="placeholder"
         :required="required"
         :debounce="debounce"
-        :data-multi="!!multi"
-        :data-icon="!!icon"
         @update:model-value="(...args) => $emit('update:modelValue', ...args)"
         @debounce="(...args) => $emit('debounce', ...args)"
         @change="(...args) => $emit('change', ...args)"
@@ -155,13 +153,13 @@ $height: 40px;
   transition: box-shadow $fast;
 }
 
-.input[data-multi="false"] {
+.input:not(.multi) {
   height: $height;
   padding: 0 calc($height * 0.25);
   line-height: $spacing;
 }
 
-.input[data-multi="true"] {
+.input.multi {
   min-width: 100%;
   max-width: 100%;
   height: calc($height * 4);
@@ -170,7 +168,7 @@ $height: 40px;
   line-height: $spacing;
 }
 
-.input[data-icon="true"] {
+.input.has-icon {
   padding-right: calc($height * 0.85);
 }
 

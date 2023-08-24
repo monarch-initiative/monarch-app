@@ -8,8 +8,7 @@
     align-h="left"
     direction="col"
     gap="small"
-    class="detail"
-    :data-big="big"
+    :class="['detail', { big }]"
   >
     <AppFlex gap="small" align-h="left">
       <AppIcon v-if="icon" :icon="icon" class="icon" />
@@ -69,18 +68,18 @@ defineSlots<Slots>();
   line-height: $spacing;
   text-align: left;
 
-  &[data-big="true"] {
+  &.big {
     width: 100%;
   }
 
-  &[data-big="false"] {
+  &:not(.big) {
     /** keep in sync with AppDetails gap */
     width: calc((100% - 30px) / 2);
   }
 
   @media (max-width: 700px) {
-    &[data-big] {
-      width: 100%;
+    & {
+      width: 100% !important;
     }
   }
 }

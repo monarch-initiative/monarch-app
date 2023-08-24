@@ -137,13 +137,13 @@ h3 {
 </style>
 
 <style lang="scss">
-[data-design="fill"] {
+section.fill {
   h1,
   h2,
   h3 {
     .icon {
       height: 1.2em;
-      color: $theme-dark;
+      color: $theme;
     }
   }
 }

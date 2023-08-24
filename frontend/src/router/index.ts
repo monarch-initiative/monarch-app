@@ -29,31 +29,33 @@ export const routes: RouteRecordRaw[] = [
     component: PageHome,
     beforeEnter: async () => {
       /** look for redirect in session storage (saved from public/404.html page) */
-      const redirect = window.sessionStorage.redirect;
-      let redirectState = parse(window.sessionStorage.redirectState, {});
+      const redirect = window.sessionStorage.redirect || "";
+      const redirectState = window.sessionStorage.redirectState || "{}";
+
+      /** parse serialized state */
+      const state = pick(
+        parse<{ [key: string]: unknown }>(redirectState, {}),
+        /** only keep fields added by this app */
+        ["phenotypes", "breadcrumbs", "fromSearch"],
+      );
 
       /** after consuming, remove storage values */
       window.sessionStorage.removeItem("redirect");
       window.sessionStorage.removeItem("redirectState");
 
-      /** log for debugging */
       if (import.meta.env.MODE !== "test") {
         console.info("Redirecting to:", redirect);
-        console.info("With state:", redirectState);
+        console.info("With state:", state);
       }
 
-      /**
-       * only keep state added by app, as to not interfere with built-in browser
-       * nav
-       */
-      redirectState = pick(redirectState, ["phenotypes", "breadcrumbs"]);
-
       /** apply state to current route */
-      if (!isEmpty(redirectState))
-        window.history.replaceState(redirectState, "");
+      if (!isEmpty(state)) window.history.replaceState(state, "");
 
       /** go to appropriate route */
-      if (redirect) return redirect;
+      if (redirect) {
+        const { pathname, search, hash } = new URL(redirect);
+        return pathname + search + hash;
+      }
     },
   },
   {

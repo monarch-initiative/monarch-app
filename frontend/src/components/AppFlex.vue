@@ -6,10 +6,7 @@
 
 <template>
   <div
-    class="flex"
-    :data-flow="flow"
-    :data-direction="direction"
-    :data-gap="gap"
+    :class="['flex', flow, direction, gap]"
     :style="{ justifyContent, alignItems }"
   >
     <slot />
@@ -67,40 +64,40 @@ const alignItems = computed(() =>
 
 <style lang="scss" scoped>
 .flex {
-  &[data-flow="block"] {
+  &.block {
     display: flex;
     width: 100%;
   }
 
-  &[data-flow="inline"] {
+  &.inline {
     display: inline-flex;
   }
 
-  &[data-direction="row"] {
+  &.row {
     flex-wrap: wrap;
   }
 
-  &[data-direction="col"] {
+  &.col {
     flex-direction: column;
   }
 
-  &[data-gap="none"] {
+  &.none {
     gap: 0;
   }
 
-  &[data-gap="tiny"] {
+  &.tiny {
     gap: 5px;
   }
 
-  &[data-gap="small"] {
+  &.small {
     gap: 10px;
   }
 
-  &[data-gap="medium"] {
+  &.medium {
     gap: 20px;
   }
 
-  &[data-gap="big"] {
+  &.big {
     gap: 40px;
   }
 }

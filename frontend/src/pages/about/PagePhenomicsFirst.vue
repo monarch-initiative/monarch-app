@@ -47,7 +47,7 @@
     </p>
   </AppSection>
 
-  <AppSection>
+  <AppSection design="fill">
     <AppHeading>Phenomics First Goals</AppHeading>
 
     <p>

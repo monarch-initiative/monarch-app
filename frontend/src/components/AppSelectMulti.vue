@@ -16,12 +16,16 @@
       :is="design === 'small' ? 'AppButton' : 'button'"
       :id="`select-${id}`"
       ref="anchor"
-      :class="design === 'normal' ? 'box' : ''"
+      :class="[
+        {
+          notification: !allSelected && !noneSelected,
+          box: design === 'normal',
+        },
+      ]"
       :aria-label="name"
       :aria-expanded="expanded"
       :aria-controls="`list-${id}`"
       aria-haspopup="listbox"
-      :data-notification="!allSelected && !noneSelected"
       icon="filter"
       design="small"
       @click="onClick"
@@ -30,14 +34,14 @@
     >
       <template v-if="design === 'normal'">
         <span class="box-label">
-          {{ startCase(name) }}
+          {{ name }}
           <span class="box-more">
             <template v-if="selected.length === 0">none selected</template>
             <template v-else-if="selected.length === options.length">
               all selected
             </template>
             <template v-else-if="selected.length === 1">
-              {{ options[selected[0]]?.id }}
+              {{ options[selected[0]]?.label || options[selected[0]]?.id }}
             </template>
             <template v-else>{{ selected.length }} selected</template>
           </span>
@@ -67,22 +71,20 @@
         <!-- select all -->
         <div
           :id="`option-${id}--1`"
-          class="option"
+          :class="['option', { highlighted: highlighted === -1 }]"
           role="option"
           :aria-label="allSelected ? 'Deselect all' : 'Select all'"
           :aria-selected="allSelected"
-          :data-selected="allSelected"
-          :data-highlighted="highlighted === -1"
           tabindex="0"
           @click="() => toggleSelect(-1)"
-          @mouseenter="highlighted = -1"
           @mousedown.prevent=""
           @focusin="() => null"
           @keydown="() => null"
         >
-          <span class="option-icon">
-            <AppIcon :icon="allSelected ? 'square-check' : 'square'" />
-          </span>
+          <AppIcon
+            :icon="allSelected ? 'square-check' : 'square'"
+            class="option-check"
+          />
           <span class="option-label truncate">All</span>
           <span class="option-count"></span>
         </div>
@@ -95,22 +97,20 @@
           :id="`option-${id}-${index}`"
           :key="index"
           v-tooltip="option.tooltip"
-          class="option"
+          :class="['option', { highlighted: highlighted === -1 }]"
           role="option"
           :aria-selected="selected.includes(index)"
-          :data-selected="selected.includes(index)"
-          :data-highlighted="index === highlighted"
           tabindex="0"
           @click="(event) => toggleSelect(index, event.shiftKey)"
-          @mouseenter.capture="highlighted = index"
           @mousedown.prevent=""
           @focusin="() => null"
           @keydown="() => null"
         >
           <AppIcon
             :icon="selected.includes(index) ? 'square-check' : 'square'"
-            class="option-icon"
+            class="option-check"
           />
+          <AppIcon v-if="option.icon" :icon="option.icon" class="option-icon" />
           <span class="option-label truncate">
             {{ option.label || option.id }}
           </span>
@@ -132,6 +132,8 @@ export type Option = {
   id: string;
   /** display label */
   label?: string;
+  /** icon */
+  icon?: string;
   /** count col */
   count?: number;
   /** tooltip on hover */
@@ -143,7 +145,7 @@ export type Options = Option[];
 
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from "vue";
-import { isEqual, startCase, uniqueId } from "lodash";
+import { isEqual, uniqueId } from "lodash";
 import { useFloating } from "@/util/composables";
 import { wrap } from "@/util/math";
 
@@ -174,14 +176,14 @@ type Emits = {
 const emit = defineEmits<Emits>();
 
 /** unique id for instance of component */
-const id = ref(uniqueId());
+const id = uniqueId();
 /** whether dropdown is open */
 const expanded = ref(false);
 /** array of indices of selected options */
 const selected = ref<number[]>([]);
 /** selected state when dropdown was opened */
 const original = ref<number[]>([]);
-/** index of option that is highlighted */
+/** index of option that is highlighted (keyboard controls) */
 const highlighted = ref(0);
 
 /** anchor element */
@@ -222,7 +224,7 @@ function onClick() {
   /** toggle dropdown */
   expanded.value ? close() : open();
   /** https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#clicking_and_focus */
-  document.querySelector<HTMLElement>(`#select-${id.value}`)?.focus();
+  document.querySelector<HTMLElement>(`#select-${id}`)?.focus();
 }
 
 /** when button blurred */
@@ -277,23 +279,29 @@ function getModel(): Options {
 }
 
 /** select or deselect option(s) */
-function toggleSelect(index = -1, shift = false) {
-  /** toggle all */
+function toggleSelect(index = -1, solo = false) {
+  /**
+   * if all selected, and individual option clicked, start by selecting just
+   * clicked
+   */
+  if (index !== -1 && allSelected.value) solo = true;
+
+  /** toggle all options */
   if (index === -1) {
     if (allSelected.value) selected.value = [];
     else
       selected.value = Array(props.options.length)
         .fill(0)
         .map((_, index) => index);
-  } else if (shift) {
-    /** solo/un-solo one */
+  } else if (solo) {
+    /** solo/un-solo one option */
     if (isEqual(selected.value, [index]))
       selected.value = Array(props.options.length)
         .fill(0)
         .map((_, index) => index);
     else selected.value = [index];
   } else {
-    /** toggle one */
+    /** toggle one option */
     if (selected.value.includes(index))
       selected.value = selected.value.filter((value) => value !== index);
     else selected.value.push(index);
@@ -324,7 +332,7 @@ watch(
   () =>
     /** scroll to highlighted in dropdown */
     document
-      .querySelector(`#option-${id.value}-${highlighted.value} > *`)
+      .querySelector(`#option-${id}-${highlighted.value} > *`)
       ?.scrollIntoView({ block: "nearest" }),
 );
 
@@ -385,7 +393,8 @@ const noneSelected = computed(() => !selected.value.length);
   transition: background $fast;
 }
 
-.option[data-highlighted="true"] {
+.option:hover,
+.option.highlighted {
   background: $light-gray;
 }
 
@@ -393,9 +402,13 @@ const noneSelected = computed(() => !selected.value.length);
   height: 10px;
 }
 
-.option-icon {
+.option-check {
   color: $theme;
   font-size: 1.2rem;
+}
+
+.option-icon {
+  color: $dark-gray;
 }
 
 .option-label {

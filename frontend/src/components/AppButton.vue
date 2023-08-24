@@ -6,12 +6,9 @@
   <component
     :is="component"
     ref="button"
-    class="button"
+    :class="['button', design, color, { text }]"
     :to="to"
     :type="type"
-    :data-design="design"
-    :data-color="color"
-    :data-text="!!text"
     @click="copy ? copyToClipboard() : click"
   >
     <span v-if="text" class="truncate">{{ text }}</span>
@@ -86,7 +83,7 @@ defineExpose({ button });
     opacity $fast,
     box-shadow $fast;
 
-  &[data-design="normal"] {
+  &.normal {
     min-width: min(200px, calc(100% - 40px));
     min-height: 40px;
     padding: 5px 20px;
@@ -95,11 +92,11 @@ defineExpose({ button });
     font-weight: 500;
     font-size: 1rem;
 
-    &[data-color="primary"] {
+    &.primary {
       background: $theme-light;
     }
 
-    &[data-color="secondary"] {
+    &.secondary {
       background: $light-gray;
     }
 
@@ -110,26 +107,26 @@ defineExpose({ button });
     }
   }
 
-  &[data-design="circle"] {
+  &.circle {
     border-radius: 999px;
     color: $off-black;
 
-    &[data-text="true"] {
+    &.text {
       min-width: 2em;
       min-height: 2em;
       padding: 0.25em 0.75em;
     }
 
-    &:not([data-text="true"]) {
+    &:not(.text) {
       width: 2.5em;
       height: 2.5em;
     }
 
-    &[data-color="primary"] {
+    &.primary {
       background: $theme-light;
     }
 
-    &[data-color="secondary"] {
+    &.secondary {
       background: $light-gray;
     }
 
@@ -140,16 +137,16 @@ defineExpose({ button });
     }
   }
 
-  &[data-design="small"] {
+  &.small {
     flex-direction: row-reverse;
     padding: 3px;
     border-radius: $rounded;
 
-    &[data-color="primary"] {
+    &.primary {
       color: $theme;
     }
 
-    &[data-color="secondary"] {
+    &.secondary {
       color: $dark-gray;
     }
 
@@ -162,8 +159,8 @@ defineExpose({ button });
 </style>
 
 <style lang="scss">
-[data-design="fill"] {
-  .button[data-design="circle"][data-color="primary"] {
+.fill {
+  .button.circle.primary {
     background: $theme-mid;
   }
 }
