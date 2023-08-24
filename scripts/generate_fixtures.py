@@ -131,21 +131,32 @@ def main(
 
         counts = {"node": [], "association": []}
         for node_count in [
-            {"label": "Genes", "icon": "category-gene", "count": node_counts["biolink:Gene"]},
+            {
+                "label": "Genes", 
+                "icon": "category-gene",
+                "count": node_counts["biolink:Gene"]
+            },
             {
                 "label": "Phenotypes",
-                "icon": "category-phenotypic-feature",
+                "icon": "category-phenotypic-quality",
                 "count": node_counts["biolink:PhenotypicQuality"],
             },
-            {"label": "Diseases", "icon": "category-disease", "count": node_counts["biolink:Disease"]},
-            {"label": "Total Nodes", "icon": "Total", "count": node_counts_total},
+            {
+                "label": "Diseases",
+                "icon": "category-disease",
+                "count": node_counts["biolink:Disease"]
+            },
+            {"label": "Total Nodes",
+             "icon": "Total",
+             "count": node_counts_total
+            },
         ]:
             counts["node"].append(node_count)
 
         for association_count in [
             {
                 "label": "Gene to Disease",
-                "icon": "category-gene-to-disease-association",
+                "icon": "chart",
                 "count": gene_to_disease,
             },
             {

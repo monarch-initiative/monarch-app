@@ -7,7 +7,7 @@
     },
     {
       "label": "Phenotypes",
-      "icon": "category-phenotypic-feature",
+      "icon": "category-phenotypic-quality",
       "count": 89431
     },
     {
@@ -24,7 +24,7 @@
   "association": [
     {
       "label": "Gene to Disease",
-      "icon": "category-gene-to-disease-association",
+      "icon": "chart",
       "count": 15010
     },
     {

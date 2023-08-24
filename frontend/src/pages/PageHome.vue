@@ -47,7 +47,7 @@
       <AppTile
         v-for="(item, index) in metadata.node"
         :key="index"
-        icon="category-gene"
+        :icon="item.icon"
         :title="startCase(item.label.replace(/biolink:/g, ''))"
         :subtitle="`~${item.count.toLocaleString()}`"
         design="small"
@@ -56,7 +56,7 @@
       <AppTile
         v-for="(item, index) in metadata.association"
         :key="index"
-        icon="category-association"
+        :icon="item.icon"
         :title="startCase(item.label.replace(/biolink:/g, ''))"
         :subtitle="`~${item.count.toLocaleString()}`"
         design="small"
