@@ -11,7 +11,7 @@
       :model-value="search"
       name="Search"
       placeholder="Gene, disease, phenotype, etc."
-      :class="{ headerBox }"
+      :class="{ 'header-box': headerBox }"
       :options="runGetAutocomplete"
       @focus="onFocus"
       @change="onChange"
@@ -123,7 +123,7 @@ import { useQuery } from "@/util/composables";
 type Props = {
   /** whether to show pared down version with just search box */
   minimal?: boolean;
-  /** whether to style search box for headerBox */
+  /** whether to style search box for header */
   headerBox?: boolean;
   /** whether to navigate to explore page when focusing search box */
   focusExplore?: boolean;
@@ -382,12 +382,12 @@ watch(from, () => runGetSearch(false));
   flex-shrink: 0;
 }
 
-.headerBox {
+.header-box {
   width: 300px;
   max-width: 100%;
 }
 
-.headerBox :deep(input) {
+.header-box :deep(input) {
   border-top-width: 0;
   border-right-width: 0;
   border-left-width: 0;
@@ -397,7 +397,7 @@ watch(from, () => runGetSearch(false));
   color: currentColor;
 }
 
-.headerBox :deep(.icon) {
+.header-box :deep(.icon) {
   color: currentColor;
 }
 

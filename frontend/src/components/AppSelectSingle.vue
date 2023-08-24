@@ -49,11 +49,15 @@
           :id="`option-${id}-${index}`"
           :key="index"
           v-tooltip="option.tooltip"
-          class="option"
+          :class="[
+            'option',
+            {
+              selected: selected === index,
+              highlighted: highlighted === index,
+            },
+          ]"
           role="option"
           :aria-selected="selected === index"
-          :data-selected="selected === index"
-          :data-highlighted="index === highlighted"
           tabindex="0"
           @click="selected = index"
           @mousedown.prevent=""
@@ -283,12 +287,12 @@ watch(
   transition: background $fast;
 }
 
-.option[data-selected="true"] {
+.option.selected {
   background: $theme-light;
 }
 
 .option:hover,
-.option[data-highlighted="true"] {
+.option.highlighted {
   background: $light-gray;
 }
 

@@ -10,12 +10,7 @@
 <template>
   <div class="select-tags">
     <!-- select box -->
-    <div
-      :id="`select-${id}`"
-      ref="target"
-      class="box"
-      :data-expanded="expanded"
-    >
+    <div :id="`select-${id}`" ref="target" :class="['box', { expanded }]">
       <!-- deselect button -->
       <AppButton
         v-for="(option, index) in selected"
@@ -100,10 +95,9 @@
           :id="`option-${id}-${index}`"
           :key="index"
           v-tooltip="option.tooltip"
-          class="option"
+          :class="['option', { highlighted: highlighted === index }]"
           role="option"
           :aria-selected="true"
-          :data-highlighted="index === highlighted"
           tabindex="0"
           @click="select(option)"
           @mousedown.prevent=""
@@ -419,7 +413,7 @@ watch(highlighted, () => {
 }
 
 .box:hover,
-.box[data-expanded="true"] {
+.box.expanded {
   box-shadow: $outline;
 }
 
@@ -459,7 +453,7 @@ watch(highlighted, () => {
 }
 
 .option:hover,
-.option[data-highlighted="true"] {
+.option.highlighted {
   background: $light-gray;
 }
 

@@ -5,7 +5,7 @@
 
 <template>
   <div class="post">
-    <div class="image" :data-image="!!image">
+    <div v-if="image" class="image">
       <img :src="image" alt="" />
     </div>
     <AppFlex align-h="left" direction="col" gap="small" class="text">
@@ -59,10 +59,7 @@ defineProps<Props>();
   width: 100px;
   height: 100px;
   overflow: hidden;
-
-  &[data-image="true"] {
-    box-shadow: $shadow;
-  }
+  box-shadow: $shadow;
 
   img {
     width: 100%;

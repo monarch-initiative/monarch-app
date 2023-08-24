@@ -3,7 +3,7 @@
 -->
 
 <template>
-  <header ref="header" class="header" :data-home="home">
+  <header ref="header" :class="['header', { home }]">
     <!-- header background visualization -->
     <TheNexus v-if="home" />
 
@@ -13,8 +13,7 @@
       <AppLink
         v-tooltip="home ? '' : 'Homepage'"
         :to="home ? '' : '/'"
-        class="logo"
-        :data-home="home"
+        :class="['logo', { home }]"
       >
         <TheLogo class="image" />
         <!-- make logo text the h1 on homepage -->
@@ -40,7 +39,7 @@
     </div>
 
     <!-- navigation bar -->
-    <nav class="nav" :data-home="home" :data-expanded="expanded">
+    <nav :class="['nav', { home, expanded }]">
       <TabSearch v-if="search" :minimal="true" :header-box="true" />
 
       <AppLink
@@ -107,7 +106,7 @@ onClickOutside(header, close);
 </script>
 
 <style lang="scss" scoped>
-$wrap: 700px;
+$wrap: 850px;
 
 /** header */
 
@@ -122,7 +121,7 @@ $wrap: 700px;
   color: $white;
 }
 
-.header[data-home="true"] {
+.header.home {
   justify-content: center;
 }
 
@@ -131,13 +130,13 @@ $wrap: 700px;
     flex-direction: column;
   }
 
-  .header[data-home="true"] {
+  .header.home {
     justify-content: space-between;
   }
 }
 
 @media not all and (max-width: $wrap) {
-  .header[data-home="true"] {
+  .header.home {
     position: relative;
     min-height: 300px;
   }
@@ -219,7 +218,7 @@ $wrap: 700px;
 }
 
 @media not all and (max-width: $wrap) {
-  .logo[data-home="true"] {
+  .logo.home {
     flex-direction: column;
 
     .image {
@@ -278,7 +277,7 @@ $wrap: 700px;
     margin-top: -10px;
   }
 
-  .nav[data-expanded="false"] {
+  .nav:not(.expanded) {
     display: none;
   }
 
@@ -289,7 +288,7 @@ $wrap: 700px;
 }
 
 @media not all and (max-width: $wrap) {
-  .nav[data-home="true"] {
+  .nav.home {
     position: absolute;
     top: 0;
     right: 0;

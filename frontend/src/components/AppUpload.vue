@@ -5,10 +5,9 @@
 <template>
   <AppButton
     v-tooltip="'Choose or drag & drop a file'"
-    class="button"
+    :class="['button', { drag }]"
     text="Upload"
     icon="upload"
-    :data-drag="drag"
     @click="onClick"
     @dragenter="drag = true"
     @dragleave="drag = false"
@@ -72,7 +71,7 @@ function onDrop(event: DragEvent) {
 </script>
 
 <style lang="scss" scoped>
-.button[data-drag="true"] {
+.button.drag {
   outline: dashed 2px $black;
   box-shadow: none !important;
 }

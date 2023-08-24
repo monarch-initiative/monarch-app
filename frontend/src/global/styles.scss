@@ -175,11 +175,11 @@ strong {
 
 /** notification dot */
 
-[data-notification="true"] {
+.notification {
   position: relative;
 }
 
-[data-notification="true"]:after {
+.notification:after {
   position: absolute;
   top: 0;
   right: 0;

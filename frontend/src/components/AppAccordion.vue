@@ -13,7 +13,7 @@
       <span v-if="text">{{ text }}</span>
       <AppIcon v-if="icon" class="icon" :icon="icon" />
     </span>
-    <AppIcon class="caret" icon="angle-down" :data-expanded="expanded" />
+    <AppIcon :class="['caret', { expanded }]" icon="angle-down" />
   </button>
   <div v-if="expanded" class="content">
     <slot />
@@ -78,9 +78,9 @@ const expanded = ref(false);
   position: relative;
   top: 2px;
   transition: transform $fast;
+}
 
-  &[data-expanded="true"] {
-    transform: rotate(-180deg);
-  }
+.expanded {
+  transform: rotate(-180deg);
 }
 </style>

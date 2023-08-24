@@ -137,7 +137,7 @@ h3 {
 </style>
 
 <style lang="scss">
-[data-design="fill"] {
+section.fill {
   h1,
   h2,
   h3 {

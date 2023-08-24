@@ -8,11 +8,12 @@
 
 <template>
   <!-- table data -->
-  <AppFlex direction="col" class="container" :data-expanded="expanded">
+  <AppFlex direction="col" :class="['container', { expanded }]">
     <div
-      class="wrapper"
-      :data-left="arrivedState.left"
-      :data-right="arrivedState.right"
+      :class="[
+        'wrapper',
+        { 'at-left': arrivedState.left, 'at-right': arrivedState.right },
+      ]"
     >
       <div class="left-scroll">
         <AppIcon icon="angle-left" />
@@ -34,10 +35,12 @@
               <th
                 v-for="(col, colIndex) in cols"
                 :key="colIndex"
-                class="th"
+                :class="[
+                  'th',
+                  col.align || 'left',
+                  { divider: col.slot === 'divider' },
+                ]"
                 :aria-sort="ariaSort"
-                :data-align="col.align || 'left'"
-                :data-divider="col.slot === 'divider'"
               >
                 <span>
                   {{ col.heading }}
@@ -77,11 +80,13 @@
               <td
                 v-for="(col, colIndex) in cols"
                 :key="colIndex"
-                class="td"
+                :class="[
+                  'td',
+                  col.align || 'left',
+                  { divider: col.slot === 'divider' },
+                ]"
                 :aria-rowindex="rowIndex + 1"
                 :aria-colindex="colIndex + 1"
-                :data-align="col.align || 'left'"
-                :data-divider="col.slot === 'divider'"
               >
                 <!-- if col has slot name, use to custom format/template cell -->
                 <slot
@@ -423,7 +428,7 @@ watch(
 
 <style lang="scss" scoped>
 .container {
-  &[data-expanded="true"] {
+  &.expanded {
     left: 0;
     width: calc(100vw - 100px);
     transform: translateX(0);
@@ -486,25 +491,25 @@ watch(
     overflow-x: auto;
   }
 
-  &[data-left="false"] .left-scroll {
+  &:not(.at-left) .left-scroll {
     opacity: 1;
   }
 
-  &[data-right="false"] .right-scroll {
+  &:not(.at-right) .right-scroll {
     opacity: 1;
   }
 
-  &[data-left="false"][data-right="true"] .scroll {
+  &:not(.at-left).at-right .scroll {
     -webkit-mask-image: linear-gradient(to left, black 75%, transparent);
     mask-image: linear-gradient(to left, black 75%, transparent);
   }
 
-  &[data-right="false"][data-left="true"] .scroll {
+  &:not(.at-right).at-left .scroll {
     -webkit-mask-image: linear-gradient(to right, black 75%, transparent);
     mask-image: linear-gradient(to right, black 75%, transparent);
   }
 
-  &[data-left="false"][data-right="false"] .scroll {
+  &:not(.at-left):not(.at-right) .scroll {
     -webkit-mask-image: linear-gradient(
       to left,
       transparent,
@@ -544,17 +549,17 @@ watch(
   padding: 5px 10px;
   gap: 10px;
 
-  &[data-align="left"] {
+  &.left {
     justify-content: flex-start;
     text-align: left;
   }
 
-  &[data-align="center"] {
+  &.center {
     justify-content: center;
     text-align: center;
   }
 
-  &[data-align="right"] {
+  &.right {
     justify-content: flex-end;
     text-align: right;
 
@@ -563,7 +568,7 @@ watch(
     }
   }
 
-  &[data-divider="true"] {
+  &.divider {
     width: 2px;
     margin: 0 5px;
     padding: 0;

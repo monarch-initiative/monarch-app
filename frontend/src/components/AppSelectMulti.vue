@@ -16,12 +16,16 @@
       :is="design === 'small' ? 'AppButton' : 'button'"
       :id="`select-${id}`"
       ref="anchor"
-      :class="design === 'normal' ? 'box' : ''"
+      :class="[
+        {
+          notification: !allSelected && !noneSelected,
+          box: design === 'normal',
+        },
+      ]"
       :aria-label="name"
       :aria-expanded="expanded"
       :aria-controls="`list-${id}`"
       aria-haspopup="listbox"
-      :data-notification="!allSelected && !noneSelected"
       icon="filter"
       design="small"
       @click="onClick"
@@ -67,12 +71,10 @@
         <!-- select all -->
         <div
           :id="`option-${id}--1`"
-          class="option"
+          :class="['option', { highlighted: highlighted === -1 }]"
           role="option"
           :aria-label="allSelected ? 'Deselect all' : 'Select all'"
           :aria-selected="allSelected"
-          :data-selected="allSelected"
-          :data-highlighted="highlighted === -1"
           tabindex="0"
           @click="() => toggleSelect(-1)"
           @mousedown.prevent=""
@@ -95,11 +97,9 @@
           :id="`option-${id}-${index}`"
           :key="index"
           v-tooltip="option.tooltip"
-          class="option"
+          :class="['option', { highlighted: highlighted === -1 }]"
           role="option"
           :aria-selected="selected.includes(index)"
-          :data-selected="selected.includes(index)"
-          :data-highlighted="index === highlighted"
           tabindex="0"
           @click="(event) => toggleSelect(index, event.shiftKey)"
           @mousedown.prevent=""
@@ -394,7 +394,7 @@ const noneSelected = computed(() => !selected.value.length);
 }
 
 .option:hover,
-.option[data-highlighted="true"] {
+.option.highlighted {
   background: $light-gray;
 }
 

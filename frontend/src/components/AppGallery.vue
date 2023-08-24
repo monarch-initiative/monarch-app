@@ -3,7 +3,7 @@
 -->
 
 <template>
-  <div class="gallery" :data-size="size">
+  <div :class="['gallery', size]">
     <slot />
   </div>
 </template>
@@ -33,7 +33,7 @@ $col: minmax(0, 1fr);
   justify-items: stretch;
   width: 100%;
 
-  &[data-size="small"] {
+  &.small {
     grid-template-columns: $col $col $col $col $col;
     gap: 20px;
 
@@ -46,7 +46,7 @@ $col: minmax(0, 1fr);
     }
   }
 
-  &[data-size="medium"] {
+  &.medium {
     grid-template-columns: $col $col $col;
     gap: 40px;
 
@@ -59,7 +59,7 @@ $col: minmax(0, 1fr);
     }
   }
 
-  &[data-size="big"] {
+  &.big {
     grid-template-columns: $col $col;
     gap: 40px;
 

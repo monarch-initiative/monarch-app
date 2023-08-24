@@ -6,8 +6,7 @@
   <AppLink
     v-tooltip="code === 'error' ? 'See dev console for more details' : ''"
     :to="link || ''"
-    class="status"
-    :data-code="code || ''"
+    :class="['status', code]"
     :aria-label="code || ''"
   >
     <AppIcon class="icon" :icon="icon" />
@@ -79,27 +78,27 @@ const icon = computed(() => icons[props.code]);
   font-size: 1.5rem;
 }
 
-.status[data-code="loading"] .icon {
+.status.loading .icon {
   color: $gray;
 }
 
-.status[data-code="paused"] .icon {
+.status.paused .icon {
   color: $gray;
 }
 
-.status[data-code="success"] .icon {
+.status.success .icon {
   color: $success;
 }
 
-.status[data-code="warning"] .icon {
+.status.warning .icon {
   color: $gray;
 }
 
-.status[data-code="error"] .icon {
+.status.error .icon {
   color: $error;
 }
 
-.status[data-code="unknown"] .icon {
+.status.unknown .icon {
   color: $gray;
 }
 

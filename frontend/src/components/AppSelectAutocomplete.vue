@@ -62,10 +62,9 @@
           :id="`option-${id}-${index}`"
           :key="index"
           v-tooltip="option.tooltip"
-          class="option"
+          :class="['option', { highlighted: index === highlighted }]"
           role="option"
           :aria-selected="true"
-          :data-highlighted="index === highlighted"
           tabindex="0"
           @click.prevent="() => select(option.label)"
           @mousedown.prevent=""
@@ -328,7 +327,7 @@ watch(highlighted, () => {
 }
 
 .option:hover,
-.option[data-highlighted="true"] {
+.option.highlighted {
   background: $light-gray;
 }
 
