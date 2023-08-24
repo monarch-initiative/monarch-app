@@ -41,6 +41,8 @@
 
     <!-- navigation bar -->
     <nav class="nav" :data-home="home" :data-expanded="expanded">
+      <TabSearch v-if="search" :minimal="true" :header-box="true" />
+
       <AppLink
         v-tooltip="'Dive right in and use Monarch'"
         class="link"
@@ -71,6 +73,7 @@ import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { onClickOutside } from "@vueuse/core";
 import TheLogo from "@/assets/TheLogo.vue";
+import TabSearch from "@/pages/explore/TabSearch.vue";
 import TheNexus from "./TheNexus.vue";
 import app from "../../package.json";
 
@@ -86,6 +89,11 @@ const header = ref<HTMLElement>();
 /** is home page (big) version */
 const home = computed((): boolean => route.name === "Home");
 
+/** whether to show search box */
+const search = computed(
+  (): boolean => route.name !== "Home" && route.name !== "Explore",
+);
+
 /** close nav */
 function close() {
   expanded.value = false;
@@ -99,7 +107,7 @@ onClickOutside(header, close);
 </script>
 
 <style lang="scss" scoped>
-$wrap: 600px;
+$wrap: 700px;
 
 /** header */
 
@@ -229,12 +237,16 @@ $wrap: 600px;
 
 .nav {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
   padding: 15px;
   gap: 10px;
 }
 
 .link {
   position: relative;
+  max-width: 100%;
   padding: 10px;
   color: $white;
   text-align: center;
@@ -262,8 +274,7 @@ $wrap: 600px;
 @media (max-width: $wrap) {
   .nav {
     position: unset;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
     margin-top: -10px;
   }
 
@@ -272,6 +283,7 @@ $wrap: 600px;
   }
 
   .link {
+    width: 200px;
     padding: 5px;
   }
 }

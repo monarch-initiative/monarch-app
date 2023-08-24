@@ -168,6 +168,11 @@ strong {
   font-weight: 600;
 }
 
+::placeholder {
+  color: currentColor;
+  opacity: 0.5;
+}
+
 /** notification dot */
 
 [data-notification="true"] {

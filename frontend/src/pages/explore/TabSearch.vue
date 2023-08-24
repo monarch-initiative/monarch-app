@@ -5,12 +5,13 @@
 -->
 
 <template>
-  <AppWrapper tag="AppSection" :wrap="!home">
+  <AppWrapper tag="AppSection" :wrap="!minimal">
     <!-- search box -->
     <AppSelectAutocomplete
       :model-value="search"
       name="Search"
-      placeholder="Search for a gene, disease, phenotype, etc."
+      placeholder="Gene, disease, phenotype, etc."
+      :class="{ headerBox }"
       :options="runGetAutocomplete"
       @focus="onFocus"
       @change="onChange"
@@ -18,7 +19,7 @@
     />
 
     <!-- facet dropdown filters -->
-    <AppFlex v-if="facets.length && !home">
+    <AppFlex v-if="facets.length && !minimal">
       <template v-for="(facet, index) in facets" :key="index">
         <AppSelectMulti
           v-if="Object.keys(facet.facet_values || {}).length"
@@ -32,7 +33,7 @@
     </AppFlex>
   </AppWrapper>
 
-  <AppSection v-if="!home">
+  <AppSection v-if="!minimal">
     <!-- status -->
     <AppStatus v-if="isLoading" code="loading">Loading results</AppStatus>
     <AppStatus v-else-if="isError" code="error"
@@ -120,11 +121,15 @@ import { appTitle } from "@/global/meta";
 import { useQuery } from "@/util/composables";
 
 type Props = {
-  /** whether to show pared down version for home page */
-  home: boolean;
+  /** whether to show pared down version with just search box */
+  minimal?: boolean;
+  /** whether to style search box for headerBox */
+  headerBox?: boolean;
+  /** whether to navigate to explore page when focusing search box */
+  focusExplore?: boolean;
 };
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 /** route info */
 const router = useRouter();
@@ -145,6 +150,8 @@ const dropdownsSelected = ref<{ [key: string]: MultiOptions }>({});
 
 /** when user focuses text box */
 async function onFocus() {
+  if (!props.focusExplore) return;
+
   /** navigate to explore page */
   await router.push({ ...route, name: "Explore" });
   /** refocus box */
@@ -354,6 +361,7 @@ watch(search, async () => {
   /** update url */
   const query: { [key: string]: string } = {};
   if (search.value) query.search = search.value;
+  /** navigate to explore page */
   await router.push({ ...route, name: "Explore", query });
 });
 
@@ -372,6 +380,25 @@ watch(from, () => runGetSearch(false));
 .name {
   flex-grow: 1;
   flex-shrink: 0;
+}
+
+.headerBox {
+  width: 300px;
+  max-width: 100%;
+}
+
+.headerBox :deep(input) {
+  border-top-width: 0;
+  border-right-width: 0;
+  border-left-width: 0;
+  border-radius: 0;
+  border-color: currentColor;
+  background: none;
+  color: currentColor;
+}
+
+.headerBox :deep(.icon) {
+  color: currentColor;
 }
 
 .name > :deep(svg) {

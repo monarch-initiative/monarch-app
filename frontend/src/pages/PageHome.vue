@@ -12,7 +12,7 @@
       :tabs="tabs"
       navigate="Explore"
     />
-    <TabSearch :home="true" />
+    <TabSearch :minimal="true" :focus-explore="true" />
   </AppSection>
 
   <AppSection>
