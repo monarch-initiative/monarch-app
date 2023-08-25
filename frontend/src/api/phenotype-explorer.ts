@@ -37,7 +37,7 @@ export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
   return {
     options: items.map((item) => ({
       id: item.id,
-      name: item.name,
+      label: item.name,
       spreadOptions:
         /**
          * if gene/disease, provide function to get associated phenotypes upon
@@ -62,12 +62,12 @@ const getPhenotypeAssociations = async (id = ""): Promise<Options> => {
       "biolink:GeneToPhenotypicFeatureAssociation",
       "biolink:DiseaseToPhenotypicFeatureAssociation",
     ],
-    limit: 1000,
+    limit: 500,
     direct: true,
   };
 
   /** make query */
-  const url = `${monarch}/associations`;
+  const url = `${monarch}/association`;
   const { items } = await request<AssociationResults>(url, params);
 
   /** convert into desired result format */
