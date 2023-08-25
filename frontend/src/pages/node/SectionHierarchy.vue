@@ -20,7 +20,13 @@
             v-for="(_class, index) in node.node_hierarchy?.super_classes"
             :key="index"
             :node="_class"
-            :breadcrumb="{ node }"
+            :breadcrumb="{
+              node,
+              association: {
+                predicate: 'is super class of',
+                direction: AssociationDirectionEnum.incoming,
+              },
+            }"
           />
         </AppFlex>
       </AppDetail>
@@ -38,7 +44,10 @@
             v-for="(_class, index) in node.node_hierarchy?.equivalent_classes"
             :key="index"
             :node="_class"
-            :breadcrumb="{ node }"
+            :breadcrumb="{
+              node,
+              association: { predicate: 'is equivalent class of' },
+            }"
           />
         </AppFlex>
       </AppDetail>
@@ -56,7 +65,10 @@
             v-for="(_class, index) in node.node_hierarchy?.sub_classes"
             :key="index"
             :node="_class"
-            :breadcrumb="{ node }"
+            :breadcrumb="{
+              node,
+              association: { predicate: 'is sub class of' },
+            }"
           />
         </AppFlex>
       </AppDetail>
@@ -65,7 +77,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Node } from "@/api/model";
+import { AssociationDirectionEnum, type Node } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";

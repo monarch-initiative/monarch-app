@@ -58,10 +58,10 @@ export const stringify = (value: unknown, space = 0) => {
 };
 
 /** safe json parse */
-export const parse = (value: string, defaultValue: unknown = null) => {
+export const parse = <Type>(value: string, defaultValue: Type) => {
   try {
     if (!value) return defaultValue;
-    else return JSON.parse(value);
+    else return JSON.parse(value) as Type;
   } catch (error) {
     console.warn("Invalid JSON parse");
     console.info(value);

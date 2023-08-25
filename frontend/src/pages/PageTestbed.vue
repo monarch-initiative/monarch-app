@@ -8,26 +8,17 @@
     <AppHeading>Testbed</AppHeading>
   </AppSection>
 
-  <!-- category icons -->
+  <!-- custom icons -->
   <AppSection>
-    <AppHeading>Category Icons</AppHeading>
-    <AppFlex>
-      <AppIcon icon="category-anatomy" />
-      <AppIcon icon="category-case" />
-      <AppIcon icon="category-cell-line" />
-      <AppIcon icon="category-disease" />
-      <AppIcon icon="category-fallback" />
-      <AppIcon icon="category-function" />
-      <AppIcon icon="category-gene" />
-      <AppIcon icon="category-genotype" />
-      <AppIcon icon="category-homolog" />
-      <AppIcon icon="category-interaction" />
-      <AppIcon icon="category-model" />
-      <AppIcon icon="category-ortholog-disease" />
-      <AppIcon icon="category-ortholog-phenotype" />
-      <AppIcon icon="category-pathway" />
-      <AppIcon icon="category-phenotype" />
-      <AppIcon icon="category-variant" />
+    <AppHeading>Custom Icons</AppHeading>
+    <AppFlex class="icons">
+      <AppIcon
+        v-for="(icon, index) of icons"
+        :key="index"
+        v-tooltip="icon + '.svg'"
+        :icon="icon"
+      />
+      <AppIcon icon="test-initials" />
     </AppFlex>
   </AppSection>
 
@@ -149,6 +140,7 @@
     <AppHeading>Table</AppHeading>
     <span>{{ omit(table, ["cols", "rows"]) }}</span>
     <AppTable
+      id="testbed"
       v-model:sort="table.sort"
       v-model:selectedFilters="table.selectedFilters"
       v-model:per-page="table.perPage"
@@ -178,6 +170,11 @@ import AppTable from "@/components/AppTable.vue";
 import AppTabs from "@/components/AppTabs.vue";
 import AppTextbox from "@/components/AppTextbox.vue";
 import { sleep } from "@/util/debug";
+
+/** get all files in custom icon folder */
+const icons = Object.values(import.meta.glob("@/assets/icons/*.svg")).map(
+  (icon) => (icon.name.split("/").pop() || "").replace(/\.svg$/, ""),
+);
 
 const input = ref("");
 
@@ -314,3 +311,10 @@ const table = ref({
 /** util */
 const log = console.info;
 </script>
+
+<style lang="scss" scoped>
+.icons {
+  color: $theme;
+  font-size: 4rem;
+}
+</style>

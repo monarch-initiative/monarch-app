@@ -12,7 +12,7 @@
       :tabs="tabs"
       navigate="Explore"
     />
-    <TabSearch :home="true" />
+    <TabSearch :minimal="true" :focus-explore="true" />
   </AppSection>
 
   <AppSection>
@@ -41,7 +41,7 @@
 
     <hr />
 
-    <!-- node counts, just for advertising -->
+    <!-- KG counts (for advertising) -->
     <AppFlex gap="medium">
       <!-- node counts -->
       <AppTile

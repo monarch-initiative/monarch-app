@@ -3,7 +3,7 @@
 -->
 
 <template>
-  <div class="tile" :data-design="design">
+  <div :class="['tile', design]">
     <AppButton
       v-if="to"
       design="circle"
@@ -53,7 +53,7 @@ withDefaults(defineProps<Props>(), { to: "", subtitle: "", design: "big" });
   color: $off-black;
 }
 
-.tile[data-design="small"] {
+.tile.small {
   width: 160px;
   gap: 10px;
 

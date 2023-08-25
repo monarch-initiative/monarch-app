@@ -6,7 +6,7 @@
   <component
     :is="customIcon"
     v-if="isCustom"
-    class="icon"
+    class="custom"
     :data-icon="icon"
     aria-hidden="true"
   />
@@ -14,9 +14,10 @@
     v-else-if="fontAwesome"
     :icon="fontAwesome"
     aria-hidden="true"
+    class="fa"
   />
   <svg v-else-if="initials" viewBox="-10 -10 120 120" class="initials">
-    <circle cx="50" cy="50" r="55" />
+    <circle fill="none" stroke="currentColor" cx="50" cy="50" r="55" />
     <text x="50" y="54">
       {{ initials }}
     </text>
@@ -76,27 +77,28 @@ const initials = computed(
 </script>
 
 <style lang="scss" scoped>
-.icon {
-  height: 1em;
-}
+$thickness: 5px;
 
-/** category icon styles */
-[data-icon^="category-"] {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  height: 1.2em;
+.custom {
+  height: 1em;
+
+  /** category icon styles */
+  &[data-icon^="category-"] {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: $thickness;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
 }
 
 .initials {
-  height: 1.2em;
+  height: 1em;
 
   circle {
     fill: none;
     stroke: currentColor;
-    stroke-width: 5;
+    stroke-width: $thickness;
   }
 
   text {

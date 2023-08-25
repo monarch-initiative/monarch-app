@@ -14,6 +14,7 @@
   <!-- results -->
   <AppTable
     v-else
+    id="associations"
     v-model:sort="sort"
     v-model:per-page="perPage"
     v-model:start="start"
@@ -30,6 +31,7 @@
           id: row.subject,
           name: row.subject_label,
           category: row.subject_category,
+          info: row.subject_taxon_label,
         }"
         :link="node.id !== row.subject"
       />
@@ -47,6 +49,7 @@
           id: row.object,
           name: row.object_label,
           category: row.object_category,
+          info: row.object_taxon_label,
         }"
         :link="node.id !== row.object"
       />
@@ -74,7 +77,7 @@
     <!-- taxon specific -->
     <template #taxon="{ row }">
       {{
-        row.direction === "outgoing"
+        row.direction === AssociationDirectionEnum.outgoing
           ? row.object_taxon_label
           : row.subject_taxon_label
       }}
@@ -92,7 +95,11 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { getAssociations } from "@/api/associations";
 import { getCategoryLabel } from "@/api/categories";
-import type { DirectionalAssociation, Node } from "@/api/model";
+import {
+  AssociationDirectionEnum,
+  type DirectionalAssociation,
+  type Node,
+} from "@/api/model";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
 import type { Option } from "@/components/AppSelectSingle.vue";
@@ -138,14 +145,14 @@ const cols = computed((): Cols<Datum> => {
       heading: getCategoryLabel(
         associations.value.items[0]?.subject_category || "Subject",
       ),
-      width: "max-content",
+      width: 3,
       sortable: true,
     },
     {
       slot: "predicate",
       key: "predicate",
       heading: "Association",
-      width: "max-content",
+      width: 2,
       sortable: true,
     },
     {
@@ -154,14 +161,14 @@ const cols = computed((): Cols<Datum> => {
       heading: getCategoryLabel(
         associations.value.items[0]?.object_category || "Object",
       ),
-      width: "max-content",
+      width: 3,
       sortable: true,
     },
     {
       slot: "evidence",
       key: "evidence_count",
       heading: "Evidence",
-      width: "min-content",
+      width: 1,
       align: "center",
       sortable: true,
     },
@@ -179,7 +186,7 @@ const cols = computed((): Cols<Datum> => {
     extraCols.push({
       slot: "taxon",
       heading: "Taxon",
-      width: "max-content",
+      width: 2,
     });
 
   /** phenotype specific columns */

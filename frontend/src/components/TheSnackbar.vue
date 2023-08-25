@@ -84,7 +84,7 @@ useEventListener(window, "snackbar", onPush);
 
 @keyframes flash {
   0% {
-    background: $theme-dark;
+    background: $theme;
   }
   100% {
     background: $off-black;

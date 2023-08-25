@@ -10,12 +10,7 @@
 <template>
   <div class="select-tags">
     <!-- select box -->
-    <div
-      :id="`select-${id}`"
-      ref="target"
-      class="box"
-      :data-expanded="expanded"
-    >
+    <div :id="`select-${id}`" ref="target" :class="['box', { expanded }]">
       <!-- deselect button -->
       <AppButton
         v-for="(option, index) in selected"
@@ -100,13 +95,11 @@
           :id="`option-${id}-${index}`"
           :key="index"
           v-tooltip="option.tooltip"
-          class="option"
+          :class="['option', { highlighted: highlighted === index }]"
           role="option"
           :aria-selected="true"
-          :data-highlighted="index === highlighted"
           tabindex="0"
           @click="select(option)"
-          @mouseenter.capture="highlighted = index"
           @mousedown.prevent=""
           @focusin="() => null"
           @keydown="() => null"
@@ -209,12 +202,12 @@ type Emits = {
 const emit = defineEmits<Emits>();
 
 /** unique id for instance of component */
-const id = ref(uniqueId());
+const id = uniqueId();
 /** array of selected options */
 const selected = ref<Options>([]);
 /** currently searched text */
 const search = ref("");
-/** index of option that is highlighted */
+/** index of option that is highlighted (keyboard controls) */
 const highlighted = ref(0);
 /** whether input box focused and dropdown expanded */
 const expanded = ref(false);
@@ -393,7 +386,7 @@ watch(
 watch(highlighted, () => {
   /** scroll to highlighted in dropdown */
   document
-    .querySelector(`#option-${id.value}-${highlighted.value} > *`)
+    .querySelector(`#option-${id}-${highlighted.value} > *`)
     ?.scrollIntoView({ block: "nearest" });
 });
 </script>
@@ -420,7 +413,7 @@ watch(highlighted, () => {
 }
 
 .box:hover,
-.box[data-expanded="true"] {
+.box.expanded {
   box-shadow: $outline;
 }
 
@@ -459,7 +452,8 @@ watch(highlighted, () => {
   transition: background $fast;
 }
 
-.option[data-highlighted="true"] {
+.option:hover,
+.option.highlighted {
   background: $light-gray;
 }
 

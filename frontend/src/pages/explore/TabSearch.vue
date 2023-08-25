@@ -5,12 +5,13 @@
 -->
 
 <template>
-  <AppWrapper tag="AppSection" :wrap="!home">
+  <AppWrapper tag="AppSection" :wrap="!minimal">
     <!-- search box -->
     <AppSelectAutocomplete
       :model-value="search"
       name="Search"
-      placeholder="Search for a gene, disease, phenotype, etc."
+      placeholder="Gene, disease, phenotype, etc."
+      :class="{ 'header-box': headerBox }"
       :options="runGetAutocomplete"
       @focus="onFocus"
       @change="onChange"
@@ -18,13 +19,13 @@
     />
 
     <!-- facet dropdown filters -->
-    <AppFlex v-if="facets.length && !home">
+    <AppFlex v-if="facets.length && !minimal">
       <template v-for="(facet, index) in facets" :key="index">
         <AppSelectMulti
           v-if="Object.keys(facet.facet_values || {}).length"
           v-model="dropdownsSelected[facet.label]"
-          v-tooltip="`${facet.label} filter`"
-          :name="`${facet.label}`"
+          v-tooltip="`<i>${startCase(facet.label)}</i> filter`"
+          :name="startCase(facet.label)"
           :options="dropdownsOptions[facet.label]"
           @change="onSelectedChange"
         />
@@ -32,7 +33,7 @@
     </AppFlex>
   </AppWrapper>
 
-  <AppSection v-if="!home">
+  <AppSection v-if="!minimal">
     <!-- status -->
     <AppStatus v-if="isLoading" code="loading">Loading results</AppStatus>
     <AppStatus v-else-if="isError" code="error"
@@ -51,14 +52,11 @@
       align-h="stretch"
     >
       <div class="title">
-        <AppIcon
-          v-tooltip="getCategoryLabel(result.category)"
-          :icon="getCategoryIcon(result.category)"
-          class="type"
+        <AppNodeBadge
+          :node="result"
+          :state="{ fromSearch: search }"
+          class="name"
         />
-        <AppLink :to="`/node/${result.id}`" class="name">
-          <span v-html="result.name"></span>
-        </AppLink>
         <AppButton
           v-tooltip="'Node ID (click to copy)'"
           class="id"
@@ -108,10 +106,11 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { groupBy, mapValues, sortBy, uniq } from "lodash";
+import { groupBy, mapValues, sortBy, startCase, uniq } from "lodash";
 import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
 import type { SearchResults } from "@/api/model";
 import { getAutocomplete, getSearch } from "@/api/search";
+import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import type { Options as AutocompleteOptions } from "@/components/AppSelectAutocomplete.vue";
 import AppSelectAutocomplete from "@/components/AppSelectAutocomplete.vue";
 import type { Options as MultiOptions } from "@/components/AppSelectMulti.vue";
@@ -122,11 +121,15 @@ import { appTitle } from "@/global/meta";
 import { useQuery } from "@/util/composables";
 
 type Props = {
-  /** whether to show pared down version for home page */
-  home: boolean;
+  /** whether to show pared down version with just search box */
+  minimal?: boolean;
+  /** whether to style search box for header */
+  headerBox?: boolean;
+  /** whether to navigate to explore page when focusing search box */
+  focusExplore?: boolean;
 };
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 /** route info */
 const router = useRouter();
@@ -147,6 +150,8 @@ const dropdownsSelected = ref<{ [key: string]: MultiOptions }>({});
 
 /** when user focuses text box */
 async function onFocus() {
+  if (!props.focusExplore) return;
+
   /** navigate to explore page */
   await router.push({ ...route, name: "Explore" });
   /** refocus box */
@@ -277,7 +282,11 @@ const {
             label:
               facet.label === "category"
                 ? getCategoryLabel(facet_value.label)
-                : facet_value.label,
+                : startCase(facet_value.label),
+            icon:
+              facet.label === "category"
+                ? getCategoryIcon(facet_value.label)
+                : "",
             count: facet_value.count,
           })) || [];
       }
@@ -352,6 +361,7 @@ watch(search, async () => {
   /** update url */
   const query: { [key: string]: string } = {};
   if (search.value) query.search = search.value;
+  /** navigate to explore page */
   await router.push({ ...route, name: "Explore", query });
 });
 
@@ -367,14 +377,32 @@ watch(from, () => runGetSearch(false));
   text-align: left;
 }
 
-.type {
-  flex-grow: 0;
-  flex-shrink: 0;
-  font-size: 2rem;
-}
-
 .name {
   flex-grow: 1;
+  flex-shrink: 0;
+}
+
+.header-box {
+  width: 300px;
+  max-width: 100%;
+}
+
+.header-box :deep(input) {
+  border-top-width: 0;
+  border-right-width: 0;
+  border-left-width: 0;
+  border-radius: 0;
+  border-color: currentColor;
+  background: none;
+  color: currentColor;
+}
+
+.header-box :deep(.icon) {
+  color: currentColor;
+}
+
+.name > :deep(svg) {
+  font-size: 2rem;
 }
 
 .id {
@@ -403,7 +431,7 @@ watch(from, () => runGetSearch(false));
   height: 30px;
   padding: 0 3px;
   border-radius: $rounded;
-  color: $theme-dark;
+  color: $theme;
   transition: box-shadow $fast;
 
   &:hover {

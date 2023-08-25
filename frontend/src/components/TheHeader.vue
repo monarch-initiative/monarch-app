@@ -3,7 +3,7 @@
 -->
 
 <template>
-  <header ref="header" class="header" :data-home="home">
+  <header ref="header" :class="['header', { home }]">
     <!-- header background visualization -->
     <TheNexus v-if="home" />
 
@@ -13,8 +13,7 @@
       <AppLink
         v-tooltip="home ? '' : 'Homepage'"
         :to="home ? '' : '/'"
-        class="logo"
-        :data-home="home"
+        :class="['logo', { home }]"
       >
         <TheLogo class="image" />
         <!-- make logo text the h1 on homepage -->
@@ -40,7 +39,9 @@
     </div>
 
     <!-- navigation bar -->
-    <nav class="nav" :data-home="home" :data-expanded="expanded">
+    <nav :class="['nav', { home, expanded }]">
+      <TabSearch v-if="search" :minimal="true" :header-box="true" />
+
       <AppLink
         v-tooltip="'Dive right in and use Monarch'"
         class="link"
@@ -71,6 +72,7 @@ import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { onClickOutside } from "@vueuse/core";
 import TheLogo from "@/assets/TheLogo.vue";
+import TabSearch from "@/pages/explore/TabSearch.vue";
 import TheNexus from "./TheNexus.vue";
 import app from "../../package.json";
 
@@ -86,6 +88,11 @@ const header = ref<HTMLElement>();
 /** is home page (big) version */
 const home = computed((): boolean => route.name === "Home");
 
+/** whether to show search box */
+const search = computed(
+  (): boolean => route.name !== "Home" && route.name !== "Explore",
+);
+
 /** close nav */
 function close() {
   expanded.value = false;
@@ -99,7 +106,7 @@ onClickOutside(header, close);
 </script>
 
 <style lang="scss" scoped>
-$wrap: 600px;
+$wrap: 850px;
 
 /** header */
 
@@ -110,11 +117,11 @@ $wrap: 600px;
   top: 0;
   align-items: center;
   justify-content: space-between;
-  background: $theme-dark;
+  background: $theme;
   color: $white;
 }
 
-.header[data-home="true"] {
+.header.home {
   justify-content: center;
 }
 
@@ -123,13 +130,13 @@ $wrap: 600px;
     flex-direction: column;
   }
 
-  .header[data-home="true"] {
+  .header.home {
     justify-content: space-between;
   }
 }
 
 @media not all and (max-width: $wrap) {
-  .header[data-home="true"] {
+  .header.home {
     position: relative;
     min-height: 300px;
   }
@@ -211,7 +218,7 @@ $wrap: 600px;
 }
 
 @media not all and (max-width: $wrap) {
-  .logo[data-home="true"] {
+  .logo.home {
     flex-direction: column;
 
     .image {
@@ -229,12 +236,16 @@ $wrap: 600px;
 
 .nav {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
   padding: 15px;
   gap: 10px;
 }
 
 .link {
   position: relative;
+  max-width: 100%;
   padding: 10px;
   color: $white;
   text-align: center;
@@ -262,22 +273,22 @@ $wrap: 600px;
 @media (max-width: $wrap) {
   .nav {
     position: unset;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
     margin-top: -10px;
   }
 
-  .nav[data-expanded="false"] {
+  .nav:not(.expanded) {
     display: none;
   }
 
   .link {
+    width: 200px;
     padding: 5px;
   }
 }
 
 @media not all and (max-width: $wrap) {
-  .nav[data-home="true"] {
+  .nav.home {
     position: absolute;
     top: 0;
     right: 0;

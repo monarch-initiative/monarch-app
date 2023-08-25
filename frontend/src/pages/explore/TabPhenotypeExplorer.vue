@@ -288,7 +288,7 @@ watch([aPhenotypes, bMode, bTaxon, bPhenotypes], clearResults, { deep: true });
 /** fill in phenotype ids from text annotator */
 onMounted(() => {
   if (window.history.state.phenotypes) {
-    const phenotypes = parse(window.history.state.phenotypes, []) as Options;
+    const phenotypes = parse<Options>(window.history.state.phenotypes, []);
     aPhenotypes.value = phenotypes;
     aGeneratedFrom.value = {
       option: { id: "text annotator" },

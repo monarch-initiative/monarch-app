@@ -24,10 +24,10 @@ const size = 4;
 /** distance between dots */
 const gap = 50;
 
-/** color of elements at rest (10% white, 90% theme-dark) */
-const baseColor: Color = [25, 143, 154];
-/** color of element when pulsing (50% white, 50% theme-dark) */
-const pulseColor: Color = [127, 193, 199];
+/** color of elements at rest */
+const baseColor: Color = [185, 100, 30 + 3];
+/** color of element when pulsing */
+const pulseColor: Color = [185, 0, 100];
 
 /** 3d axis rotations */
 let rx = 0;
@@ -35,7 +35,7 @@ let ry = 0;
 let rxTarget = 0;
 let ryTarget = 0;
 
-/** efficient rgb tuple format */
+/** efficient hsl tuple format */
 type Color = [number, number, number];
 
 type Dot = {
@@ -52,7 +52,7 @@ type Link = {
   /** dots to link together */
   from: Dot;
   to: Dot;
-  /** target and actual color (in efficient rgb tuple format) */
+  /** target and actual color (in efficient hsl tuple format) */
   color: Color;
   colorTarget: Color;
 };
@@ -86,7 +86,7 @@ const generate = debounce(() => {
       if (
         /** eliminate some to make more "organic" and less "grid" */
         Math.random() > 0.4 &&
-        /** avoid direct center to make visual space for log */
+        /** avoid direct center to make visual space for logo */
         (Math.abs(x - width / 2) > gap * 2 || Math.abs(y - height / 2) > gap)
       ) {
         const angle = Math.random() * 360;
@@ -181,9 +181,13 @@ function draw() {
   if (!ctx) return;
 
   /** draw links */
-  for (const { from, to, color } of links) {
+  for (const {
+    from,
+    to,
+    color: [h, s, l],
+  } of links) {
     if (!from.projected || !to.projected) continue;
-    ctx.strokeStyle = "rgb(" + color.join(",") + ")";
+    ctx.strokeStyle = `hsl(${h} ${s}% ${l}%)`;
     ctx.lineWidth = size / 3;
     ctx.beginPath();
     ctx.moveTo(from.projected.x, from.projected.y);
@@ -192,9 +196,12 @@ function draw() {
   }
 
   /** draw dots */
-  for (const { projected, color } of dots) {
+  for (const {
+    projected,
+    color: [h, s, l],
+  } of dots) {
     if (!projected) continue;
-    ctx.fillStyle = "rgb(" + color.join(",") + ")";
+    ctx.fillStyle = `hsl(${h} ${s}% ${l}%)`;
     ctx.beginPath();
     ctx.arc(projected.x, projected.y, size, 0, 2 * Math.PI);
     ctx.fill();
@@ -210,9 +217,13 @@ function pulse() {
         ? entity.point
         : getMidpoint(entity.from.point, entity.to.point);
 
+    /** how fast pulse propagates outward */
+    const speed = 0.2;
+    /** how wide pulse "band" is */
+    const band = 1.5;
     /** time delays */
-    const speed = 5 / 10; /** how fast pulse propagates outward */
-    const start = dist(center.x - width / 2, center.y - height / 2) / speed;
+    const start =
+      dist(center.x - width / 2, center.y - height / 2) / speed / band;
     const reset = start + 100 / speed;
     /** set timers */
     window.setTimeout(() => (entity.colorTarget = [...pulseColor]), start);

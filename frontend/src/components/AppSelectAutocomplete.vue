@@ -62,13 +62,11 @@
           :id="`option-${id}-${index}`"
           :key="index"
           v-tooltip="option.tooltip"
-          class="option"
+          :class="['option', { highlighted: index === highlighted }]"
           role="option"
           :aria-selected="true"
-          :data-highlighted="index === highlighted"
           tabindex="0"
           @click.prevent="() => select(option.label)"
-          @mouseenter.capture="highlighted = index"
           @mousedown.prevent=""
           @focusin="() => null"
           @keydown="() => null"
@@ -146,10 +144,10 @@ type Emits = {
 const emit = defineEmits<Emits>();
 
 /** unique id for instance of component */
-const id = ref(uniqueId());
+const id = uniqueId();
 /** currently searched text */
 const search = ref("");
-/** index of option that is highlighted */
+/** index of option that is highlighted (keyboard controls) */
 const highlighted = ref(0);
 /** whether input box focused and dropdown expanded */
 const expanded = ref(false);
@@ -281,7 +279,7 @@ watch(search, () => {
 watch(highlighted, () => {
   /** scroll to highlighted in dropdown */
   document
-    .querySelector(`#option-${id.value}-${highlighted.value} > *`)
+    .querySelector(`#option-${id}-${highlighted.value} > *`)
     ?.scrollIntoView({ block: "nearest" });
 });
 </script>
@@ -328,7 +326,8 @@ watch(highlighted, () => {
   transition: background $fast;
 }
 
-.option[data-highlighted="true"] {
+.option:hover,
+.option.highlighted {
   background: $light-gray;
 }
 

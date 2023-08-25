@@ -47,7 +47,7 @@
       />
       <AppTile
         to="/phenomics-first"
-        icon="category-phenotypic-feature"
+        icon="eye"
         title="Phenomics First"
         subtitle="Our approach to disease diagnosis"
       />

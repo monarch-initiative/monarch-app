@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { uniqueId } from "lodash";
 import { wrap } from "@/util/math";
@@ -87,7 +87,7 @@ type Emits = {
 const emit = defineEmits<Emits>();
 
 /** unique id for instance of component */
-const id = ref(uniqueId());
+const id = uniqueId();
 
 /** when user clicks on button */
 async function onClick(id: string) {
@@ -103,19 +103,23 @@ async function onKeydown(event: KeyboardEvent) {
     /** move selected tab */
     let index = props.tabs.findIndex((tab) => tab.id === props.modelValue);
 
-    /** go forward until we find a not disabled tab */
-    const forward = (index: number) =>
-      props.tabs.findIndex((tab, i) => i >= index && !tab.disabled) ||
-      props.tabs.length - 1;
-    /** go backward until we find a not disabled tab */
-    const backward = (index: number) =>
-      props.tabs.findLastIndex((tab, i) => i <= index && !tab.disabled) || 0;
+    /** keep index within bounds */
+    const wrapIndex = (index: number) => wrap(index, 0, props.tabs.length - 1);
+
+    /** go forward/backward until we find a non-disabled tab */
+    const skip = (index: number, direction: number) => {
+      index = wrapIndex(index);
+      let limit = props.tabs.length;
+      while (props.tabs[index].disabled && --limit > 0)
+        index = wrapIndex(index + direction);
+      return index;
+    };
 
     /** handle key strokes */
-    if (event.key === "ArrowLeft") index = backward(index - 1);
-    if (event.key === "ArrowRight") index = forward(index + 1);
-    if (event.key === "Home") index = forward(0);
-    if (event.key === "End") index = backward(props.tabs.length - 1);
+    if (event.key === "ArrowLeft") index = skip(index - 1, -1);
+    if (event.key === "ArrowRight") index = skip(index + 1, 1);
+    if (event.key === "Home") index = skip(0, 1);
+    if (event.key === "End") index = skip(props.tabs.length - 1, -1);
 
     /** update selected, wrapping beyond -1 or options length */
     emit(
@@ -139,7 +143,7 @@ watch(
   () => props.modelValue,
   async () => {
     /** focus the selected tab */
-    // const selector = `#tab-${id.value}-${props.modelValue}`;
+    // const selector = `#tab-${id}-${props.modelValue}`;
     // const button = document?.querySelector<HTMLButtonElement>(selector);
     // button?.focus();
 
