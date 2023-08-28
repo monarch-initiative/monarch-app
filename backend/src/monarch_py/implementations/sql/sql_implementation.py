@@ -139,8 +139,8 @@ class SQLImplementation(EntityInterface, AssociationInterface):
             NodeHierarchy: A NodeHierarchy object
         """
 
-        super_classes = self._get_associated_entities(entity, subject=entity.id, predicate="biolink:subclass_of")
-        sub_classes = self._get_associated_entities(entity, object=entity.id, predicate="biolink:subclass_of")
+        super_classes = self._get_associated_entities(this_entity=entity, subject=entity.id, predicate="biolink:subclass_of")
+        sub_classes = self._get_associated_entities(this_entity=entity, object=entity.id, predicate="biolink:subclass_of")
 
         return NodeHierarchy(
             super_classes=super_classes,
