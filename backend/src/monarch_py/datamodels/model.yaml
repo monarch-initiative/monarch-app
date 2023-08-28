@@ -210,7 +210,6 @@ classes:
   NodeHierarchy:
     slots:
       - super_classes
-      - equivalent_classes
       - sub_classes
   Results:
     abstract: true

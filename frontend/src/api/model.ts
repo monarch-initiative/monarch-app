@@ -344,7 +344,6 @@ export interface Node extends Entity {
 
 export interface NodeHierarchy {
     super_classes: Entity[],
-    equivalent_classes: Entity[],
     sub_classes: Entity[],
 };
 

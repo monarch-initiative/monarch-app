@@ -157,12 +157,10 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         """
 
         super_classes = self._get_associated_entities(entity, subject=entity.id, predicate="biolink:subclass_of")
-        equivalent_classes = self._get_associated_entities(entity, entity=entity.id, predicate="biolink:same_as")
         sub_classes = self._get_associated_entities(entity, object=entity.id, predicate="biolink:subclass_of")
 
         return NodeHierarchy(
             super_classes=super_classes,
-            equivalent_classes=equivalent_classes,
             sub_classes=sub_classes,
         )
 
