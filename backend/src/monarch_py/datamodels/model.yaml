@@ -260,12 +260,6 @@ slots:
       the object or in the object closure, the direction is backwards.
     range: AssociationDirectionEnum
     required: true
-  equivalent_classes:
-    range: Entity
-    multivalued: true
-    inlined: true
-    inlined_as_list: true
-    required: true
   evidence_count:
     description: count of supporting documents, evidence codes, and sources supplying evidence
     range: integer

@@ -108,7 +108,6 @@ def node():
                     "synonym": [],
                 },
             ],
-            "equivalent_classes": [],
             "sub_classes": [
                 {
                     "id": "MONDO:0020121",
