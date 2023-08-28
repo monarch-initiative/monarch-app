@@ -49,7 +49,9 @@
         :key="index"
         :icon="item.icon"
         :title="startCase(item.label.replace(/biolink:/g, ''))"
-        :subtitle="`${item.count.toLocaleString()}`"
+        :subtitle="`${item.count.toLocaleString(undefined, {
+          notation: 'compact',
+        })}`"
         design="small"
       />
       <!-- association counts -->
@@ -58,7 +60,9 @@
         :key="index"
         :icon="item.icon"
         :title="startCase(item.label.replace(/biolink:/g, ''))"
-        :subtitle="`${item.count.toLocaleString()}`"
+        :subtitle="`${item.count.toLocaleString(undefined, {
+          notation: 'compact',
+        })}`"
         design="small"
       />
     </AppFlex>
@@ -200,5 +204,9 @@ $wrap: 600px;
   .tiles {
     grid-template-columns: 1fr;
   }
+}
+
+:deep(.title) {
+  font-size: 1rem;
 }
 </style>
