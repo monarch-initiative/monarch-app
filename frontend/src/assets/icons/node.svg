@@ -1,0 +1,12 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="-10 -10 120 120"
+  fill="none"
+  stroke="currentColor"
+  stroke="currentColor"
+  stroke-width="5"
+  stroke-linecap="round"
+>
+  <circle cx="50" cy="50" r="55" />
+  <circle cx="50" cy="50" r="10" />
+</svg>
