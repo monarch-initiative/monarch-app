@@ -49,7 +49,7 @@
         :key="index"
         :icon="item.icon"
         :title="startCase(item.label.replace(/biolink:/g, ''))"
-        :subtitle="`~${item.count.toLocaleString()}`"
+        :subtitle="`${item.count.toLocaleString()}`"
         design="small"
       />
       <!-- association counts -->
@@ -58,7 +58,7 @@
         :key="index"
         :icon="item.icon"
         :title="startCase(item.label.replace(/biolink:/g, ''))"
-        :subtitle="`~${item.count.toLocaleString()}`"
+        :subtitle="`${item.count.toLocaleString()}`"
         design="small"
       />
     </AppFlex>

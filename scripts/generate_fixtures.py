@@ -102,7 +102,6 @@ def main(
     ### Generate metadata fixtures
     if metadata or all_fixtures:
         print(f"{'-'*120}\n\tGenerating metadata fixtures...")
-        "Genes | Phenotypes | Diseases | Gene :left_right_arrow: Pheno. | Disease :left_right_arrow: Pheno | Corr. Gene :left_right_arrow: Disease | Caus. Gene :left_right_arrow: Disease"
         targets = [
             "biolink:Gene",
             "biolink:PhenotypicQuality",
@@ -176,8 +175,7 @@ def main(
             }
         ]:
             counts["association"].append(association_count)
-        # counts = counts["node"] + counts["association"]
-        # pp(counts)
+
         with open(root / "frontend" / "src" / "pages" / "metadata.json", "w") as f:
             json.dump(counts, f, indent=2)
 
