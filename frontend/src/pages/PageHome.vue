@@ -20,7 +20,7 @@
 
     <!-- high level description of monarch as a whole. "elevator pitch" -->
     <!-- eslint-disable-next-line -->
-    <div class="tiles">
+    <AppGallery :cols="2">
       <AppTile
         icon="people"
         title="For informaticians, patients, clinicians, researchers, and more"
@@ -37,12 +37,12 @@
         icon="toolbox"
         title="Powerful API and ecosystem of related tools"
       />
-    </div>
+    </AppGallery>
 
     <hr />
 
     <!-- KG counts (for advertising) -->
-    <AppFlex gap="medium">
+    <AppGallery :cols="4">
       <!-- node counts -->
       <AppTile
         v-for="(item, index) in metadata.node"
@@ -65,7 +65,7 @@
         })}`"
         design="small"
       />
-    </AppFlex>
+    </AppGallery>
     <AppButton to="/about" text="Learn more" icon="arrow-right" />
   </AppSection>
 
@@ -188,22 +188,8 @@ onMounted(runGetBlogPosts);
 </script>
 
 <style lang="scss" scoped>
-$wrap: 600px;
-
-.tiles {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-}
-
 .explore {
   color: $off-black;
-}
-
-@media (max-width: $wrap) {
-  .tiles {
-    grid-template-columns: 1fr;
-  }
 }
 
 :deep(.title) {
