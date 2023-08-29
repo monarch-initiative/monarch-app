@@ -18,6 +18,10 @@
         <AppPredicateBadge
           :association="breadcrumb.association"
           :vertical="true"
+          :reverse="
+            breadcrumb.association.direction ===
+            AssociationDirectionEnum.incoming
+          "
         />
       </template>
 
@@ -39,7 +43,7 @@
 <script setup lang="ts">
 import { watch } from "vue";
 import { useRoute } from "vue-router";
-import type { Node } from "@/api/model";
+import { AssociationDirectionEnum, type Node } from "@/api/model";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
 import { breadcrumbs, updateBreadcrumbs } from "@/global/breadcrumbs";

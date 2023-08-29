@@ -50,6 +50,7 @@ $phone: 600px;
     var(--intended-cols);
   display: grid;
   grid-template-columns: repeat(var(--actual-cols), minmax(0, 1fr));
+  grid-auto-rows: 1fr;
   place-content: center;
   // when content doesn't fill first row, limit width of gallery so that cell size is same as if first row was full
   // e.g. team page, so groups with only 1-2 members aren't bigger than 3+ members
