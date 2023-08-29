@@ -96,13 +96,13 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
 
     def _get_associated_entity(self, association: Association, this_entity: Entity) -> Entity:
         """Returns the id, name, and category of the other Entity in an Association given this_entity"""
-        if this_entity.id in association.subject_closure:
+        if this_entity.id == association.subject:
             entity = Entity(
                 id=association.object,
                 name=association.object_label,
                 category=association.object_category,
             )
-        elif this_entity.id in association.object_closure:
+        elif this_entity.id == association.object:
             entity = Entity(
                 id=association.subject,
                 name=association.subject_label,
@@ -156,13 +156,15 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
             NodeHierarchy: A NodeHierarchy object
         """
 
-        super_classes = self._get_associated_entities(entity, subject=entity.id, predicate="biolink:subclass_of")
-        equivalent_classes = self._get_associated_entities(entity, entity=entity.id, predicate="biolink:same_as")
-        sub_classes = self._get_associated_entities(entity, object=entity.id, predicate="biolink:subclass_of")
+        super_classes = self._get_associated_entities(
+            this_entity=entity, subject=entity.id, predicate="biolink:subclass_of"
+        )
+        sub_classes = self._get_associated_entities(
+            this_entity=entity, object=entity.id, predicate="biolink:subclass_of"
+        )
 
         return NodeHierarchy(
             super_classes=super_classes,
-            equivalent_classes=equivalent_classes,
             sub_classes=sub_classes,
         )
 

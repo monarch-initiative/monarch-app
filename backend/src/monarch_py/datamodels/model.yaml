@@ -210,7 +210,6 @@ classes:
   NodeHierarchy:
     slots:
       - super_classes
-      - equivalent_classes
       - sub_classes
   Results:
     abstract: true
@@ -260,12 +259,6 @@ slots:
       If the entity is the subject or in the subject closure, the direction is forwards, if it is
       the object or in the object closure, the direction is backwards.
     range: AssociationDirectionEnum
-    required: true
-  equivalent_classes:
-    range: Entity
-    multivalued: true
-    inlined: true
-    inlined_as_list: true
     required: true
   evidence_count:
     description: count of supporting documents, evidence codes, and sources supplying evidence
@@ -371,8 +364,6 @@ slots:
     multivalued: true
   qualifiers:
     multivalued: true
-  relation:
-    range: string
   score:
     range: float
   sex_qualifier:

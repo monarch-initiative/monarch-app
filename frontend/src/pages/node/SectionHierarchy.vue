@@ -31,27 +31,6 @@
         </AppFlex>
       </AppDetail>
 
-      <!-- nodes that are "siblings" of node -->
-      <AppDetail
-        title="Equivalent classes"
-        icon="equals"
-        :blank="!node.node_hierarchy?.equivalent_classes.length"
-        :big="true"
-        :v-tooltip="`Nodes that are &quot;siblings&quot; of this node`"
-      >
-        <AppFlex class="flex" align-h="left" gap="small">
-          <AppNodeBadge
-            v-for="(_class, index) in node.node_hierarchy?.equivalent_classes"
-            :key="index"
-            :node="_class"
-            :breadcrumb="{
-              node,
-              association: { predicate: 'is equivalent class of' },
-            }"
-          />
-        </AppFlex>
-      </AppDetail>
-
       <!-- nodes that are "children" of node -->
       <AppDetail
         title="Sub-classes"

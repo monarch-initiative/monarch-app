@@ -13,8 +13,8 @@ def test_autocomplete(autocomplete):
     assert autocomplete.total != 0
 
 
-def test_compare(compare):
-    tsps = TermSetPairwiseSimilarity(**compare)
+def test_compare(phenotype_explorer_compare):
+    tsps = TermSetPairwiseSimilarity(**phenotype_explorer_compare)
     assert len(tsps.subject_best_matches) != 0
 
 

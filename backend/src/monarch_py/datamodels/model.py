@@ -407,7 +407,6 @@ class Node(Entity):
 class NodeHierarchy(ConfiguredBaseModel):
 
     super_classes: List[Entity] = Field(default_factory=list)
-    equivalent_classes: List[Entity] = Field(default_factory=list)
     sub_classes: List[Entity] = Field(default_factory=list)
 
 

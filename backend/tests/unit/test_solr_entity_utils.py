@@ -18,8 +18,8 @@ from monarch_py.implementations.solr.solr_implementation import SolrImplementati
                 object_label="Test Case 2",
                 predicate="biolink:subclass_of",
             ),
-            Entity(id="ENT:0000001", name="Test Case 1", category="biolink:testCase"),
             Entity(id="ENT:0000002", name="Test Case 2", category="biolink:testCase"),
+            Entity(id="ENT:0000003", name="Test Case 3", category="biolink:testCase"),
         ),
         (
             Association(
@@ -27,10 +27,10 @@ from monarch_py.implementations.solr.solr_implementation import SolrImplementati
                 object="ENT:0000004",
                 object_category="biolink:testCase",
                 object_label="Test Case 4",
-                object_closure=["ENT:0000003"],
-                subject="ENT:0000004",
+                object_closure=["ENT:0000001"],
+                subject="ENT:0000003",
                 subject_category="biolink:testCase",
-                subject_label="Test Case 4",
+                subject_label="Test Case 3",
                 predicate="biolink:subclass_of",
             ),
             Entity(id="ENT:0000003", name="Test Case 3", category="biolink:testCase"),

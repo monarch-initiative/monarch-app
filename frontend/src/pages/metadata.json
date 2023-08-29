@@ -28,12 +28,12 @@
       "count": 15010
     },
     {
-      "label": "Gene to Pheno.",
+      "label": "Gene to Phenotype",
       "icon": "association-gene-to-phenotype",
       "count": 735039
     },
     {
-      "label": "Disease to Pheno.",
+      "label": "Disease to Phenotype",
       "icon": "association-disease-to-phenotype",
       "count": 241110
     },
