@@ -15,16 +15,18 @@ let fromDomain =
 if (url.hostname === "monarchinitiative.org") fromDomain = "production";
 
 /** running web app locally */
-if (url.hostname === "localhost") fromDomain = "v3";
+if (url.hostname === "localhost")
+  // fromDomain = "local";
+  fromDomain = "next";
 
 /** netlify pr deploy previews */
-if (url.hostname.endsWith("netlify.app")) fromDomain = "v3";
+if (url.hostname.endsWith("netlify.app")) fromDomain = "next";
 
 /** specific ip */
 if (url.hostname.match(/\d+\.\d+\.\d+\.\d+/)) fromDomain = "relative";
 
 /** last resort fallback */
-if (!fromDomain) fromDomain = "v3";
+if (!fromDomain) fromDomain = "next";
 
 /** from env var */
 const fromEnv = import.meta.env.VITE_API || "";
@@ -47,6 +49,9 @@ if (apiName === "production")
 
 /** relative to wherever web app is hosted */
 if (apiName === "relative") monarch = suffix;
+
+/** locally running server */
+if (apiName === "local") monarch = `127.0.0.1:8000${suffix}`;
 
 export { monarch };
 

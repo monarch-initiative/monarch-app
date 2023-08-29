@@ -65,8 +65,7 @@ URL param: `monarchinitiative.org/?api=dev`
 Env var: `VITE_API=local`
 
 If not set, inferred from URL.
-Flag gets directly inserted into the API URL like `api-beta.monarchinitiative.org`.
-See `src/api/index.ts` for related logic.
+See `src/api/index.ts` for logic.
 
 **`mock`**
 
