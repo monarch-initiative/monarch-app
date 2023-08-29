@@ -146,7 +146,7 @@ def main(
                 "count": node_counts["biolink:Disease"]
             },
             {"label": "Total Nodes",
-             "icon": "Total",
+             "icon": "node",
              "count": node_counts_total
             },
         ]:
@@ -155,22 +155,22 @@ def main(
         for association_count in [
             {
                 "label": "Gene to Disease",
-                "icon": "chart",
+                "icon": "association-gene-to-disease",
                 "count": gene_to_disease,
             },
             {
                 "label": "Gene to Phenotype",
-                "icon": "category-gene-to-phenotype",
+                "icon": "association-gene-to-phenotype",
                 "count": association_counts["biolink:GeneToPhenotypicFeatureAssociation"],
             },
             {
                 "label": "Disease to Phenotype",
-                "icon": "category-disease-to-phenotype",
+                "icon": "association-disease-to-phenotype",
                 "count": association_counts["biolink:DiseaseToPhenotypicFeatureAssociation"],
             },
             {
                 "label": "Total Associations",
-                "icon": "Total",
+                "icon": "association",
                 "count": association_counts_total,
             }
         ]:
