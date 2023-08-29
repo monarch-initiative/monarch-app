@@ -11,7 +11,9 @@ def phenotype_explorer_compare():
             },
             "MP:0010771": {"id": "MP:0010771", "label": "integument phenotype (MPO)"},
         },
-        "object_termset": {"HP:0004325": {"id": "HP:0004325", "label": "Decreased body weight (HPO)"}},
+        "object_termset": {
+            "HP:0004325": {"id": "HP:0004325", "label": "Decreased body weight (HPO)"}
+        },
         "subject_best_matches": {
             "MP:0002169": {
                 "match_source": "MP:0002169",
