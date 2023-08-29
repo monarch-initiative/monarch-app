@@ -3,47 +3,47 @@
   "items": [
     {
       "label": "musculature",
-      "count": 1746,
+      "count": 1747,
       "id": "HP:0003011"
     },
     {
       "label": "nervous_system",
-      "count": 1125,
+      "count": 1118,
       "id": "HP:0000707"
     },
     {
       "label": "head_neck",
-      "count": 598,
+      "count": 573,
       "id": "HP:0000152"
     },
     {
       "label": "skeletal_system",
-      "count": 493,
+      "count": 504,
       "id": "HP:0000924"
     },
     {
       "label": "respiratory",
-      "count": 317,
+      "count": 318,
       "id": "HP:0002086"
     },
     {
       "label": "eye",
-      "count": 298,
+      "count": 276,
       "id": "HP:0000478"
     },
     {
       "label": "metabolism_homeostasis",
-      "count": 218,
+      "count": 219,
       "id": "HP:0001939"
     },
     {
       "label": "cardiovascular_system",
-      "count": 185,
+      "count": 192,
       "id": "HP:0001626"
     },
     {
       "label": "blood",
-      "count": 183,
+      "count": 185,
       "id": "HP:0001871"
     },
     {
@@ -63,7 +63,7 @@
     },
     {
       "label": "genitourinary_system",
-      "count": 44,
+      "count": 43,
       "id": "HP:0000119"
     },
     {
@@ -73,12 +73,12 @@
     },
     {
       "label": "ear",
-      "count": 28,
+      "count": 27,
       "id": "HP:0000598"
     },
     {
       "label": "endocrine",
-      "count": 26,
+      "count": 25,
       "id": "HP:0000818"
     },
     {

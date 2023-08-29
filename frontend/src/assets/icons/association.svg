@@ -1,0 +1,14 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 100 100"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="5"
+  stroke-linecap="round"
+>
+  <g transform="translate(50, 50) rotate(-25) translate(-50,-50)">
+    <circle cx="12" cy="50" r="8" />
+    <circle cx="88" cy="50" r="8" />
+    <path d="M 30 50 L 70 50" stroke-dasharray="1 12" />
+  </g>
+</svg>

@@ -35,7 +35,7 @@
     <AppStatus v-if="isError" code="error">Error loading checks</AppStatus>
 
     <!-- individual statuses -->
-    <AppGallery size="small">
+    <AppGallery :cols="4">
       <AppStatus
         v-for="(uptime, index) in uptimes"
         :key="index"

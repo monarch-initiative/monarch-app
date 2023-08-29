@@ -83,7 +83,8 @@ $thickness: 5px;
   height: 1em;
 
   /** category icon styles */
-  &[data-icon^="category-"] {
+  &[data-icon^="category-"],
+  &[data-icon^="association-"] {
     fill: none;
     stroke: currentColor;
     stroke-width: $thickness;

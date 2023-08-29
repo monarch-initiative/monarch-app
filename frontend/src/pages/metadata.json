@@ -1,0 +1,46 @@
+{
+  "node": [
+    {
+      "label": "Genes",
+      "icon": "category-gene",
+      "count": 514018
+    },
+    {
+      "label": "Phenotypes",
+      "icon": "category-phenotypic-quality",
+      "count": 89431
+    },
+    {
+      "label": "Diseases",
+      "icon": "category-disease",
+      "count": 26469
+    },
+    {
+      "label": "Total Nodes",
+      "icon": "node",
+      "count": 712881
+    }
+  ],
+  "association": [
+    {
+      "label": "Gene to Disease",
+      "icon": "association-gene-to-disease",
+      "count": 15010
+    },
+    {
+      "label": "Gene to Phenotype",
+      "icon": "association-gene-to-phenotype",
+      "count": 735039
+    },
+    {
+      "label": "Disease to Phenotype",
+      "icon": "association-disease-to-phenotype",
+      "count": 241110
+    },
+    {
+      "label": "Total Associations",
+      "icon": "association",
+      "count": 6430384
+    }
+  ]
+}
