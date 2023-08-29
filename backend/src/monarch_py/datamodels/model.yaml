@@ -364,8 +364,6 @@ slots:
     multivalued: true
   qualifiers:
     multivalued: true
-  relation:
-    range: string
   score:
     range: float
   sex_qualifier:
