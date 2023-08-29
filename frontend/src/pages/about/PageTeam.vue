@@ -29,7 +29,7 @@
       {{ group.name }}
     </AppHeading>
     <AppGroup :name="group.name" :link="group.link" />
-    <AppGallery :size="group.name.includes('Alumni') ? 'small' : 'medium'">
+    <AppGallery :cols="group.name.includes('Alumni') ? 5 : 3">
       <template v-if="!group.type">
         <AppMember
           v-for="(member, memberIndex) in group.members"

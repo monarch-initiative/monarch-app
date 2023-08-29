@@ -52,6 +52,7 @@ watch(
   width: 100%;
   gap: 10px;
   text-decoration: none;
+  overflow-wrap: break-word;
 }
 
 .image {

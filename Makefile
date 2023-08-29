@@ -112,7 +112,7 @@ test-frontend:
 .PHONY: fixtures
 fixtures: 
 	@echo "Generating fixtures..."
-	$(RUN) python scripts/generate_fixtures.py
+	$(RUN) python scripts/generate_fixtures.py --all-fixtures
 	$(RUN) black backend/tests/fixtures/
 	cd frontend && \
 		yarn lint 
@@ -148,11 +148,12 @@ docker-push:
 
 .PHONY: clean
 clean:
-	rm -rf `find . -name __pycache__`
 	rm -f `find . -type f -name '*.py[co]' `
-	rm -rf .pytest_cache
-	rm -rf dist
-	rm -rf backend/.venv
+	rm -rf `find . -name __pycache__` \
+		.ruff_cache .pytest_cache **/.ipynb_checkpoints \
+		frontend/dist \
+		backend/.venv \
+
 
 
 .PHONY: clobber

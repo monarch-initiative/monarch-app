@@ -46,7 +46,7 @@
     width="big"
   >
     <AppHeading>{{ group.year }}</AppHeading>
-    <AppGallery size="big">
+    <AppGallery>
       <AppCitation
         v-for="(publication, item) in group.items"
         :key="item"

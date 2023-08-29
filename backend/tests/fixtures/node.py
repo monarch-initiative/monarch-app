@@ -32,39 +32,21 @@ def node():
             {"id": "GARD:0007922", "url": None},
             {"id": "ICD10CM:G71.0", "url": None},
             {"id": "ICD9:359.1", "url": None},
-            {
-                "id": "MESH:D009136",
-                "url": "http://purl.obolibrary.org/obo/MESH_D009136",
-            },
+            {"id": "MESH:D009136", "url": "http://purl.obolibrary.org/obo/MESH_D009136"},
             {"id": "MedDRA:10028356", "url": None},
             {"id": "NCIT:C84910", "url": "http://purl.obolibrary.org/obo/NCIT_C84910"},
             {"id": "Orphanet:98473", "url": "http://www.orpha.net/ORDO/Orphanet_98473"},
             {"id": "SCTID:73297009", "url": None},
-            {
-                "id": "UMLS:C0026850",
-                "url": "http://linkedlifedata.com/resource/umls/id/C0026850",
-            },
+            {"id": "UMLS:C0026850", "url": "http://linkedlifedata.com/resource/umls/id/C0026850"},
         ],
         "provided_by_link": {
             "id": "phenio",
             "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/phenio/#",
         },
         "association_counts": [
-            {
-                "label": "Phenotypes",
-                "count": 4011,
-                "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
-            },
-            {
-                "label": "Causal Genes",
-                "count": 121,
-                "category": "biolink:CausalGeneToDiseaseAssociation",
-            },
-            {
-                "label": "Correlated Genes",
-                "count": 147,
-                "category": "biolink:CorrelatedGeneToDiseaseAssociation",
-            },
+            {"label": "Phenotypes", "count": 4011, "category": "biolink:DiseaseToPhenotypicFeatureAssociation"},
+            {"label": "Causal Genes", "count": 121, "category": "biolink:CausalGeneToDiseaseAssociation"},
+            {"label": "Correlated Genes", "count": 147, "category": "biolink:CorrelatedGeneToDiseaseAssociation"},
         ],
         "node_hierarchy": {
             "super_classes": [

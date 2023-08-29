@@ -13,6 +13,6 @@ site
 docs/Data-Model
 
 ### Script ignores
-scripts/scholarly_*.json
-
+scripts/*.json
+scripts/pubs_report.txt
 .DS_Store

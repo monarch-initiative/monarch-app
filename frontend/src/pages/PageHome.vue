@@ -5,7 +5,7 @@
 <template>
   <!-- dive right in -->
   <AppSection design="fill">
-    <div class="explore">Explore our knowledge on this website</div>
+    <div>Explore our knowledge on this website</div>
     <AppTabs
       v-model="tab"
       name="Explore Mode"
@@ -20,7 +20,7 @@
 
     <!-- high level description of monarch as a whole. "elevator pitch" -->
     <!-- eslint-disable-next-line -->
-    <div class="tiles">
+    <AppGallery :cols="2">
       <AppTile
         icon="people"
         title="For informaticians, patients, clinicians, researchers, and more"
@@ -37,62 +37,35 @@
         icon="toolbox"
         title="Powerful API and ecosystem of related tools"
       />
-    </div>
+    </AppGallery>
 
     <hr />
 
-    <!-- (rough) node counts, just for advertising -->
-    <AppFlex>
-      <!-- http://solr.monarchinitiative.org/solr/search/select?q=*:*&rows=0&facet=true&facet.field=category&wt=json -->
+    <!-- KG counts (for advertising) -->
+    <AppGallery :cols="4">
+      <!-- node counts -->
       <AppTile
-        icon="category-gene"
+        v-for="(item, index) in metadata.node"
+        :key="index"
+        :icon="item.icon"
+        :title="startCase(item.label.replace(/biolink:/g, ''))"
+        :subtitle="`${item.count.toLocaleString(undefined, {
+          notation: 'compact',
+        })}`"
         design="small"
-        :title="`~${(1000000).toLocaleString()}`"
-        subtitle="genes"
       />
+      <!-- association counts -->
       <AppTile
-        icon="category-disease"
+        v-for="(item, index) in metadata.association"
+        :key="index"
+        :icon="item.icon"
+        :title="startCase(item.label.replace(/biolink:/g, ''))"
+        :subtitle="`${item.count.toLocaleString(undefined, {
+          notation: 'compact',
+        })}`"
         design="small"
-        :title="`~${(25000).toLocaleString()}`"
-        subtitle="diseases"
       />
-      <AppTile
-        icon="category-phenotypic-feature"
-        design="small"
-        :title="`~${(70000).toLocaleString()}`"
-        subtitle="phenotypes"
-      />
-      <AppTile
-        icon="category-variant"
-        design="small"
-        :title="`~${(3000000).toLocaleString()}`"
-        subtitle="variants"
-      />
-      <AppTile
-        icon="category-genotype"
-        design="small"
-        :title="`~${(200000).toLocaleString()}`"
-        subtitle="genotypes"
-      />
-      <AppTile
-        icon="category-anatomical-entity"
-        design="small"
-        :title="`~${(100000).toLocaleString()}`"
-        subtitle="anatomies"
-      />
-      <AppTile
-        icon="category-publication"
-        design="small"
-        :title="`~${(50000).toLocaleString()}`"
-        subtitle="publications"
-      />
-      <AppTile
-        icon="knowledge-graph"
-        design="small"
-        :title="`~${(5000000).toLocaleString()}`"
-        subtitle="total nodes"
-      />
-    </AppFlex>
+    </AppGallery>
     <AppButton to="/about" text="Learn more" icon="arrow-right" />
   </AppSection>
 
@@ -184,6 +157,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+import { startCase } from "lodash";
 import { getBlogPosts } from "@/api/blog";
 import nodePage from "@/assets/demos/node-page.mp4";
 import phenotypeExplorer from "@/assets/demos/phenotype-explorer.mp4";
@@ -196,6 +170,7 @@ import AppTile from "@/components/AppTile.vue";
 import { useQuery } from "@/util/composables";
 import tabs from "./explore/tabs.json";
 import TabSearch from "./explore/TabSearch.vue";
+import metadata from "./metadata.json";
 
 /** selected tab state */
 const tab = ref(tabs[0].id);
@@ -213,21 +188,7 @@ onMounted(runGetBlogPosts);
 </script>
 
 <style lang="scss" scoped>
-$wrap: 600px;
-
-.tiles {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-}
-
-.explore {
-  color: $off-black;
-}
-
-@media (max-width: $wrap) {
-  .tiles {
-    grid-template-columns: 1fr;
-  }
+:deep(.title) {
+  font-size: 1rem;
 }
 </style>
