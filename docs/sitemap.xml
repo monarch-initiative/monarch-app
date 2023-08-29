@@ -311,11 +311,6 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/equivalent_classes/</loc>
-         <lastmod>2023-08-29</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/evidence_count/</loc>
          <lastmod>2023-08-29</lastmod>
          <changefreq>daily</changefreq>
@@ -647,11 +642,6 @@
     </url>
     <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/qualifiers/</loc>
-         <lastmod>2023-08-29</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/relation/</loc>
          <lastmod>2023-08-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
