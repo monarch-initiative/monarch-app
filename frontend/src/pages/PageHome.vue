@@ -5,7 +5,7 @@
 <template>
   <!-- dive right in -->
   <AppSection design="fill">
-    <div class="explore">Explore our knowledge on this website</div>
+    <div>Explore our knowledge on this website</div>
     <AppTabs
       v-model="tab"
       name="Explore Mode"
@@ -188,10 +188,6 @@ onMounted(runGetBlogPosts);
 </script>
 
 <style lang="scss" scoped>
-.explore {
-  color: $off-black;
-}
-
 :deep(.title) {
   font-size: 1rem;
 }

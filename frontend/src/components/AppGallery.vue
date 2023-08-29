@@ -5,7 +5,7 @@
 <template>
   <div
     :class="['gallery', `cols-${cols}`]"
-    :style="{ '--max-cols': cols, '--cells': Math.min(cells, cols) }"
+    :style="{ '--max-cols': cols, '--content-cols': Math.min(cells, cols) }"
   >
     <slot />
   </div>
@@ -36,44 +36,51 @@ const cells = computed(
 </script>
 
 <style lang="scss" scoped>
+$tablet: 900px;
+$phone: 600px;
+
 .gallery {
   --gap: 40px;
+  // actual number of cols with content, limited by screen size col reduction
+  --actual-cols: min(var(--content-cols), var(--screen-cols));
+  // intended number of cols per row, with content, limited by screen size col reduction
+  --intended-cols: min(var(--max-cols), var(--screen-cols));
+  // size of cell if row was full
+  --cell: (100% - (var(--intended-cols) - 1) * var(--gap)) /
+    var(--intended-cols);
   display: grid;
-  grid-template-columns: repeat(min(var(--cells), var(--cols)), minmax(0, 1fr));
+  grid-template-columns: repeat(var(--actual-cols), minmax(0, 1fr));
   place-content: center;
+  // when content doesn't fill first row, limit width of gallery so that cell size is same as if first row was full
+  // e.g. team page, so groups with only 1-2 members aren't bigger than 3+ members
   max-width: calc(
-    (
-        (100% - (min(var(--max-cols), var(--cols)) - 1) * var(--gap)) /
-          min(var(--max-cols), var(--cols))
-      ) * var(--cells) + (var(--cells) - 1) * var(--gap)
+    (var(--cell)) * var(--content-cols) + (var(--content-cols) - 1) * var(--gap)
   );
   gap: var(--gap);
 
   @media (min-width: 0) {
-    --cols: 1;
-
-    &.cols-4,
-    &.cols-5 {
-      --cols: 2;
-    }
+    --screen-cols: 1;
   }
 
-  @media (min-width: 600px) {
-    --cols: 2;
-
-    &.cols-4,
-    &.cols-5 {
-      --cols: 3;
-    }
+  @media (min-width: $phone) {
+    --screen-cols: 2;
   }
 
-  @media (min-width: 900px) {
-    --cols: var(--max-cols) !important;
+  @media (min-width: $tablet) {
+    --screen-cols: var(--max-cols) !important;
   }
 
   &.cols-4,
   &.cols-5 {
     --gap: 20px;
+
+    @media (min-width: 0) {
+      --screen-cols: 2;
+    }
+
+    @media (min-width: $phone) {
+      --screen-cols: 3;
+    }
   }
 }
 </style>
