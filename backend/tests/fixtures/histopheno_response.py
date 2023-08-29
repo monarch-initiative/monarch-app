@@ -5,7 +5,7 @@ import pytest
 def histopheno_response():
     return {
         "responseHeader": {
-            "QTime": 1,
+            "QTime": 2,
             "params": {
                 "facet.query": [
                     'object_closure:"HP:0000924"',
@@ -39,26 +39,26 @@ def histopheno_response():
                 "facet": "true",
             },
         },
-        "response": {"num_found": 4538, "start": 0, "docs": []},
+        "response": {"num_found": 4537, "start": 0, "docs": []},
         "facet_counts": {
             "facet_fields": {},
             "facet_queries": {
-                'object_closure:"HP:0000924"': 504,
-                'object_closure:"HP:0000707"': 1118,
-                'object_closure:"HP:0000152"': 573,
+                'object_closure:"HP:0000924"': 493,
+                'object_closure:"HP:0000707"': 1125,
+                'object_closure:"HP:0000152"': 598,
                 'object_closure:"HP:0001574"': 48,
-                'object_closure:"HP:0000478"': 276,
-                'object_closure:"HP:0001626"': 192,
-                'object_closure:"HP:0001939"': 219,
-                'object_closure:"HP:0000119"': 43,
+                'object_closure:"HP:0000478"': 298,
+                'object_closure:"HP:0001626"': 185,
+                'object_closure:"HP:0001939"': 218,
+                'object_closure:"HP:0000119"': 44,
                 'object_closure:"HP:0025031"': 143,
                 'object_closure:"HP:0002664"': 7,
-                'object_closure:"HP:0001871"': 185,
+                'object_closure:"HP:0001871"': 183,
                 'object_closure:"HP:0002715"': 21,
-                'object_closure:"HP:0000818"': 25,
-                'object_closure:"HP:0003011"': 1747,
-                'object_closure:"HP:0002086"': 318,
-                'object_closure:"HP:0000598"': 27,
+                'object_closure:"HP:0000818"': 26,
+                'object_closure:"HP:0003011"': 1746,
+                'object_closure:"HP:0002086"': 317,
+                'object_closure:"HP:0000598"': 28,
                 'object_closure:"HP:0003549"': 165,
                 'object_closure:"HP:0001197"': 20,
                 'object_closure:"HP:0001507"': 33,
