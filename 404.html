@@ -1,0 +1,25 @@
+<html>
+  <body>
+    <script type="text/javascript">
+      /** 404 redirect page */
+
+      /**
+       * only needed when app is hosted on GitHub Pages, Netlify, etc. and when
+       * navigating directly (from a fresh tab) to a non-root page. when
+       * navigating within the app, or on local dev server, vue-router handles
+       * everything.
+       */
+
+      /** turn on "preserve log" in dev tools to still see this after nav */
+      console.info("Redirecting from:", location);
+      console.info("With state:", history.state);
+
+      /** save redirect and state */
+      sessionStorage.redirect = location.href;
+      sessionStorage.redirectState = JSON.stringify(history.state);
+
+      /** navigate */
+      location = "/";
+    </script>
+  </body>
+</html>
