@@ -33,13 +33,6 @@ jobs:
       - name: Build app
         run: yarn build
 
-      - name: Deploy to gh-pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          clean: true
-          folder: frontend/dist
-          clean-exclude: docs
-
       # also create an image based off of nginx with the frontend baked in
       # (copied from ./build-image.yaml, with modifications)
       
