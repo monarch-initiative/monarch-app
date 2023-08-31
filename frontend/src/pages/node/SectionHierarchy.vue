@@ -20,13 +20,15 @@
             v-for="(_class, index) in node.node_hierarchy?.super_classes"
             :key="index"
             :node="_class"
-            :breadcrumb="{
-              node,
-              association: {
-                predicate: 'is super class of',
-                direction: AssociationDirectionEnum.incoming,
+            :breadcrumbs="[
+              {
+                node,
+                association: {
+                  predicate: 'is super class of',
+                  direction: AssociationDirectionEnum.incoming,
+                },
               },
-            }"
+            ]"
           />
         </AppFlex>
       </AppDetail>
@@ -44,10 +46,12 @@
             v-for="(_class, index) in node.node_hierarchy?.sub_classes"
             :key="index"
             :node="_class"
-            :breadcrumb="{
-              node,
-              association: { predicate: 'is sub class of' },
-            }"
+            :breadcrumbs="[
+              {
+                node,
+                association: { predicate: 'is sub class of' },
+              },
+            ]"
           />
         </AppFlex>
       </AppDetail>

@@ -24,7 +24,7 @@
     :total="associations.total"
     @download="download"
   >
-    <!-- "subject" (current node) -->
+    <!-- subject -->
     <template #subject="{ row }">
       <AppNodeBadge
         :node="{
@@ -33,16 +33,16 @@
           category: row.subject_category,
           info: row.subject_taxon_label,
         }"
-        :link="node.id !== row.subject"
+        :breadcrumbs="getBreadcrumbs(node, row, 'subject')"
       />
     </template>
 
-    <!-- "predicate" (association/relation) -->
+    <!-- predicate -->
     <template #predicate="{ row }">
       <AppPredicateBadge :association="row" />
     </template>
 
-    <!-- "object" (what current node has an association with) -->
+    <!-- object-->
     <template #object="{ row }">
       <AppNodeBadge
         :node="{
@@ -51,7 +51,7 @@
           category: row.object_category,
           info: row.object_taxon_label,
         }"
-        :link="node.id !== row.object"
+        :breadcrumbs="getBreadcrumbs(node, row, 'object')"
       />
     </template>
 
@@ -106,6 +106,8 @@ import type { Option } from "@/components/AppSelectSingle.vue";
 import AppTable from "@/components/AppTable.vue";
 import type { Cols, Sort } from "@/components/AppTable.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
+import type { Breadcrumb } from "@/global/breadcrumbs";
+import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
 import { useQuery } from "@/util/composables";
 import { downloadJson } from "@/util/download";
 
@@ -298,6 +300,15 @@ async function download() {
   );
   downloadJson(response);
 }
+
+/** extra link to put between current node and subject, if they are not the same */
+const superClass = computed<Breadcrumb>(() => ({
+  node: props.node,
+  association: {
+    predicate: "is super class of",
+    direction: AssociationDirectionEnum.outgoing,
+  },
+}));
 
 /** get associations when category or table state changes */
 watch(

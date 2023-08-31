@@ -8,11 +8,13 @@
     >
 
     <AppFlex direction="col">
-      <template v-for="(breadcrumb, index) of breadcrumbs" :key="index">
+      <template v-for="(breadcrumb, index) of _breadcrumbs" :key="index">
         <!-- node -->
         <AppNodeBadge
+          v-tooltip="`Go ${-breadcrumb.back} step(s) back`"
           :node="breadcrumb.node"
-          @click.prevent.capture="$router.go(-breadcrumbs.length + index)"
+          :style="{ opacity: breadcrumb.noEntry ? 0.5 : 1 }"
+          @click.prevent.capture="$router.go(breadcrumb.back)"
         />
         <!-- predicate -->
         <AppPredicateBadge
@@ -41,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from "vue";
+import { computed, watch } from "vue";
 import { useRoute } from "vue-router";
 import { AssociationDirectionEnum, type Node } from "@/api/model";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
@@ -57,6 +59,19 @@ defineProps<Props>();
 
 /** route info */
 const route = useRoute();
+
+/**
+ * breadcrumbs, plus computed "back" prop to tell how many history steps to go
+ * back when clicked
+ */
+const _breadcrumbs = computed(() => {
+  let back =
+    -breadcrumbs.value.filter((breadcrumb) => !breadcrumb.noEntry).length - 1;
+  return breadcrumbs.value.map((breadcrumb) => ({
+    ...breadcrumb,
+    back: breadcrumb.noEntry ? back : ++back,
+  }));
+});
 
 /** keep breadcrumbs global variable in sync with history.state.breadcrumbs */
 watch(() => route, updateBreadcrumbs, { immediate: true, deep: true });
