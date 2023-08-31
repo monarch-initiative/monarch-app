@@ -115,7 +115,7 @@
             {{ option.label || option.id }}
           </span>
           <span
-            v-if="option.count && (allSelected || noneSelected)"
+            v-if="option.count !== undefined && showCounts"
             class="option-count"
           >
             {{ option.count }}
@@ -158,15 +158,20 @@ type Props = {
   options: Options;
   /** visual design */
   design?: "normal" | "small";
+  /** whether to show counts for each option */
+  showCounts?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   design: "normal",
+  showCounts: true,
 });
 
 type Emits = {
   /** two-way bound selected items state */
   "update:modelValue": [Options];
+  /** whether specific items are selected, and not all/none selected */
+  partial: [boolean];
   /** when value changed */
   input: [];
   /** when value change "submitted"/"committed" by user */
@@ -343,6 +348,15 @@ const allSelected = computed(
 
 /** are no options selected */
 const noneSelected = computed(() => !selected.value.length);
+
+/** update partial status */
+watch(
+  [allSelected, noneSelected],
+  () => {
+    emit("partial", !(allSelected.value || noneSelected.value));
+  },
+  { immediate: true },
+);
 </script>
 
 <style lang="scss" scoped>
