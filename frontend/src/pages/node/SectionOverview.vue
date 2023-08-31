@@ -7,11 +7,6 @@
     <AppHeading icon="lightbulb">Overview</AppHeading>
 
     <AppDetails>
-      <!-- synonyms -->
-      <AppDetail :blank="!node.synonym?.length" title="Also Known As">
-        <p v-html="node.synonym?.join(',\n&nbsp;')"></p>
-      </AppDetail>
-
       <!-- symbol (gene specific) -->
       <AppDetail
         v-if="node.category === 'biolink:Gene'"
@@ -28,8 +23,17 @@
         </AppLink>
       </AppDetail>
 
+      <!-- synonyms -->
+      <AppDetail
+        :blank="!node.synonym?.length"
+        title="Also Known As"
+        :full="true"
+      >
+        <p v-html="node.synonym?.join(',\n&nbsp;')"></p>
+      </AppDetail>
+
       <!-- paragraph description -->
-      <AppDetail :blank="!node.description" title="Description" :big="true">
+      <AppDetail :blank="!node.description" title="Description" :full="true">
         <p
           v-tooltip="'Click to expand'"
           class="description truncate-10"

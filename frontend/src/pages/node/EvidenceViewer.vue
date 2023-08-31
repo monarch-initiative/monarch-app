@@ -32,7 +32,7 @@
         title="Evidence Codes"
         :count="association.evidence_count"
         icon="flask"
-        :big="true"
+        :full="true"
       >
         <AppFlex gap="small" align-h="left">
           <span
@@ -57,7 +57,7 @@
         title="Publications"
         :count="association.publications?.length"
         icon="book"
-        :big="true"
+        :full="true"
       >
         <AppFlex gap="small" align-h="left">
           <span

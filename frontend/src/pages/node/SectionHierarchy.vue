@@ -12,7 +12,7 @@
         title="Super-classes"
         icon="angle-up"
         :blank="!node.node_hierarchy?.super_classes.length"
-        :big="true"
+        :full="true"
         :v-tooltip="`Nodes that are &quot;parents&quot; of this node`"
       >
         <AppFlex class="flex" align-h="left" gap="small">
@@ -38,7 +38,7 @@
         title="Sub-classes"
         icon="angle-down"
         :blank="!node.node_hierarchy?.sub_classes.length"
-        :big="true"
+        :full="true"
         :v-tooltip="`Nodes that are &quot;children&quot; of this node`"
       >
         <AppFlex class="flex" align-h="left" gap="small">
