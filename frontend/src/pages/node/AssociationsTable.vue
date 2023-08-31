@@ -106,7 +106,6 @@ import type { Option } from "@/components/AppSelectSingle.vue";
 import AppTable from "@/components/AppTable.vue";
 import type { Cols, Sort } from "@/components/AppTable.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
-import type { Breadcrumb } from "@/global/breadcrumbs";
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
 import { useQuery } from "@/util/composables";
 import { downloadJson } from "@/util/download";
@@ -300,15 +299,6 @@ async function download() {
   );
   downloadJson(response);
 }
-
-/** extra link to put between current node and subject, if they are not the same */
-const superClass = computed<Breadcrumb>(() => ({
-  node: props.node,
-  association: {
-    predicate: "is super class of",
-    direction: AssociationDirectionEnum.outgoing,
-  },
-}));
 
 /** get associations when category or table state changes */
 watch(
