@@ -279,15 +279,15 @@ const {
 /** download table data */
 async function download() {
   /** max rows to try to query */
-  const max = 100000;
+  const max = 100;
+  const total = associations.value.total;
 
   /** warn user */
   snackbar(
-    `Downloading data for ${Math.min(
-      associations.value.total,
+    `Downloading data for ${total > max ? "first " : ""}${Math.min(
+      total,
       max,
-    )} table entries.` +
-      (associations.value.total >= 100 ? " This may take a minute." : ""),
+    )} table entries.` + (total >= 100 ? " This may take a minute." : ""),
   );
 
   /** attempt to request all rows */
