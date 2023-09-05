@@ -27,7 +27,9 @@
           v-tooltip="`<i>${startCase(facet.label)}</i> filter`"
           :name="startCase(facet.label)"
           :options="dropdownsOptions[facet.label]"
+          :show-counts="!Object.values(dropdownsPartial).some(Boolean)"
           @change="onSelectedChange"
+          @partial="(value) => (dropdownsPartial[facet.label] = value)"
         />
       </template>
     </AppFlex>
@@ -55,11 +57,11 @@
         <AppNodeBadge
           :node="result"
           :state="{ fromSearch: search }"
-          class="name"
+          class="title-name"
         />
         <AppButton
           v-tooltip="'Node ID (click to copy)'"
-          class="id"
+          class="title-id"
           :text="result.id"
           icon="hashtag"
           design="small"
@@ -147,6 +149,8 @@ const facets = ref<NonNullable<SearchResults["facet_fields"]>>([]);
 const dropdownsOptions = ref<{ [key: string]: MultiOptions }>({});
 /** dropdowns selected options */
 const dropdownsSelected = ref<{ [key: string]: MultiOptions }>({});
+/** dropdowns partial status */
+const dropdownsPartial = ref<{ [key: string]: boolean }>({});
 
 /** when user focuses text box */
 async function onFocus() {
@@ -257,9 +261,11 @@ const {
       /** transform dropdown selected options into filters to search for */
       fresh
         ? undefined
-        : mapValues(dropdownsSelected.value, (dropdown) =>
-            dropdown.map((option) => option.id),
-          ),
+        : mapValues(dropdownsSelected.value, (dropdown, key) => {
+            if (dropdownsPartial.value[key])
+              return dropdown.map((option) => option.id);
+            else return [];
+          }),
     );
 
     return response;
@@ -377,35 +383,16 @@ watch(from, () => runGetSearch(false));
   text-align: left;
 }
 
-.name {
+.title-name {
   flex-grow: 1;
   flex-shrink: 0;
 }
 
-.header-box {
-  width: 300px;
-  max-width: 100%;
-}
-
-.header-box :deep(input) {
-  border-top-width: 0;
-  border-right-width: 0;
-  border-left-width: 0;
-  border-radius: 0;
-  border-color: currentColor;
-  background: none;
-  color: currentColor;
-}
-
-.header-box :deep(.icon) {
-  color: currentColor;
-}
-
-.name > :deep(svg) {
+.title-name > :deep(svg) {
   font-size: 2rem;
 }
 
-.id {
+.title-id {
   font-size: 0.9rem;
 }
 
@@ -437,6 +424,25 @@ watch(from, () => runGetSearch(false));
   &:hover {
     box-shadow: $outline;
   }
+}
+
+.header-box {
+  width: 300px;
+  max-width: 100%;
+}
+
+.header-box :deep(input) {
+  border-top-width: 0;
+  border-right-width: 0;
+  border-left-width: 0;
+  border-radius: 0;
+  border-color: currentColor;
+  background: none;
+  color: currentColor;
+}
+
+.header-box :deep(.icon) {
+  color: currentColor;
 }
 </style>
 

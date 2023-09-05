@@ -6,8 +6,12 @@
   <AppSection>
     <AppHeading icon="arrows-left-right">Associations</AppHeading>
 
+    <span v-if="!categoryOptions.length"
+      >No associations with &nbsp;<AppNodeBadge :node="node" />
+    </span>
+
     <!-- select -->
-    <AppFlex gap="small">
+    <AppFlex v-else gap="small">
       <span
         >Associations between &nbsp;<AppNodeBadge :node="node" />&nbsp;
         and</span

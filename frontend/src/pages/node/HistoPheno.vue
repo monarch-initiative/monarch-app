@@ -6,7 +6,14 @@
   >
 
   <!-- results -->
-  <Apex v-if="series.length" type="bar" :options="options" :series="series" />
+  <Apex
+    v-if="series[0]?.data?.length"
+    type="bar"
+    :options="options"
+    :series="series"
+  />
+
+  <div v-else>No info</div>
 </template>
 
 <script setup lang="ts">
@@ -84,7 +91,9 @@ const {
 } = useQuery(
   async function () {
     const histopheno = await getHistoPheno(props.node.id || "");
-    const data = histopheno.items?.map((d) => ({ x: d.label, y: d.count }));
+    const data = histopheno.items
+      ?.map((d) => ({ x: d.label, y: d.count }))
+      ?.filter((d) => d.y);
     return [{ name: "phenotypes", data: data }];
   },
 

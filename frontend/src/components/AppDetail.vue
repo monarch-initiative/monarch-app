@@ -8,7 +8,7 @@
     align-h="left"
     direction="col"
     gap="small"
-    :class="['detail', { big }]"
+    :class="['detail', { full }]"
   >
     <AppFlex gap="small" align-h="left">
       <AppIcon v-if="icon" :icon="icon" class="icon" />
@@ -45,14 +45,14 @@ type Props = {
    */
   blank?: boolean;
   /** whether info block is full width or not */
-  big?: boolean;
+  full?: boolean;
 };
 
 withDefaults(defineProps<Props>(), {
   icon: "",
   count: undefined,
   blank: false,
-  big: false,
+  full: false,
 });
 
 type Slots = {
@@ -68,12 +68,11 @@ defineSlots<Slots>();
   line-height: $spacing;
   text-align: left;
 
-  &.big {
+  &.full {
     width: 100%;
   }
 
-  &:not(.big) {
-    /** keep in sync with AppDetails gap */
+  &:not(.full) {
     width: calc((100% - 30px) / 2);
   }
 

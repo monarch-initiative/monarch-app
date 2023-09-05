@@ -33,7 +33,7 @@
       <AppDetail
         :blank="!node.external_links"
         title="External References"
-        :big="true"
+        :full="true"
       >
         <AppFlex align-h="left" gap="small">
           <AppLink

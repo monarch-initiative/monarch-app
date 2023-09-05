@@ -12,7 +12,7 @@
         title="Super-classes"
         icon="angle-up"
         :blank="!node.node_hierarchy?.super_classes.length"
-        :big="true"
+        :full="true"
         :v-tooltip="`Nodes that are &quot;parents&quot; of this node`"
       >
         <AppFlex class="flex" align-h="left" gap="small">
@@ -20,13 +20,15 @@
             v-for="(_class, index) in node.node_hierarchy?.super_classes"
             :key="index"
             :node="_class"
-            :breadcrumb="{
-              node,
-              association: {
-                predicate: 'is super class of',
-                direction: AssociationDirectionEnum.incoming,
+            :breadcrumbs="[
+              {
+                node,
+                association: {
+                  predicate: 'is super class of',
+                  direction: AssociationDirectionEnum.incoming,
+                },
               },
-            }"
+            ]"
           />
         </AppFlex>
       </AppDetail>
@@ -36,7 +38,7 @@
         title="Sub-classes"
         icon="angle-down"
         :blank="!node.node_hierarchy?.sub_classes.length"
-        :big="true"
+        :full="true"
         :v-tooltip="`Nodes that are &quot;children&quot; of this node`"
       >
         <AppFlex class="flex" align-h="left" gap="small">
@@ -44,10 +46,12 @@
             v-for="(_class, index) in node.node_hierarchy?.sub_classes"
             :key="index"
             :node="_class"
-            :breadcrumb="{
-              node,
-              association: { predicate: 'is sub class of' },
-            }"
+            :breadcrumbs="[
+              {
+                node,
+                association: { predicate: 'is sub class of' },
+              },
+            ]"
           />
         </AppFlex>
       </AppDetail>

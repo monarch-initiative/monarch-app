@@ -24,7 +24,7 @@
     :total="associations.total"
     @download="download"
   >
-    <!-- "subject" (current node) -->
+    <!-- subject -->
     <template #subject="{ row }">
       <AppNodeBadge
         :node="{
@@ -33,16 +33,16 @@
           category: row.subject_category,
           info: row.subject_taxon_label,
         }"
-        :link="node.id !== row.subject"
+        :breadcrumbs="getBreadcrumbs(node, row, 'subject')"
       />
     </template>
 
-    <!-- "predicate" (association/relation) -->
+    <!-- predicate -->
     <template #predicate="{ row }">
       <AppPredicateBadge :association="row" />
     </template>
 
-    <!-- "object" (what current node has an association with) -->
+    <!-- object-->
     <template #object="{ row }">
       <AppNodeBadge
         :node="{
@@ -51,7 +51,7 @@
           category: row.object_category,
           info: row.object_taxon_label,
         }"
-        :link="node.id !== row.object"
+        :breadcrumbs="getBreadcrumbs(node, row, 'object')"
       />
     </template>
 
@@ -106,6 +106,7 @@ import type { Option } from "@/components/AppSelectSingle.vue";
 import AppTable from "@/components/AppTable.vue";
 import type { Cols, Sort } from "@/components/AppTable.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
+import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
 import { useQuery } from "@/util/composables";
 import { downloadJson } from "@/util/download";
 
@@ -278,15 +279,15 @@ const {
 /** download table data */
 async function download() {
   /** max rows to try to query */
-  const max = 100000;
+  const max = 100;
+  const total = associations.value.total;
 
   /** warn user */
   snackbar(
-    `Downloading data for ${Math.min(
-      associations.value.total,
+    `Downloading data for ${total > max ? "first " : ""}${Math.min(
+      total,
       max,
-    )} table entries.` +
-      (associations.value.total >= 100 ? " This may take a minute." : ""),
+    )} table entries.` + (total >= 100 ? " This may take a minute." : ""),
   );
 
   /** attempt to request all rows */

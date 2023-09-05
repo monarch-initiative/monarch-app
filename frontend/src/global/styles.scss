@@ -234,7 +234,7 @@ strong {
 }
 
 /** for spans of text (not clickable, not links, not buttons) with tooltips */
-[data-tooltip="true"] {
+.tooltip {
   text-decoration: underline;
   text-decoration-style: dotted;
   text-underline-offset: 2px;

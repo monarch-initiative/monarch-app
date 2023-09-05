@@ -14,14 +14,14 @@
       v-if="!currentPage"
       :to="`/node/${node.id}`"
       :state="
-        breadcrumb
-          ? { breadcrumbs: [...breadcrumbs, breadcrumb] }
+        breadcrumbs
+          ? { breadcrumbs: [...currentBreadcrumbs, ...breadcrumbs] }
           : state || undefined
       "
       >{{ node.name || node.id }}</AppLink
     >
     <span v-else class="name">{{ node.name }}</span>
-    <span v-if="node.in_taxon_label"> ({{ node.info }})</span>
+    <span v-if="node.in_taxon_label"> ({{ node.in_taxon_label }})</span>
     <span v-if="node.info"> ({{ node.info }})</span>
   </span>
 </template>
@@ -30,7 +30,7 @@
 import { computed } from "vue";
 import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
 import type { Node } from "@/api/model";
-import { breadcrumbs } from "@/global/breadcrumbs";
+import { breadcrumbs as currentBreadcrumbs } from "@/global/breadcrumbs";
 import type { Breadcrumb } from "@/global/breadcrumbs";
 
 type Props = {
@@ -42,10 +42,10 @@ type Props = {
   /** whether to include icon */
   icon?: boolean;
   /**
-   * breadcrumb object to add list when badge clicked on. include node that user
-   * came from and relation between that node and this node.
+   * breadcrumb objects to add list when badge clicked on. include node that
+   * user came from and relation between that node and this node.
    */
-  breadcrumb?: Breadcrumb;
+  breadcrumbs?: Breadcrumb[];
   /** state data to pass through to link component */
   state?: { [key: string]: unknown };
 };
@@ -53,7 +53,7 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   icon: true,
   link: true,
-  breadcrumb: undefined,
+  breadcrumbs: undefined,
   state: undefined,
 });
 

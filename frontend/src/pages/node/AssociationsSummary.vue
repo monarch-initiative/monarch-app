@@ -29,7 +29,7 @@
             category: item.subject_category,
             info: item.subject_taxon_label,
           }"
-          :link="node.id !== item.subject"
+          :breadcrumbs="getBreadcrumbs(node, item, 'subject')"
         />
         <AppPredicateBadge :association="item" :vertical="true" />
         <AppNodeBadge
@@ -39,7 +39,7 @@
             category: item.object_category,
             info: item.object_taxon_label,
           }"
-          :link="node.id !== item.object"
+          :breadcrumbs="getBreadcrumbs(node, item, 'object')"
         />
       </AppFlex>
 
@@ -60,13 +60,83 @@
   </template>
 </template>
 
+<script lang="ts">
+/**
+ * get breadcrumbs to add to trail when clicking on association subject or
+ * object
+ */
+export function getBreadcrumbs(
+  node: Node,
+  association: DirectionalAssociation,
+  side: "subject" | "object",
+) {
+  const subject = {
+    id: association.subject,
+    name: association.subject_label,
+    category: association.subject_category,
+    in_taxon_label: association.subject_taxon_label,
+  };
+  const object = {
+    id: association.object,
+    name: association.object_label,
+    category: association.object_category,
+    in_taxon_label: association.object_taxon_label,
+  };
+
+  let breadcrumbs: Breadcrumb[] | undefined = [];
+
+  /**
+   * add extra link between current node and subject/object if they are not the
+   * same, e.g. current node is muscular dystrophy and association is
+   * oculopharyngodistal myopathy 1 (sub-class of muscular dystrophy) -> Distal
+   * muscle weakness
+   */
+  if (
+    association.direction === AssociationDirectionEnum.outgoing
+      ? subject.id !== node.id
+      : object.id !== node.id
+  )
+    breadcrumbs.push({
+      node,
+      association: {
+        predicate: "is super class of",
+        direction: AssociationDirectionEnum.outgoing,
+      },
+    });
+
+  if (
+    association.direction === AssociationDirectionEnum.outgoing
+      ? side === "object"
+      : side === "subject"
+  )
+    breadcrumbs.push({
+      node: side === "subject" ? object : subject,
+      association,
+    });
+
+  /**
+   * if we're adding two breadcrumbs, mark one has not having its own history
+   * entry, so clicking on it in breadcrumbs section moves history back correct
+   * number of steps
+   */
+  if (breadcrumbs.length === 2) breadcrumbs[1].noEntry = true;
+
+  return breadcrumbs;
+}
+</script>
+
 <script setup lang="ts">
 import { onMounted, watch } from "vue";
 import { getTopAssociations } from "@/api/associations";
-import type { DirectionalAssociation, Node } from "@/api/model";
+import {
+  AssociationDirectionEnum,
+  type DirectionalAssociation,
+  type Node,
+} from "@/api/model";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
 import type { Option } from "@/components/AppSelectSingle.vue";
+import type { Breadcrumb } from "@/global/breadcrumbs";
 import { useQuery } from "@/util/composables";
 
 type Props = {
