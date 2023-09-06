@@ -36,11 +36,11 @@ import { computed } from "vue";
 /** icons for status codes */
 const icons: Record<Code, string> = {
   loading: "loading",
-  paused: "pause-circle",
-  success: "check-circle",
-  warning: "exclamation-circle",
-  error: "times-circle",
-  unknown: "question-circle",
+  paused: "circle-pause",
+  success: "circle-check",
+  warning: "circle-exclamation",
+  error: "circle-xmark",
+  unknown: "circle-question",
 };
 
 type Props = {

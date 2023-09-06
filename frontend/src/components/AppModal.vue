@@ -28,7 +28,7 @@
             v-tooltip="'Close dialog (esc)'"
             class="close"
             design="circle"
-            icon="times"
+            icon="xmark"
             @click="close"
           />
           <slot />

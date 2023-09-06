@@ -7,7 +7,7 @@
     <div>
       <slot />
     </div>
-    <AppButton icon="times" text="Close" design="small" @click="open = false" />
+    <AppButton icon="xmark" text="Close" design="small" @click="open = false" />
   </aside>
 </template>
 

@@ -31,7 +31,7 @@
         v-if="modelValue"
         v-tooltip="'Clear text'"
         class="icon"
-        icon="times"
+        icon="xmark"
         design="small"
         @click.capture.stop="clear"
       />

@@ -57,7 +57,7 @@
           <AppButton
             v-tooltip="`Clear selected values`"
             design="small"
-            icon="times"
+            icon="xmark"
             @click="clear"
           />
         </div>

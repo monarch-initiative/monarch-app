@@ -34,7 +34,7 @@
         :aria-expanded="expanded"
         @click="expanded = !expanded"
       >
-        <AppIcon :icon="expanded ? 'times' : 'bars'" />
+        <AppIcon :icon="expanded ? 'xmark' : 'bars'" />
       </button>
     </div>
 

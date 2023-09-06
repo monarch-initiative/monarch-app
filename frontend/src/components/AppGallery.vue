@@ -41,10 +41,10 @@ $phone: 600px;
 
 .gallery {
   --gap: 40px;
+  // intended number of cols per row, limited by screen size col reduction
+  --intended-cols: min(var(--max-cols), var(--screen-cols));
   // actual number of cols with content, limited by screen size col reduction
   --actual-cols: min(var(--content-cols), var(--screen-cols));
-  // intended number of cols per row, with content, limited by screen size col reduction
-  --intended-cols: min(var(--max-cols), var(--screen-cols));
   // size of cell if row was full
   --cell: (100% - (var(--intended-cols) - 1) * var(--gap)) /
     var(--intended-cols);
@@ -53,7 +53,7 @@ $phone: 600px;
   grid-auto-rows: 1fr;
   place-content: center;
   // when content doesn't fill first row, limit width of gallery so that cell size is same as if first row was full
-  // e.g. team page, so groups with only 1-2 members aren't bigger than 3+ members
+  // e.g. on team page, so portraits in groups with only 1-2 members aren't bigger than portraits in groups with 3+ members
   max-width: calc(
     (var(--cell)) * var(--content-cols) + (var(--content-cols) - 1) * var(--gap)
   );

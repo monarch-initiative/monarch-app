@@ -134,7 +134,7 @@
           <AppButton
             v-tooltip="'Go to first page'"
             :disabled="start <= 0"
-            icon="angle-double-left"
+            icon="angles-left"
             design="small"
             @click="clickFirst"
           />
@@ -164,7 +164,7 @@
           <AppButton
             v-tooltip="'Go to last page'"
             :disabled="start + perPage > total"
-            icon="angle-double-right"
+            icon="angles-right"
             design="small"
             @click="clickLast"
           />
@@ -177,7 +177,7 @@
           v-if="showControls"
           v-tooltip="'Search table data'"
           class="search"
-          icon="search"
+          icon="magnifying-glass"
           :model-value="search"
           @debounce="emitSearch"
           @change="emitSearch"

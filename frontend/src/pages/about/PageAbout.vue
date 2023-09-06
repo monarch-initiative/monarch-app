@@ -65,13 +65,13 @@
       />
       <AppTile
         to="/cite"
-        icon="feather-alt"
+        icon="feather-pointed"
         title="Cite"
         subtitle="How to cite and attribute Monarch"
       />
       <AppTile
         to="/terms"
-        icon="balance-scale"
+        icon="scale-balanced"
         title="Terms of Use"
         subtitle="Disclaimers and agreements"
       />
