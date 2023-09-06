@@ -1,6 +1,6 @@
 import os
 from dataclasses import dataclass
-from typing import List, Union
+from typing import List, Union, Optional
 
 import requests
 from monarch_py.datamodels.model import (
@@ -60,7 +60,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
     # Implements: EntityInterface #
     ###############################
 
-    def get_entity(self, id: str, extra: bool) -> Union[Node, Entity]:
+    def get_entity(self, id: str, extra: bool) -> Optional[Union[Node, Entity]]:
         """Retrieve a specific entity by exact ID match, with optional extras
 
         Args:
@@ -73,10 +73,12 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         """
         solr = SolrService(base_url=self.base_url, core=core.ENTITY)
         solr_document = solr.get(id)
+        if solr_document is None:
+            return None
         if not extra:
             return parse_entity(solr_document)
-        # Get extra data (this logic is very tricky to test because of the calls to Solr)
 
+        # Get extra data (this logic is very tricky to test because of the calls to Solr)
         node = Node(**solr_document)
         if "biolink:Disease" in node.category:
             mode_of_inheritance_associations = self.get_associations(
@@ -86,9 +88,12 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
                 node.inheritance = self._get_associated_entity(mode_of_inheritance_associations.items[0], node)
         node.node_hierarchy = self._get_node_hierarchy(node)
         node.association_counts = self.get_association_counts(id).items
-        node.external_links = [ExpandedCurie(id=curie, url=CurieService().expand(curie)) for curie in node.xref]
+        node.external_links = (
+            [ExpandedCurie(id=curie, url=CurieService().expand(curie)) for curie in node.xref] if node.xref else []
+        )
         node.provided_by_link = ExpandedCurie(
-            id=node.provided_by.replace("_nodes", "").replace("_edges", ""), url=get_provided_by_link(node.provided_by)
+            id=node.provided_by.replace("_nodes", "").replace("_edges", "") if node.provided_by else None
+            , url=get_provided_by_link(node.provided_by)
         )
         return node
 
@@ -294,7 +299,6 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         facet_fields: List[str] = None,
         facet_queries: List[str] = None,
     ) -> SearchResults:
-
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
 
         query = build_association_query(
@@ -316,8 +320,8 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
             offset=0,
             total=query_result.response.num_found,
             items=[],
-            facet_fields=convert_facet_fields(query_result.facet_counts.facet_fields),
-            facet_queries=convert_facet_queries(query_result.facet_counts.facet_queries),
+            facet_fields=convert_facet_fields(query_result.facet_counts.facet_fields) if query_result.facet_counts else [],
+            facet_queries=convert_facet_queries(query_result.facet_counts.facet_queries) if query_result.facet_counts else [],
         )
 
     def get_association_table(
@@ -329,7 +333,6 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         offset: int = 0,
         limit: int = 5,
     ) -> AssociationTableResults:
-
         query = build_association_table_query(
             entity=entity,
             category=category,
