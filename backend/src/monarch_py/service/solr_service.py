@@ -20,8 +20,8 @@ class SolrService(BaseModel):
         entity = response.json()["doc"]
         try:
             self._strip_json(entity, "_version_")
-        except TypeError:
-            pass  # what if entity is None?
+        except TypeError:  # if entity is None
+            return None
         return entity
 
     def query(self, q: SolrQuery) -> SolrQueryResult:
@@ -53,7 +53,6 @@ class SolrService(BaseModel):
         return dict(zip(facet_list[::2], facet_list[1::2]))
 
     def get_filtered_facet(self, id, filter_field, facet_field):
-
         query = SolrQuery(
             rows=0,
             facet=True,

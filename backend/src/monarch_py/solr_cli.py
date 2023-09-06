@@ -112,9 +112,13 @@ def entity(
     if not id:
         console.print("\n[bold red]Entity ID required.[/]\n")
         raise typer.Exit(1)
-    data = get_solr(update=False)
-    response = data.get_entity(id, extra)
-    format_output(fmt, response, output)
+    solr = get_solr(update=False)
+    response = solr.get_entity(id, extra)
+    if response is not None:
+        format_output(fmt, response, output)
+    else:
+        console.print(f"\n[bold red]Entity {id} not found.[/]\n")
+        raise typer.Exit(1)
 
 
 @solr_app.command("associations")
@@ -160,8 +164,8 @@ def associations(
     args.pop("fmt", None)
     args.pop("output", None)
 
-    data = get_solr(update=False)
-    response = data.get_associations(**args)
+    solr = get_solr(update=False)
+    response = solr.get_associations(**args)
     format_output(fmt, response, output)
 
 
@@ -201,8 +205,8 @@ def search(
     params.pop("fmt", None)
     params.pop("output", None)
 
-    data = get_solr(update=False)
-    response = data.search(**params)
+    solr = get_solr(update=False)
+    response = solr.search(**params)
     format_output(fmt, response, output)
 
 
@@ -226,8 +230,8 @@ def autocomplete(
         output: The path to the output file (stdout if not specified)
 
     """
-    data = get_solr(update=False)
-    response = data.autocomplete(q)
+    solr = get_solr(update=False)
+    response = solr.autocomplete(q)
     format_output(fmt, response, output)
 
 
@@ -258,8 +262,8 @@ def histopheno(
         console.print("\n[bold red]Subject ID required.[/]\n")
         raise typer.Exit(1)
 
-    data = get_solr(update=False)
-    response = data.get_histopheno(subject)
+    solr = get_solr(update=False)
+    response = solr.get_histopheno(subject)
     format_output(fmt, response, output)
 
 
@@ -288,8 +292,8 @@ def association_counts(
     if not entity:
         console.print("\n[bold red]Entity ID required.[/]\n")
         raise typer.Exit(1)
-    data = get_solr(update=False)
-    response = data.get_association_counts(entity)
+    solr = get_solr(update=False)
+    response = solr.get_association_counts(entity)
     format_output(fmt, response, output)
 
 
@@ -311,6 +315,6 @@ def association_table(
     ),
     output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
 ):
-    data = get_solr(update=False)
-    response = data.get_association_table(entity=entity, category=category, q=q, limit=limit, offset=offset)
+    solr = get_solr(update=False)
+    response = solr.get_association_table(entity=entity, category=category, q=q, limit=limit, offset=offset)
     format_output(fmt, response, output)

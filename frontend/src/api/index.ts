@@ -51,7 +51,7 @@ if (apiName === "production")
 if (apiName === "relative") monarch = suffix;
 
 /** locally running server */
-if (apiName === "local") monarch = `127.0.0.1:8000${suffix}`;
+if (apiName === "local") monarch = `http://127.0.0.1:8000${suffix}`;
 
 export { monarch };
 
