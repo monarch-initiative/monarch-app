@@ -423,6 +423,7 @@ watch(
 
 .option-icon {
   color: $dark-gray;
+  font-size: 1.2em;
 }
 
 .option-label {

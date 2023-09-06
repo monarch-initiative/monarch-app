@@ -15,7 +15,7 @@ export const wrap = (value: number, min: number, max: number): number => {
   return value;
 };
 
-/** sTUFF ONLY USED FOR HEADER VISUALIZATION */
+/** STUFF ONLY USED FOR HEADER VISUALIZATION */
 
 /** point tuple types */
 export type Point3d = {
