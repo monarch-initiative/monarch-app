@@ -92,8 +92,8 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
             [ExpandedCurie(id=curie, url=CurieService().expand(curie)) for curie in node.xref] if node.xref else []
         )
         node.provided_by_link = ExpandedCurie(
-            id=node.provided_by.replace("_nodes", "").replace("_edges", "") if node.provided_by else None
-            , url=get_provided_by_link(node.provided_by)
+            id=node.provided_by.replace("_nodes", "").replace("_edges", "") if node.provided_by else None,
+            url=get_provided_by_link(node.provided_by),
         )
         return node
 
@@ -320,8 +320,12 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
             offset=0,
             total=query_result.response.num_found,
             items=[],
-            facet_fields=convert_facet_fields(query_result.facet_counts.facet_fields) if query_result.facet_counts else [],
-            facet_queries=convert_facet_queries(query_result.facet_counts.facet_queries) if query_result.facet_counts else [],
+            facet_fields=convert_facet_fields(query_result.facet_counts.facet_fields)
+            if query_result.facet_counts
+            else [],
+            facet_queries=convert_facet_queries(query_result.facet_counts.facet_queries)
+            if query_result.facet_counts
+            else [],
         )
 
     def get_association_table(
