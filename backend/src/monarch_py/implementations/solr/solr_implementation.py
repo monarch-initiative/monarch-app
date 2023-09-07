@@ -8,9 +8,11 @@ from monarch_py.datamodels.model import (
     AssociationCountList,
     AssociationResults,
     AssociationTableResults,
+    CategoryGroupedAssociationResults,
     Entity,
     ExpandedCurie,
     HistoPheno,
+    MultiEntityAssociationResults,
     Node,
     NodeHierarchy,
     SearchResults,
@@ -33,6 +35,7 @@ from monarch_py.implementations.solr.solr_query_utils import (
     build_association_table_query,
     build_autocomplete_query,
     build_histopheno_query,
+    build_multi_entity_association_query,
     build_search_query,
 )
 from monarch_py.interfaces.association_interface import AssociationInterface
@@ -231,6 +234,51 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         query_result = solr.query(query)
         histopheno = parse_histopheno(query_result, subject_closure)
         return histopheno
+
+    def get_multi_entity_associations(
+        self,
+        entity: List[str],
+        counterpart_category: List[str] = None,
+        offset: int = 0,
+        # limit: int = 20,
+        limit_per_group: int = 20,
+    ) -> List[MultiEntityAssociationResults]:
+        """Get associations between multiple entities and counterparts of a given category
+
+        Args:
+            entity (List[str]): List of entity IDs to get associations for
+            counterpart_category (List[str], optional): List of categories of counterpart entity to get associations for. Defaults to None.
+            offset (int, optional): Result offset, for pagination. Defaults to 0.
+            limit (int, optional): Limit results to specified number. Defaults to 20.
+            limit_per_group (int, optional): Limit results to specified number per group. Defaults to 20.
+        """
+        solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
+        results = []
+        for ent in entity:
+            ent = self.get_entity(ent, extra=False)
+            if ent is None:
+                continue  # Do something else here?
+            entity_result = MultiEntityAssociationResults(
+                id=ent.id, name=ent.name, total=0, offset=offset, limit=limit_per_group, associated_categories=[]
+            )
+            if counterpart_category:
+                for category in counterpart_category:
+                    query = build_multi_entity_association_query(
+                        entity=ent.id, counterpart_category=category, offset=offset, limit=limit_per_group
+                    )
+                    query_result = solr.query(query)
+                    associations = parse_associations(query_result)
+                    entity_result.associated_categories.append(
+                        CategoryGroupedAssociationResults(
+                            counterpart_category=category,
+                            items=associations.items,
+                            total=associations.total,
+                            offset=associations.offset,
+                            limit=associations.limit,
+                        )
+                    )
+            results.append(entity_result)
+        return results
 
     ###############################
     # Implements: SearchInterface #

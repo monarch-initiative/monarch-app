@@ -86,7 +86,7 @@ def get_headers_from_obj(obj: ConfiguredBaseModel) -> list:
     return list(headers)
 
 
-def to_json(obj: ConfiguredBaseModel, file: str):
+def to_json(obj: ConfiguredBaseModel, file: str = None):
     """Converts a pydantic model to a JSON string."""
     if file:
         with open(file, "w") as f:
