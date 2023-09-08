@@ -9,7 +9,7 @@
     :class="['button', design, color, { text }]"
     :to="to"
     :type="type"
-    @click="copy ? copyToClipboard() : click"
+    @click="copy ? copyFunc() : click"
   >
     <span v-if="text" class="truncate">{{ text }}</span>
     <AppIcon v-if="icon" :icon="icon" />
@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { snackbar } from "./TheSnackbar.vue";
+import { copyToClipboard } from "@/util/string";
 
 type Props = {
   /** text to show */
@@ -54,9 +54,8 @@ const props = withDefaults(defineProps<Props>(), {
 const button = ref();
 
 /** copy text prop to clipboard */
-async function copyToClipboard() {
-  await window.navigator.clipboard.writeText(props.text || "");
-  snackbar("Text copied");
+async function copyFunc() {
+  copyToClipboard(props.text);
 }
 
 /** type of component to render */

@@ -4,7 +4,7 @@
 
 <template>
   <AppLink
-    v-tooltip="code === 'error' ? 'See dev console for more details' : ''"
+    v-tooltip="code === 'error' ? 'See dev console for more info' : ''"
     :to="link || ''"
     :class="['status', code]"
     :aria-label="code || ''"
