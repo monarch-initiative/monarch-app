@@ -1,3 +1,4 @@
+import { stringify } from "@/util/object";
 import { request } from "./";
 
 /** serverless endpoint to make post on helpdesk with github api */
@@ -25,11 +26,10 @@ export const postFeedback = async (
   if (!title || !body) throw new Error("Title or body not specified");
 
   /** post to api endpoint which posts new github issue */
-  const data = await request<_Response>(
-    feedbackEndpoint,
-    { title, body },
-    { method: "POST" },
-  );
+  const data = await request<_Response>(feedbackEndpoint, {
+    method: "POST",
+    body: stringify({ title, body }),
+  });
 
   /** if error */
   if ("error" in data) throw new Error(data.error);
