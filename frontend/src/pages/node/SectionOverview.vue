@@ -16,22 +16,6 @@
         <p>{{ node.full_name }}</p>
       </AppDetail>
 
-      <!-- provided by -->
-      <AppDetail :blank="!node.provided_by_link" title="Provided By">
-        <AppLink :to="node.provided_by_link?.url || ''">
-          {{ node.provided_by_link?.id || node.provided_by }}
-        </AppLink>
-      </AppDetail>
-
-      <!-- synonyms -->
-      <AppDetail
-        :blank="!node.synonym?.length"
-        title="Also Known As"
-        :full="true"
-      >
-        <p v-html="node.synonym?.join(',\n&nbsp;')"></p>
-      </AppDetail>
-
       <!-- paragraph description -->
       <AppDetail :blank="!node.description" title="Description" :full="true">
         <p
@@ -41,6 +25,30 @@
           v-html="node.description?.trim()"
         ></p>
       </AppDetail>
+
+      <!-- synonyms -->
+      <AppDetail
+        :blank="!node.synonym?.length"
+        title="Also Known As"
+        :full="true"
+      >
+        <p
+          class="truncate-2"
+          tabindex="0"
+          v-html="node.synonym?.join(',\n&nbsp;')"
+        ></p>
+      </AppDetail>
+
+      <!-- association counts -->
+      <AppDetail
+        :blank="!node.association_counts"
+        title="Association counts"
+        :full="true"
+      >
+        <div v-for="(count, index) in node.association_counts" :key="index">
+          {{ count.label }} {{ count.count }}
+        </div>
+      </AppDetail>
     </AppDetails>
   </AppSection>
 </template>
@@ -49,6 +57,7 @@
 import type { Node } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
+import AppNodeBadge from "@/components/AppNodeBadge.vue";
 
 type Props = {
   /** current node */
