@@ -42,12 +42,14 @@
       <!-- association counts -->
       <AppDetail
         :blank="!node.association_counts"
-        title="Association counts"
+        title="Association Counts"
         :full="true"
       >
-        <div v-for="(count, index) in node.association_counts" :key="index">
-          {{ count.label }} {{ count.count }}
-        </div>
+        <AppFlex align-h="left">
+          <span v-for="(count, index) in node.association_counts" :key="index">
+            {{ count.label }} {{ count.count?.toLocaleString() || 0 }}
+          </span>
+        </AppFlex>
       </AppDetail>
     </AppDetails>
   </AppSection>
@@ -57,7 +59,6 @@
 import type { Node } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
-import AppNodeBadge from "@/components/AppNodeBadge.vue";
 
 type Props = {
   /** current node */

@@ -404,7 +404,11 @@ const end = computed((): number => props.start + props.rows.length);
 const widths = computed((): string =>
   props.cols
     .map((col) =>
-      expanded.value ? `minmax(max-content, 99999px)` : `${col.width || 1}fr`,
+      col.slot === "divider"
+        ? "20px"
+        : expanded.value
+        ? `minmax(max-content, 99999px)`
+        : `${col.width || 1}fr`,
     )
     .join(" "),
 );
@@ -570,7 +574,7 @@ watch(
 
   &.divider {
     width: 2px;
-    margin: 0 5px;
+    margin: 0 auto;
     padding: 0;
     background: $light-gray;
   }
