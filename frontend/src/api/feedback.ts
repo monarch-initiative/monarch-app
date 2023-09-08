@@ -26,7 +26,7 @@ export const postFeedback = async (
   if (!title || !body) throw new Error("Title or body not specified");
 
   /** post to api endpoint which posts new github issue */
-  const data = await request<_Response>(feedbackEndpoint, {
+  const data = await request<_Response>(feedbackEndpoint, undefined, {
     method: "POST",
     body: stringify({ title, body }),
   });
