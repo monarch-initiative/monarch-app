@@ -57,7 +57,7 @@
           <AppButton
             v-tooltip="`Clear selected values`"
             design="small"
-            icon="times"
+            icon="xmark"
             @click="clear"
           />
         </div>
@@ -172,6 +172,7 @@ import { computed, nextTick, ref, watch } from "vue";
 import { isEqual, uniqBy, uniqueId } from "lodash";
 import { useFloating, useQuery } from "@/util/composables";
 import { wrap } from "@/util/math";
+import { copyToClipboard } from "@/util/string";
 import AppInput from "./AppInput.vue";
 import { snackbar } from "./TheSnackbar.vue";
 
@@ -300,10 +301,10 @@ function clear() {
 
 /** copy selected ids to clipboard */
 async function copy() {
-  await window.navigator.clipboard?.writeText(
+  copyToClipboard(
     selected.value.map(({ id }) => id).join(","),
+    `Copied ${selected.value.length} values`,
   );
-  snackbar(`Copied ${selected.value.length} values`);
 }
 
 const {

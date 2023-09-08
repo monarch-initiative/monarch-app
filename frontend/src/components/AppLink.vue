@@ -15,7 +15,7 @@
       <span>
         <slot />
       </span>
-      <AppIcon class="icon" icon="external-link-alt" />
+      <AppIcon class="icon" icon="arrow-up-right-from-square" />
     </template>
     <slot v-else />
   </a>

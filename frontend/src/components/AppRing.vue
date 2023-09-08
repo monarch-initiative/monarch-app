@@ -43,8 +43,9 @@ const d = computed(() => {
   position: relative;
   flex-grow: 0;
   flex-shrink: 0;
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
+  font-size: 0.9rem;
 
   & > * {
     display: flex;
