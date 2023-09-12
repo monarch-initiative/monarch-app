@@ -38,7 +38,6 @@ export const apiCall = async (): Promise<void> => {
    */
   await sleep();
   await sleep();
-  await sleep(10);
 };
 
 /** mount wrapper with standard options */
