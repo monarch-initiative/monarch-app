@@ -257,7 +257,7 @@ const {
   ) {
     /** catch case where no association categories available */
     if (!props.node.association_counts.length)
-      throw new Error("No association info available");
+      throw Error("No association info available");
 
     /** get association data */
     const response = await getAssociations(

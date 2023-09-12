@@ -84,7 +84,7 @@ export const emitted = <Event = unknown>(
   try {
     return wrapper.emitted()[event].pop() as Array<Event>;
   } catch (error) {
-    throw new Error(`No "${event}" event emitted`);
+    throw Error(`No "${event}" event emitted`);
   }
 };
 

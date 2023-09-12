@@ -102,15 +102,8 @@ export const compareSetToSet = async (
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   headers.append("Accept", "application/json");
-  const body = {
-    subjects: aPhenotypes,
-    objects: bPhenotypes,
-  };
-  const options = {
-    method: "POST",
-    headers,
-    body: stringify(body),
-  };
+  const body = { subjects: aPhenotypes, objects: bPhenotypes };
+  const options = { method: "POST", headers, body: stringify(body) };
 
   /** make query */
   const url = `${monarch}/semsim/compare`;
