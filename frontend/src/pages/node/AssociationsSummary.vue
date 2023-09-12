@@ -167,7 +167,7 @@ const {
   async function () {
     /** catch case where no association categories available */
     if (!props.node.association_counts.length)
-      throw new Error("No association info available");
+      throw Error("No association info available");
 
     /** get association data */
     return await getTopAssociations(props.node.id, props.category.id);

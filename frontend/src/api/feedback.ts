@@ -5,40 +5,32 @@ import { request } from "./";
 export const feedbackEndpoint =
   "https://us-central1-monarch-initiative.cloudfunctions.net/monarch-gh-issue-post";
 
-type _Success = {
+/** status response (from backend) */
+type _Response = {
   html_url: string;
 };
-
-type _Error = {
-  error: string;
-  next_request: string;
-};
-
-/** status response (from backend) */
-type _Response = _Success | _Error;
 
 /** create issue on helpdesk on submit of feedback form */
 export const postFeedback = async (
   title = "",
   body = "",
 ): Promise<IssueLink> => {
-  /** check params */
-  if (!title || !body) throw new Error("Title or body not specified");
+  /** check if params blank */
+  if (!title || !body) throw Error("Title or body not specified");
+
+  /** make request options */
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("Accept", "application/json");
 
   /** post to api endpoint which posts new github issue */
   const data = await request<_Response>(feedbackEndpoint, undefined, {
     method: "POST",
+    headers,
     body: stringify({ title, body }),
   });
 
-  /** if error */
-  if ("error" in data) throw new Error(data.error);
-
-  /** if success */
-  if ("html_url" in data) return data.html_url;
-
-  /** last resort */
-  throw new Error("Unknown problem submitting feedback");
+  return data.html_url;
 };
 
 /** link to posted issue (for frontend) */

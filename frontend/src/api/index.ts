@@ -132,15 +132,22 @@ export const request = async <Response>(
     /* make new request */
     response = await fetch(url, options);
 
-  /** check response code */
-  if (!response.ok) throw new Error(`Response not OK`);
+  /** capture error for throwing later */
+  let error = "";
 
-  /** add response to cache */
-  if (request.method === "GET") cache.set(id, response.clone());
+  /** check response code */
+  if (!response.ok) error = `Response not OK`;
 
   /** parse response */
-  const parsed: Response =
-    parse === "text" ? await response.text() : await response.json();
+  let parsed: Response | undefined;
+  try {
+    parsed =
+      parse === "text"
+        ? await response.clone().text()
+        : await response.clone().json();
+  } catch (e) {
+    error = `Couldn't parse response as ${parse}`;
+  }
 
   if (import.meta.env.MODE !== "test")
     groupLog(`📣 Response (${cached}) ${endpoint}`, {
@@ -148,8 +155,14 @@ export const request = async <Response>(
       params,
       options,
       parsed,
-      response,
+      response: response.clone(),
     });
+
+  /** throw error after details have been logged */
+  if (error || parsed === undefined) throw Error(error);
+
+  /** add response to cache */
+  if (request.method === "GET") cache.set(id, response.clone());
 
   return parsed;
 };
