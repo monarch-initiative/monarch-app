@@ -2,6 +2,8 @@
 
 This project was scaffolded using Vite (`yarn create vite` → `Vue` → `create-vue`) with the following options:
 
+s
+
 - TypeScript (for type checking)
 - Vue Router (for SPA navigation)
 - Vitest (unit testing)
