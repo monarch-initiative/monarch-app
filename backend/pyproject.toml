@@ -30,7 +30,7 @@ pystow = ">=0.5.0"
 loguru = "*"
 ### Optional API dependencies
 fastapi ={ version = "^0.87.0", optional = true }
-oaklib = "0.5.18rc2"
+oaklib = "0.5.19rc-1"
 
 
 [tool.poetry.group.dev.dependencies]
