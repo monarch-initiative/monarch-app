@@ -28,9 +28,8 @@ rich = "*"
 docker = "^6.0.1"
 pystow = ">=0.5.0"
 loguru = "*"
-### Optional API dependencies
-fastapi ={ version = "^0.87.0", optional = true }
-oaklib = "0.5.18rc2"
+fastapi = "^0.87.0"
+oaklib = "^0.5.19"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -47,13 +46,9 @@ habanero = "*"
 manubot = "*"
 
 
-[tool.poetry.extras]
-api = ["fastapi", "oaklib"]
-
-
 [tool.poetry.scripts]
 monarch = "monarch_py.cli:app"
-monarch-api = { callable = "monarch_py.api.main:run", extras = ["api"] }
+monarch-api = { callable = "monarch_py.api.main:run"}
 
 
 [tool.ruff]
