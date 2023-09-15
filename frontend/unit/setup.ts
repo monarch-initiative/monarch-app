@@ -39,9 +39,7 @@ export const apiCall = async (): Promise<void> => {
   await sleep();
   await sleep();
   /** extra buffer time to make extra sure mocks finish  */
-  // await sleep(10);
-  /** make sure components render */
-  await nextTick();
+  await sleep(10);
 };
 
 /** mount wrapper with standard options */
