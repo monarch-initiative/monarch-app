@@ -43,7 +43,7 @@ FROM builder-base as production
 ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 WORKDIR /opt/monarch-app/backend
 
-RUN poetry install -E api
+RUN poetry install
 
 CMD ["/opt/poetry/bin/poetry", "run", "uvicorn", "src.monarch_py.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
 
