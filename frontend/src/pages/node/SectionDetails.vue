@@ -8,10 +8,11 @@
 
     <AppDetails>
       <!-- inheritance -->
-      <AppDetail 
-        v-if:"node.category === 'biolink:Disease'" 
-        :blank="!node.inheritance" 
-        title="Heritability">
+      <AppDetail
+        v-if="node.category === 'biolink:Disease'"
+        :blank="!node.inheritance"
+        title="Heritability"
+      >
         <AppFlex align-h="left" gap="small">
           <AppLink
             v-tooltip="node.inheritance?.name"
