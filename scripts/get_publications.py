@@ -15,7 +15,7 @@ import sys
 from pathlib import Path
 from typing import List
 
-from scholarly import scholarly
+from scholarly import scholarly # type: ignore
 import pprint
 
 pp = pprint.PrettyPrinter(indent=2, sort_dicts=False).pprint
@@ -93,7 +93,7 @@ def get_pubs_from_scholarly():
             issue += f"({bib['number']})"
         if "pages" in bib:
             issue += f":{bib['pages']}"
-        link = f"[Link]({p['pub_url']})" if ("pub_url" in p and "scholar.google" not in p["pub_url"]) else ""
+        link = f"{p['pub_url']}" if ("pub_url" in p and "scholar.google" not in p["pub_url"]) else ""
         pubs.append(
             {
                 "title": title,
@@ -201,7 +201,7 @@ def main(update: bool):
         for pub in dups:
             report.append(f"\n\t{pub}")
         scholarly_data = checked
-        
+
     # Flag publications with no link (to manually edit in publications.json later)
     nolinks = [pub["title"] for pub in scholarly_data if not pub["link"]]  # type: ignore
     if nolinks:
@@ -210,6 +210,10 @@ def main(update: bool):
             report.append(f"\n\t{pub}")
 
     # Filter out publications already in publications.json
+    if not Path(pubs_file).exists():
+        report.append(f"{'-'*120}\nNo publications.json file found. Creating one now...")
+        with open(pubs_file, "w") as f:
+            json.dump({"metadata": {}, "publications": []}, f, indent=2)        
     with open(pubs_file, "r") as f:
         current_data = json.load(f)
     current_pubs = [pub for year in current_data["publications"] for pub in year["items"]]
