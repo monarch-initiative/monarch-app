@@ -2,7 +2,7 @@ name: Build and Push Semsim Image to GCR
 on:
   push:
     branches:
-      - similarity
+      - semantic-search
 
 # This job uses RafikFarhad's GitHub action to build and
 # push a docker image to a specified GCP repository
