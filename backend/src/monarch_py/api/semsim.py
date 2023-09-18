@@ -2,6 +2,7 @@ from typing import List
 
 from fastapi import APIRouter
 from monarch_py.api.config import oak
+from monarch_py.implementations.oak.oak_implementation import SemsimSearchCategory
 
 router = APIRouter(tags=["semsim"], responses={404: {"description": "Not Found"}})
 
@@ -51,3 +52,14 @@ def _post_compare(
     </pre>
     """
     return oak().compare(subjects, objects)
+
+
+@router.get("/search")
+def _search(
+    subjects: str = "",
+    target_group: SemsimSearchCategory = None,
+    limit: int = 10,
+):
+    # TODO: subjects as an argument to this api method is consistent with compare,
+    #       but obviously bizarre to have objects=subjects in the translation to oaklib
+    return oak().search(objects=subjects.split(","), target_groups=[target_group], limit=limit)

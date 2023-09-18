@@ -1,6 +1,7 @@
 import time
 from dataclasses import dataclass
 from typing import List
+from enum import Enum
 
 from loguru import logger
 
@@ -8,7 +9,18 @@ from monarch_py.datamodels.model import TermSetPairwiseSimilarity
 from oaklib.interfaces.semsim_interface import SemanticSimilarityInterface
 from oaklib.selector import get_adapter
 from linkml_runtime.dumpers.json_dumper import JSONDumper
+
 import pystow
+
+
+class SemsimSearchCategory(Enum):
+    HUMAN_GENE = "HGNC"
+    MOUSE_GENE = "MGI"
+    RAT_GENE = "RGD"
+    ZEBRAFISH_GENE = "ZFIN"
+    WORM_GENE = "WB"
+    DISEASE = "MONDO"
+
 
 @dataclass
 class OakImplementation(SemanticSimilarityInterface):
@@ -64,3 +76,17 @@ class OakImplementation(SemanticSimilarityInterface):
         response_dict = self.json_dumper.to_dict(response)
         return TermSetPairwiseSimilarity(**response_dict)
 
+    def search(self,
+               objects: List[str],
+               target_groups: List[SemsimSearchCategory] = None,
+               predicates: List[str] = None,
+               limit: int = 10):
+        predicates = predicates or self.default_predicates
+        return self.semsim.associations_subject_search(
+            predicates={"biolink:has_phenotype"},
+            objects=set(objects),
+            object_closure_predicates=predicates,
+            include_similarity_object=True,
+            subject_prefixes=[target_group.value for target_group in target_groups],
+            limit=limit,
+        )
