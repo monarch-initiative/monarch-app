@@ -15,7 +15,7 @@ type Props = {
   icon?: string;
 };
 
-withDefaults(defineProps<Props>(), { icon: "info-circle" });
+withDefaults(defineProps<Props>(), { icon: "circle-info" });
 
 type Slots = {
   default: () => unknown;

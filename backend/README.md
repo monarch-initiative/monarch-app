@@ -1,6 +1,6 @@
 # Monarch-Py
 
-[![documentation](https://img.shields.io/badge/-Documentation-purple?logo=read-the-docs&logoColor=white&style=for-the-badge)](https://monarch-initiative.github.io/monarch-app/docs)
+[![documentation](https://img.shields.io/badge/-Documentation-purple?logo=read-the-docs&logoColor=white&style=for-the-badge)](https://monarch-initiative.github.io/monarch-app)
 
 Monarch-Py is a Python library for interfacing with the Monarch Initiative Knowledge graph.  
 It can be used from CLI, as a module, or as a FastAPI app

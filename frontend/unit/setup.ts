@@ -33,11 +33,13 @@ afterAll(() => server.close());
 /** util function to wait for api calls to mock */
 export const apiCall = async (): Promise<void> => {
   /**
-   * why two "flushPromises" calls? see:
+   * wait for mocks to finish. why two "flushPromises" calls? see:
    * https://github.com/vuejs/test-utils/issues/137
    */
   await sleep();
   await sleep();
+  /** extra buffer time to make extra sure mocks finish */
+  await sleep(10);
 };
 
 /** mount wrapper with standard options */
@@ -84,7 +86,7 @@ export const emitted = <Event = unknown>(
   try {
     return wrapper.emitted()[event].pop() as Array<Event>;
   } catch (error) {
-    throw new Error(`No "${event}" event emitted`);
+    throw Error(`No "${event}" event emitted`);
   }
 };
 

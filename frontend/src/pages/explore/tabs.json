@@ -2,7 +2,7 @@
   {
     "id": "search",
     "text": "Search",
-    "icon": "search",
+    "icon": "magnifying-glass",
     "tooltip": "Search our knowledge graph for genes, diseases, phenotypes, and more, then see rich information and relational data between them"
   },
   {

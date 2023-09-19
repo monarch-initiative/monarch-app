@@ -8,7 +8,7 @@
     align-h="left"
     direction="col"
     gap="small"
-    :class="['detail', { full }]"
+    :class="['detail', { full: full && !blank }]"
   >
     <AppFlex gap="small" align-h="left">
       <AppIcon v-if="icon" :icon="icon" class="icon" />
@@ -73,7 +73,7 @@ defineSlots<Slots>();
   }
 
   &:not(.full) {
-    width: calc((100% - 30px) / 2);
+    width: calc((100% - 30px - 30px) / 3);
   }
 
   @media (max-width: 700px) {

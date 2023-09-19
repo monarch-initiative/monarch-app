@@ -8,7 +8,7 @@ const props = {
   tabs: [
     { id: "apple", text: "Apple", icon: "asterisk" },
     { id: "banana", text: "Banana", icon: "cogs" },
-    { id: "cherry", text: "Cherry", icon: "home" },
+    { id: "cherry", text: "Cherry", icon: "database" },
   ],
 };
 

@@ -6,7 +6,13 @@
 
 <template>
   <AppSection>
-    <AppHeading>Publications</AppHeading>
+    <AppHeading>Monarch-Related Publications</AppHeading>
+
+    <p class="metadata">
+      This list includes papers by the Monarch Team that were foundational to
+      the current Monarch work. The graph below shows the number of citations to
+      Monarch papers over time.
+    </p>
 
     <Apex
       class="chart"
