@@ -40,8 +40,8 @@ withDefaults(defineProps<Props>(), { to: "", subtitle: "", design: "big" });
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  width: 200px;
   gap: 15px;
+  width: 200px;
 }
 
 .button {
@@ -54,8 +54,8 @@ withDefaults(defineProps<Props>(), { to: "", subtitle: "", design: "big" });
 }
 
 .tile.small {
-  width: 160px;
   gap: 10px;
+  width: 160px;
 
   .button {
     font-size: 1.4rem;

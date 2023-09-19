@@ -204,8 +204,8 @@ function resetForm() {
 .fields {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  width: 100%;
   gap: 40px;
+  width: 100%;
 }
 
 .feedback {
@@ -226,8 +226,8 @@ function resetForm() {
   display: grid;
   grid-template-columns: 100px 1fr 100px 1fr;
   justify-items: flex-start;
-  width: 100%;
   gap: 10px;
+  width: 100%;
   color: $dark-gray;
   text-align: left;
 

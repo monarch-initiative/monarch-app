@@ -105,14 +105,14 @@ onUpdated(update);
 <style lang="scss" scoped>
 .anchor {
   display: inline-block;
-  width: 0;
-  margin-left: 0.75em;
-  font-size: 0.8em;
-  text-decoration: none;
   opacity: 0;
   transition:
     opacity $fast,
     color $fast;
+  margin-left: 0.75em;
+  width: 0;
+  font-size: 0.8em;
+  text-decoration: none;
 }
 
 .anchor:focus {
@@ -122,9 +122,9 @@ onUpdated(update);
 .icon {
   position: relative;
   top: -1px;
+  vertical-align: middle;
   margin-right: 0.75em;
   color: $gray;
-  vertical-align: middle;
 }
 
 h1,

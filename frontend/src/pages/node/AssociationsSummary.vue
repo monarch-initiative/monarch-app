@@ -188,8 +188,8 @@ onMounted(getAssociations);
 .result {
   display: flex;
   align-items: center;
-  width: 100%;
   gap: 40px;
+  width: 100%;
 }
 
 @media (max-width: 600px) {

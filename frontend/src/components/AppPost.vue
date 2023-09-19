@@ -43,8 +43,8 @@ defineProps<Props>();
 <style lang="scss" scoped>
 .post {
   display: flex;
-  width: 100%;
   gap: 20px;
+  width: 100%;
 }
 
 @media (max-width: 400px) {
@@ -56,10 +56,10 @@ defineProps<Props>();
 
 .image {
   flex-shrink: 0;
+  box-shadow: $shadow;
   width: 100px;
   height: 100px;
   overflow: hidden;
-  box-shadow: $shadow;
 
   img {
     width: 100%;

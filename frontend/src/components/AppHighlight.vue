@@ -29,11 +29,11 @@ defineSlots<Slots>();
 <style lang="scss" scoped>
 .highlight {
   display: flex;
-  align-items: center;
   justify-content: center;
-  width: 100%;
-  margin: 20px 0;
+  align-items: center;
   gap: 40px;
+  margin: 20px 0;
+  width: 100%;
 
   &:nth-child(even) {
     flex-direction: row-reverse;
@@ -44,9 +44,9 @@ defineSlots<Slots>();
   }
 
   video {
+    box-shadow: $shadow;
     width: 100%;
     max-width: 360px;
-    box-shadow: $shadow;
   }
 
   p {

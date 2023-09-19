@@ -8,6 +8,17 @@ It then writes the results to a json file, as well as a report containing:
     - publications with no link (to be manually added)
     - duplicates returned by scholarly
     - publications that are already in the publications.json file
+
+
+Links for known pubs with no link:
+- Metrics to Assess Value of Biomedical Digital Repositories: 
+    https://zenodo.org/record/203295
+
+- The Monarch Initiative: Insights across species reveal human disease mechanisms: 
+    https://www.biorxiv.org/content/10.1101/055756v1
+
+- k-BOOM: a Bayesian approach to ontology structure inference, with applications in disease ontology construction. bioRxiv 2019: 048843
+    https://www.biorxiv.org/content/10.1101/048843v3
 """
 import argparse
 import json

@@ -69,17 +69,17 @@ useEventListener(window, "snackbar", onPush);
 
 <style lang="scss" scoped>
 .snackbar {
-  z-index: 99;
   position: fixed;
   bottom: 20px;
   left: 50%;
-  padding: 10px;
   transform: translateX(-50%);
+  z-index: 99;
+  animation: flash 0.25s linear forwards;
+  box-shadow: $shadow;
   border-radius: $rounded;
   background: $off-black;
-  box-shadow: $shadow;
+  padding: 10px;
   color: $white;
-  animation: flash 0.25s linear forwards;
 }
 
 @keyframes flash {

@@ -32,8 +32,8 @@ defineSlots<Slots>();
   flex-direction: column;
   align-items: center;
   gap: 40px;
-  text-align: center;
   transition: background $fast;
+  text-align: center;
 
   &.full {
     padding: 50px 40px;
