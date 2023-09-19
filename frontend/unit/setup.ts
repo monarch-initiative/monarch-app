@@ -33,18 +33,20 @@ afterAll(() => server.close());
 /** util function to wait for api calls to mock */
 export const apiCall = async (): Promise<void> => {
   /**
-   * why two "flushPromises" calls? see:
+   * wait for mocks to finish. why two "flushPromises" calls? see:
    * https://github.com/vuejs/test-utils/issues/137
    */
   await sleep();
   await sleep();
+  /** extra buffer time to make extra sure mocks finish  */
+  await sleep(10);
 };
 
 /** mount wrapper with standard options */
 export const mount = (
   component: Component,
   options: ComponentMountingOptions<unknown> = {},
-  vModel: { [key: PropertyKey]: unknown } = {},
+  vModel: { [key: PropertyKey]: unknown } = {}
 ) => {
   /** standard globals */
   options.global = { components, plugins, stubs: { teleport: true } };
@@ -79,7 +81,7 @@ export const mount = (
  */
 export const emitted = <Event = unknown>(
   wrapper: VueWrapper,
-  event = "update:modelValue",
+  event = "update:modelValue"
 ): Array<Event> => {
   try {
     return wrapper.emitted()[event].pop() as Array<Event>;

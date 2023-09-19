@@ -155,14 +155,14 @@ export const request = async <Response>(
       params,
       options,
       parsed,
-      response: response.clone(),
+      response,
     });
 
   /** throw error after details have been logged */
   if (error || parsed === undefined) throw Error(error);
 
   /** add response to cache */
-  if (request.method === "GET") cache.set(id, response.clone());
+  if (request.method === "GET") cache.set(id, response);
 
   return parsed;
 };
