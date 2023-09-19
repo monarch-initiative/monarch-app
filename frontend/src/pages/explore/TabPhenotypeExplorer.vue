@@ -307,8 +307,8 @@ onMounted(() => {
 .match {
   display: flex;
   align-items: center;
-  gap: 40px;
   width: 100%;
+  gap: 40px;
 }
 
 .details {
@@ -323,8 +323,8 @@ onMounted(() => {
 @media (max-width: 600px) {
   .match {
     flex-direction: column;
-    gap: 20px;
     margin: 10px 0;
+    gap: 20px;
   }
 
   .details {

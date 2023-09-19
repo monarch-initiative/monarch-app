@@ -65,10 +65,10 @@ const icon = computed(() => icons[props.code]);
 <style lang="scss" scoped>
 .status {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 20px;
+  justify-content: center;
   padding: 10px;
+  gap: 20px;
   text-decoration: none;
 }
 

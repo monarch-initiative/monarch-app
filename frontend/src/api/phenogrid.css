@@ -21,18 +21,18 @@
 .ui-helper-hidden-accessible {
   clip: rect(0 0 0 0);
   position: absolute;
-  margin: -1px;
-  border: 0;
-  padding: 0;
   width: 1px;
   height: 1px;
+  margin: -1px;
+  padding: 0;
   overflow: hidden;
+  border: 0;
 }
 .ui-helper-reset {
   margin: 0;
-  outline: 0;
-  border: 0;
   padding: 0;
+  border: 0;
+  outline: 0;
   font-size: 100%;
   line-height: 1.3;
   list-style: none;
@@ -51,10 +51,10 @@
   position: absolute;
   top: 0;
   left: 0;
-  opacity: 0;
-  filter: Alpha(Opacity=0);
   width: 100%;
   height: 100%;
+  filter: Alpha(Opacity=0);
+  opacity: 0;
 }
 .ui-front {
   z-index: 3;
@@ -66,11 +66,11 @@
 .ui-icon {
   display: inline-block;
   position: relative;
-  vertical-align: middle;
   margin-top: -0.25em;
-  background-repeat: no-repeat;
   overflow: hidden;
+  background-repeat: no-repeat;
   text-indent: -99999px;
+  vertical-align: middle;
 }
 .ui-widget-icon-block {
   display: block;
@@ -98,15 +98,15 @@
 .ui-accordion .ui-accordion-header {
   display: block;
   position: relative;
-  cursor: pointer;
   margin: 2px 0 0;
   padding: 0.5em 0.5em 0.5em 0.7em;
   font-size: 100%;
+  cursor: pointer;
 }
 .ui-accordion .ui-accordion-content {
-  border-top: 0;
   padding: 1em 2.2em;
   overflow: auto;
+  border-top: 0;
 }
 
 /*!
@@ -139,17 +139,17 @@
 .ui-button {
   display: inline-block;
   position: relative;
-  vertical-align: middle;
-  cursor: pointer;
   margin-right: 0.1em;
   padding: 0.4em 1em;
   overflow: visible;
   line-height: normal;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  text-align: center;
 }
 .ui-button,
 .ui-button:active,
@@ -175,23 +175,23 @@ input.ui-button.ui-button-icon-only {
   margin-left: -8px;
 }
 .ui-button.ui-icon-notext .ui-icon {
-  padding: 0;
   width: 2.1em;
   height: 2.1em;
+  padding: 0;
   text-indent: -9999px;
   white-space: nowrap;
 }
 input.ui-button.ui-icon-notext .ui-icon {
-  padding: 0.4em 1em;
   width: auto;
   height: auto;
+  padding: 0.4em 1em;
   text-indent: 0;
   white-space: normal;
 }
 button.ui-button::-moz-focus-inner,
 input.ui-button::-moz-focus-inner {
-  border: 0;
   padding: 0;
+  border: 0;
 }
 
 /*!
@@ -205,24 +205,24 @@ input.ui-button::-moz-focus-inner {
  * http://api.jqueryui.com/checkboxradio/#theming
  */
 .ui-checkboxradio-label .ui-icon-background {
-  box-shadow: inset 1px 1px 1px #ccc;
   border: none;
   border-radius: 0.12em;
+  box-shadow: inset 1px 1px 1px #ccc;
 }
 .ui-checkboxradio-radio-label .ui-icon-background {
-  border: none;
-  border-radius: 1em;
   width: 16px;
   height: 16px;
   overflow: visible;
+  border: none;
+  border-radius: 1em;
 }
 .ui-checkboxradio-radio-label.ui-checkboxradio-checked .ui-icon,
 .ui-checkboxradio-radio-label.ui-checkboxradio-checked:hover .ui-icon {
+  width: 8px;
+  height: 8px;
   border-width: 4px;
   border-style: solid;
   background-image: none;
-  width: 8px;
-  height: 8px;
 }
 .ui-checkboxradio-disabled {
   pointer-events: none;
@@ -243,9 +243,9 @@ input.ui-button::-moz-focus-inner {
   vertical-align: middle;
 }
 .ui-controlgroup > .ui-controlgroup-item {
-  float: left;
   margin-right: 0;
   margin-left: 0;
+  float: left;
 }
 .ui-controlgroup > .ui-controlgroup-item.ui-visual-focus,
 .ui-controlgroup > .ui-controlgroup-item:focus {
@@ -253,10 +253,10 @@ input.ui-button::-moz-focus-inner {
 }
 .ui-controlgroup-vertical > .ui-controlgroup-item {
   display: block;
-  float: none;
+  width: 100%;
   margin-top: 0;
   margin-bottom: 0;
-  width: 100%;
+  float: none;
   text-align: left;
 }
 .ui-controlgroup-vertical .ui-controlgroup-item {
@@ -300,8 +300,8 @@ input.ui-button::-moz-focus-inner {
  */
 .ui-datepicker {
   display: none;
-  padding: 0.2em 0.2em 0;
   width: 17em;
+  padding: 0.2em 0.2em 0;
 }
 .ui-datepicker .ui-datepicker-header {
   position: relative;
@@ -353,20 +353,20 @@ input.ui-button::-moz-focus-inner {
   width: 45%;
 }
 .ui-datepicker table {
+  width: 100%;
   margin: 0 0 0.4em;
   border-collapse: collapse;
-  width: 100%;
   font-size: 0.9em;
 }
 .ui-datepicker th {
-  border: 0;
   padding: 0.7em 0.3em;
+  border: 0;
   font-weight: 700;
   text-align: center;
 }
 .ui-datepicker td {
-  border: 0;
   padding: 1px;
+  border: 0;
 }
 .ui-datepicker td a,
 .ui-datepicker td span {
@@ -377,19 +377,19 @@ input.ui-button::-moz-focus-inner {
 }
 .ui-datepicker .ui-datepicker-buttonpane {
   margin: 0.7em 0 0;
+  padding: 0 0.2em;
   border-right: 0;
   border-bottom: 0;
   border-left: 0;
   background-image: none;
-  padding: 0 0.2em;
 }
 .ui-datepicker .ui-datepicker-buttonpane button {
-  float: right;
-  cursor: pointer;
+  width: auto;
   margin: 0.5em 0.2em 0.4em;
   padding: 0.2em 0.6em 0.3em;
-  width: auto;
+  float: right;
   overflow: visible;
+  cursor: pointer;
 }
 .ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current {
   float: left;
@@ -401,8 +401,8 @@ input.ui-button::-moz-focus-inner {
   float: left;
 }
 .ui-datepicker-multi .ui-datepicker-group table {
-  margin: 0 auto 0.4em;
   width: 95%;
+  margin: 0 auto 0.4em;
 }
 .ui-datepicker-multi-2 .ui-datepicker-group {
   width: 50%;
@@ -421,8 +421,8 @@ input.ui-button::-moz-focus-inner {
   clear: left;
 }
 .ui-datepicker-row-break {
-  clear: both;
   width: 100%;
+  clear: both;
   font-size: 0;
 }
 .ui-datepicker-rtl {
@@ -463,8 +463,8 @@ input.ui-button::-moz-focus-inner {
   display: block;
   top: 0.3em;
   left: 0.5em;
-  background-repeat: no-repeat;
   overflow: hidden;
+  background-repeat: no-repeat;
   text-indent: -99999px;
 }
 
@@ -482,17 +482,17 @@ input.ui-button::-moz-focus-inner {
   position: absolute;
   top: 0;
   left: 0;
-  outline: 0;
   padding: 0.2em;
+  outline: 0;
 }
 .ui-dialog .ui-dialog-titlebar {
   position: relative;
   padding: 0.4em 1em;
 }
 .ui-dialog .ui-dialog-title {
-  float: left;
-  margin: 0.1em 0;
   width: 90%;
+  margin: 0.1em 0;
+  float: left;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -501,31 +501,31 @@ input.ui-button::-moz-focus-inner {
   position: absolute;
   top: 50%;
   right: 0.3em;
-  margin: -10px 0 0;
-  padding: 1px;
   width: 20px;
   height: 20px;
+  margin: -10px 0 0;
+  padding: 1px;
 }
 .ui-dialog .ui-dialog-content {
   position: relative;
-  border: 0;
-  background: none;
   padding: 0.5em 1em;
   overflow: auto;
+  border: 0;
+  background: none;
 }
 .ui-dialog .ui-dialog-buttonpane {
   margin-top: 0.5em;
+  padding: 0.3em 1em 0.5em 0.4em;
   border-width: 1px 0 0;
   background-image: none;
-  padding: 0.3em 1em 0.5em 0.4em;
   text-align: left;
 }
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
   float: right;
 }
 .ui-dialog .ui-dialog-buttonpane button {
-  cursor: pointer;
   margin: 0.5em 0.4em 0.5em 0;
+  cursor: pointer;
 }
 .ui-dialog .ui-resizable-n {
   top: 0;
@@ -596,26 +596,26 @@ input.ui-button::-moz-focus-inner {
 .ui-menu {
   display: block;
   margin: 0;
-  outline: 0;
   padding: 0;
+  outline: 0;
   list-style: none;
 }
 .ui-menu .ui-menu {
   position: absolute;
 }
 .ui-menu .ui-menu-item {
-  cursor: pointer;
   margin: 0;
   list-style-image: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");
+  cursor: pointer;
 }
 .ui-menu .ui-menu-item-wrapper {
   position: relative;
   padding: 3px 1em 3px 0.4em;
 }
 .ui-menu .ui-menu-divider {
+  height: 0;
   margin: 5px 0;
   border-width: 1px 0 0;
-  height: 0;
   font-size: 0;
   line-height: 0;
 }
@@ -657,14 +657,14 @@ input.ui-button::-moz-focus-inner {
   text-align: left;
 }
 .ui-progressbar .ui-progressbar-value {
-  margin: -1px;
   height: 100%;
+  margin: -1px;
 }
 .ui-progressbar .ui-progressbar-overlay {
-  opacity: 0.25;
-  filter: alpha(opacity=25);
-  background: url("data:image/gif;base64,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");
   height: 100%;
+  background: url("data:image/gif;base64,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");
+  filter: alpha(opacity=25);
+  opacity: 0.25;
 }
 .ui-progressbar-indeterminate .ui-progressbar-value {
   background-image: none;
@@ -684,9 +684,9 @@ input.ui-button::-moz-focus-inner {
 .ui-resizable-handle {
   display: block;
   position: absolute;
+  font-size: 0.1px;
   -ms-touch-action: none;
   touch-action: none;
-  font-size: 0.1px;
 }
 .ui-resizable-autohide .ui-resizable-handle,
 .ui-resizable-disabled .ui-resizable-handle {
@@ -695,58 +695,58 @@ input.ui-button::-moz-focus-inner {
 .ui-resizable-n {
   top: -5px;
   left: 0;
-  cursor: n-resize;
   width: 100%;
   height: 7px;
+  cursor: n-resize;
 }
 .ui-resizable-s {
   bottom: -5px;
   left: 0;
-  cursor: s-resize;
   width: 100%;
   height: 7px;
+  cursor: s-resize;
 }
 .ui-resizable-e {
   top: 0;
   right: -5px;
-  cursor: e-resize;
   width: 7px;
   height: 100%;
+  cursor: e-resize;
 }
 .ui-resizable-w {
   top: 0;
   left: -5px;
-  cursor: w-resize;
   width: 7px;
   height: 100%;
+  cursor: w-resize;
 }
 .ui-resizable-se {
   right: 1px;
   bottom: 1px;
-  cursor: se-resize;
   width: 12px;
   height: 12px;
+  cursor: se-resize;
 }
 .ui-resizable-sw {
   bottom: -5px;
   left: -5px;
-  cursor: sw-resize;
   width: 9px;
   height: 9px;
+  cursor: sw-resize;
 }
 .ui-resizable-nw {
   top: -5px;
   left: -5px;
-  cursor: nw-resize;
   width: 9px;
   height: 9px;
+  cursor: nw-resize;
 }
 .ui-resizable-ne {
   top: -5px;
   right: -5px;
-  cursor: ne-resize;
   width: 9px;
   height: 9px;
+  cursor: ne-resize;
 }
 
 /*!
@@ -762,8 +762,8 @@ input.ui-button::-moz-focus-inner {
   touch-action: none;
 }
 .ui-selectable-helper {
-  position: absolute;
   z-index: 3;
+  position: absolute;
   border: 1px dotted #000;
 }
 
@@ -791,10 +791,10 @@ input.ui-button::-moz-focus-inner {
   overflow-x: hidden;
 }
 .ui-selectmenu-menu .ui-menu .ui-selectmenu-optgroup {
-  margin: 0.5em 0 0;
-  border: 0;
-  padding: 2px 0.4em;
   height: auto;
+  margin: 0.5em 0 0;
+  padding: 2px 0.4em;
+  border: 0;
   font-weight: 700;
   font-size: 1em;
   line-height: 1.5;
@@ -814,8 +814,8 @@ input.ui-button::-moz-focus-inner {
   white-space: nowrap;
 }
 .ui-selectmenu-icon.ui-icon {
-  float: right;
   margin-top: 0;
+  float: right;
 }
 
 /*!
@@ -846,18 +846,18 @@ input.ui-button::-moz-focus-inner {
   text-align: left;
 }
 .ui-slider .ui-slider-handle {
-  position: absolute;
   z-index: 2;
-  cursor: default;
+  position: absolute;
   width: 1.2em;
   height: 1.2em;
+  cursor: default;
   -ms-touch-action: none;
   touch-action: none;
 }
 .ui-slider .ui-slider-range {
   display: block;
-  position: absolute;
   z-index: 1;
+  position: absolute;
   border: 0;
   background-position: 0 0;
   font-size: 0.7em;
@@ -916,32 +916,32 @@ input.ui-button::-moz-focus-inner {
 .ui-spinner {
   display: inline-block;
   position: relative;
-  vertical-align: middle;
   padding: 0;
   overflow: hidden;
+  vertical-align: middle;
 }
 .ui-spinner-input {
-  vertical-align: middle;
   margin: 0.2em 0;
   margin-right: 2em;
   margin-left: 0.4em;
+  padding: 0.222em 0;
   border: none;
   background: none;
-  padding: 0.222em 0;
   color: inherit;
+  vertical-align: middle;
 }
 .ui-spinner-button {
   display: block;
   position: absolute;
   right: 0;
-  cursor: default;
-  margin: 0;
-  padding: 0;
   width: 1.6em;
   height: 50%;
+  margin: 0;
+  padding: 0;
   overflow: hidden;
   font-size: 0.5em;
   text-align: center;
+  cursor: default;
 }
 .ui-spinner a.ui-spinner-button {
   border-top-style: none;
@@ -976,16 +976,16 @@ input.ui-button::-moz-focus-inner {
 .ui-tabs .ui-tabs-nav li {
   position: relative;
   top: 0;
-  float: left;
   margin: 1px 0.2em 0 0;
-  border-bottom-width: 0;
   padding: 0;
+  float: left;
+  border-bottom-width: 0;
   list-style: none;
   white-space: nowrap;
 }
 .ui-tabs .ui-tabs-nav .ui-tabs-anchor {
-  float: left;
   padding: 0.5em 1em;
+  float: left;
   text-decoration: none;
 }
 .ui-tabs .ui-tabs-nav li.ui-tabs-active {
@@ -1002,9 +1002,9 @@ input.ui-button::-moz-focus-inner {
 }
 .ui-tabs .ui-tabs-panel {
   display: block;
+  padding: 1em 1.4em;
   border-width: 0;
   background: none;
-  padding: 1em 1.4em;
 }
 
 /*!
@@ -1018,10 +1018,10 @@ input.ui-button::-moz-focus-inner {
  * http://api.jqueryui.com/tooltip/#theming
  */
 .ui-tooltip {
-  position: absolute;
   z-index: 6;
-  padding: 8px;
+  position: absolute;
   max-width: 300px;
+  padding: 8px;
 }
 body .ui-tooltip {
   border-width: 2px;
@@ -1184,16 +1184,16 @@ a.ui-button:active {
 .ui-priority-secondary,
 .ui-widget-content .ui-priority-secondary,
 .ui-widget-header .ui-priority-secondary {
-  opacity: 0.7;
-  filter: Alpha(Opacity=70);
   font-weight: 400;
+  filter: Alpha(Opacity=70);
+  opacity: 0.7;
 }
 .ui-state-disabled,
 .ui-widget-content .ui-state-disabled,
 .ui-widget-header .ui-state-disabled {
-  opacity: 0.35;
-  filter: Alpha(Opacity=35);
   background-image: none;
+  filter: Alpha(Opacity=35);
+  opacity: 0.35;
 }
 .ui-state-disabled .ui-icon {
   filter: Alpha(Opacity=35);
@@ -1776,9 +1776,9 @@ a.ui-button:active {
   border-bottom-right-radius: 3px;
 }
 .ui-widget-overlay {
-  opacity: 0.3;
-  filter: Alpha(Opacity=30);
   background: #aaa;
+  filter: Alpha(Opacity=30);
+  opacity: 0.3;
 }
 .ui-widget-shadow {
   box-shadow: 0 0 5px #666;
@@ -1803,14 +1803,14 @@ a.ui-button:active {
   left: 0;
 }
 .pg_container .pg_controls_options {
-  position: absolute;
   z-index: 4;
-  box-shadow: 4px 4px 2px #ddd;
-  border: 1px solid #222;
-  background: #f1f3f8;
-  padding: 20px;
+  position: absolute;
   width: 200px;
   height: 434px;
+  padding: 20px;
+  border: 1px solid #222;
+  background: #f1f3f8;
+  box-shadow: 4px 4px 2px #ddd;
   color: #111;
 }
 .pg_container .pg_controls_options_arrow_border {
@@ -1822,10 +1822,10 @@ a.ui-button:active {
   display: block;
   position: absolute;
   left: 27px;
-  border-width: 8px;
-  border-style: solid;
   width: 0;
   height: 0;
+  border-width: 8px;
+  border-style: solid;
 }
 .pg_container .pg_controls_options_arrow {
   top: -16px;
@@ -1833,20 +1833,20 @@ a.ui-button:active {
 }
 .pg_container .pg_controls_close {
   display: inline-block;
-  float: right;
   margin-top: -20px;
   margin-right: -20px;
+  padding: 2px 5px;
+  float: right;
   border-bottom: 1px solid #222;
   border-left: 1px solid #222;
   background: #605f61;
-  padding: 2px 5px;
   color: #fff;
   font-size: 20px;
 }
 .pg_container .pg_controls_close:hover,
 .pg_container .pg_unmatched_close:hover {
-  cursor: pointer;
   background: #ea763b;
+  cursor: pointer;
 }
 .pg_container .pg_slide_btn {
   position: absolute;
@@ -1856,13 +1856,13 @@ a.ui-button:active {
 }
 .pg_container .pg_slide_btn:hover,
 .pg_container .pg_unmatched_btn:hover {
-  cursor: pointer;
   color: #ea763b;
+  cursor: pointer;
 }
 .pg_container .pg_slide_open:hover,
 .pg_container .pg_unmatched_open:hover {
-  cursor: default !important;
   color: #44a293 !important;
+  cursor: default !important;
 }
 .pg_container .pg_ctrl_label {
   margin-bottom: 3px;
@@ -1871,21 +1871,21 @@ a.ui-button:active {
 }
 .pg_container input[type="checkbox"],
 .pg_container input[type="radio"] {
-  vertical-align: -1px;
-  margin: 0 2px 0 0;
   width: 11px;
   height: 11px;
+  margin: 0 2px 0 0;
+  vertical-align: -1px;
 }
 .pg_container .pg_hr {
-  clear: both;
   margin: 10px 0;
+  clear: both;
   border-bottom: 1px solid #cbcbcb;
 }
 .pg_container .pg_select_item {
-  margin: 2px 0;
-  padding: 0;
   width: 200px;
   height: 14px;
+  margin: 2px 0;
+  padding: 0;
   overflow: hidden;
   font-size: 12px;
   text-overflow: ellipsis;
@@ -1897,31 +1897,31 @@ a.ui-button:active {
   left: 0;
 }
 .pg_container .pg_unmatched_list {
+  z-index: 4;
   position: absolute;
   left: 30px;
-  z-index: 4;
   margin-bottom: 20px;
-  box-shadow: 4px 4px 2px #ddd;
+  padding: 10px;
   border: 1px solid #222;
   background: #f1f3f8;
-  padding: 10px;
+  box-shadow: 4px 4px 2px #ddd;
   color: #111;
 }
 .pg_container .pg_unmatched_close {
   display: inline-block;
-  float: right;
   margin-top: -10px;
   margin-right: -10px;
+  padding: 2px 5px;
+  float: right;
   border-bottom: 1px solid #222;
   border-left: 1px solid #222;
   background: #605f61;
-  padding: 2px 5px;
   color: #fff;
   font-size: 20px;
 }
 .pg_container .pg_unmatched_list_item a {
-  float: left;
   padding: 5px 10px;
+  float: left;
   font-size: 11px;
 }
 .pg_container .pg_unmatched_list_arrow_border {
@@ -1933,10 +1933,10 @@ a.ui-button:active {
   display: block;
   position: absolute;
   left: 80px;
-  border-width: 8px;
-  border-style: solid;
   width: 0;
   height: 0;
+  border-width: 8px;
+  border-style: solid;
 }
 .pg_container .pg_unmatched_list_arrow {
   top: -15px;
@@ -1960,17 +1960,17 @@ a.ui-button:active {
   cursor: pointer;
 }
 .pg_container .pg_tooltip {
-  position: absolute;
   z-index: 5;
+  position: absolute;
   padding: 5px;
 }
 .pg_container .pg_tooltip_inner {
+  padding: 5px;
+  border: 1px solid #000;
+  background: #fff;
   box-shadow: 5px 5px 8px #818181;
   -webkit-box-shadow: 5px 5px 8px #818181;
   -moz-box-shadow: 5px 5px 8px #818181;
-  border: 1px solid #000;
-  background: #fff;
-  padding: 5px;
   font-size: 11px;
   font-family: Verdana, Geneva, sans-serif;
 }
@@ -2001,9 +2001,9 @@ a.ui-button:active {
 }
 .clearfix:after {
   display: block;
-  clear: both;
   visibility: hidden;
   height: 0;
+  clear: both;
   content: " ";
 }
 .pg_container .pg_active {
@@ -2017,9 +2017,9 @@ a.ui-button:active {
 }
 .pg_container .pg_expand_genotype,
 .pg_container .pg_expand_ontology {
-  cursor: pointer;
   color: #dc4945;
   text-decoration: underline;
+  cursor: pointer;
 }
 .pg_container .pg_expand_genotype_icon,
 .pg_container .pg_expand_ontology_icon {
@@ -2027,9 +2027,9 @@ a.ui-button:active {
 }
 .pg_container em.pg_ontology_tree_indent {
   display: inline-block;
-  float: left;
   width: 12px;
   height: 1px;
+  float: left;
 }
 .pg_container .pg_cursor_pointer {
   cursor: pointer;
@@ -2048,8 +2048,8 @@ a.ui-button:active {
   display: none;
 }
 .pg_container .pg_export:hover {
-  cursor: pointer;
   color: #ea763b;
+  cursor: pointer;
 }
 .phenogrid_controls_options {
   text-align: left;

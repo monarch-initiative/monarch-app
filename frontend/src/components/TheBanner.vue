@@ -28,11 +28,11 @@ const open = ref(true);
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  padding: 20px;
   gap: 20px;
   background: $theme-light;
-  padding: 20px;
   text-align: center;
 }
 </style>

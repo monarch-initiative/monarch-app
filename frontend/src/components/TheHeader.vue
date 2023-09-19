@@ -117,11 +117,11 @@ $wrap: 850px;
 
 .header {
   display: flex;
+  z-index: 10;
   position: sticky;
   top: 0;
-  justify-content: space-between;
   align-items: center;
-  z-index: 10;
+  justify-content: space-between;
   background: $theme;
   color: $white;
 }
@@ -151,8 +151,8 @@ $wrap: 850px;
 
 .title {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 }
 
 .button {
@@ -183,8 +183,8 @@ $wrap: 850px;
 }
 
 .image {
-  padding: 5px;
   height: 45px;
+  padding: 5px;
 }
 
 .name {
@@ -241,17 +241,17 @@ $wrap: 850px;
 
 .nav {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 10px;
-  padding: 15px;
+  justify-content: center;
   max-width: 100%;
+  padding: 15px;
+  gap: 10px;
 }
 
 .link {
   position: relative;
-  padding: 10px;
   max-width: 100%;
+  padding: 10px;
   color: $white;
   text-align: center;
   text-decoration: none;
@@ -261,12 +261,12 @@ $wrap: 850px;
     right: 50%;
     bottom: 0;
     left: 50%;
+    height: 2px;
+    background: $white;
+    content: "";
     transition:
       left $fast,
       right $fast;
-    background: $white;
-    height: 2px;
-    content: "";
   }
 
   &:hover:after {
@@ -287,8 +287,8 @@ $wrap: 850px;
   }
 
   .link {
-    padding: 5px;
     width: 200px;
+    padding: 5px;
   }
 }
 
