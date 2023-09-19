@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "total": 12677,
-    "num_publications": 140,
-    "last_5_yrs": 9022,
+    "total": 12690,
+    "num_publications": 137,
+    "last_5_yrs": 9043,
     "cites_per_year": {
       "2009": 43,
       "2010": 90,
@@ -12,13 +12,13 @@
       "2014": 349,
       "2015": 692,
       "2016": 786,
-      "2017": 978,
-      "2018": 1133,
+      "2017": 977,
+      "2018": 1132,
       "2019": 1362,
       "2020": 1272,
-      "2021": 1535,
-      "2022": 2087,
-      "2023": 1602
+      "2021": 1534,
+      "2022": 2084,
+      "2023": 1627
     },
     "hindex": 48,
     "hindex5y": 43,
@@ -775,6 +775,14 @@
           "journal": "ICBO/BioCreative, 2016",
           "issue": "",
           "link": "https://ceur-ws.org/Vol-1747/IT605_ICBO2016.pdf"
+        },
+        {
+          "title": "Metrics to assess value of biomedical digital repositories: response to RFI NOT-OD-16-133",
+          "authors": "Melissa Haendel, Andrew Su, Julie McMurry, CG Chute, C Mungall, B Good, C Wu, S McWeeney, H Hochheiser, P Robinson, M Hoatlin, M Brush, D Smedley, M Munoz-Torres, G Jiang, H Liu, P McQuilton",
+          "year": 2016,
+          "journal": "Geneva: Zenodo",
+          "issue": "",
+          "link": "https://zenodo.org/record/203295"
         },
         {
           "title": "Computational evaluation of exome sequence data using human and model organism phenotypes improves diagnostic efficiency",
