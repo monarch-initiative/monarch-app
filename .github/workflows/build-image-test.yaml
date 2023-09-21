@@ -55,7 +55,7 @@ jobs:
 
       - name: Check iam permissions
         run: |
-          gcloud projects get-iam-policy monarch-initiative --flatten="bindings[].members" --format='table(bindings.role)' --filter="bindings.members:
+          gcloud projects get-iam-policy monarch-initiative
 
       - name: "Update API Service"
           # gcloud compute ssh --zone us-central1-a monarch-v3-dev-manager -- sudo docker service update monarch-v3_api --with-registry-auth  --update-order=start-first --force --image us-central1-docker.pkg.dev/monarch-initiative/monarch-api/monarch-api:${{ github.sha }}
