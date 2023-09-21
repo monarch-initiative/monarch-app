@@ -14,12 +14,12 @@ import pystow
 
 
 class SemsimSearchCategory(Enum):
-    HUMAN_GENE = "HGNC"
-    MOUSE_GENE = "MGI"
-    RAT_GENE = "RGD"
-    ZEBRAFISH_GENE = "ZFIN"
-    WORM_GENE = "WB"
-    DISEASE = "MONDO"
+    HGNC = "Human Genes"
+    MGI = "Mouse Genes"
+    RGD = "Rat Genes"
+    ZFIN = "Zebrafish Genes"
+    WB = "C. Elegans Genes"
+    MONDO = "Human Diseases"
 
 
 @dataclass
@@ -87,6 +87,6 @@ class OakImplementation(SemanticSimilarityInterface):
             objects=set(objects),
             object_closure_predicates=predicates,
             include_similarity_object=True,
-            subject_prefixes=[target_group.value for target_group in target_groups],
+            subject_prefixes=[target_group.name for target_group in target_groups],
             limit=limit,
         )
