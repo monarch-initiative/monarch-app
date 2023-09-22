@@ -3,7 +3,9 @@ on:
   workflow_dispatch:
   workflow_run:
     workflows: ["Build and Push Docker Images"]
-    branches: [main, automate-docker-update]
+    branches: 
+      - main
+      - automate-docker-update
     types:
       - completed
 

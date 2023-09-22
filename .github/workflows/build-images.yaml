@@ -1,9 +1,11 @@
 name: Build and Push Docker Images
+
 on:
   workflow_dispatch:
   push:
     branches:
-      - [main, automate-docker-update]
+      - main
+      - automate-docker-update
   release:
     types: [published]
 
