@@ -41,6 +41,10 @@ jobs:
     runs-on: ubuntu-latest
     # needs: build-and-push-to-gcr
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # to get all tags
       # gcloud compute ssh monarch-v3-api-manager -- sudo docker service update monarch-v3_api --with-registry-auth  --update-order=start-first --force --image us-central1-docker.pkg.dev/monarch-initiative/monarch-api/monarch-api:${COMMIT_HASH}
       # repeat for monarch-v3_nginx and monarch-ui
       - id: "auth"
