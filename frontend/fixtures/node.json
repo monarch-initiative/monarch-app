@@ -204,5 +204,25 @@
         "synonym": []
       }
     ]
-  }
+  },
+  "causal_gene": [
+    {
+      "id": "ssh1",
+      "name": "SSH1",
+      "category": "gene",
+      "in_taxon_label": "Homosapiens"
+    },
+    {
+      "id": "ssh2",
+      "name": "SSH2",
+      "category": "gene",
+      "in_taxon_label": "Homosapiens"
+    },
+    {
+      "id": "ssh3",
+      "name": "SSH3",
+      "category": "gene",
+      "in_taxon_label": "Homosapiens"
+    }
+  ]
 }

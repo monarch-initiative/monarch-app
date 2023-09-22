@@ -121,7 +121,7 @@ export const routes: RouteRecordRaw[] = [
 
   /** node pages */
   {
-    path: "/node/:id",
+    path: "/:id",
     name: "Node",
     component: PageNode,
   },
@@ -205,8 +205,10 @@ export const scrollToElement = async (element?: Element | null) => {
 };
 
 /** scroll to hash */
-export const scrollToHash = () =>
-  scrollToElement(document?.getElementById(window.location.hash.slice(1)));
+export const scrollToHash = (hash?: string) =>
+  scrollToElement(
+    document?.getElementById(hash || window.location.hash.slice(1)),
+  );
 
 /** navigation history object */
 export const history = createWebHistory(import.meta.env.BASE_URL);

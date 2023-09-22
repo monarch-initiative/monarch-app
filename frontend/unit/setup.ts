@@ -2,27 +2,14 @@ import { nextTick } from "vue";
 import type { Component } from "vue";
 import { cloneDeep } from "lodash";
 import { setupServer } from "msw/node";
-import { afterAll, afterEach, beforeAll, beforeEach, vi } from "vitest";
+import { afterAll, afterEach, beforeAll, vi } from "vitest";
 import type { ComponentMountingOptions, VueWrapper } from "@vue/test-utils";
 import { mount as _mount } from "@vue/test-utils";
 import components from "@/global/components";
 import plugins from "@/global/plugins";
-import router from "@/router";
 import { sleep } from "@/util/debug";
 import { handlers } from "../fixtures";
 import "@/global/icons";
-
-/** run before each test */
-beforeEach(async () => {
-  /** set default route and wait until ready */
-  await router.push("/");
-  await router.isReady();
-});
-
-/** https://github.com/vuejs/router/issues/615 */
-afterAll(async () => {
-  await sleep();
-});
 
 /** setup mock-service-worker */
 const server = setupServer(...handlers);
@@ -33,11 +20,14 @@ afterAll(() => server.close());
 /** util function to wait for api calls to mock */
 export const apiCall = async (): Promise<void> => {
   /**
-   * why two "flushPromises" calls? see:
+   * wait for mocks to finish. multiple sleeps needed because msw wraps
+   * callbacks in multiple promises. more arbitrary sleeps may be needed in
+   * future, depending on msw implementation details. see:
    * https://github.com/vuejs/test-utils/issues/137
    */
-  await sleep();
-  await sleep();
+  await sleep(10);
+  await sleep(10);
+  await sleep(10);
 };
 
 /** mount wrapper with standard options */

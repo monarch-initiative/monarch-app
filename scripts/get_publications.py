@@ -8,6 +8,17 @@ It then writes the results to a json file, as well as a report containing:
     - publications with no link (to be manually added)
     - duplicates returned by scholarly
     - publications that are already in the publications.json file
+
+
+Links for known pubs with no link:
+- Metrics to Assess Value of Biomedical Digital Repositories: 
+    https://zenodo.org/record/203295
+
+- The Monarch Initiative: Insights across species reveal human disease mechanisms: 
+    https://www.biorxiv.org/content/10.1101/055756v1
+
+- k-BOOM: a Bayesian approach to ontology structure inference, with applications in disease ontology construction. bioRxiv 2019: 048843
+    https://www.biorxiv.org/content/10.1101/048843v3
 """
 import argparse
 import json
@@ -15,7 +26,7 @@ import sys
 from pathlib import Path
 from typing import List
 
-from scholarly import scholarly
+from scholarly import scholarly  # type: ignore
 import pprint
 
 pp = pprint.PrettyPrinter(indent=2, sort_dicts=False).pprint
@@ -30,14 +41,6 @@ scholarly_file = script_dir / "scholarly_output.json"
 
 # These either aren't publications, are known duplicates, or have bad/missing info
 EXCLUDE = [
-    "384 Phenopackets",
-    "Uberon ontology",
-    "Haendel M. k-BOOM: a Bayesian approach to ontology structure inference, with applications in disease ontology construction. bioRxiv 2019: 048843",
-    "k-BOOM: A Bayesian approach to ontology structure inference, with applications in disease ontology construction. bioRxiv",
-    "Metrics to assess value of biomedical digital repositories: response to RFI NOT-OD-16-133",
-    "An Improved Bioinformatics Tool for Rare Disease Variant Prioritization: The Exomiser 9.0. 1 in Clinical Practice",
-    "/releases/2014-03-28/uberon",
-    "The Human Phenotype Ontology",
 ]
 
 
@@ -48,8 +51,13 @@ def get_citation_metadata():
     """
     author = scholarly.search_author_id(id="zmUEDj0AAAAJ")
     scholarly.fill(author, sections=["basics", "indices", "counts", "publications"])  # type: ignore
+    total = (
+        author["citedby"]
+        # - len([pub for pub in author["publications"] if pub["bib"]["title"] in EXCLUDE])
+        - len([pub for pub in author["publications"] if int(pub["bib"]["pub_year"]) < 2012])
+    )
     citation_info = {
-        "total": author["citedby"],  # type: ignore
+        "total": total,  # type: ignore
         "num_publications": len(author["publications"]),  # type: ignore
         "last_5_yrs": author["citedby5y"],  # type: ignore
         "cites_per_year": author["cites_per_year"],  # type: ignore
@@ -70,8 +78,8 @@ def get_pubs_from_scholarly():
     for p in publications:
         scholarly.fill(p, sections=["bib"])  # type: ignore
         bib = p["bib"]  # type: ignore
-        if bib["title"] in EXCLUDE:  # type: ignore
-            continue
+        # if bib["title"] in EXCLUDE:  # type: ignore
+        #     continue
         if "pub_year" not in bib or int(bib["pub_year"]) < 2012:
             continue
         title = bib["title"]  # type: ignore
@@ -93,7 +101,7 @@ def get_pubs_from_scholarly():
             issue += f"({bib['number']})"
         if "pages" in bib:
             issue += f":{bib['pages']}"
-        link = f"[Link]({p['pub_url']})" if ("pub_url" in p and "scholar.google" not in p["pub_url"]) else ""
+        link = f"{p['pub_url']}" if ("pub_url" in p and "scholar.google" not in p["pub_url"]) else ""
         pubs.append(
             {
                 "title": title,
@@ -201,7 +209,7 @@ def main(update: bool):
         for pub in dups:
             report.append(f"\n\t{pub}")
         scholarly_data = checked
-        
+
     # Flag publications with no link (to manually edit in publications.json later)
     nolinks = [pub["title"] for pub in scholarly_data if not pub["link"]]  # type: ignore
     if nolinks:
@@ -210,6 +218,10 @@ def main(update: bool):
             report.append(f"\n\t{pub}")
 
     # Filter out publications already in publications.json
+    if not Path(pubs_file).exists():
+        report.append(f"{'-'*120}\nNo publications.json file found. Creating one now...")
+        with open(pubs_file, "w") as f:
+            json.dump({"metadata": {}, "publications": []}, f, indent=2)
     with open(pubs_file, "r") as f:
         current_data = json.load(f)
     current_pubs = [pub for year in current_data["publications"] for pub in year["items"]]
@@ -234,9 +246,9 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    if args.debug:
-        # get_citation_metadata()
-        sys.exit()
+    # if args.debug:
+    #     get_citation_metadata()
+    #     sys.exit()
 
     citations, metadata, report = main(args.update)
     write_citations(citations, metadata)
