@@ -1,0 +1,84 @@
+name: Build and Push Docker Images
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - [main, automate-docker-update]
+  release:
+    types: [published]
+
+# This job uses RafikFarhad's GitHub action to build and
+# push a docker image to a specified GCP repository
+jobs:
+  build-and-push-api-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # to get all tags
+
+      - name: Generate Image Tag
+        id: get-tag
+        run: |
+          REV=$(git rev-list --tags --max-count=1)
+          IMAGE_TAG=$(git describe --tags $REV)
+          echo "IMAGE_TAG=${IMAGE_TAG//v}"
+          echo "IMAGE_TAG=${IMAGE_TAG//v}" >> $GITHUB_OUTPUT
+
+      - name: Build and Push Image
+        uses: RafikFarhad/push-to-gcr-github-action@v5-beta
+        with:
+          gcloud_service_key: ${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }}
+          registry: us-central1-docker.pkg.dev
+          project_id: monarch-initiative
+          image_name: monarch-api/monarch-api
+          image_tag: latest, ${{ steps.get-tag.outputs.IMAGE_TAG }}, ${{ github.sha }}
+          dockerfile: ./backend/Dockerfile
+
+  build-and-push-frontend-image:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # to get all tags
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install packages
+        run: yarn install
+
+      - name: Build app
+        run: yarn build
+
+      - name: Generate Image Tag for Frontend Dir
+        id: get-tag
+        run: |
+          REV=$(git rev-list --tags --max-count=1 )
+          IMAGE_TAG=$(git describe --tags $REV)
+          echo "IMAGE_TAG=${IMAGE_TAG//v}"
+          echo "IMAGE_TAG=${IMAGE_TAG//v}" >> $GITHUB_OUTPUT
+
+      # the monarch-ui Dockerfile pulls from two places:
+      # ./frontend/dist/, copied to /var/www/ in the image
+      # ./services/nginx/config/, copied to /etc/nginx/conf.d/ in the image
+
+      - name: Build and Push Image
+        uses: RafikFarhad/push-to-gcr-github-action@v5-beta
+        with:
+          gcloud_service_key: ${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }}
+          registry: us-central1-docker.pkg.dev
+          project_id: monarch-initiative
+          image_name: monarch-api/monarch-ui
+          image_tag: latest, ${{ steps.get-tag.outputs.IMAGE_TAG }}
+          dockerfile: ./services/nginx/Dockerfile
+          context: .
