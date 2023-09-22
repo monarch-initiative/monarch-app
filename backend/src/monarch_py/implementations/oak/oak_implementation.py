@@ -42,9 +42,9 @@ class OakImplementation(SemanticSimilarityInterface):
                 self.semsim = get_adapter(f"semsimian:sqlite:{phenio_path}")
             else:
                 monarchstow = pystow.module("monarch")
-                with monarchstow.ensure_gunzip("phenio",
-                                               url=self.default_phenio_db_url,
-                                               force=force_update) as stowed_phenio_path:
+                with monarchstow.ensure_gunzip(
+                    "phenio", url=self.default_phenio_db_url, force=force_update
+                ) as stowed_phenio_path:
                     self.semsim = get_adapter(f"semsimian:sqlite:{stowed_phenio_path}")
 
             # run a query to get the adapter to initialize properly
@@ -76,11 +76,13 @@ class OakImplementation(SemanticSimilarityInterface):
         response_dict = self.json_dumper.to_dict(response)
         return TermSetPairwiseSimilarity(**response_dict)
 
-    def search(self,
-               objects: List[str],
-               target_groups: List[SemsimSearchCategory] = None,
-               predicates: List[str] = None,
-               limit: int = 10):
+    def search(
+        self,
+        objects: List[str],
+        target_groups: List[SemsimSearchCategory] = None,
+        predicates: List[str] = None,
+        limit: int = 10,
+    ):
         predicates = predicates or self.default_predicates
         return self.semsim.associations_subject_search(
             predicates={"biolink:has_phenotype"},

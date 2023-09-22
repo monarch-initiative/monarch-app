@@ -58,7 +58,7 @@ def _post_compare(
 def _search(
     subjects: str = Query(...),
     target_group: SemsimSearchCategory = Query(...),
-    limit: int = Query(default=10, ge=1, le=500)
+    limit: int = Query(default=10, ge=1, le=500),
 ):
     """
     Search for genes or diseases by phenotype similarity<br>
