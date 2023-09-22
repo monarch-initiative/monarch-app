@@ -25,18 +25,18 @@ $wrap: 500px;
 
 .footer {
   display: flex;
-  z-index: 10;
-  align-items: center;
   justify-content: space-between;
-  padding: 20px;
+  align-items: center;
+  z-index: 10;
   background: $theme;
+  padding: 20px;
   color: $white;
   font-size: 0.9rem;
 }
 
 a {
-  color: $white;
   transition: opacity $fast;
+  color: $white;
 
   &:hover {
     opacity: 0.5;

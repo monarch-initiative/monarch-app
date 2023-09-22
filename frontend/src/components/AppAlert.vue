@@ -27,13 +27,13 @@ defineSlots<Slots>();
 <style lang="scss" scoped>
 .alert {
   display: flex;
-  align-items: center;
   justify-content: center;
-  width: 100%;
-  padding: 40px;
+  align-items: center;
   gap: 20px;
   border-radius: $rounded;
   background: $light-gray;
+  padding: 40px;
+  width: 100%;
 
   .icon {
     color: $gray;

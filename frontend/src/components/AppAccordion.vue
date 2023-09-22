@@ -44,12 +44,12 @@ const expanded = ref(false);
 
 <style lang="scss" scoped>
 .title {
-  width: 100%;
-  padding: 10px;
+  transition: background $fast;
   border-bottom: solid 2px $light-gray;
   border-radius: $rounded;
+  padding: 10px;
+  width: 100%;
   font-size: 1.1rem;
-  transition: background $fast;
 
   &:hover {
     background: $light-gray;
@@ -69,9 +69,9 @@ const expanded = ref(false);
 .content {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  padding: 20px;
   gap: 20px;
+  padding: 20px;
+  width: 100%;
 }
 
 .caret {

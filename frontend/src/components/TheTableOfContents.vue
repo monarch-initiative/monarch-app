@@ -180,11 +180,11 @@ useMutationObserver(
 
 <style lang="scss" scoped>
 .toc {
-  z-index: 10;
   position: fixed;
   top: 0;
-  background: $white;
+  z-index: 10;
   box-shadow: $shadow;
+  background: $white;
 }
 
 .toc.expanded {
@@ -209,17 +209,17 @@ useMutationObserver(
 }
 
 .spacer {
-  width: 100%;
   margin: 5px 0;
+  width: 100%;
   content: "";
 }
 
 .entry {
   display: flex;
   align-items: center;
+  transition: background $fast;
   height: 40px;
   text-decoration: none;
-  transition: background $fast;
 }
 
 .entry.active {

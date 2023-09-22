@@ -46,11 +46,11 @@ function onChange(event: Event) {
   display: inline-flex;
   position: relative;
   align-items: center;
-  padding: 10px;
   gap: 10px;
-  border-radius: $rounded;
-  cursor: pointer;
   transition: background $fast;
+  cursor: pointer;
+  border-radius: $rounded;
+  padding: 10px;
 
   .check {
     color: $theme;
