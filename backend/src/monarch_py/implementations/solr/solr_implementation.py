@@ -88,17 +88,25 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
                 node.inheritance = self._get_associated_entity(mode_of_inheritance_associations.items[0], node)
 
         if "biolink:Disease" == node.category:
-              node.causal_gene = [self._get_associated_entity(association, node)
-                                   for association
-                                   in self.get_associations(object=id, direct=True,
-                                                            predicate="biolink:causes",
-                                                            category="biolink:CausalGeneToDiseaseAssociation").items]
+            node.causal_gene = [
+                self._get_associated_entity(association, node)
+                for association in self.get_associations(
+                    object=id,
+                    direct=True,
+                    predicate="biolink:causes",
+                    category="biolink:CausalGeneToDiseaseAssociation",
+                ).items
+            ]
         if "biolink:Gene" == node.category:
-            node.causes_disease = [self._get_associated_entity(association, node)
-                                   for association
-                                   in self.get_associations(subject=id, direct=True,
-                                                            predicate="biolink:causes",
-                                                            category="biolink:CausalGeneToDiseaseAssociation").items]
+            node.causes_disease = [
+                self._get_associated_entity(association, node)
+                for association in self.get_associations(
+                    subject=id,
+                    direct=True,
+                    predicate="biolink:causes",
+                    category="biolink:CausalGeneToDiseaseAssociation",
+                ).items
+            ]
 
         node.node_hierarchy = self._get_node_hierarchy(node)
         node.association_counts = self.get_association_counts(id).items
