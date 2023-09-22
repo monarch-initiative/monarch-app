@@ -250,13 +250,13 @@ watch(
 
 .box {
   display: flex;
-  align-items: center;
   justify-content: center;
-  width: 100%;
-  padding: 5px 10px;
+  align-items: center;
   gap: 10px;
   border-radius: $rounded;
   background: $light-gray;
+  padding: 5px 10px;
+  width: 100%;
 }
 
 .box-label {
@@ -265,26 +265,26 @@ watch(
 }
 
 .list {
-  z-index: 12;
   position: fixed;
+  z-index: 12;
+  box-shadow: $shadow;
+  background: $white;
   max-width: 90vw;
   max-height: 300px;
   overflow-x: auto;
   overflow-y: auto;
-  background: $white;
-  box-shadow: $shadow;
 }
 
 .option {
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 5px 10px;
+  align-items: center;
   gap: 10px;
+  transition: background $fast;
+  cursor: pointer;
+  padding: 5px 10px;
   text-align: left;
   white-space: nowrap;
-  cursor: pointer;
-  transition: background $fast;
 }
 
 .option.selected {

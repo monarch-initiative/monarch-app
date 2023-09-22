@@ -104,8 +104,8 @@ $height: 40px;
 .label {
   display: flex;
   flex-direction: column;
-  width: 100%;
   gap: 10px;
+  width: 100%;
 }
 
 .title {
@@ -137,34 +137,34 @@ $height: 40px;
   position: absolute;
   top: 0;
   right: 0;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   width: $height;
   height: $height;
   color: $gray;
 }
 
 .input {
-  width: 100%;
+  transition: box-shadow $fast;
+  outline: none;
   border: solid 2px $off-black;
   border-radius: $rounded;
-  outline: none;
   background: $white;
-  transition: box-shadow $fast;
+  width: 100%;
 }
 
 .input:not(.multi) {
-  height: $height;
   padding: 0 calc($height * 0.25);
+  height: $height;
   line-height: $spacing;
 }
 
 .input.multi {
+  padding: calc($height * 0.25);
   min-width: 100%;
   max-width: 100%;
   height: calc($height * 4);
   min-height: calc($height * 2);
-  padding: calc($height * 0.25);
   line-height: $spacing;
 }
 

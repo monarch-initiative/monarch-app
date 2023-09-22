@@ -49,8 +49,8 @@ watch(
 .member {
   display: flex;
   flex-direction: column;
-  width: 100%;
   gap: 10px;
+  width: 100%;
   text-decoration: none;
   overflow-wrap: break-word;
 }
@@ -66,12 +66,12 @@ watch(
   }
 
   img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
     transition:
       transform $fast,
       filter $fast;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }
 

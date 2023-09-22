@@ -302,28 +302,28 @@ watch(highlighted, () => {
 
 .controls {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   gap: 5px;
 }
 
 .list {
   z-index: 12;
+  box-shadow: $shadow;
+  background: $white;
   max-height: 300px;
   overflow-x: auto;
   overflow-y: auto;
-  background: $white;
-  box-shadow: $shadow;
 }
 
 .option {
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 5px 10px;
+  align-items: center;
   gap: 10px;
-  cursor: pointer;
   transition: background $fast;
+  cursor: pointer;
+  padding: 5px 10px;
 }
 
 .option:hover,

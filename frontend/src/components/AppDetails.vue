@@ -13,7 +13,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  width: 100%;
   gap: 30px;
+  width: 100%;
 }
 </style>

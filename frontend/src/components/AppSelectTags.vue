@@ -402,15 +402,15 @@ watch(highlighted, () => {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  width: 100%;
-  min-height: 40px;
-  padding: 5px 10px;
   gap: 10px;
+  transition: box-shadow $fast;
+  outline: none;
   border: solid 2px $off-black;
   border-radius: $rounded;
-  outline: none;
   background: $white;
-  transition: box-shadow $fast;
+  padding: 5px 10px;
+  width: 100%;
+  min-height: 40px;
 }
 
 .box:hover,
@@ -429,28 +429,28 @@ watch(highlighted, () => {
 
 .controls {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   gap: 5px;
 }
 
 .list {
   z-index: 12;
+  box-shadow: $shadow;
+  background: $white;
   max-height: 300px;
   overflow-x: auto;
   overflow-y: auto;
-  background: $white;
-  box-shadow: $shadow;
 }
 
 .option {
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 5px 10px;
+  align-items: center;
   gap: 10px;
-  cursor: pointer;
   transition: background $fast;
+  cursor: pointer;
+  padding: 5px 10px;
 }
 
 .option:hover,

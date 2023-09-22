@@ -415,11 +415,11 @@ watch(from, () => runGetSearch(false));
 }
 
 .page-button {
-  height: 30px;
-  padding: 0 3px;
-  border-radius: $rounded;
-  color: $theme;
   transition: box-shadow $fast;
+  border-radius: $rounded;
+  padding: 0 3px;
+  height: 30px;
+  color: $theme;
 
   &:hover {
     box-shadow: $outline;
@@ -435,8 +435,8 @@ watch(from, () => runGetSearch(false));
   border-top-width: 0;
   border-right-width: 0;
   border-left-width: 0;
-  border-radius: 0;
   border-color: currentColor;
+  border-radius: 0;
   background: none;
   color: currentColor;
 }
