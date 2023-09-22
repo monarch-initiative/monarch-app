@@ -2,7 +2,7 @@ name: Update GCP Docker Services
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: ["Build and Push Docker Images"]
+    workflows: [Build and Push Docker Images]
     branches: 
       - main
       - automate-docker-update

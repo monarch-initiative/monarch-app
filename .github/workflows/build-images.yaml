@@ -81,6 +81,6 @@ jobs:
           registry: us-central1-docker.pkg.dev
           project_id: monarch-initiative
           image_name: monarch-api/monarch-ui
-          image_tag: latest, ${{ steps.get-tag.outputs.IMAGE_TAG }}
+          image_tag: latest, ${{ steps.get-tag.outputs.IMAGE_TAG }}, ${{ github.sha }}
           dockerfile: ./services/nginx/Dockerfile
           context: .
