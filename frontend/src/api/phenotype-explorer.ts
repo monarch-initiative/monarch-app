@@ -1,10 +1,11 @@
 import type {
   AssociationResults,
+  BestMatch,
   TermSetPairwiseSimilarity,
 } from "@/api/model";
 import type { Options, OptionsFunc } from "@/components/AppSelectTags.vue";
 import { stringify } from "@/util/object";
-import { biolink, monarch, request } from "./";
+import { monarch, request } from "./";
 import { getSearch } from "./search";
 
 /** search individual phenotypes or gene/disease phenotypes */
@@ -77,22 +78,6 @@ const getPhenotypeAssociations = async (id = ""): Promise<Options> => {
   }));
 };
 
-/** results of phenotype comparison (from backend) */
-type _Comparison = {
-  matches: {
-    id: string;
-    label: string;
-    type: string;
-    taxon?: {
-      id?: string;
-      label?: string;
-    };
-    rank: string;
-    score: number;
-    significance: string;
-  }[];
-};
-
 /** compare a set of phenotypes to another set of phenotypes */
 export const compareSetToSet = async (
   aPhenotypes: string[],
@@ -135,44 +120,30 @@ export const compareSetToSet = async (
 export const compareSetToTaxon = async (
   phenotypes: string[],
   taxon: string,
-): Promise<Comparison> => {
-  /** endpoint settings */
-  const params = {
-    id: phenotypes,
-    taxon: taxon,
+) => {
+  /** make request options */
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("Accept", "application/json");
+  const body = {
+    subjects: phenotypes,
+    target_group: taxon,
+  };
+  const options = {
+    method: "POST",
+    headers,
+    body: stringify(body),
   };
 
   /** make query */
-  const url = `${biolink}/sim/search`;
-  const response = await request<_Comparison>(url, params);
+  const url = `${monarch}/semsim/search`;
+  const response = await request<BestMatch[]>(url, {}, options);
 
-  return mapMatches(response);
-};
-
-/** convert comparison matches into desired result format */
-const mapMatches = (response: _Comparison) => {
-  const matches = response.matches.map((match) => ({
-    id: match.id,
-    name: match.label,
+  return response.map((match) => ({
+    source: match.match_source,
+    source_label: match.match_source_label,
+    target: match.match_target,
+    target_label: match.match_target_label,
     score: match.score,
-    category: match.type || "phenotype",
-    taxon: match.taxon?.label || "",
   }));
-  const minScore = Math.min(...matches.map(({ score }) => score));
-  const maxScore = Math.max(...matches.map(({ score }) => score));
-
-  return { matches, minScore, maxScore };
-};
-
-/** results of phenotype comparison (for frontend) */
-export type Comparison = {
-  matches: {
-    id: string;
-    name: string;
-    score: number;
-    category: string;
-    taxon: string;
-  }[];
-  minScore?: number;
-  maxScore?: number;
 };

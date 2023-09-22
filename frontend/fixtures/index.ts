@@ -61,7 +61,7 @@ export const handlers = [
   ),
 
   /** phenotype explorer */
-  rest.get(regex(biolink, "/sim/search"), (req, res, ctx) =>
+  rest.post(regex(monarch, "/semsim/search"), (req, res, ctx) =>
     res(ctx.status(200), ctx.json(phenotypeExplorerSearch)),
   ),
   rest.post(regex(monarch, "/semsim/compare"), (req, res, ctx) =>

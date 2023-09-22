@@ -44,7 +44,7 @@
       >
         <span :tabindex="tokens.length ? 0 : -1">{{ text }}</span>
         <template v-if="!!tokens.length" #content>
-          <div class="table">
+          <div class="tooltip-table">
             <template v-for="(token, tokenIndex) in tokens" :key="tokenIndex">
               <AppIcon :icon="`category-${kebabCase(token.category)}`" />
               <AppLink :to="`/${kebabCase(token.category)}/${token.id}`">{{

@@ -50,15 +50,7 @@
     />
 
     <!-- run analysis -->
-    <AppButton
-      v-if="bMode.id.includes('these phenotypes')"
-      text="Analyze"
-      icon="bars-progress"
-      @click="runAnalysis"
-    />
-    <AppAlert v-else
-      >This feature is still being worked on. Check back soon!</AppAlert
-    >
+    <AppButton text="Analyze" icon="bars-progress" @click="runAnalysis" />
   </AppSection>
 
   <AppSection>
@@ -67,7 +59,7 @@
     <AppStatus v-if="isError" code="error">Error running analysis</AppStatus>
 
     <!-- analysis top results -->
-    <AppFlex v-else-if="comparison.length">
+    <AppFlex v-else-if="comparison.length" gap="big">
       <!-- heading -->
       <strong>Top {{ Math.min(comparison.length, 10) }} match(es)</strong>
 
@@ -85,16 +77,19 @@
         />
         <!-- for percent, use asymptotic function limited to 1 so we don't need to know max score -->
 
-        <AppFlex class="details" align-h="left" gap="small">
-          Source:
-          <AppLink :to="`/node/${match.source}`">
-            {{ match.source_label || match.source }}
-          </AppLink>
-          <AppIcon icon="arrow-right" class="arrow" />
-          Target:
-          <AppLink :to="`/node/${match.target}`">
-            {{ match.target_label || match.target }}
-          </AppLink>
+        <AppFlex class="details" direction="col" align-h="left" gap="small">
+          <div>
+            Source:
+            <AppLink :to="`/node/${match.source}`">
+              {{ match.source_label || match.source }}
+            </AppLink>
+          </div>
+          <div>
+            Target:
+            <AppLink :to="`/node/${match.target}`">
+              {{ match.target_label || match.target }}
+            </AppLink>
+          </div>
         </AppFlex>
       </div>
     </AppFlex>
@@ -113,10 +108,9 @@ import { isEqual } from "lodash";
 import { mountPhenogrid } from "@/api/phenogrid";
 import {
   compareSetToSet,
-  // compareSetToTaxon,
+  compareSetToTaxon,
   getPhenotypes,
 } from "@/api/phenotype-explorer";
-import AppAlert from "@/components/AppAlert.vue";
 import AppRing from "@/components/AppRing.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import type { Option, Options } from "@/components/AppSelectTags.vue";
@@ -154,7 +148,7 @@ const taxons = [
   { id: "8353", label: "frog", scientific: "Xenopus" },
 ];
 
-// const bTaxonHuman = taxons[0];
+const bTaxonHuman = taxons[0];
 
 /** taxon options for second set */
 const bTaxonOptions = taxons.slice(1);
@@ -197,17 +191,17 @@ const {
   isError,
 } = useQuery(
   async function () {
-    // /** run appropriate analysis based on selected mode */
-    // if (bMode.value.id.includes("these phenotypes"))
-    return await compareSetToSet(
-      aPhenotypes.value.map(({ id }) => id),
-      bPhenotypes.value.map(({ id }) => id),
-    );
-    // else
-    //   return await compareSetToTaxon(
-    //     aPhenotypes.value.map(({ id }) => id),
-    //     bMode.value.id.includes("diseases") ? bTaxonHuman.id : bTaxon.value.id,
-    //   );
+    /** run appropriate analysis based on selected mode */
+    if (bMode.value.id.includes("these phenotypes"))
+      return await compareSetToSet(
+        aPhenotypes.value.map(({ id }) => id),
+        bPhenotypes.value.map(({ id }) => id),
+      );
+    else
+      return await compareSetToTaxon(
+        aPhenotypes.value.map(({ id }) => id),
+        bMode.value.id.includes("diseases") ? bTaxonHuman.id : bTaxon.value.id,
+      );
   },
 
   /** default value */
@@ -237,14 +231,13 @@ function runPhenogrid() {
 
   /** use second taxon id or group of phenotypes as x axis */
   let xAxis = [];
-  // if (mode === "compare")
-  xAxis = bPhenotypes.value;
-  // else {
-  //   const taxon = bMode.value.id.includes("diseases")
-  //     ? bTaxonHuman
-  //     : bTaxon.value;
-  //   xAxis = [{ id: taxon.id, label: taxon.scientific }];
-  // }
+  if (mode === "compare") xAxis = bPhenotypes.value;
+  else {
+    const taxon = bMode.value.id.includes("diseases")
+      ? bTaxonHuman
+      : bTaxon.value;
+    xAxis = [{ id: taxon.id, label: taxon.scientific }];
+  }
   /** call phenogrid */
   mountPhenogrid("#phenogrid", xAxis, yAxis, mode);
 }
@@ -307,8 +300,8 @@ onMounted(() => {
 .match {
   display: flex;
   align-items: center;
-  width: 100%;
   gap: 40px;
+  width: 100%;
 }
 
 .details {
@@ -323,8 +316,8 @@ onMounted(() => {
 @media (max-width: 600px) {
   .match {
     flex-direction: column;
-    margin: 10px 0;
     gap: 20px;
+    margin: 10px 0;
   }
 
   .details {
