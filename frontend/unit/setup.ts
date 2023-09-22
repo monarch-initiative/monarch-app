@@ -25,9 +25,9 @@ export const apiCall = async (): Promise<void> => {
    * future, depending on msw implementation details. see:
    * https://github.com/vuejs/test-utils/issues/137
    */
-  await sleep();
-  await sleep();
-  await sleep();
+  await sleep(10);
+  await sleep(10);
+  await sleep(10);
 };
 
 /** mount wrapper with standard options */
