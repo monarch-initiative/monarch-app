@@ -205,7 +205,7 @@ export const scrollToElement = async (element?: Element | null) => {
 };
 
 /** scroll to hash */
-export const scrollToHash = (hash: string) =>
+export const scrollToHash = (hash?: string) =>
   scrollToElement(
     document?.getElementById(hash || window.location.hash.slice(1)),
   );

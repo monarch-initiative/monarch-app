@@ -40,7 +40,7 @@ test("Recent/frequent results show", async ({ page }) => {
   }
 
   /** go to node page, which should also get added to search history */
-  await page.goto("/node/MONDO:12345");
+  await page.goto("/MONDO:12345");
   /** wait for page to load */
   await expect(page.locator("#overview")).toBeVisible();
   await page.goto("/explore");
