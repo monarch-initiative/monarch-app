@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test("Table of contents works", async ({ page }) => {
-  await page.goto("/node/MONDO:0007523");
+  await page.goto("/MONDO:0007523");
   await page.setViewportSize({ width: 800, height: 1000 });
 
   /** toggle button exists */
@@ -78,7 +78,7 @@ test("Table of contents works", async ({ page }) => {
 });
 
 test("Title info shows", async ({ page }) => {
-  await page.goto("/node/MONDO:0007523");
+  await page.goto("/MONDO:0007523");
 
   /** text info in top section */
   await expect(page.getByText(/Ehlers-Danlos/i).first()).toBeVisible();
@@ -87,7 +87,7 @@ test("Title info shows", async ({ page }) => {
 });
 
 test("Overview items show", async ({ page }) => {
-  await page.goto("/node/MONDO:0007523");
+  await page.goto("/MONDO:0007523");
 
   /** check for description */
   await expect(
@@ -98,7 +98,7 @@ test("Overview items show", async ({ page }) => {
 test("Details items show", async ({ page }) => {
   test.skip(true, "No fixture data yet");
 
-  await page.goto("/node/MONDO:0007523");
+  await page.goto("/MONDO:0007523");
 
   /** check inheritance, xref, etc. */
   await expect(page.getByText(/MONDO_0007523/i).first()).toBeVisible();
@@ -110,7 +110,7 @@ test("Details items show", async ({ page }) => {
 });
 
 test("Hierarchy items show", async ({ page }) => {
-  await page.goto("/node/MONDO:0007523");
+  await page.goto("/MONDO:0007523");
 
   /** check super/equiv/sub classes */
   await expect(page.getByText(/myopathy/i).first()).toBeVisible();
@@ -118,7 +118,7 @@ test("Hierarchy items show", async ({ page }) => {
 });
 
 test("Publication specific info shows", async ({ page }) => {
-  await page.goto("/node/PMID:25614286");
+  await page.goto("/PMID:25614286");
 
   /** check author, description, etc. */
   await expect(page.getByText(/Publication/i).first()).toBeVisible();
@@ -141,7 +141,7 @@ test("Publication specific info shows", async ({ page }) => {
 test("Summary association info shows", async ({ page }) => {
   test.skip(true, "Fixture data not stable yet");
 
-  await page.goto("/node/MONDO:0007523");
+  await page.goto("/MONDO:0007523");
 
   /** check node, relation, target node */
   await expect(
@@ -153,13 +153,13 @@ test("Summary association info shows", async ({ page }) => {
   await expect(page.getByText(/Has Phenotype/i).first()).toBeVisible();
   await expect(
     page.getByText(/Agenesis of corpus callosum/i).first(),
-  ).toHaveAttribute("href", "/node/HP:0001274");
+  ).toHaveAttribute("href", "/HP:0001274");
 });
 
 test("Table association info shows", async ({ page }) => {
   test.skip(true, "Fixture data not stable yet");
 
-  await page.goto("/node/MONDO:0007523");
+  await page.goto("/MONDO:0007523");
 
   /** check node, relation, target node */
   await page.getByText(/Table/i).first().click();
@@ -185,7 +185,7 @@ test("Table association info shows", async ({ page }) => {
 test("Association mode switching works", async ({ page }) => {
   test.skip(true, "Fixture data not stable yet");
 
-  await page.goto("/node/MONDO:0007523");
+  await page.goto("/MONDO:0007523");
   await expect(page).toHaveURL(/associations=phenotype/i);
 
   /** switch to table mode and variant associations */
@@ -210,7 +210,7 @@ test("Association mode switching works", async ({ page }) => {
 test("Association table has extra metadata columns", async ({ page }) => {
   test.skip(true, "No fixture data yet");
 
-  await page.goto("/node/MONDO:0007523");
+  await page.goto("/MONDO:0007523");
 
   /** switch to table mode */
   await page.getByText(/Table/i).first().click();
@@ -276,7 +276,7 @@ test("Association table has extra metadata columns", async ({ page }) => {
 test("Evidence viewer works", async ({ page }) => {
   test.skip(true, "Fixture data not stable yet");
 
-  await page.goto("/node/MONDO:0007523");
+  await page.goto("/MONDO:0007523");
 
   /** get evidence section */
   const evidence = page.locator("#evidence").locator("..");
@@ -319,7 +319,7 @@ test("Breadcrumbs section works", async ({ page, browserName }) => {
     "Clearly a Firefox bug or peculiarity with Playwright, works fine in real Firefox",
   );
 
-  await page.goto("/node/MONDO:0007523");
+  await page.goto("/MONDO:0007523");
 
   /**
    * visit chain of nodes. include clicking on both association links and

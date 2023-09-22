@@ -57,7 +57,7 @@ const icons = [
   fas.faFeatherPointed,
   fas.faFilter,
   fas.faFlask,
-  fas.faHashtag,
+  fas.faBarcode,
   fas.faLink,
   fas.faLocationDot,
   fas.faMagnifyingGlass,
