@@ -105,6 +105,7 @@ jobs:
           version: ">= 447.0.0"
 
       - name: "Update API Service"
-        run: |
-          gcloud compute ssh --zone us-central1-a monarch-v3-dev-manager -- sudo docker service update monarch-v3_api --with-registry-auth  --update-order=start-first --force --image us-central1-docker.pkg.dev/monarch-initiative/monarch-api/monarch-api:${{ github.sha }}
-          gcloud compute ssh --zone us-central1-a monarch-v3-dev-manager -- sudo docker service update monarch-v3_nginx --with-registry-auth  --update-order=start-first --force --image us-central1-docker.pkg.dev/monarch-initiative/monarch-api/monarch-ui:${{ github.sha }}
+        run: gcloud compute ssh --zone us-central1-a monarch-v3-dev-manager -- sudo docker service update monarch-v3_api --with-registry-auth  --update-order=start-first --force --image us-central1-docker.pkg.dev/monarch-initiative/monarch-api/monarch-api:${{ github.sha }}
+          
+      - name: "Update UI Service"
+        run: gcloud compute ssh --zone us-central1-a monarch-v3-dev-manager -- sudo docker service update monarch-v3_nginx --with-registry-auth  --update-order=start-first --force --image us-central1-docker.pkg.dev/monarch-initiative/monarch-api/monarch-ui:${{ github.sha }}
