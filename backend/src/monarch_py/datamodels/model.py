@@ -384,6 +384,14 @@ class Node(Entity):
         description="""The label of the biolink taxon that the entity is in the closure of.""",
     )
     inheritance: Optional[Entity] = Field(None)
+    causal_gene: Optional[List[Entity]] = Field(
+        default_factory=list,
+        description="""A list of genes that are known to be causally associated with a disease""",
+    )
+    causes_disease: Optional[List[Entity]] = Field(
+        default_factory=list,
+        description="""A list of diseases that are known to be causally associated with a gene""",
+    )
     external_links: Optional[List[ExpandedCurie]] = Field(
         default_factory=list, description="""ExpandedCurie with id and url for xrefs"""
     )

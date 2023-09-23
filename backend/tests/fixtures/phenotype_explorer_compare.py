@@ -11,9 +11,7 @@ def phenotype_explorer_compare():
                 "label": "no abnormal phenotype detected (MPO)",
             },
         },
-        "object_termset": {
-            "HP:0004325": {"id": "HP:0004325", "label": "Decreased body weight (HPO)"}
-        },
+        "object_termset": {"HP:0004325": {"id": "HP:0004325", "label": "Decreased body weight (HPO)"}},
         "subject_best_matches": {
             "MP:0002169": {
                 "match_source": "MP:0002169",

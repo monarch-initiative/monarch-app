@@ -105,7 +105,7 @@ function clearData() {
 <style lang="scss" scoped>
 .status {
   justify-content: flex-start;
-  gap: 10px;
   padding: 0;
+  gap: 10px;
 }
 </style>

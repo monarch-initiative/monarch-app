@@ -29,17 +29,6 @@
         </AppLink>
       </AppDetail>
 
-      <!-- taxon (gene specific)-->
-      <AppDetail
-        v-if="node.category === 'biolink:Gene'"
-        :blank="!node.in_taxon_label"
-        title="Taxon"
-      >
-        <AppLink v-tooltip="node?.in_taxon_label" :to="node.in_taxon || ''">{{
-          node.in_taxon_label
-        }}</AppLink>
-      </AppDetail>
-
       <!-- external references -->
       <AppDetail
         :blank="!node.external_links?.length"

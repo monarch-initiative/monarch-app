@@ -324,6 +324,10 @@ export interface Node extends Entity {
     /** The label of the biolink taxon that the entity is in the closure of. */
     in_taxon_label?: string,
     inheritance?: Entity,
+    /** A list of genes that are known to be causally associated with a disease */
+    causal_gene?: Entity[],
+    /** A list of diseases that are known to be causally associated with a gene */
+    causes_disease?: Entity[],
     /** ExpandedCurie with id and url for xrefs */
     external_links?: ExpandedCurie[],
     /** A link to the docs for the knowledge source that provided the node/edge. */

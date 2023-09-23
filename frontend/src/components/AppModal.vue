@@ -130,29 +130,29 @@ onBeforeUpdate(async () => {
 <style lang="scss" scoped>
 .overlay {
   display: flex;
+  z-index: 99;
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  justify-content: center;
   align-items: center;
-  z-index: 99;
+  justify-content: center;
   background: #000000c0;
 }
 
 .modal {
   display: flex;
+  z-index: 100;
   position: relative;
   flex-direction: column;
   align-items: center;
-  gap: 40px;
-  z-index: 100;
-  background: $white;
-  padding: 40px;
   max-width: min(800px, calc(100vw - 80px));
   max-height: calc(100vh - 80px);
+  padding: 40px;
   overflow-y: auto;
+  gap: 40px;
+  background: $white;
 }
 
 /** close button */

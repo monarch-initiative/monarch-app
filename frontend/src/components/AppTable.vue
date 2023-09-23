@@ -434,8 +434,8 @@ watch(
 .container {
   &.expanded {
     left: 0;
-    transform: translateX(0);
     width: calc(100vw - 100px);
+    transform: translateX(0);
 
     .td,
     .th {
@@ -452,16 +452,16 @@ watch(
   .left-scroll,
   .right-scroll {
     display: flex;
-    position: absolute;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
     z-index: 99;
-    animation: 0.5s alternate infinite ease-in-out;
-    transition: opacity $fast;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
     width: 0;
     height: 100%;
     color: $gray;
+    animation: 0.5s alternate infinite ease-in-out;
+    opacity: 0;
+    transition: opacity $fast;
 
     svg {
       transform: scale(1.5);
@@ -533,8 +533,8 @@ watch(
 
 .table {
   display: grid;
-  border-collapse: collapse;
   min-width: $section;
+  border-collapse: collapse;
 }
 
 /** ignore top level semantic elements in grid layout */
@@ -549,9 +549,9 @@ watch(
 .td {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 5px 10px;
   max-width: 300px;
+  padding: 5px 10px;
+  gap: 10px;
 
   &.left {
     justify-content: flex-start;
@@ -573,10 +573,10 @@ watch(
   }
 
   &.divider {
-    margin: 0 auto;
-    background: $light-gray;
-    padding: 0;
     width: 2px;
+    margin: 0 auto;
+    padding: 0;
+    background: $light-gray;
   }
 }
 
@@ -603,8 +603,8 @@ watch(
 
   & > * {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     gap: 10px;
   }
 

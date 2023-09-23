@@ -16,6 +16,17 @@
         <p>{{ node.full_name }}</p>
       </AppDetail>
 
+      <!-- taxon (gene specific)-->
+      <AppDetail
+        v-if="node.category === 'biolink:Gene'"
+        :blank="!node.in_taxon_label"
+        title="Taxon"
+      >
+        <AppLink v-tooltip="node?.in_taxon_label" :to="node.in_taxon || ''">{{
+          node.in_taxon_label
+        }}</AppLink>
+      </AppDetail>
+
       <!-- paragraph description -->
       <AppDetail :blank="!node.description" title="Description" :full="true">
         <p
@@ -41,14 +52,33 @@
 
       <!-- association counts -->
       <AppDetail
-        :blank="!node.association_counts"
+        :blank="!node.association_counts.length"
         title="Association Counts"
         :full="true"
       >
         <AppFlex align-h="left">
-          <span v-for="(count, index) in node.association_counts" :key="index">
+          <AppLink
+            v-for="(count, index) in node.association_counts"
+            :key="index"
+            :to="{ query: { associations: count.category || '' } }"
+          >
             {{ count.label }} {{ count.count?.toLocaleString() || 0 }}
-          </span>
+          </AppLink>
+        </AppFlex>
+      </AppDetail>
+
+      <!-- disease causal genes -->
+      <AppDetail
+        v-if="node.category === 'biolink:Disease'"
+        :blank="!node.causal_gene?.length"
+        title="Causal Genes"
+      >
+        <AppFlex align-h="left">
+          <AppNodeBadge
+            v-for="(gene, index) in node.causal_gene"
+            :key="index"
+            :node="omit(gene, 'in_taxon_label')"
+          />
         </AppFlex>
       </AppDetail>
     </AppDetails>
@@ -56,9 +86,11 @@
 </template>
 
 <script setup lang="ts">
+import { omit } from "lodash";
 import type { Node } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
+import AppNodeBadge from "@/components/AppNodeBadge.vue";
 
 type Props = {
   /** current node */

@@ -102,8 +102,8 @@ $wrap: 800px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   justify-items: flex-start;
-  gap: 10px;
   width: 100%;
+  gap: 10px;
   text-align: left;
 }
 

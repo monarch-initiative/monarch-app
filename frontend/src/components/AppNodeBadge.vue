@@ -12,7 +12,7 @@
     />
     <AppLink
       v-if="!currentPage"
-      :to="`/node/${node.id}`"
+      :to="`/${node.id}`"
       :state="
         breadcrumbs
           ? { breadcrumbs: [...currentBreadcrumbs, ...breadcrumbs] }
@@ -76,8 +76,8 @@ const currentPage = computed(() =>
 .icon {
   position: relative;
   top: -1px;
-  vertical-align: middle;
   margin-right: 0.4em;
+  vertical-align: middle;
 }
 
 .name {

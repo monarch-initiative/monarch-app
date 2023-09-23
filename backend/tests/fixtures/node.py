@@ -16,6 +16,8 @@ def node():
         "symbol": None,
         "synonym": [],
         "inheritance": None,
+        "causal_gene": [],
+        "causes_disease": [],
         "external_links": [],
         "provided_by_link": {
             "id": "phenio",

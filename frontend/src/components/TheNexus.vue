@@ -264,14 +264,14 @@ useIntervalFn(pulse, 10000);
 
 <style lang="scss" scoped>
 #nexus {
+  z-index: -1;
   position: absolute;
   top: 0;
   left: 0;
-  z-index: -1;
-  animation: fade-in forwards 1s linear;
   width: 100%;
   height: 100%;
   overflow: hidden;
+  animation: fade-in forwards 1s linear;
 }
 
 @keyframes fade-in {
