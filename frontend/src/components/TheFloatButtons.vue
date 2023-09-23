@@ -100,19 +100,19 @@ useMutationObserver(document?.body, update, {
 <style lang="scss" scoped>
 .float {
   display: flex;
+  z-index: 20;
   position: fixed;
   right: 0;
   flex-direction: column;
-  justify-content: flex-end;
   align-items: flex-end;
-  gap: 10px;
-  z-index: 20;
+  justify-content: flex-end;
   padding: 10px;
+  gap: 10px;
   pointer-events: none;
 }
 
 .button {
-  pointer-events: all;
   font-size: 0.9rem;
+  pointer-events: all;
 }
 </style>
