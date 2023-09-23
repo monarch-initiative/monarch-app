@@ -104,7 +104,7 @@ def main(
         print(f"{'-'*120}\n\tGenerating metadata fixtures...")
         targets = [
             "biolink:Gene",
-            "biolink:PhenotypicQuality",
+            "biolink:PhenotypicFeature",
             "biolink:Disease",
             "biolink:GeneToPhenotypicFeatureAssociation",
             "biolink:DiseaseToPhenotypicFeatureAssociation",
@@ -138,7 +138,7 @@ def main(
             {
                 "label": "Phenotypes",
                 "icon": "category-phenotypic-quality",
-                "count": node_counts["biolink:PhenotypicQuality"],
+                "count": node_counts["biolink:PhenotypicFeature"],
             },
             {
                 "label": "Diseases",
