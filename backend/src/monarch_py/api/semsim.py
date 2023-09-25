@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Path
 from monarch_py.api.config import oak
 
 router = APIRouter(tags=["semsim"], responses={404: {"description": "Not Found"}})
@@ -8,8 +8,8 @@ router = APIRouter(tags=["semsim"], responses={404: {"description": "Not Found"}
 
 @router.get("/compare/{subjects}/{objects}")
 def _compare(
-    subjects: str = "",
-    objects: str = "",
+    subjects: str = Path(title="List of subjects for comparison"),
+    objects: str = Path(title="List of objects for comparison"),
 ):
     """Get pairwise similarity between two sets of terms
 
