@@ -58,7 +58,7 @@ class Association(ConfiguredBaseModel):
         description="""Field containing subject id and the ids of all of it's ancestors""",
     )
     subject_label: Optional[str] = Field(
-        None, description="""the label or name for the first entity"""
+        None, description="""The name of the subject entity"""
     )
     subject_closure_label: Optional[List[str]] = Field(
         default_factory=list,
@@ -80,7 +80,7 @@ class Association(ConfiguredBaseModel):
         description="""Field containing object id and the ids of all of it's ancestors""",
     )
     object_label: Optional[str] = Field(
-        None, description="""the label or name for the second entity"""
+        None, description="""The name of the object entity"""
     )
     object_closure_label: Optional[List[str]] = Field(
         default_factory=list,
@@ -236,7 +236,7 @@ class DirectionalAssociation(Association):
         description="""Field containing subject id and the ids of all of it's ancestors""",
     )
     subject_label: Optional[str] = Field(
-        None, description="""the label or name for the first entity"""
+        None, description="""The name of the subject entity"""
     )
     subject_closure_label: Optional[List[str]] = Field(
         default_factory=list,
@@ -258,7 +258,7 @@ class DirectionalAssociation(Association):
         description="""Field containing object id and the ids of all of it's ancestors""",
     )
     object_label: Optional[str] = Field(
-        None, description="""the label or name for the second entity"""
+        None, description="""The name of the object entity"""
     )
     object_closure_label: Optional[List[str]] = Field(
         default_factory=list,
@@ -523,9 +523,7 @@ class SearchResult(Entity):
     highlight: Optional[str] = Field(
         None, description="""matching text snippet containing html tags"""
     )
-    score: Optional[str] = Field(
-        None, description="""Abstract base slot for different kinds of scores"""
-    )
+    score: Optional[float] = Field(None)
     id: str = Field(...)
     category: str = Field(...)
     name: str = Field(...)
@@ -582,7 +580,7 @@ class TermPairwiseSimilarity(PairwiseSimilarity):
         ..., description="""The first of the two entities being compared"""
     )
     subject_label: Optional[str] = Field(
-        None, description="""the label or name for the first entity"""
+        None, description="""The name of the subject entity"""
     )
     subject_source: Optional[str] = Field(
         None, description="""the source for the first entity"""
@@ -591,7 +589,7 @@ class TermPairwiseSimilarity(PairwiseSimilarity):
         None, description="""The second of the two entities being compared"""
     )
     object_label: Optional[str] = Field(
-        None, description="""the label or name for the second entity"""
+        None, description="""The name of the object entity"""
     )
     object_source: Optional[str] = Field(
         None, description="""the source for the second entity"""
