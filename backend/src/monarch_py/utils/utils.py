@@ -3,7 +3,7 @@ import sys
 
 import typer
 import yaml
-from monarch_py.datamodels.model import AssociationCountList, ConfiguredBaseModel, Entity, HistoPheno, Results
+from monarch_py.datamodels.model import AssociationCountList, ConfiguredBaseModel, Entity, HistoPheno, Node, Results
 from rich import print_json
 from rich.console import Console
 from rich.table import Table
@@ -126,9 +126,11 @@ def to_tsv(obj: ConfiguredBaseModel, file: str) -> str:
 
 
 def to_table(obj: ConfiguredBaseModel):
-
     # Extract headers and rows from object
-    if isinstance(obj, Entity):
+    if isinstance(obj, Node):
+        console.print(f"\n[bold red]Table output not implemented for Node objects.[/]\n")
+        raise typer.Exit(1)
+    elif isinstance(obj, Entity):
         headers = obj.dict().keys()
         rows = [list(obj.dict().values())]
     elif isinstance(obj, (AssociationCountList, HistoPheno, Results)):
