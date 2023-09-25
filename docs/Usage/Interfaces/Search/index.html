@@ -18,7 +18,7 @@
       
       
       <link rel="icon" href="../../../images/favicon.ico">
-      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.2.3">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.2">
     
     
       
@@ -26,10 +26,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.0e669242.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.d451bc0e.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.85d0ee34.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.a5377069.min.css">
       
       
 
@@ -375,15 +375,20 @@
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+    
       
-        
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
         
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -451,14 +456,16 @@
     
     
     
+    
+    
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
-        
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
         
+          
           <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
             
   
@@ -677,9 +684,10 @@
     
     
     
+    
+    
     <li class="md-nav__item md-nav__item--nested">
       
-        
         
         
         
@@ -687,6 +695,7 @@
         
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4" >
         
+          
           <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
             
   
@@ -788,9 +797,13 @@
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    
+    
       
-        
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
         
         
         
@@ -798,7 +811,8 @@
         
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -844,9 +858,10 @@
     
     
     
+    
+    
     <li class="md-nav__item md-nav__item--nested">
       
-        
         
         
         
@@ -854,6 +869,7 @@
         
         <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_2" >
         
+          
           <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
             
   
@@ -1041,6 +1057,7 @@
 
 
 
+
   <div class="doc doc-contents first">
 
   
@@ -1055,6 +1072,7 @@
 
 
 <div class="doc doc-object doc-class">
+
 
 
 
@@ -1090,8 +1108,9 @@
 
 
 
+
 <h3 id="src.monarch_py.interfaces.search_interface.SearchInterface.autocomplete" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">autocomplete</span></code>
+          <code class="highlight language-python"><span class="n">autocomplete</span></code>
 
 </h3>
 
@@ -1186,69 +1205,20 @@
 
 
 
+
 <h3 id="src.monarch_py.interfaces.search_interface.SearchInterface.get_association_counts" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_association_counts</span></code>
+          <code class="highlight language-python"><span class="n">get_association_counts</span></code>
 
 </h3>
 
 
   <div class="doc doc-contents ">
   
-      <p>Get counts of associations for a given entity</p>
-
-
-
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>entity</code></td>
-          <td>
-                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Entity to get association counts for</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-
-  <p><strong>Returns:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>
-                <code><a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a>[<span title="monarch_py.datamodels.model.FacetValue">FacetValue</span>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>List[FacetValue]: List of FacetValue objects representing the counts of associations for the given entity</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+      <p>Get counts of associations for a given entity
+Args:
+    entity (str): Entity to get association counts for
+Returns:
+    List[FacetValue]: List of FacetValue objects representing the counts of associations for the given entity</p>
 
   </div>
 
@@ -1256,194 +1226,32 @@
 
 
 <div class="doc doc-object doc-function">
+
 
 
 
 <h3 id="src.monarch_py.interfaces.search_interface.SearchInterface.get_association_facets" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_association_facets</span></code>
+          <code class="highlight language-python"><span class="n">get_association_facets</span></code>
 
 </h3>
 
 
   <div class="doc doc-contents ">
   
-      <p>Get facet counts and facet query counts for associations</p>
-
-
-
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>facet_fields</code></td>
-          <td>
-                <code><a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Facet fields to return counts for</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr>
-          <td><code>facet_queries</code></td>
-          <td>
-                <code><a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Facet queries to return counts for</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr>
-          <td><code>category</code></td>
-          <td>
-                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Filter to only associations matching the specified category</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr>
-          <td><code>predicate</code></td>
-          <td>
-                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Filter to only associations matching the specified predicate</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr>
-          <td><code>subject</code></td>
-          <td>
-                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Filter to only associations matching the specified subject</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr>
-          <td><code>subject_closure</code></td>
-          <td>
-                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Filter to only associations with the specified term ID as an ancestor of the subject</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr>
-          <td><code>object</code></td>
-          <td>
-                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Filter to only associations matching the specified object</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr>
-          <td><code>object_closure</code></td>
-          <td>
-                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Filter to only associations with the specified term ID as an ancestor of the object</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-        <tr>
-          <td><code>entity</code></td>
-          <td>
-                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Filter to only associations where the specified entity is the subject or the object</p>
-            </div>
-          </td>
-          <td>
-                <code>None</code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-
-  <p><strong>Returns:</strong></p>
-  <table>
-    <thead>
-      <tr>
-<th>Name</th>        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-<td><code>SearchResults</code></td>          <td>
-                <code><span title="monarch_py.datamodels.model.SearchResults">SearchResults</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>Dataclass representing results of a search, with zero rows returned but total count</p>
-            </div>
-          </td>
-        </tr>
-        <tr>
-<td></td>          <td>
-                <code><span title="monarch_py.datamodels.model.SearchResults">SearchResults</span></code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>and faceting information populated</p>
-            </div>
-          </td>
-        </tr>
-    </tbody>
-  </table>
+      <p>Get facet counts and facet query counts for associations
+Args:
+    facet_fields (List[str]): Facet fields to return counts for
+    facet_queries (List[str]): Facet queries to return counts for
+    category (str): Filter to only associations matching the specified category
+    predicate (str): Filter to only associations matching the specified predicate
+    subject (str): Filter to only associations matching the specified subject
+    subject_closure (str): Filter to only associations with the specified term ID as an ancestor of the subject
+    object (str): Filter to only associations matching the specified object
+    object_closure (str): Filter to only associations with the specified term ID as an ancestor of the object
+    entity (str): Filter to only associations where the specified entity is the subject or the object
+Returns:
+    SearchResults: Dataclass representing results of a search, with zero rows returned but total count
+    and faceting information populated</p>
 
   </div>
 
@@ -1454,8 +1262,9 @@
 
 
 
+
 <h3 id="src.monarch_py.interfaces.search_interface.SearchInterface.get_association_table" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_association_table</span></code>
+          <code class="highlight language-python"><span class="n">get_association_table</span></code>
 
 </h3>
 
@@ -1597,8 +1406,9 @@
 
 
 
+
 <h3 id="src.monarch_py.interfaces.search_interface.SearchInterface.search" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">search</span></code>
+          <code class="highlight language-python"><span class="n">search</span></code>
   
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
@@ -1827,10 +1637,10 @@
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.expand", "navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky"], "search": "../../../assets/javascripts/workers/search.dfff1995.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.expand", "navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky"], "search": "../../../assets/javascripts/workers/search.a264c092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.78eede0e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.726fbb30.min.js"></script>
       
     
   </body>
