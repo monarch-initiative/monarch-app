@@ -1,9 +1,10 @@
 import time
 from dataclasses import dataclass
-from typing import List, Dict
+from typing import List
 
 from loguru import logger
 
+from monarch_py.datamodels.model import TermSetPairwiseSimilarity
 from oaklib.interfaces.semsim_interface import SemanticSimilarityInterface
 from oaklib.selector import get_adapter
 from linkml_runtime.dumpers.json_dumper import JSONDumper
@@ -37,7 +38,9 @@ class OakImplementation(SemanticSimilarityInterface):
             logger.info(f"Semsimian ready, warmup time: {time.time() - start} sec")
             return self
 
-    def compare(self, subjects: List[str], objects: List[str], predicates: List[str] = None, labels=False) -> Dict:
+    def compare(
+        self, subjects: List[str], objects: List[str], predicates: List[str] = None, labels=False
+    ) -> TermSetPairwiseSimilarity:
         """Compare two sets of terms using OAK"""
         predicates = predicates or self.default_predicates
         logger.debug(f"Comparing {subjects} to {objects} using {predicates}")
@@ -51,4 +54,4 @@ class OakImplementation(SemanticSimilarityInterface):
         logger.debug(f"Comparison took: {time.time() - compare_time} sec")
 
         response_dict = self.json_dumper.to_dict(response)
-        return response_dict
+        return TermSetPairwiseSimilarity(**response_dict)
