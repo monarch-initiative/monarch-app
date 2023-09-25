@@ -126,12 +126,11 @@ def to_tsv(obj: ConfiguredBaseModel, file: str) -> str:
 
 
 def to_table(obj: ConfiguredBaseModel):
-
     # Extract headers and rows from object
     if isinstance(obj, Node):
         console.print(f"\n[bold red]Table output not implemented for Node objects.[/]\n")
         raise typer.Exit(1)
-    if isinstance(obj, Entity):
+    elif isinstance(obj, Entity):
         headers = obj.dict().keys()
         rows = [list(obj.dict().values())]
     elif isinstance(obj, (AssociationCountList, HistoPheno, Results)):
