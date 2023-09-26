@@ -31,7 +31,7 @@ export interface Association {
     subject_category?: string,
     /** Field containing subject id and the ids of all of it's ancestors */
     subject_closure?: string[],
-    /** the label or name for the first entity */
+    /** The name of the subject entity */
     subject_label?: string,
     /** Field containing subject name and the names of all of it's ancestors */
     subject_closure_label?: string[],
@@ -46,7 +46,7 @@ export interface Association {
     object_category?: string,
     /** Field containing object id and the ids of all of it's ancestors */
     object_closure?: string[],
-    /** the label or name for the second entity */
+    /** The name of the object entity */
     object_label?: string,
     /** Field containing object name and the names of all of it's ancestors */
     object_closure_label?: string[],
@@ -174,7 +174,7 @@ export interface DirectionalAssociation extends Association {
     subject_category?: string,
     /** Field containing subject id and the ids of all of it's ancestors */
     subject_closure?: string[],
-    /** the label or name for the first entity */
+    /** The name of the subject entity */
     subject_label?: string,
     /** Field containing subject name and the names of all of it's ancestors */
     subject_closure_label?: string[],
@@ -189,7 +189,7 @@ export interface DirectionalAssociation extends Association {
     object_category?: string,
     /** Field containing object id and the ids of all of it's ancestors */
     object_closure?: string[],
-    /** the label or name for the second entity */
+    /** The name of the object entity */
     object_label?: string,
     /** Field containing object name and the names of all of it's ancestors */
     object_closure_label?: string[],
@@ -363,8 +363,7 @@ export interface Results {
 export interface SearchResult extends Entity {
     /** matching text snippet containing html tags */
     highlight?: string,
-    /** Abstract base slot for different kinds of scores */
-    score?: string,
+    score?: number,
     id: string,
     category: string,
     name: string,
@@ -406,13 +405,13 @@ export interface PairwiseSimilarity {
 export interface TermPairwiseSimilarity extends PairwiseSimilarity {
     /** The first of the two entities being compared */
     subject_id: string,
-    /** the label or name for the first entity */
+    /** The name of the subject entity */
     subject_label?: string,
     /** the source for the first entity */
     subject_source?: string,
     /** The second of the two entities being compared */
     object_id?: string,
-    /** the label or name for the second entity */
+    /** The name of the object entity */
     object_label?: string,
     /** the source for the second entity */
     object_source?: string,

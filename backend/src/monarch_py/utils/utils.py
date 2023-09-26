@@ -1,5 +1,7 @@
 import csv
+import json
 import sys
+from typing import Union, Dict
 
 import typer
 import yaml
@@ -86,14 +88,18 @@ def get_headers_from_obj(obj: ConfiguredBaseModel) -> list:
     return list(headers)
 
 
-def to_json(obj: ConfiguredBaseModel, file: str):
+def to_json(obj: Union[ConfiguredBaseModel, Dict], file: str):
     """Converts a pydantic model to a JSON string."""
+    if isinstance(obj, ConfiguredBaseModel):
+        json_value = obj.json(indent=4)
+    elif isinstance(obj, dict):
+        json_value = json.dumps(obj, indent=4)
     if file:
         with open(file, "w") as f:
-            f.write(obj.json(indent=4))
+            f.write(json_value)
         console.print(f"\nOutput written to {file}\n")
     else:
-        print_json(obj.json(indent=4))
+        print_json(json_value)
 
 
 def to_tsv(obj: ConfiguredBaseModel, file: str) -> str:
@@ -182,7 +188,7 @@ def to_yaml(obj: ConfiguredBaseModel, file: str):
     return
 
 
-def format_output(fmt: str, response: ConfiguredBaseModel, output: str):
+def format_output(fmt: str, response: Union[ConfiguredBaseModel, Dict], output: str):
     if fmt.lower() == "json":
         to_json(response, output)
     elif fmt.lower() == "tsv":

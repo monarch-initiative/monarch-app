@@ -4,10 +4,9 @@ description: Data models for the Monarch Initiative data access library
 prefixes:
   linkml: https://w3id.org/linkml/
   biolink: https://w3id.org/biolink/vocab/
-  oak: https://w3id.org/oak/
 imports:
   - linkml:types
-  - oak:similarity
+  - similarity
 default_range: string
 
 
@@ -238,7 +237,6 @@ classes:
     slot_usage:
         items:
           range: SearchResult
-
 
 slots:
   aggregator_knowledge_source:
