@@ -275,7 +275,7 @@ def compare(
     """Compare two entities using semantic similarity via OAK"""
     subjects = subjects.split(",")
     objects = objects.split(",")
-    response = oak.compare(subjects, objects)
+    response = oak().compare(subjects, objects)
     format_output(fmt, response, output)
 
 
