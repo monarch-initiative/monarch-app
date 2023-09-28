@@ -302,6 +302,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
                             limit=associations.limit,
                         )
                     )
+                    entity_result.total += associations.total
             results.append(entity_result)
         return results
 
