@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://monarch-app.monarchinitiative.org/docs/Data-Model/AssociationResults/">
+        <link rel="canonical" href="https://monarch-app.monarchinitiative.org/docs/Data-Model/counterpart_category/">
       
       
       
@@ -18,7 +18,7 @@
     
     
       
-        <title>Class: AssociationResults - monarch-py</title>
+        <title>Slot: counterpart_category - monarch-py</title>
       
     
     
@@ -75,7 +75,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#class-associationresults" class="md-skip">
+        <a href="#slot-counterpart_category" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Class: AssociationResults
+              Slot: counterpart_category
             
           </span>
         </div>
@@ -898,15 +898,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#inheritance" class="md-nav__link">
-    Inheritance
+  <a href="#applicable-classes" class="md-nav__link">
+    Applicable Classes
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#slots" class="md-nav__link">
-    Slots
+  <a href="#properties" class="md-nav__link">
+    Properties
   </a>
   
 </li>
@@ -932,36 +932,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#mappings" class="md-nav__link">
-    Mappings
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#linkml-source" class="md-nav__link">
     LinkML Source
   </a>
-  
-    <nav class="md-nav" aria-label="LinkML Source">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#direct" class="md-nav__link">
-    Direct
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#induced" class="md-nav__link">
-    Induced
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -983,186 +956,48 @@
   
 
 
-<h1 id="class-associationresults">Class: AssociationResults</h1>
-<p>URI: <a href="https://w3id.org/monarch/monarch-py/:AssociationResults">https://w3id.org/monarch/monarch-py/:AssociationResults</a></p>
-<div class="highlight"><pre><span></span><code> classDiagram
-    class AssociationResults
-      Results &lt;|-- AssociationResults
+<h1 id="slot-counterpart_category">Slot: counterpart_category</h1>
+<p><em>The category of the counterpart entity in a given association,  eg. the category of the entity that is not the subject</em></p>
+<p>URI: <a href="https://w3id.org/monarch/monarch-py/:counterpart_category">https://w3id.org/monarch/monarch-py/:counterpart_category</a></p>
+<!-- no inheritance hierarchy -->
 
-      AssociationResults : items
-
-          AssociationResults --|&gt; Association : items
-
-      AssociationResults : limit
-
-      AssociationResults : offset
-
-      AssociationResults : total
-</code></pre></div>
-<h2 id="inheritance">Inheritance</h2>
-<ul>
-<li><a href="../Results/">Results</a><ul>
-<li><strong>AssociationResults</strong></li>
-</ul>
-</li>
-</ul>
-<h2 id="slots">Slots</h2>
+<h2 id="applicable-classes">Applicable Classes</h2>
 <table>
 <thead>
 <tr>
 <th>Name</th>
-<th>Cardinality and Range</th>
 <th>Description</th>
-<th>Inheritance</th>
+<th>Modifies Slot</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><a href="../items/">items</a></td>
-<td>1..* <br/> <a href="../Association/">Association</a></td>
-<td>A collection of items, with the type to be overriden by slot_usage</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../limit/">limit</a></td>
-<td>1..1 <br/> <a href="../Integer/">Integer</a></td>
-<td>number of items to return in a response</td>
-<td><a href="../Results/">Results</a></td>
-</tr>
-<tr>
-<td><a href="../offset/">offset</a></td>
-<td>1..1 <br/> <a href="../Integer/">Integer</a></td>
-<td>offset into the total number of items</td>
-<td><a href="../Results/">Results</a></td>
-</tr>
-<tr>
-<td><a href="../total/">total</a></td>
-<td>1..1 <br/> <a href="../Integer/">Integer</a></td>
-<td>total number of items matching a query</td>
-<td><a href="../Results/">Results</a></td>
+<td><a href="../CategoryGroupedAssociationResults/">CategoryGroupedAssociationResults</a></td>
+<td></td>
+<td>no</td>
 </tr>
 </tbody>
 </table>
+<h2 id="properties">Properties</h2>
+<ul>
+<li>Range: <a href="../String/">String</a></li>
+</ul>
 <h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
 <h3 id="schema-source">Schema Source</h3>
 <ul>
 <li>from schema: <a href="https://w3id.org/monarch/monarch-py">https://w3id.org/monarch/monarch-py</a></li>
 </ul>
-<h2 id="mappings">Mappings</h2>
-<table>
-<thead>
-<tr>
-<th>Mapping Type</th>
-<th>Mapped Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>self</td>
-<td><a href="https://w3id.org/monarch/monarch-py/:AssociationResults">https://w3id.org/monarch/monarch-py/:AssociationResults</a></td>
-</tr>
-<tr>
-<td>native</td>
-<td><a href="https://w3id.org/monarch/monarch-py/:AssociationResults">https://w3id.org/monarch/monarch-py/:AssociationResults</a></td>
-</tr>
-</tbody>
-</table>
 <h2 id="linkml-source">LinkML Source</h2>
-<!-- TODO: investigate https://stackoverflow.com/questions/37606292/how-to-create-tabbed-code-blocks-in-mkdocs-or-sphinx -->
-
-<h3 id="direct">Direct</h3>
 <details>
-<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationResults</span>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">counterpart_category</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The category of the counterpart entity in a given association,  eg. the</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">category of the entity that is not the subject</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
-<span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Results</span>
-<span class="nt">slots</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">items</span>
-<span class="nt">slot_usage</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">items</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">items</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationCountList</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationResults</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationTableResults</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CategoryGroupedAssociationResults</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EntityResults</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HistoPheno</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SearchResults</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
-</code></pre></div>
-</details>
-
-<h3 id="induced">Induced</h3>
-<details>
-<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationResults</span>
-<span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
-<span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Results</span>
-<span class="nt">slot_usage</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">items</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">items</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationCountList</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationResults</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationTableResults</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CategoryGroupedAssociationResults</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EntityResults</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HistoPheno</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SearchResults</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
-<span class="nt">attributes</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">items</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">items</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A collection of items, with the type to be overriden by slot_usage</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">multivalued</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">items</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationResults</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationCountList</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationResults</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationTableResults</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CategoryGroupedAssociationResults</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EntityResults</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HistoPheno</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SearchResults</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
-<span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">inlined</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">inlined_as_list</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">limit</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">limit</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">number of items to return in a response</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">limit</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationResults</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Results</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">integer</span>
-<span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">offset</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">offset</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">offset into the total number of items</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">offset</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationResults</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Results</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">integer</span>
-<span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">  </span><span class="nt">total</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total number of items matching a query</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationResults</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Results</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">integer</span>
-<span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">counterpart_category</span>
+<span class="nt">domain_of</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CategoryGroupedAssociationResults</span>
+<span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
 </code></pre></div>
 </details>
 

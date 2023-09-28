@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://monarch-app.monarchinitiative.org/docs/Data-Model/AssociationResults/">
+        <link rel="canonical" href="https://monarch-app.monarchinitiative.org/docs/Data-Model/MultiEntityAssociationResults/">
       
       
       
@@ -18,7 +18,7 @@
     
     
       
-        <title>Class: AssociationResults - monarch-py</title>
+        <title>Class: MultiEntityAssociationResults - monarch-py</title>
       
     
     
@@ -75,7 +75,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#class-associationresults" class="md-skip">
+        <a href="#class-multientityassociationresults" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Class: AssociationResults
+              Class: MultiEntityAssociationResults
             
           </span>
         </div>
@@ -983,26 +983,30 @@
   
 
 
-<h1 id="class-associationresults">Class: AssociationResults</h1>
-<p>URI: <a href="https://w3id.org/monarch/monarch-py/:AssociationResults">https://w3id.org/monarch/monarch-py/:AssociationResults</a></p>
+<h1 id="class-multientityassociationresults">Class: MultiEntityAssociationResults</h1>
+<p>URI: <a href="https://w3id.org/monarch/monarch-py/:MultiEntityAssociationResults">https://w3id.org/monarch/monarch-py/:MultiEntityAssociationResults</a></p>
 <div class="highlight"><pre><span></span><code> classDiagram
-    class AssociationResults
-      Results &lt;|-- AssociationResults
+    class MultiEntityAssociationResults
+      Results &lt;|-- MultiEntityAssociationResults
 
-      AssociationResults : items
+      MultiEntityAssociationResults : associated_categories
 
-          AssociationResults --|&gt; Association : items
+          MultiEntityAssociationResults --|&gt; CategoryGroupedAssociationResults : associated_categories
 
-      AssociationResults : limit
+      MultiEntityAssociationResults : id
 
-      AssociationResults : offset
+      MultiEntityAssociationResults : limit
 
-      AssociationResults : total
+      MultiEntityAssociationResults : name
+
+      MultiEntityAssociationResults : offset
+
+      MultiEntityAssociationResults : total
 </code></pre></div>
 <h2 id="inheritance">Inheritance</h2>
 <ul>
 <li><a href="../Results/">Results</a><ul>
-<li><strong>AssociationResults</strong></li>
+<li><strong>MultiEntityAssociationResults</strong></li>
 </ul>
 </li>
 </ul>
@@ -1018,9 +1022,21 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="../items/">items</a></td>
-<td>1..* <br/> <a href="../Association/">Association</a></td>
-<td>A collection of items, with the type to be overriden by slot_usage</td>
+<td><a href="../id/">id</a></td>
+<td>1..1 <br/> <a href="../String/">String</a></td>
+<td></td>
+<td>direct</td>
+</tr>
+<tr>
+<td><a href="../name/">name</a></td>
+<td>0..1 <br/> <a href="../String/">String</a></td>
+<td></td>
+<td>direct</td>
+</tr>
+<tr>
+<td><a href="../associated_categories/">associated_categories</a></td>
+<td>1..* <br/> <a href="../CategoryGroupedAssociationResults/">CategoryGroupedAssociationResults</a></td>
+<td></td>
 <td>direct</td>
 </tr>
 <tr>
@@ -1059,11 +1075,11 @@
 <tbody>
 <tr>
 <td>self</td>
-<td><a href="https://w3id.org/monarch/monarch-py/:AssociationResults">https://w3id.org/monarch/monarch-py/:AssociationResults</a></td>
+<td><a href="https://w3id.org/monarch/monarch-py/:MultiEntityAssociationResults">https://w3id.org/monarch/monarch-py/:MultiEntityAssociationResults</a></td>
 </tr>
 <tr>
 <td>native</td>
-<td><a href="https://w3id.org/monarch/monarch-py/:AssociationResults">https://w3id.org/monarch/monarch-py/:AssociationResults</a></td>
+<td><a href="https://w3id.org/monarch/monarch-py/:MultiEntityAssociationResults">https://w3id.org/monarch/monarch-py/:MultiEntityAssociationResults</a></td>
 </tr>
 </tbody>
 </table>
@@ -1072,61 +1088,59 @@
 
 <h3 id="direct">Direct</h3>
 <details>
-<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationResults</span>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MultiEntityAssociationResults</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
 <span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Results</span>
 <span class="nt">slots</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">items</span>
-<span class="nt">slot_usage</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">items</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">items</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationCountList</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationResults</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationTableResults</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CategoryGroupedAssociationResults</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EntityResults</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HistoPheno</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SearchResults</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">id</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">associated_categories</span>
 </code></pre></div>
 </details>
 
 <h3 id="induced">Induced</h3>
 <details>
-<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationResults</span>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MultiEntityAssociationResults</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
 <span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Results</span>
-<span class="nt">slot_usage</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">items</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">items</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationCountList</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationResults</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationTableResults</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CategoryGroupedAssociationResults</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EntityResults</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HistoPheno</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SearchResults</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
 <span class="nt">attributes</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">items</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">items</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A collection of items, with the type to be overriden by slot_usage</span>
+<span class="w">  </span><span class="nt">id</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">id</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">identifier</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">id</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MultiEntityAssociationResults</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ExpandedCurie</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Entity</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HistoPheno</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HistoBin</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MultiEntityAssociationResults</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermInfo</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MultiEntityAssociationResults</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Entity</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MultiEntityAssociationResults</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">  </span><span class="nt">associated_categories</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">associated_categories</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">multivalued</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">items</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationResults</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">associated_categories</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MultiEntityAssociationResults</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationCountList</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationResults</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationTableResults</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CategoryGroupedAssociationResults</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EntityResults</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HistoPheno</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SearchResults</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MultiEntityAssociationResults</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CategoryGroupedAssociationResults</span>
 <span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">inlined</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">inlined_as_list</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
@@ -1136,7 +1150,7 @@
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">limit</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationResults</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MultiEntityAssociationResults</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Results</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">integer</span>
@@ -1147,7 +1161,7 @@
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">offset</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationResults</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MultiEntityAssociationResults</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Results</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">integer</span>
@@ -1158,7 +1172,7 @@
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationResults</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MultiEntityAssociationResults</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Results</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">integer</span>

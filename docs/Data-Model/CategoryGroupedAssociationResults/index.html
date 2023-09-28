@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://monarch-app.monarchinitiative.org/docs/Data-Model/AssociationResults/">
+        <link rel="canonical" href="https://monarch-app.monarchinitiative.org/docs/Data-Model/CategoryGroupedAssociationResults/">
       
       
       
@@ -18,7 +18,7 @@
     
     
       
-        <title>Class: AssociationResults - monarch-py</title>
+        <title>Class: CategoryGroupedAssociationResults - monarch-py</title>
       
     
     
@@ -75,7 +75,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#class-associationresults" class="md-skip">
+        <a href="#class-categorygroupedassociationresults" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Class: AssociationResults
+              Class: CategoryGroupedAssociationResults
             
           </span>
         </div>
@@ -912,6 +912,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#usages" class="md-nav__link">
+    Usages
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#identifier-and-mapping-information" class="md-nav__link">
     Identifier and Mapping Information
   </a>
@@ -983,26 +990,28 @@
   
 
 
-<h1 id="class-associationresults">Class: AssociationResults</h1>
-<p>URI: <a href="https://w3id.org/monarch/monarch-py/:AssociationResults">https://w3id.org/monarch/monarch-py/:AssociationResults</a></p>
+<h1 id="class-categorygroupedassociationresults">Class: CategoryGroupedAssociationResults</h1>
+<p>URI: <a href="https://w3id.org/monarch/monarch-py/:CategoryGroupedAssociationResults">https://w3id.org/monarch/monarch-py/:CategoryGroupedAssociationResults</a></p>
 <div class="highlight"><pre><span></span><code> classDiagram
-    class AssociationResults
-      Results &lt;|-- AssociationResults
+    class CategoryGroupedAssociationResults
+      Results &lt;|-- CategoryGroupedAssociationResults
 
-      AssociationResults : items
+      CategoryGroupedAssociationResults : counterpart_category
 
-          AssociationResults --|&gt; Association : items
+      CategoryGroupedAssociationResults : items
 
-      AssociationResults : limit
+          CategoryGroupedAssociationResults --|&gt; Association : items
 
-      AssociationResults : offset
+      CategoryGroupedAssociationResults : limit
 
-      AssociationResults : total
+      CategoryGroupedAssociationResults : offset
+
+      CategoryGroupedAssociationResults : total
 </code></pre></div>
 <h2 id="inheritance">Inheritance</h2>
 <ul>
 <li><a href="../Results/">Results</a><ul>
-<li><strong>AssociationResults</strong></li>
+<li><strong>CategoryGroupedAssociationResults</strong></li>
 </ul>
 </li>
 </ul>
@@ -1017,6 +1026,12 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td><a href="../counterpart_category/">counterpart_category</a></td>
+<td>0..1 <br/> <a href="../String/">String</a></td>
+<td>The category of the counterpart entity in a given association,  eg</td>
+<td>direct</td>
+</tr>
 <tr>
 <td><a href="../items/">items</a></td>
 <td>1..* <br/> <a href="../Association/">Association</a></td>
@@ -1043,6 +1058,25 @@
 </tr>
 </tbody>
 </table>
+<h2 id="usages">Usages</h2>
+<table>
+<thead>
+<tr>
+<th>used by</th>
+<th>used in</th>
+<th>type</th>
+<th>used</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../MultiEntityAssociationResults/">MultiEntityAssociationResults</a></td>
+<td><a href="../associated_categories/">associated_categories</a></td>
+<td>range</td>
+<td><a href="./">CategoryGroupedAssociationResults</a></td>
+</tr>
+</tbody>
+</table>
 <h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
 <h3 id="schema-source">Schema Source</h3>
 <ul>
@@ -1059,11 +1093,11 @@
 <tbody>
 <tr>
 <td>self</td>
-<td><a href="https://w3id.org/monarch/monarch-py/:AssociationResults">https://w3id.org/monarch/monarch-py/:AssociationResults</a></td>
+<td><a href="https://w3id.org/monarch/monarch-py/:CategoryGroupedAssociationResults">https://w3id.org/monarch/monarch-py/:CategoryGroupedAssociationResults</a></td>
 </tr>
 <tr>
 <td>native</td>
-<td><a href="https://w3id.org/monarch/monarch-py/:AssociationResults">https://w3id.org/monarch/monarch-py/:AssociationResults</a></td>
+<td><a href="https://w3id.org/monarch/monarch-py/:CategoryGroupedAssociationResults">https://w3id.org/monarch/monarch-py/:CategoryGroupedAssociationResults</a></td>
 </tr>
 </tbody>
 </table>
@@ -1072,10 +1106,11 @@
 
 <h3 id="direct">Direct</h3>
 <details>
-<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationResults</span>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CategoryGroupedAssociationResults</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
 <span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Results</span>
 <span class="nt">slots</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">counterpart_category</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">items</span>
 <span class="nt">slot_usage</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">items</span><span class="p">:</span>
@@ -1094,7 +1129,7 @@
 
 <h3 id="induced">Induced</h3>
 <details>
-<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationResults</span>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CategoryGroupedAssociationResults</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
 <span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Results</span>
 <span class="nt">slot_usage</span><span class="p">:</span>
@@ -1110,6 +1145,17 @@
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SearchResults</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
 <span class="nt">attributes</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">counterpart_category</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">counterpart_category</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The category of the counterpart entity in a given association,  eg.</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">the category of the entity that is not the subject</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">counterpart_category</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CategoryGroupedAssociationResults</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CategoryGroupedAssociationResults</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
 <span class="w">  </span><span class="nt">items</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">items</span>
 <span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A collection of items, with the type to be overriden by slot_usage</span>
@@ -1117,7 +1163,7 @@
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">multivalued</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">items</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationResults</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CategoryGroupedAssociationResults</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationCountList</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationResults</span>
@@ -1136,7 +1182,7 @@
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">limit</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationResults</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CategoryGroupedAssociationResults</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Results</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">integer</span>
@@ -1147,7 +1193,7 @@
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">offset</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationResults</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CategoryGroupedAssociationResults</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Results</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">integer</span>
@@ -1158,7 +1204,7 @@
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">total</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationResults</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CategoryGroupedAssociationResults</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Results</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">integer</span>

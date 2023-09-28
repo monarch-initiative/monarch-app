@@ -1029,6 +1029,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_multi_entity_associations" class="md-nav__link">
+    get_multi_entity_associations()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.search" class="md-nav__link">
     search()
   </a>
@@ -1261,6 +1268,13 @@
           <li class="md-nav__item">
   <a href="#src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_histopheno" class="md-nav__link">
     get_histopheno()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_multi_entity_associations" class="md-nav__link">
+    get_multi_entity_associations()
   </a>
   
 </li>
@@ -2709,6 +2723,112 @@ Returns:
   <div class="doc doc-contents ">
   
       <p>Get histopheno counts for a given subject_closure</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_multi_entity_associations" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">get_multi_entity_associations</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Get associations between multiple entities and counterparts of a given category</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>entity</code></td>
+          <td>
+                <code><a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>List of entity IDs to get associations for</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>counterpart_category</code></td>
+          <td>
+                <code><a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>List of categories of counterpart entity to get associations for. Defaults to None.</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>offset</code></td>
+          <td>
+                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Result offset, for pagination. Defaults to 0.</p>
+            </div>
+          </td>
+          <td>
+                <code>0</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>limit</code></td>
+          <td>
+                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Limit results to specified number. Defaults to 20.</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>limit_per_group</code></td>
+          <td>
+                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Limit results to specified number per group. Defaults to 20.</p>
+            </div>
+          </td>
+          <td>
+                <code>20</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
 
   </div>
 
