@@ -9,7 +9,6 @@ imports:
   - similarity
 default_range: string
 
-
 enums:
   AssociationDirectionEnum:
     description: >-
@@ -23,75 +22,74 @@ enums:
         description: >-
           An association for which a specified entity is the subject or part of the subject closure
 
-
 classes:
   Association:
     slots:
-    - id
-    - subject
-    - original_subject
-    - subject_namespace
-    - subject_category
-    - subject_closure
-    - subject_label
-    - subject_closure_label
-    - subject_taxon
-    - subject_taxon_label
-    - predicate
-    - object
-    - original_object
-    - object_namespace
-    - object_category
-    - object_closure
-    - object_label
-    - object_closure_label
-    - object_taxon
-    - object_taxon_label
-    - primary_knowledge_source
-    - aggregator_knowledge_source
-    - category
-    - negated
-    - provided_by
-    - provided_by_link
-    - publications
-    - qualifiers
-    - frequency_qualifier
-    - has_evidence
-    - onset_qualifier
-    - sex_qualifier
-    - stage_qualifier
-    - evidence_count
-    - pathway
-    - subject_label
-    - subject_namespace
-    - subject_category
-    - subject_closure
-    - subject_closure_label
-    - object_label
-    - object_namespace
-    - object_category
-    - object_closure
-    - object_closure_label
-    - frequency_qualifier_label
-    - frequency_qualifier_namespace
-    - frequency_qualifier_category
-    - frequency_qualifier_closure
-    - frequency_qualifier_closure_label
-    - onset_qualifier_label
-    - onset_qualifier_namespace
-    - onset_qualifier_category
-    - onset_qualifier_closure
-    - onset_qualifier_closure_label
-    - sex_qualifier_label
-    - sex_qualifier_namespace
-    - sex_qualifier_category
-    - sex_qualifier_closure
-    - sex_qualifier_closure_label
-    - stage_qualifier_label
-    - stage_qualifier_namespace
-    - stage_qualifier_category
-    - stage_qualifier_closure
-    - stage_qualifier_closure_label
+      - id
+      - subject
+      - original_subject
+      - subject_namespace
+      - subject_category
+      - subject_closure
+      - subject_label
+      - subject_closure_label
+      - subject_taxon
+      - subject_taxon_label
+      - predicate
+      - object
+      - original_object
+      - object_namespace
+      - object_category
+      - object_closure
+      - object_label
+      - object_closure_label
+      - object_taxon
+      - object_taxon_label
+      - primary_knowledge_source
+      - aggregator_knowledge_source
+      - category
+      - negated
+      - provided_by
+      - provided_by_link
+      - publications
+      - qualifiers
+      - frequency_qualifier
+      - has_evidence
+      - onset_qualifier
+      - sex_qualifier
+      - stage_qualifier
+      - evidence_count
+      - pathway
+      - subject_label
+      - subject_namespace
+      - subject_category
+      - subject_closure
+      - subject_closure_label
+      - object_label
+      - object_namespace
+      - object_category
+      - object_closure
+      - object_closure_label
+      - frequency_qualifier_label
+      - frequency_qualifier_namespace
+      - frequency_qualifier_category
+      - frequency_qualifier_closure
+      - frequency_qualifier_closure_label
+      - onset_qualifier_label
+      - onset_qualifier_namespace
+      - onset_qualifier_category
+      - onset_qualifier_closure
+      - onset_qualifier_closure_label
+      - sex_qualifier_label
+      - sex_qualifier_namespace
+      - sex_qualifier_category
+      - sex_qualifier_closure
+      - sex_qualifier_closure_label
+      - stage_qualifier_label
+      - stage_qualifier_namespace
+      - stage_qualifier_category
+      - stage_qualifier_closure
+      - stage_qualifier_closure_label
   AssociationCount:
     is_a: FacetValue
     slots:
@@ -108,7 +106,7 @@ classes:
         range: AssociationCount
   AssociationResults:
     is_a: Results
-    slots: 
+    slots:
       - items
     slot_usage:
       items:
@@ -144,6 +142,14 @@ classes:
         description: The biolink category to use in queries for this association type
         required: true
         multivalued: false
+  CategoryGroupedAssociationResults:
+    is_a: Results
+    slots:
+      - counterpart_category
+      - items
+    slot_usage:
+      items:
+        range: Association
   DirectionalAssociation:
     is_a: Association
     description: >-
@@ -158,20 +164,20 @@ classes:
   Entity:
     description: Represents an Entity in the Monarch KG data model
     slots:
-    - id
-    - category
-    - name
-    - full_name
-    - description
-    - xref
-    - provided_by
-    - in_taxon
-    - in_taxon_label
-    - symbol
-    - synonym
+      - id
+      - category
+      - name
+      - full_name
+      - description
+      - xref
+      - provided_by
+      - in_taxon
+      - in_taxon_label
+      - symbol
+      - synonym
   EntityResults:
     is_a: Results
-    slots: 
+    slots:
       - items
     slot_usage:
       items:
@@ -195,6 +201,12 @@ classes:
     is_a: FacetValue
     slots:
       - id
+  MultiEntityAssociationResults:
+    is_a: Results
+    slots:
+      - id
+      - name
+      - associated_categories
   Node:
     description: UI container class extending Entity with additional information
     is_a: Entity
@@ -235,14 +247,19 @@ classes:
       - facet_fields
       - facet_queries
     slot_usage:
-        items:
-          range: SearchResult
+      items:
+        range: SearchResult
 
 slots:
   aggregator_knowledge_source:
     multivalued: true
   association_counts:
     range: AssociationCount
+    multivalued: true
+    inlined_as_list: true
+    required: true
+  associated_categories:
+    range: CategoryGroupedAssociationResults
     multivalued: true
     inlined_as_list: true
     required: true
@@ -263,6 +280,11 @@ slots:
   count:
     description: count of documents
     range: integer
+  counterpart_category:
+    description: >-
+      The category of the counterpart entity in a given association, 
+      eg. the category of the entity that is not the subject
+    range: string
   description:
     range: string
   direction:

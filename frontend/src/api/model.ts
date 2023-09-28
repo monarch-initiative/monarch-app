@@ -4,6 +4,7 @@ export type ExpandedCurieId = string;
 export type EntityId = string;
 export type HistoPhenoId = string;
 export type HistoBinId = string;
+export type MultiEntityAssociationResultsId = string;
 export type NodeId = string;
 export type SearchResultId = string;
 export type TermInfoId = string;
@@ -158,6 +159,19 @@ export interface AssociationTypeMapping {
     symmetric: boolean,
     /** The biolink category to use in queries for this association type */
     category: string,
+};
+
+export interface CategoryGroupedAssociationResults extends Results {
+    /** The category of the counterpart entity in a given association,  eg. the category of the entity that is not the subject */
+    counterpart_category?: string,
+    /** A collection of items, with the type to be overriden by slot_usage */
+    items: Association[],
+    /** number of items to return in a response */
+    limit: number,
+    /** offset into the total number of items */
+    offset: number,
+    /** total number of items matching a query */
+    total: number,
 };
 /**
  * An association that gives it's direction relative to a specified entity
@@ -314,6 +328,18 @@ export interface HistoBin extends FacetValue {
     label: string,
     /** count of documents */
     count?: number,
+};
+
+export interface MultiEntityAssociationResults extends Results {
+    id: string,
+    name?: string,
+    associated_categories: CategoryGroupedAssociationResults[],
+    /** number of items to return in a response */
+    limit: number,
+    /** offset into the total number of items */
+    offset: number,
+    /** total number of items matching a query */
+    total: number,
 };
 /**
  * UI container class extending Entity with additional information

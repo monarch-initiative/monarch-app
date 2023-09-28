@@ -507,12 +507,37 @@ class AssociationTableResults(Results):
     total: int = Field(..., description="""total number of items matching a query""")
 
 
+class CategoryGroupedAssociationResults(Results):
+
+    counterpart_category: Optional[str] = Field(
+        None,
+        description="""The category of the counterpart entity in a given association,  eg. the category of the entity that is not the subject""",
+    )
+    items: List[Association] = Field(
+        default_factory=list,
+        description="""A collection of items, with the type to be overriden by slot_usage""",
+    )
+    limit: int = Field(..., description="""number of items to return in a response""")
+    offset: int = Field(..., description="""offset into the total number of items""")
+    total: int = Field(..., description="""total number of items matching a query""")
+
+
 class EntityResults(Results):
 
     items: List[Entity] = Field(
         default_factory=list,
         description="""A collection of items, with the type to be overriden by slot_usage""",
     )
+    limit: int = Field(..., description="""number of items to return in a response""")
+    offset: int = Field(..., description="""offset into the total number of items""")
+    total: int = Field(..., description="""total number of items matching a query""")
+
+
+class MultiEntityAssociationResults(Results):
+
+    id: str = Field(...)
+    name: Optional[str] = Field(None)
+    associated_categories: List[CategoryGroupedAssociationResults] = Field(default_factory=list)
     limit: int = Field(..., description="""number of items to return in a response""")
     offset: int = Field(..., description="""offset into the total number of items""")
     total: int = Field(..., description="""total number of items matching a query""")
@@ -676,7 +701,9 @@ NodeHierarchy.update_forward_refs()
 Results.update_forward_refs()
 AssociationResults.update_forward_refs()
 AssociationTableResults.update_forward_refs()
+CategoryGroupedAssociationResults.update_forward_refs()
 EntityResults.update_forward_refs()
+MultiEntityAssociationResults.update_forward_refs()
 SearchResult.update_forward_refs()
 SearchResults.update_forward_refs()
 PairwiseSimilarity.update_forward_refs()
