@@ -276,10 +276,13 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         """
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
         results = []
-        for ent in entity:
-            ent = self.get_entity(ent, extra=False)
+        for entity_id in entity:
+            ent = self.get_entity(entity_id, extra=False)
             if ent is None:
-                continue  # Do something else here?
+                results.append(MultiEntityAssociationResults(
+                    id=entity_id, name="Entity not found", total=0, offset=offset, limit=limit_per_group, associated_categories=[]
+                ))
+                continue
             entity_result = MultiEntityAssociationResults(
                 id=ent.id, name=ent.name, total=0, offset=offset, limit=limit_per_group, associated_categories=[]
             )
