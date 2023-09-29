@@ -1,8 +1,8 @@
 #!/usr/bin/bash 
 
-# check for uvicorn workers env var, default to 8
+# check for uvicorn workers env var, default to 1
 if [ -z "${UVICORN_WORKERS}" ]; then
-    UVICORN_WORKERS=8
+    UVICORN_WORKERS=1
 fi
 
 # Start the API
