@@ -241,6 +241,19 @@ strong {
   cursor: help;
 }
 
+.mini-table {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  justify-items: flex-start;
+  gap: 5px 15px;
+  text-align: left;
+}
+
+.mini-table :nth-child(odd) {
+  font-weight: 500;
+}
+
 /** util */
 
 .truncate:not(:focus) {

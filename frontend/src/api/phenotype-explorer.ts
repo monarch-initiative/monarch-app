@@ -109,17 +109,20 @@ export const compareSetToSet = async (
   const url = `${monarch}/semsim/compare`;
   const response = await request<TermSetPairwiseSimilarity>(url, {}, options);
 
-  const matches = Object.values(response.subject_best_matches || {}).map(
-    (match) => ({
-      source: match.match_source,
-      source_label: match.match_source_label,
-      target: match.match_target,
-      target_label: match.match_target_label,
-      score: match.score,
-    }),
-  );
+  const matches = {
+    summary: Object.values(response.subject_best_matches || {}).map(
+      (match) => ({
+        source: match.match_source,
+        source_label: match.match_source_label,
+        target: match.match_target,
+        target_label: match.match_target_label,
+        score: match.score,
+      }),
+    ),
+    phenogrid: response,
+  };
 
-  matches.sort((a, b) => b.score - a.score);
+  matches.summary.sort((a, b) => b.score - a.score);
 
   return matches;
 };

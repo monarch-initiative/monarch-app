@@ -41,15 +41,14 @@
         :key="annotationIndex"
         :interactive="true"
         :append-to="appendToBody"
+        :tabindex="tokens.length ? 0 : -1"
+        tag="span"
       >
-        <span :tabindex="tokens.length ? 0 : -1">{{ text }}</span>
+        {{ text }}
         <template v-if="!!tokens.length" #content>
-          <div class="table">
+          <div class="mini-table">
             <template v-for="(token, tokenIndex) in tokens" :key="tokenIndex">
-              <AppIcon :icon="`category-${kebabCase(token.category)}`" />
-              <AppLink :to="`/${kebabCase(token.category)}/${token.id}`">{{
-                token.id
-              }}</AppLink>
+              <span>{{ token.id }}</span>
               <div class="truncate">{{ token.name }}</div>
             </template>
           </div>
@@ -149,16 +148,5 @@ onMounted(async () => {
 <style lang="scss" scoped>
 .results {
   white-space: pre-line;
-}
-
-.table {
-  display: grid;
-  grid-template-columns: 20px auto auto;
-  align-items: center;
-  gap: 5px 10px;
-}
-
-.table svg {
-  font-size: 1.2rem;
 }
 </style>
