@@ -39,8 +39,7 @@ COPY . /opt/monarch-app/
 
 # install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
 RUN curl -sSL https://install.python-poetry.org | python3 && \
-    poetry self update && \ 
-    ls -l /opt/monarch-app/backend 
+    poetry self update
 
 ###############################################
 # Production Image
