@@ -41,11 +41,12 @@ RUN curl -sSL https://install.python-poetry.org | python3 && \
 
 FROM builder-base as production
 ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
+ENV UVICORN_WORKERS=8
 WORKDIR /opt/monarch-app/backend
 
 RUN poetry install
 
-CMD ["/opt/poetry/bin/poetry", "run", "uvicorn", "src.monarch_py.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["/opt/poetry/bin/poetry", "run", "uvicorn", "src.monarch_py.api.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "${UVICORN_WORKERS}"]
 
 ### Image URLs for reference ###
 #
