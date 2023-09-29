@@ -46,7 +46,7 @@ WORKDIR /opt/monarch-app/backend
 
 RUN poetry install
 
-CMD ["/opt/poetry/bin/poetry", "run", "uvicorn", "src.monarch_py.api.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "${UVICORN_WORKERS}"]
+CMD start_api.sh
 
 ### Image URLs for reference ###
 #
