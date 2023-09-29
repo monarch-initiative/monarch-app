@@ -29,7 +29,7 @@ RUN apt-get update -y && \
 
 # copy project requirement files here to ensure they will be cached.
 WORKDIR $PYSETUP_PATH
-COPY . /opt/monarch-app
+COPY . /opt/monarch-app/backend
 
 # install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
 RUN curl -sSL https://install.python-poetry.org | python3 && \
@@ -46,7 +46,7 @@ WORKDIR /opt/monarch-app/backend
 
 RUN poetry install
 
-CMD start_api.sh
+CMD /opt/monarch-app/backend/start_api.sh
 
 ### Image URLs for reference ###
 #
