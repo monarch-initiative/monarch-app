@@ -41,7 +41,7 @@ RUN curl -sSL https://install.python-poetry.org | python3 && \
 
 FROM builder-base as production
 ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
-ENV UVICORN_WORKERS=8
+# ENV UVICORN_WORKERS=8
 WORKDIR /opt/monarch-app/backend
 
 RUN poetry install
