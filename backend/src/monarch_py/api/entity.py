@@ -41,9 +41,9 @@ def _association_table(
         title="Type of association to retrieve association table data for",
         examples=["biolink:DiseaseToPhenotypicFeatureAssociation"],
     ),
-    query: str = Query(default=..., title="query string to limit results to a subset", examples=["thumb"]),
+    query: str = Query(default=None, title="query string to limit results to a subset", examples=["thumb"]),
     sort: List[str] = Query(
-        default=...,
+        default=None,
         title="Sort results by a list of field + direction statements",
         examples=["subject_label asc", "predicate asc", "object_label asc"],
     ),
