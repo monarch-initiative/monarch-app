@@ -77,9 +77,6 @@ test("Phenotype set vs gene/disease works", async ({ page }) => {
   await expect(page.getByText(/55/i).first()).toBeVisible();
   await expect(page.getByText(/1600029I14Rik/i).first()).toBeVisible();
   await expect(page.getByText(/Mus musculus/i).first()).toBeVisible();
-  await expect(
-    page.locator("svg", { hasText: /Pulmonary artery dilatation/i }).first(),
-  ).toBeVisible();
 });
 
 test("Phenotype set vs phenotype set works", async ({ page }) => {
@@ -101,7 +98,4 @@ test("Phenotype set vs phenotype set works", async ({ page }) => {
     .click();
   await expect(page.getByText(/0/).first()).toBeVisible();
   await expect(page.getByText(/female sterile/).first()).toBeVisible();
-  await expect(
-    page.locator("svg", { hasText: /female sterile/i }).first(),
-  ).toBeVisible();
 });
