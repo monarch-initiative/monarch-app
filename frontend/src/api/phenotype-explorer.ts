@@ -1,3 +1,4 @@
+import { pick } from "lodash";
 import type {
   AssociationResults,
   TermSetPairwiseSimilarity,
@@ -109,23 +110,56 @@ export const compareSetToSet = async (
   const url = `${monarch}/semsim/compare`;
   const response = await request<TermSetPairwiseSimilarity>(url, {}, options);
 
-  const matches = {
-    summary: Object.values(response.subject_best_matches || {}).map(
-      (match) => ({
-        source: match.match_source,
-        source_label: match.match_source_label,
-        target: match.match_target,
-        target_label: match.match_target_label,
-        score: match.score,
-      }),
-    ),
-    phenogrid: response,
-  };
+  /** get high level data */
+  const summary = Object.values(response.subject_best_matches || {}).map(
+    (match) => ({
+      source: match.match_source,
+      source_label: match.match_source_label,
+      target: match.match_target,
+      target_label: match.match_target_label,
+      score: match.score,
+    }),
+  );
+  summary.sort((a, b) => b.score - a.score);
 
-  matches.summary.sort((a, b) => b.score - a.score);
+  /** get detailed phenogrid info */
+  const cols = Object.values(response.object_termset || {});
+  const rows = Object.values(response.subject_termset || {});
 
-  return matches;
+  /** get detailed phenogrid info */
+  const cells = cols.map((col) =>
+    rows.map((row) => {
+      const match = Object.values(response.subject_best_matches || {}).find(
+        ({ match_source, match_target }) =>
+          match_source === row.id && match_target === col.id,
+      );
+
+      return {
+        score: match?.score || 0,
+        strength: 0,
+        simInfo: pick(match?.similarity, [
+          "ancestor_id",
+          "jaccard_similarity",
+          "phenodigm_score",
+        ]),
+      };
+    }),
+  );
+
+  /** get range of cell scores */
+  const scores = cells.map((row) => row.map((col) => col.score)).flat();
+  const min = Math.min(...scores);
+  const max = Math.max(...scores);
+
+  /** normalize cell scores to 0-1 */
+  cells.forEach((row) =>
+    row.forEach((col) => (col.strength = (col.score - min) / (max - min))),
+  );
+
+  return { summary, phenogrid: { cols, rows, cells } };
 };
+
+export type SetToSet = Awaited<ReturnType<typeof compareSetToSet>>;
 
 /** compare a set of phenotypes to a gene or disease taxon id */
 export const compareSetToTaxon = async (

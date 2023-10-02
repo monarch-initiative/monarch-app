@@ -44,5 +44,11 @@ module.exports = {
      */
     "vue/no-v-html": ["off"],
     "vue/no-v-text-v-html-on-component": ["off"],
+    /**
+     * important rule. only disregard in cases where mouse event only adds
+     * non-essentially functionality, e.g. hovering over a table cell to
+     * highlight its row and column.
+     */
+    "vuejs-accessibility/mouse-events-have-key-events": ["off"],
   },
 };

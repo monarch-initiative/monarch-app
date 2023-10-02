@@ -87,22 +87,29 @@
         />
         <!-- for percent, use asymptotic function limited to 1 so we don't need to know max score -->
 
-        <AppFlex class="details" align-h="left" gap="small">
-          Source:
-          <AppNodeBadge
-            :node="{ id: match.source, name: match.source_label }"
-          />
-          <AppIcon icon="arrow-right" class="arrow" />
-          Target:
-          <AppNodeBadge
-            :node="{ id: match.target, name: match.target_label }"
-          />
+        <AppFlex class="details" direction="col" align-h="left" gap="small">
+          <AppFlex align-h="left" gap="small">
+            Source:
+            <AppNodeBadge
+              :node="{ id: match.source, name: match.source_label }"
+            />
+          </AppFlex>
+          <AppFlex align-h="left" gap="small">
+            Target:
+            <AppNodeBadge
+              :node="{ id: match.target, name: match.target_label }"
+            />
+          </AppFlex>
         </AppFlex>
       </div>
     </AppFlex>
 
     <!-- phenogrid results -->
-    <template v-if="Object.keys(comparison.phenogrid).length">
+    <template v-if="comparison.phenogrid.cells.length">
+      <AppAlert
+        >This feature is still under development. Check back soon for
+        more!</AppAlert
+      >
       <strong>Phenotype Similarity Comparison</strong>
       <ThePhenogrid :data="comparison.phenogrid" />
     </template>
@@ -214,7 +221,7 @@ const {
   },
 
   /** default value */
-  { summary: [], phenogrid: {} },
+  { summary: [], phenogrid: { cols: [], rows: [], cells: [] } },
 );
 
 /** when multi select component runs spread options function */
@@ -231,7 +238,7 @@ function spreadOptions(option: Option, options: Options, set: string) {
 /** clear/reset results */
 function clearResults() {
   comparison.value.summary = [];
-  comparison.value.phenogrid = {};
+  comparison.value.phenogrid = { cols: [], rows: [], cells: [] };
 }
 
 /** get description to show below phenotypes select box */

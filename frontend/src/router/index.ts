@@ -10,6 +10,7 @@ import PagePublications from "@/pages/about/PagePublications.vue";
 import PageTeam from "@/pages/about/PageTeam.vue";
 import PageTerms from "@/pages/about/PageTerms.vue";
 import PageExplore from "@/pages/explore/PageExplore.vue";
+import PagePhenogrid from "@/pages/explore/PagePhenogrid.vue";
 import PageFeedback from "@/pages/help/PageFeedback.vue";
 import PageHelp from "@/pages/help/PageHelp.vue";
 import PageNode from "@/pages/node/PageNode.vue";
@@ -126,6 +127,14 @@ export const routes: RouteRecordRaw[] = [
     component: PageNode,
   },
 
+  /** phenogrid iframe widget page */
+  {
+    path: "/phenogrid",
+    name: "Phenogrid",
+    component: PagePhenogrid,
+    meta: { bare: true },
+  },
+
   /** test pages (comment this out when we release app) */
   {
     path: "/testbed",
@@ -142,12 +151,12 @@ export const routes: RouteRecordRaw[] = [
 ];
 
 /** insert descriptions from imported json into each route's metadata */
-for (const route of routes)
-  route.meta = {
-    description:
-      (descriptions as { [key: string]: string })[String(route.name || "")] ||
-      import.meta.env.VITE_DESCRIPTION,
-  };
+for (const route of routes) {
+  route.meta ??= {};
+  route.meta.description =
+    (descriptions as { [key: string]: string })[String(route.name || "")] ||
+    import.meta.env.VITE_DESCRIPTION;
+}
 
 /** vue-router's scroll behavior handler */
 const scrollBehavior: RouterScrollBehavior = async (

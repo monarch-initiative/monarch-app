@@ -1,148 +1,126 @@
 <template>
-  <div class="wrapper">
-    <table class="table">
-      <thead>
-        <tr>
-          <th></th>
-          <tooltip
-            v-for="(col, colIndex) in cols"
-            :key="colIndex"
-            :interactive="true"
-            follow-cursor="initial"
-            :append-to="appendToBody"
-            tag="th"
-            class="col-head truncate"
-          >
-            {{ col.label }}
-            <template #content>
-              <div class="mini-table">
-                <span>ID</span>
-                <span>{{ col.id }}</span>
-                <span>Name</span>
-                <span>{{ col.label }}</span>
-              </div>
-            </template>
-          </tooltip>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(row, rowIndex) in rows" :key="rowIndex">
-          <tooltip
-            :interactive="true"
-            :append-to="appendToBody"
-            tag="td"
-            class="row-head truncate"
-          >
-            {{ row.label }}
-            <template #content>
-              <div class="mini-table">
-                <span>ID</span>
-                <span>{{ row.id }}</span>
-                <span>Name</span>
-                <span>{{ row.label }}</span>
-              </div>
-            </template>
-          </tooltip>
-          <td v-for="(col, colIndex) in cols" :key="colIndex">
+  <AppFlex direction="col">
+    <div class="wrapper">
+      <table class="table">
+        <thead>
+          <tr>
+            <th></th>
             <tooltip
+              v-for="(col, colIndex) in data.cols"
+              :key="colIndex"
               :interactive="true"
-              tag="button"
-              :class="['cell', { selected: isSelected(colIndex, rowIndex) }]"
-              :style="{ '--score': getCell(colIndex, rowIndex).score }"
-              @click="selectCell(colIndex, rowIndex)"
+              follow-cursor="initial"
+              :append-to="appendToBody"
+              tag="th"
+              :class="[
+                'col-head',
+                'truncate',
+                {
+                  hovered: hovered?.col === colIndex,
+                },
+              ]"
             >
+              {{ col.label }}
               <template #content>
-                <div class="mini-table">
-                  <span>Score</span>
-                  <span>{{ getCell(colIndex, rowIndex).score }}</span>
-                  <span>Lorem</span>
-                  <span>{{ getCell(colIndex, rowIndex).lorem }}</span>
-                </div>
+                <AppNodeBadge :node="{ id: col.id, name: col.label }" /> ({{
+                  col.id
+                }})
               </template>
             </tooltip>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(row, rowIndex) in data.rows" :key="rowIndex">
+            <tooltip
+              :interactive="true"
+              :append-to="appendToBody"
+              tag="td"
+              :class="[
+                'row-head',
+                'truncate',
+                {
+                  hovered: hovered?.row === rowIndex,
+                },
+              ]"
+            >
+              {{ row.label }}
+              <template #content>
+                <AppNodeBadge :node="{ id: row.id, name: row.label }" /> ({{
+                  row.id
+                }})
+              </template>
+            </tooltip>
+            <td
+              v-for="(cell, colIndex) in data.cols.map(
+                (_, colIndex) => data.cells[colIndex][rowIndex],
+              )"
+              :key="colIndex"
+            >
+              <tooltip
+                v-if="cell.strength"
+                :interactive="true"
+                tag="button"
+                class="cell"
+                :style="{ '--score': cell.strength }"
+                @mouseenter="hoverCell(colIndex, rowIndex)"
+                @mouseleave="hoverCell(colIndex, rowIndex, true)"
+              >
+                <template #content>
+                  <div class="mini-table">
+                    <span>Score</span>
+                    <span>{{ cell.score.toFixed(2) }}</span>
+                    <template
+                      v-for="(value, key, index) in cell.simInfo"
+                      :key="index"
+                    >
+                      <span>{{ startCase(key) }}</span>
+                      <span>{{
+                        typeof value === "number" ? value.toFixed(2) : value
+                      }}</span>
+                    </template>
+                  </div>
+                </template>
+              </tooltip>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-  <div class="legend">
-    <div class="gradient" />
-    <span>Less similar</span>
-    <span>More similar</span>
-  </div>
-
-  <AppFlex v-if="selected" direction="col">
-    <strong>Selected match</strong>
-    <div class="mini-table">
-      <span>Score</span>
-      <span>{{ getCell(selected.col, selected.row).score }}</span>
-      <span>Lorem</span>
-      <span>{{ getCell(selected.col, selected.row).lorem }}</span>
+    <div class="legend">
+      <div class="gradient" />
+      <span>Less similar</span>
+      <span>More similar</span>
     </div>
   </AppFlex>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
-import { round } from "lodash";
-import type { TermSetPairwiseSimilarity } from "@/api/model";
+import { ref } from "vue";
+import { startCase } from "lodash";
+import { type SetToSet } from "@/api/phenotype-explorer";
+import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import { appendToBody } from "@/global/tooltip";
 
 type Props = {
-  data: TermSetPairwiseSimilarity;
+  data: SetToSet["phenogrid"];
 };
 
-const props = defineProps<Props>();
+defineProps<Props>();
 
-const selected = ref<{ col: number; row: number }>();
+const hovered = ref<{ col: number; row: number }>();
 
-/** details for each column */
-const cols = computed(() =>
-  Object.values(props.data.object_termset || {}).map(({ id, label }) => ({
-    id,
-    label,
-  })),
-);
-
-/** details for each row */
-const rows = computed(() =>
-  Object.values(props.data.subject_termset || {}).map(({ id, label }) => ({
-    id,
-    label,
-  })),
-);
-
-/** details for each cell */
-const cells = computed(() =>
-  cols.value.map(() =>
-    rows.value.map(() => ({
-      score: round(Math.random(), 3),
-      lorem: "ipsum",
-    })),
-  ),
-);
-
-/** get cell from col/row indices */
-function getCell(colIndex: number, rowIndex: number) {
-  return cells.value[colIndex][rowIndex];
-}
-
-/** check if cell is selected */
-function isSelected(colIndex: number, rowIndex: number) {
-  return colIndex === selected.value?.col && rowIndex === selected.value?.row;
-}
-
-/** set selected cell */
-function selectCell(colIndex: number, rowIndex: number) {
-  if (isSelected(colIndex, rowIndex)) selected.value = undefined;
-  else selected.value = { col: colIndex, row: rowIndex };
+/** set/unset hovered cell */
+function hoverCell(colIndex: number, rowIndex: number, unset = false) {
+  if (unset) hovered.value = undefined;
+  else hovered.value = { col: colIndex, row: rowIndex };
 }
 </script>
 
 <style scoped lang="scss">
 .wrapper {
   width: 100%;
+  padding: 20px 150px 20px 20px;
   overflow-x: auto;
 }
 
@@ -177,11 +155,12 @@ th {
   padding: 0;
   border-radius: 3px;
   background: color-mix(in srgb, $white, $theme calc(var(--score) * 100%));
+  vertical-align: middle;
+  cursor: help;
 }
 
-.cell.selected,
-.cell:hover {
-  outline: solid 2px $black;
+td {
+  text-align: center;
 }
 
 th,
@@ -199,5 +178,9 @@ td {
 .gradient {
   grid-column: span 2;
   background: linear-gradient(to right, $white, $theme);
+}
+
+.hovered {
+  font-weight: 600;
 }
 </style>

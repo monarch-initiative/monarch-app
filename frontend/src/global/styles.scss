@@ -226,6 +226,15 @@ strong {
   width: 100%;
   padding: 0 !important;
   gap: 10px;
+
+  a {
+    color: $theme-mid;
+  }
+
+  a:hover {
+    color: $white;
+  }
+
 }
 
 /** useless tippy wrapper span that sometimes appears */
