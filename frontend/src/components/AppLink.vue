@@ -9,13 +9,13 @@
     <slot />
   </span>
 
-  <a v-else-if="absoluteLink" :href="to" target="_blank">
+  <a v-else-if="absoluteLink" :href="stringTo" target="_blank">
     <!-- use regular html link for absolute urls -->
     <template v-if="externalLink && plainText && !noIcon">
       <span>
         <slot />
       </span>
-      <AppIcon class="icon" icon="external-link-alt" />
+      <AppIcon class="icon" icon="arrow-up-right-from-square" />
     </template>
     <slot v-else />
   </a>
@@ -23,10 +23,10 @@
   <router-link
     v-else
     :to="{
-      ...splitTo,
+      ...routeTo,
       state: mapValues(state, (value) => stringify(value)),
     }"
-    :replace="!!splitTo.hash && !splitTo.path"
+    :replace="!!routeTo.hash && !routeTo.path"
   >
     <!-- use vue router component for relative urls -->
     <slot />
@@ -35,13 +35,17 @@
 
 <script setup lang="ts">
 import { computed, useSlots } from "vue";
+import { useRouter, type RouteLocationRaw } from "vue-router";
 import { mapValues } from "lodash";
 import { stringify } from "@/util/object";
 import { isAbsolute, isExternal } from "@/util/url";
 
+/** route info */
+const router = useRouter();
+
 type Props = {
   /** location to link to */
-  to: string;
+  to: string | RouteLocationRaw;
   /**
    * state data to attach on navigation. object/array values get stringified.
    * https://developer.mozilla.org/en-US/docs/Web/API/History/pushState
@@ -64,11 +68,20 @@ type Slots = {
 
 defineSlots<Slots>();
 
+/** interpret location as href string */
+const stringTo = computed(() => {
+  if (typeof props.to === "string") return props.to;
+  else return router.resolve(props.to).href;
+});
+
+/** interpret location as route object */
+const routeTo = computed(() => router.resolve(props.to));
+
 /** is "to" prop an external url */
-const externalLink = computed(() => isExternal(props.to));
+const externalLink = computed(() => isExternal(stringTo.value));
 
 /** is "to" prop an absolute url */
-const absoluteLink = computed(() => isAbsolute(props.to));
+const absoluteLink = computed(() => isAbsolute(stringTo.value));
 
 /** is provided slot just plain text */
 const plainText = computed(
@@ -77,15 +90,6 @@ const plainText = computed(
     slots.default().length === 1 &&
     typeof slots.default()[0].children === "string",
 );
-
-/**
- * convert "to" prop to separate route props because vue-router can't do this
- * itself
- */
-const splitTo = computed(() => {
-  const [, path, hash] = props.to.match(/([^#]*)(#[^#]*)?/) || [];
-  return { path, hash };
-});
 </script>
 
 <style lang="scss" scoped>

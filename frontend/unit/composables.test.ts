@@ -10,7 +10,7 @@ const mock = vi.fn();
 /** simulated api call */
 const apiCall = async ({ wait = 10, data = "", error = "" } = {}) => {
   await sleep(wait);
-  if (error) throw new Error(error);
+  if (error) throw Error(error);
   mock();
   return data;
 };

@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Path
 from monarch_py.api.config import oak
 from monarch_py.implementations.oak.oak_implementation import SemsimSearchCategory
 
@@ -9,8 +9,8 @@ router = APIRouter(tags=["semsim"], responses={404: {"description": "Not Found"}
 
 @router.get("/compare/{subjects}/{objects}")
 def _compare(
-    subjects: str = "",
-    objects: str = "",
+    subjects: str = Path(title="List of subjects for comparison"),
+    objects: str = Path(title="List of objects for comparison"),
 ):
     """Get pairwise similarity between two sets of terms
 
@@ -56,9 +56,9 @@ def _post_compare(
 
 @router.get("/search")
 def _search(
-    subjects: str = Query(...),
-    target_group: SemsimSearchCategory = Query(...),
-    limit: int = Query(default=10, ge=1, le=500),
+    subjects: str = Path(...),
+    target_group: SemsimSearchCategory = Path(...),
+    limit: int = Path(default=10, ge=1, le=500),
 ):
     """
     Search for genes or diseases by phenotype similarity<br>

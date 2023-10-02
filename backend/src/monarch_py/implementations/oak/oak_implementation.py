@@ -9,6 +9,7 @@ from monarch_py.datamodels.model import TermSetPairwiseSimilarity
 from oaklib.interfaces.semsim_interface import SemanticSimilarityInterface
 from oaklib.selector import get_adapter
 from linkml_runtime.dumpers.json_dumper import JSONDumper
+import pystow
 
 import pystow
 
@@ -29,6 +30,7 @@ class OakImplementation(SemanticSimilarityInterface):
     semsim = None
     json_dumper = JSONDumper()
     default_predicates = ["rdfs:subClassOf", "BFO:0000050", "UPHENO:0000001"]
+
     default_phenio_db_url = "https://data.monarchinitiative.org/monarch-kg-dev/latest/phenio.db.gz"
 
     def init_semsim(self, phenio_path: str = None, force_update: bool = False):
@@ -36,15 +38,18 @@ class OakImplementation(SemanticSimilarityInterface):
             logger.info("Warming up semsimian")
             start = time.time()
             # self.semsim = get_adapter(f"sqlite:obo:phenio")
-            logger.debug("Getting semsimian adapter")
+
 
             if phenio_path:
+                logger.debug(f"Creating semsimian adapter using phenio_path at {phenio_path}")
                 self.semsim = get_adapter(f"semsimian:sqlite:{phenio_path}")
             else:
                 monarchstow = pystow.module("monarch")
+
                 with monarchstow.ensure_gunzip(
                     "phenio", url=self.default_phenio_db_url, force=force_update
                 ) as stowed_phenio_path:
+                    logger.debug(f"Creating semsimian adapter using pystow at {stowed_phenio_path}")
                     self.semsim = get_adapter(f"semsimian:sqlite:{stowed_phenio_path}")
 
             # run a query to get the adapter to initialize properly

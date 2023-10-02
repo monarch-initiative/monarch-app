@@ -63,7 +63,7 @@ install: install-backend install-frontend
 .PHONY: install-backend
 install-backend:
 	cd backend && \
-		poetry install -E api --with dev
+		poetry install --with dev
 
 
 .PHONY: install-frontend

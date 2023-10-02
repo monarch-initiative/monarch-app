@@ -34,7 +34,7 @@
         :aria-expanded="expanded"
         @click="expanded = !expanded"
       >
-        <AppIcon :icon="expanded ? 'times' : 'bars'" />
+        <AppIcon :icon="expanded ? 'xmark' : 'bars'" />
       </button>
     </div>
 
@@ -90,7 +90,12 @@ const home = computed((): boolean => route.name === "Home");
 
 /** whether to show search box */
 const search = computed(
-  (): boolean => route.name !== "Home" && route.name !== "Explore",
+  (): boolean =>
+    route.name !== "Home" &&
+    !(
+      route.hash === "#search" ||
+      (route.name === "Explore" && route.hash === "")
+    ),
 );
 
 /** close nav */

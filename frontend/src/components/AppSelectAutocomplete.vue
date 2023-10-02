@@ -15,7 +15,7 @@
       ref="target"
       v-model="search"
       class="box"
-      icon="search"
+      icon="magnifying-glass"
       role="combobox"
       :placeholder="placeholder"
       :debounce="200"

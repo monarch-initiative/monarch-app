@@ -34,7 +34,7 @@
     <!-- clear button -->
     <AppButton
       v-tooltip="'Clear breadcrumb history'"
-      icon="times"
+      icon="xmark"
       text="Clear"
       design="small"
       @click="clear"

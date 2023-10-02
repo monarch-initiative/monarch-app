@@ -38,7 +38,7 @@
     <AppTextbox
       v-model="input"
       :multi="true"
-      icon="search"
+      icon="magnifying-glass"
       placeholder="Multi-line input"
     />
   </AppSection>
@@ -226,10 +226,10 @@ const tagsSelectOptions = ref(async (search = "") => {
   await sleep(500); /** test loading spinner */
   return {
     options: [
-      { id: "ice cream", icon: "home" },
+      { id: "ice cream", icon: "flask" },
       { id: "candy", icon: "database", info: "8 phenotypes" },
       { id: "gummies", info: "4 phenotypes" },
-      { id: "brownies", icon: "puzzle-piece", info: "1 phenotype" },
+      { id: "brownies", icon: "paper-plane", info: "1 phenotype" },
       { id: "cookies" },
     ].filter(({ id }) => id.includes(search)),
     message: "Selected item!",
@@ -243,7 +243,7 @@ const tagsSelectValue = ref([
 const autocompleteSelectOptions = ref(async () => {
   await sleep(500); /** test loading spinner */
   return [
-    { icon: "home", label: "Cat" },
+    { icon: "flask", label: "Cat" },
     { label: "Dog", info: "good dog" },
     { icon: "download", label: "Zebra" },
   ];
@@ -253,9 +253,9 @@ const autocompleteSelectOptions = ref(async () => {
 const tabs = [
   { id: "apple", text: "Apple", icon: "asterisk" },
   { id: "banana", text: "Banana", icon: "cogs" },
-  { id: "cherry", text: "Cherry", icon: "home" },
-  { id: "durian", text: "Durian", icon: "puzzle-piece" },
-  { id: "elderberry", text: "Elderberry", icon: "tools" },
+  { id: "cherry", text: "Cherry", icon: "flask" },
+  { id: "durian", text: "Durian", icon: "paper-plane" },
+  { id: "elderberry", text: "Elderberry", icon: "sitemap" },
 ];
 
 /** selected tab */

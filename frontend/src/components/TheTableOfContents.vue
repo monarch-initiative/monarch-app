@@ -22,7 +22,7 @@
           :aria-expanded="expanded"
           @click="expanded = !expanded"
         >
-          <AppIcon :icon="expanded ? 'times' : 'bars'" />
+          <AppIcon :icon="expanded ? 'xmark' : 'bars'" />
         </button>
         <span v-if="expanded" class="title-text truncate"
           >Table of Contents</span

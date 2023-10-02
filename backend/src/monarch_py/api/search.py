@@ -1,6 +1,6 @@
 from typing import List, Union
 
-from fastapi import APIRouter, Query, Depends
+from fastapi import APIRouter, Depends, Query
 
 from monarch_py.api.additional_models import PaginationParams
 from monarch_py.api.config import solr
@@ -14,7 +14,7 @@ router = APIRouter(
 
 @router.get("/search")
 async def search(
-    q: str = "*:*",
+    q: str = Query(default=None),
     category: Union[List[str], None] = Query(default=None),
     in_taxon_label: Union[List[str], None] = Query(default=None),
     pagination: PaginationParams = Depends(),
@@ -33,7 +33,7 @@ async def search(
     """
     facet_fields = ["category", "in_taxon_label"]
     response = solr().search(
-        q=q,
+        q=q or "*:*",
         category=category,
         in_taxon_label=in_taxon_label,
         facet_fields=facet_fields,
@@ -45,7 +45,13 @@ async def search(
 
 
 @router.get("/autocomplete")
-async def autocomplete(q: str) -> SearchResults:
+async def autocomplete(
+    q: str = Query(
+        default="*:*",
+        title="Query string to autocomplete against",
+        examples=["fanc", "ehler"],
+    )
+) -> SearchResults:
     """Autocomplete for entities by label
 
     Args:

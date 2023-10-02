@@ -1,0 +1,206 @@
+id: https://w3id.org/monarch/monarch-py-similarity
+name: monarch-py-similarity
+description: Data models for the Monarch Initiative data access library
+prefixes:
+  linkml: https://w3id.org/linkml/
+imports:
+  - linkml:types
+default_range: string
+
+# This is a copy and paste from https://w3id.org/oak/similarity.yaml with some slots commented out because they
+# conflicted with slots in the monarch-py schema
+
+classes:
+  PairwiseSimilarity:
+    abstract: true
+    description: >-
+      Abstract grouping for representing individual pairwise similarities
+
+  TermPairwiseSimilarity:
+    is_a: PairwiseSimilarity
+    description: >-
+      A simple pairwise similarity between two atomic concepts/terms
+    slots:
+      - subject_id
+      - subject_label
+      - subject_source
+      - object_id
+      - object_label
+      - object_source
+      - ancestor_id
+      - ancestor_label
+      - ancestor_source
+      - object_information_content
+      - subject_information_content
+      - ancestor_information_content
+      - jaccard_similarity
+      - cosine_similarity
+      - dice_similarity
+      - phenodigm_score
+
+  TermSetPairwiseSimilarity:
+    is_a: PairwiseSimilarity
+    description: >-
+      A simple pairwise similarity between two sets of concepts/terms
+    slots:
+      - subject_termset
+      - object_termset
+      - subject_best_matches
+      - object_best_matches
+      - average_score
+      - best_score
+      - metric
+
+  TermInfo:
+    attributes:
+      id:
+        identifier: true
+      label:
+        slot_uri: rdfs:label
+
+  BestMatch:
+    attributes:
+      match_source:
+        identifier: true
+        comments:
+          - note that the match_source is either the subject or the object
+      match_source_label:
+      match_target:
+        description: the entity matches
+      match_target_label:
+      score:
+        range: float
+        required: true
+      match_subsumer:
+        range: uriorcurie
+      match_subsumer_label:
+      similarity:
+        range: TermPairwiseSimilarity
+        required: true
+
+
+types:
+  ZeroToOne:
+    typeof: float
+    minimum_value: 0
+    maximum_value: 0
+  NonNegativeFloat:
+    typeof: float
+    minimum_value: 0
+  NegativeLogValue:
+    typeof: float
+    minimum_value: 0
+  ItemCount:
+    typeof: integer
+    minimum_value: 0
+
+slots:
+  subject_id:
+    slot_uri: sssom:subject_id
+    required: true
+    range: uriorcurie
+    description: The first of the two entities being compared
+  # Excluded, since it conflicts with subject_label from this schema
+  #  subject_label:
+  #    slot_uri: sssom:subject_label
+  #    description: the label or name for the first entity
+  subject_source:
+    slot_uri: sssom:subject_source
+    description: the source for the first entity
+  object_id:
+    slot_uri: sssom:object_id
+    range: uriorcurie
+    description: The second of the two entities being compared
+  # Excluded, since it conflicts with object_label from this schema
+  #  object_label:
+  #    slot_uri: sssom:object_label
+  #    description: the label or name for the second entity
+  object_source:
+    slot_uri: sssom:object_source
+    description: the source for the second entity
+  ancestor_id:
+    range: uriorcurie
+    description: >-
+      the most recent common ancestor of the two compared entities. If there are multiple MRCAs then
+      the most informative one is selected
+    todos:
+      - decide on what to do when there are multiple possible ancestos
+  ancestor_label:
+    description: the name or label of the ancestor concept
+  ancestor_source:
+  # Excluded, conflicts with score from this schema
+  #  score:
+  #    abstract: true
+  #    description: Abstract base slot for different kinds of scores
+  information_content:
+    abstract: true
+    aliases:
+      - IC
+    is_a: score
+    range: NegativeLogValue
+    description: The IC is the negative log of the probability of the concept
+  subject_information_content:
+    is_a: information_content
+    description: The IC of the subject
+  object_information_content:
+    is_a: information_content
+    description: The IC of the object
+  ancestor_information_content:
+    is_a: information_content
+    description: The IC of the object
+  jaccard_similarity:
+    is_a: score
+    range: ZeroToOne
+    description: The number of concepts in the intersection divided by the number in the union
+  cosine_similarity:
+    is_a: score
+    range: float
+    description: the dot product of two node embeddings divided by the product of their lengths
+  dice_similarity:
+    is_a: score
+    range: ZeroToOne
+  phenodigm_score:
+    is_a: score
+    range: NonNegativeFloat
+    description: the geometric mean of the jaccard similarity and the information content
+    equals_expression: sqrt({jaccard_similarity} * {information_content})
+  overlap_coefficient:
+    is_a: score
+    range: ZeroToOne
+  subsumes_score:
+    is_a: score
+    range: ZeroToOne
+  subsumed_by_score:
+    is_a: score
+    range: ZeroToOne
+  intersection_count:
+    is_a: score
+    range: ItemCount
+  union_count:
+    is_a: score
+    range: ItemCount
+  # TermSets
+  subject_termset:
+    range: TermInfo
+    multivalued: true
+    inlined: true
+  object_termset:
+    range: TermInfo
+    multivalued: true
+    inlined: true
+  subject_best_matches:
+    range: BestMatch
+    multivalued: true
+    inlined: true
+  object_best_matches:
+    range: BestMatch
+    multivalued: true
+    inlined: true
+  metric:
+    range: uriorcurie
+  average_score:
+    range: float
+    required: false
+  best_score:
+    range: float
+    required: false
