@@ -53,10 +53,11 @@ watch(
      */
 
     /** update document title from current route name */
-    appTitle.value = [String(route.name) || ""];
+    if (route.name) appTitle.value = [String(route.name) || ""];
 
     /** update description from current route meta */
-    appDescription.value = String(route.meta.description);
+    if (route.meta.description)
+      appDescription.value = String(route.meta.description);
 
     /** update canonical url from current url in address bar */
     appUrl.value = window.location.href;
