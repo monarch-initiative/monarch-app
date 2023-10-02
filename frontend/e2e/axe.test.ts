@@ -13,7 +13,7 @@ const paths = [
   "/publications",
   "/terms",
   "/feedback",
-  "/node/MONDO:012345",
+  "/MONDO:012345",
   "/testbed",
 ];
 

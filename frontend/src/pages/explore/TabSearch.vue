@@ -63,7 +63,7 @@
           v-tooltip="'Node ID (click to copy)'"
           class="title-id"
           :text="result.id"
-          icon="hashtag"
+          icon="barcode"
           design="small"
           :copy="true"
           color="secondary"

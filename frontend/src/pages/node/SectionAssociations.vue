@@ -71,6 +71,7 @@ import AppTabs from "@/components/AppTabs.vue";
 import AssociationsSummary from "@/pages/node/AssociationsSummary.vue";
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
 import EvidenceViewer from "@/pages/node/EvidenceViewer.vue";
+import { scrollToHash } from "@/router";
 
 /** route info */
 const route = useRoute();
@@ -121,11 +122,13 @@ watch(category, () => (association.value = undefined));
 /** update url from selected category */
 watch(
   category,
-  () => {
-    router.replace({
-      ...route,
-      query: { associations: category.value?.id },
-    });
+  (_, oldValue) => {
+    /** ignore first change to category due to auto-select */
+    if (oldValue)
+      router.replace({
+        ...route,
+        query: { associations: category.value?.id },
+      });
   },
   /** avoid extra triggering of watch functions */
   { flush: "post" },
@@ -139,6 +142,8 @@ watch(
       category.value = categoryOptions.value.find(
         (option) => option.id === route.query.associations,
       );
+
+    scrollToHash("associations");
   },
   { immediate: true },
 );

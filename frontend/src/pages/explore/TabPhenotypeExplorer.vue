@@ -87,14 +87,14 @@
 
         <AppFlex class="details" align-h="left" gap="small">
           Source:
-          <AppLink :to="`/node/${match.source}`">
-            {{ match.source_label || match.source }}
-          </AppLink>
+          <AppNodeBadge
+            :node="{ id: match.source, name: match.source_label }"
+          />
           <AppIcon icon="arrow-right" class="arrow" />
           Target:
-          <AppLink :to="`/node/${match.target}`">
-            {{ match.target_label || match.target }}
-          </AppLink>
+          <AppNodeBadge
+            :node="{ id: match.target, name: match.target_label }"
+          />
         </AppFlex>
       </div>
     </AppFlex>
@@ -117,6 +117,7 @@ import {
   getPhenotypes,
 } from "@/api/phenotype-explorer";
 import AppAlert from "@/components/AppAlert.vue";
+import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppRing from "@/components/AppRing.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import type { Option, Options } from "@/components/AppSelectTags.vue";

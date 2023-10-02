@@ -146,7 +146,7 @@ defineExpose({ button });
     }
 
     &.secondary {
-      color: $dark-gray;
+      color: $off-black;
     }
 
     &:hover,

@@ -17,7 +17,7 @@
           v-tooltip="'ID of this node (click to copy)'"
           design="small"
           color="secondary"
-          icon="hashtag"
+          icon="barcode"
           :text="node.id"
           :copy="true"
         />

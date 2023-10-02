@@ -115,6 +115,24 @@ def build_histopheno_query(subject_closure: str) -> SolrQuery:
     return query
 
 
+def build_multi_entity_association_query(
+    entity: str,
+    counterpart_category: str = None,
+    # predicate: List[str] = None,
+    offset: int = 0,
+    limit: int = 20,
+) -> SolrQuery:
+    """Populate a SolrQuery object with association filters"""
+    query = SolrQuery(start=offset, rows=limit)
+    if counterpart_category:
+        query.add_filter_query(
+            f'(subject:"{escape(entity)}" AND object_category:"{escape(counterpart_category)}") OR (object:"{escape(entity)}" AND subject_category:"{escape(counterpart_category)}")'
+        )
+    else:
+        query.add_filter_query(f'(subject:"{escape(entity)}") OR (object:"{escape(entity)}")')
+    return query
+
+
 def build_search_query(
     q: str = "*:*",
     offset: int = 0,

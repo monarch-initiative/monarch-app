@@ -4,6 +4,7 @@ export type ExpandedCurieId = string;
 export type EntityId = string;
 export type HistoPhenoId = string;
 export type HistoBinId = string;
+export type MultiEntityAssociationResultsId = string;
 export type NodeId = string;
 export type SearchResultId = string;
 export type TermInfoId = string;
@@ -31,7 +32,7 @@ export interface Association {
     subject_category?: string,
     /** Field containing subject id and the ids of all of it's ancestors */
     subject_closure?: string[],
-    /** the label or name for the first entity */
+    /** The name of the subject entity */
     subject_label?: string,
     /** Field containing subject name and the names of all of it's ancestors */
     subject_closure_label?: string[],
@@ -46,7 +47,7 @@ export interface Association {
     object_category?: string,
     /** Field containing object id and the ids of all of it's ancestors */
     object_closure?: string[],
-    /** the label or name for the second entity */
+    /** The name of the object entity */
     object_label?: string,
     /** Field containing object name and the names of all of it's ancestors */
     object_closure_label?: string[],
@@ -159,6 +160,19 @@ export interface AssociationTypeMapping {
     /** The biolink category to use in queries for this association type */
     category: string,
 };
+
+export interface CategoryGroupedAssociationResults extends Results {
+    /** The category of the counterpart entity in a given association,  eg. the category of the entity that is not the subject */
+    counterpart_category?: string,
+    /** A collection of items, with the type to be overriden by slot_usage */
+    items: Association[],
+    /** number of items to return in a response */
+    limit: number,
+    /** offset into the total number of items */
+    offset: number,
+    /** total number of items matching a query */
+    total: number,
+};
 /**
  * An association that gives it's direction relative to a specified entity
  */
@@ -174,7 +188,7 @@ export interface DirectionalAssociation extends Association {
     subject_category?: string,
     /** Field containing subject id and the ids of all of it's ancestors */
     subject_closure?: string[],
-    /** the label or name for the first entity */
+    /** The name of the subject entity */
     subject_label?: string,
     /** Field containing subject name and the names of all of it's ancestors */
     subject_closure_label?: string[],
@@ -189,7 +203,7 @@ export interface DirectionalAssociation extends Association {
     object_category?: string,
     /** Field containing object id and the ids of all of it's ancestors */
     object_closure?: string[],
-    /** the label or name for the second entity */
+    /** The name of the object entity */
     object_label?: string,
     /** Field containing object name and the names of all of it's ancestors */
     object_closure_label?: string[],
@@ -315,6 +329,18 @@ export interface HistoBin extends FacetValue {
     /** count of documents */
     count?: number,
 };
+
+export interface MultiEntityAssociationResults extends Results {
+    id: string,
+    name?: string,
+    associated_categories: CategoryGroupedAssociationResults[],
+    /** number of items to return in a response */
+    limit: number,
+    /** offset into the total number of items */
+    offset: number,
+    /** total number of items matching a query */
+    total: number,
+};
 /**
  * UI container class extending Entity with additional information
  */
@@ -324,6 +350,10 @@ export interface Node extends Entity {
     /** The label of the biolink taxon that the entity is in the closure of. */
     in_taxon_label?: string,
     inheritance?: Entity,
+    /** A list of genes that are known to be causally associated with a disease */
+    causal_gene?: Entity[],
+    /** A list of diseases that are known to be causally associated with a gene */
+    causes_disease?: Entity[],
     /** ExpandedCurie with id and url for xrefs */
     external_links?: ExpandedCurie[],
     /** A link to the docs for the knowledge source that provided the node/edge. */
@@ -359,8 +389,7 @@ export interface Results {
 export interface SearchResult extends Entity {
     /** matching text snippet containing html tags */
     highlight?: string,
-    /** Abstract base slot for different kinds of scores */
-    score?: string,
+    score?: number,
     id: string,
     category: string,
     name: string,
@@ -402,13 +431,13 @@ export interface PairwiseSimilarity {
 export interface TermPairwiseSimilarity extends PairwiseSimilarity {
     /** The first of the two entities being compared */
     subject_id: string,
-    /** the label or name for the first entity */
+    /** The name of the subject entity */
     subject_label?: string,
     /** the source for the first entity */
     subject_source?: string,
     /** The second of the two entities being compared */
     object_id?: string,
-    /** the label or name for the second entity */
+    /** The name of the object entity */
     object_label?: string,
     /** the source for the second entity */
     object_source?: string,

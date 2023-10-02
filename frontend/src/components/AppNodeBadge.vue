@@ -12,7 +12,7 @@
     />
     <AppLink
       v-if="!currentPage"
-      :to="`/node/${node.id}`"
+      :to="`/${node.id}`"
       :state="
         breadcrumbs
           ? { breadcrumbs: [...currentBreadcrumbs, ...breadcrumbs] }
