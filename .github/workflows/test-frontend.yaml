@@ -125,5 +125,7 @@ jobs:
           path: ${{ env.CACHE_PATH }}
           key: ${{ needs.install-cache.outputs.cache-key }}
 
+      - uses: mxschmitt/action-tmate@v3
+
       - name: Run test
         run: yarn test:e2e
