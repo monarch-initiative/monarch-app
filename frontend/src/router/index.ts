@@ -13,7 +13,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "Home",
-    component: () => import("@/pages/PageHome.vue"),
+    component: () => import("../pages/PageHome.vue"),
     beforeEnter: async () => {
       /** look for redirect in session storage (saved from public/404.html page) */
       const redirect = window.sessionStorage.redirect || "";
@@ -54,70 +54,70 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/explore",
     name: "Explore",
-    component: () => import("@/pages/explore/PageExplore.vue"),
+    component: () => import("../pages/explore/PageExplore.vue"),
   },
   {
     path: "/about",
     name: "About",
-    component: () => import("@/pages/about/PageAbout.vue"),
+    component: () => import("../pages/about/PageAbout.vue"),
   },
   {
     path: "/help",
     name: "Help",
-    component: () => import("@/pages/help/PageHelp.vue"),
+    component: () => import("../pages/help/PageHelp.vue"),
   },
 
   /** about pages */
   {
     path: "/overview",
     name: "Overview",
-    component: () => import("@/pages/about/PageOverview.vue"),
+    component: () => import("../pages/about/PageOverview.vue"),
   },
   {
     path: "/cite",
     name: "Cite",
-    component: () => import("@/pages/about/PageCite.vue"),
+    component: () => import("../pages/about/PageCite.vue"),
   },
   {
     path: "/team",
     name: "Team",
-    component: () => import("@/pages/about/PageTeam.vue"),
+    component: () => import("../pages/about/PageTeam.vue"),
   },
   {
     path: "/publications",
     name: "Publications",
-    component: () => import("@/pages/about/PagePublications.vue"),
+    component: () => import("../pages/about/PagePublications.vue"),
   },
   {
     path: "/terms",
     name: "Terms",
-    component: () => import("@/pages/about/PageTerms.vue"),
+    component: () => import("../pages/about/PageTerms.vue"),
   },
   {
     path: "/phenomics-first",
     name: "PhenomicsFirst",
-    component: () => import("@/pages/about/PagePhenomicsFirst.vue"),
+    component: () => import("../pages/about/PagePhenomicsFirst.vue"),
   },
 
   /** help pages */
   {
     path: "/feedback",
     name: "Feedback",
-    component: () => import("@/pages/help/PageFeedback.vue"),
+    component: () => import("../pages/help/PageFeedback.vue"),
   },
 
   /** node pages */
   {
     path: "/:id",
     name: "Node",
-    component: () => import("@/pages/node/PageNode.vue"),
+    component: () => import("../pages/node/PageNode.vue"),
   },
 
   /** phenogrid iframe widget page */
   {
     path: "/phenogrid",
     name: "Phenogrid",
-    component: () => import("@/pages/explore/PagePhenogrid.vue"),
+    component: () => import("../pages/explore/PagePhenogrid.vue"),
     meta: { bare: true },
   },
 
@@ -125,14 +125,14 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/testbed",
     name: "Testbed",
-    component: () => import("@/pages/PageTestbed.vue"),
+    component: () => import("../pages/PageTestbed.vue"),
   },
 
   /** if no other route match found (404) */
   {
     path: "/:pathMatch(.*)*",
     name: "NotFound",
-    component: () => import("@/pages/PageHome.vue"),
+    component: () => import("../pages/PageHome.vue"),
   },
 ];
 
