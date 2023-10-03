@@ -1,7 +1,12 @@
 import { expect, test } from "@playwright/test";
+import { log } from "../playwright.config";
 import example from "../src/pages/explore/text-annotator.json";
 
+log();
+
 test("Basic search results show", async ({ page }) => {
+  test.skip(true, "No fixture data yet");
+
   await page.goto("/explore#text-annotator");
 
   /** paste example text */

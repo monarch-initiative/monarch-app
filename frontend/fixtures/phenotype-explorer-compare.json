@@ -1,90 +1,218 @@
 {
   "subject_termset": {
-    "MP:0010771": {
-      "id": "MP:0010771",
-      "label": "integument phenotype (MPO)"
+    "MP:0005391": {
+      "id": "MP:0005391",
+      "label": "vision/eye phenotype (MPO)"
+    },
+    "MP:0005367": {
+      "id": "MP:0005367",
+      "label": "renal/urinary system phenotype (MPO)"
     },
     "MP:0002169": {
       "id": "MP:0002169",
       "label": "no abnormal phenotype detected (MPO)"
+    },
+    "MP:0010771": {
+      "id": "MP:0010771",
+      "label": "integument phenotype (MPO)"
+    },
+    "MP:0005389": {
+      "id": "MP:0005389",
+      "label": "reproductive system phenotype (MPO)"
     }
   },
   "object_termset": {
     "HP:0004325": {
       "id": "HP:0004325",
       "label": "Decreased body weight (HPO)"
+    },
+    "MP:0006144": {
+      "id": "MP:0006144",
+      "label": "increased systemic arterial systolic blood pressure (MPO)"
+    },
+    "HP:0000093": {
+      "id": "HP:0000093",
+      "label": "Proteinuria (HPO)"
     }
   },
   "subject_best_matches": {
     "MP:0002169": {
       "match_source": "MP:0002169",
       "match_source_label": "no abnormal phenotype detected (MPO)",
-      "match_target": "HP:0004325",
-      "match_target_label": "Decreased body weight (HPO)",
-      "score": 1.5592737301071706,
+      "match_target": "MP:0006144",
+      "match_target_label": "increased systemic arterial systolic blood pressure (MPO)",
+      "score": 4.26719956102326,
       "match_subsumer": null,
       "match_subsumer_label": null,
       "similarity": {
         "subject_id": "MP:0002169",
         "subject_label": null,
         "subject_source": null,
-        "object_id": "HP:0004325",
+        "object_id": "MP:0006144",
         "object_label": null,
         "object_source": null,
-        "ancestor_id": "UPHENO:0001003",
+        "ancestor_id": "MP:0000001",
         "ancestor_label": "",
         "ancestor_source": null,
         "object_information_content": null,
         "subject_information_content": null,
-        "ancestor_information_content": 1.5592737301071706,
-        "jaccard_similarity": 0.16216216216216217,
+        "ancestor_information_content": 4.26719956102326,
+        "jaccard_similarity": 0.12962962962962962,
         "cosine_similarity": null,
         "dice_similarity": null,
-        "phenodigm_score": 0.50284709353524
+        "phenodigm_score": 0.7437442427684151
+      }
+    },
+    "MP:0005367": {
+      "match_source": "MP:0005367",
+      "match_source_label": "renal/urinary system phenotype (MPO)",
+      "match_target": "HP:0000093",
+      "match_target_label": "Proteinuria (HPO)",
+      "score": 6.936744601801884,
+      "match_subsumer": null,
+      "match_subsumer_label": null,
+      "similarity": {
+        "subject_id": "MP:0005367",
+        "subject_label": null,
+        "subject_source": null,
+        "object_id": "HP:0000093",
+        "object_label": null,
+        "object_source": null,
+        "ancestor_id": "UBERON:0001008",
+        "ancestor_label": "",
+        "ancestor_source": null,
+        "object_information_content": null,
+        "subject_information_content": null,
+        "ancestor_information_content": 6.936744601801884,
+        "jaccard_similarity": 0.18181818181818182,
+        "cosine_similarity": null,
+        "dice_similarity": null,
+        "phenodigm_score": 1.123043316723227
+      }
+    },
+    "MP:0005389": {
+      "match_source": "MP:0005389",
+      "match_source_label": "reproductive system phenotype (MPO)",
+      "match_target": "MP:0006144",
+      "match_target_label": "increased systemic arterial systolic blood pressure (MPO)",
+      "score": 4.26719956102326,
+      "match_subsumer": null,
+      "match_subsumer_label": null,
+      "similarity": {
+        "subject_id": "MP:0005389",
+        "subject_label": null,
+        "subject_source": null,
+        "object_id": "MP:0006144",
+        "object_label": null,
+        "object_source": null,
+        "ancestor_id": "MP:0000001",
+        "ancestor_label": "",
+        "ancestor_source": null,
+        "object_information_content": null,
+        "subject_information_content": null,
+        "ancestor_information_content": 4.26719956102326,
+        "jaccard_similarity": 0.2962962962962963,
+        "cosine_similarity": null,
+        "dice_similarity": null,
+        "phenodigm_score": 1.124435603086443
+      }
+    },
+    "MP:0005391": {
+      "match_source": "MP:0005391",
+      "match_source_label": "vision/eye phenotype (MPO)",
+      "match_target": "MP:0006144",
+      "match_target_label": "increased systemic arterial systolic blood pressure (MPO)",
+      "score": 4.26719956102326,
+      "match_subsumer": null,
+      "match_subsumer_label": null,
+      "similarity": {
+        "subject_id": "MP:0005391",
+        "subject_label": null,
+        "subject_source": null,
+        "object_id": "MP:0006144",
+        "object_label": null,
+        "object_source": null,
+        "ancestor_id": "MP:0000001",
+        "ancestor_label": "",
+        "ancestor_source": null,
+        "object_information_content": null,
+        "subject_information_content": null,
+        "ancestor_information_content": 4.26719956102326,
+        "jaccard_similarity": 0.2807017543859649,
+        "cosine_similarity": null,
+        "dice_similarity": null,
+        "phenodigm_score": 1.094445249016253
       }
     },
     "MP:0010771": {
       "match_source": "MP:0010771",
       "match_source_label": "integument phenotype (MPO)",
-      "match_target": "HP:0004325",
-      "match_target_label": "Decreased body weight (HPO)",
-      "score": 2.2829964196656634,
+      "match_target": "MP:0006144",
+      "match_target_label": "increased systemic arterial systolic blood pressure (MPO)",
+      "score": 4.26719956102326,
       "match_subsumer": null,
       "match_subsumer_label": null,
       "similarity": {
         "subject_id": "MP:0010771",
         "subject_label": null,
         "subject_source": null,
-        "object_id": "HP:0004325",
+        "object_id": "MP:0006144",
         "object_label": null,
         "object_source": null,
-        "ancestor_id": "UBERON:0000468",
+        "ancestor_id": "MP:0000001",
         "ancestor_label": "",
         "ancestor_source": null,
         "object_information_content": null,
         "subject_information_content": null,
-        "ancestor_information_content": 2.2829964196656634,
-        "jaccard_similarity": 0.325,
+        "ancestor_information_content": 4.26719956102326,
+        "jaccard_similarity": 0.3148148148148148,
         "cosine_similarity": null,
         "dice_similarity": null,
-        "phenodigm_score": 0.8613790317806329
+        "phenodigm_score": 1.1590416901826253
       }
     }
   },
   "object_best_matches": {
+    "HP:0000093": {
+      "match_source": "HP:0000093",
+      "match_source_label": "Proteinuria (HPO)",
+      "match_target": "MP:0005367",
+      "match_target_label": "renal/urinary system phenotype (MPO)",
+      "score": 6.936744601801884,
+      "match_subsumer": null,
+      "match_subsumer_label": null,
+      "similarity": {
+        "subject_id": "HP:0000093",
+        "subject_label": null,
+        "subject_source": null,
+        "object_id": "MP:0005367",
+        "object_label": null,
+        "object_source": null,
+        "ancestor_id": "UBERON:0001008",
+        "ancestor_label": "",
+        "ancestor_source": null,
+        "object_information_content": null,
+        "subject_information_content": null,
+        "ancestor_information_content": 6.936744601801884,
+        "jaccard_similarity": 0.18181818181818182,
+        "cosine_similarity": null,
+        "dice_similarity": null,
+        "phenodigm_score": 1.123043316723227
+      }
+    },
     "HP:0004325": {
       "match_source": "HP:0004325",
       "match_source_label": "Decreased body weight (HPO)",
-      "match_target": "MP:0010771",
-      "match_target_label": "integument phenotype (MPO)",
-      "score": 2.2829964196656634,
+      "match_target": "MP:0005389",
+      "match_target_label": "reproductive system phenotype (MPO)",
+      "score": 2.2728188647181566,
       "match_subsumer": null,
       "match_subsumer_label": null,
       "similarity": {
         "subject_id": "HP:0004325",
         "subject_label": null,
         "subject_source": null,
-        "object_id": "MP:0010771",
+        "object_id": "MP:0005389",
         "object_label": null,
         "object_source": null,
         "ancestor_id": "UBERON:0000468",
@@ -92,15 +220,42 @@
         "ancestor_source": null,
         "object_information_content": null,
         "subject_information_content": null,
-        "ancestor_information_content": 2.2829964196656634,
-        "jaccard_similarity": 0.325,
+        "ancestor_information_content": 2.2728188647181566,
+        "jaccard_similarity": 0.3333333333333333,
         "cosine_similarity": null,
         "dice_similarity": null,
-        "phenodigm_score": 0.8613790317806329
+        "phenodigm_score": 0.8704058181327751
+      }
+    },
+    "MP:0006144": {
+      "match_source": "MP:0006144",
+      "match_source_label": "increased systemic arterial systolic blood pressure (MPO)",
+      "match_target": "MP:0002169",
+      "match_target_label": "no abnormal phenotype detected (MPO)",
+      "score": 4.26719956102326,
+      "match_subsumer": null,
+      "match_subsumer_label": null,
+      "similarity": {
+        "subject_id": "MP:0006144",
+        "subject_label": null,
+        "subject_source": null,
+        "object_id": "MP:0002169",
+        "object_label": null,
+        "object_source": null,
+        "ancestor_id": "MP:0000001",
+        "ancestor_label": "",
+        "ancestor_source": null,
+        "object_information_content": null,
+        "subject_information_content": null,
+        "ancestor_information_content": 4.26719956102326,
+        "jaccard_similarity": 0.12962962962962962,
+        "cosine_similarity": null,
+        "dice_similarity": null,
+        "phenodigm_score": 0.7437442427684151
       }
     }
   },
-  "average_score": 2.1020657472760402,
-  "best_score": 2.2829964196656634,
+  "average_score": 4.646681455846709,
+  "best_score": 6.936744601801884,
   "metric": "ancestor_information_content"
 }

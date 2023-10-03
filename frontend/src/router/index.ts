@@ -2,19 +2,6 @@ import type { RouteRecordRaw, RouterScrollBehavior } from "vue-router";
 import { createRouter, createWebHistory } from "vue-router";
 import { isEmpty, pick } from "lodash";
 import { hideAll } from "tippy.js";
-import PageAbout from "@/pages/about/PageAbout.vue";
-import PageCite from "@/pages/about/PageCite.vue";
-import PageOverview from "@/pages/about/PageOverview.vue";
-import PagePhenomicsFirst from "@/pages/about/PagePhenomicsFirst.vue";
-import PagePublications from "@/pages/about/PagePublications.vue";
-import PageTeam from "@/pages/about/PageTeam.vue";
-import PageTerms from "@/pages/about/PageTerms.vue";
-import PageExplore from "@/pages/explore/PageExplore.vue";
-import PageFeedback from "@/pages/help/PageFeedback.vue";
-import PageHelp from "@/pages/help/PageHelp.vue";
-import PageNode from "@/pages/node/PageNode.vue";
-import PageHome from "@/pages/PageHome.vue";
-import PageTestbed from "@/pages/PageTestbed.vue";
 import descriptions from "@/router/descriptions.json";
 import { sleep } from "@/util/debug";
 import { parse } from "@/util/object";
@@ -26,7 +13,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "Home",
-    component: PageHome,
+    component: () => import("../pages/PageHome.vue"),
     beforeEnter: async () => {
       /** look for redirect in session storage (saved from public/404.html page) */
       const redirect = window.sessionStorage.redirect || "";
@@ -67,87 +54,95 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/explore",
     name: "Explore",
-    component: PageExplore,
+    component: () => import("../pages/explore/PageExplore.vue"),
   },
   {
     path: "/about",
     name: "About",
-    component: PageAbout,
+    component: () => import("../pages/about/PageAbout.vue"),
   },
   {
     path: "/help",
     name: "Help",
-    component: PageHelp,
+    component: () => import("../pages/help/PageHelp.vue"),
   },
 
   /** about pages */
   {
     path: "/overview",
     name: "Overview",
-    component: PageOverview,
+    component: () => import("../pages/about/PageOverview.vue"),
   },
   {
     path: "/cite",
     name: "Cite",
-    component: PageCite,
+    component: () => import("../pages/about/PageCite.vue"),
   },
   {
     path: "/team",
     name: "Team",
-    component: PageTeam,
+    component: () => import("../pages/about/PageTeam.vue"),
   },
   {
     path: "/publications",
     name: "Publications",
-    component: PagePublications,
+    component: () => import("../pages/about/PagePublications.vue"),
   },
   {
     path: "/terms",
     name: "Terms",
-    component: PageTerms,
+    component: () => import("../pages/about/PageTerms.vue"),
   },
   {
     path: "/phenomics-first",
     name: "PhenomicsFirst",
-    component: PagePhenomicsFirst,
+    component: () => import("../pages/about/PagePhenomicsFirst.vue"),
   },
 
   /** help pages */
   {
     path: "/feedback",
     name: "Feedback",
-    component: PageFeedback,
+    component: () => import("../pages/help/PageFeedback.vue"),
   },
 
   /** node pages */
   {
     path: "/:id",
     name: "Node",
-    component: PageNode,
+    component: () => import("../pages/node/PageNode.vue"),
+  },
+
+  /** phenogrid iframe widget page */
+  {
+    path: "/phenogrid",
+    name: "Phenogrid",
+    component: () => import("../pages/explore/PagePhenogrid.vue"),
+    meta: { bare: true },
   },
 
   /** test pages (comment this out when we release app) */
   {
     path: "/testbed",
     name: "Testbed",
-    component: PageTestbed,
+    component: () => import("../pages/PageTestbed.vue"),
   },
 
   /** if no other route match found (404) */
   {
     path: "/:pathMatch(.*)*",
     name: "NotFound",
-    component: PageHome,
+    component: () => import("../pages/PageHome.vue"),
   },
 ];
 
 /** insert descriptions from imported json into each route's metadata */
-for (const route of routes)
-  route.meta = {
-    description:
-      (descriptions as { [key: string]: string })[String(route.name || "")] ||
-      import.meta.env.VITE_DESCRIPTION,
-  };
+for (const route of routes) {
+  route.meta ??= {};
+  route.meta.description =
+    (descriptions as { [key: string]: string })[String(route.name || "")] ||
+    import.meta.env.VITE_DESCRIPTION;
+}
 
 /** vue-router's scroll behavior handler */
 const scrollBehavior: RouterScrollBehavior = async (

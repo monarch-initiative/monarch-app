@@ -76,7 +76,63 @@ Env var: `VITE_MOCK=true`
 
 Defaults to `false`.
 
-### Style guidelines
+## Phenogrid
+
+The page at `monarchinitiative.org/phenogrid` provides a widget embeddable on any site via an `<iframe>`.
+The widget displays a visual comparison between two sets of phenotypes, and calculates the most and least similar pairs.
+
+Include the widget on your page like so:
+
+```html
+<iframe
+  src="https://monarchinitiative.org/phenogrid?PARAM=VALUE&PARAM=VALUE&PARAM=VALUE"
+  title="Phenogrid"
+  frameborder="0"
+></iframe>
+```
+
+### Parameters
+
+The widget accepts several URL parameters:
+
+- `source` - Comma-separated list of "source" phenotype IDs (set A).
+- `target` - Comma-separated list of "target" phenotype IDs (set B).
+- `stylesheet - A URI-encoded URL to a stylesheet that will be applied to the widget, for the purposes of matching its styles to your webpage.
+
+### Events
+
+The widget also emits `message` events to the parent window when certain things change, and listens for `message` events from the parent window to receive information.
+
+#### Listens for `MessageEvent<{ source: string[], target: string[] }>`
+
+Provide input phenotype lists to the widget when they might be [too long for a URL](https://www.google.com/search?q=max+url+length).
+
+```js
+// get your iframe dom element somehow
+const iframe = document.querySelector("iframe");
+// send it a message
+iframe.contentWindow.postMessage({ source: ["abc"], target: ["def"] }, "*");
+```
+
+#### Emits `MessageEvent<DOMRect>`
+
+Emitted when the size of the widget changes and on load.
+Useful for setting the dimensions of your iframe container, for example:
+
+```js
+window.addEventListener("message", (event) => {
+  // get your iframe dom element somehow
+  const iframe = document.querySelector("iframe");
+  // some static styles that should probably be on it to prevent overflow
+  iframe.style.maxWidth = "100%";
+  iframe.style.maxHeight = "100%";
+  // dynamically fit dimensions to content (with some padding for possible scroll bars)
+  iframe.style.width = event.data.width + 20 + "px";
+  iframe.style.height = event.data.height + 20 + "px";
+});
+```
+
+## Style guidelines
 
 Use JSDoc style comments (`/** some comment */`) instead of regular JavaScript comments.
 This allows lint checking and auto-fixing/auto-formatting of long comments wrapping to new lines.

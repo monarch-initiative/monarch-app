@@ -1,4 +1,7 @@
 import { expect, test } from "@playwright/test";
+import { log } from "../playwright.config";
+
+log();
 
 test("Feedback form can open and close", async ({ page }) => {
   /** setup */

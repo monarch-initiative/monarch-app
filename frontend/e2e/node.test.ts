@@ -1,4 +1,7 @@
 import { expect, test } from "@playwright/test";
+import { log } from "../playwright.config";
+
+log();
 
 test("Table of contents works", async ({ page }) => {
   await page.goto("/MONDO:0007523");

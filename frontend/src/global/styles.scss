@@ -14,6 +14,8 @@ body {
 #app {
   display: flex;
   flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
   min-height: 100vh;
 }
 
@@ -226,6 +228,14 @@ strong {
   width: 100%;
   padding: 0 !important;
   gap: 10px;
+
+  a {
+    color: $theme-mid;
+  }
+
+  a:hover {
+    color: $white;
+  }
 }
 
 /** useless tippy wrapper span that sometimes appears */
@@ -239,6 +249,19 @@ strong {
   text-decoration-style: dotted;
   text-underline-offset: 2px;
   cursor: help;
+}
+
+.mini-table {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  justify-items: flex-start;
+  gap: 5px 15px;
+  text-align: left;
+}
+
+.mini-table :nth-child(odd) {
+  font-weight: 500;
 }
 
 /** util */

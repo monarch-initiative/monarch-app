@@ -67,13 +67,15 @@
     <AppStatus v-if="isError" code="error">Error running analysis</AppStatus>
 
     <!-- analysis top results -->
-    <AppFlex v-else-if="comparison.length">
+    <AppFlex v-else-if="comparison.summary.length">
       <!-- heading -->
-      <strong>Top {{ Math.min(comparison.length, 10) }} match(es)</strong>
+      <strong
+        >Top {{ Math.min(comparison.summary.length, 10) }} match(es)</strong
+      >
 
       <!-- list of comparison results -->
       <div
-        v-for="(match, matchIndex) in comparison.slice(0, 10)"
+        v-for="(match, matchIndex) in comparison.summary.slice(0, 10)"
         :key="matchIndex"
         class="match"
       >
@@ -85,24 +87,31 @@
         />
         <!-- for percent, use asymptotic function limited to 1 so we don't need to know max score -->
 
-        <AppFlex class="details" align-h="left" gap="small">
-          Source:
-          <AppNodeBadge
-            :node="{ id: match.source, name: match.source_label }"
-          />
-          <AppIcon icon="arrow-right" class="arrow" />
-          Target:
-          <AppNodeBadge
-            :node="{ id: match.target, name: match.target_label }"
-          />
+        <AppFlex class="details" direction="col" align-h="left" gap="small">
+          <AppFlex align-h="left" gap="small">
+            Source:
+            <AppNodeBadge
+              :node="{ id: match.source, name: match.source_label }"
+            />
+          </AppFlex>
+          <AppFlex align-h="left" gap="small">
+            Target:
+            <AppNodeBadge
+              :node="{ id: match.target, name: match.target_label }"
+            />
+          </AppFlex>
         </AppFlex>
       </div>
     </AppFlex>
 
     <!-- phenogrid results -->
-    <template v-if="comparison.length">
+    <template v-if="comparison.phenogrid.cells.length">
       <strong>Phenotype Similarity Comparison</strong>
-      <div id="phenogrid"></div>
+      <ThePhenogrid :data="comparison.phenogrid" />
+      <AppAlert
+        >This feature is still under development. Check back soon for
+        more!</AppAlert
+      >
     </template>
   </AppSection>
 </template>
@@ -110,7 +119,6 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from "vue";
 import { isEqual } from "lodash";
-import { mountPhenogrid } from "@/api/phenogrid";
 import {
   compareSetToSet,
   // compareSetToTaxon,
@@ -122,6 +130,7 @@ import AppRing from "@/components/AppRing.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import type { Option, Options } from "@/components/AppSelectTags.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
+import ThePhenogrid from "@/components/ThePhenogrid.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
 import { useQuery } from "@/util/composables";
 import { parse } from "@/util/object";
@@ -212,7 +221,7 @@ const {
   },
 
   /** default value */
-  [],
+  { summary: [], phenogrid: { cols: [], rows: [], cells: [] } },
 );
 
 /** when multi select component runs spread options function */
@@ -226,41 +235,10 @@ function spreadOptions(option: Option, options: Options, set: string) {
   else if (set === "b") bGeneratedFrom.value = { option, options };
 }
 
-/** show phenogrid results */
-function runPhenogrid() {
-  /** which biolink /sim endpoint to use */
-  const mode = bMode.value.id.includes("these phenotypes")
-    ? "compare"
-    : "search";
-
-  /** use first group of phenotypes for y axis */
-  const yAxis = aPhenotypes.value;
-
-  /** use second taxon id or group of phenotypes as x axis */
-  let xAxis = [];
-  // if (mode === "compare")
-  xAxis = bPhenotypes.value;
-  // else {
-  //   const taxon = bMode.value.id.includes("diseases")
-  //     ? bTaxonHuman
-  //     : bTaxon.value;
-  //   xAxis = [{ id: taxon.id, label: taxon.scientific }];
-  // }
-  /** call phenogrid */
-  mountPhenogrid("#phenogrid", xAxis, yAxis, mode);
-}
-
-/** run phenogrid, attach to div container */
-watch(
-  () => comparison.value,
-  () => {
-    if (comparison.value.length) runPhenogrid();
-  },
-);
-
 /** clear/reset results */
 function clearResults() {
-  comparison.value = [];
+  comparison.value.summary = [];
+  comparison.value.phenogrid = { cols: [], rows: [], cells: [] };
 }
 
 /** get description to show below phenotypes select box */
@@ -331,9 +309,5 @@ onMounted(() => {
   .details {
     width: 100%;
   }
-}
-
-#phenogrid {
-  width: 100%;
 }
 </style>

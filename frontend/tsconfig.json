@@ -2,6 +2,7 @@
   "extends": ["@tsconfig/node18/tsconfig.json", "@vue/tsconfig/tsconfig.json"],
   "include": [
     "env.d.ts",
+    "playwright.config.ts",
     "src/**/*",
     "fixtures/**/*",
     "unit/**/*",

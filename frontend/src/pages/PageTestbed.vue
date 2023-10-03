@@ -8,6 +8,18 @@
     <AppHeading>Testbed</AppHeading>
   </AppSection>
 
+  <!-- phenogrid -->
+  <AppSection>
+    <AppHeading>Phenogrid</AppHeading>
+    <iframe
+      title="Phenogrid"
+      frameBorder="0"
+      src="/phenogrid?source=MP:0010771,MP:0002169,MP:0005391&target=HP:0004325,HP:0000093"
+    ></iframe>
+
+    <AppButton text="Send Message" @click="sendMessage" />
+  </AppSection>
+
   <!-- custom icons -->
   <AppSection>
     <AppHeading>Custom Icons</AppHeading>
@@ -158,6 +170,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { omit } from "lodash";
+import { useEventListener } from "@vueuse/core";
 import AppButton from "@/components/AppButton.vue";
 import AppInput from "@/components/AppInput.vue";
 import AppRing from "@/components/AppRing.vue";
@@ -175,6 +188,35 @@ import { sleep } from "@/util/debug";
 const icons = Object.values(import.meta.glob("@/assets/icons/*.svg")).map(
   (icon) => (icon.name.split("/").pop() || "").replace(/\.svg$/, ""),
 );
+
+/** test phenogrid iframe embedding */
+useEventListener("message", (event: MessageEvent<DOMRect>) => {
+  const iframe = document.querySelector<HTMLIFrameElement>("iframe");
+  if (!iframe) return;
+  iframe.style.maxWidth = "100%";
+  iframe.style.maxHeight = "100%";
+  iframe.style.width = event.data.width + 20 + "px";
+  iframe.style.height = event.data.height + 20 + "px";
+});
+
+/** send message to iframe with longer params */
+function sendMessage() {
+  const iframe = document.querySelector<HTMLIFrameElement>("iframe");
+  if (!iframe) return;
+  iframe.contentWindow?.postMessage(
+    {
+      source: [
+        "MP:0010771",
+        "MP:0002169",
+        "MP:0005391",
+        "MP:0005389",
+        "MP:0005367",
+      ],
+      target: ["HP:0004325", "HP:0000093", "MP:0006144"],
+    },
+    "*",
+  );
+}
 
 const input = ref("");
 
@@ -313,6 +355,9 @@ const log = console.info;
 </script>
 
 <style lang="scss" scoped>
+iframe {
+  margin: auto;
+}
 .icons {
   color: $theme;
   font-size: 4rem;

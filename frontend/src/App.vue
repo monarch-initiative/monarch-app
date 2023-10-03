@@ -3,23 +3,30 @@
 -->
 
 <template>
-  <TheBanner>
-    This web app is the
-    <strong v-if="apiName === 'v3'">BETA VERSION</strong
-    ><strong v-if="apiName === 'beta'">BETA VERSION</strong
-    ><strong v-if="apiName === 'dev'">DEV VERSION</strong> successor to the
-    <AppLink to="https://monarchinitiative.org/">old web app here</AppLink>. Not
-    all features are implemented yet. Please use the feedback form to tell us
-    what you think!
-  </TheBanner>
-
-  <TheHeader />
-  <main>
+  <!-- display current route with no "scaffolding" (header/footer/etc) around it -->
+  <template v-if="route.meta.bare">
     <router-view />
-    <TheFloatButtons />
-    <TheSnackbar />
-  </main>
-  <TheFooter />
+  </template>
+
+  <template v-else>
+    <TheBanner>
+      This web app is the
+      <strong v-if="apiName === 'v3'">BETA VERSION</strong
+      ><strong v-if="apiName === 'beta'">BETA VERSION</strong
+      ><strong v-if="apiName === 'dev'">DEV VERSION</strong> successor to the
+      <AppLink to="https://monarchinitiative.org/">old web app here</AppLink>.
+      Not all features are implemented yet. Please use the feedback form to tell
+      us what you think!
+    </TheBanner>
+
+    <TheHeader />
+    <main>
+      <router-view />
+      <TheFloatButtons />
+      <TheSnackbar />
+    </main>
+    <TheFooter />
+  </template>
 </template>
 
 <script setup lang="ts">
@@ -46,10 +53,11 @@ watch(
      */
 
     /** update document title from current route name */
-    appTitle.value = [String(route.name) || ""];
+    if (route.name) appTitle.value = [String(route.name) || ""];
 
     /** update description from current route meta */
-    appDescription.value = String(route.meta.description);
+    if (route.meta.description)
+      appDescription.value = String(route.meta.description);
 
     /** update canonical url from current url in address bar */
     appUrl.value = window.location.href;

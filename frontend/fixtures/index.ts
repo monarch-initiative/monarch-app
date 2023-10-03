@@ -1,5 +1,4 @@
 import { rest } from "msw";
-/** url bases */
 import { biolink, monarch } from "@/api";
 import { feedbackEndpoint } from "@/api/feedback";
 import { efetch, esummary } from "@/api/publications";
@@ -161,25 +160,29 @@ export const handlers = [
   rest.get(/.*/, (req, res, ctx) => {
     /** for certain exceptions, passthrough (let browser make a real request) */
     const exceptions = [
-      ".vue",
-      ".js" /** vite seems to turn dynamic import of images/assets into .js */,
-      ".mp4",
-      ".svg",
-      ".png",
-      ".jpg",
-      ".jpeg",
-      ".gif",
-      ".bmp",
-      ".tiff",
-      ".woff",
-      ".json",
-      ".jsonld",
-      ".txt",
-      "site.webmanifest",
-      "medium.com",
-      "fonts.googleapis.com",
+      /\.vue$/,
+      /\.js$/,
+      /\.ts$/,
+      /\.css$/,
+      /\.scss$/,
+      /\.html$/,
+      /\.mp4$/,
+      /\.svg$/,
+      /\.png$/,
+      /\.jpg$/,
+      /\.jpeg$/,
+      /\.gif$/,
+      /\.bmp$/,
+      /\.tiff$/,
+      /\.woff$/,
+      /\.json$/,
+      /\.jsonld$/,
+      /\.txt$/,
+      /site\.webmanifest/,
+      /medium\.com/,
+      /fonts\.googleapis\.com/,
     ];
-    if (exceptions.some((exception) => req.url.href.includes(exception)))
+    if (exceptions.some((exception) => req.url.href.match(exception)))
       return req.passthrough();
 
     /**
