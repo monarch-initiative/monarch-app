@@ -32,6 +32,9 @@ def solr():
 
 class OakRPCMarshaller:
     def __init__(self) -> None:
+        pass
+
+    def connect_to_oak(self):
         ctx = zmq.Context()
         rpc_client = RPCClient(
             JSONRPCProtocol(),
@@ -39,9 +42,14 @@ class OakRPCMarshaller:
                 ctx, f'tcp://{settings.oak_server_host}:{settings.oak_server_port}'
             )
         )
-        self.oak_server = rpc_client.get_proxy()
+        return rpc_client.get_proxy()
 
     def compare(self, *args, **kwargs):
+        # make the connection each time to the backend server, to get around it timing out
+        # (note to future readers: if we find this to be too expensive, we can
+        # try the existing connection and reconnect if there's an exception)
+        self.oak_server = self.connect_to_oak()
+
         # for some reason TermSetPairwiseSimilarity is not JSON-serializable so
         # we can't call compare() directly. instead, we call compare_as_dict(),
         # which sends back a dict, and then we convert it into the expected
