@@ -1,5 +1,8 @@
 import { configureAxe, getViolations, injectAxe } from "axe-playwright";
 import { expect, test } from "@playwright/test";
+import { log } from "../playwright.config";
+
+log();
 
 /** pages to test */
 const paths = [

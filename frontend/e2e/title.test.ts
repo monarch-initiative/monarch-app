@@ -1,5 +1,8 @@
 import { expect, test } from "@playwright/test";
+import { log } from "../playwright.config";
 import { sleep } from "../src/util/debug";
+
+log();
 
 test("Document title updates on navigation", async ({ page }) => {
   /** pages to test */

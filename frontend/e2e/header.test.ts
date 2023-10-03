@@ -1,4 +1,7 @@
 import { expect, test } from "@playwright/test";
+import { log } from "../playwright.config";
+
+log();
 
 test("Header nav bar collapses on small screens", async ({ page }) => {
   /** setup */

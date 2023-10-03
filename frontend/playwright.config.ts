@@ -1,9 +1,13 @@
-import type { Page, PlaywrightTestConfig } from "@playwright/test";
-import { devices } from "@playwright/test";
+import type { PlaywrightTestConfig } from "@playwright/test";
+import test, { devices } from "@playwright/test";
 
 /** pass browser console logs to cli logs */
-export const log = (page: Page) =>
-  page.on("console", (msg) => console.log(msg.text()));
+export const log = () => {
+  if (process.env.RUNNER_DEBUG)
+    test.beforeEach(({ page }) =>
+      page.on("console", (msg) => console.log(msg.text())),
+    );
+};
 
 /** browsers to test when running locally */
 const browsersLocal = [

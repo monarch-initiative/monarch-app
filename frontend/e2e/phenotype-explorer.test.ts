@@ -1,5 +1,8 @@
 import type { Locator } from "@playwright/test";
 import { expect, test } from "@playwright/test";
+import { log } from "../playwright.config";
+
+log();
 
 // https://github.com/microsoft/playwright/issues/8114
 export const paste = async (locator: Locator, value: string) => {

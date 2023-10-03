@@ -160,28 +160,29 @@ export const handlers = [
   rest.get(/.*/, (req, res, ctx) => {
     /** for certain exceptions, passthrough (let browser make a real request) */
     const exceptions = [
-      ".vue",
-      /** vite turns dynamic imports of images/assets into .js */
-      ".js",
-      /** vite turns dynamic imports of vue components into .ts */
-      ".ts",
-      ".mp4",
-      ".svg",
-      ".png",
-      ".jpg",
-      ".jpeg",
-      ".gif",
-      ".bmp",
-      ".tiff",
-      ".woff",
-      ".json",
-      ".jsonld",
-      ".txt",
-      "site.webmanifest",
-      "medium.com",
-      "fonts.googleapis.com",
+      /\.vue$/,
+      /\.js$/,
+      /\.ts$/,
+      /\.css$/,
+      /\.scss$/,
+      /\.html$/,
+      /\.mp4$/,
+      /\.svg$/,
+      /\.png$/,
+      /\.jpg$/,
+      /\.jpeg$/,
+      /\.gif$/,
+      /\.bmp$/,
+      /\.tiff$/,
+      /\.woff$/,
+      /\.json$/,
+      /\.jsonld$/,
+      /\.txt$/,
+      /site\.webmanifest/,
+      /medium\.com/,
+      /fonts\.googleapis\.com/,
     ];
-    if (exceptions.some((exception) => req.url.href.includes(exception)))
+    if (exceptions.some((exception) => req.url.href.match(exception)))
       return req.passthrough();
 
     /**

@@ -1,9 +1,9 @@
 import { expect, test } from "@playwright/test";
 import { log } from "../playwright.config";
 
-test("Redirects to explore page from home page", async ({ page }) => {
-  log(page);
+log();
 
+test("Redirects to explore page from home page", async ({ page }) => {
   /** go to homepage and focus search box */
   await page.goto("/");
   await page.locator("input").focus();
