@@ -97,7 +97,7 @@ The widget accepts several URL parameters:
 
 - `source` - Comma-separated list of "source" phenotype IDs (set A).
 - `target` - Comma-separated list of "target" phenotype IDs (set B).
-- `stylesheet - A URI-encoded URL to a stylesheet that will be applied to the widget, for the purposes of matching its styles to your webpage.
+- `stylesheet` - A URI-encoded URL to a stylesheet that will be applied to the widget, for the purposes of matching its styles to your webpage.
 
 ### Events
 
