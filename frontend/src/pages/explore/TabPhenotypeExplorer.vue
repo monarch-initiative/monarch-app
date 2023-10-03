@@ -106,12 +106,12 @@
 
     <!-- phenogrid results -->
     <template v-if="comparison.phenogrid.cells.length">
+      <strong>Phenotype Similarity Comparison</strong>
+      <ThePhenogrid :data="comparison.phenogrid" />
       <AppAlert
         >This feature is still under development. Check back soon for
         more!</AppAlert
       >
-      <strong>Phenotype Similarity Comparison</strong>
-      <ThePhenogrid :data="comparison.phenogrid" />
     </template>
   </AppSection>
 </template>

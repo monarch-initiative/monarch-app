@@ -14,6 +14,8 @@ body {
 #app {
   display: flex;
   flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
   min-height: 100vh;
 }
 

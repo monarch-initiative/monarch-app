@@ -83,9 +83,16 @@ const stylesheet = computed(() =>
 const container = ref<HTMLDivElement>();
 
 /** when size of widget changes */
-function onResize() {
-  const bbox = container.value?.getBoundingClientRect();
+async function onResize() {
+  if (!container.value) return;
+  container.value.style.maxWidth = "unset";
+  container.value.style.maxHeight = "unset";
+  const bbox = container.value.getBoundingClientRect();
+  bbox.width += 2;
+  bbox.height += 2;
   window.parent.postMessage(bbox, "*");
+  container.value.style.maxWidth = "100%";
+  container.value.style.maxHeight = "100%";
 }
 
 useResizeObserver(container, onResize);
@@ -95,5 +102,11 @@ useResizeObserver(container, onResize);
 .container {
   width: max-content;
   height: max-content;
+}
+</style>
+
+<style>
+#app {
+  align-items: center;
 }
 </style>

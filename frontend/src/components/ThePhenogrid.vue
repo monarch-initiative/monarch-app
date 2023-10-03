@@ -12,15 +12,11 @@
               follow-cursor="initial"
               :append-to="appendToBody"
               tag="th"
-              :class="[
-                'col-head',
-                'truncate',
-                {
-                  hovered: hovered?.col === colIndex,
-                },
-              ]"
+              :class="['col-head', { hovered: hovered?.col === colIndex }]"
             >
-              {{ col.label }}
+              <div class="truncate">
+                {{ col.label }}
+              </div>
               <template #content>
                 <AppNodeBadge :node="{ id: col.id, name: col.label }" /> ({{
                   col.id
@@ -57,7 +53,6 @@
               :key="colIndex"
             >
               <tooltip
-                v-if="cell.strength"
                 :interactive="true"
                 tag="button"
                 class="cell"
@@ -119,14 +114,14 @@ function hoverCell(colIndex: number, rowIndex: number, unset = false) {
 
 <style scoped lang="scss">
 .wrapper {
-  width: 100%;
-  padding: 20px 150px 20px 20px;
-  overflow-x: auto;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: auto;
 }
 
 .table {
-  margin: auto;
-  margin-top: -50px;
+  margin-top: -40px;
+  margin-right: 140px;
   border-collapse: collapse;
   text-align: left;
 }
@@ -136,6 +131,12 @@ th {
 }
 
 .col-head {
+  text-align: left;
+  vertical-align: bottom;
+}
+
+// need extra wrapper because of safari writing-mode bug with table cells
+.col-head div {
   max-height: 200px;
   transform: translate(-5px, -10px) rotate(-135deg) translateY(100%);
   transform-origin: bottom center;

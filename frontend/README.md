@@ -126,9 +126,9 @@ window.addEventListener("message", (event) => {
   // some static styles that should probably be on it to prevent overflow
   iframe.style.maxWidth = "100%";
   iframe.style.maxHeight = "100%";
-  // dynamically fit dimensions to content
-  iframe.style.width = event.data.width + "px";
-  iframe.style.height = event.data.height + "px";
+  // dynamically fit dimensions to content (with some padding for possible scroll bars)
+  iframe.style.width = event.data.width + 20 + "px";
+  iframe.style.height = event.data.height + 20 + "px";
 });
 ```
 

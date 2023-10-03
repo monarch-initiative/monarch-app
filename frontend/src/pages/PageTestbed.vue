@@ -195,8 +195,8 @@ useEventListener("message", (event: MessageEvent<DOMRect>) => {
   if (!iframe) return;
   iframe.style.maxWidth = "100%";
   iframe.style.maxHeight = "100%";
-  iframe.style.width = event.data.width + "px";
-  iframe.style.height = event.data.height + "px";
+  iframe.style.width = event.data.width + 20 + "px";
+  iframe.style.height = event.data.height + 20 + "px";
 });
 
 /** send message to iframe with longer params */
@@ -355,6 +355,9 @@ const log = console.info;
 </script>
 
 <style lang="scss" scoped>
+iframe {
+  margin: auto;
+}
 .icons {
   color: $theme;
   font-size: 4rem;
