@@ -1,5 +1,4 @@
 import { rest } from "msw";
-/** url bases */
 import { biolink, monarch } from "@/api";
 import { feedbackEndpoint } from "@/api/feedback";
 import { efetch, esummary } from "@/api/publications";
@@ -162,7 +161,10 @@ export const handlers = [
     /** for certain exceptions, passthrough (let browser make a real request) */
     const exceptions = [
       ".vue",
-      ".js" /** vite seems to turn dynamic import of images/assets into .js */,
+      /** vite turns dynamic imports of images/assets into .js */
+      ".js",
+      /** vite turns dynamic imports of vue components into .ts */
+      ".ts",
       ".mp4",
       ".svg",
       ".png",
