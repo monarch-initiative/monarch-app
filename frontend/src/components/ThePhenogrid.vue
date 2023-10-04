@@ -1,6 +1,6 @@
 <template>
   <AppFlex direction="col">
-    <div class="wrapper">
+    <div ref="scroll" class="scroll force-scrollbar">
       <table class="table">
         <thead>
           <tr>
@@ -96,6 +96,7 @@ import { startCase } from "lodash";
 import { type SetToSet } from "@/api/phenotype-explorer";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import { appendToBody } from "@/global/tooltip";
+import { useScrollable } from "@/util/composables";
 
 type Props = {
   data: SetToSet["phenogrid"];
@@ -110,10 +111,13 @@ function hoverCell(colIndex: number, rowIndex: number, unset = false) {
   if (unset) hovered.value = undefined;
   else hovered.value = { col: colIndex, row: rowIndex };
 }
+
+/** style scroll states */
+const { ref: scroll } = useScrollable();
 </script>
 
 <style scoped lang="scss">
-.wrapper {
+.scroll {
   max-width: 100%;
   max-height: 100%;
   overflow: auto;

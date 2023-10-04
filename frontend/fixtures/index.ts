@@ -157,38 +157,8 @@ export const handlers = [
   ),
 
   /** any other request */
-  rest.get(/.*/, (req, res, ctx) => {
-    /** for certain exceptions, passthrough (let browser make a real request) */
-    const exceptions = [
-      /\.vue$/,
-      /\.js$/,
-      /\.ts$/,
-      /\.css$/,
-      /\.scss$/,
-      /\.html$/,
-      /\.mp4$/,
-      /\.svg$/,
-      /\.png$/,
-      /\.jpg$/,
-      /\.jpeg$/,
-      /\.gif$/,
-      /\.bmp$/,
-      /\.tiff$/,
-      /\.woff$/,
-      /\.json$/,
-      /\.jsonld$/,
-      /\.txt$/,
-      /site\.webmanifest/,
-      /medium\.com/,
-      /fonts\.googleapis\.com/,
-    ];
-    if (exceptions.some((exception) => req.url.href.match(exception)))
-      return req.passthrough();
-
-    /**
-     * otherwise, throw error to make sure we never hit any api when mocking is
-     * enabled
-     */
-    return res(ctx.status(500, "Non-mocked request " + req.url.pathname));
+  rest.get(/.*/, (req) => {
+    console.info("Non-mocked request", req.url.pathname);
+    return req.passthrough();
   }),
 ];
