@@ -119,7 +119,8 @@ def to_tsv(obj: ConfiguredBaseModel, file: str) -> str:
             headers = obj.items[0].dict().keys()
             rows = [list(item.dict().values()) for item in obj.items]
     else:
-        raise TypeError(FMT_INPUT_ERROR_MSG)
+        console.print(f"\n[bold red]{FMT_INPUT_ERROR_MSG}[/]\n")
+        raise typer.Exit(1)
 
     fh = open(file, "w") if file else sys.stdout
     writer = csv.writer(fh, delimiter="\t")
@@ -149,7 +150,8 @@ def to_table(obj: ConfiguredBaseModel):
             headers = obj.items[0].dict().keys()
             rows = [list(item.dict().values()) for item in obj.items]
     else:
-        raise TypeError(FMT_INPUT_ERROR_MSG)
+        console.print(f"\n[bold red]{FMT_INPUT_ERROR_MSG}[/]\n")
+        raise typer.Exit(1)
 
     for row in rows:
         for i, value in enumerate(row):
@@ -181,8 +183,8 @@ def to_yaml(obj: ConfiguredBaseModel, file: str):
     elif isinstance(obj, Results) or isinstance(obj, HistoPheno) or isinstance(obj, AssociationCountList):
         yaml.dump([item.dict() for item in obj.items], fh, indent=4)
     else:
-        raise TypeError(FMT_INPUT_ERROR_MSG)
-
+        console.print(f"\n[bold red]{FMT_INPUT_ERROR_MSG}[/]\n")
+        raise typer.Exit(1)
     if file:
         console.print(f"\nOutput written to {file}\n")
         fh.close()
