@@ -190,14 +190,17 @@ const icons = Object.values(import.meta.glob("@/assets/icons/*.svg")).map(
 );
 
 /** test phenogrid iframe embedding */
-useEventListener("message", (event: MessageEvent<DOMRect>) => {
-  const iframe = document.querySelector<HTMLIFrameElement>("iframe");
-  if (!iframe) return;
-  iframe.style.maxWidth = "100%";
-  iframe.style.maxHeight = "100%";
-  iframe.style.width = event.data.width + 20 + "px";
-  iframe.style.height = event.data.height + 20 + "px";
-});
+useEventListener(
+  "message",
+  (event: MessageEvent<{ width: number; height: number }>) => {
+    const iframe = document.querySelector<HTMLIFrameElement>("iframe");
+    if (!iframe) return;
+    iframe.style.maxWidth = "100%";
+    iframe.style.maxHeight = "100%";
+    iframe.style.width = event.data.width + 20 + "px";
+    iframe.style.height = event.data.height + 20 + "px";
+  },
+);
 
 /** send message to iframe with longer params */
 function sendMessage() {

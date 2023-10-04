@@ -105,7 +105,7 @@
     </AppFlex>
 
     <!-- phenogrid results -->
-    <template v-if="comparison.phenogrid.cells.length">
+    <template v-if="!isEmpty(comparison.phenogrid.cells)">
       <strong>Phenotype Similarity Comparison</strong>
       <ThePhenogrid :data="comparison.phenogrid" />
       <AppAlert
@@ -118,7 +118,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref, watch } from "vue";
-import { isEqual } from "lodash";
+import { isEmpty, isEqual } from "lodash";
 import {
   compareSetToSet,
   // compareSetToTaxon,
@@ -221,7 +221,7 @@ const {
   },
 
   /** default value */
-  { summary: [], phenogrid: { cols: [], rows: [], cells: [] } },
+  { summary: [], phenogrid: { cols: [], rows: [], cells: {} } },
 );
 
 /** when multi select component runs spread options function */
@@ -238,7 +238,7 @@ function spreadOptions(option: Option, options: Options, set: string) {
 /** clear/reset results */
 function clearResults() {
   comparison.value.summary = [];
-  comparison.value.phenogrid = { cols: [], rows: [], cells: [] };
+  comparison.value.phenogrid = { cols: [], rows: [], cells: {} };
 }
 
 /** get description to show below phenotypes select box */

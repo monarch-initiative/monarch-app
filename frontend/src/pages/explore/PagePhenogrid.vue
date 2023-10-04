@@ -11,12 +11,12 @@
     <AppStatus v-else-if="isError" code="error"
       >Error running analysis</AppStatus
     >
-    <AppStatus v-else-if="!comparison.phenogrid.cells.length" code="warning"
+    <AppStatus v-else-if="isEmpty(comparison.phenogrid.cells)" code="warning"
       >No results</AppStatus
     >
 
     <!-- results -->
-    <template v-if="comparison.phenogrid.cells.length">
+    <template v-else>
       <ThePhenogrid :data="comparison.phenogrid" />
     </template>
   </div>
@@ -25,6 +25,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
+import { isEmpty } from "lodash";
 import { useEventListener, useResizeObserver } from "@vueuse/core";
 import { compareSetToSet } from "@/api/phenotype-explorer";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
@@ -48,7 +49,7 @@ const {
   },
 
   /** default value */
-  { summary: [], phenogrid: { cols: [], rows: [], cells: [] } },
+  { summary: [], phenogrid: { cols: [], rows: [], cells: {} } },
 );
 
 /** re-rerun analysis when inputs change */
@@ -83,25 +84,21 @@ const stylesheet = computed(() =>
 const container = ref<HTMLDivElement>();
 
 /** when size of widget changes */
-async function onResize() {
+function onResize() {
   if (!container.value) return;
-  container.value.style.maxWidth = "unset";
-  container.value.style.maxHeight = "unset";
-  const bbox = container.value.getBoundingClientRect();
-  bbox.width += 2;
-  bbox.height += 2;
-  window.parent.postMessage(bbox, "*");
-  container.value.style.maxWidth = "100%";
-  container.value.style.maxHeight = "100%";
+  let width = container.value.scrollWidth + 2;
+  let height = container.value.scrollHeight + 2;
+  window.parent.postMessage({ width, height }, "*");
 }
-
 useResizeObserver(container, onResize);
 </script>
 
 <style lang="scss" scoped>
 .container {
   width: max-content;
+  max-width: 100%;
   height: max-content;
+  max-height: 100%;
 }
 </style>
 

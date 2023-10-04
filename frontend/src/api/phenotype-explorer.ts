@@ -1,6 +1,7 @@
 import { pick } from "lodash";
 import type {
   AssociationResults,
+  TermPairwiseSimilarity,
   TermSetPairwiseSimilarity,
 } from "@/api/model";
 import type { Options, OptionsFunc } from "@/components/AppSelectTags.vue";
@@ -127,14 +128,21 @@ export const compareSetToSet = async (
   const rows = Object.values(response.subject_termset || {});
 
   /** get detailed phenogrid info */
-  const cells = cols.map((col) =>
-    rows.map((row) => {
+  const cells: {
+    [key: string]: {
+      score: number;
+      strength: number;
+      simInfo: Partial<TermPairwiseSimilarity>;
+    };
+  } = {};
+
+  for (const col of cols) {
+    for (const row of rows) {
       const match = Object.values(response.subject_best_matches || {}).find(
         ({ match_source, match_target }) =>
           match_source === row.id && match_target === col.id,
       );
-
-      return {
+      cells[col.id + row.id] = {
         score: match?.score || 0,
         strength: 0,
         simInfo: pick(match?.similarity, [
@@ -143,17 +151,15 @@ export const compareSetToSet = async (
           "phenodigm_score",
         ]),
       };
-    }),
-  );
-
-  /** get range of cell scores */
-  const scores = cells.map((row) => row.map((col) => col.score)).flat();
-  const min = Math.min(...scores);
-  const max = Math.max(...scores);
+    }
+  }
 
   /** normalize cell scores to 0-1 */
-  cells.forEach((row) =>
-    row.forEach((col) => (col.strength = (col.score - min) / (max - min))),
+  const scores = Object.values(cells).map((value) => value.score);
+  const min = Math.min(...scores);
+  const max = Math.max(...scores);
+  Object.values(cells).forEach(
+    (value) => (value.strength = (value.score - min) / (max - min)),
   );
 
   return { summary, phenogrid: { cols, rows, cells } };

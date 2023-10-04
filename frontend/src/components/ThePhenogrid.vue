@@ -1,102 +1,158 @@
 <template>
   <AppFlex direction="col">
-    <div ref="scroll" class="scroll force-scrollbar">
-      <table class="table">
-        <thead>
-          <tr>
-            <th></th>
-            <tooltip
-              v-for="(col, colIndex) in data.cols"
-              :key="colIndex"
-              :interactive="true"
-              follow-cursor="initial"
-              :append-to="appendToBody"
-              tag="th"
-              :class="['col-head', { hovered: hovered?.col === colIndex }]"
-            >
-              <div class="truncate">
-                {{ col.label }}
-              </div>
-              <template #content>
-                <AppNodeBadge :node="{ id: col.id, name: col.label }" /> ({{
-                  col.id
-                }})
-              </template>
-            </tooltip>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(row, rowIndex) in data.rows" :key="rowIndex">
-            <tooltip
-              :interactive="true"
-              :append-to="appendToBody"
-              tag="td"
-              :class="[
-                'row-head',
-                'truncate',
-                {
-                  hovered: hovered?.row === rowIndex,
-                },
-              ]"
-            >
-              {{ row.label }}
-              <template #content>
-                <AppNodeBadge :node="{ id: row.id, name: row.label }" /> ({{
-                  row.id
-                }})
-              </template>
-            </tooltip>
-            <td
-              v-for="(cell, colIndex) in data.cols.map(
-                (_, colIndex) => data.cells[colIndex][rowIndex],
-              )"
-              :key="colIndex"
+    <AppFlex ref="flex" direction="col">
+      <div ref="scroll" class="scroll force-scrollbar">
+        <table class="table">
+          <thead>
+            <tr>
+              <!-- corner cell -->
+              <th class="corner"></th>
+
+              <!-- header cols -->
+              <tooltip
+                v-for="(col, colIndex) in [...data.cols].sort(sort)"
+                :key="colIndex"
+                :interactive="true"
+                follow-cursor="initial"
+                :append-to="appendToBody"
+                tag="th"
+                :class="['col-head', { hovered: hovered?.col === colIndex }]"
+                :style="{ zIndex: 999 - colIndex }"
+              >
+                <div>
+                  {{ col.label }}
+                </div>
+                <template #content>
+                  <AppNodeBadge :node="{ id: col.id, name: col.label }" /> ({{
+                    col.id
+                  }})
+                </template>
+              </tooltip>
+            </tr>
+          </thead>
+
+          <tbody>
+            <!-- row heads -->
+            <tr
+              v-for="(row, rowIndex) in [...data.rows].sort(sort)"
+              :key="rowIndex"
             >
               <tooltip
                 :interactive="true"
-                tag="button"
-                class="cell"
-                :style="{ '--score': cell.strength }"
-                @mouseenter="hoverCell(colIndex, rowIndex)"
-                @mouseleave="hoverCell(colIndex, rowIndex, true)"
+                :append-to="appendToBody"
+                tag="td"
+                :class="[
+                  'row-head',
+                  'truncate',
+                  {
+                    hovered: hovered?.row === rowIndex,
+                  },
+                ]"
               >
+                {{ row.label }}
                 <template #content>
-                  <div class="mini-table">
-                    <span>Score</span>
-                    <span>{{ cell.score.toFixed(2) }}</span>
-                    <template
-                      v-for="(value, key, index) in cell.simInfo"
-                      :key="index"
-                    >
-                      <span>{{ startCase(key) }}</span>
-                      <span>{{
-                        typeof value === "number" ? value.toFixed(2) : value
-                      }}</span>
-                    </template>
-                  </div>
+                  <AppNodeBadge :node="{ id: row.id, name: row.label }" /> ({{
+                    row.id
+                  }})
                 </template>
               </tooltip>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
 
-    <div class="legend">
-      <div class="gradient" />
-      <span>Less similar</span>
-      <span>More similar</span>
-    </div>
+              <!-- cells -->
+              <td
+                v-for="(col, colIndex) in [...data.cols].sort(sort)"
+                :key="colIndex"
+                class="cell"
+              >
+                <!-- cell score -->
+                <tooltip
+                  v-if="data.cells[col.id + row.id].strength"
+                  :interactive="true"
+                  tag="button"
+                  :style="{ '--score': data.cells[col.id + row.id].strength }"
+                  @mouseenter="hoverCell(colIndex, rowIndex)"
+                  @mouseleave="hoverCell(colIndex, rowIndex, true)"
+                >
+                  <template #content>
+                    <div class="mini-table">
+                      <span>Score</span>
+                      <span>{{
+                        data.cells[col.id + row.id].score.toFixed(2)
+                      }}</span>
+                      <template
+                        v-for="(value, key, index) in data.cells[
+                          col.id + row.id
+                        ].simInfo"
+                        :key="index"
+                      >
+                        <span>{{ startCase(String(key)) }}</span>
+                        <span>{{
+                          typeof value === "number" ? value.toFixed(2) : value
+                        }}</span>
+                      </template>
+                    </div>
+                  </template>
+                </tooltip>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- legend -->
+      <div class="legend">
+        <div class="gradient" />
+        <span>Less similar</span>
+        <span>More similar</span>
+      </div>
+    </AppFlex>
+
+    <AppFlex>
+      <tooltip :interactive="true" :append-to="appendToBody" tag="button">
+        Info&nbsp;<AppIcon icon="circle-question" />
+        <template #content>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </p>
+        </template>
+      </tooltip>
+      <AppButton
+        v-tooltip="'Download grid as PNG'"
+        design="small"
+        text="Download"
+        icon="download"
+        @click="download"
+      />
+      <AppFlex flow="inline" gap="small">
+        <span>Sort</span>
+        <AppSelectSingle
+          v-model="sortMethod"
+          name="Sort"
+          :options="sortMethods"
+        />
+      </AppFlex>
+    </AppFlex>
   </AppFlex>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { startCase } from "lodash";
+import { hideAll } from "tippy.js";
+import type { TermInfo } from "@/api/model";
 import { type SetToSet } from "@/api/phenotype-explorer";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
+import AppSelectSingle, {
+  type Option,
+  type Options,
+} from "@/components/AppSelectSingle.vue";
 import { appendToBody } from "@/global/tooltip";
-import { useScrollable } from "@/util/composables";
+import { frame, sleep } from "@/util/debug";
+import { downloadPng, getScreenshot } from "@/util/download";
 
 type Props = {
   data: SetToSet["phenogrid"];
@@ -112,71 +168,161 @@ function hoverCell(colIndex: number, rowIndex: number, unset = false) {
   else hovered.value = { col: colIndex, row: rowIndex };
 }
 
-/** style scroll states */
-const { ref: scroll } = useScrollable();
+const flex = ref<{ element: HTMLTableElement }>();
+const scroll = ref<HTMLElement>();
+
+/** download grid as png */
+async function download() {
+  if (!flex.value?.element || !scroll.value) return;
+
+  /** make full size */
+  scroll.value.classList.add("saving");
+  flex.value.element.classList.add("saving");
+
+  hideAll();
+
+  /** wait for dom to update */
+  await frame();
+  await sleep(10);
+
+  /** convert to image and download */
+  try {
+    const png = await getScreenshot(flex.value.element, 1);
+    downloadPng(png, "phenogrid");
+  } catch (error) {
+    console.error(error);
+    window.alert("Error saving image");
+  }
+
+  /** reset size */
+  scroll.value.classList.remove("saving");
+  flex.value.element.classList.remove("saving");
+}
+
+const sortMethods: Options = [
+  { id: "input", label: "Input Order" },
+  { id: "desc", label: "Alphabetical (desc)" },
+  { id: "asc", label: "Alphabetical (asc)" },
+];
+const sortMethod = ref<Option>(sortMethods[0]);
+
+/** get sort func to sort rows/cols in particular order */
+const sort = computed<(a: TermInfo, b: TermInfo) => number>(() => {
+  if (sortMethod.value.id === "desc") {
+    return (a, b) => {
+      if ((a.label || "") > (b.label || "")) return 1;
+      if ((a.label || "") < (b.label || "")) return -1;
+      return 0;
+    };
+  }
+
+  if (sortMethod.value.id === "asc") {
+    return (a, b) => {
+      if ((a.label || "") > (b.label || "")) return -1;
+      if ((a.label || "") < (b.label || "")) return 1;
+      return 0;
+    };
+  }
+
+  return () => 0;
+});
 </script>
 
 <style scoped lang="scss">
 .scroll {
   max-width: 100%;
-  max-height: 100%;
+  max-height: 500px;
   overflow: auto;
+  background: $white;
+}
+
+.saving {
+  width: max-content !important;
+  max-width: unset !important;
+  height: max-content !important;
+  max-height: unset !important;
+  overflow: visible !important;
+  background: none !important;
+
+  td,
+  th {
+    background: none !important;
+  }
 }
 
 .table {
-  margin-top: -40px;
   margin-right: 140px;
   border-collapse: collapse;
-  text-align: left;
 }
 
-th {
-  font-weight: inherit;
+.corner {
+  z-index: 1000;
+  position: sticky;
+  top: 0;
+  left: 0;
 }
 
 .col-head {
+  position: sticky;
+  top: 0;
+  font-weight: inherit;
   text-align: left;
   vertical-align: bottom;
 }
 
-// need extra wrapper because of safari writing-mode bug with table cells
-.col-head div {
+.col-head > div {
   max-height: 200px;
+  overflow: hidden;
   transform: translate(-5px, -10px) rotate(-135deg) translateY(100%);
   transform-origin: bottom center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   writing-mode: vertical-lr;
 }
 
 .row-head {
+  position: sticky;
+  left: 0;
   max-width: 200px !important;
   padding-right: 10px;
   text-align: right;
 }
 
-.cell {
-  width: 20px;
-  height: 20px;
-  margin: auto;
-  padding: 0;
-  border-radius: 3px;
-  background: color-mix(in srgb, $white, $theme calc(var(--score) * 100%));
-  vertical-align: middle;
-  cursor: help;
+.cell:empty {
+  min-width: 20px;
+  min-height: 20px;
 }
 
-td {
-  text-align: center;
+.cell > * {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  background: $light-gray;
+}
+
+.cell > div {
+  opacity: 0;
+}
+
+.cell > button {
+  background: color-mix(in srgb, $white, $theme calc(var(--score) * 100%));
+  cursor: help;
 }
 
 th,
 td {
   padding: 2px;
+  background: $white;
 }
 
 .legend {
   display: grid;
   grid-template-rows: 10px 1fr;
   grid-template-columns: 1fr 1fr;
+  width: max-content;
   gap: 10px;
 }
 

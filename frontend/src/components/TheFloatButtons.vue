@@ -100,7 +100,7 @@ useMutationObserver(document?.body, update, {
 <style lang="scss" scoped>
 .float {
   display: flex;
-  z-index: 20;
+  z-index: 1000;
   position: fixed;
   right: 0;
   flex-direction: column;
