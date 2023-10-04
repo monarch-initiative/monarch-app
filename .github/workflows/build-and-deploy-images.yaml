@@ -38,6 +38,17 @@ jobs:
           image_tag: latest, ${{ steps.get-tag.outputs.IMAGE_TAG }}, ${{ github.sha }}
           dockerfile: ./backend/Dockerfile
 
+      - name: Build and Push OAK RPC Server Image
+        uses: RafikFarhad/push-to-gcr-github-action@v5-beta
+        with:
+          gcloud_service_key: ${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }}
+          registry: us-central1-docker.pkg.dev
+          project_id: monarch-initiative
+          image_name: monarch-api/monarch-oak-server
+          image_tag: latest, ${{ steps.get-tag.outputs.IMAGE_TAG }}, ${{ github.sha }}
+          dockerfile: ./services/oak_rpc_server/Dockerfile
+          build_args: FROM_IMAGE=monarch-api/monarch-api:${{ github.sha }}
+
   build-and-push-frontend-image:
     runs-on: ubuntu-latest
     defaults:
