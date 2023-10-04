@@ -160,12 +160,48 @@ def associations(
         output: The path to the output file (stdout if not specified)
     """
     args = locals()
-    args.pop("update", None)
     args.pop("fmt", None)
     args.pop("output", None)
 
     solr = get_solr(update=False)
     response = solr.get_associations(**args)
+    format_output(fmt, response, output)
+
+
+@solr_app.command("multi-entity-associations")
+def multi_entity_associations(
+    entity: List[str] = typer.Option(None, "--entity", "-e", help="Entity ID to get associations for"),
+    counterpart_category: List[str] = typer.Option(None, "--counterpart-category", "-c", help="Counterpart category to get associations for"),
+    limit: int = typer.Option(20, "--limit", "-l"),
+    offset: int = typer.Option(0, "--offset"),
+    fmt: str = typer.Option(
+        "json",
+        "--format",
+        "-f",
+        help="The format of the output (json, yaml, tsv, table)",
+    ),
+    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
+):
+    """
+    Paginate through associations for multiple entities
+
+    Args:
+        entity: A comma-separated list of entities
+        counterpart_category: A comma-separated list of counterpart categories
+        limit: The number of associations to return
+        offset: The offset of the first association to be retrieved
+        fmt: The format of the output (json, yaml, tsv, table)
+        output: The path to the output file (stdout if not specified)
+    """
+    # console.print("\n[bold red]Multi-entity associations not implemented in CLI.[/]\n")
+    # raise typer.Exit(1)
+    args = locals()
+    args.pop("fmt", None)
+    args.pop("output", None)
+    args['limit_per_group'] = args.pop('limit')
+
+    solr = get_solr(update=False)
+    response = solr.get_multi_entity_associations(**args)
     format_output(fmt, response, output)
 
 
@@ -253,7 +289,6 @@ def histopheno(
         subject (str): The subject of the association
 
     Optional Args:
-        update (bool): Whether to re-download the Monarch KG. Default False
         fmt (str): The format of the output (json, yaml, tsv, table). Default JSON
         output (str): The path to the output file. Default stdout
     """
@@ -285,7 +320,6 @@ def association_counts(
         entity (str): The entity to get association counts for
 
     Optional Args:
-        update (bool): Whether to re-download the Monarch KG. Default False
         fmt (str): The format of the output (json, yaml, tsv, table). Default JSON
         output (str): The path to the output file. Default stdout
     """

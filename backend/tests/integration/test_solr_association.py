@@ -67,3 +67,18 @@ def test_entity():
     assert response.total > 50
     for association in response.items:
         assert "MONDO:0007947" in association.subject_closure or "MONDO:0007947" in association.object_closure
+
+
+def test_multi_entity_associations():
+    si = SolrImplementation()
+    response = si.get_multi_entity_associations(
+        entity=["MONDO:0012933", "MONDO:0005439", "MANDO:0001138"],
+        counterpart_category=["biolink:Gene", "biolink:Disease"],
+    )
+    assert response
+    assert len(response) == 3
+    assert response[2].name == "Entity not found"
+    # assert response[0].associated_categories['biolink:Disease'].total > 0
+    for c in response[0].associated_categories:
+        if c.counterpart_category == "biolink:Disease":
+            assert c.total > 0
