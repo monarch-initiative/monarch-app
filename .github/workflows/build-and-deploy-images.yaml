@@ -47,7 +47,7 @@ jobs:
           image_name: monarch-api/monarch-oak-server
           image_tag: latest, ${{ steps.get-tag.outputs.IMAGE_TAG }}, ${{ github.sha }}
           dockerfile: ./services/oak_rpc_server/Dockerfile
-          build_args: FROM_IMAGE=monarch-api/monarch-api:${{ github.sha }}
+          build_args: FROM_IMAGE=us-central1-docker.pkg.dev/monarch-initiative/monarch-api/monarch-api:${{ github.sha }}
 
   build-and-push-frontend-image:
     runs-on: ubuntu-latest
