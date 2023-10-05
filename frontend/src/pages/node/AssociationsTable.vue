@@ -295,7 +295,7 @@ async function download() {
     0,
     max,
   );
-  downloadJson(response);
+  downloadJson(response, "associations");
 }
 
 /** get associations when category or table state changes */
