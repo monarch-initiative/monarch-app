@@ -123,11 +123,18 @@ export const compareSetToSet = async (
   );
   summary.sort((a, b) => b.score - a.score);
 
-  /** get detailed phenogrid info */
-  const cols = Object.values(response.object_termset || {});
-  const rows = Object.values(response.subject_termset || {});
+  /** turn objects into array of cols */
+  const cols = Object.values(response.object_termset || {}).map((col) => ({
+    ...col,
+    total: 0,
+  }));
+  /** turn subjects into array of cols */
+  const rows = Object.values(response.subject_termset || {}).map((row) => ({
+    ...row,
+    total: 0,
+  }));
 
-  /** get detailed phenogrid info */
+  /** make map of col/row id to cells */
   const cells: {
     [key: string]: {
       score: number;
@@ -136,16 +143,27 @@ export const compareSetToSet = async (
     };
   } = {};
 
+  /** get subject matches */
+  const matches = Object.values(response.subject_best_matches || {});
+
   for (const col of cols) {
     for (const row of rows) {
-      const match = Object.values(response.subject_best_matches || {}).find(
-        ({ match_source, match_target }) =>
-          match_source === row.id && match_target === col.id,
-      );
+      /** find match corresponding to col/row id */
+      const { score = 0, similarity = {} } =
+        matches.find(
+          ({ match_source, match_target }) =>
+            match_source === row.id && match_target === col.id,
+        ) || {};
+
+      /** sum up row and col scores */
+      col.total += score;
+      row.total += score;
+
+      /** assign cell */
       cells[col.id + row.id] = {
-        score: match?.score || 0,
+        score: score || 0,
         strength: 0,
-        simInfo: pick(match?.similarity, [
+        simInfo: pick(similarity, [
           "ancestor_id",
           "jaccard_similarity",
           "phenodigm_score",

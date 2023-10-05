@@ -10,7 +10,7 @@
 
               <!-- header cols -->
               <tooltip
-                v-for="(col, colIndex) in [...data.cols].sort(sort)"
+                v-for="(col, colIndex) in sort(data.cols)"
                 :key="colIndex"
                 :interactive="true"
                 follow-cursor="initial"
@@ -33,10 +33,7 @@
 
           <tbody>
             <!-- row heads -->
-            <tr
-              v-for="(row, rowIndex) in [...data.rows].sort(sort)"
-              :key="rowIndex"
-            >
+            <tr v-for="(row, rowIndex) in sort(data.rows)" :key="rowIndex">
               <tooltip
                 :interactive="true"
                 :append-to="appendToBody"
@@ -59,7 +56,7 @@
 
               <!-- cells -->
               <td
-                v-for="(col, colIndex) in [...data.cols].sort(sort)"
+                v-for="(col, colIndex) in sort(data.cols)"
                 :key="colIndex"
                 class="cell"
               >
@@ -135,16 +132,18 @@
           :options="sortMethods"
         />
       </AppFlex>
+      <AppCheckbox v-model="reverse" text="Flip" />
     </AppFlex>
   </AppFlex>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
-import { startCase } from "lodash";
+import { ref } from "vue";
+import { sortBy, startCase } from "lodash";
 import { hideAll } from "tippy.js";
 import type { TermInfo } from "@/api/model";
 import { type SetToSet } from "@/api/phenotype-explorer";
+import AppCheckbox from "@/components/AppCheckbox.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppSelectSingle, {
   type Option,
@@ -199,33 +198,24 @@ async function download() {
   flex.value.element.classList.remove("saving");
 }
 
+/** options for sorting */
 const sortMethods: Options = [
-  { id: "input", label: "Input Order" },
-  { id: "desc", label: "Alphabetical (desc)" },
-  { id: "asc", label: "Alphabetical (asc)" },
+  { id: "", label: "Input Order" },
+  { id: "alpha", label: "Alphabetical" },
+  { id: "total", label: "Score Totals" },
 ];
 const sortMethod = ref<Option>(sortMethods[0]);
+const reverse = ref(false);
 
 /** get sort func to sort rows/cols in particular order */
-const sort = computed<(a: TermInfo, b: TermInfo) => number>(() => {
-  if (sortMethod.value.id === "desc") {
-    return (a, b) => {
-      if ((a.label || "") > (b.label || "")) return 1;
-      if ((a.label || "") < (b.label || "")) return -1;
-      return 0;
-    };
-  }
-
-  if (sortMethod.value.id === "asc") {
-    return (a, b) => {
-      if ((a.label || "") > (b.label || "")) return -1;
-      if ((a.label || "") < (b.label || "")) return 1;
-      return 0;
-    };
-  }
-
-  return () => 0;
-});
+function sort(array: TermInfo[]): TermInfo[] {
+  const method = sortMethod.value.id;
+  if (method === "") array = [...array];
+  if (method === "alpha") array = sortBy(array, "label");
+  if (method === "total") array = sortBy(array, ["total"]).reverse();
+  if (reverse.value) array.reverse();
+  return array;
+}
 </script>
 
 <style scoped lang="scss">
