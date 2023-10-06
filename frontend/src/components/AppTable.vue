@@ -9,102 +9,87 @@
 <template>
   <!-- table data -->
   <AppFlex direction="col" :class="['container', { expanded }]">
-    <div
-      :class="[
-        'wrapper',
-        { 'at-left': arrivedState.left, 'at-right': arrivedState.right },
-      ]"
-    >
-      <div class="left-scroll">
-        <AppIcon icon="angle-left" />
-      </div>
-      <div class="right-scroll">
-        <AppIcon icon="angle-right" />
-      </div>
+    <div ref="scroll" class="scroll force-scrollbar">
+      <table
+        class="table"
+        :aria-colcount="cols.length"
+        :aria-rowcount="rows.length"
+        :style="{ gridTemplateColumns: widths }"
+      >
+        <!-- head -->
+        <thead class="thead">
+          <tr class="tr">
+            <th
+              v-for="(col, colIndex) in cols"
+              :key="colIndex"
+              :class="[
+                'th',
+                col.align || 'left',
+                { divider: col.slot === 'divider' },
+              ]"
+              :aria-sort="ariaSort"
+            >
+              <span>
+                {{ col.heading }}
+              </span>
+              <AppButton
+                v-if="col.sortable"
+                v-tooltip="'Sort by ' + col.heading"
+                :icon="
+                  'arrow-' + (sort?.key === col.key ? sort?.direction : 'down')
+                "
+                design="small"
+                :color="sort?.key === col.key ? 'primary' : 'secondary'"
+                :style="{ opacity: sort?.key === col.key ? 1 : 0.35 }"
+                @click.stop="emitSort(col)"
+              />
+              <AppSelectMulti
+                v-if="
+                  col.key &&
+                  selectedFilters?.[col.key] &&
+                  filterOptions?.[col.key]?.length
+                "
+                v-tooltip="'Filter by ' + col.heading"
+                :name="'Filter by ' + col.heading"
+                :options="filterOptions[col.key]"
+                :model-value="selectedFilters[col.key]"
+                design="small"
+                @change="(value) => emitFilter(col.key, value)"
+              />
+            </th>
+          </tr>
+        </thead>
 
-      <div ref="table" class="scroll">
-        <table
-          class="table"
-          :aria-colcount="cols.length"
-          :aria-rowcount="rows.length"
-          :style="{ gridTemplateColumns: widths }"
-        >
-          <!-- head -->
-          <thead class="thead">
-            <tr class="tr">
-              <th
-                v-for="(col, colIndex) in cols"
-                :key="colIndex"
-                :class="[
-                  'th',
-                  col.align || 'left',
-                  { divider: col.slot === 'divider' },
-                ]"
-                :aria-sort="ariaSort"
-              >
-                <span>
-                  {{ col.heading }}
-                </span>
-                <AppButton
-                  v-if="col.sortable"
-                  v-tooltip="'Sort by ' + col.heading"
-                  :icon="
-                    'arrow-' +
-                    (sort?.key === col.key ? sort?.direction : 'down')
-                  "
-                  design="small"
-                  :color="sort?.key === col.key ? 'primary' : 'secondary'"
-                  :style="{ opacity: sort?.key === col.key ? 1 : 0.35 }"
-                  @click.stop="emitSort(col)"
-                />
-                <AppSelectMulti
-                  v-if="
-                    col.key &&
-                    selectedFilters?.[col.key] &&
-                    filterOptions?.[col.key]?.length
-                  "
-                  v-tooltip="'Filter by ' + col.heading"
-                  :name="'Filter by ' + col.heading"
-                  :options="filterOptions[col.key]"
-                  :model-value="selectedFilters[col.key]"
-                  design="small"
-                  @change="(value) => emitFilter(col.key, value)"
-                />
-              </th>
-            </tr>
-          </thead>
-
-          <!-- body -->
-          <tbody class="tbody">
-            <tr v-for="(row, rowIndex) in rows" :key="rowIndex" class="tr">
-              <td
-                v-for="(col, colIndex) in cols"
-                :key="colIndex"
-                :class="[
-                  'td',
-                  col.align || 'left',
-                  { divider: col.slot === 'divider' },
-                ]"
-                :aria-rowindex="rowIndex + 1"
-                :aria-colindex="colIndex + 1"
-              >
-                <!-- if col has slot name, use to custom format/template cell -->
-                <slot
-                  v-if="col.slot && $slots[col.slot]"
-                  :name="col.slot"
-                  :row="row"
-                  :col="col"
-                  :cell="col.key ? row[col.key] : null"
-                />
-                <!-- otherwise, just display raw cell value -->
-                <template v-else-if="col.key">
-                  {{ row[col.key] }}
-                </template>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+        <!-- body -->
+        <tbody class="tbody">
+          <tr v-for="(row, rowIndex) in rows" :key="rowIndex" class="tr">
+            <td
+              v-for="(col, colIndex) in cols"
+              :key="colIndex"
+              :class="[
+                'td',
+                col.align || 'left',
+                { divider: col.slot === 'divider' },
+              ]"
+              :aria-rowindex="rowIndex + 1"
+              :aria-colindex="colIndex + 1"
+            >
+              <!-- if col has slot name, use to custom format/template cell -->
+              <slot
+                v-if="col.slot && $slots[col.slot]"
+                :name="col.slot"
+                :row="row"
+                :col="col"
+                :cell="col.key ? row[col.key] : null"
+              />
+              <!-- otherwise, just display raw cell value -->
+              <template v-else-if="col.key">
+                {{ row[col.key] }}
+              </template>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <div class="controls">
@@ -233,8 +218,9 @@ export type Sort<Key extends string = string> = {
 </script>
 
 <script setup lang="ts" generic="Datum extends object">
-import { computed, nextTick, onMounted, ref, watch, type VNode } from "vue";
-import { useLocalStorage, useResizeObserver, useScroll } from "@vueuse/core";
+import { computed, watch, type VNode } from "vue";
+import { useLocalStorage } from "@vueuse/core";
+import { useScrollable } from "@/util/composables";
 import type { Options } from "./AppSelectMulti.vue";
 import AppSelectMulti from "./AppSelectMulti.vue";
 import AppSelectSingle from "./AppSelectSingle.vue";
@@ -314,20 +300,10 @@ defineSlots<{
 
 /** whether table is expanded to be full width */
 const expanded = useLocalStorage(`${props.id}-table-expanded`, false);
-/** table reference */
-const table = ref<HTMLElement>();
 
-/** table scroll state */
-const { arrivedState } = useScroll(table, { offset: { left: 10, right: 10 } });
-
-/** force table scroll to update */
-async function updateScroll() {
-  await nextTick();
-  table.value?.dispatchEvent(new Event("scroll"));
-}
-onMounted(updateScroll);
+/** style scroll states */
+const { ref: scroll, updateScroll } = useScrollable();
 watch(expanded, updateScroll);
-useResizeObserver(table, updateScroll);
 
 /** when user clicks to first page */
 function clickFirst() {
@@ -445,90 +421,9 @@ watch(
   }
 }
 
-.wrapper {
-  position: relative;
-  max-width: 100%;
-
-  .left-scroll,
-  .right-scroll {
-    display: flex;
-    z-index: 99;
-    position: absolute;
-    align-items: center;
-    justify-content: center;
-    width: 0;
-    height: 100%;
-    color: $gray;
-    animation: 0.5s alternate infinite ease-in-out;
-    opacity: 0;
-    transition: opacity $fast;
-
-    svg {
-      transform: scale(1.5);
-    }
-
-    @keyframes nudge-left {
-      to {
-        transform: translateX(-5px);
-      }
-    }
-
-    @keyframes nudge-right {
-      to {
-        transform: translateX(5px);
-      }
-    }
-  }
-
-  .left-scroll {
-    left: 0px;
-    animation-name: nudge-left;
-  }
-
-  .right-scroll {
-    right: 0px;
-    animation-name: nudge-right;
-  }
-
-  .scroll {
-    width: 100%;
-    overflow-x: auto;
-  }
-
-  &:not(.at-left) .left-scroll {
-    opacity: 1;
-  }
-
-  &:not(.at-right) .right-scroll {
-    opacity: 1;
-  }
-
-  &:not(.at-left).at-right .scroll {
-    -webkit-mask-image: linear-gradient(to left, black 75%, transparent);
-    mask-image: linear-gradient(to left, black 75%, transparent);
-  }
-
-  &:not(.at-right).at-left .scroll {
-    -webkit-mask-image: linear-gradient(to right, black 75%, transparent);
-    mask-image: linear-gradient(to right, black 75%, transparent);
-  }
-
-  &:not(.at-left):not(.at-right) .scroll {
-    -webkit-mask-image: linear-gradient(
-      to left,
-      transparent,
-      black 25%,
-      black 75%,
-      transparent
-    );
-    mask-image: linear-gradient(
-      to left,
-      transparent,
-      black 25%,
-      black 75%,
-      transparent
-    );
-  }
+.scroll {
+  width: 100%;
+  overflow-x: auto;
 }
 
 .table {

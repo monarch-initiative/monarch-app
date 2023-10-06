@@ -114,7 +114,7 @@ const iframe = document.querySelector("iframe");
 iframe.contentWindow.postMessage({ source: ["abc"], target: ["def"] }, "*");
 ```
 
-#### Emits `MessageEvent<DOMRect>`
+#### Emits `MessageEvent<{ width: number; height: number; }>`
 
 Emitted when the size of the widget changes and on load.
 Useful for setting the dimensions of your iframe container, for example:

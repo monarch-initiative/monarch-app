@@ -69,7 +69,7 @@ useEventListener(window, "snackbar", onPush);
 
 <style lang="scss" scoped>
 .snackbar {
-  z-index: 99;
+  z-index: 1100;
   position: fixed;
   bottom: 20px;
   left: 50%;

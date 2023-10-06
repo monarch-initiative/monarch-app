@@ -180,7 +180,7 @@ useMutationObserver(
 
 <style lang="scss" scoped>
 .toc {
-  z-index: 10;
+  z-index: 1010;
   position: fixed;
   top: 0;
   background: $white;

@@ -307,3 +307,42 @@ strong {
 .fade-leave-to {
   opacity: 0;
 }
+
+/** force scrollbar to stay visible in some browsers/OSes */
+
+.force-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  border-radius: 99999px;
+  background-color: $light-gray;
+}
+
+.force-scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 99999px;
+  background-color: $gray;
+}
+
+/** add gradients to scrollable regions */
+
+$fade: 15px;
+
+.scrollable-left::before,
+.scrollable-right::after {
+  display: block;
+  position: sticky;
+  width: $fade;
+  height: 9999px;
+  margin-top: -9999px;
+  margin-left: -$fade;
+  inset: 0;
+  content: "";
+}
+
+.scrollable-left::before {
+  background: linear-gradient(to right, #d8d8d8 0, transparent $fade);
+}
+
+.scrollable-right::after {
+  left: calc(100% - $fade);
+  background: linear-gradient(to left, #d8d8d8 0, transparent $fade);
+}

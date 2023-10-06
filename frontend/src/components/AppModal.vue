@@ -130,7 +130,7 @@ onBeforeUpdate(async () => {
 <style lang="scss" scoped>
 .overlay {
   display: flex;
-  z-index: 99;
+  z-index: 1100;
   position: fixed;
   top: 0;
   right: 0;
@@ -143,7 +143,7 @@ onBeforeUpdate(async () => {
 
 .modal {
   display: flex;
-  z-index: 100;
+  z-index: 1101;
   position: relative;
   flex-direction: column;
   align-items: center;

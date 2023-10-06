@@ -308,7 +308,7 @@ watch(highlighted, () => {
 }
 
 .list {
-  z-index: 12;
+  z-index: 1000;
   max-height: 300px;
   overflow-x: auto;
   overflow-y: auto;

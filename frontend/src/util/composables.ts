@@ -1,8 +1,13 @@
 import type { CSSProperties, Ref } from "vue";
-import { ref, shallowRef } from "vue";
+import { nextTick, onMounted, ref, shallowRef, watchEffect } from "vue";
 import { debounce } from "lodash";
 import { computePosition, flip, shift, size } from "@floating-ui/dom";
-import { useEventListener } from "@vueuse/core";
+import {
+  useEventListener,
+  useMutationObserver,
+  useResizeObserver,
+  useScroll,
+} from "@vueuse/core";
 
 /**
  * inspired by react-query. simple query manager/wrapper for making queries in
@@ -136,4 +141,39 @@ export const useFloating = (
   useEventListener(window, "resize", debounced);
 
   return { calculate, style };
+};
+
+/** add classes to element when scrollable for styling */
+export const useScrollable = () => {
+  const element = ref<HTMLElement>();
+  const { arrivedState } = useScroll(element);
+
+  /** set css class on/off */
+  function setClass(_class: string, on: boolean) {
+    element.value?.classList?.[on ? "remove" : "add"](_class);
+  }
+
+  /** set classes */
+  watchEffect(() => {
+    if (!element.value) return;
+    const { left, right } = arrivedState;
+    setClass("scrollable-left", left);
+    setClass("scrollable-right", right);
+  });
+
+  /** force table scroll to update */
+  async function updateScroll() {
+    await nextTick();
+    element.value?.dispatchEvent(new Event("scroll"));
+  }
+
+  /** update scroll on some events that might affect element's scrollWidth/Height */
+  onMounted(updateScroll);
+  useResizeObserver(element, updateScroll);
+  useMutationObserver(element, updateScroll, {
+    childList: true,
+    subtree: true,
+  });
+
+  return { ref: element, arrivedState, updateScroll };
 };

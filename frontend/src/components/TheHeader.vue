@@ -117,7 +117,7 @@ $wrap: 900px;
 
 .header {
   display: flex;
-  z-index: 10;
+  z-index: 1010;
   position: sticky;
   top: 0;
   align-items: center;

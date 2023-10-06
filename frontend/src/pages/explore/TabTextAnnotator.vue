@@ -74,7 +74,7 @@
 
 <script setup lang="ts">
 import { onMounted } from "vue";
-import { kebabCase, uniqBy } from "lodash";
+import { uniqBy } from "lodash";
 import { useLocalStorage } from "@vueuse/core";
 import { annotateText } from "@/api/text-annotator";
 import AppTextbox from "@/components/AppTextbox.vue";

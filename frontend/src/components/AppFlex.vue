@@ -6,6 +6,7 @@
 
 <template>
   <div
+    ref="element"
     :class="['flex', flow, direction, gap]"
     :style="{ justifyContent, alignItems }"
   >
@@ -14,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
 /** map nice human align names to css flex align names */
 const alignMap = {
@@ -60,6 +61,10 @@ const justifyContent = computed(() =>
 const alignItems = computed(() =>
   props.direction === "col" ? alignMap[props.alignH] : alignMap[props.alignV],
 );
+
+const element = ref();
+
+defineExpose({ element });
 </script>
 
 <style lang="scss" scoped>

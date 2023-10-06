@@ -1,6 +1,7 @@
 import { pick } from "lodash";
 import type {
   AssociationResults,
+  TermPairwiseSimilarity,
   TermSetPairwiseSimilarity,
 } from "@/api/model";
 import type { Options, OptionsFunc } from "@/components/AppSelectTags.vue";
@@ -122,38 +123,61 @@ export const compareSetToSet = async (
   );
   summary.sort((a, b) => b.score - a.score);
 
-  /** get detailed phenogrid info */
-  const cols = Object.values(response.object_termset || {});
-  const rows = Object.values(response.subject_termset || {});
+  /** turn objects into array of cols */
+  const cols = Object.values(response.object_termset || {}).map((col) => ({
+    ...col,
+    total: 0,
+  }));
+  /** turn subjects into array of cols */
+  const rows = Object.values(response.subject_termset || {}).map((row) => ({
+    ...row,
+    total: 0,
+  }));
 
-  /** get detailed phenogrid info */
-  const cells = cols.map((col) =>
-    rows.map((row) => {
-      const match = Object.values(response.subject_best_matches || {}).find(
-        ({ match_source, match_target }) =>
-          match_source === row.id && match_target === col.id,
-      );
+  /** make map of col/row id to cells */
+  const cells: {
+    [key: string]: {
+      score: number;
+      strength: number;
+      simInfo: Partial<TermPairwiseSimilarity>;
+    };
+  } = {};
 
-      return {
-        score: match?.score || 0,
+  /** get subject matches */
+  const matches = Object.values(response.subject_best_matches || {});
+
+  for (const col of cols) {
+    for (const row of rows) {
+      /** find match corresponding to col/row id */
+      const { score = 0, similarity = {} } =
+        matches.find(
+          ({ match_source, match_target }) =>
+            match_source === row.id && match_target === col.id,
+        ) || {};
+
+      /** sum up row and col scores */
+      col.total += score;
+      row.total += score;
+
+      /** assign cell */
+      cells[col.id + row.id] = {
+        score: score || 0,
         strength: 0,
-        simInfo: pick(match?.similarity, [
+        simInfo: pick(similarity, [
           "ancestor_id",
           "jaccard_similarity",
           "phenodigm_score",
         ]),
       };
-    }),
-  );
-
-  /** get range of cell scores */
-  const scores = cells.map((row) => row.map((col) => col.score)).flat();
-  const min = Math.min(...scores);
-  const max = Math.max(...scores);
+    }
+  }
 
   /** normalize cell scores to 0-1 */
-  cells.forEach((row) =>
-    row.forEach((col) => (col.strength = (col.score - min) / (max - min))),
+  const scores = Object.values(cells).map((value) => value.score);
+  const min = Math.min(...scores);
+  const max = Math.max(...scores);
+  Object.values(cells).forEach(
+    (value) => (value.strength = (value.score - min) / (max - min)),
   );
 
   return { summary, phenogrid: { cols, rows, cells } };

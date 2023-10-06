@@ -25,7 +25,7 @@ $wrap: 500px;
 
 .footer {
   display: flex;
-  z-index: 10;
+  z-index: 1010;
   align-items: center;
   justify-content: space-between;
   padding: 20px;
