@@ -12,7 +12,7 @@
     />
     <AppLink
       v-if="!currentPage"
-      :to="`/${node.id}`"
+      :to="`${absolute ? baseurl : ''}${node.id}`"
       :state="
         breadcrumbs
           ? { breadcrumbs: [...currentBreadcrumbs, ...breadcrumbs] }
@@ -33,6 +33,8 @@ import type { Node } from "@/api/model";
 import { breadcrumbs as currentBreadcrumbs } from "@/global/breadcrumbs";
 import type { Breadcrumb } from "@/global/breadcrumbs";
 
+const { VITE_URL: baseurl } = import.meta.env;
+
 type Props = {
   /** node represented by badge */
   node: Partial<Node> & {
@@ -48,6 +50,8 @@ type Props = {
   breadcrumbs?: Breadcrumb[];
   /** state data to pass through to link component */
   state?: { [key: string]: unknown };
+  /** whether to use absolute link */
+  absolute?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -55,6 +59,7 @@ const props = withDefaults(defineProps<Props>(), {
   link: true,
   breadcrumbs: undefined,
   state: undefined,
+  absolute: false,
 });
 
 /** whether we're already on page we're linking to */

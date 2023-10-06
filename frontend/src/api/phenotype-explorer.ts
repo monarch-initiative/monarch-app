@@ -1,4 +1,4 @@
-import { pick } from "lodash";
+import { pick, uniqBy } from "lodash";
 import type {
   AssociationResults,
   TermPairwiseSimilarity,
@@ -124,12 +124,12 @@ export const compareSetToSet = async (
   summary.sort((a, b) => b.score - a.score);
 
   /** turn objects into array of cols */
-  const cols = Object.values(response.object_termset || {}).map((col) => ({
+  let cols = Object.values(response.object_termset || {}).map((col) => ({
     ...col,
     total: 0,
   }));
   /** turn subjects into array of cols */
-  const rows = Object.values(response.subject_termset || {}).map((row) => ({
+  let rows = Object.values(response.subject_termset || {}).map((row) => ({
     ...row,
     total: 0,
   }));
@@ -149,21 +149,20 @@ export const compareSetToSet = async (
   for (const col of cols) {
     for (const row of rows) {
       /** find match corresponding to col/row id */
-      const { score = 0, similarity = {} } =
-        matches.find(
-          ({ match_source, match_target }) =>
-            match_source === row.id && match_target === col.id,
-        ) || {};
+      const match = matches.find(
+        ({ match_source, match_target }) =>
+          match_source === row.id && match_target === col.id,
+      );
 
       /** sum up row and col scores */
-      col.total += score;
-      row.total += score;
+      col.total += match?.score || 0;
+      row.total += match?.score || 0;
 
       /** assign cell */
       cells[col.id + row.id] = {
-        score: score || 0,
+        score: match?.score || 0,
         strength: 0,
-        simInfo: pick(similarity, [
+        simInfo: pick(match?.similarity, [
           "ancestor_id",
           "jaccard_similarity",
           "phenodigm_score",
@@ -172,15 +171,33 @@ export const compareSetToSet = async (
     }
   }
 
+  /** collect unmatched phenotypes */
+  let unmatched: typeof cols = [];
+
+  /** filter out unmatched phenotypes */
+  cols = cols.filter((col) => {
+    col.total && unmatched.push(col);
+    return col.total;
+  });
+  rows = rows.filter((row) => {
+    row.total && unmatched.push(row);
+    return row.total;
+  });
+
+  unmatched = [];
+
   /** normalize cell scores to 0-1 */
   const scores = Object.values(cells).map((value) => value.score);
   const min = Math.min(...scores);
   const max = Math.max(...scores);
   Object.values(cells).forEach(
-    (value) => (value.strength = (value.score - min) / (max - min)),
+    (value) => (value.strength = (value.score - min) / (max - min || 0)),
   );
 
-  return { summary, phenogrid: { cols, rows, cells } };
+  /** assemble all data needed for phenogrid */
+  const phenogrid = { cols, rows, cells, unmatched };
+
+  return { summary, phenogrid };
 };
 
 export type SetToSet = Awaited<ReturnType<typeof compareSetToSet>>;

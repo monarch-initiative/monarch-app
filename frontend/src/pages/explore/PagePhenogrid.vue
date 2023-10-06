@@ -3,6 +3,7 @@
 -->
 
 <template>
+  <TheSnackbar />
   <div ref="container" class="container">
     <link :href="stylesheet" rel="stylesheet" />
 
@@ -29,6 +30,7 @@ import { isEmpty } from "lodash";
 import { useEventListener, useResizeObserver } from "@vueuse/core";
 import { compareSetToSet } from "@/api/phenotype-explorer";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
+import TheSnackbar from "@/components/TheSnackbar.vue";
 import { useQuery } from "@/util/composables";
 
 /** route info */
@@ -49,7 +51,7 @@ const {
   },
 
   /** default value */
-  { summary: [], phenogrid: { cols: [], rows: [], cells: {} } },
+  { summary: [], phenogrid: { cols: [], rows: [], cells: {}, unmatched: [] } },
 );
 
 /** re-rerun analysis when inputs change */
@@ -60,18 +62,23 @@ watch(
   () => route.query,
   () => {
     const { source = "", target = "" } = route.query;
+
     if (source && typeof source === "string")
       aPhenotypes.value = source.split(",");
     if (target && typeof target === "string")
       bPhenotypes.value = target.split(",");
+
+    runAnalysis();
   },
   { immediate: true, deep: true },
 );
 
 /** get input phenotype sets from parent window message */
 useEventListener("message", (event: MessageEvent) => {
-  if ("source" in event.data) aPhenotypes.value = event.data.source;
-  if ("target" in event.data) bPhenotypes.value = event.data.target;
+  if ("source" in event.data && "target" in event.data) {
+    aPhenotypes.value = event.data.source;
+    bPhenotypes.value = event.data.target;
+  }
 });
 
 /** allow consuming parent to link to css stylesheet */

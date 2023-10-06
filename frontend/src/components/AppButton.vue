@@ -9,7 +9,7 @@
     :class="['button', design, color, { text }]"
     :to="to"
     :type="type"
-    @click="copy ? copyFunc() : click"
+    @click="copy ? copyToClipboard(text) : click"
   >
     <span v-if="text" class="truncate">{{ text }}</span>
     <AppIcon v-if="icon" :icon="icon" />
@@ -52,11 +52,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 /** element ref */
 const button = ref();
-
-/** copy text prop to clipboard */
-async function copyFunc() {
-  copyToClipboard(props.text);
-}
 
 /** type of component to render */
 const component = computed(() => (props.to ? "AppLink" : "button"));

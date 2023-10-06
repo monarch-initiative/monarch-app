@@ -23,9 +23,11 @@
                   {{ col.label }}
                 </div>
                 <template #content>
-                  <AppNodeBadge :node="{ id: col.id, name: col.label }" /> ({{
-                    col.id
-                  }})
+                  <AppNodeBadge
+                    :node="{ id: col.id, name: col.label }"
+                    :absolute="true"
+                  />
+                  ({{ col.id }})
                 </template>
               </tooltip>
             </tr>
@@ -48,9 +50,11 @@
               >
                 {{ row.label }}
                 <template #content>
-                  <AppNodeBadge :node="{ id: row.id, name: row.label }" /> ({{
-                    row.id
-                  }})
+                  <AppNodeBadge
+                    :node="{ id: row.id, name: row.label }"
+                    :absolute="true"
+                  />
+                  ({{ row.id }})
                 </template>
               </tooltip>
 
@@ -71,6 +75,16 @@
                 >
                   <template #content>
                     <div class="mini-table">
+                      <AppNodeBadge
+                        class="span"
+                        :node="{ id: col.id, name: col.label }"
+                        :absolute="true"
+                      />
+                      <AppNodeBadge
+                        class="span"
+                        :node="{ id: row.id, name: row.label }"
+                        :absolute="true"
+                      />
                       <span>Score</span>
                       <span>{{
                         data.cells[col.id + row.id].score.toFixed(2)
@@ -104,7 +118,7 @@
     </AppFlex>
 
     <AppFlex>
-      <tooltip :interactive="true" :append-to="appendToBody" tag="button">
+      <!-- <tooltip :interactive="true" :append-to="appendToBody" tag="button">
         Info&nbsp;<AppIcon icon="circle-question" />
         <template #content>
           <p>
@@ -116,7 +130,7 @@
             eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </p>
         </template>
-      </tooltip>
+      </tooltip> -->
       <AppButton
         v-tooltip="'Download grid as PNG'"
         design="small"
@@ -133,6 +147,13 @@
         />
       </AppFlex>
       <AppCheckbox v-model="reverse" text="Flip" />
+      <AppButton
+        v-tooltip="'Copy unmatched phenotype ids to clipboard'"
+        design="small"
+        icon="copy"
+        :text="`Unmatched (${data.unmatched.length})`"
+        @click="copy"
+      />
     </AppFlex>
   </AppFlex>
 </template>
@@ -149,15 +170,17 @@ import AppSelectSingle, {
   type Option,
   type Options,
 } from "@/components/AppSelectSingle.vue";
+import { snackbar } from "@/components/TheSnackbar.vue";
 import { appendToBody } from "@/global/tooltip";
 import { frame, sleep } from "@/util/debug";
 import { downloadPng, getScreenshot } from "@/util/download";
+import { copyToClipboard } from "@/util/string";
 
 type Props = {
   data: SetToSet["phenogrid"];
 };
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const hovered = ref<{ col: number; row: number }>();
 
@@ -190,7 +213,7 @@ async function download() {
     downloadPng(png, "phenogrid");
   } catch (error) {
     console.error(error);
-    window.alert("Error saving image");
+    snackbar("Error saving image");
   }
 
   /** reset size */
@@ -216,12 +239,19 @@ function sort(array: TermInfo[]): TermInfo[] {
   if (reverse.value) array.reverse();
   return array;
 }
+
+/** copy unmatched phenotype ids to clipboard */
+function copy() {
+  copyToClipboard(
+    props.data.unmatched.map((phenotype) => phenotype.id).join(","),
+  );
+}
 </script>
 
 <style scoped lang="scss">
 .scroll {
   max-width: 100%;
-  max-height: 500px;
+  max-height: calc(100vh - 200px);
   overflow: auto;
   background: $white;
 }
@@ -323,5 +353,9 @@ td {
 
 .hovered {
   font-weight: 600;
+}
+
+.span {
+  grid-column: span 2;
 }
 </style>
