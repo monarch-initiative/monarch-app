@@ -537,7 +537,9 @@ class MultiEntityAssociationResults(Results):
 
     id: str = Field(...)
     name: Optional[str] = Field(None)
-    associated_categories: List[CategoryGroupedAssociationResults] = Field(default_factory=list)
+    associated_categories: List[CategoryGroupedAssociationResults] = Field(
+        default_factory=list
+    )
     limit: int = Field(..., description="""number of items to return in a response""")
     offset: int = Field(..., description="""offset into the total number of items""")
     total: int = Field(..., description="""total number of items matching a query""")

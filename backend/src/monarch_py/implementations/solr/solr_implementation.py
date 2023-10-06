@@ -279,9 +279,11 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         for entity_id in entity:
             ent = self.get_entity(entity_id, extra=False)
             if ent is None:
-                results.append(MultiEntityAssociationResults(
-                    id=entity_id, name="Entity not found", total=0, offset=offset, limit=limit_per_group, associated_categories=[]
-                ))
+                results.append(
+                    MultiEntityAssociationResults(
+                        id=entity_id, name="Entity not found", total=0, offset=0, limit=0, associated_categories=[]
+                    )
+                )
                 continue
             entity_result = MultiEntityAssociationResults(
                 id=ent.id, name=ent.name, total=0, offset=offset, limit=limit_per_group, associated_categories=[]
