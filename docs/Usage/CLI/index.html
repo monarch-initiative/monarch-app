@@ -527,6 +527,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#monarch-multi-entity-associations" class="md-nav__link">
+    monarch multi-entity-associations
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#monarch-schema" class="md-nav__link">
     monarch schema
   </a>
@@ -593,6 +600,13 @@
           <li class="md-nav__item">
   <a href="#monarch-solr-histopheno" class="md-nav__link">
     monarch solr histopheno
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monarch-solr-multi-entity-associations" class="md-nav__link">
+    monarch solr multi-entity-associations
   </a>
   
 </li>
@@ -1180,6 +1194,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#monarch-multi-entity-associations" class="md-nav__link">
+    monarch multi-entity-associations
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#monarch-schema" class="md-nav__link">
     monarch schema
   </a>
@@ -1246,6 +1267,13 @@
           <li class="md-nav__item">
   <a href="#monarch-solr-histopheno" class="md-nav__link">
     monarch solr histopheno
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monarch-solr-multi-entity-associations" class="md-nav__link">
+    monarch solr multi-entity-associations
   </a>
   
 </li>
@@ -1357,6 +1385,7 @@
 <li><code>compare</code>: Compare two entities using semantic...</li>
 <li><code>entity</code>: Retrieve an entity by ID</li>
 <li><code>histopheno</code>: Retrieve the histopheno data for an entity...</li>
+<li><code>multi-entity-associations</code>: Paginate through associations for multiple...</li>
 <li><code>schema</code>: Print the linkml schema for the data model</li>
 <li><code>search</code>: Search for entities</li>
 <li><code>solr</code></li>
@@ -1507,6 +1536,28 @@
 <li><code>-o, --output TEXT</code>: The path to the output file</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
+<h2 id="monarch-multi-entity-associations"><code>monarch multi-entity-associations</code></h2>
+<p>Paginate through associations for multiple entities</p>
+<p>Args:
+    entity: A comma-separated list of entities
+    counterpart_category: A comma-separated list of counterpart categories
+    limit: The number of associations to return
+    offset: The offset of the first association to be retrieved
+    fmt: The format of the output (json, yaml, tsv, table)
+    output: The path to the output file (stdout if not specified)</p>
+<p><strong>Usage</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>multi-entity-associations<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</code></pre></div>
+<p><strong>Options</strong>:</p>
+<ul>
+<li><code>-e, --entity TEXT</code>: Comma-separated list of entities</li>
+<li><code>-c, --counterpart-category TEXT</code></li>
+<li><code>-l, --limit INTEGER</code>: [default: 20]</li>
+<li><code>--offset INTEGER</code>: [default: 0]</li>
+<li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
+<li><code>-o, --output TEXT</code>: The path to the output file</li>
+<li><code>--help</code>: Show this message and exit.</li>
+</ul>
 <h2 id="monarch-schema"><code>monarch schema</code></h2>
 <p>Print the linkml schema for the data model</p>
 <p><strong>Usage</strong>:</p>
@@ -1561,6 +1612,7 @@
 <li><code>download</code>: Download the Monarch Solr KG.</li>
 <li><code>entity</code>: Retrieve an entity by ID</li>
 <li><code>histopheno</code>: Retrieve the histopheno associations for a...</li>
+<li><code>multi-entity-associations</code>: Paginate through associations for multiple...</li>
 <li><code>search</code>: Search for entities</li>
 <li><code>start</code>: Starts a local Solr container.</li>
 <li><code>status</code>: Checks the status of the local Solr...</li>
@@ -1571,7 +1623,6 @@
 <p>Args:
     entity (str): The entity to get association counts for</p>
 <p>Optional Args:
-    update (bool): Whether to re-download the Monarch KG. Default False
     fmt (str): The format of the output (json, yaml, tsv, table). Default JSON
     output (str): The path to the output file. Default stdout</p>
 <p><strong>Usage</strong>:</p>
@@ -1691,7 +1742,6 @@
 <p>Args:
     subject (str): The subject of the association</p>
 <p>Optional Args:
-    update (bool): Whether to re-download the Monarch KG. Default False
     fmt (str): The format of the output (json, yaml, tsv, table). Default JSON
     output (str): The path to the output file. Default stdout</p>
 <p><strong>Usage</strong>:</p>
@@ -1704,6 +1754,28 @@
 <p><strong>Options</strong>:</p>
 <ul>
 <li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: JSON]</li>
+<li><code>-o, --output TEXT</code>: The path to the output file</li>
+<li><code>--help</code>: Show this message and exit.</li>
+</ul>
+<h3 id="monarch-solr-multi-entity-associations"><code>monarch solr multi-entity-associations</code></h3>
+<p>Paginate through associations for multiple entities</p>
+<p>Args:
+    entity: A comma-separated list of entities
+    counterpart_category: A comma-separated list of counterpart categories
+    limit: The number of associations to return
+    offset: The offset of the first association to be retrieved
+    fmt: The format of the output (json, yaml, tsv, table)
+    output: The path to the output file (stdout if not specified)</p>
+<p><strong>Usage</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>solr<span class="w"> </span>multi-entity-associations<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</code></pre></div>
+<p><strong>Options</strong>:</p>
+<ul>
+<li><code>-e, --entity TEXT</code>: Entity ID to get associations for</li>
+<li><code>-c, --counterpart-category TEXT</code>: Counterpart category to get associations for</li>
+<li><code>-l, --limit INTEGER</code>: [default: 20]</li>
+<li><code>--offset INTEGER</code>: [default: 0]</li>
+<li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
 <li><code>-o, --output TEXT</code>: The path to the output file</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
