@@ -184,7 +184,8 @@ export const compareSetToSet = async (
     return row.total;
   });
 
-  unmatched = [];
+  /** deduplicate unmatched phenotypes */
+  unmatched = uniqBy(unmatched, "id");
 
   /** normalize cell scores to 0-1 */
   const scores = Object.values(cells).map((value) => value.score);
