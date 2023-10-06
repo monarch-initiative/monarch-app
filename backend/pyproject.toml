@@ -31,7 +31,6 @@ loguru = "*"
 fastapi = "^0.103.1"
 oaklib = "^0.5.19"
 gunicorn = "^21.2.0"
-tinyrpc = {extras = ["zmq"], version = "^1.1.7"}
 
 
 [tool.poetry.group.dev.dependencies]
