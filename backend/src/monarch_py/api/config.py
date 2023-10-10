@@ -68,8 +68,9 @@ class OakHTTPRequester:
         converted_data = {
             **data,
             **{
-                'subject_termset': data['subject_termset'][0],
-                'object_termset': data['object_termset'][0],
+                # flatten the nested termset dicts
+                'subject_termset': {k: v for d in data['subject_termset'] for k, v in d.items()},
+                'object_termset': {k: v for d in data['object_termset'] for k, v in d.items()},
                 'subject_best_matches': {
                     k: {**v, 'similarity': subject_best_matches_similarity_map[k]}
                     for k, v in data['subject_best_matches'].items()
