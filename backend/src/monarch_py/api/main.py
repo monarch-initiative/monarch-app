@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
+
 from monarch_py.api import association, entity, histopheno, search, semsim
 from monarch_py.api.config import oak
 

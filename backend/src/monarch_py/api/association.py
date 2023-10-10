@@ -35,6 +35,7 @@ async def _get_associations(
     )
     return response
 
+
 @router.get("/multi")
 async def _get_multi_entity_associations(
     entity: Union[List[str], None] = Query(default=None),

@@ -27,7 +27,6 @@ class OakImplementation(SemanticSimilarityInterface):
             start = time.time()
             # self.semsim = get_adapter(f"sqlite:obo:phenio")
 
-
             if phenio_path:
                 logger.debug(f"Creating semsimian adapter using phenio_path at {phenio_path}")
                 self.semsim = get_adapter(f"semsimian:sqlite:{phenio_path}")

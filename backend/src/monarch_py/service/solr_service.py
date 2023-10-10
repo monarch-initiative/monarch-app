@@ -3,14 +3,19 @@ from typing import Dict, List
 
 import requests
 from loguru import logger
-from monarch_py.datamodels.solr import SolrQuery, SolrQueryResult, core
-from monarch_py.utils.utils import escape
 from pydantic import BaseModel
+
+from monarch_py.datamodels.solr import SolrQuery, SolrQueryResult, core
+from monarch_py.utils.utils import escape, set_log_level
 
 
 class SolrService(BaseModel):
     base_url: str
     core: core
+    log_level: str = "INFO"
+
+    def __post_init_post_parse__(self):
+        set_log_level(log_level=self.log_level)
 
     def get(self, id):
         url = f"{self.base_url}/{self.core.value}/get?id={id}"

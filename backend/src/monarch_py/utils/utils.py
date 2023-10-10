@@ -58,10 +58,9 @@ def dict_diff(d1, d2):
 
 def set_log_level(log_level: str):
     """Sets the log level for the application."""
-    import loguru
+    from loguru import logger
 
-    loguru.logger.remove()
-    loguru.logger.add(sys.stderr, level=log_level)
+    logger.configure(handlers=[{"sink": sys.stdout, "level": "ERROR"}])
 
 
 def get_provided_by_link(provided_by: str) -> str:

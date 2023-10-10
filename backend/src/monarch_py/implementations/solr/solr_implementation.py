@@ -43,7 +43,7 @@ from monarch_py.interfaces.entity_interface import EntityInterface
 from monarch_py.interfaces.search_interface import SearchInterface
 from monarch_py.service.curie_service import CurieService
 from monarch_py.service.solr_service import SolrService
-from monarch_py.utils.utils import get_provided_by_link
+from monarch_py.utils.utils import get_provided_by_link, set_log_level
 
 
 @dataclass
@@ -51,6 +51,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
     """Implementation of Monarch Interfaces for Solr endpoint"""
 
     base_url: str = os.getenv("MONARCH_SOLR_URL", "http://localhost:8983/solr")
+    log_level: str = "INFO"
 
     def solr_is_available(self) -> bool:
         """Check if the Solr instance is available"""
@@ -74,6 +75,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
             Entity: Dataclass representing results of an entity search.
             Node: Dataclass representing results of an entity search with extra=True.
         """
+        set_log_level(log_level=self.log_level)
         solr = SolrService(base_url=self.base_url, core=core.ENTITY)
         solr_document = solr.get(id)
         if solr_document is None:
@@ -126,6 +128,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
 
     def _get_associated_entity(self, association: Association, this_entity: Entity) -> Entity:
         """Returns the id, name, and category of the other Entity in an Association given this_entity"""
+
         if this_entity.id == association.subject:
             entity = Entity(
                 id=association.object,
@@ -231,7 +234,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         Returns:
             AssociationResults: Dataclass representing results of an association search.
         """
-
+        set_log_level(log_level=self.log_level)
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
         query = build_association_query(
             category=[category] if isinstance(category, str) else category,
@@ -251,6 +254,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
 
     def get_histopheno(self, subject_closure: str = None) -> HistoPheno:
         """Get histopheno counts for a given subject_closure"""
+        set_log_level(log_level=self.log_level)
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
         query = build_histopheno_query(subject_closure)
         query_result = solr.query(query)
@@ -274,7 +278,8 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
             limit (int, optional): Limit results to specified number. Defaults to 20.
             limit_per_group (int, optional): Limit results to specified number per group. Defaults to 20.
         """
-        solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
+        set_log_level(log_level=self.log_level)
+        solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION, log_level=self.log_level)
         results = []
         for entity_id in entity:
             ent = self.get_entity(entity_id, extra=False)
@@ -343,12 +348,14 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         args = locals()
         args.pop("self", None)
         query = build_search_query(**args)
+        set_log_level(log_level=self.log_level)
         solr = SolrService(base_url=self.base_url, core=core.ENTITY)
         query_result = solr.query(query)
         results = parse_search(query_result)
         return results
 
     def autocomplete(self, q: str) -> SearchResults:
+        set_log_level(log_level=self.log_level)
         solr = SolrService(base_url=self.base_url, core=core.ENTITY)
         query = build_autocomplete_query(q)
         query_result = solr.query(query)
@@ -357,6 +364,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
 
     def get_association_counts(self, entity: str) -> AssociationCountList:
         """Get list of association counts for a given entity"""
+        set_log_level(log_level=self.log_level)
         query = build_association_counts_query(entity)
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
         query_result = solr.query(query)
@@ -375,8 +383,8 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         facet_fields: List[str] = None,
         facet_queries: List[str] = None,
     ) -> SearchResults:
+        set_log_level(log_level=self.log_level)
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
-
         query = build_association_query(
             category=[category] if isinstance(category, str) else category,
             predicate=[predicate] if isinstance(predicate, str) else predicate,
@@ -413,6 +421,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         offset: int = 0,
         limit: int = 5,
     ) -> AssociationTableResults:
+        set_log_level(log_level=self.log_level)
         query = build_association_table_query(
             entity=entity,
             category=category,
