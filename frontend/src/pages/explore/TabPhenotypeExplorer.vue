@@ -221,7 +221,7 @@ const {
   },
 
   /** default value */
-  { summary: [], phenogrid: { cols: [], rows: [], cells: {} } },
+  { summary: [], phenogrid: { cols: [], rows: [], cells: {}, unmatched: [] } },
 );
 
 /** when multi select component runs spread options function */
@@ -238,7 +238,7 @@ function spreadOptions(option: Option, options: Options, set: string) {
 /** clear/reset results */
 function clearResults() {
   comparison.value.summary = [];
-  comparison.value.phenogrid = { cols: [], rows: [], cells: {} };
+  comparison.value.phenogrid = { cols: [], rows: [], cells: {}, unmatched: [] };
 }
 
 /** get description to show below phenotypes select box */
