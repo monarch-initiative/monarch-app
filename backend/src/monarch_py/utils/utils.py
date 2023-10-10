@@ -60,7 +60,7 @@ def set_log_level(log_level: str):
     """Sets the log level for the application."""
     from loguru import logger
 
-    logger.configure(handlers=[{"sink": sys.stdout, "level": "ERROR"}])
+    logger.configure(handlers=[{"sink": sys.stdout, "level": log_level}])
 
 
 def get_provided_by_link(provided_by: str) -> str:
