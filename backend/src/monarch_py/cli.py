@@ -299,8 +299,8 @@ def multi_entity_associations(
     Args:
         entity: A comma-separated list of entities
         counterpart_category: A comma-separated list of counterpart categories
-        limit: The number of associations to return
-        offset: The offset of the first association to be retrieved
+        limit: The number of associations to return per category
+        offset: The offset of the first association to be retrieved, per category
         fmt: The format of the output (json, yaml, tsv, table)
         output: The path to the output file (stdout if not specified)
     """

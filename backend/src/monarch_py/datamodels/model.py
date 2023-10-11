@@ -568,18 +568,18 @@ class AssociationsByCategory(ConfiguredBaseModel):
     counterpart_category: Optional[str] = Field(
         None, description="""The category of the counterpart entity"""
     )
-    associations: Optional[List[str]] = Field(
+    total: int = Field(..., description="""total number of items matching a query""")
+    associations: Optional[List[CounterpartAssociation]] = Field(
         default_factory=list,
         description="""A list of associations for the entity with the given category""",
     )
-    total: int = Field(..., description="""total number of items matching a query""")
 
 
 class CounterpartAssociation(ConfiguredBaseModel):
 
     id: str = Field(...)
     category: Optional[str] = Field(None)
-    counterpart: str = Field(..., description="""The id of the counterpart entity""")
+    counterpart_id: str = Field(..., description="""The id of the counterpart entity""")
     original_counterpart: Optional[str] = Field(
         None, description="""The id of the original counterpart entity"""
     )
@@ -698,7 +698,7 @@ class EntityAssociatedCategories(ConfiguredBaseModel):
     A specialized class to hold the associated categories for a given entity
     """
 
-    entity: str = Field(..., description="""The id of the entity entity""")
+    entity_id: str = Field(..., description="""The id of the entity entity""")
     entity_label: Optional[str] = Field(
         None, description="""The name of the entity entity"""
     )

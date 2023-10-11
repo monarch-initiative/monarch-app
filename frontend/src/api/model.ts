@@ -399,17 +399,17 @@ export interface SearchResults extends Results {
 export interface AssociationsByCategory {
     /** The category of the counterpart entity */
     counterpart_category?: string,
-    /** A list of associations for the entity with the given category */
-    associations?: AssociationId[],
     /** total number of items matching a query */
     total: number,
+    /** A list of associations for the entity with the given category */
+    associations?: CounterpartAssociation[],
 };
 
 export interface CounterpartAssociation {
     id: string,
     category?: string,
     /** The id of the counterpart entity */
-    counterpart: string,
+    counterpart_id: string,
     /** The id of the original counterpart entity */
     original_counterpart?: string,
     /** The namespace/prefix of the counterpart entity */
@@ -487,7 +487,7 @@ export interface CounterpartAssociation {
  */
 export interface EntityAssociatedCategories {
     /** The id of the entity entity */
-    entity: string,
+    entity_id: string,
     /** The name of the entity entity */
     entity_label?: string,
     /** The id of the original entity entity */

@@ -22,7 +22,6 @@ enums:
         description: >-
           An association for which a specified entity is the subject or part of the subject closure
 
-
 classes:
   Association:
     slots:
@@ -230,13 +229,13 @@ classes:
   AssociationsByCategory:
     slots:
       - counterpart_category
-      - associations
       - total
+      - associations
   CounterpartAssociation:
     slots:
       - id
       - category
-      - counterpart
+      - counterpart_id
       - original_counterpart
       - counterpart_namespace
       - counterpart_category
@@ -283,7 +282,7 @@ classes:
   EntityAssociatedCategories:
     description: A specialized class to hold the associated categories for a given entity
     slots:
-      - entity
+      - entity_id
       - entity_label
       - original_entity
       - entity_namespace
@@ -298,7 +297,6 @@ classes:
       - offset_per_category
       - limit_per_category
       - entities
-
 
 slots:
   aggregator_knowledge_source:
@@ -464,7 +462,7 @@ slots:
     description: Field containing onset_qualifier id and the ids of all of its ancestors
   onset_qualifier_closure_label:
     multivalued: true
-    description: Field containing onset_qualifier name and the names of all of its ancestors  
+    description: Field containing onset_qualifier name and the names of all of its ancestors
   original_object:
     range: string
   original_subject:
@@ -583,15 +581,16 @@ slots:
     required: true
   associations:
     description: A list of associations for the entity with the given category
-    range: Association
+    range: CounterpartAssociation
     multivalued: true
+    inlined_as_list: true
   entities:
     description: A list of entities for which associations were found
     range: EntityAssociatedCategories
     multivalued: true
     # inlined_as_list: true
     required: true
-  counterpart:
+  counterpart_id:
     description: The id of the counterpart entity
     required: true
   original_counterpart:
@@ -614,7 +613,7 @@ slots:
     is_a: in_taxon
   counterpart_taxon_label:
     is_a: in_taxon_label
-  entity:
+  entity_id:
     description: The id of the entity entity
     required: true
   original_entity:

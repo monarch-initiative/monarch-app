@@ -8,6 +8,7 @@ from monarch_py.datamodels.model import (
     AssociationDirectionEnum,
     AssociationResults,
     AssociationTableResults,
+    CounterpartAssociation,
     DirectionalAssociation,
     Entity,
     ExpandedCurie,
@@ -77,6 +78,93 @@ def parse_association_counts(query_result: SolrQueryResult, entity: str) -> Asso
                     category=agm.category,
                 )
     return AssociationCountList(items=list(association_count_dict.values()))
+
+
+def parse_counterpart_associations(query_result: SolrQueryResult, entity: str) -> List[CounterpartAssociation]:
+    associations = []
+    for doc in query_result.response.docs:
+        try:
+            association = Association(**doc)
+        except ValidationError:
+            logger.error(f"Validation error for {doc}")
+            raise ValidationError
+        provided_by_link = ExpandedCurie(
+            id=association.provided_by.replace("_nodes", "").replace("_edges", ""),
+            url=get_provided_by_link(association.provided_by),
+        )
+        if association.subject == entity or entity in association.subject_closure:
+            counterpart_id = association.object
+            original_counterpart = association.original_object
+            counterpart_namespace = association.object_namespace
+            counterpart_category = association.object_category
+            counterpart_closure = association.object_closure
+            counterpart_label = association.object_label
+            counterpart_closure_label = association.object_closure_label
+            counterpart_taxon = association.object_taxon
+            counterpart_taxon_label = association.object_taxon_label
+        elif association.object == entity or entity in association.object_closure:
+            counterpart_id = association.subject
+            original_counterpart = association.original_subject
+            counterpart_namespace = association.subject_namespace
+            counterpart_category = association.subject_category
+            counterpart_closure = association.subject_closure
+            counterpart_label = association.subject_label
+            counterpart_closure_label = association.subject_closure_label
+            counterpart_taxon = association.subject_taxon
+            counterpart_taxon_label = association.subject_taxon_label
+        else:
+            raise ValueError(f"Entity {entity} not found in association {association}")
+
+        counterpart_association = CounterpartAssociation(
+            id=association.id,
+            category=association.category,
+            counterpart_id=counterpart_id,
+            original_counterpart=original_counterpart,
+            counterpart_namespace=counterpart_namespace,
+            counterpart_category=counterpart_category,
+            counterpart_closure=counterpart_closure,
+            counterpart_label=counterpart_label,
+            counterpart_closure_label=counterpart_closure_label,
+            counterpart_taxon=counterpart_taxon,
+            counterpart_taxon_label=counterpart_taxon_label,
+            predicate=association.predicate,
+            primary_knowledge_source=association.primary_knowledge_source,
+            aggregator_knowledge_source=association.aggregator_knowledge_source,
+            negated=association.negated,
+            pathway=association.pathway,
+            provided_by=association.provided_by,
+            provided_by_link=provided_by_link,
+            publications=association.publications,
+            qualifiers=association.qualifiers,
+            has_evidence=association.has_evidence,
+            evidence_count=association.evidence_count,
+            frequency_qualifier=association.frequency_qualifier,
+            onset_qualifier=association.onset_qualifier,
+            sex_qualifier=association.sex_qualifier,
+            stage_qualifier=association.stage_qualifier,
+            frequency_qualifier_label=association.frequency_qualifier_label,
+            frequency_qualifier_namespace=association.frequency_qualifier_namespace,
+            frequency_qualifier_category=association.frequency_qualifier_category,
+            frequency_qualifier_closure=association.frequency_qualifier_closure,
+            frequency_qualifier_closure_label=association.frequency_qualifier_closure_label,
+            onset_qualifier_label=association.onset_qualifier_label,
+            onset_qualifier_namespace=association.onset_qualifier_namespace,
+            onset_qualifier_category=association.onset_qualifier_category,
+            onset_qualifier_closure=association.onset_qualifier_closure,
+            onset_qualifier_closure_label=association.onset_qualifier_closure_label,
+            sex_qualifier_label=association.sex_qualifier_label,
+            sex_qualifier_namespace=association.sex_qualifier_namespace,
+            sex_qualifier_category=association.sex_qualifier_category,
+            sex_qualifier_closure=association.sex_qualifier_closure,
+            sex_qualifier_closure_label=association.sex_qualifier_closure_label,
+            stage_qualifier_label=association.stage_qualifier_label,
+            stage_qualifier_namespace=association.stage_qualifier_namespace,
+            stage_qualifier_category=association.stage_qualifier_category,
+            stage_qualifier_closure=association.stage_qualifier_closure,
+            stage_qualifier_closure_label=association.stage_qualifier_closure_label,
+        )
+        associations.append(counterpart_association)
+    return associations
 
 
 def parse_entity(solr_document: Dict) -> Entity:

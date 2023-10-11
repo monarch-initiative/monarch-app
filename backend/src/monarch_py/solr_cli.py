@@ -198,7 +198,8 @@ def multi_entity_associations(
     args = locals()
     args.pop("fmt", None)
     args.pop("output", None)
-    args['limit_per_group'] = args.pop('limit')
+    args['offset_per_category'] = args.pop('offset')
+    args['limit_per_category'] = args.pop('limit')
 
     solr = get_solr(update=False)
     response = solr.get_multi_entity_associations(**args)
