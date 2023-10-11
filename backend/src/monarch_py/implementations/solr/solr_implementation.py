@@ -8,7 +8,9 @@ from monarch_py.datamodels.model import (
     AssociationCountList,
     AssociationResults,
     AssociationTableResults,
-    CategoryGroupedAssociationResults,
+    AssociationsByCategory,
+    CounterpartAssociation,
+    EntityAssociatedCategories,
     Entity,
     ExpandedCurie,
     HistoPheno,
@@ -296,7 +298,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
                     query_result = solr.query(query)
                     associations = parse_associations(query_result)
                     entity_result.associated_categories.append(
-                        CategoryGroupedAssociationResults(
+                        AssociationsByCategory(
                             counterpart_category=category,
                             items=associations.items,
                             total=associations.total,

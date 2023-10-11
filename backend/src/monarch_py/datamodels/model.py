@@ -45,6 +45,7 @@ class AssociationDirectionEnum(str, Enum):
 class Association(ConfiguredBaseModel):
 
     id: str = Field(...)
+    category: Optional[str] = Field(None)
     subject: str = Field(...)
     original_subject: Optional[str] = Field(None)
     subject_namespace: Optional[str] = Field(
@@ -55,14 +56,14 @@ class Association(ConfiguredBaseModel):
     )
     subject_closure: Optional[List[str]] = Field(
         default_factory=list,
-        description="""Field containing subject id and the ids of all of it's ancestors""",
+        description="""Field containing subject id and the ids of all of its ancestors""",
     )
     subject_label: Optional[str] = Field(
         None, description="""The name of the subject entity"""
     )
     subject_closure_label: Optional[List[str]] = Field(
         default_factory=list,
-        description="""Field containing subject name and the names of all of it's ancestors""",
+        description="""Field containing subject name and the names of all of its ancestors""",
     )
     subject_taxon: Optional[str] = Field(None)
     subject_taxon_label: Optional[str] = Field(None)
@@ -77,21 +78,21 @@ class Association(ConfiguredBaseModel):
     )
     object_closure: Optional[List[str]] = Field(
         default_factory=list,
-        description="""Field containing object id and the ids of all of it's ancestors""",
+        description="""Field containing object id and the ids of all of its ancestors""",
     )
     object_label: Optional[str] = Field(
         None, description="""The name of the object entity"""
     )
     object_closure_label: Optional[List[str]] = Field(
         default_factory=list,
-        description="""Field containing object name and the names of all of it's ancestors""",
+        description="""Field containing object name and the names of all of its ancestors""",
     )
     object_taxon: Optional[str] = Field(None)
     object_taxon_label: Optional[str] = Field(None)
     primary_knowledge_source: Optional[str] = Field(None)
     aggregator_knowledge_source: Optional[List[str]] = Field(default_factory=list)
-    category: Optional[str] = Field(None)
     negated: Optional[bool] = Field(None)
+    pathway: Optional[str] = Field(None)
     provided_by: Optional[str] = Field(None)
     provided_by_link: Optional[ExpandedCurie] = Field(
         None,
@@ -99,16 +100,15 @@ class Association(ConfiguredBaseModel):
     )
     publications: Optional[List[str]] = Field(default_factory=list)
     qualifiers: Optional[List[str]] = Field(default_factory=list)
-    frequency_qualifier: Optional[str] = Field(None)
     has_evidence: Optional[List[str]] = Field(default_factory=list)
-    onset_qualifier: Optional[str] = Field(None)
-    sex_qualifier: Optional[str] = Field(None)
-    stage_qualifier: Optional[str] = Field(None)
     evidence_count: Optional[int] = Field(
         None,
         description="""count of supporting documents, evidence codes, and sources supplying evidence""",
     )
-    pathway: Optional[str] = Field(None)
+    frequency_qualifier: Optional[str] = Field(None)
+    onset_qualifier: Optional[str] = Field(None)
+    sex_qualifier: Optional[str] = Field(None)
+    stage_qualifier: Optional[str] = Field(None)
     frequency_qualifier_label: Optional[str] = Field(
         None, description="""The name of the frequency_qualifier entity"""
     )
@@ -120,11 +120,11 @@ class Association(ConfiguredBaseModel):
     )
     frequency_qualifier_closure: Optional[List[str]] = Field(
         default_factory=list,
-        description="""Field containing frequency_qualifier id and the ids of all of it's ancestors""",
+        description="""Field containing frequency_qualifier id and the ids of all of its ancestors""",
     )
     frequency_qualifier_closure_label: Optional[List[str]] = Field(
         default_factory=list,
-        description="""Field containing frequency_qualifier name and the names of all of it's ancestors""",
+        description="""Field containing frequency_qualifier name and the names of all of its ancestors""",
     )
     onset_qualifier_label: Optional[str] = Field(
         None, description="""The name of the onset_qualifier entity"""
@@ -137,11 +137,11 @@ class Association(ConfiguredBaseModel):
     )
     onset_qualifier_closure: Optional[List[str]] = Field(
         default_factory=list,
-        description="""Field containing onset_qualifier id and the ids of all of it's ancestors""",
+        description="""Field containing onset_qualifier id and the ids of all of its ancestors""",
     )
     onset_qualifier_closure_label: Optional[List[str]] = Field(
         default_factory=list,
-        description="""Field containing onset_qualifier name and the names of all of it's ancestors""",
+        description="""Field containing onset_qualifier name and the names of all of its ancestors""",
     )
     sex_qualifier_label: Optional[str] = Field(
         None, description="""The name of the sex_qualifier entity"""
@@ -154,11 +154,11 @@ class Association(ConfiguredBaseModel):
     )
     sex_qualifier_closure: Optional[List[str]] = Field(
         default_factory=list,
-        description="""Field containing sex_qualifier id and the ids of all of it's ancestors""",
+        description="""Field containing sex_qualifier id and the ids of all of its ancestors""",
     )
     sex_qualifier_closure_label: Optional[List[str]] = Field(
         default_factory=list,
-        description="""Field containing sex_qualifier name and the names of all of it's ancestors""",
+        description="""Field containing sex_qualifier name and the names of all of its ancestors""",
     )
     stage_qualifier_label: Optional[str] = Field(
         None, description="""The name of the stage_qualifier entity"""
@@ -171,11 +171,11 @@ class Association(ConfiguredBaseModel):
     )
     stage_qualifier_closure: Optional[List[str]] = Field(
         default_factory=list,
-        description="""Field containing stage_qualifier id and the ids of all of it's ancestors""",
+        description="""Field containing stage_qualifier id and the ids of all of its ancestors""",
     )
     stage_qualifier_closure_label: Optional[List[str]] = Field(
         default_factory=list,
-        description="""Field containing stage_qualifier name and the names of all of it's ancestors""",
+        description="""Field containing stage_qualifier name and the names of all of its ancestors""",
     )
 
 
@@ -215,7 +215,7 @@ class AssociationTypeMapping(ConfiguredBaseModel):
 
 class DirectionalAssociation(Association):
     """
-    An association that gives it's direction relative to a specified entity
+    An association that gives its direction relative to a specified entity
     """
 
     direction: AssociationDirectionEnum = Field(
@@ -223,6 +223,7 @@ class DirectionalAssociation(Association):
         description="""The directionality of the association relative to a given entity for an association_count. If the entity is the subject or in the subject closure, the direction is forwards, if it is the object or in the object closure, the direction is backwards.""",
     )
     id: str = Field(...)
+    category: Optional[str] = Field(None)
     subject: str = Field(...)
     original_subject: Optional[str] = Field(None)
     subject_namespace: Optional[str] = Field(
@@ -233,14 +234,14 @@ class DirectionalAssociation(Association):
     )
     subject_closure: Optional[List[str]] = Field(
         default_factory=list,
-        description="""Field containing subject id and the ids of all of it's ancestors""",
+        description="""Field containing subject id and the ids of all of its ancestors""",
     )
     subject_label: Optional[str] = Field(
         None, description="""The name of the subject entity"""
     )
     subject_closure_label: Optional[List[str]] = Field(
         default_factory=list,
-        description="""Field containing subject name and the names of all of it's ancestors""",
+        description="""Field containing subject name and the names of all of its ancestors""",
     )
     subject_taxon: Optional[str] = Field(None)
     subject_taxon_label: Optional[str] = Field(None)
@@ -255,21 +256,21 @@ class DirectionalAssociation(Association):
     )
     object_closure: Optional[List[str]] = Field(
         default_factory=list,
-        description="""Field containing object id and the ids of all of it's ancestors""",
+        description="""Field containing object id and the ids of all of its ancestors""",
     )
     object_label: Optional[str] = Field(
         None, description="""The name of the object entity"""
     )
     object_closure_label: Optional[List[str]] = Field(
         default_factory=list,
-        description="""Field containing object name and the names of all of it's ancestors""",
+        description="""Field containing object name and the names of all of its ancestors""",
     )
     object_taxon: Optional[str] = Field(None)
     object_taxon_label: Optional[str] = Field(None)
     primary_knowledge_source: Optional[str] = Field(None)
     aggregator_knowledge_source: Optional[List[str]] = Field(default_factory=list)
-    category: Optional[str] = Field(None)
     negated: Optional[bool] = Field(None)
+    pathway: Optional[str] = Field(None)
     provided_by: Optional[str] = Field(None)
     provided_by_link: Optional[ExpandedCurie] = Field(
         None,
@@ -277,16 +278,15 @@ class DirectionalAssociation(Association):
     )
     publications: Optional[List[str]] = Field(default_factory=list)
     qualifiers: Optional[List[str]] = Field(default_factory=list)
-    frequency_qualifier: Optional[str] = Field(None)
     has_evidence: Optional[List[str]] = Field(default_factory=list)
-    onset_qualifier: Optional[str] = Field(None)
-    sex_qualifier: Optional[str] = Field(None)
-    stage_qualifier: Optional[str] = Field(None)
     evidence_count: Optional[int] = Field(
         None,
         description="""count of supporting documents, evidence codes, and sources supplying evidence""",
     )
-    pathway: Optional[str] = Field(None)
+    frequency_qualifier: Optional[str] = Field(None)
+    onset_qualifier: Optional[str] = Field(None)
+    sex_qualifier: Optional[str] = Field(None)
+    stage_qualifier: Optional[str] = Field(None)
     frequency_qualifier_label: Optional[str] = Field(
         None, description="""The name of the frequency_qualifier entity"""
     )
@@ -298,11 +298,11 @@ class DirectionalAssociation(Association):
     )
     frequency_qualifier_closure: Optional[List[str]] = Field(
         default_factory=list,
-        description="""Field containing frequency_qualifier id and the ids of all of it's ancestors""",
+        description="""Field containing frequency_qualifier id and the ids of all of its ancestors""",
     )
     frequency_qualifier_closure_label: Optional[List[str]] = Field(
         default_factory=list,
-        description="""Field containing frequency_qualifier name and the names of all of it's ancestors""",
+        description="""Field containing frequency_qualifier name and the names of all of its ancestors""",
     )
     onset_qualifier_label: Optional[str] = Field(
         None, description="""The name of the onset_qualifier entity"""
@@ -315,11 +315,11 @@ class DirectionalAssociation(Association):
     )
     onset_qualifier_closure: Optional[List[str]] = Field(
         default_factory=list,
-        description="""Field containing onset_qualifier id and the ids of all of it's ancestors""",
+        description="""Field containing onset_qualifier id and the ids of all of its ancestors""",
     )
     onset_qualifier_closure_label: Optional[List[str]] = Field(
         default_factory=list,
-        description="""Field containing onset_qualifier name and the names of all of it's ancestors""",
+        description="""Field containing onset_qualifier name and the names of all of its ancestors""",
     )
     sex_qualifier_label: Optional[str] = Field(
         None, description="""The name of the sex_qualifier entity"""
@@ -332,11 +332,11 @@ class DirectionalAssociation(Association):
     )
     sex_qualifier_closure: Optional[List[str]] = Field(
         default_factory=list,
-        description="""Field containing sex_qualifier id and the ids of all of it's ancestors""",
+        description="""Field containing sex_qualifier id and the ids of all of its ancestors""",
     )
     sex_qualifier_closure_label: Optional[List[str]] = Field(
         default_factory=list,
-        description="""Field containing sex_qualifier name and the names of all of it's ancestors""",
+        description="""Field containing sex_qualifier name and the names of all of its ancestors""",
     )
     stage_qualifier_label: Optional[str] = Field(
         None, description="""The name of the stage_qualifier entity"""
@@ -349,11 +349,11 @@ class DirectionalAssociation(Association):
     )
     stage_qualifier_closure: Optional[List[str]] = Field(
         default_factory=list,
-        description="""Field containing stage_qualifier id and the ids of all of it's ancestors""",
+        description="""Field containing stage_qualifier id and the ids of all of its ancestors""",
     )
     stage_qualifier_closure_label: Optional[List[str]] = Field(
         default_factory=list,
-        description="""Field containing stage_qualifier name and the names of all of it's ancestors""",
+        description="""Field containing stage_qualifier name and the names of all of its ancestors""",
     )
 
 
@@ -507,38 +507,11 @@ class AssociationTableResults(Results):
     total: int = Field(..., description="""total number of items matching a query""")
 
 
-class CategoryGroupedAssociationResults(Results):
-
-    counterpart_category: Optional[str] = Field(
-        None,
-        description="""The category of the counterpart entity in a given association,  eg. the category of the entity that is not the subject""",
-    )
-    items: List[Association] = Field(
-        default_factory=list,
-        description="""A collection of items, with the type to be overriden by slot_usage""",
-    )
-    limit: int = Field(..., description="""number of items to return in a response""")
-    offset: int = Field(..., description="""offset into the total number of items""")
-    total: int = Field(..., description="""total number of items matching a query""")
-
-
 class EntityResults(Results):
 
     items: List[Entity] = Field(
         default_factory=list,
         description="""A collection of items, with the type to be overriden by slot_usage""",
-    )
-    limit: int = Field(..., description="""number of items to return in a response""")
-    offset: int = Field(..., description="""offset into the total number of items""")
-    total: int = Field(..., description="""total number of items matching a query""")
-
-
-class MultiEntityAssociationResults(Results):
-
-    id: str = Field(...)
-    name: Optional[str] = Field(None)
-    associated_categories: List[CategoryGroupedAssociationResults] = Field(
-        default_factory=list
     )
     limit: int = Field(..., description="""number of items to return in a response""")
     offset: int = Field(..., description="""offset into the total number of items""")
@@ -588,6 +561,180 @@ class SearchResults(Results):
     limit: int = Field(..., description="""number of items to return in a response""")
     offset: int = Field(..., description="""offset into the total number of items""")
     total: int = Field(..., description="""total number of items matching a query""")
+
+
+class AssociationsByCategory(ConfiguredBaseModel):
+
+    counterpart_category: Optional[str] = Field(
+        None, description="""The category of the counterpart entity"""
+    )
+    associations: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""A list of associations for the entity with the given category""",
+    )
+    total: int = Field(..., description="""total number of items matching a query""")
+
+
+class CounterpartAssociation(ConfiguredBaseModel):
+
+    id: str = Field(...)
+    category: Optional[str] = Field(None)
+    counterpart: str = Field(..., description="""The id of the counterpart entity""")
+    original_counterpart: Optional[str] = Field(
+        None, description="""The id of the original counterpart entity"""
+    )
+    counterpart_namespace: Optional[str] = Field(
+        None, description="""The namespace/prefix of the counterpart entity"""
+    )
+    counterpart_category: Optional[str] = Field(
+        None, description="""The category of the counterpart entity"""
+    )
+    counterpart_closure: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing counterpart id and the ids of all of its ancestors""",
+    )
+    counterpart_label: Optional[str] = Field(
+        None, description="""The name of the counterpart entity"""
+    )
+    counterpart_closure_label: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing counterpart name and the names of all of its ancestors""",
+    )
+    counterpart_taxon: Optional[str] = Field(None)
+    counterpart_taxon_label: Optional[str] = Field(None)
+    predicate: str = Field(...)
+    primary_knowledge_source: Optional[str] = Field(None)
+    aggregator_knowledge_source: Optional[List[str]] = Field(default_factory=list)
+    negated: Optional[bool] = Field(None)
+    pathway: Optional[str] = Field(None)
+    provided_by: Optional[str] = Field(None)
+    provided_by_link: Optional[ExpandedCurie] = Field(
+        None,
+        description="""A link to the docs for the knowledge source that provided the node/edge.""",
+    )
+    publications: Optional[List[str]] = Field(default_factory=list)
+    qualifiers: Optional[List[str]] = Field(default_factory=list)
+    has_evidence: Optional[List[str]] = Field(default_factory=list)
+    evidence_count: Optional[int] = Field(
+        None,
+        description="""count of supporting documents, evidence codes, and sources supplying evidence""",
+    )
+    frequency_qualifier: Optional[str] = Field(None)
+    onset_qualifier: Optional[str] = Field(None)
+    sex_qualifier: Optional[str] = Field(None)
+    stage_qualifier: Optional[str] = Field(None)
+    frequency_qualifier_label: Optional[str] = Field(
+        None, description="""The name of the frequency_qualifier entity"""
+    )
+    frequency_qualifier_namespace: Optional[str] = Field(
+        None, description="""The namespace/prefix of the frequency_qualifier entity"""
+    )
+    frequency_qualifier_category: Optional[str] = Field(
+        None, description="""The category of the frequency_qualifier entity"""
+    )
+    frequency_qualifier_closure: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing frequency_qualifier id and the ids of all of its ancestors""",
+    )
+    frequency_qualifier_closure_label: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing frequency_qualifier name and the names of all of its ancestors""",
+    )
+    onset_qualifier_label: Optional[str] = Field(
+        None, description="""The name of the onset_qualifier entity"""
+    )
+    onset_qualifier_namespace: Optional[str] = Field(
+        None, description="""The namespace/prefix of the onset_qualifier entity"""
+    )
+    onset_qualifier_category: Optional[str] = Field(
+        None, description="""The category of the onset_qualifier entity"""
+    )
+    onset_qualifier_closure: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing onset_qualifier id and the ids of all of its ancestors""",
+    )
+    onset_qualifier_closure_label: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing onset_qualifier name and the names of all of its ancestors""",
+    )
+    sex_qualifier_label: Optional[str] = Field(
+        None, description="""The name of the sex_qualifier entity"""
+    )
+    sex_qualifier_namespace: Optional[str] = Field(
+        None, description="""The namespace/prefix of the sex_qualifier entity"""
+    )
+    sex_qualifier_category: Optional[str] = Field(
+        None, description="""The category of the sex_qualifier entity"""
+    )
+    sex_qualifier_closure: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing sex_qualifier id and the ids of all of its ancestors""",
+    )
+    sex_qualifier_closure_label: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing sex_qualifier name and the names of all of its ancestors""",
+    )
+    stage_qualifier_label: Optional[str] = Field(
+        None, description="""The name of the stage_qualifier entity"""
+    )
+    stage_qualifier_namespace: Optional[str] = Field(
+        None, description="""The namespace/prefix of the stage_qualifier entity"""
+    )
+    stage_qualifier_category: Optional[str] = Field(
+        None, description="""The category of the stage_qualifier entity"""
+    )
+    stage_qualifier_closure: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing stage_qualifier id and the ids of all of its ancestors""",
+    )
+    stage_qualifier_closure_label: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing stage_qualifier name and the names of all of its ancestors""",
+    )
+
+
+class EntityAssociatedCategories(ConfiguredBaseModel):
+    """
+    A specialized class to hold the associated categories for a given entity
+    """
+
+    entity: str = Field(..., description="""The id of the entity entity""")
+    entity_label: Optional[str] = Field(
+        None, description="""The name of the entity entity"""
+    )
+    original_entity: Optional[str] = Field(
+        None, description="""The id of the original entity entity"""
+    )
+    entity_namespace: Optional[str] = Field(
+        None, description="""The namespace/prefix of the entity entity"""
+    )
+    entity_category: Optional[str] = Field(
+        None, description="""The category of the entity entity"""
+    )
+    entity_closure: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing entity id and the ids of all of its ancestors""",
+    )
+    entity_closure_label: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing entity name and the names of all of its ancestors""",
+    )
+    entity_taxon: Optional[str] = Field(None)
+    entity_taxon_label: Optional[str] = Field(None)
+    associated_categories: List[AssociationsByCategory] = Field(
+        default_factory=list,
+        description="""A list of associated categories for the entity""",
+    )
+
+
+class MultiEntityAssociationResults(ConfiguredBaseModel):
+
+    offset_per_category: int = Field(...)
+    limit_per_category: int = Field(...)
+    entities: List[EntityAssociatedCategories] = Field(
+        default_factory=list,
+        description="""A list of entities for which associations were found""",
+    )
 
 
 class PairwiseSimilarity(ConfiguredBaseModel):
@@ -703,11 +850,13 @@ NodeHierarchy.update_forward_refs()
 Results.update_forward_refs()
 AssociationResults.update_forward_refs()
 AssociationTableResults.update_forward_refs()
-CategoryGroupedAssociationResults.update_forward_refs()
 EntityResults.update_forward_refs()
-MultiEntityAssociationResults.update_forward_refs()
 SearchResult.update_forward_refs()
 SearchResults.update_forward_refs()
+AssociationsByCategory.update_forward_refs()
+CounterpartAssociation.update_forward_refs()
+EntityAssociatedCategories.update_forward_refs()
+MultiEntityAssociationResults.update_forward_refs()
 PairwiseSimilarity.update_forward_refs()
 TermPairwiseSimilarity.update_forward_refs()
 TermSetPairwiseSimilarity.update_forward_refs()

@@ -22,10 +22,12 @@ enums:
         description: >-
           An association for which a specified entity is the subject or part of the subject closure
 
+
 classes:
   Association:
     slots:
       - id
+      - category
       - subject
       - original_subject
       - subject_namespace
@@ -47,29 +49,18 @@ classes:
       - object_taxon_label
       - primary_knowledge_source
       - aggregator_knowledge_source
-      - category
       - negated
+      - pathway
       - provided_by
       - provided_by_link
       - publications
       - qualifiers
-      - frequency_qualifier
       - has_evidence
+      - evidence_count
+      - frequency_qualifier
       - onset_qualifier
       - sex_qualifier
       - stage_qualifier
-      - evidence_count
-      - pathway
-      - subject_label
-      - subject_namespace
-      - subject_category
-      - subject_closure
-      - subject_closure_label
-      - object_label
-      - object_namespace
-      - object_category
-      - object_closure
-      - object_closure_label
       - frequency_qualifier_label
       - frequency_qualifier_namespace
       - frequency_qualifier_category
@@ -142,18 +133,10 @@ classes:
         description: The biolink category to use in queries for this association type
         required: true
         multivalued: false
-  CategoryGroupedAssociationResults:
-    is_a: Results
-    slots:
-      - counterpart_category
-      - items
-    slot_usage:
-      items:
-        range: Association
   DirectionalAssociation:
     is_a: Association
     description: >-
-      An association that gives it's direction relative to a specified entity
+      An association that gives its direction relative to a specified entity
     slots:
       - direction
   ExpandedCurie:
@@ -201,12 +184,6 @@ classes:
     is_a: FacetValue
     slots:
       - id
-  MultiEntityAssociationResults:
-    is_a: Results
-    slots:
-      - id
-      - name
-      - associated_categories
   Node:
     description: UI container class extending Entity with additional information
     is_a: Entity
@@ -249,17 +226,85 @@ classes:
     slot_usage:
       items:
         range: SearchResult
+  ### For Multi-Entity Associations
+  AssociationsByCategory:
+    slots:
+      - counterpart_category
+      - associations
+      - total
+  CounterpartAssociation:
+    slots:
+      - id
+      - category
+      - counterpart
+      - original_counterpart
+      - counterpart_namespace
+      - counterpart_category
+      - counterpart_closure
+      - counterpart_label
+      - counterpart_closure_label
+      - counterpart_taxon
+      - counterpart_taxon_label
+      - predicate
+      - primary_knowledge_source
+      - aggregator_knowledge_source
+      - negated
+      - pathway
+      - provided_by
+      - provided_by_link
+      - publications
+      - qualifiers
+      - has_evidence
+      - evidence_count
+      - frequency_qualifier
+      - onset_qualifier
+      - sex_qualifier
+      - stage_qualifier
+      - frequency_qualifier_label
+      - frequency_qualifier_namespace
+      - frequency_qualifier_category
+      - frequency_qualifier_closure
+      - frequency_qualifier_closure_label
+      - onset_qualifier_label
+      - onset_qualifier_namespace
+      - onset_qualifier_category
+      - onset_qualifier_closure
+      - onset_qualifier_closure_label
+      - sex_qualifier_label
+      - sex_qualifier_namespace
+      - sex_qualifier_category
+      - sex_qualifier_closure
+      - sex_qualifier_closure_label
+      - stage_qualifier_label
+      - stage_qualifier_namespace
+      - stage_qualifier_category
+      - stage_qualifier_closure
+      - stage_qualifier_closure_label
+  EntityAssociatedCategories:
+    description: A specialized class to hold the associated categories for a given entity
+    slots:
+      - entity
+      - entity_label
+      - original_entity
+      - entity_namespace
+      - entity_category
+      - entity_closure
+      - entity_closure_label
+      - entity_taxon
+      - entity_taxon_label
+      - associated_categories
+  MultiEntityAssociationResults:
+    slots:
+      - offset_per_category
+      - limit_per_category
+      - entities
+
 
 slots:
   aggregator_knowledge_source:
     multivalued: true
   association_counts:
     range: AssociationCount
-    multivalued: true
-    inlined_as_list: true
-    required: true
-  associated_categories:
-    range: CategoryGroupedAssociationResults
     multivalued: true
     inlined_as_list: true
     required: true
@@ -280,11 +325,6 @@ slots:
   count:
     description: count of documents
     range: integer
-  counterpart_category:
-    description: >-
-      The category of the counterpart entity in a given association, 
-      eg. the category of the entity that is not the subject
-    range: string
   description:
     range: string
   direction:
@@ -322,6 +362,21 @@ slots:
     range: FacetValue
   frequency_qualifier:
     range: string
+  frequency_qualifier_label:
+    is_a: name
+    description: The name of the frequency_qualifier entity
+  frequency_qualifier_namespace:
+    range: string
+    description: The namespace/prefix of the frequency_qualifier entity
+  frequency_qualifier_category:
+    is_a: category
+    description: The category of the frequency_qualifier entity
+  frequency_qualifier_closure:
+    multivalued: true
+    description: Field containing frequency_qualifier id and the ids of all of its ancestors
+  frequency_qualifier_closure_label:
+    multivalued: true
+    description: Field containing frequency_qualifier name and the names of all of its ancestors
   full_name:
     description: The long form name of an entity
     range: string
@@ -370,12 +425,46 @@ slots:
   object:
     range: string
     required: true
+  object_label:
+    is_a: name
+    description: The name of the object entity
+  object_namespace:
+    range: string
+    description: The namespace/prefix of the object entity
+  object_category:
+    is_a: category
+    description: The category of the object entity
+  object_closure:
+    multivalued: true
+    description: Field containing object id and the ids of all of its ancestors
+  object_closure_label:
+    multivalued: true
+    description: Field containing object name and the names of all of its ancestors
+  object_taxon:
+    is_a: in_taxon
+  object_taxon_label:
+    is_a: in_taxon_label
   offset:
     description: offset into the total number of items
     range: integer
     required: true
   onset_qualifier:
     range: string
+  onset_qualifier_label:
+    is_a: name
+    description: The name of the onset_qualifier entity
+  onset_qualifier_namespace:
+    range: string
+    description: The namespace/prefix of the onset_qualifier entity
+  onset_qualifier_category:
+    is_a: category
+    description: The category of the onset_qualifier entity
+  onset_qualifier_closure:
+    multivalued: true
+    description: Field containing onset_qualifier id and the ids of all of its ancestors
+  onset_qualifier_closure_label:
+    multivalued: true
+    description: Field containing onset_qualifier name and the names of all of its ancestors  
   original_object:
     range: string
   original_subject:
@@ -402,11 +491,60 @@ slots:
     range: float
   sex_qualifier:
     range: string
+  sex_qualifier_label:
+    is_a: name
+    description: The name of the sex_qualifier entity
+  sex_qualifier_namespace:
+    range: string
+    description: The namespace/prefix of the sex_qualifier entity
+  sex_qualifier_category:
+    is_a: category
+    description: The category of the sex_qualifier entity
+  sex_qualifier_closure:
+    multivalued: true
+    description: Field containing sex_qualifier id and the ids of all of its ancestors
+  sex_qualifier_closure_label:
+    multivalued: true
+    description: Field containing sex_qualifier name and the names of all of its ancestors
   stage_qualifier:
     range: string
+  stage_qualifier_label:
+    is_a: name
+    description: The name of the stage_qualifier entity
+  stage_qualifier_namespace:
+    range: string
+    description: The namespace/prefix of the stage_qualifier entity
+  stage_qualifier_category:
+    is_a: category
+    description: The category of the stage_qualifier entity
+  stage_qualifier_closure:
+    multivalued: true
+    description: Field containing stage_qualifier id and the ids of all of its ancestors
+  stage_qualifier_closure_label:
+    multivalued: true
+    description: Field containing stage_qualifier name and the names of all of its ancestors
   subject:
     range: string
     required: true
+  subject_label:
+    is_a: name
+    description: The name of the subject entity
+  subject_namespace:
+    range: string
+    description: The namespace/prefix of the subject entity
+  subject_category:
+    is_a: category
+    description: The category of the subject entity
+  subject_closure:
+    multivalued: true
+    description: Field containing subject id and the ids of all of its ancestors
+  subject_closure_label:
+    multivalued: true
+    description: Field containing subject name and the names of all of its ancestors
+  subject_taxon:
+    is_a: in_taxon
+  subject_taxon_label:
+    is_a: in_taxon_label
   sub_classes:
     range: Entity
     multivalued: true
@@ -436,101 +574,70 @@ slots:
     range: string
   url:
     range: string
-  subject_label:
+  ### For MultiEntityAssociationResults
+  associated_categories:
+    description: A list of associated categories for the entity
+    range: AssociationsByCategory
+    multivalued: true
+    # inlined_as_list: true
+    required: true
+  associations:
+    description: A list of associations for the entity with the given category
+    range: Association
+    multivalued: true
+  entities:
+    description: A list of entities for which associations were found
+    range: EntityAssociatedCategories
+    multivalued: true
+    # inlined_as_list: true
+    required: true
+  counterpart:
+    description: The id of the counterpart entity
+    required: true
+  original_counterpart:
+    description: The id of the original counterpart entity
+  counterpart_label:
     is_a: name
-    description: The name of the subject entity
-  subject_namespace:
-    range: string
-    description: The namespace/prefix of the subject entity
-  subject_category:
+    description: The name of the counterpart entity
+  counterpart_namespace:
+    description: The namespace/prefix of the counterpart entity
+  counterpart_category:
+    description: The category of the counterpart entity
     is_a: category
-    description: The category of the subject entity
-  subject_closure:
+  counterpart_closure:
+    description: Field containing counterpart id and the ids of all of its ancestors
     multivalued: true
-    description: Field containing subject id and the ids of all of it's ancestors
-  subject_closure_label:
+  counterpart_closure_label:
+    description: Field containing counterpart name and the names of all of its ancestors
     multivalued: true
-    description: Field containing subject name and the names of all of it's ancestors
-  subject_taxon:
+  counterpart_taxon:
     is_a: in_taxon
-  subject_taxon_label:
+  counterpart_taxon_label:
     is_a: in_taxon_label
-  object_label:
+  entity:
+    description: The id of the entity entity
+    required: true
+  original_entity:
+    description: The id of the original entity entity
+  entity_label:
     is_a: name
-    description: The name of the object entity
-  object_namespace:
-    range: string
-    description: The namespace/prefix of the object entity
-  object_category:
+    description: The name of the entity entity
+  entity_namespace:
+    description: The namespace/prefix of the entity entity
+  entity_category:
+    description: The category of the entity entity
     is_a: category
-    description: The category of the object entity
-  object_closure:
+  entity_closure:
+    description: Field containing entity id and the ids of all of its ancestors
     multivalued: true
-    description: Field containing object id and the ids of all of it's ancestors
-  object_closure_label:
+  entity_closure_label:
+    description: Field containing entity name and the names of all of its ancestors
     multivalued: true
-    description: Field containing object name and the names of all of it's ancestors
-  object_taxon:
+  entity_taxon:
     is_a: in_taxon
-  object_taxon_label:
+  entity_taxon_label:
     is_a: in_taxon_label
-  frequency_qualifier_label:
-    is_a: name
-    description: The name of the frequency_qualifier entity
-  frequency_qualifier_namespace:
-    range: string
-    description: The namespace/prefix of the frequency_qualifier entity
-  frequency_qualifier_category:
-    is_a: category
-    description: The category of the frequency_qualifier entity
-  frequency_qualifier_closure:
-    multivalued: true
-    description: Field containing frequency_qualifier id and the ids of all of it's ancestors
-  frequency_qualifier_closure_label:
-    multivalued: true
-    description: Field containing frequency_qualifier name and the names of all of it's ancestors
-  onset_qualifier_label:
-    is_a: name
-    description: The name of the onset_qualifier entity
-  onset_qualifier_namespace:
-    range: string
-    description: The namespace/prefix of the onset_qualifier entity
-  onset_qualifier_category:
-    is_a: category
-    description: The category of the onset_qualifier entity
-  onset_qualifier_closure:
-    multivalued: true
-    description: Field containing onset_qualifier id and the ids of all of it's ancestors
-  onset_qualifier_closure_label:
-    multivalued: true
-    description: Field containing onset_qualifier name and the names of all of it's ancestors
-  sex_qualifier_label:
-    is_a: name
-    description: The name of the sex_qualifier entity
-  sex_qualifier_namespace:
-    range: string
-    description: The namespace/prefix of the sex_qualifier entity
-  sex_qualifier_category:
-    is_a: category
-    description: The category of the sex_qualifier entity
-  sex_qualifier_closure:
-    multivalued: true
-    description: Field containing sex_qualifier id and the ids of all of it's ancestors
-  sex_qualifier_closure_label:
-    multivalued: true
-    description: Field containing sex_qualifier name and the names of all of it's ancestors
-  stage_qualifier_label:
-    is_a: name
-    description: The name of the stage_qualifier entity
-  stage_qualifier_namespace:
-    range: string
-    description: The namespace/prefix of the stage_qualifier entity
-  stage_qualifier_category:
-    is_a: category
-    description: The category of the stage_qualifier entity
-  stage_qualifier_closure:
-    multivalued: true
-    description: Field containing stage_qualifier id and the ids of all of it's ancestors
-  stage_qualifier_closure_label:
-    multivalued: true
-    description: Field containing stage_qualifier name and the names of all of it's ancestors
+  offset_per_category:
+    is_a: offset
+  limit_per_category:
+    is_a: limit
