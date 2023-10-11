@@ -300,7 +300,15 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
                         limit=limit_per_category,
                     )
                     query_result = solr.query(query)
-                    associations = parse_counterpart_associations(query_result, entity=ent.id)
+                    this_entity, associations = parse_counterpart_associations(query_result, entity=ent.id)
+                    print(this_entity)
+                    entity_result.original_entity = this_entity["original_entity"]
+                    entity_result.entity_namespace = this_entity["entity_namespace"]
+                    entity_result.entity_category = this_entity["entity_category"]
+                    entity_result.entity_closure = this_entity["entity_closure"]
+                    entity_result.entity_closure_label = this_entity["entity_closure_label"]
+                    entity_result.entity_taxon = this_entity["entity_taxon"]
+                    entity_result.entity_taxon_label = this_entity["entity_taxon_label"]
                     entity_result.associated_categories.append(
                         AssociationsByCategory(
                             counterpart_category=category, associations=associations, total=len(associations)

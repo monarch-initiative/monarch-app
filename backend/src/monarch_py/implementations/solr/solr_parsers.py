@@ -80,8 +80,17 @@ def parse_association_counts(query_result: SolrQueryResult, entity: str) -> Asso
     return AssociationCountList(items=list(association_count_dict.values()))
 
 
-def parse_counterpart_associations(query_result: SolrQueryResult, entity: str) -> List[CounterpartAssociation]:
+def parse_counterpart_associations(query_result: SolrQueryResult, entity: str) -> (dict, List[CounterpartAssociation]):
     associations = []
+    this_entity = {
+        "original_entity": None,
+        "entity_namespace": None,
+        "entity_category": None,
+        "entity_closure": None,
+        "entity_closure_label": None,
+        "entity_taxon": None,
+        "entity_taxon_label": None,
+    }
     for doc in query_result.response.docs:
         try:
             association = Association(**doc)
@@ -93,6 +102,15 @@ def parse_counterpart_associations(query_result: SolrQueryResult, entity: str) -
             url=get_provided_by_link(association.provided_by),
         )
         if association.subject == entity or entity in association.subject_closure:
+            this_entity = {
+                "original_entity": association.original_subject,
+                "entity_namespace": association.subject_namespace,
+                "entity_category": association.subject_category,
+                "entity_closure": association.subject_closure,
+                "entity_closure_label": association.subject_closure_label,
+                "entity_taxon": association.subject_taxon,
+                "entity_taxon_label": association.subject_taxon_label,
+            }
             counterpart_id = association.object
             original_counterpart = association.original_object
             counterpart_namespace = association.object_namespace
@@ -103,6 +121,15 @@ def parse_counterpart_associations(query_result: SolrQueryResult, entity: str) -
             counterpart_taxon = association.object_taxon
             counterpart_taxon_label = association.object_taxon_label
         elif association.object == entity or entity in association.object_closure:
+            this_entity = {
+                "original_entity": association.original_object,
+                "entity_namespace": association.object_namespace,
+                "entity_category": association.object_category,
+                "entity_closure": association.object_closure,
+                "entity_closure_label": association.object_closure_label,
+                "entity_taxon": association.object_taxon,
+                "entity_taxon_label": association.object_taxon_label,
+            }
             counterpart_id = association.subject
             original_counterpart = association.original_subject
             counterpart_namespace = association.subject_namespace
@@ -164,7 +191,7 @@ def parse_counterpart_associations(query_result: SolrQueryResult, entity: str) -
             stage_qualifier_closure_label=association.stage_qualifier_closure_label,
         )
         associations.append(counterpart_association)
-    return associations
+    return (this_entity, associations)
 
 
 def parse_entity(solr_document: Dict) -> Entity:
