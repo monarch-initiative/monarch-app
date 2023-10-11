@@ -19,7 +19,7 @@ import pytest
      ("WormBase:WBGene00000001", "http://identifiers.org/wb/WBGene00000001"),
      ("WB:WBGene00000001", "https://identifiers.org/wb/WBGene00000001"),
      ("SGD:S000000001", "https://identifiers.org/sgd/S000000001"),
-     ("RGD:1", "http://identifiers.org/rgd/1"),
+     ("RGD:1", "https://identifiers.org/rgd/1"),
      ("HGNC:5", "http://identifiers.org/hgnc/HGNC:5")]
 )
 def test_curie_expansion(curie, expanded_curie_part):
