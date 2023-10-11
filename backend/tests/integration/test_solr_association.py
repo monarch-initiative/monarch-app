@@ -76,9 +76,9 @@ def test_multi_entity_associations():
         counterpart_category=["biolink:Gene", "biolink:Disease"],
     )
     assert response
-    assert len(response) == 3
-    assert response[2].name == "Entity not found"
-    # assert response[0].associated_categories['biolink:Disease'].total > 0
-    for c in response[0].associated_categories:
+    assert len(response.entities) == 3
+    assert response.entities[2].entity_label == "Entity not found"
+    # assert response.entities[0].associated_categories['biolink:Disease'].total > 0
+    for c in response.entities[0].associated_categories:
         if c.counterpart_category == "biolink:Disease":
             assert c.total > 0

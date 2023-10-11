@@ -9,7 +9,6 @@ from monarch_py.datamodels.model import (
     AssociationResults,
     AssociationTableResults,
     AssociationsByCategory,
-    CounterpartAssociation,
     EntityAssociatedCategories,
     Entity,
     ExpandedCurie,

@@ -171,7 +171,9 @@ def associations(
 @solr_app.command("multi-entity-associations")
 def multi_entity_associations(
     entity: List[str] = typer.Option(None, "--entity", "-e", help="Entity ID to get associations for"),
-    counterpart_category: List[str] = typer.Option(None, "--counterpart-category", "-c", help="Counterpart category to get associations for"),
+    counterpart_category: List[str] = typer.Option(
+        None, "--counterpart-category", "-c", help="Counterpart category to get associations for"
+    ),
     limit: int = typer.Option(20, "--limit", "-l"),
     offset: int = typer.Option(0, "--offset"),
     fmt: str = typer.Option(
@@ -198,8 +200,8 @@ def multi_entity_associations(
     args = locals()
     args.pop("fmt", None)
     args.pop("output", None)
-    args['offset_per_category'] = args.pop('offset')
-    args['limit_per_category'] = args.pop('limit')
+    args["offset_per_category"] = args.pop("offset")
+    args["limit_per_category"] = args.pop("limit")
 
     solr = get_solr(update=False)
     response = solr.get_multi_entity_associations(**args)
