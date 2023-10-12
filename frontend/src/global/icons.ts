@@ -46,6 +46,7 @@ const icons = [
   fas.faBars,
   fas.faBarsProgress,
   fas.faBook,
+  fas.faBullhorn,
   fas.faCheck,
   fas.faCircleExclamation,
   fas.faCircleInfo,

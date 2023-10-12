@@ -98,6 +98,11 @@ export const routes: RouteRecordRaw[] = [
     name: "PhenomicsFirst",
     component: () => import("../pages/about/PagePhenomicsFirst.vue"),
   },
+  {
+    path: "/outreach",
+    name: "Outreach",
+    component: () => import("../pages/about/PageOutreach.vue"), 
+  },
 
   /** help pages */
   {
