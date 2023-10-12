@@ -1,7 +1,7 @@
 ### make a singleton class that uses prefixmap and curies to expand curies
 
-import curies
 from curies import Converter
+from prefixmaps.io.parser import load_multi_context, load_context
 
 
 class CurieService:
@@ -15,7 +15,11 @@ class CurieService:
         return cls._instance
 
     def initialize(self):
-        self.converter = curies.get_monarch_converter()
+        # this is a magic keyword that represents the "merged" context from Chris M's algorithm
+        # (https://github.com/linkml/prefixmaps/blob/main/src/prefixmaps/data/merged.csv)
+        context = load_multi_context(["merged"])
+        extended_prefix_map = context.as_extended_prefix_map()
+        self.converter = Converter.from_extended_prefix_map(extended_prefix_map)
 
     def expand(self, curie: str) -> str:
         return self.converter.expand(curie)
