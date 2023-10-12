@@ -101,7 +101,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/outreach",
     name: "Outreach",
-    component: () => import("../pages/about/PageOutreach.vue"), 
+    component: () => import("../pages/about/PageOutreach.vue"),
   },
 
   /** help pages */
