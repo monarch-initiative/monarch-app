@@ -55,8 +55,12 @@
     </template>
   </AppSection>
 
-  <!-- evidence viewer of association -->
-  <EvidenceViewer v-if="association" :node="node" :association="association" />
+  <!-- details viewer of association -->
+  <SectionAssociationDetails
+    v-if="association"
+    :node="node"
+    :association="association"
+  />
 </template>
 
 <script setup lang="ts">
@@ -70,7 +74,7 @@ import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import AppTabs from "@/components/AppTabs.vue";
 import AssociationsSummary from "@/pages/node/AssociationsSummary.vue";
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
-import EvidenceViewer from "@/pages/node/EvidenceViewer.vue";
+import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
 import { scrollToHash } from "@/router";
 
 /** route info */

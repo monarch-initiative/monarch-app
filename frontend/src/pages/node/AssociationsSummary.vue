@@ -21,7 +21,7 @@
       :key="index"
       class="result"
     >
-      <AppFlex direction="col" align-h="left" gap="small" class="details">
+      <AppFlex direction="col" align-h="left" gap="small" class="info">
         <AppNodeBadge
           :node="{
             id: item.subject,
@@ -46,11 +46,13 @@
       <AppButton
         v-tooltip="
           item.id === association?.id
-            ? 'Viewing supporting evidence. Click again to hide.'
-            : 'View supporting evidence for this association'
+            ? 'Deselect this association'
+            : `Show evidence (${
+                item.evidence_count || 0
+              }) and other info about this association`
         "
-        class="evidence"
-        :text="`Evidence (${item?.evidence_count || 0})`"
+        class="details"
+        text="Details"
         :aria-pressed="item.id === association?.id"
         :icon="item.id === association?.id ? 'check' : 'flask'"
         :color="item.id === association?.id ? 'primary' : 'secondary'"
@@ -202,13 +204,13 @@ onMounted(getAssociations);
   color: $gray;
 }
 
-.details {
+.info {
   flex-grow: 1;
   width: 0;
   text-align: left;
 }
 
-.evidence {
+.details {
   min-width: unset !important;
   min-height: unset !important;
 }

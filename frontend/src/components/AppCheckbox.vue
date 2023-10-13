@@ -46,7 +46,7 @@ function onChange(event: Event) {
   display: inline-flex;
   position: relative;
   align-items: center;
-  padding: 2px 8px;
+  padding: 5px 10px;
   gap: 10px;
   border-radius: $rounded;
   cursor: pointer;

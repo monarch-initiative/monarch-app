@@ -55,15 +55,15 @@
       />
     </template>
 
-    <!-- button to show evidence -->
-    <template #evidence="{ cell, row }">
+    <!-- button to show details -->
+    <template #details="{ cell, row }">
       <AppButton
         v-tooltip="
           row.id === association?.id
-            ? 'Viewing supporting evidence. Click again to hide.'
-            : 'View supporting evidence for this association'
+            ? `Show evidence (${row.evidence_count}) and other info about this association`
+            : 'Deselect this association'
         "
-        class="evidence"
+        class="details"
         :text="String(cell || 0)"
         :aria-pressed="row.id === association?.id"
         :icon="row.id === association?.id ? 'check' : 'flask'"
@@ -166,9 +166,9 @@ const cols = computed((): Cols<Datum> => {
       sortable: true,
     },
     {
-      slot: "evidence",
+      slot: "details",
       key: "evidence_count",
-      heading: "Evidence",
+      heading: "Details",
       width: 1,
       align: "center",
       sortable: true,
@@ -317,7 +317,7 @@ onMounted(() => queryAssociations(true));
   color: $gray;
 }
 
-.evidence {
+.details {
   width: 100%;
   min-height: unset !important;
 }
