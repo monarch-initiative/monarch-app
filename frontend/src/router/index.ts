@@ -225,4 +225,11 @@ router.beforeEach(() => {
   hideAll();
 });
 
+/** on route load */
+router.afterEach(async () => {
+  /** wait for layout shifts */
+  await sleep(1000);
+  scrollToHash();
+});
+
 export default router;
