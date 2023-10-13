@@ -82,7 +82,7 @@
       To link to a specific page or to algorithmic results presented on this
       website, please use the URL in your browser's address bar. For example,
       you would cite the prefixed identifier
-      <AppLink to="/disease/OMIM:154700">OMIM:154700</AppLink>
+      <AppLink to="/OMIM:154700">OMIM:154700</AppLink>
       as:
     </p>
     <blockquote>

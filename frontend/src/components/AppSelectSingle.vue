@@ -265,7 +265,7 @@ watch(
 }
 
 .list {
-  z-index: 1000;
+  z-index: 1020;
   position: fixed;
   max-width: 90vw;
   max-height: 300px;

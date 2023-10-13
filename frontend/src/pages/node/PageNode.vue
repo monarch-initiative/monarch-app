@@ -24,11 +24,11 @@
   <template v-else-if="node">
     <SectionTitle :node="node" />
     <SectionOverview :node="node" />
-    <SectionDetails :node="node" />
-    <SectionHierarchy :node="node" />
     <SectionVisualization :node="node" />
     <SectionAssociations :node="node" />
     <SectionBreadcrumbs :node="node" />
+    <SectionHierarchy :node="node" />
+    <SectionExtra :node="node" />
     <Teleport to="body">
       <TheTableOfContents />
     </Teleport>
@@ -46,7 +46,7 @@ import SectionBreadcrumbs from "@/pages/node/SectionBreadcrumbs.vue";
 import { scrollToHash } from "@/router";
 import { useQuery } from "@/util/composables";
 import SectionAssociations from "./SectionAssociations.vue";
-import SectionDetails from "./SectionDetails.vue";
+import SectionExtra from "./SectionExtra.vue";
 import SectionHierarchy from "./SectionHierarchy.vue";
 import SectionOverview from "./SectionOverview.vue";
 import SectionTitle from "./SectionTitle.vue";

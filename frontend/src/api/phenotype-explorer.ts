@@ -50,7 +50,7 @@ export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
           : async () => await getPhenotypeAssociations(item.id),
       highlight: item.highlight,
       icon: "category-" + item.category,
-      info: item.in_taxon || "",
+      info: item.in_taxon_label || "",
     })),
   };
 };
