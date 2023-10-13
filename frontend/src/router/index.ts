@@ -189,7 +189,12 @@ const getTarget = (element: Element): Element => {
 };
 
 /** get offset to account for header */
-const getOffset = () => document?.querySelector("header")?.clientHeight || 0;
+const getOffset = () => {
+  const header = document?.querySelector("header");
+  if (header && window.getComputedStyle(header).position === "sticky")
+    header.clientHeight;
+  return 0;
+};
 
 /** scroll to element */
 export const scrollToElement = async (element?: Element | null) => {
