@@ -11,7 +11,7 @@
     </p>
 
     <AppFlex>
-      <AppButton to="/help" icon="handshake-angle" text="Support" />
+      <AppButton to="/help" icon="handshake-angle" text="Get Help" />
       <AppButton to="/#follow" icon="share-nodes" text="Follow" />
     </AppFlex>
   </AppSection>
@@ -31,12 +31,12 @@
 
     <ul>
       <li>
-        The OBO Academy develops Self-paced tutorials in the OBOOK, hosts
+        The OBO Academy develops self-paced tutorials in the OBOOK, hosts
         fortnightly live training sessions on Zoom, and maintains a YouTube
         channel with lesson recordings.
       </li>
       <li>
-        Youtube channel:
+        YouTube channel:
         <AppLink to="https://www.youtube.com/@obo-academy"
           >https://www.youtube.com/@obo-academy</AppLink
         >
@@ -82,7 +82,7 @@
         </li>
       </ul>
       <li>
-        Join the Mondo User mailing list
+        Join the Mondo users mailing list
         <AppLink to="https://groups.google.com/g/mondo-users"> here </AppLink>
       </li>
     </ul>
@@ -98,7 +98,7 @@
       in YAML that describe the structure of your data.
     </p>
     <p>
-      LinkML is used to model the Monarch data model, and we welcome your
+      LinkML is used to model the Monarch data, and much more. We welcome your
       contributions to the LinkML community.
     </p>
     <ul>
