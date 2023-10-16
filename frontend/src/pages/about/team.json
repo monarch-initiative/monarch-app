@@ -75,7 +75,8 @@
       },
       {
         "name": "Bryan Laraway",
-        "role": "Data Wrangler"
+        "role": "Data Wrangler",
+        "link": "https://tislab.org/members/bryan-laraway.html"
       }
     ]
   },
@@ -85,8 +86,8 @@
     "members": [
       {
         "name": "Peter Robinson",
-        "link": "https://www.jax.org/research-and-faculty/faculty/peter-robinson",
-        "role": "Monarch PI"
+        "role": "Monarch PI",
+        "link": "https://www.jax.org/research-and-faculty/faculty/peter-robinson"
       },
       {
         "name": "Leigh Carmody",
@@ -288,7 +289,7 @@
       {
         "name": "Harry Hochheiser",
         "role": "Monarch PI",
-        "link": "https://www.dbmi.pitt.edu/person/harry-hochheiser-phd"
+        "link": "https://www.phdl.pitt.edu/people/harry-hochheiser-phd"
       },
       {
         "name": "Michael Davis",

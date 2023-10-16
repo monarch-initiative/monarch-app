@@ -98,6 +98,11 @@ export const routes: RouteRecordRaw[] = [
     name: "PhenomicsFirst",
     component: () => import("../pages/about/PagePhenomicsFirst.vue"),
   },
+  {
+    path: "/outreach",
+    name: "Outreach",
+    component: () => import("../pages/about/PageOutreach.vue"),
+  },
 
   /** help pages */
   {
@@ -184,7 +189,12 @@ const getTarget = (element: Element): Element => {
 };
 
 /** get offset to account for header */
-const getOffset = () => document?.querySelector("header")?.clientHeight || 0;
+const getOffset = () => {
+  const header = document?.querySelector("header");
+  if (header && window.getComputedStyle(header).position === "sticky")
+    header.clientHeight;
+  return 0;
+};
 
 /** scroll to element */
 export const scrollToElement = async (element?: Element | null) => {
@@ -218,6 +228,13 @@ const router = createRouter({
 /** close any open tooltips on route change */
 router.beforeEach(() => {
   hideAll();
+});
+
+/** on route load */
+router.afterEach(async () => {
+  /** wait for layout shifts */
+  await sleep(1000);
+  scrollToHash();
 });
 
 export default router;
