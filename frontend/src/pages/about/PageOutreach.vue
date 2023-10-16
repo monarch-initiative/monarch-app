@@ -42,10 +42,8 @@
         >
       </li>
       <li>
-        Join the OBO Academy mailing list using
-        <AppLink to="https://groups.google.com/g/obo-academy"
-          >https://groups.google.com/g/obo-academy</AppLink
-        >
+        Join the OBO Academy mailing list
+        <AppLink to="https://groups.google.com/g/obo-academy"> here </AppLink>
       </li>
     </ul>
 
@@ -66,20 +64,26 @@
         terminology experts to discuss specific use cases and requirements. Our
         goal is to improve Mondo with a focus on our user needs.
       </li>
+      <ul>
+        <li>
+          These calls are scheduled for the second Thursday of every month. You
+          can find more information about the calls
+          <AppLink
+            to="https://mondo.monarchinitiative.org/pages/workshop/#outreach"
+            >here</AppLink
+          >.
+        </li>
+        <li>
+          You can find the schedule with Zoom information
+          <AppLink
+            to="https://docs.google.com/document/d/1MStpDyh9LOZYJTjLtnpOsNYc3HaeU-bz0CHAI9xOjfQ/edit#heading=h.6sqkx1xhumse"
+            >here</AppLink
+          >.
+        </li>
+      </ul>
       <li>
-        These calls are scheduled for the second Thursday of every month. You
-        can find more information about the calls
-        <AppLink
-          to="https://mondo.monarchinitiative.org/pages/workshop/#outreach"
-          >here</AppLink
-        >.
-      </li>
-      <li>
-        You can find the schedule with Zoom information
-        <AppLink
-          to="https://docs.google.com/document/d/1MStpDyh9LOZYJTjLtnpOsNYc3HaeU-bz0CHAI9xOjfQ/edit#heading=h.6sqkx1xhumse"
-          >here</AppLink
-        >.
+        Join the Mondo User mailing list
+        <AppLink to="https://groups.google.com/g/mondo-users"> here </AppLink>
       </li>
     </ul>
 
@@ -93,12 +97,17 @@
       LinkML is a flexible modeling language that allows you to author schemas
       in YAML that describe the structure of your data.
     </p>
-
     <p>
       LinkML is used to model the Monarch data model, and we welcome your
-      contributions to the LinkML community. You can learn more
-      <AppLink to="https://linkml.io/linkml/faq/contributing.html">here</AppLink
-      >.
+      contributions to the LinkML community.
     </p>
+    <ul>
+      <li>
+        You can learn more
+        <AppLink to="https://linkml.io/linkml/faq/contributing.html"
+          >here</AppLink
+        >.
+      </li>
+    </ul>
   </AppSection>
 </template>
