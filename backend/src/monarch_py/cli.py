@@ -114,7 +114,7 @@ def associations(
         "-f",
         help="The format of the output (json, yaml, tsv, table)",
     ),
-    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
+    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
 ):
     """
     Paginate through associations

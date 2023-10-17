@@ -45,6 +45,7 @@ class AssociationDirectionEnum(str, Enum):
 class Association(ConfiguredBaseModel):
 
     id: str = Field(...)
+    category: Optional[str] = Field(None)
     subject: str = Field(...)
     original_subject: Optional[str] = Field(None)
     subject_namespace: Optional[str] = Field(
@@ -90,25 +91,32 @@ class Association(ConfiguredBaseModel):
     object_taxon_label: Optional[str] = Field(None)
     primary_knowledge_source: Optional[str] = Field(None)
     aggregator_knowledge_source: Optional[List[str]] = Field(default_factory=list)
-    category: Optional[str] = Field(None)
     negated: Optional[bool] = Field(None)
+    pathway: Optional[str] = Field(None)
+    evidence_count: Optional[int] = Field(
+        None,
+        description="""count of supporting documents, evidence codes, and sources supplying evidence""",
+    )
+    has_evidence: Optional[List[str]] = Field(default_factory=list)
+    has_evidence_links: Optional[List[ExpandedCurie]] = Field(
+        default_factory=list,
+        description="""List of ExpandedCuries with id and url for evidence""",
+    )
     provided_by: Optional[str] = Field(None)
     provided_by_link: Optional[ExpandedCurie] = Field(
         None,
         description="""A link to the docs for the knowledge source that provided the node/edge.""",
     )
     publications: Optional[List[str]] = Field(default_factory=list)
+    publications_links: Optional[List[ExpandedCurie]] = Field(
+        default_factory=list,
+        description="""List of ExpandedCuries with id and url for publications""",
+    )
     qualifiers: Optional[List[str]] = Field(default_factory=list)
     frequency_qualifier: Optional[str] = Field(None)
-    has_evidence: Optional[List[str]] = Field(default_factory=list)
     onset_qualifier: Optional[str] = Field(None)
     sex_qualifier: Optional[str] = Field(None)
     stage_qualifier: Optional[str] = Field(None)
-    evidence_count: Optional[int] = Field(
-        None,
-        description="""count of supporting documents, evidence codes, and sources supplying evidence""",
-    )
-    pathway: Optional[str] = Field(None)
     frequency_qualifier_label: Optional[str] = Field(
         None, description="""The name of the frequency_qualifier entity"""
     )
@@ -223,6 +231,7 @@ class DirectionalAssociation(Association):
         description="""The directionality of the association relative to a given entity for an association_count. If the entity is the subject or in the subject closure, the direction is forwards, if it is the object or in the object closure, the direction is backwards.""",
     )
     id: str = Field(...)
+    category: Optional[str] = Field(None)
     subject: str = Field(...)
     original_subject: Optional[str] = Field(None)
     subject_namespace: Optional[str] = Field(
@@ -268,25 +277,32 @@ class DirectionalAssociation(Association):
     object_taxon_label: Optional[str] = Field(None)
     primary_knowledge_source: Optional[str] = Field(None)
     aggregator_knowledge_source: Optional[List[str]] = Field(default_factory=list)
-    category: Optional[str] = Field(None)
     negated: Optional[bool] = Field(None)
+    pathway: Optional[str] = Field(None)
+    evidence_count: Optional[int] = Field(
+        None,
+        description="""count of supporting documents, evidence codes, and sources supplying evidence""",
+    )
+    has_evidence: Optional[List[str]] = Field(default_factory=list)
+    has_evidence_links: Optional[List[ExpandedCurie]] = Field(
+        default_factory=list,
+        description="""List of ExpandedCuries with id and url for evidence""",
+    )
     provided_by: Optional[str] = Field(None)
     provided_by_link: Optional[ExpandedCurie] = Field(
         None,
         description="""A link to the docs for the knowledge source that provided the node/edge.""",
     )
     publications: Optional[List[str]] = Field(default_factory=list)
+    publications_links: Optional[List[ExpandedCurie]] = Field(
+        default_factory=list,
+        description="""List of ExpandedCuries with id and url for publications""",
+    )
     qualifiers: Optional[List[str]] = Field(default_factory=list)
     frequency_qualifier: Optional[str] = Field(None)
-    has_evidence: Optional[List[str]] = Field(default_factory=list)
     onset_qualifier: Optional[str] = Field(None)
     sex_qualifier: Optional[str] = Field(None)
     stage_qualifier: Optional[str] = Field(None)
-    evidence_count: Optional[int] = Field(
-        None,
-        description="""count of supporting documents, evidence codes, and sources supplying evidence""",
-    )
-    pathway: Optional[str] = Field(None)
     frequency_qualifier_label: Optional[str] = Field(
         None, description="""The name of the frequency_qualifier entity"""
     )

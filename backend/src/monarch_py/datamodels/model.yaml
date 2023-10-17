@@ -26,6 +26,7 @@ classes:
   Association:
     slots:
       - id
+      - category
       - subject
       - original_subject
       - subject_namespace
@@ -47,29 +48,20 @@ classes:
       - object_taxon_label
       - primary_knowledge_source
       - aggregator_knowledge_source
-      - category
       - negated
+      - pathway
+      - evidence_count
+      - has_evidence
+      - has_evidence_links
       - provided_by
       - provided_by_link
       - publications
+      - publications_links
       - qualifiers
       - frequency_qualifier
-      - has_evidence
       - onset_qualifier
       - sex_qualifier
       - stage_qualifier
-      - evidence_count
-      - pathway
-      - subject_label
-      - subject_namespace
-      - subject_category
-      - subject_closure
-      - subject_closure_label
-      - object_label
-      - object_namespace
-      - object_category
-      - object_closure
-      - object_closure_label
       - frequency_qualifier_label
       - frequency_qualifier_namespace
       - frequency_qualifier_category
@@ -328,6 +320,11 @@ slots:
   has_evidence:
     range: string
     multivalued: true
+  has_evidence_links:
+    description: List of ExpandedCuries with id and url for evidence
+    range: ExpandedCurie
+    multivalued: true
+    inlined_as_list: true
   highlight:
     description: matching text snippet containing html tags
     range: string
@@ -396,6 +393,11 @@ slots:
     range: string
   publications:
     multivalued: true
+  publications_links:
+    description: List of ExpandedCuries with id and url for publications
+    range: ExpandedCurie
+    multivalued: true
+    inlined_as_list: true
   qualifiers:
     multivalued: true
   score:
