@@ -35,11 +35,11 @@
         :full="true"
       >
         <AppFlex gap="small" align-h="left">
-          <Applink
+          <AppLink
             v-for="(source, index) in association.has_evidence_links"
             :key="index"
             :to="source.url || ''"
-            >{{ source.id }}</Applink
+            >{{ source.id }}</AppLink
           >
         </AppFlex>
       </AppDetail>
