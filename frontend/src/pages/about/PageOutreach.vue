@@ -36,7 +36,8 @@
       </li>
       <ul>
         <li>
-          These calls are scheduled monthly. You can find more information about the calls
+          These calls are scheduled monthly. You can find more information about
+          the calls
           <AppLink
             to="https://mondo.monarchinitiative.org/pages/workshop/#outreach"
             >here</AppLink
@@ -57,7 +58,7 @@
     </ul>
 
     <hr />
-      
+
     <AppLink
       to="https://oboacademy.github.io/obook/courses/monarch-obo-training/"
       >OBO Academy: Monarch Training Series</AppLink
@@ -82,9 +83,10 @@
       </li>
       <li>
         Join the OBO Academy mailing list
-        <AppLink to="https://groups.google.com/g/monarch-tutorials"> here </AppLink>
+        <AppLink to="https://groups.google.com/g/monarch-tutorials">
+          here
+        </AppLink>
       </li>
     </ul>
-
   </AppSection>
 </template>
