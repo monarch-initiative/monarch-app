@@ -113,7 +113,7 @@ test-frontend:
 fixtures: 
 	@echo "Generating fixtures..."
 	$(RUN) python scripts/generate_fixtures.py --all-fixtures
-	$(RUN) black backend/tests/fixtures/
+	$(RUN) black -l 120 backend/tests/fixtures/
 	cd frontend && \
 		yarn lint 
 

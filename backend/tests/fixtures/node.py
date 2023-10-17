@@ -26,7 +26,7 @@ def node():
         "association_counts": [
             {
                 "label": "Phenotypes",
-                "count": 2166,
+                "count": 4027,
                 "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
             },
             {
@@ -34,22 +34,14 @@ def node():
                 "count": 124,
                 "category": "biolink:CausalGeneToDiseaseAssociation",
             },
+            {
+                "label": "Correlated Genes",
+                "count": 151,
+                "category": "biolink:CorrelatedGeneToDiseaseAssociation",
+            },
         ],
         "node_hierarchy": {
             "super_classes": [
-                {
-                    "id": "MONDO:0005336",
-                    "category": "biolink:Disease",
-                    "name": "myopathy",
-                    "full_name": None,
-                    "description": None,
-                    "xref": [],
-                    "provided_by": None,
-                    "in_taxon": None,
-                    "in_taxon_label": None,
-                    "symbol": None,
-                    "synonym": [],
-                },
                 {
                     "id": "MONDO:0019056",
                     "category": "biolink:Disease",
@@ -67,6 +59,19 @@ def node():
                     "id": "MONDO:0700223",
                     "category": "biolink:Disease",
                     "name": "hereditary skeletal muscle disorder",
+                    "full_name": None,
+                    "description": None,
+                    "xref": [],
+                    "provided_by": None,
+                    "in_taxon": None,
+                    "in_taxon_label": None,
+                    "symbol": None,
+                    "synonym": [],
+                },
+                {
+                    "id": "MONDO:0005336",
+                    "category": "biolink:Disease",
+                    "name": "myopathy",
                     "full_name": None,
                     "description": None,
                     "xref": [],

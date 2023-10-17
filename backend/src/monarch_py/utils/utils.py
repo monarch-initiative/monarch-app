@@ -16,7 +16,7 @@ from monarch_py.datamodels.model import (
     ExpandedCurie,
     HistoPheno,
     Node,
-    Results
+    Results,
 )
 from monarch_py.service.curie_service import CurieService
 
@@ -74,15 +74,11 @@ def set_log_level(log_level: str):
     loguru.logger.add(sys.stderr, level=log_level)
 
 
-### Input conversion methods ###
-
-def get_evidence_links(evidence: List[str]):# -> List[ExpandedCurie]:
-    """Returns a list of links to evidence resources."""
-    return evidence
+### URL fetching methods ###
 
 
-def get_external_links(xrefs: List[str]) -> List[ExpandedCurie]:
-    return [ExpandedCurie(id=curie, url=CurieService().expand(curie)) for curie in xrefs] 
+def get_links_for_field(field: List[str]) -> List[ExpandedCurie]:
+    return [ExpandedCurie(id=curie, url=CurieService().expand(curie)) for curie in field]
 
 
 def get_provided_by_link(provided_by: str) -> List[ExpandedCurie]:
@@ -91,14 +87,8 @@ def get_provided_by_link(provided_by: str) -> List[ExpandedCurie]:
     pb = provided_by.replace("_nodes", "").replace("_edges", "").split("_")
     slug = f"{pb[0]}/#{'_'.join(pb[1:])}"
     return ExpandedCurie(
-        id=provided_by.replace("_nodes", "").replace("_edges", "") if provided_by else None,
-        url=f"{base_url}/{slug}"
+        id=provided_by.replace("_nodes", "").replace("_edges", "") if provided_by else None, url=f"{base_url}/{slug}"
     )
-
-
-def get_publication_links(publications: List[str]):# -> List[ExpandedCurie]:
-    """Returns a list of links to publications."""
-    return publications
 
 
 ### Output conversion methods ###

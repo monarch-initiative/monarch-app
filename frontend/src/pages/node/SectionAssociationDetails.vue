@@ -35,10 +35,11 @@
         :full="true"
       >
         <AppFlex gap="small" align-h="left">
-          <span
-            v-for="(source, index) in association.has_evidence"
+          <Applink
+            v-for="(source, index) in association.has_evidence_links"
             :key="index"
-            >{{ source }}</span
+            :to="source.url || ''"
+            >{{ source.id }}</Applink
           >
         </AppFlex>
       </AppDetail>
@@ -60,12 +61,13 @@
         :full="true"
       >
         <AppFlex gap="small" align-h="left">
-          <span
-            v-for="(publication, index) of association.publications"
+          <AppLink
+            v-for="(publication, index) of association.publications_links"
             :key="index"
+            :to="publication.url || ''"
           >
-            {{ publication }}
-          </span>
+            {{ publication.id }}
+          </AppLink>
         </AppFlex>
       </AppDetail>
     </AppDetails>
