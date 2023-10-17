@@ -78,7 +78,7 @@ def set_log_level(log_level: str):
 
 
 def get_links_for_field(field: List[str]) -> List[ExpandedCurie]:
-    return [ExpandedCurie(id=curie, url=CurieService().expand(curie)) for curie in field]
+    return [ExpandedCurie(id=curie, url=CurieService().expand(curie.replace("PMID", "PUBMED"))) for curie in field]
 
 
 def get_provided_by_link(provided_by: str) -> List[ExpandedCurie]:
