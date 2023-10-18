@@ -10,8 +10,8 @@ router = APIRouter(tags=["semsim"], responses={404: {"description": "Not Found"}
 
 @router.get("/compare/{subjects}/{objects}")
 def _compare(
-    subjects: str = Path(...,title="List of subjects for comparison"),
-    objects: str = Path(...,title="List of objects for comparison"),
+    subjects: str = Path(..., title="List of subjects for comparison"),
+    objects: str = Path(..., title="List of objects for comparison"),
 ):
     """Get pairwise similarity between two sets of terms
 

@@ -228,24 +228,6 @@
       "score": null
     },
     {
-      "id": "MONDO:0100136",
-      "category": "biolink:Disease",
-      "name": "obsolete Fanconia anemia complementation group M",
-      "full_name": null,
-      "description": "OBSOLETE Any Fanconi anemia in which the cause of the disease is a mutation in the FANCM gene.",
-      "xref": [],
-      "provided_by": "phenio_nodes",
-      "in_taxon": null,
-      "in_taxon_label": null,
-      "symbol": null,
-      "synonym": [
-        "FANCM Fanconi anemia",
-        "Fanconi anemia caused by mutation in FANCM"
-      ],
-      "highlight": null,
-      "score": null
-    },
-    {
       "id": "MONDO:0010351",
       "category": "biolink:Disease",
       "name": "Fanconi anemia complementation group B",
@@ -336,6 +318,24 @@
         "Fanconi anemia complementation group type U",
         "Fanconi anemia, complementation GROUP U",
         "XRCC2 Fanconi anemia"
+      ],
+      "highlight": null,
+      "score": null
+    },
+    {
+      "id": "MONDO:0100136",
+      "category": "biolink:Disease",
+      "name": "obsolete Fanconia anemia complementation group M",
+      "full_name": null,
+      "description": "OBSOLETE Any Fanconi anemia in which the cause of the disease is a mutation in the FANCM gene.",
+      "xref": [],
+      "provided_by": "phenio_nodes",
+      "in_taxon": null,
+      "in_taxon_label": null,
+      "symbol": null,
+      "synonym": [
+        "FANCM Fanconi anemia",
+        "Fanconi anemia caused by mutation in FANCM"
       ],
       "highlight": null,
       "score": null

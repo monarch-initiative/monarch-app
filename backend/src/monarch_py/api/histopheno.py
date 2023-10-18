@@ -15,7 +15,7 @@ async def _get_histopheno(
         title="ID of the entity to get histopheno data for",
         examples=["MONDO:0019391"],
     )
-    ) -> HistoPheno:
+) -> HistoPheno:
     """Retrieves the entity with the specified id"""
     response = solr().get_histopheno(id)
     if response is None:

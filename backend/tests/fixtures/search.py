@@ -70,11 +70,7 @@ def search():
                 "in_taxon": None,
                 "in_taxon_label": None,
                 "symbol": None,
-                "synonym": [
-                    "FRTS1",
-                    "Fanconi renotubular syndrome 1",
-                    "primary Fanconi renotubular syndrome",
-                ],
+                "synonym": ["FRTS1", "Fanconi renotubular syndrome 1", "primary Fanconi renotubular syndrome"],
                 "highlight": None,
                 "score": None,
             },

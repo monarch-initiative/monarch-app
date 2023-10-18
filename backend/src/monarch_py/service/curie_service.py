@@ -1,7 +1,7 @@
 ### make a singleton class that uses prefixmap and curies to expand curies
 
 from curies import Converter
-from prefixmaps.io.parser import load_multi_context, load_context
+from prefixmaps.io.parser import load_multi_context
 
 
 class CurieService:

@@ -12,7 +12,6 @@ router = APIRouter(
 
 
 @router.get("")
-@router.get("/all")
 async def _get_associations(
     category: Union[List[str], None] = Query(default=None),
     subject: Union[List[str], None] = Query(default=None),
@@ -34,6 +33,7 @@ async def _get_associations(
         limit=pagination.limit,
     )
     return response
+
 
 @router.get("/multi")
 async def _get_multi_entity_associations(
