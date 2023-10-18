@@ -43,13 +43,6 @@
             >here</AppLink
           >.
         </li>
-        <li>
-          You can find the schedule with Zoom information
-          <AppLink
-            to="https://docs.google.com/document/d/1MStpDyh9LOZYJTjLtnpOsNYc3HaeU-bz0CHAI9xOjfQ/edit#heading=h.6sqkx1xhumse"
-            >here</AppLink
-          >.
-        </li>
       </ul>
       <li>
         Join the Mondo users mailing list
