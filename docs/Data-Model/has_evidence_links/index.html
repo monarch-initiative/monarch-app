@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://monarch-app.monarchinitiative.org/docs/Data-Model/Objectidentifier/">
+        <link rel="canonical" href="https://monarch-app.monarchinitiative.org/docs/Data-Model/has_evidence_links/">
       
       
       
@@ -18,7 +18,7 @@
     
     
       
-        <title>Type: Objectidentifier - monarch-py</title>
+        <title>Slot: has_evidence_links - monarch-py</title>
       
     
     
@@ -75,7 +75,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#type-objectidentifier" class="md-skip">
+        <a href="#slot-has_evidence_links" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Type: Objectidentifier
+              Slot: has_evidence_links
             
           </span>
         </div>
@@ -898,8 +898,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#comments" class="md-nav__link">
-    Comments
+  <a href="#applicable-classes" class="md-nav__link">
+    Applicable Classes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#properties" class="md-nav__link">
+    Properties
   </a>
   
 </li>
@@ -924,6 +931,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#linkml-source" class="md-nav__link">
+    LinkML Source
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -942,29 +956,62 @@
   
 
 
-<h1 id="type-objectidentifier">Type: Objectidentifier</h1>
-<p><em>A URI or CURIE that represents an object in the model.</em></p>
-<p>URI: <a href="http://www.w3.org/ns/shex#iri">shex:iri</a></p>
+<h1 id="slot-has_evidence_links">Slot: has_evidence_links</h1>
+<p><em>List of ExpandedCuries with id and url for evidence</em></p>
+<p>URI: <a href="https://w3id.org/monarch/monarch-py/:has_evidence_links">https://w3id.org/monarch/monarch-py/:has_evidence_links</a></p>
+<!-- no inheritance hierarchy -->
+
+<h2 id="applicable-classes">Applicable Classes</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Modifies Slot</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../Association/">Association</a></td>
+<td></td>
+<td>no</td>
+</tr>
+<tr>
+<td><a href="../DirectionalAssociation/">DirectionalAssociation</a></td>
+<td>An association that gives it's direction relative to a specified entity</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<h2 id="properties">Properties</h2>
 <ul>
 <li>
-<p><a href="https://w3id.org/linkml/base">base</a>: ElementIdentifier</p>
+<p>Range: <a href="../ExpandedCurie/">ExpandedCurie</a></p>
 </li>
 <li>
-<p><a href="https://w3id.org/linkml/uri">uri</a>: shex:iri</p>
+<p>Multivalued: True</p>
 </li>
-<li>
-<p><a href="https://w3id.org/linkml/repr">repr</a>: str</p>
-</li>
-</ul>
-<h2 id="comments">Comments</h2>
-<ul>
-<li>Used for inheritance and type checking</li>
 </ul>
 <h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
 <h3 id="schema-source">Schema Source</h3>
 <ul>
 <li>from schema: <a href="https://w3id.org/monarch/monarch-py">https://w3id.org/monarch/monarch-py</a></li>
 </ul>
+<h2 id="linkml-source">LinkML Source</h2>
+<details>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">has_evidence_links</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">List of ExpandedCuries with id and url for evidence</span>
+<span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
+<span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="nt">multivalued</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">has_evidence_links</span>
+<span class="nt">domain_of</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
+<span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ExpandedCurie</span>
+<span class="nt">inlined</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">inlined_as_list</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+</details>
 
 
 
