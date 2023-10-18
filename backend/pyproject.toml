@@ -33,6 +33,7 @@ fastapi = "^0.103.1"
 oaklib = ">=0.5.19"
 gunicorn = "^21.2.0"
 bioregistry = "^0.10.57"
+google-cloud-logging = "^3.8.0"
 
 
 [tool.poetry.group.dev.dependencies]

@@ -1,12 +1,11 @@
 """Middleware to log requests."""
 from loguru import logger
-import logging
 
 from fastapi import Request
 from fastapi.logger import logger as fastapi_logger
 from starlette.middleware.base import BaseHTTPMiddleware
 
-fastapi_logger.setLevel(logging.INFO)
+fastapi_logger.setLevel("INFO")
 
 
 class LoggingMiddleware(BaseHTTPMiddleware):

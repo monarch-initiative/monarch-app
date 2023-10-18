@@ -1,11 +1,18 @@
+import logging
+
+import google
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
+from fastapi.logger import logger
 from monarch_py.api import association, entity, histopheno, search, semsim
-from monarch_py.api.config import oak, solr
+from monarch_py.api.config import oak
+from monarch_py.api.middleware.gcloud_logging import CloudLoggingMiddleware
+from monarch_py.api.middleware.gcloud_logging import CloudLogFilter
 from monarch_py.api.middleware.logging_middleware import LoggingMiddleware
 from monarch_py.service.curie_service import CurieService
+from google.cloud.logging_v2.resource import Resource
 
 PREFIX = "/v3/api"
 
@@ -15,11 +22,28 @@ app = FastAPI(
 )
 
 
+def setup_cloud_logging():
+    client = google.cloud.logging_v2.Client()
+    client.setup_logging()
+
+    handler = client.get_default_handler()
+    handler.resource = Resource(type="api", labels={"service": "monarch-api"})
+    handler.setLevel(logging.DEBUG)
+    handler.filters = []
+    # handler.addFilter(CloudLogFilter(project=client.project))
+    logger.handlers = []
+    logger.addHandler(handler)
+    logger.setLevel(logging.DEBUG)
+    logger.info("Logging initialized")
+
+
 @app.on_event("startup")
 async def initialize_app():
     oak()
     # Let the curie service singleton initialize itself
     CurieService()
+    # todo: if production
+    setup_cloud_logging()
 
 
 app.include_router(entity.router, prefix=f"{PREFIX}/entity")
@@ -37,6 +61,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.add_middleware(LoggingMiddleware)
+app.add_middleware(CloudLoggingMiddleware)
+
 
 @app.get("/")
 async def _root():
