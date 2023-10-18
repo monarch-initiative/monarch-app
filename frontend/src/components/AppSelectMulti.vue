@@ -388,7 +388,7 @@ watch(
 }
 
 .list {
-  z-index: 1000;
+  z-index: 1020;
   max-width: 90vw;
   max-height: 300px;
   overflow-x: auto;

@@ -54,6 +54,7 @@
       v-if="bMode.id.includes('these phenotypes')"
       text="Analyze"
       icon="bars-progress"
+      :disabled="isLoading || !aPhenotypes.length || !bPhenotypes.length"
       @click="runAnalysis"
     />
     <AppAlert v-else
@@ -61,7 +62,9 @@
     >
   </AppSection>
 
-  <AppSection>
+  <AppSection v-if="comparison.summary.length || isLoading || isError">
+    <AppHeading>Results</AppHeading>
+
     <!-- analysis status -->
     <AppStatus v-if="isLoading" code="loading">Running analysis</AppStatus>
     <AppStatus v-if="isError" code="error">Error running analysis</AppStatus>
@@ -132,7 +135,9 @@ import type { Option, Options } from "@/components/AppSelectTags.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
+import { scrollToElement } from "@/router";
 import { useQuery } from "@/util/composables";
+import { waitFor } from "@/util/dom";
 import { parse } from "@/util/object";
 import examples from "./phenotype-explorer.json";
 
@@ -207,6 +212,8 @@ const {
   isError,
 } = useQuery(
   async function () {
+    scrollToResults();
+
     // /** run appropriate analysis based on selected mode */
     // if (bMode.value.id.includes("these phenotypes"))
     return await compareSetToSet(
@@ -222,7 +229,14 @@ const {
 
   /** default value */
   { summary: [], phenogrid: { cols: [], rows: [], cells: {}, unmatched: [] } },
+
+  scrollToResults,
 );
+
+/** scroll results into view */
+async function scrollToResults() {
+  scrollToElement(await waitFor("#results"));
+}
 
 /** when multi select component runs spread options function */
 function spreadOptions(option: Option, options: Options, set: string) {

@@ -1,14 +1,14 @@
 <!--
-  node page associations section, viewer for supporting evidence of an 
-  association 
+  node page association details section, viewer for supporting evidence of an 
+  association
 -->
 
 <template>
   <AppSection>
-    <AppHeading icon="flask">Evidence</AppHeading>
+    <AppHeading icon="flask">Association Details</AppHeading>
 
     <div>
-      Evidence for the selected association, <br />
+      Details for the selected association, <br />
       <AppNodeBadge
         :node="{
           id: association.subject,
@@ -35,10 +35,11 @@
         :full="true"
       >
         <AppFlex gap="small" align-h="left">
-          <span
-            v-for="(source, index) in association.has_evidence"
+          <AppLink
+            v-for="(source, index) in association.has_evidence_links"
             :key="index"
-            >{{ source }}</span
+            :to="source.url || ''"
+            >{{ source.id }}</AppLink
           >
         </AppFlex>
       </AppDetail>
@@ -60,12 +61,13 @@
         :full="true"
       >
         <AppFlex gap="small" align-h="left">
-          <span
-            v-for="(publication, index) of association.publications"
+          <AppLink
+            v-for="(publication, index) of association.publications_links"
             :key="index"
+            :to="publication.url || ''"
           >
-            {{ publication }}
-          </span>
+            {{ publication.id }}
+          </AppLink>
         </AppFlex>
       </AppDetail>
     </AppDetails>
@@ -91,9 +93,9 @@ type Props = {
 
 const props = defineProps<Props>();
 
-/** scroll evidence section into view */
+/** scroll details section into view */
 async function scrollIntoView() {
-  scrollToElement(await waitFor("#evidence"));
+  scrollToElement(await waitFor("#association-details"));
 }
 
 watch(() => props.association, scrollIntoView);

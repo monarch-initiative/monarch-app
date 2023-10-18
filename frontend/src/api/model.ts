@@ -58,14 +58,18 @@ export interface Association {
     aggregator_knowledge_source?: string[],
     negated?: boolean,
     pathway?: string,
+    /** count of supporting documents, evidence codes, and sources supplying evidence */
+    evidence_count?: number,
+    has_evidence?: string[],
+    /** List of ExpandedCuries with id and url for evidence */
+    has_evidence_links?: ExpandedCurie[],
     provided_by?: string,
     /** A link to the docs for the knowledge source that provided the node/edge. */
     provided_by_link?: ExpandedCurie,
     publications?: string[],
+    /** List of ExpandedCuries with id and url for publications */
+    publications_links?: ExpandedCurie[],
     qualifiers?: string[],
-    has_evidence?: string[],
-    /** count of supporting documents, evidence codes, and sources supplying evidence */
-    evidence_count?: number,
     frequency_qualifier?: string,
     onset_qualifier?: string,
     sex_qualifier?: string,
@@ -201,14 +205,18 @@ export interface DirectionalAssociation extends Association {
     aggregator_knowledge_source?: string[],
     negated?: boolean,
     pathway?: string,
+    /** count of supporting documents, evidence codes, and sources supplying evidence */
+    evidence_count?: number,
+    has_evidence?: string[],
+    /** List of ExpandedCuries with id and url for evidence */
+    has_evidence_links?: ExpandedCurie[],
     provided_by?: string,
     /** A link to the docs for the knowledge source that provided the node/edge. */
     provided_by_link?: ExpandedCurie,
     publications?: string[],
+    /** List of ExpandedCuries with id and url for publications */
+    publications_links?: ExpandedCurie[],
     qualifiers?: string[],
-    has_evidence?: string[],
-    /** count of supporting documents, evidence codes, and sources supplying evidence */
-    evidence_count?: number,
     frequency_qualifier?: string,
     onset_qualifier?: string,
     sex_qualifier?: string,

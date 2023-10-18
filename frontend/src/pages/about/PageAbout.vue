@@ -70,6 +70,12 @@
         subtitle="How to cite and attribute Monarch"
       />
       <AppTile
+        to="/outreach"
+        icon="bullhorn"
+        title="Outreach"
+        subtitle="Training and Community Engagement"
+      />
+      <AppTile
         to="/terms"
         icon="scale-balanced"
         title="Terms of Use"

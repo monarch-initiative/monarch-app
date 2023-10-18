@@ -12,7 +12,6 @@ router = APIRouter(
 
 
 @router.get("")
-@router.get("/all")
 async def _get_associations(
     category: Union[List[str], None] = Query(default=None),
     subject: Union[List[str], None] = Query(default=None),

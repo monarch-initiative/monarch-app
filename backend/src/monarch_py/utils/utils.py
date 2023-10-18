@@ -5,10 +5,20 @@ from typing import Union, Dict, List
 
 import typer
 import yaml
-from monarch_py.datamodels.model import AssociationCountList, ConfiguredBaseModel, Entity, HistoPheno, Node, Results
 from rich import print_json
 from rich.console import Console
 from rich.table import Table
+
+from monarch_py.datamodels.model import (
+    AssociationCountList,
+    ConfiguredBaseModel,
+    Entity,
+    ExpandedCurie,
+    HistoPheno,
+    Node,
+    Results,
+)
+from monarch_py.service.curie_service import CurieService
 
 MONARCH_DATA_URL = "https://data.monarchinitiative.org/monarch-kg-dev"
 SOLR_DATA_URL = f"{MONARCH_DATA_URL}/latest/solr.tar.gz"
@@ -64,12 +74,21 @@ def set_log_level(log_level: str):
     loguru.logger.add(sys.stderr, level=log_level)
 
 
-def get_provided_by_link(provided_by: str) -> str:
+### URL fetching methods ###
+
+
+def get_links_for_field(field: List[str]) -> List[ExpandedCurie]:
+    return [ExpandedCurie(id=curie, url=CurieService().expand(curie.replace("PMID", "PUBMED"))) for curie in field]
+
+
+def get_provided_by_link(provided_by: str) -> List[ExpandedCurie]:
     """Returns a link to the provided_by resource."""
-    pb = provided_by.replace("_nodes", "").replace("_edges", "").split("_")
     base_url = "https://monarch-initiative.github.io/monarch-ingest/Sources"
+    pb = provided_by.replace("_nodes", "").replace("_edges", "").split("_")
     slug = f"{pb[0]}/#{'_'.join(pb[1:])}"
-    return f"{base_url}/{slug}"
+    return ExpandedCurie(
+        id=provided_by.replace("_nodes", "").replace("_edges", "") if provided_by else None, url=f"{base_url}/{slug}"
+    )
 
 
 ### Output conversion methods ###

@@ -7,8 +7,9 @@
   <AppSection>
     <AppHeading>Help</AppHeading>
     <p>
-      Request a feature, report a bug, or chat with us about anything
-      Monarch-related.
+      We welcome all questions, requests, and feedback! Request a feature,
+      report a bug, or chat with us about anything Monarch-related. We will
+      connect you with someone who can help.
     </p>
     <AppFlex gap="big">
       <AppTile

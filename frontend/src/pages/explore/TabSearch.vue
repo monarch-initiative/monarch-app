@@ -186,9 +186,11 @@ async function runGetAutocomplete(
   /** if something typed in, get autocomplete options from backend */
   if (search.trim())
     return (await getAutocomplete(search)).items.map((item) => ({
-      label: item.name,
-      icon: getCategoryIcon(item.category),
+      label: item.name.toLowerCase(),
       tooltip: "",
+      info:
+        /** show duplicates for gene symbols */
+        item.name === item.symbol ? item.dupes.join(" / ") : undefined,
     }));
 
   /**
@@ -368,7 +370,7 @@ watch(search, async () => {
   const query: { [key: string]: string } = {};
   if (search.value) query.search = search.value;
   /** navigate to explore page */
-  await router.push({ ...route, name: "Explore", query });
+  await router.push({ ...route, name: "Explore", query, hash: "#search" });
 });
 
 /** when start page changes */

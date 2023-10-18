@@ -1,29 +1,14 @@
 <!--
-  node page details section. more detailed metadata/info about node.
+  node page extra info section. more detailed metadata/info about node.
 -->
 
 <template>
   <AppSection>
-    <AppHeading icon="clipboard-list">Details</AppHeading>
+    <AppHeading icon="clipboard-list">Extra Info</AppHeading>
 
     <AppDetails>
-      <!-- inheritance -->
-      <AppDetail
-        v-if="node.category === 'biolink:Disease'"
-        :blank="!node.inheritance"
-        title="Heritability"
-      >
-        <AppFlex align-h="left" gap="small">
-          <AppLink
-            v-tooltip="node.inheritance?.name"
-            :to="node.inheritance?.id || ''"
-            >{{ node.inheritance?.name }}</AppLink
-          >
-        </AppFlex>
-      </AppDetail>
-
-      <!-- provided by -->
-      <AppDetail :blank="!node.provided_by_link" title="Provided By">
+      <!-- source documentation -->
+      <AppDetail :blank="!node.provided_by_link" title="Source Documentation">
         <AppLink :to="node.provided_by_link?.url || ''">
           {{ node.provided_by_link?.id || node.provided_by }}
         </AppLink>

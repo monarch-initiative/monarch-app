@@ -50,12 +50,14 @@ classes:
       - aggregator_knowledge_source
       - negated
       - pathway
+      - evidence_count
+      - has_evidence
+      - has_evidence_links
       - provided_by
       - provided_by_link
       - publications
+      - publications_links
       - qualifiers
-      - has_evidence
-      - evidence_count
       - frequency_qualifier
       - onset_qualifier
       - sex_qualifier
@@ -381,6 +383,12 @@ slots:
   has_evidence:
     range: string
     multivalued: true
+  has_evidence_links:
+    description: List of ExpandedCuries with id and url for evidence
+    range: ExpandedCurie
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
   highlight:
     description: matching text snippet containing html tags
     range: string
@@ -483,6 +491,12 @@ slots:
     range: string
   publications:
     multivalued: true
+  publications_links:
+    description: List of ExpandedCuries with id and url for publications
+    range: ExpandedCurie
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
   qualifiers:
     multivalued: true
   score:

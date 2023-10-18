@@ -11,6 +11,18 @@
       <AppLink v-tooltip="'GitHub'" to="https://github.com/monarch-initiative">
         <AppIcon icon="github" />
       </AppLink>
+      <AppLink
+        v-tooltip="'YouTube'"
+        to="https://www.youtube.com/@monarchinitiative"
+      >
+        <AppIcon icon="youtube" />
+      </AppLink>
+      <AppLink
+        v-tooltip="'LinkedIn'"
+        to="https://www.linkedin.com/company/the-monarch-initiative"
+      >
+        <AppIcon icon="linkedin" />
+      </AppLink>
     </div>
     <div class="license">
       <span>Monarch Intiative {{ new Date().getFullYear() }}</span>
