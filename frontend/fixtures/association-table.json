@@ -182,15 +182,15 @@
       "publications_links": [
         {
           "id": "PMID:21242490",
-          "url": null
+          "url": "http://identifiers.org/pubmed/21242490"
         },
         {
           "id": "PMID:32493488",
-          "url": null
+          "url": "http://identifiers.org/pubmed/32493488"
         },
         {
           "id": "PMID:31332380",
-          "url": null
+          "url": "http://identifiers.org/pubmed/31332380"
         }
       ],
       "qualifiers": [],
@@ -457,15 +457,15 @@
       "publications_links": [
         {
           "id": "PMID:21242490",
-          "url": null
+          "url": "http://identifiers.org/pubmed/21242490"
         },
         {
           "id": "PMID:32493488",
-          "url": null
+          "url": "http://identifiers.org/pubmed/32493488"
         },
         {
           "id": "PMID:31332380",
-          "url": null
+          "url": "http://identifiers.org/pubmed/31332380"
         }
       ],
       "qualifiers": [],
@@ -808,11 +808,11 @@
       "publications_links": [
         {
           "id": "PMID:19576565",
-          "url": null
+          "url": "http://identifiers.org/pubmed/19576565"
         },
         {
           "id": "PMID:28803818",
-          "url": null
+          "url": "http://identifiers.org/pubmed/28803818"
         }
       ],
       "qualifiers": [],
@@ -1023,7 +1023,7 @@
       "publications_links": [
         {
           "id": "PMID:16258657",
-          "url": null
+          "url": "http://identifiers.org/pubmed/16258657"
         },
         {
           "id": "OMIM:254090",
@@ -1236,11 +1236,11 @@
       "publications_links": [
         {
           "id": "PMID:9731527",
-          "url": null
+          "url": "http://identifiers.org/pubmed/9731527"
         },
         {
           "id": "PMID:9009996",
-          "url": null
+          "url": "http://identifiers.org/pubmed/9009996"
         }
       ],
       "qualifiers": [],

@@ -6,10 +6,7 @@ def phenotype_explorer_compare():
     return {
         "subject_termset": {
             "MP:0010771": {"id": "MP:0010771", "label": "integument phenotype (MPO)"},
-            "MP:0002169": {
-                "id": "MP:0002169",
-                "label": "no abnormal phenotype detected (MPO)",
-            },
+            "MP:0002169": {"id": "MP:0002169", "label": "no abnormal phenotype detected (MPO)"},
         },
         "object_termset": {"HP:0004325": {"id": "HP:0004325", "label": "Decreased body weight (HPO)"}},
         "subject_best_matches": {
@@ -72,8 +69,8 @@ def phenotype_explorer_compare():
             "HP:0004325": {
                 "match_source": "HP:0004325",
                 "match_source_label": "Decreased body weight (HPO)",
-                "match_target": "MP:0010771",
-                "match_target_label": "integument phenotype (MPO)",
+                "match_target": "MP:0002169",
+                "match_target_label": "no abnormal phenotype detected (MPO)",
                 "score": 1.4431977534690428,
                 "match_subsumer": None,
                 "match_subsumer_label": None,
@@ -81,7 +78,7 @@ def phenotype_explorer_compare():
                     "subject_id": "HP:0004325",
                     "subject_label": None,
                     "subject_source": None,
-                    "object_id": "MP:0010771",
+                    "object_id": "MP:0002169",
                     "object_label": None,
                     "object_source": None,
                     "ancestor_id": "UPHENO:0001003",
@@ -90,10 +87,10 @@ def phenotype_explorer_compare():
                     "object_information_content": None,
                     "subject_information_content": None,
                     "ancestor_information_content": 1.4431977534690428,
-                    "jaccard_similarity": 0.3333333333333333,
+                    "jaccard_similarity": 0.16216216216216217,
                     "cosine_similarity": None,
                     "dice_similarity": None,
-                    "phenodigm_score": 0.6935891563620457,
+                    "phenodigm_score": 0.48376861011243283,
                 },
             }
         },

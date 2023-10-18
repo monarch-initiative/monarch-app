@@ -24,21 +24,9 @@ def node():
             "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/phenio/#",
         },
         "association_counts": [
-            {
-                "label": "Phenotypes",
-                "count": 4027,
-                "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
-            },
-            {
-                "label": "Causal Genes",
-                "count": 124,
-                "category": "biolink:CausalGeneToDiseaseAssociation",
-            },
-            {
-                "label": "Correlated Genes",
-                "count": 151,
-                "category": "biolink:CorrelatedGeneToDiseaseAssociation",
-            },
+            {"label": "Phenotypes", "count": 4027, "category": "biolink:DiseaseToPhenotypicFeatureAssociation"},
+            {"label": "Causal Genes", "count": 124, "category": "biolink:CausalGeneToDiseaseAssociation"},
+            {"label": "Correlated Genes", "count": 151, "category": "biolink:CorrelatedGeneToDiseaseAssociation"},
         ],
         "node_hierarchy": {
             "super_classes": [

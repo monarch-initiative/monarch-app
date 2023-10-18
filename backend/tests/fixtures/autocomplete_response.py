@@ -254,10 +254,7 @@ def autocomplete_response():
                     "category": "biolink:Disease",
                     "name": "obsolete Fanconia anemia complementation group M",
                     "provided_by": "phenio_nodes",
-                    "synonym": [
-                        "FANCM Fanconi anemia",
-                        "Fanconi anemia caused by mutation in FANCM",
-                    ],
+                    "synonym": ["FANCM Fanconi anemia", "Fanconi anemia caused by mutation in FANCM"],
                     "description": "OBSOLETE Any Fanconi anemia in which the cause of the disease is a mutation in the FANCM gene.",
                 },
                 {

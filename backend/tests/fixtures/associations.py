@@ -475,12 +475,7 @@ def associations():
                 "pathway": None,
                 "evidence_count": 2,
                 "has_evidence": ["ECO:0000304"],
-                "has_evidence_links": [
-                    {
-                        "id": "ECO:0000304",
-                        "url": "http://purl.obolibrary.org/obo/ECO_0000304",
-                    }
-                ],
+                "has_evidence_links": [{"id": "ECO:0000304", "url": "http://purl.obolibrary.org/obo/ECO_0000304"}],
                 "provided_by": "hpoa_disease_to_phenotype_edges",
                 "provided_by_link": {
                     "id": "hpoa_disease_to_phenotype",
@@ -783,12 +778,7 @@ def associations():
                 "pathway": None,
                 "evidence_count": 2,
                 "has_evidence": ["ECO:0000304"],
-                "has_evidence_links": [
-                    {
-                        "id": "ECO:0000304",
-                        "url": "http://purl.obolibrary.org/obo/ECO_0000304",
-                    }
-                ],
+                "has_evidence_links": [{"id": "ECO:0000304", "url": "http://purl.obolibrary.org/obo/ECO_0000304"}],
                 "provided_by": "hpoa_disease_to_phenotype_edges",
                 "provided_by_link": {
                     "id": "hpoa_disease_to_phenotype",
@@ -1087,12 +1077,7 @@ def associations():
                 "pathway": None,
                 "evidence_count": 2,
                 "has_evidence": ["ECO:0000304"],
-                "has_evidence_links": [
-                    {
-                        "id": "ECO:0000304",
-                        "url": "http://purl.obolibrary.org/obo/ECO_0000304",
-                    }
-                ],
+                "has_evidence_links": [{"id": "ECO:0000304", "url": "http://purl.obolibrary.org/obo/ECO_0000304"}],
                 "provided_by": "hpoa_disease_to_phenotype_edges",
                 "provided_by_link": {
                     "id": "hpoa_disease_to_phenotype",
@@ -1381,12 +1366,7 @@ def associations():
                 "pathway": None,
                 "evidence_count": 2,
                 "has_evidence": ["ECO:0000304"],
-                "has_evidence_links": [
-                    {
-                        "id": "ECO:0000304",
-                        "url": "http://purl.obolibrary.org/obo/ECO_0000304",
-                    }
-                ],
+                "has_evidence_links": [{"id": "ECO:0000304", "url": "http://purl.obolibrary.org/obo/ECO_0000304"}],
                 "provided_by": "hpoa_disease_to_phenotype_edges",
                 "provided_by_link": {
                     "id": "hpoa_disease_to_phenotype",
@@ -1691,12 +1671,7 @@ def associations():
                 "pathway": None,
                 "evidence_count": 2,
                 "has_evidence": ["ECO:0000304"],
-                "has_evidence_links": [
-                    {
-                        "id": "ECO:0000304",
-                        "url": "http://purl.obolibrary.org/obo/ECO_0000304",
-                    }
-                ],
+                "has_evidence_links": [{"id": "ECO:0000304", "url": "http://purl.obolibrary.org/obo/ECO_0000304"}],
                 "provided_by": "hpoa_disease_to_phenotype_edges",
                 "provided_by_link": {
                     "id": "hpoa_disease_to_phenotype",
@@ -2077,12 +2052,7 @@ def associations():
                 "pathway": None,
                 "evidence_count": 2,
                 "has_evidence": ["ECO:0000501"],
-                "has_evidence_links": [
-                    {
-                        "id": "ECO:0000501",
-                        "url": "http://purl.obolibrary.org/obo/ECO_0000501",
-                    }
-                ],
+                "has_evidence_links": [{"id": "ECO:0000501", "url": "http://purl.obolibrary.org/obo/ECO_0000501"}],
                 "provided_by": "hpoa_disease_to_phenotype_edges",
                 "provided_by_link": {
                     "id": "hpoa_disease_to_phenotype",
@@ -2425,12 +2395,7 @@ def associations():
                 "pathway": None,
                 "evidence_count": 2,
                 "has_evidence": ["ECO:0000304"],
-                "has_evidence_links": [
-                    {
-                        "id": "ECO:0000304",
-                        "url": "http://purl.obolibrary.org/obo/ECO_0000304",
-                    }
-                ],
+                "has_evidence_links": [{"id": "ECO:0000304", "url": "http://purl.obolibrary.org/obo/ECO_0000304"}],
                 "provided_by": "hpoa_disease_to_phenotype_edges",
                 "provided_by_link": {
                     "id": "hpoa_disease_to_phenotype",
@@ -2725,12 +2690,7 @@ def associations():
                 "pathway": None,
                 "evidence_count": 2,
                 "has_evidence": ["ECO:0000501"],
-                "has_evidence_links": [
-                    {
-                        "id": "ECO:0000501",
-                        "url": "http://purl.obolibrary.org/obo/ECO_0000501",
-                    }
-                ],
+                "has_evidence_links": [{"id": "ECO:0000501", "url": "http://purl.obolibrary.org/obo/ECO_0000501"}],
                 "provided_by": "hpoa_disease_to_phenotype_edges",
                 "provided_by_link": {
                     "id": "hpoa_disease_to_phenotype",
@@ -3027,12 +2987,7 @@ def associations():
                 "pathway": None,
                 "evidence_count": 2,
                 "has_evidence": ["ECO:0000304"],
-                "has_evidence_links": [
-                    {
-                        "id": "ECO:0000304",
-                        "url": "http://purl.obolibrary.org/obo/ECO_0000304",
-                    }
-                ],
+                "has_evidence_links": [{"id": "ECO:0000304", "url": "http://purl.obolibrary.org/obo/ECO_0000304"}],
                 "provided_by": "hpoa_disease_to_phenotype_edges",
                 "provided_by_link": {
                     "id": "hpoa_disease_to_phenotype",
@@ -3325,12 +3280,7 @@ def associations():
                 "pathway": None,
                 "evidence_count": 2,
                 "has_evidence": ["ECO:0000304"],
-                "has_evidence_links": [
-                    {
-                        "id": "ECO:0000304",
-                        "url": "http://purl.obolibrary.org/obo/ECO_0000304",
-                    }
-                ],
+                "has_evidence_links": [{"id": "ECO:0000304", "url": "http://purl.obolibrary.org/obo/ECO_0000304"}],
                 "provided_by": "hpoa_disease_to_phenotype_edges",
                 "provided_by_link": {
                     "id": "hpoa_disease_to_phenotype",
@@ -3623,12 +3573,7 @@ def associations():
                 "pathway": None,
                 "evidence_count": 2,
                 "has_evidence": ["ECO:0000304"],
-                "has_evidence_links": [
-                    {
-                        "id": "ECO:0000304",
-                        "url": "http://purl.obolibrary.org/obo/ECO_0000304",
-                    }
-                ],
+                "has_evidence_links": [{"id": "ECO:0000304", "url": "http://purl.obolibrary.org/obo/ECO_0000304"}],
                 "provided_by": "hpoa_disease_to_phenotype_edges",
                 "provided_by_link": {
                     "id": "hpoa_disease_to_phenotype",
@@ -3913,12 +3858,7 @@ def associations():
                 "pathway": None,
                 "evidence_count": 2,
                 "has_evidence": ["ECO:0000269"],
-                "has_evidence_links": [
-                    {
-                        "id": "ECO:0000269",
-                        "url": "http://purl.obolibrary.org/obo/ECO_0000269",
-                    }
-                ],
+                "has_evidence_links": [{"id": "ECO:0000269", "url": "http://purl.obolibrary.org/obo/ECO_0000269"}],
                 "provided_by": "hpoa_disease_to_phenotype_edges",
                 "provided_by_link": {
                     "id": "hpoa_disease_to_phenotype",
@@ -4243,12 +4183,7 @@ def associations():
                 "pathway": None,
                 "evidence_count": 2,
                 "has_evidence": ["ECO:0000304"],
-                "has_evidence_links": [
-                    {
-                        "id": "ECO:0000304",
-                        "url": "http://purl.obolibrary.org/obo/ECO_0000304",
-                    }
-                ],
+                "has_evidence_links": [{"id": "ECO:0000304", "url": "http://purl.obolibrary.org/obo/ECO_0000304"}],
                 "provided_by": "hpoa_disease_to_phenotype_edges",
                 "provided_by_link": {
                     "id": "hpoa_disease_to_phenotype",
@@ -4545,12 +4480,7 @@ def associations():
                 "pathway": None,
                 "evidence_count": 2,
                 "has_evidence": ["ECO:0000304"],
-                "has_evidence_links": [
-                    {
-                        "id": "ECO:0000304",
-                        "url": "http://purl.obolibrary.org/obo/ECO_0000304",
-                    }
-                ],
+                "has_evidence_links": [{"id": "ECO:0000304", "url": "http://purl.obolibrary.org/obo/ECO_0000304"}],
                 "provided_by": "hpoa_disease_to_phenotype_edges",
                 "provided_by_link": {
                     "id": "hpoa_disease_to_phenotype",
@@ -4843,12 +4773,7 @@ def associations():
                 "pathway": None,
                 "evidence_count": 2,
                 "has_evidence": ["ECO:0000304"],
-                "has_evidence_links": [
-                    {
-                        "id": "ECO:0000304",
-                        "url": "http://purl.obolibrary.org/obo/ECO_0000304",
-                    }
-                ],
+                "has_evidence_links": [{"id": "ECO:0000304", "url": "http://purl.obolibrary.org/obo/ECO_0000304"}],
                 "provided_by": "hpoa_disease_to_phenotype_edges",
                 "provided_by_link": {
                     "id": "hpoa_disease_to_phenotype",
@@ -5141,12 +5066,7 @@ def associations():
                 "pathway": None,
                 "evidence_count": 2,
                 "has_evidence": ["ECO:0000304"],
-                "has_evidence_links": [
-                    {
-                        "id": "ECO:0000304",
-                        "url": "http://purl.obolibrary.org/obo/ECO_0000304",
-                    }
-                ],
+                "has_evidence_links": [{"id": "ECO:0000304", "url": "http://purl.obolibrary.org/obo/ECO_0000304"}],
                 "provided_by": "hpoa_disease_to_phenotype_edges",
                 "provided_by_link": {
                     "id": "hpoa_disease_to_phenotype",
@@ -5427,12 +5347,7 @@ def associations():
                 "pathway": None,
                 "evidence_count": 2,
                 "has_evidence": ["ECO:0000501"],
-                "has_evidence_links": [
-                    {
-                        "id": "ECO:0000501",
-                        "url": "http://purl.obolibrary.org/obo/ECO_0000501",
-                    }
-                ],
+                "has_evidence_links": [{"id": "ECO:0000501", "url": "http://purl.obolibrary.org/obo/ECO_0000501"}],
                 "provided_by": "hpoa_disease_to_phenotype_edges",
                 "provided_by_link": {
                     "id": "hpoa_disease_to_phenotype",
@@ -5749,12 +5664,7 @@ def associations():
                 "pathway": None,
                 "evidence_count": 2,
                 "has_evidence": ["ECO:0000501"],
-                "has_evidence_links": [
-                    {
-                        "id": "ECO:0000501",
-                        "url": "http://purl.obolibrary.org/obo/ECO_0000501",
-                    }
-                ],
+                "has_evidence_links": [{"id": "ECO:0000501", "url": "http://purl.obolibrary.org/obo/ECO_0000501"}],
                 "provided_by": "hpoa_disease_to_phenotype_edges",
                 "provided_by_link": {
                     "id": "hpoa_disease_to_phenotype",
@@ -6071,12 +5981,7 @@ def associations():
                 "pathway": None,
                 "evidence_count": 2,
                 "has_evidence": ["ECO:0000501"],
-                "has_evidence_links": [
-                    {
-                        "id": "ECO:0000501",
-                        "url": "http://purl.obolibrary.org/obo/ECO_0000501",
-                    }
-                ],
+                "has_evidence_links": [{"id": "ECO:0000501", "url": "http://purl.obolibrary.org/obo/ECO_0000501"}],
                 "provided_by": "hpoa_disease_to_phenotype_edges",
                 "provided_by_link": {
                     "id": "hpoa_disease_to_phenotype",

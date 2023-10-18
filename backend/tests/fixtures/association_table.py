@@ -172,12 +172,7 @@ def association_table():
                 "pathway": None,
                 "evidence_count": 4,
                 "has_evidence": ["ECO:0000269"],
-                "has_evidence_links": [
-                    {
-                        "id": "ECO:0000269",
-                        "url": "http://purl.obolibrary.org/obo/ECO_0000269",
-                    }
-                ],
+                "has_evidence_links": [{"id": "ECO:0000269", "url": "http://purl.obolibrary.org/obo/ECO_0000269"}],
                 "provided_by": "hpoa_disease_to_phenotype_edges",
                 "provided_by_link": {
                     "id": "hpoa_disease_to_phenotype",
@@ -185,9 +180,9 @@ def association_table():
                 },
                 "publications": ["PMID:21242490", "PMID:32493488", "PMID:31332380"],
                 "publications_links": [
-                    {"id": "PMID:21242490", "url": None},
-                    {"id": "PMID:32493488", "url": None},
-                    {"id": "PMID:31332380", "url": None},
+                    {"id": "PMID:21242490", "url": "http://identifiers.org/pubmed/21242490"},
+                    {"id": "PMID:32493488", "url": "http://identifiers.org/pubmed/32493488"},
+                    {"id": "PMID:31332380", "url": "http://identifiers.org/pubmed/31332380"},
                 ],
                 "qualifiers": [],
                 "frequency_qualifier": "HP:0040282",
@@ -197,16 +192,8 @@ def association_table():
                 "frequency_qualifier_label": "Frequent (HPO)",
                 "frequency_qualifier_namespace": "HP",
                 "frequency_qualifier_category": "biolink:PhenotypicFeature",
-                "frequency_qualifier_closure": [
-                    "HP:0000001",
-                    "HP:0040282",
-                    "HP:0040279",
-                ],
-                "frequency_qualifier_closure_label": [
-                    "All (HPO)",
-                    "Frequency (HPO)",
-                    "Frequent (HPO)",
-                ],
+                "frequency_qualifier_closure": ["HP:0000001", "HP:0040282", "HP:0040279"],
+                "frequency_qualifier_closure_label": ["All (HPO)", "Frequency (HPO)", "Frequent (HPO)"],
                 "onset_qualifier_label": None,
                 "onset_qualifier_namespace": None,
                 "onset_qualifier_category": None,
@@ -442,12 +429,7 @@ def association_table():
                 "pathway": None,
                 "evidence_count": 4,
                 "has_evidence": ["ECO:0000269"],
-                "has_evidence_links": [
-                    {
-                        "id": "ECO:0000269",
-                        "url": "http://purl.obolibrary.org/obo/ECO_0000269",
-                    }
-                ],
+                "has_evidence_links": [{"id": "ECO:0000269", "url": "http://purl.obolibrary.org/obo/ECO_0000269"}],
                 "provided_by": "hpoa_disease_to_phenotype_edges",
                 "provided_by_link": {
                     "id": "hpoa_disease_to_phenotype",
@@ -455,9 +437,9 @@ def association_table():
                 },
                 "publications": ["PMID:21242490", "PMID:32493488", "PMID:31332380"],
                 "publications_links": [
-                    {"id": "PMID:21242490", "url": None},
-                    {"id": "PMID:32493488", "url": None},
-                    {"id": "PMID:31332380", "url": None},
+                    {"id": "PMID:21242490", "url": "http://identifiers.org/pubmed/21242490"},
+                    {"id": "PMID:32493488", "url": "http://identifiers.org/pubmed/32493488"},
+                    {"id": "PMID:31332380", "url": "http://identifiers.org/pubmed/31332380"},
                 ],
                 "qualifiers": [],
                 "frequency_qualifier": "HP:0040282",
@@ -467,16 +449,8 @@ def association_table():
                 "frequency_qualifier_label": "Frequent (HPO)",
                 "frequency_qualifier_namespace": "HP",
                 "frequency_qualifier_category": "biolink:PhenotypicFeature",
-                "frequency_qualifier_closure": [
-                    "HP:0000001",
-                    "HP:0040282",
-                    "HP:0040279",
-                ],
-                "frequency_qualifier_closure_label": [
-                    "All (HPO)",
-                    "Frequency (HPO)",
-                    "Frequent (HPO)",
-                ],
+                "frequency_qualifier_closure": ["HP:0000001", "HP:0040282", "HP:0040279"],
+                "frequency_qualifier_closure_label": ["All (HPO)", "Frequency (HPO)", "Frequent (HPO)"],
                 "onset_qualifier_label": None,
                 "onset_qualifier_namespace": None,
                 "onset_qualifier_category": None,
@@ -788,12 +762,7 @@ def association_table():
                 "pathway": None,
                 "evidence_count": 3,
                 "has_evidence": ["ECO:0000269"],
-                "has_evidence_links": [
-                    {
-                        "id": "ECO:0000269",
-                        "url": "http://purl.obolibrary.org/obo/ECO_0000269",
-                    }
-                ],
+                "has_evidence_links": [{"id": "ECO:0000269", "url": "http://purl.obolibrary.org/obo/ECO_0000269"}],
                 "provided_by": "hpoa_disease_to_phenotype_edges",
                 "provided_by_link": {
                     "id": "hpoa_disease_to_phenotype",
@@ -801,8 +770,8 @@ def association_table():
                 },
                 "publications": ["PMID:19576565", "PMID:28803818"],
                 "publications_links": [
-                    {"id": "PMID:19576565", "url": None},
-                    {"id": "PMID:28803818", "url": None},
+                    {"id": "PMID:19576565", "url": "http://identifiers.org/pubmed/19576565"},
+                    {"id": "PMID:28803818", "url": "http://identifiers.org/pubmed/28803818"},
                 ],
                 "qualifiers": [],
                 "frequency_qualifier": "HP:0040280",
@@ -812,16 +781,8 @@ def association_table():
                 "frequency_qualifier_label": "Obligate (HPO)",
                 "frequency_qualifier_namespace": "HP",
                 "frequency_qualifier_category": "biolink:PhenotypicFeature",
-                "frequency_qualifier_closure": [
-                    "HP:0000001",
-                    "HP:0040279",
-                    "HP:0040280",
-                ],
-                "frequency_qualifier_closure_label": [
-                    "All (HPO)",
-                    "Frequency (HPO)",
-                    "Obligate (HPO)",
-                ],
+                "frequency_qualifier_closure": ["HP:0000001", "HP:0040279", "HP:0040280"],
+                "frequency_qualifier_closure_label": ["All (HPO)", "Frequency (HPO)", "Obligate (HPO)"],
                 "onset_qualifier_label": None,
                 "onset_qualifier_namespace": None,
                 "onset_qualifier_category": None,
@@ -1001,12 +962,7 @@ def association_table():
                 "pathway": None,
                 "evidence_count": 3,
                 "has_evidence": ["ECO:0000269"],
-                "has_evidence_links": [
-                    {
-                        "id": "ECO:0000269",
-                        "url": "http://purl.obolibrary.org/obo/ECO_0000269",
-                    }
-                ],
+                "has_evidence_links": [{"id": "ECO:0000269", "url": "http://purl.obolibrary.org/obo/ECO_0000269"}],
                 "provided_by": "hpoa_disease_to_phenotype_edges",
                 "provided_by_link": {
                     "id": "hpoa_disease_to_phenotype",
@@ -1014,7 +970,7 @@ def association_table():
                 },
                 "publications": ["PMID:16258657", "OMIM:254090"],
                 "publications_links": [
-                    {"id": "PMID:16258657", "url": None},
+                    {"id": "PMID:16258657", "url": "http://identifiers.org/pubmed/16258657"},
                     {"id": "OMIM:254090", "url": "http://identifiers.org/mim/254090"},
                 ],
                 "qualifiers": [],
@@ -1025,16 +981,8 @@ def association_table():
                 "frequency_qualifier_label": "Obligate (HPO)",
                 "frequency_qualifier_namespace": "HP",
                 "frequency_qualifier_category": "biolink:PhenotypicFeature",
-                "frequency_qualifier_closure": [
-                    "HP:0000001",
-                    "HP:0040279",
-                    "HP:0040280",
-                ],
-                "frequency_qualifier_closure_label": [
-                    "All (HPO)",
-                    "Frequency (HPO)",
-                    "Obligate (HPO)",
-                ],
+                "frequency_qualifier_closure": ["HP:0000001", "HP:0040279", "HP:0040280"],
+                "frequency_qualifier_closure_label": ["All (HPO)", "Frequency (HPO)", "Obligate (HPO)"],
                 "onset_qualifier_label": None,
                 "onset_qualifier_namespace": None,
                 "onset_qualifier_category": None,
@@ -1212,12 +1160,7 @@ def association_table():
                 "pathway": None,
                 "evidence_count": 3,
                 "has_evidence": ["ECO:0000269"],
-                "has_evidence_links": [
-                    {
-                        "id": "ECO:0000269",
-                        "url": "http://purl.obolibrary.org/obo/ECO_0000269",
-                    }
-                ],
+                "has_evidence_links": [{"id": "ECO:0000269", "url": "http://purl.obolibrary.org/obo/ECO_0000269"}],
                 "provided_by": "hpoa_disease_to_phenotype_edges",
                 "provided_by_link": {
                     "id": "hpoa_disease_to_phenotype",
@@ -1225,8 +1168,8 @@ def association_table():
                 },
                 "publications": ["PMID:9731527", "PMID:9009996"],
                 "publications_links": [
-                    {"id": "PMID:9731527", "url": None},
-                    {"id": "PMID:9009996", "url": None},
+                    {"id": "PMID:9731527", "url": "http://identifiers.org/pubmed/9731527"},
+                    {"id": "PMID:9009996", "url": "http://identifiers.org/pubmed/9009996"},
                 ],
                 "qualifiers": [],
                 "frequency_qualifier": "HP:0040280",
@@ -1236,16 +1179,8 @@ def association_table():
                 "frequency_qualifier_label": "Obligate (HPO)",
                 "frequency_qualifier_namespace": "HP",
                 "frequency_qualifier_category": "biolink:PhenotypicFeature",
-                "frequency_qualifier_closure": [
-                    "HP:0000001",
-                    "HP:0040279",
-                    "HP:0040280",
-                ],
-                "frequency_qualifier_closure_label": [
-                    "All (HPO)",
-                    "Frequency (HPO)",
-                    "Obligate (HPO)",
-                ],
+                "frequency_qualifier_closure": ["HP:0000001", "HP:0040279", "HP:0040280"],
+                "frequency_qualifier_closure_label": ["All (HPO)", "Frequency (HPO)", "Obligate (HPO)"],
                 "onset_qualifier_label": None,
                 "onset_qualifier_namespace": None,
                 "onset_qualifier_category": None,

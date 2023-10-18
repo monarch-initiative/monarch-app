@@ -338,10 +338,7 @@ def autocomplete():
                 "in_taxon": None,
                 "in_taxon_label": None,
                 "symbol": None,
-                "synonym": [
-                    "FANCM Fanconi anemia",
-                    "Fanconi anemia caused by mutation in FANCM",
-                ],
+                "synonym": ["FANCM Fanconi anemia", "Fanconi anemia caused by mutation in FANCM"],
                 "highlight": None,
                 "score": None,
             },
