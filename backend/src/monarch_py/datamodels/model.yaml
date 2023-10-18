@@ -324,6 +324,7 @@ slots:
     description: List of ExpandedCuries with id and url for evidence
     range: ExpandedCurie
     multivalued: true
+    inlined: true
     inlined_as_list: true
   highlight:
     description: matching text snippet containing html tags
@@ -397,6 +398,7 @@ slots:
     description: List of ExpandedCuries with id and url for publications
     range: ExpandedCurie
     multivalued: true
+    inlined: true
     inlined_as_list: true
   qualifiers:
     multivalued: true

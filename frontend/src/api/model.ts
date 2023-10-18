@@ -62,13 +62,13 @@ export interface Association {
     evidence_count?: number,
     has_evidence?: string[],
     /** List of ExpandedCuries with id and url for evidence */
-    has_evidence_links?: ExpandedCurieId[],
+    has_evidence_links?: ExpandedCurie[],
     provided_by?: string,
     /** A link to the docs for the knowledge source that provided the node/edge. */
     provided_by_link?: ExpandedCurie,
     publications?: string[],
     /** List of ExpandedCuries with id and url for publications */
-    publications_links?: ExpandedCurieId[],
+    publications_links?: ExpandedCurie[],
     qualifiers?: string[],
     frequency_qualifier?: string,
     onset_qualifier?: string,
