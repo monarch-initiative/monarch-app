@@ -13,9 +13,10 @@
       This web app is the
       <strong v-if="apiName === 'beta'">BETA VERSION</strong
       ><strong v-if="apiName === 'dev'">DEV VERSION</strong> successor to the
-      <AppLink to="https://previous.monarchinitiative.org/">old web app here</AppLink>.
-      Not all features are implemented yet. Please use the feedback form to tell
-      us what you think!
+      <AppLink to="https://previous.monarchinitiative.org/"
+        >old web app here</AppLink
+      >. Not all features are implemented yet. Please use the feedback form to
+      tell us what you think!
     </TheBanner>
 
     <TheHeader />
