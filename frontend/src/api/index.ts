@@ -48,7 +48,7 @@ let monarch = `https://api-${apiName}.monarchinitiative.org${suffix}`;
 
 /** production version */
 if (apiName === "production")
-  monarch = `https://api.monarchinitiative.org${suffix}`;
+  monarch = suffix;
 
 /** relative to wherever web app is hosted */
 if (apiName === "relative") monarch = suffix;
