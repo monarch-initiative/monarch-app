@@ -1,4 +1,4 @@
-import { monarch, request } from "@/api";
+import { apiUrl, request } from "@/api";
 import type { AssociationTableResults } from "@/api/model";
 import type { Sort } from "@/components/AppTable.vue";
 
@@ -22,7 +22,7 @@ export const getAssociations = async (
   };
 
   /** make query */
-  const url = `${monarch}/entity/${nodeId}/${associationCategory}`;
+  const url = `${apiUrl}/entity/${nodeId}/${associationCategory}`;
   const response = await request<AssociationTableResults>(url, params);
 
   return response;

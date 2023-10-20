@@ -13,7 +13,7 @@
   </p>
 
   <!-- form -->
-  <form class="form" @submit.prevent="onSubmit">
+  <form class="form" @submit.prevent="runPostFeedback">
     <!-- fields for user to fill out -->
     <div class="fields">
       <AppTextbox
@@ -21,6 +21,7 @@
         title="Name"
         description="So we can address you"
         placeholder="Jane Smith"
+        @keydown="preventImplicit"
       />
       <AppTextbox
         v-model.trim="email"
@@ -28,12 +29,14 @@
         description="So we can follow up with you"
         placeholder="jane.smith@gmail.com"
         type="email"
+        @keydown="preventImplicit"
       />
       <AppTextbox
         v-model.trim="github"
         title="GitHub username"
         description="So we can tag you"
         placeholder="@janesmith"
+        @keydown="preventImplicit"
       />
       <div class="feedback">
         <AppTextbox
@@ -128,14 +131,10 @@ const details = computed(() => {
   };
 });
 
-/** when form submitted */
-async function onSubmit() {
-  /**
-   * only proceed if submitted through button, not "implicitly" (enter press).
-   * https://stackoverflow.com/questions/895171/prevent-users-from-submitting-a-form-by-hitting-enter
-   */
-  if ((document.activeElement as Element).matches("button[type='submit']"))
-    await runPostFeedback();
+/** prevent implicit form submission (enter press) */
+/** https://stackoverflow.com/questions/895171/prevent-users-from-submitting-a-form-by-hitting-enter */
+async function preventImplicit(event: KeyboardEvent) {
+  if (event.key === "Enter") event.preventDefault();
 }
 
 /** post feedback to backend */

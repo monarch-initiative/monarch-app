@@ -9,27 +9,13 @@ const url = new URL(window.sessionStorage.redirectHref || window.location.href);
 
 /** get monarch api name/version to use */
 
-/** infer as best as possible from url */
+/** from url domain */
 let fromDomain =
   /** sub domain */
-  url.hostname.match(/([\w\d-]+)?\.?(monarchinitiative)\.org/)?.[1] || "";
+  url.hostname.match(/([\w\d-]+)\.monarchinitiative\.org/)?.[1] || "";
 
-/** production url */
-if (url.hostname === "monarchinitiative.org") fromDomain = "production";
-
-/** running web app locally */
-if (url.hostname === "localhost")
-  // fromDomain = "local";
-  fromDomain = "next";
-
-/** netlify pr deploy previews */
-if (url.hostname.endsWith("netlify.app")) fromDomain = "next";
-
-/** specific ip */
-if (url.hostname.match(/\d+\.\d+\.\d+\.\d+/)) fromDomain = "relative";
-
-/** last resort fallback */
-if (!fromDomain) fromDomain = "next";
+/** prod has no subdomain */
+if (url.hostname === "monarchinitiative.org") fromDomain = "prod";
 
 /** from env var */
 const fromEnv = import.meta.env.VITE_API || "";
@@ -38,32 +24,36 @@ const fromEnv = import.meta.env.VITE_API || "";
 const fromParam = new URLSearchParams(url.search).get("api") || "";
 
 /** name of monarch api version to use. highest to lowest override priority. */
-export const apiName = fromParam || fromEnv || fromDomain;
+export const apiName = fromParam || fromEnv || fromDomain || "prod";
 
 /** api url suffix */
 const suffix = "/v3/api";
 
-/** base monarch api url */
-let monarch = `https://api-${apiName}.monarchinitiative.org${suffix}`;
+/** base monarch api url, relative by default */
+let apiUrl = suffix;
 
-/** production version */
-if (apiName === "production")
-  monarch = suffix;
-
-/** relative to wherever web app is hosted */
-if (apiName === "relative") monarch = suffix;
+/** make absolute */
+if (
+  /** local dev */
+  url.hostname === "localhost" ||
+  /** netlify pr deploy previews */
+  url.hostname.endsWith("netlify.app")
+)
+  apiUrl = `https://${
+    apiName === "prod" ? "" : apiName + "."
+  }monarchinitiative.org${suffix}`;
 
 /** locally running server */
-if (apiName === "local") monarch = `http://127.0.0.1:8000${suffix}`;
+if (apiName === "local") apiUrl = `http://127.0.0.1:8000${suffix}`;
 
-export { monarch };
+export { apiUrl };
 
 groupLog(`API version: ${apiName}`, {
   fromParam,
   fromEnv,
   fromDomain,
   apiName,
-  monarch,
+  apiUrl,
 });
 
 type Param = string | number | boolean | undefined | null;
