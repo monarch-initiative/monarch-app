@@ -1,6 +1,6 @@
 import { groupBy, uniq } from "lodash";
 import type { SearchResult, SearchResults } from "@/api/model";
-import { monarch, request } from "./index";
+import { apiUrl, request } from "./index";
 
 export type Filters = { [key: string]: string[] };
 
@@ -10,7 +10,7 @@ export const getSearch = async (
   limit?: number,
   filters?: Filters,
 ) => {
-  const url = `${monarch}/search`;
+  const url = `${apiUrl}/search`;
   const response = await request<SearchResults>(url, {
     q,
     offset,
@@ -26,7 +26,7 @@ type DedupedSearchResults = Omit<SearchResults, "items"> & {
 };
 
 export const getAutocomplete = async (q: string) => {
-  const url = `${monarch}/autocomplete`;
+  const url = `${apiUrl}/autocomplete`;
   const response = await request<SearchResults>(url, { q });
 
   const transformedResponse: DedupedSearchResults = {

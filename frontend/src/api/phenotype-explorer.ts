@@ -6,7 +6,7 @@ import type {
 } from "@/api/model";
 import type { Options, OptionsFunc } from "@/components/AppSelectTags.vue";
 import { stringify } from "@/util/object";
-import { biolink, monarch, request } from "./";
+import { apiUrl, biolink, request } from "./";
 import { getSearch } from "./search";
 
 /** search individual phenotypes or gene/disease phenotypes */
@@ -69,7 +69,7 @@ const getPhenotypeAssociations = async (id = ""): Promise<Options> => {
   };
 
   /** make query */
-  const url = `${monarch}/association`;
+  const url = `${apiUrl}/association`;
   const { items } = await request<AssociationResults>(url, params);
 
   /** convert into desired result format */
@@ -108,7 +108,7 @@ export const compareSetToSet = async (
   const options = { method: "POST", headers, body: stringify(body) };
 
   /** make query */
-  const url = `${monarch}/semsim/compare`;
+  const url = `${apiUrl}/semsim/compare`;
   const response = await request<TermSetPairwiseSimilarity>(url, {}, options);
 
   /** get high level data */
