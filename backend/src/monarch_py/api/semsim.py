@@ -1,6 +1,4 @@
-from typing import List
-
-from fastapi import APIRouter, Path, Query
+from fastapi import APIRouter, Path
 
 from monarch_py.api.additional_models import CompareRequest
 from monarch_py.api.config import oak
