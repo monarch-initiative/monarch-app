@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from monarch_py.api import association, entity, histopheno, search, semsim
-from monarch_py.api.config import oak, solr
+from monarch_py.api.config import oak
 from monarch_py.api.middleware.logging_middleware import LoggingMiddleware
 from monarch_py.service.curie_service import CurieService
 
@@ -37,6 +37,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.add_middleware(LoggingMiddleware)
+
 
 @app.get("/")
 async def _root():

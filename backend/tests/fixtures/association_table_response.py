@@ -5,7 +5,7 @@ import pytest
 def association_table_response():
     return {
         "responseHeader": {
-            "QTime": 0,
+            "QTime": 1,
             "params": {
                 "mm": "100%",
                 "q": "*:*",
@@ -26,7 +26,7 @@ def association_table_response():
             "start": 0,
             "docs": [
                 {
-                    "id": "uuid:aafbc2e0-6c84-11ee-9c86-072f86c27f6e",
+                    "id": "uuid:89aa7b9b-5d8c-11ee-9b27-2b20ed86a9d9",
                     "original_subject": "OMIM:164310",
                     "predicate": "biolink:has_phenotype",
                     "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
@@ -189,10 +189,10 @@ def association_table_response():
                     "frequency_qualifier_closure": ["HP:0000001", "HP:0040282", "HP:0040279"],
                     "frequency_qualifier_closure_label": ["All (HPO)", "Frequency (HPO)", "Frequent (HPO)"],
                     "frequency_qualifier_label": "Frequent (HPO)",
-                    "evidence_count": 4,
+                    "evidence_count": 6,
                 },
                 {
-                    "id": "uuid:aafbc2f1-6c84-11ee-9c86-072f86c27f6e",
+                    "id": "uuid:89aa7bac-5d8c-11ee-9b27-2b20ed86a9d9",
                     "original_subject": "OMIM:164310",
                     "predicate": "biolink:has_phenotype",
                     "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
@@ -409,10 +409,10 @@ def association_table_response():
                     "frequency_qualifier_closure": ["HP:0000001", "HP:0040282", "HP:0040279"],
                     "frequency_qualifier_closure_label": ["All (HPO)", "Frequency (HPO)", "Frequent (HPO)"],
                     "frequency_qualifier_label": "Frequent (HPO)",
-                    "evidence_count": 4,
+                    "evidence_count": 6,
                 },
                 {
-                    "id": "uuid:a77a5b0a-6c84-11ee-9c86-072f86c27f6e",
+                    "id": "uuid:862bc0d4-5d8c-11ee-9b27-2b20ed86a9d9",
                     "original_subject": "OMIM:612937",
                     "predicate": "biolink:has_phenotype",
                     "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
@@ -605,9 +605,7 @@ def association_table_response():
                         "entity",
                         "continuant",
                         "continuant",
-                        "occurrent",
                         "independent continuant",
-                        "process",
                         "specifically dependent continuant",
                         "material entity",
                         "gas molecular entity",
@@ -636,8 +634,6 @@ def association_table_response():
                         "nitrogen molecular entity",
                         "creatine kinase complex",
                         "cellular_component",
-                        "biological_process",
-                        "metabolic process",
                         "protein-containing complex",
                         "transferase complex, transferring phosphorus-containing groups",
                         "catalytic complex",
@@ -705,10 +701,10 @@ def association_table_response():
                     "frequency_qualifier_closure": ["HP:0000001", "HP:0040279", "HP:0040280"],
                     "frequency_qualifier_closure_label": ["All (HPO)", "Frequency (HPO)", "Obligate (HPO)"],
                     "frequency_qualifier_label": "Obligate (HPO)",
-                    "evidence_count": 3,
+                    "evidence_count": 5,
                 },
                 {
-                    "id": "uuid:abeb7c29-6c84-11ee-9c86-072f86c27f6e",
+                    "id": "uuid:8a99d6f0-5d8c-11ee-9b27-2b20ed86a9d9",
                     "original_subject": "OMIM:254090",
                     "predicate": "biolink:has_phenotype",
                     "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
@@ -869,10 +865,10 @@ def association_table_response():
                     "frequency_qualifier_closure": ["HP:0000001", "HP:0040279", "HP:0040280"],
                     "frequency_qualifier_closure_label": ["All (HPO)", "Frequency (HPO)", "Obligate (HPO)"],
                     "frequency_qualifier_label": "Obligate (HPO)",
-                    "evidence_count": 3,
+                    "evidence_count": 5,
                 },
                 {
-                    "id": "uuid:aa9b85eb-6c84-11ee-9c86-072f86c27f6e",
+                    "id": "uuid:894ab8ce-5d8c-11ee-9b27-2b20ed86a9d9",
                     "original_subject": "OMIM:253601",
                     "predicate": "biolink:has_phenotype",
                     "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
@@ -1031,7 +1027,7 @@ def association_table_response():
                     "frequency_qualifier_closure": ["HP:0000001", "HP:0040279", "HP:0040280"],
                     "frequency_qualifier_closure_label": ["All (HPO)", "Frequency (HPO)", "Obligate (HPO)"],
                     "frequency_qualifier_label": "Obligate (HPO)",
-                    "evidence_count": 3,
+                    "evidence_count": 5,
                 },
             ],
         },

@@ -31,9 +31,9 @@ def node():
         "node_hierarchy": {
             "super_classes": [
                 {
-                    "id": "MONDO:0019056",
+                    "id": "MONDO:0005336",
                     "category": "biolink:Disease",
-                    "name": "neuromuscular disease",
+                    "name": "myopathy",
                     "full_name": None,
                     "description": None,
                     "xref": [],
@@ -57,9 +57,9 @@ def node():
                     "synonym": [],
                 },
                 {
-                    "id": "MONDO:0005336",
+                    "id": "MONDO:0019056",
                     "category": "biolink:Disease",
-                    "name": "myopathy",
+                    "name": "neuromuscular disease",
                     "full_name": None,
                     "description": None,
                     "xref": [],
