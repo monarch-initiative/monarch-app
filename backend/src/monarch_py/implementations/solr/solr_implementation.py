@@ -83,7 +83,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         node = Node(**solr_document)
         if "biolink:Disease" in node.category:
             mode_of_inheritance_associations = self.get_associations(
-                subject=id, predicate="biolink:has_mode_of_inheritance", offset=0
+                subject=id, predicate="biolink:has_mode_of_inheritance", direct=True, offset=0
             )
             if mode_of_inheritance_associations is not None and len(mode_of_inheritance_associations.items) == 1:
                 node.inheritance = self._get_associated_entity(mode_of_inheritance_associations.items[0], node)
