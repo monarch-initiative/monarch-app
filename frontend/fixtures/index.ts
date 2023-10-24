@@ -1,12 +1,11 @@
 import { rest } from "msw";
-import { biolink, monarch } from "@/api";
+import { apiUrl, biolink } from "@/api";
 import { feedbackEndpoint } from "@/api/feedback";
 import { efetch, esummary } from "@/api/publications";
 import { uptimeRobot } from "@/api/uptime";
 import associationsTable from "./association-table.json";
 import associations from "./associations.json";
 import autocomplete from "./autocomplete.json";
-import datasets from "./datasets.json";
 import feedback from "./feedback.json";
 import histopheno from "./histopheno.json";
 import nodePublicationAbstract from "./node-publication-abstract.json";
@@ -24,18 +23,13 @@ const regex = (base: string = "", pattern: string = "") =>
 
 /** api calls to be mocked with fixture data */
 export const handlers = [
-  /** dynamically fetched data on /sources */
-  rest.get(regex(biolink, "/metadata/datasets"), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(datasets)),
-  ),
-
   /** api status monitoring on /help */
   rest.post(regex(uptimeRobot), (req, res, ctx) =>
     res(ctx.status(200), ctx.json(uptime)),
   ),
 
   /** histopheno data */
-  rest.get(regex(monarch, "/histopheno"), (req, res, ctx) =>
+  rest.get(regex(apiUrl, "/histopheno"), (req, res, ctx) =>
     res(ctx.status(200), ctx.json(histopheno)),
   ),
 
@@ -45,12 +39,12 @@ export const handlers = [
   ),
 
   /** search * */
-  rest.get(regex(monarch, "/search"), (req, res, ctx) =>
+  rest.get(regex(apiUrl, "/search"), (req, res, ctx) =>
     res(ctx.status(200), ctx.json(search)),
   ),
 
   /** autocomplete */
-  rest.get(regex(monarch, "/autocomplete"), (req, res, ctx) =>
+  rest.get(regex(apiUrl, "/autocomplete"), (req, res, ctx) =>
     res(ctx.status(200), ctx.json(autocomplete)),
   ),
 
@@ -63,22 +57,22 @@ export const handlers = [
   rest.get(regex(biolink, "/sim/search"), (req, res, ctx) =>
     res(ctx.status(200), ctx.json(phenotypeExplorerSearch)),
   ),
-  rest.post(regex(monarch, "/semsim/compare"), (req, res, ctx) =>
+  rest.post(regex(apiUrl, "/semsim/compare"), (req, res, ctx) =>
     res(ctx.status(200), ctx.json(phenotypeExplorerCompare)),
   ),
 
   /** node associations */
-  rest.get(regex(monarch, "/associations"), (req, res, ctx) =>
+  rest.get(regex(apiUrl, "/associations"), (req, res, ctx) =>
     res(ctx.status(200), ctx.json(associations)),
   ),
 
   /** node associations table */
-  rest.get(regex(monarch, "/entity/.*/.*"), (req, res, ctx) =>
+  rest.get(regex(apiUrl, "/entity/.*/.*"), (req, res, ctx) =>
     res(ctx.status(200), ctx.json(associationsTable)),
   ),
 
   /** node lookup */
-  rest.get(regex(monarch, "/entity/.*"), (req, res, ctx) => {
+  rest.get(regex(apiUrl, "/entity/.*"), (req, res, ctx) => {
     /**
      * change fixture data based on request so we can see UI that is conditional
      * on name/category/etc

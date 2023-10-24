@@ -64,7 +64,6 @@ Which version of the Monarch API to utilize in the frontend, e.g.:
 URL param: `monarchinitiative.org/?api=dev`  
 Env var: `VITE_API=local`
 
-If not set, inferred from URL.
 See `src/api/index.ts` for logic.
 
 **`mock`**

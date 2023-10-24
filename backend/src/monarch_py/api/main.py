@@ -4,6 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from monarch_py.api import association, entity, histopheno, search, semsim
 from monarch_py.api.config import oak
+from monarch_py.api.middleware.logging_middleware import LoggingMiddleware
+from monarch_py.service.curie_service import CurieService
 
 PREFIX = "/v3/api"
 
@@ -16,6 +18,8 @@ app = FastAPI(
 @app.on_event("startup")
 async def initialize_app():
     oak()
+    # Let the curie service singleton initialize itself
+    CurieService()
 
 
 app.include_router(entity.router, prefix=f"{PREFIX}/entity")
@@ -32,6 +36,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(LoggingMiddleware)
 
 
 @app.get("/")
