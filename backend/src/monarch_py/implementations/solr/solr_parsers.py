@@ -103,7 +103,7 @@ def parse_counterpart_associations(query_result: SolrQueryResult, entity: str) -
             raise ValidationError
         provided_by_link = ExpandedCurie(
             id=association.provided_by.replace("_nodes", "").replace("_edges", ""),
-            url=get_provgtided_by_link(association.provided_by),
+            url=get_provided_by_link(association.provided_by),
         )
         if association.subject == entity or entity in association.subject_closure:
             this_entity = {
