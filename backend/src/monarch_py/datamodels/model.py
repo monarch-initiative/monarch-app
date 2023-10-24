@@ -389,6 +389,19 @@ class HistoBin(FacetValue):
     count: Optional[int] = Field(None, description="""count of documents""")
 
 
+class Mapping(ConfiguredBaseModel):
+    """
+    A minimal class to hold a SSSOM mapping
+    """
+
+    subject_id: str = Field(..., description="""The first of the two entities being compared""")
+    subject_label: Optional[str] = Field(None, description="""The name of the subject entity""")
+    predicate_id: str = Field(...)
+    object_id: Optional[str] = Field(None, description="""The second of the two entities being compared""")
+    object_label: Optional[str] = Field(None, description="""The name of the object entity""")
+    mapping_justification: Optional[str] = Field(None)
+
+
 class Node(Entity):
     """
     UI container class extending Entity with additional information
@@ -626,6 +639,7 @@ AssociationCount.update_forward_refs()
 FacetField.update_forward_refs()
 HistoPheno.update_forward_refs()
 HistoBin.update_forward_refs()
+Mapping.update_forward_refs()
 Node.update_forward_refs()
 NodeHierarchy.update_forward_refs()
 Results.update_forward_refs()

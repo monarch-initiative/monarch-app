@@ -193,6 +193,16 @@ classes:
     is_a: FacetValue
     slots:
       - id
+  Mapping:
+    description: >-
+      A minimal class to hold a SSSOM mapping
+    slots:
+      - subject_id
+      - subject_label
+      - predicate_id
+      - object_id
+      - object_label
+      - mapping_justification
   MultiEntityAssociationResults:
     is_a: Results
     slots:
@@ -316,6 +326,9 @@ slots:
     range: string
   full_name:
     description: The long form name of an entity
+    range: string
+  grouping_key:
+    description: A concatenation of fields used to group associations with the same essential/defining properties
     range: string
   has_evidence:
     range: string
@@ -538,3 +551,17 @@ slots:
   stage_qualifier_closure_label:
     multivalued: true
     description: Field containing stage_qualifier name and the names of all of it's ancestors
+# sssom slots
+  subject_id:
+      range: string
+      required: true
+  # subject label is already included in this schema
+  predicate_id:
+      range: string
+      required: true
+  object_id:
+      range: string
+      required: true
+  # object label is already included in this schema
+  mapping_justification:
+      range: string
