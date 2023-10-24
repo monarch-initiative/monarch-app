@@ -42,7 +42,7 @@ def parse_associations(
         except ValidationError:
             logger.error(f"Validation error for {doc}")
             raise ValidationError
-        association.provided_by_link = get_provided_by_link(association.provided_by) if association.provided_by else []
+        association.provided_by_link = get_provided_by_link(association.provided_by) if association.provided_by else None
         association.has_evidence_links = (
             get_links_for_field(association.has_evidence) if association.has_evidence else []
         )
@@ -101,10 +101,7 @@ def parse_counterpart_associations(query_result: SolrQueryResult, entity: str) -
         except ValidationError:
             logger.error(f"Validation error for {doc}")
             raise ValidationError
-        provided_by_link = ExpandedCurie(
-            id=association.provided_by.replace("_nodes", "").replace("_edges", ""),
-            url=get_provided_by_link(association.provided_by),
-        )
+        provided_by_link = get_provided_by_link(association.provided_by) if association.provided_by else None
         if association.subject == entity or entity in association.subject_closure:
             this_entity = {
                 "original_entity": association.original_subject,

@@ -81,7 +81,7 @@ def get_links_for_field(field: List[str]) -> List[ExpandedCurie]:
     return [ExpandedCurie(id=curie, url=CurieService().expand(curie.replace("PMID", "PUBMED"))) for curie in field]
 
 
-def get_provided_by_link(provided_by: str) -> List[ExpandedCurie]:
+def get_provided_by_link(provided_by: str) -> ExpandedCurie:
     """Returns a link to the provided_by resource."""
     base_url = "https://monarch-initiative.github.io/monarch-ingest/Sources"
     pb = provided_by.replace("_nodes", "").replace("_edges", "").split("_")
