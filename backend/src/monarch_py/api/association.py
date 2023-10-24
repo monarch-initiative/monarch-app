@@ -41,7 +41,7 @@ async def _get_multi_entity_associations(
     entity: Union[List[str], None] = Query(default=None),
     counterpart_category: Union[List[str], None] = Query(default=None),
     pagination: PaginationParams = Depends(),
-) -> List[MultiEntityAssociationResults]:
+) -> MultiEntityAssociationResults:
     """Retrieves all associations between each entity and each counterpart category."""
     response = solr().get_multi_entity_associations(
         entity=entity,
