@@ -19,6 +19,7 @@ from monarch_py.datamodels.model import (
     HistoPheno,
     SearchResult,
     SearchResults,
+    ExpandedCurie
 )
 from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQueryResult
 from monarch_py.utils.association_type_utils import get_association_type_mapping_by_query_string
@@ -102,7 +103,7 @@ def parse_counterpart_associations(query_result: SolrQueryResult, entity: str) -
             raise ValidationError
         provided_by_link = ExpandedCurie(
             id=association.provided_by.replace("_nodes", "").replace("_edges", ""),
-            url=get_provided_by_link(association.provided_by),
+            url=get_provgtided_by_link(association.provided_by),
         )
         if association.subject == entity or entity in association.subject_closure:
             this_entity = {

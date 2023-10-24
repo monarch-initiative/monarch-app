@@ -46,7 +46,7 @@ async def _get_multi_entity_associations(
     response = solr().get_multi_entity_associations(
         entity=entity,
         counterpart_category=counterpart_category,
-        offset=pagination.offset,
-        limit_per_group=pagination.limit,
+        offset_per_category=pagination.offset,
+        limit_per_category=pagination.limit,
     )
     return response
