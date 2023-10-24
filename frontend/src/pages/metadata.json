@@ -25,22 +25,22 @@
     {
       "label": "Gene to Disease",
       "icon": "association-gene-to-disease",
-      "count": 7092
+      "count": 15038
     },
     {
       "label": "Gene to Phenotype",
       "icon": "association-gene-to-phenotype",
-      "count": 832349
+      "count": 832433
     },
     {
       "label": "Disease to Phenotype",
       "icon": "association-disease-to-phenotype",
-      "count": 129270
+      "count": 240556
     },
     {
       "label": "Total Associations",
       "icon": "association",
-      "count": 8260697
+      "count": 8076791
     }
   ]
 }

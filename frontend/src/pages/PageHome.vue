@@ -141,14 +141,28 @@
         to="https://medium.com/@MonarchInit"
         icon="medium"
         title="Medium"
-        subtitle="Blog posts and major updates"
+        subtitle="Blog posts"
         design="small"
       />
       <AppTile
         to="https://github.com/monarch-initiative"
         icon="github"
         title="GitHub"
-        subtitle="Source code and releases"
+        subtitle="Source code"
+        design="small"
+      />
+      <AppTile
+        to="https://www.youtube.com/@monarchinitiative"
+        icon="youtube"
+        title="YouTube"
+        subtitle="Videos"
+        design="small"
+      />
+      <AppTile
+        to="https://www.linkedin.com/company/the-monarch-initiative"
+        icon="linkedin"
+        title="LinkedIn"
+        subtitle="Major updates"
         design="small"
       />
     </AppFlex>

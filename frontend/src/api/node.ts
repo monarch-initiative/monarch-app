@@ -1,9 +1,9 @@
 import { getPublication } from "@/api/publications";
-import { monarch, request } from "./index";
+import { apiUrl, request } from "./index";
 import type { Node } from "./model";
 
 export const getNode = async (id: string) => {
-  const url = `${monarch}/entity/${id}`;
+  const url = `${apiUrl}/entity/${id}`;
   const response = await request<Node>(url);
 
   const metadata: Metadata & Partial<typeof response> = {};

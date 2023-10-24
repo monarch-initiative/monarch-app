@@ -37,6 +37,36 @@
         ></p>
       </AppDetail>
 
+      <!-- inheritance -->
+      <AppDetail
+        v-if="node.category === 'biolink:Disease'"
+        :blank="!node.inheritance"
+        title="Heritability"
+      >
+        <AppFlex align-h="left" gap="small">
+          <AppLink
+            v-tooltip="node.inheritance?.name"
+            :to="node.inheritance?.id || ''"
+            >{{ node.inheritance?.name }}</AppLink
+          >
+        </AppFlex>
+      </AppDetail>
+
+      <!-- disease causal genes -->
+      <AppDetail
+        v-if="node.category === 'biolink:Disease'"
+        :blank="!node.causal_gene?.length"
+        title="Causal Genes"
+      >
+        <AppFlex align-h="left">
+          <AppNodeBadge
+            v-for="(gene, index) in node.causal_gene"
+            :key="index"
+            :node="omit(gene, 'in_taxon_label')"
+          />
+        </AppFlex>
+      </AppDetail>
+
       <!-- synonyms -->
       <AppDetail
         :blank="!node.synonym?.length"
@@ -64,21 +94,6 @@
           >
             {{ count.label }} {{ count.count?.toLocaleString() || 0 }}
           </AppLink>
-        </AppFlex>
-      </AppDetail>
-
-      <!-- disease causal genes -->
-      <AppDetail
-        v-if="node.category === 'biolink:Disease'"
-        :blank="!node.causal_gene?.length"
-        title="Causal Genes"
-      >
-        <AppFlex align-h="left">
-          <AppNodeBadge
-            v-for="(gene, index) in node.causal_gene"
-            :key="index"
-            :node="omit(gene, 'in_taxon_label')"
-          />
         </AppFlex>
       </AppDetail>
     </AppDetails>

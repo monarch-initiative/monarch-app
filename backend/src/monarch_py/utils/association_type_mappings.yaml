@@ -24,6 +24,12 @@
 - subject_label: Genes
   object_label: Molecular Functions
   category: "biolink:MacromolecularMachineToMolecularActivityAssociation"
+- subject_label: Genes
+  object_label: Cellular Components
+  category: "biolink:MacromolecularMachineToCellularComponentAssociation"
+- subject_label: Genes
+  object_label: Biological Processes
+  category: "biolink:MacromolecularMachineToBiologicalProcessAssociation"
 - subject_label: Causal Genes
   object_label: Causal Diseases
   category: "biolink:CausalGeneToDiseaseAssociation"

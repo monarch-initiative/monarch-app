@@ -1,6 +1,6 @@
-from typing import List
-
 from fastapi import APIRouter, Path
+
+from monarch_py.api.additional_models import CompareRequest
 from monarch_py.api.config import oak
 
 router = APIRouter(tags=["semsim"], responses={404: {"description": "Not Found"}})
@@ -8,8 +8,8 @@ router = APIRouter(tags=["semsim"], responses={404: {"description": "Not Found"}
 
 @router.get("/compare/{subjects}/{objects}")
 def _compare(
-    subjects: str = Path(title="List of subjects for comparison"),
-    objects: str = Path(title="List of objects for comparison"),
+    subjects: str = Path(..., title="List of subjects for comparison"),
+    objects: str = Path(..., title="List of objects for comparison"),
 ):
     """Get pairwise similarity between two sets of terms
 
@@ -35,10 +35,7 @@ def _compare(
 
 
 @router.post("/compare")
-def _post_compare(
-    subjects: List[str] = None,
-    objects: List[str] = None,
-):
+def _post_compare(request: CompareRequest):
     """
         Pairwise similarity between two sets of terms <br>
         <br>
@@ -50,4 +47,4 @@ def _post_compare(
     }
     </pre>
     """
-    return oak().compare(subjects, objects)
+    return oak().compare(request.subjects, request.objects)

@@ -5,7 +5,7 @@ import pytest
 def association_table_response():
     return {
         "responseHeader": {
-            "QTime": 0,
+            "QTime": 1,
             "params": {
                 "mm": "100%",
                 "q": "*:*",
@@ -22,11 +22,11 @@ def association_table_response():
             },
         },
         "response": {
-            "num_found": 2166,
+            "num_found": 4027,
             "start": 0,
             "docs": [
                 {
-                    "id": "uuid:d92c5da3-5349-11ee-a38e-df3e29a44ac7",
+                    "id": "uuid:89aa7b9b-5d8c-11ee-9b27-2b20ed86a9d9",
                     "original_subject": "OMIM:164310",
                     "predicate": "biolink:has_phenotype",
                     "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
@@ -186,21 +186,13 @@ def association_table_response():
                     "object_label": "Distal muscle weakness (HPO)",
                     "frequency_qualifier_namespace": "HP",
                     "frequency_qualifier_category": "biolink:PhenotypicFeature",
-                    "frequency_qualifier_closure": [
-                        "HP:0000001",
-                        "HP:0040282",
-                        "HP:0040279",
-                    ],
-                    "frequency_qualifier_closure_label": [
-                        "All (HPO)",
-                        "Frequency (HPO)",
-                        "Frequent (HPO)",
-                    ],
+                    "frequency_qualifier_closure": ["HP:0000001", "HP:0040282", "HP:0040279"],
+                    "frequency_qualifier_closure_label": ["All (HPO)", "Frequency (HPO)", "Frequent (HPO)"],
                     "frequency_qualifier_label": "Frequent (HPO)",
                     "evidence_count": 6,
                 },
                 {
-                    "id": "uuid:d92c5db4-5349-11ee-a38e-df3e29a44ac7",
+                    "id": "uuid:89aa7bac-5d8c-11ee-9b27-2b20ed86a9d9",
                     "original_subject": "OMIM:164310",
                     "predicate": "biolink:has_phenotype",
                     "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
@@ -414,21 +406,13 @@ def association_table_response():
                     "object_label": "Dysphagia (HPO)",
                     "frequency_qualifier_namespace": "HP",
                     "frequency_qualifier_category": "biolink:PhenotypicFeature",
-                    "frequency_qualifier_closure": [
-                        "HP:0000001",
-                        "HP:0040282",
-                        "HP:0040279",
-                    ],
-                    "frequency_qualifier_closure_label": [
-                        "All (HPO)",
-                        "Frequency (HPO)",
-                        "Frequent (HPO)",
-                    ],
+                    "frequency_qualifier_closure": ["HP:0000001", "HP:0040282", "HP:0040279"],
+                    "frequency_qualifier_closure_label": ["All (HPO)", "Frequency (HPO)", "Frequent (HPO)"],
                     "frequency_qualifier_label": "Frequent (HPO)",
                     "evidence_count": 6,
                 },
                 {
-                    "id": "uuid:d574cdea-5349-11ee-a38e-df3e29a44ac7",
+                    "id": "uuid:862bc0d4-5d8c-11ee-9b27-2b20ed86a9d9",
                     "original_subject": "OMIM:612937",
                     "predicate": "biolink:has_phenotype",
                     "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
@@ -714,21 +698,13 @@ def association_table_response():
                     "object_label": "Elevated circulating creatine kinase concentration (HPO)",
                     "frequency_qualifier_namespace": "HP",
                     "frequency_qualifier_category": "biolink:PhenotypicFeature",
-                    "frequency_qualifier_closure": [
-                        "HP:0000001",
-                        "HP:0040279",
-                        "HP:0040280",
-                    ],
-                    "frequency_qualifier_closure_label": [
-                        "All (HPO)",
-                        "Frequency (HPO)",
-                        "Obligate (HPO)",
-                    ],
+                    "frequency_qualifier_closure": ["HP:0000001", "HP:0040279", "HP:0040280"],
+                    "frequency_qualifier_closure_label": ["All (HPO)", "Frequency (HPO)", "Obligate (HPO)"],
                     "frequency_qualifier_label": "Obligate (HPO)",
                     "evidence_count": 5,
                 },
                 {
-                    "id": "uuid:da2b4746-5349-11ee-a38e-df3e29a44ac7",
+                    "id": "uuid:8a99d6f0-5d8c-11ee-9b27-2b20ed86a9d9",
                     "original_subject": "OMIM:254090",
                     "predicate": "biolink:has_phenotype",
                     "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
@@ -886,21 +862,13 @@ def association_table_response():
                     "object_label": "Distal joint laxity (HPO)",
                     "frequency_qualifier_namespace": "HP",
                     "frequency_qualifier_category": "biolink:PhenotypicFeature",
-                    "frequency_qualifier_closure": [
-                        "HP:0000001",
-                        "HP:0040279",
-                        "HP:0040280",
-                    ],
-                    "frequency_qualifier_closure_label": [
-                        "All (HPO)",
-                        "Frequency (HPO)",
-                        "Obligate (HPO)",
-                    ],
+                    "frequency_qualifier_closure": ["HP:0000001", "HP:0040279", "HP:0040280"],
+                    "frequency_qualifier_closure_label": ["All (HPO)", "Frequency (HPO)", "Obligate (HPO)"],
                     "frequency_qualifier_label": "Obligate (HPO)",
                     "evidence_count": 5,
                 },
                 {
-                    "id": "uuid:d8c61fbc-5349-11ee-a38e-df3e29a44ac7",
+                    "id": "uuid:894ab8ce-5d8c-11ee-9b27-2b20ed86a9d9",
                     "original_subject": "OMIM:253601",
                     "predicate": "biolink:has_phenotype",
                     "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
@@ -1056,16 +1024,8 @@ def association_table_response():
                     "object_label": "Proximal muscle weakness (HPO)",
                     "frequency_qualifier_namespace": "HP",
                     "frequency_qualifier_category": "biolink:PhenotypicFeature",
-                    "frequency_qualifier_closure": [
-                        "HP:0000001",
-                        "HP:0040279",
-                        "HP:0040280",
-                    ],
-                    "frequency_qualifier_closure_label": [
-                        "All (HPO)",
-                        "Frequency (HPO)",
-                        "Obligate (HPO)",
-                    ],
+                    "frequency_qualifier_closure": ["HP:0000001", "HP:0040279", "HP:0040280"],
+                    "frequency_qualifier_closure_label": ["All (HPO)", "Frequency (HPO)", "Obligate (HPO)"],
                     "frequency_qualifier_label": "Obligate (HPO)",
                     "evidence_count": 5,
                 },

@@ -5,7 +5,7 @@ import pytest
 def search_response():
     return {
         "responseHeader": {
-            "QTime": 0,
+            "QTime": 2,
             "params": {
                 "mm": "100%",
                 "q": "fanconi",
@@ -65,11 +65,7 @@ def search_response():
                     "category": "biolink:Disease",
                     "name": "primary Fanconi syndrome",
                     "provided_by": "phenio_nodes",
-                    "synonym": [
-                        "FRTS1",
-                        "Fanconi renotubular syndrome 1",
-                        "primary Fanconi renotubular syndrome",
-                    ],
+                    "synonym": ["FRTS1", "Fanconi renotubular syndrome 1", "primary Fanconi renotubular syndrome"],
                     "description": "A condition in which the kidneys do not absorb certain substances into the body. These substances, such as cysteine, fructose, galactose, or glycogen, are lost in the urine. Fanconi syndrome is thought to be caused by genetic and environmental factors, and it may be diagnosed at any age. Symptoms of Fanconi syndrome include increased urine production (which may cause dehydration), weakness, and abnormalities of the bones.",
                 },
                 {

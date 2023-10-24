@@ -12,7 +12,7 @@ router = APIRouter(
 
 
 @router.get("")
-@router.get("/all")
+@router.get("/all", include_in_schema=False)  # We can remove this once the chatgpt plugin & oak aren't using it
 async def _get_associations(
     category: Union[List[str], None] = Query(default=None),
     subject: Union[List[str], None] = Query(default=None),

@@ -24,16 +24,9 @@ def node():
             "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/phenio/#",
         },
         "association_counts": [
-            {
-                "label": "Phenotypes",
-                "count": 2166,
-                "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
-            },
-            {
-                "label": "Causal Genes",
-                "count": 124,
-                "category": "biolink:CausalGeneToDiseaseAssociation",
-            },
+            {"label": "Phenotypes", "count": 4027, "category": "biolink:DiseaseToPhenotypicFeatureAssociation"},
+            {"label": "Causal Genes", "count": 124, "category": "biolink:CausalGeneToDiseaseAssociation"},
+            {"label": "Correlated Genes", "count": 151, "category": "biolink:CorrelatedGeneToDiseaseAssociation"},
         ],
         "node_hierarchy": {
             "super_classes": [
@@ -51,9 +44,9 @@ def node():
                     "synonym": [],
                 },
                 {
-                    "id": "MONDO:0019056",
+                    "id": "MONDO:0700223",
                     "category": "biolink:Disease",
-                    "name": "neuromuscular disease",
+                    "name": "hereditary skeletal muscle disorder",
                     "full_name": None,
                     "description": None,
                     "xref": [],
@@ -64,9 +57,9 @@ def node():
                     "synonym": [],
                 },
                 {
-                    "id": "MONDO:0700223",
+                    "id": "MONDO:0019056",
                     "category": "biolink:Disease",
-                    "name": "hereditary skeletal muscle disorder",
+                    "name": "neuromuscular disease",
                     "full_name": None,
                     "description": None,
                     "xref": [],

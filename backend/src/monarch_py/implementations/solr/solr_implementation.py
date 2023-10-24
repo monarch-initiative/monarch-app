@@ -10,7 +10,6 @@ from monarch_py.datamodels.model import (
     AssociationTableResults,
     CategoryGroupedAssociationResults,
     Entity,
-    ExpandedCurie,
     HistoPheno,
     MultiEntityAssociationResults,
     Node,
@@ -41,9 +40,8 @@ from monarch_py.implementations.solr.solr_query_utils import (
 from monarch_py.interfaces.association_interface import AssociationInterface
 from monarch_py.interfaces.entity_interface import EntityInterface
 from monarch_py.interfaces.search_interface import SearchInterface
-from monarch_py.service.curie_service import CurieService
 from monarch_py.service.solr_service import SolrService
-from monarch_py.utils.utils import get_provided_by_link, set_log_level
+from monarch_py.utils.utils import get_provided_by_link, get_links_for_field, set_log_level
 
 
 @dataclass
@@ -87,7 +85,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         node = Node(**solr_document)
         if "biolink:Disease" in node.category:
             mode_of_inheritance_associations = self.get_associations(
-                subject=id, predicate="biolink:has_mode_of_inheritance", offset=0
+                subject=id, predicate="biolink:has_mode_of_inheritance", direct=True, offset=0
             )
             if mode_of_inheritance_associations is not None and len(mode_of_inheritance_associations.items) == 1:
                 node.inheritance = self._get_associated_entity(mode_of_inheritance_associations.items[0], node)
@@ -115,13 +113,9 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
 
         node.node_hierarchy = self._get_node_hierarchy(node)
         node.association_counts = self.get_association_counts(id).items
-        node.external_links = (
-            [ExpandedCurie(id=curie, url=CurieService().expand(curie)) for curie in node.xref] if node.xref else []
-        )
-        node.provided_by_link = ExpandedCurie(
-            id=node.provided_by.replace("_nodes", "").replace("_edges", "") if node.provided_by else None,
-            url=get_provided_by_link(node.provided_by),
-        )
+        node.external_links = get_links_for_field(node.xref) if node.xref else []
+        node.provided_by_link = get_provided_by_link(node.provided_by)
+
         return node
 
     ### Entity helpers ###

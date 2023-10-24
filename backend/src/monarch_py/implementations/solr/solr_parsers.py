@@ -1,6 +1,8 @@
 from typing import Dict, List
 
 from loguru import logger
+from pydantic import ValidationError
+
 from monarch_py.datamodels.model import (
     Association,
     AssociationCount,
@@ -10,7 +12,6 @@ from monarch_py.datamodels.model import (
     AssociationTableResults,
     DirectionalAssociation,
     Entity,
-    ExpandedCurie,
     FacetField,
     FacetValue,
     HistoBin,
@@ -20,8 +21,7 @@ from monarch_py.datamodels.model import (
 )
 from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQueryResult
 from monarch_py.utils.association_type_utils import get_association_type_mapping_by_query_string
-from monarch_py.utils.utils import get_provided_by_link
-from pydantic import ValidationError
+from monarch_py.utils.utils import get_links_for_field, get_provided_by_link
 
 ####################
 # Parser functions #
@@ -40,9 +40,12 @@ def parse_associations(
         except ValidationError:
             logger.error(f"Validation error for {doc}")
             raise ValidationError
-        association.provided_by_link = ExpandedCurie(
-            id=association.provided_by.replace("_nodes", "").replace("_edges", ""),
-            url=get_provided_by_link(association.provided_by),
+        association.provided_by_link = get_provided_by_link(association.provided_by) if association.provided_by else []
+        association.has_evidence_links = (
+            get_links_for_field(association.has_evidence) if association.has_evidence else []
+        )
+        association.publications_links = (
+            get_links_for_field(association.publications) if association.publications else []
         )
         associations.append(association)
     total = query_result.response.num_found
@@ -100,6 +103,15 @@ def parse_association_table(
         try:
             direction = get_association_direction(entity, doc)
             association = DirectionalAssociation(**doc, direction=direction)
+            association.provided_by_link = (
+                get_provided_by_link(association.provided_by) if association.provided_by else []
+            )
+            association.has_evidence_links = (
+                get_links_for_field(association.has_evidence) if association.has_evidence else []
+            )
+            association.publications_links = (
+                get_links_for_field(association.publications) if association.publications else []
+            )
             associations.append(association)
         except ValidationError:
             logger.error(f"Validation error for {doc}")

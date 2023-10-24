@@ -8,7 +8,9 @@ import * as fas from "@fortawesome/free-solid-svg-icons";
 /** create collection/"palette" of useable icons */
 const icons = [
   fab.faGithub,
+  fab.faLinkedin,
   fab.faMedium,
+  fab.faYoutube,
   far.faChartBar,
   far.faCircleCheck,
   far.faCirclePause,
@@ -46,6 +48,7 @@ const icons = [
   fas.faBars,
   fas.faBarsProgress,
   fas.faBook,
+  fas.faBullhorn,
   fas.faCheck,
   fas.faCircleExclamation,
   fas.faCircleInfo,
@@ -58,6 +61,7 @@ const icons = [
   fas.faFeatherPointed,
   fas.faFilter,
   fas.faFlask,
+  fas.faHandshakeAngle,
   fas.faLink,
   fas.faLocationDot,
   fas.faMagnifyingGlass,
@@ -67,6 +71,7 @@ const icons = [
   fas.faPersonRunning,
   fas.faScaleBalanced,
   fas.faSitemap,
+  fas.faShareNodes,
   fas.faSquareCheck,
   fas.faSubscript,
   fas.faTable,

@@ -24,6 +24,7 @@ export enum AssociationDirectionEnum {
 
 export interface Association {
     id: string,
+    category?: string,
     subject: string,
     original_subject?: string,
     /** The namespace/prefix of the subject entity */
@@ -55,21 +56,24 @@ export interface Association {
     object_taxon_label?: string,
     primary_knowledge_source?: string,
     aggregator_knowledge_source?: string[],
-    category?: string,
     negated?: boolean,
+    pathway?: string,
+    /** count of supporting documents, evidence codes, and sources supplying evidence */
+    evidence_count?: number,
+    has_evidence?: string[],
+    /** List of ExpandedCuries with id and url for evidence */
+    has_evidence_links?: ExpandedCurie[],
     provided_by?: string,
     /** A link to the docs for the knowledge source that provided the node/edge. */
     provided_by_link?: ExpandedCurie,
     publications?: string[],
+    /** List of ExpandedCuries with id and url for publications */
+    publications_links?: ExpandedCurie[],
     qualifiers?: string[],
     frequency_qualifier?: string,
-    has_evidence?: string[],
     onset_qualifier?: string,
     sex_qualifier?: string,
     stage_qualifier?: string,
-    /** count of supporting documents, evidence codes, and sources supplying evidence */
-    evidence_count?: number,
-    pathway?: string,
     /** The name of the frequency_qualifier entity */
     frequency_qualifier_label?: string,
     /** The namespace/prefix of the frequency_qualifier entity */
@@ -180,6 +184,7 @@ export interface DirectionalAssociation extends Association {
     /** The directionality of the association relative to a given entity for an association_count. If the entity is the subject or in the subject closure, the direction is forwards, if it is the object or in the object closure, the direction is backwards. */
     direction: string,
     id: string,
+    category?: string,
     subject: string,
     original_subject?: string,
     /** The namespace/prefix of the subject entity */
@@ -211,21 +216,24 @@ export interface DirectionalAssociation extends Association {
     object_taxon_label?: string,
     primary_knowledge_source?: string,
     aggregator_knowledge_source?: string[],
-    category?: string,
     negated?: boolean,
+    pathway?: string,
+    /** count of supporting documents, evidence codes, and sources supplying evidence */
+    evidence_count?: number,
+    has_evidence?: string[],
+    /** List of ExpandedCuries with id and url for evidence */
+    has_evidence_links?: ExpandedCurie[],
     provided_by?: string,
     /** A link to the docs for the knowledge source that provided the node/edge. */
     provided_by_link?: ExpandedCurie,
     publications?: string[],
+    /** List of ExpandedCuries with id and url for publications */
+    publications_links?: ExpandedCurie[],
     qualifiers?: string[],
     frequency_qualifier?: string,
-    has_evidence?: string[],
     onset_qualifier?: string,
     sex_qualifier?: string,
     stage_qualifier?: string,
-    /** count of supporting documents, evidence codes, and sources supplying evidence */
-    evidence_count?: number,
-    pathway?: string,
     /** The name of the frequency_qualifier entity */
     frequency_qualifier_label?: string,
     /** The namespace/prefix of the frequency_qualifier entity */

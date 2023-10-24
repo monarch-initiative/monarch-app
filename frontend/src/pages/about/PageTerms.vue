@@ -17,9 +17,10 @@
         >3-Clause BSD License</AppLink
       >. Licensing information for the data sources and ontologies that make up
       the Monarch knowledge graph can be found on the
-      <AppLink to="/sources">sources page</AppLink>. Licensing information for
-      tools, APIs, algorithms, and workflows can be found on the
-      <AppLink to="/overview">overview page</AppLink>.
+      <AppLink to="https://monarch-initiative.github.io/monarch-ingest/Sources"
+        >sources page</AppLink
+      >. Licensing information for tools, APIs, algorithms, and workflows can be
+      found on the <AppLink to="/overview">overview page</AppLink>.
     </p>
     <AppHeading>Tracking</AppHeading>
     <p>

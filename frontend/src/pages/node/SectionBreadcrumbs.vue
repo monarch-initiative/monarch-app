@@ -1,44 +1,54 @@
 <template>
-  <AppSection v-if="breadcrumbs.length">
+  <AppSection>
     <AppHeading icon="location-dot">Breadcrumbs</AppHeading>
 
-    <span
-      >How you got to <AppNodeBadge :node="node" /> through the Monarch
-      knowledge graph:</span
-    >
+    <template v-if="breadcrumbs.length">
+      <span
+        >How you got to <AppNodeBadge :node="node" /> through the Monarch
+        knowledge graph:</span
+      >
 
-    <AppFlex direction="col">
-      <template v-for="(breadcrumb, index) of _breadcrumbs" :key="index">
-        <!-- node -->
-        <AppNodeBadge
-          v-tooltip="`Go ${-breadcrumb.back} step(s) back`"
-          :node="breadcrumb.node"
-          :style="{ opacity: breadcrumb.noEntry ? 0.5 : 1 }"
-          @click.prevent.capture="$router.go(breadcrumb.back)"
-        />
-        <!-- predicate -->
-        <AppPredicateBadge
-          :association="breadcrumb.association"
-          :vertical="true"
-          :reverse="
-            breadcrumb.association.direction ===
-            AssociationDirectionEnum.incoming
-          "
-        />
-      </template>
+      <AppFlex direction="col">
+        <template v-for="(breadcrumb, index) of _breadcrumbs" :key="index">
+          <!-- node -->
+          <AppNodeBadge
+            v-tooltip="`Go ${-breadcrumb.back} step(s) back`"
+            :node="breadcrumb.node"
+            :style="{ opacity: breadcrumb.noEntry ? 0.5 : 1 }"
+            @click.prevent.capture="$router.go(breadcrumb.back)"
+          />
+          <!-- predicate -->
+          <AppPredicateBadge
+            :association="breadcrumb.association"
+            :vertical="true"
+            :reverse="
+              breadcrumb.association.direction ===
+              AssociationDirectionEnum.incoming
+            "
+          />
+        </template>
 
-      <!-- ending/current node -->
-      <AppNodeBadge :node="node" />
-    </AppFlex>
+        <!-- ending/current node -->
+        <AppNodeBadge :node="node" />
+      </AppFlex>
 
-    <!-- clear button -->
-    <AppButton
-      v-tooltip="'Clear breadcrumb history'"
-      icon="xmark"
-      text="Clear"
-      design="small"
-      @click="clear"
-    />
+      <!-- clear button -->
+      <AppButton
+        v-tooltip="'Clear breadcrumb history'"
+        icon="xmark"
+        text="Clear"
+        design="small"
+        @click="clear"
+      />
+    </template>
+
+    <template v-else>
+      <p class="gray">
+        As you navigate to new nodes from this page, the path you traveled
+        through the KG will be shown here. Try clicking on a node in the
+        hierarchy or associations sections.
+      </p>
+    </template>
   </AppSection>
 </template>
 
@@ -90,5 +100,9 @@ function clear() {
 <style lang="scss" scoped>
 .arrow {
   color: $gray;
+}
+
+.gray {
+  color: $dark-gray;
 }
 </style>
