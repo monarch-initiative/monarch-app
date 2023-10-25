@@ -552,16 +552,12 @@ slots:
     multivalued: true
     description: Field containing stage_qualifier name and the names of all of it's ancestors
 # sssom slots
-  subject_id:
-      range: string
-      required: true
+  # subject_id already exists in similarity.yaml
   # subject label is already included in this schema
   predicate_id:
       range: string
       required: true
-  object_id:
-      range: string
-      required: true
+  # object_id already exists in similarity.yaml
   # object label is already included in this schema
   mapping_justification:
       range: string
