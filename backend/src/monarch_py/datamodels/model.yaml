@@ -57,16 +57,16 @@ classes:
       - provided_by_link
       - publications
       - publications_links
-      - qualifier
+      - qualifiers
       - frequency_qualifier
       - onset_qualifier
       - sex_qualifier
       - stage_qualifier
-      - qualifier_label
-      - qualifier_namespace
-      - qualifier_category
-      - qualifier_closure
-      - qualifier_closure_label
+      - qualifiers_label
+      - qualifiers_namespace
+      - qualifiers_category
+      - qualifiers_closure
+      - qualifiers_closure_label
       - frequency_qualifier_label
       - frequency_qualifier_namespace
       - frequency_qualifier_category
@@ -418,7 +418,7 @@ slots:
     multivalued: true
     inlined: true
     inlined_as_list: true
-  qualifier:
+  qualifiers:
     multivalued: true
   score:
     range: float
