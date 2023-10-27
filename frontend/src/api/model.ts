@@ -337,6 +337,21 @@ export interface HistoBin extends FacetValue {
     /** count of documents */
     count?: number,
 };
+/**
+ * A minimal class to hold a SSSOM mapping
+ */
+export interface Mapping {
+    /** The first of the two entities being compared */
+    subject_id: string,
+    /** The name of the subject entity */
+    subject_label?: string,
+    predicate_id: string,
+    /** The second of the two entities being compared */
+    object_id?: string,
+    /** The name of the object entity */
+    object_label?: string,
+    mapping_justification?: string,
+};
 
 export interface MultiEntityAssociationResults extends Results {
     id: string,
