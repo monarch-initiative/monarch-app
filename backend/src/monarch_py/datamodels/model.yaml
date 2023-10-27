@@ -496,6 +496,24 @@ slots:
     is_a: in_taxon
   object_taxon_label:
     is_a: in_taxon_label
+
+  # this whole block will be renamed to qualifer_ after we bring in the next biolink model release
+  qualifiers_label:
+    is_a: name
+    description: The name of the frequency_qualifier entity
+  qualifiers_namespace:
+    range: string
+    description: The namespace/prefix of the frequency_qualifier entity
+  qualifiers_category:
+    is_a: category
+    description: The category of the frequency_qualifier entity
+  qualifiers_closure:
+    multivalued: true
+    description: Field containing frequency_qualifier id and the ids of all of it's ancestors
+  qualifiers_closure_label:
+    multivalued: true
+    description: Field containing frequency_qualifier name and the names of all of it's ancestors
+
   frequency_qualifier_label:
     is_a: name
     description: The name of the frequency_qualifier entity
