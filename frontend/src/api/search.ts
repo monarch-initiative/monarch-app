@@ -1,5 +1,4 @@
-import { groupBy, uniq } from "lodash";
-import type { SearchResult, SearchResults } from "@/api/model";
+import type { SearchResults } from "@/api/model";
 import { apiUrl, request } from "./index";
 
 export type Filters = { [key: string]: string[] };

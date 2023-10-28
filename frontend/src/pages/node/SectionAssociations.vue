@@ -64,23 +64,6 @@ type Props = {
 
 const props = defineProps<Props>();
 
-/** mode tabs */
-const tabs = [
-  {
-    id: "summary",
-    text: "Summary",
-    icon: "clipboard",
-    tooltip: "Top few associations and high level details",
-  },
-  {
-    id: "table",
-    text: "Table",
-    icon: "table",
-    tooltip: "All association data, in tabular form",
-  },
-];
-const tab = ref(tabs[0].id);
-
 /** selected category of associations to show */
 const category = ref<Option>();
 /** selected association id */

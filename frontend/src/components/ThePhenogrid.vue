@@ -167,7 +167,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { sortBy, startCase } from "lodash";
+import { sortBy } from "lodash";
 import { hideAll } from "tippy.js";
 import type { TermInfo } from "@/api/model";
 import { type SetToSet } from "@/api/phenotype-explorer";

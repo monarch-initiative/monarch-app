@@ -229,7 +229,7 @@ async function runGetAutocomplete(
   /** show top N entries in each category */
   const top = 5;
 
-  /** recents */
+  /** recent */
   const recent: AutocompleteOptions = uniqBy([...history.value].reverse(), "id")
     .slice(0, top)
     .map((entry) => ({
@@ -238,7 +238,7 @@ async function runGetAutocomplete(
       tooltip: "Node you recently visited",
     }));
 
-  /** populars */
+  /** popular */
   const popular: AutocompleteOptions = sortBy(
     Object.entries(groupBy(history.value, "id")).map(([, matches]) => ({
       entry: matches[0],
