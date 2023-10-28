@@ -50,11 +50,8 @@ import type { DirectionalAssociation, Node } from "@/api/model";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import type { Option, Options } from "@/components/AppSelectSingle.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
-import AppTabs from "@/components/AppTabs.vue";
-// import AssociationsSummary from "@/pages/node/AssociationsSummary.vue";
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
 import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
-import { scrollToHash } from "@/router";
 
 /** route info */
 const route = useRoute();
@@ -121,12 +118,10 @@ watch(
 watch(
   () => route.query.associations,
   () => {
-    if (route.query.associations)
-      category.value = categoryOptions.value.find(
-        (option) => option.id === route.query.associations,
-      );
-
-    scrollToHash("associations");
+    if (!route.query.associations) return;
+    category.value = categoryOptions.value.find(
+      (option) => option.id === route.query.associations,
+    );
   },
   { immediate: true },
 );

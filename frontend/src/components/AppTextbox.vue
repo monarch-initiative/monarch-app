@@ -80,7 +80,7 @@ type Emits = {
   blur: [];
 };
 
-const emit = defineEmits<Emits>();
+defineEmits<Emits>();
 
 /** element reference */
 const textbox = ref();
@@ -91,7 +91,7 @@ const input = ref();
 function clear() {
   input.value.input.value = "";
   input.value.input.dispatchEvent(new Event("input"));
-  emit("change", "");
+  input.value.input.dispatchEvent(new Event("change"));
 }
 
 /** allow parent to access ref */
@@ -141,7 +141,6 @@ $height: 40px;
   justify-content: center;
   width: $height;
   height: $height;
-  color: $gray;
 }
 
 .input {

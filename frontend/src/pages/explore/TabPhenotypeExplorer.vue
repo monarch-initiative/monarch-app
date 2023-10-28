@@ -135,9 +135,8 @@ import type { Option, Options } from "@/components/AppSelectTags.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
-import { scrollToElement } from "@/router";
+import { scrollTo } from "@/router";
 import { useQuery } from "@/util/composables";
-import { waitFor } from "@/util/dom";
 import { parse } from "@/util/object";
 import examples from "./phenotype-explorer.json";
 
@@ -235,7 +234,7 @@ const {
 
 /** scroll results into view */
 async function scrollToResults() {
-  scrollToElement(await waitFor("#results"));
+  scrollTo("#results");
 }
 
 /** when multi select component runs spread options function */

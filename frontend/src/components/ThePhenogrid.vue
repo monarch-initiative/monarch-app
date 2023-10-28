@@ -85,21 +85,28 @@
                         :node="{ id: row.id, name: row.label }"
                         :absolute="true"
                       />
-                      <span>Score</span>
+                      <span>Ancestor</span>
+                      <AppNodeBadge
+                        :node="{
+                          id: data.cells[col.id + row.id].ancestor_id,
+                          name: data.cells[col.id + row.id].ancestor_label,
+                        }"
+                        :absolute="true"
+                      />
+                      <span>Ancestor IC</span>
                       <span>{{
-                        data.cells[col.id + row.id].score.toFixed(2)
+                        data.cells[col.id + row.id].score.toFixed(3)
                       }}</span>
-                      <template
-                        v-for="(value, key, index) in data.cells[
-                          col.id + row.id
-                        ].simInfo"
-                        :key="index"
-                      >
-                        <span>{{ startCase(String(key)) }}</span>
-                        <span>{{
-                          typeof value === "number" ? value.toFixed(2) : value
-                        }}</span>
-                      </template>
+                      <span>Phenodigm</span>
+                      <span>{{
+                        data.cells[col.id + row.id].phenodigm_score?.toFixed(3)
+                      }}</span>
+                      <span>Jaccard</span>
+                      <span>{{
+                        data.cells[col.id + row.id].jaccard_similarity?.toFixed(
+                          3,
+                        )
+                      }}</span>
                     </div>
                   </template>
                 </tooltip>
@@ -146,7 +153,7 @@
           :options="sortMethods"
         />
       </AppFlex>
-      <AppCheckbox v-model="reverse" text="Flip" />
+      <AppCheckbox v-model="reverse" text="Reverse" />
       <AppButton
         v-tooltip="'Copy unmatched phenotype ids to clipboard'"
         design="small"

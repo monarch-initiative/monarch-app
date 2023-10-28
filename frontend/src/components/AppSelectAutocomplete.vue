@@ -62,11 +62,14 @@
           :id="`option-${id}-${index}`"
           :key="index"
           v-tooltip="option.tooltip"
-          :class="['option', { highlighted: index === highlighted }]"
+          :class="[
+            'option',
+            { highlighted: index === highlighted, special: option.special },
+          ]"
           role="option"
           :aria-selected="true"
           tabindex="0"
-          @click.prevent="() => select(option.label)"
+          @click.prevent="() => select(option)"
           @mousedown.prevent=""
           @focusin="() => null"
           @keydown="() => null"
@@ -83,9 +86,6 @@
         </div>
       </div>
     </Teleport>
-
-    <!-- description -->
-    <div v-if="description" class="description">{{ description }}</div>
   </div>
 </template>
 
@@ -99,12 +99,16 @@ export type Option = {
   icon?: string;
   /** display label */
   label: string;
+  /** unique id */
+  id?: string;
   /** highlighting html */
   highlight?: string;
   /** info col */
   info?: string;
   /** tooltip on hover */
   tooltip?: string;
+  /** whether option is "special" (gets styled differently) */
+  special?: boolean;
 };
 </script>
 
@@ -136,9 +140,9 @@ type Emits = {
   /** when input focused */
   focus: [];
   /** when input value change "submitted"/"committed" by user */
-  change: [string];
+  change: [string | Option, string];
   /** when user wants to delete an entry */
-  delete: [string];
+  delete: [Option];
 };
 
 const emit = defineEmits<Emits>();
@@ -182,9 +186,13 @@ async function onDebounce() {
   await runGetResults();
 }
 
+/** ignore next child input box change event */
+let ignoreChange = false;
+
 /** when user "commits" change to value, e.g. pressing enter, de-focusing, etc */
-function onChange(value: string) {
-  select(value);
+async function onChange(value: string) {
+  if (!ignoreChange) select(value);
+  ignoreChange = false;
 }
 
 /** when user presses key in input */
@@ -210,13 +218,12 @@ async function onKeydown(event: KeyboardEvent) {
 
   /** enter key to select highlighted result */
   if (event.key === "Enter" && highlighted.value >= 0) {
-    event.stopPropagation();
-    select(results.value[highlighted.value].label);
+    select(results.value[highlighted.value]);
   }
 
   /** delete key to delete the highlighted result */
   if (event.key === "Delete" && event.shiftKey) {
-    emit("delete", results.value[highlighted.value].label);
+    emit("delete", results.value[highlighted.value]);
     await runGetResults();
   }
 
@@ -225,9 +232,11 @@ async function onKeydown(event: KeyboardEvent) {
 }
 
 /** select an option */
-async function select(value: string) {
-  search.value = value;
-  emit("change", value);
+async function select(value: string | Option) {
+  /** ignore next child input box change event triggered by enter press */
+  ignoreChange = true;
+  emit("change", value, search.value);
+  search.value = typeof value === "string" ? value : value.label;
   close();
 }
 
@@ -345,9 +354,7 @@ watch(highlighted, () => {
   color: $gray;
 }
 
-.description {
-  margin-top: 10px;
-  color: $dark-gray;
-  font-size: 0.9rem;
+.special {
+  font-weight: 500;
 }
 </style>

@@ -21,29 +21,13 @@ export const getSearch = async (
   return response;
 };
 
-type DedupedSearchResults = Omit<SearchResults, "items"> & {
-  items: (SearchResult & { dupes: string[] })[];
-};
-
 export const getAutocomplete = async (q: string) => {
   const url = `${apiUrl}/autocomplete`;
   const response = await request<SearchResults>(url, { q });
 
-  const transformedResponse: DedupedSearchResults = {
+  const transformedResponse = {
     ...response,
-    items: Object.values(
-      /** consolidate items */
-      groupBy(
-        response.items,
-        /** by name, case insensitively */
-        (item) => item.name.toLowerCase(),
-      ),
-    ).map((dupes) => ({
-      ...dupes[0],
-      /** keep list of duplicated names */
-      /** de-dupe this list case sensitively */
-      dupes: uniq(dupes.map((dupe) => dupe.name)),
-    })),
+    items: response.items.slice(0, 20),
   };
 
   return transformedResponse;

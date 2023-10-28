@@ -468,7 +468,7 @@ watch(
   }
 
   &.divider {
-    width: 2px;
+    width: 2px !important;
     margin: 0 auto;
     padding: 0;
     background: $light-gray;

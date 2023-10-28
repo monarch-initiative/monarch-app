@@ -36,14 +36,13 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted, watch } from "vue";
+import { onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 import { getNode } from "@/api/node";
 import TheTableOfContents from "@/components/TheTableOfContents.vue";
 import { addEntry } from "@/global/history";
 import { appDescription, appTitle } from "@/global/meta";
 import SectionBreadcrumbs from "@/pages/node/SectionBreadcrumbs.vue";
-import { scrollToHash } from "@/router";
 import { useQuery } from "@/util/composables";
 import SectionAssociations from "./SectionAssociations.vue";
 import SectionExtra from "./SectionExtra.vue";
@@ -65,6 +64,8 @@ const {
   async function () {
     /** get node from route params */
     const { id = "" } = route.params;
+
+    if (!id) return null;
     const node_info = await getNode(String(id));
 
     return node_info;
@@ -75,10 +76,6 @@ const {
 
   /** on success, after data loaded */
   async (results) => {
-    /** scroll to hash */
-    await nextTick();
-    scrollToHash();
-
     /**
      * set page description from node metadata. no need to include category and
      * id, as those should already be in the document title. see
@@ -109,9 +106,19 @@ watch(
 );
 
 /** update node history on node visit */
-watch([() => node.value?.name], () => addEntry(node.value?.name), {
-  immediate: true,
-});
+watch(
+  [() => node.value?.name],
+  () => {
+    if (node.value)
+      addEntry({
+        id: node.value.id,
+        label: node.value.name || "",
+      });
+  },
+  {
+    immediate: true,
+  },
+);
 
 /** get new node data on load */
 onMounted(runGetNode);

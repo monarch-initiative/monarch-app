@@ -461,12 +461,12 @@ export interface TermPairwiseSimilarity extends PairwiseSimilarity {
     /** The IC of the object */
     ancestor_information_content?: string,
     /** The number of concepts in the intersection divided by the number in the union */
-    jaccard_similarity?: string,
+    jaccard_similarity?: number,
     /** the dot product of two node embeddings divided by the product of their lengths */
     cosine_similarity?: number,
-    dice_similarity?: string,
+    dice_similarity?: number,
     /** the geometric mean of the jaccard similarity and the information content */
-    phenodigm_score?: string,
+    phenodigm_score?: number,
 };
 /**
  * A simple pairwise similarity between two sets of concepts/terms
