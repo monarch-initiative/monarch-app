@@ -63,6 +63,8 @@ export interface Association {
     has_evidence?: string[],
     /** List of ExpandedCuries with id and url for evidence */
     has_evidence_links?: ExpandedCurie[],
+    /** A concatenation of fields used to group associations with the same essential/defining properties */
+    grouping_key?: string,
     provided_by?: string,
     /** A link to the docs for the knowledge source that provided the node/edge. */
     provided_by_link?: ExpandedCurie,
@@ -74,6 +76,16 @@ export interface Association {
     onset_qualifier?: string,
     sex_qualifier?: string,
     stage_qualifier?: string,
+    /** The name of the frequency_qualifier entity */
+    qualifiers_label?: string,
+    /** The namespace/prefix of the frequency_qualifier entity */
+    qualifiers_namespace?: string,
+    /** The category of the frequency_qualifier entity */
+    qualifiers_category?: string,
+    /** Field containing frequency_qualifier id and the ids of all of it's ancestors */
+    qualifiers_closure?: string[],
+    /** Field containing frequency_qualifier name and the names of all of it's ancestors */
+    qualifiers_closure_label?: string[],
     /** The name of the frequency_qualifier entity */
     frequency_qualifier_label?: string,
     /** The namespace/prefix of the frequency_qualifier entity */
@@ -223,6 +235,8 @@ export interface DirectionalAssociation extends Association {
     has_evidence?: string[],
     /** List of ExpandedCuries with id and url for evidence */
     has_evidence_links?: ExpandedCurie[],
+    /** A concatenation of fields used to group associations with the same essential/defining properties */
+    grouping_key?: string,
     provided_by?: string,
     /** A link to the docs for the knowledge source that provided the node/edge. */
     provided_by_link?: ExpandedCurie,
@@ -234,6 +248,16 @@ export interface DirectionalAssociation extends Association {
     onset_qualifier?: string,
     sex_qualifier?: string,
     stage_qualifier?: string,
+    /** The name of the frequency_qualifier entity */
+    qualifiers_label?: string,
+    /** The namespace/prefix of the frequency_qualifier entity */
+    qualifiers_namespace?: string,
+    /** The category of the frequency_qualifier entity */
+    qualifiers_category?: string,
+    /** Field containing frequency_qualifier id and the ids of all of it's ancestors */
+    qualifiers_closure?: string[],
+    /** Field containing frequency_qualifier name and the names of all of it's ancestors */
+    qualifiers_closure_label?: string[],
     /** The name of the frequency_qualifier entity */
     frequency_qualifier_label?: string,
     /** The namespace/prefix of the frequency_qualifier entity */

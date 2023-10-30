@@ -53,6 +53,7 @@ classes:
       - evidence_count
       - has_evidence
       - has_evidence_links
+      - grouping_key
       - provided_by
       - provided_by_link
       - publications
