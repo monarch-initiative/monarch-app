@@ -36,12 +36,12 @@
     <p>
       The PFR will provide a framework to fundamentally advance and simplify
       computational approaches for interpreting human genome variation. We are
-      the creators of the Human Phenotype Ontology which has been the
+      the creators of the Human Phenotype Ontology (HPO), which has been the
       cornerstone of our pioneering work in data integration. We will leverage
       this to align phenotype ontologies and clinical terminologies, bringing
       major model species and clinical domains into the PFR, which we will
-      refine through continual community partnership. We propose the following
-      interlinked approaches that will provide a dynamic suite of
+      refine through continual community partnership. The following
+      interlinked approaches will provide a dynamic suite of
       community-developed knowledge resources to revolutionize variant
       interpretation applications and drive precision medicine.
     </p>
@@ -84,7 +84,7 @@
       <figcaption>
         The
         <AppLink to="https://hpo.jax.org" target="__blank"
-          >The Phenomics First Project</AppLink
+          >Human Phenotype Ontology</AppLink
         >
         (HPO) provides a standardized vocabulary of phenotypic abnormalities
         encountered in human disease.
@@ -101,7 +101,7 @@
       />
       <figcaption>
         <AppLink to="http://phenopackets.org/" target="__blank"
-          >Phenopackets</AppLink
+          >The Phenopacket schema</AppLink
         >
         is a standard exchange format for phenotypes and environmental factors.
         This packet of phenotype data can be used anywhere, and can be written
