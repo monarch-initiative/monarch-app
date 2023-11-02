@@ -161,6 +161,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/Mapping/</loc>
+         <lastmod>2023-11-02</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/MultiEntityAssociationResults/</loc>
          <lastmod>2023-11-02</lastmod>
          <changefreq>daily</changefreq>
@@ -416,6 +421,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/grouping_key/</loc>
+         <lastmod>2023-11-02</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/has_evidence/</loc>
          <lastmod>2023-11-02</lastmod>
          <changefreq>daily</changefreq>
@@ -482,6 +492,11 @@
     </url>
     <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/limit/</loc>
+         <lastmod>2023-11-02</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/mapping_justification/</loc>
          <lastmod>2023-11-02</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -671,6 +686,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/predicate_id/</loc>
+         <lastmod>2023-11-02</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/primary_knowledge_source/</loc>
          <lastmod>2023-11-02</lastmod>
          <changefreq>daily</changefreq>
@@ -697,6 +717,31 @@
     </url>
     <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/qualifiers/</loc>
+         <lastmod>2023-11-02</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/qualifiers_category/</loc>
+         <lastmod>2023-11-02</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/qualifiers_closure/</loc>
+         <lastmod>2023-11-02</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/qualifiers_closure_label/</loc>
+         <lastmod>2023-11-02</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/qualifiers_label/</loc>
+         <lastmod>2023-11-02</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/qualifiers_namespace/</loc>
          <lastmod>2023-11-02</lastmod>
          <changefreq>daily</changefreq>
     </url>

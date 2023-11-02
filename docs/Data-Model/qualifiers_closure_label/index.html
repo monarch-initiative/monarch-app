@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://monarch-app.monarchinitiative.org/docs/Data-Model/subject_id/">
+        <link rel="canonical" href="https://monarch-app.monarchinitiative.org/docs/Data-Model/qualifiers_closure_label/">
       
       
       
@@ -18,7 +18,7 @@
     
     
       
-        <title>Slot: subject_id - monarch-py</title>
+        <title>Slot: qualifiers_closure_label - monarch-py</title>
       
     
     
@@ -75,7 +75,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#slot-subject_id" class="md-skip">
+        <a href="#slot-qualifiers_closure_label" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Slot: subject_id
+              Slot: qualifiers_closure_label
             
           </span>
         </div>
@@ -956,8 +956,9 @@
   
 
 
-<h1 id="slot-subject_id">Slot: subject_id</h1>
-<p>URI: <a href="https://w3id.org/monarch/monarch-py/:subject_id">https://w3id.org/monarch/monarch-py/:subject_id</a></p>
+<h1 id="slot-qualifiers_closure_label">Slot: qualifiers_closure_label</h1>
+<p><em>Field containing frequency_qualifier name and the names of all of it's ancestors</em></p>
+<p>URI: <a href="https://w3id.org/monarch/monarch-py/:qualifiers_closure_label">https://w3id.org/monarch/monarch-py/:qualifiers_closure_label</a></p>
 <!-- no inheritance hierarchy -->
 
 <h2 id="applicable-classes">Applicable Classes</h2>
@@ -971,13 +972,13 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="../Mapping/">Mapping</a></td>
-<td>A minimal class to hold a SSSOM mapping</td>
+<td><a href="../Association/">Association</a></td>
+<td></td>
 <td>no</td>
 </tr>
 <tr>
-<td><a href="../TermPairwiseSimilarity/">TermPairwiseSimilarity</a></td>
-<td>A simple pairwise similarity between two atomic concepts/terms</td>
+<td><a href="../DirectionalAssociation/">DirectionalAssociation</a></td>
+<td>An association that gives it's direction relative to a specified entity</td>
 <td>no</td>
 </tr>
 </tbody>
@@ -988,7 +989,7 @@
 <p>Range: <a href="../String/">String</a></p>
 </li>
 <li>
-<p>Required: True</p>
+<p>Multivalued: True</p>
 </li>
 </ul>
 <h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
@@ -998,15 +999,16 @@
 </ul>
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
-<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject_id</span>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">qualifiers_closure_label</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Field containing frequency_qualifier name and the names of all of it&#39;s</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">ancestors</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject_id</span>
+<span class="nt">multivalued</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">qualifiers_closure_label</span>
 <span class="nt">domain_of</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Mapping</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
 <span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 </details>
 
