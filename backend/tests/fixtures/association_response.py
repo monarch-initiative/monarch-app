@@ -5,13 +5,14 @@ import pytest
 def association_response():
     return {
         "responseHeader": {
-            "QTime": 1,
+            "QTime": 0,
             "params": {
                 "mm": "100%",
                 "q": "*:*",
                 "defType": "edismax",
                 "facet_min_count": "1",
                 "start": "0",
+                "q.op": "AND",
                 "fq": 'subject:"MONDO\\:0020121" OR subject_closure:"MONDO\\:0020121" OR object:"MONDO\\:0020121" OR object_closure:"MONDO\\:0020121"',
                 "rows": "20",
                 "facet": "true",
