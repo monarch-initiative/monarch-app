@@ -23,6 +23,7 @@
         "pancytopenia, congenital",
         "primary erythroid hypoplasia"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -51,6 +52,7 @@
         "infantile nephropathic cystinosis",
         "toni-debre-Fanconi syndrome"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -70,6 +72,7 @@
         "Fanconi renotubular syndrome 1",
         "primary Fanconi renotubular syndrome"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -85,6 +88,7 @@
       "in_taxon_label": null,
       "symbol": null,
       "synonym": ["Fanconi-like syndrome"],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -100,6 +104,7 @@
       "in_taxon_label": null,
       "symbol": null,
       "synonym": ["adult Fanconi syndrome", "adult Fanconi's syndrome"],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -115,6 +120,7 @@
       "in_taxon_label": null,
       "symbol": null,
       "synonym": ["acquired Fanconi syndrome"],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -130,6 +136,7 @@
       "in_taxon_label": null,
       "symbol": null,
       "synonym": [],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -151,6 +158,7 @@
         "Fanconi syndrome caused by mutation in SLC34A1",
         "SLC34A1 Fanconi syndrome"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -172,6 +180,7 @@
         "Fanconi renotubular syndrome type 3",
         "Fanconi syndrome caused by mutation in EHHADH"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -198,6 +207,7 @@
         "primary Fanconi renotubular syndrome",
         "renal Fanconi syndrome"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -218,6 +228,7 @@
         "Fanconi Renotubular Syndrome, Acadian Variant",
         "Fanconi renotubular syndrome 5"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -233,6 +244,7 @@
       "in_taxon_label": null,
       "symbol": null,
       "synonym": ["hereditary Fanconi renotubular syndrome"],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -259,6 +271,7 @@
         "Fanconi pancytopenia, type 3",
         "facc"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -284,6 +297,7 @@
         "Fanconi pancytopenia type 4",
         "Fanconi pancytopenia, type 4"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -311,6 +325,7 @@
         "Fanconi anemia complementation group type A",
         "Fanconi anemia, complementation group A"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -337,6 +352,7 @@
         "Fanconi pancytopenia type 2",
         "Fanconi pancytopenia, type 2"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -361,6 +377,7 @@
         "Fanconi anemia, complementation group E",
         "face"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -382,6 +399,7 @@
         "Fanconi anemia complementation group type F",
         "Fanconi anemia, complementation group F"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -404,6 +422,7 @@
         "Fanconi anemia, complementation group D1",
         "inherited cancer-predisposing syndrome due to biallelic BRCA2 mutations"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -426,6 +445,7 @@
         "Fanconi anemia complementation group type I",
         "Fanconi anemia, complementation group I"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     }

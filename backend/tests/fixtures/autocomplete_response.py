@@ -5,7 +5,7 @@ import pytest
 def autocomplete_response():
     return {
         "responseHeader": {
-            "QTime": 1,
+            "QTime": 0,
             "params": {
                 "mm": "100%",
                 "q": "fanc",
@@ -183,14 +183,6 @@ def autocomplete_response():
                     "description": "Any Fanconi anemia in which the cause of the disease is a mutation in the MAD2L2 gene.",
                 },
                 {
-                    "id": "MONDO:0100136",
-                    "category": "biolink:Disease",
-                    "name": "obsolete Fanconia anemia complementation group M",
-                    "provided_by": "phenio_nodes",
-                    "synonym": ["FANCM Fanconi anemia", "Fanconi anemia caused by mutation in FANCM"],
-                    "description": "OBSOLETE Any Fanconi anemia in which the cause of the disease is a mutation in the FANCM gene.",
-                },
-                {
                     "id": "MONDO:0010351",
                     "category": "biolink:Disease",
                     "name": "Fanconi anemia complementation group B",
@@ -256,6 +248,14 @@ def autocomplete_response():
                         "XRCC2 Fanconi anemia",
                     ],
                     "description": "Any Fanconi anemia in which the cause of the disease is a mutation in the XRCC2 gene.",
+                },
+                {
+                    "id": "MONDO:0100136",
+                    "category": "biolink:Disease",
+                    "name": "obsolete Fanconia anemia complementation group M",
+                    "provided_by": "phenio_nodes",
+                    "synonym": ["FANCM Fanconi anemia", "Fanconi anemia caused by mutation in FANCM"],
+                    "description": "OBSOLETE Any Fanconi anemia in which the cause of the disease is a mutation in the FANCM gene.",
                 },
                 {
                     "id": "MONDO:0009213",

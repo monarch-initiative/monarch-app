@@ -300,6 +300,8 @@ export interface Entity {
     in_taxon_label?: string,
     symbol?: string,
     synonym?: string[],
+    /** The URI of the entity */
+    uri?: string,
 };
 
 export interface EntityResults extends Results {
@@ -378,6 +380,8 @@ export interface Node extends Entity {
     provided_by?: string,
     symbol?: string,
     synonym?: string[],
+    /** The URI of the entity */
+    uri?: string,
 };
 
 export interface NodeHierarchy {
@@ -412,6 +416,8 @@ export interface SearchResult extends Entity {
     in_taxon_label?: string,
     symbol?: string,
     synonym?: string[],
+    /** The URI of the entity */
+    uri?: string,
 };
 
 export interface SearchResults extends Results {
