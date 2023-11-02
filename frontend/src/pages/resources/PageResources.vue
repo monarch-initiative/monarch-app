@@ -2,19 +2,27 @@
   <AppSection>
     <AppHeading>Resources</AppHeading>
     <p>
-      This page contains links to resources and tools that are central to the Monarch Initiative.
+      This page contains links to resources and tools that are central to the
+      Monarch Initiative.
     </p>
   </AppSection>
-  <AppSection v-for="(category, categoryIndex) in resources" :key="categoryIndex" width="big">
+  <AppSection
+    v-for="(category, categoryIndex) in resources"
+    :key="categoryIndex"
+    width="big"
+  >
     <AppHeading>
       {{ categoryIndex }}
     </AppHeading>
     <AppGallery :cols="3">
-      <template v-for="(resource, resourceIndex) in category" :key="resourceIndex">
-        <AppTile 
-          :to="resource.link" 
-          :icon="resource.icon" 
-          :title="resource.name" 
+      <template
+        v-for="(resource, resourceIndex) in category"
+        :key="resourceIndex"
+      >
+        <AppTile
+          :to="resource.link"
+          :icon="resource.icon"
+          :title="resource.name"
           :subtitle="resource.description"
         />
       </template>
