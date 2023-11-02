@@ -1,10 +1,10 @@
 <template>
   <AppSection>
     <AppHeading>Resources</AppHeading>
+    <p>
+      This page contains links to resources and tools that are central to the Monarch Initiative.
+    </p>
   </AppSection>
-  <p>
-    This page contains links to resources and tools that are central to the Monarch Initiative.
-  </p>
   <AppSection v-for="(category, categoryIndex) in resources" :key="categoryIndex" width="big">
     <AppHeading>
       {{ categoryIndex }}
