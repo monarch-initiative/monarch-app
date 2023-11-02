@@ -21,61 +21,59 @@ test("Redirects to explore page from home page", async ({ page }) => {
 test("Recent/frequent results show", async ({ page }) => {
   await page.goto("/explore");
 
-  /** dummy searches */
-  const searches = [
-    "abc def",
-    "123",
-    "123",
-    "abc def",
-    "123",
-    "123",
-    "abc def",
+  const nodes = [
+    "MONDO:0007523",
+    "HP:0003179",
+    "HP:0003179",
+    "MONDO:0007523",
+    "HP:0003179",
+    "HP:0003179",
+    "MONDO:0007523",
+    "HP:0100775",
   ];
 
-  /** go through dummy searches */
-  for (const search of searches) {
-    await page.locator("input").fill(search);
-    /** dispatch textbox change event which triggers search and records it */
-    await page.locator("input").dispatchEvent("change");
-    /** wait for results */
-    await expect(page.locator("p.description").first()).toBeVisible();
-    await page.locator(".textbox button").click();
+  for (const node of nodes) {
+    await page.goto("/" + node);
+    await expect(page.locator("#overview")).toBeVisible();
   }
 
-  /** go to node page, which should also get added to search history */
-  await page.goto("/MONDO:12345");
-  /** wait for page to load */
-  await expect(page.locator("#overview")).toBeVisible();
   await page.goto("/explore");
-
-  /** focus search box to show list of results */
   await page.locator("input").focus();
+  const options = page.locator("[role='option']");
 
   /** recent */
-  const options = page.locator("[role='option']");
   await expect(
     options
       .nth(0)
-      .getByText(/muscular dystrophy/i)
+      .getByText(/Dural ectasia/i)
       .first(),
   ).toBeVisible();
   await expect(
     options
       .nth(1)
-      .getByText(/abc def/i)
+      .getByText(/Ehlers-Danlos syndrome, hypermobility/i)
       .first(),
   ).toBeVisible();
-  await expect(options.nth(2).getByText(/123/).first()).toBeVisible();
+  await expect(
+    options
+      .nth(2)
+      .getByText(/Protrusio acetabuli/i)
+      .first(),
+  ).toBeVisible();
 
   /** frequent */
   await expect(
-    page.locator("[role='option']").nth(3).getByText(/123/).first(),
+    page
+      .locator("[role='option']")
+      .nth(3)
+      .getByText(/Protrusio acetabuli/i)
+      .first(),
   ).toBeVisible();
   await expect(
     page
       .locator("[role='option']")
       .nth(4)
-      .getByText(/abc def/)
+      .getByText(/Ehlers-Danlos syndrome, hypermobility/i)
       .first(),
   ).toBeVisible();
 });

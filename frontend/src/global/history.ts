@@ -1,15 +1,14 @@
 import { useLocalStorage } from "@vueuse/core";
+import type { Option } from "@/components/AppSelectAutocomplete.vue";
 
-/** raw, in-order node search/visit history */
-export const history = useLocalStorage<string[]>("search-history", []);
+/** raw, in-order node history */
+export const history = useLocalStorage<Option[]>("search-history", []);
 
-/** add entry to node search/visit history */
-export const addEntry = (value?: string) => {
-  if (value?.trim()) history.value.push(value.trim());
+/** add entry to node history */
+export const addEntry = (entry: Option) => {
+  history.value.push(entry);
 };
 
-/** delete entry(s) from node search/visit history */
-export const deleteEntry = (value: string) =>
-  (history.value = history.value.filter(
-    (entry) => entry.trim() !== value.trim(),
-  ));
+/** delete entry(s) from node history */
+export const deleteEntry = (entry: Option) =>
+  (history.value = history.value.filter((e) => e.id !== entry.id));

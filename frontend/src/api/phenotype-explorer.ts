@@ -139,8 +139,13 @@ export const compareSetToSet = async (
     [key: string]: {
       score: number;
       strength: number;
-      simInfo: Partial<TermPairwiseSimilarity>;
-    };
+    } & Pick<
+      TermPairwiseSimilarity,
+      | "ancestor_id"
+      | "ancestor_label"
+      | "jaccard_similarity"
+      | "phenodigm_score"
+    >;
   } = {};
 
   /** get subject matches */
@@ -162,8 +167,9 @@ export const compareSetToSet = async (
       cells[col.id + row.id] = {
         score: match?.score || 0,
         strength: 0,
-        simInfo: pick(match?.similarity, [
+        ...pick(match?.similarity, [
           "ancestor_id",
+          "ancestor_label",
           "jaccard_similarity",
           "phenodigm_score",
         ]),
