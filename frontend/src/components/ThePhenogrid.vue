@@ -197,17 +197,21 @@ function hoverCell(colIndex: number, rowIndex: number, unset = false) {
   else hovered.value = { col: colIndex, row: rowIndex };
 }
 
-const flex = ref<{ element: HTMLTableElement }>();
+const flex = ref<{ element: HTMLElement }>();
 const scroll = ref<HTMLElement>();
+
+/** set container to be full size (of contents) */
+function setFullsize(full: boolean) {
+  if (!flex.value?.element || !scroll.value) return;
+  scroll.value.classList[full ? "add" : "remove"]("full-size");
+  flex.value.element.classList[full ? "add" : "remove"]("full-size");
+}
 
 /** download grid as png */
 async function download() {
   if (!flex.value?.element || !scroll.value) return;
 
-  /** make full size */
-  scroll.value.classList.add("saving");
-  flex.value.element.classList.add("saving");
-
+  setFullsize(true);
   hideAll();
 
   /** wait for dom to update */
@@ -223,9 +227,7 @@ async function download() {
     snackbar("Error saving image");
   }
 
-  /** reset size */
-  scroll.value.classList.remove("saving");
-  flex.value.element.classList.remove("saving");
+  setFullsize(false);
 }
 
 /** options for sorting */
@@ -258,12 +260,11 @@ function copy() {
 <style scoped lang="scss">
 .scroll {
   max-width: 100%;
-  max-height: calc(100vh - 200px);
   overflow: auto;
   background: $white;
 }
 
-.saving {
+.full-size {
   width: max-content !important;
   max-width: unset !important;
   height: max-content !important;
