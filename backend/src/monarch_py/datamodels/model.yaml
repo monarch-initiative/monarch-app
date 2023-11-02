@@ -167,6 +167,7 @@ classes:
       - in_taxon_label
       - symbol
       - synonym
+      - uri
   EntityResults:
     is_a: Results
     slots:
@@ -438,6 +439,8 @@ slots:
   xref:
     multivalued: true
     range: string
+  uri:
+    description: The URI of the entity
   url:
     range: string
   subject_label:
