@@ -10,6 +10,7 @@
   "in_taxon_label": null,
   "symbol": null,
   "synonym": [],
+  "uri": null,
   "inheritance": null,
   "causal_gene": [],
   "causes_disease": [],
@@ -48,7 +49,8 @@
         "in_taxon": null,
         "in_taxon_label": null,
         "symbol": null,
-        "synonym": []
+        "synonym": [],
+        "uri": null
       },
       {
         "id": "MONDO:0700223",
@@ -61,7 +63,8 @@
         "in_taxon": null,
         "in_taxon_label": null,
         "symbol": null,
-        "synonym": []
+        "synonym": [],
+        "uri": null
       },
       {
         "id": "MONDO:0005336",
@@ -74,7 +77,8 @@
         "in_taxon": null,
         "in_taxon_label": null,
         "symbol": null,
-        "synonym": []
+        "synonym": [],
+        "uri": null
       }
     ],
     "sub_classes": [
@@ -89,7 +93,8 @@
         "in_taxon": null,
         "in_taxon_label": null,
         "symbol": null,
-        "synonym": []
+        "synonym": [],
+        "uri": null
       },
       {
         "id": "MONDO:0019950",
@@ -102,7 +107,8 @@
         "in_taxon": null,
         "in_taxon_label": null,
         "symbol": null,
-        "synonym": []
+        "synonym": [],
+        "uri": null
       },
       {
         "id": "MONDO:0023204",
@@ -115,7 +121,8 @@
         "in_taxon": null,
         "in_taxon_label": null,
         "symbol": null,
-        "synonym": []
+        "synonym": [],
+        "uri": null
       },
       {
         "id": "MONDO:0100228",
@@ -128,7 +135,8 @@
         "in_taxon": null,
         "in_taxon_label": null,
         "symbol": null,
-        "synonym": []
+        "synonym": [],
+        "uri": null
       },
       {
         "id": "MONDO:0008028",
@@ -141,7 +149,8 @@
         "in_taxon": null,
         "in_taxon_label": null,
         "symbol": null,
-        "synonym": []
+        "synonym": [],
+        "uri": null
       },
       {
         "id": "MONDO:0010675",
@@ -154,7 +163,8 @@
         "in_taxon": null,
         "in_taxon_label": null,
         "symbol": null,
-        "synonym": []
+        "synonym": [],
+        "uri": null
       },
       {
         "id": "MONDO:0010676",
@@ -167,7 +177,8 @@
         "in_taxon": null,
         "in_taxon_label": null,
         "symbol": null,
-        "synonym": []
+        "synonym": [],
+        "uri": null
       },
       {
         "id": "MONDO:0010677",
@@ -180,7 +191,8 @@
         "in_taxon": null,
         "in_taxon_label": null,
         "symbol": null,
-        "synonym": []
+        "synonym": [],
+        "uri": null
       },
       {
         "id": "MONDO:0010678",
@@ -193,7 +205,8 @@
         "in_taxon": null,
         "in_taxon_label": null,
         "symbol": null,
-        "synonym": []
+        "synonym": [],
+        "uri": null
       },
       {
         "id": "MONDO:0016106",
@@ -206,7 +219,8 @@
         "in_taxon": null,
         "in_taxon_label": null,
         "symbol": null,
-        "synonym": []
+        "synonym": [],
+        "uri": null
       }
     ]
   }

@@ -383,6 +383,7 @@ class Entity(ConfiguredBaseModel):
     )
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)
+    uri: Optional[str] = Field(None, description="""The URI of the entity""")
 
 
 class FacetValue(ConfiguredBaseModel):
@@ -428,10 +429,10 @@ class Mapping(ConfiguredBaseModel):
     A minimal class to hold a SSSOM mapping
     """
 
-    subject_id: str = Field(..., description="""The first of the two entities being compared""")
+    subject_id: str = Field(...)
     subject_label: Optional[str] = Field(None, description="""The name of the subject entity""")
     predicate_id: str = Field(...)
-    object_id: Optional[str] = Field(None, description="""The second of the two entities being compared""")
+    object_id: str = Field(...)
     object_label: Optional[str] = Field(None, description="""The name of the object entity""")
     mapping_justification: Optional[str] = Field(None)
 
@@ -473,6 +474,7 @@ class Node(Entity):
     provided_by: Optional[str] = Field(None)
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)
+    uri: Optional[str] = Field(None, description="""The URI of the entity""")
 
 
 class NodeHierarchy(ConfiguredBaseModel):
@@ -564,6 +566,7 @@ class SearchResult(Entity):
     )
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)
+    uri: Optional[str] = Field(None, description="""The URI of the entity""")
 
 
 class SearchResults(Results):
@@ -598,10 +601,10 @@ class TermPairwiseSimilarity(PairwiseSimilarity):
     A simple pairwise similarity between two atomic concepts/terms
     """
 
-    subject_id: str = Field(..., description="""The first of the two entities being compared""")
+    subject_id: str = Field(...)
     subject_label: Optional[str] = Field(None, description="""The name of the subject entity""")
     subject_source: Optional[str] = Field(None, description="""the source for the first entity""")
-    object_id: Optional[str] = Field(None, description="""The second of the two entities being compared""")
+    object_id: str = Field(...)
     object_label: Optional[str] = Field(None, description="""The name of the object entity""")
     object_source: Optional[str] = Field(None, description="""the source for the second entity""")
     ancestor_id: Optional[str] = Field(

@@ -24,34 +24,13 @@
     </AppFlex>
 
     <template v-if="category">
-      <!-- mode tab -->
-      <AppTabs
-        v-model="tab"
-        :tabs="tabs"
-        name="Association viewing mode"
-        :url="false"
-        @update:model-value="association = undefined"
-      />
-
-      <!-- summary view of associations -->
-      <template v-if="tab === 'summary'">
-        <AssociationsSummary
-          :node="node"
-          :category="category"
-          :association="association"
-          @select="(value) => (association = value)"
-        />
-      </template>
-
       <!-- table view of associations -->
-      <template v-if="tab === 'table'">
-        <AssociationsTable
-          :node="node"
-          :category="category"
-          :association="association"
-          @select="(value) => (association = value)"
-        />
-      </template>
+      <AssociationsTable
+        :node="node"
+        :category="category"
+        :association="association"
+        @select="(value) => (association = value)"
+      />
     </template>
   </AppSection>
 
@@ -72,7 +51,7 @@ import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import type { Option, Options } from "@/components/AppSelectSingle.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import AppTabs from "@/components/AppTabs.vue";
-import AssociationsSummary from "@/pages/node/AssociationsSummary.vue";
+// import AssociationsSummary from "@/pages/node/AssociationsSummary.vue";
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
 import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
 import { scrollToHash } from "@/router";

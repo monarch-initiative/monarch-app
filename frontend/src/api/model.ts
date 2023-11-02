@@ -324,6 +324,8 @@ export interface Entity {
     in_taxon_label?: string,
     symbol?: string,
     synonym?: string[],
+    /** The URI of the entity */
+    uri?: string,
 };
 
 export interface EntityResults extends Results {
@@ -365,13 +367,11 @@ export interface HistoBin extends FacetValue {
  * A minimal class to hold a SSSOM mapping
  */
 export interface Mapping {
-    /** The first of the two entities being compared */
     subject_id: string,
     /** The name of the subject entity */
     subject_label?: string,
     predicate_id: string,
-    /** The second of the two entities being compared */
-    object_id?: string,
+    object_id: string,
     /** The name of the object entity */
     object_label?: string,
     mapping_justification?: string,
@@ -417,6 +417,8 @@ export interface Node extends Entity {
     provided_by?: string,
     symbol?: string,
     synonym?: string[],
+    /** The URI of the entity */
+    uri?: string,
 };
 
 export interface NodeHierarchy {
@@ -451,6 +453,8 @@ export interface SearchResult extends Entity {
     in_taxon_label?: string,
     symbol?: string,
     synonym?: string[],
+    /** The URI of the entity */
+    uri?: string,
 };
 
 export interface SearchResults extends Results {
@@ -476,14 +480,12 @@ export interface PairwiseSimilarity {
  * A simple pairwise similarity between two atomic concepts/terms
  */
 export interface TermPairwiseSimilarity extends PairwiseSimilarity {
-    /** The first of the two entities being compared */
     subject_id: string,
     /** The name of the subject entity */
     subject_label?: string,
     /** the source for the first entity */
     subject_source?: string,
-    /** The second of the two entities being compared */
-    object_id?: string,
+    object_id: string,
     /** The name of the object entity */
     object_label?: string,
     /** the source for the second entity */

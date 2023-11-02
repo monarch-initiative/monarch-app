@@ -15,6 +15,7 @@ def node():
         "in_taxon_label": None,
         "symbol": None,
         "synonym": [],
+        "uri": None,
         "inheritance": None,
         "causal_gene": [],
         "causes_disease": [],
@@ -42,6 +43,7 @@ def node():
                     "in_taxon_label": None,
                     "symbol": None,
                     "synonym": [],
+                    "uri": None,
                 },
                 {
                     "id": "MONDO:0700223",
@@ -55,6 +57,7 @@ def node():
                     "in_taxon_label": None,
                     "symbol": None,
                     "synonym": [],
+                    "uri": None,
                 },
                 {
                     "id": "MONDO:0005336",
@@ -68,6 +71,7 @@ def node():
                     "in_taxon_label": None,
                     "symbol": None,
                     "synonym": [],
+                    "uri": None,
                 },
             ],
             "sub_classes": [
@@ -83,6 +87,7 @@ def node():
                     "in_taxon_label": None,
                     "symbol": None,
                     "synonym": [],
+                    "uri": None,
                 },
                 {
                     "id": "MONDO:0019950",
@@ -96,6 +101,7 @@ def node():
                     "in_taxon_label": None,
                     "symbol": None,
                     "synonym": [],
+                    "uri": None,
                 },
                 {
                     "id": "MONDO:0023204",
@@ -109,6 +115,7 @@ def node():
                     "in_taxon_label": None,
                     "symbol": None,
                     "synonym": [],
+                    "uri": None,
                 },
                 {
                     "id": "MONDO:0100228",
@@ -122,6 +129,7 @@ def node():
                     "in_taxon_label": None,
                     "symbol": None,
                     "synonym": [],
+                    "uri": None,
                 },
                 {
                     "id": "MONDO:0008028",
@@ -135,6 +143,7 @@ def node():
                     "in_taxon_label": None,
                     "symbol": None,
                     "synonym": [],
+                    "uri": None,
                 },
                 {
                     "id": "MONDO:0010675",
@@ -148,6 +157,7 @@ def node():
                     "in_taxon_label": None,
                     "symbol": None,
                     "synonym": [],
+                    "uri": None,
                 },
                 {
                     "id": "MONDO:0010676",
@@ -161,6 +171,7 @@ def node():
                     "in_taxon_label": None,
                     "symbol": None,
                     "synonym": [],
+                    "uri": None,
                 },
                 {
                     "id": "MONDO:0010677",
@@ -174,6 +185,7 @@ def node():
                     "in_taxon_label": None,
                     "symbol": None,
                     "synonym": [],
+                    "uri": None,
                 },
                 {
                     "id": "MONDO:0010678",
@@ -187,6 +199,7 @@ def node():
                     "in_taxon_label": None,
                     "symbol": None,
                     "synonym": [],
+                    "uri": None,
                 },
                 {
                     "id": "MONDO:0016106",
@@ -200,6 +213,7 @@ def node():
                     "in_taxon_label": None,
                     "symbol": None,
                     "synonym": [],
+                    "uri": None,
                 },
             ],
         },
