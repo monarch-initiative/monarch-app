@@ -1,0 +1,104 @@
+{
+  "Standard": [
+    {
+      "name": "Phenopackets",
+      "icon": "resource-phenopackets",
+      "link": "http://phenopackets.org/",
+      "description": "Open and Computable Bioinformation"
+    },
+    {
+      "name": "SSSOM",
+      "icon": "resource-sssom",
+      "link": "https://mapping-commons.github.io/sssom/spec",
+      "description": "A Simple Standard for Sharing Ontological Mappings"
+    },
+    {
+      "name": "Mapping Commons",
+      "icon": "resource-monarch",
+      "link": "https://github.com/monarch-initiative/monarch-mapping-commons",
+      "description": "SSSOM Style Mappings for Monarch"
+    }
+  ],
+  "Ontologies": [
+    {
+      "name": "HPO",
+      "icon": "resource-hpo",
+      "link": "https://hpo.jax.org/app/",
+      "description": "Human Phenotype Ontology"
+    },
+    {
+      "name": "Mondo",
+      "icon": "resource-mondo",
+      "link": "https://mondo.monarchinitiative.org/",
+      "description": "Mondo Disease Ontology"
+    },
+    {
+      "name": "uPheno",
+      "icon": "resource-upheno",
+      "link": "https://obophenotype.github.io/upheno/",
+      "description": "Unified Phenotype Ontology"
+    }
+  ],
+  "Tools": [
+    {
+      "name": "Monarch KG & API",
+      "icon": "resource-monarch",
+      "link": "https://monarch-initiative.github.io/monarch-ingest/",
+      "description": "Monarch's Integrated Knowledge Graph"
+    },
+    {
+      "name": "Monarch App",
+      "icon": "resource-monarch",
+      "link": "https://monarch-initiative.github.io/monarch-documentation",
+      "description": "Monarch's Web Interface"
+    },
+    {
+      "name": "Phenotype Explorer",
+      "icon": "resource-monarch",
+      "link": "explore#phenotype-explorer",
+      "description": "Explore Similarity Between Phenotypes"
+    },
+    {
+      "name": "OAK",
+      "icon": "resource-oak",
+      "link": "https://github.com/INCATools/ontology-access-kit",
+      "description": "Ontology Access Kit"
+    },
+    {
+      "name": "OntoGPT",
+      "icon": "toolbox",
+      "link": "https://github.com/monarch-initiative/ontogpt",
+      "description": "AI Assisted Ontology Operations"
+    },
+    {
+      "name": "CurateGPT",
+      "icon": "toolbox",
+      "link": "https://github.com/monarch-initiative/curate-gpt",
+      "description": "AI Assisted Ontology Curation"
+    },
+    {
+      "name": "LinkML",
+      "icon": "resource-linkml",
+      "link": "https://linkml.io/",
+      "description": "The Linked Data Modeling Language"
+    },
+    {
+      "name": "Semsimian",
+      "icon": "toolbox",
+      "link": "https://github.com/monarch-initiative/semsimian",
+      "description": "Semantic Similarity in Rust"
+    },
+    {
+      "name": "Exomiser",
+      "icon": "resource-exomiser",
+      "link": "https://hpo.jax.org/app/tools/exomiser",
+      "description": "Whole-Exome Dataset Filtering"
+    },
+    {
+      "name": "LIRICAL",
+      "icon": "toolbox",
+      "link": "https://thejacksonlaboratory.github.io/LIRICAL/stable/",
+      "description": "LIkelihood Ratio Interpretation of Clinical AbnormaLities"
+    }
+  ]
+}

@@ -104,6 +104,13 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("../pages/about/PageOutreach.vue"),
   },
 
+  /** resources page */
+  {
+    path: "/resources",
+    name: "Resources",
+    component: () => import("../pages/resources/PageResources.vue"),
+  },
+
   /** help pages */
   {
     path: "/feedback",

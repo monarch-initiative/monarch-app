@@ -50,6 +50,13 @@
         Explore
       </AppLink>
       <AppLink
+        v-tooltip="'Learn about Monarch Tools and Resources'"
+        class="link"
+        to="/resources"
+      >
+        Resources
+      </AppLink>
+      <AppLink
         v-tooltip="'Citing, licensing, sources, and other info'"
         class="link"
         to="/about"
