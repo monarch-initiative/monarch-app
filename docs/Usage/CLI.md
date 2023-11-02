@@ -21,8 +21,10 @@ $ monarch [OPTIONS] COMMAND [ARGS]...
 * `association-table`
 * `associations`: Paginate through associations
 * `autocomplete`: Return entity autcomplete matches for a...
+* `compare`: Compare two entities using semantic...
 * `entity`: Retrieve an entity by ID
 * `histopheno`: Retrieve the histopheno data for an entity...
+* `multi-entity-associations`: Paginate through associations for multiple...
 * `schema`: Print the linkml schema for the data model
 * `search`: Search for entities
 * `solr`
@@ -112,7 +114,7 @@ $ monarch associations [OPTIONS]
 * `-l, --limit INTEGER`: The number of associations to return  [default: 20]
 * `--offset INTEGER`: The offset of the first association to be retrieved  [default: 0]
 * `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: json]
-* `-o, --output TEXT`: The path to the output file
+* `-O, --output TEXT`: The path to the output file
 * `--help`: Show this message and exit.
 
 ## `monarch autocomplete`
@@ -133,6 +135,27 @@ $ monarch autocomplete [OPTIONS] [Q]
 **Arguments**:
 
 * `[Q]`: Query string to autocomplete against
+
+**Options**:
+
+* `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: json]
+* `-o, --output TEXT`: The path to the output file
+* `--help`: Show this message and exit.
+
+## `monarch compare`
+
+Compare two entities using semantic similarity via OAK
+
+**Usage**:
+
+```console
+$ monarch compare [OPTIONS] SUBJECTS OBJECTS
+```
+
+**Arguments**:
+
+* `SUBJECTS`: Comma separated list of subjects to compare  [required]
+* `OBJECTS`: Comma separated list of objects to compare  [required]
 
 **Options**:
 
@@ -193,6 +216,34 @@ $ monarch histopheno [OPTIONS] [SUBJECT]
 * `-o, --output TEXT`: The path to the output file
 * `--help`: Show this message and exit.
 
+## `monarch multi-entity-associations`
+
+Paginate through associations for multiple entities
+
+Args:
+    entity: A comma-separated list of entities
+    counterpart_category: A comma-separated list of counterpart categories
+    limit: The number of associations to return
+    offset: The offset of the first association to be retrieved
+    fmt: The format of the output (json, yaml, tsv, table)
+    output: The path to the output file (stdout if not specified)
+
+**Usage**:
+
+```console
+$ monarch multi-entity-associations [OPTIONS]
+```
+
+**Options**:
+
+* `-e, --entity TEXT`: Comma-separated list of entities
+* `-c, --counterpart-category TEXT`
+* `-l, --limit INTEGER`: [default: 20]
+* `--offset INTEGER`: [default: 0]
+* `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: json]
+* `-o, --output TEXT`: The path to the output file
+* `--help`: Show this message and exit.
+
 ## `monarch schema`
 
 Print the linkml schema for the data model
@@ -214,7 +265,7 @@ Search for entities
 Args:
     q: The query string to search for
     category: The category of the entity
-    taxon: The taxon of the entity
+    in_taxon_label: The taxon label to filter by
     limit: The number of entities to return
     offset: The offset of the first entity to be retrieved
     fmt: The format of the output (json, yaml, tsv, table)
@@ -230,7 +281,7 @@ $ monarch search [OPTIONS]
 
 * `-q, --query TEXT`
 * `-c, --category TEXT`
-* `-t, --in-taxon TEXT`
+* `-t, --in-taxon-label TEXT`
 * `-ff, --facet-fields TEXT`
 * `--facet-queries TEXT`
 * `-l, --limit INTEGER`: [default: 20]
@@ -262,6 +313,7 @@ $ monarch solr [OPTIONS] COMMAND [ARGS]...
 * `download`: Download the Monarch Solr KG.
 * `entity`: Retrieve an entity by ID
 * `histopheno`: Retrieve the histopheno associations for a...
+* `multi-entity-associations`: Paginate through associations for multiple...
 * `search`: Search for entities
 * `start`: Starts a local Solr container.
 * `status`: Checks the status of the local Solr...
@@ -275,7 +327,6 @@ Args:
     entity (str): The entity to get association counts for
 
 Optional Args:
-    update (bool): Whether to re-download the Monarch KG. Default False
     fmt (str): The format of the output (json, yaml, tsv, table). Default JSON
     output (str): The path to the output file. Default stdout
 
@@ -430,7 +481,6 @@ Args:
     subject (str): The subject of the association
 
 Optional Args:
-    update (bool): Whether to re-download the Monarch KG. Default False
     fmt (str): The format of the output (json, yaml, tsv, table). Default JSON
     output (str): The path to the output file. Default stdout
 
@@ -450,6 +500,34 @@ $ monarch solr histopheno [OPTIONS] [SUBJECT]
 * `-o, --output TEXT`: The path to the output file
 * `--help`: Show this message and exit.
 
+### `monarch solr multi-entity-associations`
+
+Paginate through associations for multiple entities
+
+Args:
+    entity: A comma-separated list of entities
+    counterpart_category: A comma-separated list of counterpart categories
+    limit: The number of associations to return
+    offset: The offset of the first association to be retrieved
+    fmt: The format of the output (json, yaml, tsv, table)
+    output: The path to the output file (stdout if not specified)
+
+**Usage**:
+
+```console
+$ monarch solr multi-entity-associations [OPTIONS]
+```
+
+**Options**:
+
+* `-e, --entity TEXT`: Entity ID to get associations for
+* `-c, --counterpart-category TEXT`: Counterpart category to get associations for
+* `-l, --limit INTEGER`: [default: 20]
+* `--offset INTEGER`: [default: 0]
+* `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: json]
+* `-o, --output TEXT`: The path to the output file
+* `--help`: Show this message and exit.
+
 ### `monarch solr search`
 
 Search for entities
@@ -457,7 +535,7 @@ Search for entities
 Optional Args:
     q: The query string to search for
     category: The category of the entity
-    taxon: The taxon of the entity
+    in_taxon_label: The taxon label to filter on
     facet_fields: The fields to facet on
     facet_queries: The queries to facet on
     limit: The number of entities to return
@@ -475,7 +553,7 @@ $ monarch solr search [OPTIONS]
 
 * `-q, --query TEXT`
 * `-c, --category TEXT`
-* `-t, --in-taxon TEXT`
+* `-t, --in-taxon-label TEXT`
 * `-ff, --facet-fields TEXT`
 * `--facet-queries TEXT`
 * `-l, --limit INTEGER`: [default: 20]

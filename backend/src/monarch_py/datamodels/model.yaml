@@ -53,6 +53,7 @@ classes:
       - evidence_count
       - has_evidence
       - has_evidence_links
+      - grouping_key
       - provided_by
       - provided_by_link
       - publications
@@ -172,6 +173,7 @@ classes:
       - in_taxon_label
       - symbol
       - synonym
+      - uri
   EntityResults:
     is_a: Results
     slots:
@@ -456,6 +458,8 @@ slots:
   xref:
     multivalued: true
     range: string
+  uri:
+    description: The URI of the entity
   url:
     range: string
   subject_label:
@@ -496,6 +500,24 @@ slots:
     is_a: in_taxon
   object_taxon_label:
     is_a: in_taxon_label
+
+  # this whole block will be renamed to qualifer_ after we bring in the next biolink model release
+  qualifiers_label:
+    is_a: name
+    description: The name of the frequency_qualifier entity
+  qualifiers_namespace:
+    range: string
+    description: The namespace/prefix of the frequency_qualifier entity
+  qualifiers_category:
+    is_a: category
+    description: The category of the frequency_qualifier entity
+  qualifiers_closure:
+    multivalued: true
+    description: Field containing frequency_qualifier id and the ids of all of it's ancestors
+  qualifiers_closure_label:
+    multivalued: true
+    description: Field containing frequency_qualifier name and the names of all of it's ancestors
+
   frequency_qualifier_label:
     is_a: name
     description: The name of the frequency_qualifier entity
@@ -557,12 +579,16 @@ slots:
     multivalued: true
     description: Field containing stage_qualifier name and the names of all of it's ancestors
 # sssom slots
-  # subject_id already exists in similarity.yaml
+  subject_id:
+    range: string
+    required: true
   # subject label is already included in this schema
   predicate_id:
-      range: string
-      required: true
-  # object_id already exists in similarity.yaml
+    range: string
+    required: true
+  object_id:
+    range: string
+    required: true
   # object label is already included in this schema
   mapping_justification:
       range: string

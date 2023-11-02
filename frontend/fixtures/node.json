@@ -10,6 +10,7 @@
   "in_taxon_label": null,
   "symbol": null,
   "synonym": [],
+  "uri": null,
   "inheritance": null,
   "causal_gene": [],
   "causes_disease": [],
@@ -38,9 +39,9 @@
   "node_hierarchy": {
     "super_classes": [
       {
-        "id": "MONDO:0005336",
+        "id": "MONDO:0019056",
         "category": "biolink:Disease",
-        "name": "myopathy",
+        "name": "neuromuscular disease",
         "full_name": null,
         "description": null,
         "xref": [],
@@ -48,7 +49,8 @@
         "in_taxon": null,
         "in_taxon_label": null,
         "symbol": null,
-        "synonym": []
+        "synonym": [],
+        "uri": null
       },
       {
         "id": "MONDO:0700223",
@@ -61,12 +63,13 @@
         "in_taxon": null,
         "in_taxon_label": null,
         "symbol": null,
-        "synonym": []
+        "synonym": [],
+        "uri": null
       },
       {
-        "id": "MONDO:0019056",
+        "id": "MONDO:0005336",
         "category": "biolink:Disease",
-        "name": "neuromuscular disease",
+        "name": "myopathy",
         "full_name": null,
         "description": null,
         "xref": [],
@@ -74,88 +77,11 @@
         "in_taxon": null,
         "in_taxon_label": null,
         "symbol": null,
-        "synonym": []
+        "synonym": [],
+        "uri": null
       }
     ],
     "sub_classes": [
-      {
-        "id": "MONDO:0008028",
-        "category": "biolink:Disease",
-        "name": "muscular dystrophy, Barnes type",
-        "full_name": null,
-        "description": null,
-        "xref": [],
-        "provided_by": null,
-        "in_taxon": null,
-        "in_taxon_label": null,
-        "symbol": null,
-        "synonym": []
-      },
-      {
-        "id": "MONDO:0010675",
-        "category": "biolink:Disease",
-        "name": "muscular dystrophy, cardiac type",
-        "full_name": null,
-        "description": null,
-        "xref": [],
-        "provided_by": null,
-        "in_taxon": null,
-        "in_taxon_label": null,
-        "symbol": null,
-        "synonym": []
-      },
-      {
-        "id": "MONDO:0010676",
-        "category": "biolink:Disease",
-        "name": "muscular dystrophy, Hemizygous lethal type",
-        "full_name": null,
-        "description": null,
-        "xref": [],
-        "provided_by": null,
-        "in_taxon": null,
-        "in_taxon_label": null,
-        "symbol": null,
-        "synonym": []
-      },
-      {
-        "id": "MONDO:0010677",
-        "category": "biolink:Disease",
-        "name": "muscular dystrophy, Mabry type",
-        "full_name": null,
-        "description": null,
-        "xref": [],
-        "provided_by": null,
-        "in_taxon": null,
-        "in_taxon_label": null,
-        "symbol": null,
-        "synonym": []
-      },
-      {
-        "id": "MONDO:0010678",
-        "category": "biolink:Disease",
-        "name": "muscular dystrophy, progressive Pectorodorsal",
-        "full_name": null,
-        "description": null,
-        "xref": [],
-        "provided_by": null,
-        "in_taxon": null,
-        "in_taxon_label": null,
-        "symbol": null,
-        "synonym": []
-      },
-      {
-        "id": "MONDO:0016106",
-        "category": "biolink:Disease",
-        "name": "progressive muscular dystrophy",
-        "full_name": null,
-        "description": null,
-        "xref": [],
-        "provided_by": null,
-        "in_taxon": null,
-        "in_taxon_label": null,
-        "symbol": null,
-        "synonym": []
-      },
       {
         "id": "MONDO:0018949",
         "category": "biolink:Disease",
@@ -167,7 +93,8 @@
         "in_taxon": null,
         "in_taxon_label": null,
         "symbol": null,
-        "synonym": []
+        "synonym": [],
+        "uri": null
       },
       {
         "id": "MONDO:0019950",
@@ -180,7 +107,8 @@
         "in_taxon": null,
         "in_taxon_label": null,
         "symbol": null,
-        "synonym": []
+        "synonym": [],
+        "uri": null
       },
       {
         "id": "MONDO:0023204",
@@ -193,7 +121,8 @@
         "in_taxon": null,
         "in_taxon_label": null,
         "symbol": null,
-        "synonym": []
+        "synonym": [],
+        "uri": null
       },
       {
         "id": "MONDO:0100228",
@@ -206,7 +135,92 @@
         "in_taxon": null,
         "in_taxon_label": null,
         "symbol": null,
-        "synonym": []
+        "synonym": [],
+        "uri": null
+      },
+      {
+        "id": "MONDO:0008028",
+        "category": "biolink:Disease",
+        "name": "muscular dystrophy, Barnes type",
+        "full_name": null,
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "in_taxon_label": null,
+        "symbol": null,
+        "synonym": [],
+        "uri": null
+      },
+      {
+        "id": "MONDO:0010675",
+        "category": "biolink:Disease",
+        "name": "muscular dystrophy, cardiac type",
+        "full_name": null,
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "in_taxon_label": null,
+        "symbol": null,
+        "synonym": [],
+        "uri": null
+      },
+      {
+        "id": "MONDO:0010676",
+        "category": "biolink:Disease",
+        "name": "muscular dystrophy, Hemizygous lethal type",
+        "full_name": null,
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "in_taxon_label": null,
+        "symbol": null,
+        "synonym": [],
+        "uri": null
+      },
+      {
+        "id": "MONDO:0010677",
+        "category": "biolink:Disease",
+        "name": "muscular dystrophy, Mabry type",
+        "full_name": null,
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "in_taxon_label": null,
+        "symbol": null,
+        "synonym": [],
+        "uri": null
+      },
+      {
+        "id": "MONDO:0010678",
+        "category": "biolink:Disease",
+        "name": "muscular dystrophy, progressive Pectorodorsal",
+        "full_name": null,
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "in_taxon_label": null,
+        "symbol": null,
+        "synonym": [],
+        "uri": null
+      },
+      {
+        "id": "MONDO:0016106",
+        "category": "biolink:Disease",
+        "name": "progressive muscular dystrophy",
+        "full_name": null,
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "in_taxon_label": null,
+        "symbol": null,
+        "synonym": [],
+        "uri": null
       }
     ]
   }

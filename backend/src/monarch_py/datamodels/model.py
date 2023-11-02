@@ -90,6 +90,10 @@ class Association(ConfiguredBaseModel):
         default_factory=list,
         description="""List of ExpandedCuries with id and url for evidence""",
     )
+    grouping_key: Optional[str] = Field(
+        None,
+        description="""A concatenation of fields used to group associations with the same essential/defining properties""",
+    )
     provided_by: Optional[str] = Field(None)
     provided_by_link: Optional[ExpandedCurie] = Field(
         None,
@@ -105,6 +109,19 @@ class Association(ConfiguredBaseModel):
     onset_qualifier: Optional[str] = Field(None)
     sex_qualifier: Optional[str] = Field(None)
     stage_qualifier: Optional[str] = Field(None)
+    qualifiers_label: Optional[str] = Field(None, description="""The name of the frequency_qualifier entity""")
+    qualifiers_namespace: Optional[str] = Field(
+        None, description="""The namespace/prefix of the frequency_qualifier entity"""
+    )
+    qualifiers_category: Optional[str] = Field(None, description="""The category of the frequency_qualifier entity""")
+    qualifiers_closure: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing frequency_qualifier id and the ids of all of it's ancestors""",
+    )
+    qualifiers_closure_label: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing frequency_qualifier name and the names of all of it's ancestors""",
+    )
     frequency_qualifier_label: Optional[str] = Field(None, description="""The name of the frequency_qualifier entity""")
     frequency_qualifier_namespace: Optional[str] = Field(
         None, description="""The namespace/prefix of the frequency_qualifier entity"""
@@ -250,6 +267,10 @@ class DirectionalAssociation(Association):
         default_factory=list,
         description="""List of ExpandedCuries with id and url for evidence""",
     )
+    grouping_key: Optional[str] = Field(
+        None,
+        description="""A concatenation of fields used to group associations with the same essential/defining properties""",
+    )
     provided_by: Optional[str] = Field(None)
     provided_by_link: Optional[ExpandedCurie] = Field(
         None,
@@ -265,6 +286,19 @@ class DirectionalAssociation(Association):
     onset_qualifier: Optional[str] = Field(None)
     sex_qualifier: Optional[str] = Field(None)
     stage_qualifier: Optional[str] = Field(None)
+    qualifiers_label: Optional[str] = Field(None, description="""The name of the frequency_qualifier entity""")
+    qualifiers_namespace: Optional[str] = Field(
+        None, description="""The namespace/prefix of the frequency_qualifier entity"""
+    )
+    qualifiers_category: Optional[str] = Field(None, description="""The category of the frequency_qualifier entity""")
+    qualifiers_closure: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing frequency_qualifier id and the ids of all of it's ancestors""",
+    )
+    qualifiers_closure_label: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing frequency_qualifier name and the names of all of it's ancestors""",
+    )
     frequency_qualifier_label: Optional[str] = Field(None, description="""The name of the frequency_qualifier entity""")
     frequency_qualifier_namespace: Optional[str] = Field(
         None, description="""The namespace/prefix of the frequency_qualifier entity"""
@@ -349,6 +383,7 @@ class Entity(ConfiguredBaseModel):
     )
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)
+    uri: Optional[str] = Field(None, description="""The URI of the entity""")
 
 
 class FacetValue(ConfiguredBaseModel):
@@ -394,10 +429,10 @@ class Mapping(ConfiguredBaseModel):
     A minimal class to hold a SSSOM mapping
     """
 
-    subject_id: str = Field(..., description="""The first of the two entities being compared""")
+    subject_id: str = Field(...)
     subject_label: Optional[str] = Field(None, description="""The name of the subject entity""")
     predicate_id: str = Field(...)
-    object_id: Optional[str] = Field(None, description="""The second of the two entities being compared""")
+    object_id: str = Field(...)
     object_label: Optional[str] = Field(None, description="""The name of the object entity""")
     mapping_justification: Optional[str] = Field(None)
 
@@ -439,6 +474,7 @@ class Node(Entity):
     provided_by: Optional[str] = Field(None)
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)
+    uri: Optional[str] = Field(None, description="""The URI of the entity""")
 
 
 class NodeHierarchy(ConfiguredBaseModel):
@@ -530,6 +566,7 @@ class SearchResult(Entity):
     )
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)
+    uri: Optional[str] = Field(None, description="""The URI of the entity""")
 
 
 class SearchResults(Results):
@@ -564,10 +601,10 @@ class TermPairwiseSimilarity(PairwiseSimilarity):
     A simple pairwise similarity between two atomic concepts/terms
     """
 
-    subject_id: str = Field(..., description="""The first of the two entities being compared""")
+    subject_id: str = Field(...)
     subject_label: Optional[str] = Field(None, description="""The name of the subject entity""")
     subject_source: Optional[str] = Field(None, description="""the source for the first entity""")
-    object_id: Optional[str] = Field(None, description="""The second of the two entities being compared""")
+    object_id: str = Field(...)
     object_label: Optional[str] = Field(None, description="""The name of the object entity""")
     object_source: Optional[str] = Field(None, description="""the source for the second entity""")
     ancestor_id: Optional[str] = Field(

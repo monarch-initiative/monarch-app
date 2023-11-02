@@ -4,34 +4,31 @@
 
 <template>
   <TheSnackbar />
-  <div ref="container" class="container">
-    <link :href="stylesheet" rel="stylesheet" />
+  <link :href="stylesheet" rel="stylesheet" />
 
-    <!-- analysis status -->
-    <AppStatus v-if="isLoading" code="loading">Running analysis</AppStatus>
-    <AppStatus v-else-if="isError" code="error"
-      >Error running analysis</AppStatus
-    >
-    <AppStatus v-else-if="isEmpty(comparison.phenogrid.cells)" code="warning"
-      >No results</AppStatus
-    >
+  <!-- analysis status -->
+  <AppStatus v-if="isLoading" code="loading">Running analysis</AppStatus>
+  <AppStatus v-else-if="isError" code="error">Error running analysis</AppStatus>
+  <AppStatus v-else-if="isEmpty(comparison.phenogrid.cells)" code="warning"
+    >No results</AppStatus
+  >
 
-    <!-- results -->
-    <template v-else>
-      <ThePhenogrid :data="comparison.phenogrid" />
-    </template>
-  </div>
+  <!-- results -->
+  <template v-else>
+    <ThePhenogrid :data="comparison.phenogrid" />
+  </template>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { isEmpty } from "lodash";
-import { useEventListener, useResizeObserver } from "@vueuse/core";
+import { useEventListener } from "@vueuse/core";
 import { compareSetToSet } from "@/api/phenotype-explorer";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
 import TheSnackbar from "@/components/TheSnackbar.vue";
 import { useQuery } from "@/util/composables";
+import { sleep } from "@/util/debug";
 
 /** route info */
 const route = useRoute();
@@ -81,36 +78,33 @@ useEventListener("message", (event: MessageEvent) => {
   }
 });
 
+watch(
+  [isLoading, isError, comparison],
+  async () => {
+    const container = document.body;
+    await sleep(10);
+    if (!container) return;
+    let width = container.scrollWidth + 2;
+    let height = container.scrollHeight + 2;
+    window.parent.postMessage({ width, height }, "*");
+  },
+  { immediate: true, deep: true },
+);
+
 /** allow consuming parent to link to css stylesheet */
 const stylesheet = computed(() =>
   typeof route.query.stylesheet === "string"
     ? window.decodeURIComponent(route.query.stylesheet)
     : "",
 );
-
-const container = ref<HTMLDivElement>();
-
-/** when size of widget changes */
-function onResize() {
-  if (!container.value) return;
-  let width = container.value.scrollWidth + 2;
-  let height = container.value.scrollHeight + 2;
-  window.parent.postMessage({ width, height }, "*");
-}
-useResizeObserver(container, onResize);
 </script>
 
-<style lang="scss" scoped>
-.container {
-  width: max-content;
-  max-width: 100%;
-  height: max-content;
-  max-height: 100%;
-}
-</style>
-
 <style>
+body {
+  height: max-content;
+}
+
 #app {
-  align-items: center;
+  display: contents;
 }
 </style>
