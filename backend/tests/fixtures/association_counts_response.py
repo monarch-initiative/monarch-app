@@ -5,7 +5,7 @@ import pytest
 def association_counts_response():
     return {
         "responseHeader": {
-            "QTime": 4,
+            "QTime": 1,
             "params": {
                 "facet.query": [
                     '(category:"biolink:DiseaseToPhenotypicFeatureAssociation") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")',
@@ -38,6 +38,7 @@ def association_counts_response():
                 "defType": "edismax",
                 "facet_min_count": "1",
                 "start": "0",
+                "q.op": "AND",
                 "fq": 'subject:"MONDO\\:0020121" OR subject_closure:"MONDO\\:0020121" OR object:"MONDO\\:0020121" OR object_closure:"MONDO\\:0020121"',
                 "rows": "20",
                 "facet": "true",

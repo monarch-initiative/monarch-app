@@ -21,6 +21,7 @@ def association_query_indirect():
         ],
         "query_fields": "subject subject_label predicate object object_label",
         "def_type": "edismax",
+        "q_op": "AND",
         "mm": "100%",
         "boost": None,
         "sort": None,

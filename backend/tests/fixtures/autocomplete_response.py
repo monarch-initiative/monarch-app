@@ -5,7 +5,7 @@ import pytest
 def autocomplete_response():
     return {
         "responseHeader": {
-            "QTime": 1,
+            "QTime": 0,
             "params": {
                 "mm": "100%",
                 "q": "fanc",
@@ -13,6 +13,7 @@ def autocomplete_response():
                 "facet_min_count": "1",
                 "qf": "id^100 name^10 name_t^5 name_ac symbol^10 symbol_t^5 symbol_ac synonym synonym_t synonym_ac",
                 "start": "0",
+                "q.op": "AND",
                 "boost": 'product(if(termfreq(category,"biolink:Disease"),10.0,1),if(and(termfreq(in_taxon,"NCBITaxon:9606"),termfreq(category,"biolink:Gene")),5.0,1))',
                 "rows": "20",
                 "facet": "true",
