@@ -133,39 +133,21 @@
 
   <AppSection>
     <AppHeading>The Mondo Disease Ontology (Mondo)</AppHeading>
-    <p>
-      The Mondo Disease Ontology (Mondo) aims to harmonize disease definitions
-      across the world. It is a semi-automatically constructed ontology that
-      merges in multiple disease resources to yield a coherent merged ontology.
-      Original versions of Mondo were constructed entirely automatically and
-      used the IDs of source databases and ontologies. Later, additional
-      manually curated cross-ontology axioms were added, and a native Mondo ID
-      system was used to avoid confusion with source databases.
-    </p>
-    <p>
-      You can find more information
-      <AppLink to="https://mondo.readthedocs.io/en/latest/" target="__blank"
-        >here</AppLink
-      >.
-    </p>
+    <AppAlert>Coming soon!</AppAlert>
   </AppSection>
 
   <AppSection>
     <AppHeading>Phenopackets</AppHeading>
-    <p>
-      Phenopackets are an open standard for sharing disease and phenotype
-      information, with the aim of improving our ability to understand,
-      diagnose, and treat both rare and common diseases. A Phenopacket links
-      detailed phenotype descriptions with disease, patient, and genetic
-      information, enabling clinicians, biologists, and disease and drug
-      researchers to build more complete models of disease. The standard is
-      designed to encourage wide adoption and synergy between the people,
-      organizations and systems that comprise the joint effort to address human
-      disease and biological understanding.
-    </p>
-    <p>
-      You can find more information
-      <AppLink to="http://phenopackets.org/" target="__blank">here</AppLink>.
-    </p>
+    <AppAlert>Coming soon!</AppAlert>
+  </AppSection>
+
+  <AppSection>
+    <AppHeading>The Phenomics First Resource</AppHeading>
+    <AppAlert>Coming soon!</AppAlert>
   </AppSection>
 </template>
+
+<script setup lang="ts">
+import AppAlert from "@/components/AppAlert.vue";
+import AppSection from "@/components/AppSection.vue";
+</script>

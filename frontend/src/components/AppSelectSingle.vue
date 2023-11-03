@@ -69,7 +69,7 @@
             {{ option.label || option.id }}
           </span>
           <span v-if="option.count" class="option-count">
-            {{ option.count }}
+            {{ option.count.toLocaleString() }}
           </span>
         </div>
       </div>
