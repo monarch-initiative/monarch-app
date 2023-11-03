@@ -376,6 +376,17 @@ export interface Mapping {
     object_label?: string,
     mapping_justification?: string,
 };
+/**
+ * SSSOM Mappings returned as a results collection
+ */
+export interface MappingResults extends Results {
+    /** number of items to return in a response */
+    limit: number,
+    /** offset into the total number of items */
+    offset: number,
+    /** total number of items matching a query */
+    total: number,
+};
 
 export interface MultiEntityAssociationResults extends Results {
     id: string,
@@ -502,12 +513,12 @@ export interface TermPairwiseSimilarity extends PairwiseSimilarity {
     /** The IC of the object */
     ancestor_information_content?: string,
     /** The number of concepts in the intersection divided by the number in the union */
-    jaccard_similarity?: number,
+    jaccard_similarity?: string,
     /** the dot product of two node embeddings divided by the product of their lengths */
     cosine_similarity?: number,
-    dice_similarity?: number,
+    dice_similarity?: string,
     /** the geometric mean of the jaccard similarity and the information content */
-    phenodigm_score?: number,
+    phenodigm_score?: string,
 };
 /**
  * A simple pairwise similarity between two sets of concepts/terms
