@@ -90,7 +90,7 @@ export const request = async <Response>(
   }
 
   /** artificial delay */
-  await sleep(10);
+  await sleep();
 
   /** sort params for consistency */
   paramsObject.sort();

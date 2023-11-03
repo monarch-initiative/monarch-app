@@ -15,7 +15,7 @@ const paths = [
   "/publications",
   "/terms",
   "/feedback",
-  "/MONDO:012345",
+  "/MONDO:0007523",
   "/testbed",
 ];
 
@@ -32,8 +32,6 @@ const rules = [
   { id: "color-contrast", enabled: false },
   /** ignore select dropdowns that are appended to body */
   { id: "region", selector: ":not([role='listbox']" },
-  /** ignore iframes */
-  { id: "page-has-heading-one", selector: ":not(iframe)" },
 ];
 
 type Test = Parameters<typeof test>[1];
@@ -46,7 +44,11 @@ const checkPage =
 
     /** navigate to page */
     await page.goto(path);
+
+    /** wait for content to load */
     await page.waitForSelector("main");
+    await page.waitForSelector("section");
+    await page.waitForSelector("h1");
     await page.waitForTimeout(100);
 
     /** setup axe */
