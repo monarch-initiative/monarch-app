@@ -2,8 +2,7 @@
   <AppSection>
     <AppHeading>Resources</AppHeading>
     <p>
-      This page contains links to resources and tools that are central to the
-      Monarch Initiative.
+      Resources and tools central to Monarch Initiative.
     </p>
   </AppSection>
   <AppSection

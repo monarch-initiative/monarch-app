@@ -104,7 +104,7 @@ const thickness = computed(() => {
 <style lang="scss" scoped>
 .custom {
   height: 1em;
-
+  filter: brightness(0);
   /** category icon styles */
   &[data-icon^="category-"],
   &[data-icon^="association-"] {
