@@ -10,7 +10,6 @@ const paths = [
   "/explore",
   "/about",
   "/help",
-  "/overview",
   "/cite",
   "/team",
   "/publications",
@@ -33,6 +32,8 @@ const rules = [
   { id: "color-contrast", enabled: false },
   /** ignore select dropdowns that are appended to body */
   { id: "region", selector: ":not([role='listbox']" },
+  /** ignore iframes */
+  { id: "page-has-heading-one", selector: ":not(iframe)" },
 ];
 
 type Test = Parameters<typeof test>[1];

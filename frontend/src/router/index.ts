@@ -1,4 +1,9 @@
-import { defineAsyncComponent, defineComponent, h } from "vue";
+import {
+  defineAsyncComponent,
+  defineComponent,
+  h,
+  type AsyncComponentLoader,
+} from "vue";
 import type { RouteRecordRaw, RouterScrollBehavior } from "vue-router";
 import { createRouter, createWebHistory } from "vue-router";
 import { isEmpty, pick } from "lodash";
@@ -10,15 +15,15 @@ import { waitFor } from "@/util/dom";
 import { parse } from "@/util/object";
 
 /**
- * generate async loaded route. differs from lazy loaded route in that it
- * doesn't render homepage as loading fallback.
+ * generate async loaded route. normal lazy loaded route renders homepage/root
+ * route as loading fallback, this allows any loading fallback.
  */
-const asyncRoute = (page: string) =>
+const asyncRoute = (loader: AsyncComponentLoader) =>
   /** https://stackoverflow.com/questions/67044999 */
   defineComponent({
     render() {
       const component = defineAsyncComponent({
-        loader: () => import(page),
+        loader,
         loadingComponent: AppPlaceholder,
       });
       return h(component);
@@ -32,7 +37,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "Home",
-    component: asyncRoute("../pages/PageHome.vue"),
+    component: asyncRoute(() => import("../pages/PageHome.vue")),
     beforeEnter: () => {
       /** look for redirect in session storage (saved from public/404.html page) */
       const redirect = window.sessionStorage.redirect || "";
@@ -73,70 +78,72 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/explore",
     name: "Explore",
-    component: asyncRoute("../pages/explore/PageExplore.vue"),
+    component: asyncRoute(() => import("../pages/explore/PageExplore.vue")),
   },
   {
     path: "/about",
     name: "About",
-    component: asyncRoute("../pages/about/PageAbout.vue"),
+    component: asyncRoute(() => import("../pages/about/PageAbout.vue")),
   },
   {
     path: "/help",
     name: "Help",
-    component: asyncRoute("../pages/help/PageHelp.vue"),
+    component: asyncRoute(() => import("../pages/help/PageHelp.vue")),
   },
 
   /** about pages */
   {
     path: "/cite",
     name: "Cite",
-    component: asyncRoute("../pages/about/PageCite.vue"),
+    component: asyncRoute(() => import("../pages/about/PageCite.vue")),
   },
   {
     path: "/team",
     name: "Team",
-    component: asyncRoute("../pages/about/PageTeam.vue"),
+    component: asyncRoute(() => import("../pages/about/PageTeam.vue")),
   },
   {
     path: "/publications",
     name: "Publications",
-    component: asyncRoute("../pages/about/PagePublications.vue"),
+    component: asyncRoute(() => import("../pages/about/PagePublications.vue")),
   },
   {
     path: "/terms",
     name: "Terms",
-    component: asyncRoute("../pages/about/PageTerms.vue"),
+    component: asyncRoute(() => import("../pages/about/PageTerms.vue")),
   },
   {
     path: "/phenomics-first",
     name: "PhenomicsFirst",
-    component: asyncRoute("../pages/about/PagePhenomicsFirst.vue"),
+    component: asyncRoute(
+      () => import("../pages/about/PagePhenomicsFirst.vue"),
+    ),
   },
   {
     path: "/outreach",
     name: "Outreach",
-    component: asyncRoute("../pages/about/PageOutreach.vue"),
+    component: asyncRoute(() => import("../pages/about/PageOutreach.vue")),
   },
 
   /** help pages */
   {
     path: "/feedback",
     name: "Feedback",
-    component: asyncRoute("../pages/help/PageFeedback.vue"),
+    component: asyncRoute(() => import("../pages/help/PageFeedback.vue")),
   },
 
   /** node pages */
   {
     path: "/:id",
     name: "Node",
-    component: asyncRoute("../pages/node/PageNode.vue"),
+    component: asyncRoute(() => import("../pages/node/PageNode.vue")),
   },
 
   /** phenogrid iframe widget page */
   {
     path: "/phenogrid",
     name: "Phenogrid",
-    component: asyncRoute("../pages/explore/PagePhenogrid.vue"),
+    component: asyncRoute(() => import("../pages/explore/PagePhenogrid.vue")),
     meta: { bare: true },
   },
 
@@ -144,15 +151,15 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/testbed",
     name: "Testbed",
-    component: asyncRoute("../pages/PageTestbed.vue"),
+    component: asyncRoute(() => import("../pages/PageTestbed.vue")),
   },
 
   /** if no other route match found (404) */
-  // {
-  //   path: "/:pathMatch(.*)*",
-  //   name: "NotFound",
-  //   component: asyncRoute("../pages/PageHome.vue"),
-  // },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "NotFound",
+    component: asyncRoute(() => import("../pages/PageHome.vue")),
+  },
 ];
 
 /** insert descriptions from imported json into each route's metadata */
@@ -197,7 +204,7 @@ export const scrollTo = async (selector: string) => {
 
   /** get height of header */
   let offset = 0;
-  const header = document?.querySelector("header");
+  const header = document.querySelector("header");
   if (header && window.getComputedStyle(header).position === "sticky")
     offset = header.clientHeight;
 

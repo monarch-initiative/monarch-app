@@ -9,20 +9,17 @@ export const restartAnimations = (element: Element): void => {
     }
 };
 
-/**
- * wait for element matching selector to appear. check several times per sec,
- * with hard limit. when found, return found element and run callback with
- * element
- */
+/** wait for element matching selector to appear, checking periodically */
 export const waitFor = async <El extends Element>(
-  selector = "",
-  timeout = 3000,
-  interval = 50,
+  selector: string,
 ): Promise<El | undefined> => {
-  for (let check = 0; check < timeout / interval; check++) {
-    const match = document?.querySelector<El>(selector);
+  const waits = [
+    0, 1, 5, 10, 20, 30, 40, 50, 100, 200, 300, 400, 500, 1000, 2000, 3000,
+  ];
+  while (waits.length) {
+    const match = document.querySelector<El>(selector);
     if (match) return match;
-    await sleep(interval);
+    await sleep(waits.shift());
   }
 };
 
@@ -51,7 +48,8 @@ export const screenToSvgCoords = (
 };
 
 const canvas = document.createElement("canvas");
-const ctx = canvas.getContext("2d");
+const ctx = canvas?.getContext("2d");
+
 /** calculate dimensions of given font */
 export const getTextSize = (text: string, font: string) => {
   if (!ctx) return new TextMetrics();
