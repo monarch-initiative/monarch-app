@@ -118,7 +118,7 @@ onClickOutside(header, close);
 </script>
 
 <style lang="scss" scoped>
-$wrap: 900px;
+$wrap: 1000px;
 
 /** header */
 
