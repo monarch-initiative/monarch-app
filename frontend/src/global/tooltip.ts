@@ -21,9 +21,13 @@ const update = (instance: Instance): void => {
     instance.reference.setAttribute("data-tooltip", "true");
 };
 
-/** cancel show if no content to show */
-const onShow = (instance: Instance): boolean =>
-  !!String(instance.props.content).trim();
+const onShow = (instance: Instance): boolean => {
+  const content = instance.props.content;
+  // https://github.com/KABBOUCHI/vue-tippy/issues/303
+  if (content instanceof Element) instance.setContent(content.innerHTML);
+  /** cancel show if no content to show */
+  return !!String(content).trim();
+};
 
 /** return false to inspect popup for debugging */
 const onHide = (): boolean => true;

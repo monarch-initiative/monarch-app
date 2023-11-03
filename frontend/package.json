@@ -25,7 +25,6 @@
     "@vueuse/core": "^10.4.1",
     "apexcharts": "^3.43.0",
     "body-scroll-lock": "4.0.0-beta.0",
-    "dom-to-image": "^2.6.0",
     "lodash": "^4.17.21",
     "micromark": "^4.0.0",
     "normalize.css": "^8.0.1",

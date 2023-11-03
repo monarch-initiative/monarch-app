@@ -1,4 +1,4 @@
-import { groupLog } from "@/util/debug";
+import { groupLog, sleep } from "@/util/debug";
 import { getUrl } from "@/util/url";
 
 /** base biolink api url */
@@ -88,6 +88,9 @@ export const request = async <Response>(
       if (["string", "number", "boolean"].includes(typeof value))
         paramsObject.append(key, String(value));
   }
+
+  /** artificial delay */
+  await sleep(10);
 
   /** sort params for consistency */
   paramsObject.sort();

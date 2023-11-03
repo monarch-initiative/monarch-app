@@ -81,11 +81,12 @@ useEventListener("message", (event: MessageEvent) => {
 watch(
   [isLoading, isError, comparison],
   async () => {
-    const container = document.body;
+    document.body.classList.add("full-size");
     await sleep(10);
-    if (!container) return;
-    let width = container.scrollWidth + 2;
-    let height = container.scrollHeight + 2;
+    let width = document.body.clientWidth + 2;
+    let height = document.body.clientHeight + 2;
+    await sleep(10);
+    document.body.classList.remove("full-size");
     window.parent.postMessage({ width, height }, "*");
   },
   { immediate: true, deep: true },
@@ -100,11 +101,22 @@ const stylesheet = computed(() =>
 </script>
 
 <style>
+html,
 body {
-  height: max-content;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  padding: 10px;
 }
 
 #app {
   display: contents;
+}
+
+.full-size {
+  width: max-content !important;
+  height: max-content !important;
 }
 </style>
