@@ -1,9 +1,7 @@
 <template>
   <AppSection>
     <AppHeading>Resources</AppHeading>
-    <p>
-      Resources and tools central to Monarch Initiative.
-    </p>
+    <p>Resources and tools central to Monarch Initiative.</p>
   </AppSection>
   <AppSection
     v-for="(category, categoryIndex) in resources"

@@ -66,13 +66,13 @@
     },
     {
       "name": "OntoGPT",
-      "icon": "toolbox",
+      "icon": "onto-gpt",
       "link": "https://github.com/monarch-initiative/ontogpt",
       "description": "AI Assisted Ontology Operations"
     },
     {
       "name": "CurateGPT",
-      "icon": "toolbox",
+      "icon": "curate-gpt",
       "link": "https://github.com/monarch-initiative/curate-gpt",
       "description": "AI Assisted Ontology Curation"
     },
@@ -84,7 +84,7 @@
     },
     {
       "name": "Semsimian",
-      "icon": "toolbox",
+      "icon": "semsimian",
       "link": "https://github.com/monarch-initiative/semsimian",
       "description": "Semantic Similarity in Rust"
     },
@@ -96,7 +96,7 @@
     },
     {
       "name": "LIRICAL",
-      "icon": "toolbox",
+      "icon": "lirical",
       "link": "https://thejacksonlaboratory.github.io/LIRICAL/stable/",
       "description": "LIkelihood Ratio Interpretation of Clinical AbnormaLities"
     }
