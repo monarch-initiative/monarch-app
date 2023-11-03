@@ -3,30 +3,9 @@
 -->
 
 <template>
-  <component
-    :is="customIcon"
-    v-if="isCustom"
-    ref="element"
-    class="custom"
-    :style="{ '--thickness': thickness }"
-    :data-icon="icon"
-    aria-hidden="true"
-  />
-  <FontAwesomeIcon
-    v-else-if="fontAwesome"
-    ref="element"
-    :icon="fontAwesome"
-    class="fa"
-    :style="{ '--thickness': thickness }"
-    aria-hidden="true"
-  />
-  <svg
-    v-else-if="initials"
-    ref="element"
-    viewBox="-10 -10 120 120"
-    class="initials"
-    :style="{ '--thickness': thickness }"
-  >
+  <component :is="customIcon" v-if="isCustom" ref="element" class="custom" :style="{ '--thickness': thickness }" :data-icon="icon" aria-hidden="true" />
+  <FontAwesomeIcon v-else-if="fontAwesome" ref="element" :icon="fontAwesome" class="fa" :style="{ '--thickness': thickness }" aria-hidden="true" />
+  <svg v-else-if="initials" ref="element" viewBox="-10 -10 120 120" class="initials" :style="{ '--thickness': thickness }">
     <circle fill="none" stroke="currentColor" cx="50" cy="50" r="55" />
     <text x="50" y="54">
       {{ initials }}
@@ -84,7 +63,7 @@ const initials = computed(
       .split("-")
       .map((word) => (word[0] || "").toUpperCase())
       .slice(0, 2)
-      .join("") || "",
+      .join("") || ""
 );
 
 const element = ref();
@@ -104,7 +83,12 @@ const thickness = computed(() => {
 <style lang="scss" scoped>
 .custom {
   height: 1em;
-  filter: brightness(0);
+
+  /** resource icon styles */
+  &[data-icon^="resource-"] {
+    filter: brightness(0.2);
+  }
+
   /** category icon styles */
   &[data-icon^="category-"],
   &[data-icon^="association-"] {
