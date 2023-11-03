@@ -1,21 +1,38 @@
 <template>
-  <AppFlex direction="col" class="flex">
+  <AppFlex ref="container" direction="col" class="container">
+    <tooltip
+      :interactive="true"
+      placement="bottom"
+      :append-to="appendToBody"
+      tag="span"
+      tabindex="0"
+    >
+      Info&nbsp;<AppIcon icon="circle-question" />
+      <template #content>
+        <p>
+          Compares one set of phenotypes to another. Set A is on the
+          {{ transpose ? "top" : "left" }}, set B is on the
+          {{ transpose ? "left" : "top" }}.
+        </p>
+      </template>
+    </tooltip>
+
     <div ref="scroll" class="scroll force-scrollbar">
       <svg
         ref="svg"
         xmlns="http://www.w3.org/2000/svg"
         class="svg"
-        :viewBox="`-${labelXSize} -${labelYSize} ${width} ${height}`"
+        :viewBox="`-${marginLeft} -${marginTop} ${width} ${height}`"
         :width="width / 3"
         :height="height / 3"
         :style="{ '--x': scrollCoords.x + 'px', '--y': scrollCoords.y + 'px' }"
       >
         <!-- clip col/row labels -->
         <clipPath id="clip-col-labels">
-          <rect :x="0" :y="-labelYSize" :width="width" :height="labelYSize" />
+          <rect :x="0" :y="-marginTop" :width="width" :height="marginTop" />
         </clipPath>
         <clipPath id="clip-row-labels">
-          <rect :x="-labelXSize" :y="0" :width="labelXSize" :height="height" />
+          <rect :x="-marginLeft" :y="0" :width="marginLeft" :height="height" />
         </clipPath>
 
         <!-- clip cells/grid-->
@@ -24,22 +41,25 @@
         </clipPath>
 
         <!-- col labels -->
-        <g class="col-labels">
+        <g
+          class="col-labels"
+          :style="{ 'font-size': cellSize * 0.5 + 'px' }"
+          dominant-baseline="middle"
+        >
           <tooltip
             v-for="(col, colIndex) in cols"
             :key="colIndex"
             :interactive="true"
+            placement="bottom"
             follow-cursor="initial"
             :append-to="appendToBody"
             :tag="null"
           >
             <text
-              :class="['col-label', { hovered: hovered?.col === colIndex }]"
+              :data-hovered="hovered ? hovered.col === colIndex : ''"
               :transform="`translate(${(0.5 + colIndex) * cellSize}, -${
                 cellSize * 0.25
               }) rotate(-45)`"
-              :style="{ 'font-size': cellSize * 0.5 + 'px' }"
-              dominant-baseline="middle"
             >
               {{ truncate(col.label) }}
             </text>
@@ -48,29 +68,32 @@
                 :node="{ id: col.id, name: col.label }"
                 :absolute="true"
               />
-              ({{ col.id }})
+              {{ col.id }}
             </template>
           </tooltip>
         </g>
 
         <!-- row labels -->
-        <g class="row-labels">
+        <g
+          class="row-labels"
+          :style="{ 'font-size': cellSize * 0.5 + 'px' }"
+          dominant-baseline="middle"
+          text-anchor="end"
+        >
           <tooltip
             v-for="(row, rowIndex) in rows"
             :key="rowIndex"
             :interactive="true"
+            placement="bottom"
             follow-cursor="initial"
             :append-to="appendToBody"
             :tag="null"
           >
             <text
-              :class="['row-label', { hovered: hovered?.row === rowIndex }]"
+              :data-hovered="hovered ? hovered.row === rowIndex : ''"
               :transform="`translate(-${cellSize * 0.25}, ${
                 (0.5 + rowIndex) * cellSize
               })`"
-              :style="{ 'font-size': cellSize * 0.5 + 'px' }"
-              dominant-baseline="middle"
-              text-anchor="end"
             >
               {{ truncate(row.label) }}
             </text>
@@ -79,39 +102,40 @@
                 :node="{ id: row.id, name: row.label }"
                 :absolute="true"
               />
-              ({{ row.id }})
+              {{ row.id }}
             </template>
           </tooltip>
         </g>
 
         <!-- grid -->
-        <g class="grid">
+        <g class="grid" stroke="gray">
           <template v-for="(col, colIndex) in cols" :key="colIndex">
             <line
-              stroke="gray"
+              :data-hovered="hovered ? hovered.col === colIndex : ''"
               :x1="(0.5 + colIndex) * cellSize"
-              y1="0"
+              :y1="0"
               :x2="(0.5 + colIndex) * cellSize"
-              :y2="height - labelYSize"
+              :y2="rows.length * cellSize"
             />
           </template>
           <template v-for="(row, rowIndex) in rows" :key="rowIndex">
             <line
-              stroke="gray"
+              :data-hovered="hovered ? hovered.row === rowIndex : ''"
+              :x1="0"
               :y1="(0.5 + rowIndex) * cellSize"
-              x1="0"
+              :x2="cols.length * cellSize"
               :y2="(0.5 + rowIndex) * cellSize"
-              :x2="width - labelXSize - labelXSize * 0.75"
             />
           </template>
         </g>
 
         <!-- cells -->
-        <g class="cells">
+        <g class="cells" fill="hsl(185, 100%, 30%)">
           <tooltip
             v-for="(cell, index) in cells"
             :key="index"
             :interactive="true"
+            placement="bottom"
             follow-cursor="initial"
             :append-to="appendToBody"
             :tag="null"
@@ -127,26 +151,25 @@
               :height="cellSize - cellMargin * 2"
               :rx="cellMargin"
               :ry="cellMargin"
-              fill="hsl(185, 100%, 30%)"
               :opacity="cell.strength"
               tabindex="0"
               role="button"
-              class="cell"
               @mouseenter="hoverCell(cell.col.index, cell.row.index)"
               @mouseleave="hoverCell(cell.col.index, cell.row.index, true)"
             />
             <template #content>
-              <div class="mini-table">
+              <div class="tooltip-heading">
                 <AppNodeBadge
-                  class="span"
                   :node="{ id: cell.col.id, name: cell.col.label }"
                   :absolute="true"
                 />
+                <AppIcon icon="arrows-left-right" />
                 <AppNodeBadge
-                  class="span"
                   :node="{ id: cell.row.id, name: cell.row.label }"
                   :absolute="true"
                 />
+              </div>
+              <div class="mini-table">
                 <span>Ancestor</span>
                 <AppNodeBadge
                   :node="{
@@ -172,36 +195,24 @@
       </svg>
     </div>
 
-    <AppFlex>
-      <!-- <tooltip :interactive="true" :append-to="appendToBody" tag="button">
-        Info&nbsp;<AppIcon icon="circle-question" />
-        <template #content>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          </p>
-        </template>
-      </tooltip> -->
-      <AppButton
-        v-tooltip="'Download grid as PNG'"
-        design="small"
-        text="Download"
-        icon="download"
-        @click="download"
-      />
-      <AppFlex flow="inline" gap="small">
+    <div class="controls">
+      <AppFlex
+        v-tooltip="'What order to put column and row labels in'"
+        flow="inline"
+        gap="small"
+      >
         <span>Sort</span>
         <AppSelectSingle
-          v-model="sortMethod"
+          v-model="sortOrder"
           name="Sort"
-          :options="sortMethods"
+          :options="sortOrders"
         />
       </AppFlex>
-      <AppCheckbox v-model="reverse" text="Reverse" />
+      <AppCheckbox
+        v-model="transpose"
+        v-tooltip="'Swap rows and columns'"
+        text="Transpose"
+      />
       <AppButton
         v-tooltip="'Copy unmatched phenotype ids to clipboard'"
         design="small"
@@ -209,23 +220,28 @@
         :text="`Unmatched (${data.unmatched.length})`"
         @click="copy"
       />
-    </AppFlex>
+      <AppButton
+        v-tooltip="'Download grid as PNG'"
+        design="small"
+        text="Download"
+        icon="download"
+        @click="download"
+      />
+    </div>
   </AppFlex>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, nextTick, ref, watch } from "vue";
 import { sortBy } from "lodash";
 import { useScroll } from "@vueuse/core";
 import type { TermInfo } from "@/api/model";
 import { type SetToSet } from "@/api/phenotype-explorer";
 import AppCheckbox from "@/components/AppCheckbox.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
-import AppSelectSingle, {
-  type Option,
-  type Options,
-} from "@/components/AppSelectSingle.vue";
+import AppSelectSingle, { type Option } from "@/components/AppSelectSingle.vue";
 import { appendToBody } from "@/global/tooltip";
+import { frame } from "@/util/debug";
 import { screenToSvgCoords, truncateBySize } from "@/util/dom";
 import { downloadSvg } from "@/util/download";
 import { copyToClipboard } from "@/util/string";
@@ -240,38 +256,24 @@ const props = defineProps<Props>();
 const cellSize = 100;
 /** space around cell squares */
 const cellMargin = 10;
-/** max length of labels, i.e. top and left margin */
-const labelXSize = 500;
-const labelYSize = 400;
+/** margins around cell area */
+const marginLeft = 500;
+const marginRight = 325;
+const marginTop = 400;
 
-const svg = ref<SVGSVGElement>();
-
-/** track grid scroll */
+/** element refs */
+const container = ref<{ element: HTMLDivElement }>();
 const scroll = ref<HTMLDivElement>();
-const scrollInfo = useScroll(scroll);
-const scrollCoords = ref<{ x: number; y: number }>({ x: 0, y: 0 });
-
-watch(
-  () => scrollInfo,
-  () => {
-    const { x, y } = screenToSvgCoords(
-      svg.value,
-      scrollInfo.x.value,
-      scrollInfo.y.value,
-    );
-    scrollCoords.value = { x: x + labelXSize, y: y + labelYSize };
-  },
-  { deep: true },
-);
-
-/** currently hovered col and row */
-const hovered = ref<{ col: number; row: number }>();
+const svg = ref<SVGSVGElement>();
 
 /** total dimensions and viewbox of svg */
 const width = computed(
-  () => labelXSize + props.data.cols.length * cellSize + labelXSize * 0.65,
+  () => marginLeft + cols.value.length * cellSize + marginRight,
 );
-const height = computed(() => labelYSize + props.data.rows.length * cellSize);
+const height = computed(() => marginTop + rows.value.length * cellSize);
+
+/** currently hovered col and row */
+const hovered = ref<{ col: number; row: number }>();
 
 /** set/unset hovered cell */
 function hoverCell(col: number, row: number, unset = false) {
@@ -280,27 +282,36 @@ function hoverCell(col: number, row: number, unset = false) {
 }
 
 /** options for sorting */
-const sortMethods: Options = [
-  { id: "", label: "Input Order" },
-  { id: "alpha", label: "Alphabetical" },
-  { id: "total", label: "Score Totals" },
+const sortOrders: Option[] = [
+  { id: "input", label: "Input Order" },
+  { id: "alpha", label: "Alpha. (a → z)" },
+  { id: "alpha-rev", label: "Alpha. (z → a)" },
+  { id: "total", label: "Score (highest)" },
+  { id: "total-rev", label: "Score (lowest)" },
 ];
-const sortMethod = ref<Option>(sortMethods[0]);
-const reverse = ref(false);
+const sortOrder = ref(sortOrders[0]);
 
 /** get sort func to sort rows/cols in particular order */
 function sort(array: TermInfo[]): TermInfo[] {
-  const method = sortMethod.value.id;
+  const { id } = sortOrder.value;
   array = [...array];
-  if (method === "alpha") array = sortBy(array, "label");
-  if (method === "total") array = sortBy(array, ["total"]).reverse();
-  if (reverse.value) array.reverse();
+  if (id.startsWith("alpha"))
+    array = sortBy(array, (item) => item.label?.toLowerCase());
+  if (id.startsWith("total")) array = sortBy(array, ["total"]).reverse();
+  if (id.endsWith("-rev")) array.reverse();
   return array;
 }
 
+/** swap cols/rows */
+const transpose = ref(false);
+
 /** put rows, cols, cells in order for display */
-const cols = computed(() => sort(props.data.cols));
-const rows = computed(() => sort(props.data.rows));
+const cols = computed(() =>
+  sort(transpose.value ? props.data.rows : props.data.cols),
+);
+const rows = computed(() =>
+  sort(transpose.value ? props.data.cols : props.data.rows),
+);
 const cells = computed(() =>
   cols.value
     .map((col, colIndex) =>
@@ -313,10 +324,17 @@ const cells = computed(() =>
     .map(({ col, row }) => ({
       col,
       row,
-      ...props.data.cells[col.id + row.id],
+      ...getCell(col, row),
     }))
     .filter((cell) => cell.score),
 );
+
+/** get matching cell from col and row */
+function getCell(col: TermInfo, row: TermInfo) {
+  return transpose.value
+    ? props.data.cells[row.id + col.id]
+    : props.data.cells[col.id + row.id];
+}
 
 /** download svg */
 function download() {
@@ -334,16 +352,60 @@ function copy() {
 function truncate(text?: string) {
   return truncateBySize(
     text || "",
-    labelXSize * 0.9,
+    marginLeft * 0.9,
     cellSize * 0.5 + "px Poppins",
   );
+}
+
+/** track grid scroll */
+const scrollInfo = useScroll(scroll);
+const scrollCoords = ref<{ x: number; y: number }>({ x: 0, y: 0 });
+watch(
+  () => scrollInfo,
+  () => {
+    const { x, y } = screenToSvgCoords(
+      svg.value,
+      scrollInfo.x.value,
+      scrollInfo.y.value,
+    );
+    scrollCoords.value = { x: x + marginLeft, y: y + marginTop };
+  },
+  { deep: true },
+);
+
+/** notify parent of events that may change dimensions */
+watch([sortOrder, transpose, props.data], emitSize, {
+  immediate: true,
+  deep: true,
+});
+
+/** post message that size of widget has changed */
+async function emitSize() {
+  await nextTick();
+  const element = container.value?.element;
+  if (!element) return;
+  element.classList.add("full-size");
+  await frame();
+  let width = element.clientWidth + 2;
+  let height = element.clientHeight + 2;
+  await frame();
+  element.classList.remove("full-size");
+  window.parent.postMessage({ width, height }, "*");
 }
 </script>
 
 <style scoped lang="scss">
-.flex {
+.container {
   max-width: 100%;
   max-height: 100%;
+}
+
+.full-size {
+  width: max-content !important;
+  max-width: unset !important;
+  height: max-content !important;
+  max-height: unset !important;
+  margin: auto;
 }
 
 .scroll {
@@ -352,11 +414,6 @@ function truncate(text?: string) {
   overflow: auto;
   border-radius: $rounded;
   box-shadow: $shadow;
-}
-
-.hovered {
-  fill: $theme;
-  font-weight: 600;
 }
 
 .col-labels {
@@ -396,5 +453,41 @@ function truncate(text?: string) {
 
 #clip-grid {
   transform: translate(var(--x), var(--y));
+}
+
+[data-hovered] {
+  transition:
+    fill $fast,
+    stroke $fast,
+    opacity $fast;
+}
+
+.col-labels [data-hovered="true"],
+.row-labels [data-hovered="true"] {
+  fill: $theme;
+}
+
+.grid [data-hovered="true"] {
+  stroke: $theme;
+  stroke-width: 5;
+}
+
+[data-hovered="false"] {
+  opacity: 0.1;
+}
+
+.tooltip-heading {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding-bottom: 10px;
+  gap: 20px;
+  border-bottom: dashed 1px $dark-gray;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 10px 20px;
 }
 </style>

@@ -198,6 +198,8 @@ const {
   return await getBlogPosts();
 }, []);
 
+console.log("hi");
+
 onMounted(runGetBlogPosts);
 </script>
 

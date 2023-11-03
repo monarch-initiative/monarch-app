@@ -133,17 +133,17 @@
 
   <AppSection>
     <AppHeading>The Mondo Disease Ontology (Mondo)</AppHeading>
-    <AppAlert>Coming Soon....</AppAlert>
+    <AppAlert>Coming soon!</AppAlert>
   </AppSection>
 
   <AppSection>
     <AppHeading>Phenopackets</AppHeading>
-    <AppAlert>Coming Soon....</AppAlert>
+    <AppAlert>Coming soon!</AppAlert>
   </AppSection>
 
   <AppSection>
     <AppHeading>The Phenomics First Resource</AppHeading>
-    <AppAlert>Coming Soon...</AppAlert>
+    <AppAlert>Coming soon!</AppAlert>
   </AppSection>
 </template>
 

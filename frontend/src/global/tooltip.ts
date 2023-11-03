@@ -24,7 +24,8 @@ const update = (instance: Instance): void => {
 const onShow = (instance: Instance): boolean => {
   const content = instance.props.content;
   // https://github.com/KABBOUCHI/vue-tippy/issues/303
-  if (content instanceof Element) instance.setContent(content.innerHTML);
+  if (content instanceof Element && instance.reference instanceof SVGElement)
+    instance.setContent(content.innerHTML);
   /** cancel show if no content to show */
   return !!String(content).trim();
 };

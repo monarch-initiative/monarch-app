@@ -28,7 +28,6 @@ import { compareSetToSet } from "@/api/phenotype-explorer";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
 import TheSnackbar from "@/components/TheSnackbar.vue";
 import { useQuery } from "@/util/composables";
-import { sleep } from "@/util/debug";
 
 /** route info */
 const route = useRoute();
@@ -78,20 +77,6 @@ useEventListener("message", (event: MessageEvent) => {
   }
 });
 
-watch(
-  [isLoading, isError, comparison],
-  async () => {
-    document.body.classList.add("full-size");
-    await sleep(10);
-    let width = document.body.clientWidth + 2;
-    let height = document.body.clientHeight + 2;
-    await sleep(10);
-    document.body.classList.remove("full-size");
-    window.parent.postMessage({ width, height }, "*");
-  },
-  { immediate: true, deep: true },
-);
-
 /** allow consuming parent to link to css stylesheet */
 const stylesheet = computed(() =>
   typeof route.query.stylesheet === "string"
@@ -100,23 +85,14 @@ const stylesheet = computed(() =>
 );
 </script>
 
-<style>
-html,
-body {
+<style scoped>
+:global(html),
+:global(body) {
   width: 100%;
   height: 100%;
 }
 
-body {
-  padding: 10px;
-}
-
-#app {
+:global(#app) {
   display: contents;
-}
-
-.full-size {
-  width: max-content !important;
-  height: max-content !important;
 }
 </style>
