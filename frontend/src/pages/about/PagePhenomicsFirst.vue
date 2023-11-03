@@ -1,8 +1,8 @@
 <!-- 
-    Overview page for Phenomics First
+    Overview page for phenomics First
  -->
 
-<template>
+ <template>
   <AppSection>
     <AppHeading>Phenomics First</AppHeading>
 
@@ -83,12 +83,12 @@
       />
       <figcaption>
         The
-        <AppLink to="https://hpo.jax.org" target="__blank"
+        <AppLink to="https://hpo.jax.org"
           >The Phenomics First Project</AppLink
         >
         (HPO) provides a standardized vocabulary of phenotypic abnormalities
         encountered in human disease.
-        <AppLink to="https://pubmed.ncbi.nlm.nih.gov/30476213/" target="__blank"
+        <AppLink to="https://pubmed.ncbi.nlm.nih.gov/30476213/"
           >More about HPO...</AppLink
         >
       </figcaption>
@@ -100,13 +100,13 @@
         alt="Phenopackets Ecosystem"
       />
       <figcaption>
-        <AppLink to="http://phenopackets.org/" target="__blank"
+        <AppLink to="http://phenopackets.org/"
           >Phenopackets</AppLink
         >
         is a standard exchange format for phenotypes and environmental factors.
         This packet of phenotype data can be used anywhere, and can be written
         by anyone. This work is being done in collaboration with the
-        <AppLink to="https://www.ga4gh.org/" target="__blank"
+        <AppLink to="https://www.ga4gh.org/"
           >Global Alliance for Genomics and Health (GA4GH)</AppLink
         >.
       </figcaption>
@@ -133,21 +133,39 @@
 
   <AppSection>
     <AppHeading>The Mondo Disease Ontology (Mondo)</AppHeading>
-    <AppAlert>Coming soon!</AppAlert>
+    <p>
+      The Mondo Disease Ontology (Mondo) aims to harmonize disease definitions
+      across the world. It is a semi-automatically constructed ontology that
+      merges in multiple disease resources to yield a coherent merged ontology.
+      Original versions of Mondo were constructed entirely automatically and
+      used the IDs of source databases and ontologies. Later, additional
+      manually curated cross-ontology axioms were added, and a native Mondo ID
+      system was used to avoid confusion with source databases.
+    </p>
+    <p>
+      You can find more information
+      <AppLink to="https://mondo.readthedocs.io/en/latest/"
+        >here</AppLink
+      >.
+    </p>
   </AppSection>
 
   <AppSection>
     <AppHeading>Phenopackets</AppHeading>
-    <AppAlert>Coming soon!</AppAlert>
-  </AppSection>
-
-  <AppSection>
-    <AppHeading>The Phenomics First Resource</AppHeading>
-    <AppAlert>Coming soon!</AppAlert>
+    <p>
+      Phenopackets are an open standard for sharing disease and phenotype
+      information, with the aim of improving our ability to understand,
+      diagnose, and treat both rare and common diseases. A Phenopacket links
+      detailed phenotype descriptions with disease, patient, and genetic
+      information, enabling clinicians, biologists, and disease and drug
+      researchers to build more complete models of disease. The standard is
+      designed to encourage wide adoption and synergy between the people,
+      organizations and systems that comprise the joint effort to address human
+      disease and biological understanding.
+    </p>
+    <p>
+      You can find more information
+      <AppLink to="http://phenopackets.org/">here</AppLink>.
+    </p>
   </AppSection>
 </template>
-
-<script setup lang="ts">
-import AppAlert from "@/components/AppAlert.vue";
-import AppSection from "@/components/AppSection.vue";
-</script>
