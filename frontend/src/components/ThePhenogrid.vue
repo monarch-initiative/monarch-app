@@ -85,21 +85,28 @@
                         :node="{ id: row.id, name: row.label }"
                         :absolute="true"
                       />
-                      <span>Score</span>
+                      <span>Ancestor</span>
+                      <AppNodeBadge
+                        :node="{
+                          id: data.cells[col.id + row.id].ancestor_id,
+                          name: data.cells[col.id + row.id].ancestor_label,
+                        }"
+                        :absolute="true"
+                      />
+                      <span>Ancestor IC</span>
                       <span>{{
-                        data.cells[col.id + row.id].score.toFixed(2)
+                        data.cells[col.id + row.id].score.toFixed(3)
                       }}</span>
-                      <template
-                        v-for="(value, key, index) in data.cells[
-                          col.id + row.id
-                        ].simInfo"
-                        :key="index"
-                      >
-                        <span>{{ startCase(String(key)) }}</span>
-                        <span>{{
-                          typeof value === "number" ? value.toFixed(2) : value
-                        }}</span>
-                      </template>
+                      <span>Phenodigm</span>
+                      <span>{{
+                        data.cells[col.id + row.id].phenodigm_score?.toFixed(3)
+                      }}</span>
+                      <span>Jaccard</span>
+                      <span>{{
+                        data.cells[col.id + row.id].jaccard_similarity?.toFixed(
+                          3,
+                        )
+                      }}</span>
                     </div>
                   </template>
                 </tooltip>
@@ -146,7 +153,7 @@
           :options="sortMethods"
         />
       </AppFlex>
-      <AppCheckbox v-model="reverse" text="Flip" />
+      <AppCheckbox v-model="reverse" text="Reverse" />
       <AppButton
         v-tooltip="'Copy unmatched phenotype ids to clipboard'"
         design="small"
@@ -160,7 +167,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { sortBy, startCase } from "lodash";
+import { sortBy } from "lodash";
 import { hideAll } from "tippy.js";
 import type { TermInfo } from "@/api/model";
 import { type SetToSet } from "@/api/phenotype-explorer";
@@ -190,17 +197,21 @@ function hoverCell(colIndex: number, rowIndex: number, unset = false) {
   else hovered.value = { col: colIndex, row: rowIndex };
 }
 
-const flex = ref<{ element: HTMLTableElement }>();
+const flex = ref<{ element: HTMLElement }>();
 const scroll = ref<HTMLElement>();
+
+/** set container to be full size (of contents) */
+function setFullsize(full: boolean) {
+  if (!flex.value?.element || !scroll.value) return;
+  scroll.value.classList[full ? "add" : "remove"]("full-size");
+  flex.value.element.classList[full ? "add" : "remove"]("full-size");
+}
 
 /** download grid as png */
 async function download() {
   if (!flex.value?.element || !scroll.value) return;
 
-  /** make full size */
-  scroll.value.classList.add("saving");
-  flex.value.element.classList.add("saving");
-
+  setFullsize(true);
   hideAll();
 
   /** wait for dom to update */
@@ -216,9 +227,7 @@ async function download() {
     snackbar("Error saving image");
   }
 
-  /** reset size */
-  scroll.value.classList.remove("saving");
-  flex.value.element.classList.remove("saving");
+  setFullsize(false);
 }
 
 /** options for sorting */
@@ -251,12 +260,11 @@ function copy() {
 <style scoped lang="scss">
 .scroll {
   max-width: 100%;
-  max-height: calc(100vh - 200px);
   overflow: auto;
   background: $white;
 }
 
-.saving {
+.full-size {
   width: max-content !important;
   max-width: unset !important;
   height: max-content !important;

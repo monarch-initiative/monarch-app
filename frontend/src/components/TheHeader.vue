@@ -249,8 +249,8 @@ $wrap: 1000px;
 .nav {
   display: flex;
   align-items: center;
-  justify-content: center;
-  max-width: 100%;
+  justify-content: flex-end;
+  width: 100%;
   padding: 15px;
   gap: 10px;
 }

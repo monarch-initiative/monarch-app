@@ -53,6 +53,7 @@ classes:
       - evidence_count
       - has_evidence
       - has_evidence_links
+      - grouping_key
       - provided_by
       - provided_by_link
       - publications
@@ -62,6 +63,11 @@ classes:
       - onset_qualifier
       - sex_qualifier
       - stage_qualifier
+      - qualifiers_label
+      - qualifiers_namespace
+      - qualifiers_category
+      - qualifiers_closure
+      - qualifiers_closure_label
       - frequency_qualifier_label
       - frequency_qualifier_namespace
       - frequency_qualifier_category
@@ -194,6 +200,16 @@ classes:
     is_a: FacetValue
     slots:
       - id
+  Mapping:
+    description: >-
+      A minimal class to hold a SSSOM mapping
+    slots:
+      - subject_id
+      - subject_label
+      - predicate_id
+      - object_id
+      - object_label
+      - mapping_justification
   MultiEntityAssociationResults:
     is_a: Results
     slots:
@@ -317,6 +333,9 @@ slots:
     range: string
   full_name:
     description: The long form name of an entity
+    range: string
+  grouping_key:
+    description: A concatenation of fields used to group associations with the same essential/defining properties
     range: string
   has_evidence:
     range: string
@@ -481,6 +500,24 @@ slots:
     is_a: in_taxon
   object_taxon_label:
     is_a: in_taxon_label
+
+  # this whole block will be renamed to qualifer_ after we bring in the next biolink model release
+  qualifiers_label:
+    is_a: name
+    description: The name of the frequency_qualifier entity
+  qualifiers_namespace:
+    range: string
+    description: The namespace/prefix of the frequency_qualifier entity
+  qualifiers_category:
+    is_a: category
+    description: The category of the frequency_qualifier entity
+  qualifiers_closure:
+    multivalued: true
+    description: Field containing frequency_qualifier id and the ids of all of it's ancestors
+  qualifiers_closure_label:
+    multivalued: true
+    description: Field containing frequency_qualifier name and the names of all of it's ancestors
+
   frequency_qualifier_label:
     is_a: name
     description: The name of the frequency_qualifier entity
@@ -541,3 +578,17 @@ slots:
   stage_qualifier_closure_label:
     multivalued: true
     description: Field containing stage_qualifier name and the names of all of it's ancestors
+# sssom slots
+  subject_id:
+    range: string
+    required: true
+  # subject label is already included in this schema
+  predicate_id:
+    range: string
+    required: true
+  object_id:
+    range: string
+    required: true
+  # object label is already included in this schema
+  mapping_justification:
+      range: string

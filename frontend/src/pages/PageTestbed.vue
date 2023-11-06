@@ -195,9 +195,6 @@ useEventListener(
   (event: MessageEvent<{ width: number; height: number }>) => {
     const iframe = document.querySelector<HTMLIFrameElement>("iframe");
     if (!iframe) return;
-    iframe.style.maxWidth = "100%";
-    iframe.style.maxHeight = "100%";
-    iframe.style.width = event.data.width + 20 + "px";
     iframe.style.height = event.data.height + 20 + "px";
   },
 );
@@ -359,8 +356,9 @@ const log = console.info;
 
 <style lang="scss" scoped>
 iframe {
-  margin: auto;
+  width: 100%;
 }
+
 .icons {
   color: $theme;
   font-size: 4rem;

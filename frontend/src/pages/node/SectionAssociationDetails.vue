@@ -81,8 +81,7 @@ import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
-import { scrollToElement } from "@/router";
-import { waitFor } from "@/util/dom";
+import { scrollTo } from "@/router";
 
 type Props = {
   /** current node */
@@ -95,7 +94,7 @@ const props = defineProps<Props>();
 
 /** scroll details section into view */
 async function scrollIntoView() {
-  scrollToElement(await waitFor("#association-details"));
+  scrollTo("#association-details");
 }
 
 watch(() => props.association, scrollIntoView);
