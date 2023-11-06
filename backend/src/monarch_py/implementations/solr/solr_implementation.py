@@ -34,6 +34,7 @@ from monarch_py.implementations.solr.solr_query_utils import (
     build_association_table_query,
     build_autocomplete_query,
     build_histopheno_query,
+    build_mapping_query,
     build_multi_entity_association_query,
     build_search_query,
 )
@@ -418,3 +419,20 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
         query_result = solr.query(query)
         return parse_association_table(query_result, entity, offset, limit)
+
+    def get_mappings(
+        self,
+        entity_id: List[str] = None,
+        subject_id: List[str] = None,
+        predicate_id: List[str] = None,
+        object_id: List[str] = None,
+        mapping_justification: List[str] = None,
+    ) -> MappingResults:
+        solr = SolrService(base_url=self.base_url, core=core.SSSOM)
+        query = build_mapping_query(
+            entity_id=entity_id,
+            subject_id=subject_id,
+            predicate_id=predicate_id,
+            object_id=object_id,
+            mapping_justification=mapping_justification,
+        )

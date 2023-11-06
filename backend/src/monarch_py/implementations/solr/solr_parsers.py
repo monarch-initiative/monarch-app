@@ -16,6 +16,8 @@ from monarch_py.datamodels.model import (
     FacetValue,
     HistoBin,
     HistoPheno,
+    Mapping,
+    MappingResults,
     SearchResult,
     SearchResults,
 )
@@ -166,6 +168,19 @@ def parse_autocomplete(query_result: SolrQueryResult) -> SearchResults:
             logger.error(f"Validation error for {doc}")
             raise
     return SearchResults(limit=10, offset=0, total=total, items=items)
+
+
+def parse_mapping(query_result: SolrQueryResult, offset: int, limit: int) -> MappingResults:
+    total = query_result.response.num_found
+    items = []
+    for doc in query_result.response.docs:
+        try:
+            result = Mapping(**doc)
+            items.append(result)
+        except ValidationError:
+            logger.error(f"Validation error for {doc}")
+            raise
+    return MappingResults(limit=limit, offset=offset, total=total, items=items)
 
 
 ##################
