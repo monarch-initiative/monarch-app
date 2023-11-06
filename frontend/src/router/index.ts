@@ -70,6 +70,11 @@ export const routes: RouteRecordRaw[] = [
 
   /** about pages */
   {
+    path: "/overview",
+    name: "Overview",
+    component: () => import("../pages/about/PageOverview.vue"),
+  },
+  {
     path: "/cite",
     name: "Cite",
     component: () => import("../pages/about/PageCite.vue"),
