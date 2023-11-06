@@ -83,12 +83,12 @@
       />
       <figcaption>
         The
-        <AppLink to="https://hpo.jax.org" target="__blank"
+        <AppLink to="https://hpo.jax.org"
           >The Phenomics First Project</AppLink
         >
         (HPO) provides a standardized vocabulary of phenotypic abnormalities
         encountered in human disease.
-        <AppLink to="https://pubmed.ncbi.nlm.nih.gov/30476213/" target="__blank"
+        <AppLink to="https://pubmed.ncbi.nlm.nih.gov/30476213/"
           >More about HPO...</AppLink
         >
       </figcaption>
@@ -100,13 +100,13 @@
         alt="Phenopackets Ecosystem"
       />
       <figcaption>
-        <AppLink to="http://phenopackets.org/" target="__blank"
+        <AppLink to="http://phenopackets.org/"
           >Phenopackets</AppLink
         >
         is a standard exchange format for phenotypes and environmental factors.
         This packet of phenotype data can be used anywhere, and can be written
         by anyone. This work is being done in collaboration with the
-        <AppLink to="https://www.ga4gh.org/" target="__blank"
+        <AppLink to="https://www.ga4gh.org/"
           >Global Alliance for Genomics and Health (GA4GH)</AppLink
         >.
       </figcaption>
