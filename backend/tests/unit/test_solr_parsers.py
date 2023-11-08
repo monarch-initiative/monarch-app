@@ -72,6 +72,4 @@ def test_parse_mappings(mapping_response, mappings):
     mapping_response["response"]["numFound"] = mapping_response["response"].pop("num_found")
     solr_response = SolrQueryResult(**mapping_response)
     parsed = parse_mappings(solr_response)
-    assert (
-        parsed == mappings
-    ), f"Parsed result is not as expected. Difference: {dict_diff(parsed.dict(), mappings)}"
+    assert parsed == mappings, f"Parsed result is not as expected. Difference: {dict_diff(parsed.dict(), mappings)}"

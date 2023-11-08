@@ -15,4 +15,3 @@ def test_mappings(search):
     assert response.status_code == 200
     assert response.headers["content-type"] == "application/json"
     assert response.json() == search
-
