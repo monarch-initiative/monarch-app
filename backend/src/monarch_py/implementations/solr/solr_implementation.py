@@ -11,6 +11,7 @@ from monarch_py.datamodels.model import (
     CategoryGroupedAssociationResults,
     Entity,
     HistoPheno,
+    MappingResults,
     MultiEntityAssociationResults,
     Node,
     NodeHierarchy,
@@ -26,6 +27,7 @@ from monarch_py.implementations.solr.solr_parsers import (
     parse_autocomplete,
     parse_entity,
     parse_histopheno,
+    parse_mappings,
     parse_search,
 )
 from monarch_py.implementations.solr.solr_query_utils import (
@@ -241,7 +243,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
             limit=limit,
         )
         query_result = solr.query(query)
-        associations = parse_associations(query_result)
+        associations = parse_associations(query_result, offset, limit)
         return associations
 
     def get_histopheno(self, subject_closure: str = None) -> HistoPheno:
@@ -427,12 +429,21 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         predicate_id: List[str] = None,
         object_id: List[str] = None,
         mapping_justification: List[str] = None,
+        offset: int = 0,
+        limit: int = 20,
     ) -> MappingResults:
         solr = SolrService(base_url=self.base_url, core=core.SSSOM)
         query = build_mapping_query(
-            entity_id=entity_id,
-            subject_id=subject_id,
-            predicate_id=predicate_id,
-            object_id=object_id,
-            mapping_justification=mapping_justification,
+            entity_id=[entity_id] if isinstance(entity_id, str) else entity_id,
+            subject_id=[subject_id] if isinstance(subject_id, str) else subject_id,
+            predicate_id=[predicate_id] if isinstance(predicate_id, str) else predicate_id,
+            object_id=[object_id] if isinstance(object_id, str) else object_id,
+            mapping_justification=[mapping_justification]
+            if isinstance(mapping_justification, str)
+            else mapping_justification,
+            offset=offset,
+            limit=limit,
         )
+        query_result = solr.query(query)
+        mappings = parse_mappings(query_result, offset, limit)
+        return mappings

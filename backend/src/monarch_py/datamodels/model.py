@@ -2,7 +2,7 @@ from __future__ import annotations
 from datetime import datetime, date
 from enum import Enum
 from typing import List, Dict, Optional, Any, Union
-from pydantic import BaseModel as BaseModel, Field
+from pydantic import BaseModel as BaseModel, ConfigDict, Field
 import sys
 
 if sys.version_info >= (3, 8):
@@ -435,6 +435,7 @@ class Mapping(ConfiguredBaseModel):
     object_id: str = Field(...)
     object_label: Optional[str] = Field(None, description="""The name of the object entity""")
     mapping_justification: Optional[str] = Field(None)
+    id: str = Field(...)
 
 
 class Node(Entity):
@@ -543,6 +544,10 @@ class MappingResults(Results):
     SSSOM Mappings returned as a results collection
     """
 
+    items: List[Mapping] = Field(
+        default_factory=list,
+        description="""A collection of items, with the type to be overriden by slot_usage""",
+    )
     limit: int = Field(..., description="""number of items to return in a response""")
     offset: int = Field(..., description="""offset into the total number of items""")
     total: int = Field(..., description="""total number of items matching a query""")

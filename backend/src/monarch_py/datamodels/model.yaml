@@ -210,9 +210,12 @@ classes:
       - object_id
       - object_label
       - mapping_justification
+      - id
   MappingResults:
     description: SSSOM Mappings returned as a results collection
     is_a: Results
+    slots:
+      - items
     slot_usage:
       items:
         range: Mapping

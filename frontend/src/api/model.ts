@@ -4,6 +4,7 @@ export type ExpandedCurieId = string;
 export type EntityId = string;
 export type HistoPhenoId = string;
 export type HistoBinId = string;
+export type MappingId = string;
 export type MultiEntityAssociationResultsId = string;
 export type NodeId = string;
 export type SearchResultId = string;
@@ -375,11 +376,14 @@ export interface Mapping {
     /** The name of the object entity */
     object_label?: string,
     mapping_justification?: string,
+    id: string,
 };
 /**
  * SSSOM Mappings returned as a results collection
  */
 export interface MappingResults extends Results {
+    /** A collection of items, with the type to be overriden by slot_usage */
+    items: Mapping[],
     /** number of items to return in a response */
     limit: number,
     /** offset into the total number of items */
