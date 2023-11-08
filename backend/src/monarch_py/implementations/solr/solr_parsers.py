@@ -170,7 +170,7 @@ def parse_autocomplete(query_result: SolrQueryResult) -> SearchResults:
     return SearchResults(limit=10, offset=0, total=total, items=items)
 
 
-def parse_mappings(query_result: SolrQueryResult, offset: int, limit: int) -> MappingResults:
+def parse_mappings(query_result: SolrQueryResult, offset: int = 0, limit: int = 20) -> MappingResults:
     total = query_result.response.num_found
     items = []
     for doc in query_result.response.docs:
