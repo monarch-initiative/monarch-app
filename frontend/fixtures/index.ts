@@ -1,10 +1,8 @@
 import { http, HttpResponse, passthrough } from "msw";
-import { apiUrl, biolink } from "@/api";
 import { feedbackEndpoint } from "@/api/feedback";
 import { efetch, esummary } from "@/api/publications";
 import { uptimeRobot } from "@/api/uptime";
 import associationsTable from "./association-table.json";
-import associations from "./associations.json";
 import autocomplete from "./autocomplete.json";
 import feedback from "./feedback.json";
 import histopheno from "./histopheno.json";
@@ -17,56 +15,40 @@ import search from "./search.json";
 import textAnnotator from "./text-annotator.json";
 import uptime from "./uptime.json";
 
-/** make single regex from base url and pattern */
-const regex = (base: string = "", pattern: string = "") =>
-  new RegExp(base + pattern.replace(/[/\\]/g, "\\$&"), "i");
-
 /** api calls to be mocked with fixture data */
 export const handlers = [
   /** api status monitoring on /help */
-  http.post(regex(uptimeRobot), () => HttpResponse.json(uptime)),
+  http.post(uptimeRobot, () => HttpResponse.json(uptime)),
 
   /** histopheno data */
-  http.get(regex(apiUrl, "/histopheno"), () => HttpResponse.json(histopheno)),
+  http.get("*/histopheno/:id", () => HttpResponse.json(histopheno)),
 
   /** submit feedback form */
-  http.post(regex(feedbackEndpoint), () => HttpResponse.json(feedback)),
+  http.post(feedbackEndpoint, () => HttpResponse.json(feedback)),
 
   /** search * */
-  http.get(regex(apiUrl, "/search"), () => HttpResponse.json(search)),
+  http.get("*/search", () => HttpResponse.json(search)),
 
   /** autocomplete */
-  http.get(regex(apiUrl, "/autocomplete"), () =>
-    HttpResponse.json(autocomplete),
-  ),
+  http.get("*/autocomplete", () => HttpResponse.json(autocomplete)),
 
   /** text annotator */
-  http.post(regex(biolink, "/nlp/annotate"), () =>
-    HttpResponse.json(textAnnotator),
-  ),
+  http.post("*/nlp/annotate", () => HttpResponse.json(textAnnotator)),
 
   /** phenotype explorer */
-  http.get(regex(biolink, "/sim/search"), () =>
-    HttpResponse.json(phenotypeExplorerSearch),
-  ),
-  http.post(regex(apiUrl, "/semsim/compare"), () =>
+  http.get("*/sim/search", () => HttpResponse.json(phenotypeExplorerSearch)),
+  http.post("*/semsim/compare", () =>
     HttpResponse.json(phenotypeExplorerCompare),
   ),
 
   /** node associations */
-  http.get(regex(apiUrl, "/associations"), () =>
-    HttpResponse.json(associations),
-  ),
-
-  /** node associations table */
-  http.get(regex(apiUrl, "/entity/.*/.*"), () =>
+  http.get("*/entity/:id/:assoctype", () =>
     HttpResponse.json(associationsTable),
   ),
 
   /** node lookup */
-  http.get(regex(apiUrl, "/entity/.*"), ({ request }) => {
-    const { pathname } = new URL(request.url);
-    const id = pathname.match(/\/entity\/(.*)/)?.[1] || "";
+  http.get("*/entity/:id", ({ params }) => {
+    const id = String(params.id);
 
     /**
      * change fixture data based on request so we can see UI that is conditional
@@ -136,13 +118,11 @@ export const handlers = [
   }),
 
   /** node publication info */
-  http.get(regex(esummary), () => HttpResponse.json(nodePublicationSummary)),
-  http.get(regex(efetch), () =>
-    HttpResponse.json(nodePublicationAbstract.abstract),
-  ),
+  http.get(esummary, () => HttpResponse.json(nodePublicationSummary)),
+  http.get(efetch, () => HttpResponse.json(nodePublicationAbstract.abstract)),
 
   /** any other request */
-  http.get(/.*/, ({ request }) => {
+  http.get("*", ({ request }) => {
     const { pathname } = new URL(request.url);
     if (!pathname.match(/\.[A-Za-z0-9]{2,5}$/))
       console.warn("Non-mocked request", pathname);
