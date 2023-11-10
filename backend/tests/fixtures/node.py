@@ -19,6 +19,15 @@ def node():
         "inheritance": None,
         "causal_gene": [],
         "causes_disease": [],
+        "mappings": [
+            {"id": "DOID:9884", "url": "http://purl.obolibrary.org/obo/DOID_9884"},
+            {"id": "ICD10CM:G71.0", "url": "https://icd.codes/icd10cm/G71.0"},
+            {"id": "MESH:D009136", "url": "http://identifiers.org/mesh/D009136"},
+            {"id": "NCIT:C84910", "url": "http://purl.obolibrary.org/obo/NCIT_C84910"},
+            {"id": "SCTID:73297009", "url": None},
+            {"id": "UMLS:C0026850", "url": "http://identifiers.org/umls/C0026850"},
+            {"id": "Orphanet:98473", "url": None},
+        ],
         "external_links": [],
         "provided_by_link": {
             "id": "phenio",

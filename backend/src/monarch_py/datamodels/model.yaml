@@ -234,6 +234,7 @@ classes:
       - inheritance
       - causal_gene
       - causes_disease
+      - mappings
       - external_links
       - provided_by_link
       - association_counts
@@ -526,7 +527,6 @@ slots:
   qualifiers_closure_label:
     multivalued: true
     description: Field containing frequency_qualifier name and the names of all of it's ancestors
-
   frequency_qualifier_label:
     is_a: name
     description: The name of the frequency_qualifier entity
@@ -587,7 +587,13 @@ slots:
   stage_qualifier_closure_label:
     multivalued: true
     description: Field containing stage_qualifier name and the names of all of it's ancestors
-# sssom slots
+  
+  # sssom slots
+  mappings:
+    description: List of ExpandedCuries with id and url for mapped entities
+    range: ExpandedCurie
+    multivalued: true
+    inlined_as_list: true
   subject_id:
     range: string
     required: true

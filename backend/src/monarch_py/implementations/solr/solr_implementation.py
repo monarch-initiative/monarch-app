@@ -44,6 +44,7 @@ from monarch_py.interfaces.association_interface import AssociationInterface
 from monarch_py.interfaces.entity_interface import EntityInterface
 from monarch_py.interfaces.search_interface import SearchInterface
 from monarch_py.service.solr_service import SolrService
+from monarch_py.utils.entity_utils import get_expanded_curie
 from monarch_py.utils.utils import get_provided_by_link, get_links_for_field
 
 
@@ -116,10 +117,24 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         node.association_counts = self.get_association_counts(id).items
         node.external_links = get_links_for_field(node.xref) if node.xref else []
         node.provided_by_link = get_provided_by_link(node.provided_by)
+        node.mappings = self._get_mapped_entities(node)
 
         return node
 
     ### Entity helpers ###
+
+    def _get_mapped_entities(self, this_entity: Entity) -> list:
+        """..."""
+        mapped_entities = []
+        mappings = self.get_mappings(entity_id=this_entity.id)
+        for m in mappings.items:
+            if this_entity.id == m.subject_id:
+                mapped_entities.append(get_expanded_curie(m.object_id))
+            elif this_entity.id == m.object_id:
+                mapped_entities.append(get_expanded_curie(m.subject_id))
+            else:
+                pass
+        return mapped_entities
 
     def _get_associated_entity(self, association: Association, this_entity: Entity) -> Entity:
         """Returns the id, name, and category of the other Entity in an Association given this_entity"""

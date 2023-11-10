@@ -416,6 +416,8 @@ export interface Node extends Entity {
     causal_gene?: Entity[],
     /** A list of diseases that are known to be causally associated with a gene */
     causes_disease?: Entity[],
+    /** List of ExpandedCuries with id and url for mapped entities */
+    mappings?: ExpandedCurie[],
     /** ExpandedCurie with id and url for xrefs */
     external_links?: ExpandedCurie[],
     /** A link to the docs for the knowledge source that provided the node/edge. */
@@ -511,18 +513,18 @@ export interface TermPairwiseSimilarity extends PairwiseSimilarity {
     ancestor_label?: string,
     ancestor_source?: string,
     /** The IC of the object */
-    object_information_content?: number,
+    object_information_content?: string,
     /** The IC of the subject */
-    subject_information_content?: number,
+    subject_information_content?: string,
     /** The IC of the object */
-    ancestor_information_content?: number,
+    ancestor_information_content?: string,
     /** The number of concepts in the intersection divided by the number in the union */
-    jaccard_similarity?: number,
+    jaccard_similarity?: string,
     /** the dot product of two node embeddings divided by the product of their lengths */
     cosine_similarity?: number,
-    dice_similarity?: number,
+    dice_similarity?: string,
     /** the geometric mean of the jaccard similarity and the information content */
-    phenodigm_score?: number,
+    phenodigm_score?: string,
 };
 /**
  * A simple pairwise similarity between two sets of concepts/terms
