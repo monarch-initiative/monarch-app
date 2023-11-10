@@ -11,6 +11,7 @@ from monarch_py.datamodels.model import (
     CategoryGroupedAssociationResults,
     Entity,
     HistoPheno,
+    MappingResults,
     MultiEntityAssociationResults,
     Node,
     NodeHierarchy,
@@ -26,6 +27,7 @@ from monarch_py.implementations.solr.solr_parsers import (
     parse_autocomplete,
     parse_entity,
     parse_histopheno,
+    parse_mappings,
     parse_search,
 )
 from monarch_py.implementations.solr.solr_query_utils import (
@@ -34,6 +36,7 @@ from monarch_py.implementations.solr.solr_query_utils import (
     build_association_table_query,
     build_autocomplete_query,
     build_histopheno_query,
+    build_mapping_query,
     build_multi_entity_association_query,
     build_search_query,
 )
@@ -41,6 +44,7 @@ from monarch_py.interfaces.association_interface import AssociationInterface
 from monarch_py.interfaces.entity_interface import EntityInterface
 from monarch_py.interfaces.search_interface import SearchInterface
 from monarch_py.service.solr_service import SolrService
+from monarch_py.utils.entity_utils import get_expanded_curie
 from monarch_py.utils.utils import get_provided_by_link, get_links_for_field
 
 
@@ -113,10 +117,24 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         node.association_counts = self.get_association_counts(id).items
         node.external_links = get_links_for_field(node.xref) if node.xref else []
         node.provided_by_link = get_provided_by_link(node.provided_by)
+        node.mappings = self._get_mapped_entities(node)
 
         return node
 
     ### Entity helpers ###
+
+    def _get_mapped_entities(self, this_entity: Entity) -> list:
+        """..."""
+        mapped_entities = []
+        mappings = self.get_mappings(entity_id=this_entity.id)
+        for m in mappings.items:
+            if this_entity.id == m.subject_id:
+                mapped_entities.append(get_expanded_curie(m.object_id))
+            elif this_entity.id == m.object_id:
+                mapped_entities.append(get_expanded_curie(m.subject_id))
+            else:
+                pass
+        return mapped_entities
 
     def _get_associated_entity(self, association: Association, this_entity: Entity) -> Entity:
         """Returns the id, name, and category of the other Entity in an Association given this_entity"""
@@ -240,7 +258,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
             limit=limit,
         )
         query_result = solr.query(query)
-        associations = parse_associations(query_result)
+        associations = parse_associations(query_result, offset, limit)
         return associations
 
     def get_histopheno(self, subject_closure: str = None) -> HistoPheno:
@@ -418,3 +436,29 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
         query_result = solr.query(query)
         return parse_association_table(query_result, entity, offset, limit)
+
+    def get_mappings(
+        self,
+        entity_id: List[str] = None,
+        subject_id: List[str] = None,
+        predicate_id: List[str] = None,
+        object_id: List[str] = None,
+        mapping_justification: List[str] = None,
+        offset: int = 0,
+        limit: int = 20,
+    ) -> MappingResults:
+        solr = SolrService(base_url=self.base_url, core=core.SSSOM)
+        query = build_mapping_query(
+            entity_id=[entity_id] if isinstance(entity_id, str) else entity_id,
+            subject_id=[subject_id] if isinstance(subject_id, str) else subject_id,
+            predicate_id=[predicate_id] if isinstance(predicate_id, str) else predicate_id,
+            object_id=[object_id] if isinstance(object_id, str) else object_id,
+            mapping_justification=[mapping_justification]
+            if isinstance(mapping_justification, str)
+            else mapping_justification,
+            offset=offset,
+            limit=limit,
+        )
+        query_result = solr.query(query)
+        mappings = parse_mappings(query_result, offset, limit)
+        return mappings

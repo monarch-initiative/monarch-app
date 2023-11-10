@@ -5,6 +5,7 @@ from monarch_py.implementations.solr.solr_query_utils import (
     build_association_query,
     build_autocomplete_query,
     build_histopheno_query,
+    build_mapping_query,
     build_search_query,
 )
 from monarch_py.utils.utils import compare_dicts, dict_diff
@@ -110,4 +111,10 @@ def test_build_search_query(search_query):
 def test_build_autocomplete_query(autocomplete_query):
     query = build_autocomplete_query(q="fanc").dict()
     expected = autocomplete_query
+    assert compare_dicts(query, expected), f"Query is not as expected. Difference: {dict_diff(query, expected)}"
+
+
+def test_build_mappings_query(mapping_query):
+    query = build_mapping_query(entity_id=["MONDO:0020121"]).dict()
+    expected = mapping_query
     assert compare_dicts(query, expected), f"Query is not as expected. Difference: {dict_diff(query, expected)}"

@@ -4,6 +4,7 @@ export type ExpandedCurieId = string;
 export type EntityId = string;
 export type HistoPhenoId = string;
 export type HistoBinId = string;
+export type MappingId = string;
 export type MultiEntityAssociationResultsId = string;
 export type NodeId = string;
 export type SearchResultId = string;
@@ -375,6 +376,20 @@ export interface Mapping {
     /** The name of the object entity */
     object_label?: string,
     mapping_justification?: string,
+    id: string,
+};
+/**
+ * SSSOM Mappings returned as a results collection
+ */
+export interface MappingResults extends Results {
+    /** A collection of items, with the type to be overriden by slot_usage */
+    items: Mapping[],
+    /** number of items to return in a response */
+    limit: number,
+    /** offset into the total number of items */
+    offset: number,
+    /** total number of items matching a query */
+    total: number,
 };
 
 export interface MultiEntityAssociationResults extends Results {
@@ -401,6 +416,8 @@ export interface Node extends Entity {
     causal_gene?: Entity[],
     /** A list of diseases that are known to be causally associated with a gene */
     causes_disease?: Entity[],
+    /** List of ExpandedCuries with id and url for mapped entities */
+    mappings?: ExpandedCurie[],
     /** ExpandedCurie with id and url for xrefs */
     external_links?: ExpandedCurie[],
     /** A link to the docs for the knowledge source that provided the node/edge. */

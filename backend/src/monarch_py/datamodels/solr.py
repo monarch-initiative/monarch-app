@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field
 class core(Enum):
     ENTITY = "entity"
     ASSOCIATION = "association"
+    SSSOM = "sssom"
 
 
 class HistoPhenoKeys(Enum):

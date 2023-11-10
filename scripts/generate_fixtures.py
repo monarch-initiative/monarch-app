@@ -9,15 +9,16 @@ from monarch_py.implementations.solr.solr_implementation import SolrImplementati
 from monarch_py.implementations.solr.solr_query_utils import (
     build_association_query,
     build_association_counts_query,
+    build_association_table_query,
     build_autocomplete_query,
     build_histopheno_query,
+    build_mapping_query,
     build_search_query,
-    build_association_table_query,
 )
 from monarch_py.service.solr_service import SolrService, core
 from monarch_py.utils.utils import format_output
 
-from pprint import pprint as pp
+# from pprint import pprint as pp
 
 ### Define variables
 oak = OakImplementation()
@@ -26,6 +27,7 @@ si = SolrImplementation()
 solr_url = os.getenv("MONARCH_SOLR_URL", "http://localhost:8983/solr")
 solr_entities = SolrService(base_url=solr_url, core=core.ENTITY)
 solr_associations = SolrService(base_url=solr_url, core=core.ASSOCIATION)
+solr_mappings = SolrService(base_url=solr_url, core=core.SSSOM)
 
 root = Path(__file__).parent.parent
 frontend_fixture_dir = Path(root) / "frontend" / "fixtures"
@@ -192,6 +194,7 @@ def main(
         fixtures["histopheno"] = si.get_histopheno(node_id)
         fixtures["entity"] = si.get_entity(id=node_id, extra=False)
         fixtures["node"] = si.get_entity(id=node_id, extra=True)
+        fixtures["mappings"] = si.get_mappings(entity_id=node_id)
         # fixtures['node-publication-abstract'] =
         # fixtures['node-publication-summary'] =
         # fixtures['ontologies'] =
@@ -227,6 +230,7 @@ def main(
         )
         extra_fixtures["autocomplete-query"] = build_autocomplete_query(q="fanc")
         extra_fixtures["histopheno-query"] = build_histopheno_query(subject_closure=node_id)
+        extra_fixtures["mapping-query"] = build_mapping_query(entity_id=[node_id])
         extra_fixtures["search-query"] = build_search_query(q="fanconi")
 
         # solr doc fixtures
@@ -240,6 +244,7 @@ def main(
         extra_fixtures["autocomplete-response"] = solr_entities.query(extra_fixtures["autocomplete-query"])
         extra_fixtures["entity-response"] = solr_entities.get(node_id)
         extra_fixtures["histopheno-response"] = solr_associations.query(extra_fixtures["histopheno-query"])
+        extra_fixtures["mapping-response"] = solr_mappings.query(extra_fixtures["mapping-query"])
         extra_fixtures["search-response"] = solr_entities.query(extra_fixtures["search-query"])
 
     ### Write frontend fixtures
