@@ -80,13 +80,55 @@
         ></p>
       </AppDetail>
 
+      <!-- mappings -->
+      <AppDetail :blank="!clinicalSynopsis.length" title="Clinical Synopsis">
+        <AppFlex align-h="left" gap="small">
+          <AppLink
+            v-for="(mapping, index) in clinicalSynopsis"
+            :key="index"
+            :to="mapping.url || ''"
+          >
+            {{ mapping.id }}
+          </AppLink>
+        </AppFlex>
+      </AppDetail>
+      <AppDetail
+        :blank="!infoForPatients.length"
+        title="Clinical Info for Patients"
+      >
+        <AppFlex align-h="left" gap="small">
+          <AppLink
+            v-for="(mapping, index) in infoForPatients"
+            :key="index"
+            :to="mapping.url || ''"
+          >
+            {{ mapping.id }}
+          </AppLink>
+        </AppFlex>
+      </AppDetail>
+      <AppDetail
+        :blank="!otherMappings.length"
+        title="Other Mappings"
+        :full="true"
+      >
+        <AppFlex align-h="left" gap="small">
+          <AppLink
+            v-for="(mapping, index) in otherMappings"
+            :key="index"
+            :to="mapping.url || ''"
+          >
+            {{ mapping.id }}
+          </AppLink>
+        </AppFlex>
+      </AppDetail>
+
       <!-- association counts -->
       <AppDetail
         :blank="!node.association_counts.length"
         title="Association Counts"
         :full="true"
       >
-        <AppFlex align-h="left">
+        <AppFlex align-h="left" gap="small">
           <AppLink
             v-for="(count, index) in node.association_counts"
             :key="index"
@@ -101,6 +143,8 @@
 </template>
 
 <script setup lang="ts">
+import type { info } from "console";
+import { computed } from "vue";
 import { omit } from "lodash";
 import type { Node } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
@@ -112,7 +156,30 @@ type Props = {
   node: Node;
 };
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+/** separate out mappings into categories */
+const clinicalSynopsis = computed(
+  () =>
+    props.node.mappings?.filter(({ id }) =>
+      ["OMIM:", "Orphanet:"].some((prefix) => id.startsWith(prefix)),
+    ) || [],
+);
+const infoForPatients = computed(
+  () =>
+    props.node.mappings?.filter(({ id }) =>
+      ["GARD:"].some((prefix) => id.startsWith(prefix)),
+    ) || [],
+);
+const otherMappings = computed(
+  () =>
+    props.node.mappings?.filter(
+      ({ id }) =>
+        !["OMIM:", "GARD:", "Orphanet:"].some((prefix) =>
+          id.startsWith(prefix),
+        ),
+    ) || [],
+);
 </script>
 
 <style lang="scss" scoped>
