@@ -68,7 +68,6 @@ export const handlers = [
     const { pathname } = new URL(request.url);
     const id = pathname.match(/\/entity\/(.*)/)?.[1] || "";
 
-    console.log(regex(apiUrl, "/entity/:id"));
     /**
      * change fixture data based on request so we can see UI that is conditional
      * on name/category/etc

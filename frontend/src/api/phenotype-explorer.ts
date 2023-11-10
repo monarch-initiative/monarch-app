@@ -194,7 +194,9 @@ export const compareSetToSet = async (
   unmatched = uniqBy(unmatched, "id");
 
   /** normalize cell scores to 0-1 */
-  const scores = Object.values(cells).map((value) => value.score);
+  const scores = Object.values(cells)
+    .map((value) => value.score)
+    .filter(Boolean);
   const min = Math.min(...scores);
   const max = Math.max(...scores);
   Object.values(cells).forEach(

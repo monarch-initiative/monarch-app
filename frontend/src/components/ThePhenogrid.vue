@@ -10,7 +10,8 @@
       Info&nbsp;<AppIcon icon="circle-question" />
       <template #content>
         <p>
-          Compares one set of phenotypes to another. Set A is on the
+          Compares one set of phenotypes to another based on ontology structure.
+          Set A is on the
           {{ transpose ? "top" : "left" }}, set B is on the
           {{ transpose ? "left" : "top" }}.
         </p>
@@ -25,25 +26,42 @@
         :viewBox="`-${marginLeft} -${marginTop} ${width} ${height}`"
         :width="width / 3"
         :height="height / 3"
-        :style="{ '--x': scrollCoords.x + 'px', '--y': scrollCoords.y + 'px' }"
       >
         <!-- clip col/row labels -->
-        <clipPath id="clip-col-labels">
+        <clipPath
+          id="clip-col-labels"
+          class="translate"
+          :style="{ '--x': scrollCoords.x + 'px' }"
+        >
           <rect :x="0" :y="-marginTop" :width="width" :height="marginTop" />
         </clipPath>
-        <clipPath id="clip-row-labels">
+        <clipPath
+          id="clip-row-labels"
+          class="translate"
+          :style="{ '--y': scrollCoords.y + 'px' }"
+        >
           <rect :x="-marginLeft" :y="0" :width="marginLeft" :height="height" />
         </clipPath>
 
         <!-- clip cells/grid-->
-        <clipPath id="clip-grid">
+        <clipPath
+          id="clip-grid"
+          class="translate"
+          :style="{
+            '--x': scrollCoords.x + 'px',
+            '--y': scrollCoords.y + 'px',
+          }"
+        >
           <rect x="0" y="0" :width="width" :height="height" />
         </clipPath>
 
         <!-- col labels -->
         <g
-          class="col-labels"
-          :style="{ 'font-size': cellSize * 0.5 + 'px' }"
+          class="col-labels translate"
+          :style="{
+            'font-size': cellSize * 0.5 + 'px',
+            '--y': scrollCoords.y + 'px',
+          }"
           dominant-baseline="middle"
         >
           <tooltip
@@ -75,8 +93,11 @@
 
         <!-- row labels -->
         <g
-          class="row-labels"
-          :style="{ 'font-size': cellSize * 0.5 + 'px' }"
+          class="row-labels translate"
+          :style="{
+            'font-size': cellSize * 0.5 + 'px',
+            '--x': scrollCoords.x + 'px',
+          }"
           dominant-baseline="middle"
           text-anchor="end"
         >
@@ -115,7 +136,7 @@
               :x1="(0.5 + colIndex) * cellSize"
               :y1="0"
               :x2="(0.5 + colIndex) * cellSize"
-              :y2="rows.length * cellSize"
+              :y2="gridHeight"
             />
           </template>
           <template v-for="(row, rowIndex) in rows" :key="rowIndex">
@@ -123,14 +144,14 @@
               :data-hovered="hovered ? hovered.row === rowIndex : ''"
               :x1="0"
               :y1="(0.5 + rowIndex) * cellSize"
-              :x2="cols.length * cellSize"
+              :x2="gridWidth"
               :y2="(0.5 + rowIndex) * cellSize"
             />
           </template>
         </g>
 
         <!-- cells -->
-        <g class="cells" fill="hsl(185, 100%, 30%)">
+        <g class="cells">
           <tooltip
             v-for="(cell, index) in cells"
             :key="index"
@@ -151,7 +172,7 @@
               :height="cellSize - cellMargin * 2"
               :rx="cellMargin"
               :ry="cellMargin"
-              :opacity="cell.strength"
+              :fill="getColor(cell.strength)"
               tabindex="0"
               role="button"
               @mouseenter="hoverCell(cell.col.index, cell.row.index)"
@@ -178,19 +199,77 @@
                   }"
                   :absolute="true"
                 />
-                <span>Ancestor IC</span>
-                <span>{{ cell.score?.toFixed(3) }}</span>
-                <span>Phenodigm</span>
+                <AppLink
+                  to="https://incatools.github.io/ontology-access-kit/guide/similarity.html#information-content"
+                >
+                  Ancestor IC
+                </AppLink>
                 <span>
+                  {{ cell.score?.toFixed(3) }}
+                </span>
+                <AppLink
+                  to="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3649640/"
+                >
+                  Phenodigm
+                </AppLink>
+                <strong>
                   {{ cell.phenodigm_score?.toFixed(3) }}
-                </span>
-                <span>Jaccard</span>
-                <span>
-                  {{ cell.jaccard_similarity?.toFixed(3) }}
-                </span>
+                </strong>
+                <AppLink
+                  to="https://incatools.github.io/ontology-access-kit/guide/similarity.html#jaccard-similarity"
+                >
+                  Jaccard
+                </AppLink>
+                <span>{{ cell.jaccard_similarity?.toFixed(3) }}</span>
               </div>
             </template>
           </tooltip>
+        </g>
+
+        <!-- legend -->
+        <g
+          class="legend translate"
+          dominant-baseline="middle"
+          :style="{
+            'font-size': cellSize * 0.5 + 'px',
+            '--x': scrollCoords.x + 'px',
+            '--y': scrollCoords.y + 'px',
+          }"
+        >
+          <text :x="-marginLeft / 2" :y="-marginTop / 2" text-anchor="middle">
+            Similarity
+          </text>
+          <text
+            :x="-marginLeft / 2 - cellSize * 0.75"
+            :y="-marginTop / 2 + cellSize * 0.65"
+            text-anchor="end"
+          >
+            Less
+          </text>
+          <text
+            :x="-marginLeft / 2 + cellSize * 0.75"
+            :y="-marginTop / 2 + cellSize * 0.65"
+            text-anchor="start"
+          >
+            More
+          </text>
+          <defs>
+            <linearGradient id="gradient" x1="0" x2="1" y1="0" y2="0">
+              <stop
+                v-for="(percent, index) in [0, 0.2, 0.4, 0.6, 0.8, 1]"
+                :key="index"
+                :offset="`${percent * 100}%`"
+                :stop-color="getColor(percent)"
+              />
+            </linearGradient>
+          </defs>
+          <rect
+            fill="url(#gradient)"
+            :x="-marginLeft / 2 - cellSize / 2"
+            :y="-marginTop / 2 + cellSize * 0.8 - cellSize / 3"
+            :width="cellSize"
+            :height="cellSize / 3"
+          />
         </g>
       </svg>
     </div>
@@ -234,7 +313,7 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from "vue";
 import { sortBy } from "lodash";
-import { useScroll } from "@vueuse/core";
+import { useResizeObserver, useScroll } from "@vueuse/core";
 import type { TermInfo } from "@/api/model";
 import { type SetToSet } from "@/api/phenotype-explorer";
 import AppCheckbox from "@/components/AppCheckbox.vue";
@@ -260,17 +339,20 @@ const cellMargin = 10;
 const marginLeft = 500;
 const marginRight = 325;
 const marginTop = 400;
+const marginBottom = 20;
 
 /** element refs */
 const container = ref<{ element: HTMLDivElement }>();
 const scroll = ref<HTMLDivElement>();
 const svg = ref<SVGSVGElement>();
 
+/** dimensions of grid cells area */
+const gridWidth = computed(() => cols.value.length * cellSize);
+const gridHeight = computed(() => rows.value.length * cellSize);
+
 /** total dimensions and viewbox of svg */
-const width = computed(
-  () => marginLeft + cols.value.length * cellSize + marginRight,
-);
-const height = computed(() => marginTop + rows.value.length * cellSize);
+const width = computed(() => marginLeft + gridWidth.value + marginRight);
+const height = computed(() => marginTop + gridHeight.value + marginBottom);
 
 /** currently hovered col and row */
 const hovered = ref<{ col: number; row: number }>();
@@ -336,6 +418,12 @@ function getCell(col: TermInfo, row: TermInfo) {
     : props.data.cells[col.id + row.id];
 }
 
+/** get color of strength */
+function getColor(strength: number) {
+  /** $theme */
+  return `hsl(185, ${strength * 100}%, 30%)`;
+}
+
 /** download svg */
 function download() {
   if (svg.value) downloadSvg(svg.value, "phenogrid");
@@ -359,19 +447,23 @@ function truncate(text?: string) {
 
 /** track grid scroll */
 const scrollInfo = useScroll(scroll);
-const scrollCoords = ref<{ x: number; y: number }>({ x: 0, y: 0 });
-watch(
-  () => scrollInfo,
-  () => {
-    const { x, y } = screenToSvgCoords(
-      svg.value,
-      scrollInfo.x.value,
-      scrollInfo.y.value,
-    );
-    scrollCoords.value = { x: x + marginLeft, y: y + marginTop };
-  },
-  { deep: true },
-);
+const scrollCoords = ref({ x: 0, y: 0, w: 0, h: 0 });
+function updateScroll() {
+  if (!svg.value || !scroll.value) return;
+  const { x, y } = screenToSvgCoords(
+    svg.value,
+    scrollInfo.x.value,
+    scrollInfo.y.value,
+  );
+  const { x: w, y: h } = screenToSvgCoords(
+    svg.value,
+    scroll.value.clientWidth,
+    scroll.value.clientHeight,
+  );
+  scrollCoords.value = { x: x + marginLeft, y: y + marginTop, w, h };
+}
+watch(() => scrollInfo, updateScroll, { deep: true });
+useResizeObserver(scroll, updateScroll);
 
 /** notify parent of events that may change dimensions */
 watch([sortOrder, transpose, props.data], emitSize, {
@@ -416,12 +508,8 @@ async function emitSize() {
   box-shadow: $shadow;
 }
 
-.col-labels {
-  transform: translateY(var(--y));
-}
-
-.row-labels {
-  transform: translateX(var(--x));
+.translate {
+  transform: translate(var(--x, 0), var(--y, 0));
 }
 
 .col-labels,
@@ -441,18 +529,6 @@ async function emitSize() {
 .cells,
 .grid {
   clip-path: url(#clip-grid);
-}
-
-#clip-col-labels {
-  transform: translateX(var(--x));
-}
-
-#clip-row-labels {
-  transform: translateY(var(--y));
-}
-
-#clip-grid {
-  transform: translate(var(--x), var(--y));
 }
 
 [data-hovered] {

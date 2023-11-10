@@ -33,11 +33,7 @@ export const firstInView = (elements: HTMLElement[]): number => {
 };
 
 /** convert screen coordinates to svg coordinates */
-export const screenToSvgCoords = (
-  svg: SVGSVGElement | undefined,
-  x: number,
-  y: number,
-) => {
+export const screenToSvgCoords = (svg: SVGSVGElement, x: number, y: number) => {
   /** https://bugzilla.mozilla.org/show_bug.cgi?id=543965 */
   if (!svg || !svg.getCTM()) return new DOMPoint(0, 0);
   let point = svg.createSVGPoint();
