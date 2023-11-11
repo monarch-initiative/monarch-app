@@ -96,7 +96,7 @@ def entity(
         "-f",
         help="The format of the output (json, yaml, tsv, table)",
     ),
-    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
+    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
 ):
     """
     Retrieve an entity by ID
@@ -123,11 +123,13 @@ def entity(
 
 @solr_app.command("associations")
 def associations(
-    category: List[str] = typer.Option(None, "--category", "-c", help="Comma-separated list of categories"),
-    subject: List[str] = typer.Option(None, "--subject", "-s", help="Comma-separated list of subjects"),
-    predicate: List[str] = typer.Option(None, "--predicate", "-p", help="Comma-separated list of predicates"),
-    object: List[str] = typer.Option(None, "--object", "-o", help="Comma-separated list of objects"),
-    entity: List[str] = typer.Option(None, "--entity", "-e", help="Comma-separated list of entities"),
+    category: List[str] = typer.Option(None, "--category", "-c", help="Category to get associations for"),
+    subject: List[str] = typer.Option(None, "--subject", "-s", help="Subject ID to get associations for"),
+    predicate: List[str] = typer.Option(None, "--predicate", "-p", help="Predicate ID to get associations for"),
+    object: List[str] = typer.Option(None, "--object", "-o", help="Object ID to get associations for"),
+    entity: List[str] = typer.Option(
+        None, "--entity", "-e", help="Entity (subject or object) ID to get associations for"
+    ),
     direct: bool = typer.Option(
         False,
         "--direct",
@@ -142,22 +144,22 @@ def associations(
         "-f",
         help="The format of the output (json, yaml, tsv, table)",
     ),
-    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
+    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
 ):
     """
     Paginate through associations
 
     Args:
-        category: A comma-separated list of categories
-        subject: A comma-separated list of subjects
-        predicate: A comma-separated list of predicates
-        object: A comma-separated list of objects
-        entity: A comma-separated list of entities
-        limit: The number of associations to return
-        direct: Whether to exclude associations with subject/object as ancestors
+        category: The category of the association (multi-valued)
+        subject: The subject of the association (multi-valued)
+        predicate: The predicate of the association (multi-valued)
+        object: The object of the association (multi-valued)
+        entity: The entity (subject or object) of the association (multi-valued)
+        limit: The number of associations to return (default 20)
+        direct: Whether to exclude associations with subject/object as ancestors (default False)
         offset: The offset of the first association to be retrieved
-        fmt: The format of the output (json, yaml, tsv, table)
-        output: The path to the output file (stdout if not specified)
+        fmt: The format of the output (json, yaml, tsv, table) (default json)
+        output: The path to the output file (stdout if not specified) (default None)
     """
     args = locals()
     args.pop("fmt", None)
@@ -182,7 +184,7 @@ def multi_entity_associations(
         "-f",
         help="The format of the output (json, yaml, tsv, table)",
     ),
-    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
+    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
 ):
     """
     Paginate through associations for multiple entities
@@ -222,7 +224,7 @@ def search(
         "-f",
         help="The format of the output (json, yaml, tsv, table)",
     ),
-    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
+    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
     # sort: str = typer.Option(None, "--sort", "-s"),
 ):
     """
@@ -257,7 +259,7 @@ def autocomplete(
         "-f",
         help="The format of the output (json, yaml, tsv, table)",
     ),
-    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
+    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
 ):
     """
     Return entity autcomplete matches for a query string
@@ -282,7 +284,7 @@ def histopheno(
         "-f",
         help="The format of the output (json, yaml, tsv, table)",
     ),
-    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
+    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
 ):
     """
     Retrieve the histopheno associations for a given subject
@@ -313,7 +315,7 @@ def association_counts(
         "-f",
         help="The format of the output (json, yaml, tsv, table)",
     ),
-    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
+    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
 ):
     """
     Retrieve the association counts for a given entity
@@ -349,8 +351,36 @@ def association_table(
         "-f",
         help="The format of the output (json, yaml, tsv, table)",
     ),
-    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
+    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
 ):
     solr = get_solr(update=False)
     response = solr.get_association_table(entity=entity, category=category, q=q, limit=limit, offset=offset)
+    format_output(fmt, response, output)
+
+
+@solr_app.command("mappings")
+def mappings(
+    entity_id: List[str] = typer.Option(None, "--entity-id", "-e", help="entity ID to get mappings for"),
+    subject_id: List[str] = typer.Option(None, "--subject-id", "-s", help="subject ID to get mappings for"),
+    predicate_id: List[str] = typer.Option(None, "--predicate-id", "-p", help="predicate ID to get mappings for"),
+    object_id: List[str] = typer.Option(None, "--object-id", "-o", help="object ID to get mappings for"),
+    mapping_justification: List[str] = typer.Option(
+        None, "--mapping-justification", "-m", help="mapping justification to get mappings for"
+    ),
+    offset: int = typer.Option(0, "--offset", help="The offset of the first mapping to be retrieved"),
+    limit: int = typer.Option(20, "--limit", "-l", help="The number of mappings to return"),
+    fmt: str = typer.Option(
+        "json",
+        "--format",
+        "-f",
+        help="The format of the output (json, yaml, tsv, table)",
+    ),
+    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
+):
+    args = locals()
+    args.pop("fmt", None)
+    args.pop("output", None)
+
+    solr = get_solr(update=False)
+    response = solr.get_mappings(**args)
     format_output(fmt, response, output)

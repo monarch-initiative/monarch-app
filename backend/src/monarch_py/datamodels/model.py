@@ -2,7 +2,7 @@ from __future__ import annotations
 from datetime import datetime, date
 from enum import Enum
 from typing import List, Dict, Optional, Any, Union
-from pydantic import BaseModel as BaseModel, Field
+from pydantic import BaseModel as BaseModel, ConfigDict, Field
 import sys
 
 if sys.version_info >= (3, 8):
@@ -435,6 +435,7 @@ class Mapping(ConfiguredBaseModel):
     object_id: str = Field(...)
     object_label: Optional[str] = Field(None, description="""The name of the object entity""")
     mapping_justification: Optional[str] = Field(None)
+    id: str = Field(...)
 
 
 class Node(Entity):
@@ -455,6 +456,10 @@ class Node(Entity):
     causes_disease: Optional[List[Entity]] = Field(
         default_factory=list,
         description="""A list of diseases that are known to be causally associated with a gene""",
+    )
+    mappings: Optional[List[ExpandedCurie]] = Field(
+        default_factory=list,
+        description="""List of ExpandedCuries with id and url for mapped entities""",
     )
     external_links: Optional[List[ExpandedCurie]] = Field(
         default_factory=list, description="""ExpandedCurie with id and url for xrefs"""
@@ -530,6 +535,20 @@ class CategoryGroupedAssociationResults(Results):
 class EntityResults(Results):
 
     items: List[Entity] = Field(
+        default_factory=list,
+        description="""A collection of items, with the type to be overriden by slot_usage""",
+    )
+    limit: int = Field(..., description="""number of items to return in a response""")
+    offset: int = Field(..., description="""offset into the total number of items""")
+    total: int = Field(..., description="""total number of items matching a query""")
+
+
+class MappingResults(Results):
+    """
+    SSSOM Mappings returned as a results collection
+    """
+
+    items: List[Mapping] = Field(
         default_factory=list,
         description="""A collection of items, with the type to be overriden by slot_usage""",
     )
@@ -684,6 +703,7 @@ AssociationResults.update_forward_refs()
 AssociationTableResults.update_forward_refs()
 CategoryGroupedAssociationResults.update_forward_refs()
 EntityResults.update_forward_refs()
+MappingResults.update_forward_refs()
 MultiEntityAssociationResults.update_forward_refs()
 SearchResult.update_forward_refs()
 SearchResults.update_forward_refs()
