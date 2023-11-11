@@ -91,6 +91,7 @@
             v-for="(count, index) in node.association_counts"
             :key="index"
             :to="{ query: { associations: count.category || '' } }"
+            @click="scrollToAssociations"
           >
             {{ count.label }} {{ count.count?.toLocaleString() || 0 }}
           </AppLink>
@@ -106,6 +107,8 @@ import type { Node } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
+import { scrollTo } from "@/router";
+import { sleep } from "@/util/debug";
 
 type Props = {
   /** current node */
@@ -113,6 +116,11 @@ type Props = {
 };
 
 defineProps<Props>();
+
+async function scrollToAssociations() {
+  await sleep(100);
+  scrollTo("#associations");
+}
 </script>
 
 <style lang="scss" scoped>
