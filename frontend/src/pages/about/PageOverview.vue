@@ -13,32 +13,22 @@
       how it all fits together.
     </p>
 
-    <p>
-      The three primary data types in the Monarch KG are genes, diseases, and
-      phenotypes. The image below details their entity (node) and link (edge)
-      counts and the unifying ontologies by which the source data and ontologies
-      are harmonized. Cross-species inference is accomplished via gene
-      orthology, homology, and phenotype similarity. Content dissemination is
-      via API, the Monarch UI, and within the clinical application Exomiser.
-      Note that the figure expresses only a portion of the integrated ontologies
-      in column C. For a comprehensive list see PHENIO documentation (linked
-      below).
-    </p>
+    <img
+      src="@/assets/architecture.png"
+      alt="Diagram of Monarch infrastructure, described below."
+    />
 
-    <figure>
-      <img
-        src="@/assets/architecture.png"
-        alt="Diagram of Monarch infrastructure, described below."
-      />
-      <figcaption>
-        <strong> Data harmonization within the Monarch KG. </strong>
-        (A) Data types and counts. (B, C, D) Data sources, ontologies, and
-        knowledge graphs. (E) Cross-species inference. (F) Content dissemination
-        <br />
-        (Column D acronyms) GO: Gene Ontology; BP: Biological Process; MF:
-        Molecular Function; CC: Cellular Component
-      </figcaption>
-    </figure>
+    <p>
+      Structured and unstructured data sources are loaded into SciGraph via
+      dipper (1), our data ingest pipeline. A variety of ontologies are
+      processed in the Monarch Integration Layer and are also loaded into
+      SciGraph, resulting in a combined knowledge and data graph (2). Data is
+      disseminated via SciGraph Services, wrapped around by the BioLink API (3).
+      This lightweight API makes few assumptions, acting as a data access layer
+      for all of Monarch’s Services. Users can interrogate Monarch using our
+      tools for text annotation, navigating the ontologies, and matching
+      phenotype profiles (4).
+    </p>
 
     <hr />
 
@@ -54,8 +44,13 @@
         icon="github"
       />
       <AppButton
-        to="https://github.com/monarch-initiative/phenio/"
-        text="Phenio on GitHub"
+        to="https://github.com/SciGraph"
+        text="SciGraph on GitHub"
+        icon="github"
+      />
+      <AppButton
+        to="https://github.com/biolink"
+        text="BioLink on GitHub"
         icon="github"
       />
     </AppFlex>
