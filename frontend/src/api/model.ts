@@ -76,6 +76,16 @@ export interface Association {
     sex_qualifier?: string,
     stage_qualifier?: string,
     /** The name of the frequency_qualifier entity */
+    qualifiers_label?: string,
+    /** The namespace/prefix of the frequency_qualifier entity */
+    qualifiers_namespace?: string,
+    /** The category of the frequency_qualifier entity */
+    qualifiers_category?: string,
+    /** Field containing frequency_qualifier id and the ids of all of it's ancestors */
+    qualifiers_closure?: string[],
+    /** Field containing frequency_qualifier name and the names of all of it's ancestors */
+    qualifiers_closure_label?: string[],
+    /** The name of the frequency_qualifier entity */
     frequency_qualifier_label?: string,
     /** The namespace/prefix of the frequency_qualifier entity */
     frequency_qualifier_namespace?: string,
@@ -235,6 +245,16 @@ export interface DirectionalAssociation extends Association {
     onset_qualifier?: string,
     sex_qualifier?: string,
     stage_qualifier?: string,
+    /** The name of the frequency_qualifier entity */
+    qualifiers_label?: string,
+    /** The namespace/prefix of the frequency_qualifier entity */
+    qualifiers_namespace?: string,
+    /** The category of the frequency_qualifier entity */
+    qualifiers_category?: string,
+    /** Field containing frequency_qualifier id and the ids of all of it's ancestors */
+    qualifiers_closure?: string[],
+    /** Field containing frequency_qualifier name and the names of all of it's ancestors */
+    qualifiers_closure_label?: string[],
     /** The name of the frequency_qualifier entity */
     frequency_qualifier_label?: string,
     /** The namespace/prefix of the frequency_qualifier entity */
