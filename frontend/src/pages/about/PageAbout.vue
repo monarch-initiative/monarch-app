@@ -27,12 +27,12 @@
   <!-- main links to sub pages -->
   <AppSection>
     <AppFlex gap="big">
-      <AppTile
+      <!-- <AppTile
         to="/overview"
         icon="cogs"
         title="Overview"
         subtitle="How all the pieces of Monarch fit together"
-      />
+      /> -->
       <AppTile
         to="https://monarch-app.monarchinitiative.org/"
         icon="code"
