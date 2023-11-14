@@ -104,8 +104,8 @@ async function updatePosition() {
   await nextTick();
 
   /** get dimensions of header and "sub-header" (e.g. first section on node page) */
-  const headerEl = document?.querySelector("header");
-  const subHeaderEl = document?.querySelector("main > section:first-child");
+  const headerEl = document.querySelector("header");
+  const subHeaderEl = document.querySelector("main > section:first-child");
   if (!headerEl || !subHeaderEl) return;
   const header = headerEl.getBoundingClientRect();
   const subHeader = subHeaderEl.getBoundingClientRect();
@@ -130,7 +130,7 @@ async function updatePosition() {
 function updateEntries() {
   entries.value = Array.from(
     /** get all headings except top level one */
-    document?.querySelectorAll<HTMLElement>("h2[id], h3[id]") || [],
+    document.querySelectorAll<HTMLElement>("h2[id], h3[id]") || [],
   ).map((element) =>
     /** get relevant props from heading */
     ({
@@ -166,7 +166,7 @@ onMounted(updatePosition);
 useEventListener(window, "scroll", updatePosition);
 useEventListener(window, "resize", updatePosition);
 useMutationObserver(
-  document?.body,
+  document.body,
   () => {
     updatePosition();
     updateEntries();

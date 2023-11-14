@@ -174,6 +174,29 @@ def build_autocomplete_query(q: str) -> SolrQuery:
     return query
 
 
+def build_mapping_query(
+    entity_id: List[str] = None,
+    subject_id: List[str] = None,
+    predicate_id: List[str] = None,
+    object_id: List[str] = None,
+    mapping_justification: List[str] = None,
+    offset: int = 0,
+    limit: int = 20,
+) -> SolrQuery:
+    query = SolrQuery(start=offset, rows=limit)
+    if entity_id:
+        query.add_filter_query(" OR ".join([f'subject_id:"{escape(e)}" OR object_id:"{escape(e)}"' for e in entity_id]))
+    if subject_id:
+        query.add_filter_query(" OR ".join([f'subject_id:"{escape(e)}"' for e in subject_id]))
+    if predicate_id:
+        query.add_filter_query(" OR ".join([f'predicate_id:"{escape(e)}"' for e in predicate_id]))
+    if object_id:
+        query.add_filter_query(" OR ".join([f'object_id:"{escape(e)}"' for e in object_id]))
+    if mapping_justification:
+        query.add_filter_query(" OR ".join([f'mapping_justification:"{escape(e)}"' for e in mapping_justification]))
+    return query
+
+
 ### Search helper functions ###
 
 

@@ -15,4 +15,5 @@ def entity():
         "in_taxon_label": None,
         "symbol": None,
         "synonym": [],
+        "uri": "http://purl.obolibrary.org/obo/MONDO_0020121",
     }

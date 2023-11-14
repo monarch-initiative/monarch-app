@@ -1,10 +1,8 @@
-import { rest } from "msw";
-import { apiUrl, biolink } from "@/api";
+import { http, HttpResponse, passthrough } from "msw";
 import { feedbackEndpoint } from "@/api/feedback";
 import { efetch, esummary } from "@/api/publications";
 import { uptimeRobot } from "@/api/uptime";
 import associationsTable from "./association-table.json";
-import associations from "./associations.json";
 import autocomplete from "./autocomplete.json";
 import feedback from "./feedback.json";
 import histopheno from "./histopheno.json";
@@ -17,68 +15,45 @@ import search from "./search.json";
 import textAnnotator from "./text-annotator.json";
 import uptime from "./uptime.json";
 
-/** make single regex from base url and pattern */
-const regex = (base: string = "", pattern: string = "") =>
-  new RegExp(base + pattern.replace(/[/\\]/g, "\\$&"), "i");
-
 /** api calls to be mocked with fixture data */
 export const handlers = [
   /** api status monitoring on /help */
-  rest.post(regex(uptimeRobot), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(uptime)),
-  ),
+  http.post(uptimeRobot, () => HttpResponse.json(uptime)),
 
   /** histopheno data */
-  rest.get(regex(apiUrl, "/histopheno"), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(histopheno)),
-  ),
+  http.get("*/histopheno/:id", () => HttpResponse.json(histopheno)),
 
   /** submit feedback form */
-  rest.post(regex(feedbackEndpoint), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(feedback)),
-  ),
+  http.post(feedbackEndpoint, () => HttpResponse.json(feedback)),
 
   /** search * */
-  rest.get(regex(apiUrl, "/search"), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(search)),
-  ),
+  http.get("*/search", () => HttpResponse.json(search)),
 
   /** autocomplete */
-  rest.get(regex(apiUrl, "/autocomplete"), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(autocomplete)),
-  ),
+  http.get("*/autocomplete", () => HttpResponse.json(autocomplete)),
 
   /** text annotator */
-  rest.post(regex(biolink, "/nlp/annotate"), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(textAnnotator)),
-  ),
+  http.post("*/nlp/annotate", () => HttpResponse.json(textAnnotator)),
 
   /** phenotype explorer */
-  rest.get(regex(biolink, "/sim/search"), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(phenotypeExplorerSearch)),
-  ),
-  rest.post(regex(apiUrl, "/semsim/compare"), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(phenotypeExplorerCompare)),
+  http.get("*/sim/search", () => HttpResponse.json(phenotypeExplorerSearch)),
+  http.post("*/semsim/compare", () =>
+    HttpResponse.json(phenotypeExplorerCompare),
   ),
 
   /** node associations */
-  rest.get(regex(apiUrl, "/associations"), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(associations)),
-  ),
-
-  /** node associations table */
-  rest.get(regex(apiUrl, "/entity/.*/.*"), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(associationsTable)),
+  http.get("*/entity/:id/:assoctype", () =>
+    HttpResponse.json(associationsTable),
   ),
 
   /** node lookup */
-  rest.get(regex(apiUrl, "/entity/.*"), (req, res, ctx) => {
+  http.get("*/entity/:id", ({ params }) => {
+    const id = String(params.id);
+
     /**
      * change fixture data based on request so we can see UI that is conditional
      * on name/category/etc
      */
-    const id = req.url.pathname.match(/\/entity\/(.*)/)?.[1] || "";
-
     const replace: {
       [key: string]: { name?: string; category?: string };
     } = {
@@ -139,20 +114,18 @@ export const handlers = [
     if (name) node.name = name;
     if (category) node.category = category;
 
-    return res(ctx.status(200), ctx.json(node));
+    return HttpResponse.json(node);
   }),
 
   /** node publication info */
-  rest.get(regex(esummary), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(nodePublicationSummary)),
-  ),
-  rest.get(regex(efetch), (req, res, ctx) =>
-    res(ctx.status(200), ctx.json(nodePublicationAbstract.abstract)),
-  ),
+  http.get(esummary, () => HttpResponse.json(nodePublicationSummary)),
+  http.get(efetch, () => HttpResponse.json(nodePublicationAbstract.abstract)),
 
   /** any other request */
-  rest.get(/.*/, (req) => {
-    console.info("Non-mocked request", req.url.pathname);
-    return req.passthrough();
+  http.get("*", ({ request }) => {
+    const { pathname } = new URL(request.url);
+    if (!pathname.match(/\.[A-Za-z0-9]{2,5}$/))
+      console.warn("Non-mocked request", pathname);
+    return passthrough();
   }),
 ];

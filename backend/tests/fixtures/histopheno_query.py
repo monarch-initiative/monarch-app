@@ -34,6 +34,7 @@ def histopheno_query():
         "filter_queries": ["subject_closure:MONDO\\:0020121"],
         "query_fields": None,
         "def_type": "edismax",
+        "q_op": "AND",
         "mm": "100%",
         "boost": None,
         "sort": None,

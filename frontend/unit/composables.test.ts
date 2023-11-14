@@ -49,7 +49,7 @@ test("Statuses work", async () => {
   expect(isSuccess.value).toBe(true);
 
   /** start another query that will throw error */
-  query({ error: "dummy error" });
+  query({ error: "fake error" });
 
   /** check loading started, and other statuses reset */
   expect(isLoading.value).toBe(true);
@@ -71,8 +71,8 @@ test("Data and default value works", async () => {
   /** check default value */
   expect(data.value).toBe("");
 
-  /** start query that will return dummy data */
-  query({ data: "dummy data" });
+  /** start query that will return fake data */
+  query({ data: "fake data" });
 
   /** data shouldn't be ready yet */
   expect(data.value).toBe("");
@@ -81,10 +81,10 @@ test("Data and default value works", async () => {
   await sleep(20);
 
   /** check data has returned/been set */
-  expect(data.value).toBe("dummy data");
+  expect(data.value).toBe("fake data");
 
   /** start another query that will throw error */
-  query({ data: "dummy data", error: "dummy error" });
+  query({ data: "fake data", error: "fake error" });
 
   /** data should reset to default value */
   expect(data.value).toBe("");

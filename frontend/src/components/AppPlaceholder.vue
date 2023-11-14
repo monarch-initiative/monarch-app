@@ -1,5 +1,5 @@
 <!--
-  placeholder colored square
+  placeholder colored box
 -->
 
 <template>
@@ -8,10 +8,9 @@
 
 <style lang="scss" scoped>
 .placeholder {
-  aspect-ratio: 16 / 9;
+  flex-grow: 1;
   width: 100%;
-  min-height: 100px;
+  height: 100%;
   background: $light-gray;
-  box-shadow: $shadow;
 }
 </style>

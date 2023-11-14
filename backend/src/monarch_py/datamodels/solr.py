@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field
 class core(Enum):
     ENTITY = "entity"
     ASSOCIATION = "association"
+    SSSOM = "sssom"
 
 
 class HistoPhenoKeys(Enum):
@@ -45,7 +46,8 @@ class SolrQuery(BaseModel):
     filter_queries: Optional[List[str]] = Field(default_factory=list)
     query_fields: str = None
     def_type: str = "edismax"
-    mm: str = "100%"  # All tokens in the query must be found in the doc, equivalent to q.op="AND"
+    q_op: str = "AND"  # See SOLR-8812, need this plus mm=100% to allow boolean operators in queries
+    mm: str = "100%"  # All tokens in the query must be found in the doc
     boost: str = None
     sort: str = None
 
@@ -83,6 +85,8 @@ class SolrQuery(BaseModel):
             return "qf"
         elif value == "def_type":
             return "defType"
+        elif value == "q_op":
+            return "q.op"
         elif value is True:
             return "true"
         elif value is False:

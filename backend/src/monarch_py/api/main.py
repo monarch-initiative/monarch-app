@@ -22,10 +22,10 @@ async def initialize_app():
     CurieService()
 
 
-app.include_router(entity.router, prefix=f"{PREFIX}/entity")
 app.include_router(association.router, prefix=f"{PREFIX}/association")
-app.include_router(search.router, prefix=PREFIX)
+app.include_router(entity.router, prefix=f"{PREFIX}/entity")
 app.include_router(histopheno.router, prefix=f"{PREFIX}/histopheno")
+app.include_router(search.router, prefix=PREFIX)
 app.include_router(semsim.router, prefix=f"{PREFIX}/semsim")
 
 # Allow CORS

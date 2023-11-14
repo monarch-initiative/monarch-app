@@ -1,5 +1,5 @@
 import type { CSSProperties, Ref } from "vue";
-import { nextTick, onMounted, ref, shallowRef, watchEffect } from "vue";
+import { nextTick, onMounted, ref, watchEffect } from "vue";
 import { debounce } from "lodash";
 import { computePosition, flip, shift, size } from "@floating-ui/dom";
 import {
@@ -39,8 +39,8 @@ export const useQuery = <Data, Args extends unknown[]>(
   const isSuccess = ref(false);
 
   /** query results */
+  const data = ref<Data>(defaultValue) as Ref<Data>;
   /** https://github.com/vuejs/composition-api/issues/483 */
-  const data = shallowRef<Data>(defaultValue);
 
   /** latest query id, unique to this useQuery instance */
   let latest;

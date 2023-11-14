@@ -1,10 +1,34 @@
+import {
+  defineAsyncComponent,
+  defineComponent,
+  h,
+  type AsyncComponentLoader,
+} from "vue";
 import type { RouteRecordRaw, RouterScrollBehavior } from "vue-router";
 import { createRouter, createWebHistory } from "vue-router";
 import { isEmpty, pick } from "lodash";
 import { hideAll } from "tippy.js";
+import AppPlaceholder from "@/components/AppPlaceholder.vue";
 import descriptions from "@/router/descriptions.json";
 import { sleep } from "@/util/debug";
+import { waitFor } from "@/util/dom";
 import { parse } from "@/util/object";
+
+/**
+ * generate async loaded route. normal lazy loaded route renders homepage/root
+ * route as loading fallback, this allows any loading fallback.
+ */
+const asyncRoute = (loader: AsyncComponentLoader) =>
+  /** https://stackoverflow.com/questions/67044999 */
+  defineComponent({
+    render() {
+      const component = defineAsyncComponent({
+        loader,
+        loadingComponent: AppPlaceholder,
+      });
+      return h(component);
+    },
+  });
 
 /** list of routes and corresponding components. */
 /** KEEP IN SYNC WITH PUBLIC/SITEMAP.XML */
@@ -13,7 +37,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "Home",
-    component: () => import("../pages/PageHome.vue"),
+    component: asyncRoute(() => import("../pages/PageHome.vue")),
     beforeEnter: () => {
       /** look for redirect in session storage (saved from public/404.html page) */
       const redirect = window.sessionStorage.redirect || "";
@@ -54,75 +78,72 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/explore",
     name: "Explore",
-    component: () => import("../pages/explore/PageExplore.vue"),
+    component: asyncRoute(() => import("../pages/explore/PageExplore.vue")),
   },
   {
     path: "/about",
     name: "About",
-    component: () => import("../pages/about/PageAbout.vue"),
+    component: asyncRoute(() => import("../pages/about/PageAbout.vue")),
   },
   {
     path: "/help",
     name: "Help",
-    component: () => import("../pages/help/PageHelp.vue"),
+    component: asyncRoute(() => import("../pages/help/PageHelp.vue")),
   },
 
   /** about pages */
   {
-    path: "/overview",
-    name: "Overview",
-    component: () => import("../pages/about/PageOverview.vue"),
-  },
-  {
     path: "/cite",
     name: "Cite",
-    component: () => import("../pages/about/PageCite.vue"),
+    component: asyncRoute(() => import("../pages/about/PageCite.vue")),
   },
   {
     path: "/team",
     name: "Team",
-    component: () => import("../pages/about/PageTeam.vue"),
+    component: asyncRoute(() => import("../pages/about/PageTeam.vue")),
   },
   {
     path: "/publications",
     name: "Publications",
-    component: () => import("../pages/about/PagePublications.vue"),
+    component: asyncRoute(() => import("../pages/about/PagePublications.vue")),
   },
   {
     path: "/terms",
     name: "Terms",
-    component: () => import("../pages/about/PageTerms.vue"),
+    component: asyncRoute(() => import("../pages/about/PageTerms.vue")),
   },
   {
     path: "/phenomics-first",
     name: "PhenomicsFirst",
-    component: () => import("../pages/about/PagePhenomicsFirst.vue"),
+    component: asyncRoute(
+      () => import("../pages/about/PagePhenomicsFirst.vue"),
+    ),
   },
   {
     path: "/outreach",
     name: "Outreach",
-    component: () => import("../pages/about/PageOutreach.vue"),
+    component: asyncRoute(() => import("../pages/about/PageOutreach.vue")),
   },
 
   /** help pages */
   {
     path: "/feedback",
     name: "Feedback",
-    component: () => import("../pages/help/PageFeedback.vue"),
+    component: asyncRoute(() => import("../pages/help/PageFeedback.vue")),
   },
 
   /** node pages */
   {
     path: "/:id",
     name: "Node",
-    component: () => import("../pages/node/PageNode.vue"),
+    component: asyncRoute(() => import("../pages/node/PageNode.vue")),
   },
 
   /** phenogrid iframe widget page */
   {
     path: "/phenogrid",
     name: "Phenogrid",
-    component: () => import("../pages/explore/PagePhenogrid.vue"),
+    component: asyncRoute(() => import("../pages/explore/PagePhenogrid.vue")),
     meta: { bare: true },
   },
 
@@ -130,14 +151,14 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/testbed",
     name: "Testbed",
-    component: () => import("../pages/PageTestbed.vue"),
+    component: asyncRoute(() => import("../pages/PageTestbed.vue")),
   },
 
   /** if no other route match found (404) */
   {
     path: "/:pathMatch(.*)*",
     name: "NotFound",
-    component: () => import("../pages/PageHome.vue"),
+    component: asyncRoute(() => import("../pages/PageHome.vue")),
   },
 ];
 
@@ -150,24 +171,7 @@ for (const route of routes) {
 }
 
 /** vue-router's scroll behavior handler */
-const scrollBehavior: RouterScrollBehavior = async (
-  to,
-  from,
-  savedPosition,
-) => {
-  /** https://github.com/vuejs/vue-router-next/issues/1147 */
-  await sleep();
-
-  /** scroll to previous position if exists */
-  if (savedPosition) return savedPosition;
-
-  /** scroll to element corresponding to hash */
-  const element = document?.getElementById(to.hash.slice(1));
-  if (element)
-    return { el: getTarget(element), top: getOffset(), behavior: "smooth" };
-
-  /** otherwise don't change scroll */
-};
+const scrollBehavior: RouterScrollBehavior = async () => {};
 
 /** given element, get (possibly) modified target */
 const getTarget = (element: Element): Element => {
@@ -188,32 +192,29 @@ const getTarget = (element: Element): Element => {
   return element;
 };
 
-/** get offset to account for header */
-const getOffset = () => {
-  const header = document?.querySelector("header");
-  if (header && window.getComputedStyle(header).position === "sticky")
-    header.clientHeight;
-  return 0;
-};
+/** scroll to element by selector */
+export const scrollTo = async (selector: string) => {
+  /** wait for element to appear */
+  const element = await waitFor(selector);
 
-/** scroll to element */
-export const scrollToElement = async (element?: Element | null) => {
+  /** wait for layout shifts */
+  await sleep(100);
+
   if (!element) return;
 
+  /** get height of header */
+  let offset = 0;
+  const header = document.querySelector("header");
+  if (header && window.getComputedStyle(header).position === "sticky")
+    offset = header.clientHeight;
+
+  /** scroll to element */
   window.scrollTo({
     top:
-      getTarget(element).getBoundingClientRect().top +
-      window.scrollY -
-      getOffset(),
+      getTarget(element).getBoundingClientRect().top + window.scrollY - offset,
     behavior: "smooth",
   });
 };
-
-/** scroll to hash */
-export const scrollToHash = (hash?: string) =>
-  scrollToElement(
-    document?.getElementById(hash || window.location.hash.slice(1)),
-  );
 
 /** navigation history object */
 export const history = createWebHistory(import.meta.env.BASE_URL);
@@ -231,10 +232,10 @@ router.beforeEach(() => {
 });
 
 /** on route load */
-router.afterEach(async () => {
-  /** wait for layout shifts */
-  await sleep(1000);
-  scrollToHash();
+router.afterEach(async ({ hash }) => {
+  if (!hash.trim()) return;
+  /** scroll to section once it appears */
+  scrollTo(hash);
 });
 
 export default router;
