@@ -28,6 +28,12 @@
   <AppSection>
     <AppFlex gap="big">
       <AppTile
+        to="/overview"
+        icon="cogs"
+        title="Overview"
+        subtitle="How all the pieces of Monarch fit together"
+      />
+      <AppTile
         to="https://monarch-app.monarchinitiative.org/"
         icon="code"
         title="API"
