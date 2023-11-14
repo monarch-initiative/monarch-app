@@ -152,9 +152,6 @@ const options: ApexOptions = {
 </script>
 
 <style scoped lang="scss">
-.chart {
-}
-
 .metadata {
   text-align: center;
 }

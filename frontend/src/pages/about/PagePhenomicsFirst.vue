@@ -1,5 +1,5 @@
 <!-- 
-    Overview page for Phenomics First
+  phenomics first
  -->
 
 <template>
@@ -83,12 +83,10 @@
       />
       <figcaption>
         The
-        <AppLink to="https://hpo.jax.org" target="__blank"
-          >The Phenomics First Project</AppLink
-        >
+        <AppLink to="https://hpo.jax.org">The Phenomics First Project</AppLink>
         (HPO) provides a standardized vocabulary of phenotypic abnormalities
         encountered in human disease.
-        <AppLink to="https://pubmed.ncbi.nlm.nih.gov/30476213/" target="__blank"
+        <AppLink to="https://pubmed.ncbi.nlm.nih.gov/30476213/"
           >More about HPO...</AppLink
         >
       </figcaption>
@@ -100,13 +98,11 @@
         alt="Phenopackets Ecosystem"
       />
       <figcaption>
-        <AppLink to="http://phenopackets.org/" target="__blank"
-          >Phenopackets</AppLink
-        >
+        <AppLink to="http://phenopackets.org/">Phenopackets</AppLink>
         is a standard exchange format for phenotypes and environmental factors.
         This packet of phenotype data can be used anywhere, and can be written
         by anyone. This work is being done in collaboration with the
-        <AppLink to="https://www.ga4gh.org/" target="__blank"
+        <AppLink to="https://www.ga4gh.org/"
           >Global Alliance for Genomics and Health (GA4GH)</AppLink
         >.
       </figcaption>
@@ -144,9 +140,7 @@
     </p>
     <p>
       You can find more information
-      <AppLink to="https://mondo.readthedocs.io/en/latest/" target="__blank"
-        >here</AppLink
-      >.
+      <AppLink to="https://mondo.readthedocs.io/en/latest/">here</AppLink>.
     </p>
   </AppSection>
 
@@ -165,7 +159,7 @@
     </p>
     <p>
       You can find more information
-      <AppLink to="http://phenopackets.org/" target="__blank">here</AppLink>.
+      <AppLink to="http://phenopackets.org/">here</AppLink>.
     </p>
   </AppSection>
 </template>

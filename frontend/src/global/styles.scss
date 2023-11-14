@@ -56,7 +56,7 @@ h3 {
   padding: 10px 0;
   font-weight: 500;
   font-size: 1.1rem;
-  text-align: left;
+  text-align: center;
 }
 
 /** elements */
@@ -224,7 +224,7 @@ strong {
 
 .tippy-content {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   width: 100%;
   padding: 0 !important;
   gap: 10px;
@@ -238,11 +238,6 @@ strong {
   }
 }
 
-/** useless tippy wrapper span that sometimes appears */
-.tippy-content > span {
-  display: contents !important; /** effectively take out of dom */
-}
-
 /** for spans of text (not clickable, not links, not buttons) with tooltips */
 .tooltip {
   text-decoration: underline;
@@ -253,10 +248,10 @@ strong {
 
 .mini-table {
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: max-content auto;
   align-items: center;
   justify-items: flex-start;
-  gap: 5px 15px;
+  gap: 5px 20px;
   text-align: left;
 }
 

@@ -124,6 +124,7 @@ import AppWrapper from "@/components/AppWrapper.vue";
 import { deleteEntry, history } from "@/global/history";
 import { appTitle } from "@/global/meta";
 import { useQuery } from "@/util/composables";
+import { waitFor } from "@/util/dom";
 
 type Props = {
   /** whether to show pared down version with just search box */
@@ -162,7 +163,8 @@ async function onFocus() {
   /** navigate to explore page */
   await router.push({ ...route, name: "Explore" });
   /** refocus box */
-  document?.querySelector("input")?.focus();
+  const input = await waitFor<HTMLInputElement>("input");
+  input?.focus();
 }
 
 /** when user "submits" search */

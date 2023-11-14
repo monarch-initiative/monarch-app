@@ -10,13 +10,12 @@ const paths = [
   "/explore",
   "/about",
   "/help",
-  "/overview",
   "/cite",
   "/team",
   "/publications",
   "/terms",
   "/feedback",
-  "/MONDO:012345",
+  "/MONDO:0007523",
   "/testbed",
 ];
 
@@ -45,7 +44,11 @@ const checkPage =
 
     /** navigate to page */
     await page.goto(path);
+
+    /** wait for content to load */
     await page.waitForSelector("main");
+    await page.waitForSelector("section");
+    await page.waitForSelector("h1");
     await page.waitForTimeout(100);
 
     /** setup axe */

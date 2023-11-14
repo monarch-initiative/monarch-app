@@ -64,8 +64,6 @@ export interface Association {
     has_evidence?: string[],
     /** List of ExpandedCuries with id and url for evidence */
     has_evidence_links?: ExpandedCurie[],
-    /** A concatenation of fields used to group associations with the same essential/defining properties */
-    grouping_key?: string,
     provided_by?: string,
     /** A link to the docs for the knowledge source that provided the node/edge. */
     provided_by_link?: ExpandedCurie,
@@ -77,16 +75,6 @@ export interface Association {
     onset_qualifier?: string,
     sex_qualifier?: string,
     stage_qualifier?: string,
-    /** The name of the frequency_qualifier entity */
-    qualifiers_label?: string,
-    /** The namespace/prefix of the frequency_qualifier entity */
-    qualifiers_namespace?: string,
-    /** The category of the frequency_qualifier entity */
-    qualifiers_category?: string,
-    /** Field containing frequency_qualifier id and the ids of all of it's ancestors */
-    qualifiers_closure?: string[],
-    /** Field containing frequency_qualifier name and the names of all of it's ancestors */
-    qualifiers_closure_label?: string[],
     /** The name of the frequency_qualifier entity */
     frequency_qualifier_label?: string,
     /** The namespace/prefix of the frequency_qualifier entity */
@@ -236,8 +224,6 @@ export interface DirectionalAssociation extends Association {
     has_evidence?: string[],
     /** List of ExpandedCuries with id and url for evidence */
     has_evidence_links?: ExpandedCurie[],
-    /** A concatenation of fields used to group associations with the same essential/defining properties */
-    grouping_key?: string,
     provided_by?: string,
     /** A link to the docs for the knowledge source that provided the node/edge. */
     provided_by_link?: ExpandedCurie,
@@ -249,16 +235,6 @@ export interface DirectionalAssociation extends Association {
     onset_qualifier?: string,
     sex_qualifier?: string,
     stage_qualifier?: string,
-    /** The name of the frequency_qualifier entity */
-    qualifiers_label?: string,
-    /** The namespace/prefix of the frequency_qualifier entity */
-    qualifiers_namespace?: string,
-    /** The category of the frequency_qualifier entity */
-    qualifiers_category?: string,
-    /** Field containing frequency_qualifier id and the ids of all of it's ancestors */
-    qualifiers_closure?: string[],
-    /** Field containing frequency_qualifier name and the names of all of it's ancestors */
-    qualifiers_closure_label?: string[],
     /** The name of the frequency_qualifier entity */
     frequency_qualifier_label?: string,
     /** The namespace/prefix of the frequency_qualifier entity */
@@ -325,8 +301,6 @@ export interface Entity {
     in_taxon_label?: string,
     symbol?: string,
     synonym?: string[],
-    /** The URI of the entity */
-    uri?: string,
 };
 
 export interface EntityResults extends Results {
@@ -364,6 +338,7 @@ export interface HistoBin extends FacetValue {
     /** count of documents */
     count?: number,
 };
+
 /**
  * A minimal class to hold a SSSOM mapping
  */
@@ -434,8 +409,6 @@ export interface Node extends Entity {
     provided_by?: string,
     symbol?: string,
     synonym?: string[],
-    /** The URI of the entity */
-    uri?: string,
 };
 
 export interface NodeHierarchy {
@@ -470,8 +443,6 @@ export interface SearchResult extends Entity {
     in_taxon_label?: string,
     symbol?: string,
     synonym?: string[],
-    /** The URI of the entity */
-    uri?: string,
 };
 
 export interface SearchResults extends Results {
@@ -497,12 +468,14 @@ export interface PairwiseSimilarity {
  * A simple pairwise similarity between two atomic concepts/terms
  */
 export interface TermPairwiseSimilarity extends PairwiseSimilarity {
+    /** The first of the two entities being compared */
     subject_id: string,
     /** The name of the subject entity */
     subject_label?: string,
     /** the source for the first entity */
     subject_source?: string,
-    object_id: string,
+    /** The second of the two entities being compared */
+    object_id?: string,
     /** The name of the object entity */
     object_label?: string,
     /** the source for the second entity */
