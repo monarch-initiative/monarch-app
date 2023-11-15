@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Path
 
 from monarch_py.api.additional_models import CompareRequest
-from monarch_py.api.config import oak
+from monarch_py.api.config import semsimian
 
 router = APIRouter(tags=["semsim"], responses={404: {"description": "Not Found"}})
 
@@ -27,7 +27,7 @@ def _compare(
         objects: {objects.split(',')}
     """
     )
-    results = oak().compare(
+    results = semsimian().compare(
         subjects=subjects.split(","),
         objects=objects.split(","),
     )
@@ -47,4 +47,4 @@ def _post_compare(request: CompareRequest):
     }
     </pre>
     """
-    return oak().compare(request.subjects, request.objects)
+    return semsimian().compare(request.subjects, request.objects)

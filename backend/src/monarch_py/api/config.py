@@ -6,6 +6,7 @@ from functools import lru_cache
 from pydantic import BaseSettings
 
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
+from monarch_py.implementations.oak.oak_implementation import OakImplementation
 from monarch_py.datamodels.model import TermSetPairwiseSimilarity
 
 
@@ -15,8 +16,8 @@ class Settings(BaseSettings):
     solr_url = os.getenv("SOLR_URL") if os.getenv("SOLR_URL") else f"http://{solr_host}:{solr_port}/solr"
     phenio_db_path = os.getenv("PHENIO_DB_PATH") if os.getenv("PHENIO_DB_PATH") else "/data/phenio.db"
 
-    oak_server_host = os.getenv("OAK_SERVER_HOST", "127.0.0.1")
-    oak_server_port = os.getenv("OAK_SERVER_PORT", 18811)
+    semsimian_server_host = os.getenv("OAK_SERVER_HOST", "127.0.0.1")
+    semsimian_server_port = os.getenv("OAK_SERVER_PORT", 18811)
 
 
 settings = Settings()
@@ -40,9 +41,9 @@ def convert_nans(input_dict, to_value=None):
     return input_dict
 
 
-class OakHTTPRequester:
+class SemsimianHTTPRequester:
     def compare(self, subjects, objects):
-        host = f"http://{settings.oak_server_host}:{settings.oak_server_port}"
+        host = f"http://{settings.semsimian_server_host}:{settings.semsimian_server_port}"
         path = f"/compare/{','.join(subjects)}/{','.join(objects)}"
         url = f"{host}/{path}"
 
@@ -81,5 +82,12 @@ class OakHTTPRequester:
 
 
 @lru_cache(maxsize=1)
+def semsimian():
+    return SemsimianHTTPRequester()
+
+
+@lru_cache(maxsize=1)
 def oak():
-    return OakHTTPRequester()
+    oak_implementation = OakImplementation()
+    oak_implementation.init_phenio_adapter(force_update=False)
+    return oak_implementation

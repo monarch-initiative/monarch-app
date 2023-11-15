@@ -4,7 +4,7 @@ from typing import List, Optional
 
 import typer
 from monarch_py import solr_cli, sql_cli
-from monarch_py.api.config import oak
+from monarch_py.api.config import semsimian
 from monarch_py.utils.solr_cli_utils import check_for_docker
 from monarch_py.utils.utils import set_log_level, format_output
 from typing_extensions import Annotated
@@ -275,7 +275,7 @@ def compare(
     """Compare two entities using semantic similarity via OAK"""
     subjects = subjects.split(",")
     objects = objects.split(",")
-    response = oak().compare(subjects, objects)
+    response = semsimian().compare(subjects, objects)
     format_output(fmt, response, output)
 
 

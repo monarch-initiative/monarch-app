@@ -20,6 +20,34 @@ class OakImplementation(SemanticSimilarityInterface):
     default_predicates = ["rdfs:subClassOf", "BFO:0000050", "UPHENO:0000001"]
 
     default_phenio_db_url = "https://data.monarchinitiative.org/monarch-kg-dev/latest/phenio.db.gz"
+    phenio_adapter = None
+
+    def init_phenio_adapter(self, phenio_path: str = None, force_update: bool = False):
+        if self.phenio_adapter is None:
+            logger.info("Warming up semsimian")
+            start = time.time()
+            # self.phenio_adapter = get_adapter(f"sqlite:obo:phenio")
+
+            if phenio_path:
+                logger.debug(f"Creating phenio adapter using phenio_path at {phenio_path}")
+                self.phenio_adapter = get_adapter(f"sqlite:{phenio_path}")
+            else:
+                monarchstow = pystow.module("monarch")
+
+                with monarchstow.ensure_gunzip(
+                    "phenio", url=self.default_phenio_db_url, force=force_update
+                ) as stowed_phenio_path:
+                    logger.debug(f"Creating phenio adapter using pystow at {stowed_phenio_path}")
+                    self.phenio_adapter = get_adapter(f"sqlite:{stowed_phenio_path}")
+
+            # run a query to get the adapter to initialize properly
+            logger.debug("Running query to initialize adapter")
+
+            # TODO: run a little bit of text annotation here to get oak warmed up
+
+            logger.info(f"Phenio adapter ready, warmup time: {time.time() - start} sec")
+            return self
+
 
     def init_semsim(self, phenio_path: str = None, force_update: bool = False):
         if self.semsim is None:
