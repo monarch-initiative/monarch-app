@@ -10,7 +10,7 @@
       "object_id": "DOID:9884",
       "object_label": "muscular dystrophy",
       "mapping_justification": "semapv:UnspecifiedMatching",
-      "id": "cda26856-16a7-499c-956f-119cbaac5b96"
+      "id": "262c80f7-3ae3-43c7-b2b6-380680c4fe57"
     },
     {
       "subject_id": "MONDO:0020121",
@@ -19,7 +19,7 @@
       "object_id": "ICD10CM:G71.0",
       "object_label": "Muscular dystrophy",
       "mapping_justification": "semapv:UnspecifiedMatching",
-      "id": "25777569-b997-4c8f-a1f3-5af352a16ee1"
+      "id": "d5ba56b9-d9b4-47dd-a1be-703b20916c44"
     },
     {
       "subject_id": "MONDO:0020121",
@@ -28,7 +28,7 @@
       "object_id": "MESH:D009136",
       "object_label": null,
       "mapping_justification": "semapv:UnspecifiedMatching",
-      "id": "819ab197-2ab1-4b73-8d0f-d7d4ec14d8a7"
+      "id": "fba1a9f9-9bd4-460a-a0b6-394d7f5c69e1"
     },
     {
       "subject_id": "MONDO:0020121",
@@ -37,7 +37,7 @@
       "object_id": "NCIT:C84910",
       "object_label": "Muscular Dystrophy",
       "mapping_justification": "semapv:UnspecifiedMatching",
-      "id": "adb4b8ed-c4dc-4353-a08e-a4cb02b1826e"
+      "id": "4ac29ee3-2174-453d-9a46-0fea2330d2a4"
     },
     {
       "subject_id": "MONDO:0020121",
@@ -46,7 +46,7 @@
       "object_id": "SCTID:73297009",
       "object_label": null,
       "mapping_justification": "semapv:UnspecifiedMatching",
-      "id": "f6417283-c9d1-4289-aee6-16d30a4445b1"
+      "id": "b665b928-982b-4b86-a5c1-d2d581f9218a"
     },
     {
       "subject_id": "MONDO:0020121",
@@ -55,7 +55,7 @@
       "object_id": "UMLS:C0026850",
       "object_label": null,
       "mapping_justification": "semapv:UnspecifiedMatching",
-      "id": "93968631-eedb-448b-b58a-e31e3e411dde"
+      "id": "8d7d7a8d-2190-486b-936b-98e7dda2b7f3"
     },
     {
       "subject_id": "MONDO:0020121",
@@ -64,7 +64,7 @@
       "object_id": "Orphanet:98473",
       "object_label": null,
       "mapping_justification": "semapv:UnspecifiedMatching",
-      "id": "e39e8ba9-8d7e-4b33-9f46-3867b652bdb5"
+      "id": "655d8ad1-33ab-4b87-99dd-7d2a9f816685"
     }
   ]
 }
