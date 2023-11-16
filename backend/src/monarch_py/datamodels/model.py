@@ -373,6 +373,10 @@ class Entity(ConfiguredBaseModel):
     category: Optional[str] = Field(None)
     name: Optional[str] = Field(None)
     full_name: Optional[str] = Field(None, description="""The long form name of an entity""")
+    deprecated: Optional[bool] = Field(
+        None,
+        description="""A boolean flag indicating that an entity is no longer considered current or valid.""",
+    )
     description: Optional[str] = Field(None)
     xref: Optional[List[str]] = Field(default_factory=list)
     provided_by: Optional[str] = Field(None)
@@ -474,6 +478,10 @@ class Node(Entity):
     category: Optional[str] = Field(None)
     name: Optional[str] = Field(None)
     full_name: Optional[str] = Field(None, description="""The long form name of an entity""")
+    deprecated: Optional[bool] = Field(
+        None,
+        description="""A boolean flag indicating that an entity is no longer considered current or valid.""",
+    )
     description: Optional[str] = Field(None)
     xref: Optional[List[str]] = Field(default_factory=list)
     provided_by: Optional[str] = Field(None)
@@ -575,6 +583,10 @@ class SearchResult(Entity):
     category: str = Field(...)
     name: str = Field(...)
     full_name: Optional[str] = Field(None, description="""The long form name of an entity""")
+    deprecated: Optional[bool] = Field(
+        None,
+        description="""A boolean flag indicating that an entity is no longer considered current or valid.""",
+    )
     description: Optional[str] = Field(None)
     xref: Optional[List[str]] = Field(default_factory=list)
     provided_by: Optional[str] = Field(None)
