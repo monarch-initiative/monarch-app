@@ -131,23 +131,6 @@
       "score": null
     },
     {
-      "id": "MONDO:0000026",
-      "category": "biolink:Disease",
-      "name": "obsolete Fanconi renotubular syndrome",
-      "full_name": null,
-      "deprecated": null,
-      "description": null,
-      "xref": [],
-      "provided_by": "phenio_nodes",
-      "in_taxon": null,
-      "in_taxon_label": null,
-      "symbol": null,
-      "synonym": [],
-      "uri": null,
-      "highlight": null,
-      "score": null
-    },
-    {
       "id": "MONDO:0013247",
       "category": "biolink:Disease",
       "name": "Fanconi renotubular syndrome 2",
@@ -464,6 +447,29 @@
         "Fanconi anemia complementation group I",
         "Fanconi anemia complementation group type I",
         "Fanconi anemia, complementation group I"
+      ],
+      "uri": null,
+      "highlight": null,
+      "score": null
+    },
+    {
+      "id": "MONDO:0012187",
+      "category": "biolink:Disease",
+      "name": "Fanconi anemia complementation group J",
+      "full_name": null,
+      "deprecated": null,
+      "description": "Fanconi anemia caused by mutations in the BRIP1 gene, encoding Fanconi anemia group J protein.",
+      "xref": [],
+      "provided_by": "phenio_nodes",
+      "in_taxon": null,
+      "in_taxon_label": null,
+      "symbol": null,
+      "synonym": [
+        "FANCJ",
+        "Fanconi Anemia, complementation group type J",
+        "Fanconi anemia complementation group J",
+        "Fanconi anemia complementation group type J",
+        "Fanconi anemia, complementation group J"
       ],
       "uri": null,
       "highlight": null,

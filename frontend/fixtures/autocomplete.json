@@ -349,26 +349,6 @@
       "score": null
     },
     {
-      "id": "MONDO:0100136",
-      "category": "biolink:Disease",
-      "name": "obsolete Fanconia anemia complementation group M",
-      "full_name": null,
-      "deprecated": null,
-      "description": "OBSOLETE Any Fanconi anemia in which the cause of the disease is a mutation in the FANCM gene.",
-      "xref": [],
-      "provided_by": "phenio_nodes",
-      "in_taxon": null,
-      "in_taxon_label": null,
-      "symbol": null,
-      "synonym": [
-        "FANCM Fanconi anemia",
-        "Fanconi anemia caused by mutation in FANCM"
-      ],
-      "uri": null,
-      "highlight": null,
-      "score": null
-    },
-    {
       "id": "MONDO:0009213",
       "category": "biolink:Disease",
       "name": "Fanconi anemia complementation group C",
@@ -513,6 +493,29 @@
         "Fanconi anemia complementation group F",
         "Fanconi anemia complementation group type F",
         "Fanconi anemia, complementation group F"
+      ],
+      "uri": null,
+      "highlight": null,
+      "score": null
+    },
+    {
+      "id": "MONDO:0012187",
+      "category": "biolink:Disease",
+      "name": "Fanconi anemia complementation group J",
+      "full_name": null,
+      "deprecated": null,
+      "description": "Fanconi anemia caused by mutations in the BRIP1 gene, encoding Fanconi anemia group J protein.",
+      "xref": [],
+      "provided_by": "phenio_nodes",
+      "in_taxon": null,
+      "in_taxon_label": null,
+      "symbol": null,
+      "synonym": [
+        "FANCJ",
+        "Fanconi Anemia, complementation group type J",
+        "Fanconi anemia complementation group J",
+        "Fanconi anemia complementation group type J",
+        "Fanconi anemia, complementation group J"
       ],
       "uri": null,
       "highlight": null,

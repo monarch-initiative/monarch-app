@@ -88,6 +88,7 @@ def parse_association_counts(query_result: SolrQueryResult, entity: str) -> Asso
 def parse_entity(solr_document: Dict) -> Entity:
     try:
         entity = Entity(**solr_document)
+
         entity.uri = get_uri(entity.id)
     except ValidationError:
         logger.error(f"Validation error for {solr_document}")
