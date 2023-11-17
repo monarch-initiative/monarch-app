@@ -77,7 +77,7 @@ install-frontend:
 model: install-backend	
 	$(RUN) gen-pydantic $(SCHEMADIR)/model.yaml > $(SCHEMADIR)/model.py
 	$(RUN) gen-typescript $(SCHEMADIR)/model.yaml > frontend/src/api/model.ts
-	$(RUN) black $(SCHEMADIR)/model.py
+	make format
 
 
 ### Documentation ###
@@ -111,20 +111,11 @@ test-frontend:
 
 .PHONY: fixtures
 fixtures: 
-	@echo "Generating fixtures..."
+	@echo "Generating fixtures and data..."
 	$(RUN) python scripts/generate_fixtures.py --all-fixtures
-	$(RUN) black -l 120 backend/tests/fixtures/
-	cd frontend && \
-		yarn lint 
-
-
-.PHONE: data
-data: 
-	@echo "Generating data..."
 	$(RUN) python scripts/get_publications.py
 	wget https://raw.githubusercontent.com/monarch-initiative/monarch-documentation/main/src/docs/resources/monarch-app-resources.json -O frontend/src/pages/resources/resources.json
-	cd frontend && \
-		yarn lint
+	make format
 
 ### Development ###
 
