@@ -1,98 +1,80 @@
 {
   "Standards": [
-    {
-      "name": "Phenopackets",
-      "icon": "resource-phenopackets",
-      "link": "http://phenopackets.org/",
-      "description": "Open and Computable Bioinformation for Phenotypic Data"
-    },
-    {
-      "name": "SSSOM",
-      "icon": "resource-sssom",
-      "link": "https://mapping-commons.github.io/sssom/spec",
-      "description": "A Simple Standard for Sharing Ontological Mappings"
-    },
-    {
-      "name": "Mapping Commons",
-      "icon": "resource-monarch",
-      "link": "https://github.com/monarch-initiative/monarch-mapping-commons",
-      "description": "SSSOM Style Mappings for Monarch"
-    }
+    [
+      {
+        "description": "Open and Computable Bioinformation for Phenotypic Data",
+        "icon": "resource-phenopackets",
+        "link": "http://phenopackets.org/",
+        "name": "Phenopackets"
+      },
+      {
+        "description": "Open and Computable Bioinformation for Phenotypic Data",
+        "icon": "resource-sssom",
+        "link": "https://mapping-commons.github.io/sssom/spec/",
+        "name": "SSSOM"
+      }
+    ]
   ],
   "Ontologies": [
-    {
-      "name": "HPO",
-      "icon": "resource-hpo",
-      "link": "https://hpo.jax.org/app/",
-      "description": "Human Phenotype Ontology"
-    },
-    {
-      "name": "Mondo",
-      "icon": "resource-mondo",
-      "link": "https://mondo.monarchinitiative.org/",
-      "description": "Mondo Disease Ontology"
-    },
-    {
-      "name": "uPheno",
-      "icon": "resource-upheno",
-      "link": "https://obophenotype.github.io/upheno/",
-      "description": "Unified Phenotype Ontology"
-    }
+    [
+      {
+        "description": "Open and Computable Bioinformation for Phenotypic Data",
+        "icon": "resource-hpo",
+        "link": "https://hpo.jax.org/app/",
+        "name": "HPO"
+      },
+      {
+        "description": "Open and Computable Bioinformation for Phenotypic Data",
+        "icon": "resource-mondo",
+        "link": "https://mondo.monarchinitiative.org/",
+        "name": "Mondo"
+      },
+      {
+        "description": "Open and Computable Bioinformation for Phenotypic Data",
+        "icon": "resource-upheno",
+        "link": "https://obophenotype.github.io/upheno/",
+        "name": "uPheno"
+      }
+    ]
   ],
   "Tools": [
-    {
-      "name": "Monarch KG & API",
-      "icon": "resource-monarch",
-      "link": "https://monarch-initiative.github.io/monarch-ingest/",
-      "description": "Monarch's Integrated Knowledge Graph"
-    },
-    {
-      "name": "Monarch App",
-      "icon": "resource-monarch",
-      "link": "https://monarch-initiative.github.io/monarch-documentation",
-      "description": "Monarch's Web Interface and Phenotype Explorer"
-    },
-    {
-      "name": "OAK",
-      "icon": "resource-oak",
-      "link": "https://github.com/INCATools/ontology-access-kit",
-      "description": "Ontology Access Kit"
-    },
-    {
-      "name": "OntoGPT",
-      "icon": "onto-gpt",
-      "link": "https://github.com/monarch-initiative/ontogpt",
-      "description": "AI Assisted Ontology Operations"
-    },
-    {
-      "name": "CurateGPT",
-      "icon": "curate-gpt",
-      "link": "https://github.com/monarch-initiative/curate-gpt",
-      "description": "AI Assisted Ontology Curation"
-    },
-    {
-      "name": "LinkML",
-      "icon": "resource-linkml",
-      "link": "https://linkml.io/",
-      "description": "The Linked Data Modeling Language"
-    },
-    {
-      "name": "Semsimian",
-      "icon": "semsimian",
-      "link": "https://github.com/monarch-initiative/semsimian",
-      "description": "Semantic Similarity in Rust"
-    },
-    {
-      "name": "Exomiser",
-      "icon": "resource-exomiser",
-      "link": "https://hpo.jax.org/app/tools/exomiser",
-      "description": "Whole-Exome Dataset Filtering"
-    },
-    {
-      "name": "LIRICAL",
-      "icon": "lirical",
-      "link": "https://thejacksonlaboratory.github.io/LIRICAL/stable/",
-      "description": "LIkelihood Ratio Interpretation of Clinical AbnormaLities"
-    }
+    [
+      {
+        "description": "Open and Computable Bioinformation for Phenotypic Data",
+        "icon": "resource-exomiser",
+        "link": "https://hpo.jax.org/app/tools/exomiser",
+        "name": "Exomiser"
+      },
+      {
+        "description": "Open and Computable Bioinformation for Phenotypic Data",
+        "icon": "resource-monarch",
+        "link": "https://monarch-initiative.github.io/monarch-documentation",
+        "name": "Monarch App"
+      },
+      {
+        "description": "Open and Computable Bioinformation for Phenotypic Data",
+        "icon": "lirical",
+        "link": "https://thejacksonlaboratory.github.io/LIRICAL/stable/",
+        "name": "LIRICAL"
+      },
+      {
+        "description": "Open and Computable Bioinformation for Phenotypic Data",
+        "icon": "onto-gpt",
+        "link": "https://github.com/monarch-initiative/ontogpt",
+        "name": "OntoGPT"
+      },
+      {
+        "description": "Open and Computable Bioinformation for Phenotypic Data",
+        "icon": "curate-gpt",
+        "link": "https://curategpt.io/",
+        "name": "CurateGPT"
+      },
+      {
+        "description": "Open and Computable Bioinformation for Phenotypic Data",
+        "icon": "resource-monarch",
+        "link": "https://github.com/monarch-initiative/monarch-mapping-commons",
+        "name": "Monarch Mapping Commons"
+      }
+    ]
   ]
 }

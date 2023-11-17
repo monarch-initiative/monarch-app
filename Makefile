@@ -117,6 +117,15 @@ fixtures:
 	cd frontend && \
 		yarn lint 
 
+
+.PHONE: data
+data: 
+	@echo "Generating data..."
+	$(RUN) python scripts/get_publications.py
+	wget https://raw.githubusercontent.com/monarch-initiative/monarch-documentation/main/src/docs/resources/monarch-app-resources.json -O frontend/src/pages/resources/resources.json
+	cd frontend && \
+		yarn lint
+
 ### Development ###
 
 .PHONY: dev-frontend
