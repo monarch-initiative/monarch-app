@@ -66,7 +66,7 @@ async function update() {
     focused.value && focused.value.matches("input, textarea");
 
   /** get dimensions of footer */
-  const footerEl = document?.querySelector("footer");
+  const footerEl = document.querySelector("footer");
   if (!footerEl) return;
   const footer = footerEl.getBoundingClientRect();
 
@@ -91,7 +91,7 @@ watch(route, update, { deep: true });
 watch(focused, update);
 useEventListener(window, "scroll", update);
 useEventListener(window, "resize", update);
-useMutationObserver(document?.body, update, {
+useMutationObserver(document.body, update, {
   subtree: true,
   childList: true,
 });

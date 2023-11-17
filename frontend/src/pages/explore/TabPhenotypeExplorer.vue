@@ -58,58 +58,58 @@
       @click="runAnalysis"
     />
     <AppAlert v-else
-      >This feature is still being worked on. Check back soon!</AppAlert
+      >This feature is still under development. Check back soon for
+      more!</AppAlert
     >
   </AppSection>
 
   <AppSection v-if="comparison.summary.length || isLoading || isError">
     <AppHeading>Results</AppHeading>
 
+    <p>Similarity comparison between pairs of phenotypes.</p>
+
     <!-- analysis status -->
     <AppStatus v-if="isLoading" code="loading">Running analysis</AppStatus>
     <AppStatus v-if="isError" code="error">Error running analysis</AppStatus>
 
     <!-- analysis top results -->
-    <AppFlex v-else-if="comparison.summary.length">
+    <template v-else-if="comparison.summary.length">
       <!-- heading -->
-      <strong
-        >Top {{ Math.min(comparison.summary.length, 10) }} match(es)</strong
+      <AppHeading
+        >Top {{ Math.min(comparison.summary.length, 10) }} most
+        similar</AppHeading
       >
 
       <!-- list of comparison results -->
-      <div
-        v-for="(match, matchIndex) in comparison.summary.slice(0, 10)"
-        :key="matchIndex"
-        class="match"
-      >
-        <!-- ring score -->
-        <AppRing
-          v-tooltip="'Similarity score'"
-          :score="match.score"
-          :percent="1 - 1 / (1 + match.score)"
-        />
-        <!-- for percent, use asymptotic function limited to 1 so we don't need to know max score -->
+      <AppFlex>
+        <div
+          v-for="(match, matchIndex) in comparison.summary.slice(0, 10)"
+          :key="matchIndex"
+          class="match"
+        >
+          <!-- ring score -->
+          <AppRing
+            v-tooltip="'Similarity score'"
+            :score="match.score"
+            :percent="1 - 1 / (1 + match.score)"
+          />
+          <!-- for percent, use asymptotic function limited to 1 so we don't need to know max score -->
 
-        <AppFlex class="details" direction="col" align-h="left" gap="small">
-          <AppFlex align-h="left" gap="small">
-            Source:
+          <AppFlex class="details" direction="col" align-h="left" gap="small">
             <AppNodeBadge
               :node="{ id: match.source, name: match.source_label }"
             />
-          </AppFlex>
-          <AppFlex align-h="left" gap="small">
-            Target:
             <AppNodeBadge
               :node="{ id: match.target, name: match.target_label }"
             />
           </AppFlex>
-        </AppFlex>
-      </div>
-    </AppFlex>
+        </div>
+      </AppFlex>
+    </template>
 
     <!-- phenogrid results -->
     <template v-if="!isEmpty(comparison.phenogrid.cells)">
-      <strong>Phenotype Similarity Comparison</strong>
+      <AppHeading>Detailed Comparison</AppHeading>
       <ThePhenogrid :data="comparison.phenogrid" />
       <AppAlert
         >This feature is still under development. Check back soon for

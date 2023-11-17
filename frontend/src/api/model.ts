@@ -4,6 +4,7 @@ export type ExpandedCurieId = string;
 export type EntityId = string;
 export type HistoPhenoId = string;
 export type HistoBinId = string;
+export type MappingId = string;
 export type MultiEntityAssociationResultsId = string;
 export type NodeId = string;
 export type SearchResultId = string;
@@ -315,6 +316,8 @@ export interface Entity {
     name?: string,
     /** The long form name of an entity */
     full_name?: string,
+    /** A boolean flag indicating that an entity is no longer considered current or valid. */
+    deprecated?: boolean,
     description?: string,
     xref?: string[],
     provided_by?: string,
@@ -375,6 +378,20 @@ export interface Mapping {
     /** The name of the object entity */
     object_label?: string,
     mapping_justification?: string,
+    id: string,
+};
+/**
+ * SSSOM Mappings returned as a results collection
+ */
+export interface MappingResults extends Results {
+    /** A collection of items, with the type to be overriden by slot_usage */
+    items: Mapping[],
+    /** number of items to return in a response */
+    limit: number,
+    /** offset into the total number of items */
+    offset: number,
+    /** total number of items matching a query */
+    total: number,
 };
 
 export interface MultiEntityAssociationResults extends Results {
@@ -401,6 +418,8 @@ export interface Node extends Entity {
     causal_gene?: Entity[],
     /** A list of diseases that are known to be causally associated with a gene */
     causes_disease?: Entity[],
+    /** List of ExpandedCuries with id and url for mapped entities */
+    mappings?: ExpandedCurie[],
     /** ExpandedCurie with id and url for xrefs */
     external_links?: ExpandedCurie[],
     /** A link to the docs for the knowledge source that provided the node/edge. */
@@ -412,6 +431,8 @@ export interface Node extends Entity {
     name?: string,
     /** The long form name of an entity */
     full_name?: string,
+    /** A boolean flag indicating that an entity is no longer considered current or valid. */
+    deprecated?: boolean,
     description?: string,
     xref?: string[],
     provided_by?: string,
@@ -444,6 +465,8 @@ export interface SearchResult extends Entity {
     name: string,
     /** The long form name of an entity */
     full_name?: string,
+    /** A boolean flag indicating that an entity is no longer considered current or valid. */
+    deprecated?: boolean,
     description?: string,
     xref?: string[],
     provided_by?: string,
@@ -496,11 +519,11 @@ export interface TermPairwiseSimilarity extends PairwiseSimilarity {
     ancestor_label?: string,
     ancestor_source?: string,
     /** The IC of the object */
-    object_information_content?: string,
+    object_information_content?: number,
     /** The IC of the subject */
-    subject_information_content?: string,
+    subject_information_content?: number,
     /** The IC of the object */
-    ancestor_information_content?: string,
+    ancestor_information_content?: number,
     /** The number of concepts in the intersection divided by the number in the union */
     jaccard_similarity?: number,
     /** the dot product of two node embeddings divided by the product of their lengths */

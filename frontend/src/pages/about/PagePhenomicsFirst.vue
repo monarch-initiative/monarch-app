@@ -1,5 +1,5 @@
 <!-- 
-    Overview page for Phenomics First
+  phenomics first
  -->
 
 <template>
@@ -140,9 +140,7 @@
     </p>
     <p>
       You can find more information
-      <AppLink to="https://mondo.readthedocs.io/en/latest/" target="__blank"
-        >here</AppLink
-      >.
+      <AppLink to="https://mondo.readthedocs.io/en/latest/">here</AppLink>.
     </p>
   </AppSection>
 
@@ -161,7 +159,7 @@
     </p>
     <p>
       You can find more information
-      <AppLink to="http://phenopackets.org/" target="__blank">here</AppLink>.
+      <AppLink to="http://phenopackets.org/">here</AppLink>.
     </p>
   </AppSection>
 </template>

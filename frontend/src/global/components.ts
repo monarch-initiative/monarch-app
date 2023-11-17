@@ -5,7 +5,6 @@ import AppHeading from "@/components/AppHeading.vue";
 import AppIcon from "@/components/AppIcon.vue";
 import AppLink from "@/components/AppLink.vue";
 import AppMarkdown from "@/components/AppMarkdown.vue";
-import AppPlaceholder from "@/components/AppPlaceholder.vue";
 import AppSection from "@/components/AppSection.vue";
 import AppStatus from "@/components/AppStatus.vue";
 import AppTile from "@/components/AppTile.vue";
@@ -22,7 +21,6 @@ const globalComponents = {
   AppIcon,
   AppLink,
   AppMarkdown,
-  AppPlaceholder,
   AppSection,
   AppStatus,
   AppTile,
@@ -43,7 +41,6 @@ declare module "@vue/runtime-core" {
     AppIcon: typeof AppIcon;
     AppLink: typeof AppLink;
     AppMarkdown: typeof AppMarkdown;
-    AppPlaceholder: typeof AppPlaceholder;
     AppSection: typeof AppSection;
     AppStatus: typeof AppStatus;
     AppTile: typeof AppTile;

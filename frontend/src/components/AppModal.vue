@@ -87,7 +87,7 @@ const modal = ref<HTMLElement>();
 /** after state change */
 onUpdated(() => {
   /** rest of app besides modal */
-  const app = document?.querySelector("#app");
+  const app = document.querySelector("#app");
 
   /** if modal just opened */
   if (props.modelValue) {
@@ -107,11 +107,11 @@ onUpdated(() => {
 /** before state change */
 onBeforeUpdate(async () => {
   /** rest of app besides modal */
-  const app = document?.querySelector("#app");
+  const app = document.querySelector("#app");
 
   /** if modal about to be opened */
   if (props.modelValue) {
-    originalFocus.value = document?.activeElement as HTMLElement;
+    originalFocus.value = document.activeElement as HTMLElement;
   } else {
     /** if modal about to be closed */
     /** show for screen readers */

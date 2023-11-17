@@ -5,7 +5,7 @@ import pytest
 def search_response():
     return {
         "responseHeader": {
-            "QTime": 1,
+            "QTime": 0,
             "params": {
                 "mm": "100%",
                 "q": "fanconi",
@@ -14,7 +14,7 @@ def search_response():
                 "qf": "id^100 name^10 name_t^5 name_ac symbol^10 symbol_t^5 symbol_ac synonym synonym_t synonym_ac",
                 "start": "0",
                 "q.op": "AND",
-                "boost": 'product(if(termfreq(category,"biolink:Disease"),10.0,1),if(and(termfreq(in_taxon,"NCBITaxon:9606"),termfreq(category,"biolink:Gene")),5.0,1))',
+                "boost": 'product(if(termfreq(category,"biolink:Disease"),10.0,1),if(and(termfreq(in_taxon,"NCBITaxon:9606"),termfreq(category,"biolink:Gene")),5.0,1),if(termfreq(deprecated,"true"),0.1,1))',
                 "fq": "name:*",
                 "rows": "20",
                 "facet": "true",
@@ -92,12 +92,6 @@ def search_response():
                     "provided_by": "phenio_nodes",
                     "synonym": ["acquired Fanconi syndrome"],
                     "description": "Fanconi Syndrome caused by exposure to noxious agents.",
-                },
-                {
-                    "id": "MONDO:0000026",
-                    "category": "biolink:Disease",
-                    "name": "obsolete Fanconi renotubular syndrome",
-                    "provided_by": "phenio_nodes",
                 },
                 {
                     "id": "MONDO:0013247",
@@ -301,6 +295,20 @@ def search_response():
                         "Fanconi anemia, complementation group I",
                     ],
                     "description": "Fanconi anemia caused by mutations in the FANCI gene, encoding Fanconi anemia group I protein.",
+                },
+                {
+                    "id": "MONDO:0012187",
+                    "category": "biolink:Disease",
+                    "name": "Fanconi anemia complementation group J",
+                    "provided_by": "phenio_nodes",
+                    "synonym": [
+                        "FANCJ",
+                        "Fanconi Anemia, complementation group type J",
+                        "Fanconi anemia complementation group J",
+                        "Fanconi anemia complementation group type J",
+                        "Fanconi anemia, complementation group J",
+                    ],
+                    "description": "Fanconi anemia caused by mutations in the BRIP1 gene, encoding Fanconi anemia group J protein.",
                 },
             ],
         },

@@ -118,7 +118,7 @@
             v-if="option.count !== undefined && showCounts"
             class="option-count"
           >
-            {{ option.count }}
+            {{ option.count.toLocaleString() }}
           </span>
         </div>
       </div>

@@ -8,23 +8,27 @@
     <AppHeading icon="flask">Association Details</AppHeading>
 
     <div>
-      Details for the selected association, <br />
-      <AppNodeBadge
-        :node="{
-          id: association.subject,
-          name: association.subject_label,
-          category: association.subject_category,
-          info: association.subject_taxon_label,
-        }"
-      />&nbsp; <AppPredicateBadge :association="association" />&nbsp;
-      <AppNodeBadge
-        :node="{
-          id: association.object,
-          name: association.object_label,
-          category: association.object_category,
-          info: association.object_taxon_label,
-        }"
-      />
+      Details for the selected association... <br />
+
+      <div class="selected">
+        <AppNodeBadge
+          :node="{
+            id: association.subject,
+            name: association.subject_label,
+            category: association.subject_category,
+            info: association.subject_taxon_label,
+          }"
+        />
+        <AppPredicateBadge :association="association" />
+        <AppNodeBadge
+          :node="{
+            id: association.object,
+            name: association.object_label,
+            category: association.object_category,
+            info: association.object_taxon_label,
+          }"
+        />
+      </div>
     </div>
 
     <AppDetails>
@@ -102,6 +106,19 @@ onMounted(scrollIntoView);
 </script>
 
 <style lang="scss" scoped>
+.selected {
+  display: flex;
+  margin-top: 10px;
+  padding: 10px;
+  gap: 10px 20px;
+}
+
+@media (max-width: 600px) {
+  .selected {
+    flex-direction: column;
+  }
+}
+
 .arrow {
   color: $gray;
 }

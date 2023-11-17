@@ -28,7 +28,6 @@ import { compareSetToSet } from "@/api/phenotype-explorer";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
 import TheSnackbar from "@/components/TheSnackbar.vue";
 import { useQuery } from "@/util/composables";
-import { sleep } from "@/util/debug";
 
 /** route info */
 const route = useRoute();
@@ -78,19 +77,6 @@ useEventListener("message", (event: MessageEvent) => {
   }
 });
 
-watch(
-  [isLoading, isError, comparison],
-  async () => {
-    const container = document.body;
-    await sleep(10);
-    if (!container) return;
-    let width = container.scrollWidth + 2;
-    let height = container.scrollHeight + 2;
-    window.parent.postMessage({ width, height }, "*");
-  },
-  { immediate: true, deep: true },
-);
-
 /** allow consuming parent to link to css stylesheet */
 const stylesheet = computed(() =>
   typeof route.query.stylesheet === "string"
@@ -99,12 +85,14 @@ const stylesheet = computed(() =>
 );
 </script>
 
-<style>
-body {
-  height: max-content;
+<style scoped>
+:global(html),
+:global(body) {
+  width: 100%;
+  height: 100%;
 }
 
-#app {
+:global(#app) {
   display: contents;
 }
 </style>
