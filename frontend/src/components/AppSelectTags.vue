@@ -314,7 +314,7 @@ const {
   isError,
 } = useQuery(
   /** get list of results */
-  async function (forceAutoAccept = false) {
+  async function (passedSearch?: string, forceAutoAccept = false) {
     /** reset highlighted */
     highlighted.value = 0;
 
@@ -399,7 +399,7 @@ watch(highlighted, () => {
 /** programmatically set search, query results, and auto-accept */
 function runSearch(value: string) {
   search.value = value;
-  runGetResults(true);
+  runGetResults("", true);
 }
 
 defineExpose({ runSearch });
