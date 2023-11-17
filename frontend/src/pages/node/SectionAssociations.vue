@@ -23,6 +23,20 @@
       />
     </AppFlex>
 
+    <AppButton
+      v-if="
+        (node.category === 'biolink:Disease' &&
+          category?.id.startsWith('biolink:DiseaseToPheno')) ||
+        (node.category === 'biolink:Gene' &&
+          category?.id.startsWith('biolink:GeneToPheno'))
+      "
+      v-tooltip="'Send these phenotypes to Phenotype Explorer for comparison'"
+      to="explore#phenotype-explorer"
+      :state="{ search: node.id }"
+      text="Phenotype Explorer"
+      icon="arrow-right"
+    />
+
     <template v-if="category">
       <!-- table view of associations -->
       <AssociationsTable

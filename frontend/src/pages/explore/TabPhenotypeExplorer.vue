@@ -13,6 +13,7 @@
 
     <!-- set A -->
     <AppSelectTags
+      ref="aBox"
       v-model="aPhenotypes"
       name="First set of phenotypes"
       :options="getPhenotypes"
@@ -194,6 +195,9 @@ const bPhenotypes = ref<Options>([]);
 /** "generated from" helpers after selecting gene or disease */
 const bGeneratedFrom = ref<GeneratedFrom>({});
 
+/** element reference */
+const aBox = ref<{ runSearch: (value: string) => void }>();
+
 /** example phenotype set comparison */
 function doExample() {
   aPhenotypes.value = examples.a.options;
@@ -277,15 +281,21 @@ function description(
 /** clear results when inputs are changed to avoid de-sync */
 watch([aPhenotypes, bMode, bTaxon, bPhenotypes], clearResults, { deep: true });
 
-/** fill in phenotype ids from text annotator */
+/** fill in phenotype ids or search from other pages */
 onMounted(() => {
-  if (window.history.state.phenotypes) {
-    const phenotypes = parse<Options>(window.history.state.phenotypes, []);
-    aPhenotypes.value = phenotypes;
+  const { phenotypes, search } = window.history.state;
+  if (phenotypes) {
+    const _phenotypes = parse<Options>(phenotypes, []);
+    aPhenotypes.value = _phenotypes;
     aGeneratedFrom.value = {
       option: { id: "text annotator" },
-      options: phenotypes,
+      options: _phenotypes,
     };
+  }
+
+  if (search) {
+    const _search = parse<string>(search, "");
+    aBox.value?.runSearch(_search);
   }
 });
 </script>

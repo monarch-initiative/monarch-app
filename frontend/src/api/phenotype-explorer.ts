@@ -64,7 +64,7 @@ const getPhenotypeAssociations = async (id = ""): Promise<Options> => {
       "biolink:GeneToPhenotypicFeatureAssociation",
       "biolink:DiseaseToPhenotypicFeatureAssociation",
     ],
-    limit: 500,
+    limit: 1000,
     direct: true,
   };
 

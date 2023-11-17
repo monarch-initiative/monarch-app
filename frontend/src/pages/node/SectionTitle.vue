@@ -6,7 +6,12 @@
   <AppSection design="fill" class="section">
     <AppFlex dir="column">
       <AppHeading class="heading" :icon="getCategoryIcon(node.category)">
-        {{ node.name }}
+        <span
+          :style="{ textDecoration: node.deprecated ? 'line-through' : '' }"
+        >
+          {{ node.name }}
+        </span>
+        <template v-if="node.deprecated"> (OBSOLETE)</template>
       </AppHeading>
 
       <AppFlex>
