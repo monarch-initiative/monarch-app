@@ -2,6 +2,24 @@
   <AppSection>
     <AppHeading>Resources</AppHeading>
     <p>Resources and tools central to Monarch Initiative.</p>
+    <p>
+      The Monarch Initiative is an international consortium that leads key
+      global standards and semantic data integration technologies. Monarch
+      resources and integrated data are also foundational to many downstream
+      applications and contexts; we work closely with a variety of stakeholders
+      and resource-development communities to capture feedback and make
+      improvements. To maximize utility and impact, the Monarch platform is
+      composed of multiple open-source, open-access components. We promote
+      provenance and transparency, enhanced use of standards and new
+      technologies and improved data accessibility, end-user utility, and data
+      submission. Below, we highlight a collection of our flagship projects.
+      Learn more about the complete suite of Monarch resources on our
+      organization's
+      <AppLink to="https://monarch-initiative.github.io/monarch-documentation/">
+        documentation pages
+      </AppLink>
+      .
+    </p>
   </AppSection>
   <AppSection
     v-for="(category, categoryIndex) in resources"
