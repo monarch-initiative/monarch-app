@@ -113,9 +113,18 @@ test-frontend:
 fixtures: 
 	@echo "Generating fixtures and data..."
 	$(RUN) python scripts/generate_fixtures.py --all-fixtures
-	$(RUN) python scripts/get_publications.py
-	wget https://raw.githubusercontent.com/monarch-initiative/monarch-documentation/main/src/docs/resources/monarch-app-resources.json -O frontend/src/pages/resources/resources.json
 	make format
+
+
+.PHONY: data
+data:
+	@echo "Generating frontpage metadata..."
+	$(RUN) python scripts/generate_fixtures.py --metadata
+	@echo "Generating publications data..."
+	$(RUN) python scripts/get_publications.py
+	@echo "Generating resources data..."
+	wget https://raw.githubusercontent.com/monarch-initiative/monarch-documentation/main/src/docs/resources/monarch-app-resources.json -O frontend/src/pages/resources/resources.json
+	make format-frontend
 
 ### Development ###
 
