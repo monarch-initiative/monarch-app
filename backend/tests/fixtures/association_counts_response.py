@@ -5,7 +5,7 @@ import pytest
 def association_counts_response():
     return {
         "responseHeader": {
-            "QTime": 1,
+            "QTime": 3,
             "params": {
                 "facet.query": [
                     '(category:"biolink:DiseaseToPhenotypicFeatureAssociation") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")',
