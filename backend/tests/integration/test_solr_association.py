@@ -88,13 +88,12 @@ def test_multi_entity_associations():
 def test_association_search_partial_match(q: str):
     si = SolrImplementation()
     response = si.get_associations(
-        q=q,
-        subject="MONDO:0011518",
-        category="biolink:DiseaseToPhenotypicFeatureAssociation"
+        q=q, subject="MONDO:0011518", category="biolink:DiseaseToPhenotypicFeatureAssociation"
     )
     assert response
     assert response.total > 0
     assert "HP:0000574" in [item.object for item in response.items]
+
 
 @pytest.mark.parametrize("q", ["eyebrow", "thick", "Thick", "Thick eyebrow", "thick eyebrow", "Thick eyebrow (HPO)"])
 def test_association_table_search_partial_match(q: str):

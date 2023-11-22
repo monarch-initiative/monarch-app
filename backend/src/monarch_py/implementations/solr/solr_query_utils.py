@@ -216,12 +216,15 @@ def entity_query_fields():
     """
     return "id^100 name^10 name_t^5 name_ac symbol^10 symbol_t^5 symbol_ac synonym synonym_t synonym_ac"
 
+
 def association_search_query_fields():
     """
     Shared field list for free text search on associations (e.g. for the association table)
     """
 
-    return ("subject subject_label^2 subject_label_t subject_closure subject_closure_label subject_closure_label_t"
-            " predicate predicate_t"
-            " object object_label^2 object_label_t object_closure object_closure_label object_closure_label_t"
-            " publications has_evidence primary_knowledge_source aggregator_knowledge_source provided_by ")
+    return (
+        "subject subject_label^2 subject_label_t subject_closure subject_closure_label subject_closure_label_t"
+        " predicate predicate_t"
+        " object object_label^2 object_label_t object_closure object_closure_label object_closure_label_t"
+        " publications has_evidence primary_knowledge_source aggregator_knowledge_source provided_by "
+    )
