@@ -224,6 +224,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         object_closure: str = None,
         entity: List[str] = None,
         direct: bool = None,
+        q: str = None,
         offset: int = 0,
         limit: int = 20,
     ) -> AssociationResults:
@@ -237,6 +238,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
             subject_closure: Filter to only associations with the specified term ID as an ancestor of the subject. Defaults to None
             object_closure: Filter to only associations with the specified term ID as an ancestor of the object. Defaults to None
             entity: Filter to only associations where the specified entities are the subject or the object. Defaults to None.
+            q: Query string to search within matches. Defaults to None.
             offset: Result offset, for pagination. Defaults to 0.
             limit: Limit results to specified number. Defaults to 20.
 
@@ -254,6 +256,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
             subject_closure=subject_closure,
             object_closure=object_closure,
             direct=direct,
+            q=q,
             offset=offset,
             limit=limit,
         )
