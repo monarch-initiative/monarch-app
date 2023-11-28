@@ -40,10 +40,10 @@
       cornerstone of our pioneering work in data integration. We will leverage
       this to align phenotype ontologies and clinical terminologies, bringing
       major model species and clinical domains into the PFR, which we will
-      refine through continual community partnership. The following
-      interlinked approaches will provide a dynamic suite of
-      community-developed knowledge resources to revolutionize variant
-      interpretation applications and drive precision medicine.
+      refine through continual community partnership. The following interlinked
+      approaches will provide a dynamic suite of community-developed knowledge
+      resources to revolutionize variant interpretation applications and drive
+      precision medicine.
     </p>
   </AppSection>
 
