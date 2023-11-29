@@ -204,7 +204,7 @@
         "link": ""
       }
     ]
-  },  
+  },
   {
     "name": "European Bioinformatics Institute",
     "link": "https://www.ebi.ac.uk/",
@@ -269,7 +269,7 @@
   {
     "name": "Johns Hopkins University",
     "link": "https://www.jhu.edu/",
-    "members":[
+    "members": [
       {
         "name": "Ada Hamosh",
         "role": "Clinical Director DGM, Scientific Director OMIM",
@@ -329,7 +329,7 @@
       {
         "name": "Tudor Groza",
         "role": ""
-      }      
+      }
     ]
   },
   {
