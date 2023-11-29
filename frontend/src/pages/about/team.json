@@ -14,11 +14,6 @@
         "link": "https://tislab.org/members/monica-munoz-torres.html"
       },
       {
-        "name": "Tim Putman",
-        "role": "Technical Director",
-        "link": "https://tislab.org/members/tim-putman.html"
-      },
-      {
         "name": "Julie McMurry",
         "role": "Project Manager",
         "link": "https://tislab.org/members/julie-mcmurry.html"
@@ -77,31 +72,41 @@
         "name": "Bryan Laraway",
         "role": "Data Wrangler",
         "link": "https://tislab.org/members/bryan-laraway.html"
-      }
-    ]
-  },
-  {
-    "name": "The Jackson Laboratory",
-    "link": "https://www.jax.org/",
-    "members": [
-      {
-        "name": "Peter Robinson",
-        "role": "Monarch PI",
-        "link": "https://www.jax.org/research-and-faculty/faculty/peter-robinson"
       },
       {
-        "name": "Leigh Carmody",
-        "role": "Scientific Curator"
+        "name": "Katie Mullen",
+        "role": "Veterinary Postdoctoral Fellow",
+        "link": "https://tislab.org/members/katie-mullen.html"
       },
       {
-        "name": "Hannah Blau",
-        "role": "Research Software Engineer",
-        "link": "https://www.jax.org/people/hannah-blau"
+        "name": "Madan Krishnamurthy",
+        "role": "Semantic Engineer",
+        "link": "https://tislab.org/members/madan-krishnamurthy.html"
       },
       {
-        "name": "Michael Gargano",
-        "role": "Software Engineer",
-        "link": "https://www.jax.org/people/michael-gargano"
+        "name": "Shawn O'Neil",
+        "role": "DevOps, Bioinformatics, and Data Engineer",
+        "link": "https://tislab.org/members/shawn-oneil.html"
+      },
+      {
+        "name": "Trish Whetzel",
+        "role": "",
+        "link": ""
+      },
+      {
+        "name": "Megan Kraus",
+        "role": "PhD Student",
+        "link": "https://tislab.org/members/megan-kraus.html"
+      },
+      {
+        "name": "Eric Hurwitz",
+        "role": "Postdoctoral Fellow",
+        "link": "https://tislab.org/members/eric-hurwitz.html"
+      },
+      {
+        "name": "Katherina Cortes",
+        "role": "PhD Student",
+        "link": ""
       }
     ]
   },
@@ -137,16 +142,97 @@
         "name": "J. Harry Caufield",
         "role": "Data Scientist",
         "link": "https://harrycaufield.net/"
+      },
+      {
+        "name": "Harshad Hegde",
+        "role": "Software Developer",
+        "link": ""
+      },
+      {
+        "name": "Mark Miller",
+        "role": "Software Developer",
+        "link": ""
+      },
+      {
+        "name": "Patrick Kalita",
+        "role": "Software Developer",
+        "link": ""
       }
     ]
   },
   {
-    "name": "Ada Health",
-    "link": "https://ada.com/",
+    "name": "The Jackson Laboratory",
+    "link": "https://www.jax.org/",
     "members": [
       {
-        "name": "Sebastian Köhler",
-        "role": "Bioinformatician & Developer"
+        "name": "Peter Robinson",
+        "role": "Monarch PI",
+        "link": "https://www.jax.org/research-and-faculty/faculty/peter-robinson"
+      },
+      {
+        "name": "Leigh Carmody",
+        "role": "Scientific Curator"
+      },
+      {
+        "name": "Hannah Blau",
+        "role": "Research Software Engineer",
+        "link": "https://www.jax.org/people/hannah-blau"
+      },
+      {
+        "name": "Michael Gargano",
+        "role": "Software Engineer",
+        "link": "https://www.jax.org/people/michael-gargano"
+      },
+      {
+        "name": "Ben Coleman",
+        "role": "",
+        "link": ""
+      },
+      {
+        "name": "Daniel Danis",
+        "role": "",
+        "link": ""
+      },
+      {
+        "name": "Lauren Rekerle",
+        "role": "",
+        "link": ""
+      },
+      {
+        "name": "Martha Beckwith",
+        "role": "",
+        "link": ""
+      }
+    ]
+  },  
+  {
+    "name": "European Bioinformatics Institute",
+    "link": "https://www.ebi.ac.uk/",
+    "members": [
+      {
+        "name": "Anita Reane Caron",
+        "role": "",
+        "link": ""
+      },
+      {
+        "name": "Arwa Ibrahim",
+        "role": "",
+        "link": ""
+      },
+      {
+        "name": "James McLaughlin",
+        "role": "Monarch PI",
+        "link": "https://github.com/udp"
+      },
+      {
+        "name": "Ray Stefancsik",
+        "role": "",
+        "link": ""
+      },
+      {
+        "name": "Vinícius de Souza",
+        "role": "Semantic/Ontology Developer",
+        "link": ""
       }
     ]
   },
@@ -155,6 +241,11 @@
     "link": "http://www.qmul.ac.uk/",
     "members": [
       {
+        "name": "Carlo Kroll",
+        "role": "Software Engineer",
+        "link": ""
+      },
+      {
         "name": "Damian Smedley",
         "role": "Senior Scientific Manager",
         "link": "https://www.qmul.ac.uk/whri/people/academic-staff/items/smedleydamian.html"
@@ -162,6 +253,37 @@
       {
         "name": "Jules Jacobsen",
         "role": "Bioinformatician"
+      },
+      {
+        "name": "Valentina Cipriani",
+        "role": "Genetic Statistician",
+        "link": ""
+      },
+      {
+        "name": "Yasemin Bridges",
+        "role": "",
+        "link": ""
+      }
+    ]
+  },
+  {
+    "name": "Johns Hopkins University",
+    "link": "https://www.jhu.edu/",
+    "members":[
+      {
+        "name": "Ada Hamosh",
+        "role": "Clinical Director DGM, Scientific Director OMIM",
+        "link": ""
+      },
+      {
+        "name": "Chris Chute",
+        "role": "",
+        "link": ""
+      },
+      {
+        "name": "Joseph E Flack",
+        "role": "",
+        "link": ""
       }
     ]
   },
@@ -171,30 +293,43 @@
     "members": [
       {
         "name": "Jim Balhoff",
-        "role": "Senior Research Scientist",
+        "role": "Semantic Developer",
         "link": "https://renci.org/staff/james-balhoff/"
       }
     ]
   },
   {
-    "name": "European Bioinformatics Institute",
-    "link": "https://www.ebi.ac.uk/",
+    "name": "Ada Health",
+    "link": "https://ada.com/",
     "members": [
       {
-        "name": "James McLaughlin",
-        "role": "Monarch PI",
-        "link": "https://github.com/udp"
+        "name": "Sebastian Köhler",
+        "role": "Software Developer"
       }
     ]
   },
   {
-    "name": "Semanticly",
-    "link": "https://semanticly.de",
+    "name": "C-Path",
+    "link": "https://c-path.org/",
+    "members": [
+      {
+        "name": "Nicole Vasilevsky",
+        "role": "Biocuration/Ontology Developer"
+      }
+    ]
+  },
+  {
+    "name": "Consultants",
+    "link": "",
     "members": [
       {
         "name": "Nicolas Matentzoglu",
         "role": "Semantic Web Developer"
-      }
+      },
+      {
+        "name": "Tudor Groza",
+        "role": ""
+      }      
     ]
   },
   {
@@ -235,8 +370,8 @@
     "name": "Alumni Members",
     "members": [
       {
-        "name": "Nicole Vasilevsky",
-        "role": "Lead Biocurator"
+        "name": "Tim Putman",
+        "role": "Technical Director"
       },
       {
         "name": "David Osumi-Sutherland",
@@ -301,10 +436,6 @@
       {
         "name": "Lilly Winfree",
         "role": "Science and Data Analyst"
-      },
-      {
-        "name": "Tudor Groza",
-        "role": "Phenomics Team Leader"
       },
       {
         "name": "Craig McNamara",
