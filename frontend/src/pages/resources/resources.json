@@ -1,13 +1,13 @@
 {
   "Standards": [
     {
-      "description": "Open and Computable Bioinformation for Phenotypic Data",
+      "description": "The Phenopacket Schema is an ISO-endorsed open standard for sharing disease and phenotype information.",
       "icon": "resource-phenopackets",
       "link": "http://phenopackets.org/",
       "name": "Phenopackets"
     },
     {
-      "description": "Open and Computable Bioinformation for Phenotypic Data",
+      "description": "SSSOM is a simple metadata standard for describing semantic mappings.",
       "icon": "resource-sssom",
       "link": "https://mapping-commons.github.io/sssom/spec/",
       "name": "SSSOM"
@@ -15,19 +15,19 @@
   ],
   "Ontologies": [
     {
-      "description": "Open and Computable Bioinformation for Phenotypic Data",
+      "description": "The HPO provides a standardized vocabulary of phenotypic abnormalities in human disease.",
       "icon": "resource-hpo",
       "link": "https://hpo.jax.org/app/",
       "name": "HPO"
     },
     {
-      "description": "Open and Computable Bioinformation for Phenotypic Data",
+      "description": "The Mondo Disease Ontology aims to harmonizes disease definitions across the world.",
       "icon": "resource-mondo",
       "link": "https://mondo.monarchinitiative.org/",
       "name": "Mondo"
     },
     {
-      "description": "Open and Computable Bioinformation for Phenotypic Data",
+      "description": "uPheno aims to unify the annotation of phenotypes across species.",
       "icon": "resource-upheno",
       "link": "https://obophenotype.github.io/upheno/",
       "name": "uPheno"
@@ -35,37 +35,37 @@
   ],
   "Tools": [
     {
-      "description": "Open and Computable Bioinformation for Phenotypic Data",
+      "description": "The Exomiser is a tool for finding potential disease-causing variants in whole-exome or whole-genome sequencing data.",
       "icon": "resource-exomiser",
       "link": "https://hpo.jax.org/app/tools/exomiser",
       "name": "Exomiser"
     },
     {
-      "description": "Open and Computable Bioinformation for Phenotypic Data",
+      "description": "The Monarch App is a web application for exploring the Monarch Knowledge Graph.",
       "icon": "resource-monarch",
       "link": "https://monarch-initiative.github.io/monarch-documentation",
       "name": "Monarch App"
     },
     {
-      "description": "Open and Computable Bioinformation for Phenotypic Data",
+      "description": "LIkelihood Ratio Interpretation of Clinical AbnormaLities performs phenotype-driven prioritization of candidate diseases and genes in the setting of genomic diagnostics.",
       "icon": "lirical",
       "link": "https://thejacksonlaboratory.github.io/LIRICAL/stable/",
       "name": "LIRICAL"
     },
     {
-      "description": "Open and Computable Bioinformation for Phenotypic Data",
+      "description": "OntoGPT is a Python package for extracting structured information from text with large language models (LLMs), instruction prompts, and ontology-based grounding.",
       "icon": "onto-gpt",
       "link": "https://github.com/monarch-initiative/ontogpt",
       "name": "OntoGPT"
     },
     {
-      "description": "Open and Computable Bioinformation for Phenotypic Data",
+      "description": "AI Assisted Ontology Curation.",
       "icon": "curate-gpt",
       "link": "https://curategpt.io/",
       "name": "CurateGPT"
     },
     {
-      "description": "Open and Computable Bioinformation for Phenotypic Data",
+      "description": "SSSOM Mappings collected and curated by the Monarch Initiative.",
       "icon": "resource-monarch",
       "link": "https://github.com/monarch-initiative/monarch-mapping-commons",
       "name": "Monarch Mapping Commons"
