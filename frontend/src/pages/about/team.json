@@ -198,17 +198,49 @@
     ]
   },
   {
+    "name": "Scientific Advisory Board",
+    "link": "https://monarchinit.medium.com/introducing-the-monarch-initiatives-scientific-advisory-board-40f7e1584269",
+    "members": [
+      { 
+        "name": "Elissa Chesler",
+        "link": "https://www.jax.org/research-and-faculty/faculty/elissa-chesler"
+      },
+      { 
+        "name": "Michael Hoffman",
+        "link": "https://hoffmanlab.org"
+      },
+      { 
+        "name": "Kent Lloyd",
+        "link": "https://health.ucdavis.edu/medical-center/team/21942/kevin-lloyd---genetics---cancer/"
+      },
+      { 
+        "name": "Heidi Rehm",
+        "link": "https://www.broadinstitute.org/bios/heidi-rehm"
+      },
+      { 
+        "name": "Susheel Varma",
+        "link": "https://susheelvarma.com/about/"
+      },
+      { 
+        "name": "Matthew Wheeler",
+        "link": "https://med.stanford.edu/profiles/matthew-wheeler"
+      },
+      { 
+        "name": "Jason Williams",
+        "link": "https://dnalc.cshl.edu/about/staff-bio.html#williams"
+      }
+    ]
+  },
+  {
     "name": "Alumni Members",
     "members": [
       {
         "name": "Nicole Vasilevsky",
-        "role": "Lead Biocurator",
-        "link": "https://nicolevasilevsky.github.io"
+        "role": "Lead Biocurator"
       },
       {
         "name": "David Osumi-Sutherland",
-        "role": "Monarch PI",
-        "link": "https://www.ebi.ac.uk/about/people/david-osumi-sutherland"
+        "role": "Monarch PI"
       },
       {
         "name": "Kent Shefchek",
@@ -220,8 +252,7 @@
       },
       {
         "name": "Vida Ravanmehr",
-        "role": "Postdoctoral Associate",
-        "link": "https://www.jax.org/people/vida-ravanmehr"
+        "role": "Postdoctoral Associate"
       },
       {
         "name": "Deepak Unni",
@@ -237,8 +268,7 @@
       },
       {
         "name": "Suzanna Lewis",
-        "role": "Genomics",
-        "link": "https://scholar.google.com/citations?user=mS3mpAgAAAAJ&hl=en"
+        "role": "Genomics"
       },
       {
         "name": "Jeremy Nguyen Xuan",
@@ -254,8 +284,7 @@
       },
       {
         "name": "Pilar Cacheiro",
-        "role": "Computational Biologist",
-        "link": "https://www.qmul.ac.uk/c4tb/our-team/profiles/pilar-cacheiro.html"
+        "role": "Computational Biologist"
       },
       {
         "name": "Jen Martin",
@@ -267,8 +296,7 @@
       },
       {
         "name": "Daniel Keith",
-        "role": "Bioinformatics Semantic Engineer",
-        "link": "https://doctorbud.com/"
+        "role": "Bioinformatics Semantic Engineer"
       },
       {
         "name": "Lilly Winfree",
@@ -288,28 +316,23 @@
       },
       {
         "name": "Harry Hochheiser",
-        "role": "Monarch PI",
-        "link": "https://www.phdl.pitt.edu/people/harry-hochheiser-phd"
+        "role": "Monarch PI"
       },
       {
         "name": "Michael Davis",
-        "role": "Software Developer",
-        "link": "https://www.dbmi.pitt.edu/node/1902"
+        "role": "Software Developer"
       },
       {
         "name": "Zhou (Joe) Yuan",
-        "role": "Web Application Developer",
-        "link": "https://www.dbmi.pitt.edu/node/3778"
+        "role": "Web Application Developer"
       },
       {
         "name": "Charles Borromeo",
-        "role": "Interface Architect",
-        "link": "https://www.dbmi.pitt.edu/person/charles-borromeo"
+        "role": "Interface Architect"
       },
       {
         "name": "Jeremy Espino",
-        "role": "Senior Research Scientist",
-        "link": "https://www.dbmi.pitt.edu/person/jeremy-espino-md-ms-0"
+        "role": "Senior Research Scientist"
       }
     ]
   },
