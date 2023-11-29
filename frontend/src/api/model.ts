@@ -4,6 +4,7 @@ export type ExpandedCurieId = string;
 export type EntityId = string;
 export type HistoPhenoId = string;
 export type HistoBinId = string;
+export type MappingId = string;
 export type MultiEntityAssociationResultsId = string;
 export type NodeId = string;
 export type SearchResultId = string;
@@ -63,6 +64,8 @@ export interface Association {
     has_evidence?: string[],
     /** List of ExpandedCuries with id and url for evidence */
     has_evidence_links?: ExpandedCurie[],
+    /** A concatenation of fields used to group associations with the same essential/defining properties */
+    grouping_key?: string,
     provided_by?: string,
     /** A link to the docs for the knowledge source that provided the node/edge. */
     provided_by_link?: ExpandedCurie,
@@ -74,6 +77,16 @@ export interface Association {
     onset_qualifier?: string,
     sex_qualifier?: string,
     stage_qualifier?: string,
+    /** The name of the frequency_qualifier entity */
+    qualifiers_label?: string,
+    /** The namespace/prefix of the frequency_qualifier entity */
+    qualifiers_namespace?: string,
+    /** The category of the frequency_qualifier entity */
+    qualifiers_category?: string,
+    /** Field containing frequency_qualifier id and the ids of all of it's ancestors */
+    qualifiers_closure?: string[],
+    /** Field containing frequency_qualifier name and the names of all of it's ancestors */
+    qualifiers_closure_label?: string[],
     /** The name of the frequency_qualifier entity */
     frequency_qualifier_label?: string,
     /** The namespace/prefix of the frequency_qualifier entity */
@@ -223,6 +236,8 @@ export interface DirectionalAssociation extends Association {
     has_evidence?: string[],
     /** List of ExpandedCuries with id and url for evidence */
     has_evidence_links?: ExpandedCurie[],
+    /** A concatenation of fields used to group associations with the same essential/defining properties */
+    grouping_key?: string,
     provided_by?: string,
     /** A link to the docs for the knowledge source that provided the node/edge. */
     provided_by_link?: ExpandedCurie,
@@ -234,6 +249,16 @@ export interface DirectionalAssociation extends Association {
     onset_qualifier?: string,
     sex_qualifier?: string,
     stage_qualifier?: string,
+    /** The name of the frequency_qualifier entity */
+    qualifiers_label?: string,
+    /** The namespace/prefix of the frequency_qualifier entity */
+    qualifiers_namespace?: string,
+    /** The category of the frequency_qualifier entity */
+    qualifiers_category?: string,
+    /** Field containing frequency_qualifier id and the ids of all of it's ancestors */
+    qualifiers_closure?: string[],
+    /** Field containing frequency_qualifier name and the names of all of it's ancestors */
+    qualifiers_closure_label?: string[],
     /** The name of the frequency_qualifier entity */
     frequency_qualifier_label?: string,
     /** The namespace/prefix of the frequency_qualifier entity */
@@ -291,6 +316,8 @@ export interface Entity {
     name?: string,
     /** The long form name of an entity */
     full_name?: string,
+    /** A boolean flag indicating that an entity is no longer considered current or valid. */
+    deprecated?: boolean,
     description?: string,
     xref?: string[],
     provided_by?: string,
@@ -300,6 +327,8 @@ export interface Entity {
     in_taxon_label?: string,
     symbol?: string,
     synonym?: string[],
+    /** The URI of the entity */
+    uri?: string,
 };
 
 export interface EntityResults extends Results {
@@ -337,6 +366,33 @@ export interface HistoBin extends FacetValue {
     /** count of documents */
     count?: number,
 };
+/**
+ * A minimal class to hold a SSSOM mapping
+ */
+export interface Mapping {
+    subject_id: string,
+    /** The name of the subject entity */
+    subject_label?: string,
+    predicate_id: string,
+    object_id: string,
+    /** The name of the object entity */
+    object_label?: string,
+    mapping_justification?: string,
+    id: string,
+};
+/**
+ * SSSOM Mappings returned as a results collection
+ */
+export interface MappingResults extends Results {
+    /** A collection of items, with the type to be overriden by slot_usage */
+    items: Mapping[],
+    /** number of items to return in a response */
+    limit: number,
+    /** offset into the total number of items */
+    offset: number,
+    /** total number of items matching a query */
+    total: number,
+};
 
 export interface MultiEntityAssociationResults extends Results {
     id: string,
@@ -362,6 +418,8 @@ export interface Node extends Entity {
     causal_gene?: Entity[],
     /** A list of diseases that are known to be causally associated with a gene */
     causes_disease?: Entity[],
+    /** List of ExpandedCuries with id and url for mapped entities */
+    mappings?: ExpandedCurie[],
     /** ExpandedCurie with id and url for xrefs */
     external_links?: ExpandedCurie[],
     /** A link to the docs for the knowledge source that provided the node/edge. */
@@ -373,11 +431,15 @@ export interface Node extends Entity {
     name?: string,
     /** The long form name of an entity */
     full_name?: string,
+    /** A boolean flag indicating that an entity is no longer considered current or valid. */
+    deprecated?: boolean,
     description?: string,
     xref?: string[],
     provided_by?: string,
     symbol?: string,
     synonym?: string[],
+    /** The URI of the entity */
+    uri?: string,
 };
 
 export interface NodeHierarchy {
@@ -403,6 +465,8 @@ export interface SearchResult extends Entity {
     name: string,
     /** The long form name of an entity */
     full_name?: string,
+    /** A boolean flag indicating that an entity is no longer considered current or valid. */
+    deprecated?: boolean,
     description?: string,
     xref?: string[],
     provided_by?: string,
@@ -412,6 +476,8 @@ export interface SearchResult extends Entity {
     in_taxon_label?: string,
     symbol?: string,
     synonym?: string[],
+    /** The URI of the entity */
+    uri?: string,
 };
 
 export interface SearchResults extends Results {
@@ -437,14 +503,12 @@ export interface PairwiseSimilarity {
  * A simple pairwise similarity between two atomic concepts/terms
  */
 export interface TermPairwiseSimilarity extends PairwiseSimilarity {
-    /** The first of the two entities being compared */
     subject_id: string,
     /** The name of the subject entity */
     subject_label?: string,
     /** the source for the first entity */
     subject_source?: string,
-    /** The second of the two entities being compared */
-    object_id?: string,
+    object_id: string,
     /** The name of the object entity */
     object_label?: string,
     /** the source for the second entity */
@@ -455,18 +519,18 @@ export interface TermPairwiseSimilarity extends PairwiseSimilarity {
     ancestor_label?: string,
     ancestor_source?: string,
     /** The IC of the object */
-    object_information_content?: string,
+    object_information_content?: number,
     /** The IC of the subject */
-    subject_information_content?: string,
+    subject_information_content?: number,
     /** The IC of the object */
-    ancestor_information_content?: string,
+    ancestor_information_content?: number,
     /** The number of concepts in the intersection divided by the number in the union */
-    jaccard_similarity?: string,
+    jaccard_similarity?: number,
     /** the dot product of two node embeddings divided by the product of their lengths */
     cosine_similarity?: number,
-    dice_similarity?: string,
+    dice_similarity?: number,
     /** the geometric mean of the jaccard similarity and the information content */
-    phenodigm_score?: string,
+    phenodigm_score?: number,
 };
 /**
  * A simple pairwise similarity between two sets of concepts/terms

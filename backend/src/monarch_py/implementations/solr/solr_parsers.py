@@ -16,11 +16,14 @@ from monarch_py.datamodels.model import (
     FacetValue,
     HistoBin,
     HistoPheno,
+    Mapping,
+    MappingResults,
     SearchResult,
     SearchResults,
 )
 from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQueryResult
 from monarch_py.utils.association_type_utils import get_association_type_mapping_by_query_string
+from monarch_py.utils.entity_utils import get_uri
 from monarch_py.utils.utils import get_links_for_field, get_provided_by_link
 
 ####################
@@ -85,6 +88,8 @@ def parse_association_counts(query_result: SolrQueryResult, entity: str) -> Asso
 def parse_entity(solr_document: Dict) -> Entity:
     try:
         entity = Entity(**solr_document)
+
+        entity.uri = get_uri(entity.id)
     except ValidationError:
         logger.error(f"Validation error for {solr_document}")
         raise
@@ -164,6 +169,19 @@ def parse_autocomplete(query_result: SolrQueryResult) -> SearchResults:
             logger.error(f"Validation error for {doc}")
             raise
     return SearchResults(limit=10, offset=0, total=total, items=items)
+
+
+def parse_mappings(query_result: SolrQueryResult, offset: int = 0, limit: int = 20) -> MappingResults:
+    total = query_result.response.num_found
+    items = []
+    for doc in query_result.response.docs:
+        try:
+            result = Mapping(**doc)
+            items.append(result)
+        except ValidationError:
+            logger.error(f"Validation error for {doc}")
+            raise
+    return MappingResults(limit=limit, offset=offset, total=total, items=items)
 
 
 ##################

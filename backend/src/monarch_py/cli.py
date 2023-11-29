@@ -307,5 +307,27 @@ def multi_entity_associations(
     solr_cli.multi_entity_associations(**locals())
 
 
+@app.command("mappings")
+def mappings(
+    entity_id: List[str] = typer.Option(None, "--entity-id", "-e", help="entity ID to get mappings for"),
+    subject_id: List[str] = typer.Option(None, "--subject-id", "-s", help="subject ID to get mappings for"),
+    predicate_id: List[str] = typer.Option(None, "--predicate-id", "-p", help="predicate ID to get mappings for"),
+    object_id: List[str] = typer.Option(None, "--object-id", "-o", help="object ID to get mappings for"),
+    mapping_justification: List[str] = typer.Option(
+        None, "--mapping-justification", "-m", help="mapping justification to get mappings for"
+    ),
+    offset: int = typer.Option(0, "--offset", help="The offset of the first mapping to be retrieved"),
+    limit: int = typer.Option(20, "--limit", "-l", help="The number of mappings to return"),
+    fmt: str = typer.Option(
+        "json",
+        "--format",
+        "-f",
+        help="The format of the output (json, yaml, tsv, table)",
+    ),
+    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
+):
+    solr_cli.mappings(**locals())
+
+
 if __name__ == "__main__":
     app()

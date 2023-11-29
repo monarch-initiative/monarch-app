@@ -8,6 +8,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi anemia",
       "full_name": null,
+      "deprecated": null,
       "description": "Fanconi anemia (FA) is a hereditary DNA repair disorder characterized by progressive pancytopenia with bone marrow failure, variable congenital malformations and predisposition to develop hematological or solid tumors.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -23,6 +24,7 @@
         "pancytopenia, congenital",
         "primary erythroid hypoplasia"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -31,6 +33,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi renotubular syndrome",
       "full_name": null,
+      "deprecated": null,
       "description": "A genetic or acquired disorder characterized by impairment of the function of the proximal tubules of the kidney. It results in decreased reabsorption of electrolytes, glucose, amino acids, and other nutrients.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -51,6 +54,7 @@
         "infantile nephropathic cystinosis",
         "toni-debre-Fanconi syndrome"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -59,6 +63,7 @@
       "category": "biolink:Disease",
       "name": "primary Fanconi syndrome",
       "full_name": null,
+      "deprecated": null,
       "description": "A condition in which the kidneys do not absorb certain substances into the body. These substances, such as cysteine, fructose, galactose, or glycogen, are lost in the urine. Fanconi syndrome is thought to be caused by genetic and environmental factors, and it may be diagnosed at any age. Symptoms of Fanconi syndrome include increased urine production (which may cause dehydration), weakness, and abnormalities of the bones.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -70,6 +75,7 @@
         "Fanconi renotubular syndrome 1",
         "primary Fanconi renotubular syndrome"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -78,6 +84,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi-like syndrome",
       "full_name": null,
+      "deprecated": null,
       "description": "A syndrome characterized by pancytopenia, immune deficiency and cutaneous malignancies.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -85,6 +92,7 @@
       "in_taxon_label": null,
       "symbol": null,
       "synonym": ["Fanconi-like syndrome"],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -93,6 +101,7 @@
       "category": "biolink:Disease",
       "name": "adult Fanconi syndrome",
       "full_name": null,
+      "deprecated": null,
       "description": "Probably related to a recessive gene, this is Fanconi Syndrome, characterised by adult onset.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -100,6 +109,7 @@
       "in_taxon_label": null,
       "symbol": null,
       "synonym": ["adult Fanconi syndrome", "adult Fanconi's syndrome"],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -108,6 +118,7 @@
       "category": "biolink:Disease",
       "name": "acquired Fanconi syndrome",
       "full_name": null,
+      "deprecated": null,
       "description": "Fanconi Syndrome caused by exposure to noxious agents.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -115,21 +126,7 @@
       "in_taxon_label": null,
       "symbol": null,
       "synonym": ["acquired Fanconi syndrome"],
-      "highlight": null,
-      "score": null
-    },
-    {
-      "id": "MONDO:0000026",
-      "category": "biolink:Disease",
-      "name": "obsolete Fanconi renotubular syndrome",
-      "full_name": null,
-      "description": null,
-      "xref": [],
-      "provided_by": "phenio_nodes",
-      "in_taxon": null,
-      "in_taxon_label": null,
-      "symbol": null,
-      "synonym": [],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -138,6 +135,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi renotubular syndrome 2",
       "full_name": null,
+      "deprecated": null,
       "description": "Any Fanconi syndrome in which the cause of the disease is a mutation in the SLC34A1 gene.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -151,6 +149,7 @@
         "Fanconi syndrome caused by mutation in SLC34A1",
         "SLC34A1 Fanconi syndrome"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -159,6 +158,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi renotubular syndrome 3",
       "full_name": null,
+      "deprecated": null,
       "description": "Any Fanconi syndrome in which the cause of the disease is a mutation in the EHHADH gene.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -172,6 +172,7 @@
         "Fanconi renotubular syndrome type 3",
         "Fanconi syndrome caused by mutation in EHHADH"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -180,6 +181,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi renotubular syndrome 1",
       "full_name": null,
+      "deprecated": null,
       "description": null,
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -198,6 +200,7 @@
         "primary Fanconi renotubular syndrome",
         "renal Fanconi syndrome"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -206,6 +209,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi renotubular syndrome 5",
       "full_name": null,
+      "deprecated": null,
       "description": null,
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -218,6 +222,7 @@
         "Fanconi Renotubular Syndrome, Acadian Variant",
         "Fanconi renotubular syndrome 5"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -226,6 +231,7 @@
       "category": "biolink:Disease",
       "name": "inherited Fanconi renotubular syndrome",
       "full_name": null,
+      "deprecated": null,
       "description": "An instance of Fanconi renotubular syndrome that is inherited.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -233,6 +239,7 @@
       "in_taxon_label": null,
       "symbol": null,
       "synonym": ["hereditary Fanconi renotubular syndrome"],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -241,6 +248,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi anemia complementation group C",
       "full_name": null,
+      "deprecated": null,
       "description": "Fanconi anemia caused by mutations of the FANCC gene. This gene provides instructions for making a protein that delays the onset of apoptosis and promotes homologous recombination repair of damaged DNA.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -259,6 +267,7 @@
         "Fanconi pancytopenia, type 3",
         "facc"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -267,6 +276,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi anemia complementation group D2",
       "full_name": null,
+      "deprecated": null,
       "description": "Fanconi anemia caused by mutations of the FANCD2 gene. This gene is involved in the repair of DNA double-strand breaks, both by homologous recombination and single-strand annealing.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -284,6 +294,7 @@
         "Fanconi pancytopenia type 4",
         "Fanconi pancytopenia, type 4"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -292,6 +303,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi anemia complementation group A",
       "full_name": null,
+      "deprecated": null,
       "description": "Fanconi anemia caused by mutations of the FANCA gene. FANCA gene mutations are the most common cause of Fanconi anemia. This gene provides instructions for making a protein that is involved in the Fanconi anemia (FA) pathway.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -311,6 +323,7 @@
         "Fanconi anemia complementation group type A",
         "Fanconi anemia, complementation group A"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -319,6 +332,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi anemia complementation group B",
       "full_name": null,
+      "deprecated": null,
       "description": "Fanconi anemia caused by mutations of the FANCB gene. This gene encodes the protein for complementation group B.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -337,6 +351,7 @@
         "Fanconi pancytopenia type 2",
         "Fanconi pancytopenia, type 2"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -345,6 +360,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi anemia complementation group E",
       "full_name": null,
+      "deprecated": null,
       "description": "Fanconi anemia caused by mutations of the FANCE gene. This is a protein coding gene. It is required for the nuclear accumulation of FANCC and provides a critical bridge between the FA complex and FANCD2.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -361,6 +377,7 @@
         "Fanconi anemia, complementation group E",
         "face"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -369,6 +386,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi anemia complementation group F",
       "full_name": null,
+      "deprecated": null,
       "description": "Fanconi anemia caused by mutations of the FANCF gene. This gene encodes a polypeptide with homology to the prokaryotic RNA-binding protein ROM.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -382,6 +400,7 @@
         "Fanconi anemia complementation group type F",
         "Fanconi anemia, complementation group F"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -390,6 +409,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi anemia complementation group D1",
       "full_name": null,
+      "deprecated": null,
       "description": "Inherited cancer-predisposing syndrome due to biallelic BRCA2 mutations is a rare cancer-predisposing syndrome, associated with the D1 subgroup of Fanconi anemia (FA), characterized by progressive bone marrow failure, cardiac, brain, intestinal or skeletal abnormalities and predisposition to various malignancies. Bone marrow suppression and the incidence of developmental abnormalities are less frequent than in other FA, but cancer risk is very high with the spectrum of childhood cancers including Wilms tumor, brain tumor (often medulloblastoma) and ALL/AML.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -404,6 +424,7 @@
         "Fanconi anemia, complementation group D1",
         "inherited cancer-predisposing syndrome due to biallelic BRCA2 mutations"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -412,6 +433,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi anemia complementation group I",
       "full_name": null,
+      "deprecated": null,
       "description": "Fanconi anemia caused by mutations in the FANCI gene, encoding Fanconi anemia group I protein.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -426,6 +448,30 @@
         "Fanconi anemia complementation group type I",
         "Fanconi anemia, complementation group I"
       ],
+      "uri": null,
+      "highlight": null,
+      "score": null
+    },
+    {
+      "id": "MONDO:0012187",
+      "category": "biolink:Disease",
+      "name": "Fanconi anemia complementation group J",
+      "full_name": null,
+      "deprecated": null,
+      "description": "Fanconi anemia caused by mutations in the BRIP1 gene, encoding Fanconi anemia group J protein.",
+      "xref": [],
+      "provided_by": "phenio_nodes",
+      "in_taxon": null,
+      "in_taxon_label": null,
+      "symbol": null,
+      "synonym": [
+        "FANCJ",
+        "Fanconi Anemia, complementation group type J",
+        "Fanconi anemia complementation group J",
+        "Fanconi anemia complementation group type J",
+        "Fanconi anemia, complementation group J"
+      ],
+      "uri": null,
       "highlight": null,
       "score": null
     }

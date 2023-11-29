@@ -50,6 +50,13 @@
         Explore
       </AppLink>
       <AppLink
+        v-tooltip="'Learn about Monarch Tools and Resources'"
+        class="link"
+        to="/resources"
+      >
+        Resources
+      </AppLink>
+      <AppLink
         v-tooltip="'Citing, licensing, sources, and other info'"
         class="link"
         to="/about"
@@ -111,7 +118,7 @@ onClickOutside(header, close);
 </script>
 
 <style lang="scss" scoped>
-$wrap: 900px;
+$wrap: 1000px;
 
 /** header */
 
@@ -242,8 +249,8 @@ $wrap: 900px;
 .nav {
   display: flex;
   align-items: center;
-  justify-content: center;
-  max-width: 100%;
+  justify-content: flex-end;
+  width: 100%;
   padding: 15px;
   gap: 10px;
 }

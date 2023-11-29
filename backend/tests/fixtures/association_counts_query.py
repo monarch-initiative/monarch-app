@@ -40,6 +40,7 @@ def association_counts_query():
         ],
         "query_fields": None,
         "def_type": "edismax",
+        "q_op": "AND",
         "mm": "100%",
         "boost": None,
         "sort": None,

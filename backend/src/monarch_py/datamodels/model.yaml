@@ -53,6 +53,7 @@ classes:
       - evidence_count
       - has_evidence
       - has_evidence_links
+      - grouping_key
       - provided_by
       - provided_by_link
       - publications
@@ -62,6 +63,11 @@ classes:
       - onset_qualifier
       - sex_qualifier
       - stage_qualifier
+      - qualifiers_label
+      - qualifiers_namespace
+      - qualifiers_category
+      - qualifiers_closure
+      - qualifiers_closure_label
       - frequency_qualifier_label
       - frequency_qualifier_namespace
       - frequency_qualifier_category
@@ -160,6 +166,7 @@ classes:
       - category
       - name
       - full_name
+      - deprecated
       - description
       - xref
       - provided_by
@@ -167,6 +174,7 @@ classes:
       - in_taxon_label
       - symbol
       - synonym
+      - uri
   EntityResults:
     is_a: Results
     slots:
@@ -193,6 +201,25 @@ classes:
     is_a: FacetValue
     slots:
       - id
+  Mapping:
+    description: >-
+      A minimal class to hold a SSSOM mapping
+    slots:
+      - subject_id
+      - subject_label
+      - predicate_id
+      - object_id
+      - object_label
+      - mapping_justification
+      - id
+  MappingResults:
+    description: SSSOM Mappings returned as a results collection
+    is_a: Results
+    slots:
+      - items
+    slot_usage:
+      items:
+        range: Mapping
   MultiEntityAssociationResults:
     is_a: Results
     slots:
@@ -208,6 +235,7 @@ classes:
       - inheritance
       - causal_gene
       - causes_disease
+      - mappings
       - external_links
       - provided_by_link
       - association_counts
@@ -277,6 +305,13 @@ slots:
       The category of the counterpart entity in a given association, 
       eg. the category of the entity that is not the subject
     range: string
+  deprecated:
+    description: >-
+      A boolean flag indicating that an entity is no longer considered current or valid.
+    range: boolean
+    exact_mappings:
+      - oboInOwl:ObsoleteClass
+
   description:
     range: string
   direction:
@@ -316,6 +351,9 @@ slots:
     range: string
   full_name:
     description: The long form name of an entity
+    range: string
+  grouping_key:
+    description: A concatenation of fields used to group associations with the same essential/defining properties
     range: string
   has_evidence:
     range: string
@@ -438,6 +476,8 @@ slots:
   xref:
     multivalued: true
     range: string
+  uri:
+    description: The URI of the entity
   url:
     range: string
   subject_label:
@@ -478,6 +518,23 @@ slots:
     is_a: in_taxon
   object_taxon_label:
     is_a: in_taxon_label
+
+  # this whole block will be renamed to qualifer_ after we bring in the next biolink model release
+  qualifiers_label:
+    is_a: name
+    description: The name of the frequency_qualifier entity
+  qualifiers_namespace:
+    range: string
+    description: The namespace/prefix of the frequency_qualifier entity
+  qualifiers_category:
+    is_a: category
+    description: The category of the frequency_qualifier entity
+  qualifiers_closure:
+    multivalued: true
+    description: Field containing frequency_qualifier id and the ids of all of it's ancestors
+  qualifiers_closure_label:
+    multivalued: true
+    description: Field containing frequency_qualifier name and the names of all of it's ancestors
   frequency_qualifier_label:
     is_a: name
     description: The name of the frequency_qualifier entity
@@ -538,3 +595,23 @@ slots:
   stage_qualifier_closure_label:
     multivalued: true
     description: Field containing stage_qualifier name and the names of all of it's ancestors
+  
+  # sssom slots
+  mappings:
+    description: List of ExpandedCuries with id and url for mapped entities
+    range: ExpandedCurie
+    multivalued: true
+    inlined_as_list: true
+  subject_id:
+    range: string
+    required: true
+  # subject label is already included in this schema
+  predicate_id:
+    range: string
+    required: true
+  object_id:
+    range: string
+    required: true
+  # object label is already included in this schema
+  mapping_justification:
+      range: string

@@ -108,24 +108,28 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { groupBy, mapValues, sortBy, startCase, uniq } from "lodash";
+import { groupBy, mapValues, sortBy, startCase, uniq, uniqBy } from "lodash";
 import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
 import type { SearchResults } from "@/api/model";
 import { getAutocomplete, getSearch } from "@/api/search";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
-import type { Options as AutocompleteOptions } from "@/components/AppSelectAutocomplete.vue";
+import type {
+  Options as AutocompleteOptions,
+  Option,
+} from "@/components/AppSelectAutocomplete.vue";
 import AppSelectAutocomplete from "@/components/AppSelectAutocomplete.vue";
 import type { Options as MultiOptions } from "@/components/AppSelectMulti.vue";
 import AppSelectMulti from "@/components/AppSelectMulti.vue";
 import AppWrapper from "@/components/AppWrapper.vue";
-import { addEntry, deleteEntry, history } from "@/global/history";
+import { deleteEntry, history } from "@/global/history";
 import { appTitle } from "@/global/meta";
 import { useQuery } from "@/util/composables";
+import { waitFor } from "@/util/dom";
 
 type Props = {
   /** whether to show pared down version with just search box */
   minimal?: boolean;
-  /** whether to style search box for header */
+  /** whether search box is in header */
   headerBox?: boolean;
   /** whether to navigate to explore page when focusing search box */
   focusExplore?: boolean;
@@ -159,25 +163,48 @@ async function onFocus() {
   /** navigate to explore page */
   await router.push({ ...route, name: "Explore" });
   /** refocus box */
-  document?.querySelector("input")?.focus();
+  const input = await waitFor<HTMLInputElement>("input");
+  input?.focus();
 }
 
-/** when user "submits" text box */
-function onChange(value: string) {
-  search.value = value;
-  page.value = 0;
+/** when user "submits" search */
+async function onChange(value: string | Option, originalSearch: string) {
+  if (typeof value !== "string" && value.id && value.id !== viewAll.id) {
+    /** go directly to node page of selected option */
+    await router.push("/" + value.id);
+  } else {
+    /** if in header and search cleared, don't navigate away */
+    if (props.headerBox && !originalSearch) return;
+    /** view all results on explore page */
+    await router.push({
+      name: "Explore",
+      query: {
+        search: originalSearch,
+      },
+      hash: "#search",
+    });
+  }
 }
 
 /** when user deletes entry in textbox */
-function onDelete(value: string) {
+function onDelete(value: Option) {
   deleteEntry(value);
 }
 
-/** when user changes selected options */
+/** when user changes selected ƒacet options */
 function onSelectedChange() {
   page.value = 0;
   runGetSearch(false);
 }
+
+/** autocomplete option for viewing all/detailed results on explore page */
+const viewAll: Option = {
+  id: "ALL",
+  label: "View all results...",
+  icon: "arrow-right",
+  // info: "on explore page",
+  special: true,
+};
 
 /** get autocomplete results */
 async function runGetAutocomplete(
@@ -185,13 +212,16 @@ async function runGetAutocomplete(
 ): Promise<AutocompleteOptions> {
   /** if something typed in, get autocomplete options from backend */
   if (search.trim())
-    return (await getAutocomplete(search)).items.map((item) => ({
-      label: item.name.toLowerCase(),
-      tooltip: "",
-      info:
-        /** show duplicates for gene symbols */
-        item.name === item.symbol ? item.dupes.join(" / ") : undefined,
-    }));
+    return [
+      viewAll,
+      ...(await getAutocomplete(search)).items.map((item) => ({
+        id: item.id,
+        label: item.name,
+        info: item.in_taxon_label || item.id,
+        icon: getCategoryIcon(item.category),
+        tooltip: "",
+      })),
+    ] satisfies AutocompleteOptions;
 
   /**
    * otherwise, if search box focused and nothing is typed in yet, show some
@@ -201,19 +231,19 @@ async function runGetAutocomplete(
   /** show top N entries in each category */
   const top = 5;
 
-  /** recent searches */
-  const recent = uniq([...history.value].reverse())
+  /** recent */
+  const recent: AutocompleteOptions = uniqBy([...history.value].reverse(), "id")
     .slice(0, top)
-    .map((search) => ({
-      label: search,
+    .map((entry) => ({
+      ...entry,
       icon: "clock-rotate-left",
-      tooltip: "One of your recent searches",
+      tooltip: "Node you recently visited",
     }));
 
-  /** most popular searches */
-  const popular = sortBy(
-    Object.entries(groupBy(history.value)).map(([search, matches]) => ({
-      search,
+  /** popular */
+  const popular: AutocompleteOptions = sortBy(
+    Object.entries(groupBy(history.value, "id")).map(([, matches]) => ({
+      entry: matches[0],
       count: matches.length,
     })),
     "count",
@@ -221,21 +251,21 @@ async function runGetAutocomplete(
     .filter(({ count }) => count >= 3)
     .reverse()
     .slice(0, top)
-    .map(({ search }) => ({
-      label: search,
+    .map(({ entry }) => ({
+      ...entry,
       icon: "person-running",
-      tooltip: "One of your frequent node searches",
+      tooltip: "Node you frequently visit",
     }));
 
-  /** example searches */
-  const examples = [
-    "Ehlers-Danlos hypermobility",
-    "SSH",
-    "Multicystic kidney dysplasia",
-  ].map((search) => ({
-    label: search,
+  /** examples */
+  const examples: AutocompleteOptions = [
+    { id: "MONDO:0007523", label: "Ehlers-Danlos hypermobility" },
+    { id: "FB:FBgn0029157", label: "SSH" },
+    { id: "MONDO:0015988", label: "Multicystic kidney dysplasia" },
+  ].map((entry) => ({
+    ...entry,
     icon: "lightbulb",
-    tooltip: "Example search",
+    tooltip: "Example node",
   }));
 
   return [...recent, ...popular, ...examples];
@@ -302,9 +332,6 @@ const {
       dropdownsOptions.value = { ...options };
       dropdownsSelected.value = { ...options };
     }
-
-    /** add search to history */
-    addEntry(search.value);
   },
 );
 
@@ -364,15 +391,6 @@ watch(
   { immediate: true, flush: "post" },
 );
 
-/** when search changes */
-watch(search, async () => {
-  /** update url */
-  const query: { [key: string]: string } = {};
-  if (search.value) query.search = search.value;
-  /** navigate to explore page */
-  await router.push({ ...route, name: "Explore", query, hash: "#search" });
-});
-
 /** when start page changes */
 watch(from, () => runGetSearch(false));
 </script>
@@ -429,8 +447,7 @@ watch(from, () => runGetSearch(false));
 }
 
 .header-box {
-  width: 300px;
-  max-width: 100%;
+  width: 100%;
 }
 
 .header-box :deep(input) {
@@ -444,7 +461,7 @@ watch(from, () => runGetSearch(false));
 }
 
 .header-box :deep(.icon) {
-  color: currentColor;
+  color: currentColor !important;
 }
 </style>
 

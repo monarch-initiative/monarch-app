@@ -2,7 +2,7 @@ from __future__ import annotations
 from datetime import datetime, date
 from enum import Enum
 from typing import List, Dict, Optional, Any, Union
-from pydantic import BaseModel as BaseModel, Field
+from pydantic import BaseModel as BaseModel, ConfigDict, Field
 import sys
 
 if sys.version_info >= (3, 8):
@@ -90,6 +90,10 @@ class Association(ConfiguredBaseModel):
         default_factory=list,
         description="""List of ExpandedCuries with id and url for evidence""",
     )
+    grouping_key: Optional[str] = Field(
+        None,
+        description="""A concatenation of fields used to group associations with the same essential/defining properties""",
+    )
     provided_by: Optional[str] = Field(None)
     provided_by_link: Optional[ExpandedCurie] = Field(
         None,
@@ -105,6 +109,19 @@ class Association(ConfiguredBaseModel):
     onset_qualifier: Optional[str] = Field(None)
     sex_qualifier: Optional[str] = Field(None)
     stage_qualifier: Optional[str] = Field(None)
+    qualifiers_label: Optional[str] = Field(None, description="""The name of the frequency_qualifier entity""")
+    qualifiers_namespace: Optional[str] = Field(
+        None, description="""The namespace/prefix of the frequency_qualifier entity"""
+    )
+    qualifiers_category: Optional[str] = Field(None, description="""The category of the frequency_qualifier entity""")
+    qualifiers_closure: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing frequency_qualifier id and the ids of all of it's ancestors""",
+    )
+    qualifiers_closure_label: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing frequency_qualifier name and the names of all of it's ancestors""",
+    )
     frequency_qualifier_label: Optional[str] = Field(None, description="""The name of the frequency_qualifier entity""")
     frequency_qualifier_namespace: Optional[str] = Field(
         None, description="""The namespace/prefix of the frequency_qualifier entity"""
@@ -250,6 +267,10 @@ class DirectionalAssociation(Association):
         default_factory=list,
         description="""List of ExpandedCuries with id and url for evidence""",
     )
+    grouping_key: Optional[str] = Field(
+        None,
+        description="""A concatenation of fields used to group associations with the same essential/defining properties""",
+    )
     provided_by: Optional[str] = Field(None)
     provided_by_link: Optional[ExpandedCurie] = Field(
         None,
@@ -265,6 +286,19 @@ class DirectionalAssociation(Association):
     onset_qualifier: Optional[str] = Field(None)
     sex_qualifier: Optional[str] = Field(None)
     stage_qualifier: Optional[str] = Field(None)
+    qualifiers_label: Optional[str] = Field(None, description="""The name of the frequency_qualifier entity""")
+    qualifiers_namespace: Optional[str] = Field(
+        None, description="""The namespace/prefix of the frequency_qualifier entity"""
+    )
+    qualifiers_category: Optional[str] = Field(None, description="""The category of the frequency_qualifier entity""")
+    qualifiers_closure: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing frequency_qualifier id and the ids of all of it's ancestors""",
+    )
+    qualifiers_closure_label: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing frequency_qualifier name and the names of all of it's ancestors""",
+    )
     frequency_qualifier_label: Optional[str] = Field(None, description="""The name of the frequency_qualifier entity""")
     frequency_qualifier_namespace: Optional[str] = Field(
         None, description="""The namespace/prefix of the frequency_qualifier entity"""
@@ -339,6 +373,10 @@ class Entity(ConfiguredBaseModel):
     category: Optional[str] = Field(None)
     name: Optional[str] = Field(None)
     full_name: Optional[str] = Field(None, description="""The long form name of an entity""")
+    deprecated: Optional[bool] = Field(
+        None,
+        description="""A boolean flag indicating that an entity is no longer considered current or valid.""",
+    )
     description: Optional[str] = Field(None)
     xref: Optional[List[str]] = Field(default_factory=list)
     provided_by: Optional[str] = Field(None)
@@ -349,6 +387,7 @@ class Entity(ConfiguredBaseModel):
     )
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)
+    uri: Optional[str] = Field(None, description="""The URI of the entity""")
 
 
 class FacetValue(ConfiguredBaseModel):
@@ -389,6 +428,20 @@ class HistoBin(FacetValue):
     count: Optional[int] = Field(None, description="""count of documents""")
 
 
+class Mapping(ConfiguredBaseModel):
+    """
+    A minimal class to hold a SSSOM mapping
+    """
+
+    subject_id: str = Field(...)
+    subject_label: Optional[str] = Field(None, description="""The name of the subject entity""")
+    predicate_id: str = Field(...)
+    object_id: str = Field(...)
+    object_label: Optional[str] = Field(None, description="""The name of the object entity""")
+    mapping_justification: Optional[str] = Field(None)
+    id: str = Field(...)
+
+
 class Node(Entity):
     """
     UI container class extending Entity with additional information
@@ -408,6 +461,10 @@ class Node(Entity):
         default_factory=list,
         description="""A list of diseases that are known to be causally associated with a gene""",
     )
+    mappings: Optional[List[ExpandedCurie]] = Field(
+        default_factory=list,
+        description="""List of ExpandedCuries with id and url for mapped entities""",
+    )
     external_links: Optional[List[ExpandedCurie]] = Field(
         default_factory=list, description="""ExpandedCurie with id and url for xrefs"""
     )
@@ -421,11 +478,16 @@ class Node(Entity):
     category: Optional[str] = Field(None)
     name: Optional[str] = Field(None)
     full_name: Optional[str] = Field(None, description="""The long form name of an entity""")
+    deprecated: Optional[bool] = Field(
+        None,
+        description="""A boolean flag indicating that an entity is no longer considered current or valid.""",
+    )
     description: Optional[str] = Field(None)
     xref: Optional[List[str]] = Field(default_factory=list)
     provided_by: Optional[str] = Field(None)
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)
+    uri: Optional[str] = Field(None, description="""The URI of the entity""")
 
 
 class NodeHierarchy(ConfiguredBaseModel):
@@ -489,6 +551,20 @@ class EntityResults(Results):
     total: int = Field(..., description="""total number of items matching a query""")
 
 
+class MappingResults(Results):
+    """
+    SSSOM Mappings returned as a results collection
+    """
+
+    items: List[Mapping] = Field(
+        default_factory=list,
+        description="""A collection of items, with the type to be overriden by slot_usage""",
+    )
+    limit: int = Field(..., description="""number of items to return in a response""")
+    offset: int = Field(..., description="""offset into the total number of items""")
+    total: int = Field(..., description="""total number of items matching a query""")
+
+
 class MultiEntityAssociationResults(Results):
 
     id: str = Field(...)
@@ -507,6 +583,10 @@ class SearchResult(Entity):
     category: str = Field(...)
     name: str = Field(...)
     full_name: Optional[str] = Field(None, description="""The long form name of an entity""")
+    deprecated: Optional[bool] = Field(
+        None,
+        description="""A boolean flag indicating that an entity is no longer considered current or valid.""",
+    )
     description: Optional[str] = Field(None)
     xref: Optional[List[str]] = Field(default_factory=list)
     provided_by: Optional[str] = Field(None)
@@ -517,6 +597,7 @@ class SearchResult(Entity):
     )
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)
+    uri: Optional[str] = Field(None, description="""The URI of the entity""")
 
 
 class SearchResults(Results):
@@ -551,10 +632,10 @@ class TermPairwiseSimilarity(PairwiseSimilarity):
     A simple pairwise similarity between two atomic concepts/terms
     """
 
-    subject_id: str = Field(..., description="""The first of the two entities being compared""")
+    subject_id: str = Field(...)
     subject_label: Optional[str] = Field(None, description="""The name of the subject entity""")
     subject_source: Optional[str] = Field(None, description="""the source for the first entity""")
-    object_id: Optional[str] = Field(None, description="""The second of the two entities being compared""")
+    object_id: str = Field(...)
     object_label: Optional[str] = Field(None, description="""The name of the object entity""")
     object_source: Optional[str] = Field(None, description="""the source for the second entity""")
     ancestor_id: Optional[str] = Field(
@@ -626,6 +707,7 @@ AssociationCount.update_forward_refs()
 FacetField.update_forward_refs()
 HistoPheno.update_forward_refs()
 HistoBin.update_forward_refs()
+Mapping.update_forward_refs()
 Node.update_forward_refs()
 NodeHierarchy.update_forward_refs()
 Results.update_forward_refs()
@@ -633,6 +715,7 @@ AssociationResults.update_forward_refs()
 AssociationTableResults.update_forward_refs()
 CategoryGroupedAssociationResults.update_forward_refs()
 EntityResults.update_forward_refs()
+MappingResults.update_forward_refs()
 MultiEntityAssociationResults.update_forward_refs()
 SearchResult.update_forward_refs()
 SearchResults.update_forward_refs()

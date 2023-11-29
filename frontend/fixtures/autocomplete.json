@@ -8,6 +8,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi renotubular syndrome",
       "full_name": null,
+      "deprecated": null,
       "description": "A genetic or acquired disorder characterized by impairment of the function of the proximal tubules of the kidney. It results in decreased reabsorption of electrolytes, glucose, amino acids, and other nutrients.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -28,6 +29,7 @@
         "infantile nephropathic cystinosis",
         "toni-debre-Fanconi syndrome"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -36,6 +38,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi anemia complementation group A",
       "full_name": null,
+      "deprecated": null,
       "description": "Fanconi anemia caused by mutations of the FANCA gene. FANCA gene mutations are the most common cause of Fanconi anemia. This gene provides instructions for making a protein that is involved in the Fanconi anemia (FA) pathway.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -55,6 +58,7 @@
         "Fanconi anemia complementation group type A",
         "Fanconi anemia, complementation group A"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -63,6 +67,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi anemia complementation group L",
       "full_name": null,
+      "deprecated": null,
       "description": "Any Fanconi anemia in which the cause of the disease is a mutation in the FANCL gene.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -79,6 +84,7 @@
         "Fanconi anemia complementation group type L",
         "Fanconi anemia, complementation group L"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -87,6 +93,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi anemia complementation group E",
       "full_name": null,
+      "deprecated": null,
       "description": "Fanconi anemia caused by mutations of the FANCE gene. This is a protein coding gene. It is required for the nuclear accumulation of FANCC and provides a critical bridge between the FA complex and FANCD2.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -103,6 +110,7 @@
         "Fanconi anemia, complementation group E",
         "face"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -111,6 +119,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi renotubular syndrome 1",
       "full_name": null,
+      "deprecated": null,
       "description": null,
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -129,6 +138,7 @@
         "primary Fanconi renotubular syndrome",
         "renal Fanconi syndrome"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -137,6 +147,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi anemia",
       "full_name": null,
+      "deprecated": null,
       "description": "Fanconi anemia (FA) is a hereditary DNA repair disorder characterized by progressive pancytopenia with bone marrow failure, variable congenital malformations and predisposition to develop hematological or solid tumors.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -152,6 +163,7 @@
         "pancytopenia, congenital",
         "primary erythroid hypoplasia"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -160,6 +172,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi anemia complementation group O",
       "full_name": null,
+      "deprecated": null,
       "description": "Any Fanconi anemia in which the cause of the disease is a mutation in the RAD51C gene.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -176,6 +189,7 @@
         "RAD51C Fanconi anemia",
         "Rad51C Fanconi anemia"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -184,6 +198,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi anemia complementation group P",
       "full_name": null,
+      "deprecated": null,
       "description": "Any Fanconi anemia in which the cause of the disease is a mutation in the SLX4 gene.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -200,6 +215,7 @@
         "SLX4 Fanconi anemia",
         "Slx4 Fanconi anemia"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -208,6 +224,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi anemia complementation group V",
       "full_name": null,
+      "deprecated": null,
       "description": "Any Fanconi anemia in which the cause of the disease is a mutation in the MAD2L2 gene.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -224,24 +241,7 @@
         "Fanconi anemia, complementation GROUP V",
         "MAD2L2 Fanconi anemia"
       ],
-      "highlight": null,
-      "score": null
-    },
-    {
-      "id": "MONDO:0100136",
-      "category": "biolink:Disease",
-      "name": "obsolete Fanconia anemia complementation group M",
-      "full_name": null,
-      "description": "OBSOLETE Any Fanconi anemia in which the cause of the disease is a mutation in the FANCM gene.",
-      "xref": [],
-      "provided_by": "phenio_nodes",
-      "in_taxon": null,
-      "in_taxon_label": null,
-      "symbol": null,
-      "synonym": [
-        "FANCM Fanconi anemia",
-        "Fanconi anemia caused by mutation in FANCM"
-      ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -250,6 +250,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi anemia complementation group B",
       "full_name": null,
+      "deprecated": null,
       "description": "Fanconi anemia caused by mutations of the FANCB gene. This gene encodes the protein for complementation group B.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -268,6 +269,7 @@
         "Fanconi pancytopenia type 2",
         "Fanconi pancytopenia, type 2"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -276,6 +278,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi anemia complementation group N",
       "full_name": null,
+      "deprecated": null,
       "description": "Any Fanconi anemia in which the cause of the disease is a mutation in the PALB2 gene.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -291,6 +294,7 @@
         "Fanconi anemia, complementation group N",
         "PALB2 Fanconi anemia"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -299,6 +303,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi anemia complementation group R",
       "full_name": null,
+      "deprecated": null,
       "description": "Any Fanconi anemia in which the cause of the disease is a mutation in the RAD51 gene.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -314,6 +319,7 @@
         "Fanconi anemia, complementation GROUP R",
         "RAD51 Fanconi anemia"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -322,6 +328,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi anemia complementation group U",
       "full_name": null,
+      "deprecated": null,
       "description": "Any Fanconi anemia in which the cause of the disease is a mutation in the XRCC2 gene.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -337,6 +344,7 @@
         "Fanconi anemia, complementation GROUP U",
         "XRCC2 Fanconi anemia"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -345,6 +353,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi anemia complementation group C",
       "full_name": null,
+      "deprecated": null,
       "description": "Fanconi anemia caused by mutations of the FANCC gene. This gene provides instructions for making a protein that delays the onset of apoptosis and promotes homologous recombination repair of damaged DNA.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -363,6 +372,7 @@
         "Fanconi pancytopenia, type 3",
         "facc"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -371,6 +381,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi anemia complementation group D2",
       "full_name": null,
+      "deprecated": null,
       "description": "Fanconi anemia caused by mutations of the FANCD2 gene. This gene is involved in the repair of DNA double-strand breaks, both by homologous recombination and single-strand annealing.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -388,6 +399,7 @@
         "Fanconi pancytopenia type 4",
         "Fanconi pancytopenia, type 4"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -396,6 +408,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi anemia complementation group I",
       "full_name": null,
+      "deprecated": null,
       "description": "Fanconi anemia caused by mutations in the FANCI gene, encoding Fanconi anemia group I protein.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -410,6 +423,7 @@
         "Fanconi anemia complementation group type I",
         "Fanconi anemia, complementation group I"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -418,6 +432,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi anemia complementation group Q",
       "full_name": null,
+      "deprecated": null,
       "description": "Any Fanconi anemia in which the cause of the disease is a mutation in the ERCC4 gene.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -432,6 +447,7 @@
         "Fanconi anemia complementation group type Q",
         "Fanconi anemia, complementation group Q"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -440,6 +456,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi anemia complementation group T",
       "full_name": null,
+      "deprecated": null,
       "description": "Any Fanconi anemia in which the cause of the disease is a mutation in the UBE2T gene.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -454,6 +471,7 @@
         "Fanconi anemia, complementation group T",
         "UBE2T Fanconi anemia"
       ],
+      "uri": null,
       "highlight": null,
       "score": null
     },
@@ -462,6 +480,7 @@
       "category": "biolink:Disease",
       "name": "Fanconi anemia complementation group F",
       "full_name": null,
+      "deprecated": null,
       "description": "Fanconi anemia caused by mutations of the FANCF gene. This gene encodes a polypeptide with homology to the prokaryotic RNA-binding protein ROM.",
       "xref": [],
       "provided_by": "phenio_nodes",
@@ -475,6 +494,30 @@
         "Fanconi anemia complementation group type F",
         "Fanconi anemia, complementation group F"
       ],
+      "uri": null,
+      "highlight": null,
+      "score": null
+    },
+    {
+      "id": "MONDO:0012187",
+      "category": "biolink:Disease",
+      "name": "Fanconi anemia complementation group J",
+      "full_name": null,
+      "deprecated": null,
+      "description": "Fanconi anemia caused by mutations in the BRIP1 gene, encoding Fanconi anemia group J protein.",
+      "xref": [],
+      "provided_by": "phenio_nodes",
+      "in_taxon": null,
+      "in_taxon_label": null,
+      "symbol": null,
+      "synonym": [
+        "FANCJ",
+        "Fanconi Anemia, complementation group type J",
+        "Fanconi anemia complementation group J",
+        "Fanconi anemia complementation group type J",
+        "Fanconi anemia, complementation group J"
+      ],
+      "uri": null,
       "highlight": null,
       "score": null
     }

@@ -5,7 +5,7 @@ import pytest
 def histopheno_response():
     return {
         "responseHeader": {
-            "QTime": 3,
+            "QTime": 4,
             "params": {
                 "facet.query": [
                     'object_closure:"HP:0000924"',
@@ -34,12 +34,13 @@ def histopheno_response():
                 "defType": "edismax",
                 "facet_min_count": "1",
                 "start": "0",
+                "q.op": "AND",
                 "fq": "subject_closure:MONDO\\:0020121",
                 "rows": "0",
                 "facet": "true",
             },
         },
-        "response": {"num_found": 4560, "start": 0, "docs": []},
+        "response": {"num_found": 4563, "start": 0, "docs": []},
         "facet_counts": {
             "facet_fields": {},
             "facet_queries": {

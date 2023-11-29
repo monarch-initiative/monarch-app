@@ -5,7 +5,7 @@ import pytest
 def autocomplete_response():
     return {
         "responseHeader": {
-            "QTime": 1,
+            "QTime": 0,
             "params": {
                 "mm": "100%",
                 "q": "fanc",
@@ -13,7 +13,8 @@ def autocomplete_response():
                 "facet_min_count": "1",
                 "qf": "id^100 name^10 name_t^5 name_ac symbol^10 symbol_t^5 symbol_ac synonym synonym_t synonym_ac",
                 "start": "0",
-                "boost": 'product(if(termfreq(category,"biolink:Disease"),10.0,1),if(and(termfreq(in_taxon,"NCBITaxon:9606"),termfreq(category,"biolink:Gene")),5.0,1))',
+                "q.op": "AND",
+                "boost": 'product(if(termfreq(category,"biolink:Disease"),10.0,1),if(and(termfreq(in_taxon,"NCBITaxon:9606"),termfreq(category,"biolink:Gene")),5.0,1),if(termfreq(deprecated,"true"),0.1,1))',
                 "rows": "20",
                 "facet": "true",
             },
@@ -183,14 +184,6 @@ def autocomplete_response():
                     "description": "Any Fanconi anemia in which the cause of the disease is a mutation in the MAD2L2 gene.",
                 },
                 {
-                    "id": "MONDO:0100136",
-                    "category": "biolink:Disease",
-                    "name": "obsolete Fanconia anemia complementation group M",
-                    "provided_by": "phenio_nodes",
-                    "synonym": ["FANCM Fanconi anemia", "Fanconi anemia caused by mutation in FANCM"],
-                    "description": "OBSOLETE Any Fanconi anemia in which the cause of the disease is a mutation in the FANCM gene.",
-                },
-                {
                     "id": "MONDO:0010351",
                     "category": "biolink:Disease",
                     "name": "Fanconi anemia complementation group B",
@@ -352,6 +345,20 @@ def autocomplete_response():
                         "Fanconi anemia, complementation group F",
                     ],
                     "description": "Fanconi anemia caused by mutations of the FANCF gene. This gene encodes a polypeptide with homology to the prokaryotic RNA-binding protein ROM.",
+                },
+                {
+                    "id": "MONDO:0012187",
+                    "category": "biolink:Disease",
+                    "name": "Fanconi anemia complementation group J",
+                    "provided_by": "phenio_nodes",
+                    "synonym": [
+                        "FANCJ",
+                        "Fanconi Anemia, complementation group type J",
+                        "Fanconi anemia complementation group J",
+                        "Fanconi anemia complementation group type J",
+                        "Fanconi anemia, complementation group J",
+                    ],
+                    "description": "Fanconi anemia caused by mutations in the BRIP1 gene, encoding Fanconi anemia group J protein.",
                 },
             ],
         },

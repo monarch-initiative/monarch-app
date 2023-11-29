@@ -16,7 +16,7 @@
         {{ title }}
       </span>
       <span v-if="count !== undefined" class="count">
-        {{ count }}
+        {{ count.toLocaleString() }}
       </span>
     </AppFlex>
 

@@ -105,6 +105,11 @@ const thickness = computed(() => {
 .custom {
   height: 1em;
 
+  /** resource icon styles */
+  &[data-icon^="resource-"] {
+    filter: brightness(0.2);
+  }
+
   /** category icon styles */
   &[data-icon^="category-"],
   &[data-icon^="association-"] {

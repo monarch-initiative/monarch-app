@@ -62,3 +62,24 @@ async def autocomplete(
     """
     response = solr().autocomplete(q=q)
     return response
+
+
+@router.get("/mappings")
+async def mappings(
+    entity_id: Union[List[str], None] = Query(default=None),
+    subject_id: Union[List[str], None] = Query(default=None),
+    predicate_id: Union[List[str], None] = Query(default=None),
+    object_id: Union[List[str], None] = Query(default=None),
+    mapping_justification: Union[List[str], None] = Query(default=None),
+    pagination: PaginationParams = Depends(),
+):
+    response = solr().get_mappings(
+        entity_id=entity_id,
+        subject_id=subject_id,
+        predicate_id=predicate_id,
+        object_id=object_id,
+        mapping_justification=mapping_justification,
+        offset=pagination.offset,
+        limit=pagination.limit,
+    )
+    return response
