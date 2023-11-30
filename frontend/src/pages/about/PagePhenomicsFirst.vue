@@ -126,10 +126,11 @@
         >Phenotype Ontologies Reconciliation Effort</AppLink
       >.
     </p>
-    <p>
-      You can find more information
-      <AppLink to="https://obophenotype.github.io/upheno/">here</AppLink>.
-    </p>
+    <AppButton
+      to="https://obophenotype.github.io/upheno/"
+      text="Learn More"
+      icon="arrow-right"
+    />
   </AppSection>
 
   <AppSection>
@@ -143,10 +144,11 @@
       manually curated cross-ontology axioms were added, and a native Mondo ID
       system was used to avoid confusion with source databases.
     </p>
-    <p>
-      You can find more information
-      <AppLink to="https://mondo.monarchinitiative.org/">here</AppLink>.
-    </p>
+    <AppButton
+      to="https://mondo.monarchinitiative.org/"
+      text="Learn More"
+      icon="arrow-right"
+    />
   </AppSection>
 
   <AppSection>
@@ -162,9 +164,10 @@
       organizations and systems that comprise the joint effort to address human
       disease and biological understanding.
     </p>
-    <p>
-      You can find more information
-      <AppLink to="http://phenopackets.org/">here</AppLink>.
-    </p>
+    <AppButton
+      to="http://phenopackets.org/"
+      text="Learn More"
+      icon="arrow-right"
+    />
   </AppSection>
 </template>
