@@ -383,8 +383,8 @@ const widths = computed((): string =>
       col.slot === "divider"
         ? "20px"
         : expanded.value
-        ? `minmax(max-content, 99999px)`
-        : `${col.width || 1}fr`,
+          ? `minmax(max-content, 99999px)`
+          : `${col.width || 1}fr`,
     )
     .join(" "),
 );
