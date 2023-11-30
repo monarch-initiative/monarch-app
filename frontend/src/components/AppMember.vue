@@ -4,8 +4,8 @@
 
 <template>
   <AppLink :to="link || ''" class="member">
-    <div class="image">
-      <img class="portrait" :src="src" :alt="name" loading="lazy" />
+    <div v-if="!noImage" class="image">
+      <img class="portrait" :src="src" alt="" loading="lazy" />
     </div>
     <div class="text">
       <div class="name">{{ name }}</div>
@@ -25,6 +25,8 @@ type Props = {
   role?: string;
   /** link to bio */
   link?: string;
+  /** hide image */
+  noImage?: true;
 };
 
 const props = defineProps<Props>();
