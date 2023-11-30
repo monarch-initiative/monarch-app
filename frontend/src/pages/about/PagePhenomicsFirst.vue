@@ -126,6 +126,10 @@
         >Phenotype Ontologies Reconciliation Effort</AppLink
       >.
     </p>
+    <p>
+      You can find more information
+      <AppLink to="https://obophenotype.github.io/upheno/">here</AppLink>.
+    </p>
   </AppSection>
 
   <AppSection>
@@ -141,7 +145,7 @@
     </p>
     <p>
       You can find more information
-      <AppLink to="https://mondo.readthedocs.io/en/latest/">here</AppLink>.
+      <AppLink to="https://mondo.monarchinitiative.org/">here</AppLink>.
     </p>
   </AppSection>
 
