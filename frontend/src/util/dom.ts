@@ -1,5 +1,9 @@
 import { sleep } from "@/util/debug";
 
+/** safely get document object */
+export const safeDocument = () =>
+  typeof document === "undefined" ? undefined : document;
+
 /** restart an element's CSS animations programmatically */
 export const restartAnimations = (element: Element): void => {
   if (element instanceof Element)
@@ -17,7 +21,7 @@ export const waitFor = async <El extends Element>(
     0, 1, 5, 10, 20, 30, 40, 50, 100, 200, 300, 400, 500, 1000, 2000, 3000,
   ];
   while (waits.length) {
-    const match = document.querySelector<El>(selector);
+    const match = safeDocument()?.querySelector<El>(selector);
     if (match) return match;
     await sleep(waits.shift());
   }
