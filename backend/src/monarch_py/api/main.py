@@ -5,7 +5,6 @@ from fastapi.responses import RedirectResponse
 from monarch_py.api import association, entity, histopheno, search, semsim
 from monarch_py.api.config import oak
 from monarch_py.api.middleware.logging_middleware import LoggingMiddleware
-from monarch_py.service.curie_service import CurieService
 
 PREFIX = "/v3/api"
 
@@ -18,8 +17,6 @@ app = FastAPI(
 @app.on_event("startup")
 async def initialize_app():
     oak()
-    # Let the curie service singleton initialize itself
-    CurieService()
 
 
 app.include_router(association.router, prefix=f"{PREFIX}/association")

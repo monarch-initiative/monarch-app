@@ -1,12 +1,11 @@
 from monarch_py.datamodels.model import ExpandedCurie
-from monarch_py.service.curie_service import CurieService
+from monarch_py.service.curie_service import converter
 
-
-def get_uri(id: str) -> str:
-    """Returns the URI for the given CURIE."""
-    return CurieService().expand(id)
+__all__ = [
+    "get_expanded_curie",
+]
 
 
 def get_expanded_curie(id: str) -> ExpandedCurie:
     """Returns the URI for the given CURIE."""
-    return ExpandedCurie(id=id, url=get_uri(id))
+    return ExpandedCurie(id=id, url=converter.expand(id))
