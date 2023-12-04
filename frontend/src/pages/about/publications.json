@@ -30,6 +30,22 @@
       "year": 2023,
       "items": [
         {
+          "title": "The Human Phenotype Ontology in 2024: phenotypes around the world",
+          "authors": "Michael A Gargano, Nicolas Matentzoglu, Ben Coleman, Eunice B Addo-Lartey, Anna V Anagnostopoulos, Joel Anderton, Paul Avillach, Anita M Bagley, Eduard Bak\u0161tein, James P Balhoff, Gareth Baynam, Susan M Bello, Michael Berk, Holli Bertram, Somer Bishop, Hannah Blau, David F Bodenstein, Pablo Botas, Kaan Boztug, Jolana \u010cady, Tiffany J Callahan, Rhiannon Cameron, Seth J Carbon, Francisco Castellanos, J Harry Caufield, Lauren E Chan, Christopher G Chute, Jaime Cruz-Rojo, No\u00e9mi Dahan-Oliel, Jon R Davids, Maud de Dieuleveult, Vinicius de Souza, Bert BA de Vries, Esther de Vries, J Raymond DePaulo, Beata Derfalvi, Ferdinand Dhombres, Claudia Diaz-Byrd, Alexander JM Dingemans, Bruno Donadille, Michael Duyzend, Reem Elfeky, Shahim Essaid, Carolina Fabrizzi, Giovanna Fico, Helen V Firth, Yun Freudenberg-Hua, Janice M Fullerton, Davera L Gabriel, Kimberly Gilmour, Jessica Giordano, Fernando S Goes, Rachel Gore Moses, Ian Green, Matthias Griese",
+          "year": 2023,
+          "journal": "Nucleic Acids Research",
+          "issue": ":gkad1005",
+          "link": "https://academic.oup.com/nar/advance-article-abstract/doi/10.1093/nar/gkad1005/7416384"
+        },
+        {
+          "title": "The Monarch Initiative in 2024: an analytic platform integrating phenotypes, genes and diseases across species",
+          "authors": "Tim E Putman, Kevin Schaper, Nicolas Matentzoglu, Vincent P Rubinetti, Faisal S Alquaddoomi, Corey Cox, J Harry Caufield, Glass Elsarboukh, Sarah Gehrke, Harshad Hegde, Justin T Reese, Ian Braun, Richard M Bruskiewich, Luca Cappelletti, Seth Carbon, Anita R Caron, Lauren E Chan, Christopher G Chute, Katherina G Cortes, Vin\u00edcius De Souza, Tommaso Fontana, Nomi L Harris, Emily L Hartley, Eric Hurwitz, Julius OB Jacobsen, Madan Krishnamurthy, Bryan J Laraway, James A McLaughlin, Julie A McMurry, Sierra AT Moxon, Kathleen R Mullen, Shawn T O\u2019Neil, Kent A Shefchek, Ray Stefancsik, Sabrina Toro, Nicole A Vasilevsky, Ramona L Walls, Patricia L Whetzel, David Osumi-Sutherland, Damian Smedley, Peter N Robinson, Christopher J Mungall, Melissa A Haendel, Monica C Munoz-Torres",
+          "year": 2023,
+          "journal": "Nucleic Acids Research",
+          "issue": ":gkad1082",
+          "link": "https://academic.oup.com/nar/advance-article-abstract/doi/10.1093/nar/gkad1082/7449493"
+        },
+        {
           "title": "The Medical Action Ontology: A Tool for Annotating and Analyzing Treatments and Clinical Management of Human Disease",
           "authors": "Leigh C Carmody, Michael A Gargano, Sabrina Toro, Nicole A Vasilevsky, Margaret P Adam, Hannah Blau, Lauren E Chan, David Gomez-Andres, Rita Horvath, Markus S Ladewig, David Lewis-Smith, Hanns Lochmueller, Nicolas A Matentzoglu, Monica C Munoz-Torres, Catharina Schuetz, Megan L Kraus, Berthold Seitz, Morgan N Similuk, Teresa Sparks, Timmy Strauss, Emilia M Swietlik, Rachel Thompson, Xingmin Aaron Zhang, Christopher J Mungall, Melissa A Haendel, Peter N Robinson",
           "year": 2023,

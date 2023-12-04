@@ -231,6 +231,9 @@ def main(update: bool):
         )
         for pub in dups:
             report.append(f"\n\t{pub}")
+        report.append(f"\n{'-'*120}\nNew publications:")
+        for pub in filtered:
+            report.append(f"\n\t{pub['title']}")
 
     citations = filtered
     return citations, metadata, report
