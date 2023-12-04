@@ -1,3 +1,4 @@
+
 import time
 from dataclasses import dataclass
 from typing import List
@@ -44,6 +45,9 @@ class OakImplementation(SemanticSimilarityInterface):
             logger.debug("Running query to initialize adapter")
 
             # TODO: run a little bit of text annotation here to get oak warmed up
+            print("Oaklib adapter warmup")
+            for ann in self.phenio_adapter.annotate_text("Nystagmus, strabismus and fundus."):
+                print(ann.subject_start, ann.subject_end, ann.object_id, ann.object_label)
 
             logger.info(f"Phenio adapter ready, warmup time: {time.time() - start} sec")
             return self
