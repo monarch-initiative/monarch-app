@@ -17,22 +17,23 @@ packages = [
 [tool.poetry.dependencies]
 ### Core dependencies
 python = "^3.9"
-pydantic = "^1.10.2"
-curies = "<1"
-linkml = "^1.6.2"
-prefixmaps = "^0.1.7"
+pydantic = "^2"
 
+bioregistry = "^0.10.57"
+curies = "<1"
+linkml = "^1.6.3"
+oaklib = ">=0.5.22"
+prefixmaps = "^0.2"
+
+docker = "^6.0.1"
+fastapi = "^0.103.1"
+gunicorn = "^21.2.0"
+loguru = "*"
+pystow = ">=0.5.0"
 requests = "^2.28.1"
+rich = "*"
 typer = "^0.7.0"
 typer-cli = "^0.0.13"
-rich = "*"
-docker = "^6.0.1"
-pystow = ">=0.5.0"
-loguru = "*"
-fastapi = "^0.103.1"
-oaklib = ">=0.5.19"
-gunicorn = "^21.2.0"
-bioregistry = "^0.10.57"
 
 
 [tool.poetry.group.dev.dependencies]
