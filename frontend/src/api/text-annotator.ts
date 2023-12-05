@@ -1,5 +1,5 @@
 import { getCategoryLabel } from "./categories";
-import { biolink, request } from "./index";
+import { apiUrl, request } from "./index";
 
 /** annotations (from backend) */
 type _Annotations = {
@@ -22,7 +22,8 @@ export const annotateText = async (content = ""): Promise<Annotations> => {
   if (!content.trim()) return [];
 
   /** request params */
-  const params = { longest_only: true };
+  // const params = { longest_only: true };
+  const params = {};
 
   /** make request options */
   const headers = new Headers();
@@ -33,8 +34,11 @@ export const annotateText = async (content = ""): Promise<Annotations> => {
   const body = "content=" + window.encodeURIComponent(content);
   const options = { method: "POST", headers, body };
 
+  console.log(body)
+
   /** make query */
-  const url = `${biolink}/nlp/annotate/entities`;
+  // const url = `${biolink}/nlp/annotate/entities`;
+  const url = `${apiUrl}/annotate`;
   const response = await request<_Annotations>(url, params, options);
   const { spans } = response;
 

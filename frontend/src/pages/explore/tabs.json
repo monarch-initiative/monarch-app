@@ -9,9 +9,8 @@
     "id": "text-annotator",
     "text": "Text Annotator",
     "icon": "subscript",
-    "tooltip": "Coming soon!",
-    "disabled": true
-  },
+    "tooltip": "Annotate text with concepts from our knowledge graph"
+    },
   {
     "id": "phenotype-explorer",
     "text": "Phenotype Explorer",
