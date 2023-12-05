@@ -1,15 +1,21 @@
-
+import re
 import time
 from dataclasses import dataclass
 from typing import List
 
-from loguru import logger
-
-from monarch_py.datamodels.model import TermSetPairwiseSimilarity
 from oaklib.interfaces.semsim_interface import SemanticSimilarityInterface
 from oaklib.selector import get_adapter
 from linkml_runtime.dumpers.json_dumper import JSONDumper
+from loguru import logger
 import pystow
+
+from monarch_py.datamodels.model import TermSetPairwiseSimilarity
+from monarch_py.implementations.oak.annotation_utils import (
+    get_word_length,
+    concatenate_same_entities,
+    concatenate_ngram_entities,
+    replace_entities,
+)
 
 
 @dataclass
@@ -51,7 +57,6 @@ class OakImplementation(SemanticSimilarityInterface):
 
             logger.info(f"Phenio adapter ready, warmup time: {time.time() - start} sec")
             return self
-
 
     def init_semsim(self, phenio_path: str = None, force_update: bool = False):
         if self.semsim is None:
@@ -99,3 +104,26 @@ class OakImplementation(SemanticSimilarityInterface):
 
         response_dict = self.json_dumper.to_dict(response)
         return TermSetPairwiseSimilarity(**response_dict)
+
+    def annotate_text(self, text):
+        sentences = re.split(r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", text)
+        result = ""
+        for sentence in sentences:
+            entities = []
+            for ann in self.phenio_adapter.annotate_text(sentence):
+                if len(ann.object_label) >= 4:
+                    element = [ann.subject_start, ann.subject_end, str(ann.object_label) + "," + str(ann.object_id)]
+                    if (get_word_length(sentence, ann.subject_start - 1) - len(ann.object_label)) < 2:
+                        entities.append(element)
+            try:
+                # Trying to access an element that doesn't exist in the list
+                entities.sort()
+                entities = concatenate_same_entities(entities)
+                entities = concatenate_ngram_entities(entities)
+                replaced_text = replace_entities(sentence, entities)
+                result += replaced_text + " "
+            except IndexError as error:
+                # Handling the list index out of range error
+                result += sentence + " "
+                print("Error occurred:", error)
+        return result

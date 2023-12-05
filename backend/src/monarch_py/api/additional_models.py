@@ -16,3 +16,7 @@ class PaginationParams(BaseModel):
 class CompareRequest(BaseModel):
     subjects: List[str] = Field(..., title="List of subjects for comparison")
     objects: List[str] = Field(..., title="List of objects for comparison")
+
+
+class TextAnnotationRequest(BaseModel):
+    content: str = Field(..., title="The text content to annotate")

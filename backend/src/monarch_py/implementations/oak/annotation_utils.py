@@ -1,32 +1,6 @@
-from monarch_py.api.config import oak
-import re
-
-phenio_adapter = oak().phenio_adapter
-
-
-def annotate_text(text):
-    sentences = re.split(r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", text)
-    result = ""
-    for sentence in sentences:
-        entities = []
-        for ann in phenio_adapter.annotate_text(sentence):  # type: ignore
-            if len(ann.object_label) >= 4:
-                element = [ann.subject_start, ann.subject_end, str(ann.object_label) + "," + str(ann.object_id)]
-                if (get_word_length(sentence, ann.subject_start - 1) - len(ann.object_label)) < 2:
-                    entities.append(element)
-        try:
-            # Trying to access an element that doesn't exist in the list
-            entities.sort()
-            entities = concatenate_same_entities(entities)
-            entities = concatenate_ngram_entities(entities)
-            replaced_text = replace_entities(sentence, entities)
-            result += replaced_text + " "
-        except IndexError as error:
-            # Handling the list index out of range error
-            result += sentence + " "
-            print("Error occurred:", error)
-    return result
-
+"""
+Utility functions for annotating text with OAK.
+"""
 
 def get_word_length(text, start):
     word = ""
@@ -69,7 +43,7 @@ def replace_entities(text, entities):
     entities = sorted(entities, key=lambda x: x[0], reverse=True)
     for entity in entities:
         start, end = entity[0] - 1, entity[1]
-        # entity_value = entity[2]
-        entity_value = f'<span class="sciCrunchAnnotation" data-sciGraph="{entity[2]}">{text[start:end]}</span>'
+        #entity_value = entity[2]
+        entity_value = f'<span class=\"sciCrunchAnnotation\" data-sciGraph=\"{entity[2]}\">{text[start:end]}</span>'
         replaced_text = replaced_text[:start] + entity_value + replaced_text[end:]
     return replaced_text
