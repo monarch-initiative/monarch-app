@@ -17,6 +17,7 @@ def test_parse_associations(association_response, associations):
     association_response["response"]["numFound"] = association_response["response"].pop("num_found")
     solr_response = SolrQueryResult(**association_response)
     parsed = parse_associations(solr_response)
+    print(f"parsed: {parsed.model_dump()}\nassociations: {associations.model_dump()}")
     assert (
         parsed == associations
     ), f"Parsed result is not as expected. Difference: {dict_diff(parsed.model_dump(), associations)}"
