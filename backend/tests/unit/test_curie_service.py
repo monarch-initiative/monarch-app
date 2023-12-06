@@ -30,5 +30,5 @@ import pytest
 def test_curie_expansion(curie, expanded_curie_part):
     cs = CurieService()
     expanded_curie = cs.expand(curie)
-    # print(expanded_curie, expanded_curie_part)
+    print(f"expanded_curie: {expanded_curie}\nexpanded_curie_part: {expanded_curie_part}")
     assert expanded_curie_part in expanded_curie
