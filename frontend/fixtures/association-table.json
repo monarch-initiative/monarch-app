@@ -173,7 +173,7 @@
           "url": "http://purl.obolibrary.org/obo/ECO_0000269"
         }
       ],
-      "grouping_key": "MONDO:0020793\ud83c\udf6a\ud83c\udf6abiolink:has_phenotype\ud83c\udf6aHP:0002460",
+      "grouping_key": "MONDO:0020793🍪🍪biolink:has_phenotype🍪HP:0002460",
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
@@ -183,15 +183,15 @@
       "publications_links": [
         {
           "id": "PMID:21242490",
-          "url": "http://identifiers.org/pubmed/21242490"
+          "url": null
         },
         {
           "id": "PMID:32493488",
-          "url": "http://identifiers.org/pubmed/32493488"
+          "url": null
         },
         {
           "id": "PMID:31332380",
-          "url": "http://identifiers.org/pubmed/31332380"
+          "url": null
         }
       ],
       "qualifiers": [],
@@ -454,7 +454,7 @@
           "url": "http://purl.obolibrary.org/obo/ECO_0000269"
         }
       ],
-      "grouping_key": "MONDO:0020793\ud83c\udf6a\ud83c\udf6abiolink:has_phenotype\ud83c\udf6aHP:0002015",
+      "grouping_key": "MONDO:0020793🍪🍪biolink:has_phenotype🍪HP:0002015",
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
@@ -464,15 +464,15 @@
       "publications_links": [
         {
           "id": "PMID:21242490",
-          "url": "http://identifiers.org/pubmed/21242490"
+          "url": null
         },
         {
           "id": "PMID:32493488",
-          "url": "http://identifiers.org/pubmed/32493488"
+          "url": null
         },
         {
           "id": "PMID:31332380",
-          "url": "http://identifiers.org/pubmed/31332380"
+          "url": null
         }
       ],
       "qualifiers": [],
@@ -811,7 +811,7 @@
           "url": "http://purl.obolibrary.org/obo/ECO_0000269"
         }
       ],
-      "grouping_key": "MONDO:0013049\ud83c\udf6a\ud83c\udf6abiolink:has_phenotype\ud83c\udf6aHP:0003236",
+      "grouping_key": "MONDO:0013049🍪🍪biolink:has_phenotype🍪HP:0003236",
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
@@ -821,11 +821,11 @@
       "publications_links": [
         {
           "id": "PMID:19576565",
-          "url": "http://identifiers.org/pubmed/19576565"
+          "url": null
         },
         {
           "id": "PMID:28803818",
-          "url": "http://identifiers.org/pubmed/28803818"
+          "url": null
         }
       ],
       "qualifiers": [],
@@ -1032,7 +1032,7 @@
           "url": "http://purl.obolibrary.org/obo/ECO_0000269"
         }
       ],
-      "grouping_key": "MONDO:0009681\ud83c\udf6a\ud83c\udf6abiolink:has_phenotype\ud83c\udf6aHP:0020152",
+      "grouping_key": "MONDO:0009681🍪🍪biolink:has_phenotype🍪HP:0020152",
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
@@ -1042,11 +1042,11 @@
       "publications_links": [
         {
           "id": "PMID:16258657",
-          "url": "http://identifiers.org/pubmed/16258657"
+          "url": null
         },
         {
           "id": "OMIM:254090",
-          "url": "http://identifiers.org/mim/254090"
+          "url": null
         }
       ],
       "qualifiers": [],
@@ -1251,7 +1251,7 @@
           "url": "http://purl.obolibrary.org/obo/ECO_0000269"
         }
       ],
-      "grouping_key": "MONDO:0009676\ud83c\udf6a\ud83c\udf6abiolink:has_phenotype\ud83c\udf6aHP:0003701",
+      "grouping_key": "MONDO:0009676🍪🍪biolink:has_phenotype🍪HP:0003701",
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
@@ -1261,11 +1261,11 @@
       "publications_links": [
         {
           "id": "PMID:9731527",
-          "url": "http://identifiers.org/pubmed/9731527"
+          "url": null
         },
         {
           "id": "PMID:9009996",
-          "url": "http://identifiers.org/pubmed/9009996"
+          "url": null
         }
       ],
       "qualifiers": [],

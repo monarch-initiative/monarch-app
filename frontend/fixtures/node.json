@@ -18,7 +18,7 @@
   "mappings": [
     {
       "id": "DOID:9884",
-      "url": "http://purl.obolibrary.org/obo/DOID_9884"
+      "url": null
     },
     {
       "id": "ICD10CM:G71.0",
@@ -26,11 +26,11 @@
     },
     {
       "id": "MESH:D009136",
-      "url": "http://identifiers.org/mesh/D009136"
+      "url": null
     },
     {
       "id": "NCIT:C84910",
-      "url": "http://purl.obolibrary.org/obo/NCIT_C84910"
+      "url": null
     },
     {
       "id": "SCTID:73297009",
@@ -38,7 +38,7 @@
     },
     {
       "id": "UMLS:C0026850",
-      "url": "http://identifiers.org/umls/C0026850"
+      "url": null
     },
     {
       "id": "Orphanet:98473",

@@ -8,6 +8,7 @@ def association_query_direct():
         "rows": 100,
         "start": 100,
         "facet": True,
+        "facet_min_count": 1,
         "facet_fields": [],
         "facet_queries": [],
         "filter_queries": [
@@ -25,5 +26,4 @@ def association_query_direct():
         "mm": "100%",
         "boost": None,
         "sort": None,
-        "facet_min_count": 1,
     }

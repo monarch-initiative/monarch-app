@@ -21,7 +21,7 @@ pydantic = "^2"
 
 bioregistry = "^0.10.57"
 curies = "<1"
-linkml = "^1.6.3"
+linkml = { git = "https://github.com/linkml/linkml.git", branch = "allow-extra-fields" } # "^1.6"
 oaklib = ">=0.5.22"
 prefixmaps = "^0.2"
 

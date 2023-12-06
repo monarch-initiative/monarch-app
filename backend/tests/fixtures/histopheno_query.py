@@ -8,6 +8,7 @@ def histopheno_query():
         "rows": 0,
         "start": 0,
         "facet": True,
+        "facet_min_count": 1,
         "facet_fields": [],
         "facet_queries": [
             'object_closure:"HP:0000924"',
@@ -38,5 +39,4 @@ def histopheno_query():
         "mm": "100%",
         "boost": None,
         "sort": None,
-        "facet_min_count": 1,
     }
