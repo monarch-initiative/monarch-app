@@ -16,61 +16,62 @@ from monarch_py.utils.utils import dict_diff
 def test_parse_associations(association_response, associations):
     association_response["response"]["numFound"] = association_response["response"].pop("num_found")
     solr_response = SolrQueryResult(**association_response)
-    parsed = parse_associations(solr_response)
-    print(f"parsed: {parsed.model_dump()}\nassociations: {associations.model_dump()}")
-    assert (
-        parsed == associations
-    ), f"Parsed result is not as expected. Difference: {dict_diff(parsed.model_dump(), associations)}"
+    parsed = parse_associations(solr_response).model_dump()
+    assert parsed == associations, f"Parsed result is not as expected. Difference: {dict_diff(parsed, associations)}"
 
 
 def test_parse_association_counts(association_counts_response, association_counts, node):
     association_counts_response["response"]["numFound"] = association_counts_response["response"].pop("num_found")
     solr_response = SolrQueryResult(**association_counts_response)
-    parsed = parse_association_counts(solr_response, entity=Node(**node).id)
+    parsed = parse_association_counts(solr_response, entity=Node(**node).id).model_dump()
     assert (
         parsed == association_counts
-    ), f"Parsed result is not as expected. Difference: {dict_diff(parsed.model_dump(), association_counts)}"
+    ), f"Parsed result is not as expected. Difference: {dict_diff(parsed, association_counts)}"
 
 
 def test_parse_association_table(association_table_response, association_table, node):
     association_table_response["response"]["numFound"] = association_table_response["response"].pop("num_found")
     solr_response = SolrQueryResult(**association_table_response)
-    parsed = parse_association_table(solr_response, entity=Node(**node).id, offset=0, limit=5)
+    parsed = parse_association_table(solr_response, entity=Node(**node).id, offset=0, limit=5).model_dump()
     assert (
         parsed == association_table
-    ), f"Parsed result is not as expected. Difference: {dict_diff(parsed.model_dump(), association_table)}"
+    ), f"Parsed result is not as expected. Difference: {dict_diff(parsed, association_table)}"
 
 
 def test_parse_entity(entity_response, node):
-    parsed = parse_entity(entity_response)
-    assert all(parsed.model_dump()[k] == v for k, v in parsed.model_dump().items() if k in node)
+    parsed = parse_entity(entity_response).model_dump()
+    assert all(parsed[k] == v for k, v in parsed.items() if k in node)
 
 
 def test_parse_histopheno(histopheno_response, histopheno, node):
     histopheno_response["response"]["numFound"] = histopheno_response["response"].pop("num_found")
     solr_response = SolrQueryResult(**histopheno_response)
-    parsed = parse_histopheno(solr_response, subject_closure=Node(**node).id)
-    assert parsed == histopheno, f"Parsed result is not as expected. Difference: {dict_diff(parsed.model_dump(), histopheno)}"
+    parsed = parse_histopheno(solr_response, subject_closure=Node(**node).id).model_dump()
+    assert (
+        parsed == histopheno
+    ), f"Parsed result is not as expected. Difference: {dict_diff(parsed, histopheno)}"
 
 
 def test_parse_search(search_response, search):
     search_response["response"]["numFound"] = search_response["response"].pop("num_found")
     solr_response = SolrQueryResult(**search_response)
-    parsed = parse_search(solr_response)
-    assert parsed == search, f"Parsed result is not as expected. Difference: {dict_diff(parsed.model_dump(), search)}"
+    parsed = parse_search(solr_response).model_dump()
+    assert parsed == search, f"Parsed result is not as expected. Difference: {dict_diff(parsed, search)}"
 
 
 def test_parse_autocomplete(autocomplete_response, autocomplete):
     autocomplete_response["response"]["numFound"] = autocomplete_response["response"].pop("num_found")
     solr_response = SolrQueryResult(**autocomplete_response)
-    parsed = parse_autocomplete(solr_response)
+    parsed = parse_autocomplete(solr_response).model_dump()
     assert (
         parsed == autocomplete
-    ), f"Parsed result is not as expected. Difference: {dict_diff(parsed.model_dump(), autocomplete)}"
+    ), f"Parsed result is not as expected. Difference: {dict_diff(parsed, autocomplete)}"
 
 
 def test_parse_mappings(mapping_response, mappings):
     mapping_response["response"]["numFound"] = mapping_response["response"].pop("num_found")
     solr_response = SolrQueryResult(**mapping_response)
-    parsed = parse_mappings(solr_response)
-    assert parsed == mappings, f"Parsed result is not as expected. Difference: {dict_diff(parsed.model_dump(), mappings)}"
+    parsed = parse_mappings(solr_response).model_dump()
+    assert (
+        parsed == mappings
+    ), f"Parsed result is not as expected. Difference: {dict_diff(parsed, mappings)}"
