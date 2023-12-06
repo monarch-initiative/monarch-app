@@ -114,7 +114,7 @@ def to_json(obj: Union[ConfiguredBaseModel, Dict, List[ConfiguredBaseModel]], fi
     elif isinstance(obj, dict):
         json_value = json.dumps(obj, indent=4)
     elif isinstance(obj, list):
-        json_value = json.dumps({"items": [o.dict() for o in obj]}, indent=4)
+        json_value = json.dumps({"items": [o.model_dump() for o in obj]}, indent=4)
     if file:
         with open(file, "w") as f:
             f.write(json_value)
@@ -135,8 +135,8 @@ def to_tsv(obj: ConfiguredBaseModel, file: str) -> str:
             headers = get_headers_from_obj(obj)
             rows = []
         else:
-            headers = obj.items[0].dict().keys()
-            rows = [list(item.dict().values()) for item in obj.items]
+            headers = obj.items[0].model_dump().keys()
+            rows = [list(item.model_dump().values()) for item in obj.items]
     else:
         console.print(f"\n[bold red]{FMT_INPUT_ERROR_MSG}[/]\n")
         raise typer.Exit(1)
@@ -200,7 +200,7 @@ def to_yaml(obj: ConfiguredBaseModel, file: str):
     if isinstance(obj, Entity):
         yaml.dump(obj.model_dump(), fh, indent=4)
     elif isinstance(obj, Results) or isinstance(obj, HistoPheno) or isinstance(obj, AssociationCountList):
-        yaml.dump([item.dict() for item in obj.items], fh, indent=4)
+        yaml.dump([item.model_dump() for item in obj.items], fh, indent=4)
     else:
         console.print(f"\n[bold red]{FMT_INPUT_ERROR_MSG}[/]\n")
         raise typer.Exit(1)

@@ -19,7 +19,7 @@ class ConfiguredBaseModel(BaseModel):
     model_config = ConfigDict(
         validate_assignment=True,
         validate_default=True,
-        extra="ignore",
+        extra="allow",
         arbitrary_types_allowed=True,
         use_enum_values=True,
     )

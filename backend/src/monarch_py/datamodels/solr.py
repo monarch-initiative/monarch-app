@@ -67,7 +67,7 @@ class SolrQuery(BaseModel):
 
     def query_string(self):
         return urllib.parse.urlencode(
-            {self._solrize(k): self._solrize(v) for k, v in self.dict().items() if v is not None},
+            {self._solrize(k): self._solrize(v) for k, v in self..model_dump().items() if v is not None},
             doseq=True,
         )
 

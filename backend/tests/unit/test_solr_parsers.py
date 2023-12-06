@@ -47,9 +47,7 @@ def test_parse_histopheno(histopheno_response, histopheno, node):
     histopheno_response["response"]["numFound"] = histopheno_response["response"].pop("num_found")
     solr_response = SolrQueryResult(**histopheno_response)
     parsed = parse_histopheno(solr_response, subject_closure=Node(**node).id).model_dump()
-    assert (
-        parsed == histopheno
-    ), f"Parsed result is not as expected. Difference: {dict_diff(parsed, histopheno)}"
+    assert parsed == histopheno, f"Parsed result is not as expected. Difference: {dict_diff(parsed, histopheno)}"
 
 
 def test_parse_search(search_response, search):
@@ -63,15 +61,11 @@ def test_parse_autocomplete(autocomplete_response, autocomplete):
     autocomplete_response["response"]["numFound"] = autocomplete_response["response"].pop("num_found")
     solr_response = SolrQueryResult(**autocomplete_response)
     parsed = parse_autocomplete(solr_response).model_dump()
-    assert (
-        parsed == autocomplete
-    ), f"Parsed result is not as expected. Difference: {dict_diff(parsed, autocomplete)}"
+    assert parsed == autocomplete, f"Parsed result is not as expected. Difference: {dict_diff(parsed, autocomplete)}"
 
 
 def test_parse_mappings(mapping_response, mappings):
     mapping_response["response"]["numFound"] = mapping_response["response"].pop("num_found")
     solr_response = SolrQueryResult(**mapping_response)
     parsed = parse_mappings(solr_response).model_dump()
-    assert (
-        parsed == mappings
-    ), f"Parsed result is not as expected. Difference: {dict_diff(parsed, mappings)}"
+    assert parsed == mappings, f"Parsed result is not as expected. Difference: {dict_diff(parsed, mappings)}"
