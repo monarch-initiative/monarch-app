@@ -20,4 +20,4 @@ class CurieService:
         self.converter = load_converter(["merged"])
 
     def expand(self, curie: str) -> str:
-        return self.converter.expand(curie)
+        return self.converter.expand(curie, strict=True)

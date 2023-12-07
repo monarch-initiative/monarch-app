@@ -1,10 +1,8 @@
 import os
 import requests as rq
-
 from functools import lru_cache
 
 from pydantic import BaseModel
-
 # from pydantic_settings import BaseSettings
 
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
