@@ -30,7 +30,7 @@
       },
       {
         "name": "Bryan Laraway",
-        "role": "Data Wrangler",
+        "role": "Scientific Software Engineer",
         "link": "https://tislab.org/members/bryan-laraway.html"
       },
       {
@@ -135,7 +135,7 @@
       },
       {
         "name": "Justin Reese",
-        "role": "Software developer",
+        "role": "Computational Biologist",
         "link": "http://github.com/justaddcoffee"
       },
       {
@@ -146,12 +146,12 @@
       {
         "name": "Patrick Kalita",
         "role": "Software Developer",
-        "link": ""
+        "link": "https://github.com/pkalita-lbl/"
       },
       {
         "name": "Seth Carbon",
-        "role": "Software engineer",
-        "link": "https://scholar.google.com/citations?hl=en&user=Ypz4s1UAAAAJ"
+        "role": "Software Engineer",
+        "link": "https://orcid.org/0000-0001-8244-1536"
       },
       {
         "name": "Sierra Taylor Moxon",
@@ -176,8 +176,8 @@
       },
       {
         "name": "Daniel Danis",
-        "role": "",
-        "link": ""
+        "role": "Computational Scientist",
+        "link": "https://www.jax.org/people/daniel-danis"
       },
       {
         "name": "Hannah Blau",
@@ -186,7 +186,7 @@
       },
       {
         "name": "Lauren Rekerle",
-        "role": "",
+        "role": "Bioinformatician",
         "link": ""
       },
       {
@@ -212,27 +212,27 @@
       {
         "name": "James McLaughlin",
         "role": "Monarch PI",
-        "link": "https://github.com/udp"
+        "link": "https://www.ebi.ac.uk/people/person/james-mclaughlin/"
       },
       {
         "name": "Anita Reane Caron",
-        "role": "",
-        "link": ""
+        "role": "Semantic Web Developer",
+        "link": "https://github.com/anitacaron"
       },
       {
         "name": "Arwa Ibrahim",
-        "role": "",
-        "link": ""
+        "role": "Ontology Editor",
+        "link": "https://www.ebi.ac.uk/people/person/arwa-ibrahim/"
       },
       {
         "name": "Ray Stefancsik",
-        "role": "",
-        "link": ""
+        "role": "Biomedical Ontology Developer/Editor",
+        "link": "https://www.ebi.ac.uk/people/person/raymund-stefancsik/"
       },
       {
         "name": "Vinícius de Souza",
         "role": "Semantic/Ontology Developer",
-        "link": ""
+        "link": "https://www.ebi.ac.uk/people/person/vinicius-de-souza/"
       }
     ]
   },
@@ -252,17 +252,18 @@
       },
       {
         "name": "Jules Jacobsen",
-        "role": "Bioinformatician"
+        "role": "Bioinformatician",
+        "link": "https://www.qmul.ac.uk/c4tb/our-team/profiles/julius-jacobsen.html"
       },
       {
         "name": "Valentina Cipriani",
         "role": "Genetic Statistician",
-        "link": ""
+        "link": "https://www.qmul.ac.uk/whri/people/academic-staff/items/ciprianivalentina.html"
       },
       {
         "name": "Yasemin Bridges",
-        "role": "",
-        "link": ""
+        "role": "Bioinformatician/Data Engineer",
+        "link": "https://www.qmul.ac.uk/c4tb/our-team/profiles/ybridges.html"
       }
     ]
   },
@@ -272,18 +273,18 @@
     "members": [
       {
         "name": "Chris Chute",
-        "role": "",
-        "link": ""
+        "role": "Monarch PI",
+        "link": "https://www.hopkinsmedicine.org/profiles/details/christopher-chute"
       },
       {
         "name": "Ada Hamosh",
         "role": "Clinical Director DGM, Scientific Director OMIM",
-        "link": ""
+        "link": "https://www.hopkinsmedicine.org/profiles/details/ada-hamosh"
       },
       {
         "name": "Joseph E Flack",
-        "role": "",
-        "link": ""
+        "role": "Software Engineer",
+        "link": "https://josephflack.com/"
       }
     ]
   },
@@ -314,7 +315,8 @@
     "members": [
       {
         "name": "Nicole Vasilevsky",
-        "role": "Biocuration/Ontology Developer"
+        "role": "Biocuration/Ontology Developer",
+        "link": "https://github.com/nicolevasilevsky"
       }
     ]
   },
@@ -324,7 +326,8 @@
     "members": [
       {
         "name": "Nicolas Matentzoglu",
-        "role": "Semantic Web Developer"
+        "role": "Semantic Web Developer",
+        "link": "https://www.linkedin.com/in/nmatentzoglu/"
       },
       {
         "name": "Tudor Groza",
