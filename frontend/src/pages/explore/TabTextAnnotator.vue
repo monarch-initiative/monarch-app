@@ -37,21 +37,22 @@
     <!-- results -->
     <p v-if="annotations.length" class="results">
       <tooltip
-        v-for="({ text, tokens = [] }, annotationIndex) in annotations"
+        v-for="({ text, tokens }, annotationIndex) in annotations"
         :key="annotationIndex"
         :interactive="true"
         :append-to="appendToBody"
         :tabindex="tokens.length ? 0 : -1"
         tag="span"
-      >
-        {{ text }}
-        <template v-if="!!tokens.length" #content>
-          <div class="mini-table">
-            <template v-for="(token, tokenIndex) in tokens" :key="tokenIndex">
-              <span>{{ token.id }}</span>
-              <div class="truncate">{{ token.name }}</div>
-            </template>
-          </div>
+        >{{ text
+        }}<template v-if="!!tokens.length" #content>
+          <AppFlex direction="col" align-h="left" gap="tiny">
+            <AppNodeBadge
+              v-for="(token, index) in tokens"
+              :key="index"
+              :node="token"
+              :show-id="true"
+            />
+          </AppFlex>
         </template>
       </tooltip>
     </p>
@@ -77,6 +78,7 @@ import { onMounted } from "vue";
 import { uniqBy } from "lodash";
 import { useLocalStorage } from "@vueuse/core";
 import { annotateText } from "@/api/text-annotator";
+import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppTextbox from "@/components/AppTextbox.vue";
 import AppUpload from "@/components/AppUpload.vue";
 import { appendToBody } from "@/global/tooltip";
@@ -133,7 +135,7 @@ function getPhenotypes() {
   const phenotypes = [];
   for (const { tokens } of annotations.value)
     for (const { id, name } of tokens)
-      if (id.startsWith("HP:")) phenotypes.push({ id, name });
+      if (id?.startsWith("HP:")) phenotypes.push({ id, name });
 
   /** de-duplicate, and send them to phenotype explorer component via router */
   return uniqBy(phenotypes, "id");

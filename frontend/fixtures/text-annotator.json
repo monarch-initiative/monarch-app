@@ -8,17 +8,17 @@
       {
         "id": "HP:0032320",
         "name": "Affected",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "RO:0002418",
         "name": "causally upstream of or within",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "RO:0002264",
         "name": "acts upstream of or within",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -31,17 +31,17 @@
       {
         "id": "UBERON:0003101",
         "name": "male organism",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "PATO:0000384",
         "name": "male",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "WBbt:0007850",
         "name": "male",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -54,17 +54,17 @@
       {
         "id": "HP:0032320",
         "name": "Affected",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "RO:0002418",
         "name": "causally upstream of or within",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "RO:0002264",
         "name": "acts upstream of or within",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -77,12 +77,12 @@
       {
         "id": "UBERON:0003100",
         "name": "female organism",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "PATO:0000383",
         "name": "female",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -95,7 +95,7 @@
       {
         "id": "HP:0001417",
         "name": "X-linked inheritance",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -111,12 +111,12 @@
       {
         "id": "MONDO:0043209",
         "name": "albinism",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "HP:0001022",
         "name": "Albinism",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -129,12 +129,12 @@
       {
         "id": "PATO:0000587",
         "name": "decreased size",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "PATO:0001997",
         "name": "decreased amount",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -150,12 +150,12 @@
       {
         "id": "HP:0000613",
         "name": "Photophobia",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "MP:0013787",
         "name": "photophobia",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -168,12 +168,12 @@
       {
         "id": "HP:0000639",
         "name": "Nystagmus",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "MONDO:0005712",
         "name": "congenital nystagmus",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -186,12 +186,12 @@
       {
         "id": "WBPhenotype:0000162",
         "name": "pale larva",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "PATO:0001354",
         "name": "translucent",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -204,22 +204,22 @@
       {
         "id": "ZFA:0001238",
         "name": "iris",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "UBERON:0001769",
         "name": "iris",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "ECO:0005520",
         "name": "interferometric reflectance imaging sensor evidence",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "MONDO:0100185",
         "name": "immune reconstitution inflammatory syndrome",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -232,17 +232,17 @@
       {
         "id": "MP:0005254",
         "name": "strabismus",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "MONDO:0003432",
         "name": "strabismus",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "HP:0000486",
         "name": "Strabismus",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -255,7 +255,7 @@
       {
         "id": "UBERON:0003951",
         "name": "ocular fundus",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -268,7 +268,7 @@
       {
         "id": "UBERON:0001786",
         "name": "fovea centralis",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -281,17 +281,17 @@
       {
         "id": "PATO:0000587",
         "name": "decreased size",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "FBcv:0000724",
         "name": "hypoplasia",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "PATO:0000645",
         "name": "hypoplastic",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -304,32 +304,32 @@
       {
         "id": "ZFA:0000368",
         "name": "integument",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "MONDO:0002531",
         "name": "skin neoplasm",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "UBERON:0000014",
         "name": "zone of skin",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "UBERON:0002097",
         "name": "skin of body",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "UBERON:0001003",
         "name": "skin epidermis",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "UBERON:0002199",
         "name": "integument",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -342,7 +342,7 @@
       {
         "id": "PATO:0040025",
         "name": "lesioned",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -355,12 +355,12 @@
       {
         "id": "MP:0030917",
         "name": "enlarged melanosome",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "HP:0005592",
         "name": "Giant melanosomes in melanocytes",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -373,7 +373,7 @@
       {
         "id": "HP:0001417",
         "name": "X-linked inheritance",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -389,12 +389,12 @@
       {
         "id": "MONDO:0043209",
         "name": "albinism",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "HP:0001022",
         "name": "Albinism",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -407,17 +407,17 @@
       {
         "id": "MP:0001967",
         "name": "deafness",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "HP:0000365",
         "name": "Hearing impairment",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "MONDO:0005365",
         "name": "hearing loss disorder",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -430,7 +430,7 @@
       {
         "id": "HP:0001756",
         "name": "Vestibular hypofunction",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -443,12 +443,12 @@
       {
         "id": "MONDO:0007889",
         "name": "lentigines",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "MONDO:0021582",
         "name": "lentigo",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -461,7 +461,7 @@
       {
         "id": "PATO:0001323",
         "name": "area",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -477,12 +477,12 @@
       {
         "id": "UBERON:0001021",
         "name": "nerve",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "ZFA:0007009",
         "name": "nerve",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -495,7 +495,7 @@
       {
         "id": "PATO:0000640",
         "name": "dysplastic",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -508,7 +508,7 @@
       {
         "id": "HP:0000005",
         "name": "Mode of inheritance",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -524,12 +524,12 @@
       {
         "id": "MONDO:0043209",
         "name": "albinism",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "HP:0001022",
         "name": "Albinism",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -542,7 +542,7 @@
       {
         "id": "NCBITaxon:9691",
         "name": "Panthera pardus",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -555,12 +555,12 @@
       {
         "id": "MONDO:0002254",
         "name": "syndromic disease",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "MONDO:0024541",
         "name": "trichohepatoenteric syndrome 1",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -573,12 +573,12 @@
       {
         "id": "BFO:0000034",
         "name": "function",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "RO:0000079",
         "name": "function of",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -591,12 +591,12 @@
       {
         "id": "PATO:0000461",
         "name": "normal",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "MP:0002169",
         "name": "no abnormal phenotype detected",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -609,7 +609,7 @@
       {
         "id": "PATO:0000460",
         "name": "abnormal",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -625,12 +625,12 @@
       {
         "id": "MONDO:0002254",
         "name": "syndromic disease",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "MONDO:0024541",
         "name": "trichohepatoenteric syndrome 1",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -643,7 +643,7 @@
       {
         "id": "UBERON:0001681",
         "name": "nasal bone",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -656,12 +656,12 @@
       {
         "id": "OBO:PO_0009005",
         "name": "root",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "NCBITaxon:1",
         "name": "root",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -674,7 +674,7 @@
       {
         "id": "PATO:0001482",
         "name": "prominent",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -687,17 +687,17 @@
       {
         "id": "HP:0032320",
         "name": "Affected",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "RO:0002418",
         "name": "causally upstream of or within",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "RO:0002264",
         "name": "acts upstream of or within",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -710,12 +710,12 @@
       {
         "id": "foaf:Person",
         "name": "Person",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "schema:Person",
         "name": "Person",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -731,7 +731,7 @@
       {
         "id": "UBERON:0006742",
         "name": "canthus",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -744,12 +744,12 @@
       {
         "id": "UBERON:0001456",
         "name": "face",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "MONDO:0010953",
         "name": "Fanconi anemia complementation group E",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -762,7 +762,7 @@
       {
         "id": "HP:0001480",
         "name": "Freckling",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -775,17 +775,17 @@
       {
         "id": "MONDO:0015595",
         "name": "posttransplant acute limbic encephalitis",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "WBPhenotype:0001261",
         "name": "pale",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "PATO:0000328",
         "name": "low saturation",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -798,32 +798,32 @@
       {
         "id": "ZFA:0000368",
         "name": "integument",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "MONDO:0002531",
         "name": "skin neoplasm",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "UBERON:0000014",
         "name": "zone of skin",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "UBERON:0002097",
         "name": "skin of body",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "UBERON:0001003",
         "name": "skin epidermis",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "UBERON:0002199",
         "name": "integument",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -836,7 +836,7 @@
       {
         "id": "RO:0002206",
         "name": "expressed in",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -849,12 +849,12 @@
       {
         "id": "NCBITaxon:family",
         "name": "family",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "PCO:0000020",
         "name": "family",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -870,12 +870,12 @@
       {
         "id": "MONDO:0002254",
         "name": "syndromic disease",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "MONDO:0024541",
         "name": "trichohepatoenteric syndrome 1",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -888,7 +888,7 @@
       {
         "id": "MONDO:0000001",
         "name": "disease or disorder",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -901,12 +901,12 @@
       {
         "id": "PATO:0000587",
         "name": "decreased size",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "WBPhenotype:0000229",
         "name": "small",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -919,12 +919,12 @@
       {
         "id": "NCBITaxon:family",
         "name": "family",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "PCO:0000020",
         "name": "family",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -937,12 +937,12 @@
       {
         "id": "MONDO:0002254",
         "name": "syndromic disease",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "MONDO:0024541",
         "name": "trichohepatoenteric syndrome 1",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -958,12 +958,12 @@
       {
         "id": "MONDO:0002254",
         "name": "syndromic disease",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "MONDO:0024541",
         "name": "trichohepatoenteric syndrome 1",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -976,12 +976,12 @@
       {
         "id": "NCBITaxon:family",
         "name": "family",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "PCO:0000020",
         "name": "family",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -997,12 +997,12 @@
       {
         "id": "MONDO:0043209",
         "name": "albinism",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "HP:0001022",
         "name": "Albinism",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -1015,7 +1015,7 @@
       {
         "id": "PATO:0000467",
         "name": "present",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -1028,12 +1028,12 @@
       {
         "id": "NCBITaxon:family",
         "name": "family",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "PCO:0000020",
         "name": "family",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -1046,17 +1046,17 @@
       {
         "id": "MP:0001967",
         "name": "deafness",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "HP:0000365",
         "name": "Hearing impairment",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "MONDO:0005365",
         "name": "hearing loss disorder",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -1069,7 +1069,7 @@
       {
         "id": "MONDO:0021140",
         "name": "congenital",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -1085,7 +1085,7 @@
       {
         "id": "UBERON:0005969",
         "name": "eye trabecular meshwork",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -1098,7 +1098,7 @@
       {
         "id": "PATO:0001482",
         "name": "prominent",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -1111,7 +1111,7 @@
       {
         "id": "PATO:0002404",
         "name": "segmental",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -1124,22 +1124,22 @@
       {
         "id": "ZFA:0001238",
         "name": "iris",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "UBERON:0001769",
         "name": "iris",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "ECO:0005520",
         "name": "interferometric reflectance imaging sensor evidence",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "MONDO:0100185",
         "name": "immune reconstitution inflammatory syndrome",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -1152,12 +1152,12 @@
       {
         "id": "BFO:0000066",
         "name": "occurs in",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "OBO:mp/mp-equivalent-axioms-subq#occurs_in",
         "name": "occurs in",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -1170,17 +1170,17 @@
       {
         "id": "HP:0032320",
         "name": "Affected",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "RO:0002418",
         "name": "causally upstream of or within",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "RO:0002264",
         "name": "acts upstream of or within",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -1193,7 +1193,7 @@
       {
         "id": "MONDO:0008568",
         "name": "thyroid hormone plasma membrane transport defect",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -1206,22 +1206,22 @@
       {
         "id": "ZFA:0001238",
         "name": "iris",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "UBERON:0001769",
         "name": "iris",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "ECO:0005520",
         "name": "interferometric reflectance imaging sensor evidence",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "MONDO:0100185",
         "name": "immune reconstitution inflammatory syndrome",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -1234,17 +1234,17 @@
       {
         "id": "MONDO:0007459",
         "name": "dilution, pigmentary",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "MP:0005408",
         "name": "hypopigmentation",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "HP:0001010",
         "name": "Hypopigmentation of the skin",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -1257,7 +1257,7 @@
       {
         "id": "UBERON:0003951",
         "name": "ocular fundus",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -1270,7 +1270,7 @@
       {
         "id": "HP:0012825",
         "name": "Mild",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -1283,7 +1283,7 @@
       {
         "id": "HP:0012826",
         "name": "Moderate",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -1296,7 +1296,7 @@
       {
         "id": "HP:0012828",
         "name": "Severe",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -1309,17 +1309,17 @@
       {
         "id": "HP:0032320",
         "name": "Affected",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "RO:0002418",
         "name": "causally upstream of or within",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "RO:0002264",
         "name": "acts upstream of or within",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -1332,17 +1332,17 @@
       {
         "id": "MP:0005254",
         "name": "strabismus",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "MONDO:0003432",
         "name": "strabismus",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "HP:0000486",
         "name": "Strabismus",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -1355,7 +1355,7 @@
       {
         "id": "MONDO:0008568",
         "name": "thyroid hormone plasma membrane transport defect",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -1368,7 +1368,7 @@
       {
         "id": "PATO:0001482",
         "name": "prominent",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -1381,7 +1381,7 @@
       {
         "id": "PATO:0000323",
         "name": "white",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -1394,7 +1394,7 @@
       {
         "id": "MONDO:0022109",
         "name": "catatrichy",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },
@@ -1410,12 +1410,12 @@
       {
         "id": "MONDO:0002254",
         "name": "syndromic disease",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       },
       {
         "id": "MONDO:0024541",
         "name": "trichohepatoenteric syndrome 1",
-        "category": ""
+        "category": "biolink:PhenotypicQuality"
       }
     ]
   },

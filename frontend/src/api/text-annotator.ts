@@ -1,5 +1,16 @@
+import type { Node } from "@/api/model";
 import { stringify } from "@/util/object";
 import { apiUrl, request } from "./index";
+
+/** annotations (from backend) */
+export type _Annotations = {
+  text: string;
+  tokens?: {
+    id: string;
+    name: string;
+    category: string;
+  }[];
+}[];
 
 /** get annotations from full text */
 export const annotateText = async (content = ""): Promise<Annotations> => {
@@ -21,17 +32,18 @@ export const annotateText = async (content = ""): Promise<Annotations> => {
 
   /** make query */
   const url = `${apiUrl}/annotate`;
-  const response = await request<Annotations>(url, params, options);
+  const response = await request<_Annotations>(url, params, options);
 
-  return response;
+  const transformedResponse = response.map((item) => ({
+    ...item,
+    tokens: item.tokens || [],
+  }));
+
+  return transformedResponse;
 };
 
 /** annotations (for frontend) */
 export type Annotations = {
   text: string;
-  tokens?: {
-    id: string;
-    name: string;
-    category: string;
-  }[];
+  tokens: Partial<Node>[];
 }[];
