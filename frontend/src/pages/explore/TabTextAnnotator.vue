@@ -37,7 +37,7 @@
     <!-- results -->
     <p v-if="annotations.length" class="results">
       <tooltip
-        v-for="({ text, tokens }, annotationIndex) in annotations"
+        v-for="({ text, tokens = [] }, annotationIndex) in annotations"
         :key="annotationIndex"
         :interactive="true"
         :append-to="appendToBody"
