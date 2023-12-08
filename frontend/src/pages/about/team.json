@@ -137,7 +137,7 @@
       {
         "name": "Justin Reese",
         "role": "Computational Biologist",
-        "link": "http://github.com/justaddcoffee"
+        "link": "https://biosciences.lbl.gov/profiles/justin-reese/"
       },
       {
         "name": "Mark Miller",
@@ -290,13 +290,18 @@
     ]
   },
   {
-    "name": "Renaissance Computing Institute",
-    "link": "http://renci.org/",
+    "name": "Consultants",
+    "link": "",
     "members": [
       {
-        "name": "Jim Balhoff",
-        "role": "Semantic Developer",
-        "link": "https://renci.org/staff/james-balhoff/"
+        "name": "Nicolas Matentzoglu",
+        "role": "Semantic Web Developer",
+        "link": "https://www.linkedin.com/in/nmatentzoglu/"
+      },
+      {
+        "name": "Tudor Groza",
+        "role": "",
+        "link": ""
       }
     ]
   },
@@ -306,7 +311,8 @@
     "members": [
       {
         "name": "Sebastian Köhler",
-        "role": "Software Developer"
+        "role": "Software Developer",
+        "link": ""
       }
     ]
   },
@@ -322,17 +328,13 @@
     ]
   },
   {
-    "name": "Consultants",
-    "link": "",
+    "name": "Renaissance Computing Institute",
+    "link": "http://renci.org/",
     "members": [
       {
-        "name": "Nicolas Matentzoglu",
-        "role": "Semantic Web Developer",
-        "link": "https://www.linkedin.com/in/nmatentzoglu/"
-      },
-      {
-        "name": "Tudor Groza",
-        "role": ""
+        "name": "Jim Balhoff",
+        "role": "Semantic Developer",
+        "link": "https://renci.org/staff/james-balhoff/"
       }
     ]
   },
