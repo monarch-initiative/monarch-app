@@ -34,7 +34,7 @@
       <AppTextbox
         v-model.trim="github"
         title="GitHub username"
-        description="So we can tag you"
+        description="So we can tag/notify you"
         placeholder="@janesmith"
         @keydown="preventImplicit"
       />

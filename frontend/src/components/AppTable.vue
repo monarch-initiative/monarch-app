@@ -175,6 +175,7 @@
         />
         <AppButton
           v-tooltip="expanded ? 'Collapse table' : 'Expand table to full width'"
+          :text="expanded ? 'Collapse' : 'Expand'"
           :icon="expanded ? 'minimize' : 'maximize'"
           design="small"
           @click="expanded = !expanded"

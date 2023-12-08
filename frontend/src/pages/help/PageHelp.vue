@@ -15,13 +15,13 @@
       <AppTile
         icon="comment"
         title="Feedback Form"
-        subtitle="Right here, no account required, one-way"
+        subtitle="Right here, no account required"
         to="/feedback"
       />
       <AppTile
         icon="comments"
         title="Help Desk"
-        subtitle="On GitHub, requires account, two-way"
+        subtitle="On GitHub, requires account"
         to="https://github.com/monarch-initiative/helpdesk"
       />
     </AppFlex>

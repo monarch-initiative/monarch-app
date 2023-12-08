@@ -61,12 +61,12 @@
       <AppButton text="Download" icon="download" @click="download" />
       <AppButton
         v-tooltip="
-          'Send any annotations above that are phenotypes to Phenotype Explorer'
+          'Send any annotations above that are phenotypes to Phenotype Explorer for comparison'
         "
         to="#phenotype-explorer"
         :state="{ phenotypes: getPhenotypes() }"
-        text="Analyze Phenotypes"
-        icon="bars-progress"
+        text="Phenotype Explorer"
+        icon="arrow-right"
       />
     </AppFlex>
   </AppSection>
