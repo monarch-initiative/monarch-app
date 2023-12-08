@@ -121,12 +121,13 @@
       },
       {
         "name": "Nomi Harris",
-        "role": "Program Manager"
+        "role": "Program Manager",
+        "link": ""
       },
       {
         "name": "Harshad Hegde",
         "role": "Software Developer",
-        "link": ""
+        "link": "https://github.com/hrshdhgd"
       },
       {
         "name": "J. Harry Caufield",
@@ -252,8 +253,8 @@
       },
       {
         "name": "Jules Jacobsen",
-        "role": "Bioinformatician",
-        "link": "https://www.qmul.ac.uk/c4tb/our-team/profiles/julius-jacobsen.html"
+        "role": "Senior Software Developer",
+        "link": "https://github.com/julesjacobsen"
       },
       {
         "name": "Valentina Cipriani",
