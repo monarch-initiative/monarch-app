@@ -1,9 +1,4 @@
-import {
-  defineAsyncComponent,
-  defineComponent,
-  h,
-  type AsyncComponentLoader,
-} from "vue";
+import { defineAsyncComponent, defineComponent, h, type Component } from "vue";
 import type { RouteRecordRaw, RouterScrollBehavior } from "vue-router";
 import { createRouter, createWebHistory } from "vue-router";
 import { isEmpty, pick } from "lodash";
@@ -17,18 +12,18 @@ import { parse } from "@/util/object";
 /**
  * generate async loaded route. normal lazy loaded route renders homepage/root
  * route as loading fallback, this allows any loading fallback.
+ * https://stackoverflow.com/questions/67044999/how-to-use-createasynccomponent-in-vuerouter4-0-0-vue3/77629317#77629317
  */
-const asyncRoute = (loader: AsyncComponentLoader) =>
-  /** https://stackoverflow.com/questions/67044999 */
-  defineComponent({
-    render() {
-      const component = defineAsyncComponent({
-        loader,
-        loadingComponent: AppPlaceholder,
-      });
-      return h(component);
-    },
+const asyncRoute = (path: string) => {
+  const component = defineAsyncComponent({
+    loader: () =>
+      import.meta
+        .glob<false, string, Component>("../pages/**/*.vue")
+        [`../pages/${path}.vue`](),
+    loadingComponent: AppPlaceholder,
   });
+  return defineComponent({ render: () => h(component) });
+};
 
 /** list of routes and corresponding components. */
 /** KEEP IN SYNC WITH PUBLIC/SITEMAP.XML */
@@ -37,7 +32,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "Home",
-    component: asyncRoute(() => import("../pages/PageHome.vue")),
+    component: asyncRoute("PageHome"),
     beforeEnter: () => {
       /** look for redirect in session storage (saved from public/404.html page) */
       const redirect = window.sessionStorage.redirect || "";
@@ -78,72 +73,70 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/explore",
     name: "Explore",
-    component: asyncRoute(() => import("../pages/explore/PageExplore.vue")),
+    component: asyncRoute("explore/PageExplore"),
   },
   {
     path: "/about",
     name: "About",
-    component: asyncRoute(() => import("../pages/about/PageAbout.vue")),
+    component: asyncRoute("about/PageAbout"),
   },
   {
     path: "/help",
     name: "Help",
-    component: asyncRoute(() => import("../pages/help/PageHelp.vue")),
+    component: asyncRoute("help/PageHelp"),
   },
 
   /** about pages */
   {
     path: "/cite",
     name: "Cite",
-    component: asyncRoute(() => import("../pages/about/PageCite.vue")),
+    component: asyncRoute("about/PageCite"),
   },
   {
     path: "/team",
     name: "Team",
-    component: asyncRoute(() => import("../pages/about/PageTeam.vue")),
+    component: asyncRoute("about/PageTeam"),
   },
   {
     path: "/publications",
     name: "Publications",
-    component: asyncRoute(() => import("../pages/about/PagePublications.vue")),
+    component: asyncRoute("about/PagePublications"),
   },
   {
     path: "/terms",
     name: "Terms",
-    component: asyncRoute(() => import("../pages/about/PageTerms.vue")),
+    component: asyncRoute("about/PageTerms"),
   },
   {
     path: "/phenomics-first",
     name: "PhenomicsFirst",
-    component: asyncRoute(
-      () => import("../pages/about/PagePhenomicsFirst.vue"),
-    ),
+    component: asyncRoute("about/PagePhenomicsFirst"),
   },
   {
     path: "/outreach",
     name: "Outreach",
-    component: asyncRoute(() => import("../pages/about/PageOutreach.vue")),
+    component: asyncRoute("about/PageOutreach"),
   },
 
   /** help pages */
   {
     path: "/feedback",
     name: "Feedback",
-    component: asyncRoute(() => import("../pages/help/PageFeedback.vue")),
+    component: asyncRoute("help/PageFeedback"),
   },
 
   /** node pages */
   {
     path: "/:id",
     name: "Node",
-    component: asyncRoute(() => import("../pages/node/PageNode.vue")),
+    component: asyncRoute("node/PageNode"),
   },
 
   /** phenogrid iframe widget page */
   {
     path: "/phenogrid",
     name: "Phenogrid",
-    component: asyncRoute(() => import("../pages/explore/PagePhenogrid.vue")),
+    component: asyncRoute("explore/PagePhenogrid"),
     meta: { bare: true },
   },
 
@@ -151,14 +144,14 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/testbed",
     name: "Testbed",
-    component: asyncRoute(() => import("../pages/PageTestbed.vue")),
+    component: asyncRoute("PageTestbed"),
   },
 
   /** if no other route match found (404) */
   {
     path: "/:pathMatch(.*)*",
     name: "NotFound",
-    component: asyncRoute(() => import("../pages/PageHome.vue")),
+    component: asyncRoute("PageHome"),
   },
 ];
 
