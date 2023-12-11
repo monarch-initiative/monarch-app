@@ -88,6 +88,11 @@ export const routes: RouteRecordRaw[] = [
 
   /** about pages */
   {
+    path: "/overview",
+    name: "Overview",
+    component: () => import("../pages/about/PageOverview.vue"),
+  },
+  {
     path: "/cite",
     name: "Cite",
     component: asyncRoute("about/PageCite"),
@@ -116,6 +121,13 @@ export const routes: RouteRecordRaw[] = [
     path: "/outreach",
     name: "Outreach",
     component: asyncRoute("about/PageOutreach"),
+  },
+
+  /** resources page */
+  {
+    path: "/resources",
+    name: "Resources",
+    component: () => import("../pages/resources/PageResources.vue"),
   },
 
   /** help pages */

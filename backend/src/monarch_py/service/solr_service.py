@@ -18,7 +18,7 @@ class SolrService(BaseModel):
         response.raise_for_status()
         entity = response.json()["doc"]
         try:
-            self._strip_json(entity, "_version_")
+            self._strip_json(entity, "_version_", "iri")
         except TypeError:  # if entity is None
             return None
         return entity
@@ -33,7 +33,7 @@ class SolrService(BaseModel):
         response.raise_for_status()
         solr_query_result = SolrQueryResult.parse_obj(data)
         for doc in solr_query_result.response.docs:
-            self._strip_json(doc, "_version_")
+            self._strip_json(doc, "_version_", "iri")
 
         return solr_query_result
 

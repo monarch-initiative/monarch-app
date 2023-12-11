@@ -3,7 +3,7 @@
     {
       "label": "Genes",
       "icon": "category-gene",
-      "count": 558334
+      "count": 558323
     },
     {
       "label": "Phenotypes",
@@ -18,7 +18,7 @@
     {
       "label": "Total Nodes",
       "icon": "node",
-      "count": 838004
+      "count": 838006
     }
   ],
   "association": [
@@ -30,7 +30,7 @@
     {
       "label": "Gene to Phenotype",
       "icon": "association-gene-to-phenotype",
-      "count": 882338
+      "count": 882741
     },
     {
       "label": "Disease to Phenotype",
@@ -40,7 +40,7 @@
     {
       "label": "Total Associations",
       "icon": "association",
-      "count": 10049896
+      "count": 10052263
     }
   ]
 }

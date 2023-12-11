@@ -166,6 +166,7 @@ classes:
       - category
       - name
       - full_name
+      - deprecated
       - description
       - xref
       - provided_by
@@ -304,6 +305,13 @@ slots:
       The category of the counterpart entity in a given association, 
       eg. the category of the entity that is not the subject
     range: string
+  deprecated:
+    description: >-
+      A boolean flag indicating that an entity is no longer considered current or valid.
+    range: boolean
+    exact_mappings:
+      - oboInOwl:ObsoleteClass
+
   description:
     range: string
   direction:

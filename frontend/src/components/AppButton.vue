@@ -132,7 +132,6 @@ defineExpose({ button });
   }
 
   &.small {
-    flex-direction: row-reverse;
     padding: 3px;
     border-radius: $rounded;
 

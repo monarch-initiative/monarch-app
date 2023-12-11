@@ -15,7 +15,7 @@ def autocomplete_query():
         "def_type": "edismax",
         "q_op": "AND",
         "mm": "100%",
-        "boost": 'product(if(termfreq(category,"biolink:Disease"),10.0,1),if(and(termfreq(in_taxon,"NCBITaxon:9606"),termfreq(category,"biolink:Gene")),5.0,1))',
+        "boost": 'product(if(termfreq(category,"biolink:Disease"),10.0,1),if(and(termfreq(in_taxon,"NCBITaxon:9606"),termfreq(category,"biolink:Gene")),5.0,1),if(termfreq(deprecated,"true"),0.1,1))',
         "sort": None,
         "facet_min_count": 1,
     }

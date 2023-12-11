@@ -204,7 +204,8 @@ def entity_boost():
     """Shared boost function between search and autocomplete"""
     disease_boost = 'if(termfreq(category,"biolink:Disease"),10.0,1)'
     human_gene_boost = 'if(and(termfreq(in_taxon,"NCBITaxon:9606"),termfreq(category,"biolink:Gene")),5.0,1)'
-    return f"product({disease_boost},{human_gene_boost})"
+    obsolete_unboost = 'if(termfreq(deprecated,"true"),0.1,1)'
+    return f"product({disease_boost},{human_gene_boost},{obsolete_unboost})"
 
 
 def entity_query_fields():
