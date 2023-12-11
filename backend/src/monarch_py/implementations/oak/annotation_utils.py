@@ -1,6 +1,7 @@
 """
 Utility functions for annotating text with OAK.
 """
+import json
 
 def get_word_length(text, start):
     word = ""
@@ -47,3 +48,32 @@ def replace_entities(text, entities):
         entity_value = f'<span class=\"sciCrunchAnnotation\" data-sciGraph=\"{entity[2]}\">{text[start:end]}</span>'
         replaced_text = replaced_text[:start] + entity_value + replaced_text[end:]
     return replaced_text
+
+
+def convert_to_json(text, entities):
+    json_data = {
+        "content": text,
+        "spans": []
+    }
+    for item in entities:
+        start = item[0]
+        end = item[1]
+        entity = item[2].split(',')[0].lower()
+        token_id = item[2].split(',')[1]
+
+        json_item = {
+            "start": start,
+            "end": end,
+            "text": entity,
+            "token": [
+                {
+                    "id": token_id,
+                    "category": [],
+                    "terms": [entity.capitalize()]
+                }
+            ]
+        }
+
+        json_data["spans"].append(json_item)
+
+    return json.dumps(json_data, indent=4)
