@@ -175,6 +175,14 @@ strong {
   opacity: 0.5;
 }
 
+/** text with tooltip */
+
+[data-tooltip] {
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  text-underline-offset: 2px;
+}
+
 /** notification dot */
 
 .notification {
