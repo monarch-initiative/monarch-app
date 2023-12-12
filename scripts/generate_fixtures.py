@@ -1,10 +1,15 @@
+"""
+Generate fixtures for monarch-app. 
+Requires a running instance of both Solr and semsimian_server.
+"""
+
 import argparse
 import json
 import os
 import sys
 from pathlib import Path
 
-from monarch_py.implementations.oak.oak_implementation import OakImplementation
+from monarch_py.api.semsim import _compare, _search
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 from monarch_py.implementations.solr.solr_query_utils import (
     build_association_query,
@@ -21,8 +26,7 @@ from monarch_py.utils.utils import format_output
 # from pprint import pprint as pp
 
 ### Define variables
-oak = OakImplementation()
-oak.init_semsim()
+
 si = SolrImplementation()
 solr_url = os.getenv("MONARCH_SOLR_URL", "http://localhost:8983/solr")
 solr_entities = SolrService(base_url=solr_url, core=core.ENTITY)
@@ -132,25 +136,14 @@ def main(
 
         counts = {"node": [], "association": []}
         for node_count in [
-            {
-                "label": "Genes", 
-                "icon": "category-gene",
-                "count": node_counts["biolink:Gene"]
-            },
+            {"label": "Genes", "icon": "category-gene", "count": node_counts["biolink:Gene"]},
             {
                 "label": "Phenotypes",
                 "icon": "category-phenotypic-quality",
                 "count": node_counts["biolink:PhenotypicFeature"],
             },
-            {
-                "label": "Diseases",
-                "icon": "category-disease",
-                "count": node_counts["biolink:Disease"]
-            },
-            {"label": "Total Nodes",
-             "icon": "node",
-             "count": node_counts_total
-            },
+            {"label": "Diseases", "icon": "category-disease", "count": node_counts["biolink:Disease"]},
+            {"label": "Total Nodes", "icon": "node", "count": node_counts_total},
         ]:
             counts["node"].append(node_count)
 
@@ -174,7 +167,7 @@ def main(
                 "label": "Total Associations",
                 "icon": "association",
                 "count": association_counts_total,
-            }
+            },
         ]:
             counts["association"].append(association_count)
 
@@ -198,10 +191,8 @@ def main(
         # fixtures['node-publication-abstract'] =
         # fixtures['node-publication-summary'] =
         # fixtures['ontologies'] =
-        fixtures["phenotype-explorer-compare"] = oak.compare(
-            subjects=["MP:0010771", "MP:0002169"], objects=["HP:0004325"]
-        )
-        # fixtures['phenotype-explorer-search'] =
+        fixtures["phenotype-explorer-compare"] = _compare(subjects="MP:0010771,MP:0002169", objects="HP:0004325")
+        fixtures["phenotype-explorer-search"] = _search(termset="HP:0000001,HP:0000002", prefix="ZFIN", limit=10)
         fixtures["search"] = si.search(q="fanconi")
         # fixtures['text-annotator'] =
         # fixtures['uptime'] =
