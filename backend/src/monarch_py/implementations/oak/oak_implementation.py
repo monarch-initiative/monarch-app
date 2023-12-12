@@ -109,23 +109,24 @@ class OakImplementation(SemanticSimilarityInterface):
     def annotate_text(self, text):
         sentences = re.split(r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", text)
         result = ""
-        entities = []
-        for sentence in sentences:
 
+        for sentence in sentences:
+            entities = []
             for ann in self.phenio_adapter.annotate_text(sentence):
                 if len(ann.object_label) >= 4:
                     element = [ann.subject_start, ann.subject_end, str(ann.object_label) + "," + str(ann.object_id)]
                     if (get_word_length(sentence, ann.subject_start - 1) - len(ann.object_label)) < 2:
                         entities.append(element)
-        try:
-            #entities.sort()
-            #entities = concatenate_same_entities(entities)
-            #entities = concatenate_ngram_entities(entities)
-            #replaced_text = replace_entities(sentence, entities)
-            #result += replaced_text + " "
-            result = convert_to_json(text, entities)
-        except IndexError as error:
-            # Handling the list index out of range error
-            #result += sentence + " "
-            print("Error occurred:", error)
+            try:
+                entities.sort()
+                entities = concatenate_same_entities(entities)
+                entities = concatenate_ngram_entities(entities)
+                replaced_text = replace_entities(sentence, entities)
+                result += replaced_text + " "
+                #result = convert_to_json(text, entities)
+            except IndexError as error:
+                # Handling the list index out of range error
+                result += sentence + " "
+                print("Error occurred:", error)
+        result = convert_to_json(result)
         return result
