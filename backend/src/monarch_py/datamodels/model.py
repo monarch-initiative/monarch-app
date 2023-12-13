@@ -647,6 +647,7 @@ class BestMatch(ConfiguredBaseModel):
 class SemsimSearchResult(ConfiguredBaseModel):
 
     subject_id: str = Field(...)
+    subject: Entity = Field(...)
     score: Optional[float] = Field(None)
     similarity: Optional[TermSetPairwiseSimilarity] = Field(None)
 

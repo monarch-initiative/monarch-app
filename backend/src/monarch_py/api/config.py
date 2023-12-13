@@ -92,8 +92,15 @@ class SemsimianHTTPRequester:
         response = rq.get(url=url)
         data = response.json()
         results = [
-            SemsimSearchResult(score=i[0], similarity=self.convert_tsps_data(i[1]), subject_id=i[2]) for i in data
+            SemsimSearchResult(
+                score=i[0],
+                similarity=self.convert_tsps_data(i[1]),
+                subject_id=i[2],
+                subject=solr().get_entity(i[2], extra=False),
+            )
+            for i in data
         ]
+
         return results
 
 

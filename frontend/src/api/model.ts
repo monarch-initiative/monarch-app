@@ -564,6 +564,7 @@ export interface BestMatch {
 
 export interface SemsimSearchResult {
     subject_id: string,
+    subject: Entity,
     score?: number,
     similarity?: TermSetPairwiseSimilarity,
 };

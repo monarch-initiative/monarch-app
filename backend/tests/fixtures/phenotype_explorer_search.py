@@ -6,14 +6,29 @@ def phenotype_explorer_search():
     return [
         SemsimSearchResult(
             subject_id="ZFIN:ZDB-GENE-070117-1426",
+            subject=Entity(
+                id="ZFIN:ZDB-GENE-070117-1426",
+                category="biolink:Gene",
+                name="unm_t30456",
+                full_name="un-named t30456",
+                deprecated=None,
+                description=None,
+                xref=["ZFIN:ZDB-GENE-070117-1426"],
+                provided_by="alliance_gene_nodes",
+                in_taxon="NCBITaxon:7955",
+                in_taxon_label="Danio rerio",
+                symbol="unm_t30456",
+                synonym=["unm t30456"],
+                uri="https://identifiers.org/zfin/ZDB-GENE-070117-1426",
+            ),
             score=8.153058700868163,
             similarity=TermSetPairwiseSimilarity(
                 subject_termset={
                     "ZP:0002909": TermInfo(id="ZP:0002909", label="whole organism dwarf-like, abnormal (ZPO)")
                 },
                 object_termset={
-                    "HP:0000001": TermInfo(id="HP:0000001", label="All (HPO)"),
                     "HP:0000002": TermInfo(id="HP:0000002", label="Abnormality of body height (HPO)"),
+                    "HP:0000001": TermInfo(id="HP:0000001", label="All (HPO)"),
                 },
                 subject_best_matches={
                     "ZP:0002909": BestMatch(
@@ -107,6 +122,27 @@ def phenotype_explorer_search():
         ),
         SemsimSearchResult(
             subject_id="ZFIN:ZDB-GENE-081022-128",
+            subject=Entity(
+                id="ZFIN:ZDB-GENE-081022-128",
+                category="biolink:Gene",
+                name="nsmce2",
+                full_name="NSE2 (MMS21) homolog, SMC5-SMC6 complex SUMO ligase",
+                deprecated=None,
+                description=None,
+                xref=[
+                    "ENSEMBL:ENSDARG00000076379",
+                    "NCBIGene:564644",
+                    "PANTHER:PTHR21330",
+                    "UniProtKB:B3DIX8",
+                    "ZFIN:ZDB-GENE-081022-128",
+                ],
+                provided_by="alliance_gene_nodes",
+                in_taxon="NCBITaxon:7955",
+                in_taxon_label="Danio rerio",
+                symbol="nsmce2",
+                synonym=["zgc:194609", "zgc:194590"],
+                uri="https://identifiers.org/zfin/ZDB-GENE-081022-128",
+            ),
             score=8.153058700868163,
             similarity=TermSetPairwiseSimilarity(
                 subject_termset={
@@ -208,6 +244,31 @@ def phenotype_explorer_search():
         ),
         SemsimSearchResult(
             subject_id="ZFIN:ZDB-GENE-111209-1",
+            subject=Entity(
+                id="ZFIN:ZDB-GENE-111209-1",
+                category="biolink:Gene",
+                name="mast3b",
+                full_name="microtubule associated serine/threonine kinase 3b",
+                deprecated=None,
+                description=None,
+                xref=[
+                    "UniProtKB:A0A8M1RIX4",
+                    "ZFIN:ZDB-GENE-111209-1",
+                    "PANTHER:PTHR24356",
+                    "UniProtKB:A0A8M3AXH0",
+                    "UniProtKB:A0A8M3B3Z1",
+                    "NCBIGene:100535762",
+                    "UniProtKB:A0A8M3B6T6",
+                    "ENSEMBL:ENSDARG00000086505",
+                    "UniProtKB:A0A8M2B2L6",
+                ],
+                provided_by="alliance_gene_nodes",
+                in_taxon="NCBITaxon:7955",
+                in_taxon_label="Danio rerio",
+                symbol="mast3b",
+                synonym=[],
+                uri="https://identifiers.org/zfin/ZDB-GENE-111209-1",
+            ),
             score=8.153058700868163,
             similarity=TermSetPairwiseSimilarity(
                 subject_termset={
@@ -309,6 +370,21 @@ def phenotype_explorer_search():
         ),
         SemsimSearchResult(
             subject_id="ZFIN:ZDB-GENE-070117-1424",
+            subject=Entity(
+                id="ZFIN:ZDB-GENE-070117-1424",
+                category="biolink:Gene",
+                name="unm_t30446",
+                full_name="un-named t30446",
+                deprecated=None,
+                description=None,
+                xref=["ZFIN:ZDB-GENE-070117-1424"],
+                provided_by="alliance_gene_nodes",
+                in_taxon="NCBITaxon:7955",
+                in_taxon_label="Danio rerio",
+                symbol="unm_t30446",
+                synonym=["unm t30446"],
+                uri="https://identifiers.org/zfin/ZDB-GENE-070117-1424",
+            ),
             score=8.153058700868163,
             similarity=TermSetPairwiseSimilarity(
                 subject_termset={
@@ -410,6 +486,31 @@ def phenotype_explorer_search():
         ),
         SemsimSearchResult(
             subject_id="ZFIN:ZDB-GENE-030131-4487",
+            subject=Entity(
+                id="ZFIN:ZDB-GENE-030131-4487",
+                category="biolink:Gene",
+                name="sec24c",
+                full_name="SEC24 homolog C, COPII coat complex component",
+                deprecated=None,
+                description=None,
+                xref=[
+                    "UniProtKB:A0A0R4IMX2",
+                    "UniProtKB:A0A8M2B375",
+                    "PANTHER:PTHR13803",
+                    "ENSEMBL:ENSDARG00000103516",
+                    "ZFIN:ZDB-GENE-030131-4487",
+                    "UniProtKB:A0A8M6Z9C2",
+                    "UniProtKB:A0A0R4IAZ9",
+                    "NCBIGene:571870",
+                    "UniProtKB:A0A8M2B330",
+                ],
+                provided_by="alliance_gene_nodes",
+                in_taxon="NCBITaxon:7955",
+                in_taxon_label="Danio rerio",
+                symbol="sec24c",
+                synonym=["im:7145364", "wu:fd10d12"],
+                uri="https://identifiers.org/zfin/ZDB-GENE-030131-4487",
+            ),
             score=8.153058700868163,
             similarity=TermSetPairwiseSimilarity(
                 subject_termset={
@@ -511,6 +612,21 @@ def phenotype_explorer_search():
         ),
         SemsimSearchResult(
             subject_id="ZFIN:ZDB-GENE-070117-1594",
+            subject=Entity(
+                id="ZFIN:ZDB-GENE-070117-1594",
+                category="biolink:Gene",
+                name="unm_tv205x",
+                full_name="un-named tv205x",
+                deprecated=None,
+                description=None,
+                xref=["ZFIN:ZDB-GENE-070117-1594"],
+                provided_by="alliance_gene_nodes",
+                in_taxon="NCBITaxon:7955",
+                in_taxon_label="Danio rerio",
+                symbol="unm_tv205x",
+                synonym=["unm tv205x"],
+                uri="https://identifiers.org/zfin/ZDB-GENE-070117-1594",
+            ),
             score=8.153058700868163,
             similarity=TermSetPairwiseSimilarity(
                 subject_termset={
@@ -612,6 +728,21 @@ def phenotype_explorer_search():
         ),
         SemsimSearchResult(
             subject_id="ZFIN:ZDB-GENE-070117-1423",
+            subject=Entity(
+                id="ZFIN:ZDB-GENE-070117-1423",
+                category="biolink:Gene",
+                name="unm_t30419",
+                full_name="un-named t30419",
+                deprecated=None,
+                description=None,
+                xref=["ZFIN:ZDB-GENE-070117-1423"],
+                provided_by="alliance_gene_nodes",
+                in_taxon="NCBITaxon:7955",
+                in_taxon_label="Danio rerio",
+                symbol="unm_t30419",
+                synonym=["unm t30419"],
+                uri="https://identifiers.org/zfin/ZDB-GENE-070117-1423",
+            ),
             score=8.153058700868163,
             similarity=TermSetPairwiseSimilarity(
                 subject_termset={
@@ -713,6 +844,28 @@ def phenotype_explorer_search():
         ),
         SemsimSearchResult(
             subject_id="ZFIN:ZDB-GENE-100729-3",
+            subject=Entity(
+                id="ZFIN:ZDB-GENE-100729-3",
+                category="biolink:Gene",
+                name="mrap2a",
+                full_name="melanocortin 2 receptor accessory protein 2a",
+                deprecated=None,
+                description=None,
+                xref=[
+                    "UniProtKB:F8W4H9",
+                    "ENSEMBL:ENSDARG00000074763",
+                    "NCBIGene:100003330",
+                    "PANTHER:PTHR28675",
+                    "ZFIN:ZDB-GENE-100729-3",
+                    "UniProtKB:A0A2R8Q573",
+                ],
+                provided_by="alliance_gene_nodes",
+                in_taxon="NCBITaxon:7955",
+                in_taxon_label="Danio rerio",
+                symbol="mrap2a",
+                synonym=["si:ch211-198c19.4"],
+                uri="https://identifiers.org/zfin/ZDB-GENE-100729-3",
+            ),
             score=8.153058700868163,
             similarity=TermSetPairwiseSimilarity(
                 subject_termset={
@@ -814,15 +967,37 @@ def phenotype_explorer_search():
         ),
         SemsimSearchResult(
             subject_id="ZFIN:ZDB-GENE-120919-4",
+            subject=Entity(
+                id="ZFIN:ZDB-GENE-120919-4",
+                category="biolink:Gene",
+                name="itcha",
+                full_name="itchy E3 ubiquitin protein ligase a",
+                deprecated=None,
+                description=None,
+                xref=[
+                    "ENSEMBL:ENSDARG00000074903",
+                    "UniProtKB:U6C7X6",
+                    "NCBIGene:100331274",
+                    "UniProtKB:A0A8M3B3R5",
+                    "ZFIN:ZDB-GENE-120919-4",
+                    "PANTHER:PTHR11254",
+                ],
+                provided_by="alliance_gene_nodes",
+                in_taxon="NCBITaxon:7955",
+                in_taxon_label="Danio rerio",
+                symbol="itcha",
+                synonym=["itch"],
+                uri="https://identifiers.org/zfin/ZDB-GENE-120919-4",
+            ),
             score=7.661460799028868,
             similarity=TermSetPairwiseSimilarity(
                 subject_termset={
-                    "ZP:0014819": TermInfo(id="ZP:0014819", label="growth decreased process quality, abnormal (ZPO)"),
                     "ZP:0000473": TermInfo(id="ZP:0000473", label="whole organism decreased length, abnormal (ZPO)"),
+                    "ZP:0014819": TermInfo(id="ZP:0014819", label="growth decreased process quality, abnormal (ZPO)"),
                 },
                 object_termset={
-                    "HP:0000002": TermInfo(id="HP:0000002", label="Abnormality of body height (HPO)"),
                     "HP:0000001": TermInfo(id="HP:0000001", label="All (HPO)"),
+                    "HP:0000002": TermInfo(id="HP:0000002", label="Abnormality of body height (HPO)"),
                 },
                 subject_best_matches={
                     "ZP:0000473": BestMatch(
@@ -884,8 +1059,8 @@ def phenotype_explorer_search():
                     "HP:0000001": BestMatch(
                         match_source="HP:0000001",
                         match_source_label="All (HPO)",
-                        match_target="ZP:0014819",
-                        match_target_label="growth decreased process quality, abnormal (ZPO)",
+                        match_target="ZP:0000473",
+                        match_target_label="whole organism decreased length, abnormal (ZPO)",
                         score=0.0,
                         match_subsumer=None,
                         match_subsumer_label=None,
@@ -893,7 +1068,7 @@ def phenotype_explorer_search():
                             subject_id="HP:0000001",
                             subject_label=None,
                             subject_source=None,
-                            object_id="ZP:0014819",
+                            object_id="ZP:0000473",
                             object_label=None,
                             object_source=None,
                             ancestor_id="NO_ANCESTOR_FOUND",
@@ -943,15 +1118,30 @@ def phenotype_explorer_search():
         ),
         SemsimSearchResult(
             subject_id="ZFIN:ZDB-GENE-130726-2",
+            subject=Entity(
+                id="ZFIN:ZDB-GENE-130726-2",
+                category="biolink:Gene",
+                name="kcnj10b",
+                full_name="potassium inwardly rectifying channel subfamily J member 10b",
+                deprecated=None,
+                description=None,
+                xref=["ENSEMBL:ENSDARG00000105022", "ZFIN:ZDB-GENE-130726-2"],
+                provided_by="alliance_gene_nodes",
+                in_taxon="NCBITaxon:7955",
+                in_taxon_label="Danio rerio",
+                symbol="kcnj10b",
+                synonym=["Kir4.1b"],
+                uri="https://identifiers.org/zfin/ZDB-GENE-130726-2",
+            ),
             score=6.283193403469026,
             similarity=TermSetPairwiseSimilarity(
                 subject_termset={
-                    "ZP:0000324": TermInfo(id="ZP:0000324", label="whole organism decreased size, abnormal (ZPO)"),
                     "ZP:0001589": TermInfo(id="ZP:0001589", label="embryo development disrupted, abnormal (ZPO)"),
+                    "ZP:0000324": TermInfo(id="ZP:0000324", label="whole organism decreased size, abnormal (ZPO)"),
                 },
                 object_termset={
-                    "HP:0000001": TermInfo(id="HP:0000001", label="All (HPO)"),
                     "HP:0000002": TermInfo(id="HP:0000002", label="Abnormality of body height (HPO)"),
+                    "HP:0000001": TermInfo(id="HP:0000001", label="All (HPO)"),
                 },
                 subject_best_matches={
                     "ZP:0000324": BestMatch(

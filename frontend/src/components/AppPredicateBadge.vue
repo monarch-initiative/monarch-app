@@ -34,8 +34,8 @@ const arrowDirection = computed(() =>
       ? "up"
       : "left"
     : props.vertical
-      ? "down"
-      : "right",
+    ? "down"
+    : "right",
 );
 </script>
 
