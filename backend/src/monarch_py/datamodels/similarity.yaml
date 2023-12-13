@@ -80,9 +80,13 @@ classes:
 
   SemsimSearchResult:
     slots:
-      - subject_id
+      - subject
       - score
       - similarity
+    slot_usage:
+      subject:
+        range: Entity
+        inlined: true
 
 types:
   ZeroToOne:
