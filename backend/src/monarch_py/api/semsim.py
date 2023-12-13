@@ -49,9 +49,6 @@ def _post_compare(request: SemsimCompareRequest):
     </pre>
     """
     return semsimian().compare(request.subjects, request.objects)
-<<<<<<< HEAD
-=======
-
 
 @router.get("/search/{termset}/{category}")
 def _search(
