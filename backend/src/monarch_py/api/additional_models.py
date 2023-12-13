@@ -30,5 +30,5 @@ class SemsimCompareRequest(BaseModel):
 
 class SemsimSearchRequest(BaseModel):
     termset: List[str] = Field(..., title="Termset to search")
-    prefix: str = Field(..., title="Prefix to search for")
-    limit: Optional[int] = Field(..., title="Limit the number of results")
+    category: SemsimSearchCategory = Field(..., title="Category to search for")
+    limit: Optional[int] = Field(10, title="Limit the number of results", ge=1, le=50)

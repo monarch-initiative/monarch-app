@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Path, Query
+from fastapi import APIRouter, Path, Query
 
 from monarch_py.api.additional_models import SemsimCompareRequest, SemsimSearchRequest, SemsimSearchCategory
 from monarch_py.api.config import semsimian
@@ -54,14 +54,14 @@ def _post_compare(request: SemsimCompareRequest):
 @router.get("/search/{termset}/{prefix}")
 def _search(
     termset: str = Path(..., title="Termset to search"),
-    prefix: str = Path(..., title="Prefix to search for"),
-    limit: int = Query(default=10, ge=0, le=500),
+    category: SemsimSearchCategory = Path(..., title="Category of entities to search for"),
+    limit: int = Query(default=10, ge=1, le=50),
 ):
     """Search for terms in a termset
 
     <b>Args:</b> <br>
-        termset (str, optional): Termset to search. Defaults to "". <br>
-        prefix (str, optional): Prefix to search for. Defaults to "". <br>
+        termset (str, optional): Comma separated list of term IDs to find matches for. <br>
+        category (str, optional): Category of entities to search for. <br>
         limit (int, optional): Limit the number of results. Defaults to 10.
 
     <b>Returns:</b> <br>
@@ -72,11 +72,11 @@ def _search(
         f"""
     Running semsim search:
         termset: {termset}
-        prefix: {prefix}
+        category: {category}
     """
     )
-    
-    results = semsimian().search(termset=termset.split(","), prefix=parse_similarity_prefix(prefix), limit=limit)
+
+    results = semsimian().search(termset=termset.split(","), prefix=parse_similarity_prefix(category), limit=limit)
     return results
 
 
@@ -88,10 +88,10 @@ def _post_search(request: SemsimSearchRequest):
         Example: <br>
     <pre>
     {
-      "termset": ["HP:0000001", "HP:0000002"],
-      "prefix": "ZFIN",
+      "termset": ["HP:0002104", "HP:0012378", "HP:0012378", "HP:0012378"],
+      "category": "Human Diseases",
       "limit": 5
     }
     </pre>
     """
-    return semsimian().search(request.termset, parse_similarity_prefix(request.prefix), request.limit)
+    return semsimian().search(request.termset, parse_similarity_prefix(request.category.value), request.limit)
