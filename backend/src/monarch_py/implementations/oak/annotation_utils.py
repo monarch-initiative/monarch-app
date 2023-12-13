@@ -82,8 +82,7 @@ def convert_to_json(paragraphs: List[str]):
 
         result.append({"text": "\n"})
 
-    api_response = json.dumps(result)\
-
+    api_response = json.dumps(result)
     # Load the JSON
     data = json.loads(api_response)
 

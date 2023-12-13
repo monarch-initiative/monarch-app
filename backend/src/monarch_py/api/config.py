@@ -43,7 +43,7 @@ def convert_nans(input_dict, to_value=None):
 
 class SemsimianHTTPRequester:
     """A class that makes HTTP requests to the semsimian_server."""
-    
+
     def compare(self, subjects, objects):
         host = f"http://{settings.semsimian_server_host}:{settings.semsimian_server_port}"
         path = f"/compare/{','.join(subjects)}/{','.join(objects)}"

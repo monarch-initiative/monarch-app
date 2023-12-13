@@ -10,7 +10,7 @@
     "text": "Text Annotator",
     "icon": "subscript",
     "tooltip": "Annotate text with concepts from our knowledge graph"
-    },
+  },
   {
     "id": "phenotype-explorer",
     "text": "Phenotype Explorer",

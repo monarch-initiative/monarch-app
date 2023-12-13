@@ -130,7 +130,7 @@ class OakImplementation(SemanticSimilarityInterface):
                     # Handling the list index out of range error
                     result += sentence + " "
                     print("Error occurred:", error)
-            
+
             paragraphs_annotated.append(result)
         result = convert_to_json(paragraphs_annotated)
         return result

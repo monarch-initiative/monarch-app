@@ -50,6 +50,7 @@ def _post_compare(request: SemsimCompareRequest):
     """
     return semsimian().compare(request.subjects, request.objects)
 
+
 @router.get("/search/{termset}/{category}")
 def _search(
     termset: str = Path(..., title="Termset to search"),
