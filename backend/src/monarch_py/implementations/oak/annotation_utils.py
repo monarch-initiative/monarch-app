@@ -58,7 +58,7 @@ def convert_to_json(paragraphs: List[str]):
     result = []
     span_pattern = re.compile(r'<span class="sciCrunchAnnotation" data-sciGraph="([^"]+)">([^<]+)</span>')
 
-    start_index = 0
+    #start_index = 0
     for paragraph in paragraphs:
         start_index = 0
         for match in span_pattern.finditer(paragraph):
