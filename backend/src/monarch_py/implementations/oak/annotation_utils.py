@@ -60,6 +60,7 @@ def convert_to_json(paragraphs: List[str]):
 
     start_index = 0
     for paragraph in paragraphs:
+        start_index = 0
         for match in span_pattern.finditer(paragraph):
             span_data = match.group(1)
             span_text = match.group(2)

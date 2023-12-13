@@ -113,7 +113,7 @@ class OakImplementation(SemanticSimilarityInterface):
         for paragraph in paragraphs:
             result = ""
             sentences = re.split(r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", paragraph)
-            pp(f"Sentences: {sentences}")
+            #pp(f"Sentences: {sentences}")
             for sentence in sentences:
                 entities = []
                 for ann in self.phenio_adapter.annotate_text(sentence):  # type: ignore
@@ -133,5 +133,6 @@ class OakImplementation(SemanticSimilarityInterface):
                     print("Error occurred:", error)
             
             paragraphs_annotated.append(result)
+            print("annotated paragraphs:", paragraphs_annotated)
         result = convert_to_json(paragraphs_annotated)
         return result
