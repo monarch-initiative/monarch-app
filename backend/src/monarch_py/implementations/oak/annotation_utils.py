@@ -58,7 +58,6 @@ def convert_to_json(paragraphs: List[str]):
     result = []
     span_pattern = re.compile(r'<span class="sciCrunchAnnotation" data-sciGraph="([^"]+)">([^<]+)</span>')
 
-    #start_index = 0
     for paragraph in paragraphs:
         start_index = 0
         for match in span_pattern.finditer(paragraph):
@@ -81,33 +80,9 @@ def convert_to_json(paragraphs: List[str]):
             non_span_text = paragraph[start_index:]
             result.append({"text": non_span_text})
 
-        result.append({"text": "\n\n"})
+        result.append({"text": "\n"})
 
-    # for match in span_pattern.finditer(text):
-    #     span_data = match.group(1)
-    #     span_text = match.group(2)
-
-    #     if start_index < match.start():
-    #         non_span_text = text[start_index : match.start()]
-    #         result.append({"text": non_span_text})
-
-    #     tokens = []
-    #     for token_data in span_data.split("|"):
-    #         token_parts = token_data.split(",")
-    #         tokens.append({"id": token_parts[1], "name": token_parts[0]})
-
-    #     result.append({"text": span_text, "tokens": tokens})
-    #     start_index = match.end()
-
-    # if start_index < len(text):
-    #     non_span_text = text[start_index:]
-    #     result.append({"text": non_span_text})
-
-    # return json.dumps(result, indent=2)
-    # return json.dumps(result)
-    api_response = json.dumps(result)
-    # Replace "\n" with actual line breaks
-    # api_response = api_response.replace("\\n", "\n")
+    api_response = json.dumps(result)\
 
     # Load the JSON
     data = json.loads(api_response)
