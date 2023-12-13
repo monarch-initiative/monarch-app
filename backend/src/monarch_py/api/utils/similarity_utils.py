@@ -3,6 +3,10 @@ from oaklib import OntologyResource
 from oaklib.constants import OAKLIB_MODULE
 from oaklib.implementations.sqldb.sql_implementation import SqlImplementation
 
+from fastapi import HTTPException
+
+from monarch_py.api.additional_models import SemsimSearchCategory
+
 IS_A = omd.slots.subClassOf.curie
 HP_DB_URL = "https://s3.amazonaws.com/bbop-sqlite/hp.db.gz"
 
@@ -18,3 +22,13 @@ def compare_termsets(
     oi = SqlImplementation(OntologyResource(slug=hp_db))
     results = oi.termset_pairwise_similarity(subjects, objects, predicates)
     return results
+
+
+def parse_similarity_prefix(prefix: str):
+    if prefix in SemsimSearchCategory._member_names_:
+        prefix = prefix
+    elif SemsimSearchCategory(prefix):
+        prefix = SemsimSearchCategory(prefix).name
+    else:
+        raise HTTPException(status_code=404, detail="Prefix not found")
+    return prefix

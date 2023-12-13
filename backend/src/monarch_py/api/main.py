@@ -19,7 +19,6 @@ app = FastAPI(
 async def initialize_app():
     semsimian()
     oak()
-    # Let the curie service singleton initialize itself
     CurieService()
 
 

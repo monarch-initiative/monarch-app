@@ -51,13 +51,11 @@ class Association(ConfiguredBaseModel):
     subject_namespace: Optional[str] = Field(None, description="""The namespace/prefix of the subject entity""")
     subject_category: Optional[str] = Field(None, description="""The category of the subject entity""")
     subject_closure: Optional[List[str]] = Field(
-        default_factory=list,
-        description="""Field containing subject id and the ids of all of it's ancestors""",
+        default_factory=list, description="""Field containing subject id and the ids of all of it's ancestors"""
     )
     subject_label: Optional[str] = Field(None, description="""The name of the subject entity""")
     subject_closure_label: Optional[List[str]] = Field(
-        default_factory=list,
-        description="""Field containing subject name and the names of all of it's ancestors""",
+        default_factory=list, description="""Field containing subject name and the names of all of it's ancestors"""
     )
     subject_taxon: Optional[str] = Field(None)
     subject_taxon_label: Optional[str] = Field(None)
@@ -67,13 +65,11 @@ class Association(ConfiguredBaseModel):
     object_namespace: Optional[str] = Field(None, description="""The namespace/prefix of the object entity""")
     object_category: Optional[str] = Field(None, description="""The category of the object entity""")
     object_closure: Optional[List[str]] = Field(
-        default_factory=list,
-        description="""Field containing object id and the ids of all of it's ancestors""",
+        default_factory=list, description="""Field containing object id and the ids of all of it's ancestors"""
     )
     object_label: Optional[str] = Field(None, description="""The name of the object entity""")
     object_closure_label: Optional[List[str]] = Field(
-        default_factory=list,
-        description="""Field containing object name and the names of all of it's ancestors""",
+        default_factory=list, description="""Field containing object name and the names of all of it's ancestors"""
     )
     object_taxon: Optional[str] = Field(None)
     object_taxon_label: Optional[str] = Field(None)
@@ -82,13 +78,11 @@ class Association(ConfiguredBaseModel):
     negated: Optional[bool] = Field(None)
     pathway: Optional[str] = Field(None)
     evidence_count: Optional[int] = Field(
-        None,
-        description="""count of supporting documents, evidence codes, and sources supplying evidence""",
+        None, description="""count of supporting documents, evidence codes, and sources supplying evidence"""
     )
     has_evidence: Optional[List[str]] = Field(default_factory=list)
     has_evidence_links: Optional[List[ExpandedCurie]] = Field(
-        default_factory=list,
-        description="""List of ExpandedCuries with id and url for evidence""",
+        default_factory=list, description="""List of ExpandedCuries with id and url for evidence"""
     )
     grouping_key: Optional[str] = Field(
         None,
@@ -96,13 +90,11 @@ class Association(ConfiguredBaseModel):
     )
     provided_by: Optional[str] = Field(None)
     provided_by_link: Optional[ExpandedCurie] = Field(
-        None,
-        description="""A link to the docs for the knowledge source that provided the node/edge.""",
+        None, description="""A link to the docs for the knowledge source that provided the node/edge."""
     )
     publications: Optional[List[str]] = Field(default_factory=list)
     publications_links: Optional[List[ExpandedCurie]] = Field(
-        default_factory=list,
-        description="""List of ExpandedCuries with id and url for publications""",
+        default_factory=list, description="""List of ExpandedCuries with id and url for publications"""
     )
     qualifiers: Optional[List[str]] = Field(default_factory=list)
     frequency_qualifier: Optional[str] = Field(None)
@@ -143,8 +135,7 @@ class Association(ConfiguredBaseModel):
     )
     onset_qualifier_category: Optional[str] = Field(None, description="""The category of the onset_qualifier entity""")
     onset_qualifier_closure: Optional[List[str]] = Field(
-        default_factory=list,
-        description="""Field containing onset_qualifier id and the ids of all of it's ancestors""",
+        default_factory=list, description="""Field containing onset_qualifier id and the ids of all of it's ancestors"""
     )
     onset_qualifier_closure_label: Optional[List[str]] = Field(
         default_factory=list,
@@ -156,8 +147,7 @@ class Association(ConfiguredBaseModel):
     )
     sex_qualifier_category: Optional[str] = Field(None, description="""The category of the sex_qualifier entity""")
     sex_qualifier_closure: Optional[List[str]] = Field(
-        default_factory=list,
-        description="""Field containing sex_qualifier id and the ids of all of it's ancestors""",
+        default_factory=list, description="""Field containing sex_qualifier id and the ids of all of it's ancestors"""
     )
     sex_qualifier_closure_label: Optional[List[str]] = Field(
         default_factory=list,
@@ -169,8 +159,7 @@ class Association(ConfiguredBaseModel):
     )
     stage_qualifier_category: Optional[str] = Field(None, description="""The category of the stage_qualifier entity""")
     stage_qualifier_closure: Optional[List[str]] = Field(
-        default_factory=list,
-        description="""Field containing stage_qualifier id and the ids of all of it's ancestors""",
+        default_factory=list, description="""Field containing stage_qualifier id and the ids of all of it's ancestors"""
     )
     stage_qualifier_closure_label: Optional[List[str]] = Field(
         default_factory=list,
@@ -184,8 +173,7 @@ class AssociationCountList(ConfiguredBaseModel):
     """
 
     items: List[AssociationCount] = Field(
-        default_factory=list,
-        description="""A collection of items, with the type to be overriden by slot_usage""",
+        default_factory=list, description="""A collection of items, with the type to be overriden by slot_usage"""
     )
 
 
@@ -195,21 +183,16 @@ class AssociationTypeMapping(ConfiguredBaseModel):
     """
 
     subject_label: Optional[str] = Field(
-        None,
-        description="""A label to describe the subjects of the association type as a whole for use in the UI""",
+        None, description="""A label to describe the subjects of the association type as a whole for use in the UI"""
     )
     object_label: Optional[str] = Field(
-        None,
-        description="""A label to describe the objects of the association type as a whole for use in the UI""",
+        None, description="""A label to describe the objects of the association type as a whole for use in the UI"""
     )
     symmetric: bool = Field(
         False,
         description="""Whether the association type is symmetric, meaning that the subject and object labels should be interchangeable""",
     )
-    category: str = Field(
-        ...,
-        description="""The biolink category to use in queries for this association type""",
-    )
+    category: str = Field(..., description="""The biolink category to use in queries for this association type""")
 
 
 class DirectionalAssociation(Association):
@@ -228,13 +211,11 @@ class DirectionalAssociation(Association):
     subject_namespace: Optional[str] = Field(None, description="""The namespace/prefix of the subject entity""")
     subject_category: Optional[str] = Field(None, description="""The category of the subject entity""")
     subject_closure: Optional[List[str]] = Field(
-        default_factory=list,
-        description="""Field containing subject id and the ids of all of it's ancestors""",
+        default_factory=list, description="""Field containing subject id and the ids of all of it's ancestors"""
     )
     subject_label: Optional[str] = Field(None, description="""The name of the subject entity""")
     subject_closure_label: Optional[List[str]] = Field(
-        default_factory=list,
-        description="""Field containing subject name and the names of all of it's ancestors""",
+        default_factory=list, description="""Field containing subject name and the names of all of it's ancestors"""
     )
     subject_taxon: Optional[str] = Field(None)
     subject_taxon_label: Optional[str] = Field(None)
@@ -244,13 +225,11 @@ class DirectionalAssociation(Association):
     object_namespace: Optional[str] = Field(None, description="""The namespace/prefix of the object entity""")
     object_category: Optional[str] = Field(None, description="""The category of the object entity""")
     object_closure: Optional[List[str]] = Field(
-        default_factory=list,
-        description="""Field containing object id and the ids of all of it's ancestors""",
+        default_factory=list, description="""Field containing object id and the ids of all of it's ancestors"""
     )
     object_label: Optional[str] = Field(None, description="""The name of the object entity""")
     object_closure_label: Optional[List[str]] = Field(
-        default_factory=list,
-        description="""Field containing object name and the names of all of it's ancestors""",
+        default_factory=list, description="""Field containing object name and the names of all of it's ancestors"""
     )
     object_taxon: Optional[str] = Field(None)
     object_taxon_label: Optional[str] = Field(None)
@@ -259,13 +238,11 @@ class DirectionalAssociation(Association):
     negated: Optional[bool] = Field(None)
     pathway: Optional[str] = Field(None)
     evidence_count: Optional[int] = Field(
-        None,
-        description="""count of supporting documents, evidence codes, and sources supplying evidence""",
+        None, description="""count of supporting documents, evidence codes, and sources supplying evidence"""
     )
     has_evidence: Optional[List[str]] = Field(default_factory=list)
     has_evidence_links: Optional[List[ExpandedCurie]] = Field(
-        default_factory=list,
-        description="""List of ExpandedCuries with id and url for evidence""",
+        default_factory=list, description="""List of ExpandedCuries with id and url for evidence"""
     )
     grouping_key: Optional[str] = Field(
         None,
@@ -273,13 +250,11 @@ class DirectionalAssociation(Association):
     )
     provided_by: Optional[str] = Field(None)
     provided_by_link: Optional[ExpandedCurie] = Field(
-        None,
-        description="""A link to the docs for the knowledge source that provided the node/edge.""",
+        None, description="""A link to the docs for the knowledge source that provided the node/edge."""
     )
     publications: Optional[List[str]] = Field(default_factory=list)
     publications_links: Optional[List[ExpandedCurie]] = Field(
-        default_factory=list,
-        description="""List of ExpandedCuries with id and url for publications""",
+        default_factory=list, description="""List of ExpandedCuries with id and url for publications"""
     )
     qualifiers: Optional[List[str]] = Field(default_factory=list)
     frequency_qualifier: Optional[str] = Field(None)
@@ -320,8 +295,7 @@ class DirectionalAssociation(Association):
     )
     onset_qualifier_category: Optional[str] = Field(None, description="""The category of the onset_qualifier entity""")
     onset_qualifier_closure: Optional[List[str]] = Field(
-        default_factory=list,
-        description="""Field containing onset_qualifier id and the ids of all of it's ancestors""",
+        default_factory=list, description="""Field containing onset_qualifier id and the ids of all of it's ancestors"""
     )
     onset_qualifier_closure_label: Optional[List[str]] = Field(
         default_factory=list,
@@ -333,8 +307,7 @@ class DirectionalAssociation(Association):
     )
     sex_qualifier_category: Optional[str] = Field(None, description="""The category of the sex_qualifier entity""")
     sex_qualifier_closure: Optional[List[str]] = Field(
-        default_factory=list,
-        description="""Field containing sex_qualifier id and the ids of all of it's ancestors""",
+        default_factory=list, description="""Field containing sex_qualifier id and the ids of all of it's ancestors"""
     )
     sex_qualifier_closure_label: Optional[List[str]] = Field(
         default_factory=list,
@@ -346,8 +319,7 @@ class DirectionalAssociation(Association):
     )
     stage_qualifier_category: Optional[str] = Field(None, description="""The category of the stage_qualifier entity""")
     stage_qualifier_closure: Optional[List[str]] = Field(
-        default_factory=list,
-        description="""Field containing stage_qualifier id and the ids of all of it's ancestors""",
+        default_factory=list, description="""Field containing stage_qualifier id and the ids of all of it's ancestors"""
     )
     stage_qualifier_closure_label: Optional[List[str]] = Field(
         default_factory=list,
@@ -374,16 +346,14 @@ class Entity(ConfiguredBaseModel):
     name: Optional[str] = Field(None)
     full_name: Optional[str] = Field(None, description="""The long form name of an entity""")
     deprecated: Optional[bool] = Field(
-        None,
-        description="""A boolean flag indicating that an entity is no longer considered current or valid.""",
+        None, description="""A boolean flag indicating that an entity is no longer considered current or valid."""
     )
     description: Optional[str] = Field(None)
     xref: Optional[List[str]] = Field(default_factory=list)
     provided_by: Optional[str] = Field(None)
     in_taxon: Optional[str] = Field(None, description="""The biolink taxon that the entity is in the closure of.""")
     in_taxon_label: Optional[str] = Field(
-        None,
-        description="""The label of the biolink taxon that the entity is in the closure of.""",
+        None, description="""The label of the biolink taxon that the entity is in the closure of."""
     )
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)
@@ -407,8 +377,7 @@ class FacetField(ConfiguredBaseModel):
 
     label: str = Field(...)
     facet_values: Optional[List[FacetValue]] = Field(
-        default_factory=list,
-        description="""Collection of FacetValue label/value instances belonging to a FacetField""",
+        default_factory=list, description="""Collection of FacetValue label/value instances belonging to a FacetField"""
     )
 
 
@@ -416,8 +385,7 @@ class HistoPheno(ConfiguredBaseModel):
 
     id: str = Field(...)
     items: List[HistoBin] = Field(
-        default_factory=list,
-        description="""A collection of items, with the type to be overriden by slot_usage""",
+        default_factory=list, description="""A collection of items, with the type to be overriden by slot_usage"""
     )
 
 
@@ -449,28 +417,23 @@ class Node(Entity):
 
     in_taxon: Optional[str] = Field(None, description="""The biolink taxon that the entity is in the closure of.""")
     in_taxon_label: Optional[str] = Field(
-        None,
-        description="""The label of the biolink taxon that the entity is in the closure of.""",
+        None, description="""The label of the biolink taxon that the entity is in the closure of."""
     )
     inheritance: Optional[Entity] = Field(None)
     causal_gene: Optional[List[Entity]] = Field(
-        default_factory=list,
-        description="""A list of genes that are known to be causally associated with a disease""",
+        default_factory=list, description="""A list of genes that are known to be causally associated with a disease"""
     )
     causes_disease: Optional[List[Entity]] = Field(
-        default_factory=list,
-        description="""A list of diseases that are known to be causally associated with a gene""",
+        default_factory=list, description="""A list of diseases that are known to be causally associated with a gene"""
     )
     mappings: Optional[List[ExpandedCurie]] = Field(
-        default_factory=list,
-        description="""List of ExpandedCuries with id and url for mapped entities""",
+        default_factory=list, description="""List of ExpandedCuries with id and url for mapped entities"""
     )
     external_links: Optional[List[ExpandedCurie]] = Field(
         default_factory=list, description="""ExpandedCurie with id and url for xrefs"""
     )
     provided_by_link: Optional[ExpandedCurie] = Field(
-        None,
-        description="""A link to the docs for the knowledge source that provided the node/edge.""",
+        None, description="""A link to the docs for the knowledge source that provided the node/edge."""
     )
     association_counts: List[AssociationCount] = Field(default_factory=list)
     node_hierarchy: Optional[NodeHierarchy] = Field(None)
@@ -479,8 +442,7 @@ class Node(Entity):
     name: Optional[str] = Field(None)
     full_name: Optional[str] = Field(None, description="""The long form name of an entity""")
     deprecated: Optional[bool] = Field(
-        None,
-        description="""A boolean flag indicating that an entity is no longer considered current or valid.""",
+        None, description="""A boolean flag indicating that an entity is no longer considered current or valid."""
     )
     description: Optional[str] = Field(None)
     xref: Optional[List[str]] = Field(default_factory=list)
@@ -506,8 +468,7 @@ class Results(ConfiguredBaseModel):
 class AssociationResults(Results):
 
     items: List[Association] = Field(
-        default_factory=list,
-        description="""A collection of items, with the type to be overriden by slot_usage""",
+        default_factory=list, description="""A collection of items, with the type to be overriden by slot_usage"""
     )
     limit: int = Field(..., description="""number of items to return in a response""")
     offset: int = Field(..., description="""offset into the total number of items""")
@@ -517,8 +478,7 @@ class AssociationResults(Results):
 class AssociationTableResults(Results):
 
     items: List[DirectionalAssociation] = Field(
-        default_factory=list,
-        description="""A collection of items, with the type to be overriden by slot_usage""",
+        default_factory=list, description="""A collection of items, with the type to be overriden by slot_usage"""
     )
     limit: int = Field(..., description="""number of items to return in a response""")
     offset: int = Field(..., description="""offset into the total number of items""")
@@ -532,8 +492,7 @@ class CategoryGroupedAssociationResults(Results):
         description="""The category of the counterpart entity in a given association,  eg. the category of the entity that is not the subject""",
     )
     items: List[Association] = Field(
-        default_factory=list,
-        description="""A collection of items, with the type to be overriden by slot_usage""",
+        default_factory=list, description="""A collection of items, with the type to be overriden by slot_usage"""
     )
     limit: int = Field(..., description="""number of items to return in a response""")
     offset: int = Field(..., description="""offset into the total number of items""")
@@ -543,8 +502,7 @@ class CategoryGroupedAssociationResults(Results):
 class EntityResults(Results):
 
     items: List[Entity] = Field(
-        default_factory=list,
-        description="""A collection of items, with the type to be overriden by slot_usage""",
+        default_factory=list, description="""A collection of items, with the type to be overriden by slot_usage"""
     )
     limit: int = Field(..., description="""number of items to return in a response""")
     offset: int = Field(..., description="""offset into the total number of items""")
@@ -557,8 +515,7 @@ class MappingResults(Results):
     """
 
     items: List[Mapping] = Field(
-        default_factory=list,
-        description="""A collection of items, with the type to be overriden by slot_usage""",
+        default_factory=list, description="""A collection of items, with the type to be overriden by slot_usage"""
     )
     limit: int = Field(..., description="""number of items to return in a response""")
     offset: int = Field(..., description="""offset into the total number of items""")
@@ -584,16 +541,14 @@ class SearchResult(Entity):
     name: str = Field(...)
     full_name: Optional[str] = Field(None, description="""The long form name of an entity""")
     deprecated: Optional[bool] = Field(
-        None,
-        description="""A boolean flag indicating that an entity is no longer considered current or valid.""",
+        None, description="""A boolean flag indicating that an entity is no longer considered current or valid."""
     )
     description: Optional[str] = Field(None)
     xref: Optional[List[str]] = Field(default_factory=list)
     provided_by: Optional[str] = Field(None)
     in_taxon: Optional[str] = Field(None, description="""The biolink taxon that the entity is in the closure of.""")
     in_taxon_label: Optional[str] = Field(
-        None,
-        description="""The label of the biolink taxon that the entity is in the closure of.""",
+        None, description="""The label of the biolink taxon that the entity is in the closure of."""
     )
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)
@@ -603,12 +558,10 @@ class SearchResult(Entity):
 class SearchResults(Results):
 
     items: List[SearchResult] = Field(
-        default_factory=list,
-        description="""A collection of items, with the type to be overriden by slot_usage""",
+        default_factory=list, description="""A collection of items, with the type to be overriden by slot_usage"""
     )
     facet_fields: Optional[List[FacetField]] = Field(
-        default_factory=list,
-        description="""Collection of facet field responses with the field values and counts""",
+        default_factory=list, description="""Collection of facet field responses with the field values and counts"""
     )
     facet_queries: Optional[List[FacetValue]] = Field(
         default_factory=list,
@@ -648,17 +601,14 @@ class TermPairwiseSimilarity(PairwiseSimilarity):
     subject_information_content: Optional[float] = Field(None, description="""The IC of the subject""")
     ancestor_information_content: Optional[float] = Field(None, description="""The IC of the object""")
     jaccard_similarity: Optional[float] = Field(
-        None,
-        description="""The number of concepts in the intersection divided by the number in the union""",
+        None, description="""The number of concepts in the intersection divided by the number in the union"""
     )
     cosine_similarity: Optional[float] = Field(
-        None,
-        description="""the dot product of two node embeddings divided by the product of their lengths""",
+        None, description="""the dot product of two node embeddings divided by the product of their lengths"""
     )
     dice_similarity: Optional[float] = Field(None)
     phenodigm_score: Optional[float] = Field(
-        None,
-        description="""the geometric mean of the jaccard similarity and the information content""",
+        None, description="""the geometric mean of the jaccard similarity and the information content"""
     )
 
 
@@ -694,6 +644,13 @@ class BestMatch(ConfiguredBaseModel):
     similarity: TermPairwiseSimilarity = Field(...)
 
 
+class SemsimSearchResult(ConfiguredBaseModel):
+
+    subject_id: str = Field(...)
+    score: Optional[float] = Field(None)
+    similarity: Optional[TermSetPairwiseSimilarity] = Field(None)
+
+
 # Update forward refs
 # see https://pydantic-docs.helpmanual.io/usage/postponed_annotations/
 Association.update_forward_refs()
@@ -724,3 +681,4 @@ TermPairwiseSimilarity.update_forward_refs()
 TermSetPairwiseSimilarity.update_forward_refs()
 TermInfo.update_forward_refs()
 BestMatch.update_forward_refs()
+SemsimSearchResult.update_forward_refs()

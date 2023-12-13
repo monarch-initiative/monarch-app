@@ -44,7 +44,7 @@ from monarch_py.interfaces.association_interface import AssociationInterface
 from monarch_py.interfaces.entity_interface import EntityInterface
 from monarch_py.interfaces.search_interface import SearchInterface
 from monarch_py.service.solr_service import SolrService
-from monarch_py.utils.entity_utils import get_expanded_curie
+from monarch_py.utils.entity_utils import get_expanded_curie, get_uri
 from monarch_py.utils.utils import get_provided_by_link, get_links_for_field
 
 
@@ -85,6 +85,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
 
         # Get extra data (this logic is very tricky to test because of the calls to Solr)
         node = Node(**solr_document)
+        node.uri = get_uri(node.id)
         if "biolink:Disease" in node.category:
             mode_of_inheritance_associations = self.get_associations(
                 subject=id, predicate="biolink:has_mode_of_inheritance", direct=True, offset=0
