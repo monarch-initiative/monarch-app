@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     phenio_db_path = os.getenv("PHENIO_DB_PATH") if os.getenv("PHENIO_DB_PATH") else "/data/phenio.db"
 
     semsim_server_host = os.getenv("SEMSIM_SERVER_HOST", "127.0.0.1")
-    semsim_server_port = os.getenv("SEMSIM_SERVER_PORT", 18811)
+    semsim_server_port = os.getenv("SEMSIM_SERVER_PORT", 9999)
 
 
 settings = Settings()
