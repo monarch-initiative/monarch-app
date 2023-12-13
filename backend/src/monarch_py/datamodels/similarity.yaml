@@ -80,7 +80,6 @@ classes:
 
   SemsimSearchResult:
     slots:
-      - subject_id
       - subject
       - score
       - similarity
