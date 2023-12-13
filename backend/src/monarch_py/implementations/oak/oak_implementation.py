@@ -95,7 +95,7 @@ class OakImplementation(SemanticSimilarityInterface):
         predicates = predicates or self.default_predicates
         logger.debug(f"Comparing {subjects} to {objects} using {predicates}")
         compare_time = time.time()
-        response = self.semsim.termset_pairwise_similarity(
+        response = self.semsim.termset_pairwise_similarity(  # type: ignore
             subjects=subjects,
             objects=objects,
             predicates=predicates,
@@ -107,26 +107,31 @@ class OakImplementation(SemanticSimilarityInterface):
         return TermSetPairwiseSimilarity(**response_dict)
 
     def annotate_text(self, text):
-        sentences = re.split(r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", text)
-        result = ""
-
-        for sentence in sentences:
-            entities = []
-            for ann in self.phenio_adapter.annotate_text(sentence):
-                if len(ann.object_label) >= 4:
-                    element = [ann.subject_start, ann.subject_end, str(ann.object_label) + "," + str(ann.object_id)]
-                    if (get_word_length(sentence, ann.subject_start - 1) - len(ann.object_label)) < 2:
-                        entities.append(element)
-            try:
-                entities.sort()
-                entities = concatenate_same_entities(entities)
-                entities = concatenate_ngram_entities(entities)
-                replaced_text = replace_entities(sentence, entities)
-                result += replaced_text + " "
-                #result = convert_to_json(text, entities)
-            except IndexError as error:
-                # Handling the list index out of range error
-                result += sentence + " "
-                print("Error occurred:", error)
-        result = convert_to_json(result)
+        """Annotate text using OAK"""
+        paragraphs = text.split("\n")
+        paragraphs_annotated = []
+        for paragraph in paragraphs:
+            result = ""
+            sentences = re.split(r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", paragraph)
+            pp(f"Sentences: {sentences}")
+            for sentence in sentences:
+                entities = []
+                for ann in self.phenio_adapter.annotate_text(sentence):  # type: ignore
+                    if len(ann.object_label) >= 4:
+                        element = [ann.subject_start, ann.subject_end, str(ann.object_label) + "," + str(ann.object_id)]
+                        if (get_word_length(sentence, ann.subject_start - 1) - len(ann.object_label)) < 2:
+                            entities.append(element)
+                try:
+                    entities.sort()
+                    entities = concatenate_same_entities(entities)
+                    entities = concatenate_ngram_entities(entities)
+                    replaced_text = replace_entities(sentence, entities)
+                    result += replaced_text + " "
+                except IndexError as error:
+                    # Handling the list index out of range error
+                    result += sentence + " "
+                    print("Error occurred:", error)
+            
+            paragraphs_annotated.append(result)
+        result = convert_to_json(paragraphs_annotated)
         return result

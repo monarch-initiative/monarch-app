@@ -131,7 +131,7 @@ data:
 .PHONY: dev-frontend
 dev-frontend: frontend/src/api/model.ts
 	cd frontend && \
-		yarn dev
+		VITE_API=local yarn dev
 
 
 .PHONY: dev-api

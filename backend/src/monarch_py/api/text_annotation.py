@@ -10,10 +10,12 @@ router = APIRouter(tags=["text_annotation"], responses={404: {"description": "No
 def _annotate(
         content: str = Path(title="The text content to annotate")
 ):
+    print(f"\n\nRunning oak annotate (GET):\n{content}\n")
     return oak().annotate_text(content)
 
 
 @router.post("/annotate")
 def _post_annotate(request: TextAnnotationRequest):
-    print(f"\n\tRunning oak annotate:\n{request.content}\n")
+    print(f"\n\nRunning oak annotate (POST):\n{request.content}\n")
+    # print(request.content.split("\n"))
     return oak().annotate_text(request.content)

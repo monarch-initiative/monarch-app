@@ -4,6 +4,8 @@ Utility functions for annotating text with OAK.
 
 import re
 import json
+from typing import List
+
 
 def get_word_length(text, start):
     word = ""
@@ -46,74 +48,65 @@ def replace_entities(text, entities):
     entities = sorted(entities, key=lambda x: x[0], reverse=True)
     for entity in entities:
         start, end = entity[0] - 1, entity[1]
-        #entity_value = entity[2]
-        entity_value = f'<span class=\"sciCrunchAnnotation\" data-sciGraph=\"{entity[2]}\">{text[start:end]}</span>'
+        # entity_value = entity[2]
+        entity_value = f'<span class="sciCrunchAnnotation" data-sciGraph="{entity[2]}">{text[start:end]}</span>'
         replaced_text = replaced_text[:start] + entity_value + replaced_text[end:]
     return replaced_text
 
-'''
-### with start and end format ###
-def convert_to_json(text, entities):
-    json_data = {
-        "content": text,
-        "spans": []
-    }
-    for item in entities:
-        start = item[0]
-        end = item[1]
-        entity = item[2].split(',')[0].lower()
-        token_id = item[2].split(',')[1]
 
-        json_item = {
-            "start": start,
-            "end": end,
-            "text": entity,
-            "token": [
-                {
-                    "id": token_id,
-                    "category": [],
-                    "terms": [entity.capitalize()]
-                }
-            ]
-        }
-
-        json_data["spans"].append(json_item)
-
-    return json.dumps(json_data, indent=4)
-'''
-
-
-def convert_to_json(text):
+def convert_to_json(paragraphs: List[str]):
     result = []
     span_pattern = re.compile(r'<span class="sciCrunchAnnotation" data-sciGraph="([^"]+)">([^<]+)</span>')
 
     start_index = 0
+    for paragraph in paragraphs:
+        for match in span_pattern.finditer(paragraph):
+            span_data = match.group(1)
+            span_text = match.group(2)
 
-    for match in span_pattern.finditer(text):
-        span_data = match.group(1)
-        span_text = match.group(2)
+            if start_index < match.start():
+                non_span_text = paragraph[start_index : match.start()]
+                result.append({"text": non_span_text})
 
-        if start_index < match.start():
-            non_span_text = text[start_index:match.start()]
+            tokens = []
+            for token_data in span_data.split("|"):
+                token_parts = token_data.split(",")
+                tokens.append({"id": token_parts[1], "name": token_parts[0]})
+
+            result.append({"text": span_text, "tokens": tokens})
+            start_index = match.end()
+
+        if start_index < len(paragraph):
+            non_span_text = paragraph[start_index:]
             result.append({"text": non_span_text})
 
-        tokens = []
-        for token_data in span_data.split('|'):
-            token_parts = token_data.split(',')
-            tokens.append({"id": token_parts[1], "name": token_parts[0]})
+        result.append({"text": "\n\n"})
 
-        result.append({"text": span_text, "tokens": tokens})
-        start_index = match.end()
+    # for match in span_pattern.finditer(text):
+    #     span_data = match.group(1)
+    #     span_text = match.group(2)
 
-    if start_index < len(text):
-        non_span_text = text[start_index:]
-        result.append({"text": non_span_text})
+    #     if start_index < match.start():
+    #         non_span_text = text[start_index : match.start()]
+    #         result.append({"text": non_span_text})
 
-    #return json.dumps(result, indent=2)
-    #return json.dumps(result)
+    #     tokens = []
+    #     for token_data in span_data.split("|"):
+    #         token_parts = token_data.split(",")
+    #         tokens.append({"id": token_parts[1], "name": token_parts[0]})
+
+    #     result.append({"text": span_text, "tokens": tokens})
+    #     start_index = match.end()
+
+    # if start_index < len(text):
+    #     non_span_text = text[start_index:]
+    #     result.append({"text": non_span_text})
+
+    # return json.dumps(result, indent=2)
+    # return json.dumps(result)
     api_response = json.dumps(result)
     # Replace "\n" with actual line breaks
-    api_response = api_response.replace("\\n", "\n")
+    # api_response = api_response.replace("\\n", "\n")
 
     # Load the JSON
     data = json.loads(api_response)
