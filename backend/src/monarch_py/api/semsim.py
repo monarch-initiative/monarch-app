@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Path
+from fastapi import APIRouter, Path, Query
 
-from monarch_py.api.additional_models import CompareRequest
-from monarch_py.api.config import oak
+from monarch_py.api.additional_models import SemsimCompareRequest, SemsimSearchRequest, SemsimSearchCategory
+from monarch_py.api.config import semsimian
+from monarch_py.api.utils.similarity_utils import parse_similarity_prefix
 
 router = APIRouter(tags=["semsim"], responses={404: {"description": "Not Found"}})
 
@@ -13,11 +14,11 @@ def _compare(
 ):
     """Get pairwise similarity between two sets of terms
 
-    Args:
-        subjects (str, optional): List of subjects for comparison. Defaults to "".
-        objects (str, optional): List of objects for comparison. Defaults to "".
+    <b>Args:</b> <br>
+        subjects (str, optional): List of subjects for comparison. Defaults to "". <br>
+        objects (str, optional): List of objects for comparison. Defaults to "". <br>
 
-    Returns:
+    <b>Returns:</b> <br>
         TermSetPairwiseSimilarity: Pairwise similarity between subjects and objects
     """
     print(
@@ -27,7 +28,7 @@ def _compare(
         objects: {objects.split(',')}
     """
     )
-    results = oak().compare(
+    results = semsimian().compare(
         subjects=subjects.split(","),
         objects=objects.split(","),
     )
@@ -35,7 +36,7 @@ def _compare(
 
 
 @router.post("/compare")
-def _post_compare(request: CompareRequest):
+def _post_compare(request: SemsimCompareRequest):
     """
         Pairwise similarity between two sets of terms <br>
         <br>
@@ -47,4 +48,50 @@ def _post_compare(request: CompareRequest):
     }
     </pre>
     """
-    return oak().compare(request.subjects, request.objects)
+    return semsimian().compare(request.subjects, request.objects)
+
+
+@router.get("/search/{termset}/{prefix}")
+def _search(
+    termset: str = Path(..., title="Termset to search"),
+    category: SemsimSearchCategory = Path(..., title="Category of entities to search for"),
+    limit: int = Query(default=10, ge=1, le=50),
+):
+    """Search for terms in a termset
+
+    <b>Args:</b> <br>
+        termset (str, optional): Comma separated list of term IDs to find matches for. <br>
+        category (str, optional): Category of entities to search for. <br>
+        limit (int, optional): Limit the number of results. Defaults to 10.
+
+    <b>Returns:</b> <br>
+        List[str]: List of matching terms
+    """
+
+    print(
+        f"""
+    Running semsim search:
+        termset: {termset}
+        category: {category}
+    """
+    )
+
+    results = semsimian().search(termset=termset.split(","), prefix=parse_similarity_prefix(category), limit=limit)
+    return results
+
+
+@router.post("/search")
+def _post_search(request: SemsimSearchRequest):
+    """
+        Search for terms in a termset <br>
+        <br>
+        Example: <br>
+    <pre>
+    {
+      "termset": ["HP:0002104", "HP:0012378", "HP:0012378", "HP:0012378"],
+      "category": "Human Diseases",
+      "limit": 5
+    }
+    </pre>
+    """
+    return semsimian().search(request.termset, parse_similarity_prefix(request.category.value), request.limit)
