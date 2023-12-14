@@ -53,8 +53,9 @@ if (new URL(window.location.href).hostname.endsWith("monarchinitiative.org")) {
   if (
     import.meta.env.MODE === "test" ||
     import.meta.env.VITE_MOCK === "true" ||
-    new URL(window.sessionStorage.redirect).searchParams.get("mock") === "true" ||
-    new URLSearchParams(window.location.search).get("mock") === "true"
+    new URL(
+      window.sessionStorage.redirect || window.location.href,
+    ).searchParams.get("mock") === "true"
   ) {
     const { setupWorker } = await import("msw/browser");
     const { handlers } = await import("../fixtures");
