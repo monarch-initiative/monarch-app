@@ -115,5 +115,5 @@ def semsimian():
 @lru_cache(maxsize=1)
 def oak():
     oak_implementation = OakImplementation()
-    oak_implementation.init_phenio_adapter(force_update=False)
+    oak_implementation.init_phenio_adapter(force_update=False, phenio_path=settings.phenio_db_path)
     return oak_implementation
