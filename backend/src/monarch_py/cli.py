@@ -247,6 +247,7 @@ def association_table(
         help="The association category to get associations for, ex. biolink:GeneToPhenotypicFeatureAssociation",
     ),
     q: str = typer.Option(None, "--query", "-q"),
+    sort: List[str] = typer.Option(None, "--sort", "-s"),
     limit: int = typer.Option(5, "--limit", "-l"),
     offset: int = typer.Option(0, "--offset"),
     fmt: str = typer.Option(
