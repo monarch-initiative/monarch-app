@@ -110,11 +110,15 @@ jobs:
           path: ~/.ssh/google_compute_engine
           key: ${{ runner.os }}-ssh-key
 
+      - name: "Remove old SSH keys"
+        run: |
+          for i in $(gcloud compute os-login ssh-keys list | grep -v FINGERPRINT); do echo $i; gcloud compute os-login ssh-keys remove --key $i; done
+
       - name: "Update API Service"
-        run: | 
+        run: |
           gcloud compute ssh --ssh-key-expiration 60m --zone us-central1-a monarch-v3-dev-manager -- sudo docker system prune -f
           gcloud compute ssh --ssh-key-expiration 60m --zone us-central1-a monarch-v3-dev-manager -- sudo docker service update monarch-v3_api --with-registry-auth  --update-order=start-first --force --image us-central1-docker.pkg.dev/monarch-initiative/monarch-api/monarch-api:${{ github.sha }}
-          
+
       - name: "Update UI Service"
         run: |
           gcloud compute ssh --ssh-key-expiration 60m --zone us-central1-a monarch-v3-dev-manager -- sudo docker system prune -f
