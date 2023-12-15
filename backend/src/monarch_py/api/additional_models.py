@@ -32,3 +32,7 @@ class SemsimSearchRequest(BaseModel):
     termset: List[str] = Field(..., title="Termset to search")
     category: SemsimSearchCategory = Field(..., title="Category to search for")
     limit: Optional[int] = Field(10, title="Limit the number of results", ge=1, le=50)
+
+
+class TextAnnotationRequest(BaseModel):
+    content: str = Field(..., title="The text content to annotate")

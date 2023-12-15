@@ -5,7 +5,7 @@ import { getUrl } from "@/util/url";
 export const biolink = "https://api.monarchinitiative.org/api";
 
 /** served location of web app, from address bar or storage redirect */
-const url = new URL(window.sessionStorage.redirectHref || window.location.href);
+const url = new URL(window.sessionStorage.redirect || window.location.href);
 
 /** get monarch api name/version to use */
 
@@ -21,7 +21,7 @@ if (url.hostname === "monarchinitiative.org") fromDomain = "prod";
 const fromEnv = import.meta.env.VITE_API || "";
 
 /** from param in url */
-const fromParam = new URLSearchParams(url.search).get("api") || "";
+const fromParam = url.searchParams.get("api") || "";
 
 /** name of monarch api version to use. highest to lowest override priority. */
 export const apiName = fromParam || fromEnv || fromDomain || "prod";
