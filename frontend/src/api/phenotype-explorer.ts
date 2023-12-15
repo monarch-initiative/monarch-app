@@ -1,12 +1,13 @@
 import { pick, uniqBy } from "lodash";
 import type {
   AssociationResults,
-  TermPairwiseSimilarity,
+  SemsimSearchResult,
   TermSetPairwiseSimilarity,
 } from "@/api/model";
 import type { Options, OptionsFunc } from "@/components/AppSelectTags.vue";
+import type { Phenogrid } from "@/components/ThePhenogrid.vue";
 import { stringify } from "@/util/object";
-import { apiUrl, biolink, request } from "./";
+import { apiUrl, request } from "./";
 import { getSearch } from "./search";
 
 /** search individual phenotypes or gene/disease phenotypes */
@@ -56,7 +57,7 @@ export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
 };
 
 /** get phenotypes associated with gene/disease */
-const getPhenotypeAssociations = async (id = ""): Promise<Options> => {
+const getPhenotypeAssociations = async (id = "") => {
   /** endpoint settings */
   const params = {
     subject: id,
@@ -76,23 +77,7 @@ const getPhenotypeAssociations = async (id = ""): Promise<Options> => {
   return items.map((item) => ({
     id: item.object,
     name: item.object_label,
-  }));
-};
-
-/** results of phenotype comparison (from backend) */
-type _Comparison = {
-  matches: {
-    id: string;
-    label: string;
-    type: string;
-    taxon?: {
-      id?: string;
-      label?: string;
-    };
-    rank: string;
-    score: number;
-    significance: string;
-  }[];
+  })) satisfies Options;
 };
 
 /** compare a set of phenotypes to another set of phenotypes */
@@ -124,29 +109,25 @@ export const compareSetToSet = async (
   summary.sort((a, b) => b.score - a.score);
 
   /** turn objects into array of cols */
-  let cols = Object.values(response.object_termset || {}).map((col) => ({
+  let cols: Phenogrid["cols"] = Object.values(
+    response.object_termset || {},
+  ).map((col) => ({
     ...col,
     total: 0,
   }));
-  /** turn subjects into array of cols */
-  let rows = Object.values(response.subject_termset || {}).map((row) => ({
+  /** turn subjects into array of rows */
+  let rows: Phenogrid["rows"] = Object.values(
+    response.subject_termset || {},
+  ).map((row) => ({
     ...row,
     total: 0,
   }));
 
   /** make map of col/row id to cells */
-  const cells: {
-    [key: string]: {
-      score: number;
-      strength: number;
-    } & Pick<
-      TermPairwiseSimilarity,
-      | "ancestor_id"
-      | "ancestor_label"
-      | "jaccard_similarity"
-      | "phenodigm_score"
-    >;
-  } = {};
+  const cells: Phenogrid["cells"] = {};
+
+  /** collect unmatched phenotypes */
+  let unmatched: Phenogrid["unmatched"] = [];
 
   /** get subject matches */
   const matches = Object.values(response.subject_best_matches || {});
@@ -177,16 +158,13 @@ export const compareSetToSet = async (
     }
   }
 
-  /** collect unmatched phenotypes */
-  let unmatched: typeof cols = [];
-
   /** filter out unmatched phenotypes */
   cols = cols.filter((col) => {
-    col.total && unmatched.push(col);
+    if (!col.total) unmatched.push({ ...col });
     return col.total;
   });
   rows = rows.filter((row) => {
-    row.total && unmatched.push(row);
+    if (!row.total) unmatched.push({ ...row });
     return row.total;
   });
 
@@ -200,59 +178,126 @@ export const compareSetToSet = async (
   const min = Math.min(...scores);
   const max = Math.max(...scores);
   Object.values(cells).forEach(
-    (value) => (value.strength = (value.score - min) / (max - min || 0)),
+    (value) =>
+      (value.strength =
+        max - min === 0 ? 0.5 : (value.score - min) / (max - min || 0)),
   );
 
   /** assemble all data needed for phenogrid */
-  const phenogrid = { cols, rows, cells, unmatched };
+  const phenogrid = { cols, rows, cells, unmatched } satisfies Phenogrid;
 
   return { summary, phenogrid };
 };
 
 export type SetToSet = Awaited<ReturnType<typeof compareSetToSet>>;
 
-/** compare a set of phenotypes to a gene or disease taxon id */
-export const compareSetToTaxon = async (
+/** types of groups */
+export const groups = [
+  "Human Genes",
+  "Mouse Genes",
+  "Rat Genes",
+  "Zebrafish Genes",
+  "C. Elegans Genes",
+  "Human Diseases",
+] as const;
+
+/** compare a set of phenotypes to a group of phenotypes */
+export const compareSetToGroup = async (
   phenotypes: string[],
-  taxon: string,
-): Promise<Comparison> => {
-  /** endpoint settings */
-  const params = {
-    id: phenotypes,
-    taxon: taxon,
-  };
+  group: (typeof groups)[number],
+) => {
+  /** make request options */
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("Accept", "application/json");
+  const body = { termset: phenotypes, category: group };
+  const options = { method: "POST", headers, body: stringify(body) };
 
   /** make query */
-  const url = `${biolink}/sim/search`;
-  const response = await request<_Comparison>(url, params);
+  const url = `${apiUrl}/semsim/search`;
+  const response = await request<SemsimSearchResult[]>(url, {}, options);
 
-  return mapMatches(response);
-};
-
-/** convert comparison matches into desired result format */
-const mapMatches = (response: _Comparison) => {
-  const matches = response.matches.map((match) => ({
-    id: match.id,
-    name: match.label,
-    score: match.score,
-    category: match.type || "phenotype",
-    taxon: match.taxon?.label || "",
+  /** get high level data */
+  const summary = response.map((match) => ({
+    subject: match.subject,
+    score: match.score || 0,
   }));
-  const minScore = Math.min(...matches.map(({ score }) => score));
-  const maxScore = Math.max(...matches.map(({ score }) => score));
+  summary.sort((a, b) => b.score - a.score);
 
-  return { matches, minScore, maxScore };
+  /** turn objects into array of cols */
+  let cols: Phenogrid["cols"] = response.map((match) => ({
+    id: match.subject.id,
+    label: match.subject.name,
+    total: 0,
+  }));
+  /** turn subjects into array of rows */
+  let rows: Phenogrid["cols"] = Object.values(
+    response[0].similarity?.object_termset || [],
+  ).map((entry) => ({
+    id: entry.id,
+    label: entry.label,
+    total: 0,
+  }));
+
+  /** make map of col/row id to cells */
+  const cells: Phenogrid["cells"] = {};
+
+  /** collect unmatched phenotypes */
+  let unmatched: Phenogrid["unmatched"] = [];
+
+  for (const col of cols) {
+    for (const row of rows) {
+      /** find match corresponding to col/row id */
+      const match = response.find((entry) => entry.subject.id === col.id)
+        ?.similarity?.object_best_matches?.[row.id];
+
+      /** sum up row and col scores */
+      col.total += match?.score || 0;
+      row.total += match?.score || 0;
+
+      /** assign cell */
+      cells[col.id + row.id] = {
+        score: match?.score || 0,
+        strength: 0,
+        ...pick(match?.similarity, [
+          "ancestor_id",
+          "ancestor_label",
+          "jaccard_similarity",
+          "phenodigm_score",
+        ]),
+      };
+    }
+  }
+
+  /** filter out unmatched phenotypes */
+  cols = cols.filter((col) => {
+    if (!col.total) unmatched.push({ ...col });
+    return col.total;
+  });
+  rows = rows.filter((row) => {
+    if (!row.total) unmatched.push({ ...row });
+    return row.total;
+  });
+
+  /** deduplicate unmatched phenotypes */
+  unmatched = uniqBy(unmatched, "id");
+
+  /** normalize cell scores to 0-1 */
+  const scores = Object.values(cells)
+    .map((value) => value.score)
+    .filter(Boolean);
+  const min = Math.min(...scores);
+  const max = Math.max(...scores);
+  Object.values(cells).forEach(
+    (value) =>
+      (value.strength =
+        max - min === 0 ? 0.5 : (value.score - min) / (max - min || 0)),
+  );
+
+  /** assemble all data needed for phenogrid */
+  const phenogrid = { cols, rows, cells, unmatched } satisfies Phenogrid;
+
+  return { summary, phenogrid };
 };
 
-/** results of phenotype comparison (for frontend) */
-export type Comparison = {
-  matches: {
-    id: string;
-    name: string;
-    score: number;
-    category: string;
-    taxon: string;
-  }[];
-  minScore?: number;
-  maxScore?: number;
-};
+export type SetToTaxon = Awaited<ReturnType<typeof compareSetToSet>>;
