@@ -175,6 +175,7 @@
         />
         <AppButton
           v-tooltip="expanded ? 'Collapse table' : 'Expand table to full width'"
+          :text="expanded ? 'Collapse' : 'Expand'"
           :icon="expanded ? 'minimize' : 'maximize'"
           design="small"
           @click="expanded = !expanded"
@@ -383,8 +384,8 @@ const widths = computed((): string =>
       col.slot === "divider"
         ? "20px"
         : expanded.value
-        ? `minmax(max-content, 99999px)`
-        : `${col.width || 1}fr`,
+          ? `minmax(max-content, 99999px)`
+          : `${col.width || 1}fr`,
     )
     .join(" "),
 );

@@ -33,7 +33,7 @@ export const handlers = [
   http.get("*/autocomplete", () => HttpResponse.json(autocomplete)),
 
   /** text annotator */
-  http.post("*/nlp/annotate", () => HttpResponse.json(textAnnotator)),
+  http.post("*/annotate", () => HttpResponse.json(textAnnotator)),
 
   /** phenotype explorer */
   http.get("*/sim/search", () => HttpResponse.json(phenotypeExplorerSearch)),

@@ -15,8 +15,8 @@
       ><strong v-if="apiName === 'dev'">DEV VERSION</strong> successor to the
       <AppLink to="https://previous.monarchinitiative.org/"
         >old web app here</AppLink
-      >. Not all features are implemented yet. Please use the feedback form to
-      tell us what you think!
+      >. Not all features are implemented yet. Please use the feedback form
+      <AppIcon icon="comment" /> &nbsp;on any page to tell us what you think!
     </TheBanner>
 
     <TheHeader />

@@ -519,11 +519,11 @@ export interface TermPairwiseSimilarity extends PairwiseSimilarity {
     ancestor_label?: string,
     ancestor_source?: string,
     /** The IC of the object */
-    object_information_content?: number,
+    object_information_content?: string,
     /** The IC of the subject */
-    subject_information_content?: number,
+    subject_information_content?: string,
     /** The IC of the object */
-    ancestor_information_content?: number,
+    ancestor_information_content?: string,
     /** The number of concepts in the intersection divided by the number in the union */
     jaccard_similarity?: number,
     /** the dot product of two node embeddings divided by the product of their lengths */
@@ -560,5 +560,11 @@ export interface BestMatch {
     match_subsumer?: string,
     match_subsumer_label?: string,
     similarity: TermPairwiseSimilarity,
+};
+
+export interface SemsimSearchResult {
+    subject: Entity,
+    score?: number,
+    similarity?: TermSetPairwiseSimilarity,
 };
 

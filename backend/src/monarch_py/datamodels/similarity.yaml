@@ -78,6 +78,15 @@ classes:
         range: TermPairwiseSimilarity
         required: true
 
+  SemsimSearchResult:
+    slots:
+      - subject
+      - score
+      - similarity
+    slot_usage:
+      subject:
+        range: Entity
+        inlined: true
 
 types:
   ZeroToOne:
@@ -95,11 +104,13 @@ types:
     minimum_value: 0
 
 slots:
-#  subject_id:
-#    slot_uri: sssom:subject_id
-#    required: true
-#    range: uriorcurie
-#    description: The first of the two entities being compared
+  similarity:
+    range: TermSetPairwiseSimilarity
+  #  subject_id:
+  #    slot_uri: sssom:subject_id
+  #    required: true
+  #    range: uriorcurie
+  #    description: The first of the two entities being compared
   # Excluded, since it conflicts with subject_label from this schema
   #  subject_label:
   #    slot_uri: sssom:subject_label
@@ -107,10 +118,10 @@ slots:
   subject_source:
     slot_uri: sssom:subject_source
     description: the source for the first entity
-#  object_id:
-#    slot_uri: sssom:object_id
-#    range: uriorcurie
-#    description: The second of the two entities being compared
+  #  object_id:
+  #    slot_uri: sssom:object_id
+  #    range: uriorcurie
+  #    description: The second of the two entities being compared
   # Excluded, since it conflicts with object_label from this schema
   #  object_label:
   #    slot_uri: sssom:object_label
