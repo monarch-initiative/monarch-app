@@ -22,8 +22,8 @@ from monarch_py.datamodels.model import (
     SearchResults,
 )
 from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQueryResult
+from monarch_py.service.curie_service import converter
 from monarch_py.utils.association_type_utils import get_association_type_mapping_by_query_string
-from monarch_py.utils.entity_utils import get_uri
 from monarch_py.utils.utils import get_links_for_field, get_provided_by_link
 
 ####################
@@ -89,7 +89,7 @@ def parse_entity(solr_document: Dict) -> Entity:
     try:
         entity = Entity(**solr_document)
 
-        entity.uri = get_uri(entity.id)
+        entity.uri = converter.expand(entity.id)
     except ValidationError:
         logger.error(f"Validation error for {solr_document}")
         raise

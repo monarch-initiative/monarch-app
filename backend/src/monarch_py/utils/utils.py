@@ -18,7 +18,7 @@ from monarch_py.datamodels.model import (
     Node,
     Results,
 )
-from monarch_py.service.curie_service import CurieService
+from monarch_py.service.curie_service import converter
 
 MONARCH_DATA_URL = "https://data.monarchinitiative.org/monarch-kg-dev"
 SOLR_DATA_URL = f"{MONARCH_DATA_URL}/latest/solr.tar.gz"
@@ -78,7 +78,8 @@ def set_log_level(log_level: str):
 
 
 def get_links_for_field(field: List[str]) -> List[ExpandedCurie]:
-    return [ExpandedCurie(id=curie, url=CurieService().expand(curie.replace("PMID", "PUBMED"))) for curie in field]
+    # TODO should be able to remove curie.replace("PMID", "PUBMED")) since the converter should handle prefix synonyms
+    return [ExpandedCurie(id=curie, url=converter.expand(curie.replace("PMID", "PUBMED"))) for curie in field]
 
 
 def get_provided_by_link(provided_by: str) -> List[ExpandedCurie]:
