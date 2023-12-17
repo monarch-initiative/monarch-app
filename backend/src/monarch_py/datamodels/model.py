@@ -2,7 +2,8 @@ from __future__ import annotations
 from datetime import datetime, date
 from enum import Enum
 from typing import List, Dict, Optional, Any, Union
-from pydantic import BaseModel as BaseModel, ConfigDict, Field
+from pydantic import BaseModel as BaseModel, ConfigDict, Field, field_validator
+import re
 import sys
 
 if sys.version_info >= (3, 8):
@@ -638,6 +639,13 @@ class BestMatch(ConfiguredBaseModel):
     similarity: TermPairwiseSimilarity = Field(...)
 
 
+class SemsimSearchResult(ConfiguredBaseModel):
+
+    subject: Entity = Field(...)
+    score: Optional[float] = Field(None)
+    similarity: Optional[TermSetPairwiseSimilarity] = Field(None)
+
+
 # Model rebuild
 # see https://pydantic-docs.helpmanual.io/usage/models/#rebuilding-a-model
 Association.model_rebuild()
@@ -668,3 +676,4 @@ TermPairwiseSimilarity.model_rebuild()
 TermSetPairwiseSimilarity.model_rebuild()
 TermInfo.model_rebuild()
 BestMatch.model_rebuild()
+SemsimSearchResult.model_rebuild()

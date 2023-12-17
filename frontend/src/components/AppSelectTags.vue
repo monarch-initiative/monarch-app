@@ -314,12 +314,17 @@ const {
   isError,
 } = useQuery(
   /** get list of results */
-  async function () {
+  async function (passedSearch?: string, forceAutoAccept = false) {
     /** reset highlighted */
     highlighted.value = 0;
 
     /** get results */
-    return await props.options(search.value);
+    const result = await props.options(search.value);
+
+    /** force auto-accept */
+    if (forceAutoAccept) result.autoAccept = true;
+
+    return result;
   },
 
   /** default value */
@@ -390,6 +395,14 @@ watch(highlighted, () => {
     .querySelector(`#option-${id}-${highlighted.value} > *`)
     ?.scrollIntoView({ block: "nearest" });
 });
+
+/** programmatically set search, query results, and auto-accept */
+function runSearch(value: string) {
+  search.value = value;
+  runGetResults("", true);
+}
+
+defineExpose({ runSearch });
 </script>
 
 <style lang="scss" scoped>

@@ -4,7 +4,7 @@ from typing import List, Optional
 
 import typer
 from monarch_py import solr_cli, sql_cli
-from monarch_py.api.config import oak
+from monarch_py.api.config import semsimian
 from monarch_py.utils.solr_cli_utils import check_for_docker
 from monarch_py.utils.utils import set_log_level, format_output
 from typing_extensions import Annotated
@@ -247,6 +247,7 @@ def association_table(
         help="The association category to get associations for, ex. biolink:GeneToPhenotypicFeatureAssociation",
     ),
     q: str = typer.Option(None, "--query", "-q"),
+    sort: List[str] = typer.Option(None, "--sort", "-s"),
     limit: int = typer.Option(5, "--limit", "-l"),
     offset: int = typer.Option(0, "--offset"),
     fmt: str = typer.Option(
@@ -272,10 +273,10 @@ def compare(
     ),
     output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
 ):
-    """Compare two entities using semantic similarity via OAK"""
+    """Compare two sets of phenotypes using semantic similarity via SemSimian"""
     subjects = subjects.split(",")
     objects = objects.split(",")
-    response = oak().compare(subjects, objects)
+    response = semsimian().compare(subjects, objects)
     format_output(fmt, response, output)
 
 

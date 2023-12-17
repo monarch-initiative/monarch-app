@@ -37,7 +37,7 @@
     {
       "description": "The Exomiser is a tool for finding potential disease-causing variants in whole-exome or whole-genome sequencing data.",
       "icon": "resource-exomiser",
-      "link": "https://hpo.jax.org/app/tools/exomiser",
+      "link": "https://exomiser.monarchinitiative.org/exomiser/",
       "name": "Exomiser"
     },
     {

@@ -4,7 +4,7 @@ import pytest
 @pytest.fixture
 def association_query_indirect():
     return {
-        "q": "*test:q*",
+        "q": "test:q",
         "rows": 100,
         "start": 100,
         "facet": True,
@@ -20,7 +20,7 @@ def association_query_indirect():
             "object_closure:TEST\\:0000004",
             'subject:"TEST\\:0000005" OR subject_closure:"TEST\\:0000005" OR object:"TEST\\:0000005" OR object_closure:"TEST\\:0000005"',
         ],
-        "query_fields": "subject subject_label predicate object object_label",
+        "query_fields": "subject subject_label^2 subject_label_t subject_closure subject_closure_label subject_closure_label_t predicate predicate_t object object_label^2 object_label_t object_closure object_closure_label object_closure_label_t publications has_evidence primary_knowledge_source aggregator_knowledge_source provided_by ",
         "def_type": "edismax",
         "q_op": "AND",
         "mm": "100%",

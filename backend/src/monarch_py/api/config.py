@@ -1,21 +1,23 @@
 import os
 import requests as rq
 from functools import lru_cache
+from typing import List
 
-from pydantic import BaseModel
 # from pydantic_settings import BaseSettings
 
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
-from monarch_py.datamodels.model import TermSetPairwiseSimilarity
+from monarch_py.implementations.oak.oak_implementation import OakImplementation
+from monarch_py.datamodels.model import TermSetPairwiseSimilarity, SemsimSearchResult
 
 
-class Settings(BaseModel):
-    solr_host: str = os.getenv("SOLR_HOST") if os.getenv("SOLR_HOST") else "127.0.0.1"
-    solr_port: str = os.getenv("SOLR_PORT") if os.getenv("SOLR_PORT") else 8983
-    solr_url: str = os.getenv("SOLR_URL") if os.getenv("SOLR_URL") else f"http://{solr_host}:{solr_port}/solr"
-    phenio_db_path: str = os.getenv("PHENIO_DB_PATH") if os.getenv("PHENIO_DB_PATH") else "/data/phenio.db"
-    oak_server_host: str = os.getenv("OAK_SERVER_HOST", "127.0.0.1")
-    oak_server_port: str = os.getenv("OAK_SERVER_PORT", 18811)
+class Settings(BaseSettings):
+    solr_host = os.getenv("SOLR_HOST") if os.getenv("SOLR_HOST") else "127.0.0.1"
+    solr_port = os.getenv("SOLR_PORT") if os.getenv("SOLR_PORT") else 8983
+    solr_url = os.getenv("SOLR_URL") if os.getenv("SOLR_URL") else f"http://{solr_host}:{solr_port}/solr"
+    phenio_db_path = os.getenv("PHENIO_DB_PATH") if os.getenv("PHENIO_DB_PATH") else "/data/phenio.db"
+
+    semsim_server_host = os.getenv("SEMSIM_SERVER_HOST", "127.0.0.1")
+    semsim_server_port = os.getenv("SEMSIM_SERVER_PORT", 9999)
 
 
 settings = Settings()
@@ -39,26 +41,25 @@ def convert_nans(input_dict, to_value=None):
     return input_dict
 
 
-class OakHTTPRequester:
+class SemsimianHTTPRequester:
+    """A class that makes HTTP requests to the semsimian_server."""
+
     def compare(self, subjects, objects):
-        host = f"http://{settings.oak_server_host}:{settings.oak_server_port}"
+        host = f"http://{settings.semsimian_server_host}:{settings.semsimian_server_port}"
         path = f"/compare/{','.join(subjects)}/{','.join(objects)}"
         url = f"{host}/{path}"
 
-        print(f"Fetching {url}...")
-        response = rq.get(url=url)
-        data = response.json()
+    def convert_tsps_data(self, data):
+        """Convert to a format that can be coerced into a TermSetPairwiseSimilarity model
 
-        # FIXME: currently, the response returned from semsimian_server doesn't
-        #  100% match the TermSetPairwiseSimilarity model, so we perform some
-        #  transformations below. once it does, we can remove all the code below
-        #  and just return TermSetPairwiseSimilarity(**data)
-
+        FIXME: currently, the response returned from semsimian_server doesn't
+        100% match the TermSetPairwiseSimilarity model, so we perform some
+        transformations below. once it does, we can remove all the code below
+        and just return TermSetPairwiseSimilarity(**data)
+        """
         # remove these similarity maps and fold them into the _best_matches dicts
         object_best_matches_similarity_map = convert_nans(data.pop("object_best_matches_similarity_map"))
         subject_best_matches_similarity_map = convert_nans(data.pop("subject_best_matches_similarity_map"))
-
-        # convert to a format that can be coerced into a TermSetPairwiseSimilarity
         converted_data = {
             **data,
             **{
@@ -75,10 +76,44 @@ class OakHTTPRequester:
                 },
             },
         }
+        return converted_data
 
-        return TermSetPairwiseSimilarity(**converted_data)
+    def compare(self, subjects: List[str], objects: List[str]):
+        host = f"http://{settings.semsim_server_host}:{settings.semsim_server_port}"
+        path = f"compare/{','.join(subjects)}/{','.join(objects)}"
+        url = f"{host}/{path}"
+
+        print(f"Fetching {url}...")
+        response = rq.get(url=url)
+        data = response.json()
+        results = self.convert_tsps_data(data)
+        return TermSetPairwiseSimilarity(**results)
+
+    def search(self, termset: List[str], prefix: str, limit: int):
+        host = f"http://{settings.semsim_server_host}:{settings.semsim_server_port}"
+        path = f"search/{','.join(termset)}/{prefix}?limit={limit}"
+        url = f"{host}/{path}"
+
+        print(f"Fetching {url}...")
+        response = rq.get(url=url)
+        data = response.json()
+        results = [
+            SemsimSearchResult(
+                subject=solr().get_entity(i[2], extra=False), score=i[0], similarity=self.convert_tsps_data(i[1])
+            )
+            for i in data
+        ]
+
+        return results
+
+
+@lru_cache(maxsize=1)
+def semsimian():
+    return SemsimianHTTPRequester()
 
 
 @lru_cache(maxsize=1)
 def oak():
-    return OakHTTPRequester()
+    oak_implementation = OakImplementation()
+    oak_implementation.init_phenio_adapter(force_update=False, phenio_path=settings.phenio_db_path)
+    return oak_implementation

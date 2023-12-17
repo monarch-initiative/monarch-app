@@ -562,3 +562,9 @@ export interface BestMatch {
     similarity: TermPairwiseSimilarity,
 };
 
+export interface SemsimSearchResult {
+    subject: Entity,
+    score?: number,
+    similarity?: TermSetPairwiseSimilarity,
+};
+

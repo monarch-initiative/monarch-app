@@ -29,14 +29,15 @@
       {{ group.name }}
     </AppHeading>
     <AppGroup :name="group.name" :link="group.link" />
-    <AppGallery :cols="group.name.includes('Alumni') ? 5 : 4">
+    <AppGallery :cols="group.name.includes('Alumni') ? 6 : 4">
       <template v-if="!group.type">
         <AppMember
           v-for="(member, memberIndex) in group.members"
           :key="memberIndex"
           :name="member.name"
           :role="'role' in member ? member.role : ''"
-          :link="member.link"
+          :link="'link' in member ? member.link : ''"
+          :no-image="group.name.includes('Alumni') ? true : undefined"
         />
       </template>
       <template v-else>

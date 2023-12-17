@@ -5,25 +5,22 @@ description = "Python package for interacting with Monarch Initiative knowledge 
 authors = [
     "glass-ships <glass.ships@outlook.com>",
     "kevin schaper <kevin@tislab.org>",
-    "The Monarch Initiative <info@monarchinitiative.org>"
+    "The Monarch Initiative <info@monarchinitiative.org>",
 ]
 
 
-packages = [
-    { include = "monarch_py", from = "src" }
-]
+packages = [{ include = "monarch_py", from = "src" }]
 
 
 [tool.poetry.dependencies]
 ### Core dependencies
 python = "^3.9"
 pydantic = "^2"
-
-bioregistry = "^0.10.57"
 curies = "<1"
-linkml = { git = "https://github.com/linkml/linkml.git", branch = "allow-extra-fields" } # "^1.6"
-oaklib = ">=0.5.22"
+linkml = "^1.6"
 prefixmaps = "^0.2"
+bioregistry = "^0.10.57"
+oaklib = ">=0.5.22"
 
 docker = "^6.0.1"
 fastapi = "^0.103.1"
@@ -40,10 +37,10 @@ typer-cli = "^0.0.13"
 pytest = "^7.2.0"
 mkdocs = ">=1.4.2"
 mkdocs-material = ">=9.1.16"
-mkdocstrings = {extras = ["python"], version = ">=0.22.0"}
+mkdocstrings = { extras = ["python"], version = ">=0.22.0" }
 black = "^22.10.0"
 ruff = "*"
-uvicorn = {extras = ["standard"], version = "^0.20.0"}
+uvicorn = { extras = ["standard"], version = "^0.20.0" }
 httpx = "^0.24.1"
 scholarly = "*"
 habanero = "*"
@@ -52,7 +49,7 @@ manubot = "*"
 
 [tool.poetry.scripts]
 monarch = "monarch_py.cli:app"
-monarch-api = { callable = "monarch_py.api.main:run"}
+monarch-api = { callable = "monarch_py.api.main:run" }
 
 
 [tool.ruff]
@@ -60,10 +57,7 @@ line-length = 120
 ignore = [
     "F541", # f-strings with no placeholders
 ]
-exclude = [
-    "tests/fixtures/*.py",
-    "src/monarch_py/datamodels/model.py"
-]
+exclude = ["tests/fixtures/*.py", "src/monarch_py/datamodels/model.py"]
 # per-file-ignores = {"" = ""}
 
 

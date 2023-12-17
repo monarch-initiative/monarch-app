@@ -16,13 +16,13 @@ async def _get_entity(
 ) -> Node:
     """Retrieves the entity with the specified id
 
-    Args:
+    <b>Args:</b> <br>
         id (str): ID for the entity to retrieve, ex: MONDO:0019391
 
-    Raises:
+    <b>Raises:</b> <br>
         HTTPException: 404 if the entity is not found
 
-    Returns:
+    <b>Returns:</b> <br>
         Node: Entity details for the specified id
     """
     response = solr().get_entity(id, extra=True)
@@ -52,13 +52,13 @@ def _association_table(
     """
     Retrieves association table data for a given entity and association type
 
-    Args:
+    <b>Args:</b> <br>
         id (str): ID of the entity to retrieve association table data, ex: MONDO:0019391
         category (str): Category of association to retrieve association table data for, ex: biolink:DiseaseToPhenotypicFeatureAssociation
         Path (str, optional): Path string to limit results to a subset. Defaults to None.
         pagination (PaginationParams, optional): Pagination parameters. Defaults to Depends().
 
-    Returns:
+    <b>Returns:</b> <br>
         AssociationResults: Association table data for the specified entity and association type
     """
     response = solr().get_association_table(
