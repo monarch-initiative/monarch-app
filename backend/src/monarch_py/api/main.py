@@ -17,7 +17,7 @@ app = FastAPI(
 @app.on_event("startup")
 async def initialize_app():
     semsimian()
-    oak()
+    # oak()
 
 
 app.include_router(association.router, prefix=f"{PREFIX}/association")
