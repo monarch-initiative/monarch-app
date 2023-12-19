@@ -107,7 +107,9 @@ jobs:
       - name: "Cache SSH Key"
         uses: actions/cache@v3
         with:
-          path: ~/.ssh/google_compute_engine
+          path: |
+            ~/.ssh/google_compute_engine
+            ~/.ssh/google_compute_engine.pub
           key: ${{ runner.os }}-ssh-key
 
       - name: "Remove old SSH keys"
