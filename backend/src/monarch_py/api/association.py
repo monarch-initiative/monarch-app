@@ -25,9 +25,9 @@ async def _get_associations(
 ) -> AssociationResults:
     """Retrieves all associations for a given entity, or between two entities."""
     if category:
-        category = [c.name if isinstance(c, AssociationCategory) else c for c in category]
+        category = [c.value if isinstance(c, AssociationCategory) else c for c in category]
     if predicate:
-        predicate = [p.name if isinstance(p, AssociationPredicate) else p for p in predicate]
+        predicate = [p.value if isinstance(p, AssociationPredicate) else p for p in predicate]
     response = solr().get_associations(
         category=category,
         predicate=predicate,

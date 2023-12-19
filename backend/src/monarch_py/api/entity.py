@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, Path, Query
 from monarch_py.api.additional_models import PaginationParams
 from monarch_py.api.config import solr
 from monarch_py.datamodels.model import AssociationTableResults, Node
+from monarch_py.datamodels.category_enums import AssociationCategory
 
 router = APIRouter(tags=["entity"], responses={404: {"description": "Not Found"}})
 
@@ -37,7 +38,7 @@ def _association_table(
         title="ID of the entity to retrieve association table data for",
         examples=["MONDO:0019391"],
     ),
-    category: str = Path(
+    category: AssociationCategory = Path(
         title="Type of association to retrieve association table data for",
         examples=["biolink:DiseaseToPhenotypicFeatureAssociation"],
     ),
@@ -62,6 +63,6 @@ def _association_table(
         AssociationResults: Association table data for the specified entity and association type
     """
     response = solr().get_association_table(
-        entity=id, category=category, q=query, sort=sort, offset=pagination.offset, limit=pagination.limit
+        entity=id, category=category.value, q=query, sort=sort, offset=pagination.offset, limit=pagination.limit
     )
     return response
