@@ -193,12 +193,12 @@ export type SetToSet = Awaited<ReturnType<typeof compareSetToSet>>;
 
 /** types of groups */
 export const groups = [
+  "Human Diseases",
   "Human Genes",
   "Mouse Genes",
   "Rat Genes",
   "Zebrafish Genes",
   "C. Elegans Genes",
-  "Human Diseases",
 ] as const;
 
 /** compare a set of phenotypes to a group of phenotypes */
@@ -210,7 +210,7 @@ export const compareSetToGroup = async (
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   headers.append("Accept", "application/json");
-  const body = { termset: phenotypes, category: group };
+  const body = { termset: phenotypes, group: group };
   const options = { method: "POST", headers, body: stringify(body) };
 
   /** make query */

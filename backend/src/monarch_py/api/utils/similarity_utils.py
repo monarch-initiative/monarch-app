@@ -5,7 +5,7 @@ from oaklib.implementations.sqldb.sql_implementation import SqlImplementation
 
 from fastapi import HTTPException
 
-from monarch_py.api.additional_models import SemsimSearchCategory
+from monarch_py.api.additional_models import SemsimSearchGroup
 
 IS_A = omd.slots.subClassOf.curie
 HP_DB_URL = "https://s3.amazonaws.com/bbop-sqlite/hp.db.gz"
@@ -25,10 +25,10 @@ def compare_termsets(
 
 
 def parse_similarity_prefix(prefix: str):
-    if prefix in SemsimSearchCategory._member_names_:
+    if prefix in SemsimSearchGroup._member_names_:
         prefix = prefix
-    elif SemsimSearchCategory(prefix):
-        prefix = SemsimSearchCategory(prefix).name
+    elif SemsimSearchGroup(prefix):
+        prefix = SemsimSearchGroup(prefix).name
     else:
         raise HTTPException(status_code=404, detail="Prefix not found")
     return prefix

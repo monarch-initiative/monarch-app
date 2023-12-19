@@ -14,7 +14,7 @@ class PaginationParams(BaseModel):
         arbitrary_types_allowed = True
 
 
-class SemsimSearchCategory(Enum):
+class SemsimSearchGroup(Enum):
     HGNC = "Human Genes"
     MGI = "Mouse Genes"
     RGD = "Rat Genes"
@@ -30,7 +30,7 @@ class SemsimCompareRequest(BaseModel):
 
 class SemsimSearchRequest(BaseModel):
     termset: List[str] = Field(..., title="Termset to search")
-    category: SemsimSearchCategory = Field(..., title="Category to search for")
+    group: SemsimSearchGroup = Field(..., title="Group of entities to search within (e.g. Human Genes)")
     limit: Optional[int] = Field(10, title="Limit the number of results", ge=1, le=50)
 
 
