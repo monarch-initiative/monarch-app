@@ -24,9 +24,13 @@ async def _get_associations(
     pagination: PaginationParams = Depends(),
 ) -> AssociationResults:
     """Retrieves all associations for a given entity, or between two entities."""
+
+    print(f"\n\n{category}\n{predicate}\n\n")
+    category = [c.name for c in category] if category else []
+    predicate = [p.name for p in predicate] if predicate else []
     response = solr().get_associations(
-        category=AssociationCategory.category if category else None,
-        predicate=AssociationPredicate[predicate] if predicate else None,
+        category=category,
+        predicate=predicate,
         subject=subject,
         object=object,
         entity=entity,
