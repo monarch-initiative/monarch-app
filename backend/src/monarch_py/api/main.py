@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from monarch_py.api import association, entity, histopheno, search, semsim, text_annotation
-from monarch_py.api.config import semsimian, oak
+from monarch_py.api.config import semsimian
 from monarch_py.api.middleware.logging_middleware import LoggingMiddleware
 
 PREFIX = "/v3/api"

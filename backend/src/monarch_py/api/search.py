@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, Query
 from monarch_py.api.additional_models import PaginationParams
 from monarch_py.api.config import solr
 from monarch_py.datamodels.model import SearchResults
+from monarch_py.datamodels.category_enums import EntityCategory
 
 router = APIRouter(
     tags=["search"],
@@ -15,7 +16,7 @@ router = APIRouter(
 @router.get("/search")
 async def search(
     q: str = Query(default=None),
-    category: Union[List[str], None] = Query(default=None),
+    category: Union[List[EntityCategory], None] = Query(default=None),
     in_taxon_label: Union[List[str], None] = Query(default=None),
     pagination: PaginationParams = Depends(),
 ) -> SearchResults:
@@ -34,7 +35,7 @@ async def search(
     facet_fields = ["category", "in_taxon_label"]
     response = solr().search(
         q=q or "*:*",
-        category=category,
+        category=category.value if isinstance(category, EntityCategory) else category,
         in_taxon_label=in_taxon_label,
         facet_fields=facet_fields,
         offset=pagination.offset,
