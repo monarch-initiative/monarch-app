@@ -192,7 +192,7 @@ def main(
         # fixtures['node-publication-summary'] =
         # fixtures['ontologies'] =
         fixtures["phenotype-explorer-compare"] = _compare(subjects="MP:0010771,MP:0002169", objects="HP:0004325")
-        fixtures["phenotype-explorer-search"] = _search(termset="HP:0000001,HP:0000002", category="Zebrafish Genes", limit=10)
+        fixtures["phenotype-explorer-search"] = _search(termset="HP:0002104,HP:0012378,HP:0012378,HP:0012378", group="Zebrafish Genes", limit=10)
         fixtures["search"] = si.search(q="fanconi")
         # fixtures['text-annotator'] =
         # fixtures['uptime'] =

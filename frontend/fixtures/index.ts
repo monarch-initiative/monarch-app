@@ -3,6 +3,7 @@ import { feedbackEndpoint } from "@/api/feedback";
 import { efetch, esummary } from "@/api/publications";
 import { uptimeRobot } from "@/api/uptime";
 import associationsTable from "./association-table.json";
+import associations from "./associations.json";
 import autocomplete from "./autocomplete.json";
 import feedback from "./feedback.json";
 import histopheno from "./histopheno.json";
@@ -36,10 +37,15 @@ export const handlers = [
   http.post("*/annotate", () => HttpResponse.json(textAnnotator)),
 
   /** phenotype explorer */
-  http.get("*/sim/search", () => HttpResponse.json(phenotypeExplorerSearch)),
+  http.post("*/semsim/search", () =>
+    HttpResponse.json(phenotypeExplorerSearch),
+  ),
   http.post("*/semsim/compare", () =>
     HttpResponse.json(phenotypeExplorerCompare),
   ),
+
+  /** associations */
+  http.get("*/association", () => HttpResponse.json(associations)),
 
   /** node associations */
   http.get("*/entity/:id/:assoctype", () =>

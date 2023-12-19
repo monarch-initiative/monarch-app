@@ -16,7 +16,7 @@ def node():
         "in_taxon_label": None,
         "symbol": None,
         "synonym": [],
-        "uri": None,
+        "uri": "http://purl.obolibrary.org/obo/MONDO_0020121",
         "inheritance": None,
         "causal_gene": [],
         "causes_disease": [],
