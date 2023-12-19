@@ -126,6 +126,12 @@ data:
 	wget https://raw.githubusercontent.com/monarch-initiative/monarch-documentation/main/src/docs/resources/monarch-app-resources.json -O frontend/src/pages/resources/resources.json
 	make format-frontend
 
+.PHONY: category-enums
+category-enums:
+	@echo "Generating category enums..."
+	$(RUN) python scripts/generate_category_enums.py
+	make format-backend
+
 ### Development ###
 
 .PHONY: dev-frontend
