@@ -1,4 +1,4 @@
-from monarch_py.service.curie_service import CurieService
+from monarch_py.service.curie_service import converter
 import pytest
 
 
@@ -28,7 +28,6 @@ import pytest
     ],
 )
 def test_curie_expansion(curie, expanded_curie_part):
-    cs = CurieService()
-    expanded_curie = cs.expand(curie)
+    expanded_curie = converter.expand(curie)
     # print(expanded_curie, expanded_curie_part)
     assert expanded_curie_part in expanded_curie

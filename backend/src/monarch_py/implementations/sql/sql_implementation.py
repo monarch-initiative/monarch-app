@@ -8,7 +8,7 @@ from pydantic import ValidationError
 from monarch_py.datamodels.model import Association, AssociationResults, Entity, Node, NodeHierarchy
 from monarch_py.interfaces.association_interface import AssociationInterface
 from monarch_py.interfaces.entity_interface import EntityInterface
-from monarch_py.utils.entity_utils import get_uri
+from monarch_py.service.curie_service import converter
 from monarch_py.utils.utils import SQL_DATA_URL, dict_factory
 
 monarchstow = pystow.module("monarch")
@@ -51,7 +51,7 @@ class SQLImplementation(EntityInterface, AssociationInterface):
             "in_taxon": sql_data["in_taxon"],
             "symbol": sql_data["symbol"],
             "synonym": sql_data["synonym"].split("|"),
-            "uri": get_uri(sql_data["id"]),
+            "uri": converter.expand(sql_data["id"]),
         }
         try:
             results["source"] = sql_data["source"]

@@ -114,6 +114,7 @@ def semsimian():
 
 @lru_cache(maxsize=1)
 def oak():
-    oak_implementation = OakImplementation()
-    oak_implementation.init_phenio_adapter(force_update=False)
-    return oak_implementation
+    return NotImplementedError("OAK is temporarily disabled")
+#    oak_implementation = OakImplementation()
+#    oak_implementation.init_phenio_adapter(force_update=False, phenio_path=settings.phenio_db_path)
+#    return oak_implementation
