@@ -33,9 +33,11 @@ async def search(
         EntityResults
     """
     facet_fields = ["category", "in_taxon_label"]
+    if category is None:
+        category = []
     response = solr().search(
         q=q or "*:*",
-        category=[c.value if isinstance(c, EntityCategory) else c for c in category],
+        category=[c.value for c in category] if category else None,
         in_taxon_label=in_taxon_label,
         facet_fields=facet_fields,
         offset=pagination.offset,
