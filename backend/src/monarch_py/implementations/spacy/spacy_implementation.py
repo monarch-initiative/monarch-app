@@ -11,7 +11,7 @@ import pystow
 
 import spacy
 
-from monarch_py.implementations.spacy.text_annoataion_utils import (
+from monarch_py.implementations.spacy.text_annotation_utils import (
     concatenate_same_entities,
     replace_entities,
     convert_to_json,
