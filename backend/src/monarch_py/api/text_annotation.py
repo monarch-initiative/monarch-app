@@ -13,7 +13,8 @@ def _annotate(content: str = Path(title="The text content to annotate")):
     return spacyner().annotate_text(content)
 
 
-@router.post("/annotate", include_in_schema=False)
+#@router.post("/annotate", include_in_schema=False)
+@router.post("/annotate")
 def _post_annotate(request: TextAnnotationRequest):
     print(f"\n\nRunning oak annotate (POST):\n{request.content}\n")
     # print(request.content.split("\n"))
