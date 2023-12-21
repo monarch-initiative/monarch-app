@@ -126,5 +126,5 @@ def oak():
 @lru_cache(maxsize=1)
 def spacyner():
     spacy_implementation = SpacyImplementation()
-    spacy_implementation.init_spacy()
+    spacy_implementation.init_spacy(search_engine=solr())
     return spacy_implementation

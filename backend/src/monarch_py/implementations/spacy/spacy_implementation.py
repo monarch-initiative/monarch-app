@@ -18,15 +18,21 @@ from monarch_py.implementations.spacy.text_annotation_utils import (
     get_monarch_equivalent,
     get_monarch_top_three,
 )
+from monarch_py.interfaces.search_interface import SearchInterface
+
 
 @dataclass
 class SpacyImplementation():
     """Implementation of Monarch Interfaces for SPACY"""
 
     nlp = None
+    search_engine = None
 
-    def init_spacy(self):
+    def init_spacy(self, search_engine: SearchInterface):
         self.nlp = spacy.load("en_core_sci_sm")
+        self.search_engine = search_engine
+        # TODO: remove this print, it's just there to confirm that search works from here
+        print(search_engine.search(q="ehlers"))
         self.annotate_text("Nystagmus, strabismus and fundus.")
 
     def annotate_text(self, text):
@@ -48,3 +54,4 @@ class SpacyImplementation():
 
         result = convert_to_json(result)
         return result
+
