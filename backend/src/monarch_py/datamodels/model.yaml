@@ -269,6 +269,14 @@ classes:
     slot_usage:
       items:
         range: SearchResult
+  AnnotatedJSONResult:
+    slots:
+      - text
+      - tokens
+  TokenItems:
+    slots:
+      - id
+      - name
 
 slots:
   aggregator_knowledge_source:
@@ -615,3 +623,14 @@ slots:
   # object label is already included in this schema
   mapping_justification:
       range: string
+  # Text annotation
+  text:
+    description: text without tokens
+    range: string
+    inlined: true
+  tokens:
+    description: A collection of entities or concepts
+    range: TokenItems
+    inlined: true
+    inlined_as_list: true
+    multivalued: true
