@@ -11,7 +11,7 @@
   "in_taxon_label": null,
   "symbol": null,
   "synonym": [],
-  "uri": null,
+  "uri": "http://purl.obolibrary.org/obo/MONDO_0020121",
   "inheritance": null,
   "causal_gene": [],
   "causes_disease": [],

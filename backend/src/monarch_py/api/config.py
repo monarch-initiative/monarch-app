@@ -7,7 +7,6 @@ from pydantic import BaseModel
 # from pydantic_settings import BaseSettings
 
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
-from monarch_py.implementations.oak.oak_implementation import OakImplementation
 from monarch_py.datamodels.model import TermSetPairwiseSimilarity, SemsimSearchResult
 
 
@@ -44,11 +43,6 @@ def convert_nans(input_dict, to_value=None):
 
 class SemsimianHTTPRequester:
     """A class that makes HTTP requests to the semsimian_server."""
-
-    def compare(self, subjects, objects):
-        host = f"http://{settings.semsimian_server_host}:{settings.semsimian_server_port}"
-        path = f"/compare/{','.join(subjects)}/{','.join(objects)}"
-        url = f"{host}/{path}"
 
     def convert_tsps_data(self, data):
         """Convert to a format that can be coerced into a TermSetPairwiseSimilarity model
@@ -115,6 +109,9 @@ def semsimian():
 
 @lru_cache(maxsize=1)
 def oak():
-    oak_implementation = OakImplementation()
-    oak_implementation.init_phenio_adapter(force_update=False, phenio_path=settings.phenio_db_path)
-    return oak_implementation
+    return NotImplementedError("OAK is temporarily disabled")
+
+
+#    oak_implementation = OakImplementation()
+#    oak_implementation.init_phenio_adapter(force_update=False, phenio_path=settings.phenio_db_path)
+#    return oak_implementation

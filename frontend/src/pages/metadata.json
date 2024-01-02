@@ -3,22 +3,22 @@
     {
       "label": "Genes",
       "icon": "category-gene",
-      "count": 558323
+      "count": 558400
     },
     {
       "label": "Phenotypes",
       "icon": "category-phenotypic-quality",
-      "count": 117133
+      "count": 117141
     },
     {
       "label": "Diseases",
       "icon": "category-disease",
-      "count": 26470
+      "count": 26860
     },
     {
       "label": "Total Nodes",
       "icon": "node",
-      "count": 838006
+      "count": 860203
     }
   ],
   "association": [

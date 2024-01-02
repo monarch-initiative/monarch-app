@@ -32,15 +32,15 @@
         :options="bModeOptions"
       />
       <AppSelectSingle
-        v-if="bMode.id.includes('genes')"
-        v-model="bTaxon"
+        v-if="!isCompare"
+        v-model="bGroup"
         name="Second set taxon"
-        :options="bTaxonOptions"
+        :options="bGroupOptions"
       />
     </AppFlex>
 
     <AppSelectTags
-      v-if="bMode.id.includes('these phenotypes')"
+      v-if="isCompare"
       v-model="bPhenotypes"
       name="Second set of phenotypes"
       :options="getPhenotypes"
@@ -52,81 +52,119 @@
 
     <!-- run analysis -->
     <AppButton
-      v-if="bMode.id.includes('these phenotypes')"
       text="Analyze"
       icon="bars-progress"
-      :disabled="isLoading || !aPhenotypes.length || !bPhenotypes.length"
-      @click="runAnalysis"
+      :disabled="isPending || isBlank"
+      @click="isCompare ? runCompare() : runSearch()"
     />
-    <AppAlert v-else
-      >This feature is still under development. Check back soon for
-      more!</AppAlert
+  </AppSection>
+
+  <!-- analysis status -->
+  <AppSection v-if="isPending">
+    <AppStatus v-if="compareIsLoading || searchIsLoading" code="loading"
+      >Running analysis</AppStatus
+    >
+    <AppStatus v-if="compareIsError || searchIsError" code="error"
+      >Error running analysis</AppStatus
     >
   </AppSection>
 
-  <AppSection v-if="comparison.summary.length || isLoading || isError">
-    <AppHeading>Results</AppHeading>
+  <!-- compare results -->
+  <AppSection v-else-if="compareResults.summary.length">
+    <AppHeading>Similarity Comparison</AppHeading>
 
-    <p>Similarity comparison between pairs of phenotypes.</p>
+    <!-- heading -->
+    <AppHeading
+      >Top {{ Math.min(compareResults.summary.length, 10) }} most
+      similar</AppHeading
+    >
 
-    <!-- analysis status -->
-    <AppStatus v-if="isLoading" code="loading">Running analysis</AppStatus>
-    <AppStatus v-if="isError" code="error">Error running analysis</AppStatus>
-
-    <!-- analysis top results -->
-    <template v-else-if="comparison.summary.length">
-      <!-- heading -->
-      <AppHeading
-        >Top {{ Math.min(comparison.summary.length, 10) }} most
-        similar</AppHeading
+    <!-- list of compare results -->
+    <AppFlex>
+      <div
+        v-for="(match, matchIndex) in compareResults.summary.slice(0, 10)"
+        :key="matchIndex"
+        class="match"
       >
+        <!-- ring score -->
+        <AppRing
+          v-tooltip="'Similarity score'"
+          :score="match.score"
+          :percent="ringPercent(match.score)"
+        />
+        <!-- for percent, use asymptotic function limited to 1 so we don't need to know max score -->
 
-      <!-- list of comparison results -->
-      <AppFlex>
-        <div
-          v-for="(match, matchIndex) in comparison.summary.slice(0, 10)"
-          :key="matchIndex"
-          class="match"
-        >
-          <!-- ring score -->
-          <AppRing
-            v-tooltip="'Similarity score'"
-            :score="match.score"
-            :percent="1 - 1 / (1 + match.score)"
+        <AppFlex class="details" direction="col" align-h="left" gap="small">
+          <AppNodeBadge
+            :node="{ id: match.source, name: match.source_label }"
           />
-          <!-- for percent, use asymptotic function limited to 1 so we don't need to know max score -->
-
-          <AppFlex class="details" direction="col" align-h="left" gap="small">
-            <AppNodeBadge
-              :node="{ id: match.source, name: match.source_label }"
-            />
-            <AppNodeBadge
-              :node="{ id: match.target, name: match.target_label }"
-            />
-          </AppFlex>
-        </div>
-      </AppFlex>
-    </template>
+          <AppNodeBadge
+            :node="{ id: match.target, name: match.target_label }"
+          />
+        </AppFlex>
+      </div>
+    </AppFlex>
 
     <!-- phenogrid results -->
-    <template v-if="!isEmpty(comparison.phenogrid.cells)">
+    <template v-if="!isEmpty(compareResults.phenogrid.cells)">
       <AppHeading>Detailed Comparison</AppHeading>
-      <ThePhenogrid :data="comparison.phenogrid" />
+      <ThePhenogrid :data="compareResults.phenogrid" />
       <AppAlert
         >This feature is still under development. Check back soon for
         more!</AppAlert
       >
     </template>
   </AppSection>
+
+  <!-- search results -->
+  <AppSection v-else-if="searchResults.summary.length">
+    <AppHeading>Similarity Comparison</AppHeading>
+
+    <!-- heading -->
+    <AppHeading
+      >Top {{ Math.min(searchResults.summary.length, 10) }} most
+      similar</AppHeading
+    >
+
+    <!-- list of search results -->
+    <AppFlex>
+      <div
+        v-for="(match, matchIndex) in searchResults.summary.slice(0, 10)"
+        :key="matchIndex"
+        class="match"
+      >
+        <!-- ring score -->
+        <AppRing
+          v-tooltip="'Similarity score'"
+          :score="match.score"
+          :percent="ringPercent(match.score)"
+        />
+        <!-- for percent, use asymptotic function limited to 1 so we don't need to know max score -->
+
+        <AppFlex class="details" direction="col" align-h="left" gap="small">
+          <AppNodeBadge :node="match.subject" />
+        </AppFlex>
+      </div>
+    </AppFlex>
+
+    <!-- phenogrid results -->
+    <AppHeading>Detailed Comparison</AppHeading>
+    <ThePhenogrid :data="searchResults.phenogrid" />
+    <AppAlert
+      >This feature is still under development. Check back soon for
+      more!</AppAlert
+    >
+  </AppSection>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { isEmpty, isEqual } from "lodash";
 import {
+  compareSetToGroup,
   compareSetToSet,
-  // compareSetToTaxon,
   getPhenotypes,
+  groups,
 } from "@/api/phenotype-explorer";
 import AppAlert from "@/components/AppAlert.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
@@ -152,27 +190,11 @@ const multiTooltip = `In this box, you can select phenotypes in 3 ways:<br>
 /** options for mode of second set */
 const bModeOptions = [
   { id: "these phenotypes ..." },
-  { id: "phenotypes from all genes of ..." },
-  { id: "phenotypes from all human diseases" },
+  { id: "phenotypes from all ..." },
 ];
 
-/**
- * small hard-coded list of taxon options, just for phenotype explorer, so no
- * backend querying needed
- */
-const taxons = [
-  { id: "9606", label: "human", scientific: "Homo sapiens" },
-  { id: "10090", label: "mouse", scientific: "Mus musculus" },
-  { id: "7955", label: "zebrafish", scientific: "Danio rerio" },
-  { id: "7227", label: "fruitfly", scientific: "Drosophila melanogaster" },
-  { id: "6239", label: "worm", scientific: "Caenorhabditis elegans" },
-  { id: "8353", label: "frog", scientific: "Xenopus" },
-];
-
-// const bTaxonHuman = taxons[0];
-
-/** taxon options for second set */
-const bTaxonOptions = taxons.slice(1);
+/** search group options */
+const bGroupOptions = groups.map((group) => ({ id: group, label: group }));
 
 /** example data */
 type GeneratedFrom = {
@@ -188,8 +210,8 @@ const aPhenotypes = ref<Options>([]);
 const aGeneratedFrom = ref<GeneratedFrom>({});
 /** selected mode of second set */
 const bMode = ref(bModeOptions[0]);
-/** selected taxon for second set */
-const bTaxon = ref(bTaxonOptions[0]);
+/** selected group for second set */
+const bGroup = ref(bGroupOptions[0]);
 /** second set of phenotypes */
 const bPhenotypes = ref<Options>([]);
 /** "generated from" helpers after selecting gene or disease */
@@ -197,6 +219,11 @@ const bGeneratedFrom = ref<GeneratedFrom>({});
 
 /** element reference */
 const aBox = ref<{ runSearch: (value: string) => void }>();
+
+/** get % for showing ring. domain 1 to ~20 (asymptotic), range 0 to 1 */
+function ringPercent(score = 0) {
+  return (score - 1) / (5 + score - 1);
+}
 
 /** example phenotype set comparison */
 function doExample() {
@@ -209,25 +236,40 @@ function doExample() {
 
 /** comparison analysis */
 const {
-  query: runAnalysis,
-  data: comparison,
-  isLoading,
-  isError,
+  query: runCompare,
+  data: compareResults,
+  isLoading: compareIsLoading,
+  isError: compareIsError,
 } = useQuery(
   async function () {
     scrollToResults();
 
-    // /** run appropriate analysis based on selected mode */
-    // if (bMode.value.id.includes("these phenotypes"))
     return await compareSetToSet(
       aPhenotypes.value.map(({ id }) => id),
       bPhenotypes.value.map(({ id }) => id),
     );
-    // else
-    //   return await compareSetToTaxon(
-    //     aPhenotypes.value.map(({ id }) => id),
-    //     bMode.value.id.includes("diseases") ? bTaxonHuman.id : bTaxon.value.id,
-    //   );
+  },
+
+  /** default value */
+  { summary: [], phenogrid: { cols: [], rows: [], cells: {}, unmatched: [] } },
+
+  scrollToResults,
+);
+
+/** search analysis */
+const {
+  query: runSearch,
+  data: searchResults,
+  isLoading: searchIsLoading,
+  isError: searchIsError,
+} = useQuery(
+  async function () {
+    scrollToResults();
+
+    return await compareSetToGroup(
+      aPhenotypes.value.map(({ id }) => id),
+      bGroup.value.id,
+    );
   },
 
   /** default value */
@@ -240,6 +282,22 @@ const {
 async function scrollToResults() {
   scrollTo("#results");
 }
+
+/** current mode */
+const isCompare = computed(() => bMode.value.id.includes("these phenotypes"));
+
+/** is in loading/error state */
+const isPending = computed(() =>
+  isCompare.value
+    ? compareIsLoading.value || compareIsError.value
+    : searchIsLoading.value || searchIsError.value,
+);
+
+/** whether user hasn't inputted anything to analyze */
+const isBlank = computed(
+  () =>
+    !aPhenotypes.value.length || (isCompare.value && !bPhenotypes.value.length),
+);
 
 /** when multi select component runs spread options function */
 function spreadOptions(option: Option, options: Options, set: string) {
@@ -254,8 +312,14 @@ function spreadOptions(option: Option, options: Options, set: string) {
 
 /** clear/reset results */
 function clearResults() {
-  comparison.value.summary = [];
-  comparison.value.phenogrid = { cols: [], rows: [], cells: {}, unmatched: [] };
+  compareResults.value = {
+    summary: [],
+    phenogrid: { cols: [], rows: [], cells: {}, unmatched: [] },
+  };
+  searchResults.value = {
+    summary: [],
+    phenogrid: { cols: [], rows: [], cells: {}, unmatched: [] },
+  };
 }
 
 /** get description to show below phenotypes select box */
@@ -279,7 +343,7 @@ function description(
 }
 
 /** clear results when inputs are changed to avoid de-sync */
-watch([aPhenotypes, bMode, bTaxon, bPhenotypes], clearResults, { deep: true });
+watch([aPhenotypes, bMode, bGroup, bPhenotypes], clearResults, { deep: true });
 
 /** fill in phenotype ids or search from other pages */
 onMounted(() => {

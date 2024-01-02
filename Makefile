@@ -21,7 +21,9 @@ help:
 	@echo "│                                                           │"
 	@echo "│     docs                Generate documentation            │"
 	@echo "│     model               Generate model files              │"
-	@echo "|     fixtures            Generate data fixtures            │" 
+	@echo "|     fixtures            Generate data fixtures            │"
+	@echo "|     data                Generate data files               │"
+	@echo "|     category-enums      Generate category enums           │"
 	@echo "│                                                           │"
 	@echo "│     install             Install backend and frontend      │"
 	@echo "│     install-backend     Install backend                   │"
@@ -125,6 +127,12 @@ data:
 	@echo "Generating resources data..."
 	wget https://raw.githubusercontent.com/monarch-initiative/monarch-documentation/main/src/docs/resources/monarch-app-resources.json -O frontend/src/pages/resources/resources.json
 	make format-frontend
+
+.PHONY: category-enums
+category-enums:
+	@echo "Generating category enums..."
+	$(RUN) python scripts/generate_category_enums.py
+	make format-backend
 
 ### Development ###
 

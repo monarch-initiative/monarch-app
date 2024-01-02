@@ -1,9 +1,6 @@
 import { groupLog, sleep } from "@/util/debug";
 import { getUrl } from "@/util/url";
 
-/** base biolink api url */
-export const biolink = "https://api.monarchinitiative.org/api";
-
 /** served location of web app, from address bar or storage redirect */
 const url = new URL(window.sessionStorage.redirect || window.location.href);
 
