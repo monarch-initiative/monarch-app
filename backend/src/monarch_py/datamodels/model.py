@@ -385,16 +385,10 @@ class SearchResults(Results):
     total: int = Field(..., description="""total number of items matching a query""")
     
 
-class AnnotatedJSONResult(ConfiguredBaseModel):
+class TextAnnotationResult(ConfiguredBaseModel):
     
     text: Optional[str] = Field(None, description="""text without tokens""")
-    tokens: Optional[List[TokenItems]] = Field(default_factory=list, description="""A collection of entities or concepts""")
-    
-
-class TokenItems(ConfiguredBaseModel):
-    
-    id: str = Field(...)
-    name: Optional[str] = Field(None)
+    tokens: Optional[List[Entity]] = Field(default_factory=list, description="""A collection of entities or concepts""")
     
 
 class PairwiseSimilarity(ConfiguredBaseModel):
@@ -490,8 +484,7 @@ MappingResults.update_forward_refs()
 MultiEntityAssociationResults.update_forward_refs()
 SearchResult.update_forward_refs()
 SearchResults.update_forward_refs()
-AnnotatedJSONResult.update_forward_refs()
-TokenItems.update_forward_refs()
+TextAnnotationResult.update_forward_refs()
 PairwiseSimilarity.update_forward_refs()
 TermPairwiseSimilarity.update_forward_refs()
 TermSetPairwiseSimilarity.update_forward_refs()

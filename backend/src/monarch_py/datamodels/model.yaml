@@ -269,14 +269,10 @@ classes:
     slot_usage:
       items:
         range: SearchResult
-  AnnotatedJSONResult:
+  TextAnnotationResult:
     slots:
       - text
       - tokens
-  TokenItems:
-    slots:
-      - id
-      - name
 
 slots:
   aggregator_knowledge_source:
@@ -630,7 +626,7 @@ slots:
     inlined: true
   tokens:
     description: A collection of entities or concepts
-    range: TokenItems
+    range: Entity
     inlined: true
     inlined_as_list: true
     multivalued: true

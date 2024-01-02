@@ -494,6 +494,13 @@ export interface SearchResults extends Results {
     /** total number of items matching a query */
     total: number,
 };
+
+export interface TextAnnotationResult {
+    /** text without tokens */
+    text?: string,
+    /** A collection of entities or concepts */
+    tokens?: Entity[],
+};
 /**
  * Abstract grouping for representing individual pairwise similarities
  */
@@ -519,11 +526,11 @@ export interface TermPairwiseSimilarity extends PairwiseSimilarity {
     ancestor_label?: string,
     ancestor_source?: string,
     /** The IC of the object */
-    object_information_content?: string,
+    object_information_content?: number,
     /** The IC of the subject */
-    subject_information_content?: string,
+    subject_information_content?: number,
     /** The IC of the object */
-    ancestor_information_content?: string,
+    ancestor_information_content?: number,
     /** The number of concepts in the intersection divided by the number in the union */
     jaccard_similarity?: number,
     /** the dot product of two node embeddings divided by the product of their lengths */
