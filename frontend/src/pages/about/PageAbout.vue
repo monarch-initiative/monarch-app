@@ -34,7 +34,7 @@
         subtitle="How all the pieces of Monarch fit together"
       />
       <AppTile
-        to="https://monarch-app.monarchinitiative.org/"
+        to="http://api-v3.monarchinitiative.org/"
         icon="code"
         title="API"
         subtitle="The API serving this website"
