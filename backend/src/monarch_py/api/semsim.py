@@ -48,7 +48,7 @@ def _post_compare(request: SemsimCompareRequest):
     }
     </pre>
     """
-    return semsimian().compare(request.subjects, request.objects)
+    return semsimian().compare(subjects=request.subjects, objects=request.objects)
 
 
 @router.get("/search/{termset}/{group}")

@@ -11,6 +11,34 @@ from monarch_py.api.semsim import router
 client = TestClient(router)
 
 
+@patch("monarch_py.api.config.SemsimianHTTPRequester.compare")
+def test_get_compare(mock_compare):
+    mock_compare.return_value = MagicMock()
+
+    subjects = "HP:123,HP:456"
+    objects = "HP:789,HP:101112"
+
+    response = client.get(f"/compare/{subjects}/{objects}")
+
+    assert response.status_code == status.HTTP_200_OK
+    mock_compare.assert_called_once_with(subjects=["HP:123", "HP:456"], objects=["HP:789", "HP:101112"])
+
+
+@patch("monarch_py.api.config.SemsimianHTTPRequester.compare")
+def test_post_compare(mock_compare):
+    mock_compare.return_value = MagicMock()
+
+    subjects = ["HP:123", "HP:456"]
+    objects = ["HP:789", "HP:101112"]
+
+    response = client.post(f"/compare/",
+                           json={"subjects": subjects,
+                                 "objects": objects})
+
+    assert response.status_code == status.HTTP_200_OK
+    mock_compare.assert_called_once_with(subjects=subjects, objects=objects)
+
+
 @patch("monarch_py.api.config.SemsimianHTTPRequester.search")
 @pytest.mark.parametrize("termset", [
     "HP:123,HP:456",
