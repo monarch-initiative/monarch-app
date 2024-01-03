@@ -1,5 +1,3 @@
-from json import dumps
-
 import pytest
 from fastapi.testclient import TestClient
 from fastapi import status
@@ -31,20 +29,14 @@ def test_post_compare(mock_compare):
     subjects = ["HP:123", "HP:456"]
     objects = ["HP:789", "HP:101112"]
 
-    response = client.post(f"/compare/",
-                           json={"subjects": subjects,
-                                 "objects": objects})
+    response = client.post(f"/compare/", json={"subjects": subjects, "objects": objects})
 
     assert response.status_code == status.HTTP_200_OK
     mock_compare.assert_called_once_with(subjects=subjects, objects=objects)
 
 
 @patch("monarch_py.api.config.SemsimianHTTPRequester.search")
-@pytest.mark.parametrize("termset", [
-    "HP:123,HP:456",
-    "HP:123, HP:456",
-    " HP:123, HP:456 "
-])
+@pytest.mark.parametrize("termset", ["HP:123,HP:456", "HP:123, HP:456", " HP:123, HP:456 "])
 def test_get_search(mock_search, termset: str):
     mock_search.return_value = MagicMock()
 
@@ -65,11 +57,7 @@ def test_post_search(mock_search):
     group = SemsimSearchGroup.HGNC
     limit = 5
 
-    response = client.post(f"/search/",
-                           json={"termset": termset,
-                                 "group": group.value,
-                                 "limit": limit})
+    response = client.post(f"/search/", json={"termset": termset, "group": group.value, "limit": limit})
 
     assert response.status_code == status.HTTP_200_OK
     mock_search.assert_called_once_with(termset=["HP:123", "HP:456"], prefix=group.name, limit=limit)
-
