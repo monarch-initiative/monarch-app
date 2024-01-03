@@ -1,3 +1,5 @@
+from json import dumps
+
 import pytest
 from fastapi.testclient import TestClient
 from fastapi import status
@@ -22,6 +24,23 @@ def test_get_search(mock_search, termset: str):
     limit = 5
 
     response = client.get(f"/search/{termset}/{group.value}?limit={limit}")
+
+    assert response.status_code == status.HTTP_200_OK
+    mock_search.assert_called_once_with(termset=["HP:123", "HP:456"], prefix=group.name, limit=limit)
+
+
+@patch("monarch_py.api.config.SemsimianHTTPRequester.search")
+def test_post_search(mock_search):
+    mock_search.return_value = MagicMock()
+
+    termset = ["HP:123", "HP:456"]
+    group = SemsimSearchGroup.HGNC
+    limit = 5
+
+    response = client.post(f"/search/",
+                           json={"termset": termset,
+                                 "group": group.value,
+                                 "limit": limit})
 
     assert response.status_code == status.HTTP_200_OK
     mock_search.assert_called_once_with(termset=["HP:123", "HP:456"], prefix=group.name, limit=limit)

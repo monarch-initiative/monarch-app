@@ -94,4 +94,6 @@ def _post_search(request: SemsimSearchRequest):
     }
     </pre>
     """
-    return semsimian().search(request.termset, parse_similarity_prefix(request.group.value), request.limit)
+    return semsimian().search(termset=request.termset,
+                              prefix=parse_similarity_prefix(request.group.value),
+                              limit=request.limit)
