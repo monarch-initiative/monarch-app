@@ -128,6 +128,16 @@ def convert_to_tsv(obj: ConfiguredBaseModel) -> (str, str):
     return headers, rows
 
 
+def to_tsv_str(obj: ConfiguredBaseModel) -> str:
+    """Converts a pydantic model to a TSV string."""
+    headers, rows = convert_to_tsv(obj)
+    result = ""
+    result += "\t".join(headers)
+    for row in rows:
+        result += f"\n{row}"
+    return result
+
+
 def to_json(obj: Union[ConfiguredBaseModel, Dict, List[ConfiguredBaseModel]], file: str = None) -> None:
     """Converts a pydantic model to a JSON string."""
     if isinstance(obj, ConfiguredBaseModel):
@@ -143,16 +153,6 @@ def to_json(obj: Union[ConfiguredBaseModel, Dict, List[ConfiguredBaseModel]], fi
     else:
         print_json(json_value)
     return
-
-
-def to_tsv_str(obj: ConfiguredBaseModel) -> str:
-    """Converts a pydantic model to a TSV string."""
-    headers, rows = convert_to_tsv(obj)
-    result = ""
-    result += "\t".join(headers)
-    for row in rows:
-        result += f"\n{row}"
-    return result
 
 
 def to_tsv(obj: ConfiguredBaseModel, file: str = None) -> None:
