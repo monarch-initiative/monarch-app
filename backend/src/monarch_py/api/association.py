@@ -1,10 +1,12 @@
-from typing import List, Optional, Union
+from typing import List, Union
 
 from fastapi import APIRouter, Depends, Query
-from monarch_py.api.additional_models import PaginationParams
+
+from monarch_py.api.additional_models import OutputFormat, PaginationParams
 from monarch_py.api.config import solr
 from monarch_py.datamodels.model import AssociationResults, MultiEntityAssociationResults
 from monarch_py.datamodels.category_enums import AssociationCategory, AssociationPredicate
+from monarch_py.utils.utils import to_tsv_str
 
 router = APIRouter(
     tags=["association"],
@@ -22,6 +24,11 @@ async def _get_associations(
     entity: Union[List[str], None] = Query(default=None),
     direct: Union[bool, None] = Query(default=None),
     pagination: PaginationParams = Depends(),
+    format: OutputFormat = Query(
+        default=OutputFormat.json,
+        title="Output format for the response",
+        examples=["json", "tsv"],
+    )
 ) -> AssociationResults:
     """Retrieves all associations for a given entity, or between two entities."""
     if category:
@@ -38,7 +45,10 @@ async def _get_associations(
         offset=pagination.offset,
         limit=pagination.limit,
     )
-    return response
+    if format == OutputFormat.json:
+        return response
+    elif format == OutputFormat.tsv:
+        return to_tsv_str(response)
 
 
 @router.get("/multi", include_in_schema=False)
@@ -46,6 +56,11 @@ async def _get_multi_entity_associations(
     entity: Union[List[str], None] = Query(default=None),
     counterpart_category: Union[List[str], None] = Query(default=None),
     pagination: PaginationParams = Depends(),
+    format: OutputFormat = Query(
+        default=OutputFormat.json,
+        title="Output format for the response",
+        examples=["json", "tsv"],
+    )
 ) -> List[MultiEntityAssociationResults]:
     """Retrieves all associations between each entity and each counterpart category."""
     response = solr().get_multi_entity_associations(
@@ -54,4 +69,7 @@ async def _get_multi_entity_associations(
         offset=pagination.offset,
         limit_per_group=pagination.limit,
     )
-    return response
+    if format == OutputFormat.json:
+        return response
+    elif format == OutputFormat.tsv:
+        return to_tsv_str(response)
