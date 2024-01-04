@@ -108,23 +108,7 @@ def get_headers_from_obj(obj: ConfiguredBaseModel) -> list:
     return list(headers)
 
 
-def to_json(obj: Union[ConfiguredBaseModel, Dict, List[ConfiguredBaseModel]], file: str):
-    """Converts a pydantic model to a JSON string."""
-    if isinstance(obj, ConfiguredBaseModel):
-        json_value = obj.json(indent=4)
-    elif isinstance(obj, dict):
-        json_value = json.dumps(obj, indent=4)
-    elif isinstance(obj, list):
-        json_value = json.dumps({"items": [o.dict() for o in obj]}, indent=4)
-    if file:
-        with open(file, "w") as f:
-            f.write(json_value)
-        console.print(f"\nOutput written to {file}\n")
-    else:
-        print_json(json_value)
-
-
-def to_tsv(obj: ConfiguredBaseModel, file: str) -> str:
+def convert_to_tsv(obj: ConfiguredBaseModel) -> (str, str):
     """Converts a pydantic model to a TSV string."""
 
     # Extract headers and rows from object
@@ -141,7 +125,39 @@ def to_tsv(obj: ConfiguredBaseModel, file: str) -> str:
     else:
         console.print(f"\n[bold red]{FMT_INPUT_ERROR_MSG}[/]\n")
         raise typer.Exit(1)
+    return headers, rows
 
+
+def to_json(obj: Union[ConfiguredBaseModel, Dict, List[ConfiguredBaseModel]], file: str = None) -> None:
+    """Converts a pydantic model to a JSON string."""
+    if isinstance(obj, ConfiguredBaseModel):
+        json_value = obj.json(indent=4)
+    elif isinstance(obj, dict):
+        json_value = json.dumps(obj, indent=4)
+    elif isinstance(obj, list):
+        json_value = json.dumps({"items": [o.dict() for o in obj]}, indent=4)
+    if file:
+        with open(file, "w") as f:
+            f.write(json_value)
+        console.print(f"\nOutput written to {file}\n")
+    else:
+        print_json(json_value)
+    return
+
+
+def to_tsv_str(obj: ConfiguredBaseModel) -> str:
+    """Converts a pydantic model to a TSV string."""
+    headers, rows = convert_to_tsv(obj)
+    result = ""
+    result += "\t".join(headers)
+    for row in rows:
+        result += f"\n{row}"
+    return result
+
+
+def to_tsv(obj: ConfiguredBaseModel, file: str = None) -> None:
+    """Prints or writes a pydantic model to a TSV file/stdout."""
+    headers, rows = convert_to_tsv(obj)
     fh = open(file, "w") if file else sys.stdout
     writer = csv.writer(fh, delimiter="\t")
     writer.writerow(headers)
@@ -150,7 +166,6 @@ def to_tsv(obj: ConfiguredBaseModel, file: str) -> str:
     if file:
         fh.close()
         console.print(f"\nOutput written to {file}\n")
-
     return
 
 
@@ -193,7 +208,7 @@ def to_table(obj: ConfiguredBaseModel):
     return
 
 
-def to_yaml(obj: ConfiguredBaseModel, file: str):
+def to_yaml(obj: ConfiguredBaseModel, file: str = None):
     """Converts a pydantic model to a YAML string."""
 
     fh = open(file, "w") if file else sys.stdout

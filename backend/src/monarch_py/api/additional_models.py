@@ -14,6 +14,11 @@ class PaginationParams(BaseModel):
         arbitrary_types_allowed = True
 
 
+class OutputFormat(str, Enum):
+    json = "json"
+    tsv = "tsv"
+
+
 class SemsimSearchGroup(Enum):
     HGNC = "Human Genes"
     MGI = "Mouse Genes"
