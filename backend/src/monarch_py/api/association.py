@@ -1,4 +1,4 @@
-from typing import List, Optional, Union
+from typing import List, Union
 
 from fastapi import APIRouter, Depends, Query
 from monarch_py.api.additional_models import PaginationParams
