@@ -23,7 +23,7 @@ async def _get_histopheno(
         default=OutputFormat.json,
         title="Output format for the response",
         examples=["json", "tsv"],
-    )
+    ),
 ) -> Union[HistoPheno, str]:
     """Retrieves the entity with the specified id"""
     response = solr().get_histopheno(id)

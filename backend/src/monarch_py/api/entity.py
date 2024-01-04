@@ -39,7 +39,7 @@ async def _get_entity(
     if response is None:
         raise HTTPException(status_code=404, detail="Entity not found")
     if format == OutputFormat.json:
-        return Node(**response.__dict__) # This is an odd consequence of how Node extends Entity
+        return Node(**response.__dict__)  # This is an odd consequence of how Node extends Entity
     elif format == OutputFormat.tsv:
         return to_tsv_str(response)
 

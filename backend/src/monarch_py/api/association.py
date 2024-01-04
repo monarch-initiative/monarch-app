@@ -28,7 +28,7 @@ async def _get_associations(
         default=OutputFormat.json,
         title="Output format for the response",
         examples=["json", "tsv"],
-    )
+    ),
 ) -> AssociationResults:
     """Retrieves all associations for a given entity, or between two entities."""
     if category:
@@ -60,7 +60,7 @@ async def _get_multi_entity_associations(
         default=OutputFormat.json,
         title="Output format for the response",
         examples=["json", "tsv"],
-    )
+    ),
 ) -> List[MultiEntityAssociationResults]:
     """Retrieves all associations between each entity and each counterpart category."""
     response = solr().get_multi_entity_associations(
