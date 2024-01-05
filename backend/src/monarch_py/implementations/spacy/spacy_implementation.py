@@ -25,11 +25,8 @@ class SpacyImplementation(TextAnnotatorInterface):
     def annotate_text(self, text) -> List[TextAnnotationResult]:
         """Annotate text using SPACY"""
         result = ""
-        entities = []
-        doc = self.nlp(text)
         try:
-            entities = self.get_entities(doc, entities)
-            entities.sort()
+            entities = self.get_entities(text)
             entities = self.concatenate_same_entities(entities)
             replaced_text = self.replace_entities(text, entities)
             result += replaced_text + " "
@@ -38,7 +35,9 @@ class SpacyImplementation(TextAnnotatorInterface):
         result = self.convert_to_json(result)
         return result
 
-    def get_entities(self, doc, entities):
+    def get_entities(self, text):
+        entities = []
+        doc = self.nlp(text)
         for entity in doc.ents:
             solr_search_results = self.search_engine.search(q=str(entity))
             matches = re.findall(r"SearchResult\(id='(.*?)', category='(.*?)', name='(.*?)',", str(solr_search_results))
@@ -61,7 +60,7 @@ class SpacyImplementation(TextAnnotatorInterface):
 
                 if any(conditions):
                     entities.append([entity.start_char, entity.end_char, f"{match[2].replace(',', '')},{match[0]}"])
-
+        entities.sort()
         return entities
 
     def concatenate_same_entities(self, lst):
