@@ -6,7 +6,6 @@
   <component
     :is="customIcon"
     v-if="isCustom"
-    ref="element"
     class="custom"
     :style="{ '--thickness': thickness }"
     :data-icon="icon"
@@ -14,7 +13,6 @@
   />
   <FontAwesomeIcon
     v-else-if="fontAwesome"
-    ref="element"
     :icon="fontAwesome"
     class="fa"
     :style="{ '--thickness': thickness }"
@@ -22,7 +20,6 @@
   />
   <svg
     v-else-if="initials"
-    ref="element"
     viewBox="-10 -10 120 120"
     class="initials"
     :style="{ '--thickness': thickness }"
@@ -87,16 +84,9 @@ const initials = computed(
       .join("") || "",
 );
 
-const element = ref();
-
-/** get absolute/rendered size of icon */
-const { height } = useElementSize(element);
-
-/** increase thickness for smaller sizes */
+/** dynamic line thickness */
 const thickness = computed(() => {
-  if (height.value < 20) return 8;
-  if (height.value < 25) return 7;
-  if (height.value < 30) return 6;
+  /** leave opportunity for thickness based on absolute size in the future */
   return 5;
 });
 </script>
