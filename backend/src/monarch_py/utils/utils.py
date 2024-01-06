@@ -56,7 +56,7 @@ def compare_dicts(dict1, dict2):
     return all([k in dict2 for k in dict1]) and all([dict1[k] == dict2[k] for k in dict2])
 
 
-def dict_diff(d1, d2):
+def dict_diff(d1, d2) -> dict:
     """Return the difference between two dictionaries"""
     difference = {}
     for k in d1.keys():
@@ -76,13 +76,12 @@ def set_log_level(log_level: str):
 
 ### URL fetching methods ###
 
-
 def get_links_for_field(field: List[str]) -> List[ExpandedCurie]:
     # TODO should be able to remove curie.replace("PMID", "PUBMED")) since the converter should handle prefix synonyms
     return [ExpandedCurie(id=curie, url=converter.expand(curie.replace("PMID", "PUBMED"))) for curie in field]
 
 
-def get_provided_by_link(provided_by: str) -> List[ExpandedCurie]:
+def get_provided_by_link(provided_by: str) -> ExpandedCurie:
     """Returns a link to the provided_by resource."""
     base_url = "https://monarch-initiative.github.io/monarch-ingest/Sources"
     pb = provided_by.replace("_nodes", "").replace("_edges", "").split("_")
