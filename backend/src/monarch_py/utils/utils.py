@@ -76,6 +76,7 @@ def set_log_level(log_level: str):
 
 ### URL fetching methods ###
 
+
 def get_links_for_field(field: List[str]) -> List[ExpandedCurie]:
     # TODO should be able to remove curie.replace("PMID", "PUBMED")) since the converter should handle prefix synonyms
     return [ExpandedCurie(id=curie, url=converter.expand(curie.replace("PMID", "PUBMED"))) for curie in field]
@@ -100,10 +101,16 @@ FMT_INPUT_ERROR_MSG = (
 
 def get_headers_from_obj(obj: ConfiguredBaseModel) -> list:
     """Return a list of headers from a pydantic model."""
-    schema = type(obj).schema()
-    definitions = schema["definitions"]
-    this_ref = schema["properties"]["items"]["items"]["$ref"].split("/")[-1]
-    headers = definitions[this_ref]["properties"].keys()
+    if isinstance(obj, Entity):
+        headers = obj.dict().keys()
+    elif isinstance(obj, (AssociationCountList, HistoPheno, Results)):
+        if obj.items:
+            headers = obj.items[0].dict().keys()
+        else:
+            schema = type(obj).schema()
+            definitions = schema["definitions"]
+            this_ref = schema["properties"]["items"]["items"]["$ref"].split("/")[-1]
+            headers = definitions[this_ref]["properties"].keys()
     return list(headers)
 
 
