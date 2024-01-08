@@ -40,26 +40,25 @@ class SpacyImplementation(TextAnnotatorInterface):
         doc = self.nlp(text)
         for entity in doc.ents:
             solr_search_results = self.search_engine.search(q=str(entity))
-            matches = re.findall(r"SearchResult\(id='(.*?)', category='(.*?)', name='(.*?)',", str(solr_search_results))
 
-            filtered_results = [match for match in matches if 'obsolete' not in match[2].lower()]
+            filtered_search_results = [result for result in solr_search_results.items if not result.deprecated]
 
-            if len(filtered_results) >= 3:
+            if len(filtered_search_results) >= 3:
                 entities.extend([
-                    [entity.start_char, entity.end_char, f"{filtered_results[i][2].replace(',', '')},{filtered_results[i][0]}"]
+                    [entity.start_char, entity.end_char, f"{filtered_search_results[i].name.replace(',', '')},{filtered_search_results[i].id}"]
                     for i in range(3)
                 ])
 
-            for index, match in enumerate(filtered_results[3:], start=3):
+            for index, match in enumerate(filtered_search_results[3:], start=3):
                 entity_lower = str.lower(str(entity))
                 conditions = [
-                    match[2].lower() == entity_lower + " (hpo)",
-                    match[2].lower() == entity_lower,
-                    match[2].lower() == entity_lower + " (mpo)"
+                    match.name.lower() == entity_lower + " (hpo)",
+                    match.name.lower() == entity_lower,
+                    match.name.lower() == entity_lower + " (mpo)"
                 ]
 
                 if any(conditions):
-                    entities.append([entity.start_char, entity.end_char, f"{match[2].replace(',', '')},{match[0]}"])
+                    entities.append([entity.start_char, entity.end_char, f"{match.name.replace(',', '')},{match.id}"])
         entities.sort()
         return entities
 
