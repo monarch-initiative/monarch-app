@@ -114,20 +114,6 @@ class Association(ConfiguredBaseModel):
         default_factory=list,
         description="""Field containing frequency_qualifier name and the names of all of it's ancestors""",
     )
-    qualifiers: Optional[List[str]] = Field(default_factory=list)
-    qualifiers_label: Optional[str] = Field(None, description="""The name of the frequency_qualifier entity""")
-    qualifiers_namespace: Optional[str] = Field(
-        None, description="""The namespace/prefix of the frequency_qualifier entity"""
-    )
-    qualifiers_category: Optional[str] = Field(None, description="""The category of the frequency_qualifier entity""")
-    qualifiers_closure: Optional[List[str]] = Field(
-        default_factory=list,
-        description="""Field containing frequency_qualifier id and the ids of all of it's ancestors""",
-    )
-    qualifiers_closure_label: Optional[List[str]] = Field(
-        default_factory=list,
-        description="""Field containing frequency_qualifier name and the names of all of it's ancestors""",
-    )
     frequency_qualifier_label: Optional[str] = Field(None, description="""The name of the frequency_qualifier entity""")
     frequency_qualifier_namespace: Optional[str] = Field(
         None, description="""The namespace/prefix of the frequency_qualifier entity"""
@@ -285,20 +271,6 @@ class DirectionalAssociation(Association):
         description="""Field containing frequency_qualifier id and the ids of all of it's ancestors""",
     )
     qualifier_closure_label: Optional[List[str]] = Field(
-        default_factory=list,
-        description="""Field containing frequency_qualifier name and the names of all of it's ancestors""",
-    )
-    qualifiers: Optional[List[str]] = Field(default_factory=list)
-    qualifiers_label: Optional[str] = Field(None, description="""The name of the frequency_qualifier entity""")
-    qualifiers_namespace: Optional[str] = Field(
-        None, description="""The namespace/prefix of the frequency_qualifier entity"""
-    )
-    qualifiers_category: Optional[str] = Field(None, description="""The category of the frequency_qualifier entity""")
-    qualifiers_closure: Optional[List[str]] = Field(
-        default_factory=list,
-        description="""Field containing frequency_qualifier id and the ids of all of it's ancestors""",
-    )
-    qualifiers_closure_label: Optional[List[str]] = Field(
         default_factory=list,
         description="""Field containing frequency_qualifier name and the names of all of it's ancestors""",
     )
