@@ -96,11 +96,25 @@ class Association(ConfiguredBaseModel):
     publications_links: Optional[List[ExpandedCurie]] = Field(
         default_factory=list, description="""List of ExpandedCuries with id and url for publications"""
     )
-    qualifiers: Optional[List[str]] = Field(default_factory=list)
     frequency_qualifier: Optional[str] = Field(None)
     onset_qualifier: Optional[str] = Field(None)
     sex_qualifier: Optional[str] = Field(None)
     stage_qualifier: Optional[str] = Field(None)
+    qualifier: Optional[List[str]] = Field(default_factory=list)
+    qualifier_label: Optional[str] = Field(None, description="""The name of the frequency_qualifier entity""")
+    qualifier_namespace: Optional[str] = Field(
+        None, description="""The namespace/prefix of the frequency_qualifier entity"""
+    )
+    qualifier_category: Optional[str] = Field(None, description="""The category of the frequency_qualifier entity""")
+    qualifier_closure: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing frequency_qualifier id and the ids of all of it's ancestors""",
+    )
+    qualifier_closure_label: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing frequency_qualifier name and the names of all of it's ancestors""",
+    )
+    qualifiers: Optional[List[str]] = Field(default_factory=list)
     qualifiers_label: Optional[str] = Field(None, description="""The name of the frequency_qualifier entity""")
     qualifiers_namespace: Optional[str] = Field(
         None, description="""The namespace/prefix of the frequency_qualifier entity"""
@@ -256,11 +270,25 @@ class DirectionalAssociation(Association):
     publications_links: Optional[List[ExpandedCurie]] = Field(
         default_factory=list, description="""List of ExpandedCuries with id and url for publications"""
     )
-    qualifiers: Optional[List[str]] = Field(default_factory=list)
     frequency_qualifier: Optional[str] = Field(None)
     onset_qualifier: Optional[str] = Field(None)
     sex_qualifier: Optional[str] = Field(None)
     stage_qualifier: Optional[str] = Field(None)
+    qualifier: Optional[List[str]] = Field(default_factory=list)
+    qualifier_label: Optional[str] = Field(None, description="""The name of the frequency_qualifier entity""")
+    qualifier_namespace: Optional[str] = Field(
+        None, description="""The namespace/prefix of the frequency_qualifier entity"""
+    )
+    qualifier_category: Optional[str] = Field(None, description="""The category of the frequency_qualifier entity""")
+    qualifier_closure: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing frequency_qualifier id and the ids of all of it's ancestors""",
+    )
+    qualifier_closure_label: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing frequency_qualifier name and the names of all of it's ancestors""",
+    )
+    qualifiers: Optional[List[str]] = Field(default_factory=list)
     qualifiers_label: Optional[str] = Field(None, description="""The name of the frequency_qualifier entity""")
     qualifiers_namespace: Optional[str] = Field(
         None, description="""The namespace/prefix of the frequency_qualifier entity"""
