@@ -6,11 +6,8 @@ from typing import List
 from pydantic import BaseSettings
 
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
-from monarch_py.implementations.oak.oak_implementation import OakImplementation
 from monarch_py.implementations.spacy.spacy_implementation import SpacyImplementation
 from monarch_py.datamodels.model import TermSetPairwiseSimilarity, SemsimSearchResult
-
-import spacy
 
 
 class Settings(BaseSettings):
@@ -119,9 +116,11 @@ def semsimian():
 def oak():
     return NotImplementedError("OAK is temporarily disabled")
 
+
 #    oak_implementation = OakImplementation()
 #    oak_implementation.init_phenio_adapter(force_update=False, phenio_path=settings.phenio_db_path)
 #    return oak_implementation
+
 
 @lru_cache(maxsize=1)
 def spacyner():

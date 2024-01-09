@@ -1,13 +1,12 @@
-import json
-import re
 from dataclasses import dataclass
 from typing import List
 
 import spacy
+from spacy.tokens.doc import Doc
+
 from monarch_py.interfaces.search_interface import SearchInterface
 from monarch_py.interfaces.text_annotation_interface import TextAnnotatorInterface
-from monarch_py.datamodels.model import TextAnnotationResult
-from loguru import logger
+from monarch_py.datamodels.model import TextAnnotationResult, Entity, TextAnnotationPosition
 
 
 @dataclass
@@ -22,91 +21,52 @@ class SpacyImplementation(TextAnnotatorInterface):
         self.search_engine = search_engine
         self.annotate_text("Nystagmus, strabismus, fundus, ocular albinism, lewis.")
 
-    def annotate_text(self, text) -> List[TextAnnotationResult]:
+    def get_annotated_entities(self, text) -> List[TextAnnotationResult]:
         """Annotate text using SPACY"""
-        result = ""
-        try:
-            entities = self.get_entities(text)
-            entities = self.concatenate_same_entities(entities)
-            replaced_text = self.replace_entities(text, entities)
-            result += replaced_text + " "
-        except IndexError as error:
-            logger.error(f"Error occurred: {error}")
-        result = self.convert_to_json(result)
-        return result
 
-    def get_entities(self, text):
-        entities = []
+        results: List[TextAnnotationResult] = []
         doc = self.nlp(text)
-        for entity in doc.ents:
-            solr_search_results = self.search_engine.search(q=str(entity))
 
-            filtered_search_results = [result for result in solr_search_results.items if not result.deprecated]
+        unique_entities = list(set([ent.text for ent in doc.ents]))
+        for entity_text in unique_entities:
+            matching_entities = self.ground_entity(entity_text)
+            positions = self.get_positions(entity_text, doc)
+            result = TextAnnotationResult(text=entity_text, tokens=matching_entities, positions=positions)
+            results.append(result)
 
-            if len(filtered_search_results) >= 3:
-                entities.extend([
-                    [entity.start_char, entity.end_char, f"{filtered_search_results[i].name.replace(',', '')},{filtered_search_results[i].id}"]
-                    for i in range(3)
-                ])
+        return results
 
-            for index, match in enumerate(filtered_search_results[3:], start=3):
-                entity_lower = str.lower(str(entity))
-                conditions = [
-                    match.name.lower() == entity_lower + " (hpo)",
-                    match.name.lower() == entity_lower,
-                    match.name.lower() == entity_lower + " (mpo)"
-                ]
+    def annotate_text(self, text) -> str:
+        """ Returns an html formatted string with tags wrapping entities found in the text """
+        annotated_entities = self.get_annotated_entities(text)
 
-                if any(conditions):
-                    entities.append([entity.start_char, entity.end_char, f"{match.name.replace(',', '')},{match.id}"])
-        entities.sort()
-        return entities
+        # for each annotated entity
+          # relpace text with contents from create_span
 
-    def concatenate_same_entities(self, lst):
-        result = {}
-        for elem in lst:
-            if len(elem) >= 3:
-                key = (elem[0], elem[1])
-                result[key] = result.get(key, "") + "|" + elem[2]
+        pass
 
-        return [[key[0], key[1], value] for key, value in result.items() if len(key) >= 2]
+    def create_span(self, entity: Entity) -> str:
+        """ Returns an html formatted string with tags wrapping entities found in the text """
+        pass
 
-    def replace_entities(self, text, entities):
-        replaced_text = text
-        entities = sorted(entities, key=lambda x: x[0], reverse=True)
+    def ground_entity(self, entity_text: str) -> List[Entity]:
+        returned_entities = []
 
-        for start, end, entity_data in entities:
-            if 0 <= start <= len(text) and 0 <= end <= len(text):
-                entity_value = f'<span class="sciCrunchAnnotation" data-sciGraph="{entity_data}">{text[start:end]}</span>'
-                replaced_text = replaced_text[:start] + entity_value + replaced_text[end:]
-            else:
-                logger.warning(f"Indices {start} or {end} are out of range for text length {len(text)}.")
+        search_results = self.search_engine.search(q=str(entity_text))
+        filtered_search_results = [result for result in search_results.items if not result.deprecated]
 
-        return replaced_text
+        returned_entities = filtered_search_results[:3]
 
-    def convert_to_json(self, text):
-        result = []
-        span_pattern = re.compile(r'<span class="sciCrunchAnnotation" data-sciGraph="([^"]+)">([^<]+)</span>')
+        for result in filtered_search_results[3:]:
+            stripped_result_name = result.name.lower().replace(" (hpo)", "").replace(" (mpo)", "")
+            if entity_text.lower() == stripped_result_name:
+                returned_entities.append(result)
 
-        start_index = 0
-        for match in span_pattern.finditer(text):
-            span_data, span_text = match.group(1), match.group(2)
+        return returned_entities
 
-            if start_index < match.start():
-                non_span_text = text[start_index: match.start()]
-                result.append({"text": non_span_text})
-
-            tokens = [{"id": token_parts[1], "name": token_parts[0]}
-                      for token_data in span_data.split("|")
-                      if (token_parts := token_data.split(",")) and len(token_parts) >= 2]
-
-            result.append({"text": span_text, "tokens": tokens})
-            start_index = match.end()
-
-        if start_index < len(text):
-            non_span_text = text[start_index:]
-            result.append({"text": non_span_text})
-
-        result.append({"text": "\n"})
-
-        return json.loads(json.dumps(result))
+    def get_positions(self, entity_text, doc: Doc) -> List[TextAnnotationPosition]:
+        positions = []
+        for ent in doc.ents:
+            if ent.text == entity_text:
+                positions.append(TextAnnotationPosition(start=ent.start_char, end=ent.end_char))
+        return positions

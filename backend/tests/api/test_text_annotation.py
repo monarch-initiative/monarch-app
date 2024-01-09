@@ -1,6 +1,4 @@
-import pytest
 from fastapi.testclient import TestClient
-from fastapi import status
 from unittest.mock import MagicMock, patch
 from monarch_py.api.text_annotation import router
 
