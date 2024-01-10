@@ -6,7 +6,7 @@ def search():
     return {
         "limit": 20,
         "offset": 0,
-        "total": 115,
+        "total": 101,
         "items": [
             {
                 "id": "MONDO:0019391",
