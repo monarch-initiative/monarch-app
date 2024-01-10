@@ -495,20 +495,15 @@ export interface SearchResults extends Results {
     total: number,
 };
 
-export interface TextAnnotationPosition {
-    /** start position of the annotation */
-    start?: number,
-    /** end position of the annotation */
-    end?: number,
-};
-
 export interface TextAnnotationResult {
     /** text without tokens */
     text?: string,
     /** A collection of entities or concepts */
     tokens?: Entity[],
-    /** A collection of positions for matches within a text annotation result */
-    positions?: TextAnnotationPosition[],
+    /** start position of the annotation */
+    start?: number,
+    /** end position of the annotation */
+    end?: number,
 };
 /**
  * Abstract grouping for representing individual pairwise similarities

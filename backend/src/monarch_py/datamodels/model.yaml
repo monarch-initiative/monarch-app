@@ -270,16 +270,12 @@ classes:
       items:
         range: SearchResult
 
-  TextAnnotationPosition:
-    slots:
-      - start
-      - end
-
   TextAnnotationResult:
     slots:
       - text
       - tokens
-      - positions
+      - start
+      - end
 
 slots:
   aggregator_knowledge_source:
@@ -643,9 +639,3 @@ slots:
   end:
     description: end position of the annotation
     range: integer
-  positions:
-    description: A collection of positions for matches within a text annotation result
-    range: TextAnnotationPosition
-    inlined: true
-    inlined_as_list: true
-    multivalued: true

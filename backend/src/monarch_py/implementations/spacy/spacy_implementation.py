@@ -6,7 +6,7 @@ from spacy.tokens.doc import Doc
 
 from monarch_py.interfaces.search_interface import SearchInterface
 from monarch_py.interfaces.text_annotation_interface import TextAnnotatorInterface
-from monarch_py.datamodels.model import TextAnnotationResult, Entity, TextAnnotationPosition
+from monarch_py.datamodels.model import TextAnnotationResult, Entity
 
 
 @dataclass
@@ -20,6 +20,7 @@ class SpacyImplementation(TextAnnotatorInterface):
         self.nlp = spacy.load("en_core_sci_sm")
         self.search_engine = search_engine
         self.annotate_text("Nystagmus, strabismus, fundus, ocular albinism, lewis.")
+        self.get_annotated_entities("Ehlers-Danlos syndrome, Marfan syndrome, and Loeys-Dietz syndrome are all connective tissue disorders.")
 
     def get_annotated_entities(self, text) -> List[TextAnnotationResult]:
         """Annotate text using SPACY"""
@@ -27,13 +28,13 @@ class SpacyImplementation(TextAnnotatorInterface):
         results: List[TextAnnotationResult] = []
         doc = self.nlp(text)
 
-        unique_entities = list(set([ent.text for ent in doc.ents]))
-        for entity_text in unique_entities:
-            matching_entities = self.ground_entity(entity_text)
-            positions = self.get_positions(entity_text, doc)
-            result = TextAnnotationResult(text=entity_text, tokens=matching_entities, positions=positions)
+        #unique_entities = list(set([ent.text for ent in doc.ents]))
+        #text_entities = [ent.text for ent in doc.ents]
+        for entity in doc.ents:
+            matching_entities = self.ground_entity(entity.text)
+            result = TextAnnotationResult(text=entity.text, tokens=matching_entities, start=entity.start, end=entity.end)
             results.append(result)
-
+        print(results)
         return results
 
     def annotate_text(self, text) -> str:
@@ -64,9 +65,4 @@ class SpacyImplementation(TextAnnotatorInterface):
 
         return returned_entities
 
-    def get_positions(self, entity_text, doc: Doc) -> List[TextAnnotationPosition]:
-        positions = []
-        for ent in doc.ents:
-            if ent.text == entity_text:
-                positions.append(TextAnnotationPosition(start=ent.start_char, end=ent.end_char))
-        return positions
+
