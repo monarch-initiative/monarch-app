@@ -10,12 +10,15 @@ def spacy_instance():
     return spacy
 
 
-def test_get_entities(spacy_instance):
-    entities = spacy_instance.get_entities(
-        "Ehlers-Danlos syndrome, Marfan syndrome, and Loeys-Dietz syndrome are all connective tissue disorders."
+def test_annotated_entities(spacy_instance):
+    entities = spacy_instance.get_annotated_entities(
+        "let me tell you about Marfan syndrome, ok?"
     )
     assert entities
-    assert len(entities) > 0
+    assert len(entities) == 3
+    assert entities[0].text == "let me tell you about"
+    assert entities[1].text == "Marfan syndrome"
+    assert entities[2].text == ", ok?"
 
 
 def test_get_positions(spacy_instance):
