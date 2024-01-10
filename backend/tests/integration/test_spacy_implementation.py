@@ -10,64 +10,64 @@ def spacy_instance():
     return spacy
 
 
+def test_spacy_positions(spacy_instance):
+    entity = spacy_instance.nlp("the brain").ents[0]
+    entity.start = 4
+    entity.end = 9
+
+
+def test_spacy_positions_with_two_entities(spacy_instance):
+    entities = spacy_instance.nlp("the brain and the heart").ents
+    assert len(entities) == 2
+    assert entities[0].start_char == 4
+    assert entities[0].end_char == 9
+    assert entities[1].start_char == 18
+    assert entities[1].end_char == 23
+
+
+def test_entity_positions(spacy_instance):
+    entities = spacy_instance.get_annotated_entities("the brain")
+    assert entities
+    assert len(entities) == 2
+    assert entities[0].text == "the "
+    assert entities[1].text == "brain"
+    assert entities[1].start == 4
+    assert entities[1].end == 9
+
+
 def test_annotated_entities(spacy_instance):
-    entities = spacy_instance.get_annotated_entities(
-        "let me tell you about Marfan syndrome, ok?"
-    )
+    entities = spacy_instance.get_annotated_entities("let me tell you about Marfan syndrome, ok?")
     assert entities
     assert len(entities) == 3
-    assert entities[0].text == "let me tell you about"
+    assert entities[0].text == "let me tell you about "
     assert entities[1].text == "Marfan syndrome"
     assert entities[2].text == ", ok?"
 
 
-def test_get_positions(spacy_instance):
-    text = "and Marfan syndrome is Marfan syndrome"
-    doc = spacy_instance.nlp(text)
-    positions = spacy_instance.get_positions("Marfan syndrome", doc)
-    assert positions
-    assert len(positions) > 0
-    assert positions[0].start == 4
-    assert positions[0].end == 18
-    assert positions[1].start == 23
-    assert positions[1].end == 37
-
-
-def test_non_entity_text_is_returned(spacy_instance):
-    annotation_results = spacy_instance.annotate_text("and Marfan syndrome or Ehlers Danlos")
-    assert annotation_results
-    assert len(annotation_results) > 1
-    assert annotation_results[0].text == "and"
-    assert annotation_results[1].text == "Marfan syndrome"
-    assert annotation_results[2].text == "or"
-    assert annotation_results[3].text == "Ehlers Danlos"
-
-
-@pytest.mark.skip("Will be rewritten for a slightly different method")
-def test_replace_entities(spacy_instance):
-    result = spacy_instance.replace_entities(
-        "Ehlers-Danlos syndrome, Marfan syndrome, and Loeys-Dietz syndrome are all connective tissue disorders.",
-        [
-            [
-                0,
-                22,
-                "|Ehlers-Danlos syndrome classic type,MONDO:0007522|Ehlers-Danlos syndrome,MONDO:0020066|spondylodysplastic Ehlers-Danlos syndrome,MONDO:0034021",
-            ],
-            [
-                24,
-                39,
-                "|Marfan syndrome non-human animal,MONDO:1010296|Marfan syndrome,MONDO:0007947|neonatal Marfan syndrome,MONDO:0017309",
-            ],
-            [
-                45,
-                65,
-                "|Loeys-Dietz syndrome 1,MONDO:0012212|Loeys-Dietz syndrome 2,MONDO:0012427|Loeys-Dietz syndrome,MONDO:0018954",
-            ],
-            [
-                74,
-                101,
-                "|connective tissue disorder non-human animal,MONDO:1011309|connective tissue disorder,MONDO:0003900|hereditary disorder of connective tissue,MONDO:0023603",
-            ],
-        ],
+def test_non_entity_text_is_returned_between_entities(spacy_instance):
+    entities = spacy_instance.get_annotated_entities(
+        "let me tell you about Marfan syndrome and Ehlers Danlos syndrome, ok?"
     )
-    assert result
+    assert entities
+    assert len(entities) > 1
+    assert entities[0].text == "let me tell you about "
+    assert entities[1].text == "Marfan syndrome"
+    assert entities[2].text == " and "
+    assert entities[3].text == "Ehlers Danlos syndrome"
+    assert entities[4].text == ", ok?"
+
+
+@pytest.mark.parametrize(
+    "text,expected_id",
+    [
+        ("Marfan syndrome", "MONDO:0007947"),
+        ("Ehlers-Danlos syndrome", "MONDO:0007522"),
+        ("Loeys-Dietz syndrome", "MONDO:0018954"),
+        ("connective tissue disorder", "MONDO:0003900"),
+    ],
+)
+def test_grounding(spacy_instance, text, expected_id):
+    matching_results = spacy_instance.ground_entity(text)
+    assert matching_results
+    matching_identifiers = [result.id for result in matching_results]
+    assert expected_id in matching_identifiers
