@@ -5,7 +5,7 @@ from fastapi import APIRouter, HTTPException, Path, Query
 from monarch_py.api.config import solr
 from monarch_py.api.additional_models import OutputFormat
 from monarch_py.datamodels.model import HistoPheno
-from monarch_py.utils.utils import to_tsv_str
+from monarch_py.utils.format_utils import to_tsv
 
 router = APIRouter(
     tags=["histopheno"],
@@ -32,4 +32,7 @@ async def _get_histopheno(
     if format == OutputFormat.json:
         return response
     elif format == OutputFormat.tsv:
-        return to_tsv_str(response)
+        tsv = ""
+        for row in to_tsv(response, print_output=False):
+            tsv += row
+        return tsv

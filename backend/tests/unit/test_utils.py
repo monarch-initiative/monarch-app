@@ -14,11 +14,13 @@ from monarch_py.utils.utils import (
     dict_factory,
     dict_diff,
     escape,
-    get_headers_from_obj,
     get_links_for_field,
     get_provided_by_link,
     strip_json,
-    to_tsv_str,
+)
+from monarch_py.utils.format_utils import (
+    get_headers_from_obj,
+    convert_to_tsv,
 )
 
 ### Test basic utility methods ###
@@ -90,7 +92,6 @@ def test_get_provided_by_link():
 
 
 ### Test output conversion methods ###
-# TODO
 
 
 @pytest.mark.parametrize(
@@ -119,3 +120,16 @@ def test_get_headers_from_obj(obj, expected, request):
     expected = request.getfixturevalue(expected)
     headers = get_headers_from_obj(obj)
     assert headers == expected
+
+
+@pytest.mark.parametrize(
+    "obj, expected",
+    [
+        ("node", "node_headers"),
+        ("search", "search_headers"),
+        ("histopheno", "histopheno_headers"),
+        ("associations", "association_headers"),
+    ],
+)
+def test_convert_to_tsv(obj, expected, request):
+    pass

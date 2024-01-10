@@ -2,7 +2,6 @@
 Generate fixtures for monarch-app. 
 Requires a running instance of both Solr and semsimian_server.
 """
-
 import argparse
 import json
 import os
@@ -10,6 +9,7 @@ import sys
 from pathlib import Path
 
 from monarch_py.api.semsim import _compare, _search
+from monarch_py.datamodels.model import Association, HistoPheno, Node, SearchResult
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 from monarch_py.implementations.solr.solr_query_utils import (
     build_association_query,
@@ -21,9 +21,8 @@ from monarch_py.implementations.solr.solr_query_utils import (
     build_search_query,
 )
 from monarch_py.service.solr_service import SolrService, core
-from monarch_py.utils.utils import format_output
+from monarch_py.utils.format_utils import get_headers_from_obj, format_output
 
-# from pprint import pprint as pp
 
 ### Define variables
 
@@ -86,6 +85,11 @@ def get_fv_icon(category: str) -> str:
     return "Test Icon"
 
 
+def thing():
+    node_headers = get_headers_from_obj(node)
+
+
+### Main
 def main(
     backend: bool = False,
     frontend: bool = False,
@@ -192,7 +196,9 @@ def main(
         # fixtures['node-publication-summary'] =
         # fixtures['ontologies'] =
         fixtures["phenotype-explorer-compare"] = _compare(subjects="MP:0010771,MP:0002169", objects="HP:0004325")
-        fixtures["phenotype-explorer-search"] = _search(termset="HP:0002104,HP:0012378,HP:0012378,HP:0012378", group="Zebrafish Genes", limit=10)
+        fixtures["phenotype-explorer-search"] = _search(
+            termset="HP:0002104,HP:0012378,HP:0012378,HP:0012378", group="Zebrafish Genes", limit=10
+        )
         fixtures["search"] = si.search(q="fanconi")
         # fixtures['text-annotator'] =
         # fixtures['uptime'] =
@@ -237,6 +243,9 @@ def main(
         extra_fixtures["histopheno-response"] = solr_associations.query(extra_fixtures["histopheno-query"])
         extra_fixtures["mapping-response"] = solr_mappings.query(extra_fixtures["mapping-query"])
         extra_fixtures["search-response"] = solr_entities.query(extra_fixtures["search-query"])
+
+        # output fixtures
+
 
     ### Write frontend fixtures
     if any([frontend, metadata, all_fixtures]):

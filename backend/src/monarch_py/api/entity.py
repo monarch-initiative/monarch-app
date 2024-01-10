@@ -2,12 +2,12 @@ from typing import List, Union
 
 from fastapi import APIRouter, Depends, HTTPException, Path, Query
 
-from monarch_py.utils.utils import to_tsv_str
 from monarch_py.api.additional_models import PaginationParams
 from monarch_py.api.config import solr
 from monarch_py.api.additional_models import OutputFormat
 from monarch_py.datamodels.model import AssociationTableResults, Node
 from monarch_py.datamodels.category_enums import AssociationCategory
+from monarch_py.utils.format_utils import to_tsv
 
 router = APIRouter(tags=["entity"], responses={404: {"description": "Not Found"}})
 
@@ -41,7 +41,10 @@ async def _get_entity(
     if format == OutputFormat.json:
         return Node(**response.__dict__)  # This is an odd consequence of how Node extends Entity
     elif format == OutputFormat.tsv:
-        return to_tsv_str(response)
+        tsv = ""
+        for row in to_tsv(response, print_output=False):
+            tsv += row
+        return tsv
 
 
 @router.get("/{id}/{category}")
@@ -85,4 +88,7 @@ def _association_table(
     if format == OutputFormat.json:
         return response
     elif format == OutputFormat.tsv:
-        return to_tsv_str(response)
+        tsv = ""
+        for row in to_tsv(response, print_output=False):
+            tsv += row
+        return tsv

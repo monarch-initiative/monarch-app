@@ -6,7 +6,7 @@ from monarch_py.api.additional_models import OutputFormat, PaginationParams
 from monarch_py.api.config import solr
 from monarch_py.datamodels.model import AssociationResults, MultiEntityAssociationResults
 from monarch_py.datamodels.category_enums import AssociationCategory, AssociationPredicate
-from monarch_py.utils.utils import to_tsv_str
+from monarch_py.utils.format_utils import to_tsv
 
 router = APIRouter(
     tags=["association"],
@@ -29,7 +29,7 @@ async def _get_associations(
         title="Output format for the response",
         examples=["json", "tsv"],
     ),
-) -> AssociationResults:
+) -> Union[AssociationResults, str]:
     """Retrieves all associations for a given entity, or between two entities."""
     if category:
         category = [c.value if isinstance(c, AssociationCategory) else c for c in category]
@@ -48,7 +48,10 @@ async def _get_associations(
     if format == OutputFormat.json:
         return response
     elif format == OutputFormat.tsv:
-        return to_tsv_str(response)
+        tsv = ""
+        for row in to_tsv(response, print_output=False):
+            tsv += row
+        return tsv
 
 
 @router.get("/multi", include_in_schema=False)
@@ -72,4 +75,7 @@ async def _get_multi_entity_associations(
     if format == OutputFormat.json:
         return response
     elif format == OutputFormat.tsv:
-        return to_tsv_str(response)
+        tsv = ""
+        for row in to_tsv(response, print_output=False):
+            tsv += row
+        return tsv

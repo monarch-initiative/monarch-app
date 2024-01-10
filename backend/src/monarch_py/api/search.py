@@ -6,7 +6,7 @@ from monarch_py.api.additional_models import OutputFormat, PaginationParams
 from monarch_py.api.config import solr
 from monarch_py.datamodels.model import SearchResults
 from monarch_py.datamodels.category_enums import EntityCategory
-from monarch_py.utils.utils import to_tsv_str
+from monarch_py.utils.format_utils import to_tsv
 
 router = APIRouter(
     tags=["search"],
@@ -94,4 +94,7 @@ async def mappings(
     if format == OutputFormat.json:
         return response
     elif format == OutputFormat.tsv:
-        return to_tsv_str(response)
+        tsv = ""
+        for row in to_tsv(response, print_output=False):
+            tsv += row
+        return tsv
