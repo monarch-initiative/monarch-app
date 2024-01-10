@@ -1,7 +1,7 @@
 {
   "limit": 20,
   "offset": 0,
-  "total": 115,
+  "total": 101,
   "items": [
     {
       "id": "MONDO:0019391",
@@ -190,7 +190,7 @@
       "in_taxon_label": null,
       "symbol": null,
       "synonym": [
-        "DeToni-Debr\u00e9-Fanconi syndrome",
+        "DeToni-Debré-Fanconi syndrome",
         "FRTS1",
         "Fanconi renotubular syndrome",
         "Fanconi renotubular syndrome 1",

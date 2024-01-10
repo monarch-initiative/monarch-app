@@ -8,4 +8,4 @@ __all__ = [
 
 # this is a magic keyword that represents the "merged" context from Chris M's algorithm
 # (https://github.com/linkml/prefixmaps/blob/main/src/prefixmaps/data/merged.csv)
-converter = load_converter(["merged"])
+converter = load_converter("merged")

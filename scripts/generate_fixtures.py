@@ -53,7 +53,7 @@ def write_frontend_fixture(key, value):
 
 def write_backend_fixture(key, value):
     try:
-        contents = value.dict()
+        contents = value.model_dump()
     except AttributeError:
         contents = value
     filename = f"{backend_fixture_dir}/{key.replace('-', '_')}.py"
