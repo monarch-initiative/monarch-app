@@ -62,6 +62,7 @@ def test_non_entity_text_is_returned_between_entities(spacy_instance):
     [
         ("Marfan syndrome", "MONDO:0007947"),
         ("Ehlers-Danlos syndrome", "MONDO:0007522"),
+        ("Ehlers-Danlos syndrome", "MONDO:0007522"),
         ("Loeys-Dietz syndrome", "MONDO:0018954"),
         ("connective tissue disorder", "MONDO:0003900"),
     ],
@@ -71,3 +72,20 @@ def test_grounding(spacy_instance, text, expected_id):
     assert matching_results
     matching_identifiers = [result.id for result in matching_results]
     assert expected_id in matching_identifiers
+
+# This test is intended to act as guard rails and documentation of entity recognition quality, if we collect
+# terms that work and do not work here, we can eventually test a full list against alternate models
+@pytest.mark.parametrize(
+    "text",
+    [
+        "Marfan syndrome",
+        "Ehlers-Danlos syndrome",
+        # fails: "Ehlers Danlos syndrome",
+        # fails: "Ehlers Danlos",
+        "Loeys-Dietz syndrome",
+        "connective tissue disorder",
+    ]
+)
+def test_entity_recognition(spacy_instance, text):
+    entities = spacy_instance.nlp(text).ents
+    assert [entity.text for entity in entities] == [text]
