@@ -48,10 +48,10 @@ def _post_compare(request: SemsimCompareRequest):
     }
     </pre>
     """
-    return semsimian().compare(request.subjects, request.objects)
+    return semsimian().compare(subjects=request.subjects, objects=request.objects)
 
 
-@router.get("/search/{termset}/{category}")
+@router.get("/search/{termset}/{group}")
 def _search(
     termset: str = Path(..., title="Termset to search"),
     group: SemsimSearchGroup = Path(..., title="Group of entities to search within (e.g. Human Genes)"),
@@ -75,8 +75,8 @@ def _search(
         group: {group}
     """
     )
-
-    results = semsimian().search(termset=termset.split(","), prefix=parse_similarity_prefix(group), limit=limit)
+    terms = [term.strip() for term in termset.split(",")]
+    results = semsimian().search(termset=terms, prefix=parse_similarity_prefix(group), limit=limit)
     return results
 
 
@@ -94,4 +94,6 @@ def _post_search(request: SemsimSearchRequest):
     }
     </pre>
     """
-    return semsimian().search(request.termset, parse_similarity_prefix(request.group.value), request.limit)
+    return semsimian().search(
+        termset=request.termset, prefix=parse_similarity_prefix(request.group.value), limit=request.limit
+    )

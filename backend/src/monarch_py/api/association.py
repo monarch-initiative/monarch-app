@@ -1,4 +1,4 @@
-from typing import List, Optional, Union
+from typing import List, Union
 
 from fastapi import APIRouter, Depends, Query
 from monarch_py.api.additional_models import PaginationParams
@@ -41,7 +41,7 @@ async def _get_associations(
     return response
 
 
-@router.get("/multi")
+@router.get("/multi", include_in_schema=False)
 async def _get_multi_entity_associations(
     entity: Union[List[str], None] = Query(default=None),
     counterpart_category: Union[List[str], None] = Query(default=None),
