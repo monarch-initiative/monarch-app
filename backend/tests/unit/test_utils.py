@@ -117,6 +117,7 @@ def test_get_headers_from_obj(obj, expected, request):
     headers = get_headers_from_obj(obj)
     assert headers == expected
 
+
 @pytest.mark.skip(reason="It's broken and I'm dumb")
 @pytest.mark.parametrize(
     "obj, expected, format",
