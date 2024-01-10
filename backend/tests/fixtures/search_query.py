@@ -8,6 +8,7 @@ def search_query():
         "rows": 20,
         "start": 0,
         "facet": True,
+        "facet_min_count": 1,
         "facet_fields": [],
         "facet_queries": [],
         "filter_queries": ["name:*"],
@@ -17,5 +18,4 @@ def search_query():
         "mm": "100%",
         "boost": 'product(if(termfreq(category,"biolink:Disease"),10.0,1),if(and(termfreq(in_taxon,"NCBITaxon:9606"),termfreq(category,"biolink:Gene")),5.0,1),if(termfreq(deprecated,"true"),0.1,1))',
         "sort": None,
-        "facet_min_count": 1,
     }

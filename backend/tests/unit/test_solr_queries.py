@@ -33,7 +33,7 @@ def test_build_association_query(
         direct=direct,
         facet_fields=facet_fields,
         facet_queries=facet_queries,
-    ).dict()
+    ).model_dump()
     expected = association_query_direct if direct else association_query_indirect
     if facet_fields:
         expected["facet_fields"] = facet_fields
@@ -91,30 +91,30 @@ def test_build_association_multiple_objects():
 
 
 def test_build_association_counts_query(association_counts_query, node):
-    query = build_association_counts_query(entity=Node(**node).id).dict()
+    query = build_association_counts_query(entity=Node(**node).id).model_dump()
     expected = association_counts_query
     assert compare_dicts(query, expected), f"Query is not as expected. Difference: {dict_diff(query, expected)}"
 
 
 def test_build_histopheno_query(histopheno_query):
-    query = build_histopheno_query("MONDO:0020121").dict()
+    query = build_histopheno_query("MONDO:0020121").model_dump()
     expected = histopheno_query
     assert compare_dicts(query, expected), f"Query is not as expected. Difference: {dict_diff(query, expected)}"
 
 
 def test_build_search_query(search_query):
-    query = build_search_query(q="fanconi").dict()
+    query = build_search_query(q="fanconi").model_dump()
     expected = search_query
     assert compare_dicts(query, expected), f"Query is not as expected. Difference: {dict_diff(query, expected)}"
 
 
 def test_build_autocomplete_query(autocomplete_query):
-    query = build_autocomplete_query(q="fanc").dict()
+    query = build_autocomplete_query(q="fanc").model_dump()
     expected = autocomplete_query
     assert compare_dicts(query, expected), f"Query is not as expected. Difference: {dict_diff(query, expected)}"
 
 
 def test_build_mappings_query(mapping_query):
-    query = build_mapping_query(entity_id=["MONDO:0020121"]).dict()
+    query = build_mapping_query(entity_id=["MONDO:0020121"]).model_dump()
     expected = mapping_query
     assert compare_dicts(query, expected), f"Query is not as expected. Difference: {dict_diff(query, expected)}"

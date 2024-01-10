@@ -173,7 +173,7 @@
           "url": "http://purl.obolibrary.org/obo/ECO_0000269"
         }
       ],
-      "grouping_key": "MONDO:0020793\ud83c\udf6a\ud83c\udf6abiolink:has_phenotype\ud83c\udf6aHP:0002460",
+      "grouping_key": "MONDO:0020793🍪🍪biolink:has_phenotype🍪HP:0002460",
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
@@ -460,7 +460,7 @@
           "url": "http://purl.obolibrary.org/obo/ECO_0000269"
         }
       ],
-      "grouping_key": "MONDO:0020793\ud83c\udf6a\ud83c\udf6abiolink:has_phenotype\ud83c\udf6aHP:0002015",
+      "grouping_key": "MONDO:0020793🍪🍪biolink:has_phenotype🍪HP:0002015",
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
@@ -823,7 +823,7 @@
           "url": "http://purl.obolibrary.org/obo/ECO_0000269"
         }
       ],
-      "grouping_key": "MONDO:0013049\ud83c\udf6a\ud83c\udf6abiolink:has_phenotype\ud83c\udf6aHP:0003236",
+      "grouping_key": "MONDO:0013049🍪🍪biolink:has_phenotype🍪HP:0003236",
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
@@ -1050,7 +1050,7 @@
           "url": "http://purl.obolibrary.org/obo/ECO_0000269"
         }
       ],
-      "grouping_key": "MONDO:0009681\ud83c\udf6a\ud83c\udf6abiolink:has_phenotype\ud83c\udf6aHP:0020152",
+      "grouping_key": "MONDO:0009681🍪🍪biolink:has_phenotype🍪HP:0020152",
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
@@ -1275,7 +1275,7 @@
           "url": "http://purl.obolibrary.org/obo/ECO_0000269"
         }
       ],
-      "grouping_key": "MONDO:0009676\ud83c\udf6a\ud83c\udf6abiolink:has_phenotype\ud83c\udf6aHP:0003701",
+      "grouping_key": "MONDO:0009676🍪🍪biolink:has_phenotype🍪HP:0003701",
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
