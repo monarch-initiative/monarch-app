@@ -37,13 +37,13 @@
           }
         },
         "object_termset": {
-          "HP:0012378": {
-            "id": "HP:0012378",
-            "label": "Fatigue (HPO)"
-          },
           "HP:0002104": {
             "id": "HP:0002104",
             "label": "Apnea (HPO)"
+          },
+          "HP:0012378": {
+            "id": "HP:0012378",
+            "label": "Fatigue (HPO)"
           }
         },
         "subject_best_matches": {
@@ -502,174 +502,6 @@
           }
         },
         "object_termset": {
-          "HP:0012378": {
-            "id": "HP:0012378",
-            "label": "Fatigue (HPO)"
-          },
-          "HP:0002104": {
-            "id": "HP:0002104",
-            "label": "Apnea (HPO)"
-          }
-        },
-        "subject_best_matches": {
-          "ZP:0018568": {
-            "match_source": "ZP:0018568",
-            "match_source_label": "primitive hemopoiesis absent, abnormal (ZPO)",
-            "match_target": "HP:0002104",
-            "match_target_label": "Apnea (HPO)",
-            "score": 9.08524944639702,
-            "match_subsumer": null,
-            "match_subsumer_label": null,
-            "similarity": {
-              "subject_id": "ZP:0018568",
-              "subject_label": null,
-              "subject_source": null,
-              "object_id": "HP:0002104",
-              "object_label": null,
-              "object_source": null,
-              "ancestor_id": "UPHENO:0034024",
-              "ancestor_label": "",
-              "ancestor_source": null,
-              "object_information_content": null,
-              "subject_information_content": null,
-              "ancestor_information_content": 9.08524944639702,
-              "jaccard_similarity": 0.3333333333333333,
-              "cosine_similarity": null,
-              "dice_similarity": null,
-              "phenodigm_score": 1.7402346054863809
-            }
-          },
-          "ZP:0018569": {
-            "match_source": "ZP:0018569",
-            "match_source_label": "myeloid cell development absent, abnormal (ZPO)",
-            "match_target": "HP:0002104",
-            "match_target_label": "Apnea (HPO)",
-            "score": 9.08524944639702,
-            "match_subsumer": null,
-            "match_subsumer_label": null,
-            "similarity": {
-              "subject_id": "ZP:0018569",
-              "subject_label": null,
-              "subject_source": null,
-              "object_id": "HP:0002104",
-              "object_label": null,
-              "object_source": null,
-              "ancestor_id": "UPHENO:0034024",
-              "ancestor_label": "",
-              "ancestor_source": null,
-              "object_information_content": null,
-              "subject_information_content": null,
-              "ancestor_information_content": 9.08524944639702,
-              "jaccard_similarity": 0.34615384615384615,
-              "cosine_similarity": null,
-              "dice_similarity": null,
-              "phenodigm_score": 1.773384910034319
-            }
-          }
-        },
-        "object_best_matches": {
-          "HP:0002104": {
-            "match_source": "HP:0002104",
-            "match_source_label": "Apnea (HPO)",
-            "match_target": "ZP:0018569",
-            "match_target_label": "myeloid cell development absent, abnormal (ZPO)",
-            "score": 9.08524944639702,
-            "match_subsumer": null,
-            "match_subsumer_label": null,
-            "similarity": {
-              "subject_id": "HP:0002104",
-              "subject_label": null,
-              "subject_source": null,
-              "object_id": "ZP:0018569",
-              "object_label": null,
-              "object_source": null,
-              "ancestor_id": "UPHENO:0034024",
-              "ancestor_label": "",
-              "ancestor_source": null,
-              "object_information_content": null,
-              "subject_information_content": null,
-              "ancestor_information_content": 9.08524944639702,
-              "jaccard_similarity": 0.34615384615384615,
-              "cosine_similarity": null,
-              "dice_similarity": null,
-              "phenodigm_score": 1.773384910034319
-            }
-          },
-          "HP:0012378": {
-            "match_source": "HP:0012378",
-            "match_source_label": "Fatigue (HPO)",
-            "match_target": "ZP:0018569",
-            "match_target_label": "myeloid cell development absent, abnormal (ZPO)",
-            "score": 1.6836208034928104,
-            "match_subsumer": null,
-            "match_subsumer_label": null,
-            "similarity": {
-              "subject_id": "HP:0012378",
-              "subject_label": null,
-              "subject_source": null,
-              "object_id": "ZP:0018569",
-              "object_label": null,
-              "object_source": null,
-              "ancestor_id": "UPHENO:0001005",
-              "ancestor_label": "",
-              "ancestor_source": null,
-              "object_information_content": null,
-              "subject_information_content": null,
-              "ancestor_information_content": 1.6836208034928104,
-              "jaccard_similarity": 0.47058823529411764,
-              "cosine_similarity": null,
-              "dice_similarity": null,
-              "phenodigm_score": 0.8901079388591847
-            }
-          }
-        },
-        "average_score": 7.234842285670967,
-        "best_score": 9.08524944639702,
-        "metric": "ancestor_information_content"
-      }
-    },
-    {
-      "subject": {
-        "id": "ZFIN:ZDB-GENE-040426-2142",
-        "category": "biolink:Gene",
-        "name": "ak3",
-        "full_name": "adenylate kinase 3",
-        "deprecated": null,
-        "description": null,
-        "xref": [
-          "NCBIGene:406404",
-          "ZFIN:ZDB-GENE-040426-2142",
-          "PANTHER:PTHR23359",
-          "UniProtKB:F1R4S7",
-          "ENSEMBL:ENSDARG00000058226"
-        ],
-        "provided_by": "alliance_gene_nodes",
-        "in_taxon": "NCBITaxon:7955",
-        "in_taxon_label": "Danio rerio",
-        "symbol": "ak3",
-        "synonym": [
-          "wu:fc20h08",
-          "zgc:64135",
-          "id:ibd3034",
-          "sb:cb845",
-          "ak3l1",
-          "wu:fa02c11"
-        ],
-        "uri": "https://identifiers.org/zfin/ZDB-GENE-040426-2142"
-      },
-      "score": 7.234842285670967,
-      "similarity": {
-        "subject_termset": {
-          "ZP:0018569": {
-            "id": "ZP:0018569",
-            "label": "myeloid cell development absent, abnormal (ZPO)"
-          },
-          "ZP:0018568": {
-            "id": "ZP:0018568",
-            "label": "primitive hemopoiesis absent, abnormal (ZPO)"
-          }
-        },
-        "object_termset": {
           "HP:0002104": {
             "id": "HP:0002104",
             "label": "Apnea (HPO)"
@@ -798,6 +630,174 @@
     },
     {
       "subject": {
+        "id": "ZFIN:ZDB-GENE-040426-2142",
+        "category": "biolink:Gene",
+        "name": "ak3",
+        "full_name": "adenylate kinase 3",
+        "deprecated": null,
+        "description": null,
+        "xref": [
+          "NCBIGene:406404",
+          "ZFIN:ZDB-GENE-040426-2142",
+          "PANTHER:PTHR23359",
+          "UniProtKB:F1R4S7",
+          "ENSEMBL:ENSDARG00000058226"
+        ],
+        "provided_by": "alliance_gene_nodes",
+        "in_taxon": "NCBITaxon:7955",
+        "in_taxon_label": "Danio rerio",
+        "symbol": "ak3",
+        "synonym": [
+          "wu:fc20h08",
+          "zgc:64135",
+          "id:ibd3034",
+          "sb:cb845",
+          "ak3l1",
+          "wu:fa02c11"
+        ],
+        "uri": "https://identifiers.org/zfin/ZDB-GENE-040426-2142"
+      },
+      "score": 7.234842285670967,
+      "similarity": {
+        "subject_termset": {
+          "ZP:0018568": {
+            "id": "ZP:0018568",
+            "label": "primitive hemopoiesis absent, abnormal (ZPO)"
+          },
+          "ZP:0018569": {
+            "id": "ZP:0018569",
+            "label": "myeloid cell development absent, abnormal (ZPO)"
+          }
+        },
+        "object_termset": {
+          "HP:0012378": {
+            "id": "HP:0012378",
+            "label": "Fatigue (HPO)"
+          },
+          "HP:0002104": {
+            "id": "HP:0002104",
+            "label": "Apnea (HPO)"
+          }
+        },
+        "subject_best_matches": {
+          "ZP:0018568": {
+            "match_source": "ZP:0018568",
+            "match_source_label": "primitive hemopoiesis absent, abnormal (ZPO)",
+            "match_target": "HP:0002104",
+            "match_target_label": "Apnea (HPO)",
+            "score": 9.08524944639702,
+            "match_subsumer": null,
+            "match_subsumer_label": null,
+            "similarity": {
+              "subject_id": "ZP:0018568",
+              "subject_label": null,
+              "subject_source": null,
+              "object_id": "HP:0002104",
+              "object_label": null,
+              "object_source": null,
+              "ancestor_id": "UPHENO:0034024",
+              "ancestor_label": "",
+              "ancestor_source": null,
+              "object_information_content": null,
+              "subject_information_content": null,
+              "ancestor_information_content": 9.08524944639702,
+              "jaccard_similarity": 0.3333333333333333,
+              "cosine_similarity": null,
+              "dice_similarity": null,
+              "phenodigm_score": 1.7402346054863809
+            }
+          },
+          "ZP:0018569": {
+            "match_source": "ZP:0018569",
+            "match_source_label": "myeloid cell development absent, abnormal (ZPO)",
+            "match_target": "HP:0002104",
+            "match_target_label": "Apnea (HPO)",
+            "score": 9.08524944639702,
+            "match_subsumer": null,
+            "match_subsumer_label": null,
+            "similarity": {
+              "subject_id": "ZP:0018569",
+              "subject_label": null,
+              "subject_source": null,
+              "object_id": "HP:0002104",
+              "object_label": null,
+              "object_source": null,
+              "ancestor_id": "UPHENO:0034024",
+              "ancestor_label": "",
+              "ancestor_source": null,
+              "object_information_content": null,
+              "subject_information_content": null,
+              "ancestor_information_content": 9.08524944639702,
+              "jaccard_similarity": 0.34615384615384615,
+              "cosine_similarity": null,
+              "dice_similarity": null,
+              "phenodigm_score": 1.773384910034319
+            }
+          }
+        },
+        "object_best_matches": {
+          "HP:0002104": {
+            "match_source": "HP:0002104",
+            "match_source_label": "Apnea (HPO)",
+            "match_target": "ZP:0018569",
+            "match_target_label": "myeloid cell development absent, abnormal (ZPO)",
+            "score": 9.08524944639702,
+            "match_subsumer": null,
+            "match_subsumer_label": null,
+            "similarity": {
+              "subject_id": "HP:0002104",
+              "subject_label": null,
+              "subject_source": null,
+              "object_id": "ZP:0018569",
+              "object_label": null,
+              "object_source": null,
+              "ancestor_id": "UPHENO:0034024",
+              "ancestor_label": "",
+              "ancestor_source": null,
+              "object_information_content": null,
+              "subject_information_content": null,
+              "ancestor_information_content": 9.08524944639702,
+              "jaccard_similarity": 0.34615384615384615,
+              "cosine_similarity": null,
+              "dice_similarity": null,
+              "phenodigm_score": 1.773384910034319
+            }
+          },
+          "HP:0012378": {
+            "match_source": "HP:0012378",
+            "match_source_label": "Fatigue (HPO)",
+            "match_target": "ZP:0018569",
+            "match_target_label": "myeloid cell development absent, abnormal (ZPO)",
+            "score": 1.6836208034928104,
+            "match_subsumer": null,
+            "match_subsumer_label": null,
+            "similarity": {
+              "subject_id": "HP:0012378",
+              "subject_label": null,
+              "subject_source": null,
+              "object_id": "ZP:0018569",
+              "object_label": null,
+              "object_source": null,
+              "ancestor_id": "UPHENO:0001005",
+              "ancestor_label": "",
+              "ancestor_source": null,
+              "object_information_content": null,
+              "subject_information_content": null,
+              "ancestor_information_content": 1.6836208034928104,
+              "jaccard_similarity": 0.47058823529411764,
+              "cosine_similarity": null,
+              "dice_similarity": null,
+              "phenodigm_score": 0.8901079388591847
+            }
+          }
+        },
+        "average_score": 7.234842285670967,
+        "best_score": 9.08524944639702,
+        "metric": "ancestor_information_content"
+      }
+    },
+    {
+      "subject": {
         "id": "ZFIN:ZDB-GENE-070117-2249",
         "category": "biolink:Gene",
         "name": "poa",
@@ -815,23 +815,23 @@
       "score": 5.412148503540145,
       "similarity": {
         "subject_termset": {
-          "ZP:0000945": {
-            "id": "ZP:0000945",
-            "label": "pigment cell quality, abnormal (ZPO)"
-          },
           "ZP:0100294": {
             "id": "ZP:0100294",
             "label": "visual perception absent, abnormal (ZPO)"
+          },
+          "ZP:0000945": {
+            "id": "ZP:0000945",
+            "label": "pigment cell quality, abnormal (ZPO)"
           }
         },
         "object_termset": {
-          "HP:0012378": {
-            "id": "HP:0012378",
-            "label": "Fatigue (HPO)"
-          },
           "HP:0002104": {
             "id": "HP:0002104",
             "label": "Apnea (HPO)"
+          },
+          "HP:0012378": {
+            "id": "HP:0012378",
+            "label": "Fatigue (HPO)"
           }
         },
         "subject_best_matches": {
@@ -970,23 +970,23 @@
       "score": 5.384435124944915,
       "similarity": {
         "subject_termset": {
-          "ZP:0015039": {
-            "id": "ZP:0015039",
-            "label": "visual behavior absent, abnormal (ZPO)"
-          },
           "ZP:0001841": {
             "id": "ZP:0001841",
             "label": "visual behavior quality, abnormal (ZPO)"
+          },
+          "ZP:0015039": {
+            "id": "ZP:0015039",
+            "label": "visual behavior absent, abnormal (ZPO)"
           }
         },
         "object_termset": {
-          "HP:0012378": {
-            "id": "HP:0012378",
-            "label": "Fatigue (HPO)"
-          },
           "HP:0002104": {
             "id": "HP:0002104",
             "label": "Apnea (HPO)"
+          },
+          "HP:0012378": {
+            "id": "HP:0012378",
+            "label": "Fatigue (HPO)"
           }
         },
         "subject_best_matches": {
@@ -1076,8 +1076,8 @@
           "HP:0012378": {
             "match_source": "HP:0012378",
             "match_source_label": "Fatigue (HPO)",
-            "match_target": "ZP:0001841",
-            "match_target_label": "visual behavior quality, abnormal (ZPO)",
+            "match_target": "ZP:0015039",
+            "match_target_label": "visual behavior absent, abnormal (ZPO)",
             "score": 1.6836208034928104,
             "match_subsumer": null,
             "match_subsumer_label": null,
@@ -1085,7 +1085,7 @@
               "subject_id": "HP:0012378",
               "subject_label": null,
               "subject_source": null,
-              "object_id": "ZP:0001841",
+              "object_id": "ZP:0015039",
               "object_label": null,
               "object_source": null,
               "ancestor_id": "UPHENO:0001005",
@@ -1094,10 +1094,10 @@
               "object_information_content": null,
               "subject_information_content": null,
               "ancestor_information_content": 1.6836208034928104,
-              "jaccard_similarity": 0.47058823529411764,
+              "jaccard_similarity": 0.38095238095238093,
               "cosine_similarity": null,
               "dice_similarity": null,
-              "phenodigm_score": 0.8901079388591847
+              "phenodigm_score": 0.8008616320635836
             }
           }
         },
