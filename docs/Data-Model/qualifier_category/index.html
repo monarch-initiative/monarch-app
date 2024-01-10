@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://monarch-app.monarchinitiative.org/docs/Data-Model/name/">
+        <link rel="canonical" href="https://monarch-app.monarchinitiative.org/docs/Data-Model/qualifier_category/">
       
       
       
@@ -18,7 +18,7 @@
     
     
       
-        <title>Slot: name - monarch-py</title>
+        <title>Slot: qualifier_category - monarch-py</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#slot-name" class="md-skip">
+        <a href="#slot-qualifier_category" class="md-skip">
           Skip to content
         </a>
       
@@ -107,7 +107,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Slot: name
+              Slot: qualifier_category
             
           </span>
         </div>
@@ -995,19 +995,13 @@
   
 
 
-<h1 id="slot-name">Slot: name</h1>
-<p>URI: <a href="https://w3id.org/monarch/monarch-py/:name">https://w3id.org/monarch/monarch-py/:name</a></p>
+<h1 id="slot-qualifier_category">Slot: qualifier_category</h1>
+<p><em>The category of the frequency_qualifier entity</em></p>
+<p>URI: <a href="https://w3id.org/monarch/monarch-py/:qualifier_category">https://w3id.org/monarch/monarch-py/:qualifier_category</a></p>
 <h2 id="inheritance">Inheritance</h2>
 <ul>
-<li><strong>name</strong><ul>
-<li><a href="../subject_label/">subject_label</a></li>
-<li><a href="../object_label/">object_label</a></li>
-<li><a href="../qualifiers_label/">qualifiers_label</a></li>
-<li><a href="../qualifier_label/">qualifier_label</a></li>
-<li><a href="../frequency_qualifier_label/">frequency_qualifier_label</a></li>
-<li><a href="../onset_qualifier_label/">onset_qualifier_label</a></li>
-<li><a href="../sex_qualifier_label/">sex_qualifier_label</a></li>
-<li><a href="../stage_qualifier_label/">stage_qualifier_label</a></li>
+<li><a href="../category/">category</a><ul>
+<li><strong>qualifier_category</strong></li>
 </ul>
 </li>
 </ul>
@@ -1022,24 +1016,14 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="../Entity/">Entity</a></td>
-<td>Represents an Entity in the Monarch KG data model</td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../MultiEntityAssociationResults/">MultiEntityAssociationResults</a></td>
+<td><a href="../Association/">Association</a></td>
 <td></td>
 <td>no</td>
 </tr>
 <tr>
-<td><a href="../Node/">Node</a></td>
-<td>UI container class extending Entity with additional information</td>
+<td><a href="../DirectionalAssociation/">DirectionalAssociation</a></td>
+<td>An association that gives it's direction relative to a specified entity</td>
 <td>no</td>
-</tr>
-<tr>
-<td><a href="../SearchResult/">SearchResult</a></td>
-<td></td>
-<td>yes</td>
 </tr>
 </tbody>
 </table>
@@ -1054,13 +1038,14 @@
 </ul>
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
-<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">qualifier_category</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The category of the frequency_qualifier entity</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
+<span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">category</span>
+<span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">qualifier_category</span>
 <span class="nt">domain_of</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Entity</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MultiEntityAssociationResults</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
 <span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
 </code></pre></div>
 </details>

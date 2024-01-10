@@ -736,6 +736,36 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/qualifier/</loc>
+         <lastmod>2024-01-10</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/qualifier_category/</loc>
+         <lastmod>2024-01-10</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/qualifier_closure/</loc>
+         <lastmod>2024-01-10</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/qualifier_closure_label/</loc>
+         <lastmod>2024-01-10</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/qualifier_label/</loc>
+         <lastmod>2024-01-10</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/qualifier_namespace/</loc>
+         <lastmod>2024-01-10</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/qualifiers/</loc>
          <lastmod>2024-01-10</lastmod>
          <changefreq>daily</changefreq>
