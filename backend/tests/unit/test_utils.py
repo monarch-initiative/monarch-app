@@ -2,7 +2,6 @@ import pytest
 from unittest.mock import MagicMock
 
 from monarch_py.datamodels.model import (
-    AssociationCountList,
     AssociationResults,
     HistoPheno,
     Node,
@@ -18,10 +17,7 @@ from monarch_py.utils.utils import (
     get_provided_by_link,
     strip_json,
 )
-from monarch_py.utils.format_utils import (
-    get_headers_from_obj,
-    convert_to_tsv,
-)
+from monarch_py.utils.format_utils import get_headers_from_obj, to_json, to_tsv, to_yaml
 
 ### Test basic utility methods ###
 
@@ -99,7 +95,7 @@ def test_get_provided_by_link():
     [
         ("node", "node_headers"),
         ("search", "search_headers"),
-        ("histopheno", "histopheno_headers"),
+        ("histopheno", "histobin_headers"),
         ("associations", "association_headers"),
     ],
 )
@@ -123,13 +119,22 @@ def test_get_headers_from_obj(obj, expected, request):
 
 
 @pytest.mark.parametrize(
-    "obj, expected",
+    "obj, expected, format",
     [
-        ("node", "node_headers"),
-        ("search", "search_headers"),
-        ("histopheno", "histopheno_headers"),
-        ("associations", "association_headers"),
+        ("node", "node_json", "json"),
+        ("node", "node_tsv", "tsv"),
+        ("node", "node_yaml", "yaml"),
     ],
 )
-def test_convert_to_tsv(obj, expected, request):
-    pass
+def test_convert_to_tsv(obj, expected, format, request):
+    obj = request.getfixturevalue(obj)
+    node = Node(**obj)
+    if format == "json":
+        result = to_json(node, print_output=False)
+    elif format == "tsv":
+        result = to_tsv(node, print_output=False)
+    elif format == "yaml":
+        result = to_yaml(node, print_output=False)
+    result = f"\"\"\"\n{result}\n\"\"\""  # type: ignore
+    expected = request.getfixturevalue(expected)
+    assert result == expected  # type: ignore

@@ -8,6 +8,7 @@ def mapping_query():
         "rows": 20,
         "start": 0,
         "facet": True,
+        "facet_min_count": 1,
         "facet_fields": [],
         "facet_queries": [],
         "filter_queries": ['subject_id:"MONDO\\:0020121" OR object_id:"MONDO\\:0020121"'],
@@ -17,5 +18,4 @@ def mapping_query():
         "mm": "100%",
         "boost": None,
         "sort": None,
-        "facet_min_count": 1,
     }

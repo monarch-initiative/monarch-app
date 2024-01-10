@@ -2,59 +2,6 @@ import pytest
 
 
 @pytest.fixture
-def node_headers():
-    return [
-        "id",
-        "category",
-        "name",
-        "full_name",
-        "deprecated",
-        "description",
-        "xref",
-        "provided_by",
-        "in_taxon",
-        "in_taxon_label",
-        "symbol",
-        "synonym",
-        "uri",
-        "inheritance",
-        "causal_gene",
-        "causes_disease",
-        "mappings",
-        "external_links",
-        "provided_by_link",
-        "association_counts",
-        "node_hierarchy",
-    ]
-
-
-@pytest.fixture
-def search_headers():
-    return [
-        "id",
-        "category",
-        "name",
-        "full_name",
-        "deprecated",
-        "description",
-        "xref",
-        "provided_by",
-        "in_taxon",
-        "in_taxon_label",
-        "symbol",
-        "synonym",
-        "uri",
-        "highlight",
-        "score",
-    ]
-
-
-@pytest.fixture
-def histopheno_headers():
-    return ["label", "count", "id"]
-
-
-@pytest.fixture
 def association_headers():
     return [
         "id",
@@ -120,4 +67,57 @@ def association_headers():
         "stage_qualifier_category",
         "stage_qualifier_closure",
         "stage_qualifier_closure_label",
+    ]
+
+
+@pytest.fixture
+def histobin_headers():
+    return ["label", "count", "id"]
+
+
+@pytest.fixture
+def node_headers():
+    return [
+        "id",
+        "category",
+        "name",
+        "full_name",
+        "deprecated",
+        "description",
+        "xref",
+        "provided_by",
+        "in_taxon",
+        "in_taxon_label",
+        "symbol",
+        "synonym",
+        "uri",
+        "inheritance",
+        "causal_gene",
+        "causes_disease",
+        "mappings",
+        "external_links",
+        "provided_by_link",
+        "association_counts",
+        "node_hierarchy",
+    ]
+
+
+@pytest.fixture
+def search_headers():
+    return [
+        "id",
+        "category",
+        "name",
+        "full_name",
+        "deprecated",
+        "description",
+        "xref",
+        "provided_by",
+        "in_taxon",
+        "in_taxon_label",
+        "symbol",
+        "synonym",
+        "uri",
+        "highlight",
+        "score",
     ]

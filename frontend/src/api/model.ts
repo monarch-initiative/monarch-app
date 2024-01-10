@@ -519,11 +519,11 @@ export interface TermPairwiseSimilarity extends PairwiseSimilarity {
     ancestor_label?: string,
     ancestor_source?: string,
     /** The IC of the object */
-    object_information_content?: string,
+    object_information_content?: number,
     /** The IC of the subject */
-    subject_information_content?: string,
+    subject_information_content?: number,
     /** The IC of the object */
-    ancestor_information_content?: string,
+    ancestor_information_content?: number,
     /** The number of concepts in the intersection divided by the number in the union */
     jaccard_similarity?: number,
     /** the dot product of two node embeddings divided by the product of their lengths */

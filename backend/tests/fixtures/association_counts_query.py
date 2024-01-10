@@ -8,6 +8,7 @@ def association_counts_query():
         "rows": 20,
         "start": 0,
         "facet": True,
+        "facet_min_count": 1,
         "facet_fields": [],
         "facet_queries": [
             '(category:"biolink:DiseaseToPhenotypicFeatureAssociation") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")',
@@ -44,5 +45,4 @@ def association_counts_query():
         "mm": "100%",
         "boost": None,
         "sort": None,
-        "facet_min_count": 1,
     }

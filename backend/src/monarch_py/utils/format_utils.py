@@ -1,5 +1,4 @@
 import sys
-import csv
 import json
 import yaml
 from typing import Union, Dict, List
@@ -29,10 +28,10 @@ FMT_INPUT_ERROR_MSG = (
 def get_headers_from_obj(obj: ConfiguredBaseModel) -> list:
     """Return a list of headers from a pydantic model."""
     if isinstance(obj, Entity):
-        headers = obj.dict().keys()
+        headers = obj.model_dump().keys()
     elif isinstance(obj, (AssociationCountList, HistoPheno, Results)):
         if obj.items:
-            headers = obj.items[0].dict().keys()
+            headers = obj.items[0].model_dump().keys()
         else:
             schema = type(obj).schema()
             definitions = schema["definitions"]
@@ -47,15 +46,15 @@ def get_headers_from_obj(obj: ConfiguredBaseModel) -> list:
 def get_headers_and_rows(obj: ConfiguredBaseModel) -> (str, str):
     """Converts a pydantic model to a TSV string."""
     if isinstance(obj, Entity):
-        headers = obj.dict().keys()
-        rows = [list(obj.dict().values())]
+        headers = obj.model_dump().keys()
+        rows = [list(obj.model_dump().values())]
     elif isinstance(obj, (AssociationCountList, HistoPheno, Results)):
         if not obj.items:
             headers = get_headers_from_obj(obj)
             rows = []
         else:
-            headers = obj.items[0].dict().keys()
-            rows = [list(item.dict().values()) for item in obj.items]
+            headers = obj.items[0].model_dump().keys()
+            rows = [list(item.model_dump().values()) for item in obj.items]
     else:
         console.print(f"\n[bold red]{FMT_INPUT_ERROR_MSG}[/]\n")
         raise typer.Exit(1)
@@ -70,11 +69,11 @@ def to_json(
 ) -> str:
     """Converts a pydantic model to a JSON string."""
     if isinstance(obj, ConfiguredBaseModel):
-        json_value = obj.json(indent=4)
+        json_value = obj.model_dump_json(indent=4)
     elif isinstance(obj, dict):
         json_value = json.dumps(obj, indent=4)
     elif isinstance(obj, list):
-        json_value = json.dumps({"items": [o.dict() for o in obj]}, indent=4)
+        json_value = json.dumps({"items": [o.model_dump_json() for o in obj]}, indent=4)
     if file:
         with open(file, "w") as f:
             f.write(json_value)
@@ -131,9 +130,9 @@ def to_table(obj: ConfiguredBaseModel, print_output: bool = True) -> Table:
 def to_yaml(obj: ConfiguredBaseModel, file: str = None, print_output: bool = True) -> Union[Dict, List[Dict]]:
     """Converts a pydantic model to a YAML string."""
     if isinstance(obj, Entity):
-        o = obj.dict()
+        o = obj.model_dump()
     elif isinstance(obj, (Results, HistoPheno, AssociationCountList)):
-        o = [item.dict() for item in obj.items]
+        o = [item.model_dump() for item in obj.items]
     else:
         console.print(f"\n[bold red]{FMT_INPUT_ERROR_MSG}[/]\n")
         raise typer.Exit(1)
@@ -144,7 +143,7 @@ def to_yaml(obj: ConfiguredBaseModel, file: str = None, print_output: bool = Tru
         fh.close()
     elif print_output and not file:
         yaml.dump(o, sys.stdout, indent=4)
-    return o
+    return yaml.dump(o)
 
 
 def format_output(fmt: str, response: Union[ConfiguredBaseModel, Dict], output: str):
