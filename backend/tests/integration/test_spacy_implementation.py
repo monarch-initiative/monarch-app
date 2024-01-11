@@ -25,6 +25,10 @@ def test_spacy_positions_with_two_entities(spacy_instance):
     assert entities[1].end_char == 23
 
 
+@pytest.mark.skipif(
+    condition=not SolrImplementation().solr_is_available(),
+    reason="Solr is not available",
+)
 def test_entity_positions(spacy_instance):
     entities = spacy_instance.get_annotated_entities("the brain")
     assert entities
@@ -35,6 +39,10 @@ def test_entity_positions(spacy_instance):
     assert entities[1].end == 9
 
 
+@pytest.mark.skipif(
+    condition=not SolrImplementation().solr_is_available(),
+    reason="Solr is not available",
+)
 def test_annotated_entities(spacy_instance):
     entities = spacy_instance.get_annotated_entities("let me tell you about Marfan syndrome, ok?")
     assert entities
@@ -44,6 +52,10 @@ def test_annotated_entities(spacy_instance):
     assert entities[2].text == ", ok?"
 
 
+@pytest.mark.skipif(
+    condition=not SolrImplementation().solr_is_available(),
+    reason="Solr is not available",
+)
 def test_non_entity_text_is_returned_between_entities(spacy_instance):
     entities = spacy_instance.get_annotated_entities(
         "let me tell you about Marfan syndrome and Ehlers Danlos syndrome, ok?"
@@ -66,6 +78,10 @@ def test_non_entity_text_is_returned_between_entities(spacy_instance):
         ("Loeys-Dietz syndrome", "MONDO:0018954"),
         ("connective tissue disorder", "MONDO:0003900"),
     ],
+)
+@pytest.mark.skipif(
+    condition=not SolrImplementation().solr_is_available(),
+    reason="Solr is not available",
 )
 def test_grounding(spacy_instance, text, expected_id):
     matching_results = spacy_instance.ground_entity(text)
