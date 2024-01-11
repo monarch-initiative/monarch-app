@@ -18,10 +18,7 @@ class SpacyImplementation(TextAnnotatorInterface):
     def init_spacy(self, search_engine: SearchInterface):
         self.nlp = spacy.load("en_core_sci_sm")
         self.search_engine = search_engine
-        self.annotate_text("Nystagmus, strabismus, fundus, ocular albinism, lewis.")
-        self.get_annotated_entities(
-            "Ehlers-Danlos syndrome, Marfan syndrome, and Loeys-Dietz syndrome are all connective tissue disorders."
-        )
+        self.nlp("Nystagmus, strabismus, fundus, ocular albinism, lewis.")
 
     def get_annotated_entities(self, text) -> List[TextAnnotationResult]:
         """Annotate text using SPACY"""
