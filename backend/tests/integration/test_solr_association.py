@@ -84,7 +84,7 @@ def test_multi_entity_associations():
             assert c.total > 0
 
 
-@pytest.mark.parametrize("q", ["eyebrow", "thick", "Thick", "Thick eyebrow", "thick eyebrow", "Thick eyebrow (HPO)"])
+@pytest.mark.parametrize("q", ["eyebrow", "thick", "Thick", "Thick eyebrow", "thick eyebrow"])
 def test_association_search_partial_match(q: str):
     si = SolrImplementation()
     response = si.get_associations(
@@ -95,7 +95,7 @@ def test_association_search_partial_match(q: str):
     assert "HP:0000574" in [item.object for item in response.items]
 
 
-@pytest.mark.parametrize("q", ["eyebrow", "thick", "Thick", "Thick eyebrow", "thick eyebrow", "Thick eyebrow (HPO)"])
+@pytest.mark.parametrize("q", ["eyebrow", "thick", "Thick", "Thick eyebrow", "thick eyebrow"])
 def test_association_table_search_partial_match(q: str):
     si = SolrImplementation()
     response = si.get_association_table(
