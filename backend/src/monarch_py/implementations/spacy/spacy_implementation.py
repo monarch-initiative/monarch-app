@@ -38,14 +38,15 @@ class SpacyImplementation(TextAnnotatorInterface):
 
         return self.add_non_entity_results(text, results)
 
-    def annotate_text(self, text) -> str:
+    def annotate_text(self, text) -> List[TextAnnotationResult]:
         """Returns an html formatted string with tags wrapping entities found in the text"""
         annotated_entities = self.get_annotated_entities(text)
 
         # for each annotated entity
         # relpace text with contents from create_span
 
-        pass
+        #pass
+        return annotated_entities
 
     def create_span(self, entity: Entity) -> str:
         """Returns an html formatted string with tags wrapping entities found in the text"""
