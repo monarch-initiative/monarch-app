@@ -53,7 +53,7 @@ def write_frontend_fixture(key, value):
 
 def write_backend_fixture(key, value):
     try:
-        contents = value.dict()
+        contents = value.model_dump()
     except AttributeError:
         contents = value
     filename = f"{backend_fixture_dir}/{key.replace('-', '_')}.py"
@@ -192,7 +192,7 @@ def main(
         # fixtures['node-publication-summary'] =
         # fixtures['ontologies'] =
         fixtures["phenotype-explorer-compare"] = _compare(subjects="MP:0010771,MP:0002169", objects="HP:0004325")
-        fixtures["phenotype-explorer-search"] = _search(termset="HP:0000001,HP:0000002", category="Zebrafish Genes", limit=10)
+        fixtures["phenotype-explorer-search"] = _search(termset="HP:0002104,HP:0012378,HP:0012378,HP:0012378", group="Zebrafish Genes", limit=10)
         fixtures["search"] = si.search(q="fanconi")
         # fixtures['text-annotator'] =
         # fixtures['uptime'] =

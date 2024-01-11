@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, Query
 from monarch_py.api.additional_models import PaginationParams
 from monarch_py.api.config import solr
 from monarch_py.datamodels.model import AssociationResults, MultiEntityAssociationResults
+from monarch_py.datamodels.category_enums import AssociationCategory, AssociationPredicate
 
 router = APIRouter(
     tags=["association"],
@@ -14,15 +15,19 @@ router = APIRouter(
 @router.get("")
 @router.get("/all", include_in_schema=False)  # We can remove this once the chatgpt plugin & oak aren't using it
 async def _get_associations(
-    category: Union[List[str], None] = Query(default=None),
+    category: Union[List[AssociationCategory], None] = Query(default=None),
     subject: Union[List[str], None] = Query(default=None),
-    predicate: Union[List[str], None] = Query(default=None),
+    predicate: Union[List[AssociationPredicate], None] = Query(default=None),
     object: Union[List[str], None] = Query(default=None),
     entity: Union[List[str], None] = Query(default=None),
     direct: Union[bool, None] = Query(default=None),
     pagination: PaginationParams = Depends(),
 ) -> AssociationResults:
     """Retrieves all associations for a given entity, or between two entities."""
+    if category:
+        category = [c.value if isinstance(c, AssociationCategory) else c for c in category]
+    if predicate:
+        predicate = [p.value if isinstance(p, AssociationPredicate) else p for p in predicate]
     response = solr().get_associations(
         category=category,
         predicate=predicate,
@@ -36,7 +41,7 @@ async def _get_associations(
     return response
 
 
-@router.get("/multi")
+@router.get("/multi", include_in_schema=False)
 async def _get_multi_entity_associations(
     entity: Union[List[str], None] = Query(default=None),
     counterpart_category: Union[List[str], None] = Query(default=None),

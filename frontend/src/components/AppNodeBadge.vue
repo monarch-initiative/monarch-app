@@ -21,7 +21,7 @@
       >{{ node.name || node.id }}</AppLink
     >
     <span v-else class="name">{{ node.name }}</span>
-    <span v-if="node.id && showId"> ({{ node.id }})</span>
+    <span v-if="node.name && node.id && showId"> ({{ node.id }})</span>
     <span v-if="node.in_taxon_label"> ({{ node.in_taxon_label }})</span>
     <span v-if="node.info"> ({{ node.info }})</span>
   </span>

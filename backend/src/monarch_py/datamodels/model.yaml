@@ -58,16 +58,22 @@ classes:
       - provided_by_link
       - publications
       - publications_links
-      - qualifiers
       - frequency_qualifier
       - onset_qualifier
       - sex_qualifier
       - stage_qualifier
+      - qualifiers
       - qualifiers_label
       - qualifiers_namespace
       - qualifiers_category
       - qualifiers_closure
       - qualifiers_closure_label
+      - qualifier
+      - qualifier_label
+      - qualifier_namespace
+      - qualifier_category
+      - qualifier_closure
+      - qualifier_closure_label
       - frequency_qualifier_label
       - frequency_qualifier_namespace
       - frequency_qualifier_category
@@ -445,8 +451,6 @@ slots:
     multivalued: true
     inlined: true
     inlined_as_list: true
-  qualifiers:
-    multivalued: true
   score:
     range: float
   sex_qualifier:
@@ -525,8 +529,8 @@ slots:
     is_a: in_taxon
   object_taxon_label:
     is_a: in_taxon_label
-
-  # this whole block will be renamed to qualifer_ after we bring in the next biolink model release
+  qualifiers:
+    multivalued: true
   qualifiers_label:
     is_a: name
     description: The name of the frequency_qualifier entity
@@ -540,6 +544,23 @@ slots:
     multivalued: true
     description: Field containing frequency_qualifier id and the ids of all of it's ancestors
   qualifiers_closure_label:
+    multivalued: true
+    description: Field containing frequency_qualifier name and the names of all of it's ancestors
+  qualifier:
+    multivalued: true
+  qualifier_label:
+    is_a: name
+    description: The name of the frequency_qualifier entity
+  qualifier_namespace:
+    range: string
+    description: The namespace/prefix of the frequency_qualifier entity
+  qualifier_category:
+    is_a: category
+    description: The category of the frequency_qualifier entity
+  qualifier_closure:
+    multivalued: true
+    description: Field containing frequency_qualifier id and the ids of all of it's ancestors
+  qualifier_closure_label:
     multivalued: true
     description: Field containing frequency_qualifier name and the names of all of it's ancestors
   frequency_qualifier_label:

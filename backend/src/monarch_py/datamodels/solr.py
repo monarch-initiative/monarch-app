@@ -40,7 +40,7 @@ class SolrQuery(BaseModel):
     rows: int = 20
     start: int = 0
     facet: bool = True
-    facet_min_count = 1
+    facet_min_count: int = 1
     facet_fields: Optional[List[str]] = Field(default_factory=list)
     facet_queries: Optional[List[str]] = Field(default_factory=list)
     filter_queries: Optional[List[str]] = Field(default_factory=list)
@@ -48,8 +48,8 @@ class SolrQuery(BaseModel):
     def_type: str = "edismax"
     q_op: str = "AND"  # See SOLR-8812, need this plus mm=100% to allow boolean operators in queries
     mm: str = "100%"  # All tokens in the query must be found in the doc
-    boost: str = None
-    sort: str = None
+    boost: Optional[str] = None
+    sort: Optional[str] = None
 
     def add_field_filter_query(self, field, value):
         if field is not None and value is not None:
@@ -67,7 +67,7 @@ class SolrQuery(BaseModel):
 
     def query_string(self):
         return urllib.parse.urlencode(
-            {self._solrize(k): self._solrize(v) for k, v in self.dict().items() if v is not None},
+            {self._solrize(k): self._solrize(v) for k, v in self.model_dump().items() if v is not None},
             doseq=True,
         )
 

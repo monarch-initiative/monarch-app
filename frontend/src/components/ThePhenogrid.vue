@@ -82,11 +82,11 @@
               {{ truncate(col.label) }}
             </text>
             <template #content>
-              <AppNodeBadge
-                :node="{ id: col.id, name: col.label }"
-                :absolute="true"
-              />
-              {{ col.id }}
+              <AppNodeBadge :node="col" :absolute="true" :show-id="true" />
+              <div class="mini-table">
+                <span>Total Score</span>
+                <span>{{ col.total.toFixed(3) }}</span>
+              </div>
             </template>
           </tooltip>
         </g>
@@ -119,11 +119,11 @@
               {{ truncate(row.label) }}
             </text>
             <template #content>
-              <AppNodeBadge
-                :node="{ id: row.id, name: row.label }"
-                :absolute="true"
-              />
-              {{ row.id }}
+              <AppNodeBadge :node="row" :absolute="true" :show-id="true" />
+              <div class="mini-table">
+                <span>Total Score</span>
+                <span>{{ row.total.toFixed(3) }}</span>
+              </div>
             </template>
           </tooltip>
         </g>
@@ -132,6 +132,7 @@
         <g class="grid" stroke="gray">
           <template v-for="(col, colIndex) in cols" :key="colIndex">
             <line
+              stroke-width="0"
               :data-hovered="hovered ? hovered.col === colIndex : ''"
               :x1="(0.5 + colIndex) * cellSize"
               :y1="0"
@@ -141,6 +142,7 @@
           </template>
           <template v-for="(row, rowIndex) in rows" :key="rowIndex">
             <line
+              stroke-width="0"
               :data-hovered="hovered ? hovered.row === rowIndex : ''"
               :x1="0"
               :y1="(0.5 + rowIndex) * cellSize"
@@ -310,12 +312,43 @@
   </AppFlex>
 </template>
 
+<script lang="ts">
+export type Phenogrid = {
+  cols: {
+    total: number;
+    id: string;
+    label?: string | undefined;
+  }[];
+  rows: {
+    total: number;
+    id: string;
+    label?: string | undefined;
+  }[];
+  cells: {
+    [key: string]: {
+      score: number;
+      strength: number;
+    } & Pick<
+      TermPairwiseSimilarity,
+      | "ancestor_id"
+      | "ancestor_label"
+      | "jaccard_similarity"
+      | "phenodigm_score"
+    >;
+  };
+  unmatched: {
+    total: number;
+    id: string;
+    label?: string | undefined;
+  }[];
+};
+</script>
+
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from "vue";
 import { sortBy } from "lodash";
 import { useResizeObserver, useScroll } from "@vueuse/core";
-import type { TermInfo } from "@/api/model";
-import { type SetToSet } from "@/api/phenotype-explorer";
+import type { TermInfo, TermPairwiseSimilarity } from "@/api/model";
 import AppCheckbox from "@/components/AppCheckbox.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppSelectSingle, { type Option } from "@/components/AppSelectSingle.vue";
@@ -326,7 +359,7 @@ import { downloadSvg } from "@/util/download";
 import { copyToClipboard } from "@/util/string";
 
 type Props = {
-  data: SetToSet["phenogrid"];
+  data: Phenogrid;
 };
 
 const props = defineProps<Props>();
@@ -374,7 +407,7 @@ const sortOrders: Option[] = [
 const sortOrder = ref(sortOrders[0]);
 
 /** get sort func to sort rows/cols in particular order */
-function sort(array: TermInfo[]): TermInfo[] {
+function sort(array: Phenogrid["rows"]): Phenogrid["rows"] {
   const { id } = sortOrder.value;
   array = [...array];
   if (id.startsWith("alpha"))
@@ -421,7 +454,7 @@ function getCell(col: TermInfo, row: TermInfo) {
 /** get color of strength */
 function getColor(strength: number) {
   /** $theme */
-  return `hsl(185, ${strength * 100}%, 30%)`;
+  return `hsla(185, 100%, 30%, ${strength})`;
 }
 
 /** download svg */

@@ -1,7 +1,7 @@
 {
   "limit": 20,
   "offset": 0,
-  "total": 100,
+  "total": 115,
   "items": [
     {
       "id": "MONDO:0019391",
@@ -19,6 +19,7 @@
         "Fanconi anemia",
         "Fanconi pancytopenia",
         "Fanconi panmyelopathy",
+        "Fanconi's anaemia",
         "Fanconi's anemia",
         "Panmyelopathy, Fanconi",
         "pancytopenia, congenital",
@@ -102,7 +103,7 @@
       "name": "adult Fanconi syndrome",
       "full_name": null,
       "deprecated": null,
-      "description": "Probably related to a recessive gene, this is Fanconi Syndrome, characterised by adult onset.",
+      "description": "Probably related to a recessive gene, this is Fanconi Syndrome, characterized by adult onset.",
       "xref": [],
       "provided_by": "phenio_nodes",
       "in_taxon": null,
@@ -189,7 +190,7 @@
       "in_taxon_label": null,
       "symbol": null,
       "synonym": [
-        "DeToni-Debr\u00e9-Fanconi syndrome",
+        "DeToni-Debré-Fanconi syndrome",
         "FRTS1",
         "Fanconi renotubular syndrome",
         "Fanconi renotubular syndrome 1",
@@ -260,6 +261,7 @@
         "FACC",
         "FANCC",
         "Fanconi Anemia, complementation group type C",
+        "Fanconi anaemia complementation group type C",
         "Fanconi anemia complementation group C",
         "Fanconi anemia complementation group type C",
         "Fanconi anemia, complementation group C",
@@ -311,13 +313,18 @@
       "in_taxon_label": null,
       "symbol": null,
       "synonym": [
+        "Estren-Dameshek variant of Fanconi Anaemia",
         "Estren-Dameshek variant of Fanconi Anemia",
         "Estren-Dameshek variant of Fanconi pancytopenia",
         "FANCA",
+        "FANCA Fanconi anaemia",
         "FANCA Fanconi anemia",
+        "Fanconi Anaemia",
         "Fanconi Anemia",
         "Fanconi Anemia, Estren-Dameshek variant",
         "Fanconi Anemia, complementation group type a",
+        "Fanconi anaemia caused by mutation in FANCA",
+        "Fanconi anaemia complementation group type A",
         "Fanconi anemia caused by mutation in FANCA",
         "Fanconi anemia complementation group A",
         "Fanconi anemia complementation group type A",
@@ -344,6 +351,7 @@
         "FACB",
         "FANCB",
         "Fanconi Anemia, complementation group type B",
+        "Fanconi anaemia complementation group type B",
         "Fanconi anemia complementation group B",
         "Fanconi anemia complementation group type B",
         "Fanconi anemia, complementation group B",
@@ -369,8 +377,11 @@
       "symbol": null,
       "synonym": [
         "FANCE",
+        "FANCE Fanconi anaemia",
         "FANCE Fanconi anemia",
         "Fanconi Anemia, complementation group type E",
+        "Fanconi anaemia caused by mutation in FANCE",
+        "Fanconi anaemia complementation group type E",
         "Fanconi anemia caused by mutation in FANCE",
         "Fanconi anemia complementation group E",
         "Fanconi anemia complementation group type E",
@@ -396,6 +407,7 @@
       "synonym": [
         "FANCF",
         "Fanconi Anemia, complementation group type F",
+        "Fanconi anaemia complementation group type F",
         "Fanconi anemia complementation group F",
         "Fanconi anemia complementation group type F",
         "Fanconi anemia, complementation group F"
@@ -444,6 +456,7 @@
         "FANCI",
         "Fanconi Anemia, complementation Group 1",
         "Fanconi Anemia, complementation group type 1",
+        "Fanconi anaemia complementation group type I",
         "Fanconi anemia complementation group I",
         "Fanconi anemia complementation group type I",
         "Fanconi anemia, complementation group I"
@@ -467,6 +480,7 @@
       "synonym": [
         "FANCJ",
         "Fanconi Anemia, complementation group type J",
+        "Fanconi anaemia complementation group type J",
         "Fanconi anemia complementation group J",
         "Fanconi anemia complementation group type J",
         "Fanconi anemia, complementation group J"

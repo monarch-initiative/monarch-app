@@ -11,7 +11,7 @@
   "in_taxon_label": null,
   "symbol": null,
   "synonym": [],
-  "uri": null,
+  "uri": "http://purl.obolibrary.org/obo/MONDO_0020121",
   "inheritance": null,
   "causal_gene": [],
   "causes_disease": [],
@@ -34,7 +34,7 @@
     },
     {
       "id": "SCTID:73297009",
-      "url": null
+      "url": "http://identifiers.org/snomedct/73297009"
     },
     {
       "id": "UMLS:C0026850",

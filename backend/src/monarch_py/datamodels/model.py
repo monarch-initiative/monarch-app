@@ -2,7 +2,8 @@ from __future__ import annotations
 from datetime import datetime, date
 from enum import Enum
 from typing import List, Dict, Optional, Any, Union
-from pydantic import BaseModel as BaseModel, ConfigDict, Field
+from pydantic import BaseModel as BaseModel, ConfigDict, Field, field_validator
+import re
 import sys
 
 if sys.version_info >= (3, 8):
@@ -15,20 +16,14 @@ metamodel_version = "None"
 version = "None"
 
 
-class WeakRefShimBaseModel(BaseModel):
-    __slots__ = "__weakref__"
-
-
-class ConfiguredBaseModel(
-    WeakRefShimBaseModel,
-    validate_assignment=True,
-    validate_all=True,
-    underscore_attrs_are_private=True,
-    extra="forbid",
-    arbitrary_types_allowed=True,
-    use_enum_values=True,
-):
-    pass
+class ConfiguredBaseModel(BaseModel):
+    model_config = ConfigDict(
+        validate_assignment=True,
+        validate_default=True,
+        extra="allow",
+        arbitrary_types_allowed=True,
+        use_enum_values=True,
+    )
 
 
 class AssociationDirectionEnum(str, Enum):
@@ -96,11 +91,11 @@ class Association(ConfiguredBaseModel):
     publications_links: Optional[List[ExpandedCurie]] = Field(
         default_factory=list, description="""List of ExpandedCuries with id and url for publications"""
     )
-    qualifiers: Optional[List[str]] = Field(default_factory=list)
     frequency_qualifier: Optional[str] = Field(None)
     onset_qualifier: Optional[str] = Field(None)
     sex_qualifier: Optional[str] = Field(None)
     stage_qualifier: Optional[str] = Field(None)
+    qualifiers: Optional[List[str]] = Field(default_factory=list)
     qualifiers_label: Optional[str] = Field(None, description="""The name of the frequency_qualifier entity""")
     qualifiers_namespace: Optional[str] = Field(
         None, description="""The namespace/prefix of the frequency_qualifier entity"""
@@ -111,6 +106,20 @@ class Association(ConfiguredBaseModel):
         description="""Field containing frequency_qualifier id and the ids of all of it's ancestors""",
     )
     qualifiers_closure_label: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing frequency_qualifier name and the names of all of it's ancestors""",
+    )
+    qualifier: Optional[List[str]] = Field(default_factory=list)
+    qualifier_label: Optional[str] = Field(None, description="""The name of the frequency_qualifier entity""")
+    qualifier_namespace: Optional[str] = Field(
+        None, description="""The namespace/prefix of the frequency_qualifier entity"""
+    )
+    qualifier_category: Optional[str] = Field(None, description="""The category of the frequency_qualifier entity""")
+    qualifier_closure: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing frequency_qualifier id and the ids of all of it's ancestors""",
+    )
+    qualifier_closure_label: Optional[List[str]] = Field(
         default_factory=list,
         description="""Field containing frequency_qualifier name and the names of all of it's ancestors""",
     )
@@ -256,11 +265,11 @@ class DirectionalAssociation(Association):
     publications_links: Optional[List[ExpandedCurie]] = Field(
         default_factory=list, description="""List of ExpandedCuries with id and url for publications"""
     )
-    qualifiers: Optional[List[str]] = Field(default_factory=list)
     frequency_qualifier: Optional[str] = Field(None)
     onset_qualifier: Optional[str] = Field(None)
     sex_qualifier: Optional[str] = Field(None)
     stage_qualifier: Optional[str] = Field(None)
+    qualifiers: Optional[List[str]] = Field(default_factory=list)
     qualifiers_label: Optional[str] = Field(None, description="""The name of the frequency_qualifier entity""")
     qualifiers_namespace: Optional[str] = Field(
         None, description="""The namespace/prefix of the frequency_qualifier entity"""
@@ -271,6 +280,20 @@ class DirectionalAssociation(Association):
         description="""Field containing frequency_qualifier id and the ids of all of it's ancestors""",
     )
     qualifiers_closure_label: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing frequency_qualifier name and the names of all of it's ancestors""",
+    )
+    qualifier: Optional[List[str]] = Field(default_factory=list)
+    qualifier_label: Optional[str] = Field(None, description="""The name of the frequency_qualifier entity""")
+    qualifier_namespace: Optional[str] = Field(
+        None, description="""The namespace/prefix of the frequency_qualifier entity"""
+    )
+    qualifier_category: Optional[str] = Field(None, description="""The category of the frequency_qualifier entity""")
+    qualifier_closure: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing frequency_qualifier id and the ids of all of it's ancestors""",
+    )
+    qualifier_closure_label: Optional[List[str]] = Field(
         default_factory=list,
         description="""Field containing frequency_qualifier name and the names of all of it's ancestors""",
     )
@@ -659,35 +682,35 @@ class SemsimSearchResult(ConfiguredBaseModel):
     similarity: Optional[TermSetPairwiseSimilarity] = Field(None)
 
 
-# Update forward refs
-# see https://pydantic-docs.helpmanual.io/usage/postponed_annotations/
-Association.update_forward_refs()
-AssociationCountList.update_forward_refs()
-AssociationTypeMapping.update_forward_refs()
-DirectionalAssociation.update_forward_refs()
-ExpandedCurie.update_forward_refs()
-Entity.update_forward_refs()
-FacetValue.update_forward_refs()
-AssociationCount.update_forward_refs()
-FacetField.update_forward_refs()
-HistoPheno.update_forward_refs()
-HistoBin.update_forward_refs()
-Mapping.update_forward_refs()
-Node.update_forward_refs()
-NodeHierarchy.update_forward_refs()
-Results.update_forward_refs()
-AssociationResults.update_forward_refs()
-AssociationTableResults.update_forward_refs()
-CategoryGroupedAssociationResults.update_forward_refs()
-EntityResults.update_forward_refs()
-MappingResults.update_forward_refs()
-MultiEntityAssociationResults.update_forward_refs()
-SearchResult.update_forward_refs()
-SearchResults.update_forward_refs()
-TextAnnotationResult.update_forward_refs()
-PairwiseSimilarity.update_forward_refs()
-TermPairwiseSimilarity.update_forward_refs()
-TermSetPairwiseSimilarity.update_forward_refs()
-TermInfo.update_forward_refs()
-BestMatch.update_forward_refs()
-SemsimSearchResult.update_forward_refs()
+# Model rebuild
+# see https://pydantic-docs.helpmanual.io/usage/models/#rebuilding-a-model
+Association.model_rebuild()
+AssociationCountList.model_rebuild()
+AssociationTypeMapping.model_rebuild()
+DirectionalAssociation.model_rebuild()
+ExpandedCurie.model_rebuild()
+Entity.model_rebuild()
+FacetValue.model_rebuild()
+AssociationCount.model_rebuild()
+FacetField.model_rebuild()
+HistoPheno.model_rebuild()
+HistoBin.model_rebuild()
+Mapping.model_rebuild()
+Node.model_rebuild()
+NodeHierarchy.model_rebuild()
+Results.model_rebuild()
+AssociationResults.model_rebuild()
+AssociationTableResults.model_rebuild()
+CategoryGroupedAssociationResults.model_rebuild()
+EntityResults.model_rebuild()
+MappingResults.model_rebuild()
+MultiEntityAssociationResults.model_rebuild()
+SearchResult.model_rebuild()
+SearchResults.model_rebuild()
+TextAnnotationResult.model_rebuild()
+PairwiseSimilarity.model_rebuild()
+TermPairwiseSimilarity.model_rebuild()
+TermSetPairwiseSimilarity.model_rebuild()
+TermInfo.model_rebuild()
+BestMatch.model_rebuild()
+SemsimSearchResult.model_rebuild()

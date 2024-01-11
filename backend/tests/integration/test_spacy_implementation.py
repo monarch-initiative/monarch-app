@@ -73,6 +73,7 @@ def test_grounding(spacy_instance, text, expected_id):
     matching_identifiers = [result.id for result in matching_results]
     assert expected_id in matching_identifiers
 
+
 # This test is intended to act as guard rails and documentation of entity recognition quality, if we collect
 # terms that work and do not work here, we can eventually test a full list against alternate models
 @pytest.mark.parametrize(
@@ -84,7 +85,7 @@ def test_grounding(spacy_instance, text, expected_id):
         # fails: "Ehlers Danlos",
         "Loeys-Dietz syndrome",
         "connective tissue disorder",
-    ]
+    ],
 )
 def test_entity_recognition(spacy_instance, text):
     entities = spacy_instance.nlp(text).ents

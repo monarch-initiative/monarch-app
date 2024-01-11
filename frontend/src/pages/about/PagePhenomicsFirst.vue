@@ -5,7 +5,25 @@
 <template>
   <AppSection>
     <AppHeading>Phenomics First</AppHeading>
+    <figure>
+      <img
+        src="@/assets/phenomics-first-resource.png"
+        alt="Phenomics First Resource Overview"
+      />
+      <figcaption>
+        The
+        <AppLink to="https://hpo.jax.org">Human Phenotype Ontology</AppLink>
+        (HPO) provides a standardized vocabulary of phenotypic abnormalities
+        encountered in human disease.
+        <AppLink to="https://pubmed.ncbi.nlm.nih.gov/30476213/"
+          >More about HPO...</AppLink
+        >
+      </figcaption>
+    </figure>
+  </AppSection>
 
+  <AppSection>
+    <AppHeading>About Phenomics First</AppHeading>
     <p>
       Understanding genomic variation is key to precision medicine; however,
       despite the ease of sequencing, clinical interpretation is still thwarted
@@ -78,22 +96,6 @@
   <AppSection>
     <figure>
       <img
-        src="@/assets/phenomics-first-resource.png"
-        alt="Phenomics First Resource Overview"
-      />
-      <figcaption>
-        The
-        <AppLink to="https://hpo.jax.org">Human Phenotype Ontology</AppLink>
-        (HPO) provides a standardized vocabulary of phenotypic abnormalities
-        encountered in human disease.
-        <AppLink to="https://pubmed.ncbi.nlm.nih.gov/30476213/"
-          >More about HPO...</AppLink
-        >
-      </figcaption>
-    </figure>
-
-    <figure>
-      <img
         src="@/assets/phenopackets-ecosystem.png"
         alt="Phenopackets Ecosystem"
       />
@@ -111,7 +113,10 @@
   </AppSection>
 
   <AppSection>
-    <AppHeading>The Unified Phenotype Ontology (uPheno)</AppHeading>
+    <AppHeading>
+      <AppIcon icon="resource-upheno" />
+      The Unified Phenotype Ontology (uPheno)
+    </AppHeading>
 
     <p>
       The Unified Phenotype Ontology (uPheno) is an effort led by the Monarch
@@ -134,7 +139,10 @@
   </AppSection>
 
   <AppSection>
-    <AppHeading>The Mondo Disease Ontology (Mondo)</AppHeading>
+    <AppHeading>
+      <AppIcon icon="resource-mondo" />
+      The Mondo Disease Ontology (Mondo)
+    </AppHeading>
     <p>
       The Mondo Disease Ontology (Mondo) aims to harmonize disease definitions
       across the world. It is a semi-automatically constructed ontology that
@@ -152,7 +160,10 @@
   </AppSection>
 
   <AppSection>
-    <AppHeading>Phenopackets</AppHeading>
+    <AppHeading>
+      <AppIcon icon="resource-phenopackets" />
+      Phenopackets
+    </AppHeading>
     <p>
       Phenopackets are an open standard for sharing disease and phenotype
       information, with the aim of improving our ability to understand,

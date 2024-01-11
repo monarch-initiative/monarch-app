@@ -173,7 +173,7 @@
           "url": "http://purl.obolibrary.org/obo/ECO_0000269"
         }
       ],
-      "grouping_key": "MONDO:0020793\ud83c\udf6a\ud83c\udf6abiolink:has_phenotype\ud83c\udf6aHP:0002460",
+      "grouping_key": "MONDO:0020793🍪🍪biolink:has_phenotype🍪HP:0002460",
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
@@ -194,16 +194,22 @@
           "url": "http://identifiers.org/pubmed/31332380"
         }
       ],
-      "qualifiers": [],
       "frequency_qualifier": "HP:0040282",
       "onset_qualifier": null,
       "sex_qualifier": null,
       "stage_qualifier": null,
+      "qualifiers": [],
       "qualifiers_label": null,
       "qualifiers_namespace": null,
       "qualifiers_category": null,
       "qualifiers_closure": [],
       "qualifiers_closure_label": [],
+      "qualifier": [],
+      "qualifier_label": null,
+      "qualifier_namespace": null,
+      "qualifier_category": null,
+      "qualifier_closure": [],
+      "qualifier_closure_label": [],
       "frequency_qualifier_label": "Frequent (HPO)",
       "frequency_qualifier_namespace": "HP",
       "frequency_qualifier_category": "biolink:PhenotypicFeature",
@@ -454,7 +460,7 @@
           "url": "http://purl.obolibrary.org/obo/ECO_0000269"
         }
       ],
-      "grouping_key": "MONDO:0020793\ud83c\udf6a\ud83c\udf6abiolink:has_phenotype\ud83c\udf6aHP:0002015",
+      "grouping_key": "MONDO:0020793🍪🍪biolink:has_phenotype🍪HP:0002015",
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
@@ -475,16 +481,22 @@
           "url": "http://identifiers.org/pubmed/31332380"
         }
       ],
-      "qualifiers": [],
       "frequency_qualifier": "HP:0040282",
       "onset_qualifier": null,
       "sex_qualifier": null,
       "stage_qualifier": null,
+      "qualifiers": [],
       "qualifiers_label": null,
       "qualifiers_namespace": null,
       "qualifiers_category": null,
       "qualifiers_closure": [],
       "qualifiers_closure_label": [],
+      "qualifier": [],
+      "qualifier_label": null,
+      "qualifier_namespace": null,
+      "qualifier_category": null,
+      "qualifier_closure": [],
+      "qualifier_closure_label": [],
       "frequency_qualifier_label": "Frequent (HPO)",
       "frequency_qualifier_namespace": "HP",
       "frequency_qualifier_category": "biolink:PhenotypicFeature",
@@ -811,7 +823,7 @@
           "url": "http://purl.obolibrary.org/obo/ECO_0000269"
         }
       ],
-      "grouping_key": "MONDO:0013049\ud83c\udf6a\ud83c\udf6abiolink:has_phenotype\ud83c\udf6aHP:0003236",
+      "grouping_key": "MONDO:0013049🍪🍪biolink:has_phenotype🍪HP:0003236",
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
@@ -828,16 +840,22 @@
           "url": "http://identifiers.org/pubmed/28803818"
         }
       ],
-      "qualifiers": [],
       "frequency_qualifier": "HP:0040280",
       "onset_qualifier": null,
       "sex_qualifier": null,
       "stage_qualifier": null,
+      "qualifiers": [],
       "qualifiers_label": null,
       "qualifiers_namespace": null,
       "qualifiers_category": null,
       "qualifiers_closure": [],
       "qualifiers_closure_label": [],
+      "qualifier": [],
+      "qualifier_label": null,
+      "qualifier_namespace": null,
+      "qualifier_category": null,
+      "qualifier_closure": [],
+      "qualifier_closure_label": [],
       "frequency_qualifier_label": "Obligate (HPO)",
       "frequency_qualifier_namespace": "HP",
       "frequency_qualifier_category": "biolink:PhenotypicFeature",
@@ -1032,7 +1050,7 @@
           "url": "http://purl.obolibrary.org/obo/ECO_0000269"
         }
       ],
-      "grouping_key": "MONDO:0009681\ud83c\udf6a\ud83c\udf6abiolink:has_phenotype\ud83c\udf6aHP:0020152",
+      "grouping_key": "MONDO:0009681🍪🍪biolink:has_phenotype🍪HP:0020152",
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
@@ -1049,16 +1067,22 @@
           "url": "http://identifiers.org/mim/254090"
         }
       ],
-      "qualifiers": [],
       "frequency_qualifier": "HP:0040280",
       "onset_qualifier": null,
       "sex_qualifier": null,
       "stage_qualifier": null,
+      "qualifiers": [],
       "qualifiers_label": null,
       "qualifiers_namespace": null,
       "qualifiers_category": null,
       "qualifiers_closure": [],
       "qualifiers_closure_label": [],
+      "qualifier": [],
+      "qualifier_label": null,
+      "qualifier_namespace": null,
+      "qualifier_category": null,
+      "qualifier_closure": [],
+      "qualifier_closure_label": [],
       "frequency_qualifier_label": "Obligate (HPO)",
       "frequency_qualifier_namespace": "HP",
       "frequency_qualifier_category": "biolink:PhenotypicFeature",
@@ -1251,7 +1275,7 @@
           "url": "http://purl.obolibrary.org/obo/ECO_0000269"
         }
       ],
-      "grouping_key": "MONDO:0009676\ud83c\udf6a\ud83c\udf6abiolink:has_phenotype\ud83c\udf6aHP:0003701",
+      "grouping_key": "MONDO:0009676🍪🍪biolink:has_phenotype🍪HP:0003701",
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
@@ -1268,16 +1292,22 @@
           "url": "http://identifiers.org/pubmed/9009996"
         }
       ],
-      "qualifiers": [],
       "frequency_qualifier": "HP:0040280",
       "onset_qualifier": null,
       "sex_qualifier": null,
       "stage_qualifier": null,
+      "qualifiers": [],
       "qualifiers_label": null,
       "qualifiers_namespace": null,
       "qualifiers_category": null,
       "qualifiers_closure": [],
       "qualifiers_closure_label": [],
+      "qualifier": [],
+      "qualifier_label": null,
+      "qualifier_namespace": null,
+      "qualifier_category": null,
+      "qualifier_closure": [],
+      "qualifier_closure_label": [],
       "frequency_qualifier_label": "Obligate (HPO)",
       "frequency_qualifier_namespace": "HP",
       "frequency_qualifier_category": "biolink:PhenotypicFeature",

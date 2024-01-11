@@ -3,21 +3,21 @@ import requests as rq
 from functools import lru_cache
 from typing import List
 
-from pydantic import BaseSettings
+from pydantic import BaseModel
 
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 from monarch_py.implementations.spacy.spacy_implementation import SpacyImplementation
 from monarch_py.datamodels.model import TermSetPairwiseSimilarity, SemsimSearchResult
 
 
-class Settings(BaseSettings):
-    solr_host = os.getenv("SOLR_HOST") if os.getenv("SOLR_HOST") else "127.0.0.1"
-    solr_port = os.getenv("SOLR_PORT") if os.getenv("SOLR_PORT") else 8983
-    solr_url = os.getenv("SOLR_URL") if os.getenv("SOLR_URL") else f"http://{solr_host}:{solr_port}/solr"
-    phenio_db_path = os.getenv("PHENIO_DB_PATH") if os.getenv("PHENIO_DB_PATH") else "/data/phenio.db"
+class Settings(BaseModel):
+    solr_host: str = os.getenv("SOLR_HOST") if os.getenv("SOLR_HOST") else "127.0.0.1"
+    solr_port: str = os.getenv("SOLR_PORT") if os.getenv("SOLR_PORT") else 8983
+    solr_url: str = os.getenv("SOLR_URL") if os.getenv("SOLR_URL") else f"http://{solr_host}:{solr_port}/solr"
+    phenio_db_path: str = os.getenv("PHENIO_DB_PATH") if os.getenv("PHENIO_DB_PATH") else "/data/phenio.db"
 
-    semsim_server_host = os.getenv("SEMSIM_SERVER_HOST", "127.0.0.1")
-    semsim_server_port = os.getenv("SEMSIM_SERVER_PORT", 9999)
+    semsim_server_host: str = os.getenv("SEMSIM_SERVER_HOST", "127.0.0.1")
+    semsim_server_port: str = os.getenv("SEMSIM_SERVER_PORT", 9999)
 
 
 settings = Settings()
@@ -43,11 +43,6 @@ def convert_nans(input_dict, to_value=None):
 
 class SemsimianHTTPRequester:
     """A class that makes HTTP requests to the semsimian_server."""
-
-    def compare(self, subjects, objects):
-        host = f"http://{settings.semsimian_server_host}:{settings.semsimian_server_port}"
-        path = f"/compare/{','.join(subjects)}/{','.join(objects)}"
-        url = f"{host}/{path}"
 
     def convert_tsps_data(self, data):
         """Convert to a format that can be coerced into a TermSetPairwiseSimilarity model
