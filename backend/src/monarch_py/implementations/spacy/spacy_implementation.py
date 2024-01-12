@@ -35,15 +35,26 @@ class SpacyImplementation(TextAnnotatorInterface):
 
         return self.add_non_entity_results(text, results)
 
-    def annotate_text(self, text) -> List[TextAnnotationResult]:
+    def annotate_text(self, text) -> str:
         """Returns an html formatted string with tags wrapping entities found in the text"""
         annotated_entities = self.get_annotated_entities(text)
 
-        # for each annotated entity
-        # relpace text with contents from create_span
+        spans = []
 
-        #pass
-        return annotated_entities
+        for result in annotated_entities:
+            if isinstance(result, TextAnnotationResult):
+                if result.tokens:
+                    span_text = result.text
+                    span_data = ",".join(
+                        f"{sr.name},{sr.id},{sr.category}" for sr in result.tokens if isinstance(sr, SearchResult))
+                    spans.append(f'<span class="sciCrunchAnnotation" data-sciGraph="{span_data}">{span_text}</span>')
+                else:
+                    spans.append(result.text)
+            else:
+                spans.append(result.text)
+        print(''.join(spans).rstrip(', '))
+        #return ''.join(spans).rstrip(', ')
+        pass
 
     def create_span(self, entity: Entity) -> str:
         """Returns an html formatted string with tags wrapping entities found in the text"""
