@@ -1,13 +1,15 @@
+from io import StringIO
 from typing import List, Union
 
 from fastapi import APIRouter, Depends, HTTPException, Path, Query
+from fastapi.responses import StreamingResponse
 
 from monarch_py.api.additional_models import PaginationParams
 from monarch_py.api.config import solr
 from monarch_py.api.additional_models import OutputFormat
 from monarch_py.datamodels.model import AssociationTableResults, Node
 from monarch_py.datamodels.category_enums import AssociationCategory
-from monarch_py.utils.format_utils import to_tsv
+from monarch_py.utils.format_utils import to_json, to_tsv
 
 router = APIRouter(tags=["entity"], responses={404: {"description": "Not Found"}})
 
@@ -69,6 +71,11 @@ def _association_table(
         title="Output format for the response",
         examples=["json", "tsv"],
     ),
+    download=Query(
+        default=False,
+        title="Download the results as a file",
+        examples=[True, False],
+    ),
 ) -> Union[AssociationTableResults, str]:
     """
     Retrieves association table data for a given entity and association type
@@ -85,6 +92,18 @@ def _association_table(
     response = solr().get_association_table(
         entity=id, category=category.value, q=query, sort=sort, offset=pagination.offset, limit=pagination.limit
     )
+    if download:
+        string_response = (
+            to_tsv(response, print_output=False)
+            if format == OutputFormat.tsv
+            else to_json(response, print_output=False)
+        )
+        stream = StringIO(string_response)
+        response = StreamingResponse(
+            stream, media_type="text/csv" if format == OutputFormat.tsv else "application/json"
+        )
+        response.headers["Content-Disposition"] = f"attachment; filename=assoc-table-{id}.{format.value}"
+        return response
     if format == OutputFormat.json:
         return response
     elif format == OutputFormat.tsv:
