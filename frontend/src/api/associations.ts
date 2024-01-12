@@ -24,7 +24,6 @@ export const getAssociations = async (
   /** make query */
   const url = `${apiUrl}/entity/${nodeId}/${associationCategory}`;
   const response = await request<AssociationTableResults>(url, params);
-
   return response;
 };
 
