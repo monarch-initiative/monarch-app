@@ -72,10 +72,12 @@ export const request = async <Response>(
    * { id: [1,2,3] } -> ?id=1&id=2&id=3
    */
   params: Params = {},
-  /** fetch options */
+  /** fetch/request options */
   options: RequestInit = {},
   /** parse response mode */
   parse: "text" | "json" = "json",
+  /** whether open request url in new tab */
+  newTab = false,
 ): Promise<Response> => {
   /** get string of url parameters/options */
   const paramsObject = new URLSearchParams();
@@ -95,6 +97,8 @@ export const request = async <Response>(
   /** assemble url to query */
   const paramsString = "?" + paramsObject.toString();
   const url = path + paramsString;
+
+  if (newTab) window.open(url);
 
   /** make request object */
   const request = new Request(url, options);

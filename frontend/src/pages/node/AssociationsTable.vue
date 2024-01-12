@@ -93,7 +93,11 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
-import { getAssociations } from "@/api/associations";
+import {
+  downloadAssociations,
+  getAssociations,
+  maxDownload,
+} from "@/api/associations";
 import { getCategoryLabel } from "@/api/categories";
 import {
   AssociationDirectionEnum,
@@ -275,27 +279,22 @@ const {
 
 /** download table data */
 async function download() {
-  /** max supported rows to query */
-  const max = 500;
-  const total = associations.value.total;
-
   /** warn user */
   snackbar(
-    `Downloading data for ${total > max ? "first " : ""}${Math.min(
-      total,
-      max,
+    `Downloading data for ${
+      associations.value.total > maxDownload ? "first " : ""
+    }${Math.min(
+      associations.value.total,
+      maxDownload,
     )} table rows. This may take a minute.`,
   );
 
   /** download as many rows as possible */
-  await getAssociations(
+  await downloadAssociations(
     props.node.id,
     props.category.id,
-    0,
-    max,
     search.value,
     sort.value,
-    "tsv",
   );
 }
 
