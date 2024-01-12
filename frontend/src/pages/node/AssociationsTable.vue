@@ -108,7 +108,6 @@ import type { Cols, Sort } from "@/components/AppTable.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
 import { useQuery } from "@/util/composables";
-import { downloadJson } from "@/util/download";
 
 type Props = {
   /** current node */
@@ -276,8 +275,8 @@ const {
 
 /** download table data */
 async function download() {
-  /** max rows to try to query */
-  const max = 100;
+  /** max supported rows to query */
+  const max = 500;
   const total = associations.value.total;
 
   /** warn user */
@@ -285,17 +284,19 @@ async function download() {
     `Downloading data for ${total > max ? "first " : ""}${Math.min(
       total,
       max,
-    )} table entries.` + (total >= 100 ? " This may take a minute." : ""),
+    )} table rows. This may take a minute.`,
   );
 
-  /** attempt to request all rows */
-  const response = await getAssociations(
+  /** download as many rows as possible */
+  await getAssociations(
     props.node.id,
     props.category.id,
     0,
     max,
+    search.value,
+    sort.value,
+    "tsv",
   );
-  downloadJson(response, "associations");
 }
 
 /** get associations when category or table state changes */

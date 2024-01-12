@@ -10,6 +10,7 @@ export const getAssociations = async (
   limit = 10,
   search?: string,
   sort: Sort = null,
+  download?: "tsv" | "json",
 ) => {
   /** make query params */
   const params = {
@@ -19,6 +20,7 @@ export const getAssociations = async (
     sort: sort
       ? `${sort.key} ${sort.direction === "up" ? "asc" : "desc"}`
       : null,
+    ...(download && { format: download }),
   };
 
   /** make query */
