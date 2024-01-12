@@ -25,12 +25,12 @@
       "url": "https://icd.codes/icd10cm/G71.0"
     },
     {
-      "id": "MESH:D009136",
-      "url": "http://identifiers.org/mesh/D009136"
-    },
-    {
       "id": "NCIT:C84910",
       "url": "http://purl.obolibrary.org/obo/NCIT_C84910"
+    },
+    {
+      "id": "Orphanet:98473",
+      "url": null
     },
     {
       "id": "SCTID:73297009",
@@ -41,7 +41,7 @@
       "url": "http://identifiers.org/umls/C0026850"
     },
     {
-      "id": "Orphanet:98473",
+      "id": "mesh:D009136",
       "url": null
     }
   ],
@@ -53,7 +53,7 @@
   "association_counts": [
     {
       "label": "Phenotypes",
-      "count": 4027,
+      "count": 3879,
       "category": "biolink:DiseaseToPhenotypicFeatureAssociation"
     },
     {
@@ -63,7 +63,7 @@
     },
     {
       "label": "Correlated Genes",
-      "count": 151,
+      "count": 139,
       "category": "biolink:CorrelatedGeneToDiseaseAssociation"
     }
   ],
@@ -117,9 +117,99 @@
     ],
     "sub_classes": [
       {
+        "id": "MONDO:0016106",
+        "category": "biolink:Disease",
+        "name": "progressive muscular dystrophy",
+        "full_name": null,
+        "deprecated": null,
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "in_taxon_label": null,
+        "symbol": null,
+        "synonym": [],
+        "uri": null
+      },
+      {
+        "id": "MONDO:0018949",
+        "category": "biolink:Disease",
+        "name": "distal myopathy",
+        "full_name": null,
+        "deprecated": null,
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "in_taxon_label": null,
+        "symbol": null,
+        "synonym": [],
+        "uri": null
+      },
+      {
+        "id": "MONDO:0019950",
+        "category": "biolink:Disease",
+        "name": "congenital muscular dystrophy",
+        "full_name": null,
+        "deprecated": null,
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "in_taxon_label": null,
+        "symbol": null,
+        "synonym": [],
+        "uri": null
+      },
+      {
+        "id": "MONDO:0023204",
+        "category": "biolink:Disease",
+        "name": "Fukuda-Miyanomae-Nakata syndrome",
+        "full_name": null,
+        "deprecated": null,
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "in_taxon_label": null,
+        "symbol": null,
+        "synonym": [],
+        "uri": null
+      },
+      {
+        "id": "MONDO:0100228",
+        "category": "biolink:Disease",
+        "name": "LAMA2-related muscular dystrophy",
+        "full_name": null,
+        "deprecated": null,
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "in_taxon_label": null,
+        "symbol": null,
+        "synonym": [],
+        "uri": null
+      },
+      {
         "id": "MONDO:0008028",
         "category": "biolink:Disease",
         "name": "muscular dystrophy, Barnes type",
+        "full_name": null,
+        "deprecated": null,
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "in_taxon_label": null,
+        "symbol": null,
+        "synonym": [],
+        "uri": null
+      },
+      {
+        "id": "MONDO:0010311",
+        "category": "biolink:Disease",
+        "name": "Becker muscular dystrophy",
         "full_name": null,
         "deprecated": null,
         "description": null,
@@ -192,69 +282,9 @@
         "uri": null
       },
       {
-        "id": "MONDO:0019950",
+        "id": "MONDO:0010679",
         "category": "biolink:Disease",
-        "name": "congenital muscular dystrophy",
-        "full_name": null,
-        "deprecated": null,
-        "description": null,
-        "xref": [],
-        "provided_by": null,
-        "in_taxon": null,
-        "in_taxon_label": null,
-        "symbol": null,
-        "synonym": [],
-        "uri": null
-      },
-      {
-        "id": "MONDO:0023204",
-        "category": "biolink:Disease",
-        "name": "Fukuda-Miyanomae-Nakata syndrome",
-        "full_name": null,
-        "deprecated": null,
-        "description": null,
-        "xref": [],
-        "provided_by": null,
-        "in_taxon": null,
-        "in_taxon_label": null,
-        "symbol": null,
-        "synonym": [],
-        "uri": null
-      },
-      {
-        "id": "MONDO:0100228",
-        "category": "biolink:Disease",
-        "name": "LAMA2-related muscular dystrophy",
-        "full_name": null,
-        "deprecated": null,
-        "description": null,
-        "xref": [],
-        "provided_by": null,
-        "in_taxon": null,
-        "in_taxon_label": null,
-        "symbol": null,
-        "synonym": [],
-        "uri": null
-      },
-      {
-        "id": "MONDO:0018949",
-        "category": "biolink:Disease",
-        "name": "distal myopathy",
-        "full_name": null,
-        "deprecated": null,
-        "description": null,
-        "xref": [],
-        "provided_by": null,
-        "in_taxon": null,
-        "in_taxon_label": null,
-        "symbol": null,
-        "synonym": [],
-        "uri": null
-      },
-      {
-        "id": "MONDO:0016106",
-        "category": "biolink:Disease",
-        "name": "progressive muscular dystrophy",
+        "name": "Duchenne muscular dystrophy",
         "full_name": null,
         "deprecated": null,
         "description": null,
