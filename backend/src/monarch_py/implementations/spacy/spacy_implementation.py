@@ -52,9 +52,8 @@ class SpacyImplementation(TextAnnotatorInterface):
                     spans.append(result.text)
             else:
                 spans.append(result.text)
-        print(''.join(spans).rstrip(', '))
-        #return ''.join(spans).rstrip(', ')
-        pass
+
+        return ''.join(spans).rstrip(', ')
 
     def create_span(self, entity: Entity) -> str:
         """Returns an html formatted string with tags wrapping entities found in the text"""
