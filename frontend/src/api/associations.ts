@@ -20,7 +20,7 @@ export const getAssociations = async (
     sort: sort
       ? `${sort.key} ${sort.direction === "up" ? "asc" : "desc"}`
       : null,
-    ...(download && { format: download }),
+    ...(download && { download: true, format: download }),
   };
 
   /** make query */
