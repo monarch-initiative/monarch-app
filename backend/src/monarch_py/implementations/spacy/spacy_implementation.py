@@ -5,7 +5,7 @@ import spacy
 
 from monarch_py.interfaces.search_interface import SearchInterface
 from monarch_py.interfaces.text_annotation_interface import TextAnnotatorInterface
-from monarch_py.datamodels.model import TextAnnotationResult, Entity
+from monarch_py.datamodels.model import TextAnnotationResult, Entity, SearchResult
 
 
 @dataclass
