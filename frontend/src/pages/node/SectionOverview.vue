@@ -144,7 +144,6 @@
 </template>
 
 <script setup lang="ts">
-import type { info } from "console";
 import { computed } from "vue";
 import { omit } from "lodash";
 import type { Node } from "@/api/model";
