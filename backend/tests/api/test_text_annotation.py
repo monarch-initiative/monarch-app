@@ -24,7 +24,7 @@ def test_post_annotate_entities(mock_annotate):
 
 @patch("monarch_py.implementations.spacy.spacy_implementation.SpacyImplementation.annotate_text")
 def test_get_annotate(mock_annotate):
-    mock_annotate.return_value = MagicMock()
+    mock_annotate.return_value = '<span class="this-is-just-mocked">Ehlers-Danlos syndrome</span>'
     response = client.get("/annotate/Ehlers-Danlos syndrome")
     assert response.status_code == 200
     mock_annotate.assert_called_with("Ehlers-Danlos syndrome")
