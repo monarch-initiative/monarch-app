@@ -72,11 +72,11 @@ export interface Association {
     publications?: string[],
     /** List of ExpandedCuries with id and url for publications */
     publications_links?: ExpandedCurie[],
-    qualifiers?: string[],
     frequency_qualifier?: string,
     onset_qualifier?: string,
     sex_qualifier?: string,
     stage_qualifier?: string,
+    qualifiers?: string[],
     /** The name of the frequency_qualifier entity */
     qualifiers_label?: string,
     /** The namespace/prefix of the frequency_qualifier entity */
@@ -87,6 +87,17 @@ export interface Association {
     qualifiers_closure?: string[],
     /** Field containing frequency_qualifier name and the names of all of it's ancestors */
     qualifiers_closure_label?: string[],
+    qualifier?: string[],
+    /** The name of the frequency_qualifier entity */
+    qualifier_label?: string,
+    /** The namespace/prefix of the frequency_qualifier entity */
+    qualifier_namespace?: string,
+    /** The category of the frequency_qualifier entity */
+    qualifier_category?: string,
+    /** Field containing frequency_qualifier id and the ids of all of it's ancestors */
+    qualifier_closure?: string[],
+    /** Field containing frequency_qualifier name and the names of all of it's ancestors */
+    qualifier_closure_label?: string[],
     /** The name of the frequency_qualifier entity */
     frequency_qualifier_label?: string,
     /** The namespace/prefix of the frequency_qualifier entity */
@@ -244,11 +255,11 @@ export interface DirectionalAssociation extends Association {
     publications?: string[],
     /** List of ExpandedCuries with id and url for publications */
     publications_links?: ExpandedCurie[],
-    qualifiers?: string[],
     frequency_qualifier?: string,
     onset_qualifier?: string,
     sex_qualifier?: string,
     stage_qualifier?: string,
+    qualifiers?: string[],
     /** The name of the frequency_qualifier entity */
     qualifiers_label?: string,
     /** The namespace/prefix of the frequency_qualifier entity */
@@ -259,6 +270,17 @@ export interface DirectionalAssociation extends Association {
     qualifiers_closure?: string[],
     /** Field containing frequency_qualifier name and the names of all of it's ancestors */
     qualifiers_closure_label?: string[],
+    qualifier?: string[],
+    /** The name of the frequency_qualifier entity */
+    qualifier_label?: string,
+    /** The namespace/prefix of the frequency_qualifier entity */
+    qualifier_namespace?: string,
+    /** The category of the frequency_qualifier entity */
+    qualifier_category?: string,
+    /** Field containing frequency_qualifier id and the ids of all of it's ancestors */
+    qualifier_closure?: string[],
+    /** Field containing frequency_qualifier name and the names of all of it's ancestors */
+    qualifier_closure_label?: string[],
     /** The name of the frequency_qualifier entity */
     frequency_qualifier_label?: string,
     /** The namespace/prefix of the frequency_qualifier entity */
@@ -494,6 +516,17 @@ export interface SearchResults extends Results {
     /** total number of items matching a query */
     total: number,
 };
+
+export interface TextAnnotationResult {
+    /** text without tokens */
+    text?: string,
+    /** A collection of entities or concepts */
+    tokens?: Entity[],
+    /** start position of the annotation */
+    start?: number,
+    /** end position of the annotation */
+    end?: number,
+};
 /**
  * Abstract grouping for representing individual pairwise similarities
  */
@@ -519,11 +552,11 @@ export interface TermPairwiseSimilarity extends PairwiseSimilarity {
     ancestor_label?: string,
     ancestor_source?: string,
     /** The IC of the object */
-    object_information_content?: string,
+    object_information_content?: number,
     /** The IC of the subject */
-    subject_information_content?: string,
+    subject_information_content?: number,
     /** The IC of the object */
-    ancestor_information_content?: string,
+    ancestor_information_content?: number,
     /** The number of concepts in the intersection divided by the number in the union */
     jaccard_similarity?: number,
     /** the dot product of two node embeddings divided by the product of their lengths */

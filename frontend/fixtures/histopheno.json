@@ -3,67 +3,67 @@
   "items": [
     {
       "label": "musculature",
-      "count": 1756,
+      "count": 1686,
       "id": "HP:0003011"
     },
     {
       "label": "nervous_system",
-      "count": 1130,
+      "count": 1077,
       "id": "HP:0000707"
     },
     {
       "label": "head_neck",
-      "count": 602,
+      "count": 583,
       "id": "HP:0000152"
     },
     {
       "label": "skeletal_system",
-      "count": 493,
+      "count": 472,
       "id": "HP:0000924"
     },
     {
-      "label": "respiratory",
-      "count": 320,
-      "id": "HP:0002086"
-    },
-    {
       "label": "eye",
-      "count": 300,
+      "count": 289,
       "id": "HP:0000478"
     },
     {
       "label": "metabolism_homeostasis",
-      "count": 221,
+      "count": 215,
       "id": "HP:0001939"
     },
     {
       "label": "cardiovascular_system",
-      "count": 185,
+      "count": 178,
       "id": "HP:0001626"
     },
     {
       "label": "blood",
-      "count": 184,
+      "count": 177,
       "id": "HP:0001871"
     },
     {
       "label": "connective_tissue",
-      "count": 165,
+      "count": 161,
       "id": "HP:0003549"
     },
     {
-      "label": "neoplasm",
+      "label": "respiratory",
       "count": 150,
+      "id": "HP:0002086"
+    },
+    {
+      "label": "neoplasm",
+      "count": 149,
       "id": "HP:0002664"
     },
     {
       "label": "digestive_system",
-      "count": 144,
+      "count": 143,
       "id": "HP:0025031"
     },
     {
       "label": "integument",
-      "count": 48,
+      "count": 47,
       "id": "HP:0001574"
     },
     {
@@ -73,7 +73,7 @@
     },
     {
       "label": "growth",
-      "count": 33,
+      "count": 32,
       "id": "HP:0001507"
     },
     {
@@ -83,7 +83,7 @@
     },
     {
       "label": "endocrine",
-      "count": 26,
+      "count": 25,
       "id": "HP:0000818"
     },
     {

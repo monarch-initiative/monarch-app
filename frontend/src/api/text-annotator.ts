@@ -31,7 +31,7 @@ export const annotateText = async (content = ""): Promise<Annotations> => {
   };
 
   /** make query */
-  const url = `${apiUrl}/annotate`;
+  const url = `${apiUrl}/annotate/entities`;
   const response = await request<_Annotations>(url, params, options);
 
   const transformedResponse = response.map((item) => ({

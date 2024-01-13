@@ -5,44 +5,45 @@ description = "Python package for interacting with Monarch Initiative knowledge 
 authors = [
     "glass-ships <glass.ships@outlook.com>",
     "kevin schaper <kevin@tislab.org>",
-    "The Monarch Initiative <info@monarchinitiative.org>"
+    "The Monarch Initiative <info@monarchinitiative.org>",
 ]
 
 
-packages = [
-    { include = "monarch_py", from = "src" }
-]
+packages = [{ include = "monarch_py", from = "src" }]
 
 
 [tool.poetry.dependencies]
 ### Core dependencies
 python = "^3.9"
-pydantic = "^1.10.2"
+pydantic = "^2"
 curies = "<1"
-linkml = ">=1.6.3"
-prefixmaps = "^0.1.7"
+linkml = "^1.6"
+prefixmaps = "^0.2"
+bioregistry = "^0.10.57"
+oaklib = ">=0.5.22"
 
+docker = "^6.0.1"
+fastapi = "^0.103.1"
+gunicorn = "^21.2.0"
+loguru = "*"
+pystow = ">=0.5.0"
 requests = "^2.28.1"
+rich = "*"
 typer = "^0.7.0"
 typer-cli = "^0.0.13"
-rich = "*"
-docker = "^6.0.1"
-pystow = ">=0.5.0"
-loguru = "*"
-fastapi = "^0.103.1"
-oaklib = ">=0.5.19"
-gunicorn = "^21.2.0"
-bioregistry = "^0.10.57"
+spacy = ">=3.6.1,<3.8.0"
 
+[tool.poetry.dependencies.en_core_sci_sm]
+url="https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.3/en_core_sci_sm-0.5.3.tar.gz"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2.0"
 mkdocs = ">=1.4.2"
 mkdocs-material = ">=9.1.16"
-mkdocstrings = {extras = ["python"], version = ">=0.22.0"}
+mkdocstrings = { extras = ["python"], version = ">=0.22.0" }
 black = "^22.10.0"
 ruff = "*"
-uvicorn = {extras = ["standard"], version = "^0.20.0"}
+uvicorn = { extras = ["standard"], version = "^0.20.0" }
 httpx = "^0.24.1"
 scholarly = "*"
 habanero = "*"
@@ -51,7 +52,7 @@ manubot = "*"
 
 [tool.poetry.scripts]
 monarch = "monarch_py.cli:app"
-monarch-api = { callable = "monarch_py.api.main:run"}
+monarch-api = { callable = "monarch_py.api.main:run" }
 
 
 [tool.ruff]
@@ -59,10 +60,7 @@ line-length = 120
 ignore = [
     "F541", # f-strings with no placeholders
 ]
-exclude = [
-    "tests/fixtures/*.py",
-    "src/monarch_py/datamodels/model.py"
-]
+exclude = ["tests/fixtures/*.py", "src/monarch_py/datamodels/model.py"]
 # per-file-ignores = {"" = ""}
 
 

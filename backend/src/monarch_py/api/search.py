@@ -2,10 +2,11 @@ from typing import List, Union
 
 from fastapi import APIRouter, Depends, Query
 
-from monarch_py.api.additional_models import PaginationParams
+from monarch_py.api.additional_models import OutputFormat, PaginationParams
 from monarch_py.api.config import solr
 from monarch_py.datamodels.model import SearchResults
 from monarch_py.datamodels.category_enums import EntityCategory
+from monarch_py.utils.format_utils import to_tsv
 
 router = APIRouter(
     tags=["search"],
@@ -75,6 +76,11 @@ async def mappings(
     object_id: Union[List[str], None] = Query(default=None),
     mapping_justification: Union[List[str], None] = Query(default=None),
     pagination: PaginationParams = Depends(),
+    format: OutputFormat = Query(
+        default=OutputFormat.json,
+        title="Output format for the response",
+        examples=["json", "tsv"],
+    ),
 ):
     response = solr().get_mappings(
         entity_id=entity_id,
@@ -85,4 +91,10 @@ async def mappings(
         offset=pagination.offset,
         limit=pagination.limit,
     )
-    return response
+    if format == OutputFormat.json:
+        return response
+    elif format == OutputFormat.tsv:
+        tsv = ""
+        for row in to_tsv(response, print_output=False):
+            tsv += row
+        return tsv

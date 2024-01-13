@@ -1,10 +1,12 @@
 from typing import List
+from typing_extensions import Annotated
 
 import pystow
 import typer
+
 from monarch_py.utils.solr_cli_utils import ensure_solr, get_solr, solr_status, start_solr, stop_solr
-from monarch_py.utils.utils import console, format_output, set_log_level
-from typing_extensions import Annotated
+from monarch_py.utils.utils import console, set_log_level
+from monarch_py.utils.format_utils import format_output
 
 solr_app = typer.Typer()
 monarchstow = pystow.module("monarch")

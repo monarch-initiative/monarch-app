@@ -1,9 +1,11 @@
 from typing import List
+from typing_extensions import Annotated
 
 import typer
+
 from monarch_py.implementations.sql.sql_implementation import SQLImplementation
-from monarch_py.utils.utils import console, format_output, set_log_level
-from typing_extensions import Annotated
+from monarch_py.utils.utils import console, set_log_level
+from monarch_py.utils.format_utils import format_output
 
 sql_app = typer.Typer()
 app_state = {"log_level": "WARNING"}
