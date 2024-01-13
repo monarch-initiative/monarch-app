@@ -261,6 +261,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/TextAnnotationResult/</loc>
+         <lastmod>2024-01-13</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/Time/</loc>
          <lastmod>2024-01-13</lastmod>
          <changefreq>daily</changefreq>
@@ -372,6 +377,11 @@
     </url>
     <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/direction/</loc>
+         <lastmod>2024-01-13</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/end/</loc>
          <lastmod>2024-01-13</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -866,6 +876,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/start/</loc>
+         <lastmod>2024-01-13</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/sub_classes/</loc>
          <lastmod>2024-01-13</lastmod>
          <changefreq>daily</changefreq>
@@ -962,6 +977,16 @@
     </url>
     <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/synonym/</loc>
+         <lastmod>2024-01-13</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/text/</loc>
+         <lastmod>2024-01-13</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/tokens/</loc>
          <lastmod>2024-01-13</lastmod>
          <changefreq>daily</changefreq>
     </url>
