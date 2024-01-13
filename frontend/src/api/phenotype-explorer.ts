@@ -259,6 +259,8 @@ export const compareSetToGroup = async (
       cells[col.id + row.id] = {
         score: match?.score || 0,
         strength: 0,
+        phenotype: match?.match_target || "",
+        phenotypeLabel: match?.match_target_label || "",
         ...pick(match?.similarity, [
           "ancestor_id",
           "ancestor_label",

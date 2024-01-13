@@ -1,7 +1,6 @@
 from fastapi.testclient import TestClient
 from unittest.mock import MagicMock, patch
 from monarch_py.api.text_annotation import router
-from monarch_py.datamodels.model import TextAnnotationResult
 
 client = TestClient(router)
 

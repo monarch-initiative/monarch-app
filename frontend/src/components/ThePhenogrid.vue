@@ -159,7 +159,6 @@
             :key="index"
             :interactive="true"
             placement="bottom"
-            follow-cursor="initial"
             :append-to="appendToBody"
             :tag="null"
           >
@@ -181,8 +180,19 @@
               @mouseleave="hoverCell(cell.col.index, cell.row.index, true)"
             />
             <template #content>
+              <AppNodeBadge
+                v-if="cell.phenotype"
+                :node="{ id: cell.col.id, name: cell.col.label }"
+                :absolute="true"
+              />
               <div class="tooltip-heading">
                 <AppNodeBadge
+                  v-if="cell.phenotype"
+                  :node="{ id: cell.phenotype, name: cell.phenotypeLabel }"
+                  :absolute="true"
+                />
+                <AppNodeBadge
+                  v-else
                   :node="{ id: cell.col.id, name: cell.col.label }"
                   :absolute="true"
                 />
@@ -328,6 +338,8 @@ export type Phenogrid = {
     [key: string]: {
       score: number;
       strength: number;
+      phenotype?: string;
+      phenotypeLabel?: string;
     } & Pick<
       TermPairwiseSimilarity,
       | "ancestor_id"

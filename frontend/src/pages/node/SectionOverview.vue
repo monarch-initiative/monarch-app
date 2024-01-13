@@ -80,6 +80,13 @@
         ></p>
       </AppDetail>
 
+      <!-- URI -->
+      <AppDetail :blank="!node.uri" title="URI">
+        <AppLink :to="node.uri || ''">
+          {{ node.id }}
+        </AppLink>
+      </AppDetail>
+
       <!-- mappings -->
       <AppDetail :blank="!clinicalSynopsis.length" title="Clinical Synopsis">
         <AppFlex align-h="left" gap="small">

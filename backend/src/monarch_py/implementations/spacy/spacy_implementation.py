@@ -46,14 +46,15 @@ class SpacyImplementation(TextAnnotatorInterface):
                 if result.tokens:
                     span_text = result.text
                     span_data = ",".join(
-                        f"{sr.name},{sr.id},{sr.category}" for sr in result.tokens if isinstance(sr, SearchResult))
+                        f"{sr.name},{sr.id},{sr.category}" for sr in result.tokens if isinstance(sr, SearchResult)
+                    )
                     spans.append(f'<span class="sciCrunchAnnotation" data-sciGraph="{span_data}">{span_text}</span>')
                 else:
                     spans.append(result.text)
             else:
                 spans.append(result.text)
 
-        return ''.join(spans).rstrip(', ')
+        return "".join(spans).rstrip(", ")
 
     def create_span(self, entity: Entity) -> str:
         """Returns an html formatted string with tags wrapping entities found in the text"""

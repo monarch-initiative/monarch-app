@@ -1,12 +1,12 @@
 {
   "subject_termset": {
-    "MP:0002169": {
-      "id": "MP:0002169",
-      "label": "no abnormal phenotype detected (MPO)"
-    },
     "MP:0010771": {
       "id": "MP:0010771",
       "label": "integument phenotype (MPO)"
+    },
+    "MP:0002169": {
+      "id": "MP:0002169",
+      "label": "no abnormal phenotype detected (MPO)"
     }
   },
   "object_termset": {
