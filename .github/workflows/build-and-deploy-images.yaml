@@ -114,11 +114,13 @@ jobs:
 
       - name: "Remove old SSH keys"
         run: |
-          for i in $(gcloud compute os-login ssh-keys list | grep -v FINGERPRINT)
-          do 
-            echo $i
-            gcloud compute os-login ssh-keys remove --key $i
-          done
+          if [[ $(gcloud compute os-login ssh-keys list | grep -v FINGERPRINT) ]]; then
+            for i in $(gcloud compute os-login ssh-keys list | grep -v FINGERPRINT)
+            do 
+              echo $i
+              gcloud compute os-login ssh-keys remove --key $i
+            done
+          fi
 
       - name: "Update API Service"
         run: |
