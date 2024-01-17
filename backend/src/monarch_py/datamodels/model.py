@@ -595,14 +595,6 @@ class SearchResults(Results):
     total: int = Field(..., description="""total number of items matching a query""")
 
 
-class TextAnnotationResult(ConfiguredBaseModel):
-
-    text: Optional[str] = Field(None, description="""text without tokens""")
-    tokens: Optional[List[Entity]] = Field(default_factory=list, description="""A collection of entities or concepts""")
-    start: Optional[int] = Field(None, description="""start position of the annotation""")
-    end: Optional[int] = Field(None, description="""end position of the annotation""")
-
-
 class PairwiseSimilarity(ConfiguredBaseModel):
     """
     Abstract grouping for representing individual pairwise similarities
@@ -707,7 +699,6 @@ MappingResults.model_rebuild()
 MultiEntityAssociationResults.model_rebuild()
 SearchResult.model_rebuild()
 SearchResults.model_rebuild()
-TextAnnotationResult.model_rebuild()
 PairwiseSimilarity.model_rebuild()
 TermPairwiseSimilarity.model_rebuild()
 TermSetPairwiseSimilarity.model_rebuild()

@@ -5,8 +5,9 @@ from typing import List
 
 from pydantic import BaseModel
 
+# from pydantic_settings import BaseSettings
+
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
-from monarch_py.implementations.spacy.spacy_implementation import SpacyImplementation
 from monarch_py.datamodels.model import TermSetPairwiseSimilarity, SemsimSearchResult
 
 
@@ -115,10 +116,3 @@ def oak():
 #    oak_implementation = OakImplementation()
 #    oak_implementation.init_phenio_adapter(force_update=False, phenio_path=settings.phenio_db_path)
 #    return oak_implementation
-
-
-@lru_cache(maxsize=1)
-def spacyner():
-    spacy_implementation = SpacyImplementation()
-    spacy_implementation.init_spacy(search_engine=solr())
-    return spacy_implementation

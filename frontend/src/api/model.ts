@@ -516,17 +516,6 @@ export interface SearchResults extends Results {
     /** total number of items matching a query */
     total: number,
 };
-
-export interface TextAnnotationResult {
-    /** text without tokens */
-    text?: string,
-    /** A collection of entities or concepts */
-    tokens?: Entity[],
-    /** start position of the annotation */
-    start?: number,
-    /** end position of the annotation */
-    end?: number,
-};
 /**
  * Abstract grouping for representing individual pairwise similarities
  */
