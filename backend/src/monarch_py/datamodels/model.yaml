@@ -276,6 +276,13 @@ classes:
       items:
         range: SearchResult
 
+  TextAnnotationResult:
+    slots:
+      - text
+      - tokens
+      - start
+      - end
+
 slots:
   aggregator_knowledge_source:
     multivalued: true
@@ -636,3 +643,20 @@ slots:
   # object label is already included in this schema
   mapping_justification:
       range: string
+  # Text annotation
+  text:
+    description: text without tokens
+    range: string
+    inlined: true
+  tokens:
+    description: A collection of entities or concepts
+    range: Entity
+    inlined: true
+    inlined_as_list: true
+    multivalued: true
+  start:
+    description: start position of the annotation
+    range: integer
+  end:
+    description: end position of the annotation
+    range: integer
