@@ -42,7 +42,7 @@ export const screenToSvgCoords = (svg: SVGSVGElement, x: number, y: number) => {
    * https://bugzilla.mozilla.org/show_bug.cgi?id=543965 no viable workarounds
    * found
    */
-  if (!svg || !svg.getCTM()) return;
+  if (!svg.getCTM()) return;
   let point = svg.createSVGPoint();
   point.x = x;
   point.y = y;
