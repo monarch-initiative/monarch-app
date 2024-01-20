@@ -1,10 +1,9 @@
 <svg
   xmlns="http://www.w3.org/2000/svg"
-  viewBox="-10 -10 120 120"
+  viewBox="0 0 100 100"
   fill="none"
   stroke="currentColor"
 >
-  <circle cx="50" cy="50" r="55" />
   <path d="M50 15v25m0 0l-12.5 7.5M50 40l12.5 7.5" />
   <path
     d="M42 35c0-5 .2-10-5-10S17 35 17 55c0 15 2.5 22.5 7.5 22.5S35 75 40 70s2-10 2-15"

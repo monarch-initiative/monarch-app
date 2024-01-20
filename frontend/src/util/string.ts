@@ -13,6 +13,14 @@ export const breakUrl = (value = ""): string =>
 export const stripHtml = (html = "") =>
   new DOMParser().parseFromString(html, "text/html").body.textContent || "";
 
+/** format number value */
+export const formatNumber = (value: number, compact = false) =>
+  value
+    .toLocaleString(undefined, {
+      notation: compact ? "compact" : undefined,
+    })
+    .replace(/([^A-Za-z]+)([A-Za-z]+)/, "$1 $2");
+
 /** safe copy to clipboard with notifications */
 export const copyToClipboard = async (
   value: string,

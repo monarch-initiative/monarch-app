@@ -13,6 +13,7 @@
       :aria-label="title"
     />
     <AppIcon v-else-if="icon" class="icon" :icon="icon" />
+    <slot />
     <div class="title">{{ title }}</div>
     <div v-if="subtitle" class="subtitle">{{ subtitle }}</div>
   </div>
@@ -23,7 +24,7 @@ type Props = {
   /** where to link to */
   to?: string;
   /** icon to show in button */
-  icon: string;
+  icon?: string;
   /** main text */
   title: string;
   /** secondary text */
@@ -32,7 +33,12 @@ type Props = {
   design?: "small" | "big";
 };
 
-withDefaults(defineProps<Props>(), { to: "", subtitle: "", design: "big" });
+withDefaults(defineProps<Props>(), {
+  to: "",
+  icon: "",
+  subtitle: "",
+  design: "big",
+});
 </script>
 
 <style lang="scss" scoped>
