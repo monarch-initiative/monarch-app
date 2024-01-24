@@ -71,7 +71,7 @@ def _association_table(
         title="Output format for the response",
         examples=["json", "tsv"],
     ),
-    download=Query(
+    download: bool = Query(
         default=False,
         title="Download the results as a file",
         examples=[True, False],
