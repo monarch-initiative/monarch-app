@@ -92,7 +92,7 @@ def _association_table(
     response = solr().get_association_table(
         entity=id, category=category.value, q=query, sort=sort, offset=pagination.offset, limit=pagination.limit
     )
-    if download:
+    if download is True:
         string_response = (
             to_tsv(response, print_output=False)
             if format == OutputFormat.tsv
