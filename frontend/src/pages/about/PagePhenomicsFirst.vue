@@ -5,21 +5,10 @@
 <template>
   <AppSection>
     <AppHeading>Phenomics First</AppHeading>
-    <figure>
-      <img
-        src="@/assets/phenomics-first-resource.png"
-        alt="Phenomics First Resource Overview"
-      />
-      <figcaption>
-        The
-        <AppLink to="https://hpo.jax.org">Human Phenotype Ontology</AppLink>
-        (HPO) provides a standardized vocabulary of phenotypic abnormalities
-        encountered in human disease.
-        <AppLink to="https://pubmed.ncbi.nlm.nih.gov/30476213/"
-          >More about HPO...</AppLink
-        >
-      </figcaption>
-    </figure>
+    <img
+      src="@/assets/phenomics-first-resource.png"
+      alt="Phenomics First Resource Overview"
+    />
   </AppSection>
 
   <AppSection>
@@ -94,25 +83,6 @@
   </AppSection>
 
   <AppSection>
-    <figure>
-      <img
-        src="@/assets/phenopackets-ecosystem.png"
-        alt="Phenopackets Ecosystem"
-      />
-      <figcaption>
-        The
-        <AppLink to="http://phenopackets.org/">Phenopacket schema</AppLink>
-        is a standard exchange format for phenotypes and environmental factors.
-        This packet of phenotype data can be used anywhere, and can be written
-        by anyone. This work is being done in collaboration with the
-        <AppLink to="https://www.ga4gh.org/"
-          >Global Alliance for Genomics and Health (GA4GH)</AppLink
-        >.
-      </figcaption>
-    </figure>
-  </AppSection>
-
-  <AppSection>
     <AppHeading>
       <AppIcon icon="resource-upheno" />
       The Unified Phenotype Ontology (uPheno)
@@ -175,6 +145,23 @@
       organizations and systems that comprise the joint effort to address human
       disease and biological understanding.
     </p>
+
+    <figure>
+      <img
+        src="@/assets/phenopackets-ecosystem.png"
+        alt="Phenopackets Ecosystem"
+      />
+      <figcaption>
+        The Phenopacket schema is a standard exchange format for phenotypes and
+        environmental factors. This packet of phenotype data can be used
+        anywhere, and can be written by anyone. This work is being done in
+        collaboration with the
+        <AppLink to="https://www.ga4gh.org/"
+          >Global Alliance for Genomics and Health (GA4GH)</AppLink
+        >.
+      </figcaption>
+    </figure>
+
     <AppButton
       to="http://phenopackets.org/"
       text="Learn More"
