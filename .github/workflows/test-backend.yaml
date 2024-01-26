@@ -37,23 +37,23 @@ jobs:
         with:
           version: ">= 447.0.0"
 
-      - name: "Cache SSH Key"
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.ssh/google_compute_engine
-            ~/.ssh/google_compute_engine.pub
-          key: ${{ runner.os }}-ssh-key
-
-      - name: "Remove old SSH keys"
-        run: |
-          if [[ $(gcloud compute os-login ssh-keys list | grep -v FINGERPRINT) ]]; then
-            for i in $(gcloud compute os-login ssh-keys list | grep -v FINGERPRINT)
-            do 
-              echo $i
-              gcloud compute os-login ssh-keys remove --key $i
-            done
-          fi
+#      - name: "Cache SSH Key"
+#        uses: actions/cache@v3
+#        with:
+#          path: |
+#            ~/.ssh/google_compute_engine
+#            ~/.ssh/google_compute_engine.pub
+#          key: ${{ runner.os }}-ssh-key
+#
+#      - name: "Remove old SSH keys"
+#        run: |
+#          if [[ $(gcloud compute os-login ssh-keys list | grep -v FINGERPRINT) ]]; then
+#            for i in $(gcloud compute os-login ssh-keys list | grep -v FINGERPRINT)
+#            do
+#              echo $i
+#              gcloud compute os-login ssh-keys remove --key $i
+#            done
+#          fi
 
       - name: "Make SSH Tunnel for Solr"
         run: |
