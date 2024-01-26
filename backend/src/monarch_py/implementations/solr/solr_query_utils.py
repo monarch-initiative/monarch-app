@@ -211,15 +211,14 @@ def build_grounding_query(text: str) -> SolrQuery:
 ### Search helper functions ###
 
 
+def obsolete_unboost(multiplier = 0.1):
+    return f'if(termfreq(deprecated,"true"),{multiplier},1)'
+
 def entity_boost():
     """Shared boost function between search and autocomplete"""
     disease_boost = 'if(termfreq(category,"biolink:Disease"),10.0,1)'
     human_gene_boost = 'if(and(termfreq(in_taxon,"NCBITaxon:9606"),termfreq(category,"biolink:Gene")),5.0,1)'
-    obsolete_unboost = obsolete_unboost()
-    return f"product({disease_boost},{human_gene_boost},{obsolete_unboost})"
-
-def obsolete_unboost(multiplier = 0.1):
-    return f'if(termfreq(deprecated,"true"),{multiplier},1)'
+    return f"product({disease_boost},{human_gene_boost},{obsolete_unboost()})"
 
 def entity_query_fields():
     """
