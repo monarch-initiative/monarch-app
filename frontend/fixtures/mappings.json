@@ -10,7 +10,7 @@
       "object_id": "DOID:9884",
       "object_label": "muscular dystrophy",
       "mapping_justification": "semapv:UnspecifiedMatching",
-      "id": "63d84b9a-93bc-4d4a-9c2c-755a444f7d7c"
+      "id": "075fcf48-3222-44cd-ac08-d5a4b9fd08d4"
     },
     {
       "subject_id": "MONDO:0020121",
@@ -19,7 +19,7 @@
       "object_id": "ICD10CM:G71.0",
       "object_label": "Muscular dystrophy",
       "mapping_justification": "semapv:UnspecifiedMatching",
-      "id": "1e7e3e71-c912-443f-b92f-c7a828543070"
+      "id": "47d5f1a4-3a6e-480e-a4d6-0a6430f78f4f"
     },
     {
       "subject_id": "MONDO:0020121",
@@ -28,7 +28,7 @@
       "object_id": "NCIT:C84910",
       "object_label": "Muscular Dystrophy",
       "mapping_justification": "semapv:UnspecifiedMatching",
-      "id": "8b7a5c87-d896-4daf-ac51-6ad53ef838a7"
+      "id": "90516385-d88c-426b-9ebc-87a1b17b5c54"
     },
     {
       "subject_id": "MONDO:0020121",
@@ -37,7 +37,7 @@
       "object_id": "Orphanet:98473",
       "object_label": "Muscular dystrophy",
       "mapping_justification": "semapv:UnspecifiedMatching",
-      "id": "74d9dc89-0a38-41fd-8f0f-9b89e1085824"
+      "id": "22da12b7-0a7f-45d1-9288-43d382576200"
     },
     {
       "subject_id": "MONDO:0020121",
@@ -46,7 +46,7 @@
       "object_id": "SCTID:73297009",
       "object_label": null,
       "mapping_justification": "semapv:UnspecifiedMatching",
-      "id": "f93de036-44d8-43fd-b5b6-9753b75f79b0"
+      "id": "6ee041ca-f7dd-4c23-b76c-17cdf17e15d5"
     },
     {
       "subject_id": "MONDO:0020121",
@@ -55,7 +55,7 @@
       "object_id": "UMLS:C0026850",
       "object_label": null,
       "mapping_justification": "semapv:UnspecifiedMatching",
-      "id": "d5cbdd21-5791-4b49-ae6f-42b8f226e3bf"
+      "id": "fd54ee43-d729-4896-a82d-ada7c2346ca8"
     },
     {
       "subject_id": "MONDO:0020121",
@@ -64,7 +64,7 @@
       "object_id": "mesh:D009136",
       "object_label": null,
       "mapping_justification": "semapv:UnspecifiedMatching",
-      "id": "573ffaec-5e44-47a3-affc-1019df4b4ef9"
+      "id": "05330487-9c63-425c-a936-fe4934e61cba"
     }
   ]
 }

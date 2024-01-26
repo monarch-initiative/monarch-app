@@ -1,6 +1,6 @@
 import urllib
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from monarch_py.utils.utils import escape
 from pydantic import BaseModel, Field
@@ -51,18 +51,20 @@ class SolrQuery(BaseModel):
     boost: Optional[str] = None
     sort: Optional[str] = None
 
-    def add_field_filter_query(self, field, value):
-        if field is not None and value is not None:
-            self.filter_queries.append(f"{field}:{escape(value)}")
-        else:
-            raise ValueError("Can't add a field filter query without a field and value")
+    def add_field_filter_query(self, field: str, value: Union[list, str]):
+        if not value:
+            return self
+        if isinstance(value, list) and not len(value) == 0:
+            value = " OR ".join(value)
+        self.filter_queries.append(f"{field}:{escape(value)}")
         return self
 
-    def add_filter_query(self, filter_query):
-        if filter_query is not None:
-            self.filter_queries.append(filter_query)
-        else:
-            raise ValueError("Can't append an empty filter query")
+    def add_filter_query(self, filter_query: Union[list, str]):
+        if not filter_query:
+            return self
+        if isinstance(filter_query, list):
+            filter_query = " OR ".join(escape(filter_query))
+        self.filter_queries.append(filter_query)
         return self
 
     def query_string(self):
