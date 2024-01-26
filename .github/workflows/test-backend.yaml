@@ -25,6 +25,41 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       #----------------------------------------------
+      #        set up ssh tunnel for solr
+      #----------------------------------------------
+      - id: "auth"
+        uses: "google-github-actions/auth@v1"
+        with:
+          credentials_json: "${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }}"
+
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v1"
+        with:
+          version: ">= 447.0.0"
+
+      - name: "Cache SSH Key"
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.ssh/google_compute_engine
+            ~/.ssh/google_compute_engine.pub
+          key: ${{ runner.os }}-ssh-key
+
+      - name: "Remove old SSH keys"
+        run: |
+          if [[ $(gcloud compute os-login ssh-keys list | grep -v FINGERPRINT) ]]; then
+            for i in $(gcloud compute os-login ssh-keys list | grep -v FINGERPRINT)
+            do 
+              echo $i
+              gcloud compute os-login ssh-keys remove --key $i
+            done
+          fi
+
+      - name: "Make SSH Tunnel for Solr"
+        run: |
+          gcloud compute ssh --ssh-key-expiration 60m --zone us-central1-a monarch-v3-dev-solr -- -f -NL 8983:localhost:8983
+
+      #----------------------------------------------
       #          install & configure poetry
       #----------------------------------------------
       - name: Install Poetry

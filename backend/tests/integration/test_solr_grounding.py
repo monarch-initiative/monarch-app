@@ -28,6 +28,10 @@ def test_grounding(text, expected_id):
     ("reduced", "MONDO:0012143"),
     ("Bard", "MONDO:0014432"),
 ])
+# @pytest.mark.skipif(
+#     condition=not SolrImplementation().solr_is_available(),
+#     reason="Solr is not available",
+# )
 def test_grounding_should_not_match(text, unwanted_id):
     matching_results = SolrImplementation().ground_entity(text)
     identifiers = [result.id for result in matching_results]
