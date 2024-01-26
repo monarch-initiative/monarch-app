@@ -6,7 +6,7 @@ from monarch_py.implementations.spacy.spacy_implementation import SpacyImplement
 @pytest.fixture
 def spacy_instance():
     spacy = SpacyImplementation()
-    spacy.init_spacy(search_engine=SolrImplementation())
+    spacy.init_spacy(grounding_implementation=SolrImplementation())
     return spacy
 
 
