@@ -1,5 +1,5 @@
 from unittest.mock import MagicMock, patch
-
+import urllib
 from fastapi.testclient import TestClient
 from httpx import Response
 from monarch_py.api.association import router
@@ -23,23 +23,24 @@ def test_associations(associations):
 def test_associations_params(mock_get_assoc):
     """Test that the correct parameters are passed to the monarch api"""
     mock_get_assoc.return_value = MagicMock()
-    client.get(
-        "/association?category=biolink%3AAssociation&subject=HGNC%3A0000001&predicate=biolink%3Ainteracts_with&object=MONDO%3A0000001&entity=MONDO%3A0000002&subject_category=biolink%3ADisease&subject_namespace=HGNC&subject_taxon=NCBITaxon%3A1234&object_taxon=NCBITaxon%3A9876&object_category=biolink%3AGene&object_namespace=MONDO&direct=true&format=json&limit=20&offset=0"
-    )
-    mock_get_assoc.assert_called_with(
-        category=["biolink:Association"],
-        subject=["HGNC:0000001"],
-        predicate=["biolink:interacts_with"],
-        object=["MONDO:0000001"],
-        entity=["MONDO:0000002"],
-        subject_category=["biolink:Disease"],
-        subject_namespace=["HGNC"],
-        subject_taxon=["NCBITaxon:1234"],
-        object_taxon=["NCBITaxon:9876"],
-        object_category=["biolink:Gene"],
-        object_namespace=["MONDO"],
-        direct=True,
-        format="json",
-        offset=0,
-        limit=20,
-    )
+
+    params = {
+        "category": ["biolink:Association", "biolink:GeneToPhenotypicFeatureAssociation"],
+        "subject": ["HGNC:0000001", "HGNC:0000002"],
+        "predicate": ["biolink:interacts_with"],
+        "object": ["MONDO:0000001", "MONDO:0000002"],
+        "entity": ["MONDO:0000002", "HGNC:0000001"],
+        "subject_category": ["biolink:Disease", "biolink:Gene"],
+        "subject_namespace": ["HGNC", "ZFIN"],
+        "subject_taxon": ["NCBITaxon:1234", "NCBITaxon:1"],
+        "object_taxon": ["NCBITaxon:9876", "NCBITaxon:2"],
+        "object_category": ["biolink:Gene", "biolink:PhenotypicFeature"],
+        "object_namespace": ["MONDO", "HP"],
+        "direct": True,
+        "offset": 0,
+        "limit": 20,
+    }
+    query_string = urllib.parse.urlencode(params, doseq=True)
+    client.get(f"/all?{query_string}")
+    mock_get_assoc.assert_called_with(**params)
+
