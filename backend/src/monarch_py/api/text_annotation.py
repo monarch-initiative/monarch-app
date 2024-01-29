@@ -18,9 +18,9 @@ def _post_annotate(request: TextAnnotationRequest) -> str:
     return _annotate(request.content)
 
 
-@router.get("/annotate/entities")
-def _entities(request: TextAnnotationRequest) -> List[TextAnnotationResult]:
-    return spacyner().get_annotated_entities(request.content)
+@router.get("/annotate/entities?text={content}")
+def _entities(text: str) -> List[TextAnnotationResult]:
+    return spacyner().get_annotated_entities(text)
 
 
 @router.post("/annotate/entities")
