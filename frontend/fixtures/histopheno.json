@@ -3,12 +3,12 @@
   "items": [
     {
       "label": "musculature",
-      "count": 1686,
+      "count": 1685,
       "id": "HP:0003011"
     },
     {
       "label": "nervous_system",
-      "count": 1077,
+      "count": 1076,
       "id": "HP:0000707"
     },
     {
@@ -18,7 +18,7 @@
     },
     {
       "label": "skeletal_system",
-      "count": 472,
+      "count": 470,
       "id": "HP:0000924"
     },
     {
