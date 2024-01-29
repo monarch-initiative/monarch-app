@@ -1091,6 +1091,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.ground_entity" class="md-nav__link">
+    <span class="md-ellipsis">
+      ground_entity()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.search" class="md-nav__link">
     <span class="md-ellipsis">
       search()
@@ -1376,6 +1385,15 @@
   <a href="#src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_multi_entity_associations" class="md-nav__link">
     <span class="md-ellipsis">
       get_multi_entity_associations()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.ground_entity" class="md-nav__link">
+    <span class="md-ellipsis">
+      ground_entity()
     </span>
   </a>
   
@@ -2498,7 +2516,7 @@ Returns:
 
   <div class="doc doc-contents ">
           <p class="doc doc-class-bases">
-            Bases: <code><span title="monarch_py.interfaces.entity_interface.EntityInterface">EntityInterface</span></code>, <code><span title="monarch_py.interfaces.association_interface.AssociationInterface">AssociationInterface</span></code>, <code><span title="monarch_py.interfaces.search_interface.SearchInterface">SearchInterface</span></code></p>
+            Bases: <code><span title="monarch_py.interfaces.entity_interface.EntityInterface">EntityInterface</span></code>, <code><span title="monarch_py.interfaces.association_interface.AssociationInterface">AssociationInterface</span></code>, <code><span title="monarch_py.interfaces.search_interface.SearchInterface">SearchInterface</span></code>, <code><span title="monarch_py.interfaces.grounding_interface.GroundingInterface">GroundingInterface</span></code></p>
 
   
       <p>Implementation of Monarch Interfaces for Solr endpoint</p>
@@ -2951,6 +2969,80 @@ Returns:
           </td>
           <td>
                 <code>20</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.ground_entity" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">ground_entity</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Grounds a single entity</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>text</code></td>
+          <td>
+                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Text to ground</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>Entity</code></td>          <td>
+                <code><a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a>[<span title="monarch_py.datamodels.model.Entity">Entity</span>]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Dataclass representing a single entity</p>
+            </div>
           </td>
         </tr>
     </tbody>
