@@ -1,29 +1,29 @@
 from unittest.mock import MagicMock, patch
 
 from fastapi.testclient import TestClient
-from httpx import Response
+
 from monarch_py.api.entity import router
+from monarch_py.datamodels.model import Node
 
 client = TestClient(router)
 
 
-def test_entity(node):
-    with patch.object(
-        client, "get", MagicMock(return_value=Response(200, json=node, headers={"content-type": "application/json"}))
-    ):
-        response = client.get("/MONDO:0019391")
-    assert response.status_code == 200
-    assert response.headers["content-type"] == "application/json"
-    assert response.json() == node
+@patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_entity")
+def test_entity(mock_get_entity, node):
+    mock_get_entity.return_value = Node(**node)
+    client.get("/MONDO:0019391")
+    mock_get_entity.assert_called_with("MONDO:0019391", extra=True)
 
 
-def test_association_table(association_table):
-    with patch.object(
-        client,
-        "get",
-        MagicMock(return_value=Response(200, json=association_table, headers={"content-type": "application/json"})),
-    ):
-        response = client.get("/MONDO:0019391/biolink:DiseaseToPhenotypicFeatureAssociation")
-    assert response.status_code == 200
-    assert response.headers["content-type"] == "application/json"
-    assert response.json() == association_table
+@patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_association_table")
+def test_association_table(mock_get_assoc_table):
+    mock_get_assoc_table.return_value = MagicMock()
+    client.get("/MONDO:0019391/biolink:DiseaseToPhenotypicFeatureAssociation")
+    mock_get_assoc_table.assert_called_with(
+        entity="MONDO:0019391",
+        category="biolink:DiseaseToPhenotypicFeatureAssociation",
+        q=None,
+        sort=None,
+        offset=0,
+        limit=20,
+    )

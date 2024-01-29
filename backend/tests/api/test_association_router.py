@@ -1,7 +1,9 @@
-from unittest.mock import MagicMock, patch
 import urllib
+from unittest.mock import MagicMock, patch
+
 from fastapi.testclient import TestClient
 from httpx import Response
+
 from monarch_py.api.association import router
 
 client = TestClient(router)
@@ -43,4 +45,3 @@ def test_associations_params(mock_get_assoc):
     query_string = urllib.parse.urlencode(params, doseq=True)
     client.get(f"/all?{query_string}")
     mock_get_assoc.assert_called_with(**params)
-
