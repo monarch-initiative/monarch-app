@@ -20,6 +20,7 @@ const icons = [
   far.faComment,
   far.faComments,
   far.faCopy,
+  far.faEnvelope,
   far.faEye,
   far.faFileLines,
   far.faFloppyDisk,
