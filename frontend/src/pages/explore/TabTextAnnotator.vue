@@ -22,6 +22,9 @@
       <span>or</span>
       <AppButton text="Try an example" design="small" @click="doExample()" />
     </AppFlex>
+
+    <!-- submit button -->
+    <AppButton text="Annotate Text" icon="search" @click="runAnnotateText" />
   </AppSection>
 
   <AppSection>
@@ -109,9 +112,8 @@ async function onUpload(data = "", file = "") {
 }
 
 /** on textbox change */
-async function onChange() {
+function onChange() {
   filename.value = "";
-  await runAnnotateText();
 }
 
 /** example full text */
