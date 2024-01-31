@@ -12,7 +12,6 @@
       :multi="true"
       icon="file-lines"
       placeholder="Paste full text"
-      @change="onChange"
     />
 
     <!-- other options -->
