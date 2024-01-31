@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import List
 
 import spacy
+import re
 
 from monarch_py.interfaces.grounding_interface import GroundingInterface
 from monarch_py.interfaces.search_interface import SearchInterface
@@ -29,6 +30,13 @@ class SpacyImplementation(TextAnnotatorInterface):
 
         for entity in doc.ents:
             matching_entities = self.grounding_implementation.ground_entity(entity.text)
+            if matching_entities:
+                text = text.replace(entity.text, entity.text.title())
+
+        doc = self.nlp(text)  # Recreate the doc after modifying the text
+
+        for entity in doc.ents:
+            matching_entities = self.grounding_implementation.ground_entity(entity.text.lower())
             result = TextAnnotationResult(
                 text=entity.text, tokens=matching_entities, start=entity.start_char, end=entity.end_char
             )
