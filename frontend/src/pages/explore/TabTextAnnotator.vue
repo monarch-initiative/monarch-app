@@ -12,6 +12,7 @@
       :multi="true"
       icon="file-lines"
       placeholder="Paste full text"
+      @change="onChange"
     />
 
     <!-- other options -->
@@ -108,6 +109,11 @@ async function onUpload(data = "", file = "") {
   content.value = data;
   filename.value = file;
   await runAnnotateText();
+}
+
+/** on textbox change */
+function onChange() {
+  filename.value = "";
 }
 
 /** example full text */
