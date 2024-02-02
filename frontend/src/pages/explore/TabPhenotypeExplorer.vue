@@ -70,50 +70,80 @@
   </AppSection>
 
   <!-- compare results -->
-  <AppSection v-else-if="compareResults.summary.length">
+  <AppSection v-else-if="compareResults.triptych.length">
     <AppHeading>Similarity Comparison</AppHeading>
 
-    <!-- heading -->
-    <AppHeading
-      >Top {{ Math.min(compareResults.summary.length, 10) }} most
-      similar</AppHeading
-    >
-
     <!-- list of compare results -->
-    <AppFlex>
-      <div
-        v-for="(match, matchIndex) in compareResults.summary.slice(0, 10)"
-        :key="matchIndex"
-        class="match"
-      >
-        <!-- ring score -->
-        <AppRing
-          v-tooltip="'Similarity score'"
-          :score="match.score"
-          :percent="ringPercent(match.score)"
-        />
-        <!-- for percent, use asymptotic function limited to 1 so we don't need to know max score -->
+    <div class="triptych-scroll">
+      <div class="triptych">
+        <div>
+          <strong>Set A</strong>
+          <div class="weak">{{ description(aPhenotypes, aGeneratedFrom) }}</div>
+        </div>
+        <strong>Match</strong>
+        <div>
+          <strong>Set B</strong>
+          <div class="weak">{{ description(bPhenotypes, bGeneratedFrom) }}</div>
+        </div>
 
-        <AppFlex class="details" direction="col" align-h="left" gap="small">
+        <template
+          v-for="(match, matchIndex) in compareResults.triptych.slice(0, 10)"
+          :key="matchIndex"
+        >
           <AppNodeBadge
             :node="{ id: match.source, name: match.source_label }"
           />
+
+          <!-- ring score -->
+          <tooltip :interactive="true" :append-to="appendToBody" :tag="null">
+            <AppRing
+              :score="match.score"
+              :percent="ringPercent(match.score)"
+              tabindex="0"
+            />
+
+            <template #content>
+              <div class="mini-table">
+                <span>Ancestor</span>
+                <AppNodeBadge
+                  :node="{
+                    id: match.ancestor_id,
+                    name: match.ancestor_label,
+                  }"
+                  :absolute="true"
+                />
+                <AppLink
+                  to="https://incatools.github.io/ontology-access-kit/guide/similarity.html#information-content"
+                >
+                  Ancestor IC
+                </AppLink>
+                <span>
+                  {{ match.score?.toFixed(3) }}
+                </span>
+                <AppLink
+                  to="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3649640/"
+                >
+                  Phenodigm
+                </AppLink>
+                <strong>
+                  {{ match.phenodigm_score?.toFixed(3) }}
+                </strong>
+                <AppLink
+                  to="https://incatools.github.io/ontology-access-kit/guide/similarity.html#jaccard-similarity"
+                >
+                  Jaccard
+                </AppLink>
+                <span>{{ match.jaccard_similarity?.toFixed(3) }}</span>
+              </div>
+            </template>
+          </tooltip>
+
           <AppNodeBadge
             :node="{ id: match.target, name: match.target_label }"
           />
-        </AppFlex>
+        </template>
       </div>
-    </AppFlex>
-
-    <!-- phenogrid results -->
-    <template v-if="!isEmpty(compareResults.phenogrid.cells)">
-      <AppHeading>Detailed Comparison</AppHeading>
-      <ThePhenogrid :data="compareResults.phenogrid" />
-      <AppAlert
-        >This feature is still under development. Check back soon for
-        more!</AppAlert
-      >
-    </template>
+    </div>
   </AppSection>
 
   <!-- search results -->
@@ -139,7 +169,6 @@
           :score="match.score"
           :percent="ringPercent(match.score)"
         />
-        <!-- for percent, use asymptotic function limited to 1 so we don't need to know max score -->
 
         <AppFlex class="details" direction="col" align-h="left" gap="small">
           <AppNodeBadge :node="match.subject" />
@@ -174,6 +203,7 @@ import type { Option, Options } from "@/components/AppSelectTags.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
+import { appendToBody } from "@/global/tooltip";
 import { scrollTo } from "@/router";
 import { useQuery } from "@/util/composables";
 import { parse } from "@/util/object";
@@ -190,7 +220,7 @@ const multiTooltip = `In this box, you can select phenotypes in 3 ways:<br>
 /** options for mode of second set */
 const bModeOptions = [
   { id: "these phenotypes ..." },
-  { id: "phenotypes from all ..." },
+  { id: "phenotypes from these genes/diseases ..." },
 ];
 
 /** search group options */
@@ -220,7 +250,10 @@ const bGeneratedFrom = ref<GeneratedFrom>({});
 /** element reference */
 const aBox = ref<{ runSearch: (value: string) => void }>();
 
-/** get % for showing ring. domain 1 to ~20 (asymptotic), range 0 to 1 */
+/**
+ * get % for showing ring. use asymptotic function limited to 1 so we don't need
+ * to know max score. domain 1 to ~20, range 0 to 1
+ */
 function ringPercent(score = 0) {
   return (score - 1) / (5 + score - 1);
 }
@@ -251,7 +284,7 @@ const {
   },
 
   /** default value */
-  { summary: [], phenogrid: { cols: [], rows: [], cells: {}, unmatched: [] } },
+  { triptych: [] },
 
   scrollToResults,
 );
@@ -313,8 +346,7 @@ function spreadOptions(option: Option, options: Options, set: string) {
 /** clear/reset results */
 function clearResults() {
   compareResults.value = {
-    summary: [],
-    phenogrid: { cols: [], rows: [], cells: {}, unmatched: [] },
+    triptych: [],
   };
   searchResults.value = {
     summary: [],
@@ -330,7 +362,7 @@ function description(
   const description = [];
 
   /** number of phenotypes */
-  description.push(`${phenotypes.length} selected`);
+  description.push(`${phenotypes.length} phenotypes`);
 
   /** to avoid misleading text, only show if lists match exactly */
   if (isEqual(generatedFrom.options, phenotypes))
@@ -365,9 +397,35 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.triptych-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.triptych {
+  display: grid;
+  grid-template-columns: 1fr min-content 1fr;
+  min-width: 400px;
+  gap: 20px 40px;
+}
+
 .weak {
   color: $gray;
+}
+
+.triptych > :nth-child(3n + 1) {
+  justify-self: flex-start;
+  text-align: left;
+}
+
+.triptych > :nth-child(3n + 2) {
+  justify-self: center;
   text-align: center;
+}
+
+.triptych > :nth-child(3n) {
+  justify-self: flex-end;
+  text-align: right;
 }
 
 .match {

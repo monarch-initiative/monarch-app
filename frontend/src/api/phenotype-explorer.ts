@@ -97,96 +97,26 @@ export const compareSetToSet = async (
   const response = await request<TermSetPairwiseSimilarity>(url, {}, options);
 
   /** get high level data */
-  const summary = Object.values(response.subject_best_matches || {}).map(
+  const triptych = Object.values(response.subject_best_matches || {}).map(
     (match) => ({
       source: match.match_source,
       source_label: match.match_source_label,
       target: match.match_target,
       target_label: match.match_target_label,
       score: match.score,
+      ...pick(match.similarity, [
+        "ancestor_id",
+        "ancestor_label",
+        "jaccard_similarity",
+        "phenodigm_score",
+      ]),
     }),
   );
-  summary.sort((a, b) => b.score - a.score);
+  triptych.sort((a, b) => b.score - a.score);
 
-  /** turn objects into array of cols */
-  let cols: Phenogrid["cols"] = Object.values(
-    response.object_termset || {},
-  ).map((col) => ({
-    ...col,
-    total: 0,
-  }));
-  /** turn subjects into array of rows */
-  let rows: Phenogrid["rows"] = Object.values(
-    response.subject_termset || {},
-  ).map((row) => ({
-    ...row,
-    total: 0,
-  }));
+  console.log(response);
 
-  /** make map of col/row id to cells */
-  const cells: Phenogrid["cells"] = {};
-
-  /** collect unmatched phenotypes */
-  let unmatched: Phenogrid["unmatched"] = [];
-
-  /** get subject matches */
-  const matches = Object.values(response.subject_best_matches || {});
-
-  for (const col of cols) {
-    for (const row of rows) {
-      /** find match corresponding to col/row id */
-      const match = matches.find(
-        ({ match_source, match_target }) =>
-          match_source === row.id && match_target === col.id,
-      );
-
-      /** sum up row and col scores */
-      col.total += match?.score || 0;
-      row.total += match?.score || 0;
-
-      /** assign cell */
-      cells[col.id + row.id] = {
-        score: match?.score || 0,
-        strength: 0,
-        ...pick(match?.similarity, [
-          "ancestor_id",
-          "ancestor_label",
-          "jaccard_similarity",
-          "phenodigm_score",
-        ]),
-      };
-    }
-  }
-
-  /** filter out unmatched phenotypes */
-  cols = cols.filter((col) => {
-    if (!col.total) unmatched.push({ ...col });
-    return col.total;
-  });
-  rows = rows.filter((row) => {
-    if (!row.total) unmatched.push({ ...row });
-    return row.total;
-  });
-
-  /** deduplicate unmatched phenotypes */
-  unmatched = uniqBy(unmatched, "id");
-
-  /** normalize cell scores to 0-1 */
-  const scores = Object.values(cells)
-    .map((value) => value.score)
-    .filter(Boolean);
-  const min = Math.min(...scores);
-  const max = Math.max(...scores);
-  Object.values(cells).forEach(
-    (value) =>
-      (value.strength =
-        max - min === 0 ? 0.5 : (value.score - min) / (max - min || 0)),
-  );
-
-  /** assemble all data needed for phenogrid */
-  const phenogrid = { cols, rows, cells, unmatched } satisfies Phenogrid;
-
-  return { summary, phenogrid };
+  return { triptych };
 };
 
 export type SetToSet = Awaited<ReturnType<typeof compareSetToSet>>;

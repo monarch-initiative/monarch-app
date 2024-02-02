@@ -2,7 +2,7 @@
   "a": {
     "option": {
       "id": "MGI:2683546",
-      "name": "Ssh3",
+      "label": "Ssh3",
       "highlight": "<em class=\"hilite\">Ssh3</em>",
       "icon": "category-gene",
       "info": "Mus musculus"
@@ -33,7 +33,7 @@
   "b": {
     "option": {
       "id": "RGD:621382",
-      "name": "Plod1",
+      "label": "Plod1",
       "highlight": "<em class=\"hilite\">Plod1</em>",
       "icon": "category-gene",
       "info": "Rattus norvegicus"

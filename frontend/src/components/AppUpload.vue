@@ -8,6 +8,7 @@
     :class="['button', { drag }]"
     text="Upload"
     icon="upload"
+    color="secondary"
     @click="onClick"
     @dragenter="drag = true"
     @dragleave="drag = false"
