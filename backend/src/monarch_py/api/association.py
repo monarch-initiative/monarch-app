@@ -38,16 +38,16 @@ async def _get_associations(
 ) -> Union[AssociationResults, str]:
     """Retrieves all associations for a given entity, or between two entities."""
     response = solr().get_associations(
-        category=[category.value for category in category],
+        category=category,
         subject=subject,
-        predicate=[predicate.value for predicate in predicate],
+        predicate=predicate,
         object=object,
         entity=entity,
-        subject_category=[subject_category.value for subject_category in subject_category],
+        subject_category=subject_category,
         subject_namespace=subject_namespace,
         subject_taxon=subject_taxon,
         object_taxon=object_taxon,
-        object_category=[object_category.value for object_category in object_category],
+        object_category=object_category,
         object_namespace=object_namespace,
         direct=direct,
         offset=pagination.offset,

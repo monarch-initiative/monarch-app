@@ -1,21 +1,22 @@
 from typing import List
 
+from monarch_py.datamodels.category_enums import AssociationCategory, AssociationPredicate, EntityCategory
 from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQuery
 from monarch_py.utils.association_type_utils import AssociationTypeMappings, get_solr_query_fragment
 from monarch_py.utils.utils import escape
 
 
 def build_association_query(
-    category: List[str] = None,
+    category: List[AssociationCategory] = None,
     subject: List[str] = None,
     subject_closure: str = None,
-    subject_category: List[str] = None,
+    subject_category: List[EntityCategory] = None,
     subject_namespace: List[str] = None,
     subject_taxon: List[str] = None,
-    predicate: List[str] = None,
+    predicate: List[AssociationPredicate] = None,
     object: List[str] = None,
     object_closure: str = None,
-    object_category: List[str] = None,
+    object_category: List[EntityCategory] = None,
     object_namespace: List[str] = None,
     object_taxon: List[str] = None,
     entity: List[str] = None,
@@ -29,14 +30,16 @@ def build_association_query(
 ) -> SolrQuery:
     """Populate a SolrQuery object with association filters"""
     query = SolrQuery(start=offset, rows=limit)
-    query.add_field_filter_query("category", category)
-    query.add_field_filter_query("predicate", predicate)
+    query.add_field_filter_query("category", None if not category else [c.value for c in category])
+    query.add_field_filter_query("predicate", None if not predicate else [p.value for p in predicate])
     query.add_field_filter_query("subject_closure", subject_closure)
-    query.add_field_filter_query("subject_category", subject_category)
+    query.add_field_filter_query(
+        "subject_category", None if not subject_category else [c.value for c in subject_category]
+    )
     query.add_field_filter_query("subject_namespace", subject_namespace)
     query.add_field_filter_query("subject_taxon", subject_taxon)
     query.add_field_filter_query("object_closure", object_closure)
-    query.add_field_filter_query("object_category", object_category)
+    query.add_field_filter_query("object_category", None if not object_category else [c.value for c in object_category])
     query.add_field_filter_query("object_namespace", object_namespace)
     query.add_field_filter_query("object_taxon", object_taxon)
     if subject:
@@ -78,7 +81,7 @@ def build_association_query(
 
 
 def build_association_table_query(
-    entity: str, category: str, q: str = None, offset: int = 0, limit: int = 5, sort: List[str] = None
+    entity: str, category: AssociationCategory, q: str = None, offset: int = 0, limit: int = 5, sort: List[str] = None
 ) -> SolrQuery:
     if sort is None:
         sort = [
@@ -127,8 +130,8 @@ def build_histopheno_query(subject_closure: str) -> SolrQuery:
 
 def build_multi_entity_association_query(
     entity: str,
-    counterpart_category: str = None,
-    # predicate: List[str] = None,
+    counterpart_category: EntityCategory = None,
+    # predicate: List[AssociationPredicate] = None,
     offset: int = 0,
     limit: int = 20,
 ) -> SolrQuery:
@@ -136,7 +139,7 @@ def build_multi_entity_association_query(
     query = SolrQuery(start=offset, rows=limit)
     if counterpart_category:
         query.add_filter_query(
-            f'(subject:"{escape(entity)}" AND object_category:"{escape(counterpart_category)}") OR (object:"{escape(entity)}" AND subject_category:"{escape(counterpart_category)}")'
+            f'(subject:"{escape(entity)}" AND object_category:"{escape(counterpart_category.value)}") OR (object:"{escape(entity)}" AND subject_category:"{escape(counterpart_category.value)}")'
         )
     else:
         query.add_filter_query(f'(subject:"{escape(entity)}") OR (object:"{escape(entity)}")')
@@ -147,7 +150,7 @@ def build_search_query(
     q: str = "*:*",
     offset: int = 0,
     limit: int = 20,
-    category: List[str] = None,
+    category: List[EntityCategory] = None,
     in_taxon_label: List[str] = None,
     facet_fields: List[str] = None,
     facet_queries: List[str] = None,
@@ -160,7 +163,7 @@ def build_search_query(
     query.query_fields = entity_query_fields()
     query.boost = entity_boost()
     if category:
-        query.add_filter_query(" OR ".join(f'category:"{cat}"' for cat in category))
+        query.add_filter_query(" OR ".join(f'category:"{cat.value}"' for cat in category))
     if in_taxon_label:
         query.add_filter_query(" OR ".join([f'in_taxon_label:"{t}"' for t in in_taxon_label]))
     if facet_fields:
@@ -209,7 +212,7 @@ def build_mapping_query(
 
 def build_grounding_query(text: str) -> SolrQuery:
     query = SolrQuery(q=text, limit=10, start=0)
-    query.q = f'"{text}"' # quoting so that the complete text is matched as a unit
+    query.q = f'"{text}"'  # quoting so that the complete text is matched as a unit
     # rather than _t (text) or _ac (autocomplete/starts-with), just use keyword fields
     query.query_fields = "id^100 name^10 symbol^10 synonym"
     query.def_type = "edismax"
@@ -220,14 +223,16 @@ def build_grounding_query(text: str) -> SolrQuery:
 ### Search helper functions ###
 
 
-def obsolete_unboost(multiplier = 0.1):
+def obsolete_unboost(multiplier=0.1):
     return f'if(termfreq(deprecated,"true"),{multiplier},1)'
+
 
 def entity_boost():
     """Shared boost function between search and autocomplete"""
     disease_boost = 'if(termfreq(category,"biolink:Disease"),10.0,1)'
     human_gene_boost = 'if(and(termfreq(in_taxon,"NCBITaxon:9606"),termfreq(category,"biolink:Gene")),5.0,1)'
     return f"product({disease_boost},{human_gene_boost},{obsolete_unboost()})"
+
 
 def entity_query_fields():
     """
@@ -248,4 +253,3 @@ def association_search_query_fields():
         " object object_label^2 object_label_t object_closure object_closure_label object_closure_label_t"
         " publications has_evidence primary_knowledge_source aggregator_knowledge_source provided_by "
     )
-

@@ -18,6 +18,7 @@ from monarch_py.datamodels.model import (
     SearchResults,
 )
 from monarch_py.datamodels.solr import core
+from monarch_py.datamodels.category_enums import AssociationCategory, AssociationPredicate, EntityCategory
 from monarch_py.implementations.solr.solr_parsers import (
     convert_facet_fields,
     convert_facet_queries,
@@ -202,10 +203,10 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         """
 
         super_classes = self._get_associated_entities(
-            this_entity=entity, subject=entity.id, predicate="biolink:subclass_of"
+            this_entity=entity, subject=entity.id, predicate=AssociationPredicate.SUBCLASS_OF.value
         )
         sub_classes = self._get_associated_entities(
-            this_entity=entity, object=entity.id, predicate="biolink:subclass_of"
+            this_entity=entity, object=entity.id, predicate=AssociationPredicate.SUBCLASS_OF.value
         )
 
         return NodeHierarchy(
@@ -219,16 +220,16 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
 
     def get_associations(
         self,
-        category: List[str] = None,
+        category: List[AssociationCategory] = None,
         subject: List[str] = None,
         subject_closure: str = None,
-        subject_category: List[str] = None,
+        subject_category: List[EntityCategory] = None,
         subject_namespace: List[str] = None,
         subject_taxon: List[str] = None,
-        predicate: List[str] = None,
+        predicate: List[AssociationPredicate] = None,
         object: List[str] = None,
         object_closure: str = None,
-        object_category: List[str] = None,
+        object_category: List[EntityCategory] = None,
         object_namespace: List[str] = None,
         object_taxon: List[str] = None,
         entity: List[str] = None,
@@ -254,20 +255,19 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         Returns:
             AssociationResults: Dataclass representing results of an association search.
         """
-
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
         query = build_association_query(
-            category=[category] if isinstance(category, str) else category,
-            predicate=[predicate] if isinstance(predicate, str) else predicate,
+            category=category,
+            predicate=predicate,
             subject=[subject] if isinstance(subject, str) else subject,
             object=[object] if isinstance(object, str) else object,
             entity=[entity] if isinstance(entity, str) else entity,
             subject_closure=subject_closure,
             object_closure=object_closure,
-            subject_category=[subject_category] if isinstance(subject_category, str) else subject_category,
+            subject_category=subject_category,
             subject_namespace=[subject_namespace] if isinstance(subject_namespace, str) else subject_namespace,
             subject_taxon=[subject_taxon] if isinstance(subject_taxon, str) else subject_taxon,
-            object_category=[object_category] if isinstance(object_category, str) else object_category,
+            object_category=object_category,
             object_taxon=[object_taxon] if isinstance(object_taxon, str) else object_taxon,
             object_namespace=[object_namespace] if isinstance(object_namespace, str) else object_namespace,
             direct=direct,
@@ -345,7 +345,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
     def search(
         self,
         q: str = "*:*",
-        category: Union[List[str], None] = None,
+        category: Union[List[EntityCategory], None] = None,
         in_taxon_label: Union[List[str], None] = None,
         facet_fields: Union[List[str], None] = None,
         facet_queries: Union[List[str], None] = None,
@@ -395,9 +395,9 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
 
     def get_association_facets(
         self,
-        category: List[str] = None,
+        category: List[AssociationCategory] = None,
         subject: List[str] = None,
-        predicate: List[str] = None,
+        predicate: List[AssociationPredicate] = None,
         object: List[str] = None,
         subject_closure: str = None,
         object_closure: str = None,
@@ -408,8 +408,8 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
 
         query = build_association_query(
-            category=[category] if isinstance(category, str) else category,
-            predicate=[predicate] if isinstance(predicate, str) else predicate,
+            category=category,
+            predicate=predicate,
             subject=[subject] if isinstance(subject, str) else subject,
             object=[object] if isinstance(object, str) else object,
             entity=[entity] if isinstance(entity, str) else entity,
