@@ -4,6 +4,12 @@ from typing_extensions import Annotated
 import pystow
 import typer
 
+from monarch_py.datamodels.category_enums import (
+    AssociationCategory,
+    AssociationPredicate,
+    EntityCategory,
+    MappingPredicate,
+)
 from monarch_py.utils.solr_cli_utils import ensure_solr, get_solr, solr_status, start_solr, stop_solr
 from monarch_py.utils.utils import console, set_log_level
 from monarch_py.utils.format_utils import format_output
@@ -125,9 +131,13 @@ def entity(
 
 @solr_app.command("associations")
 def associations(
-    category: List[str] = typer.Option(None, "--category", "-c", help="Category to get associations for"),
+    category: List[AssociationCategory] = typer.Option(
+        None, "--category", "-c", help="Category to get associations for"
+    ),
     subject: List[str] = typer.Option(None, "--subject", "-s", help="Subject ID to get associations for"),
-    predicate: List[str] = typer.Option(None, "--predicate", "-p", help="Predicate ID to get associations for"),
+    predicate: List[AssociationPredicate] = typer.Option(
+        None, "--predicate", "-p", help="Predicate ID to get associations for"
+    ),
     object: List[str] = typer.Option(None, "--object", "-o", help="Object ID to get associations for"),
     entity: List[str] = typer.Option(
         None, "--entity", "-e", help="Entity (subject or object) ID to get associations for"
@@ -199,8 +209,6 @@ def multi_entity_associations(
         fmt: The format of the output (json, yaml, tsv, table)
         output: The path to the output file (stdout if not specified)
     """
-    # console.print("\n[bold red]Multi-entity associations not implemented in CLI.[/]\n")
-    # raise typer.Exit(1)
     args = locals()
     args.pop("fmt", None)
     args.pop("output", None)
@@ -213,8 +221,8 @@ def multi_entity_associations(
 
 @solr_app.command("search")
 def search(
-    q: str = typer.Option(None, "--query", "-q"),
-    category: List[str] = typer.Option(None, "--category", "-c"),
+    q: str = typer.Option("*:*", "--query", "-q"),
+    category: List[EntityCategory] = typer.Option(None, "--category", "-c"),
     in_taxon_label: str = typer.Option(None, "--in-taxon-label", "-t"),
     facet_fields: List[str] = typer.Option(None, "--facet-fields", "-ff"),
     facet_queries: List[str] = typer.Option(None, "--facet-queries"),
@@ -340,8 +348,8 @@ def association_counts(
 @solr_app.command("association-table")
 def association_table(
     entity: str = typer.Argument(..., help="The entity to get associations for"),
-    category: str = typer.Argument(
-        ...,
+    category: AssociationCategory = typer.Argument(
+        None,
         help="The association category to get associations for, ex. biolink:GeneToPhenotypicFeatureAssociation",
     ),
     q: str = typer.Option(None, "--query", "-q"),
@@ -365,7 +373,7 @@ def association_table(
 def mappings(
     entity_id: List[str] = typer.Option(None, "--entity-id", "-e", help="entity ID to get mappings for"),
     subject_id: List[str] = typer.Option(None, "--subject-id", "-s", help="subject ID to get mappings for"),
-    predicate_id: List[str] = typer.Option(None, "--predicate-id", "-p", help="predicate ID to get mappings for"),
+    predicate_id: List[MappingPredicate] = typer.Option(None, "--predicate-id", "-p", help="predicate ID to get mappings for"),
     object_id: List[str] = typer.Option(None, "--object-id", "-o", help="object ID to get mappings for"),
     mapping_justification: List[str] = typer.Option(
         None, "--mapping-justification", "-m", help="mapping justification to get mappings for"
