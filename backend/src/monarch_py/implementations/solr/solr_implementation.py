@@ -18,7 +18,12 @@ from monarch_py.datamodels.model import (
     SearchResults,
 )
 from monarch_py.datamodels.solr import core
-from monarch_py.datamodels.category_enums import AssociationCategory, AssociationPredicate, EntityCategory
+from monarch_py.datamodels.category_enums import (
+    AssociationCategory,
+    AssociationPredicate,
+    EntityCategory,
+    MappingPredicate,
+)
 from monarch_py.implementations.solr.solr_parsers import (
     convert_facet_fields,
     convert_facet_queries,
@@ -89,21 +94,21 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         # Get extra data (this logic is very tricky to test because of the calls to Solr)
         node = Node(**solr_document)
         node.uri = get_uri(node.id)
-        if "biolink:Disease" in node.category:
+        if "biolink:Disease" == node.category:
+            # Get mode of inheritance
             mode_of_inheritance_associations = self.get_associations(
-                subject=id, predicate="biolink:has_mode_of_inheritance", direct=True, offset=0
+                subject=id, predicate=[AssociationPredicate.HAS_MODE_OF_INHERITANCE], direct=True, offset=0
             )
             if mode_of_inheritance_associations is not None and len(mode_of_inheritance_associations.items) == 1:
                 node.inheritance = self._get_associated_entity(mode_of_inheritance_associations.items[0], node)
-
-        if "biolink:Disease" == node.category:
+            # Get causal gene
             node.causal_gene = [
                 self._get_associated_entity(association, node)
                 for association in self.get_associations(
                     object=id,
                     direct=True,
-                    predicate="biolink:causes",
-                    category="biolink:CausalGeneToDiseaseAssociation",
+                    predicate=[AssociationPredicate.CAUSES],
+                    category=[AssociationCategory.CAUSAL_GENE_TO_DISEASE_ASSOCIATION],
                 ).items
             ]
         if "biolink:Gene" == node.category:
@@ -112,8 +117,8 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                 for association in self.get_associations(
                     subject=id,
                     direct=True,
-                    predicate="biolink:causes",
-                    category="biolink:CausalGeneToDiseaseAssociation",
+                    predicate=[AssociationPredicate.CAUSES],
+                    category=AssociationCategory.CAUSAL_GENE_TO_DISEASE_ASSOCIATION,
                 ).items
             ]
 
@@ -164,7 +169,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         this_entity: Entity,
         entity: str = None,
         subject: str = None,
-        predicate: str = None,
+        predicate: List[AssociationPredicate] = None,
         object: str = None,
     ) -> List[Entity]:
         """
@@ -203,10 +208,10 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         """
 
         super_classes = self._get_associated_entities(
-            this_entity=entity, subject=entity.id, predicate=AssociationPredicate.SUBCLASS_OF.value
+            this_entity=entity, subject=entity.id, predicate=[AssociationPredicate.SUBCLASS_OF]
         )
         sub_classes = self._get_associated_entities(
-            this_entity=entity, object=entity.id, predicate=AssociationPredicate.SUBCLASS_OF.value
+            this_entity=entity, object=entity.id, predicate=[AssociationPredicate.SUBCLASS_OF]
         )
 
         return NodeHierarchy(
@@ -257,17 +262,17 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         """
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
         query = build_association_query(
-            category=category,
-            predicate=predicate,
+            category=[c.value for c in category] if category else None,
+            predicate=[p.value for p in predicate] if predicate else None,
             subject=[subject] if isinstance(subject, str) else subject,
             object=[object] if isinstance(object, str) else object,
             entity=[entity] if isinstance(entity, str) else entity,
             subject_closure=subject_closure,
             object_closure=object_closure,
-            subject_category=subject_category,
+            subject_category=[c.value for c in subject_category] if subject_category else None,
             subject_namespace=[subject_namespace] if isinstance(subject_namespace, str) else subject_namespace,
             subject_taxon=[subject_taxon] if isinstance(subject_taxon, str) else subject_taxon,
-            object_category=object_category,
+            object_category=[c.value for c in object_category] if object_category else None,
             object_taxon=[object_taxon] if isinstance(object_taxon, str) else object_taxon,
             object_namespace=[object_namespace] if isinstance(object_namespace, str) else object_namespace,
             direct=direct,
@@ -370,9 +375,17 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         Returns:
             SearchResults: Dataclass representing results of a search.
         """
-        args = locals()
-        args.pop("self", None)
-        query = build_search_query(**args)
+        query = build_search_query(
+            q=q,
+            category=[c.value for c in category] if category else None,
+            in_taxon_label=in_taxon_label,
+            facet_fields=facet_fields,
+            facet_queries=facet_queries,
+            filter_queries=filter_queries,
+            sort=sort,
+            offset=offset,
+            limit=limit,
+        )
         solr = SolrService(base_url=self.base_url, core=core.ENTITY)
         query_result = solr.query(query)
         results = parse_search(query_result)
@@ -408,8 +421,8 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
 
         query = build_association_query(
-            category=category,
-            predicate=predicate,
+            category=[c.value for c in category] if category else None,
+            predicate=[p.value for p in predicate] if predicate else None,
             subject=[subject] if isinstance(subject, str) else subject,
             object=[object] if isinstance(object, str) else object,
             entity=[entity] if isinstance(entity, str) else entity,
@@ -437,7 +450,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
     def get_association_table(
         self,
         entity: str,
-        category: str,
+        category: AssociationCategory,
         q: str = None,
         sort: List[str] = None,
         offset: int = 0,
@@ -445,7 +458,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
     ) -> AssociationTableResults:
         query = build_association_table_query(
             entity=entity,
-            category=category,
+            category=category.value,
             q=q,
             sort=sort,
             offset=offset,
@@ -459,7 +472,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         self,
         entity_id: List[str] = None,
         subject_id: List[str] = None,
-        predicate_id: List[str] = None,
+        predicate_id: List[MappingPredicate] = None,
         object_id: List[str] = None,
         mapping_justification: List[str] = None,
         offset: int = 0,
@@ -469,7 +482,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         query = build_mapping_query(
             entity_id=[entity_id] if isinstance(entity_id, str) else entity_id,
             subject_id=[subject_id] if isinstance(subject_id, str) else subject_id,
-            predicate_id=[predicate_id] if isinstance(predicate_id, str) else predicate_id,
+            predicate_id=[p.value for p in predicate_id] if predicate_id else None,
             object_id=[object_id] if isinstance(object_id, str) else object_id,
             mapping_justification=[mapping_justification]
             if isinstance(mapping_justification, str)

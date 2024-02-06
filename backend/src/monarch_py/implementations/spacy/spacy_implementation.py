@@ -4,9 +4,8 @@ from typing import List
 import spacy
 
 from monarch_py.interfaces.grounding_interface import GroundingInterface
-from monarch_py.interfaces.search_interface import SearchInterface
 from monarch_py.interfaces.text_annotation_interface import TextAnnotatorInterface
-from monarch_py.datamodels.model import TextAnnotationResult, Entity, SearchResult
+from monarch_py.datamodels.model import TextAnnotationResult, SearchResult
 
 
 @dataclass
@@ -56,7 +55,6 @@ class SpacyImplementation(TextAnnotatorInterface):
                 spans.append(result.text)
 
         return "".join(spans).rstrip(", ")
-
 
     # def ground_entity(self, entity_text: str) -> List[Entity]:
     #     """

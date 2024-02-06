@@ -1,4 +1,9 @@
 import pytest
+
+from monarch_py.datamodels.category_enums import (
+    AssociationCategory,
+    AssociationPredicate,
+)
 from monarch_py.datamodels.model import Node
 from monarch_py.implementations.solr.solr_query_utils import (
     build_association_counts_query,
@@ -43,16 +48,22 @@ def test_build_association_query(
 
 
 def test_build_association_multiple_categories():
-    query = build_association_query(category=["biolink:Disease", "biolink:PhenotypicFeature"])
+    query = build_association_query(
+        category=[
+            AssociationCategory.CAUSAL_GENE_TO_DISEASE_ASSOCIATION.value,
+            AssociationCategory.DISEASE_TO_PHENOTYPIC_FEATURE_ASSOCIATION.value,
+        ]
+    )
     assert len(query.filter_queries) > 0, "filter_queries is empty"
     category_filter = [fq for fq in query.filter_queries if fq.startswith("category:")][0]
     assert (
-        category_filter == "category:biolink\\:Disease OR biolink\\:PhenotypicFeature"
+        category_filter
+        == "category:biolink\\:CausalGeneToDiseaseAssociation OR biolink\\:DiseaseToPhenotypicFeatureAssociation"
     ), "multiple category filter is not as expected"
 
 
 def test_build_association_multiple_predicates():
-    query = build_association_query(predicate=["biolink:has_phenotype", "biolink:expressed_in"])
+    query = build_association_query(predicate=[AssociationPredicate.HAS_PHENOTYPE.value, AssociationPredicate.EXPRESSED_IN.value])
     assert len(query.filter_queries) > 0, "filter_queries is empty"
     predicate_filter = [fq for fq in query.filter_queries if fq.startswith("predicate:")][0]
     assert (

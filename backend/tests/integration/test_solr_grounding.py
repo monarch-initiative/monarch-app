@@ -23,11 +23,14 @@ def test_grounding(text, expected_id):
     assert expected_id in matching_identifiers
 
 
-@pytest.mark.parametrize("text,unwanted_id", [
-    ("patients", "MGI:1332635"),
-    ("reduced", "MONDO:0012143"),
-    ("Bard", "MONDO:0014432"),
-])
+@pytest.mark.parametrize(
+    "text,unwanted_id",
+    [
+        ("patients", "MGI:1332635"),
+        ("reduced", "MONDO:0012143"),
+        ("Bard", "MONDO:0014432"),
+    ],
+)
 @pytest.mark.skipif(
     condition=not SolrImplementation().solr_is_available(),
     reason="Solr is not available",

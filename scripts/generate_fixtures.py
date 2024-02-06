@@ -9,6 +9,7 @@ import sys
 from pathlib import Path
 
 from monarch_py.api.semsim import _compare, _search
+from monarch_py.datamodels.category_enums import AssociationCategory, AssociationPredicate, EntityCategory
 from monarch_py.datamodels.model import Association, HistoBin, Node, SearchResult
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 from monarch_py.implementations.solr.solr_query_utils import (
@@ -37,7 +38,7 @@ frontend_fixture_dir = Path(root) / "frontend" / "fixtures"
 backend_fixture_dir = Path(root) / "backend" / "tests" / "fixtures"
 
 node_id = "MONDO:0020121"
-category = "biolink:DiseaseToPhenotypicFeatureAssociation"
+category = AssociationCategory.DISEASE_TO_PHENOTYPIC_FEATURE_ASSOCIATION
 
 
 ### Writers
@@ -255,16 +256,22 @@ def main(
         print(f"{'-'*120}\n\tGenerating extra backend fixtures...")
         extra_fixtures["association-counts-query"] = build_association_counts_query(entity=node_id)
         extra_fixtures["association-query-params"] = {
-            "category": ["biolink:TestCase"],
-            "predicate": ["biolink:is_a_test_case", "biolink:is_an_example"],
-            "subject": ["TEST:0000001"],
-            "object": ["TEST:0000002"],
+            "category": [category.value],
+            "subject":  ["TEST:0000001"],
             "subject_closure": "TEST:0000003",
+            "subject_category": [EntityCategory.GENE.value],
+            "subject_namespace": "TEST",
+            "subject_taxon": ["NCBITaxon:1111"],
+            "predicate": [AssociationPredicate.CAUSES.value],
+            "object":  ["TEST:0000002"],
             "object_closure": "TEST:0000004",
+            "object_category": [EntityCategory.DISEASE.value],
+            "object_namespace": "TEST",
+            "object_taxon": ["NCBITaxon:2222"],
             "entity": ["TEST:0000005"],
             "q": "test:q",
             "offset": 100,
-            "limit": 100,
+            "limit": 100
         }
         extra_fixtures["association-query-direct"] = build_association_query(
             **extra_fixtures["association-query-params"], direct=True
@@ -283,7 +290,7 @@ def main(
             extra_fixtures["association-counts-query"]
         )
         extra_fixtures["association-table-response"] = solr_associations.query(
-            build_association_table_query(entity=node_id, category=category)
+            build_association_table_query(entity=node_id, category=category.value)
         )
         extra_fixtures["autocomplete-response"] = solr_entities.query(extra_fixtures["autocomplete-query"])
         extra_fixtures["entity-response"] = solr_entities.get(node_id)

@@ -1,22 +1,21 @@
 from typing import List
 
-from monarch_py.datamodels.category_enums import AssociationCategory, AssociationPredicate, EntityCategory
 from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQuery
 from monarch_py.utils.association_type_utils import AssociationTypeMappings, get_solr_query_fragment
 from monarch_py.utils.utils import escape
 
 
 def build_association_query(
-    category: List[AssociationCategory] = None,
+    category: List[str] = None,
     subject: List[str] = None,
     subject_closure: str = None,
-    subject_category: List[EntityCategory] = None,
+    subject_category: List[str] = None,
     subject_namespace: List[str] = None,
     subject_taxon: List[str] = None,
-    predicate: List[AssociationPredicate] = None,
+    predicate: List[str] = None,
     object: List[str] = None,
     object_closure: str = None,
-    object_category: List[EntityCategory] = None,
+    object_category: List[str] = None,
     object_namespace: List[str] = None,
     object_taxon: List[str] = None,
     entity: List[str] = None,
@@ -30,16 +29,14 @@ def build_association_query(
 ) -> SolrQuery:
     """Populate a SolrQuery object with association filters"""
     query = SolrQuery(start=offset, rows=limit)
-    query.add_field_filter_query("category", None if not category else [c.value for c in category])
-    query.add_field_filter_query("predicate", None if not predicate else [p.value for p in predicate])
+    query.add_field_filter_query("category", None if not category else [c for c in category])
+    query.add_field_filter_query("predicate", None if not predicate else [p for p in predicate])
     query.add_field_filter_query("subject_closure", subject_closure)
-    query.add_field_filter_query(
-        "subject_category", None if not subject_category else [c.value for c in subject_category]
-    )
+    query.add_field_filter_query("subject_category", None if not subject_category else [c for c in subject_category])
     query.add_field_filter_query("subject_namespace", subject_namespace)
     query.add_field_filter_query("subject_taxon", subject_taxon)
     query.add_field_filter_query("object_closure", object_closure)
-    query.add_field_filter_query("object_category", None if not object_category else [c.value for c in object_category])
+    query.add_field_filter_query("object_category", None if not object_category else [c for c in object_category])
     query.add_field_filter_query("object_namespace", object_namespace)
     query.add_field_filter_query("object_taxon", object_taxon)
     if subject:
@@ -76,12 +73,11 @@ def build_association_query(
         query.facet_fields = facet_fields
     if facet_queries:
         query.facet_queries = facet_queries
-    print(query)
     return query
 
 
 def build_association_table_query(
-    entity: str, category: AssociationCategory, q: str = None, offset: int = 0, limit: int = 5, sort: List[str] = None
+    entity: str, category: str, q: str = None, offset: int = 0, limit: int = 5, sort: List[str] = None
 ) -> SolrQuery:
     if sort is None:
         sort = [
@@ -123,15 +119,15 @@ def build_histopheno_query(subject_closure: str) -> SolrQuery:
         offset=0,
         limit=0,
     )
-    hpkeys = [i.value for i in HistoPhenoKeys]
-    query.facet_queries = [f'object_closure:"{i}"' for i in hpkeys]
+    hpkeys = [i for i in HistoPhenoKeys]
+    query.facet_queries = [f'object_closure:"{(i.value)}"' for i in hpkeys]
     return query
 
 
 def build_multi_entity_association_query(
     entity: str,
-    counterpart_category: EntityCategory = None,
-    # predicate: List[AssociationPredicate] = None,
+    counterpart_category: str = None,
+    # predicate: List[str] = None,
     offset: int = 0,
     limit: int = 20,
 ) -> SolrQuery:
@@ -139,7 +135,7 @@ def build_multi_entity_association_query(
     query = SolrQuery(start=offset, rows=limit)
     if counterpart_category:
         query.add_filter_query(
-            f'(subject:"{escape(entity)}" AND object_category:"{escape(counterpart_category.value)}") OR (object:"{escape(entity)}" AND subject_category:"{escape(counterpart_category.value)}")'
+            f'(subject:"{escape(entity)}" AND object_category:"{escape(counterpart_category)}") OR (object:"{escape(entity)}" AND subject_category:"{escape(counterpart_category)}")'
         )
     else:
         query.add_filter_query(f'(subject:"{escape(entity)}") OR (object:"{escape(entity)}")')
@@ -150,7 +146,7 @@ def build_search_query(
     q: str = "*:*",
     offset: int = 0,
     limit: int = 20,
-    category: List[EntityCategory] = None,
+    category: List[str] = None,
     in_taxon_label: List[str] = None,
     facet_fields: List[str] = None,
     facet_queries: List[str] = None,
@@ -163,7 +159,7 @@ def build_search_query(
     query.query_fields = entity_query_fields()
     query.boost = entity_boost()
     if category:
-        query.add_filter_query(" OR ".join(f'category:"{cat.value}"' for cat in category))
+        query.add_filter_query(" OR ".join(f'category:"{cat}"' for cat in category))
     if in_taxon_label:
         query.add_filter_query(" OR ".join([f'in_taxon_label:"{t}"' for t in in_taxon_label]))
     if facet_fields:
@@ -198,15 +194,15 @@ def build_mapping_query(
 ) -> SolrQuery:
     query = SolrQuery(start=offset, rows=limit)
     if entity_id:
-        query.add_filter_query(" OR ".join([f'subject_id:"{escape(e)}" OR object_id:"{escape(e)}"' for e in entity_id]))
+        query.add_filter_query(" OR ".join([f'subject_id:"{escape(i)}" OR object_id:"{escape(i)}"' for i in entity_id]))
     if subject_id:
-        query.add_filter_query(" OR ".join([f'subject_id:"{escape(e)}"' for e in subject_id]))
+        query.add_filter_query(" OR ".join([f'subject_id:"{escape(i)}"' for i in subject_id]))
     if predicate_id:
-        query.add_filter_query(" OR ".join([f'predicate_id:"{escape(e)}"' for e in predicate_id]))
+        query.add_filter_query(" OR ".join([f'predicate_id:"{escape(i)}"' for i in predicate_id]))
     if object_id:
-        query.add_filter_query(" OR ".join([f'object_id:"{escape(e)}"' for e in object_id]))
+        query.add_filter_query(" OR ".join([f'object_id:"{escape(i)}"' for i in object_id]))
     if mapping_justification:
-        query.add_filter_query(" OR ".join([f'mapping_justification:"{escape(e)}"' for e in mapping_justification]))
+        query.add_filter_query(" OR ".join([f'mapping_justification:"{escape(i)}"' for i in mapping_justification]))
     return query
 
 
