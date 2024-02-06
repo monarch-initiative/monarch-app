@@ -18,7 +18,7 @@ class SpacyImplementation(TextAnnotatorInterface):
     grounding_implementation = None
 
     def init_spacy(self, grounding_implementation: GroundingInterface):
-        self.nlp = spacy.load("en_core_sci_sm")
+        self.get_annotated_entitiesnlp = spacy.load("en_core_sci_sm")
         self.grounding_implementation = grounding_implementation
         self.nlp("Nystagmus, strabismus, fundus, ocular albinism, lewis.")
 
@@ -52,7 +52,7 @@ class SpacyImplementation(TextAnnotatorInterface):
                     )
                     results.append(result)
                 elif len(entity.text.split()) > 1:
-                    # Handle superset/multi-word entities
+                    # Handle superset/multi-word entities (adding period to treat entity as a sentence)
                     for concept in self.nlp(entity.text.upper() + "."):
                         matching_entities = self.grounding_implementation.ground_entity(concept.text)
                         result = TextAnnotationResult(
