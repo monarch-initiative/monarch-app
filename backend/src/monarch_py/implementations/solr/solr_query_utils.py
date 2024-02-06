@@ -211,7 +211,7 @@ def build_grounding_query(text: str) -> SolrQuery:
     query = SolrQuery(q=text, limit=10, start=0)
     query.q = f'"{text}"' # quoting so that the complete text is matched as a unit
     # rather than _t (text) or _ac (autocomplete/starts-with), just use keyword fields
-    query.query_fields = "id^100 name^10 symbol^10 synonym"
+    query.query_fields = "id^100 name^10 symbol^10 synonym name_grounding full_name_grounding symbol_grounding synonym_grounding"
     query.def_type = "edismax"
     query.boost = obsolete_unboost(multiplier=0.001)
     return query

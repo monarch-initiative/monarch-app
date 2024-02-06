@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import List
 
 import spacy
+import re
 
 from monarch_py.interfaces.grounding_interface import GroundingInterface
 from monarch_py.interfaces.search_interface import SearchInterface
@@ -26,6 +27,14 @@ class SpacyImplementation(TextAnnotatorInterface):
         results: List[TextAnnotationResult] = []
         doc = self.nlp(text)
 
+        # Identify tokens to be excluded from annotations
+        excluded_tokens = set()
+        for token in doc:
+            # To filter out tokens representing people's names
+            if token.dep_ == "nsubj" and (token.pos_ in {"PROPN", "NOUN"}) and not token.ent_type_:
+                excluded_tokens.add(token.text.lower())
+
+        # Modify text to match entity capitalization to handle inconsistent annotations
         for entity in doc.ents:
             matching_entities = self.grounding_implementation.ground_entity(entity.text)
             if matching_entities:
@@ -33,12 +42,25 @@ class SpacyImplementation(TextAnnotatorInterface):
 
         doc = self.nlp(text)  # Recreate the doc after modifying the text
 
+        # Annotate entities and handle multi-word entities
         for entity in doc.ents:
-            matching_entities = self.grounding_implementation.ground_entity(entity.text)
-            result = TextAnnotationResult(
-                text=entity.text, tokens=matching_entities, start=entity.start_char, end=entity.end_char
-            )
-            results.append(result)
+            if entity.text.lower() not in excluded_tokens:
+                matching_entities = self.grounding_implementation.ground_entity(entity.text)
+                if matching_entities:
+                    result = TextAnnotationResult(
+                        text=entity.text, tokens=matching_entities, start=entity.start_char, end=entity.end_char
+                    )
+                    results.append(result)
+                elif len(entity.text.split()) > 1:
+                    # Handle superset/multi-word entities
+                    for concept in self.nlp(entity.text.upper() + "."):
+                        matching_entities = self.grounding_implementation.ground_entity(concept.text)
+                        result = TextAnnotationResult(
+                            text=entity.text, tokens=matching_entities, start=entity.start_char, end=entity.end_char
+                        )
+                        results.append(result)
+
+        # Add non-entity results
         return self.add_non_entity_results(text, results)
 
     def annotate_text(self, text) -> str:
@@ -61,7 +83,6 @@ class SpacyImplementation(TextAnnotatorInterface):
                 spans.append(result.text)
 
         return "".join(spans).rstrip(", ")
-
 
     # def ground_entity(self, entity_text: str) -> List[Entity]:
     #     """
@@ -87,7 +108,7 @@ class SpacyImplementation(TextAnnotatorInterface):
         start_index = 0
         for entity in entities:
             if start_index < entity.start:
-                non_span_text = text[start_index : entity.start]
+                non_span_text = text[start_index: entity.start]
                 results.append(TextAnnotationResult(text=non_span_text, start=start_index, end=entity.start))
             results.append(entity)
             start_index = entity.end
