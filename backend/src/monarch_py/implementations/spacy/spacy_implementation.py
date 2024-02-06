@@ -18,7 +18,7 @@ class SpacyImplementation(TextAnnotatorInterface):
     grounding_implementation = None
 
     def init_spacy(self, grounding_implementation: GroundingInterface):
-        self.get_annotated_entitiesnlp = spacy.load("en_core_sci_sm")
+        self.nlp = spacy.load("en_core_sci_sm")
         self.grounding_implementation = grounding_implementation
         self.nlp("Nystagmus, strabismus, fundus, ocular albinism, lewis.")
 
