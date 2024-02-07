@@ -41,3 +41,14 @@ jobs:
       #----------------------------------------------
       - name: Run tests
         run: poetry -C backend run pytest backend/tests
+
+      #----------------------------------------------
+      #              coverage report
+      #----------------------------------------------
+      - name: Generate coverage results
+        run: |
+          poetry -C backend run coverage run -m pytest backend/tests
+          poetry run coverage xml
+          poetry run coverage report -m
+        shell: bash
+
