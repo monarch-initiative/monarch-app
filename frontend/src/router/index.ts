@@ -123,6 +123,11 @@ export const routes: RouteRecordRaw[] = [
     name: "Outreach",
     component: asyncRoute("about/PageOutreach"),
   },
+  {
+    path: "/how-to",
+    name: "HowTo",
+    component: asyncRoute("about/PageHowTo"),
+  },
 
   /** resources page */
   {
