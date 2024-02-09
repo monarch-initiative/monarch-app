@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, Query
 from monarch_py.api.additional_models import OutputFormat, PaginationParams
 from monarch_py.api.config import solr
 from monarch_py.datamodels.model import AssociationResults, MultiEntityAssociationResults
-from monarch_py.datamodels.category_enums import AssociationCategory, AssociationPredicate
+from monarch_py.datamodels.category_enums import AssociationCategory, AssociationPredicate, EntityCategory
 from monarch_py.utils.format_utils import to_tsv
 
 router = APIRouter(
@@ -17,12 +17,18 @@ router = APIRouter(
 @router.get("")
 @router.get("/all", include_in_schema=False)  # We can remove this once the chatgpt plugin & oak aren't using it
 async def _get_associations(
-    category: Union[List[AssociationCategory], None] = Query(default=None),
+    category: List[AssociationCategory] = Query(default_factory=list),
     subject: Union[List[str], None] = Query(default=None),
-    predicate: Union[List[AssociationPredicate], None] = Query(default=None),
+    subject_category: List[EntityCategory] = Query(default_factory=list),
+    subject_namespace: Union[List[str], None] = Query(default=None),
+    subject_taxon: Union[List[str], None] = Query(default=None),
+    predicate: List[AssociationPredicate] = Query(default_factory=list),
     object: Union[List[str], None] = Query(default=None),
+    object_category: List[EntityCategory] = Query(default_factory=list),
+    object_namespace: Union[List[str], None] = Query(default=None),
+    object_taxon: Union[List[str], None] = Query(default=None),
     entity: Union[List[str], None] = Query(default=None),
-    direct: Union[bool, None] = Query(default=None),
+    direct: bool = Query(default=False),
     pagination: PaginationParams = Depends(),
     format: OutputFormat = Query(
         default=OutputFormat.json,
@@ -31,16 +37,18 @@ async def _get_associations(
     ),
 ) -> Union[AssociationResults, str]:
     """Retrieves all associations for a given entity, or between two entities."""
-    if category:
-        category = [c.value if isinstance(c, AssociationCategory) else c for c in category]
-    if predicate:
-        predicate = [p.value if isinstance(p, AssociationPredicate) else p for p in predicate]
     response = solr().get_associations(
-        category=category,
-        predicate=predicate,
+        category=[category.value for category in category],
         subject=subject,
+        predicate=[predicate.value for predicate in predicate],
         object=object,
         entity=entity,
+        subject_category=[subject_category.value for subject_category in subject_category],
+        subject_namespace=subject_namespace,
+        subject_taxon=subject_taxon,
+        object_taxon=object_taxon,
+        object_category=[object_category.value for object_category in object_category],
+        object_namespace=object_namespace,
         direct=direct,
         offset=pagination.offset,
         limit=pagination.limit,

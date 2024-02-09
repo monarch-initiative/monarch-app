@@ -495,17 +495,24 @@ const scrollInfo = useScroll(scroll);
 const scrollCoords = ref({ x: 0, y: 0, w: 0, h: 0 });
 function updateScroll() {
   if (!svg.value || !scroll.value) return;
-  const { x, y } = screenToSvgCoords(
+  const position = screenToSvgCoords(
     svg.value,
     scrollInfo.x.value,
     scrollInfo.y.value,
   );
-  const { x: w, y: h } = screenToSvgCoords(
+  if (!position) return;
+  const dimensions = screenToSvgCoords(
     svg.value,
     scroll.value.clientWidth,
     scroll.value.clientHeight,
   );
-  scrollCoords.value = { x: x + marginLeft, y: y + marginTop, w, h };
+  if (!dimensions) return;
+  scrollCoords.value = {
+    x: position.x + marginLeft,
+    y: position.y + marginTop,
+    w: dimensions.x,
+    h: dimensions.y,
+  };
 }
 watch(() => scrollInfo, updateScroll, { deep: true });
 useResizeObserver(scroll, updateScroll);

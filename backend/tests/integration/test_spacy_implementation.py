@@ -6,7 +6,7 @@ from monarch_py.implementations.spacy.spacy_implementation import SpacyImplement
 @pytest.fixture
 def spacy_instance():
     spacy = SpacyImplementation()
-    spacy.init_spacy(search_engine=SolrImplementation())
+    spacy.init_spacy(grounding_implementation=SolrImplementation())
     return spacy
 
 
@@ -67,27 +67,6 @@ def test_non_entity_text_is_returned_between_entities(spacy_instance):
     assert entities[2].text == " and "
     assert entities[3].text == "Ehlers Danlos syndrome"
     assert entities[4].text == ", ok?"
-
-
-@pytest.mark.parametrize(
-    "text,expected_id",
-    [
-        ("Marfan syndrome", "MONDO:0007947"),
-        ("Ehlers-Danlos syndrome", "MONDO:0007522"),
-        ("Ehlers-Danlos syndrome", "MONDO:0007522"),
-        ("Loeys-Dietz syndrome", "MONDO:0018954"),
-        ("connective tissue disorder", "MONDO:0003900"),
-    ],
-)
-@pytest.mark.skipif(
-    condition=not SolrImplementation().solr_is_available(),
-    reason="Solr is not available",
-)
-def test_grounding(spacy_instance, text, expected_id):
-    matching_results = spacy_instance.ground_entity(text)
-    assert matching_results
-    matching_identifiers = [result.id for result in matching_results]
-    assert expected_id in matching_identifiers
 
 
 # This test is intended to act as guard rails and documentation of entity recognition quality, if we collect

@@ -142,6 +142,13 @@
 
     <AppFlex align-v="top">
       <AppTile
+        to="https://groups.google.com/g/monarch-friends/"
+        icon="envelope"
+        title="Subscribe"
+        subtitle="Mailing list"
+        design="small"
+      />
+      <AppTile
         to="https://medium.com/@MonarchInit"
         icon="medium"
         title="Medium"
@@ -166,7 +173,7 @@
         to="https://www.linkedin.com/company/the-monarch-initiative"
         icon="linkedin"
         title="LinkedIn"
-        subtitle="Major updates"
+        subtitle="Social updates"
         design="small"
       />
     </AppFlex>

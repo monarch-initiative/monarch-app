@@ -2,7 +2,9 @@ from dataclasses import dataclass
 from typing import List
 
 import spacy
+import re
 
+from monarch_py.interfaces.grounding_interface import GroundingInterface
 from monarch_py.interfaces.search_interface import SearchInterface
 from monarch_py.interfaces.text_annotation_interface import TextAnnotatorInterface
 from monarch_py.datamodels.model import TextAnnotationResult, Entity, SearchResult
@@ -13,26 +15,44 @@ class SpacyImplementation(TextAnnotatorInterface):
     """Implementation of Monarch Interfaces for SPACY"""
 
     nlp = None
-    search_engine = None
+    grounding_implementation = None
 
-    def init_spacy(self, search_engine: SearchInterface):
+    def init_spacy(self, grounding_implementation: GroundingInterface):
         self.nlp = spacy.load("en_core_sci_sm")
-        self.search_engine = search_engine
+        self.grounding_implementation = grounding_implementation
         self.nlp("Nystagmus, strabismus, fundus, ocular albinism, lewis.")
 
     def get_annotated_entities(self, text) -> List[TextAnnotationResult]:
         """Annotate text using SPACY"""
-
         results: List[TextAnnotationResult] = []
         doc = self.nlp(text)
 
-        for entity in doc.ents:
-            matching_entities = self.ground_entity(entity.text)
-            result = TextAnnotationResult(
-                text=entity.text, tokens=matching_entities, start=entity.start_char, end=entity.end_char
-            )
-            results.append(result)
+        # Identify tokens to be excluded from annotations
+        excluded_tokens = set()
+        for token in doc:
+            # To filter out tokens representing people's names
+            if token.dep_ == "nsubj" and (token.pos_ in {"PROPN", "NOUN"}) and not token.ent_type_:
+                excluded_tokens.add(token.text.lower())
 
+        # Modify text to match entity capitalization to handle inconsistent annotations
+        for entity in doc.ents:
+            matching_entities = self.grounding_implementation.ground_entity(entity.text)
+            if matching_entities and text.lower().count(entity.text.lower()) > 1:
+                text = text.replace(entity.text, entity.text.title())
+
+        doc = self.nlp(text)  # Recreate the doc after modifying the text
+
+        # Annotate entities
+        for entity in doc.ents:
+            if entity.text.lower() not in excluded_tokens:
+                matching_entities = self.grounding_implementation.ground_entity(entity.text)
+                if matching_entities:
+                    result = TextAnnotationResult(
+                        text=entity.text, tokens=matching_entities, start=entity.start_char, end=entity.end_char
+                    )
+                    results.append(result)
+
+        # Add non-entity results
         return self.add_non_entity_results(text, results)
 
     def annotate_text(self, text) -> str:
@@ -56,36 +76,31 @@ class SpacyImplementation(TextAnnotatorInterface):
 
         return "".join(spans).rstrip(", ")
 
-    def create_span(self, entity: Entity) -> str:
-        """Returns an html formatted string with tags wrapping entities found in the text"""
-        pass
-
-    def ground_entity(self, entity_text: str) -> List[Entity]:
-        """
-        Grounds an entity (finds an appropriate ID or a collection of potential identifiers),
-        using the search engine (Solr), returning the first 3 matches along with any exact matches,
-        allowing for (hpo) and (mpo) suffixes
-
-        """
-        search_results = self.search_engine.search(q=str(entity_text))
-        filtered_search_results = [result for result in search_results.items if not result.deprecated]
-
-        returned_entities = filtered_search_results[:3]
-
-        for result in filtered_search_results[3:]:
-            stripped_result_name = result.name.lower().replace(" (hpo)", "").replace(" (mpo)", "")
-            if entity_text.lower() == stripped_result_name:
-                returned_entities.append(result)
-
-        return returned_entities
-
+    # def ground_entity(self, entity_text: str) -> List[Entity]:
+    #     """
+    #     Grounds an entity (finds an appropriate ID or a collection of potential identifiers),
+    #     using the search engine (Solr), returning the first 3 matches along with any exact matches,
+    #     allowing for (hpo) and (mpo) suffixes
+    #
+    #     """
+    #
+    #     filtered_search_results = [result for result in search_results.items if not result.deprecated]
+    #
+    #     returned_entities = filtered_search_results[:3]
+    #
+    #     for result in filtered_search_results[3:]:
+    #         stripped_result_name = result.name.lower().replace(" (hpo)", "").replace(" (mpo)", "")
+    #         if entity_text.lower() == stripped_result_name:
+    #             returned_entities.append(result)
+    #
+    #     return returned_entities
     def add_non_entity_results(self, text: str, entities: List[TextAnnotationResult]) -> List[TextAnnotationResult]:
         """Adds non-entity text to the list of entities"""
         results = []
         start_index = 0
         for entity in entities:
             if start_index < entity.start:
-                non_span_text = text[start_index : entity.start]
+                non_span_text = text[start_index: entity.start]
                 results.append(TextAnnotationResult(text=non_span_text, start=start_index, end=entity.start))
             results.append(entity)
             start_index = entity.end

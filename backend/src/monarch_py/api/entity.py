@@ -71,7 +71,7 @@ def _association_table(
         title="Output format for the response",
         examples=["json", "tsv"],
     ),
-    download=Query(
+    download: bool = Query(
         default=False,
         title="Download the results as a file",
         examples=[True, False],
@@ -92,7 +92,7 @@ def _association_table(
     response = solr().get_association_table(
         entity=id, category=category.value, q=query, sort=sort, offset=pagination.offset, limit=pagination.limit
     )
-    if download:
+    if download is True:
         string_response = (
             to_tsv(response, print_output=False)
             if format == OutputFormat.tsv

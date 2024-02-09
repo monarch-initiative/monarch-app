@@ -16,3 +16,6 @@ docs/Data-Model
 scripts/*.json
 scripts/pubs_report.txt
 .DS_Store
+
+### Test/Coverage ignore
+.coverage

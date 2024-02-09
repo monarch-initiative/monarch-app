@@ -67,14 +67,6 @@ def _search(
     <b>Returns:</b> <br>
         List[str]: List of matching terms
     """
-
-    print(
-        f"""
-    Running semsim search:
-        termset: {termset}
-        group: {group}
-    """
-    )
     terms = [term.strip() for term in termset.split(",")]
     results = semsimian().search(termset=terms, prefix=parse_similarity_prefix(group), limit=limit)
     return results

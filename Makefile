@@ -94,22 +94,7 @@ docs: install-backend docs/Data-Model
 	$(RUN) mkdocs build
 
 
-### Testing ###
-
-.PHONY: test
-test: test-backend test-frontend
-
-
-.PHONY: test-backend
-test-backend: 
-	$(RUN) pytest backend/tests
-
-
-.PHONY: test-frontend
-test-frontend: 
-	cd frontend && \
-		yarn test
-
+### Data/Fixtures ###
 
 .PHONY: fixtures
 fixtures: 
@@ -133,6 +118,24 @@ category-enums:
 	@echo "Generating category enums..."
 	$(RUN) python scripts/generate_category_enums.py
 	make format-backend
+	
+
+### Testing ###
+
+.PHONY: test
+test: test-backend test-frontend
+
+
+.PHONY: test-backend
+test-backend: 
+	$(RUN) pytest backend/tests
+
+
+.PHONY: test-frontend
+test-frontend: 
+	cd frontend && \
+		yarn test
+
 
 ### Development ###
 

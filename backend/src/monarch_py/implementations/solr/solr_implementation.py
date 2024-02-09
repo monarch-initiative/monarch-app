@@ -39,17 +39,19 @@ from monarch_py.implementations.solr.solr_query_utils import (
     build_mapping_query,
     build_multi_entity_association_query,
     build_search_query,
+    build_grounding_query,
 )
 from monarch_py.interfaces.association_interface import AssociationInterface
 from monarch_py.interfaces.entity_interface import EntityInterface
 from monarch_py.interfaces.search_interface import SearchInterface
+from monarch_py.interfaces.grounding_interface import GroundingInterface
 from monarch_py.service.solr_service import SolrService
 from monarch_py.utils.entity_utils import get_expanded_curie, get_uri
 from monarch_py.utils.utils import get_provided_by_link, get_links_for_field
 
 
 @dataclass
-class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface):
+class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface, GroundingInterface):
     """Implementation of Monarch Interfaces for Solr endpoint"""
 
     base_url: str = os.getenv("MONARCH_SOLR_URL", "http://localhost:8983/solr")
@@ -219,12 +221,18 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         self,
         category: List[str] = None,
         subject: List[str] = None,
+        subject_closure: str = None,
+        subject_category: List[str] = None,
+        subject_namespace: List[str] = None,
+        subject_taxon: List[str] = None,
         predicate: List[str] = None,
         object: List[str] = None,
-        subject_closure: str = None,
         object_closure: str = None,
+        object_category: List[str] = None,
+        object_namespace: List[str] = None,
+        object_taxon: List[str] = None,
         entity: List[str] = None,
-        direct: bool = None,
+        direct: bool = False,
         q: str = None,
         offset: int = 0,
         limit: int = 20,
@@ -256,6 +264,12 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
             entity=[entity] if isinstance(entity, str) else entity,
             subject_closure=subject_closure,
             object_closure=object_closure,
+            subject_category=[subject_category] if isinstance(subject_category, str) else subject_category,
+            subject_namespace=[subject_namespace] if isinstance(subject_namespace, str) else subject_namespace,
+            subject_taxon=[subject_taxon] if isinstance(subject_taxon, str) else subject_taxon,
+            object_category=[object_category] if isinstance(object_category, str) else object_category,
+            object_taxon=[object_taxon] if isinstance(object_taxon, str) else object_taxon,
+            object_namespace=[object_namespace] if isinstance(object_namespace, str) else object_namespace,
             direct=direct,
             q=q,
             offset=offset,
@@ -466,3 +480,23 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface)
         query_result = solr.query(query)
         mappings = parse_mappings(query_result, offset, limit)
         return mappings
+
+    ##################################
+    # Implements: GroundingInterface #
+    ##################################
+
+    def ground_entity(self, text: str) -> List[Entity]:
+        """Grounds a single entity
+
+        Args:
+            text (str): Text to ground
+
+        Returns:
+            Entity: Dataclass representing a single entity
+        """
+        solr = SolrService(base_url=self.base_url, core=core.ENTITY)
+        query = build_grounding_query(text)
+        query_result = solr.query(query)
+        search_result = parse_search(query_result)
+        entities = [entity for entity in search_result.items[:3]]
+        return entities

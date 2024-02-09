@@ -7,13 +7,19 @@ from monarch_py.utils.utils import escape
 
 def build_association_query(
     category: List[str] = None,
-    predicate: List[str] = None,
     subject: List[str] = None,
-    object: List[str] = None,
     subject_closure: str = None,
+    subject_category: List[str] = None,
+    subject_namespace: List[str] = None,
+    subject_taxon: List[str] = None,
+    predicate: List[str] = None,
+    object: List[str] = None,
     object_closure: str = None,
+    object_category: List[str] = None,
+    object_namespace: List[str] = None,
+    object_taxon: List[str] = None,
     entity: List[str] = None,
-    direct: bool = None,
+    direct: bool = False,
     q: str = None,
     sort: List[str] = None,
     facet_fields: List[str] = None,
@@ -23,24 +29,26 @@ def build_association_query(
 ) -> SolrQuery:
     """Populate a SolrQuery object with association filters"""
     query = SolrQuery(start=offset, rows=limit)
-    if category:
-        query.add_filter_query(" OR ".join([f"category:{escape(cat)}" for cat in category]))
-    if predicate:
-        query.add_filter_query(" OR ".join([f"predicate:{escape(pred)}" for pred in predicate]))
+    query.add_field_filter_query("category", category)
+    query.add_field_filter_query("predicate", predicate)
+    query.add_field_filter_query("subject_closure", subject_closure)
+    query.add_field_filter_query("subject_category", subject_category)
+    query.add_field_filter_query("subject_namespace", subject_namespace)
+    query.add_field_filter_query("subject_taxon", subject_taxon)
+    query.add_field_filter_query("object_closure", object_closure)
+    query.add_field_filter_query("object_category", object_category)
+    query.add_field_filter_query("object_namespace", object_namespace)
+    query.add_field_filter_query("object_taxon", object_taxon)
     if subject:
         if direct:
             query.add_field_filter_query("subject", " OR ".join(subject))
         else:
             query.add_filter_query(" OR ".join([f'subject:"{s}" OR subject_closure:"{s}"' for s in subject]))
-    if subject_closure:
-        query.add_field_filter_query("subject_closure", subject_closure)
     if object:
         if direct:
             query.add_field_filter_query("object", " OR ".join(object))
         else:
             query.add_filter_query(" OR ".join([f'object:"{o}" OR object_closure:"{o}"' for o in object]))
-    if object_closure:
-        query.add_field_filter_query("object_closure", object_closure)
     if entity:
         if direct:
             query.add_filter_query(" OR ".join([f'subject:"{escape(e)}" OR object:"{escape(e)}"' for e in entity]))
@@ -65,6 +73,7 @@ def build_association_query(
         query.facet_fields = facet_fields
     if facet_queries:
         query.facet_queries = facet_queries
+    print(query)
     return query
 
 
@@ -198,16 +207,27 @@ def build_mapping_query(
     return query
 
 
+def build_grounding_query(text: str) -> SolrQuery:
+    query = SolrQuery(q=text, limit=10, start=0)
+    query.q = f'"{text}"' # quoting so that the complete text is matched as a unit
+    # rather than _t (text) or _ac (autocomplete/starts-with), just use keyword fields
+    query.query_fields = "id^100 name^10 symbol^10 synonym name_grounding full_name_grounding symbol_grounding synonym_grounding"
+    query.def_type = "edismax"
+    query.boost = obsolete_unboost(multiplier=0.001)
+    return query
+
+
 ### Search helper functions ###
 
+
+def obsolete_unboost(multiplier = 0.1):
+    return f'if(termfreq(deprecated,"true"),{multiplier},1)'
 
 def entity_boost():
     """Shared boost function between search and autocomplete"""
     disease_boost = 'if(termfreq(category,"biolink:Disease"),10.0,1)'
     human_gene_boost = 'if(and(termfreq(in_taxon,"NCBITaxon:9606"),termfreq(category,"biolink:Gene")),5.0,1)'
-    obsolete_unboost = 'if(termfreq(deprecated,"true"),0.1,1)'
-    return f"product({disease_boost},{human_gene_boost},{obsolete_unboost})"
-
+    return f"product({disease_boost},{human_gene_boost},{obsolete_unboost()})"
 
 def entity_query_fields():
     """
@@ -228,3 +248,4 @@ def association_search_query_fields():
         " object object_label^2 object_label_t object_closure object_closure_label object_closure_label_t"
         " publications has_evidence primary_knowledge_source aggregator_knowledge_source provided_by "
     )
+
