@@ -47,6 +47,7 @@ The Biolink API (Monarch v1/v2) is available at
 but will be [shut down on March 20th, 2023](http://monarchinit.medium.com/migrating-to-the-new-monarch-infrastructure-fe9d98ccf64a).
 """
 
+
 @app.get("/")
 async def _root():
     return RedirectResponse(url="/v3/docs")

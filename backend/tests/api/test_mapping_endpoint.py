@@ -30,7 +30,7 @@ def test_mappings_params(mock_get_mappings, mappings):
         "object_id": ["MONDO:0000001", "MONDO:0000002"],
         "mapping_justification": ["semapv:UnspecifiedMatching"],
         "offset": 0,
-        "limit": 20
+        "limit": 20,
     }
     query_string = urllib.parse.urlencode(params, doseq=True)
     mappings = MappingResults(**mappings)
