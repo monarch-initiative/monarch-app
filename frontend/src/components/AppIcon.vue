@@ -8,7 +8,7 @@
     v-if="isCustom"
     :class="['app-icon', type]"
     aria-hidden="true"
-    @vue:mounted="customMounted"
+    @vue:updated="({ el }: VNode) => customMounted(el, true)"
   />
   <FontAwesomeIcon
     v-else-if="fontAwesome"
@@ -16,7 +16,12 @@
     class="app-icon"
     aria-hidden="true"
   />
-  <svg v-else-if="initials" viewBox="0 0 100 100" class="app-icon initials">
+  <svg
+    v-else-if="initials"
+    viewBox="0 0 100 100"
+    class="app-icon initials"
+    @vue:mounted="({ el }: VNode) => customMounted(el)"
+  >
     <circle class="outline" cx="50" cy="50" r="50" />
     <text x="50" y="54">
       {{ initials }}
@@ -85,22 +90,28 @@ const initials = computed(
 );
 
 /** when custom icon mounted */
-function customMounted({ el }: VNode) {
+function customMounted(element: VNode["el"], createCircle = false) {
   /** add child elements to category icon */
-  if (el && el instanceof SVGSVGElement && type.value === "category") {
+  if (
+    element &&
+    element instanceof SVGSVGElement &&
+    type.value === "category"
+  ) {
     /** set color for category */
-    el.style.setProperty("--color", getCategoryColor(props.icon));
+    element.style.setProperty("--color", getCategoryColor(props.icon));
 
-    /** create circle outline */
-    const outline = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "circle",
-    );
-    outline.setAttribute("cx", "50");
-    outline.setAttribute("cy", "50");
-    outline.setAttribute("r", "50");
-    outline.classList.add("outline");
-    el.insertBefore(outline, el.firstChild!);
+    if (createCircle) {
+      /** create circle outline */
+      const outline = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "circle",
+      );
+      outline.setAttribute("cx", "50");
+      outline.setAttribute("cy", "50");
+      outline.setAttribute("r", "50");
+      outline.classList.add("outline");
+      element.insertBefore(outline, element.firstChild!);
+    }
   }
 }
 </script>
