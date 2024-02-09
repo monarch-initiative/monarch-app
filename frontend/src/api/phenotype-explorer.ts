@@ -21,9 +21,6 @@ export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
     return {
       autoAccept: true,
       options: ids.map((id) => ({ id })),
-      message: ids.every((id) => id.startsWith("HP:"))
-        ? ""
-        : 'One or more pasted IDs were not valid HPO phenotype IDs (starting with "HP:")',
     };
 
   /** otherwise perform string search for phenotypes/genes/diseases */
@@ -96,9 +93,13 @@ export const compareSetToSet = async (
   const url = `${apiUrl}/semsim/compare`;
   const response = await request<TermSetPairwiseSimilarity>(url, {}, options);
 
-  /** get high level data */
-  const triptych = Object.values(response.subject_best_matches || {}).map(
-    (match) => ({
+  /** map matches into nicer format */
+  const mapMatches = (
+    matches:
+      | TermSetPairwiseSimilarity["subject_best_matches"]
+      | TermSetPairwiseSimilarity["object_best_matches"],
+  ) =>
+    Object.values(matches || {}).map((match) => ({
       source: match.match_source,
       source_label: match.match_source_label,
       target: match.match_target,
@@ -110,13 +111,23 @@ export const compareSetToSet = async (
         "jaccard_similarity",
         "phenodigm_score",
       ]),
-    }),
+    }));
+
+  /** get high level data */
+  const subjectMatches = mapMatches(response.subject_best_matches);
+  const objectMatches = mapMatches(response.object_best_matches);
+  subjectMatches.sort((a, b) => b.score - a.score);
+  objectMatches.sort((a, b) => b.score - a.score);
+
+  /** find unmatched */
+  const subjectUnmatched = Object.values(response.subject_termset || {}).filter(
+    (term) => !(term.id in (response.subject_best_matches || {})),
   );
-  triptych.sort((a, b) => b.score - a.score);
+  const objectUnmatched = Object.values(response.object_termset || {}).filter(
+    (term) => !(term.id in (response.object_best_matches || {})),
+  );
 
-  console.log(response);
-
-  return { triptych };
+  return { subjectMatches, objectMatches, subjectUnmatched, objectUnmatched };
 };
 
 export type SetToSet = Awaited<ReturnType<typeof compareSetToSet>>;
@@ -130,6 +141,8 @@ export const groups = [
   "Zebrafish Genes",
   "C. Elegans Genes",
 ] as const;
+
+export type Group = (typeof groups)[number];
 
 /** compare a set of phenotypes to a group of phenotypes */
 export const compareSetToGroup = async (

@@ -59,7 +59,7 @@ type Tab = {
   tooltip?: string;
   disabled?: boolean;
 };
-type Tabs = Tab[];
+type Tabs = readonly Tab[];
 
 type Props = {
   /** two-way bound selected tab state */

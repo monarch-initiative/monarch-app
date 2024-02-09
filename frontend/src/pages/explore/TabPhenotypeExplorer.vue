@@ -70,25 +70,41 @@
   </AppSection>
 
   <!-- compare results -->
-  <AppSection v-else-if="compareResults.triptych.length">
+  <AppSection
+    v-else-if="
+      compareResults.subjectMatches.length ||
+      compareResults.objectMatches.length ||
+      compareResults.subjectUnmatched.length ||
+      compareResults.objectUnmatched.length
+    "
+  >
     <AppHeading>Similarity Comparison</AppHeading>
+
+    <AppTabs
+      v-model="compareTab"
+      name="Comparison direction"
+      :tabs="compareTabs"
+      :url="false"
+    />
 
     <!-- list of compare results -->
     <div class="triptych-scroll">
       <div class="triptych">
         <div>
-          <strong>Set A</strong>
-          <div class="weak">{{ description(aPhenotypes, aGeneratedFrom) }}</div>
+          <strong>{{ headings[0].name }}</strong>
+          <div class="weak">{{ headings[0].description }}</div>
         </div>
         <strong>Match</strong>
         <div>
-          <strong>Set B</strong>
-          <div class="weak">{{ description(bPhenotypes, bGeneratedFrom) }}</div>
+          <strong>{{ headings[1].name }}</strong>
+          <div class="weak">{{ headings[1].description }}</div>
         </div>
 
         <template
-          v-for="(match, matchIndex) in compareResults.triptych.slice(0, 10)"
-          :key="matchIndex"
+          v-for="(match, index) in compareTab === 'a-to-b'
+            ? compareResults.subjectMatches
+            : compareResults.objectMatches"
+          :key="index"
         >
           <AppNodeBadge
             :node="{ id: match.source, name: match.source_label }"
@@ -96,11 +112,14 @@
 
           <!-- ring score -->
           <tooltip :interactive="true" :append-to="appendToBody" :tag="null">
-            <AppRing
-              :score="match.score"
-              :percent="ringPercent(match.score)"
-              tabindex="0"
-            />
+            <div>
+              <AppRing
+                :score="match.score"
+                :percent="ringPercent(match.score)"
+                tabindex="0"
+              />
+              <AppIcon v-if="match.jaccard_similarity === 1" icon="equals" />
+            </div>
 
             <template #content>
               <div class="mini-table">
@@ -144,6 +163,28 @@
         </template>
       </div>
     </div>
+
+    <!-- unmatched phenotypes -->
+    <template
+      v-if="
+        (compareTab === 'a-to-b'
+          ? compareResults.subjectUnmatched
+          : compareResults.objectUnmatched
+        ).length
+      "
+    >
+      <AppHeading>Unmatched</AppHeading>
+
+      <AppFlex direction="col">
+        <AppNodeBadge
+          v-for="(unmatched, index) in compareTab === 'a-to-b'
+            ? compareResults.subjectUnmatched
+            : compareResults.objectUnmatched"
+          :key="index"
+          :node="{ id: unmatched.id, name: unmatched.label }"
+        />
+      </AppFlex>
+    </template>
   </AppSection>
 
   <!-- search results -->
@@ -159,8 +200,8 @@
     <!-- list of search results -->
     <AppFlex>
       <div
-        v-for="(match, matchIndex) in searchResults.summary.slice(0, 10)"
-        :key="matchIndex"
+        v-for="(match, index) in searchResults.summary.slice(0, 10)"
+        :key="index"
         class="match"
       >
         <!-- ring score -->
@@ -188,7 +229,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
-import { isEmpty, isEqual } from "lodash";
+import { isEqual } from "lodash";
 import {
   compareSetToGroup,
   compareSetToSet,
@@ -201,6 +242,7 @@ import AppRing from "@/components/AppRing.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import type { Option, Options } from "@/components/AppSelectTags.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
+import AppTabs from "@/components/AppTabs.vue";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
 import { appendToBody } from "@/global/tooltip";
@@ -267,6 +309,33 @@ function doExample() {
   bMode.value = bModeOptions[0];
 }
 
+/** compare tab options */
+const compareTabs = [
+  { id: "a-to-b", text: "A → B" },
+  { id: "b-to-a", text: "B → A" },
+] as const;
+
+/** currently selected compare tab */
+const compareTab = ref<(typeof compareTabs)[number]["id"]>("a-to-b");
+
+/** headings for compare table */
+const headings = computed(() => {
+  const headings = [
+    {
+      name: "Set A",
+      description: description(aPhenotypes.value, aGeneratedFrom.value),
+    },
+    {
+      name: "Set B",
+      description: description(bPhenotypes.value, bGeneratedFrom.value),
+    },
+  ];
+
+  if (compareTab.value === "b-to-a") headings.reverse();
+
+  return headings;
+});
+
 /** comparison analysis */
 const {
   query: runCompare,
@@ -284,7 +353,12 @@ const {
   },
 
   /** default value */
-  { triptych: [] },
+  {
+    subjectMatches: [],
+    objectMatches: [],
+    subjectUnmatched: [],
+    objectUnmatched: [],
+  },
 
   scrollToResults,
 );
@@ -346,7 +420,10 @@ function spreadOptions(option: Option, options: Options, set: string) {
 /** clear/reset results */
 function clearResults() {
   compareResults.value = {
-    triptych: [],
+    subjectMatches: [],
+    objectMatches: [],
+    subjectUnmatched: [],
+    objectUnmatched: [],
   };
   searchResults.value = {
     summary: [],
@@ -419,8 +496,9 @@ onMounted(() => {
 }
 
 .triptych > :nth-child(3n + 2) {
-  justify-self: center;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 .triptych > :nth-child(3n) {
