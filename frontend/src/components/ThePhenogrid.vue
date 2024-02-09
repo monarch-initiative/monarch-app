@@ -466,7 +466,7 @@ function getCell(col: TermInfo, row: TermInfo) {
 /** get color of strength */
 function getColor(strength: number) {
   /** $theme */
-  return `hsla(185, 100%, 30%, ${strength})`;
+  return `hsla(185, 100%, 30%, ${0.1 + strength * 0.9})`;
 }
 
 /** download svg */
