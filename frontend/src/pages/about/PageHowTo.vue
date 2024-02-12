@@ -4,14 +4,36 @@
 
 <template>
   <AppSection>
-    <AppHeading>Getting Started with Monarch KG</AppHeading>
+    <AppHeading>How to use Monarch Intiative</AppHeading>
     <p>
-      This is a placeholder for the how-to page. It will contain information on how to use the Monarch KG through the website.
+      The Monarch Initiative is an extensive knowledge graph and ecosystem of tools made for the
+      benefit of clinicians, researchers, and scientists. This section is intended to help you get
+      started in using these tools. Advanced users may want to head directly to the
+      <AppLink
+        to="https://github.com/obophenotype/upheno/wiki/Phenotype-Ontologies-Reconciliation-Effort"
+        >home page</AppLink
+      >.
+      and start exploring on your own.
     </p>
   </AppSection>
 
   <AppSection>
-    <AppHeading>How to explore the Monarch KG using Monarch Web</AppHeading>
+    <AppHeading>What are you trying to do today?</AppHeading>
+    <AppButton
+      to="https://obophenotype.github.io/upheno/"
+      text="Find phenotypically similar diseases based on a patient's symptoms"
+      icon="arrow-right"
+    />
+    <AppButton
+      to="https://obophenotype.github.io/upheno/"
+      text="Annotate a patients symptoms to terms in the Monarch KG"
+      icon="arrow-right"
+    />
+    <AppButton
+      to="https://obophenotype.github.io/upheno/"
+      text="Compare phenotypes between two diseases or genes"
+      icon="arrow-right"
+    />
   </AppSection>
 
   <AppSection design="fill">
@@ -32,7 +54,7 @@
     </p>
     <AppButton
       to="https://obophenotype.github.io/upheno/"
-      text="Learn More"
+      text="Let's make this button text really really long to see how it looks"
       icon="arrow-right"
     />
   </AppSection>
