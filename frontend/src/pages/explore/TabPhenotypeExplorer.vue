@@ -7,7 +7,7 @@
 <template>
   <AppSection>
     <!-- example -->
-    <div style="display: inline-block">
+    <AppFlex gap="small">
       <AppButton
         text="Try a simple example"
         design="small"
@@ -19,7 +19,7 @@
         design="small"
         @click="doBiggerExample()"
       />
-    </div>
+    </AppFlex>
     <strong>Compare these phenotypes ...</strong>
 
     <!-- set A -->
