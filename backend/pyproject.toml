@@ -48,6 +48,7 @@ httpx = "^0.24.1"
 scholarly = "*"
 habanero = "*"
 manubot = "*"
+coverage = "^7.4.1"
 
 
 [tool.poetry.scripts]

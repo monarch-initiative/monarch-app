@@ -113,6 +113,7 @@ export const compareSetToSet = async (
       ]),
     }));
 
+
   /** get high level data */
   const subjectMatches = mapMatches(response.subject_best_matches);
   const objectMatches = mapMatches(response.object_best_matches);

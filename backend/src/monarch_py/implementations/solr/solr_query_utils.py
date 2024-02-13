@@ -209,9 +209,11 @@ def build_mapping_query(
 
 def build_grounding_query(text: str) -> SolrQuery:
     query = SolrQuery(q=text, limit=10, start=0)
-    query.q = f'"{text}"' # quoting so that the complete text is matched as a unit
+    query.q = f'"{text}"'  # quoting so that the complete text is matched as a unit
     # rather than _t (text) or _ac (autocomplete/starts-with), just use keyword fields
-    query.query_fields = "id^100 name^10 symbol^10 synonym"
+    query.query_fields = (
+        "id^100 name^10 symbol^10 synonym name_grounding full_name_grounding symbol_grounding synonym_grounding"
+    )
     query.def_type = "edismax"
     query.boost = obsolete_unboost(multiplier=0.001)
     return query
@@ -220,14 +222,16 @@ def build_grounding_query(text: str) -> SolrQuery:
 ### Search helper functions ###
 
 
-def obsolete_unboost(multiplier = 0.1):
+def obsolete_unboost(multiplier=0.1):
     return f'if(termfreq(deprecated,"true"),{multiplier},1)'
+
 
 def entity_boost():
     """Shared boost function between search and autocomplete"""
     disease_boost = 'if(termfreq(category,"biolink:Disease"),10.0,1)'
     human_gene_boost = 'if(and(termfreq(in_taxon,"NCBITaxon:9606"),termfreq(category,"biolink:Gene")),5.0,1)'
     return f"product({disease_boost},{human_gene_boost},{obsolete_unboost()})"
+
 
 def entity_query_fields():
     """
@@ -248,4 +252,3 @@ def association_search_query_fields():
         " object object_label^2 object_label_t object_closure object_closure_label object_closure_label_t"
         " publications has_evidence primary_knowledge_source aggregator_knowledge_source provided_by "
     )
-
