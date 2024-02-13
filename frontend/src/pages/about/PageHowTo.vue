@@ -21,17 +21,27 @@
     <AppHeading>What are you trying to do today?</AppHeading>
     <AppButton
       to="https://obophenotype.github.io/upheno/"
-      text="Find phenotypically similar diseases based on a patient's symptoms"
+      text="Search and use information about a gene, disease, or phenotype..."
       icon="arrow-right"
     />
     <AppButton
       to="https://obophenotype.github.io/upheno/"
-      text="Annotate a patients symptoms to terms in the Monarch KG"
+      text="Find phenotypically similar diseases based on a patient's symptoms..."
       icon="arrow-right"
     />
     <AppButton
       to="https://obophenotype.github.io/upheno/"
-      text="Compare phenotypes between two diseases or genes"
+      text="Annotate a patients symptoms to terms in the Monarch KG..."
+      icon="arrow-right"
+    />
+    <AppButton
+      to="https://obophenotype.github.io/upheno/"
+      text="Compare phenotypes between two diseases or genes..."
+      icon="arrow-right"
+    />
+    <AppButton
+      to="https://obophenotype.github.io/upheno/"
+      text="Find additional information about..."
       icon="arrow-right"
     />
   </AppSection>
