@@ -461,6 +461,31 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/has_phenotype/</loc>
+         <lastmod>2024-02-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/has_phenotype_closure/</loc>
+         <lastmod>2024-02-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/has_phenotype_closure_label/</loc>
+         <lastmod>2024-02-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/has_phenotype_count/</loc>
+         <lastmod>2024-02-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/has_phenotype_label/</loc>
+         <lastmod>2024-02-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/highlight/</loc>
          <lastmod>2024-02-14</lastmod>
          <changefreq>daily</changefreq>
@@ -572,6 +597,11 @@
     </url>
     <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/name/</loc>
+         <lastmod>2024-02-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/namespace/</loc>
          <lastmod>2024-02-14</lastmod>
          <changefreq>daily</changefreq>
     </url>
