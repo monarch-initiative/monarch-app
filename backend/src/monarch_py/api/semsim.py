@@ -18,7 +18,8 @@ def autocomplete(
     )
 ) -> SearchResults:
     """
-    Autocomplete for semantic similarity lookups, prioritizes entities which have direct phenotype associations
+    Autocomplete for semantic similarity lookups, prioritizes entities which have direct phenotype associations.
+    Note: This API endpoint is experimental and may evolve or disappear over time.
 
     Args:
         q (str): Query string to autocomplete against
