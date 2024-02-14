@@ -35,12 +35,12 @@ class SpacyImplementation(TextAnnotatorInterface):
         # Modify text to match entity capitalization to handle inconsistent annotations
         for entity in doc.ents:
             matching_entities = self.grounding_implementation.ground_entity(entity.text)
-            if matching_entities:
+            if matching_entities and text.lower().count(entity.text.lower()) > 1:
                 text = text.replace(entity.text, entity.text.title())
 
         doc = self.nlp(text)  # Recreate the doc after modifying the text
 
-        # Annotate entities and handle multi-word entities
+        # Annotate entities
         for entity in doc.ents:
             if entity.text.lower() not in excluded_tokens:
                 matching_entities = self.grounding_implementation.ground_entity(entity.text)
@@ -49,14 +49,6 @@ class SpacyImplementation(TextAnnotatorInterface):
                         text=entity.text, tokens=matching_entities, start=entity.start_char, end=entity.end_char
                     )
                     results.append(result)
-                elif len(entity.text.split()) > 1:
-                    # Handle superset/multi-word entities (adding period to treat entity as a sentence)
-                    for concept in self.nlp(entity.text.upper() + "."):
-                        matching_entities = self.grounding_implementation.ground_entity(concept.text)
-                        result = TextAnnotationResult(
-                            text=entity.text, tokens=matching_entities, start=entity.start_char, end=entity.end_char
-                        )
-                        results.append(result)
 
         # Add non-entity results
         return self.add_non_entity_results(text, results)
