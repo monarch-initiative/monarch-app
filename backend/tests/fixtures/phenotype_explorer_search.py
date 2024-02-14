@@ -25,6 +25,7 @@ def phenotype_explorer_search():
                 symbol="tpma",
                 synonym=["TPM1-2 alpha", "wu:fb37a09", "tm", "fb37a09", "tropomyosin alpha chain"],
                 uri="https://identifiers.org/zfin/ZDB-GENE-990415-269",
+                namespace="ZFIN",
                 has_phenotype=["ZP:0018569"],
                 has_phenotype_label=["myeloid cell development absent, abnormal"],
                 has_phenotype_closure=[
@@ -60,7 +61,6 @@ def phenotype_explorer_search():
                     "hemopoiesis quality, abnormal",
                 ],
                 has_phenotype_count=1,
-                namespace=["ZFIN"],
             ),
             score=7.234842285670967,
             similarity=TermSetPairwiseSimilarity(
@@ -68,8 +68,8 @@ def phenotype_explorer_search():
                     "ZP:0018569": TermInfo(id="ZP:0018569", label="myeloid cell development absent, abnormal (ZPO)")
                 },
                 object_termset={
-                    "HP:0012378": TermInfo(id="HP:0012378", label="Fatigue (HPO)"),
                     "HP:0002104": TermInfo(id="HP:0002104", label="Apnea (HPO)"),
+                    "HP:0012378": TermInfo(id="HP:0012378", label="Fatigue (HPO)"),
                 },
                 subject_best_matches={
                     "ZP:0018569": BestMatch(
@@ -184,6 +184,7 @@ def phenotype_explorer_search():
                 symbol="arhgef3",
                 synonym=["si:ch211-258l4.8"],
                 uri="https://identifiers.org/zfin/ZDB-GENE-050208-773",
+                namespace="ZFIN",
                 has_phenotype=["ZP:0018569", "ZP:0018568"],
                 has_phenotype_label=[
                     "myeloid cell development absent, abnormal",
@@ -226,17 +227,16 @@ def phenotype_explorer_search():
                     "hemopoiesis quality, abnormal",
                 ],
                 has_phenotype_count=2,
-                namespace=["ZFIN"],
             ),
             score=7.234842285670967,
             similarity=TermSetPairwiseSimilarity(
                 subject_termset={
-                    "ZP:0018569": TermInfo(id="ZP:0018569", label="myeloid cell development absent, abnormal (ZPO)"),
                     "ZP:0018568": TermInfo(id="ZP:0018568", label="primitive hemopoiesis absent, abnormal (ZPO)"),
+                    "ZP:0018569": TermInfo(id="ZP:0018569", label="myeloid cell development absent, abnormal (ZPO)"),
                 },
                 object_termset={
-                    "HP:0002104": TermInfo(id="HP:0002104", label="Apnea (HPO)"),
                     "HP:0012378": TermInfo(id="HP:0012378", label="Fatigue (HPO)"),
+                    "HP:0002104": TermInfo(id="HP:0002104", label="Apnea (HPO)"),
                 },
                 subject_best_matches={
                     "ZP:0018568": BestMatch(
@@ -376,6 +376,7 @@ def phenotype_explorer_search():
                 symbol="rnf145b",
                 synonym=["wu:fa20f10", "fa20f10", "rnf145", "zgc:56435"],
                 uri="https://identifiers.org/zfin/ZDB-GENE-030131-5264",
+                namespace="ZFIN",
                 has_phenotype=["ZP:0018568", "ZP:0018569"],
                 has_phenotype_label=[
                     "primitive hemopoiesis absent, abnormal",
@@ -418,7 +419,6 @@ def phenotype_explorer_search():
                     "hemopoiesis quality, abnormal",
                 ],
                 has_phenotype_count=2,
-                namespace=["ZFIN"],
             ),
             score=7.234842285670967,
             similarity=TermSetPairwiseSimilarity(
@@ -490,8 +490,8 @@ def phenotype_explorer_search():
                     "HP:0002104": BestMatch(
                         match_source="HP:0002104",
                         match_source_label="Apnea (HPO)",
-                        match_target="ZP:0018569",
-                        match_target_label="myeloid cell development absent, abnormal (ZPO)",
+                        match_target="ZP:0018568",
+                        match_target_label="primitive hemopoiesis absent, abnormal (ZPO)",
                         score=9.08524944639702,
                         match_subsumer=None,
                         match_subsumer_label=None,
@@ -499,7 +499,7 @@ def phenotype_explorer_search():
                             subject_id="HP:0002104",
                             subject_label=None,
                             subject_source=None,
-                            object_id="ZP:0018569",
+                            object_id="ZP:0018568",
                             object_label=None,
                             object_source=None,
                             ancestor_id="UPHENO:0034024",
@@ -508,10 +508,10 @@ def phenotype_explorer_search():
                             object_information_content=None,
                             subject_information_content=None,
                             ancestor_information_content=9.08524944639702,
-                            jaccard_similarity=0.34615384615384615,
+                            jaccard_similarity=0.3333333333333333,
                             cosine_similarity=None,
                             dice_similarity=None,
-                            phenodigm_score=1.773384910034319,
+                            phenodigm_score=1.7402346054863809,
                         ),
                     ),
                     "HP:0012378": BestMatch(
@@ -575,6 +575,7 @@ def phenotype_explorer_search():
                 symbol="jmjd1cb",
                 synonym=["zmp:0000000876", "si:dkey-204n14.2"],
                 uri="https://identifiers.org/zfin/ZDB-GENE-121214-344",
+                namespace="ZFIN",
                 has_phenotype=["ZP:0018569", "ZP:0018568"],
                 has_phenotype_label=[
                     "myeloid cell development absent, abnormal",
@@ -617,7 +618,6 @@ def phenotype_explorer_search():
                     "hemopoiesis quality, abnormal",
                 ],
                 has_phenotype_count=2,
-                namespace=["ZFIN"],
             ),
             score=7.234842285670967,
             similarity=TermSetPairwiseSimilarity(
@@ -767,6 +767,7 @@ def phenotype_explorer_search():
                 symbol="ak3",
                 synonym=["wu:fc20h08", "zgc:64135", "id:ibd3034", "sb:cb845", "ak3l1", "wu:fa02c11"],
                 uri="https://identifiers.org/zfin/ZDB-GENE-040426-2142",
+                namespace="ZFIN",
                 has_phenotype=["ZP:0018568", "ZP:0018569"],
                 has_phenotype_label=[
                     "primitive hemopoiesis absent, abnormal",
@@ -809,17 +810,16 @@ def phenotype_explorer_search():
                     "hemopoiesis quality, abnormal",
                 ],
                 has_phenotype_count=2,
-                namespace=["ZFIN"],
             ),
             score=7.234842285670967,
             similarity=TermSetPairwiseSimilarity(
                 subject_termset={
-                    "ZP:0018569": TermInfo(id="ZP:0018569", label="myeloid cell development absent, abnormal (ZPO)"),
                     "ZP:0018568": TermInfo(id="ZP:0018568", label="primitive hemopoiesis absent, abnormal (ZPO)"),
+                    "ZP:0018569": TermInfo(id="ZP:0018569", label="myeloid cell development absent, abnormal (ZPO)"),
                 },
                 object_termset={
-                    "HP:0012378": TermInfo(id="HP:0012378", label="Fatigue (HPO)"),
                     "HP:0002104": TermInfo(id="HP:0002104", label="Apnea (HPO)"),
+                    "HP:0012378": TermInfo(id="HP:0012378", label="Fatigue (HPO)"),
                 },
                 subject_best_matches={
                     "ZP:0018568": BestMatch(
@@ -881,8 +881,8 @@ def phenotype_explorer_search():
                     "HP:0002104": BestMatch(
                         match_source="HP:0002104",
                         match_source_label="Apnea (HPO)",
-                        match_target="ZP:0018568",
-                        match_target_label="primitive hemopoiesis absent, abnormal (ZPO)",
+                        match_target="ZP:0018569",
+                        match_target_label="myeloid cell development absent, abnormal (ZPO)",
                         score=9.08524944639702,
                         match_subsumer=None,
                         match_subsumer_label=None,
@@ -890,7 +890,7 @@ def phenotype_explorer_search():
                             subject_id="HP:0002104",
                             subject_label=None,
                             subject_source=None,
-                            object_id="ZP:0018568",
+                            object_id="ZP:0018569",
                             object_label=None,
                             object_source=None,
                             ancestor_id="UPHENO:0034024",
@@ -899,17 +899,17 @@ def phenotype_explorer_search():
                             object_information_content=None,
                             subject_information_content=None,
                             ancestor_information_content=9.08524944639702,
-                            jaccard_similarity=0.3333333333333333,
+                            jaccard_similarity=0.34615384615384615,
                             cosine_similarity=None,
                             dice_similarity=None,
-                            phenodigm_score=1.7402346054863809,
+                            phenodigm_score=1.773384910034319,
                         ),
                     ),
                     "HP:0012378": BestMatch(
                         match_source="HP:0012378",
                         match_source_label="Fatigue (HPO)",
-                        match_target="ZP:0018568",
-                        match_target_label="primitive hemopoiesis absent, abnormal (ZPO)",
+                        match_target="ZP:0018569",
+                        match_target_label="myeloid cell development absent, abnormal (ZPO)",
                         score=1.6836208034928104,
                         match_subsumer=None,
                         match_subsumer_label=None,
@@ -917,7 +917,7 @@ def phenotype_explorer_search():
                             subject_id="HP:0012378",
                             subject_label=None,
                             subject_source=None,
-                            object_id="ZP:0018568",
+                            object_id="ZP:0018569",
                             object_label=None,
                             object_source=None,
                             ancestor_id="UPHENO:0001005",
@@ -926,10 +926,10 @@ def phenotype_explorer_search():
                             object_information_content=None,
                             subject_information_content=None,
                             ancestor_information_content=1.6836208034928104,
-                            jaccard_similarity=0.4444444444444444,
+                            jaccard_similarity=0.47058823529411764,
                             cosine_similarity=None,
                             dice_similarity=None,
-                            phenodigm_score=0.8650294287846346,
+                            phenodigm_score=0.8901079388591847,
                         ),
                     ),
                 },
@@ -953,6 +953,7 @@ def phenotype_explorer_search():
                 symbol="poa",
                 synonym=[],
                 uri="https://identifiers.org/zfin/ZDB-GENE-070117-2249",
+                namespace="ZFIN",
                 has_phenotype=["ZP:0000945", "ZP:0100294"],
                 has_phenotype_label=["pigment cell quality, abnormal", "visual perception absent, abnormal"],
                 has_phenotype_closure=[
@@ -1000,7 +1001,6 @@ def phenotype_explorer_search():
                     "phenotype by ontology source",
                 ],
                 has_phenotype_count=2,
-                namespace=["ZFIN"],
             ),
             score=5.412148503540145,
             similarity=TermSetPairwiseSimilarity(
@@ -1009,8 +1009,8 @@ def phenotype_explorer_search():
                     "ZP:0000945": TermInfo(id="ZP:0000945", label="pigment cell quality, abnormal (ZPO)"),
                 },
                 object_termset={
-                    "HP:0012378": TermInfo(id="HP:0012378", label="Fatigue (HPO)"),
                     "HP:0002104": TermInfo(id="HP:0002104", label="Apnea (HPO)"),
+                    "HP:0012378": TermInfo(id="HP:0012378", label="Fatigue (HPO)"),
                 },
                 subject_best_matches={
                     "ZP:0000945": BestMatch(
@@ -1099,8 +1099,8 @@ def phenotype_explorer_search():
                     "HP:0012378": BestMatch(
                         match_source="HP:0012378",
                         match_source_label="Fatigue (HPO)",
-                        match_target="ZP:0000945",
-                        match_target_label="pigment cell quality, abnormal (ZPO)",
+                        match_target="ZP:0100294",
+                        match_target_label="visual perception absent, abnormal (ZPO)",
                         score=1.6836208034928104,
                         match_subsumer=None,
                         match_subsumer_label=None,
@@ -1108,7 +1108,7 @@ def phenotype_explorer_search():
                             subject_id="HP:0012378",
                             subject_label=None,
                             subject_source=None,
-                            object_id="ZP:0000945",
+                            object_id="ZP:0100294",
                             object_label=None,
                             object_source=None,
                             ancestor_id="UPHENO:0001005",
@@ -1117,10 +1117,10 @@ def phenotype_explorer_search():
                             object_information_content=None,
                             subject_information_content=None,
                             ancestor_information_content=1.6836208034928104,
-                            jaccard_similarity=0.42105263157894735,
+                            jaccard_similarity=0.4444444444444444,
                             cosine_similarity=None,
                             dice_similarity=None,
-                            phenodigm_score=0.841957819544251,
+                            phenodigm_score=0.8650294287846346,
                         ),
                     ),
                 },
@@ -1144,6 +1144,7 @@ def phenotype_explorer_search():
                 symbol="unm_t30758",
                 synonym=["unm t30758"],
                 uri="https://identifiers.org/zfin/ZDB-GENE-070117-1530",
+                namespace="ZFIN",
                 has_phenotype=["ZP:0001841", "ZP:0015039"],
                 has_phenotype_label=["visual behavior quality, abnormal", "visual behavior absent, abnormal"],
                 has_phenotype_closure=[
@@ -1185,13 +1186,12 @@ def phenotype_explorer_search():
                     "phenotype by ontology source",
                 ],
                 has_phenotype_count=2,
-                namespace=["ZFIN"],
             ),
             score=5.384435124944915,
             similarity=TermSetPairwiseSimilarity(
                 subject_termset={
-                    "ZP:0001841": TermInfo(id="ZP:0001841", label="visual behavior quality, abnormal (ZPO)"),
                     "ZP:0015039": TermInfo(id="ZP:0015039", label="visual behavior absent, abnormal (ZPO)"),
+                    "ZP:0001841": TermInfo(id="ZP:0001841", label="visual behavior quality, abnormal (ZPO)"),
                 },
                 object_termset={
                     "HP:0012378": TermInfo(id="HP:0012378", label="Fatigue (HPO)"),
@@ -1329,6 +1329,7 @@ def phenotype_explorer_search():
                 symbol="il4",
                 synonym=["il4/13b"],
                 uri="https://identifiers.org/zfin/ZDB-GENE-100204-1",
+                namespace="ZFIN",
                 has_phenotype=["ZP:0021445", "ZP:0021445", "ZP:0021445"],
                 has_phenotype_label=[
                     "gill increased amount, abnormal",
@@ -1393,7 +1394,6 @@ def phenotype_explorer_search():
                     "gill quality, abnormal",
                 ],
                 has_phenotype_count=1,
-                namespace=["ZFIN"],
             ),
             score=5.366503250547169,
             similarity=TermSetPairwiseSimilarity(
@@ -1515,6 +1515,7 @@ def phenotype_explorer_search():
                 symbol="vps37a",
                 synonym=["fb08f03", "wu:fj42c03", "wu:fb08f03", "fj42c03", "zgc:77637"],
                 uri="https://identifiers.org/zfin/ZDB-GENE-030131-8312",
+                namespace="ZFIN",
                 has_phenotype=["ZP:0003210"],
                 has_phenotype_label=["whole organism decreased mobility, abnormal"],
                 has_phenotype_closure=[
@@ -1559,7 +1560,6 @@ def phenotype_explorer_search():
                     "phenotype by ontology source",
                 ],
                 has_phenotype_count=1,
-                namespace=["ZFIN"],
             ),
             score=2.0320941603922114,
             similarity=TermSetPairwiseSimilarity(
@@ -1682,6 +1682,7 @@ def phenotype_explorer_search():
                 symbol="tnfsf10",
                 synonym=["DL2", "tnfsf10l2", "TNFSF10-1", "zgc:92320"],
                 uri="https://identifiers.org/zfin/ZDB-GENE-040718-335",
+                namespace="ZFIN",
                 has_phenotype=["ZP:0001432"],
                 has_phenotype_label=["whole organism morphology, abnormal"],
                 has_phenotype_closure=[
@@ -1725,7 +1726,6 @@ def phenotype_explorer_search():
                     "phenotype by ontology source",
                 ],
                 has_phenotype_count=1,
-                namespace=["ZFIN"],
             ),
             score=2.0320941603922114,
             similarity=TermSetPairwiseSimilarity(
@@ -1733,8 +1733,8 @@ def phenotype_explorer_search():
                     "ZP:0001432": TermInfo(id="ZP:0001432", label="whole organism morphology, abnormal (ZPO)")
                 },
                 object_termset={
-                    "HP:0002104": TermInfo(id="HP:0002104", label="Apnea (HPO)"),
                     "HP:0012378": TermInfo(id="HP:0012378", label="Fatigue (HPO)"),
+                    "HP:0002104": TermInfo(id="HP:0002104", label="Apnea (HPO)"),
                 },
                 subject_best_matches={
                     "ZP:0001432": BestMatch(

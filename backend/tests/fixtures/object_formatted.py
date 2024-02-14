@@ -18,6 +18,7 @@ def node_json():
     "symbol": null,
     "synonym": [],
     "uri": "http://purl.obolibrary.org/obo/MONDO_0020121",
+    "namespace": "MONDO",
     "has_phenotype": [],
     "has_phenotype_label": [],
     "has_phenotype_closure": [],
@@ -94,6 +95,7 @@ def node_json():
                 "symbol": null,
                 "synonym": [],
                 "uri": null,
+                "namespace": null,
                 "has_phenotype": [],
                 "has_phenotype_label": [],
                 "has_phenotype_closure": [],
@@ -114,6 +116,7 @@ def node_json():
                 "symbol": null,
                 "synonym": [],
                 "uri": null,
+                "namespace": null,
                 "has_phenotype": [],
                 "has_phenotype_label": [],
                 "has_phenotype_closure": [],
@@ -134,6 +137,7 @@ def node_json():
                 "symbol": null,
                 "synonym": [],
                 "uri": null,
+                "namespace": null,
                 "has_phenotype": [],
                 "has_phenotype_label": [],
                 "has_phenotype_closure": [],
@@ -142,86 +146,6 @@ def node_json():
             }
         ],
         "sub_classes": [
-            {
-                "id": "MONDO:0018949",
-                "category": "biolink:Disease",
-                "name": "distal myopathy",
-                "full_name": null,
-                "deprecated": null,
-                "description": null,
-                "xref": [],
-                "provided_by": null,
-                "in_taxon": null,
-                "in_taxon_label": null,
-                "symbol": null,
-                "synonym": [],
-                "uri": null,
-                "has_phenotype": [],
-                "has_phenotype_label": [],
-                "has_phenotype_closure": [],
-                "has_phenotype_closure_label": [],
-                "has_phenotype_count": null
-            },
-            {
-                "id": "MONDO:0019950",
-                "category": "biolink:Disease",
-                "name": "congenital muscular dystrophy",
-                "full_name": null,
-                "deprecated": null,
-                "description": null,
-                "xref": [],
-                "provided_by": null,
-                "in_taxon": null,
-                "in_taxon_label": null,
-                "symbol": null,
-                "synonym": [],
-                "uri": null,
-                "has_phenotype": [],
-                "has_phenotype_label": [],
-                "has_phenotype_closure": [],
-                "has_phenotype_closure_label": [],
-                "has_phenotype_count": null
-            },
-            {
-                "id": "MONDO:0023204",
-                "category": "biolink:Disease",
-                "name": "Fukuda-Miyanomae-Nakata syndrome",
-                "full_name": null,
-                "deprecated": null,
-                "description": null,
-                "xref": [],
-                "provided_by": null,
-                "in_taxon": null,
-                "in_taxon_label": null,
-                "symbol": null,
-                "synonym": [],
-                "uri": null,
-                "has_phenotype": [],
-                "has_phenotype_label": [],
-                "has_phenotype_closure": [],
-                "has_phenotype_closure_label": [],
-                "has_phenotype_count": null
-            },
-            {
-                "id": "MONDO:0100228",
-                "category": "biolink:Disease",
-                "name": "LAMA2-related muscular dystrophy",
-                "full_name": null,
-                "deprecated": null,
-                "description": null,
-                "xref": [],
-                "provided_by": null,
-                "in_taxon": null,
-                "in_taxon_label": null,
-                "symbol": null,
-                "synonym": [],
-                "uri": null,
-                "has_phenotype": [],
-                "has_phenotype_label": [],
-                "has_phenotype_closure": [],
-                "has_phenotype_closure_label": [],
-                "has_phenotype_count": null
-            },
             {
                 "id": "MONDO:0008028",
                 "category": "biolink:Disease",
@@ -236,6 +160,7 @@ def node_json():
                 "symbol": null,
                 "synonym": [],
                 "uri": null,
+                "namespace": null,
                 "has_phenotype": [],
                 "has_phenotype_label": [],
                 "has_phenotype_closure": [],
@@ -256,6 +181,7 @@ def node_json():
                 "symbol": null,
                 "synonym": [],
                 "uri": null,
+                "namespace": null,
                 "has_phenotype": [],
                 "has_phenotype_label": [],
                 "has_phenotype_closure": [],
@@ -276,6 +202,7 @@ def node_json():
                 "symbol": null,
                 "synonym": [],
                 "uri": null,
+                "namespace": null,
                 "has_phenotype": [],
                 "has_phenotype_label": [],
                 "has_phenotype_closure": [],
@@ -296,6 +223,7 @@ def node_json():
                 "symbol": null,
                 "synonym": [],
                 "uri": null,
+                "namespace": null,
                 "has_phenotype": [],
                 "has_phenotype_label": [],
                 "has_phenotype_closure": [],
@@ -316,6 +244,7 @@ def node_json():
                 "symbol": null,
                 "synonym": [],
                 "uri": null,
+                "namespace": null,
                 "has_phenotype": [],
                 "has_phenotype_label": [],
                 "has_phenotype_closure": [],
@@ -336,6 +265,7 @@ def node_json():
                 "symbol": null,
                 "synonym": [],
                 "uri": null,
+                "namespace": null,
                 "has_phenotype": [],
                 "has_phenotype_label": [],
                 "has_phenotype_closure": [],
@@ -356,6 +286,7 @@ def node_json():
                 "symbol": null,
                 "synonym": [],
                 "uri": null,
+                "namespace": null,
                 "has_phenotype": [],
                 "has_phenotype_label": [],
                 "has_phenotype_closure": [],
@@ -376,6 +307,91 @@ def node_json():
                 "symbol": null,
                 "synonym": [],
                 "uri": null,
+                "namespace": null,
+                "has_phenotype": [],
+                "has_phenotype_label": [],
+                "has_phenotype_closure": [],
+                "has_phenotype_closure_label": [],
+                "has_phenotype_count": null
+            },
+            {
+                "id": "MONDO:0018949",
+                "category": "biolink:Disease",
+                "name": "distal myopathy",
+                "full_name": null,
+                "deprecated": null,
+                "description": null,
+                "xref": [],
+                "provided_by": null,
+                "in_taxon": null,
+                "in_taxon_label": null,
+                "symbol": null,
+                "synonym": [],
+                "uri": null,
+                "namespace": null,
+                "has_phenotype": [],
+                "has_phenotype_label": [],
+                "has_phenotype_closure": [],
+                "has_phenotype_closure_label": [],
+                "has_phenotype_count": null
+            },
+            {
+                "id": "MONDO:0019950",
+                "category": "biolink:Disease",
+                "name": "congenital muscular dystrophy",
+                "full_name": null,
+                "deprecated": null,
+                "description": null,
+                "xref": [],
+                "provided_by": null,
+                "in_taxon": null,
+                "in_taxon_label": null,
+                "symbol": null,
+                "synonym": [],
+                "uri": null,
+                "namespace": null,
+                "has_phenotype": [],
+                "has_phenotype_label": [],
+                "has_phenotype_closure": [],
+                "has_phenotype_closure_label": [],
+                "has_phenotype_count": null
+            },
+            {
+                "id": "MONDO:0023204",
+                "category": "biolink:Disease",
+                "name": "Fukuda-Miyanomae-Nakata syndrome",
+                "full_name": null,
+                "deprecated": null,
+                "description": null,
+                "xref": [],
+                "provided_by": null,
+                "in_taxon": null,
+                "in_taxon_label": null,
+                "symbol": null,
+                "synonym": [],
+                "uri": null,
+                "namespace": null,
+                "has_phenotype": [],
+                "has_phenotype_label": [],
+                "has_phenotype_closure": [],
+                "has_phenotype_closure_label": [],
+                "has_phenotype_count": null
+            },
+            {
+                "id": "MONDO:0100228",
+                "category": "biolink:Disease",
+                "name": "LAMA2-related muscular dystrophy",
+                "full_name": null,
+                "deprecated": null,
+                "description": null,
+                "xref": [],
+                "provided_by": null,
+                "in_taxon": null,
+                "in_taxon_label": null,
+                "symbol": null,
+                "synonym": [],
+                "uri": null,
+                "namespace": null,
                 "has_phenotype": [],
                 "has_phenotype_label": [],
                 "has_phenotype_closure": [],
@@ -383,10 +399,7 @@ def node_json():
                 "has_phenotype_count": null
             }
         ]
-    },
-    "namespace": [
-        "MONDO"
-    ]
+    }
 }
 """
 
@@ -394,8 +407,8 @@ def node_json():
 @pytest.fixture
 def node_tsv():
     return """
-id	category	name	full_name	deprecated	description	xref	provided_by	in_taxon	in_taxon_label	symbol	synonym	uri	has_phenotype	has_phenotype_label	has_phenotype_closure	has_phenotype_closure_label	has_phenotype_count	inheritance	causal_gene	causes_disease	mappings	external_links	provided_by_link	association_counts	node_hierarchy	namespace
-MONDO:0020121	biolink:Disease	muscular dystrophy	None	None	Muscular dystrophy (MD) refers to a group of more than 30 genetic diseases characterized by progressive weakness and degeneration of the skeletal muscles that control movement. Some forms of MD are seen in newborns, infants or children, while others have late-onset and may not appear until middle age or later. The disorders differ in terms of the distribution and extent of muscle weakness (some forms of MD also affect cardiac muscle), age of onset, rate of progression, and pattern of inheritance. The prognosis for people with MD varies according to the type and progression of the disorder. There is no specific treatment to stop or reverse any form of MD. Treatment is supportive and may include physical therapy, respiratory therapy, speech therapy, orthopedic appliances used for support, corrective orthopedic surgery, and medicationsincluding corticosteroids, anticonvulsants (seizure medications), immunosuppressants, and antibiotics. Some individuals may need assisted ventilation to treat respiratory muscle weaknessor a pacemaker for cardiac (heart)abnormalities.	[]	phenio_nodes	None	None	None	[]	http://purl.obolibrary.org/obo/MONDO_0020121	[]	[]	[]	[]	0	None	[]	[]	[{'id': 'DOID:9884', 'url': 'http://purl.obolibrary.org/obo/DOID_9884'}, {'id': 'ICD10CM:G71.0', 'url': 'https://icd.codes/icd10cm/G71.0'}, {'id': 'NCIT:C84910', 'url': 'http://purl.obolibrary.org/obo/NCIT_C84910'}, {'id': 'Orphanet:98473', 'url': None}, {'id': 'SCTID:73297009', 'url': 'http://identifiers.org/snomedct/73297009'}, {'id': 'UMLS:C0026850', 'url': 'http://identifiers.org/umls/C0026850'}, {'id': 'mesh:D009136', 'url': None}]	[]	{'id': 'phenio', 'url': 'https://monarch-initiative.github.io/monarch-ingest/Sources/phenio/#'}	[{'label': 'Phenotypes', 'count': 3875, 'category': 'biolink:DiseaseToPhenotypicFeatureAssociation'}, {'label': 'Causal Genes', 'count': 125, 'category': 'biolink:CausalGeneToDiseaseAssociation'}, {'label': 'Correlated Genes', 'count': 139, 'category': 'biolink:CorrelatedGeneToDiseaseAssociation'}]	{'super_classes': [{'id': 'MONDO:0019056', 'category': 'biolink:Disease', 'name': 'neuromuscular disease', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}, {'id': 'MONDO:0700223', 'category': 'biolink:Disease', 'name': 'hereditary skeletal muscle disorder', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}, {'id': 'MONDO:0005336', 'category': 'biolink:Disease', 'name': 'myopathy', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}], 'sub_classes': [{'id': 'MONDO:0018949', 'category': 'biolink:Disease', 'name': 'distal myopathy', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}, {'id': 'MONDO:0019950', 'category': 'biolink:Disease', 'name': 'congenital muscular dystrophy', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}, {'id': 'MONDO:0023204', 'category': 'biolink:Disease', 'name': 'Fukuda-Miyanomae-Nakata syndrome', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}, {'id': 'MONDO:0100228', 'category': 'biolink:Disease', 'name': 'LAMA2-related muscular dystrophy', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}, {'id': 'MONDO:0008028', 'category': 'biolink:Disease', 'name': 'muscular dystrophy, Barnes type', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}, {'id': 'MONDO:0010311', 'category': 'biolink:Disease', 'name': 'Becker muscular dystrophy', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}, {'id': 'MONDO:0010675', 'category': 'biolink:Disease', 'name': 'muscular dystrophy, cardiac type', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}, {'id': 'MONDO:0010676', 'category': 'biolink:Disease', 'name': 'muscular dystrophy, Hemizygous lethal type', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}, {'id': 'MONDO:0010677', 'category': 'biolink:Disease', 'name': 'muscular dystrophy, Mabry type', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}, {'id': 'MONDO:0010678', 'category': 'biolink:Disease', 'name': 'muscular dystrophy, progressive Pectorodorsal', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}, {'id': 'MONDO:0010679', 'category': 'biolink:Disease', 'name': 'Duchenne muscular dystrophy', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}, {'id': 'MONDO:0016106', 'category': 'biolink:Disease', 'name': 'progressive muscular dystrophy', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}]}	['MONDO']
+id	category	name	full_name	deprecated	description	xref	provided_by	in_taxon	in_taxon_label	symbol	synonym	uri	namespace	has_phenotype	has_phenotype_label	has_phenotype_closure	has_phenotype_closure_label	has_phenotype_count	inheritance	causal_gene	causes_disease	mappings	external_links	provided_by_link	association_counts	node_hierarchy
+MONDO:0020121	biolink:Disease	muscular dystrophy	None	None	Muscular dystrophy (MD) refers to a group of more than 30 genetic diseases characterized by progressive weakness and degeneration of the skeletal muscles that control movement. Some forms of MD are seen in newborns, infants or children, while others have late-onset and may not appear until middle age or later. The disorders differ in terms of the distribution and extent of muscle weakness (some forms of MD also affect cardiac muscle), age of onset, rate of progression, and pattern of inheritance. The prognosis for people with MD varies according to the type and progression of the disorder. There is no specific treatment to stop or reverse any form of MD. Treatment is supportive and may include physical therapy, respiratory therapy, speech therapy, orthopedic appliances used for support, corrective orthopedic surgery, and medicationsincluding corticosteroids, anticonvulsants (seizure medications), immunosuppressants, and antibiotics. Some individuals may need assisted ventilation to treat respiratory muscle weaknessor a pacemaker for cardiac (heart)abnormalities.	[]	phenio_nodes	None	None	None	[]	http://purl.obolibrary.org/obo/MONDO_0020121	MONDO	[]	[]	[]	[]	0	None	[]	[]	[{'id': 'DOID:9884', 'url': 'http://purl.obolibrary.org/obo/DOID_9884'}, {'id': 'ICD10CM:G71.0', 'url': 'https://icd.codes/icd10cm/G71.0'}, {'id': 'NCIT:C84910', 'url': 'http://purl.obolibrary.org/obo/NCIT_C84910'}, {'id': 'Orphanet:98473', 'url': None}, {'id': 'SCTID:73297009', 'url': 'http://identifiers.org/snomedct/73297009'}, {'id': 'UMLS:C0026850', 'url': 'http://identifiers.org/umls/C0026850'}, {'id': 'mesh:D009136', 'url': None}]	[]	{'id': 'phenio', 'url': 'https://monarch-initiative.github.io/monarch-ingest/Sources/phenio/#'}	[{'label': 'Phenotypes', 'count': 3875, 'category': 'biolink:DiseaseToPhenotypicFeatureAssociation'}, {'label': 'Causal Genes', 'count': 125, 'category': 'biolink:CausalGeneToDiseaseAssociation'}, {'label': 'Correlated Genes', 'count': 139, 'category': 'biolink:CorrelatedGeneToDiseaseAssociation'}]	{'super_classes': [{'id': 'MONDO:0019056', 'category': 'biolink:Disease', 'name': 'neuromuscular disease', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'namespace': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}, {'id': 'MONDO:0700223', 'category': 'biolink:Disease', 'name': 'hereditary skeletal muscle disorder', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'namespace': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}, {'id': 'MONDO:0005336', 'category': 'biolink:Disease', 'name': 'myopathy', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'namespace': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}], 'sub_classes': [{'id': 'MONDO:0008028', 'category': 'biolink:Disease', 'name': 'muscular dystrophy, Barnes type', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'namespace': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}, {'id': 'MONDO:0010311', 'category': 'biolink:Disease', 'name': 'Becker muscular dystrophy', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'namespace': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}, {'id': 'MONDO:0010675', 'category': 'biolink:Disease', 'name': 'muscular dystrophy, cardiac type', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'namespace': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}, {'id': 'MONDO:0010676', 'category': 'biolink:Disease', 'name': 'muscular dystrophy, Hemizygous lethal type', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'namespace': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}, {'id': 'MONDO:0010677', 'category': 'biolink:Disease', 'name': 'muscular dystrophy, Mabry type', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'namespace': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}, {'id': 'MONDO:0010678', 'category': 'biolink:Disease', 'name': 'muscular dystrophy, progressive Pectorodorsal', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'namespace': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}, {'id': 'MONDO:0010679', 'category': 'biolink:Disease', 'name': 'Duchenne muscular dystrophy', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'namespace': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}, {'id': 'MONDO:0016106', 'category': 'biolink:Disease', 'name': 'progressive muscular dystrophy', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'namespace': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}, {'id': 'MONDO:0018949', 'category': 'biolink:Disease', 'name': 'distal myopathy', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'namespace': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}, {'id': 'MONDO:0019950', 'category': 'biolink:Disease', 'name': 'congenital muscular dystrophy', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'namespace': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}, {'id': 'MONDO:0023204', 'category': 'biolink:Disease', 'name': 'Fukuda-Miyanomae-Nakata syndrome', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'namespace': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}, {'id': 'MONDO:0100228', 'category': 'biolink:Disease', 'name': 'LAMA2-related muscular dystrophy', 'full_name': None, 'deprecated': None, 'description': None, 'xref': [], 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': [], 'uri': None, 'namespace': None, 'has_phenotype': [], 'has_phenotype_label': [], 'has_phenotype_closure': [], 'has_phenotype_closure_label': [], 'has_phenotype_count': None}]}
 """
 
 
@@ -456,82 +469,9 @@ mappings:
 - id: mesh:D009136
   url: null
 name: muscular dystrophy
-namespace:
-- MONDO
+namespace: MONDO
 node_hierarchy:
   sub_classes:
-  - category: biolink:Disease
-    deprecated: null
-    description: null
-    full_name: null
-    has_phenotype: []
-    has_phenotype_closure: []
-    has_phenotype_closure_label: []
-    has_phenotype_count: null
-    has_phenotype_label: []
-    id: MONDO:0018949
-    in_taxon: null
-    in_taxon_label: null
-    name: distal myopathy
-    provided_by: null
-    symbol: null
-    synonym: []
-    uri: null
-    xref: []
-  - category: biolink:Disease
-    deprecated: null
-    description: null
-    full_name: null
-    has_phenotype: []
-    has_phenotype_closure: []
-    has_phenotype_closure_label: []
-    has_phenotype_count: null
-    has_phenotype_label: []
-    id: MONDO:0019950
-    in_taxon: null
-    in_taxon_label: null
-    name: congenital muscular dystrophy
-    provided_by: null
-    symbol: null
-    synonym: []
-    uri: null
-    xref: []
-  - category: biolink:Disease
-    deprecated: null
-    description: null
-    full_name: null
-    has_phenotype: []
-    has_phenotype_closure: []
-    has_phenotype_closure_label: []
-    has_phenotype_count: null
-    has_phenotype_label: []
-    id: MONDO:0023204
-    in_taxon: null
-    in_taxon_label: null
-    name: Fukuda-Miyanomae-Nakata syndrome
-    provided_by: null
-    symbol: null
-    synonym: []
-    uri: null
-    xref: []
-  - category: biolink:Disease
-    deprecated: null
-    description: null
-    full_name: null
-    has_phenotype: []
-    has_phenotype_closure: []
-    has_phenotype_closure_label: []
-    has_phenotype_count: null
-    has_phenotype_label: []
-    id: MONDO:0100228
-    in_taxon: null
-    in_taxon_label: null
-    name: LAMA2-related muscular dystrophy
-    provided_by: null
-    symbol: null
-    synonym: []
-    uri: null
-    xref: []
   - category: biolink:Disease
     deprecated: null
     description: null
@@ -545,6 +485,7 @@ node_hierarchy:
     in_taxon: null
     in_taxon_label: null
     name: muscular dystrophy, Barnes type
+    namespace: null
     provided_by: null
     symbol: null
     synonym: []
@@ -563,6 +504,7 @@ node_hierarchy:
     in_taxon: null
     in_taxon_label: null
     name: Becker muscular dystrophy
+    namespace: null
     provided_by: null
     symbol: null
     synonym: []
@@ -581,6 +523,7 @@ node_hierarchy:
     in_taxon: null
     in_taxon_label: null
     name: muscular dystrophy, cardiac type
+    namespace: null
     provided_by: null
     symbol: null
     synonym: []
@@ -599,6 +542,7 @@ node_hierarchy:
     in_taxon: null
     in_taxon_label: null
     name: muscular dystrophy, Hemizygous lethal type
+    namespace: null
     provided_by: null
     symbol: null
     synonym: []
@@ -617,6 +561,7 @@ node_hierarchy:
     in_taxon: null
     in_taxon_label: null
     name: muscular dystrophy, Mabry type
+    namespace: null
     provided_by: null
     symbol: null
     synonym: []
@@ -635,6 +580,7 @@ node_hierarchy:
     in_taxon: null
     in_taxon_label: null
     name: muscular dystrophy, progressive Pectorodorsal
+    namespace: null
     provided_by: null
     symbol: null
     synonym: []
@@ -653,6 +599,7 @@ node_hierarchy:
     in_taxon: null
     in_taxon_label: null
     name: Duchenne muscular dystrophy
+    namespace: null
     provided_by: null
     symbol: null
     synonym: []
@@ -671,6 +618,83 @@ node_hierarchy:
     in_taxon: null
     in_taxon_label: null
     name: progressive muscular dystrophy
+    namespace: null
+    provided_by: null
+    symbol: null
+    synonym: []
+    uri: null
+    xref: []
+  - category: biolink:Disease
+    deprecated: null
+    description: null
+    full_name: null
+    has_phenotype: []
+    has_phenotype_closure: []
+    has_phenotype_closure_label: []
+    has_phenotype_count: null
+    has_phenotype_label: []
+    id: MONDO:0018949
+    in_taxon: null
+    in_taxon_label: null
+    name: distal myopathy
+    namespace: null
+    provided_by: null
+    symbol: null
+    synonym: []
+    uri: null
+    xref: []
+  - category: biolink:Disease
+    deprecated: null
+    description: null
+    full_name: null
+    has_phenotype: []
+    has_phenotype_closure: []
+    has_phenotype_closure_label: []
+    has_phenotype_count: null
+    has_phenotype_label: []
+    id: MONDO:0019950
+    in_taxon: null
+    in_taxon_label: null
+    name: congenital muscular dystrophy
+    namespace: null
+    provided_by: null
+    symbol: null
+    synonym: []
+    uri: null
+    xref: []
+  - category: biolink:Disease
+    deprecated: null
+    description: null
+    full_name: null
+    has_phenotype: []
+    has_phenotype_closure: []
+    has_phenotype_closure_label: []
+    has_phenotype_count: null
+    has_phenotype_label: []
+    id: MONDO:0023204
+    in_taxon: null
+    in_taxon_label: null
+    name: Fukuda-Miyanomae-Nakata syndrome
+    namespace: null
+    provided_by: null
+    symbol: null
+    synonym: []
+    uri: null
+    xref: []
+  - category: biolink:Disease
+    deprecated: null
+    description: null
+    full_name: null
+    has_phenotype: []
+    has_phenotype_closure: []
+    has_phenotype_closure_label: []
+    has_phenotype_count: null
+    has_phenotype_label: []
+    id: MONDO:0100228
+    in_taxon: null
+    in_taxon_label: null
+    name: LAMA2-related muscular dystrophy
+    namespace: null
     provided_by: null
     symbol: null
     synonym: []
@@ -690,6 +714,7 @@ node_hierarchy:
     in_taxon: null
     in_taxon_label: null
     name: neuromuscular disease
+    namespace: null
     provided_by: null
     symbol: null
     synonym: []
@@ -708,6 +733,7 @@ node_hierarchy:
     in_taxon: null
     in_taxon_label: null
     name: hereditary skeletal muscle disorder
+    namespace: null
     provided_by: null
     symbol: null
     synonym: []
@@ -726,6 +752,7 @@ node_hierarchy:
     in_taxon: null
     in_taxon_label: null
     name: myopathy
+    namespace: null
     provided_by: null
     symbol: null
     synonym: []

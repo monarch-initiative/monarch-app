@@ -22,6 +22,7 @@ def autocomplete():
                 "symbol": None,
                 "synonym": ["De toni-fanconi-debre syndrome", "Renal tubular fanconi syndrome"],
                 "uri": None,
+                "namespace": "HP",
                 "has_phenotype": [],
                 "has_phenotype_label": [],
                 "has_phenotype_closure": [],
@@ -29,7 +30,6 @@ def autocomplete():
                 "has_phenotype_count": 0,
                 "highlight": None,
                 "score": None,
-                "namespace": ["HP"],
             },
             {
                 "id": "MONDO:0009215",
@@ -62,6 +62,7 @@ def autocomplete():
                     "Fanconi anemia, complementation group A",
                 ],
                 "uri": None,
+                "namespace": "MONDO",
                 "has_phenotype": [
                     "HP:0000086",
                     "HP:0001875",
@@ -1071,7 +1072,6 @@ def autocomplete():
                 "has_phenotype_count": 33,
                 "highlight": None,
                 "score": None,
-                "namespace": ["MONDO"],
             },
             {
                 "id": "MONDO:0013566",
@@ -1099,6 +1099,7 @@ def autocomplete():
                     "Fanconi anemia, complementation group L",
                 ],
                 "uri": None,
+                "namespace": "MONDO",
                 "has_phenotype": [
                     "HP:0040012",
                     "HP:0007018",
@@ -2224,7 +2225,6 @@ def autocomplete():
                 "has_phenotype_count": 36,
                 "highlight": None,
                 "score": None,
-                "namespace": ["MONDO"],
             },
             {
                 "id": "MONDO:0010953",
@@ -2252,6 +2252,7 @@ def autocomplete():
                     "face",
                 ],
                 "uri": None,
+                "namespace": "MONDO",
                 "has_phenotype": [
                     "HP:0000086",
                     "HP:0001875",
@@ -3255,7 +3256,6 @@ def autocomplete():
                 "has_phenotype_count": 32,
                 "highlight": None,
                 "score": None,
-                "namespace": ["MONDO"],
             },
             {
                 "id": "MONDO:0001083",
@@ -3284,6 +3284,7 @@ def autocomplete():
                     "toni-debre-Fanconi syndrome",
                 ],
                 "uri": None,
+                "namespace": "MONDO",
                 "has_phenotype": [],
                 "has_phenotype_label": [],
                 "has_phenotype_closure": [],
@@ -3291,7 +3292,6 @@ def autocomplete():
                 "has_phenotype_count": 0,
                 "highlight": None,
                 "score": None,
-                "namespace": ["MONDO"],
             },
             {
                 "id": "MONDO:0019391",
@@ -3316,6 +3316,7 @@ def autocomplete():
                     "primary erythroid hypoplasia",
                 ],
                 "uri": None,
+                "namespace": "MONDO",
                 "has_phenotype": [
                     "HP:0000582",
                     "HP:0010469",
@@ -5436,7 +5437,6 @@ def autocomplete():
                 "has_phenotype_count": 106,
                 "highlight": None,
                 "score": None,
-                "namespace": ["MONDO"],
             },
             {
                 "id": "HGNC:26144",
@@ -5452,6 +5452,7 @@ def autocomplete():
                 "symbol": "PALB2",
                 "synonym": ["FLJ21816", "FANCN", "Fanconi anemia, complementation group N"],
                 "uri": None,
+                "namespace": "HGNC",
                 "has_phenotype": [
                     "HP:0000582",
                     "HP:0000470",
@@ -8044,7 +8045,6 @@ def autocomplete():
                 "has_phenotype_count": 145,
                 "highlight": None,
                 "score": None,
-                "namespace": ["HGNC"],
             },
             {
                 "id": "MONDO:0013248",
@@ -8074,6 +8074,7 @@ def autocomplete():
                     "Rad51C Fanconi anemia",
                 ],
                 "uri": None,
+                "namespace": "MONDO",
                 "has_phenotype": [
                     "HP:0040012",
                     "HP:0000126",
@@ -8722,7 +8723,6 @@ def autocomplete():
                 "has_phenotype_count": 15,
                 "highlight": None,
                 "score": None,
-                "namespace": ["MONDO"],
             },
             {
                 "id": "MONDO:0013499",
@@ -8752,6 +8752,7 @@ def autocomplete():
                     "Slx4 Fanconi anemia",
                 ],
                 "uri": None,
+                "namespace": "MONDO",
                 "has_phenotype": [
                     "HP:0009777",
                     "HP:0000957",
@@ -9618,7 +9619,6 @@ def autocomplete():
                 "has_phenotype_count": 20,
                 "highlight": None,
                 "score": None,
-                "namespace": ["MONDO"],
             },
             {
                 "id": "MONDO:0024525",
@@ -9645,6 +9645,7 @@ def autocomplete():
                     "renal Fanconi syndrome",
                 ],
                 "uri": None,
+                "namespace": "MONDO",
                 "has_phenotype": [
                     "HP:0000117",
                     "HP:0001824",
@@ -10376,7 +10377,6 @@ def autocomplete():
                 "has_phenotype_count": 39,
                 "highlight": None,
                 "score": None,
-                "namespace": ["MONDO"],
             },
             {
                 "id": "MONDO:0014985",
@@ -10404,6 +10404,7 @@ def autocomplete():
                     "MAD2L2 Fanconi anemia",
                 ],
                 "uri": None,
+                "namespace": "MONDO",
                 "has_phenotype": [
                     "HP:0001875",
                     "HP:0000252",
@@ -10785,7 +10786,6 @@ def autocomplete():
                 "has_phenotype_count": 8,
                 "highlight": None,
                 "score": None,
-                "namespace": ["MONDO"],
             },
             {
                 "id": "MONDO:0014986",
@@ -10812,6 +10812,7 @@ def autocomplete():
                     "RAD51 Fanconi anemia",
                 ],
                 "uri": None,
+                "namespace": "MONDO",
                 "has_phenotype": [
                     "HP:0001249",
                     "HP:0009777",
@@ -11433,7 +11434,6 @@ def autocomplete():
                 "has_phenotype_count": 18,
                 "highlight": None,
                 "score": None,
-                "namespace": ["MONDO"],
             },
             {
                 "id": "MONDO:0012565",
@@ -11460,6 +11460,7 @@ def autocomplete():
                     "PALB2 Fanconi anemia",
                 ],
                 "uri": None,
+                "namespace": "MONDO",
                 "has_phenotype": [
                     "HP:0000470",
                     "HP:0000957",
@@ -12064,7 +12065,6 @@ def autocomplete():
                 "has_phenotype_count": 13,
                 "highlight": None,
                 "score": None,
-                "namespace": ["MONDO"],
             },
             {
                 "id": "MONDO:0014987",
@@ -12091,6 +12091,7 @@ def autocomplete():
                     "XRCC2 Fanconi anemia",
                 ],
                 "uri": None,
+                "namespace": "MONDO",
                 "has_phenotype": [
                     "HP:0040012",
                     "HP:0000086",
@@ -12732,7 +12733,6 @@ def autocomplete():
                 "has_phenotype_count": 11,
                 "highlight": None,
                 "score": None,
-                "namespace": ["MONDO"],
             },
             {
                 "id": "MONDO:0014638",
@@ -12758,6 +12758,7 @@ def autocomplete():
                     "UBE2T Fanconi anemia",
                 ],
                 "uri": None,
+                "namespace": "MONDO",
                 "has_phenotype": [
                     "HP:0004808",
                     "HP:0005528",
@@ -13250,7 +13251,6 @@ def autocomplete():
                 "has_phenotype_count": 11,
                 "highlight": None,
                 "score": None,
-                "namespace": ["MONDO"],
             },
             {
                 "id": "MONDO:0014108",
@@ -13276,6 +13276,7 @@ def autocomplete():
                     "Fanconi anemia, complementation group Q",
                 ],
                 "uri": None,
+                "namespace": "MONDO",
                 "has_phenotype": [
                     "HP:0040012",
                     "HP:0009777",
@@ -13778,7 +13779,6 @@ def autocomplete():
                 "has_phenotype_count": 11,
                 "highlight": None,
                 "score": None,
-                "namespace": ["MONDO"],
             },
             {
                 "id": "MONDO:0010351",
@@ -13806,6 +13806,7 @@ def autocomplete():
                     "Fanconi pancytopenia, type 2",
                 ],
                 "uri": None,
+                "namespace": "MONDO",
                 "has_phenotype": [
                     "HP:0000470",
                     "HP:0002575",
@@ -14864,7 +14865,6 @@ def autocomplete():
                 "has_phenotype_count": 30,
                 "highlight": None,
                 "score": None,
-                "namespace": ["MONDO"],
             },
             {
                 "id": "MONDO:0009213",
@@ -14892,6 +14892,7 @@ def autocomplete():
                     "facc",
                 ],
                 "uri": None,
+                "namespace": "MONDO",
                 "has_phenotype": [
                     "HP:0000086",
                     "HP:0001875",
@@ -16045,7 +16046,6 @@ def autocomplete():
                 "has_phenotype_count": 38,
                 "highlight": None,
                 "score": None,
-                "namespace": ["MONDO"],
             },
             {
                 "id": "HGNC:3585",
@@ -16061,6 +16061,7 @@ def autocomplete():
                 "symbol": "FANCD2",
                 "synonym": ["FAD", "FA-D2", "FACD", "FANCD", "Fanconi anemia complementation group D2"],
                 "uri": None,
+                "namespace": "HGNC",
                 "has_phenotype": [
                     "HP:0000086",
                     "HP:0000582",
@@ -18749,7 +18750,6 @@ def autocomplete():
                 "has_phenotype_count": 143,
                 "highlight": None,
                 "score": None,
-                "namespace": ["HGNC"],
             },
             {
                 "id": "HGNC:1101",
@@ -18777,6 +18777,7 @@ def autocomplete():
                     "breast cancer 2",
                 ],
                 "uri": None,
+                "namespace": "HGNC",
                 "has_phenotype": [
                     "HP:0000582",
                     "HP:0007018",
@@ -21923,7 +21924,6 @@ def autocomplete():
                 "has_phenotype_count": 204,
                 "highlight": None,
                 "score": None,
-                "namespace": ["HGNC"],
             },
         ],
         "facet_fields": [],

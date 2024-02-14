@@ -20,14 +20,14 @@
         "Renal tubular fanconi syndrome"
       ],
       "uri": null,
+      "namespace": "HP",
       "has_phenotype": [],
       "has_phenotype_label": [],
       "has_phenotype_closure": [],
       "has_phenotype_closure_label": [],
       "has_phenotype_count": 0,
       "highlight": null,
-      "score": null,
-      "namespace": ["HP"]
+      "score": null
     },
     {
       "id": "MONDO:0009215",
@@ -60,6 +60,7 @@
         "Fanconi anemia, complementation group A"
       ],
       "uri": null,
+      "namespace": "MONDO",
       "has_phenotype": [
         "HP:0000086",
         "HP:0001875",
@@ -1068,8 +1069,7 @@
       ],
       "has_phenotype_count": 33,
       "highlight": null,
-      "score": null,
-      "namespace": ["MONDO"]
+      "score": null
     },
     {
       "id": "MONDO:0013566",
@@ -1097,6 +1097,7 @@
         "Fanconi anemia, complementation group L"
       ],
       "uri": null,
+      "namespace": "MONDO",
       "has_phenotype": [
         "HP:0040012",
         "HP:0007018",
@@ -2221,8 +2222,7 @@
       ],
       "has_phenotype_count": 36,
       "highlight": null,
-      "score": null,
-      "namespace": ["MONDO"]
+      "score": null
     },
     {
       "id": "MONDO:0010953",
@@ -2250,6 +2250,7 @@
         "face"
       ],
       "uri": null,
+      "namespace": "MONDO",
       "has_phenotype": [
         "HP:0000086",
         "HP:0001875",
@@ -3252,8 +3253,7 @@
       ],
       "has_phenotype_count": 32,
       "highlight": null,
-      "score": null,
-      "namespace": ["MONDO"]
+      "score": null
     },
     {
       "id": "MONDO:0001083",
@@ -3282,14 +3282,14 @@
         "toni-debre-Fanconi syndrome"
       ],
       "uri": null,
+      "namespace": "MONDO",
       "has_phenotype": [],
       "has_phenotype_label": [],
       "has_phenotype_closure": [],
       "has_phenotype_closure_label": [],
       "has_phenotype_count": 0,
       "highlight": null,
-      "score": null,
-      "namespace": ["MONDO"]
+      "score": null
     },
     {
       "id": "MONDO:0019391",
@@ -3314,6 +3314,7 @@
         "primary erythroid hypoplasia"
       ],
       "uri": null,
+      "namespace": "MONDO",
       "has_phenotype": [
         "HP:0000582",
         "HP:0010469",
@@ -5433,8 +5434,7 @@
       ],
       "has_phenotype_count": 106,
       "highlight": null,
-      "score": null,
-      "namespace": ["MONDO"]
+      "score": null
     },
     {
       "id": "HGNC:26144",
@@ -5454,6 +5454,7 @@
         "Fanconi anemia, complementation group N"
       ],
       "uri": null,
+      "namespace": "HGNC",
       "has_phenotype": [
         "HP:0000582",
         "HP:0000470",
@@ -8045,8 +8046,7 @@
       ],
       "has_phenotype_count": 145,
       "highlight": null,
-      "score": null,
-      "namespace": ["HGNC"]
+      "score": null
     },
     {
       "id": "MONDO:0013248",
@@ -8076,6 +8076,7 @@
         "Rad51C Fanconi anemia"
       ],
       "uri": null,
+      "namespace": "MONDO",
       "has_phenotype": [
         "HP:0040012",
         "HP:0000126",
@@ -8723,8 +8724,7 @@
       ],
       "has_phenotype_count": 15,
       "highlight": null,
-      "score": null,
-      "namespace": ["MONDO"]
+      "score": null
     },
     {
       "id": "MONDO:0013499",
@@ -8754,6 +8754,7 @@
         "Slx4 Fanconi anemia"
       ],
       "uri": null,
+      "namespace": "MONDO",
       "has_phenotype": [
         "HP:0009777",
         "HP:0000957",
@@ -9619,8 +9620,7 @@
       ],
       "has_phenotype_count": 20,
       "highlight": null,
-      "score": null,
-      "namespace": ["MONDO"]
+      "score": null
     },
     {
       "id": "MONDO:0024525",
@@ -9647,6 +9647,7 @@
         "renal Fanconi syndrome"
       ],
       "uri": null,
+      "namespace": "MONDO",
       "has_phenotype": [
         "HP:0000117",
         "HP:0001824",
@@ -10377,8 +10378,7 @@
       ],
       "has_phenotype_count": 39,
       "highlight": null,
-      "score": null,
-      "namespace": ["MONDO"]
+      "score": null
     },
     {
       "id": "MONDO:0014985",
@@ -10406,6 +10406,7 @@
         "MAD2L2 Fanconi anemia"
       ],
       "uri": null,
+      "namespace": "MONDO",
       "has_phenotype": [
         "HP:0001875",
         "HP:0000252",
@@ -10786,8 +10787,7 @@
       ],
       "has_phenotype_count": 8,
       "highlight": null,
-      "score": null,
-      "namespace": ["MONDO"]
+      "score": null
     },
     {
       "id": "MONDO:0014986",
@@ -10814,6 +10814,7 @@
         "RAD51 Fanconi anemia"
       ],
       "uri": null,
+      "namespace": "MONDO",
       "has_phenotype": [
         "HP:0001249",
         "HP:0009777",
@@ -11434,8 +11435,7 @@
       ],
       "has_phenotype_count": 18,
       "highlight": null,
-      "score": null,
-      "namespace": ["MONDO"]
+      "score": null
     },
     {
       "id": "MONDO:0012565",
@@ -11462,6 +11462,7 @@
         "PALB2 Fanconi anemia"
       ],
       "uri": null,
+      "namespace": "MONDO",
       "has_phenotype": [
         "HP:0000470",
         "HP:0000957",
@@ -12065,8 +12066,7 @@
       ],
       "has_phenotype_count": 13,
       "highlight": null,
-      "score": null,
-      "namespace": ["MONDO"]
+      "score": null
     },
     {
       "id": "MONDO:0014987",
@@ -12093,6 +12093,7 @@
         "XRCC2 Fanconi anemia"
       ],
       "uri": null,
+      "namespace": "MONDO",
       "has_phenotype": [
         "HP:0040012",
         "HP:0000086",
@@ -12733,8 +12734,7 @@
       ],
       "has_phenotype_count": 11,
       "highlight": null,
-      "score": null,
-      "namespace": ["MONDO"]
+      "score": null
     },
     {
       "id": "MONDO:0014638",
@@ -12760,6 +12760,7 @@
         "UBE2T Fanconi anemia"
       ],
       "uri": null,
+      "namespace": "MONDO",
       "has_phenotype": [
         "HP:0004808",
         "HP:0005528",
@@ -13251,8 +13252,7 @@
       ],
       "has_phenotype_count": 11,
       "highlight": null,
-      "score": null,
-      "namespace": ["MONDO"]
+      "score": null
     },
     {
       "id": "MONDO:0014108",
@@ -13278,6 +13278,7 @@
         "Fanconi anemia, complementation group Q"
       ],
       "uri": null,
+      "namespace": "MONDO",
       "has_phenotype": [
         "HP:0040012",
         "HP:0009777",
@@ -13779,8 +13780,7 @@
       ],
       "has_phenotype_count": 11,
       "highlight": null,
-      "score": null,
-      "namespace": ["MONDO"]
+      "score": null
     },
     {
       "id": "MONDO:0010351",
@@ -13808,6 +13808,7 @@
         "Fanconi pancytopenia, type 2"
       ],
       "uri": null,
+      "namespace": "MONDO",
       "has_phenotype": [
         "HP:0000470",
         "HP:0002575",
@@ -14865,8 +14866,7 @@
       ],
       "has_phenotype_count": 30,
       "highlight": null,
-      "score": null,
-      "namespace": ["MONDO"]
+      "score": null
     },
     {
       "id": "MONDO:0009213",
@@ -14894,6 +14894,7 @@
         "facc"
       ],
       "uri": null,
+      "namespace": "MONDO",
       "has_phenotype": [
         "HP:0000086",
         "HP:0001875",
@@ -16046,8 +16047,7 @@
       ],
       "has_phenotype_count": 38,
       "highlight": null,
-      "score": null,
-      "namespace": ["MONDO"]
+      "score": null
     },
     {
       "id": "HGNC:3585",
@@ -16069,6 +16069,7 @@
         "Fanconi anemia complementation group D2"
       ],
       "uri": null,
+      "namespace": "HGNC",
       "has_phenotype": [
         "HP:0000086",
         "HP:0000582",
@@ -18756,8 +18757,7 @@
       ],
       "has_phenotype_count": 143,
       "highlight": null,
-      "score": null,
-      "namespace": ["HGNC"]
+      "score": null
     },
     {
       "id": "HGNC:1101",
@@ -18785,6 +18785,7 @@
         "breast cancer 2"
       ],
       "uri": null,
+      "namespace": "HGNC",
       "has_phenotype": [
         "HP:0000582",
         "HP:0007018",
@@ -21930,8 +21931,7 @@
       ],
       "has_phenotype_count": 204,
       "highlight": null,
-      "score": null,
-      "namespace": ["HGNC"]
+      "score": null
     }
   ],
   "facet_fields": [],

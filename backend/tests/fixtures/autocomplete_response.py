@@ -5,7 +5,7 @@ import pytest
 def autocomplete_response():
     return {
         "responseHeader": {
-            "QTime": 0,
+            "QTime": 1,
             "params": {
                 "mm": "100%",
                 "q": "fanc",
@@ -14,7 +14,7 @@ def autocomplete_response():
                 "qf": "id^100 name^10 name_t^5 name_ac symbol^10 symbol_t^5 symbol_ac synonym synonym_t synonym_ac",
                 "start": "0",
                 "q.op": "AND",
-                "boost": 'product(if(termfreq(category,"biolink:PhenotypicFeature"),1.3,1),if(and(termfreq(in_taxon,"NCBITaxon:9606"),termfreq(category,"biolink:Gene")),1.1,1),if(termfreq(deprecated,"true"),0.1,1))',
+                "boost": 'product(if(termfreq(category,"biolink:PhenotypicFeature"),1.1,1),if(termfreq(category,"biolink:PhenotypicFeature"),1.3,1),if(and(termfreq(in_taxon,"NCBITaxon:9606"),termfreq(category,"biolink:Gene")),1.1,1),if(termfreq(deprecated,"true"),0.1,1))',
                 "rows": "20",
                 "facet": "true",
             },
@@ -30,7 +30,7 @@ def autocomplete_response():
                     "description": "An inability of the tubules in the kidney to reabsorb small molecules, causing increased urinary loss of electrolytes (sodium, potassium, bicarbonate), minerals, glucose, amino acids, and water.",
                     "provided_by": "phenio_nodes",
                     "synonym": ["De toni-fanconi-debre syndrome", "Renal tubular fanconi syndrome"],
-                    "namespace": ["HP"],
+                    "namespace": "HP",
                     "has_phenotype_count": 0,
                 },
                 {
@@ -57,7 +57,7 @@ def autocomplete_response():
                         "Fanconi anemia complementation group type A",
                         "Fanconi anemia, complementation group A",
                     ],
-                    "namespace": ["MONDO"],
+                    "namespace": "MONDO",
                     "has_phenotype": [
                         "HP:0000086",
                         "HP:0001875",
@@ -1085,7 +1085,7 @@ def autocomplete_response():
                         "Fanconi anemia complementation group type L",
                         "Fanconi anemia, complementation group L",
                     ],
-                    "namespace": ["MONDO"],
+                    "namespace": "MONDO",
                     "has_phenotype": [
                         "HP:0040012",
                         "HP:0007018",
@@ -2229,7 +2229,7 @@ def autocomplete_response():
                         "Fanconi anemia, complementation group E",
                         "face",
                     ],
-                    "namespace": ["MONDO"],
+                    "namespace": "MONDO",
                     "has_phenotype": [
                         "HP:0000086",
                         "HP:0001875",
@@ -3252,7 +3252,7 @@ def autocomplete_response():
                         "infantile nephropathic cystinosis",
                         "toni-debre-Fanconi syndrome",
                     ],
-                    "namespace": ["MONDO"],
+                    "namespace": "MONDO",
                     "has_phenotype_count": 0,
                 },
                 {
@@ -3271,7 +3271,7 @@ def autocomplete_response():
                         "pancytopenia, congenital",
                         "primary erythroid hypoplasia",
                     ],
-                    "namespace": ["MONDO"],
+                    "namespace": "MONDO",
                     "has_phenotype": [
                         "HP:0000582",
                         "HP:0010469",
@@ -5402,7 +5402,7 @@ def autocomplete_response():
                     "in_taxon": "NCBITaxon:9606",
                     "in_taxon_label": "Homo sapiens",
                     "symbol": "PALB2",
-                    "namespace": ["HGNC"],
+                    "namespace": "HGNC",
                     "has_phenotype": [
                         "HP:0000582",
                         "HP:0000470",
@@ -8015,7 +8015,7 @@ def autocomplete_response():
                         "Rad51C Fanconi anaemia",
                         "Rad51C Fanconi anemia",
                     ],
-                    "namespace": ["MONDO"],
+                    "namespace": "MONDO",
                     "has_phenotype": [
                         "HP:0040012",
                         "HP:0000126",
@@ -8684,7 +8684,7 @@ def autocomplete_response():
                         "Slx4 Fanconi anaemia",
                         "Slx4 Fanconi anemia",
                     ],
-                    "namespace": ["MONDO"],
+                    "namespace": "MONDO",
                     "has_phenotype": [
                         "HP:0009777",
                         "HP:0000957",
@@ -9567,7 +9567,7 @@ def autocomplete_response():
                         "primary Fanconi renotubular syndrome",
                         "renal Fanconi syndrome",
                     ],
-                    "namespace": ["MONDO"],
+                    "namespace": "MONDO",
                     "has_phenotype": [
                         "HP:0000117",
                         "HP:0001824",
@@ -10317,7 +10317,7 @@ def autocomplete_response():
                         "MAD2L2 Fanconi anaemia",
                         "MAD2L2 Fanconi anemia",
                     ],
-                    "namespace": ["MONDO"],
+                    "namespace": "MONDO",
                     "has_phenotype": [
                         "HP:0001875",
                         "HP:0000252",
@@ -10716,7 +10716,7 @@ def autocomplete_response():
                         "RAD51 Fanconi anaemia",
                         "RAD51 Fanconi anemia",
                     ],
-                    "namespace": ["MONDO"],
+                    "namespace": "MONDO",
                     "has_phenotype": [
                         "HP:0001249",
                         "HP:0009777",
@@ -11355,7 +11355,7 @@ def autocomplete_response():
                         "PALB2 Fanconi anaemia",
                         "PALB2 Fanconi anemia",
                     ],
-                    "namespace": ["MONDO"],
+                    "namespace": "MONDO",
                     "has_phenotype": [
                         "HP:0000470",
                         "HP:0000957",
@@ -11977,7 +11977,7 @@ def autocomplete_response():
                         "XRCC2 Fanconi anaemia",
                         "XRCC2 Fanconi anemia",
                     ],
-                    "namespace": ["MONDO"],
+                    "namespace": "MONDO",
                     "has_phenotype": [
                         "HP:0040012",
                         "HP:0000086",
@@ -12635,7 +12635,7 @@ def autocomplete_response():
                         "UBE2T Fanconi anaemia",
                         "UBE2T Fanconi anemia",
                     ],
-                    "namespace": ["MONDO"],
+                    "namespace": "MONDO",
                     "has_phenotype": [
                         "HP:0004808",
                         "HP:0005528",
@@ -13144,7 +13144,7 @@ def autocomplete_response():
                         "Fanconi anemia complementation group type Q",
                         "Fanconi anemia, complementation group Q",
                     ],
-                    "namespace": ["MONDO"],
+                    "namespace": "MONDO",
                     "has_phenotype": [
                         "HP:0040012",
                         "HP:0009777",
@@ -13665,7 +13665,7 @@ def autocomplete_response():
                         "Fanconi pancytopenia type 2",
                         "Fanconi pancytopenia, type 2",
                     ],
-                    "namespace": ["MONDO"],
+                    "namespace": "MONDO",
                     "has_phenotype": [
                         "HP:0000470",
                         "HP:0002575",
@@ -14742,7 +14742,7 @@ def autocomplete_response():
                         "Fanconi pancytopenia, type 3",
                         "facc",
                     ],
-                    "namespace": ["MONDO"],
+                    "namespace": "MONDO",
                     "has_phenotype": [
                         "HP:0000086",
                         "HP:0001875",
@@ -15906,7 +15906,7 @@ def autocomplete_response():
                     "in_taxon": "NCBITaxon:9606",
                     "in_taxon_label": "Homo sapiens",
                     "symbol": "FANCD2",
-                    "namespace": ["HGNC"],
+                    "namespace": "HGNC",
                     "has_phenotype": [
                         "HP:0000086",
                         "HP:0000582",
@@ -18617,7 +18617,7 @@ def autocomplete_response():
                     "in_taxon": "NCBITaxon:9606",
                     "in_taxon_label": "Homo sapiens",
                     "symbol": "BRCA2",
-                    "namespace": ["HGNC"],
+                    "namespace": "HGNC",
                     "has_phenotype": [
                         "HP:0000582",
                         "HP:0007018",

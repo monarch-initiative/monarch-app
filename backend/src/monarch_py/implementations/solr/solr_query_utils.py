@@ -237,7 +237,7 @@ def entity_boost(prioritized_predicates: List[AssociationPredicate] = None) -> s
     disease_boost = category_boost("biolink:PhenotypicFeature", 1.3)
     human_gene_boost = category_boost("biolink:Gene", 1.1, taxon="NCBITaxon:9606")
 
-    boosts = [disease_boost, human_gene_boost, obsolete_unboost()]
+    boosts = [phenotype_boost, disease_boost, human_gene_boost, obsolete_unboost()]
     if prioritized_predicates:
         boosts.append(entity_predicate_boost(prioritized_predicates, 2.0))
     return f"product({','.join(boosts)})"
