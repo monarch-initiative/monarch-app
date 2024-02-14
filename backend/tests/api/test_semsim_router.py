@@ -14,11 +14,11 @@ client = TestClient(router)
 def test_autocomplete_params(mock_autocomplete, autocomplete):
     mock_autocomplete.return_value = autocomplete
     client.get(f"/autocomplete?q=heart")
-    mock_autocomplete.assert_called_with(q="heart",
-                                         category=[EntityCategory.DISEASE,
-                                                   EntityCategory.GENE,
-                                                   EntityCategory.PHENOTYPIC_FEATURE],
-                                         prioritized_predicates=[AssociationPredicate.HAS_PHENOTYPE])
+    mock_autocomplete.assert_called_with(
+        q="heart",
+        category=[EntityCategory.DISEASE, EntityCategory.GENE, EntityCategory.PHENOTYPIC_FEATURE],
+        prioritized_predicates=[AssociationPredicate.HAS_PHENOTYPE],
+    )
 
 
 @patch("monarch_py.api.config.SemsimianHTTPRequester.compare")

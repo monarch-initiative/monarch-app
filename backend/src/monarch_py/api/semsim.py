@@ -26,11 +26,11 @@ def autocomplete(
     Returns:
         SearchResults
     """
-    response = solr().autocomplete(q=q,
-                                   category=[EntityCategory.DISEASE,
-                                             EntityCategory.GENE,
-                                             EntityCategory.PHENOTYPIC_FEATURE],
-                                   prioritized_predicates=[AssociationPredicate.HAS_PHENOTYPE])
+    response = solr().autocomplete(
+        q=q,
+        category=[EntityCategory.DISEASE, EntityCategory.GENE, EntityCategory.PHENOTYPIC_FEATURE],
+        prioritized_predicates=[AssociationPredicate.HAS_PHENOTYPE],
+    )
     return response
 
 

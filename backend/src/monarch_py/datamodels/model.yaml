@@ -181,6 +181,7 @@ classes:
       - symbol
       - synonym
       - uri
+      - namespace
       - has_phenotype
       - has_phenotype_label
       - has_phenotype_closure
@@ -444,6 +445,9 @@ slots:
     required: true
   name:
     range: string
+  namespace:
+    range: string
+    description: The namespace/prefix portion of this entity's identifier
   negated:
     range: boolean
   node_hierarchy:

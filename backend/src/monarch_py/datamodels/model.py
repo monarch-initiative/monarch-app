@@ -381,6 +381,7 @@ class Entity(ConfiguredBaseModel):
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)
     uri: Optional[str] = Field(None, description="""The URI of the entity""")
+    namespace: Optional[str] = Field(None, description="""The namespace/prefix portion of this entity's identifier""")
     has_phenotype: Optional[List[str]] = Field(
         default_factory=list,
         description="""A list of phenotype identifiers that are known to be associated with this entity""",
@@ -492,6 +493,7 @@ class Node(Entity):
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)
     uri: Optional[str] = Field(None, description="""The URI of the entity""")
+    namespace: Optional[str] = Field(None, description="""The namespace/prefix portion of this entity's identifier""")
     has_phenotype: Optional[List[str]] = Field(
         default_factory=list,
         description="""A list of phenotype identifiers that are known to be associated with this entity""",
@@ -614,6 +616,7 @@ class SearchResult(Entity):
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)
     uri: Optional[str] = Field(None, description="""The URI of the entity""")
+    namespace: Optional[str] = Field(None, description="""The namespace/prefix portion of this entity's identifier""")
     has_phenotype: Optional[List[str]] = Field(
         default_factory=list,
         description="""A list of phenotype identifiers that are known to be associated with this entity""",

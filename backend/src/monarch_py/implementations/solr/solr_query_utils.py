@@ -175,9 +175,9 @@ def build_search_query(
     return query
 
 
-def build_autocomplete_query(q: str,
-                             category: List[str] = None,
-                             prioritized_predicates: List[AssociationPredicate] = None) -> SolrQuery:
+def build_autocomplete_query(
+    q: str, category: List[str] = None, prioritized_predicates: List[AssociationPredicate] = None
+) -> SolrQuery:
     query = SolrQuery(q=q, limit=10, start=0)
     query.q = q
     if category:

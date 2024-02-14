@@ -379,14 +379,15 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         results = parse_search(query_result)
         return results
 
-    def autocomplete(self,
-                     q: str,
-                     category: List[EntityCategory] = None,
-                     prioritized_predicates: List[AssociationPredicate] = None) -> SearchResults:
+    def autocomplete(
+        self, q: str, category: List[EntityCategory] = None, prioritized_predicates: List[AssociationPredicate] = None
+    ) -> SearchResults:
         solr = SolrService(base_url=self.base_url, core=core.ENTITY)
-        query = build_autocomplete_query(q,
-                                         category=[cat.value for cat in category] if category else None,
-                                         prioritized_predicates=prioritized_predicates)
+        query = build_autocomplete_query(
+            q,
+            category=[cat.value for cat in category] if category else None,
+            prioritized_predicates=prioritized_predicates,
+        )
         query_result = solr.query(query)
         results = parse_autocomplete(query_result)
         return results

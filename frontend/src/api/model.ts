@@ -351,6 +351,8 @@ export interface Entity {
     synonym?: string[],
     /** The URI of the entity */
     uri?: string,
+    /** The namespace/prefix portion of this entity's identifier */
+    namespace?: string,
     /** A list of phenotype identifiers that are known to be associated with this entity */
     has_phenotype?: string[],
     /** A list of phenotype labels that are known to be associated with this entity */
@@ -472,6 +474,8 @@ export interface Node extends Entity {
     synonym?: string[],
     /** The URI of the entity */
     uri?: string,
+    /** The namespace/prefix portion of this entity's identifier */
+    namespace?: string,
     /** A list of phenotype identifiers that are known to be associated with this entity */
     has_phenotype?: string[],
     /** A list of phenotype labels that are known to be associated with this entity */
@@ -520,6 +524,8 @@ export interface SearchResult extends Entity {
     synonym?: string[],
     /** The URI of the entity */
     uri?: string,
+    /** The namespace/prefix portion of this entity's identifier */
+    namespace?: string,
     /** A list of phenotype identifiers that are known to be associated with this entity */
     has_phenotype?: string[],
     /** A list of phenotype labels that are known to be associated with this entity */
