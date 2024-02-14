@@ -3,7 +3,7 @@ from fastapi import APIRouter, Path, Query
 from monarch_py.api.additional_models import SemsimCompareRequest, SemsimSearchRequest, SemsimSearchGroup
 from monarch_py.api.config import semsimian, solr
 from monarch_py.api.utils.similarity_utils import parse_similarity_prefix
-from monarch_py.datamodels.category_enums import AssociationPredicate
+from monarch_py.datamodels.category_enums import AssociationPredicate, EntityCategory
 from monarch_py.datamodels.model import SearchResults
 
 router = APIRouter(tags=["semsim"], responses={404: {"description": "Not Found"}})
@@ -26,7 +26,11 @@ def autocomplete(
     Returns:
         SearchResults
     """
-    response = solr().autocomplete(q=q, prioritized_predicates=[AssociationPredicate.HAS_PHENOTYPE])
+    response = solr().autocomplete(q=q,
+                                   category=[EntityCategory.DISEASE,
+                                             EntityCategory.GENE,
+                                             EntityCategory.PHENOTYPIC_FEATURE],
+                                   prioritized_predicates=[AssociationPredicate.HAS_PHENOTYPE])
     return response
 
 

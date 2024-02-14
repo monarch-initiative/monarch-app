@@ -1,5 +1,6 @@
 import type { SearchResults } from "@/api/model";
 import { apiUrl, request } from "./index";
+import * as url from "url";
 
 export type Filters = { [key: string]: string[] };
 
@@ -20,8 +21,10 @@ export const getSearch = async (
   return response;
 };
 
-export const getAutocomplete = async (q: string) => {
-  const url = `${apiUrl}/autocomplete`;
+export const getAutocomplete = async (q: string, semsim: boolean = false) => {
+
+  const url = semsim ? `${apiUrl}/semsim/autocomplete` : `${apiUrl}/autocomplete`;
+
   const response = await request<SearchResults>(url, { q });
 
   const transformedResponse = {

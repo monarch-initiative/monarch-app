@@ -17,7 +17,7 @@ from monarch_py.datamodels.model import (
     NodeHierarchy,
     SearchResults,
 )
-from monarch_py.datamodels.category_enums import AssociationPredicate
+from monarch_py.datamodels.category_enums import AssociationPredicate, EntityCategory
 from monarch_py.datamodels.solr import core
 from monarch_py.implementations.solr.solr_parsers import (
     convert_facet_fields,
@@ -379,9 +379,14 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         results = parse_search(query_result)
         return results
 
-    def autocomplete(self, q: str, prioritized_predicates: List[AssociationPredicate] = None) -> SearchResults:
+    def autocomplete(self,
+                     q: str,
+                     category: List[EntityCategory] = None,
+                     prioritized_predicates: List[AssociationPredicate] = None) -> SearchResults:
         solr = SolrService(base_url=self.base_url, core=core.ENTITY)
-        query = build_autocomplete_query(q, prioritized_predicates=prioritized_predicates)
+        query = build_autocomplete_query(q,
+                                         category=[cat.value for cat in category],
+                                         prioritized_predicates=prioritized_predicates)
         query_result = solr.query(query)
         results = parse_autocomplete(query_result)
         return results

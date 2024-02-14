@@ -8,7 +8,7 @@ import type { Options, OptionsFunc } from "@/components/AppSelectTags.vue";
 import type { Phenogrid } from "@/components/ThePhenogrid.vue";
 import { stringify } from "@/util/object";
 import { apiUrl, request } from "./";
-import { getSearch } from "./search";
+import {getAutocomplete, getSearch} from "./search";
 
 /** search individual phenotypes or gene/disease phenotypes */
 export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
@@ -27,14 +27,7 @@ export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
     };
 
   /** otherwise perform string search for phenotypes/genes/diseases */
-  const { items } = await getSearch(search, 0, 20, {
-    category: [
-      "biolink:PhenotypicFeature",
-      "biolink:PhenotypicQuality",
-      "biolink:Gene",
-      "biolink:Disease",
-    ],
-  });
+  const { items } = await getAutocomplete(search, true);
 
   /** convert into desired result format */
   return {

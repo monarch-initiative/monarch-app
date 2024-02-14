@@ -175,9 +175,13 @@ def build_search_query(
     return query
 
 
-def build_autocomplete_query(q: str, prioritized_predicates: List[AssociationPredicate] = None) -> SolrQuery:
+def build_autocomplete_query(q: str,
+                             category: List[str],
+                             prioritized_predicates: List[AssociationPredicate] = None) -> SolrQuery:
     query = SolrQuery(q=q, limit=10, start=0)
     query.q = q
+    if category:
+        query.add_filter_query(" OR ".join(f'category:"{cat}"' for cat in category))
     # match the query fields to start with
     query.query_fields = entity_query_fields()
     query.def_type = "edismax"
