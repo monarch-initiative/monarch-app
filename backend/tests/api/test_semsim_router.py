@@ -5,8 +5,16 @@ from unittest.mock import MagicMock, patch
 
 from monarch_py.api.additional_models import SemsimSearchGroup
 from monarch_py.api.semsim import router
+from monarch_py.datamodels.category_enums import AssociationPredicate
 
 client = TestClient(router)
+
+
+@patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.autocomplete")
+def test_autocomplete_params(mock_autocomplete, autocomplete):
+    mock_autocomplete.return_value = autocomplete
+    client.get(f"/autocomplete?q=heart")
+    mock_autocomplete.assert_called_with(q="heart", prioritized_predicates=[AssociationPredicate.HAS_PHENOTYPE])
 
 
 @patch("monarch_py.api.config.SemsimianHTTPRequester.compare")

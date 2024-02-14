@@ -1,6 +1,7 @@
 from typing import List
 
 from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQuery
+from monarch_py.datamodels.category_enums import AssociationPredicate
 from monarch_py.utils.association_type_utils import AssociationTypeMappings, get_solr_query_fragment
 from monarch_py.utils.utils import escape
 
@@ -174,13 +175,13 @@ def build_search_query(
     return query
 
 
-def build_autocomplete_query(q: str) -> SolrQuery:
+def build_autocomplete_query(q: str, prioritized_predicates: List[AssociationPredicate] = None) -> SolrQuery:
     query = SolrQuery(q=q, limit=10, start=0)
     query.q = q
     # match the query fields to start with
     query.query_fields = entity_query_fields()
     query.def_type = "edismax"
-    query.boost = entity_boost()
+    query.boost = entity_boost(prioritized_predicates=prioritized_predicates)
     return query
 
 
@@ -209,9 +210,11 @@ def build_mapping_query(
 
 def build_grounding_query(text: str) -> SolrQuery:
     query = SolrQuery(q=text, limit=10, start=0)
-    query.q = f'"{text}"' # quoting so that the complete text is matched as a unit
+    query.q = f'"{text}"'  # quoting so that the complete text is matched as a unit
     # rather than _t (text) or _ac (autocomplete/starts-with), just use keyword fields
-    query.query_fields = "id^100 name^10 symbol^10 synonym name_grounding full_name_grounding symbol_grounding synonym_grounding"
+    query.query_fields = (
+        "id^100 name^10 symbol^10 synonym name_grounding full_name_grounding symbol_grounding synonym_grounding"
+    )
     query.def_type = "edismax"
     query.boost = obsolete_unboost(multiplier=0.001)
     return query
@@ -220,14 +223,37 @@ def build_grounding_query(text: str) -> SolrQuery:
 ### Search helper functions ###
 
 
-def obsolete_unboost(multiplier = 0.1):
+def obsolete_unboost(multiplier=0.1):
     return f'if(termfreq(deprecated,"true"),{multiplier},1)'
 
-def entity_boost():
+
+def entity_boost(prioritized_predicates: List[AssociationPredicate] = None) -> str:
     """Shared boost function between search and autocomplete"""
-    disease_boost = 'if(termfreq(category,"biolink:Disease"),10.0,1)'
-    human_gene_boost = 'if(and(termfreq(in_taxon,"NCBITaxon:9606"),termfreq(category,"biolink:Gene")),5.0,1)'
-    return f"product({disease_boost},{human_gene_boost},{obsolete_unboost()})"
+    phenotype_boost = category_boost("biolink:PhenotypicFeature", 1.1)
+    disease_boost = category_boost("biolink:PhenotypicFeature", 1.3)
+    human_gene_boost = category_boost("biolink:Gene", 1.1, taxon="NCBITaxon:9606")
+
+    boosts = [disease_boost, human_gene_boost, obsolete_unboost()]
+    if prioritized_predicates:
+        boosts.append(entity_predicate_boost(prioritized_predicates, 2.0))
+    return f"product({','.join(boosts)})"
+
+
+def entity_predicate_boost(prioritized_predicates: List[AssociationPredicate], multiplier: float) -> str:
+    boosts = []
+    for predicate in prioritized_predicates:
+        field_root = predicate.value.replace("biolink:", "")
+        count_field = field_root + "_count"
+        boosts.append(f"if({count_field},{multiplier},1)")
+    return ",".join(boosts)
+
+
+def category_boost(category: str, multiplier: float, taxon: str = None) -> str:
+    if taxon:
+        return f'if(and(termfreq(in_taxon,"{taxon}"),termfreq(category,"{category}")),{multiplier},1)'
+    else:
+        return f'if(termfreq(category,"{category}"),{multiplier},1)'
+
 
 def entity_query_fields():
     """
@@ -248,4 +274,3 @@ def association_search_query_fields():
         " object object_label^2 object_label_t object_closure object_closure_label object_closure_label_t"
         " publications has_evidence primary_knowledge_source aggregator_knowledge_source provided_by "
     )
-

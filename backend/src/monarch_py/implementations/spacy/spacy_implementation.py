@@ -2,12 +2,10 @@ from dataclasses import dataclass
 from typing import List
 
 import spacy
-import re
 
 from monarch_py.interfaces.grounding_interface import GroundingInterface
-from monarch_py.interfaces.search_interface import SearchInterface
 from monarch_py.interfaces.text_annotation_interface import TextAnnotatorInterface
-from monarch_py.datamodels.model import TextAnnotationResult, Entity, SearchResult
+from monarch_py.datamodels.model import TextAnnotationResult, SearchResult
 
 
 @dataclass
@@ -108,7 +106,7 @@ class SpacyImplementation(TextAnnotatorInterface):
         start_index = 0
         for entity in entities:
             if start_index < entity.start:
-                non_span_text = text[start_index: entity.start]
+                non_span_text = text[start_index : entity.start]
                 results.append(TextAnnotationResult(text=non_span_text, start=start_index, end=entity.start))
             results.append(entity)
             start_index = entity.end
