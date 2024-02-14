@@ -7,8 +7,19 @@
 <template>
   <AppSection>
     <!-- example -->
-    <AppButton text="Try an example" design="small" @click="doExample()" />
-
+    <AppFlex gap="small">
+      <AppButton
+        text="Try a simple example"
+        design="small"
+        @click="doSimpleExample()"
+      />
+      |
+      <AppButton
+        text="Try a bigger example"
+        design="small"
+        @click="doBiggerExample()"
+      />
+    </AppFlex>
     <strong>Compare these phenotypes ...</strong>
 
     <!-- set A -->
@@ -226,11 +237,19 @@ function ringPercent(score = 0) {
 }
 
 /** example phenotype set comparison */
-function doExample() {
+function doSimpleExample() {
   aPhenotypes.value = examples.a.options;
   bPhenotypes.value = examples.b.options;
   aGeneratedFrom.value = examples.a;
   bGeneratedFrom.value = examples.b;
+  bMode.value = bModeOptions[0];
+}
+
+function doBiggerExample() {
+  aPhenotypes.value = examples.c.options;
+  bPhenotypes.value = examples.d.options;
+  aGeneratedFrom.value = examples.c;
+  bGeneratedFrom.value = examples.d;
   bMode.value = bModeOptions[0];
 }
 

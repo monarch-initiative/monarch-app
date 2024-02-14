@@ -55,8 +55,10 @@ class SolrQuery(BaseModel):
         if not value:
             return self
         if isinstance(value, list) and not len(value) == 0:
-            value = " OR ".join(value)
-        self.filter_queries.append(f"{field}:{escape(value)}")
+            fq = " OR ".join([f"{field}:{escape(val)}" for val in value])
+        else:
+            fq = f"{field}:{escape(value)}"
+        self.filter_queries.append(fq)
         return self
 
     def add_filter_query(self, filter_query: Union[list, str]):

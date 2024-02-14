@@ -49,22 +49,26 @@
         :key="index"
         :icon="item.icon"
         :title="startCase(item.label.replace(/biolink:/g, ''))"
-        :subtitle="`${item.count.toLocaleString(undefined, {
-          notation: 'compact',
-        })}`"
+        :subtitle="formatNumber(item.count, true)"
         design="small"
       />
       <!-- association counts -->
       <AppTile
         v-for="(item, index) in metadata.association"
         :key="index"
-        :icon="item.icon"
+        :icon="item.icon2 ? undefined : item.icon"
         :title="startCase(item.label.replace(/biolink:/g, ''))"
-        :subtitle="`${item.count.toLocaleString(undefined, {
-          notation: 'compact',
-        })}`"
+        :subtitle="formatNumber(item.count, true)"
         design="small"
-      />
+      >
+        <AppFlex v-if="item.icon2" gap="tiny" class="association">
+          <AppIcon :icon="item.icon" />
+          <svg viewBox="0 0 9 2" class="line">
+            <line x1="0" y1="1" x2="9" y2="1" />
+          </svg>
+          <AppIcon :icon="item.icon2" />
+        </AppFlex>
+      </AppTile>
     </AppGallery>
     <AppButton to="/about" text="Learn more" icon="arrow-right" />
   </AppSection>
@@ -189,6 +193,7 @@ import AppPost from "@/components/AppPost.vue";
 import AppTabs from "@/components/AppTabs.vue";
 import AppTile from "@/components/AppTile.vue";
 import { useQuery } from "@/util/composables";
+import { formatNumber } from "@/util/string";
 import tabs from "./explore/tabs.json";
 import TabSearch from "./explore/TabSearch.vue";
 import metadata from "./metadata.json";
@@ -209,7 +214,18 @@ onMounted(runGetBlogPosts);
 </script>
 
 <style lang="scss" scoped>
-:deep(.title) {
-  font-size: 1rem;
+.association {
+  font-size: 2rem;
+}
+
+.line {
+  width: 10px;
+
+  line {
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-dasharray: 1 3;
+    stroke-linecap: round;
+  }
 }
 </style>

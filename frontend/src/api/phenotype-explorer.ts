@@ -130,15 +130,21 @@ export const compareSetToSet = async (
   let unmatched: Phenogrid["unmatched"] = [];
 
   /** get subject matches */
-  const matches = Object.values(response.subject_best_matches || {});
+  const subjectMatches = Object.values(response.subject_best_matches || {});
+  const objectMatches = Object.values(response.object_best_matches || {});
 
   for (const col of cols) {
     for (const row of rows) {
       /** find match corresponding to col/row id */
-      const match = matches.find(
-        ({ match_source, match_target }) =>
-          match_source === row.id && match_target === col.id,
-      );
+      const match =
+        subjectMatches.find(
+          ({ match_source, match_target }) =>
+            match_source === row.id && match_target === col.id,
+        ) ||
+        objectMatches.find(
+          ({ match_source, match_target }) =>
+            match_source === col.id && match_target === row.id,
+        );
 
       /** sum up row and col scores */
       col.total += match?.score || 0;

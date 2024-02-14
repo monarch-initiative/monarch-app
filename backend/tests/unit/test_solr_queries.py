@@ -52,7 +52,7 @@ def test_build_association_multiple_categories():
     assert len(query.filter_queries) > 0, "filter_queries is empty"
     category_filter = [fq for fq in query.filter_queries if fq.startswith("category:")][0]
     assert (
-        category_filter == "category:biolink\\:Disease OR biolink\\:PhenotypicFeature"
+        category_filter == "category:biolink\\:Disease OR category:biolink\\:PhenotypicFeature"
     ), "multiple category filter is not as expected"
 
 
@@ -61,7 +61,7 @@ def test_build_association_multiple_predicates():
     assert len(query.filter_queries) > 0, "filter_queries is empty"
     predicate_filter = [fq for fq in query.filter_queries if fq.startswith("predicate:")][0]
     assert (
-        predicate_filter == "predicate:biolink\\:has_phenotype OR biolink\\:expressed_in"
+        predicate_filter == "predicate:biolink\\:has_phenotype OR predicate:biolink\\:expressed_in"
     ), "multiple predicate filter is not as expected"
 
 

@@ -24,17 +24,20 @@
   "association": [
     {
       "label": "Gene to Disease",
-      "icon": "association-gene-to-disease",
+      "icon": "category-gene",
+      "icon2": "category-disease",
       "count": 15255
     },
     {
       "label": "Gene to Phenotype",
-      "icon": "association-gene-to-phenotype",
+      "icon": "category-gene",
+      "icon2": "category-phenotypic-quality",
       "count": 922665
     },
     {
       "label": "Disease to Phenotype",
-      "icon": "association-disease-to-phenotype",
+      "icon": "category-disease",
+      "icon2": "category-phenotypic-quality",
       "count": 242021
     },
     {
