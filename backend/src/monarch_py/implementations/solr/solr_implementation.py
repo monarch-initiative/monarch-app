@@ -385,7 +385,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                      prioritized_predicates: List[AssociationPredicate] = None) -> SearchResults:
         solr = SolrService(base_url=self.base_url, core=core.ENTITY)
         query = build_autocomplete_query(q,
-                                         category=[cat.value for cat in category],
+                                         category=[cat.value for cat in category] if category else None,
                                          prioritized_predicates=prioritized_predicates)
         query_result = solr.query(query)
         results = parse_autocomplete(query_result)
