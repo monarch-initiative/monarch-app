@@ -351,6 +351,18 @@ export interface Entity {
     synonym?: string[],
     /** The URI of the entity */
     uri?: string,
+    /** The namespace/prefix portion of this entity's identifier */
+    namespace?: string,
+    /** A list of phenotype identifiers that are known to be associated with this entity */
+    has_phenotype?: string[],
+    /** A list of phenotype labels that are known to be associated with this entity */
+    has_phenotype_label?: string[],
+    /** A list of phenotype identifiers that are known to be associated with this entity expanded to include all ancestors */
+    has_phenotype_closure?: string[],
+    /** A list of phenotype labels that are known to be associated with this entity expanded to include all ancestors */
+    has_phenotype_closure_label?: string[],
+    /** A count of the number of phenotypes that are known to be associated with this entity */
+    has_phenotype_count?: number,
 };
 
 export interface EntityResults extends Results {
@@ -462,6 +474,18 @@ export interface Node extends Entity {
     synonym?: string[],
     /** The URI of the entity */
     uri?: string,
+    /** The namespace/prefix portion of this entity's identifier */
+    namespace?: string,
+    /** A list of phenotype identifiers that are known to be associated with this entity */
+    has_phenotype?: string[],
+    /** A list of phenotype labels that are known to be associated with this entity */
+    has_phenotype_label?: string[],
+    /** A list of phenotype identifiers that are known to be associated with this entity expanded to include all ancestors */
+    has_phenotype_closure?: string[],
+    /** A list of phenotype labels that are known to be associated with this entity expanded to include all ancestors */
+    has_phenotype_closure_label?: string[],
+    /** A count of the number of phenotypes that are known to be associated with this entity */
+    has_phenotype_count?: number,
 };
 
 export interface NodeHierarchy {
@@ -500,6 +524,18 @@ export interface SearchResult extends Entity {
     synonym?: string[],
     /** The URI of the entity */
     uri?: string,
+    /** The namespace/prefix portion of this entity's identifier */
+    namespace?: string,
+    /** A list of phenotype identifiers that are known to be associated with this entity */
+    has_phenotype?: string[],
+    /** A list of phenotype labels that are known to be associated with this entity */
+    has_phenotype_label?: string[],
+    /** A list of phenotype identifiers that are known to be associated with this entity expanded to include all ancestors */
+    has_phenotype_closure?: string[],
+    /** A list of phenotype labels that are known to be associated with this entity expanded to include all ancestors */
+    has_phenotype_closure_label?: string[],
+    /** A count of the number of phenotypes that are known to be associated with this entity */
+    has_phenotype_count?: number,
 };
 
 export interface SearchResults extends Results {

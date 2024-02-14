@@ -40,7 +40,7 @@ def histopheno_response():
                 "facet": "true",
             },
         },
-        "response": {"num_found": 4360, "start": 0, "docs": []},
+        "response": {"num_found": 4363, "start": 0, "docs": []},
         "facet_counts": {
             "facet_fields": {},
             "facet_queries": {

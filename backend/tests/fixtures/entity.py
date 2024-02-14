@@ -17,4 +17,10 @@ def entity():
         "symbol": None,
         "synonym": [],
         "uri": "http://purl.obolibrary.org/obo/MONDO_0020121",
+        "namespace": "MONDO",
+        "has_phenotype": [],
+        "has_phenotype_label": [],
+        "has_phenotype_closure": [],
+        "has_phenotype_closure_label": [],
+        "has_phenotype_count": 0,
     }

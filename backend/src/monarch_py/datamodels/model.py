@@ -381,6 +381,26 @@ class Entity(ConfiguredBaseModel):
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)
     uri: Optional[str] = Field(None, description="""The URI of the entity""")
+    namespace: Optional[str] = Field(None, description="""The namespace/prefix portion of this entity's identifier""")
+    has_phenotype: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""A list of phenotype identifiers that are known to be associated with this entity""",
+    )
+    has_phenotype_label: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""A list of phenotype labels that are known to be associated with this entity""",
+    )
+    has_phenotype_closure: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""A list of phenotype identifiers that are known to be associated with this entity expanded to include all ancestors""",
+    )
+    has_phenotype_closure_label: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""A list of phenotype labels that are known to be associated with this entity expanded to include all ancestors""",
+    )
+    has_phenotype_count: Optional[int] = Field(
+        None, description="""A count of the number of phenotypes that are known to be associated with this entity"""
+    )
 
 
 class FacetValue(ConfiguredBaseModel):
@@ -473,6 +493,26 @@ class Node(Entity):
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)
     uri: Optional[str] = Field(None, description="""The URI of the entity""")
+    namespace: Optional[str] = Field(None, description="""The namespace/prefix portion of this entity's identifier""")
+    has_phenotype: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""A list of phenotype identifiers that are known to be associated with this entity""",
+    )
+    has_phenotype_label: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""A list of phenotype labels that are known to be associated with this entity""",
+    )
+    has_phenotype_closure: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""A list of phenotype identifiers that are known to be associated with this entity expanded to include all ancestors""",
+    )
+    has_phenotype_closure_label: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""A list of phenotype labels that are known to be associated with this entity expanded to include all ancestors""",
+    )
+    has_phenotype_count: Optional[int] = Field(
+        None, description="""A count of the number of phenotypes that are known to be associated with this entity"""
+    )
 
 
 class NodeHierarchy(ConfiguredBaseModel):
@@ -576,6 +616,26 @@ class SearchResult(Entity):
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)
     uri: Optional[str] = Field(None, description="""The URI of the entity""")
+    namespace: Optional[str] = Field(None, description="""The namespace/prefix portion of this entity's identifier""")
+    has_phenotype: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""A list of phenotype identifiers that are known to be associated with this entity""",
+    )
+    has_phenotype_label: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""A list of phenotype labels that are known to be associated with this entity""",
+    )
+    has_phenotype_closure: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""A list of phenotype identifiers that are known to be associated with this entity expanded to include all ancestors""",
+    )
+    has_phenotype_closure_label: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""A list of phenotype labels that are known to be associated with this entity expanded to include all ancestors""",
+    )
+    has_phenotype_count: Optional[int] = Field(
+        None, description="""A count of the number of phenotypes that are known to be associated with this entity"""
+    )
 
 
 class SearchResults(Results):
