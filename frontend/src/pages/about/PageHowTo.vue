@@ -6,13 +6,14 @@
   <AppSection>
     <AppHeading>How to use Monarch Intiative</AppHeading>
     <p>
-      The Monarch Initiative is an extensive knowledge graph and ecosystem of tools made for the
-      benefit of clinicians, researchers, and scientists. This section is intended to help you get
-      started in using these tools. Advanced users may want to head directly to the
+      The Monarch Initiative is an extensive knowledge graph and ecosystem of
+      tools made for the benefit of clinicians, researchers, and scientists.
+      This section is intended to help you get started in using these tools.
+      Advanced users may want to head directly to the
       <AppLink
         to="https://github.com/obophenotype/upheno/wiki/Phenotype-Ontologies-Reconciliation-Effort"
         >home page</AppLink
-      >.
+      >
       and start exploring on your own.
     </p>
   </AppSection>
@@ -56,7 +57,8 @@
       Heading
     </AppHeading>
 
-    <p> Info
+    <p>
+      Info
       <AppLink
         to="https://github.com/obophenotype/upheno/wiki/Phenotype-Ontologies-Reconciliation-Effort"
         >Phenotype Ontologies Reconciliation Effort</AppLink
@@ -68,5 +70,4 @@
       icon="arrow-right"
     />
   </AppSection>
-
 </template>
