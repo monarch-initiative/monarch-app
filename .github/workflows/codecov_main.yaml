@@ -1,0 +1,62 @@
+name: Upload coverage report for main branch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-backend:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"]
+        os: [ubuntu-latest]
+        #os: [ ubuntu-latest, windows-latest ]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      #----------------------------------------------
+      #          install & configure poetry
+      #----------------------------------------------
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+
+      #----------------------------------------------
+      #    install your root project, if required
+      #----------------------------------------------
+      - name: Install library
+        run: poetry -C backend install --no-interaction
+
+      #----------------------------------------------
+      #              run pytest
+      #----------------------------------------------
+      - name: Run tests
+        run: poetry -C backend run pytest backend/tests
+
+      #----------------------------------------------
+      #              coverage report
+      #----------------------------------------------
+      - name: Generate coverage results
+        run: |
+          poetry -C backend run coverage run -m pytest backend/tests
+          poetry -C backend run coverage xml
+          poetry -C backend run coverage report -m
+        shell: bash
+
+      #----------------------------------------------
+      #           upload coverage results
+      #----------------------------------------------
+      - name: Upload coverage report
+        if: github.repository == 'monarch-initiative/monarch-app'
+        uses: codecov/codecov-action@v3.1.0
+        with:
+          name: codecov-results-${{ matrix.python-version }}
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: coverage.xml
+          fail_ci_if_error: true
+
