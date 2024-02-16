@@ -61,7 +61,7 @@ def test_build_association_multiple_categories():
     category_filter = [fq for fq in query.filter_queries if fq.startswith("category:")][0]
     assert (
         category_filter
-        == "category:biolink\\:CausalGeneToDiseaseAssociation OR biolink\\:DiseaseToPhenotypicFeatureAssociation"
+        == "category:biolink\\:CausalGeneToDiseaseAssociation OR category:biolink\\:DiseaseToPhenotypicFeatureAssociation"
     ), "multiple category filter is not as expected"
 
 
