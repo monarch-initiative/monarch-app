@@ -3,6 +3,10 @@ from typing_extensions import Annotated
 
 import typer
 
+from monarch_py.datamodels.category_enums import (
+    AssociationCategory,
+    AssociationPredicate,
+)
 from monarch_py.implementations.sql.sql_implementation import SQLImplementation
 from monarch_py.utils.utils import console, set_log_level
 from monarch_py.utils.format_utils import format_output
@@ -68,11 +72,17 @@ def entity(
 
 @sql_app.command()
 def associations(
-    category: List[str] = typer.Option(None, "--category", "-c", help="Comma-separated list of categories"),
-    subject: List[str] = typer.Option(None, "--subject", "-s", help="Comma-separated list of subjects"),
-    predicate: List[str] = typer.Option(None, "--predicate", "-p", help="Comma-separated list of predicates"),
-    object: List[str] = typer.Option(None, "--object", "-o", help="Comma-separated list of objects"),
-    entity: List[str] = typer.Option(None, "--entity", "-e", help="Comma-separated list of entities"),
+    category: List[AssociationCategory] = typer.Option(
+        None, "--category", "-c", help="Category to get associations for"
+    ),
+    subject: List[str] = typer.Option(None, "--subject", "-s", help="Subject ID to get associations for"),
+    predicate: List[AssociationPredicate] = typer.Option(
+        None, "--predicate", "-p", help="Predicate ID to get associations for"
+    ),
+    object: List[str] = typer.Option(None, "--object", "-o", help="Object ID to get associations for"),
+    entity: List[str] = typer.Option(
+        None, "--entity", "-e", help="Entity (subject or object) ID to get associations for"
+    ),
     direct: bool = typer.Option(
         False,
         "--direct",

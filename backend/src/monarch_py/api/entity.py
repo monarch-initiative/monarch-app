@@ -90,7 +90,7 @@ def _association_table(
         AssociationResults: Association table data for the specified entity and association type
     """
     response = solr().get_association_table(
-        entity=id, category=category.value, q=query, sort=sort, offset=pagination.offset, limit=pagination.limit
+        entity=id, category=category, q=query, sort=sort, offset=pagination.offset, limit=pagination.limit
     )
     if download is True:
         string_response = (

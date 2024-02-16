@@ -5,6 +5,7 @@ from fastapi.testclient import TestClient
 from httpx import Response
 
 from monarch_py.api.association import router
+from monarch_py.datamodels.category_enums import AssociationCategory, AssociationPredicate, EntityCategory
 
 client = TestClient(router)
 
@@ -43,5 +44,11 @@ def test_associations_params(mock_get_assoc):
         "limit": 20,
     }
     query_string = urllib.parse.urlencode(params, doseq=True)
+    print(query_string)
     client.get(f"/all?{query_string}")
+
+    params["category"] = [AssociationCategory.ASSOCIATION, AssociationCategory.GENE_TO_PHENOTYPIC_FEATURE_ASSOCIATION]
+    params["subject_category"] = [EntityCategory.DISEASE, EntityCategory.GENE]
+    params["object_category"] = [EntityCategory.GENE, EntityCategory.PHENOTYPIC_FEATURE]
+    params["predicate"] = [AssociationPredicate.INTERACTS_WITH]
     mock_get_assoc.assert_called_with(**params)

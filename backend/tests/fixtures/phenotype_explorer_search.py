@@ -231,8 +231,8 @@ def phenotype_explorer_search():
             score=7.234842285670967,
             similarity=TermSetPairwiseSimilarity(
                 subject_termset={
-                    "ZP:0018568": TermInfo(id="ZP:0018568", label="primitive hemopoiesis absent, abnormal (ZPO)"),
                     "ZP:0018569": TermInfo(id="ZP:0018569", label="myeloid cell development absent, abnormal (ZPO)"),
+                    "ZP:0018568": TermInfo(id="ZP:0018568", label="primitive hemopoiesis absent, abnormal (ZPO)"),
                 },
                 object_termset={
                     "HP:0002104": TermInfo(id="HP:0002104", label="Apnea (HPO)"),
@@ -626,8 +626,8 @@ def phenotype_explorer_search():
                     "ZP:0018569": TermInfo(id="ZP:0018569", label="myeloid cell development absent, abnormal (ZPO)"),
                 },
                 object_termset={
-                    "HP:0012378": TermInfo(id="HP:0012378", label="Fatigue (HPO)"),
                     "HP:0002104": TermInfo(id="HP:0002104", label="Apnea (HPO)"),
+                    "HP:0012378": TermInfo(id="HP:0012378", label="Fatigue (HPO)"),
                 },
                 subject_best_matches={
                     "ZP:0018568": BestMatch(
@@ -814,8 +814,8 @@ def phenotype_explorer_search():
             score=7.234842285670967,
             similarity=TermSetPairwiseSimilarity(
                 subject_termset={
-                    "ZP:0018568": TermInfo(id="ZP:0018568", label="primitive hemopoiesis absent, abnormal (ZPO)"),
                     "ZP:0018569": TermInfo(id="ZP:0018569", label="myeloid cell development absent, abnormal (ZPO)"),
+                    "ZP:0018568": TermInfo(id="ZP:0018568", label="primitive hemopoiesis absent, abnormal (ZPO)"),
                 },
                 object_termset={
                     "HP:0002104": TermInfo(id="HP:0002104", label="Apnea (HPO)"),
@@ -1009,8 +1009,8 @@ def phenotype_explorer_search():
                     "ZP:0100294": TermInfo(id="ZP:0100294", label="visual perception absent, abnormal (ZPO)"),
                 },
                 object_termset={
-                    "HP:0002104": TermInfo(id="HP:0002104", label="Apnea (HPO)"),
                     "HP:0012378": TermInfo(id="HP:0012378", label="Fatigue (HPO)"),
+                    "HP:0002104": TermInfo(id="HP:0002104", label="Apnea (HPO)"),
                 },
                 subject_best_matches={
                     "ZP:0000945": BestMatch(
@@ -1099,8 +1099,8 @@ def phenotype_explorer_search():
                     "HP:0012378": BestMatch(
                         match_source="HP:0012378",
                         match_source_label="Fatigue (HPO)",
-                        match_target="ZP:0100294",
-                        match_target_label="visual perception absent, abnormal (ZPO)",
+                        match_target="ZP:0000945",
+                        match_target_label="pigment cell quality, abnormal (ZPO)",
                         score=1.6836208034928104,
                         match_subsumer=None,
                         match_subsumer_label=None,
@@ -1108,7 +1108,7 @@ def phenotype_explorer_search():
                             subject_id="HP:0012378",
                             subject_label=None,
                             subject_source=None,
-                            object_id="ZP:0100294",
+                            object_id="ZP:0000945",
                             object_label=None,
                             object_source=None,
                             ancestor_id="UPHENO:0001005",
@@ -1117,10 +1117,10 @@ def phenotype_explorer_search():
                             object_information_content=None,
                             subject_information_content=None,
                             ancestor_information_content=1.6836208034928104,
-                            jaccard_similarity=0.4444444444444444,
+                            jaccard_similarity=0.42105263157894735,
                             cosine_similarity=None,
                             dice_similarity=None,
-                            phenodigm_score=0.8650294287846346,
+                            phenodigm_score=0.841957819544251,
                         ),
                     ),
                 },
