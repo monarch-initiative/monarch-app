@@ -81,49 +81,120 @@
   </AppSection>
 
   <!-- compare results -->
-  <AppSection v-else-if="compareResults.summary.length">
+  <AppSection
+    v-else-if="
+      compareResults.subjectMatches.length ||
+      compareResults.objectMatches.length ||
+      compareResults.subjectUnmatched.length ||
+      compareResults.objectUnmatched.length
+    "
+  >
     <AppHeading>Similarity Comparison</AppHeading>
 
-    <!-- heading -->
-    <AppHeading
-      >Top {{ Math.min(compareResults.summary.length, 10) }} most
-      similar</AppHeading
-    >
+    <AppTabs
+      v-model="compareTab"
+      name="Comparison direction"
+      :tabs="compareTabs"
+      :url="false"
+    />
 
     <!-- list of compare results -->
-    <AppFlex>
-      <div
-        v-for="(match, matchIndex) in compareResults.summary.slice(0, 10)"
-        :key="matchIndex"
-        class="match"
-      >
-        <!-- ring score -->
-        <AppRing
-          v-tooltip="'Similarity score'"
-          :score="match.score"
-          :percent="ringPercent(match.score)"
-        />
-        <!-- for percent, use asymptotic function limited to 1 so we don't need to know max score -->
+    <div class="triptych-scroll">
+      <div class="triptych">
+        <div>
+          <strong>{{ headings[0].name }}</strong>
+          <div class="weak">{{ headings[0].description }}</div>
+        </div>
+        <strong>Match</strong>
+        <div>
+          <strong>{{ headings[1].name }}</strong>
+          <div class="weak">{{ headings[1].description }}</div>
+        </div>
 
-        <AppFlex class="details" direction="col" align-h="left" gap="small">
+        <template
+          v-for="(match, index) in compareTab === 'a-to-b'
+            ? compareResults.subjectMatches
+            : compareResults.objectMatches"
+          :key="index"
+        >
           <AppNodeBadge
             :node="{ id: match.source, name: match.source_label }"
           />
+
+          <!-- ring score -->
+          <tooltip :interactive="true" :append-to="appendToBody" :tag="null">
+            <div>
+              <AppRing
+                :score="match.score"
+                :percent="ringPercent(match.score)"
+                tabindex="0"
+              />
+              <AppIcon v-if="match.jaccard_similarity === 1" icon="equals" />
+            </div>
+
+            <template #content>
+              <div class="mini-table">
+                <span>Ancestor</span>
+                <AppNodeBadge
+                  :node="{
+                    id: match.ancestor_id,
+                    name: match.ancestor_label,
+                  }"
+                  :absolute="true"
+                />
+                <AppLink
+                  to="https://incatools.github.io/ontology-access-kit/guide/similarity.html#information-content"
+                >
+                  Ancestor IC
+                </AppLink>
+                <span>
+                  {{ match.score?.toFixed(3) }}
+                </span>
+                <AppLink
+                  to="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3649640/"
+                >
+                  Phenodigm
+                </AppLink>
+                <strong>
+                  {{ match.phenodigm_score?.toFixed(3) }}
+                </strong>
+                <AppLink
+                  to="https://incatools.github.io/ontology-access-kit/guide/similarity.html#jaccard-similarity"
+                >
+                  Jaccard
+                </AppLink>
+                <span>{{ match.jaccard_similarity?.toFixed(3) }}</span>
+              </div>
+            </template>
+          </tooltip>
+
           <AppNodeBadge
             :node="{ id: match.target, name: match.target_label }"
           />
-        </AppFlex>
+        </template>
       </div>
-    </AppFlex>
+    </div>
 
-    <!-- phenogrid results -->
-    <template v-if="!isEmpty(compareResults.phenogrid.cells)">
-      <AppHeading>Detailed Comparison</AppHeading>
-      <ThePhenogrid :data="compareResults.phenogrid" />
-      <AppAlert
-        >This feature is still under development. Check back soon for
-        more!</AppAlert
-      >
+    <!-- unmatched phenotypes -->
+    <template
+      v-if="
+        (compareTab === 'a-to-b'
+          ? compareResults.subjectUnmatched
+          : compareResults.objectUnmatched
+        ).length
+      "
+    >
+      <AppHeading>Unmatched</AppHeading>
+
+      <AppFlex direction="col">
+        <AppNodeBadge
+          v-for="(unmatched, index) in compareTab === 'a-to-b'
+            ? compareResults.subjectUnmatched
+            : compareResults.objectUnmatched"
+          :key="index"
+          :node="{ id: unmatched.id, name: unmatched.label }"
+        />
+      </AppFlex>
     </template>
   </AppSection>
 
@@ -140,17 +211,16 @@
     <!-- list of search results -->
     <AppFlex>
       <div
-        v-for="(match, matchIndex) in searchResults.summary.slice(0, 10)"
-        :key="matchIndex"
+        v-for="(match, index) in searchResults.summary.slice(0, 10)"
+        :key="index"
         class="match"
       >
         <!-- ring score -->
         <AppRing
-          v-tooltip="'Similarity score'"
+          v-tooltip="'Average similarity score'"
           :score="match.score"
           :percent="ringPercent(match.score)"
         />
-        <!-- for percent, use asymptotic function limited to 1 so we don't need to know max score -->
 
         <AppFlex class="details" direction="col" align-h="left" gap="small">
           <AppNodeBadge :node="match.subject" />
@@ -170,7 +240,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
-import { isEmpty, isEqual } from "lodash";
+import { isEqual } from "lodash";
 import {
   compareSetToGroup,
   compareSetToSet,
@@ -183,8 +253,10 @@ import AppRing from "@/components/AppRing.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import type { Option, Options } from "@/components/AppSelectTags.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
+import AppTabs from "@/components/AppTabs.vue";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
+import { appendToBody } from "@/global/tooltip";
 import { scrollTo } from "@/router";
 import { useQuery } from "@/util/composables";
 import { parse } from "@/util/object";
@@ -201,7 +273,7 @@ const multiTooltip = `In this box, you can select phenotypes in 3 ways:<br>
 /** options for mode of second set */
 const bModeOptions = [
   { id: "these phenotypes ..." },
-  { id: "phenotypes from all ..." },
+  { id: "phenotypes from these genes/diseases ..." },
 ];
 
 /** search group options */
@@ -231,9 +303,16 @@ const bGeneratedFrom = ref<GeneratedFrom>({});
 /** element reference */
 const aBox = ref<{ runSearch: (value: string) => void }>();
 
-/** get % for showing ring. domain 1 to ~20 (asymptotic), range 0 to 1 */
+/**
+ * get % for showing ring. use asymptotic function limited to 1 so we don't need
+ * to know max score. domain 1 to ~20, range 0 to 1
+ */
 function ringPercent(score = 0) {
-  return (score - 1) / (5 + score - 1);
+  const in_min = 4;
+  const in_max = 19;
+  const out_min = 0;
+  const out_max = 1;
+  return ((score - in_min) / (in_max - in_min)) * (out_max - out_min) + out_min;
 }
 
 /** example phenotype set comparison */
@@ -253,6 +332,33 @@ function doBiggerExample() {
   bMode.value = bModeOptions[0];
 }
 
+/** compare tab options */
+const compareTabs = [
+  { id: "a-to-b", text: "A → B" },
+  { id: "b-to-a", text: "B → A" },
+] as const;
+
+/** currently selected compare tab */
+const compareTab = ref<(typeof compareTabs)[number]["id"]>("a-to-b");
+
+/** headings for compare table */
+const headings = computed(() => {
+  const headings = [
+    {
+      name: "Set A",
+      description: description(aPhenotypes.value, aGeneratedFrom.value),
+    },
+    {
+      name: "Set B",
+      description: description(bPhenotypes.value, bGeneratedFrom.value),
+    },
+  ];
+
+  if (compareTab.value === "b-to-a") headings.reverse();
+
+  return headings;
+});
+
 /** comparison analysis */
 const {
   query: runCompare,
@@ -270,7 +376,12 @@ const {
   },
 
   /** default value */
-  { summary: [], phenogrid: { cols: [], rows: [], cells: {}, unmatched: [] } },
+  {
+    subjectMatches: [],
+    objectMatches: [],
+    subjectUnmatched: [],
+    objectUnmatched: [],
+  },
 
   scrollToResults,
 );
@@ -332,8 +443,10 @@ function spreadOptions(option: Option, options: Options, set: string) {
 /** clear/reset results */
 function clearResults() {
   compareResults.value = {
-    summary: [],
-    phenogrid: { cols: [], rows: [], cells: {}, unmatched: [] },
+    subjectMatches: [],
+    objectMatches: [],
+    subjectUnmatched: [],
+    objectUnmatched: [],
   };
   searchResults.value = {
     summary: [],
@@ -349,7 +462,7 @@ function description(
   const description = [];
 
   /** number of phenotypes */
-  description.push(`${phenotypes.length} selected`);
+  description.push(`${phenotypes.length} phenotypes`);
 
   /** to avoid misleading text, only show if lists match exactly */
   if (isEqual(generatedFrom.options, phenotypes))
@@ -384,9 +497,36 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.triptych-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.triptych {
+  display: grid;
+  grid-template-columns: 1fr min-content 1fr;
+  min-width: 400px;
+  gap: 20px 40px;
+}
+
 .weak {
   color: $gray;
-  text-align: center;
+}
+
+.triptych > :nth-child(3n + 1) {
+  justify-self: flex-start;
+  text-align: left;
+}
+
+.triptych > :nth-child(3n + 2) {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.triptych > :nth-child(3n) {
+  justify-self: flex-end;
+  text-align: right;
 }
 
 .match {

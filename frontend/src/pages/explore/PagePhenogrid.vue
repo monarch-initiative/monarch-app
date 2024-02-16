@@ -24,7 +24,7 @@ import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { isEmpty } from "lodash";
 import { useEventListener } from "@vueuse/core";
-import { compareSetToSet } from "@/api/phenotype-explorer";
+import { compareSetToGroup, type Group } from "@/api/phenotype-explorer";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
 import TheSnackbar from "@/components/TheSnackbar.vue";
 import { useQuery } from "@/util/composables";
@@ -33,7 +33,7 @@ import { useQuery } from "@/util/composables";
 const route = useRoute();
 
 const aPhenotypes = ref<string[]>([]);
-const bPhenotypes = ref<string[]>([]);
+const bGroup = ref<Group>("Human Diseases");
 
 /** comparison analysis */
 const {
@@ -43,7 +43,7 @@ const {
   isError,
 } = useQuery(
   async function () {
-    return await compareSetToSet(aPhenotypes.value, bPhenotypes.value);
+    return await compareSetToGroup(aPhenotypes.value, bGroup.value);
   },
 
   /** default value */
@@ -51,7 +51,7 @@ const {
 );
 
 /** re-rerun analysis when inputs change */
-watch([aPhenotypes, bPhenotypes], runAnalysis);
+watch([aPhenotypes, bGroup], runAnalysis);
 
 /** get input phenotype sets from url params */
 watch(
@@ -61,8 +61,7 @@ watch(
 
     if (source && typeof source === "string")
       aPhenotypes.value = source.split(",");
-    if (target && typeof target === "string")
-      bPhenotypes.value = target.split(",");
+    if (target && typeof target === "string") bGroup.value = target as Group;
 
     runAnalysis();
   },
@@ -73,7 +72,7 @@ watch(
 useEventListener("message", (event: MessageEvent) => {
   if ("source" in event.data && "target" in event.data) {
     aPhenotypes.value = event.data.source;
-    bPhenotypes.value = event.data.target;
+    bGroup.value = event.data.target;
   }
 });
 

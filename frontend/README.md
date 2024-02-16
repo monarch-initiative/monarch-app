@@ -95,14 +95,15 @@ Include the widget on your page like so:
 The widget accepts several URL parameters:
 
 - `source` - Comma-separated list of "source" phenotype IDs (set A).
-- `target` - Comma-separated list of "target" phenotype IDs (set B).
+- `target` - "target" group of phenotypes to compare to (group B).
+  See `src/api/phenotype-explorer.ts` groups for enumerated options.
 - `stylesheet` - A URI-encoded URL to a stylesheet that will be applied to the widget, for the purposes of matching its styles to your webpage.
 
 ### Events
 
 The widget also emits `message` events to the parent window when certain things change, and listens for `message` events from the parent window to receive information.
 
-#### Listens for `MessageEvent<{ source: string[], target: string[] }>`
+#### Listens for `MessageEvent<{ source: string[], target: string }>`
 
 Provide input phenotype lists to the widget when they might be [too long for a URL](https://www.google.com/search?q=max+url+length).
 
@@ -110,7 +111,10 @@ Provide input phenotype lists to the widget when they might be [too long for a U
 // get your iframe dom element somehow
 const iframe = document.querySelector("iframe");
 // send it a message
-iframe.contentWindow.postMessage({ source: ["abc"], target: ["def"] }, "*");
+iframe.contentWindow.postMessage(
+  { source: ["HP:123,HP:456"], target: "Human Diseases" },
+  "*",
+);
 ```
 
 #### Emits `MessageEvent<{ width: number; height: number; }>`

@@ -71,6 +71,7 @@
         :state="{ phenotypes: getPhenotypes() }"
         text="Phenotype Explorer"
         icon="arrow-right"
+        color="secondary"
       />
     </AppFlex>
   </AppSection>

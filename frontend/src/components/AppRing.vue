@@ -4,7 +4,7 @@
 
 <template>
   <div class="ring">
-    <div>{{ score.toFixed(2) }}</div>
+    <div>{{ score.toFixed(1) }}</div>
     <svg viewBox="-50 -50 100 100">
       <circle cx="0" cy="0" r="50" />
       <path :d="d" />
