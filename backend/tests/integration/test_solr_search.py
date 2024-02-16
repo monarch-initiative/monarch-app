@@ -1,4 +1,6 @@
 import pytest
+
+from monarch_py.datamodels.category_enums import AssociationCategory, EntityCategory
 from monarch_py.datamodels.model import AssociationDirectionEnum
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
@@ -47,7 +49,7 @@ def test_facet_fields():
 
 def test_single_filter_queries():
     si = SolrImplementation()
-    response = si.search("syndrome", category=["biolink:Disease"])
+    response = si.search("syndrome", category=[EntityCategory.DISEASE])
     assert response
     assert response.total > 0
     assert response.items[0].category == "biolink:Disease"
@@ -55,7 +57,7 @@ def test_single_filter_queries():
 
 def test_multiple_filter_queries():
     si = SolrImplementation()
-    response = si.search("eye", category=["biolink:Disease", "biolink:PhenotypicFeature"])
+    response = si.search("eye", category=[EntityCategory.DISEASE, EntityCategory.PHENOTYPIC_FEATURE])
     assert response
     assert response.total > 0
     for (i, item) in enumerate(response.items):
@@ -140,7 +142,9 @@ def test_association_counts_for_phenotype():
 
 def test_association_table():
     si = SolrImplementation()
-    association_results = si.get_association_table("MONDO:0007947", "biolink:DiseaseToPhenotypicFeatureAssociation")
+    association_results = si.get_association_table(
+        "MONDO:0007947", AssociationCategory.DISEASE_TO_PHENOTYPIC_FEATURE_ASSOCIATION
+    )
     assert association_results
     assert association_results.total > 5
     assert association_results.items[0].direction == AssociationDirectionEnum.outgoing

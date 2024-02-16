@@ -4,6 +4,7 @@ from fastapi.testclient import TestClient
 
 from monarch_py.api.entity import router
 from monarch_py.datamodels.model import Node
+from monarch_py.datamodels.category_enums import AssociationCategory
 
 client = TestClient(router)
 
@@ -21,7 +22,7 @@ def test_association_table(mock_get_assoc_table):
     client.get("/MONDO:0019391/biolink:DiseaseToPhenotypicFeatureAssociation")
     mock_get_assoc_table.assert_called_with(
         entity="MONDO:0019391",
-        category="biolink:DiseaseToPhenotypicFeatureAssociation",
+        category=AssociationCategory.DISEASE_TO_PHENOTYPIC_FEATURE_ASSOCIATION,
         q=None,
         sort=None,
         offset=0,

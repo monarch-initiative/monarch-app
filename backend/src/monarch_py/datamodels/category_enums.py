@@ -28,10 +28,10 @@ class EntityCategory(Enum):
     PATHOLOGICAL_PROCESS = "biolink:PathologicalProcess"
     CHEMICAL_ENTITY = "biolink:ChemicalEntity"
     DRUG = "biolink:Drug"
-    INFORMATION_CONTENT_ENTITY = "biolink:InformationContentEntity"
+    ORGANISM_TAXON = "biolink:OrganismTaxon"
     SEQUENCE_VARIANT = "biolink:SequenceVariant"
     SMALL_MOLECULE = "biolink:SmallMolecule"
-    ORGANISM_TAXON = "biolink:OrganismTaxon"
+    INFORMATION_CONTENT_ENTITY = "biolink:InformationContentEntity"
     NUCLEIC_ACID_ENTITY = "biolink:NucleicAcidEntity"
     EVIDENCE_TYPE = "biolink:EvidenceType"
     GEOGRAPHIC_EXPOSURE = "biolink:GeographicExposure"
@@ -39,15 +39,14 @@ class EntityCategory(Enum):
     TRANSCRIPT = "biolink:Transcript"
     FUNGUS = "biolink:Fungus"
     PLANT = "biolink:Plant"
-    POPULATION_OF_INDIVIDUAL_ORGANISMS = "biolink:PopulationOfIndividualOrganisms"
+    DATASET = "biolink:Dataset"
     INVERTEBRATE = "biolink:Invertebrate"
-    PROTEIN_DOMAIN = "biolink:ProteinDomain"
+    POPULATION_OF_INDIVIDUAL_ORGANISMS = "biolink:PopulationOfIndividualOrganisms"
     PROTEIN_FAMILY = "biolink:ProteinFamily"
     ACTIVITY = "biolink:Activity"
     AGENT = "biolink:Agent"
     CHEMICAL_EXPOSURE = "biolink:ChemicalExposure"
     CONFIDENCE_LEVEL = "biolink:ConfidenceLevel"
-    DATASET = "biolink:Dataset"
     ENVIRONMENTAL_FEATURE = "biolink:EnvironmentalFeature"
     EXON = "biolink:Exon"
     GENETIC_INHERITANCE = "biolink:GeneticInheritance"
@@ -60,6 +59,7 @@ class EntityCategory(Enum):
     MATERIAL_SAMPLE = "biolink:MaterialSample"
     MICRO_RNA = "biolink:MicroRNA"
     PATENT = "biolink:Patent"
+    PROTEIN_DOMAIN = "biolink:ProteinDomain"
     PUBLICATION = "biolink:Publication"
     REGULATORY_REGION = "biolink:RegulatoryRegion"
     STUDY = "biolink:Study"
@@ -119,7 +119,6 @@ class AssociationCategory(Enum):
         "biolink:DiseaseOrPhenotypicFeatureToGeneticInheritanceAssociation"
     )
     CAUSAL_GENE_TO_DISEASE_ASSOCIATION = "biolink:CausalGeneToDiseaseAssociation"
-    CHEMICAL_TO_DISEASE_OR_PHENOTYPIC_FEATURE_ASSOCIATION = "biolink:ChemicalToDiseaseOrPhenotypicFeatureAssociation"
 
 
 class AssociationPredicate(Enum):
@@ -134,8 +133,8 @@ class AssociationPredicate(Enum):
     LOCATED_IN = "biolink:located_in"
     SUBCLASS_OF = "biolink:subclass_of"
     PARTICIPATES_IN = "biolink:participates_in"
-    RELATED_TO = "biolink:related_to"
     ACTS_UPSTREAM_OF_OR_WITHIN = "biolink:acts_upstream_of_or_within"
+    RELATED_TO = "biolink:related_to"
     ACTIVE_IN = "biolink:active_in"
     PART_OF = "biolink:part_of"
     ACTS_UPSTREAM_OF = "biolink:acts_upstream_of"
@@ -146,6 +145,14 @@ class AssociationPredicate(Enum):
     COLOCALIZES_WITH = "biolink:colocalizes_with"
     ACTS_UPSTREAM_OF_OR_WITHIN_POSITIVE_EFFECT = "biolink:acts_upstream_of_or_within_positive_effect"
     ACTS_UPSTREAM_OF_POSITIVE_EFFECT = "biolink:acts_upstream_of_positive_effect"
-    AFFECTS = "biolink:affects"
     ACTS_UPSTREAM_OF_OR_WITHIN_NEGATIVE_EFFECT = "biolink:acts_upstream_of_or_within_negative_effect"
     ACTS_UPSTREAM_OF_NEGATIVE_EFFECT = "biolink:acts_upstream_of_negative_effect"
+
+
+class MappingPredicate(Enum):
+    """Mapping predicates"""
+
+    EXACT_MATCH = "skos:exactMatch"
+    CLOSE_MATCH = "skos:closeMatch"
+    BROAD_MATCH = "skos:broadMatch"
+    NARROW_MATCH = "skos:narrowMatch"

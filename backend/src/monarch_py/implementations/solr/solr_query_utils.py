@@ -30,14 +30,14 @@ def build_association_query(
 ) -> SolrQuery:
     """Populate a SolrQuery object with association filters"""
     query = SolrQuery(start=offset, rows=limit)
-    query.add_field_filter_query("category", category)
-    query.add_field_filter_query("predicate", predicate)
+    query.add_field_filter_query("category", None if not category else [c for c in category])
+    query.add_field_filter_query("predicate", None if not predicate else [p for p in predicate])
     query.add_field_filter_query("subject_closure", subject_closure)
-    query.add_field_filter_query("subject_category", subject_category)
+    query.add_field_filter_query("subject_category", None if not subject_category else [c for c in subject_category])
     query.add_field_filter_query("subject_namespace", subject_namespace)
     query.add_field_filter_query("subject_taxon", subject_taxon)
     query.add_field_filter_query("object_closure", object_closure)
-    query.add_field_filter_query("object_category", object_category)
+    query.add_field_filter_query("object_category", None if not object_category else [c for c in object_category])
     query.add_field_filter_query("object_namespace", object_namespace)
     query.add_field_filter_query("object_taxon", object_taxon)
     if subject:
@@ -74,7 +74,6 @@ def build_association_query(
         query.facet_fields = facet_fields
     if facet_queries:
         query.facet_queries = facet_queries
-    print(query)
     return query
 
 
@@ -121,8 +120,8 @@ def build_histopheno_query(subject_closure: str) -> SolrQuery:
         offset=0,
         limit=0,
     )
-    hpkeys = [i.value for i in HistoPhenoKeys]
-    query.facet_queries = [f'object_closure:"{i}"' for i in hpkeys]
+    hpkeys = [i for i in HistoPhenoKeys]
+    query.facet_queries = [f'object_closure:"{(i.value)}"' for i in hpkeys]
     return query
 
 
@@ -200,15 +199,15 @@ def build_mapping_query(
 ) -> SolrQuery:
     query = SolrQuery(start=offset, rows=limit)
     if entity_id:
-        query.add_filter_query(" OR ".join([f'subject_id:"{escape(e)}" OR object_id:"{escape(e)}"' for e in entity_id]))
+        query.add_filter_query(" OR ".join([f'subject_id:"{escape(i)}" OR object_id:"{escape(i)}"' for i in entity_id]))
     if subject_id:
-        query.add_filter_query(" OR ".join([f'subject_id:"{escape(e)}"' for e in subject_id]))
+        query.add_filter_query(" OR ".join([f'subject_id:"{escape(i)}"' for i in subject_id]))
     if predicate_id:
-        query.add_filter_query(" OR ".join([f'predicate_id:"{escape(e)}"' for e in predicate_id]))
+        query.add_filter_query(" OR ".join([f'predicate_id:"{escape(i)}"' for i in predicate_id]))
     if object_id:
-        query.add_filter_query(" OR ".join([f'object_id:"{escape(e)}"' for e in object_id]))
+        query.add_filter_query(" OR ".join([f'object_id:"{escape(i)}"' for i in object_id]))
     if mapping_justification:
-        query.add_filter_query(" OR ".join([f'mapping_justification:"{escape(e)}"' for e in mapping_justification]))
+        query.add_filter_query(" OR ".join([f'mapping_justification:"{escape(i)}"' for i in mapping_justification]))
     return query
 
 
