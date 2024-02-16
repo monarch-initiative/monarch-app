@@ -217,7 +217,7 @@
       >
         <!-- ring score -->
         <AppRing
-          v-tooltip="'Similarity score'"
+          v-tooltip="'Average similarity score'"
           :score="match.score"
           :percent="ringPercent(match.score)"
         />
