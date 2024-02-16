@@ -312,7 +312,7 @@ function ringPercent(score = 0) {
   const in_max = 19;
   const out_min = 0;
   const out_max = 1;
-  return (score - in_min) / (in_max - in_min) * (out_max - out_min) + out_min
+  return ((score - in_min) / (in_max - in_min)) * (out_max - out_min) + out_min;
 }
 
 /** example phenotype set comparison */
