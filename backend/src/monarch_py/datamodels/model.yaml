@@ -181,6 +181,12 @@ classes:
       - symbol
       - synonym
       - uri
+      - namespace
+      - has_phenotype
+      - has_phenotype_label
+      - has_phenotype_closure
+      - has_phenotype_closure_label
+      - has_phenotype_count
   EntityResults:
     is_a: Results
     slots:
@@ -377,6 +383,34 @@ slots:
     multivalued: true
     inlined: true
     inlined_as_list: true
+  has_phenotype:
+    description: >-
+      A list of phenotype identifiers that are known to be associated with this entity
+    range: string
+    multivalued: true
+    inlined_as_list: true
+  has_phenotype_label:
+    description: >-
+      A list of phenotype labels that are known to be associated with this entity
+    range: string
+    multivalued: true
+    inlined_as_list: true
+  has_phenotype_closure:
+    description: >-
+      A list of phenotype identifiers that are known to be associated with this entity expanded to include all ancestors
+    range: string
+    multivalued: true
+    inlined_as_list: true
+  has_phenotype_closure_label:
+    description: >-
+      A list of phenotype labels that are known to be associated with this entity expanded to include all ancestors
+    range: string
+    multivalued: true
+    inlined_as_list: true
+  has_phenotype_count:
+    description: >-
+      A count of the number of phenotypes that are known to be associated with this entity
+    range: integer
   highlight:
     description: matching text snippet containing html tags
     range: string
@@ -411,6 +445,9 @@ slots:
     required: true
   name:
     range: string
+  namespace:
+    range: string
+    description: The namespace/prefix portion of this entity's identifier
   negated:
     range: boolean
   node_hierarchy:

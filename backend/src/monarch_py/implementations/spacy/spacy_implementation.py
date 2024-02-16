@@ -22,17 +22,35 @@ class SpacyImplementation(TextAnnotatorInterface):
 
     def get_annotated_entities(self, text) -> List[TextAnnotationResult]:
         """Annotate text using SPACY"""
-
         results: List[TextAnnotationResult] = []
         doc = self.nlp(text)
 
+        # Identify tokens to be excluded from annotations
+        excluded_tokens = set()
+        for token in doc:
+            # To filter out tokens representing people's names
+            if token.dep_ == "nsubj" and (token.pos_ in {"PROPN", "NOUN"}) and not token.ent_type_:
+                excluded_tokens.add(token.text.lower())
+
+        # Modify text to match entity capitalization to handle inconsistent annotations
         for entity in doc.ents:
             matching_entities = self.grounding_implementation.ground_entity(entity.text)
-            result = TextAnnotationResult(
-                text=entity.text, tokens=matching_entities, start=entity.start_char, end=entity.end_char
-            )
-            results.append(result)
+            if matching_entities and text.lower().count(entity.text.lower()) > 1:
+                text = text.replace(entity.text, entity.text.title())
 
+        doc = self.nlp(text)  # Recreate the doc after modifying the text
+
+        # Annotate entities
+        for entity in doc.ents:
+            if entity.text.lower() not in excluded_tokens:
+                matching_entities = self.grounding_implementation.ground_entity(entity.text)
+                if matching_entities:
+                    result = TextAnnotationResult(
+                        text=entity.text, tokens=matching_entities, start=entity.start_char, end=entity.end_char
+                    )
+                    results.append(result)
+
+        # Add non-entity results
         return self.add_non_entity_results(text, results)
 
     def annotate_text(self, text) -> str:

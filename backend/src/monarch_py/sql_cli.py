@@ -6,8 +6,6 @@ import typer
 from monarch_py.datamodels.category_enums import (
     AssociationCategory,
     AssociationPredicate,
-    EntityCategory,
-    MappingPredicate,
 )
 from monarch_py.implementations.sql.sql_implementation import SQLImplementation
 from monarch_py.utils.utils import console, set_log_level

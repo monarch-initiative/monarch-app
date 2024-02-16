@@ -12,6 +12,9 @@ from monarch_py.implementations.solr.solr_query_utils import (
     build_histopheno_query,
     build_mapping_query,
     build_search_query,
+    obsolete_unboost,
+    entity_predicate_boost,
+    category_boost,
 )
 from monarch_py.utils.utils import compare_dicts, dict_diff
 
@@ -63,11 +66,13 @@ def test_build_association_multiple_categories():
 
 
 def test_build_association_multiple_predicates():
-    query = build_association_query(predicate=[AssociationPredicate.HAS_PHENOTYPE.value, AssociationPredicate.EXPRESSED_IN.value])
+    query = build_association_query(
+        predicate=[AssociationPredicate.HAS_PHENOTYPE.value, AssociationPredicate.EXPRESSED_IN.value]
+    )
     assert len(query.filter_queries) > 0, "filter_queries is empty"
     predicate_filter = [fq for fq in query.filter_queries if fq.startswith("predicate:")][0]
     assert (
-        predicate_filter == "predicate:biolink\\:has_phenotype OR biolink\\:expressed_in"
+        predicate_filter == "predicate:biolink\\:has_phenotype OR predicate:biolink\\:expressed_in"
     ), "multiple predicate filter is not as expected"
 
 
@@ -129,3 +134,27 @@ def test_build_mappings_query(mapping_query):
     query = build_mapping_query(entity_id=["MONDO:0020121"]).model_dump()
     expected = mapping_query
     assert compare_dicts(query, expected), f"Query is not as expected. Difference: {dict_diff(query, expected)}"
+
+
+def test_obsolete_unboost():
+    boost = obsolete_unboost()
+    assert "deprecated" in boost
+
+
+def test_entity_predicate_boost() -> str:
+    boost = entity_predicate_boost([AssociationPredicate.HAS_PHENOTYPE], 2.0)
+    assert "has_phenotype_count" in boost
+    assert "2.0" in boost
+
+
+def test_category_boost():
+    boost = category_boost("biolink:PhenotypicFeature", 99.0)
+    assert "biolink:PhenotypicFeature" in boost
+    assert "99.0" in boost
+
+
+def test_category_boost_with_taxon():
+    boost = category_boost("biolink:Gene", 100.0, taxon="NCBITaxon:9606")
+    assert "biolink:Gene" in boost
+    assert "100.0" in boost
+    assert "NCBITaxon:9606" in boost

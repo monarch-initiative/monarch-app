@@ -12,6 +12,12 @@
   "symbol": null,
   "synonym": [],
   "uri": "http://purl.obolibrary.org/obo/MONDO_0020121",
+  "namespace": "MONDO",
+  "has_phenotype": [],
+  "has_phenotype_label": [],
+  "has_phenotype_closure": [],
+  "has_phenotype_closure_label": [],
+  "has_phenotype_count": 0,
   "inheritance": null,
   "causal_gene": [],
   "causes_disease": [],
@@ -58,7 +64,7 @@
     },
     {
       "label": "Causal Genes",
-      "count": 124,
+      "count": 125,
       "category": "biolink:CausalGeneToDiseaseAssociation"
     },
     {
@@ -82,7 +88,13 @@
         "in_taxon_label": null,
         "symbol": null,
         "synonym": [],
-        "uri": null
+        "uri": null,
+        "namespace": null,
+        "has_phenotype": [],
+        "has_phenotype_label": [],
+        "has_phenotype_closure": [],
+        "has_phenotype_closure_label": [],
+        "has_phenotype_count": null
       },
       {
         "id": "MONDO:0700223",
@@ -97,7 +109,13 @@
         "in_taxon_label": null,
         "symbol": null,
         "synonym": [],
-        "uri": null
+        "uri": null,
+        "namespace": null,
+        "has_phenotype": [],
+        "has_phenotype_label": [],
+        "has_phenotype_closure": [],
+        "has_phenotype_closure_label": [],
+        "has_phenotype_count": null
       },
       {
         "id": "MONDO:0005336",
@@ -112,7 +130,13 @@
         "in_taxon_label": null,
         "symbol": null,
         "synonym": [],
-        "uri": null
+        "uri": null,
+        "namespace": null,
+        "has_phenotype": [],
+        "has_phenotype_label": [],
+        "has_phenotype_closure": [],
+        "has_phenotype_closure_label": [],
+        "has_phenotype_count": null
       }
     ],
     "sub_classes": [
@@ -129,7 +153,13 @@
         "in_taxon_label": null,
         "symbol": null,
         "synonym": [],
-        "uri": null
+        "uri": null,
+        "namespace": null,
+        "has_phenotype": [],
+        "has_phenotype_label": [],
+        "has_phenotype_closure": [],
+        "has_phenotype_closure_label": [],
+        "has_phenotype_count": null
       },
       {
         "id": "MONDO:0010311",
@@ -144,7 +174,13 @@
         "in_taxon_label": null,
         "symbol": null,
         "synonym": [],
-        "uri": null
+        "uri": null,
+        "namespace": null,
+        "has_phenotype": [],
+        "has_phenotype_label": [],
+        "has_phenotype_closure": [],
+        "has_phenotype_closure_label": [],
+        "has_phenotype_count": null
       },
       {
         "id": "MONDO:0010675",
@@ -159,7 +195,13 @@
         "in_taxon_label": null,
         "symbol": null,
         "synonym": [],
-        "uri": null
+        "uri": null,
+        "namespace": null,
+        "has_phenotype": [],
+        "has_phenotype_label": [],
+        "has_phenotype_closure": [],
+        "has_phenotype_closure_label": [],
+        "has_phenotype_count": null
       },
       {
         "id": "MONDO:0010676",
@@ -174,7 +216,13 @@
         "in_taxon_label": null,
         "symbol": null,
         "synonym": [],
-        "uri": null
+        "uri": null,
+        "namespace": null,
+        "has_phenotype": [],
+        "has_phenotype_label": [],
+        "has_phenotype_closure": [],
+        "has_phenotype_closure_label": [],
+        "has_phenotype_count": null
       },
       {
         "id": "MONDO:0010677",
@@ -189,7 +237,13 @@
         "in_taxon_label": null,
         "symbol": null,
         "synonym": [],
-        "uri": null
+        "uri": null,
+        "namespace": null,
+        "has_phenotype": [],
+        "has_phenotype_label": [],
+        "has_phenotype_closure": [],
+        "has_phenotype_closure_label": [],
+        "has_phenotype_count": null
       },
       {
         "id": "MONDO:0010678",
@@ -204,7 +258,13 @@
         "in_taxon_label": null,
         "symbol": null,
         "synonym": [],
-        "uri": null
+        "uri": null,
+        "namespace": null,
+        "has_phenotype": [],
+        "has_phenotype_label": [],
+        "has_phenotype_closure": [],
+        "has_phenotype_closure_label": [],
+        "has_phenotype_count": null
       },
       {
         "id": "MONDO:0010679",
@@ -219,7 +279,13 @@
         "in_taxon_label": null,
         "symbol": null,
         "synonym": [],
-        "uri": null
+        "uri": null,
+        "namespace": null,
+        "has_phenotype": [],
+        "has_phenotype_label": [],
+        "has_phenotype_closure": [],
+        "has_phenotype_closure_label": [],
+        "has_phenotype_count": null
       },
       {
         "id": "MONDO:0016106",
@@ -234,52 +300,13 @@
         "in_taxon_label": null,
         "symbol": null,
         "synonym": [],
-        "uri": null
-      },
-      {
-        "id": "MONDO:0019950",
-        "category": "biolink:Disease",
-        "name": "congenital muscular dystrophy",
-        "full_name": null,
-        "deprecated": null,
-        "description": null,
-        "xref": [],
-        "provided_by": null,
-        "in_taxon": null,
-        "in_taxon_label": null,
-        "symbol": null,
-        "synonym": [],
-        "uri": null
-      },
-      {
-        "id": "MONDO:0023204",
-        "category": "biolink:Disease",
-        "name": "Fukuda-Miyanomae-Nakata syndrome",
-        "full_name": null,
-        "deprecated": null,
-        "description": null,
-        "xref": [],
-        "provided_by": null,
-        "in_taxon": null,
-        "in_taxon_label": null,
-        "symbol": null,
-        "synonym": [],
-        "uri": null
-      },
-      {
-        "id": "MONDO:0100228",
-        "category": "biolink:Disease",
-        "name": "LAMA2-related muscular dystrophy",
-        "full_name": null,
-        "deprecated": null,
-        "description": null,
-        "xref": [],
-        "provided_by": null,
-        "in_taxon": null,
-        "in_taxon_label": null,
-        "symbol": null,
-        "synonym": [],
-        "uri": null
+        "uri": null,
+        "namespace": null,
+        "has_phenotype": [],
+        "has_phenotype_label": [],
+        "has_phenotype_closure": [],
+        "has_phenotype_closure_label": [],
+        "has_phenotype_count": null
       },
       {
         "id": "MONDO:0018949",
@@ -294,7 +321,76 @@
         "in_taxon_label": null,
         "symbol": null,
         "synonym": [],
-        "uri": null
+        "uri": null,
+        "namespace": null,
+        "has_phenotype": [],
+        "has_phenotype_label": [],
+        "has_phenotype_closure": [],
+        "has_phenotype_closure_label": [],
+        "has_phenotype_count": null
+      },
+      {
+        "id": "MONDO:0019950",
+        "category": "biolink:Disease",
+        "name": "congenital muscular dystrophy",
+        "full_name": null,
+        "deprecated": null,
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "in_taxon_label": null,
+        "symbol": null,
+        "synonym": [],
+        "uri": null,
+        "namespace": null,
+        "has_phenotype": [],
+        "has_phenotype_label": [],
+        "has_phenotype_closure": [],
+        "has_phenotype_closure_label": [],
+        "has_phenotype_count": null
+      },
+      {
+        "id": "MONDO:0023204",
+        "category": "biolink:Disease",
+        "name": "Fukuda-Miyanomae-Nakata syndrome",
+        "full_name": null,
+        "deprecated": null,
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "in_taxon_label": null,
+        "symbol": null,
+        "synonym": [],
+        "uri": null,
+        "namespace": null,
+        "has_phenotype": [],
+        "has_phenotype_label": [],
+        "has_phenotype_closure": [],
+        "has_phenotype_closure_label": [],
+        "has_phenotype_count": null
+      },
+      {
+        "id": "MONDO:0100228",
+        "category": "biolink:Disease",
+        "name": "LAMA2-related muscular dystrophy",
+        "full_name": null,
+        "deprecated": null,
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "in_taxon_label": null,
+        "symbol": null,
+        "synonym": [],
+        "uri": null,
+        "namespace": null,
+        "has_phenotype": [],
+        "has_phenotype_label": [],
+        "has_phenotype_closure": [],
+        "has_phenotype_closure_label": [],
+        "has_phenotype_count": null
       }
     ]
   }

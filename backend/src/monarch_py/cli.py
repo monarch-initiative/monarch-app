@@ -326,7 +326,9 @@ def multi_entity_associations(
 def mappings(
     entity_id: List[str] = typer.Option(None, "--entity-id", "-e", help="entity ID to get mappings for"),
     subject_id: List[str] = typer.Option(None, "--subject-id", "-s", help="subject ID to get mappings for"),
-    predicate_id: List[MappingPredicate] = typer.Option(None, "--predicate-id", "-p", help="predicate ID to get mappings for"),
+    predicate_id: List[MappingPredicate] = typer.Option(
+        None, "--predicate-id", "-p", help="predicate ID to get mappings for"
+    ),
     object_id: List[str] = typer.Option(None, "--object-id", "-o", help="object ID to get mappings for"),
     mapping_justification: List[str] = typer.Option(
         None, "--mapping-justification", "-m", help="mapping justification to get mappings for"

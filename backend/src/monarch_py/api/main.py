@@ -38,6 +38,15 @@ app.add_middleware(
 )
 app.add_middleware(LoggingMiddleware)
 
+app.description = """
+
+# This is the v3 Monarch API, the Biolink API is still available through March 20th, 2023 
+
+The Biolink API (Monarch v1/v2) is available at 
+[http://api-biolink.monarchinitiative.org](http://api-biolink.monarchinitiative.org), 
+but will be [shut down on March 20th, 2023](http://monarchinit.medium.com/migrating-to-the-new-monarch-infrastructure-fe9d98ccf64a).
+"""
+
 
 @app.get("/")
 async def _root():
