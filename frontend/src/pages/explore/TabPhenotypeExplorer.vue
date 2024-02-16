@@ -308,7 +308,11 @@ const aBox = ref<{ runSearch: (value: string) => void }>();
  * to know max score. domain 1 to ~20, range 0 to 1
  */
 function ringPercent(score = 0) {
-  return (score - 1) / (5 + score - 1);
+  const in_min = 4;
+  const in_max = 19;
+  const out_min = 0;
+  const out_max = 1;
+  return (score - in_min) / (in_max - in_min) * (out_max - out_min) + out_min
 }
 
 /** example phenotype set comparison */
