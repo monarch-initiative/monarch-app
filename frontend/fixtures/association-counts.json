@@ -7,7 +7,7 @@
     },
     {
       "label": "Causal Genes",
-      "count": 124,
+      "count": 125,
       "category": "biolink:CausalGeneToDiseaseAssociation"
     },
     {

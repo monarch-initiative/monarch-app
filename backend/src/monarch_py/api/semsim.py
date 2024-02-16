@@ -1,10 +1,38 @@
 from fastapi import APIRouter, Path, Query
 
 from monarch_py.api.additional_models import SemsimCompareRequest, SemsimSearchRequest, SemsimSearchGroup
-from monarch_py.api.config import semsimian
+from monarch_py.api.config import semsimian, solr
 from monarch_py.api.utils.similarity_utils import parse_similarity_prefix
+from monarch_py.datamodels.category_enums import AssociationPredicate, EntityCategory
+from monarch_py.datamodels.model import SearchResults
 
 router = APIRouter(tags=["semsim"], responses={404: {"description": "Not Found"}})
+
+
+@router.get("/autocomplete")
+def autocomplete(
+    q: str = Query(
+        default="*:*",
+        title="Query string to autocomplete against",
+        examples=["fanc", "ehler"],
+    )
+) -> SearchResults:
+    """
+    Autocomplete for semantic similarity lookups, prioritizes entities which have direct phenotype associations.
+    Note: This API endpoint is experimental and may evolve or disappear over time.
+
+    Args:
+        q (str): Query string to autocomplete against
+
+    Returns:
+        SearchResults
+    """
+    response = solr().autocomplete(
+        q=q,
+        category=[EntityCategory.DISEASE, EntityCategory.GENE, EntityCategory.PHENOTYPIC_FEATURE],
+        prioritized_predicates=[AssociationPredicate.HAS_PHENOTYPE],
+    )
+    return response
 
 
 @router.get("/compare/{subjects}/{objects}")
