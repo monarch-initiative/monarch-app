@@ -1580,12 +1580,12 @@
 </ul>
 <h2 id="monarch-association-table"><code>monarch association-table</code></h2>
 <p><strong>Usage</strong>:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>association-table<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>ENTITY<span class="w"> </span>CATEGORY
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>association-table<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>ENTITY<span class="w"> </span>CATEGORY:<span class="o">{</span>biolink:PairwiseGeneToGeneInteraction<span class="p">|</span>biolink:GeneToExpressionSiteAssociation<span class="p">|</span>biolink:MacromolecularMachineToBiologicalProcessAssociation<span class="p">|</span>biolink:GeneToPhenotypicFeatureAssociation<span class="p">|</span>biolink:MacromolecularMachineToMolecularActivityAssociation<span class="p">|</span>biolink:MacromolecularMachineToCellularComponentAssociation<span class="p">|</span>biolink:Association<span class="p">|</span>biolink:GeneToGeneHomologyAssociation<span class="p">|</span>biolink:DiseaseToPhenotypicFeatureAssociation<span class="p">|</span>biolink:GeneToPathwayAssociation<span class="p">|</span>biolink:ChemicalToPathwayAssociation<span class="p">|</span>biolink:CorrelatedGeneToDiseaseAssociation<span class="p">|</span>biolink:DiseaseOrPhenotypicFeatureToGeneticInheritanceAssociation<span class="p">|</span>biolink:CausalGeneToDiseaseAssociation<span class="o">}</span>
 </code></pre></div>
 <p><strong>Arguments</strong>:</p>
 <ul>
 <li><code>ENTITY</code>: The entity to get associations for  [required]</li>
-<li><code>CATEGORY</code>: The association category to get associations for, ex. biolink:GeneToPhenotypicFeatureAssociation  [required]</li>
+<li><code>CATEGORY:{biolink:PairwiseGeneToGeneInteraction|biolink:GeneToExpressionSiteAssociation|biolink:MacromolecularMachineToBiologicalProcessAssociation|biolink:GeneToPhenotypicFeatureAssociation|biolink:MacromolecularMachineToMolecularActivityAssociation|biolink:MacromolecularMachineToCellularComponentAssociation|biolink:Association|biolink:GeneToGeneHomologyAssociation|biolink:DiseaseToPhenotypicFeatureAssociation|biolink:GeneToPathwayAssociation|biolink:ChemicalToPathwayAssociation|biolink:CorrelatedGeneToDiseaseAssociation|biolink:DiseaseOrPhenotypicFeatureToGeneticInheritanceAssociation|biolink:CausalGeneToDiseaseAssociation}</code>: The association category to get associations for, ex. biolink:GeneToPhenotypicFeatureAssociation  [required]</li>
 </ul>
 <p><strong>Options</strong>:</p>
 <ul>
@@ -1615,11 +1615,11 @@
 </code></pre></div>
 <p><strong>Options</strong>:</p>
 <ul>
-<li><code>-c, --category TEXT</code>: Comma-separated list of categories</li>
-<li><code>-s, --subject TEXT</code>: Comma-separated list of subjects</li>
-<li><code>-p, --predicate TEXT</code>: Comma-separated list of predicates</li>
-<li><code>-o, --object TEXT</code>: Comma-separated list of objects</li>
-<li><code>-e, --entity TEXT</code>: Comma-separated list of entities</li>
+<li><code>-c, --category [biolink:PairwiseGeneToGeneInteraction|biolink:GeneToExpressionSiteAssociation|biolink:MacromolecularMachineToBiologicalProcessAssociation|biolink:GeneToPhenotypicFeatureAssociation|biolink:MacromolecularMachineToMolecularActivityAssociation|biolink:MacromolecularMachineToCellularComponentAssociation|biolink:Association|biolink:GeneToGeneHomologyAssociation|biolink:DiseaseToPhenotypicFeatureAssociation|biolink:GeneToPathwayAssociation|biolink:ChemicalToPathwayAssociation|biolink:CorrelatedGeneToDiseaseAssociation|biolink:DiseaseOrPhenotypicFeatureToGeneticInheritanceAssociation|biolink:CausalGeneToDiseaseAssociation]</code>: Category to get associations for</li>
+<li><code>-s, --subject TEXT</code>: Subject ID to get associations for</li>
+<li><code>-p, --predicate [biolink:interacts_with|biolink:expressed_in|biolink:has_phenotype|biolink:enables|biolink:actively_involved_in|biolink:orthologous_to|biolink:located_in|biolink:subclass_of|biolink:participates_in|biolink:acts_upstream_of_or_within|biolink:related_to|biolink:active_in|biolink:part_of|biolink:acts_upstream_of|biolink:has_mode_of_inheritance|biolink:gene_associated_with_condition|biolink:contributes_to|biolink:causes|biolink:colocalizes_with|biolink:acts_upstream_of_or_within_positive_effect|biolink:acts_upstream_of_positive_effect|biolink:acts_upstream_of_or_within_negative_effect|biolink:acts_upstream_of_negative_effect]</code>: Predicate ID to get associations for</li>
+<li><code>-o, --object TEXT</code>: Object ID to get associations for</li>
+<li><code>-e, --entity TEXT</code>: Entity (subject or object) ID to get associations for</li>
 <li><code>-d, --direct</code>: Whether to exclude associations with subject/object as ancestors</li>
 <li><code>-l, --limit INTEGER</code>: The number of associations to return  [default: 20]</li>
 <li><code>--offset INTEGER</code>: The offset of the first association to be retrieved  [default: 0]</li>
@@ -1710,7 +1710,7 @@
 <ul>
 <li><code>-e, --entity-id TEXT</code>: entity ID to get mappings for</li>
 <li><code>-s, --subject-id TEXT</code>: subject ID to get mappings for</li>
-<li><code>-p, --predicate-id TEXT</code>: predicate ID to get mappings for</li>
+<li><code>-p, --predicate-id [skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch]</code>: predicate ID to get mappings for</li>
 <li><code>-o, --object-id TEXT</code>: object ID to get mappings for</li>
 <li><code>-m, --mapping-justification TEXT</code>: mapping justification to get mappings for</li>
 <li><code>--offset INTEGER</code>: The offset of the first mapping to be retrieved  [default: 0]</li>
@@ -1766,7 +1766,7 @@
 <p><strong>Options</strong>:</p>
 <ul>
 <li><code>-q, --query TEXT</code></li>
-<li><code>-c, --category TEXT</code></li>
+<li><code>-c, --category [biolink:Gene|biolink:PhenotypicFeature|biolink:BiologicalProcessOrActivity|biolink:GrossAnatomicalStructure|biolink:Disease|biolink:Pathway|biolink:Cell|biolink:NamedThing|biolink:AnatomicalEntity|biolink:CellularComponent|biolink:MolecularEntity|biolink:BiologicalProcess|biolink:MacromolecularComplex|biolink:MolecularActivity|biolink:Protein|biolink:CellularOrganism|biolink:PhenotypicQuality|biolink:Vertebrate|biolink:Virus|biolink:BehavioralFeature|biolink:LifeStage|biolink:PathologicalProcess|biolink:ChemicalEntity|biolink:Drug|biolink:OrganismTaxon|biolink:SequenceVariant|biolink:SmallMolecule|biolink:InformationContentEntity|biolink:NucleicAcidEntity|biolink:EvidenceType|biolink:GeographicExposure|biolink:RNAProduct|biolink:Transcript|biolink:Fungus|biolink:Plant|biolink:Dataset|biolink:Invertebrate|biolink:PopulationOfIndividualOrganisms|biolink:ProteinFamily|biolink:Activity|biolink:Agent|biolink:ChemicalExposure|biolink:ConfidenceLevel|biolink:EnvironmentalFeature|biolink:Exon|biolink:GeneticInheritance|biolink:Genome|biolink:Genotype|biolink:Haplotype|biolink:Human|biolink:IndividualOrganism|biolink:Mammal|biolink:MaterialSample|biolink:MicroRNA|biolink:Patent|biolink:ProteinDomain|biolink:Publication|biolink:RegulatoryRegion|biolink:Study|biolink:Treatment|biolink:WebPage|biolink:AccessibleDnaRegion|biolink:Article|biolink:Attribute|biolink:Bacterium|biolink:BiologicalEntity|biolink:BiologicalSex|biolink:CellLine|biolink:ChemicalMixture|biolink:CodingSequence|biolink:DatasetDistribution|biolink:DiagnosticAid|biolink:DrugExposure|biolink:EnvironmentalProcess|biolink:Event|biolink:GenotypicSex|biolink:NoncodingRNAProduct|biolink:OrganismalEntity|biolink:PhenotypicSex|biolink:Polypeptide|biolink:Procedure|biolink:ProcessedMaterial|biolink:ReagentTargetedGene|biolink:SiRNA|biolink:Snv|biolink:StudyVariable|biolink:TranscriptionFactorBindingSite|biolink:Zygosity]</code></li>
 <li><code>-t, --in-taxon-label TEXT</code></li>
 <li><code>-ff, --facet-fields TEXT</code></li>
 <li><code>--facet-queries TEXT</code></li>
@@ -1824,12 +1824,12 @@
 </ul>
 <h3 id="monarch-solr-association-table"><code>monarch solr association-table</code></h3>
 <p><strong>Usage</strong>:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>solr<span class="w"> </span>association-table<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>ENTITY<span class="w"> </span>CATEGORY
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>solr<span class="w"> </span>association-table<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>ENTITY<span class="w"> </span><span class="o">[</span>CATEGORY<span class="o">]</span>:<span class="o">[</span>biolink:PairwiseGeneToGeneInteraction<span class="p">|</span>biolink:GeneToExpressionSiteAssociation<span class="p">|</span>biolink:MacromolecularMachineToBiologicalProcessAssociation<span class="p">|</span>biolink:GeneToPhenotypicFeatureAssociation<span class="p">|</span>biolink:MacromolecularMachineToMolecularActivityAssociation<span class="p">|</span>biolink:MacromolecularMachineToCellularComponentAssociation<span class="p">|</span>biolink:Association<span class="p">|</span>biolink:GeneToGeneHomologyAssociation<span class="p">|</span>biolink:DiseaseToPhenotypicFeatureAssociation<span class="p">|</span>biolink:GeneToPathwayAssociation<span class="p">|</span>biolink:ChemicalToPathwayAssociation<span class="p">|</span>biolink:CorrelatedGeneToDiseaseAssociation<span class="p">|</span>biolink:DiseaseOrPhenotypicFeatureToGeneticInheritanceAssociation<span class="p">|</span>biolink:CausalGeneToDiseaseAssociation<span class="o">]</span>
 </code></pre></div>
 <p><strong>Arguments</strong>:</p>
 <ul>
 <li><code>ENTITY</code>: The entity to get associations for  [required]</li>
-<li><code>CATEGORY</code>: The association category to get associations for, ex. biolink:GeneToPhenotypicFeatureAssociation  [required]</li>
+<li><code>[CATEGORY]:[biolink:PairwiseGeneToGeneInteraction|biolink:GeneToExpressionSiteAssociation|biolink:MacromolecularMachineToBiologicalProcessAssociation|biolink:GeneToPhenotypicFeatureAssociation|biolink:MacromolecularMachineToMolecularActivityAssociation|biolink:MacromolecularMachineToCellularComponentAssociation|biolink:Association|biolink:GeneToGeneHomologyAssociation|biolink:DiseaseToPhenotypicFeatureAssociation|biolink:GeneToPathwayAssociation|biolink:ChemicalToPathwayAssociation|biolink:CorrelatedGeneToDiseaseAssociation|biolink:DiseaseOrPhenotypicFeatureToGeneticInheritanceAssociation|biolink:CausalGeneToDiseaseAssociation]</code>: The association category to get associations for, ex. biolink:GeneToPhenotypicFeatureAssociation</li>
 </ul>
 <p><strong>Options</strong>:</p>
 <ul>
@@ -1859,9 +1859,9 @@
 </code></pre></div>
 <p><strong>Options</strong>:</p>
 <ul>
-<li><code>-c, --category TEXT</code>: Category to get associations for</li>
+<li><code>-c, --category [biolink:PairwiseGeneToGeneInteraction|biolink:GeneToExpressionSiteAssociation|biolink:MacromolecularMachineToBiologicalProcessAssociation|biolink:GeneToPhenotypicFeatureAssociation|biolink:MacromolecularMachineToMolecularActivityAssociation|biolink:MacromolecularMachineToCellularComponentAssociation|biolink:Association|biolink:GeneToGeneHomologyAssociation|biolink:DiseaseToPhenotypicFeatureAssociation|biolink:GeneToPathwayAssociation|biolink:ChemicalToPathwayAssociation|biolink:CorrelatedGeneToDiseaseAssociation|biolink:DiseaseOrPhenotypicFeatureToGeneticInheritanceAssociation|biolink:CausalGeneToDiseaseAssociation]</code>: Category to get associations for</li>
 <li><code>-s, --subject TEXT</code>: Subject ID to get associations for</li>
-<li><code>-p, --predicate TEXT</code>: Predicate ID to get associations for</li>
+<li><code>-p, --predicate [biolink:interacts_with|biolink:expressed_in|biolink:has_phenotype|biolink:enables|biolink:actively_involved_in|biolink:orthologous_to|biolink:located_in|biolink:subclass_of|biolink:participates_in|biolink:acts_upstream_of_or_within|biolink:related_to|biolink:active_in|biolink:part_of|biolink:acts_upstream_of|biolink:has_mode_of_inheritance|biolink:gene_associated_with_condition|biolink:contributes_to|biolink:causes|biolink:colocalizes_with|biolink:acts_upstream_of_or_within_positive_effect|biolink:acts_upstream_of_positive_effect|biolink:acts_upstream_of_or_within_negative_effect|biolink:acts_upstream_of_negative_effect]</code>: Predicate ID to get associations for</li>
 <li><code>-o, --object TEXT</code>: Object ID to get associations for</li>
 <li><code>-e, --entity TEXT</code>: Entity (subject or object) ID to get associations for</li>
 <li><code>-d, --direct</code>: Whether to exclude associations with subject/object as ancestors</li>
@@ -1950,7 +1950,7 @@
 <ul>
 <li><code>-e, --entity-id TEXT</code>: entity ID to get mappings for</li>
 <li><code>-s, --subject-id TEXT</code>: subject ID to get mappings for</li>
-<li><code>-p, --predicate-id TEXT</code>: predicate ID to get mappings for</li>
+<li><code>-p, --predicate-id [skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch]</code>: predicate ID to get mappings for</li>
 <li><code>-o, --object-id TEXT</code>: object ID to get mappings for</li>
 <li><code>-m, --mapping-justification TEXT</code>: mapping justification to get mappings for</li>
 <li><code>--offset INTEGER</code>: The offset of the first mapping to be retrieved  [default: 0]</li>
@@ -1998,8 +1998,8 @@
 </code></pre></div>
 <p><strong>Options</strong>:</p>
 <ul>
-<li><code>-q, --query TEXT</code></li>
-<li><code>-c, --category TEXT</code></li>
+<li><code>-q, --query TEXT</code>: [default: <em>:</em>]</li>
+<li><code>-c, --category [biolink:Gene|biolink:PhenotypicFeature|biolink:BiologicalProcessOrActivity|biolink:GrossAnatomicalStructure|biolink:Disease|biolink:Pathway|biolink:Cell|biolink:NamedThing|biolink:AnatomicalEntity|biolink:CellularComponent|biolink:MolecularEntity|biolink:BiologicalProcess|biolink:MacromolecularComplex|biolink:MolecularActivity|biolink:Protein|biolink:CellularOrganism|biolink:PhenotypicQuality|biolink:Vertebrate|biolink:Virus|biolink:BehavioralFeature|biolink:LifeStage|biolink:PathologicalProcess|biolink:ChemicalEntity|biolink:Drug|biolink:OrganismTaxon|biolink:SequenceVariant|biolink:SmallMolecule|biolink:InformationContentEntity|biolink:NucleicAcidEntity|biolink:EvidenceType|biolink:GeographicExposure|biolink:RNAProduct|biolink:Transcript|biolink:Fungus|biolink:Plant|biolink:Dataset|biolink:Invertebrate|biolink:PopulationOfIndividualOrganisms|biolink:ProteinFamily|biolink:Activity|biolink:Agent|biolink:ChemicalExposure|biolink:ConfidenceLevel|biolink:EnvironmentalFeature|biolink:Exon|biolink:GeneticInheritance|biolink:Genome|biolink:Genotype|biolink:Haplotype|biolink:Human|biolink:IndividualOrganism|biolink:Mammal|biolink:MaterialSample|biolink:MicroRNA|biolink:Patent|biolink:ProteinDomain|biolink:Publication|biolink:RegulatoryRegion|biolink:Study|biolink:Treatment|biolink:WebPage|biolink:AccessibleDnaRegion|biolink:Article|biolink:Attribute|biolink:Bacterium|biolink:BiologicalEntity|biolink:BiologicalSex|biolink:CellLine|biolink:ChemicalMixture|biolink:CodingSequence|biolink:DatasetDistribution|biolink:DiagnosticAid|biolink:DrugExposure|biolink:EnvironmentalProcess|biolink:Event|biolink:GenotypicSex|biolink:NoncodingRNAProduct|biolink:OrganismalEntity|biolink:PhenotypicSex|biolink:Polypeptide|biolink:Procedure|biolink:ProcessedMaterial|biolink:ReagentTargetedGene|biolink:SiRNA|biolink:Snv|biolink:StudyVariable|biolink:TranscriptionFactorBindingSite|biolink:Zygosity]</code></li>
 <li><code>-t, --in-taxon-label TEXT</code></li>
 <li><code>-ff, --facet-fields TEXT</code></li>
 <li><code>--facet-queries TEXT</code></li>
@@ -2069,11 +2069,11 @@
 </code></pre></div>
 <p><strong>Options</strong>:</p>
 <ul>
-<li><code>-c, --category TEXT</code>: Comma-separated list of categories</li>
-<li><code>-s, --subject TEXT</code>: Comma-separated list of subjects</li>
-<li><code>-p, --predicate TEXT</code>: Comma-separated list of predicates</li>
-<li><code>-o, --object TEXT</code>: Comma-separated list of objects</li>
-<li><code>-e, --entity TEXT</code>: Comma-separated list of entities</li>
+<li><code>-c, --category [biolink:PairwiseGeneToGeneInteraction|biolink:GeneToExpressionSiteAssociation|biolink:MacromolecularMachineToBiologicalProcessAssociation|biolink:GeneToPhenotypicFeatureAssociation|biolink:MacromolecularMachineToMolecularActivityAssociation|biolink:MacromolecularMachineToCellularComponentAssociation|biolink:Association|biolink:GeneToGeneHomologyAssociation|biolink:DiseaseToPhenotypicFeatureAssociation|biolink:GeneToPathwayAssociation|biolink:ChemicalToPathwayAssociation|biolink:CorrelatedGeneToDiseaseAssociation|biolink:DiseaseOrPhenotypicFeatureToGeneticInheritanceAssociation|biolink:CausalGeneToDiseaseAssociation]</code>: Category to get associations for</li>
+<li><code>-s, --subject TEXT</code>: Subject ID to get associations for</li>
+<li><code>-p, --predicate [biolink:interacts_with|biolink:expressed_in|biolink:has_phenotype|biolink:enables|biolink:actively_involved_in|biolink:orthologous_to|biolink:located_in|biolink:subclass_of|biolink:participates_in|biolink:acts_upstream_of_or_within|biolink:related_to|biolink:active_in|biolink:part_of|biolink:acts_upstream_of|biolink:has_mode_of_inheritance|biolink:gene_associated_with_condition|biolink:contributes_to|biolink:causes|biolink:colocalizes_with|biolink:acts_upstream_of_or_within_positive_effect|biolink:acts_upstream_of_positive_effect|biolink:acts_upstream_of_or_within_negative_effect|biolink:acts_upstream_of_negative_effect]</code>: Predicate ID to get associations for</li>
+<li><code>-o, --object TEXT</code>: Object ID to get associations for</li>
+<li><code>-e, --entity TEXT</code>: Entity (subject or object) ID to get associations for</li>
 <li><code>-d, --direct</code>: Whether to exclude associations with subject/object as ancestors</li>
 <li><code>-l, --limit INTEGER</code>: The number of associations to return  [default: 20]</li>
 <li><code>--offset INTEGER</code>: The offset of the first association to be retrieved  [default: 0]</li>
