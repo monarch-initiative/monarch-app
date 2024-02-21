@@ -5,6 +5,7 @@ from typing import List, Union, Optional
 import requests
 from monarch_py.datamodels.model import (
     Association,
+    AssociationCompact,
     AssociationCountList,
     AssociationResults,
     AssociationTableResults,
@@ -240,9 +241,10 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         entity: List[str] = None,
         direct: bool = False,
         q: str = None,
+        compact: bool = False,
         offset: int = 0,
         limit: int = 20,
-    ) -> AssociationResults:
+    ) -> Union[AssociationResults, AssociationCompact]:
         """Retrieve paginated association records, with filter options
 
         Args:
@@ -254,6 +256,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             object_closure: Filter to only associations with the specified term ID as an ancestor of the object. Defaults to None
             entity: Filter to only associations where the specified entities are the subject or the object. Defaults to None.
             q: Query string to search within matches. Defaults to None.
+            compact: Return compact results with fewer fields. Defaults to False.
             offset: Result offset, for pagination. Defaults to 0.
             limit: Limit results to specified number. Defaults to 20.
 
@@ -262,17 +265,17 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         """
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
         query = build_association_query(
-            category=[c.value for c in category] if category else None,
-            predicate=[p.value for p in predicate] if predicate else None,
+            category=[c.value for c in category] if category else [],
+            predicate=[p.value for p in predicate] if predicate else [],
             subject=[subject] if isinstance(subject, str) else subject,
             object=[object] if isinstance(object, str) else object,
             entity=[entity] if isinstance(entity, str) else entity,
             subject_closure=subject_closure,
             object_closure=object_closure,
-            subject_category=[c.value for c in subject_category] if subject_category else None,
+            subject_category=[c.value for c in subject_category] if subject_category else [],
             subject_namespace=[subject_namespace] if isinstance(subject_namespace, str) else subject_namespace,
             subject_taxon=[subject_taxon] if isinstance(subject_taxon, str) else subject_taxon,
-            object_category=[c.value for c in object_category] if object_category else None,
+            object_category=[c.value for c in object_category] if object_category else [],
             object_taxon=[object_taxon] if isinstance(object_taxon, str) else object_taxon,
             object_namespace=[object_namespace] if isinstance(object_namespace, str) else object_namespace,
             direct=direct,
@@ -281,7 +284,8 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             limit=limit,
         )
         query_result = solr.query(query)
-        associations = parse_associations(query_result, offset, limit)
+
+        associations = parse_associations(query_result, compact, offset, limit)
         return associations
 
     def get_histopheno(self, subject_closure: str = None) -> HistoPheno:

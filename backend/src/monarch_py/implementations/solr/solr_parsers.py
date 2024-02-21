@@ -5,6 +5,8 @@ from pydantic import ValidationError
 
 from monarch_py.datamodels.model import (
     Association,
+    AssociationCompact,
+    AssociationCompactResults,
     AssociationCount,
     AssociationCountList,
     AssociationDirectionEnum,
@@ -33,26 +35,44 @@ from monarch_py.utils.utils import get_links_for_field, get_provided_by_link
 
 def parse_associations(
     query_result: SolrQueryResult,
+    compact: bool = False,
     offset: int = 0,
     limit: int = 20,
 ) -> AssociationResults:
     associations = []
-    for doc in query_result.response.docs:
-        try:
-            association = Association(**doc)
-        except ValidationError:
-            logger.error(f"Validation error for {doc}")
-            raise ValidationError
-        association.provided_by_link = get_provided_by_link(association.provided_by) if association.provided_by else []
-        association.has_evidence_links = (
-            get_links_for_field(association.has_evidence) if association.has_evidence else []
-        )
-        association.publications_links = (
-            get_links_for_field(association.publications) if association.publications else []
-        )
-        associations.append(association)
     total = query_result.response.num_found
-    return AssociationResults(items=associations, limit=limit, offset=offset, total=total)
+    if compact:
+        associations = [
+            AssociationCompact(
+                category=doc.get("category"),
+                subject=doc.get("subject"),
+                subject_label=doc.get("subject_label"),
+                predicate=doc.get("predicate"),
+                object=doc.get("object"),
+                object_label=doc.get("object_label"),
+                negated=doc.get("negated"),
+            )
+            for doc in query_result.response.docs
+        ]
+        return AssociationCompactResults(items=associations, limit=limit, offset=offset, total=total)
+    else:
+        for doc in query_result.response.docs:
+            try:
+                association = Association(**doc)
+            except ValidationError:
+                logger.error(f"Validation error for {doc}")
+                raise ValidationError
+            association.provided_by_link = (
+                get_provided_by_link(association.provided_by) if association.provided_by else []
+            )
+            association.has_evidence_links = (
+                get_links_for_field(association.has_evidence) if association.has_evidence else []
+            )
+            association.publications_links = (
+                get_links_for_field(association.publications) if association.publications else []
+            )
+            associations.append(association)
+        return AssociationResults(items=associations, limit=limit, offset=offset, total=total)
 
 
 def parse_association_counts(query_result: SolrQueryResult, entity: str) -> AssociationCountList:
@@ -88,7 +108,6 @@ def parse_association_counts(query_result: SolrQueryResult, entity: str) -> Asso
 def parse_entity(solr_document: Dict) -> Entity:
     try:
         entity = Entity(**solr_document)
-
         entity.uri = converter.expand(entity.id)
     except ValidationError:
         logger.error(f"Validation error for {solr_document}")

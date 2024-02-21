@@ -94,6 +94,15 @@ classes:
       - stage_qualifier_category
       - stage_qualifier_closure
       - stage_qualifier_closure_label
+  AssociationCompact:
+    slots:
+      - category
+      - subject
+      - subject_label
+      - predicate
+      - object
+      - object_label
+      - negated
   AssociationCount:
     is_a: FacetValue
     slots:
@@ -115,6 +124,13 @@ classes:
     slot_usage:
       items:
         range: Association
+  AssociationCompactResults:
+    is_a: Results
+    slots:
+      - items
+    slot_usage:
+      items:
+        range: AssociationCompact
   AssociationTableResults:
     is_a: Results
     slots:
@@ -281,7 +297,6 @@ classes:
     slot_usage:
       items:
         range: SearchResult
-
   TextAnnotationResult:
     slots:
       - text
