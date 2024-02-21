@@ -5,8 +5,8 @@ from pydantic import ValidationError
 
 from monarch_py.datamodels.model import (
     Association,
-    AssociationCompact,
-    AssociationCompactResults,
+    CompactAssociation,
+    CompactAssociationResults,
     AssociationCount,
     AssociationCountList,
     AssociationDirectionEnum,
@@ -43,7 +43,7 @@ def parse_associations(
     total = query_result.response.num_found
     if compact:
         associations = [
-            AssociationCompact(
+            CompactAssociation(
                 category=doc.get("category"),
                 subject=doc.get("subject"),
                 subject_label=doc.get("subject_label"),
@@ -54,7 +54,7 @@ def parse_associations(
             )
             for doc in query_result.response.docs
         ]
-        return AssociationCompactResults(items=associations, limit=limit, offset=offset, total=total)
+        return CompactAssociationResults(items=associations, limit=limit, offset=offset, total=total)
     else:
         for doc in query_result.response.docs:
             try:

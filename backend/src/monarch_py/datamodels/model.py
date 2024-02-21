@@ -176,7 +176,7 @@ class Association(ConfiguredBaseModel):
     )
 
 
-class AssociationCompact(ConfiguredBaseModel):
+class CompactAssociation(ConfiguredBaseModel):
 
     category: Optional[str] = Field(None)
     subject: str = Field(...)
@@ -549,9 +549,9 @@ class AssociationResults(Results):
     total: int = Field(..., description="""total number of items matching a query""")
 
 
-class AssociationCompactResults(Results):
+class CompactAssociationResults(Results):
 
-    items: List[AssociationCompact] = Field(
+    items: List[CompactAssociation] = Field(
         default_factory=list, description="""A collection of items, with the type to be overriden by slot_usage"""
     )
     limit: int = Field(..., description="""number of items to return in a response""")
@@ -766,7 +766,7 @@ class SemsimSearchResult(ConfiguredBaseModel):
 # Model rebuild
 # see https://pydantic-docs.helpmanual.io/usage/models/#rebuilding-a-model
 Association.model_rebuild()
-AssociationCompact.model_rebuild()
+CompactAssociation.model_rebuild()
 AssociationCountList.model_rebuild()
 AssociationTypeMapping.model_rebuild()
 DirectionalAssociation.model_rebuild()
@@ -782,7 +782,7 @@ Node.model_rebuild()
 NodeHierarchy.model_rebuild()
 Results.model_rebuild()
 AssociationResults.model_rebuild()
-AssociationCompactResults.model_rebuild()
+CompactAssociationResults.model_rebuild()
 AssociationTableResults.model_rebuild()
 CategoryGroupedAssociationResults.model_rebuild()
 EntityResults.model_rebuild()

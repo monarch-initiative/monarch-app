@@ -5,7 +5,7 @@ from typing import List, Union, Optional
 import requests
 from monarch_py.datamodels.model import (
     Association,
-    AssociationCompact,
+    CompactAssociation,
     AssociationCountList,
     AssociationResults,
     AssociationTableResults,
@@ -244,7 +244,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         compact: bool = False,
         offset: int = 0,
         limit: int = 20,
-    ) -> Union[AssociationResults, AssociationCompact]:
+    ) -> Union[AssociationResults, CompactAssociation]:
         """Retrieve paginated association records, with filter options
 
         Args:

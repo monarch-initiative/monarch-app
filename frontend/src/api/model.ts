@@ -140,7 +140,7 @@ export interface Association {
     stage_qualifier_closure_label?: string[],
 };
 
-export interface AssociationCompact {
+export interface CompactAssociation {
     category?: string,
     subject: string,
     /** The name of the subject entity */
@@ -177,9 +177,9 @@ export interface AssociationResults extends Results {
     total: number,
 };
 
-export interface AssociationCompactResults extends Results {
+export interface CompactAssociationResults extends Results {
     /** A collection of items, with the type to be overriden by slot_usage */
-    items: AssociationCompact[],
+    items: CompactAssociation[],
     /** number of items to return in a response */
     limit: number,
     /** offset into the total number of items */

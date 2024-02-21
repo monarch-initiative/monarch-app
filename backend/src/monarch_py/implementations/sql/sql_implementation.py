@@ -7,8 +7,8 @@ from pydantic import ValidationError
 
 from monarch_py.datamodels.model import (
     Association,
-    AssociationCompact,
-    AssociationCompactResults,
+    CompactAssociation,
+    CompactAssociationResults,
     AssociationResults,
     Entity,
     Node,
@@ -179,7 +179,7 @@ class SQLImplementation(EntityInterface, AssociationInterface):
         compact: bool = False,
         offset: int = 0,
         limit: int = 20,
-    ) -> Union[AssociationResults, AssociationCompactResults]:
+    ) -> Union[AssociationResults, CompactAssociationResults]:
         """Retrieve paginated association records, with filter options
 
         Args:
@@ -264,11 +264,11 @@ class SQLImplementation(EntityInterface, AssociationInterface):
                 for key in result:
                     result[key] = None if not result[key] else result[key]
                 try:
-                    associations.append(AssociationCompact(**result))
+                    associations.append(CompactAssociation(**result))
                 except ValidationError:
                     logger.error(f"Validation error for {row}")
                     raise
-            return AssociationCompactResults(items=associations, limit=limit, offset=offset, total=total)
+            return CompactAssociationResults(items=associations, limit=limit, offset=offset, total=total)
         else:
             for row in results:
                 result = {
