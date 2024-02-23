@@ -79,6 +79,13 @@ class Association(ConfiguredBaseModel):
     has_evidence_links: Optional[List[ExpandedCurie]] = Field(
         default_factory=list, description="""List of ExpandedCuries with id and url for evidence"""
     )
+    has_count: Optional[int] = Field(None, description="""count of out of has_total representing a frequency""")
+    has_total: Optional[int] = Field(None, description="""total, devided by has_count, representing a frequency""")
+    has_percentage: Optional[float] = Field(
+        None,
+        description="""percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly""",
+    )
+    has_quotient: Optional[float] = Field(None, description="""quotient, which should be 1/100 of has_percentage""")
     grouping_key: Optional[str] = Field(
         None,
         description="""A concatenation of fields used to group associations with the same essential/defining properties""",
@@ -253,6 +260,13 @@ class DirectionalAssociation(Association):
     has_evidence_links: Optional[List[ExpandedCurie]] = Field(
         default_factory=list, description="""List of ExpandedCuries with id and url for evidence"""
     )
+    has_count: Optional[int] = Field(None, description="""count of out of has_total representing a frequency""")
+    has_total: Optional[int] = Field(None, description="""total, devided by has_count, representing a frequency""")
+    has_percentage: Optional[float] = Field(
+        None,
+        description="""percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly""",
+    )
+    has_quotient: Optional[float] = Field(None, description="""quotient, which should be 1/100 of has_percentage""")
     grouping_key: Optional[str] = Field(
         None,
         description="""A concatenation of fields used to group associations with the same essential/defining properties""",
