@@ -82,12 +82,12 @@
       To link to a specific page or to algorithmic results presented on this
       website, please use the URL in your browser's address bar. For example,
       you would cite the prefixed identifier
-      <AppLink to="/OMIM:154700">OMIM:154700</AppLink>
+      <AppLink to="/MONDO:0012933">MONDO:0012933</AppLink>
       as:
     </p>
     <blockquote>
-      Monarch Consortium. Accessed 2016-09-22. Ehlers-Danlos syndrome,
-      hypermobility. https://monarchinitiative.org/OMIM:154700
+      Monarch Consortium. Accessed 2016-09-22. breast-ovarian cancer, familial,
+      susceptibility to, 2. https://monarchinitiative.org/MONDO:0012933
     </blockquote>
   </AppSection>
 </template>
