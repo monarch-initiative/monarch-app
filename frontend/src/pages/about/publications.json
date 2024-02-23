@@ -1,34 +1,64 @@
 {
   "metadata": {
-    "total": 12690,
-    "num_publications": 137,
-    "last_5_yrs": 9043,
+    "total": 13905,
+    "num_publications": 142,
+    "last_5_yrs": 9075,
     "cites_per_year": {
       "2009": 43,
       "2010": 90,
-      "2011": 144,
+      "2011": 146,
       "2012": 238,
-      "2013": 242,
+      "2013": 243,
       "2014": 349,
-      "2015": 692,
-      "2016": 786,
-      "2017": 977,
-      "2018": 1132,
-      "2019": 1362,
-      "2020": 1272,
-      "2021": 1534,
-      "2022": 2084,
-      "2023": 1627
+      "2015": 696,
+      "2016": 792,
+      "2017": 984,
+      "2018": 1139,
+      "2019": 1385,
+      "2020": 1288,
+      "2021": 1557,
+      "2022": 2114,
+      "2023": 2245,
+      "2024": 452
     },
     "hindex": 48,
-    "hindex5y": 43,
-    "i10index": 90,
-    "i10index5y": 86
+    "hindex5y": 42,
+    "i10index": 96,
+    "i10index5y": 92
   },
   "publications": [
     {
+      "year": 2024,
+      "items": [
+        {
+          "title": "Lethal phenotypes in Mendelian disorders",
+          "authors": "Pilar Cacheiro, Samantha Lawson, Ignatia B Van den Veyver, Gabriel Marengo, David Zocche, Stephen A Murray, Michael Duyzend, Peter N Robinson, Damian Smedley",
+          "year": 2024,
+          "journal": "medRxiv",
+          "issue": ":2024.01. 12.24301168",
+          "link": "https://www.medrxiv.org/content/10.1101/2024.01.12.24301168.abstract"
+        },
+        {
+          "title": "An evaluation of GPT models for phenotype concept recognition",
+          "authors": "Tudor Groza, Harry Caufield, Dylan Gration, Gareth Baynam, Melissa A Haendel, Peter N Robinson, Christopher J Mungall, Justin T Reese",
+          "year": 2024,
+          "journal": "BMC Medical Informatics and Decision Making",
+          "issue": "24(1):30",
+          "link": "https://link.springer.com/article/10.1186/s12911-024-02439-w"
+        }
+      ]
+    },
+    {
       "year": 2023,
       "items": [
+        {
+          "title": "De novo TRPM3 missense variant associated with neurodevelopmental delay and manifestations of cerebral palsy",
+          "authors": "Jagadish Chandrabose Sundaramurthi, Anita M Bagley, Hannah Blau, Leigh Carmody, Amy Crandall, Daniel Danis, Michael A Gargano, Anxhela Gjyshi Gustafson, Ellen M Raney, Mallory Shingle, Jon R Davids, Peter N Robinson",
+          "year": 2023,
+          "journal": "Molecular Case Studies",
+          "issue": "9(4):a006293",
+          "link": "https://molecularcasestudies.cshlp.org/content/9/4/a006293.short"
+        },
         {
           "title": "The Human Phenotype Ontology in 2024: phenotypes around the world",
           "authors": "Michael A Gargano, Nicolas Matentzoglu, Ben Coleman, Eunice B Addo-Lartey, Anna V Anagnostopoulos, Joel Anderton, Paul Avillach, Anita M Bagley, Eduard Bak\u0161tein, James P Balhoff, Gareth Baynam, Susan M Bello, Michael Berk, Holli Bertram, Somer Bishop, Hannah Blau, David F Bodenstein, Pablo Botas, Kaan Boztug, Jolana \u010cady, Tiffany J Callahan, Rhiannon Cameron, Seth J Carbon, Francisco Castellanos, J Harry Caufield, Lauren E Chan, Christopher G Chute, Jaime Cruz-Rojo, No\u00e9mi Dahan-Oliel, Jon R Davids, Maud de Dieuleveult, Vinicius de Souza, Bert BA de Vries, Esther de Vries, J Raymond DePaulo, Beata Derfalvi, Ferdinand Dhombres, Claudia Diaz-Byrd, Alexander JM Dingemans, Bruno Donadille, Michael Duyzend, Reem Elfeky, Shahim Essaid, Carolina Fabrizzi, Giovanna Fico, Helen V Firth, Yun Freudenberg-Hua, Janice M Fullerton, Davera L Gabriel, Kimberly Gilmour, Jessica Giordano, Fernando S Goes, Rachel Gore Moses, Ian Green, Matthias Griese",
