@@ -33,21 +33,21 @@
       references:
     </p>
     <AppCitation
+      title="The Monarch Initiative in 2024: an analytic platform integrating phenotypes, genes and diseases across species"
+      authors="Putman et al."
+      :details="[
+        'Nucleic Acids Research',
+        '2024 Jan 5; Volume 52, Issue D1: D938–D949. Published online 2023, November 24.',
+        '10.1093/nar/gkad1082',
+      ]"
+    />
+    <AppCitation
       title="Navigating the Phenotype Frontier: The Monarch Initiative"
       authors="McMurry et al."
       :details="[
         'GENETICS',
         'August 1, 2016 vol. 203 no. 4 1491-1495',
         '10.1534/genetics.116.188870',
-      ]"
-    />
-    <AppCitation
-      title="The Monarch Initiative in 2019: an integrative data and analytic platform connecting phenotypes to genotypes across species"
-      authors="Shefchek et al."
-      :details="[
-        'Nucleic Acids Res.',
-        '2020 Jan 8; 48 (Database issue): D704–D715. Published online 2019 Nov 08.',
-        '10.1093/nar/gkz997',
       ]"
     />
   </AppSection>
