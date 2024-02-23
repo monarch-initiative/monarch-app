@@ -4,7 +4,7 @@
 
 <template>
   <div class="highlight">
-    <video :src="src" muted autoplay loop controls></video>
+    <video :src="src" muted :autoplay="os.name !== 'iOS'" loop controls></video>
     <p>
       <slot />
     </p>
@@ -12,6 +12,10 @@
 </template>
 
 <script setup lang="ts">
+import parser from "ua-parser-js";
+
+const { os } = parser();
+
 type Props = {
   /** source of video */
   src: string;
