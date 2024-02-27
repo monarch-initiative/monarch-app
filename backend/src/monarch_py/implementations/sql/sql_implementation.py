@@ -1,11 +1,19 @@
 from dataclasses import dataclass
-from typing import List
+from typing import List, Union
 
 import pystow
 from loguru import logger
 from pydantic import ValidationError
 
-from monarch_py.datamodels.model import Association, AssociationResults, Entity, Node, NodeHierarchy
+from monarch_py.datamodels.model import (
+    Association,
+    CompactAssociation,
+    CompactAssociationResults,
+    AssociationResults,
+    Entity,
+    Node,
+    NodeHierarchy,
+)
 from monarch_py.interfaces.association_interface import AssociationInterface
 from monarch_py.interfaces.entity_interface import EntityInterface
 from monarch_py.service.curie_service import converter
@@ -168,9 +176,10 @@ class SQLImplementation(EntityInterface, AssociationInterface):
         object_closure: str = None,
         entity: List[str] = None,
         direct: bool = None,
+        compact: bool = False,
         offset: int = 0,
         limit: int = 20,
-    ) -> AssociationResults:
+    ) -> Union[AssociationResults, CompactAssociationResults]:
         """Retrieve paginated association records, with filter options
 
         Args:
@@ -182,6 +191,7 @@ class SQLImplementation(EntityInterface, AssociationInterface):
             object_closure (str, optional): Filter to only associations the specified term ID as an ancestor of the object. Defaults to None.
             entity (str, optional): Filter to only associations where the specified entity is the subject or the object. Defaults to None.
             association_type (str, optional): Filter to only associations matching the specified association label. Defaults to None.
+            compact (bool, optional): Whether to return compact or full association records. Defaults to False.
             offset (int, optional): Result offset, for pagination. Defaults to 0.
             limit (int, optional): Limit results to specified number. Defaults to 20.
 
@@ -239,35 +249,56 @@ class SQLImplementation(EntityInterface, AssociationInterface):
             total = count[f"COUNT(*)"]
 
         associations = []
-        for row in results:
-            result = {
-                "id": row["id"],
-                "original_subject": row["original_subject"],
-                "predicate": row["predicate"],
-                "original_object": row["original_object"],
-                "category": row["category"],
-                "aggregator_knowledge_source": row["aggregator_knowledge_source"].split("|"),
-                "primary_knowledge_source": row["primary_knowledge_source"],
-                "publications": row["publications"].split("|"),
-                "qualifiers": row["qualifiers"].split("|"),
-                "provided_by": row["provided_by"],
-                "has_evidence": row["has_evidence"].split("|"),
-                "stage_qualifier": row["stage_qualifier"],
-                "negated": False if not row["negated"] else True,
-                "frequency_qualifier": row["frequency_qualifier"],
-                "onset_qualifier": row["onset_qualifier"],
-                "sex_qualifier": row["sex_qualifier"],
-                "subject": row["subject"],
-                "object": row["object"],
-            }
-            # Convert empty strings to null value
-            for key in result:
-                result[key] = None if not result[key] else result[key]
-            try:
-                associations.append(Association(**result))
-            except ValidationError:
-                logger.error(f"Validation error for {row}")
-                raise
-
-        results = AssociationResults(items=associations, limit=limit, offset=offset, total=total)
-        return results
+        if compact:
+            for row in results:
+                result = {
+                    "category": row["category"],
+                    "subject": row["subject"],
+                    "subject_label": row["subject_label"],
+                    "predicate": row["predicate"],
+                    "object": row["object"],
+                    "object_label": row["object_label"],
+                    "negated": False if not row["negated"] else True,
+                }
+                # Convert empty strings to null value
+                for key in result:
+                    result[key] = None if not result[key] else result[key]
+                try:
+                    associations.append(CompactAssociation(**result))
+                except ValidationError:
+                    logger.error(f"Validation error for {row}")
+                    raise
+            return CompactAssociationResults(items=associations, limit=limit, offset=offset, total=total)
+        else:
+            for row in results:
+                result = {
+                    "id": row["id"],
+                    "original_subject": row["original_subject"],
+                    "predicate": row["predicate"],
+                    "original_object": row["original_object"],
+                    "category": row["category"],
+                    "aggregator_knowledge_source": row["aggregator_knowledge_source"].split("|"),
+                    "primary_knowledge_source": row["primary_knowledge_source"],
+                    "publications": row["publications"].split("|"),
+                    "qualifiers": row["qualifiers"].split("|"),
+                    "provided_by": row["provided_by"],
+                    "has_evidence": row["has_evidence"].split("|"),
+                    "stage_qualifier": row["stage_qualifier"],
+                    "negated": False if not row["negated"] else True,
+                    "frequency_qualifier": row["frequency_qualifier"],
+                    "onset_qualifier": row["onset_qualifier"],
+                    "sex_qualifier": row["sex_qualifier"],
+                    "subject": row["subject"],
+                    "object": row["object"],
+                }
+                # Convert empty strings to null value
+                for key in result:
+                    result[key] = None if not result[key] else result[key]
+                    if isinstance(result[key], list) and len(result[key]) == 1 and not result[key][0]:
+                        result[key] = []
+                try:
+                    associations.append(Association(**result))
+                except ValidationError:
+                    logger.error(f"Validation error for {row}")
+                    raise
+            return AssociationResults(items=associations, limit=limit, offset=offset, total=total)

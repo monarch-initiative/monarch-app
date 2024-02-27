@@ -9,7 +9,11 @@ import sys
 from pathlib import Path
 
 from monarch_py.api.semsim import _compare, _search
-from monarch_py.datamodels.category_enums import AssociationCategory, AssociationPredicate, EntityCategory
+from monarch_py.datamodels.category_enums import (
+    AssociationCategory,
+    AssociationPredicate,
+    EntityCategory,
+)
 from monarch_py.datamodels.model import Association, HistoBin, Node, SearchResult
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 from monarch_py.implementations.solr.solr_query_utils import (
@@ -253,6 +257,9 @@ def main(
     if any([backend, frontend, all_fixtures]):
         print(f"{'-'*120}\n\tGenerating core fixtures...")
         fixtures["associations"] = si.get_associations(entity=[node_id])
+        fixtures["associations-compact"] = si.get_associations(
+            entity=[node_id], compact=True
+        )
         fixtures["association-counts"] = si.get_association_counts(entity=node_id)
         fixtures["association-table"] = si.get_association_table(
             entity=node_id, category=category, offset=0, limit=5
@@ -288,13 +295,13 @@ def main(
         )
         extra_fixtures["association-query-params"] = {
             "category": [category.value],
-            "subject":  ["TEST:0000001"],
+            "subject": ["TEST:0000001"],
             "subject_closure": "TEST:0000003",
             "subject_category": [EntityCategory.GENE.value],
             "subject_namespace": "TEST",
             "subject_taxon": ["NCBITaxon:1111"],
             "predicate": [AssociationPredicate.CAUSES.value],
-            "object":  ["TEST:0000002"],
+            "object": ["TEST:0000002"],
             "object_closure": "TEST:0000004",
             "object_category": [EntityCategory.DISEASE.value],
             "object_namespace": "TEST",
@@ -302,7 +309,7 @@ def main(
             "entity": ["TEST:0000005"],
             "q": "test:q",
             "offset": 100,
-            "limit": 100
+            "limit": 100,
         }
         extra_fixtures["association-query-direct"] = build_association_query(
             **extra_fixtures["association-query-params"], direct=True
