@@ -1621,6 +1621,7 @@
 <li><code>-o, --object TEXT</code>: Object ID to get associations for</li>
 <li><code>-e, --entity TEXT</code>: Entity (subject or object) ID to get associations for</li>
 <li><code>-d, --direct</code>: Whether to exclude associations with subject/object as ancestors</li>
+<li><code>-C, --compact</code>: Whether to return a compact representation of the associations</li>
 <li><code>-l, --limit INTEGER</code>: The number of associations to return  [default: 20]</li>
 <li><code>--offset INTEGER</code>: The offset of the first association to be retrieved  [default: 0]</li>
 <li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
@@ -1865,6 +1866,7 @@
 <li><code>-o, --object TEXT</code>: Object ID to get associations for</li>
 <li><code>-e, --entity TEXT</code>: Entity (subject or object) ID to get associations for</li>
 <li><code>-d, --direct</code>: Whether to exclude associations with subject/object as ancestors</li>
+<li><code>-C, --compact</code>: Whether to return a compact representation of the associations</li>
 <li><code>-l, --limit INTEGER</code>: The number of associations to return  [default: 20]</li>
 <li><code>--offset INTEGER</code>: The offset of the first association to be retrieved  [default: 0]</li>
 <li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
@@ -2060,6 +2062,8 @@
     predicate: A comma-separated list of predicates
     object: A comma-separated list of objects
     entity: A comma-separated list of entities
+    direct: Whether to exclude associations with subject/object as ancestors
+    compact: Whether to return a compact representation of the associations
     limit: The number of associations to return
     offset: The offset of the first association to be retrieved
     fmt: The format of the output (json, yaml, tsv, table)
@@ -2075,6 +2079,7 @@
 <li><code>-o, --object TEXT</code>: Object ID to get associations for</li>
 <li><code>-e, --entity TEXT</code>: Entity (subject or object) ID to get associations for</li>
 <li><code>-d, --direct</code>: Whether to exclude associations with subject/object as ancestors</li>
+<li><code>-C, --compact</code>: Whether to return a compact representation of the associations</li>
 <li><code>-l, --limit INTEGER</code>: The number of associations to return  [default: 20]</li>
 <li><code>--offset INTEGER</code>: The offset of the first association to be retrieved  [default: 0]</li>
 <li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>

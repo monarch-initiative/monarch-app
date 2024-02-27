@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://monarch-app.monarchinitiative.org/docs/Data-Model/TermPairwiseSimilarity/">
+        <link rel="canonical" href="https://monarch-app.monarchinitiative.org/docs/Data-Model/CompactAssociation/">
       
       
       
@@ -18,7 +18,7 @@
     
     
       
-        <title>Class: TermPairwiseSimilarity - monarch-py</title>
+        <title>Class: CompactAssociation - monarch-py</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#class-termpairwisesimilarity" class="md-skip">
+        <a href="#class-compactassociation" class="md-skip">
           Skip to content
         </a>
       
@@ -107,7 +107,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Class: TermPairwiseSimilarity
+              Class: CompactAssociation
             
           </span>
         </div>
@@ -918,15 +918,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#inheritance" class="md-nav__link">
-    <span class="md-ellipsis">
-      Inheritance
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#slots" class="md-nav__link">
     <span class="md-ellipsis">
       Slots
@@ -1028,52 +1019,26 @@
   
 
 
-<h1 id="class-termpairwisesimilarity">Class: TermPairwiseSimilarity</h1>
-<p><em>A simple pairwise similarity between two atomic concepts/terms</em></p>
-<p>URI: <a href="https://w3id.org/monarch/monarch-py/:TermPairwiseSimilarity">https://w3id.org/monarch/monarch-py/:TermPairwiseSimilarity</a></p>
+<h1 id="class-compactassociation">Class: CompactAssociation</h1>
+<p>URI: <a href="https://w3id.org/monarch/monarch-py/:CompactAssociation">https://w3id.org/monarch/monarch-py/:CompactAssociation</a></p>
 <div class="highlight"><pre><span></span><code> classDiagram
-    class TermPairwiseSimilarity
-      PairwiseSimilarity &lt;|-- TermPairwiseSimilarity
+    class CompactAssociation
+      CompactAssociation : category
 
-      TermPairwiseSimilarity : ancestor_id
+      CompactAssociation : negated
 
-      TermPairwiseSimilarity : ancestor_information_content
+      CompactAssociation : object
 
-      TermPairwiseSimilarity : ancestor_label
+      CompactAssociation : object_label
 
-      TermPairwiseSimilarity : ancestor_source
+      CompactAssociation : predicate
 
-      TermPairwiseSimilarity : cosine_similarity
+      CompactAssociation : subject
 
-      TermPairwiseSimilarity : dice_similarity
-
-      TermPairwiseSimilarity : jaccard_similarity
-
-      TermPairwiseSimilarity : object_id
-
-      TermPairwiseSimilarity : object_information_content
-
-      TermPairwiseSimilarity : object_label
-
-      TermPairwiseSimilarity : object_source
-
-      TermPairwiseSimilarity : phenodigm_score
-
-      TermPairwiseSimilarity : subject_id
-
-      TermPairwiseSimilarity : subject_information_content
-
-      TermPairwiseSimilarity : subject_label
-
-      TermPairwiseSimilarity : subject_source
+      CompactAssociation : subject_label
 </code></pre></div>
-<h2 id="inheritance">Inheritance</h2>
-<ul>
-<li><a href="../PairwiseSimilarity/">PairwiseSimilarity</a><ul>
-<li><strong>TermPairwiseSimilarity</strong></li>
-</ul>
-</li>
-</ul>
+<!-- no inheritance hierarchy -->
+
 <h2 id="slots">Slots</h2>
 <table>
 <thead>
@@ -1086,7 +1051,13 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="../subject_id/">subject_id</a></td>
+<td><a href="../category/">category</a></td>
+<td>0..1 <br/> <a href="../String/">String</a></td>
+<td></td>
+<td>direct</td>
+</tr>
+<tr>
+<td><a href="../subject/">subject</a></td>
 <td>1..1 <br/> <a href="../String/">String</a></td>
 <td></td>
 <td>direct</td>
@@ -1098,13 +1069,13 @@
 <td>direct</td>
 </tr>
 <tr>
-<td><a href="../subject_source/">subject_source</a></td>
-<td>0..1 <br/> <a href="../String/">String</a></td>
-<td>the source for the first entity</td>
+<td><a href="../predicate/">predicate</a></td>
+<td>1..1 <br/> <a href="../String/">String</a></td>
+<td></td>
 <td>direct</td>
 </tr>
 <tr>
-<td><a href="../object_id/">object_id</a></td>
+<td><a href="../object/">object</a></td>
 <td>1..1 <br/> <a href="../String/">String</a></td>
 <td></td>
 <td>direct</td>
@@ -1116,69 +1087,9 @@
 <td>direct</td>
 </tr>
 <tr>
-<td><a href="../object_source/">object_source</a></td>
-<td>0..1 <br/> <a href="../String/">String</a></td>
-<td>the source for the second entity</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../ancestor_id/">ancestor_id</a></td>
-<td>0..1 <br/> <a href="../Uriorcurie/">Uriorcurie</a></td>
-<td>the most recent common ancestor of the two compared entities</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../ancestor_label/">ancestor_label</a></td>
-<td>0..1 <br/> <a href="../String/">String</a></td>
-<td>the name or label of the ancestor concept</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../ancestor_source/">ancestor_source</a></td>
-<td>0..1 <br/> <a href="../String/">String</a></td>
+<td><a href="../negated/">negated</a></td>
+<td>0..1 <br/> <a href="../Boolean/">Boolean</a></td>
 <td></td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../object_information_content/">object_information_content</a></td>
-<td>0..1 <br/> <a href="../NegativeLogValue/">NegativeLogValue</a></td>
-<td>The IC of the object</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../subject_information_content/">subject_information_content</a></td>
-<td>0..1 <br/> <a href="../NegativeLogValue/">NegativeLogValue</a></td>
-<td>The IC of the subject</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../ancestor_information_content/">ancestor_information_content</a></td>
-<td>0..1 <br/> <a href="../NegativeLogValue/">NegativeLogValue</a></td>
-<td>The IC of the object</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../jaccard_similarity/">jaccard_similarity</a></td>
-<td>0..1 <br/> <a href="../ZeroToOne/">ZeroToOne</a></td>
-<td>The number of concepts in the intersection divided by the number in the union</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../cosine_similarity/">cosine_similarity</a></td>
-<td>0..1 <br/> <a href="../Float/">Float</a></td>
-<td>the dot product of two node embeddings divided by the product of their length...</td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../dice_similarity/">dice_similarity</a></td>
-<td>0..1 <br/> <a href="../ZeroToOne/">ZeroToOne</a></td>
-<td></td>
-<td>direct</td>
-</tr>
-<tr>
-<td><a href="../phenodigm_score/">phenodigm_score</a></td>
-<td>0..1 <br/> <a href="../NonNegativeFloat/">NonNegativeFloat</a></td>
-<td>the geometric mean of the jaccard similarity and the information content</td>
 <td>direct</td>
 </tr>
 </tbody>
@@ -1195,10 +1106,10 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="../BestMatch/">BestMatch</a></td>
-<td><a href="../similarity/">similarity</a></td>
+<td><a href="../CompactAssociationResults/">CompactAssociationResults</a></td>
+<td><a href="../items/">items</a></td>
 <td>range</td>
-<td><a href="./">TermPairwiseSimilarity</a></td>
+<td><a href="./">CompactAssociation</a></td>
 </tr>
 </tbody>
 </table>
@@ -1218,11 +1129,11 @@
 <tbody>
 <tr>
 <td>self</td>
-<td><a href="https://w3id.org/monarch/monarch-py/:TermPairwiseSimilarity">https://w3id.org/monarch/monarch-py/:TermPairwiseSimilarity</a></td>
+<td><a href="https://w3id.org/monarch/monarch-py/:CompactAssociation">https://w3id.org/monarch/monarch-py/:CompactAssociation</a></td>
 </tr>
 <tr>
 <td>native</td>
-<td><a href="https://w3id.org/monarch/monarch-py/:TermPairwiseSimilarity">https://w3id.org/monarch/monarch-py/:TermPairwiseSimilarity</a></td>
+<td><a href="https://w3id.org/monarch/monarch-py/:CompactAssociation">https://w3id.org/monarch/monarch-py/:CompactAssociation</a></td>
 </tr>
 </tbody>
 </table>
@@ -1231,46 +1142,48 @@
 
 <h3 id="direct">Direct</h3>
 <details>
-<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A simple pairwise similarity between two atomic concepts/terms</span>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CompactAssociation</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
-<span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PairwiseSimilarity</span>
 <span class="nt">slots</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject_id</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">category</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject_label</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject_source</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_id</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">predicate</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_label</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_source</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ancestor_id</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ancestor_label</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ancestor_source</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_information_content</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject_information_content</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ancestor_information_content</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jaccard_similarity</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cosine_similarity</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dice_similarity</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">phenodigm_score</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">negated</span>
 </code></pre></div>
 </details>
 
 <h3 id="induced">Induced</h3>
 <details>
-<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A simple pairwise similarity between two atomic concepts/terms</span>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CompactAssociation</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
-<span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PairwiseSimilarity</span>
 <span class="nt">attributes</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">subject_id</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject_id</span>
+<span class="w">  </span><span class="nt">category</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">category</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject_id</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
+<span class="w">    </span><span class="nt">multivalued</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">category</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CompactAssociation</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Mapping</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationCount</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CompactAssociation</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationTypeMapping</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Entity</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">  </span><span class="nt">subject</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CompactAssociation</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CompactAssociation</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SemsimSearchResult</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
 <span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">subject_label</span><span class="p">:</span>
@@ -1280,7 +1193,7 @@
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
 <span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject_label</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CompactAssociation</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CompactAssociation</span>
@@ -1288,26 +1201,27 @@
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Mapping</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="w">  </span><span class="nt">subject_source</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject_source</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the source for the first entity</span>
+<span class="w">  </span><span class="nt">predicate</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">predicate</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">slot_uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sssom:subject_source</span>
-<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject_source</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
+<span class="w">    </span><span class="nt">multivalued</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">predicate</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CompactAssociation</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CompactAssociation</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="w">  </span><span class="nt">object_id</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_id</span>
+<span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">object</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_id</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CompactAssociation</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Mapping</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CompactAssociation</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
 <span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">  </span><span class="nt">object_label</span><span class="p">:</span>
@@ -1317,7 +1231,7 @@
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
 <span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_label</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CompactAssociation</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CompactAssociation</span>
@@ -1325,129 +1239,16 @@
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Mapping</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="w">  </span><span class="nt">object_source</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_source</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the source for the second entity</span>
+<span class="w">  </span><span class="nt">negated</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">negated</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">slot_uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sssom:object_source</span>
-<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_source</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">negated</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CompactAssociation</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="w">  </span><span class="nt">ancestor_id</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ancestor_id</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the most recent common ancestor of the two compared entities. If</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">there are multiple MRCAs then the most informative one is selected</span>
-<span class="w">    </span><span class="nt">todos</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">decide on what to do when there are multiple possible ancestos</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ancestor_id</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uriorcurie</span>
-<span class="w">  </span><span class="nt">ancestor_label</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ancestor_label</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the name or label of the ancestor concept</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ancestor_label</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="w">  </span><span class="nt">ancestor_source</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ancestor_source</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ancestor_source</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="w">  </span><span class="nt">object_information_content</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_information_content</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The IC of the object</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">information_content</span>
-<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_information_content</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NegativeLogValue</span>
-<span class="w">  </span><span class="nt">subject_information_content</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject_information_content</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The IC of the subject</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">information_content</span>
-<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject_information_content</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NegativeLogValue</span>
-<span class="w">  </span><span class="nt">ancestor_information_content</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ancestor_information_content</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The IC of the object</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">information_content</span>
-<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ancestor_information_content</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NegativeLogValue</span>
-<span class="w">  </span><span class="nt">jaccard_similarity</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jaccard_similarity</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The number of concepts in the intersection divided by the number</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">in the union</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">score</span>
-<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jaccard_similarity</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ZeroToOne</span>
-<span class="w">  </span><span class="nt">cosine_similarity</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cosine_similarity</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the dot product of two node embeddings divided by the product of</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">their lengths</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">score</span>
-<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cosine_similarity</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">float</span>
-<span class="w">  </span><span class="nt">dice_similarity</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dice_similarity</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">score</span>
-<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dice_similarity</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ZeroToOne</span>
-<span class="w">  </span><span class="nt">phenodigm_score</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">phenodigm_score</span>
-<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">the geometric mean of the jaccard similarity and the information</span>
-<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">content</span>
-<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
-<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">    </span><span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">score</span>
-<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">phenodigm_score</span>
-<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
-<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermPairwiseSimilarity</span>
-<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NonNegativeFloat</span>
-<span class="w">    </span><span class="nt">equals_expression</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sqrt({jaccard_similarity} * {information_content})</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CompactAssociation</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">boolean</span>
 </code></pre></div>
 </details>
 
