@@ -11,7 +11,7 @@ class SemsimianService(BaseModel):
     """A class that makes HTTP requests to the semsimian_server."""
     semsim_server_port: int
     semsim_server_host: str
-    entity_implementation: Any # TODO: should be EntityInterface
+    entity_implementation: Any  # TODO: should be EntityInterface
 
     def convert_tsps_data(self, data):
         """Convert to a format that can be coerced into a TermSetPairwiseSimilarity model
@@ -55,9 +55,7 @@ class SemsimianService(BaseModel):
 
     def multi_compare(self, subjects: List[str], object_sets: List[List[str]]) -> List[TermSetPairwiseSimilarity]:
         compare_results = [self.compare(subjects, object_set) for object_set in object_sets]
-        # TODO: probably should be sorted
         return compare_results
-
 
     def search(self, termset: List[str], prefix: str, limit: int):
         host = f"http://{self.semsim_server_host}:{self.semsim_server_port}"
