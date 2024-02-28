@@ -86,8 +86,8 @@ def _multicompare(subjects: str = Path(...,
                                        title="Comma separated list of subjects for comparison"),
                   objects: List[str] = Query(...,
                                              title="List of comma separated object sets to compare against")):
-    pass
 
+    return semsimian().multi_compare(subjects=subjects.split(","), object_sets=[obj.split(",") for obj in objects])
 
 @router.get("/search/{termset}/{group}")
 def _search(

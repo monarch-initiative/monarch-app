@@ -29,7 +29,8 @@ def solr():
 @lru_cache(maxsize=1)
 def semsimian():
     return SemsimianService(semsim_server_host=settings.semsim_server_host,
-                            semsim_server_port=settings.semsim_server_port)
+                            semsim_server_port=settings.semsim_server_port,
+                            entity_implementation=solr())
 
 
 @lru_cache(maxsize=1)

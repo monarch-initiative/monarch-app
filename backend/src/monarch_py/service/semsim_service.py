@@ -1,16 +1,17 @@
-from typing import List
+from typing import List, Any
 import requests
 
-from monarch_py.api.config import solr
 from pydantic import BaseModel
 
 from monarch_py.datamodels.model import TermSetPairwiseSimilarity, SemsimSearchResult
+from monarch_py.interfaces.entity_interface import EntityInterface
 
 
 class SemsimianService(BaseModel):
     """A class that makes HTTP requests to the semsimian_server."""
     semsim_server_port: int
     semsim_server_host: str
+    entity_implementation: Any # TODO: should be EntityInterface
 
     def convert_tsps_data(self, data):
         """Convert to a format that can be coerced into a TermSetPairwiseSimilarity model
@@ -42,7 +43,7 @@ class SemsimianService(BaseModel):
         return converted_data
 
     def compare(self, subjects: List[str], objects: List[str]):
-        host = f"http://{settings.semsim_server_host}:{self.semsim_server_port}"
+        host = f"http://{self.semsim_server_host}:{self.semsim_server_port}"
         path = f"compare/{','.join(subjects)}/{','.join(objects)}"
         url = f"{host}/{path}"
 
@@ -51,6 +52,12 @@ class SemsimianService(BaseModel):
         data = response.json()
         results = self.convert_tsps_data(data)
         return TermSetPairwiseSimilarity(**results)
+
+    def multi_compare(self, subjects: List[str], object_sets: List[List[str]]) -> List[TermSetPairwiseSimilarity]:
+        compare_results = [self.compare(subjects, object_set) for object_set in object_sets]
+        # TODO: probably should be sorted
+        return compare_results
+
 
     def search(self, termset: List[str], prefix: str, limit: int):
         host = f"http://{self.semsim_server_host}:{self.semsim_server_port}"
@@ -62,7 +69,7 @@ class SemsimianService(BaseModel):
         data = response.json()
         results = [
             SemsimSearchResult(
-                subject=solr().get_entity(i[2], extra=False),
+                subject=self.entity_implementation.get_entity(i[2], extra=False),
                 score=i[0],
                 similarity=self.convert_tsps_data(i[1])
             )
