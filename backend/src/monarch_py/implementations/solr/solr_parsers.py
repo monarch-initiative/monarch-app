@@ -117,7 +117,7 @@ def parse_entity(solr_document: Dict) -> Entity:
 
 def parse_association_table(
     query_result: SolrQueryResult,
-    entity: str,
+    entity: List[str],
     offset: int,
     limit: int,
 ) -> AssociationTableResults:
@@ -225,13 +225,14 @@ def convert_facet_queries(solr_facet_queries: Dict[str, int]) -> List[FacetValue
     return [FacetValue(label=k, count=v) for k, v in solr_facet_queries.items()]
 
 
-def get_association_direction(entity: str, document: Dict) -> AssociationDirectionEnum:
-    if document.get("subject") == entity or (
-        document.get("subject_closure") and entity in document.get("subject_closure")
+def get_association_direction(entity: List[str], document: Dict) -> AssociationDirectionEnum:
+    """Get the direction of an association based on the entity and the association document"""
+    if document.get("subject") in entity or (
+        document.get("subject_closure") and any(e in document.get("subject_closure") for e in entity)
     ):
         direction = AssociationDirectionEnum.outgoing
-    elif document.get("object") == entity or (
-        document.get("object_closure") and entity in document.get("object_closure")
+    elif document.get("object") in entity or (
+        document.get("object_closure") and any(e in document.get("object_closure") for e in entity)
     ):
         direction = AssociationDirectionEnum.incoming
     else:

@@ -87,7 +87,7 @@ def entity(
         "-f",
         help="The format of the output (json, yaml, tsv, table)",
     ),
-    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
+    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
 ):
     """
     Retrieve an entity by ID
@@ -169,7 +169,7 @@ def search(
         "-f",
         help="The format of the output (json, yaml, tsv, table)",
     ),
-    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
+    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
     # sort: str = typer.Option(None, "--sort", "-s"),
 ):
     """
@@ -196,7 +196,7 @@ def autocomplete(
         "-f",
         help="The format of the output (json, yaml, tsv, table)",
     ),
-    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
+    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
 ):
     """
     Return entity autcomplete matches for a query string
@@ -219,7 +219,7 @@ def histopheno(
         "-f",
         help="The format of the output (json, yaml, tsv, table)",
     ),
-    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
+    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
 ):
     """
     Retrieve the histopheno data for an entity by ID
@@ -243,7 +243,7 @@ def association_counts(
         "-f",
         help="The format of the output (json, yaml, tsv, table)",
     ),
-    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
+    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
 ):
     """
     Retrieve association counts for an entity by ID
@@ -267,6 +267,12 @@ def association_table(
         help="The association category to get associations for, ex. biolink:GeneToPhenotypicFeatureAssociation",
     ),
     q: str = typer.Option(None, "--query", "-q"),
+    traverse_orthologs: bool = typer.Option(
+        False,
+        "--traverse-orthologs",
+        "-t",
+        help="Whether to traverse orthologs when getting associations",
+    ),
     sort: List[str] = typer.Option(None, "--sort", "-s"),
     limit: int = typer.Option(5, "--limit", "-l"),
     offset: int = typer.Option(0, "--offset"),
@@ -276,7 +282,7 @@ def association_table(
         "-f",
         help="The format of the output (json, yaml, tsv, table)",
     ),
-    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
+    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
 ):
     solr_cli.association_table(**locals())
 
@@ -291,7 +297,7 @@ def compare(
         "-f",
         help="The format of the output (json, yaml, tsv, table)",
     ),
-    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
+    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
 ):
     """Compare two sets of phenotypes using semantic similarity via SemSimian"""
     subjects = subjects.split(",")
@@ -312,7 +318,7 @@ def multi_entity_associations(
         "-f",
         help="The format of the output (json, yaml, tsv, table)",
     ),
-    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
+    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
 ):
     """
     Paginate through associations for multiple entities

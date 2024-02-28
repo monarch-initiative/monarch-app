@@ -5,7 +5,7 @@ import pytest
 def histopheno_response():
     return {
         "responseHeader": {
-            "QTime": 5,
+            "QTime": 2,
             "params": {
                 "facet.query": [
                     'object_closure:"HP:0000924"',
