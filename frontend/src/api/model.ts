@@ -68,7 +68,7 @@ export interface Association {
     has_count?: number,
     /** total, devided by has_count, representing a frequency */
     has_total?: number,
-    /** percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly */
+    /** percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly, rounded to the integer level */
     has_percentage?: number,
     /** quotient, which should be 1/100 of has_percentage */
     has_quotient?: number,
@@ -259,7 +259,7 @@ export interface DirectionalAssociation extends Association {
     has_count?: number,
     /** total, devided by has_count, representing a frequency */
     has_total?: number,
-    /** percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly */
+    /** percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly, rounded to the integer level */
     has_percentage?: number,
     /** quotient, which should be 1/100 of has_percentage */
     has_quotient?: number,

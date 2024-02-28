@@ -81,9 +81,9 @@ class Association(ConfiguredBaseModel):
     )
     has_count: Optional[int] = Field(None, description="""count of out of has_total representing a frequency""")
     has_total: Optional[int] = Field(None, description="""total, devided by has_count, representing a frequency""")
-    has_percentage: Optional[float] = Field(
+    has_percentage: Optional[int] = Field(
         None,
-        description="""percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly""",
+        description="""percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly, rounded to the integer level""",
     )
     has_quotient: Optional[float] = Field(None, description="""quotient, which should be 1/100 of has_percentage""")
     grouping_key: Optional[str] = Field(
@@ -262,9 +262,9 @@ class DirectionalAssociation(Association):
     )
     has_count: Optional[int] = Field(None, description="""count of out of has_total representing a frequency""")
     has_total: Optional[int] = Field(None, description="""total, devided by has_count, representing a frequency""")
-    has_percentage: Optional[float] = Field(
+    has_percentage: Optional[int] = Field(
         None,
-        description="""percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly""",
+        description="""percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly, rounded to the integer level""",
     )
     has_quotient: Optional[float] = Field(None, description="""quotient, which should be 1/100 of has_percentage""")
     grouping_key: Optional[str] = Field(
