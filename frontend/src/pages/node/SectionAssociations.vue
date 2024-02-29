@@ -23,19 +23,38 @@
       />
     </AppFlex>
 
-    <AppButton
-      v-if="
-        (node.category === 'biolink:Disease' &&
-          category?.id.startsWith('biolink:DiseaseToPheno')) ||
-        (node.category === 'biolink:Gene' &&
-          category?.id.startsWith('biolink:GeneToPheno'))
-      "
-      v-tooltip="'Send these phenotypes to Phenotype Explorer for comparison'"
-      to="explore#phenotype-explorer"
-      :state="{ search: node.id }"
-      text="Phenotype Explorer"
-      icon="arrow-right"
-    />
+    <AppFlex gap="small">
+      <AppCheckbox
+        v-if="
+            (node.category === 'biolink:Gene' &&
+              category?.id.startsWith('biolink:GeneToPheno')) ||
+            (node.category === 'biolink:Gene' &&
+              category?.id.startsWith('biolink:CausalGeneToDisease')) ||
+            (node.category === 'biolink:Gene' &&
+              category?.id.startsWith('biolink:CorrelatedGeneToDisease')) ||
+            (node.category === 'biolink:Disease' &&
+              category?.id.startsWith('biolink:DiseaseToPheno'))
+          "
+        v-model="includeOrthologs"
+        v-tooltip="
+          'Include phenotypes for orthologous genes in the associations table'
+        "
+        text="Include orthologous genes"
+      />
+      <AppButton
+        v-if="
+          (node.category === 'biolink:Disease' &&
+            category?.id.startsWith('biolink:DiseaseToPheno')) ||
+          (node.category === 'biolink:Gene' &&
+            category?.id.startsWith('biolink:GeneToPheno'))
+        "
+        v-tooltip="'Send these phenotypes to Phenotype Explorer for comparison'"
+        to="explore#phenotype-explorer"
+        :state="{ search: node.id }"
+        text="Phenotype Explorer"
+        icon="arrow-right"
+      />
+    </AppFlex>
 
     <template v-if="category">
       <!-- table view of associations -->
@@ -43,6 +62,7 @@
         :node="node"
         :category="category"
         :association="association"
+        :include-orthologs="includeOrthologs"
         @select="(value) => (association = value)"
       />
     </template>
@@ -61,6 +81,7 @@ import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { startCase } from "lodash";
 import type { DirectionalAssociation, Node } from "@/api/model";
+import AppCheckbox from "@/components/AppCheckbox.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import type { Option, Options } from "@/components/AppSelectSingle.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
@@ -82,6 +103,8 @@ const props = defineProps<Props>();
 const category = ref<Option>();
 /** selected association id */
 const association = ref<DirectionalAssociation>();
+/** include orthologous genes in association table */
+const includeOrthologs = ref(false);
 
 /** list of options for dropdown */
 const categoryOptions = computed(
@@ -95,6 +118,17 @@ const categoryOptions = computed(
 
 /** deselect association when selected category changes */
 watch(category, () => (association.value = undefined));
+
+/** update table on toggling includeOrthologs */
+watch(includeOrthologs, (_, oldValue) => {
+  console.log("includeOrthologs", includeOrthologs.value);
+  if (oldValue !== undefined) {
+    router.replace({
+      ...route,
+      query: { includeOrthologs: includeOrthologs.value },
+    });
+  }
+});
 
 /** update url from selected category */
 watch(

@@ -118,6 +118,8 @@ type Props = {
   node: Node;
   /** selected association category */
   category: Option;
+  /** include orthologs */
+  includeOrthologs: boolean;
   /** selected association */
   association?: DirectionalAssociation;
 };
@@ -266,6 +268,7 @@ const {
       props.category.id,
       start.value,
       perPage.value,
+      props.includeOrthologs.valueOf(),
       search.value,
       sort.value,
     );

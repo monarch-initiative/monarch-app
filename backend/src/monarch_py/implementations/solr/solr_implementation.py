@@ -119,7 +119,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                     subject=id,
                     direct=True,
                     predicate=[AssociationPredicate.CAUSES],
-                    category=AssociationCategory.CAUSAL_GENE_TO_DISEASE_ASSOCIATION,
+                    category=[AssociationCategory.CAUSAL_GENE_TO_DISEASE_ASSOCIATION],
                 ).items
             ]
 

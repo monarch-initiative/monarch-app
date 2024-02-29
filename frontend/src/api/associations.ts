@@ -8,6 +8,7 @@ export const getAssociations = async (
   associationCategory = "",
   offset = 0,
   limit = 10,
+  traverseOrthologs = false,
   search?: string,
   sort: Sort = null,
 ) => {
@@ -16,6 +17,7 @@ export const getAssociations = async (
     offset,
     limit,
     query: search || "",
+    traverse_orthologs: traverseOrthologs ? "true" : "false",
     sort: sort
       ? `${sort.key} ${sort.direction === "up" ? "asc" : "desc"}`
       : null,
