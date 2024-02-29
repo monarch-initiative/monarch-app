@@ -386,7 +386,7 @@ slots:
     range: integer
   has_percentage:
     description: percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly, rounded to the integer level
-    range: integer
+    range: float
   has_quotient:
     description: quotient, which should be 1/100 of has_percentage
     range: float
