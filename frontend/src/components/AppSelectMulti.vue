@@ -332,13 +332,11 @@ watch(
 watch(selected, () => emit("update:modelValue", getModel()), { deep: true });
 
 /** when highlighted index changes */
-watch(
-  highlighted,
-  () =>
-    /** scroll to highlighted in dropdown */
-    document
-      .querySelector(`#option-${id}-${highlighted.value} > *`)
-      ?.scrollIntoView({ block: "nearest" }),
+watch(highlighted, () =>
+  /** scroll to highlighted in dropdown */
+  document
+    .querySelector(`#option-${id}-${highlighted.value} > *`)
+    ?.scrollIntoView({ block: "nearest" }),
 );
 
 /** are all options selected */
