@@ -261,7 +261,7 @@ const {
     /** catch case where no association categories available */
     if (!props.node.association_counts.length)
       throw Error("No association info available");
-
+    console.log("Include Orthologs:", props.includeOrthologs.valueOf());
     /** get association data */
     const response = await getAssociations(
       props.node.id,
@@ -304,6 +304,10 @@ async function download() {
 /** get associations when category or table state changes */
 watch(
   () => props.category,
+  async () => await queryAssociations(true),
+);
+watch(
+  () => props.includeOrthologs,
   async () => await queryAssociations(true),
 );
 watch(

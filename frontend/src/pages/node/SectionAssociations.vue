@@ -26,15 +26,15 @@
     <AppFlex gap="small">
       <AppCheckbox
         v-if="
-            (node.category === 'biolink:Gene' &&
-              category?.id.startsWith('biolink:GeneToPheno')) ||
-            (node.category === 'biolink:Gene' &&
-              category?.id.startsWith('biolink:CausalGeneToDisease')) ||
-            (node.category === 'biolink:Gene' &&
-              category?.id.startsWith('biolink:CorrelatedGeneToDisease')) ||
-            (node.category === 'biolink:Disease' &&
-              category?.id.startsWith('biolink:DiseaseToPheno'))
-          "
+          (node.category === 'biolink:Gene' &&
+            category?.id.startsWith('biolink:GeneToPheno')) ||
+          (node.category === 'biolink:Gene' &&
+            category?.id.startsWith('biolink:CausalGeneToDisease')) ||
+          (node.category === 'biolink:Gene' &&
+            category?.id.startsWith('biolink:CorrelatedGeneToDisease')) ||
+          (node.category === 'biolink:Disease' &&
+            category?.id.startsWith('biolink:DiseaseToPheno'))
+        "
         v-model="includeOrthologs"
         v-tooltip="
           'Include phenotypes for orthologous genes in the associations table'
@@ -62,7 +62,7 @@
         :node="node"
         :category="category"
         :association="association"
-        :include-orthologs="includeOrthologs"
+        :includeOrthologs="includeOrthologs"
         @select="(value) => (association = value)"
       />
     </template>
@@ -118,17 +118,6 @@ const categoryOptions = computed(
 
 /** deselect association when selected category changes */
 watch(category, () => (association.value = undefined));
-
-/** update table on toggling includeOrthologs */
-watch(includeOrthologs, (_, oldValue) => {
-  console.log("includeOrthologs", includeOrthologs.value);
-  if (oldValue !== undefined) {
-    router.replace({
-      ...route,
-      query: { includeOrthologs: includeOrthologs.value },
-    });
-  }
-});
 
 /** update url from selected category */
 watch(
