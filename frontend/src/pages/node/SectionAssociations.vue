@@ -31,9 +31,7 @@
           (node.category === 'biolink:Gene' &&
             category?.id.startsWith('biolink:CausalGeneToDisease')) ||
           (node.category === 'biolink:Gene' &&
-            category?.id.startsWith('biolink:CorrelatedGeneToDisease')) ||
-          (node.category === 'biolink:Disease' &&
-            category?.id.startsWith('biolink:DiseaseToPheno'))
+            category?.id.startsWith('biolink:CorrelatedGeneToDisease'))
         "
         v-model="includeOrthologs"
         v-tooltip="
