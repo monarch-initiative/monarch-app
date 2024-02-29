@@ -41,15 +41,6 @@
         '10.1093/nar/gkad1082',
       ]"
     />
-    <AppCitation
-      title="Navigating the Phenotype Frontier: The Monarch Initiative"
-      authors="McMurry et al."
-      :details="[
-        'GENETICS',
-        'August 1, 2016 vol. 203 no. 4 1491-1495',
-        '10.1534/genetics.116.188870',
-      ]"
-    />
   </AppSection>
 
   <!-- citing data -->
@@ -82,12 +73,12 @@
       To link to a specific page or to algorithmic results presented on this
       website, please use the URL in your browser's address bar. For example,
       you would cite the prefixed identifier
-      <AppLink to="/MONDO:0012933">MONDO:0012933</AppLink>
+      <AppLink to="/MONDO:0007523">MONDO:0007523</AppLink>
       as:
     </p>
     <blockquote>
-      Monarch Consortium. Accessed 2016-09-22. breast-ovarian cancer, familial,
-      susceptibility to, 2. https://monarchinitiative.org/MONDO:0012933
+      Ehlers-Danlos syndrome, hypermobility type.
+      https://monarchinitiative.org/MONDO:0007523
     </blockquote>
   </AppSection>
 </template>
