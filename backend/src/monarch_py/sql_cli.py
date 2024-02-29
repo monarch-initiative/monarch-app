@@ -89,6 +89,12 @@ def associations(
         "-d",
         help="Whether to exclude associations with subject/object as ancestors",
     ),
+    compact: bool = typer.Option(
+        False,
+        "--compact",
+        "-C",
+        help="Whether to return a compact representation of the associations",
+    ),
     limit: int = typer.Option(20, "--limit", "-l", help="The number of associations to return"),
     offset: int = typer.Option(0, "--offset", help="The offset of the first association to be retrieved"),
     fmt: str = typer.Option(
@@ -107,6 +113,8 @@ def associations(
         predicate: A comma-separated list of predicates
         object: A comma-separated list of objects
         entity: A comma-separated list of entities
+        direct: Whether to exclude associations with subject/object as ancestors
+        compact: Whether to return a compact representation of the associations
         limit: The number of associations to return
         offset: The offset of the first association to be retrieved
         fmt: The format of the output (json, yaml, tsv, table)

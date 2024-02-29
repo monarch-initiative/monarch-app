@@ -148,6 +148,12 @@ def associations(
         "-d",
         help="Whether to exclude associations with subject/object as ancestors",
     ),
+    compact: bool = typer.Option(
+        False,
+        "--compact",
+        "-C",
+        help="Whether to return a compact representation of the associations",
+    ),
     limit: int = typer.Option(20, "--limit", "-l", help="The number of associations to return"),
     offset: int = typer.Option(0, "--offset", help="The offset of the first association to be retrieved"),
     fmt: str = typer.Option(

@@ -140,6 +140,18 @@ export interface Association {
     stage_qualifier_closure_label?: string[],
 };
 
+export interface CompactAssociation {
+    category?: string,
+    subject: string,
+    /** The name of the subject entity */
+    subject_label?: string,
+    predicate: string,
+    object: string,
+    /** The name of the object entity */
+    object_label?: string,
+    negated?: boolean,
+};
+
 export interface AssociationCount extends FacetValue {
     category?: string,
     label: string,
@@ -157,6 +169,17 @@ export interface AssociationCountList {
 export interface AssociationResults extends Results {
     /** A collection of items, with the type to be overriden by slot_usage */
     items: Association[],
+    /** number of items to return in a response */
+    limit: number,
+    /** offset into the total number of items */
+    offset: number,
+    /** total number of items matching a query */
+    total: number,
+};
+
+export interface CompactAssociationResults extends Results {
+    /** A collection of items, with the type to be overriden by slot_usage */
+    items: CompactAssociation[],
     /** number of items to return in a response */
     limit: number,
     /** offset into the total number of items */

@@ -115,6 +115,22 @@ classes:
     slot_usage:
       items:
         range: Association
+  CompactAssociation:
+    slots:
+      - category
+      - subject
+      - subject_label
+      - predicate
+      - object
+      - object_label
+      - negated
+  CompactAssociationResults:
+    is_a: Results
+    slots:
+      - items
+    slot_usage:
+      items:
+        range: CompactAssociation
   AssociationTableResults:
     is_a: Results
     slots:
@@ -281,7 +297,6 @@ classes:
     slot_usage:
       items:
         range: SearchResult
-
   TextAnnotationResult:
     slots:
       - text
