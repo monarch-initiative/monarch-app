@@ -195,12 +195,27 @@ const cols = computed((): Cols<Datum> => {
 
   /** phenotype specific columns */
   if (
-    props.category.label === "biolink:DiseaseToPhenotypicFeatureAssociation"
+    props.category.label === "Phenotypes"
   ) {
     extraCols.push(
       {
         key: "frequency_qualifier_label",
         heading: "Frequency",
+        sortable: true,
+      },
+      {
+        key: "has_percentage",
+        heading: "Frequency %",
+        sortable: true,
+      },
+      {
+        key: "has_count",
+        heading: "Count",
+        sortable: true,
+      },
+      {
+        key: "has_total",
+        heading: "Total",
         sortable: true,
       },
       {
