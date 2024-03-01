@@ -17,7 +17,7 @@ export const getAssociations = async (
     offset,
     limit,
     query: search || "",
-    traverse_orthologs: traverseOrthologs ? "true" : "false",
+    traverse_orthologs: !!traverseOrthologs,
     sort: sort
       ? `${sort.key} ${sort.direction === "up" ? "asc" : "desc"}`
       : null,

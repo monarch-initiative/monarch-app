@@ -261,14 +261,13 @@ const {
     /** catch case where no association categories available */
     if (!props.node.association_counts.length)
       throw Error("No association info available");
-    console.log("Include Orthologs:", props.includeOrthologs.valueOf());
     /** get association data */
     const response = await getAssociations(
       props.node.id,
       props.category.id,
       start.value,
       perPage.value,
-      props.includeOrthologs.valueOf(),
+      props.includeOrthologs,
       search.value,
       sort.value,
     );
