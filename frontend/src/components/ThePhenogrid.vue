@@ -79,7 +79,7 @@
                 cellSize * 0.25
               }) rotate(-45)`"
             >
-              {{ truncate(col.label) }}
+              {{ truncateLabels ? truncate(col.label) : col.label }}
             </text>
             <template #content>
               <AppNodeBadge :node="col" :absolute="true" :show-id="true" />
@@ -116,7 +116,7 @@
                 (0.5 + rowIndex) * cellSize
               })`"
             >
-              {{ truncate(row.label) }}
+              {{ truncateLabels ? truncate(row.label) : row.label }}
             </text>
             <template #content>
               <AppNodeBadge :node="row" :absolute="true" :show-id="true" />
@@ -312,7 +312,7 @@
         @click="copy"
       />
       <AppButton
-        v-tooltip="'Download grid as PNG'"
+        v-tooltip="'Download grid as SVG'"
         design="small"
         text="Download"
         icon="download"
@@ -390,6 +390,9 @@ const marginBottom = 20;
 const container = ref<{ element: HTMLDivElement }>();
 const scroll = ref<HTMLDivElement>();
 const svg = ref<SVGSVGElement>();
+
+/** whether to truncate labels */
+const truncateLabels = ref(true);
 
 /** dimensions of grid cells area */
 const gridWidth = computed(() => cols.value.length * cellSize);
@@ -470,8 +473,12 @@ function getColor(strength: number) {
 }
 
 /** download svg */
-function download() {
-  if (svg.value) downloadSvg(svg.value, "phenogrid");
+async function download() {
+  if (!svg.value) return;
+  truncateLabels.value = false;
+  await nextTick();
+  downloadSvg(svg.value, "phenogrid");
+  truncateLabels.value = true;
 }
 
 /** copy unmatched phenotype ids to clipboard */
