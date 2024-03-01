@@ -18,10 +18,12 @@
           ? { breadcrumbs: [...currentBreadcrumbs, ...breadcrumbs] }
           : state || undefined
       "
-      >{{ node.name || node.id }}</AppLink
+      >{{ node.name || node.label || node.id }}</AppLink
     >
-    <span v-else class="name">{{ node.name }}</span>
-    <span v-if="node.name && node.id && showId"> ({{ node.id }})</span>
+    <span v-else class="name">{{ node.name || node.label }}</span>
+    <span v-if="(node.name || node.label) && node.id && showId">
+      ({{ node.id }})</span
+    >
     <span v-if="node.in_taxon_label"> ({{ node.in_taxon_label }})</span>
     <span v-if="node.info"> ({{ node.info }})</span>
   </span>
@@ -39,6 +41,8 @@ const { VITE_URL: baseurl } = import.meta.env;
 type Props = {
   /** node represented by badge */
   node: Partial<Node> & {
+    /** alternative name */
+    label?: string;
     /** extra info to show in parens */
     info?: string;
   };
