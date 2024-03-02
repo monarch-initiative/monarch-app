@@ -154,6 +154,34 @@ def associations(
     solr_cli.associations(**locals())
 
 
+@app.command("multi-entity-associations")
+def multi_entity_associations(
+    entity: List[str] = typer.Option(None, "--entity", "-e", help="Comma-separated list of entities"),
+    counterpart_category: List[str] = typer.Option(None, "--counterpart-category", "-c"),
+    limit: int = typer.Option(20, "--limit", "-l"),
+    offset: int = typer.Option(0, "--offset"),
+    fmt: str = typer.Option(
+        "json",
+        "--format",
+        "-f",
+        help="The format of the output (json, yaml, tsv, table)",
+    ),
+    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
+):
+    """
+    Paginate through associations for multiple entities
+
+    Args:
+        entity: A comma-separated list of entities
+        counterpart_category: A comma-separated list of counterpart categories
+        limit: The number of associations to return
+        offset: The offset of the first association to be retrieved
+        fmt: The format of the output (json, yaml, tsv, table)
+        output: The path to the output file (stdout if not specified)
+    """
+    solr_cli.multi_entity_associations(**locals())
+
+
 @app.command("search")
 def search(
     q: str = typer.Option(None, "--query", "-q"),
@@ -281,53 +309,6 @@ def association_table(
     solr_cli.association_table(**locals())
 
 
-@app.command("compare")
-def compare(
-    subjects: str = typer.Argument(..., help="Comma separated list of subjects to compare"),
-    objects: str = typer.Argument(..., help="Comma separated list of objects to compare"),
-    fmt: str = typer.Option(
-        "json",
-        "--format",
-        "-f",
-        help="The format of the output (json, yaml, tsv, table)",
-    ),
-    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
-):
-    """Compare two sets of phenotypes using semantic similarity via SemSimian"""
-    subjects = subjects.split(",")
-    objects = objects.split(",")
-    response = semsimian().compare(subjects, objects)
-    format_output(fmt, response, output)
-
-
-@app.command("multi-entity-associations")
-def multi_entity_associations(
-    entity: List[str] = typer.Option(None, "--entity", "-e", help="Comma-separated list of entities"),
-    counterpart_category: List[str] = typer.Option(None, "--counterpart-category", "-c"),
-    limit: int = typer.Option(20, "--limit", "-l"),
-    offset: int = typer.Option(0, "--offset"),
-    fmt: str = typer.Option(
-        "json",
-        "--format",
-        "-f",
-        help="The format of the output (json, yaml, tsv, table)",
-    ),
-    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
-):
-    """
-    Paginate through associations for multiple entities
-
-    Args:
-        entity: A comma-separated list of entities
-        counterpart_category: A comma-separated list of counterpart categories
-        limit: The number of associations to return
-        offset: The offset of the first association to be retrieved
-        fmt: The format of the output (json, yaml, tsv, table)
-        output: The path to the output file (stdout if not specified)
-    """
-    solr_cli.multi_entity_associations(**locals())
-
-
 @app.command("mappings")
 def mappings(
     entity_id: List[str] = typer.Option(None, "--entity-id", "-e", help="entity ID to get mappings for"),
@@ -350,6 +331,28 @@ def mappings(
     output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
 ):
     solr_cli.mappings(**locals())
+
+
+###
+
+
+@app.command("compare")
+def compare(
+    subjects: str = typer.Argument(..., help="Comma separated list of subjects to compare"),
+    objects: str = typer.Argument(..., help="Comma separated list of objects to compare"),
+    fmt: str = typer.Option(
+        "json",
+        "--format",
+        "-f",
+        help="The format of the output (json, yaml, tsv, table)",
+    ),
+    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
+):
+    """Compare two sets of phenotypes using semantic similarity via SemSimian"""
+    subjects = subjects.split(",")
+    objects = objects.split(",")
+    response = semsimian().compare(subjects, objects)
+    format_output(fmt, response, output)
 
 
 if __name__ == "__main__":
