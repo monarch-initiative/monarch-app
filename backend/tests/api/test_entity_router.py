@@ -24,6 +24,7 @@ def test_association_table(mock_get_assoc_table):
         entity="MONDO:0019391",
         category=AssociationCategory.DISEASE_TO_PHENOTYPIC_FEATURE_ASSOCIATION,
         q=None,
+        traverse_orthologs=False,
         sort=None,
         offset=0,
         limit=20,

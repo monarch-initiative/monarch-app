@@ -4,11 +4,11 @@ import requests
 from pydantic import BaseModel
 
 from monarch_py.datamodels.model import TermSetPairwiseSimilarity, SemsimSearchResult
-from monarch_py.interfaces.entity_interface import EntityInterface
 
 
 class SemsimianService(BaseModel):
     """A class that makes HTTP requests to the semsimian_server."""
+
     semsim_server_port: int
     semsim_server_host: str
     entity_implementation: Any  # TODO: should be EntityInterface
@@ -69,7 +69,7 @@ class SemsimianService(BaseModel):
             SemsimSearchResult(
                 subject=self.entity_implementation.get_entity(i[2], extra=False),
                 score=i[0],
-                similarity=self.convert_tsps_data(i[1])
+                similarity=self.convert_tsps_data(i[1]),
             )
             for i in data
         ]

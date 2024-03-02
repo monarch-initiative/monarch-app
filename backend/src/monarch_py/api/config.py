@@ -1,12 +1,12 @@
 import os
 from functools import lru_cache
-from typing import List
 
 from pydantic import BaseModel
 
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 from monarch_py.implementations.spacy.spacy_implementation import SpacyImplementation
 from monarch_py.service.semsim_service import SemsimianService
+
 
 class Settings(BaseModel):
     solr_host: str = os.getenv("SOLR_HOST") if os.getenv("SOLR_HOST") else "127.0.0.1"
@@ -28,9 +28,11 @@ def solr():
 
 @lru_cache(maxsize=1)
 def semsimian():
-    return SemsimianService(semsim_server_host=settings.semsim_server_host,
-                            semsim_server_port=settings.semsim_server_port,
-                            entity_implementation=solr())
+    return SemsimianService(
+        semsim_server_host=settings.semsim_server_host,
+        semsim_server_port=settings.semsim_server_port,
+        entity_implementation=solr(),
+    )
 
 
 @lru_cache(maxsize=1)
