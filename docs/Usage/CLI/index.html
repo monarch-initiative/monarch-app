@@ -1575,7 +1575,7 @@
 <p><strong>Options</strong>:</p>
 <ul>
 <li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-o, --output TEXT</code>: The path to the output file</li>
+<li><code>-O, --output TEXT</code>: The path to the output file</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h2 id="monarch-association-table"><code>monarch association-table</code></h2>
@@ -1590,11 +1590,12 @@
 <p><strong>Options</strong>:</p>
 <ul>
 <li><code>-q, --query TEXT</code></li>
+<li><code>-t, --traverse-orthologs</code>: Whether to traverse orthologs when getting associations</li>
 <li><code>-s, --sort TEXT</code></li>
 <li><code>-l, --limit INTEGER</code>: [default: 5]</li>
 <li><code>--offset INTEGER</code>: [default: 0]</li>
 <li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-o, --output TEXT</code>: The path to the output file</li>
+<li><code>-O, --output TEXT</code>: The path to the output file</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h2 id="monarch-associations"><code>monarch associations</code></h2>
@@ -1644,7 +1645,7 @@
 <p><strong>Options</strong>:</p>
 <ul>
 <li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-o, --output TEXT</code>: The path to the output file</li>
+<li><code>-O, --output TEXT</code>: The path to the output file</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h2 id="monarch-compare"><code>monarch compare</code></h2>
@@ -1660,7 +1661,7 @@
 <p><strong>Options</strong>:</p>
 <ul>
 <li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-o, --output TEXT</code>: The path to the output file</li>
+<li><code>-O, --output TEXT</code>: The path to the output file</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h2 id="monarch-entity"><code>monarch entity</code></h2>
@@ -1680,7 +1681,7 @@
 <ul>
 <li><code>-e, --extra</code>: Include extra fields in the output (association_counts and node_hierarchy)</li>
 <li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-o, --output TEXT</code>: The path to the output file</li>
+<li><code>-O, --output TEXT</code>: The path to the output file</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h2 id="monarch-histopheno"><code>monarch histopheno</code></h2>
@@ -1700,7 +1701,7 @@
 <p><strong>Options</strong>:</p>
 <ul>
 <li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-o, --output TEXT</code>: The path to the output file</li>
+<li><code>-O, --output TEXT</code>: The path to the output file</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h2 id="monarch-mappings"><code>monarch mappings</code></h2>
@@ -1739,7 +1740,7 @@
 <li><code>-l, --limit INTEGER</code>: [default: 20]</li>
 <li><code>--offset INTEGER</code>: [default: 0]</li>
 <li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-o, --output TEXT</code>: The path to the output file</li>
+<li><code>-O, --output TEXT</code>: The path to the output file</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h2 id="monarch-schema"><code>monarch schema</code></h2>
@@ -1774,7 +1775,7 @@
 <li><code>-l, --limit INTEGER</code>: [default: 20]</li>
 <li><code>--offset INTEGER</code>: [default: 0]</li>
 <li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-o, --output TEXT</code>: The path to the output file</li>
+<li><code>-O, --output TEXT</code>: The path to the output file</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h2 id="monarch-solr"><code>monarch solr</code></h2>
@@ -1834,6 +1835,7 @@
 </ul>
 <p><strong>Options</strong>:</p>
 <ul>
+<li><code>-t, --traverse-orthologs</code>: Whether to traverse orthologs when getting associations</li>
 <li><code>-q, --query TEXT</code></li>
 <li><code>-s, --sort TEXT</code></li>
 <li><code>-l, --limit INTEGER</code>: [default: 5]</li>
