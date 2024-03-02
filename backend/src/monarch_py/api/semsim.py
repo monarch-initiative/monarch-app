@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Path, Query
+from typing import List
 
 from monarch_py.api.additional_models import SemsimCompareRequest, SemsimSearchRequest, SemsimSearchGroup
 from monarch_py.api.config import semsimian, solr
@@ -78,6 +79,15 @@ def _post_compare(request: SemsimCompareRequest):
     """
     return semsimian().compare(subjects=request.subjects, objects=request.objects)
 
+
+# Do we like /multicompare/HP:212,HP:443?objects=HP:123,HP:456&objects=HP:789,HP:101112 ?
+@router.get("/multicompare/{subjects}")
+def _multicompare(subjects: str = Path(...,
+                                       title="Comma separated list of subjects for comparison"),
+                  objects: List[str] = Query(...,
+                                             title="List of comma separated object sets to compare against")):
+
+    return semsimian().multi_compare(subjects=subjects.split(","), object_sets=[obj.split(",") for obj in objects])
 
 @router.get("/search/{termset}/{group}")
 def _search(

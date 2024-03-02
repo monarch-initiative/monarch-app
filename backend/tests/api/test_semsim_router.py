@@ -21,7 +21,7 @@ def test_autocomplete_params(mock_autocomplete, autocomplete):
     )
 
 
-@patch("monarch_py.api.config.SemsimianHTTPRequester.compare")
+@patch("monarch_py.service.semsim_service.SemsimianService.compare")
 def test_get_compare(mock_compare):
     mock_compare.return_value = MagicMock()
 
@@ -34,7 +34,7 @@ def test_get_compare(mock_compare):
     mock_compare.assert_called_once_with(subjects=["HP:123", "HP:456"], objects=["HP:789", "HP:101112"])
 
 
-@patch("monarch_py.api.config.SemsimianHTTPRequester.compare")
+@patch("monarch_py.service.semsim_service.SemsimianService.compare")
 def test_post_compare(mock_compare):
     mock_compare.return_value = MagicMock()
 
@@ -47,7 +47,7 @@ def test_post_compare(mock_compare):
     mock_compare.assert_called_once_with(subjects=subjects, objects=objects)
 
 
-@patch("monarch_py.api.config.SemsimianHTTPRequester.search")
+@patch("monarch_py.service.semsim_service.SemsimianService.search")
 @pytest.mark.parametrize("termset", ["HP:123,HP:456", "HP:123, HP:456", " HP:123, HP:456 "])
 def test_get_search(mock_search, termset: str):
     mock_search.return_value = MagicMock()
@@ -61,7 +61,7 @@ def test_get_search(mock_search, termset: str):
     mock_search.assert_called_once_with(termset=["HP:123", "HP:456"], prefix=group.name, limit=limit)
 
 
-@patch("monarch_py.api.config.SemsimianHTTPRequester.search")
+@patch("monarch_py.service.semsim_service.SemsimianService.search")
 def test_post_search(mock_search):
     mock_search.return_value = MagicMock()
 
