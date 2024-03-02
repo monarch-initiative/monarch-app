@@ -141,6 +141,8 @@ def parse_association_table(
             logger.error(f"Validation error for {doc}")
             raise
     results = AssociationTableResults(items=associations, limit=limit, offset=offset, total=total)
+    for i in zip(results.items, query_result.response.docs):
+        assert i[0].subject == i[1]["subject"]
     return results
 
 
