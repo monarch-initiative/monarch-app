@@ -34,8 +34,6 @@ class AssociationTypeMappings:
     def load_mappings(self):
         mapping_data = pkgutil.get_data(__package__, "./association_type_mappings.yaml")
         mapping_data = yaml.load(mapping_data, Loader=yaml.FullLoader)
-        print(type(mapping_data))
-        print(mapping_data)
         adapter = TypeAdapter(List[AssociationTypeMapping])
         self.mappings = adapter.validate_python(mapping_data)
 
