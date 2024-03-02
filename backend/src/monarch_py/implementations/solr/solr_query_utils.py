@@ -7,24 +7,24 @@ from monarch_py.utils.utils import escape
 
 
 def build_association_query(
-    category: List[str] = [],
-    subject: List[str] = [],
-    subject_closure: str = None,
-    subject_category: List[str] = [],
-    subject_namespace: List[str] = [],
-    subject_taxon: List[str] = [],
-    predicate: List[str] = [],
-    object: List[str] = [],
-    object_closure: str = None,
-    object_category: List[str] = [],
-    object_namespace: List[str] = [],
-    object_taxon: List[str] = [],
-    entity: List[str] = [],
+    category: Optional[List[str]] = None,
+    subject: Optional[List[str]] = None,
+    subject_closure: Optional[str] = None,
+    subject_category: Optional[List[str]] = None,
+    subject_namespace: Optional[List[str]] = None,
+    subject_taxon: Optional[List[str]] = None,
+    predicate: Optional[List[str]] = None,
+    object: Optional[List[str]] = None,
+    object_closure: Optional[str] = None,
+    object_category: Optional[List[str]] = None,
+    object_namespace: Optional[List[str]] = None,
+    object_taxon: Optional[List[str]] = None,
+    entity: Optional[List[str]] = None,
     direct: bool = False,
     q: Optional[str] = None,
-    sort: List[str] = [],
-    facet_fields: List[str] = [],
-    facet_queries: List[str] = [],
+    sort: Optional[List[str]] = None,
+    facet_fields: Optional[List[str]] = None,
+    facet_queries: Optional[List[str]] = None,
     offset: int = 0,
     limit: int = 20,
 ) -> SolrQuery:
@@ -127,7 +127,7 @@ def build_histopheno_query(subject_closure: str) -> SolrQuery:
 
 def build_multi_entity_association_query(
     entity: str,
-    counterpart_category: str = None,
+    counterpart_category: Optional[str] = None,
     # predicate: List[str] = None,
     offset: int = 0,
     limit: int = 20,
@@ -152,7 +152,7 @@ def build_search_query(
     facet_fields: List[str] = None,
     facet_queries: List[str] = None,
     filter_queries: List[str] = None,
-    sort: str = None,
+    sort: Optional[str] = None,
 ) -> SolrQuery:
     query = SolrQuery(start=offset, rows=limit, sort=sort)
     query.q = q
@@ -189,11 +189,11 @@ def build_autocomplete_query(
 
 
 def build_mapping_query(
-    entity_id: List[str] = [],
-    subject_id: List[str] = [],
-    predicate_id: List[str] = [],
-    object_id: List[str] = [],
-    mapping_justification: List[str] = [],
+    entity_id: Optional[List[str]] = None,
+    subject_id: Optional[List[str]] = None,
+    predicate_id: Optional[List[str]] = None,
+    object_id: Optional[List[str]] = None,
+    mapping_justification: Optional[List[str]] = None,
     offset: int = 0,
     limit: int = 20,
 ) -> SolrQuery:
@@ -251,7 +251,7 @@ def entity_predicate_boost(prioritized_predicates: List[AssociationPredicate], m
     return ",".join(boosts)
 
 
-def category_boost(category: str, multiplier: float, taxon: str = None) -> str:
+def category_boost(category: str, multiplier: float, taxon: Optional[str] = None) -> str:
     if taxon:
         return f'if(and(termfreq(in_taxon,"{taxon}"),termfreq(category,"{category}")),{multiplier},1)'
     else:

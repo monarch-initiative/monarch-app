@@ -60,7 +60,7 @@
         :node="node"
         :category="category"
         :association="association"
-        :includeOrthologs="includeOrthologs"
+        :include-orthologs="includeOrthologs"
         @select="(value) => (association = value)"
       />
     </template>
