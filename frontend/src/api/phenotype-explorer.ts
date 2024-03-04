@@ -137,6 +137,54 @@ export const groups = [
 
 export type Group = (typeof groups)[number];
 
+/** compare a set of phenotypes to several other sets of phenotypes */
+export const compareSetToSets = async (
+  subjects: string[],
+  objects: string[][],
+) => {
+  /** make request */
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("Accept", "application/json");
+//  const body = { subjects: subjects, objects: objects };
+  const options = { method: "GET", headers, body: stringify(body) };
+
+  // TODO: this could be prettier
+  let objectsString = "";
+  for (let i = 0; i < objects.length; i++) {
+    objectsString += "objects=" + objects[i].join(",") + "&";
+  }
+
+  /** make query */
+  const url = `${apiUrl}/semsim/multicompare/${subjects.join(",")}?${objectsString}`;
+  const response = await request<TermSetPairwiseSimilarity[]>(url, {}, options);
+
+  //convert TermSetPairwiseSimilarity[] into Phenogrid
+  //make a list of labels like 'setN' for each entry in response
+  let labels: string[] = [];
+  for (let i = 0; i < response.length; i++) {
+    labels.push("set" + i);
+  }
+
+  let cols: Phenogrid["cols"] = labels.map((label) => ({
+    id: label,
+    label: label,
+    total: 0,
+  }));
+
+  let rows: Phenogrid["cols"] = Object.values(
+      response[0].object_termset || [],
+  ).map((entry) => ({
+    id: entry.id,
+    label: entry.label,
+    total: 0,
+  }));
+
+  //now populate cells
+
+}
+
+
 /** compare a set of phenotypes to a group of phenotypes */
 export const compareSetToGroup = async (
   phenotypes: string[],
