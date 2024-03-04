@@ -43,7 +43,7 @@ import TheTableOfContents from "@/components/TheTableOfContents.vue";
 import { addEntry } from "@/global/history";
 import { appDescription, appTitle } from "@/global/meta";
 import SectionBreadcrumbs from "@/pages/node/SectionBreadcrumbs.vue";
-import { useQuery } from "@/util/composables";
+import { useQuery } from "@/util/use-query";
 import SectionAssociations from "./SectionAssociations.vue";
 import SectionExtra from "./SectionExtra.vue";
 import SectionHierarchy from "./SectionHierarchy.vue";

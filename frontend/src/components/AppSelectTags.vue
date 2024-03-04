@@ -170,9 +170,10 @@ export type Option = {
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from "vue";
 import { isEqual, uniqBy, uniqueId } from "lodash";
-import { useFloating, useQuery } from "@/util/composables";
 import { wrap } from "@/util/math";
 import { copyToClipboard } from "@/util/string";
+import { useFloating } from "@/util/use-floating";
+import { useQuery } from "@/util/use-query";
 import AppInput from "./AppInput.vue";
 import { snackbar } from "./TheSnackbar.vue";
 

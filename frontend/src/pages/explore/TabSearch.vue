@@ -123,8 +123,8 @@ import AppSelectMulti from "@/components/AppSelectMulti.vue";
 import AppWrapper from "@/components/AppWrapper.vue";
 import { deleteEntry, history } from "@/global/history";
 import { appTitle } from "@/global/meta";
-import { useQuery } from "@/util/composables";
 import { waitFor } from "@/util/dom";
+import { useQuery } from "@/util/use-query";
 
 type Props = {
   /** whether to show pared down version with just search box */
@@ -191,7 +191,7 @@ function onDelete(value: Option) {
   deleteEntry(value);
 }
 
-/** when user changes selected ƒacet options */
+/** when user changes selected facet options */
 function onSelectedChange() {
   page.value = 0;
   runGetSearch(false);

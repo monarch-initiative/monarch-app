@@ -86,8 +86,8 @@ import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppTextbox from "@/components/AppTextbox.vue";
 import AppUpload from "@/components/AppUpload.vue";
 import { appendToBody } from "@/global/tooltip";
-import { useQuery } from "@/util/composables";
 import { downloadJson } from "@/util/download";
+import { useQuery } from "@/util/use-query";
 import example from "./text-annotator.json";
 
 /** text content */

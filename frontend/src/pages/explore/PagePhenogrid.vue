@@ -27,7 +27,7 @@ import { useEventListener } from "@vueuse/core";
 import { compareSetToGroup, type Group } from "@/api/phenotype-explorer";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
 import TheSnackbar from "@/components/TheSnackbar.vue";
-import { useQuery } from "@/util/composables";
+import { useQuery } from "@/util/use-query";
 
 /** route info */
 const route = useRoute();

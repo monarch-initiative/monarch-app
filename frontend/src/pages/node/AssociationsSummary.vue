@@ -139,7 +139,7 @@ import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
 import type { Option } from "@/components/AppSelectSingle.vue";
 import type { Breadcrumb } from "@/global/breadcrumbs";
-import { useQuery } from "@/util/composables";
+import { useQuery } from "@/util/use-query";
 
 type Props = {
   /** current node */
