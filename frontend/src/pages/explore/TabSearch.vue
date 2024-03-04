@@ -121,10 +121,10 @@ import AppSelectAutocomplete from "@/components/AppSelectAutocomplete.vue";
 import type { Options as MultiOptions } from "@/components/AppSelectMulti.vue";
 import AppSelectMulti from "@/components/AppSelectMulti.vue";
 import AppWrapper from "@/components/AppWrapper.vue";
+import { useQuery } from "@/composables/use-query";
 import { deleteEntry, history } from "@/global/history";
 import { appTitle } from "@/global/meta";
 import { waitFor } from "@/util/dom";
-import { useQuery } from "@/util/use-query";
 
 type Props = {
   /** whether to show pared down version with just search box */

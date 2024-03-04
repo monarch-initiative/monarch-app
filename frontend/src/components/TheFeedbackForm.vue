@@ -90,8 +90,8 @@ import parser from "ua-parser-js";
 import { useLocalStorage } from "@vueuse/core";
 import { postFeedback } from "@/api/feedback";
 import AppTextbox from "@/components/AppTextbox.vue";
+import { useQuery } from "@/composables/use-query";
 import { collapse } from "@/util/string";
-import { useQuery } from "@/util/use-query";
 
 /** route info */
 const route = useRoute();

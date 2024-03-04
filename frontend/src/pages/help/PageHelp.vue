@@ -76,7 +76,7 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 import { getUptimes } from "@/api/uptime";
-import { useQuery } from "@/util/use-query";
+import { useQuery } from "@/composables/use-query";
 
 /** list of status checks to display */
 const {

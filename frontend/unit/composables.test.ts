@@ -1,6 +1,6 @@
 import { expect, test, vi } from "vitest";
+import { useQuery } from "@/composables/use-query";
 import { sleep } from "@/util/debug";
-import { useQuery } from "@/util/use-query";
 
 /** useQuery tests */
 

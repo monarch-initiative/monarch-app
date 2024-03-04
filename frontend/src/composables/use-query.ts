@@ -2,8 +2,8 @@ import type { Ref } from "vue";
 import { ref } from "vue";
 
 /**
- * inspired by react-query. simple query manager/wrapper for making queries in
- * components. reduces repetitive boilerplate code for loading/error states,
+ * inspired by tanstack-query. simple query manager/wrapper for making queries
+ * in components. reduces repetitive boilerplate code for loading/error states,
  * try/catch blocks, de-duplicating requests, etc.
  */
 export const useQuery = <Data, Args extends unknown[]>(

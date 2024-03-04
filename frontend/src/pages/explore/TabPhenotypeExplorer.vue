@@ -256,10 +256,10 @@ import AppSelectTags from "@/components/AppSelectTags.vue";
 import AppTabs from "@/components/AppTabs.vue";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
+import { useQuery } from "@/composables/use-query";
 import { appendToBody } from "@/global/tooltip";
 import { scrollTo } from "@/router";
 import { parse } from "@/util/object";
-import { useQuery } from "@/util/use-query";
 import examples from "./phenotype-explorer.json";
 
 /** common tooltip explaining how to use multi-select component */
