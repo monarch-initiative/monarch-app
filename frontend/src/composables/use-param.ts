@@ -108,7 +108,7 @@ export function useParam<T>(
 }
 
 /** generic parameter type, with methods to encode/decode to/from string (url) */
-type Param<T> = {
+export type Param<T> = {
   parse: (value: string) => T;
   stringify: (value: T) => string;
 };

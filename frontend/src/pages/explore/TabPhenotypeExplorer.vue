@@ -246,6 +246,7 @@ import {
   compareSetToSet,
   getPhenotypes,
   groups,
+  type Group,
 } from "@/api/phenotype-explorer";
 import AppAlert from "@/components/AppAlert.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
@@ -256,6 +257,7 @@ import AppSelectTags from "@/components/AppSelectTags.vue";
 import AppTabs from "@/components/AppTabs.vue";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
+import { arrayParam, useParam, type Param } from "@/composables/use-param";
 import { useQuery } from "@/composables/use-query";
 import { appendToBody } from "@/global/tooltip";
 import { scrollTo } from "@/router";
@@ -287,16 +289,22 @@ type GeneratedFrom = {
   options?: Options;
 };
 
+/** treat param as select option */
+const optionParam = (): Param<Option> => ({
+  parse: (value) => ({ id: value }),
+  stringify: (value) => String(value.id),
+});
+
 /** first set of phenotypes */
-const aPhenotypes = ref<Options>([]);
+const aPhenotypes = useParam<Options>("a-set", arrayParam(optionParam()), []);
 /** "generated from" helpers after selecting gene or disease */
 const aGeneratedFrom = ref<GeneratedFrom>({});
 /** selected mode of second set */
-const bMode = ref(bModeOptions[0]);
+const bMode = useParam("b-mode", optionParam(), bModeOptions[0]);
 /** selected group for second set */
-const bGroup = ref(bGroupOptions[0]);
+const bGroup = useParam("b-group", optionParam(), bGroupOptions[0]);
 /** second set of phenotypes */
-const bPhenotypes = ref<Options>([]);
+const bPhenotypes = useParam<Options>("b-set", arrayParam(optionParam()), []);
 /** "generated from" helpers after selecting gene or disease */
 const bGeneratedFrom = ref<GeneratedFrom>({});
 
@@ -398,7 +406,7 @@ const {
 
     return await compareSetToGroup(
       aPhenotypes.value.map(({ id }) => id),
-      bGroup.value.id,
+      bGroup.value.id as Group,
     );
   },
 
