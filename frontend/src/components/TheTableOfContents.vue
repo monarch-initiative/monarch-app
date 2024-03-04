@@ -37,6 +37,7 @@
           v-for="(entry, index) in entries"
           :key="index"
           :to="'#' + entry.id"
+          :replace="true"
           :class="['entry', { active: active === index }]"
           :aria-current="active === index"
           @click="active = index"
