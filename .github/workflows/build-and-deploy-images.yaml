@@ -50,10 +50,8 @@ jobs:
         with:
           fetch-depth: 0 # to get all tags
 
-      - name: Set up Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18"
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v1
 
       - name: Install packages
         run: bun install
