@@ -146,8 +146,8 @@ export const compareSetToSets = async (
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   headers.append("Accept", "application/json");
-//  const body = { subjects: subjects, objects: objects };
-//  const options = { method: "GET", headers, body: stringify(body) };
+  //  const body = { subjects: subjects, objects: objects };
+  //  const options = { method: "GET", headers, body: stringify(body) };
 
   // TODO: this could be prettier
   let objectsString = "";
@@ -156,14 +156,18 @@ export const compareSetToSets = async (
   }
 
   /** make query */
-  const url = `${apiUrl}/semsim/multicompare/${subjects.join(",")}?${objectsString}`;
+  const url = `${apiUrl}/semsim/multicompare/${subjects.join(
+    ",",
+  )}?${objectsString}`;
   const response = await request<TermSetPairwiseSimilarity[]>(url, {});
 
-  //convert TermSetPairwiseSimilarity[] into Phenogrid
-  //make a list of labels like 'setN' for each entry in response
-  let labels: string[] = [];
+  /**
+   * convert TermSetPairwiseSimilarity[] into Phenogrid make a list of labels
+   * like 'setN' for each entry in response
+   */
+  const labels: string[] = [];
   for (let i = 0; i < response.length; i++) {
-    labels.push("set" + i);
+    labels.push("Set " + i);
   }
 
   let cols: Phenogrid["cols"] = labels.map((label) => ({
@@ -173,17 +177,71 @@ export const compareSetToSets = async (
   }));
 
   let rows: Phenogrid["cols"] = Object.values(
-      response[0].object_termset || [],
+    response[0].subject_termset || [],
   ).map((entry) => ({
     id: entry.id,
     label: entry.label,
     total: 0,
   }));
 
-  //now populate cells
+  /** now populate cells */
+  const cells: Phenogrid["cells"] = {};
 
-}
+  /** start collecting unmatched phenotypes */
+  let unmatched: Phenogrid["unmatched"] = [];
 
+  for (let i = 0; i < response.length; i++) {
+    for (const col of cols) {
+      for (const row of rows) {
+        const match = response[i].object_best_matches?.[row.id];
+
+        col.total += match?.score || 0;
+        row.total += match?.score || 0;
+
+        cells[col.id + row.id] = {
+          score: match?.score || 0,
+          strength: 0,
+          phenotype: match?.match_target || "",
+          phenotypeLabel: match?.match_target_label || "",
+          ...pick(match?.similarity, [
+            "ancestor_id",
+            "ancestor_label",
+            "jaccard_similarity",
+            "phenodigm_score",
+          ]),
+        };
+      }
+    }
+  }
+
+  /** filter out unmatched phenotypes */
+  cols = cols.filter((col) => {
+    if (!col.total) unmatched.push({ ...col });
+    return col.total;
+  });
+  rows = rows.filter((row) => {
+    if (!row.total) unmatched.push({ ...row });
+    return row.total;
+  });
+
+  /** deduplicate unmatched phenotypes */
+  unmatched = uniqBy(unmatched, "id");
+
+  /** normalize cell scores to 0-1 */
+  const scores = Object.values(cells)
+    .map((value) => value.score)
+    .filter(Boolean);
+  const min = Math.min(...scores);
+  const max = Math.max(...scores);
+  Object.values(cells).forEach(
+    (value) =>
+      (value.strength =
+        max - min === 0 ? 0.5 : (value.score - min) / (max - min || 0)),
+  );
+  const phenogrid = { cols, rows, cells, unmatched } satisfies Phenogrid;
+
+  return { phenogrid };
+};
 
 /** compare a set of phenotypes to a group of phenotypes */
 export const compareSetToGroup = async (

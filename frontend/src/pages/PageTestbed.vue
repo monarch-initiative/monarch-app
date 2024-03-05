@@ -8,14 +8,13 @@
     <AppHeading>Testbed</AppHeading>
   </AppSection>
 
-
   <!-- multicompare phenogrid test component -->
   <AppSection>
     <AppHeading>MultiCompare Phenogrid</AppHeading>
     <iframe
       title="MultiCompare Phenogrid"
       frameBorder="0"
-      src="/phenogrid?source=MP:0002169,MP:0005391,MP:0005389,MP:0005367,MP:0006144&target_set=Human+Diseases"
+      src="/phenogrid?source=MP:0002169,MP:0005391,MP:0005389,MP:0005367,MP:0006144&target=MP:0005367,MP:0006144&target=MP:0005391,MP:0005389"
     ></iframe>
   </AppSection>
 
