@@ -388,7 +388,7 @@ const marginTop = 400;
 const marginBottom = 20;
 
 /** element refs */
-const container = ref<null | InstanceType<typeof AppFlex>>(null);
+const container = ref<InstanceType<typeof AppFlex>>();
 const scroll = ref<HTMLDivElement>();
 const svg = ref<SVGSVGElement>();
 

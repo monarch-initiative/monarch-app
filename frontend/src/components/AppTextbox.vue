@@ -83,12 +83,13 @@ type Emits = {
 defineEmits<Emits>();
 
 /** element reference */
-const textbox = ref();
+const textbox = ref<HTMLDivElement>();
 /** element reference */
-const input = ref<null | InstanceType<typeof >>();
+const input = ref<InstanceType<typeof AppInput>>();
 
 /** clear box */
 function clear() {
+  if (!input.value?.input) return;
   input.value.input.value = "";
   input.value.input.dispatchEvent(new Event("input"));
   input.value.input.dispatchEvent(new Event("change"));
