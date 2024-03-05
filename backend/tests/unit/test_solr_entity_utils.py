@@ -38,10 +38,10 @@ from monarch_py.implementations.solr.solr_implementation import SolrImplementati
         ),
     ],
 )
-def test_get_associated_entity(association, this_entity, other_entity):
-    """Test that the get_associated_entity function returns the correct entity"""
+def test_get_counterpart_entity(association, this_entity, other_entity):
+    """Test that the get_counterpart_entity function returns the correct entity"""
     si = SolrImplementation()
-    associated_entity = si._get_associated_entity(association, this_entity)
+    associated_entity = si._get_counterpart_entity(association, this_entity)
     assert (
         associated_entity == other_entity
     ), f"Associated entity is not as expected. Expected: {other_entity}, got: {associated_entity}"

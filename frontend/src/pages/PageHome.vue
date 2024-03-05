@@ -135,7 +135,7 @@
   </AppSection>
 
   <!-- social media -->
-  <AppSection>
+  <AppSection width="big">
     <AppHeading>Follow</AppHeading>
 
     <p>Be the first to know when we have major updates or other fun news.</p>

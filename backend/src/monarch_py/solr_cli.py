@@ -358,6 +358,12 @@ def association_table(
         None,
         help="The association category to get associations for, ex. biolink:GeneToPhenotypicFeatureAssociation",
     ),
+    traverse_orthologs: bool = typer.Option(
+        False,
+        "--traverse-orthologs",
+        "-t",
+        help="Whether to traverse orthologs when getting associations",
+    ),
     q: str = typer.Option(None, "--query", "-q"),
     sort: List[str] = typer.Option(None, "--sort", "-s"),
     limit: int = typer.Option(5, "--limit", "-l"),
@@ -371,7 +377,15 @@ def association_table(
     output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
 ):
     solr = get_solr(update=False)
-    response = solr.get_association_table(entity=entity, category=category, sort=sort, q=q, limit=limit, offset=offset)
+    response = solr.get_association_table(
+        entity=entity,
+        category=category,
+        traverse_orthologs=traverse_orthologs,
+        sort=sort,
+        q=q,
+        limit=limit,
+        offset=offset,
+    )
     format_output(fmt, response, output)
 
 
