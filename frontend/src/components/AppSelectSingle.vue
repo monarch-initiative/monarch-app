@@ -128,7 +128,7 @@ const selected = ref(getSelected());
 const highlighted = ref(0);
 
 /** target element */
-const target = ref();
+const target = ref<null | InstanceType<typeof >>(null);
 /** dropdown element */
 const dropdown = ref();
 /** get dropdown position */
