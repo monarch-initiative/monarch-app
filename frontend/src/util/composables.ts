@@ -91,8 +91,8 @@ export const useQuery = <Data, Args extends unknown[]>(
 
 /** use floating-ui to position dropdown */
 export const useFloating = (
-  anchor: Ref<HTMLElement>,
-  dropdown: Ref<HTMLElement>,
+  anchor: Ref<HTMLElement | undefined>,
+  dropdown: Ref<HTMLElement | undefined>,
   fit = false,
 ) => {
   /** style of dropdown */

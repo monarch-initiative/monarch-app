@@ -46,7 +46,7 @@ type Emits = {
 const emit = defineEmits<Emits>();
 
 /** element reference */
-const input = ref();
+const input = ref<HTMLInputElement | HTMLTextAreaElement>();
 
 /** when user focuses box */
 function onFocus() {

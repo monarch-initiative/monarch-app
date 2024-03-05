@@ -10,7 +10,7 @@
 <template>
   <div class="select-tags">
     <!-- select box -->
-    <div :id="`select-${id}`" ref="target" :class="['box', { expanded }]">
+    <div :id="`select-${id}`" ref="anchor" :class="['box', { expanded }]">
       <!-- deselect button -->
       <AppButton
         v-for="(option, index) in selected"
@@ -354,12 +354,12 @@ const availableResults = computed(() =>
       ),
 );
 
-/** target element */
-const target = ref();
+/** anchor element */
+const anchor = ref<HTMLDivElement>();
 /** dropdown element */
-const dropdown = ref();
+const dropdown = ref<HTMLDivElement>();
 /** get dropdown position */
-const { calculate, style } = useFloating(target, dropdown, true);
+const { calculate, style } = useFloating(anchor, dropdown, true);
 /** recompute position when length of results changes */
 watch([expanded, availableResults], async () => {
   await nextTick();
