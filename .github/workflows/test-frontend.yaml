@@ -25,14 +25,14 @@ jobs:
           node-version: "18"
 
       - name: Install packages
-        run: yarn install
+        run: bun install
 
       - name: Install Playwright
-        run: npx playwright install
+        run: bunx playwright install
 
       - name: Define cache key
         id: define-key
-        run: echo "key=${{ hashFiles('frontend/yarn.lock') }}" >> $GITHUB_OUTPUT
+        run: echo "key=${{ hashFiles('frontend/bun.lockb') }}" >> $GITHUB_OUTPUT
 
       - name: Store cache
         uses: actions/cache@v3
@@ -61,7 +61,7 @@ jobs:
         uses: mxschmitt/action-tmate@v3
 
       - name: Run test
-        run: yarn build
+        run: bun run build
 
   # test that app has no typescript errors
   test-types:
@@ -81,7 +81,7 @@ jobs:
         uses: mxschmitt/action-tmate@v3
 
       - name: Run test
-        run: yarn test:types
+        run: bun run test:types
 
   # test that app is properly formatted and linted
   test-lint:
@@ -101,7 +101,7 @@ jobs:
         uses: mxschmitt/action-tmate@v3
 
       - name: Run test
-        run: yarn test:lint
+        run: bun run test:lint
 
   # run unit tests
   test-unit:
@@ -118,7 +118,7 @@ jobs:
           key: ${{ needs.install-cache.outputs.cache-key }}
 
       - name: Run test
-        run: yarn test:unit
+        run: bun run test:unit
 
   # run end to end integration tests
   test-e2e:
@@ -138,4 +138,4 @@ jobs:
         uses: mxschmitt/action-tmate@v3
 
       - name: Run test
-        run: yarn test:e2e
+        run: bun run test:e2e

@@ -56,10 +56,10 @@ jobs:
           node-version: "18"
 
       - name: Install packages
-        run: yarn install
+        run: bun install
 
       - name: Build app
-        run: yarn build
+        run: bun run build
 
       - name: Generate Image Tag for Frontend Dir
         id: get-tag
