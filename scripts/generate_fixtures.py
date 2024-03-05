@@ -9,6 +9,7 @@ import sys
 from pathlib import Path
 
 from monarch_py.api.semsim import _compare, _search
+from monarch_py.api.additional_models import SemsimSearchGroup
 from monarch_py.datamodels.category_enums import (
     AssociationCategory,
     AssociationPredicate,
@@ -41,8 +42,8 @@ root = Path(__file__).parent.parent
 frontend_fixture_dir = Path(root) / "frontend" / "fixtures"
 backend_fixture_dir = Path(root) / "backend" / "tests" / "fixtures"
 
-node_id = "MONDO:0020121"
-category = AssociationCategory.DISEASE_TO_PHENOTYPIC_FEATURE_ASSOCIATION
+NODE_ID = "MONDO:0020121"
+CATEGORY = AssociationCategory.DISEASE_TO_PHENOTYPIC_FEATURE_ASSOCIATION
 
 
 ### Writers
@@ -119,9 +120,9 @@ def search_headers():
 
 
 def write_output_format_fixtures():
-    json_output = to_json(si.get_entity(id=node_id, extra=True), print_output=False)
-    tsv_output = to_tsv(si.get_entity(id=node_id, extra=True), print_output=False)
-    yaml_output = to_yaml(si.get_entity(id=node_id, extra=True), print_output=False)
+    json_output = to_json(si.get_entity(id=NODE_ID, extra=True), print_output=False)
+    tsv_output = to_tsv(si.get_entity(id=NODE_ID, extra=True), print_output=False)
+    yaml_output = to_yaml(si.get_entity(id=NODE_ID, extra=True), print_output=False)
     file_contents = f"""
 import pytest
 
@@ -256,22 +257,22 @@ def main(
     ### Generate core fixtures
     if any([backend, frontend, all_fixtures]):
         print(f"{'-'*120}\n\tGenerating core fixtures...")
-        fixtures["associations"] = si.get_associations(entity=[node_id])
+        fixtures["associations"] = si.get_associations(entity=[NODE_ID])
         fixtures["associations-compact"] = si.get_associations(
-            entity=[node_id], compact=True
+            entity=[NODE_ID], compact=True
         )
-        fixtures["association-counts"] = si.get_association_counts(entity=node_id)
+        fixtures["association-counts"] = si.get_association_counts(entity=NODE_ID)
         fixtures["association-table"] = si.get_association_table(
-            entity=node_id, category=category, offset=0, limit=5
+            entity=NODE_ID, category=CATEGORY, offset=0, limit=5
         )
         # fixtures['association-evidence'] =
         fixtures["autocomplete"] = si.autocomplete("fanc")
         # fixtures['datasets'] =
         # fixtures['feedback'] =
-        fixtures["histopheno"] = si.get_histopheno(node_id)
-        fixtures["entity"] = si.get_entity(id=node_id, extra=False)
-        fixtures["node"] = si.get_entity(id=node_id, extra=True)
-        fixtures["mappings"] = si.get_mappings(entity_id=node_id)
+        fixtures["histopheno"] = si.get_histopheno(NODE_ID)
+        fixtures["entity"] = si.get_entity(id=NODE_ID, extra=False)
+        fixtures["node"] = si.get_entity(id=NODE_ID, extra=True)
+        fixtures["mappings"] = si.get_mappings(entity_id=[NODE_ID])
         # fixtures['node-publication-abstract'] =
         # fixtures['node-publication-summary'] =
         # fixtures['ontologies'] =
@@ -280,7 +281,7 @@ def main(
         )
         fixtures["phenotype-explorer-search"] = _search(
             termset="HP:0002104,HP:0012378,HP:0012378,HP:0012378",
-            group="Zebrafish Genes",
+            group=SemsimSearchGroup.ZFIN,
             limit=10,
         )
         fixtures["search"] = si.search(q="fanconi")
@@ -291,10 +292,10 @@ def main(
     if backend or all_fixtures:
         print(f"{'-'*120}\n\tGenerating extra backend fixtures...")
         extra_fixtures["association-counts-query"] = build_association_counts_query(
-            entity=node_id
+            entity=NODE_ID
         )
         extra_fixtures["association-query-params"] = {
-            "category": [category.value],
+            "category": [CATEGORY.value],
             "subject": ["TEST:0000001"],
             "subject_closure": "TEST:0000003",
             "subject_category": [EntityCategory.GENE.value],
@@ -319,25 +320,25 @@ def main(
         )
         extra_fixtures["autocomplete-query"] = build_autocomplete_query(q="fanc")
         extra_fixtures["histopheno-query"] = build_histopheno_query(
-            subject_closure=node_id
+            subject_closure=NODE_ID
         )
-        extra_fixtures["mapping-query"] = build_mapping_query(entity_id=[node_id])
+        extra_fixtures["mapping-query"] = build_mapping_query(entity_id=[NODE_ID])
         extra_fixtures["search-query"] = build_search_query(q="fanconi")
 
         # solr doc fixtures
         extra_fixtures["association-response"] = solr_associations.query(
-            build_association_query(entity=[node_id])
+            build_association_query(entity=[NODE_ID])
         )
         extra_fixtures["association-counts-response"] = solr_associations.query(
             extra_fixtures["association-counts-query"]
         )
         extra_fixtures["association-table-response"] = solr_associations.query(
-            build_association_table_query(entity=node_id, category=category.value)
+            build_association_table_query(entity=[NODE_ID], category=CATEGORY.value)
         )
         extra_fixtures["autocomplete-response"] = solr_entities.query(
             extra_fixtures["autocomplete-query"]
         )
-        extra_fixtures["entity-response"] = solr_entities.get(node_id)
+        extra_fixtures["entity-response"] = solr_entities.get(NODE_ID)
         extra_fixtures["histopheno-response"] = solr_associations.query(
             extra_fixtures["histopheno-query"]
         )

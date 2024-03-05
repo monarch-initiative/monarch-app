@@ -33,7 +33,7 @@ jobs:
         run: echo "key=${{ hashFiles('frontend/bun.lockb') }}" >> $GITHUB_OUTPUT
 
       - name: Store cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ env.CACHE_PATH }}
           key: ${{ steps.define-key.outputs.key }}
@@ -50,7 +50,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Restore cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ env.CACHE_PATH }}
           key: ${{ needs.install-cache.outputs.cache-key }}
@@ -70,7 +70,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Restore cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ env.CACHE_PATH }}
           key: ${{ needs.install-cache.outputs.cache-key }}
@@ -90,7 +90,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Restore cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ env.CACHE_PATH }}
           key: ${{ needs.install-cache.outputs.cache-key }}
@@ -110,7 +110,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Restore cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ env.CACHE_PATH }}
           key: ${{ needs.install-cache.outputs.cache-key }}
@@ -127,7 +127,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Restore cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ env.CACHE_PATH }}
           key: ${{ needs.install-cache.outputs.cache-key }}

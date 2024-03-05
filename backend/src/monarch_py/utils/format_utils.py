@@ -108,10 +108,12 @@ def to_table(obj: ConfiguredBaseModel, print_output: bool = True) -> Table:
     headers, rows = get_headers_and_rows(obj)
     for row in rows:
         for i, value in enumerate(row):
-            if isinstance(value, list):
+            if isinstance(value, list) and all(isinstance(v, str) for v in value):
                 row[i] = ", ".join(value)
             elif not isinstance(value, str):
                 row[i] = str(value)
+            else:
+                row[i] = value
     title = f"{obj.__class__.__name__}: {obj.id}" if hasattr(obj, "id") else obj.__class__.__name__
     table = Table(
         title=console.rule(title),

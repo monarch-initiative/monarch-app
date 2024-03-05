@@ -101,10 +101,10 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                 subject=id, predicate=[AssociationPredicate.HAS_MODE_OF_INHERITANCE], direct=True, offset=0
             )
             if mode_of_inheritance_associations is not None and len(mode_of_inheritance_associations.items) == 1:
-                node.inheritance = self._get_associated_entity(mode_of_inheritance_associations.items[0], node)
+                node.inheritance = self._get_counterpart_entity(mode_of_inheritance_associations.items[0], node)
             # Get causal gene
             node.causal_gene = [
-                self._get_associated_entity(association, node)
+                self._get_counterpart_entity(association, node)
                 for association in self.get_associations(
                     object=id,
                     direct=True,
@@ -114,12 +114,12 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             ]
         if "biolink:Gene" == node.category:
             node.causes_disease = [
-                self._get_associated_entity(association, node)
+                self._get_counterpart_entity(association, node)
                 for association in self.get_associations(
                     subject=id,
                     direct=True,
                     predicate=[AssociationPredicate.CAUSES],
-                    category=AssociationCategory.CAUSAL_GENE_TO_DISEASE_ASSOCIATION,
+                    category=[AssociationCategory.CAUSAL_GENE_TO_DISEASE_ASSOCIATION],
                 ).items
             ]
 
@@ -146,7 +146,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                 pass
         return mapped_entities
 
-    def _get_associated_entity(self, association: Association, this_entity: Entity) -> Entity:
+    def _get_counterpart_entity(self, association: Association, this_entity: Entity) -> Entity:
         """Returns the id, name, and category of the other Entity in an Association given this_entity"""
         if this_entity.id == association.subject:
             entity = Entity(
@@ -165,13 +165,13 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
 
         return entity
 
-    def _get_associated_entities(
+    def _get_counterpart_entities(
         self,
         this_entity: Entity,
-        entity: str = None,
-        subject: str = None,
+        entity: Optional[str] = None,
+        subject: Optional[str] = None,
         predicate: List[AssociationPredicate] = None,
-        object: str = None,
+        object: Optional[str] = None,
     ) -> List[Entity]:
         """
         Get a list of entities directly associated with this_entity fetched from associations
@@ -185,7 +185,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             object (str, optional): an entity ID occurring in the object. Defaults to None.
         """
         return [
-            self._get_associated_entity(association, this_entity)
+            self._get_counterpart_entity(association, this_entity)
             for association in self.get_associations(
                 entity=entity,
                 subject=subject,
@@ -208,10 +208,10 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             NodeHierarchy: A NodeHierarchy object
         """
 
-        super_classes = self._get_associated_entities(
+        super_classes = self._get_counterpart_entities(
             this_entity=entity, subject=entity.id, predicate=[AssociationPredicate.SUBCLASS_OF]
         )
-        sub_classes = self._get_associated_entities(
+        sub_classes = self._get_counterpart_entities(
             this_entity=entity, object=entity.id, predicate=[AssociationPredicate.SUBCLASS_OF]
         )
 
@@ -227,20 +227,20 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
     def get_associations(
         self,
         category: List[AssociationCategory] = None,
-        subject: List[str] = None,
-        subject_closure: str = None,
+        subject: Optional[List[str]] = None,
+        subject_closure: Optional[str] = None,
         subject_category: List[EntityCategory] = None,
-        subject_namespace: List[str] = None,
-        subject_taxon: List[str] = None,
+        subject_namespace: Optional[List[str]] = None,
+        subject_taxon: Optional[List[str]] = None,
         predicate: List[AssociationPredicate] = None,
-        object: List[str] = None,
-        object_closure: str = None,
+        object: Optional[List[str]] = None,
+        object_closure: Optional[str] = None,
         object_category: List[EntityCategory] = None,
-        object_namespace: List[str] = None,
-        object_taxon: List[str] = None,
-        entity: List[str] = None,
+        object_namespace: Optional[List[str]] = None,
+        object_taxon: Optional[List[str]] = None,
+        entity: Optional[List[str]] = None,
         direct: bool = False,
-        q: str = None,
+        q: Optional[str] = None,
         compact: bool = False,
         offset: int = 0,
         limit: int = 20,
@@ -288,7 +288,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         associations = parse_associations(query_result, compact, offset, limit)
         return associations
 
-    def get_histopheno(self, subject_closure: str = None) -> HistoPheno:
+    def get_histopheno(self, subject_closure: Optional[str] = None) -> HistoPheno:
         """Get histopheno counts for a given subject_closure"""
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
         query = build_histopheno_query(subject_closure)
@@ -299,7 +299,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
     def get_multi_entity_associations(
         self,
         entity: List[str],
-        counterpart_category: List[str] = None,
+        counterpart_category: Optional[List[str]] = None,
         offset: int = 0,
         # limit: int = 20,
         limit_per_group: int = 20,
@@ -359,7 +359,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         facet_fields: Union[List[str], None] = None,
         facet_queries: Union[List[str], None] = None,
         filter_queries: Union[List[str], None] = None,
-        sort: str = None,
+        sort: Optional[str] = None,
         offset: int = 0,
         limit: int = 20,
     ) -> SearchResults:
@@ -419,14 +419,14 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
     def get_association_facets(
         self,
         category: List[AssociationCategory] = None,
-        subject: List[str] = None,
+        subject: Optional[List[str]] = None,
         predicate: List[AssociationPredicate] = None,
-        object: List[str] = None,
-        subject_closure: str = None,
-        object_closure: str = None,
-        entity: List[str] = None,
-        facet_fields: List[str] = None,
-        facet_queries: List[str] = None,
+        object: Optional[List[str]] = None,
+        subject_closure: Optional[str] = None,
+        object_closure: Optional[str] = None,
+        entity: Optional[List[str]] = None,
+        facet_fields: Optional[List[str]] = None,
+        facet_queries: Optional[List[str]] = None,
     ) -> SearchResults:
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
 
@@ -461,13 +461,23 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         self,
         entity: str,
         category: AssociationCategory,
-        q: str = None,
-        sort: List[str] = None,
+        traverse_orthologs: bool = False,
+        q: Optional[str] = None,
+        sort: Optional[List[str]] = None,
         offset: int = 0,
         limit: int = 5,
     ) -> AssociationTableResults:
+        entities = [entity]
+        if traverse_orthologs:
+            ortholog_associations = self.get_associations(
+                entity=[entity], predicate=[AssociationPredicate.ORTHOLOGOUS_TO]
+            )
+            orthologous_entities = [
+                self._get_counterpart_entity(a, Entity(id=entity)) for a in ortholog_associations.items
+            ]
+            entities.extend([ent.id for ent in orthologous_entities])
         query = build_association_table_query(
-            entity=entity,
+            entity=entities,
             category=category.value,
             q=q,
             sort=sort,
@@ -476,15 +486,15 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         )
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
         query_result = solr.query(query)
-        return parse_association_table(query_result, entity, offset, limit)
+        return parse_association_table(query_result, entities, offset, limit)
 
     def get_mappings(
         self,
-        entity_id: List[str] = None,
-        subject_id: List[str] = None,
-        predicate_id: List[MappingPredicate] = None,
-        object_id: List[str] = None,
-        mapping_justification: List[str] = None,
+        entity_id: Optional[List[str]] = None,
+        subject_id: Optional[List[str]] = None,
+        predicate_id: List[MappingPredicate] = [],
+        object_id: Optional[List[str]] = None,
+        mapping_justification: Optional[List[str]] = None,
         offset: int = 0,
         limit: int = 20,
     ) -> MappingResults:
@@ -492,7 +502,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         query = build_mapping_query(
             entity_id=[entity_id] if isinstance(entity_id, str) else entity_id,
             subject_id=[subject_id] if isinstance(subject_id, str) else subject_id,
-            predicate_id=[p.value for p in predicate_id] if predicate_id else None,
+            predicate_id=[p.value for p in predicate_id],
             object_id=[object_id] if isinstance(object_id, str) else object_id,
             mapping_justification=[mapping_justification]
             if isinstance(mapping_justification, str)

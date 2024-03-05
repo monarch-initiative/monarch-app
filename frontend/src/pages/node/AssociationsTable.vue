@@ -118,6 +118,8 @@ type Props = {
   node: Node;
   /** selected association category */
   category: Option;
+  /** include orthologs */
+  includeOrthologs: boolean;
   /** selected association */
   association?: DirectionalAssociation;
 };
@@ -259,13 +261,13 @@ const {
     /** catch case where no association categories available */
     if (!props.node.association_counts.length)
       throw Error("No association info available");
-
     /** get association data */
     const response = await getAssociations(
       props.node.id,
       props.category.id,
       start.value,
       perPage.value,
+      props.includeOrthologs,
       search.value,
       sort.value,
     );
@@ -301,6 +303,10 @@ async function download() {
 /** get associations when category or table state changes */
 watch(
   () => props.category,
+  async () => await queryAssociations(true),
+);
+watch(
+  () => props.includeOrthologs,
   async () => await queryAssociations(true),
 );
 watch(

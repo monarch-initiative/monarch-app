@@ -1,4 +1,4 @@
-import urllib
+from urllib.parse import urlencode
 from enum import Enum
 from typing import Any, Dict, List, Optional, Union
 
@@ -44,24 +44,24 @@ class SolrQuery(BaseModel):
     facet_fields: Optional[List[str]] = Field(default_factory=list)
     facet_queries: Optional[List[str]] = Field(default_factory=list)
     filter_queries: Optional[List[str]] = Field(default_factory=list)
-    query_fields: str = None
+    query_fields: Optional[str] = None
     def_type: str = "edismax"
     q_op: str = "AND"  # See SOLR-8812, need this plus mm=100% to allow boolean operators in queries
     mm: str = "100%"  # All tokens in the query must be found in the doc
     boost: Optional[str] = None
     sort: Optional[str] = None
 
-    def add_field_filter_query(self, field: str, value: Union[list, str]):
-        if not value:
+    def add_field_filter_query(self, field: str, value: Union[list, str, None]):
+        if not value or len(value) == 0:
             return self
-        if isinstance(value, list) and not len(value) == 0:
+        if isinstance(value, list):
             fq = " OR ".join([f"{field}:{escape(val)}" for val in value])
         else:
             fq = f"{field}:{escape(value)}"
         self.filter_queries.append(fq)
         return self
 
-    def add_filter_query(self, filter_query: Union[list, str]):
+    def add_filter_query(self, filter_query: Union[list, str, None]):
         if not filter_query:
             return self
         if isinstance(filter_query, list):
@@ -70,7 +70,7 @@ class SolrQuery(BaseModel):
         return self
 
     def query_string(self):
-        return urllib.parse.urlencode(
+        return urlencode(
             {self._solrize(k): self._solrize(v) for k, v in self.model_dump().items() if v is not None},
             doseq=True,
         )

@@ -83,12 +83,12 @@ class SQLImplementation(EntityInterface, AssociationInterface):
                 subject=id, predicate="biolink:has_mode_of_inheritance", offset=0
             )
         if mode_of_inheritance_associations is not None and len(mode_of_inheritance_associations.items) == 1:
-            node.inheritance = self._get_associated_entity(mode_of_inheritance_associations.items[0], node)
+            node.inheritance = self._get_counterpart_entity(mode_of_inheritance_associations.items[0], node)
         node.node_hierarchy = self._get_node_hierarchy(node)
         ### SQL does not support association counts
         return node
 
-    def _get_associated_entity(self, association: Association, this_entity: Entity) -> Entity:
+    def _get_counterpart_entity(self, association: Association, this_entity: Entity) -> Entity:
         """Returns the other Entity in an Association given this_entity"""
         if this_entity.id in association.subject_closure:
             entity = Entity(
@@ -107,7 +107,7 @@ class SQLImplementation(EntityInterface, AssociationInterface):
 
         return entity
 
-    def _get_associated_entities(
+    def _get_counterpart_entities(
         self,
         this_entity: Entity,
         entity: str = None,
@@ -127,7 +127,7 @@ class SQLImplementation(EntityInterface, AssociationInterface):
             object (str, optional): an entity ID occurring in the object. Defaults to None.
         """
         return [
-            self._get_associated_entity(association, this_entity)
+            self._get_counterpart_entity(association, this_entity)
             for association in self.get_associations(
                 entity=entity,
                 subject=subject,
@@ -150,10 +150,10 @@ class SQLImplementation(EntityInterface, AssociationInterface):
             NodeHierarchy: A NodeHierarchy object
         """
 
-        super_classes = self._get_associated_entities(
+        super_classes = self._get_counterpart_entities(
             this_entity=entity, subject=entity.id, predicate="biolink:subclass_of"
         )
-        sub_classes = self._get_associated_entities(
+        sub_classes = self._get_counterpart_entities(
             this_entity=entity, object=entity.id, predicate="biolink:subclass_of"
         )
 

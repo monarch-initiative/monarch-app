@@ -4,7 +4,7 @@ from typing import List
 
 import yaml
 from monarch_py.datamodels.model import AssociationTypeMapping
-from pydantic import parse_obj_as
+from pydantic import TypeAdapter
 
 
 class AssociationTypeMappings:
@@ -34,7 +34,8 @@ class AssociationTypeMappings:
     def load_mappings(self):
         mapping_data = pkgutil.get_data(__package__, "./association_type_mappings.yaml")
         mapping_data = yaml.load(mapping_data, Loader=yaml.FullLoader)
-        self.mappings = parse_obj_as(List[AssociationTypeMapping], mapping_data)
+        adapter = TypeAdapter(List[AssociationTypeMapping])
+        self.mappings = adapter.validate_python(mapping_data)
 
 
 def get_association_type_mapping_by_query_string(

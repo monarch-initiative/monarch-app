@@ -5,7 +5,7 @@ import pytest
 def autocomplete_query():
     return {
         "q": "fanc",
-        "rows": 20,
+        "rows": 10,
         "start": 0,
         "facet": True,
         "facet_min_count": 1,
