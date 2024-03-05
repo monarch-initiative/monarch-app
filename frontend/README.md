@@ -49,9 +49,9 @@ If there is ever a problem with Bun, switching back to Node should be as simple 
 Custom e2e commands:
 
 ```
-bun test:e2e example.spec.ts
-bun test:e2e --project=chromium
-bun test:e2e --debug
+bun run test:e2e example.spec.ts
+bun run test:e2e --project=chromium
+bun run test:e2e --debug
 ```
 
 ## Flags

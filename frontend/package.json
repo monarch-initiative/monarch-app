@@ -6,7 +6,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.ts,.js,.cjs,.mjs --fix && prettier --write \"**/*.{vue,ts,js,css,scss,json,yaml,svg,md}\"",
-    "test": "bun test:types && bun test:lint && bun test:unit && bun test:e2e",
+    "test": "bun run test:types && bun run test:lint && bun run test:unit && bun run test:e2e",
     "test:types": "vue-tsc --noEmit -p tsconfig.json --composite false",
     "test:lint": "eslint . --ext .vue,.ts,.js,.cjs,.mjs && prettier --check \"**/*.{vue,ts,js,css,scss,json,yaml,svg,md}\"",
     "test:unit": "vitest run",
