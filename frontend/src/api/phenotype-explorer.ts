@@ -147,7 +147,7 @@ export const compareSetToSets = async (
   headers.append("Content-Type", "application/json");
   headers.append("Accept", "application/json");
 //  const body = { subjects: subjects, objects: objects };
-  const options = { method: "GET", headers, body: stringify(body) };
+//  const options = { method: "GET", headers, body: stringify(body) };
 
   // TODO: this could be prettier
   let objectsString = "";
@@ -157,7 +157,7 @@ export const compareSetToSets = async (
 
   /** make query */
   const url = `${apiUrl}/semsim/multicompare/${subjects.join(",")}?${objectsString}`;
-  const response = await request<TermSetPairwiseSimilarity[]>(url, {}, options);
+  const response = await request<TermSetPairwiseSimilarity[]>(url, {});
 
   //convert TermSetPairwiseSimilarity[] into Phenogrid
   //make a list of labels like 'setN' for each entry in response

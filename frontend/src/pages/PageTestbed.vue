@@ -1,5 +1,5 @@
 <!--
-  dev page for experimenting with design and behavior of components. also a 
+  dev page for experimenting with design and behavior of components. also a
   place for seeing all variations at once to check for coherence.
 -->
 
@@ -14,7 +14,7 @@
     <iframe
       title="Phenogrid"
       frameBorder="0"
-      src="/phenogrid?source=MP:0010771,MP:0002169,MP:0005391&target=HP:0004325,HP:0000093"
+      src="/phenogrid?source=HP:0000939,HP:0000444,HP:0000546,HP:0000135&target_set=Human+Diseases"
     ></iframe>
 
     <AppButton text="Send Message" @click="sendMessage" />
