@@ -85,7 +85,7 @@ defineEmits<Emits>();
 /** element reference */
 const textbox = ref();
 /** element reference */
-const input = ref();
+const input = ref<null | InstanceType<typeof >>();
 
 /** clear box */
 function clear() {
