@@ -159,6 +159,13 @@ export const routes: RouteRecordRaw[] = [
     component: asyncRoute("PageTestbed"),
   },
 
+  /** Test multi-compare phenogrid (REMOVE BEFORE MERGING) */
+  {
+    path: "/testmultiphenogrid",
+    name: "TestMultiPhenogrid",
+    component: asyncRoute("PageTestMultiPheno"),
+  },
+
   /** if no other route match found (404) */
   {
     path: "/:pathMatch(.*)*",
