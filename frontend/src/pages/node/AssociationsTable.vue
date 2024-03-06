@@ -223,6 +223,11 @@ const cols = computed((): Cols<Datum> => {
         heading: "Onset",
         sortable: true,
       },
+      {
+        key: "original_subject",
+        heading: "Original Subject",
+        sortable: true,
+      },
     );
   }
 
