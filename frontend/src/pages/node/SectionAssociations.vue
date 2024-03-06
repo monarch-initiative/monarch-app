@@ -26,18 +26,14 @@
     <AppFlex gap="small">
       <AppCheckbox
         v-if="
-          (node.category === 'biolink:Gene' &&
-            category?.id.startsWith('biolink:GeneToPheno')) ||
-          (node.category === 'biolink:Gene' &&
-            category?.id.startsWith('biolink:CausalGeneToDisease')) ||
-          (node.category === 'biolink:Gene' &&
-            category?.id.startsWith('biolink:CorrelatedGeneToDisease'))
+          node.category === 'biolink:Gene' &&
+          category?.id.startsWith('biolink:GeneToPheno')
         "
         v-model="includeOrthologs"
         v-tooltip="
           'Include phenotypes for orthologous genes in the associations table'
         "
-        text="Include orthologous genes"
+        text="Include ortholog phenotypes"
       />
       <AppButton
         v-if="
