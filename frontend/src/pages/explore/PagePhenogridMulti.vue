@@ -45,7 +45,11 @@ const {
   isError,
 } = useQuery(
   async function () {
-    return await compareSetToSets(aPhenotypes.value, bPhenotypes.value, bLabels.value);
+    return await compareSetToSets(
+      aPhenotypes.value,
+      bPhenotypes.value,
+      bLabels.value,
+    );
   },
 
   /** default value */

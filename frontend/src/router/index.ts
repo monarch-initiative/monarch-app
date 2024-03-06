@@ -151,7 +151,7 @@ export const routes: RouteRecordRaw[] = [
     component: asyncRoute("explore/PagePhenogrid"),
     meta: { bare: true },
   },
-  
+
   /** phenogrid multi-compare iframe widget page */
   {
     path: "/phenogrid-multi-compare",
