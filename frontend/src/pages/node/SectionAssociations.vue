@@ -26,8 +26,8 @@
     <AppFlex gap="small">
       <AppCheckbox
         v-if="
-          (node.category === 'biolink:Gene' &&
-            category?.id.startsWith('biolink:GeneToPheno'))
+          node.category === 'biolink:Gene' &&
+          category?.id.startsWith('biolink:GeneToPheno')
         "
         v-model="includeOrthologs"
         v-tooltip="
