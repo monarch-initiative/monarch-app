@@ -13,7 +13,7 @@
     <!-- select button box -->
     <button
       :id="`select-${id}`"
-      ref="target"
+      ref="anchor"
       class="box"
       :aria-label="name"
       :aria-expanded="expanded"
@@ -127,12 +127,12 @@ const selected = ref(getSelected());
 /** index of option that is highlighted (keyboard controls) */
 const highlighted = ref(0);
 
-/** target element */
-const target = ref();
+/** anchor element */
+const anchor = ref<HTMLButtonElement>();
 /** dropdown element */
-const dropdown = ref();
+const dropdown = ref<HTMLDivElement>();
 /** get dropdown position */
-const { calculate, style } = useFloating(target, dropdown);
+const { calculate, style } = useFloating(anchor, dropdown);
 /** recompute position after opened */
 watch(expanded, async () => {
   await nextTick();
