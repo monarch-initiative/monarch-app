@@ -73,7 +73,7 @@ watch(
     }
     // read labels as target_label[] from url params
     if (target_label && typeof target_label === "string") {
-      bLabels = target_label.split(",");
+      bLabels.value = target_label.split(",");
     } else if (
       Array.isArray(target_label) &&
       every(target_label, (t) => typeof t === "string")

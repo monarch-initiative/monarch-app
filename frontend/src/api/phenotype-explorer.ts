@@ -213,7 +213,6 @@ export const compareSetToSets = async (
         ]),
       };
     }
-
   }
 
   /** filter out unmatched phenotypes */
