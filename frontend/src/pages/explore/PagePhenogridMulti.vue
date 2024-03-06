@@ -35,7 +35,7 @@ const route = useRoute();
 const aPhenotypes = ref<string[]>([]);
 // const bPhenotypes = ref<Group>("Human Diseases");
 const bPhenotypes = ref<string[][]>([]);
-const bLabels = ref<string>([]);
+const bLabels = ref<string[]>([]);
 
 /** comparison analysis */
 const {
@@ -45,12 +45,11 @@ const {
   isError,
 } = useQuery(
   async function () {
-    return await compareSetToSets(aPhenotypes.value, bPhenotypes.value);
+    return await compareSetToSets(aPhenotypes.value, bPhenotypes.value, bLabels.value);
   },
 
   /** default value */
-  // { phenogrid: { cols: [], rows: [], cells: {}, unmatched: [] } },
-  { cols: [], rows: [], cells: {} },
+  { phenogrid: { cols: [], rows: [], cells: {}, unmatched: [] } },
 );
 
 /** re-rerun analysis when inputs change */
@@ -78,7 +77,7 @@ watch(
       Array.isArray(target_label) &&
       every(target_label, (t) => typeof t === "string")
     ) {
-      bLabels.value = target_label;
+      bLabels.value = target_label as string[];
     }
 
     runAnalysis();

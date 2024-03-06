@@ -151,20 +151,20 @@ export const routes: RouteRecordRaw[] = [
     component: asyncRoute("explore/PagePhenogrid"),
     meta: { bare: true },
   },
+  
+  /** phenogrid multi-compare iframe widget page */
+  {
+    path: "/phenogrid-multi-compare",
+    name: "PhenogridMultiCompare",
+    component: asyncRoute("explore/PagePhenogridMulti"),
+    meta: { bare: true },
+  },
 
   /** test pages (comment this out when we release app) */
   {
     path: "/testbed",
     name: "Testbed",
     component: asyncRoute("PageTestbed"),
-  },
-
-  /** Test multi-compare phenogrid (REMOVE BEFORE MERGING) */
-  {
-    path: "/testmultiphenogrid",
-    name: "TestMultiPhenogrid",
-    component: asyncRoute("PageTestMultiPheno"),
-    meta: { bare: true },
   },
 
   /** if no other route match found (404) */
