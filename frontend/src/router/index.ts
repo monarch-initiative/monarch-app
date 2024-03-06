@@ -164,6 +164,7 @@ export const routes: RouteRecordRaw[] = [
     path: "/testmultiphenogrid",
     name: "TestMultiPhenogrid",
     component: asyncRoute("PageTestMultiPheno"),
+    meta: { bare: true },
   },
 
   /** if no other route match found (404) */

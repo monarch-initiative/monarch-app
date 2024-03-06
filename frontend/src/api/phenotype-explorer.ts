@@ -141,6 +141,7 @@ export type Group = (typeof groups)[number];
 export const compareSetToSets = async (
   subjects: string[],
   objects: string[][],
+  labels: string[],
 ) => {
   /** make request */
   const headers = new Headers();
@@ -161,13 +162,12 @@ export const compareSetToSets = async (
   )}?${objectsString}`;
   const response = await request<TermSetPairwiseSimilarity[]>(url, {});
 
-  /**
-   * convert TermSetPairwiseSimilarity[] into Phenogrid make a list of labels
-   * like 'setN' for each entry in response
-   */
-  const labels: string[] = [];
-  for (let i = 0; i < response.length; i++) {
-    labels.push("Set " + i);
+  // If the labels array isn't the same length, just fill in with numbered labels for now
+  if (!labels || labels.length !== objects.length) {
+    labels = new Array();
+    for (let i = 0; i < response.length; i++) {
+      labels.push("Set " + i);
+    }
   }
 
   let cols: Phenogrid["cols"] = labels.map((label) => ({
@@ -190,28 +190,30 @@ export const compareSetToSets = async (
   /** start collecting unmatched phenotypes */
   let unmatched: Phenogrid["unmatched"] = [];
 
-  for (let i = 0; i < response.length; i++) {
-    for (const col of cols) {
-      for (const row of rows) {
-        const match = response[i].object_best_matches?.[row.id];
+  //loop over columns with an index counter
+  for (let i = 0; i < cols.length; i++) {
+    const col = cols[i];
 
-        col.total += match?.score || 0;
-        row.total += match?.score || 0;
+    for (const row of rows) {
+      const match = response[i].object_best_matches?.[row.id];
 
-        cells[col.id + row.id] = {
-          score: match?.score || 0,
-          strength: 0,
-          phenotype: match?.match_target || "",
-          phenotypeLabel: match?.match_target_label || "",
-          ...pick(match?.similarity, [
-            "ancestor_id",
-            "ancestor_label",
-            "jaccard_similarity",
-            "phenodigm_score",
-          ]),
-        };
-      }
+      col.total += match?.score || 0;
+      row.total += match?.score || 0;
+
+      cells[col.id + row.id] = {
+        score: match?.score || 0,
+        strength: 0,
+        phenotype: match?.match_target || "",
+        phenotypeLabel: match?.match_target_label || "",
+        ...pick(match?.similarity, [
+          "ancestor_id",
+          "ancestor_label",
+          "jaccard_similarity",
+          "phenodigm_score",
+        ]),
+      };
     }
+
   }
 
   /** filter out unmatched phenotypes */

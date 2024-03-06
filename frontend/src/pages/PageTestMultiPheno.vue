@@ -35,6 +35,7 @@ const route = useRoute();
 const aPhenotypes = ref<string[]>([]);
 // const bPhenotypes = ref<Group>("Human Diseases");
 const bPhenotypes = ref<string[][]>([]);
+const bLabels = ref<string>([]);
 
 /** comparison analysis */
 const {
@@ -59,7 +60,7 @@ watch([aPhenotypes, bPhenotypes], runAnalysis);
 watch(
   () => route.query,
   () => {
-    const { source = "", target = "" } = route.query;
+    const { source = "", target = "", target_label = "" } = route.query;
     if (source && typeof source === "string")
       aPhenotypes.value = source.split(",");
     if (target && typeof target === "string")
@@ -69,6 +70,15 @@ watch(
       every(target, (t) => typeof t === "string")
     ) {
       bPhenotypes.value = target.map((t) => t?.split(",")) as string[][];
+    }
+    // read labels as target_label[] from url params
+    if (target_label && typeof target_label === "string") {
+      bLabels = target_label.split(",");
+    } else if (
+      Array.isArray(target_label) &&
+      every(target_label, (t) => typeof t === "string")
+    ) {
+      bLabels.value = target_label;
     }
 
     runAnalysis();
