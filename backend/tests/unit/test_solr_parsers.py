@@ -20,6 +20,15 @@ def test_parse_associations(association_response, associations):
     assert parsed == associations, f"Parsed result is not as expected. Difference: {dict_diff(parsed, associations)}"
 
 
+def test_parse_associations_compact(association_response, associations_compact):
+    association_response["response"]["numFound"] = association_response["response"].pop("num_found")
+    solr_response = SolrQueryResult(**association_response)
+    parsed = parse_associations(solr_response, compact=True).model_dump()
+    assert (
+        parsed == associations_compact
+    ), f"Parsed result is not as expected. Difference: {dict_diff(parsed, associations_compact)}"
+
+
 def test_parse_association_counts(association_counts_response, association_counts, node):
     association_counts_response["response"]["numFound"] = association_counts_response["response"].pop("num_found")
     solr_response = SolrQueryResult(**association_counts_response)
@@ -32,7 +41,7 @@ def test_parse_association_counts(association_counts_response, association_count
 def test_parse_association_table(association_table_response, association_table, node):
     association_table_response["response"]["numFound"] = association_table_response["response"].pop("num_found")
     solr_response = SolrQueryResult(**association_table_response)
-    parsed = parse_association_table(solr_response, entity=Node(**node).id, offset=0, limit=5).model_dump()
+    parsed = parse_association_table(solr_response, entity=[Node(**node).id], offset=0, limit=5).model_dump()
     assert (
         parsed == association_table
     ), f"Parsed result is not as expected. Difference: {dict_diff(parsed, association_table)}"

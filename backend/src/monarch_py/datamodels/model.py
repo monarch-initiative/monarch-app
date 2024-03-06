@@ -183,6 +183,17 @@ class Association(ConfiguredBaseModel):
     )
 
 
+class CompactAssociation(ConfiguredBaseModel):
+
+    category: Optional[str] = Field(None)
+    subject: str = Field(...)
+    subject_label: Optional[str] = Field(None, description="""The name of the subject entity""")
+    predicate: str = Field(...)
+    object: str = Field(...)
+    object_label: Optional[str] = Field(None, description="""The name of the object entity""")
+    negated: Optional[bool] = Field(None)
+
+
 class AssociationCountList(ConfiguredBaseModel):
     """
     Container class for a list of association counts
@@ -552,6 +563,16 @@ class AssociationResults(Results):
     total: int = Field(..., description="""total number of items matching a query""")
 
 
+class CompactAssociationResults(Results):
+
+    items: List[CompactAssociation] = Field(
+        default_factory=list, description="""A collection of items, with the type to be overriden by slot_usage"""
+    )
+    limit: int = Field(..., description="""number of items to return in a response""")
+    offset: int = Field(..., description="""offset into the total number of items""")
+    total: int = Field(..., description="""total number of items matching a query""")
+
+
 class AssociationTableResults(Results):
 
     items: List[DirectionalAssociation] = Field(
@@ -759,6 +780,7 @@ class SemsimSearchResult(ConfiguredBaseModel):
 # Model rebuild
 # see https://pydantic-docs.helpmanual.io/usage/models/#rebuilding-a-model
 Association.model_rebuild()
+CompactAssociation.model_rebuild()
 AssociationCountList.model_rebuild()
 AssociationTypeMapping.model_rebuild()
 DirectionalAssociation.model_rebuild()
@@ -774,6 +796,7 @@ Node.model_rebuild()
 NodeHierarchy.model_rebuild()
 Results.model_rebuild()
 AssociationResults.model_rebuild()
+CompactAssociationResults.model_rebuild()
 AssociationTableResults.model_rebuild()
 CategoryGroupedAssociationResults.model_rebuild()
 EntityResults.model_rebuild()

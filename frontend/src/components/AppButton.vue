@@ -51,7 +51,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 /** element ref */
-const button = ref();
+const button = ref<HTMLButtonElement>();
 
 /** type of component to render */
 const component = computed(() => (props.to ? "AppLink" : "button"));

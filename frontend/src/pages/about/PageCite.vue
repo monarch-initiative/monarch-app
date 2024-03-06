@@ -33,21 +33,12 @@
       references:
     </p>
     <AppCitation
-      title="Navigating the Phenotype Frontier: The Monarch Initiative"
-      authors="McMurry et al."
+      title="The Monarch Initiative in 2024: an analytic platform integrating phenotypes, genes and diseases across species"
+      authors="Putman et al."
       :details="[
-        'GENETICS',
-        'August 1, 2016 vol. 203 no. 4 1491-1495',
-        '10.1534/genetics.116.188870',
-      ]"
-    />
-    <AppCitation
-      title="The Monarch Initiative in 2019: an integrative data and analytic platform connecting phenotypes to genotypes across species"
-      authors="Shefchek et al."
-      :details="[
-        'Nucleic Acids Res.',
-        '2020 Jan 8; 48 (Database issue): D704–D715. Published online 2019 Nov 08.',
-        '10.1093/nar/gkz997',
+        'Nucleic Acids Research',
+        '2024 Jan 5; Volume 52, Issue D1: D938–D949. Published online 2023, November 24.',
+        '10.1093/nar/gkad1082',
       ]"
     />
   </AppSection>
@@ -82,12 +73,12 @@
       To link to a specific page or to algorithmic results presented on this
       website, please use the URL in your browser's address bar. For example,
       you would cite the prefixed identifier
-      <AppLink to="/OMIM:154700">OMIM:154700</AppLink>
+      <AppLink to="/MONDO:0007523">MONDO:0007523</AppLink>
       as:
     </p>
     <blockquote>
-      Monarch Consortium. Accessed 2016-09-22. Ehlers-Danlos syndrome,
-      hypermobility. https://monarchinitiative.org/OMIM:154700
+      Ehlers-Danlos syndrome, hypermobility type.
+      https://monarchinitiative.org/MONDO:0007523
     </blockquote>
   </AppSection>
 </template>

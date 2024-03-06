@@ -1,11 +1,19 @@
 from dataclasses import dataclass
-from typing import List
+from typing import List, Union
 
 import pystow
 from loguru import logger
 from pydantic import ValidationError
 
-from monarch_py.datamodels.model import Association, AssociationResults, Entity, Node, NodeHierarchy
+from monarch_py.datamodels.model import (
+    Association,
+    CompactAssociation,
+    CompactAssociationResults,
+    AssociationResults,
+    Entity,
+    Node,
+    NodeHierarchy,
+)
 from monarch_py.interfaces.association_interface import AssociationInterface
 from monarch_py.interfaces.entity_interface import EntityInterface
 from monarch_py.service.curie_service import converter
@@ -75,12 +83,12 @@ class SQLImplementation(EntityInterface, AssociationInterface):
                 subject=id, predicate="biolink:has_mode_of_inheritance", offset=0
             )
         if mode_of_inheritance_associations is not None and len(mode_of_inheritance_associations.items) == 1:
-            node.inheritance = self._get_associated_entity(mode_of_inheritance_associations.items[0], node)
+            node.inheritance = self._get_counterpart_entity(mode_of_inheritance_associations.items[0], node)
         node.node_hierarchy = self._get_node_hierarchy(node)
         ### SQL does not support association counts
         return node
 
-    def _get_associated_entity(self, association: Association, this_entity: Entity) -> Entity:
+    def _get_counterpart_entity(self, association: Association, this_entity: Entity) -> Entity:
         """Returns the other Entity in an Association given this_entity"""
         if this_entity.id in association.subject_closure:
             entity = Entity(
@@ -99,7 +107,7 @@ class SQLImplementation(EntityInterface, AssociationInterface):
 
         return entity
 
-    def _get_associated_entities(
+    def _get_counterpart_entities(
         self,
         this_entity: Entity,
         entity: str = None,
@@ -119,7 +127,7 @@ class SQLImplementation(EntityInterface, AssociationInterface):
             object (str, optional): an entity ID occurring in the object. Defaults to None.
         """
         return [
-            self._get_associated_entity(association, this_entity)
+            self._get_counterpart_entity(association, this_entity)
             for association in self.get_associations(
                 entity=entity,
                 subject=subject,
@@ -142,10 +150,10 @@ class SQLImplementation(EntityInterface, AssociationInterface):
             NodeHierarchy: A NodeHierarchy object
         """
 
-        super_classes = self._get_associated_entities(
+        super_classes = self._get_counterpart_entities(
             this_entity=entity, subject=entity.id, predicate="biolink:subclass_of"
         )
-        sub_classes = self._get_associated_entities(
+        sub_classes = self._get_counterpart_entities(
             this_entity=entity, object=entity.id, predicate="biolink:subclass_of"
         )
 
@@ -168,9 +176,10 @@ class SQLImplementation(EntityInterface, AssociationInterface):
         object_closure: str = None,
         entity: List[str] = None,
         direct: bool = None,
+        compact: bool = False,
         offset: int = 0,
         limit: int = 20,
-    ) -> AssociationResults:
+    ) -> Union[AssociationResults, CompactAssociationResults]:
         """Retrieve paginated association records, with filter options
 
         Args:
@@ -182,6 +191,7 @@ class SQLImplementation(EntityInterface, AssociationInterface):
             object_closure (str, optional): Filter to only associations the specified term ID as an ancestor of the object. Defaults to None.
             entity (str, optional): Filter to only associations where the specified entity is the subject or the object. Defaults to None.
             association_type (str, optional): Filter to only associations matching the specified association label. Defaults to None.
+            compact (bool, optional): Whether to return compact or full association records. Defaults to False.
             offset (int, optional): Result offset, for pagination. Defaults to 0.
             limit (int, optional): Limit results to specified number. Defaults to 20.
 
@@ -239,35 +249,56 @@ class SQLImplementation(EntityInterface, AssociationInterface):
             total = count[f"COUNT(*)"]
 
         associations = []
-        for row in results:
-            result = {
-                "id": row["id"],
-                "original_subject": row["original_subject"],
-                "predicate": row["predicate"],
-                "original_object": row["original_object"],
-                "category": row["category"],
-                "aggregator_knowledge_source": row["aggregator_knowledge_source"].split("|"),
-                "primary_knowledge_source": row["primary_knowledge_source"],
-                "publications": row["publications"].split("|"),
-                "qualifiers": row["qualifiers"].split("|"),
-                "provided_by": row["provided_by"],
-                "has_evidence": row["has_evidence"].split("|"),
-                "stage_qualifier": row["stage_qualifier"],
-                "negated": False if not row["negated"] else True,
-                "frequency_qualifier": row["frequency_qualifier"],
-                "onset_qualifier": row["onset_qualifier"],
-                "sex_qualifier": row["sex_qualifier"],
-                "subject": row["subject"],
-                "object": row["object"],
-            }
-            # Convert empty strings to null value
-            for key in result:
-                result[key] = None if not result[key] else result[key]
-            try:
-                associations.append(Association(**result))
-            except ValidationError:
-                logger.error(f"Validation error for {row}")
-                raise
-
-        results = AssociationResults(items=associations, limit=limit, offset=offset, total=total)
-        return results
+        if compact:
+            for row in results:
+                result = {
+                    "category": row["category"],
+                    "subject": row["subject"],
+                    "subject_label": row["subject_label"],
+                    "predicate": row["predicate"],
+                    "object": row["object"],
+                    "object_label": row["object_label"],
+                    "negated": False if not row["negated"] else True,
+                }
+                # Convert empty strings to null value
+                for key in result:
+                    result[key] = None if not result[key] else result[key]
+                try:
+                    associations.append(CompactAssociation(**result))
+                except ValidationError:
+                    logger.error(f"Validation error for {row}")
+                    raise
+            return CompactAssociationResults(items=associations, limit=limit, offset=offset, total=total)
+        else:
+            for row in results:
+                result = {
+                    "id": row["id"],
+                    "original_subject": row["original_subject"],
+                    "predicate": row["predicate"],
+                    "original_object": row["original_object"],
+                    "category": row["category"],
+                    "aggregator_knowledge_source": row["aggregator_knowledge_source"].split("|"),
+                    "primary_knowledge_source": row["primary_knowledge_source"],
+                    "publications": row["publications"].split("|"),
+                    "qualifiers": row["qualifiers"].split("|"),
+                    "provided_by": row["provided_by"],
+                    "has_evidence": row["has_evidence"].split("|"),
+                    "stage_qualifier": row["stage_qualifier"],
+                    "negated": False if not row["negated"] else True,
+                    "frequency_qualifier": row["frequency_qualifier"],
+                    "onset_qualifier": row["onset_qualifier"],
+                    "sex_qualifier": row["sex_qualifier"],
+                    "subject": row["subject"],
+                    "object": row["object"],
+                }
+                # Convert empty strings to null value
+                for key in result:
+                    result[key] = None if not result[key] else result[key]
+                    if isinstance(result[key], list) and len(result[key]) == 1 and not result[key][0]:
+                        result[key] = []
+                try:
+                    associations.append(Association(**result))
+                except ValidationError:
+                    logger.error(f"Validation error for {row}")
+                    raise
+            return AssociationResults(items=associations, limit=limit, offset=offset, total=total)
