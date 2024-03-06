@@ -55,6 +55,26 @@
       />
     </template>
 
+    <template #frequency="{ row }">
+
+      <AppNodeBadge
+        v-if="row.frequency_qualifier"
+        :node="{
+          id: row.frequency_qualifier,
+          name: row.frequency_qualifier_label,
+        }"
+      />
+
+      <span v-else-if="row.has_count && row.has_total">
+        {{ row.has_count }}/{{ row.has_total }} Cases
+      </span>
+      <span v-else-if="row.has_percentage">
+        {{ row.has_percentage }}% of Cases
+      </span>
+      <span v-else class="empty">No info</span>
+
+    </template>
+
     <!-- button to show details -->
     <template #details="{ cell, row }">
       <AppButton
@@ -199,25 +219,26 @@ const cols = computed((): Cols<Datum> => {
   ) {
     extraCols.push(
       {
-        key: "frequency_qualifier_label",
+        slot: "frequency",
+        key: "frequency_qualifier",
         heading: "Frequency",
         sortable: true,
       },
-      {
-        key: "has_percentage",
-        heading: "Frequency %",
-        sortable: true,
-      },
-      {
-        key: "has_count",
-        heading: "Count",
-        sortable: true,
-      },
-      {
-        key: "has_total",
-        heading: "Total",
-        sortable: true,
-      },
+      // {
+      //   key: "has_percentage",
+      //   heading: "Frequency %",
+      //   sortable: true,
+      // },
+      // {
+      //   key: "has_count",
+      //   heading: "Count",
+      //   sortable: true,
+      // },
+      // {
+      //   key: "has_total",
+      //   heading: "Total",
+      //   sortable: true,
+      // },
       {
         key: "onset_qualifier_label",
         heading: "Onset",
@@ -340,5 +361,9 @@ onMounted(() => queryAssociations(true));
 .details {
   width: 100%;
   min-height: unset !important;
+}
+
+.empty {
+  color: $gray;
 }
 </style>
