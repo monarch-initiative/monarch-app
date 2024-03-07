@@ -1,6 +1,5 @@
 {
   "name": "monarch-app",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
