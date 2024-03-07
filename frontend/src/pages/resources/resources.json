@@ -5,12 +5,6 @@
       "icon": "resource-phenopackets",
       "link": "http://phenopackets.org/",
       "name": "Phenopackets"
-    },
-    {
-      "description": "SSSOM is a simple metadata standard for describing semantic mappings.",
-      "icon": "resource-sssom",
-      "link": "https://mapping-commons.github.io/sssom/spec/",
-      "name": "SSSOM"
     }
   ],
   "Ontologies": [
@@ -27,10 +21,10 @@
       "name": "Mondo"
     },
     {
-      "description": "uPheno aims to unify the annotation of phenotypes across species.",
-      "icon": "resource-upheno",
-      "link": "https://obophenotype.github.io/upheno/",
-      "name": "uPheno"
+      "description": "The Uberon Anatomy Ontology is an integrated cross-species anatomy ontology.",
+      "icon": "resource-uberon",
+      "link": "https://obophenotype.github.io/uberon/",
+      "name": "Uberon Anatomy Ontology"
     }
   ],
   "Tools": [
@@ -41,34 +35,10 @@
       "name": "Exomiser"
     },
     {
-      "description": "The Monarch App is a web application for exploring the Monarch Knowledge Graph.",
+      "description": "The Monarch Monarch Knowledge Graph & Services integrates gene, disease, and phenotype data across species.",
       "icon": "resource-monarch",
-      "link": "https://monarch-initiative.github.io/monarch-documentation",
-      "name": "Monarch App"
-    },
-    {
-      "description": "LIkelihood Ratio Interpretation of Clinical AbnormaLities performs phenotype-driven prioritization of candidate diseases and genes in the setting of genomic diagnostics.",
-      "icon": "lirical",
-      "link": "https://thejacksonlaboratory.github.io/LIRICAL/stable/",
-      "name": "LIRICAL"
-    },
-    {
-      "description": "OntoGPT is a Python package for extracting structured information from text with large language models (LLMs), instruction prompts, and ontology-based grounding.",
-      "icon": "onto-gpt",
-      "link": "https://github.com/monarch-initiative/ontogpt",
-      "name": "OntoGPT"
-    },
-    {
-      "description": "AI Assisted Ontology Curation.",
-      "icon": "curate-gpt",
-      "link": "https://curategpt.io/",
-      "name": "CurateGPT"
-    },
-    {
-      "description": "SSSOM Mappings collected and curated by the Monarch Initiative.",
-      "icon": "resource-monarch",
-      "link": "https://github.com/monarch-initiative/monarch-mapping-commons",
-      "name": "Monarch Mapping Commons"
+      "link": "https://monarchinitiative.org/",
+      "name": "Monarch Knowledge Graph & Services"
     }
   ]
 }
