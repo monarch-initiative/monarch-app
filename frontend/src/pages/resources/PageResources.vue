@@ -21,20 +21,15 @@
       .
     </p>
   </AppSection>
-  <AppSection
-    v-for="(category, categoryIndex) in resources"
-    :key="categoryIndex"
-    width="big"
-  >
-    <AppHeading>
-      {{ categoryIndex }}
-    </AppHeading>
-    <AppGallery :cols="3">
+  <AppSection width="big">
+    <AppHeading> Flagship Products </AppHeading>
+    <AppGallery>
       <template
-        v-for="(resource, resourceIndex) in category"
+        v-for="(category, categoryIndex) in resources"
         :key="resourceIndex"
       >
         <AppTile
+          v-for="(resource, resourceIndex) in category"
           :to="resource.link"
           :icon="resource.icon"
           :title="resource.name"
