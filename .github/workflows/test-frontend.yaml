@@ -12,51 +12,9 @@ defaults:
     working-directory: ./frontend
 
 jobs:
-  # install cache for rest of jobs
-  install-cache:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Define cache key
-        id: define-key
-        run: echo "key=bun-${{ hashFiles('frontend/bun.lockb') }}" >> $GITHUB_OUTPUT
-
-      - if: runner.debug == '1'
-        uses: mxschmitt/action-tmate@v3
-
-      - name: Set up Bun
-        uses: oven-sh/setup-bun@v1
-
-      - uses: actions/cache/restore@v4
-        id: restore-cache
-        with:
-          path: ${{ env.CACHE_PATH }}
-          key: ${{ steps.define-key.outputs.key }}
-
-      - name: Install packages
-        if: steps.restore-cache.outputs.cache-hit != 'true'
-        run: bun install
-
-      - name: Install Playwright
-        if: steps.restore-cache.outputs.cache-hit != 'true'
-        run: bunx playwright install
-
-      - name: Save cache
-        if: steps.restore-cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
-        with:
-          path: ${{ env.CACHE_PATH }}
-          key: ${{ steps.define-key.outputs.key }}
-
-    outputs:
-      cache-key: ${{ steps.define-key.outputs.key }}
-
   # test that app can build without issues
   test-build:
     runs-on: ubuntu-latest
-    needs: install-cache
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -64,11 +22,8 @@ jobs:
       - name: Set up Bun
         uses: oven-sh/setup-bun@v1
 
-      - name: Restore cache
-        uses: actions/cache/restore@v4
-        with:
-          path: ${{ env.CACHE_PATH }}
-          key: ${{ needs.install-cache.outputs.cache-key }}
+      - name: Install packages
+        run: bun install
 
       - if: runner.debug == '1'
         uses: mxschmitt/action-tmate@v3
@@ -79,7 +34,6 @@ jobs:
   # test that app has no typescript errors
   test-types:
     runs-on: ubuntu-latest
-    needs: install-cache
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -87,11 +41,8 @@ jobs:
       - name: Set up Bun
         uses: oven-sh/setup-bun@v1
 
-      - name: Restore cache
-        uses: actions/cache/restore@v4
-        with:
-          path: ${{ env.CACHE_PATH }}
-          key: ${{ needs.install-cache.outputs.cache-key }}
+      - name: Install packages
+        run: bun install
 
       - if: runner.debug == '1'
         uses: mxschmitt/action-tmate@v3
@@ -102,7 +53,6 @@ jobs:
   # test that app is properly formatted and linted
   test-lint:
     runs-on: ubuntu-latest
-    needs: install-cache
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -110,11 +60,8 @@ jobs:
       - name: Set up Bun
         uses: oven-sh/setup-bun@v1
 
-      - name: Restore cache
-        uses: actions/cache/restore@v4
-        with:
-          path: ${{ env.CACHE_PATH }}
-          key: ${{ needs.install-cache.outputs.cache-key }}
+      - name: Install packages
+        run: bun install
 
       - if: runner.debug == '1'
         uses: mxschmitt/action-tmate@v3
@@ -125,7 +72,6 @@ jobs:
   # run unit tests
   test-unit:
     runs-on: ubuntu-latest
-    needs: install-cache
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -133,11 +79,8 @@ jobs:
       - name: Set up Bun
         uses: oven-sh/setup-bun@v1
 
-      - name: Restore cache
-        uses: actions/cache/restore@v4
-        with:
-          path: ${{ env.CACHE_PATH }}
-          key: ${{ needs.install-cache.outputs.cache-key }}
+      - name: Install packages
+        run: bun install
 
       - name: Run test
         run: bun run test:unit
@@ -145,7 +88,6 @@ jobs:
   # run end to end integration tests
   test-e2e:
     runs-on: ubuntu-latest
-    needs: install-cache
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -153,11 +95,11 @@ jobs:
       - name: Set up Bun
         uses: oven-sh/setup-bun@v1
 
-      - name: Restore cache
-        uses: actions/cache/restore@v4
-        with:
-          path: ${{ env.CACHE_PATH }}
-          key: ${{ needs.install-cache.outputs.cache-key }}
+      - name: Install packages
+        run: bun install
+
+      - name: Install Playwright
+        run: bunx playwright install
 
       - if: runner.debug == '1'
         uses: mxschmitt/action-tmate@v3
