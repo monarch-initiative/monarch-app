@@ -66,10 +66,10 @@
       />
 
       <span v-else-if="row.has_count && row.has_total">
-        {{ row.has_count }}/{{ row.has_total }} Cases
+        {{ row.has_count }}/{{ row.has_total }}
       </span>
       <span v-else-if="row.has_percentage">
-        {{ row.has_percentage }}% of Cases
+        {{ row.has_percentage }}%
       </span>
       <span v-else class="empty">No info</span>
 
