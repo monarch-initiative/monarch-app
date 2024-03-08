@@ -24,7 +24,7 @@ jobs:
         run: echo "key=bun-${{ hashFiles('frontend/yarn.lock') }}" >> $GITHUB_OUTPUT
 
       - name: Set up Bun
-        uses: actions/setup-bun@v1
+        uses: oven-sh/setup-bun@v1
 
       - uses: actions/cache/restore@v4
         id: restore-cache
