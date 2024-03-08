@@ -28,9 +28,20 @@ class SemsimSearchGroup(Enum):
     MONDO = "Human Diseases"
 
 
+
 class SemsimCompareRequest(BaseModel):
     subjects: List[str] = Field(..., title="List of subjects for comparison")
     objects: List[str] = Field(..., title="List of objects for comparison")
+
+
+class SemsimMultiCompareObject(BaseModel):
+    id: Optional[str] = Field(None, title="ID of the object set")
+    label: str = Field(..., title="Label of the object set")
+    objects: List[str] = Field(..., title="List of object for comparison")
+
+class SemsimMultiCompareRequest(BaseModel):
+    subjects: List[str] = Field(..., title="List of subjects for comparison")
+    object_entities: List[SemsimMultiCompareObject] = Field(..., title="List of object sets for comparison")
 
 
 class SemsimSearchRequest(BaseModel):

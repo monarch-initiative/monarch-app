@@ -3,7 +3,8 @@ import requests
 
 from pydantic import BaseModel
 
-from monarch_py.datamodels.model import TermSetPairwiseSimilarity, SemsimSearchResult
+from monarch_py.api.additional_models import SemsimMultiCompareRequest
+from monarch_py.datamodels.model import TermSetPairwiseSimilarity, SemsimSearchResult, SearchResult, Entity
 
 
 class SemsimianService(BaseModel):
@@ -53,9 +54,18 @@ class SemsimianService(BaseModel):
         results = self.convert_tsps_data(data)
         return TermSetPairwiseSimilarity(**results)
 
-    def multi_compare(self, subjects: List[str], object_sets: List[List[str]]) -> List[TermSetPairwiseSimilarity]:
-        compare_results = [self.compare(subjects, object_set) for object_set in object_sets]
-        return compare_results
+    def multi_compare(self, request: SemsimMultiCompareRequest) -> SemsimSearchResult:
+
+        results = [
+            SemsimSearchResult(
+                subject=Entity(id=object_entity.id, name=object_entity.label),
+                score=object_entity.average_similarity,
+                similarity=self.compare(request.subjects, object_entity.objects)
+            )
+            for object_entity in request.object_entities
+        ]
+
+        return results
 
     def search(self, termset: List[str], prefix: str, limit: int):
         host = f"http://{self.semsim_server_host}:{self.semsim_server_port}"

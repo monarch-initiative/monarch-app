@@ -1,11 +1,12 @@
 from fastapi import APIRouter, Path, Query
 from typing import List
 
-from monarch_py.api.additional_models import SemsimCompareRequest, SemsimSearchRequest, SemsimSearchGroup
+from monarch_py.api.additional_models import SemsimCompareRequest, SemsimSearchRequest, SemsimSearchGroup, \
+    SemsimMultiCompareRequest
 from monarch_py.api.config import semsimian, solr
 from monarch_py.api.utils.similarity_utils import parse_similarity_prefix
 from monarch_py.datamodels.category_enums import AssociationPredicate, EntityCategory
-from monarch_py.datamodels.model import SearchResults
+from monarch_py.datamodels.model import SearchResults, SemsimSearchResult
 
 router = APIRouter(tags=["semsim"], responses={404: {"description": "Not Found"}})
 
@@ -80,22 +81,43 @@ def _post_compare(request: SemsimCompareRequest):
     return semsimian().compare(subjects=request.subjects, objects=request.objects)
 
 
-# Do we like /multicompare/HP:212,HP:443?objects=HP:123,HP:456&objects=HP:789,HP:101112 ?
-@router.get("/multicompare/{subjects}")
-def _multicompare(
-    subjects: str = Path(..., title="Comma separated list of subjects for comparison"),
-    objects: List[str] = Query(..., title="List of comma separated object sets to compare against"),
-):
-
-    return semsimian().multi_compare(subjects=subjects.split(","), object_sets=[obj.split(",") for obj in objects])
-
+# add a multicompare post endpoint
+@router.post("/multicompare")
+def _post_multicompare(request: SemsimMultiCompareRequest) -> List[SemsimSearchResult]:
+    """
+        Pairwise similarity between two sets of terms <br>
+        <br>
+        Example: <br>
+    <pre>
+    {
+      "subjects": [ "HP:0002616", "HP:0001763", "HP:0004944", "HP:0010749", "HP:0001533", "HP:0002020", "HP:0012450", "HP:0003394", "HP:0003771", "HP:0012378", "HP:0001278", "HP:0002827",
+"HP:0002829", "HP:0002999", "HP:0003010"],
+      "object_entities": [
+        {
+          "id": "MGI:97486"
+          "label": "Pax2",
+          "objects": [ "MP:0003675", "MP:0003675, MP:0003675, MP:0011382, MP:0011366, MP:0010097, MP:0012536, MP:0003558, MP:0004729, MP:0009113, MP:0006090, MP:0001325, MP:0001325, MP:0006309,
+MP:0004017, MP:0012533, MP:0004505, MP:0004505, MP:0004505, MP:0003938, MP:0006089, MP:0010986, MP:0009846, MP:0006032, MP:0003672, MP:0001948, MP:0010980, MP:0003586,
+MP:0003584, MP:0000534, MP:0003626"]
+        },
+        {
+          id: "MGI:95819"
+          label: "Grin1"
+          objects: ["MP:0001435", "MP:0001405", "MP:0002797", "MP:0001386", "MP:0001901", "MP:0001901", "MP:0001901", "MP:0001901", "MP:0001901", "MP:0002906", "MP:0004811", "MP:0001900",
+"MP:0009748", "MP:0008428", "MP:0008428", "MP:0008428"]
+        }
+      ]
+    }
+    </pre>
+    """
+    return semsimian().multi_compare(request)
 
 @router.get("/search/{termset}/{group}")
 def _search(
     termset: str = Path(..., title="Termset to search"),
     group: SemsimSearchGroup = Path(..., title="Group of entities to search within (e.g. Human Genes)"),
     limit: int = Query(default=10, ge=1, le=50),
-):
+) -> List[SemsimSearchResult]:
     """Search for terms in a termset
 
     <b>Args:</b> <br>
@@ -112,7 +134,7 @@ def _search(
 
 
 @router.post("/search")
-def _post_search(request: SemsimSearchRequest):
+def _post_search(request: SemsimSearchRequest) -> SemsimSearchResult:
     """
         Search for terms in a termset <br>
         <br>
