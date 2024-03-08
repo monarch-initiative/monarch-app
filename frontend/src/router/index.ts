@@ -144,11 +144,11 @@ export const routes: RouteRecordRaw[] = [
     component: asyncRoute("node/PageNode"),
   },
 
-  /** phenogrid iframe widget page */
+  /** phenogrid compare iframe widget page */
   {
-    path: "/phenogrid",
+    path: "/phenogrid-search",
     name: "Phenogrid",
-    component: asyncRoute("explore/PagePhenogrid"),
+    component: asyncRoute("explore/PagePhenogridSearch"),
     meta: { bare: true },
   },
 
@@ -156,7 +156,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/phenogrid-multi-compare",
     name: "PhenogridMultiCompare",
-    component: asyncRoute("explore/PagePhenogridMulti"),
+    component: asyncRoute("explore/PagePhenogridMulticompare"),
     meta: { bare: true },
   },
 

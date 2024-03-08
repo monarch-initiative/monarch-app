@@ -8,26 +8,26 @@
     <AppHeading>Testbed</AppHeading>
   </AppSection>
 
-  <!-- multicompare phenogrid test component -->
+  <!-- phenogrid -->
   <AppSection>
-    <AppHeading>MultiCompare Phenogrid</AppHeading>
+    <AppHeading>Phenogrid - Search mode</AppHeading>
     <iframe
-      title="MultiCompare Phenogrid"
+      title="Phenogrid"
       frameBorder="0"
-      src="/phenogrid-multi-compare?source=HP:0002616,HP:0001763,HP:0004944,HP:0010749,HP:0001533,HP:0002020,HP:0012450&target_label=Target%20Label%201&target_label=Target%20Label%202&target_label=Target%20Label%203&target=HP:0002616,HP:0001763,HP:0000767,HP:0000023,HP:0002108,HP:0000490,HP:0000545,HP:0100785,HP:0000268&target=HP:0002616,HP:0001763,HP:0004944,HP:0010749,HP:0001533,HP:0002020,HP:0012450,HP:0003394,HP:0003771,HP:0012378,HP:0001278,HP:0002827,HP:0002829,HP:0002999,HP:0003010&target=HP:0002616,HP:0001763,HP:0000767,HP:0000023,HP:0002108,HP:0000490,HP:0000545,HP:0100785,HP:0000268,HP:0001634,HP:0001653,HP:0001659,HP:0002360,HP:0003179,HP:0004970,HP:0005059,HP:0002705,HP:0012432,HP:0007800,HP:0001704"
+      src="/phenogrid-search?subjects=HP:0000939,HP:0000444,HP:0000546,HP:0000135&object-group=Human+Diseases"
     ></iframe>
+
+    <AppButton text="Send Message" @click="sendMessage" />
   </AppSection>
 
   <!-- phenogrid -->
   <AppSection>
-    <AppHeading>Phenogrid</AppHeading>
+    <AppHeading>Phenogrid - Multicompare mode</AppHeading>
     <iframe
-      title="Phenogrid"
+      title="MultiCompare Phenogrid"
       frameBorder="0"
-      src="/phenogrid?source=HP:0000939,HP:0000444,HP:0000546,HP:0000135&target_set=Human+Diseases"
+      src="/phenogrid-multi-compare?subjects=HP:0002616,HP:0001763,HP:0004944,HP:0010749,HP:0001533,HP:0002020,HP:0012450&objects=HP:0002616,HP:0001763,HP:0000767,HP:0000023,HP:0002108,HP:0000490,HP:0000545,HP:0100785,HP:0000268&objects=HP:0002616,HP:0001763,HP:0004944,HP:0010749,HP:0001533,HP:0002020,HP:0012450,HP:0003394,HP:0003771,HP:0012378,HP:0001278,HP:0002827,HP:0002829,HP:0002999,HP:0003010&objects=HP:0002616,HP:0001763,HP:0000767,HP:0000023,HP:0002108,HP:0000490,HP:0000545,HP:0100785,HP:0000268,HP:0001634,HP:0001653,HP:0001659,HP:0002360,HP:0003179,HP:0004970,HP:0005059,HP:0002705,HP:0012432,HP:0007800,HP:0001704"
     ></iframe>
-
-    <AppButton text="Send Message" @click="sendMessage" />
   </AppSection>
 
   <!-- custom icons -->
@@ -216,14 +216,14 @@ function sendMessage() {
   if (!iframe) return;
   iframe.contentWindow?.postMessage(
     {
-      source: [
+      subjects: [
         "MP:0010771",
         "MP:0002169",
         "MP:0005391",
         "MP:0005389",
         "MP:0005367",
       ],
-      target: ["HP:0004325", "HP:0000093", "MP:0006144"],
+      "object-group": "Human Genes",
     },
     "*",
   );

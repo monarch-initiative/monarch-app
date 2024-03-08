@@ -24,7 +24,7 @@ import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { isEmpty } from "lodash";
 import { useEventListener } from "@vueuse/core";
-import { compareSetToGroup, type Group } from "@/api/phenotype-explorer";
+import { compareSetToSets } from "@/api/phenotype-explorer";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
 import TheSnackbar from "@/components/TheSnackbar.vue";
 import { useQuery } from "@/util/composables";
@@ -32,8 +32,8 @@ import { useQuery } from "@/util/composables";
 /** route info */
 const route = useRoute();
 
-const aPhenotypes = ref<string[]>([]);
-const bGroup = ref<Group>("Human Diseases");
+const aPhenotypes = ref<Parameters<typeof compareSetToSets>[0]>([]);
+const bPhenotypes = ref<Parameters<typeof compareSetToSets>[1]>([]);
 
 /** comparison analysis */
 const {
@@ -43,25 +43,29 @@ const {
   isError,
 } = useQuery(
   async function () {
-    return await compareSetToGroup(aPhenotypes.value, bGroup.value);
+    return await compareSetToSets(aPhenotypes.value, bPhenotypes.value);
   },
 
   /** default value */
-  { summary: [], phenogrid: { cols: [], rows: [], cells: {}, unmatched: [] } },
+  { phenogrid: { cols: [], rows: [], cells: {}, unmatched: [] } },
 );
 
 /** re-rerun analysis when inputs change */
-watch([aPhenotypes, bGroup], runAnalysis);
+watch([aPhenotypes, bPhenotypes], runAnalysis);
 
 /** get input phenotype sets from url params */
 watch(
   () => route.query,
   () => {
-    const { source = "", target = "" } = route.query;
+    let { subjects = "", objects = "" } = route.query;
+    const flatTarget = [objects].flat();
 
-    if (source && typeof source === "string")
-      aPhenotypes.value = source.split(",");
-    if (target && typeof target === "string") bGroup.value = target as Group;
+    if (subjects && typeof subjects === "string")
+      aPhenotypes.value = subjects.split(",");
+    if (objects)
+      bPhenotypes.value = flatTarget.filter(Boolean).map((object) => ({
+        phenotypes: object?.split(",") || [],
+      }));
 
     runAnalysis();
   },
@@ -70,9 +74,9 @@ watch(
 
 /** get input phenotype sets from parent window message */
 useEventListener("message", (event: MessageEvent) => {
-  if ("source" in event.data && "target" in event.data) {
-    aPhenotypes.value = event.data.source;
-    bGroup.value = event.data.target;
+  if ("subjects" in event.data && "objects" in event.data) {
+    aPhenotypes.value = event.data.subjects;
+    bPhenotypes.value = event.data.objects;
   }
 });
 

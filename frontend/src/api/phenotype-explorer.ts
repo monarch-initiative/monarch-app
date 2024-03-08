@@ -140,39 +140,22 @@ export type Group = (typeof groups)[number];
 /** compare a set of phenotypes to several other sets of phenotypes */
 export const compareSetToSets = async (
   subjects: string[],
-  objects: string[][],
-  labels: string[],
+  objects: { id?: string; label?: string; phenotypes: string[] }[],
 ) => {
   /** make request */
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   headers.append("Accept", "application/json");
-  //  const body = { subjects: subjects, objects: objects };
-  //  const options = { method: "GET", headers, body: stringify(body) };
-
-  // TODO: this could be prettier
-  let objectsString = "";
-  for (let i = 0; i < objects.length; i++) {
-    objectsString += "objects=" + objects[i].join(",") + "&";
-  }
+  const body = { subjects, objects };
+  const options = { method: "POST", headers, body: stringify(body) };
 
   /** make query */
-  const url = `${apiUrl}/semsim/multicompare/${subjects.join(
-    ",",
-  )}?${objectsString}`;
-  const response = await request<TermSetPairwiseSimilarity[]>(url, {});
+  const url = `${apiUrl}/semsim/multicompare`;
+  const response = await request<TermSetPairwiseSimilarity[]>(url, {}, options);
 
-  // If the labels array isn't the same length, just fill in with numbered labels for now
-  if (!labels || labels.length !== objects.length) {
-    labels = new Array();
-    for (let i = 0; i < response.length; i++) {
-      labels.push("Set " + i);
-    }
-  }
-
-  let cols: Phenogrid["cols"] = labels.map((label) => ({
-    id: label,
-    label: label,
+  let cols: Phenogrid["cols"] = objects.map((object) => ({
+    id: object.id || "",
+    label: object.label || "",
     total: 0,
   }));
 

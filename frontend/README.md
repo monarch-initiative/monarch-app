@@ -77,14 +77,14 @@ Defaults to `false`.
 
 ## Phenogrid
 
-The page at `monarchinitiative.org/phenogrid` provides a widget embeddable on any site via an `<iframe>`.
+The pages at `monarchinitiative.org/phenogrid-search` and `monarchinitiative.org/phenogrid-multicompare` provide a widget embeddable on any site via an `<iframe>`.
 The widget displays a visual comparison between two sets of phenotypes, and calculates the most and least similar pairs.
 
 Include the widget on your page like so:
 
 ```html
 <iframe
-  src="https://monarchinitiative.org/phenogrid?PARAM=VALUE&PARAM=VALUE&PARAM=VALUE"
+  src="https://monarchinitiative.org/phenogrid-MODE?PARAM=VALUE&PARAM=VALUE&PARAM=VALUE"
   title="Phenogrid"
   frameborder="0"
 ></iframe>
@@ -92,11 +92,21 @@ Include the widget on your page like so:
 
 ### Parameters
 
-The widget accepts several URL parameters:
+The widget accepts several URL parameters that depend on the mode of operation.
+See `src/api/phenotype-explorer.ts` groups for enumerated options.
 
-- `source` - Comma-separated list of "source" phenotype IDs (set A).
-- `target` - "target" group of phenotypes to compare to (group B).
-  See `src/api/phenotype-explorer.ts` groups for enumerated options.
+Search:
+
+- `subjects` - Comma-separated list of "subject" phenotype IDs (set A).
+- `object-group` - "object" group of phenotypes to compare to (group B).
+
+Multi-compare:
+
+- `subjects` - Comma-separated list of "subject" phenotype IDs (set A).
+- `objects`- Multiple comma-separated lists of "object" phenotype IDs (B sets).
+
+Any mode:
+
 - `stylesheet` - A URI-encoded URL to a stylesheet that will be applied to the widget, for the purposes of matching its styles to your webpage.
 
 ### Events
@@ -112,10 +122,14 @@ Provide input phenotype lists to the widget when they might be [too long for a U
 const iframe = document.querySelector("iframe");
 // send it a message
 iframe.contentWindow.postMessage(
-  { source: ["HP:123,HP:456"], target: "Human Diseases" },
+  { 
+    subjects: ["HP:123,HP:456"], 
+    "object-group": "Human Diseases"
+  },
   "*",
 );
 ```
+
 
 #### Emits `MessageEvent<{ width: number; height: number; }>`
 
