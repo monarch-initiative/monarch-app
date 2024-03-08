@@ -122,25 +122,28 @@ Provide input phenotype lists to the widget when they might be [too long for a U
 const iframe = document.querySelector("iframe");
 // send it a message
 iframe.contentWindow.postMessage(
-  { 
-    subjects: ["HP:123,HP:456"], 
-    "object-group": "Human Diseases"
+  {
+    subjects: ["HP:123,HP:456"],
+    "object-group": "Human Diseases",
   },
   "*",
 );
 ```
 
-
-#### Emits `MessageEvent<{ width: number; height: number; }>`
+#### Emits `MessageEvent<{ name: string; width: number; height: number; }>`
 
 Emitted when the size of the widget changes and on load.
-Useful for setting the dimensions of your iframe container, for example:
+Useful for setting the dimensions of your iframe container.
+Passes back the name attribute of the iframe that emitted the event.
+Example:
 
 ```js
 window.addEventListener("message", (event) => {
-  const iframe = document.querySelector("iframe");
-  iframe.style.maxWidth = event.data.width + "px";
-  iframe.style.maxHeight = event.data.height + "px";
+  const { name, width, height } = event.data;
+  const iframe = document.querySelector(`iframe[name='${name}']`);
+  if (!iframe) return;
+  iframe.style.maxWidth = width + "px";
+  iframe.style.maxHeight = height + "px";
 });
 ```
 

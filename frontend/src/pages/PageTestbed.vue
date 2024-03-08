@@ -12,6 +12,7 @@
   <AppSection>
     <AppHeading>Phenogrid - Search mode</AppHeading>
     <iframe
+      name="pheno-search"
       title="Phenogrid"
       frameBorder="0"
       src="/phenogrid-search?subjects=HP:0000939,HP:0000444,HP:0000546,HP:0000135&object-group=Human+Diseases"
@@ -24,6 +25,7 @@
   <AppSection>
     <AppHeading>Phenogrid - Multicompare mode</AppHeading>
     <iframe
+      name="pheno-multi"
       title="MultiCompare Phenogrid"
       frameBorder="0"
       src="/phenogrid-multi-compare?subjects=HP:0002616,HP:0001763,HP:0004944,HP:0010749,HP:0001533,HP:0002020,HP:0012450&objects=HP:0002616,HP:0001763,HP:0000767,HP:0000023,HP:0002108,HP:0000490,HP:0000545,HP:0100785,HP:0000268&objects=HP:0002616,HP:0001763,HP:0004944,HP:0010749,HP:0001533,HP:0002020,HP:0012450,HP:0003394,HP:0003771,HP:0012378,HP:0001278,HP:0002827,HP:0002829,HP:0002999,HP:0003010&objects=HP:0002616,HP:0001763,HP:0000767,HP:0000023,HP:0002108,HP:0000490,HP:0000545,HP:0100785,HP:0000268,HP:0001634,HP:0001653,HP:0001659,HP:0002360,HP:0003179,HP:0004970,HP:0005059,HP:0002705,HP:0012432,HP:0007800,HP:0001704"
@@ -202,11 +204,20 @@ const icons = Object.values(import.meta.glob("@/assets/icons/*.svg")).map(
 /** test phenogrid iframe embedding */
 useEventListener(
   "message",
-  (event: MessageEvent<{ width: number; height: number }>) => {
-    const iframe = document.querySelector<HTMLIFrameElement>("iframe");
+  (
+    event: MessageEvent<{
+      name: string;
+      width: number;
+      height: number;
+    }>,
+  ) => {
+    const { width, height, name } = event.data;
+    const iframe = document.querySelector<HTMLIFrameElement>(
+      `iframe[name='${name}']`,
+    );
     if (!iframe) return;
-    iframe.style.maxWidth = event.data.width + "px";
-    iframe.style.maxHeight = event.data.height + "px";
+    iframe.style.maxWidth = width + "px";
+    iframe.style.maxHeight = height + "px";
   },
 );
 
@@ -368,7 +379,7 @@ const log = console.info;
 <style lang="scss" scoped>
 iframe {
   width: 100%;
-  height: 600px;
+  height: 2000px;
 }
 
 .icons {

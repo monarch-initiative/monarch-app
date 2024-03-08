@@ -535,7 +535,7 @@ async function emitSize() {
   let height = element.clientHeight + 2;
   await frame();
   element.classList.remove("full-size");
-  window.parent.postMessage({ width, height }, "*");
+  window.parent.postMessage({ name: window.name, width, height }, "*");
 }
 </script>
 
@@ -547,8 +547,10 @@ async function emitSize() {
 
 .full-size {
   width: max-content !important;
+  min-width: 0 !important;
   max-width: unset !important;
   height: max-content !important;
+  min-height: 0 !important;
   max-height: unset !important;
   margin: auto;
 }
