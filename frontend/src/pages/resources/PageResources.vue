@@ -24,12 +24,10 @@
   <AppSection width="big">
     <AppHeading> Flagship Products </AppHeading>
     <AppGallery>
-      <template
-        v-for="(category, categoryIndex) in resources"
-        :key="resourceIndex"
-      >
+      <template v-for="category in resources" :key="category">
         <AppTile
           v-for="(resource, resourceIndex) in category"
+          :key="resourceIndex"
           :to="resource.link"
           :icon="resource.icon"
           :title="resource.name"
