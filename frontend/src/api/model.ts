@@ -140,18 +140,6 @@ export interface Association {
     stage_qualifier_closure_label?: string[],
 };
 
-export interface CompactAssociation {
-    category?: string,
-    subject: string,
-    /** The name of the subject entity */
-    subject_label?: string,
-    predicate: string,
-    object: string,
-    /** The name of the object entity */
-    object_label?: string,
-    negated?: boolean,
-};
-
 export interface AssociationCount extends FacetValue {
     category?: string,
     label: string,
@@ -175,6 +163,18 @@ export interface AssociationResults extends Results {
     offset: number,
     /** total number of items matching a query */
     total: number,
+};
+
+export interface CompactAssociation {
+    category?: string,
+    subject: string,
+    /** The name of the subject entity */
+    subject_label?: string,
+    predicate: string,
+    object: string,
+    /** The name of the object entity */
+    object_label?: string,
+    negated?: boolean,
 };
 
 export interface CompactAssociationResults extends Results {

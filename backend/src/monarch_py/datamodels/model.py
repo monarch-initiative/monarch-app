@@ -176,6 +176,16 @@ class Association(ConfiguredBaseModel):
     )
 
 
+class AssociationCountList(ConfiguredBaseModel):
+    """
+    Container class for a list of association counts
+    """
+
+    items: List[AssociationCount] = Field(
+        default_factory=list, description="""A collection of items, with the type to be overriden by slot_usage"""
+    )
+
+
 class CompactAssociation(ConfiguredBaseModel):
 
     category: Optional[str] = Field(None)
@@ -185,16 +195,6 @@ class CompactAssociation(ConfiguredBaseModel):
     object: str = Field(...)
     object_label: Optional[str] = Field(None, description="""The name of the object entity""")
     negated: Optional[bool] = Field(None)
-
-
-class AssociationCountList(ConfiguredBaseModel):
-    """
-    Container class for a list of association counts
-    """
-
-    items: List[AssociationCount] = Field(
-        default_factory=list, description="""A collection of items, with the type to be overriden by slot_usage"""
-    )
 
 
 class AssociationTypeMapping(ConfiguredBaseModel):
@@ -766,8 +766,8 @@ class SemsimSearchResult(ConfiguredBaseModel):
 # Model rebuild
 # see https://pydantic-docs.helpmanual.io/usage/models/#rebuilding-a-model
 Association.model_rebuild()
-CompactAssociation.model_rebuild()
 AssociationCountList.model_rebuild()
+CompactAssociation.model_rebuild()
 AssociationTypeMapping.model_rebuild()
 DirectionalAssociation.model_rebuild()
 ExpandedCurie.model_rebuild()
