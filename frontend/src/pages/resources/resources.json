@@ -1,7 +1,7 @@
 {
   "Standards": [
     {
-      "description": "The Phenopacket Schema is an ISO-endorsed open standard for sharing disease and phenotype information.",
+      "description": "An ISO-endorsed open standard for sharing disease and phenotype information.",
       "icon": "resource-phenopackets",
       "link": "http://phenopackets.org/",
       "name": "Phenopackets"
@@ -9,19 +9,19 @@
   ],
   "Ontologies": [
     {
-      "description": "The HPO provides a standardized vocabulary of phenotypic abnormalities in human disease.",
+      "description": "Provides a standardized vocabulary of phenotypic abnormalities in human disease.",
       "icon": "resource-hpo",
       "link": "https://hpo.jax.org/app/",
       "name": "HPO"
     },
     {
-      "description": "The Mondo Disease Ontology aims to harmonizes disease definitions across the world.",
+      "description": "Aims to harmonize disease definitions across the world.",
       "icon": "resource-mondo",
       "link": "https://mondo.monarchinitiative.org/",
       "name": "Mondo"
     },
     {
-      "description": "The Uberon Anatomy Ontology is an integrated cross-species anatomy ontology.",
+      "description": "An integrated cross-species anatomy ontology.",
       "icon": "resource-uberon",
       "link": "https://obophenotype.github.io/uberon/",
       "name": "Uberon Anatomy Ontology"
@@ -29,13 +29,13 @@
   ],
   "Tools": [
     {
-      "description": "The Exomiser is a tool for finding potential disease-causing variants in whole-exome or whole-genome sequencing data.",
+      "description": "A tool for finding potential disease-causing variants in whole-exome or whole-genome sequencing data.",
       "icon": "resource-exomiser",
       "link": "https://exomiser.monarchinitiative.org/exomiser/",
       "name": "Exomiser"
     },
     {
-      "description": "The Monarch Monarch Knowledge Graph & Services integrates gene, disease, and phenotype data across species.",
+      "description": "Integrates gene, disease, and phenotype data across species.",
       "icon": "resource-monarch",
       "link": "https://monarchinitiative.org/",
       "name": "Monarch Knowledge Graph & Services"
