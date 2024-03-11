@@ -1,4 +1,5 @@
 # Monarch Frontend
+The monarch-app Frontend is a javascript/typescript app built on the Node.js using Bun for package management. It is developed using the Vue 3 framework and built to be deployed using 
 
 This project was scaffolded using Vite (`bun create vite` → `Vue` → `create-vue`).
 
