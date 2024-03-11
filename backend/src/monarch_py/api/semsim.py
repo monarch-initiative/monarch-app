@@ -21,7 +21,7 @@ def autocomplete(
         default="*:*",
         title="Query string to autocomplete against",
         examples=["fanc", "ehler"],
-    )
+    ),
 ) -> SearchResults:
     """
     Autocomplete for semantic similarity lookups, prioritizes entities which have direct phenotype associations.
@@ -87,31 +87,31 @@ def _post_compare(request: SemsimCompareRequest):
 
 # add a multicompare post endpoint
 @router.post("/multicompare")
-def _post_multicompare(request: SemsimMultiCompareRequest) -> List[SemsimSearchResult]:
+def _post_multicompare(request: SemsimMultiCompareRequest):
     """
-        Pairwise similarity between two sets of terms <br>
-        <br>
-        Example: <br>
-    <pre>
-{
-  "subjects": [ "HP:0002616", "HP:0001763", "HP:0004944", "HP:0010749", "HP:0001533", "HP:0002020", "HP:0012450", "HP:0003394", "HP:0003771", "HP:0012378", "HP:0001278", "HP:0002827",
-"HP:0002829", "HP:0002999", "HP:0003010"],
-  "object_entities": [
+            Pairwise similarity between two sets of terms <br>
+            <br>
+            Example: <br>
+        <pre>
     {
-      "id": "MGI:97486"
-      "label": "Pax2",
-      "objects": [ "MP:0003675", "MP:0003675", "MP:0003675", "MP:0011382", "MP:0011366", "MP:0010097", "MP:0012536", "MP:0003558", "MP:0004729", "MP:0009113", "MP:0006090", "MP:0001325", "MP:0001325", "MP:0006309",
-"MP:0004017", "MP:0012533", "MP:0004505", "MP:0004505", "MP:0004505"]
-    },
-    {
-      id: "MGI:95819"
-      label: "Grin1"
-      objects: ["MP:0001435", "MP:0001405", "MP:0002797", "MP:0001386", "MP:0001901", "MP:0001901", "MP:0001901", "MP:0001901", "MP:0001901", "MP:0002906", "MP:0004811", "MP:0001900",
-"MP:0009748", "MP:0008428", "MP:0008428", "MP:0008428"]
+      "subjects": [ "HP:0002616", "HP:0001763", "HP:0004944", "HP:0010749", "HP:0001533", "HP:0002020", "HP:0012450", "HP:0003394", "HP:0003771", "HP:0012378", "HP:0001278", "HP:0002827",
+    "HP:0002829", "HP:0002999", "HP:0003010"],
+      "object_entities": [
+        {
+          "id": "MGI:97486",
+          "label": "Pax2",
+          "objects": [ "MP:0003675", "MP:0003675", "MP:0003675", "MP:0011382", "MP:0011366", "MP:0010097", "MP:0012536", "MP:0003558", "MP:0004729", "MP:0009113", "MP:0006090", "MP:0001325", "MP:0001325", "MP:0006309",
+    "MP:0004017", "MP:0012533", "MP:0004505", "MP:0004505", "MP:0004505"]
+        },
+        {
+          "id": "MGI:95819",
+          "label": "Grin1",
+          "objects": ["MP:0001435", "MP:0001405", "MP:0002797", "MP:0001386", "MP:0001901", "MP:0001901", "MP:0001901", "MP:0001901", "MP:0001901", "MP:0002906", "MP:0004811", "MP:0001900",
+    "MP:0009748", "MP:0008428", "MP:0008428", "MP:0008428"]
+        }
+      ]
     }
-  ]
-}
-    </pre>
+        </pre>
     """
     return semsimian().multi_compare(request)
 
@@ -121,7 +121,7 @@ def _search(
     termset: str = Path(..., title="Termset to search"),
     group: SemsimSearchGroup = Path(..., title="Group of entities to search within (e.g. Human Genes)"),
     limit: int = Query(default=10, ge=1, le=50),
-) -> List[SemsimSearchResult]:
+):
     """Search for terms in a termset
 
     <b>Args:</b> <br>
@@ -138,7 +138,7 @@ def _search(
 
 
 @router.post("/search")
-def _post_search(request: SemsimSearchRequest) -> SemsimSearchResult:
+def _post_search(request: SemsimSearchRequest):
     """
         Search for terms in a termset <br>
         <br>
