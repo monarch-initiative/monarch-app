@@ -4,7 +4,7 @@ import requests
 from pydantic import BaseModel
 
 from monarch_py.api.additional_models import SemsimMultiCompareRequest
-from monarch_py.datamodels.model import TermSetPairwiseSimilarity, SemsimSearchResult, SearchResult, Entity
+from monarch_py.datamodels.model import TermSetPairwiseSimilarity, SemsimSearchResult, Entity
 
 
 class SemsimianService(BaseModel):
@@ -17,7 +17,7 @@ class SemsimianService(BaseModel):
     def convert_tsps_data(self, data):
         """Convert to a format that can be coerced into a TermSetPairwiseSimilarity model
 
-        FIXME: currently, the response returned from semsimian_server doesn't
+        TODO: currently, the response returned from semsimian_server doesn't
         100% match the TermSetPairwiseSimilarity model, so we perform some
         transformations below. once it does, we can remove all the code below
         and just return TermSetPairwiseSimilarity(**data)
@@ -43,7 +43,7 @@ class SemsimianService(BaseModel):
         }
         return converted_data
 
-    def compare(self, subjects: List[str], objects: List[str]):
+    def compare(self, subjects: List[str], objects: List[str]) -> TermSetPairwiseSimilarity:
         host = f"http://{self.semsim_server_host}:{self.semsim_server_port}"
         path = f"compare/{','.join(subjects)}/{','.join(objects)}"
         url = f"{host}/{path}"
@@ -54,20 +54,21 @@ class SemsimianService(BaseModel):
         results = self.convert_tsps_data(data)
         return TermSetPairwiseSimilarity(**results)
 
-    def multi_compare(self, request: SemsimMultiCompareRequest) -> SemsimSearchResult:
-
+    def multi_compare(self, request: SemsimMultiCompareRequest) -> List[SemsimSearchResult]:
+        comparison_results = [
+            self.compare(request.subjects, object_entity.objects) for object_entity in request.object_entities
+        ]
         results = [
             SemsimSearchResult(
                 subject=Entity(id=object_entity.id, name=object_entity.label),
-                score=object_entity.average_similarity,
-                similarity=self.compare(request.subjects, object_entity.objects)
+                score=comparison_result.average_score,
+                similarity=comparison_result,
             )
-            for object_entity in request.object_entities
+            for object_entity, comparison_result in zip(request.object_entities, comparison_results)
         ]
-
         return results
 
-    def search(self, termset: List[str], prefix: str, limit: int):
+    def search(self, termset: List[str], prefix: str, limit: int) -> List[SemsimSearchResult]:
         host = f"http://{self.semsim_server_host}:{self.semsim_server_port}"
         path = f"search/{','.join(termset)}/{prefix}?limit={limit}"
         url = f"{host}/{path}"
