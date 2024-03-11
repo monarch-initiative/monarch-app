@@ -8,7 +8,7 @@
     <TheNexus v-if="home" />
 
     <!-- title bar -->
-    <div class="title" :title="app.version">
+    <div class="title">
       <!-- logo image and text -->
       <AppLink
         v-tooltip="home ? '' : 'Homepage'"
@@ -81,7 +81,6 @@ import { onClickOutside } from "@vueuse/core";
 import TheLogo from "@/assets/TheLogo.vue";
 import TabSearch from "@/pages/explore/TabSearch.vue";
 import TheNexus from "./TheNexus.vue";
-import app from "../../package.json";
 
 /** route info */
 const route = useRoute();
