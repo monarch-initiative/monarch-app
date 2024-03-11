@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Path, Query
-from typing import List
 
 from monarch_py.api.additional_models import (
     SemsimCompareRequest,
@@ -10,7 +9,7 @@ from monarch_py.api.additional_models import (
 from monarch_py.api.config import semsimian, solr
 from monarch_py.api.utils.similarity_utils import parse_similarity_prefix
 from monarch_py.datamodels.category_enums import AssociationPredicate, EntityCategory
-from monarch_py.datamodels.model import SearchResults, SemsimSearchResult
+from monarch_py.datamodels.model import SearchResults
 
 router = APIRouter(tags=["semsim"], responses={404: {"description": "Not Found"}})
 

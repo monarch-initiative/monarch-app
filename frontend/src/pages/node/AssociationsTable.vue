@@ -56,7 +56,6 @@
     </template>
 
     <template #frequency="{ row }">
-
       <AppNodeBadge
         v-if="row.frequency_qualifier"
         :node="{
@@ -68,11 +67,8 @@
       <span v-else-if="row.has_count && row.has_total">
         {{ row.has_count }}/{{ row.has_total }}
       </span>
-      <span v-else-if="row.has_percentage">
-        {{ row.has_percentage }}%
-      </span>
+      <span v-else-if="row.has_percentage"> {{ row.has_percentage }}% </span>
       <span v-else class="empty">No info</span>
-
     </template>
 
     <!-- button to show details -->
@@ -216,9 +212,7 @@ const cols = computed((): Cols<Datum> => {
     });
 
   /** phenotype specific columns */
-  if (
-    props.category.label === "Phenotypes"
-  ) {
+  if (props.category.label === "Phenotypes") {
     extraCols.push(
       {
         slot: "frequency",
