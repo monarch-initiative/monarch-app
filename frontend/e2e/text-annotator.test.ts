@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { log } from "../playwright.config";
+/** https://github.com/microsoft/playwright/issues/23662 */
 import example from "../src/pages/explore/text-annotator.json";
 
 log();

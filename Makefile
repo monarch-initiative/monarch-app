@@ -71,8 +71,8 @@ install-backend:
 .PHONY: install-frontend
 install-frontend:
 	cd frontend && \
-		yarn install && \
-		npx playwright install
+		bun install && \
+		bunx playwright install
 
 
 .PHONY: model
@@ -134,7 +134,7 @@ test-backend:
 .PHONY: test-frontend
 test-frontend: 
 	cd frontend && \
-		yarn test
+		bun run test
 
 
 ### Development ###
@@ -142,7 +142,7 @@ test-frontend:
 .PHONY: dev-frontend
 dev-frontend: frontend/src/api/model.ts
 	cd frontend && \
-		VITE_API=local yarn dev
+		VITE_API=local bun run dev
 
 
 .PHONY: dev-api
@@ -190,7 +190,7 @@ lint: lint-frontend lint-backend
 .PHONY: lint-frontend
 lint-frontend: 
 	cd frontend && \
-		yarn test:lint
+		bun run test:lint
 
 
 .PHONY: lint-backend
@@ -212,4 +212,4 @@ format-backend:
 .PHONY: format-frontend
 format-frontend:
 	cd frontend && \
-		yarn lint
+		bun run lint
