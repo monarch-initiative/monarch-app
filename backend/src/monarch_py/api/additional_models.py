@@ -36,12 +36,12 @@ class SemsimCompareRequest(BaseModel):
 class SemsimMultiCompareObject(BaseModel):
     id: Optional[str] = Field(None, title="ID of the object set")
     label: str = Field(..., title="Label of the object set")
-    objects: List[str] = Field(..., title="List of object for comparison")
+    phenotypes: List[str] = Field(..., title="List of object for comparison")
 
 
 class SemsimMultiCompareRequest(BaseModel):
     subjects: List[str] = Field(..., title="List of subjects for comparison")
-    object_entities: List[SemsimMultiCompareObject] = Field(..., title="List of object sets for comparison")
+    object_sets: List[SemsimMultiCompareObject] = Field(..., title="List of object sets for comparison")
 
 
 class SemsimSearchRequest(BaseModel):

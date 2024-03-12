@@ -56,15 +56,15 @@ class SemsimianService(BaseModel):
 
     def multi_compare(self, request: SemsimMultiCompareRequest) -> List[SemsimSearchResult]:
         comparison_results = [
-            self.compare(request.subjects, object_entity.objects) for object_entity in request.object_entities
+            self.compare(request.subjects, object_set.phenotypes) for object_set in request.object_sets
         ]
         results = [
             SemsimSearchResult(
-                subject=Entity(id=object_entity.id, name=object_entity.label),
+                subject=Entity(id=object_set.id, name=object_set.label),
                 score=comparison_result.average_score,
                 similarity=comparison_result,
             )
-            for object_entity, comparison_result in zip(request.object_entities, comparison_results)
+            for object_set, comparison_result in zip(request.object_sets, comparison_results)
         ]
         return results
 
