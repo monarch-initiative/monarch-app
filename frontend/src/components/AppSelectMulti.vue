@@ -148,6 +148,7 @@ import { computed, nextTick, ref, watch } from "vue";
 import { isEqual, uniqueId } from "lodash";
 import { useFloating } from "@/composables/use-floating";
 import { wrap } from "@/util/math";
+import type AppButton from "./AppButton.vue";
 
 type Props = {
   /** two-way bound selected items state */
@@ -192,12 +193,16 @@ const original = ref<number[]>([]);
 const highlighted = ref(0);
 
 /** anchor element */
-const anchor = ref();
+const anchor = ref<InstanceType<typeof AppButton> | HTMLButtonElement>();
 /** dropdown element */
-const dropdown = ref();
+const dropdown = ref<HTMLDivElement>();
 /** get dropdown position */
 const { calculate, style } = useFloating(
-  computed(() => anchor.value?.button || anchor.value),
+  computed(() =>
+    anchor.value && "button" in anchor.value
+      ? anchor.value.button
+      : anchor.value,
+  ),
   dropdown,
 );
 /** recompute position after opened */
@@ -332,13 +337,11 @@ watch(
 watch(selected, () => emit("update:modelValue", getModel()), { deep: true });
 
 /** when highlighted index changes */
-watch(
-  highlighted,
-  () =>
-    /** scroll to highlighted in dropdown */
-    document
-      .querySelector(`#option-${id}-${highlighted.value} > *`)
-      ?.scrollIntoView({ block: "nearest" }),
+watch(highlighted, () =>
+  /** scroll to highlighted in dropdown */
+  document
+    .querySelector(`#option-${id}-${highlighted.value} > *`)
+    ?.scrollIntoView({ block: "nearest" }),
 );
 
 /** are all options selected */

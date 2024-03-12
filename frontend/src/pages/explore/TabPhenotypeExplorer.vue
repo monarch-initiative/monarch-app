@@ -309,7 +309,7 @@ const bPhenotypes = useParam<Options>("b-set", arrayParam(optionParam()), []);
 const bGeneratedFrom = ref<GeneratedFrom>({});
 
 /** element reference */
-const aBox = ref<{ runSearch: (value: string) => void }>();
+const aBox = ref<InstanceType<typeof AppSelectTags>>();
 
 /**
  * get % for showing ring. use asymptotic function limited to 1 so we don't need

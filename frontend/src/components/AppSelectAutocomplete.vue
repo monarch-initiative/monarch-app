@@ -12,7 +12,7 @@
     <!-- select box -->
     <AppTextbox
       :id="`select-${id}`"
-      ref="target"
+      ref="anchor"
       v-model="search"
       class="box"
       icon="magnifying-glass"
@@ -257,13 +257,13 @@ const {
   [],
 );
 
-/** target element */
-const target = ref();
+/** anchor element */
+const anchor = ref<InstanceType<typeof AppTextbox>>();
 /** dropdown element */
-const dropdown = ref();
+const dropdown = ref<HTMLDivElement>();
 /** get dropdown position */
 const { calculate, style } = useFloating(
-  computed(() => target.value?.textbox),
+  computed(() => anchor.value?.textbox),
   dropdown,
   true,
 );

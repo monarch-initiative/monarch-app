@@ -161,7 +161,7 @@ async function onFocus() {
   if (!props.focusExplore) return;
 
   /** navigate to explore page */
-  await router.push({ ...route, name: "Explore" });
+  await router.push("/explore");
   /** refocus box */
   const input = await waitFor<HTMLInputElement>("input");
   input?.focus();

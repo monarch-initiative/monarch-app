@@ -369,6 +369,7 @@ import { frame } from "@/util/debug";
 import { screenToSvgCoords, truncateBySize } from "@/util/dom";
 import { downloadSvg } from "@/util/download";
 import { copyToClipboard } from "@/util/string";
+import type AppFlex from "./AppFlex.vue";
 
 type Props = {
   data: Phenogrid;
@@ -387,7 +388,7 @@ const marginTop = 400;
 const marginBottom = 20;
 
 /** element refs */
-const container = ref<{ element: HTMLDivElement }>();
+const container = ref<InstanceType<typeof AppFlex>>();
 const scroll = ref<HTMLDivElement>();
 const svg = ref<SVGSVGElement>();
 

@@ -41,7 +41,7 @@ def test_parse_association_counts(association_counts_response, association_count
 def test_parse_association_table(association_table_response, association_table, node):
     association_table_response["response"]["numFound"] = association_table_response["response"].pop("num_found")
     solr_response = SolrQueryResult(**association_table_response)
-    parsed = parse_association_table(solr_response, entity=Node(**node).id, offset=0, limit=5).model_dump()
+    parsed = parse_association_table(solr_response, entity=[Node(**node).id], offset=0, limit=5).model_dump()
     assert (
         parsed == association_table
     ), f"Parsed result is not as expected. Difference: {dict_diff(parsed, association_table)}"

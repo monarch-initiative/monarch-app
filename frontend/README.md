@@ -1,16 +1,16 @@
 # Monarch Frontend
 
-This project was scaffolded using Vite (`yarn create vite` → `Vue` → `create-vue`) with the following options:
+This project was scaffolded using Vite (`bun create vite` → `Vue` → `create-vue`).
 
+Stack summary:
+
+- Bun (for runtime and package manager, see note below)
 - TypeScript (for type checking)
 - Vue Router (for SPA navigation)
 - Vitest (unit testing)
 - Playwright (e2e testing)
 - ESLint (code quality)
 - Prettier (code formatting)
-
-Techniques/approaches used:
-
 - Vue 3
 - Composition API
 - `<script setup lang="ts">` syntax
@@ -18,31 +18,40 @@ Techniques/approaches used:
 
 ## Requirements
 
-- Node `v18` or later
-- Yarn `v1` (classic)
+- [Bun](bun.sh)
+
+Bun is used as a drop-in replacement for Node (non-browser JavaScript runtime environment) and Yarn (package manager).
+It is _not_ yet used as a replacement for Vite (dev previewing, bundling, building) or Vitest (test runner).
+
+This makes one less thing for developers to install.
+It also should make installs (which impact GitHub Actions quota) much faster, and anything that runs locally (like Vite and Vitest) a bit faster as well.
+
+Anything that works in Node should also work in Bun, per Bun's stated goals.
+Do not use Bun-specific APIs.
+If there is ever a problem with Bun, switching back to Node should be as simple as replacing "bun" with "node"/"yarn" and "bunx" with "npx" in commands.
 
 ## Commands
 
-| Command                  | Description                               |
-| ------------------------ | ----------------------------------------- |
-| `yarn install`           | Install packages                          |
-| `yarn dev`               | Start local dev server with hot-reloading |
-| `yarn build`             | Build production version of app           |
-| `yarn preview`           | Serve built version of app                |
-| `yarn lint`              | Check linting and formatting, _and fix_   |
-| `yarn test`              | Run all tests below sequentially          |
-| `yarn test:types`        | Type-check codebase                       |
-| `yarn test:lint`         | Check linting and formatting              |
-| `yarn test:unit`         | Run unit tests with Vitest                |
-| `npx playwright install` | Install browsers for Playwright           |
-| `yarn test:e2e`          | Run e2e (and Axe) tests with Playwright   |
+| Command                   | Description                               |
+| ------------------------- | ----------------------------------------- |
+| `bun install`             | Install packages                          |
+| `bun run dev`             | Start local dev server with hot-reloading |
+| `bun run build`           | Build production version of app           |
+| `bun run preview`         | Serve built version of app                |
+| `bun run lint`            | Check linting and formatting, _and fix_   |
+| `bun run test`            | Run all tests below sequentially          |
+| `bun run test:types`      | Type-check codebase                       |
+| `bun run test:lint`       | Check linting and formatting              |
+| `bun run test:unit`       | Run unit tests with Vitest                |
+| `bunx playwright install` | Install browsers for Playwright           |
+| `bun run test:e2e`        | Run e2e (and Axe) tests with Playwright   |
 
 Custom e2e commands:
 
 ```
-yarn test:e2e example.spec.ts
-yarn test:e2e --project=chromium
-yarn test:e2e --debug
+bun run test:e2e example.spec.ts
+bun run test:e2e --project=chromium
+bun run test:e2e --debug
 ```
 
 ## Flags
@@ -55,7 +64,7 @@ For example, add `?flag=value` to a URL like `monarchinitiative.org/?unrelated-p
 
 Environment variable flags can be used to set/override a setting at "compile time", when building the web app.
 These flags always have to be prefixed with `VITE_`.
-For example, set an env var before a command like `VITE_FLAG=value yarn dev`, or add it to `.env` or `.env.local` like `VITE_FLAG=value`.
+For example, set an env var before a command like `VITE_FLAG=value bun dev`, or add it to `.env` or `.env.local` like `VITE_FLAG=value`.
 
 **`api`**
 

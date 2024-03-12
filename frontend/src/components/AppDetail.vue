@@ -4,7 +4,6 @@
 
 <template>
   <AppFlex
-    ref="cell"
     align-h="left"
     direction="col"
     gap="small"

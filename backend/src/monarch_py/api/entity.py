@@ -60,6 +60,11 @@ def _association_table(
         examples=["biolink:DiseaseToPhenotypicFeatureAssociation"],
     ),
     query: str = Query(default=None, title="query string to limit results to a subset", examples=["thumb"]),
+    traverse_orthologs: bool = Query(
+        default=False,
+        title="Traverse orthologs to get associations",
+        examples=[True, False],
+    ),
     sort: List[str] = Query(
         default=None,
         title="Sort results by a list of field + direction statements",
@@ -90,7 +95,13 @@ def _association_table(
         AssociationResults: Association table data for the specified entity and association type
     """
     response = solr().get_association_table(
-        entity=id, category=category, q=query, sort=sort, offset=pagination.offset, limit=pagination.limit
+        entity=id,
+        category=category,
+        q=query,
+        traverse_orthologs=traverse_orthologs,
+        sort=sort,
+        offset=pagination.offset,
+        limit=pagination.limit,
     )
     if download is True:
         string_response = (

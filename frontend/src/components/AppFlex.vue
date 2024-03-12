@@ -62,7 +62,7 @@ const alignItems = computed(() =>
   props.direction === "col" ? alignMap[props.alignH] : alignMap[props.alignV],
 );
 
-const element = ref();
+const element = ref<HTMLDivElement>();
 
 defineExpose({ element });
 </script>

@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQuery
 from monarch_py.datamodels.category_enums import AssociationPredicate
@@ -7,24 +7,24 @@ from monarch_py.utils.utils import escape
 
 
 def build_association_query(
-    category: List[str] = None,
-    subject: List[str] = None,
-    subject_closure: str = None,
-    subject_category: List[str] = None,
-    subject_namespace: List[str] = None,
-    subject_taxon: List[str] = None,
-    predicate: List[str] = None,
-    object: List[str] = None,
-    object_closure: str = None,
-    object_category: List[str] = None,
-    object_namespace: List[str] = None,
-    object_taxon: List[str] = None,
-    entity: List[str] = None,
+    category: Optional[List[str]] = None,
+    subject: Optional[List[str]] = None,
+    subject_closure: Optional[str] = None,
+    subject_category: Optional[List[str]] = None,
+    subject_namespace: Optional[List[str]] = None,
+    subject_taxon: Optional[List[str]] = None,
+    predicate: Optional[List[str]] = None,
+    object: Optional[List[str]] = None,
+    object_closure: Optional[str] = None,
+    object_category: Optional[List[str]] = None,
+    object_namespace: Optional[List[str]] = None,
+    object_taxon: Optional[List[str]] = None,
+    entity: Optional[List[str]] = None,
     direct: bool = False,
-    q: str = None,
-    sort: List[str] = None,
-    facet_fields: List[str] = None,
-    facet_queries: List[str] = None,
+    q: Optional[str] = None,
+    sort: Optional[List[str]] = None,
+    facet_fields: Optional[List[str]] = None,
+    facet_queries: Optional[List[str]] = None,
     offset: int = 0,
     limit: int = 20,
 ) -> SolrQuery:
@@ -78,7 +78,7 @@ def build_association_query(
 
 
 def build_association_table_query(
-    entity: str, category: str, q: str = None, offset: int = 0, limit: int = 5, sort: List[str] = None
+    entity: List[str], category: str, q: Optional[str] = None, offset: int = 0, limit: int = 5, sort: List[str] = None
 ) -> SolrQuery:
     if sort is None:
         sort = [
@@ -90,7 +90,7 @@ def build_association_table_query(
         ]
 
     query = build_association_query(
-        entity=[entity],
+        entity=entity,
         category=[category],
         q=q,
         sort=sort,
@@ -127,7 +127,7 @@ def build_histopheno_query(subject_closure: str) -> SolrQuery:
 
 def build_multi_entity_association_query(
     entity: str,
-    counterpart_category: str = None,
+    counterpart_category: Optional[str] = None,
     # predicate: List[str] = None,
     offset: int = 0,
     limit: int = 20,
@@ -152,7 +152,7 @@ def build_search_query(
     facet_fields: List[str] = None,
     facet_queries: List[str] = None,
     filter_queries: List[str] = None,
-    sort: str = None,
+    sort: Optional[str] = None,
 ) -> SolrQuery:
     query = SolrQuery(start=offset, rows=limit, sort=sort)
     query.q = q
@@ -177,7 +177,7 @@ def build_search_query(
 def build_autocomplete_query(
     q: str, category: List[str] = None, prioritized_predicates: List[AssociationPredicate] = None
 ) -> SolrQuery:
-    query = SolrQuery(q=q, limit=10, start=0)
+    query = SolrQuery(q=q, rows=10, start=0)
     query.q = q
     if category:
         query.add_filter_query(" OR ".join(f'category:"{cat}"' for cat in category))
@@ -189,11 +189,11 @@ def build_autocomplete_query(
 
 
 def build_mapping_query(
-    entity_id: List[str] = None,
-    subject_id: List[str] = None,
-    predicate_id: List[str] = None,
-    object_id: List[str] = None,
-    mapping_justification: List[str] = None,
+    entity_id: Optional[List[str]] = None,
+    subject_id: Optional[List[str]] = None,
+    predicate_id: Optional[List[str]] = None,
+    object_id: Optional[List[str]] = None,
+    mapping_justification: Optional[List[str]] = None,
     offset: int = 0,
     limit: int = 20,
 ) -> SolrQuery:
@@ -212,7 +212,7 @@ def build_mapping_query(
 
 
 def build_grounding_query(text: str) -> SolrQuery:
-    query = SolrQuery(q=text, limit=10, start=0)
+    query = SolrQuery(q=text, rows=10, start=0)
     query.q = f'"{text}"'  # quoting so that the complete text is matched as a unit
     # rather than _t (text) or _ac (autocomplete/starts-with), just use keyword fields
     query.query_fields = (
@@ -251,7 +251,7 @@ def entity_predicate_boost(prioritized_predicates: List[AssociationPredicate], m
     return ",".join(boosts)
 
 
-def category_boost(category: str, multiplier: float, taxon: str = None) -> str:
+def category_boost(category: str, multiplier: float, taxon: Optional[str] = None) -> str:
     if taxon:
         return f'if(and(termfreq(in_taxon,"{taxon}"),termfreq(category,"{category}")),{multiplier},1)'
     else:

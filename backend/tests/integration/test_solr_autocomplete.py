@@ -26,4 +26,5 @@ def test_autocomplete(q, should_return):
 
     names = [x.name for x in response.items]
     names.extend([x.symbol for x in response.items if x.symbol])
+    print(names)
     assert should_return in names

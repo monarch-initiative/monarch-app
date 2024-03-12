@@ -74,6 +74,7 @@ import {
 } from "@vueuse/core";
 import { firstInView } from "@/util/dom";
 import AppCheckbox from "./AppCheckbox.vue";
+import type AppFlex from "./AppFlex.vue";
 
 type Entries = {
   section: HTMLElement | null;
@@ -94,7 +95,7 @@ const oneAtATime = ref(false);
 const active = ref(0);
 
 /** table of contents panel element */
-const toc = ref<HTMLElement>();
+const toc = ref<InstanceType<typeof AppFlex>>();
 
 /** listen for close event */
 useEventListener(window, "closetoc", () => (expanded.value = false));
