@@ -14,6 +14,7 @@
     <AppLink
       v-if="link"
       :to="'#' + link"
+      :replace="true"
       class="anchor"
       :aria-label="'Link to this section'"
     >

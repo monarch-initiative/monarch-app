@@ -24,7 +24,7 @@ import Apex from "vue3-apexcharts";
 import type { ApexOptions } from "apexcharts";
 import { getHistoPheno } from "@/api/histopheno";
 import type { Node } from "@/api/model";
-import { useQuery } from "@/util/composables";
+import { useQuery } from "@/composables/use-query";
 
 /** route info */
 const route = useRoute();
