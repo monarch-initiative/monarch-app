@@ -16,9 +16,6 @@ The Monarch Initiative is an extensive knowledge graph and ecosystem of tools ma
   - [Backend](#backend)
   - [Frontend](#frontend)
 - [Deploying Monarch](#deploying-monarch)
-  - [Deploying to Dev](#deploying-to-dev)
-  - [Deploying to Beta](#deploying-to-beta)
-  - [Deploying to Prod](#deploying-to-prod)
 
 # Useful Links
 - [Documentation](https://monarch-initiative.github.io/monarch-documentation/) - In addition, to the documentation here, we have a separate documentation site that is automatically generated from the codebase.
@@ -88,11 +85,13 @@ Once these commands are run you should have a working version of the Monarch App
 *Note*: You may have to resolve some permissions issues with solr in order to download and start monarch solr.
 
 #### Testing
-In order to perform testing a few more steps may be needed. 
+In order to perform testing a few more steps may be needed.
 
 ## Backend
-For detailed information on running the backend please refer to the README.md and CONTRIBUTING.md file in the backend directory. Additional information 
+For detailed information on running the backend please refer to the README.md and CONTRIBUTING.md file in the backend directory. Additional information can be find in the [documentation]()
 
 ## Frontend
 
+# Deploying to Monarch
 
+For documentation on deploying to monarch please see the [online documentation]

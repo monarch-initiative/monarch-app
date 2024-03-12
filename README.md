@@ -5,7 +5,6 @@ The Monarch Initiative is an extensive knowledge graph and ecosystem of tools ma
 We welcome the contributions of the community to help us maintain and improve the knowledge graph and the tools that use it. To help get started on contributing to the Monarch Initiative, please see our CONTRIBUTING.md file.
 
 # Monarch App
-
 [![documentation](https://img.shields.io/badge/-Documentation-purple?logo=read-the-docs&logoColor=white&style=for-the-badge)](https://monarch-initiative.github.io/monarch-documentation/)  
 ![](https://github.com/monarch-initiative/monarch-app/actions/workflows/test-backend.yaml/badge.svg)
 ![](https://github.com/monarch-initiative/monarch-app/actions/workflows/test-frontend.yaml/badge.svg)
@@ -15,7 +14,9 @@ We welcome the contributions of the community to help us maintain and improve th
 [**⭐️⭐️ View the website ⭐️⭐️**](https://next.monarchinitiative.org/)
 
 The monarch-app repo contains the source code for the Monarch Initiative website (a Vue webapp),  
-as well as `monarch-py`, a Python library for interacting with the Monarch Initiative knowledge graph. The `monarch-py` library also includes a FastAPI module that serves as the website's backend. Together, the frontend and backend make up the stack used to deply and run the Monarch Initiative website. 
+as well as `monarch-py`, a Python library for interacting with the Monarch Initiative knowledge graph. The `monarch-py` library also includes a FastAPI module that serves as the website's backend. Together, the frontend and backend make up the stack used to deply and run the Monarch Initiative website.
+
+If you wish to run Monarch-App as a local web application, please install the requirements below and then follow on to the usage section to start the application. Refer to [Using Local Data](#using-local-data) to see how you can run the full Monarch website locally and use your own data store.
 
 
 ### For developers
