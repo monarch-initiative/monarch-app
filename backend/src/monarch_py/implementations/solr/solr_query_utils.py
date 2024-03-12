@@ -82,6 +82,7 @@ def build_association_table_query(
 ) -> SolrQuery:
     if sort is None:
         sort = [
+            "frequency_computed_sortable_float desc",
             "evidence_count desc",
             "subject_label asc",
             "predicate asc",
