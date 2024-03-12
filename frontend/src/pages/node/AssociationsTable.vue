@@ -55,6 +55,22 @@
       />
     </template>
 
+    <template #frequency="{ row }">
+      <AppNodeBadge
+        v-if="row.frequency_qualifier"
+        :node="{
+          id: row.frequency_qualifier,
+          name: row.frequency_qualifier_label,
+        }"
+      />
+
+      <span v-else-if="row.has_count && row.has_total">
+        {{ row.has_count }}/{{ row.has_total }}
+      </span>
+      <span v-else-if="row.has_percentage"> {{ row.has_percentage }}% </span>
+      <span v-else class="empty">No info</span>
+    </template>
+
     <!-- button to show details -->
     <template #details="{ cell, row }">
       <AppButton
@@ -110,8 +126,8 @@ import type { Option } from "@/components/AppSelectSingle.vue";
 import AppTable from "@/components/AppTable.vue";
 import type { Cols, Sort } from "@/components/AppTable.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
+import { useQuery } from "@/composables/use-query";
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
-import { useQuery } from "@/util/composables";
 
 type Props = {
   /** current node */
@@ -196,18 +212,37 @@ const cols = computed((): Cols<Datum> => {
     });
 
   /** phenotype specific columns */
-  if (
-    props.category.label === "biolink:DiseaseToPhenotypicFeatureAssociation"
-  ) {
+  if (props.category.label === "Phenotypes") {
     extraCols.push(
       {
-        key: "frequency_qualifier_label",
+        slot: "frequency",
+        key: "frequency_qualifier",
         heading: "Frequency",
         sortable: true,
       },
+      // {
+      //   key: "has_percentage",
+      //   heading: "Frequency %",
+      //   sortable: true,
+      // },
+      // {
+      //   key: "has_count",
+      //   heading: "Count",
+      //   sortable: true,
+      // },
+      // {
+      //   key: "has_total",
+      //   heading: "Total",
+      //   sortable: true,
+      // },
       {
         key: "onset_qualifier_label",
         heading: "Onset",
+        sortable: true,
+      },
+      {
+        key: "original_subject",
+        heading: "Original Subject",
         sortable: true,
       },
     );
@@ -326,5 +361,9 @@ onMounted(() => queryAssociations(true));
 .details {
   width: 100%;
   min-height: unset !important;
+}
+
+.empty {
+  color: $gray;
 }
 </style>

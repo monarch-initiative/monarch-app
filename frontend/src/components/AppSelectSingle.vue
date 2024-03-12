@@ -97,7 +97,7 @@ export type Options = Option[];
 <script setup lang="ts">
 import { nextTick, ref, watch } from "vue";
 import { uniqueId } from "lodash";
-import { useFloating } from "@/util/composables";
+import { useFloating } from "@/composables/use-floating";
 import { wrap } from "@/util/math";
 
 type Props = {

@@ -26,7 +26,7 @@
       ...routeTo,
       state: mapValues(state, (value) => stringify(value)),
     }"
-    :replace="!!routeTo.hash && !routeTo.path"
+    :replace="replace"
   >
     <!-- use vue router component for relative urls -->
     <slot />
@@ -46,6 +46,8 @@ const router = useRouter();
 type Props = {
   /** location to link to */
   to: string | RouteLocationRaw;
+  /** whether to replace url instead of push */
+  replace?: boolean;
   /**
    * state data to attach on navigation. object/array values get stringified.
    * https://developer.mozilla.org/en-US/docs/Web/API/History/pushState
@@ -56,8 +58,9 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  noIcon: false,
+  replace: false,
   state: undefined,
+  noIcon: false,
 });
 
 const slots = useSlots();
