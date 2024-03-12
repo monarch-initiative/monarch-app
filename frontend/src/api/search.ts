@@ -1,4 +1,3 @@
-import * as url from "url";
 import type { SearchResults } from "@/api/model";
 import { apiUrl, request } from "./index";
 

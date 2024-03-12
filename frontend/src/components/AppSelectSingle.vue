@@ -223,13 +223,11 @@ watch(selected, () => {
 });
 
 /** when highlighted index changes */
-watch(
-  highlighted,
-  () =>
-    /** scroll to highlighted in dropdown */
-    document
-      .querySelector(`#option-${id}-${highlighted.value}`)
-      ?.scrollIntoView({ block: "nearest" }),
+watch(highlighted, () =>
+  /** scroll to highlighted in dropdown */
+  document
+    .querySelector(`#option-${id}-${highlighted.value}`)
+    ?.scrollIntoView({ block: "nearest" }),
 );
 
 /** auto-select first option as fallback */

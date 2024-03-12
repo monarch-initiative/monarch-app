@@ -50,16 +50,14 @@ jobs:
         with:
           fetch-depth: 0 # to get all tags
 
-      - name: Set up Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18"
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v1
 
       - name: Install packages
-        run: yarn install
+        run: bun install
 
       - name: Build app
-        run: yarn build
+        run: bun run build
 
       - name: Generate Image Tag for Frontend Dir
         id: get-tag
