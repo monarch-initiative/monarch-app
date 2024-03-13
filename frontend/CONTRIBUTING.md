@@ -73,19 +73,34 @@ To host the API locally using the backend development in this repo first see fro
 ```
 cd ../backend
 poetry install
-pip install monarch-py
-monarch solr download
-monarch solr start
+poetry run monarch solr download
+```
+*Note* You may need to change permissions on the file in order to install and run the Solr container.
+
+```
+sudo chgrp -R 8983 ~/.data/monarch
+sudo chmod -R g+w ~/.data/monarch
 ```
 
-In a seperate terminal run the API (this will need to stay running will you are using the UI)
+If the permissions are correct you can then run the Solr instance with:
+
+```
+poetry run monarch solr start
+```
+
+In a seperate terminal run the API (this will need to stay running will you are using the UI). Go to monarch-app root and run:
 ```
 make dev-api
 ```
 
+Once the API is properly set up with the above commands you can run the frontend with:
+
 ```
+cd ../frontend
 VITE_API-local bun run dev
 ```
+
+If you run into problems please see the more detailed information in frontend/README.md and forntend/CONTRIBUTING.md
 
 # Monarch Frontend Details
 

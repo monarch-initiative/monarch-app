@@ -32,7 +32,7 @@ monarch solr start
 ```
 
 This will download and then run the monarch Solr image locally on port 8983.  
-\*\* You may need to change permissions on the file in order to install and run the Solr container.
+*Note* You may need to change permissions on the file in order to install and run the Solr container.
 
 ```
 sudo chgrp -R 8983 ~/.data/monarch
