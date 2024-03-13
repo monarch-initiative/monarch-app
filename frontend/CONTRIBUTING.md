@@ -27,7 +27,7 @@ Without additional setup this will use the same FastAPI backend and data source 
 
 # Quick Start
 
-To get started running or testing the frontend environment, install the dependancies then 
+To get started running or testing the frontend environment, install the dependancies then
 
 ## Dependancies
 
@@ -75,7 +75,8 @@ cd ../backend
 poetry install
 poetry run monarch solr download
 ```
-*Note* You may need to change permissions on the file in order to install and run the Solr container.
+
+_Note_ You may need to change permissions on the file in order to install and run the Solr container.
 
 ```
 sudo chgrp -R 8983 ~/.data/monarch
@@ -89,6 +90,7 @@ poetry run monarch solr start
 ```
 
 In a seperate terminal run the API (this will need to stay running will you are using the UI). Go to monarch-app root and run:
+
 ```
 make dev-api
 ```
