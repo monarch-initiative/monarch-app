@@ -13,6 +13,8 @@ The Monarch Initiative is an extensive knowledge graph and ecosystem of tools ma
     - [Other Requirements](#other-requirements)
   - [Getting Started](#getting-started)
   - [Makefile](#makefile)
+  - [Quick Start](#quick-start)
+- [Testing and Development](#testing-and-development)
   - [Backend](#backend)
   - [Frontend](#frontend)
 - [Deploying Monarch](#deploying-monarch)
@@ -25,7 +27,7 @@ The Monarch Initiative is an extensive knowledge graph and ecosystem of tools ma
 
 # Community Guidelines
 
-We welcome you to our community! We seek to provide a welcoming and safe development experience for everyone. Please read our [code of conduct](CODE_OF_CONDUCT.md)
+We welcome you to our community! We seek to provide a welcoming and safe development experience for everyone. Please read our [code of conduct](CODE_OF_CONDUCT.md) and reach out to us if you have any questions. We welcome your input!
 
 # Monarch App
 
@@ -43,13 +45,11 @@ The Monarch Initiative website tool chain has a few requirements that you may ne
 
 - Python - Most of us use Python version 3.10.12 for development and try to be compatible with versions 3.9-3.12.
 - [Poetry](https://python-poetry.org/docs/#installation) - We use Poetry to manage dependencies in `monarch-py`
-- pyenv (suggested) - I recommend using pyenv to manage your Python version within different projects
+- [pyenv](https://github.com/pyenv/pyenv?tab=readme-ov-file#installation) (suggested) - I recommend using pyenv to manage your Python version within different projects
 
 ### Frontend Requirements
 
-- Node - The monarch-app frontend is developed in typescript/javascript using Node.js
-- Yarn - We use yarn for package management in node environment.
-- nvm - I recommend
+- [Bun](https://bun.sh/docs/installation) - Bun is used as a drop-in replacement for Node (non-browser JavaScript runtime environment) and Yarn (package manager). If you already have Node.js installed you Bun will not conflict with your Node.js environment and can be installed as a module. The frontend/CONTRIBUTING.md has simple instructions on how to install Bun.
 
 ### Other Requirements
 
@@ -77,8 +77,9 @@ When the new virtual environment is created, you may want to do some peronal mod
 
 ### Makefile
 
-The monarch-app repo uses a Makefile system to facilitate and simplify some of the development setup and deployment tasks. For detailed information on the build targets and details of implementation please refer to the `Makefile` in the monarch-app directory.
+The monarch-app repo uses a Makefile system to facilitate and simplify some of the development setup and deployment tasks. For detailed information on the build targets and details of implementation please refer to the [Makefile](Makefile) in the monarch-app directory.
 
+### Quick Start
 For a quick-start, once the requirements above are met you can install and launch a working local version of the Monarch App with the following commands.
 
 ```shell
@@ -87,21 +88,21 @@ make install
 monarch solr download
 monarch solr start
 cd frontend
-yarn dev
+bun run dev
 ```
 
 Once these commands are run you should have a working version of the Monarch App running from your local system.
 _Note_: You may have to resolve some permissions issues with solr in order to download and start monarch solr.
 
-#### Testing
-
-In order to perform testing a few more steps may be needed.
+# Testing and Development
 
 ## Backend
 
-For detailed information on running the backend please refer to the [README.md](./backend/README.md) and [CONTRIBUTING.md](./backend/CONTRIBUTING.md) file in the backend directory. Additional information can be find in the [documentation](https://monarch-app.monarchinitiative.org)
+For detailed information the backend please refer to the [README.md](./backend/README.md) and [CONTRIBUTING.md](./backend/CONTRIBUTING.md) file in the backend directory. Additional information can be find in the [documentation](https://monarch-app.monarchinitiative.org)
 
 ## Frontend
+
+More detailed information on frontend development and run options can be found at the [frontend README.md](./frontend/README.md) and [CONTRIBUTING.md](./frontend/CONTRIBUTING.md) files in the frontend directory. Additional information can be found in the [documentation](https://monarch-app.monarchinitiative.org)
 
 # Deploying to Monarch
 
