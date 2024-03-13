@@ -5,8 +5,10 @@ The Monarch Initiative is an extensive knowledge graph and ecosystem of tools ma
 This CONTRIBUTING.md is for the monarch-app backend, also refered to as monarch-py, usable as either a python module or a local CLI
 
 # Useful Links
-- [Documentation](https://monarch-initiative.github.io/monarch-documentation/) - In addition, to the documentation here, we have a separate documentation site that is automatically generated from the codebase.
-- [Monarch App Website](https://next.monarchinitiative.org/) - The Monarch Initiative website, a Vue webapp accessing `monarch-py`, a Python library for interacting with the Monarch Initiative knowledge graph, which includes an optional FastAPI module that serves as the website's backend.
+
+- [Monarch Documentation](https://monarch-initiative.github.io/monarch-documentation/) - In addition to the documentation here, we have a separate documentation site that is automatically generated from the codebase, which encompasses the entire Monarch Initiative ecosystem, as well as the release process and other important information.
+- [Monarch Py Documentation](https://monarch-initiative.github.io/monarch-app/) - The Monarch Py documentation contains information on the Python library for interacting with the Monarch Initiative knowledge graph, as well as the FastAPI module that serves as the website's backend.
+- [Monarch App Website](https://next.monarchinitiative.org/) - The Monarch Initiative website, a Vue web app using `monarch-py` as the backend.
 
 ### Running the API:
 
