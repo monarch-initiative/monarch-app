@@ -56,7 +56,7 @@ $ monarch associations --subject MONDO:0012933 --limit 5
 ### Basic Example - As a Module
 
 ```python
->>> from monarch_py.implementations.solr.solr_implentation import SolrImplementation
+>>> from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 >>> si = SolrImplementation()
 >>> entity = si.get_entity("MONDO:0007947")
 >>> print(entity.name)
