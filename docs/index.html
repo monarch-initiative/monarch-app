@@ -1084,20 +1084,14 @@
 <h1 id="monarch-py">monarch-py</h1>
 <h2 id="introduction">Introduction</h2>
 <p><strong>monarch-py</strong> is a Python library for interacting with and querying the<br />
-Monarch knowledge graph, with implementations for Solr and SQLite backends.  </p>
-<p>This means the same API methods can be used regardless of the implementation.  </p>
-<p>This library provides a collection of interfaces for graph operations such as retrieving entities and browsing associations. </p>
+Monarch knowledge graph, with implementations for Solr and SQLite backends.</p>
+<p>This means the same API methods can be used regardless of the implementation.</p>
+<p>This library provides a collection of interfaces for graph operations such as retrieving entities and browsing associations.</p>
 <h2 id="installation">Installation</h2>
 <p>Requires Python 3.8 or higher</p>
-<p>This library is available via pip or pipx:
-<div class="highlight"><pre><span></span><code>pip<span class="p">|</span>pipx<span class="w"> </span>install<span class="w"> </span>monarch-py<span class="w"> </span>
-</code></pre></div></p>
-<p>A <a href="FastAPI/">FastAPI server</a> is also available as an extra:
-<div class="highlight"><pre><span></span><code>pip<span class="p">|</span>pipx<span class="w"> </span>install<span class="w"> </span>monarch-py<span class="o">[</span>api<span class="o">]</span>
-
-<span class="c1"># The API server gets its own terminal command:</span>
-monarch-api<span class="w"> </span>
-</code></pre></div></p>
+<p>This library is available via pip or pipx:</p>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>monarch-py
+</code></pre></div>
 <h2 id="usage">Usage</h2>
 <p>Full usage instructions <a href="Usage/">here</a></p>
 <h3 id="basic-example-cli">Basic Example - CLI</h3>
@@ -1128,7 +1122,7 @@ $<span class="w"> </span>monarch<span class="w"> </span>associations<span class=
 <span class="o">}</span>
 </code></pre></div>
 <h3 id="basic-example-as-a-module">Basic Example - As a Module</h3>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">monarch_py.implementations.solr.solr_implentation</span> <span class="kn">import</span> <span class="n">SolrImplementation</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">monarch_py.implementations.solr.solr_implementation</span> <span class="kn">import</span> <span class="n">SolrImplementation</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">si</span> <span class="o">=</span> <span class="n">SolrImplementation</span><span class="p">()</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">entity</span> <span class="o">=</span> <span class="n">si</span><span class="o">.</span><span class="n">get_entity</span><span class="p">(</span><span class="s2">&quot;MONDO:0007947&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">entity</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>

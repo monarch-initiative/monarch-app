@@ -1018,22 +1018,20 @@
 
 
 <h1 id="monarch-py-fastapi">Monarch-Py FastAPI</h1>
-<p>An optional FastAPI is also available for browsing the knowledge graph produced by the Monarch Initiative, which wraps the <code>monarch-py</code> library.</p>
-<p>It can be installed as an extra of <code>monarch-py</code> via pip or pipx:
-<div class="highlight"><pre><span></span><code>pip<span class="p">|</span>pipx<span class="w"> </span>install<span class="w"> </span>monarch-py<span class="o">[</span>api<span class="o">]</span>
-</code></pre></div></p>
+<p>A FastAPI is also available for browsing the knowledge graph produced by the Monarch Initiative, which wraps the <code>monarch-py</code> library.</p>
+<p>It is included automatically as part of <code>monarch-py</code> when installed via pip or pipx.</p>
 <h2 id="running-the-api-server">Running the API Server</h2>
-<p>A local development server can be started with the command: 
+<p>A local development server can be started with the command:</p>
 <div class="highlight"><pre><span></span><code>monarch-api
-</code></pre></div></p>
-<p>or using <code>uvicorn</code>:
+</code></pre></div>
+<p>or using <code>uvicorn</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Using uvicorn directly:</span>
 poetry<span class="w"> </span>run<span class="w"> </span>uvicorn<span class="w"> </span>src.monarch_py.api.main:app<span class="w"> </span>--reload
 
 <span class="c1"># Using the Makefile shortcut:</span>
 <span class="nb">cd</span><span class="w"> </span>&lt;path-to&gt;/monarch-app
 make<span class="w"> </span>dev-api
-</code></pre></div></p>
+</code></pre></div>
 <p>The API is then available at <code>http://127.0.0.1:8000/v3/api</code>.</p>
 <p>Swagger documentation is available at <code>http://127.0.0.1:8000/v3/docs</code>,<br />
 and a ReDoc interface at <code>http://127.0.0.1:8000/v3/redoc</code>.</p>
