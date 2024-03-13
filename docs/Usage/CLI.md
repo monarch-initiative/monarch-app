@@ -21,9 +21,10 @@ $ monarch [OPTIONS] COMMAND [ARGS]...
 * `association-table`
 * `associations`: Paginate through associations
 * `autocomplete`: Return entity autcomplete matches for a...
-* `compare`: Compare two entities using semantic...
+* `compare`: Compare two sets of phenotypes using...
 * `entity`: Retrieve an entity by ID
 * `histopheno`: Retrieve the histopheno data for an entity...
+* `mappings`
 * `multi-entity-associations`: Paginate through associations for multiple...
 * `schema`: Print the linkml schema for the data model
 * `search`: Search for entities
@@ -56,7 +57,7 @@ $ monarch association-counts [OPTIONS] [ENTITY]
 **Options**:
 
 * `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: json]
-* `-o, --output TEXT`: The path to the output file
+* `-O, --output TEXT`: The path to the output file
 * `--help`: Show this message and exit.
 
 ## `monarch association-table`
@@ -64,21 +65,23 @@ $ monarch association-counts [OPTIONS] [ENTITY]
 **Usage**:
 
 ```console
-$ monarch association-table [OPTIONS] ENTITY CATEGORY
+$ monarch association-table [OPTIONS] ENTITY CATEGORY:{biolink:PairwiseGeneToGeneInteraction|biolink:GeneToExpressionSiteAssociation|biolink:MacromolecularMachineToBiologicalProcessAssociation|biolink:GeneToPhenotypicFeatureAssociation|biolink:MacromolecularMachineToMolecularActivityAssociation|biolink:MacromolecularMachineToCellularComponentAssociation|biolink:Association|biolink:GeneToGeneHomologyAssociation|biolink:DiseaseToPhenotypicFeatureAssociation|biolink:GeneToPathwayAssociation|biolink:ChemicalToPathwayAssociation|biolink:CorrelatedGeneToDiseaseAssociation|biolink:DiseaseOrPhenotypicFeatureToGeneticInheritanceAssociation|biolink:CausalGeneToDiseaseAssociation}
 ```
 
 **Arguments**:
 
 * `ENTITY`: The entity to get associations for  [required]
-* `CATEGORY`: The association category to get associations for, ex. biolink:GeneToPhenotypicFeatureAssociation  [required]
+* `CATEGORY:{biolink:PairwiseGeneToGeneInteraction|biolink:GeneToExpressionSiteAssociation|biolink:MacromolecularMachineToBiologicalProcessAssociation|biolink:GeneToPhenotypicFeatureAssociation|biolink:MacromolecularMachineToMolecularActivityAssociation|biolink:MacromolecularMachineToCellularComponentAssociation|biolink:Association|biolink:GeneToGeneHomologyAssociation|biolink:DiseaseToPhenotypicFeatureAssociation|biolink:GeneToPathwayAssociation|biolink:ChemicalToPathwayAssociation|biolink:CorrelatedGeneToDiseaseAssociation|biolink:DiseaseOrPhenotypicFeatureToGeneticInheritanceAssociation|biolink:CausalGeneToDiseaseAssociation}`: The association category to get associations for, ex. biolink:GeneToPhenotypicFeatureAssociation  [required]
 
 **Options**:
 
 * `-q, --query TEXT`
+* `-t, --traverse-orthologs`: Whether to traverse orthologs when getting associations
+* `-s, --sort TEXT`
 * `-l, --limit INTEGER`: [default: 5]
 * `--offset INTEGER`: [default: 0]
 * `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: json]
-* `-o, --output TEXT`: The path to the output file
+* `-O, --output TEXT`: The path to the output file
 * `--help`: Show this message and exit.
 
 ## `monarch associations`
@@ -105,12 +108,13 @@ $ monarch associations [OPTIONS]
 
 **Options**:
 
-* `-c, --category TEXT`: Comma-separated list of categories
-* `-s, --subject TEXT`: Comma-separated list of subjects
-* `-p, --predicate TEXT`: Comma-separated list of predicates
-* `-o, --object TEXT`: Comma-separated list of objects
-* `-e, --entity TEXT`: Comma-separated list of entities
+* `-c, --category [biolink:PairwiseGeneToGeneInteraction|biolink:GeneToExpressionSiteAssociation|biolink:MacromolecularMachineToBiologicalProcessAssociation|biolink:GeneToPhenotypicFeatureAssociation|biolink:MacromolecularMachineToMolecularActivityAssociation|biolink:MacromolecularMachineToCellularComponentAssociation|biolink:Association|biolink:GeneToGeneHomologyAssociation|biolink:DiseaseToPhenotypicFeatureAssociation|biolink:GeneToPathwayAssociation|biolink:ChemicalToPathwayAssociation|biolink:CorrelatedGeneToDiseaseAssociation|biolink:DiseaseOrPhenotypicFeatureToGeneticInheritanceAssociation|biolink:CausalGeneToDiseaseAssociation]`: Category to get associations for
+* `-s, --subject TEXT`: Subject ID to get associations for
+* `-p, --predicate [biolink:interacts_with|biolink:expressed_in|biolink:has_phenotype|biolink:enables|biolink:actively_involved_in|biolink:orthologous_to|biolink:located_in|biolink:subclass_of|biolink:participates_in|biolink:acts_upstream_of_or_within|biolink:related_to|biolink:active_in|biolink:part_of|biolink:acts_upstream_of|biolink:has_mode_of_inheritance|biolink:gene_associated_with_condition|biolink:contributes_to|biolink:causes|biolink:colocalizes_with|biolink:acts_upstream_of_or_within_positive_effect|biolink:acts_upstream_of_positive_effect|biolink:acts_upstream_of_or_within_negative_effect|biolink:acts_upstream_of_negative_effect]`: Predicate ID to get associations for
+* `-o, --object TEXT`: Object ID to get associations for
+* `-e, --entity TEXT`: Entity (subject or object) ID to get associations for
 * `-d, --direct`: Whether to exclude associations with subject/object as ancestors
+* `-C, --compact`: Whether to return a compact representation of the associations
 * `-l, --limit INTEGER`: The number of associations to return  [default: 20]
 * `--offset INTEGER`: The offset of the first association to be retrieved  [default: 0]
 * `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: json]
@@ -139,12 +143,12 @@ $ monarch autocomplete [OPTIONS] [Q]
 **Options**:
 
 * `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: json]
-* `-o, --output TEXT`: The path to the output file
+* `-O, --output TEXT`: The path to the output file
 * `--help`: Show this message and exit.
 
 ## `monarch compare`
 
-Compare two entities using semantic similarity via OAK
+Compare two sets of phenotypes using semantic similarity via SemSimian
 
 **Usage**:
 
@@ -160,7 +164,7 @@ $ monarch compare [OPTIONS] SUBJECTS OBJECTS
 **Options**:
 
 * `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: json]
-* `-o, --output TEXT`: The path to the output file
+* `-O, --output TEXT`: The path to the output file
 * `--help`: Show this message and exit.
 
 ## `monarch entity`
@@ -186,7 +190,7 @@ $ monarch entity [OPTIONS] [ID]
 
 * `-e, --extra`: Include extra fields in the output (association_counts and node_hierarchy)
 * `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: json]
-* `-o, --output TEXT`: The path to the output file
+* `-O, --output TEXT`: The path to the output file
 * `--help`: Show this message and exit.
 
 ## `monarch histopheno`
@@ -213,7 +217,28 @@ $ monarch histopheno [OPTIONS] [SUBJECT]
 **Options**:
 
 * `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: json]
-* `-o, --output TEXT`: The path to the output file
+* `-O, --output TEXT`: The path to the output file
+* `--help`: Show this message and exit.
+
+## `monarch mappings`
+
+**Usage**:
+
+```console
+$ monarch mappings [OPTIONS]
+```
+
+**Options**:
+
+* `-e, --entity-id TEXT`: entity ID to get mappings for
+* `-s, --subject-id TEXT`: subject ID to get mappings for
+* `-p, --predicate-id [skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch]`: predicate ID to get mappings for
+* `-o, --object-id TEXT`: object ID to get mappings for
+* `-m, --mapping-justification TEXT`: mapping justification to get mappings for
+* `--offset INTEGER`: The offset of the first mapping to be retrieved  [default: 0]
+* `-l, --limit INTEGER`: The number of mappings to return  [default: 20]
+* `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: json]
+* `-O, --output TEXT`: The path to the output file
 * `--help`: Show this message and exit.
 
 ## `monarch multi-entity-associations`
@@ -241,7 +266,7 @@ $ monarch multi-entity-associations [OPTIONS]
 * `-l, --limit INTEGER`: [default: 20]
 * `--offset INTEGER`: [default: 0]
 * `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: json]
-* `-o, --output TEXT`: The path to the output file
+* `-O, --output TEXT`: The path to the output file
 * `--help`: Show this message and exit.
 
 ## `monarch schema`
@@ -280,14 +305,14 @@ $ monarch search [OPTIONS]
 **Options**:
 
 * `-q, --query TEXT`
-* `-c, --category TEXT`
+* `-c, --category [biolink:Gene|biolink:PhenotypicFeature|biolink:BiologicalProcessOrActivity|biolink:GrossAnatomicalStructure|biolink:Disease|biolink:Pathway|biolink:Cell|biolink:NamedThing|biolink:AnatomicalEntity|biolink:CellularComponent|biolink:MolecularEntity|biolink:BiologicalProcess|biolink:MacromolecularComplex|biolink:MolecularActivity|biolink:Protein|biolink:CellularOrganism|biolink:PhenotypicQuality|biolink:Vertebrate|biolink:Virus|biolink:BehavioralFeature|biolink:LifeStage|biolink:PathologicalProcess|biolink:ChemicalEntity|biolink:Drug|biolink:OrganismTaxon|biolink:SequenceVariant|biolink:SmallMolecule|biolink:InformationContentEntity|biolink:NucleicAcidEntity|biolink:EvidenceType|biolink:GeographicExposure|biolink:RNAProduct|biolink:Transcript|biolink:Fungus|biolink:Plant|biolink:Dataset|biolink:Invertebrate|biolink:PopulationOfIndividualOrganisms|biolink:ProteinFamily|biolink:Activity|biolink:Agent|biolink:ChemicalExposure|biolink:ConfidenceLevel|biolink:EnvironmentalFeature|biolink:Exon|biolink:GeneticInheritance|biolink:Genome|biolink:Genotype|biolink:Haplotype|biolink:Human|biolink:IndividualOrganism|biolink:Mammal|biolink:MaterialSample|biolink:MicroRNA|biolink:Patent|biolink:ProteinDomain|biolink:Publication|biolink:RegulatoryRegion|biolink:Study|biolink:Treatment|biolink:WebPage|biolink:AccessibleDnaRegion|biolink:Article|biolink:Attribute|biolink:Bacterium|biolink:BiologicalEntity|biolink:BiologicalSex|biolink:CellLine|biolink:ChemicalMixture|biolink:CodingSequence|biolink:DatasetDistribution|biolink:DiagnosticAid|biolink:DrugExposure|biolink:EnvironmentalProcess|biolink:Event|biolink:GenotypicSex|biolink:NoncodingRNAProduct|biolink:OrganismalEntity|biolink:PhenotypicSex|biolink:Polypeptide|biolink:Procedure|biolink:ProcessedMaterial|biolink:ReagentTargetedGene|biolink:SiRNA|biolink:Snv|biolink:StudyVariable|biolink:TranscriptionFactorBindingSite|biolink:Zygosity]`
 * `-t, --in-taxon-label TEXT`
 * `-ff, --facet-fields TEXT`
 * `--facet-queries TEXT`
 * `-l, --limit INTEGER`: [default: 20]
 * `--offset INTEGER`: [default: 0]
 * `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: json]
-* `-o, --output TEXT`: The path to the output file
+* `-O, --output TEXT`: The path to the output file
 * `--help`: Show this message and exit.
 
 ## `monarch solr`
@@ -313,6 +338,7 @@ $ monarch solr [OPTIONS] COMMAND [ARGS]...
 * `download`: Download the Monarch Solr KG.
 * `entity`: Retrieve an entity by ID
 * `histopheno`: Retrieve the histopheno associations for a...
+* `mappings`
 * `multi-entity-associations`: Paginate through associations for multiple...
 * `search`: Search for entities
 * `start`: Starts a local Solr container.
@@ -343,7 +369,7 @@ $ monarch solr association-counts [OPTIONS] [ENTITY]
 **Options**:
 
 * `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: json]
-* `-o, --output TEXT`: The path to the output file
+* `-O, --output TEXT`: The path to the output file
 * `--help`: Show this message and exit.
 
 ### `monarch solr association-table`
@@ -351,21 +377,23 @@ $ monarch solr association-counts [OPTIONS] [ENTITY]
 **Usage**:
 
 ```console
-$ monarch solr association-table [OPTIONS] ENTITY CATEGORY
+$ monarch solr association-table [OPTIONS] ENTITY [CATEGORY]:[biolink:PairwiseGeneToGeneInteraction|biolink:GeneToExpressionSiteAssociation|biolink:MacromolecularMachineToBiologicalProcessAssociation|biolink:GeneToPhenotypicFeatureAssociation|biolink:MacromolecularMachineToMolecularActivityAssociation|biolink:MacromolecularMachineToCellularComponentAssociation|biolink:Association|biolink:GeneToGeneHomologyAssociation|biolink:DiseaseToPhenotypicFeatureAssociation|biolink:GeneToPathwayAssociation|biolink:ChemicalToPathwayAssociation|biolink:CorrelatedGeneToDiseaseAssociation|biolink:DiseaseOrPhenotypicFeatureToGeneticInheritanceAssociation|biolink:CausalGeneToDiseaseAssociation]
 ```
 
 **Arguments**:
 
 * `ENTITY`: The entity to get associations for  [required]
-* `CATEGORY`: The association category to get associations for, ex. biolink:GeneToPhenotypicFeatureAssociation  [required]
+* `[CATEGORY]:[biolink:PairwiseGeneToGeneInteraction|biolink:GeneToExpressionSiteAssociation|biolink:MacromolecularMachineToBiologicalProcessAssociation|biolink:GeneToPhenotypicFeatureAssociation|biolink:MacromolecularMachineToMolecularActivityAssociation|biolink:MacromolecularMachineToCellularComponentAssociation|biolink:Association|biolink:GeneToGeneHomologyAssociation|biolink:DiseaseToPhenotypicFeatureAssociation|biolink:GeneToPathwayAssociation|biolink:ChemicalToPathwayAssociation|biolink:CorrelatedGeneToDiseaseAssociation|biolink:DiseaseOrPhenotypicFeatureToGeneticInheritanceAssociation|biolink:CausalGeneToDiseaseAssociation]`: The association category to get associations for, ex. biolink:GeneToPhenotypicFeatureAssociation
 
 **Options**:
 
+* `-t, --traverse-orthologs`: Whether to traverse orthologs when getting associations
 * `-q, --query TEXT`
+* `-s, --sort TEXT`
 * `-l, --limit INTEGER`: [default: 5]
 * `--offset INTEGER`: [default: 0]
 * `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: json]
-* `-o, --output TEXT`: The path to the output file
+* `-O, --output TEXT`: The path to the output file
 * `--help`: Show this message and exit.
 
 ### `monarch solr associations`
@@ -373,16 +401,16 @@ $ monarch solr association-table [OPTIONS] ENTITY CATEGORY
 Paginate through associations
 
 Args:
-    category: A comma-separated list of categories
-    subject: A comma-separated list of subjects
-    predicate: A comma-separated list of predicates
-    object: A comma-separated list of objects
-    entity: A comma-separated list of entities
-    limit: The number of associations to return
-    direct: Whether to exclude associations with subject/object as ancestors
+    category: The category of the association (multi-valued)
+    subject: The subject of the association (multi-valued)
+    predicate: The predicate of the association (multi-valued)
+    object: The object of the association (multi-valued)
+    entity: The entity (subject or object) of the association (multi-valued)
+    limit: The number of associations to return (default 20)
+    direct: Whether to exclude associations with subject/object as ancestors (default False)
     offset: The offset of the first association to be retrieved
-    fmt: The format of the output (json, yaml, tsv, table)
-    output: The path to the output file (stdout if not specified)
+    fmt: The format of the output (json, yaml, tsv, table) (default json)
+    output: The path to the output file (stdout if not specified) (default None)
 
 **Usage**:
 
@@ -392,16 +420,17 @@ $ monarch solr associations [OPTIONS]
 
 **Options**:
 
-* `-c, --category TEXT`: Comma-separated list of categories
-* `-s, --subject TEXT`: Comma-separated list of subjects
-* `-p, --predicate TEXT`: Comma-separated list of predicates
-* `-o, --object TEXT`: Comma-separated list of objects
-* `-e, --entity TEXT`: Comma-separated list of entities
+* `-c, --category [biolink:PairwiseGeneToGeneInteraction|biolink:GeneToExpressionSiteAssociation|biolink:MacromolecularMachineToBiologicalProcessAssociation|biolink:GeneToPhenotypicFeatureAssociation|biolink:MacromolecularMachineToMolecularActivityAssociation|biolink:MacromolecularMachineToCellularComponentAssociation|biolink:Association|biolink:GeneToGeneHomologyAssociation|biolink:DiseaseToPhenotypicFeatureAssociation|biolink:GeneToPathwayAssociation|biolink:ChemicalToPathwayAssociation|biolink:CorrelatedGeneToDiseaseAssociation|biolink:DiseaseOrPhenotypicFeatureToGeneticInheritanceAssociation|biolink:CausalGeneToDiseaseAssociation]`: Category to get associations for
+* `-s, --subject TEXT`: Subject ID to get associations for
+* `-p, --predicate [biolink:interacts_with|biolink:expressed_in|biolink:has_phenotype|biolink:enables|biolink:actively_involved_in|biolink:orthologous_to|biolink:located_in|biolink:subclass_of|biolink:participates_in|biolink:acts_upstream_of_or_within|biolink:related_to|biolink:active_in|biolink:part_of|biolink:acts_upstream_of|biolink:has_mode_of_inheritance|biolink:gene_associated_with_condition|biolink:contributes_to|biolink:causes|biolink:colocalizes_with|biolink:acts_upstream_of_or_within_positive_effect|biolink:acts_upstream_of_positive_effect|biolink:acts_upstream_of_or_within_negative_effect|biolink:acts_upstream_of_negative_effect]`: Predicate ID to get associations for
+* `-o, --object TEXT`: Object ID to get associations for
+* `-e, --entity TEXT`: Entity (subject or object) ID to get associations for
 * `-d, --direct`: Whether to exclude associations with subject/object as ancestors
+* `-C, --compact`: Whether to return a compact representation of the associations
 * `-l, --limit INTEGER`: The number of associations to return  [default: 20]
 * `--offset INTEGER`: The offset of the first association to be retrieved  [default: 0]
 * `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: json]
-* `-o, --output TEXT`: The path to the output file
+* `-O, --output TEXT`: The path to the output file
 * `--help`: Show this message and exit.
 
 ### `monarch solr autocomplete`
@@ -426,7 +455,7 @@ $ monarch solr autocomplete [OPTIONS] [Q]
 **Options**:
 
 * `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: json]
-* `-o, --output TEXT`: The path to the output file
+* `-O, --output TEXT`: The path to the output file
 * `--help`: Show this message and exit.
 
 ### `monarch solr download`
@@ -470,7 +499,7 @@ $ monarch solr entity [OPTIONS] [ID]
 
 * `-e, --extra`: Include extra fields in the output (association_counts and node_hierarchy)
 * `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: json]
-* `-o, --output TEXT`: The path to the output file
+* `-O, --output TEXT`: The path to the output file
 * `--help`: Show this message and exit.
 
 ### `monarch solr histopheno`
@@ -497,7 +526,28 @@ $ monarch solr histopheno [OPTIONS] [SUBJECT]
 **Options**:
 
 * `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: JSON]
-* `-o, --output TEXT`: The path to the output file
+* `-O, --output TEXT`: The path to the output file
+* `--help`: Show this message and exit.
+
+### `monarch solr mappings`
+
+**Usage**:
+
+```console
+$ monarch solr mappings [OPTIONS]
+```
+
+**Options**:
+
+* `-e, --entity-id TEXT`: entity ID to get mappings for
+* `-s, --subject-id TEXT`: subject ID to get mappings for
+* `-p, --predicate-id [skos:exactMatch|skos:closeMatch|skos:broadMatch|skos:narrowMatch]`: predicate ID to get mappings for
+* `-o, --object-id TEXT`: object ID to get mappings for
+* `-m, --mapping-justification TEXT`: mapping justification to get mappings for
+* `--offset INTEGER`: The offset of the first mapping to be retrieved  [default: 0]
+* `-l, --limit INTEGER`: The number of mappings to return  [default: 20]
+* `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: json]
+* `-O, --output TEXT`: The path to the output file
 * `--help`: Show this message and exit.
 
 ### `monarch solr multi-entity-associations`
@@ -525,7 +575,7 @@ $ monarch solr multi-entity-associations [OPTIONS]
 * `-l, --limit INTEGER`: [default: 20]
 * `--offset INTEGER`: [default: 0]
 * `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: json]
-* `-o, --output TEXT`: The path to the output file
+* `-O, --output TEXT`: The path to the output file
 * `--help`: Show this message and exit.
 
 ### `monarch solr search`
@@ -551,15 +601,15 @@ $ monarch solr search [OPTIONS]
 
 **Options**:
 
-* `-q, --query TEXT`
-* `-c, --category TEXT`
+* `-q, --query TEXT`: [default: *:*]
+* `-c, --category [biolink:Gene|biolink:PhenotypicFeature|biolink:BiologicalProcessOrActivity|biolink:GrossAnatomicalStructure|biolink:Disease|biolink:Pathway|biolink:Cell|biolink:NamedThing|biolink:AnatomicalEntity|biolink:CellularComponent|biolink:MolecularEntity|biolink:BiologicalProcess|biolink:MacromolecularComplex|biolink:MolecularActivity|biolink:Protein|biolink:CellularOrganism|biolink:PhenotypicQuality|biolink:Vertebrate|biolink:Virus|biolink:BehavioralFeature|biolink:LifeStage|biolink:PathologicalProcess|biolink:ChemicalEntity|biolink:Drug|biolink:OrganismTaxon|biolink:SequenceVariant|biolink:SmallMolecule|biolink:InformationContentEntity|biolink:NucleicAcidEntity|biolink:EvidenceType|biolink:GeographicExposure|biolink:RNAProduct|biolink:Transcript|biolink:Fungus|biolink:Plant|biolink:Dataset|biolink:Invertebrate|biolink:PopulationOfIndividualOrganisms|biolink:ProteinFamily|biolink:Activity|biolink:Agent|biolink:ChemicalExposure|biolink:ConfidenceLevel|biolink:EnvironmentalFeature|biolink:Exon|biolink:GeneticInheritance|biolink:Genome|biolink:Genotype|biolink:Haplotype|biolink:Human|biolink:IndividualOrganism|biolink:Mammal|biolink:MaterialSample|biolink:MicroRNA|biolink:Patent|biolink:ProteinDomain|biolink:Publication|biolink:RegulatoryRegion|biolink:Study|biolink:Treatment|biolink:WebPage|biolink:AccessibleDnaRegion|biolink:Article|biolink:Attribute|biolink:Bacterium|biolink:BiologicalEntity|biolink:BiologicalSex|biolink:CellLine|biolink:ChemicalMixture|biolink:CodingSequence|biolink:DatasetDistribution|biolink:DiagnosticAid|biolink:DrugExposure|biolink:EnvironmentalProcess|biolink:Event|biolink:GenotypicSex|biolink:NoncodingRNAProduct|biolink:OrganismalEntity|biolink:PhenotypicSex|biolink:Polypeptide|biolink:Procedure|biolink:ProcessedMaterial|biolink:ReagentTargetedGene|biolink:SiRNA|biolink:Snv|biolink:StudyVariable|biolink:TranscriptionFactorBindingSite|biolink:Zygosity]`
 * `-t, --in-taxon-label TEXT`
 * `-ff, --facet-fields TEXT`
 * `--facet-queries TEXT`
 * `-l, --limit INTEGER`: [default: 20]
 * `--offset INTEGER`: [default: 0]
 * `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: json]
-* `-o, --output TEXT`: The path to the output file
+* `-O, --output TEXT`: The path to the output file
 * `--help`: Show this message and exit.
 
 ### `monarch solr start`
@@ -634,6 +684,8 @@ Args:
     predicate: A comma-separated list of predicates
     object: A comma-separated list of objects
     entity: A comma-separated list of entities
+    direct: Whether to exclude associations with subject/object as ancestors
+    compact: Whether to return a compact representation of the associations
     limit: The number of associations to return
     offset: The offset of the first association to be retrieved
     fmt: The format of the output (json, yaml, tsv, table)
@@ -647,12 +699,13 @@ $ monarch sql associations [OPTIONS]
 
 **Options**:
 
-* `-c, --category TEXT`: Comma-separated list of categories
-* `-s, --subject TEXT`: Comma-separated list of subjects
-* `-p, --predicate TEXT`: Comma-separated list of predicates
-* `-o, --object TEXT`: Comma-separated list of objects
-* `-e, --entity TEXT`: Comma-separated list of entities
+* `-c, --category [biolink:PairwiseGeneToGeneInteraction|biolink:GeneToExpressionSiteAssociation|biolink:MacromolecularMachineToBiologicalProcessAssociation|biolink:GeneToPhenotypicFeatureAssociation|biolink:MacromolecularMachineToMolecularActivityAssociation|biolink:MacromolecularMachineToCellularComponentAssociation|biolink:Association|biolink:GeneToGeneHomologyAssociation|biolink:DiseaseToPhenotypicFeatureAssociation|biolink:GeneToPathwayAssociation|biolink:ChemicalToPathwayAssociation|biolink:CorrelatedGeneToDiseaseAssociation|biolink:DiseaseOrPhenotypicFeatureToGeneticInheritanceAssociation|biolink:CausalGeneToDiseaseAssociation]`: Category to get associations for
+* `-s, --subject TEXT`: Subject ID to get associations for
+* `-p, --predicate [biolink:interacts_with|biolink:expressed_in|biolink:has_phenotype|biolink:enables|biolink:actively_involved_in|biolink:orthologous_to|biolink:located_in|biolink:subclass_of|biolink:participates_in|biolink:acts_upstream_of_or_within|biolink:related_to|biolink:active_in|biolink:part_of|biolink:acts_upstream_of|biolink:has_mode_of_inheritance|biolink:gene_associated_with_condition|biolink:contributes_to|biolink:causes|biolink:colocalizes_with|biolink:acts_upstream_of_or_within_positive_effect|biolink:acts_upstream_of_positive_effect|biolink:acts_upstream_of_or_within_negative_effect|biolink:acts_upstream_of_negative_effect]`: Predicate ID to get associations for
+* `-o, --object TEXT`: Object ID to get associations for
+* `-e, --entity TEXT`: Entity (subject or object) ID to get associations for
 * `-d, --direct`: Whether to exclude associations with subject/object as ancestors
+* `-C, --compact`: Whether to return a compact representation of the associations
 * `-l, --limit INTEGER`: The number of associations to return  [default: 20]
 * `--offset INTEGER`: The offset of the first association to be retrieved  [default: 0]
 * `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: json]
