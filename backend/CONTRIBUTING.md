@@ -2,7 +2,7 @@
 
 The Monarch Initiative is an extensive knowledge graph and ecosystem of tools made for the benefit of clinicians, researchers, and scientists. The knowledge graph consists of millions of entities – genes, diseases, phenotypes, and many more – imported from dozens of sources. While we have a core development team, we welcome the contributions of the community to help us maintain and improve the knowledge graph and the tools that use it.
 
-This CONTRIBUTING.md is for the monarch-app backend, also refered to as monarch-py, usable as either a python module or a local CLI
+This CONTRIBUTING.md is for the monarch-app backend, also refered to as monarch-py, usable as either a python module or a local CLI. 
 
 # Useful Links
 
