@@ -4,11 +4,25 @@ The Monarch Initiative is an extensive knowledge graph and ecosystem of tools ma
 
 This CONTRIBUTING.md is a javascript/typescript web app using Bun as a replacement for Node.js (a non-browser JavaScript runtime environment) with the Vite/Vue framework. You can use the monarch-app frontend to query the Monarch KG using the web app locally.
 
-Without additional setup this will use the same FastAPI backend and data source as the website. This is primarily for front-end development of the website UI. If you want to use a local data store review the monarch-app README.md and CONTRIBUTING.md in the top level directory of this repository to understand how to manage the whole stack locally. 
+Without additional setup this will use the same FastAPI backend and data source as the website. This is primarily for front-end development of the website UI. If you want to use a local data store review the monarch-app README.md and CONTRIBUTING.md in the top level directory of this repository to understand how to manage the whole stack locally.
 
 # Useful Links
+
 - [Monarch App Website](https://next.monarchinitiative.org/) - The Monarch Initiative website, a Vue webapp accessing `monarch-py`, a Python library for interacting with the Monarch Initiative knowledge graph, which includes an optional FastAPI module that serves as the website's backend.
 - [Documentation](https://monarch-initiative.github.io/monarch-documentation/) - In addition, to the documentation here, we have a separate documentation site that is automatically generated from the codebase.
+
+# Table of Contents
+
+- [Welcome to the Monarch Initiative](#welcome-to-the-monarch-initiative)
+- [Useful Links](#useful-links)
+- [Monarch Frontend Stack](#monarch-frontend-stack)
+  - [Requirements](#requirements)
+  - [Commands](#commands)
+  - [Flags](#flags)
+  - [Phenogrid](#phenogrid)
+    - [Parameters](#parameters)
+    - [Events](#events)
+  - [Style guidelines](#style-guidelines)
 
 # Monarch Frontend Stack
 
@@ -43,11 +57,13 @@ Do not use Bun-specific APIs.
 If there is ever a problem with Bun, switching back to Node should be as simple as replacing "bun" with "node"/"yarn" and "bunx" with "npx" in commands.
 
 To install Bun with an existing Node.js environment (currently recommended for version/package isolation):
+
 ```
 npm install -g bun
 ```
 
 If you don't have an existing Node.js implementation and want to install Bun globally on your system (requires curl):
+
 ```
 curl -fsSL https://bun.sh/install | bash
 ```
@@ -94,6 +110,12 @@ Which version of the Monarch API to utilize in the frontend, e.g.:
 
 URL param: `monarchinitiative.org/?api=dev`  
 Env var: `VITE_API=local`
+
+For example, to use the an API running local you can run:
+
+```
+VITE_API=local bun run dev
+```
 
 See `src/api/index.ts` for logic.
 
