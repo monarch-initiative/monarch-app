@@ -15,8 +15,9 @@ Without additional setup this will use the same FastAPI backend and data source 
 
 - [Welcome to the Monarch Initiative](#welcome-to-the-monarch-initiative)
 - [Useful Links](#useful-links)
-- [Monarch Frontend Stack](#monarch-frontend-stack)
-  - [Requirements](#requirements)
+- [Quick Start](#quick-start)
+  - [Dependancies](#dependancies)
+- [Monarch Frontend Details](#monarch-frontend-details)
   - [Commands](#commands)
   - [Flags](#flags)
   - [Phenogrid](#phenogrid)
@@ -24,25 +25,11 @@ Without additional setup this will use the same FastAPI backend and data source 
     - [Events](#events)
   - [Style guidelines](#style-guidelines)
 
-# Monarch Frontend Stack
+# Quick Start
 
-The monarch-app Frontend is a javascript/typescript app built on the Node.js using Bun for package management. It is developed using the Vue 3 framework and built to be deployed using
+To get started running or testing the frontend environment, install the dependancies then 
 
-This project was scaffolded using Vite (`bun create vite` → `Vue` → `create-vue`).
-
-- Bun (for runtime and package manager, see note below)
-- TypeScript (for type checking)
-- Vue Router (for SPA navigation)
-- Vitest (unit testing)
-- Playwright (e2e testing)
-- ESLint (code quality)
-- Prettier (code formatting)
-- Vue 3
-- Composition API
-- `<script setup lang="ts">` syntax
-- `<style lang="scss" scoped>` styles
-
-## Requirements
+## Dependancies
 
 - [Bun](bun.sh)
 
@@ -67,6 +54,56 @@ If you don't have an existing Node.js implementation and want to install Bun glo
 ```
 curl -fsSL https://bun.sh/install | bash
 ```
+
+## Run using Monarch Cloud hosted API
+
+To run the frontend using the Monarch Cloud hosted API, you can use the following commands:
+
+```
+bun install
+bun run dev
+```
+
+You should now be able to run the Monarch Web App from your local system using the Monarch Cloud-Hosted FastAPI and the current realease of the Monarch-KG. If you are trying to use self-hosted data please refer to the README.md in the top-level of the monarch-app repository.
+
+## Run using local API from backend
+
+To host the API locally using the backend development in this repo first see frontend/README.md and frontend/CONTRIBUTING.md to ensure dependencies and requirements are met. Once requirements are met you can run the following commands to run the Monarch Web App frontend using the current development backend.
+
+```
+cd ../backend
+poetry install
+pip install monarch-py
+monarch solr download
+monarch solr start
+```
+
+In a seperate terminal run the API (this will need to stay running will you are using the UI)
+```
+make dev-api
+```
+
+```
+VITE_API-local bun run dev
+```
+
+# Monarch Frontend Details
+
+The monarch-app Frontend is a javascript/typescript app built on the Node.js using Bun for package management. It is developed using the Vue 3 framework and built to be deployed using
+
+This project was scaffolded using Vite (`bun create vite` → `Vue` → `create-vue`).
+
+- Bun (for runtime and package manager, see note below)
+- TypeScript (for type checking)
+- Vue Router (for SPA navigation)
+- Vitest (unit testing)
+- Playwright (e2e testing)
+- ESLint (code quality)
+- Prettier (code formatting)
+- Vue 3
+- Composition API
+- `<script setup lang="ts">` syntax
+- `<style lang="scss" scoped>` styles
 
 ## Commands
 
