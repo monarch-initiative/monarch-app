@@ -41,7 +41,7 @@ def autocomplete(
     return response
 
 
-@router.get("/compare/{subjects}/{objects}")
+@router.get("/compare/{subjects}/{objects}/{metric}")
 def _compare(
     subjects: str = Path(..., title="List of subjects for comparison"),
     objects: str = Path(..., title="List of objects for comparison"),
@@ -52,6 +52,7 @@ def _compare(
     <b>Args:</b> <br>
         subjects (str, optional): List of subjects for comparison. Defaults to "". <br>
         objects (str, optional): List of objects for comparison. Defaults to "". <br>
+        metric (str, optional): Similarity metric to use. Defaults to "ancestor_information_content".
 
     <b>Returns:</b> <br>
         TermSetPairwiseSimilarity: Pairwise similarity between subjects and objects
@@ -81,7 +82,8 @@ def _post_compare(request: SemsimCompareRequest):
     <pre>
     {
       "subjects": ["MP:0010771","MP:0002169","MP:0005391","MP:0005389","MP:0005367"],
-      "objects": ["HP:0004325","HP:0000093","MP:0006144"]
+      "objects": ["HP:0004325","HP:0000093","MP:0006144"],
+      "metric": "ancestor_information_content"
     }
     </pre>
     """
@@ -97,6 +99,7 @@ def _post_multicompare(request: SemsimMultiCompareRequest):
             Example: <br>
         <pre>
     {
+      "metric": "ancestor_information_content",
       "subjects": [ "HP:0002616", "HP:0001763", "HP:0004944", "HP:0010749", "HP:0001533", "HP:0002020", "HP:0012450", "HP:0003394", "HP:0003771", "HP:0012378", "HP:0001278", "HP:0002827",
     "HP:0002829", "HP:0002999", "HP:0003010"],
       "object_entities": [
@@ -119,7 +122,7 @@ def _post_multicompare(request: SemsimMultiCompareRequest):
     return semsimian().multi_compare(request)
 
 
-@router.get("/search/{termset}/{group}")
+@router.get("/search/{termset}/{group}/{metric}")
 def _search(
     termset: str = Path(..., title="Termset to search"),
     group: SemsimSearchGroup = Path(..., title="Group of entities to search within (e.g. Human Genes)"),
@@ -131,6 +134,7 @@ def _search(
     <b>Args:</b> <br>
         termset (str, optional): Comma separated list of term IDs to find matches for. <br>
         group (str, optional): Group of entities to search within (e.g. Human Genes) <br>
+        "metric": "ancestor_information_content", <br>
         limit (int, optional): Limit the number of results. Defaults to 10.
 
     <b>Returns:</b> <br>
@@ -151,6 +155,7 @@ def _post_search(request: SemsimSearchRequest):
     {
       "termset": ["HP:0002104", "HP:0012378", "HP:0012378", "HP:0012378"],
       "group": "Human Diseases",
+      "metric": "ancestor_information_content",
       "limit": 5
     }
     </pre>
