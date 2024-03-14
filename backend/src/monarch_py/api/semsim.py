@@ -2,6 +2,7 @@ from fastapi import APIRouter, Path, Query
 
 from monarch_py.api.additional_models import (
     SemsimCompareRequest,
+    SemsimMetric,
     SemsimSearchRequest,
     SemsimSearchGroup,
     SemsimMultiCompareRequest,
@@ -44,6 +45,7 @@ def autocomplete(
 def _compare(
     subjects: str = Path(..., title="List of subjects for comparison"),
     objects: str = Path(..., title="List of objects for comparison"),
+    metric: SemsimMetric = Query(SemsimMetric.RESNIK, title="Similarity metric to use"),
 ):
     """Get pairwise similarity between two sets of terms
 
@@ -59,11 +61,13 @@ def _compare(
     Running semsim compare:
         subjects: {subjects.split(',')}
         objects: {objects.split(',')}
+        metric: {metric}
     """
     )
     results = semsimian().compare(
         subjects=subjects.split(","),
         objects=objects.split(","),
+        metric=metric,
     )
     return results
 
@@ -81,7 +85,7 @@ def _post_compare(request: SemsimCompareRequest):
     }
     </pre>
     """
-    return semsimian().compare(subjects=request.subjects, objects=request.objects)
+    return semsimian().compare(subjects=request.subjects, objects=request.objects, metric=request.metric)
 
 
 # add a multicompare post endpoint
@@ -119,6 +123,7 @@ def _post_multicompare(request: SemsimMultiCompareRequest):
 def _search(
     termset: str = Path(..., title="Termset to search"),
     group: SemsimSearchGroup = Path(..., title="Group of entities to search within (e.g. Human Genes)"),
+    metric: SemsimMetric = Query(SemsimMetric.ANCESTOR_INFORMATION_CONTENT, title="Similarity metric to use"),
     limit: int = Query(default=10, ge=1, le=50),
 ):
     """Search for terms in a termset
@@ -132,7 +137,7 @@ def _search(
         List[str]: List of matching terms
     """
     terms = [term.strip() for term in termset.split(",")]
-    results = semsimian().search(termset=terms, prefix=parse_similarity_prefix(group), limit=limit)
+    results = semsimian().search(termset=terms, prefix=parse_similarity_prefix(group), metric=metric, limit=limit)
     return results
 
 
@@ -151,5 +156,8 @@ def _post_search(request: SemsimSearchRequest):
     </pre>
     """
     return semsimian().search(
-        termset=request.termset, prefix=parse_similarity_prefix(request.group.value), limit=request.limit
+        termset=request.termset,
+        prefix=parse_similarity_prefix(request.group.value),
+        metric=request.metric,
+        limit=request.limit,
     )

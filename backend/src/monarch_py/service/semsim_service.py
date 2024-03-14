@@ -3,7 +3,7 @@ import requests
 
 from pydantic import BaseModel
 
-from monarch_py.api.additional_models import SemsimMultiCompareRequest
+from monarch_py.api.additional_models import SemsimMetric, SemsimMultiCompareRequest
 from monarch_py.datamodels.model import TermSetPairwiseSimilarity, SemsimSearchResult, Entity
 
 
@@ -43,9 +43,11 @@ class SemsimianService(BaseModel):
         }
         return converted_data
 
-    def compare(self, subjects: List[str], objects: List[str]) -> TermSetPairwiseSimilarity:
+    def compare(
+        self, subjects: List[str], objects: List[str], metric: SemsimMetric = SemsimMetric.ANCESTOR_INFORMATION_CONTENT
+    ) -> TermSetPairwiseSimilarity:
         host = f"http://{self.semsim_server_host}:{self.semsim_server_port}"
-        path = f"compare/{','.join(subjects)}/{','.join(objects)}"
+        path = f"compare/{','.join(subjects)}/{','.join(objects)}/{metric}"
         url = f"{host}/{path}"
 
         print(f"Fetching {url}...")
@@ -56,7 +58,8 @@ class SemsimianService(BaseModel):
 
     def multi_compare(self, request: SemsimMultiCompareRequest) -> List[SemsimSearchResult]:
         comparison_results = [
-            self.compare(request.subjects, object_entity.objects) for object_entity in request.object_entities
+            self.compare(request.subjects, object_entity.objects, request.metric)
+            for object_entity in request.object_entities
         ]
         results = [
             SemsimSearchResult(
@@ -68,9 +71,15 @@ class SemsimianService(BaseModel):
         ]
         return results
 
-    def search(self, termset: List[str], prefix: str, limit: int) -> List[SemsimSearchResult]:
+    def search(
+        self,
+        termset: List[str],
+        prefix: str,
+        metric: SemsimMetric = SemsimMetric.ANCESTOR_INFORMATION_CONTENT,
+        limit: int = 10,
+    ) -> List[SemsimSearchResult]:
         host = f"http://{self.semsim_server_host}:{self.semsim_server_port}"
-        path = f"search/{','.join(termset)}/{prefix}?limit={limit}"
+        path = f"search/{','.join(termset)}/{prefix}/{metric}?limit={limit}"
         url = f"{host}/{path}"
 
         print(f"Fetching {url}...")
