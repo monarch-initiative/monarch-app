@@ -19,3 +19,6 @@ scripts/pubs_report.txt
 
 ### Test/Coverage ignore
 .coverage
+
+### IDE ignores
+.vscode/*
