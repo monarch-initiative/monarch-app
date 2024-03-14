@@ -21,7 +21,7 @@ class OutputFormat(str, Enum):
 
 class SemsimMetric(str, Enum):
     ANCESTOR_INFORMATION_CONTENT = "ancestor_information_content"
-    COSINE_SIMILARITY = "cosine_similarity"  # Not implemented
+    # COSINE_SIMILARITY = "cosine_similarity"  # Not implemented
     JACCARD_SIMILARITY = "jaccard_similarity"
     PHENODIGM_SCORE = "phenodigm_score"
 
