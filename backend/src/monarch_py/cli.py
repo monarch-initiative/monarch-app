@@ -7,6 +7,7 @@ import typer
 
 from monarch_py import solr_cli, sql_cli
 from monarch_py.api.config import semsimian
+from monarch_py.api.additional_models import SemsimMetric
 from monarch_py.datamodels.category_enums import (
     AssociationCategory,
     AssociationPredicate,
@@ -315,10 +316,19 @@ def association_table(
     solr_cli.association_table(**locals())
 
 
+### CLI Commands for Semsimian ###
+
+
 @app.command("compare")
 def compare(
     subjects: str = typer.Argument(..., help="Comma separated list of subjects to compare"),
     objects: str = typer.Argument(..., help="Comma separated list of objects to compare"),
+    metric: SemsimMetric = typer.Option(
+        SemsimMetric.ANCESTOR_INFORMATION_CONTENT,
+        "--metric",
+        "-m",
+        help="The metric to use for comparison",
+    ),
     fmt: str = typer.Option(
         "json",
         "--format",
@@ -330,36 +340,11 @@ def compare(
     """Compare two sets of phenotypes using semantic similarity via SemSimian"""
     subjects = subjects.split(",")
     objects = objects.split(",")
-    response = semsimian().compare(subjects, objects)
+    response = semsimian().compare(subjects, objects, metric)
     format_output(fmt, response, output)
 
 
-@app.command("multi-entity-associations")
-def multi_entity_associations(
-    entity: List[str] = typer.Option(None, "--entity", "-e", help="Comma-separated list of entities"),
-    counterpart_category: List[str] = typer.Option(None, "--counterpart-category", "-c"),
-    limit: int = typer.Option(20, "--limit", "-l"),
-    offset: int = typer.Option(0, "--offset"),
-    fmt: str = typer.Option(
-        "json",
-        "--format",
-        "-f",
-        help="The format of the output (json, yaml, tsv, table)",
-    ),
-    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
-):
-    """
-    Paginate through associations for multiple entities
-
-    Args:
-        entity: A comma-separated list of entities
-        counterpart_category: A comma-separated list of counterpart categories
-        limit: The number of associations to return
-        offset: The offset of the first association to be retrieved
-        fmt: The format of the output (json, yaml, tsv, table)
-        output: The path to the output file (stdout if not specified)
-    """
-    solr_cli.multi_entity_associations(**locals())
+### Misc CLI Commands ###
 
 
 @app.command("mappings")

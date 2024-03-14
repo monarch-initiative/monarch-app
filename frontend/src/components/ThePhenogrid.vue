@@ -217,16 +217,16 @@
                   Ancestor IC
                 </AppLink>
                 <span>
-                  {{ cell.score?.toFixed(3) }}
+                  {{ cell.ancestor_information_content?.toFixed(3) }}
                 </span>
                 <AppLink
                   to="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3649640/"
                 >
                   Phenodigm
                 </AppLink>
-                <strong>
+                <span>
                   {{ cell.phenodigm_score?.toFixed(3) }}
-                </strong>
+                </span>
                 <AppLink
                   to="https://incatools.github.io/ontology-access-kit/guide/similarity.html#jaccard-similarity"
                 >
@@ -344,6 +344,7 @@ export type Phenogrid = {
       TermPairwiseSimilarity,
       | "ancestor_id"
       | "ancestor_label"
+      | "ancestor_information_content"
       | "jaccard_similarity"
       | "phenodigm_score"
     >;

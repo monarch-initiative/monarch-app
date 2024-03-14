@@ -74,12 +74,13 @@ const getPhenotypeAssociations = async (id = "") => {
 export const compareSetToSet = async (
   aPhenotypes: string[],
   bPhenotypes: string[],
+  metric: string = "ancestor_information_content",
 ) => {
   /** make request options */
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   headers.append("Accept", "application/json");
-  const body = { subjects: aPhenotypes, objects: bPhenotypes };
+  const body = { subjects: aPhenotypes, objects: bPhenotypes, metric: metric };
   const options = { method: "POST", headers, body: stringify(body) };
 
   /** make query */
@@ -101,6 +102,7 @@ export const compareSetToSet = async (
       ...pick(match.similarity, [
         "ancestor_id",
         "ancestor_label",
+        "ancestor_information_content",
         "jaccard_similarity",
         "phenodigm_score",
       ]),
@@ -141,12 +143,13 @@ export type Group = (typeof groups)[number];
 export const compareSetToGroup = async (
   phenotypes: string[],
   group: (typeof groups)[number],
+  metric: string = "ancestor_information_content",
 ) => {
   /** make request options */
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   headers.append("Accept", "application/json");
-  const body = { termset: phenotypes, group: group };
+  const body = { termset: phenotypes, group: group, metric: metric };
   const options = { method: "POST", headers, body: stringify(body) };
 
   /** make query */
@@ -200,6 +203,7 @@ export const compareSetToGroup = async (
         ...pick(match?.similarity, [
           "ancestor_id",
           "ancestor_label",
+          "ancestor_information_content",
           "jaccard_similarity",
           "phenodigm_score",
         ]),
