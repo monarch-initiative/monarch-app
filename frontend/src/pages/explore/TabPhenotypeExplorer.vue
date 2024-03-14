@@ -61,6 +61,14 @@
       @spread-options="(option, options) => spreadOptions(option, options, 'b')"
     />
 
+    <!-- similarity metric -->
+    <strong>using metric:</strong>
+    <AppSelectSingle
+      v-model="metric"
+      name="Similarity metric"
+      :options="metricOptions"
+    />
+
     <!-- run analysis -->
     <AppButton
       text="Analyze"
@@ -148,16 +156,16 @@
                   Ancestor IC
                 </AppLink>
                 <span>
-                  {{ match.score?.toFixed(3) }}
+                  {{ match.ancestor_information_content?.toFixed(3) }}
                 </span>
                 <AppLink
                   to="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3649640/"
                 >
                   Phenodigm
                 </AppLink>
-                <strong>
+                <span>
                   {{ match.phenodigm_score?.toFixed(3) }}
-                </strong>
+                </span>
                 <AppLink
                   to="https://incatools.github.io/ontology-access-kit/guide/similarity.html#jaccard-similarity"
                 >
@@ -281,6 +289,12 @@ const bModeOptions = [
 /** search group options */
 const bGroupOptions = groups.map((group) => ({ id: group, label: group }));
 
+const metricOptions = [
+  { id: "ancestor_information_content", label: "Ancestor Information Content" },
+  { id: "jaccard_similarity", label: "Jaccard Similarity" },
+  { id: "phenodigm_score", label: "Phenodigm Score" },
+];
+
 /** example data */
 type GeneratedFrom = {
   /** the option (gene/disease/phenotype) that the phenotypes came from */
@@ -307,6 +321,8 @@ const bGroup = useParam("b-group", optionParam(), bGroupOptions[0]);
 const bPhenotypes = useParam<Options>("b-set", arrayParam(optionParam()), []);
 /** "generated from" helpers after selecting gene or disease */
 const bGeneratedFrom = ref<GeneratedFrom>({});
+/** selected metric */
+const metric = ref<Option>(metricOptions[0]);
 
 /** element reference */
 const aBox = ref<InstanceType<typeof AppSelectTags>>();
@@ -380,6 +396,7 @@ const {
     return await compareSetToSet(
       aPhenotypes.value.map(({ id }) => id),
       bPhenotypes.value.map(({ id }) => id),
+      metric.value.id,
     );
   },
 
@@ -407,6 +424,7 @@ const {
     return await compareSetToGroup(
       aPhenotypes.value.map(({ id }) => id),
       bGroup.value.id as Group,
+      metric.value.id,
     );
   },
 
@@ -483,7 +501,9 @@ function description(
 }
 
 /** clear results when inputs are changed to avoid de-sync */
-watch([aPhenotypes, bMode, bGroup, bPhenotypes], clearResults, { deep: true });
+watch([aPhenotypes, bMode, bGroup, bPhenotypes, metric], clearResults, {
+  deep: true,
+});
 
 /** fill in phenotype ids or search from other pages */
 onMounted(() => {
