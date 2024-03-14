@@ -20,6 +20,9 @@
 
   <AppSection>
     <AppHeading>What are you trying to do today?</AppHeading>
+      <AppAccordion text="Search and use information about a gene, disease, or phenotype..." >
+        <TabSearch />
+      </AppAccordion>
     <AppButton
       to="https://obophenotype.github.io/upheno/"
       text="Search and use information about a gene, disease, or phenotype..."
@@ -27,7 +30,7 @@
     />
     <AppButton
       to="https://obophenotype.github.io/upheno/"
-      text="Find phenotypically similar diseases based on a patient's symptoms..."
+      text="Find similar diseases based on a phenotypes or symptoms..."
       icon="arrow-right"
     />
     <AppButton
@@ -66,8 +69,13 @@
     </p>
     <AppButton
       to="https://obophenotype.github.io/upheno/"
-      text="Let's make this button text really really long to see how it looks"
+      text="Let's make this button text really really long to see how it looks, that wasn't nearly long enough... I need to make this a super large amount of text. Now how does it look?"
       icon="arrow-right"
     />
   </AppSection>
 </template>
+
+<script setup lang="ts">
+import AppAccordion from '@/components/AppAccordion.vue'
+import TabSearch from '../explore/TabSearch.vue'
+</script>
