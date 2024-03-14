@@ -45,7 +45,7 @@ def autocomplete(
 def _compare(
     subjects: str = Path(..., title="List of subjects for comparison"),
     objects: str = Path(..., title="List of objects for comparison"),
-    metric: SemsimMetric = Query(SemsimMetric.ANCESTOR_INFORMATION_CONTENT, title="Similarity metric to use"),
+    metric: SemsimMetric = Path(SemsimMetric.ANCESTOR_INFORMATION_CONTENT, title="Similarity metric to use"),
 ):
     """Get pairwise similarity between two sets of terms
 
@@ -126,7 +126,7 @@ def _post_multicompare(request: SemsimMultiCompareRequest):
 def _search(
     termset: str = Path(..., title="Termset to search"),
     group: SemsimSearchGroup = Path(..., title="Group of entities to search within (e.g. Human Genes)"),
-    metric: SemsimMetric = Query(SemsimMetric.ANCESTOR_INFORMATION_CONTENT, title="Similarity metric to use"),
+    metric: SemsimMetric = Path(SemsimMetric.ANCESTOR_INFORMATION_CONTENT, title="Similarity metric to use"),
     limit: int = Query(default=10, ge=1, le=50),
 ):
     """Search for terms in a termset
