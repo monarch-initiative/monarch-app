@@ -8,8 +8,8 @@ import os
 import sys
 from pathlib import Path
 
-from monarch_py.api.semsim import _compare, _search
-from monarch_py.api.additional_models import SemsimSearchGroup
+from monarch_py.api.semsim import _compare, _search, _post_multicompare
+from monarch_py.api.additional_models import SemsimSearchGroup, SemsimMultiCompareObject, SemsimMultiCompareRequest
 from monarch_py.datamodels.category_enums import (
     AssociationCategory,
     AssociationPredicate,
@@ -278,6 +278,20 @@ def main(
         # fixtures['ontologies'] =
         fixtures["phenotype-explorer-compare"] = _compare(
             subjects="MP:0010771,MP:0002169", objects="HP:0004325"
+        )
+        fixtures["phenotype-explorer-multi-compare"] = _post_multicompare(
+            request=SemsimMultiCompareRequest(
+                subjects=["MP:0010771", "MP:0002169"],
+                object_sets=[
+                    SemsimMultiCompareObject(
+                        id="test1", label="Test1", phenotypes=["HP:0004325"]
+                    ),
+                    SemsimMultiCompareObject(
+                        id="test2", label="Test2", phenotypes=["HP:0000093"]
+                    ),
+                ],
+                metric="ancestor_information_content",
+            )
         )
         fixtures["phenotype-explorer-search"] = _search(
             termset="HP:0002104,HP:0012378,HP:0012378,HP:0012378",
