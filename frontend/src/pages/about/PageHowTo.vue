@@ -86,16 +86,4 @@
 import AppAccordion from '@/components/AppAccordion.vue'
 import TabSearch from '../explore/TabSearch.vue'
 
-export default {
-  data() {
-    return {
-      minimal: true
-    };
-  },
-  methods: {
-    toggleMinimal() {
-      this.minimal = !this.minimal;
-    }
-  }
-};
 </script>
