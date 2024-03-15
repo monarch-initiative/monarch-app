@@ -27,16 +27,36 @@ export const download = (
 export const downloadSvg = (
   element: SVGSVGElement,
   filename: string,
+  removeEls: string[] = ["clipPath"],
   removeAttrs: RegExp[] = [/class/, /^data-/, /^aria-/, /tabindex/, /role/],
 ) => {
+  /** make editable clone of svg node */
   const clone = element.cloneNode(true) as SVGSVGElement;
   clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+
+  /** cleanup */
+
+  /** remove unneeded elements */
+  for (const selector of removeEls)
+    for (const element of clone.querySelectorAll(selector)) element.remove();
+
+  /** remove unneeded attributes on every element */
   for (const element of clone.querySelectorAll("*"))
     for (const removeAttr of removeAttrs)
       for (const { name } of [...element.attributes])
         if (name.match(removeAttr)) element.removeAttribute(name);
-  const data = clone.outerHTML;
-  download(data, filename, "image/svg+xml", "svg");
+
+  /** append to document so bbox not 0's */
+  document.body.append(clone);
+
+  /** fit viewbox to contents */
+  const { x, y, width, height } = clone.getBBox();
+  clone.setAttribute("viewBox", [x, y, width, height].join(" "));
+
+  /** download modified source */
+  download(clone.outerHTML, filename, "image/svg+xml", "svg");
+
+  clone.remove();
 };
 
 /** download data as json file */
