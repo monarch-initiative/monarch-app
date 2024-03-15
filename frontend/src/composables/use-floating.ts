@@ -10,7 +10,7 @@ export const useFloating = (
   anchor: Ref<HTMLElement | undefined>,
   dropdown: Ref<HTMLElement | undefined>,
   fit = false,
-): { calculate: () => Promise<void>; style: Ref<CSSProperties> } => {
+) => {
   /** style of dropdown */
   const style = ref<CSSProperties>({
     position: "absolute",

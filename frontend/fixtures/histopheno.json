@@ -3,12 +3,12 @@
   "items": [
     {
       "label": "musculature",
-      "count": 1689,
+      "count": 1685,
       "id": "HP:0003011"
     },
     {
       "label": "nervous_system",
-      "count": 1077,
+      "count": 1076,
       "id": "HP:0000707"
     },
     {
@@ -18,13 +18,8 @@
     },
     {
       "label": "skeletal_system",
-      "count": 468,
+      "count": 472,
       "id": "HP:0000924"
-    },
-    {
-      "label": "respiratory",
-      "count": 313,
-      "id": "HP:0002086"
     },
     {
       "label": "eye",
@@ -33,7 +28,7 @@
     },
     {
       "label": "metabolism_homeostasis",
-      "count": 214,
+      "count": 212,
       "id": "HP:0001939"
     },
     {
@@ -48,8 +43,18 @@
     },
     {
       "label": "connective_tissue",
-      "count": 160,
+      "count": 161,
       "id": "HP:0003549"
+    },
+    {
+      "label": "respiratory",
+      "count": 150,
+      "id": "HP:0002086"
+    },
+    {
+      "label": "neoplasm",
+      "count": 149,
+      "id": "HP:0002664"
     },
     {
       "label": "digestive_system",
@@ -90,11 +95,6 @@
       "label": "prenatal_or_birth",
       "count": 21,
       "id": "HP:0001197"
-    },
-    {
-      "label": "neoplasm",
-      "count": 7,
-      "id": "HP:0002664"
     },
     {
       "label": "breast",

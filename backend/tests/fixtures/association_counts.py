@@ -5,8 +5,8 @@ import pytest
 def association_counts():
     return {
         "items": [
-            {"label": "Phenotypes", "count": 3873, "category": "biolink:DiseaseToPhenotypicFeatureAssociation"},
-            {"label": "Causal Genes", "count": 124, "category": "biolink:CausalGeneToDiseaseAssociation"},
-            {"label": "Correlated Genes", "count": 139, "category": "biolink:CorrelatedGeneToDiseaseAssociation"},
+            {"label": "Phenotypes", "count": 3874, "category": "biolink:DiseaseToPhenotypicFeatureAssociation"},
+            {"label": "Causal Genes", "count": 122, "category": "biolink:CausalGeneToDiseaseAssociation"},
+            {"label": "Correlated Genes", "count": 140, "category": "biolink:CorrelatedGeneToDiseaseAssociation"},
         ]
     }

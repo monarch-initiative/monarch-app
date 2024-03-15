@@ -31,7 +31,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 /** arc svg path */
 const d = computed(() => {
-  const angle = 360 * clamp(props.percent, 0.05, 0.95);
+  /** https://stackoverflow.com/questions/5737975/circle-drawing-with-svgs-arc-path */
+  const angle = 360 * clamp(props.percent, 0, 0.99999);
   const x = sin(angle) * 50;
   const y = -cos(angle) * 50;
   return `M 0 -50 A 50 50 0 ${angle >= 180 ? 1 : 0} 1 ${x} ${y}`;

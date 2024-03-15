@@ -62,12 +62,15 @@
     />
 
     <!-- similarity metric -->
-    <strong>using metric:</strong>
-    <AppSelectSingle
-      v-model="metric"
-      name="Similarity metric"
-      :options="metricOptions"
-    />
+
+    <AppFlex gap="small">
+      <strong>...using metric</strong>
+      <AppSelectSingle
+        v-model="metric"
+        name="Similarity metric"
+        :options="metricOptions"
+      />
+    </AppFlex>
 
     <!-- run analysis -->
     <AppButton
@@ -327,16 +330,18 @@ const metric = ref<Option>(metricOptions[0]);
 /** element reference */
 const aBox = ref<InstanceType<typeof AppSelectTags>>();
 
-/**
- * get % for showing ring. use asymptotic function limited to 1 so we don't need
- * to know max score. domain 1 to ~20, range 0 to 1
- */
+/** get % for showing ring based on the selected metric */
 function ringPercent(score = 0) {
-  const in_min = 4;
-  const in_max = 19;
-  const out_min = 0;
-  const out_max = 1;
-  return ((score - in_min) / (in_max - in_min)) * (out_max - out_min) + out_min;
+  const id = metric.value.id;
+  let min = 0;
+  if (id === "ancestor_information_content") min = 4;
+  else if (id === "jaccard_similarity") min = 0;
+  else if (id === "phenodigm_score") min = 0.1;
+  let max = 1;
+  if (id === "ancestor_information_content") max = 19;
+  else if (id === "jaccard_similarity") max = 1;
+  else if (id === "phenodigm_score") max = 5;
+  return (score - min) / (max - min);
 }
 
 /** example phenotype set comparison */
