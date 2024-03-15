@@ -5,8 +5,8 @@ import pytest
 def phenotype_explorer_compare():
     return {
         "subject_termset": {
-            "MP:0010771": {"id": "MP:0010771", "label": "integument phenotype (MPO)"},
             "MP:0002169": {"id": "MP:0002169", "label": "no abnormal phenotype detected (MPO)"},
+            "MP:0010771": {"id": "MP:0010771", "label": "integument phenotype (MPO)"},
         },
         "object_termset": {"HP:0004325": {"id": "HP:0004325", "label": "Decreased body weight (HPO)"}},
         "subject_best_matches": {

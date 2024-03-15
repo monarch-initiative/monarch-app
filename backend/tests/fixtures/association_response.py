@@ -5,7 +5,7 @@ import pytest
 def association_response():
     return {
         "responseHeader": {
-            "QTime": 0,
+            "QTime": 2,
             "params": {
                 "mm": "100%",
                 "q": "*:*",
