@@ -107,10 +107,10 @@ export const compareSetToSet = async (
     }));
 
   /** get high level data */
-  const subjectMatches = mapMatches(response.subject_best_matches);
-  const objectMatches = mapMatches(response.object_best_matches);
-  subjectMatches.sort((a, b) => b.score - a.score);
-  objectMatches.sort((a, b) => b.score - a.score);
+  let subjectMatches = mapMatches(response.subject_best_matches);
+  let objectMatches = mapMatches(response.object_best_matches);
+  subjectMatches = sortBy(subjectMatches, "score").reverse();
+  objectMatches = sortBy(objectMatches, "score").reverse();
 
   /** find unmatched */
   const subjectUnmatched = Object.values(response.subject_termset || {}).filter(
@@ -167,6 +167,12 @@ export const compareSetToSets = async (
     total: 0,
   }));
 
+  /** preserve input sort order of rows/cols */
+  rows = sortBy(rows, (row) => subjects.indexOf(row.id));
+  cols = sortBy(cols, (col) =>
+    objects.findIndex((object) => object.id === col.id),
+  );
+
   /** now populate cells */
   const cells: Phenogrid["cells"] = {};
 
@@ -208,12 +214,6 @@ export const compareSetToSets = async (
     return row.total;
   });
 
-  /** preserve input sort order of rows */
-  rows = sortBy(rows, (row) => subjects.indexOf(row.id));
-  cols = sortBy(cols, (col) =>
-    objects.findIndex((object) => object.id === col.id),
-  );
-
   /** deduplicate unmatched phenotypes */
   unmatched = uniqBy(unmatched, "id");
 
@@ -250,11 +250,11 @@ export const compareSetToGroup = async (
   const response = await request<SemsimSearchResult[]>(url, {}, options);
 
   /** get high level data */
-  const summary = response.map((match) => ({
+  let summary = response.map((match) => ({
     subject: match.subject,
     score: match.score || 0,
   }));
-  summary.sort((a, b) => b.score - a.score);
+  summary = sortBy(summary, "score").reverse();
 
   /** turn objects into array of cols */
   let cols: Phenogrid["cols"] = response.map((match) => ({
@@ -270,6 +270,9 @@ export const compareSetToGroup = async (
     label: entry.label,
     total: 0,
   }));
+
+  /** preserve input sort order of rows */
+  rows = sortBy(rows, (row) => phenotypes.indexOf(row.id));
 
   /** make map of col/row id to cells */
   const cells: Phenogrid["cells"] = {};
@@ -312,9 +315,6 @@ export const compareSetToGroup = async (
     if (!row.total) unmatched.push({ ...row });
     return row.total;
   });
-
-  /** preserve input sort order of rows */
-  rows = sortBy(rows, (row) => phenotypes.indexOf(row.id));
 
   /** deduplicate unmatched phenotypes */
   unmatched = uniqBy(unmatched, "id");
