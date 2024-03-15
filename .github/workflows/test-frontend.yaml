@@ -2,11 +2,6 @@ name: Test Frontend
 
 on: pull_request
 
-env:
-  CACHE_PATH: |
-    ~/.cache/ms-playwright
-    frontend/node_modules
-
 defaults:
   run:
     working-directory: ./frontend

@@ -5,7 +5,7 @@ import pytest
 def histopheno_response():
     return {
         "responseHeader": {
-            "QTime": 1,
+            "QTime": 4,
             "params": {
                 "facet.query": [
                     'object_closure:"HP:0000924"',
@@ -40,27 +40,27 @@ def histopheno_response():
                 "facet": "true",
             },
         },
-        "response": {"num_found": 4355, "start": 0, "docs": []},
+        "response": {"num_found": 4361, "start": 0, "docs": []},
         "facet_counts": {
             "facet_fields": {},
             "facet_queries": {
-                'object_closure:"HP:0000924"': 468,
-                'object_closure:"HP:0000707"': 1077,
+                'object_closure:"HP:0000924"': 472,
+                'object_closure:"HP:0000707"': 1076,
                 'object_closure:"HP:0000152"': 583,
                 'object_closure:"HP:0001574"': 47,
                 'object_closure:"HP:0000478"': 289,
                 'object_closure:"HP:0001626"': 178,
-                'object_closure:"HP:0001939"': 214,
+                'object_closure:"HP:0001939"': 212,
                 'object_closure:"HP:0000119"': 44,
                 'object_closure:"HP:0025031"': 143,
-                'object_closure:"HP:0002664"': 7,
+                'object_closure:"HP:0002664"': 149,
                 'object_closure:"HP:0001871"': 177,
                 'object_closure:"HP:0002715"': 22,
                 'object_closure:"HP:0000818"': 25,
-                'object_closure:"HP:0003011"': 1689,
-                'object_closure:"HP:0002086"': 313,
+                'object_closure:"HP:0003011"': 1685,
+                'object_closure:"HP:0002086"': 150,
                 'object_closure:"HP:0000598"': 28,
-                'object_closure:"HP:0003549"': 160,
+                'object_closure:"HP:0003549"': 161,
                 'object_closure:"HP:0001197"': 21,
                 'object_closure:"HP:0001507"': 32,
                 'object_closure:"HP:0000769"': 1,

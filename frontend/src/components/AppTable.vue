@@ -27,7 +27,8 @@
                 col.align || 'left',
                 { divider: col.slot === 'divider' },
               ]"
-              :aria-sort="ariaSort"
+              :role="col.slot === 'divider' ? 'presentation' : undefined"
+              :aria-sort="col.slot === 'divider' ? undefined : ariaSort"
             >
               <span>
                 {{ col.heading }}
@@ -71,8 +72,9 @@
                 col.align || 'left',
                 { divider: col.slot === 'divider' },
               ]"
-              :aria-rowindex="rowIndex + 1"
-              :aria-colindex="colIndex + 1"
+              :role="col.slot === 'divider' ? 'presentation' : undefined"
+              :aria-rowindex="col.slot === 'divider' ? undefined : rowIndex + 1"
+              :aria-colindex="col.slot === 'divider' ? undefined : colIndex + 1"
             >
               <!-- if col has slot name, use to custom format/template cell -->
               <slot
