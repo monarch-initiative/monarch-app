@@ -221,7 +221,7 @@ export type Sort<Key extends string = string> = {
 <script setup lang="ts" generic="Datum extends object">
 import { computed, watch, type VNode } from "vue";
 import { useLocalStorage } from "@vueuse/core";
-import { useScrollable } from "@/util/composables";
+import { useScrollable } from "@/composables/use-scrollable";
 import type { Options } from "./AppSelectMulti.vue";
 import AppSelectMulti from "./AppSelectMulti.vue";
 import AppSelectSingle from "./AppSelectSingle.vue";

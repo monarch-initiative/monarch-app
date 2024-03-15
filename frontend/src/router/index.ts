@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import { isEmpty, pick } from "lodash";
 import { hideAll } from "tippy.js";
 import AppPlaceholder from "@/components/AppPlaceholder.vue";
+import { initRouter } from "@/composables/use-param";
 import descriptions from "@/router/descriptions.json";
 import { sleep } from "@/util/debug";
 import { waitFor } from "@/util/dom";
@@ -238,6 +239,9 @@ const router = createRouter({
   routes,
   scrollBehavior,
 });
+
+/** hook up use-param composable to router */
+initRouter(router);
 
 /** close any open tooltips on route change */
 router.beforeEach(() => {

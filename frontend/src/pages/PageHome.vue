@@ -192,7 +192,7 @@ import AppHighlight from "@/components/AppHighlight.vue";
 import AppPost from "@/components/AppPost.vue";
 import AppTabs from "@/components/AppTabs.vue";
 import AppTile from "@/components/AppTile.vue";
-import { useQuery } from "@/util/composables";
+import { useQuery } from "@/composables/use-query";
 import { formatNumber } from "@/util/string";
 import tabs from "./explore/tabs.json";
 import TabSearch from "./explore/TabSearch.vue";

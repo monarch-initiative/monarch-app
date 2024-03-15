@@ -115,7 +115,8 @@ export type Option = {
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from "vue";
 import { uniqueId } from "lodash";
-import { useFloating, useQuery } from "@/util/composables";
+import { useFloating } from "@/composables/use-floating";
+import { useQuery } from "@/composables/use-query";
 import { wrap } from "@/util/math";
 import AppTextbox from "./AppTextbox.vue";
 

@@ -151,7 +151,7 @@ export const compareSetToSets = async (
 
   /** make query */
   const url = `${apiUrl}/semsim/multicompare`;
-  const response = await request<TermSetPairwiseSimilarity[]>(url, {}, options);
+  const response = await request<SemsimSearchResult[]>(url, {}, options);
 
   let cols: Phenogrid["cols"] = objects.map((object) => ({
     id: object.id || "",
@@ -160,7 +160,7 @@ export const compareSetToSets = async (
   }));
 
   let rows: Phenogrid["cols"] = Object.values(
-    response[0].subject_termset || [],
+    response[0].similarity!.subject_termset || [],
   ).map((entry) => ({
     id: entry.id,
     label: entry.label,
@@ -178,7 +178,7 @@ export const compareSetToSets = async (
     const col = cols[i];
 
     for (const row of rows) {
-      const match = response[i].object_best_matches?.[row.id];
+      const match = response[i].similarity!.object_best_matches?.[row.id];
 
       col.total += match?.score || 0;
       row.total += match?.score || 0;

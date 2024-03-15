@@ -492,7 +492,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         self,
         entity_id: Optional[List[str]] = None,
         subject_id: Optional[List[str]] = None,
-        predicate_id: List[MappingPredicate] = [],
+        predicate_id: Optional[List[MappingPredicate]] = None,
         object_id: Optional[List[str]] = None,
         mapping_justification: Optional[List[str]] = None,
         offset: int = 0,
@@ -502,7 +502,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         query = build_mapping_query(
             entity_id=[entity_id] if isinstance(entity_id, str) else entity_id,
             subject_id=[subject_id] if isinstance(subject_id, str) else subject_id,
-            predicate_id=[p.value for p in predicate_id],
+            predicate_id=[p.value for p in predicate_id] if predicate_id else None,
             object_id=[object_id] if isinstance(object_id, str) else object_id,
             mapping_justification=[mapping_justification]
             if isinstance(mapping_justification, str)

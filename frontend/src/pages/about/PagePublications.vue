@@ -39,7 +39,9 @@
         v-for="(group, index) in publications.publications"
         :key="index"
       >
-        <AppLink :to="'#' + group.year">{{ group.year }}</AppLink>
+        <AppLink :to="'#' + group.year" :replace="true">{{
+          group.year
+        }}</AppLink>
         <span v-if="index !== publications.publications.length - 1"> · </span>
       </template>
     </p>
