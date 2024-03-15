@@ -36,6 +36,7 @@ def phenotype_explorer_compare():
                     "dice_similarity": None,
                     "phenodigm_score": 0.5988454147360435,
                 },
+                "score_metric": "ancestor_information_content",
             },
             "MP:0010771": {
                 "match_source": "MP:0010771",
@@ -63,6 +64,7 @@ def phenotype_explorer_compare():
                     "dice_similarity": None,
                     "phenodigm_score": 0.61070489107293,
                 },
+                "score_metric": "ancestor_information_content",
             },
         },
         "object_best_matches": {
@@ -92,9 +94,10 @@ def phenotype_explorer_compare():
                     "dice_similarity": None,
                     "phenodigm_score": 0.5988454147360435,
                 },
+                "score_metric": "ancestor_information_content",
             }
         },
         "average_score": 1.5540019332516637,
         "best_score": 1.5540019332516637,
-        "metric": "ancestor_information_content",
+        "metric": "AncestorInformationContent",
     }
