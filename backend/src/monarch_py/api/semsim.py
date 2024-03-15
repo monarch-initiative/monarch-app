@@ -2,6 +2,7 @@ from fastapi import APIRouter, Path, Query
 
 from monarch_py.api.additional_models import (
     SemsimCompareRequest,
+    SemsimMetric,
     SemsimSearchRequest,
     SemsimSearchGroup,
     SemsimMultiCompareRequest,
@@ -44,12 +45,14 @@ def autocomplete(
 def _compare(
     subjects: str = Path(..., title="List of subjects for comparison"),
     objects: str = Path(..., title="List of objects for comparison"),
+    metric: SemsimMetric = Query(SemsimMetric.ANCESTOR_INFORMATION_CONTENT, title="Similarity metric to use"),
 ):
     """Get pairwise similarity between two sets of terms
 
     <b>Args:</b> <br>
         subjects (str, optional): List of subjects for comparison. Defaults to "". <br>
         objects (str, optional): List of objects for comparison. Defaults to "". <br>
+        metric (str, optional): Similarity metric to use. Defaults to "ancestor_information_content".
 
     <b>Returns:</b> <br>
         TermSetPairwiseSimilarity: Pairwise similarity between subjects and objects
@@ -59,11 +62,13 @@ def _compare(
     Running semsim compare:
         subjects: {subjects.split(',')}
         objects: {objects.split(',')}
+        metric: {metric}
     """
     )
     results = semsimian().compare(
         subjects=subjects.split(","),
         objects=objects.split(","),
+        metric=metric,
     )
     return results
 
@@ -77,11 +82,12 @@ def _post_compare(request: SemsimCompareRequest):
     <pre>
     {
       "subjects": ["MP:0010771","MP:0002169","MP:0005391","MP:0005389","MP:0005367"],
-      "objects": ["HP:0004325","HP:0000093","MP:0006144"]
+      "objects": ["HP:0004325","HP:0000093","MP:0006144"],
+      "metric": "ancestor_information_content"
     }
     </pre>
     """
-    return semsimian().compare(subjects=request.subjects, objects=request.objects)
+    return semsimian().compare(subjects=request.subjects, objects=request.objects, metric=request.metric)
 
 
 # add a multicompare post endpoint
@@ -93,6 +99,7 @@ def _post_multicompare(request: SemsimMultiCompareRequest):
             Example: <br>
         <pre>
     {
+      "metric": "ancestor_information_content",
       "subjects": [ "HP:0002616", "HP:0001763", "HP:0004944", "HP:0010749", "HP:0001533", "HP:0002020", "HP:0012450", "HP:0003394", "HP:0003771", "HP:0012378", "HP:0001278", "HP:0002827",
     "HP:0002829", "HP:0002999", "HP:0003010"],
       "object_sets": [
@@ -119,20 +126,22 @@ def _post_multicompare(request: SemsimMultiCompareRequest):
 def _search(
     termset: str = Path(..., title="Termset to search"),
     group: SemsimSearchGroup = Path(..., title="Group of entities to search within (e.g. Human Genes)"),
+    metric: SemsimMetric = Query(SemsimMetric.ANCESTOR_INFORMATION_CONTENT, title="Similarity metric to use"),
     limit: int = Query(default=10, ge=1, le=50),
 ):
     """Search for terms in a termset
 
     <b>Args:</b> <br>
-        termset (str, optional): Comma separated list of term IDs to find matches for. <br>
-        group (str, optional): Group of entities to search within (e.g. Human Genes) <br>
+        termset (str): Comma separated list of term IDs to find matches for. <br>
+        group (str): Group of entities to search within (e.g. Human Genes) <br>
+        metric: (str, optional): Similarity metric to use. Defaults to "ancestor_information_content". <br>
         limit (int, optional): Limit the number of results. Defaults to 10.
 
     <b>Returns:</b> <br>
         List[str]: List of matching terms
     """
     terms = [term.strip() for term in termset.split(",")]
-    results = semsimian().search(termset=terms, prefix=parse_similarity_prefix(group), limit=limit)
+    results = semsimian().search(termset=terms, prefix=parse_similarity_prefix(group), metric=metric, limit=limit)
     return results
 
 
@@ -146,10 +155,14 @@ def _post_search(request: SemsimSearchRequest):
     {
       "termset": ["HP:0002104", "HP:0012378", "HP:0012378", "HP:0012378"],
       "group": "Human Diseases",
+      "metric": "ancestor_information_content",
       "limit": 5
     }
     </pre>
     """
     return semsimian().search(
-        termset=request.termset, prefix=parse_similarity_prefix(request.group.value), limit=request.limit
+        termset=request.termset,
+        prefix=parse_similarity_prefix(request.group.value),
+        metric=request.metric,
+        limit=request.limit,
     )

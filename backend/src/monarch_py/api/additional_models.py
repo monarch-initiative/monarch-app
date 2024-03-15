@@ -19,6 +19,16 @@ class OutputFormat(str, Enum):
     tsv = "tsv"
 
 
+class SemsimMetric(str, Enum):
+    ANCESTOR_INFORMATION_CONTENT = "ancestor_information_content"
+    # COSINE_SIMILARITY = "cosine_similarity"  # Not implemented
+    JACCARD_SIMILARITY = "jaccard_similarity"
+    PHENODIGM_SCORE = "phenodigm_score"
+
+    def __str__(self):
+        return self.value
+
+
 class SemsimSearchGroup(Enum):
     HGNC = "Human Genes"
     MGI = "Mouse Genes"
@@ -31,6 +41,7 @@ class SemsimSearchGroup(Enum):
 class SemsimCompareRequest(BaseModel):
     subjects: List[str] = Field(..., title="List of subjects for comparison")
     objects: List[str] = Field(..., title="List of objects for comparison")
+    metric: SemsimMetric = Field(SemsimMetric.ANCESTOR_INFORMATION_CONTENT, title="Similarity metric to use")
 
 
 class SemsimMultiCompareObject(BaseModel):
@@ -42,11 +53,13 @@ class SemsimMultiCompareObject(BaseModel):
 class SemsimMultiCompareRequest(BaseModel):
     subjects: List[str] = Field(..., title="List of subjects for comparison")
     object_sets: List[SemsimMultiCompareObject] = Field(..., title="List of object sets for comparison")
+    metric: SemsimMetric = Field(SemsimMetric.ANCESTOR_INFORMATION_CONTENT, title="Similarity metric to use")
 
 
 class SemsimSearchRequest(BaseModel):
     termset: List[str] = Field(..., title="Termset to search")
     group: SemsimSearchGroup = Field(..., title="Group of entities to search within (e.g. Human Genes)")
+    metric: SemsimMetric = Field(SemsimMetric.ANCESTOR_INFORMATION_CONTENT, title="Similarity metric to use")
     limit: Optional[int] = Field(10, title="Limit the number of results", ge=1, le=50)
 
 

@@ -7,6 +7,7 @@ import typer
 
 from monarch_py import solr_cli, sql_cli
 from monarch_py.api.config import semsimian
+from monarch_py.api.additional_models import SemsimMetric
 from monarch_py.datamodels.category_enums import (
     AssociationCategory,
     AssociationPredicate,
@@ -315,10 +316,19 @@ def association_table(
     solr_cli.association_table(**locals())
 
 
+### CLI Commands for Semsimian ###
+
+
 @app.command("compare")
 def compare(
     subjects: str = typer.Argument(..., help="Comma separated list of subjects to compare"),
     objects: str = typer.Argument(..., help="Comma separated list of objects to compare"),
+    metric: SemsimMetric = typer.Option(
+        SemsimMetric.ANCESTOR_INFORMATION_CONTENT,
+        "--metric",
+        "-m",
+        help="The metric to use for comparison",
+    ),
     fmt: str = typer.Option(
         "json",
         "--format",
@@ -330,8 +340,11 @@ def compare(
     """Compare two sets of phenotypes using semantic similarity via SemSimian"""
     subjects = subjects.split(",")
     objects = objects.split(",")
-    response = semsimian().compare(subjects, objects)
+    response = semsimian().compare(subjects, objects, metric)
     format_output(fmt, response, output)
+
+
+### Misc CLI Commands ###
 
 
 @app.command("mappings")
