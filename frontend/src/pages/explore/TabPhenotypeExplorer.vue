@@ -332,8 +332,22 @@ const aBox = ref<InstanceType<typeof AppSelectTags>>();
  * to know max score. domain 1 to ~20, range 0 to 1
  */
 function ringPercent(score = 0) {
-  const in_min = 4;
-  const in_max = 19;
+  const in_min =
+    metric.value.id === "ancestor_information_content"
+      ? 4
+      : metric.value.id === "jaccard_similarity"
+        ? 0
+        : metric.value.id === "phenodigm_score"
+          ? 0.1
+          : 0;
+  const in_max =
+    metric.value.id === "ancestor_information_content"
+      ? 19
+      : metric.value.id === "jaccard_similarity"
+        ? 1
+        : metric.value.id === "phenodigm_score"
+          ? 5
+          : 1;
   const out_min = 0;
   const out_max = 1;
   return ((score - in_min) / (in_max - in_min)) * (out_max - out_min) + out_min;
