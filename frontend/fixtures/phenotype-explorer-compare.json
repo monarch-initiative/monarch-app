@@ -41,7 +41,8 @@
         "cosine_similarity": null,
         "dice_similarity": null,
         "phenodigm_score": 0.5988454147360435
-      }
+      },
+      "score_metric": "ancestor_information_content"
     },
     "MP:0010771": {
       "match_source": "MP:0010771",
@@ -68,7 +69,8 @@
         "cosine_similarity": null,
         "dice_similarity": null,
         "phenodigm_score": 0.61070489107293
-      }
+      },
+      "score_metric": "ancestor_information_content"
     }
   },
   "object_best_matches": {
@@ -97,10 +99,11 @@
         "cosine_similarity": null,
         "dice_similarity": null,
         "phenodigm_score": 0.5988454147360435
-      }
+      },
+      "score_metric": "ancestor_information_content"
     }
   },
   "average_score": 1.5540019332516637,
   "best_score": 1.5540019332516637,
-  "metric": "ancestor_information_content"
+  "metric": "AncestorInformationContent"
 }
