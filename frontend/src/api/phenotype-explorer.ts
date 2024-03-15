@@ -1,4 +1,4 @@
-import { pick, uniqBy } from "lodash";
+import { pick, sortBy, uniqBy } from "lodash";
 import type {
   AssociationResults,
   SemsimSearchResult,
@@ -208,6 +208,12 @@ export const compareSetToSets = async (
     return row.total;
   });
 
+  /** preserve input sort order of rows */
+  rows = sortBy(rows, (row) => subjects.indexOf(row.id));
+  cols = sortBy(cols, (col) =>
+    objects.findIndex((object) => object.id === col.id),
+  );
+
   /** deduplicate unmatched phenotypes */
   unmatched = uniqBy(unmatched, "id");
 
@@ -306,6 +312,9 @@ export const compareSetToGroup = async (
     if (!row.total) unmatched.push({ ...row });
     return row.total;
   });
+
+  /** preserve input sort order of rows */
+  rows = sortBy(rows, (row) => phenotypes.indexOf(row.id));
 
   /** deduplicate unmatched phenotypes */
   unmatched = uniqBy(unmatched, "id");
