@@ -3,7 +3,7 @@
  -->
 
 <template>
-  <AppSection>
+  <AppSection v-show="false">
     <AppHeading>How to use Monarch Intiative</AppHeading>
     <p>
       The Monarch Initiative is an extensive knowledge graph and ecosystem of
@@ -19,10 +19,14 @@
   </AppSection>
 
   <AppSection>
-    <AppHeading>What are you trying to do today?</AppHeading>
-      <AppAccordion text="Search and use information about a gene, disease, or phenotype..." >
-        <TabSearch />
-      </AppAccordion>
+    <AppHeading>What do you want to do with Monarch to do today?</AppHeading>
+    <p>
+      The Monarch Initiative is an extensive knowledge graph and ecosystem of
+      tools made for the benefit of clinicians, researchers, and scientists.
+    </p>
+    <AppAccordion text="Search and use information about a gene, disease, or phenotype..." >
+      <TabSearch :minimal="true" />
+    </AppAccordion>
     <AppButton
       to="https://obophenotype.github.io/upheno/"
       text="Search and use information about a gene, disease, or phenotype..."
@@ -33,6 +37,9 @@
       text="Find similar diseases based on a phenotypes or symptoms..."
       icon="arrow-right"
     />
+    <AppAccordion text="Find similar diseases based on a phenotypes or symptoms..." >
+      <TabSearch />
+    </AppAccordion>
     <AppButton
       to="https://obophenotype.github.io/upheno/"
       text="Annotate a patients symptoms to terms in the Monarch KG..."
@@ -78,4 +85,17 @@
 <script setup lang="ts">
 import AppAccordion from '@/components/AppAccordion.vue'
 import TabSearch from '../explore/TabSearch.vue'
+
+export default {
+  data() {
+    return {
+      minimal: true
+    };
+  },
+  methods: {
+    toggleMinimal() {
+      this.minimal = !this.minimal;
+    }
+  }
+};
 </script>
