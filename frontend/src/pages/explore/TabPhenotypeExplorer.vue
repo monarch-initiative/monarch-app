@@ -62,6 +62,7 @@
     />
 
     <!-- similarity metric -->
+
     <AppFlex gap="small">
       <strong>...using metric</strong>
       <AppSelectSingle
