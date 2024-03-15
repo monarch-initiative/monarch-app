@@ -139,30 +139,39 @@ export const groups = [
 
 export type Group = (typeof groups)[number];
 
+type ObjectSet = { id?: string; label?: string; phenotypes: string[] };
+
 /** compare a set of phenotypes to several other sets of phenotypes */
 export const compareSetToSets = async (
   subjects: string[],
-  objects: { id?: string; label?: string; phenotypes: string[] }[],
+  objectSets: ObjectSet[],
+  metric: string = "jaccard_similarity",
 ) => {
+  /** fill in missing object set fields */
+  objectSets.forEach((set, index) => {
+    set.id ??= String(index);
+    set.label ??= `Set ${index + 1}`;
+  });
+
   /** make request */
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   headers.append("Accept", "application/json");
-  const body = { subjects, objects };
+  const body = { subjects, object_sets: objectSets, metric };
   const options = { method: "POST", headers, body: stringify(body) };
 
   /** make query */
   const url = `${apiUrl}/semsim/multicompare`;
   const response = await request<SemsimSearchResult[]>(url, {}, options);
 
-  let cols: Phenogrid["cols"] = objects.map((object) => ({
-    id: object.id || "",
-    label: object.label || "",
+  /** make flat lists of rows/cols from subjects/objects */
+  let cols: Phenogrid["cols"] = response.map((match, index) => ({
+    id: match.subject.id || String(index),
+    label: match.subject.name || `Set ${index + 1}`,
     total: 0,
   }));
-
   let rows: Phenogrid["cols"] = Object.values(
-    response[0].similarity!.subject_termset || [],
+    response[0].similarity?.subject_termset || [],
   ).map((entry) => ({
     id: entry.id,
     label: entry.label,
@@ -172,7 +181,7 @@ export const compareSetToSets = async (
   /** preserve input sort order of rows/cols */
   rows = sortBy(rows, (row) => subjects.indexOf(row.id));
   cols = sortBy(cols, (col) =>
-    objects.findIndex((object) => object.id === col.id),
+    objectSets.findIndex((object) => object.id === col.id),
   );
 
   /** now populate cells */
@@ -181,12 +190,9 @@ export const compareSetToSets = async (
   /** start collecting unmatched phenotypes */
   let unmatched: Phenogrid["unmatched"] = [];
 
-  //loop over columns with an index counter
-  for (let i = 0; i < cols.length; i++) {
-    const col = cols[i];
-
+  for (const [index, col] of Object.entries(cols)) {
     for (const row of rows) {
-      const match = response[i].similarity!.object_best_matches?.[row.id];
+      const match = response[+index]?.similarity?.object_best_matches?.[row.id];
 
       col.total += match?.score || 0;
       row.total += match?.score || 0;
@@ -245,7 +251,7 @@ export const compareSetToGroup = async (
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   headers.append("Accept", "application/json");
-  const body = { termset: phenotypes, group: group, metric: metric };
+  const body = { termset: phenotypes, group: group, metric };
   const options = { method: "POST", headers, body: stringify(body) };
 
   /** make query */
@@ -259,13 +265,12 @@ export const compareSetToGroup = async (
   }));
   summary = sortBy(summary, "score").reverse();
 
-  /** turn objects into array of cols */
+  /** make flat lists of rows/cols from subjects/objects */
   let cols: Phenogrid["cols"] = response.map((match) => ({
     id: match.subject.id,
     label: match.subject.name,
     total: 0,
   }));
-  /** turn subjects into array of rows */
   let rows: Phenogrid["cols"] = Object.values(
     response[0].similarity?.object_termset || [],
   ).map((entry) => ({

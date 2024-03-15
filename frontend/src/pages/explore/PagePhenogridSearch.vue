@@ -74,8 +74,8 @@ watch(
 /** get input phenotype sets from parent window message */
 useEventListener("message", (event: MessageEvent) => {
   if ("subjects" in event.data && "object-group" in event.data) {
-    aPhenotypes.value = event.data.source;
-    bGroup.value = event.data.target;
+    aPhenotypes.value = event.data.subjects;
+    bGroup.value = event.data["object-group"];
   }
 });
 

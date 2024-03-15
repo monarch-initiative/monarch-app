@@ -26,7 +26,7 @@ export function initRouter(router: Router) {
 
       if (!isEqual(url.value, router.currentRoute.value.query)) {
         /** push/replace based on mode */
-        router[mode === "replace" ? "replace" : "push"](to);
+        // router[mode === "replace" ? "replace" : "push"](to);
         justPushed = true;
       }
     },

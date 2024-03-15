@@ -57,13 +57,13 @@ watch([aPhenotypes, bPhenotypes], runAnalysis);
 watch(
   () => route.query,
   () => {
-    let { subjects = "", objects = "" } = route.query;
-    const flatTarget = [objects].flat();
+    let { subjects = "", "object-sets": objectSets = "" } = route.query;
+    const flatObjectSets = [objectSets].flat();
 
     if (subjects && typeof subjects === "string")
       aPhenotypes.value = subjects.split(",");
-    if (objects)
-      bPhenotypes.value = flatTarget.filter(Boolean).map((object) => ({
+    if (objectSets)
+      bPhenotypes.value = flatObjectSets.filter(Boolean).map((object) => ({
         phenotypes: object?.split(",") || [],
       }));
 
@@ -74,9 +74,9 @@ watch(
 
 /** get input phenotype sets from parent window message */
 useEventListener("message", (event: MessageEvent) => {
-  if ("subjects" in event.data && "objects" in event.data) {
+  if ("subjects" in event.data && "object-sets" in event.data) {
     aPhenotypes.value = event.data.subjects;
-    bPhenotypes.value = event.data.objects;
+    bPhenotypes.value = event.data["object-sets"];
   }
 });
 
