@@ -13,26 +13,26 @@ class core(Enum):
 
 
 class HistoPhenoKeys(Enum):
-    skeletal_system = "HP:0000924"
-    nervous_system = "HP:0000707"
-    head_neck = "HP:0000152"
-    integument = "HP:0001574"
-    eye = "HP:0000478"
-    cardiovascular_system = "HP:0001626"
-    metabolism_homeostasis = "HP:0001939"
-    genitourinary_system = "HP:0000119"
-    digestive_system = "HP:0025031"
-    neoplasm = "HP:0002664"
-    blood = "HP:0001871"
-    immune_system = "HP:0002715"
-    endocrine = "HP:0000818"
-    musculature = "HP:0003011"
-    respiratory = "HP:0002086"
-    ear = "HP:0000598"
-    connective_tissue = "HP:0003549"
-    prenatal_or_birth = "HP:0001197"
-    growth = "HP:0001507"
-    breast = "HP:0000769"
+    skeletal_system = "HP:0000924" # UPHENO:0002964"
+    nervous_system = "HP:0000707" # UPHENO:0004523
+    head_neck = "HP:0000152" # UPHENO:0002764
+    integument = "HP:0001574" # UPHENO:0002635
+    eye = "HP:0000478" #  UPHENO:0003020
+    cardiovascular_system = "HP:0001626" # UPHENO:0080362
+    metabolism_homeostasis = "HP:0001939" # ???
+    genitourinary_system = "HP:0000119" # UPHENO:0002642
+    digestive_system = "HP:0025031" # UPHENO:0002833
+    neoplasm = "HP:0002664" # ???
+    blood = "HP:0001871" # UPHENO:0004459
+    immune_system = "HP:0002715" # UPHENO:0002948
+    endocrine = "HP:0000818" # UPHENO:0003116
+    musculature = "HP:0003011" # UPHENO:0002816
+    respiratory = "HP:0002086" # UPHENO:0004536
+    ear = "HP:0000598" # UPHENO:0002903
+    connective_tissue = "HP:0003549" # UPHENO:0002712
+    prenatal_or_birth = "HP:0001197" # UPHENO:0075949
+    growth = "HP:0001507" # UPHENO:0049874
+    breast = "HP:0000769" # UPHENO:0003013
 
 
 class SolrQuery(BaseModel):
