@@ -243,7 +243,7 @@ window.addEventListener("message", (event) => {
 });
 ```
 
-### Phenogrid Multi-Compare
+## Phenogrid Multi-Compare
 
 The page at `monarchinitiative.org/phenogrid-multi-compare` provides similar functionality to the Phenogrid widget, but allows for more than two sets of phenotypes to be compared.
 
@@ -296,6 +296,10 @@ iframe.contentWindow.postMessage(
   "*",
 );
 ```
+
+#### Emits `MessageEvent<{ name: string; width: number; height: number; }>`
+
+You can use the same event listener as the standard Phenogrid widget to set the dimensions of your iframe container.
 
 ## Style guidelines
 
