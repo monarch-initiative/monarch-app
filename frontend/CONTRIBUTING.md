@@ -201,8 +201,8 @@ Include the widget on your page like so:
 
 The widget accepts several URL parameters:
 
-- `source` - Comma-separated list of "source" phenotype IDs (set A).
-- `target` - "target" group of phenotypes to compare to (group B).
+- `subjects` - Comma-separated list of "source" phenotype IDs (set A).
+- `object-group` - "target" group of phenotypes to compare to (group B).
   See `src/api/phenotype-explorer.ts` groups for enumerated options.
 - `stylesheet` - A URI-encoded URL to a stylesheet that will be applied to the widget, for the purposes of matching its styles to your webpage.
 
@@ -210,7 +210,7 @@ The widget accepts several URL parameters:
 
 The widget also emits `message` events to the parent window when certain things change, and listens for `message` events from the parent window to receive information.
 
-#### Listens for `MessageEvent<{ source: string[], target: string }>`
+#### Listens for `MessageEvent<{ subjects: string[], object-group: string }>`
 
 Provide input phenotype lists to the widget when they might be [too long for a URL](https://www.google.com/search?q=max+url+length).
 
@@ -241,6 +241,60 @@ window.addEventListener("message", (event) => {
   iframe.style.maxWidth = width + "px";
   iframe.style.maxHeight = height + "px";
 });
+```
+
+### Phenogrid Multi-Compare
+
+The page at `monarchinitiative.org/phenogrid-multi-compare` provides similar functionality to the Phenogrid widget, but allows for more than two sets of phenotypes to be compared.
+
+Include the widget on your page like so:
+
+```html
+<iframe
+  src="https://monarchinitiative.org/phenogrid-multi-compare?PARAM=VALUE&PARAM=VALUE&PARAM=VALUE"
+  title="Phenogrid Multi-Compare"
+  frameborder="0"
+></iframe>
+```
+
+### Parameters
+
+The widget accepts several URL parameters:
+
+- `subjects` - Comma-separated list of "source" phenotype IDs (set A).
+- `object-sets` - Comma-separated list of "target" phenotype IDs to compare to (group B, C, etc.).
+- `stylesheet` - A URI-encoded URL to a stylesheet that will be applied to the widget, for the purposes of matching its styles to your webpage.
+
+### Events
+
+Just like the standard Phenogrid widget, multi-compare mode also emits `message` events to the parent window when certain things change, and listens for `message` events from the parent window to receive information.
+
+#### Listens for `MessageEvent<{ subjects: string[], object-sets: string[] }>`
+
+Provide input phenotype lists to the widget when they might be [too long for a URL](https://www.google.com/search?q=max+url+length).
+
+```js
+// get your iframe dom element somehow
+const iframe = document.querySelector("iframe");
+// send it a message
+iframe.contentWindow.postMessage(
+  {
+    subjects: ["HP:123,HP:456"],
+    "object-sets": [
+      {
+        id: "ID of set 1",
+        label: "Label of set 1",
+        phenotypes: ["HP:111", "HP:222"],
+      },
+      {
+        id: "ID of set 2",
+        label: "Label of set 2",
+        phenotypes: ["HP:333", "HP:444"],
+      },
+    ]
+  },
+  "*",
+);
 ```
 
 ## Style guidelines
