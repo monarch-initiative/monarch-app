@@ -291,7 +291,7 @@ iframe.contentWindow.postMessage(
         label: "Label of set 2",
         phenotypes: ["HP:333", "HP:444"],
       },
-    ]
+    ],
   },
   "*",
 );
