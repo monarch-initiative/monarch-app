@@ -212,7 +212,10 @@ const cols = computed((): Cols<Datum> => {
     });
 
   /** phenotype specific columns */
-  if (props.category.label === "Phenotypes") {
+  if (
+    props.category.label === "Phenotypes" ||
+    props.node.category === "biolink:PhenotypicFeature"
+  ) {
     extraCols.push(
       {
         slot: "frequency",
