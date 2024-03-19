@@ -38,7 +38,7 @@ async def search(
         category = []
     response = solr().search(
         q=q or "*:*",
-        category=[c.value for c in category] if category else None,
+        category=category,
         in_taxon_label=in_taxon_label,
         facet_fields=facet_fields,
         offset=pagination.offset,
