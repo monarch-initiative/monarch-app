@@ -77,10 +77,6 @@ def association_headers():
         "stage_qualifier_category",
         "stage_qualifier_closure",
         "stage_qualifier_closure_label",
-        "frequency_computed_sortable_float",
-        "has_quotient_sortable_float",
-        "has_percentage_sortable_float"
-
     ]
 
 

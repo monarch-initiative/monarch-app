@@ -8,7 +8,7 @@
     {
       "label": "Phenotypes",
       "icon": "category-phenotypic-quality",
-      "count": 123270
+      "count": 124231
     },
     {
       "label": "Diseases",
@@ -18,7 +18,7 @@
     {
       "label": "Total Nodes",
       "icon": "node",
-      "count": 850544
+      "count": 850524
     }
   ],
   "association": [
@@ -32,7 +32,7 @@
       "label": "Gene to Phenotype",
       "icon": "category-gene",
       "icon2": "category-phenotypic-quality",
-      "count": 928431
+      "count": 928735
     },
     {
       "label": "Disease to Phenotype",
@@ -43,7 +43,7 @@
     {
       "label": "Total Associations",
       "icon": "association",
-      "count": 10503737
+      "count": 10511122
     }
   ]
 }
