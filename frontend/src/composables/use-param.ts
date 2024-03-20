@@ -1,5 +1,5 @@
 import { ref, shallowRef, watch } from "vue";
-import { type LocationQueryValue, type Router } from "vue-router";
+import { type LocationQuery, type Router } from "vue-router";
 import { cloneDeep, round } from "lodash";
 
 /**
@@ -9,9 +9,7 @@ import { cloneDeep, round } from "lodash";
  * but does not accommodate keeping/merging params, because currentRoute object
  * only updates at end of batch.
  */
-export const url = ref<{
-  [key: string]: LocationQueryValue | LocationQueryValue[];
-}>({});
+export const url = ref<LocationQuery>({});
 
 /** connect to router */
 export function initRouter(router: Router) {
