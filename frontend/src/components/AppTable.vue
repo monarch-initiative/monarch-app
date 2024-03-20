@@ -14,7 +14,6 @@
         class="table"
         :aria-colcount="cols.length"
         :aria-rowcount="rows.length"
-        :style="{ gridTemplateColumns: widths }"
       >
         <!-- head -->
         <thead class="thead">
@@ -22,41 +21,43 @@
             <th
               v-for="(col, colIndex) in cols"
               :key="colIndex"
-              :class="[
-                'th',
-                col.align || 'left',
-                { divider: col.slot === 'divider' },
-              ]"
+              :class="['th', { divider: col.slot === 'divider' }]"
               :role="col.slot === 'divider' ? 'presentation' : undefined"
               :aria-sort="col.slot === 'divider' ? undefined : ariaSort"
             >
-              <span>
-                {{ col.heading }}
-              </span>
-              <AppButton
-                v-if="col.sortable"
-                v-tooltip="'Sort by ' + col.heading"
-                :icon="
-                  'arrow-' + (sort?.key === col.key ? sort?.direction : 'down')
-                "
-                design="small"
-                :color="sort?.key === col.key ? 'primary' : 'secondary'"
-                :style="{ opacity: sort?.key === col.key ? 1 : 0.35 }"
-                @click.stop="emitSort(col)"
-              />
-              <AppSelectMulti
-                v-if="
-                  col.key &&
-                  selectedFilters?.[col.key] &&
-                  filterOptions?.[col.key]?.length
-                "
-                v-tooltip="'Filter by ' + col.heading"
-                :name="'Filter by ' + col.heading"
-                :options="filterOptions[col.key]"
-                :model-value="selectedFilters[col.key]"
-                design="small"
-                @change="(value) => emitFilter(col.key, value)"
-              />
+              <div
+                :class="['cell', col.align || 'left']"
+                :style="{ width: col.width || '' }"
+              >
+                <span>
+                  {{ col.heading }}
+                </span>
+                <AppButton
+                  v-if="col.sortable"
+                  v-tooltip="'Sort by ' + col.heading"
+                  :icon="
+                    'arrow-' +
+                    (sort?.key === col.key ? sort?.direction : 'down')
+                  "
+                  design="small"
+                  :color="sort?.key === col.key ? 'primary' : 'secondary'"
+                  :style="{ opacity: sort?.key === col.key ? 1 : 0.35 }"
+                  @click.stop="emitSort(col)"
+                />
+                <AppSelectMulti
+                  v-if="
+                    col.key &&
+                    selectedFilters?.[col.key] &&
+                    filterOptions?.[col.key]?.length
+                  "
+                  v-tooltip="'Filter by ' + col.heading"
+                  :name="'Filter by ' + col.heading"
+                  :options="filterOptions[col.key]"
+                  :model-value="selectedFilters[col.key]"
+                  design="small"
+                  @change="(value) => emitFilter(col.key, value)"
+                />
+              </div>
             </th>
           </tr>
         </thead>
@@ -67,27 +68,28 @@
             <td
               v-for="(col, colIndex) in cols"
               :key="colIndex"
-              :class="[
-                'td',
-                col.align || 'left',
-                { divider: col.slot === 'divider' },
-              ]"
+              :class="['td', { divider: col.slot === 'divider' }]"
               :role="col.slot === 'divider' ? 'presentation' : undefined"
               :aria-rowindex="col.slot === 'divider' ? undefined : rowIndex + 1"
               :aria-colindex="col.slot === 'divider' ? undefined : colIndex + 1"
             >
-              <!-- if col has slot name, use to custom format/template cell -->
-              <slot
-                v-if="col.slot && $slots[col.slot]"
-                :name="col.slot"
-                :row="row"
-                :col="col"
-                :cell="col.key ? row[col.key] : null"
-              />
-              <!-- otherwise, just display raw cell value -->
-              <template v-else-if="col.key">
-                {{ row[col.key] }}
-              </template>
+              <div
+                :class="['cell', col.align || 'left']"
+                :style="{ width: col.width || '' }"
+              >
+                <!-- if col has slot name, use to custom format/template cell -->
+                <slot
+                  v-if="col.slot && $slots[col.slot]"
+                  :name="col.slot"
+                  :row="row"
+                  :col="col"
+                  :cell="col.key ? row[col.key] : null"
+                />
+                <!-- otherwise, just display raw cell value -->
+                <template v-else-if="col.key">
+                  {{ row[col.key] }}
+                </template>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -204,11 +206,8 @@ export type Cols<Key extends string> = {
   heading?: string;
   /** how to align column contents (both header and body) horizontally */
   align?: "left" | "center" | "right";
-  /**
-   * width to apply to heading cell, in any valid css grid col width (px, fr,
-   * auto, minmax, etc)
-   */
-  width?: number;
+  /** CSS width (effectively a min width, but wont exceed `max-content`) */
+  width?: string;
   /** whether to allow sorting of column */
   sortable?: boolean;
 }[];
@@ -379,19 +378,6 @@ function emitDownload() {
 /** ending item index */
 const end = computed((): number => props.start + props.rows.length);
 
-/** grid column template widths */
-const widths = computed((): string =>
-  props.cols
-    .map((col) =>
-      col.slot === "divider"
-        ? "20px"
-        : expanded.value
-          ? `minmax(max-content, 99999px)`
-          : `${col.width || 1}fr`,
-    )
-    .join(" "),
-);
-
 /** aria sort direction attribute */
 const ariaSort = computed(() => {
   if (props.sort?.direction === "up") return "ascending";
@@ -416,10 +402,8 @@ watch(
     width: calc(100vw - 100px);
     transform: translateX(0);
 
-    .td,
-    .th {
-      width: 100%;
-      max-width: unset;
+    .cell {
+      width: max-content !important;
     }
   }
 }
@@ -430,24 +414,15 @@ watch(
 }
 
 .table {
-  display: grid;
-  min-width: $section;
   border-collapse: collapse;
-}
-
-/** ignore top level semantic elements in grid layout */
-.thead,
-.tbody,
-.tr {
-  display: contents;
+  table-layout: fixed;
 }
 
 /** all cells */
-.th,
-.td {
+.cell {
   display: flex;
   align-items: center;
-  max-width: 300px;
+  max-width: max-content;
   padding: 5px 10px;
   gap: 10px;
 
@@ -482,11 +457,8 @@ watch(
 .th {
   padding-bottom: 10px;
   font-weight: 400;
-  text-transform: capitalize;
-}
-
-.th > span {
   font-weight: 600;
+  text-transform: capitalize;
 }
 
 /** body cells */

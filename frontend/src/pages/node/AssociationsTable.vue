@@ -167,14 +167,13 @@ const cols = computed((): Cols<Datum> => {
       heading: getCategoryLabel(
         associations.value.items[0]?.subject_category || "Subject",
       ),
-      width: 3,
+      width: "200px",
       sortable: true,
     },
     {
       slot: "predicate",
       key: "predicate",
       heading: "Association",
-      width: 2,
       sortable: true,
     },
     {
@@ -183,14 +182,13 @@ const cols = computed((): Cols<Datum> => {
       heading: getCategoryLabel(
         associations.value.items[0]?.object_category || "Object",
       ),
-      width: 3,
+      width: "200px",
       sortable: true,
     },
     {
       slot: "details",
       key: "evidence_count",
       heading: "Details",
-      width: 1,
       align: "center",
       sortable: true,
     },
@@ -208,7 +206,6 @@ const cols = computed((): Cols<Datum> => {
     extraCols.push({
       slot: "taxon",
       heading: "Taxon",
-      width: 2,
     });
 
   /** phenotype specific columns */
@@ -257,18 +254,15 @@ const cols = computed((): Cols<Datum> => {
   //     {
   //       key: "author",
   //       heading: "Author",
-  //       width: "max-content",
   //     },
   //     {
   //       key: "year",
   //       heading: "Year",
   //       align: "center",
-  //       width: "max-content",
   //     },
   //     {
   //       key: "publisher",
   //       heading: "Publisher",
-  //       width: "max-content",
   //     },
   //   );
 
