@@ -79,21 +79,25 @@ As URL params:
 - `subjects` - Comma-separated list of phenotype IDs, e.g. `HP:123,HP:abc,HP:456`.
 - `object-sets` - Comma-separated lists of phenotype IDs, e.g. `?object-sets=HP:123,HP:456&object-sets=HP:abc,HP:def`
 
+Pass as message params to control additional details like set labels.
+
 As message params:
 
 ```ts
 {
   subjects: string[],
   "object-sets": {
-    // unique identifier for set (can be simple incrementing integer)
+    // unique identifier for set
     id: string;
-    // human-readable label for set (can be simple e.g. Set A/B/C)
+    // human-readable label for set
     label: string;
     // list of phenotype ids
     phenotypes: string[];
   }[]
 }
 ```
+
+If there are no other appropriate values for them, `id` can be a simple incrementing integer and `label` can something simple like "Set A".
 
 #### Emits `MessageEvent<{ name: string; width: number; height: number; }>`
 
