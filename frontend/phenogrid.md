@@ -107,7 +107,8 @@ You can use the same event listener as the standard Phenogrid widget to set the 
 
 General parameters available regardless of the mode of operation.
 
-- `stylesheet` - A URI-encoded URL to a stylesheet that will be applied to the widget, for the purposes of matching its styles to your webpage.
+- `stylesheet` - URL to a stylesheet that will be applied to the widget, for the purposes of matching its styles to your webpage.
+  If passed as a URL param, make sure it is URI encoded.
 
 ## Events
 
