@@ -280,7 +280,6 @@ watch(
   padding: 5px 10px;
   gap: 10px;
   text-align: left;
-  white-space: nowrap;
   cursor: pointer;
   transition: background $fast;
 }
