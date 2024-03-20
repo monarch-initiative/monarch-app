@@ -4,7 +4,7 @@
 
 <template>
   <TheSnackbar />
-  <link :href="stylesheet" rel="stylesheet" />
+  <link :href="stylesheetHref" rel="stylesheet" />
 
   <!-- analysis status -->
   <AppStatus v-if="isLoading" code="loading">Running analysis</AppStatus>
@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { isEmpty } from "lodash";
 import { useEventListener } from "@vueuse/core";
@@ -32,8 +32,10 @@ import { useQuery } from "@/composables/use-query";
 /** route info */
 const route = useRoute();
 
+/** input params */
 const aPhenotypes = ref<Parameters<typeof compareSetToGroup>[0]>([]);
 const bGroup = ref<Parameters<typeof compareSetToGroup>[1]>("Human Diseases");
+const stylesheetHref = ref("");
 
 /** comparison analysis */
 const {
@@ -53,38 +55,41 @@ const {
 /** re-rerun analysis when inputs change */
 watch([aPhenotypes, bGroup], runAnalysis);
 
-/** get input phenotype sets from url params */
+/** get input url params */
 watch(
   () => route.query,
   () => {
-    const { subjects = "", "object-group": objectGroup = "" } = route.query;
+    const {
+      subjects = "",
+      "object-group": objectGroup = "",
+      stylesheet = "",
+    } = route.query;
 
-    /** if we don't have what we need, exit */
-    if (!subjects || typeof subjects !== "string") return;
-    if (!objectGroup || typeof objectGroup !== "string") return;
+    if (stylesheet && typeof stylesheet === "string")
+      stylesheetHref.value = window.decodeURIComponent(stylesheet);
 
-    aPhenotypes.value = subjects.split(",");
-    bGroup.value = objectGroup as Group;
-
-    runAnalysis();
+    if (
+      subjects &&
+      typeof subjects === "string" &&
+      objectGroup &&
+      typeof objectGroup === "string"
+    ) {
+      aPhenotypes.value = subjects.split(",");
+      bGroup.value = objectGroup as Group;
+      runAnalysis();
+    }
   },
   { immediate: true, deep: true },
 );
 
-/** get input phenotype sets from parent window message */
+/** listen for message from parent window */
 useEventListener("message", (event: MessageEvent) => {
   if ("subjects" in event.data && "object-group" in event.data) {
     aPhenotypes.value = event.data.subjects;
     bGroup.value = event.data["object-group"];
   }
+  if ("stylesheet" in event.data) stylesheetHref.value = event.data.stylesheet;
 });
-
-/** allow consuming parent to link to css stylesheet */
-const stylesheet = computed(() =>
-  typeof route.query.stylesheet === "string"
-    ? window.decodeURIComponent(route.query.stylesheet)
-    : "",
-);
 </script>
 
 <style scoped>
