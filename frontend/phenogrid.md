@@ -120,7 +120,8 @@ The widget emits a "resize" event when the inherent size of the widget changes, 
 
 ```ts
 MessageEvent<{
-  // new full/natural size of widget, in pixels
+  // new intrinsic size of content within widget, in pixels
+  // (analogous to "max-content" CSS keyword)
   width: number;
   height: number;
   // "name" attribute of iframe that emitted event
@@ -138,8 +139,13 @@ window.addEventListener("message", (event) => {
   const { name, width, height } = event.data;
   const iframe = document.querySelector(`iframe[name='${name}']`);
   if (!iframe) return;
+  // recommended styling...
+  // let iframe fill its container
+  iframe.style.width = "100%";
+  iframe.style.height = "1000px";
+  // but never bigger than its contents
   iframe.style.maxWidth = width + "px";
   iframe.style.maxHeight = height + "px";
-  // e.g. along with width/height 100% and overflow auto
+  // contents will wrap/scroll appropriately at smaller sizes
 });
 ```
