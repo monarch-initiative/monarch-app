@@ -38,6 +38,7 @@ export function initRouter(router: Router) {
      * if raw url just changed due to url object change, don't change url object
      * again
      */
+    console.log(justPushed, to.query, url.value);
     if (justPushed) return (justPushed = false);
 
     /** delete params in url object */
@@ -91,6 +92,7 @@ export function useParam<T>(
       if (newValue === stringify(variable.value)) return;
 
       /** convert raw url string value to actual var value */
+      console.log(key, newValue, parse(newValue));
       variable.value = parse(newValue);
     },
     { immediate: true },
@@ -123,9 +125,9 @@ export function useParam<T>(
 }
 
 /** generic parameter type, with methods to encode/decode to/from string (url) */
-export type Param<T> = {
-  parse: (value: string) => T;
-  stringify: (value: T) => string;
+export type Param<P, S = P> = {
+  parse: (value: string) => P;
+  stringify: (value: S) => string;
 };
 
 /** treat param as string */
@@ -150,7 +152,11 @@ export const booleanParam = (
 });
 
 /** higher-order array param of other params */
-export const arrayParam = <T>(param: Param<T>): Param<T[]> => ({
-  parse: (value) => value.split(",").map(param.parse),
+export const arrayParam = <T>(param: Param<T | undefined, T>): Param<T[]> => ({
+  parse: (value) =>
+    value
+      .split(",")
+      .map(param.parse)
+      .filter((item): item is T => item !== undefined),
   stringify: (value) => value.map(param.stringify).join(","),
 });

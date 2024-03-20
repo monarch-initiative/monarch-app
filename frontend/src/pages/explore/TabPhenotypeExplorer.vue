@@ -306,22 +306,25 @@ type GeneratedFrom = {
   options?: Options;
 };
 
-/** treat param as select option */
-const optionParam = (): Param<Option> => ({
+const optionParam: Param<Option> = {
   parse: (value) => ({ id: value }),
+  stringify: (value) => String(value.id),
+};
+const optionsParam = arrayParam<Option>({
+  parse: (value) => (value ? { id: value } : undefined),
   stringify: (value) => String(value.id),
 });
 
 /** first set of phenotypes */
-const aPhenotypes = useParam<Options>("a-set", arrayParam(optionParam()), []);
+const aPhenotypes = useParam<Options>("a-set", optionsParam, []);
 /** "generated from" helpers after selecting gene or disease */
 const aGeneratedFrom = ref<GeneratedFrom>({});
 /** selected mode of second set */
-const bMode = useParam("b-mode", optionParam(), bModeOptions[0]);
+const bMode = useParam("b-mode", optionParam, bModeOptions[0]);
 /** selected group for second set */
-const bGroup = useParam("b-group", optionParam(), bGroupOptions[0]);
+const bGroup = useParam("b-group", optionParam, bGroupOptions[0]);
 /** second set of phenotypes */
-const bPhenotypes = useParam<Options>("b-set", arrayParam(optionParam()), []);
+const bPhenotypes = useParam<Options>("b-set", optionsParam, []);
 /** "generated from" helpers after selecting gene or disease */
 const bGeneratedFrom = ref<GeneratedFrom>({});
 /** selected metric */
