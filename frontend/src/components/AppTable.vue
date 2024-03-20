@@ -26,7 +26,8 @@
               :aria-sort="col.slot === 'divider' ? undefined : ariaSort"
             >
               <div
-                :class="['cell', col.align || 'left']"
+                v-if="col.slot !== 'divider'"
+                :class="['cell', col.align || 'left', ,]"
                 :style="{ width: col.width || '' }"
               >
                 <span>
@@ -74,7 +75,12 @@
               :aria-colindex="col.slot === 'divider' ? undefined : colIndex + 1"
             >
               <div
-                :class="['cell', col.align || 'left']"
+                v-if="col.slot !== 'divider'"
+                :class="[
+                  'cell',
+                  col.align || 'left',
+                  { divider: col.slot === 'divider' },
+                ]"
                 :style="{ width: col.width || '' }"
               >
                 <!-- if col has slot name, use to custom format/template cell -->
@@ -444,19 +450,28 @@ watch(
       order: -1;
     }
   }
+}
+
+.th,
+.td {
+  padding: 0;
 
   &.divider {
-    width: 2px !important;
-    margin: 0 auto;
-    padding: 0;
-    background: $light-gray;
+    position: relative;
+    min-width: 20px;
+
+    &::after {
+      position: absolute;
+      inset: 0 calc(50% - 1px);
+      background: $light-gray;
+      content: "";
+    }
   }
 }
 
 /** heading cells */
 .th {
   padding-bottom: 10px;
-  font-weight: 400;
   font-weight: 600;
   text-transform: capitalize;
 }
