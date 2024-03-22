@@ -3,19 +3,18 @@
  -->
 
 <template>
-  <AppSection v-show="false">
+  <AppSection v-show="true">
     <AppHeading>How to use Monarch Intiative</AppHeading>
     <p>
       The Monarch Initiative is an extensive knowledge graph and ecosystem of
       tools made for the benefit of clinicians, researchers, and scientists.
       This section is intended to help you get started in using these tools.
-      Advanced users may want to head directly to the
-      <AppLink
-        to="https://github.com/obophenotype/upheno/wiki/Phenotype-Ontologies-Reconciliation-Effort"
-        >home page</AppLink
-      >
-      and start exploring on your own.
     </p>
+  </AppSection>
+
+  <AppSection design="fill">
+    <AppHeading>Example from previous site</AppHeading>
+    <AppHeading :level="4">Content exact from site but layout is not.</AppHeading>
   </AppSection>
 
   <AppSection>
@@ -53,8 +52,87 @@
     </AppAccordion>
   </AppSection>
 
+  <AppSection design="fill">
+    <AppHeading>Candidate layouts for new How-To</AppHeading>
+    <AppHeading :level="4">Content isn't complete in all layouts.</AppHeading>
+  </AppSection>
+
   <AppSection>
-    <p>How To example layout 1</p>
+    <p>How To candidate layout 1</p>
+    <AppHeading>Would you like some help?</AppHeading>
+    <AppSelectSingle
+      v-model="selectedOption"
+      name="Sort"
+      :options="selectOptions"
+    />
+    <div v-if="selectedOption.id === 'search'">
+      <AppHeading>
+        Searching for a single gene, disease, or phenotype.
+      </AppHeading>
+      <p>
+        The search bar in the page header allows flexible searching of gene, disease, or 
+        phenotype all in one place.
+      </p>
+      <AppHighlight :src="search">
+        <ul>
+          <li>Genes can be searched by common gene, gene ID, or symbol.</li>
+          <li>Diseases can be searched by name or ID.</li>
+          <li>Phenotypes can be searched by name or ID.</li>
+        </ul>
+      </AppHighlight>
+      <p>
+        Any of these descriptors can be entered into the search bar directly.
+        Press enter or select a suggestion to search.
+      </p>
+      <AppButton
+          to="explore#search"
+          text="Take me to search..."
+          icon="arrow-right"
+      />
+    </div>
+    <div v-if="selectedOption.id === 'textAnnotator'">
+      <AppHeading>
+        Annotating text with terms from the Monarch KG.
+      </AppHeading>
+      <p>Annotate a descriptive text containing symptoms or phenotypes with terms from the Monarch KG.</p>
+      <AppHighlight :src="textAnnotator">
+        <ul>
+          <li>Paste or upload the text containing symptoms or phenotypes in the text box.</li>
+          <li>Click the "Annotate" button.</li>
+          <li>The results will contain your free text with matching terms replaced with Monarch terms.</li>
+        </ul>
+      </AppHighlight>
+      <AppButton
+          to="explore#text-annotator"
+          text="Take me to text annotator..."
+          icon="arrow-right"
+        />
+    </div>
+    <div v-if="selectedOption.id === 'phenotypeExplorer'">
+      <AppHeading>
+        Compare phenotype profiles of genese or diseases or your own phenotype profiles.
+      </AppHeading>
+      <p>
+        Use the phenotype explorer to find similar genes or diseases based on phenotypes or compare phenotype profiles.
+      </p>
+      <AppHighlight :src="phenotypeExplorer">
+        <ul>
+          <li>Enter the name of a disease or a list of phenotypes in the top search bar</li>
+          <li>Enter another disease, gene, or list of phenotypes you want to compare to</li>
+          <li>Click the "Search" button</li>
+          <li>The results will contain diseases that match the phenotypes or symptoms you entered.</li>
+        </ul>
+      </AppHighlight>
+      <AppButton
+          to="explore#phenotype-explorer"
+          text="Take me to phenotype explorer..."
+          icon="arrow-right"
+        />
+    </div>
+  </AppSection>
+
+  <AppSection>
+    <p>How To candidate layout 2</p>
     <AppHeading>What do you want to do with Monarch today?</AppHeading>
     <p>
       The Monarch Initiative is an extensive knowledge graph and ecosystem of
@@ -94,7 +172,7 @@
   </AppSection>
 
   <AppSection>
-    <p>How To example layout 2</p>
+    <p>How To candidate layout 3</p>
     <AppHeading>What do you want to do with Monarch today?</AppHeading>
     <p>
       The Monarch Initiative is an extensive knowledge graph and ecosystem of
@@ -119,16 +197,15 @@
   </AppSection>
 
   <AppSection>
-    <p>How To example layout 3</p>
-    <AppSelectSingle
-      v-model="selectedOption"
-      name="Sort"
-      :options="selectOptions"
-    />
+    <p>From here below is just some extra things that might be interesting to dress up the page if we want.</p>
   </AppSection>
 
   <AppSection>
-    <p>From here below is just some extra things that might be interesting to dress up the page if we want.</p>
+    <AppHeading>Test Highlights</AppHeading>
+    <AppHighlight :src="search">
+        Quickly and easily browse nodes. Filter by category and taxon. See your
+        recent and frequent searches.
+    </AppHighlight>
   </AppSection>
 
   <AppSection design="fill">
@@ -164,15 +241,20 @@ import TabTextAnnotator from "../explore/TabTextAnnotator.vue"
 import TabPhenotypeExplorer from '../explore/TabPhenotypeExplorer.vue'
 // import AppSelectSingle from "@/components/AppSelectSingle.vue"
 import AppSelectSingle, { type Option } from "@/components/AppSelectSingle.vue"
+import AppHighlight from "@/components/AppHighlight.vue"
+
+import phenotypeExplorer from "@/assets/demos/phenotype-explorer.mp4";
+import search from "@/assets/demos/search.mp4";
+import textAnnotator from "@/assets/demos/text-annotator.mp4";
 
 
 const selectOptions: Option[] = [
   { id: "none_selected", label: "What do you want to do with Monarch today?" },
-  { id: "tabsearch", label: "Search and use information about a gene, disease, or phenotype..." },
-  { id: "alpha", label: "Find similar diseases based on a phenotypes or symptoms..." },
-  { id: "alpha-rev", label: "Annotate a patients symptoms to terms in the Monarch KG..." },
-  { id: "total", label: "Compare phenotypes between two diseases or genes..." },
-  { id: "total-rev", label: "Find additional information about..." },
+  { id: "search", label: "Search and use information about a gene, disease, or phenotype..." },
+  { id: "textAnnotator", label: "Annotate a patients symptoms to terms in the Monarch KG..." },
+  { id: "phenotypeExplorer", label: "Find similar diseases based on a phenotypes or symptoms..." },
+  { id: "pheno_compare", label: "Compare phenotypes between two diseases or genes..." },
+  { id: "about", label: "Find additional information about..." },
 ];
 const selectedOption = ref(selectOptions[0])
 
