@@ -182,61 +182,6 @@ Env var: `VITE_MOCK=true`
 
 Defaults to `false`.
 
-## Phenogrid
-
-The page at `monarchinitiative.org/phenogrid` provides a widget embeddable on any site via an `<iframe>`.
-The widget displays a visual comparison between two sets of phenotypes, and calculates the most and least similar pairs.
-
-Include the widget on your page like so:
-
-```html
-<iframe
-  src="https://monarchinitiative.org/phenogrid?PARAM=VALUE&PARAM=VALUE&PARAM=VALUE"
-  title="Phenogrid"
-  frameborder="0"
-></iframe>
-```
-
-### Parameters
-
-The widget accepts several URL parameters:
-
-- `source` - Comma-separated list of "source" phenotype IDs (set A).
-- `target` - "target" group of phenotypes to compare to (group B).
-  See `src/api/phenotype-explorer.ts` groups for enumerated options.
-- `stylesheet` - A URI-encoded URL to a stylesheet that will be applied to the widget, for the purposes of matching its styles to your webpage.
-
-### Events
-
-The widget also emits `message` events to the parent window when certain things change, and listens for `message` events from the parent window to receive information.
-
-#### Listens for `MessageEvent<{ source: string[], target: string }>`
-
-Provide input phenotype lists to the widget when they might be [too long for a URL](https://www.google.com/search?q=max+url+length).
-
-```js
-// get your iframe dom element somehow
-const iframe = document.querySelector("iframe");
-// send it a message
-iframe.contentWindow.postMessage(
-  { source: ["HP:123,HP:456"], target: "Human Diseases" },
-  "*",
-);
-```
-
-#### Emits `MessageEvent<{ width: number; height: number; }>`
-
-Emitted when the size of the widget changes and on load.
-Useful for setting the dimensions of your iframe container, for example:
-
-```js
-window.addEventListener("message", (event) => {
-  const iframe = document.querySelector("iframe");
-  iframe.style.maxWidth = event.data.width + "px";
-  iframe.style.maxHeight = event.data.height + "px";
-});
-```
-
 ## Style guidelines
 
 Use JSDoc style comments (`/** some comment */`) instead of regular JavaScript comments.
@@ -257,7 +202,7 @@ Keep long lists, such as those in `/global`, sorted alphabetically for consisten
 Use `console.log` for strictly for temporary debugging during local development that should be removed before merging PRs.
 Use `console.error` for in-production logging of _caught_ errors.
 Use `console.warn` for in-production logging of events that are not problems, but are still useful to know.
-Use `console.info` for generic in-production logging.
+Use `console.debug` for generic in-production logging.
 
 Only log major, infrequent events.
 Logging too frequently (say, multiple times per second, sustained) can impact page performance.

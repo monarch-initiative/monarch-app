@@ -1,15 +1,15 @@
 import { ref, shallowRef, watch } from "vue";
-import { type Router } from "vue-router";
-import { isEqual, round } from "lodash";
+import { type LocationQuery, type Router } from "vue-router";
+import { cloneDeep, round } from "lodash";
 
 /**
  * single "reactive" object url to sync with "raw" url. needed so we can batch
- * together multiple synchronous param/hash sets into a single push/replace
- * history entry. vue-router does batch together multiple synchronous
- * pushes/replaces, but does not accommodate keeping/merging params, because
- * currentRoute object only updates at end of batch.
+ * together multiple synchronous param sets into a single push/replace history
+ * entry. vue-router does batch together multiple synchronous pushes/replaces,
+ * but does not accommodate keeping/merging params, because currentRoute object
+ * only updates at end of batch.
  */
-export const url = ref<{ [key: string]: string }>({});
+export const url = ref<LocationQuery>({});
 
 /** connect to router */
 export function initRouter(router: Router) {
@@ -20,15 +20,14 @@ export function initRouter(router: Router) {
   watch(
     url,
     () => {
-      const from = router.currentRoute.value;
-      /** update url to include params. preserve hash. */
-      const to = { query: url.value, hash: from.hash };
-
-      if (!isEqual(url.value, router.currentRoute.value.query)) {
-        /** push/replace based on mode */
-        router[mode === "replace" ? "replace" : "push"](to);
-        justPushed = true;
-      }
+      /** push/replace based on mode */
+      router[mode === "replace" ? "replace" : "push"]({
+        /** update url to include params */
+        query: cloneDeep(url.value),
+        /** preserve hash */
+        hash: router.currentRoute.value.hash,
+      });
+      justPushed = true;
     },
     { deep: true, immediate: true },
   );
@@ -39,10 +38,7 @@ export function initRouter(router: Router) {
      * if raw url just changed due to url object change, don't change url object
      * again
      */
-    if (justPushed) {
-      justPushed = false;
-      return;
-    }
+    if (justPushed) return (justPushed = false);
 
     /** delete params in url object */
     for (const key of Object.keys(url.value))
@@ -50,7 +46,7 @@ export function initRouter(router: Router) {
 
     /** add/change params in url object */
     for (const [key, value] of Object.entries(to.query))
-      if (typeof value === "string") url.value[key] = value;
+      url.value[key] = cloneDeep(value);
   });
 }
 
@@ -71,18 +67,31 @@ export function useParam<T>(
     /** when param in full url object changes */
     () => url.value[key],
     () => {
+      /** get updated value from url object */
+      let newValue = "";
+      /** if single value */
+      // @ts-expect-error
+      if (typeof url.value[key] === "string") newValue = url.value[key];
+      /** if multi-value, pick first */
+      // @ts-expect-error
+      if (Array.isArray(url.value[key]) && url.value[key][0])
+        // @ts-expect-error
+        newValue = url.value[key][0];
+
       /**
-       * get updated value from url object. if key no longer there (e.g. user
-       * went back to url without it), reset to initial value.
+       * if key no longer there (e.g. user went back to url without it), reset
+       * to initial value
        */
-      const value = url.value[key] || stringify(initialValue);
+      if (!newValue) newValue = stringify(initialValue);
+
       /**
        * stringify process is sometimes "lossy" (e.g. rounding decimal places),
-       * so compare values after that process
+       * so compare values after that process and don't update if same
        */
-      if (value === stringify(variable.value)) return;
+      if (newValue === stringify(variable.value)) return;
+
       /** convert raw url string value to actual var value */
-      variable.value = parse(value);
+      variable.value = parse(newValue);
     },
     { immediate: true },
   );
@@ -92,11 +101,17 @@ export function useParam<T>(
     variable,
     () => {
       /** convert actual var value to string for url */
-      const value = stringify(variable.value);
-      /** set var value */
-      if (value) url.value[key] = value;
-      /** if "empty", such as empty string or array, delete param from url */ else
-        delete url.value[key];
+      const newValue = stringify(variable.value);
+
+      /** set url value */
+      if (newValue) {
+        // @ts-expect-error
+        if (Array.isArray(url.value[key]) && url.value[key][0])
+          // @ts-expect-error
+          url.value[key][0] = newValue;
+        else url.value[key] = newValue;
+        /** if "empty", such as empty string or array, delete param from url */
+      } else delete url.value[key];
     },
     /**
      * no "immediate", so url doesn't update until var changes from initial
@@ -108,9 +123,9 @@ export function useParam<T>(
 }
 
 /** generic parameter type, with methods to encode/decode to/from string (url) */
-export type Param<T> = {
-  parse: (value: string) => T;
-  stringify: (value: T) => string;
+export type Param<P, S = P> = {
+  parse: (value: string) => P;
+  stringify: (value: S) => string;
 };
 
 /** treat param as string */
@@ -135,7 +150,11 @@ export const booleanParam = (
 });
 
 /** higher-order array param of other params */
-export const arrayParam = <T>(param: Param<T>): Param<T[]> => ({
-  parse: (value) => value.split(",").map(param.parse),
+export const arrayParam = <T>(param: Param<T | undefined, T>): Param<T[]> => ({
+  parse: (value) =>
+    value
+      .split(",")
+      .map(param.parse)
+      .filter((item): item is T => item !== undefined),
   stringify: (value) => value.map(param.stringify).join(","),
 });

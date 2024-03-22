@@ -3,7 +3,7 @@ from fastapi.testclient import TestClient
 from fastapi import status
 from unittest.mock import MagicMock, patch
 
-from monarch_py.api.additional_models import SemsimMetric, SemsimSearchGroup
+from monarch_py.api.additional_models import SemsimMetric, SemsimSearchGroup, SemsimMultiCompareRequest
 from monarch_py.api.semsim import router
 from monarch_py.datamodels.category_enums import AssociationPredicate, EntityCategory
 
@@ -99,3 +99,25 @@ def test_post_search(mock_search):
 
     assert response.status_code == status.HTTP_200_OK
     mock_search.assert_called_once_with(termset=["HP:123", "HP:456"], prefix=group.name, metric=metric, limit=limit)
+
+
+@patch("monarch_py.service.semsim_service.SemsimianService.multi_compare")
+def test_get_multi_compare(mock_multi_compare):
+    mock_multi_compare.return_value = MagicMock()
+
+    subjects = ["HP:123", "HP:456"]
+    object_sets = [
+        {"id": "something1", "label": "Test Set", "phenotypes": ["HP:789", "HP:101112"]},
+        {"id": "something2", "label": "Test Set 2", "phenotypes": ["HP:987", "HP:102223"]},
+    ]
+
+    response = client.post(
+        f"/multicompare/",
+        json={
+            "subjects": subjects,
+            "object_sets": object_sets,
+        },
+    )
+
+    assert response.status_code == status.HTTP_200_OK
+    mock_multi_compare.assert_called_once_with(SemsimMultiCompareRequest(subjects=subjects, object_sets=object_sets))

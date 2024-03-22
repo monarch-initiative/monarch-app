@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, Query
 from monarch_py.api.additional_models import OutputFormat, PaginationParams
 from monarch_py.api.config import solr
 from monarch_py.datamodels.model import SearchResults
-from monarch_py.datamodels.category_enums import EntityCategory
+from monarch_py.datamodels.category_enums import EntityCategory, MappingPredicate
 from monarch_py.utils.format_utils import to_tsv
 
 router = APIRouter(
@@ -72,7 +72,7 @@ async def autocomplete(
 async def mappings(
     entity_id: Union[List[str], None] = Query(default=None),
     subject_id: Union[List[str], None] = Query(default=None),
-    predicate_id: Union[List[str], None] = Query(default=None),
+    predicate_id: Union[List[MappingPredicate], None] = Query(default=None),
     object_id: Union[List[str], None] = Query(default=None),
     mapping_justification: Union[List[str], None] = Query(default=None),
     pagination: PaginationParams = Depends(),

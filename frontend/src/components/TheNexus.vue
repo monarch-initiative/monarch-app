@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import { onMounted } from "vue";
-import { debounce } from "lodash";
+import { debounce, sortBy } from "lodash";
 import {
   useEventListener,
   useIntervalFn,
@@ -110,7 +110,7 @@ const generate = debounce(() => {
     dots.splice(Math.floor(dots.length * Math.random()), 1);
 
   /** sort dots by z */
-  dots.sort((a, b) => a.point.z - b.point.z);
+  dots = sortBy(dots, (p) => p.point.x);
 
   /** go through each pair of dots */
   links = [];

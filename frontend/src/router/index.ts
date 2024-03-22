@@ -51,8 +51,8 @@ export const routes: RouteRecordRaw[] = [
       window.sessionStorage.removeItem("redirectState");
 
       if (import.meta.env.MODE !== "test") {
-        console.info("Redirecting to:", redirect);
-        console.info("With state:", state);
+        console.debug("Redirecting to:", redirect);
+        console.debug("With state:", state);
       }
 
       /** apply state to current route */
@@ -145,11 +145,19 @@ export const routes: RouteRecordRaw[] = [
     component: asyncRoute("node/PageNode"),
   },
 
-  /** phenogrid iframe widget page */
+  /** phenogrid compare iframe widget page */
   {
-    path: "/phenogrid",
+    path: "/phenogrid-search",
     name: "Phenogrid",
-    component: asyncRoute("explore/PagePhenogrid"),
+    component: asyncRoute("explore/PagePhenogridSearch"),
+    meta: { bare: true },
+  },
+
+  /** phenogrid multi-compare iframe widget page */
+  {
+    path: "/phenogrid-multi-compare",
+    name: "PhenogridMultiCompare",
+    component: asyncRoute("explore/PagePhenogridMulticompare"),
     meta: { bare: true },
   },
 

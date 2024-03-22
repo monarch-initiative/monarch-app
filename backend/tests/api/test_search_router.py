@@ -35,6 +35,7 @@ def test_search_params(mock_search, search):
     query_string = urllib.parse.urlencode(params, doseq=True)
     client.get(f"/search?{query_string}")
     search_params = {**params, "facet_fields": ["category", "in_taxon_label"]}
+    search_params["category"] = [EntityCategory(c) for c in search_params["category"]]
     search_params["category"] = [EntityCategory.DISEASE, EntityCategory.PHENOTYPIC_FEATURE]
     mock_search.assert_called_with(**search_params)
 

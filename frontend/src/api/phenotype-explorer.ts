@@ -1,4 +1,4 @@
-import { pick, uniqBy } from "lodash";
+import { pick, sortBy, uniqBy } from "lodash";
 import type {
   AssociationResults,
   SemsimSearchResult,
@@ -109,10 +109,10 @@ export const compareSetToSet = async (
     }));
 
   /** get high level data */
-  const subjectMatches = mapMatches(response.subject_best_matches);
-  const objectMatches = mapMatches(response.object_best_matches);
-  subjectMatches.sort((a, b) => b.score - a.score);
-  objectMatches.sort((a, b) => b.score - a.score);
+  let subjectMatches = mapMatches(response.subject_best_matches);
+  let objectMatches = mapMatches(response.object_best_matches);
+  subjectMatches = sortBy(subjectMatches, "score").reverse();
+  objectMatches = sortBy(objectMatches, "score").reverse();
 
   /** find unmatched */
   const subjectUnmatched = Object.values(response.subject_termset || {}).filter(
@@ -139,6 +139,108 @@ export const groups = [
 
 export type Group = (typeof groups)[number];
 
+type ObjectSet = { id?: string; label?: string; phenotypes: string[] };
+
+/** compare a set of phenotypes to several other sets of phenotypes */
+export const compareSetToSets = async (
+  subjects: string[],
+  objectSets: ObjectSet[],
+  metric: string = "jaccard_similarity",
+) => {
+  /** fill in missing object set fields */
+  objectSets.forEach((set, index) => {
+    set.id ??= String(index);
+    set.label ??= `Set ${index + 1}`;
+  });
+
+  /** make request */
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("Accept", "application/json");
+  const body = { subjects, object_sets: objectSets, metric };
+  const options = { method: "POST", headers, body: stringify(body) };
+
+  /** make query */
+  const url = `${apiUrl}/semsim/multicompare`;
+  const response = await request<SemsimSearchResult[]>(url, {}, options);
+
+  /** make flat lists of rows/cols from subjects/objects */
+  let cols: Phenogrid["cols"] = response.map((match, index) => ({
+    id: match.subject.id || String(index),
+    label: match.subject.name || `Set ${index + 1}`,
+    total: 0,
+  }));
+  let rows: Phenogrid["cols"] = Object.values(
+    response[0].similarity?.subject_termset || [],
+  ).map((entry) => ({
+    id: entry.id,
+    label: entry.label,
+    total: 0,
+  }));
+
+  /** preserve input sort order of rows/cols */
+  rows = sortBy(rows, (row) => subjects.indexOf(row.id));
+  cols = sortBy(cols, (col) =>
+    objectSets.findIndex((object) => object.id === col.id),
+  );
+
+  /** now populate cells */
+  const cells: Phenogrid["cells"] = {};
+
+  /** start collecting unmatched phenotypes */
+  let unmatched: Phenogrid["unmatched"] = [];
+
+  for (const [index, col] of Object.entries(cols)) {
+    for (const row of rows) {
+      const match = response[+index]?.similarity?.object_best_matches?.[row.id];
+
+      col.total += match?.score || 0;
+      row.total += match?.score || 0;
+
+      cells[col.id + row.id] = {
+        score: match?.score || 0,
+        strength: 0,
+        phenotype: match?.match_target || "",
+        phenotypeLabel: match?.match_target_label || "",
+        ...pick(match?.similarity, [
+          "ancestor_id",
+          "ancestor_label",
+          "jaccard_similarity",
+          "phenodigm_score",
+        ]),
+      };
+    }
+  }
+
+  /** filter out unmatched phenotypes */
+  cols = cols.filter((col) => {
+    if (!col.total) unmatched.push({ ...col });
+    return col.total;
+  });
+  rows = rows.filter((row) => {
+    if (!row.total) unmatched.push({ ...row });
+    return row.total;
+  });
+
+  /** deduplicate unmatched phenotypes */
+  unmatched = uniqBy(unmatched, "id");
+
+  /** normalize cell scores to 0-1 */
+  const scores = Object.values(cells)
+    .map((value) => value.score)
+    .filter(Boolean);
+  const min = Math.min(...scores);
+  const max = Math.max(...scores);
+  Object.values(cells).forEach(
+    (value) =>
+      (value.strength =
+        max - min === 0 ? 0.5 : (value.score - min) / (max - min || 0)),
+  );
+  const phenogrid = { cols, rows, cells, unmatched } satisfies Phenogrid;
+
+  return { phenogrid };
+};
+
 /** compare a set of phenotypes to a group of phenotypes */
 export const compareSetToGroup = async (
   phenotypes: string[],
@@ -149,7 +251,7 @@ export const compareSetToGroup = async (
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   headers.append("Accept", "application/json");
-  const body = { termset: phenotypes, group: group, metric: metric };
+  const body = { termset: phenotypes, group: group, metric };
   const options = { method: "POST", headers, body: stringify(body) };
 
   /** make query */
@@ -157,19 +259,18 @@ export const compareSetToGroup = async (
   const response = await request<SemsimSearchResult[]>(url, {}, options);
 
   /** get high level data */
-  const summary = response.map((match) => ({
+  let summary = response.map((match) => ({
     subject: match.subject,
     score: match.score || 0,
   }));
-  summary.sort((a, b) => b.score - a.score);
+  summary = sortBy(summary, "score").reverse();
 
-  /** turn objects into array of cols */
+  /** make flat lists of rows/cols from subjects/objects */
   let cols: Phenogrid["cols"] = response.map((match) => ({
     id: match.subject.id,
     label: match.subject.name,
     total: 0,
   }));
-  /** turn subjects into array of rows */
   let rows: Phenogrid["cols"] = Object.values(
     response[0].similarity?.object_termset || [],
   ).map((entry) => ({
@@ -177,6 +278,9 @@ export const compareSetToGroup = async (
     label: entry.label,
     total: 0,
   }));
+
+  /** preserve input sort order of rows */
+  rows = sortBy(rows, (row) => phenotypes.indexOf(row.id));
 
   /** make map of col/row id to cells */
   const cells: Phenogrid["cells"] = {};

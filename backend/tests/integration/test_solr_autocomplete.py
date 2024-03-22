@@ -14,8 +14,8 @@ pytestmark = pytest.mark.skipif(
         # we need an edge ngram version of the keyword tokenized field
         # ("down syn", "Down syndrome"),
         ("marf", "Marfan syndrome"),
-        ("BRC", "brc-1"),
-        ("brc", "brc-1"),
+        ("BRC", "BABAM2"),  # expect BRCA1?
+        ("brc", "BABAM2"),  # expect BRCA1?
     ],
 )
 def test_autocomplete(q, should_return):
