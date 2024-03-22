@@ -71,6 +71,12 @@
       <span v-else class="empty">No info</span>
     </template>
 
+    <template #original_subject="{ row }">
+      <AppLink :to="expandCurie(row.original_subject)">
+        {{ row.original_subject }}
+      </AppLink>
+    </template>
+
     <!-- button to show details -->
     <template #details="{ cell, row }">
       <AppButton
@@ -128,6 +134,7 @@ import type { Cols, Sort } from "@/components/AppTable.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
 import { useQuery } from "@/composables/use-query";
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
+import { expandCurie } from "@/util/url";
 
 type Props = {
   /** current node */
@@ -244,6 +251,7 @@ const cols = computed((): Cols<Datum> => {
         sortable: true,
       },
       {
+        slot: "original_subject",
         key: "original_subject",
         heading: "Original Subject",
         sortable: true,
