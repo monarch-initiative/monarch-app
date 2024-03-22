@@ -51,8 +51,8 @@ export const routes: RouteRecordRaw[] = [
       window.sessionStorage.removeItem("redirectState");
 
       if (import.meta.env.MODE !== "test") {
-        console.info("Redirecting to:", redirect);
-        console.info("With state:", state);
+        console.debug("Redirecting to:", redirect);
+        console.debug("With state:", state);
       }
 
       /** apply state to current route */

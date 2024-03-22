@@ -373,7 +373,7 @@ const table = ref({
 });
 
 /** util */
-const log = console.info;
+const log = console.debug;
 </script>
 
 <style lang="scss" scoped>

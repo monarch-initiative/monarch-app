@@ -38,7 +38,6 @@ export function initRouter(router: Router) {
      * if raw url just changed due to url object change, don't change url object
      * again
      */
-    console.log(justPushed, to.query, url.value);
     if (justPushed) return (justPushed = false);
 
     /** delete params in url object */
@@ -92,7 +91,6 @@ export function useParam<T>(
       if (newValue === stringify(variable.value)) return;
 
       /** convert raw url string value to actual var value */
-      console.log(key, newValue, parse(newValue));
       variable.value = parse(newValue);
     },
     { immediate: true },

@@ -202,7 +202,7 @@ Keep long lists, such as those in `/global`, sorted alphabetically for consisten
 Use `console.log` for strictly for temporary debugging during local development that should be removed before merging PRs.
 Use `console.error` for in-production logging of _caught_ errors.
 Use `console.warn` for in-production logging of events that are not problems, but are still useful to know.
-Use `console.info` for generic in-production logging.
+Use `console.debug` for generic in-production logging.
 
 Only log major, infrequent events.
 Logging too frequently (say, multiple times per second, sustained) can impact page performance.

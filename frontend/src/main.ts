@@ -7,14 +7,13 @@ import App from "@/App.vue";
 import components from "@/global/components";
 import plugins from "@/global/plugins";
 import router from "@/router";
-import { groupLog } from "@/util/debug";
 import "wicg-inert";
 import "@/global/icons";
 import "@/global/meta";
 import "normalize.css";
 import "@/global/styles.scss"; /** keep these last so they take priority */
 
-groupLog("Env variables", import.meta.env);
+console.debug("Env variables", import.meta.env);
 
 /** create main app object */
 export let app = createApp(App);

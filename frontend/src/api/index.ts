@@ -1,4 +1,4 @@
-import { groupLog, sleep } from "@/util/debug";
+import { sleep } from "@/util/debug";
 import { getUrl } from "@/util/url";
 
 /** served location of web app, from address bar or storage redirect */
@@ -45,7 +45,7 @@ if (apiName === "local") apiUrl = `http://127.0.0.1:8000${suffix}`;
 
 export { apiUrl };
 
-groupLog(`API version: ${apiName}`, {
+console.debug(`API version: ${apiName}`, {
   fromParam,
   fromEnv,
   fromDomain,
@@ -114,7 +114,7 @@ export const request = async <Response>(
   const endpoint = getUrl(path, "pathname").replace(suffix, "");
 
   if (import.meta.env.MODE !== "test")
-    groupLog(`📞 Request (${cached}) ${endpoint}`, {
+    console.debug(`📞 Request (${cached}) ${endpoint}`, {
       url,
       params,
       options,
@@ -144,7 +144,7 @@ export const request = async <Response>(
   }
 
   if (import.meta.env.MODE !== "test")
-    groupLog(`📣 Response (${cached}) ${endpoint}`, {
+    console.debug(`📣 Response (${cached}) ${endpoint}`, {
       url,
       params,
       options,

@@ -11,7 +11,7 @@
       :icon="getCategoryIcon(node.category)"
     />
     <AppLink
-      v-if="!isLink"
+      v-if="isLink"
       :to="`${absolute ? baseurl : ''}${node.id}`"
       :state="
         breadcrumbs
@@ -85,13 +85,14 @@ const info = computed(() =>
 );
 
 /** whether to make a link or plain text */
-const isLink = computed(
-  () =>
-    /** make sure we're already on page we're linking to */
+const isLink = computed(() => {
+  /** make sure we're already on page we're linking to */
+  return (
     !window.location.pathname.endsWith("/node/" + (props.node.id || "")) &&
     /** make sure id is a valid curie */
-    props.node.id?.match(/^\w/),
-);
+    !!props.node.id?.match(/^\w/)
+  );
+});
 </script>
 
 <style lang="scss" scoped>

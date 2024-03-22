@@ -51,8 +51,8 @@ export const stringify = (value: unknown, space = 0) => {
     else return JSON.stringify(value, null, space);
   } catch (error) {
     console.warn("Invalid JSON stringify");
-    console.info(value);
-    console.info(error);
+    console.debug(value);
+    console.debug(error);
     return "";
   }
 };
@@ -64,8 +64,8 @@ export const parse = <Type>(value: string, defaultValue: Type) => {
     else return JSON.parse(value) as Type;
   } catch (error) {
     console.warn("Invalid JSON parse");
-    console.info(value);
-    console.info(error);
+    console.debug(value);
+    console.debug(error);
     return defaultValue;
   }
 };

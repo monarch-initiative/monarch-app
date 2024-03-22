@@ -11,8 +11,8 @@
        */
 
       /** turn on "preserve log" in dev tools to still see this after nav */
-      console.info("Redirecting from:", location);
-      console.info("With state:", history.state);
+      console.debug("Redirecting from:", location);
+      console.debug("With state:", history.state);
 
       /** save redirect and state */
       sessionStorage.redirect = location.href;
