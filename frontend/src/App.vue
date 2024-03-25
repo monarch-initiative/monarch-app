@@ -15,9 +15,7 @@
       <strong v-if="apiName === 'beta'">BETA VERSION</strong>
       <strong v-if="apiName === 'dev'">DEV VERSION</strong>
       of the
-      <AppLink  to="https://monarchinitiative.org">
-        Monarch Web App
-      </AppLink>. 
+      <AppLink to="https://monarchinitiative.org"> Monarch Web App </AppLink>.
       Not all features are implemented yet. Please use the feedback form
       <AppIcon icon="comment" />
       &nbsp;on any page to tell us what you think!
