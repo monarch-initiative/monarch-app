@@ -9,15 +9,24 @@
   </template>
 
   <template v-else>
-    <TheBanner>
+    <TheBanner v-if="apiName !== 'prod'">
       This web app is the
-      <strong v-if="apiName === 'beta'">BETA VERSION</strong
-      ><strong v-if="apiName === 'dev'">DEV VERSION</strong> successor to the
-      <AppLink to="https://previous.monarchinitiative.org/"
-        >old web app here</AppLink
-      >. Not all features are implemented yet. Please use the feedback form
-      <AppIcon icon="comment" /> &nbsp;on any page to tell us what you think!
+      <strong v-if="apiName === 'local'">LOCAL VERSION</strong>
+      <strong v-if="apiName === 'beta'">BETA VERSION</strong>
+      <strong v-if="apiName === 'dev'">DEV VERSION</strong>
+      of the
+      <AppLink  to="https://monarchinitiative.org">
+        Monarch Web App
+      </AppLink>. 
+      Not all features are implemented yet. Please use the feedback form
+      <AppIcon icon="comment" />
+      &nbsp;on any page to tell us what you think!
     </TheBanner>
+    <!-- <TheBanner v-else>
+      This banner can be used to make announcements on the production version of the web app. 
+      Uncomment this section and replace this text with your announcement as needed. 
+      Disabling the banner is as simple as commenting out this section.
+    </TheBanner> -->
 
     <TheHeader />
     <main>
