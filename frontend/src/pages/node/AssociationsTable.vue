@@ -329,7 +329,7 @@ async function download() {
 
 const frequencyPercentage = (row: DirectionalAssociation) => {
   // Returns decimal, convert to percentage in template
-  if (row.has_percentage) return row.has_percentage/100;
+  if (row.has_percentage) return row.has_percentage / 100;
   else if (row.has_count && row.has_total) return row.has_count / row.has_total;
   else if (row.frequency_qualifier) {
     switch (row.frequency_qualifier) {
