@@ -24,7 +24,7 @@
         class="fill"
       />
     </svg>
-    <b>{{ score.toFixed(1) }}</b>
+    <b>{{`${(score*100).toFixed(1)}%`}}</b>
   </div>
 </template>
 
