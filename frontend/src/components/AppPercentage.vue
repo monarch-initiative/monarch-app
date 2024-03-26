@@ -3,12 +3,35 @@
 -->
 
 <template>
-  <div class="ring">
-    <div>{{ score.toFixed(1) }}</div>
+  <div v-if="props.type === `ring`" class="ring">
+    <b>{{ score.toFixed(1) }}</b>
     <svg viewBox="-50 -50 100 100">
       <circle cx="0" cy="0" r="50" />
       <path :d="d" />
     </svg>
+  </div>
+  
+  <div v-else class="bar">
+    <svg viewBox="-50 -50 100 30">
+      <rect
+      x="-50"
+      y="-50"
+      rx="3"
+      width="100%"
+      height="100%"
+      fill="none"
+      />
+      <rect
+      x="-49"
+      y="-49"
+      rx="3"
+      :width="fillWidth"
+      height="95%"
+      fill="none"
+      class="fill"
+      />
+    </svg>
+    <b>{{ score.toFixed(1) }}</b>
   </div>
 </template>
 
@@ -22,11 +45,13 @@ type Props = {
   score?: number;
   /** percent of ring filled (0-1) */
   percent?: number;
+  type?: "bar" | "ring";
 };
 
 const props = withDefaults(defineProps<Props>(), {
   score: 0.5,
   percent: 0.5,
+  type: "ring",
 });
 
 /** arc svg path */
@@ -37,6 +62,8 @@ const d = computed(() => {
   const y = -cos(angle) * 50;
   return `M 0 -50 A 50 50 0 ${angle >= 180 ? 1 : 0} 1 ${x} ${y}`;
 });
+
+const fillWidth = computed(() => `${clamp(props.percent*100, 0, 98)}%`);
 </script>
 
 <style lang="scss" scoped>
@@ -69,6 +96,36 @@ const d = computed(() => {
     fill: none;
     stroke: $theme;
     stroke-width: 10px;
+  }
+}
+
+.bar {
+  position: relative;
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 90px;
+  height: 30px;
+  font-size: 0.9rem;
+
+  & > * {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  rect {
+    fill: none;
+    stroke: $light-gray;
+    stroke-width: 3px;
+    &.fill {
+      fill: $theme;
+      stroke: none;
+    }
   }
 }
 </style>

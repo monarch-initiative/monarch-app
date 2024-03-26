@@ -56,18 +56,12 @@
     </template>
 
     <template #frequency="{ row }">
-      <AppNodeBadge
-        v-if="row.frequency_qualifier"
-        :node="{
-          id: row.frequency_qualifier,
-          name: row.frequency_qualifier_label,
-        }"
+      <AppPercentage
+        v-if="frequencyPercentage(row)"
+        :score="frequencyPercentage(row)"
+        :percent="frequencyPercentage(row)"
+        type="bar"
       />
-
-      <span v-else-if="row.has_count && row.has_total">
-        {{ row.has_count }}/{{ row.has_total }}
-      </span>
-      <span v-else-if="row.has_percentage"> {{ row.has_percentage }}% </span>
       <span v-else class="empty">No info</span>
     </template>
 
@@ -121,6 +115,7 @@ import {
   type Node,
 } from "@/api/model";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
+import AppPercentage from "@/components/AppPercentage.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
 import type { Option } from "@/components/AppSelectSingle.vue";
 import AppTable from "@/components/AppTable.vue";
@@ -331,6 +326,30 @@ async function download() {
     sort.value,
   );
 }
+
+const frequencyPercentage = (row: DirectionalAssociation) => {
+  // Returns decimal, convert to percentage in template
+  if (row.has_percentage) return row.has_percentage;
+  else if (row.has_count && row.has_total)
+    return row.has_count/row.has_total;
+  else if (row.frequency_qualifier) {
+    switch (row.frequency_qualifier) {
+      case "HP:0040280":
+        return 1.0;
+      case "HP:0040281":
+        return 0.8;
+      case "HP:0040282":
+        return 0.3;
+      case "HP:0040283":
+        return 0.05;
+      case "HP:0040284":
+        return 0.01;
+      default:
+        return 0.0; // Default value if HP ID not found
+    }
+  }
+  return undefined;
+};
 
 /** get associations when category or table state changes */
 watch(

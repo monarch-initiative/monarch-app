@@ -135,7 +135,7 @@
           <!-- ring score -->
           <tooltip :interactive="true" :append-to="appendToBody" :tag="null">
             <div>
-              <AppRing
+              <AppPercentage
                 :score="match.score"
                 :percent="ringPercent(match.score)"
                 tabindex="0"
@@ -227,7 +227,7 @@
         class="match"
       >
         <!-- ring score -->
-        <AppRing
+        <AppPercentage
           v-tooltip="'Average similarity score'"
           :score="match.score"
           :percent="ringPercent(match.score)"
@@ -261,7 +261,7 @@ import {
 } from "@/api/phenotype-explorer";
 import AppAlert from "@/components/AppAlert.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
-import AppRing from "@/components/AppRing.vue";
+import AppPercentage from "@/components/AppPercentage.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import type { Option, Options } from "@/components/AppSelectTags.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
