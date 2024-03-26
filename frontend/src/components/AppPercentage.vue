@@ -10,25 +10,18 @@
       <path :d="d" />
     </svg>
   </div>
-  
+
   <div v-else class="bar">
     <svg viewBox="-50 -50 100 30">
+      <rect x="-50" y="-50" rx="3" width="100%" height="100%" fill="none" />
       <rect
-      x="-50"
-      y="-50"
-      rx="3"
-      width="100%"
-      height="100%"
-      fill="none"
-      />
-      <rect
-      x="-49"
-      y="-49"
-      rx="3"
-      :width="fillWidth"
-      height="95%"
-      fill="none"
-      class="fill"
+        x="-49"
+        y="-49"
+        rx="3"
+        :width="fillWidth"
+        height="95%"
+        fill="none"
+        class="fill"
       />
     </svg>
     <b>{{ score.toFixed(1) }}</b>
@@ -63,7 +56,7 @@ const d = computed(() => {
   return `M 0 -50 A 50 50 0 ${angle >= 180 ? 1 : 0} 1 ${x} ${y}`;
 });
 
-const fillWidth = computed(() => `${clamp(props.percent*100, 0, 98)}%`);
+const fillWidth = computed(() => `${clamp(props.percent * 100, 0, 98)}%`);
 </script>
 
 <style lang="scss" scoped>
@@ -123,7 +116,8 @@ const fillWidth = computed(() => `${clamp(props.percent*100, 0, 98)}%`);
     stroke: $light-gray;
     stroke-width: 3px;
     &.fill {
-      fill: $theme;
+      // fill: $theme;
+      fill: $theme-mid;
       stroke: none;
     }
   }
