@@ -3,28 +3,30 @@
 -->
 
 <template>
-  <div v-if="props.type === `ring`" class="ring">
-    <b>{{ score.toFixed(1) }}</b>
+  <div v-if="type === 'ring'" class="ring">
     <svg viewBox="-50 -50 100 100">
-      <circle cx="0" cy="0" r="50" />
-      <path :d="d" />
+      <circle class="back" cx="0" cy="0" r="50" />
+      <path class="fill" :d="arc" />
     </svg>
+    <b>
+      <slot />
+    </b>
   </div>
 
-  <div v-else class="bar">
-    <svg viewBox="-50 -50 100 30">
-      <rect x="-50" y="-50" rx="3" width="100%" height="100%" fill="none" />
+  <div v-if="type === 'bar'" class="bar">
+    <b>
+      <slot />
+    </b>
+    <svg viewBox="0 0 70 10">
+      <rect class="back" x="0" y="0" width="100%" height="100%" />
       <rect
-        x="-49"
-        y="-49"
-        rx="3"
-        :width="fillWidth"
-        height="95%"
-        fill="none"
         class="fill"
+        x="0"
+        y="0"
+        :width="`${100 * percent}%`"
+        height="100%"
       />
     </svg>
-    <b>{{ `${(score * 100).toFixed(0)}%` }}</b>
   </div>
 </template>
 
@@ -34,11 +36,10 @@ import { clamp } from "lodash";
 import { cos, sin } from "@/util/math";
 
 type Props = {
-  /** value to show in center of ring */
-  score?: number;
-  /** percent of ring filled (0-1) */
+  /** percent filled (0-1) */
   percent?: number;
-  type?: "bar" | "ring";
+  /** design */
+  type?: "ring" | "bar";
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -48,7 +49,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 /** arc svg path */
-const d = computed(() => {
+const arc = computed(() => {
   /** https://stackoverflow.com/questions/5737975/circle-drawing-with-svgs-arc-path */
   const angle = 360 * clamp(props.percent, 0, 0.99999);
   const x = sin(angle) * 50;
@@ -56,70 +57,56 @@ const d = computed(() => {
   return `M 0 -50 A 50 50 0 ${angle >= 180 ? 1 : 0} 1 ${x} ${y}`;
 });
 
-const fillWidth = computed(() => `${clamp(props.percent * 100, 0, 98)}%`);
+type Slots = {
+  default: () => unknown;
+};
+
+defineSlots<Slots>();
 </script>
 
 <style lang="scss" scoped>
-.ring {
-  position: relative;
+.ring,
+.bar {
+  display: flex;
   flex-grow: 0;
   flex-shrink: 0;
-  width: 45px;
-  height: 45px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   font-size: 0.9rem;
+}
+
+.ring {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  fill: none;
+  stroke-width: 10px;
 
   & > * {
-    display: flex;
     position: absolute;
-    top: 0;
-    left: 0;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
   }
 
-  circle {
-    fill: none;
+  .back {
     stroke: $light-gray;
-    stroke-width: 10px;
   }
 
-  path {
-    fill: none;
+  .fill {
     stroke: $theme;
-    stroke-width: 10px;
   }
 }
 
 .bar {
-  position: relative;
-  flex-grow: 0;
-  flex-shrink: 0;
-  width: 90px;
-  height: 30px;
-  font-size: 0.9rem;
-
-  & > * {
-    display: flex;
-    position: absolute;
-    top: 0;
-    left: 0;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
+  svg {
+    height: 10px;
   }
 
-  rect {
-    fill: none;
-    stroke: $light-gray;
-    stroke-width: 3px;
-    &.fill {
-      // fill: $theme;
-      fill: $theme-mid;
-      stroke: none;
-    }
+  .back {
+    fill: $light-gray;
+  }
+
+  .fill {
+    fill: $theme;
   }
 }
 </style>

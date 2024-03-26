@@ -132,14 +132,15 @@
             :node="{ id: match.source, name: match.source_label }"
           />
 
-          <!-- ring score -->
+          <!-- score -->
           <tooltip :interactive="true" :append-to="appendToBody" :tag="null">
             <div>
               <AppPercentage
                 :score="match.score"
                 :percent="ringPercent(match.score)"
                 tabindex="0"
-              />
+                >{{ match.score.toFixed(1) }}</AppPercentage
+              >
               <AppIcon v-if="match.jaccard_similarity === 1" icon="equals" />
             </div>
 
@@ -226,12 +227,12 @@
         :key="index"
         class="match"
       >
-        <!-- ring score -->
+        <!-- score -->
         <AppPercentage
           v-tooltip="'Average similarity score'"
-          :score="match.score"
           :percent="ringPercent(match.score)"
-        />
+          >{{ match.score.toFixed(1) }}</AppPercentage
+        >
 
         <AppFlex class="details" direction="col" align-h="left" gap="small">
           <AppNodeBadge :node="match.subject" />

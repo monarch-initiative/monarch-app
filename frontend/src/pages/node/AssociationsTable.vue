@@ -57,11 +57,13 @@
 
     <template #frequency="{ row }">
       <AppPercentage
-        v-if="frequencyPercentage(row)"
-        :score="frequencyPercentage(row)"
+        v-if="frequencyPercentage(row) !== undefined"
         :percent="frequencyPercentage(row)"
         type="bar"
-      />
+        >{{
+          ((frequencyPercentage(row) || 0) * 100).toFixed(0)
+        }}%</AppPercentage
+      >
       <span v-else class="empty">No info</span>
     </template>
 
@@ -327,14 +329,19 @@ async function download() {
   );
 }
 
+/** get phenotype frequency percentage 0-1 */
 const frequencyPercentage = (row: DirectionalAssociation) => {
-  // Returns decimal, convert to percentage in template
+  /** frequency from % out of 100 */
   if (row.has_percentage) return row.has_percentage / 100;
-  else if (row.has_count && row.has_total) return row.has_count / row.has_total;
-  else if (row.frequency_qualifier) {
+
+  /** frequency from ratio */
+  if (row.has_count && row.has_total) return row.has_count / row.has_total;
+
+  /** enumerated frequencies */
+  if (row.frequency_qualifier)
     switch (row.frequency_qualifier) {
       case "HP:0040280":
-        return 1.0;
+        return 1;
       case "HP:0040281":
         return 0.8;
       case "HP:0040282":
@@ -344,10 +351,8 @@ const frequencyPercentage = (row: DirectionalAssociation) => {
       case "HP:0040284":
         return 0.01;
       default:
-        return 0.0; // Default value if HP ID not found
+        return 0;
     }
-  }
-  return undefined;
 };
 
 /** get associations when category or table state changes */

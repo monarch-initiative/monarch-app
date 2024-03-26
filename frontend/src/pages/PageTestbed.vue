@@ -50,16 +50,16 @@
   <AppSection>
     <AppHeading>Percentage</AppHeading>
     <AppFlex direction="row">
-      <AppPercentage :score="0.25" :percent="0.25" />
-      <AppPercentage />
-      <AppPercentage :score="0.75" :percent="0.75" />
-      <AppPercentage :score="1" :percent="1" />
+      <AppPercentage :percent="0.25">{{ 123 }}</AppPercentage>
+      <AppPercentage :percent="0.5" />
+      <AppPercentage :percent="0.75" />
+      <AppPercentage :percent="1" />
     </AppFlex>
     <AppFlex direction="row">
-      <AppPercentage :score="0.25" :percent="0.25" type="bar" />
-      <AppPercentage type="bar" />
-      <AppPercentage :score="0.75" :percent="0.75" type="bar" />
-      <AppPercentage :score="1" :percent="1" type="bar" />
+      <AppPercentage :percent="0.25" type="bar">{{ 123 }}</AppPercentage>
+      <AppPercentage :percent="0.5" type="bar" />
+      <AppPercentage :percent="0.75" type="bar" />
+      <AppPercentage :percent="1" type="bar" />
     </AppFlex>
   </AppSection>
 
