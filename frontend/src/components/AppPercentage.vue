@@ -3,7 +3,7 @@
 -->
 
 <template>
-  <div v-tooltip="tooltip">
+  <div v-tooltip="tooltip" role="tooltip" aria-hidden="true">
     <div v-if="type === 'ring'" class="ring">
       <svg viewBox="-50 -50 100 100">
         <circle class="back" cx="0" cy="0" r="50" />
