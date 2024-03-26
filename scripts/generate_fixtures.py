@@ -290,7 +290,7 @@ def main(
                         id="test2", label="Test2", phenotypes=["HP:0000093"]
                     ),
                 ],
-                metric="ancestor_information_content",
+                metric="jaccard_similarity",
             )
         )
         fixtures["phenotype-explorer-search"] = _search(
