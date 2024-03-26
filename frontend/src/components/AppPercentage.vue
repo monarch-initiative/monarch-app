@@ -3,30 +3,32 @@
 -->
 
 <template>
-  <div v-if="type === 'ring'" class="ring">
-    <svg viewBox="-50 -50 100 100">
-      <circle class="back" cx="0" cy="0" r="50" />
-      <path class="fill" :d="arc" />
-    </svg>
-    <b>
-      <slot />
-    </b>
-  </div>
+  <div v-tooltip="props.tooltip">
+    <div v-if="type === 'ring'" class="ring">
+      <svg viewBox="-50 -50 100 100">
+        <circle class="back" cx="0" cy="0" r="50" />
+        <path class="fill" :d="arc" />
+      </svg>
+      <b>
+        <slot />
+      </b>
+    </div>
 
-  <div v-if="type === 'bar'" class="bar">
-    <b>
-      <slot />
-    </b>
-    <svg viewBox="0 0 70 10">
-      <rect class="back" x="0" y="0" width="100%" height="100%" />
-      <rect
-        class="fill"
-        x="0"
-        y="0"
-        :width="`${100 * percent}%`"
-        height="100%"
-      />
-    </svg>
+    <div v-if="type === 'bar'" class="bar">
+      <b>
+        <slot />
+      </b>
+      <svg viewBox="0 0 70 10">
+        <rect class="back" x="0" y="0" width="100%" height="100%" />
+        <rect
+          class="fill"
+          x="0"
+          y="0"
+          :width="`${100 * percent}%`"
+          height="100%"
+        />
+      </svg>
+    </div>
   </div>
 </template>
 
@@ -40,6 +42,8 @@ type Props = {
   percent?: number;
   /** design */
   type?: "ring" | "bar";
+  /** tooltip on hover */
+  tooltip?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {

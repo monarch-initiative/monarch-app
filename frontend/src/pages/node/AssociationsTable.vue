@@ -58,12 +58,10 @@
     <template #frequency="{ row }">
       <AppPercentage
         v-if="frequencyPercentage(row) !== undefined"
-        :percent="frequencyPercentage(row)"
         type="bar"
-        >{{
-          ((frequencyPercentage(row) || 0) * 100).toFixed(0)
-        }}%</AppPercentage
-      >
+        :percent="frequencyPercentage(row)"
+        :tooltip="frequencyTooltip(row)"
+      />
       <span v-else class="empty">No info</span>
     </template>
 
@@ -353,6 +351,19 @@ const frequencyPercentage = (row: DirectionalAssociation) => {
       default:
         return 0;
     }
+};
+
+/** get frequency tooltip */
+const frequencyTooltip = (row: DirectionalAssociation): string | undefined => {
+  if (row.has_percentage)
+    return `${row.has_percentage.toFixed(0)}% of ${row.has_total} cases`;
+
+  if (row.has_count && row.has_total)
+    return `${row.has_count} of ${row.has_total} cases`;
+
+  if (row.frequency_qualifier) {
+    return `${row.frequency_qualifier_label}`;
+  }
 };
 
 /** get associations when category or table state changes */
