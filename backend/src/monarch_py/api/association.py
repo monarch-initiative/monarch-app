@@ -29,6 +29,7 @@ async def _get_associations(
     object_taxon: Union[List[str], None] = Query(default=None),
     entity: Union[List[str], None] = Query(default=None),
     direct: bool = Query(default=False),
+    compact: bool = Query(default=False),
     pagination: PaginationParams = Depends(),
     format: OutputFormat = Query(
         default=OutputFormat.json,
@@ -50,6 +51,7 @@ async def _get_associations(
         object_category=object_category,
         object_namespace=object_namespace,
         direct=direct,
+        compact=compact,
         offset=pagination.offset,
         limit=pagination.limit,
     )
