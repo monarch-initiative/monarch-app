@@ -46,10 +46,23 @@
     </AppFlex>
   </AppSection>
 
-  <!-- ring component -->
+  <!-- percentage ring/bar component -->
   <AppSection>
-    <AppHeading>Ring</AppHeading>
-    <AppRing />
+    <AppHeading>Percentage</AppHeading>
+    <AppFlex direction="row">
+      <AppPercentage tooltip="25%" :percent="0.25">{{ 123 }}</AppPercentage>
+      <AppPercentage tooltip="50%" :percent="0.5" />
+      <AppPercentage tooltip="75%" :percent="0.75" />
+      <AppPercentage tooltip="100%" :percent="1" />
+    </AppFlex>
+    <AppFlex direction="row">
+      <AppPercentage tooltip="25%" :percent="0.25" type="bar">{{
+        123
+      }}</AppPercentage>
+      <AppPercentage tooltip="50%" :percent="0.5" type="bar" />
+      <AppPercentage tooltip="75%" :percent="0.75" type="bar" />
+      <AppPercentage tooltip="100%" :percent="1" type="bar" />
+    </AppFlex>
   </AppSection>
 
   <!-- textbox component -->
@@ -185,7 +198,7 @@ import { omit } from "lodash";
 import { useEventListener } from "@vueuse/core";
 import AppButton from "@/components/AppButton.vue";
 import AppInput from "@/components/AppInput.vue";
-import AppRing from "@/components/AppRing.vue";
+import AppPercentage from "@/components/AppPercentage.vue";
 import AppSelectAutocomplete from "@/components/AppSelectAutocomplete.vue";
 import AppSelectMulti from "@/components/AppSelectMulti.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";

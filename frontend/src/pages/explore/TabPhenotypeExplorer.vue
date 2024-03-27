@@ -132,14 +132,15 @@
             :node="{ id: match.source, name: match.source_label }"
           />
 
-          <!-- ring score -->
+          <!-- score -->
           <tooltip :interactive="true" :append-to="appendToBody" :tag="null">
             <div>
-              <AppRing
+              <AppPercentage
                 :score="match.score"
                 :percent="ringPercent(match.score)"
                 tabindex="0"
-              />
+                >{{ match.score.toFixed(1) }}</AppPercentage
+              >
               <AppIcon v-if="match.jaccard_similarity === 1" icon="equals" />
             </div>
 
@@ -226,12 +227,12 @@
         :key="index"
         class="match"
       >
-        <!-- ring score -->
-        <AppRing
+        <!-- score -->
+        <AppPercentage
           v-tooltip="'Average similarity score'"
-          :score="match.score"
           :percent="ringPercent(match.score)"
-        />
+          >{{ match.score.toFixed(1) }}</AppPercentage
+        >
 
         <AppFlex class="details" direction="col" align-h="left" gap="small">
           <AppNodeBadge :node="match.subject" />
@@ -261,7 +262,7 @@ import {
 } from "@/api/phenotype-explorer";
 import AppAlert from "@/components/AppAlert.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
-import AppRing from "@/components/AppRing.vue";
+import AppPercentage from "@/components/AppPercentage.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import type { Option, Options } from "@/components/AppSelectTags.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
