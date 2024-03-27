@@ -2,7 +2,7 @@
 # This file is used to import pytest fixtures from the tests directory #
 ########################################################################
 
-from monarch_py.datamodels.model import AssociationResults, TermSetPairwiseSimilarity, HistoPheno, Node, SearchResults
+from monarch_py.datamodels.model import AssociationResults, HistoPheno, Node, SearchResults
 
 
 def test_autocomplete(autocomplete):
