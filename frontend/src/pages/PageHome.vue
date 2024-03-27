@@ -22,6 +22,11 @@
     <!-- eslint-disable-next-line -->
     <AppGallery :cols="2">
       <AppTile
+        icon="how-to"
+        title="Information on how to use Monarch"
+        to="/how-to"
+      />
+      <AppTile
         icon="people"
         title="For informaticians, patients, clinicians, researchers, and more"
       />
