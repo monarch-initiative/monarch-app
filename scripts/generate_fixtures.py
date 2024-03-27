@@ -9,7 +9,11 @@ import sys
 from pathlib import Path
 
 from monarch_py.api.semsim import _compare, _search, _post_multicompare
-from monarch_py.api.additional_models import SemsimSearchGroup, SemsimMultiCompareObject, SemsimMultiCompareRequest
+from monarch_py.api.additional_models import (
+    SemsimSearchGroup,
+    SemsimMultiCompareObject,
+    SemsimMultiCompareRequest,
+)
 from monarch_py.datamodels.category_enums import (
     AssociationCategory,
     AssociationPredicate,
@@ -290,7 +294,7 @@ def main(
                         id="test2", label="Test2", phenotypes=["HP:0000093"]
                     ),
                 ],
-                metric="ancestor_information_content",
+                metric="jaccard_similarity",
             )
         )
         fixtures["phenotype-explorer-search"] = _search(
@@ -368,13 +372,19 @@ def main(
         write_output_format_fixtures()
 
     ### Write frontend fixtures
-    if any([frontend, metadata, all_fixtures]):
+    if any([frontend, all_fixtures]):
         for key, value in fixtures.items():
             write_frontend_fixture(key, value)
 
     ### Write backend fixtures
-    if any([backend, metadata, all_fixtures]):
+    if any([backend, all_fixtures]):
         backend_fixtures = {**fixtures, **extra_fixtures}
+        backend_fixtures = dict(
+            filter(
+                lambda pair: not pair[0].startswith("phenotype-explorer"),
+                backend_fixtures.items(),
+            )
+        )
         for key, value in backend_fixtures.items():
             write_backend_fixture(key, value)
 

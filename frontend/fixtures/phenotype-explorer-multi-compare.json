@@ -1,0 +1,265 @@
+[
+  {
+    "subject": {
+      "id": "test1",
+      "category": null,
+      "name": "Test1",
+      "full_name": null,
+      "deprecated": null,
+      "description": null,
+      "xref": [],
+      "provided_by": null,
+      "in_taxon": null,
+      "in_taxon_label": null,
+      "symbol": null,
+      "synonym": [],
+      "uri": null,
+      "namespace": null,
+      "has_phenotype": [],
+      "has_phenotype_label": [],
+      "has_phenotype_closure": [],
+      "has_phenotype_closure_label": [],
+      "has_phenotype_count": null
+    },
+    "score": 0.2376923076923077,
+    "similarity": {
+      "subject_termset": {
+        "MP:0010771": {
+          "id": "MP:0010771",
+          "label": "integument phenotype (MPO)"
+        },
+        "MP:0002169": {
+          "id": "MP:0002169",
+          "label": "no abnormal phenotype detected (MPO)"
+        }
+      },
+      "object_termset": {
+        "HP:0004325": {
+          "id": "HP:0004325",
+          "label": "Decreased body weight (HPO)"
+        }
+      },
+      "subject_best_matches": {
+        "MP:0002169": {
+          "match_source": "MP:0002169",
+          "match_source_label": "no abnormal phenotype detected (MPO)",
+          "match_target": "HP:0004325",
+          "match_target_label": "Decreased body weight (HPO)",
+          "score": 0.23076923076923078,
+          "match_subsumer": null,
+          "match_subsumer_label": null,
+          "similarity": {
+            "subject_id": "MP:0002169",
+            "subject_label": null,
+            "subject_source": null,
+            "object_id": "HP:0004325",
+            "object_label": null,
+            "object_source": null,
+            "ancestor_id": "UPHENO:0001003",
+            "ancestor_label": "phenotype by ontology source",
+            "ancestor_source": null,
+            "object_information_content": null,
+            "subject_information_content": null,
+            "ancestor_information_content": 1.5540019332516637,
+            "jaccard_similarity": 0.23076923076923078,
+            "cosine_similarity": null,
+            "dice_similarity": null,
+            "phenodigm_score": 0.5988454147360435
+          },
+          "score_metric": "jaccard_similarity"
+        },
+        "MP:0010771": {
+          "match_source": "MP:0010771",
+          "match_source_label": "integument phenotype (MPO)",
+          "match_target": "HP:0004325",
+          "match_target_label": "Decreased body weight (HPO)",
+          "score": 0.24,
+          "match_subsumer": null,
+          "match_subsumer_label": null,
+          "similarity": {
+            "subject_id": "MP:0010771",
+            "subject_label": null,
+            "subject_source": null,
+            "object_id": "HP:0004325",
+            "object_label": null,
+            "object_source": null,
+            "ancestor_id": "UPHENO:0001003",
+            "ancestor_label": "phenotype by ontology source",
+            "ancestor_source": null,
+            "object_information_content": null,
+            "subject_information_content": null,
+            "ancestor_information_content": 1.5540019332516637,
+            "jaccard_similarity": 0.24,
+            "cosine_similarity": null,
+            "dice_similarity": null,
+            "phenodigm_score": 0.61070489107293
+          },
+          "score_metric": "jaccard_similarity"
+        }
+      },
+      "object_best_matches": {
+        "HP:0004325": {
+          "match_source": "HP:0004325",
+          "match_source_label": "Decreased body weight (HPO)",
+          "match_target": "MP:0002169",
+          "match_target_label": "no abnormal phenotype detected (MPO)",
+          "score": 0.23076923076923078,
+          "match_subsumer": null,
+          "match_subsumer_label": null,
+          "similarity": {
+            "subject_id": "HP:0004325",
+            "subject_label": null,
+            "subject_source": null,
+            "object_id": "MP:0002169",
+            "object_label": null,
+            "object_source": null,
+            "ancestor_id": "UPHENO:0001003",
+            "ancestor_label": "phenotype by ontology source",
+            "ancestor_source": null,
+            "object_information_content": null,
+            "subject_information_content": null,
+            "ancestor_information_content": 1.5540019332516637,
+            "jaccard_similarity": 0.23076923076923078,
+            "cosine_similarity": null,
+            "dice_similarity": null,
+            "phenodigm_score": 0.5988454147360435
+          },
+          "score_metric": "jaccard_similarity"
+        }
+      },
+      "average_score": 0.2376923076923077,
+      "best_score": 0.24,
+      "metric": "JaccardSimilarity"
+    }
+  },
+  {
+    "subject": {
+      "id": "test2",
+      "category": null,
+      "name": "Test2",
+      "full_name": null,
+      "deprecated": null,
+      "description": null,
+      "xref": [],
+      "provided_by": null,
+      "in_taxon": null,
+      "in_taxon_label": null,
+      "symbol": null,
+      "synonym": [],
+      "uri": null,
+      "namespace": null,
+      "has_phenotype": [],
+      "has_phenotype_label": [],
+      "has_phenotype_closure": [],
+      "has_phenotype_closure_label": [],
+      "has_phenotype_count": null
+    },
+    "score": 0.13260869565217392,
+    "similarity": {
+      "subject_termset": {
+        "MP:0002169": {
+          "id": "MP:0002169",
+          "label": "no abnormal phenotype detected (MPO)"
+        },
+        "MP:0010771": {
+          "id": "MP:0010771",
+          "label": "integument phenotype (MPO)"
+        }
+      },
+      "object_termset": {
+        "HP:0000093": { "id": "HP:0000093", "label": "Proteinuria (HPO)" }
+      },
+      "subject_best_matches": {
+        "MP:0002169": {
+          "match_source": "MP:0002169",
+          "match_source_label": "no abnormal phenotype detected (MPO)",
+          "match_target": "HP:0000093",
+          "match_target_label": "Proteinuria (HPO)",
+          "score": 0.13043478260869565,
+          "match_subsumer": null,
+          "match_subsumer_label": null,
+          "similarity": {
+            "subject_id": "MP:0002169",
+            "subject_label": null,
+            "subject_source": null,
+            "object_id": "HP:0000093",
+            "object_label": null,
+            "object_source": null,
+            "ancestor_id": "UPHENO:0001003",
+            "ancestor_label": "phenotype by ontology source",
+            "ancestor_source": null,
+            "object_information_content": null,
+            "subject_information_content": null,
+            "ancestor_information_content": 1.5540019332516637,
+            "jaccard_similarity": 0.13043478260869565,
+            "cosine_similarity": null,
+            "dice_similarity": null,
+            "phenodigm_score": 0.4502176188657809
+          },
+          "score_metric": "jaccard_similarity"
+        },
+        "MP:0010771": {
+          "match_source": "MP:0010771",
+          "match_source_label": "integument phenotype (MPO)",
+          "match_target": "HP:0000093",
+          "match_target_label": "Proteinuria (HPO)",
+          "score": 0.13333333333333333,
+          "match_subsumer": null,
+          "match_subsumer_label": null,
+          "similarity": {
+            "subject_id": "MP:0010771",
+            "subject_label": null,
+            "subject_source": null,
+            "object_id": "HP:0000093",
+            "object_label": null,
+            "object_source": null,
+            "ancestor_id": "UPHENO:0001003",
+            "ancestor_label": "phenotype by ontology source",
+            "ancestor_source": null,
+            "object_information_content": null,
+            "subject_information_content": null,
+            "ancestor_information_content": 1.5540019332516637,
+            "jaccard_similarity": 0.13333333333333333,
+            "cosine_similarity": null,
+            "dice_similarity": null,
+            "phenodigm_score": 0.4551925502102253
+          },
+          "score_metric": "jaccard_similarity"
+        }
+      },
+      "object_best_matches": {
+        "HP:0000093": {
+          "match_source": "HP:0000093",
+          "match_source_label": "Proteinuria (HPO)",
+          "match_target": "MP:0010771",
+          "match_target_label": "integument phenotype (MPO)",
+          "score": 0.13333333333333333,
+          "match_subsumer": null,
+          "match_subsumer_label": null,
+          "similarity": {
+            "subject_id": "HP:0000093",
+            "subject_label": null,
+            "subject_source": null,
+            "object_id": "MP:0010771",
+            "object_label": null,
+            "object_source": null,
+            "ancestor_id": "UPHENO:0001003",
+            "ancestor_label": "phenotype by ontology source",
+            "ancestor_source": null,
+            "object_information_content": null,
+            "subject_information_content": null,
+            "ancestor_information_content": 1.5540019332516637,
+            "jaccard_similarity": 0.13333333333333333,
+            "cosine_similarity": null,
+            "dice_similarity": null,
+            "phenodigm_score": 0.4551925502102253
+          },
+          "score_metric": "jaccard_similarity"
+        }
+      },
+      "average_score": 0.13260869565217392,
+      "best_score": 0.13333333333333333,
+      "metric": "JaccardSimilarity"
+    }
+  }
+]

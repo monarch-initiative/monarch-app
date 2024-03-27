@@ -37,11 +37,11 @@ def test_mappings_params(mock_get_mappings, mappings):
     mappings = MappingResults(**mappings)
     client.get(f"/mappings?{query_string}")
     mock_get_mappings.assert_called_with(
-        entity_id = ["MONDO:0000015", "MONDO:0000016"],
-        subject_id = ["HGNC:0000001", "HGNC:0000002"],
-        predicate_id = [MappingPredicate.EXACT_MATCH],
-        object_id = ["MONDO:0000001", "MONDO:0000002"],
-        mapping_justification = ["semapv:UnspecifiedMatching"],
-        offset = 0,
-        limit = 20,
+        entity_id=["MONDO:0000015", "MONDO:0000016"],
+        subject_id=["HGNC:0000001", "HGNC:0000002"],
+        predicate_id=[MappingPredicate.EXACT_MATCH],
+        object_id=["MONDO:0000001", "MONDO:0000002"],
+        mapping_justification=["semapv:UnspecifiedMatching"],
+        offset=0,
+        limit=20,
     )

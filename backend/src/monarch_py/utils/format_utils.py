@@ -1,7 +1,7 @@
 import sys
 import json
 import yaml
-from typing import Union, Dict, List
+from typing import Dict, List, Tuple, Union
 
 import typer
 from rich import print_json
@@ -33,7 +33,7 @@ def get_headers_from_obj(obj: ConfiguredBaseModel) -> list:
         if obj.items:
             headers = obj.items[0].model_dump().keys()
         else:
-            schema = type(obj).schema()
+            schema = type(obj).model_json_schema()
             definitions = schema["definitions"]
             this_ref = schema["properties"]["items"]["items"]["$ref"].split("/")[-1]
             headers = definitions[this_ref]["properties"].keys()
@@ -43,7 +43,7 @@ def get_headers_from_obj(obj: ConfiguredBaseModel) -> list:
     return list(headers)
 
 
-def get_headers_and_rows(obj: ConfiguredBaseModel) -> (str, str):
+def get_headers_and_rows(obj: ConfiguredBaseModel) -> Tuple[str, str]:
     """Converts a pydantic model to a TSV string."""
     if isinstance(obj, Entity):
         headers = obj.model_dump().keys()
@@ -73,7 +73,8 @@ def to_json(
     elif isinstance(obj, dict):
         json_value = json.dumps(obj, indent=4)
     elif isinstance(obj, list):
-        json_value = json.dumps({"items": [o.model_dump_json() for o in obj]}, indent=4)
+        # json_value = json.dumps({"items": [o.model_dump_json() for o in obj]}, indent=4)
+        json_value = json.dumps([json.loads(o.model_dump_json(indent=4)) for o in obj])
     if file:
         with open(file, "w") as f:
             f.write(json_value)
