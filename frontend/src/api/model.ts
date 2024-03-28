@@ -531,6 +531,20 @@ export interface NodeHierarchy {
     super_classes: Entity[],
     sub_classes: Entity[],
 };
+/**
+ * A class to hold information about a release of the Monarch KG
+ */
+export interface Release {
+    version?: string,
+    url?: string,
+    kg?: string,
+    sqlite?: string,
+    solr?: string,
+    neo4j?: string,
+    metadata?: string,
+    graph_stats?: string,
+    qc_report?: string,
+};
 
 export interface Results {
     /** number of items to return in a response */

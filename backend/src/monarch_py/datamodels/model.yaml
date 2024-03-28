@@ -276,6 +276,19 @@ classes:
     slots:
       - super_classes
       - sub_classes
+  Release:
+    description: >-
+      A class to hold information about a release of the Monarch KG
+    slots:
+      - version
+      - url
+      - kg
+      - sqlite
+      - solr
+      - neo4j
+      - metadata
+      - graph_stats
+      - qc_report
   Results:
     abstract: true
     slots:
@@ -349,7 +362,6 @@ slots:
     range: boolean
     exact_mappings:
       - oboInOwl:ObsoleteClass
-
   description:
     range: string
   direction:
@@ -691,7 +703,7 @@ slots:
   stage_qualifier_closure_label:
     multivalued: true
     description: Field containing stage_qualifier name and the names of all of it's ancestors
-  
+
   # sssom slots
   mappings:
     description: List of ExpandedCuries with id and url for mapped entities
@@ -710,7 +722,8 @@ slots:
     required: true
   # object label is already included in this schema
   mapping_justification:
-      range: string
+    range: string
+
   # Text annotation
   text:
     description: text without tokens
@@ -728,3 +741,13 @@ slots:
   end:
     description: end position of the annotation
     range: integer
+
+  # release slots
+  version: string
+  kg: string
+  sqlite: string
+  solr: string
+  neo4j: string
+  metadata: string
+  graph_stats: string
+  qc_report: string

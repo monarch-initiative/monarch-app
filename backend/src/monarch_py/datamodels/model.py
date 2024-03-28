@@ -546,6 +546,22 @@ class NodeHierarchy(ConfiguredBaseModel):
     sub_classes: List[Entity] = Field(default_factory=list)
 
 
+class Release(ConfiguredBaseModel):
+    """
+    A class to hold information about a release of the Monarch KG
+    """
+
+    version: Optional[str] = Field(None)
+    url: Optional[str] = Field(None)
+    kg: Optional[str] = Field(None)
+    sqlite: Optional[str] = Field(None)
+    solr: Optional[str] = Field(None)
+    neo4j: Optional[str] = Field(None)
+    metadata: Optional[str] = Field(None)
+    graph_stats: Optional[str] = Field(None)
+    qc_report: Optional[str] = Field(None)
+
+
 class Results(ConfiguredBaseModel):
 
     limit: int = Field(..., description="""number of items to return in a response""")
@@ -794,6 +810,7 @@ HistoBin.model_rebuild()
 Mapping.model_rebuild()
 Node.model_rebuild()
 NodeHierarchy.model_rebuild()
+Release.model_rebuild()
 Results.model_rebuild()
 AssociationResults.model_rebuild()
 CompactAssociationResults.model_rebuild()
