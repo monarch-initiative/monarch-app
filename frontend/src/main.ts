@@ -10,7 +10,8 @@ import "wicg-inert";
 import "@/global/icons";
 import "@/global/meta";
 import "normalize.css";
-import "@/global/styles.scss"; /** keep these last so they take priority */
+import "@/global/styles.scss";
+import { initCurieConverter } from "@/util/url";
 
 console.debug("Env variables", import.meta.env);
 
@@ -46,6 +47,7 @@ if (new URL(window.location.href).hostname.endsWith("monarchinitiative.org")) {
   app.use(VueGtag, { config: { id: "G-TWM5ED4QJB" } }, router);
 }
 
+
 (async () => {
   /** mock api */
   if (
@@ -59,6 +61,8 @@ if (new URL(window.location.href).hostname.endsWith("monarchinitiative.org")) {
     const { handlers } = await import("../fixtures");
     await setupWorker(...handlers).start();
   }
+
+  await initCurieConverter();
 
   /** start app */
   app.mount("#app");
