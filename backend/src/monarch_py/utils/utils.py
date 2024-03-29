@@ -105,8 +105,8 @@ def get_release_versions(dev: bool = False, limit: int = 0, print_info: bool = F
     return releases
 
 
-def get_release_metadata(release: str):
-    release_url = f"{KG_URL}/{release}"
+def get_release_metadata(release: str, dev: bool = False):
+    release_url = f"{KG_DEV_URL if dev else KG_URL}/{release}"
     release_info = Release(
         version=release,
         url=f"{release_url}/index.html",

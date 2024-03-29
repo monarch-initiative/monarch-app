@@ -27,3 +27,16 @@ def test_redoc():
     response = client.get("/v3/redoc")
     assert response.status_code == 200
     assert response.headers["content-type"] == "text/html; charset=utf-8"
+
+
+def test_releases():
+    response = client.get("/v3/api/releases?limit=1")
+    assert response.status_code == 200
+    assert response.json()[0]["version"] == "latest"
+
+
+def test_release_metadata():
+    response = client.get("/v3/api/releases?release=latest")
+    assert response.status_code == 200
+    assert response.json()["version"] == "latest"
+    assert response.json()["url"] == "https://data.monarchinitiative.org/monarch-kg/latest/index.html"
