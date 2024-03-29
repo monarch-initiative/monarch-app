@@ -142,6 +142,7 @@ Custom e2e commands:
 
 ```
 bun run test:e2e example.spec.ts
+bun run test:e2e --grep accessibility
 bun run test:e2e --project=chromium
 bun run test:e2e --debug
 ```

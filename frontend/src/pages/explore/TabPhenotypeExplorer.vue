@@ -138,7 +138,6 @@
               <AppPercentage
                 :score="match.score"
                 :percent="ringPercent(match.score)"
-                tabindex="0"
                 >{{ match.score.toFixed(1) }}</AppPercentage
               >
               <AppIcon v-if="match.jaccard_similarity === 1" icon="equals" />

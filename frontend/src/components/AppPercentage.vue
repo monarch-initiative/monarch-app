@@ -3,8 +3,8 @@
 -->
 
 <template>
-  <div v-tooltip="tooltip" role="tooltip" aria-hidden="true">
-    <div v-if="type === 'ring'" class="ring">
+  <div v-tooltip="tooltip" :class="type" tabindex="0" role="button">
+    <template v-if="type === 'ring'">
       <svg viewBox="-50 -50 100 100">
         <circle class="back" cx="0" cy="0" r="50" />
         <path class="fill" :d="arc" />
@@ -12,9 +12,9 @@
       <b>
         <slot />
       </b>
-    </div>
+    </template>
 
-    <div v-if="type === 'bar'" class="bar">
+    <template v-if="type === 'bar'">
       <b>
         <slot />
       </b>
@@ -28,7 +28,7 @@
           height="100%"
         />
       </svg>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -42,7 +42,7 @@ type Props = {
   percent?: number;
   /** design */
   type?: "ring" | "bar";
-  /** tooltip on hover */
+  /** tooltip content */
   tooltip?: string;
 };
 
@@ -50,6 +50,7 @@ const props = withDefaults(defineProps<Props>(), {
   score: 0.5,
   percent: 0.5,
   type: "ring",
+  tooltip: "",
 });
 
 /** arc svg path */
