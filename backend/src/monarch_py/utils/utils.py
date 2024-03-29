@@ -121,6 +121,6 @@ def get_release_metadata(release: str, dev: bool = False):
     return release_info
 
 
-def print_release_info(release_info):
-    for key, value in release_info.items():
+def print_release_info(release_info: Release):
+    for key, value in release_info.model_dump().items():
         console.print(f"{key+' ':—<12} {value}")
