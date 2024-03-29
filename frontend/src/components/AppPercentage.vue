@@ -3,7 +3,13 @@
 -->
 
 <template>
-  <div :class="type">
+  <div
+    v-tooltip="tooltip"
+    :class="type"
+    tabindex="0"
+    role="button"
+    aria-label="Percent"
+  >
     <svg v-if="type === 'ring'" viewBox="-50 -50 100 100">
       <circle class="back" cx="0" cy="0" r="50" />
       <path class="fill" :d="arc" />
@@ -36,12 +42,15 @@ type Props = {
   percent?: number;
   /** design */
   type?: "ring" | "bar";
+  /** description of what percent represents */
+  tooltip?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   score: 0.5,
   percent: 0.5,
   type: "ring",
+  tooltip: undefined,
 });
 
 /** arc svg path */

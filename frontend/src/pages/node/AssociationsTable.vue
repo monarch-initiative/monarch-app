@@ -58,11 +58,9 @@
     <template #frequency="{ row }">
       <AppPercentage
         v-if="frequencyPercentage(row) !== undefined"
-        v-tooltip="frequencyTooltip(row)"
         type="bar"
         :percent="frequencyPercentage(row) || 0"
-        tabindex="0"
-        role="button"
+        :tooltip="frequencyTooltip(row)"
       />
       <span v-else class="empty">No info</span>
     </template>

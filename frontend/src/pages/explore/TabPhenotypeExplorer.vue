@@ -64,7 +64,7 @@
     <!-- similarity metric -->
 
     <AppFlex gap="small">
-      <strong>...using metric</strong>
+      <strong>... using metric</strong>
       <AppSelectSingle
         v-model="metric"
         name="Similarity metric"
@@ -133,51 +133,57 @@
           />
 
           <!-- score -->
-          <tooltip :interactive="true" :append-to="appendToBody" :tag="null">
-            <div tabindex="0">
+          <AppFlex align-h="left" gap="small">
+            <tooltip :append-to="appendToBody" :tag="null">
               <AppPercentage
                 :score="match.score"
                 :percent="ringPercent(match.score)"
                 >{{ match.score.toFixed(1) }}</AppPercentage
               >
-              <AppIcon v-if="match.jaccard_similarity === 1" icon="equals" />
-            </div>
 
-            <template #content>
-              <div class="mini-table">
-                <span>Ancestor</span>
-                <AppNodeBadge
-                  :node="{
-                    id: match.ancestor_id,
-                    name: match.ancestor_label,
-                  }"
-                  :absolute="true"
-                />
-                <AppLink
-                  to="https://incatools.github.io/ontology-access-kit/guide/similarity.html#information-content"
-                >
-                  Ancestor IC
-                </AppLink>
-                <span>
-                  {{ match.ancestor_information_content?.toFixed(3) }}
-                </span>
-                <AppLink
-                  to="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3649640/"
-                >
-                  Phenodigm
-                </AppLink>
-                <span>
-                  {{ match.phenodigm_score?.toFixed(3) }}
-                </span>
-                <AppLink
-                  to="https://incatools.github.io/ontology-access-kit/guide/similarity.html#jaccard-similarity"
-                >
-                  Jaccard
-                </AppLink>
-                <span>{{ match.jaccard_similarity?.toFixed(3) }}</span>
-              </div>
-            </template>
-          </tooltip>
+              <template #content>
+                <div class="mini-table">
+                  <span>Ancestor</span>
+                  <AppNodeBadge
+                    :node="{
+                      id: match.ancestor_id,
+                      name: match.ancestor_label,
+                    }"
+                    :absolute="true"
+                  />
+                  <AppLink
+                    to="https://incatools.github.io/ontology-access-kit/guide/similarity.html#information-content"
+                  >
+                    Ancestor IC
+                  </AppLink>
+                  <span>
+                    {{ match.ancestor_information_content?.toFixed(3) }}
+                  </span>
+                  <AppLink
+                    to="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3649640/"
+                  >
+                    Phenodigm
+                  </AppLink>
+                  <span>
+                    {{ match.phenodigm_score?.toFixed(3) }}
+                  </span>
+                  <AppLink
+                    to="https://incatools.github.io/ontology-access-kit/guide/similarity.html#jaccard-similarity"
+                  >
+                    Jaccard
+                  </AppLink>
+                  <span>{{ match.jaccard_similarity?.toFixed(3) }}</span>
+                </div>
+              </template>
+            </tooltip>
+
+            <AppIcon
+              v-if="match.jaccard_similarity === 1"
+              v-tooltip="'Equal by Jaccard similarity'"
+              icon="equals"
+              tabindex="0"
+            />
+          </AppFlex>
 
           <AppNodeBadge
             :node="{ id: match.target, name: match.target_label }"
@@ -228,10 +234,8 @@
       >
         <!-- score -->
         <AppPercentage
-          v-tooltip="'Average similarity score'"
           :percent="ringPercent(match.score)"
-          tabindex="0"
-          role="button"
+          tooltip="Average similarity score"
           >{{ match.score.toFixed(1) }}</AppPercentage
         >
 
@@ -542,7 +546,7 @@ onMounted(() => {
 
 .triptych {
   display: grid;
-  grid-template-columns: 1fr min-content 1fr;
+  grid-template-columns: 1fr max-content 1fr;
   min-width: 400px;
   gap: 20px 40px;
 }
@@ -554,12 +558,6 @@ onMounted(() => {
 .triptych > :nth-child(3n + 1) {
   justify-self: flex-start;
   text-align: left;
-}
-
-.triptych > :nth-child(3n + 2) {
-  display: flex;
-  align-items: center;
-  gap: 20px;
 }
 
 .triptych > :nth-child(3n) {
