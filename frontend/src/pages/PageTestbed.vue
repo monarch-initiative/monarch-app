@@ -50,18 +50,18 @@
   <AppSection>
     <AppHeading>Percentage</AppHeading>
     <AppFlex direction="row">
-      <AppPercentage tooltip="25%" :percent="0.25">{{ 123 }}</AppPercentage>
-      <AppPercentage tooltip="50%" :percent="0.5" />
-      <AppPercentage tooltip="75%" :percent="0.75" />
-      <AppPercentage tooltip="100%" :percent="1" />
+      <AppPercentage tooltip="Percent" :percent="0.25">{{ 123 }}</AppPercentage>
+      <AppPercentage tooltip="Percent" :percent="0.5" />
+      <AppPercentage tooltip="Percent" :percent="0.75" />
+      <AppPercentage tooltip="Percent" :percent="1" />
     </AppFlex>
     <AppFlex direction="row">
-      <AppPercentage tooltip="25%" :percent="0.25" type="bar">{{
+      <AppPercentage tooltip="Percent" :percent="0.25" type="bar">{{
         123
       }}</AppPercentage>
-      <AppPercentage tooltip="50%" :percent="0.5" type="bar" />
-      <AppPercentage tooltip="75%" :percent="0.75" type="bar" />
-      <AppPercentage tooltip="100%" :percent="1" type="bar" />
+      <AppPercentage tooltip="Percent" :percent="0.5" type="bar" />
+      <AppPercentage tooltip="Percent" :percent="0.75" type="bar" />
+      <AppPercentage tooltip="Percent" :percent="1" type="bar" />
     </AppFlex>
   </AppSection>
 

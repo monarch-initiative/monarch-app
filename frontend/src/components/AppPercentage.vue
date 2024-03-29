@@ -3,32 +3,35 @@
 -->
 
 <template>
-  <div v-tooltip="tooltip" :class="type" tabindex="0" role="button">
-    <template v-if="type === 'ring'">
-      <svg viewBox="-50 -50 100 100">
-        <circle class="back" cx="0" cy="0" r="50" />
-        <path class="fill" :d="arc" />
-      </svg>
-      <b>
-        <slot />
-      </b>
-    </template>
+  <div
+    v-tooltip="tooltip"
+    :class="type"
+    tabindex="0"
+    role="meter"
+    :aria-valuenow="percent"
+    :aria-valuemin="0"
+    :aria-valuemax="1"
+    :aria-label="tooltip"
+  >
+    <svg v-if="type === 'ring'" viewBox="-50 -50 100 100">
+      <circle class="back" cx="0" cy="0" r="50" />
+      <path class="fill" :d="arc" />
+    </svg>
 
-    <template v-if="type === 'bar'">
-      <b>
-        <slot />
-      </b>
-      <svg viewBox="0 0 70 10">
-        <rect class="back" x="0" y="0" width="100%" height="100%" />
-        <rect
-          class="fill"
-          x="0"
-          y="0"
-          :width="`${100 * percent}%`"
-          height="100%"
-        />
-      </svg>
-    </template>
+    <b>
+      <slot />
+    </b>
+
+    <svg v-if="type === 'bar'" viewBox="0 0 70 10">
+      <rect class="back" x="0" y="0" width="100%" height="100%" />
+      <rect
+        class="fill"
+        x="0"
+        y="0"
+        :width="`${100 * percent}%`"
+        height="100%"
+      />
+    </svg>
   </div>
 </template>
 
@@ -40,17 +43,16 @@ import { cos, sin } from "@/util/math";
 type Props = {
   /** percent filled (0-1) */
   percent?: number;
+  /** description of what percent represents */
+  tooltip: string;
   /** design */
   type?: "ring" | "bar";
-  /** tooltip content */
-  tooltip?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   score: 0.5,
   percent: 0.5,
   type: "ring",
-  tooltip: "",
 });
 
 /** arc svg path */
