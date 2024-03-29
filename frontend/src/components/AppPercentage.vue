@@ -3,16 +3,7 @@
 -->
 
 <template>
-  <div
-    v-tooltip="tooltip"
-    :class="type"
-    tabindex="0"
-    role="meter"
-    :aria-valuenow="percent"
-    :aria-valuemin="0"
-    :aria-valuemax="1"
-    :aria-label="tooltip"
-  >
+  <div :class="type">
     <svg v-if="type === 'ring'" viewBox="-50 -50 100 100">
       <circle class="back" cx="0" cy="0" r="50" />
       <path class="fill" :d="arc" />
@@ -43,8 +34,6 @@ import { cos, sin } from "@/util/math";
 type Props = {
   /** percent filled (0-1) */
   percent?: number;
-  /** description of what percent represents */
-  tooltip: string;
   /** design */
   type?: "ring" | "bar";
 };

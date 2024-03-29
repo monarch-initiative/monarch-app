@@ -134,11 +134,10 @@
 
           <!-- score -->
           <tooltip :interactive="true" :append-to="appendToBody" :tag="null">
-            <div>
+            <div tabindex="0">
               <AppPercentage
                 :score="match.score"
                 :percent="ringPercent(match.score)"
-                tooltip="Similarity score"
                 >{{ match.score.toFixed(1) }}</AppPercentage
               >
               <AppIcon v-if="match.jaccard_similarity === 1" icon="equals" />
@@ -229,8 +228,10 @@
       >
         <!-- score -->
         <AppPercentage
+          v-tooltip="'Average similarity score'"
           :percent="ringPercent(match.score)"
-          tooltip="Average similarity score"
+          tabindex="0"
+          role="button"
           >{{ match.score.toFixed(1) }}</AppPercentage
         >
 

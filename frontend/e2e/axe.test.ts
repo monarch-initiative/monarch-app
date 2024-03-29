@@ -7,7 +7,9 @@ log();
 /** pages to test */
 const paths = [
   "/",
-  "/explore",
+  "/explore#search",
+  "/explore#text-annotator",
+  "/explore#phenotype-explorer",
   "/about",
   "/help",
   "/cite",
@@ -49,7 +51,7 @@ const checkPage =
     await page.waitForSelector("main");
     await page.waitForSelector("section");
     await page.waitForSelector("h1");
-    await page.waitForTimeout(100);
+    await page.waitForTimeout(1000);
 
     /** setup axe */
     await injectAxe(page);
