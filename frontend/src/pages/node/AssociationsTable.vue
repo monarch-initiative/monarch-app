@@ -327,6 +327,7 @@ async function download() {
   await downloadAssociations(
     props.node.id,
     props.category.id,
+    props.includeOrthologs,
     search.value,
     sort.value,
   );

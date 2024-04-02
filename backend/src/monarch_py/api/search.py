@@ -1,6 +1,6 @@
 from typing import List, Union
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Response
 
 from monarch_py.api.additional_models import OutputFormat, PaginationParams
 from monarch_py.api.config import solr
@@ -97,4 +97,4 @@ async def mappings(
         tsv = ""
         for row in to_tsv(response, print_output=False):
             tsv += row
-        return tsv
+        return Response(content=tsv, media_type="text/tab-separated-values")

@@ -37,6 +37,7 @@ export const maxDownload = 500;
 export const downloadAssociations = async (
   nodeId = "",
   associationCategory = "",
+  traverseOrthologs = false,
   search?: string,
   sort: Sort = null,
 ) => {
@@ -44,6 +45,7 @@ export const downloadAssociations = async (
   const params = {
     limit: maxDownload,
     query: search || "",
+    traverse_orthologs: !!traverseOrthologs,
     sort: sort
       ? `${sort.key} ${sort.direction === "up" ? "asc" : "desc"}`
       : null,
@@ -61,6 +63,3 @@ export const getTopAssociations = async (
   nodeId = "",
   associationCategory = "",
 ) => await getAssociations(nodeId, associationCategory, 0, 5);
-
-/** maximum associations downloadable at once */
-export const downloadLimit = 500;
