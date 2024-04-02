@@ -1,7 +1,7 @@
 from io import StringIO
 from typing import List, Union
 
-from fastapi import APIRouter, Depends, HTTPException, Path, Query
+from fastapi import APIRouter, Depends, HTTPException, Path, Query, Response
 from fastapi.responses import StreamingResponse
 
 from monarch_py.api.additional_models import PaginationParams
@@ -46,7 +46,7 @@ async def _get_entity(
         tsv = ""
         for row in to_tsv(response, print_output=False):
             tsv += row
-        return tsv
+        return Response(content=tsv, media_type="text/tab-separated-values")
 
 
 @router.get("/{id}/{category}")
@@ -111,7 +111,7 @@ def _association_table(
         )
         stream = StringIO(string_response)
         response = StreamingResponse(
-            stream, media_type="text/csv" if format == OutputFormat.tsv else "application/json"
+            stream, media_type="text/tab-separated-values" if format == OutputFormat.tsv else "application/json"
         )
         response.headers["Content-Disposition"] = f"attachment; filename=assoc-table-{id}.{format.value}"
         return response
@@ -121,4 +121,4 @@ def _association_table(
         tsv = ""
         for row in to_tsv(response, print_output=False):
             tsv += row
-        return tsv
+        return Response(content=tsv, media_type="text/tab-separated-values")
