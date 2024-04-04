@@ -97,7 +97,7 @@ export type Options = Option[];
 <script setup lang="ts">
 import { nextTick, ref, watch } from "vue";
 import { uniqueId } from "lodash";
-import { useFloating } from "@/util/composables";
+import { useFloating } from "@/composables/use-floating";
 import { wrap } from "@/util/math";
 
 type Props = {
@@ -223,13 +223,11 @@ watch(selected, () => {
 });
 
 /** when highlighted index changes */
-watch(
-  highlighted,
-  () =>
-    /** scroll to highlighted in dropdown */
-    document
-      .querySelector(`#option-${id}-${highlighted.value}`)
-      ?.scrollIntoView({ block: "nearest" }),
+watch(highlighted, () =>
+  /** scroll to highlighted in dropdown */
+  document
+    .querySelector(`#option-${id}-${highlighted.value}`)
+    ?.scrollIntoView({ block: "nearest" }),
 );
 
 /** auto-select first option as fallback */
@@ -282,7 +280,6 @@ watch(
   padding: 5px 10px;
   gap: 10px;
   text-align: left;
-  white-space: nowrap;
   cursor: pointer;
   transition: background $fast;
 }

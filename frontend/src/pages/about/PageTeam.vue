@@ -18,6 +18,7 @@
         v-for="(group, index) in team"
         :key="index"
         :to="'#' + kebabCase(group.name)"
+        :replace="true"
         >{{ group.name }}</AppLink
       >
     </div>

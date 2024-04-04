@@ -1,11 +1,11 @@
 from typing import List, Union
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Response
 
 from monarch_py.api.additional_models import OutputFormat, PaginationParams
 from monarch_py.api.config import solr
 from monarch_py.datamodels.model import SearchResults
-from monarch_py.datamodels.category_enums import EntityCategory
+from monarch_py.datamodels.category_enums import EntityCategory, MappingPredicate
 from monarch_py.utils.format_utils import to_tsv
 
 router = APIRouter(
@@ -38,7 +38,7 @@ async def search(
         category = []
     response = solr().search(
         q=q or "*:*",
-        category=[c.value for c in category] if category else None,
+        category=category,
         in_taxon_label=in_taxon_label,
         facet_fields=facet_fields,
         offset=pagination.offset,
@@ -72,7 +72,7 @@ async def autocomplete(
 async def mappings(
     entity_id: Union[List[str], None] = Query(default=None),
     subject_id: Union[List[str], None] = Query(default=None),
-    predicate_id: Union[List[str], None] = Query(default=None),
+    predicate_id: Union[List[MappingPredicate], None] = Query(default=None),
     object_id: Union[List[str], None] = Query(default=None),
     mapping_justification: Union[List[str], None] = Query(default=None),
     pagination: PaginationParams = Depends(),
@@ -97,4 +97,4 @@ async def mappings(
         tsv = ""
         for row in to_tsv(response, print_output=False):
             tsv += row
-        return tsv
+        return Response(content=tsv, media_type="text/tab-separated-values")

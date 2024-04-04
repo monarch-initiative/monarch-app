@@ -55,6 +55,22 @@
       />
     </template>
 
+    <template #frequency="{ row }">
+      <AppNodeBadge
+        v-if="row.frequency_qualifier"
+        :node="{
+          id: row.frequency_qualifier,
+          name: row.frequency_qualifier_label,
+        }"
+      />
+
+      <span v-else-if="row.has_count && row.has_total">
+        {{ row.has_count }}/{{ row.has_total }}
+      </span>
+      <span v-else-if="row.has_percentage"> {{ row.has_percentage }}% </span>
+      <span v-else class="empty">No info</span>
+    </template>
+
     <!-- button to show details -->
     <template #details="{ cell, row }">
       <AppButton
@@ -110,8 +126,8 @@ import type { Option } from "@/components/AppSelectSingle.vue";
 import AppTable from "@/components/AppTable.vue";
 import type { Cols, Sort } from "@/components/AppTable.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
+import { useQuery } from "@/composables/use-query";
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
-import { useQuery } from "@/util/composables";
 
 type Props = {
   /** current node */
@@ -151,14 +167,13 @@ const cols = computed((): Cols<Datum> => {
       heading: getCategoryLabel(
         associations.value.items[0]?.subject_category || "Subject",
       ),
-      width: 3,
+      width: "200px",
       sortable: true,
     },
     {
       slot: "predicate",
       key: "predicate",
       heading: "Association",
-      width: 2,
       sortable: true,
     },
     {
@@ -167,14 +182,13 @@ const cols = computed((): Cols<Datum> => {
       heading: getCategoryLabel(
         associations.value.items[0]?.object_category || "Object",
       ),
-      width: 3,
+      width: "200px",
       sortable: true,
     },
     {
       slot: "details",
       key: "evidence_count",
       heading: "Details",
-      width: 1,
       align: "center",
       sortable: true,
     },
@@ -192,22 +206,43 @@ const cols = computed((): Cols<Datum> => {
     extraCols.push({
       slot: "taxon",
       heading: "Taxon",
-      width: 2,
     });
 
   /** phenotype specific columns */
   if (
-    props.category.label === "biolink:DiseaseToPhenotypicFeatureAssociation"
+    props.category.label === "Phenotypes" ||
+    props.node.category === "biolink:PhenotypicFeature"
   ) {
     extraCols.push(
       {
-        key: "frequency_qualifier_label",
+        slot: "frequency",
+        key: "frequency_qualifier",
         heading: "Frequency",
         sortable: true,
       },
+      // {
+      //   key: "has_percentage",
+      //   heading: "Frequency %",
+      //   sortable: true,
+      // },
+      // {
+      //   key: "has_count",
+      //   heading: "Count",
+      //   sortable: true,
+      // },
+      // {
+      //   key: "has_total",
+      //   heading: "Total",
+      //   sortable: true,
+      // },
       {
         key: "onset_qualifier_label",
         heading: "Onset",
+        sortable: true,
+      },
+      {
+        key: "original_subject",
+        heading: "Original Subject",
         sortable: true,
       },
     );
@@ -219,18 +254,15 @@ const cols = computed((): Cols<Datum> => {
   //     {
   //       key: "author",
   //       heading: "Author",
-  //       width: "max-content",
   //     },
   //     {
   //       key: "year",
   //       heading: "Year",
   //       align: "center",
-  //       width: "max-content",
   //     },
   //     {
   //       key: "publisher",
   //       heading: "Publisher",
-  //       width: "max-content",
   //     },
   //   );
 
@@ -295,6 +327,7 @@ async function download() {
   await downloadAssociations(
     props.node.id,
     props.category.id,
+    props.includeOrthologs,
     search.value,
     sort.value,
   );
@@ -326,5 +359,9 @@ onMounted(() => queryAssociations(true));
 .details {
   width: 100%;
   min-height: unset !important;
+}
+
+.empty {
+  color: $gray;
 }
 </style>

@@ -2,140 +2,102 @@ name: Test Frontend
 
 on: pull_request
 
-env:
-  CACHE_PATH: |
-    ~/.cache/ms-playwright
-    frontend/node_modules
-
 defaults:
   run:
     working-directory: ./frontend
 
 jobs:
-  # build cache for rest of jobs
-  install-cache:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "18"
-
-      - name: Install packages
-        run: yarn install
-
-      - name: Install Playwright
-        run: npx playwright install
-
-      - name: Define cache key
-        id: define-key
-        run: echo "key=${{ hashFiles('frontend/yarn.lock') }}" >> $GITHUB_OUTPUT
-
-      - name: Store cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.CACHE_PATH }}
-          key: ${{ steps.define-key.outputs.key }}
-
-    outputs:
-      cache-key: ${{ steps.define-key.outputs.key }}
-
   # test that app can build without issues
   test-build:
     runs-on: ubuntu-latest
-    needs: install-cache
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Restore cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.CACHE_PATH }}
-          key: ${{ needs.install-cache.outputs.cache-key }}
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Install packages
+        run: bun install
 
       - if: runner.debug == '1'
         uses: mxschmitt/action-tmate@v3
 
       - name: Run test
-        run: yarn build
+        run: bun run build
 
   # test that app has no typescript errors
   test-types:
     runs-on: ubuntu-latest
-    needs: install-cache
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Restore cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.CACHE_PATH }}
-          key: ${{ needs.install-cache.outputs.cache-key }}
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Install packages
+        run: bun install
 
       - if: runner.debug == '1'
         uses: mxschmitt/action-tmate@v3
 
       - name: Run test
-        run: yarn test:types
+        run: bun run test:types
 
   # test that app is properly formatted and linted
   test-lint:
     runs-on: ubuntu-latest
-    needs: install-cache
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Restore cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.CACHE_PATH }}
-          key: ${{ needs.install-cache.outputs.cache-key }}
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Install packages
+        run: bun install
 
       - if: runner.debug == '1'
         uses: mxschmitt/action-tmate@v3
 
       - name: Run test
-        run: yarn test:lint
+        run: bun run test:lint
 
   # run unit tests
   test-unit:
     runs-on: ubuntu-latest
-    needs: install-cache
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Restore cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.CACHE_PATH }}
-          key: ${{ needs.install-cache.outputs.cache-key }}
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Install packages
+        run: bun install
 
       - name: Run test
-        run: yarn test:unit
+        run: bun run test:unit
 
   # run end to end integration tests
   test-e2e:
     runs-on: ubuntu-latest
-    needs: install-cache
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Restore cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.CACHE_PATH }}
-          key: ${{ needs.install-cache.outputs.cache-key }}
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Install packages
+        run: bun install
+
+      - name: Install Playwright
+        run: bunx playwright install
 
       - if: runner.debug == '1'
         uses: mxschmitt/action-tmate@v3
 
       - name: Run test
-        run: yarn test:e2e
+        run: bun run test:e2e

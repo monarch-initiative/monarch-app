@@ -79,7 +79,7 @@
                 cellSize * 0.25
               }) rotate(-45)`"
             >
-              {{ truncate(col.label) }}
+              {{ truncateLabels ? truncate(col.label) : col.label }}
             </text>
             <template #content>
               <AppNodeBadge :node="col" :absolute="true" :show-id="true" />
@@ -116,7 +116,7 @@
                 (0.5 + rowIndex) * cellSize
               })`"
             >
-              {{ truncate(row.label) }}
+              {{ truncateLabels ? truncate(row.label) : row.label }}
             </text>
             <template #content>
               <AppNodeBadge :node="row" :absolute="true" :show-id="true" />
@@ -217,16 +217,16 @@
                   Ancestor IC
                 </AppLink>
                 <span>
-                  {{ cell.score?.toFixed(3) }}
+                  {{ cell.ancestor_information_content?.toFixed(3) }}
                 </span>
                 <AppLink
                   to="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3649640/"
                 >
                   Phenodigm
                 </AppLink>
-                <strong>
+                <span>
                   {{ cell.phenodigm_score?.toFixed(3) }}
-                </strong>
+                </span>
                 <AppLink
                   to="https://incatools.github.io/ontology-access-kit/guide/similarity.html#jaccard-similarity"
                 >
@@ -312,7 +312,7 @@
         @click="copy"
       />
       <AppButton
-        v-tooltip="'Download grid as PNG'"
+        v-tooltip="'Download grid as SVG'"
         design="small"
         text="Download"
         icon="download"
@@ -344,6 +344,7 @@ export type Phenogrid = {
       TermPairwiseSimilarity,
       | "ancestor_id"
       | "ancestor_label"
+      | "ancestor_information_content"
       | "jaccard_similarity"
       | "phenodigm_score"
     >;
@@ -391,6 +392,9 @@ const marginBottom = 20;
 const container = ref<InstanceType<typeof AppFlex>>();
 const scroll = ref<HTMLDivElement>();
 const svg = ref<SVGSVGElement>();
+
+/** whether to truncate labels */
+const truncateLabels = ref(true);
 
 /** dimensions of grid cells area */
 const gridWidth = computed(() => cols.value.length * cellSize);
@@ -471,8 +475,12 @@ function getColor(strength: number) {
 }
 
 /** download svg */
-function download() {
-  if (svg.value) downloadSvg(svg.value, "phenogrid");
+async function download() {
+  if (!svg.value) return;
+  truncateLabels.value = false;
+  await nextTick();
+  downloadSvg(svg.value, "phenogrid");
+  truncateLabels.value = true;
 }
 
 /** copy unmatched phenotype ids to clipboard */
@@ -535,7 +543,7 @@ async function emitSize() {
   let height = element.clientHeight + 2;
   await frame();
   element.classList.remove("full-size");
-  window.parent.postMessage({ width, height }, "*");
+  window.parent.postMessage({ name: window.name, width, height }, "*");
 }
 </script>
 
@@ -547,8 +555,10 @@ async function emitSize() {
 
 .full-size {
   width: max-content !important;
+  min-width: 0 !important;
   max-width: unset !important;
   height: max-content !important;
+  min-height: 0 !important;
   max-height: unset !important;
   margin: auto;
 }

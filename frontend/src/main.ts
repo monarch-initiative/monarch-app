@@ -1,20 +1,18 @@
 import { createApp } from "vue";
 import VueGtag from "vue-gtag";
 import Hotjar from "vue-hotjar";
-import { BrowserTracing } from "@sentry/browser";
 import * as Sentry from "@sentry/vue";
 import App from "@/App.vue";
 import components from "@/global/components";
 import plugins from "@/global/plugins";
 import router from "@/router";
-import { groupLog } from "@/util/debug";
 import "wicg-inert";
 import "@/global/icons";
 import "@/global/meta";
 import "normalize.css";
 import "@/global/styles.scss"; /** keep these last so they take priority */
 
-groupLog("Env variables", import.meta.env);
+console.debug("Env variables", import.meta.env);
 
 /** create main app object */
 export let app = createApp(App);
@@ -33,12 +31,12 @@ if (new URL(window.location.href).hostname.endsWith("monarchinitiative.org")) {
     app,
     dsn: "https://122020f2154c48fa9ebbc53b98afdcf8@o1351894.ingest.sentry.io/6632682",
     integrations: [
-      new BrowserTracing({
-        routingInstrumentation: Sentry.vueRouterInstrumentation(router),
-      }),
+      Sentry.browserTracingIntegration({ router }),
+      Sentry.replayIntegration(),
     ],
     tracesSampleRate: 1.0,
-    logErrors: true,
+    replaysSessionSampleRate: 0.1,
+    replaysOnErrorSampleRate: 1.0,
   });
 
   /** hotjar analytics */

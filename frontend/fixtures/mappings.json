@@ -10,7 +10,7 @@
       "object_id": "DOID:9884",
       "object_label": "muscular dystrophy",
       "mapping_justification": "semapv:UnspecifiedMatching",
-      "id": "5292faf1-de01-4ad1-bff6-f153901a7152"
+      "id": "6ccaa3fa-12c8-49af-9e12-32d5a788dba7"
     },
     {
       "subject_id": "MONDO:0020121",
@@ -19,7 +19,7 @@
       "object_id": "ICD10CM:G71.0",
       "object_label": "Muscular dystrophy",
       "mapping_justification": "semapv:UnspecifiedMatching",
-      "id": "aca5243c-67ba-4b1c-ac88-6c53853a2cdb"
+      "id": "1f1dee7c-938f-471b-b0a7-88f257fe0728"
     },
     {
       "subject_id": "MONDO:0020121",
@@ -28,7 +28,7 @@
       "object_id": "NCIT:C84910",
       "object_label": "Muscular Dystrophy",
       "mapping_justification": "semapv:UnspecifiedMatching",
-      "id": "aa8b03b3-d02f-44b3-9256-8aee2c4400d8"
+      "id": "13be5768-20d2-4e9b-89c3-c8de434fabe4"
     },
     {
       "subject_id": "MONDO:0020121",
@@ -37,7 +37,7 @@
       "object_id": "Orphanet:98473",
       "object_label": "Muscular dystrophy",
       "mapping_justification": "semapv:UnspecifiedMatching",
-      "id": "f9362b76-05fe-4666-96b0-854bb2898567"
+      "id": "593249a0-d2e5-44f3-a012-3d79f795dbaa"
     },
     {
       "subject_id": "MONDO:0020121",
@@ -46,7 +46,7 @@
       "object_id": "SCTID:73297009",
       "object_label": null,
       "mapping_justification": "semapv:UnspecifiedMatching",
-      "id": "b889cc72-99b6-423e-932a-4a3b4be9daef"
+      "id": "2057e03e-4feb-4f7e-90c8-05179eb7dcd9"
     },
     {
       "subject_id": "MONDO:0020121",
@@ -55,16 +55,16 @@
       "object_id": "UMLS:C0026850",
       "object_label": null,
       "mapping_justification": "semapv:UnspecifiedMatching",
-      "id": "24b22775-d7c7-4aee-ad6d-f61e1fee1ce4"
+      "id": "95dc42b9-1d0c-4695-be71-a7bac419b30c"
     },
     {
       "subject_id": "MONDO:0020121",
       "subject_label": "muscular dystrophy",
       "predicate_id": "skos:exactMatch",
-      "object_id": "mesh:D009136",
+      "object_id": "MESH:D009136",
       "object_label": null,
       "mapping_justification": "semapv:UnspecifiedMatching",
-      "id": "96aa0222-74bd-4749-b777-ae2632461adf"
+      "id": "07e13edc-e638-460f-a1bb-898d8fc7f18b"
     }
   ]
 }

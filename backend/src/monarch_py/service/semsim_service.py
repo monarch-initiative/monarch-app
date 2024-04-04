@@ -3,7 +3,8 @@ import requests
 
 from pydantic import BaseModel
 
-from monarch_py.datamodels.model import TermSetPairwiseSimilarity, SemsimSearchResult
+from monarch_py.api.additional_models import SemsimMetric, SemsimMultiCompareRequest
+from monarch_py.datamodels.model import TermSetPairwiseSimilarity, SemsimSearchResult, Entity
 
 
 class SemsimianService(BaseModel):
@@ -16,7 +17,7 @@ class SemsimianService(BaseModel):
     def convert_tsps_data(self, data):
         """Convert to a format that can be coerced into a TermSetPairwiseSimilarity model
 
-        FIXME: currently, the response returned from semsimian_server doesn't
+        TODO: currently, the response returned from semsimian_server doesn't
         100% match the TermSetPairwiseSimilarity model, so we perform some
         transformations below. once it does, we can remove all the code below
         and just return TermSetPairwiseSimilarity(**data)
@@ -42,9 +43,11 @@ class SemsimianService(BaseModel):
         }
         return converted_data
 
-    def compare(self, subjects: List[str], objects: List[str]):
+    def compare(
+        self, subjects: List[str], objects: List[str], metric: SemsimMetric = SemsimMetric.ANCESTOR_INFORMATION_CONTENT
+    ) -> TermSetPairwiseSimilarity:
         host = f"http://{self.semsim_server_host}:{self.semsim_server_port}"
-        path = f"compare/{','.join(subjects)}/{','.join(objects)}"
+        path = f"compare/{','.join(subjects)}/{','.join(objects)}/{metric}"
         url = f"{host}/{path}"
 
         print(f"Fetching {url}...")
@@ -53,13 +56,29 @@ class SemsimianService(BaseModel):
         results = self.convert_tsps_data(data)
         return TermSetPairwiseSimilarity(**results)
 
-    def multi_compare(self, subjects: List[str], object_sets: List[List[str]]) -> List[TermSetPairwiseSimilarity]:
-        compare_results = [self.compare(subjects, object_set) for object_set in object_sets]
-        return compare_results
+    def multi_compare(self, request: SemsimMultiCompareRequest) -> List[SemsimSearchResult]:
+        comparison_results = [
+            self.compare(request.subjects, object_set.phenotypes, request.metric) for object_set in request.object_sets
+        ]
+        results = [
+            SemsimSearchResult(
+                subject=Entity(id=object_set.id, name=object_set.label),
+                score=comparison_result.average_score,
+                similarity=comparison_result,
+            )
+            for object_set, comparison_result in zip(request.object_sets, comparison_results)
+        ]
+        return results
 
-    def search(self, termset: List[str], prefix: str, limit: int):
+    def search(
+        self,
+        termset: List[str],
+        prefix: str,
+        metric: SemsimMetric = SemsimMetric.ANCESTOR_INFORMATION_CONTENT,
+        limit: int = 10,
+    ) -> List[SemsimSearchResult]:
         host = f"http://{self.semsim_server_host}:{self.semsim_server_port}"
-        path = f"search/{','.join(termset)}/{prefix}?limit={limit}"
+        path = f"search/{','.join(termset)}/{prefix}/{metric}?limit={limit}"
         url = f"{host}/{path}"
 
         print(f"Fetching {url}...")

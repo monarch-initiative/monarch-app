@@ -61,6 +61,17 @@
       @spread-options="(option, options) => spreadOptions(option, options, 'b')"
     />
 
+    <!-- similarity metric -->
+
+    <AppFlex gap="small">
+      <strong>...using metric</strong>
+      <AppSelectSingle
+        v-model="metric"
+        name="Similarity metric"
+        :options="metricOptions"
+      />
+    </AppFlex>
+
     <!-- run analysis -->
     <AppButton
       text="Analyze"
@@ -148,16 +159,16 @@
                   Ancestor IC
                 </AppLink>
                 <span>
-                  {{ match.score?.toFixed(3) }}
+                  {{ match.ancestor_information_content?.toFixed(3) }}
                 </span>
                 <AppLink
                   to="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3649640/"
                 >
                   Phenodigm
                 </AppLink>
-                <strong>
+                <span>
                   {{ match.phenodigm_score?.toFixed(3) }}
-                </strong>
+                </span>
                 <AppLink
                   to="https://incatools.github.io/ontology-access-kit/guide/similarity.html#jaccard-similarity"
                 >
@@ -246,6 +257,7 @@ import {
   compareSetToSet,
   getPhenotypes,
   groups,
+  type Group,
 } from "@/api/phenotype-explorer";
 import AppAlert from "@/components/AppAlert.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
@@ -256,9 +268,10 @@ import AppSelectTags from "@/components/AppSelectTags.vue";
 import AppTabs from "@/components/AppTabs.vue";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
+import { arrayParam, useParam, type Param } from "@/composables/use-param";
+import { useQuery } from "@/composables/use-query";
 import { appendToBody } from "@/global/tooltip";
 import { scrollTo } from "@/router";
-import { useQuery } from "@/util/composables";
 import { parse } from "@/util/object";
 import examples from "./phenotype-explorer.json";
 
@@ -279,6 +292,12 @@ const bModeOptions = [
 /** search group options */
 const bGroupOptions = groups.map((group) => ({ id: group, label: group }));
 
+const metricOptions = [
+  { id: "ancestor_information_content", label: "Ancestor Information Content" },
+  { id: "jaccard_similarity", label: "Jaccard Similarity" },
+  { id: "phenodigm_score", label: "Phenodigm Score" },
+];
+
 /** example data */
 type GeneratedFrom = {
   /** the option (gene/disease/phenotype) that the phenotypes came from */
@@ -287,32 +306,45 @@ type GeneratedFrom = {
   options?: Options;
 };
 
+const optionParam: Param<Option> = {
+  parse: (value) => ({ id: value }),
+  stringify: (value) => String(value.id),
+};
+const optionsParam = arrayParam<Option>({
+  parse: (value) => (value ? { id: value } : undefined),
+  stringify: (value) => String(value.id),
+});
+
 /** first set of phenotypes */
-const aPhenotypes = ref<Options>([]);
+const aPhenotypes = useParam<Options>("a-set", optionsParam, []);
 /** "generated from" helpers after selecting gene or disease */
 const aGeneratedFrom = ref<GeneratedFrom>({});
 /** selected mode of second set */
-const bMode = ref(bModeOptions[0]);
+const bMode = useParam("b-mode", optionParam, bModeOptions[0]);
 /** selected group for second set */
-const bGroup = ref(bGroupOptions[0]);
+const bGroup = useParam("b-group", optionParam, bGroupOptions[0]);
 /** second set of phenotypes */
-const bPhenotypes = ref<Options>([]);
+const bPhenotypes = useParam<Options>("b-set", optionsParam, []);
 /** "generated from" helpers after selecting gene or disease */
 const bGeneratedFrom = ref<GeneratedFrom>({});
+/** selected metric */
+const metric = ref<Option>(metricOptions[0]);
 
 /** element reference */
 const aBox = ref<InstanceType<typeof AppSelectTags>>();
 
-/**
- * get % for showing ring. use asymptotic function limited to 1 so we don't need
- * to know max score. domain 1 to ~20, range 0 to 1
- */
+/** get % for showing ring based on the selected metric */
 function ringPercent(score = 0) {
-  const in_min = 4;
-  const in_max = 19;
-  const out_min = 0;
-  const out_max = 1;
-  return ((score - in_min) / (in_max - in_min)) * (out_max - out_min) + out_min;
+  const id = metric.value.id;
+  let min = 0;
+  if (id === "ancestor_information_content") min = 4;
+  else if (id === "jaccard_similarity") min = 0;
+  else if (id === "phenodigm_score") min = 0.1;
+  let max = 1;
+  if (id === "ancestor_information_content") max = 19;
+  else if (id === "jaccard_similarity") max = 1;
+  else if (id === "phenodigm_score") max = 5;
+  return (score - min) / (max - min);
 }
 
 /** example phenotype set comparison */
@@ -372,6 +404,7 @@ const {
     return await compareSetToSet(
       aPhenotypes.value.map(({ id }) => id),
       bPhenotypes.value.map(({ id }) => id),
+      metric.value.id,
     );
   },
 
@@ -398,7 +431,8 @@ const {
 
     return await compareSetToGroup(
       aPhenotypes.value.map(({ id }) => id),
-      bGroup.value.id,
+      bGroup.value.id as Group,
+      metric.value.id,
     );
   },
 
@@ -475,7 +509,9 @@ function description(
 }
 
 /** clear results when inputs are changed to avoid de-sync */
-watch([aPhenotypes, bMode, bGroup, bPhenotypes], clearResults, { deep: true });
+watch([aPhenotypes, bMode, bGroup, bPhenotypes, metric], clearResults, {
+  deep: true,
+});
 
 /** fill in phenotype ids or search from other pages */
 onMounted(() => {

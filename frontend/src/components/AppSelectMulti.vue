@@ -146,7 +146,7 @@ export type Options = Option[];
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from "vue";
 import { isEqual, uniqueId } from "lodash";
-import { useFloating } from "@/util/composables";
+import { useFloating } from "@/composables/use-floating";
 import { wrap } from "@/util/math";
 import type AppButton from "./AppButton.vue";
 
@@ -337,13 +337,11 @@ watch(
 watch(selected, () => emit("update:modelValue", getModel()), { deep: true });
 
 /** when highlighted index changes */
-watch(
-  highlighted,
-  () =>
-    /** scroll to highlighted in dropdown */
-    document
-      .querySelector(`#option-${id}-${highlighted.value} > *`)
-      ?.scrollIntoView({ block: "nearest" }),
+watch(highlighted, () =>
+  /** scroll to highlighted in dropdown */
+  document
+    .querySelector(`#option-${id}-${highlighted.value} > *`)
+    ?.scrollIntoView({ block: "nearest" }),
 );
 
 /** are all options selected */

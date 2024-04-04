@@ -121,9 +121,9 @@ import AppSelectAutocomplete from "@/components/AppSelectAutocomplete.vue";
 import type { Options as MultiOptions } from "@/components/AppSelectMulti.vue";
 import AppSelectMulti from "@/components/AppSelectMulti.vue";
 import AppWrapper from "@/components/AppWrapper.vue";
+import { useQuery } from "@/composables/use-query";
 import { deleteEntry, history } from "@/global/history";
 import { appTitle } from "@/global/meta";
-import { useQuery } from "@/util/composables";
 import { waitFor } from "@/util/dom";
 
 type Props = {
@@ -161,7 +161,7 @@ async function onFocus() {
   if (!props.focusExplore) return;
 
   /** navigate to explore page */
-  await router.push({ ...route, name: "Explore" });
+  await router.push("/explore");
   /** refocus box */
   const input = await waitFor<HTMLInputElement>("input");
   input?.focus();
@@ -191,7 +191,7 @@ function onDelete(value: Option) {
   deleteEntry(value);
 }
 
-/** when user changes selected ƒacet options */
+/** when user changes selected facet options */
 function onSelectedChange() {
   page.value = 0;
   runGetSearch(false);
@@ -363,7 +363,7 @@ const pages = computed((): number[][] => {
   ];
 
   /** sort, deduplicate, and clamp list */
-  list.sort((a, b) => a - b);
+  list.sort();
   list = uniq(list).filter((page) => page >= 0 && page <= pages.length - 1);
 
   /** split into sub lists where page numbers are not sequential */

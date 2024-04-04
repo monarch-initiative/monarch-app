@@ -2,17 +2,17 @@
   "items": [
     {
       "label": "Phenotypes",
-      "count": 3875,
+      "count": 3874,
       "category": "biolink:DiseaseToPhenotypicFeatureAssociation"
     },
     {
       "label": "Causal Genes",
-      "count": 125,
+      "count": 122,
       "category": "biolink:CausalGeneToDiseaseAssociation"
     },
     {
       "label": "Correlated Genes",
-      "count": 139,
+      "count": 140,
       "category": "biolink:CorrelatedGeneToDiseaseAssociation"
     }
   ]

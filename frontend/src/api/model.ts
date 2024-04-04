@@ -64,6 +64,14 @@ export interface Association {
     has_evidence?: string[],
     /** List of ExpandedCuries with id and url for evidence */
     has_evidence_links?: ExpandedCurie[],
+    /** count of out of has_total representing a frequency */
+    has_count?: number,
+    /** total, devided by has_count, representing a frequency */
+    has_total?: number,
+    /** percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly, rounded to the integer level */
+    has_percentage?: number,
+    /** quotient, which should be 1/100 of has_percentage */
+    has_quotient?: number,
     /** A concatenation of fields used to group associations with the same essential/defining properties */
     grouping_key?: string,
     provided_by?: string,
@@ -140,18 +148,6 @@ export interface Association {
     stage_qualifier_closure_label?: string[],
 };
 
-export interface CompactAssociation {
-    category?: string,
-    subject: string,
-    /** The name of the subject entity */
-    subject_label?: string,
-    predicate: string,
-    object: string,
-    /** The name of the object entity */
-    object_label?: string,
-    negated?: boolean,
-};
-
 export interface AssociationCount extends FacetValue {
     category?: string,
     label: string,
@@ -175,6 +171,18 @@ export interface AssociationResults extends Results {
     offset: number,
     /** total number of items matching a query */
     total: number,
+};
+
+export interface CompactAssociation {
+    category?: string,
+    subject: string,
+    /** The name of the subject entity */
+    subject_label?: string,
+    predicate: string,
+    object: string,
+    /** The name of the object entity */
+    object_label?: string,
+    negated?: boolean,
 };
 
 export interface CompactAssociationResults extends Results {
@@ -270,6 +278,14 @@ export interface DirectionalAssociation extends Association {
     has_evidence?: string[],
     /** List of ExpandedCuries with id and url for evidence */
     has_evidence_links?: ExpandedCurie[],
+    /** count of out of has_total representing a frequency */
+    has_count?: number,
+    /** total, devided by has_count, representing a frequency */
+    has_total?: number,
+    /** percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly, rounded to the integer level */
+    has_percentage?: number,
+    /** quotient, which should be 1/100 of has_percentage */
+    has_quotient?: number,
     /** A concatenation of fields used to group associations with the same essential/defining properties */
     grouping_key?: string,
     provided_by?: string,

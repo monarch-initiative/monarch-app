@@ -1,164 +1,61 @@
 # Monarch Frontend
 
-This project was scaffolded using Vite (`yarn create vite` → `Vue` → `create-vue`) with the following options:
+The monarch-app Frontend is a javascript/typescript app built on the Node.js using Bun for package management. It is developed using the Vue 3 framework and built to be deployed using Docker to Google Cloud Platform to run the Monarch App Website.
 
-- TypeScript (for type checking)
-- Vue Router (for SPA navigation)
-- Vitest (unit testing)
-- Playwright (e2e testing)
-- ESLint (code quality)
-- Prettier (code formatting)
+You can use the monarch-app frontend to query the Monarch KG using the web app locally. Without additional setup this will use the same FastAPI backend and data source as the website. If you simply want to query the current release of the Monarch KG you probably just want to use the web application directly.
 
-Techniques/approaches used:
+If you want to use a local data store please review the monarch-app README.md and CONTRIBUTING.md in the top level directory of this repository to understand how to manage the whole stack locally.
 
-- Vue 3
-- Composition API
-- `<script setup lang="ts">` syntax
-- `<style lang="scss" scoped>` styles
+# Useful Links
+
+- [Monarch App Website](https://next.monarchinitiative.org/) - The Monarch Initiative website, a Vue webapp accessing `monarch-py`, a Python library for interacting with the Monarch Initiative knowledge graph, which includes an optional FastAPI module that serves as the website's backend.
+- [Documentation](https://monarch-initiative.github.io/monarch-documentation/) - In addition, to the documentation here, we have a separate documentation site that is automatically generated from the codebase.
 
 ## Requirements
 
-- Node `v18` or later
-- Yarn `v1` (classic)
+- [Bun](https://bun.sh/)
+
+Bun is used as a drop-in replacement for Node (non-browser JavaScript runtime environment) and Yarn (package manager).
+It is _not_ yet used as a replacement for Vite (dev previewing, bundling, building) or Vitest (test runner).
+
+It also should make installs (which impact GitHub Actions quota) much faster, and anything that runs locally (like Vite and Vitest) a bit faster as well. Anything that works in Node should also work in Bun, per Bun's stated goals.
+
+To install Bun with an existing Node.js environment (currently recommended for version/package isolation):
+
+```
+npm install -g bun
+```
+
+If you don't have an existing Node.js implementation and want to install Bun globally on your system (requires curl):
+
+```
+curl -fsSL https://bun.sh/install | bash
+```
+
+## Quick Start
+
+Once Bun is installed, you will need to install all of the necessary javascript/typescript packages then you can run the dev version from your local repository.
+
+```
+bun install
+bun run dev
+```
+
+You should now be able to run the Monarch Web App from your local system using the Monarch Cloud-Hosted FastAPI and the current realease of the Monarch-KG. If you are trying to use self-hosted data please refer to the README.md in the top-level of the monarch-app repository.
 
 ## Commands
 
-| Command                  | Description                               |
-| ------------------------ | ----------------------------------------- |
-| `yarn install`           | Install packages                          |
-| `yarn dev`               | Start local dev server with hot-reloading |
-| `yarn build`             | Build production version of app           |
-| `yarn preview`           | Serve built version of app                |
-| `yarn lint`              | Check linting and formatting, _and fix_   |
-| `yarn test`              | Run all tests below sequentially          |
-| `yarn test:types`        | Type-check codebase                       |
-| `yarn test:lint`         | Check linting and formatting              |
-| `yarn test:unit`         | Run unit tests with Vitest                |
-| `npx playwright install` | Install browsers for Playwright           |
-| `yarn test:e2e`          | Run e2e (and Axe) tests with Playwright   |
+Here are some useful commands got using the local Monarch Web App frontend with the current development environment.
 
-Custom e2e commands:
+| Command           | Description                               |
+| ----------------- | ----------------------------------------- |
+| `bun install`     | Install packages                          |
+| `bun run dev`     | Start local dev server with hot-reloading |
+| `bun run build`   | Build production version of app           |
+| `bun run preview` | Serve built version of app                |
 
-```
-yarn test:e2e example.spec.ts
-yarn test:e2e --project=chromium
-yarn test:e2e --debug
-```
+For more detailed information including test/linting and development please refer to the CONTRIBUTING.md file in this diretory.
 
-## Flags
+# Developers
 
-The frontend has a few "flags" that allow you to easily switch certain high-level development settings.
-
-URL parameter flags can be used to set and override a setting at "run time", when opening the web app.
-These flags stay until you refresh the page or open a new tab.
-For example, add `?flag=value` to a URL like `monarchinitiative.org/?unrelated-param=123&flag=value`.
-
-Environment variable flags can be used to set/override a setting at "compile time", when building the web app.
-These flags always have to be prefixed with `VITE_`.
-For example, set an env var before a command like `VITE_FLAG=value yarn dev`, or add it to `.env` or `.env.local` like `VITE_FLAG=value`.
-
-**`api`**
-
-Which version of the Monarch API to utilize in the frontend, e.g.:
-
-URL param: `monarchinitiative.org/?api=dev`  
-Env var: `VITE_API=local`
-
-See `src/api/index.ts` for logic.
-
-**`mock`**
-
-Whether to use a real API, or to use a "mock" API where the data returned for each call is always the same set of hard-coded fake/demo JSON.
-
-URL param: `monarchinitiative.org/?mock=true`  
-Env var: `VITE_MOCK=true`
-
-Defaults to `false`.
-
-## Phenogrid
-
-The page at `monarchinitiative.org/phenogrid` provides a widget embeddable on any site via an `<iframe>`.
-The widget displays a visual comparison between two sets of phenotypes, and calculates the most and least similar pairs.
-
-Include the widget on your page like so:
-
-```html
-<iframe
-  src="https://monarchinitiative.org/phenogrid?PARAM=VALUE&PARAM=VALUE&PARAM=VALUE"
-  title="Phenogrid"
-  frameborder="0"
-></iframe>
-```
-
-### Parameters
-
-The widget accepts several URL parameters:
-
-- `source` - Comma-separated list of "source" phenotype IDs (set A).
-- `target` - "target" group of phenotypes to compare to (group B).
-  See `src/api/phenotype-explorer.ts` groups for enumerated options.
-- `stylesheet` - A URI-encoded URL to a stylesheet that will be applied to the widget, for the purposes of matching its styles to your webpage.
-
-### Events
-
-The widget also emits `message` events to the parent window when certain things change, and listens for `message` events from the parent window to receive information.
-
-#### Listens for `MessageEvent<{ source: string[], target: string }>`
-
-Provide input phenotype lists to the widget when they might be [too long for a URL](https://www.google.com/search?q=max+url+length).
-
-```js
-// get your iframe dom element somehow
-const iframe = document.querySelector("iframe");
-// send it a message
-iframe.contentWindow.postMessage(
-  { source: ["HP:123,HP:456"], target: "Human Diseases" },
-  "*",
-);
-```
-
-#### Emits `MessageEvent<{ width: number; height: number; }>`
-
-Emitted when the size of the widget changes and on load.
-Useful for setting the dimensions of your iframe container, for example:
-
-```js
-window.addEventListener("message", (event) => {
-  const iframe = document.querySelector("iframe");
-  iframe.style.maxWidth = event.data.width + "px";
-  iframe.style.maxHeight = event.data.height + "px";
-});
-```
-
-## Style guidelines
-
-Use JSDoc style comments (`/** some comment */`) instead of regular JavaScript comments.
-This allows lint checking and auto-fixing/auto-formatting of long comments wrapping to new lines.
-More importantly, it allows for better editor integration.
-Hovering over a function/parameter/object/etc. will show the JSDoc comment from above where it was defined.
-You can use snippets/shortcuts/extensions/etc. to make this as convenient as regular comments.
-
-Where possible and appropriate, use custom components like `AppHeading` and `AppLink` instead of native elements like `h1` and `a`.
-
-See `variables.scss` for a palette of acceptable colors/fonts/etc to use.
-
-Keep configuration files as minimal as possible and conform to third-party-maintained presets.
-For example, avoid overriding default ESLint rules as much as possible.
-
-Keep long lists, such as those in `/global`, sorted alphabetically for consistency and ease of lookup and comparison.
-
-Use `console.log` for strictly for temporary debugging during local development that should be removed before merging PRs.
-Use `console.error` for in-production logging of _caught_ errors.
-Use `console.warn` for in-production logging of events that are not problems, but are still useful to know.
-Use `console.info` for generic in-production logging.
-
-Only log major, infrequent events.
-Logging too frequently (say, multiple times per second, sustained) can impact page performance.
-Leaving select logging in production will be beneficial for in this particular app, for user and in-situ troubleshooting of complex, hard-to-replicate problems.
-
-To analyze the size of the compiled bundle, dev-install `stats-webpack-plugin`, uncomment the `stats-webpack-plugin` line in `vue.config.js`, build the app, then run either `npx webpack-bundle-analyzer dist/stats.json` or `npx source-map-explorer dist/js/*`.
-
-To spell check the entire repo (aside from `node_modules`), run `npx cspell "**/*.{scss,js,ts,json,vue,svg,yaml}"`.
-
-For consistency, use Prettier to format whatever you can.
-Some of the things it can format: `.js`, `.ts`, `.vue`, `.html`, `.svg`, `.yaml`, `.json`, `.md`, etc.
+For detailed information on development of the Monarch Web App please see the CONTRIBUTING.md file in the frontend directory. If you want to use locally hosted data or run the FastAPI locally on your system you should refer to the README.md and CONTRIBUTING.md in the top-level of the monarch-app repository.

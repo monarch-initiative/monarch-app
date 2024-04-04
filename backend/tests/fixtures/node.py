@@ -33,7 +33,7 @@ def node():
             {"id": "Orphanet:98473", "url": None},
             {"id": "SCTID:73297009", "url": "http://identifiers.org/snomedct/73297009"},
             {"id": "UMLS:C0026850", "url": "http://identifiers.org/umls/C0026850"},
-            {"id": "mesh:D009136", "url": None},
+            {"id": "MESH:D009136", "url": "http://identifiers.org/mesh/D009136"},
         ],
         "external_links": [],
         "provided_by_link": {
@@ -41,16 +41,16 @@ def node():
             "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/phenio/#",
         },
         "association_counts": [
-            {"label": "Phenotypes", "count": 3875, "category": "biolink:DiseaseToPhenotypicFeatureAssociation"},
-            {"label": "Causal Genes", "count": 125, "category": "biolink:CausalGeneToDiseaseAssociation"},
-            {"label": "Correlated Genes", "count": 139, "category": "biolink:CorrelatedGeneToDiseaseAssociation"},
+            {"label": "Phenotypes", "count": 3874, "category": "biolink:DiseaseToPhenotypicFeatureAssociation"},
+            {"label": "Causal Genes", "count": 122, "category": "biolink:CausalGeneToDiseaseAssociation"},
+            {"label": "Correlated Genes", "count": 140, "category": "biolink:CorrelatedGeneToDiseaseAssociation"},
         ],
         "node_hierarchy": {
             "super_classes": [
                 {
-                    "id": "MONDO:0019056",
+                    "id": "MONDO:0100546",
                     "category": "biolink:Disease",
-                    "name": "neuromuscular disease",
+                    "name": "hereditary neuromuscular disease",
                     "full_name": None,
                     "deprecated": None,
                     "description": None,

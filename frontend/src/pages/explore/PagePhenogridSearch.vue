@@ -4,7 +4,7 @@
 
 <template>
   <TheSnackbar />
-  <link :href="stylesheet" rel="stylesheet" />
+  <link :href="stylesheetHref" rel="stylesheet" />
 
   <!-- analysis status -->
   <AppStatus v-if="isLoading" code="loading">Running analysis</AppStatus>
@@ -20,20 +20,22 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { isEmpty } from "lodash";
 import { useEventListener } from "@vueuse/core";
 import { compareSetToGroup, type Group } from "@/api/phenotype-explorer";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
 import TheSnackbar from "@/components/TheSnackbar.vue";
-import { useQuery } from "@/util/composables";
+import { useQuery } from "@/composables/use-query";
 
 /** route info */
 const route = useRoute();
 
-const aPhenotypes = ref<string[]>([]);
-const bGroup = ref<Group>("Human Diseases");
+/** input params */
+const aPhenotypes = ref<Parameters<typeof compareSetToGroup>[0]>([]);
+const bGroup = ref<Parameters<typeof compareSetToGroup>[1]>("Human Diseases");
+const stylesheetHref = ref("");
 
 /** comparison analysis */
 const {
@@ -53,35 +55,41 @@ const {
 /** re-rerun analysis when inputs change */
 watch([aPhenotypes, bGroup], runAnalysis);
 
-/** get input phenotype sets from url params */
+/** get input url params */
 watch(
   () => route.query,
   () => {
-    const { source = "", target = "" } = route.query;
+    const {
+      subjects = "",
+      "object-group": objectGroup = "",
+      stylesheet = "",
+    } = route.query;
 
-    if (source && typeof source === "string")
-      aPhenotypes.value = source.split(",");
-    if (target && typeof target === "string") bGroup.value = target as Group;
+    if (stylesheet && typeof stylesheet === "string")
+      stylesheetHref.value = window.decodeURIComponent(stylesheet);
 
-    runAnalysis();
+    if (
+      subjects &&
+      typeof subjects === "string" &&
+      objectGroup &&
+      typeof objectGroup === "string"
+    ) {
+      aPhenotypes.value = subjects.split(",");
+      bGroup.value = objectGroup as Group;
+      runAnalysis();
+    }
   },
   { immediate: true, deep: true },
 );
 
-/** get input phenotype sets from parent window message */
+/** listen for message from parent window */
 useEventListener("message", (event: MessageEvent) => {
-  if ("source" in event.data && "target" in event.data) {
-    aPhenotypes.value = event.data.source;
-    bGroup.value = event.data.target;
+  if ("subjects" in event.data && "object-group" in event.data) {
+    aPhenotypes.value = event.data.subjects;
+    bGroup.value = event.data["object-group"];
   }
+  if ("stylesheet" in event.data) stylesheetHref.value = event.data.stylesheet;
 });
-
-/** allow consuming parent to link to css stylesheet */
-const stylesheet = computed(() =>
-  typeof route.query.stylesheet === "string"
-    ? window.decodeURIComponent(route.query.stylesheet)
-    : "",
-);
 </script>
 
 <style scoped>
