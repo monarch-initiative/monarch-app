@@ -422,6 +422,7 @@ watch(
 .table {
   border-collapse: collapse;
   table-layout: fixed;
+  margin: 0 auto;
 }
 
 /** all cells */
