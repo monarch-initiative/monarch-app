@@ -74,7 +74,6 @@ watch(
       bPhenotypes.value = flatObjectSets.filter(Boolean).map((object) => ({
         phenotypes: object?.split(",") || [],
       }));
-      runAnalysis();
     }
   },
   { immediate: true, deep: true },
