@@ -7,7 +7,9 @@ log();
 /** pages to test */
 const paths = [
   "/",
-  "/explore",
+  "/explore#search",
+  "/explore#text-annotator",
+  "/explore#phenotype-explorer",
   "/about",
   "/help",
   "/cite",
@@ -27,7 +29,10 @@ const rules = [
    *
    * https://uxmovement.com/buttons/the-myths-of-color-contrast-accessibility/
    * https://github.com/w3c/wcag/issues/695
+   * https://twitter.com/DanHollick/status/1468958644364402702
+   * https://github.com/Myndex/SAPC-APCA
    * https://twitter.com/DanHollick/status/1417895151003865090
+   * https://twitter.com/argyleink/status/1329091518032867328
    */
   { id: "color-contrast", enabled: false },
   /** ignore select dropdowns that are appended to body */
@@ -49,7 +54,7 @@ const checkPage =
     await page.waitForSelector("main");
     await page.waitForSelector("section");
     await page.waitForSelector("h1");
-    await page.waitForTimeout(100);
+    await page.waitForTimeout(1000);
 
     /** setup axe */
     await injectAxe(page);

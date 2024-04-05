@@ -64,7 +64,7 @@
     <!-- similarity metric -->
 
     <AppFlex gap="small">
-      <strong>...using metric</strong>
+      <strong>... using metric</strong>
       <AppSelectSingle
         v-model="metric"
         name="Similarity metric"
@@ -132,52 +132,58 @@
             :node="{ id: match.source, name: match.source_label }"
           />
 
-          <!-- ring score -->
-          <tooltip :interactive="true" :append-to="appendToBody" :tag="null">
-            <div>
-              <AppRing
+          <!-- score -->
+          <AppFlex align-h="left" gap="small">
+            <tooltip :append-to="appendToBody" :tag="null">
+              <AppPercentage
                 :score="match.score"
                 :percent="ringPercent(match.score)"
-                tabindex="0"
-              />
-              <AppIcon v-if="match.jaccard_similarity === 1" icon="equals" />
-            </div>
+                >{{ match.score.toFixed(1) }}</AppPercentage
+              >
 
-            <template #content>
-              <div class="mini-table">
-                <span>Ancestor</span>
-                <AppNodeBadge
-                  :node="{
-                    id: match.ancestor_id,
-                    name: match.ancestor_label,
-                  }"
-                  :absolute="true"
-                />
-                <AppLink
-                  to="https://incatools.github.io/ontology-access-kit/guide/similarity.html#information-content"
-                >
-                  Ancestor IC
-                </AppLink>
-                <span>
-                  {{ match.ancestor_information_content?.toFixed(3) }}
-                </span>
-                <AppLink
-                  to="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3649640/"
-                >
-                  Phenodigm
-                </AppLink>
-                <span>
-                  {{ match.phenodigm_score?.toFixed(3) }}
-                </span>
-                <AppLink
-                  to="https://incatools.github.io/ontology-access-kit/guide/similarity.html#jaccard-similarity"
-                >
-                  Jaccard
-                </AppLink>
-                <span>{{ match.jaccard_similarity?.toFixed(3) }}</span>
-              </div>
-            </template>
-          </tooltip>
+              <template #content>
+                <div class="mini-table">
+                  <span>Ancestor</span>
+                  <AppNodeBadge
+                    :node="{
+                      id: match.ancestor_id,
+                      name: match.ancestor_label,
+                    }"
+                    :absolute="true"
+                  />
+                  <AppLink
+                    to="https://incatools.github.io/ontology-access-kit/guide/similarity.html#information-content"
+                  >
+                    Ancestor IC
+                  </AppLink>
+                  <span>
+                    {{ match.ancestor_information_content?.toFixed(3) }}
+                  </span>
+                  <AppLink
+                    to="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3649640/"
+                  >
+                    Phenodigm
+                  </AppLink>
+                  <span>
+                    {{ match.phenodigm_score?.toFixed(3) }}
+                  </span>
+                  <AppLink
+                    to="https://incatools.github.io/ontology-access-kit/guide/similarity.html#jaccard-similarity"
+                  >
+                    Jaccard
+                  </AppLink>
+                  <span>{{ match.jaccard_similarity?.toFixed(3) }}</span>
+                </div>
+              </template>
+            </tooltip>
+
+            <AppIcon
+              v-if="match.jaccard_similarity === 1"
+              v-tooltip="'Equal by Jaccard similarity'"
+              icon="equals"
+              tabindex="0"
+            />
+          </AppFlex>
 
           <AppNodeBadge
             :node="{ id: match.target, name: match.target_label }"
@@ -226,12 +232,12 @@
         :key="index"
         class="match"
       >
-        <!-- ring score -->
-        <AppRing
-          v-tooltip="'Average similarity score'"
-          :score="match.score"
+        <!-- score -->
+        <AppPercentage
           :percent="ringPercent(match.score)"
-        />
+          tooltip="Average similarity score"
+          >{{ match.score.toFixed(1) }}</AppPercentage
+        >
 
         <AppFlex class="details" direction="col" align-h="left" gap="small">
           <AppNodeBadge :node="match.subject" />
@@ -261,7 +267,7 @@ import {
 } from "@/api/phenotype-explorer";
 import AppAlert from "@/components/AppAlert.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
-import AppRing from "@/components/AppRing.vue";
+import AppPercentage from "@/components/AppPercentage.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import type { Option, Options } from "@/components/AppSelectTags.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
@@ -540,7 +546,7 @@ onMounted(() => {
 
 .triptych {
   display: grid;
-  grid-template-columns: 1fr min-content 1fr;
+  grid-template-columns: 1fr max-content 1fr;
   min-width: 400px;
   gap: 20px 40px;
 }
@@ -552,12 +558,6 @@ onMounted(() => {
 .triptych > :nth-child(3n + 1) {
   justify-self: flex-start;
   text-align: left;
-}
-
-.triptych > :nth-child(3n + 2) {
-  display: flex;
-  align-items: center;
-  gap: 20px;
 }
 
 .triptych > :nth-child(3n) {
