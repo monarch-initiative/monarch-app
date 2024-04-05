@@ -40,6 +40,7 @@ def test_associations_params(mock_get_assoc):
         "object_category": ["biolink:Gene", "biolink:PhenotypicFeature"],
         "object_namespace": ["MONDO", "HP"],
         "direct": True,
+        "compact": True,
         "offset": 0,
         "limit": 20,
     }
