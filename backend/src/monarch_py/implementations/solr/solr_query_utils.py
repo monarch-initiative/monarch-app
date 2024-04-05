@@ -115,9 +115,9 @@ def build_association_counts_query(entity: str) -> SolrQuery:
     return query
 
 
-def build_histopheno_query(subject_closure: str) -> SolrQuery:
+def build_histopheno_query(subject: str) -> SolrQuery:
     query = build_association_query(
-        subject_closure=subject_closure,
+        subject=[subject],
         offset=0,
         limit=0,
     )
