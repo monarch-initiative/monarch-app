@@ -563,6 +563,24 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#monarch-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      monarch release
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monarch-releases" class="md-nav__link">
+    <span class="md-ellipsis">
+      monarch releases
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#monarch-schema" class="md-nav__link">
     <span class="md-ellipsis">
       monarch schema
@@ -1318,6 +1336,24 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#monarch-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      monarch release
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monarch-releases" class="md-nav__link">
+    <span class="md-ellipsis">
+      monarch releases
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#monarch-schema" class="md-nav__link">
     <span class="md-ellipsis">
       monarch schema
@@ -1551,6 +1587,8 @@
 <li><code>histopheno</code>: Retrieve the histopheno data for an entity...</li>
 <li><code>mappings</code></li>
 <li><code>multi-entity-associations</code>: Paginate through associations for multiple...</li>
+<li><code>release</code>: Retrieve metadata for a specific release</li>
+<li><code>releases</code>: List all available releases of the Monarch...</li>
 <li><code>schema</code>: Print the linkml schema for the data model</li>
 <li><code>search</code>: Search for entities</li>
 <li><code>solr</code></li>
@@ -1742,6 +1780,36 @@
 <li><code>--offset INTEGER</code>: [default: 0]</li>
 <li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
 <li><code>-o, --output TEXT</code>: The path to the output file</li>
+<li><code>--help</code>: Show this message and exit.</li>
+</ul>
+<h2 id="monarch-release"><code>monarch release</code></h2>
+<p>Retrieve metadata for a specific release</p>
+<p>Args:
+    version: The release version to get metadata for
+    fmt: The format of the output (json, yaml, tsv, table)
+    output: The path to the output file (stdout if not specified)</p>
+<p><strong>Usage</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>release<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span><span class="o">[</span>VERSION<span class="o">]</span>
+</code></pre></div>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>[VERSION]</code>: The release version to get metadata for</li>
+</ul>
+<p><strong>Options</strong>:</p>
+<ul>
+<li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
+<li><code>-O, --output TEXT</code>: The path to the output file</li>
+<li><code>--help</code>: Show this message and exit.</li>
+</ul>
+<h2 id="monarch-releases"><code>monarch releases</code></h2>
+<p>List all available releases of the Monarch Knowledge Graph</p>
+<p><strong>Usage</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>releases<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</code></pre></div>
+<p><strong>Options</strong>:</p>
+<ul>
+<li><code>--dev</code>: Get dev releases of the KG (default is False)</li>
+<li><code>-l, --limit INTEGER</code>: The number of releases to return  [default: 0]</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h2 id="monarch-schema"><code>monarch schema</code></h2>
