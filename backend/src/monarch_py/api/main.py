@@ -1,10 +1,12 @@
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
+
 from monarch_py.api import association, entity, histopheno, search, semsim, text_annotation
 from monarch_py.api.config import semsimian, spacyner
 from monarch_py.api.middleware.logging_middleware import LoggingMiddleware
+from monarch_py.utils.utils import get_release_metadata, get_release_versions
 
 PREFIX = "/v3/api"
 
@@ -40,11 +42,10 @@ app.add_middleware(LoggingMiddleware)
 
 app.description = """
 
-# This is the v3 Monarch API, the Biolink API is still available through March 20th, 2023 
+# This is the v3 Monarch API.
 
-The Biolink API (Monarch v1/v2) is available at 
-[http://api-biolink.monarchinitiative.org](http://api-biolink.monarchinitiative.org), 
-but will be [shut down on March 20th, 2023](http://monarchinit.medium.com/migrating-to-the-new-monarch-infrastructure-fe9d98ccf64a).
+This API is a RESTful web service that provides programmatic access to the Monarch Initiative's knowledge graph,
+and which serves as the backend to the [Monarch Initiative's website](https://monarchinitiative.org).
 """
 
 
@@ -56,6 +57,17 @@ async def _root():
 @app.get("/api")
 async def _api():
     return RedirectResponse(url="/v3/docs")
+
+
+@app.get(f"{PREFIX}/releases")
+async def _v3(
+    dev: bool = Query(default=False, title="Get dev releases of the KG (default False)"),
+    limit: int = Query(default=0, title="The number of releases to return (default 0 for no limit)"),
+    release: str = Query(default=None, title="Get metadata for a specific release"),
+):
+    if release is None:
+        return get_release_versions(dev=dev, limit=limit)
+    return get_release_metadata(release=release, dev=dev)
 
 
 def run():

@@ -1,13 +1,17 @@
 import sys
 from typing import List
 
+import bs4
+import requests
 from rich.console import Console
-from monarch_py.datamodels.model import ExpandedCurie
+
+from monarch_py.datamodels.model import ExpandedCurie, Release
 from monarch_py.service.curie_service import converter
 
-MONARCH_DATA_URL = "https://data.monarchinitiative.org/monarch-kg-dev"
-SOLR_DATA_URL = f"{MONARCH_DATA_URL}/latest/solr.tar.gz"
-SQL_DATA_URL = f"{MONARCH_DATA_URL}/latest/monarch-kg.db.gz"
+KG_URL = "https://data.monarchinitiative.org/monarch-kg"
+KG_DEV_URL = "https://data.monarchinitiative.org/monarch-kg-dev"
+SOLR_DATA_URL = f"{KG_DEV_URL}/latest/solr.tar.gz"
+SQL_DATA_URL = f"{KG_DEV_URL}/latest/monarch-kg.db.gz"
 
 
 console = Console(
@@ -75,3 +79,48 @@ def get_provided_by_link(provided_by: str) -> ExpandedCurie:
     return ExpandedCurie(
         id=provided_by.replace("_nodes", "").replace("_edges", "") if provided_by else None, url=f"{base_url}/{slug}"
     )
+
+
+### Release info methods ###
+
+
+def get_release_versions(dev: bool = False, limit: int = 0, print_info: bool = False):
+    url = f"{KG_DEV_URL if dev else KG_URL}/index.html"
+    res = requests.get(url)
+    res.raise_for_status()
+    soup = bs4.BeautifulSoup(res.text, "html.parser")
+    directories = soup.select("h5 + ul > li > a")
+    releases = [
+        {"version": directory.text, "url": directory["href"]}
+        for directory in directories
+        if directory.text not in ["..", "kgx"]
+        # if directory.text != ".."]
+    ]
+    releases.reverse()
+    if limit:
+        releases = releases[:limit]
+    if print_info:
+        for release in releases:
+            console.print(f"Version: {release['version']:11s}{' ':—<3} URL: {release['url']}")
+    return releases
+
+
+def get_release_metadata(release: str, dev: bool = False):
+    release_url = f"{KG_DEV_URL if dev else KG_URL}/{release}"
+    release_info = Release(
+        version=release,
+        url=f"{release_url}/index.html",
+        kg=f"{release_url}/monarch-kg.tar.gz",
+        sqlite=f"{release_url}/monarch-kg.db.gz",
+        solr=f"{release_url}/solr.tar.gz",
+        neo4j=f"{release_url}/monarch-kg.neo4j.dump",
+        metadata=f"{release_url}/metadata.yaml",
+        graph_stats=f"{release_url}/merged_graph_stats.yaml",
+        qc_report=f"{release_url}/qc_report.yaml",
+    )
+    return release_info
+
+
+def print_release_info(release_info: Release):
+    for key, value in release_info.model_dump().items():
+        console.print(f"{key+' ':—<12} {value}")
