@@ -51,6 +51,8 @@ classes:
       - negated
       - pathway
       - evidence_count
+      - knowledge_level
+      - agent_type
       - has_evidence
       - has_evidence_links
       - has_count
@@ -374,6 +376,27 @@ slots:
   evidence_count:
     description: count of supporting documents, evidence codes, and sources supplying evidence
     range: integer
+  knowledge_level:
+    description: >-
+      Describes the level of knowledge expressed in a statement, based on the
+      reasoning or analysis methods used to generate the statement, or the
+      scope or specificity of what the statement expresses to be true.
+    slot_uri: biolink:knowledge_level
+    notes: >-
+      The range in this schema is represented as a string, but is constrained 
+      to values from biolink:KnowledgeLevelEnum at ingest time
+    range: string
+    multivalued: false
+  agent_type:
+    description: >-
+      Describes the high-level category of agent who originally generated a 
+      statement of knowledge or other type of information.
+    slot_uri: biolink:agent_type
+    notes: >-
+      The range in this schema is represented as a string, but is constrained 
+      to values from biolink:AgentTypeEnum at ingest time
+    range: string
+    multivalued: false
   external_links:
     description: ExpandedCurie with id and url for xrefs
     range: ExpandedCurie

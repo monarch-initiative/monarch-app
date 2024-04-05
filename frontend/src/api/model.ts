@@ -61,6 +61,10 @@ export interface Association {
     pathway?: string,
     /** count of supporting documents, evidence codes, and sources supplying evidence */
     evidence_count?: number,
+    /** Describes the level of knowledge expressed in a statement, based on the reasoning or analysis methods used to generate the statement, or the scope or specificity of what the statement expresses to be true. */
+    knowledge_level?: string,
+    /** Describes the high-level category of agent who originally generated a  statement of knowledge or other type of information. */
+    agent_type?: string,
     has_evidence?: string[],
     /** List of ExpandedCuries with id and url for evidence */
     has_evidence_links?: ExpandedCurie[],
@@ -275,6 +279,10 @@ export interface DirectionalAssociation extends Association {
     pathway?: string,
     /** count of supporting documents, evidence codes, and sources supplying evidence */
     evidence_count?: number,
+    /** Describes the level of knowledge expressed in a statement, based on the reasoning or analysis methods used to generate the statement, or the scope or specificity of what the statement expresses to be true. */
+    knowledge_level?: string,
+    /** Describes the high-level category of agent who originally generated a  statement of knowledge or other type of information. */
+    agent_type?: string,
     has_evidence?: string[],
     /** List of ExpandedCuries with id and url for evidence */
     has_evidence_links?: ExpandedCurie[],

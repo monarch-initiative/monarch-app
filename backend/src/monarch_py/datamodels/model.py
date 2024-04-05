@@ -75,6 +75,14 @@ class Association(ConfiguredBaseModel):
     evidence_count: Optional[int] = Field(
         None, description="""count of supporting documents, evidence codes, and sources supplying evidence"""
     )
+    knowledge_level: Optional[str] = Field(
+        None,
+        description="""Describes the level of knowledge expressed in a statement, based on the reasoning or analysis methods used to generate the statement, or the scope or specificity of what the statement expresses to be true.""",
+    )
+    agent_type: Optional[str] = Field(
+        None,
+        description="""Describes the high-level category of agent who originally generated a  statement of knowledge or other type of information.""",
+    )
     has_evidence: Optional[List[str]] = Field(default_factory=list)
     has_evidence_links: Optional[List[ExpandedCurie]] = Field(
         default_factory=list, description="""List of ExpandedCuries with id and url for evidence"""
@@ -266,6 +274,14 @@ class DirectionalAssociation(Association):
     pathway: Optional[str] = Field(None)
     evidence_count: Optional[int] = Field(
         None, description="""count of supporting documents, evidence codes, and sources supplying evidence"""
+    )
+    knowledge_level: Optional[str] = Field(
+        None,
+        description="""Describes the level of knowledge expressed in a statement, based on the reasoning or analysis methods used to generate the statement, or the scope or specificity of what the statement expresses to be true.""",
+    )
+    agent_type: Optional[str] = Field(
+        None,
+        description="""Describes the high-level category of agent who originally generated a  statement of knowledge or other type of information.""",
     )
     has_evidence: Optional[List[str]] = Field(default_factory=list)
     has_evidence_links: Optional[List[ExpandedCurie]] = Field(
