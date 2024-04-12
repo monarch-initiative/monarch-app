@@ -387,6 +387,7 @@ slots:
       to values from biolink:KnowledgeLevelEnum at ingest time
     range: string
     multivalued: false
+    required: true
   agent_type:
     description: >-
       Describes the high-level category of agent who originally generated a 
@@ -397,6 +398,7 @@ slots:
       to values from biolink:AgentTypeEnum at ingest time
     range: string
     multivalued: false
+    required: true
   external_links:
     description: ExpandedCurie with id and url for xrefs
     range: ExpandedCurie
