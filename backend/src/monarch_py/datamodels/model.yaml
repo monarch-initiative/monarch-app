@@ -203,6 +203,7 @@ classes:
       - symbol
       - synonym
       - uri
+      - iri
       - namespace
       - has_phenotype
       - has_phenotype_label
@@ -595,6 +596,8 @@ slots:
   uri:
     description: The URI of the entity
   url:
+    range: string
+  iri:
     range: string
   subject_label:
     is_a: name
