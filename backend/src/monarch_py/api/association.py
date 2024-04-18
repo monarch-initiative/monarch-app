@@ -1,6 +1,6 @@
 from typing import List, Union
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Response
 
 from monarch_py.api.additional_models import OutputFormat, PaginationParams
 from monarch_py.api.config import solr
@@ -29,6 +29,7 @@ async def _get_associations(
     object_taxon: Union[List[str], None] = Query(default=None),
     entity: Union[List[str], None] = Query(default=None),
     direct: bool = Query(default=False),
+    compact: bool = Query(default=False),
     pagination: PaginationParams = Depends(),
     format: OutputFormat = Query(
         default=OutputFormat.json,
@@ -50,6 +51,7 @@ async def _get_associations(
         object_category=object_category,
         object_namespace=object_namespace,
         direct=direct,
+        compact=compact,
         offset=pagination.offset,
         limit=pagination.limit,
     )
@@ -59,7 +61,7 @@ async def _get_associations(
         tsv = ""
         for row in to_tsv(response, print_output=False):
             tsv += row
-        return tsv
+        return Response(content=tsv, media_type="text/tab-separated-values")
 
 
 @router.get("/multi", include_in_schema=False)
@@ -86,4 +88,4 @@ async def _get_multi_entity_associations(
         tsv = ""
         for row in to_tsv(response, print_output=False):
             tsv += row
-        return tsv
+        return Response(content=tsv, media_type="text/tab-separated-values")

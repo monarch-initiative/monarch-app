@@ -1,7 +1,7 @@
 import sys
 import json
 import yaml
-from typing import Union, Dict, List
+from typing import Dict, List, Tuple, Union
 
 import typer
 from rich import print_json
@@ -13,16 +13,22 @@ from monarch_py.datamodels.model import (
     Entity,
     HistoPheno,
     Node,
+    Release,
     Results,
 )
 from monarch_py.utils.utils import console
 
-FMT_INPUT_ERROR_MSG = (
-    "Text conversion method only accepts Entity, HistoPheno, AssociationCountList, or Results objects."
-)
+FMT_INPUT_ERROR_MSG = """Text conversion method only accepts the following object types:
+    Entity
+    HistoPheno
+    AssociationCountList
+    Release
+    Results
+"""
+# VALID_MODELS = [Entity, HistoPheno, AssociationCountList, Release, Results]
 
 
-# Converters
+### Converters ###
 
 
 def get_headers_from_obj(obj: ConfiguredBaseModel) -> list:
@@ -33,19 +39,19 @@ def get_headers_from_obj(obj: ConfiguredBaseModel) -> list:
         if obj.items:
             headers = obj.items[0].model_dump().keys()
         else:
-            schema = type(obj).schema()
+            schema = type(obj).model_json_schema()
             definitions = schema["definitions"]
             this_ref = schema["properties"]["items"]["items"]["$ref"].split("/")[-1]
             headers = definitions[this_ref]["properties"].keys()
     else:
-        console.print(f"\n[bold red]{FMT_INPUT_ERROR_MSG}[/]\n")
+        console.print(f"\n[bold red]{FMT_INPUT_ERROR_MSG}[/]")
         raise typer.Exit(1)
     return list(headers)
 
 
-def get_headers_and_rows(obj: ConfiguredBaseModel) -> (str, str):
+def get_headers_and_rows(obj: ConfiguredBaseModel) -> Tuple[str, str]:
     """Converts a pydantic model to a TSV string."""
-    if isinstance(obj, Entity):
+    if isinstance(obj, (Entity, Release)):
         headers = obj.model_dump().keys()
         rows = [list(obj.model_dump().values())]
     elif isinstance(obj, (AssociationCountList, HistoPheno, Results)):
@@ -56,12 +62,12 @@ def get_headers_and_rows(obj: ConfiguredBaseModel) -> (str, str):
             headers = obj.items[0].model_dump().keys()
             rows = [list(item.model_dump().values()) for item in obj.items]
     else:
-        console.print(f"\n[bold red]{FMT_INPUT_ERROR_MSG}[/]\n")
+        console.print(f"\n[bold red]{FMT_INPUT_ERROR_MSG}[/]")
         raise typer.Exit(1)
     return headers, rows
 
 
-# Printers/writers
+### Printers/writers ###
 
 
 def to_json(
@@ -73,7 +79,8 @@ def to_json(
     elif isinstance(obj, dict):
         json_value = json.dumps(obj, indent=4)
     elif isinstance(obj, list):
-        json_value = json.dumps({"items": [o.model_dump_json() for o in obj]}, indent=4)
+        # json_value = json.dumps({"items": [o.model_dump_json() for o in obj]}, indent=4)
+        json_value = json.dumps([json.loads(o.model_dump_json(indent=4)) for o in obj])
     if file:
         with open(file, "w") as f:
             f.write(json_value)
@@ -131,7 +138,7 @@ def to_table(obj: ConfiguredBaseModel, print_output: bool = True) -> Table:
 
 def to_yaml(obj: ConfiguredBaseModel, file: str = None, print_output: bool = True) -> Union[Dict, List[Dict]]:
     """Converts a pydantic model to a YAML string."""
-    if isinstance(obj, Entity):
+    if isinstance(obj, (Entity, Release)):
         o = obj.model_dump()
     elif isinstance(obj, (Results, HistoPheno, AssociationCountList)):
         o = [item.model_dump() for item in obj.items]
@@ -148,7 +155,7 @@ def to_yaml(obj: ConfiguredBaseModel, file: str = None, print_output: bool = Tru
     return yaml.dump(o)
 
 
-def format_output(fmt: str, response: Union[ConfiguredBaseModel, Dict], output: str):
+def format_output(fmt: str, response: Union[ConfiguredBaseModel, Dict], output: str = None):
     if fmt.lower() == "json":
         to_json(response, output)
     elif fmt.lower() == "tsv":

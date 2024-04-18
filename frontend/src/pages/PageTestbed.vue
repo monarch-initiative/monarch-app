@@ -1,5 +1,5 @@
 <!--
-  dev page for experimenting with design and behavior of components. also a 
+  dev page for experimenting with design and behavior of components. also a
   place for seeing all variations at once to check for coherence.
 -->
 
@@ -10,14 +10,26 @@
 
   <!-- phenogrid -->
   <AppSection>
-    <AppHeading>Phenogrid</AppHeading>
+    <AppHeading>Phenogrid - Search mode</AppHeading>
     <iframe
+      name="pheno-search"
       title="Phenogrid"
       frameBorder="0"
-      src="phenogrid?source=HP:0000939,HP:0000444,HP:0000546,HP:0000135&target_set=Human+Diseases"
+      src="/phenogrid-search?subjects=HP:0000939,HP:0000444,HP:0000546,HP:0000135&object-group=Human+Diseases"
     ></iframe>
 
     <AppButton text="Send Message" @click="sendMessage" />
+  </AppSection>
+
+  <!-- phenogrid -->
+  <AppSection>
+    <AppHeading>Phenogrid - Multicompare mode</AppHeading>
+    <iframe
+      name="pheno-multi"
+      title="MultiCompare Phenogrid"
+      frameBorder="0"
+      src="/phenogrid-multi-compare?subjects=HP:0002616,HP:0001763,HP:0004944,HP:0010749,HP:0001533,HP:0002020,HP:0012450&object-sets=HP:0002616,HP:0001763,HP:0000767,HP:0000023,HP:0002108,HP:0000490,HP:0000545,HP:0100785,HP:0000268&object-sets=HP:0002616,HP:0001763,HP:0004944,HP:0010749,HP:0001533,HP:0002020,HP:0012450,HP:0003394,HP:0003771,HP:0012378,HP:0001278,HP:0002827,HP:0002829,HP:0002999,HP:0003010&object-sets=HP:0002616,HP:0001763,HP:0000767,HP:0000023,HP:0002108,HP:0000490,HP:0000545,HP:0100785,HP:0000268,HP:0001634,HP:0001653,HP:0001659,HP:0002360,HP:0003179,HP:0004970,HP:0005059,HP:0002705,HP:0012432,HP:0007800,HP:0001704"
+    ></iframe>
   </AppSection>
 
   <!-- custom icons -->
@@ -34,10 +46,21 @@
     </AppFlex>
   </AppSection>
 
-  <!-- ring component -->
+  <!-- percentage ring/bar component -->
   <AppSection>
-    <AppHeading>Ring</AppHeading>
-    <AppRing />
+    <AppHeading>Percentage</AppHeading>
+    <AppFlex direction="row">
+      <AppPercentage :percent="0.25">{{ 123 }}</AppPercentage>
+      <AppPercentage :percent="0.5" />
+      <AppPercentage :percent="0.75" />
+      <AppPercentage :percent="1" />
+    </AppFlex>
+    <AppFlex direction="row">
+      <AppPercentage :percent="0.25" type="bar">{{ 123 }}</AppPercentage>
+      <AppPercentage :percent="0.5" type="bar" />
+      <AppPercentage :percent="0.75" type="bar" />
+      <AppPercentage :percent="1" type="bar" />
+    </AppFlex>
   </AppSection>
 
   <!-- textbox component -->
@@ -173,7 +196,7 @@ import { omit } from "lodash";
 import { useEventListener } from "@vueuse/core";
 import AppButton from "@/components/AppButton.vue";
 import AppInput from "@/components/AppInput.vue";
-import AppRing from "@/components/AppRing.vue";
+import AppPercentage from "@/components/AppPercentage.vue";
 import AppSelectAutocomplete from "@/components/AppSelectAutocomplete.vue";
 import AppSelectMulti from "@/components/AppSelectMulti.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
@@ -192,11 +215,20 @@ const icons = Object.values(import.meta.glob("@/assets/icons/*.svg")).map(
 /** test phenogrid iframe embedding */
 useEventListener(
   "message",
-  (event: MessageEvent<{ width: number; height: number }>) => {
-    const iframe = document.querySelector<HTMLIFrameElement>("iframe");
+  (
+    event: MessageEvent<{
+      name: string;
+      width: number;
+      height: number;
+    }>,
+  ) => {
+    const { width, height, name } = event.data;
+    const iframe = document.querySelector<HTMLIFrameElement>(
+      `iframe[name='${name}']`,
+    );
     if (!iframe) return;
-    iframe.style.maxWidth = event.data.width + "px";
-    iframe.style.maxHeight = event.data.height + "px";
+    iframe.style.maxWidth = width + "px";
+    iframe.style.maxHeight = height + "px";
   },
 );
 
@@ -206,14 +238,14 @@ function sendMessage() {
   if (!iframe) return;
   iframe.contentWindow?.postMessage(
     {
-      source: [
+      subjects: [
         "MP:0010771",
         "MP:0002169",
         "MP:0005391",
         "MP:0005389",
         "MP:0005367",
       ],
-      target: ["HP:0004325", "HP:0000093", "MP:0006144"],
+      "object-group": "Human Genes",
     },
     "*",
   );
@@ -352,13 +384,13 @@ const table = ref({
 });
 
 /** util */
-const log = console.info;
+const log = console.debug;
 </script>
 
 <style lang="scss" scoped>
 iframe {
   width: 100%;
-  height: 600px;
+  height: 2000px;
 }
 
 .icons {

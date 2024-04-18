@@ -11,19 +11,19 @@
       :icon="getCategoryIcon(node.category)"
     />
     <AppLink
-      v-if="!currentPage"
+      v-if="isLink"
       :to="`${absolute ? baseurl : ''}${node.id}`"
       :state="
         breadcrumbs
           ? { breadcrumbs: [...currentBreadcrumbs, ...breadcrumbs] }
           : state || undefined
       "
-      >{{ node.name || node.id }}</AppLink
+      >{{ name }}</AppLink
     >
-    <span v-else class="name">{{ node.name }}</span>
-    <span v-if="node.name && node.id && showId"> ({{ node.id }})</span>
-    <span v-if="node.in_taxon_label"> ({{ node.in_taxon_label }})</span>
-    <span v-if="node.info"> ({{ node.info }})</span>
+    <span v-else>
+      <span class="name">{{ name }}</span>
+      <span v-if="info">({{ info }})</span>
+    </span>
   </span>
 </template>
 
@@ -39,6 +39,8 @@ const { VITE_URL: baseurl } = import.meta.env;
 type Props = {
   /** node represented by badge */
   node: Partial<Node> & {
+    /** alternative name */
+    label?: string;
     /** extra info to show in parens */
     info?: string;
   };
@@ -53,7 +55,7 @@ type Props = {
   state?: { [key: string]: unknown };
   /** whether to use absolute link */
   absolute?: boolean;
-  /** whether show id */
+  /** whether to show id. not shown by default, unless name/label empty. */
   showId?: boolean;
 };
 
@@ -63,12 +65,34 @@ const props = withDefaults(defineProps<Props>(), {
   breadcrumbs: undefined,
   state: undefined,
   absolute: false,
+  showId: false,
 });
 
-/** whether we're already on page we're linking to */
-const currentPage = computed(() =>
-  window.location.pathname.endsWith("/node/" + (props.node.id || "")),
+/** name/label */
+const name = computed(
+  () => props.node.name || props.node.label || props.node.id,
 );
+
+/** extra info */
+const info = computed(() =>
+  [
+    props.showId && name.value !== props.node.id ? props.node.id : "",
+    props.node.in_taxon_label,
+    props.node.info,
+  ]
+    .filter(Boolean)
+    .join(" | "),
+);
+
+/** whether to make a link or plain text */
+const isLink = computed(() => {
+  /** make sure we're already on page we're linking to */
+  return (
+    !window.location.pathname.endsWith("/node/" + (props.node.id || "")) &&
+    /** make sure id is a valid curie */
+    !!props.node.id?.match(/^\w/)
+  );
+});
 </script>
 
 <style lang="scss" scoped>

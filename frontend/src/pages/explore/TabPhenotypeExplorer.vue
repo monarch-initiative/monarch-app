@@ -61,6 +61,17 @@
       @spread-options="(option, options) => spreadOptions(option, options, 'b')"
     />
 
+    <!-- similarity metric -->
+
+    <AppFlex gap="small">
+      <strong>... using metric</strong>
+      <AppSelectSingle
+        v-model="metric"
+        name="Similarity metric"
+        :options="metricOptions"
+      />
+    </AppFlex>
+
     <!-- run analysis -->
     <AppButton
       text="Analyze"
@@ -121,52 +132,58 @@
             :node="{ id: match.source, name: match.source_label }"
           />
 
-          <!-- ring score -->
-          <tooltip :interactive="true" :append-to="appendToBody" :tag="null">
-            <div>
-              <AppRing
+          <!-- score -->
+          <AppFlex align-h="left" gap="small">
+            <tooltip :append-to="appendToBody" :tag="null">
+              <AppPercentage
                 :score="match.score"
                 :percent="ringPercent(match.score)"
-                tabindex="0"
-              />
-              <AppIcon v-if="match.jaccard_similarity === 1" icon="equals" />
-            </div>
+                >{{ match.score.toFixed(1) }}</AppPercentage
+              >
 
-            <template #content>
-              <div class="mini-table">
-                <span>Ancestor</span>
-                <AppNodeBadge
-                  :node="{
-                    id: match.ancestor_id,
-                    name: match.ancestor_label,
-                  }"
-                  :absolute="true"
-                />
-                <AppLink
-                  to="https://incatools.github.io/ontology-access-kit/guide/similarity.html#information-content"
-                >
-                  Ancestor IC
-                </AppLink>
-                <span>
-                  {{ match.score?.toFixed(3) }}
-                </span>
-                <AppLink
-                  to="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3649640/"
-                >
-                  Phenodigm
-                </AppLink>
-                <strong>
-                  {{ match.phenodigm_score?.toFixed(3) }}
-                </strong>
-                <AppLink
-                  to="https://incatools.github.io/ontology-access-kit/guide/similarity.html#jaccard-similarity"
-                >
-                  Jaccard
-                </AppLink>
-                <span>{{ match.jaccard_similarity?.toFixed(3) }}</span>
-              </div>
-            </template>
-          </tooltip>
+              <template #content>
+                <div class="mini-table">
+                  <span>Ancestor</span>
+                  <AppNodeBadge
+                    :node="{
+                      id: match.ancestor_id,
+                      name: match.ancestor_label,
+                    }"
+                    :absolute="true"
+                  />
+                  <AppLink
+                    to="https://incatools.github.io/ontology-access-kit/guide/similarity.html#information-content"
+                  >
+                    Ancestor IC
+                  </AppLink>
+                  <span>
+                    {{ match.ancestor_information_content?.toFixed(3) }}
+                  </span>
+                  <AppLink
+                    to="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3649640/"
+                  >
+                    Phenodigm
+                  </AppLink>
+                  <span>
+                    {{ match.phenodigm_score?.toFixed(3) }}
+                  </span>
+                  <AppLink
+                    to="https://incatools.github.io/ontology-access-kit/guide/similarity.html#jaccard-similarity"
+                  >
+                    Jaccard
+                  </AppLink>
+                  <span>{{ match.jaccard_similarity?.toFixed(3) }}</span>
+                </div>
+              </template>
+            </tooltip>
+
+            <AppIcon
+              v-if="match.jaccard_similarity === 1"
+              v-tooltip="'Equal by Jaccard similarity'"
+              icon="equals"
+              tabindex="0"
+            />
+          </AppFlex>
 
           <AppNodeBadge
             :node="{ id: match.target, name: match.target_label }"
@@ -215,12 +232,12 @@
         :key="index"
         class="match"
       >
-        <!-- ring score -->
-        <AppRing
-          v-tooltip="'Average similarity score'"
-          :score="match.score"
+        <!-- score -->
+        <AppPercentage
           :percent="ringPercent(match.score)"
-        />
+          tooltip="Average similarity score"
+          >{{ match.score.toFixed(1) }}</AppPercentage
+        >
 
         <AppFlex class="details" direction="col" align-h="left" gap="small">
           <AppNodeBadge :node="match.subject" />
@@ -250,7 +267,7 @@ import {
 } from "@/api/phenotype-explorer";
 import AppAlert from "@/components/AppAlert.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
-import AppRing from "@/components/AppRing.vue";
+import AppPercentage from "@/components/AppPercentage.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import type { Option, Options } from "@/components/AppSelectTags.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
@@ -281,6 +298,12 @@ const bModeOptions = [
 /** search group options */
 const bGroupOptions = groups.map((group) => ({ id: group, label: group }));
 
+const metricOptions = [
+  { id: "ancestor_information_content", label: "Ancestor Information Content" },
+  { id: "jaccard_similarity", label: "Jaccard Similarity" },
+  { id: "phenodigm_score", label: "Phenodigm Score" },
+];
+
 /** example data */
 type GeneratedFrom = {
   /** the option (gene/disease/phenotype) that the phenotypes came from */
@@ -289,38 +312,45 @@ type GeneratedFrom = {
   options?: Options;
 };
 
-/** treat param as select option */
-const optionParam = (): Param<Option> => ({
+const optionParam: Param<Option> = {
   parse: (value) => ({ id: value }),
+  stringify: (value) => String(value.id),
+};
+const optionsParam = arrayParam<Option>({
+  parse: (value) => (value ? { id: value } : undefined),
   stringify: (value) => String(value.id),
 });
 
 /** first set of phenotypes */
-const aPhenotypes = useParam<Options>("a-set", arrayParam(optionParam()), []);
+const aPhenotypes = useParam<Options>("a-set", optionsParam, []);
 /** "generated from" helpers after selecting gene or disease */
 const aGeneratedFrom = ref<GeneratedFrom>({});
 /** selected mode of second set */
-const bMode = useParam("b-mode", optionParam(), bModeOptions[0]);
+const bMode = useParam("b-mode", optionParam, bModeOptions[0]);
 /** selected group for second set */
-const bGroup = useParam("b-group", optionParam(), bGroupOptions[0]);
+const bGroup = useParam("b-group", optionParam, bGroupOptions[0]);
 /** second set of phenotypes */
-const bPhenotypes = useParam<Options>("b-set", arrayParam(optionParam()), []);
+const bPhenotypes = useParam<Options>("b-set", optionsParam, []);
 /** "generated from" helpers after selecting gene or disease */
 const bGeneratedFrom = ref<GeneratedFrom>({});
+/** selected metric */
+const metric = ref<Option>(metricOptions[0]);
 
 /** element reference */
 const aBox = ref<InstanceType<typeof AppSelectTags>>();
 
-/**
- * get % for showing ring. use asymptotic function limited to 1 so we don't need
- * to know max score. domain 1 to ~20, range 0 to 1
- */
+/** get % for showing ring based on the selected metric */
 function ringPercent(score = 0) {
-  const in_min = 4;
-  const in_max = 19;
-  const out_min = 0;
-  const out_max = 1;
-  return ((score - in_min) / (in_max - in_min)) * (out_max - out_min) + out_min;
+  const id = metric.value.id;
+  let min = 0;
+  if (id === "ancestor_information_content") min = 4;
+  else if (id === "jaccard_similarity") min = 0;
+  else if (id === "phenodigm_score") min = 0.1;
+  let max = 1;
+  if (id === "ancestor_information_content") max = 19;
+  else if (id === "jaccard_similarity") max = 1;
+  else if (id === "phenodigm_score") max = 5;
+  return (score - min) / (max - min);
 }
 
 /** example phenotype set comparison */
@@ -380,6 +410,7 @@ const {
     return await compareSetToSet(
       aPhenotypes.value.map(({ id }) => id),
       bPhenotypes.value.map(({ id }) => id),
+      metric.value.id,
     );
   },
 
@@ -407,6 +438,7 @@ const {
     return await compareSetToGroup(
       aPhenotypes.value.map(({ id }) => id),
       bGroup.value.id as Group,
+      metric.value.id,
     );
   },
 
@@ -483,7 +515,9 @@ function description(
 }
 
 /** clear results when inputs are changed to avoid de-sync */
-watch([aPhenotypes, bMode, bGroup, bPhenotypes], clearResults, { deep: true });
+watch([aPhenotypes, bMode, bGroup, bPhenotypes, metric], clearResults, {
+  deep: true,
+});
 
 /** fill in phenotype ids or search from other pages */
 onMounted(() => {
@@ -512,7 +546,7 @@ onMounted(() => {
 
 .triptych {
   display: grid;
-  grid-template-columns: 1fr min-content 1fr;
+  grid-template-columns: 1fr max-content 1fr;
   min-width: 400px;
   gap: 20px 40px;
 }
@@ -524,12 +558,6 @@ onMounted(() => {
 .triptych > :nth-child(3n + 1) {
   justify-self: flex-start;
   text-align: left;
-}
-
-.triptych > :nth-child(3n + 2) {
-  display: flex;
-  align-items: center;
-  gap: 20px;
 }
 
 .triptych > :nth-child(3n) {

@@ -51,6 +51,8 @@ classes:
       - negated
       - pathway
       - evidence_count
+      - knowledge_level
+      - agent_type
       - has_evidence
       - has_evidence_links
       - has_count
@@ -201,6 +203,7 @@ classes:
       - symbol
       - synonym
       - uri
+      - iri
       - namespace
       - has_phenotype
       - has_phenotype_label
@@ -276,6 +279,19 @@ classes:
     slots:
       - super_classes
       - sub_classes
+  Release:
+    description: >-
+      A class to hold information about a release of the Monarch KG
+    slots:
+      - version
+      - url
+      - kg
+      - sqlite
+      - solr
+      - neo4j
+      - metadata
+      - graph_stats
+      - qc_report
   Results:
     abstract: true
     slots:
@@ -349,7 +365,6 @@ slots:
     range: boolean
     exact_mappings:
       - oboInOwl:ObsoleteClass
-
   description:
     range: string
   direction:
@@ -362,6 +377,29 @@ slots:
   evidence_count:
     description: count of supporting documents, evidence codes, and sources supplying evidence
     range: integer
+  knowledge_level:
+    description: >-
+      Describes the level of knowledge expressed in a statement, based on the
+      reasoning or analysis methods used to generate the statement, or the
+      scope or specificity of what the statement expresses to be true.
+    slot_uri: biolink:knowledge_level
+    notes: >-
+      The range in this schema is represented as a string, but is constrained 
+      to values from biolink:KnowledgeLevelEnum at ingest time
+    range: string
+    multivalued: false
+    required: true
+  agent_type:
+    description: >-
+      Describes the high-level category of agent who originally generated a 
+      statement of knowledge or other type of information.
+    slot_uri: biolink:agent_type
+    notes: >-
+      The range in this schema is represented as a string, but is constrained 
+      to values from biolink:AgentTypeEnum at ingest time
+    range: string
+    multivalued: false
+    required: true
   external_links:
     description: ExpandedCurie with id and url for xrefs
     range: ExpandedCurie
@@ -559,6 +597,8 @@ slots:
     description: The URI of the entity
   url:
     range: string
+  iri:
+    range: string
   subject_label:
     is_a: name
     description: The name of the subject entity
@@ -691,7 +731,7 @@ slots:
   stage_qualifier_closure_label:
     multivalued: true
     description: Field containing stage_qualifier name and the names of all of it's ancestors
-  
+
   # sssom slots
   mappings:
     description: List of ExpandedCuries with id and url for mapped entities
@@ -710,7 +750,8 @@ slots:
     required: true
   # object label is already included in this schema
   mapping_justification:
-      range: string
+    range: string
+
   # Text annotation
   text:
     description: text without tokens
@@ -728,3 +769,13 @@ slots:
   end:
     description: end position of the annotation
     range: integer
+
+  # release slots
+  version: string
+  kg: string
+  sqlite: string
+  solr: string
+  neo4j: string
+  metadata: string
+  graph_stats: string
+  qc_report: string

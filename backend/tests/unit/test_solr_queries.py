@@ -24,8 +24,8 @@ from monarch_py.utils.utils import compare_dicts, dict_diff
     [
         (True, None, None),
         (False, None, None),
-        (None, ["category", "predicate"], ["category:DiseaseToPhenotypicFeatureAssociation"]),
-        (None, ["category", "predicate"], ["category:DiseaseToPhenotypicFeatureAssociation"]),
+        (None, ["category", "predicate"], [AssociationCategory.DISEASE_TO_PHENOTYPIC_FEATURE_ASSOCIATION.value]),
+        (None, ["category", "predicate"], [AssociationCategory.DISEASE_TO_PHENOTYPIC_FEATURE_ASSOCIATION.value]),
     ],
 )
 def test_build_association_query(

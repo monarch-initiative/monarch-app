@@ -5,6 +5,7 @@ from fastapi.testclient import TestClient
 from httpx import Response
 
 from monarch_py.api.search import router
+from monarch_py.datamodels.category_enums import EntityCategory
 from monarch_py.datamodels.model import SearchResults
 
 client = TestClient(router)
@@ -25,14 +26,17 @@ def test_search_params(mock_search, search):
     mock_search.return_value = SearchResults(**search)
     params = {
         "q": "heart",
-        "category": ["biolink:Disease", "biolink:PhenotypicFeature"],
+        "category": [EntityCategory.DISEASE.value, EntityCategory.PHENOTYPIC_FEATURE.value],
         "in_taxon_label": ["NCBITaxon:9606", "NCBITaxon:10090"],
         "offset": 0,
         "limit": 20,
     }
+
     query_string = urllib.parse.urlencode(params, doseq=True)
     client.get(f"/search?{query_string}")
     search_params = {**params, "facet_fields": ["category", "in_taxon_label"]}
+    search_params["category"] = [EntityCategory(c) for c in search_params["category"]]
+    search_params["category"] = [EntityCategory.DISEASE, EntityCategory.PHENOTYPIC_FEATURE]
     mock_search.assert_called_with(**search_params)
 
 

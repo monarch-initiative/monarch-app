@@ -56,18 +56,12 @@
     </template>
 
     <template #frequency="{ row }">
-      <AppNodeBadge
-        v-if="row.frequency_qualifier"
-        :node="{
-          id: row.frequency_qualifier,
-          name: row.frequency_qualifier_label,
-        }"
+      <AppPercentage
+        v-if="frequencyPercentage(row) !== undefined"
+        type="bar"
+        :percent="frequencyPercentage(row) || 0"
+        :tooltip="frequencyTooltip(row)"
       />
-
-      <span v-else-if="row.has_count && row.has_total">
-        {{ row.has_count }}/{{ row.has_total }}
-      </span>
-      <span v-else-if="row.has_percentage"> {{ row.has_percentage }}% </span>
       <span v-else class="empty">No info</span>
     </template>
 
@@ -121,6 +115,7 @@ import {
   type Node,
 } from "@/api/model";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
+import AppPercentage from "@/components/AppPercentage.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
 import type { Option } from "@/components/AppSelectSingle.vue";
 import AppTable from "@/components/AppTable.vue";
@@ -167,14 +162,13 @@ const cols = computed((): Cols<Datum> => {
       heading: getCategoryLabel(
         associations.value.items[0]?.subject_category || "Subject",
       ),
-      width: 3,
+      width: "200px",
       sortable: true,
     },
     {
       slot: "predicate",
       key: "predicate",
       heading: "Association",
-      width: 2,
       sortable: true,
     },
     {
@@ -183,14 +177,13 @@ const cols = computed((): Cols<Datum> => {
       heading: getCategoryLabel(
         associations.value.items[0]?.object_category || "Object",
       ),
-      width: 3,
+      width: "200px",
       sortable: true,
     },
     {
       slot: "details",
       key: "evidence_count",
       heading: "Details",
-      width: 1,
       align: "center",
       sortable: true,
     },
@@ -208,11 +201,13 @@ const cols = computed((): Cols<Datum> => {
     extraCols.push({
       slot: "taxon",
       heading: "Taxon",
-      width: 2,
     });
 
   /** phenotype specific columns */
-  if (props.category.label === "Phenotypes") {
+  if (
+    props.category.label === "Phenotypes" ||
+    props.node.category === "biolink:PhenotypicFeature"
+  ) {
     extraCols.push(
       {
         slot: "frequency",
@@ -254,18 +249,15 @@ const cols = computed((): Cols<Datum> => {
   //     {
   //       key: "author",
   //       heading: "Author",
-  //       width: "max-content",
   //     },
   //     {
   //       key: "year",
   //       heading: "Year",
   //       align: "center",
-  //       width: "max-content",
   //     },
   //     {
   //       key: "publisher",
   //       heading: "Publisher",
-  //       width: "max-content",
   //     },
   //   );
 
@@ -330,10 +322,50 @@ async function download() {
   await downloadAssociations(
     props.node.id,
     props.category.id,
+    props.includeOrthologs,
     search.value,
     sort.value,
   );
 }
+
+/** get phenotype frequency percentage 0-1 */
+const frequencyPercentage = (row: DirectionalAssociation) => {
+  /** frequency from % out of 100 */
+  if (row.has_percentage) return row.has_percentage / 100;
+
+  /** frequency from ratio */
+  if (row.has_count && row.has_total) return row.has_count / row.has_total;
+
+  /** enumerated frequencies */
+  if (row.frequency_qualifier)
+    switch (row.frequency_qualifier) {
+      case "HP:0040280":
+        return 1;
+      case "HP:0040281":
+        return 0.8;
+      case "HP:0040282":
+        return 0.3;
+      case "HP:0040283":
+        return 0.05;
+      case "HP:0040284":
+        return 0.01;
+      default:
+        return 0;
+    }
+};
+
+/** get frequency tooltip */
+const frequencyTooltip = (row: DirectionalAssociation) => {
+  if (row.has_percentage)
+    return `${row.has_percentage.toFixed(0)}% of ${row.has_total} cases`;
+
+  if (row.has_count && row.has_total)
+    return `${row.has_count} of ${row.has_total} cases`;
+
+  if (row.frequency_qualifier) return `${row.frequency_qualifier_label}`;
+
+  return "No info";
+};
 
 /** get associations when category or table state changes */
 watch(

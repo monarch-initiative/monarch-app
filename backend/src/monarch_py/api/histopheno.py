@@ -1,6 +1,6 @@
 from typing import Union
 
-from fastapi import APIRouter, HTTPException, Path, Query
+from fastapi import APIRouter, HTTPException, Path, Query, Response
 
 from monarch_py.api.config import solr
 from monarch_py.api.additional_models import OutputFormat
@@ -35,4 +35,4 @@ async def _get_histopheno(
         tsv = ""
         for row in to_tsv(response, print_output=False):
             tsv += row
-        return tsv
+        return Response(content=tsv, media_type="text/tab-separated-values")

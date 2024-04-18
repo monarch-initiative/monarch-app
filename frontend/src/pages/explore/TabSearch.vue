@@ -363,7 +363,7 @@ const pages = computed((): number[][] => {
   ];
 
   /** sort, deduplicate, and clamp list */
-  list.sort((a, b) => a - b);
+  list.sort();
   list = uniq(list).filter((page) => page >= 0 && page <= pages.length - 1);
 
   /** split into sub lists where page numbers are not sequential */

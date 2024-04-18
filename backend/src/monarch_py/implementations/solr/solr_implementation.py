@@ -165,7 +165,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
 
         return entity
 
-    def _get_counterpart_entities(
+    def get_counterpart_entities(
         self,
         this_entity: Entity,
         entity: Optional[str] = None,
@@ -192,6 +192,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                 predicate=predicate,
                 object=object,
                 direct=True,
+                limit=1000,
                 offset=0,
             ).items
         ]
@@ -208,10 +209,10 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             NodeHierarchy: A NodeHierarchy object
         """
 
-        super_classes = self._get_counterpart_entities(
+        super_classes = self.get_counterpart_entities(
             this_entity=entity, subject=entity.id, predicate=[AssociationPredicate.SUBCLASS_OF]
         )
-        sub_classes = self._get_counterpart_entities(
+        sub_classes = self.get_counterpart_entities(
             this_entity=entity, object=entity.id, predicate=[AssociationPredicate.SUBCLASS_OF]
         )
 
@@ -492,7 +493,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         self,
         entity_id: Optional[List[str]] = None,
         subject_id: Optional[List[str]] = None,
-        predicate_id: List[MappingPredicate] = [],
+        predicate_id: Optional[List[MappingPredicate]] = None,
         object_id: Optional[List[str]] = None,
         mapping_justification: Optional[List[str]] = None,
         offset: int = 0,
@@ -502,7 +503,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         query = build_mapping_query(
             entity_id=[entity_id] if isinstance(entity_id, str) else entity_id,
             subject_id=[subject_id] if isinstance(subject_id, str) else subject_id,
-            predicate_id=[p.value for p in predicate_id],
+            predicate_id=[p.value for p in predicate_id] if predicate_id else None,
             object_id=[object_id] if isinstance(object_id, str) else object_id,
             mapping_justification=[mapping_justification]
             if isinstance(mapping_justification, str)
