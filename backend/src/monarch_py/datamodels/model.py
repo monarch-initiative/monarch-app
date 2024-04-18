@@ -75,12 +75,12 @@ class Association(ConfiguredBaseModel):
     evidence_count: Optional[int] = Field(
         None, description="""count of supporting documents, evidence codes, and sources supplying evidence"""
     )
-    knowledge_level: Optional[str] = Field(
-        None,
+    knowledge_level: str = Field(
+        ...,
         description="""Describes the level of knowledge expressed in a statement, based on the reasoning or analysis methods used to generate the statement, or the scope or specificity of what the statement expresses to be true.""",
     )
-    agent_type: Optional[str] = Field(
-        None,
+    agent_type: str = Field(
+        ...,
         description="""Describes the high-level category of agent who originally generated a  statement of knowledge or other type of information.""",
     )
     has_evidence: Optional[List[str]] = Field(default_factory=list)
@@ -275,12 +275,12 @@ class DirectionalAssociation(Association):
     evidence_count: Optional[int] = Field(
         None, description="""count of supporting documents, evidence codes, and sources supplying evidence"""
     )
-    knowledge_level: Optional[str] = Field(
-        None,
+    knowledge_level: str = Field(
+        ...,
         description="""Describes the level of knowledge expressed in a statement, based on the reasoning or analysis methods used to generate the statement, or the scope or specificity of what the statement expresses to be true.""",
     )
-    agent_type: Optional[str] = Field(
-        None,
+    agent_type: str = Field(
+        ...,
         description="""Describes the high-level category of agent who originally generated a  statement of knowledge or other type of information.""",
     )
     has_evidence: Optional[List[str]] = Field(default_factory=list)
@@ -422,6 +422,7 @@ class Entity(ConfiguredBaseModel):
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)
     uri: Optional[str] = Field(None, description="""The URI of the entity""")
+    iri: Optional[str] = Field(None)
     namespace: Optional[str] = Field(None, description="""The namespace/prefix portion of this entity's identifier""")
     has_phenotype: Optional[List[str]] = Field(
         default_factory=list,
@@ -534,6 +535,7 @@ class Node(Entity):
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)
     uri: Optional[str] = Field(None, description="""The URI of the entity""")
+    iri: Optional[str] = Field(None)
     namespace: Optional[str] = Field(None, description="""The namespace/prefix portion of this entity's identifier""")
     has_phenotype: Optional[List[str]] = Field(
         default_factory=list,
@@ -683,6 +685,7 @@ class SearchResult(Entity):
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)
     uri: Optional[str] = Field(None, description="""The URI of the entity""")
+    iri: Optional[str] = Field(None)
     namespace: Optional[str] = Field(None, description="""The namespace/prefix portion of this entity's identifier""")
     has_phenotype: Optional[List[str]] = Field(
         default_factory=list,
