@@ -739,6 +739,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_counterpart_entities" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_counterpart_entities()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_entity" class="md-nav__link">
     <span class="md-ellipsis">
       get_entity()
@@ -1067,6 +1076,15 @@
   <a href="#src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_associations" class="md-nav__link">
     <span class="md-ellipsis">
       get_associations()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_counterpart_entities" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_counterpart_entities()
     </span>
   </a>
   
@@ -1430,6 +1448,113 @@
             <div class="doc-md-description">
               <p>Dataclass representing results of an association search.</p>
             </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_counterpart_entities" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">get_counterpart_entities</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Get a list of entities directly associated with this_entity fetched from associations
+in the Solr index</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>this_entity</code></td>
+          <td>
+                <code><span title="monarch_py.datamodels.model.Entity">Entity</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>The entity to get associations for</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>entity</code></td>
+          <td>
+                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>an entity ID occurring in either the subject or object. Defaults to None.</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>subject</code></td>
+          <td>
+                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>an entity ID occurring in the subject. Defaults to None.</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>predicate</code></td>
+          <td>
+                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>a predicate value. Defaults to None.</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>object</code></td>
+          <td>
+                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>an entity ID occurring in the object. Defaults to None.</p>
+            </div>
+          </td>
+          <td>
+                <code>None</code>
           </td>
         </tr>
     </tbody>
