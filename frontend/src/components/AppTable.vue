@@ -420,9 +420,9 @@ watch(
 }
 
 .table {
+  margin: 0 auto;
   border-collapse: collapse;
   table-layout: fixed;
-  margin: 0 auto;
 }
 
 /** all cells */

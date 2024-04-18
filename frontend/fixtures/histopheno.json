@@ -3,42 +3,42 @@
   "items": [
     {
       "label": "musculature",
-      "count": 1685,
+      "count": 1677,
       "id": "HP:0003011"
     },
     {
       "label": "nervous_system",
-      "count": 1076,
+      "count": 1071,
       "id": "HP:0000707"
     },
     {
       "label": "head_neck",
-      "count": 583,
+      "count": 577,
       "id": "HP:0000152"
     },
     {
       "label": "skeletal_system",
-      "count": 472,
+      "count": 471,
       "id": "HP:0000924"
     },
     {
       "label": "eye",
-      "count": 289,
+      "count": 287,
       "id": "HP:0000478"
     },
     {
       "label": "metabolism_homeostasis",
-      "count": 212,
+      "count": 213,
       "id": "HP:0001939"
     },
     {
       "label": "cardiovascular_system",
-      "count": 178,
+      "count": 177,
       "id": "HP:0001626"
     },
     {
       "label": "blood",
-      "count": 177,
+      "count": 175,
       "id": "HP:0001871"
     },
     {
@@ -53,12 +53,12 @@
     },
     {
       "label": "neoplasm",
-      "count": 149,
+      "count": 148,
       "id": "HP:0002664"
     },
     {
       "label": "digestive_system",
-      "count": 143,
+      "count": 142,
       "id": "HP:0025031"
     },
     {
