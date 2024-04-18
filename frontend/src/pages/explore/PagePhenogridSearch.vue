@@ -76,7 +76,6 @@ watch(
     ) {
       aPhenotypes.value = subjects.split(",");
       bGroup.value = objectGroup as Group;
-      runAnalysis();
     }
   },
   { immediate: true, deep: true },

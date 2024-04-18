@@ -9,9 +9,9 @@ export const frame = async (): Promise<void> =>
 /** try to synchronously/immutably log objects/proxies */
 export const syncLog = (...args: unknown[]): void => {
   try {
-    console.debug(...JSON.parse(JSON.stringify(args)));
+    console.log(...JSON.parse(JSON.stringify(args)));
   } catch (error) {
-    console.debug("Couldn't log to console synchronously");
-    console.debug(...args);
+    console.log("Couldn't log to console synchronously");
+    console.log(...args);
   }
 };
