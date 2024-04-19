@@ -7,7 +7,7 @@ import docker
 import pystow
 import typer
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
-from monarch_py.utils.utils import MONARCH_DATA_URL, console
+from monarch_py.utils.utils import KG_DEV_URL, console
 
 monarchstow = pystow.module("monarch")
 
@@ -35,7 +35,7 @@ def ensure_solr(version: str = "latest", overwrite: bool = False) -> None:
     # so the untarred path needs to be removed before updating
     if overwrite:
         shutil.rmtree(data_path, ignore_errors=True)
-    monarchstow.ensure_untar(url=f"{MONARCH_DATA_URL}/{version}/solr.tar.gz", force=overwrite)
+    monarchstow.ensure_untar(url=f"{KG_DEV_URL}/{version}/solr.tar.gz", force=overwrite)
     if sys.platform in ["linux", "linux2", "darwin"]:
         stat_info = os.stat(data_path)
         if stat_info.st_gid != 8983:

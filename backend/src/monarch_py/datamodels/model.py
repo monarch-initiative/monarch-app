@@ -75,6 +75,14 @@ class Association(ConfiguredBaseModel):
     evidence_count: Optional[int] = Field(
         None, description="""count of supporting documents, evidence codes, and sources supplying evidence"""
     )
+    knowledge_level: str = Field(
+        ...,
+        description="""Describes the level of knowledge expressed in a statement, based on the reasoning or analysis methods used to generate the statement, or the scope or specificity of what the statement expresses to be true.""",
+    )
+    agent_type: str = Field(
+        ...,
+        description="""Describes the high-level category of agent who originally generated a  statement of knowledge or other type of information.""",
+    )
     has_evidence: Optional[List[str]] = Field(default_factory=list)
     has_evidence_links: Optional[List[ExpandedCurie]] = Field(
         default_factory=list, description="""List of ExpandedCuries with id and url for evidence"""
@@ -267,6 +275,14 @@ class DirectionalAssociation(Association):
     evidence_count: Optional[int] = Field(
         None, description="""count of supporting documents, evidence codes, and sources supplying evidence"""
     )
+    knowledge_level: str = Field(
+        ...,
+        description="""Describes the level of knowledge expressed in a statement, based on the reasoning or analysis methods used to generate the statement, or the scope or specificity of what the statement expresses to be true.""",
+    )
+    agent_type: str = Field(
+        ...,
+        description="""Describes the high-level category of agent who originally generated a  statement of knowledge or other type of information.""",
+    )
     has_evidence: Optional[List[str]] = Field(default_factory=list)
     has_evidence_links: Optional[List[ExpandedCurie]] = Field(
         default_factory=list, description="""List of ExpandedCuries with id and url for evidence"""
@@ -406,6 +422,7 @@ class Entity(ConfiguredBaseModel):
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)
     uri: Optional[str] = Field(None, description="""The URI of the entity""")
+    iri: Optional[str] = Field(None)
     namespace: Optional[str] = Field(None, description="""The namespace/prefix portion of this entity's identifier""")
     has_phenotype: Optional[List[str]] = Field(
         default_factory=list,
@@ -518,6 +535,7 @@ class Node(Entity):
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)
     uri: Optional[str] = Field(None, description="""The URI of the entity""")
+    iri: Optional[str] = Field(None)
     namespace: Optional[str] = Field(None, description="""The namespace/prefix portion of this entity's identifier""")
     has_phenotype: Optional[List[str]] = Field(
         default_factory=list,
@@ -544,6 +562,22 @@ class NodeHierarchy(ConfiguredBaseModel):
 
     super_classes: List[Entity] = Field(default_factory=list)
     sub_classes: List[Entity] = Field(default_factory=list)
+
+
+class Release(ConfiguredBaseModel):
+    """
+    A class to hold information about a release of the Monarch KG
+    """
+
+    version: Optional[str] = Field(None)
+    url: Optional[str] = Field(None)
+    kg: Optional[str] = Field(None)
+    sqlite: Optional[str] = Field(None)
+    solr: Optional[str] = Field(None)
+    neo4j: Optional[str] = Field(None)
+    metadata: Optional[str] = Field(None)
+    graph_stats: Optional[str] = Field(None)
+    qc_report: Optional[str] = Field(None)
 
 
 class Results(ConfiguredBaseModel):
@@ -651,6 +685,7 @@ class SearchResult(Entity):
     symbol: Optional[str] = Field(None)
     synonym: Optional[List[str]] = Field(default_factory=list)
     uri: Optional[str] = Field(None, description="""The URI of the entity""")
+    iri: Optional[str] = Field(None)
     namespace: Optional[str] = Field(None, description="""The namespace/prefix portion of this entity's identifier""")
     has_phenotype: Optional[List[str]] = Field(
         default_factory=list,
@@ -794,6 +829,7 @@ HistoBin.model_rebuild()
 Mapping.model_rebuild()
 Node.model_rebuild()
 NodeHierarchy.model_rebuild()
+Release.model_rebuild()
 Results.model_rebuild()
 AssociationResults.model_rebuild()
 CompactAssociationResults.model_rebuild()

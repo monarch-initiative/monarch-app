@@ -420,6 +420,7 @@ watch(
 }
 
 .table {
+  margin: 0 auto;
   border-collapse: collapse;
   table-layout: fixed;
 }

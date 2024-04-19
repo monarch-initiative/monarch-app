@@ -165,7 +165,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
 
         return entity
 
-    def _get_counterpart_entities(
+    def get_counterpart_entities(
         self,
         this_entity: Entity,
         entity: Optional[str] = None,
@@ -192,6 +192,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                 predicate=predicate,
                 object=object,
                 direct=True,
+                limit=1000,
                 offset=0,
             ).items
         ]
@@ -208,10 +209,10 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             NodeHierarchy: A NodeHierarchy object
         """
 
-        super_classes = self._get_counterpart_entities(
+        super_classes = self.get_counterpart_entities(
             this_entity=entity, subject=entity.id, predicate=[AssociationPredicate.SUBCLASS_OF]
         )
-        sub_classes = self._get_counterpart_entities(
+        sub_classes = self.get_counterpart_entities(
             this_entity=entity, object=entity.id, predicate=[AssociationPredicate.SUBCLASS_OF]
         )
 

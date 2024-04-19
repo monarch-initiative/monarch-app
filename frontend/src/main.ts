@@ -6,7 +6,6 @@ import App from "@/App.vue";
 import components from "@/global/components";
 import plugins from "@/global/plugins";
 import router from "@/router";
-import "wicg-inert";
 import "@/global/icons";
 import "@/global/meta";
 import "normalize.css";

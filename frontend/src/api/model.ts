@@ -61,6 +61,10 @@ export interface Association {
     pathway?: string,
     /** count of supporting documents, evidence codes, and sources supplying evidence */
     evidence_count?: number,
+    /** Describes the level of knowledge expressed in a statement, based on the reasoning or analysis methods used to generate the statement, or the scope or specificity of what the statement expresses to be true. */
+    knowledge_level: string,
+    /** Describes the high-level category of agent who originally generated a  statement of knowledge or other type of information. */
+    agent_type: string,
     has_evidence?: string[],
     /** List of ExpandedCuries with id and url for evidence */
     has_evidence_links?: ExpandedCurie[],
@@ -275,6 +279,10 @@ export interface DirectionalAssociation extends Association {
     pathway?: string,
     /** count of supporting documents, evidence codes, and sources supplying evidence */
     evidence_count?: number,
+    /** Describes the level of knowledge expressed in a statement, based on the reasoning or analysis methods used to generate the statement, or the scope or specificity of what the statement expresses to be true. */
+    knowledge_level: string,
+    /** Describes the high-level category of agent who originally generated a  statement of knowledge or other type of information. */
+    agent_type: string,
     has_evidence?: string[],
     /** List of ExpandedCuries with id and url for evidence */
     has_evidence_links?: ExpandedCurie[],
@@ -390,6 +398,7 @@ export interface Entity {
     synonym?: string[],
     /** The URI of the entity */
     uri?: string,
+    iri?: string,
     /** The namespace/prefix portion of this entity's identifier */
     namespace?: string,
     /** A list of phenotype identifiers that are known to be associated with this entity */
@@ -513,6 +522,7 @@ export interface Node extends Entity {
     synonym?: string[],
     /** The URI of the entity */
     uri?: string,
+    iri?: string,
     /** The namespace/prefix portion of this entity's identifier */
     namespace?: string,
     /** A list of phenotype identifiers that are known to be associated with this entity */
@@ -530,6 +540,20 @@ export interface Node extends Entity {
 export interface NodeHierarchy {
     super_classes: Entity[],
     sub_classes: Entity[],
+};
+/**
+ * A class to hold information about a release of the Monarch KG
+ */
+export interface Release {
+    version?: string,
+    url?: string,
+    kg?: string,
+    sqlite?: string,
+    solr?: string,
+    neo4j?: string,
+    metadata?: string,
+    graph_stats?: string,
+    qc_report?: string,
 };
 
 export interface Results {
@@ -563,6 +587,7 @@ export interface SearchResult extends Entity {
     synonym?: string[],
     /** The URI of the entity */
     uri?: string,
+    iri?: string,
     /** The namespace/prefix portion of this entity's identifier */
     namespace?: string,
     /** A list of phenotype identifiers that are known to be associated with this entity */

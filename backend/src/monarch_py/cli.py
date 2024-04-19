@@ -15,7 +15,7 @@ from monarch_py.datamodels.category_enums import (
     MappingPredicate,
 )
 from monarch_py.utils.solr_cli_utils import check_for_docker
-from monarch_py.utils.utils import set_log_level
+from monarch_py.utils.utils import set_log_level, get_release_metadata, get_release_versions
 from monarch_py.utils.format_utils import format_output
 
 
@@ -369,6 +369,43 @@ def mappings(
     output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
 ):
     solr_cli.mappings(**locals())
+
+
+### CLI Commands for Release Info ###
+
+
+@app.command("releases")
+def releases(
+    dev: bool = typer.Option(False, "--dev", help="Get dev releases of the KG (default is False)"),
+    limit: int = typer.Option(0, "--limit", "-l", help="The number of releases to return"),
+):
+    """
+    List all available releases of the Monarch Knowledge Graph
+    """
+    get_release_versions(**locals(), print_info=True)
+
+
+@app.command("release")
+def release(
+    version: str = typer.Argument(None, help="The release version to get metadata for"),
+    fmt: str = typer.Option(
+        "json",
+        "--format",
+        "-f",
+        help="The format of the output (json, yaml, tsv, table)",
+    ),
+    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
+):
+    """
+    Retrieve metadata for a specific release
+
+    Args:
+        version: The release version to get metadata for
+        fmt: The format of the output (json, yaml, tsv, table)
+        output: The path to the output file (stdout if not specified)
+    """
+    release_info = get_release_metadata(version)
+    format_output(fmt, release_info)
 
 
 if __name__ == "__main__":
