@@ -289,12 +289,12 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         associations = parse_associations(query_result, compact, offset, limit)
         return associations
 
-    def get_histopheno(self, subject_closure: Optional[str] = None) -> HistoPheno:
+    def get_histopheno(self, subject: Optional[str] = None) -> HistoPheno:
         """Get histopheno counts for a given subject_closure"""
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
-        query = build_histopheno_query(subject_closure)
+        query = build_histopheno_query(subject)
         query_result = solr.query(query)
-        histopheno = parse_histopheno(query_result, subject_closure)
+        histopheno = parse_histopheno(query_result, subject)
         return histopheno
 
     def get_multi_entity_associations(

@@ -14,7 +14,8 @@ from monarch_py.implementations.solr.solr_query_utils import (
     build_search_query,
     obsolete_unboost,
     entity_predicate_boost,
-    category_boost, blank_search_boost,
+    category_boost,
+    blank_search_boost,
 )
 from monarch_py.utils.utils import compare_dicts, dict_diff
 
@@ -164,5 +165,4 @@ def test_blank_search_boost():
     boost = blank_search_boost()
     assert boost.startswith("product(")
     assert boost.endswith(")")
-    assert "if(termfreq(id,\"MONDO:0007523\"),12,1)" in boost
-
+    assert 'if(termfreq(id,"MONDO:0007523"),12,1)' in boost
