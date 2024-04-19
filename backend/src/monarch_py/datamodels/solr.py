@@ -22,7 +22,7 @@ class HistoPhenoKeys(Enum):
     metabolism_homeostasis = "HP:0001939"  # ??? No uPheno parent
     genitourinary_system = "UPHENO:0002642"  # "HP:0000119"
     digestive_system = "UPHENO:0002833"  # "HP:0025031"
-    neoplasm = "HP:0002664" # ??? No uPheno parent
+    neoplasm = "HP:0002664"  # ??? No uPheno parent
     blood = "UPHENO:0004459"  # "HP:0001871"
     immune_system = "UPHENO:0002948"  # "HP:0002715"
     endocrine = "UPHENO:0003116"  # "HP:0000818"

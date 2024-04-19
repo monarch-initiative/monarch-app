@@ -3,7 +3,11 @@
 -->
 
 <template>
-  <AppSection v-if="node.category === 'biolink:Disease' || node.category === 'biolink:Gene'">
+  <AppSection
+    v-if="
+      node.category === 'biolink:Disease' || node.category === 'biolink:Gene'
+    "
+  >
     <AppHeading icon="chart-bar">HistoPheno</AppHeading>
     <HistoPheno :node="node" />
   </AppSection>
