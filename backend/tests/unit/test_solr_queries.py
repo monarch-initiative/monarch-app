@@ -166,6 +166,3 @@ def test_blank_search_boost():
     assert boost.endswith(")")
     assert "if(termfreq(id,\"MONDO:0007523\"),12,1)" in boost
 
-
-# mock blank_search_boost and assert that it's called in build_search_query
-def
