@@ -10,12 +10,9 @@ pytestmark = pytest.mark.skipif(
 @pytest.mark.parametrize(
     "q, should_return",
     [
-        # This fails because subclasses of Down syndrome come back first,
-        # we need an edge ngram version of the keyword tokenized field
-        # ("down syn", "Down syndrome"),
+        ("down syn", "Down syndrome"),
         ("marf", "Marfan syndrome"),
-        ("BRC", "BABAM2"),  # expect BRCA1?
-        ("brc", "BABAM2"),  # expect BRCA1?
+        ("BRCA", "BRCA1"),
     ],
 )
 def test_autocomplete(q, should_return):

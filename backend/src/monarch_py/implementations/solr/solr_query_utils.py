@@ -159,7 +159,7 @@ def build_search_query(
     query.q = q
     query.def_type = "edismax"
     query.query_fields = entity_query_fields()
-    query.boost = entity_boost()
+    query.boost = entity_boost(empty_search=(q == "*:*"))
     if category:
         query.add_filter_query(" OR ".join(f'category:"{cat}"' for cat in category))
     if in_taxon_label:
@@ -185,7 +185,7 @@ def build_autocomplete_query(
     # match the query fields to start with
     query.query_fields = entity_query_fields()
     query.def_type = "edismax"
-    query.boost = entity_boost(prioritized_predicates=prioritized_predicates)
+    query.boost = entity_boost(prioritized_predicates=prioritized_predicates, empty_search=(q == "*:*"))
     return query
 
 
@@ -231,15 +231,17 @@ def obsolete_unboost(multiplier=0.1):
     return f'if(termfreq(deprecated,"true"),{multiplier},1)'
 
 
-def entity_boost(prioritized_predicates: List[AssociationPredicate] = None) -> str:
+def entity_boost(prioritized_predicates: List[AssociationPredicate] = None, empty_search: bool = False) -> str:
     """Shared boost function between search and autocomplete"""
     phenotype_boost = category_boost("biolink:PhenotypicFeature", 1.1)
-    disease_boost = category_boost("biolink:PhenotypicFeature", 1.3)
+    disease_boost = category_boost("biolink:Disease", 1.3)
     human_gene_boost = category_boost("biolink:Gene", 1.1, taxon="NCBITaxon:9606")
 
     boosts = [phenotype_boost, disease_boost, human_gene_boost, obsolete_unboost()]
     if prioritized_predicates:
         boosts.append(entity_predicate_boost(prioritized_predicates, 2.0))
+    if empty_search:
+        boosts.append(blank_search_boost())
     return f"product({','.join(boosts)})"
 
 
@@ -257,6 +259,28 @@ def category_boost(category: str, multiplier: float, taxon: Optional[str] = None
         return f'if(and(termfreq(in_taxon,"{taxon}"),termfreq(category,"{category}")),{multiplier},1)'
     else:
         return f'if(termfreq(category,"{category}"),{multiplier},1)'
+
+
+def blank_search_boost() -> str:
+    """
+    Boost specific nodes that we'd like to see as site examples to the top for empty searches
+    """
+    example_nodes = [
+        "MONDO:0007523",  # Ehlers-Danlos syndrome, hypermobility type
+        "MONDO:0019391",  # Fanconi anemia
+        "MONDO:0018954",  # Loeys-Dietz syndrome
+        "MONDO:0011518",  # Wiedemann-Steiner syndrome
+        "HP:0001166",  # Arachnodactyly
+        "HP:0001631",  # Atrial septal defect
+        "UBERON:0000948",  # heart
+        "UBERON:0006585",  # vestibular organ
+        "HGNC:4851",  # HTT
+        "HGNC:3603",  # FBN1
+    ]
+    # boost score by 1.5 + i/10 for these nodes
+    boosts = [f'if(termfreq(id,"{node}"),{len(example_nodes) - i + 2},1)' for i, node in enumerate(example_nodes)]
+    boost = ",".join(boosts)
+    return f"product({boost})"
 
 
 def entity_query_fields():

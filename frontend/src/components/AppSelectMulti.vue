@@ -97,7 +97,7 @@
           :id="`option-${id}-${index}`"
           :key="index"
           v-tooltip="option.tooltip"
-          :class="['option', { highlighted: highlighted === -1 }]"
+          :class="['option', { highlighted: highlighted === index }]"
           role="option"
           :aria-selected="selected.includes(index)"
           tabindex="0"

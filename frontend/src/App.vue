@@ -8,7 +8,7 @@
     <router-view />
   </template>
 
-  <template v-else>
+  <template v-else-if="route.matched.length">
     <TheBanner v-if="apiName !== 'prod'">
       This web app is the
       <strong v-if="apiName === 'local'">LOCAL VERSION</strong>

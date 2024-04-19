@@ -145,7 +145,7 @@ type ObjectSet = { id?: string; label?: string; phenotypes: string[] };
 export const compareSetToSets = async (
   subjects: string[],
   objectSets: ObjectSet[],
-  metric: string = "jaccard_similarity",
+  metric?: string,
 ) => {
   /** fill in missing object set fields */
   objectSets.forEach((set, index) => {
@@ -231,6 +231,7 @@ export const compareSetToSets = async (
     .filter(Boolean);
   const min = Math.min(...scores);
   const max = Math.max(...scores);
+
   Object.values(cells).forEach(
     (value) =>
       (value.strength =
