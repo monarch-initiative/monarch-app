@@ -15,4 +15,4 @@ def test_histopheno():
     for k in hp.items:
         total += k.count
 
-    assert hp.items[0].id == "HP:0003011"
+    assert hp.items[0].id == "UPHENO:0002816"

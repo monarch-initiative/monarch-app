@@ -327,7 +327,7 @@ def main(
         )
         extra_fixtures["autocomplete-query"] = build_autocomplete_query(q="fanc")
         extra_fixtures["histopheno-query"] = build_histopheno_query(
-            subject_closure=NODE_ID
+            subject=NODE_ID
         )
         extra_fixtures["mapping-query"] = build_mapping_query(entity_id=[NODE_ID])
         extra_fixtures["search-query"] = build_search_query(q="fanconi")
