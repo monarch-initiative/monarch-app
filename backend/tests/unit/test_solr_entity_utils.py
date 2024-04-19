@@ -1,6 +1,9 @@
+from unittest.mock import patch
+
 import pytest
 from monarch_py.datamodels.model import Association, Entity
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
+from monarch_py.implementations.solr.solr_query_utils import entity_boost
 
 
 @pytest.mark.parametrize(
@@ -49,3 +52,11 @@ def test_get_counterpart_entity(association, this_entity, other_entity):
     assert (
         associated_entity == other_entity
     ), f"Associated entity is not as expected. Expected: {other_entity}, got: {associated_entity}"
+
+
+def test_entity_boost_with_empty_calls_blank_search_boost():
+    # mock blank_search_boost() and assert that it's called
+    with patch("monarch_py.implementations.solr.solr_query_utils.blank_search_boost") as mock_blank_search_boost:
+        mock_blank_search_boost.return_value = ""
+        entity_boost(empty_search=True)
+        mock_blank_search_boost.assert_called_once()

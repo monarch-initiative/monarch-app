@@ -9,4 +9,4 @@ def test_get_counterpart_entities_limit():
         si = SolrImplementation()
         si.get_counterpart_entities("MONDO:0007947")
         assert mock_get_associations.called
-        assert mock_get_associations.call_args_list[0].kwargs['limit'] == 1000
+        assert mock_get_associations.call_args_list[0].kwargs["limit"] == 1000
