@@ -22,45 +22,45 @@
       "has_phenotype_closure_label": [],
       "has_phenotype_count": null
     },
-    "score": 0.5499139182472516,
+    "score": 0.5499139182472517,
     "similarity": {
       "subject_termset": {
-        "HP:0002020": {
-          "id": "HP:0002020",
-          "label": "Gastroesophageal reflux (HPO)"
-        },
         "HP:0004944": {
           "id": "HP:0004944",
           "label": "Dilatation of the cerebral artery (HPO)"
         },
         "HP:0010749": { "id": "HP:0010749", "label": "Blepharochalasis (HPO)" },
-        "HP:0002616": {
-          "id": "HP:0002616",
-          "label": "Aortic root aneurysm (HPO)"
-        },
-        "HP:0001763": { "id": "HP:0001763", "label": "Pes planus (HPO)" },
         "HP:0012450": {
           "id": "HP:0012450",
           "label": "Chronic constipation (HPO)"
         },
-        "HP:0001533": { "id": "HP:0001533", "label": "Slender build (HPO)" }
-      },
-      "object_termset": {
-        "HP:0000767": { "id": "HP:0000767", "label": "Pectus excavatum (HPO)" },
-        "HP:0000023": { "id": "HP:0000023", "label": "Inguinal hernia (HPO)" },
-        "HP:0100785": { "id": "HP:0100785", "label": "Insomnia (HPO)" },
-        "HP:0002108": {
-          "id": "HP:0002108",
-          "label": "Spontaneous pneumothorax (HPO)"
+        "HP:0002020": {
+          "id": "HP:0002020",
+          "label": "Gastroesophageal reflux (HPO)"
         },
-        "HP:0000490": { "id": "HP:0000490", "label": "Deeply set eye (HPO)" },
+        "HP:0001533": { "id": "HP:0001533", "label": "Slender build (HPO)" },
         "HP:0002616": {
           "id": "HP:0002616",
           "label": "Aortic root aneurysm (HPO)"
         },
-        "HP:0001763": { "id": "HP:0001763", "label": "Pes planus (HPO)" },
+        "HP:0001763": { "id": "HP:0001763", "label": "Pes planus (HPO)" }
+      },
+      "object_termset": {
+        "HP:0002108": {
+          "id": "HP:0002108",
+          "label": "Spontaneous pneumothorax (HPO)"
+        },
+        "HP:0000545": { "id": "HP:0000545", "label": "Myopia (HPO)" },
+        "HP:0100785": { "id": "HP:0100785", "label": "Insomnia (HPO)" },
+        "HP:0000023": { "id": "HP:0000023", "label": "Inguinal hernia (HPO)" },
+        "HP:0002616": {
+          "id": "HP:0002616",
+          "label": "Aortic root aneurysm (HPO)"
+        },
+        "HP:0000767": { "id": "HP:0000767", "label": "Pectus excavatum (HPO)" },
         "HP:0000268": { "id": "HP:0000268", "label": "Dolichocephaly (HPO)" },
-        "HP:0000545": { "id": "HP:0000545", "label": "Myopia (HPO)" }
+        "HP:0001763": { "id": "HP:0001763", "label": "Pes planus (HPO)" },
+        "HP:0000490": { "id": "HP:0000490", "label": "Deeply set eye (HPO)" }
       },
       "subject_best_matches": {
         "HP:0001533": {
@@ -206,16 +206,16 @@
         "HP:0010749": {
           "match_source": "HP:0010749",
           "match_source_label": "Blepharochalasis (HPO)",
-          "match_target": "HP:0000490",
-          "match_target_label": "Deeply set eye (HPO)",
-          "score": 0.4,
+          "match_target": "HP:0000545",
+          "match_target_label": "Myopia (HPO)",
+          "score": 0.3389830508474576,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
             "subject_id": "HP:0010749",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "HP:0000490",
+            "object_id": "HP:0000545",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "HP:0000315",
@@ -224,10 +224,10 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 7.709281511796768,
-            "jaccard_similarity": 0.4,
+            "jaccard_similarity": 0.3389830508474576,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 1.7560502853616429
+            "phenodigm_score": 1.6165753204570361
           },
           "score_metric": "jaccard_similarity"
         },
@@ -432,16 +432,16 @@
         "HP:0002108": {
           "match_source": "HP:0002108",
           "match_source_label": "Spontaneous pneumothorax (HPO)",
-          "match_target": "HP:0001763",
-          "match_target_label": "Pes planus (HPO)",
-          "score": 0.32653061224489793,
+          "match_target": "HP:0002020",
+          "match_target_label": "Gastroesophageal reflux (HPO)",
+          "score": 0.2926829268292683,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
             "subject_id": "HP:0002108",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "HP:0001763",
+            "object_id": "HP:0002020",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "HP:0000118",
@@ -450,10 +450,10 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 4.118848568918744,
-            "jaccard_similarity": 0.32653061224489793,
+            "jaccard_similarity": 0.2926829268292683,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 1.1597112334340214
+            "phenodigm_score": 1.09796022437868
           },
           "score_metric": "jaccard_similarity"
         },
@@ -514,7 +514,7 @@
           "score_metric": "jaccard_similarity"
         }
       },
-      "average_score": 0.5499139182472516,
+      "average_score": 0.5499139182472517,
       "best_score": 1.0,
       "metric": "JaccardSimilarity"
     }
@@ -545,66 +545,66 @@
     "score": 0.83497558824921,
     "similarity": {
       "subject_termset": {
-        "HP:0004944": {
-          "id": "HP:0004944",
-          "label": "Dilatation of the cerebral artery (HPO)"
-        },
-        "HP:0002020": {
-          "id": "HP:0002020",
-          "label": "Gastroesophageal reflux (HPO)"
-        },
-        "HP:0001533": { "id": "HP:0001533", "label": "Slender build (HPO)" },
         "HP:0002616": {
           "id": "HP:0002616",
           "label": "Aortic root aneurysm (HPO)"
         },
         "HP:0010749": { "id": "HP:0010749", "label": "Blepharochalasis (HPO)" },
+        "HP:0001763": { "id": "HP:0001763", "label": "Pes planus (HPO)" },
         "HP:0012450": {
           "id": "HP:0012450",
           "label": "Chronic constipation (HPO)"
         },
-        "HP:0001763": { "id": "HP:0001763", "label": "Pes planus (HPO)" }
+        "HP:0001533": { "id": "HP:0001533", "label": "Slender build (HPO)" },
+        "HP:0002020": {
+          "id": "HP:0002020",
+          "label": "Gastroesophageal reflux (HPO)"
+        },
+        "HP:0004944": {
+          "id": "HP:0004944",
+          "label": "Dilatation of the cerebral artery (HPO)"
+        }
       },
       "object_termset": {
-        "HP:0002999": {
-          "id": "HP:0002999",
-          "label": "Patellar dislocation (HPO)"
-        },
-        "HP:0004944": {
-          "id": "HP:0004944",
-          "label": "Dilatation of the cerebral artery (HPO)"
-        },
-        "HP:0002020": {
-          "id": "HP:0002020",
-          "label": "Gastroesophageal reflux (HPO)"
-        },
-        "HP:0001533": { "id": "HP:0001533", "label": "Slender build (HPO)" },
         "HP:0002616": {
           "id": "HP:0002616",
           "label": "Aortic root aneurysm (HPO)"
         },
         "HP:0010749": { "id": "HP:0010749", "label": "Blepharochalasis (HPO)" },
-        "HP:0002829": { "id": "HP:0002829", "label": "Arthralgia (HPO)" },
-        "HP:0003394": { "id": "HP:0003394", "label": "Muscle spasm (HPO)" },
-        "HP:0012450": {
-          "id": "HP:0012450",
-          "label": "Chronic constipation (HPO)"
-        },
-        "HP:0003771": {
-          "id": "HP:0003771",
-          "label": "Pulp calcification (HPO)"
-        },
         "HP:0001763": { "id": "HP:0001763", "label": "Pes planus (HPO)" },
         "HP:0001278": {
           "id": "HP:0001278",
           "label": "Orthostatic hypotension (HPO)"
         },
-        "HP:0002827": { "id": "HP:0002827", "label": "Hip dislocation (HPO)" },
         "HP:0003010": {
           "id": "HP:0003010",
           "label": "Prolonged bleeding time (HPO)"
         },
-        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue (HPO)" }
+        "HP:0012450": {
+          "id": "HP:0012450",
+          "label": "Chronic constipation (HPO)"
+        },
+        "HP:0002829": { "id": "HP:0002829", "label": "Arthralgia (HPO)" },
+        "HP:0003394": { "id": "HP:0003394", "label": "Muscle spasm (HPO)" },
+        "HP:0001533": { "id": "HP:0001533", "label": "Slender build (HPO)" },
+        "HP:0002020": {
+          "id": "HP:0002020",
+          "label": "Gastroesophageal reflux (HPO)"
+        },
+        "HP:0003771": {
+          "id": "HP:0003771",
+          "label": "Pulp calcification (HPO)"
+        },
+        "HP:0004944": {
+          "id": "HP:0004944",
+          "label": "Dilatation of the cerebral artery (HPO)"
+        },
+        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue (HPO)" },
+        "HP:0002999": {
+          "id": "HP:0002999",
+          "label": "Patellar dislocation (HPO)"
+        },
+        "HP:0002827": { "id": "HP:0002827", "label": "Hip dislocation (HPO)" }
       },
       "subject_best_matches": {
         "HP:0001533": {
@@ -808,16 +808,16 @@
         "HP:0001278": {
           "match_source": "HP:0001278",
           "match_source_label": "Orthostatic hypotension (HPO)",
-          "match_target": "HP:0004944",
-          "match_target_label": "Dilatation of the cerebral artery (HPO)",
-          "score": 0.2903225806451613,
+          "match_target": "HP:0002616",
+          "match_target_label": "Aortic root aneurysm (HPO)",
+          "score": 0.3076923076923077,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
             "subject_id": "HP:0001278",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "HP:0004944",
+            "object_id": "HP:0002616",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "HP:0002597",
@@ -826,10 +826,10 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 8.38058018831398,
-            "jaccard_similarity": 0.2903225806451613,
+            "jaccard_similarity": 0.3076923076923077,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 1.55983065349256
+            "phenodigm_score": 1.6058144531491685
           },
           "score_metric": "jaccard_similarity"
         },
@@ -976,16 +976,16 @@
         "HP:0002829": {
           "match_source": "HP:0002829",
           "match_source_label": "Arthralgia (HPO)",
-          "match_target": "HP:0001533",
-          "match_target_label": "Slender build (HPO)",
-          "score": 0.23255813953488372,
+          "match_target": "HP:0012450",
+          "match_target_label": "Chronic constipation (HPO)",
+          "score": 0.38461538461538464,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
             "subject_id": "HP:0002829",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "HP:0001533",
+            "object_id": "HP:0012450",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "HP:0000118",
@@ -994,10 +994,10 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 4.118848568918744,
-            "jaccard_similarity": 0.23255813953488372,
+            "jaccard_similarity": 0.38461538461538464,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9787092316994161
+            "phenodigm_score": 1.2586391565922337
           },
           "score_metric": "jaccard_similarity"
         },
@@ -1032,16 +1032,16 @@
         "HP:0003010": {
           "match_source": "HP:0003010",
           "match_source_label": "Prolonged bleeding time (HPO)",
-          "match_target": "HP:0001533",
-          "match_target_label": "Slender build (HPO)",
-          "score": 0.25,
+          "match_target": "HP:0002616",
+          "match_target_label": "Aortic root aneurysm (HPO)",
+          "score": 0.28205128205128205,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
             "subject_id": "HP:0003010",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "HP:0001533",
+            "object_id": "HP:0002616",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "HP:0000118",
@@ -1050,10 +1050,10 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 4.118848568918744,
-            "jaccard_similarity": 0.25,
+            "jaccard_similarity": 0.28205128205128205,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 1.0147473292547686
+            "phenodigm_score": 1.077834179936144
           },
           "score_metric": "jaccard_similarity"
         },
@@ -1088,16 +1088,16 @@
         "HP:0003771": {
           "match_source": "HP:0003771",
           "match_source_label": "Pulp calcification (HPO)",
-          "match_target": "HP:0012450",
-          "match_target_label": "Chronic constipation (HPO)",
-          "score": 0.2857142857142857,
+          "match_target": "HP:0002020",
+          "match_target_label": "Gastroesophageal reflux (HPO)",
+          "score": 0.26666666666666666,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
             "subject_id": "HP:0003771",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "HP:0012450",
+            "object_id": "HP:0002020",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "HP:0025031",
@@ -1106,10 +1106,10 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 7.826350815132431,
-            "jaccard_similarity": 0.2857142857142857,
+            "jaccard_similarity": 0.26666666666666666,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 1.495359566423735
+            "phenodigm_score": 1.4446545898709888
           },
           "score_metric": "jaccard_similarity"
         },
@@ -1172,16 +1172,16 @@
         "HP:0012378": {
           "match_source": "HP:0012378",
           "match_source_label": "Fatigue (HPO)",
-          "match_target": "HP:0004944",
-          "match_target_label": "Dilatation of the cerebral artery (HPO)",
-          "score": 0.20408163265306123,
+          "match_target": "HP:0010749",
+          "match_target_label": "Blepharochalasis (HPO)",
+          "score": 0.18867924528301888,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
             "subject_id": "HP:0012378",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "HP:0004944",
+            "object_id": "HP:0010749",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "HP:0000118",
@@ -1190,10 +1190,10 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 4.118848568918744,
-            "jaccard_similarity": 0.20408163265306123,
+            "jaccard_similarity": 0.18867924528301888,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9168322314336805
+            "phenodigm_score": 0.8815561464924574
           },
           "score_metric": "jaccard_similarity"
         },
@@ -1261,78 +1261,78 @@
           "id": "HP:0002020",
           "label": "Gastroesophageal reflux (HPO)"
         },
-        "HP:0002616": {
-          "id": "HP:0002616",
-          "label": "Aortic root aneurysm (HPO)"
+        "HP:0004944": {
+          "id": "HP:0004944",
+          "label": "Dilatation of the cerebral artery (HPO)"
         },
         "HP:0012450": {
           "id": "HP:0012450",
           "label": "Chronic constipation (HPO)"
         },
-        "HP:0010749": { "id": "HP:0010749", "label": "Blepharochalasis (HPO)" },
         "HP:0001763": { "id": "HP:0001763", "label": "Pes planus (HPO)" },
-        "HP:0001533": { "id": "HP:0001533", "label": "Slender build (HPO)" },
-        "HP:0004944": {
-          "id": "HP:0004944",
-          "label": "Dilatation of the cerebral artery (HPO)"
-        }
-      },
-      "object_termset": {
-        "HP:0001653": {
-          "id": "HP:0001653",
-          "label": "Mitral regurgitation (HPO)"
-        },
-        "HP:0012432": { "id": "HP:0012432", "label": "Chronic fatigue (HPO)" },
-        "HP:0001634": {
-          "id": "HP:0001634",
-          "label": "Mitral valve prolapse (HPO)"
-        },
-        "HP:0004970": {
-          "id": "HP:0004970",
-          "label": "Ascending tubular aorta aneurysm (HPO)"
-        },
-        "HP:0000268": { "id": "HP:0000268", "label": "Dolichocephaly (HPO)" },
-        "HP:0005059": {
-          "id": "HP:0005059",
-          "label": "Arthralgia/arthritis (HPO)"
-        },
         "HP:0002616": {
           "id": "HP:0002616",
           "label": "Aortic root aneurysm (HPO)"
         },
-        "HP:0001704": {
-          "id": "HP:0001704",
-          "label": "Tricuspid valve prolapse (HPO)"
+        "HP:0010749": { "id": "HP:0010749", "label": "Blepharochalasis (HPO)" },
+        "HP:0001533": { "id": "HP:0001533", "label": "Slender build (HPO)" }
+      },
+      "object_termset": {
+        "HP:0003179": {
+          "id": "HP:0003179",
+          "label": "Protrusio acetabuli (HPO)"
         },
-        "HP:0000023": { "id": "HP:0000023", "label": "Inguinal hernia (HPO)" },
-        "HP:0000545": { "id": "HP:0000545", "label": "Myopia (HPO)" },
-        "HP:0002360": {
-          "id": "HP:0002360",
-          "label": "Sleep disturbance (HPO)"
-        },
-        "HP:0001763": { "id": "HP:0001763", "label": "Pes planus (HPO)" },
-        "HP:0000490": { "id": "HP:0000490", "label": "Deeply set eye (HPO)" },
-        "HP:0100785": { "id": "HP:0100785", "label": "Insomnia (HPO)" },
-        "HP:0002108": {
-          "id": "HP:0002108",
-          "label": "Spontaneous pneumothorax (HPO)"
-        },
-        "HP:0001659": {
-          "id": "HP:0001659",
-          "label": "Aortic regurgitation (HPO)"
-        },
-        "HP:0007800": {
-          "id": "HP:0007800",
-          "label": "Increased axial length of the globe (HPO)"
+        "HP:0004970": {
+          "id": "HP:0004970",
+          "label": "Ascending tubular aorta aneurysm (HPO)"
         },
         "HP:0002705": {
           "id": "HP:0002705",
           "label": "High, narrow palate (HPO)"
         },
         "HP:0000767": { "id": "HP:0000767", "label": "Pectus excavatum (HPO)" },
-        "HP:0003179": {
-          "id": "HP:0003179",
-          "label": "Protrusio acetabuli (HPO)"
+        "HP:0007800": {
+          "id": "HP:0007800",
+          "label": "Increased axial length of the globe (HPO)"
+        },
+        "HP:0002108": {
+          "id": "HP:0002108",
+          "label": "Spontaneous pneumothorax (HPO)"
+        },
+        "HP:0000490": { "id": "HP:0000490", "label": "Deeply set eye (HPO)" },
+        "HP:0002360": {
+          "id": "HP:0002360",
+          "label": "Sleep disturbance (HPO)"
+        },
+        "HP:0001763": { "id": "HP:0001763", "label": "Pes planus (HPO)" },
+        "HP:0001659": {
+          "id": "HP:0001659",
+          "label": "Aortic regurgitation (HPO)"
+        },
+        "HP:0005059": {
+          "id": "HP:0005059",
+          "label": "Arthralgia/arthritis (HPO)"
+        },
+        "HP:0012432": { "id": "HP:0012432", "label": "Chronic fatigue (HPO)" },
+        "HP:0000023": { "id": "HP:0000023", "label": "Inguinal hernia (HPO)" },
+        "HP:0001653": {
+          "id": "HP:0001653",
+          "label": "Mitral regurgitation (HPO)"
+        },
+        "HP:0000268": { "id": "HP:0000268", "label": "Dolichocephaly (HPO)" },
+        "HP:0002616": {
+          "id": "HP:0002616",
+          "label": "Aortic root aneurysm (HPO)"
+        },
+        "HP:0100785": { "id": "HP:0100785", "label": "Insomnia (HPO)" },
+        "HP:0001634": {
+          "id": "HP:0001634",
+          "label": "Mitral valve prolapse (HPO)"
+        },
+        "HP:0000545": { "id": "HP:0000545", "label": "Myopia (HPO)" },
+        "HP:0001704": {
+          "id": "HP:0001704",
+          "label": "Tricuspid valve prolapse (HPO)"
         }
       },
       "subject_best_matches": {
@@ -1451,8 +1451,8 @@
         "HP:0004944": {
           "match_source": "HP:0004944",
           "match_source_label": "Dilatation of the cerebral artery (HPO)",
-          "match_target": "HP:0002616",
-          "match_target_label": "Aortic root aneurysm (HPO)",
+          "match_target": "HP:0004970",
+          "match_target_label": "Ascending tubular aorta aneurysm (HPO)",
           "score": 0.5185185185185185,
           "match_subsumer": null,
           "match_subsumer_label": null,
@@ -1460,7 +1460,7 @@
             "subject_id": "HP:0004944",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "HP:0002616",
+            "object_id": "HP:0004970",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "HP:0002617",
@@ -1479,16 +1479,16 @@
         "HP:0010749": {
           "match_source": "HP:0010749",
           "match_source_label": "Blepharochalasis (HPO)",
-          "match_target": "HP:0000490",
-          "match_target_label": "Deeply set eye (HPO)",
-          "score": 0.4,
+          "match_target": "HP:0000545",
+          "match_target_label": "Myopia (HPO)",
+          "score": 0.3389830508474576,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
             "subject_id": "HP:0010749",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "HP:0000490",
+            "object_id": "HP:0000545",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "HP:0000315",
@@ -1497,10 +1497,10 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 7.709281511796768,
-            "jaccard_similarity": 0.4,
+            "jaccard_similarity": 0.3389830508474576,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 1.7560502853616429
+            "phenodigm_score": 1.6165753204570361
           },
           "score_metric": "jaccard_similarity"
         },
@@ -1537,16 +1537,16 @@
         "HP:0000023": {
           "match_source": "HP:0000023",
           "match_source_label": "Inguinal hernia (HPO)",
-          "match_target": "HP:0002020",
-          "match_target_label": "Gastroesophageal reflux (HPO)",
-          "score": 0.36363636363636365,
+          "match_target": "HP:0012450",
+          "match_target_label": "Chronic constipation (HPO)",
+          "score": 0.4,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
             "subject_id": "HP:0000023",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "HP:0002020",
+            "object_id": "HP:0012450",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "HP:0025031",
@@ -1555,10 +1555,10 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 7.826350815132431,
-            "jaccard_similarity": 0.36363636363636365,
+            "jaccard_similarity": 0.4,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 1.686993109338994
+            "phenodigm_score": 1.769333299876813
           },
           "score_metric": "jaccard_similarity"
         },
@@ -1677,16 +1677,16 @@
         "HP:0001634": {
           "match_source": "HP:0001634",
           "match_source_label": "Mitral valve prolapse (HPO)",
-          "match_target": "HP:0002616",
-          "match_target_label": "Aortic root aneurysm (HPO)",
-          "score": 0.4166666666666667,
+          "match_target": "HP:0004944",
+          "match_target_label": "Dilatation of the cerebral artery (HPO)",
+          "score": 0.3333333333333333,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
             "subject_id": "HP:0001634",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "HP:0002616",
+            "object_id": "HP:0004944",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "HP:0030680",
@@ -1695,26 +1695,26 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 8.449787463668223,
-            "jaccard_similarity": 0.4166666666666667,
+            "jaccard_similarity": 0.3333333333333333,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 1.8763647770432128
+            "phenodigm_score": 1.6782716768219443
           },
           "score_metric": "jaccard_similarity"
         },
         "HP:0001653": {
           "match_source": "HP:0001653",
           "match_source_label": "Mitral regurgitation (HPO)",
-          "match_target": "HP:0004944",
-          "match_target_label": "Dilatation of the cerebral artery (HPO)",
-          "score": 0.2413793103448276,
+          "match_target": "HP:0002616",
+          "match_target_label": "Aortic root aneurysm (HPO)",
+          "score": 0.30434782608695654,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
             "subject_id": "HP:0001653",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "HP:0004944",
+            "object_id": "HP:0002616",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "HP:0001626",
@@ -1723,10 +1723,10 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 7.652086110215225,
-            "jaccard_similarity": 0.2413793103448276,
+            "jaccard_similarity": 0.30434782608695654,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 1.3590641147432985
+            "phenodigm_score": 1.5260720076962944
           },
           "score_metric": "jaccard_similarity"
         },
@@ -1761,16 +1761,16 @@
         "HP:0001704": {
           "match_source": "HP:0001704",
           "match_source_label": "Tricuspid valve prolapse (HPO)",
-          "match_target": "HP:0002616",
-          "match_target_label": "Aortic root aneurysm (HPO)",
-          "score": 0.4166666666666667,
+          "match_target": "HP:0004944",
+          "match_target_label": "Dilatation of the cerebral artery (HPO)",
+          "score": 0.3333333333333333,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
             "subject_id": "HP:0001704",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "HP:0002616",
+            "object_id": "HP:0004944",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "HP:0030680",
@@ -1779,10 +1779,10 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 8.449787463668223,
-            "jaccard_similarity": 0.4166666666666667,
+            "jaccard_similarity": 0.3333333333333333,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 1.8763647770432128
+            "phenodigm_score": 1.6782716768219443
           },
           "score_metric": "jaccard_similarity"
         },
@@ -1817,16 +1817,16 @@
         "HP:0002108": {
           "match_source": "HP:0002108",
           "match_source_label": "Spontaneous pneumothorax (HPO)",
-          "match_target": "HP:0004944",
-          "match_target_label": "Dilatation of the cerebral artery (HPO)",
-          "score": 0.2807017543859649,
+          "match_target": "HP:0001533",
+          "match_target_label": "Slender build (HPO)",
+          "score": 0.32,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
             "subject_id": "HP:0002108",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "HP:0004944",
+            "object_id": "HP:0001533",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "HP:0000118",
@@ -1835,10 +1835,10 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 4.118848568918744,
-            "jaccard_similarity": 0.2807017543859649,
+            "jaccard_similarity": 0.32,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 1.0752525374746216
+            "phenodigm_score": 1.1480555483311763
           },
           "score_metric": "jaccard_similarity"
         },
