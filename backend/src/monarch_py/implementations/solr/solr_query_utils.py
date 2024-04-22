@@ -283,12 +283,18 @@ def blank_search_boost() -> str:
     return f"product({boost})"
 
 
-def entity_query_fields():
+def autocomplete_query_fields():
     """
-    Shared query field list between search and autocomplete,
-    since the field list and boosts are currently the same
+    Fields and boosts used for autocomplete
     """
     return "id^100 name^10 name_t^5 name_ac symbol^10 symbol_t^5 symbol_ac synonym synonym_t synonym_ac"
+
+
+def entity_query_fields():
+    """
+    Fields and boosts used for entity search, includes autocomplete fields and expands upon them beyond pure name fields
+    """
+    return f"{autocomplete_query_fields()} description_t"
 
 
 def association_search_query_fields():

@@ -176,7 +176,7 @@ const clinicalSynopsis = computed(
 );
 const infoForPatients = computed(
   () =>
-    props.node.mappings?.filter(({ id }) =>
+    props.node.external_links?.filter(({ id }) =>
       ["GARD:"].some((prefix) => id.startsWith(prefix)),
     ) || [],
 );
