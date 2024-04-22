@@ -5,13 +5,13 @@ import pytest
 def search_response():
     return {
         "responseHeader": {
-            "QTime": 0,
+            "QTime": 3,
             "params": {
                 "mm": "100%",
                 "q": "fanconi",
                 "defType": "edismax",
                 "facet_min_count": "1",
-                "qf": "id^100 name^10 name_t^5 name_ac symbol^10 symbol_t^5 symbol_ac synonym synonym_t synonym_ac",
+                "qf": "id^100 name^10 name_t^5 name_ac symbol^10 symbol_t^5 symbol_ac synonym synonym_t synonym_ac description_t",
                 "start": "0",
                 "q.op": "AND",
                 "boost": 'product(if(termfreq(category,"biolink:PhenotypicFeature"),1.1,1),if(termfreq(category,"biolink:Disease"),1.3,1),if(and(termfreq(in_taxon,"NCBITaxon:9606"),termfreq(category,"biolink:Gene")),1.1,1),if(termfreq(deprecated,"true"),0.1,1))',
@@ -21,7 +21,7 @@ def search_response():
             },
         },
         "response": {
-            "num_found": 101,
+            "num_found": 117,
             "start": 0,
             "docs": [
                 {
