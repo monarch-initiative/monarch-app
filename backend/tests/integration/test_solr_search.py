@@ -20,6 +20,7 @@ pytestmark = pytest.mark.skipif(
         # Failing because we don't have synonyms coming in from Phenio (!)
         #        "AD16",
         "symphalangism, C. S. Lewis type",
+        "OMIM:301045",  # Confirmation that we load & search xrefs for Mondo
     ],
 )
 def test_search_query_has_some_results(query: str):

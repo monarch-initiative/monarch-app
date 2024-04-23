@@ -294,7 +294,7 @@ def entity_query_fields():
     """
     Fields and boosts used for entity search, includes autocomplete fields and expands upon them beyond pure name fields
     """
-    return f"{autocomplete_query_fields()} description_t"
+    return f"{autocomplete_query_fields()} description_t xref"
 
 
 def association_search_query_fields():
