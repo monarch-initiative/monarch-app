@@ -30,7 +30,7 @@
       </p>
       <AppHighlight :src="search">
         <ul>
-          <li>Genes can be searched by common gene, gene ID, or symbol.</li>
+          <li>Genes can be searched by common gene name, gene ID, or symbol.</li>
           <li>Diseases can be searched by name or ID.</li>
           <li>Phenotypes can be searched by name or ID.</li>
         </ul>
