@@ -16,16 +16,12 @@
   </AppSection>
 
   <AppSection>
+    <AppButton to="/how-to" text="Learn to use Monarch" icon="arrow-right" />
     <AppHeading>What is Monarch?</AppHeading>
 
     <!-- high level description of monarch as a whole. "elevator pitch" -->
     <!-- eslint-disable-next-line -->
     <AppGallery :cols="2">
-      <AppTile
-        icon="how-to"
-        title="Information on how to use Monarch"
-        to="/how-to"
-      />
       <AppTile
         icon="people"
         title="For informaticians, patients, clinicians, researchers, and more"

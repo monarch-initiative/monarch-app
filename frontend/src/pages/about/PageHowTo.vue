@@ -6,68 +6,15 @@
   <AppSection v-show="true">
     <AppHeading>How to use Monarch Intiative</AppHeading>
     <p>
-      The Monarch Initiative is an extensive knowledge graph and ecosystem of
-      tools made for the benefit of clinicians, researchers, and scientists.
-      This section is intended to help you get started in using these tools.
+      The Monarch Initiative is an extensive, cross-species, semantic knowledge graph and ecosystem of
+      tools made for the benefit of informaticians, clinicians, researchers, patients, and more.
+      This section will help you quickly and easily explore the graph on the website, with the API,
+      or using the ecosystem of related tools.
     </p>
   </AppSection>
 
-  <AppSection design="fill">
-    <AppHeading>Example from previous site</AppHeading>
-    <AppHeading :level="4"
-      >Content exact from site but layout is not.</AppHeading
-    >
-  </AppSection>
-
   <AppSection>
-    <p>Phenotype Profile Search from v2 website</p>
-    <AppAccordion text="Phenotype Profile Search">
-      <p>
-        This Phenotype Profile Search enables you to find phenotypically similar
-        diseases or genes in a variety of organisms, then visualize their
-        overlap. Begin by constructing a "profile" (a collection of phenotypes)
-        then create a comparison profile.
-      </p>
-      <AppAccordion text="1.  Create a Profile of Phenotypes">
-        <AppAccordion text="I have a phenotype list I can paste.">
-          <TabPhenotypeExplorer :minimal="true" />
-        </AppAccordion>
-        <AppAccordion text="I need some help to create a phenotype profile.">
-          <p>I want to generate a phenotype profile from a ...</p>
-          <AppAccordion text="gene.">
-            <TabSearch :minimal="true" />
-          </AppAccordion>
-          <AppAccordion text="disease.">
-            <TabSearch :minimal="true" />
-          </AppAccordion>
-        </AppAccordion>
-      </AppAccordion>
-      <AppAccordion text="2. What do you want to compare against?">
-        <AppAccordion text="Show me everything">
-          <AppButton to="" text="all matching genes." icon="arrow-right" />
-          <AppButton to="" text="all matching diseases." icon="arrow-right" />
-        </AppAccordion>
-        <AppAccordion text="I know what I want to compare.">
-          <AppButton to="" text="A specific gene" icon="arrow-right" />
-          <AppButton to="" text="A specific disease" icon="arrow-right" />
-          <AppButton
-            to=""
-            text="I will paste a list of phenotypes"
-            icon="arrow-right"
-          />
-        </AppAccordion>
-      </AppAccordion>
-    </AppAccordion>
-  </AppSection>
-
-  <AppSection design="fill">
-    <AppHeading>Candidate layouts for new How-To</AppHeading>
-    <AppHeading :level="4">Content isn't complete in all layouts.</AppHeading>
-  </AppSection>
-
-  <AppSection>
-    <p>How To candidate layout 1</p>
-    <AppHeading>Would you like some help?</AppHeading>
+    <AppHeading>What do you want to do with Monarch today?</AppHeading>
     <AppSelectSingle
       v-model="selectedOption"
       name="Sort"
@@ -125,12 +72,11 @@
     </div>
     <div v-if="selectedOption.id === 'phenotypeExplorer'">
       <AppHeading>
-        Compare phenotype profiles of genese or diseases or your own phenotype
-        profiles.
+        Compare phenotype profiles.
       </AppHeading>
       <p>
-        Use the phenotype explorer to find similar genes or diseases based on
-        phenotypes or compare phenotype profiles.
+        Find similar genes or diseases based on phenotypes using the phenotype explorer.
+        You can also use phenotype explorer to compare two phenotype profiles of your own.
       </p>
       <AppHighlight :src="phenotypeExplorer">
         <ul>
@@ -155,113 +101,105 @@
         icon="arrow-right"
       />
     </div>
-  </AppSection>
-
-  <AppSection>
-    <p>How To candidate layout 2</p>
-    <AppHeading>What do you want to do with Monarch today?</AppHeading>
-    <p>
-      The Monarch Initiative is an extensive knowledge graph and ecosystem of
-      tools made for the benefit of clinicians, researchers, and scientists.
-    </p>
-
-    <AppButton
-      color="secondary"
-      to="explore#search"
-      text="Search and use information about a gene, disease, or phenotype..."
-      icon="arrow-right"
-    />
-    <AppButton
-      color="secondary"
-      to="explore#text-annotator"
-      text="Annotate a patients symptoms to terms in the Monarch KG..."
-      icon="arrow-right"
-    />
-    <AppButton
-      color="secondary"
-      to="explore#phenotype-explorer"
-      text="Find similar diseases based on a phenotypes or symptoms..."
-      icon="arrow-right"
-    />
-    <AppButton
-      color="secondary"
-      to="explore#phenotype-explorer"
-      text="Compare phenotypes between two diseases or genes..."
-      icon="arrow-right"
-    />
-    <AppButton
-      color="secondary"
-      to="about"
-      text="Find additional information about..."
-      icon="arrow-right"
-    />
-  </AppSection>
-
-  <AppSection>
-    <p>How To candidate layout 3</p>
-    <AppHeading>What do you want to do with Monarch today?</AppHeading>
-    <p>
-      The Monarch Initiative is an extensive knowledge graph and ecosystem of
-      tools made for the benefit of clinicians, researchers, and scientists.
-    </p>
-
-    <AppAccordion
-      text="Search and use information about a gene, disease, or phenotype..."
-    >
-      <TabSearch :minimal="true" />
-    </AppAccordion>
-    <AppAccordion
-      text="Annotate a patients symptoms to terms in the Monarch KG..."
-    >
-      <TabTextAnnotator :minimal="true" />
-    </AppAccordion>
-    <AppAccordion
-      text="Find similar diseases based on a phenotypes or symptoms..."
-    >
-      <TabPhenotypeExplorer :minimal="true" />
-    </AppAccordion>
-    <AppAccordion text="Compare phenotypes between two diseases or genes...">
-      <TabPhenotypeExplorer :minimal="true" />
-    </AppAccordion>
-    <AppAccordion text="Find additional information about...">
-      <TabSearch />
-    </AppAccordion>
-  </AppSection>
-
-  <AppSection>
-    <p>
-      From here below is just some extra things that might be interesting to
-      dress up the page if we want.
-    </p>
-  </AppSection>
-
-  <AppSection>
-    <AppHeading>Test Highlights</AppHeading>
-    <AppHighlight :src="search">
-      Quickly and easily browse nodes. Filter by category and taxon. See your
-      recent and frequent searches.
-    </AppHighlight>
-  </AppSection>
-
-  <AppSection design="fill">
-    <AppHeading>Goals</AppHeading>
-  </AppSection>
-
-  <AppSection>
-    <AppHeading icon="resource-upheno"> Heading </AppHeading>
-
-    <p>
-      Info
-      <AppLink
-        to="https://github.com/obophenotype/upheno/wiki/Phenotype-Ontologies-Reconciliation-Effort"
-        >Phenotype Ontologies Reconciliation Effort</AppLink
-      >.
-    </p>
-    <AppButton
-      to="https://obophenotype.github.io/upheno/"
-      text="Let's make this button text really really long to see how it looks, that wasn't nearly long enough... I need to make this a super large amount of text. Now how does it look?"
-      icon="arrow-right"
-    />
+    <div v-if="selectedOption.id === 'monarchAPI'">
+      <AppHeading>
+        Using the Monarch API to integrate the KG into tools.
+      </AppHeading>
+      <p style="padding-bottom: 1.5rem;">
+        Monarch provides a RESTful API to access the KG and related services.
+        Here are some of the services built using the Monarch API you can use or to serve as a reference.
+      </p>
+      <AppTile
+        to="http://api-v3.monarchinitiative.org/"
+        icon="code"
+        title="API"
+        subtitle="The API serving this website"
+      />
+      <AppTile
+        to="https://github.com/monarch-initiative/oai-monarch-plugin"
+        icon="user-gear"
+        title="ChatGPT Plugin"
+        subtitle="Monarch KG with ChatGPT"
+      />
+      <AppTile
+        to="https://github.com/monarch-initiative/monarchr"
+        icon="R"
+        title="R Package"
+        subtitle="Monarch KG in R"
+      />
+      <p style="padding-top: 1.5rem;">
+        Use the buttons above to go directly to the API documentation, the ChatGPT plugin, or the R package. Or see the further information below.
+      </p>
+      <ul>
+        <li>
+          Monarch provides a RESTful API which we use to develop the website and for other tools we provide.
+          You are welcome to use the API for your own projects. For more information
+          <AppLink to="http://api-v3.monarchinitiative.org/">see the API documentation</AppLink>.
+        </li>
+        <li>
+          A ChatGPT plugin uses calls to the Monarch API to process casual language questions about genes, diseases, and phenotypes.
+          The plugin uses the API to get information from the KG on identified terms. Responses are tailored to a more
+          general audience and may be easier for non-experts to understand. For further reading please 
+          <AppLink to="https://monarchinit.medium.com/knowledge-backed-ai-with-monarch-a-match-made-in-heaven-a8296eec6b9f">
+            see the announcement paper
+          </AppLink> or you can go straight to the 
+          <AppLink to="https://github.com/monarch-initiative/oai-monarch-plugin">
+            GitHub repository
+          </AppLink>.
+        </li>
+        <li>
+          The Monarch R package provides easy access, manipulation, and analysis of Monarch KG data resources from R.
+          For more information please see the 
+          <AppLink to="https://github.com/monarch-initiative/monarchr">
+            MonarchR GitHub repository
+          </AppLink>.
+        </li>
+      </ul>
+    </div>
+    <div v-if="selectedOption.id === 'about'">
+      <AppHeading>
+        More information about the Monarch Initiative.
+      </AppHeading>
+      <p style="padding-bottom: 1.5rem;">
+        Here are some quick links for some of the most frequently requested information about the Monarch Initiative.
+        For additional information, please see 
+        <AppLink to="about">
+          our about page
+          </AppLink>.
+      </p>
+      <AppTile
+        to="/cite"
+        icon="feather-pointed"
+        title="Cite"
+        subtitle="How to cite and attribute Monarch"
+      />
+      <AppTile
+        to="/overview"
+        icon="cogs"
+        title="Overview"
+        subtitle="How all the pieces of Monarch fit together"
+      />
+      <AppTile
+        to="/team"
+        icon="users"
+        title="Team"
+        subtitle="The people behind Monarch"
+      />
+      <AppTile
+        to="https://monarch-initiative.github.io/monarch-ingest/Sources"
+        icon="database"
+        title="Sources"
+        subtitle="Datasets, ontologies, and downloads"
+      />
+      <p style="padding-top: 1.5rem;">
+        Use the buttons above to go directly to the information listed. Additional information may be available on the about page.
+      </p>
+      <AppButton
+        to="about"
+        text="Take me to the full about page..."
+        icon="arrow-right"
+      />
+    </div>
   </AppSection>
 </template>
 
@@ -270,17 +208,11 @@ import { ref } from "vue";
 import phenotypeExplorer from "@/assets/demos/phenotype-explorer.mp4";
 import search from "@/assets/demos/search.mp4";
 import textAnnotator from "@/assets/demos/text-annotator.mp4";
-// import { computed, nextTick, ref, watch } from "vue"
-import AppAccordion from "@/components/AppAccordion.vue";
 import AppHighlight from "@/components/AppHighlight.vue";
-// import AppSelectSingle from "@/components/AppSelectSingle.vue"
 import AppSelectSingle, { type Option } from "@/components/AppSelectSingle.vue";
-import TabPhenotypeExplorer from "../explore/TabPhenotypeExplorer.vue";
-import TabSearch from "../explore/TabSearch.vue";
-import TabTextAnnotator from "../explore/TabTextAnnotator.vue";
 
 const selectOptions: Option[] = [
-  { id: "none_selected", label: "What do you want to do with Monarch today?" },
+  { id: "none_selected", label: "I want to..." },
   {
     id: "search",
     label: "Search and use information about a gene, disease, or phenotype...",
@@ -294,8 +226,8 @@ const selectOptions: Option[] = [
     label: "Find similar diseases based on a phenotypes or symptoms...",
   },
   {
-    id: "pheno_compare",
-    label: "Compare phenotypes between two diseases or genes...",
+    id: "monarchAPI",
+    label: "Use the Monarch API with tools like ChatGPT/LLM or R...",
   },
   { id: "about", label: "Find additional information about..." },
 ];

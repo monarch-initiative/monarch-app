@@ -79,6 +79,7 @@ const icons = [
   fas.faTable,
   fas.faUpload,
   fas.faUsers,
+  fas.faUserGear,
   fas.faXmark,
 ];
 
