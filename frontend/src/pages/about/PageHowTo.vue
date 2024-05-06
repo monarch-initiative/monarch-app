@@ -6,10 +6,11 @@
   <AppSection v-show="true">
     <AppHeading>How to use Monarch Intiative</AppHeading>
     <p>
-      The Monarch Initiative is an extensive, cross-species, semantic knowledge graph and ecosystem of
-      tools made for the benefit of informaticians, clinicians, researchers, patients, and more.
-      This section will help you quickly and easily explore the graph on the website, with the API,
-      or using the ecosystem of related tools.
+      The Monarch Initiative is an extensive, cross-species, semantic knowledge
+      graph and ecosystem of tools made for the benefit of informaticians,
+      clinicians, researchers, patients, and more. This section will help you
+      quickly and easily explore the graph on the website, with the API, or
+      using the ecosystem of related tools.
     </p>
   </AppSection>
 
@@ -30,7 +31,9 @@
       </p>
       <AppHighlight :src="search">
         <ul>
-          <li>Genes can be searched by common gene name, gene ID, or symbol.</li>
+          <li>
+            Genes can be searched by common gene name, gene ID, or symbol.
+          </li>
           <li>Diseases can be searched by name or ID.</li>
           <li>Phenotypes can be searched by name or ID.</li>
         </ul>
@@ -71,12 +74,11 @@
       />
     </div>
     <div v-if="selectedOption.id === 'phenotypeExplorer'">
-      <AppHeading>
-        Compare phenotype profiles.
-      </AppHeading>
+      <AppHeading> Compare phenotype profiles. </AppHeading>
       <p>
-        Find similar genes or diseases based on phenotypes using the phenotype explorer.
-        You can also use phenotype explorer to compare two phenotype profiles of your own.
+        Find similar genes or diseases based on phenotypes using the phenotype
+        explorer. You can also use phenotype explorer to compare two phenotype
+        profiles of your own.
       </p>
       <AppHighlight :src="phenotypeExplorer">
         <ul>
@@ -105,9 +107,10 @@
       <AppHeading>
         Using the Monarch API to integrate the KG into tools.
       </AppHeading>
-      <p style="padding-bottom: 1.5rem;">
+      <p style="padding-bottom: 1.5rem">
         Monarch provides a RESTful API to access the KG and related services.
-        Here are some of the services built using the Monarch API you can use or to serve as a reference.
+        Here are some of the services built using the Monarch API you can use or
+        to serve as a reference.
       </p>
       <AppTile
         to="http://api-v3.monarchinitiative.org/"
@@ -127,45 +130,54 @@
         title="R Package"
         subtitle="Monarch KG in R"
       />
-      <p style="padding-top: 1.5rem;">
-        Use the buttons above to go directly to the API documentation, the ChatGPT plugin, or the R package. Or see the further information below.
+      <p style="padding-top: 1.5rem">
+        Use the buttons above to go directly to the API documentation, the
+        ChatGPT plugin, or the R package. Or see the further information below.
       </p>
       <ul>
         <li>
-          Monarch provides a RESTful API which we use to develop the website and for other tools we provide.
-          You are welcome to use the API for your own projects. For more information
-          <AppLink to="http://api-v3.monarchinitiative.org/">see the API documentation</AppLink>.
+          Monarch provides a RESTful API which we use to develop the website and
+          for other tools we provide. You are welcome to use the API for your
+          own projects. For more information
+          <AppLink to="http://api-v3.monarchinitiative.org/"
+            >see the API documentation</AppLink
+          >.
         </li>
         <li>
-          A ChatGPT plugin uses calls to the Monarch API to process casual language questions about genes, diseases, and phenotypes.
-          The plugin uses the API to get information from the KG on identified terms. Responses are tailored to a more
-          general audience and may be easier for non-experts to understand. For further reading please 
-          <AppLink to="https://monarchinit.medium.com/knowledge-backed-ai-with-monarch-a-match-made-in-heaven-a8296eec6b9f">
+          A ChatGPT plugin uses calls to the Monarch API to process casual
+          language questions about genes, diseases, and phenotypes. The plugin
+          uses the API to get information from the KG on identified terms.
+          Responses are tailored to a more general audience and may be easier
+          for non-experts to understand. For further reading please
+          <AppLink
+            to="https://monarchinit.medium.com/knowledge-backed-ai-with-monarch-a-match-made-in-heaven-a8296eec6b9f"
+          >
             see the announcement paper
-          </AppLink> or you can go straight to the 
-          <AppLink to="https://github.com/monarch-initiative/oai-monarch-plugin">
-            GitHub repository
-          </AppLink>.
+          </AppLink>
+          or you can go straight to the
+          <AppLink
+            to="https://github.com/monarch-initiative/oai-monarch-plugin"
+          >
+            GitHub repository </AppLink
+          >.
         </li>
         <li>
-          The Monarch R package provides easy access, manipulation, and analysis of Monarch KG data resources from R.
-          For more information please see the 
+          The Monarch R package provides easy access, manipulation, and analysis
+          of Monarch KG data resources from R. For more information please see
+          the
           <AppLink to="https://github.com/monarch-initiative/monarchr">
-            MonarchR GitHub repository
-          </AppLink>.
+            MonarchR GitHub repository </AppLink
+          >.
         </li>
       </ul>
     </div>
     <div v-if="selectedOption.id === 'about'">
-      <AppHeading>
-        More information about the Monarch Initiative.
-      </AppHeading>
-      <p style="padding-bottom: 1.5rem;">
-        Here are some quick links for some of the most frequently requested information about the Monarch Initiative.
-        For additional information, please see 
-        <AppLink to="about">
-          our about page
-          </AppLink>.
+      <AppHeading> More information about the Monarch Initiative. </AppHeading>
+      <p style="padding-bottom: 1.5rem">
+        Here are some quick links for some of the most frequently requested
+        information about the Monarch Initiative. For additional information,
+        please see
+        <AppLink to="about"> our about page </AppLink>.
       </p>
       <AppTile
         to="/cite"
@@ -191,8 +203,9 @@
         title="Sources"
         subtitle="Datasets, ontologies, and downloads"
       />
-      <p style="padding-top: 1.5rem;">
-        Use the buttons above to go directly to the information listed. Additional information may be available on the about page.
+      <p style="padding-top: 1.5rem">
+        Use the buttons above to go directly to the information listed.
+        Additional information may be available on the about page.
       </p>
       <AppButton
         to="about"
