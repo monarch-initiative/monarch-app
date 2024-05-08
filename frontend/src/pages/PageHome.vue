@@ -16,6 +16,10 @@
   </AppSection>
 
   <AppSection>
+    <AppButton to="/how-to" text="Learn to use Monarch" icon="arrow-right" />
+  </AppSection>
+
+  <AppSection>
     <AppHeading>What is Monarch?</AppHeading>
 
     <!-- high level description of monarch as a whole. "elevator pitch" -->

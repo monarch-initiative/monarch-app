@@ -281,6 +281,7 @@ const {
   isLoading,
   isError,
 } = useQuery(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async function (fresh: boolean) /**
    * whether to perform "fresh" search, without filters/pagination/etc. true when
    * search text changes, false when filters/pagination/etc change.
