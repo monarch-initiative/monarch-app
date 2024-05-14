@@ -59,7 +59,8 @@
           :state="{ fromSearch: search }"
           class="title-name"
         />
-        <AppButton v-if="result.in_taxon_label"
+        <AppButton
+          v-if="result.in_taxon_label"
           v-tooltip="'Taxon Name'"
           class="title-taxon"
           :text="result.in_taxon_label || ''"
@@ -406,11 +407,11 @@ watch(from, () => runGetSearch(false));
 
 <style lang="scss" scoped>
 .title {
-  position: relative;
   display: flex;
+  position: relative;
   align-items: center;
-  gap: 15px;
   justify-content: space-between;
+  gap: 15px;
   text-align: left;
 }
 
