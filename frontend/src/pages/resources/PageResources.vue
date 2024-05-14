@@ -65,7 +65,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from "vue";
 import resources from "./resources.json";
 
 type AITool = {
@@ -78,69 +77,80 @@ type AITool = {
 const AiTools: AITool[] = [
   {
     name: "Agent Smith",
-    description: "A project to make it easy to instantiate AI agents that can safely and easily call APIs and locally defined functions to interact with the world. The Phenomics Assistant (formerly the Monarch Assistant) is an example of one such tool. ",
-    link: "",
-    icon: "",
+    description:
+      "Designed to simplify instantiating AI agents that can safely and easily call APIs and locally defined functions to interact with the world. The Phenomics Assistant is an example of one such tool. ",
+    link: "https://github.com/monarch-initiative/agent-smith-ai#readme",
+    icon: "agent-smith",
   },
   {
     name: "CurateGPT",
-    description: "A prototype web application and framework for performing general purpose AI-guided curation and curation-related operations over collections of objects. Uses DRAGONAI and RAG. Does not do grounding or mapping (just knows about JSON objects). Resources are stored in a ChromaDB vector database.",
-    link: "",
-    icon: "",
+    description:
+      "A prototype web application and framework for performing general AI-guided curation-related operations over collections of objects.",
+    link: "https://github.com/monarch-initiative/curate-gpt",
+    icon: "curate-gpt",
   },
   {
     name: "Datasette LLM library",
-    description: "Or llm for short. A CLI utility and Python library for interacting with Large Language Models, both via remote APIs and models that can be installed and run on your own machine.",
-    link: "",
-    icon: "",
+    description:
+      "A CLI utility and Python library for interacting with Large Language Models, both via remote APIs and models that can be installed and run on your own machine.",
+    link: "https://llm.datasette.io/en/stable/",
+    icon: "datasette-llm",
   },
   {
     name: "Langchain",
-    description: "A framework for developing applications powered by language models. Supports connecting a language model to sources of context and enabling reasoning.",
-    link: "",
-    icon: "",
+    description:
+      "A framework for developing applications powered by language models. Supports connecting a language model to sources of context and enabling reasoning.",
+    link: "https://python.langchain.com/",
+    icon: "langchain",
   },
   {
     name: "LinkML",
-    description: "A modeling language and framework for describing, working with, and validating data in a variety of formats. OntoGPT uses LinkML to define extraction schemas.",
-    link: "",
-    icon: "",
+    description:
+      "A modeling language and framework for describing, working with, and validating data in a variety of formats. OntoGPT uses LinkML to define extraction schemas.",
+    link: "https://linkml.io/linkml/",
+    icon: "linkml",
   },
   {
     name: "Phenomics Assistant",
-    description: "An AI chatbot with access to the Monarch Initiative biomedical knowledgebase. See demo at https://phenomics-assistant.streamlit.app/ ",
-    link: "",
-    icon: "",
+    description:
+      "An AI chatbot with access to the Monarch Initiative biomedical knowledgebase. ",
+    link: "https://github.com/monarch-initiative/phenomics-assistant",
+    icon: "phenomics-assistant",
   },
   {
     name: "OGER",
-    description: "A flexible, dictionary-based system for extracting biomedical terms from scientific articles.",
-    link: "",
-    icon: "",
+    description:
+      "A flexible, dictionary-based system for extracting biomedical terms from scientific articles.",
+    link: "https://github.com/OntoGene/OGER/wiki",
+    icon: "oger",
   },
   {
     name: "OntoGPT",
-    description: "A tool for linking unstructured data to structured vocabularies with consistent identifiers. Uses SPIRES and TALISMAN methods.",
-    link: "",
-    icon: "",
+    description:
+      "A tool for linking unstructured data to structured vocabularies with consistent identifiers. Uses SPIRES and TALISMAN methods.",
+    link: "https://monarch-initiative.github.io/ontogpt/",
+    icon: "onto-gpt",
   },
   {
     name: "Ontology Access Toolkit (OAK)",
-    description: "Python library for common ontology operations over a variety of backends. OAK has its own TextAnnotator but it’s very simple. OntoGPT uses OAK for term retrieval, labeling, mapping, etc.",
-    link: "",
-    icon: "",
+    description:
+      "Python library for common ontology operations over a variety of backends. Used by OntoGPT for term retrieval, labeling, mapping, etc.",
+    link: "https://incatools.github.io/ontology-access-kit/",
+    icon: "resource-oak",
   },
   {
     name: "OntoRunner",
-    description: "A wrapper for NER methods, intended for identifying ontology terms in text. Uses OGER and Spacy.",
-    link: "",
-    icon: "",
+    description:
+      "A wrapper for NER methods, intended for identifying ontology terms in text. Uses OGER and Spacy.",
+    link: "https://monarch-initiative.github.io/ontorunner/index.html",
+    icon: "onto-runner",
   },
   {
-    name: "OpenAI Monarch Plugin for ChatGPT",
-    description: "A plugin for querying the Monarch Knowledge Graph with ChatGPT. Requires premium account.",
-    link: "",
-    icon: "",
+    name: "Monarch ChatGPT Plugin",
+    description:
+      "A plugin for querying the Monarch Knowledge Graph with ChatGPT. Requires premium account.",
+    link: "https://github.com/monarch-initiative/oai-monarch-plugin",
+    icon: "chat-gpt",
   },
 ];
 </script>
