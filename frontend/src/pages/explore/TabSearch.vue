@@ -60,6 +60,16 @@
           class="title-name"
         />
         <AppButton
+          v-if="result.in_taxon_label"
+          v-tooltip="'Taxon Name'"
+          class="title-taxon"
+          :text="result.in_taxon_label || ''"
+          icon=""
+          design="small"
+          :copy="true"
+          color="none"
+        />
+        <AppButton
           v-tooltip="'Node ID (click to copy)'"
           class="title-id"
           :text="result.id"
@@ -398,18 +408,27 @@ watch(from, () => runGetSearch(false));
 <style lang="scss" scoped>
 .title {
   display: flex;
+  position: relative;
   align-items: center;
+  justify-content: space-between;
   gap: 15px;
   text-align: left;
 }
 
 .title-name {
-  flex-grow: 1;
-  flex-shrink: 0;
+  flex-grow: 0;
 }
 
 .title-name > :deep(svg) {
   font-size: 2rem;
+}
+
+.title-taxon {
+  position: absolute;
+  margin-left: 40%;
+  color: $dark-gray;
+  font-size: 0.9rem;
+  text-align: left;
 }
 
 .title-id {
