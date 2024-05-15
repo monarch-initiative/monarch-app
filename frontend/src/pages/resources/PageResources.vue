@@ -22,7 +22,7 @@
     </p>
   </AppSection>
   <AppSection width="big">
-    <AppHeading> Flagship Products </AppHeading>
+    <AppHeading> Foundational Products </AppHeading>
     <AppGallery>
       <template v-for="category in resources" :key="category">
         <AppTile
