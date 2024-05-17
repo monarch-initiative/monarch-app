@@ -33,7 +33,8 @@ def test_releases():
     response = client.get("/v3/api/releases?limit=2")
     assert response.status_code == 200
     releases = [release["version"] for release in response.json()]
-    assert [i in ["latest", "previous"] for i in releases] 
+    assert [i in ["latest", "previous"] for i in releases]
+
 
 def test_release_metadata():
     response = client.get("/v3/api/releases?release=latest")
