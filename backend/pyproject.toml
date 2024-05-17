@@ -20,36 +20,34 @@ curies = "<1"
 linkml = "^1.6"
 prefixmaps = "^0.2"
 bioregistry = "^0.10.57"
-oaklib = ">=0.5.22"
+oaklib = ">=0.6.6"
 
-docker = "^6.0.1"
-fastapi = "^0.103.1"
-gunicorn = "^21.2.0"
+docker = "^7.0.0"
+fastapi = "^0.111.0"
+gunicorn = "^22.0.0"
 loguru = "*"
-pystow = ">=0.5.0"
-requests = "^2.28.1"
+pystow = ">=0.5.4"
+requests = "^2.31.0"
 rich = "*"
-typer = "^0.7.0"
-typer-cli = "^0.0.13"
-spacy = ">=3.6.1,<3.8.0"
+typer = "^0.12"
+# spacy = ">=3.7.5,<3.8.0"
+spacy = { git = "https://github.com/explosion/spaCy.git", branch = "master" }
 beautifulsoup4 = "^4.12.3"
 
 [tool.poetry.dependencies.en_core_sci_sm]
-url = "https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.3/en_core_sci_sm-0.5.3.tar.gz"
+url = "https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.4/en_core_sci_sm-0.5.4.tar.gz"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^7.2.0"
-mkdocs = ">=1.4.2"
-mkdocs-material = ">=9.1.16"
-mkdocstrings = { extras = ["python"], version = ">=0.22.0" }
-black = "^22.10.0"
+pytest = "^8.2.0"
+mkdocs = ">=1.6.0"
+mkdocs-material = ">=9.5.23"
+mkdocstrings = { version = ">=0.25.1", extras = ["python"] }
+black = "^24.4.2"
 ruff = "*"
-uvicorn = { extras = ["standard"], version = "^0.20.0" }
-httpx = "^0.24.1"
+uvicorn = { extras = ["standard"], version = "^0.29.0" }
+httpx = "^0.27"
 scholarly = "*"
-habanero = "*"
-manubot = "*"
-coverage = "^7.4.1"
+coverage = "^7.5.1"
 
 
 [tool.poetry.scripts]

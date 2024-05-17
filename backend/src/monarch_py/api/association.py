@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, Query, Response
 
 from monarch_py.api.additional_models import OutputFormat, PaginationParams
 from monarch_py.api.config import solr
-from monarch_py.datamodels.model import AssociationResults, MultiEntityAssociationResults
+from monarch_py.datamodels.model import AssociationResults, CompactAssociationResults, MultiEntityAssociationResults
 from monarch_py.datamodels.category_enums import AssociationCategory, AssociationPredicate, EntityCategory
 from monarch_py.utils.format_utils import to_tsv
 
@@ -36,7 +36,7 @@ async def _get_associations(
         title="Output format for the response",
         examples=["json", "tsv"],
     ),
-) -> Union[AssociationResults, str]:
+) -> Union[AssociationResults, CompactAssociationResults, str]:
     """Retrieves all associations for a given entity, or between two entities."""
     response = solr().get_associations(
         category=category,

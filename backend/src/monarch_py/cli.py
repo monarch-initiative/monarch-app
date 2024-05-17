@@ -387,7 +387,7 @@ def releases(
 
 @app.command("release")
 def release(
-    version: str = typer.Argument(None, help="The release version to get metadata for"),
+    release_ver: str = typer.Argument(None, help="The release version to get metadata for"),
     fmt: str = typer.Option(
         "json",
         "--format",
@@ -400,12 +400,12 @@ def release(
     Retrieve metadata for a specific release
 
     Args:
-        version: The release version to get metadata for
+        release_ver: The release version to get metadata for
         fmt: The format of the output (json, yaml, tsv, table)
         output: The path to the output file (stdout if not specified)
     """
-    release_info = get_release_metadata(version)
-    format_output(fmt, release_info)
+    release_info = get_release_metadata(release_ver)
+    format_output(fmt, release_info, output)
 
 
 if __name__ == "__main__":
