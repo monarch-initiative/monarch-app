@@ -21,8 +21,6 @@ Without additional setup this will use the same FastAPI backend and data source 
   - [Commands](#commands)
   - [Flags](#flags)
   - [Phenogrid](#phenogrid)
-    - [Parameters](#parameters)
-    - [Events](#events)
   - [Style guidelines](#style-guidelines)
 
 # Quick Start
@@ -182,6 +180,12 @@ URL param: `monarchinitiative.org/?mock=true`
 Env var: `VITE_MOCK=true`
 
 Defaults to `false`.
+
+
+## Phenogrid
+
+The phenogrid is a custom Vue component that displays a grid of phenotype comparisons.  
+For more information on the phenogrid and now to use it, see the [Phenogrid](./phenogrid.md) documentation.
 
 ## Style guidelines
 

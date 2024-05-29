@@ -4,7 +4,7 @@ The monarch-app Frontend is a javascript/typescript app built on the Node.js usi
 
 You can use the monarch-app frontend to query the Monarch KG using the web app locally. Without additional setup this will use the same FastAPI backend and data source as the website. If you simply want to query the current release of the Monarch KG you probably just want to use the web application directly.
 
-If you want to use a local data store please review the monarch-app README.md and CONTRIBUTING.md in the top level directory of this repository to understand how to manage the whole stack locally.
+If you want to use a local data store please review the monarch-app [README.md](../README.md) and [CONTRIBUTING.md](../CONTRIBUTING.md) in the top level directory of this repository to understand how to manage the whole stack locally.
 
 # Useful Links
 
@@ -54,8 +54,8 @@ Here are some useful commands got using the local Monarch Web App frontend with 
 | `bun run build`   | Build production version of app           |
 | `bun run preview` | Serve built version of app                |
 
-For more detailed information including test/linting and development please refer to the CONTRIBUTING.md file in this diretory.
+For more detailed information including test/linting and development please refer to the [CONTRIBUTING.md](./CONTRIBUTING.md) file in this diretory.
 
 # Developers
 
-For detailed information on development of the Monarch Web App please see the CONTRIBUTING.md file in the frontend directory. If you want to use locally hosted data or run the FastAPI locally on your system you should refer to the README.md and CONTRIBUTING.md in the top-level of the monarch-app repository.
+For detailed information on development of the Monarch Web App please see the [CONTRIBUTING.md](./CONTRIBUTING.md) file in the frontend directory. If you want to use locally hosted data or run the FastAPI locally on your system you should refer to the [README.md](../README.md) and [CONTRIBUTING.md](../CONTRIBUTING.md) in the top-level of the monarch-app repository.

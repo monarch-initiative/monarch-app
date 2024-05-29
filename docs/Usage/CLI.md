@@ -26,6 +26,8 @@ $ monarch [OPTIONS] COMMAND [ARGS]...
 * `histopheno`: Retrieve the histopheno data for an entity...
 * `mappings`
 * `multi-entity-associations`: Paginate through associations for multiple...
+* `release`: Retrieve metadata for a specific release
+* `releases`: List all available releases of the Monarch...
 * `schema`: Print the linkml schema for the data model
 * `search`: Search for entities
 * `solr`
@@ -163,6 +165,7 @@ $ monarch compare [OPTIONS] SUBJECTS OBJECTS
 
 **Options**:
 
+* `-m, --metric [ancestor_information_content|jaccard_similarity|phenodigm_score]`: The metric to use for comparison  [default: ancestor_information_content]
 * `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: json]
 * `-O, --output TEXT`: The path to the output file
 * `--help`: Show this message and exit.
@@ -266,7 +269,48 @@ $ monarch multi-entity-associations [OPTIONS]
 * `-l, --limit INTEGER`: [default: 20]
 * `--offset INTEGER`: [default: 0]
 * `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: json]
+* `-o, --output TEXT`: The path to the output file
+* `--help`: Show this message and exit.
+
+## `monarch release`
+
+Retrieve metadata for a specific release
+
+Args:
+    release_ver: The release version to get metadata for
+    fmt: The format of the output (json, yaml, tsv, table)
+    output: The path to the output file (stdout if not specified)
+
+**Usage**:
+
+```console
+$ monarch release [OPTIONS] [RELEASE_VER]
+```
+
+**Arguments**:
+
+* `[RELEASE_VER]`: The release version to get metadata for
+
+**Options**:
+
+* `-f, --format TEXT`: The format of the output (json, yaml, tsv, table)  [default: json]
 * `-O, --output TEXT`: The path to the output file
+* `--help`: Show this message and exit.
+
+## `monarch releases`
+
+List all available releases of the Monarch Knowledge Graph
+
+**Usage**:
+
+```console
+$ monarch releases [OPTIONS]
+```
+
+**Options**:
+
+* `--dev`: Get dev releases of the KG (default is False)
+* `-l, --limit INTEGER`: The number of releases to return  [default: 0]
 * `--help`: Show this message and exit.
 
 ## `monarch schema`
