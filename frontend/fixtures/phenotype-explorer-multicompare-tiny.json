@@ -1,0 +1,104 @@
+[
+  {
+    "subject": {
+      "id": "myset:01",
+      "category": null,
+      "name": "set01",
+      "full_name": null,
+      "deprecated": null,
+      "description": null,
+      "xref": [],
+      "provided_by": null,
+      "in_taxon": null,
+      "in_taxon_label": null,
+      "symbol": null,
+      "synonym": [],
+      "uri": null,
+      "iri": null,
+      "namespace": null,
+      "has_phenotype": [],
+      "has_phenotype_label": [],
+      "has_phenotype_closure": [],
+      "has_phenotype_closure_label": [],
+      "has_phenotype_count": null
+    },
+    "score": 14.38409954478889,
+    "similarity": {
+      "subject_termset": {
+        "XPO:0103336": {
+          "id": "XPO:0103336",
+          "label": "decreased size of the eye"
+        }
+      },
+      "object_termset": {
+        "ZP:0000043": {
+          "id": "ZP:0000043",
+          "label": "eye decreased size, abnormal"
+        }
+      },
+      "subject_best_matches": {
+        "XPO:0103336": {
+          "match_source": "XPO:0103336",
+          "match_source_label": "decreased size of the eye",
+          "match_target": "ZP:0000043",
+          "match_target_label": "eye decreased size, abnormal",
+          "score": 14.38409954478889,
+          "match_subsumer": null,
+          "match_subsumer_label": null,
+          "similarity": {
+            "subject_id": "XPO:0103336",
+            "subject_label": null,
+            "subject_source": null,
+            "object_id": "ZP:0000043",
+            "object_label": null,
+            "object_source": null,
+            "ancestor_id": "UPHENO:0069170",
+            "ancestor_label": "decreased size of the camera-type eye",
+            "ancestor_source": null,
+            "object_information_content": null,
+            "subject_information_content": null,
+            "ancestor_information_content": 14.38409954478889,
+            "jaccard_similarity": 0.3717948717948718,
+            "cosine_similarity": null,
+            "dice_similarity": null,
+            "phenodigm_score": 2.3125601497343715
+          },
+          "score_metric": "ancestor_information_content"
+        }
+      },
+      "object_best_matches": {
+        "ZP:0000043": {
+          "match_source": "ZP:0000043",
+          "match_source_label": "eye decreased size, abnormal",
+          "match_target": "XPO:0103336",
+          "match_target_label": "decreased size of the eye",
+          "score": 14.38409954478889,
+          "match_subsumer": null,
+          "match_subsumer_label": null,
+          "similarity": {
+            "subject_id": "ZP:0000043",
+            "subject_label": null,
+            "subject_source": null,
+            "object_id": "XPO:0103336",
+            "object_label": null,
+            "object_source": null,
+            "ancestor_id": "UPHENO:0069170",
+            "ancestor_label": "decreased size of the camera-type eye",
+            "ancestor_source": null,
+            "object_information_content": null,
+            "subject_information_content": null,
+            "ancestor_information_content": 14.38409954478889,
+            "jaccard_similarity": 0.3717948717948718,
+            "cosine_similarity": null,
+            "dice_similarity": null,
+            "phenodigm_score": 2.3125601497343715
+          },
+          "score_metric": "ancestor_information_content"
+        }
+      },
+      "average_score": 14.38409954478889,
+      "best_score": 14.38409954478889,
+      "metric": "AncestorInformationContent"
+    }
+  }
+]

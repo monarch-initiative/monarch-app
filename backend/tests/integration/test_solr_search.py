@@ -61,7 +61,7 @@ def test_multiple_filter_queries():
     response = si.search("eye", category=[EntityCategory.DISEASE, EntityCategory.PHENOTYPIC_FEATURE])
     assert response
     assert response.total > 0
-    for (i, item) in enumerate(response.items):
+    for i, item in enumerate(response.items):
         assert item.category in ["biolink:Disease", "biolink:PhenotypicFeature"]
 
 

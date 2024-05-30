@@ -450,12 +450,12 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             offset=0,
             total=query_result.response.num_found,
             items=[],
-            facet_fields=convert_facet_fields(query_result.facet_counts.facet_fields)
-            if query_result.facet_counts
-            else [],
-            facet_queries=convert_facet_queries(query_result.facet_counts.facet_queries)
-            if query_result.facet_counts
-            else [],
+            facet_fields=(
+                convert_facet_fields(query_result.facet_counts.facet_fields) if query_result.facet_counts else []
+            ),
+            facet_queries=(
+                convert_facet_queries(query_result.facet_counts.facet_queries) if query_result.facet_counts else []
+            ),
         )
 
     def get_association_table(
@@ -505,9 +505,9 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             subject_id=[subject_id] if isinstance(subject_id, str) else subject_id,
             predicate_id=[p.value for p in predicate_id] if predicate_id else None,
             object_id=[object_id] if isinstance(object_id, str) else object_id,
-            mapping_justification=[mapping_justification]
-            if isinstance(mapping_justification, str)
-            else mapping_justification,
+            mapping_justification=(
+                [mapping_justification] if isinstance(mapping_justification, str) else mapping_justification
+            ),
             offset=offset,
             limit=limit,
         )
