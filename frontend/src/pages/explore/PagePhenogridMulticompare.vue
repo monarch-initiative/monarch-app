@@ -24,7 +24,7 @@ import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { isEmpty } from "lodash";
 import { useEventListener } from "@vueuse/core";
-import { compareSetToSets } from "@/api/phenotype-explorer";
+import { compareSetToSets, metricOptions } from "@/api/phenotype-explorer";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
 import TheSnackbar from "@/components/TheSnackbar.vue";
 import { useQuery } from "@/composables/use-query";
@@ -35,6 +35,7 @@ const route = useRoute();
 /** input params */
 const aPhenotypes = ref<Parameters<typeof compareSetToSets>[0]>([]);
 const bPhenotypes = ref<Parameters<typeof compareSetToSets>[1]>([]);
+const similarityMetric = ref(metricOptions[0]);
 const stylesheetHref = ref("");
 
 /** comparison analysis */
@@ -45,7 +46,11 @@ const {
   isError,
 } = useQuery(
   async function () {
-    return await compareSetToSets(aPhenotypes.value, bPhenotypes.value);
+    return await compareSetToSets(
+      aPhenotypes.value,
+      bPhenotypes.value,
+      similarityMetric.value.id,
+    );
   },
 
   /** default value */
@@ -53,7 +58,7 @@ const {
 );
 
 /** re-rerun analysis when inputs change */
-watch([aPhenotypes, bPhenotypes], runAnalysis);
+watch([aPhenotypes, bPhenotypes, similarityMetric], runAnalysis);
 
 /** get input url params */
 watch(
@@ -62,6 +67,7 @@ watch(
     let {
       subjects = "",
       "object-sets": objectSets = "",
+      metric = "",
       stylesheet = "",
     } = route.query;
 
@@ -75,6 +81,10 @@ watch(
         phenotypes: object?.split(",") || [],
       }));
     }
+    if (metric && typeof metric === "string")
+      similarityMetric.value =
+        metricOptions.find((option) => option.id === metric) ||
+        metricOptions[0];
   },
   { immediate: true, deep: true },
 );
@@ -85,6 +95,10 @@ useEventListener("message", (event: MessageEvent) => {
     aPhenotypes.value = event.data.subjects;
     bPhenotypes.value = event.data["object-sets"];
   }
+  if ("metric" in event.data)
+    similarityMetric.value =
+      metricOptions.find((option) => option.id === event.data.metric) ||
+      metricOptions[0];
   if ("stylesheet" in event.data) stylesheetHref.value = event.data.stylesheet;
 });
 </script>

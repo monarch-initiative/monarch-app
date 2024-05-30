@@ -181,7 +181,6 @@ Env var: `VITE_MOCK=true`
 
 Defaults to `false`.
 
-
 ## Phenogrid
 
 The phenogrid is a custom Vue component that displays a grid of phenotype comparisons.  

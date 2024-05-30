@@ -10,6 +10,13 @@ import { stringify } from "@/util/object";
 import { apiUrl, request } from "./";
 import { getAutocomplete } from "./search";
 
+/** similarity metrics available for comparison */
+export const metricOptions = [
+  { id: "ancestor_information_content", label: "Ancestor Information Content" },
+  { id: "jaccard_similarity", label: "Jaccard Similarity" },
+  { id: "phenodigm_score", label: "Phenodigm Score" },
+];
+
 /** search individual phenotypes or gene/disease phenotypes */
 export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
   /**
@@ -170,6 +177,7 @@ export const compareSetToSets = async (
     label: match.subject.name || `Set ${index + 1}`,
     total: 0,
   }));
+
   let rows: Phenogrid["cols"] = Object.values(
     response[0].similarity?.subject_termset || [],
   ).map((entry) => ({
@@ -192,11 +200,11 @@ export const compareSetToSets = async (
 
   for (const [index, col] of Object.entries(cols)) {
     for (const row of rows) {
-      const match = response[+index]?.similarity?.object_best_matches?.[row.id];
+      const match =
+        response[+index]?.similarity?.subject_best_matches?.[row.id];
 
       col.total += match?.score || 0;
       row.total += match?.score || 0;
-
       cells[col.id + row.id] = {
         score: match?.score || 0,
         strength: 0,
@@ -205,6 +213,7 @@ export const compareSetToSets = async (
         ...pick(match?.similarity, [
           "ancestor_id",
           "ancestor_label",
+          "ancestor_information_content",
           "jaccard_similarity",
           "phenodigm_score",
         ]),

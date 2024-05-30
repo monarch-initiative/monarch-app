@@ -263,6 +263,7 @@ import {
   compareSetToSet,
   getPhenotypes,
   groups,
+  metricOptions,
   type Group,
 } from "@/api/phenotype-explorer";
 import AppAlert from "@/components/AppAlert.vue";
@@ -297,12 +298,6 @@ const bModeOptions = [
 
 /** search group options */
 const bGroupOptions = groups.map((group) => ({ id: group, label: group }));
-
-const metricOptions = [
-  { id: "ancestor_information_content", label: "Ancestor Information Content" },
-  { id: "jaccard_similarity", label: "Jaccard Similarity" },
-  { id: "phenodigm_score", label: "Phenodigm Score" },
-];
 
 /** example data */
 type GeneratedFrom = {

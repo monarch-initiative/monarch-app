@@ -18,7 +18,7 @@
       src="/phenogrid-search?subjects=HP:0000939,HP:0000444,HP:0000546,HP:0000135&object-group=Human+Diseases"
     ></iframe>
 
-    <AppButton text="Send Message" @click="sendMessage" />
+    <AppButton text="Send Message" @click="postPhenogridSearch" />
   </AppSection>
 
   <!-- phenogrid -->
@@ -31,7 +31,7 @@
       src="/phenogrid-multi-compare?subjects=HP:0002616,HP:0001763,HP:0004944,HP:0010749,HP:0001533,HP:0002020,HP:0012450&object-sets=HP:0002616,HP:0001763,HP:0000767,HP:0000023,HP:0002108,HP:0000490,HP:0000545,HP:0100785,HP:0000268&object-sets=HP:0002616,HP:0001763,HP:0004944,HP:0010749,HP:0001533,HP:0002020,HP:0012450,HP:0003394,HP:0003771,HP:0012378,HP:0001278,HP:0002827,HP:0002829,HP:0002999,HP:0003010&object-sets=HP:0002616,HP:0001763,HP:0000767,HP:0000023,HP:0002108,HP:0000490,HP:0000545,HP:0100785,HP:0000268,HP:0001634,HP:0001653,HP:0001659,HP:0002360,HP:0003179,HP:0004970,HP:0005059,HP:0002705,HP:0012432,HP:0007800,HP:0001704"
     ></iframe>
 
-    <AppButton text="Send Message" @click="postMultiPhenogrid" />
+    <AppButton text="Send Message" @click="postPhenogridMulti" />
   </AppSection>
 
   <!-- custom icons -->
@@ -228,15 +228,22 @@ useEventListener(
     const iframe = document.querySelector<HTMLIFrameElement>(
       `iframe[name='${name}']`,
     );
-    if (!iframe) return;
-    iframe.style.maxWidth = width + "px";
-    iframe.style.maxHeight = height + "px";
+    if (!iframe) {
+      console.error("Could not find iframe", name);
+      return;
+    } else {
+      console.log("Resizing iframe", width, height, name);
+      iframe.style.maxWidth = width + "px";
+      iframe.style.maxHeight = height + "px";
+    }
   },
 );
 
 /** send message to iframe with longer params */
-function sendMessage() {
-  const iframe = document.querySelector<HTMLIFrameElement>("iframe");
+function postPhenogridSearch() {
+  const iframe = document.querySelector<HTMLIFrameElement>(
+    "[name=pheno-search]",
+  );
   if (!iframe) return;
   iframe.contentWindow?.postMessage(
     {
@@ -254,8 +261,9 @@ function sendMessage() {
 }
 
 /** Same as above, but for multi-compare phenogrid */
-function postMultiPhenogrid() {
-  const iframe = document.querySelector<HTMLIFrameElement>("iframe");
+function postPhenogridMulti() {
+  const iframe =
+    document.querySelector<HTMLIFrameElement>("[name=pheno-multi]");
   if (!iframe) return;
   iframe.contentWindow?.postMessage(
     {

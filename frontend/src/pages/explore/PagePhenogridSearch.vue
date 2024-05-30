@@ -24,7 +24,11 @@ import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { isEmpty } from "lodash";
 import { useEventListener } from "@vueuse/core";
-import { compareSetToGroup, type Group } from "@/api/phenotype-explorer";
+import {
+  compareSetToGroup,
+  metricOptions,
+  type Group,
+} from "@/api/phenotype-explorer";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
 import TheSnackbar from "@/components/TheSnackbar.vue";
 import { useQuery } from "@/composables/use-query";
@@ -35,6 +39,7 @@ const route = useRoute();
 /** input params */
 const aPhenotypes = ref<Parameters<typeof compareSetToGroup>[0]>([]);
 const bGroup = ref<Parameters<typeof compareSetToGroup>[1]>("Human Diseases");
+const similarityMetric = ref(metricOptions[0]);
 const stylesheetHref = ref("");
 
 /** comparison analysis */
@@ -45,7 +50,11 @@ const {
   isError,
 } = useQuery(
   async function () {
-    return await compareSetToGroup(aPhenotypes.value, bGroup.value);
+    return await compareSetToGroup(
+      aPhenotypes.value,
+      bGroup.value,
+      similarityMetric.value.id,
+    );
   },
 
   /** default value */
@@ -53,7 +62,7 @@ const {
 );
 
 /** re-rerun analysis when inputs change */
-watch([aPhenotypes, bGroup], runAnalysis);
+watch([aPhenotypes, bGroup, similarityMetric], runAnalysis);
 
 /** get input url params */
 watch(
@@ -62,6 +71,7 @@ watch(
     const {
       subjects = "",
       "object-group": objectGroup = "",
+      metric = "",
       stylesheet = "",
     } = route.query;
 
@@ -77,6 +87,10 @@ watch(
       aPhenotypes.value = subjects.split(",");
       bGroup.value = objectGroup as Group;
     }
+    if (metric && typeof metric === "string")
+      similarityMetric.value =
+        metricOptions.find((option) => option.id === metric) ||
+        metricOptions[0];
   },
   { immediate: true, deep: true },
 );
@@ -87,6 +101,10 @@ useEventListener("message", (event: MessageEvent) => {
     aPhenotypes.value = event.data.subjects;
     bGroup.value = event.data["object-group"];
   }
+  if ("metric" in event.data)
+    similarityMetric.value =
+      metricOptions.find((option) => option.id === event.data.metric) ||
+      metricOptions[0];
   if ("stylesheet" in event.data) stylesheetHref.value = event.data.stylesheet;
 });
 </script>
