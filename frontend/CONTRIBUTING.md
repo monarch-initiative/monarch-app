@@ -184,7 +184,7 @@ Defaults to `false`.
 ## Phenogrid
 
 The phenogrid is a custom Vue component that displays a grid of phenotype comparisons.  
-For more information on the phenogrid and now to use it, see the [Phenogrid](./phenogrid.md) documentation.
+For more information on the phenogrid and now to use it, see the [Phenogrid](./PHENOGRID.md) documentation.
 
 ## Style guidelines
 
