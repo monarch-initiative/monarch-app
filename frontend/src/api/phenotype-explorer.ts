@@ -181,7 +181,8 @@ export function processMulticompareResponse(
 
   for (const [index, col] of Object.entries(cols)) {
     for (const row of rows) {
-      const match = response[+index]?.similarity?.subject_best_matches?.[row.id];
+      const match =
+        response[+index]?.similarity?.subject_best_matches?.[row.id];
 
       col.total += match?.score || 0;
       row.total += match?.score || 0;

@@ -377,29 +377,8 @@ def main(
         for key, value in backend_fixtures.items():
             write_backend_fixture(key, value)
 
-
-semsim_multicompare_request = SemsimMultiCompareRequest(
-    subjects=["HP:0002616","HP:0001763","HP:0004944","HP:0010749","HP:0001533","HP:0002020","HP:0012450"],
-    object_sets=[
-        SemsimMultiCompareObject(
-            id="test1",
-            label="Test1",
-            phenotypes=["HP:0002616","HP:0001763","HP:0000767","HP:0000023","HP:0002108","HP:0000490","HP:0000545","HP:0100785","HP:0000268"],
-        ),
-        SemsimMultiCompareObject(
-            id="test2",
-            label="Test2",
-            phenotypes=["HP:0002616","HP:0001763","HP:0004944","HP:0010749","HP:0001533","HP:0002020","HP:0012450","HP:0003394","HP:0003771","HP:0012378","HP:0001278","HP:0002827","HP:0002829","HP:0002999","HP:0003010"],
-        ),
-        SemsimMultiCompareObject(
-            id="test3",
-            label="Test3",
-            phenotypes=["HP:0002616","HP:0001763","HP:0000767","HP:0000023","HP:0002108","HP:0000490","HP:0000545","HP:0100785","HP:0000268","HP:0001634","HP:0001653","HP:0001659","HP:0002360","HP:0003179","HP:0004970","HP:0005059","HP:0002705","HP:0012432","HP:0007800","HP:0001704"],
-        ),
-    ],
-    metric="jaccard_similarity",
-)
-
+multi_compare_request_file = Path(root) / "frontend" / "fixtures" / "phenotype-explorer-multi-compare-request.json"
+semsim_multicompare_request = SemsimMultiCompareRequest.parse_file(multi_compare_request_file)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate fixtures for monarch-app")
