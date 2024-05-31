@@ -262,9 +262,8 @@ function postPhenogridSearch() {
 /** Same as above, but for multi-compare phenogrid */
 function postPhenogridMulti() {
   const iframe =
-    document.querySelector<HTMLIFrameElement>("[name=pheno-multi]");
+    document.querySelector<HTMLIFrameElement>("iframe[name=pheno-multi]");
   if (!iframe) {
-    console.log("Could not find multi-compare iframe");
     return;
   }
   iframe.contentWindow?.postMessage(
@@ -279,7 +278,7 @@ function postPhenogridMulti() {
         "HP:0002020",
         "HP:0012450",
       ],
-      object_sets: [
+      "object-sets": [
         {
           id: "MGI:2441732",
           label: "Adgrg7",
