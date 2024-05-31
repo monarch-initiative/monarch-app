@@ -1,17 +1,12 @@
 [
   {
-    "name": "University of Colorado",
-    "link": "https://medschool.cuanschutz.edu/",
+    "name": "University of North Carolina",
+    "link": "https://www.unc.edu/",
     "members": [
       {
         "name": "Melissa Haendel",
         "role": "Monarch PI",
         "link": "https://tislab.org/members/melissa-haendel.html"
-      },
-      {
-        "name": "Monica Munoz-Torres",
-        "role": "Program Director",
-        "link": "https://tislab.org/members/monica-munoz-torres.html"
       },
       {
         "name": "Julie McMurry",
@@ -22,6 +17,11 @@
         "name": "Sarah Gehrke",
         "role": "Project Manager",
         "link": "https://tislab.org/members/sarah-gehrke.html"
+      },
+      {
+        "name": "Aaron Odell",
+        "role": "Research Associate",
+        "link": "https://tislab.org/members/aaron-odell.html"
       },
       {
         "name": "Anne Thessen",
@@ -39,14 +39,14 @@
         "link": "https://github.com/amc-corey-cox"
       },
       {
+        "name": "Daniel Korn",
+        "role": "Staff Scientist",
+        "link": "https://github.com/DnlRKorn"
+      },
+      {
         "name": "Eric Hurwitz",
         "role": "Postdoctoral Fellow",
         "link": "https://tislab.org/members/eric-hurwitz.html"
-      },
-      {
-        "name": "Faisal Alquaddoomi",
-        "role": "Full Stack Dev and Dev Ops",
-        "link": "https://github.com/falquaddoomi"
       },
       {
         "name": "Glass Elsarboukh",
@@ -54,34 +54,14 @@
         "link": "https://github.com/glass-ships"
       },
       {
-        "name": "Katherina Cortes",
-        "role": "PhD Student",
-        "link": ""
-      },
-      {
-        "name": "Katie Mullen",
-        "role": "Veterinary Postdoctoral Fellow",
-        "link": "https://tislab.org/members/katie-mullen.html"
-      },
-      {
         "name": "Kevin Schaper",
         "role": "Scientific Software Engineer",
         "link": "https://tislab.org/members/kevin-schaper.html"
       },
       {
-        "name": "Madan Krishnamurthy",
-        "role": "Semantic Engineer",
-        "link": "https://tislab.org/members/madan-krishnamurthy.html"
-      },
-      {
         "name": "Matthew Brush",
         "role": "Ontologist",
         "link": "https://tislab.org/members/matthew-brush.html"
-      },
-      {
-        "name": "Megan Kraus",
-        "role": "PhD Student",
-        "link": "https://tislab.org/members/megan-kraus.html"
       },
       {
         "name": "Sabrina Toro",
@@ -100,13 +80,39 @@
       },
       {
         "name": "Trish Whetzel",
-        "role": "",
-        "link": ""
+        "role": "Semantic Curation Engineer",
+        "link": "https://github.com/twhetzel"
+      }
+    ]
+  },
+  {
+    "name": "University of Colorado",
+    "link": "https://medschool.cuanschutz.edu/",
+    "members": [
+      {
+        "name": "Monica Munoz-Torres",
+        "role": "Program Director",
+        "link": "https://tislab.org/members/monica-munoz-torres.html"
       },
       {
-        "name": "Vincent Rubinetti",
-        "role": "Frontend and UI/UX Dev",
-        "link": "https://greenelab.com/members/vincent-rubinetti.html"
+        "name": "Katie Mullen",
+        "role": "Veterinary Postdoctoral Fellow",
+        "link": "https://tislab.org/members/katie-mullen.html"
+      },
+      {
+        "name": "Katherina Cortes",
+        "role": "PhD Student",
+        "link": "https://github.com/kcortes133"
+      },
+      {
+        "name": "Madan Krishnamurthy",
+        "role": "Semantic Engineer",
+        "link": "https://tislab.org/members/madan-krishnamurthy.html"
+      },
+      {
+        "name": "Megan Kraus",
+        "role": "PhD Student",
+        "link": "https://tislab.org/members/megan-kraus.html"
       }
     ]
   },
@@ -122,7 +128,7 @@
       {
         "name": "Nomi Harris",
         "role": "Program Manager",
-        "link": ""
+        "link": "https://github.com/nlharris"
       },
       {
         "name": "Harshad Hegde",
@@ -142,7 +148,7 @@
       {
         "name": "Mark Miller",
         "role": "Software Developer",
-        "link": ""
+        "link": "https://github.com/turbomam"
       },
       {
         "name": "Patrick Kalita",
@@ -162,14 +168,25 @@
     ]
   },
   {
-    "name": "The Jackson Laboratory",
-    "link": "https://www.jax.org/",
+    "name": "Charite",
+    "link": "https://www.charite.de/",
     "members": [
       {
         "name": "Peter Robinson",
         "role": "Monarch PI",
         "link": "https://www.jax.org/research-and-faculty/faculty/peter-robinson"
       },
+      {
+        "name": "Leonardo Chimirri",
+        "role": "",
+        "link": "https://github.com/leokim-l"
+      }
+    ]
+  },
+  {
+    "name": "The Jackson Laboratory",
+    "link": "https://www.jax.org/",
+    "members": [
       {
         "name": "Ben Coleman",
         "role": "",
@@ -192,7 +209,8 @@
       },
       {
         "name": "Leigh Carmody",
-        "role": "Scientific Curator"
+        "role": "Scientific Curator",
+        "link": "https://github.com/LCCarmody"
       },
       {
         "name": "Martha Beckwith",
@@ -301,7 +319,7 @@
       {
         "name": "Tudor Groza",
         "role": "",
-        "link": ""
+        "link": "https://github.com/tudorgroza"
       },
       {
         "name": "Sebastian Köhler",
@@ -369,6 +387,14 @@
   {
     "name": "Alumni Members",
     "members": [
+      {
+        "name": "Faisal Alquaddoomi",
+        "role": "Full Stack Dev and Dev Ops"
+      },
+      {
+        "name": "Vincent Rubinetti",
+        "role": "Frontend and UI/UX Dev"
+      },
       {
         "name": "Tim Putman",
         "role": "Technical Director"
@@ -464,6 +490,112 @@
       {
         "name": "Jeremy Espino",
         "role": "Senior Research Scientist"
+      }
+    ],
+    "members-sorted": [
+      {
+        "name": "Charles Borromeo",
+        "role": "Interface Architect"
+      },
+      {
+        "name": "Craig McNamara",
+        "role": "Developer"
+      },
+      {
+        "name": "Daniel Keith",
+        "role": "Bioinformatics Semantic Engineer"
+      },
+      {
+        "name": "David Osumi-Sutherland",
+        "role": "Monarch PI"
+      },
+      {
+        "name": "Deepak Unni",
+        "role": "Bioinformatics Software Developer"
+      },
+      {
+        "name": "Edwin Zhang",
+        "role": "Developer"
+      },
+      {
+        "name": "Eric Douglass",
+        "role": "Software developer"
+      },
+      {
+        "name": "Faisal Alquaddoomi",
+        "role": "Full Stack Dev and Dev Ops"
+      },
+      {
+        "name": "Harry Hochheiser",
+        "role": "Monarch PI"
+      },
+      {
+        "name": "Jen Martin",
+        "role": "Scientific Software Engineer"
+      },
+      {
+        "name": "Jeremy Espino",
+        "role": "Senior Research Scientist"
+      },
+      {
+        "name": "Jeremy Nguyen Xuan",
+        "role": "Software Engineer"
+      },
+      {
+        "name": "Kent Shefchek",
+        "role": "Bioinformatics Software Engineer"
+      },
+      {
+        "name": "Lilly Winfree",
+        "role": "Science and Data Analyst"
+      },
+      {
+        "name": "Michael Davis",
+        "role": "Software Developer"
+      },
+      {
+        "name": "Nicole Washington",
+        "role": "Lead Bioinformatician"
+      },
+      {
+        "name": "Pilar Cacheiro",
+        "role": "Computational Biologist"
+      },
+      {
+        "name": "Sarah Kim",
+        "role": "Web Developer, Designer"
+      },
+      {
+        "name": "Suzanna Lewis",
+        "role": "Genomics"
+      },
+      {
+        "name": "Tim Putman",
+        "role": "Technical Director"
+      },
+      {
+        "name": "Tom Conlin",
+        "role": "Bioinformaticist"
+      },
+      {
+        "name": "Tomasz Konopka",
+        "role": "Bioinformatician"
+      },
+      {
+        "name": "Victoria Alexandra Soesanto",
+        "role": "Scientific Software Engineer"
+      },
+      {
+        "name": "Vida Ravanmehr",
+        "role": "Postdoctoral Associate"
+      },
+      {
+        "name": "Vincent Rubinetti",
+        "role": "Frontend and UI/UX Dev"
+      },
+      {
+        "name": "Zhou (Joe) Yuan",
+        "role": "Web Application Developer"
       }
     ]
   },
