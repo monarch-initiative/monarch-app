@@ -10,6 +10,13 @@ import { stringify } from "@/util/object";
 import { apiUrl, request } from "./";
 import { getAutocomplete } from "./search";
 
+/** similarity metrics available for comparison */
+export const metricOptions = [
+  { id: "ancestor_information_content", label: "Ancestor Information Content" },
+  { id: "jaccard_similarity", label: "Jaccard Similarity" },
+  { id: "phenodigm_score", label: "Phenodigm Score" },
+];
+
 /** search individual phenotypes or gene/disease phenotypes */
 export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
   /**
@@ -141,29 +148,11 @@ export type Group = (typeof groups)[number];
 
 type ObjectSet = { id?: string; label?: string; phenotypes: string[] };
 
-/** compare a set of phenotypes to several other sets of phenotypes */
-export const compareSetToSets = async (
+export function processMulticompareResponse(
+  response: SemsimSearchResult[],
   subjects: string[],
   objectSets: ObjectSet[],
-  metric?: string,
-) => {
-  /** fill in missing object set fields */
-  objectSets.forEach((set, index) => {
-    set.id ??= String(index);
-    set.label ??= `Set ${index + 1}`;
-  });
-
-  /** make request */
-  const headers = new Headers();
-  headers.append("Content-Type", "application/json");
-  headers.append("Accept", "application/json");
-  const body = { subjects, object_sets: objectSets, metric };
-  const options = { method: "POST", headers, body: stringify(body) };
-
-  /** make query */
-  const url = `${apiUrl}/semsim/multicompare`;
-  const response = await request<SemsimSearchResult[]>(url, {}, options);
-
+) {
   /** make flat lists of rows/cols from subjects/objects */
   let cols: Phenogrid["cols"] = response.map((match, index) => ({
     id: match.subject.id || String(index),
@@ -192,7 +181,8 @@ export const compareSetToSets = async (
 
   for (const [index, col] of Object.entries(cols)) {
     for (const row of rows) {
-      const match = response[+index]?.similarity?.object_best_matches?.[row.id];
+      const match =
+        response[+index]?.similarity?.subject_best_matches?.[row.id];
 
       col.total += match?.score || 0;
       row.total += match?.score || 0;
@@ -205,6 +195,7 @@ export const compareSetToSets = async (
         ...pick(match?.similarity, [
           "ancestor_id",
           "ancestor_label",
+          "ancestor_information_content",
           "jaccard_similarity",
           "phenodigm_score",
         ]),
@@ -240,6 +231,31 @@ export const compareSetToSets = async (
   const phenogrid = { cols, rows, cells, unmatched } satisfies Phenogrid;
 
   return { phenogrid };
+}
+
+/** compare a set of phenotypes to several other sets of phenotypes */
+export const compareSetToSets = async (
+  subjects: string[],
+  objectSets: ObjectSet[],
+  metric?: string,
+) => {
+  /** fill in missing object set fields */
+  objectSets.forEach((set, index) => {
+    set.id ??= String(index);
+    set.label ??= `Set ${index + 1}`;
+  });
+
+  /** make request */
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("Accept", "application/json");
+  const body = { subjects, object_sets: objectSets, metric };
+  const options = { method: "POST", headers, body: stringify(body) };
+
+  /** make query */
+  const url = `${apiUrl}/semsim/multicompare`;
+  const response = await request<SemsimSearchResult[]>(url, {}, options);
+  return processMulticompareResponse(response, subjects, objectSets);
 };
 
 /** compare a set of phenotypes to a group of phenotypes */

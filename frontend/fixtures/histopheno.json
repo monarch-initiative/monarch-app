@@ -3,62 +3,62 @@
   "items": [
     {
       "label": "musculature",
-      "count": 1677,
+      "count": 1709,
       "id": "UPHENO:0002816"
     },
     {
       "label": "nervous_system",
-      "count": 1071,
+      "count": 1088,
       "id": "UPHENO:0004523"
     },
     {
       "label": "head_neck",
-      "count": 577,
+      "count": 584,
       "id": "UPHENO:0002764"
     },
     {
       "label": "skeletal_system",
-      "count": 471,
+      "count": 472,
       "id": "UPHENO:0002964"
     },
     {
       "label": "eye",
-      "count": 287,
+      "count": 291,
       "id": "UPHENO:0003020"
     },
     {
       "label": "metabolism_homeostasis",
-      "count": 213,
+      "count": 221,
       "id": "HP:0001939"
     },
     {
       "label": "cardiovascular_system",
-      "count": 177,
+      "count": 181,
       "id": "UPHENO:0080362"
     },
     {
       "label": "blood",
-      "count": 175,
+      "count": 178,
       "id": "UPHENO:0004459"
     },
     {
       "label": "connective_tissue",
-      "count": 161,
+      "count": 162,
       "id": "UPHENO:0002712"
     },
     {
       "label": "respiratory",
-      "count": 150,
+      "count": 155,
       "id": "UPHENO:0004536"
     },
     {
       "label": "neoplasm",
-      "count": 148,
+      "count": 153,
       "id": "HP:0002664"
     },
     {
       "label": "digestive_system",
-      "count": 142,
+      "count": 147,
       "id": "UPHENO:0002833"
     },
     {

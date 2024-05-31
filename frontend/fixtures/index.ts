@@ -11,7 +11,7 @@ import nodePublicationAbstract from "./node-publication-abstract.json";
 import nodePublicationSummary from "./node-publication-summary.json";
 import node from "./node.json";
 import phenotypeExplorerCompare from "./phenotype-explorer-compare.json";
-import phenotypeExplorerMulticompare from "./phenotype-explorer-multicompare.json";
+import phenotypeExplorerMulticompare from "./phenotype-explorer-multi-compare.json";
 import phenotypeExplorerSearch from "./phenotype-explorer-search.json";
 import search from "./search.json";
 import textAnnotator from "./text-annotator.json";

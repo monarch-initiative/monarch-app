@@ -19,6 +19,7 @@ def entity_response():
             "Orphanet:98473",
             "SCTID:73297009",
             "UMLS:C0026850",
+            "icd11.foundation:1464662404",
         ],
         "provided_by": "phenio_nodes",
         "namespace": "MONDO",

@@ -6,23 +6,30 @@ A widget for visualizing similarity between phenotypes.
 
 Phenogrid displays a visual comparison between sets of phenotypes in a grid arrangement, with calculations of the similarity in various metrics.
 
-Public pages at `monarchinitiative.org/phenogrid-search` and `/phenogrid-multi-compare` provide a widget embeddable on any site via an `<iframe>`, like so:
+Public pages at `monarchinitiative.org/phenogrid-search` and `/phenogrid-multi-compare` provide a widget embeddable on any site via an `<iframe>`, for example:
 
 ```html
 <iframe
-  src="https://monarchinitiative.org/phenogrid?PARAM=VALUE"
+  src="https://monarchinitiative.org/phenogrid-search?PARAM=VALUE&..."
   title="Phenogrid"
   name="some-optional-name"
   frameborder="0"
+  width="75%"
+  height="600px"
 ></iframe>
 ```
 
+You can specify a height and width here, but the widget will emit a `message` event to the parent window with the intrinsic size of its content, so you can dynamically set the dimensions of your iframe container.  
+See the [Events](#events) section for more details.
+
 ## Modes
 
-Phenogrid can operate in several modes, which you can specify via the `src` URL.
+Phenogrid can operate in multiple modes, which you can specify via the `src` URL.
 
 - [`/phenogrid-search`](#search-mode) - Compares a list of enumerated phenotypes (set A) against all the phenotypes from a gene or disease of interest (group B).
 - [`/phenogrid-multi-compare`](#multi-compare-mode) - Compares a list of enumerated phenotypes to _multiple_ enumerated other lists of phenotypes.
+
+For more details on the parameters for each mode, see the respective sections below.
 
 ## Passing Parameters
 
@@ -31,16 +38,16 @@ You can choose to pass them either way, unless specified otherwise.
 
 ### URL Params (simple)
 
-Specify params in the URL like `?some-param=1,2,3&another-param=abc`.
+Specify params in the `src` URL like `?some-param=1,2,3&another-param=abc`.
 This is allows convenient use in cases where the parameters are simple and short.
 
 ### Message Params (detailed)
 
-For more flexible and detailed parameters, you can send the widget a message from JavaScript like this:
+For more flexible and detailed parameters, you can omit params from the URL and instead send the widget a message from JavaScript like this:
 
 ```js
 // get your iframe DOM element somehow
-const iframe = document.querySelector("iframe");
+const iframe = document.querySelector("iframe[name='your-iframe-name']");
 // send it a message
 iframe.contentWindow.postMessage(
   // some parameters
@@ -55,7 +62,7 @@ iframe.contentWindow.postMessage(
 
 You should use this method when your params might be [too long for a URL](https://www.google.com/search?q=max+url+length).
 
-## "Search" Mode
+## "Search" Mode Parameters
 
 As URL params:
 
@@ -72,7 +79,7 @@ As message params:
 }
 ```
 
-## "Multi-Compare" Mode
+## "Multi-Compare" Mode Parameters
 
 As URL params:
 
@@ -108,7 +115,7 @@ You can use the same event listener as the standard Phenogrid widget to set the 
 General parameters available regardless of the mode of operation.
 
 - `stylesheet` - URL to a stylesheet that will be applied to the widget, for the purposes of matching its styles to your webpage.
-  If passed as a URL param, make sure it is URI encoded.
+  - If passed as a URL param, make sure it is URI encoded.
 
 ## Events
 
@@ -132,7 +139,7 @@ MessageEvent<{
 
 This can happen when it switches from loading to results, when new phenotypes are loaded, when the grid is flipped/transposed, etc.
 
-This can be useful for setting the dimensions of your iframe container:
+This can be useful for dynamically setting the dimensions of your iframe container:
 
 ```js
 window.addEventListener("message", (event) => {

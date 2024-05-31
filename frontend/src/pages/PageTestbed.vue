@@ -18,7 +18,7 @@
       src="/phenogrid-search?subjects=HP:0000939,HP:0000444,HP:0000546,HP:0000135&object-group=Human+Diseases"
     ></iframe>
 
-    <AppButton text="Send Message" @click="sendMessage" />
+    <AppButton text="Send Message" @click="postPhenogridSearch" />
   </AppSection>
 
   <!-- phenogrid -->
@@ -30,6 +30,8 @@
       frameBorder="0"
       src="/phenogrid-multi-compare?subjects=HP:0002616,HP:0001763,HP:0004944,HP:0010749,HP:0001533,HP:0002020,HP:0012450&object-sets=HP:0002616,HP:0001763,HP:0000767,HP:0000023,HP:0002108,HP:0000490,HP:0000545,HP:0100785,HP:0000268&object-sets=HP:0002616,HP:0001763,HP:0004944,HP:0010749,HP:0001533,HP:0002020,HP:0012450,HP:0003394,HP:0003771,HP:0012378,HP:0001278,HP:0002827,HP:0002829,HP:0002999,HP:0003010&object-sets=HP:0002616,HP:0001763,HP:0000767,HP:0000023,HP:0002108,HP:0000490,HP:0000545,HP:0100785,HP:0000268,HP:0001634,HP:0001653,HP:0001659,HP:0002360,HP:0003179,HP:0004970,HP:0005059,HP:0002705,HP:0012432,HP:0007800,HP:0001704"
     ></iframe>
+
+    <AppButton text="Send Message" @click="postPhenogridMulti" />
   </AppSection>
 
   <!-- custom icons -->
@@ -226,15 +228,21 @@ useEventListener(
     const iframe = document.querySelector<HTMLIFrameElement>(
       `iframe[name='${name}']`,
     );
-    if (!iframe) return;
-    iframe.style.maxWidth = width + "px";
-    iframe.style.maxHeight = height + "px";
+    if (!iframe) {
+      console.error(`Could not find iframe ${name}`);
+      return;
+    } else {
+      iframe.style.maxWidth = width + "px";
+      iframe.style.maxHeight = height + "px";
+    }
   },
 );
 
 /** send message to iframe with longer params */
-function sendMessage() {
-  const iframe = document.querySelector<HTMLIFrameElement>("iframe");
+function postPhenogridSearch() {
+  const iframe = document.querySelector<HTMLIFrameElement>(
+    "iframe[name=pheno-search]",
+  );
   if (!iframe) return;
   iframe.contentWindow?.postMessage(
     {
@@ -246,6 +254,63 @@ function sendMessage() {
         "MP:0005367",
       ],
       "object-group": "Human Genes",
+    },
+    "*",
+  );
+}
+
+/** Same as above, but for multi-compare phenogrid */
+function postPhenogridMulti() {
+  const iframe = document.querySelector<HTMLIFrameElement>(
+    "iframe[name=pheno-multi]",
+  );
+  if (!iframe) {
+    return;
+  }
+  iframe.contentWindow?.postMessage(
+    {
+      metric: "ancestor_information_content",
+      subjects: [
+        "HP:0002616",
+        "HP:0001763",
+        "HP:0004944",
+        "HP:0010749",
+        "HP:0001533",
+        "HP:0002020",
+        "HP:0012450",
+      ],
+      "object-sets": [
+        {
+          id: "MGI:2441732",
+          label: "Adgrg7",
+          phenotypes: [
+            "MP:0011965",
+            "MP:0002834",
+            "MP:0003731",
+            "MP:0011962",
+            "MP:0011960",
+            "MP:0008489",
+            "MP:0003291",
+            "MP:0001262",
+          ],
+        },
+        {
+          id: "MGI:87909",
+          label: "Acta2",
+          phenotypes: [
+            "MP:0002834",
+            "MP:0003070",
+            "MP:0004022",
+            "MP:0004021",
+            "MP:0003026",
+            "MP:0006264",
+            "MP:0000230",
+            "MP:0000233",
+            "MP:0000272",
+            "MP:0009862",
+          ],
+        },
+      ],
     },
     "*",
   );

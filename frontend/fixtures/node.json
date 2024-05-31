@@ -15,7 +15,8 @@
     "NCIT:C84910",
     "Orphanet:98473",
     "SCTID:73297009",
-    "UMLS:C0026850"
+    "UMLS:C0026850",
+    "icd11.foundation:1464662404"
   ],
   "provided_by": "phenio_nodes",
   "in_taxon": null,
@@ -103,6 +104,10 @@
     {
       "id": "UMLS:C0026850",
       "url": "http://identifiers.org/umls/C0026850"
+    },
+    {
+      "id": "icd11.foundation:1464662404",
+      "url": null
     }
   ],
   "provided_by_link": {
@@ -112,17 +117,17 @@
   "association_counts": [
     {
       "label": "Phenotypes",
-      "count": 3859,
+      "count": 3932,
       "category": "biolink:DiseaseToPhenotypicFeatureAssociation"
     },
     {
       "label": "Causal Genes",
-      "count": 119,
+      "count": 126,
       "category": "biolink:CausalGeneToDiseaseAssociation"
     },
     {
       "label": "Correlated Genes",
-      "count": 139,
+      "count": 146,
       "category": "biolink:CorrelatedGeneToDiseaseAssociation"
     }
   ],
@@ -196,28 +201,6 @@
       }
     ],
     "sub_classes": [
-      {
-        "id": "MONDO:0008028",
-        "category": "biolink:Disease",
-        "name": "muscular dystrophy, Barnes type",
-        "full_name": null,
-        "deprecated": null,
-        "description": null,
-        "xref": [],
-        "provided_by": null,
-        "in_taxon": null,
-        "in_taxon_label": null,
-        "symbol": null,
-        "synonym": [],
-        "uri": null,
-        "iri": null,
-        "namespace": null,
-        "has_phenotype": [],
-        "has_phenotype_label": [],
-        "has_phenotype_closure": [],
-        "has_phenotype_closure_label": [],
-        "has_phenotype_count": null
-      },
       {
         "id": "MONDO:0010311",
         "category": "biolink:Disease",
@@ -373,9 +356,9 @@
         "has_phenotype_count": null
       },
       {
-        "id": "MONDO:0019950",
+        "id": "MONDO:0018949",
         "category": "biolink:Disease",
-        "name": "congenital muscular dystrophy",
+        "name": "distal myopathy",
         "full_name": null,
         "deprecated": null,
         "description": null,
@@ -395,9 +378,9 @@
         "has_phenotype_count": null
       },
       {
-        "id": "MONDO:0018949",
+        "id": "MONDO:0019950",
         "category": "biolink:Disease",
-        "name": "distal myopathy",
+        "name": "congenital muscular dystrophy",
         "full_name": null,
         "deprecated": null,
         "description": null,
@@ -442,6 +425,28 @@
         "id": "MONDO:0100228",
         "category": "biolink:Disease",
         "name": "LAMA2-related muscular dystrophy",
+        "full_name": null,
+        "deprecated": null,
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "in_taxon_label": null,
+        "symbol": null,
+        "synonym": [],
+        "uri": null,
+        "iri": null,
+        "namespace": null,
+        "has_phenotype": [],
+        "has_phenotype_label": [],
+        "has_phenotype_closure": [],
+        "has_phenotype_closure_label": [],
+        "has_phenotype_count": null
+      },
+      {
+        "id": "MONDO:0008028",
+        "category": "biolink:Disease",
+        "name": "muscular dystrophy, Barnes type",
         "full_name": null,
         "deprecated": null,
         "description": null,
