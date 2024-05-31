@@ -261,8 +261,9 @@ function postPhenogridSearch() {
 
 /** Same as above, but for multi-compare phenogrid */
 function postPhenogridMulti() {
-  const iframe =
-    document.querySelector<HTMLIFrameElement>("iframe[name=pheno-multi]");
+  const iframe = document.querySelector<HTMLIFrameElement>(
+    "iframe[name=pheno-multi]",
+  );
   if (!iframe) {
     return;
   }
