@@ -229,10 +229,9 @@ useEventListener(
       `iframe[name='${name}']`,
     );
     if (!iframe) {
-      console.error("Could not find iframe", name);
+      console.error(`Could not find iframe ${name}`);
       return;
     } else {
-      console.log("Resizing iframe", width, height, name);
       iframe.style.maxWidth = width + "px";
       iframe.style.maxHeight = height + "px";
     }
@@ -242,7 +241,7 @@ useEventListener(
 /** send message to iframe with longer params */
 function postPhenogridSearch() {
   const iframe = document.querySelector<HTMLIFrameElement>(
-    "[name=pheno-search]",
+    "iframe[name=pheno-search]",
   );
   if (!iframe) return;
   iframe.contentWindow?.postMessage(
@@ -264,26 +263,51 @@ function postPhenogridSearch() {
 function postPhenogridMulti() {
   const iframe =
     document.querySelector<HTMLIFrameElement>("[name=pheno-multi]");
-  if (!iframe) return;
+  if (!iframe) {
+    console.log("Could not find multi-compare iframe");
+    return;
+  }
   iframe.contentWindow?.postMessage(
     {
+      metric: "ancestor_information_content",
       subjects: [
-        "MP:0010771",
-        "MP:0002169",
-        "MP:0005391",
-        "MP:0005389",
-        "MP:0005367",
+        "HP:0002616",
+        "HP:0001763",
+        "HP:0004944",
+        "HP:0010749",
+        "HP:0001533",
+        "HP:0002020",
+        "HP:0012450",
       ],
-      "object-sets": [
+      object_sets: [
         {
-          id: "SET:000001",
-          label: "Test set",
+          id: "MGI:2441732",
+          label: "Adgrg7",
           phenotypes: [
-            "MP:0010771",
-            "MP:0002169",
-            "MP:0005391",
-            "MP:0005389",
-            "MP:0005367",
+            "MP:0011965",
+            "MP:0002834",
+            "MP:0003731",
+            "MP:0011962",
+            "MP:0011960",
+            "MP:0008489",
+            "MP:0003291",
+            "MP:0001262",
+          ],
+        },
+        {
+          id: "MGI:87909",
+          label: "Acta2",
+          phenotypes: [
+            "MP:0002834",
+            "MP:0003070",
+            "MP:0004022",
+            "MP:0004021",
+            "MP:0003026",
+            "MP:0006264",
+            "MP:0000230",
+            "MP:0000233",
+            "MP:0000272",
+            "MP:0009862",
           ],
         },
       ],
