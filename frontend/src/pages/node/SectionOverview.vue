@@ -142,7 +142,7 @@
             :to="{ query: { associations: count.category || '' } }"
             @click="scrollToAssociations"
           >
-            {{ count.label }} {{ count.count?.toLocaleString() || 0 }}
+            {{ count.label }} ({{ count.count?.toLocaleString() || 0 }})
           </AppLink>
         </AppFlex>
       </AppDetail>

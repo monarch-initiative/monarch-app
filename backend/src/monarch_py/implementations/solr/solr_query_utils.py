@@ -52,12 +52,12 @@ def build_association_query(
             query.add_filter_query(" OR ".join([f'object:"{o}" OR object_closure:"{o}"' for o in object]))
     if entity:
         if direct:
-            query.add_filter_query(" OR ".join([f'subject:"{escape(e)}" OR object:"{escape(e)}"' for e in entity]))
+            query.add_filter_query(" OR ".join([f'subject:"{e}" OR object:"{e}"' for e in entity]))
         else:
             query.add_filter_query(
                 " OR ".join(
                     [
-                        f'subject:"{escape(e)}" OR subject_closure:"{escape(e)}" OR object:"{escape(e)}" OR object_closure:"{escape(e)}"'
+                        f'subject:"{e}" OR subject_closure:"{e}" OR object:"{e}" OR object_closure:"{e}"'
                         for e in entity
                     ]
                 )
@@ -97,6 +97,7 @@ def build_association_table_query(
         sort=sort,
         offset=offset,
         limit=limit,
+        direct=False
     )
     return query
 
