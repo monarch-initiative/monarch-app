@@ -1,5 +1,5 @@
 - subject_label: Disease to Phenotype
-  object_label: Phenotype from Disease
+  object_label: Phenotype to Disease
   category: "biolink:DiseaseToPhenotypicFeatureAssociation"
 - subject_label: Gene to Phenotype
   object_label: Phenotype to Gene

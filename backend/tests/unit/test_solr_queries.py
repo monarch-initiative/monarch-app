@@ -83,7 +83,7 @@ def test_build_association_multiple_entites():
     entity_filter = [fq for fq in query.filter_queries if fq.startswith("subject:")][0]
     assert (
         entity_filter
-        == 'subject:"MONDO\\:0020121" OR subject_closure:"MONDO\\:0020121" OR object:"MONDO\\:0020121" OR object_closure:"MONDO\\:0020121" OR subject:"HP\\:0000006" OR subject_closure:"HP\\:0000006" OR object:"HP\\:0000006" OR object_closure:"HP\\:0000006"'
+        == 'subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121" OR object:"MONDO:0020121" OR object_closure:"MONDO:0020121" OR subject:"HP:0000006" OR subject_closure:"HP:0000006" OR object:"HP:0000006" OR object_closure:"HP:0000006"'
     )
 
 
