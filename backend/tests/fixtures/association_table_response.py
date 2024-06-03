@@ -5,7 +5,7 @@ import pytest
 def association_table_response():
     return {
         "responseHeader": {
-            "QTime": 1,
+            "QTime": 0,
             "params": {
                 "mm": "100%",
                 "q": "*:*",
@@ -15,7 +15,7 @@ def association_table_response():
                 "q.op": "AND",
                 "fq": [
                     "category:biolink\\:DiseaseToPhenotypicFeatureAssociation",
-                    'subject:"MONDO\\:0020121" OR subject_closure:"MONDO\\:0020121" OR object:"MONDO\\:0020121" OR object_closure:"MONDO\\:0020121"',
+                    'subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121" OR object:"MONDO:0020121" OR object_closure:"MONDO:0020121"',
                 ],
                 "sort": "frequency_computed_sortable_float desc, evidence_count desc, subject_label asc, predicate asc, object_label asc, primary_knowledge_source asc",
                 "rows": "5",

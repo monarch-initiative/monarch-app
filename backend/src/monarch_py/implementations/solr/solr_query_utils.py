@@ -56,10 +56,7 @@ def build_association_query(
         else:
             query.add_filter_query(
                 " OR ".join(
-                    [
-                        f'subject:"{e}" OR subject_closure:"{e}" OR object:"{e}" OR object_closure:"{e}"'
-                        for e in entity
-                    ]
+                    [f'subject:"{e}" OR subject_closure:"{e}" OR object:"{e}" OR object_closure:"{e}"' for e in entity]
                 )
             )
     if q:
@@ -91,13 +88,7 @@ def build_association_table_query(
         ]
 
     query = build_association_query(
-        entity=entity,
-        category=[category],
-        q=q,
-        sort=sort,
-        offset=offset,
-        limit=limit,
-        direct=False
+        entity=entity, category=[category], q=q, sort=sort, offset=offset, limit=limit, direct=False
     )
     return query
 

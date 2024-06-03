@@ -24,7 +24,7 @@ def association_query_direct():
             "object_taxon:NCBITaxon\\:2222",
             "subject:TEST\\:0000001",
             "object:TEST\\:0000002",
-            'subject:"TEST\\:0000005" OR object:"TEST\\:0000005"',
+            'subject:"TEST:0000005" OR object:"TEST:0000005"',
         ],
         "query_fields": "subject subject_label^2 subject_label_t subject_closure subject_closure_label subject_closure_label_t predicate predicate_t object object_label^2 object_label_t object_closure object_closure_label object_closure_label_t publications has_evidence primary_knowledge_source aggregator_knowledge_source provided_by ",
         "def_type": "edismax",

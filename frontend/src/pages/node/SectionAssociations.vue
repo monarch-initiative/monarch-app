@@ -12,7 +12,6 @@
 
     <!-- select -->
     <AppFlex v-else gap="small">
-
       <AppSelectSingle
         v-model="category"
         name="category"
@@ -20,8 +19,7 @@
       />
       <span
         >associations involving &nbsp;<AppNodeBadge :node="node" />&nbsp;
-      </span
-      >
+      </span>
     </AppFlex>
 
     <AppFlex gap="small">
