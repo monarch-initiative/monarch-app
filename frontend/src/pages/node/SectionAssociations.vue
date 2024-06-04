@@ -12,15 +12,14 @@
 
     <!-- select -->
     <AppFlex v-else gap="small">
-      <span
-        >Associations between &nbsp;<AppNodeBadge :node="node" />&nbsp;
-        and</span
-      >
       <AppSelectSingle
         v-model="category"
         name="category"
         :options="categoryOptions"
       />
+      <span
+        >associations involving &nbsp;<AppNodeBadge :node="node" />&nbsp;
+      </span>
     </AppFlex>
 
     <AppFlex gap="small">

@@ -109,12 +109,12 @@ def test_association_counts_for_disease():
     assert len(association_counts.items) > 0
 
     causal_genes = [ac for ac in association_counts.items if ac.category == "biolink:CausalGeneToDiseaseAssociation"][0]
-    assert causal_genes.label == "Causal Genes"
+    assert causal_genes.label == "Causal Gene"
 
     disease_phenotype = [
         ac for ac in association_counts.items if ac.category == "biolink:DiseaseToPhenotypicFeatureAssociation"
     ][0]
-    assert disease_phenotype.label == "Phenotypes"
+    assert disease_phenotype.label == "Phenotype to Disease"
 
 
 def test_association_counts_for_eds():
@@ -133,12 +133,12 @@ def test_association_counts_for_phenotype():
     disease_phenotype = [
         ac for ac in association_counts.items if ac.category == "biolink:DiseaseToPhenotypicFeatureAssociation"
     ][0]
-    assert disease_phenotype.label == "Diseases"
+    assert disease_phenotype.label == "Disease to Phenotype"
 
     gene_phenotype = [
         ac for ac in association_counts.items if ac.category == "biolink:GeneToPhenotypicFeatureAssociation"
     ][0]
-    assert gene_phenotype.label == "Genes"
+    assert gene_phenotype.label == "Gene to Phenotype"
 
 
 def test_association_table():

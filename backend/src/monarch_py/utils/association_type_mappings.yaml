@@ -1,38 +1,38 @@
-- subject_label: Diseases
-  object_label: Phenotypes
+- subject_label: Disease to Phenotype
+  object_label: Phenotype to Disease
   category: "biolink:DiseaseToPhenotypicFeatureAssociation"
-- subject_label: Genes
-  object_label: Phenotypes
+- subject_label: Gene to Phenotype
+  object_label: Phenotype to Gene
   category: "biolink:GeneToPhenotypicFeatureAssociation"
 - subject_label: Interactions
   object_label: Interactions
   symmetric: true
   category: "biolink:PairwiseGeneToGeneInteraction"
-- subject_label: Genes
-  object_label: Pathways
+- subject_label: Gene to Pathway
+  object_label: Pathway to Gene
   category: "biolink:GeneToPathwayAssociation"
-- subject_label: Genes
-  object_label: Anatomy
+- subject_label: Gene Expression
+  object_label: Gene Expression
   category: "biolink:GeneToExpressionSiteAssociation"
 - subject_label: Orthologs
   object_label: Orthologs
   symmetric: true
   category: "biolink:GeneToGeneHomologyAssociation"
-- subject_label: Chemicals
-  object_label: Pathways
+- subject_label: Chemical to Pathway
+  object_label: Pathway to Chemical
   category: "biolink:ChemicalToPathwayAssociation"
-- subject_label: Genes
-  object_label: Molecular Functions
+- subject_label: Gene to Molecular Function
+  object_label: Molecular Function to Gene
   category: "biolink:MacromolecularMachineToMolecularActivityAssociation"
-- subject_label: Genes
-  object_label: Cellular Components
+- subject_label: Gene to Cellular Component
+  object_label: Cellular Component to Gene
   category: "biolink:MacromolecularMachineToCellularComponentAssociation"
-- subject_label: Genes
-  object_label: Biological Processes
+- subject_label: Gene to Biological Process
+  object_label: Biological Process to Gene
   category: "biolink:MacromolecularMachineToBiologicalProcessAssociation"
-- subject_label: Causal Genes
-  object_label: Causal Diseases
+- subject_label: Causal Gene
+  object_label: Causal Disease
   category: "biolink:CausalGeneToDiseaseAssociation"
-- subject_label: "Correlated Genes"
-  object_label: "Correlated Diseases"
+- subject_label: Correlated Gene
+  object_label: Correlated Disease
   category: "biolink:CorrelatedGeneToDiseaseAssociation"

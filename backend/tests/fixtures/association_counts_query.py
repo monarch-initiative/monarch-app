@@ -37,7 +37,7 @@ def association_counts_query():
             '(category:"biolink:CorrelatedGeneToDiseaseAssociation") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121")',
         ],
         "filter_queries": [
-            'subject:"MONDO\\:0020121" OR subject_closure:"MONDO\\:0020121" OR object:"MONDO\\:0020121" OR object_closure:"MONDO\\:0020121"'
+            'subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121" OR object:"MONDO:0020121" OR object_closure:"MONDO:0020121"'
         ],
         "query_fields": None,
         "def_type": "edismax",
