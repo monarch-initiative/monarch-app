@@ -169,7 +169,7 @@
   },
   {
     "name": "Charite",
-    "link": "https://www.charite.de/",
+    "link": "https://www.bihealth.org/en/",
     "members": [
       {
         "name": "Peter Robinson",
@@ -187,6 +187,11 @@
     "name": "The Jackson Laboratory",
     "link": "https://www.jax.org/",
     "members": [
+      {
+        "name": "Peter Robinson",
+        "role": "Monarch PI",
+        "link": "https://www.jax.org/research-and-faculty/faculty/peter-robinson"
+      },
       {
         "name": "Ben Coleman",
         "role": "",
