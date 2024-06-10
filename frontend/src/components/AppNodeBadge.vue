@@ -18,10 +18,10 @@
           ? { breadcrumbs: [...currentBreadcrumbs, ...breadcrumbs] }
           : state || undefined
       "
-      >{{ name }}</AppLink
-    >
+      v-html="name"
+    ></AppLink>
     <span v-else>
-      <span class="name">{{ name }}</span>
+      <span class="name" v-html="name"></span>
       <span v-if="info">({{ info }})</span>
     </span>
   </span>
