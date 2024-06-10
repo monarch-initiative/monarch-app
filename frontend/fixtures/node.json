@@ -12,6 +12,8 @@
     "ICD9:359.1",
     "MESH:D009136",
     "MedDRA:10028356",
+    "NANDO:1200486",
+    "NANDO:2100233",
     "NCIT:C84910",
     "Orphanet:98473",
     "SCTID:73297009",
@@ -90,6 +92,14 @@
       "url": null
     },
     {
+      "id": "NANDO:1200486",
+      "url": "http://identifiers.org/NANDO/1200486"
+    },
+    {
+      "id": "NANDO:2100233",
+      "url": "http://identifiers.org/NANDO/2100233"
+    },
+    {
       "id": "NCIT:C84910",
       "url": "http://purl.obolibrary.org/obo/NCIT_C84910"
     },
@@ -117,7 +127,7 @@
   "association_counts": [
     {
       "label": "Phenotype to Disease",
-      "count": 3932,
+      "count": 3941,
       "category": "biolink:DiseaseToPhenotypicFeatureAssociation"
     },
     {
@@ -129,10 +139,42 @@
       "label": "Correlated Gene",
       "count": 146,
       "category": "biolink:CorrelatedGeneToDiseaseAssociation"
+    },
+    {
+      "label": "Variant to Disease",
+      "count": 1,
+      "category": "biolink:VariantToDiseaseAssociation"
+    },
+    {
+      "label": "Disease Model",
+      "count": 243,
+      "category": "biolink:GenotypeToDiseaseAssociation"
     }
   ],
   "node_hierarchy": {
     "super_classes": [
+      {
+        "id": "MONDO:0005336",
+        "category": "biolink:Disease",
+        "name": "myopathy",
+        "full_name": null,
+        "deprecated": null,
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "in_taxon_label": null,
+        "symbol": null,
+        "synonym": [],
+        "uri": null,
+        "iri": null,
+        "namespace": null,
+        "has_phenotype": [],
+        "has_phenotype_label": [],
+        "has_phenotype_closure": [],
+        "has_phenotype_closure_label": [],
+        "has_phenotype_count": null
+      },
       {
         "id": "MONDO:0100546",
         "category": "biolink:Disease",
@@ -176,11 +218,13 @@
         "has_phenotype_closure": [],
         "has_phenotype_closure_label": [],
         "has_phenotype_count": null
-      },
+      }
+    ],
+    "sub_classes": [
       {
-        "id": "MONDO:0005336",
+        "id": "MONDO:0008028",
         "category": "biolink:Disease",
-        "name": "myopathy",
+        "name": "muscular dystrophy, Barnes type",
         "full_name": null,
         "deprecated": null,
         "description": null,
@@ -198,9 +242,7 @@
         "has_phenotype_closure": [],
         "has_phenotype_closure_label": [],
         "has_phenotype_count": null
-      }
-    ],
-    "sub_classes": [
+      },
       {
         "id": "MONDO:0010311",
         "category": "biolink:Disease",
@@ -425,28 +467,6 @@
         "id": "MONDO:0100228",
         "category": "biolink:Disease",
         "name": "LAMA2-related muscular dystrophy",
-        "full_name": null,
-        "deprecated": null,
-        "description": null,
-        "xref": [],
-        "provided_by": null,
-        "in_taxon": null,
-        "in_taxon_label": null,
-        "symbol": null,
-        "synonym": [],
-        "uri": null,
-        "iri": null,
-        "namespace": null,
-        "has_phenotype": [],
-        "has_phenotype_label": [],
-        "has_phenotype_closure": [],
-        "has_phenotype_closure_label": [],
-        "has_phenotype_count": null
-      },
-      {
-        "id": "MONDO:0008028",
-        "category": "biolink:Disease",
-        "name": "muscular dystrophy, Barnes type",
         "full_name": null,
         "deprecated": null,
         "description": null,

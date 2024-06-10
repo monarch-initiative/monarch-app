@@ -36,3 +36,15 @@
 - subject_label: Correlated Gene
   object_label: Correlated Disease
   category: "biolink:CorrelatedGeneToDiseaseAssociation"
+- subject_label: Variant to Gene
+  object_label: Variant to Gene
+  category: "biolink:VariantToGeneAssociation"
+- subject_label: Variant to Disease
+  object_label: Variant to Disease
+  category: "biolink:VariantToDiseaseAssociation"
+- subject_label: Genotype to Phenotype
+  object_label:  Genotype to Phenotype
+  category: "biolink:GenotypeToPhenotypicFeatureAssociation"
+- subject_label: Disease Model
+  object_label: Disease Model
+  category: "biolink:GenotypeToDiseaseAssociation"

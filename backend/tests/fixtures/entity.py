@@ -17,6 +17,8 @@ def entity():
             "ICD9:359.1",
             "MESH:D009136",
             "MedDRA:10028356",
+            "NANDO:1200486",
+            "NANDO:2100233",
             "NCIT:C84910",
             "Orphanet:98473",
             "SCTID:73297009",
