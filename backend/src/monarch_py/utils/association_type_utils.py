@@ -50,11 +50,9 @@ def get_association_type_mapping_by_query_string(
     Raises: ValueError if no match is found
     """
 
-    categories = parse_query_string_for_category(query_string)
+    category = parse_query_string_for_category(query_string)
 
-    matching_types = [
-        a_type for a_type in AssociationTypeMappings.get_mappings() if set(a_type.category) == set(categories)
-    ]
+    matching_types = [a_type for a_type in AssociationTypeMappings.get_mappings() if a_type.category == category]
 
     if len(matching_types) == 0:
         raise ValueError(f"No matching association type found for query string: [{query_string}]")
