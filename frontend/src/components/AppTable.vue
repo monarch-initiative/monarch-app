@@ -174,6 +174,7 @@
           class="search"
           icon="magnifying-glass"
           :model-value="search"
+          :debounce=900
           @debounce="emitSearch"
           @change="emitSearch"
         />
