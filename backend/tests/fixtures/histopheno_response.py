@@ -5,7 +5,7 @@ import pytest
 def histopheno_response():
     return {
         "responseHeader": {
-            "QTime": 1,
+            "QTime": 5,
             "params": {
                 "facet.query": [
                     'object_closure:"UPHENO:0002964"',
@@ -40,27 +40,27 @@ def histopheno_response():
                 "facet": "true",
             },
         },
-        "response": {"num_found": 4426, "start": 0, "docs": []},
+        "response": {"num_found": 4446, "start": 0, "docs": []},
         "facet_counts": {
             "facet_fields": {},
             "facet_queries": {
-                'object_closure:"UPHENO:0002964"': 472,
-                'object_closure:"UPHENO:0004523"': 1088,
+                'object_closure:"UPHENO:0002964"': 479,
+                'object_closure:"UPHENO:0004523"': 1089,
                 'object_closure:"UPHENO:0002764"': 584,
                 'object_closure:"UPHENO:0002635"': 47,
                 'object_closure:"UPHENO:0003020"': 291,
                 'object_closure:"UPHENO:0080362"': 181,
-                'object_closure:"HP:0001939"': 221,
+                'object_closure:"HP:0001939"': 223,
                 'object_closure:"UPHENO:0002642"': 44,
                 'object_closure:"UPHENO:0002833"': 147,
                 'object_closure:"HP:0002664"': 153,
-                'object_closure:"UPHENO:0004459"': 178,
+                'object_closure:"UPHENO:0004459"': 180,
                 'object_closure:"UPHENO:0002948"': 22,
                 'object_closure:"UPHENO:0003116"': 25,
-                'object_closure:"UPHENO:0002816"': 1709,
+                'object_closure:"UPHENO:0002816"': 1723,
                 'object_closure:"UPHENO:0004536"': 155,
                 'object_closure:"HP:0000598"': 28,
-                'object_closure:"UPHENO:0002712"': 162,
+                'object_closure:"UPHENO:0002712"': 166,
                 'object_closure:"UPHENO:0075949"': 21,
                 'object_closure:"UPHENO:0049874"': 32,
                 'object_closure:"UPHENO:0003013"': 1,

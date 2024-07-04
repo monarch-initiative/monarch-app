@@ -2,7 +2,7 @@
   "items": [
     {
       "label": "Phenotype to Disease",
-      "count": 3932,
+      "count": 3959,
       "category": "biolink:DiseaseToPhenotypicFeatureAssociation"
     },
     {
