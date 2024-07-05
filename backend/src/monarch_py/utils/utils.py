@@ -68,7 +68,7 @@ def set_log_level(log_level: str):
 
 def get_links_for_field(field: List[str]) -> List[ExpandedCurie]:
     # TODO should be able to remove curie.replace("PMID", "PUBMED")) since the converter should handle prefix synonyms
-    expanded_curies = [ExpandedCurie(id=curie, url=get_link_for_curie(curie)) for curie in field]
+    expanded_curies = [ExpandedCurie(id=curie, url=get_link_for_curie(curie)) for curie in field if ":" in curie]
     return expanded_curies
 
 

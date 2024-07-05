@@ -5,6 +5,7 @@
 <template>
   <span class="predicate">
     <AppIcon class="arrow" :icon="`arrow-${arrowDirection}`" />
+    <span v-if="association.negated">NOT</span>
     {{ startCase(getCategoryLabel(association.predicate)).toLowerCase() }}
     <AppIcon class="arrow" :icon="`arrow-${arrowDirection}`" />
   </span>

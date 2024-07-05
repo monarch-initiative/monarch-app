@@ -8,8 +8,8 @@
       <AppHeading class="heading" :icon="getCategoryIcon(node.category)">
         <span
           :style="{ textDecoration: node.deprecated ? 'line-through' : '' }"
+          v-html="node.name"
         >
-          {{ node.name }}
         </span>
         <template v-if="node.deprecated"> (OBSOLETE)</template>
       </AppHeading>
