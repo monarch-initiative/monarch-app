@@ -78,6 +78,7 @@
           :copy="true"
           color="secondary"
         />
+
       </div>
       <p class="description truncate-3" tabindex="0">
         {{ result.description || "No description available" }}
@@ -424,8 +425,6 @@ watch(from, () => runGetSearch(false));
 }
 
 .title-taxon {
-  position: absolute;
-  margin-left: 40%;
   color: $dark-gray;
   font-size: 0.9rem;
   text-align: left;
