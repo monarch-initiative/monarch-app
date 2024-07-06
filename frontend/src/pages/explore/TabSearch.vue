@@ -78,7 +78,6 @@
           :copy="true"
           color="secondary"
         />
-
       </div>
       <p class="description truncate-3" tabindex="0">
         {{ result.description || "No description available" }}
