@@ -424,8 +424,6 @@ watch(from, () => runGetSearch(false));
 }
 
 .title-taxon {
-  position: absolute;
-  margin-left: 40%;
   color: $dark-gray;
   font-size: 0.9rem;
   text-align: left;
