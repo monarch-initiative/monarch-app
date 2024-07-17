@@ -6,6 +6,7 @@ from monarch_py.api.additional_models import (
     SemsimSearchRequest,
     SemsimSearchGroup,
     SemsimMultiCompareRequest,
+    SemsimDirectionality,
 )
 from monarch_py.api.config import semsimian, solr
 from monarch_py.api.utils.similarity_utils import parse_similarity_prefix
@@ -124,6 +125,9 @@ def _search(
     termset: str = Path(..., title="Termset to search"),
     group: SemsimSearchGroup = Path(..., title="Group of entities to search within (e.g. Human Genes)"),
     metric: SemsimMetric = Query(SemsimMetric.ANCESTOR_INFORMATION_CONTENT, title="Similarity metric to use"),
+    directionality: SemsimDirectionality = Query(
+        SemsimDirectionality.BIDIRECTIONAL, title="Directionality of the search"
+    ),
     limit: int = Query(default=10, ge=1, le=50),
 ):
     """Search for terms in a termset
@@ -138,7 +142,9 @@ def _search(
         List[str]: List of matching terms
     """
     terms = [term.strip() for term in termset.split(",")]
-    results = semsimian().search(termset=terms, prefix=parse_similarity_prefix(group), metric=metric, limit=limit)
+    results = semsimian().search(
+        termset=terms, prefix=parse_similarity_prefix(group), metric=metric, directionality=directionality, limit=limit
+    )
     return results
 
 

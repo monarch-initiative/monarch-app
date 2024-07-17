@@ -38,6 +38,12 @@ class SemsimSearchGroup(Enum):
     MONDO = "Human Diseases"
 
 
+class SemsimDirectionality(str, Enum):
+    BIDIRECTIONAL = "bidirectional"
+    SUBJECT_TO_OBJECT = "subject_to_object"
+    OBJECT_TO_SUBJECT = "object_to_subject"
+
+
 class SemsimCompareRequest(BaseModel):
     subjects: List[str] = Field(..., title="List of subjects for comparison")
     objects: List[str] = Field(..., title="List of objects for comparison")
@@ -60,6 +66,9 @@ class SemsimSearchRequest(BaseModel):
     termset: List[str] = Field(..., title="Termset to search")
     group: SemsimSearchGroup = Field(..., title="Group of entities to search within (e.g. Human Genes)")
     metric: SemsimMetric = Field(SemsimMetric.ANCESTOR_INFORMATION_CONTENT, title="Similarity metric to use")
+    directionality: SemsimDirectionality = (
+        Query(SemsimDirectionality.BIDIRECTIONAL, title="Directionality of the search"),
+    )
     limit: Optional[int] = Field(10, title="Limit the number of results", ge=1, le=50)
 
 

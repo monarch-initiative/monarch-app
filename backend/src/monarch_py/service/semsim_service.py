@@ -3,7 +3,7 @@ import requests
 
 from pydantic import BaseModel
 
-from monarch_py.api.additional_models import SemsimMetric, SemsimMultiCompareRequest
+from monarch_py.api.additional_models import SemsimMetric, SemsimMultiCompareRequest, SemsimDirectionality
 from monarch_py.datamodels.model import TermSetPairwiseSimilarity, SemsimSearchResult, Entity
 
 
@@ -75,10 +75,11 @@ class SemsimianService(BaseModel):
         termset: List[str],
         prefix: str,
         metric: SemsimMetric = SemsimMetric.ANCESTOR_INFORMATION_CONTENT,
+        directionality: SemsimDirectionality = SemsimDirectionality.BIDIRECTIONAL,
         limit: int = 10,
     ) -> List[SemsimSearchResult]:
         host = f"http://{self.semsim_server_host}:{self.semsim_server_port}"
-        path = f"search/{','.join(termset)}/{prefix}/{metric}?limit={limit}"
+        path = f"search/{','.join(termset)}/{prefix}:/{metric}?limit={limit}&directionality={directionality.value} "
         url = f"{host}/{path}"
 
         print(f"Fetching {url}...")

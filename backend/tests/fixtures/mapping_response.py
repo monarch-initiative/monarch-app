@@ -5,7 +5,7 @@ import pytest
 def mapping_response():
     return {
         "responseHeader": {
-            "QTime": 1,
+            "QTime": 0,
             "params": {
                 "mm": "100%",
                 "q": "*:*",
@@ -19,7 +19,7 @@ def mapping_response():
             },
         },
         "response": {
-            "num_found": 14,
+            "num_found": 8,
             "start": 0,
             "docs": [
                 {
@@ -29,7 +29,7 @@ def mapping_response():
                     "object_id": "DOID:9884",
                     "object_label": "muscular dystrophy",
                     "mapping_justification": "semapv:UnspecifiedMatching",
-                    "id": "e118a569-aef9-4406-a56e-26c0cce23832",
+                    "id": "3eda4910-e721-4814-b2cd-0739f2eee579",
                 },
                 {
                     "subject_id": "MONDO:0020121",
@@ -38,7 +38,15 @@ def mapping_response():
                     "object_id": "ICD10CM:G71.0",
                     "object_label": "Muscular dystrophy",
                     "mapping_justification": "semapv:UnspecifiedMatching",
-                    "id": "c019bafb-05f0-4e88-a872-213dc1cbadf8",
+                    "id": "fd45bbd0-9de7-4d93-b491-3b582dfb003c",
+                },
+                {
+                    "subject_id": "MONDO:0020121",
+                    "subject_label": "muscular dystrophy",
+                    "predicate_id": "skos:exactMatch",
+                    "object_id": "MEDGEN:44527",
+                    "mapping_justification": "semapv:UnspecifiedMatching",
+                    "id": "abafcd0b-fb7f-404a-8af3-98fba60c72bd",
                 },
                 {
                     "subject_id": "MONDO:0020121",
@@ -47,7 +55,7 @@ def mapping_response():
                     "object_id": "NCIT:C84910",
                     "object_label": "Muscular Dystrophy",
                     "mapping_justification": "semapv:UnspecifiedMatching",
-                    "id": "409672f9-0244-46db-b53e-5a941daecf79",
+                    "id": "7bd011ab-4a21-451d-9298-9f37ed755977",
                 },
                 {
                     "subject_id": "MONDO:0020121",
@@ -56,7 +64,7 @@ def mapping_response():
                     "object_id": "Orphanet:98473",
                     "object_label": "Muscular dystrophy",
                     "mapping_justification": "semapv:UnspecifiedMatching",
-                    "id": "e03a2881-54f2-484a-927b-c90557ddf4fa",
+                    "id": "8fde6a2a-f907-4f74-8b7c-6fcd6103ca19",
                 },
                 {
                     "subject_id": "MONDO:0020121",
@@ -64,7 +72,7 @@ def mapping_response():
                     "predicate_id": "skos:exactMatch",
                     "object_id": "SCTID:73297009",
                     "mapping_justification": "semapv:UnspecifiedMatching",
-                    "id": "25ff5a19-ae6b-4d3d-a57e-f8087f435cb7",
+                    "id": "167879bf-ba1b-445c-afe7-e2db86cbe795",
                 },
                 {
                     "subject_id": "MONDO:0020121",
@@ -72,7 +80,7 @@ def mapping_response():
                     "predicate_id": "skos:exactMatch",
                     "object_id": "UMLS:C0026850",
                     "mapping_justification": "semapv:UnspecifiedMatching",
-                    "id": "9edb04c4-fcd6-4b0d-a2ea-b2812c3ae7d3",
+                    "id": "a9560c9f-0075-4117-895c-af85ef93ea46",
                 },
                 {
                     "subject_id": "MONDO:0020121",
@@ -80,67 +88,7 @@ def mapping_response():
                     "predicate_id": "skos:exactMatch",
                     "object_id": "MESH:D009136",
                     "mapping_justification": "semapv:UnspecifiedMatching",
-                    "id": "ca9265de-6da9-46b2-9d90-18b7fc56d874",
-                },
-                {
-                    "subject_id": "MONDO:0020121",
-                    "subject_label": "muscular dystrophy",
-                    "predicate_id": "skos:exactMatch",
-                    "object_id": "DOID:9884",
-                    "object_label": "muscular dystrophy",
-                    "mapping_justification": "semapv:UnspecifiedMatching",
-                    "id": "5d822e16-51fe-4ab9-a15d-2319b883d96e",
-                },
-                {
-                    "subject_id": "MONDO:0020121",
-                    "subject_label": "muscular dystrophy",
-                    "predicate_id": "skos:exactMatch",
-                    "object_id": "ICD10CM:G71.0",
-                    "object_label": "Muscular dystrophy",
-                    "mapping_justification": "semapv:UnspecifiedMatching",
-                    "id": "9ed03b0f-bf8d-41be-b21e-5cd47203dc8a",
-                },
-                {
-                    "subject_id": "MONDO:0020121",
-                    "subject_label": "muscular dystrophy",
-                    "predicate_id": "skos:exactMatch",
-                    "object_id": "NCIT:C84910",
-                    "object_label": "Muscular Dystrophy",
-                    "mapping_justification": "semapv:UnspecifiedMatching",
-                    "id": "c94c80d9-67cb-4c8c-9855-445c493e6b09",
-                },
-                {
-                    "subject_id": "MONDO:0020121",
-                    "subject_label": "muscular dystrophy",
-                    "predicate_id": "skos:exactMatch",
-                    "object_id": "Orphanet:98473",
-                    "object_label": "Muscular dystrophy",
-                    "mapping_justification": "semapv:UnspecifiedMatching",
-                    "id": "493dfdf8-e149-4287-9522-1f123af2428b",
-                },
-                {
-                    "subject_id": "MONDO:0020121",
-                    "subject_label": "muscular dystrophy",
-                    "predicate_id": "skos:exactMatch",
-                    "object_id": "SCTID:73297009",
-                    "mapping_justification": "semapv:UnspecifiedMatching",
-                    "id": "223f9ee1-c176-4355-bc8f-22cec80116ea",
-                },
-                {
-                    "subject_id": "MONDO:0020121",
-                    "subject_label": "muscular dystrophy",
-                    "predicate_id": "skos:exactMatch",
-                    "object_id": "UMLS:C0026850",
-                    "mapping_justification": "semapv:UnspecifiedMatching",
-                    "id": "d7d48a1f-1325-45d7-b9af-35f74f4e796f",
-                },
-                {
-                    "subject_id": "MONDO:0020121",
-                    "subject_label": "muscular dystrophy",
-                    "predicate_id": "skos:exactMatch",
-                    "object_id": "MESH:D009136",
-                    "mapping_justification": "semapv:UnspecifiedMatching",
-                    "id": "e10a82df-8a83-4ca4-8591-8c00c556c228",
+                    "id": "e9965a94-a5fb-4f32-b803-dc757b045b5d",
                 },
             ],
         },

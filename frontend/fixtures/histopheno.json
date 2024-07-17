@@ -3,33 +3,38 @@
   "items": [
     {
       "label": "musculature",
-      "count": 1723,
+      "count": 1748,
       "id": "UPHENO:0002816"
     },
     {
       "label": "nervous_system",
-      "count": 1089,
+      "count": 1097,
       "id": "UPHENO:0004523"
     },
     {
       "label": "head_neck",
-      "count": 584,
+      "count": 592,
       "id": "UPHENO:0002764"
     },
     {
       "label": "skeletal_system",
-      "count": 479,
+      "count": 500,
       "id": "UPHENO:0002964"
     },
     {
       "label": "eye",
-      "count": 291,
+      "count": 292,
       "id": "UPHENO:0003020"
     },
     {
       "label": "metabolism_homeostasis",
-      "count": 223,
+      "count": 225,
       "id": "HP:0001939"
+    },
+    {
+      "label": "blood",
+      "count": 182,
+      "id": "UPHENO:0004459"
     },
     {
       "label": "cardiovascular_system",
@@ -37,28 +42,23 @@
       "id": "UPHENO:0080362"
     },
     {
-      "label": "blood",
-      "count": 180,
-      "id": "UPHENO:0004459"
-    },
-    {
       "label": "connective_tissue",
-      "count": 166,
+      "count": 172,
       "id": "UPHENO:0002712"
     },
     {
       "label": "respiratory",
-      "count": 155,
+      "count": 158,
       "id": "UPHENO:0004536"
     },
     {
       "label": "neoplasm",
-      "count": 153,
+      "count": 155,
       "id": "HP:0002664"
     },
     {
       "label": "digestive_system",
-      "count": 147,
+      "count": 149,
       "id": "UPHENO:0002833"
     },
     {
@@ -88,12 +88,12 @@
     },
     {
       "label": "immune_system",
-      "count": 22,
+      "count": 23,
       "id": "UPHENO:0002948"
     },
     {
       "label": "prenatal_or_birth",
-      "count": 21,
+      "count": 22,
       "id": "UPHENO:0075949"
     },
     {
