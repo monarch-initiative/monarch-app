@@ -33,7 +33,14 @@ class SolrService(BaseModel):
         response.raise_for_status()
         solr_query_result = SolrQueryResult.model_validate(data, from_attributes=True)
         for doc in solr_query_result.response.docs:
-            self._strip_json(doc, "_version_", "iri")
+            self._strip_json(
+                doc,
+                "_version_",
+                "iri",
+                "frequency_computed_sortable_float",
+                "has_quotient_sortable_float",
+                "has_percentage_sortable_float",
+            )
 
         return solr_query_result
 

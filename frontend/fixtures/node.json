@@ -46,32 +46,8 @@
       "url": "https://icd.codes/icd10cm/G71.0"
     },
     {
-      "id": "NCIT:C84910",
-      "url": "http://purl.obolibrary.org/obo/NCIT_C84910"
-    },
-    {
-      "id": "Orphanet:98473",
-      "url": "https://www.orpha.net/en/disease/detail/98473"
-    },
-    {
-      "id": "SCTID:73297009",
-      "url": "http://identifiers.org/snomedct/73297009"
-    },
-    {
-      "id": "UMLS:C0026850",
-      "url": "http://identifiers.org/umls/C0026850"
-    },
-    {
-      "id": "MESH:D009136",
-      "url": "http://identifiers.org/mesh/D009136"
-    },
-    {
-      "id": "DOID:9884",
-      "url": "http://purl.obolibrary.org/obo/DOID_9884"
-    },
-    {
-      "id": "ICD10CM:G71.0",
-      "url": "https://icd.codes/icd10cm/G71.0"
+      "id": "MEDGEN:44527",
+      "url": "http://identifiers.org/medgen/44527"
     },
     {
       "id": "NCIT:C84910",
@@ -155,7 +131,7 @@
   "association_counts": [
     {
       "label": "Phenotype to Disease",
-      "count": 3959,
+      "count": 4012,
       "category": "biolink:DiseaseToPhenotypicFeatureAssociation"
     },
     {
@@ -167,6 +143,16 @@
       "label": "Correlated Gene",
       "count": 146,
       "category": "biolink:CorrelatedGeneToDiseaseAssociation"
+    },
+    {
+      "label": "Variant to Disease",
+      "count": 1,
+      "category": "biolink:VariantToDiseaseAssociation"
+    },
+    {
+      "label": "Disease Model",
+      "count": 237,
+      "category": "biolink:GenotypeToDiseaseAssociation"
     }
   ],
   "node_hierarchy": {
@@ -239,28 +225,6 @@
       }
     ],
     "sub_classes": [
-      {
-        "id": "MONDO:0010311",
-        "category": "biolink:Disease",
-        "name": "Becker muscular dystrophy",
-        "full_name": null,
-        "deprecated": null,
-        "description": null,
-        "xref": [],
-        "provided_by": null,
-        "in_taxon": null,
-        "in_taxon_label": null,
-        "symbol": null,
-        "synonym": [],
-        "uri": null,
-        "iri": null,
-        "namespace": null,
-        "has_phenotype": [],
-        "has_phenotype_label": [],
-        "has_phenotype_closure": [],
-        "has_phenotype_closure_label": [],
-        "has_phenotype_count": null
-      },
       {
         "id": "MONDO:0010675",
         "category": "biolink:Disease",
@@ -372,6 +336,50 @@
         "has_phenotype_count": null
       },
       {
+        "id": "MONDO:0010311",
+        "category": "biolink:Disease",
+        "name": "Becker muscular dystrophy",
+        "full_name": null,
+        "deprecated": null,
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "in_taxon_label": null,
+        "symbol": null,
+        "synonym": [],
+        "uri": null,
+        "iri": null,
+        "namespace": null,
+        "has_phenotype": [],
+        "has_phenotype_label": [],
+        "has_phenotype_closure": [],
+        "has_phenotype_closure_label": [],
+        "has_phenotype_count": null
+      },
+      {
+        "id": "MONDO:0008028",
+        "category": "biolink:Disease",
+        "name": "muscular dystrophy, Barnes type",
+        "full_name": null,
+        "deprecated": null,
+        "description": null,
+        "xref": [],
+        "provided_by": null,
+        "in_taxon": null,
+        "in_taxon_label": null,
+        "symbol": null,
+        "synonym": [],
+        "uri": null,
+        "iri": null,
+        "namespace": null,
+        "has_phenotype": [],
+        "has_phenotype_label": [],
+        "has_phenotype_closure": [],
+        "has_phenotype_closure_label": [],
+        "has_phenotype_count": null
+      },
+      {
         "id": "MONDO:0016106",
         "category": "biolink:Disease",
         "name": "progressive muscular dystrophy",
@@ -463,28 +471,6 @@
         "id": "MONDO:0100228",
         "category": "biolink:Disease",
         "name": "LAMA2-related muscular dystrophy",
-        "full_name": null,
-        "deprecated": null,
-        "description": null,
-        "xref": [],
-        "provided_by": null,
-        "in_taxon": null,
-        "in_taxon_label": null,
-        "symbol": null,
-        "synonym": [],
-        "uri": null,
-        "iri": null,
-        "namespace": null,
-        "has_phenotype": [],
-        "has_phenotype_label": [],
-        "has_phenotype_closure": [],
-        "has_phenotype_closure_label": [],
-        "has_phenotype_count": null
-      },
-      {
-        "id": "MONDO:0008028",
-        "category": "biolink:Disease",
-        "name": "muscular dystrophy, Barnes type",
         "full_name": null,
         "deprecated": null,
         "description": null,
