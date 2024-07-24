@@ -131,6 +131,7 @@ type Props = {
   category: Option;
   /** include orthologs */
   includeOrthologs: boolean;
+  direct: boolean;
   /** selected association */
   association?: DirectionalAssociation;
 };
@@ -290,12 +291,17 @@ const {
     if (!props.node.association_counts.length)
       throw Error("No association info available");
     /** get association data */
+    if (fresh) {
+      start.value = 0;
+    }
+    console.log("queryAssociations, start: " + start.value);
     const response = await getAssociations(
       props.node.id,
       props.category.id,
       start.value,
       perPage.value,
       props.includeOrthologs,
+      props.direct,
       search.value,
       sort.value,
     );
@@ -324,6 +330,7 @@ async function download() {
     props.node.id,
     props.category.id,
     props.includeOrthologs,
+    props.direct,
     search.value,
     sort.value,
   );
@@ -376,6 +383,13 @@ watch(
 watch(
   () => props.includeOrthologs,
   async () => await queryAssociations(true),
+);
+watch(
+  () => props.direct,
+  async () => {
+    console.log("watching direct, start: " + start.value);
+    await queryAssociations(true);
+  },
 );
 watch(
   [perPage, start, search, sort],

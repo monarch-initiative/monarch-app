@@ -23,6 +23,8 @@
     </AppFlex>
 
     <AppFlex gap="small">
+      <AppCheckbox v-model="direct" text="direct only" />
+
       <AppCheckbox
         v-if="
           node.category === 'biolink:Gene' &&
@@ -56,6 +58,7 @@
         :category="category"
         :association="association"
         :include-orthologs="includeOrthologs"
+        :direct="direct"
         @select="(value) => (association = value)"
       />
     </template>
@@ -98,6 +101,7 @@ const category = ref<Option>();
 const association = ref<DirectionalAssociation>();
 /** include orthologous genes in association table */
 const includeOrthologs = ref(false);
+const direct = ref(false);
 
 /** list of options for dropdown */
 const categoryOptions = computed(
