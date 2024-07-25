@@ -75,7 +75,13 @@ def build_association_query(
 
 
 def build_association_table_query(
-    entity: List[str], category: str, direct: bool = False, q: Optional[str] = None, offset: int = 0, limit: int = 5, sort: List[str] = None
+    entity: List[str],
+    category: str,
+    direct: bool = False,
+    q: Optional[str] = None,
+    offset: int = 0,
+    limit: int = 5,
+    sort: List[str] = None,
 ) -> SolrQuery:
     if sort is None:
         sort = [

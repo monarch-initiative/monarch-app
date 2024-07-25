@@ -12,7 +12,7 @@ from monarch_py.api.semsim import _compare, _search, _post_multicompare
 from monarch_py.api.additional_models import (
     SemsimSearchGroup,
     SemsimMultiCompareObject,
-    SemsimMultiCompareRequest, SemsimDirectionality,
+    SemsimMultiCompareRequest, SemsimDirectionality, SemsimMetric,
 )
 from monarch_py.datamodels.category_enums import (
     AssociationCategory,
@@ -288,6 +288,7 @@ def main(
         )
         fixtures["phenotype-explorer-search"] = _search(
             termset="HP:0002104,HP:0012378,HP:0012378,HP:0012378",
+            metric=SemsimMetric.ANCESTOR_INFORMATION_CONTENT,
             group=SemsimSearchGroup.ZFIN,
             directionality=SemsimDirectionality.BIDIRECTIONAL,
             limit=10,
