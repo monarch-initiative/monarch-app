@@ -131,7 +131,7 @@ type Props = {
   category: Option;
   /** include orthologs */
   includeOrthologs: boolean;
-  direct: boolean;
+  direct: Option;
   /** selected association */
   association?: DirectionalAssociation;
 };
@@ -294,14 +294,13 @@ const {
     if (fresh) {
       start.value = 0;
     }
-    console.log("queryAssociations, start: " + start.value);
     const response = await getAssociations(
       props.node.id,
       props.category.id,
       start.value,
       perPage.value,
       props.includeOrthologs,
-      props.direct,
+      props.direct.id,
       search.value,
       sort.value,
     );
@@ -386,10 +385,7 @@ watch(
 );
 watch(
   () => props.direct,
-  async () => {
-    console.log("watching direct, start: " + start.value);
-    await queryAssociations(true);
-  },
+  async () => await queryAssociations(true),
 );
 watch(
   [perPage, start, search, sort],

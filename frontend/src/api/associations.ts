@@ -9,7 +9,7 @@ export const getAssociations = async (
   offset = 0,
   limit = 10,
   traverseOrthologs = false,
-  direct = false,
+  direct = "false",
   search?: string,
   sort: Sort = null,
 ) => {
@@ -19,7 +19,7 @@ export const getAssociations = async (
     limit,
     query: search || "",
     traverse_orthologs: !!traverseOrthologs,
-    direct: !!direct,
+    direct: direct,
     sort: sort
       ? `${sort.key} ${sort.direction === "up" ? "asc" : "desc"}`
       : null,
@@ -40,7 +40,7 @@ export const downloadAssociations = async (
   nodeId = "",
   associationCategory = "",
   traverseOrthologs = false,
-  direct = false,
+  direct = "false",
   search?: string,
   sort: Sort = null,
 ) => {
@@ -49,7 +49,7 @@ export const downloadAssociations = async (
     limit: maxDownload,
     query: search || "",
     traverse_orthologs: !!traverseOrthologs,
-    direct: !!direct,
+    direct: direct,
     sort: sort
       ? `${sort.key} ${sort.direction === "up" ? "asc" : "desc"}`
       : null,
