@@ -329,7 +329,7 @@ async function download() {
     props.node.id,
     props.category.id,
     props.includeOrthologs,
-    props.direct,
+    props.direct.id,
     search.value,
     sort.value,
   );
