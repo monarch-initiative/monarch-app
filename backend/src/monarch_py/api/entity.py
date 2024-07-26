@@ -81,6 +81,11 @@ def _association_table(
         title="Download the results as a file",
         examples=[True, False],
     ),
+    direct: bool = Query(
+        default=False,
+        title="Only return direct associations",
+        examples=[True, False],
+    ),
 ) -> Union[AssociationTableResults, str]:
     """
     Retrieves association table data for a given entity and association type
@@ -99,6 +104,7 @@ def _association_table(
         category=category,
         q=query,
         traverse_orthologs=traverse_orthologs,
+        direct=direct,
         sort=sort,
         offset=pagination.offset,
         limit=pagination.limit,

@@ -15,14 +15,21 @@
       <AppSelectSingle
         v-model="category"
         name="category"
-        :options="categoryOptions"
-      />
-      <span
-        >associations involving &nbsp;<AppNodeBadge :node="node" />&nbsp;
-      </span>
-    </AppFlex>
+        :options="categoryOptions" />&nbsp;associations
+      involving&nbsp;<AppNodeBadge :node="node" /><AppSelectSingle
+        v-if="
+          node.node_hierarchy &&
+          node.node_hierarchy.sub_classes &&
+          node.node_hierarchy.sub_classes.length > 0
+        "
+        v-model="direct"
+        name="direct"
+        :options="directOptions"
+    /></AppFlex>
 
     <AppFlex gap="small">
+      <!--      <AppCheckbox v-model="direct" text="direct only" />-->
+
       <AppCheckbox
         v-if="
           node.category === 'biolink:Gene' &&
@@ -49,13 +56,14 @@
       />
     </AppFlex>
 
-    <template v-if="category">
+    <template v-if="category && direct">
       <!-- table view of associations -->
       <AssociationsTable
         :node="node"
         :category="category"
         :association="association"
         :include-orthologs="includeOrthologs"
+        :direct="direct"
         @select="(value) => (association = value)"
       />
     </template>
@@ -98,6 +106,7 @@ const category = ref<Option>();
 const association = ref<DirectionalAssociation>();
 /** include orthologous genes in association table */
 const includeOrthologs = ref(false);
+const direct = ref<Option>();
 
 /** list of options for dropdown */
 const categoryOptions = computed(
@@ -109,6 +118,12 @@ const categoryOptions = computed(
     })) || [],
 );
 
+const directOptions = computed(
+  (): Options => [
+    { id: "false", label: "including sub-classes" },
+    { id: "true", label: "directly" },
+  ],
+);
 /** deselect association when selected category changes */
 watch(category, () => (association.value = undefined));
 
@@ -135,6 +150,24 @@ watch(
     category.value = categoryOptions.value.find(
       (option) => option.id === route.query.associations,
     );
+    direct.value = directOptions.value.find(
+      (option) => option.id === route.query.direct,
+    );
+  },
+  { immediate: true },
+);
+watch(
+  () => route.query,
+  () => {
+    if (!route.query.direct) {
+      direct.value = directOptions.value.find(
+        (option) => option.id === "false",
+      ); // Set default value
+    } else {
+      direct.value = directOptions.value.find(
+        (option) => option.id === route.query.direct,
+      );
+    }
   },
   { immediate: true },
 );

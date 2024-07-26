@@ -25,6 +25,7 @@ def test_association_table(mock_get_assoc_table):
         category=AssociationCategory.DISEASE_TO_PHENOTYPIC_FEATURE_ASSOCIATION,
         q=None,
         traverse_orthologs=False,
+        direct=False,
         sort=None,
         offset=0,
         limit=20,
