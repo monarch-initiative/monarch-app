@@ -15,8 +15,8 @@
       <AppSelectSingle
         v-model="category"
         name="category"
-        :options="categoryOptions" />&nbsp;associations involving&nbsp;<AppNodeBadge
-        :node="node" /><AppSelectSingle
+        :options="categoryOptions" />&nbsp;associations
+      involving&nbsp;<AppNodeBadge :node="node" /><AppSelectSingle
         v-if="
           node.node_hierarchy &&
           node.node_hierarchy.sub_classes &&
@@ -28,7 +28,7 @@
     /></AppFlex>
 
     <AppFlex gap="small">
-<!--      <AppCheckbox v-model="direct" text="direct only" />-->
+      <!--      <AppCheckbox v-model="direct" text="direct only" />-->
 
       <AppCheckbox
         v-if="
@@ -150,7 +150,9 @@ watch(
     category.value = categoryOptions.value.find(
       (option) => option.id === route.query.associations,
     );
-    direct.value = directOptions.value.find((option) => option.id === route.query.direct);
+    direct.value = directOptions.value.find(
+      (option) => option.id === route.query.direct,
+    );
   },
   { immediate: true },
 );
@@ -158,9 +160,13 @@ watch(
   () => route.query,
   () => {
     if (!route.query.direct) {
-      direct.value = directOptions.value.find((option) => option.id === "false"); // Set default value
+      direct.value = directOptions.value.find(
+        (option) => option.id === "false",
+      ); // Set default value
     } else {
-      direct.value = directOptions.value.find((option) => option.id === route.query.direct);
+      direct.value = directOptions.value.find(
+        (option) => option.id === route.query.direct,
+      );
     }
   },
   { immediate: true },
