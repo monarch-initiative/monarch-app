@@ -24,23 +24,14 @@
         "
         v-model="direct"
         name="direct"
-        :options="directOptions"
+        :options="directOptions" /><AppSelectSingle
+        v-if="node.category === 'biolink:Gene'"
+        v-model="includeOrthologs"
+        name="includeOrthologs"
+        :options="includeOrthologOptions"
     /></AppFlex>
 
     <AppFlex gap="small">
-      <!--      <AppCheckbox v-model="direct" text="direct only" />-->
-
-      <AppCheckbox
-        v-if="
-          node.category === 'biolink:Gene' &&
-          category?.id.startsWith('biolink:GeneToPheno')
-        "
-        v-model="includeOrthologs"
-        v-tooltip="
-          'Include phenotypes for orthologous genes in the associations table'
-        "
-        text="Include ortholog phenotypes"
-      />
       <AppButton
         v-if="
           (node.category === 'biolink:Disease' &&
@@ -56,7 +47,7 @@
       />
     </AppFlex>
 
-    <template v-if="category && direct">
+    <template v-if="category && direct && includeOrthologs">
       <!-- table view of associations -->
       <AssociationsTable
         :node="node"
@@ -105,7 +96,7 @@ const category = ref<Option>();
 /** selected association id */
 const association = ref<DirectionalAssociation>();
 /** include orthologous genes in association table */
-const includeOrthologs = ref(false);
+const includeOrthologs = ref<Option>();
 const direct = ref<Option>();
 
 /** list of options for dropdown */
@@ -122,6 +113,13 @@ const directOptions = computed(
   (): Options => [
     { id: "false", label: "including sub-classes" },
     { id: "true", label: "directly" },
+  ],
+);
+
+const includeOrthologOptions = computed(
+  (): Options => [
+    { id: "false", label: "directly" },
+    { id: "true", label: "including orthologs" },
   ],
 );
 /** deselect association when selected category changes */
@@ -142,7 +140,7 @@ watch(
   { flush: "post" },
 );
 
-/** update selected category from url */
+/** update selectable choices from url */
 watch(
   () => route.query.associations,
   () => {
@@ -152,6 +150,9 @@ watch(
     );
     direct.value = directOptions.value.find(
       (option) => option.id === route.query.direct,
+    );
+    includeOrthologs.value = includeOrthologOptions.value.find(
+      (option) => option.id === route.query.includeOrthologs,
     );
   },
   { immediate: true },
@@ -166,6 +167,15 @@ watch(
     } else {
       direct.value = directOptions.value.find(
         (option) => option.id === route.query.direct,
+      );
+    }
+    if (!route.query.includeOrthologs) {
+      includeOrthologs.value = includeOrthologOptions.value.find(
+        (option) => option.id === "false",
+      ); // Set default value
+    } else {
+      includeOrthologs.value = includeOrthologOptions.value.find(
+        (option) => option.id === route.query.includeOrthologs,
       );
     }
   },

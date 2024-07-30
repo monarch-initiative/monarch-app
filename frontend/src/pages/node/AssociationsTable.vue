@@ -130,7 +130,7 @@ type Props = {
   /** selected association category */
   category: Option;
   /** include orthologs */
-  includeOrthologs: boolean;
+  includeOrthologs: Option;
   direct: Option;
   /** selected association */
   association?: DirectionalAssociation;
@@ -299,7 +299,7 @@ const {
       props.category.id,
       start.value,
       perPage.value,
-      props.includeOrthologs,
+      props.includeOrthologs.id,
       props.direct.id,
       search.value,
       sort.value,
@@ -328,7 +328,7 @@ async function download() {
   await downloadAssociations(
     props.node.id,
     props.category.id,
-    props.includeOrthologs,
+    props.includeOrthologs.id,
     props.direct.id,
     search.value,
     sort.value,

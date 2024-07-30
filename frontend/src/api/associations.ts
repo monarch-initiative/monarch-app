@@ -8,7 +8,7 @@ export const getAssociations = async (
   associationCategory = "",
   offset = 0,
   limit = 10,
-  traverseOrthologs = false,
+  traverseOrthologs = "false",
   direct = "false",
   search?: string,
   sort: Sort = null,
@@ -39,7 +39,7 @@ export const maxDownload = 500;
 export const downloadAssociations = async (
   nodeId = "",
   associationCategory = "",
-  traverseOrthologs = false,
+  traverseOrthologs = "false",
   direct = "false",
   search?: string,
   sort: Sort = null,
