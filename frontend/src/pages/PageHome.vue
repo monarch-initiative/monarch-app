@@ -5,7 +5,7 @@
 <template>
   <!-- dive right in -->
   <AppSection design="fill">
-    <div>Explore our knowledge on this website</div>
+    <div>Accelerating precision medicine through Open Data Science.</div>
     <AppTabs
       v-model="tab"
       name="Explore Mode"
@@ -15,10 +15,24 @@
     <TabSearch :minimal="true" :focus-explore="true" />
   </AppSection>
 
+  <AppSection width="big">
+        <AppHeading> Foundational Products </AppHeading>
+        <AppGallery>
+          <template v-for="category in resources" :key="category">
+            <AppTile
+              v-for="(resource, resourceIndex) in category"
+              :key="resourceIndex"
+              :to="resource.link"
+              :icon="resource.icon"
+              :title="resource.name"
+              :subtitle="resource.description"
+            />
+          </template>
+        </AppGallery>
+  </AppSection>
   <AppSection>
     <AppButton to="/how-to" text="Learn to use Monarch" icon="arrow-right" />
   </AppSection>
-
   <AppSection>
     <AppHeading>What is Monarch?</AppHeading>
 
@@ -201,6 +215,7 @@ import { formatNumber } from "@/util/string";
 import tabs from "./explore/tabs.json";
 import TabSearch from "./explore/TabSearch.vue";
 import metadata from "./metadata.json";
+import resources from "./resources.json";
 
 /** selected tab state */
 const tab = ref(tabs[0].id);
