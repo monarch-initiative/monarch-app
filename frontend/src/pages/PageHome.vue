@@ -28,6 +28,7 @@
             />
           </template>
         </AppGallery>
+        <AppButton to="/about" text="Learn more" icon="arrow-right" />
   </AppSection>
  <!-- <AppSection>
     <AppButton to="/how-to" text="Learn to use Monarch" icon="arrow-right" />
@@ -56,12 +57,12 @@
       />
     </AppGallery>
     <!-- KG counts (for advertising) -->
-    <AppButton to="/about" text="Learn more" icon="arrow-right" />
+    <!-- <AppButton to="/about" text="Learn more" icon="arrow-right" /> -->
   </AppSection>
 
   <!-- specific feature demos  -->
 
-  <AppSection>
+  <!-- <AppSection>
     <AppHeading>Highlights</AppHeading>
 
     <p>Some cool things you can do on this website.</p>
@@ -87,7 +88,7 @@
       See rich details about each node. Traverse between nodes via associations
       between them, and view the evidence for those associations.
     </AppHighlight>
-  </AppSection>
+  </AppSection> -->
 
   <!-- news -->
   <AppSection>
@@ -102,7 +103,7 @@
     <!-- list of posts -->
     <AppFlex v-if="blogPosts.length" direction="col" gap="big">
       <AppPost
-        v-for="(item, index) in blogPosts.slice(0, 5)"
+        v-for="(item, index) in blogPosts.slice(0, 3)"
         :key="index"
         class="blog-post"
         :image="item.thumbnail"
@@ -174,7 +175,7 @@ import nodePage from "@/assets/demos/node-page.mp4";
 import phenotypeExplorer from "@/assets/demos/phenotype-explorer.mp4";
 import search from "@/assets/demos/search.mp4";
 import textAnnotator from "@/assets/demos/text-annotator.mp4";
-import AppHighlight from "@/components/AppHighlight.vue";
+// import AppHighlight from "@/components/AppHighlight.vue";
 import AppPost from "@/components/AppPost.vue";
 import AppTabs from "@/components/AppTabs.vue";
 import AppTile from "@/components/AppTile.vue";
