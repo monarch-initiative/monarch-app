@@ -5,7 +5,6 @@
 <template>
   <!-- dive right in -->
   <AppSection design="fill">
-    <div>Accelerating precision medicine through Open Data Science.</div>
     <AppTabs
       v-model="tab"
       name="Explore Mode"
@@ -30,9 +29,9 @@
           </template>
         </AppGallery>
   </AppSection>
-  <AppSection>
+ <!-- <AppSection>
     <AppButton to="/how-to" text="Learn to use Monarch" icon="arrow-right" />
-  </AppSection>
+  </AppSection> -->
   <AppSection>
     <AppHeading>What is Monarch?</AppHeading>
 
@@ -56,38 +55,7 @@
         title="Powerful API and ecosystem of related tools"
       />
     </AppGallery>
-
-    <hr />
-
     <!-- KG counts (for advertising) -->
-    <AppGallery :cols="4">
-      <!-- node counts -->
-      <AppTile
-        v-for="(item, index) in metadata.node"
-        :key="index"
-        :icon="item.icon"
-        :title="startCase(item.label.replace(/biolink:/g, ''))"
-        :subtitle="formatNumber(item.count, true)"
-        design="small"
-      />
-      <!-- association counts -->
-      <AppTile
-        v-for="(item, index) in metadata.association"
-        :key="index"
-        :icon="item.icon2 ? undefined : item.icon"
-        :title="startCase(item.label.replace(/biolink:/g, ''))"
-        :subtitle="formatNumber(item.count, true)"
-        design="small"
-      >
-        <AppFlex v-if="item.icon2" gap="tiny" class="association">
-          <AppIcon :icon="item.icon" />
-          <svg viewBox="0 0 9 2" class="line">
-            <line x1="0" y1="1" x2="9" y2="1" />
-          </svg>
-          <AppIcon :icon="item.icon2" />
-        </AppFlex>
-      </AppTile>
-    </AppGallery>
     <AppButton to="/about" text="Learn more" icon="arrow-right" />
   </AppSection>
 
@@ -211,10 +179,8 @@ import AppPost from "@/components/AppPost.vue";
 import AppTabs from "@/components/AppTabs.vue";
 import AppTile from "@/components/AppTile.vue";
 import { useQuery } from "@/composables/use-query";
-import { formatNumber } from "@/util/string";
 import tabs from "./explore/tabs.json";
 import TabSearch from "./explore/TabSearch.vue";
-import metadata from "./metadata.json";
 import resources from "./resources.json";
 
 /** selected tab state */

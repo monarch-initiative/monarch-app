@@ -5,15 +5,15 @@
       "icon": "resource-phenopackets",
       "link": "http://phenopackets.org/",
       "name": "Phenopackets"
+    },
+    {
+      "description": "Integrates gene, disease, and phenotype data across species.",
+      "icon": "resource-monarch",
+      "link": "https://monarchinitiative.org/",
+      "name": "Knowledge Graph"
     }
   ],
   "Ontologies": [
-    {
-      "description": "Provides a standardized vocabulary of phenotypic abnormalities in human disease.",
-      "icon": "resource-hpo",
-      "link": "https://hpo.jax.org/app/",
-      "name": "HPO"
-    },
     {
       "description": "Aims to harmonize disease definitions across the world.",
       "icon": "resource-mondo",
@@ -21,10 +21,16 @@
       "name": "Mondo"
     },
     {
+      "description": "Provides a standardized vocabulary of phenotypic abnormalities in human disease.",
+      "icon": "resource-hpo",
+      "link": "https://hpo.jax.org/app/",
+      "name": "HPO"
+    },
+    {
       "description": "An integrated cross-species anatomy ontology.",
       "icon": "resource-uberon",
       "link": "https://obophenotype.github.io/uberon/",
-      "name": "Uberon Anatomy Ontology"
+      "name": "Uberon"
     }
   ],
   "Tools": [
@@ -33,12 +39,6 @@
       "icon": "resource-exomiser",
       "link": "https://exomiser.monarchinitiative.org/exomiser/",
       "name": "Exomiser"
-    },
-    {
-      "description": "Integrates gene, disease, and phenotype data across species.",
-      "icon": "resource-monarch",
-      "link": "https://monarchinitiative.org/",
-      "name": "Monarch Knowledge Graph & Services"
     }
   ]
 }

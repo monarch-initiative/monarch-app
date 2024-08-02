@@ -18,7 +18,6 @@
       <AppLink to="https://monarch-initiative.github.io/monarch-documentation/">
         documentation pages
       </AppLink>
-      .
     </p>
   </AppSection>
 
