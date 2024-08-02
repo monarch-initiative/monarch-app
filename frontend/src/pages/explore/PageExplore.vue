@@ -5,12 +5,8 @@
 <template>
   <AppSection>
     <AppHeading>Explore</AppHeading>
-
-    <AppTabs v-model="tab" name="Explore Mode" :tabs="tabs" />
-  </AppSection>
-  <TabSearch v-if="tab === 'search'" />
-  <AppSection>
-      <AppGallery :cols="4">
+         <!-- KG counts (for advertising) -->
+    <AppGallery :cols="5">
       <!-- node counts -->
       <AppTile
         v-for="(item, index) in metadata.node"
@@ -18,7 +14,7 @@
         :icon="item.icon"
         :title="startCase(item.label.replace(/biolink:/g, ''))"
         :subtitle="formatNumber(item.count, true)"
-        design="small"
+        design="extra-small"
       />
       <!-- association counts -->
       <AppTile
@@ -27,7 +23,7 @@
         :icon="item.icon2 ? undefined : item.icon"
         :title="startCase(item.label.replace(/biolink:/g, ''))"
         :subtitle="formatNumber(item.count, true)"
-        design="small"
+        design="extra-small"
       >
         <AppFlex v-if="item.icon2" gap="tiny" class="association">
           <AppIcon :icon="item.icon" />
@@ -38,8 +34,12 @@
         </AppFlex>
       </AppTile>
     </AppGallery>
+    <hr />
+    <AppTabs v-model="tab" name="Explore Mode" :tabs="tabs" />
   </AppSection>
 
+  <TabSearch v-if="tab === 'search'" />
+  
   <TabTextAnnotator v-if="tab === 'text-annotator'" />
 
   <TabPhenotypeExplorer v-if="tab === 'phenotype-explorer'" />
@@ -55,8 +55,8 @@ import TabPhenotypeExplorer from "./TabPhenotypeExplorer.vue";
 import tabs from "./tabs.json";
 import TabSearch from "./TabSearch.vue";
 import TabTextAnnotator from "./TabTextAnnotator.vue";
-import metadata from "./metadata.json";
 import { formatNumber } from "@/util/string";
+import metadata from "./metadata.json";
 
 /** route info */
 const route = useRoute();

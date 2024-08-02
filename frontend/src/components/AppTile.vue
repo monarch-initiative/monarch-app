@@ -30,7 +30,7 @@ type Props = {
   /** secondary text */
   subtitle?: string;
   /** visual design */
-  design?: "small" | "big";
+  design?: "extra-small" | "small" | "big";
 };
 
 withDefaults(defineProps<Props>(), {
@@ -69,6 +69,24 @@ withDefaults(defineProps<Props>(), {
 
   .icon {
     height: 40px;
+  }
+}
+
+.tile.extra-small {
+
+  width: 160px;
+  gap: 10px;
+
+  .title {
+    font-size: 1rem;
+  }
+
+  .button {
+    font-size: 1.2rem;
+  }
+
+  .icon {
+    height: 20px;
   }
 }
 
