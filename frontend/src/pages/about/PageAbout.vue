@@ -24,7 +24,7 @@
         documentation pages.
       </AppLink>
     </p>
-    <!-- <h3>Exploring the Knowledge Graph</h3>
+    <h3>Exploring the Knowledge Graph</h3>
     <iframe
       title="Monarch Initiative Overview"
       class="video"
@@ -32,7 +32,7 @@
       frameborder="0"
       allow="autoplay; picture-in-picture"
       allowfullscreen
-    ></iframe>-->
+    ></iframe>
   </AppSection>
 
   <!-- main links to sub pages -->
