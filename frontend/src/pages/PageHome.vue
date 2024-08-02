@@ -30,15 +30,13 @@
         </AppGallery>
         <AppButton to="/about" text="Learn more" icon="arrow-right" />
   </AppSection>
- <!-- <AppSection>
-    <AppButton to="/how-to" text="Learn to use Monarch" icon="arrow-right" />
-  </AppSection> -->
-  <AppSection>
+
+  <AppSection width="big">
     <AppHeading>What is Monarch?</AppHeading>
 
     <!-- high level description of monarch as a whole. "elevator pitch" -->
     <!-- eslint-disable-next-line -->
-    <AppGallery :cols="2">
+    <AppGallery :cols="4" :home=true>
       <AppTile
         icon="people"
         title="For informaticians, patients, clinicians, researchers, and more"

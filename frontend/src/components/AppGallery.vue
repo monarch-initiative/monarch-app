@@ -4,7 +4,7 @@
 
 <template>
   <div
-    :class="['gallery', `cols-${cols}`]"
+    :class="['gallery', `cols-${cols}`, home ? 'home' : '']"
     :style="{ '--max-cols': cols, '--content-cols': Math.min(cells, cols) }"
   >
     <slot />
@@ -17,6 +17,7 @@ import { computed, type VNode } from "vue";
 type Props = {
   /** max number of columns */
   cols?: number;
+  home?: false;
 };
 
 withDefaults(defineProps<Props>(), { cols: 3 });
@@ -82,6 +83,10 @@ $phone: 600px;
     @media (min-width: $phone) {
       --screen-cols: 3;
     }
+  }
+
+  &.cols-4.home {
+    --gap: 60px;
   }
 }
 </style>
