@@ -73,7 +73,6 @@ withDefaults(defineProps<Props>(), {
 }
 
 .tile.extra-small {
-
   width: 160px;
   gap: 10px;
 

@@ -15,20 +15,20 @@
   </AppSection>
 
   <AppSection width="big">
-        <AppHeading> Foundational Products </AppHeading>
-        <AppGallery>
-          <template v-for="category in resources" :key="category">
-            <AppTile
-              v-for="(resource, resourceIndex) in category"
-              :key="resourceIndex"
-              :to="resource.link"
-              :icon="resource.icon"
-              :title="resource.name"
-              :subtitle="resource.description"
-            />
-          </template>
-        </AppGallery>
-        <AppButton to="/about" text="Learn more" icon="arrow-right" />
+    <AppHeading> Foundational Products </AppHeading>
+    <AppGallery>
+      <template v-for="category in resources" :key="category">
+        <AppTile
+          v-for="(resource, resourceIndex) in category"
+          :key="resourceIndex"
+          :to="resource.link"
+          :icon="resource.icon"
+          :title="resource.name"
+          :subtitle="resource.description"
+        />
+      </template>
+    </AppGallery>
+    <AppButton to="/about" text="Learn more" icon="arrow-right" />
   </AppSection>
 
   <AppSection width="big">
@@ -36,7 +36,7 @@
 
     <!-- high level description of monarch as a whole. "elevator pitch" -->
     <!-- eslint-disable-next-line -->
-    <AppGallery :cols="4" :home=true>
+    <AppGallery :cols="4" :home="true">
       <AppTile
         icon="people"
         title="For informaticians, patients, clinicians, researchers, and more"
@@ -167,7 +167,6 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { startCase } from "lodash";
 import { getBlogPosts } from "@/api/blog";
 import nodePage from "@/assets/demos/node-page.mp4";
 import phenotypeExplorer from "@/assets/demos/phenotype-explorer.mp4";

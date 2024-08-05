@@ -17,7 +17,7 @@ import { computed, type VNode } from "vue";
 type Props = {
   /** max number of columns */
   cols?: number;
-  home?: false;
+  home?: boolean;
 };
 
 withDefaults(defineProps<Props>(), { cols: 3 });

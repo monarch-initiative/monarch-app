@@ -12,16 +12,8 @@
       connect you with someone who can help.
     </p>
     <AppFlex gap="big">
-      <AppTile
-        icon="question-circle"
-        title="How To Use"
-        to="/how-to"
-      />
-      <AppTile
-        icon="comment"
-        title="Feedback Form"
-        to="/feedback"
-      />
+      <AppTile icon="question-circle" title="How To Use" to="/how-to" />
+      <AppTile icon="comment" title="Feedback Form" to="/feedback" />
       <AppTile
         icon="comments"
         title="Help Desk"

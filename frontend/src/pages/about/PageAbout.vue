@@ -17,9 +17,8 @@
       composed of multiple open-source, open-access components. We promote
       provenance and transparency, enhanced use of standards and new
       technologies and improved data accessibility, end-user utility, and data
-      submission.
-      Learn more about the complete suite of Monarch resources on our
-      organization's
+      submission. Learn more about the complete suite of Monarch resources on
+      our organization's
       <AppLink to="https://monarch-initiative.github.io/monarch-documentation/">
         documentation pages.
       </AppLink>

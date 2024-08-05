@@ -20,9 +20,10 @@
         <component :is="home ? 'h1' : 'div'" class="name">
           Monarch Initiative
         </component>
-
         <!-- slogan -->
-        <div v-if="home" class="slogan">Accelerating precision medicine through open data science</div>
+        <div v-if="home" class="slogan">
+          Accelerating precision medicine through open data science
+        </div>
       </AppLink>
 
       <!-- nav toggle button -->

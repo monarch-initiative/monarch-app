@@ -5,7 +5,8 @@
 <template>
   <footer class="footer">
     <div class="social">
-      <AppLink v-tooltip="'Subscribe'"
+      <AppLink
+        v-tooltip="'Subscribe'"
         to="https://groups.google.com/g/monarch-friends/"
       >
         <AppIcon icon="envelope" />
