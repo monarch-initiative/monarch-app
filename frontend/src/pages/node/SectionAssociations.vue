@@ -3,29 +3,31 @@
 -->
 
 <template>
-  <AppSection>
-    <AppHeading icon="arrows-left-right">Associations</AppHeading>
+<!-- show an AppSection for each category in categoryOptions  -->
+  <div v-for="category in categoryOptions" :key="category.id">
+    <AppSection>
+    <AppHeading icon="arrows-left-right">{{category.label}} Associations</AppHeading>
 
     <span v-if="!categoryOptions.length"
       >No associations with &nbsp;<AppNodeBadge :node="node" />
     </span>
 
     <!-- select -->
-    <AppFlex v-else gap="small">
-      <AppSelectSingle
-        v-model="category"
-        name="category"
-        :options="categoryOptions" />&nbsp;associations
-      involving&nbsp;<AppNodeBadge :node="node" /><AppSelectSingle
-        v-if="
-          node.node_hierarchy &&
-          node.node_hierarchy.sub_classes &&
-          node.node_hierarchy.sub_classes.length > 0
-        "
-        v-model="direct"
-        name="direct"
-        :options="directOptions"
-    /></AppFlex>
+<!--    <AppFlex v-else gap="small">-->
+<!--      <AppSelectSingle-->
+<!--        v-model="category"-->
+<!--        name="category"-->
+<!--        :options="categoryOptions" />&nbsp;associations-->
+<!--      involving&nbsp;<AppNodeBadge :node="node" /><AppSelectSingle-->
+<!--        v-if="-->
+<!--          node.node_hierarchy &&-->
+<!--          node.node_hierarchy.sub_classes &&-->
+<!--          node.node_hierarchy.sub_classes.length > 0-->
+<!--        "-->
+<!--        v-model="direct"-->
+<!--        name="direct"-->
+<!--        :options="directOptions"-->
+<!--    /></AppFlex>-->
 
     <AppFlex gap="small">
       <!--      <AppCheckbox v-model="direct" text="direct only" />-->
@@ -68,13 +70,13 @@
       />
     </template>
   </AppSection>
-
-  <!-- details viewer of association -->
-  <SectionAssociationDetails
+    <!-- details viewer of association -->
+    <SectionAssociationDetails
     v-if="association"
     :node="node"
     :association="association"
   />
+  </div>
 </template>
 
 <script setup lang="ts">
