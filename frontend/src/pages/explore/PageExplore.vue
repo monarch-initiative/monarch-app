@@ -5,14 +5,32 @@
 <template>
   <AppSection>
     <AppHeading>Explore</AppHeading>
-
+    <!-- KG counts (for advertising) -->
+    <AppGallery :cols="5">
+      <!-- node counts -->
+      <AppTile
+        v-for="(item, index) in metadata.node"
+        :key="index"
+        :icon="item.icon"
+        :title="startCase(item.label.replace(/biolink:/g, ''))"
+        :subtitle="formatNumber(item.count, true)"
+        design="extra-small"
+      />
+      <AppTile
+        v-for="(item, index) in metadata.association"
+        :key="index"
+        :icon="item.icon"
+        :title="startCase(item.label.replace(/biolink:/g, ''))"
+        :subtitle="formatNumber(item.count, true)"
+        design="extra-small"
+      >
+      </AppTile>
+    </AppGallery>
+    <hr />
     <AppTabs v-model="tab" name="Explore Mode" :tabs="tabs" />
   </AppSection>
-
   <TabSearch v-if="tab === 'search'" />
-
   <TabTextAnnotator v-if="tab === 'text-annotator'" />
-
   <TabPhenotypeExplorer v-if="tab === 'phenotype-explorer'" />
 </template>
 
@@ -22,6 +40,8 @@ import { useRoute } from "vue-router";
 import { startCase } from "lodash";
 import AppTabs from "@/components/AppTabs.vue";
 import { appTitle } from "@/global/meta";
+import { formatNumber } from "@/util/string";
+import metadata from "./metadata.json";
 import TabPhenotypeExplorer from "./TabPhenotypeExplorer.vue";
 import tabs from "./tabs.json";
 import TabSearch from "./TabSearch.vue";
@@ -42,3 +62,20 @@ watch(
   { immediate: true, flush: "post" },
 );
 </script>
+
+<style lang="scss" scoped>
+.association {
+  font-size: 2rem;
+}
+
+.line {
+  width: 10px;
+
+  line {
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-dasharray: 1 3;
+    stroke-linecap: round;
+  }
+}
+</style>

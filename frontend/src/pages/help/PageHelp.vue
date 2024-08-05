@@ -12,16 +12,11 @@
       connect you with someone who can help.
     </p>
     <AppFlex gap="big">
-      <AppTile
-        icon="comment"
-        title="Feedback Form"
-        subtitle="Right here, no account required"
-        to="/feedback"
-      />
+      <AppTile icon="question-circle" title="How To Use" to="/how-to" />
+      <AppTile icon="comment" title="Feedback Form" to="/feedback" />
       <AppTile
         icon="comments"
         title="Help Desk"
-        subtitle="On GitHub, requires account"
         to="https://github.com/monarch-initiative/helpdesk"
       />
     </AppFlex>

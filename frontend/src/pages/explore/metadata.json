@@ -1,0 +1,31 @@
+{
+  "node": [
+    {
+      "label": "Genes",
+      "icon": "category-gene",
+      "count": 571073
+    },
+    {
+      "label": "Phenotypes",
+      "icon": "category-phenotypic-quality",
+      "count": 124241
+    },
+    {
+      "label": "Diseases",
+      "icon": "category-disease",
+      "count": 28031
+    },
+    {
+      "label": "Nodes",
+      "icon": "node",
+      "count": 1011022
+    }
+  ],
+  "association": [
+    {
+      "label": "Associations",
+      "icon": "association",
+      "count": 11076689
+    }
+  ]
+}
