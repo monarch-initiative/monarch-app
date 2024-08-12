@@ -9,7 +9,7 @@
 <template>
   <!-- table data -->
   <AppFlex direction="col" :class="['container', { expanded }]">
-    <div ref="scroll" class="scroll force-scrollbar">
+    <div ref="scroll">
       <table
         class="table"
         :aria-colcount="cols.length"
@@ -420,7 +420,7 @@ watch(
 }
 
 .table {
-  margin: 0 auto;
+ //  margin: 0 auto;
   border-collapse: collapse;
   table-layout: fixed;
 }

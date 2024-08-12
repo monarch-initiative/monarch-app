@@ -40,11 +40,13 @@ defineSlots<Slots>();
   }
 
   &.medium {
-    padding: 50px max(40px, calc((100% - $section) / 2));
+    padding: 50px 40px;
+    //padding: 50px max(40px, calc((100% - $section) / 2));
   }
 
   &.big {
-    padding: 50px max(40px, calc((100% - $section-big) / 2));
+    padding: 50px 40px;
+    //padding: 50px max(40px, calc((100% - $section-big) / 2));
   }
 
   &.normal {
