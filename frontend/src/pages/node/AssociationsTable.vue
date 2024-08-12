@@ -336,13 +336,14 @@ async function download() {
 /** get phenotype frequency percentage 0-1 */
 const frequencyPercentage = (row: DirectionalAssociation) => {
   /** frequency from % out of 100 */
-  if (row.has_percentage) return row.has_percentage / 100;
+  if (row.has_percentage !== undefined) return row.has_percentage / 100;
 
   /** frequency from ratio */
-  if (row.has_count && row.has_total) return row.has_count / row.has_total;
-
+  if (row.has_count !== undefined && row.has_total !== undefined) {
+    return row.has_count / row.has_total;
+  }
   /** enumerated frequencies */
-  if (row.frequency_qualifier)
+  if (row.frequency_qualifier !== undefined)
     switch (row.frequency_qualifier) {
       case "HP:0040280":
         return 1;
@@ -361,14 +362,20 @@ const frequencyPercentage = (row: DirectionalAssociation) => {
 
 /** get frequency tooltip */
 const frequencyTooltip = (row: DirectionalAssociation) => {
-  if (row.has_percentage)
-    return `${row.has_percentage.toFixed(0)}% of ${row.has_total} cases`;
 
-  if (row.has_count && row.has_total)
+  // display fraction if possible
+  if (row.has_count !== undefined && row.has_total !== undefined) {
     return `${row.has_count} of ${row.has_total} cases`;
+  }
 
+  // if percentage is present but fraction isn't, that's what was originally in the data
+  if (row.has_percentage !== undefined && row.has_total !== undefined) {
+    return `${row.has_percentage.toFixed(0)}%`;
+  }
+  // if no percentage or fraction, display the qualifier label
   if (row.frequency_qualifier) return `${row.frequency_qualifier_label}`;
 
+  // finally, there is no frequency info at all
   return "No info";
 };
 
