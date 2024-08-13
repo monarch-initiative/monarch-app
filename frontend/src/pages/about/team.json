@@ -49,11 +49,6 @@
         "link": "https://tislab.org/members/eric-hurwitz.html"
       },
       {
-        "name": "Glass Elsarboukh",
-        "role": "Scientific Software Engineer",
-        "link": "https://github.com/glass-ships"
-      },
-      {
         "name": "Kevin Schaper",
         "role": "Scientific Software Engineer",
         "link": "https://tislab.org/members/kevin-schaper.html"
@@ -377,6 +372,11 @@
   {
     "name": "Alumni Members",
     "members": [
+       {
+        "name": "Glass Elsarboukh",
+        "role": "Scientific Software Engineer",
+        "link": "https://github.com/glass-ships"
+      },
       {
         "name": "Richard Bruskiewich",
         "link": "Bioinformatician "
