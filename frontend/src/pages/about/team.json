@@ -203,11 +203,6 @@
         "link": ""
       },
       {
-        "name": "Leigh Carmody",
-        "role": "Scientific Curator",
-        "link": "https://github.com/LCCarmody"
-      },
-      {
         "name": "Martha Beckwith",
         "role": "",
         "link": ""
@@ -382,6 +377,15 @@
   {
     "name": "Alumni Members",
     "members": [
+      {
+        "name": "Richard Bruskiewich",
+        "link": "Bioinformatician "
+      },
+      {
+        "name": "Leigh Carmody",
+        "role": "Scientific Curator",
+        "link": "https://github.com/LCCarmody"
+      },
       {
         "name": "Ben Coleman",
         "role": ""
