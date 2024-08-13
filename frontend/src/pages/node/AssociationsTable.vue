@@ -362,7 +362,6 @@ const frequencyPercentage = (row: DirectionalAssociation) => {
 
 /** get frequency tooltip */
 const frequencyTooltip = (row: DirectionalAssociation) => {
-
   // display fraction if possible
   if (row.has_count !== undefined && row.has_total !== undefined) {
     return `${row.has_count} of ${row.has_total} cases`;
