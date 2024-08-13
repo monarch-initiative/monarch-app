@@ -8,7 +8,7 @@
 
 <template>
   <!-- table data -->
-  <AppFlex direction="col" :class="['container', { expanded }]">
+  <AppFlex direction="col" align-h="left" :class="['container', { expanded }]">
     <div ref="scroll">
       <table
         class="table"
@@ -422,7 +422,8 @@ watch(
 .table {
  //  margin: 0 auto;
   border-collapse: collapse;
-  table-layout: fixed;
+  width: 100%;
+  //table-layout: fixed;
 }
 
 /** all cells */

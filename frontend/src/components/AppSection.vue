@@ -30,23 +30,23 @@ defineSlots<Slots>();
 .section {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 40px;
-  text-align: center;
+  align-items: flex-start;
+  gap: 20px;
+  text-align: left;
   transition: background $fast;
 
   &.full {
-    padding: 50px 40px;
+    padding: 30px 20px;
   }
 
   &.medium {
-    padding: 50px 40px;
-    //padding: 50px max(40px, calc((100% - $section) / 2));
+    padding: 30px 20px;
+    //padding: 30px max(20px, calc((100% - $section) / 2));
   }
 
   &.big {
-    padding: 50px 40px;
-    //padding: 50px max(40px, calc((100% - $section-big) / 2));
+    padding: 30px 20px;
+    //padding: 30px max(20px, calc((100% - $section-big) / 2));
   }
 
   &.normal {
