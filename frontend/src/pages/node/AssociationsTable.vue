@@ -214,34 +214,21 @@ const cols = computed((): Cols<Datum> => {
         heading: "Frequency",
         sortable: true,
       },
-      // {
-      //   key: "has_percentage",
-      //   heading: "Frequency %",
-      //   sortable: true,
-      // },
-      // {
-      //   key: "has_count",
-      //   heading: "Count",
-      //   sortable: true,
-      // },
-      // {
-      //   key: "has_total",
-      //   heading: "Total",
-      //   sortable: true,
-      // },
       {
         key: "onset_qualifier_label",
         heading: "Onset",
         sortable: true,
       },
-      {
-        key: "original_subject",
-        heading: "Original Subject",
-        sortable: true,
-      },
     );
   }
-
+  //include original subject and call it Source for D2P
+  if (props.category.id.includes("DiseaseToPhenotypicFeature")) {
+    extraCols.push({
+      key: "original_subject",
+      heading: "Source",
+      sortable: true,
+    });
+  }
   /** publication specific columns */
   // if (props.category.label === "biolink:Publication")
   //   extraCols.push(
