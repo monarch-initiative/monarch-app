@@ -7,16 +7,27 @@
 <template>
   <AppWrapper tag="AppSection" :wrap="!minimal">
     <!-- search box -->
-    <AppSelectAutocomplete
-      :model-value="search"
-      name="Search"
-      placeholder="Gene, disease, phenotype, etc."
-      :class="{ 'header-box': headerBox }"
-      :options="runGetAutocomplete"
-      @focus="onFocus"
-      @change="onChange"
-      @delete="onDelete"
-    />
+    <div class="help-icon-section">
+      <AppSelectAutocomplete
+        :model-value="search"
+        name="Search"
+        placeholder="Gene, disease, phenotype, etc."
+        :class="{ 'header-box': headerBox }"
+        :options="runGetAutocomplete"
+        @focus="onFocus"
+        @change="onChange"
+        @delete="onDelete"
+      />
+      <AppButton
+      class="help-icon"
+        v-if="!minimal"
+        text="?"
+        design="circle"
+        color="secondary"
+        to="how-to"
+        v-tooltip="'How to use'"
+      />
+    </div>
 
     <!-- facet dropdown filters -->
     <AppFlex v-if="facets.length && !minimal">
@@ -135,6 +146,7 @@ import { useQuery } from "@/composables/use-query";
 import { deleteEntry, history } from "@/global/history";
 import { appTitle } from "@/global/meta";
 import { waitFor } from "@/util/dom";
+import AppButton from "@/components/AppButton.vue";
 
 type Props = {
   /** whether to show pared down version with just search box */
@@ -480,11 +492,26 @@ watch(from, () => runGetSearch(false));
 .header-box :deep(.icon) {
   color: currentColor !important;
 }
-</style>
 
-<style>
 .hilite {
   font-style: normal;
   font-weight: 600;
 }
+
+.help-icon {
+  font-size: 1.3em;
+  margin-left: 10px;
+  font-weight: bolder;
+}
+
+.help-icon-section {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  flex-grow: 1;
+}
+
 </style>

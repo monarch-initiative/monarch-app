@@ -28,16 +28,21 @@
             />
           </template>
         </AppGallery>
-        <AppButton to="/about" text="Learn more" icon="arrow-right" />
   </AppSection>
- <!-- <AppSection>
-    <AppButton to="/how-to" text="Learn to use Monarch" icon="arrow-right" />
-  </AppSection> -->
   <AppSection>
     <AppHeading>What is Monarch?</AppHeading>
 
     <!-- high level description of monarch as a whole. "elevator pitch" -->
     <!-- eslint-disable-next-line -->
+    <iframe
+      title="Monarch Initiative Overview"
+      class="video"
+      src="https://www.youtube-nocookie.com/embed/SuUKqG2tbx0?autoplay=1&mute=1"
+      frameborder="0"
+      allow="autoplay; picture-in-picture"
+      allowfullscreen
+    ></iframe>
+
     <AppGallery :cols="2">
       <AppTile
         icon="people"
@@ -202,6 +207,11 @@ onMounted(runGetBlogPosts);
 <style lang="scss" scoped>
 .association {
   font-size: 2rem;
+}
+
+.video {
+  aspect-ratio: 16 / 9;
+  width: 100%;
 }
 
 .line {
