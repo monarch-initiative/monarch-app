@@ -35,9 +35,9 @@
     <!-- high level description of monarch as a whole. "elevator pitch" -->
     <!-- eslint-disable-next-line -->
     <iframe
-      title="Monarch Initiative Overview"
+      title="Monarch Initiative: Resource Overview"
       class="video"
-      src="https://www.youtube-nocookie.com/embed/SuUKqG2tbx0?autoplay=1&mute=1"
+      src="https://www.youtube.com/embed/25e88kbjKtU?si=lG88-c2fZcKHxIhm"
       frameborder="0"
       allow="autoplay; picture-in-picture"
       allowfullscreen
@@ -124,6 +124,17 @@
       text="More on Medium"
       icon="medium"
     />
+  </AppSection>
+
+  <AppSection>
+    <iframe
+      title="Monarch Initiative: User Experience"
+      class="video"
+      src="https://www.youtube.com/embed/kYyP6My2tWA?si=k-d_jM-01rUuBBG5"
+      frameborder="0"
+      allow="autoplay; picture-in-picture"
+      allowfullscreen
+    ></iframe>
   </AppSection>
 
   <!-- social media -->
