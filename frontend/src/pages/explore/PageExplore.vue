@@ -10,7 +10,7 @@
   </AppSection>
   <TabSearch v-if="tab === 'search'" />
   <AppSection>
-      <AppGallery :cols="4">
+    <AppGallery :cols="4">
       <!-- node counts -->
       <AppTile
         v-for="(item, index) in metadata.node"
@@ -51,12 +51,12 @@ import { useRoute } from "vue-router";
 import { startCase } from "lodash";
 import AppTabs from "@/components/AppTabs.vue";
 import { appTitle } from "@/global/meta";
+import { formatNumber } from "@/util/string";
+import metadata from "./metadata.json";
 import TabPhenotypeExplorer from "./TabPhenotypeExplorer.vue";
 import tabs from "./tabs.json";
 import TabSearch from "./TabSearch.vue";
 import TabTextAnnotator from "./TabTextAnnotator.vue";
-import metadata from "./metadata.json";
-import { formatNumber } from "@/util/string";
 
 /** route info */
 const route = useRoute();
@@ -90,4 +90,3 @@ watch(
   }
 }
 </style>
-

@@ -17,22 +17,12 @@
       composed of multiple open-source, open-access components. We promote
       provenance and transparency, enhanced use of standards and new
       technologies and improved data accessibility, end-user utility, and data
-      submission.
-      Learn more about the complete suite of Monarch resources on our
-      organization's
+      submission. Learn more about the complete suite of Monarch resources on
+      our organization's
       <AppLink to="https://monarch-initiative.github.io/monarch-documentation/">
         documentation pages.
       </AppLink>
     </p>
-    <h3>Exploring the Knowledge Graph</h3>
-    <iframe
-      title="Monarch Initiative Overview"
-      class="video"
-      src="https://www.youtube-nocookie.com/embed/SuUKqG2tbx0?autoplay=1&mute=1"
-      frameborder="0"
-      allow="autoplay; picture-in-picture"
-      allowfullscreen
-    ></iframe>
   </AppSection>
 
   <!-- main links to sub pages -->

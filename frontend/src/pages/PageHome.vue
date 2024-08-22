@@ -15,19 +15,19 @@
   </AppSection>
 
   <AppSection width="big">
-        <AppHeading> Foundational Products </AppHeading>
-        <AppGallery>
-          <template v-for="category in resources" :key="category">
-            <AppTile
-              v-for="(resource, resourceIndex) in category"
-              :key="resourceIndex"
-              :to="resource.link"
-              :icon="resource.icon"
-              :title="resource.name"
-              :subtitle="resource.description"
-            />
-          </template>
-        </AppGallery>
+    <AppHeading> Foundational Products </AppHeading>
+    <AppGallery>
+      <template v-for="category in resources" :key="category">
+        <AppTile
+          v-for="(resource, resourceIndex) in category"
+          :key="resourceIndex"
+          :to="resource.link"
+          :icon="resource.icon"
+          :title="resource.name"
+          :subtitle="resource.description"
+        />
+      </template>
+    </AppGallery>
   </AppSection>
   <AppSection>
     <AppHeading>What is Monarch?</AppHeading>

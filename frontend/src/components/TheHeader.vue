@@ -22,7 +22,9 @@
         </component>
 
         <!-- slogan -->
-        <div v-if="home" class="slogan">Accelerating precision medicine through Open Data Science</div>
+        <div v-if="home" class="slogan">
+          Accelerating precision medicine through Open Data Science
+        </div>
       </AppLink>
 
       <!-- nav toggle button -->

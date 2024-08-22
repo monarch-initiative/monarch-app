@@ -19,13 +19,13 @@
         @delete="onDelete"
       />
       <AppButton
-      class="help-icon"
         v-if="!minimal"
+        v-tooltip="'How to use'"
+        class="help-icon"
         text="?"
         design="circle"
         color="secondary"
         to="how-to"
-        v-tooltip="'How to use'"
       />
     </div>
 
@@ -133,6 +133,7 @@ import { groupBy, mapValues, sortBy, startCase, uniq, uniqBy } from "lodash";
 import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
 import type { SearchResults } from "@/api/model";
 import { getAutocomplete, getSearch } from "@/api/search";
+import AppButton from "@/components/AppButton.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import type {
   Options as AutocompleteOptions,
@@ -146,7 +147,6 @@ import { useQuery } from "@/composables/use-query";
 import { deleteEntry, history } from "@/global/history";
 import { appTitle } from "@/global/meta";
 import { waitFor } from "@/util/dom";
-import AppButton from "@/components/AppButton.vue";
 
 type Props = {
   /** whether to show pared down version with just search box */
@@ -499,19 +499,18 @@ watch(from, () => runGetSearch(false));
 }
 
 .help-icon {
-  font-size: 1.3em;
   margin-left: 10px;
   font-weight: bolder;
+  font-size: 1.3em;
 }
 
 .help-icon-section {
-  width: 100%;
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 .search-input {
   flex-grow: 1;
 }
-
 </style>

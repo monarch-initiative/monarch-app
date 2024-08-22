@@ -20,7 +20,6 @@
       </AppLink>
     </p>
   </AppSection>
-
 </template>
 
 <script setup lang="ts">
