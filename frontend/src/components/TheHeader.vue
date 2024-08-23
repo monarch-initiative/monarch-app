@@ -22,7 +22,9 @@
         </component>
 
         <!-- slogan -->
-        <div v-if="home" class="slogan">Phenotype driven discovery</div>
+        <div v-if="home" class="slogan">
+          Accelerating precision medicine through Open Data Science
+        </div>
       </AppLink>
 
       <!-- nav toggle button -->
@@ -48,13 +50,6 @@
         to="/explore"
       >
         Explore
-      </AppLink>
-      <AppLink
-        v-tooltip="'Learn about Monarch Tools and Resources'"
-        class="link"
-        to="/resources"
-      >
-        Resources
       </AppLink>
       <AppLink
         v-tooltip="'Citing, licensing, sources, and other info'"

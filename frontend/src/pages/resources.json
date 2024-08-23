@@ -1,0 +1,44 @@
+{
+  "Standards": [
+    {
+      "description": "An ISO-endorsed open standard to share disease and phenotype information.",
+      "icon": "resource-phenopackets",
+      "link": "http://phenopackets.org/",
+      "name": "Phenopackets"
+    },
+    {
+      "description": "Explore gene, disease, and phenotype data across species.",
+      "icon": "resource-monarch",
+      "link": "/explore",
+      "name": "Knowledge Graph"
+    }
+  ],
+  "Ontologies": [
+    {
+      "description": "Harmonizing disease definitions globally.",
+      "icon": "resource-mondo",
+      "link": "https://mondo.monarchinitiative.org/",
+      "name": "Mondo"
+    },
+    {
+      "description": "The standard vocabulary of human phenotypic abnormalities.",
+      "icon": "resource-hpo",
+      "link": "https://hpo.jax.org/app/",
+      "name": "HPO"
+    },
+    {
+      "description": "An integrated cross-species anatomy ontology.",
+      "icon": "resource-uberon",
+      "link": "https://github.com/obophenotype/uberon/",
+      "name": "Uberon"
+    }
+  ],
+  "Tools": [
+    {
+      "description": "A tool to find potential disease-causing variants in WES and WGS.",
+      "icon": "resource-exomiser",
+      "link": "https://exomiser.monarchinitiative.org/exomiser/",
+      "name": "Exomiser"
+    }
+  ]
+}
