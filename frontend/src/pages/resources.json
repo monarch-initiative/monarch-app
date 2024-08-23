@@ -1,7 +1,7 @@
 {
   "Standards": [
     {
-      "description": "An ISO-endorsed open standard to share disease and phenotype information.",
+      "description": "An ISO-endorsed open standard for sharing disease and phenotype information.",
       "icon": "resource-phenopackets",
       "link": "http://phenopackets.org/",
       "name": "Phenopackets"
