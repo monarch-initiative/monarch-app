@@ -59,6 +59,7 @@ const icons = [
   fas.faCogs,
   fas.faDatabase,
   fas.faDownload,
+  fas.faDiagramProject,
   fas.faEquals,
   fas.faFeatherPointed,
   fas.faFilter,

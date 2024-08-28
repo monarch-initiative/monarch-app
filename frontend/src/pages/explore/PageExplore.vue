@@ -9,6 +9,30 @@
     <AppTabs v-model="tab" name="Explore Mode" :tabs="tabs" />
   </AppSection>
   <TabSearch v-if="tab === 'search'" />
+
+  <AppSection>
+    <AppFlex gap="big">
+      <AppTile
+        to="https://github.com/monarch-initiative/monarchr"
+        icon="diagram-project"
+        title="MonarchR"
+        subtitle="R package for exploring the Monarch KG locally"
+      />
+      <AppTile
+        to="http://api-v3.monarchinitiative.org/"
+        icon="code"
+        title="Monarch KG API"
+        subtitle="The API servingthe KG for this website"
+      />
+      <AppTile
+        to="https://github.com/monarch-initiative/monarch-assistant-cypher"
+        icon="person-running"
+        title="Monarch Assistant"
+        subtitle="AI Assistant for the Monarch KG"
+      />
+    </AppFlex>
+  </AppSection>
+
   <AppSection>
     <AppGallery :cols="4">
       <!-- node counts -->
