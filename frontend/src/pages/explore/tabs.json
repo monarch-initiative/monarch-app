@@ -16,5 +16,11 @@
     "text": "Phenotype Explorer",
     "icon": "bars-progress",
     "tooltip": "Construct two sets of phenotypes and see comparisons between them"
+  },
+  {
+    "id": "metadata",
+    "text": "Metadata",
+    "icon": "info",
+    "tooltip": "View metadata about the knowledge graph"
   }
 ]
