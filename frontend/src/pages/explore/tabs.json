@@ -1,7 +1,7 @@
 [
   {
     "id": "search",
-    "text": "Search",
+    "text": "Search Graph",
     "icon": "magnifying-glass",
     "tooltip": "Search our knowledge graph for genes, diseases, phenotypes, and more, then see rich information and relational data between them"
   },
@@ -16,5 +16,11 @@
     "text": "Phenotype Explorer",
     "icon": "bars-progress",
     "tooltip": "Construct two sets of phenotypes and see comparisons between them"
+  },
+  {
+    "id": "resources",
+    "text": "Resources",
+    "icon": "info",
+    "tooltip": "View metadata about the knowledge graph"
   }
 ]
