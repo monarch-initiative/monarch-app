@@ -3,8 +3,7 @@
 -->
 
 <template>
-
-<AppSection design="fill">
+  <AppSection design="fill">
     <AppTabs
       v-model="tab"
       name="Explore Mode"
