@@ -3,7 +3,6 @@
 -->
 
 <template>
-  <!-- dive right in -->
   <AppSection design="fill">
     <AppTabs
       v-model="tab"
@@ -29,6 +28,7 @@
       </template>
     </AppGallery>
   </AppSection>
+
   <AppSection>
     <AppHeading>What is Monarch?</AppHeading>
 
