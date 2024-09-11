@@ -3,7 +3,6 @@
 -->
 
 <template>
-
   <AppSection width="big">
     <AppHeading> Foundational Products </AppHeading>
     <AppGallery>
