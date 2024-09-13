@@ -3,15 +3,6 @@
 -->
 
 <template>
-  <AppSection design="fill">
-    <AppTabs
-      v-model="tab"
-      name="Explore Mode"
-      :tabs="tabs"
-      navigate="Explore"
-    />
-    <TabSearch :minimal="true" :focus-explore="true" />
-  </AppSection>
 
   <AppSection width="big">
     <AppHeading> Foundational Products </AppHeading>
@@ -27,6 +18,16 @@
         />
       </template>
     </AppGallery>
+  </AppSection>
+
+  <AppSection design="fill">
+<!--    <AppTabs-->
+<!--      v-model="tab"-->
+<!--      name="Explore Mode"-->
+<!--      :tabs="tabs"-->
+<!--      navigate="Explore"-->
+<!--    />-->
+    <TabSearch :minimal="true" :focus-explore="true" />
   </AppSection>
 
   <AppSection>

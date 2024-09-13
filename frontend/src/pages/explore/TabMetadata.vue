@@ -32,7 +32,7 @@
   <AppSection>
     <AppFlex gap="big">
       <AppTile
-        to="https://github.com/monarch-initiative/monarchr"
+        to="https://monarch-initiative.github.io/monarchr/articles/monarchr"
         icon="diagram-project"
         title="MonarchR"
         subtitle="R package for exploring the Monarch KG locally"
