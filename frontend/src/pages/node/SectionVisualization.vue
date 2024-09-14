@@ -7,6 +7,8 @@
     v-if="
       node.category === 'biolink:Disease' || node.category === 'biolink:Gene'
     "
+    class="inset"
+    alignment="left"
   >
     <AppHeading icon="chart-bar">HistoPheno</AppHeading>
     <HistoPheno :node="node" />

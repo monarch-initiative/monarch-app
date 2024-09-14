@@ -3,7 +3,7 @@
 -->
 
 <template>
-  <AppSection>
+  <AppSection design="bare">
     <AppHeading icon="lightbulb">Overview</AppHeading>
 
     <AppDetails>

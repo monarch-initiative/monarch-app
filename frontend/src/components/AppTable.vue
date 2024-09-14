@@ -183,13 +183,6 @@
           design="small"
           @click="emitDownload"
         />
-        <AppButton
-          v-tooltip="expanded ? 'Collapse table' : 'Expand table to full width'"
-          :text="expanded ? 'Collapse' : 'Expand'"
-          :icon="expanded ? 'minimize' : 'maximize'"
-          design="small"
-          @click="expanded = !expanded"
-        />
       </div>
     </div>
   </AppFlex>
@@ -227,8 +220,6 @@ export type Sort<Key extends string = string> = {
 
 <script setup lang="ts" generic="Datum extends object">
 import { computed, watch, type VNode } from "vue";
-import { useLocalStorage } from "@vueuse/core";
-import { useScrollable } from "@/composables/use-scrollable";
 import type { Options } from "./AppSelectMulti.vue";
 import AppSelectMulti from "./AppSelectMulti.vue";
 import AppSelectSingle from "./AppSelectSingle.vue";
@@ -305,13 +296,6 @@ type SlotProps = {
 defineSlots<{
   [slot in SlotNames]: (props: SlotProps) => VNode;
 }>();
-
-/** whether table is expanded to be full width */
-const expanded = useLocalStorage(`${props.id}-table-expanded`, false);
-
-/** style scroll states */
-const { ref: scroll, updateScroll } = useScrollable();
-watch(expanded, updateScroll);
 
 /** when user clicks to first page */
 function clickFirst() {
@@ -390,28 +374,18 @@ const ariaSort = computed(() => {
   if (props.sort?.direction === "down") return "descending";
   return "none";
 });
-
-/** close table of contents when expanding or starting expanded */
-watch(
-  expanded,
-  () => {
-    if (expanded.value) closeToc();
-  },
-  { immediate: true },
-);
 </script>
 
 <style lang="scss" scoped>
 .container {
-  &.expanded {
-    left: 0;
-    width: calc(100vw - 100px);
-    transform: translateX(0);
-
-    .cell {
-      width: max-content !important;
-    }
-  }
+  left: 0;
+  width: calc(100vw - 50px);
+  transform: translateX(0);
+  //width: 100%;
+  overflow-x: auto;
+  //.cell {
+  //  width: max-content !important;
+  //}
 }
 
 .scroll {
@@ -420,19 +394,20 @@ watch(
 }
 
 .table {
- //  margin: 0 auto;
-  border-collapse: collapse;
   width: 100%;
-  //table-layout: fixed;
+  //  margin: 0 auto;
+  border-collapse: collapse;
+  font-size: 0.9em;
+  table-layout: auto;
 }
 
 /** all cells */
 .cell {
-  display: flex;
-  align-items: center;
+  //display: flex;
+  //align-items: center;
   max-width: max-content;
-  padding: 5px 10px;
-  gap: 10px;
+  padding: 3px 6px;
+  gap: 5px;
 
   &.left {
     justify-content: flex-start;
@@ -457,6 +432,7 @@ watch(
 .th,
 .td {
   padding: 0;
+  white-space: nowrap;
 
   &.divider {
     position: relative;
@@ -473,7 +449,7 @@ watch(
 
 /** heading cells */
 .th {
-  padding-bottom: 10px;
+  padding-bottom: 3px;
   font-weight: 600;
   text-transform: capitalize;
 }
