@@ -5,7 +5,7 @@
 <template>
   <!-- show an AppSection for each category in categoryOptions  -->
   <div v-for="category in categoryOptions" :key="category.id">
-    <AppSection alignment="left" class="inset">
+    <AppSection alignment="left" class="inset node">
       <AppHeading level="3">{{ category.label }}</AppHeading>
       <span v-if="!categoryOptions.length"
         >No associations with &nbsp;<AppNodeBadge :node="node" />

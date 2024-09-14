@@ -29,32 +29,30 @@
         >
       </div>
 
-      <template v-if="expanded">
-        <div class="spacer"></div>
+      <div class="spacer"></div>
 
-        <!-- entries -->
-        <AppLink
-          v-for="(entry, index) in entries"
-          :key="index"
-          :to="'#' + entry.id"
-          :replace="true"
-          :class="['entry', { active: active === index }]"
-          :aria-current="active === index"
-          @click="active = index"
-        >
-          <AppIcon :icon="entry.icon" class="entry-icon" />
-          <span class="entry-text truncate">{{ entry.text }}</span>
-        </AppLink>
+      <!-- entries -->
+      <AppLink
+        v-for="(entry, index) in entries"
+        :key="index"
+        :to="'#' + entry.id"
+        :replace="true"
+        :class="['entry', { active: active === index }]"
+        :aria-current="active === index"
+        @click="active = index"
+      >
+        <AppIcon :icon="entry.icon" class="entry-icon" />
+        <span class="entry-text truncate">{{ entry.text }}</span>
+      </AppLink>
 
-        <div class="spacer"></div>
+      <div class="spacer"></div>
 
-        <!-- options -->
-        <AppCheckbox
-          v-model="oneAtATime"
-          v-tooltip="'Only show one section at a time'"
-          text="Show single section"
-        />
-      </template>
+      <!-- options -->
+      <AppCheckbox
+        v-model="oneAtATime"
+        v-tooltip="'Only show one section at a time'"
+        text="Show single section"
+      />
     </AppFlex>
   </aside>
 </template>
@@ -185,13 +183,10 @@ useMutationObserver(
   z-index: 1010;
   position: fixed;
   top: 0;
+  width: $toc-width;
+  max-width: calc(100vw - 40px);
   background: $white;
   box-shadow: $shadow;
-}
-
-.toc.expanded {
-  width: 210px;
-  max-width: calc(100vw - 40px);
 }
 
 .title {

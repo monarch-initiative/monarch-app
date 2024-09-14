@@ -380,9 +380,9 @@ const ariaSort = computed(() => {
 .container {
   left: 0;
   width: calc(100vw - 50px);
-  transform: translateX(0);
   //width: 100%;
   overflow-x: auto;
+  transform: translateX(0);
   //.cell {
   //  width: max-content !important;
   //}

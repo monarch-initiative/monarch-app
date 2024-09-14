@@ -4,7 +4,7 @@
 -->
 
 <template>
-  <section :class="['section', width, design, alignment, { inset }]">
+  <section :class="['section', width, design, alignment, { inset }, { node }]">
     <slot />
   </section>
 </template>
@@ -17,6 +17,7 @@ type Props = {
   design?: "normal" | "fill" | "bare";
   alignment?: "left" | "center";
   inset?: boolean;
+  node?: boolean;
 };
 
 withDefaults(defineProps<Props>(), {
@@ -54,6 +55,9 @@ defineSlots<Slots>();
     padding: 30px 20px;
   }
 
+  &.node {
+    margin: 10px 20px 10px $toc-width + 10px !important;
+  }
   &.inset {
     padding: 30px 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
