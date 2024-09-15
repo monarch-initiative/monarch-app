@@ -90,7 +90,6 @@ async function updatePosition() {
   const subHeaderEl = document.querySelector("main > section:first-child");
   if (!headerEl || !subHeaderEl) return;
   const header = headerEl.getBoundingClientRect();
-  const subHeader = subHeaderEl.getBoundingClientRect();
 
   /** calculate nudge */
   nudge.value = Math.max(header.top + header.height);
