@@ -93,10 +93,7 @@ async function updatePosition() {
   const subHeader = subHeaderEl.getBoundingClientRect();
 
   /** calculate nudge */
-  nudge.value = Math.max(
-    header.top + header.height,
-    subHeader.top + subHeader.height,
-  );
+  nudge.value = Math.max(header.top + header.height);
 
   /** find in view section */
   if (!oneAtATime.value)

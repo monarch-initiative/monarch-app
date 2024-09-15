@@ -3,7 +3,7 @@
 -->
 
 <template>
-  <AppSection design="fill" class="section">
+  <AppSection design="bare" alignment="left" class="section node">
     <AppFlex dir="column">
       <AppHeading class="heading" :icon="getCategoryIcon(node.category)">
         <span
