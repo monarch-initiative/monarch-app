@@ -163,7 +163,6 @@ const cols = computed((): Cols<Datum> => {
       heading: getCategoryLabel(
         associations.value.items[0]?.subject_category || "Subject",
       ),
-      width: "200px",
       sortable: true,
     },
     {
@@ -178,7 +177,6 @@ const cols = computed((): Cols<Datum> => {
       heading: getCategoryLabel(
         associations.value.items[0]?.object_category || "Object",
       ),
-      width: "200px",
       sortable: true,
     },
     {

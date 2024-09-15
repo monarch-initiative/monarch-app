@@ -43,8 +43,6 @@ const arrowDirection = computed(() =>
 
 <style lang="scss" scoped>
 .predicate {
-  white-space: nowrap;
-
   & > * {
     white-space: normal;
     overflow-wrap: anywhere;

@@ -13,7 +13,6 @@
       aria-label="Page table of contents"
       @click.stop
     >
-
       <!-- entries -->
       <AppLink
         v-for="(entry, index) in entries"
@@ -167,8 +166,8 @@ useMutationObserver(
   position: fixed;
   top: 0;
   width: $toc-width;
-  height: 100%;
   max-width: calc(100vw - 40px);
+  height: 100%;
   background: $white;
   box-shadow: $shadow;
 }

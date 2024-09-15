@@ -9,7 +9,7 @@
 <template>
   <!-- table data -->
   <AppFlex direction="col" align-h="left" :class="['container', { expanded }]">
-    <div ref="scroll">
+    <div ref="scroll" style="width: 100%">
       <table
         class="table"
         :aria-colcount="cols.length"
@@ -379,8 +379,8 @@ const ariaSort = computed(() => {
 <style lang="scss" scoped>
 .container {
   left: 0;
-  width: calc(100vw - 50px);
-  //width: 100%;
+  //width: calc(100vw - 50px);
+  width: 100%;
   overflow-x: auto;
   transform: translateX(0);
   //.cell {
@@ -398,6 +398,7 @@ const ariaSort = computed(() => {
   //  margin: 0 auto;
   border-collapse: collapse;
   font-size: 0.9em;
+  //table-layout: fixed;
   table-layout: auto;
 }
 
@@ -405,7 +406,7 @@ const ariaSort = computed(() => {
 .cell {
   //display: flex;
   //align-items: center;
-  max-width: max-content;
+  //max-width: max-content;
   padding: 3px 6px;
   gap: 5px;
 
@@ -452,6 +453,21 @@ const ariaSort = computed(() => {
   padding-bottom: 3px;
   font-weight: 600;
   text-transform: capitalize;
+}
+
+/* first th */
+.th:nth-child(1) {
+  width: 30%;
+}
+
+/* second th */
+.th:nth-child(2) {
+  width: 5%;
+}
+
+/* third th */
+.th:nth-child(3) {
+  width: 30%;
 }
 
 /** body cells */

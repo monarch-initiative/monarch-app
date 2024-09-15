@@ -1,5 +1,5 @@
 <template>
-  <AppSection>
+  <AppSection alignment="left" class="node">
     <AppHeading icon="location-dot">Breadcrumbs</AppHeading>
 
     <template v-if="breadcrumbs.length">
