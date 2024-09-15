@@ -6,30 +6,13 @@
       direction="col"
       gap="none"
       align-h="stretch"
+      align-v="top"
       :class="['toc', { expanded }]"
       :style="{ top: nudge + 'px' }"
       role="doc-toc"
       aria-label="Page table of contents"
       @click.stop
     >
-      <!-- toggle button -->
-      <div class="title">
-        <button
-          v-tooltip="
-            expanded ? 'Close table of contents' : 'Expand table of contents'
-          "
-          class="title-button"
-          :aria-expanded="expanded"
-          @click="expanded = !expanded"
-        >
-          <AppIcon :icon="expanded ? 'xmark' : 'bars'" />
-        </button>
-        <span v-if="expanded" class="title-text truncate"
-          >Table of Contents</span
-        >
-      </div>
-
-      <div class="spacer"></div>
 
       <!-- entries -->
       <AppLink
@@ -184,6 +167,7 @@ useMutationObserver(
   position: fixed;
   top: 0;
   width: $toc-width;
+  height: 100%;
   max-width: calc(100vw - 40px);
   background: $white;
   box-shadow: $shadow;
