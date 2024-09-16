@@ -155,7 +155,8 @@ $wrap: 1000px;
 
 @media not all and (max-width: $wrap) {
   .header.home {
-    position: relative;
+    //commenting this out makes the header not sticky
+    //position: relative;
     min-height: 300px;
   }
 }
