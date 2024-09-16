@@ -183,12 +183,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 import { getBlogPosts } from "@/api/blog";
 import AppPost from "@/components/AppPost.vue";
 import AppTile from "@/components/AppTile.vue";
 import { useQuery } from "@/composables/use-query";
-import tabs from "./explore/tabs.json";
 import resources from "./resources.json";
 
 const {
