@@ -166,7 +166,9 @@ $wrap: 1000px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 50px;
+  &.home {
+    padding-top: 50px;
+  }
 }
 
 .button {
