@@ -157,7 +157,11 @@ $wrap: 1000px;
   .header.home {
     //commenting this out makes the header not sticky
     //position: relative;
-    min-height: 300px;
+    min-height: 200px;
+  }
+  .header.home .title {
+    margin-top: 70px;
+    margin-bottom: 20px;
   }
 }
 
@@ -167,9 +171,6 @@ $wrap: 1000px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  &.home {
-    padding-top: 50px;
-  }
 }
 
 .button {
