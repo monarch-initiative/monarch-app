@@ -42,6 +42,17 @@
 
     <!-- navigation bar -->
     <nav :class="['nav', { home, expanded }]">
+      <div v-if="home" class="home">
+        <AppLink
+          v-tooltip="'Go to the homepage'"
+          class="logo"
+          to="/"
+        >
+          <TheLogo class="image" />
+          <div class="name">Monarch Initiative</div>
+        </AppLink>
+      </div>
+
       <TabSearch
         v-if="search"
         :minimal="true"
