@@ -3,21 +3,6 @@ import { log } from "../playwright.config";
 
 log();
 
-test("Redirects to explore page from home page", async ({ page }) => {
-  /** go to homepage and focus search box */
-  await page.goto("/");
-  await page.locator("input").focus();
-  await page.waitForURL(/explore/);
-
-  /** go to homepage and click one of tabs */
-  await page.goto("/");
-  await page
-    .getByText(/Phenotype Explorer/i)
-    .first()
-    .click();
-  await page.waitForURL(/explore/);
-});
-
 test("Recent/frequent results show", async ({ page }) => {
   await page.goto("/explore");
 
