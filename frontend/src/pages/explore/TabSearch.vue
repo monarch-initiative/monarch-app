@@ -479,11 +479,6 @@ watch(from, () => runGetSearch(false));
 
 .header-box {
   width: 100%;
-
-  &.home {
-    padding-right: 40px;
-    padding-left: 60px;
-  }
 }
 .header-box :deep(input) {
   border-top-width: 0;
