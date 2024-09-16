@@ -12,7 +12,7 @@
         :model-value="search"
         name="Search"
         placeholder="Gene, disease, phenotype, etc."
-        :class="{ 'header-box': headerBox }"
+        :class="{ 'header-box': headerBox, home: home }"
         :options="runGetAutocomplete"
         @focus="onFocus"
         @change="onChange"
@@ -155,6 +155,8 @@ type Props = {
   headerBox?: boolean;
   /** whether to navigate to explore page when focusing search box */
   focusExplore?: boolean;
+  /** whether this is being shown on the home page */
+  home?: boolean;
 };
 
 const props = defineProps<Props>();
@@ -477,8 +479,12 @@ watch(from, () => runGetSearch(false));
 
 .header-box {
   width: 100%;
-}
 
+  &.home {
+    padding-right: 40px;
+    padding-left: 60px;
+  }
+}
 .header-box :deep(input) {
   border-top-width: 0;
   border-right-width: 0;

@@ -42,7 +42,13 @@
 
     <!-- navigation bar -->
     <nav :class="['nav', { home, expanded }]">
-      <TabSearch v-if="search" :minimal="true" :header-box="true" />
+      <TabSearch
+        v-if="search"
+        :minimal="true"
+        :header-box="true"
+        :home="home"
+        :class="[home]"
+      />
 
       <AppLink
         v-tooltip="'Dive right in and use Monarch'"
@@ -92,7 +98,6 @@ const home = computed((): boolean => route.name === "Home");
 /** whether to show search box */
 const search = computed(
   (): boolean =>
-    route.name !== "Home" &&
     !(
       route.hash === "#search" ||
       (route.name === "Explore" && route.hash === "")
