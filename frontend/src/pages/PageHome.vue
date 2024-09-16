@@ -3,18 +3,7 @@
 -->
 
 <template>
-  <AppSection design="fill">
-    <AppTabs
-      v-model="tab"
-      name="Explore Mode"
-      :tabs="tabs"
-      navigate="Explore"
-    />
-    <TabSearch :minimal="true" :focus-explore="true" />
-  </AppSection>
-
   <AppSection width="big">
-    <AppHeading> Foundational Products </AppHeading>
     <AppGallery>
       <template v-for="category in resources" :key="category">
         <AppTile
@@ -28,6 +17,16 @@
       </template>
     </AppGallery>
   </AppSection>
+
+  <!--  <AppSection design="fill">-->
+  <!--    <AppTabs-->
+  <!--      v-model="tab"-->
+  <!--      name="Explore Mode"-->
+  <!--      :tabs="tabs"-->
+  <!--      navigate="Explore"-->
+  <!--    />-->
+  <!--    <TabSearch :minimal="true" :focus-explore="true" />-->
+  <!--  </AppSection>-->
 
   <AppSection>
     <AppHeading>What is Monarch?</AppHeading>
@@ -184,24 +183,12 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import { startCase } from "lodash";
+import { onMounted } from "vue";
 import { getBlogPosts } from "@/api/blog";
-import nodePage from "@/assets/demos/node-page.mp4";
-import phenotypeExplorer from "@/assets/demos/phenotype-explorer.mp4";
-import search from "@/assets/demos/search.mp4";
-import textAnnotator from "@/assets/demos/text-annotator.mp4";
-// import AppHighlight from "@/components/AppHighlight.vue";
 import AppPost from "@/components/AppPost.vue";
-import AppTabs from "@/components/AppTabs.vue";
 import AppTile from "@/components/AppTile.vue";
 import { useQuery } from "@/composables/use-query";
-import tabs from "./explore/tabs.json";
-import TabSearch from "./explore/TabSearch.vue";
 import resources from "./resources.json";
-
-/** selected tab state */
-const tab = ref(tabs[0].id);
 
 const {
   query: runGetBlogPosts,

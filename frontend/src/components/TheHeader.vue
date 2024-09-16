@@ -42,7 +42,20 @@
 
     <!-- navigation bar -->
     <nav :class="['nav', { home, expanded }]">
-      <TabSearch v-if="search" :minimal="true" :header-box="true" />
+      <div v-if="home" class="home">
+        <AppLink v-tooltip="'Go to the homepage'" class="logo" to="/">
+          <TheLogo class="image" />
+          <div class="name">Monarch Initiative</div>
+        </AppLink>
+      </div>
+
+      <TabSearch
+        v-if="search"
+        :minimal="true"
+        :header-box="true"
+        :home="home"
+        :class="[home]"
+      />
 
       <AppLink
         v-tooltip="'Dive right in and use Monarch'"
@@ -92,7 +105,6 @@ const home = computed((): boolean => route.name === "Home");
 /** whether to show search box */
 const search = computed(
   (): boolean =>
-    route.name !== "Home" &&
     !(
       route.hash === "#search" ||
       (route.name === "Explore" && route.hash === "")
@@ -143,8 +155,13 @@ $wrap: 1000px;
 
 @media not all and (max-width: $wrap) {
   .header.home {
-    position: relative;
-    min-height: 300px;
+    //commenting this out makes the header not sticky
+    //position: relative;
+    min-height: 200px;
+  }
+  .header.home .title {
+    margin-top: 70px;
+    margin-bottom: 20px;
   }
 }
 

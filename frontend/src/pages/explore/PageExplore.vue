@@ -19,8 +19,6 @@ import { useRoute } from "vue-router";
 import { startCase } from "lodash";
 import AppTabs from "@/components/AppTabs.vue";
 import { appTitle } from "@/global/meta";
-import { formatNumber } from "@/util/string";
-import metadata from "./metadata.json";
 import TabMetadata from "./TabMetadata.vue";
 import TabPhenotypeExplorer from "./TabPhenotypeExplorer.vue";
 import tabs from "./tabs.json";
