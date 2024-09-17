@@ -44,6 +44,7 @@ class SolrQuery(BaseModel):
     facet_fields: Optional[List[str]] = Field(default_factory=list)
     facet_queries: Optional[List[str]] = Field(default_factory=list)
     filter_queries: Optional[List[str]] = Field(default_factory=list)
+    facet_mincount: int = 1
     query_fields: Optional[str] = None
     def_type: str = "edismax"
     q_op: str = "AND"  # See SOLR-8812, need this plus mm=100% to allow boolean operators in queries
@@ -85,6 +86,8 @@ class SolrQuery(BaseModel):
             return "facet.query"
         elif value == "filter_queries":
             return "fq"
+        elif value == "facet_mincount":
+            return "facet.mincount"
         elif value == "query_fields":
             return "qf"
         elif value == "def_type":

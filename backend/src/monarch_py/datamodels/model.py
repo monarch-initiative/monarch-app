@@ -1,16 +1,16 @@
 from __future__ import annotations
 from datetime import datetime, date
+from decimal import Decimal
 from enum import Enum
-from typing import List, Dict, Optional, Any, Union
-from pydantic import BaseModel as BaseModel, ConfigDict, Field, field_validator
 import re
 import sys
+from typing import Any, List, Literal, Dict, Optional, Union
+from pydantic.version import VERSION as PYDANTIC_VERSION
 
-if sys.version_info >= (3, 8):
-    from typing import Literal
+if int(PYDANTIC_VERSION[0]) >= 2:
+    from pydantic import BaseModel, ConfigDict, Field, field_validator
 else:
-    from typing_extensions import Literal
-
+    from pydantic import BaseModel, Field, validator
 
 metamodel_version = "None"
 version = "None"
@@ -23,7 +23,9 @@ class ConfiguredBaseModel(BaseModel):
         extra="allow",
         arbitrary_types_allowed=True,
         use_enum_values=True,
+        strict=False,
     )
+    pass
 
 
 class AssociationDirectionEnum(str, Enum):
@@ -37,8 +39,83 @@ class AssociationDirectionEnum(str, Enum):
     outgoing = "outgoing"
 
 
-class Association(ConfiguredBaseModel):
+class PairwiseSimilarity(ConfiguredBaseModel):
+    """
+    Abstract grouping for representing individual pairwise similarities
+    """
 
+    pass
+
+
+class TermPairwiseSimilarity(PairwiseSimilarity):
+    """
+    A simple pairwise similarity between two atomic concepts/terms
+    """
+
+    subject_id: str = Field(...)
+    subject_label: Optional[str] = Field(None, description="""The name of the subject entity""")
+    subject_source: Optional[str] = Field(None, description="""the source for the first entity""")
+    object_id: str = Field(...)
+    object_label: Optional[str] = Field(None, description="""The name of the object entity""")
+    object_source: Optional[str] = Field(None, description="""the source for the second entity""")
+    ancestor_id: Optional[str] = Field(
+        None,
+        description="""the most recent common ancestor of the two compared entities. If there are multiple MRCAs then the most informative one is selected""",
+    )
+    ancestor_label: Optional[str] = Field(None, description="""the name or label of the ancestor concept""")
+    ancestor_source: Optional[str] = Field(None)
+    object_information_content: Optional[float] = Field(None, description="""The IC of the object""")
+    subject_information_content: Optional[float] = Field(None, description="""The IC of the subject""")
+    ancestor_information_content: Optional[float] = Field(None, description="""The IC of the object""")
+    jaccard_similarity: Optional[float] = Field(
+        None, description="""The number of concepts in the intersection divided by the number in the union"""
+    )
+    cosine_similarity: Optional[float] = Field(
+        None, description="""the dot product of two node embeddings divided by the product of their lengths"""
+    )
+    dice_similarity: Optional[float] = Field(None)
+    phenodigm_score: Optional[float] = Field(
+        None, description="""the geometric mean of the jaccard similarity and the information content"""
+    )
+
+
+class TermSetPairwiseSimilarity(PairwiseSimilarity):
+    """
+    A simple pairwise similarity between two sets of concepts/terms
+    """
+
+    subject_termset: Optional[Dict[str, str]] = Field(default_factory=dict)
+    object_termset: Optional[Dict[str, str]] = Field(default_factory=dict)
+    subject_best_matches: Optional[Dict[str, BestMatch]] = Field(default_factory=dict)
+    object_best_matches: Optional[Dict[str, BestMatch]] = Field(default_factory=dict)
+    average_score: Optional[float] = Field(None)
+    best_score: Optional[float] = Field(None)
+    metric: Optional[str] = Field(None)
+
+
+class TermInfo(ConfiguredBaseModel):
+    id: str = Field(...)
+    label: Optional[str] = Field(None)
+
+
+class BestMatch(ConfiguredBaseModel):
+    match_source: str = Field(...)
+    match_source_label: Optional[str] = Field(None)
+    match_target: Optional[str] = Field(None, description="""the entity matches""")
+    match_target_label: Optional[str] = Field(None)
+    score: float = Field(...)
+    match_subsumer: Optional[str] = Field(None)
+    match_subsumer_label: Optional[str] = Field(None)
+    similarity: TermPairwiseSimilarity = Field(...)
+
+
+class SemsimSearchResult(ConfiguredBaseModel):
+    subject: Entity = Field(...)
+    score: Optional[float] = Field(None)
+    similarity: Optional[TermSetPairwiseSimilarity] = Field(None)
+
+
+class Association(ConfiguredBaseModel):
     id: str = Field(...)
     category: Optional[str] = Field(None)
     subject: str = Field(...)
@@ -202,7 +279,6 @@ class AssociationCountList(ConfiguredBaseModel):
 
 
 class CompactAssociation(ConfiguredBaseModel):
-
     category: Optional[str] = Field(None)
     subject: str = Field(...)
     subject_label: Optional[str] = Field(None, description="""The name of the subject entity""")
@@ -446,20 +522,17 @@ class Entity(ConfiguredBaseModel):
 
 
 class FacetValue(ConfiguredBaseModel):
-
     label: str = Field(...)
     count: Optional[int] = Field(None, description="""count of documents""")
 
 
 class AssociationCount(FacetValue):
-
     category: Optional[str] = Field(None)
     label: str = Field(...)
     count: Optional[int] = Field(None, description="""count of documents""")
 
 
 class FacetField(ConfiguredBaseModel):
-
     label: str = Field(...)
     facet_values: Optional[List[FacetValue]] = Field(
         default_factory=list, description="""Collection of FacetValue label/value instances belonging to a FacetField"""
@@ -467,7 +540,6 @@ class FacetField(ConfiguredBaseModel):
 
 
 class HistoPheno(ConfiguredBaseModel):
-
     id: str = Field(...)
     items: List[HistoBin] = Field(
         default_factory=list, description="""A collection of items, with the type to be overriden by slot_usage"""
@@ -475,7 +547,6 @@ class HistoPheno(ConfiguredBaseModel):
 
 
 class HistoBin(FacetValue):
-
     id: str = Field(...)
     label: str = Field(...)
     count: Optional[int] = Field(None, description="""count of documents""")
@@ -559,7 +630,6 @@ class Node(Entity):
 
 
 class NodeHierarchy(ConfiguredBaseModel):
-
     super_classes: List[Entity] = Field(default_factory=list)
     sub_classes: List[Entity] = Field(default_factory=list)
 
@@ -581,16 +651,21 @@ class Release(ConfiguredBaseModel):
 
 
 class Results(ConfiguredBaseModel):
-
     limit: int = Field(..., description="""number of items to return in a response""")
     offset: int = Field(..., description="""offset into the total number of items""")
     total: int = Field(..., description="""total number of items matching a query""")
 
 
 class AssociationResults(Results):
-
     items: List[Association] = Field(
         default_factory=list, description="""A collection of items, with the type to be overriden by slot_usage"""
+    )
+    facet_fields: Optional[List[FacetField]] = Field(
+        default_factory=list, description="""Collection of facet field responses with the field values and counts"""
+    )
+    facet_queries: Optional[List[FacetValue]] = Field(
+        default_factory=list,
+        description="""Collection of facet query responses with the query string values and counts""",
     )
     limit: int = Field(..., description="""number of items to return in a response""")
     offset: int = Field(..., description="""offset into the total number of items""")
@@ -598,9 +673,15 @@ class AssociationResults(Results):
 
 
 class CompactAssociationResults(Results):
-
     items: List[CompactAssociation] = Field(
         default_factory=list, description="""A collection of items, with the type to be overriden by slot_usage"""
+    )
+    facet_fields: Optional[List[FacetField]] = Field(
+        default_factory=list, description="""Collection of facet field responses with the field values and counts"""
+    )
+    facet_queries: Optional[List[FacetValue]] = Field(
+        default_factory=list,
+        description="""Collection of facet query responses with the query string values and counts""",
     )
     limit: int = Field(..., description="""number of items to return in a response""")
     offset: int = Field(..., description="""offset into the total number of items""")
@@ -608,9 +689,15 @@ class CompactAssociationResults(Results):
 
 
 class AssociationTableResults(Results):
-
     items: List[DirectionalAssociation] = Field(
         default_factory=list, description="""A collection of items, with the type to be overriden by slot_usage"""
+    )
+    facet_fields: Optional[List[FacetField]] = Field(
+        default_factory=list, description="""Collection of facet field responses with the field values and counts"""
+    )
+    facet_queries: Optional[List[FacetValue]] = Field(
+        default_factory=list,
+        description="""Collection of facet query responses with the query string values and counts""",
     )
     limit: int = Field(..., description="""number of items to return in a response""")
     offset: int = Field(..., description="""offset into the total number of items""")
@@ -618,7 +705,6 @@ class AssociationTableResults(Results):
 
 
 class CategoryGroupedAssociationResults(Results):
-
     counterpart_category: Optional[str] = Field(
         None,
         description="""The category of the counterpart entity in a given association,  eg. the category of the entity that is not the subject""",
@@ -632,7 +718,6 @@ class CategoryGroupedAssociationResults(Results):
 
 
 class EntityResults(Results):
-
     items: List[Entity] = Field(
         default_factory=list, description="""A collection of items, with the type to be overriden by slot_usage"""
     )
@@ -655,7 +740,6 @@ class MappingResults(Results):
 
 
 class MultiEntityAssociationResults(Results):
-
     id: str = Field(...)
     name: Optional[str] = Field(None)
     associated_categories: List[CategoryGroupedAssociationResults] = Field(default_factory=list)
@@ -665,7 +749,6 @@ class MultiEntityAssociationResults(Results):
 
 
 class SearchResult(Entity):
-
     highlight: Optional[str] = Field(None, description="""matching text snippet containing html tags""")
     score: Optional[float] = Field(None)
     id: str = Field(...)
@@ -709,7 +792,6 @@ class SearchResult(Entity):
 
 
 class SearchResults(Results):
-
     items: List[SearchResult] = Field(
         default_factory=list, description="""A collection of items, with the type to be overriden by slot_usage"""
     )
@@ -726,94 +808,20 @@ class SearchResults(Results):
 
 
 class TextAnnotationResult(ConfiguredBaseModel):
-
     text: Optional[str] = Field(None, description="""text without tokens""")
     tokens: Optional[List[Entity]] = Field(default_factory=list, description="""A collection of entities or concepts""")
     start: Optional[int] = Field(None, description="""start position of the annotation""")
     end: Optional[int] = Field(None, description="""end position of the annotation""")
 
 
-class PairwiseSimilarity(ConfiguredBaseModel):
-    """
-    Abstract grouping for representing individual pairwise similarities
-    """
-
-    None
-
-
-class TermPairwiseSimilarity(PairwiseSimilarity):
-    """
-    A simple pairwise similarity between two atomic concepts/terms
-    """
-
-    subject_id: str = Field(...)
-    subject_label: Optional[str] = Field(None, description="""The name of the subject entity""")
-    subject_source: Optional[str] = Field(None, description="""the source for the first entity""")
-    object_id: str = Field(...)
-    object_label: Optional[str] = Field(None, description="""The name of the object entity""")
-    object_source: Optional[str] = Field(None, description="""the source for the second entity""")
-    ancestor_id: Optional[str] = Field(
-        None,
-        description="""the most recent common ancestor of the two compared entities. If there are multiple MRCAs then the most informative one is selected""",
-    )
-    ancestor_label: Optional[str] = Field(None, description="""the name or label of the ancestor concept""")
-    ancestor_source: Optional[str] = Field(None)
-    object_information_content: Optional[float] = Field(None, description="""The IC of the object""")
-    subject_information_content: Optional[float] = Field(None, description="""The IC of the subject""")
-    ancestor_information_content: Optional[float] = Field(None, description="""The IC of the object""")
-    jaccard_similarity: Optional[float] = Field(
-        None, description="""The number of concepts in the intersection divided by the number in the union"""
-    )
-    cosine_similarity: Optional[float] = Field(
-        None, description="""the dot product of two node embeddings divided by the product of their lengths"""
-    )
-    dice_similarity: Optional[float] = Field(None)
-    phenodigm_score: Optional[float] = Field(
-        None, description="""the geometric mean of the jaccard similarity and the information content"""
-    )
-
-
-class TermSetPairwiseSimilarity(PairwiseSimilarity):
-    """
-    A simple pairwise similarity between two sets of concepts/terms
-    """
-
-    subject_termset: Optional[Dict[str, TermInfo]] = Field(default_factory=dict)
-    object_termset: Optional[Dict[str, TermInfo]] = Field(default_factory=dict)
-    subject_best_matches: Optional[Dict[str, BestMatch]] = Field(default_factory=dict)
-    object_best_matches: Optional[Dict[str, BestMatch]] = Field(default_factory=dict)
-    average_score: Optional[float] = Field(None)
-    best_score: Optional[float] = Field(None)
-    metric: Optional[str] = Field(None)
-
-
-class TermInfo(ConfiguredBaseModel):
-
-    id: str = Field(...)
-    label: Optional[str] = Field(None)
-
-
-class BestMatch(ConfiguredBaseModel):
-
-    match_source: str = Field(...)
-    match_source_label: Optional[str] = Field(None)
-    match_target: Optional[str] = Field(None, description="""the entity matches""")
-    match_target_label: Optional[str] = Field(None)
-    score: float = Field(...)
-    match_subsumer: Optional[str] = Field(None)
-    match_subsumer_label: Optional[str] = Field(None)
-    similarity: TermPairwiseSimilarity = Field(...)
-
-
-class SemsimSearchResult(ConfiguredBaseModel):
-
-    subject: Entity = Field(...)
-    score: Optional[float] = Field(None)
-    similarity: Optional[TermSetPairwiseSimilarity] = Field(None)
-
-
 # Model rebuild
 # see https://pydantic-docs.helpmanual.io/usage/models/#rebuilding-a-model
+PairwiseSimilarity.model_rebuild()
+TermPairwiseSimilarity.model_rebuild()
+TermSetPairwiseSimilarity.model_rebuild()
+TermInfo.model_rebuild()
+BestMatch.model_rebuild()
+SemsimSearchResult.model_rebuild()
 Association.model_rebuild()
 AssociationCountList.model_rebuild()
 CompactAssociation.model_rebuild()
@@ -841,9 +849,3 @@ MultiEntityAssociationResults.model_rebuild()
 SearchResult.model_rebuild()
 SearchResults.model_rebuild()
 TextAnnotationResult.model_rebuild()
-PairwiseSimilarity.model_rebuild()
-TermPairwiseSimilarity.model_rebuild()
-TermSetPairwiseSimilarity.model_rebuild()
-TermInfo.model_rebuild()
-BestMatch.model_rebuild()
-SemsimSearchResult.model_rebuild()
