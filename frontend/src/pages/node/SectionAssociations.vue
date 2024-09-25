@@ -5,31 +5,15 @@
 <template>
   <!-- show an AppSection for each category in categoryOptions  -->
   <div v-for="category in categoryOptions" :key="category.id">
+    <!-- Association table -->
     <AppSection alignment="left" class="inset node">
-      <AppHeading level="3">{{ category.label }}</AppHeading>
+      <AppHeading :level="3">{{ category.label }}</AppHeading>
       <span v-if="!categoryOptions.length"
         >No associations with &nbsp;<AppNodeBadge :node="node" />
       </span>
 
-      <!-- select -->
-      <!--    <AppFlex v-else gap="small">-->
-      <!--      <AppSelectSingle-->
-      <!--        v-model="category"-->
-      <!--        name="category"-->
-      <!--        :options="categoryOptions" />&nbsp;associations-->
-      <!--      involving&nbsp;<AppNodeBadge :node="node" /><AppSelectSingle-->
-      <!--        v-if="-->
-      <!--          node.node_hierarchy &&-->
-      <!--          node.node_hierarchy.sub_classes &&-->
-      <!--          node.node_hierarchy.sub_classes.length > 0-->
-      <!--        "-->
-      <!--        v-model="direct"-->
-      <!--        name="direct"-->
-      <!--        :options="directOptions"-->
-      <!--    /></AppFlex>-->
 
       <AppFlex gap="small">
-        <!--      <AppCheckbox v-model="direct" text="direct only" />-->
 
         <AppCheckbox
           v-if="
@@ -72,11 +56,6 @@
       </template>
     </AppSection>
     <!-- details viewer of association -->
-    <SectionAssociationDetails
-      v-if="association"
-      :node="node"
-      :association="association"
-    />
   </div>
 </template>
 
@@ -88,7 +67,6 @@ import type { DirectionalAssociation, Node } from "@/api/model";
 import AppCheckbox from "@/components/AppCheckbox.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import type { Option, Options } from "@/components/AppSelectSingle.vue";
-import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
 import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
 
@@ -107,6 +85,7 @@ const props = defineProps<Props>();
 const category = ref<Option>();
 /** selected association id */
 const association = ref<DirectionalAssociation>();
+
 /** include orthologous genes in association table */
 const includeOrthologs = ref(false);
 const direct = ref<Option>();

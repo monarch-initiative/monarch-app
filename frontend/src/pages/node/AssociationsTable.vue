@@ -76,10 +76,11 @@
         class="details"
         :text="String(cell || 0)"
         :aria-pressed="row.id === association?.id"
-        :icon="row.id === association?.id ? 'check' : 'flask'"
+        :icon="row.id === association?.id ? 'check' : 'newspaper'"
         :color="row.id === association?.id ? 'primary' : 'secondary'"
         @click="emit('select', row.id === association?.id ? undefined : row)"
       />
+      <!--        @click="emit('select', row.id === association?.id ? undefined : row)"-->
     </template>
 
     <!-- extra columns -->
@@ -99,6 +100,10 @@
     <!-- publication specific -->
     <!-- no template needed because info just plain text -->
   </AppTable>
+  <AppModal v-model="showModal" label="Association Details">
+    <SectionAssociationDetails :node="node" />
+    <!-- :association="association" -->
+  </AppModal>
 </template>
 
 <script setup lang="ts">
@@ -117,12 +122,14 @@ import {
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPercentage from "@/components/AppPercentage.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
+import AppModal from "@/components/AppModal.vue";
 import type { Option } from "@/components/AppSelectSingle.vue";
 import AppTable from "@/components/AppTable.vue";
 import type { Cols, Sort } from "@/components/AppTable.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
 import { useQuery } from "@/composables/use-query";
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
+import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
 
 type Props = {
   /** current node */
@@ -132,11 +139,12 @@ type Props = {
   /** include orthologs */
   includeOrthologs: boolean;
   direct: Option;
-  /** selected association */
-  association?: DirectionalAssociation;
 };
 
 const props = defineProps<Props>();
+
+const showModal = ref(false);
+const association: DirectionalAssociation = ref(false);
 
 type Emits = {
   /** change selected association */
@@ -144,6 +152,16 @@ type Emits = {
 };
 
 const emit = defineEmits<Emits>();
+
+emit("select", (value) => {
+  if (value) {
+    alert(value);
+    console.log("emitting association detail event");
+    console.log(value);
+    association.value = value;
+    showModal.value = true;
+  }
+});
 
 /** table state */
 const sort = ref<Sort>();
@@ -202,7 +220,6 @@ const cols = computed((): Cols<Datum> => {
       heading: "Taxon",
     });
 
-  console.log(props);
   /** phenotype specific columns */
   if (props.category.id.includes("PhenotypicFeature")) {
     extraCols.push(

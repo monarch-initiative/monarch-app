@@ -8,7 +8,7 @@
 
 <template>
   <!-- table data -->
-  <AppFlex direction="col" align-h="left" :class="['container', { expanded }]">
+  <AppFlex direction="col" align-h="left" :class="['container']">
     <div ref="scroll" style="width: 100%">
       <table
         class="table"
