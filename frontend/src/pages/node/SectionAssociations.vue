@@ -48,10 +48,8 @@
         <AssociationsTable
           :node="node"
           :category="category"
-          :association="association"
           :include-orthologs="includeOrthologs"
           :direct="direct"
-          @select="(value) => (association = value)"
         />
       </template>
     </AppSection>
@@ -63,7 +61,7 @@
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { startCase } from "lodash";
-import type { DirectionalAssociation, Node } from "@/api/model";
+import type { Node } from "@/api/model";
 import AppCheckbox from "@/components/AppCheckbox.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import type { Option, Options } from "@/components/AppSelectSingle.vue";
@@ -82,8 +80,6 @@ const props = defineProps<Props>();
 
 /** selected category of associations to show */
 const category = ref<Option>();
-/** selected association id */
-const association = ref<DirectionalAssociation>();
 
 /** include orthologous genes in association table */
 const includeOrthologs = ref(false);

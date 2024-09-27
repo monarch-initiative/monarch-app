@@ -145,8 +145,6 @@ type Props = {
   category: Option;
   /** include orthologs */
   includeOrthologs: boolean;
-  /** selected association */
-  association?: DirectionalAssociation;
   direct: Option;
 };
 
@@ -166,21 +164,21 @@ watch(showModal, (newValue) => {
   }
 });
 
-type Emits = {
-  /** change selected association */
-  select: [value?: DirectionalAssociation];
-};
-
-const emit = defineEmits<Emits>();
-
-emit("select", (value) => {
-  if (value) {
-    console.log("emitting association detail event");
-    console.log(value);
-    association.value = value;
-    showModal.value = true;
-  }
-});
+// type Emits = {
+//   /** change selected association */
+//   select: [value?: DirectionalAssociation];
+// };
+//
+// const emit = defineEmits<Emits>();
+//
+// emit("select", (value) => {
+//   if (value) {
+//     console.log("emitting association detail event");
+//     console.log(value);
+//     association.value = value;
+//     showModal.value = true;
+//   }
+// });
 
 /** table state */
 const sort = ref<Sort>();
