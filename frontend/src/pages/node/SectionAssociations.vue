@@ -68,7 +68,6 @@ import AppCheckbox from "@/components/AppCheckbox.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import type { Option, Options } from "@/components/AppSelectSingle.vue";
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
-import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
 
 /** route info */
 const route = useRoute();
@@ -106,6 +105,7 @@ const directOptions = computed(
     { id: "true", label: "directly" },
   ],
 );
+
 /** deselect association when selected category changes */
 watch(category, () => (association.value = undefined));
 

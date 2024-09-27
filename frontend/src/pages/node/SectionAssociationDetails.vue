@@ -4,8 +4,7 @@
 -->
 
 <template>
-  <div>
-    <AppSection>
+  <AppSection v-if="association">
     <AppHeading icon="flask">Association Details</AppHeading>
 
     <div>
@@ -77,7 +76,6 @@
       </AppDetail>
     </AppDetails>
   </AppSection>
-  </div>
 </template>
 
 <script setup lang="ts">
@@ -93,7 +91,7 @@ type Props = {
   /** current node */
   node: Node;
   /** selected association */
-  association: DirectionalAssociation;
+  association?: DirectionalAssociation;
 };
 
 const props = defineProps<Props>();

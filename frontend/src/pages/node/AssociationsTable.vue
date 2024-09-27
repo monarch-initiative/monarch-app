@@ -66,19 +66,24 @@
     </template>
 
     <!-- button to show details -->
-    <template #details="{ cell, row }">
+    <template #details="{ row }">
+<!--      <AppButton-->
+<!--        v-tooltip="-->
+<!--          row.id === association?.id-->
+<!--            ? `Show evidence (${row.evidence_count}) and other info about this association`-->
+<!--            : 'Deselect this association'-->
+<!--        "-->
+<!--        class="details"-->
+<!--        :text="String(cell || 0)"-->
+<!--        :aria-pressed="row.id === association?.id"-->
+<!--        :icon="row.id === association?.id ? 'check' : 'newspaper'"-->
+<!--        :color="row.id === association?.id ? 'primary' : 'secondary'"-->
+<!--        @click="emit('select', row.id === association?.id ? undefined : row)"-->
+<!--      />-->
       <AppButton
-        v-tooltip="
-          row.id === association?.id
-            ? `Show evidence (${row.evidence_count}) and other info about this association`
-            : 'Deselect this association'
-        "
-        class="details"
-        :text="String(cell || 0)"
-        :aria-pressed="row.id === association?.id"
-        :icon="row.id === association?.id ? 'check' : 'newspaper'"
-        :color="row.id === association?.id ? 'primary' : 'secondary'"
-        @click="emit('select', row.id === association?.id ? undefined : row)"
+        text="Details"
+        icon="info-circle"
+        @click="openModal(row)"
       />
       <!--        @click="emit('select', row.id === association?.id ? undefined : row)"-->
     </template>
@@ -100,9 +105,12 @@
     <!-- publication specific -->
     <!-- no template needed because info just plain text -->
   </AppTable>
-<!--  <AppModal v-model="showModal" label="Association Details">-->
-  <SectionAssociationDetails :node="node" :association="association" />
-<!--  </AppModal>-->
+  <AppModal v-model="showModal" label="Association Details">
+    <SectionAssociationDetails
+      :node="node"
+      :association="selectedAssociation"
+    />
+  </AppModal>
 </template>
 
 <script setup lang="ts">
@@ -137,13 +145,26 @@ type Props = {
   category: Option;
   /** include orthologs */
   includeOrthologs: boolean;
+  /** selected association */
+  association?: DirectionalAssociation;
   direct: Option;
 };
 
 const props = defineProps<Props>();
 
 const showModal = ref(false);
-const association: DirectionalAssociation = ref(false);
+const selectedAssociation = ref<DirectionalAssociation | null>(null);
+
+function openModal(association: DirectionalAssociation) {
+  selectedAssociation.value = association;
+  showModal.value = true;
+}
+
+watch(showModal, (newValue) => {
+  if (!newValue) {
+    selectedAssociation.value = null;
+  }
+});
 
 type Emits = {
   /** change selected association */
