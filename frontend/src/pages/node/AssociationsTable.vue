@@ -100,9 +100,9 @@
     <!-- publication specific -->
     <!-- no template needed because info just plain text -->
   </AppTable>
-  <AppModal v-model="showModal" label="Association Details">
-    <SectionAssociationDetails :node="node" :association="association" />
-  </AppModal>
+<!--  <AppModal v-model="showModal" label="Association Details">-->
+  <SectionAssociationDetails :node="node" :association="association" />
+<!--  </AppModal>-->
 </template>
 
 <script setup lang="ts">
@@ -154,7 +154,6 @@ const emit = defineEmits<Emits>();
 
 emit("select", (value) => {
   if (value) {
-    alert(value);
     console.log("emitting association detail event");
     console.log(value);
     association.value = value;

@@ -4,7 +4,8 @@
 -->
 
 <template>
-  <AppSection>
+  <div>
+    <AppSection>
     <AppHeading icon="flask">Association Details</AppHeading>
 
     <div>
@@ -76,6 +77,7 @@
       </AppDetail>
     </AppDetails>
   </AppSection>
+  </div>
 </template>
 
 <script setup lang="ts">
