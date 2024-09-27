@@ -101,8 +101,7 @@
     <!-- no template needed because info just plain text -->
   </AppTable>
   <AppModal v-model="showModal" label="Association Details">
-    <SectionAssociationDetails :node="node" />
-    <!-- :association="association" -->
+    <SectionAssociationDetails :node="node" :association="association" />
   </AppModal>
 </template>
 
