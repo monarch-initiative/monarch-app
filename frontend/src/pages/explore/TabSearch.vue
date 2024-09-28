@@ -7,16 +7,27 @@
 <template>
   <AppWrapper tag="AppSection" :wrap="!minimal">
     <!-- search box -->
-    <AppSelectAutocomplete
-      :model-value="search"
-      name="Search"
-      placeholder="Gene, disease, phenotype, etc."
-      :class="{ 'header-box': headerBox }"
-      :options="runGetAutocomplete"
-      @focus="onFocus"
-      @change="onChange"
-      @delete="onDelete"
-    />
+    <div class="help-icon-section">
+      <AppSelectAutocomplete
+        :model-value="search"
+        name="Search"
+        placeholder="Gene, disease, phenotype, etc."
+        :class="{ 'header-box': headerBox, home: home }"
+        :options="runGetAutocomplete"
+        @focus="onFocus"
+        @change="onChange"
+        @delete="onDelete"
+      />
+      <AppButton
+        v-if="!minimal"
+        v-tooltip="'How to use'"
+        class="help-icon"
+        text="?"
+        design="circle"
+        color="secondary"
+        to="how-to"
+      />
+    </div>
 
     <!-- facet dropdown filters -->
     <AppFlex v-if="facets.length && !minimal">
@@ -122,6 +133,7 @@ import { groupBy, mapValues, sortBy, startCase, uniq, uniqBy } from "lodash";
 import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
 import type { SearchResults } from "@/api/model";
 import { getAutocomplete, getSearch } from "@/api/search";
+import AppButton from "@/components/AppButton.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import type {
   Options as AutocompleteOptions,
@@ -143,6 +155,8 @@ type Props = {
   headerBox?: boolean;
   /** whether to navigate to explore page when focusing search box */
   focusExplore?: boolean;
+  /** whether this is being shown on the home page */
+  home?: boolean;
 };
 
 const props = defineProps<Props>();
@@ -466,7 +480,6 @@ watch(from, () => runGetSearch(false));
 .header-box {
   width: 100%;
 }
-
 .header-box :deep(input) {
   border-top-width: 0;
   border-right-width: 0;
@@ -480,11 +493,25 @@ watch(from, () => runGetSearch(false));
 .header-box :deep(.icon) {
   color: currentColor !important;
 }
-</style>
 
-<style>
 .hilite {
   font-style: normal;
   font-weight: 600;
+}
+
+.help-icon {
+  margin-left: 10px;
+  font-weight: bolder;
+  font-size: 1.3em;
+}
+
+.help-icon-section {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.search-input {
+  flex-grow: 1;
 }
 </style>

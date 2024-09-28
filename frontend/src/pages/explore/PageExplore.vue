@@ -5,15 +5,12 @@
 <template>
   <AppSection>
     <AppHeading>Explore</AppHeading>
-
     <AppTabs v-model="tab" name="Explore Mode" :tabs="tabs" />
   </AppSection>
-
   <TabSearch v-if="tab === 'search'" />
-
   <TabTextAnnotator v-if="tab === 'text-annotator'" />
-
   <TabPhenotypeExplorer v-if="tab === 'phenotype-explorer'" />
+  <TabMetadata v-if="tab === 'resources'" />
 </template>
 
 <script setup lang="ts">
@@ -22,6 +19,7 @@ import { useRoute } from "vue-router";
 import { startCase } from "lodash";
 import AppTabs from "@/components/AppTabs.vue";
 import { appTitle } from "@/global/meta";
+import TabMetadata from "./TabMetadata.vue";
 import TabPhenotypeExplorer from "./TabPhenotypeExplorer.vue";
 import tabs from "./tabs.json";
 import TabSearch from "./TabSearch.vue";
