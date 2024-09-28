@@ -4,7 +4,7 @@
 
 <template>
   <AppSection design="bare" alignment="left" class="section node">
-    <AppFlex dir="column">
+    <AppFlex direction="col">
       <AppFlex align-h="right">
         <span>
           {{ getCategoryLabel(node.category) }}
@@ -27,8 +27,6 @@
         </span>
         <template v-if="node.deprecated"> (OBSOLETE)</template>
       </AppHeading>
-
-
 
       <AppButton
         v-if="fromSearch"
