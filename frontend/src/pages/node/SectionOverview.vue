@@ -4,8 +4,6 @@
 
 <template>
   <AppSection design="bare" alignment="left" class="node">
-    <AppHeading icon="lightbulb">Overview</AppHeading>
-
     <AppDetails>
       <!-- symbol (gene specific) -->
       <AppDetail

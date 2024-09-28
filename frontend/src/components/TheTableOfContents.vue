@@ -158,7 +158,8 @@ useMutationObserver(
 
 <style lang="scss" scoped>
 .toc {
-  z-index: 1010;
+  /* this is an unfortunate hack to get the TOC to be behind the footer */
+  z-index: 1009;
   position: fixed;
   top: 0;
   width: $toc-width;

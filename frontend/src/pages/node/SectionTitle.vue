@@ -5,16 +5,7 @@
 <template>
   <AppSection design="bare" alignment="left" class="section node">
     <AppFlex dir="column">
-      <AppHeading class="heading" :icon="getCategoryIcon(node.category)">
-        <span
-          :style="{ textDecoration: node.deprecated ? 'line-through' : '' }"
-          v-html="node.name"
-        >
-        </span>
-        <template v-if="node.deprecated"> (OBSOLETE)</template>
-      </AppHeading>
-
-      <AppFlex>
+      <AppFlex align-h="right">
         <span>
           {{ getCategoryLabel(node.category) }}
         </span>
@@ -27,6 +18,17 @@
           :copy="true"
         />
       </AppFlex>
+
+      <AppHeading class="heading" :icon="getCategoryIcon(node.category)">
+        <span
+          :style="{ textDecoration: node.deprecated ? 'line-through' : '' }"
+          v-html="node.name"
+        >
+        </span>
+        <template v-if="node.deprecated"> (OBSOLETE)</template>
+      </AppHeading>
+
+
 
       <AppButton
         v-if="fromSearch"

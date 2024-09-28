@@ -5,11 +5,9 @@
 
 <template>
   <AppSection v-if="association">
-    <AppHeading icon="flask">Association Details</AppHeading>
+    <h2>Association Details</h2>
 
     <div>
-      Details for the selected association... <br />
-
       <div class="selected">
         <AppNodeBadge
           :node="{
@@ -34,7 +32,6 @@
     <AppDetails>
       <AppDetail
         title="Evidence Codes"
-        :count="association.evidence_count"
         icon="flask"
         :full="true"
       >
@@ -60,7 +57,6 @@
 
       <AppDetail
         title="Publications"
-        :count="association.publications?.length"
         icon="book"
         :full="true"
       >

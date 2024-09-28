@@ -56,7 +56,7 @@ defineSlots<Slots>();
   }
 
   &.node {
-    margin: 10px 20px 10px $toc-width + 10px !important;
+    margin: 10px 20px 10px $toc-width + 20px !important;
   }
   &.inset {
     padding: 30px 20px;
