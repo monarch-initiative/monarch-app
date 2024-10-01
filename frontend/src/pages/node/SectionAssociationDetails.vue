@@ -30,11 +30,7 @@
     </div>
 
     <AppDetails>
-      <AppDetail
-        title="Evidence Codes"
-        icon="flask"
-        :full="true"
-      >
+      <AppDetail title="Evidence Codes" icon="flask" :full="true">
         <AppFlex gap="small" align-h="left">
           <AppLink
             v-for="(source, index) in association.has_evidence_links"
@@ -55,11 +51,7 @@
         </AppLink>
       </AppDetail>
 
-      <AppDetail
-        title="Publications"
-        icon="book"
-        :full="true"
-      >
+      <AppDetail title="Publications" icon="book" :full="true">
         <AppFlex gap="small" align-h="left">
           <AppLink
             v-for="(publication, index) of association.publications_links"

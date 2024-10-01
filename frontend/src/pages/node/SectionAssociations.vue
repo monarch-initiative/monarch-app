@@ -12,9 +12,7 @@
         >No associations with &nbsp;<AppNodeBadge :node="node" />
       </span>
 
-
       <AppFlex gap="small">
-
         <AppCheckbox
           v-if="
             node.category === 'biolink:Gene' &&
@@ -101,9 +99,6 @@ const directOptions = computed(
     { id: "true", label: "directly" },
   ],
 );
-
-/** deselect association when selected category changes */
-watch(category, () => (association.value = undefined));
 
 /** update url from selected category */
 watch(

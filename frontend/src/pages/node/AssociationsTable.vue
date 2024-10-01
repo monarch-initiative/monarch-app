@@ -67,25 +67,7 @@
 
     <!-- button to show details -->
     <template #details="{ row }">
-<!--      <AppButton-->
-<!--        v-tooltip="-->
-<!--          row.id === association?.id-->
-<!--            ? `Show evidence (${row.evidence_count}) and other info about this association`-->
-<!--            : 'Deselect this association'-->
-<!--        "-->
-<!--        class="details"-->
-<!--        :text="String(cell || 0)"-->
-<!--        :aria-pressed="row.id === association?.id"-->
-<!--        :icon="row.id === association?.id ? 'check' : 'newspaper'"-->
-<!--        :color="row.id === association?.id ? 'primary' : 'secondary'"-->
-<!--        @click="emit('select', row.id === association?.id ? undefined : row)"-->
-<!--      />-->
-      <AppButton
-        text="Details"
-        icon="info-circle"
-        @click="openModal(row)"
-      />
-      <!--        @click="emit('select', row.id === association?.id ? undefined : row)"-->
+      <AppButton text="Details" icon="info-circle" @click="openModal(row)" />
     </template>
 
     <!-- extra columns -->
@@ -126,10 +108,10 @@ import {
   type DirectionalAssociation,
   type Node,
 } from "@/api/model";
+import AppModal from "@/components/AppModal.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPercentage from "@/components/AppPercentage.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
-import AppModal from "@/components/AppModal.vue";
 import type { Option } from "@/components/AppSelectSingle.vue";
 import AppTable from "@/components/AppTable.vue";
 import type { Cols, Sort } from "@/components/AppTable.vue";
@@ -151,7 +133,7 @@ type Props = {
 const props = defineProps<Props>();
 
 const showModal = ref(false);
-const selectedAssociation = ref<DirectionalAssociation | null>(null);
+const selectedAssociation   = ref<DirectionalAssociation | null>(null);
 
 function openModal(association: DirectionalAssociation) {
   selectedAssociation.value = association;
