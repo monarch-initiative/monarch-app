@@ -1,35 +1,123 @@
 {
   "metadata": {
-    "total": 13905,
-    "num_publications": 142,
-    "last_5_yrs": 9075,
+    "total": 15265,
+    "num_publications": 155,
+    "last_5_yrs": 10490,
     "cites_per_year": {
       "2009": 43,
-      "2010": 90,
-      "2011": 146,
-      "2012": 238,
-      "2013": 243,
-      "2014": 349,
-      "2015": 696,
-      "2016": 792,
-      "2017": 984,
-      "2018": 1139,
-      "2019": 1385,
-      "2020": 1288,
-      "2021": 1557,
-      "2022": 2114,
-      "2023": 2245,
-      "2024": 452
+      "2010": 92,
+      "2011": 144,
+      "2012": 236,
+      "2013": 252,
+      "2014": 351,
+      "2015": 685,
+      "2016": 797,
+      "2017": 973,
+      "2018": 1091,
+      "2019": 1365,
+      "2020": 1309,
+      "2021": 1539,
+      "2022": 2070,
+      "2023": 2170,
+      "2024": 1993
     },
-    "hindex": 48,
-    "hindex5y": 42,
-    "i10index": 96,
-    "i10index5y": 92
+    "hindex": 54,
+    "hindex5y": 48,
+    "i10index": 105,
+    "i10index5y": 100
   },
   "publications": [
     {
       "year": 2024,
       "items": [
+        {
+          "title": "A corpus of GA4GH Phenopackets: case-level phenotyping for genomic diagnostics and discovery",
+          "authors": "Daniel Danis, Michael J Bamshad, Yasemin Bridges, Pilar Cacheiro, Leigh C Carmody, Jessica X Chong, Ben Coleman, Raymond Dalgleish, Peter J Freeman, Adam SL Graefe, Tudor Groza, Julius OB Jacobsen, Adam Klocperk, Maaike Kusters, Markus S Ladewig, Anthony J Marcello, Teresa Mattina, Christopher J Mungall, Monica C Munoz-Torres, Justin T Reese, Filip Rehburg, Barbara CS Reis, Catharina Schuetz, Damian Smedley, Timmy Strauss, Jagadish Chandrabose Sundaramurthi, Sylvia Thun, Kyran Wissink, John F Wagstaff, David Zocche, Melissa A Haendel, Peter N Robinson",
+          "year": 2024,
+          "journal": "medRxiv",
+          "issue": ":2024.05. 29.24308104",
+          "link": "https://www.medrxiv.org/content/10.1101/2024.05.29.24308104.abstract"
+        },
+        {
+          "title": "Evaluation of the Diagnostic Accuracy of GPT-4 in Five Thousand Rare Disease Cases",
+          "authors": "Justin T Reese, Leonardo Chimirri, Daniel Danis, J Harry Caufield, Kyran Wissink Wissink, Elena Casiraghi, Giorgio Valentini, Melissa A Haendel, Christopher J Mungall, Peter N Robinson",
+          "year": 2024,
+          "journal": "medRxiv",
+          "issue": ":2024.07. 22.24310816",
+          "link": "https://www.medrxiv.org/content/10.1101/2024.07.22.24310816.abstract"
+        },
+        {
+          "title": "Leveraging Generative AI to Accelerate Biocuration of Medical Actions for Rare Disease",
+          "authors": "Enock Niyonkuru, J Harry Caufield, Leigh Carmody, Michael Gargano, Sabrina Toro, Trish Whetzel, Hannah Blau, Mauricio Soto, Elena Casiraghi, Leonardo Chimirri, Justin T Reese, Giorgio Valentini, Melissa A Haendel, Christopher J Mungall, Peter N Robinson",
+          "year": 2024,
+          "journal": "medRxiv",
+          "issue": ":2024.08. 22.24310814",
+          "link": "https://www.medrxiv.org/content/10.1101/2024.08.22.24310814.abstract"
+        },
+        {
+          "title": "Replacing non-biomedical concepts improves embedding of biomedical concepts",
+          "authors": "Enock Niyonkuru, Mauricio Soto Gomez, Elena Casiraghi, Stephan Antogiovanni, Hannah Blau, Justin T Reese, Giorgio Valentini, Peter N Robinson",
+          "year": 2024,
+          "journal": "bioRxiv",
+          "issue": ":2024.07. 01.601556",
+          "link": "https://www.biorxiv.org/content/10.1101/2024.07.01.601556.abstract"
+        },
+        {
+          "title": "Towards a standard benchmark for variant and gene prioritisation algorithms: PhEval-Phenotypic inference Evaluation framework",
+          "authors": "Yasemin S Bridges, Vinicius de Souza, Katherina G Cortes, Melissa Haendel, Nomi L Harris, Daniel R Korn, Nikolaos M Marinakis, Nicolas Matentzoglu, James A McLaughlin, Christopher J Mungall, David J Osumi-Sutherland, Peter N Robinson, Damian Smedley, Julius OB Jacobsen",
+          "year": 2024,
+          "journal": "bioRxiv",
+          "issue": ":2024.06. 13.598672",
+          "link": "https://www.biorxiv.org/content/10.1101/2024.06.13.598672.abstract"
+        },
+        {
+          "title": "Advancing diagnosis and research for rare genetic diseases in Indigenous peoples",
+          "authors": "Gareth Baynam, Daria Julkowska, Sarah Bowdin, Azure Hermes, Christopher R McMaster, Elissa Prichep, \u00c9tienne Richer, Francois H van der Westhuizen, Gabriela M Repetto, Helen Malherbe, Juergen KV Reichardt, Laura Arbour, Maui Hudson, Kelly du Plessis, Melissa Haendel, Phillip Wilcox, Sally Ann Lynch, Shamir Rind, Simon Easteal, Xavier Estivill, Nadine Caron, Meck Chongo, Yarlalu Thomas, Mary Catherine V Letinturier, Barend Christiaan Vorster",
+          "year": 2024,
+          "journal": "Nature Genetics",
+          "issue": "56(2):189-193",
+          "link": "https://www.nature.com/articles/s41588-023-01642-1"
+        },
+        {
+          "title": "Improving prenatal diagnosis through standards and aggregation",
+          "authors": "Michael H Duyzend, Pilar Cacheiro, Julius OB Jacobsen, Jessica Giordano, Harrison Brand, Ronald J Wapner, Michael E Talkowski, Peter N Robinson, Damian Smedley",
+          "year": 2024,
+          "journal": "Prenatal diagnosis 44 (4), 454-464, 2024",
+          "issue": "44(4):454-464",
+          "link": "https://obgyn.onlinelibrary.wiley.com/doi/abs/10.1002/pd.6522"
+        },
+        {
+          "title": "Critical assessment of variant prioritization methods for rare disease diagnosis within the Rare Genomes Project",
+          "authors": "Sarah L Stenton, Melanie C O\u2019Leary, Gabrielle Lemire, Grace E VanNoy, Stephanie DiTroia, Vijay S Ganesh, Emily Groopman, Emily O\u2019Heir, Brian Mangilog, Ikeoluwa Osei-Owusu, Lynn S Pais, Jillian Serrano, Moriel Singer-Berk, Ben Weisburd, Michael W Wilson, Christina Austin-Tse, Marwa Abdelhakim, Azza Althagafi, Giulia Babbi, Riccardo Bellazzi, Samuele Bovo, Maria Giulia Carta, Rita Casadio, Pieter-Jan Coenen, Federica De Paoli, Matteo Floris, Manavalan Gajapathy, Robert Hoehndorf, Julius OB Jacobsen, Thomas Joseph, Akash Kamandula, Panagiotis Katsonis, Cyrielle Kint, Olivier Lichtarge, Ivan Limongelli, Yulan Lu, Paolo Magni, Tarun Karthik Kumar Mamidi, Pier Luigi Martelli, Marta Mulargia, Giovanna Nicora, Keith Nykamp, Vikas Pejaver, Yisu Peng, Thi Hong Cam Pham, Maurizio S Podda, Aditya Rao, Ettore Rizzo, Vangala G Saipradeep, Castrense Savojardo, Peter Schols, Yang Shen, Naveen Sivadasan, Damian Smedley, Dorian Soru, Rajgopal Srinivasan, Yuanfei Sun, Uma Sunderam, Wuwei Tan, Naina Tiwari, Xiao Wang, Yaqiong Wang, Amanda Williams, Elizabeth A Worthey, Rujie Yin, Yuning You, Daniel Zeiberg, Susanna Zucca, Constantina Bakolitsa, Steven E Brenner, Stephanie M Fullerton, Predrag Radivojac, Heidi L Rehm, Anne O\u2019Donnell-Luria",
+          "year": 2024,
+          "journal": "Human Genomics",
+          "issue": "18(1):44",
+          "link": "https://link.springer.com/article/10.1186/s40246-024-00604-w"
+        },
+        {
+          "title": "Harnessing Consumer Wearable Digital Biomarkers for Individualized Recognition of Postpartum Depression Using the All of Us Research Program Data Set: Cross-Sectional Study",
+          "authors": "Eric Hurwitz, Zachary Butzin-Dozier, Hiral Master, Shawn T O'Neil, Anita Walden, Michelle Holko, Rena C Patel, Melissa A Haendel",
+          "year": 2024,
+          "journal": "JMIR mHealth and uHealth",
+          "issue": "12(1):e54622",
+          "link": "https://mhealth.jmir.org/2024/1/e54622/"
+        },
+        {
+          "title": "The Vertebrate Breed Ontology: Towards Effective Breed Data Standardization",
+          "authors": "Kathleen R Mullen, Imke Tammen, Nicolas A Matentzoglu, Marius Mather, Christopher J Mungall, Melissa A Haendel, Frank W Nicholas, Sabrina Toro",
+          "year": 2024,
+          "journal": "arXiv preprint arXiv:2406.02623",
+          "issue": "",
+          "link": "https://arxiv.org/abs/2406.02623"
+        },
+        {
+          "title": "FastHPOCR: pragmatic, fast, and accurate concept recognition using the human phenotype ontology",
+          "authors": "Tudor Groza, Dylan Gration, Gareth Baynam, Peter N Robinson",
+          "year": 2024,
+          "journal": "Bioinformatics",
+          "issue": "40(7)",
+          "link": "https://academic.oup.com/bioinformatics/article-abstract/40/7/btae406/7698025"
+        },
         {
           "title": "Lethal phenotypes in Mendelian disorders",
           "authors": "Pilar Cacheiro, Samantha Lawson, Ignatia B Van den Veyver, Gabriel Marengo, David Zocche, Stephen A Murray, Michael Duyzend, Peter N Robinson, Damian Smedley",
@@ -51,6 +139,14 @@
     {
       "year": 2023,
       "items": [
+        {
+          "title": "Gene set summarization using large language models",
+          "authors": "Marcin P Joachimiak, J Harry Caufield, Nomi L Harris, Hyeongsik Kim, Christopher J Mungall",
+          "year": 2023,
+          "journal": "ArXiv",
+          "issue": "",
+          "link": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10246080/"
+        },
         {
           "title": "De novo TRPM3 missense variant associated with neurodevelopmental delay and manifestations of cerebral palsy",
           "authors": "Jagadish Chandrabose Sundaramurthi, Anita M Bagley, Hannah Blau, Leigh Carmody, Amy Crandall, Daniel Danis, Michael A Gargano, Anxhela Gjyshi Gustafson, Ellen M Raney, Mallory Shingle, Jon R Davids, Peter N Robinson",
