@@ -133,7 +133,7 @@ type Props = {
 const props = defineProps<Props>();
 
 const showModal = ref(false);
-const selectedAssociation   = ref<DirectionalAssociation | null>(null);
+const selectedAssociation = ref<DirectionalAssociation | null>(null);
 
 function openModal(association: DirectionalAssociation) {
   selectedAssociation.value = association;
