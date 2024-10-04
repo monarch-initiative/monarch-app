@@ -97,7 +97,6 @@ const directOptions = computed(
   ],
 );
 
-
 watch(
   () => route.query,
   () => {
