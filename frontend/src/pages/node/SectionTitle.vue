@@ -19,7 +19,11 @@
         />
       </AppFlex>
 
-      <AppHeading class="heading" :icon="getCategoryIcon(node.category)">
+      <AppHeading
+        class="heading"
+        :level="1"
+        :icon="getCategoryIcon(node.category)"
+      >
         <span
           :style="{ textDecoration: node.deprecated ? 'line-through' : '' }"
           v-html="node.name"
