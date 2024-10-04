@@ -19,7 +19,7 @@ test("Recent/frequent results show", async ({ page }) => {
 
   for (const node of nodes) {
     await page.goto("/" + node);
-    await expect(page.locator("#overview")).toBeVisible();
+    await expect(page.locator("#hierarchy")).toBeVisible();
   }
 
   await page.goto("/explore");

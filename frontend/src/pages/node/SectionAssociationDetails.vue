@@ -4,12 +4,10 @@
 -->
 
 <template>
-  <AppSection>
-    <AppHeading icon="flask">Association Details</AppHeading>
+  <AppSection v-if="association">
+    <h2>Association Details</h2>
 
     <div>
-      Details for the selected association... <br />
-
       <div class="selected">
         <AppNodeBadge
           :node="{
@@ -32,12 +30,7 @@
     </div>
 
     <AppDetails>
-      <AppDetail
-        title="Evidence Codes"
-        :count="association.evidence_count"
-        icon="flask"
-        :full="true"
-      >
+      <AppDetail title="Evidence Codes" icon="flask" :full="true">
         <AppFlex gap="small" align-h="left">
           <AppLink
             v-for="(source, index) in association.has_evidence_links"
@@ -58,12 +51,7 @@
         </AppLink>
       </AppDetail>
 
-      <AppDetail
-        title="Publications"
-        :count="association.publications?.length"
-        icon="book"
-        :full="true"
-      >
+      <AppDetail title="Publications" icon="book" :full="true">
         <AppFlex gap="small" align-h="left">
           <AppLink
             v-for="(publication, index) of association.publications_links"
@@ -91,7 +79,7 @@ type Props = {
   /** current node */
   node: Node;
   /** selected association */
-  association: DirectionalAssociation;
+  association: DirectionalAssociation | null;
 };
 
 const props = defineProps<Props>();

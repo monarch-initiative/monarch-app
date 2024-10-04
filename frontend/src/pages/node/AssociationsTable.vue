@@ -66,20 +66,8 @@
     </template>
 
     <!-- button to show details -->
-    <template #details="{ cell, row }">
-      <AppButton
-        v-tooltip="
-          row.id === association?.id
-            ? `Show evidence (${row.evidence_count}) and other info about this association`
-            : 'Deselect this association'
-        "
-        class="details"
-        :text="String(cell || 0)"
-        :aria-pressed="row.id === association?.id"
-        :icon="row.id === association?.id ? 'check' : 'flask'"
-        :color="row.id === association?.id ? 'primary' : 'secondary'"
-        @click="emit('select', row.id === association?.id ? undefined : row)"
-      />
+    <template #details="{ row }">
+      <AppButton text="Details" icon="info-circle" @click="openModal(row)" />
     </template>
 
     <!-- extra columns -->
@@ -99,6 +87,12 @@
     <!-- publication specific -->
     <!-- no template needed because info just plain text -->
   </AppTable>
+  <AppModal v-model="showModal" label="Association Details">
+    <SectionAssociationDetails
+      :node="node"
+      :association="selectedAssociation"
+    />
+  </AppModal>
 </template>
 
 <script setup lang="ts">
@@ -114,6 +108,7 @@ import {
   type DirectionalAssociation,
   type Node,
 } from "@/api/model";
+import AppModal from "@/components/AppModal.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPercentage from "@/components/AppPercentage.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
@@ -123,6 +118,7 @@ import type { Cols, Sort } from "@/components/AppTable.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
 import { useQuery } from "@/composables/use-query";
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
+import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
 
 type Props = {
   /** current node */
@@ -132,18 +128,39 @@ type Props = {
   /** include orthologs */
   includeOrthologs: boolean;
   direct: Option;
-  /** selected association */
-  association?: DirectionalAssociation;
 };
 
 const props = defineProps<Props>();
 
-type Emits = {
-  /** change selected association */
-  select: [value?: DirectionalAssociation];
-};
+const showModal = ref(false);
+const selectedAssociation = ref<DirectionalAssociation | null>(null);
 
-const emit = defineEmits<Emits>();
+function openModal(association: DirectionalAssociation) {
+  selectedAssociation.value = association;
+  showModal.value = true;
+}
+
+watch(showModal, (newValue) => {
+  if (!newValue) {
+    selectedAssociation.value = null;
+  }
+});
+
+// type Emits = {
+//   /** change selected association */
+//   select: [value?: DirectionalAssociation];
+// };
+//
+// const emit = defineEmits<Emits>();
+//
+// emit("select", (value) => {
+//   if (value) {
+//     console.log("emitting association detail event");
+//     console.log(value);
+//     association.value = value;
+//     showModal.value = true;
+//   }
+// });
 
 /** table state */
 const sort = ref<Sort>();
@@ -163,7 +180,6 @@ const cols = computed((): Cols<Datum> => {
       heading: getCategoryLabel(
         associations.value.items[0]?.subject_category || "Subject",
       ),
-      width: "200px",
       sortable: true,
     },
     {
@@ -178,7 +194,6 @@ const cols = computed((): Cols<Datum> => {
       heading: getCategoryLabel(
         associations.value.items[0]?.object_category || "Object",
       ),
-      width: "200px",
       sortable: true,
     },
     {
@@ -204,7 +219,6 @@ const cols = computed((): Cols<Datum> => {
       heading: "Taxon",
     });
 
-  console.log(props);
   /** phenotype specific columns */
   if (props.category.id.includes("PhenotypicFeature")) {
     extraCols.push(
