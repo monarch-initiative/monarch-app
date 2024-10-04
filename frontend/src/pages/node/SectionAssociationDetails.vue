@@ -79,7 +79,7 @@ type Props = {
   /** current node */
   node: Node;
   /** selected association */
-  association?: DirectionalAssociation;
+  association: DirectionalAssociation | null;
 };
 
 const props = defineProps<Props>();
