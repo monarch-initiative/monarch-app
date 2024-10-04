@@ -76,9 +76,6 @@ type Props = {
 
 const props = defineProps<Props>();
 
-/** selected category of associations to show */
-const category = ref<Option>();
-
 /** include orthologous genes in association table */
 const includeOrthologs = ref(false);
 const direct = ref<Option>();
