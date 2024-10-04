@@ -57,7 +57,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import { startCase } from "lodash";
 import type { Node } from "@/api/model";
 import AppCheckbox from "@/components/AppCheckbox.vue";
@@ -67,7 +67,6 @@ import AssociationsTable from "@/pages/node/AssociationsTable.vue";
 
 /** route info */
 const route = useRoute();
-const router = useRouter();
 
 type Props = {
   /** current node */
