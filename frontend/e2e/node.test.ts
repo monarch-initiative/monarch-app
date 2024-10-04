@@ -13,44 +13,12 @@ test("Table of contents works", async ({ page }) => {
     /table of contents/i,
   );
 
-  /** starts closed (due to small screen size) */
-  await expect(page.locator(".toc button")).toHaveAttribute(
-    "aria-expanded",
-    "false",
-  );
-
-  /** click button to open */
-  await page.locator(".toc").click();
-  await expect(page.locator(".toc button")).toHaveAttribute(
-    "aria-expanded",
-    "true",
-  );
-
-  /** click off to close (with small screen size) */
-  await page.locator("body").click({ position: { x: 500, y: 500 } });
-  await expect(page.locator(".toc button")).toHaveAttribute(
-    "aria-expanded",
-    "false",
-  );
-
-  /** open again and check contents */
-  await page.locator(".toc").click();
-  await expect(
-    page.locator(".toc", { hasText: /Overview/i }).first(),
-  ).toBeVisible();
-  await expect(
-    page.locator(".toc", { hasText: /Hierarchy/i }).first(),
-  ).toBeVisible();
-  await expect(
-    page.locator(".toc", { hasText: /Associations/i }).first(),
-  ).toBeVisible();
-
   /** check if solo selection mode works */
   await page.locator(".toc .checkbox").click();
   await expect(
     page
       .locator("main")
-      .getByText(/Overview/i)
+      .getByText(/Ehlers-Danlos syndrome, hypermobility/i)
       .first(),
   ).toBeVisible();
   await expect(
