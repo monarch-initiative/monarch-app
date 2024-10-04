@@ -97,35 +97,7 @@ const directOptions = computed(
   ],
 );
 
-/** update url from selected category */
-watch(
-  category,
-  (_, oldValue) => {
-    /** ignore first change to category due to auto-select */
-    if (oldValue)
-      router.replace({
-        ...route,
-        query: { associations: category.value?.id },
-      });
-  },
-  /** avoid extra triggering of watch functions */
-  { flush: "post" },
-);
 
-/** update selected category from url */
-watch(
-  () => route.query.associations,
-  () => {
-    if (!route.query.associations) return;
-    category.value = categoryOptions.value.find(
-      (option) => option.id === route.query.associations,
-    );
-    direct.value = directOptions.value.find(
-      (option) => option.id === route.query.direct,
-    );
-  },
-  { immediate: true },
-);
 watch(
   () => route.query,
   () => {
