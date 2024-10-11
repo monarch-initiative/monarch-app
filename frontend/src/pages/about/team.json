@@ -229,11 +229,6 @@
         "link": "https://www.ebi.ac.uk/people/person/james-mclaughlin/"
       },
       {
-        "name": "Anita Reane Caron",
-        "role": "Semantic Web Developer",
-        "link": "https://github.com/anitacaron"
-      },
-      {
         "name": "Arwa Ibrahim",
         "role": "Ontology Editor",
         "link": "https://www.ebi.ac.uk/people/person/arwa-ibrahim/"
@@ -382,6 +377,10 @@
   {
     "name": "Alumni Members",
     "members": [
+      {
+        "name": "Anita Reane Caron",
+        "role": "Semantic Web Developer"
+      },
       {
         "name": "Glass Elsarboukh",
         "role": "Scientific Software Engineer"
