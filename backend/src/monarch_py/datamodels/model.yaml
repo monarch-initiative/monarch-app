@@ -100,6 +100,7 @@ classes:
       - stage_qualifier_category
       - stage_qualifier_closure
       - stage_qualifier_closure_label
+      - disease_context_qualifier
   AssociationCount:
     is_a: FacetValue
     slots:
@@ -374,6 +375,13 @@ slots:
       the object or in the object closure, the direction is backwards.
     range: AssociationDirectionEnum
     required: true
+  disease_context_qualifier:
+    description: >-
+      A context qualifier representing a disease or condition in which a relationship expressed in an association took place.
+    examples:
+      - value: MONDO:0004979 # Asthma
+      - value: MONDO:0005148 # type 2 diabetes mellitus  
+    range: string
   evidence_count:
     description: count of supporting documents, evidence codes, and sources supplying evidence
     range: integer
