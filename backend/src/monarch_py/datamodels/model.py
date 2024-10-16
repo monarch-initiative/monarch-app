@@ -270,6 +270,23 @@ class Association(ConfiguredBaseModel):
         None,
         description="""A context qualifier representing a disease or condition in which a relationship expressed in an association took place.""",
     )
+    disease_context_qualifier_label: Optional[str] = Field(
+        None, description="""The name of the disease_context_qualifier entity"""
+    )
+    disease_context_qualifier_namespace: Optional[str] = Field(
+        None, description="""The namespace/prefix of the disease_context_qualifier entity"""
+    )
+    disease_context_qualifier_category: Optional[str] = Field(
+        None, description="""The category of the disease_context_qualifier entity"""
+    )
+    disease_context_qualifier_closure: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing disease_context_qualifier id and the ids of all of it's ancestors""",
+    )
+    disease_context_qualifier_closure_label: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing disease_context_qualifier name and the names of all of it's ancestors""",
+    )
 
 
 class AssociationCountList(ConfiguredBaseModel):
@@ -472,6 +489,23 @@ class DirectionalAssociation(Association):
     disease_context_qualifier: Optional[str] = Field(
         None,
         description="""A context qualifier representing a disease or condition in which a relationship expressed in an association took place.""",
+    )
+    disease_context_qualifier_label: Optional[str] = Field(
+        None, description="""The name of the disease_context_qualifier entity"""
+    )
+    disease_context_qualifier_namespace: Optional[str] = Field(
+        None, description="""The namespace/prefix of the disease_context_qualifier entity"""
+    )
+    disease_context_qualifier_category: Optional[str] = Field(
+        None, description="""The category of the disease_context_qualifier entity"""
+    )
+    disease_context_qualifier_closure: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing disease_context_qualifier id and the ids of all of it's ancestors""",
+    )
+    disease_context_qualifier_closure_label: Optional[List[str]] = Field(
+        default_factory=list,
+        description="""Field containing disease_context_qualifier name and the names of all of it's ancestors""",
     )
 
 
