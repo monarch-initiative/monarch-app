@@ -77,7 +77,7 @@ install-frontend:
 
 .PHONY: model
 model: install-backend	
-	$(RUN) gen-pydantic --pydantic-version 2 --extra-fields allow $(SCHEMADIR)/model.yaml > $(SCHEMADIR)/model.py
+	$(RUN) gen-pydantic --extra-fields allow $(SCHEMADIR)/model.yaml > $(SCHEMADIR)/model.py
 	$(RUN) gen-typescript $(SCHEMADIR)/model.yaml > frontend/src/api/model.ts
 	make format
 

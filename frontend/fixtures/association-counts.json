@@ -2,7 +2,7 @@
   "items": [
     {
       "label": "Phenotype to Disease",
-      "count": 4012,
+      "count": 4115,
       "category": "biolink:DiseaseToPhenotypicFeatureAssociation"
     },
     {
@@ -12,7 +12,7 @@
     },
     {
       "label": "Correlated Gene",
-      "count": 146,
+      "count": 151,
       "category": "biolink:CorrelatedGeneToDiseaseAssociation"
     },
     {
