@@ -80,7 +80,9 @@
           : row.subject_taxon_label
       }}
     </template>
-
+    <template #disease_context_qualifier="{ row }">
+      {{ row.disease_context_qualifier_label }}
+    </template>
     <!-- phenotype specific -->
     <!-- no template needed because info just plain text -->
 
@@ -210,15 +212,24 @@ const cols = computed((): Cols<Datum> => {
 
   /** taxon column. exists for many categories, so just add if any row has taxon. */
   if (
-    associations.value.items.some(
-      (item) => item.subject_taxon_label || item.object_taxon_label,
-    )
+    props.category.id.includes("GeneToGeneHomology") ||
+    props.category.id.includes("Interaction")
   )
     extraCols.push({
       slot: "taxon",
       heading: "Taxon",
     });
 
+  if (
+    props.node.in_taxon_label == "Homo sapiens" &&
+    props.category.id.includes("GeneToPhenotypicFeature")
+  ) {
+    extraCols.push({
+      key: "disease_context_qualifier_label",
+      heading: "Disease Context",
+      sortable: true,
+    });
+  }
   /** phenotype specific columns */
   if (props.category.id.includes("PhenotypicFeature")) {
     extraCols.push(
@@ -235,6 +246,7 @@ const cols = computed((): Cols<Datum> => {
       },
     );
   }
+
   //include original subject and call it Source for D2P
   if (props.category.id.includes("DiseaseToPhenotypicFeature")) {
     extraCols.push({
