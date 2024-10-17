@@ -80,8 +80,16 @@
           : row.subject_taxon_label
       }}
     </template>
-    <template #disease_context_qualifier="{ row }">
-      {{ row.disease_context_qualifier_label }}
+    <template #disease_context="{ row }">
+      <AppNodeBadge
+        v-if="row.disease_context_qualifier"
+        :node="{
+          id: row.disease_context_qualifier,
+          name: row.disease_context_qualifier_label,
+          category: 'biolink:Disease',
+        }"
+      />
+      <span v-else class="empty">No info</span>
     </template>
     <!-- phenotype specific -->
     <!-- no template needed because info just plain text -->
@@ -225,7 +233,8 @@ const cols = computed((): Cols<Datum> => {
     props.category.id.includes("GeneToPhenotypicFeature")
   ) {
     extraCols.push({
-      key: "disease_context_qualifier_label",
+      slot: "disease_context",
+      key: "disease_context_qualifier",
       heading: "Disease Context",
       sortable: true,
     });

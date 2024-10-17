@@ -88,7 +88,7 @@ const info = computed(() =>
 const isLink = computed(() => {
   /** make sure we're already on page we're linking to */
   return (
-    !window.location.pathname.endsWith("/node/" + (props.node.id || "")) &&
+    !window.location.pathname.endsWith("/" + (props.node.id || "")) &&
     /** make sure id is a valid curie */
     !!props.node.id?.match(/^\w/)
   );
