@@ -100,8 +100,8 @@
         }
       },
       "object_termset": {
-        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" },
-        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" }
+        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" },
+        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" }
       },
       "subject_best_matches": {
         "ZP:0018569": {
@@ -318,8 +318,8 @@
         }
       },
       "object_termset": {
-        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" },
-        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" }
+        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" },
+        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" }
       },
       "subject_best_matches": {
         "ZP:0018568": {
@@ -383,8 +383,8 @@
         "HP:0002104": {
           "match_source": "HP:0002104",
           "match_source_label": "Apnea",
-          "match_target": "ZP:0018568",
-          "match_target_label": "primitive hemopoiesis absent, abnormal",
+          "match_target": "ZP:0018569",
+          "match_target_label": "myeloid cell development absent, abnormal",
           "score": 8.79057503056431,
           "match_subsumer": null,
           "match_subsumer_label": null,
@@ -392,7 +392,7 @@
             "subject_id": "HP:0002104",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "ZP:0018568",
+            "object_id": "ZP:0018569",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "UPHENO:0034024",
@@ -552,13 +552,13 @@
     "score": 7.011754466426716,
     "similarity": {
       "subject_termset": {
-        "ZP:0018568": {
-          "id": "ZP:0018568",
-          "label": "primitive hemopoiesis absent, abnormal"
-        },
         "ZP:0018569": {
           "id": "ZP:0018569",
           "label": "myeloid cell development absent, abnormal"
+        },
+        "ZP:0018568": {
+          "id": "ZP:0018568",
+          "label": "primitive hemopoiesis absent, abnormal"
         }
       },
       "object_termset": {
@@ -627,8 +627,8 @@
         "HP:0002104": {
           "match_source": "HP:0002104",
           "match_source_label": "Apnea",
-          "match_target": "ZP:0018568",
-          "match_target_label": "primitive hemopoiesis absent, abnormal",
+          "match_target": "ZP:0018569",
+          "match_target_label": "myeloid cell development absent, abnormal",
           "score": 8.79057503056431,
           "match_subsumer": null,
           "match_subsumer_label": null,
@@ -636,7 +636,7 @@
             "subject_id": "HP:0002104",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "ZP:0018568",
+            "object_id": "ZP:0018569",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "UPHENO:0034024",
@@ -655,8 +655,8 @@
         "HP:0012378": {
           "match_source": "HP:0012378",
           "match_source_label": "Fatigue",
-          "match_target": "ZP:0018568",
-          "match_target_label": "primitive hemopoiesis absent, abnormal",
+          "match_target": "ZP:0018569",
+          "match_target_label": "myeloid cell development absent, abnormal",
           "score": 1.6752927740139332,
           "match_subsumer": null,
           "match_subsumer_label": null,
@@ -664,7 +664,7 @@
             "subject_id": "HP:0012378",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "ZP:0018568",
+            "object_id": "ZP:0018569",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "UPHENO:0001005",
@@ -813,8 +813,8 @@
         }
       },
       "object_termset": {
-        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" },
-        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" }
+        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" },
+        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" }
       },
       "subject_best_matches": {
         "ZP:0018568": {
@@ -1054,13 +1054,13 @@
     "score": 7.011754466426716,
     "similarity": {
       "subject_termset": {
-        "ZP:0018568": {
-          "id": "ZP:0018568",
-          "label": "primitive hemopoiesis absent, abnormal"
-        },
         "ZP:0018569": {
           "id": "ZP:0018569",
           "label": "myeloid cell development absent, abnormal"
+        },
+        "ZP:0018568": {
+          "id": "ZP:0018568",
+          "label": "primitive hemopoiesis absent, abnormal"
         }
       },
       "object_termset": {
@@ -1157,8 +1157,8 @@
         "HP:0012378": {
           "match_source": "HP:0012378",
           "match_source_label": "Fatigue",
-          "match_target": "ZP:0018568",
-          "match_target_label": "primitive hemopoiesis absent, abnormal",
+          "match_target": "ZP:0018569",
+          "match_target_label": "myeloid cell development absent, abnormal",
           "score": 1.6752927740139332,
           "match_subsumer": null,
           "match_subsumer_label": null,
@@ -1166,7 +1166,7 @@
             "subject_id": "HP:0012378",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "ZP:0018568",
+            "object_id": "ZP:0018569",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "UPHENO:0001005",
@@ -1296,13 +1296,13 @@
     "score": 5.262083911717577,
     "similarity": {
       "subject_termset": {
-        "ZP:0000945": {
-          "id": "ZP:0000945",
-          "label": "pigment cell quality, abnormal"
-        },
         "ZP:0100294": {
           "id": "ZP:0100294",
           "label": "visual perception absent, abnormal"
+        },
+        "ZP:0000945": {
+          "id": "ZP:0000945",
+          "label": "pigment cell quality, abnormal"
         }
       },
       "object_termset": {
@@ -1518,13 +1518,13 @@
     "score": 5.232933902289122,
     "similarity": {
       "subject_termset": {
-        "ZP:0015039": {
-          "id": "ZP:0015039",
-          "label": "visual behavior absent, abnormal"
-        },
         "ZP:0001841": {
           "id": "ZP:0001841",
           "label": "visual behavior quality, abnormal"
+        },
+        "ZP:0015039": {
+          "id": "ZP:0015039",
+          "label": "visual behavior absent, abnormal"
         }
       },
       "object_termset": {
@@ -1621,8 +1621,8 @@
         "HP:0012378": {
           "match_source": "HP:0012378",
           "match_source_label": "Fatigue",
-          "match_target": "ZP:0001841",
-          "match_target_label": "visual behavior quality, abnormal",
+          "match_target": "ZP:0015039",
+          "match_target_label": "visual behavior absent, abnormal",
           "score": 1.6752927740139332,
           "match_subsumer": null,
           "match_subsumer_label": null,
@@ -1630,7 +1630,7 @@
             "subject_id": "HP:0012378",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "ZP:0001841",
+            "object_id": "ZP:0015039",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "UPHENO:0001005",
@@ -1639,10 +1639,10 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 1.6752927740139332,
-            "jaccard_similarity": 0.47058823529411764,
+            "jaccard_similarity": 0.38095238095238093,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.8879037504843663
+            "phenodigm_score": 0.7988784457305923
           },
           "score_metric": "ancestor_information_content"
         }
@@ -2013,8 +2013,8 @@
         }
       },
       "object_termset": {
-        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" },
-        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" }
+        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" },
+        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" }
       },
       "subject_best_matches": {
         "ZP:0001432": {

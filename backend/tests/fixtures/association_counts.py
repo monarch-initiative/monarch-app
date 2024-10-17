@@ -6,7 +6,7 @@ def association_counts():
     return {
         "items": [
             {
-                "label": "Phenotype to Disease",
+                "label": "Disease to Phenotype",
                 "count": 4115,
                 "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
             },

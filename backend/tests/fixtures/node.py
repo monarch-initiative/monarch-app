@@ -75,7 +75,7 @@ def node():
         },
         "association_counts": [
             {
-                "label": "Phenotype to Disease",
+                "label": "Disease to Phenotype",
                 "count": 4115,
                 "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
             },
