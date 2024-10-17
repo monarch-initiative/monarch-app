@@ -79,6 +79,12 @@ def association_headers():
         "stage_qualifier_category",
         "stage_qualifier_closure",
         "stage_qualifier_closure_label",
+        "disease_context_qualifier",
+        "disease_context_qualifier_label",
+        "disease_context_qualifier_namespace",
+        "disease_context_qualifier_category",
+        "disease_context_qualifier_closure",
+        "disease_context_qualifier_closure_label",
     ]
 
 

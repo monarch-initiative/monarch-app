@@ -3,47 +3,42 @@
   "items": [
     {
       "label": "musculature",
-      "count": 1748,
+      "count": 2068,
       "id": "UPHENO:0002816"
     },
     {
       "label": "nervous_system",
-      "count": 1097,
+      "count": 1126,
       "id": "UPHENO:0004523"
     },
     {
       "label": "head_neck",
-      "count": 592,
+      "count": 597,
       "id": "UPHENO:0002764"
     },
     {
       "label": "skeletal_system",
-      "count": 500,
+      "count": 509,
       "id": "UPHENO:0002964"
     },
     {
       "label": "eye",
-      "count": 292,
+      "count": 297,
       "id": "UPHENO:0003020"
     },
     {
       "label": "metabolism_homeostasis",
-      "count": 225,
+      "count": 228,
       "id": "HP:0001939"
     },
     {
       "label": "blood",
-      "count": 182,
+      "count": 185,
       "id": "UPHENO:0004459"
     },
     {
-      "label": "cardiovascular_system",
-      "count": 181,
-      "id": "UPHENO:0080362"
-    },
-    {
       "label": "connective_tissue",
-      "count": 172,
+      "count": 175,
       "id": "UPHENO:0002712"
     },
     {
@@ -52,29 +47,29 @@
       "id": "UPHENO:0004536"
     },
     {
-      "label": "neoplasm",
-      "count": 155,
-      "id": "HP:0002664"
-    },
-    {
       "label": "digestive_system",
-      "count": 149,
+      "count": 154,
       "id": "UPHENO:0002833"
     },
     {
       "label": "integument",
-      "count": 47,
+      "count": 49,
       "id": "UPHENO:0002635"
     },
     {
       "label": "genitourinary_system",
-      "count": 44,
+      "count": 49,
       "id": "UPHENO:0002642"
     },
     {
       "label": "growth",
       "count": 32,
       "id": "UPHENO:0049874"
+    },
+    {
+      "label": "immune_system",
+      "count": 28,
+      "id": "UPHENO:0002948"
     },
     {
       "label": "ear",
@@ -87,19 +82,24 @@
       "id": "UPHENO:0003116"
     },
     {
-      "label": "immune_system",
-      "count": 23,
-      "id": "UPHENO:0002948"
-    },
-    {
       "label": "prenatal_or_birth",
       "count": 22,
       "id": "UPHENO:0075949"
     },
     {
+      "label": "neoplasm",
+      "count": 7,
+      "id": "HP:0002664"
+    },
+    {
       "label": "breast",
       "count": 1,
       "id": "UPHENO:0003013"
+    },
+    {
+      "label": "cardiovascular_system",
+      "count": 0,
+      "id": "UPHENO:0080362"
     }
   ]
 }
