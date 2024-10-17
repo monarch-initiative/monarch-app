@@ -968,6 +968,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#mappings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mappings
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#linkml-source" class="md-nav__link">
     <span class="md-ellipsis">
       LinkML Source
@@ -1007,6 +1016,7 @@
 <li><a href="../onset_qualifier_category/">onset_qualifier_category</a></li>
 <li><a href="../sex_qualifier_category/">sex_qualifier_category</a></li>
 <li><a href="../stage_qualifier_category/">stage_qualifier_category</a></li>
+<li><a href="../disease_context_qualifier_category/">disease_context_qualifier_category</a></li>
 </ul>
 </li>
 </ul>
@@ -1021,13 +1031,23 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="../AssociationTypeMapping/">AssociationTypeMapping</a></td>
-<td>A data class to hold the necessary information to produce association type co...</td>
-<td>yes</td>
+<td><a href="../DirectionalAssociation/">DirectionalAssociation</a></td>
+<td>An association that gives it's direction relative to a specified entity</td>
+<td>no</td>
+</tr>
+<tr>
+<td><a href="../Association/">Association</a></td>
+<td></td>
+<td>no</td>
 </tr>
 <tr>
 <td><a href="../Entity/">Entity</a></td>
 <td>Represents an Entity in the Monarch KG data model</td>
+<td>no</td>
+</tr>
+<tr>
+<td><a href="../Node/">Node</a></td>
+<td>UI container class extending Entity with additional information</td>
 <td>no</td>
 </tr>
 <tr>
@@ -1036,9 +1056,9 @@
 <td>yes</td>
 </tr>
 <tr>
-<td><a href="../DirectionalAssociation/">DirectionalAssociation</a></td>
-<td>An association that gives it's direction relative to a specified entity</td>
-<td>no</td>
+<td><a href="../AssociationTypeMapping/">AssociationTypeMapping</a></td>
+<td>A data class to hold the necessary information to produce association type co...</td>
+<td>yes</td>
 </tr>
 <tr>
 <td><a href="../SearchResult/">SearchResult</a></td>
@@ -1046,17 +1066,7 @@
 <td>yes</td>
 </tr>
 <tr>
-<td><a href="../Node/">Node</a></td>
-<td>UI container class extending Entity with additional information</td>
-<td>no</td>
-</tr>
-<tr>
 <td><a href="../CompactAssociation/">CompactAssociation</a></td>
-<td></td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../Association/">Association</a></td>
 <td></td>
 <td>no</td>
 </tr>
@@ -1071,12 +1081,30 @@
 <ul>
 <li>from schema: <a href="https://w3id.org/monarch/monarch-py">https://w3id.org/monarch/monarch-py</a></li>
 </ul>
+<h2 id="mappings">Mappings</h2>
+<table>
+<thead>
+<tr>
+<th>Mapping Type</th>
+<th>Mapped Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>self</td>
+<td><a href="https://w3id.org/monarch/monarch-py/:category">https://w3id.org/monarch/monarch-py/:category</a></td>
+</tr>
+<tr>
+<td>native</td>
+<td><a href="https://w3id.org/monarch/monarch-py/:category">https://w3id.org/monarch/monarch-py/:category</a></td>
+</tr>
+</tbody>
+</table>
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">category</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="nt">multivalued</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">category</span>
 <span class="nt">domain_of</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
@@ -1085,6 +1113,7 @@
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationTypeMapping</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Entity</span>
 <span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="nt">multivalued</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
 </details>
 
