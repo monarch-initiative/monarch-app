@@ -17,7 +17,7 @@ packages = [{ include = "monarch_py", from = "src" }]
 python = "^3.9"
 pydantic = "^2"
 curies = "<1"
-linkml = "^1.7.10"
+linkml = "1.8.3"
 prefixmaps = "^0.2"
 bioregistry = "^0.10.57"
 oaklib = ">=0.6.6"
