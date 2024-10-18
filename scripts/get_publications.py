@@ -1,62 +1,90 @@
-"""This script is intended to assist in updating the publications page of the Monarch website.
+"""
+This script is intended to assist in updating the publications page of the Monarch website.
 
 It uses the scholarly package to search for publications citing the Monarch Initiative and 
 metadata (counts of publications citing Monarch) from Google Scholar.
-
-It then writes the results to a json file, as well as a report containing:
-    - the total number of publications found by scholarly
-    - publications with no link (to be manually added)
-    - duplicates returned by scholarly
-    - publications that are already in the publications.json file
-
-
-Links for known pubs with no link:
-- Metrics to Assess Value of Biomedical Digital Repositories: 
-    https://zenodo.org/record/203295
-
-- The Monarch Initiative: Insights across species reveal human disease mechanisms: 
-    https://www.biorxiv.org/content/10.1101/055756v1
-
-- k-BOOM: a Bayesian approach to ontology structure inference, with applications in disease ontology construction. bioRxiv 2019: 048843
-    https://www.biorxiv.org/content/10.1101/048843v3
 """
-import argparse
+
+from collections import defaultdict
+from functools import cache, reduce
+import itertools
 import json
 from pathlib import Path
-from typing import List
+import re
+import sys
+from dataclasses import asdict, dataclass, replace, fields
+from loguru import logger
+from typing import DefaultDict, List, Optional
+from typing_extensions import Annotated
 
-from scholarly import scholarly  # type: ignore
-import pprint
+import typer
+from scholarly import Author, scholarly
 
-pp = pprint.PrettyPrinter(indent=2, sort_dicts=False).pprint
+app = typer.Typer()
 
-outdir = Path(__file__).parent.parent / "frontend" / "src" / "pages" / "about"
+# https://scholar.google.com/citations?user=zmUEDj0AAAAJ
+MONARCH_GOOGLE_SCHOLAR_ID = "zmUEDj0AAAAJ"
+
+KNOWN_LINKS = {
+    "Metrics to Assess Value of Biomedical Digital Repositories": "https://zenodo.org/record/203295",
+    "The Monarch Initiative: Insights across species reveal human disease mechanisms": "https://www.biorxiv.org/content/10.1101/055756v1",
+    "k-BOOM: a Bayesian approach to ontology structure inference, with applications in disease ontology construction.  bioRxiv 2019: 048843": "https://www.biorxiv.org/content/10.1101/048843v3",
+    "The Human Phenotype Ontology in 2024: phenotypes around the world": "https://doi.org/10.1093/nar/gkad1005",
+    "Metrics to assess value of biomedical digital repositories: response to RFI NOT-OD-16-133": "https://zenodo.org/records/203295",
+    "The GA4GH Phenopacket schema: A computable representation of clinical data for precision medicine": "https://www.medrxiv.org/content/10.1101/2021.11.27.21266944v1",
+}
+
+
 script_dir = Path(__file__).parent
-
-pubs_file = outdir / "publications.json"
-new_pubs_file = script_dir / "new_pubs.json"
-report_file = script_dir / "pubs_report.txt"
-scholarly_file = script_dir / "scholarly_output.json"
-
-# These either aren't publications, are known duplicates, or have bad/missing info
-EXCLUDE = [
-]
+default_metadata_file = script_dir / "metadata.json"
+default_scholarly_data = script_dir / "scholarly_output.json"
+default_publications_file = (
+    script_dir.parent / "frontend/src/pages/about/publications.json"
+)
 
 
-def get_citation_metadata():
+@dataclass
+class MonarchPublication:
+    title: str
+    authors: str
+    year: int
+    journal: str
+    issue: str
+    link: Optional[str]
+
+    def key(self):
+        return title_to_key(self.title)
+
+
+def title_to_key(title: str) -> str:
+    return re.sub(r"\W", "", title.lower())
+
+
+def replace_links(pubs: list[MonarchPublication]):
+    links_by_title = {pub.key(): pub for pub in pubs}
+
+    for title, link in KNOWN_LINKS.items():
+        key = title_to_key(title)
+        if key in links_by_title:
+            links_by_title[key].link = link
+
+
+@cache
+def get_scholarly_author() -> Author:
+    author = scholarly.search_author_id(id=MONARCH_GOOGLE_SCHOLAR_ID)
+    scholarly.fill(author, sections=["basics", "indices", "counts", "publications"])  # type: ignore
+    return author
+
+
+def fetch_citation_metadata():
     """Get citation metadata from google scholar
 
     See https://scholarly.readthedocs.io/en/latest/DataTypes.html?highlight=hindex for details
     """
-    author = scholarly.search_author_id(id="zmUEDj0AAAAJ")
-    scholarly.fill(author, sections=["basics", "indices", "counts", "publications"])  # type: ignore
-    total = (
-        author["citedby"]
-        # - len([pub for pub in author["publications"] if pub["bib"]["title"] in EXCLUDE])
-        - len([pub for pub in author["publications"] if int(pub["bib"]["pub_year"]) < 2012])
-    )
+    author = get_scholarly_author()
+
     citation_info = {
-        "total": total,  # type: ignore
+        "total": author["citedby"],  # type: ignore
         "num_publications": len(author["publications"]),  # type: ignore
         "last_5_yrs": author["citedby5y"],  # type: ignore
         "cites_per_year": author["cites_per_year"],  # type: ignore
@@ -65,34 +93,32 @@ def get_citation_metadata():
         "i10index": author["i10index"],  # type: ignore
         "i10index5y": author["i10index5y"],  # type: ignore
     }
+
     return citation_info
 
 
-def get_pubs_from_scholarly():
+def fetch_scholarly_publications() -> List[MonarchPublication]:
     """Search for Monarch publications using scholarly"""
-    author = scholarly.search_author_id(id="zmUEDj0AAAAJ")
-    scholarly.fill(author, sections=["publications"], sortby="year")  # type: ignore
+    author = get_scholarly_author()
     publications = author["publications"]  # type: ignore
-    pubs = []
+    pubs: List[MonarchPublication] = []
+
     for p in publications:
         scholarly.fill(p, sections=["bib"])  # type: ignore
         bib = p["bib"]  # type: ignore
-        # if bib["title"] in EXCLUDE:  # type: ignore
-        #     continue
-        if "pub_year" not in bib or int(bib["pub_year"]) < 2012:
-            continue
+
         title = bib["title"]  # type: ignore
         authors = ", ".join(bib["author"].split(" and "))  # type: ignore
-        year = int(bib["pub_year"])
-        journal = (
-            bib["journal"]
-            if "journal" in bib
-            else bib["publisher"]
-            if "publisher" in bib
-            else bib["citation"]
-            if "citation" in bib
-            else ""
-        )
+        year = int(bib["pub_year"])  # type: ignore
+
+        journal = ""
+        if "journal" in bib:
+            journal = bib["journal"]
+        elif "publisher" in bib:
+            journal = bib["publisher"]
+        elif "citation" in bib:
+            journal = bib["citation"]
+
         issue = ""
         if "volume" in bib:
             issue += f"{bib['volume']}"
@@ -100,158 +126,244 @@ def get_pubs_from_scholarly():
             issue += f"({bib['number']})"
         if "pages" in bib:
             issue += f":{bib['pages']}"
-        link = f"{p['pub_url']}" if ("pub_url" in p and "scholar.google" not in p["pub_url"]) else ""
-        pubs.append(
-            {
-                "title": title,
-                "authors": authors,
-                "year": year,
-                "journal": journal,
-                "issue": issue,
-                "link": link,
-            }
+
+        link = (
+            f"{p['pub_url']}"
+            if ("pub_url" in p and "scholar.google" not in p["pub_url"])
+            else None
         )
+
+        pubs.append(
+            MonarchPublication(
+                title=title,
+                authors=authors,
+                year=year,
+                journal=journal,
+                issue=issue,
+                link=link,
+            )
+        )
+
     return pubs
 
 
-def pick_best(pub1, pub2):
+def combine_publications(pub1: MonarchPublication, pub2: MonarchPublication):
     """Return publication with most info from two publications"""
-    new_pub = {"title": pub1["title"]}
+    # Copy the publication from the first candidate
+    new_pub = replace(pub1)
+
     # pick year from publication with link
-    if pub1["link"]:
-        new_pub["year"] = pub1["year"]
-    else:
-        new_pub["year"] = pub2["year"]
+    if not pub1.link and pub2.link:
+        new_pub.link = pub2.link
+        new_pub.year = pub2.year
+
     # pick longer (non-empty) from each
-    for k, v in pub1.items():
-        if k in ["year", "title"]:
+    for f in fields(pub1):
+        if f.name in ["year", "title"]:
             continue
-        new_pub[k] = v if len(v) > len(pub2[k]) else pub2[k]
+        val1 = getattr(pub1, f.name)
+        val2 = getattr(pub2, f.name)
+        if val1 is None:
+            if val2 is not None:
+                setattr(new_pub, f.name, val2)
+        elif len(val2) > len(val1):
+            setattr(new_pub, f.name, val2)
+
     return new_pub
 
 
-def check_for_dups(publication_list: List[dict]):
+def dedup_publications(publication_list: List[MonarchPublication]):
     """Check for duplicate publications from scholarly and pick best info from each"""
-    checked = []
-    duplicates = []
-    for pub in publication_list:
-        if pub["title"].lower() not in [p["title"].lower() for p in checked]:
-            checked.append(pub)
+    publication_list = sorted(publication_list, key=lambda p: p.key())
+    pubs_by_key = itertools.groupby(publication_list, key=lambda p: p.key())
+
+    deduped: List[MonarchPublication] = []
+
+    for key, pubs in pubs_by_key:
+        pubs_list = list(pubs)
+        if len(pubs_list) == 1:
+            pub = pubs_list[0]
         else:
-            for ind, p in enumerate(checked):
-                if p["title"].lower() == pub["title"].lower():
-                    duplicates.append(pub["title"])
-                    checked[ind] = pick_best(p, pub)
-                    break
-    return checked, duplicates
+            logger.info(f"Found {len(pubs_list)} records for {key}")
+            pub = reduce(combine_publications, pubs)
+        deduped.append(pub)
+
+    return deduped
 
 
-def find_existing(current_data, new_data):
+def extend_current_pubs(
+    current_pubs: List[MonarchPublication], scholarly_pubs: List[MonarchPublication]
+):
     """Find publications in scholarly_data that are already in publications.json"""
-    existing_titles = [pub["title"].lower() for pub in current_data]
-    dups = [pub["title"] for pub in new_data if pub["title"].lower() in existing_titles]
-    filtered = [pub for pub in new_data if pub["title"].lower() not in existing_titles]
-    ### The below returns a different list than the above, but I'm not sure why ###
-    # dups = []
-    # for ind, pub in enumerate(new_data):
-    #     if pub["title"].lower() in existing_titles:
-    #         new_data.pop(ind)
-    #         dups.append(pub["title"])
-    return filtered, dups
+    existing_by_key = {pub.key(): pub for pub in current_pubs}
 
+    new_pubs_ct = 0
+    updated_pubs_ct = 0
+    existing_pubs_ct = 0
 
-def write_citations(publications: List[dict], metadata: dict):
-    """Write JSON file with citations for each publication"""
-    # group by year
-    pubs_sorted = []
-    for pub in publications:
-        if pub["year"] not in [year["year"] for year in pubs_sorted]:
-            pubs_sorted.append({"year": pub["year"], "items": [pub]})
+    new_pubs: list[MonarchPublication] = []
+
+    for pub in scholarly_pubs:
+        existing_pub = existing_by_key.get(pub.key(), None)
+
+        if existing_pub:
+            if pub.year > existing_pub.year:
+                logger.info(
+                    f"Updating publication year for {pub.title} from {existing_pub.year} to {pub.year}"
+                )
+                existing_pub.year = pub.year
+                updated_pubs_ct += 1
+            else:
+                existing_pubs_ct += 1
         else:
-            for year in pubs_sorted:
-                if year["year"] == pub["year"]:
-                    year["items"].insert(0, pub)
-                    break
-    output = {"metadata": metadata, "publications": pubs_sorted}
-    # write to output file
-    with open(new_pubs_file, "w") as f:
-        json.dump(output, f, indent=2)
+            new_pubs.append(pub)
+            new_pubs_ct += 1
+
+    logger.info(f"Untouched publications: {existing_pubs_ct}")
+    logger.info(f"Updated publications: {updated_pubs_ct}")
+    logger.info(f"New publications: {new_pubs_ct}")
+
+    combined_pubs = current_pubs[:]
+    combined_pubs.extend(new_pubs)
+
+    return combined_pubs
 
 
-def write_report(report: List[str]):
-    """Write report of publications with no link or with Google Scholar link"""
-    with open(report_file, "w") as f:
-        f.write("\n".join(report))
+def add_scholarly_publications(
+    scholarly_file: Path, existing_publications_file: Optional[Path]
+):
+    """Add scholarly publications to an existing publications.json file."""
 
+    with open(scholarly_file) as fd:
+        scholarly_pubs = [MonarchPublication(**pub_dict) for pub_dict in json.load(fd)]
 
-def main(update: bool):
-    """Main function"""
-    report = []
-    metadata = get_citation_metadata()
-
-    # Get publications from scholarly or existing file
-    Path(scholarly_file).touch()
-    with open(scholarly_file, "r+") as f:
-        if args.update:
-            scholarly_data = get_pubs_from_scholarly()
-            json.dump(scholarly_data, f, indent=2)
-        else:
-            scholarly_data = json.load(f)
-    report.append(f"{'-'*120}\nFound {len(scholarly_data)} publications in Google Scholar")
+    if existing_publications_file is not None:
+        with open(existing_publications_file) as fd:
+            current_data = json.load(fd)
+            current_pubs = [
+                MonarchPublication(**pub)
+                for year in current_data["publications"]
+                for pub in year["items"]
+            ]
+    else:
+        current_pubs = []
 
     # Check for duplicate publications in scholarly_data
-    checked, dups = check_for_dups(scholarly_data)
-    if dups:
-        report.append(
-            f"{'-'*120}\nFound (and removed) {len(scholarly_data) - len(checked)} duplicate publications in scholarly_data:"
-        )
-        for pub in dups:
-            report.append(f"\n\t{pub}")
-        scholarly_data = checked
+    scholarly_pubs = dedup_publications(scholarly_pubs)
 
-    # Flag publications with no link (to manually edit in publications.json later)
-    nolinks = [pub["title"] for pub in scholarly_data if not pub["link"]]  # type: ignore
-    if nolinks:
-        report.append(f"{'-'*120}\nFound {len(nolinks)} publications with no link:")
-        for pub in nolinks:
-            report.append(f"\n\t{pub}")
+    # Add known missing links
+    replace_links(scholarly_pubs)
 
-    # Filter out publications already in publications.json
-    if not Path(pubs_file).exists():
-        report.append(f"{'-'*120}\nNo publications.json file found. Creating one now...")
-        with open(pubs_file, "w") as f:
-            json.dump({"metadata": {}, "publications": []}, f, indent=2)
-    with open(pubs_file, "r") as f:
-        current_data = json.load(f)
-    current_pubs = [pub for year in current_data["publications"] for pub in year["items"]]
-    filtered, dups = find_existing(current_pubs, scholarly_data)
-    if dups:
-        report.append(
-            f"{'-'*120}\nFound {len(dups)} publications already in publications.json ({len(filtered)} new publications)\nDuplicates:"
-        )
-        for pub in dups:
-            report.append(f"\n\t{pub}")
-        report.append(f"\n{'-'*120}\nNew publications:")
-        for pub in filtered:
-            report.append(f"\n\t{pub['title']}")
+    # Bail out if there are any missing links after adding replacements
+    missing_links = [pub for pub in scholarly_pubs if not pub.link]
+    if missing_links:
+        for pub in missing_links:
+            logger.error(f"No link for {pub.title}. Add in script before continuing.")
+        sys.exit(1)
 
-    citations = filtered
-    return citations, metadata, report
+    logger.info(f"Existing publications in system: {len(current_pubs)}")
+    logger.info(f"Publications from Google Scholar: {len(scholarly_pubs)}")
+
+    # Return the scholarly publications to the current publications
+    return extend_current_pubs(current_pubs, scholarly_pubs)
+
+
+@app.command()
+def update(
+    metadata_file: Annotated[
+        Path,
+        typer.Argument(
+            exists=True,
+            file_okay=True,
+            dir_okay=False,
+            readable=True,
+        ),
+    ] = default_metadata_file,
+    publications_file: Annotated[
+        Path,
+        typer.Argument(
+            exists=True,
+            file_okay=True,
+            dir_okay=False,
+            readable=True,
+        ),
+    ] = default_scholarly_data,
+    existing_data_file: Annotated[
+        Optional[Path],
+        typer.Argument(
+            exists=True,
+            file_okay=True,
+            dir_okay=False,
+            readable=True,
+        ),
+    ] = default_publications_file,
+    output_file: Annotated[
+        Path,
+        typer.Option(
+            "--output",
+            "-o",
+            file_okay=True,
+            dir_okay=False,
+            readable=True,
+        ),
+    ] = default_publications_file,
+    update_data: bool = False
+):
+    if update_data:
+        fetch_metadata()
+        fetch_publications()
+
+    pubs = add_scholarly_publications(publications_file, existing_data_file)
+
+    # Convert publications to a dict and sort in such an order that the most recent year is first
+    pubs_by_year: DefaultDict[int, List[MonarchPublication]] = defaultdict(list)
+    for pub in pubs:
+        pubs_by_year[pub.year].append(pub)
+
+    publications_by_year = sorted(
+        [{"year": k, "items": [asdict(p) for p in v]} for k, v in pubs_by_year.items()],
+        key=lambda p: p["year"],
+        reverse=True,
+    )
+
+    with metadata_file.open("r") as fd:
+        metadata = json.load(fd)
+
+    output = json.dumps(
+        {
+            "metadata": metadata,
+            "publications": publications_by_year,
+        },
+        indent=2,
+    )
+
+    with output_file.open("w") as fd:
+        fd.write(output)
+
+
+@app.command()
+def fetch_metadata(
+    outfile: Annotated[Path, typer.Option("--output", "-o")] = default_metadata_file,
+):
+    """Fetch the latest citation metadata from Google Scholar."""
+    citation_metadata = fetch_citation_metadata()
+    output = json.dumps(citation_metadata, indent=2)
+
+    with open(outfile, "w") as fd:
+        fd.write(output)
+
+
+@app.command()
+def fetch_publications(
+    outfile: Annotated[Path, typer.Option("--output", "-o")] = default_scholarly_data,
+):
+    """Fetch the latest publication list from Google Scholar."""
+    publications = fetch_scholarly_publications()
+    output = json.dumps([asdict(pub) for pub in publications], indent=2)
+
+    with open(outfile, "w") as fd:
+        fd.write(output)
 
 
 if __name__ == "__main__":
-    ### Parse arguments
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-d", "--debug", help="Debug mode", action="store_true", default=False)
-    parser.add_argument(
-        "-u", "--update", help="Update scholarly_output.json", default=True, action=argparse.BooleanOptionalAction
-    )
-    args = parser.parse_args()
-
-    # if args.debug:
-    #     get_citation_metadata()
-    #     sys.exit()
-
-    citations, metadata, report = main(args.update)
-    write_citations(citations, metadata)
-    write_report(report)
+    app()
