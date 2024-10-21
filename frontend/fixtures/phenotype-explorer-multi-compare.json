@@ -7,52 +7,52 @@
       "full_name": null,
       "deprecated": null,
       "description": null,
-      "xref": [],
+      "xref": null,
       "provided_by": null,
       "in_taxon": null,
       "in_taxon_label": null,
       "symbol": null,
-      "synonym": [],
+      "synonym": null,
       "uri": null,
       "iri": null,
       "namespace": null,
-      "has_phenotype": [],
-      "has_phenotype_label": [],
-      "has_phenotype_closure": [],
-      "has_phenotype_closure_label": [],
+      "has_phenotype": null,
+      "has_phenotype_label": null,
+      "has_phenotype_closure": null,
+      "has_phenotype_closure_label": null,
       "has_phenotype_count": null
     },
-    "score": 8.608834726850038,
+    "score": 8.60883472685004,
     "similarity": {
       "subject_termset": {
-        "HP:0001533": { "id": "HP:0001533", "label": "Slender build" },
         "HP:0002020": {
           "id": "HP:0002020",
           "label": "Gastroesophageal reflux"
         },
-        "HP:0002616": { "id": "HP:0002616", "label": "Aortic root aneurysm" },
+        "HP:0001533": { "id": "HP:0001533", "label": "Slender build" },
+        "HP:0010749": { "id": "HP:0010749", "label": "Blepharochalasis" },
         "HP:0004944": {
           "id": "HP:0004944",
           "label": "Dilatation of the cerebral artery"
         },
         "HP:0001763": { "id": "HP:0001763", "label": "Pes planus" },
-        "HP:0012450": { "id": "HP:0012450", "label": "Chronic constipation" },
-        "HP:0010749": { "id": "HP:0010749", "label": "Blepharochalasis" }
+        "HP:0002616": { "id": "HP:0002616", "label": "Aortic root aneurysm" },
+        "HP:0012450": { "id": "HP:0012450", "label": "Chronic constipation" }
       },
       "object_termset": {
+        "MP:0001262": { "id": "MP:0001262", "label": "decreased body weight" },
         "MP:0011960": {
           "id": "MP:0011960",
           "label": "abnormal eye anterior chamber depth"
         },
+        "MP:0011965": {
+          "id": "MP:0011965",
+          "label": "decreased total retina thickness"
+        },
+        "MP:0002834": { "id": "MP:0002834", "label": "decreased heart weight" },
         "MP:0008489": {
           "id": "MP:0008489",
           "label": "slow postnatal weight gain"
-        },
-        "MP:0002834": { "id": "MP:0002834", "label": "decreased heart weight" },
-        "MP:0001262": { "id": "MP:0001262", "label": "decreased body weight" },
-        "MP:0011962": {
-          "id": "MP:0011962",
-          "label": "increased cornea thickness"
         },
         "MP:0003731": {
           "id": "MP:0003731",
@@ -62,9 +62,9 @@
           "id": "MP:0003291",
           "label": "interstinal hyperperistalsis"
         },
-        "MP:0011965": {
-          "id": "MP:0011965",
-          "label": "decreased total retina thickness"
+        "MP:0011962": {
+          "id": "MP:0011962",
+          "label": "increased cornea thickness"
         }
       },
       "subject_best_matches": {
@@ -83,8 +83,8 @@
             "object_id": "MP:0008489",
             "object_label": null,
             "object_source": null,
-            "ancestor_id": "UPHENO:0082794",
-            "ancestor_label": "Decreased multicellular organism mass",
+            "ancestor_id": "UPHENO:0054299",
+            "ancestor_label": "decreased multicellular organism mass",
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
@@ -281,8 +281,8 @@
             "object_id": "HP:0001533",
             "object_label": null,
             "object_source": null,
-            "ancestor_id": "UPHENO:0054299",
-            "ancestor_label": "decreased multicellular organism mass",
+            "ancestor_id": "UPHENO:0082794",
+            "ancestor_label": "Decreased multicellular organism mass",
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
@@ -309,8 +309,8 @@
             "object_id": "HP:0001533",
             "object_label": null,
             "object_source": null,
-            "ancestor_id": "UPHENO:0054261",
-            "ancestor_label": "decreased anatomical entity mass",
+            "ancestor_id": "UPHENO:0082761",
+            "ancestor_label": "Decreased anatomical entity mass",
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
@@ -325,8 +325,8 @@
         "MP:0003291": {
           "match_source": "MP:0003291",
           "match_source_label": "interstinal hyperperistalsis",
-          "match_target": "HP:0002020",
-          "match_target_label": "Gastroesophageal reflux",
+          "match_target": "HP:0012450",
+          "match_target_label": "Chronic constipation",
           "score": 9.97713534604573,
           "match_subsumer": null,
           "match_subsumer_label": null,
@@ -334,7 +334,7 @@
             "subject_id": "MP:0003291",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "HP:0002020",
+            "object_id": "HP:0012450",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "UPHENO:0002443",
@@ -343,10 +343,10 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 9.97713534604573,
-            "jaccard_similarity": 0.3684210526315789,
+            "jaccard_similarity": 0.4117647058823529,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 1.9172341292700534
+            "phenodigm_score": 2.026877450985369
           },
           "score_metric": "ancestor_information_content"
         },
@@ -393,8 +393,8 @@
             "object_id": "HP:0001533",
             "object_label": null,
             "object_source": null,
-            "ancestor_id": "UPHENO:0082794",
-            "ancestor_label": "Decreased multicellular organism mass",
+            "ancestor_id": "UPHENO:0054299",
+            "ancestor_label": "decreased multicellular organism mass",
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
@@ -491,7 +491,7 @@
           "score_metric": "ancestor_information_content"
         }
       },
-      "average_score": 8.608834726850038,
+      "average_score": 8.60883472685004,
       "best_score": 13.667892510789482,
       "metric": "AncestorInformationContent"
     }
@@ -504,59 +504,59 @@
       "full_name": null,
       "deprecated": null,
       "description": null,
-      "xref": [],
+      "xref": null,
       "provided_by": null,
       "in_taxon": null,
       "in_taxon_label": null,
       "symbol": null,
-      "synonym": [],
+      "synonym": null,
       "uri": null,
       "iri": null,
       "namespace": null,
-      "has_phenotype": [],
-      "has_phenotype_label": [],
-      "has_phenotype_closure": [],
-      "has_phenotype_closure_label": [],
+      "has_phenotype": null,
+      "has_phenotype_label": null,
+      "has_phenotype_closure": null,
+      "has_phenotype_closure_label": null,
       "has_phenotype_count": null
     },
-    "score": 7.343905449061466,
+    "score": 7.343905449061465,
     "similarity": {
       "subject_termset": {
         "HP:0002020": {
           "id": "HP:0002020",
           "label": "Gastroesophageal reflux"
         },
-        "HP:0001533": { "id": "HP:0001533", "label": "Slender build" },
         "HP:0010749": { "id": "HP:0010749", "label": "Blepharochalasis" },
-        "HP:0002616": { "id": "HP:0002616", "label": "Aortic root aneurysm" },
+        "HP:0001533": { "id": "HP:0001533", "label": "Slender build" },
         "HP:0012450": { "id": "HP:0012450", "label": "Chronic constipation" },
         "HP:0004944": {
           "id": "HP:0004944",
           "label": "Dilatation of the cerebral artery"
         },
-        "HP:0001763": { "id": "HP:0001763", "label": "Pes planus" }
+        "HP:0001763": { "id": "HP:0001763", "label": "Pes planus" },
+        "HP:0002616": { "id": "HP:0002616", "label": "Aortic root aneurysm" }
       },
       "object_termset": {
+        "MP:0006264": {
+          "id": "MP:0006264",
+          "label": "decreased systemic arterial systolic blood pressure"
+        },
+        "MP:0000230": {
+          "id": "MP:0000230",
+          "label": "abnormal systemic arterial blood pressure"
+        },
         "MP:0004022": {
           "id": "MP:0004022",
           "label": "abnormal cone electrophysiology"
         },
         "MP:0002834": { "id": "MP:0002834", "label": "decreased heart weight" },
-        "MP:0006264": {
-          "id": "MP:0006264",
-          "label": "decreased systemic arterial systolic blood pressure"
+        "MP:0003070": {
+          "id": "MP:0003070",
+          "label": "increased vascular permeability"
         },
-        "MP:0000233": {
-          "id": "MP:0000233",
-          "label": "abnormal blood flow velocity"
-        },
-        "MP:0000272": {
-          "id": "MP:0000272",
-          "label": "abnormal aorta morphology"
-        },
-        "MP:0000230": {
-          "id": "MP:0000230",
-          "label": "abnormal systemic arterial blood pressure"
+        "MP:0003026": {
+          "id": "MP:0003026",
+          "label": "decreased vasoconstriction"
         },
         "MP:0009862": {
           "id": "MP:0009862",
@@ -566,13 +566,13 @@
           "id": "MP:0004021",
           "label": "abnormal rod electrophysiology"
         },
-        "MP:0003070": {
-          "id": "MP:0003070",
-          "label": "increased vascular permeability"
+        "MP:0000272": {
+          "id": "MP:0000272",
+          "label": "abnormal aorta morphology"
         },
-        "MP:0003026": {
-          "id": "MP:0003026",
-          "label": "decreased vasoconstriction"
+        "MP:0000233": {
+          "id": "MP:0000233",
+          "label": "abnormal blood flow velocity"
         }
       },
       "subject_best_matches": {
@@ -691,8 +691,8 @@
         "HP:0004944": {
           "match_source": "HP:0004944",
           "match_source_label": "Dilatation of the cerebral artery",
-          "match_target": "MP:0000272",
-          "match_target_label": "abnormal aorta morphology",
+          "match_target": "MP:0009862",
+          "match_target_label": "abnormal aorta elastic tissue morphology",
           "score": 9.101342047182207,
           "match_subsumer": null,
           "match_subsumer_label": null,
@@ -700,7 +700,7 @@
             "subject_id": "HP:0004944",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "MP:0000272",
+            "object_id": "MP:0009862",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "UPHENO:0087334",
@@ -709,10 +709,10 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 9.101342047182207,
-            "jaccard_similarity": 0.2807017543859649,
+            "jaccard_similarity": 0.25757575757575757,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 1.5983624995321914
+            "phenodigm_score": 1.5311058332979641
           },
           "score_metric": "ancestor_information_content"
         },
@@ -747,8 +747,8 @@
         "HP:0012450": {
           "match_source": "HP:0012450",
           "match_source_label": "Chronic constipation",
-          "match_target": "MP:0003026",
-          "match_target_label": "decreased vasoconstriction",
+          "match_target": "MP:0004021",
+          "match_target_label": "abnormal rod electrophysiology",
           "score": 5.132448071645384,
           "match_subsumer": null,
           "match_subsumer_label": null,
@@ -756,7 +756,7 @@
             "subject_id": "HP:0012450",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "MP:0003026",
+            "object_id": "MP:0004021",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "UPHENO:0002332",
@@ -765,10 +765,10 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 5.132448071645384,
-            "jaccard_similarity": 0.2727272727272727,
+            "jaccard_similarity": 0.36363636363636365,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 1.1831139273097055
+            "phenodigm_score": 1.3661422888285077
           },
           "score_metric": "ancestor_information_content"
         }
@@ -805,8 +805,8 @@
         "MP:0000233": {
           "match_source": "MP:0000233",
           "match_source_label": "abnormal blood flow velocity",
-          "match_target": "HP:0004944",
-          "match_target_label": "Dilatation of the cerebral artery",
+          "match_target": "HP:0002616",
+          "match_target_label": "Aortic root aneurysm",
           "score": 7.3467487024345575,
           "match_subsumer": null,
           "match_subsumer_label": null,
@@ -814,7 +814,7 @@
             "subject_id": "MP:0000233",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "HP:0004944",
+            "object_id": "HP:0002616",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "UPHENO:0080362",
@@ -823,10 +823,10 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 7.3467487024345575,
-            "jaccard_similarity": 0.18333333333333332,
+            "jaccard_similarity": 0.23404255319148937,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 1.160561902174834
+            "phenodigm_score": 1.311278698055469
           },
           "score_metric": "ancestor_information_content"
         },
@@ -889,8 +889,8 @@
         "MP:0003026": {
           "match_source": "MP:0003026",
           "match_source_label": "decreased vasoconstriction",
-          "match_target": "HP:0002616",
-          "match_target_label": "Aortic root aneurysm",
+          "match_target": "HP:0004944",
+          "match_target_label": "Dilatation of the cerebral artery",
           "score": 7.3467487024345575,
           "match_subsumer": null,
           "match_subsumer_label": null,
@@ -898,7 +898,7 @@
             "subject_id": "MP:0003026",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "HP:0002616",
+            "object_id": "HP:0004944",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "UPHENO:0080362",
@@ -907,18 +907,18 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 7.3467487024345575,
-            "jaccard_similarity": 0.21428571428571427,
+            "jaccard_similarity": 0.17391304347826086,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 1.2547124345358316
+            "phenodigm_score": 1.1303519038380736
           },
           "score_metric": "ancestor_information_content"
         },
         "MP:0003070": {
           "match_source": "MP:0003070",
           "match_source_label": "increased vascular permeability",
-          "match_target": "HP:0002616",
-          "match_target_label": "Aortic root aneurysm",
+          "match_target": "HP:0004944",
+          "match_target_label": "Dilatation of the cerebral artery",
           "score": 7.3467487024345575,
           "match_subsumer": null,
           "match_subsumer_label": null,
@@ -926,7 +926,7 @@
             "subject_id": "MP:0003070",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "HP:0002616",
+            "object_id": "HP:0004944",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "UPHENO:0080362",
@@ -935,10 +935,10 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 7.3467487024345575,
-            "jaccard_similarity": 0.32653061224489793,
+            "jaccard_similarity": 0.25806451612903225,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 1.5488506551037662
+            "phenodigm_score": 1.3769296093175458
           },
           "score_metric": "ancestor_information_content"
         },
@@ -1001,8 +1001,8 @@
         "MP:0006264": {
           "match_source": "MP:0006264",
           "match_source_label": "decreased systemic arterial systolic blood pressure",
-          "match_target": "HP:0004944",
-          "match_target_label": "Dilatation of the cerebral artery",
+          "match_target": "HP:0002616",
+          "match_target_label": "Aortic root aneurysm",
           "score": 7.3467487024345575,
           "match_subsumer": null,
           "match_subsumer_label": null,
@@ -1010,7 +1010,7 @@
             "subject_id": "MP:0006264",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "HP:0004944",
+            "object_id": "HP:0002616",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "UPHENO:0080362",
@@ -1019,10 +1019,10 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 7.3467487024345575,
-            "jaccard_similarity": 0.1896551724137931,
+            "jaccard_similarity": 0.24444444444444444,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 1.1804020043362502
+            "phenodigm_score": 1.340101453263729
           },
           "score_metric": "ancestor_information_content"
         },
@@ -1055,7 +1055,7 @@
           "score_metric": "ancestor_information_content"
         }
       },
-      "average_score": 7.343905449061466,
+      "average_score": 7.343905449061465,
       "best_score": 10.484095334765613,
       "metric": "AncestorInformationContent"
     }

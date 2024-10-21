@@ -3,9 +3,7 @@
 -->
 
 <template>
-  <AppSection>
-    <AppHeading icon="lightbulb">Overview</AppHeading>
-
+  <AppSection design="bare" alignment="left" class="node">
     <AppDetails>
       <!-- symbol (gene specific) -->
       <AppDetail

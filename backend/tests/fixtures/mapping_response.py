@@ -19,7 +19,7 @@ def mapping_response():
             },
         },
         "response": {
-            "num_found": 8,
+            "num_found": 9,
             "start": 0,
             "docs": [
                 {
@@ -29,7 +29,7 @@ def mapping_response():
                     "object_id": "DOID:9884",
                     "object_label": "muscular dystrophy",
                     "mapping_justification": "semapv:UnspecifiedMatching",
-                    "id": "3eda4910-e721-4814-b2cd-0739f2eee579",
+                    "id": "4f2e79ec-aeeb-4040-b382-ef6269bf2e65",
                 },
                 {
                     "subject_id": "MONDO:0020121",
@@ -38,7 +38,7 @@ def mapping_response():
                     "object_id": "ICD10CM:G71.0",
                     "object_label": "Muscular dystrophy",
                     "mapping_justification": "semapv:UnspecifiedMatching",
-                    "id": "fd45bbd0-9de7-4d93-b491-3b582dfb003c",
+                    "id": "63c3a2fa-4183-46ec-a931-84029dccd9c0",
                 },
                 {
                     "subject_id": "MONDO:0020121",
@@ -46,7 +46,7 @@ def mapping_response():
                     "predicate_id": "skos:exactMatch",
                     "object_id": "MEDGEN:44527",
                     "mapping_justification": "semapv:UnspecifiedMatching",
-                    "id": "abafcd0b-fb7f-404a-8af3-98fba60c72bd",
+                    "id": "f6d14347-cb93-467d-9748-2b72e07cfd53",
                 },
                 {
                     "subject_id": "MONDO:0020121",
@@ -55,7 +55,7 @@ def mapping_response():
                     "object_id": "NCIT:C84910",
                     "object_label": "Muscular Dystrophy",
                     "mapping_justification": "semapv:UnspecifiedMatching",
-                    "id": "7bd011ab-4a21-451d-9298-9f37ed755977",
+                    "id": "3d4a3827-d4fc-42e5-afed-7e33a6cfa8ac",
                 },
                 {
                     "subject_id": "MONDO:0020121",
@@ -64,7 +64,7 @@ def mapping_response():
                     "object_id": "Orphanet:98473",
                     "object_label": "Muscular dystrophy",
                     "mapping_justification": "semapv:UnspecifiedMatching",
-                    "id": "8fde6a2a-f907-4f74-8b7c-6fcd6103ca19",
+                    "id": "9e915435-7914-4115-a06a-65f0052c087b",
                 },
                 {
                     "subject_id": "MONDO:0020121",
@@ -72,7 +72,7 @@ def mapping_response():
                     "predicate_id": "skos:exactMatch",
                     "object_id": "SCTID:73297009",
                     "mapping_justification": "semapv:UnspecifiedMatching",
-                    "id": "167879bf-ba1b-445c-afe7-e2db86cbe795",
+                    "id": "0dd46d38-566d-411d-9969-f72477c4979d",
                 },
                 {
                     "subject_id": "MONDO:0020121",
@@ -80,7 +80,15 @@ def mapping_response():
                     "predicate_id": "skos:exactMatch",
                     "object_id": "UMLS:C0026850",
                     "mapping_justification": "semapv:UnspecifiedMatching",
-                    "id": "a9560c9f-0075-4117-895c-af85ef93ea46",
+                    "id": "a3dfb55d-83e8-4c81-a08d-ca9a856adf3a",
+                },
+                {
+                    "subject_id": "MONDO:0020121",
+                    "subject_label": "muscular dystrophy",
+                    "predicate_id": "skos:exactMatch",
+                    "object_id": "icd11.foundation:1464662404",
+                    "mapping_justification": "semapv:UnspecifiedMatching",
+                    "id": "633a180e-cd8f-46e9-9501-f86b04efba22",
                 },
                 {
                     "subject_id": "MONDO:0020121",
@@ -88,7 +96,7 @@ def mapping_response():
                     "predicate_id": "skos:exactMatch",
                     "object_id": "MESH:D009136",
                     "mapping_justification": "semapv:UnspecifiedMatching",
-                    "id": "e9965a94-a5fb-4f32-b803-dc757b045b5d",
+                    "id": "3a648314-ad03-4942-a741-7c181f1e7e5e",
                 },
             ],
         },

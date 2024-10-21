@@ -240,7 +240,7 @@ async function runGetAutocomplete(
       viewAll,
       ...(await getAutocomplete(search)).items.map((item) => ({
         id: item.id,
-        label: item.name,
+        label: item.name || "",
         info: item.in_taxon_label || item.id,
         icon: getCategoryIcon(item.category),
         tooltip: "",

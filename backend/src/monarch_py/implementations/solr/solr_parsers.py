@@ -84,11 +84,11 @@ def parse_association_counts(query_result: SolrQueryResult, entity: str) -> Asso
             if k.endswith(subject_query):
                 original_query = k.replace(f" {subject_query}", "").lstrip("(").rstrip(")")
                 agm = get_association_type_mapping_by_query_string(original_query)
-                label = agm.object_label
+                label = agm.subject_label
             elif k.endswith(object_query):
                 original_query = k.replace(f" {object_query}", "").lstrip("(").rstrip(")")
                 agm = get_association_type_mapping_by_query_string(original_query)
-                label = agm.subject_label
+                label = agm.object_label
                 # always use forward for symmetric association types
             else:
                 raise ValueError(f"Unexpected facet query when building association counts: {k}")

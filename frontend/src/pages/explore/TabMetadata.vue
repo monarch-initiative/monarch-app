@@ -61,6 +61,12 @@
         title="Monarch Graph QC"
         subtitle="AI Assistant for the Monarch KG"
       />
+      <AppTile
+        to="https://data.monarchinitiative.org/"
+        icon="download"
+        title="Monarch Data"
+        subtitle="Download Monarch KG data or versions"
+      />
     </AppFlex>
   </AppSection>
 </template>

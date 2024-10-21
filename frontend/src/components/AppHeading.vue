@@ -148,4 +148,13 @@ section.fill {
     }
   }
 }
+section.inset {
+  h1,
+  h2,
+  h3 {
+    margin-bottom: 1px;
+    padding-bottom: 3px;
+    border-bottom: 2px solid $theme;
+  }
+}
 </style>

@@ -1,15 +1,15 @@
 - subject_label: Disease to Phenotype
-  object_label: Phenotype to Disease
+  object_label: Disease to Phenotype
   category: "biolink:DiseaseToPhenotypicFeatureAssociation"
 - subject_label: Gene to Phenotype
-  object_label: Phenotype to Gene
+  object_label: Gene to Phenotype
   category: "biolink:GeneToPhenotypicFeatureAssociation"
 - subject_label: Interactions
   object_label: Interactions
   symmetric: true
   category: "biolink:PairwiseGeneToGeneInteraction"
 - subject_label: Gene to Pathway
-  object_label: Pathway to Gene
+  object_label: Gene to Pathway
   category: "biolink:GeneToPathwayAssociation"
 - subject_label: Gene Expression
   object_label: Gene Expression
@@ -19,22 +19,22 @@
   symmetric: true
   category: "biolink:GeneToGeneHomologyAssociation"
 - subject_label: Chemical to Pathway
-  object_label: Pathway to Chemical
+  object_label: Chemical to Pathway
   category: "biolink:ChemicalToPathwayAssociation"
 - subject_label: Gene to Molecular Function
-  object_label: Molecular Function to Gene
+  object_label: Gene to Molecular Function
   category: "biolink:MacromolecularMachineToMolecularActivityAssociation"
 - subject_label: Gene to Cellular Component
-  object_label: Cellular Component to Gene
+  object_label: Gene to Cellular Component
   category: "biolink:MacromolecularMachineToCellularComponentAssociation"
 - subject_label: Gene to Biological Process
-  object_label: Biological Process to Gene
+  object_label: Gene to Biological Process
   category: "biolink:MacromolecularMachineToBiologicalProcessAssociation"
-- subject_label: Causal Gene
-  object_label: Causal Disease
+- subject_label: Causal Disease
+  object_label: Causal Gene
   category: "biolink:CausalGeneToDiseaseAssociation"
-- subject_label: Correlated Gene
-  object_label: Correlated Disease
+- subject_label: Correlated Disease
+  object_label: Correlated Gene
   category: "biolink:CorrelatedGeneToDiseaseAssociation"
 - subject_label: Variant to Gene
   object_label: Variant to Gene

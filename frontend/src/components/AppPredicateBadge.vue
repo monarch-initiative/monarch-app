@@ -4,10 +4,10 @@
 
 <template>
   <span class="predicate">
-    <AppIcon class="arrow" :icon="`arrow-${arrowDirection}`" />
+    <AppIcon v-if="arrows" class="arrow" :icon="`arrow-${arrowDirection}`" />
     <span v-if="association.negated">NOT</span>
     {{ startCase(getCategoryLabel(association.predicate)).toLowerCase() }}
-    <AppIcon class="arrow" :icon="`arrow-${arrowDirection}`" />
+    <AppIcon v-if="arrows" class="arrow" :icon="`arrow-${arrowDirection}`" />
   </span>
 </template>
 
@@ -24,6 +24,7 @@ type Props = {
   reverse?: boolean;
   /** whether to display arrows vertically */
   vertical?: boolean;
+  arrows?: boolean;
 };
 
 const props = defineProps<Props>();
@@ -42,8 +43,6 @@ const arrowDirection = computed(() =>
 
 <style lang="scss" scoped>
 .predicate {
-  white-space: nowrap;
-
   & > * {
     white-space: normal;
     overflow-wrap: anywhere;

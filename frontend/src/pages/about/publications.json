@@ -158,7 +158,7 @@
         {
           "title": "The Human Phenotype Ontology in 2024: phenotypes around the world",
           "authors": "Michael A Gargano, Nicolas Matentzoglu, Ben Coleman, Eunice B Addo-Lartey, Anna V Anagnostopoulos, Joel Anderton, Paul Avillach, Anita M Bagley, Eduard Bak\u0161tein, James P Balhoff, Gareth Baynam, Susan M Bello, Michael Berk, Holli Bertram, Somer Bishop, Hannah Blau, David F Bodenstein, Pablo Botas, Kaan Boztug, Jolana \u010cady, Tiffany J Callahan, Rhiannon Cameron, Seth J Carbon, Francisco Castellanos, J Harry Caufield, Lauren E Chan, Christopher G Chute, Jaime Cruz-Rojo, No\u00e9mi Dahan-Oliel, Jon R Davids, Maud de Dieuleveult, Vinicius de Souza, Bert BA de Vries, Esther de Vries, J Raymond DePaulo, Beata Derfalvi, Ferdinand Dhombres, Claudia Diaz-Byrd, Alexander JM Dingemans, Bruno Donadille, Michael Duyzend, Reem Elfeky, Shahim Essaid, Carolina Fabrizzi, Giovanna Fico, Helen V Firth, Yun Freudenberg-Hua, Janice M Fullerton, Davera L Gabriel, Kimberly Gilmour, Jessica Giordano, Fernando S Goes, Rachel Gore Moses, Ian Green, Matthias Griese",
-          "year": 2023,
+          "year": 2024,
           "journal": "Nucleic Acids Research",
           "issue": ":gkad1005",
           "link": "https://academic.oup.com/nar/advance-article-abstract/doi/10.1093/nar/gkad1005/7416384"
@@ -166,10 +166,143 @@
         {
           "title": "The Monarch Initiative in 2024: an analytic platform integrating phenotypes, genes and diseases across species",
           "authors": "Tim E Putman, Kevin Schaper, Nicolas Matentzoglu, Vincent P Rubinetti, Faisal S Alquaddoomi, Corey Cox, J Harry Caufield, Glass Elsarboukh, Sarah Gehrke, Harshad Hegde, Justin T Reese, Ian Braun, Richard M Bruskiewich, Luca Cappelletti, Seth Carbon, Anita R Caron, Lauren E Chan, Christopher G Chute, Katherina G Cortes, Vin\u00edcius De Souza, Tommaso Fontana, Nomi L Harris, Emily L Hartley, Eric Hurwitz, Julius OB Jacobsen, Madan Krishnamurthy, Bryan J Laraway, James A McLaughlin, Julie A McMurry, Sierra AT Moxon, Kathleen R Mullen, Shawn T O\u2019Neil, Kent A Shefchek, Ray Stefancsik, Sabrina Toro, Nicole A Vasilevsky, Ramona L Walls, Patricia L Whetzel, David Osumi-Sutherland, Damian Smedley, Peter N Robinson, Christopher J Mungall, Melissa A Haendel, Monica C Munoz-Torres",
-          "year": 2023,
+          "year": 2024,
           "journal": "Nucleic Acids Research",
           "issue": ":gkad1082",
           "link": "https://academic.oup.com/nar/advance-article-abstract/doi/10.1093/nar/gkad1082/7449493"
+        },
+        {
+          "title": "Predicting nutrition and environmental factors associated with female reproductive disorders using a knowledge graph and random forests",
+          "authors": "Lauren E Chan, Elena Casiraghi, Timothy Putman, Justin Reese, Quaker E Harmon, Kevin Schaper, Harshad Hedge, Giorgio Valentini, Charles Schmitt, Alison Motsinger-Reif, Janet E Hall, Christopher J Mungall, Peter N Robinson, Melissa A Haendel",
+          "year": 2024,
+          "journal": "medRxiv",
+          "issue": ":2023.07. 14.23292679",
+          "link": "https://www.medrxiv.org/content/10.1101/2023.07.14.23292679.abstract"
+        },
+        {
+          "title": "On the limitations of large language models in clinical diagnosis",
+          "authors": "Justin Reese, Daniel Danis, J Harry Caufield, Elena Casiraghi, Giorgio Valentini, Christopher J Mungall, Peter N Robinson",
+          "year": 2024,
+          "journal": "medRxiv",
+          "issue": ":2023.07. 13.23292613",
+          "link": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10370243/"
+        },
+        {
+          "title": "Structured prompt interrogation and recursive extraction of semantics (SPIRES): A method for populating knowledge bases using zero-shot learning",
+          "authors": "J Harry Caufield, Harshad Hegde, Vincent Emonet, Nomi L Harris, Marcin P Joachimiak, Nicolas Matentzoglu, HyeongSik Kim, Sierra AT Moxon, Justin T Reese, Melissa A Haendel, Peter N Robinson, Christopher J Mungall",
+          "year": 2024,
+          "journal": "arXiv preprint arXiv:2304.02711",
+          "issue": "",
+          "link": "https://arxiv.org/abs/2304.02711"
+        },
+        {
+          "title": "A corpus of GA4GH Phenopackets: case-level phenotyping for genomic diagnostics and discovery",
+          "authors": "Daniel Danis, Michael J Bamshad, Yasemin Bridges, Pilar Cacheiro, Leigh C Carmody, Jessica X Chong, Ben Coleman, Raymond Dalgleish, Peter J Freeman, Adam SL Graefe, Tudor Groza, Julius OB Jacobsen, Adam Klocperk, Maaike Kusters, Markus S Ladewig, Anthony J Marcello, Teresa Mattina, Christopher J Mungall, Monica C Munoz-Torres, Justin T Reese, Filip Rehburg, Barbara CS Reis, Catharina Schuetz, Damian Smedley, Timmy Strauss, Jagadish Chandrabose Sundaramurthi, Sylvia Thun, Kyran Wissink, John F Wagstaff, David Zocche, Melissa A Haendel, Peter N Robinson",
+          "year": 2024,
+          "journal": "medRxiv",
+          "issue": ":2024.05. 29.24308104",
+          "link": "https://www.medrxiv.org/content/10.1101/2024.05.29.24308104.abstract"
+        },
+        {
+          "title": "Advancing diagnosis and research for rare genetic diseases in Indigenous peoples",
+          "authors": "Gareth Baynam, Daria Julkowska, Sarah Bowdin, Azure Hermes, Christopher R McMaster, Elissa Prichep, \u00c9tienne Richer, Francois H van der Westhuizen, Gabriela M Repetto, Helen Malherbe, Juergen KV Reichardt, Laura Arbour, Maui Hudson, Kelly du Plessis, Melissa Haendel, Phillip Wilcox, Sally Ann Lynch, Shamir Rind, Simon Easteal, Xavier Estivill, Nadine Caron, Meck Chongo, Yarlalu Thomas, Mary Catherine V Letinturier, Barend Christiaan Vorster",
+          "year": 2024,
+          "journal": "Nature Genetics",
+          "issue": "56(2):189-193",
+          "link": "https://www.nature.com/articles/s41588-023-01642-1"
+        },
+        {
+          "title": "Critical assessment of variant prioritization methods for rare disease diagnosis within the Rare Genomes Project",
+          "authors": "Sarah L Stenton, Melanie C O\u2019Leary, Gabrielle Lemire, Grace E VanNoy, Stephanie DiTroia, Vijay S Ganesh, Emily Groopman, Emily O\u2019Heir, Brian Mangilog, Ikeoluwa Osei-Owusu, Lynn S Pais, Jillian Serrano, Moriel Singer-Berk, Ben Weisburd, Michael W Wilson, Christina Austin-Tse, Marwa Abdelhakim, Azza Althagafi, Giulia Babbi, Riccardo Bellazzi, Samuele Bovo, Maria Giulia Carta, Rita Casadio, Pieter-Jan Coenen, Federica De Paoli, Matteo Floris, Manavalan Gajapathy, Robert Hoehndorf, Julius OB Jacobsen, Thomas Joseph, Akash Kamandula, Panagiotis Katsonis, Cyrielle Kint, Olivier Lichtarge, Ivan Limongelli, Yulan Lu, Paolo Magni, Tarun Karthik Kumar Mamidi, Pier Luigi Martelli, Marta Mulargia, Giovanna Nicora, Keith Nykamp, Vikas Pejaver, Yisu Peng, Thi Hong Cam Pham, Maurizio S Podda, Aditya Rao, Ettore Rizzo, Vangala G Saipradeep, Castrense Savojardo, Peter Schols, Yang Shen, Naveen Sivadasan, Damian Smedley, Dorian Soru, Rajgopal Srinivasan, Yuanfei Sun, Uma Sunderam, Wuwei Tan, Naina Tiwari, Xiao Wang, Yaqiong Wang, Amanda Williams, Elizabeth A Worthey, Rujie Yin, Yuning You, Daniel Zeiberg, Susanna Zucca, Constantina Bakolitsa, Steven E Brenner, Stephanie M Fullerton, Predrag Radivojac, Heidi L Rehm, Anne O\u2019Donnell-Luria",
+          "year": 2024,
+          "journal": "Human Genomics",
+          "issue": "18(1):44",
+          "link": "https://link.springer.com/article/10.1186/s40246-024-00604-w"
+        },
+        {
+          "title": "Evaluation of the Diagnostic Accuracy of GPT-4 in Five Thousand Rare Disease Cases",
+          "authors": "Justin T Reese, Leonardo Chimirri, Daniel Danis, J Harry Caufield, Kyran Wissink Wissink, Elena Casiraghi, Giorgio Valentini, Melissa A Haendel, Christopher J Mungall, Peter N Robinson",
+          "year": 2024,
+          "journal": "medRxiv",
+          "issue": ":2024.07. 22.24310816",
+          "link": "https://www.medrxiv.org/content/10.1101/2024.07.22.24310816.abstract"
+        },
+        {
+          "title": "FastHPOCR: pragmatic, fast, and accurate concept recognition using the human phenotype ontology",
+          "authors": "Tudor Groza, Dylan Gration, Gareth Baynam, Peter N Robinson",
+          "year": 2024,
+          "journal": "Bioinformatics",
+          "issue": "40(7)",
+          "link": "https://academic.oup.com/bioinformatics/article-abstract/40/7/btae406/7698025"
+        },
+        {
+          "title": "Gene set summarization using large language models",
+          "authors": "Marcin P Joachimiak, J Harry Caufield, Nomi L Harris, Hyeongsik Kim, Christopher J Mungall",
+          "year": 2024,
+          "journal": "ArXiv",
+          "issue": "",
+          "link": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10246080/"
+        },
+        {
+          "title": "Harnessing Consumer Wearable Digital Biomarkers for Individualized Recognition of Postpartum Depression Using the All of Us Research Program Data Set: Cross-Sectional Study",
+          "authors": "Eric Hurwitz, Zachary Butzin-Dozier, Hiral Master, Shawn T O'Neil, Anita Walden, Michelle Holko, Rena C Patel, Melissa A Haendel",
+          "year": 2024,
+          "journal": "JMIR mHealth and uHealth",
+          "issue": "12(1):e54622",
+          "link": "https://mhealth.jmir.org/2024/1/e54622/"
+        },
+        {
+          "title": "Improving prenatal diagnosis through standards and aggregation",
+          "authors": "Michael H Duyzend, Pilar Cacheiro, Julius OB Jacobsen, Jessica Giordano, Harrison Brand, Ronald J Wapner, Michael E Talkowski, Peter N Robinson, Damian Smedley",
+          "year": 2024,
+          "journal": "Prenatal diagnosis 44 (4), 454-464, 2024",
+          "issue": "44(4):454-464",
+          "link": "https://obgyn.onlinelibrary.wiley.com/doi/abs/10.1002/pd.6522"
+        },
+        {
+          "title": "Leveraging Generative AI to Accelerate Biocuration of Medical Actions for Rare Disease",
+          "authors": "Enock Niyonkuru, J Harry Caufield, Leigh Carmody, Michael Gargano, Sabrina Toro, Trish Whetzel, Hannah Blau, Mauricio Soto, Elena Casiraghi, Leonardo Chimirri, Justin T Reese, Giorgio Valentini, Melissa A Haendel, Christopher J Mungall, Peter N Robinson",
+          "year": 2024,
+          "journal": "medRxiv",
+          "issue": ":2024.08. 22.24310814",
+          "link": "https://www.medrxiv.org/content/10.1101/2024.08.22.24310814.abstract"
+        },
+        {
+          "title": "Replacing non-biomedical concepts improves embedding of biomedical concepts",
+          "authors": "Enock Niyonkuru, Mauricio Soto Gomez, Elena Casiraghi, Stephan Antogiovanni, Hannah Blau, Justin T Reese, Giorgio Valentini, Peter N Robinson",
+          "year": 2024,
+          "journal": "bioRxiv",
+          "issue": ":2024.07. 01.601556",
+          "link": "https://www.biorxiv.org/content/10.1101/2024.07.01.601556.abstract"
+        },
+        {
+          "title": "The Vertebrate Breed Ontology: Towards Effective Breed Data Standardization",
+          "authors": "Kathleen R Mullen, Imke Tammen, Nicolas A Matentzoglu, Marius Mather, Christopher J Mungall, Melissa A Haendel, Frank W Nicholas, Sabrina Toro",
+          "year": 2024,
+          "journal": "arXiv preprint arXiv:2406.02623",
+          "issue": "",
+          "link": "https://arxiv.org/abs/2406.02623"
+        },
+        {
+          "title": "Towards a standard benchmark for variant and gene prioritisation algorithms: PhEval-Phenotypic inference Evaluation framework",
+          "authors": "Yasemin S Bridges, Vinicius de Souza, Katherina G Cortes, Melissa Haendel, Nomi L Harris, Daniel R Korn, Nikolaos M Marinakis, Nicolas Matentzoglu, James A McLaughlin, Christopher J Mungall, David J Osumi-Sutherland, Peter N Robinson, Damian Smedley, Julius OB Jacobsen",
+          "year": 2024,
+          "journal": "bioRxiv",
+          "issue": ":2024.06. 13.598672",
+          "link": "https://www.biorxiv.org/content/10.1101/2024.06.13.598672.abstract"
+        }
+      ]
+    },
+    {
+      "year": 2023,
+      "items": [
+        {
+          "title": "De novo TRPM3 missense variant associated with neurodevelopmental delay and manifestations of cerebral palsy",
+          "authors": "Jagadish Chandrabose Sundaramurthi, Anita M Bagley, Hannah Blau, Leigh Carmody, Amy Crandall, Daniel Danis, Michael A Gargano, Anxhela Gjyshi Gustafson, Ellen M Raney, Mallory Shingle, Jon R Davids, Peter N Robinson",
+          "year": 2023,
+          "journal": "Molecular Case Studies",
+          "issue": "9(4):a006293",
+          "link": "https://molecularcasestudies.cshlp.org/content/9/4/a006293.short"
         },
         {
           "title": "The Medical Action Ontology: A Tool for Annotating and Analyzing Treatments and Clinical Management of Human Disease",
@@ -178,22 +311,6 @@
           "journal": "medRxiv",
           "issue": ":2023.07. 13.23292612",
           "link": "https://www.medrxiv.org/content/10.1101/2023.07.13.23292612.abstract"
-        },
-        {
-          "title": "Predicting nutrition and environmental factors associated with female reproductive disorders using a knowledge graph and random forests",
-          "authors": "Lauren E Chan, Elena Casiraghi, Timothy Putman, Justin Reese, Quaker E Harmon, Kevin Schaper, Harshad Hedge, Giorgio Valentini, Charles Schmitt, Alison Motsinger-Reif, Janet E Hall, Christopher J Mungall, Peter N Robinson, Melissa A Haendel",
-          "year": 2023,
-          "journal": "medRxiv",
-          "issue": ":2023.07. 14.23292679",
-          "link": "https://www.medrxiv.org/content/10.1101/2023.07.14.23292679.abstract"
-        },
-        {
-          "title": "On the limitations of large language models in clinical diagnosis",
-          "authors": "Justin Reese, Daniel Danis, J Harry Caufield, Elena Casiraghi, Giorgio Valentini, Christopher J Mungall, Peter N Robinson",
-          "year": 2023,
-          "journal": "medRxiv",
-          "issue": ":2023.07. 13.23292613",
-          "link": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10370243/"
         },
         {
           "title": "The International Mouse Phenotyping Consortium: comprehensive knockout phenotyping underpinning the study of human disease",
@@ -218,14 +335,6 @@
           "journal": "Advanced Genetics",
           "issue": "4(1):2200016",
           "link": "https://onlinelibrary.wiley.com/doi/abs/10.1002/ggn2.202200016"
-        },
-        {
-          "title": "Structured prompt interrogation and recursive extraction of semantics (SPIRES): A method for populating knowledge bases using zero-shot learning",
-          "authors": "J Harry Caufield, Harshad Hegde, Vincent Emonet, Nomi L Harris, Marcin P Joachimiak, Nicolas Matentzoglu, HyeongSik Kim, Sierra AT Moxon, Justin T Reese, Melissa A Haendel, Peter N Robinson, Christopher J Mungall",
-          "year": 2023,
-          "journal": "arXiv preprint arXiv:2304.02711",
-          "issue": "",
-          "link": "https://arxiv.org/abs/2304.02711"
         },
         {
           "title": "The Ontology of Biological Attributes (OBA)\u2014computational traits for the life sciences",
