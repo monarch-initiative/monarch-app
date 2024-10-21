@@ -108,7 +108,7 @@ data:
 	@echo "Generating frontpage metadata..."
 	$(RUN) python scripts/generate_fixtures.py --metadata
 	@echo "Generating publications data..."
-	$(RUN) python scripts/get_publications.py --update
+	$(RUN) python scripts/get_publications.py update --update-data
 	@echo "Generating resources data..."
 	wget https://raw.githubusercontent.com/monarch-initiative/monarch-documentation/main/src/docs/resources/monarch-app-resources.json -O frontend/src/pages/resources/resources.json
 	make format-frontend
