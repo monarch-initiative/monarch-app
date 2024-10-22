@@ -3,7 +3,7 @@
 -->
 
 <template>
-  <AppSection design="bare" alignment="left" class="node">
+  <AppSection design="bare" width="full" alignment="left">
     <AppDetails>
       <!-- symbol (gene specific) -->
       <AppDetail

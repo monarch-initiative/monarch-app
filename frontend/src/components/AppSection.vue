@@ -55,30 +55,17 @@ defineSlots<Slots>();
     padding: 30px 20px;
   }
 
-  &.node {
-    margin: 10px 20px 10px $toc-width + 20px !important;
-  }
   &.inset {
     padding: 30px 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
 
-  &.left {
-    margin: 10px 20px;
-  }
-
   &.medium {
-    &.center {
-      padding: 30px max(20px, calc((100% - $section) / 2));
-    }
-    &.left {
-      padding: 5px 15px;
-    }
+    padding: 30px max(20px, calc((100% - $section) / 2));
   }
 
   &.big {
-    padding: 30px 20px;
-    //padding: 30px max(20px, calc((100% - $section-big) / 2));
+    padding: 30px max(20px, calc((100% - $section-big) / 2));
   }
 
   &.normal {

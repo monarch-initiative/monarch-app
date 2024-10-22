@@ -5,8 +5,9 @@
 <template>
   <AppSection
     v-if="node.category !== 'biolink:Gene'"
+    width="full"
     alignment="left"
-    class="node inset"
+    class="inset"
   >
     <AppHeading icon="sitemap">Hierarchy</AppHeading>
 
