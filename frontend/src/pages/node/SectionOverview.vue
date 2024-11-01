@@ -169,7 +169,7 @@ const props = defineProps<Props>();
 const clinicalSynopsis = computed(
   () =>
     props.node.mappings?.filter(({ id }) =>
-      ["OMIM:", "Orphanet:"].some((prefix) => id.startsWith(prefix)),
+      ["OMIM:"].some((prefix) => id.startsWith(prefix)),
     ) || [],
 );
 const infoForPatients = computed(
@@ -181,10 +181,7 @@ const infoForPatients = computed(
 const otherMappings = computed(
   () =>
     props.node.mappings?.filter(
-      ({ id }) =>
-        !["OMIM:", "GARD:", "Orphanet:"].some((prefix) =>
-          id.startsWith(prefix),
-        ),
+      ({ id }) => !["OMIM:", "GARD:"].some((prefix) => id.startsWith(prefix)),
     ) || [],
 );
 
