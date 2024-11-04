@@ -1,19 +1,13 @@
 import importlib
 import importlib.util
 from pathlib import Path
-from typing import Annotated, List, Optional
+from typing import Annotated, Optional
 
 import typer
 
 from monarch_py import solr_cli, sql_cli
 from monarch_py.api.config import semsimian
 from monarch_py.api.additional_models import SemsimMetric
-from monarch_py.datamodels.category_enums import (
-    AssociationCategory,
-    AssociationPredicate,
-    EntityCategory,
-    MappingPredicate,
-)
 from monarch_py.utils.solr_cli_utils import check_for_docker
 from monarch_py.utils.utils import (
     set_log_level,
@@ -105,230 +99,15 @@ def schema():
 ### "Aliases" for Solr CLI ###
 
 
-@app.command("entity")
-def entity(
-    entity_id: Annotated[
-        str,
-        typer.Argument(help="The identifier of the entity to be retrieved"),
-    ],
-    extra: Annotated[
-        bool,
-        typer.Option(
-            "--extra",
-            "-e",
-            help="Include extra fields in the output (association_counts and node_hierarchy)",
-        ),
-    ] = False,
-    fmt: fields.FormatOption = fields.OutputFormat.json,
-    output: fields.OutputOption = None,
-):
-    """
-    Retrieve an entity by ID
-    """
-    solr_cli.entity(**locals())
-
-
-@app.command("associations")
-def associations(
-    category: Annotated[
-        Optional[List[AssociationCategory]],
-        typer.Option(
-            "--category",
-            "-c",
-            help="Category to get associations for",
-        ),
-    ] = None,
-    subject: Annotated[
-        Optional[List[str]],
-        typer.Option(
-            "--subject",
-            "-s",
-            help="Subject ID to get associations for",
-        ),
-    ] = None,
-    predicate: Annotated[
-        Optional[List[AssociationPredicate]],
-        typer.Option(
-            "--predicate",
-            "-p",
-            help="Predicate ID to get associations for",
-        ),
-    ] = None,
-    object: Annotated[
-        Optional[List[str]],
-        typer.Option(
-            "--object",
-            "-o",
-            help="Object ID to get associations for",
-        ),
-    ] = None,
-    entity: Annotated[
-        Optional[List[str]],
-        typer.Option(
-            "--entity",
-            "-e",
-            help="Entity (subject or object) ID to get associations for",
-        ),
-    ] = None,
-    direct: Annotated[
-        bool,
-        typer.Option(
-            "--direct",
-            "-d",
-            help="Whether to exclude associations with subject/object as ancestors",
-        ),
-    ] = False,
-    compact: Annotated[
-        bool,
-        typer.Option(
-            "--compact",
-            "-C",
-            help="Whether to return a compact representation of the associations",
-        ),
-    ] = False,
-    limit: fields.LimitOption = 20,
-    offset: fields.OffsetOption = 0,
-    fmt: fields.FormatOption = fields.OutputFormat.json,
-    output: fields.OutputOption = None,
-):
-    """
-    Paginate through associations
-    """
-    solr_cli.associations(**locals())
-
-
-@app.command("multi-entity-associations")
-def multi_entity_associations(
-    entity: Annotated[
-        Optional[List[str]],
-        typer.Option(
-            "--entity",
-            "-e",
-            help="Comma-separated list of entities",
-        ),
-    ] = None,
-    counterpart_category: Annotated[
-        Optional[List[str]],
-        typer.Option(
-            "--counterpart-category",
-            "-c",
-        ),
-    ] = None,
-    limit: fields.LimitOption = 20,
-    offset: fields.OffsetOption = 0,
-    fmt: fields.FormatOption = fields.OutputFormat.json,
-    output: fields.OutputOption = None,
-):
-    """
-    Paginate through associations for multiple entities
-    """
-    solr_cli.multi_entity_associations(**locals())
-
-
-@app.command("search")
-def search(
-    q: fields.QueryOption = ":*",
-    category: Annotated[
-        Optional[List[EntityCategory]],
-        typer.Option("--category", "-c"),
-    ] = None,
-    in_taxon_label: Annotated[
-        Optional[str],
-        typer.Option("--in-taxon-label", "-t"),
-    ] = None,
-    facet_fields: Annotated[
-        Optional[List[str]],
-        typer.Option("--facet-fields", "-ff"),
-    ] = None,
-    facet_queries: Annotated[
-        Optional[List[str]],
-        typer.Option("--facet-queries", "-fq"),
-    ] = None,
-    limit: fields.LimitOption = 20,
-    offset: fields.OffsetOption = 0,
-    fmt: fields.FormatOption = fields.OutputFormat.json,
-    output: fields.OutputOption = None,
-    # sort: str = typer.Option(None, "--sort", "-s"),
-):
-    """
-    Search for entities
-    """
-    solr_cli.search(**locals())
-
-
-@app.command("autocomplete")
-def autocomplete(
-    q: Annotated[str, typer.Argument(help="Query string to autocomplete against")],
-    fmt: fields.FormatOption = fields.OutputFormat.json,
-    output: fields.OutputOption = None,
-):
-    """
-    Return entity autcomplete matches for a query string
-    """
-    solr_cli.autocomplete(**locals())
-
-
-@app.command("histopheno")
-def histopheno(
-    subject: Annotated[str, typer.Argument(help="The subject of the association")],
-    fmt: fields.FormatOption = fields.OutputFormat.json,
-    output: fields.OutputOption = None,
-):
-    """
-    Retrieve the histopheno data for an entity by ID
-    """
-    solr_cli.histopheno(**locals())
-
-
-@app.command("association-counts")
-def association_counts(
-    entity: Annotated[
-        str, typer.Argument(help="The entity to get association counts for")
-    ],
-    fmt: fields.FormatOption = fields.OutputFormat.json,
-    output: fields.OutputOption = None,
-):
-    """
-    Retrieve association counts for an entity by ID
-    """
-    solr_cli.association_counts(**locals())
-
-
-@app.command("association-table")
-def association_table(
-    entity: Annotated[
-        str,
-        typer.Argument(
-            help="The entity to get associations for",
-        ),
-    ],
-    category: Annotated[
-        AssociationCategory,
-        typer.Argument(
-            help="The association category to get associations for, ex. biolink:GeneToPhenotypicFeatureAssociation",
-        ),
-    ],
-    q: Annotated[
-        Optional[str],
-        typer.Option("--query", "-q"),
-    ] = None,
-    traverse_orthologs: Annotated[
-        bool,
-        typer.Option(
-            "--traverse-orthologs",
-            "-t",
-            help="Whether to traverse orthologs when getting associations",
-        ),
-    ] = False,
-    sort: Annotated[
-        Optional[List[str]],
-        typer.Option("--sort", "-s"),
-    ] = None,
-    limit: fields.LimitOption = 20,
-    fmt: fields.FormatOption = fields.OutputFormat.json,
-    output: fields.OutputOption = None,
-):
-    solr_cli.association_table(**locals())
+app.command("entity")(solr_cli.entity)
+app.command("associations")(solr_cli.associations)
+app.command("multi-entity-associations")(solr_cli.multi_entity_associations)
+app.command("search")(solr_cli.search)
+app.command("autocomplete")(solr_cli.autocomplete)
+app.command("histopheno")(solr_cli.histopheno)
+app.command("association-counts")(solr_cli.association_counts)
+app.command("association-table")(solr_cli.association_table)
+app.command("mappings")(solr_cli.mappings)
 
 
 ### CLI Commands for Semsimian ###
@@ -366,43 +145,6 @@ def compare(
     format_output(fmt, response, output)
 
 
-### Misc CLI Commands ###
-
-
-@app.command("mappings")
-def mappings(
-    entity_id: Annotated[
-        Optional[List[str]],
-        typer.Option("--entity-id", "-e", help="entity ID to get mappings for"),
-    ] = None,
-    subject_id: Annotated[
-        Optional[List[str]],
-        typer.Option("--subject-id", "-s", help="subject ID to get mappings for"),
-    ] = None,
-    predicate_id: Annotated[
-        Optional[List[MappingPredicate]],
-        typer.Option("--predicate-id", "-p", help="predicate ID to get mappings for"),
-    ] = None,
-    object_id: Annotated[
-        Optional[List[str]],
-        typer.Option("--object-id", "-o", help="object ID to get mappings for"),
-    ] = None,
-    mapping_justification: Annotated[
-        Optional[List[str]],
-        typer.Option(
-            "--mapping-justification",
-            "-m",
-            help="mapping justification to get mappings for",
-        ),
-    ] = None,
-    limit: fields.LimitOption = 20,
-    offset: fields.OffsetOption = 0,
-    fmt: fields.FormatOption = fields.OutputFormat.json,
-    output: fields.OutputOption = None,
-):
-    solr_cli.mappings(**locals())
-
-
 ### CLI Commands for Release Info ###
 
 
@@ -425,9 +167,7 @@ def releases(
 
 @app.command("release")
 def release(
-    release_ver: str = typer.Argument(
-        help="The release version to get metadata for"
-    ),
+    release_ver: str = typer.Argument(help="The release version to get metadata for"),
     fmt: fields.FormatOption = fields.OutputFormat.json,
     output: fields.OutputOption = None,
 ):
