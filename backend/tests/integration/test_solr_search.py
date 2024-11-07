@@ -114,7 +114,7 @@ def test_association_counts_for_disease():
     disease_phenotype = [
         ac for ac in association_counts.items if ac.category == "biolink:DiseaseToPhenotypicFeatureAssociation"
     ][0]
-    assert disease_phenotype.label == "Phenotype to Disease"
+    assert disease_phenotype.label == "Disease to Phenotype"
 
 
 def test_association_counts_for_eds():

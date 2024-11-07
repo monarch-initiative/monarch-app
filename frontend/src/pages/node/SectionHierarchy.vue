@@ -3,7 +3,12 @@
 -->
 
 <template>
-  <AppSection v-if="node.category !== 'biolink:Gene'">
+  <AppSection
+    v-if="node.category !== 'biolink:Gene'"
+    width="full"
+    alignment="left"
+    class="inset"
+  >
     <AppHeading icon="sitemap">Hierarchy</AppHeading>
 
     <AppDetails>

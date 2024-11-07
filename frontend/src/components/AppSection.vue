@@ -4,7 +4,7 @@
 -->
 
 <template>
-  <section :class="['section', width, design]">
+  <section :class="['section', width, design, alignment, { inset }, { node }]">
     <slot />
   </section>
 </template>
@@ -14,10 +14,18 @@ type Props = {
   /** width of section */
   width?: "full" | "medium" | "big";
   /** visual design */
-  design?: "normal" | "fill";
+  design?: "normal" | "fill" | "bare";
+  alignment?: "left" | "center";
+  inset?: boolean;
+  node?: boolean;
 };
 
-withDefaults(defineProps<Props>(), { width: "medium", design: "normal" });
+withDefaults(defineProps<Props>(), {
+  width: "medium",
+  design: "normal",
+  alignment: "center",
+  inset: false,
+});
 
 type Slots = {
   default: () => unknown;
@@ -30,21 +38,34 @@ defineSlots<Slots>();
 .section {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 40px;
-  text-align: center;
   transition: background $fast;
+  &.center {
+    align-items: center;
+    gap: 40px;
+    text-align: center;
+  }
+
+  &.left {
+    align-items: flex-start;
+    gap: 20px;
+    text-align: left;
+  }
 
   &.full {
-    padding: 50px 40px;
+    padding: 30px 20px;
+  }
+
+  &.inset {
+    padding: 30px 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
 
   &.medium {
-    padding: 50px max(40px, calc((100% - $section) / 2));
+    padding: 30px max(20px, calc((100% - $section) / 2));
   }
 
   &.big {
-    padding: 50px max(40px, calc((100% - $section-big) / 2));
+    padding: 30px max(20px, calc((100% - $section-big) / 2));
   }
 
   &.normal {

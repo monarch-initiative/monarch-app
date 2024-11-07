@@ -235,6 +235,18 @@ export interface Association {
     stage_qualifier_closure?: string[],
     /** Field containing stage_qualifier name and the names of all of it's ancestors */
     stage_qualifier_closure_label?: string[],
+    /** A context qualifier representing a disease or condition in which a relationship expressed in an association took place. */
+    disease_context_qualifier?: string,
+    /** The name of the disease_context_qualifier entity */
+    disease_context_qualifier_label?: string,
+    /** The namespace/prefix of the disease_context_qualifier entity */
+    disease_context_qualifier_namespace?: string,
+    /** The category of the disease_context_qualifier entity */
+    disease_context_qualifier_category?: string,
+    /** Field containing disease_context_qualifier id and the ids of all of it's ancestors */
+    disease_context_qualifier_closure?: string[],
+    /** Field containing disease_context_qualifier name and the names of all of it's ancestors */
+    disease_context_qualifier_closure_label?: string[],
 }
 
 

@@ -66,20 +66,8 @@
     </template>
 
     <!-- button to show details -->
-    <template #details="{ cell, row }">
-      <AppButton
-        v-tooltip="
-          row.id === association?.id
-            ? `Show evidence (${row.evidence_count}) and other info about this association`
-            : 'Deselect this association'
-        "
-        class="details"
-        :text="String(cell || 0)"
-        :aria-pressed="row.id === association?.id"
-        :icon="row.id === association?.id ? 'check' : 'flask'"
-        :color="row.id === association?.id ? 'primary' : 'secondary'"
-        @click="emit('select', row.id === association?.id ? undefined : row)"
-      />
+    <template #details="{ row }">
+      <AppButton text="Details" icon="info-circle" @click="openModal(row)" />
     </template>
 
     <!-- extra columns -->
@@ -92,13 +80,29 @@
           : row.subject_taxon_label
       }}
     </template>
-
+    <template #disease_context="{ row }">
+      <AppNodeBadge
+        v-if="row.disease_context_qualifier"
+        :node="{
+          id: row.disease_context_qualifier,
+          name: row.disease_context_qualifier_label,
+          category: 'biolink:Disease',
+        }"
+      />
+      <span v-else class="empty">No info</span>
+    </template>
     <!-- phenotype specific -->
     <!-- no template needed because info just plain text -->
 
     <!-- publication specific -->
     <!-- no template needed because info just plain text -->
   </AppTable>
+  <AppModal v-model="showModal" label="Association Details">
+    <SectionAssociationDetails
+      :node="node"
+      :association="selectedAssociation"
+    />
+  </AppModal>
 </template>
 
 <script setup lang="ts">
@@ -114,6 +118,7 @@ import {
   type DirectionalAssociation,
   type Node,
 } from "@/api/model";
+import AppModal from "@/components/AppModal.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPercentage from "@/components/AppPercentage.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
@@ -123,6 +128,7 @@ import type { Cols, Sort } from "@/components/AppTable.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
 import { useQuery } from "@/composables/use-query";
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
+import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
 
 type Props = {
   /** current node */
@@ -132,18 +138,39 @@ type Props = {
   /** include orthologs */
   includeOrthologs: boolean;
   direct: Option;
-  /** selected association */
-  association?: DirectionalAssociation;
 };
 
 const props = defineProps<Props>();
 
-type Emits = {
-  /** change selected association */
-  select: [value?: DirectionalAssociation];
-};
+const showModal = ref(false);
+const selectedAssociation = ref<DirectionalAssociation | null>(null);
 
-const emit = defineEmits<Emits>();
+function openModal(association: DirectionalAssociation) {
+  selectedAssociation.value = association;
+  showModal.value = true;
+}
+
+watch(showModal, (newValue) => {
+  if (!newValue) {
+    selectedAssociation.value = null;
+  }
+});
+
+// type Emits = {
+//   /** change selected association */
+//   select: [value?: DirectionalAssociation];
+// };
+//
+// const emit = defineEmits<Emits>();
+//
+// emit("select", (value) => {
+//   if (value) {
+//     console.log("emitting association detail event");
+//     console.log(value);
+//     association.value = value;
+//     showModal.value = true;
+//   }
+// });
 
 /** table state */
 const sort = ref<Sort>();
@@ -163,7 +190,6 @@ const cols = computed((): Cols<Datum> => {
       heading: getCategoryLabel(
         associations.value.items[0]?.subject_category || "Subject",
       ),
-      width: "200px",
       sortable: true,
     },
     {
@@ -178,7 +204,6 @@ const cols = computed((): Cols<Datum> => {
       heading: getCategoryLabel(
         associations.value.items[0]?.object_category || "Object",
       ),
-      width: "200px",
       sortable: true,
     },
     {
@@ -195,16 +220,25 @@ const cols = computed((): Cols<Datum> => {
 
   /** taxon column. exists for many categories, so just add if any row has taxon. */
   if (
-    associations.value.items.some(
-      (item) => item.subject_taxon_label || item.object_taxon_label,
-    )
+    props.category.id.includes("GeneToGeneHomology") ||
+    props.category.id.includes("Interaction")
   )
     extraCols.push({
       slot: "taxon",
       heading: "Taxon",
     });
 
-  console.log(props);
+  if (
+    props.node.in_taxon_label == "Homo sapiens" &&
+    props.category.id.includes("GeneToPhenotypicFeature")
+  ) {
+    extraCols.push({
+      slot: "disease_context",
+      key: "disease_context_qualifier",
+      heading: "Disease Context",
+      sortable: true,
+    });
+  }
   /** phenotype specific columns */
   if (props.category.id.includes("PhenotypicFeature")) {
     extraCols.push(
@@ -214,34 +248,22 @@ const cols = computed((): Cols<Datum> => {
         heading: "Frequency",
         sortable: true,
       },
-      // {
-      //   key: "has_percentage",
-      //   heading: "Frequency %",
-      //   sortable: true,
-      // },
-      // {
-      //   key: "has_count",
-      //   heading: "Count",
-      //   sortable: true,
-      // },
-      // {
-      //   key: "has_total",
-      //   heading: "Total",
-      //   sortable: true,
-      // },
       {
         key: "onset_qualifier_label",
         heading: "Onset",
         sortable: true,
       },
-      {
-        key: "original_subject",
-        heading: "Original Subject",
-        sortable: true,
-      },
     );
   }
 
+  //include original subject and call it Source for D2P
+  if (props.category.id.includes("DiseaseToPhenotypicFeature")) {
+    extraCols.push({
+      key: "original_subject",
+      heading: "Source",
+      sortable: true,
+    });
+  }
   /** publication specific columns */
   // if (props.category.label === "biolink:Publication")
   //   extraCols.push(
@@ -336,13 +358,14 @@ async function download() {
 /** get phenotype frequency percentage 0-1 */
 const frequencyPercentage = (row: DirectionalAssociation) => {
   /** frequency from % out of 100 */
-  if (row.has_percentage) return row.has_percentage / 100;
+  if (row.has_percentage !== undefined) return row.has_percentage / 100;
 
   /** frequency from ratio */
-  if (row.has_count && row.has_total) return row.has_count / row.has_total;
-
+  if (row.has_count !== undefined && row.has_total !== undefined) {
+    return row.has_count / row.has_total;
+  }
   /** enumerated frequencies */
-  if (row.frequency_qualifier)
+  if (row.frequency_qualifier !== undefined)
     switch (row.frequency_qualifier) {
       case "HP:0040280":
         return 1;
@@ -361,14 +384,19 @@ const frequencyPercentage = (row: DirectionalAssociation) => {
 
 /** get frequency tooltip */
 const frequencyTooltip = (row: DirectionalAssociation) => {
-  if (row.has_percentage)
-    return `${row.has_percentage.toFixed(0)}% of ${row.has_total} cases`;
-
-  if (row.has_count && row.has_total)
+  // display fraction if possible
+  if (row.has_count !== undefined && row.has_total !== undefined) {
     return `${row.has_count} of ${row.has_total} cases`;
+  }
 
+  // if percentage is present but fraction isn't, that's what was originally in the data
+  if (row.has_percentage !== undefined && row.has_total !== undefined) {
+    return `${row.has_percentage.toFixed(0)}%`;
+  }
+  // if no percentage or fraction, display the qualifier label
   if (row.frequency_qualifier) return `${row.frequency_qualifier_label}`;
 
+  // finally, there is no frequency info at all
   return "No info";
 };
 

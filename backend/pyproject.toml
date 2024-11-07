@@ -17,24 +17,22 @@ packages = [{ include = "monarch_py", from = "src" }]
 python = "^3.9"
 pydantic = "^2"
 curies = "<1"
-linkml = "^1.7.10"
+linkml = "1.8.3"
 prefixmaps = "^0.2"
 bioregistry = "^0.10.57"
 oaklib = ">=0.6.6"
 
 docker = "^7.1.0"
-# fastapi = "^0.111.0"
 fastapi = "^0.103.1"
 gunicorn = "^22.0.0"
 loguru = "*"
 pystow = ">=0.5.4"
 requests = "^2.31.0"
 rich = "*"
-# typer = "^0.12"
 typer = "^0.7.0"
 typer-cli = "^0.0.13"
-spacy = { git = "https://github.com/explosion/spaCy.git", branch = "master" }
 beautifulsoup4 = "^4.12.3"
+spacy = "^3.7.6"
 
 [tool.poetry.dependencies.en_core_sci_sm]
 url = "https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.4/en_core_sci_sm-0.5.4.tar.gz"

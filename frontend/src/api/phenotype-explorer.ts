@@ -43,7 +43,7 @@ export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
          * if gene/disease, provide function to get associated phenotypes upon
          * select
          */
-        item.category.startsWith("biolink:Pheno")
+        item.category?.startsWith("biolink:Pheno")
           ? undefined
           : async () => await getPhenotypeAssociations(item.id),
       highlight: item.highlight,

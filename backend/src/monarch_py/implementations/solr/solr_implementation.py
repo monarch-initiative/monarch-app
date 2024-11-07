@@ -93,18 +93,18 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             return parse_entity(solr_document)
 
         # Get extra data (this logic is very tricky to test because of the calls to Solr)
-        node = Node(**solr_document)
-        node.uri = get_uri(node.id)
-        if "biolink:Disease" == node.category:
+        entity = Entity(**solr_document)
+        entity.uri = get_uri(entity.id)
+        if "biolink:Disease" == entity.category:
             # Get mode of inheritance
             mode_of_inheritance_associations = self.get_associations(
                 subject=id, predicate=[AssociationPredicate.HAS_MODE_OF_INHERITANCE], direct=True, offset=0
             )
             if mode_of_inheritance_associations is not None and len(mode_of_inheritance_associations.items) == 1:
-                node.inheritance = self._get_counterpart_entity(mode_of_inheritance_associations.items[0], node)
+                entity.inheritance = self._get_counterpart_entity(mode_of_inheritance_associations.items[0], entity)
             # Get causal gene
-            node.causal_gene = [
-                self._get_counterpart_entity(association, node)
+            entity.causal_gene = [
+                self._get_counterpart_entity(association, entity)
                 for association in self.get_associations(
                     object=id,
                     direct=True,
@@ -112,9 +112,9 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                     category=[AssociationCategory.CAUSAL_GENE_TO_DISEASE_ASSOCIATION],
                 ).items
             ]
-        if "biolink:Gene" == node.category:
-            node.causes_disease = [
-                self._get_counterpart_entity(association, node)
+        if "biolink:Gene" == entity.category:
+            entity.causes_disease = [
+                self._get_counterpart_entity(association, entity)
                 for association in self.get_associations(
                     subject=id,
                     direct=True,
@@ -122,12 +122,14 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                     category=[AssociationCategory.CAUSAL_GENE_TO_DISEASE_ASSOCIATION],
                 ).items
             ]
-
-        node.node_hierarchy = self._get_node_hierarchy(node)
-        node.association_counts = self.get_association_counts(id).items
-        node.external_links = get_links_for_field(node.xref) if node.xref else []
-        node.provided_by_link = get_provided_by_link(node.provided_by)
-        node.mappings = self._get_mapped_entities(node)
+        node: Node = Node(
+            **entity.dict(),
+            node_hierarchy=self._get_node_hierarchy(entity),
+            association_counts=self.get_association_counts(id).items,
+            external_links=get_links_for_field(entity.xref) if entity.xref else [],
+            provided_by_link=get_provided_by_link(entity.provided_by),
+            mappings=self._get_mapped_entities(entity),
+        )
 
         return node
 

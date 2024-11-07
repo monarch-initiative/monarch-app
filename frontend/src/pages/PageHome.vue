@@ -3,27 +3,45 @@
 -->
 
 <template>
-  <!-- dive right in -->
-  <AppSection design="fill">
-    <div>Explore our knowledge on this website</div>
-    <AppTabs
-      v-model="tab"
-      name="Explore Mode"
-      :tabs="tabs"
-      navigate="Explore"
-    />
-    <TabSearch :minimal="true" :focus-explore="true" />
+  <AppSection width="big">
+    <AppGallery>
+      <template v-for="category in resources" :key="category">
+        <AppTile
+          v-for="(resource, resourceIndex) in category"
+          :key="resourceIndex"
+          :to="resource.link"
+          :icon="resource.icon"
+          :title="resource.name"
+          :subtitle="resource.description"
+        />
+      </template>
+    </AppGallery>
   </AppSection>
 
-  <AppSection>
-    <AppButton to="/how-to" text="Learn to use Monarch" icon="arrow-right" />
-  </AppSection>
+  <!--  <AppSection design="fill">-->
+  <!--    <AppTabs-->
+  <!--      v-model="tab"-->
+  <!--      name="Explore Mode"-->
+  <!--      :tabs="tabs"-->
+  <!--      navigate="Explore"-->
+  <!--    />-->
+  <!--    <TabSearch :minimal="true" :focus-explore="true" />-->
+  <!--  </AppSection>-->
 
   <AppSection>
     <AppHeading>What is Monarch?</AppHeading>
 
     <!-- high level description of monarch as a whole. "elevator pitch" -->
     <!-- eslint-disable-next-line -->
+    <iframe
+      title="Monarch Initiative: Resource Overview"
+      class="video"
+      src="https://www.youtube.com/embed/25e88kbjKtU?si=lG88-c2fZcKHxIhm"
+      frameborder="0"
+      allow="autoplay; picture-in-picture"
+      allowfullscreen
+    ></iframe>
+
     <AppGallery :cols="2">
       <AppTile
         icon="people"
@@ -42,44 +60,13 @@
         title="Powerful API and ecosystem of related tools"
       />
     </AppGallery>
-
-    <hr />
-
     <!-- KG counts (for advertising) -->
-    <AppGallery :cols="4">
-      <!-- node counts -->
-      <AppTile
-        v-for="(item, index) in metadata.node"
-        :key="index"
-        :icon="item.icon"
-        :title="startCase(item.label.replace(/biolink:/g, ''))"
-        :subtitle="formatNumber(item.count, true)"
-        design="small"
-      />
-      <!-- association counts -->
-      <AppTile
-        v-for="(item, index) in metadata.association"
-        :key="index"
-        :icon="item.icon2 ? undefined : item.icon"
-        :title="startCase(item.label.replace(/biolink:/g, ''))"
-        :subtitle="formatNumber(item.count, true)"
-        design="small"
-      >
-        <AppFlex v-if="item.icon2" gap="tiny" class="association">
-          <AppIcon :icon="item.icon" />
-          <svg viewBox="0 0 9 2" class="line">
-            <line x1="0" y1="1" x2="9" y2="1" />
-          </svg>
-          <AppIcon :icon="item.icon2" />
-        </AppFlex>
-      </AppTile>
-    </AppGallery>
-    <AppButton to="/about" text="Learn more" icon="arrow-right" />
+    <!-- <AppButton to="/about" text="Learn more" icon="arrow-right" /> -->
   </AppSection>
 
   <!-- specific feature demos  -->
 
-  <AppSection>
+  <!-- <AppSection>
     <AppHeading>Highlights</AppHeading>
 
     <p>Some cool things you can do on this website.</p>
@@ -105,7 +92,7 @@
       See rich details about each node. Traverse between nodes via associations
       between them, and view the evidence for those associations.
     </AppHighlight>
-  </AppSection>
+  </AppSection> -->
 
   <!-- news -->
   <AppSection>
@@ -120,7 +107,7 @@
     <!-- list of posts -->
     <AppFlex v-if="blogPosts.length" direction="col" gap="big">
       <AppPost
-        v-for="(item, index) in blogPosts.slice(0, 5)"
+        v-for="(item, index) in blogPosts.slice(0, 3)"
         :key="index"
         class="blog-post"
         :image="item.thumbnail"
@@ -136,6 +123,17 @@
       text="More on Medium"
       icon="medium"
     />
+  </AppSection>
+
+  <AppSection>
+    <iframe
+      title="Monarch Initiative: User Experience"
+      class="video"
+      src="https://www.youtube.com/embed/kYyP6My2tWA?si=k-d_jM-01rUuBBG5"
+      frameborder="0"
+      allow="autoplay; picture-in-picture"
+      allowfullscreen
+    ></iframe>
   </AppSection>
 
   <!-- social media -->
@@ -185,25 +183,12 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import { startCase } from "lodash";
+import { onMounted } from "vue";
 import { getBlogPosts } from "@/api/blog";
-import nodePage from "@/assets/demos/node-page.mp4";
-import phenotypeExplorer from "@/assets/demos/phenotype-explorer.mp4";
-import search from "@/assets/demos/search.mp4";
-import textAnnotator from "@/assets/demos/text-annotator.mp4";
-import AppHighlight from "@/components/AppHighlight.vue";
 import AppPost from "@/components/AppPost.vue";
-import AppTabs from "@/components/AppTabs.vue";
 import AppTile from "@/components/AppTile.vue";
 import { useQuery } from "@/composables/use-query";
-import { formatNumber } from "@/util/string";
-import tabs from "./explore/tabs.json";
-import TabSearch from "./explore/TabSearch.vue";
-import metadata from "./metadata.json";
-
-/** selected tab state */
-const tab = ref(tabs[0].id);
+import resources from "./resources.json";
 
 const {
   query: runGetBlogPosts,
@@ -220,6 +205,11 @@ onMounted(runGetBlogPosts);
 <style lang="scss" scoped>
 .association {
   font-size: 2rem;
+}
+
+.video {
+  aspect-ratio: 16 / 9;
+  width: 100%;
 }
 
 .line {

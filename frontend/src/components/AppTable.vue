@@ -8,8 +8,8 @@
 
 <template>
   <!-- table data -->
-  <AppFlex direction="col" :class="['container', { expanded }]">
-    <div ref="scroll" class="scroll force-scrollbar">
+  <AppFlex direction="col" align-h="left" :class="['container']">
+    <div ref="scroll" style="width: 100%">
       <table
         class="table"
         :aria-colcount="cols.length"
@@ -183,13 +183,6 @@
           design="small"
           @click="emitDownload"
         />
-        <AppButton
-          v-tooltip="expanded ? 'Collapse table' : 'Expand table to full width'"
-          :text="expanded ? 'Collapse' : 'Expand'"
-          :icon="expanded ? 'minimize' : 'maximize'"
-          design="small"
-          @click="expanded = !expanded"
-        />
       </div>
     </div>
   </AppFlex>
@@ -226,14 +219,11 @@ export type Sort<Key extends string = string> = {
 </script>
 
 <script setup lang="ts" generic="Datum extends object">
-import { computed, watch, type VNode } from "vue";
-import { useLocalStorage } from "@vueuse/core";
-import { useScrollable } from "@/composables/use-scrollable";
+import { computed, type VNode } from "vue";
 import type { Options } from "./AppSelectMulti.vue";
 import AppSelectMulti from "./AppSelectMulti.vue";
 import AppSelectSingle from "./AppSelectSingle.vue";
 import AppTextbox from "./AppTextbox.vue";
-import { closeToc } from "./TheTableOfContents.vue";
 
 /** possible keys on datum (remove number and symbol from default object type) */
 type Keys = Extract<keyof Datum, string>;
@@ -305,13 +295,6 @@ type SlotProps = {
 defineSlots<{
   [slot in SlotNames]: (props: SlotProps) => VNode;
 }>();
-
-/** whether table is expanded to be full width */
-const expanded = useLocalStorage(`${props.id}-table-expanded`, false);
-
-/** style scroll states */
-const { ref: scroll, updateScroll } = useScrollable();
-watch(expanded, updateScroll);
 
 /** when user clicks to first page */
 function clickFirst() {
@@ -390,28 +373,18 @@ const ariaSort = computed(() => {
   if (props.sort?.direction === "down") return "descending";
   return "none";
 });
-
-/** close table of contents when expanding or starting expanded */
-watch(
-  expanded,
-  () => {
-    if (expanded.value) closeToc();
-  },
-  { immediate: true },
-);
 </script>
 
 <style lang="scss" scoped>
 .container {
-  &.expanded {
-    left: 0;
-    width: calc(100vw - 100px);
-    transform: translateX(0);
-
-    .cell {
-      width: max-content !important;
-    }
-  }
+  left: 0;
+  //width: calc(100vw - 50px);
+  width: 100%;
+  overflow-x: auto;
+  transform: translateX(0);
+  //.cell {
+  //  width: max-content !important;
+  //}
 }
 
 .scroll {
@@ -420,18 +393,21 @@ watch(
 }
 
 .table {
-  margin: 0 auto;
+  width: 100%;
+  //  margin: 0 auto;
   border-collapse: collapse;
-  table-layout: fixed;
+  font-size: 0.9em;
+  //table-layout: fixed;
+  table-layout: auto;
 }
 
 /** all cells */
 .cell {
-  display: flex;
-  align-items: center;
-  max-width: max-content;
-  padding: 5px 10px;
-  gap: 10px;
+  //display: flex;
+  //align-items: center;
+  //max-width: max-content;
+  padding: 3px 6px;
+  gap: 5px;
 
   &.left {
     justify-content: flex-start;
@@ -456,6 +432,7 @@ watch(
 .th,
 .td {
   padding: 0;
+  white-space: nowrap;
 
   &.divider {
     position: relative;
@@ -472,9 +449,24 @@ watch(
 
 /** heading cells */
 .th {
-  padding-bottom: 10px;
+  padding-bottom: 3px;
   font-weight: 600;
   text-transform: capitalize;
+}
+
+/* first th */
+.th:nth-child(1) {
+  width: 30%;
+}
+
+/* second th */
+.th:nth-child(2) {
+  width: 5%;
+}
+
+/* third th */
+.th:nth-child(3) {
+  width: 30%;
 }
 
 /** body cells */

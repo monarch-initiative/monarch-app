@@ -8,20 +8,21 @@
     <AppHeading>About</AppHeading>
 
     <p>
-      The Monarch Initiative is an extensive knowledge graph and ecosystem of
-      tools made for the benefit of clinicians, researchers, and scientists. The
-      knowledge graph consists of millions of entities &ndash; genes, diseases,
-      phenotypes, and many more &ndash; imported from dozens of sources.
+      The Monarch Initiative is an international consortium that leads key
+      global standards and semantic data integration technologies. Monarch
+      resources and integrated data are also foundational to many downstream
+      applications and contexts; we work closely with a variety of stakeholders
+      and resource-development communities to capture feedback and make
+      improvements. To maximize utility and impact, the Monarch platform is
+      composed of multiple open-source, open-access components. We promote
+      provenance and transparency, enhanced use of standards and new
+      technologies and improved data accessibility, end-user utility, and data
+      submission. Learn more about the complete suite of Monarch resources on
+      our organization's
+      <AppLink to="https://monarch-initiative.github.io/monarch-documentation/">
+        documentation pages.
+      </AppLink>
     </p>
-
-    <iframe
-      title="Monarch Initiative Overview"
-      class="video"
-      src="https://www.youtube-nocookie.com/embed/SuUKqG2tbx0?autoplay=1&mute=1"
-      frameborder="0"
-      allow="autoplay; picture-in-picture"
-      allowfullscreen
-    ></iframe>
   </AppSection>
 
   <!-- main links to sub pages -->
