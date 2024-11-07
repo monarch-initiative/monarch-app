@@ -1571,22 +1571,22 @@
 </code></pre></div>
 <p><strong>Options</strong>:</p>
 <ul>
-<li><code>--version / --no-version</code></li>
-<li><code>--quiet / --no-quiet</code>: [default: no-quiet]</li>
-<li><code>--debug / --no-debug</code>: [default: no-debug]</li>
+<li><code>-v, --version</code>: Show the currently installed version</li>
+<li><code>-q, --quiet</code>: Set log level to warning</li>
+<li><code>-d, --debug</code>: Set log level to debug</li>
 <li><code>--install-completion</code>: Install completion for the current shell.</li>
 <li><code>--show-completion</code>: Show completion for the current shell, to copy it or customize the installation.</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <p><strong>Commands</strong>:</p>
 <ul>
-<li><code>association-counts</code>: Retrieve association counts for an entity...</li>
+<li><code>association-counts</code>: Retrieve the association counts for a...</li>
 <li><code>association-table</code></li>
 <li><code>associations</code>: Paginate through associations</li>
 <li><code>autocomplete</code>: Return entity autcomplete matches for a...</li>
 <li><code>compare</code>: Compare two sets of phenotypes using...</li>
 <li><code>entity</code>: Retrieve an entity by ID</li>
-<li><code>histopheno</code>: Retrieve the histopheno data for an entity...</li>
+<li><code>histopheno</code>: Retrieve the histopheno associations for a...</li>
 <li><code>mappings</code></li>
 <li><code>multi-entity-associations</code>: Paginate through associations for multiple...</li>
 <li><code>release</code>: Retrieve metadata for a specific release</li>
@@ -1598,24 +1598,18 @@
 <li><code>test</code>: Test the CLI</li>
 </ul>
 <h2 id="monarch-association-counts"><code>monarch association-counts</code></h2>
-<p>Retrieve association counts for an entity by ID</p>
-<p>Args:
-    entity: The entity to get association counts for
-    fmt: The format of the output (json, yaml, tsv, table). Default JSON
-    output: The path to the output file. Default stdout</p>
-<p>Returns:
-    A list of association counts for the given entity containing association type, label and count</p>
+<p>Retrieve the association counts for a given entity</p>
 <p><strong>Usage</strong>:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>association-counts<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span><span class="o">[</span>ENTITY<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>association-counts<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>ENTITY
 </code></pre></div>
 <p><strong>Arguments</strong>:</p>
 <ul>
-<li><code>[ENTITY]</code>: The entity to get association counts for</li>
+<li><code>ENTITY</code>: The entity to get association counts for  [required]</li>
 </ul>
 <p><strong>Options</strong>:</p>
 <ul>
-<li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-O, --output TEXT</code>: The path to the output file</li>
+<li><code>-f, --format [json|yaml|tsv|table]</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
+<li><code>-o, --output TEXT</code>: The path to write command output (stdout if not specified)</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h2 id="monarch-association-table"><code>monarch association-table</code></h2>
@@ -1632,25 +1626,14 @@
 <li><code>-q, --query TEXT</code></li>
 <li><code>-t, --traverse-orthologs</code>: Whether to traverse orthologs when getting associations</li>
 <li><code>-s, --sort TEXT</code></li>
-<li><code>-l, --limit INTEGER</code>: [default: 5]</li>
-<li><code>--offset INTEGER</code>: [default: 0]</li>
-<li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-O, --output TEXT</code>: The path to the output file</li>
+<li><code>-l, --limit INTEGER</code>: The number of results to return  [default: 20]</li>
+<li><code>--offset INTEGER</code>: The offset of the first result to be retrieved  [default: 0]</li>
+<li><code>-f, --format [json|yaml|tsv|table]</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
+<li><code>-o, --output TEXT</code>: The path to write command output (stdout if not specified)</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h2 id="monarch-associations"><code>monarch associations</code></h2>
 <p>Paginate through associations</p>
-<p>Args:
-    category: A comma-separated list of categories
-    subject: A comma-separated list of subjects
-    predicate: A comma-separated list of predicates
-    object: A comma-separated list of objects
-    entity: A comma-separated list of entities
-    limit: The number of associations to return
-    direct: Whether to exclude associations with subject/object as ancestors
-    offset: The offset of the first association to be retrieved
-    fmt: The format of the output (json, yaml, tsv, table)
-    output: The path to the output file (stdout if not specified)</p>
 <p><strong>Usage</strong>:</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>associations<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
 </code></pre></div>
@@ -1663,29 +1646,25 @@
 <li><code>-e, --entity TEXT</code>: Entity (subject or object) ID to get associations for</li>
 <li><code>-d, --direct</code>: Whether to exclude associations with subject/object as ancestors</li>
 <li><code>-C, --compact</code>: Whether to return a compact representation of the associations</li>
-<li><code>-l, --limit INTEGER</code>: The number of associations to return  [default: 20]</li>
-<li><code>--offset INTEGER</code>: The offset of the first association to be retrieved  [default: 0]</li>
-<li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-O, --output TEXT</code>: The path to the output file</li>
+<li><code>-l, --limit INTEGER</code>: The number of results to return  [default: 20]</li>
+<li><code>--offset INTEGER</code>: The offset of the first result to be retrieved  [default: 0]</li>
+<li><code>-f, --format [json|yaml|tsv|table]</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
+<li><code>-o, --output TEXT</code>: The path to write command output (stdout if not specified)</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h2 id="monarch-autocomplete"><code>monarch autocomplete</code></h2>
 <p>Return entity autcomplete matches for a query string</p>
-<p>Args:
-    q: The query string to autocomplete against
-    fmt: The format of the output (json, yaml, tsv, table)
-    output: The path to the output file (stdout if not specified)</p>
 <p><strong>Usage</strong>:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>autocomplete<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span><span class="o">[</span>Q<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>autocomplete<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>Q
 </code></pre></div>
 <p><strong>Arguments</strong>:</p>
 <ul>
-<li><code>[Q]</code>: Query string to autocomplete against</li>
+<li><code>Q</code>: Query string to autocomplete against  [required]</li>
 </ul>
 <p><strong>Options</strong>:</p>
 <ul>
-<li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-O, --output TEXT</code>: The path to the output file</li>
+<li><code>-f, --format [json|yaml|tsv|table]</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
+<li><code>-o, --output TEXT</code>: The path to write command output (stdout if not specified)</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h2 id="monarch-compare"><code>monarch compare</code></h2>
@@ -1701,48 +1680,39 @@
 <p><strong>Options</strong>:</p>
 <ul>
 <li><code>-m, --metric [ancestor_information_content|jaccard_similarity|phenodigm_score]</code>: The metric to use for comparison  [default: ancestor_information_content]</li>
-<li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-O, --output TEXT</code>: The path to the output file</li>
+<li><code>-f, --format [json|yaml|tsv|table]</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
+<li><code>-o, --output TEXT</code>: The path to write command output (stdout if not specified)</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h2 id="monarch-entity"><code>monarch entity</code></h2>
 <p>Retrieve an entity by ID</p>
-<p>Args:
-    id: The identifier of the entity to be retrieved
-    fmt: The format of the output (json, yaml, tsv, table)
-    output: The path to the output file (stdout if not specified)</p>
 <p><strong>Usage</strong>:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>entity<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span><span class="o">[</span>ID<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>entity<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>ENTITY_ID
 </code></pre></div>
 <p><strong>Arguments</strong>:</p>
 <ul>
-<li><code>[ID]</code>: The identifier of the entity to be retrieved</li>
+<li><code>ENTITY_ID</code>: The identifier of the entity to be retrieved  [required]</li>
 </ul>
 <p><strong>Options</strong>:</p>
 <ul>
 <li><code>-e, --extra</code>: Include extra fields in the output (association_counts and node_hierarchy)</li>
-<li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-O, --output TEXT</code>: The path to the output file</li>
+<li><code>-f, --format [json|yaml|tsv|table]</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
+<li><code>-o, --output TEXT</code>: The path to write command output (stdout if not specified)</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h2 id="monarch-histopheno"><code>monarch histopheno</code></h2>
-<p>Retrieve the histopheno data for an entity by ID</p>
-<p>Args:
-    subject: The subject of the association</p>
-<p>Optional Args:
-    fmt (str): The format of the output (json, yaml, tsv, table). Default JSON
-    output (str): The path to the output file. Default stdout</p>
+<p>Retrieve the histopheno associations for a given subject</p>
 <p><strong>Usage</strong>:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>histopheno<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span><span class="o">[</span>SUBJECT<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>histopheno<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>SUBJECT
 </code></pre></div>
 <p><strong>Arguments</strong>:</p>
 <ul>
-<li><code>[SUBJECT]</code>: The subject of the association</li>
+<li><code>SUBJECT</code>: The subject of the association  [required]</li>
 </ul>
 <p><strong>Options</strong>:</p>
 <ul>
-<li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-O, --output TEXT</code>: The path to the output file</li>
+<li><code>-f, --format [json|yaml|tsv|table]</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
+<li><code>-o, --output TEXT</code>: The path to write command output (stdout if not specified)</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h2 id="monarch-mappings"><code>monarch mappings</code></h2>
@@ -1756,21 +1726,14 @@
 <li><code>-p, --predicate-id [skos:exactMatch|skos:broadMatch]</code>: predicate ID to get mappings for</li>
 <li><code>-o, --object-id TEXT</code>: object ID to get mappings for</li>
 <li><code>-m, --mapping-justification TEXT</code>: mapping justification to get mappings for</li>
-<li><code>--offset INTEGER</code>: The offset of the first mapping to be retrieved  [default: 0]</li>
-<li><code>-l, --limit INTEGER</code>: The number of mappings to return  [default: 20]</li>
-<li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-O, --output TEXT</code>: The path to the output file</li>
+<li><code>-l, --limit INTEGER</code>: The number of results to return  [default: 20]</li>
+<li><code>--offset INTEGER</code>: The offset of the first result to be retrieved  [default: 0]</li>
+<li><code>-f, --format [json|yaml|tsv|table]</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
+<li><code>-o, --output TEXT</code>: The path to write command output (stdout if not specified)</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h2 id="monarch-multi-entity-associations"><code>monarch multi-entity-associations</code></h2>
 <p>Paginate through associations for multiple entities</p>
-<p>Args:
-    entity: A comma-separated list of entities
-    counterpart_category: A comma-separated list of counterpart categories
-    limit: The number of associations to return
-    offset: The offset of the first association to be retrieved
-    fmt: The format of the output (json, yaml, tsv, table)
-    output: The path to the output file (stdout if not specified)</p>
 <p><strong>Usage</strong>:</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>multi-entity-associations<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
 </code></pre></div>
@@ -1778,29 +1741,25 @@
 <ul>
 <li><code>-e, --entity TEXT</code>: Comma-separated list of entities</li>
 <li><code>-c, --counterpart-category TEXT</code></li>
-<li><code>-l, --limit INTEGER</code>: [default: 20]</li>
-<li><code>--offset INTEGER</code>: [default: 0]</li>
-<li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-o, --output TEXT</code>: The path to the output file</li>
+<li><code>-l, --limit INTEGER</code>: The number of results to return  [default: 20]</li>
+<li><code>--offset INTEGER</code>: The offset of the first result to be retrieved  [default: 0]</li>
+<li><code>-f, --format [json|yaml|tsv|table]</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
+<li><code>-o, --output TEXT</code>: The path to write command output (stdout if not specified)</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h2 id="monarch-release"><code>monarch release</code></h2>
 <p>Retrieve metadata for a specific release</p>
-<p>Args:
-    release_ver: The release version to get metadata for
-    fmt: The format of the output (json, yaml, tsv, table)
-    output: The path to the output file (stdout if not specified)</p>
 <p><strong>Usage</strong>:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>release<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span><span class="o">[</span>RELEASE_VER<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>release<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>RELEASE_VER
 </code></pre></div>
 <p><strong>Arguments</strong>:</p>
 <ul>
-<li><code>[RELEASE_VER]</code>: The release version to get metadata for</li>
+<li><code>RELEASE_VER</code>: The release version to get metadata for  [required]</li>
 </ul>
 <p><strong>Options</strong>:</p>
 <ul>
-<li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-O, --output TEXT</code>: The path to the output file</li>
+<li><code>-f, --format [json|yaml|tsv|table]</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
+<li><code>-o, --output TEXT</code>: The path to write command output (stdout if not specified)</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h2 id="monarch-releases"><code>monarch releases</code></h2>
@@ -1811,7 +1770,7 @@
 <p><strong>Options</strong>:</p>
 <ul>
 <li><code>--dev</code>: Get dev releases of the KG (default is False)</li>
-<li><code>-l, --limit INTEGER</code>: The number of releases to return  [default: 0]</li>
+<li><code>-l, --limit INTEGER</code>: The number of results to return  [default: 0]</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h2 id="monarch-schema"><code>monarch schema</code></h2>
@@ -1825,28 +1784,20 @@
 </ul>
 <h2 id="monarch-search"><code>monarch search</code></h2>
 <p>Search for entities</p>
-<p>Args:
-    q: The query string to search for
-    category: The category of the entity
-    in_taxon_label: The taxon label to filter by
-    limit: The number of entities to return
-    offset: The offset of the first entity to be retrieved
-    fmt: The format of the output (json, yaml, tsv, table)
-    output: The path to the output file (stdout if not specified)</p>
 <p><strong>Usage</strong>:</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>search<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
 </code></pre></div>
 <p><strong>Options</strong>:</p>
 <ul>
-<li><code>-q, --query TEXT</code></li>
+<li><code>-q, --query TEXT</code>: [default: :*]</li>
 <li><code>-c, --category [biolink:SequenceVariant|biolink:Gene|biolink:Genotype|biolink:PhenotypicFeature|biolink:BiologicalProcessOrActivity|biolink:Disease|biolink:GrossAnatomicalStructure|biolink:Cell|biolink:Pathway|biolink:NamedThing|biolink:AnatomicalEntity|biolink:CellularComponent|biolink:MolecularEntity|biolink:BiologicalProcess|biolink:MacromolecularComplex|biolink:MolecularActivity|biolink:Protein|biolink:CellularOrganism|biolink:Vertebrate|biolink:Virus|biolink:BehavioralFeature|biolink:ChemicalEntity|biolink:LifeStage|biolink:PathologicalProcess|biolink:Drug|biolink:SmallMolecule|biolink:OrganismTaxon|biolink:InformationContentEntity|biolink:NucleicAcidEntity|biolink:EvidenceType|biolink:RNAProduct|biolink:Transcript|biolink:Fungus|biolink:Plant|biolink:ProcessedMaterial|biolink:Activity|biolink:Agent|biolink:ConfidenceLevel|biolink:Dataset|biolink:EnvironmentalFeature|biolink:GeneticInheritance|biolink:Haplotype|biolink:Invertebrate|biolink:Mammal|biolink:PopulationOfIndividualOrganisms|biolink:ProteinFamily|biolink:Publication|biolink:AccessibleDnaRegion|biolink:Bacterium|biolink:BiologicalSex|biolink:CellLine|biolink:ChemicalExposure|biolink:ChemicalMixture|biolink:DatasetDistribution|biolink:DiagnosticAid|biolink:DrugExposure|biolink:EnvironmentalProcess|biolink:Event|biolink:Exon|biolink:Genome|biolink:GenotypicSex|biolink:Human|biolink:IndividualOrganism|biolink:MaterialSample|biolink:MicroRNA|biolink:OrganismalEntity|biolink:Patent|biolink:PhenotypicSex|biolink:Polypeptide|biolink:ProteinDomain|biolink:ReagentTargetedGene|biolink:RegulatoryRegion|biolink:SiRNA|biolink:Snv|biolink:Study|biolink:StudyVariable|biolink:TranscriptionFactorBindingSite|biolink:Treatment|biolink:WebPage|biolink:Zygosity]</code></li>
 <li><code>-t, --in-taxon-label TEXT</code></li>
 <li><code>-ff, --facet-fields TEXT</code></li>
-<li><code>--facet-queries TEXT</code></li>
-<li><code>-l, --limit INTEGER</code>: [default: 20]</li>
-<li><code>--offset INTEGER</code>: [default: 0]</li>
-<li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-O, --output TEXT</code>: The path to the output file</li>
+<li><code>-fq, --facet-queries TEXT</code></li>
+<li><code>-l, --limit INTEGER</code>: The number of results to return  [default: 20]</li>
+<li><code>--offset INTEGER</code>: The offset of the first result to be retrieved  [default: 0]</li>
+<li><code>-f, --format [json|yaml|tsv|table]</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
+<li><code>-o, --output TEXT</code>: The path to write command output (stdout if not specified)</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h2 id="monarch-solr"><code>monarch solr</code></h2>
@@ -1855,8 +1806,8 @@
 </code></pre></div>
 <p><strong>Options</strong>:</p>
 <ul>
-<li><code>--quiet / --no-quiet</code>: [default: no-quiet]</li>
-<li><code>--debug / --no-debug</code>: [default: no-debug]</li>
+<li><code>-q, --quiet</code>: Set log level to warning</li>
+<li><code>-d, --debug</code>: Set log level to debug</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <p><strong>Commands</strong>:</p>
@@ -1877,57 +1828,41 @@
 </ul>
 <h3 id="monarch-solr-association-counts"><code>monarch solr association-counts</code></h3>
 <p>Retrieve the association counts for a given entity</p>
-<p>Args:
-    entity (str): The entity to get association counts for</p>
-<p>Optional Args:
-    fmt (str): The format of the output (json, yaml, tsv, table). Default JSON
-    output (str): The path to the output file. Default stdout</p>
 <p><strong>Usage</strong>:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>solr<span class="w"> </span>association-counts<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span><span class="o">[</span>ENTITY<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>solr<span class="w"> </span>association-counts<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>ENTITY
 </code></pre></div>
 <p><strong>Arguments</strong>:</p>
 <ul>
-<li><code>[ENTITY]</code>: The entity to get association counts for</li>
+<li><code>ENTITY</code>: The entity to get association counts for  [required]</li>
 </ul>
 <p><strong>Options</strong>:</p>
 <ul>
-<li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-O, --output TEXT</code>: The path to the output file</li>
+<li><code>-f, --format [json|yaml|tsv|table]</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
+<li><code>-o, --output TEXT</code>: The path to write command output (stdout if not specified)</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h3 id="monarch-solr-association-table"><code>monarch solr association-table</code></h3>
 <p><strong>Usage</strong>:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>solr<span class="w"> </span>association-table<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>ENTITY<span class="w"> </span><span class="o">[</span>CATEGORY<span class="o">]</span>:<span class="o">[</span>biolink:PairwiseGeneToGeneInteraction<span class="p">|</span>biolink:GeneToExpressionSiteAssociation<span class="p">|</span>biolink:VariantToGeneAssociation<span class="p">|</span>biolink:MacromolecularMachineToBiologicalProcessAssociation<span class="p">|</span>biolink:GeneToPhenotypicFeatureAssociation<span class="p">|</span>biolink:MacromolecularMachineToMolecularActivityAssociation<span class="p">|</span>biolink:MacromolecularMachineToCellularComponentAssociation<span class="p">|</span>biolink:Association<span class="p">|</span>biolink:GeneToGeneHomologyAssociation<span class="p">|</span>biolink:GenotypeToPhenotypicFeatureAssociation<span class="p">|</span>biolink:DiseaseToPhenotypicFeatureAssociation<span class="p">|</span>biolink:GeneToPathwayAssociation<span class="p">|</span>biolink:DiseaseOrPhenotypicFeatureToLocationAssociation<span class="p">|</span>biolink:ChemicalToPathwayAssociation<span class="p">|</span>biolink:GenotypeToDiseaseAssociation<span class="p">|</span>biolink:CorrelatedGeneToDiseaseAssociation<span class="p">|</span>biolink:DiseaseOrPhenotypicFeatureToGeneticInheritanceAssociation<span class="p">|</span>biolink:VariantToDiseaseAssociation<span class="p">|</span>biolink:CausalGeneToDiseaseAssociation<span class="p">|</span>biolink:ChemicalToDiseaseOrPhenotypicFeatureAssociation<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>solr<span class="w"> </span>association-table<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>ENTITY<span class="w"> </span>CATEGORY:<span class="o">{</span>biolink:PairwiseGeneToGeneInteraction<span class="p">|</span>biolink:GeneToExpressionSiteAssociation<span class="p">|</span>biolink:VariantToGeneAssociation<span class="p">|</span>biolink:MacromolecularMachineToBiologicalProcessAssociation<span class="p">|</span>biolink:GeneToPhenotypicFeatureAssociation<span class="p">|</span>biolink:MacromolecularMachineToMolecularActivityAssociation<span class="p">|</span>biolink:MacromolecularMachineToCellularComponentAssociation<span class="p">|</span>biolink:Association<span class="p">|</span>biolink:GeneToGeneHomologyAssociation<span class="p">|</span>biolink:GenotypeToPhenotypicFeatureAssociation<span class="p">|</span>biolink:DiseaseToPhenotypicFeatureAssociation<span class="p">|</span>biolink:GeneToPathwayAssociation<span class="p">|</span>biolink:DiseaseOrPhenotypicFeatureToLocationAssociation<span class="p">|</span>biolink:ChemicalToPathwayAssociation<span class="p">|</span>biolink:GenotypeToDiseaseAssociation<span class="p">|</span>biolink:CorrelatedGeneToDiseaseAssociation<span class="p">|</span>biolink:DiseaseOrPhenotypicFeatureToGeneticInheritanceAssociation<span class="p">|</span>biolink:VariantToDiseaseAssociation<span class="p">|</span>biolink:CausalGeneToDiseaseAssociation<span class="p">|</span>biolink:ChemicalToDiseaseOrPhenotypicFeatureAssociation<span class="o">}</span>
 </code></pre></div>
 <p><strong>Arguments</strong>:</p>
 <ul>
 <li><code>ENTITY</code>: The entity to get associations for  [required]</li>
-<li><code>[CATEGORY]:[biolink:PairwiseGeneToGeneInteraction|biolink:GeneToExpressionSiteAssociation|biolink:VariantToGeneAssociation|biolink:MacromolecularMachineToBiologicalProcessAssociation|biolink:GeneToPhenotypicFeatureAssociation|biolink:MacromolecularMachineToMolecularActivityAssociation|biolink:MacromolecularMachineToCellularComponentAssociation|biolink:Association|biolink:GeneToGeneHomologyAssociation|biolink:GenotypeToPhenotypicFeatureAssociation|biolink:DiseaseToPhenotypicFeatureAssociation|biolink:GeneToPathwayAssociation|biolink:DiseaseOrPhenotypicFeatureToLocationAssociation|biolink:ChemicalToPathwayAssociation|biolink:GenotypeToDiseaseAssociation|biolink:CorrelatedGeneToDiseaseAssociation|biolink:DiseaseOrPhenotypicFeatureToGeneticInheritanceAssociation|biolink:VariantToDiseaseAssociation|biolink:CausalGeneToDiseaseAssociation|biolink:ChemicalToDiseaseOrPhenotypicFeatureAssociation]</code>: The association category to get associations for, ex. biolink:GeneToPhenotypicFeatureAssociation</li>
+<li><code>CATEGORY:{biolink:PairwiseGeneToGeneInteraction|biolink:GeneToExpressionSiteAssociation|biolink:VariantToGeneAssociation|biolink:MacromolecularMachineToBiologicalProcessAssociation|biolink:GeneToPhenotypicFeatureAssociation|biolink:MacromolecularMachineToMolecularActivityAssociation|biolink:MacromolecularMachineToCellularComponentAssociation|biolink:Association|biolink:GeneToGeneHomologyAssociation|biolink:GenotypeToPhenotypicFeatureAssociation|biolink:DiseaseToPhenotypicFeatureAssociation|biolink:GeneToPathwayAssociation|biolink:DiseaseOrPhenotypicFeatureToLocationAssociation|biolink:ChemicalToPathwayAssociation|biolink:GenotypeToDiseaseAssociation|biolink:CorrelatedGeneToDiseaseAssociation|biolink:DiseaseOrPhenotypicFeatureToGeneticInheritanceAssociation|biolink:VariantToDiseaseAssociation|biolink:CausalGeneToDiseaseAssociation|biolink:ChemicalToDiseaseOrPhenotypicFeatureAssociation}</code>: The association category to get associations for, ex. biolink:GeneToPhenotypicFeatureAssociation  [required]</li>
 </ul>
 <p><strong>Options</strong>:</p>
 <ul>
-<li><code>-t, --traverse-orthologs</code>: Whether to traverse orthologs when getting associations</li>
 <li><code>-q, --query TEXT</code></li>
+<li><code>-t, --traverse-orthologs</code>: Whether to traverse orthologs when getting associations</li>
 <li><code>-s, --sort TEXT</code></li>
-<li><code>-l, --limit INTEGER</code>: [default: 5]</li>
-<li><code>--offset INTEGER</code>: [default: 0]</li>
-<li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-O, --output TEXT</code>: The path to the output file</li>
+<li><code>-l, --limit INTEGER</code>: The number of results to return  [default: 20]</li>
+<li><code>--offset INTEGER</code>: The offset of the first result to be retrieved  [default: 0]</li>
+<li><code>-f, --format [json|yaml|tsv|table]</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
+<li><code>-o, --output TEXT</code>: The path to write command output (stdout if not specified)</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h3 id="monarch-solr-associations"><code>monarch solr associations</code></h3>
 <p>Paginate through associations</p>
-<p>Args:
-    category: The category of the association (multi-valued)
-    subject: The subject of the association (multi-valued)
-    predicate: The predicate of the association (multi-valued)
-    object: The object of the association (multi-valued)
-    entity: The entity (subject or object) of the association (multi-valued)
-    limit: The number of associations to return (default 20)
-    direct: Whether to exclude associations with subject/object as ancestors (default False)
-    offset: The offset of the first association to be retrieved
-    fmt: The format of the output (json, yaml, tsv, table) (default json)
-    output: The path to the output file (stdout if not specified) (default None)</p>
 <p><strong>Usage</strong>:</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>solr<span class="w"> </span>associations<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
 </code></pre></div>
@@ -1940,81 +1875,70 @@
 <li><code>-e, --entity TEXT</code>: Entity (subject or object) ID to get associations for</li>
 <li><code>-d, --direct</code>: Whether to exclude associations with subject/object as ancestors</li>
 <li><code>-C, --compact</code>: Whether to return a compact representation of the associations</li>
-<li><code>-l, --limit INTEGER</code>: The number of associations to return  [default: 20]</li>
-<li><code>--offset INTEGER</code>: The offset of the first association to be retrieved  [default: 0]</li>
-<li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-O, --output TEXT</code>: The path to the output file</li>
+<li><code>-l, --limit INTEGER</code>: The number of results to return  [default: 20]</li>
+<li><code>--offset INTEGER</code>: The offset of the first result to be retrieved  [default: 0]</li>
+<li><code>-f, --format [json|yaml|tsv|table]</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
+<li><code>-o, --output TEXT</code>: The path to write command output (stdout if not specified)</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h3 id="monarch-solr-autocomplete"><code>monarch solr autocomplete</code></h3>
 <p>Return entity autcomplete matches for a query string</p>
-<p>Args:
-    q: The query string to autocomplete against
-    fmt: The format of the output (json, yaml, tsv, table)
-    output: The path to the output file (stdout if not specified)</p>
 <p><strong>Usage</strong>:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>solr<span class="w"> </span>autocomplete<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span><span class="o">[</span>Q<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>solr<span class="w"> </span>autocomplete<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>Q
 </code></pre></div>
 <p><strong>Arguments</strong>:</p>
 <ul>
-<li><code>[Q]</code>: Query string to autocomplete against</li>
+<li><code>Q</code>: Query string to autocomplete against  [required]</li>
 </ul>
 <p><strong>Options</strong>:</p>
 <ul>
-<li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-O, --output TEXT</code>: The path to the output file</li>
+<li><code>-f, --format [json|yaml|tsv|table]</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
+<li><code>-o, --output TEXT</code>: The path to write command output (stdout if not specified)</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h3 id="monarch-solr-download"><code>monarch solr download</code></h3>
 <p>Download the Monarch Solr KG.</p>
 <p><strong>Usage</strong>:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>solr<span class="w"> </span>download<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>solr<span class="w"> </span>download<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span><span class="o">[</span>VERSION<span class="o">]</span>
 </code></pre></div>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>[VERSION]</code>: The version of the Solr KG to download (latest, dev, or a specific version)  [default: latest]</li>
+</ul>
 <p><strong>Options</strong>:</p>
 <ul>
-<li><code>--version TEXT</code>: [default: latest]</li>
-<li><code>--overwrite / --no-overwrite</code>: [default: no-overwrite]</li>
+<li><code>--overwrite</code>: Overwrite the existing Solr KG if it exists</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h3 id="monarch-solr-entity"><code>monarch solr entity</code></h3>
 <p>Retrieve an entity by ID</p>
-<p>Args:
-    id (str): The identifier of the entity to be retrieved</p>
-<p>Optional Args:
-    fmt (str): The format of the output (json, yaml, tsv, table). Default JSON
-    output (str): The path to the output file. Default stdout</p>
 <p><strong>Usage</strong>:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>solr<span class="w"> </span>entity<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span><span class="o">[</span>ID<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>solr<span class="w"> </span>entity<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>ENTITY_ID
 </code></pre></div>
 <p><strong>Arguments</strong>:</p>
 <ul>
-<li><code>[ID]</code>: The identifier of the entity to be retrieved</li>
+<li><code>ENTITY_ID</code>: The identifier of the entity to be retrieved  [required]</li>
 </ul>
 <p><strong>Options</strong>:</p>
 <ul>
 <li><code>-e, --extra</code>: Include extra fields in the output (association_counts and node_hierarchy)</li>
-<li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-O, --output TEXT</code>: The path to the output file</li>
+<li><code>-f, --format [json|yaml|tsv|table]</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
+<li><code>-o, --output TEXT</code>: The path to write command output (stdout if not specified)</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h3 id="monarch-solr-histopheno"><code>monarch solr histopheno</code></h3>
 <p>Retrieve the histopheno associations for a given subject</p>
-<p>Args:
-    subject (str): The subject of the association</p>
-<p>Optional Args:
-    fmt (str): The format of the output (json, yaml, tsv, table). Default JSON
-    output (str): The path to the output file. Default stdout</p>
 <p><strong>Usage</strong>:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>solr<span class="w"> </span>histopheno<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span><span class="o">[</span>SUBJECT<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>solr<span class="w"> </span>histopheno<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>SUBJECT
 </code></pre></div>
 <p><strong>Arguments</strong>:</p>
 <ul>
-<li><code>[SUBJECT]</code>: The subject of the association</li>
+<li><code>SUBJECT</code>: The subject of the association  [required]</li>
 </ul>
 <p><strong>Options</strong>:</p>
 <ul>
-<li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: JSON]</li>
-<li><code>-O, --output TEXT</code>: The path to the output file</li>
+<li><code>-f, --format [json|yaml|tsv|table]</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
+<li><code>-o, --output TEXT</code>: The path to write command output (stdout if not specified)</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h3 id="monarch-solr-mappings"><code>monarch solr mappings</code></h3>
@@ -2028,60 +1952,43 @@
 <li><code>-p, --predicate-id [skos:exactMatch|skos:broadMatch]</code>: predicate ID to get mappings for</li>
 <li><code>-o, --object-id TEXT</code>: object ID to get mappings for</li>
 <li><code>-m, --mapping-justification TEXT</code>: mapping justification to get mappings for</li>
-<li><code>--offset INTEGER</code>: The offset of the first mapping to be retrieved  [default: 0]</li>
-<li><code>-l, --limit INTEGER</code>: The number of mappings to return  [default: 20]</li>
-<li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-O, --output TEXT</code>: The path to the output file</li>
+<li><code>-l, --limit INTEGER</code>: The number of results to return  [default: 20]</li>
+<li><code>--offset INTEGER</code>: The offset of the first result to be retrieved  [default: 0]</li>
+<li><code>-f, --format [json|yaml|tsv|table]</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
+<li><code>-o, --output TEXT</code>: The path to write command output (stdout if not specified)</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h3 id="monarch-solr-multi-entity-associations"><code>monarch solr multi-entity-associations</code></h3>
 <p>Paginate through associations for multiple entities</p>
-<p>Args:
-    entity: A comma-separated list of entities
-    counterpart_category: A comma-separated list of counterpart categories
-    limit: The number of associations to return
-    offset: The offset of the first association to be retrieved
-    fmt: The format of the output (json, yaml, tsv, table)
-    output: The path to the output file (stdout if not specified)</p>
 <p><strong>Usage</strong>:</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>solr<span class="w"> </span>multi-entity-associations<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
 </code></pre></div>
 <p><strong>Options</strong>:</p>
 <ul>
-<li><code>-e, --entity TEXT</code>: Entity ID to get associations for</li>
-<li><code>-c, --counterpart-category TEXT</code>: Counterpart category to get associations for</li>
-<li><code>-l, --limit INTEGER</code>: [default: 20]</li>
-<li><code>--offset INTEGER</code>: [default: 0]</li>
-<li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-O, --output TEXT</code>: The path to the output file</li>
+<li><code>-e, --entity TEXT</code>: Comma-separated list of entities</li>
+<li><code>-c, --counterpart-category TEXT</code></li>
+<li><code>-l, --limit INTEGER</code>: The number of results to return  [default: 20]</li>
+<li><code>--offset INTEGER</code>: The offset of the first result to be retrieved  [default: 0]</li>
+<li><code>-f, --format [json|yaml|tsv|table]</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
+<li><code>-o, --output TEXT</code>: The path to write command output (stdout if not specified)</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h3 id="monarch-solr-search"><code>monarch solr search</code></h3>
 <p>Search for entities</p>
-<p>Optional Args:
-    q: The query string to search for
-    category: The category of the entity
-    in_taxon_label: The taxon label to filter on
-    facet_fields: The fields to facet on
-    facet_queries: The queries to facet on
-    limit: The number of entities to return
-    offset: The offset of the first entity to be retrieved
-    fmt (str): The format of the output (json, yaml, tsv, table). Default JSON
-    output (str): The path to the output file. Default stdout</p>
 <p><strong>Usage</strong>:</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>solr<span class="w"> </span>search<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
 </code></pre></div>
 <p><strong>Options</strong>:</p>
 <ul>
-<li><code>-q, --query TEXT</code>: [default: <em>:</em>]</li>
+<li><code>-q, --query TEXT</code>: [default: :*]</li>
 <li><code>-c, --category [biolink:SequenceVariant|biolink:Gene|biolink:Genotype|biolink:PhenotypicFeature|biolink:BiologicalProcessOrActivity|biolink:Disease|biolink:GrossAnatomicalStructure|biolink:Cell|biolink:Pathway|biolink:NamedThing|biolink:AnatomicalEntity|biolink:CellularComponent|biolink:MolecularEntity|biolink:BiologicalProcess|biolink:MacromolecularComplex|biolink:MolecularActivity|biolink:Protein|biolink:CellularOrganism|biolink:Vertebrate|biolink:Virus|biolink:BehavioralFeature|biolink:ChemicalEntity|biolink:LifeStage|biolink:PathologicalProcess|biolink:Drug|biolink:SmallMolecule|biolink:OrganismTaxon|biolink:InformationContentEntity|biolink:NucleicAcidEntity|biolink:EvidenceType|biolink:RNAProduct|biolink:Transcript|biolink:Fungus|biolink:Plant|biolink:ProcessedMaterial|biolink:Activity|biolink:Agent|biolink:ConfidenceLevel|biolink:Dataset|biolink:EnvironmentalFeature|biolink:GeneticInheritance|biolink:Haplotype|biolink:Invertebrate|biolink:Mammal|biolink:PopulationOfIndividualOrganisms|biolink:ProteinFamily|biolink:Publication|biolink:AccessibleDnaRegion|biolink:Bacterium|biolink:BiologicalSex|biolink:CellLine|biolink:ChemicalExposure|biolink:ChemicalMixture|biolink:DatasetDistribution|biolink:DiagnosticAid|biolink:DrugExposure|biolink:EnvironmentalProcess|biolink:Event|biolink:Exon|biolink:Genome|biolink:GenotypicSex|biolink:Human|biolink:IndividualOrganism|biolink:MaterialSample|biolink:MicroRNA|biolink:OrganismalEntity|biolink:Patent|biolink:PhenotypicSex|biolink:Polypeptide|biolink:ProteinDomain|biolink:ReagentTargetedGene|biolink:RegulatoryRegion|biolink:SiRNA|biolink:Snv|biolink:Study|biolink:StudyVariable|biolink:TranscriptionFactorBindingSite|biolink:Treatment|biolink:WebPage|biolink:Zygosity]</code></li>
 <li><code>-t, --in-taxon-label TEXT</code></li>
 <li><code>-ff, --facet-fields TEXT</code></li>
-<li><code>--facet-queries TEXT</code></li>
-<li><code>-l, --limit INTEGER</code>: [default: 20]</li>
-<li><code>--offset INTEGER</code>: [default: 0]</li>
-<li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-O, --output TEXT</code>: The path to the output file</li>
+<li><code>-fq, --facet-queries TEXT</code></li>
+<li><code>-l, --limit INTEGER</code>: The number of results to return  [default: 20]</li>
+<li><code>--offset INTEGER</code>: The offset of the first result to be retrieved  [default: 0]</li>
+<li><code>-f, --format [json|yaml|tsv|table]</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
+<li><code>-o, --output TEXT</code>: The path to write command output (stdout if not specified)</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h3 id="monarch-solr-start"><code>monarch solr start</code></h3>
@@ -2118,8 +2025,8 @@
 </code></pre></div>
 <p><strong>Options</strong>:</p>
 <ul>
-<li><code>--quiet / --no-quiet</code>: [default: no-quiet]</li>
-<li><code>--debug / --no-debug</code>: [default: no-debug]</li>
+<li><code>-q, --quiet</code>: Set log level to warning</li>
+<li><code>-d, --debug</code>: Set log level to debug</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <p><strong>Commands</strong>:</p>
@@ -2129,18 +2036,6 @@
 </ul>
 <h3 id="monarch-sql-associations"><code>monarch sql associations</code></h3>
 <p>Paginate through associations</p>
-<p>Args:
-    category: A comma-separated list of categories
-    subject: A comma-separated list of subjects
-    predicate: A comma-separated list of predicates
-    object: A comma-separated list of objects
-    entity: A comma-separated list of entities
-    direct: Whether to exclude associations with subject/object as ancestors
-    compact: Whether to return a compact representation of the associations
-    limit: The number of associations to return
-    offset: The offset of the first association to be retrieved
-    fmt: The format of the output (json, yaml, tsv, table)
-    output: The path to the output file (stdout if not specified)</p>
 <p><strong>Usage</strong>:</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>sql<span class="w"> </span>associations<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
 </code></pre></div>
@@ -2153,32 +2048,27 @@
 <li><code>-e, --entity TEXT</code>: Entity (subject or object) ID to get associations for</li>
 <li><code>-d, --direct</code>: Whether to exclude associations with subject/object as ancestors</li>
 <li><code>-C, --compact</code>: Whether to return a compact representation of the associations</li>
-<li><code>-l, --limit INTEGER</code>: The number of associations to return  [default: 20]</li>
-<li><code>--offset INTEGER</code>: The offset of the first association to be retrieved  [default: 0]</li>
-<li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-o, --output TEXT</code>: The path to the output file</li>
+<li><code>-l, --limit INTEGER</code>: The number of results to return  [default: 20]</li>
+<li><code>--offset INTEGER</code>: The offset of the first result to be retrieved  [default: 0]</li>
+<li><code>-f, --format [json|yaml|tsv|table]</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
+<li><code>-o, --output TEXT</code>: The path to write command output (stdout if not specified)</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h3 id="monarch-sql-entity"><code>monarch sql entity</code></h3>
 <p>Retrieve an entity by ID</p>
-<p>Args:
-    id (str): The identifier of the entity to be retrieved
-    update (bool): = Whether to re-download the Monarch KG. Default False
-    fmt (str): The format of the output (json, yaml, tsv, table). Default JSON
-    output (str): The path to the output file. Default stdout</p>
 <p><strong>Usage</strong>:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>sql<span class="w"> </span>entity<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span><span class="o">[</span>ID<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>monarch<span class="w"> </span>sql<span class="w"> </span>entity<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>ENTITY_ID
 </code></pre></div>
 <p><strong>Arguments</strong>:</p>
 <ul>
-<li><code>[ID]</code>: The identifier of the entity to be retrieved</li>
+<li><code>ENTITY_ID</code>: The identifier of the entity to be retrieved  [required]</li>
 </ul>
 <p><strong>Options</strong>:</p>
 <ul>
-<li><code>-e, --extra</code>: Include extra fields in the output (association_counts and node_hierarchy)</li>
-<li><code>-u, --update</code>: Whether to re-download the Monarch KG</li>
-<li><code>-f, --format TEXT</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
-<li><code>-o, --output TEXT</code>: The path to the output file</li>
+<li><code>-e, --extra</code>: Include extra fields in the output (association_counts and node_hierarchy)  [required]</li>
+<li><code>-u, --update</code>: Whether to re-download the Monarch KG  [required]</li>
+<li><code>-f, --format [json|yaml|tsv|table]</code>: The format of the output (json, yaml, tsv, table)  [default: json]</li>
+<li><code>-o, --output TEXT</code>: The path to write command output (stdout if not specified)</li>
 <li><code>--help</code>: Show this message and exit.</li>
 </ul>
 <h2 id="monarch-test"><code>monarch test</code></h2>
