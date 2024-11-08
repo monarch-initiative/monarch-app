@@ -123,7 +123,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                 ).items
             ]
         node: Node = Node(
-            **entity.dict(),
+            **entity.model_dump(),
             node_hierarchy=self._get_node_hierarchy(entity),
             association_counts=self.get_association_counts(id).items,
             external_links=get_links_for_field(entity.xref) if entity.xref else [],

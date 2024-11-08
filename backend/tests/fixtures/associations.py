@@ -5800,4 +5800,6 @@ def associations():
                 "disease_context_qualifier_closure_label": None,
             },
         ],
+        "facet_fields": [],
+        "facet_queries": [],
     }
