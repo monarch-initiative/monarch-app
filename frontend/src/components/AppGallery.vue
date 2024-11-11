@@ -53,7 +53,7 @@ $phone: 600px;
   grid-auto-rows: 1fr;
   place-content: center;
   // when content doesn't fill first row, limit width of gallery so that cell size is same as if first row was full
-  // e.g. on team page, so portraits in groups with only 1-2 members aren't bigger than portraits in groups with 3+ members
+  // e.g. team page, so portraits in groups with only 1-2 members aren't bigger than portraits in groups with 3+ members
   max-width: calc(
     (var(--cell)) * var(--content-cols) + (var(--content-cols) - 1) * var(--gap)
   );

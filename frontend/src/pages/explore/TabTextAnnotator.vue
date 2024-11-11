@@ -88,7 +88,7 @@ import AppUpload from "@/components/AppUpload.vue";
 import { useQuery } from "@/composables/use-query";
 import { appendToBody } from "@/global/tooltip";
 import { downloadJson } from "@/util/download";
-import example from "./text-annotator.json";
+import example from "./text-annotator.json" with { type: "json" };
 
 /** text content */
 const content = useLocalStorage("annotations-content", "");

@@ -20,7 +20,7 @@ export const getUrl = (
   }
 };
 
-/** https://stackoverflow.com/questions/54520676/in-typescript-how-to-get-the-keys-of-an-object-type-whose-values-are-of-a-given */
+/** https://stackoverflow.com/a/54520829/9878785 */
 type KeysMatching<T, V> = {
   [K in keyof T]-?: T[K] extends V ? K : never;
 }[keyof T];
