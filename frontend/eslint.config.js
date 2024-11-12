@@ -51,12 +51,12 @@ export default [
     ],
     /** Override rules */
     rules: {
+      "max-len": ["error", { code: 120 }],
+      "no-constant-binary-expression": ["off"],
+      "prefer-const": "off",
       "@typescript-eslint/no-empty-object-type": ["warn"],
       "@typescript-eslint/no-unused-expressions": ["off"],
       "@typescript-eslint/no-unused-vars": ["off"],
-      "max-len": ["error", { code: 120 }],
-      "no-constant-binary-expression": ["off"],
-      "prefer-const": 0,
       "prettier/prettier": ["warn", {}, { usePrettierrc: true }],
       "vue/attribute-hyphenation": [
         "warn",
