@@ -18,7 +18,7 @@
       </template>
     </tooltip>
 
-    <div ref="scroll">
+    <div ref="scroll" class="scroll force-scrollbar">
       <svg
         ref="svg"
         xmlns="http://www.w3.org/2000/svg"
