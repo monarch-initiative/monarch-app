@@ -14,6 +14,7 @@ def mapping_response():
                 "start": "0",
                 "q.op": "AND",
                 "fq": 'subject_id:"MONDO\\:0020121" OR object_id:"MONDO\\:0020121"',
+                "facet.mincount": "1",
                 "rows": "20",
                 "facet": "true",
             },

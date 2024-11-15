@@ -1553,5 +1553,7 @@
       "disease_context_qualifier_closure_label": null,
       "direction": "outgoing"
     }
-  ]
+  ],
+  "facet_fields": [],
+  "facet_queries": []
 }

@@ -5954,5 +5954,7 @@
       "disease_context_qualifier_closure": null,
       "disease_context_qualifier_closure_label": null
     }
-  ]
+  ],
+  "facet_fields": [],
+  "facet_queries": []
 }

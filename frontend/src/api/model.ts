@@ -269,6 +269,10 @@ export interface AssociationCountList {
 export interface AssociationResults extends Results {
     /** A collection of items, with the type to be overriden by slot_usage */
     items: Association[],
+    /** Collection of facet field responses with the field values and counts */
+    facet_fields?: FacetField[],
+    /** Collection of facet query responses with the query string values and counts */
+    facet_queries?: FacetValue[],
 }
 
 
@@ -290,6 +294,10 @@ export interface CompactAssociation {
 export interface CompactAssociationResults extends Results {
     /** A collection of items, with the type to be overriden by slot_usage */
     items: CompactAssociation[],
+    /** Collection of facet field responses with the field values and counts */
+    facet_fields?: FacetField[],
+    /** Collection of facet query responses with the query string values and counts */
+    facet_queries?: FacetValue[],
 }
 
 
@@ -297,6 +305,10 @@ export interface CompactAssociationResults extends Results {
 export interface AssociationTableResults extends Results {
     /** A collection of items, with the type to be overriden by slot_usage */
     items: DirectionalAssociation[],
+    /** Collection of facet field responses with the field values and counts */
+    facet_fields?: FacetField[],
+    /** Collection of facet query responses with the query string values and counts */
+    facet_queries?: FacetValue[],
 }
 
 

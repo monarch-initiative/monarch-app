@@ -183,5 +183,7 @@
       "object_label": "Lower limb muscle weakness",
       "negated": false
     }
-  ]
+  ],
+  "facet_fields": [],
+  "facet_queries": []
 }
