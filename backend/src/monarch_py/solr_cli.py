@@ -309,7 +309,7 @@ def histopheno(
 
 @solr_app.command("association-counts")
 def association_counts(
-    entity: Annotated[
+    entity_id: Annotated[
         str, typer.Argument(help="The entity to get association counts for")
     ],
     fmt: fields.FormatOption = fields.OutputFormat.json,
@@ -322,13 +322,13 @@ def association_counts(
         console.print("\n[bold red]Entity ID required.[/]\n")
         raise typer.Exit(1)
     solr = get_solr(update=False)
-    response = solr.get_association_counts(entity)
+    response = solr.get_association_counts(entity_id)
     format_output(fmt, response, output)
 
 
 @solr_app.command("association-table")
 def association_table(
-    entity: Annotated[
+    entity_id: Annotated[
         str,
         typer.Argument(
             help="The entity to get associations for",
@@ -363,7 +363,7 @@ def association_table(
 ):
     solr = get_solr(update=False)
     response = solr.get_association_table(
-        entity=entity,
+        entity=entity_id,
         category=category,
         traverse_orthologs=traverse_orthologs,
         sort=sort,
