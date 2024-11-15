@@ -9,6 +9,7 @@ nav:
     - Overview: 'index.md'
     - Usage: 'Usage/index.md'
     - CLI: 'Usage/CLI.md'
+    - Data Model: 'Data-Model/index.md'
     - Interfaces: 
       - Overview: 'Usage/Interfaces/index.md'
       - Entity: 'Usage/Interfaces/Entity.md'
@@ -25,8 +26,6 @@ nav:
     - Overview: 'FastAPI/index.md'
     - Endpoints: 
       - 'FastAPI/Endpoints/index.md'
-  - API Reference: 'API-Reference/index.md'
-  - Response Data Model: 'Data-Model/index.md'
 
 
 theme:
