@@ -5,8 +5,8 @@ site_url: 'https://monarch-app.monarchinitiative.org/docs/'
 
 
 nav:
-  - Welcome: 'index.md'
-  - Usage: 
+  - monarch-py:
+    - Overview: 'index.md'
     - Usage: 'Usage/index.md'
     - CLI: 'Usage/CLI.md'
     - Interfaces: 
@@ -20,6 +20,7 @@ nav:
       - Solr: 'Usage/Implementations/Solr.md'
       - SQL: 'Usage/Implementations/SQL.md'
       # - OAK: 'Usage/Implementations/OAK.md'
+  - Release Process: 'release-process.md'
   - FastAPI: 
     - Overview: 'FastAPI/index.md'
     - Endpoints: 
