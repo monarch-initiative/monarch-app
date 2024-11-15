@@ -217,6 +217,7 @@ def multi_entity_associations(
         typer.Option(
             "--counterpart-category",
             "-c",
+            help="A comma-separated list of counterpart categories"
         ),
     ] = None,
     limit: fields.LimitOption = 20,
