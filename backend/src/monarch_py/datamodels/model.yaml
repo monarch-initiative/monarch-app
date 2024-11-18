@@ -125,6 +125,8 @@ classes:
     is_a: Results
     slots:
       - items
+      - facet_fields
+      - facet_queries
     slot_usage:
       items:
         range: Association
@@ -141,6 +143,8 @@ classes:
     is_a: Results
     slots:
       - items
+      - facet_fields
+      - facet_queries
     slot_usage:
       items:
         range: CompactAssociation
@@ -148,6 +152,8 @@ classes:
     is_a: Results
     slots:
       - items
+      - facet_fields
+      - facet_queries
     slot_usage:
       items:
         range: DirectionalAssociation

@@ -1453,4 +1453,6 @@ def association_table():
                 "direction": "outgoing",
             },
         ],
+        "facet_fields": [],
+        "facet_queries": [],
     }
