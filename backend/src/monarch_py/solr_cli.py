@@ -28,12 +28,8 @@ monarchstow = pystow.module("monarch")
 @solr_app.callback(invoke_without_command=True)
 def callback(
     ctx: typer.Context,
-    quiet: Annotated[
-        bool, typer.Option("--quiet", "-q", help="Set log level to warning")
-    ] = False,
-    debug: Annotated[
-        bool, typer.Option("--debug", "-d", help="Set log level to debug")
-    ] = False,
+    quiet: Annotated[bool, typer.Option("--quiet", "-q", help="Set log level to warning")] = False,
+    debug: Annotated[bool, typer.Option("--debug", "-d", help="Set log level to debug")] = False,
 ):
     if ctx.invoked_subcommand is None:
         typer.secho(
@@ -309,9 +305,7 @@ def histopheno(
 
 @solr_app.command("association-counts")
 def association_counts(
-    entity: Annotated[
-        str, typer.Argument(help="The entity to get association counts for")
-    ],
+    entity: Annotated[str, typer.Argument(help="The entity to get association counts for")],
     fmt: fields.FormatOption = fields.OutputFormat.json,
     output: fields.OutputOption = None,
 ):

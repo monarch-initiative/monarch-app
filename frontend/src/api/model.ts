@@ -180,10 +180,6 @@ export interface Association {
     qualifiers_namespace?: string,
     /** The category of the frequency_qualifier entity */
     qualifiers_category?: string,
-    /** Field containing frequency_qualifier id and the ids of all of it's ancestors */
-    qualifiers_closure?: string[],
-    /** Field containing frequency_qualifier name and the names of all of it's ancestors */
-    qualifiers_closure_label?: string[],
     qualifier?: string[],
     /** The name of the frequency_qualifier entity */
     qualifier_label?: string,
@@ -191,50 +187,30 @@ export interface Association {
     qualifier_namespace?: string,
     /** The category of the frequency_qualifier entity */
     qualifier_category?: string,
-    /** Field containing frequency_qualifier id and the ids of all of it's ancestors */
-    qualifier_closure?: string[],
-    /** Field containing frequency_qualifier name and the names of all of it's ancestors */
-    qualifier_closure_label?: string[],
     /** The name of the frequency_qualifier entity */
     frequency_qualifier_label?: string,
     /** The namespace/prefix of the frequency_qualifier entity */
     frequency_qualifier_namespace?: string,
     /** The category of the frequency_qualifier entity */
     frequency_qualifier_category?: string,
-    /** Field containing frequency_qualifier id and the ids of all of it's ancestors */
-    frequency_qualifier_closure?: string[],
-    /** Field containing frequency_qualifier name and the names of all of it's ancestors */
-    frequency_qualifier_closure_label?: string[],
     /** The name of the onset_qualifier entity */
     onset_qualifier_label?: string,
     /** The namespace/prefix of the onset_qualifier entity */
     onset_qualifier_namespace?: string,
     /** The category of the onset_qualifier entity */
     onset_qualifier_category?: string,
-    /** Field containing onset_qualifier id and the ids of all of it's ancestors */
-    onset_qualifier_closure?: string[],
-    /** Field containing onset_qualifier name and the names of all of it's ancestors */
-    onset_qualifier_closure_label?: string[],
     /** The name of the sex_qualifier entity */
     sex_qualifier_label?: string,
     /** The namespace/prefix of the sex_qualifier entity */
     sex_qualifier_namespace?: string,
     /** The category of the sex_qualifier entity */
     sex_qualifier_category?: string,
-    /** Field containing sex_qualifier id and the ids of all of it's ancestors */
-    sex_qualifier_closure?: string[],
-    /** Field containing sex_qualifier name and the names of all of it's ancestors */
-    sex_qualifier_closure_label?: string[],
     /** The name of the stage_qualifier entity */
     stage_qualifier_label?: string,
     /** The namespace/prefix of the stage_qualifier entity */
     stage_qualifier_namespace?: string,
     /** The category of the stage_qualifier entity */
     stage_qualifier_category?: string,
-    /** Field containing stage_qualifier id and the ids of all of it's ancestors */
-    stage_qualifier_closure?: string[],
-    /** Field containing stage_qualifier name and the names of all of it's ancestors */
-    stage_qualifier_closure_label?: string[],
     /** A context qualifier representing a disease or condition in which a relationship expressed in an association took place. */
     disease_context_qualifier?: string,
     /** The name of the disease_context_qualifier entity */
@@ -247,6 +223,14 @@ export interface Association {
     disease_context_qualifier_closure?: string[],
     /** Field containing disease_context_qualifier name and the names of all of it's ancestors */
     disease_context_qualifier_closure_label?: string[],
+    /** A context qualifier representing a species in which a relationship expressed in an association took place. */
+    species_context_qualifier?: string,
+    /** The name of the species_context_qualifier entity */
+    species_context_qualifier_label?: string,
+    /** The namespace/prefix of the species_context_qualifier entity */
+    species_context_qualifier_namespace?: string,
+    /** The category of the species_context_qualifier entity */
+    species_context_qualifier_category?: string,
 }
 
 

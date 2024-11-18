@@ -19,12 +19,8 @@ app_state = {"log_level": "WARNING"}
 @sql_app.callback(invoke_without_command=True)
 def callback(
     ctx: typer.Context,
-    quiet: Annotated[
-        bool, typer.Option("--quiet", "-q", help="Set log level to warning")
-    ] = False,
-    debug: Annotated[
-        bool, typer.Option("--debug", "-d", help="Set log level to debug")
-    ] = False,
+    quiet: Annotated[bool, typer.Option("--quiet", "-q", help="Set log level to warning")] = False,
+    debug: Annotated[bool, typer.Option("--debug", "-d", help="Set log level to debug")] = False,
 ):
     if ctx.invoked_subcommand is None:
         typer.secho(

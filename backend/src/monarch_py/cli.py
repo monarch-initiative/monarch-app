@@ -83,9 +83,7 @@ def schema():
     """
     schema_name = "model"
     import_path = f"monarch_py.datamodels.{schema_name}"
-    schema_module_spec = importlib.util.find_spec(
-        f"monarch_py.datamodels.{schema_name}"
-    )
+    schema_module_spec = importlib.util.find_spec(f"monarch_py.datamodels.{schema_name}")
     if schema_module_spec is None or schema_module_spec.origin is None:
         print(f"No python module found at {import_path}")
         raise typer.Exit(code=1)
