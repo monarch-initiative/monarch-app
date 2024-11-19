@@ -189,4 +189,6 @@ def associations_compact():
                 "negated": None,
             },
         ],
+        "facet_fields": [],
+        "facet_queries": [],
     }

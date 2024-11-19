@@ -16,6 +16,7 @@ def search_response():
                 "q.op": "AND",
                 "boost": 'product(if(termfreq(category,"biolink:PhenotypicFeature"),1.1,1),if(termfreq(category,"biolink:Disease"),1.3,1),if(and(termfreq(in_taxon,"NCBITaxon:9606"),termfreq(category,"biolink:Gene")),1.1,1),if(termfreq(deprecated,"true"),0.1,1))',
                 "fq": "name:*",
+                "facet.mincount": "1",
                 "rows": "20",
                 "facet": "true",
             },

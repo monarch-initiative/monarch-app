@@ -2157,6 +2157,36 @@ class AssociationResults(Results):
             }
         },
     )
+    facet_fields: Optional[List[FacetField]] = Field(
+        None,
+        description="""Collection of facet field responses with the field values and counts""",
+        json_schema_extra={
+            "linkml_meta": {
+                "alias": "facet_fields",
+                "domain_of": [
+                    "AssociationResults",
+                    "CompactAssociationResults",
+                    "AssociationTableResults",
+                    "SearchResults",
+                ],
+            }
+        },
+    )
+    facet_queries: Optional[List[FacetValue]] = Field(
+        None,
+        description="""Collection of facet query responses with the query string values and counts""",
+        json_schema_extra={
+            "linkml_meta": {
+                "alias": "facet_queries",
+                "domain_of": [
+                    "AssociationResults",
+                    "CompactAssociationResults",
+                    "AssociationTableResults",
+                    "SearchResults",
+                ],
+            }
+        },
+    )
     limit: int = Field(
         ...,
         description="""number of items to return in a response""",
@@ -2202,6 +2232,36 @@ class CompactAssociationResults(Results):
             }
         },
     )
+    facet_fields: Optional[List[FacetField]] = Field(
+        None,
+        description="""Collection of facet field responses with the field values and counts""",
+        json_schema_extra={
+            "linkml_meta": {
+                "alias": "facet_fields",
+                "domain_of": [
+                    "AssociationResults",
+                    "CompactAssociationResults",
+                    "AssociationTableResults",
+                    "SearchResults",
+                ],
+            }
+        },
+    )
+    facet_queries: Optional[List[FacetValue]] = Field(
+        None,
+        description="""Collection of facet query responses with the query string values and counts""",
+        json_schema_extra={
+            "linkml_meta": {
+                "alias": "facet_queries",
+                "domain_of": [
+                    "AssociationResults",
+                    "CompactAssociationResults",
+                    "AssociationTableResults",
+                    "SearchResults",
+                ],
+            }
+        },
+    )
     limit: int = Field(
         ...,
         description="""number of items to return in a response""",
@@ -2242,6 +2302,36 @@ class AssociationTableResults(Results):
                     "EntityResults",
                     "HistoPheno",
                     "MappingResults",
+                    "SearchResults",
+                ],
+            }
+        },
+    )
+    facet_fields: Optional[List[FacetField]] = Field(
+        None,
+        description="""Collection of facet field responses with the field values and counts""",
+        json_schema_extra={
+            "linkml_meta": {
+                "alias": "facet_fields",
+                "domain_of": [
+                    "AssociationResults",
+                    "CompactAssociationResults",
+                    "AssociationTableResults",
+                    "SearchResults",
+                ],
+            }
+        },
+    )
+    facet_queries: Optional[List[FacetValue]] = Field(
+        None,
+        description="""Collection of facet query responses with the query string values and counts""",
+        json_schema_extra={
+            "linkml_meta": {
+                "alias": "facet_queries",
+                "domain_of": [
+                    "AssociationResults",
+                    "CompactAssociationResults",
+                    "AssociationTableResults",
                     "SearchResults",
                 ],
             }
@@ -2625,12 +2715,32 @@ class SearchResults(Results):
     facet_fields: Optional[List[FacetField]] = Field(
         None,
         description="""Collection of facet field responses with the field values and counts""",
-        json_schema_extra={"linkml_meta": {"alias": "facet_fields", "domain_of": ["SearchResults"]}},
+        json_schema_extra={
+            "linkml_meta": {
+                "alias": "facet_fields",
+                "domain_of": [
+                    "AssociationResults",
+                    "CompactAssociationResults",
+                    "AssociationTableResults",
+                    "SearchResults",
+                ],
+            }
+        },
     )
     facet_queries: Optional[List[FacetValue]] = Field(
         None,
         description="""Collection of facet query responses with the query string values and counts""",
-        json_schema_extra={"linkml_meta": {"alias": "facet_queries", "domain_of": ["SearchResults"]}},
+        json_schema_extra={
+            "linkml_meta": {
+                "alias": "facet_queries",
+                "domain_of": [
+                    "AssociationResults",
+                    "CompactAssociationResults",
+                    "AssociationTableResults",
+                    "SearchResults",
+                ],
+            }
+        },
     )
     limit: int = Field(
         ...,

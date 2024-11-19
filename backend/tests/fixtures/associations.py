@@ -3429,4 +3429,6 @@ def associations():
                 "species_context_qualifier_category": None,
             },
         ],
+        "facet_fields": [],
+        "facet_queries": [],
     }

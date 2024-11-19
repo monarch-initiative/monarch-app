@@ -48,6 +48,7 @@ def association_counts_response():
                 "start": "0",
                 "q.op": "AND",
                 "fq": 'subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121" OR object:"MONDO:0020121" OR object_closure:"MONDO:0020121"',
+                "facet.mincount": "1",
                 "rows": "20",
                 "facet": "true",
             },

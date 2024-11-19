@@ -1575,5 +1575,7 @@
       "species_context_qualifier_category": null,
       "direction": "outgoing"
     }
-  ]
+  ],
+  "facet_fields": [],
+  "facet_queries": []
 }
