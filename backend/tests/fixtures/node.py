@@ -76,13 +76,13 @@ def node():
         "association_counts": [
             {
                 "label": "Disease to Phenotype",
-                "count": 4115,
+                "count": 4082,
                 "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
             },
-            {"label": "Causal Gene", "count": 126, "category": "biolink:CausalGeneToDiseaseAssociation"},
-            {"label": "Correlated Gene", "count": 151, "category": "biolink:CorrelatedGeneToDiseaseAssociation"},
+            {"label": "Causal Gene", "count": 125, "category": "biolink:CausalGeneToDiseaseAssociation"},
+            {"label": "Correlated Gene", "count": 150, "category": "biolink:CorrelatedGeneToDiseaseAssociation"},
             {"label": "Variant to Disease", "count": 1, "category": "biolink:VariantToDiseaseAssociation"},
-            {"label": "Disease Model", "count": 237, "category": "biolink:GenotypeToDiseaseAssociation"},
+            {"label": "Disease Model", "count": 238, "category": "biolink:GenotypeToDiseaseAssociation"},
         ],
         "node_hierarchy": {
             "super_classes": [
@@ -331,9 +331,9 @@ def node():
                     "has_phenotype_count": None,
                 },
                 {
-                    "id": "MONDO:0019950",
+                    "id": "MONDO:0018949",
                     "category": "biolink:Disease",
-                    "name": "congenital muscular dystrophy",
+                    "name": "distal myopathy",
                     "full_name": None,
                     "deprecated": None,
                     "description": None,
@@ -353,9 +353,9 @@ def node():
                     "has_phenotype_count": None,
                 },
                 {
-                    "id": "MONDO:0018949",
+                    "id": "MONDO:0019950",
                     "category": "biolink:Disease",
-                    "name": "distal myopathy",
+                    "name": "congenital muscular dystrophy",
                     "full_name": None,
                     "deprecated": None,
                     "description": None,
