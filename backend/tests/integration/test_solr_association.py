@@ -68,7 +68,12 @@ def test_entity():
     assert response
     assert response.total > 50
     for association in response.items:
-        assert "MONDO:0007947" in association.subject_closure or "MONDO:0007947" in association.object_closure
+        if association.subject_closure is None or len(association.subject_closure) == 0:
+            assert "MONDO:0007947" in association.object_closure
+        elif association.object_closure is None or len(association.object_closure) == 0:
+            assert "MONDO:0007947" in association.subject_closure
+        else:
+            assert "MONDO:0007947" in association.subject_closure or "MONDO:0007947" in association.object_closure
 
 
 @pytest.mark.parametrize("q", ["eyebrow", "thick", "Thick", "Thick eyebrow", "thick eyebrow"])

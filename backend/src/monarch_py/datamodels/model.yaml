@@ -72,41 +72,32 @@ classes:
       - qualifiers_label
       - qualifiers_namespace
       - qualifiers_category
-      - qualifiers_closure
-      - qualifiers_closure_label
       - qualifier
       - qualifier_label
       - qualifier_namespace
       - qualifier_category
-      - qualifier_closure
-      - qualifier_closure_label
       - frequency_qualifier_label
       - frequency_qualifier_namespace
       - frequency_qualifier_category
-      - frequency_qualifier_closure
-      - frequency_qualifier_closure_label
       - onset_qualifier_label
       - onset_qualifier_namespace
       - onset_qualifier_category
-      - onset_qualifier_closure
-      - onset_qualifier_closure_label
       - sex_qualifier_label
       - sex_qualifier_namespace
       - sex_qualifier_category
-      - sex_qualifier_closure
-      - sex_qualifier_closure_label
       - stage_qualifier_label
       - stage_qualifier_namespace
       - stage_qualifier_category
-      - stage_qualifier_closure
-      - stage_qualifier_closure_label
       - disease_context_qualifier
       - disease_context_qualifier_label
       - disease_context_qualifier_namespace
       - disease_context_qualifier_category
       - disease_context_qualifier_closure
       - disease_context_qualifier_closure_label
-
+      - species_context_qualifier
+      - species_context_qualifier_label
+      - species_context_qualifier_namespace
+      - species_context_qualifier_category
   AssociationCount:
     is_a: FacetValue
     slots:
@@ -393,6 +384,12 @@ slots:
     examples:
       - value: MONDO:0004979 # Asthma
       - value: MONDO:0005148 # type 2 diabetes mellitus  
+    range: string
+  species_context_qualifier:
+    description: >-
+      A context qualifier representing a species in which a relationship expressed in an association took place.
+    examples:
+      - value: NCBITaxon:9606 
     range: string
   evidence_count:
     description: count of supporting documents, evidence codes, and sources supplying evidence
@@ -685,12 +682,6 @@ slots:
   qualifier_category:
     is_a: category
     description: The category of the frequency_qualifier entity
-  qualifier_closure:
-    multivalued: true
-    description: Field containing frequency_qualifier id and the ids of all of it's ancestors
-  qualifier_closure_label:
-    multivalued: true
-    description: Field containing frequency_qualifier name and the names of all of it's ancestors
   frequency_qualifier_label:
     is_a: name
     description: The name of the frequency_qualifier entity
@@ -700,12 +691,6 @@ slots:
   frequency_qualifier_category:
     is_a: category
     description: The category of the frequency_qualifier entity
-  frequency_qualifier_closure:
-    multivalued: true
-    description: Field containing frequency_qualifier id and the ids of all of it's ancestors
-  frequency_qualifier_closure_label:
-    multivalued: true
-    description: Field containing frequency_qualifier name and the names of all of it's ancestors
   onset_qualifier_label:
     is_a: name
     description: The name of the onset_qualifier entity
@@ -715,12 +700,6 @@ slots:
   onset_qualifier_category:
     is_a: category
     description: The category of the onset_qualifier entity
-  onset_qualifier_closure:
-    multivalued: true
-    description: Field containing onset_qualifier id and the ids of all of it's ancestors
-  onset_qualifier_closure_label:
-    multivalued: true
-    description: Field containing onset_qualifier name and the names of all of it's ancestors
   sex_qualifier_label:
     is_a: name
     description: The name of the sex_qualifier entity
@@ -730,12 +709,6 @@ slots:
   sex_qualifier_category:
     is_a: category
     description: The category of the sex_qualifier entity
-  sex_qualifier_closure:
-    multivalued: true
-    description: Field containing sex_qualifier id and the ids of all of it's ancestors
-  sex_qualifier_closure_label:
-    multivalued: true
-    description: Field containing sex_qualifier name and the names of all of it's ancestors
   stage_qualifier_label:
     is_a: name
     description: The name of the stage_qualifier entity
@@ -745,12 +718,6 @@ slots:
   stage_qualifier_category:
     is_a: category
     description: The category of the stage_qualifier entity
-  stage_qualifier_closure:
-    multivalued: true
-    description: Field containing stage_qualifier id and the ids of all of it's ancestors
-  stage_qualifier_closure_label:
-    multivalued: true
-    description: Field containing stage_qualifier name and the names of all of it's ancestors
   disease_context_qualifier_label:
     is_a: name
     description: The name of the disease_context_qualifier entity
@@ -766,9 +733,15 @@ slots:
   disease_context_qualifier_closure_label:
     multivalued: true
     description: Field containing disease_context_qualifier name and the names of all of it's ancestors
-
-
-
+  species_context_qualifier_label:
+    is_a: name
+    description: The name of the species_context_qualifier entity
+  species_context_qualifier_namespace:
+    range: string
+    description: The namespace/prefix of the species_context_qualifier entity
+  species_context_qualifier_category:
+    is_a: category
+    description: The category of the species_context_qualifier entity
   # sssom slots
   mappings:
     description: List of ExpandedCuries with id and url for mapped entities
