@@ -4,7 +4,7 @@
 -->
 
 <template>
-  <tspan v-if="isSVG" ref="container">
+  <tspan v-if="isSvg" ref="container">
     {{ text }}
   </tspan>
   <span v-else ref="container">
@@ -16,22 +16,86 @@
 import { onMounted, onUpdated, ref } from "vue";
 
 type Props = {
-  text: string;
-  isSVG?: boolean;
+  text?: string;
+  isSvg?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  isSVG: false,
+  text: "",
+  isSvg: false,
 });
 
 const container = ref<HTMLSpanElement | SVGTSpanElement | null>(null);
 
-function renderSups(el: HTMLSpanElement | SVGTSpanElement) {
-  // State to keep track if the current last element in the child nodes is
-  // superscripted. (This is necessary because the `dy` attribute affects
-  // the current and next sibling <tspan> elements).
-  let svgCurrentlySup = false;
+type ReplacementTag = "sup" | "a" | "i";
 
+type Replacement = {
+  type: ReplacementTag;
+  start: [number, number];
+  end: [number, number];
+  startNode?: Text;
+  endNode?: Text;
+};
+
+type ReplacementPosition = {
+  type: "start" | "end";
+  replacement: Replacement;
+  at: [number, number];
+};
+
+const replacementTags = new Map([
+  [
+    "sup" as ReplacementTag,
+    {
+      regex: /(<sup>).*?(<\/sup>)/dg,
+      createSurroundingTag(isSvg: Boolean) {
+        return isSvg
+          ? document.createElementNS("http://www.w3.org/2000/svg", "tspan")
+          : document.createElement("sup");
+      },
+      afterMount(isSvg: Boolean, node: Element) {
+        if (!isSvg) return;
+        node.setAttribute("dy", "-1ex");
+        node.classList.add("svg-superscript");
+
+        // The next sibling will be the text node "</sup>". Check if there is
+        // remaining text after that. If there is, adjust the text baseline back
+        // down to the normal level.
+        const nextSibling = node.nextSibling!.nextSibling;
+        if (!nextSibling) return;
+
+        const range = new Range();
+
+        const tspan = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "tspan",
+        );
+
+        tspan.setAttribute("dy", "+1ex");
+
+        range.selectNode(nextSibling);
+        range.surroundContents(tspan);
+      },
+    },
+  ],
+  [
+    "i" as ReplacementTag,
+    {
+      regex: /(<i>).*?(<\/i>)/dg,
+      createSurroundingTag(isSvg: Boolean) {
+        return isSvg
+          ? document.createElementNS("http://www.w3.org/2000/svg", "tspan")
+          : document.createElement("i");
+      },
+      afterMount(isSvg: Boolean, node: Element) {
+        if (!isSvg) return;
+        node.classList.add("svg-italic");
+      },
+    },
+  ],
+]);
+
+function buildDOM(el: Element) {
   const text = props.text;
 
   const containsOnlyText =
@@ -43,88 +107,86 @@ function renderSups(el: HTMLSpanElement | SVGTSpanElement) {
   // if the element contains anything but a single text node.
   if (!containsOnlyText) return;
 
-  const regex = /<sup>(.*?)<\/sup>/g;
-  const newChildren: Node[] = [];
+  const textNode = el.firstChild as Text;
 
-  let idx = 0;
+  const replacements: Replacement[] = [];
 
-  // Add text to the list of new child nodes. For SVG, this is a <tspan>
-  // element. For HTML, it's a TextNode.
-  const addText = (text: string) => {
-    if (props.isSVG) {
-      const el = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "tspan",
-      );
-      el.textContent = text;
+  // Create a list of every place there's a match for a start and end tag
+  // matched from the defined regexes.
+  replacementTags.entries().forEach(([type, { regex }]) => {
+    for (const match of text.matchAll(regex)) {
+      const { indices } = match;
 
-      // If the last <tspan> was superscripted (i.e. has dy="-1ex", then return
-      // the text to the normal baseline.
-      if (svgCurrentlySup) {
-        el.setAttribute("dy", "+1ex");
-        svgCurrentlySup = true;
-      }
-
-      newChildren.push(el);
-    } else {
-      newChildren.push(new Text(text));
+      replacements.push({
+        type,
+        start: indices![1],
+        end: indices![2],
+      });
     }
-  };
+  });
 
-  for (const match of text.matchAll(regex)) {
-    const [outer, inner] = match;
+  // Now create a new list that has the position of each start and end token
+  const positions: ReplacementPosition[] = replacements.flatMap((x) => [
+    { type: "start", replacement: x, at: x.start },
+    { type: "end", replacement: x, at: x.end },
+  ]);
 
-    const startText = text.slice(idx, match.index);
+  // Sort that list by the position of the tag token (with the last token
+  // first and the first token last).
+  //
+  // After that, iterate through each of the token positions and split the
+  // text node at the boundaries of each token. Store the text node of each
+  // start and end tag in the `replacements` array to be used later.
+  positions
+    .sort((a, b) => {
+      return b.at[0] - a.at[0];
+    })
+    .forEach((position) => {
+      textNode.splitText(position.at[1]);
+      const node = textNode.splitText(position.at[0]);
+      position.replacement[`${position.type}Node`] = node;
+    });
 
-    // If there is text before the match, add it as a text node.
-    if (startText) {
-      addText(startText);
-    }
+  // Build the correct DOM tree for each replacement found
+  replacements.forEach((replacement) => {
+    const { startNode, endNode, type } = replacement;
+    const { createSurroundingTag, afterMount } = replacementTags.get(type)!;
 
-    const newNode = props.isSVG
-      ? document.createElementNS("http://www.w3.org/2000/svg", "tspan")
-      : document.createElement("sup");
+    // Select the range that goes from the end of the opening tag text node to
+    // the start of the closing tag text node.
+    const range = new Range();
+    range.setStartAfter(startNode!);
+    range.setEndBefore(endNode!);
 
-    newNode.textContent = inner;
-    newChildren.push(newNode);
+    // Surround that range with the appropriate DOM element.
+    const el = createSurroundingTag(props.isSvg);
+    range.surroundContents(el);
 
-    if (props.isSVG) {
-      newNode.classList.add("svg-superscript");
-    }
+    // Run any code required after the container element is mounted.
+    afterMount(props.isSvg, el);
 
-    // If the baseline isn't currently superscripted, move the baseline up.
-    if (!svgCurrentlySup) {
-      newNode.setAttribute("dy", "-1ex");
-      svgCurrentlySup = true;
-    }
-
-    // Advance the current index to the end of the match.
-    idx += match.index + outer.length;
-  }
-
-  // Add any remaining text beyond the match.
-  const remainingText = text.slice(idx);
-
-  if (remainingText) {
-    addText(remainingText);
-  }
-
-  el.replaceChildren(...newChildren);
+    // Remove the start and end tag text nodes
+    startNode!.parentNode!.removeChild(startNode!);
+    endNode!.parentNode!.removeChild(endNode!);
+  });
 }
 
 onMounted(() => {
   if (!container.value) return;
-  renderSups(container.value);
+  buildDOM(container.value);
 });
 
 onUpdated(() => {
   if (!container.value) return;
-  renderSups(container.value);
+  buildDOM(container.value);
 });
 </script>
 
 <style>
 .svg-superscript {
   font-size: 0.7rem;
+}
+.svg-italic {
+  font-style: italic;
 }
 </style>
