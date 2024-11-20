@@ -1,6 +1,10 @@
 <!--
-  The text of a node in the knowledge graph. Specially renders any text wrapped
-  in <sup> as superscripted in HTML and SVG.
+  The text of a node in the knowledge graph.
+
+  Selectively renders the following tags in HTML and SVG:
+    - <sup>
+    - <i>
+    - <a> with an `href` property surrounded in double quotes
 -->
 
 <template>
@@ -90,6 +94,24 @@ const replacementTags = new Map([
       afterMount(isSvg: Boolean, node: Element) {
         if (!isSvg) return;
         node.classList.add("svg-italic");
+      },
+    },
+  ],
+  [
+    "a" as ReplacementTag,
+    {
+      regex: /(<a href="http[^"]+">).*?(<\/a>)/dg,
+      createSurroundingTag(isSvg: Boolean) {
+        return isSvg
+          ? document.createElementNS("http://www.w3.org/2000/svg", "a")
+          : document.createElement("a");
+      },
+      afterMount(isSvg: Boolean, node: Element) {
+        // The previous sibling will be the text node containing the string
+        // <a href="http...">. Slice it to get the value of the href.
+        const tagTextNode = node.previousSibling!;
+        const href = tagTextNode.textContent!.slice(9, -2);
+        node.setAttribute("href", href);
       },
     },
   ],
