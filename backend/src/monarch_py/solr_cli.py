@@ -28,12 +28,8 @@ monarchstow = pystow.module("monarch")
 @solr_app.callback(invoke_without_command=True)
 def callback(
     ctx: typer.Context,
-    quiet: Annotated[
-        bool, typer.Option("--quiet", "-q", help="Set log level to warning")
-    ] = False,
-    debug: Annotated[
-        bool, typer.Option("--debug", "-d", help="Set log level to debug")
-    ] = False,
+    quiet: Annotated[bool, typer.Option("--quiet", "-q", help="Set log level to warning")] = False,
+    debug: Annotated[bool, typer.Option("--debug", "-d", help="Set log level to debug")] = False,
 ):
     if ctx.invoked_subcommand is None:
         typer.secho(
@@ -319,9 +315,6 @@ def association_counts(
     """
     Retrieve the association counts for a given entity
     """
-    if not entity:
-        console.print("\n[bold red]Entity ID required.[/]\n")
-        raise typer.Exit(1)
     solr = get_solr(update=False)
     response = solr.get_association_counts(entity_id)
     format_output(fmt, response, output)

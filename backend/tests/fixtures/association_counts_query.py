@@ -47,6 +47,7 @@ def association_counts_query():
         "filter_queries": [
             'subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121" OR object:"MONDO:0020121" OR object_closure:"MONDO:0020121"'
         ],
+        "facet_mincount": 1,
         "query_fields": None,
         "def_type": "edismax",
         "q_op": "AND",

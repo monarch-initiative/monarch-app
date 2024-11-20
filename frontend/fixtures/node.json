@@ -140,17 +140,17 @@
   "association_counts": [
     {
       "label": "Disease to Phenotype",
-      "count": 4115,
+      "count": 4082,
       "category": "biolink:DiseaseToPhenotypicFeatureAssociation"
     },
     {
       "label": "Causal Gene",
-      "count": 126,
+      "count": 125,
       "category": "biolink:CausalGeneToDiseaseAssociation"
     },
     {
       "label": "Correlated Gene",
-      "count": 151,
+      "count": 150,
       "category": "biolink:CorrelatedGeneToDiseaseAssociation"
     },
     {
@@ -160,7 +160,7 @@
     },
     {
       "label": "Disease Model",
-      "count": 237,
+      "count": 238,
       "category": "biolink:GenotypeToDiseaseAssociation"
     }
   ],
@@ -411,9 +411,9 @@
         "has_phenotype_count": null
       },
       {
-        "id": "MONDO:0019950",
+        "id": "MONDO:0018949",
         "category": "biolink:Disease",
-        "name": "congenital muscular dystrophy",
+        "name": "distal myopathy",
         "full_name": null,
         "deprecated": null,
         "description": null,
@@ -433,9 +433,9 @@
         "has_phenotype_count": null
       },
       {
-        "id": "MONDO:0018949",
+        "id": "MONDO:0019950",
         "category": "biolink:Disease",
-        "name": "distal myopathy",
+        "name": "congenital muscular dystrophy",
         "full_name": null,
         "deprecated": null,
         "description": null,
