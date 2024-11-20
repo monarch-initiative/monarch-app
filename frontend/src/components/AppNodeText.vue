@@ -135,7 +135,7 @@ function buildDOM(el: Element) {
 
   // Create a list of every place there's a match for a start and end tag
   // matched from the defined regexes.
-  replacementTags.entries().forEach(([type, { regex }]) => {
+  Array.from(replacementTags.entries()).forEach(([type, { regex }]) => {
     for (const match of text.matchAll(regex)) {
       const { indices } = match;
 
