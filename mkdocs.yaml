@@ -1,14 +1,15 @@
-site_name: 'monarch-py'
+site_name: 'Monarch KG Tools'
 repo_name: 'monarch-app/backend'
 repo_url: 'https://github.com/monarch-initiative/monarch-app/tree/main/backend'
 site_url: 'https://monarch-app.monarchinitiative.org/docs/'
 
 
 nav:
-  - Welcome: 'index.md'
-  - Usage: 
+  - monarch-py:
+    - Overview: 'index.md'
     - Usage: 'Usage/index.md'
     - CLI: 'Usage/CLI.md'
+    - Data Model: 'Data-Model/index.md'
     - Interfaces: 
       - Overview: 'Usage/Interfaces/index.md'
       - Entity: 'Usage/Interfaces/Entity.md'
@@ -20,12 +21,11 @@ nav:
       - Solr: 'Usage/Implementations/Solr.md'
       - SQL: 'Usage/Implementations/SQL.md'
       # - OAK: 'Usage/Implementations/OAK.md'
+  - Release Process: 'release-process.md'
   - FastAPI: 
     - Overview: 'FastAPI/index.md'
     - Endpoints: 
       - 'FastAPI/Endpoints/index.md'
-  - API Reference: 'API-Reference/index.md'
-  - Response Data Model: 'Data-Model/index.md'
 
 
 theme:

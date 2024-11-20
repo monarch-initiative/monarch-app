@@ -51,7 +51,7 @@ OutputOption = Annotated[
     Optional[str],
     typer.Option(
         "--output",
-        "-o",
-        help="The path to write command output (stdout if not specified)",
+        "-O",
+        help="Path to file to write command output (stdout if not specified)",
     ),
 ]
