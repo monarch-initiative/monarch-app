@@ -26,8 +26,8 @@
       >
         <span
           :style="{ textDecoration: node.deprecated ? 'line-through' : '' }"
-          v-html="node.name"
         >
+          <AppNodeText :text="node.name" />
         </span>
         <template v-if="node.deprecated"> (OBSOLETE)</template>
       </AppHeading>
@@ -48,6 +48,7 @@ import { computed } from "vue";
 import { truncate } from "lodash";
 import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
 import type { Node } from "@/api/model";
+import AppNodeText from "@/components/AppNodeText.vue";
 import { parse } from "@/util/object";
 
 type Props = {

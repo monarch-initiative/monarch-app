@@ -31,8 +31,9 @@
           v-tooltip="'Click to expand'"
           class="description truncate-10"
           tabindex="0"
-          v-html="node.description?.trim()"
-        ></p>
+        >
+          <AppNodeText :text="node.description?.trim()" />
+        </p>
       </AppDetail>
 
       <!-- inheritance -->
@@ -71,11 +72,9 @@
         title="Also Known As"
         :full="true"
       >
-        <p
-          class="truncate-2"
-          tabindex="0"
-          v-html="node.synonym?.join(',\n&nbsp;')"
-        ></p>
+        <p class="truncate-2" tabindex="0">
+          <AppNodeText :text="node.synonym?.join(',\n&nbsp;')" />
+        </p>
       </AppDetail>
 
       <!-- URI -->
@@ -155,6 +154,7 @@ import type { Node } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
+import AppNodeText from "@/components/AppNodeText.vue";
 import { scrollTo } from "@/router";
 import { sleep } from "@/util/debug";
 
