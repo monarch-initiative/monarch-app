@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from typing_extensions import Annotated
 
 import pystow
@@ -10,9 +10,16 @@ from monarch_py.datamodels.category_enums import (
     EntityCategory,
     MappingPredicate,
 )
-from monarch_py.utils.solr_cli_utils import ensure_solr, get_solr, solr_status, start_solr, stop_solr
+from monarch_py.utils.solr_cli_utils import (
+    ensure_solr,
+    get_solr,
+    solr_status,
+    start_solr,
+    stop_solr,
+)
 from monarch_py.utils.utils import console, set_log_level
 from monarch_py.utils.format_utils import format_output
+from monarch_py.utils import cli_fields as fields
 
 solr_app = typer.Typer()
 monarchstow = pystow.module("monarch")
@@ -64,16 +71,13 @@ def status():
 def download(
     version: Annotated[
         str,
-        typer.Option(
-            "latest",
-            "--version",
+        typer.Argument(
             help="The version of the Solr KG to download (latest, dev, or a specific version)",
         ),
     ] = "latest",
     overwrite: Annotated[
         bool,
         typer.Option(
-            False,
             "--overwrite",
             help="Overwrite the existing Solr KG if it exists",
         ),
@@ -91,37 +95,27 @@ def download(
 
 @solr_app.command("entity")
 def entity(
-    id: str = typer.Argument(None, help="The identifier of the entity to be retrieved"),
-    extra: bool = typer.Option(
-        False,
-        "--extra",
-        "-e",
-        help="Include extra fields in the output (association_counts and node_hierarchy)",
-    ),
-    fmt: str = typer.Option(
-        "json",
-        "--format",
-        "-f",
-        help="The format of the output (json, yaml, tsv, table)",
-    ),
-    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
+    entity_id: Annotated[
+        str,
+        typer.Argument(help="The identifier of the entity to be retrieved"),
+    ],
+    extra: Annotated[
+        bool,
+        typer.Option(
+            "--extra",
+            "-e",
+            help="Include extra fields in the output (association_counts and node_hierarchy)",
+        ),
+    ] = False,
+    fmt: fields.FormatOption = fields.OutputFormat.json,
+    output: fields.OutputOption = None,
 ):
     """
     Retrieve an entity by ID
-
-    Args:
-        id (str): The identifier of the entity to be retrieved
-
-    Optional Args:
-        fmt (str): The format of the output (json, yaml, tsv, table). Default JSON
-        output (str): The path to the output file. Default stdout
     """
 
-    if not id:
-        console.print("\n[bold red]Entity ID required.[/]\n")
-        raise typer.Exit(1)
     solr = get_solr(update=False)
-    response = solr.get_entity(id, extra)
+    response = solr.get_entity(entity_id, extra)
     if response is not None:
         format_output(fmt, response, output)
     else:
@@ -131,160 +125,160 @@ def entity(
 
 @solr_app.command("associations")
 def associations(
-    category: List[AssociationCategory] = typer.Option(
-        None, "--category", "-c", help="Category to get associations for"
-    ),
-    subject: List[str] = typer.Option(None, "--subject", "-s", help="Subject ID to get associations for"),
-    predicate: List[AssociationPredicate] = typer.Option(
-        None, "--predicate", "-p", help="Predicate ID to get associations for"
-    ),
-    object: List[str] = typer.Option(None, "--object", "-o", help="Object ID to get associations for"),
-    entity: List[str] = typer.Option(
-        None, "--entity", "-e", help="Entity (subject or object) ID to get associations for"
-    ),
-    direct: bool = typer.Option(
-        False,
-        "--direct",
-        "-d",
-        help="Whether to exclude associations with subject/object as ancestors",
-    ),
-    compact: bool = typer.Option(
-        False,
-        "--compact",
-        "-C",
-        help="Whether to return a compact representation of the associations",
-    ),
-    limit: int = typer.Option(20, "--limit", "-l", help="The number of associations to return"),
-    offset: int = typer.Option(0, "--offset", help="The offset of the first association to be retrieved"),
-    fmt: str = typer.Option(
-        "json",
-        "--format",
-        "-f",
-        help="The format of the output (json, yaml, tsv, table)",
-    ),
-    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
+    category: Annotated[
+        Optional[List[AssociationCategory]],
+        typer.Option(
+            "--category",
+            "-c",
+            help="Category to get associations for",
+        ),
+    ] = None,
+    subject: Annotated[
+        Optional[List[str]],
+        typer.Option(
+            "--subject",
+            "-s",
+            help="Subject ID to get associations for",
+        ),
+    ] = None,
+    predicate: Annotated[
+        Optional[List[AssociationPredicate]],
+        typer.Option(
+            "--predicate",
+            "-p",
+            help="Predicate ID to get associations for",
+        ),
+    ] = None,
+    object: Annotated[
+        Optional[List[str]],
+        typer.Option(
+            "--object",
+            "-o",
+            help="Object ID to get associations for",
+        ),
+    ] = None,
+    entity: Annotated[
+        Optional[List[str]],
+        typer.Option(
+            "--entity",
+            "-e",
+            help="Entity (subject or object) ID to get associations for",
+        ),
+    ] = None,
+    direct: Annotated[
+        bool,
+        typer.Option(
+            "--direct",
+            "-d",
+            help="Whether to exclude associations with subject/object as ancestors",
+        ),
+    ] = False,
+    compact: Annotated[
+        bool,
+        typer.Option(
+            "--compact",
+            "-C",
+            help="Whether to return a compact representation of the associations",
+        ),
+    ] = False,
+    limit: fields.LimitOption = 20,
+    offset: fields.OffsetOption = 0,
+    fmt: fields.FormatOption = fields.OutputFormat.json,
+    output: fields.OutputOption = None,
 ):
     """
     Paginate through associations
-
-    Args:
-        category: The category of the association (multi-valued)
-        subject: The subject of the association (multi-valued)
-        predicate: The predicate of the association (multi-valued)
-        object: The object of the association (multi-valued)
-        entity: The entity (subject or object) of the association (multi-valued)
-        limit: The number of associations to return (default 20)
-        direct: Whether to exclude associations with subject/object as ancestors (default False)
-        offset: The offset of the first association to be retrieved
-        fmt: The format of the output (json, yaml, tsv, table) (default json)
-        output: The path to the output file (stdout if not specified) (default None)
     """
-    args = locals()
-    args.pop("fmt", None)
-    args.pop("output", None)
+    kwargs = locals()
+    kwargs.pop("fmt", None)
+    kwargs.pop("output", None)
 
     solr = get_solr(update=False)
-    response = solr.get_associations(**args)
+    response = solr.get_associations(**kwargs)
     format_output(fmt, response, output)
 
 
 @solr_app.command("multi-entity-associations")
 def multi_entity_associations(
-    entity: List[str] = typer.Option(None, "--entity", "-e", help="Entity ID to get associations for"),
-    counterpart_category: List[str] = typer.Option(
-        None, "--counterpart-category", "-c", help="Counterpart category to get associations for"
-    ),
-    limit: int = typer.Option(20, "--limit", "-l"),
-    offset: int = typer.Option(0, "--offset"),
-    fmt: str = typer.Option(
-        "json",
-        "--format",
-        "-f",
-        help="The format of the output (json, yaml, tsv, table)",
-    ),
-    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
+    entity: Annotated[
+        Optional[List[str]],
+        typer.Option(
+            "--entity",
+            "-e",
+            help="Comma-separated list of entities",
+        ),
+    ] = None,
+    counterpart_category: Annotated[
+        Optional[List[str]],
+        typer.Option(
+            "--counterpart-category",
+            "-c",
+            help="A comma-separated list of counterpart categories"
+        ),
+    ] = None,
+    limit: fields.LimitOption = 20,
+    offset: fields.OffsetOption = 0,
+    fmt: fields.FormatOption = fields.OutputFormat.json,
+    output: fields.OutputOption = None,
 ):
     """
     Paginate through associations for multiple entities
-
-    Args:
-        entity: A comma-separated list of entities
-        counterpart_category: A comma-separated list of counterpart categories
-        limit: The number of associations to return
-        offset: The offset of the first association to be retrieved
-        fmt: The format of the output (json, yaml, tsv, table)
-        output: The path to the output file (stdout if not specified)
     """
-    args = locals()
-    args.pop("fmt", None)
-    args.pop("output", None)
-    args["limit_per_group"] = args.pop("limit")
+    kwargs = locals()
+    kwargs.pop("fmt", None)
+    kwargs.pop("output", None)
+    kwargs["limit_per_group"] = kwargs.pop("limit")
 
     solr = get_solr(update=False)
-    response = solr.get_multi_entity_associations(**args)
+    response = solr.get_multi_entity_associations(**kwargs)
     format_output(fmt, response, output)
 
 
 @solr_app.command("search")
 def search(
-    q: str = typer.Option("*:*", "--query", "-q"),
-    category: List[EntityCategory] = typer.Option(None, "--category", "-c"),
-    in_taxon_label: str = typer.Option(None, "--in-taxon-label", "-t"),
-    facet_fields: List[str] = typer.Option(None, "--facet-fields", "-ff"),
-    facet_queries: List[str] = typer.Option(None, "--facet-queries"),
-    limit: int = typer.Option(20, "--limit", "-l"),
-    offset: int = typer.Option(0, "--offset"),
-    fmt: str = typer.Option(
-        "json",
-        "--format",
-        "-f",
-        help="The format of the output (json, yaml, tsv, table)",
-    ),
-    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
+    q: fields.QueryOption = ":*",
+    category: Annotated[
+        Optional[List[EntityCategory]],
+        typer.Option("--category", "-c"),
+    ] = None,
+    in_taxon_label: Annotated[
+        Optional[str],
+        typer.Option("--in-taxon-label", "-t"),
+    ] = None,
+    facet_fields: Annotated[
+        Optional[List[str]],
+        typer.Option("--facet-fields", "-ff"),
+    ] = None,
+    facet_queries: Annotated[
+        Optional[List[str]],
+        typer.Option("--facet-queries", "-fq"),
+    ] = None,
+    limit: fields.LimitOption = 20,
+    offset: fields.OffsetOption = 0,
+    fmt: fields.FormatOption = fields.OutputFormat.json,
+    output: fields.OutputOption = None,
     # sort: str = typer.Option(None, "--sort", "-s"),
 ):
     """
     Search for entities
-
-    Optional Args:
-        q: The query string to search for
-        category: The category of the entity
-        in_taxon_label: The taxon label to filter on
-        facet_fields: The fields to facet on
-        facet_queries: The queries to facet on
-        limit: The number of entities to return
-        offset: The offset of the first entity to be retrieved
-        fmt (str): The format of the output (json, yaml, tsv, table). Default JSON
-        output (str): The path to the output file. Default stdout
     """
-    params = locals()
-    params.pop("fmt", None)
-    params.pop("output", None)
+    kwargs = locals()
+    kwargs.pop("fmt", None)
+    kwargs.pop("output", None)
 
     solr = get_solr(update=False)
-    response = solr.search(**params)
+    response = solr.search(**kwargs)
     format_output(fmt, response, output)
 
 
 @solr_app.command("autocomplete")
 def autocomplete(
-    q: str = typer.Argument(None, help="Query string to autocomplete against"),
-    fmt: str = typer.Option(
-        "json",
-        "--format",
-        "-f",
-        help="The format of the output (json, yaml, tsv, table)",
-    ),
-    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
+    q: Annotated[str, typer.Argument(help="Query string to autocomplete against")],
+    fmt: fields.FormatOption = fields.OutputFormat.json,
+    output: fields.OutputOption = None,
 ):
     """
     Return entity autcomplete matches for a query string
-
-    Args:
-        q: The query string to autocomplete against
-        fmt: The format of the output (json, yaml, tsv, table)
-        output: The path to the output file (stdout if not specified)
-
     """
     solr = get_solr(update=False)
     response = solr.autocomplete(q)
@@ -293,24 +287,12 @@ def autocomplete(
 
 @solr_app.command("histopheno")
 def histopheno(
-    subject: str = typer.Argument(None, help="The subject of the association"),
-    fmt: str = typer.Option(
-        "JSON",
-        "--format",
-        "-f",
-        help="The format of the output (json, yaml, tsv, table)",
-    ),
-    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
+    subject: Annotated[str, typer.Argument(help="The subject of the association")],
+    fmt: fields.FormatOption = fields.OutputFormat.json,
+    output: fields.OutputOption = None,
 ):
     """
     Retrieve the histopheno associations for a given subject
-
-    Args:
-        subject (str): The subject of the association
-
-    Optional Args:
-        fmt (str): The format of the output (json, yaml, tsv, table). Default JSON
-        output (str): The path to the output file. Default stdout
     """
 
     if not subject:
@@ -324,61 +306,58 @@ def histopheno(
 
 @solr_app.command("association-counts")
 def association_counts(
-    entity: str = typer.Argument(None, help="The entity to get association counts for"),
-    fmt: str = typer.Option(
-        "json",
-        "--format",
-        "-f",
-        help="The format of the output (json, yaml, tsv, table)",
-    ),
-    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
+    entity_id: Annotated[
+        str, typer.Argument(help="The entity to get association counts for")
+    ],
+    fmt: fields.FormatOption = fields.OutputFormat.json,
+    output: fields.OutputOption = None,
 ):
     """
     Retrieve the association counts for a given entity
-
-    Args:
-        entity (str): The entity to get association counts for
-
-    Optional Args:
-        fmt (str): The format of the output (json, yaml, tsv, table). Default JSON
-        output (str): The path to the output file. Default stdout
     """
-    if not entity:
-        console.print("\n[bold red]Entity ID required.[/]\n")
-        raise typer.Exit(1)
     solr = get_solr(update=False)
-    response = solr.get_association_counts(entity)
+    response = solr.get_association_counts(entity_id)
     format_output(fmt, response, output)
 
 
 @solr_app.command("association-table")
 def association_table(
-    entity: str = typer.Argument(..., help="The entity to get associations for"),
-    category: AssociationCategory = typer.Argument(
-        None,
-        help="The association category to get associations for, ex. biolink:GeneToPhenotypicFeatureAssociation",
-    ),
-    traverse_orthologs: bool = typer.Option(
-        False,
-        "--traverse-orthologs",
-        "-t",
-        help="Whether to traverse orthologs when getting associations",
-    ),
-    q: str = typer.Option(None, "--query", "-q"),
-    sort: List[str] = typer.Option(None, "--sort", "-s"),
-    limit: int = typer.Option(5, "--limit", "-l"),
-    offset: int = typer.Option(0, "--offset"),
-    fmt: str = typer.Option(
-        "json",
-        "--format",
-        "-f",
-        help="The format of the output (json, yaml, tsv, table)",
-    ),
-    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
+    entity_id: Annotated[
+        str,
+        typer.Argument(
+            help="The entity to get associations for",
+        ),
+    ],
+    category: Annotated[
+        AssociationCategory,
+        typer.Argument(
+            help="The association category to get associations for, ex. biolink:GeneToPhenotypicFeatureAssociation",
+        ),
+    ],
+    q: Annotated[
+        Optional[str],
+        typer.Option("--query", "-q"),
+    ] = None,
+    traverse_orthologs: Annotated[
+        bool,
+        typer.Option(
+            "--traverse-orthologs",
+            "-t",
+            help="Whether to traverse orthologs when getting associations",
+        ),
+    ] = False,
+    sort: Annotated[
+        Optional[List[str]],
+        typer.Option("--sort", "-s"),
+    ] = None,
+    limit: fields.LimitOption = 20,
+    offset: fields.OffsetOption = 0,
+    fmt: fields.FormatOption = fields.OutputFormat.json,
+    output: fields.OutputOption = None,
 ):
     solr = get_solr(update=False)
     response = solr.get_association_table(
-        entity=entity,
+        entity=entity_id,
         category=category,
         traverse_orthologs=traverse_orthologs,
         sort=sort,
@@ -391,24 +370,34 @@ def association_table(
 
 @solr_app.command("mappings")
 def mappings(
-    entity_id: List[str] = typer.Option(None, "--entity-id", "-e", help="entity ID to get mappings for"),
-    subject_id: List[str] = typer.Option(None, "--subject-id", "-s", help="subject ID to get mappings for"),
-    predicate_id: List[MappingPredicate] = typer.Option(
-        None, "--predicate-id", "-p", help="predicate ID to get mappings for"
-    ),
-    object_id: List[str] = typer.Option(None, "--object-id", "-o", help="object ID to get mappings for"),
-    mapping_justification: List[str] = typer.Option(
-        None, "--mapping-justification", "-m", help="mapping justification to get mappings for"
-    ),
-    offset: int = typer.Option(0, "--offset", help="The offset of the first mapping to be retrieved"),
-    limit: int = typer.Option(20, "--limit", "-l", help="The number of mappings to return"),
-    fmt: str = typer.Option(
-        "json",
-        "--format",
-        "-f",
-        help="The format of the output (json, yaml, tsv, table)",
-    ),
-    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
+    entity_id: Annotated[
+        Optional[List[str]],
+        typer.Option("--entity-id", "-e", help="entity ID to get mappings for"),
+    ] = None,
+    subject_id: Annotated[
+        Optional[List[str]],
+        typer.Option("--subject-id", "-s", help="subject ID to get mappings for"),
+    ] = None,
+    predicate_id: Annotated[
+        Optional[List[MappingPredicate]],
+        typer.Option("--predicate-id", "-p", help="predicate ID to get mappings for"),
+    ] = None,
+    object_id: Annotated[
+        Optional[List[str]],
+        typer.Option("--object-id", "-o", help="object ID to get mappings for"),
+    ] = None,
+    mapping_justification: Annotated[
+        Optional[List[str]],
+        typer.Option(
+            "--mapping-justification",
+            "-m",
+            help="mapping justification to get mappings for",
+        ),
+    ] = None,
+    limit: fields.LimitOption = 20,
+    offset: fields.OffsetOption = 0,
+    fmt: fields.FormatOption = fields.OutputFormat.json,
+    output: fields.OutputOption = None,
 ):
     args = locals()
     args.pop("fmt", None)

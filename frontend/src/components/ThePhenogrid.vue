@@ -18,7 +18,7 @@
       </template>
     </tooltip>
 
-    <div ref="scroll">
+    <div ref="scroll" class="scroll force-scrollbar">
       <svg
         ref="svg"
         xmlns="http://www.w3.org/2000/svg"
@@ -155,8 +155,8 @@
         <!-- cells -->
         <g class="cells">
           <tooltip
-            v-for="(cell, index) in cells"
-            :key="index"
+            v-for="cell in cells"
+            :key="cell.id"
             :interactive="true"
             placement="bottom"
             :append-to="appendToBody"
@@ -454,6 +454,7 @@ const cells = computed(() =>
     )
     .flat()
     .map(({ col, row }) => ({
+      id: `${col.id}|${row.id}`,
       col,
       row,
       ...getCell(col, row),

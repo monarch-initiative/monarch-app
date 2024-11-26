@@ -123,7 +123,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                 ).items
             ]
         node: Node = Node(
-            **entity.dict(),
+            **entity.model_dump(),
             node_hierarchy=self._get_node_hierarchy(entity),
             association_counts=self.get_association_counts(id).items,
             external_links=get_links_for_field(entity.xref) if entity.xref else [],
@@ -244,6 +244,9 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         entity: Optional[List[str]] = None,
         direct: bool = False,
         q: Optional[str] = None,
+        facet_fields: Optional[List[str]] = None,
+        facet_queries: Optional[List[str]] = None,
+        filter_queries: Optional[List[str]] = None,
         compact: bool = False,
         offset: int = 0,
         limit: int = 20,
@@ -259,6 +262,9 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             object_closure: Filter to only associations with the specified term ID as an ancestor of the object. Defaults to None
             entity: Filter to only associations where the specified entities are the subject or the object. Defaults to None.
             q: Query string to search within matches. Defaults to None.
+            facet_fields: List of fields to include facet counts for. Defaults to None.
+            facet_queries: List of queries to include facet counts for. Defaults to None.
+            filter_queries: List of queries to filter results by. Defaults to None.
             compact: Return compact results with fewer fields. Defaults to False.
             offset: Result offset, for pagination. Defaults to 0.
             limit: Limit results to specified number. Defaults to 20.
@@ -283,6 +289,9 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             object_namespace=[object_namespace] if isinstance(object_namespace, str) else object_namespace,
             direct=direct,
             q=q,
+            facet_fields=facet_fields,
+            facet_queries=facet_queries,
+            filter_queries=filter_queries,
             offset=offset,
             limit=limit,
         )
@@ -430,6 +439,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         entity: Optional[List[str]] = None,
         facet_fields: Optional[List[str]] = None,
         facet_queries: Optional[List[str]] = None,
+        filter_queries: Optional[List[str]] = None,
     ) -> SearchResults:
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
 
@@ -445,6 +455,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             limit=0,
             facet_fields=facet_fields,
             facet_queries=facet_queries,
+            filter_queries=filter_queries,
         )
         query_result = solr.query(query)
         return SearchResults(
@@ -467,6 +478,9 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         traverse_orthologs: bool = False,
         direct: bool = False,
         q: Optional[str] = None,
+        facet_fields: Optional[List[str]] = None,
+        facet_queries: Optional[List[str]] = None,
+        filter_queries: Optional[List[str]] = None,
         sort: Optional[List[str]] = None,
         offset: int = 0,
         limit: int = 5,
@@ -485,6 +499,9 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             category=category.value,
             direct=direct,
             q=q,
+            facet_fields=facet_fields,
+            facet_queries=facet_queries,
+            filter_queries=filter_queries,
             sort=sort,
             offset=offset,
             limit=limit,

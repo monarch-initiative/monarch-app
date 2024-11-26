@@ -1,22 +1,21 @@
 import importlib
+import importlib.util
 from pathlib import Path
-from typing import List, Optional
-from typing_extensions import Annotated
+from typing import Annotated, Optional
 
 import typer
 
 from monarch_py import solr_cli, sql_cli
 from monarch_py.api.config import semsimian
 from monarch_py.api.additional_models import SemsimMetric
-from monarch_py.datamodels.category_enums import (
-    AssociationCategory,
-    AssociationPredicate,
-    EntityCategory,
-    MappingPredicate,
-)
 from monarch_py.utils.solr_cli_utils import check_for_docker
-from monarch_py.utils.utils import set_log_level, get_release_metadata, get_release_versions
+from monarch_py.utils.utils import (
+    set_log_level,
+    get_release_metadata,
+    get_release_versions,
+)
 from monarch_py.utils.format_utils import format_output
+from monarch_py.utils import cli_fields as fields
 
 
 app = typer.Typer()
@@ -28,11 +27,31 @@ app.add_typer(sql_cli.sql_app, name="sql")
 def callback(
     ctx: typer.Context,
     version: Annotated[
-        Optional[bool], typer.Option("--version", "-v", help="Show the currently installed version", is_eager=True)
+        Optional[bool],
+        typer.Option(
+            "--version",
+            "-v",
+            help="Show the currently installed version",
+            is_eager=True,
+        ),
     ] = None,
+    quiet: Annotated[
+        bool,
+        typer.Option(
+            "--quiet",
+            "-q",
+            help="Set log level to warning",
+        ),
+    ] = False,
+    debug: Annotated[
+        bool,
+        typer.Option(
+            "--debug",
+            "-d",
+            help="Set log level to debug",
+        ),
+    ] = False,
     # verbose: Annotated[int, typer.Option("--verbose", "-v", count=True)] = 0,
-    quiet: Annotated[bool, typer.Option("--quiet", "-q", help="Set log level to warning")] = False,
-    debug: Annotated[bool, typer.Option("--debug", "-d", help="Set log level to debug")] = False,
 ):
     if version and ctx.invoked_subcommand is None:
         from monarch_py import __version__
@@ -63,8 +82,13 @@ def schema():
     Print the linkml schema for the data model
     """
     schema_name = "model"
-    schema_dir = Path(importlib.util.find_spec(f"monarch_py.datamodels.{schema_name}").origin).parent
-    schema_path = schema_dir / Path(schema_name + ".yaml")
+    import_path = f"monarch_py.datamodels.{schema_name}"
+    schema_module_spec = importlib.util.find_spec(f"monarch_py.datamodels.{schema_name}")
+    if schema_module_spec is None or schema_module_spec.origin is None:
+        print(f"No python module found at {import_path}")
+        raise typer.Exit(code=1)
+    schema_dir = Path(schema_module_spec.origin).parent
+    schema_path = schema_dir / f"{schema_name}.yaml"
     with open(schema_path, "r") as schema_file:
         print(schema_file.read())
     raise typer.Exit()
@@ -73,247 +97,15 @@ def schema():
 ### "Aliases" for Solr CLI ###
 
 
-@app.command("entity")
-def entity(
-    id: str = typer.Argument(None, help="The identifier of the entity to be retrieved"),
-    extra: bool = typer.Option(
-        False,
-        "--extra",
-        "-e",
-        help="Include extra fields in the output (association_counts and node_hierarchy)",
-    ),
-    fmt: str = typer.Option(
-        "json",
-        "--format",
-        "-f",
-        help="The format of the output (json, yaml, tsv, table)",
-    ),
-    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
-):
-    """
-    Retrieve an entity by ID
-
-    Args:
-        id: The identifier of the entity to be retrieved
-        fmt: The format of the output (json, yaml, tsv, table)
-        output: The path to the output file (stdout if not specified)
-
-    """
-    solr_cli.entity(**locals())
-
-
-@app.command("associations")
-def associations(
-    category: List[AssociationCategory] = typer.Option(
-        None, "--category", "-c", help="Category to get associations for"
-    ),
-    subject: List[str] = typer.Option(None, "--subject", "-s", help="Subject ID to get associations for"),
-    predicate: List[AssociationPredicate] = typer.Option(
-        None, "--predicate", "-p", help="Predicate ID to get associations for"
-    ),
-    object: List[str] = typer.Option(None, "--object", "-o", help="Object ID to get associations for"),
-    entity: List[str] = typer.Option(
-        None, "--entity", "-e", help="Entity (subject or object) ID to get associations for"
-    ),
-    direct: bool = typer.Option(
-        False,
-        "--direct",
-        "-d",
-        help="Whether to exclude associations with subject/object as ancestors",
-    ),
-    compact: bool = typer.Option(
-        False,
-        "--compact",
-        "-C",
-        help="Whether to return a compact representation of the associations",
-    ),
-    limit: int = typer.Option(20, "--limit", "-l", help="The number of associations to return"),
-    offset: int = typer.Option(0, "--offset", help="The offset of the first association to be retrieved"),
-    fmt: str = typer.Option(
-        "json",
-        "--format",
-        "-f",
-        help="The format of the output (json, yaml, tsv, table)",
-    ),
-    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
-):
-    """
-    Paginate through associations
-
-    Args:
-        category: A comma-separated list of categories
-        subject: A comma-separated list of subjects
-        predicate: A comma-separated list of predicates
-        object: A comma-separated list of objects
-        entity: A comma-separated list of entities
-        limit: The number of associations to return
-        direct: Whether to exclude associations with subject/object as ancestors
-        offset: The offset of the first association to be retrieved
-        fmt: The format of the output (json, yaml, tsv, table)
-        output: The path to the output file (stdout if not specified)
-    """
-    solr_cli.associations(**locals())
-
-
-@app.command("multi-entity-associations")
-def multi_entity_associations(
-    entity: List[str] = typer.Option(None, "--entity", "-e", help="Comma-separated list of entities"),
-    counterpart_category: List[str] = typer.Option(None, "--counterpart-category", "-c"),
-    limit: int = typer.Option(20, "--limit", "-l"),
-    offset: int = typer.Option(0, "--offset"),
-    fmt: str = typer.Option(
-        "json",
-        "--format",
-        "-f",
-        help="The format of the output (json, yaml, tsv, table)",
-    ),
-    output: str = typer.Option(None, "--output", "-o", help="The path to the output file"),
-):
-    """
-    Paginate through associations for multiple entities
-
-    Args:
-        entity: A comma-separated list of entities
-        counterpart_category: A comma-separated list of counterpart categories
-        limit: The number of associations to return
-        offset: The offset of the first association to be retrieved
-        fmt: The format of the output (json, yaml, tsv, table)
-        output: The path to the output file (stdout if not specified)
-    """
-    solr_cli.multi_entity_associations(**locals())
-
-
-@app.command("search")
-def search(
-    q: str = typer.Option(None, "--query", "-q"),
-    category: List[EntityCategory] = typer.Option(None, "--category", "-c"),
-    in_taxon_label: str = typer.Option(None, "--in-taxon-label", "-t"),
-    facet_fields: List[str] = typer.Option(None, "--facet-fields", "-ff"),
-    facet_queries: List[str] = typer.Option(None, "--facet-queries"),
-    limit: int = typer.Option(20, "--limit", "-l"),
-    offset: int = typer.Option(0, "--offset"),
-    fmt: str = typer.Option(
-        "json",
-        "--format",
-        "-f",
-        help="The format of the output (json, yaml, tsv, table)",
-    ),
-    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
-    # sort: str = typer.Option(None, "--sort", "-s"),
-):
-    """
-    Search for entities
-
-    Args:
-        q: The query string to search for
-        category: The category of the entity
-        in_taxon_label: The taxon label to filter by
-        limit: The number of entities to return
-        offset: The offset of the first entity to be retrieved
-        fmt: The format of the output (json, yaml, tsv, table)
-        output: The path to the output file (stdout if not specified)
-    """
-    solr_cli.search(**locals())
-
-
-@app.command("autocomplete")
-def autocomplete(
-    q: str = typer.Argument(None, help="Query string to autocomplete against"),
-    fmt: str = typer.Option(
-        "json",
-        "--format",
-        "-f",
-        help="The format of the output (json, yaml, tsv, table)",
-    ),
-    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
-):
-    """
-    Return entity autcomplete matches for a query string
-
-    Args:
-        q: The query string to autocomplete against
-        fmt: The format of the output (json, yaml, tsv, table)
-        output: The path to the output file (stdout if not specified)
-
-    """
-    solr_cli.autocomplete(**locals())
-
-
-@app.command("histopheno")
-def histopheno(
-    subject: str = typer.Argument(None, help="The subject of the association"),
-    fmt: str = typer.Option(
-        "json",
-        "--format",
-        "-f",
-        help="The format of the output (json, yaml, tsv, table)",
-    ),
-    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
-):
-    """
-    Retrieve the histopheno data for an entity by ID
-
-    Args:
-        subject: The subject of the association
-
-    Optional Args:
-        fmt (str): The format of the output (json, yaml, tsv, table). Default JSON
-        output (str): The path to the output file. Default stdout
-    """
-    solr_cli.histopheno(**locals())
-
-
-@app.command("association-counts")
-def association_counts(
-    entity: str = typer.Argument(None, help="The entity to get association counts for"),
-    fmt: str = typer.Option(
-        "json",
-        "--format",
-        "-f",
-        help="The format of the output (json, yaml, tsv, table)",
-    ),
-    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
-):
-    """
-    Retrieve association counts for an entity by ID
-
-    Args:
-        entity: The entity to get association counts for
-        fmt: The format of the output (json, yaml, tsv, table). Default JSON
-        output: The path to the output file. Default stdout
-
-    Returns:
-        A list of association counts for the given entity containing association type, label and count
-    """
-    solr_cli.association_counts(**locals())
-
-
-@app.command("association-table")
-def association_table(
-    entity: str = typer.Argument(..., help="The entity to get associations for"),
-    category: AssociationCategory = typer.Argument(
-        ...,
-        help="The association category to get associations for, ex. biolink:GeneToPhenotypicFeatureAssociation",
-    ),
-    q: str = typer.Option(None, "--query", "-q"),
-    traverse_orthologs: bool = typer.Option(
-        False,
-        "--traverse-orthologs",
-        "-t",
-        help="Whether to traverse orthologs when getting associations",
-    ),
-    sort: List[str] = typer.Option(None, "--sort", "-s"),
-    limit: int = typer.Option(5, "--limit", "-l"),
-    offset: int = typer.Option(0, "--offset"),
-    fmt: str = typer.Option(
-        "json",
-        "--format",
-        "-f",
-        help="The format of the output (json, yaml, tsv, table)",
-    ),
-    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
-):
-    solr_cli.association_table(**locals())
+app.command("entity")(solr_cli.entity)
+app.command("associations")(solr_cli.associations)
+app.command("multi-entity-associations")(solr_cli.multi_entity_associations)
+app.command("search")(solr_cli.search)
+app.command("autocomplete")(solr_cli.autocomplete)
+app.command("histopheno")(solr_cli.histopheno)
+app.command("association-counts")(solr_cli.association_counts)
+app.command("association-table")(solr_cli.association_table)
+app.command("mappings")(solr_cli.mappings)
 
 
 ### CLI Commands for Semsimian ###
@@ -321,54 +113,34 @@ def association_table(
 
 @app.command("compare")
 def compare(
-    subjects: str = typer.Argument(..., help="Comma separated list of subjects to compare"),
-    objects: str = typer.Argument(..., help="Comma separated list of objects to compare"),
-    metric: SemsimMetric = typer.Option(
-        SemsimMetric.ANCESTOR_INFORMATION_CONTENT,
-        "--metric",
-        "-m",
-        help="The metric to use for comparison",
-    ),
-    fmt: str = typer.Option(
-        "json",
-        "--format",
-        "-f",
-        help="The format of the output (json, yaml, tsv, table)",
-    ),
-    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
+    subjects: Annotated[
+        str,
+        typer.Argument(
+            help="Comma separated list of subjects to compare",
+        ),
+    ],
+    objects: Annotated[
+        str,
+        typer.Argument(
+            help="Comma separated list of objects to compare",
+        ),
+    ],
+    metric: Annotated[
+        SemsimMetric,
+        typer.Option(
+            "--metric",
+            "-m",
+            help="The metric to use for comparison",
+        ),
+    ] = SemsimMetric.ANCESTOR_INFORMATION_CONTENT,
+    fmt: fields.FormatOption = fields.OutputFormat.json,
+    output: fields.OutputOption = None,
 ):
     """Compare two sets of phenotypes using semantic similarity via SemSimian"""
-    subjects = subjects.split(",")
-    objects = objects.split(",")
-    response = semsimian().compare(subjects, objects, metric)
+    subjects_list = subjects.split(",")
+    objects_list = objects.split(",")
+    response = semsimian().compare(subjects_list, objects_list, metric)
     format_output(fmt, response, output)
-
-
-### Misc CLI Commands ###
-
-
-@app.command("mappings")
-def mappings(
-    entity_id: List[str] = typer.Option(None, "--entity-id", "-e", help="entity ID to get mappings for"),
-    subject_id: List[str] = typer.Option(None, "--subject-id", "-s", help="subject ID to get mappings for"),
-    predicate_id: List[MappingPredicate] = typer.Option(
-        None, "--predicate-id", "-p", help="predicate ID to get mappings for"
-    ),
-    object_id: List[str] = typer.Option(None, "--object-id", "-o", help="object ID to get mappings for"),
-    mapping_justification: List[str] = typer.Option(
-        None, "--mapping-justification", "-m", help="mapping justification to get mappings for"
-    ),
-    offset: int = typer.Option(0, "--offset", help="The offset of the first mapping to be retrieved"),
-    limit: int = typer.Option(20, "--limit", "-l", help="The number of mappings to return"),
-    fmt: str = typer.Option(
-        "json",
-        "--format",
-        "-f",
-        help="The format of the output (json, yaml, tsv, table)",
-    ),
-    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
-):
-    solr_cli.mappings(**locals())
 
 
 ### CLI Commands for Release Info ###
@@ -376,33 +148,29 @@ def mappings(
 
 @app.command("releases")
 def releases(
-    dev: bool = typer.Option(False, "--dev", help="Get dev releases of the KG (default is False)"),
-    limit: int = typer.Option(0, "--limit", "-l", help="The number of releases to return"),
+    dev: Annotated[
+        bool,
+        typer.Option(
+            "--dev",
+            help="Get dev releases of the KG (default is False)",
+        ),
+    ] = False,
+    limit: fields.LimitOption = 0,
 ):
     """
     List all available releases of the Monarch Knowledge Graph
     """
-    get_release_versions(**locals(), print_info=True)
+    get_release_versions(dev, limit, print_info=True)
 
 
 @app.command("release")
 def release(
-    release_ver: str = typer.Argument(None, help="The release version to get metadata for"),
-    fmt: str = typer.Option(
-        "json",
-        "--format",
-        "-f",
-        help="The format of the output (json, yaml, tsv, table)",
-    ),
-    output: str = typer.Option(None, "--output", "-O", help="The path to the output file"),
+    release_ver: str = typer.Argument(help="The release version to get metadata for"),
+    fmt: fields.FormatOption = fields.OutputFormat.json,
+    output: fields.OutputOption = None,
 ):
     """
     Retrieve metadata for a specific release
-
-    Args:
-        release_ver: The release version to get metadata for
-        fmt: The format of the output (json, yaml, tsv, table)
-        output: The path to the output file (stdout if not specified)
     """
     release_info = get_release_metadata(release_ver)
     format_output(fmt, release_info, output)
