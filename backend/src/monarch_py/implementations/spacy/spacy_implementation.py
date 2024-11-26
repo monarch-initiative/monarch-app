@@ -7,6 +7,8 @@ from monarch_py.interfaces.grounding_interface import GroundingInterface
 from monarch_py.interfaces.text_annotation_interface import TextAnnotatorInterface
 from monarch_py.datamodels.model import TextAnnotationResult, SearchResult
 
+import pystow
+import tarfile
 
 @dataclass
 class SpacyImplementation(TextAnnotatorInterface):
@@ -16,9 +18,60 @@ class SpacyImplementation(TextAnnotatorInterface):
     grounding_implementation = None
 
     def init_spacy(self, grounding_implementation: GroundingInterface):
-        self.nlp = spacy.load("en_core_sci_sm")
-        self.grounding_implementation = grounding_implementation
-        self.nlp("Nystagmus, strabismus, fundus, ocular albinism, lewis.")
+        try:
+            # Define the URL for the Spacy model
+            model_url = "https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.4/en_core_sci_sm-0.5.4.tar.gz"
+
+            # Use pystow.ensure to download and cache the model archive
+            try:
+                model_archive = pystow.ensure("spacy", "models", url=model_url)
+            except Exception as e:
+                raise RuntimeError(f"Failed to download or cache the Spacy model: {e}")
+
+            # Define the expected unpacked directory
+            model_dir = model_archive.parent / "en_core_sci"
+
+            # Unpack the model if it's not already unpacked
+            if not model_dir.exists():
+                try:
+                    print("Unpacking Spacy model...")
+                    with tarfile.open(model_archive, "r:gz") as tar:
+                        tar.extractall(path=model_dir.parent)
+                except (tarfile.TarError, IOError) as e:
+                    raise RuntimeError(f"Error while unpacking the Spacy model archive: {e}")
+
+            # Identify the unpacked directory dynamically
+            model_subdir = next(
+                (d for d in model_archive.parent.iterdir() if d.is_dir() and d.name.startswith("en_core_sci")), None
+            )
+            if not model_subdir:
+                raise FileNotFoundError(f"Unpacked directory not found in {model_dir}.")
+
+            inner_model_dir = next(
+                (d for d in model_subdir.iterdir() if
+                 d.is_dir() and d.name.startswith("en_core_sci") and "egg-info" not in d.name), None
+            )
+            if not inner_model_dir:
+                raise FileNotFoundError(f"Inner 'en_core_sci' directory not found in {model_subdir}.")
+
+            # Load the model
+            try:
+                self.nlp = spacy.load(
+                    str(model_archive.parent / model_subdir.name / inner_model_dir.name / model_subdir.name))
+            except Exception as e:
+                raise RuntimeError(f"Failed to load the Spacy model: {e}")
+
+            self.grounding_implementation = grounding_implementation
+
+            # Test the model
+            try:
+                self.nlp("Nystagmus, strabismus, fundus, ocular albinism, lewis.")
+            except Exception as e:
+                raise RuntimeError(f"Test run of Spacy NLP model failed: {e}")
+
+        except Exception as e:
+            print(f"An error occurred during Spacy initialization: {e}")
+            raise
 
     def get_annotated_entities(self, text) -> List[TextAnnotationResult]:
         """Annotate text using SPACY"""

@@ -34,9 +34,6 @@ typer-cli = "^0.0.13"
 beautifulsoup4 = "^4.12.3"
 spacy = "^3.7.6"
 
-[tool.poetry.dependencies.en_core_sci_sm]
-url = "https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.4/en_core_sci_sm-0.5.4.tar.gz"
-
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.2.0"
 mkdocs = ">=1.6.0"
