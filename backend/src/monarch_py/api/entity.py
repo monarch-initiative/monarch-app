@@ -86,17 +86,6 @@ def _association_table(
         title="Only return direct associations",
         examples=[True, False],
     ),
-    facet_fields: List[str] = Query(
-        default=None,
-        title="Facet fields to include in the response",
-        examples=["subject", "subject_taxon", "predicate"],
-    ),
-    facet_queries: List[str] = Query(
-        default=None, title="Facet queries to include in the response", examples=['subject_category:"biolink:Gene"']
-    ),
-    filter_queries: List[str] = Query(
-        default=None, title="Filter queries to limit the response", examples=['subject_category:"biolink:Gene"']
-    ),
 ) -> Union[AssociationTableResults, str]:
     """
     Retrieves association table data for a given entity and association type
@@ -116,9 +105,6 @@ def _association_table(
         q=query,
         traverse_orthologs=traverse_orthologs,
         direct=direct,
-        facet_fields=facet_fields,
-        facet_queries=facet_queries,
-        filter_queries=filter_queries,
         sort=sort,
         offset=pagination.offset,
         limit=pagination.limit,

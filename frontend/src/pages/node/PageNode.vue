@@ -5,7 +5,7 @@
 <template>
   <!-- status -->
   <template v-if="isLoading || isError">
-    <AppSection width="full" design="fill" class="bare node">
+    <AppSection design="fill" class="bare node">
       <AppHeading class="heading">
         {{ $route.params.id }}
       </AppHeading>
@@ -127,10 +127,5 @@ onMounted(runGetNode);
 <style lang="scss" scoped>
 .heading {
   font-size: 1.2rem;
-}
-
-/** make room for the table of contents **/
-.section {
-  margin: 10px 20px 10px $toc-width + 20px !important;
 }
 </style>

@@ -12,7 +12,6 @@ def autocomplete_query():
         "facet_fields": [],
         "facet_queries": [],
         "filter_queries": [],
-        "facet_mincount": 1,
         "query_fields": "id^100 name^10 name_t^5 name_ac symbol^10 symbol_t^5 symbol_ac synonym synonym_t synonym_ac description_t xref",
         "def_type": "edismax",
         "q_op": "AND",

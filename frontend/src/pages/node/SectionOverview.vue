@@ -3,7 +3,7 @@
 -->
 
 <template>
-  <AppSection design="bare" width="full" alignment="left">
+  <AppSection design="bare" alignment="left" class="node">
     <AppDetails>
       <!-- symbol (gene specific) -->
       <AppDetail
@@ -31,9 +31,8 @@
           v-tooltip="'Click to expand'"
           class="description truncate-10"
           tabindex="0"
-        >
-          <AppNodeText :text="node.description?.trim()" />
-        </p>
+          v-html="node.description?.trim()"
+        ></p>
       </AppDetail>
 
       <!-- inheritance -->
@@ -72,9 +71,11 @@
         title="Also Known As"
         :full="true"
       >
-        <p class="truncate-2" tabindex="0">
-          <AppNodeText :text="node.synonym?.join(',\n&nbsp;')" />
-        </p>
+        <p
+          class="truncate-2"
+          tabindex="0"
+          v-html="node.synonym?.join(',\n&nbsp;')"
+        ></p>
       </AppDetail>
 
       <!-- URI -->
@@ -154,7 +155,6 @@ import type { Node } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
-import AppNodeText from "@/components/AppNodeText.vue";
 import { scrollTo } from "@/router";
 import { sleep } from "@/util/debug";
 
@@ -169,7 +169,7 @@ const props = defineProps<Props>();
 const clinicalSynopsis = computed(
   () =>
     props.node.mappings?.filter(({ id }) =>
-      ["OMIM:"].some((prefix) => id.startsWith(prefix)),
+      ["OMIM:", "Orphanet:"].some((prefix) => id.startsWith(prefix)),
     ) || [],
 );
 const infoForPatients = computed(
@@ -181,7 +181,10 @@ const infoForPatients = computed(
 const otherMappings = computed(
   () =>
     props.node.mappings?.filter(
-      ({ id }) => !["OMIM:", "GARD:"].some((prefix) => id.startsWith(prefix)),
+      ({ id }) =>
+        !["OMIM:", "GARD:", "Orphanet:"].some((prefix) =>
+          id.startsWith(prefix),
+        ),
     ) || [],
 );
 

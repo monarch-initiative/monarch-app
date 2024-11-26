@@ -41,9 +41,6 @@ def test_associations_params(mock_get_assoc):
         "object_namespace": ["MONDO", "HP"],
         "direct": True,
         "compact": True,
-        "facet_fields": [],
-        "facet_queries": [],
-        "filter_queries": [],
         "offset": 0,
         "limit": 20,
     }

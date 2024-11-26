@@ -3,7 +3,7 @@
 -->
 
 <template>
-  <AppSection width="full" alignment="left" class="inset">
+  <AppSection alignment="left" class="node inset">
     <AppHeading icon="clipboard-list">Extra Info</AppHeading>
 
     <AppDetails>

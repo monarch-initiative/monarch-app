@@ -100,6 +100,11 @@
     "link": "https://medschool.cuanschutz.edu/",
     "members": [
       {
+        "name": "Monica Munoz-Torres",
+        "role": "Program Director",
+        "link": "https://tislab.org/members/monica-munoz-torres.html"
+      },
+      {
         "name": "Katherina Cortes",
         "role": "PhD Student",
         "link": "https://github.com/kcortes133"
@@ -124,6 +129,11 @@
         "name": "Nomi Harris",
         "role": "Program Manager",
         "link": "https://github.com/nlharris"
+      },
+      {
+        "name": "Harshad Hegde",
+        "role": "Software Developer",
+        "link": "https://github.com/hrshdhgd"
       },
       {
         "name": "J. Harry Caufield",
@@ -367,14 +377,6 @@
   {
     "name": "Alumni Members",
     "members": [
-      {
-        "name": "Monica Munoz-Torres",
-        "role": "Program Director"
-      },
-      {
-        "name": "Harshad Hegde",
-        "role": "Software Developer"
-      },
       {
         "name": "Anita Reane Caron",
         "role": "Semantic Web Developer"

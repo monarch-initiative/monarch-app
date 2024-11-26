@@ -54,14 +54,7 @@ def parse_associations(
             )
             for doc in query_result.response.docs
         ]
-        return CompactAssociationResults(
-            items=associations,
-            limit=limit,
-            offset=offset,
-            total=total,
-            facet_fields=convert_facet_fields(query_result.facet_counts.facet_fields),
-            facet_queries=convert_facet_queries(query_result.facet_counts.facet_queries),
-        )
+        return CompactAssociationResults(items=associations, limit=limit, offset=offset, total=total)
     else:
         for doc in query_result.response.docs:
             try:
@@ -79,14 +72,7 @@ def parse_associations(
                 get_links_for_field(association.publications) if association.publications else []
             )
             associations.append(association)
-        return AssociationResults(
-            items=associations,
-            limit=limit,
-            offset=offset,
-            total=total,
-            facet_fields=convert_facet_fields(query_result.facet_counts.facet_fields),
-            facet_queries=convert_facet_queries(query_result.facet_counts.facet_queries),
-        )
+        return AssociationResults(items=associations, limit=limit, offset=offset, total=total)
 
 
 def parse_association_counts(query_result: SolrQueryResult, entity: str) -> AssociationCountList:
@@ -154,14 +140,7 @@ def parse_association_table(
         except ValidationError:
             logger.error(f"Validation error for {doc}")
             raise
-    results = AssociationTableResults(
-        items=associations,
-        limit=limit,
-        offset=offset,
-        total=total,
-        facet_fields=convert_facet_fields(query_result.facet_counts.facet_fields),
-        facet_queries=convert_facet_queries(query_result.facet_counts.facet_queries),
-    )
+    results = AssociationTableResults(items=associations, limit=limit, offset=offset, total=total)
     for i in zip(results.items, query_result.response.docs):
         assert i[0].subject == i[1]["subject"]
     return results

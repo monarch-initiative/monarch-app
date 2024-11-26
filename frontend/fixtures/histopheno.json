@@ -3,22 +3,22 @@
   "items": [
     {
       "label": "musculature",
-      "count": 2057,
+      "count": 2068,
       "id": "UPHENO:0002816"
     },
     {
       "label": "nervous_system",
-      "count": 1113,
+      "count": 1126,
       "id": "UPHENO:0004523"
     },
     {
       "label": "head_neck",
-      "count": 595,
+      "count": 597,
       "id": "UPHENO:0002764"
     },
     {
       "label": "skeletal_system",
-      "count": 508,
+      "count": 509,
       "id": "UPHENO:0002964"
     },
     {
@@ -28,12 +28,12 @@
     },
     {
       "label": "metabolism_homeostasis",
-      "count": 225,
+      "count": 228,
       "id": "HP:0001939"
     },
     {
       "label": "blood",
-      "count": 183,
+      "count": 185,
       "id": "UPHENO:0004459"
     },
     {
@@ -43,12 +43,12 @@
     },
     {
       "label": "respiratory",
-      "count": 157,
+      "count": 158,
       "id": "UPHENO:0004536"
     },
     {
       "label": "digestive_system",
-      "count": 153,
+      "count": 154,
       "id": "UPHENO:0002833"
     },
     {
@@ -73,7 +73,7 @@
     },
     {
       "label": "ear",
-      "count": 26,
+      "count": 28,
       "id": "HP:0000598"
     },
     {

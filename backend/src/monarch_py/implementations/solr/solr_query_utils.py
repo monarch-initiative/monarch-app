@@ -25,8 +25,6 @@ def build_association_query(
     sort: Optional[List[str]] = None,
     facet_fields: Optional[List[str]] = None,
     facet_queries: Optional[List[str]] = None,
-    filter_queries: Optional[List[str]] = None,
-    facet_mincount: int = 1,
     offset: int = 0,
     limit: int = 20,
 ) -> SolrQuery:
@@ -73,9 +71,6 @@ def build_association_query(
         query.facet_fields = facet_fields
     if facet_queries:
         query.facet_queries = facet_queries
-    if filter_queries:
-        query.filter_queries.extend(filter_queries)
-    query.facet_mincount = facet_mincount
     return query
 
 
@@ -84,9 +79,6 @@ def build_association_table_query(
     category: str,
     direct: bool = False,
     q: Optional[str] = None,
-    facet_fields: List[str] = None,
-    facet_queries: List[str] = None,
-    filter_queries: List[str] = None,
     offset: int = 0,
     limit: int = 5,
     sort: List[str] = None,
@@ -102,16 +94,7 @@ def build_association_table_query(
         ]
 
     query = build_association_query(
-        entity=entity,
-        category=[category],
-        q=q,
-        sort=sort,
-        offset=offset,
-        limit=limit,
-        direct=direct,
-        facet_fields=facet_fields,
-        facet_queries=facet_queries,
-        filter_queries=filter_queries,
+        entity=entity, category=[category], q=q, sort=sort, offset=offset, limit=limit, direct=direct
     )
     return query
 

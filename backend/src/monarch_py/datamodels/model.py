@@ -662,6 +662,16 @@ class Association(ConfiguredBaseModel):
             "linkml_meta": {"alias": "qualifiers_category", "domain_of": ["Association"], "is_a": "category"}
         },
     )
+    qualifiers_closure: Optional[List[str]] = Field(
+        None,
+        description="""Field containing frequency_qualifier id and the ids of all of it's ancestors""",
+        json_schema_extra={"linkml_meta": {"alias": "qualifiers_closure", "domain_of": ["Association"]}},
+    )
+    qualifiers_closure_label: Optional[List[str]] = Field(
+        None,
+        description="""Field containing frequency_qualifier name and the names of all of it's ancestors""",
+        json_schema_extra={"linkml_meta": {"alias": "qualifiers_closure_label", "domain_of": ["Association"]}},
+    )
     qualifier: Optional[List[str]] = Field(
         None, json_schema_extra={"linkml_meta": {"alias": "qualifier", "domain_of": ["Association"]}}
     )
@@ -682,6 +692,16 @@ class Association(ConfiguredBaseModel):
             "linkml_meta": {"alias": "qualifier_category", "domain_of": ["Association"], "is_a": "category"}
         },
     )
+    qualifier_closure: Optional[List[str]] = Field(
+        None,
+        description="""Field containing frequency_qualifier id and the ids of all of it's ancestors""",
+        json_schema_extra={"linkml_meta": {"alias": "qualifier_closure", "domain_of": ["Association"]}},
+    )
+    qualifier_closure_label: Optional[List[str]] = Field(
+        None,
+        description="""Field containing frequency_qualifier name and the names of all of it's ancestors""",
+        json_schema_extra={"linkml_meta": {"alias": "qualifier_closure_label", "domain_of": ["Association"]}},
+    )
     frequency_qualifier_label: Optional[str] = Field(
         None,
         description="""The name of the frequency_qualifier entity""",
@@ -700,6 +720,16 @@ class Association(ConfiguredBaseModel):
         json_schema_extra={
             "linkml_meta": {"alias": "frequency_qualifier_category", "domain_of": ["Association"], "is_a": "category"}
         },
+    )
+    frequency_qualifier_closure: Optional[List[str]] = Field(
+        None,
+        description="""Field containing frequency_qualifier id and the ids of all of it's ancestors""",
+        json_schema_extra={"linkml_meta": {"alias": "frequency_qualifier_closure", "domain_of": ["Association"]}},
+    )
+    frequency_qualifier_closure_label: Optional[List[str]] = Field(
+        None,
+        description="""Field containing frequency_qualifier name and the names of all of it's ancestors""",
+        json_schema_extra={"linkml_meta": {"alias": "frequency_qualifier_closure_label", "domain_of": ["Association"]}},
     )
     onset_qualifier_label: Optional[str] = Field(
         None,
@@ -720,6 +750,16 @@ class Association(ConfiguredBaseModel):
             "linkml_meta": {"alias": "onset_qualifier_category", "domain_of": ["Association"], "is_a": "category"}
         },
     )
+    onset_qualifier_closure: Optional[List[str]] = Field(
+        None,
+        description="""Field containing onset_qualifier id and the ids of all of it's ancestors""",
+        json_schema_extra={"linkml_meta": {"alias": "onset_qualifier_closure", "domain_of": ["Association"]}},
+    )
+    onset_qualifier_closure_label: Optional[List[str]] = Field(
+        None,
+        description="""Field containing onset_qualifier name and the names of all of it's ancestors""",
+        json_schema_extra={"linkml_meta": {"alias": "onset_qualifier_closure_label", "domain_of": ["Association"]}},
+    )
     sex_qualifier_label: Optional[str] = Field(
         None,
         description="""The name of the sex_qualifier entity""",
@@ -739,6 +779,16 @@ class Association(ConfiguredBaseModel):
             "linkml_meta": {"alias": "sex_qualifier_category", "domain_of": ["Association"], "is_a": "category"}
         },
     )
+    sex_qualifier_closure: Optional[List[str]] = Field(
+        None,
+        description="""Field containing sex_qualifier id and the ids of all of it's ancestors""",
+        json_schema_extra={"linkml_meta": {"alias": "sex_qualifier_closure", "domain_of": ["Association"]}},
+    )
+    sex_qualifier_closure_label: Optional[List[str]] = Field(
+        None,
+        description="""Field containing sex_qualifier name and the names of all of it's ancestors""",
+        json_schema_extra={"linkml_meta": {"alias": "sex_qualifier_closure_label", "domain_of": ["Association"]}},
+    )
     stage_qualifier_label: Optional[str] = Field(
         None,
         description="""The name of the stage_qualifier entity""",
@@ -757,6 +807,16 @@ class Association(ConfiguredBaseModel):
         json_schema_extra={
             "linkml_meta": {"alias": "stage_qualifier_category", "domain_of": ["Association"], "is_a": "category"}
         },
+    )
+    stage_qualifier_closure: Optional[List[str]] = Field(
+        None,
+        description="""Field containing stage_qualifier id and the ids of all of it's ancestors""",
+        json_schema_extra={"linkml_meta": {"alias": "stage_qualifier_closure", "domain_of": ["Association"]}},
+    )
+    stage_qualifier_closure_label: Optional[List[str]] = Field(
+        None,
+        description="""Field containing stage_qualifier name and the names of all of it's ancestors""",
+        json_schema_extra={"linkml_meta": {"alias": "stage_qualifier_closure_label", "domain_of": ["Association"]}},
     )
     disease_context_qualifier: Optional[str] = Field(
         None,
@@ -804,42 +864,6 @@ class Association(ConfiguredBaseModel):
         description="""Field containing disease_context_qualifier name and the names of all of it's ancestors""",
         json_schema_extra={
             "linkml_meta": {"alias": "disease_context_qualifier_closure_label", "domain_of": ["Association"]}
-        },
-    )
-    species_context_qualifier: Optional[str] = Field(
-        None,
-        description="""A context qualifier representing a species in which a relationship expressed in an association took place.""",
-        json_schema_extra={
-            "linkml_meta": {
-                "alias": "species_context_qualifier",
-                "domain_of": ["Association"],
-                "examples": [{"value": "NCBITaxon:9606"}],
-            }
-        },
-    )
-    species_context_qualifier_label: Optional[str] = Field(
-        None,
-        description="""The name of the species_context_qualifier entity""",
-        json_schema_extra={
-            "linkml_meta": {"alias": "species_context_qualifier_label", "domain_of": ["Association"], "is_a": "name"}
-        },
-    )
-    species_context_qualifier_namespace: Optional[str] = Field(
-        None,
-        description="""The namespace/prefix of the species_context_qualifier entity""",
-        json_schema_extra={
-            "linkml_meta": {"alias": "species_context_qualifier_namespace", "domain_of": ["Association"]}
-        },
-    )
-    species_context_qualifier_category: Optional[str] = Field(
-        None,
-        description="""The category of the species_context_qualifier entity""",
-        json_schema_extra={
-            "linkml_meta": {
-                "alias": "species_context_qualifier_category",
-                "domain_of": ["Association"],
-                "is_a": "category",
-            }
         },
     )
 
@@ -1348,6 +1372,16 @@ class DirectionalAssociation(Association):
             "linkml_meta": {"alias": "qualifiers_category", "domain_of": ["Association"], "is_a": "category"}
         },
     )
+    qualifiers_closure: Optional[List[str]] = Field(
+        None,
+        description="""Field containing frequency_qualifier id and the ids of all of it's ancestors""",
+        json_schema_extra={"linkml_meta": {"alias": "qualifiers_closure", "domain_of": ["Association"]}},
+    )
+    qualifiers_closure_label: Optional[List[str]] = Field(
+        None,
+        description="""Field containing frequency_qualifier name and the names of all of it's ancestors""",
+        json_schema_extra={"linkml_meta": {"alias": "qualifiers_closure_label", "domain_of": ["Association"]}},
+    )
     qualifier: Optional[List[str]] = Field(
         None, json_schema_extra={"linkml_meta": {"alias": "qualifier", "domain_of": ["Association"]}}
     )
@@ -1368,6 +1402,16 @@ class DirectionalAssociation(Association):
             "linkml_meta": {"alias": "qualifier_category", "domain_of": ["Association"], "is_a": "category"}
         },
     )
+    qualifier_closure: Optional[List[str]] = Field(
+        None,
+        description="""Field containing frequency_qualifier id and the ids of all of it's ancestors""",
+        json_schema_extra={"linkml_meta": {"alias": "qualifier_closure", "domain_of": ["Association"]}},
+    )
+    qualifier_closure_label: Optional[List[str]] = Field(
+        None,
+        description="""Field containing frequency_qualifier name and the names of all of it's ancestors""",
+        json_schema_extra={"linkml_meta": {"alias": "qualifier_closure_label", "domain_of": ["Association"]}},
+    )
     frequency_qualifier_label: Optional[str] = Field(
         None,
         description="""The name of the frequency_qualifier entity""",
@@ -1386,6 +1430,16 @@ class DirectionalAssociation(Association):
         json_schema_extra={
             "linkml_meta": {"alias": "frequency_qualifier_category", "domain_of": ["Association"], "is_a": "category"}
         },
+    )
+    frequency_qualifier_closure: Optional[List[str]] = Field(
+        None,
+        description="""Field containing frequency_qualifier id and the ids of all of it's ancestors""",
+        json_schema_extra={"linkml_meta": {"alias": "frequency_qualifier_closure", "domain_of": ["Association"]}},
+    )
+    frequency_qualifier_closure_label: Optional[List[str]] = Field(
+        None,
+        description="""Field containing frequency_qualifier name and the names of all of it's ancestors""",
+        json_schema_extra={"linkml_meta": {"alias": "frequency_qualifier_closure_label", "domain_of": ["Association"]}},
     )
     onset_qualifier_label: Optional[str] = Field(
         None,
@@ -1406,6 +1460,16 @@ class DirectionalAssociation(Association):
             "linkml_meta": {"alias": "onset_qualifier_category", "domain_of": ["Association"], "is_a": "category"}
         },
     )
+    onset_qualifier_closure: Optional[List[str]] = Field(
+        None,
+        description="""Field containing onset_qualifier id and the ids of all of it's ancestors""",
+        json_schema_extra={"linkml_meta": {"alias": "onset_qualifier_closure", "domain_of": ["Association"]}},
+    )
+    onset_qualifier_closure_label: Optional[List[str]] = Field(
+        None,
+        description="""Field containing onset_qualifier name and the names of all of it's ancestors""",
+        json_schema_extra={"linkml_meta": {"alias": "onset_qualifier_closure_label", "domain_of": ["Association"]}},
+    )
     sex_qualifier_label: Optional[str] = Field(
         None,
         description="""The name of the sex_qualifier entity""",
@@ -1425,6 +1489,16 @@ class DirectionalAssociation(Association):
             "linkml_meta": {"alias": "sex_qualifier_category", "domain_of": ["Association"], "is_a": "category"}
         },
     )
+    sex_qualifier_closure: Optional[List[str]] = Field(
+        None,
+        description="""Field containing sex_qualifier id and the ids of all of it's ancestors""",
+        json_schema_extra={"linkml_meta": {"alias": "sex_qualifier_closure", "domain_of": ["Association"]}},
+    )
+    sex_qualifier_closure_label: Optional[List[str]] = Field(
+        None,
+        description="""Field containing sex_qualifier name and the names of all of it's ancestors""",
+        json_schema_extra={"linkml_meta": {"alias": "sex_qualifier_closure_label", "domain_of": ["Association"]}},
+    )
     stage_qualifier_label: Optional[str] = Field(
         None,
         description="""The name of the stage_qualifier entity""",
@@ -1443,6 +1517,16 @@ class DirectionalAssociation(Association):
         json_schema_extra={
             "linkml_meta": {"alias": "stage_qualifier_category", "domain_of": ["Association"], "is_a": "category"}
         },
+    )
+    stage_qualifier_closure: Optional[List[str]] = Field(
+        None,
+        description="""Field containing stage_qualifier id and the ids of all of it's ancestors""",
+        json_schema_extra={"linkml_meta": {"alias": "stage_qualifier_closure", "domain_of": ["Association"]}},
+    )
+    stage_qualifier_closure_label: Optional[List[str]] = Field(
+        None,
+        description="""Field containing stage_qualifier name and the names of all of it's ancestors""",
+        json_schema_extra={"linkml_meta": {"alias": "stage_qualifier_closure_label", "domain_of": ["Association"]}},
     )
     disease_context_qualifier: Optional[str] = Field(
         None,
@@ -1490,42 +1574,6 @@ class DirectionalAssociation(Association):
         description="""Field containing disease_context_qualifier name and the names of all of it's ancestors""",
         json_schema_extra={
             "linkml_meta": {"alias": "disease_context_qualifier_closure_label", "domain_of": ["Association"]}
-        },
-    )
-    species_context_qualifier: Optional[str] = Field(
-        None,
-        description="""A context qualifier representing a species in which a relationship expressed in an association took place.""",
-        json_schema_extra={
-            "linkml_meta": {
-                "alias": "species_context_qualifier",
-                "domain_of": ["Association"],
-                "examples": [{"value": "NCBITaxon:9606"}],
-            }
-        },
-    )
-    species_context_qualifier_label: Optional[str] = Field(
-        None,
-        description="""The name of the species_context_qualifier entity""",
-        json_schema_extra={
-            "linkml_meta": {"alias": "species_context_qualifier_label", "domain_of": ["Association"], "is_a": "name"}
-        },
-    )
-    species_context_qualifier_namespace: Optional[str] = Field(
-        None,
-        description="""The namespace/prefix of the species_context_qualifier entity""",
-        json_schema_extra={
-            "linkml_meta": {"alias": "species_context_qualifier_namespace", "domain_of": ["Association"]}
-        },
-    )
-    species_context_qualifier_category: Optional[str] = Field(
-        None,
-        description="""The category of the species_context_qualifier entity""",
-        json_schema_extra={
-            "linkml_meta": {
-                "alias": "species_context_qualifier_category",
-                "domain_of": ["Association"],
-                "is_a": "category",
-            }
         },
     )
 
@@ -2157,36 +2205,6 @@ class AssociationResults(Results):
             }
         },
     )
-    facet_fields: Optional[List[FacetField]] = Field(
-        None,
-        description="""Collection of facet field responses with the field values and counts""",
-        json_schema_extra={
-            "linkml_meta": {
-                "alias": "facet_fields",
-                "domain_of": [
-                    "AssociationResults",
-                    "CompactAssociationResults",
-                    "AssociationTableResults",
-                    "SearchResults",
-                ],
-            }
-        },
-    )
-    facet_queries: Optional[List[FacetValue]] = Field(
-        None,
-        description="""Collection of facet query responses with the query string values and counts""",
-        json_schema_extra={
-            "linkml_meta": {
-                "alias": "facet_queries",
-                "domain_of": [
-                    "AssociationResults",
-                    "CompactAssociationResults",
-                    "AssociationTableResults",
-                    "SearchResults",
-                ],
-            }
-        },
-    )
     limit: int = Field(
         ...,
         description="""number of items to return in a response""",
@@ -2232,36 +2250,6 @@ class CompactAssociationResults(Results):
             }
         },
     )
-    facet_fields: Optional[List[FacetField]] = Field(
-        None,
-        description="""Collection of facet field responses with the field values and counts""",
-        json_schema_extra={
-            "linkml_meta": {
-                "alias": "facet_fields",
-                "domain_of": [
-                    "AssociationResults",
-                    "CompactAssociationResults",
-                    "AssociationTableResults",
-                    "SearchResults",
-                ],
-            }
-        },
-    )
-    facet_queries: Optional[List[FacetValue]] = Field(
-        None,
-        description="""Collection of facet query responses with the query string values and counts""",
-        json_schema_extra={
-            "linkml_meta": {
-                "alias": "facet_queries",
-                "domain_of": [
-                    "AssociationResults",
-                    "CompactAssociationResults",
-                    "AssociationTableResults",
-                    "SearchResults",
-                ],
-            }
-        },
-    )
     limit: int = Field(
         ...,
         description="""number of items to return in a response""",
@@ -2302,36 +2290,6 @@ class AssociationTableResults(Results):
                     "EntityResults",
                     "HistoPheno",
                     "MappingResults",
-                    "SearchResults",
-                ],
-            }
-        },
-    )
-    facet_fields: Optional[List[FacetField]] = Field(
-        None,
-        description="""Collection of facet field responses with the field values and counts""",
-        json_schema_extra={
-            "linkml_meta": {
-                "alias": "facet_fields",
-                "domain_of": [
-                    "AssociationResults",
-                    "CompactAssociationResults",
-                    "AssociationTableResults",
-                    "SearchResults",
-                ],
-            }
-        },
-    )
-    facet_queries: Optional[List[FacetValue]] = Field(
-        None,
-        description="""Collection of facet query responses with the query string values and counts""",
-        json_schema_extra={
-            "linkml_meta": {
-                "alias": "facet_queries",
-                "domain_of": [
-                    "AssociationResults",
-                    "CompactAssociationResults",
-                    "AssociationTableResults",
                     "SearchResults",
                 ],
             }
@@ -2715,32 +2673,12 @@ class SearchResults(Results):
     facet_fields: Optional[List[FacetField]] = Field(
         None,
         description="""Collection of facet field responses with the field values and counts""",
-        json_schema_extra={
-            "linkml_meta": {
-                "alias": "facet_fields",
-                "domain_of": [
-                    "AssociationResults",
-                    "CompactAssociationResults",
-                    "AssociationTableResults",
-                    "SearchResults",
-                ],
-            }
-        },
+        json_schema_extra={"linkml_meta": {"alias": "facet_fields", "domain_of": ["SearchResults"]}},
     )
     facet_queries: Optional[List[FacetValue]] = Field(
         None,
         description="""Collection of facet query responses with the query string values and counts""",
-        json_schema_extra={
-            "linkml_meta": {
-                "alias": "facet_queries",
-                "domain_of": [
-                    "AssociationResults",
-                    "CompactAssociationResults",
-                    "AssociationTableResults",
-                    "SearchResults",
-                ],
-            }
-        },
+        json_schema_extra={"linkml_meta": {"alias": "facet_queries", "domain_of": ["SearchResults"]}},
     )
     limit: int = Field(
         ...,
