@@ -18,10 +18,13 @@
           ? { breadcrumbs: [...currentBreadcrumbs, ...breadcrumbs] }
           : state || undefined
       "
-      v-html="name"
-    ></AppLink>
+    >
+      <AppNodeText :text="name" />
+    </AppLink>
     <span v-else>
-      <span class="name" v-html="name"></span>
+      <span class="name">
+        <AppNodeText :text="name" />
+      </span>
       <span v-if="info">({{ info }})</span>
     </span>
   </span>
@@ -31,6 +34,7 @@
 import { computed } from "vue";
 import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
 import type { Node } from "@/api/model";
+import AppNodeText from "@/components/AppNodeText.vue";
 import { breadcrumbs as currentBreadcrumbs } from "@/global/breadcrumbs";
 import type { Breadcrumb } from "@/global/breadcrumbs";
 

@@ -10,7 +10,7 @@ QueryOption = Annotated[
     typer.Option(
         "--query",
         "-q",
-    )
+    ),
 ]
 
 LimitOption = Annotated[
@@ -30,11 +30,13 @@ OffsetOption = Annotated[
     ),
 ]
 
+
 class OutputFormat(str, Enum):
     json = "json"
     yaml = "yaml"
     tsv = "tsv"
     table = "table"
+
 
 FormatOption = Annotated[
     OutputFormat,
@@ -49,7 +51,7 @@ OutputOption = Annotated[
     Optional[str],
     typer.Option(
         "--output",
-        "-o",
-        help="The path to write command output (stdout if not specified)",
+        "-O",
+        help="Path to file to write command output (stdout if not specified)",
     ),
 ]
