@@ -66,12 +66,12 @@ const replacementTags = new Map([
     "sup" as ReplacedTag,
     {
       regex: /(<sup>).*?(<\/sup>)/dg,
-      createSurroundingEl(isSvg: Boolean) {
+      createSurroundingEl(isSvg: boolean) {
         return isSvg
           ? document.createElementNS("http://www.w3.org/2000/svg", "tspan")
           : document.createElement("sup");
       },
-      afterMount(isSvg: Boolean, el: Element) {
+      afterMount(isSvg: boolean, el: Element) {
         if (!isSvg) return;
         el.setAttribute("dy", "-1ex");
         el.classList.add("svg-superscript");
@@ -100,12 +100,12 @@ const replacementTags = new Map([
     "i" as ReplacedTag,
     {
       regex: /(<i>).*?(<\/i>)/dg,
-      createSurroundingEl(isSvg: Boolean) {
+      createSurroundingEl(isSvg: boolean) {
         return isSvg
           ? document.createElementNS("http://www.w3.org/2000/svg", "tspan")
           : document.createElement("i");
       },
-      afterMount(isSvg: Boolean, el: Element) {
+      afterMount(isSvg: boolean, el: Element) {
         if (!isSvg) return;
         el.classList.add("svg-italic");
       },
@@ -115,12 +115,12 @@ const replacementTags = new Map([
     "a" as ReplacedTag,
     {
       regex: /(<a href="http[^"]+">).*?(<\/a>)/dg,
-      createSurroundingEl(isSvg: Boolean) {
+      createSurroundingEl(isSvg: boolean) {
         return isSvg
           ? document.createElementNS("http://www.w3.org/2000/svg", "a")
           : document.createElement("a");
       },
-      afterMount(isSvg: Boolean, el: Element) {
+      afterMount(isSvg: boolean, el: Element) {
         // The previous sibling will be the text node containing the string
         // <a href="http...">. Slice it to get the value of the href.
         const tagTextNode = el.previousSibling!;
