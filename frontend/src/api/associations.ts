@@ -14,15 +14,35 @@ export const getAssociations = async (
   sort: Sort = null,
 ) => {
   /** make query params */
+  let sortBy = sort?.key;
+
+  /**
+   * Sorting by frequency_qualifier is a special case. Those terms are entities
+   * like HP:0040280 ("Always present"), and are only one out of three ways to
+   * represent the frequency of a phenotypic association. The other two are a
+   * ratio and a percentage. To sort all three values at the same time, we have
+   * a derived column in the index that unifies all of these representation
+   * called `frequency_computed_sortable_float`.
+   *
+   * This replacement could be done on /any/ frequency key (has_percentage,
+   * has_count, has_total), but for now, we only use frequency qualifier in the
+   * table.
+   *
+   * This could end up being a bug if someone /actually/, /really/ wanted to
+   * only sort by the frequency qualifier, and have the other two classes show
+   * up as null.
+   */
+  if (sortBy === "frequency_qualifier") {
+    sortBy = "frequency_computed_sortable_float";
+  }
+
   const params = {
     offset,
     limit,
     query: search || "",
     traverse_orthologs: !!traverseOrthologs,
     direct: direct,
-    sort: sort
-      ? `${sort.key} ${sort.direction === "up" ? "asc" : "desc"}`
-      : null,
+    sort: sort ? `${sortBy} ${sort.direction === "up" ? "asc" : "desc"}` : null,
   };
 
   /** make query */
@@ -45,14 +65,20 @@ export const downloadAssociations = async (
   sort: Sort = null,
 ) => {
   /** make query params */
+
+  let sortBy = sort?.key;
+
+  /** See comment in getAssociations() */
+  if (sortBy === "frequency_qualifier") {
+    sortBy = "frequency_computed_sortable_float";
+  }
+
   const params = {
     limit: maxDownload,
     query: search || "",
     traverse_orthologs: !!traverseOrthologs,
     direct: direct,
-    sort: sort
-      ? `${sort.key} ${sort.direction === "up" ? "asc" : "desc"}`
-      : null,
+    sort: sort ? `${sortBy} ${sort.direction === "up" ? "asc" : "desc"}` : null,
     download: true,
     format: "tsv",
   };
