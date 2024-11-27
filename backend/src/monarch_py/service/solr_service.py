@@ -3,7 +3,7 @@ from typing import Dict, List
 
 import requests
 from loguru import logger
-from monarch_py.datamodels.solr import SolrQuery, SolrQueryResult, core
+from monarch_py.datamodels.solr import SolrGroupedQueryResult, SolrQuery, SolrQueryResult, core
 from monarch_py.utils.utils import escape
 from pydantic import BaseModel
 
@@ -22,6 +22,28 @@ class SolrService(BaseModel):
         except TypeError:  # if entity is None
             return None
         return entity
+
+    def group_query(self, q: SolrQuery) -> SolrGroupedQueryResult:
+        url = f"{self.base_url}/{self.core.value}/select?{q.query_string()}"
+        response = requests.get(url)
+        logger.debug(f"SolrService.query: {url}")
+        data = json.loads(response.text)
+        if "error" in data:
+            logger.error("Solr error message: " + data["error"]["msg"])
+        response.raise_for_status()
+        solr_query_result = SolrGroupedQueryResult.model_validate(data, from_attributes=True)
+        for group in solr_query_result.grouped.values():
+            for doc in group.doclist.docs:
+                self._strip_json(
+                    doc,
+                    "_version_",
+                    "iri",
+                    "frequency_computed_sortable_float",
+                    "has_quotient_sortable_float",
+                    "has_percentage_sortable_float",
+                )
+
+        return solr_query_result
 
     def query(self, q: SolrQuery) -> SolrQueryResult:
         url = f"{self.base_url}/{self.core.value}/select?{q.query_string()}"
