@@ -244,7 +244,7 @@ const cols = computed((): Cols<Datum> => {
     extraCols.push(
       {
         slot: "frequency",
-        key: "frequency_computed_sortable_float",
+        key: "frequency_qualifier",
         heading: "Frequency",
         sortable: true,
       },
