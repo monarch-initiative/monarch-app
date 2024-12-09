@@ -1,6 +1,6 @@
 # Welcome to the Monarch Initiative
 
-The Monarch Initiative is an extensive knowledge graph and ecosystem of tools made for the benefit of clinicians, researchers, and scientists. The knowledge graph consists of millions of entities – genes, diseases, phenotypes, and many more – imported from dozens of sources. While we have a core development team, we welcome the contributions of the community to help us maintain and improve the knowledge graph and the tools that use it.
+The Monarch Knowledge Graph (Monarch KG) is an extensive knowledge graph and ecosystem of tools made for the benefit of clinicians, researchers, and scientists. The knowledge graph consists of millions of entities – genes, diseases, phenotypes, and many more – imported from dozens of sources. While we have a core development team, we welcome the contributions of the community to help us maintain and improve the knowledge graph and the tools that use it.
 
 # Table of Contents
 
@@ -21,9 +21,9 @@ The Monarch Initiative is an extensive knowledge graph and ecosystem of tools ma
 
 # Useful Links
 
-- [Monarch Documentation](https://monarch-initiative.github.io/monarch-documentation/) - In addition to the documentation here, we have a separate documentation site that is automatically generated from the codebase, which encompasses the entire Monarch Initiative ecosystem, as well as the release process and other important information.
-- [Monarch Py Documentation](https://monarch-initiative.github.io/monarch-app/) - The Monarch Py documentation contains information on the Python library for interacting with the Monarch Initiative knowledge graph, as well as the FastAPI module that serves as the website's backend.
-- [Monarch App Website](https://next.monarchinitiative.org/) - The Monarch Initiative website, a Vue web app using `monarch-py` as the backend.
+- [Monarch-KG and Tools Documentation](https://monarch-app.monarchinitiative.org/) - The Monarch KG and tools documentation site includes information about the Monarch-KG and it's access tools, as well as the release process and other important information.
+- [Monarch App Website](https://monarchinitiative.org/) - The Monarch-KG website, a Vue web app using `monarch-py`(API) as the backend.
+- [Monarch Initiative Documentation](https://monarch-initiative.github.io/monarch-documentation/) - This is the Monarch Initiative's Consortium wide documenation. 
 
 # Community Guidelines
 
@@ -31,9 +31,9 @@ We welcome you to our community! We seek to provide a welcoming and safe develop
 
 # Monarch App
 
-[![documentation](https://img.shields.io/badge/-Documentation-purple?logo=read-the-docs&logoColor=white&style=for-the-badge)](https://monarch-initiative.github.io/monarch-documentation/)
+[![documentation](https://img.shields.io/badge/-Documentation-purple?logo=read-the-docs&logoColor=white&style=for-the-badge)](https://monarch-app.monarchinitiative.org/)
 
-[**⭐️⭐️ View the website ⭐️⭐️**](https://next.monarchinitiative.org/)
+[**⭐️⭐️ View the website ⭐️⭐️**](https://monarchinitiative.org/)
 
 The monarch-app repository is a monorepo that contains the projects necessary to build and run the web app at monarchinitiative.org and the appropriate tooling and developer resources to continue development. The frontend for the Monarch Initiative website is a javascript/typescript webapp developed using the Vue toolkit. The backend, also referred to as `monarch-py`, is a Python library for interacting with the Monarch Initiative knowledge graph. The `monarch-py` backend also includes an optional FastAPI module that serves as the website's backend and related services for enabling the frontend.
 
@@ -98,12 +98,12 @@ _Note_: You may have to resolve some permissions issues with solr in order to do
 
 ## Backend
 
-For detailed information the backend please refer to the [README.md](./backend/README.md) and [CONTRIBUTING.md](./backend/CONTRIBUTING.md) file in the backend directory. Additional information can be find in the [documentation](https://monarch-app.monarchinitiative.org)
+For detailed information the backend please refer to the [README.md](./backend/README.md) and [CONTRIBUTING.md](./backend/CONTRIBUTING.md) file in the backend directory. Additional information can be find in the [documentation](https://monarch-initiative.github.io/monarch-documentation/)
 
 ## Frontend
 
-More detailed information on frontend development and run options can be found at the [frontend README.md](./frontend/README.md) and [CONTRIBUTING.md](./frontend/CONTRIBUTING.md) files in the frontend directory. Additional information can be found in the [documentation](https://monarch-app.monarchinitiative.org)
+More detailed information on frontend development and run options can be found at the [frontend README.md](./frontend/README.md) and [CONTRIBUTING.md](./frontend/CONTRIBUTING.md) files in the frontend directory. Additional information can be found in the [documentation](https://monarch-initiative.github.io/monarch-documentation/)
 
 # Deploying to Monarch
 
-For documentation on deploying to monarch please see the [Monarch documentation](https://monarch-initiative.github.io/monarch-documentation/release-process/) regarding the release process.
+For documentation on deploying to monarch please see the [Monarch documentation](https://monarch-app.monarchinitiative.org/release-process/) regarding the release process.
