@@ -823,23 +823,6 @@ files = [
 ]
 
 [[package]]
-name = "en_core_sci_sm"
-version = "0.5.4"
-description = "Spacy Models for Biomedical Text."
-optional = false
-python-versions = "*"
-files = [
-    {file = "en_core_sci_sm-0.5.4.tar.gz", hash = "sha256:a54a114ee11dab7cf6db8cf69ef485145011537f45f3c16c71338c48fd6f070b"},
-]
-
-[package.dependencies]
-spacy = ">=3.7.4,<3.8.0"
-
-[package.source]
-type = "url"
-url = "https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.4/en_core_sci_sm-0.5.4.tar.gz"
-
-[[package]]
 name = "et-xmlfile"
 version = "1.1.0"
 description = "An implementation of lxml.xmlfile for the standard library"
@@ -5319,4 +5302,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "jaraco.test", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "2cce2c4f6dc36c8b23aa4a62bc72f03554f3fb69d0e219b388150642bd78575e"
+content-hash = "e4c96e16276d5a535c44767a7b270389e3bd60109bc821182f0b46494075a188"
