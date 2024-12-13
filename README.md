@@ -6,7 +6,7 @@ We welcome the contributions of the community to help us maintain and improve th
 
 # Monarch App
 
-[![documentation](https://img.shields.io/badge/-Documentation-purple?logo=read-the-docs&logoColor=white&style=for-the-badge)](https://monarch-initiative.github.io/monarch-documentation/)  
+[![documentation](https://img.shields.io/badge/-Documentation-purple?logo=read-the-docs&logoColor=white&style=for-the-badge)](https://monarch-app.monarchinitiative.org/)  
 ![](https://github.com/monarch-initiative/monarch-app/actions/workflows/test-backend.yaml/badge.svg)
 ![](https://github.com/monarch-initiative/monarch-app/actions/workflows/test-frontend.yaml/badge.svg)
 ![](https://github.com/monarch-initiative/monarch-app/actions/workflows/deploy-documentation.yaml/badge.svg)
