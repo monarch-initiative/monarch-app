@@ -228,7 +228,6 @@ const orthologColoumns = computed<Cols<Datum>>(() => {
       slot: "ortholog",
       key: "ortholog" as Datum,
       heading: "Ortholog",
-      sortable: true,
     },
     {
       slot: "has_evidence",
