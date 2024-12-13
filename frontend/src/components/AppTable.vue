@@ -454,21 +454,6 @@ const ariaSort = computed(() => {
   text-transform: capitalize;
 }
 
-/* first th */
-.th:nth-child(1) {
-  width: 30%;
-}
-
-/* second th */
-.th:nth-child(2) {
-  width: 5%;
-}
-
-/* third th */
-.th:nth-child(3) {
-  width: 30%;
-}
-
 /** body cells */
 .td {
   border-bottom: solid 2px $light-gray;
