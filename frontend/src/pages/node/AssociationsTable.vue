@@ -222,7 +222,6 @@ const orthologColoumns = computed<Cols<Datum>>(() => {
       slot: "taxon",
       key: "taxon" as Datum,
       heading: "Taxon",
-      sortable: true,
     },
     {
       slot: "ortholog",
@@ -238,7 +237,6 @@ const orthologColoumns = computed<Cols<Datum>>(() => {
       slot: "primary_knowledge_source",
       key: "primary_knowledge_source" as Datum,
       heading: "Source",
-      sortable: true,
     },
     { slot: "divider" },
     {
@@ -246,7 +244,6 @@ const orthologColoumns = computed<Cols<Datum>>(() => {
       key: "evidence_count",
       heading: "Details",
       align: "center",
-      sortable: true,
     },
   ];
 });
