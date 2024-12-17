@@ -93,7 +93,7 @@
     <template #has_evidence="{ row }">
       <AppLink
         v-for="(source, index) in row.has_evidence_links"
-        :key="index"
+        :key="source.id"
         :to="source.url || ''"
         >{{ source.id }}</AppLink
       >
