@@ -24,6 +24,31 @@
     :total="associations.total"
     @download="download"
   >
+    <!-- ortholog -->
+    <template #ortholog="{ row }">
+      <AppNodeBadge
+        v-if="row.direction === AssociationDirectionEnum.outgoing"
+        :node="{
+          id: row.object,
+          name: row.object_label,
+          category: 'biolink:Gene',
+          info: row.object_taxon_label,
+        }"
+        :breadcrumbs="getBreadcrumbs(node, row, 'subject')"
+      />
+
+      <AppNodeBadge
+        v-if="row.direction === AssociationDirectionEnum.incoming"
+        :node="{
+          id: row.subject,
+          name: row.subject_label,
+          category: 'biolink:Gene',
+          info: row.subject_taxon_label,
+        }"
+        :breadcrumbs="getBreadcrumbs(node, row, 'object')"
+      />
+    </template>
+
     <!-- subject -->
     <template #subject="{ row }">
       <AppNodeBadge
@@ -63,6 +88,15 @@
         :tooltip="frequencyTooltip(row)"
       />
       <span v-else class="empty">No info</span>
+    </template>
+
+    <template #has_evidence="{ row }">
+      <AppLink
+        v-for="source in row.has_evidence_links"
+        :key="source.id"
+        :to="source.url || ''"
+        >{{ source.id }}</AppLink
+      >
     </template>
 
     <!-- button to show details -->
@@ -180,8 +214,46 @@ const search = ref("");
 
 type Datum = keyof DirectionalAssociation;
 
+/** Orholog columns */
+
+const orthologColoumns = computed<Cols<Datum>>(() => {
+  return [
+    {
+      slot: "taxon",
+      key: "taxon" as Datum,
+      heading: "Taxon",
+    },
+    {
+      slot: "ortholog",
+      key: "ortholog" as Datum,
+      heading: "Ortholog",
+    },
+    {
+      slot: "has_evidence",
+      key: "has_evidence" as Datum,
+      heading: "Evidence",
+    },
+    {
+      slot: "primary_knowledge_source",
+      key: "primary_knowledge_source" as Datum,
+      heading: "Source",
+    },
+    { slot: "divider" },
+    {
+      slot: "details",
+      key: "evidence_count",
+      heading: "Details",
+      align: "center",
+    },
+  ];
+});
+
 /** table columns */
 const cols = computed((): Cols<Datum> => {
+  if (props.category.id.includes("GeneToGeneHomology")) {
+    return orthologColoumns.value;
+  }
+
   /** standard columns, always present */
   const baseCols: Cols<Datum> = [
     {
@@ -219,14 +291,12 @@ const cols = computed((): Cols<Datum> => {
   let extraCols: Cols<Datum> = [];
 
   /** taxon column. exists for many categories, so just add if any row has taxon. */
-  if (
-    props.category.id.includes("GeneToGeneHomology") ||
-    props.category.id.includes("Interaction")
-  )
+  if (props.category.id.includes("Interaction")) {
     extraCols.push({
       slot: "taxon",
       heading: "Taxon",
     });
+  }
 
   if (
     props.node.in_taxon_label == "Homo sapiens" &&
