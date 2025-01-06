@@ -18,6 +18,7 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         additionalData: `@use "@/global/variables.scss" as *;`,
+        api: "modern",
       },
     },
   },
