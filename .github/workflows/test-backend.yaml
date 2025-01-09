@@ -44,7 +44,7 @@ jobs:
       #----------------------------------------------
       - name: Run tests
         run: |
-          poetry -C backend run pytest backend/tests
+          poetry -C backend run pytest tests
         shell: bash
 
       #----------------------------------------------
