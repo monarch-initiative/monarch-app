@@ -52,7 +52,7 @@ jobs:
       #----------------------------------------------
       - name: Generate coverage results
         run: |
-          poetry -C backend run coverage run -m pytest backend/tests
+          poetry -C backend run coverage run -m pytest tests
           poetry -C backend run coverage xml
           poetry -C backend run coverage report -m
         shell: bash
