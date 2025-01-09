@@ -40,7 +40,10 @@ jobs:
       #              run pytest
       #----------------------------------------------
       - name: Run tests
-        run: poetry -C backend run pytest backend/tests
+        run: |
+          export PYTHONPATH=./backend
+          poetry -C backend run pytest backend/tests
+        shell: bash
 
       #----------------------------------------------
       #              coverage report
