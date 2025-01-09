@@ -6,7 +6,7 @@ def associations_compact():
     return {
         "limit": 20,
         "offset": 0,
-        "total": 5080,
+        "total": 11434,
         "items": [
             {
                 "category": "biolink:Association",

@@ -30,7 +30,7 @@ def build_association_query(
     offset: int = 0,
     limit: int = 20,
 ) -> SolrQuery:
-    
+
     entity_fields = ["subject", "object", "disease_context_qualifier"]
     """Populate a SolrQuery object with association filters"""
     query = SolrQuery(start=offset, rows=limit)
@@ -59,9 +59,7 @@ def build_association_query(
             query.add_filter_query(" OR ".join([f'{field}:"{e}"' for e in entity for field in entity_fields]))
         else:
             query.add_filter_query(
-                " OR ".join(
-                    [f'{field}:"{e}" OR {field}_closure:"{e}"' for e in entity for field in entity_fields]
-                )
+                " OR ".join([f'{field}:"{e}" OR {field}_closure:"{e}"' for e in entity for field in entity_fields])
             )
     if q:
         # We don't yet have tokenization strategies for the association index, initially we'll limit searching to

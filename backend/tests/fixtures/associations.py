@@ -6,7 +6,7 @@ def associations():
     return {
         "limit": 20,
         "offset": 0,
-        "total": 5080,
+        "total": 11434,
         "items": [
             {
                 "id": "urn:uuid:dc404203-067c-44fb-96fb-792a1227a408",

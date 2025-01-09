@@ -255,11 +255,12 @@ def get_association_direction(entity: List[str], document: Dict) -> AssociationD
     ):
         direction = AssociationDirectionEnum.outgoing
     elif document.get("object") in entity or (
-        document.get("object_closure") and any(e in document.get("object_closure") for e in entity)        
+        document.get("object_closure") and any(e in document.get("object_closure") for e in entity)
     ):
         direction = AssociationDirectionEnum.incoming
     elif document.get("disease_context_qualifier") in entity or (
-        document.get("disease_context_qualifier_closure") and any(e in document.get("disease_context_qualifier_closure") for e in entity)
+        document.get("disease_context_qualifier_closure")
+        and any(e in document.get("disease_context_qualifier_closure") for e in entity)
     ):
         # This is a special case for disease_context_qualifier, if an association between two other entities
         # only occurs within the context of a disease, we can treat it like an incoming association

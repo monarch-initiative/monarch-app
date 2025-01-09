@@ -13,14 +13,14 @@ def association_response():
                 "facet_min_count": "1",
                 "start": "0",
                 "q.op": "AND",
-                "fq": 'subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121" OR object:"MONDO:0020121" OR object_closure:"MONDO:0020121"',
+                "fq": 'subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121" OR object:"MONDO:0020121" OR object_closure:"MONDO:0020121" OR disease_context_qualifier:"MONDO:0020121" OR disease_context_qualifier_closure:"MONDO:0020121"',
                 "facet.mincount": "1",
                 "rows": "20",
                 "facet": "true",
             },
         },
         "response": {
-            "num_found": 5080,
+            "num_found": 11434,
             "start": 0,
             "docs": [
                 {
