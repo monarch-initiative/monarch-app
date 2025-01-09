@@ -41,8 +41,7 @@ jobs:
       #----------------------------------------------
       - name: Run tests
         run: |
-          export PYTHONPATH=./backend
-          poetry -C backend run pytest backend/tests
+          poetry -C backend PYTHONPATH=./backend run pytest backend/tests
         shell: bash
 
       #----------------------------------------------
