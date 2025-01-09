@@ -80,6 +80,18 @@
       />
     </template>
 
+    <template #disease="{ row }">
+      <AppNodeBadge
+        v-if="row.disease_context_qualifier"
+        :node="{
+          id: row.disease_context_qualifier,
+          name: row.disease_context_qualifier_label,
+          category: 'biolink:Disease',
+        }"
+      />
+      <span v-else class="empty">No info</span>
+    </template>
+
     <template #frequency="{ row }">
       <AppPercentage
         v-if="frequencyPercentage(row) != undefined"
@@ -248,10 +260,45 @@ const orthologColoumns = computed<Cols<Datum>>(() => {
   ];
 });
 
+const medicalActionCategory =
+  "biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation";
+const medicalActionColumns = computed<Cols<Datum>>(() => {
+  return [
+    {
+      slot: "subject",
+      key: "subject_label",
+      heading: "Medical Action",
+    },
+    {
+      slot: "predicate",
+      key: "predicate",
+      heading: "Association",
+    },
+    {
+      slot: "object",
+      key: "object_label",
+      heading: "Phenotype",
+    },
+    {
+      slot: "disease",
+      key: "disease_context_qualifier_label",
+      heading: "Disease Context",
+    },
+    {
+      slot: "details",
+      key: "evidence_count",
+      heading: "Details",
+      align: "center",
+    },
+  ];
+});
+
 /** table columns */
 const cols = computed((): Cols<Datum> => {
   if (props.category.id.includes("GeneToGeneHomology")) {
     return orthologColoumns.value;
+  } else if (props.category.id == medicalActionCategory) {
+    return medicalActionColumns.value;
   }
 
   /** standard columns, always present */

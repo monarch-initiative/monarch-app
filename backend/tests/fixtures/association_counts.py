@@ -7,7 +7,7 @@ def association_counts():
         "items": [
             {
                 "label": "Disease to Phenotype",
-                "count": 4082,
+                "count": 4077,
                 "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
             },
             {"label": "Causal Gene", "count": 125, "category": "biolink:CausalGeneToDiseaseAssociation"},
