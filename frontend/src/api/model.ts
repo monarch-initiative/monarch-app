@@ -231,6 +231,30 @@ export interface Association {
     species_context_qualifier_namespace?: string,
     /** The category of the species_context_qualifier entity */
     species_context_qualifier_category?: string,
+    /** A qualifier that composes with a core subject/object concept to define a more specific version of the subject concept, specifically using an ontology term that is not a subclass or descendant of the core concept and in the vast majority of cases, is of a different ontological namespace than the category or namespace of the subject identifier. */
+    subject_specialization_qualifier?: string,
+    /** A label for the subject_specialization_qualifier */
+    subject_specialization_qualifier_label?: string,
+    /** The namespace/prefix of the subject_specialization_qualifier */
+    subject_specialization_qualifier_namespace?: string,
+    /** The category of the subject_specialization_qualifier */
+    subject_specialization_qualifier_category?: string,
+    /** A closure of the subject_specialization_qualifier, including the subject_specialization_qualifier itself and all of its ancestors */
+    subject_specialization_qualifier_closure?: string,
+    /** A closure of the subject_specialization_qualifier, including the subject_specialization_qualifier itself and all of its ancestors */
+    subject_specialization_qualifier_closure_label?: string,
+    /** A qualifier that composes with a core subject/object concept to define a more specific version of the object concept, specifically using an ontology term that is not a subclass or descendant of the core concept and in the vast majority of cases, is of a different ontological namespace than the category or namespace of the object identifier. */
+    object_specialization_qualifier?: string,
+    /** A label for the object_specialization_qualifier */
+    object_specialization_qualifier_label?: string,
+    /** The namespace/prefix of the object_specialization_qualifier */
+    object_specialization_qualifier_namespace?: string,
+    /** The category of the object_specialization_qualifier */
+    object_specialization_qualifier_category?: string,
+    /** A closure of the object_specialization_qualifier, including the object_specialization_qualifier itself and all of its ancestors */
+    object_specialization_qualifier_closure?: string,
+    /** A closure of the object_specialization_qualifier, including the object_specialization_qualifier itself and all of its ancestors */
+    object_specialization_qualifier_closure_label?: string,
 }
 
 
