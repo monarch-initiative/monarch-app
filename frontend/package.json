@@ -28,7 +28,7 @@
     "micromark": "^4.0.1",
     "normalize.css": "^8.0.1",
     "tippy.js": "^6.3.7",
-    "ua-parser-js": "^1.0.40",
+    "ua-parser-js": "^2.0.0",
     "vue": "^3.5.13",
     "vue-gtag": "^2.0.1",
     "vue-hotjar": "^1.4.0",

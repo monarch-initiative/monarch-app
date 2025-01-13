@@ -12,9 +12,12 @@
 </template>
 
 <script setup lang="ts">
-import parser from "ua-parser-js";
+// import parser from "ua-parser-js";
+import { UAParser } from "ua-parser-js";
 
-const { os } = parser();
+// const { os } = parser();
+const { os } = new UAParser().getResult();
+console.log({ os });
 
 type Props = {
   /** source of video */
