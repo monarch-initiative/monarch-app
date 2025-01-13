@@ -34,10 +34,10 @@
     "vue-hotjar": "^1.4.0",
     "vue-router": "^4.5.0",
     "vue-tippy": "^6.6.0",
-    "vue3-apexcharts": "~1.4.4"
+    "vue3-apexcharts": "^1.8.0"
   },
   "devDependencies": {
-    "@ianvs/prettier-plugin-sort-imports": "^4.4.0",
+    "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
     "@playwright/test": "~1.49.1",
     "@tsconfig/node20": "^20.1.4",
     "@types/body-scroll-lock": "^3.1.2",
@@ -52,7 +52,7 @@
     "@vue/test-utils": "2.4.6",
     "@vue/tsconfig": "^0.7.0",
     "axe-playwright": "^2.0.3",
-    "eslint": "^9.17.0",
+    "eslint": "^9.18.0",
     "eslint-plugin-vue": "^9.32.0",
     "eslint-plugin-vuejs-accessibility": "^2.4.1",
     "jsdom": "^26.0.0",
