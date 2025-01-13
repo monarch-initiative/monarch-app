@@ -126,6 +126,8 @@ export interface Association {
     subject_taxon?: string,
     subject_taxon_label?: string,
     predicate: string,
+    /** used to hold the original relation/predicate that an external knowledge source uses before transformation to match the biolink-model specification. */
+    original_predicate?: string,
     object: string,
     original_object?: string,
     /** The namespace/prefix of the object entity */

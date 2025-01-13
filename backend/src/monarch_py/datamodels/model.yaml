@@ -37,6 +37,7 @@ classes:
       - subject_taxon
       - subject_taxon_label
       - predicate
+      - original_predicate
       - object
       - original_object
       - object_namespace
@@ -562,6 +563,11 @@ slots:
     range: string
   original_object:
     range: string
+  original_predicate:
+    range: string
+    description: >-
+      used to hold the original relation/predicate that an external knowledge
+      source uses before transformation to match the biolink-model specification.
   original_subject:
     range: string
   pathway:

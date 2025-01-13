@@ -477,6 +477,11 @@ class Association(ConfiguredBaseModel):
         ...,
         json_schema_extra={"linkml_meta": {"alias": "predicate", "domain_of": ["Association", "CompactAssociation"]}},
     )
+    original_predicate: Optional[str] = Field(
+        None,
+        description="""used to hold the original relation/predicate that an external knowledge source uses before transformation to match the biolink-model specification.""",
+        json_schema_extra={"linkml_meta": {"alias": "original_predicate", "domain_of": ["Association"]}},
+    )
     object: str = Field(
         ..., json_schema_extra={"linkml_meta": {"alias": "object", "domain_of": ["Association", "CompactAssociation"]}}
     )
@@ -1242,6 +1247,11 @@ class DirectionalAssociation(Association):
     predicate: str = Field(
         ...,
         json_schema_extra={"linkml_meta": {"alias": "predicate", "domain_of": ["Association", "CompactAssociation"]}},
+    )
+    original_predicate: Optional[str] = Field(
+        None,
+        description="""used to hold the original relation/predicate that an external knowledge source uses before transformation to match the biolink-model specification.""",
+        json_schema_extra={"linkml_meta": {"alias": "original_predicate", "domain_of": ["Association"]}},
     )
     object: str = Field(
         ..., json_schema_extra={"linkml_meta": {"alias": "object", "domain_of": ["Association", "CompactAssociation"]}}

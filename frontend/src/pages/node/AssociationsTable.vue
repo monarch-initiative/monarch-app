@@ -80,6 +80,19 @@
       />
     </template>
 
+    <template #extension="{ row }">
+      <AppNodeBadge
+        v-if="row.subject_specialization_qualifier_label"
+        :node="{
+          id: row.subject_specialization_qualifier,
+          name: row.subject_specialization_qualifier_label,
+          category: row.subject_specialization_qualifier_category,
+        }"
+        :breadcrumbs="getBreadcrumbs(node, row, 'subject')"
+      />
+      <span v-else>{{ row.subject_specialization_qualifier }}</span>
+    </template>
+
     <template #disease="{ row }">
       <AppNodeBadge
         v-if="row.disease_context_qualifier"
@@ -268,6 +281,11 @@ const medicalActionColumns = computed<Cols<Datum>>(() => {
       slot: "subject",
       key: "subject_label",
       heading: "Medical Action",
+    },
+    {
+      slot: "extension",
+      key: "subject_specialization_qualifier",
+      heading: "Extension",
     },
     {
       slot: "predicate",
