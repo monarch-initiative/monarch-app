@@ -86,7 +86,6 @@
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { truncate } from "lodash";
-// import parser from "ua-parser-js";
 import { UAParser } from "ua-parser-js";
 import { useLocalStorage } from "@vueuse/core";
 import { postFeedback } from "@/api/feedback";
@@ -116,7 +115,6 @@ const feedback = useLocalStorage("feedback-form-feedback", "");
 /** list of automatic details to record */
 const details = computed(() => {
   /** get browser/device/os/etc details from ua parser library */
-  // const { browser, device, os, engine, cpu } = parser();
   const { browser, device, os, engine, cpu } = new UAParser().getResult();
 
   /** filter and join strings together */
