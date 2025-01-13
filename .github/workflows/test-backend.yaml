@@ -4,6 +4,9 @@ on:
   pull_request:
   workflow_dispatch:
 
+env:
+  PYTHONPATH: ${{ github.workspace }}/backend
+
 # defaults:
 #   run:
 #     working-directory: ./backend
@@ -40,14 +43,16 @@ jobs:
       #              run pytest
       #----------------------------------------------
       - name: Run tests
-        run: poetry -C backend run pytest backend/tests
+        run: |
+          poetry -C backend run pytest tests
+        shell: bash
 
       #----------------------------------------------
       #              coverage report
       #----------------------------------------------
       - name: Generate coverage results
         run: |
-          poetry -C backend run coverage run -m pytest backend/tests
+          poetry -C backend run coverage run -m pytest tests
           poetry -C backend run coverage xml
           poetry -C backend run coverage report -m
         shell: bash
