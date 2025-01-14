@@ -14,7 +14,7 @@ def association_counts():
             {"label": "Causal Gene", "count": 125, "category": "biolink:CausalGeneToDiseaseAssociation"},
             {"label": "Correlated Gene", "count": 150, "category": "biolink:CorrelatedGeneToDiseaseAssociation"},
             {"label": "Variant to Disease", "count": 1, "category": "biolink:VariantToDiseaseAssociation"},
-            {"label": "Disease Model", "count": 238, "category": "biolink:GenotypeToDiseaseAssociation"},
+            {"label": "Disease Model", "count": 239, "category": "biolink:GenotypeToDiseaseAssociation"},
             {
                 "label": "Medical Action",
                 "count": 4,

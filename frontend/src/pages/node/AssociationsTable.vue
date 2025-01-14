@@ -70,7 +70,7 @@
     <!-- maxorelation -->
     <template #maxorelation="{ row }">
       {{ row.original_predicate }}
-    </template> 
+    </template>
 
     <!-- object-->
     <template #object="{ row }">
@@ -96,8 +96,15 @@
         :breadcrumbs="getBreadcrumbs(node, row, 'subject')"
       />
       <!-- unfortunate link hardcoding for CHEBI IDs that we don't have in the graph, TODO: replace with prefix expansion in the browser -->
-      <span v-else-if="row.subject_specialization_qualifier?.startsWith('CHEBI')">
-        <AppLink :to="'http://purl.obolibrary.org/obo/CHEBI_' + row.subject_specialization_qualifier.split(':')[1]">
+      <span
+        v-else-if="row.subject_specialization_qualifier?.startsWith('CHEBI')"
+      >
+        <AppLink
+          :to="
+            'http://purl.obolibrary.org/obo/CHEBI_' +
+            row.subject_specialization_qualifier.split(':')[1]
+          "
+        >
           {{ row.subject_specialization_qualifier }}
         </AppLink>
       </span>

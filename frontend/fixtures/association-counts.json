@@ -27,7 +27,7 @@
     },
     {
       "label": "Disease Model",
-      "count": 238,
+      "count": 239,
       "category": "biolink:GenotypeToDiseaseAssociation"
     },
     {
