@@ -68,10 +68,17 @@ def test_entity():
     assert response
     assert response.total > 50
     for association in response.items:
-        if association.subject_closure is None or len(association.subject_closure) == 0:
+
+        if (
+            association.subject_closure is None or len(association.subject_closure) == 0
+        ) and association.disease_context_qualifier is None:
             assert "MONDO:0007947" in association.object_closure
-        elif association.object_closure is None or len(association.object_closure) == 0:
+        elif (
+            association.object_closure is None or len(association.object_closure) == 0
+        ) and association.disease_context_qualifier is None:
             assert "MONDO:0007947" in association.subject_closure
+        elif association.disease_context_qualifier is not None:
+            assert "MONDO:0007947" in association.disease_context_qualifier_closure
         else:
             assert "MONDO:0007947" in association.subject_closure or "MONDO:0007947" in association.object_closure
 
