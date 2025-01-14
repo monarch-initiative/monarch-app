@@ -67,6 +67,11 @@
       <AppPredicateBadge :association="row" />
     </template>
 
+    <!-- maxorelation -->
+    <template #maxorelation="{ row }">
+      {{ row.original_predicate }}
+    </template> 
+
     <!-- object-->
     <template #object="{ row }">
       <AppNodeBadge
@@ -90,6 +95,12 @@
         }"
         :breadcrumbs="getBreadcrumbs(node, row, 'subject')"
       />
+      <!-- unfortunate link hardcoding for CHEBI IDs that we don't have in the graph, TODO: replace with prefix expansion in the browser -->
+      <span v-else-if="row.subject_specialization_qualifier?.startsWith('CHEBI')">
+        <AppLink :to="'http://purl.obolibrary.org/obo/CHEBI_' + row.subject_specialization_qualifier.split(':')[1]">
+          {{ row.subject_specialization_qualifier }}
+        </AppLink>
+      </span>
       <span v-else>{{ row.subject_specialization_qualifier }}</span>
     </template>
 
@@ -288,9 +299,9 @@ const medicalActionColumns = computed<Cols<Datum>>(() => {
       heading: "Extension",
     },
     {
-      slot: "predicate",
-      key: "predicate",
-      heading: "Association",
+      slot: "maxorelation",
+      key: "original_predicate",
+      heading: "MaXO Relation",
     },
     {
       slot: "object",
