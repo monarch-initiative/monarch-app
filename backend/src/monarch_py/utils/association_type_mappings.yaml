@@ -48,3 +48,6 @@
 - subject_label: Disease Model
   object_label: Disease Model
   category: "biolink:GenotypeToDiseaseAssociation"
+- subject_label: Medical Action
+  object_label: Medical Action
+  category: "biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation"

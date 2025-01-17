@@ -477,6 +477,11 @@ class Association(ConfiguredBaseModel):
         ...,
         json_schema_extra={"linkml_meta": {"alias": "predicate", "domain_of": ["Association", "CompactAssociation"]}},
     )
+    original_predicate: Optional[str] = Field(
+        None,
+        description="""used to hold the original relation/predicate that an external knowledge source uses before transformation to match the biolink-model specification.""",
+        json_schema_extra={"linkml_meta": {"alias": "original_predicate", "domain_of": ["Association"]}},
+    )
     object: str = Field(
         ..., json_schema_extra={"linkml_meta": {"alias": "object", "domain_of": ["Association", "CompactAssociation"]}}
     )
@@ -840,6 +845,86 @@ class Association(ConfiguredBaseModel):
                 "domain_of": ["Association"],
                 "is_a": "category",
             }
+        },
+    )
+    subject_specialization_qualifier: Optional[str] = Field(
+        None,
+        description="""A qualifier that composes with a core subject/object concept to define a more specific version of the subject concept, specifically using an ontology term that is not a subclass or descendant of the core concept and in the vast majority of cases, is of a different ontological namespace than the category or namespace of the subject identifier.""",
+        json_schema_extra={"linkml_meta": {"alias": "subject_specialization_qualifier", "domain_of": ["Association"]}},
+    )
+    subject_specialization_qualifier_label: Optional[str] = Field(
+        None,
+        description="""A label for the subject_specialization_qualifier""",
+        json_schema_extra={
+            "linkml_meta": {"alias": "subject_specialization_qualifier_label", "domain_of": ["Association"]}
+        },
+    )
+    subject_specialization_qualifier_namespace: Optional[str] = Field(
+        None,
+        description="""The namespace/prefix of the subject_specialization_qualifier""",
+        json_schema_extra={
+            "linkml_meta": {"alias": "subject_specialization_qualifier_namespace", "domain_of": ["Association"]}
+        },
+    )
+    subject_specialization_qualifier_category: Optional[str] = Field(
+        None,
+        description="""The category of the subject_specialization_qualifier""",
+        json_schema_extra={
+            "linkml_meta": {"alias": "subject_specialization_qualifier_category", "domain_of": ["Association"]}
+        },
+    )
+    subject_specialization_qualifier_closure: Optional[str] = Field(
+        None,
+        description="""A closure of the subject_specialization_qualifier, including the subject_specialization_qualifier itself and all of its ancestors""",
+        json_schema_extra={
+            "linkml_meta": {"alias": "subject_specialization_qualifier_closure", "domain_of": ["Association"]}
+        },
+    )
+    subject_specialization_qualifier_closure_label: Optional[str] = Field(
+        None,
+        description="""A closure of the subject_specialization_qualifier, including the subject_specialization_qualifier itself and all of its ancestors""",
+        json_schema_extra={
+            "linkml_meta": {"alias": "subject_specialization_qualifier_closure_label", "domain_of": ["Association"]}
+        },
+    )
+    object_specialization_qualifier: Optional[str] = Field(
+        None,
+        description="""A qualifier that composes with a core subject/object concept to define a more specific version of the object concept, specifically using an ontology term that is not a subclass or descendant of the core concept and in the vast majority of cases, is of a different ontological namespace than the category or namespace of the object identifier.""",
+        json_schema_extra={"linkml_meta": {"alias": "object_specialization_qualifier", "domain_of": ["Association"]}},
+    )
+    object_specialization_qualifier_label: Optional[str] = Field(
+        None,
+        description="""A label for the object_specialization_qualifier""",
+        json_schema_extra={
+            "linkml_meta": {"alias": "object_specialization_qualifier_label", "domain_of": ["Association"]}
+        },
+    )
+    object_specialization_qualifier_namespace: Optional[str] = Field(
+        None,
+        description="""The namespace/prefix of the object_specialization_qualifier""",
+        json_schema_extra={
+            "linkml_meta": {"alias": "object_specialization_qualifier_namespace", "domain_of": ["Association"]}
+        },
+    )
+    object_specialization_qualifier_category: Optional[str] = Field(
+        None,
+        description="""The category of the object_specialization_qualifier""",
+        json_schema_extra={
+            "linkml_meta": {"alias": "object_specialization_qualifier_category", "domain_of": ["Association"]}
+        },
+    )
+    object_specialization_qualifier_closure: Optional[str] = Field(
+        None,
+        description="""A closure of the object_specialization_qualifier, including the object_specialization_qualifier itself and all of its ancestors""",
+        json_schema_extra={
+            "linkml_meta": {"alias": "object_specialization_qualifier_closure", "domain_of": ["Association"]}
+        },
+    )
+    object_specialization_qualifier_closure_label: Optional[str] = Field(
+        None,
+        description="""A closure of the object_specialization_qualifier, including the object_specialization_qualifier itself and all of its ancestors""",
+        json_schema_extra={
+            "linkml_meta": {"alias": "object_specialization_qualifier_closure_label", "domain_of": ["Association"]}
         },
     )
 
@@ -1163,6 +1248,11 @@ class DirectionalAssociation(Association):
         ...,
         json_schema_extra={"linkml_meta": {"alias": "predicate", "domain_of": ["Association", "CompactAssociation"]}},
     )
+    original_predicate: Optional[str] = Field(
+        None,
+        description="""used to hold the original relation/predicate that an external knowledge source uses before transformation to match the biolink-model specification.""",
+        json_schema_extra={"linkml_meta": {"alias": "original_predicate", "domain_of": ["Association"]}},
+    )
     object: str = Field(
         ..., json_schema_extra={"linkml_meta": {"alias": "object", "domain_of": ["Association", "CompactAssociation"]}}
     )
@@ -1526,6 +1616,86 @@ class DirectionalAssociation(Association):
                 "domain_of": ["Association"],
                 "is_a": "category",
             }
+        },
+    )
+    subject_specialization_qualifier: Optional[str] = Field(
+        None,
+        description="""A qualifier that composes with a core subject/object concept to define a more specific version of the subject concept, specifically using an ontology term that is not a subclass or descendant of the core concept and in the vast majority of cases, is of a different ontological namespace than the category or namespace of the subject identifier.""",
+        json_schema_extra={"linkml_meta": {"alias": "subject_specialization_qualifier", "domain_of": ["Association"]}},
+    )
+    subject_specialization_qualifier_label: Optional[str] = Field(
+        None,
+        description="""A label for the subject_specialization_qualifier""",
+        json_schema_extra={
+            "linkml_meta": {"alias": "subject_specialization_qualifier_label", "domain_of": ["Association"]}
+        },
+    )
+    subject_specialization_qualifier_namespace: Optional[str] = Field(
+        None,
+        description="""The namespace/prefix of the subject_specialization_qualifier""",
+        json_schema_extra={
+            "linkml_meta": {"alias": "subject_specialization_qualifier_namespace", "domain_of": ["Association"]}
+        },
+    )
+    subject_specialization_qualifier_category: Optional[str] = Field(
+        None,
+        description="""The category of the subject_specialization_qualifier""",
+        json_schema_extra={
+            "linkml_meta": {"alias": "subject_specialization_qualifier_category", "domain_of": ["Association"]}
+        },
+    )
+    subject_specialization_qualifier_closure: Optional[str] = Field(
+        None,
+        description="""A closure of the subject_specialization_qualifier, including the subject_specialization_qualifier itself and all of its ancestors""",
+        json_schema_extra={
+            "linkml_meta": {"alias": "subject_specialization_qualifier_closure", "domain_of": ["Association"]}
+        },
+    )
+    subject_specialization_qualifier_closure_label: Optional[str] = Field(
+        None,
+        description="""A closure of the subject_specialization_qualifier, including the subject_specialization_qualifier itself and all of its ancestors""",
+        json_schema_extra={
+            "linkml_meta": {"alias": "subject_specialization_qualifier_closure_label", "domain_of": ["Association"]}
+        },
+    )
+    object_specialization_qualifier: Optional[str] = Field(
+        None,
+        description="""A qualifier that composes with a core subject/object concept to define a more specific version of the object concept, specifically using an ontology term that is not a subclass or descendant of the core concept and in the vast majority of cases, is of a different ontological namespace than the category or namespace of the object identifier.""",
+        json_schema_extra={"linkml_meta": {"alias": "object_specialization_qualifier", "domain_of": ["Association"]}},
+    )
+    object_specialization_qualifier_label: Optional[str] = Field(
+        None,
+        description="""A label for the object_specialization_qualifier""",
+        json_schema_extra={
+            "linkml_meta": {"alias": "object_specialization_qualifier_label", "domain_of": ["Association"]}
+        },
+    )
+    object_specialization_qualifier_namespace: Optional[str] = Field(
+        None,
+        description="""The namespace/prefix of the object_specialization_qualifier""",
+        json_schema_extra={
+            "linkml_meta": {"alias": "object_specialization_qualifier_namespace", "domain_of": ["Association"]}
+        },
+    )
+    object_specialization_qualifier_category: Optional[str] = Field(
+        None,
+        description="""The category of the object_specialization_qualifier""",
+        json_schema_extra={
+            "linkml_meta": {"alias": "object_specialization_qualifier_category", "domain_of": ["Association"]}
+        },
+    )
+    object_specialization_qualifier_closure: Optional[str] = Field(
+        None,
+        description="""A closure of the object_specialization_qualifier, including the object_specialization_qualifier itself and all of its ancestors""",
+        json_schema_extra={
+            "linkml_meta": {"alias": "object_specialization_qualifier_closure", "domain_of": ["Association"]}
+        },
+    )
+    object_specialization_qualifier_closure_label: Optional[str] = Field(
+        None,
+        description="""A closure of the object_specialization_qualifier, including the object_specialization_qualifier itself and all of its ancestors""",
+        json_schema_extra={
+            "linkml_meta": {"alias": "object_specialization_qualifier_closure_label", "domain_of": ["Association"]}
         },
     )
 

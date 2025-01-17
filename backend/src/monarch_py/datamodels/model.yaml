@@ -37,6 +37,7 @@ classes:
       - subject_taxon
       - subject_taxon_label
       - predicate
+      - original_predicate
       - object
       - original_object
       - object_namespace
@@ -98,6 +99,18 @@ classes:
       - species_context_qualifier_label
       - species_context_qualifier_namespace
       - species_context_qualifier_category
+      - subject_specialization_qualifier
+      - subject_specialization_qualifier_label
+      - subject_specialization_qualifier_namespace
+      - subject_specialization_qualifier_category
+      - subject_specialization_qualifier_closure
+      - subject_specialization_qualifier_closure_label
+      - object_specialization_qualifier
+      - object_specialization_qualifier_label
+      - object_specialization_qualifier_namespace
+      - object_specialization_qualifier_category
+      - object_specialization_qualifier_closure
+      - object_specialization_qualifier_closure_label
   AssociationCount:
     is_a: FacetValue
     slots:
@@ -550,6 +563,11 @@ slots:
     range: string
   original_object:
     range: string
+  original_predicate:
+    range: string
+    description: >-
+      used to hold the original relation/predicate that an external knowledge
+      source uses before transformation to match the biolink-model specification.
   original_subject:
     range: string
   pathway:
@@ -743,6 +761,60 @@ slots:
     is_a: category
     description: The category of the species_context_qualifier entity
   # sssom slots
+  subject_specialization_qualifier:
+    range: string
+    description: >-
+      A qualifier that composes with a core subject/object concept to define a more specific version of the
+      subject concept, specifically using an ontology term that is not a subclass or descendant of the core concept
+      and in the vast majority of cases, is of a different ontological namespace than the category or namespace of the
+      subject identifier.
+  subject_specialization_qualifier_label:
+    range: string
+    description: >-
+      A label for the subject_specialization_qualifier
+  subject_specialization_qualifier_namespace:
+    range: string
+    description: >-
+      The namespace/prefix of the subject_specialization_qualifier
+  subject_specialization_qualifier_category:
+    range: string
+    description: >-
+      The category of the subject_specialization_qualifier
+  subject_specialization_qualifier_closure:
+    range: string
+    description: >-
+      A closure of the subject_specialization_qualifier, including the subject_specialization_qualifier itself and all of its ancestors
+  subject_specialization_qualifier_closure_label:
+    range: string
+    description: >-
+      A closure of the subject_specialization_qualifier, including the subject_specialization_qualifier itself and all of its ancestors
+  object_specialization_qualifier:
+    range: string
+    description: >-
+      A qualifier that composes with a core subject/object concept to define a more specific version of the
+      object concept, specifically using an ontology term that is not a subclass or descendant of the core concept
+      and in the vast majority of cases, is of a different ontological namespace than the category or namespace of the
+      object identifier.
+  object_specialization_qualifier_label:
+    range: string
+    description: >-
+      A label for the object_specialization_qualifier
+  object_specialization_qualifier_namespace:
+    range: string
+    description: >-
+      The namespace/prefix of the object_specialization_qualifier
+  object_specialization_qualifier_category:
+    range: string
+    description: >-
+      The category of the object_specialization_qualifier
+  object_specialization_qualifier_closure:
+    range: string
+    description: >-
+      A closure of the object_specialization_qualifier, including the object_specialization_qualifier itself and all of its ancestors
+  object_specialization_qualifier_closure_label:
+    range: string
+    description: >-
+      A closure of the object_specialization_qualifier, including the object_specialization_qualifier itself and all of its ancestors
   mappings:
     description: List of ExpandedCuries with id and url for mapped entities
     range: ExpandedCurie

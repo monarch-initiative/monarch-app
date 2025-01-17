@@ -2,8 +2,13 @@
   "items": [
     {
       "label": "Disease to Phenotype",
-      "count": 4082,
+      "count": 4077,
       "category": "biolink:DiseaseToPhenotypicFeatureAssociation"
+    },
+    {
+      "label": "Gene to Phenotype",
+      "count": 6350,
+      "category": "biolink:GeneToPhenotypicFeatureAssociation"
     },
     {
       "label": "Causal Gene",
@@ -22,8 +27,13 @@
     },
     {
       "label": "Disease Model",
-      "count": 238,
+      "count": 239,
       "category": "biolink:GenotypeToDiseaseAssociation"
+    },
+    {
+      "label": "Medical Action",
+      "count": 4,
+      "category": "biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation"
     }
   ]
 }
