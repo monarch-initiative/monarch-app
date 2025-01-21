@@ -92,6 +92,16 @@
         "name": "Evan Connelly",
         "role": "Scientific Software Engineer",
         "link": "https://tislab.org/members/evan-connelly.html"
+      },
+      {
+        "name": "Patrick Golden",
+        "role": "Scientific Software Engineer",
+        "link": ""
+      },
+      {
+        "name": "Carlo Kroll",
+        "role": "Software Engineer",
+        "link": ""
       }
     ]
   },
@@ -243,11 +253,6 @@
         "name": "Damian Smedley",
         "role": "Monarch PI",
         "link": "https://www.qmul.ac.uk/whri/people/academic-staff/items/smedleydamian.html"
-      },
-      {
-        "name": "Carlo Kroll",
-        "role": "Software Engineer",
-        "link": ""
       },
       {
         "name": "Jules Jacobsen",
