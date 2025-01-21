@@ -66,7 +66,7 @@
         >
           <tooltip
             v-for="(col, colIndex) in cols"
-            :key="colIndex"
+            :key="col.id"
             :interactive="true"
             placement="bottom"
             follow-cursor="initial"
@@ -103,7 +103,7 @@
         >
           <tooltip
             v-for="(row, rowIndex) in rows"
-            :key="rowIndex"
+            :key="row.id"
             :interactive="true"
             placement="bottom"
             follow-cursor="initial"
