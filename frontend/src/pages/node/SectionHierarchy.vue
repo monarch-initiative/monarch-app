@@ -27,7 +27,7 @@
             :node="_class"
             :breadcrumbs="[
               {
-                node,
+                node: toBreadcrumbNode(node),
                 association: {
                   predicate: 'is super class of',
                   direction: AssociationDirectionEnum.incoming,
@@ -40,7 +40,7 @@
 
       <!-- nodes that are "children" of node -->
       <AppDetail
-        title="Sub-classes"
+        :title="`Sub-classes (${node.node_hierarchy?.sub_classes.length})`"
         icon="angle-down"
         :blank="!node.node_hierarchy?.sub_classes.length"
         :full="true"
@@ -53,7 +53,7 @@
             :node="_class"
             :breadcrumbs="[
               {
-                node,
+                node: toBreadcrumbNode(node),
                 association: { predicate: 'is sub class of' },
               },
             ]"
@@ -69,6 +69,7 @@ import { AssociationDirectionEnum, type Node } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
+import { toBreadcrumbNode } from "@/global/breadcrumbs";
 
 type Props = {
   /** current node */
