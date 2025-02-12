@@ -125,24 +125,6 @@
           </AppLink>
         </AppFlex>
       </AppDetail>
-
-      <!-- association counts -->
-      <AppDetail
-        :blank="!node.association_counts.length"
-        title="Association Counts"
-        :full="true"
-      >
-        <AppFlex align-h="left" gap="small">
-          <AppLink
-            v-for="(count, index) in node.association_counts"
-            :key="index"
-            :to="{ query: { associations: count.category || '' } }"
-            @click="scrollToAssociations"
-          >
-            {{ count.label }} ({{ count.count?.toLocaleString() || 0 }})
-          </AppLink>
-        </AppFlex>
-      </AppDetail>
     </AppDetails>
   </AppSection>
 </template>
