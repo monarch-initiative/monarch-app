@@ -4,7 +4,7 @@
 
 <template>
   <!-- status -->
-  <AppStatus v-if="isLoading" code="loading"
+  <AppStatus v-if="isLoading" code="loading" class="loading"
     >Loading tabulated association data</AppStatus
   >
   <AppStatus v-else-if="isError" code="error"
@@ -19,7 +19,7 @@
     v-model:per-page="perPage"
     v-model:start="start"
     v-model:search="search"
-    :cols="cols"
+    :cols="columns"
     :rows="associations.items"
     :total="associations.total"
     @download="download"
@@ -183,7 +183,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch, watchEffect } from "vue";
 import {
   downloadAssociations,
   getAssociations,
@@ -221,6 +221,7 @@ const props = defineProps<Props>();
 
 const showModal = ref(false);
 const selectedAssociation = ref<DirectionalAssociation | null>(null);
+const columns = ref<Cols<Datum>>([]);
 
 function openModal(association: DirectionalAssociation) {
   selectedAssociation.value = association;
@@ -329,8 +330,7 @@ const medicalActionColumns = computed<Cols<Datum>>(() => {
   ];
 });
 
-/** table columns */
-const cols = computed((): Cols<Datum> => {
+function computeCols(): Cols<Datum> {
   if (props.category.id.includes("GeneToGeneHomology")) {
     return orthologColoumns.value;
   } else if (props.category.id == medicalActionCategory) {
@@ -446,7 +446,7 @@ const cols = computed((): Cols<Datum> => {
   if (extraCols[0]) extraCols.unshift({ slot: "divider" });
 
   return [...baseCols, ...extraCols];
-});
+}
 
 /** get table association data */
 const {
@@ -548,30 +548,39 @@ const frequencyTooltip = (row: DirectionalAssociation) => {
   }
   // if no percentage or fraction, display the qualifier label
   if (row.frequency_qualifier) return `${row.frequency_qualifier_label}`;
-
-  // finally, there is no frequency info at all
   return "No info";
 };
 
-/** get associations when category or table state changes */
+watch(
+  () => [props.category, props.node],
+  () => {
+    columns.value = computeCols();
+  },
+  { immediate: true },
+);
+
 watch(
   () => props.category,
-  async () => await queryAssociations(true),
+  async () => {
+    await queryAssociations(true);
+  },
 );
 watch(
   () => props.includeOrthologs,
-  async () => await queryAssociations(true),
+  async () => {
+    await queryAssociations(true);
+  },
 );
 watch(
   () => props.direct,
-  async () => await queryAssociations(true),
+  async () => {
+    await queryAssociations(true);
+  },
 );
-watch(
-  [perPage, start, search, sort],
-  async () => await queryAssociations(false),
-);
+watchEffect(async () => {
+  await queryAssociations(false);
+});
 
-/** get associations on load */
 onMounted(() => queryAssociations(true));
 </script>
 
@@ -587,5 +596,14 @@ onMounted(() => queryAssociations(true));
 
 .empty {
   color: $gray;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 18em;
 }
 </style>

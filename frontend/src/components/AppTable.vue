@@ -9,7 +9,9 @@
 <template>
   <!-- table data -->
   <AppFlex direction="col" align-h="left" :class="['container']">
-    <div ref="scroll" style="width: 100%">
+    <div v-if="total === 0" class="emptyState">No data available</div>
+
+    <div v-else ref="scroll" style="width: 100%">
       <table
         class="table"
         :aria-colcount="cols.length"
@@ -219,7 +221,7 @@ export type Sort<Key extends string = string> = {
 </script>
 
 <script setup lang="ts" generic="Datum extends object">
-import { computed, type VNode } from "vue";
+import { computed, ref, type VNode } from "vue";
 import type { Options } from "./AppSelectMulti.vue";
 import AppSelectMulti from "./AppSelectMulti.vue";
 import AppSelectSingle from "./AppSelectSingle.vue";
@@ -394,6 +396,7 @@ const ariaSort = computed(() => {
 
 .table {
   width: 100%;
+  min-height: 18em;
   //  margin: 0 auto;
   border-collapse: collapse;
   font-size: 0.9em;
@@ -478,5 +481,14 @@ const ariaSort = computed(() => {
   .search {
     max-width: 150px;
   }
+}
+
+.emptyState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 18em;
 }
 </style>
