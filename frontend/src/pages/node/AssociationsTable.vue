@@ -95,7 +95,10 @@
         }"
         :breadcrumbs="getBreadcrumbs(node, row, 'subject')"
       />
-      <!-- unfortunate link hardcoding for CHEBI IDs that we don't have in the graph, TODO: replace with prefix expansion in the browser -->
+      <!-- 
+        unfortunate link hardcoding for CHEBI IDs that we don't have in the graph,
+        TODO: replace with prefix expansion in the browser
+      -->
       <span
         v-else-if="row.subject_specialization_qualifier?.startsWith('CHEBI')"
       >
