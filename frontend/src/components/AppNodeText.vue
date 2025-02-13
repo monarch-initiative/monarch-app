@@ -133,12 +133,12 @@ const replacementTags = new Map([
     "b" as ReplacedTag,
     {
       regex: /(<b>).*?(<\/b>)/dg,
-      createSurroundingEl(isSvg: Boolean) {
+      createSurroundingEl(isSvg: boolean) {
         return isSvg
           ? document.createElementNS("http://www.w3.org/2000/svg", "tspan")
           : document.createElement("b");
       },
-      afterMount(isSvg: Boolean, el: Element) {
+      afterMount(isSvg: boolean, el: Element) {
         if (!isSvg) return;
         el.classList.add("svg-bold");
       },
