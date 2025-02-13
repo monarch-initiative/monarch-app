@@ -45,7 +45,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const container = ref<HTMLSpanElement | SVGTSpanElement | null>(null);
 
-type ReplacedTag = "sup" | "a" | "i";
+type ReplacedTag = "sup" | "a" | "i" | "b";
 
 type Replacement = {
   type: ReplacedTag;
@@ -126,6 +126,21 @@ const replacementTags = new Map([
         const tagTextNode = el.previousSibling!;
         const href = tagTextNode.textContent!.slice(9, -2);
         el.setAttribute("href", href);
+      },
+    },
+  ],
+  [
+    "b" as ReplacedTag,
+    {
+      regex: /(<b>).*?(<\/b>)/dg,
+      createSurroundingEl(isSvg: Boolean) {
+        return isSvg
+          ? document.createElementNS("http://www.w3.org/2000/svg", "tspan")
+          : document.createElement("b");
+      },
+      afterMount(isSvg: Boolean, el: Element) {
+        if (!isSvg) return;
+        el.classList.add("svg-bold");
       },
     },
   ],
@@ -224,5 +239,8 @@ onUpdated(() => {
 }
 .svg-italic {
   font-style: italic;
+}
+.svg-bold {
+  font-weight: bold;
 }
 </style>

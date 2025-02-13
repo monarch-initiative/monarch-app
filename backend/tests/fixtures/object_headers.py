@@ -16,6 +16,7 @@ def association_headers():
         "subject_taxon",
         "subject_taxon_label",
         "predicate",
+        "original_predicate",
         "object",
         "original_object",
         "object_namespace",
@@ -77,6 +78,18 @@ def association_headers():
         "species_context_qualifier_label",
         "species_context_qualifier_namespace",
         "species_context_qualifier_category",
+        "subject_specialization_qualifier",
+        "subject_specialization_qualifier_label",
+        "subject_specialization_qualifier_namespace",
+        "subject_specialization_qualifier_category",
+        "subject_specialization_qualifier_closure",
+        "subject_specialization_qualifier_closure_label",
+        "object_specialization_qualifier",
+        "object_specialization_qualifier_label",
+        "object_specialization_qualifier_namespace",
+        "object_specialization_qualifier_category",
+        "object_specialization_qualifier_closure",
+        "object_specialization_qualifier_closure_label",
     ]
 
 

@@ -83,7 +83,7 @@ def test_build_association_multiple_entites():
     entity_filter = [fq for fq in query.filter_queries if fq.startswith("subject:")][0]
     assert (
         entity_filter
-        == 'subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121" OR object:"MONDO:0020121" OR object_closure:"MONDO:0020121" OR subject:"HP:0000006" OR subject_closure:"HP:0000006" OR object:"HP:0000006" OR object_closure:"HP:0000006"'
+        == 'subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121" OR object:"MONDO:0020121" OR object_closure:"MONDO:0020121" OR disease_context_qualifier:"MONDO:0020121" OR disease_context_qualifier_closure:"MONDO:0020121" OR subject:"HP:0000006" OR subject_closure:"HP:0000006" OR object:"HP:0000006" OR object_closure:"HP:0000006" OR disease_context_qualifier:"HP:0000006" OR disease_context_qualifier_closure:"HP:0000006"'
     )
 
 
@@ -101,6 +101,7 @@ def test_build_association_multiple_objects():
     query = build_association_query(object=["HP:0000006", "HP:0000007"])
     assert len(query.filter_queries) > 0, "filter_queries is empty"
     object_filter = [fq for fq in query.filter_queries if fq.startswith("object:")][0]
+    print(object_filter)
     assert (
         object_filter
         == 'object:"HP:0000006" OR object_closure:"HP:0000006" OR object:"HP:0000007" OR object_closure:"HP:0000007"'

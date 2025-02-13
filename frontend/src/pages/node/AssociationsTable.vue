@@ -67,6 +67,11 @@
       <AppPredicateBadge :association="row" />
     </template>
 
+    <!-- maxorelation -->
+    <template #maxorelation="{ row }">
+      {{ row.original_predicate }}
+    </template>
+
     <!-- object-->
     <template #object="{ row }">
       <AppNodeBadge
@@ -78,6 +83,44 @@
         }"
         :breadcrumbs="getBreadcrumbs(node, row, 'object')"
       />
+    </template>
+
+    <template #extension="{ row }">
+      <AppNodeBadge
+        v-if="row.subject_specialization_qualifier_label"
+        :node="{
+          id: row.subject_specialization_qualifier,
+          name: row.subject_specialization_qualifier_label,
+          category: row.subject_specialization_qualifier_category,
+        }"
+        :breadcrumbs="getBreadcrumbs(node, row, 'subject')"
+      />
+      <!-- unfortunate link hardcoding for CHEBI IDs that we don't have in the graph, TODO: replace with prefix expansion in the browser -->
+      <span
+        v-else-if="row.subject_specialization_qualifier?.startsWith('CHEBI')"
+      >
+        <AppLink
+          :to="
+            'http://purl.obolibrary.org/obo/CHEBI_' +
+            row.subject_specialization_qualifier.split(':')[1]
+          "
+        >
+          {{ row.subject_specialization_qualifier }}
+        </AppLink>
+      </span>
+      <span v-else>{{ row.subject_specialization_qualifier }}</span>
+    </template>
+
+    <template #disease="{ row }">
+      <AppNodeBadge
+        v-if="row.disease_context_qualifier"
+        :node="{
+          id: row.disease_context_qualifier,
+          name: row.disease_context_qualifier_label,
+          category: 'biolink:Disease',
+        }"
+      />
+      <span v-else class="empty">No info</span>
     </template>
 
     <template #frequency="{ row }">
@@ -248,10 +291,50 @@ const orthologColoumns = computed<Cols<Datum>>(() => {
   ];
 });
 
+const medicalActionCategory =
+  "biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation";
+const medicalActionColumns = computed<Cols<Datum>>(() => {
+  return [
+    {
+      slot: "subject",
+      key: "subject_label",
+      heading: "Medical Action",
+    },
+    {
+      slot: "extension",
+      key: "subject_specialization_qualifier",
+      heading: "Extension",
+    },
+    {
+      slot: "maxorelation",
+      key: "original_predicate",
+      heading: "MaXO Relation",
+    },
+    {
+      slot: "object",
+      key: "object_label",
+      heading: "Phenotype",
+    },
+    {
+      slot: "disease",
+      key: "disease_context_qualifier_label",
+      heading: "Disease Context",
+    },
+    {
+      slot: "details",
+      key: "evidence_count",
+      heading: "Details",
+      align: "center",
+    },
+  ];
+});
+
 /** table columns */
 const cols = computed((): Cols<Datum> => {
   if (props.category.id.includes("GeneToGeneHomology")) {
     return orthologColoumns.value;
+  } else if (props.category.id == medicalActionCategory) {
+    return medicalActionColumns.value;
   }
 
   /** standard columns, always present */

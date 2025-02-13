@@ -91,7 +91,7 @@ def parse_associations(
 
 def parse_association_counts(query_result: SolrQueryResult, entity: str) -> AssociationCountList:
     subject_query = f'AND (subject:"{entity}" OR subject_closure:"{entity}")'
-    object_query = f'AND (object:"{entity}" OR object_closure:"{entity}")'
+    object_query = f'AND (object:"{entity}" OR object_closure:"{entity}" OR disease_context_qualifier:"{entity}" OR disease_context_qualifier_closure:"{entity}")'
     association_count_dict: Dict[str, AssociationCount] = {}
     for k, v in query_result.facet_counts.facet_queries.items():
         if v > 0:
@@ -257,6 +257,13 @@ def get_association_direction(entity: List[str], document: Dict) -> AssociationD
     elif document.get("object") in entity or (
         document.get("object_closure") and any(e in document.get("object_closure") for e in entity)
     ):
+        direction = AssociationDirectionEnum.incoming
+    elif document.get("disease_context_qualifier") in entity or (
+        document.get("disease_context_qualifier_closure")
+        and any(e in document.get("disease_context_qualifier_closure") for e in entity)
+    ):
+        # This is a special case for disease_context_qualifier, if an association between two other entities
+        # only occurs within the context of a disease, we can treat it like an incoming association
         direction = AssociationDirectionEnum.incoming
     else:
         raise ValueError(f"Entity {entity} not found in association {document}")

@@ -10,6 +10,7 @@ from monarch_py.datamodels.model import TextAnnotationResult, SearchResult
 import pystow
 import tarfile
 
+
 @dataclass
 class SpacyImplementation(TextAnnotatorInterface):
     """Implementation of Monarch Interfaces for SPACY"""
@@ -32,21 +33,30 @@ class SpacyImplementation(TextAnnotatorInterface):
             with tarfile.open(model_archive, "r:gz") as tar:
                 tar.extractall(path=model_dir.parent)
 
-        model_subdir = next((d for d in model_archive.parent.iterdir() if d.is_dir() and d.name.startswith("en_core_sci")), None)
+        model_subdir = next(
+            (d for d in model_archive.parent.iterdir() if d.is_dir() and d.name.startswith("en_core_sci")), None
+        )
 
         if model_subdir:
-            inner_model_dir = next((d for d in model_subdir.iterdir() if d.is_dir() and d.name.startswith("en_core_sci") and "egg-info" not in d.name), None)
+            inner_model_dir = next(
+                (
+                    d
+                    for d in model_subdir.iterdir()
+                    if d.is_dir() and d.name.startswith("en_core_sci") and "egg-info" not in d.name
+                ),
+                None,
+            )
             if inner_model_dir:
                 # Load the model
-                self.nlp = spacy.load(str(str(model_archive.parent / model_subdir.name / inner_model_dir.name / model_subdir.name)))
+                self.nlp = spacy.load(
+                    str(str(model_archive.parent / model_subdir.name / inner_model_dir.name / model_subdir.name))
+                )
 
         # Assign the grounding implementation
         self.grounding_implementation = grounding_implementation
 
         # Test the model with a sample sentence
         self.nlp("Nystagmus, strabismus, fundus, ocular albinism, lewis.")
-
-
 
     def get_annotated_entities(self, text) -> List[TextAnnotationResult]:
         """Annotate text using SPACY"""

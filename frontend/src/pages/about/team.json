@@ -34,14 +34,14 @@
         "link": "https://tislab.org/members/bryan-laraway.html"
       },
       {
+        "name": "Carlo Kroll",
+        "role": "Scientific Software Engineer",
+        "link": ""
+      },
+      {
         "name": "Corey Cox",
         "role": "Scientific Software Engineer",
         "link": "https://github.com/amc-corey-cox"
-      },
-      {
-        "name": "Madan Krishnamurthy",
-        "role": "Semantic Engineer",
-        "link": "https://tislab.org/members/madan-krishnamurthy.html"
       },
       {
         "name": "Daniel Korn",
@@ -54,14 +54,34 @@
         "link": "https://tislab.org/members/eric-hurwitz.html"
       },
       {
+        "name": "Evan Connelly",
+        "role": "Scientific Software Engineer",
+        "link": "https://tislab.org/members/evan-connelly.html"
+      },
+      {
+        "name": "Katie Mullen",
+        "role": "Veterinary Postdoctoral Fellow",
+        "link": "https://tislab.org/members/katie-mullen.html"
+      },
+      {
         "name": "Kevin Schaper",
         "role": "Scientific Software Engineer",
         "link": "https://tislab.org/members/kevin-schaper.html"
       },
       {
+        "name": "Madan Krishnamurthy",
+        "role": "Semantic Engineer",
+        "link": "https://tislab.org/members/madan-krishnamurthy.html"
+      },
+      {
         "name": "Matthew Brush",
         "role": "Ontologist",
         "link": "https://tislab.org/members/matthew-brush.html"
+      },
+      {
+        "name": "Patrick Golden",
+        "role": "Scientific Software Engineer",
+        "link": ""
       },
       {
         "name": "Sabrina Toro",
@@ -79,19 +99,9 @@
         "link": "https://tislab.org/members/shawn-oneil.html"
       },
       {
-        "name": "Katie Mullen",
-        "role": "Veterinary Postdoctoral Fellow",
-        "link": "https://tislab.org/members/katie-mullen.html"
-      },
-      {
         "name": "Trish Whetzel",
         "role": "Semantic Curation Engineer",
         "link": "https://github.com/twhetzel"
-      },
-      {
-        "name": "Evan Connelly",
-        "role": "Scientific Software Engineer",
-        "link": "https://tislab.org/members/evan-connelly.html"
       }
     ]
   },
@@ -243,11 +253,6 @@
         "name": "Damian Smedley",
         "role": "Monarch PI",
         "link": "https://www.qmul.ac.uk/whri/people/academic-staff/items/smedleydamian.html"
-      },
-      {
-        "name": "Carlo Kroll",
-        "role": "Software Engineer",
-        "link": ""
       },
       {
         "name": "Jules Jacobsen",

@@ -3,22 +3,22 @@
   "items": [
     {
       "label": "musculature",
-      "count": 2057,
+      "count": 2035,
       "id": "UPHENO:0002816"
     },
     {
       "label": "nervous_system",
-      "count": 1113,
+      "count": 1042,
       "id": "UPHENO:0004523"
     },
     {
       "label": "head_neck",
-      "count": 595,
+      "count": 594,
       "id": "UPHENO:0002764"
     },
     {
       "label": "skeletal_system",
-      "count": 508,
+      "count": 500,
       "id": "UPHENO:0002964"
     },
     {
@@ -28,12 +28,12 @@
     },
     {
       "label": "metabolism_homeostasis",
-      "count": 225,
+      "count": 222,
       "id": "HP:0001939"
     },
     {
       "label": "blood",
-      "count": 183,
+      "count": 180,
       "id": "UPHENO:0004459"
     },
     {
@@ -48,7 +48,7 @@
     },
     {
       "label": "digestive_system",
-      "count": 153,
+      "count": 147,
       "id": "UPHENO:0002833"
     },
     {
@@ -58,7 +58,7 @@
     },
     {
       "label": "genitourinary_system",
-      "count": 49,
+      "count": 47,
       "id": "UPHENO:0002642"
     },
     {
@@ -68,13 +68,8 @@
     },
     {
       "label": "immune_system",
-      "count": 28,
+      "count": 27,
       "id": "UPHENO:0002948"
-    },
-    {
-      "label": "ear",
-      "count": 26,
-      "id": "HP:0000598"
     },
     {
       "label": "endocrine",
@@ -82,8 +77,13 @@
       "id": "UPHENO:0003116"
     },
     {
+      "label": "ear",
+      "count": 21,
+      "id": "HP:0000598"
+    },
+    {
       "label": "prenatal_or_birth",
-      "count": 22,
+      "count": 21,
       "id": "UPHENO:0075949"
     },
     {
