@@ -8,7 +8,7 @@
     v-if="isLoading"
     code="loading"
     class="loading"
-    :style="{ minHeight: dynamicMinHeight }"
+    :style="{ minHeight: dynamicMinHeight + 'em' }"
     >Loading tabulated association data</AppStatus
   >
   <AppStatus v-else-if="isError" code="error"
@@ -27,6 +27,7 @@
     :rows="associations.items"
     :total="associations.total"
     @download="download"
+    :dynamicMinHeight="dynamicMinHeight"
   >
     <!-- ortholog -->
     <template #ortholog="{ row }">
@@ -296,9 +297,10 @@ const orthologColoumns = computed<Cols<Datum>>(() => {
   ];
 });
 
+//calculate dynamic min height of table
 const dynamicMinHeight = computed(() => {
-  const itemHeight = 3.6; // Height of each item (in em)
-  return `${perPage.value * itemHeight}em`; // Adjust min-height based on perPage
+  const itemHeight = 3.6;
+  return perPage.value * itemHeight;
 });
 
 const medicalActionCategory =

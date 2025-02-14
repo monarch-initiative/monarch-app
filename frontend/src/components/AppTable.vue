@@ -16,6 +16,7 @@
     <div v-else ref="scroll" style="width: 100%">
       <table
         class="table"
+        :style="{ minHeight: dynamicMinHeight + 'em' }"
         :aria-colcount="cols.length"
         :aria-rowcount="rows.length"
       >
@@ -223,7 +224,7 @@ export type Sort<Key extends string = string> = {
 </script>
 
 <script setup lang="ts" generic="Datum extends object">
-import { computed, ref, type VNode } from "vue";
+import { computed, type VNode } from "vue";
 import type { Options } from "./AppSelectMulti.vue";
 import AppSelectMulti from "./AppSelectMulti.vue";
 import AppSelectSingle from "./AppSelectSingle.vue";
@@ -258,6 +259,8 @@ type Props = {
    * yet)
    */
   showControls?: boolean;
+  /** height of table according to per-page */
+  dynamicMinHeight?: number;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -398,7 +401,6 @@ const ariaSort = computed(() => {
 
 .table {
   width: 100%;
-  min-height: 18em;
   //  margin: 0 auto;
   border-collapse: collapse;
   font-size: 0.9em;
