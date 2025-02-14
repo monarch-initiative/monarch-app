@@ -340,6 +340,7 @@ const medicalActionColumns = computed<Cols<Datum>>(() => {
   ];
 });
 
+/** table columns */
 const cols = computed((): Cols<Datum> => {
   if (props.category.id.includes("GeneToGeneHomology")) {
     return orthologColoumns.value;
@@ -558,26 +559,23 @@ const frequencyTooltip = (row: DirectionalAssociation) => {
   }
   // if no percentage or fraction, display the qualifier label
   if (row.frequency_qualifier) return `${row.frequency_qualifier_label}`;
+
+  // finally, there is no frequency info at all
   return "No info";
 };
 
+/** get associations when category or table state changes * */
 watch(
   () => props.category,
-  async () => {
-    await queryAssociations(true);
-  },
+  async () => await queryAssociations(true),
 );
 watch(
   () => props.includeOrthologs,
-  async () => {
-    await queryAssociations(true);
-  },
+  async () => await queryAssociations(true),
 );
 watch(
   () => props.direct,
-  async () => {
-    await queryAssociations(true);
-  },
+  async () => await queryAssociations(true),
 );
 
 watch(
