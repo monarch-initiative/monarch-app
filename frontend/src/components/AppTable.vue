@@ -9,8 +9,10 @@
 <template>
   <!-- table data -->
   <AppFlex direction="col" align-h="left" :class="['container']">
-    <div v-if="total === 0" class="emptyState">No data available</div>
-
+    <div v-if="total === 0" class="emptyState">
+      <AppIcon icon="face-meh" size="lg" />
+      <div class="noResults">No matching results!</div>
+    </div>
     <div v-else ref="scroll" style="width: 100%">
       <table
         class="table"
@@ -485,10 +487,16 @@ const ariaSort = computed(() => {
 
 .emptyState {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100%;
   min-height: 18em;
+  gap: 1em;
+}
+
+.noResults {
+  font-size: 1.2em;
 }
 </style>

@@ -4,7 +4,11 @@
 
 <template>
   <!-- status -->
-  <AppStatus v-if="isLoading" code="loading" class="loading"
+  <AppStatus
+    v-if="isLoading"
+    code="loading"
+    class="loading"
+    :style="{ minHeight: dynamicMinHeight }"
     >Loading tabulated association data</AppStatus
   >
   <AppStatus v-else-if="isError" code="error"
@@ -290,6 +294,11 @@ const orthologColoumns = computed<Cols<Datum>>(() => {
       align: "center",
     },
   ];
+});
+
+const dynamicMinHeight = computed(() => {
+  const itemHeight = 3.6; // Height of each item (in em)
+  return `${perPage.value * itemHeight}em`; // Adjust min-height based on perPage
 });
 
 const medicalActionCategory =
@@ -604,6 +613,18 @@ onMounted(() => queryAssociations(true));
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-height: 18em;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.7;
+  }
 }
 </style>
