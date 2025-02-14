@@ -564,7 +564,7 @@ const frequencyTooltip = (row: DirectionalAssociation) => {
   return "No info";
 };
 
-/** get associations when category or table state changes * */
+/** get associations when category or table state changes */
 watch(
   () => props.category,
   async () => await queryAssociations(true),
@@ -577,7 +577,6 @@ watch(
   () => props.direct,
   async () => await queryAssociations(true),
 );
-
 watch(
   [perPage, start, search, sort],
   async () => await queryAssociations(false),
