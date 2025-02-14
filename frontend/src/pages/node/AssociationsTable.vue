@@ -23,7 +23,7 @@
     v-model:per-page="perPage"
     v-model:start="start"
     v-model:search="search"
-    :cols="columns"
+    :cols="cols"
     :rows="associations.items"
     :total="associations.total"
     @download="download"
@@ -188,7 +188,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch, watchEffect } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import {
   downloadAssociations,
   getAssociations,
@@ -226,7 +226,6 @@ const props = defineProps<Props>();
 
 const showModal = ref(false);
 const selectedAssociation = ref<DirectionalAssociation | null>(null);
-const columns = ref<Cols<Datum>>([]);
 
 function openModal(association: DirectionalAssociation) {
   selectedAssociation.value = association;
@@ -341,7 +340,7 @@ const medicalActionColumns = computed<Cols<Datum>>(() => {
   ];
 });
 
-function computeCols(): Cols<Datum> {
+const cols = computed((): Cols<Datum> => {
   if (props.category.id.includes("GeneToGeneHomology")) {
     return orthologColoumns.value;
   } else if (props.category.id == medicalActionCategory) {
@@ -457,7 +456,7 @@ function computeCols(): Cols<Datum> {
   if (extraCols[0]) extraCols.unshift({ slot: "divider" });
 
   return [...baseCols, ...extraCols];
-}
+});
 
 /** get table association data */
 const {
@@ -563,14 +562,6 @@ const frequencyTooltip = (row: DirectionalAssociation) => {
 };
 
 watch(
-  () => [props.category, props.node],
-  () => {
-    columns.value = computeCols();
-  },
-  { immediate: true },
-);
-
-watch(
   () => props.category,
   async () => {
     await queryAssociations(true);
@@ -588,10 +579,13 @@ watch(
     await queryAssociations(true);
   },
 );
-watchEffect(async () => {
-  await queryAssociations(false);
-});
 
+watch(
+  [perPage, start, search, sort],
+  async () => await queryAssociations(false),
+);
+
+/** get associations on load */
 onMounted(() => queryAssociations(true));
 </script>
 
