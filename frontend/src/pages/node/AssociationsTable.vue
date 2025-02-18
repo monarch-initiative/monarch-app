@@ -3,6 +3,11 @@
 -->
 
 <template>
+  <AppTextbox
+    v-model="search"
+    @input="updateSearch($event.target.value)"
+    placeholder="Search table data..."
+  />
   <!-- status -->
   <AppStatus
     v-if="isLoading"
@@ -179,6 +184,20 @@
     <!-- publication specific -->
     <!-- no template needed because info just plain text -->
   </AppTable>
+
+  <ShowContols
+    id="showControls"
+    v-model:sort="sort"
+    v-model:per-page="perPage"
+    v-model:start="start"
+    v-model:search="search"
+    :cols="cols"
+    :rows="associations.items"
+    :total="associations.total"
+    @download="download"
+    :dynamicMinHeight="dynamicMinHeight"
+  />
+
   <AppModal v-model="showModal" label="Association Details">
     <SectionAssociationDetails
       :node="node"
@@ -207,6 +226,8 @@ import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
 import type { Option } from "@/components/AppSelectSingle.vue";
 import AppTable from "@/components/AppTable.vue";
 import type { Cols, Sort } from "@/components/AppTable.vue";
+import AppTextbox from "@/components/AppTextbox.vue";
+import ShowContols from "@/components/ShowContols.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
 import { useQuery } from "@/composables/use-query";
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
@@ -259,6 +280,11 @@ const sort = ref<Sort>();
 const perPage = ref(5);
 const start = ref(0);
 const search = ref("");
+
+function updateSearch(value: string) {
+  search.value = value;
+  start.value = 0; // Reset start index
+}
 
 type Datum = keyof DirectionalAssociation;
 
@@ -478,6 +504,7 @@ const {
     if (fresh) {
       start.value = 0;
     }
+
     const response = await getAssociations(
       props.node.id,
       props.category.id,

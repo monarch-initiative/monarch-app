@@ -106,90 +106,6 @@
         </tbody>
       </table>
     </div>
-
-    <div class="controls">
-      <!-- left side controls -->
-      <div>
-        <template v-if="showControls">
-          <span>Per page</span>
-          <AppSelectSingle
-            name="Rows per page"
-            :options="[
-              { id: '5' },
-              { id: '10' },
-              { id: '20' },
-              { id: '50' },
-              { id: '100' },
-              { id: '500' },
-            ]"
-            :model-value="{ id: String(perPage || 5) }"
-            @update:model-value="(value) => emitPerPage(value.id)"
-          />
-        </template>
-      </div>
-
-      <!-- center controls -->
-      <div>
-        <template v-if="showControls">
-          <AppButton
-            v-tooltip="'Go to first page'"
-            :disabled="start <= 0"
-            icon="angles-left"
-            design="small"
-            @click="clickFirst"
-          />
-          <AppButton
-            v-tooltip="'Go to previous page'"
-            :disabled="start - perPage < 0"
-            icon="angle-left"
-            design="small"
-            @click="clickPrev"
-          />
-        </template>
-        <template v-if="total > 0">
-          <span v-if="showControls"
-            >{{ start + 1 }} &mdash; {{ end }} of {{ total }}</span
-          >
-          <span v-else>{{ total }} row(s)</span>
-        </template>
-        <span v-else>no data</span>
-        <template v-if="showControls">
-          <AppButton
-            v-tooltip="'Go to next page'"
-            :disabled="start + perPage > total"
-            icon="angle-right"
-            design="small"
-            @click="clickNext"
-          />
-          <AppButton
-            v-tooltip="'Go to last page'"
-            :disabled="start + perPage > total"
-            icon="angles-right"
-            design="small"
-            @click="clickLast"
-          />
-        </template>
-      </div>
-
-      <!-- right side controls -->
-      <div>
-        <AppTextbox
-          v-if="showControls"
-          v-tooltip="'Search table data'"
-          class="search"
-          icon="magnifying-glass"
-          :model-value="search"
-          @debounce="emitSearch"
-          @change="emitSearch"
-        />
-        <AppButton
-          v-tooltip="'Download table data'"
-          icon="download"
-          design="small"
-          @click="emitDownload"
-        />
-      </div>
-    </div>
   </AppFlex>
 </template>
 
@@ -227,8 +143,6 @@ export type Sort<Key extends string = string> = {
 import { computed, type VNode } from "vue";
 import type { Options } from "./AppSelectMulti.vue";
 import AppSelectMulti from "./AppSelectMulti.vue";
-import AppSelectSingle from "./AppSelectSingle.vue";
-import AppTextbox from "./AppTextbox.vue";
 
 /** possible keys on datum (remove number and symbol from default object type) */
 type Keys = Extract<keyof Datum, string>;
@@ -303,26 +217,6 @@ defineSlots<{
   [slot in SlotNames]: (props: SlotProps) => VNode;
 }>();
 
-/** when user clicks to first page */
-function clickFirst() {
-  emit("update:start", 0);
-}
-
-/** when user clicks to previous page */
-function clickPrev() {
-  emit("update:start", props.start - props.perPage);
-}
-
-/** when user clicks to next page */
-function clickNext() {
-  emit("update:start", props.start + props.perPage);
-}
-
-/** when user clicks to last page */
-function clickLast() {
-  emit("update:start", Math.floor(props.total / props.perPage) * props.perPage);
-}
-
 /** when user clicks a sort button */
 function emitSort(col: Cols<Keys>[number]) {
   let newSort: Sort<Keys>;
@@ -353,26 +247,6 @@ function emitFilter(colKey: Cols<Keys>[number]["key"], value: Options) {
       [colKey]: value,
     });
 }
-
-/** when user changes rows per page */
-function emitPerPage(value: string) {
-  emit("update:perPage", Number(value));
-  emit("update:start", 0);
-}
-
-/** when user types in search */
-function emitSearch(value: string) {
-  emit("update:search", value);
-  emit("update:start", 0);
-}
-
-/** when user clicks download */
-function emitDownload() {
-  emit("download");
-}
-
-/** ending item index */
-const end = computed((): number => props.start + props.rows.length);
 
 /** aria sort direction attribute */
 const ariaSort = computed(() => {
@@ -466,26 +340,26 @@ const ariaSort = computed(() => {
   border-bottom: solid 2px $light-gray;
 }
 
-.controls {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px 40px;
+// .controls {
+//   display: flex;
+//   justify-content: space-between;
+//   gap: 20px 40px;
 
-  & > * {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-  }
+//   & > * {
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     gap: 10px;
+//   }
 
-  @media (max-width: 850px) {
-    flex-direction: column;
-  }
+//   @media (max-width: 850px) {
+//     flex-direction: column;
+//   }
 
-  .search {
-    max-width: 150px;
-  }
-}
+//   .search {
+//     max-width: 150px;
+//   }
+// }
 
 .emptyState {
   display: flex;
