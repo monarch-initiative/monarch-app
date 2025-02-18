@@ -100,7 +100,6 @@ function clear() {
 watch(
   () => input.value?.input?.value,
   (newValue) => {
-    console.log("newValuesbjfbdjsf");
     if (newValue && !isTyping.value) {
       isTyping.value = true; // Mark typing as started
     }
