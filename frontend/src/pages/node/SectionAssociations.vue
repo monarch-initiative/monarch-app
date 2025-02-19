@@ -58,7 +58,7 @@
           :include-orthologs="includeOrthologs"
           :direct="direct"
           :search="debouncedSearchValues[category.id]"
-          :start="start"
+          v-model:start="start"
         />
       </template>
     </AppSection>

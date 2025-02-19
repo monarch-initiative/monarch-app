@@ -175,30 +175,34 @@ defineSlots<{
   [slot in SlotNames]: (props: SlotProps) => VNode;
 }>();
 
+function updateStart(newStart: number) {
+  emit("update:start", newStart);
+}
+
 /** when user clicks to first page */
 function clickFirst() {
-  emit("update:start", 0);
+  updateStart(0);
 }
 
 /** when user clicks to previous page */
 function clickPrev() {
-  emit("update:start", props.start - props.perPage);
+  updateStart(props.start - props.perPage); // Example decrement
 }
 
 /** when user clicks to next page */
 function clickNext() {
-  emit("update:start", props.start + props.perPage);
+  updateStart(props.start + props.perPage); // Example increment
 }
 
 /** when user clicks to last page */
 function clickLast() {
-  emit("update:start", Math.floor(props.total / props.perPage) * props.perPage);
+  updateStart(Math.floor(props.total / props.perPage) * props.perPage);
 }
 
 /** when user changes rows per page */
 function emitPerPage(value: string) {
   emit("update:perPage", Number(value));
-  emit("update:start", 0);
+  updateStart(0);
 }
 
 /** when user clicks download */

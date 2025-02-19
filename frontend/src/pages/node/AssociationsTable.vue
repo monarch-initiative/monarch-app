@@ -191,6 +191,7 @@
     :total="associations.total"
     @download="download"
     :dynamicMinHeight="dynamicMinHeight"
+    @update:start="updateStart"
   />
 
   <AppModal v-model="showModal" label="Association Details">
@@ -241,6 +242,14 @@ type Props = {
 };
 
 const props = defineProps<Props>();
+
+const emit = defineEmits(["update:start"]);
+
+function updateStart(newStart: number | undefined) {
+  if (newStart !== undefined) {
+    emit("update:start", newStart);
+  }
+}
 
 const showModal = ref(false);
 const selectedAssociation = ref<DirectionalAssociation | null>(null);
@@ -604,7 +613,15 @@ watch(
   { immediate: true },
 );
 
-watch([perPage, props.start, sort], async () => await queryAssociations(false));
+watch(
+  () => props.start,
+  async () => {
+    await queryAssociations(true);
+    console.log(props.start);
+  },
+  { immediate: true },
+);
+watch([perPage, sort], async () => await queryAssociations(false));
 
 /** get associations on load */
 onMounted(() => queryAssociations(true));

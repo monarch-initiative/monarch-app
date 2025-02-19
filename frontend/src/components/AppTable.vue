@@ -250,20 +250,6 @@ function emitFilter(colKey: Cols<Keys>[number]["key"], value: Options) {
     });
 }
 
-/** when user types in search */
-function emitSearch(value: string) {
-  emit("update:search", value);
-  emit("update:start", 0);
-}
-
-/** when user clicks download */
-function emitDownload() {
-  emit("download");
-}
-
-/** ending item index */
-const end = computed((): number => props.start + props.rows.length);
-
 /** aria sort direction attribute */
 const ariaSort = computed(() => {
   if (props.sort?.direction === "up") return "ascending";
