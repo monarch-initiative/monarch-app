@@ -126,8 +126,7 @@ type Props = {
   start?: number;
   /** total number of items */
   total?: number;
-  /** text being searched (two-way bound) */
-  search?: string;
+
   /**
    * whether to show certain controls (temp solution, needed b/c this is a
    * controlled component and cannot paginate/search/etc on its own where needed
@@ -145,7 +144,6 @@ const props = withDefaults(defineProps<Props>(), {
   perPage: 5,
   start: 0,
   total: 0,
-  search: "",
   showControls: true,
 });
 
@@ -158,8 +156,7 @@ type Emits = {
   "update:perPage": [Props["perPage"]];
   /** when start row changes (two-way bound) */
   "update:start": [Props["start"]];
-  /** when search changes (two-way bound) */
-  "update:search": [Props["search"]];
+
   /** when user requests download */
   download: [];
 };
@@ -204,12 +201,6 @@ function emitPerPage(value: string) {
   emit("update:start", 0);
 }
 
-/** when user types in search */
-// function emitSearch(value: string) {
-//   emit("update:search", value);
-//   emit("update:start", 0);
-// }
-
 /** when user clicks download */
 function emitDownload() {
   emit("download");
@@ -224,9 +215,6 @@ const end = computed((): number => props.start + props.rows.length);
   display: flex;
   justify-content: space-between;
   gap: 20px 40px;
-}
-.search {
-  margin-right: 10px;
 }
 
 .controls {

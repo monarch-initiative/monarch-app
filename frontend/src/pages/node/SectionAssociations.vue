@@ -39,6 +39,12 @@
           text="Phenotype Explorer"
           icon="arrow-right"
         />
+        <!-- Removed @debounce event -->
+        <AppTextbox
+          v-model="searchValues[category.id]"
+          placeholder="Search table data..."
+          @debounce="handleDebounce"
+        />
       </AppFlex>
 
       <template v-if="category && direct">
@@ -48,6 +54,8 @@
           :category="category"
           :include-orthologs="includeOrthologs"
           :direct="direct"
+          :search="searchValues[category.id]"
+          :start="start"
         />
       </template>
     </AppSection>
@@ -56,13 +64,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { startCase } from "lodash";
 import type { Node } from "@/api/model";
 import AppCheckbox from "@/components/AppCheckbox.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import type { Option, Options } from "@/components/AppSelectSingle.vue";
+import AppTextbox from "@/components/AppTextbox.vue";
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
 
 /** route info */
@@ -78,6 +87,29 @@ const props = defineProps<Props>();
 /** include orthologous genes in association table */
 const includeOrthologs = ref(false);
 const direct = ref<Option>();
+const start = ref(0);
+const searchValues = ref<Record<string, string>>({});
+
+const debounceTimers = ref<Record<string, ReturnType<typeof setTimeout>>>({});
+const debouncedValue = ref("");
+
+const handleDebounce = (value: string) => {
+  console.log("THE VALUEEEEEEE", value);
+  debouncedValue.value = value;
+};
+
+function updateSearch(categoryId: string, value: string) {
+  // Clear previous debounce timer for the category
+  if (debounceTimers.value[categoryId]) {
+    clearTimeout(debounceTimers.value[categoryId]);
+  }
+
+  // Set a new debounce timer
+  debounceTimers.value[categoryId] = setTimeout(() => {
+    searchValues.value[categoryId] = value;
+    start.value = 0; // Reset the start index
+  }, 1000); // Debounce delay (in ms)
+}
 
 /** list of options for dropdown */
 const categoryOptions = computed(
@@ -94,6 +126,17 @@ const directOptions = computed(
     { id: "false", label: "including sub-classes" },
     { id: "true", label: "directly" },
   ],
+);
+
+// Watch for search changes and debounce them
+watch(
+  () => searchValues.value,
+  (newSearchValues) => {
+    Object.keys(newSearchValues).forEach((categoryId) => {
+      updateSearch(categoryId, newSearchValues[categoryId]);
+    });
+  },
+  { deep: true },
 );
 
 watch(

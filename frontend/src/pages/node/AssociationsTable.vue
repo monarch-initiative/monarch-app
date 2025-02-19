@@ -3,11 +3,6 @@
 -->
 
 <template>
-  <AppTextbox
-    v-model="search"
-    @input="updateSearch($event.target.value)"
-    placeholder="Search table data..."
-  />
   <!-- status -->
   <AppStatus
     v-if="isLoading"
@@ -26,8 +21,8 @@
     id="associations"
     v-model:sort="sort"
     v-model:per-page="perPage"
-    v-model:start="start"
-    v-model:search="search"
+    v-model:start="props.start"
+    v-model:search="props.search"
     :cols="cols"
     :rows="associations.items"
     :total="associations.total"
@@ -189,8 +184,8 @@
     id="showControls"
     v-model:sort="sort"
     v-model:per-page="perPage"
-    v-model:start="start"
-    v-model:search="search"
+    v-model:start="props.start"
+    v-model:search="props.search"
     :cols="cols"
     :rows="associations.items"
     :total="associations.total"
@@ -241,6 +236,8 @@ type Props = {
   /** include orthologs */
   includeOrthologs: boolean;
   direct: Option;
+  search: string;
+  start: number;
 };
 
 const props = defineProps<Props>();
@@ -278,13 +275,6 @@ watch(showModal, (newValue) => {
 /** table state */
 const sort = ref<Sort>();
 const perPage = ref(5);
-const start = ref(0);
-const search = ref("");
-
-function updateSearch(value: string) {
-  search.value = value;
-  start.value = 0; // Reset start index
-}
 
 type Datum = keyof DirectionalAssociation;
 
@@ -501,18 +491,18 @@ const {
     if (!props.node.association_counts.length)
       throw Error("No association info available");
     /** get association data */
-    if (fresh) {
-      start.value = 0;
-    }
+    // if (fresh) {
+    //   start.value = 0;
+    // }
 
     const response = await getAssociations(
       props.node.id,
       props.category.id,
-      start.value,
+      props.start,
       perPage.value,
       props.includeOrthologs,
       props.direct.id,
-      search.value,
+      props.search,
       sort.value,
     );
 
@@ -541,7 +531,7 @@ async function download() {
     props.category.id,
     props.includeOrthologs,
     props.direct.id,
-    search.value,
+    props.search,
     sort.value,
   );
 }
@@ -604,10 +594,13 @@ watch(
   () => props.direct,
   async () => await queryAssociations(true),
 );
+
 watch(
-  [perPage, start, search, sort],
-  async () => await queryAssociations(false),
+  () => props.search,
+  async () => await queryAssociations(true),
 );
+
+watch([perPage, props.start, sort], async () => await queryAssociations(false));
 
 /** get associations on load */
 onMounted(() => queryAssociations(true));

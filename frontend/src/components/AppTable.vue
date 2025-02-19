@@ -143,6 +143,8 @@ export type Sort<Key extends string = string> = {
 import { computed, type VNode } from "vue";
 import type { Options } from "./AppSelectMulti.vue";
 import AppSelectMulti from "./AppSelectMulti.vue";
+import AppSelectSingle from "./AppSelectSingle.vue";
+import AppTextbox from "./AppTextbox.vue";
 
 /** possible keys on datum (remove number and symbol from default object type) */
 type Keys = Extract<keyof Datum, string>;
@@ -247,6 +249,20 @@ function emitFilter(colKey: Cols<Keys>[number]["key"], value: Options) {
       [colKey]: value,
     });
 }
+
+/** when user types in search */
+function emitSearch(value: string) {
+  emit("update:search", value);
+  emit("update:start", 0);
+}
+
+/** when user clicks download */
+function emitDownload() {
+  emit("download");
+}
+
+/** ending item index */
+const end = computed((): number => props.start + props.rows.length);
 
 /** aria sort direction attribute */
 const ariaSort = computed(() => {
