@@ -11,41 +11,44 @@
       <span v-if="!categoryOptions.length"
         >No associations with &nbsp;<AppNodeBadge :node="node" />
       </span>
-
-      <AppFlex gap="small">
-        <AppCheckbox
-          v-if="
-            node.category === 'biolink:Gene' &&
-            category?.id.startsWith('biolink:GeneToPheno')
-          "
-          v-model="includeOrthologs"
-          v-tooltip="
-            'Include phenotypes for orthologous genes in the associations table'
-          "
-          text="Include ortholog phenotypes"
-        />
-        <AppButton
-          v-if="
-            (node.category === 'biolink:Disease' &&
-              category?.id.startsWith('biolink:DiseaseToPheno')) ||
-            (node.category === 'biolink:Gene' &&
-              category?.id.startsWith('biolink:GeneToPheno'))
-          "
-          v-tooltip="
-            'Send these phenotypes to Phenotype Explorer for comparison'
-          "
-          to="explore#phenotype-explorer"
-          :state="{ search: node.id }"
-          text="Phenotype Explorer"
-          icon="arrow-right"
-        />
-        <!-- Removed @debounce event -->
-        <AppTextbox
-          v-model="searchValues[category.id]"
-          placeholder="Search table data..."
-          @debounce="handleDebounce"
-        />
-      </AppFlex>
+      <div class="topRow">
+        <AppFlex gap="small" class="leftColumn">
+          <AppCheckbox
+            v-if="
+              node.category === 'biolink:Gene' &&
+              category?.id.startsWith('biolink:GeneToPheno')
+            "
+            v-model="includeOrthologs"
+            v-tooltip="
+              'Include phenotypes for orthologous genes in the associations table'
+            "
+            text="Include ortholog phenotypes"
+          />
+          <AppButton
+            v-if="
+              (node.category === 'biolink:Disease' &&
+                category?.id.startsWith('biolink:DiseaseToPheno')) ||
+              (node.category === 'biolink:Gene' &&
+                category?.id.startsWith('biolink:GeneToPheno'))
+            "
+            v-tooltip="
+              'Send these phenotypes to Phenotype Explorer for comparison'
+            "
+            to="explore#phenotype-explorer"
+            :state="{ search: node.id }"
+            text="Phenotype Explorer"
+            icon="arrow-right"
+          />
+        </AppFlex>
+        <div class="rightColumn">
+          <AppTextbox
+            v-model="searchValues[category.id]"
+            placeholder="Search table data..."
+            @debounce="handleDebounce($event, category.id)"
+            @change="handleDebounce($event, category.id)"
+          />
+        </div>
+      </div>
 
       <template v-if="category && direct">
         <!-- table view of associations -->
@@ -93,23 +96,21 @@ const searchValues = ref<Record<string, string>>({});
 const debounceTimers = ref<Record<string, ReturnType<typeof setTimeout>>>({});
 const debouncedValue = ref("");
 
-const handleDebounce = (value: string) => {
-  console.log("THE VALUEEEEEEE", value);
-  debouncedValue.value = value;
-};
-
-function updateSearch(categoryId: string, value: string) {
-  // Clear previous debounce timer for the category
+const handleDebounce = (value: string, categoryId: string) => {
+  // Clear existing timeout if any
   if (debounceTimers.value[categoryId]) {
     clearTimeout(debounceTimers.value[categoryId]);
   }
 
-  // Set a new debounce timer
+  // Set new timeout
   debounceTimers.value[categoryId] = setTimeout(() => {
     searchValues.value[categoryId] = value;
-    start.value = 0; // Reset the start index
-  }, 1000); // Debounce delay (in ms)
-}
+    console.log(
+      "Updated search value after debounce:",
+      searchValues.value[categoryId],
+    );
+  }, 300); // Adjust debounce delay as needed
+};
 
 /** list of options for dropdown */
 const categoryOptions = computed(
@@ -126,17 +127,6 @@ const directOptions = computed(
     { id: "false", label: "including sub-classes" },
     { id: "true", label: "directly" },
   ],
-);
-
-// Watch for search changes and debounce them
-watch(
-  () => searchValues.value,
-  (newSearchValues) => {
-    Object.keys(newSearchValues).forEach((categoryId) => {
-      updateSearch(categoryId, newSearchValues[categoryId]);
-    });
-  },
-  { deep: true },
 );
 
 watch(
@@ -163,5 +153,19 @@ watch(
 /** make room for the table of contents **/
 .section {
   margin: 10px 20px 10px $toc-width + 20px !important;
+}
+.topRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  gap: 16px;
+}
+.leftColumn {
+  flex: 1;
+  min-width: 300px;
+}
+.rightColumn {
+  min-width: 20em;
 }
 </style>
