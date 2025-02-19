@@ -597,7 +597,11 @@ watch(
 
 watch(
   () => props.search,
-  async () => await queryAssociations(true),
+  async () => {
+    await queryAssociations(true);
+    console.log(props.search);
+  },
+  { immediate: true },
 );
 
 watch([perPage, props.start, sort], async () => await queryAssociations(false));

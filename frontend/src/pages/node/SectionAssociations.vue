@@ -57,7 +57,7 @@
           :category="category"
           :include-orthologs="includeOrthologs"
           :direct="direct"
-          :search="searchValues[category.id]"
+          :search="debouncedSearchValues[category.id]"
           :start="start"
         />
       </template>
@@ -91,25 +91,22 @@ const props = defineProps<Props>();
 const includeOrthologs = ref(false);
 const direct = ref<Option>();
 const start = ref(0);
-const searchValues = ref<Record<string, string>>({});
 
+const searchValues = ref<Record<string, string>>({});
+const debouncedSearchValues = ref<Record<string, string>>({});
 const debounceTimers = ref<Record<string, ReturnType<typeof setTimeout>>>({});
-const debouncedValue = ref("");
 
 const handleDebounce = (value: string, categoryId: string) => {
-  // Clear existing timeout if any
+  // Update searchValues immediately (for UI updates if needed)
+  searchValues.value[categoryId] = value;
+
   if (debounceTimers.value[categoryId]) {
     clearTimeout(debounceTimers.value[categoryId]);
   }
 
-  // Set new timeout
   debounceTimers.value[categoryId] = setTimeout(() => {
-    searchValues.value[categoryId] = value;
-    console.log(
-      "Updated search value after debounce:",
-      searchValues.value[categoryId],
-    );
-  }, 300); // Adjust debounce delay as needed
+    debouncedSearchValues.value[categoryId] = value;
+  }, 300); // 300ms debounce time
 };
 
 /** list of options for dropdown */
