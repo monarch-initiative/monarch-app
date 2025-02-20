@@ -82,6 +82,7 @@ const icons = [
   fas.faUsers,
   fas.faUserGear,
   fas.faXmark,
+  far.faFaceMeh,
 ];
 
 library.add(...icons);

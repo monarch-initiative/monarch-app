@@ -70,7 +70,7 @@ function onInput() {
 /** when user types in box, after some delay */
 const onDebounce = _debounce(function (value: string) {
   emit("debounce", value);
-}, props.debounce || 500);
+}, props.debounce || 1000);
 
 /** when user "commits" change (pressing enter, blurring, etc) */
 async function onChange() {
