@@ -158,33 +158,16 @@ type Props = {
   /** filters */
   filterOptions?: { [key: string]: Options };
   selectedFilters?: { [key: string]: Options };
-  /** items per page (two-way bound) */
-  perPage?: number;
-  /** starting item index (two-way bound) */
-  start?: number;
+
   /** total number of items */
   total?: number;
-  /** text being searched (two-way bound) */
-  search?: string;
-  /**
-   * whether to show certain controls (temp solution, needed b/c this is a
-   * controlled component and cannot paginate/search/etc on its own where needed
-   * yet)
-   */
-  showControls?: boolean;
-  /** height of table according to per-page */
-  dynamicMinHeight?: number;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   sort: undefined,
   filterOptions: undefined,
   selectedFilters: undefined,
-  perPage: 5,
-  start: 0,
   total: 0,
-  search: "",
-  showControls: true,
 });
 
 type Emits = {
@@ -192,14 +175,6 @@ type Emits = {
   "update:sort": [Props["sort"]];
   /** when selected filters change (two-way bound) */
   "update:selectedFilters": [Props["selectedFilters"]];
-  /** when per page changes (two-way bound) */
-  "update:perPage": [Props["perPage"]];
-  /** when start row changes (two-way bound) */
-  "update:start": [Props["start"]];
-  /** when search changes (two-way bound) */
-  "update:search": [Props["search"]];
-  /** when user requests download */
-  download: [];
 };
 
 const emit = defineEmits<Emits>();
@@ -339,27 +314,6 @@ const ariaSort = computed(() => {
   border-bottom: solid 2px $light-gray;
 }
 
-// .controls {
-//   display: flex;
-//   justify-content: space-between;
-//   gap: 20px 40px;
-
-//   & > * {
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//     gap: 10px;
-//   }
-
-//   @media (max-width: 850px) {
-//     flex-direction: column;
-//   }
-
-//   .search {
-//     max-width: 150px;
-//   }
-// }
-
 .emptyState {
   display: flex;
   flex-direction: column;
@@ -372,6 +326,6 @@ const ariaSort = computed(() => {
 }
 
 .noResults {
-  font-size: 1.2em;
+  font-size: 1.1em;
 }
 </style>

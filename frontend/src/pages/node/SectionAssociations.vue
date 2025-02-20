@@ -11,6 +11,7 @@
       <span v-if="!categoryOptions.length"
         >No associations with &nbsp;<AppNodeBadge :node="node" />
       </span>
+
       <div class="topRow">
         <AppFlex gap="small" class="leftColumn">
           <AppCheckbox
@@ -40,6 +41,7 @@
             icon="arrow-right"
           />
         </AppFlex>
+
         <div class="rightColumn">
           <AppTextbox
             v-model="searchValues[category.id]"
@@ -66,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { startCase } from "lodash";
 import type { Node } from "@/api/model";

@@ -19,7 +19,6 @@
       </template>
     </div>
 
-    <!-- Center controls -->
     <div>
       <template v-if="showControls">
         <AppButton
@@ -78,68 +77,24 @@ import { computed, type VNode } from "vue";
 import type { Options } from "./AppSelectMulti.vue";
 import AppSelectSingle from "./AppSelectSingle.vue";
 
-/** possible keys on datum (remove number and symbol from default object type) */
-type Keys = Extract<keyof Datum, string>;
-
-type Cols<Key extends string = string> = {
-  /**
-   * name of slot to use for rendering. use "divider" to create vertical divider
-   * to separate cols.
-   */
-  slot?: string;
-  /**
-   * what item in row object to access as raw cell value, and which key to use
-   * for sorting and filtering
-   */
-  key?: Key;
-  /** header display text */
-  heading?: string;
-  /** how to align column contents (both header and body) horizontally */
-  align?: "left" | "center" | "right";
-  /** CSS width (effectively a min width, but wont exceed `max-content`) */
-  width?: string;
-  /** whether to allow sorting of column */
-  sortable?: boolean;
-}[];
-/** sort prop */
-type Sort<Key extends string = string> = {
-  key: Key;
-  direction: "up" | "down";
-} | null;
-
 type Props = {
-  /** unique id for table */
-  id: string;
-  /** info for each column of table */
-  cols: Cols<Keys>;
   /** list of table rows, i.e. the table data */
   rows: Datum[];
-  /** sort key and direction */
-  sort?: Sort;
-  /** filters */
-  filterOptions?: { [key: string]: Options };
-  selectedFilters?: { [key: string]: Options };
   /** items per page (two-way bound) */
   perPage?: number;
   /** starting item index (two-way bound) */
   start?: number;
   /** total number of items */
   total?: number;
-
   /**
    * whether to show certain controls (temp solution, needed b/c this is a
    * controlled component and cannot paginate/search/etc on its own where needed
    * yet)
    */
   showControls?: boolean;
-  /** height of table according to per-page */
-  dynamicMinHeight?: number;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  sort: undefined,
-  filterOptions: undefined,
-  selectedFilters: undefined,
   perPage: 5,
   start: 0,
   total: 0,
@@ -147,32 +102,15 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 type Emits = {
-  /** when sort changes (two-way bound) */
-  "update:sort": [Props["sort"]];
-  /** when selected filters change (two-way bound) */
-  "update:selectedFilters": [Props["selectedFilters"]];
   /** when per page changes (two-way bound) */
   "update:perPage": [Props["perPage"]];
   /** when start row changes (two-way bound) */
   "update:start": [Props["start"]];
-
   /** when user requests download */
   download: [];
 };
 
 const emit = defineEmits<Emits>();
-
-type SlotNames = string;
-
-type SlotProps = {
-  col: Cols<Keys>[number];
-  row: Datum;
-  cell: Datum[Keys] | null;
-};
-
-defineSlots<{
-  [slot in SlotNames]: (props: SlotProps) => VNode;
-}>();
 
 function updateStart(newStart: number) {
   emit("update:start", newStart);

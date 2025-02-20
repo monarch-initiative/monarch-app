@@ -27,7 +27,6 @@
     :rows="associations.items"
     :total="associations.total"
     @download="download"
-    :dynamicMinHeight="dynamicMinHeight"
   >
     <!-- ortholog -->
     <template #ortholog="{ row }">
@@ -182,15 +181,11 @@
 
   <ShowContols
     id="showControls"
-    v-model:sort="sort"
     v-model:per-page="perPage"
     v-model:start="start"
-    v-model:search="props.search"
-    :cols="cols"
     :rows="associations.items"
     :total="associations.total"
     @download="download"
-    :dynamicMinHeight="dynamicMinHeight"
   />
 
   <AppModal v-model="showModal" label="Association Details">
@@ -221,7 +216,6 @@ import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
 import type { Option } from "@/components/AppSelectSingle.vue";
 import AppTable from "@/components/AppTable.vue";
 import type { Cols, Sort } from "@/components/AppTable.vue";
-import AppTextbox from "@/components/AppTextbox.vue";
 import ShowContols from "@/components/ShowContols.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
 import { useQuery } from "@/composables/use-query";
@@ -236,22 +230,18 @@ type Props = {
   /** include orthologs */
   includeOrthologs: boolean;
   direct: Option;
+  /** search string */
   search: string;
 };
 
 const props = defineProps<Props>();
 
-// const emit = defineEmits(["update:start"]);
-
-// function updateStart(newStart: number | undefined) {
-//   if (newStart !== undefined) {
-//     emit("update:start", newStart);
-//   }
-// }
-
 const showModal = ref(false);
 const selectedAssociation = ref<DirectionalAssociation | null>(null);
 const start = ref(0);
+const sort = ref<Sort>();
+const perPage = ref(5);
+
 function openModal(association: DirectionalAssociation) {
   selectedAssociation.value = association;
   showModal.value = true;
@@ -263,30 +253,9 @@ watch(showModal, (newValue) => {
   }
 });
 
-// type Emits = {
-//   /** change selected association */
-//   select: [value?: DirectionalAssociation];
-// };
-//
-// const emit = defineEmits<Emits>();
-//
-// emit("select", (value) => {
-//   if (value) {
-//     console.log("emitting association detail event");
-//     console.log(value);
-//     association.value = value;
-//     showModal.value = true;
-//   }
-// });
-
-/** table state */
-const sort = ref<Sort>();
-const perPage = ref(5);
-
 type Datum = keyof DirectionalAssociation;
 
 /** Orholog columns */
-
 const orthologColoumns = computed<Cols<Datum>>(() => {
   return [
     {
