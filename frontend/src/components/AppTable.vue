@@ -16,7 +16,6 @@
     <div v-else ref="scroll" style="width: 100%">
       <table
         class="table"
-        :style="{ minHeight: dynamicMinHeight + 'em' }"
         :aria-colcount="cols.length"
         :aria-rowcount="rows.length"
       >
@@ -143,8 +142,6 @@ export type Sort<Key extends string = string> = {
 import { computed, type VNode } from "vue";
 import type { Options } from "./AppSelectMulti.vue";
 import AppSelectMulti from "./AppSelectMulti.vue";
-import AppSelectSingle from "./AppSelectSingle.vue";
-import AppTextbox from "./AppTextbox.vue";
 
 /** possible keys on datum (remove number and symbol from default object type) */
 type Keys = Extract<keyof Datum, string>;

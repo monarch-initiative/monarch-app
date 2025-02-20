@@ -58,7 +58,6 @@
           :include-orthologs="includeOrthologs"
           :direct="direct"
           :search="debouncedSearchValues[category.id]"
-          v-model:start="start"
         />
       </template>
     </AppSection>
@@ -90,7 +89,6 @@ const props = defineProps<Props>();
 /** include orthologous genes in association table */
 const includeOrthologs = ref(false);
 const direct = ref<Option>();
-const start = ref(0);
 
 const searchValues = ref<Record<string, string>>({});
 const debouncedSearchValues = ref<Record<string, string>>({});

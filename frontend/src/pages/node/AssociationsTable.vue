@@ -21,7 +21,7 @@
     id="associations"
     v-model:sort="sort"
     v-model:per-page="perPage"
-    v-model:start="props.start"
+    v-model:start="start"
     v-model:search="props.search"
     :cols="cols"
     :rows="associations.items"
@@ -184,14 +184,13 @@
     id="showControls"
     v-model:sort="sort"
     v-model:per-page="perPage"
-    v-model:start="props.start"
+    v-model:start="start"
     v-model:search="props.search"
     :cols="cols"
     :rows="associations.items"
     :total="associations.total"
     @download="download"
     :dynamicMinHeight="dynamicMinHeight"
-    @update:start="updateStart"
   />
 
   <AppModal v-model="showModal" label="Association Details">
@@ -238,22 +237,21 @@ type Props = {
   includeOrthologs: boolean;
   direct: Option;
   search: string;
-  start: number;
 };
 
 const props = defineProps<Props>();
 
-const emit = defineEmits(["update:start"]);
+// const emit = defineEmits(["update:start"]);
 
-function updateStart(newStart: number | undefined) {
-  if (newStart !== undefined) {
-    emit("update:start", newStart);
-  }
-}
+// function updateStart(newStart: number | undefined) {
+//   if (newStart !== undefined) {
+//     emit("update:start", newStart);
+//   }
+// }
 
 const showModal = ref(false);
 const selectedAssociation = ref<DirectionalAssociation | null>(null);
-
+const start = ref(0);
 function openModal(association: DirectionalAssociation) {
   selectedAssociation.value = association;
   showModal.value = true;
@@ -500,14 +498,14 @@ const {
     if (!props.node.association_counts.length)
       throw Error("No association info available");
     /** get association data */
-    // if (fresh) {
-    //   start.value = 0;
-    // }
+    if (fresh) {
+      start.value = 0;
+    }
 
     const response = await getAssociations(
       props.node.id,
       props.category.id,
-      props.start,
+      start.value,
       perPage.value,
       props.includeOrthologs,
       props.direct.id,
@@ -613,15 +611,7 @@ watch(
   { immediate: true },
 );
 
-watch(
-  () => props.start,
-  async () => {
-    await queryAssociations(true);
-    console.log(props.start);
-  },
-  { immediate: true },
-);
-watch([perPage, sort], async () => await queryAssociations(false));
+watch([perPage, sort, start], async () => await queryAssociations(false));
 
 /** get associations on load */
 onMounted(() => queryAssociations(true));

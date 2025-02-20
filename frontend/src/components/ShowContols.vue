@@ -77,7 +77,6 @@
 import { computed, type VNode } from "vue";
 import type { Options } from "./AppSelectMulti.vue";
 import AppSelectSingle from "./AppSelectSingle.vue";
-import AppTextbox from "./AppTextbox.vue";
 
 /** possible keys on datum (remove number and symbol from default object type) */
 type Keys = Extract<keyof Datum, string>;
@@ -181,22 +180,22 @@ function updateStart(newStart: number) {
 
 /** when user clicks to first page */
 function clickFirst() {
-  updateStart(0);
+  emit("update:start", 0);
 }
 
 /** when user clicks to previous page */
 function clickPrev() {
-  updateStart(props.start - props.perPage); // Example decrement
+  emit("update:start", props.start - props.perPage);
 }
 
 /** when user clicks to next page */
 function clickNext() {
-  updateStart(props.start + props.perPage); // Example increment
+  emit("update:start", props.start + props.perPage);
 }
 
 /** when user clicks to last page */
 function clickLast() {
-  updateStart(Math.floor(props.total / props.perPage) * props.perPage);
+  emit("update:start", Math.floor(props.total / props.perPage) * props.perPage);
 }
 
 /** when user changes rows per page */
