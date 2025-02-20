@@ -46,8 +46,8 @@
           <AppTextbox
             v-model="searchValues[category.id]"
             placeholder="Search table data..."
-            @debounce="handleDebounce($event, category.id)"
-            @change="handleDebounce($event, category.id)"
+            @debounce="(value) => (debouncedSearchValues[category.id] = value)"
+            @change="(value) => (debouncedSearchValues[category.id] = value)"
           />
         </div>
       </div>
@@ -94,20 +94,6 @@ const direct = ref<Option>();
 
 const searchValues = ref<Record<string, string>>({});
 const debouncedSearchValues = ref<Record<string, string>>({});
-const debounceTimers = ref<Record<string, ReturnType<typeof setTimeout>>>({});
-
-const handleDebounce = (value: string, categoryId: string) => {
-  // Update searchValues immediately (for UI updates if needed)
-  searchValues.value[categoryId] = value;
-
-  if (debounceTimers.value[categoryId]) {
-    clearTimeout(debounceTimers.value[categoryId]);
-  }
-
-  debounceTimers.value[categoryId] = setTimeout(() => {
-    debouncedSearchValues.value[categoryId] = value;
-  }, 300); // 300ms debounce time
-};
 
 /** list of options for dropdown */
 const categoryOptions = computed(
