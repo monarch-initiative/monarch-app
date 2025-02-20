@@ -115,7 +115,6 @@ data:
 update_publications:
 	@echo "Generating publications data..."
 	$(RUN) python scripts/get_publications.py update --update-data
-	make format-frontend
 
 .PHONY: category-enums
 category-enums:
