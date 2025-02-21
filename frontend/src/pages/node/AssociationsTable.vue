@@ -22,7 +22,6 @@
     v-model:sort="sort"
     v-model:per-page="perPage"
     v-model:start="start"
-    v-model:search="props.search"
     :cols="cols"
     :rows="associations.items"
     :total="associations.total"

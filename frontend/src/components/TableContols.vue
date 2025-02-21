@@ -73,8 +73,7 @@
 </template>
 
 <script setup lang="ts" generic="Datum extends object">
-import { computed, type VNode } from "vue";
-import type { Options } from "./AppSelectMulti.vue";
+import { computed } from "vue";
 import AppSelectSingle from "./AppSelectSingle.vue";
 
 type Props = {

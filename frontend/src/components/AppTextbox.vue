@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import AppInput from "./AppInput.vue";
 
 defineOptions({ inheritAttrs: false });
@@ -65,7 +65,7 @@ type Props = {
   debounce?: number;
 };
 
-const props = defineProps<Props>();
+defineProps<Props>();
 
 type Emits = {
   /** two-way bound text state */
