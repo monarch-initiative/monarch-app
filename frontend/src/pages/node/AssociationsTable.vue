@@ -179,7 +179,7 @@
     <!-- no template needed because info just plain text -->
   </AppTable>
 
-  <ShowContols
+  <TableControls
     id="showControls"
     v-model:per-page="perPage"
     v-model:start="start"
@@ -216,7 +216,7 @@ import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
 import type { Option } from "@/components/AppSelectSingle.vue";
 import AppTable from "@/components/AppTable.vue";
 import type { Cols, Sort } from "@/components/AppTable.vue";
-import ShowContols from "@/components/ShowContols.vue";
+import TableControls from "@/components/TableContols.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
 import { useQuery } from "@/composables/use-query";
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";

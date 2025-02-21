@@ -1,6 +1,6 @@
 import type { Component } from "vue";
 import { expect, test } from "vitest";
-import ShowControls from "@/components/ShowContols.vue";
+import TableControls from "@/components/TableContols.vue";
 import { emitted, mount } from "./setup";
 
 const data = [
@@ -19,14 +19,14 @@ const props = {
 };
 
 test("Changes per page", async () => {
-  const wrapper = mount(ShowControls as unknown as Component, { props });
+  const wrapper = mount(TableControls as unknown as Component, { props });
   await wrapper.find(".controls div:nth-child(1) button").trigger("click");
   await wrapper.find("[role='option']").trigger("click");
   expect(emitted(wrapper, "update:perPage")).toEqual([5]);
 });
 
 test("Changes pages", async () => {
-  const wrapper = mount(ShowControls as unknown as Component, { props });
+  const wrapper = mount(TableControls as unknown as Component, { props });
   const nav = wrapper.findAll(".controls div:nth-child(2) button");
   await nav.at(1)?.trigger("click");
   expect(emitted(wrapper, "update:start"));
@@ -39,7 +39,7 @@ test("Changes pages", async () => {
 });
 
 test("Downloads", async () => {
-  const wrapper = mount(ShowControls as unknown as Component, { props });
+  const wrapper = mount(TableControls as unknown as Component, { props });
   await wrapper.find(".controls div:nth-child(3) button").trigger("click");
   expect(emitted(wrapper, "download")).toEqual([]);
 });
