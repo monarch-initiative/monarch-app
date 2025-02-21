@@ -79,7 +79,7 @@ def start_solr():
                 "solr:8",
                 ports={"8983": 8983},
                 volumes=[f"{data}:/opt/solr-data"],
-                environment=["SOLR_HOME=/opt/solr-data"],
+                environment=["SOLR_HOME=/opt/solr-data", "SOLR_OPTS=-Dsolr.jetty.request.header.size=65535"],
                 name="monarch_solr",
                 command="",
                 detach=True,
