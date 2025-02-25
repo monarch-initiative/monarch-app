@@ -192,7 +192,35 @@
   </AppSection>
 
   <AppSection>
-    <TheUphenoGraph />
+    <TheUphenoGraph
+      :data="{
+        upheno_parent: {
+          id: 'UPHENO:123',
+          label: 'big heart',
+          ontology: 'uPheno',
+        },
+        species_specific_children: [
+          {
+            id: 'HP:123',
+            label: 'cardiomegaly',
+            ontology: 'HP',
+            taxon: 'human',
+          },
+          {
+            id: 'ZP:436',
+            label: 'heart enlarged, abnormal',
+            ontology: 'ZP',
+            taxon: 'zebrafish',
+          },
+          {
+            id: 'MP:436',
+            label: 'heart enlarged, very abnormal',
+            ontology: 'MP',
+            taxon: 'mouse',
+          },
+        ],
+      }"
+    />
   </AppSection>
 </template>
 

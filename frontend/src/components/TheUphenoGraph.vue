@@ -1,11 +1,16 @@
 <template>
-  <div id="graph"></div>
+  <div class="graphContainer">
+    <div id="graph"></div>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref, watch } from "vue";
 import * as d3 from "d3";
 
+const props = defineProps({
+  data: Object,
+});
 // Define Node and Link Types
 interface Node {
   id: string;
@@ -22,26 +27,6 @@ interface Link {
   source: Node;
   target: Node;
 }
-
-const data = ref<{ upheno_parent: Node; species_specific_children: Node[] }>({
-  upheno_parent: { id: "UPHENO:123", label: "big heart", ontology: "uPheno" },
-  species_specific_children: [
-    { id: "HP:123", label: "cardiomegaly", ontology: "HP", taxon: "human" },
-    {
-      id: "ZP:436",
-      label: "heart enlarged, abnormal",
-      ontology: "ZP",
-      taxon: "zebrafish",
-    },
-    {
-      id: "MP:436",
-      label: "heart enlarged, very abnormal",
-      ontology: "MP",
-      taxon: "mouse",
-    },
-    { id: "NP:436", label: "The new label", ontology: "NP", taxon: "Rat" },
-  ],
-});
 
 const drawGraph = () => {
   const width = 600,
@@ -61,30 +46,34 @@ const drawGraph = () => {
     .append("g");
 
   // Set positions and dimensions for nodes
-  const numChildren = data.value.species_specific_children.length;
+  const numChildren = props.data?.species_specific_children?.length || 0;
   const startX = parentX - ((numChildren - 1) * childSpacing) / 2;
   const nodes: Node[] = [
     {
-      ...data.value.upheno_parent,
+      ...(props.data?.upheno_parent ?? {}),
       x: parentX,
       y: parentY,
       width: 239,
       height: 99,
     },
-    ...data.value.species_specific_children.map((child, i) => ({
-      ...child,
-      x: startX + i * childSpacing,
-      y: childrenY,
-      width: 107,
-      height: 136,
-    })),
+    ...(props.data?.species_specific_children ?? []).map(
+      (child: Node, i: number) => ({
+        ...child,
+        x: startX + i * childSpacing,
+        y: childrenY,
+        width: 107,
+        height: 136,
+      }),
+    ),
   ];
 
   // Create links from parent to children
-  const links: Link[] = data.value.species_specific_children.map((child) => ({
-    source: nodes[0],
-    target: nodes.find((n) => n.id === child.id)!,
-  }));
+  const links: Link[] = (props.data?.species_specific_children ?? []).map(
+    (child: Node) => ({
+      source: nodes[0],
+      target: nodes.find((n) => n.id === child.id)!,
+    }),
+  );
   svg
     .selectAll(".link")
     .data(links)
@@ -164,11 +153,16 @@ const drawGraph = () => {
 };
 
 // Watch for changes in data and redraw graph
-watch(data, drawGraph);
+watch(() => props.data, drawGraph);
 onMounted(drawGraph);
 </script>
 
 <style>
+#graph {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
 .node-text {
   font-family: Arial, sans-serif;
   text-anchor: middle;
@@ -184,5 +178,10 @@ onMounted(drawGraph);
   font-weight: normal;
   font-size: 12px;
   fill: white;
+}
+
+.graphContainer {
+  width: 100%;
+  overflow-x: auto;
 }
 </style>
