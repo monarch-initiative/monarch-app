@@ -53,7 +53,7 @@ jobs:
       #----------------------------------------------
       - name: Upload coverage report
         if: github.repository == 'monarch-initiative/monarch-app'
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           name: codecov-results-${{ matrix.python-version }}
           token: ${{ secrets.CODECOV_TOKEN }}
