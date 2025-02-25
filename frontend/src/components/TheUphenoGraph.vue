@@ -2,12 +2,30 @@
   <div id="graph"></div>
 </template>
 
-<script setup>
-import { onMounted } from "vue";
+<script setup lang="ts">
+import { onMounted, ref, watch } from "vue";
 import * as d3 from "d3";
 
-// Sample data
-const data = {
+// Define Node and Link Types
+interface Node {
+  id: string;
+  label: string;
+  ontology: string;
+  taxon?: string;
+  x?: number;
+  y?: number;
+}
+
+interface Link {
+  source: Node;
+  target: Node;
+}
+
+// Define the data
+const data = ref<{
+  upheno_parent: Node;
+  species_specific_children: Node[];
+}>({
   upheno_parent: {
     id: "UPHENO:123",
     label: "big heart",
@@ -26,99 +44,105 @@ const data = {
       ontology: "ZP",
       taxon: "zebrafish",
     },
+    {
+      id: "MP:436",
+      label: "heart enlarged, very abnormal",
+      ontology: "MP",
+      taxon: "mouse",
+    },
+    {
+      id: "NP:436",
+      label: "The new label",
+      ontology: "NP",
+      taxon: "Rat",
+    },
   ],
-};
+});
 
-onMounted(() => {
-  const width = 500,
-    height = 300;
+const drawGraph = () => {
+  const width = 600,
+    height = 400;
+  const parentY = 50,
+    childrenY = 250; // Fixed Y positions
+  const parentX = width / 2;
 
+  // Clear previous SVG before drawing
   const svg = d3
     .select("#graph")
+    .html("")
     .append("svg")
     .attr("width", width)
     .attr("height", height)
-    .append("g")
-    .attr("transform", "translate(50,50)");
+    .append("g");
 
-  const links = [
-    { source: data.upheno_parent, target: data.species_specific_children[0] },
-    { source: data.upheno_parent, target: data.species_specific_children[1] },
+  // Calculate X positions for children (evenly spaced)
+  const numChildren = data.value.species_specific_children.length;
+  const childSpacing = 150;
+  const startX = parentX - ((numChildren - 1) * childSpacing) / 2;
+
+  // Set explicit positions
+  const nodes: Node[] = [
+    { ...data.value.upheno_parent, x: parentX, y: parentY },
+    ...data.value.species_specific_children.map((child, i) => ({
+      ...child,
+      x: startX + i * childSpacing, // Evenly distribute children horizontally
+      y: childrenY,
+    })),
   ];
 
-  const nodes = [data.upheno_parent, ...data.species_specific_children];
+  // Define links from parent to each child
+  const links: Link[] = data.value.species_specific_children.map((child) => ({
+    source: nodes[0], // Parent node
+    target: nodes.find((n) => n.id === child.id)!,
+  }));
 
-  const simulation = d3
-    .forceSimulation(nodes)
-    .force(
-      "link",
-      d3
-        .forceLink(links)
-        .id((d) => d.id)
-        .distance(100),
-    )
-    .force("x", d3.forceX(width / 2)) // Center nodes horizontally
-    .force(
-      "y",
-      d3.forceY((d) => (d.ontology === "uPheno" ? 50 : 200)),
-    ) // Parent at top, children below
-    .force("collide", d3.forceCollide(50)); // Avoid overlap
-
-  const link = svg
+  // Create links
+  svg
     .selectAll(".link")
     .data(links)
     .enter()
     .append("line")
     .attr("stroke", "#999")
-    .attr("stroke-width", 2);
+    .attr("stroke-width", 2)
+    .attr("x1", (d) => d.source.x!)
+    .attr("y1", (d) => d.source.y!)
+    .attr("x2", (d) => d.target.x!)
+    .attr("y2", (d) => d.target.y!);
 
+  // Create nodes (rectangles)
   const node = svg
     .selectAll(".node")
     .data(nodes)
     .enter()
     .append("rect")
-    .attr("width", 120) // Set width of the box
-    .attr("height", 50) // Set height of the box
-    .attr("rx", 10) // Rounded corners
-    .attr("ry", 10) // Rounded corners
-    .attr("fill", (d) => (d.ontology === "uPheno" ? "#1f77b4" : "#ff7f0e"));
+    .attr("width", (d) => (d.ontology === "uPheno" ? 239 : 107))
+    .attr("height", (d) => (d.ontology === "uPheno" ? 99 : 136))
+    .attr("rx", 10)
+    .attr("ry", 10)
+    .attr("fill", (d) => (d.ontology === "uPheno" ? "#1f77b4" : "#ff7f0e"))
+    .attr("x", (d) => d.x! - (d.ontology === "uPheno" ? 239 : 107) / 2)
+    .attr("y", (d) => d.y! - (d.ontology === "uPheno" ? 99 : 136) / 2);
 
-  const label = svg
+  // Create text labels
+  svg
     .selectAll(".label")
     .data(nodes)
     .enter()
     .append("text")
-    .text((d) => `${d.label} (${d.id})`)
+    .text((d) => d.label)
     .attr("text-anchor", "middle")
-    .attr("dy", -15) // Adjust the vertical position of the label
+    .attr("x", (d) => d.x!)
+    .attr("y", (d) => d.y! + (d.ontology === "uPheno" ? 60 : 80))
     .style("fill", "#333")
     .style("font-size", "12px");
+};
 
-  node
-    .on("mouseover", function (event, d) {
-      if (d.ontology !== "uPheno") {
-        d3.select(this).attr("stroke", "black").attr("stroke-width", 2); // Highlight on hover
-      }
-    })
-    .on("mouseout", function (event, d) {
-      if (d.ontology !== "uPheno") {
-        d3.select(this).attr("stroke", "none"); // Reset highlight on hover out
-      }
-    });
+// Watch for changes in data and redraw graph
+watch(data, () => {
+  drawGraph();
+});
 
-  simulation.on("tick", () => {
-    link
-      .attr("x1", (d) => d.source.x)
-      .attr("y1", (d) => d.source.y)
-      .attr("x2", (d) => d.target.x)
-      .attr("y2", (d) => d.target.y);
-
-    node
-      .attr("x", (d) => d.x - 60) // Adjust the position of the box
-      .attr("y", (d) => d.y - 25); // Adjust the vertical position of the box
-    label
-      .attr("x", (d) => d.x) // Position the label inside the box
-      .attr("y", (d) => d.y); // Position the label inside the box
-  });
+onMounted(() => {
+  drawGraph();
 });
 </script>
