@@ -190,6 +190,10 @@
       <template #arbitrary>Arbitrary slot content</template>
     </AppTable>
   </AppSection>
+
+  <AppSection>
+    <TheUphenoGraph />
+  </AppSection>
 </template>
 
 <script setup lang="ts">
@@ -207,6 +211,7 @@ import type { Sort } from "@/components/AppTable.vue";
 import AppTable from "@/components/AppTable.vue";
 import AppTabs from "@/components/AppTabs.vue";
 import AppTextbox from "@/components/AppTextbox.vue";
+import TheUphenoGraph from "@/components/TheUphenoGraph.vue";
 import { sleep } from "@/util/debug";
 
 /** get all files in custom icon folder */
