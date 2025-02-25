@@ -5,7 +5,7 @@
 <template>
   <span class="predicate">
     <AppIcon v-if="arrows" class="arrow" :icon="`arrow-${arrowDirection}`" />
-    <span v-if="association.negated">NOT</span>
+    <span v-if="association.negated" class="negated-text">NOT</span>
     {{ startCase(getCategoryLabel(association.predicate)).toLowerCase() }}
     <AppIcon v-if="arrows" class="arrow" :icon="`arrow-${arrowDirection}`" />
   </span>
@@ -59,5 +59,10 @@ const arrowDirection = computed(() =>
   &:last-child {
     margin-left: 0.5em;
   }
+}
+
+.negated-text {
+  color: $error;
+  font-weight: 600;
 }
 </style>

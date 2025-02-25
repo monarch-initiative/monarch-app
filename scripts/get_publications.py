@@ -339,6 +339,7 @@ def update(
 
     with output_file.open("w") as fd:
         fd.write(output)
+        fd.write("\n")
 
 
 @app.command()
@@ -351,6 +352,7 @@ def fetch_metadata(
 
     with open(outfile, "w") as fd:
         fd.write(output)
+        fd.write("\n")
 
 
 @app.command()
@@ -363,6 +365,7 @@ def fetch_publications(
 
     with open(outfile, "w") as fd:
         fd.write(output)
+        fd.write("\n")
 
 
 if __name__ == "__main__":
