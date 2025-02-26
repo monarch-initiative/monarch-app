@@ -1,7 +1,5 @@
 <template>
-  <div class="graphContainer">
-    <div id="graph"></div>
-  </div>
+  <div id="graph"></div>
 </template>
 
 <script setup lang="ts">
@@ -11,8 +9,6 @@ import * as d3 from "d3";
 const props = defineProps({
   data: Object,
 });
-
-const graphContainer = ref<HTMLElement | null>(null);
 
 // Define Node and Link Types
 interface Node {
@@ -39,7 +35,6 @@ const drawGraph = () => {
   const width = container.clientWidth || 600;
   const height = container.clientHeight || 400;
   const parentY = 50;
-
   // Adjust childrenY dynamically to avoid excessive distance
   const maxChildrenY = 350; // Prevents too much spacing
   const childrenY = Math.min(
@@ -48,7 +43,6 @@ const drawGraph = () => {
   );
 
   const parentX = width / 2;
-
   const numChildren = props.data?.species_specific_children?.length || 0;
   const maxChildSpacing = 150;
   const minChildSpacing = 80;
@@ -58,18 +52,27 @@ const drawGraph = () => {
   );
 
   const startX = parentX - ((numChildren - 1) * childSpacing) / 2;
+
+  const graphWidth = width;
+  const graphHeight = Math.max(childrenY + 150, parentY + 100);
+  console.log({ width, height, graphWidth, graphHeight });
   // Clear previous SVG before drawing
   const svg = d3
     .select("#graph")
     .html("")
     .append("svg")
     .attr("width", "100%")
-    .attr("height", "100%")
-    .attr("viewBox", `0 0 ${width} ${height}`)
+    .attr("height", graphHeight)
+    .attr("viewBox", `0 0 ${graphWidth} ${graphHeight}`)
     .attr("preserveAspectRatio", "xMidYMid meet")
     .attr("class", "custom-svg");
 
-  const g = svg.append("g").attr("class", "graph-group");
+  const g = svg
+    .append("g")
+    .attr("class", "graph-group")
+    .attr("transform", "translate(10, 50)"); // Ensure no offset
+
+  // Continue with nodes, links, and text creation...
 
   const nodes: Node[] = [
     {
@@ -218,13 +221,6 @@ onUnmounted(() => {
   font-weight: normal;
   font-size: 12px;
   fill: white;
-}
-
-.graphContainer {
-  width: 100%;
-  height: 100%;
-  min-height: 400px;
-  overflow-x: auto;
 }
 
 .custom-svg {
