@@ -8,6 +8,7 @@ import * as d3 from "d3";
 
 const props = defineProps({
   data: Object,
+  highlightId: String,
 });
 
 // Define Node and Link Types
@@ -26,7 +27,9 @@ interface Link {
   source: Node;
   target: Node;
 }
-
+onMounted(() => {
+  console.log("Unmounted", props);
+});
 const drawGraph = () => {
   const container = document.getElementById("graph");
   if (!container) return;
@@ -114,6 +117,7 @@ const drawGraph = () => {
     .attr("y2", (d) => d.target.y! - d.target.height! / 2);
 
   // Create rectangles (nodes)
+  // Create rectangles (nodes)
   g.selectAll(".node")
     .data(nodes)
     .enter()
@@ -124,6 +128,9 @@ const drawGraph = () => {
     .attr("rx", 10)
     .attr("ry", 10)
     .attr("fill", (d) => (d.ontology === "uPheno" ? "#1f77b4" : "#ff7f0e"))
+    .attr("stroke", (d) => (d.id === props.highlightId ? "yellow" : "none")) // Highlight outline
+    .attr("stroke-width", (d) => (d.id === props.highlightId ? 4 : 0)) // Stroke width for highlight
+
     .attr("x", (d) => d.x! - d.width! / 2)
     .attr("y", (d) => d.y! - d.height! / 2);
 
@@ -215,6 +222,7 @@ onUnmounted(() => {
   font-weight: bold;
   font-size: 14px;
   fill: yellow;
+  padding: 2px;
 }
 
 .node-label {
