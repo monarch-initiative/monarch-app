@@ -195,31 +195,32 @@
     <TheUphenoGraph
       :data="{
         upheno_parent: {
-          id: 'UPHENO:123',
-          label: 'big heart',
+          id: 'UPHENO:0001471',
+          label: 'Big heart',
           ontology: 'uPheno',
         },
         species_specific_children: [
           {
-            id: 'HP:123',
+            id: 'HP:0001640',
             label: 'cardiomegaly',
             ontology: 'HP',
             taxon: 'human',
           },
           {
-            id: 'ZP:436',
+            id: 'HGNC:2330',
             label: 'heart enlarged, abnormal',
             ontology: 'ZP',
             taxon: 'zebrafish',
           },
           {
-            id: 'MP:436',
-            label: 'heart enlarged, very abnormal',
+            id: 'MP:0000274',
+            label: 'An increase in the size of the heart.',
             ontology: 'MP',
             taxon: 'mouse',
           },
         ],
       }"
+      :highlightId="'MP:0000274'"
     />
   </AppSection>
 </template>

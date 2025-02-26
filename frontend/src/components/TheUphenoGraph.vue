@@ -116,6 +116,23 @@ const drawGraph = () => {
     .attr("x2", (d) => d.target.x!)
     .attr("y2", (d) => d.target.y! - d.target.height! / 2);
 
+  // Create shadow filter
+  const filter = svg
+    .append("defs")
+    .append("filter")
+    .attr("id", "shadow")
+    .attr("x", "-50%")
+    .attr("y", "-50%")
+    .attr("width", "200%")
+    .attr("height", "200%");
+
+  filter
+    .append("feDropShadow")
+    .attr("dx", 3)
+    .attr("dy", 3)
+    .attr("stdDeviation", 5)
+    .attr("flood-color", "rgba(0, 0, 0, 0.5)");
+
   // Create rectangles (nodes)
   // Create rectangles (nodes)
   g.selectAll(".node")
@@ -127,10 +144,16 @@ const drawGraph = () => {
     .attr("height", (d) => d.height!)
     .attr("rx", 10)
     .attr("ry", 10)
-    .attr("fill", (d) => (d.ontology === "uPheno" ? "#1f77b4" : "#ff7f0e"))
-    .attr("stroke", (d) => (d.id === props.highlightId ? "yellow" : "none")) // Highlight outline
-    .attr("stroke-width", (d) => (d.id === props.highlightId ? 4 : 0)) // Stroke width for highlight
-
+    .attr("fill", (d) =>
+      d.id === props.highlightId
+        ? "none"
+        : d.ontology === "uPheno"
+          ? "#1f77b4"
+          : "#ff7f0e",
+    )
+    .attr("stroke", (d) => (d.id === props.highlightId ? "#f0a737" : "none")) // Highlight outline
+    .attr("stroke-width", (d) => (d.id === props.highlightId ? 4 : 0)) // Thicker stroke when highlighted
+    .attr("filter", "url(#shadow)")
     .attr("x", (d) => d.x! - d.width! / 2)
     .attr("y", (d) => d.y! - d.height! / 2);
 
@@ -162,7 +185,7 @@ const drawGraph = () => {
     .attr("text-anchor", "middle")
     .attr("x", (d) => d.x!)
     .attr("y", (d) => d.y!)
-    .each(function (d) {
+    .each(function (d: Node) {
       const text = d3.select(this);
       const maxWidth = d.width! - 10,
         fontSize = 12,
@@ -173,7 +196,10 @@ const drawGraph = () => {
         .attr("x", d.x!)
         .attr("dy", "-0.5em")
         .text(d.id)
-        .attr("class", "node-id");
+        .attr("class", "node-id")
+        .style("fill", (d) =>
+          (d as Node).id === props.highlightId ? "#000000" : "yellow",
+        ); // Darker color when highlighted
 
       const wrappedLines = wrapText(d.label, maxWidth, fontSize);
       wrappedLines.forEach((line, i) => {
@@ -182,7 +208,10 @@ const drawGraph = () => {
           .attr("x", d.x!)
           .attr("dy", i === 0 ? "1.5em" : `${lineHeight}px`)
           .text(line)
-          .attr("class", "node-label");
+          .attr("class", "node-label")
+          .style("fill", (d) =>
+            (d as Node).id === props.highlightId ? "#000000" : "white",
+          ); // Darker color when highlighted
       });
     });
 };
