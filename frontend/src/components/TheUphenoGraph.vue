@@ -5,12 +5,15 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { onMounted, onUnmounted, ref, watchEffect } from "vue";
 import * as d3 from "d3";
 
 const props = defineProps({
   data: Object,
 });
+
+const graphContainer = ref<HTMLElement | null>(null);
+
 // Define Node and Link Types
 interface Node {
   id: string;
@@ -29,25 +32,45 @@ interface Link {
 }
 
 const drawGraph = () => {
-  const width = 600,
-    height = 400;
-  const parentY = 50,
-    childrenY = 250;
-  const parentX = width / 2,
-    childSpacing = 150;
+  const container = document.getElementById("graph");
+  if (!container) return;
 
+  // Get dynamic width & height
+  const width = container.clientWidth || 600;
+  const height = container.clientHeight || 400;
+  const parentY = 50;
+
+  // Adjust childrenY dynamically to avoid excessive distance
+  const maxChildrenY = 350; // Prevents too much spacing
+  const childrenY = Math.min(
+    Math.max(parentY + 150, height * 0.4),
+    maxChildrenY,
+  );
+
+  const parentX = width / 2;
+
+  const numChildren = props.data?.species_specific_children?.length || 0;
+  const maxChildSpacing = 150;
+  const minChildSpacing = 80;
+  const childSpacing = Math.max(
+    minChildSpacing,
+    Math.min(maxChildSpacing, width / Math.max(numChildren, 1)),
+  );
+
+  const startX = parentX - ((numChildren - 1) * childSpacing) / 2;
   // Clear previous SVG before drawing
   const svg = d3
     .select("#graph")
     .html("")
     .append("svg")
-    .attr("width", width)
-    .attr("height", height)
-    .append("g");
+    .attr("width", "100%")
+    .attr("height", "100%")
+    .attr("viewBox", `0 0 ${width} ${height}`)
+    .attr("preserveAspectRatio", "xMidYMid meet")
+    .attr("class", "custom-svg");
 
-  // Set positions and dimensions for nodes
-  const numChildren = props.data?.species_specific_children?.length || 0;
-  const startX = parentX - ((numChildren - 1) * childSpacing) / 2;
+  const g = svg.append("g").attr("class", "graph-group");
+
   const nodes: Node[] = [
     {
       ...(props.data?.upheno_parent ?? {}),
@@ -74,11 +97,12 @@ const drawGraph = () => {
       target: nodes.find((n) => n.id === child.id)!,
     }),
   );
-  svg
-    .selectAll(".link")
+
+  g.selectAll(".link")
     .data(links)
     .enter()
     .append("line")
+    .attr("class", "link")
     .attr("stroke", "#999")
     .attr("stroke-width", 2)
     .attr("x1", (d) => d.source.x!)
@@ -87,11 +111,11 @@ const drawGraph = () => {
     .attr("y2", (d) => d.target.y! - d.target.height! / 2);
 
   // Create rectangles (nodes)
-  svg
-    .selectAll(".node")
+  g.selectAll(".node")
     .data(nodes)
     .enter()
     .append("rect")
+    .attr("class", "node")
     .attr("width", (d) => d.width!)
     .attr("height", (d) => d.height!)
     .attr("rx", 10)
@@ -120,26 +144,27 @@ const drawGraph = () => {
   };
 
   // Create text inside nodes (ID and label)
-  svg
-    .selectAll(".node-text")
+  g.selectAll(".node-text")
     .data(nodes)
     .enter()
     .append("text")
+    .attr("class", "node-text")
     .attr("text-anchor", "middle")
     .attr("x", (d) => d.x!)
     .attr("y", (d) => d.y!)
-    .attr("class", "node-text")
     .each(function (d) {
       const text = d3.select(this);
       const maxWidth = d.width! - 10,
         fontSize = 12,
         lineHeight = fontSize * 1.2;
+
       text
         .append("tspan")
         .attr("x", d.x!)
         .attr("dy", "-0.5em")
         .text(d.id)
         .attr("class", "node-id");
+
       const wrappedLines = wrapText(d.label, maxWidth, fontSize);
       wrappedLines.forEach((line, i) => {
         text
@@ -152,9 +177,23 @@ const drawGraph = () => {
     });
 };
 
+// Resize graph dynamically
+const updateGraph = () => {
+  drawGraph();
+};
+
 // Watch for changes in data and redraw graph
-watch(() => props.data, drawGraph);
-onMounted(drawGraph);
+watchEffect(drawGraph);
+
+// Mount & unmount resize listener
+onMounted(() => {
+  window.addEventListener("resize", updateGraph);
+  drawGraph();
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", updateGraph);
+});
 </script>
 
 <style>
@@ -163,6 +202,7 @@ onMounted(drawGraph);
   height: 100%;
   overflow: auto;
 }
+
 .node-text {
   font-family: Arial, sans-serif;
   text-anchor: middle;
@@ -182,6 +222,12 @@ onMounted(drawGraph);
 
 .graphContainer {
   width: 100%;
+  height: 100%;
+  min-height: 400px;
   overflow-x: auto;
+}
+
+.custom-svg {
+  display: flex;
 }
 </style>
