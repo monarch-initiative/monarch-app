@@ -8,7 +8,7 @@ import * as d3 from "d3";
 
 const props = defineProps({
   data: Object,
-  highlightId: String,
+  currentId: String,
 });
 
 // Define Node and Link Types
@@ -145,14 +145,14 @@ const drawGraph = () => {
     .attr("rx", 10)
     .attr("ry", 10)
     .attr("fill", (d) =>
-      d.id === props.highlightId
+      d.id === props.currentId
         ? "none"
         : d.ontology === "uPheno"
           ? "#1f77b4"
           : "#ff7f0e",
     )
-    .attr("stroke", (d) => (d.id === props.highlightId ? "#f0a737" : "none")) // Highlight outline
-    .attr("stroke-width", (d) => (d.id === props.highlightId ? 4 : 0)) // Thicker stroke when highlighted
+    .attr("stroke", (d) => (d.id === props.currentId ? "#f0a737" : "none")) // Highlight outline
+    .attr("stroke-width", (d) => (d.id === props.currentId ? 4 : 0)) // Thicker stroke when highlighted
     .attr("filter", "url(#shadow)")
     .attr("x", (d) => d.x! - d.width! / 2)
     .attr("y", (d) => d.y! - d.height! / 2);
@@ -198,7 +198,7 @@ const drawGraph = () => {
         .text(d.id)
         .attr("class", "node-id")
         .style("fill", (d) =>
-          (d as Node).id === props.highlightId ? "#000000" : "yellow",
+          (d as Node).id === props.currentId ? "#000000" : "yellow",
         ); // Darker color when highlighted
 
       const wrappedLines = wrapText(d.label, maxWidth, fontSize);
@@ -210,7 +210,7 @@ const drawGraph = () => {
           .text(line)
           .attr("class", "node-label")
           .style("fill", (d) =>
-            (d as Node).id === props.highlightId ? "#000000" : "white",
+            (d as Node).id === props.currentId ? "#000000" : "white",
           ); // Darker color when highlighted
       });
     });
