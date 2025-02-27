@@ -7,7 +7,7 @@ import { onMounted, onUnmounted, watchEffect } from "vue";
 import * as d3 from "d3";
 import homosapienIcon from "../assets/icons/homosapien.svg?url";
 import mouseIcon from "../assets/icons/mouse.svg?url";
-import zebrafishIcon from "../assets/icons/zebrafish.svg?url"; // Import the SVG files as URLs
+import zebrafishIcon from "../assets/icons/zebrafish.svg?url";
 
 const ICON_MAP = {
   human: homosapienIcon,
@@ -20,7 +20,7 @@ const props = defineProps({
   currentId: String,
 });
 
-// Define Node and Link Types
+// Define Node
 interface Node {
   id: string;
   label: string;
@@ -32,6 +32,7 @@ interface Node {
   height?: number;
 }
 
+// Define Link
 interface Link {
   source: Node;
   target: Node;
@@ -45,8 +46,9 @@ const drawGraph = () => {
   const width = container.clientWidth || 600;
   const height = container.clientHeight || 400;
   const parentY = 50;
+
   // Adjust childrenY dynamically to avoid excessive distance
-  const maxChildrenY = 350; // Prevents too much spacing
+  const maxChildrenY = 350;
   const childrenY = Math.min(
     Math.max(parentY + 150, height * 0.4),
     maxChildrenY,
@@ -60,12 +62,11 @@ const drawGraph = () => {
     minChildSpacing,
     Math.min(maxChildSpacing, width / Math.max(numChildren, 1)),
   );
-
   const startX = parentX - ((numChildren - 1) * childSpacing) / 2;
-
   const graphWidth = width;
   const graphHeight = Math.max(childrenY + 150, parentY + 100);
   console.log({ width, height, graphWidth, graphHeight });
+
   // Clear previous SVG before drawing
   const svg = d3
     .select("#graph")
@@ -82,8 +83,7 @@ const drawGraph = () => {
     .attr("class", "graph-group")
     .attr("transform", "translate(10, 50)"); // Ensure no offset
 
-  // Continue with nodes, links, and text creation...
-
+  // Create nodes (parent and children)
   const nodes: Node[] = [
     {
       ...(props.data?.upheno_parent ?? {}),
@@ -140,29 +140,29 @@ const drawGraph = () => {
           ? "#1f77b4"
           : "#ff7f0e",
     )
-    .attr("stroke", (d) => (d.id === props.currentId ? "#f0a737" : "none")) // Highlight outline
-    .attr("stroke-width", (d) => (d.id === props.currentId ? 4 : 0)) // Thicker stroke when highlighted
+    .attr("stroke", (d) => (d.id === props.currentId ? "#f0a737" : "none"))
+    .attr("stroke-width", (d) => (d.id === props.currentId ? 4 : 0))
     .attr("filter", "url(#shadow)")
     .attr("x", (d) => d.x! - d.width! / 2)
     .attr("y", (d) => d.y! - d.height! / 2);
 
-  // Add SVG images inside nodes based on the taxon property (only for children or other specific taxons)
+  // Add SVG images inside nodes based on the taxon property
   g.selectAll(".node-image")
     .data(nodes)
     .enter()
     .append("image")
     .attr("class", "node-image")
-    .attr("x", (d) => d.x! - 15) // Adjusted x to center the image (use half the image size)
-    .attr("y", (d) => d.y! - 30 - 20) // Adjusted y to place the image above the node-id
-    .attr("width", 25) // Set image width to 30px
-    .attr("height", 25) // Set image height to 30px
-    .attr("preserveAspectRatio", "xMidYMid slice") // Keep aspect ratio
+    .attr("x", (d) => d.x! - 15)
+    .attr("y", (d) => d.y! - 30 - 20)
+    .attr("width", 25)
+    .attr("height", 25)
+    .attr("preserveAspectRatio", "xMidYMid slice")
     .attr("xlink:href", (d) => {
       if (d.taxon === "human") return ICON_MAP.human;
       if (d.taxon === "mouse") return ICON_MAP.mouse;
       if (d.taxon === "zebrafish") return ICON_MAP.zebrafish;
       return null;
-    }); // Use the imported SVG as the href
+    });
 
   // Function to wrap text inside nodes
   const wrapText = (text: string, maxWidth: number, fontSize: number) => {
@@ -205,8 +205,8 @@ const drawGraph = () => {
         .text(d.id)
         .attr("class", "node-id")
         .style("fill", (d) =>
-          (d as Node).id === props.currentId ? "#000000" : "yellow",
-        ); // Darker color when highlighted
+          (d as Node).id === props.currentId ? "#000000" : "#FFD700",
+        );
 
       const wrappedLines = wrapText(d.label, maxWidth, fontSize);
       wrappedLines.forEach((line, i) => {
@@ -217,8 +217,8 @@ const drawGraph = () => {
           .text(line)
           .attr("class", "node-label")
           .style("fill", (d) =>
-            (d as Node).id === props.currentId ? "#000000" : "white",
-          ); // Darker color when highlighted
+            (d as Node).id === props.currentId ? "#000000" : "#FFFFFF",
+          );
       });
     });
 
@@ -274,14 +274,14 @@ onUnmounted(() => {
 .node-id {
   font-weight: bold;
   font-size: 14px;
-  fill: yellow;
+  fill: #ffd700;
   padding: 2px;
 }
 
 .node-label {
   font-weight: normal;
   font-size: 12px;
-  fill: white;
+  fill: #ffffff;
 }
 
 .custom-svg {
