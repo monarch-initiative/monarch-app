@@ -153,9 +153,9 @@ const drawGraph = () => {
     .append("image")
     .attr("class", "node-image")
     .attr("x", (d) => d.x! - 15) // Adjusted x to center the image (use half the image size)
-    .attr("y", (d) => d.y! - 40 - 20) // Adjusted y to place the image above the node-id
-    .attr("width", 30) // Set image width to 30px
-    .attr("height", 30) // Set image height to 30px
+    .attr("y", (d) => d.y! - 30 - 20) // Adjusted y to place the image above the node-id
+    .attr("width", 25) // Set image width to 30px
+    .attr("height", 25) // Set image height to 30px
     .attr("preserveAspectRatio", "xMidYMid slice") // Keep aspect ratio
     .attr("xlink:href", (d) => {
       if (d.taxon === "human") return ICON_MAP.human;
