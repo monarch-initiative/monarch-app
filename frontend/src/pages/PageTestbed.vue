@@ -190,6 +190,39 @@
       <template #arbitrary>Arbitrary slot content</template>
     </AppTable>
   </AppSection>
+
+  <AppSection>
+    <TheUphenoGraph
+      :data="{
+        upheno_parent: {
+          id: 'UPHENO:0001471',
+          label: 'big heart',
+          ontology: 'uPheno',
+        },
+        species_specific_children: [
+          {
+            id: 'HP:0001640',
+            label: 'cardiomegaly',
+            ontology: 'HP',
+            taxon: 'human',
+          },
+          {
+            id: 'HGNC:2330',
+            label: 'heart enlarged, abnormal',
+            ontology: 'ZP',
+            taxon: 'zebrafish',
+          },
+          {
+            id: 'MP:0000274',
+            label: 'An increase in the size of the heart.',
+            ontology: 'MP',
+            taxon: 'mouse',
+          },
+        ],
+      }"
+      :currentId="'HGNC:2330'"
+    />
+  </AppSection>
 </template>
 
 <script setup lang="ts">
@@ -207,6 +240,7 @@ import type { Sort } from "@/components/AppTable.vue";
 import AppTable from "@/components/AppTable.vue";
 import AppTabs from "@/components/AppTabs.vue";
 import AppTextbox from "@/components/AppTextbox.vue";
+import TheUphenoGraph from "@/components/TheUphenoGraph.vue";
 import { sleep } from "@/util/debug";
 
 /** get all files in custom icon folder */
