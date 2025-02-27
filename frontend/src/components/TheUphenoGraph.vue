@@ -3,8 +3,17 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watchEffect } from "vue";
+import { onMounted, onUnmounted, watchEffect } from "vue";
 import * as d3 from "d3";
+import homosapienIcon from "../assets/icons/homosapien.svg?url";
+import mouseIcon from "../assets/icons/mouse.svg?url";
+import zebrafishIcon from "../assets/icons/zebrafish.svg?url"; // Import the SVG files as URLs
+
+const ICON_MAP = {
+  human: homosapienIcon,
+  mouse: mouseIcon,
+  zebrafish: zebrafishIcon,
+};
 
 const props = defineProps({
   data: Object,
@@ -27,9 +36,7 @@ interface Link {
   source: Node;
   target: Node;
 }
-onMounted(() => {
-  console.log("Unmounted", props);
-});
+
 const drawGraph = () => {
   const container = document.getElementById("graph");
   if (!container) return;
@@ -116,24 +123,6 @@ const drawGraph = () => {
     .attr("x2", (d) => d.target.x!)
     .attr("y2", (d) => d.target.y! - d.target.height! / 2);
 
-  // Create shadow filter
-  const filter = svg
-    .append("defs")
-    .append("filter")
-    .attr("id", "shadow")
-    .attr("x", "-50%")
-    .attr("y", "-50%")
-    .attr("width", "200%")
-    .attr("height", "200%");
-
-  filter
-    .append("feDropShadow")
-    .attr("dx", 3)
-    .attr("dy", 3)
-    .attr("stdDeviation", 5)
-    .attr("flood-color", "rgba(0, 0, 0, 0.5)");
-
-  // Create rectangles (nodes)
   // Create rectangles (nodes)
   g.selectAll(".node")
     .data(nodes)
@@ -156,6 +145,24 @@ const drawGraph = () => {
     .attr("filter", "url(#shadow)")
     .attr("x", (d) => d.x! - d.width! / 2)
     .attr("y", (d) => d.y! - d.height! / 2);
+
+  // Add SVG images inside nodes based on the taxon property (only for children or other specific taxons)
+  g.selectAll(".node-image")
+    .data(nodes)
+    .enter()
+    .append("image")
+    .attr("class", "node-image")
+    .attr("x", (d) => d.x! - 15) // Adjusted x to center the image (use half the image size)
+    .attr("y", (d) => d.y! - 40 - 20) // Adjusted y to place the image above the node-id
+    .attr("width", 30) // Set image width to 30px
+    .attr("height", 30) // Set image height to 30px
+    .attr("preserveAspectRatio", "xMidYMid slice") // Keep aspect ratio
+    .attr("xlink:href", (d) => {
+      if (d.taxon === "human") return ICON_MAP.human;
+      if (d.taxon === "mouse") return ICON_MAP.mouse;
+      if (d.taxon === "zebrafish") return ICON_MAP.zebrafish;
+      return null;
+    }); // Use the imported SVG as the href
 
   // Function to wrap text inside nodes
   const wrapText = (text: string, maxWidth: number, fontSize: number) => {
@@ -194,7 +201,7 @@ const drawGraph = () => {
       text
         .append("tspan")
         .attr("x", d.x!)
-        .attr("dy", "-0.5em")
+        .attr("dy", "-0.2em")
         .text(d.id)
         .attr("class", "node-id")
         .style("fill", (d) =>
@@ -214,6 +221,23 @@ const drawGraph = () => {
           ); // Darker color when highlighted
       });
     });
+
+  // Create shadow filter
+  const filter = svg
+    .append("defs")
+    .append("filter")
+    .attr("id", "shadow")
+    .attr("x", "-50%")
+    .attr("y", "-50%")
+    .attr("width", "200%")
+    .attr("height", "200%");
+
+  filter
+    .append("feDropShadow")
+    .attr("dx", 3)
+    .attr("dy", 3)
+    .attr("stdDeviation", 5)
+    .attr("flood-color", "rgba(0, 0, 0, 0.5)");
 };
 
 // Resize graph dynamically
@@ -262,5 +286,9 @@ onUnmounted(() => {
 
 .custom-svg {
   display: flex;
+}
+
+.image {
+  border-radius: 10px;
 }
 </style>
