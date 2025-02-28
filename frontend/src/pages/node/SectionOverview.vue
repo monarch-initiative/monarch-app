@@ -137,8 +137,9 @@ import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppNodeText from "@/components/AppNodeText.vue";
-import { scrollTo } from "@/router";
-import { sleep } from "@/util/debug";
+
+// import { scrollTo } from "@/router";
+// import { sleep } from "@/util/debug";
 
 type Props = {
   /** current node */
