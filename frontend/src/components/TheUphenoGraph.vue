@@ -65,7 +65,6 @@ const drawGraph = () => {
   const startX = parentX - ((numChildren - 1) * childSpacing) / 2;
   const graphWidth = width;
   const graphHeight = Math.max(childrenY + 150, parentY + 100);
-  console.log({ width, height, graphWidth, graphHeight });
 
   // Clear previous SVG before drawing
   const svg = d3
@@ -260,6 +259,11 @@ onUnmounted(() => {
 </script>
 
 <style>
+/**
+ * We may need to pass down/adjust the height and width of the graph 
+ * if we plan to use it in multiple locations. 
+ (it will depend on how much space we are planning to allocate for the graph)
+ */
 #graph {
   width: 100%;
   height: 100%;
