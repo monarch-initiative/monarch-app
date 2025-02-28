@@ -5,9 +5,9 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, watchEffect } from "vue";
 import * as d3 from "d3";
-import homosapienIcon from "../assets/icons/homosapien.svg?url";
-import mouseIcon from "../assets/icons/mouse.svg?url";
-import zebrafishIcon from "../assets/icons/zebrafish.svg?url";
+import humanIcon from "../assets/icons/humanIcon.svg?url";
+import mouseIcon from "../assets/icons/mouseIcon.svg?url";
+import zebrafishIcon from "../assets/icons/zebrafishIcon.svg?url";
 
 const props = defineProps({
   data: {
@@ -21,7 +21,7 @@ const props = defineProps({
 });
 
 const ICON_MAP = {
-  human: homosapienIcon,
+  human: humanIcon,
   mouse: mouseIcon,
   zebrafish: zebrafishIcon,
 };

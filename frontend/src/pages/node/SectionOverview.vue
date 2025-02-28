@@ -167,10 +167,10 @@ const otherMappings = computed(
     ) || [],
 );
 
-async function scrollToAssociations() {
-  await sleep(100);
-  scrollTo("#associations");
-}
+// async function scrollToAssociations() {
+//   await sleep(100);
+//   scrollTo("#associations");
+// }
 </script>
 
 <style lang="scss" scoped>
