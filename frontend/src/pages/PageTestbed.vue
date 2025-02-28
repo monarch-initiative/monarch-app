@@ -220,7 +220,7 @@
           },
         ],
       }"
-      :currentId="'HGNC:2330'"
+      :current-id="'MP:0000274'"
     />
   </AppSection>
 </template>

@@ -9,16 +9,22 @@ import homosapienIcon from "../assets/icons/homosapien.svg?url";
 import mouseIcon from "../assets/icons/mouse.svg?url";
 import zebrafishIcon from "../assets/icons/zebrafish.svg?url";
 
+const props = defineProps({
+  data: {
+    type: Object,
+    default: () => ({}),
+  },
+  currentId: {
+    type: String,
+    default: "",
+  },
+});
+
 const ICON_MAP = {
   human: homosapienIcon,
   mouse: mouseIcon,
   zebrafish: zebrafishIcon,
 };
-
-const props = defineProps({
-  data: Object,
-  currentId: String,
-});
 
 // Define Node
 interface Node {
