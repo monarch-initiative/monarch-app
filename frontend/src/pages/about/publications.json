@@ -1,29 +1,58 @@
 {
   "metadata": {
-    "total": 13749,
-    "num_publications": 150,
-    "last_5_yrs": 9306,
+    "total": 14077,
+    "num_publications": 154,
+    "last_5_yrs": 9620,
     "cites_per_year": {
       "2013": 44,
       "2014": 175,
-      "2015": 482,
-      "2016": 623,
-      "2017": 836,
-      "2018": 954,
+      "2015": 489,
+      "2016": 621,
+      "2017": 848,
+      "2018": 940,
       "2019": 1209,
       "2020": 1193,
-      "2021": 1406,
-      "2022": 1916,
-      "2023": 2028,
-      "2024": 2571,
-      "2025": 154
+      "2021": 1421,
+      "2022": 1906,
+      "2023": 2051,
+      "2024": 2581,
+      "2025": 425
     },
-    "hindex": 51,
-    "hindex5y": 45,
-    "i10index": 102,
-    "i10index5y": 93
+    "hindex": 53,
+    "hindex5y": 46,
+    "i10index": 104,
+    "i10index5y": 95
   },
   "publications": [
+    {
+      "year": 2025,
+      "items": [
+        {
+          "title": "An ontology-based rare disease common data model harmonising international registries, FHIR, and Phenopackets",
+          "authors": "Adam SL Graefe, Miriam R H\u00fcbner, Filip Rehburg, Steffen Sander, Sophie AI Klopfenstein, Samer Alkarkoukly, Ana Gr\u00f6nke, Annic Weyersberg, Daniel Danis, Jana Zsch\u00fcntzsch, Elisabeth F Nyoungui, Susanna Wiegand, Peter K\u00fchnen, Peter N Robinson, Oya Beyan, Sylvia Thun",
+          "year": 2025,
+          "journal": "Scientific Data",
+          "issue": "12(1):1-22",
+          "link": "https://www.nature.com/articles/s41597-025-04558-z"
+        },
+        {
+          "title": "Leveraging clinical intuition to improve accuracy of phenotype-driven prioritization.",
+          "authors": "Martha A Beckwith, Daniel Danis, Yasemin Bridges, Julius OB Jacobsen, Damian Smedley, Peter N Robinson",
+          "year": 2025,
+          "journal": "Genetics in medicine: official journal of the American College of Medical Genetics",
+          "issue": "27(1):101292",
+          "link": "https://www.sciencedirect.com/science/article/pii/S1098360024002260"
+        },
+        {
+          "title": "The genomic landscape of syndromic and non-syndromic hearing loss within the 100,000 Genomes Project cohort",
+          "authors": "Letizia Vestito, Damian Smedley, Valentina Cipriani, Gudrun E Moore, Philip Stanier, Michael R Bowl, Sally J Dawson, Emma Clement, Maria Bitner-Glindzicz",
+          "year": 2025,
+          "journal": "medRxiv",
+          "issue": ":2025.02. 06.25321804",
+          "link": "https://www.medrxiv.org/content/10.1101/2025.02.06.25321804.abstract"
+        }
+      ]
+    },
     {
       "year": 2024,
       "items": [
@@ -210,6 +239,14 @@
           "journal": "bioRxiv",
           "issue": "",
           "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11429889/"
+        },
+        {
+          "title": "Systematic benchmarking demonstrates large language models have not reached the diagnostic accuracy of traditional rare-disease decision support tools",
+          "authors": "Justin T Reese, Leonardo Chimirri, Yasemin Bridges, Daniel Danis, J Harry Caufield, Kyran Wissink, Julie A McMurry, Adam SL Graefe, Elena Casiraghi, Giorgio Valentini, Julius OB Jacobsen, Melissa Haendel, Damian Smedley, Christopher J Mungall, Peter N Robinson",
+          "year": 2024,
+          "journal": "medRxiv",
+          "issue": "",
+          "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11302616/"
         }
       ]
     },
