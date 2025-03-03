@@ -1080,6 +1080,18 @@
 
       DirectionalAssociation : object_namespace
 
+      DirectionalAssociation : object_specialization_qualifier
+
+      DirectionalAssociation : object_specialization_qualifier_category
+
+      DirectionalAssociation : object_specialization_qualifier_closure
+
+      DirectionalAssociation : object_specialization_qualifier_closure_label
+
+      DirectionalAssociation : object_specialization_qualifier_label
+
+      DirectionalAssociation : object_specialization_qualifier_namespace
+
       DirectionalAssociation : object_taxon
 
       DirectionalAssociation : object_taxon_label
@@ -1093,6 +1105,8 @@
       DirectionalAssociation : onset_qualifier_namespace
 
       DirectionalAssociation : original_object
+
+      DirectionalAssociation : original_predicate
 
       DirectionalAssociation : original_subject
 
@@ -1175,6 +1189,18 @@
       DirectionalAssociation : subject_label
 
       DirectionalAssociation : subject_namespace
+
+      DirectionalAssociation : subject_specialization_qualifier
+
+      DirectionalAssociation : subject_specialization_qualifier_category
+
+      DirectionalAssociation : subject_specialization_qualifier_closure
+
+      DirectionalAssociation : subject_specialization_qualifier_closure_label
+
+      DirectionalAssociation : subject_specialization_qualifier_label
+
+      DirectionalAssociation : subject_specialization_qualifier_namespace
 
       DirectionalAssociation : subject_taxon
 
@@ -1274,6 +1300,12 @@
 <td><a href="../predicate/">predicate</a></td>
 <td>1 <br/> <a href="../String/">String</a></td>
 <td></td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../original_predicate/">original_predicate</a></td>
+<td>0..1 <br/> <a href="../String/">String</a></td>
+<td>used to hold the original relation/predicate that an external knowledge sourc...</td>
 <td><a href="../Association/">Association</a></td>
 </tr>
 <tr>
@@ -1642,6 +1674,78 @@
 <td>The category of the species_context_qualifier entity</td>
 <td><a href="../Association/">Association</a></td>
 </tr>
+<tr>
+<td><a href="../subject_specialization_qualifier/">subject_specialization_qualifier</a></td>
+<td>0..1 <br/> <a href="../String/">String</a></td>
+<td>A qualifier that composes with a core subject/object concept to define a more...</td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../subject_specialization_qualifier_label/">subject_specialization_qualifier_label</a></td>
+<td>0..1 <br/> <a href="../String/">String</a></td>
+<td>A label for the subject_specialization_qualifier</td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../subject_specialization_qualifier_namespace/">subject_specialization_qualifier_namespace</a></td>
+<td>0..1 <br/> <a href="../String/">String</a></td>
+<td>The namespace/prefix of the subject_specialization_qualifier</td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../subject_specialization_qualifier_category/">subject_specialization_qualifier_category</a></td>
+<td>0..1 <br/> <a href="../String/">String</a></td>
+<td>The category of the subject_specialization_qualifier</td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../subject_specialization_qualifier_closure/">subject_specialization_qualifier_closure</a></td>
+<td>0..1 <br/> <a href="../String/">String</a></td>
+<td>A closure of the subject_specialization_qualifier, including the subject_spec...</td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../subject_specialization_qualifier_closure_label/">subject_specialization_qualifier_closure_label</a></td>
+<td>0..1 <br/> <a href="../String/">String</a></td>
+<td>A closure of the subject_specialization_qualifier, including the subject_spec...</td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../object_specialization_qualifier/">object_specialization_qualifier</a></td>
+<td>0..1 <br/> <a href="../String/">String</a></td>
+<td>A qualifier that composes with a core subject/object concept to define a more...</td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../object_specialization_qualifier_label/">object_specialization_qualifier_label</a></td>
+<td>0..1 <br/> <a href="../String/">String</a></td>
+<td>A label for the object_specialization_qualifier</td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../object_specialization_qualifier_namespace/">object_specialization_qualifier_namespace</a></td>
+<td>0..1 <br/> <a href="../String/">String</a></td>
+<td>The namespace/prefix of the object_specialization_qualifier</td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../object_specialization_qualifier_category/">object_specialization_qualifier_category</a></td>
+<td>0..1 <br/> <a href="../String/">String</a></td>
+<td>The category of the object_specialization_qualifier</td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../object_specialization_qualifier_closure/">object_specialization_qualifier_closure</a></td>
+<td>0..1 <br/> <a href="../String/">String</a></td>
+<td>A closure of the object_specialization_qualifier, including the object_specia...</td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../object_specialization_qualifier_closure_label/">object_specialization_qualifier_closure_label</a></td>
+<td>0..1 <br/> <a href="../String/">String</a></td>
+<td>A closure of the object_specialization_qualifier, including the object_specia...</td>
+<td><a href="../Association/">Association</a></td>
+</tr>
 </tbody>
 </table>
 <h2 id="usages">Usages</h2>
@@ -1865,6 +1969,17 @@
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
 <span class="w">    </span><span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">    </span><span class="nt">multivalued</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">original_predicate</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">original_predicate</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">used to hold the original relation/predicate that an external knowledge</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">source uses before transformation to match the biolink-model specification.</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">original_predicate</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DirectionalAssociation</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
 <span class="w">  </span><span class="nt">object</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object</span>
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
@@ -2526,6 +2641,138 @@
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">is_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">category</span>
 <span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">species_context_qualifier_category</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DirectionalAssociation</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">  </span><span class="nt">subject_specialization_qualifier</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject_specialization_qualifier</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A qualifier that composes with a core subject/object concept to define</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">a more specific version of the subject concept, specifically using an ontology</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">term that is not a subclass or descendant of the core concept and in the vast</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">majority of cases, is of a different ontological namespace than the category</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">or namespace of the subject identifier.</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject_specialization_qualifier</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DirectionalAssociation</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">  </span><span class="nt">subject_specialization_qualifier_label</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject_specialization_qualifier_label</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A label for the subject_specialization_qualifier</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject_specialization_qualifier_label</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DirectionalAssociation</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">  </span><span class="nt">subject_specialization_qualifier_namespace</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject_specialization_qualifier_namespace</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The namespace/prefix of the subject_specialization_qualifier</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject_specialization_qualifier_namespace</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DirectionalAssociation</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">  </span><span class="nt">subject_specialization_qualifier_category</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject_specialization_qualifier_category</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The category of the subject_specialization_qualifier</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject_specialization_qualifier_category</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DirectionalAssociation</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">  </span><span class="nt">subject_specialization_qualifier_closure</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject_specialization_qualifier_closure</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A closure of the subject_specialization_qualifier, including the</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">subject_specialization_qualifier itself and all of its ancestors</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject_specialization_qualifier_closure</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DirectionalAssociation</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">  </span><span class="nt">subject_specialization_qualifier_closure_label</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject_specialization_qualifier_closure_label</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A closure of the subject_specialization_qualifier, including the</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">subject_specialization_qualifier itself and all of its ancestors</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">subject_specialization_qualifier_closure_label</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DirectionalAssociation</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">  </span><span class="nt">object_specialization_qualifier</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_specialization_qualifier</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A qualifier that composes with a core subject/object concept to define</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">a more specific version of the object concept, specifically using an ontology</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">term that is not a subclass or descendant of the core concept and in the vast</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">majority of cases, is of a different ontological namespace than the category</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">or namespace of the object identifier.</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_specialization_qualifier</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DirectionalAssociation</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">  </span><span class="nt">object_specialization_qualifier_label</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_specialization_qualifier_label</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A label for the object_specialization_qualifier</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_specialization_qualifier_label</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DirectionalAssociation</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">  </span><span class="nt">object_specialization_qualifier_namespace</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_specialization_qualifier_namespace</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The namespace/prefix of the object_specialization_qualifier</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_specialization_qualifier_namespace</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DirectionalAssociation</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">  </span><span class="nt">object_specialization_qualifier_category</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_specialization_qualifier_category</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The category of the object_specialization_qualifier</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_specialization_qualifier_category</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DirectionalAssociation</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">  </span><span class="nt">object_specialization_qualifier_closure</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_specialization_qualifier_closure</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A closure of the object_specialization_qualifier, including the object_specialization_qualifier</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">itself and all of its ancestors</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_specialization_qualifier_closure</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DirectionalAssociation</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">  </span><span class="nt">object_specialization_qualifier_closure_label</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_specialization_qualifier_closure_label</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A closure of the object_specialization_qualifier, including the object_specialization_qualifier</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">itself and all of its ancestors</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_specialization_qualifier_closure_label</span>
 <span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DirectionalAssociation</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
