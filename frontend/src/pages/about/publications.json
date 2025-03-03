@@ -1,22 +1,22 @@
 {
   "metadata": {
-    "total": 14077,
-    "num_publications": 154,
-    "last_5_yrs": 9620,
+    "total": 14115,
+    "num_publications": 156,
+    "last_5_yrs": 9657,
     "cites_per_year": {
       "2013": 44,
       "2014": 175,
       "2015": 489,
       "2016": 621,
-      "2017": 848,
-      "2018": 940,
+      "2017": 850,
+      "2018": 939,
       "2019": 1209,
       "2020": 1193,
       "2021": 1421,
-      "2022": 1906,
-      "2023": 2051,
-      "2024": 2581,
-      "2025": 425
+      "2022": 1907,
+      "2023": 2048,
+      "2024": 2587,
+      "2025": 458
     },
     "hindex": 53,
     "hindex5y": 46,
@@ -50,6 +50,22 @@
           "journal": "medRxiv",
           "issue": ":2025.02. 06.25321804",
           "link": "https://www.medrxiv.org/content/10.1101/2025.02.06.25321804.abstract"
+        },
+        {
+          "title": "Consistent Performance of GPT-4o in Rare Disease Diagnosis Across Nine Languages and 4967 Cases",
+          "authors": "Leonardo Chimirri, J Harry Caufield, Nicolas Matentzoglu, Mike A Gargano, Yasemin Bridges, Mario Cazalla, Shihan Chen, Daniel Danis, Alexander JM Dingemanns, Petra J Gehle, Adam S L Graefe, Weihong Gu, Markus S Ladewig, Pablo Lapunzina, Julian Nevado, Soichi Ogishima, Dominik Seelow, Jair A Tenorio Castano, Marek Turnovec, Bert BA de Vries, Kai Wang, Kyran Wissink, Zafer Yuksel, Gabriele Zucca, Christopher J Mungall, Melissa A Haendel, Justin Reese, Peter N Robinson",
+          "year": 2025,
+          "journal": "medRxiv",
+          "issue": ":2025.02. 26.25322769",
+          "link": "https://www.medrxiv.org/content/10.1101/2025.02.26.25322769.abstract"
+        },
+        {
+          "title": "Rare disease gene association discovery in the 100,000 Genomes Project",
+          "authors": "Valentina Cipriani, Letizia Vestito, Emma F Magavern, Julius OB Jacobsen, Gavin Arno, Elijah R Behr, Katherine A Benson, Marta Bertoli, Detlef Bockenhauer, Michael R Bowl, Kate Burley, Li F Chan, Patrick Chinnery, Peter J Conlon, Marcos A Costa, Alice E Davidson, Sally J Dawson, Elhussein AE Elhassan, Sarah E Flanagan, Marta Futema, Daniel P Gale, Sonia Garc\u00eda-Ruiz, Cecilia Gonzalez Corcia, Helen R Griffin, Sophie Hambleton, Amy R Hicks, Henry Houlden, Richard S Houlston, Sarah A Howles, Robert Kleta, Iris Lekkerkerker, Siying Lin, Petra Liskova, Hannah H Mitchison, Heba Morsy, Andrew D Mumford, William G Newman, Ruxandra Neatu, Edel A O\u2019Toole, Albert CM Ong, Alistair T Pagnamenta, Shamima Rahman, Neil Rajan, Peter N Robinson, Mina Ryten, Omid Sadeghi-Alavijeh, John A Sayer, Claire L Shovlin, Jenny C Taylor, Omri Teltsh, Ian Tomlinson, Arianna Tucci, Clare Turnbull, Albertien M van Eerde, James S Ware, Laura M Watts, Andrew R Webster, Sarah K Westbury, Sean L Zheng, Mark Caulfield, Damian Smedley",
+          "year": 2025,
+          "journal": "Nature",
+          "issue": ":1-9",
+          "link": "https://www.nature.com/articles/s41586-025-08623-w"
         }
       ]
     },
