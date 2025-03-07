@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import AppInput from "./AppInput.vue";
 
 defineOptions({ inheritAttrs: false });
@@ -86,6 +86,7 @@ defineEmits<Emits>();
 const textbox = ref<HTMLDivElement>();
 /** element reference */
 const input = ref<InstanceType<typeof AppInput>>();
+const isTyping = ref(false); // Track if user has started typing
 
 /** clear box */
 function clear() {
@@ -94,6 +95,19 @@ function clear() {
   input.value.input.dispatchEvent(new Event("input"));
   input.value.input.dispatchEvent(new Event("change"));
 }
+
+/** Detect typing and retain focus */
+watch(
+  () => input.value?.input?.value,
+  (newValue) => {
+    if (newValue && !isTyping.value) {
+      isTyping.value = true; // Mark typing as started
+    }
+    if (isTyping.value && input.value?.input) {
+      input.value.input.focus(); // Retain focus
+    }
+  },
+);
 
 /** allow parent to access ref */
 defineExpose({ textbox });

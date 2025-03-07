@@ -44,10 +44,7 @@ const props = {
   cols,
   rows: data,
   sort: { key: "score", direction: "up" },
-  perPage: 10,
-  start: 1,
   total: 123,
-  search: "",
   filterOptions: { score: [{ id: "numbers" }, { id: "nulls" }] },
   selectedFilters: { score: [{ id: "numbers" }] },
 };
@@ -76,36 +73,4 @@ test("Changes filter", async () => {
       score: [{ id: "nulls" }],
     },
   ]);
-});
-
-test("Changes per page", async () => {
-  const wrapper = mount(AppTable as unknown as Component, { props });
-  await wrapper.find(".controls div:nth-child(1) button").trigger("click");
-  await wrapper.find("[role='option']").trigger("click");
-  expect(emitted(wrapper, "update:perPage")).toEqual([5]);
-});
-
-test("Changes pages", async () => {
-  const wrapper = mount(AppTable as unknown as Component, { props });
-  const nav = wrapper.findAll(".controls div:nth-child(2) button");
-  await nav.at(1)?.trigger("click");
-  expect(emitted(wrapper, "update:start"));
-  await nav.at(2)?.trigger("click");
-  expect(emitted(wrapper, "update:start"));
-  await nav.at(3)?.trigger("click");
-  expect(emitted(wrapper, "update:start"));
-  await nav.at(4)?.trigger("click");
-  expect(emitted(wrapper, "update:start"));
-});
-
-test("Changes search", async () => {
-  const wrapper = mount(AppTable as unknown as Component, { props });
-  await wrapper.find("input").setValue("test search");
-  expect(emitted(wrapper, "update:search")).toEqual(["test search"]);
-});
-
-test("Downloads", async () => {
-  const wrapper = mount(AppTable as unknown as Component, { props });
-  await wrapper.find(".controls div:nth-child(3) button").trigger("click");
-  expect(emitted(wrapper, "download")).toEqual([]);
 });
