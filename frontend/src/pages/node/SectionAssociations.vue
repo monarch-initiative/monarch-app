@@ -12,34 +12,45 @@
         >No associations with &nbsp;<AppNodeBadge :node="node" />
       </span>
 
-      <AppFlex gap="small">
-        <AppCheckbox
-          v-if="
-            node.category === 'biolink:Gene' &&
-            category?.id.startsWith('biolink:GeneToPheno')
-          "
-          v-model="includeOrthologs"
-          v-tooltip="
-            'Include phenotypes for orthologous genes in the associations table'
-          "
-          text="Include ortholog phenotypes"
-        />
-        <AppButton
-          v-if="
-            (node.category === 'biolink:Disease' &&
-              category?.id.startsWith('biolink:DiseaseToPheno')) ||
-            (node.category === 'biolink:Gene' &&
-              category?.id.startsWith('biolink:GeneToPheno'))
-          "
-          v-tooltip="
-            'Send these phenotypes to Phenotype Explorer for comparison'
-          "
-          to="explore#phenotype-explorer"
-          :state="{ search: node.id }"
-          text="Phenotype Explorer"
-          icon="arrow-right"
-        />
-      </AppFlex>
+      <div class="topRow">
+        <AppFlex gap="small" class="leftColumn">
+          <AppCheckbox
+            v-if="
+              node.category === 'biolink:Gene' &&
+              category?.id.startsWith('biolink:GeneToPheno')
+            "
+            v-model="includeOrthologs"
+            v-tooltip="
+              'Include phenotypes for orthologous genes in the associations table'
+            "
+            text="Include ortholog phenotypes"
+          />
+          <AppButton
+            v-if="
+              (node.category === 'biolink:Disease' &&
+                category?.id.startsWith('biolink:DiseaseToPheno')) ||
+              (node.category === 'biolink:Gene' &&
+                category?.id.startsWith('biolink:GeneToPheno'))
+            "
+            v-tooltip="
+              'Send these phenotypes to Phenotype Explorer for comparison'
+            "
+            to="explore#phenotype-explorer"
+            :state="{ search: node.id }"
+            text="Phenotype Explorer"
+            icon="arrow-right"
+          />
+        </AppFlex>
+
+        <div class="rightColumn">
+          <AppTextbox
+            v-model="searchValues[category.id]"
+            placeholder="Search table data..."
+            @debounce="(value) => (debouncedSearchValues[category.id] = value)"
+            @change="(value) => (debouncedSearchValues[category.id] = value)"
+          />
+        </div>
+      </div>
 
       <template v-if="category && direct">
         <!-- table view of associations -->
@@ -48,6 +59,7 @@
           :category="category"
           :include-orthologs="includeOrthologs"
           :direct="direct"
+          :search="debouncedSearchValues[category.id]"
         />
       </template>
     </AppSection>
@@ -63,6 +75,7 @@ import type { Node } from "@/api/model";
 import AppCheckbox from "@/components/AppCheckbox.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import type { Option, Options } from "@/components/AppSelectSingle.vue";
+import AppTextbox from "@/components/AppTextbox.vue";
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
 
 /** route info */
@@ -78,6 +91,9 @@ const props = defineProps<Props>();
 /** include orthologous genes in association table */
 const includeOrthologs = ref(false);
 const direct = ref<Option>();
+
+const searchValues = ref<Record<string, string>>({});
+const debouncedSearchValues = ref<Record<string, string>>({});
 
 /** list of options for dropdown */
 const categoryOptions = computed(
@@ -120,5 +136,19 @@ watch(
 /** make room for the table of contents **/
 .section {
   margin: 10px 20px 10px $toc-width + 20px !important;
+}
+.topRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  gap: 16px;
+}
+.leftColumn {
+  flex: 1;
+  min-width: 300px;
+}
+.rightColumn {
+  min-width: 20em;
 }
 </style>
