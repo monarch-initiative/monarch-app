@@ -4,7 +4,11 @@
 
 <template>
   <!-- status -->
-  <AppStatus v-if="isLoading" code="loading"
+  <AppStatus
+    v-if="isLoading"
+    code="loading"
+    class="loading"
+    :style="{ minHeight: dynamicMinHeight + 'em' }"
     >Loading tabulated association data</AppStatus
   >
   <AppStatus v-else-if="isError" code="error"
@@ -18,7 +22,6 @@
     v-model:sort="sort"
     v-model:per-page="perPage"
     v-model:start="start"
-    v-model:search="search"
     :cols="cols"
     :rows="associations.items"
     :total="associations.total"
@@ -177,6 +180,16 @@
     <!-- publication specific -->
     <!-- no template needed because info just plain text -->
   </AppTable>
+
+  <TableControls
+    id="showControls"
+    v-model:per-page="perPage"
+    v-model:start="start"
+    :rows="associations.items"
+    :total="associations.total"
+    @download="download"
+  />
+
   <AppModal v-model="showModal" label="Association Details">
     <SectionAssociationDetails
       :node="node"
@@ -205,6 +218,7 @@ import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
 import type { Option } from "@/components/AppSelectSingle.vue";
 import AppTable from "@/components/AppTable.vue";
 import type { Cols, Sort } from "@/components/AppTable.vue";
+import TableControls from "@/components/TableContols.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
 import { useQuery } from "@/composables/use-query";
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
@@ -218,12 +232,17 @@ type Props = {
   /** include orthologs */
   includeOrthologs: boolean;
   direct: Option;
+  /** search string */
+  search: string;
 };
 
 const props = defineProps<Props>();
 
 const showModal = ref(false);
 const selectedAssociation = ref<DirectionalAssociation | null>(null);
+const start = ref(0);
+const sort = ref<Sort>();
+const perPage = ref(5);
 
 function openModal(association: DirectionalAssociation) {
   selectedAssociation.value = association;
@@ -236,32 +255,9 @@ watch(showModal, (newValue) => {
   }
 });
 
-// type Emits = {
-//   /** change selected association */
-//   select: [value?: DirectionalAssociation];
-// };
-//
-// const emit = defineEmits<Emits>();
-//
-// emit("select", (value) => {
-//   if (value) {
-//     console.log("emitting association detail event");
-//     console.log(value);
-//     association.value = value;
-//     showModal.value = true;
-//   }
-// });
-
-/** table state */
-const sort = ref<Sort>();
-const perPage = ref(5);
-const start = ref(0);
-const search = ref("");
-
 type Datum = keyof DirectionalAssociation;
 
 /** Orholog columns */
-
 const orthologColoumns = computed<Cols<Datum>>(() => {
   return [
     {
@@ -292,6 +288,12 @@ const orthologColoumns = computed<Cols<Datum>>(() => {
       align: "center",
     },
   ];
+});
+
+//calculate dynamic min height of table
+const dynamicMinHeight = computed(() => {
+  const itemHeight = 3.6;
+  return perPage.value * itemHeight;
 });
 
 const medicalActionCategory =
@@ -469,6 +471,7 @@ const {
     if (fresh) {
       start.value = 0;
     }
+
     const response = await getAssociations(
       props.node.id,
       props.category.id,
@@ -476,7 +479,7 @@ const {
       perPage.value,
       props.includeOrthologs,
       props.direct.id,
-      search.value,
+      props.search,
       sort.value,
     );
 
@@ -505,7 +508,7 @@ async function download() {
     props.category.id,
     props.includeOrthologs,
     props.direct.id,
-    search.value,
+    props.search,
     sort.value,
   );
 }
@@ -568,10 +571,17 @@ watch(
   () => props.direct,
   async () => await queryAssociations(true),
 );
+
 watch(
-  [perPage, start, search, sort],
-  async () => await queryAssociations(false),
+  () => props.search,
+  async () => {
+    await queryAssociations(true);
+    console.log(props.search);
+  },
+  { immediate: true },
 );
+
+watch([perPage, sort, start], async () => await queryAssociations(false));
 
 /** get associations on load */
 onMounted(() => queryAssociations(true));
@@ -589,5 +599,26 @@ onMounted(() => queryAssociations(true));
 
 .empty {
   color: $gray;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.7;
+  }
 }
 </style>
