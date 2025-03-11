@@ -1,9 +1,10 @@
 <!--
   about cite page
-
+  
   info on how to cite and acknowledge monarch
 -->
 
+<!-- eslint-disable max-len -->
 <template>
   <AppSection>
     <AppHeading>Cite</AppHeading>
