@@ -22,7 +22,7 @@
     },
     {
       "label": "Variant to Disease",
-      "count": 1,
+      "count": 163,
       "category": "biolink:VariantToDiseaseAssociation"
     },
     {
