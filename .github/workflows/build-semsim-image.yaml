@@ -16,7 +16,7 @@ jobs:
           fetch-depth: 0 # to get all tags
         
       - name: Build and Push Image
-        uses: RafikFarhad/push-to-gcr-github-action@v5-beta
+        uses: RafikFarhad/push-to-gcr-github-action@v5-rc1
         with:
           gcloud_service_key: ${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }} # not needed if you use google-github-actions/auth
           registry: us-central1-docker.pkg.dev
