@@ -196,7 +196,7 @@
       :data="{
         upheno_parent: {
           id: 'UPHENO:0001471',
-          label: 'big heart',
+          label: 'increased size of the heart',
           ontology: 'uPheno',
         },
         species_specific_children: [
@@ -214,7 +214,7 @@
           },
           {
             id: 'MP:0000274',
-            label: 'An increase in the size of the heart.',
+            label: 'enlarged heart',
             ontology: 'MP',
             taxon: 'mouse',
           },
