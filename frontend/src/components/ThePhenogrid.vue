@@ -79,7 +79,11 @@
                 cellSize * 0.25
               }) rotate(-45)`"
             >
-              {{ truncateLabels ? truncate(col.label) : col.label }}
+              <AppNodeText
+                is-svg
+                :text="col.label"
+                :truncateWidth="marginLeft * .8"
+              />
             </text>
             <template #content>
               <AppNodeBadge :node="col" :absolute="true" :show-id="true" />
@@ -116,7 +120,11 @@
                 (0.5 + rowIndex) * cellSize
               })`"
             >
-              {{ truncateLabels ? truncate(row.label) : row.label }}
+              <AppNodeText
+                is-svg
+                :text="row.label"
+                :truncateWidth="marginLeft * .8"
+              />
             </text>
             <template #content>
               <AppNodeBadge :node="row" :absolute="true" :show-id="true" />
@@ -364,10 +372,11 @@ import { useResizeObserver, useScroll } from "@vueuse/core";
 import type { TermInfo, TermPairwiseSimilarity } from "@/api/model";
 import AppCheckbox from "@/components/AppCheckbox.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
+import AppNodeText from "@/components/AppNodeText.vue";
 import AppSelectSingle, { type Option } from "@/components/AppSelectSingle.vue";
 import { appendToBody } from "@/global/tooltip";
 import { frame } from "@/util/debug";
-import { screenToSvgCoords, truncateBySize } from "@/util/dom";
+import { screenToSvgCoords } from "@/util/dom";
 import { downloadSvg } from "@/util/download";
 import { copyToClipboard } from "@/util/string";
 import type AppFlex from "./AppFlex.vue";
@@ -491,15 +500,6 @@ function copy() {
   );
 }
 
-/** truncate labels */
-function truncate(text?: string) {
-  return truncateBySize(
-    text || "",
-    marginLeft * 0.9,
-    cellSize * 0.5 + "px Poppins",
-  );
-}
-
 /** track grid scroll */
 const scrollInfo = useScroll(scroll);
 const scrollCoords = ref({ x: 0, y: 0, w: 0, h: 0 });
@@ -546,6 +546,7 @@ async function emitSize() {
   element.classList.remove("full-size");
   window.parent.postMessage({ name: window.name, width, height }, "*");
 }
+
 </script>
 
 <style scoped lang="scss">
