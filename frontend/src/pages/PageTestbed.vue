@@ -207,7 +207,7 @@
             taxon: 'human',
           },
           {
-            id: 'HGNC:2330',
+            id: 'ZP:0000532',
             label: 'heart enlarged, abnormal',
             ontology: 'ZP',
             taxon: 'zebrafish',

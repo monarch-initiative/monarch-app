@@ -2116,6 +2116,9 @@ class Node(Entity):
     association_counts: List[AssociationCount] = Field(
         ..., json_schema_extra={"linkml_meta": {"alias": "association_counts", "domain_of": ["Node"]}}
     )
+    cross_species_term_clique: Optional[CrossSpeciesTermClique] = Field(
+        None, json_schema_extra={"linkml_meta": {"alias": "cross_species_term_clique", "domain_of": ["Node"]}}
+    )
     node_hierarchy: Optional[NodeHierarchy] = Field(
         None, json_schema_extra={"linkml_meta": {"alias": "node_hierarchy", "domain_of": ["Node"]}}
     )
@@ -2220,6 +2223,35 @@ class Node(Entity):
         None,
         description="""A count of the number of phenotypes that are known to be associated with this entity""",
         json_schema_extra={"linkml_meta": {"alias": "has_phenotype_count", "domain_of": ["Entity"]}},
+    )
+
+
+class CrossSpeciesTermClique(ConfiguredBaseModel):
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
+        {
+            "from_schema": "https://w3id.org/monarch/monarch-py",
+            "slot_usage": {
+                "associations": {"name": "associations", "required": True},
+                "entities": {"name": "entities", "required": True},
+                "root_term": {"name": "root_term", "required": True},
+            },
+        }
+    )
+
+    root_term: Entity = Field(
+        ...,
+        description="""The parent portion of a CrossSpeciesTermClique""",
+        json_schema_extra={"linkml_meta": {"alias": "root_term", "domain_of": ["CrossSpeciesTermClique"]}},
+    )
+    entities: List[Entity] = Field(
+        ...,
+        description="""A collection of nodes / entities""",
+        json_schema_extra={"linkml_meta": {"alias": "entities", "domain_of": ["CrossSpeciesTermClique"]}},
+    )
+    associations: List[Association] = Field(
+        ...,
+        description="""A collection of edges / associations""",
+        json_schema_extra={"linkml_meta": {"alias": "associations", "domain_of": ["CrossSpeciesTermClique"]}},
     )
 
 
@@ -2976,6 +3008,7 @@ HistoPheno.model_rebuild()
 HistoBin.model_rebuild()
 Mapping.model_rebuild()
 Node.model_rebuild()
+CrossSpeciesTermClique.model_rebuild()
 NodeHierarchy.model_rebuild()
 Release.model_rebuild()
 Results.model_rebuild()

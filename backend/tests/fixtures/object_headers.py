@@ -128,6 +128,7 @@ def node_headers():
         "external_links",
         "provided_by_link",
         "association_counts",
+        "phenotype_neighborhood",
         "node_hierarchy",
     ]
 
