@@ -51,7 +51,7 @@ jobs:
           fetch-depth: 0 # to get all tags
 
       - name: Set up Bun
-        uses: oven-sh/setup-bun@v1
+        uses: oven-sh/setup-bun@v2
 
       - name: Install packages
         run: bun install
