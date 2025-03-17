@@ -58,12 +58,6 @@ const highlightedPredicate = computed(() => {
     (match) => `<span style="
      background: #D6CB98;">${match}</span>`,
   );
-
-  // return predicateLabel.replace(
-  //   searchRegex,
-  //   (match) => `<span style="
-  //   background: yellow;">${match}</span>`,
-  // );
 });
 </script>
 
