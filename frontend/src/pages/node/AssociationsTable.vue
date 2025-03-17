@@ -62,6 +62,7 @@
           info: row.subject_taxon_label,
         }"
         :breadcrumbs="getBreadcrumbs(node, row, 'subject')"
+        :search="props.search"
       />
     </template>
 
@@ -85,6 +86,7 @@
           info: row.object_taxon_label,
         }"
         :breadcrumbs="getBreadcrumbs(node, row, 'object')"
+        :search="props.search"
       />
     </template>
 

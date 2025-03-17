@@ -55,7 +55,8 @@ const highlightedPredicate = computed(() => {
   const searchRegex = new RegExp(props.search, "gi"); // Case-insensitive search
   return predicateLabel.replace(
     searchRegex,
-    (match) => `<span class="highlight">${match}</span>`,
+    (match) => `<span style="
+     background: #D6CB98;">${match}</span>`,
   );
 
   // return predicateLabel.replace(
@@ -84,9 +85,6 @@ const highlightedPredicate = computed(() => {
   &:last-child {
     margin-left: 0.5em;
   }
-}
-:deep(.highlight) {
-  background: yellow;
 }
 .negated-text {
   color: $error;

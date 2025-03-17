@@ -19,7 +19,7 @@
           : state || undefined
       "
     >
-      <AppNodeText :text="name" />
+      <AppNodeText :text="name" :search="search" />
     </AppLink>
     <span v-else>
       <span class="name">
@@ -61,6 +61,7 @@ type Props = {
   absolute?: boolean;
   /** whether to show id. not shown by default, unless name/label empty. */
   showId?: boolean;
+  search?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -70,6 +71,7 @@ const props = withDefaults(defineProps<Props>(), {
   state: undefined,
   absolute: false,
   showId: false,
+  search: "",
 });
 
 /** name/label */

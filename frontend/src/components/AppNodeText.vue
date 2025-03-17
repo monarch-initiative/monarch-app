@@ -25,22 +25,22 @@
   <tspan v-if="isSvg" ref="container">
     {{ text }}
   </tspan>
-  <span v-else ref="container">
-    {{ text }}
-  </span>
+  <span v-else ref="container" v-html="highlightedText"> </span>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUpdated, ref } from "vue";
+import { computed, onMounted, onUpdated, ref } from "vue";
 
 type Props = {
   text?: string;
   isSvg?: boolean;
+  search?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   text: "",
   isSvg: false,
+  search: "",
 });
 
 const container = ref<HTMLSpanElement | SVGTSpanElement | null>(null);
@@ -221,6 +221,20 @@ function buildDOM(containerEl: Element) {
     endNode!.parentNode!.removeChild(endNode!);
   });
 }
+
+const highlightedText = computed(() => {
+  const text = props.text;
+
+  if (!props.search) {
+    return text; // No search term, return the original text
+  }
+  const searchRegex = new RegExp(props.search, "gi"); // Case-insensitive search
+  return text.replace(
+    searchRegex,
+    (match) => `<span style="
+     background: #D6CB98;">${match}</span>`,
+  );
+});
 
 onMounted(() => {
   if (!container.value) return;
