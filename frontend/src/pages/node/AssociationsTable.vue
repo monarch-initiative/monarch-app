@@ -67,7 +67,7 @@
 
     <!-- predicate -->
     <template #predicate="{ row }">
-      <AppPredicateBadge :association="row" />
+      <AppPredicateBadge :association="row" :search="props.search" />
     </template>
 
     <!-- maxorelation -->
@@ -574,7 +574,6 @@ watch(
   () => props.search,
   async () => {
     await queryAssociations(true);
-    console.log(props.search);
   },
   { immediate: true },
 );

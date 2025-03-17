@@ -6,7 +6,8 @@
   <span class="predicate">
     <AppIcon v-if="arrows" class="arrow" :icon="`arrow-${arrowDirection}`" />
     <span v-if="association.negated" class="negated-text">NOT</span>
-    {{ startCase(getCategoryLabel(association.predicate)).toLowerCase() }}
+
+    <span v-html="highlightedPredicate"></span>
     <AppIcon v-if="arrows" class="arrow" :icon="`arrow-${arrowDirection}`" />
   </span>
 </template>
@@ -25,6 +26,8 @@ type Props = {
   /** whether to display arrows vertically */
   vertical?: boolean;
   arrows?: boolean;
+  /** search term for highlighting */
+  search?: string;
 };
 
 const props = defineProps<Props>();
@@ -39,6 +42,28 @@ const arrowDirection = computed(() =>
       ? "down"
       : "right",
 );
+
+const highlightedPredicate = computed(() => {
+  const predicateLabel = startCase(
+    getCategoryLabel(props.association.predicate),
+  ).toLowerCase();
+
+  if (!props.search) {
+    return predicateLabel; // No search term, return the original text
+  }
+
+  const searchRegex = new RegExp(props.search, "gi"); // Case-insensitive search
+  return predicateLabel.replace(
+    searchRegex,
+    (match) => `<span class="highlight">${match}</span>`,
+  );
+
+  // return predicateLabel.replace(
+  //   searchRegex,
+  //   (match) => `<span style="
+  //   background: yellow;">${match}</span>`,
+  // );
+});
 </script>
 
 <style lang="scss" scoped>
@@ -60,7 +85,9 @@ const arrowDirection = computed(() =>
     margin-left: 0.5em;
   }
 }
-
+:deep(.highlight) {
+  background: yellow;
+}
 .negated-text {
   color: $error;
   font-weight: 600;
