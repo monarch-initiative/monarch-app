@@ -1,7 +1,8 @@
+import pytest
 from unittest.mock import patch
 
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
-from monarch_py.datamodels.model import Entity, PhenotypeNeighborhood
+from monarch_py.datamodels.model import Entity, CrossSpeciesTermClique
 
 
 def test_get_counterpart_entities_limit():
@@ -20,14 +21,16 @@ def test_get_cross_species_term_clique_non_phenotypic_feature():
     assert result is None
 
 
-def test_get_cross_species_term_clique_root_term():
+@pytest.mark.parametrize("prefix", SolrImplementation.CROSS_SPECIES_PREFIXES)
+def test_get_cross_species_term_clique_root_term(prefix):
     with patch.object(SolrImplementation, "get_entity") as mock_get_entity, patch.object(
         SolrImplementation, "get_counterpart_entities"
     ) as mock_get_counterpart_entities:
 
         si = SolrImplementation()
-        entity = Entity(id="UPHENO:0001", category="biolink:PhenotypicFeature")
-        parent_entity = Entity(id="UPHENO:0001", category="biolink:PhenotypicFeature")
+        entity_id = f"{prefix}:0001"
+        entity = Entity(id=entity_id, category="biolink:PhenotypicFeature")
+        parent_entity = Entity(id=entity_id, category="biolink:PhenotypicFeature")
         child_entity = Entity(id="HP:0002", category="biolink:PhenotypicFeature")
         child_entity_2 = Entity(id="MP:0004", category="biolink:PhenotypicFeature")
 
@@ -37,17 +40,18 @@ def test_get_cross_species_term_clique_root_term():
         result = si._get_cross_species_term_clique(entity)
 
         assert result is not None
-        assert isinstance(result, PhenotypeNeighborhood)
-        assert result.parent == parent_entity
-        assert result.children == [child_entity, child_entity_2]
+        assert isinstance(result, CrossSpeciesTermClique)
+        assert result.root_term == parent_entity
+        assert result.entities == [child_entity, child_entity_2]
 
 
-def test_get_cross_species_term_clique_non_upheno_parent():
+@pytest.mark.parametrize("prefix", SolrImplementation.CROSS_SPECIES_PREFIXES)
+def test_get_cross_species_term_clique_child_term(prefix):
     with patch.object(SolrImplementation, "get_counterpart_entities") as mock_get_counterpart_entities:
 
         si = SolrImplementation()
         entity = Entity(id="ZP:0001", category="biolink:PhenotypicFeature")
-        parent_entity = Entity(id="UPHENO:0001", category="biolink:PhenotypicFeature")
+        parent_entity = Entity(id=f"{prefix}:0001", category="biolink:PhenotypicFeature")
         child_entity = Entity(id="MP:0002", category="biolink:PhenotypicFeature")
 
         mock_get_counterpart_entities.side_effect = [[parent_entity], [child_entity]]
@@ -55,9 +59,9 @@ def test_get_cross_species_term_clique_non_upheno_parent():
         result = si._get_cross_species_term_clique(entity)
 
         assert result is not None
-        assert isinstance(result, PhenotypeNeighborhood)
-        assert result.parent == parent_entity
-        assert result.children == [child_entity]
+        assert isinstance(result, CrossSpeciesTermClique)
+        assert result.root_term == parent_entity
+        assert result.entities == [child_entity]
 
 
 def test_get_cross_species_term_clique_no_parent():

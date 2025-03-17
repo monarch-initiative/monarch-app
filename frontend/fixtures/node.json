@@ -174,7 +174,7 @@
       "category": "biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation"
     }
   ],
-  "phenotype_neighborhood": null,
+  "cross_species_term_clique": null,
   "node_hierarchy": {
     "super_classes": [
       {
