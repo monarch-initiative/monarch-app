@@ -26,8 +26,11 @@ type Props = {
   /** whether to display arrows vertically */
   vertical?: boolean;
   arrows?: boolean;
-  /** search term for highlighting */
-  search?: string;
+
+  getHighlightedText: (
+    text: string,
+    transformFn?: (text: string) => string,
+  ) => string;
 };
 
 const props = defineProps<Props>();
@@ -44,19 +47,8 @@ const arrowDirection = computed(() =>
 );
 
 const highlightedPredicate = computed(() => {
-  const predicateLabel = startCase(
-    getCategoryLabel(props.association.predicate),
-  ).toLowerCase();
-
-  if (!props.search) {
-    return predicateLabel; // No search term, return the original text
-  }
-
-  const searchRegex = new RegExp(props.search, "gi"); // Case-insensitive search
-  return predicateLabel.replace(
-    searchRegex,
-    (match) => `<span style="
-     background: #D6CB98;">${match}</span>`,
+  return props.getHighlightedText(props.association.predicate || "", (text) =>
+    startCase(getCategoryLabel(text)).toLowerCase(),
   );
 });
 </script>

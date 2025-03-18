@@ -62,13 +62,16 @@
           info: row.subject_taxon_label,
         }"
         :breadcrumbs="getBreadcrumbs(node, row, 'subject')"
-        :search="props.search"
+        :getHighlightedText="getHighlightedText"
       />
     </template>
 
     <!-- predicate -->
     <template #predicate="{ row }">
-      <AppPredicateBadge :association="row" :search="props.search" />
+      <AppPredicateBadge
+        :association="row"
+        :getHighlightedText="getHighlightedText"
+      />
     </template>
 
     <!-- maxorelation -->
@@ -86,7 +89,7 @@
           info: row.object_taxon_label,
         }"
         :breadcrumbs="getBreadcrumbs(node, row, 'object')"
-        :search="props.search"
+        :getHighlightedText="getHighlightedText"
       />
     </template>
 
@@ -255,6 +258,24 @@ watch(showModal, (newValue) => {
 });
 
 type Datum = keyof DirectionalAssociation;
+
+function getHighlightedText(
+  text: string,
+  transformFn?: (text: string) => string,
+): string {
+  if (!text) return "";
+  if (transformFn) {
+    text = transformFn(text); // Apply the transformation logic if provided
+  }
+  if (!props.search) return text; // If no search term, return the original text
+
+  const searchRegex = new RegExp(props.search, "gi"); // Case-insensitive search
+  return text.replace(
+    searchRegex,
+    (match) => `<span style="
+   background: #FFFF00;">${match}</span>`,
+  );
+}
 
 /** Orholog columns */
 const orthologColoumns = computed<Cols<Datum>>(() => {

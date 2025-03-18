@@ -35,12 +35,16 @@ type Props = {
   text?: string;
   isSvg?: boolean;
   search?: string;
+  getHighlightedText?: (
+    text: string,
+    transformFn?: (text: string) => string,
+  ) => string;
 };
-
 const props = withDefaults(defineProps<Props>(), {
   text: "",
   isSvg: false,
   search: "",
+  getHighlightedText: (text: string) => text,
 });
 
 const container = ref<HTMLSpanElement | SVGTSpanElement | null>(null);
@@ -223,17 +227,9 @@ function buildDOM(containerEl: Element) {
 }
 
 const highlightedText = computed(() => {
-  const text = props.text;
-
-  if (!props.search) {
-    return text; // No search term, return the original text
-  }
-  const searchRegex = new RegExp(props.search, "gi"); // Case-insensitive search
-  return text.replace(
-    searchRegex,
-    (match) => `<span style="
-     background: #D6CB98;">${match}</span>`,
-  );
+  return props.getHighlightedText
+    ? props.getHighlightedText(props.text || "")
+    : props.text || "";
 });
 
 onMounted(() => {
