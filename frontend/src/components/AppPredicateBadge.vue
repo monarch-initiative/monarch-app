@@ -27,7 +27,7 @@ type Props = {
   vertical?: boolean;
   arrows?: boolean;
   /** function to hightlight search text */
-  getHighlightedText: (
+  getHighlightedText?: (
     text: string,
     transformFn?: (text: string) => string,
   ) => string;
@@ -47,9 +47,10 @@ const arrowDirection = computed(() =>
 );
 
 const highlightedPredicate = computed(() => {
-  return props.getHighlightedText(props.association.predicate || "", (text) =>
-    startCase(getCategoryLabel(text)).toLowerCase(),
-  );
+  if (!props.getHighlightedText) return "";
+  const predicate = props.association.predicate || "";
+  const transformedText = startCase(getCategoryLabel(predicate)).toLowerCase();
+  return props.getHighlightedText(predicate, () => transformedText);
 });
 </script>
 
