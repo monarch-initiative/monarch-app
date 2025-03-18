@@ -259,10 +259,10 @@ watch(showModal, (newValue) => {
 
 type Datum = keyof DirectionalAssociation;
 
-function getHighlightedText(
+const getHighlightedText = (
   text: string,
   transformFn?: (text: string) => string,
-): string {
+): string => {
   if (!text) return "";
   if (transformFn) {
     text = transformFn(text); // Apply the transformation logic if provided
@@ -275,7 +275,7 @@ function getHighlightedText(
     (match) => `<span style="
    background: #FFFF00;">${match}</span>`,
   );
-}
+};
 
 /** Orholog columns */
 const orthologColoumns = computed<Cols<Datum>>(() => {
