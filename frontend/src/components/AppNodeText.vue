@@ -34,7 +34,6 @@ import { computed, onMounted, onUpdated, ref } from "vue";
 type Props = {
   text?: string;
   isSvg?: boolean;
-  search?: string;
   getHighlightedText?: (
     text: string,
     transformFn?: (text: string) => string,
@@ -43,7 +42,6 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   text: "",
   isSvg: false,
-  search: "",
   getHighlightedText: (text: string) => text,
 });
 

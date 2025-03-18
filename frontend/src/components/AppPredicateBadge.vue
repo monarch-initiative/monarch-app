@@ -26,7 +26,7 @@ type Props = {
   /** whether to display arrows vertically */
   vertical?: boolean;
   arrows?: boolean;
-
+  /** function to hightlight search text */
   getHighlightedText: (
     text: string,
     transformFn?: (text: string) => string,
