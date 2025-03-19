@@ -930,7 +930,7 @@ class Association(ConfiguredBaseModel):
     highlighting: Optional[Dict[str, Union[str, Highlight]]] = Field(
         None,
         description="""Collection of highlighting responses with field name and highlighted text""",
-        json_schema_extra={"linkml_meta": {"alias": "highlighting", "domain_of": ["Association", "SearchResults"]}},
+        json_schema_extra={"linkml_meta": {"alias": "highlighting", "domain_of": ["Association", "SearchResult"]}},
     )
 
 
@@ -1706,7 +1706,7 @@ class DirectionalAssociation(Association):
     highlighting: Optional[Dict[str, Union[str, Highlight]]] = Field(
         None,
         description="""Collection of highlighting responses with field name and highlighted text""",
-        json_schema_extra={"linkml_meta": {"alias": "highlighting", "domain_of": ["Association", "SearchResults"]}},
+        json_schema_extra={"linkml_meta": {"alias": "highlighting", "domain_of": ["Association", "SearchResult"]}},
     )
 
 
@@ -2754,7 +2754,7 @@ class Highlighting(ConfiguredBaseModel):
     highlights: Optional[Dict[str, Union[str, Highlight]]] = Field(
         None,
         description="""matching text snippet containing html tags""",
-        json_schema_extra={"linkml_meta": {"alias": "highlights", "domain_of": ["Highlighting", "SearchResult"]}},
+        json_schema_extra={"linkml_meta": {"alias": "highlights", "domain_of": ["Highlighting"]}},
     )
 
 
@@ -2769,10 +2769,10 @@ class SearchResult(Entity):
         }
     )
 
-    highlights: Optional[Dict[str, Union[str, Highlight]]] = Field(
+    highlighting: Optional[Dict[str, Union[str, Highlight]]] = Field(
         None,
-        description="""matching text snippet containing html tags""",
-        json_schema_extra={"linkml_meta": {"alias": "highlights", "domain_of": ["Highlighting", "SearchResult"]}},
+        description="""Collection of highlighting responses with field name and highlighted text""",
+        json_schema_extra={"linkml_meta": {"alias": "highlighting", "domain_of": ["Association", "SearchResult"]}},
     )
     score: Optional[float] = Field(
         None,
@@ -2951,11 +2951,6 @@ class SearchResults(Results):
                 ],
             }
         },
-    )
-    highlighting: Optional[Dict[str, Union[str, Highlight]]] = Field(
-        None,
-        description="""Collection of highlighting responses with field name and highlighted text""",
-        json_schema_extra={"linkml_meta": {"alias": "highlighting", "domain_of": ["Association", "SearchResults"]}},
     )
     limit: int = Field(
         ...,

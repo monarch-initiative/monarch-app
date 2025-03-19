@@ -330,7 +330,7 @@ classes:
   SearchResult:
     is_a: Entity
     slots:
-      - highlights
+      - highlighting
       - score
     slot_usage:
       category:
@@ -343,7 +343,6 @@ classes:
       - items
       - facet_fields
       - facet_queries
-      - highlighting
     slot_usage:
       items:
         range: SearchResult

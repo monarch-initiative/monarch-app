@@ -551,8 +551,8 @@ export interface Highlighting {
 
 
 export interface SearchResult extends Entity {
-    /** matching text snippet containing html tags */
-    highlights?: {[index: HighlightField]: Highlight },
+    /** Collection of highlighting responses with field name and highlighted text */
+    highlighting?: {[index: HighlightField]: Highlight },
     score?: number,
 }
 
@@ -565,8 +565,6 @@ export interface SearchResults extends Results {
     facet_fields?: FacetField[],
     /** Collection of facet query responses with the query string values and counts */
     facet_queries?: FacetValue[],
-    /** Collection of highlighting responses with field name and highlighted text */
-    highlighting?: {[index: HighlightField]: Highlight },
 }
 
 
