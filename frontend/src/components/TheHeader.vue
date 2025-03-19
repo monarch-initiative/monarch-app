@@ -326,8 +326,8 @@ $wrap: 1000px;
     position: unset;
     flex-direction: column;
     margin-top: -10px;
+
     &.expanded {
-      max-height: 300px;
       transition: max-height 0.3s ease-out;
     }
   }
@@ -369,6 +369,13 @@ $wrap: 1000px;
     flex-direction: column;
     margin-right: auto;
     padding: 5px 0;
+  }
+}
+
+/* Adjust TabSearch component when screen width is less than $wrap */
+@media (max-width: $wrap) {
+  .tab-search {
+    max-height: 20px;
   }
 }
 </style>

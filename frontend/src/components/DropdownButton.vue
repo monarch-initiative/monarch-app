@@ -58,12 +58,7 @@ $wrap: 1000px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 4px;
-  background-color: transparent;
-  color: white;
-  font-size: 16px;
+
   cursor: pointer;
 }
 
@@ -122,7 +117,7 @@ $wrap: 1000px;
 /* Dropdown menu for small screens */
 @media (max-width: $wrap) {
   .dropdown-menu {
-    position: static;
+    position: relative;
     width: 100%;
     max-height: 300px; /* Adjust as needed */
     padding: 0;
