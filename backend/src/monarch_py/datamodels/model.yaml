@@ -111,6 +111,7 @@ classes:
       - object_specialization_qualifier_category
       - object_specialization_qualifier_closure
       - object_specialization_qualifier_closure_label
+      - highlighting
   AssociationCount:
     is_a: FacetValue
     slots:
@@ -315,10 +316,21 @@ classes:
       - limit
       - offset
       - total
+  Highlight:
+    slots:
+      - field
+      - snippets
+    slot_usage:
+      field:
+        required: true
+        identifier: true
+  Highlighting:
+    slots:
+      - highlights
   SearchResult:
     is_a: Entity
     slots:
-      - highlight
+      - highlights
       - score
     slot_usage:
       category:
@@ -331,6 +343,7 @@ classes:
       - items
       - facet_fields
       - facet_queries
+      - highlighting
     slot_usage:
       items:
         range: SearchResult
@@ -340,7 +353,6 @@ classes:
       - tokens
       - start
       - end
-
 slots:
   aggregator_knowledge_source:
     multivalued: true
@@ -453,6 +465,13 @@ slots:
     inlined_as_list: true
     multivalued: true
     range: FacetValue
+  field: 
+    description: field name
+    range: string
+  snippets:
+    description: highlighted text snippet
+    range: string
+    multivalued: true
   frequency_qualifier:
     range: string
   full_name:
@@ -510,9 +529,16 @@ slots:
     description: >-
       A count of the number of phenotypes that are known to be associated with this entity
     range: integer
-  highlight:
+  highlights:
     description: matching text snippet containing html tags
-    range: string
+    range: Highlight
+    multivalued: true
+    inlined: true
+  highlighting:
+    description: Collection of highlighting responses with field name and highlighted text
+    range: Highlight
+    multivalued: true
+    inlined: true
   id:
     identifier: true
     range: string

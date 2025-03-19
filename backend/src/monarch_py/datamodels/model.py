@@ -927,6 +927,11 @@ class Association(ConfiguredBaseModel):
             "linkml_meta": {"alias": "object_specialization_qualifier_closure_label", "domain_of": ["Association"]}
         },
     )
+    highlighting: Optional[Dict[str, Union[str, Highlight]]] = Field(
+        None,
+        description="""Collection of highlighting responses with field name and highlighted text""",
+        json_schema_extra={"linkml_meta": {"alias": "highlighting", "domain_of": ["Association", "SearchResults"]}},
+    )
 
 
 class AssociationCountList(ConfiguredBaseModel):
@@ -1697,6 +1702,11 @@ class DirectionalAssociation(Association):
         json_schema_extra={
             "linkml_meta": {"alias": "object_specialization_qualifier_closure_label", "domain_of": ["Association"]}
         },
+    )
+    highlighting: Optional[Dict[str, Union[str, Highlight]]] = Field(
+        None,
+        description="""Collection of highlighting responses with field name and highlighted text""",
+        json_schema_extra={"linkml_meta": {"alias": "highlighting", "domain_of": ["Association", "SearchResults"]}},
     )
 
 
@@ -2718,6 +2728,36 @@ class MultiEntityAssociationResults(Results):
     )
 
 
+class Highlight(ConfiguredBaseModel):
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
+        {
+            "from_schema": "https://w3id.org/monarch/monarch-py",
+            "slot_usage": {"field": {"identifier": True, "name": "field", "required": True}},
+        }
+    )
+
+    field: str = Field(
+        ...,
+        description="""field name""",
+        json_schema_extra={"linkml_meta": {"alias": "field", "domain_of": ["Highlight"]}},
+    )
+    snippets: Optional[List[str]] = Field(
+        None,
+        description="""highlighted text snippet""",
+        json_schema_extra={"linkml_meta": {"alias": "snippets", "domain_of": ["Highlight"]}},
+    )
+
+
+class Highlighting(ConfiguredBaseModel):
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({"from_schema": "https://w3id.org/monarch/monarch-py"})
+
+    highlights: Optional[Dict[str, Union[str, Highlight]]] = Field(
+        None,
+        description="""matching text snippet containing html tags""",
+        json_schema_extra={"linkml_meta": {"alias": "highlights", "domain_of": ["Highlighting", "SearchResult"]}},
+    )
+
+
 class SearchResult(Entity):
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
         {
@@ -2729,10 +2769,10 @@ class SearchResult(Entity):
         }
     )
 
-    highlight: Optional[str] = Field(
+    highlights: Optional[Dict[str, Union[str, Highlight]]] = Field(
         None,
         description="""matching text snippet containing html tags""",
-        json_schema_extra={"linkml_meta": {"alias": "highlight", "domain_of": ["SearchResult"]}},
+        json_schema_extra={"linkml_meta": {"alias": "highlights", "domain_of": ["Highlighting", "SearchResult"]}},
     )
     score: Optional[float] = Field(
         None,
@@ -2912,6 +2952,11 @@ class SearchResults(Results):
             }
         },
     )
+    highlighting: Optional[Dict[str, Union[str, Highlight]]] = Field(
+        None,
+        description="""Collection of highlighting responses with field name and highlighted text""",
+        json_schema_extra={"linkml_meta": {"alias": "highlighting", "domain_of": ["Association", "SearchResults"]}},
+    )
     limit: int = Field(
         ...,
         description="""number of items to return in a response""",
@@ -2986,6 +3031,8 @@ CategoryGroupedAssociationResults.model_rebuild()
 EntityResults.model_rebuild()
 MappingResults.model_rebuild()
 MultiEntityAssociationResults.model_rebuild()
+Highlight.model_rebuild()
+Highlighting.model_rebuild()
 SearchResult.model_rebuild()
 SearchResults.model_rebuild()
 TextAnnotationResult.model_rebuild()

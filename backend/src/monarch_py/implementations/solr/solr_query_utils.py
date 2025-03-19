@@ -66,6 +66,7 @@ def build_association_query(
         # the visible fields in an association table plus their ID equivalents and use a wildcard query for substring matching
         query.q = q
         query.def_type = "edismax"
+        query.hl = True
         query.query_fields = association_search_query_fields()
     if sort:
         query.sort = ", ".join(sort)

@@ -51,6 +51,7 @@ class SolrQuery(BaseModel):
     mm: str = "100%"  # All tokens in the query must be found in the doc
     boost: Optional[str] = None
     sort: Optional[str] = None
+    hl: bool = False
 
     def add_field_filter_query(self, field: str, value: Union[list, str, None]):
         if not value or len(value) == 0:
@@ -116,6 +117,10 @@ class SolrQueryResponse(BaseModel):
 class SolrFacetCounts(BaseModel):
     facet_fields: Optional[Dict]
     facet_queries: Optional[Dict]
+
+
+class SolrHighlighting(BaseModel):
+    Dict[str, Dict[str, List[str]]]
 
 
 class SolrQueryResult(BaseModel):
