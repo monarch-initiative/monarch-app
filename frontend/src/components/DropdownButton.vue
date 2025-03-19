@@ -6,15 +6,17 @@
       class="dropdown-btn"
       ref="dropdown"
       @focusout="closeMenu"
+      :aria-expanded="isOpen"
     >
       <slot name="button"></slot>
       <span class="dropdown-arrow">&#9662;</span>
-      <!-- Unicode arrow -->
     </button>
 
     <!-- Dropdown menu -->
     <div v-if="isOpen" class="dropdown-menu">
-      <slot></slot>
+      <ul class="menu-list">
+        <slot></slot>
+      </ul>
     </div>
   </div>
 </template>
@@ -38,10 +40,13 @@ defineProps({
   },
 });
 
+// Dropdown element reference
 const dropdown = ref<HTMLElement | null>(null);
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+$wrap: 1000px;
+
 /* Dropdown container */
 .dropdown {
   display: inline-block;
@@ -50,23 +55,47 @@ const dropdown = ref<HTMLElement | null>(null);
 
 /* Dropdown button */
 .dropdown-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
   border: none;
+  border-radius: 4px;
+  background-color: transparent;
+  color: white;
+  font-size: 16px;
   cursor: pointer;
 }
 
-/* Dropdown menu */
+.dropdown-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Dropdown arrow */
+.dropdown-arrow {
+  margin-left: 8px;
+  color: white;
+  font-size: 12px;
+  transition: transform 0.3s ease;
+}
+
+.dropdown-btn[aria-expanded="true"] .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+/* Dropdown menu (regular size) */
 .dropdown-menu {
   z-index: 1000;
   position: absolute;
   top: 100%;
-  left: 0; /* Align to the right */
-  min-width: 100px;
-  transform: translateY(0);
+  right: 0;
+  min-width: 200px;
+  padding: 10px 0;
+  overflow: hidden;
   border: 1px solid #ddd;
   border-radius: 4px;
   background-color: white;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  opacity: 1;
   transition:
     opacity 0.3s ease,
     transform 0.3s ease;
@@ -81,6 +110,7 @@ const dropdown = ref<HTMLElement | null>(null);
 
 .dropdown-menu li {
   padding: 12px 16px;
+  background-color: #ffffff;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -89,32 +119,17 @@ const dropdown = ref<HTMLElement | null>(null);
   background-color: #f1f1f1;
 }
 
-/* Responsive adjustments */
-@media (max-width: 1000px) {
+/* Dropdown menu for small screens */
+@media (max-width: $wrap) {
   .dropdown-menu {
-    right: auto;
-    left: 0;
+    position: static;
     width: 100%;
+    max-height: 300px; /* Adjust as needed */
+    padding: 0;
+    overflow-y: auto;
+    border: none;
+    background-color: #f9f9f9;
+    box-shadow: none;
   }
-}
-
-.dropdown-btn {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  color: white;
-
-  cursor: pointer;
-}
-
-.dropdown-arrow {
-  margin-left: 8px;
-  color: white;
-  font-size: 12px;
-  transition: transform 0.3s ease; /* Add a smooth rotation effect */
-}
-
-.dropdown-btn[aria-expanded="true"] .dropdown-arrow {
-  transform: rotate(180deg); /* Rotate the arrow when the dropdown is open */
 }
 </style>
