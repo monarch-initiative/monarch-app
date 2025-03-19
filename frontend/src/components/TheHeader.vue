@@ -57,37 +57,54 @@
         :class="[home]"
       />
 
-      <AppLink
+      <!-- <AppLink
         v-tooltip="'Dive right in and use Monarch'"
         class="link"
         to="/explore"
       >
         Explore
-      </AppLink>
-      <AppLink
-        v-tooltip="'Citing, licensing, sources, and other info'"
-        class="link"
-        to="/about"
-      >
-        About
-      </AppLink>
-      <AppLink
-        v-tooltip="'Feedback, docs, guides, contact, and more'"
-        class="link"
-        to="/help"
-      >
-        Help
-      </AppLink>
+      </AppLink> -->
+      <div class="navItems">
+        <DropdownButton
+          class="link"
+          :isOpen="isOpen"
+          :closeMenu="closeMenu"
+          :handleClickOutside="handleClickOutside"
+          @toggle="toggleMenu"
+        >
+          <template #button> KG </template>
+          <ul>
+            <li><a href="#">Item 1</a></li>
+            <li><a href="#">Item 2</a></li>
+            <li><a href="#">Item 3</a></li>
+          </ul>
+        </DropdownButton>
+        <AppLink
+          v-tooltip="'Citing, licensing, sources, and other info'"
+          class="link"
+          to="/about"
+        >
+          About
+        </AppLink>
+        <AppLink
+          v-tooltip="'Feedback, docs, guides, contact, and more'"
+          class="link"
+          to="/help"
+        >
+          Help
+        </AppLink>
+      </div>
     </nav>
   </header>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { onClickOutside } from "@vueuse/core";
 import TheLogo from "@/assets/TheLogo.vue";
 import TabSearch from "@/pages/explore/TabSearch.vue";
+import DropdownButton from "./DropdownButton.vue";
 import TheNexus from "./TheNexus.vue";
 
 /** route info */
@@ -98,6 +115,9 @@ const expanded = ref(false);
 
 /** header element */
 const header = ref<HTMLElement>();
+
+// Reactive state to track if the dropdown is open
+const isOpen = ref(false);
 
 /** is home page (big) version */
 const home = computed((): boolean => route.name === "Home");
@@ -116,6 +136,32 @@ function close() {
   expanded.value = false;
 }
 
+// Toggle the dropdown menu visibility
+const toggleMenu = (): void => {
+  isOpen.value = !isOpen.value;
+};
+
+// Close the dropdown menu
+const closeMenu = (): void => {
+  isOpen.value = false;
+};
+
+// Handle clicks outside the dropdown
+const handleClickOutside = (event: MouseEvent): void => {
+  const dropdown = document.querySelector(".dropdown");
+  if (dropdown && !dropdown.contains(event.target as Node)) {
+    closeMenu();
+  }
+};
+
+// Add and remove event listeners for outside clicks
+onMounted(() => {
+  document.addEventListener("click", handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("click", handleClickOutside);
+});
 /** close nav when page changes */
 watch(() => route.name, close);
 
@@ -273,24 +319,6 @@ $wrap: 1000px;
   color: $white;
   text-align: center;
   text-decoration: none;
-
-  &:after {
-    position: absolute;
-    right: 50%;
-    bottom: 0;
-    left: 50%;
-    height: 2px;
-    background: $white;
-    content: "";
-    transition:
-      left $fast,
-      right $fast;
-  }
-
-  &:hover:after {
-    right: 5px;
-    left: 5px;
-  }
 }
 
 @media (max-width: $wrap) {
@@ -298,6 +326,10 @@ $wrap: 1000px;
     position: unset;
     flex-direction: column;
     margin-top: -10px;
+    &.expanded {
+      max-height: 300px;
+      transition: max-height 0.3s ease-out;
+    }
   }
 
   .nav:not(.expanded) {
@@ -307,6 +339,10 @@ $wrap: 1000px;
   .link {
     width: 200px;
     padding: 5px;
+
+    @media (max-width: $wrap) {
+      text-align: left;
+    }
   }
 }
 
@@ -315,6 +351,24 @@ $wrap: 1000px;
     position: absolute;
     top: 0;
     right: 0;
+  }
+}
+
+.navItems {
+  display: flex;
+  align-items: center;
+
+  .link:hover {
+    color: hsl(185, 75%, 80%);
+  }
+
+  .dropdown :hover {
+    color: hsl(185, 75%, 80%); /* Change color on hover */
+  }
+  @media (max-width: $wrap) {
+    flex-direction: column;
+    margin-right: auto;
+    padding: 5px 0;
   }
 }
 </style>
