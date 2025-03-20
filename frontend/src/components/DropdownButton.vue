@@ -55,15 +55,17 @@ $wrap: 1000px;
 }
 /* Dropdown menu (hidden by default) */
 .dropdown-menu {
-  visibility: hidden;
   position: absolute;
   top: calc(100% + 8px);
-  min-width: 9em;
-  transform: translateY(10px);
+  left: 0;
+  min-width: 10em;
+  transform: scaleY(0);
+  transform-origin: top;
   border: 1px solid #ddd;
   border-radius: 4px;
   background-color: white;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+
   opacity: 0;
   transition:
     opacity 0.3s ease,
@@ -76,8 +78,7 @@ $wrap: 1000px;
 
 /* Show menu when isOpen is true */
 .is-open .dropdown-menu {
-  visibility: visible;
-  transform: translateY(0);
+  transform: scaleY(1);
   opacity: 1;
 }
 
