@@ -1,0 +1,22 @@
+[
+  {
+    "label": "About",
+    "subItems": [
+      { "label": "Our Story", "link": "/our-story", "key": "our-story" },
+      { "label": "Team", "link": "/team", "key": "team" },
+      { "label": "SAB", "link": "/sab", "key": "sab" },
+      { "label": "FAQs", "link": "/faqs", "key": "faqs" },
+      { "label": "Contact Us", "link": "/contact", "key": "contact-us" }
+    ]
+  },
+  {
+    "label": "KG",
+    "subItems": [
+      { "label": "About KG", "link": "/about-kg", "key": "about-kg" },
+      { "label": "KG Tools", "link": "/kg-tools", "key": "kg-tools" },
+      { "label": "Cite", "link": "/cite", "key": "cite" },
+      { "label": "How To & Help", "link": "/how-to", "key": "how-to-help" },
+      { "label": "KG Status & QC", "link": "/kg-status", "key": "kg-status-qc" }
+    ]
+  }
+]

@@ -1,13 +1,6 @@
 <template>
-  <div class="dropdown">
-    <!-- Dropdown button -->
-    <button
-      @click="$emit('toggle')"
-      class="dropdown-btn"
-      ref="dropdown"
-      @focusout="closeMenu"
-      :aria-expanded="isOpen"
-    >
+  <div class="dropdown" ref="dropdown">
+    <button @click="toggleMenu" class="dropdown-btn">
       <slot name="button"></slot>
       <span class="dropdown-arrow">&#9662;</span>
     </button>
@@ -22,30 +15,37 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type PropType } from "vue";
+import { onBeforeUnmount, onMounted, ref } from "vue";
 
-// Accept props from the parent
-defineProps({
-  isOpen: {
-    type: Boolean,
-    required: true,
-  },
-  closeMenu: {
-    type: Function as PropType<(payload: FocusEvent) => void>,
-    required: true,
-  },
-  handleClickOutside: {
-    type: Function,
-    required: true,
-  },
-});
+// Reactive state to track if the dropdown is open
+const isOpen = ref(false);
+
+// Toggle the dropdown visibility
+const toggleMenu = (): void => {
+  isOpen.value = !isOpen.value;
+};
+
+// Close the dropdown when clicking outside
+const handleClickOutside = (event: MouseEvent) => {
+  if (dropdown.value && !dropdown.value.contains(event.target as Node)) {
+    isOpen.value = false;
+  }
+};
 
 // Dropdown element reference
 const dropdown = ref<HTMLElement | null>(null);
+
+onMounted(() => {
+  document.addEventListener("click", handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("click", handleClickOutside);
+});
 </script>
 
 <style lang="scss" scoped>
-$wrap: 1000px;
+$wrap: 1000px; /* Define the breakpoints using $wrap */
 
 /* Dropdown container */
 .dropdown {
@@ -53,39 +53,13 @@ $wrap: 1000px;
   position: relative;
 }
 
-/* Dropdown button */
-.dropdown-btn {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  cursor: pointer;
-}
-
-.dropdown-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* Dropdown arrow */
-.dropdown-arrow {
-  margin-left: 8px;
-  color: white;
-  font-size: 12px;
-  transition: transform 0.3s ease;
-}
-
-.dropdown-btn[aria-expanded="true"] .dropdown-arrow {
-  transform: rotate(180deg);
-}
-
 /* Dropdown menu (regular size) */
 .dropdown-menu {
   z-index: 1000;
   position: absolute;
   top: 100%;
-  right: 0;
-  min-width: 200px;
-  padding: 10px 0;
+  left: 0;
+  min-width: 10em;
   overflow: hidden;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -96,22 +70,12 @@ $wrap: 1000px;
     transform 0.3s ease;
 }
 
-/* Dropdown menu items */
 .dropdown-menu ul {
+  display: block;
   margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.dropdown-menu li {
-  padding: 12px 16px;
-  background-color: #ffffff;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.dropdown-menu li:hover {
-  background-color: #f1f1f1;
+  padding: 0.5em;
+  font-size: 0.8em;
+  white-space: nowrap;
 }
 
 /* Dropdown menu for small screens */
@@ -125,6 +89,13 @@ $wrap: 1000px;
     border: none;
     background-color: #f9f9f9;
     box-shadow: none;
+  }
+
+  .dropdown-arrow {
+    margin-left: 8px;
+    color: white;
+    font-size: 12px;
+    transition: transform 0.3s ease;
   }
 }
 </style>

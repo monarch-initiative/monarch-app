@@ -66,18 +66,18 @@
       </AppLink> -->
       <div class="navItems">
         <DropdownButton
-          class="link"
-          :isOpen="isOpen"
-          :closeMenu="closeMenu"
-          :handleClickOutside="handleClickOutside"
-          @toggle="toggleMenu"
+          v-for="(menu, index) in menus"
+          :key="menu.label"
+          :index="index"
+          :label="menu.label"
         >
-          <template #button> KG </template>
-          <ul>
-            <li><a href="#">Item 1</a></li>
-            <li><a href="#">Item 2</a></li>
-            <li><a href="#">Item 3</a></li>
-          </ul>
+          <template #button>{{ menu.label }}</template>
+
+          <template #default>
+            <li v-for="subItem in menu.subItems" :key="subItem.label">
+              <a :href="subItem.link">{{ subItem.label }}</a>
+            </li>
+          </template>
         </DropdownButton>
         <AppLink
           v-tooltip="'Citing, licensing, sources, and other info'"
@@ -101,8 +101,8 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
-import { onClickOutside } from "@vueuse/core";
 import TheLogo from "@/assets/TheLogo.vue";
+import menus from "@/data/menu.json";
 import TabSearch from "@/pages/explore/TabSearch.vue";
 import DropdownButton from "./DropdownButton.vue";
 import TheNexus from "./TheNexus.vue";
@@ -122,6 +122,8 @@ const isOpen = ref(false);
 /** is home page (big) version */
 const home = computed((): boolean => route.name === "Home");
 
+const openIndex = ref<number | null>(null);
+
 /** whether to show search box */
 const search = computed(
   (): boolean =>
@@ -137,36 +139,27 @@ function close() {
 }
 
 // Toggle the dropdown menu visibility
-const toggleMenu = (): void => {
-  isOpen.value = !isOpen.value;
-};
+// const toggleMenu = (index: number) => {
+//   openIndex.value = openIndex.value === index ? null : index;
+// };
 
 // Close the dropdown menu
 const closeMenu = (): void => {
   isOpen.value = false;
 };
 
-// Handle clicks outside the dropdown
-const handleClickOutside = (event: MouseEvent): void => {
-  const dropdown = document.querySelector(".dropdown");
-  if (dropdown && !dropdown.contains(event.target as Node)) {
-    closeMenu();
-  }
-};
+// // Handle clicks outside the dropdown
+// const handleClickOutside = (event: MouseEvent): void => {
+//   const dropdown = document.querySelector(".dropdown");
+//   if (dropdown && !dropdown.contains(event.target as Node)) {
+//     closeMenu();
+//   }
+// };
 
 // Add and remove event listeners for outside clicks
-onMounted(() => {
-  document.addEventListener("click", handleClickOutside);
-});
 
-onBeforeUnmount(() => {
-  document.removeEventListener("click", handleClickOutside);
-});
 /** close nav when page changes */
 watch(() => route.name, close);
-
-/** close nav when clicking outside header */
-onClickOutside(header, close);
 </script>
 
 <style lang="scss" scoped>
@@ -377,5 +370,12 @@ $wrap: 1000px;
   .tab-search {
     max-height: 20px;
   }
+}
+
+.dropdown-menu li {
+  list-style: none;
+}
+.dropdown-menu li a {
+  text-decoration: none !important;
 }
 </style>
