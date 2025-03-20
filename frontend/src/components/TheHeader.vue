@@ -70,6 +70,7 @@
           :key="menu.label"
           :index="index"
           :label="menu.label"
+          class="dropdown-button"
         >
           <template #button>{{ menu.label }}</template>
 
@@ -350,7 +351,6 @@ $wrap: 1000px;
 .navItems {
   display: flex;
   align-items: center;
-
   .link:hover {
     color: hsl(185, 75%, 80%);
   }
@@ -360,8 +360,8 @@ $wrap: 1000px;
   }
   @media (max-width: $wrap) {
     flex-direction: column;
+    align-items: unset;
     margin-right: auto;
-    padding: 5px 0;
   }
 }
 
@@ -372,7 +372,17 @@ $wrap: 1000px;
   }
 }
 
+/**This is temperory. When we replce the whole navbigation menu with dropdowns, 
+we can remove this and adjust onw styling to the whole menu items. 
+Its here to align with the styling of old nav items. */
+.dropdown-button {
+  padding: 10px;
+  @media (max-width: $wrap) {
+    padding: 6.5px;
+  }
+}
 .dropdown-menu li {
+  font-size: 0.8em;
   list-style: none;
 }
 .dropdown-menu li a {

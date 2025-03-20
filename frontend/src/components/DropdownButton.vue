@@ -1,5 +1,5 @@
 <template>
-  <div class="dropdown" ref="dropdown">
+  <div class="dropdown" ref="dropdown" :class="{ 'is-open': isOpen }">
     <button @click="toggleMenu" class="dropdown-btn">
       <slot name="button"></slot>
       <span class="dropdown-arrow">&#9662;</span>
@@ -17,22 +17,19 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from "vue";
 
-// Reactive state to track if the dropdown is open
 const isOpen = ref(false);
 
-// Toggle the dropdown visibility
 const toggleMenu = (): void => {
   isOpen.value = !isOpen.value;
 };
 
-// Close the dropdown when clicking outside
+// Close dropdown when clicking outside
 const handleClickOutside = (event: MouseEvent) => {
   if (dropdown.value && !dropdown.value.contains(event.target as Node)) {
     isOpen.value = false;
   }
 };
 
-// Dropdown element reference
 const dropdown = ref<HTMLElement | null>(null);
 
 onMounted(() => {
@@ -45,57 +42,71 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss" scoped>
-$wrap: 1000px; /* Define the breakpoints using $wrap */
+$wrap: 1000px;
 
-/* Dropdown container */
 .dropdown {
   display: inline-block;
   position: relative;
 }
 
-/* Dropdown menu (regular size) */
+.dropdown-btn {
+  display: flex;
+  gap: 0.2em;
+}
+/* Dropdown menu (hidden by default) */
 .dropdown-menu {
-  z-index: 1000;
+  visibility: hidden;
   position: absolute;
-  top: 100%;
-  left: 0;
-  min-width: 10em;
-  overflow: hidden;
+  top: calc(100% + 8px);
+  min-width: 9em;
+  transform: translateY(10px);
   border: 1px solid #ddd;
   border-radius: 4px;
   background-color: white;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  opacity: 0;
   transition:
     opacity 0.3s ease,
     transform 0.3s ease;
 }
 
-.dropdown-menu ul {
-  display: block;
-  margin: 0;
-  padding: 0.5em;
-  font-size: 0.8em;
-  white-space: nowrap;
+.menu-list {
+  padding: 0.5rem 1em;
 }
 
-/* Dropdown menu for small screens */
+/* Show menu when isOpen is true */
+.is-open .dropdown-menu {
+  visibility: visible;
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Arrow pointing to button */
+.is-open .dropdown-menu::before {
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid white;
+  border-left: 10px solid transparent;
+  content: "";
+  filter: drop-shadow(0px -2px 2px rgba(0, 0, 0, 0.1));
+}
+
 @media (max-width: $wrap) {
   .dropdown-menu {
+    visibility: visible;
     position: relative;
+    top: 0;
     width: 100%;
-    max-height: 300px; /* Adjust as needed */
-    padding: 0;
-    overflow-y: auto;
+    transform: none;
     border: none;
-    background-color: #f9f9f9;
     box-shadow: none;
+    opacity: 1;
   }
 
-  .dropdown-arrow {
-    margin-left: 8px;
-    color: white;
-    font-size: 12px;
-    transition: transform 0.3s ease;
+  .dropdown-menu::before {
+    display: none;
   }
 }
 </style>
