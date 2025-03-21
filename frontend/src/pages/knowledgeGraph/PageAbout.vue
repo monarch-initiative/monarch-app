@@ -1,0 +1,213 @@
+<template>
+  <AppSection>
+    <PageTitle
+      title="KnowledgeGraph"
+      tagline="Discover the power of our Knowledge Graph, seamlessly connecting
+      biological data to reveal hidden relationships."
+      icon="eye"
+      id="kg-about"
+    >
+      <template #default> KnowledgeGraph </template>
+    </PageTitle>
+    <AppHeading class="fullWidthHeader">What is KnowledgeGraph?</AppHeading>
+
+    <!--WHat is KG-->
+    <div class="content-container">
+      <div class="text-column">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur.,
+        </p>
+      </div>
+      <div class="video-column">
+        <iframe
+          title="What is KnowledgeGraph?"
+          class="video"
+          src="https://www.youtube.com/embed/z11xZKBEO-U"
+          frameborder="0"
+          allow="autoplay; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
+
+    <!--Entity and association nodes-->
+    <AppGallery :cols="4">
+      <AppTile
+        v-for="(item, index) in metadata.node"
+        :key="index"
+        :icon="item.icon"
+        :title="startCase(item.label.replace(/biolink:/g, ''))"
+        :subtitle="formatNumber(item.count, true)"
+        design="small"
+      />
+      <!-- association counts -->
+      <AppTile
+        v-for="(item, index) in metadata.association"
+        :key="index"
+        :icon="item.icon2 ? undefined : item.icon"
+        :title="startCase(item.label.replace(/biolink:/g, ''))"
+        :subtitle="formatNumber(item.count, true)"
+        design="small"
+      >
+        <AppFlex v-if="item.icon2" gap="tiny" class="association">
+          <AppIcon :icon="item.icon" />
+          <svg viewBox="0 0 9 2" class="line">
+            <line x1="0" y1="1" x2="9" y2="1" />
+          </svg>
+          <AppIcon :icon="item.icon2" />
+        </AppFlex>
+      </AppTile>
+    </AppGallery>
+
+    <!--Entity and association nodes-->
+    <AppHeading class="fullWidthHeader"
+      >Knowledge Graph's Ket Tools and Resources</AppHeading
+    >
+
+    <AppFlex gap="big">
+      <AppTileCard
+        title="Graph"
+        content="Dive into the Monarch Knowledge Graph, where complex biological data is interconnected. This section lets you explore relationships between genes, diseases, phenotypes, and more, providing deep insights to accelerate scientific discovery."
+        buttonText="Explore"
+      />
+
+      <AppTileCard
+        title="Phenotype Explore"
+        content="The Phenotype Explorer enables you to investigate phenotypic data, linking observable traits to genetic information. Use this tool to explore how phenotypes are connected to genetic variations and their role in diseases."
+        buttonText="Explore"
+      />
+      <AppTileCard
+        title="Text Annotator"
+        content="The Text Annotator is a powerful tool for extracting biological knowledge from scientific literature. It helps researchers identify key biological concepts and relationships within text, enhancing the search for relevant data and insights."
+        buttonText="Explore"
+      />
+
+      <AppTileCard
+        title="Tools"
+        content="Access a wealth of resources that support your research, including tools, datasets, and documentation. This section provides the essential data and information needed to make the most of Monarch's integrated biological knowledge"
+        buttonText="Explore"
+      />
+    </AppFlex>
+
+    <!--ORIP Section-->
+    <AppHeading class="fullWidthHeader">Title Placeholder</AppHeading>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+      velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+      est laborum.
+    </p>
+    <iframe
+      title="Monarch Initiative: Resource Overview"
+      class="ORIP-video"
+      src="https://www.youtube.com/embed/25e88kbjKtU?si=lG88-c2fZcKHxIhm"
+      frameborder="0"
+      allow="autoplay; picture-in-picture"
+      allowfullscreen
+    ></iframe>
+    <p>
+      If you have any questions, fell free to reach out to us at :
+      <a>info@monarchinitiative.org</a>
+    </p></AppSection
+  >
+</template>
+
+<script setup lang="ts">
+import { startCase } from "lodash";
+import AppSection from "@/components/AppSection.vue";
+import AppTileCard from "@/components/AppTileCard.vue";
+import PageTitle from "@/components/PageTitle.vue";
+import metadata from "@/pages/explore/metadata.json";
+import { formatNumber } from "@/util/string";
+</script>
+
+<style lang="scss" scoped>
+$wrap: 1000px;
+
+.fullWidthHeader {
+  width: 100%;
+  padding: 0.6em 1em;
+  border: 1px solid rgba(0, 128, 128, 0.5);
+  background-color: #a6ecf2;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.content-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Adjust for spacing */
+  gap: 2em;
+
+  @media (max-width: $wrap) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 1em;
+  }
+}
+
+.text-column {
+  flex: 1;
+  max-width: 60%;
+  overflow: hidden;
+  @media (max-width: $wrap) {
+    max-width: 100%;
+  }
+}
+
+.video-column {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  max-width: 45%;
+  height: 100%; /* Ensure it takes full height of the parent */
+  @media (max-width: $wrap) {
+    width: 100%;
+    min-width: 380px;
+  }
+}
+
+iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.video {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.ORIP-video {
+  aspect-ratio: 16 / 9;
+  width: 65%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.association {
+  font-size: 2rem;
+}
+
+.line {
+  width: 10px;
+
+  line {
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-dasharray: 1 3;
+    stroke-linecap: round;
+  }
+}
+</style>

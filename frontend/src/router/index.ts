@@ -179,6 +179,12 @@ export const routes: RouteRecordRaw[] = [
     name: "NotFound",
     component: asyncRoute("PageHome"),
   },
+
+  {
+    path: "/knowledgegraph/about",
+    name: "about-knowledge-graph",
+    component: asyncRoute("knowledgeGraph/PageAbout"),
+  },
 ];
 
 /** insert descriptions from imported json into each route's metadata */
