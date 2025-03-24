@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <Breadcrumb />
     <AppSection width="big" class="section" design="bare">
       <PageTitle
         title="KnowledgeGraph"
@@ -148,6 +149,7 @@ import { startCase } from "lodash";
 import AppHeading from "@/components/AppHeading.vue";
 import AppSection from "@/components/AppSection.vue";
 import AppTileCard from "@/components/AppTileCard.vue";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 import PageTitle from "@/components/PageTitle.vue";
 import metadata from "@/pages/explore/metadata.json";
 import { formatNumber } from "@/util/string";
