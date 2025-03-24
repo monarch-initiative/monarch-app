@@ -30,7 +30,7 @@ class SolrService(BaseModel):
         data = json.loads(response.text)
         if "error" in data:
             logger.error("Solr error message: " + data["error"]["msg"])
-        response.raise_for_status()
+        response.raise_for_status()        
         solr_query_result = SolrQueryResult.model_validate(data, from_attributes=True)
         for doc in solr_query_result.response.docs:
             self._strip_json(

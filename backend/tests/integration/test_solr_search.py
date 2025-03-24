@@ -37,6 +37,17 @@ def test_search_sort():
     assert response.total > 0
     assert response.items[0].name > response.items[-1].name
 
+def test_search_highlighting():
+    si = SolrImplementation()
+    response = si.search("marfan", highlighting=True)
+    assert response
+    assert response.total > 0
+    assert response.items[0].highlighting
+    assert "name" in response.items[0].highlighting
+    
+    assert "chicken" in response.items[0].highlighting
+
+
 
 def test_facet_fields():
     si = SolrImplementation()

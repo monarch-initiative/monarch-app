@@ -170,12 +170,14 @@ def build_search_query(
     facet_fields: List[str] = None,
     facet_queries: List[str] = None,
     filter_queries: List[str] = None,
+    highlighting: bool = False,
     sort: Optional[str] = None,
 ) -> SolrQuery:
     query = SolrQuery(start=offset, rows=limit, sort=sort)
     query.q = q
     query.def_type = "edismax"
     query.query_fields = entity_query_fields()
+    query.hl = highlighting
     query.boost = entity_boost(empty_search=(q == "*:*"))
     if category:
         query.add_filter_query(" OR ".join(f'category:"{cat}"' for cat in category))

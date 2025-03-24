@@ -120,10 +120,11 @@ class SolrFacetCounts(BaseModel):
 
 
 class SolrHighlighting(BaseModel):
-    Dict[str, Dict[str, List[str]]]
+    Dict[str, Dict[str, Optional[List[str]]]]
 
 
 class SolrQueryResult(BaseModel):
     responseHeader: SolrQueryResponseHeader
     response: SolrQueryResponse
     facet_counts: Optional[SolrFacetCounts]
+    highlighting: Optional[SolrHighlighting]
