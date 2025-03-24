@@ -5,7 +5,7 @@
         title="KnowledgeGraph"
         tagline="Discover the power of our Knowledge Graph, seamlessly connecting
       biological data to reveal hidden relationships."
-        icon="eye"
+        imageSrc="/icons/monarch-logo.svg"
         id="kg-about"
       >
         <template #default> KnowledgeGraph </template>

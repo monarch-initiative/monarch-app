@@ -1,7 +1,7 @@
 <template>
   <div class="title-container">
     <div class="heading-container">
-      <AppIcon v-if="icon" :icon="icon" :fallback="fallbackIcon" class="icon" />
+      <img v-if="imageSrc" :src="imageSrc" :alt="title" class="title-image" />
       <h1>{{ title }}</h1>
     </div>
     <p v-if="tagline" class="tagline">{{ tagline }}</p>
@@ -12,38 +12,45 @@
 defineProps<{
   title: string;
   tagline?: string;
-  icon?: string;
+  imageSrc?: string;
   id: string;
-  fallbackIcon?: string;
 }>();
 </script>
 
 <style scoped>
 /* Wrap both heading and tagline together */
 .title-container {
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.2em;
+  gap: 0.5rem;
+  text-align: center;
 }
 
-/* Keep heading and icon aligned */
+/* Keep heading and image aligned */
 .heading-container {
   display: flex;
   align-items: center;
-  gap: 0.5em;
+  gap: 0.5rem;
 }
 
-/* Make h1 only take as much width as needed */
+/* Ensure the image is properly styled */
+.title-image {
+  width: 40px; /* Adjust as needed */
+  max-height: 40px;
+  object-fit: contain;
+}
+
+/* Style heading */
 h1 {
-  display: inline-block;
   margin: 0;
-  padding: 0;
+  font-size: 1.5rem;
 }
 
 /* Style tagline */
 .tagline {
   margin: 0;
-  font-size: 0.85em;
+  color: gray;
+  font-size: 1rem;
 }
 </style>
