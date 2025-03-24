@@ -2,10 +2,15 @@
   <nav aria-label="breadcrumb">
     <ul class="breadcrumb">
       <li v-for="(crumb, index) in breadcrumbs" :key="index">
-        <router-link v-if="index !== breadcrumbs.length - 1" :to="crumb.path">
+        <router-link
+          v-if="index !== breadcrumbs.length - 1 && !crumb.disabled"
+          :to="crumb.path"
+        >
           {{ crumb.label }}
         </router-link>
-        <span v-else>{{ crumb.label }}</span>
+        <span v-else :class="{ 'breadcrumb-disabled': crumb.disabled }">
+          {{ crumb.label }}
+        </span>
       </li>
     </ul>
   </nav>
@@ -13,17 +18,50 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 
+// Access the current route
 const route = useRoute();
-const router = useRouter();
 
-const breadcrumbs = computed(() => {
+// Define the type for each breadcrumb item
+interface Breadcrumb {
+  path: string;
+  label: string;
+  disabled?: boolean;
+}
+
+const breadcrumbs = computed<Breadcrumb[]>(() => {
   const matchedRoutes = route.matched;
-  return matchedRoutes.map((r) => ({
-    path: r.path,
-    label: r.meta.breadcrumb || r.name, // Uses `meta.breadcrumb` or fallback to route name
-  }));
+  let breadcrumbTrail: Breadcrumb[] = [];
+
+  // Always add the "Home" breadcrumb as the first item
+  breadcrumbTrail.push({
+    path: "/",
+    label: "Home",
+  });
+
+  if (route.path.includes("/knowledge-graph")) {
+    breadcrumbTrail.push({
+      path: "/knowledge-graph",
+      label: "Knowledge Graph",
+      disabled: true,
+    });
+  }
+
+  // Build breadcrumb trail based on URL
+  matchedRoutes.forEach((route, index) => {
+    const fullPath = matchedRoutes
+      .slice(0, index + 1)
+      .map((r) => r.path)
+      .join("");
+    const label = route.meta.breadcrumb || route.name || "Unknown";
+    breadcrumbTrail.push({
+      path: fullPath,
+      label: label as string, // Ensure the label is a string
+    });
+  });
+
+  return breadcrumbTrail;
 });
 </script>
 
@@ -53,5 +91,12 @@ const breadcrumbs = computed(() => {
 
 .breadcrumb a:hover {
   text-decoration: underline;
+}
+
+/* Style for disabled breadcrumb */
+.breadcrumb-disabled {
+  color: #6c757d; /* Grey color */
+  text-decoration: none; /* Prevent underline */
+  cursor: not-allowed; /* Show "not-allowed" cursor */
 }
 </style>

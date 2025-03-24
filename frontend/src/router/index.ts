@@ -34,6 +34,7 @@ export const routes: RouteRecordRaw[] = [
     path: "/",
     name: "Home",
     component: asyncRoute("PageHome"),
+    meta: { breadcrumb: "Home" },
     beforeEnter: () => {
       /** look for redirect in session storage (saved from public/404.html page) */
       const redirect = window.sessionStorage.redirect || "";
@@ -68,6 +69,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/home",
     redirect: "/",
+    meta: { breadcrumb: "Home" },
   },
 
   /** top level pages */
@@ -181,9 +183,10 @@ export const routes: RouteRecordRaw[] = [
   },
 
   {
-    path: "/knowledgegraph/about",
+    path: "/knowledge-graph/about",
     name: "about-knowledge-graph",
     component: asyncRoute("knowledgeGraph/PageAbout"),
+    meta: { breadcrumb: "About KG" },
   },
 ];
 

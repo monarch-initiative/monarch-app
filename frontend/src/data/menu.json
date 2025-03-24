@@ -2,11 +2,41 @@
   {
     "label": "KG",
     "subItems": [
-      { "label": "About KG", "link": "/about-kg", "key": "about-kg" },
-      { "label": "KG Tools", "link": "/kg-tools", "key": "kg-tools" },
-      { "label": "Cite", "link": "/cite", "key": "cite" },
-      { "label": "How To & Help", "link": "/how-to", "key": "how-to-help" },
-      { "label": "KG Status & QC", "link": "/kg-status", "key": "kg-status-qc" }
+      {
+        "label": "About KG",
+        "link": "/about-kg",
+        "key": "about-kg",
+        "to": "/knowledge-graph/about",
+        "tooltip": "About the Knowledge Graph"
+      },
+      {
+        "label": "KG Tools",
+        "link": "/kg-tools",
+        "key": "kg-tools",
+        "to": "/knowledge-graph/about",
+        "tooltip": "Explore tools related to the Knowledge Graph"
+      },
+      {
+        "label": "Cite",
+        "link": "/cite",
+        "key": "cite",
+        "to": "/knowledge-graph/about",
+        "tooltip": "Learn how to cite the Knowledge Graph"
+      },
+      {
+        "label": "How To & Help",
+        "link": "/how-to",
+        "key": "how-to-help",
+        "to": "/knowledge-graph/about",
+        "tooltip": "Find guides and help resources for the Knowledge Graph"
+      },
+      {
+        "label": "KG Status & QC",
+        "link": "/kg-status",
+        "key": "kg-status-qc",
+        "to": "/knowledge-graph/about",
+        "tooltip": "Check the status and quality control of the Knowledge Graph"
+      }
     ]
   }
 ]

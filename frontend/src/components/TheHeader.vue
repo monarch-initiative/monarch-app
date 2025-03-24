@@ -75,8 +75,10 @@
           <template #button>{{ menu.label }}</template>
 
           <template #default>
-            <li v-for="subItem in menu.subItems" :key="subItem.label">
-              <a :href="subItem.link">{{ subItem.label }}</a>
+            <li v-for="subItem in menu.subItems || []" :key="subItem.label">
+              <AppLink v-tooltip="subItem.tooltip" :to="subItem.to">
+                {{ subItem.label }}</AppLink
+              >
             </li>
           </template>
         </DropdownButton>
