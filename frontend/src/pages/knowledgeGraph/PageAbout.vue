@@ -1,5 +1,5 @@
 <template>
-  <AppSection>
+  <AppSection width="big" class="section">
     <PageTitle
       title="KnowledgeGraph"
       tagline="Discover the power of our Knowledge Graph, seamlessly connecting
@@ -20,7 +20,12 @@
           minim veniam, quis nostrud exercitation ullamco laboris nisi ut
           aliquip ex ea commodo consequat. Duis aute irure dolor in
           reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur.,
+          pariatur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+          do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+          ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur.
         </p>
       </div>
       <div class="video-column">
@@ -43,7 +48,7 @@
         :icon="item.icon"
         :title="startCase(item.label.replace(/biolink:/g, ''))"
         :subtitle="formatNumber(item.count, true)"
-        design="small"
+        design="big"
       />
       <!-- association counts -->
       <AppTile
@@ -52,7 +57,7 @@
         :icon="item.icon2 ? undefined : item.icon"
         :title="startCase(item.label.replace(/biolink:/g, ''))"
         :subtitle="formatNumber(item.count, true)"
-        design="small"
+        design="big"
       >
         <AppFlex v-if="item.icon2" gap="tiny" class="association">
           <AppIcon :icon="item.icon" />
@@ -132,6 +137,9 @@ import { formatNumber } from "@/util/string";
 <style lang="scss" scoped>
 $wrap: 1000px;
 
+.section {
+  gap: 1em;
+}
 .fullWidthHeader {
   width: 100%;
   padding: 0.6em 1em;
@@ -144,9 +152,16 @@ $wrap: 1000px;
 .content-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between; /* Adjust for spacing */
-  gap: 2em;
+  align-items: center;
+  justify-content: space-between;
 
+  padding: 1.5em;
+  gap: 4em;
+
+  p {
+    line-height: 1.6;
+    text-align: unset;
+  }
   @media (max-width: $wrap) {
     display: flex;
     flex-direction: column;
@@ -158,7 +173,7 @@ $wrap: 1000px;
 
 .text-column {
   flex: 1;
-  max-width: 60%;
+  max-width: 50%;
   overflow: hidden;
   @media (max-width: $wrap) {
     max-width: 100%;
@@ -175,6 +190,7 @@ $wrap: 1000px;
   @media (max-width: $wrap) {
     width: 100%;
     min-width: 380px;
+    max-width: 65%;
   }
 }
 
@@ -198,6 +214,10 @@ iframe {
 
 .association {
   font-size: 2rem;
+}
+
+h1 {
+  padding: 0;
 }
 
 .line {

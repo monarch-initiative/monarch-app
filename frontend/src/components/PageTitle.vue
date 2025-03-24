@@ -24,6 +24,7 @@ defineProps<{
   display: inline-flex;
   flex-direction: column;
   align-items: center;
+  gap: 0.2em;
 }
 
 /* Keep heading and icon aligned */
@@ -37,6 +38,7 @@ defineProps<{
 h1 {
   display: inline-block;
   margin: 0;
+  padding: 0;
 }
 
 /* Style tagline */
