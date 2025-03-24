@@ -20,18 +20,18 @@ console.log("Button Text:", props.buttonText);
 </script>
 
 <style lang="scss" scoped>
-$wrap: 1000px;
+$wrap: 1100px;
 
 .tile {
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
-  width: 520px;
+  width: 580px;
+
   padding: 1.5em;
   gap: 10px;
   background-color: #a6ecf257;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-
   @media (max-width: $wrap) {
     width: 100%;
   }
