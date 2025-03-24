@@ -1,6 +1,6 @@
 <template>
-  <div class="dropdown" ref="dropdown" :class="{ 'is-open': isOpen }">
-    <button @click="toggleMenu" class="dropdown-btn">
+  <div ref="dropdown" class="dropdown" :class="{ 'is-open': isOpen }">
+    <button class="dropdown-btn" @click="toggleMenu">
       <slot name="button"></slot>
       <span class="dropdown-arrow">&#9662;</span>
     </button>

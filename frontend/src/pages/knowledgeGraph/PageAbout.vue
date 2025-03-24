@@ -1,13 +1,13 @@
 <template>
   <div class="container">
-    <Breadcrumb />
+    <AppBreadcrumb />
     <AppSection width="big" class="section" design="bare">
       <PageTitle
+        id="kg-about"
         title="KnowledgeGraph"
         tagline="Discover the power of our Knowledge Graph, seamlessly connecting
-      biological data to reveal hidden relationships."
-        imageSrc="/icons/monarch-logo.svg"
-        id="kg-about"
+biological data to reveal hidden relationships."
+        image-src="/icons/monarch-logo.svg"
       >
         <template #default> KnowledgeGraph </template>
       </PageTitle>
@@ -79,8 +79,6 @@
         </AppGallery>
       </div>
     </AppSection>
-    <!-- <AppSection width="big" class="section" design="bare">
-      <!--Entity and association nodes-->
 
     <!-- </AppSection> -->
     <AppSection width="big" design="bare">
@@ -91,24 +89,24 @@
         <AppTileCard
           title="Graph"
           content="Dive into the Monarch Knowledge Graph, where complex biological data is interconnected. This section lets you explore relationships between genes, diseases, phenotypes, and more, providing deep insights to accelerate scientific discovery."
-          buttonText="Explore"
+          button-text="Explore"
         />
 
         <AppTileCard
           title="Phenotype Explore"
           content="The Phenotype Explorer enables you to investigate phenotypic data, linking observable traits to genetic information. Use this tool to explore how phenotypes are connected to genetic variations and their role in diseases."
-          buttonText="Explore"
+          button-text="Explore"
         />
         <AppTileCard
           title="Text Annotator"
           content="The Text Annotator is a powerful tool for extracting biological knowledge from scientific literature. It helps researchers identify key biological concepts and relationships within text, enhancing the search for relevant data and insights."
-          buttonText="Explore"
+          button-text="Explore"
         />
 
         <AppTileCard
           title="Tools"
           content="Access a wealth of resources that support your research, including tools, datasets, and documentation. This section provides the essential data and information needed to make the most of Monarch's integrated biological knowledge"
-          buttonText="Explore"
+          button-text="Explore"
         />
       </AppFlex>
     </AppSection>
@@ -146,10 +144,10 @@
 
 <script setup lang="ts">
 import { startCase } from "lodash";
+import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppHeading from "@/components/AppHeading.vue";
 import AppSection from "@/components/AppSection.vue";
 import AppTileCard from "@/components/AppTileCard.vue";
-import Breadcrumb from "@/components/Breadcrumb.vue";
 import PageTitle from "@/components/PageTitle.vue";
 import metadata from "@/pages/explore/metadata.json";
 import { formatNumber } from "@/util/string";

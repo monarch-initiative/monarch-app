@@ -102,7 +102,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import TheLogo from "@/assets/TheLogo.vue";
 import menus from "@/data/menu.json";
@@ -119,13 +119,8 @@ const expanded = ref(false);
 /** header element */
 const header = ref<HTMLElement>();
 
-// Reactive state to track if the dropdown is open
-const isOpen = ref(false);
-
 /** is home page (big) version */
 const home = computed((): boolean => route.name === "Home");
-
-const openIndex = ref<number | null>(null);
 
 /** whether to show search box */
 const search = computed(
@@ -140,26 +135,6 @@ const search = computed(
 function close() {
   expanded.value = false;
 }
-
-// Toggle the dropdown menu visibility
-// const toggleMenu = (index: number) => {
-//   openIndex.value = openIndex.value === index ? null : index;
-// };
-
-// Close the dropdown menu
-const closeMenu = (): void => {
-  isOpen.value = false;
-};
-
-// // Handle clicks outside the dropdown
-// const handleClickOutside = (event: MouseEvent): void => {
-//   const dropdown = document.querySelector(".dropdown");
-//   if (dropdown && !dropdown.contains(event.target as Node)) {
-//     closeMenu();
-//   }
-// };
-
-// Add and remove event listeners for outside clicks
 
 /** close nav when page changes */
 watch(() => route.name, close);
