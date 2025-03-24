@@ -10,13 +10,11 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
   title: string;
   content: string;
   buttonText?: string;
 }>();
-
-console.log("Button Text:", props.buttonText);
 </script>
 
 <style lang="scss" scoped>

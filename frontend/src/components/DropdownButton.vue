@@ -2,13 +2,14 @@
   <div ref="dropdown" class="dropdown" :class="{ 'is-open': isOpen }">
     <button class="dropdown-btn" @click="toggleMenu">
       <slot name="button"></slot>
-      <span class="dropdown-arrow">&#9662;</span>
+      <span class="dropdown-arrow" :class="{ 'is-rotated': isOpen }"
+        >&#9662;</span
+      >
     </button>
 
-    <!-- Dropdown menu -->
     <div v-if="isOpen" class="dropdown-menu">
       <ul class="menu-list">
-        <slot></slot>
+        <slot @click="closeMenu"></slot>
       </ul>
     </div>
   </div>
@@ -18,19 +19,23 @@
 import { onBeforeUnmount, onMounted, ref } from "vue";
 
 const isOpen = ref(false);
+const dropdown = ref<HTMLElement | null>(null);
 
-const toggleMenu = (): void => {
+const toggleMenu = () => {
   isOpen.value = !isOpen.value;
 };
 
-// Close dropdown when clicking outside
-const handleClickOutside = (event: MouseEvent) => {
-  if (dropdown.value && !dropdown.value.contains(event.target as Node)) {
-    isOpen.value = false;
-  }
+const closeMenu = () => {
+  console.log("opned");
+  isOpen.value = false;
+  console.log("XXXXXXXXXXXXX,isOpen.value", isOpen.value);
 };
 
-const dropdown = ref<HTMLElement | null>(null);
+const handleClickOutside = (event: MouseEvent) => {
+  if (dropdown.value && !dropdown.value.contains(event.target as Node)) {
+    closeMenu();
+  }
+};
 
 onMounted(() => {
   document.addEventListener("click", handleClickOutside);
@@ -53,6 +58,7 @@ $wrap: 1000px;
   display: flex;
   gap: 0.2em;
 }
+
 /* Dropdown menu (hidden by default) */
 .dropdown-menu {
   position: absolute;
@@ -92,6 +98,15 @@ $wrap: 1000px;
   border-left: 10px solid transparent;
   content: "";
   filter: drop-shadow(0px -2px 2px rgba(0, 0, 0, 0.1));
+}
+
+/* Rotate arrow when dropdown is open */
+.dropdown-arrow {
+  transition: transform 0.3s ease;
+}
+
+.dropdown-arrow.is-rotated {
+  transform: rotate(180deg);
 }
 
 @media (max-width: $wrap) {
