@@ -7,9 +7,9 @@
       >
     </button>
 
-    <div v-if="isOpen" class="dropdown-menu">
+    <div v-if="isOpen" class="dropdown-menu" @click="closeMenu">
       <ul class="menu-list">
-        <slot @click="closeMenu"></slot>
+        <slot></slot>
       </ul>
     </div>
   </div>

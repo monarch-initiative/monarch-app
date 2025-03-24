@@ -12,9 +12,6 @@ biological data to reveal hidden relationships."
         <template #default> KnowledgeGraph </template>
       </PageTitle>
     </AppSection>
-    <!-- <AppSection width="big" class="section" design="bare">
-     
-    </AppSection> -->
 
     <!--WHat is KG-->
     <AppSection width="big" design="bare">
