@@ -13,17 +13,17 @@
       </span>
 
       <div class="topRow">
-        <AppCheckbox
-          v-if="
-            node.category === 'biolink:Gene' &&
-            category?.id.startsWith('biolink:GeneToPheno')
-          "
-          v-model="includeOrthologs"
-          v-tooltip="
-            'Include phenotypes for orthologous genes in the associations table'
-          "
-          text="Include ortholog phenotypes"
-        />
+        <div class="leftColumn">
+          <AppCheckbox
+            v-if="true"
+            v-model="includeOrthologs"
+            v-tooltip="
+              'Include phenotypes for orthologous genes in the associations table'
+            "
+            text="Include ortholog phenotypes"
+          />
+        </div>
+
         <div class="rightColumn">
           <AppTextbox
             v-model="searchValues[category.id]"
@@ -122,12 +122,18 @@ watch(
 .topRow {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end; /* Align everything to the right */
+  justify-content: space-between;
   width: 100%;
   gap: 16px;
 }
-
+.leftColumn {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  min-width: 300px;
+}
 .rightColumn {
   min-width: 20em;
+  margin-left: auto;
 }
 </style>
