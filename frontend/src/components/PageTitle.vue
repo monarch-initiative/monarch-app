@@ -17,20 +17,25 @@ defineProps<{
 }>();
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+$wrap: 1000px;
 /* Wrap both heading and tagline together */
 .title-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  align-items: center;
+  padding: 0px 1.5em;
   text-align: center;
+  @media (max-width: $wrap) {
+  }
 }
 
 /* Keep heading and image aligned */
 .heading-container {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.5em;
 }
 
 /* Ensure the image is properly styled */
@@ -43,13 +48,14 @@ defineProps<{
 /* Style heading */
 h1 {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 2em;
 }
 
 /* Style tagline */
 .tagline {
   margin: 0;
-  color: gray;
+  color: hsl(185, 100%, 30%);
+  font-weight: 500;
   font-size: 1rem;
 }
 </style>

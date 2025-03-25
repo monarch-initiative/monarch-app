@@ -1,20 +1,22 @@
 <template>
   <div class="container">
     <AppBreadcrumb />
-    <AppSection width="big" class="section" design="bare">
-      <PageTitle
-        id="kg-about"
-        title="KnowledgeGraph"
-        tagline="Discover the power of our Knowledge Graph, seamlessly connecting
+    <!-- <AppSection width="big" class="section" design="bare"> -->
+
+    <PageTitle
+      id="kg-about"
+      title="KnowledgeGraph"
+      tagline="Discover the power of our Knowledge Graph, seamlessly connecting
 biological data to reveal hidden relationships."
-        image-src="/icons/monarch-logo.svg"
-      >
-        <template #default> KnowledgeGraph </template>
-      </PageTitle>
-    </AppSection>
+      image-src="/icons/monarch-logo.svg"
+    >
+      <template #default> KnowledgeGraph </template>
+    </PageTitle>
+
+    <!-- </AppSection> -->
 
     <!--WHat is KG-->
-    <AppSection width="big" design="bare">
+    <AppSection width="big" design="bare" class="section kg-about">
       <AppHeading class="fullWidthHeader">What is KnowledgeGraph?</AppHeading>
       <div class="content-container">
         <div class="text-column">
@@ -45,7 +47,7 @@ biological data to reveal hidden relationships."
     </AppSection>
     <AppSection width="big" design="bare">
       <div class="enity-association">
-        <AppHeading>Entity and Association Statistics</AppHeading>
+        <AppHeading :level="2">Entity and Association Statistics</AppHeading>
         <AppGallery :cols="4">
           <!-- node counts -->
           <AppTile
@@ -78,7 +80,7 @@ biological data to reveal hidden relationships."
     </AppSection>
 
     <!-- </AppSection> -->
-    <AppSection width="big" design="bare">
+    <AppSection width="big" design="bare" class="section">
       <AppHeading class="fullWidthHeader"
         >Knowledge Graph's Ket Tools and Resources</AppHeading
       >
@@ -107,11 +109,9 @@ biological data to reveal hidden relationships."
         />
       </AppFlex>
     </AppSection>
+
     <AppSection width="big" class="section" design="bare">
-      <!--ORIP Section-->
       <AppHeading class="fullWidthHeader">Title Placeholder</AppHeading>
-    </AppSection>
-    <AppSection width="big" class="section" design="bare">
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
@@ -160,7 +160,7 @@ $wrap: 1000px;
 }
 .fullWidthHeader {
   width: 100%;
-  padding: 0.6em 1em;
+  padding: 0.6em 0.5em;
   background-color: #e0e0e0;
   color: black;
   text-align: left;
@@ -215,7 +215,7 @@ iframe {
   @media (max-width: $wrap) {
     width: 100%;
     min-width: 380px;
-    max-width: 90%;
+    max-width: 80%;
   }
 }
 .enity-association {
@@ -233,7 +233,7 @@ iframe {
   @media (max-width: $wrap) {
     width: 100%;
     min-width: 380px;
-    max-width: 90%;
+    max-width: 80%;
   }
 }
 
@@ -269,5 +269,18 @@ h1 {
 
 .info {
   padding: 1em;
+}
+
+.section.center {
+  gap: 1em;
+  @media (max-width: $wrap) {
+    gap: 1.5em;
+  }
+}
+
+.kg-about[data-v-55956969] {
+  @media (max-width: $wrap) {
+    padding-top: 0.7em;
+  }
 }
 </style>
