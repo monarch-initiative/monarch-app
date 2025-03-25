@@ -13,7 +13,7 @@
       </span>
 
       <div class="topRow">
-        <div class="leftColumn">
+        <AppFlex gap="small" class="leftColumn">
           <AppCheckbox
             v-if="
               node.category === 'biolink:Gene' &&
@@ -25,7 +25,25 @@
             "
             text="Include ortholog phenotypes"
           />
-        </div>
+
+          <AppButton
+            v-if="
+              (node.category === 'biolink:Disease' &&
+                category?.id.startsWith('biolink:DiseaseToPheno') &&
+                (node.has_phenotype_count ?? 0) > 0) ||
+              (node.category === 'biolink:Gene' &&
+                category?.id.startsWith('biolink:GeneToPheno') &&
+                (node.has_phenotype_count ?? 0) > 0)
+            "
+            v-tooltip="
+              'Send these phenotypes to Phenotype Explorer for comparison'
+            "
+            to="explore#phenotype-explorer"
+            :state="{ search: node.id }"
+            text="Phenotype Explorer"
+            icon="arrow-right"
+          />
+        </AppFlex>
 
         <div class="rightColumn">
           <AppTextbox
@@ -130,13 +148,10 @@ watch(
   gap: 16px;
 }
 .leftColumn {
-  display: flex;
   flex: 1;
-  justify-content: center;
   min-width: 300px;
 }
 .rightColumn {
   min-width: 20em;
-  margin-left: auto;
 }
 </style>
