@@ -71,7 +71,6 @@ $wrap: 1000px;
   border-radius: 4px;
   background-color: white;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-
   opacity: 0;
   transition:
     opacity 0.3s ease,
@@ -113,7 +112,7 @@ $wrap: 1000px;
   .dropdown-menu {
     visibility: visible;
     position: relative;
-    top: 0;
+    top: 0.3em;
     width: 100%;
     transform: none;
     border: none;
