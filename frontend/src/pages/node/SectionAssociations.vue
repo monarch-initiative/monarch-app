@@ -14,10 +14,7 @@
 
       <div class="topRow">
         <AppCheckbox
-          v-if="
-            node.category === 'biolink:Gene' &&
-            category?.id.startsWith('biolink:GeneToPheno')
-          "
+          v-if="true"
           v-model="includeOrthologs"
           v-tooltip="
             'Include phenotypes for orthologous genes in the associations table'
@@ -122,14 +119,11 @@ watch(
 .topRow {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-end; /* Align everything to the right */
   width: 100%;
   gap: 16px;
 }
-.leftColumn {
-  flex: 1;
-  min-width: 300px;
-}
+
 .rightColumn {
   min-width: 20em;
 }
