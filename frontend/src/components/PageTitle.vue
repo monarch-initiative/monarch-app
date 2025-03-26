@@ -32,11 +32,14 @@ $wrap: 1000px;
 .heading-container {
   display: flex;
   align-items: center;
+  margin-top: 1em;
   gap: 0.5em;
   h1 {
-    padding-bottom: 0;
+    padding: 0;
+    font-size: 2em;
     @media (max-width: $wrap) {
       padding-bottom: 0.2em;
+      font-size: 1.8em;
     }
   }
 }
@@ -47,16 +50,14 @@ $wrap: 1000px;
   object-fit: contain;
 }
 
-h1 {
-  margin: 0;
-  font-size: 2em;
-}
-
 /* Style tagline */
 .tagline {
   margin: 0;
   color: hsl(185, 100%, 30%);
   font-weight: 500;
   font-size: 1rem;
+  @media (max-width: $wrap) {
+    font-size: 0.8em;
+  }
 }
 </style>

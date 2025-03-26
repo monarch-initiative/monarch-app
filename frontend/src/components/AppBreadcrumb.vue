@@ -65,13 +65,17 @@ const breadcrumbs = computed<Breadcrumb[]>(() => {
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+$wrap: 1000px;
 .breadcrumb {
   display: flex;
   padding: 0;
   gap: 8px;
   font-size: 14px;
   list-style: none;
+  @media (max-width: $wrap) {
+    padding: 0.2em;
+  }
 }
 
 .breadcrumb li {
