@@ -98,7 +98,7 @@ class SolrQuery(BaseModel):
         elif value is True:
             return "true"
         elif value is False:
-            return "false"
+            return "false"        
         else:
             return value
 
@@ -119,12 +119,8 @@ class SolrFacetCounts(BaseModel):
     facet_queries: Optional[Dict]
 
 
-class SolrHighlighting(BaseModel):
-    Dict[str, Dict[str, Optional[List[str]]]]
-
-
 class SolrQueryResult(BaseModel):
     responseHeader: SolrQueryResponseHeader
     response: SolrQueryResponse
     facet_counts: Optional[SolrFacetCounts]
-    highlighting: Optional[SolrHighlighting]
+    highlighting: Optional[Dict[str, Dict[str, Optional[List[str]]]]] = Field(default_factory=dict)
