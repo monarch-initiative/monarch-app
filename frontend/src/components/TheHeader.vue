@@ -66,7 +66,7 @@
       </AppLink> -->
       <div class="navItems">
         <DropdownButton
-          v-for="(menu, index) in menus"
+          v-for="(menu, index) in navigationMenus"
           :key="menu.label"
           :index="index"
           :label="menu.label"
@@ -105,7 +105,7 @@
 import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import TheLogo from "@/assets/TheLogo.vue";
-import menus from "@/data/menu.json";
+import navigationMenus from "@/data/navigationMenu.json";
 import TabSearch from "@/pages/explore/TabSearch.vue";
 import DropdownButton from "./DropdownButton.vue";
 import TheNexus from "./TheNexus.vue";

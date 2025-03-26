@@ -184,9 +184,15 @@ export const routes: RouteRecordRaw[] = [
 
   {
     path: "/knowledge-graph/about",
-    name: "about-knowledge-graph",
+    name: "knowledge-graph-about",
     component: asyncRoute("knowledgeGraph/PageAbout"),
     meta: { breadcrumb: "About KG" },
+  },
+  {
+    path: "/knowledge-graph/citation",
+    name: "knowledge-graph-cite",
+    component: asyncRoute("knowledgeGraph/PageCite"),
+    meta: { breadcrumb: "Citation" },
   },
 ];
 

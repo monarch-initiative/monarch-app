@@ -26,9 +26,7 @@ const toggleMenu = () => {
 };
 
 const closeMenu = () => {
-  console.log("opned");
   isOpen.value = false;
-  console.log("XXXXXXXXXXXXX,isOpen.value", isOpen.value);
 };
 
 const handleClickOutside = (event: MouseEvent) => {

@@ -10,18 +10,18 @@
         "tooltip": "About the Knowledge Graph"
       },
       {
+        "label": "Cite",
+        "link": "/cite",
+        "key": "cite",
+        "to": "/knowledge-graph/citation",
+        "tooltip": "Learn how to cite the Knowledge Graph"
+      },
+      {
         "label": "KG Tools",
         "link": "/kg-tools",
         "key": "kg-tools",
         "to": "/knowledge-graph/about",
         "tooltip": "Explore tools related to the Knowledge Graph"
-      },
-      {
-        "label": "Cite",
-        "link": "/cite",
-        "key": "cite",
-        "to": "/knowledge-graph/about",
-        "tooltip": "Learn how to cite the Knowledge Graph"
       },
       {
         "label": "How To & Help",
