@@ -19,7 +19,7 @@ defineProps<{
 
 <style lang="scss" scoped>
 $wrap: 1000px;
-/* Wrap both heading and tagline together */
+
 .title-container {
   display: flex;
   flex-direction: column;
@@ -29,7 +29,6 @@ $wrap: 1000px;
   text-align: center;
 }
 
-/* Keep heading and image aligned */
 .heading-container {
   display: flex;
   align-items: center;
@@ -42,14 +41,12 @@ $wrap: 1000px;
   }
 }
 
-/* Ensure the image is properly styled */
 .title-image {
-  width: 40px; /* Adjust as needed */
+  width: 40px;
   max-height: 40px;
   object-fit: contain;
 }
 
-/* Style heading */
 h1 {
   margin: 0;
   font-size: 2em;
