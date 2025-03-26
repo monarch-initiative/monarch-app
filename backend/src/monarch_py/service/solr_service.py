@@ -9,6 +9,7 @@ from pydantic import BaseModel
 
 FIELD_TYPE_SUFFIXES = ["_t", "_ac", "_grounding", "_sortable_float"]
 
+
 class SolrService(BaseModel):
     base_url: str
     core: core
@@ -33,7 +34,9 @@ class SolrService(BaseModel):
             logger.error("Solr error message: " + data["error"]["msg"])
         response.raise_for_status()
         solr_query_result = SolrQueryResult.model_validate(data, from_attributes=True)
-        solr_query_result.highlighting = SolrService._consolidate_highlights(solr_query_result.highlighting, FIELD_TYPE_SUFFIXES)
+        solr_query_result.highlighting = SolrService._consolidate_highlights(
+            solr_query_result.highlighting, FIELD_TYPE_SUFFIXES
+        )
         for doc in solr_query_result.response.docs:
             SolrService._strip_json(
                 doc,
@@ -64,11 +67,13 @@ class SolrService(BaseModel):
                     del doc[key]
 
     @staticmethod
-    def _consolidate_highlights(highlights: Dict[str, Dict[str, List[str]]], suffixes: List[str]) -> Dict[str, Dict[str, List[str]]]:
-        """ 
+    def _consolidate_highlights(
+        highlights: Dict[str, Dict[str, List[str]]], suffixes: List[str]
+    ) -> Dict[str, Dict[str, List[str]]]:
+        """
         For each field that's returned, collapse specified suffix highlighting down to the root field. For example, each
         highlight for name_t and name_ac should be merged into a unique list for name and the specified suffix fields should
-        be removed from the highlights.    
+        be removed from the highlights.
         """
         consolidated_highlights = highlights.copy()
         for id, highlight in consolidated_highlights.items():
@@ -81,7 +86,7 @@ class SolrService(BaseModel):
                         else:
                             highlight[root_field] = list(set(highlight[root_field] + highlight[field]))
                         del highlight[field]
-                        
+
         return consolidated_highlights
 
     # Solr returns facet values and counts as a list, they make much more

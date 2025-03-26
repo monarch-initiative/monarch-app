@@ -196,7 +196,13 @@ def parse_search(
     facet_fields = convert_facet_fields(query_result.facet_counts.facet_fields)
     facet_queries = convert_facet_queries(query_result.facet_counts.facet_queries)
     return SearchResults(
-        limit=limit, offset=offset, total=total, items=items, facet_fields=facet_fields, facet_queries=facet_queries, highlight=query_result.highlighting
+        limit=limit,
+        offset=offset,
+        total=total,
+        items=items,
+        facet_fields=facet_fields,
+        facet_queries=facet_queries,
+        highlight=query_result.highlighting,
     )
 
 

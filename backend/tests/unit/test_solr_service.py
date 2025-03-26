@@ -1,4 +1,3 @@
-import pytest
 from monarch_py.service.solr_service import SolrService, FIELD_TYPE_SUFFIXES
 
 
@@ -15,7 +14,6 @@ def test_consolidate_highlights():
             "description_t": ["gene description about <em>heart</em>"],
             "name_ac": ["<em>heart</em> gene"],
         },
-
     }
 
     # Expected consolidated highlights
@@ -26,7 +24,7 @@ def test_consolidate_highlights():
         },
         "HGNC:456": {
             "name": ["<em>heart</em> gene"],
-            "description": ["gene description about <em>heart</em>"],            
+            "description": ["gene description about <em>heart</em>"],
         },
     }
 

@@ -98,7 +98,7 @@ class SolrQuery(BaseModel):
         elif value is True:
             return "true"
         elif value is False:
-            return "false"        
+            return "false"
         else:
             return value
 
