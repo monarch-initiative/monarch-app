@@ -1,145 +1,141 @@
 <template>
-  <div class="container">
-    <AppBreadcrumb />
-    <!-- <AppSection width="big" class="section" design="bare"> -->
+  <AppBreadcrumb />
+  <!-- <AppSection width="big" class="section" design="bare"> -->
 
-    <PageTitle
-      id="kg-about"
-      title="KnowledgeGraph"
-      tagline="Discover the power of our Knowledge Graph, seamlessly connecting
+  <PageTitle
+    id="kg-about"
+    title="KnowledgeGraph"
+    tagline="Discover the power of our Knowledge Graph, seamlessly connecting
 biological data to reveal hidden relationships."
-      image-src="/icons/monarch-logo.svg"
-    >
-      <template #default> KnowledgeGraph </template>
-    </PageTitle>
+    image-src="/icons/monarch-logo.svg"
+  />
 
-    <!--WHat is KG-->
-    <AppSection width="big" design="bare" class="section kg-about">
-      <AppHeading class="fullWidthHeader">What is KnowledgeGraph?</AppHeading>
-      <div class="content-container">
-        <div class="text-column">
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Lorem ipsum dolor sit amet,Lorem ipsum dolor sit amet,
-            consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud
-            exercitation ullamco laboris nisi ut aliquip ex ea commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit
-            esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor sit
-            amet,Lorem ipsum dolor sit amet, consectetur adipiscing elit
-          </p>
-        </div>
-
-        <iframe
-          title="What is KnowledgeGraph?"
-          class="video"
-          src="https://www.youtube.com/embed/z11xZKBEO-U"
-          frameborder="0"
-          allow="autoplay; picture-in-picture"
-          allowfullscreen
-        ></iframe>
+  <!--WHat is KG-->
+  <AppSection width="big" design="bare" class="section kg-about">
+    <AppHeading class="fullWidthHeader">What is KnowledgeGraph?</AppHeading>
+    <div class="content-container">
+      <div class="text-column">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Lorem ipsum dolor sit amet,Lorem ipsum dolor sit amet,
+          consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud
+          exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+          dolore eu fugiat nulla pariatur. Lorem ipsum dolor sit amet,Lorem
+          ipsum dolor sit amet, consectetur adipiscing elit
+        </p>
       </div>
-    </AppSection>
 
-    <!--Entity and Association statistics-->
-    <AppSection width="big" design="bare">
-      <div class="enity-association">
-        <AppHeading :level="2">Entity and Association Statistics</AppHeading>
-        <AppGallery :cols="4">
-          <!-- node counts -->
-          <AppTile
-            v-for="(item, index) in metadata.node"
-            :key="index"
-            :icon="item.icon"
-            :title="startCase(item.label.replace(/biolink:/g, ''))"
-            :subtitle="formatNumber(item.count, true)"
-            design="small"
-          />
-          <!-- association counts -->
-          <AppTile
-            v-for="(item, index) in metadata.association"
-            :key="index"
-            :icon="item.icon2 ? undefined : item.icon"
-            :title="startCase(item.label.replace(/biolink:/g, ''))"
-            :subtitle="formatNumber(item.count, true)"
-            design="small"
-          >
-            <AppFlex v-if="item.icon2" gap="tiny" class="association">
-              <AppIcon :icon="item.icon" />
-              <svg viewBox="0 0 9 2" class="line">
-                <line x1="0" y1="1" x2="9" y2="1" />
-              </svg>
-              <AppIcon :icon="item.icon2" />
-            </AppFlex>
-          </AppTile>
-        </AppGallery>
-      </div>
-    </AppSection>
-
-    <!--KG's Tools and Resources-->
-    <AppSection width="big" design="bare" class="section">
-      <AppHeading class="fullWidthHeader"
-        >Knowledge Graph's Tools and Resources</AppHeading
-      >
-      <AppFlex gap="big" class="tools">
-        <AppTileCard
-          title="Graph"
-          content="Dive into the Monarch Knowledge Graph, where complex biological data is interconnected. This section lets you explore relationships between genes, diseases, phenotypes, and more, providing deep insights to accelerate scientific discovery."
-          button-text="Explore"
-        />
-
-        <AppTileCard
-          title="Phenotype Explore"
-          content="The Phenotype Explorer enables you to investigate phenotypic data, linking observable traits to genetic information. Use this tool to explore how phenotypes are connected to genetic variations and their role in diseases."
-          button-text="Explore"
-        />
-        <AppTileCard
-          title="Text Annotator"
-          content="The Text Annotator is a powerful tool for extracting biological knowledge from scientific literature. It helps researchers identify key biological concepts and relationships within text, enhancing the search for relevant data and insights."
-          button-text="Explore"
-        />
-
-        <AppTileCard
-          title="Tools"
-          content="Access a wealth of resources that support your research, including tools, datasets, and documentation. This section provides the essential data and information needed to make the most of Monarch's integrated biological knowledge"
-          button-text="Explore"
-        />
-      </AppFlex>
-    </AppSection>
-
-    <!--Title Placeholder - Has to be replaced with real content-->
-    <AppSection width="big" class="section" design="bare">
-      <AppHeading class="fullWidthHeader">Title Placeholder</AppHeading>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-        occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-        mollit anim id est laborum.
-      </p>
       <iframe
-        title="Monarch Initiative: Resource Overview"
-        class="ORIP-video"
-        src="https://www.youtube.com/embed/25e88kbjKtU?si=lG88-c2fZcKHxIhm"
+        title="What is KnowledgeGraph?"
+        class="video"
+        src="https://www.youtube.com/embed/z11xZKBEO-U"
         frameborder="0"
         allow="autoplay; picture-in-picture"
         allowfullscreen
       ></iframe>
-    </AppSection>
+    </div>
+  </AppSection>
 
-    <!--contact-->
-    <AppSection width="big" design="bare">
-      <p class="info">
-        If you have any questions, fell free to reach out to us at :
-        <a>info@monarchinitiative.org</a>
-      </p></AppSection
+  <!--Entity and Association statistics-->
+  <AppSection width="big" design="bare">
+    <div class="enity-association">
+      <AppHeading :level="2">Entity and Association Statistics</AppHeading>
+      <AppGallery :cols="4">
+        <!-- node counts -->
+        <AppTile
+          v-for="(item, index) in metadata.node"
+          :key="index"
+          :icon="item.icon"
+          :title="startCase(item.label.replace(/biolink:/g, ''))"
+          :subtitle="formatNumber(item.count, true)"
+          design="small"
+        />
+        <!-- association counts -->
+        <AppTile
+          v-for="(item, index) in metadata.association"
+          :key="index"
+          :icon="item.icon2 ? undefined : item.icon"
+          :title="startCase(item.label.replace(/biolink:/g, ''))"
+          :subtitle="formatNumber(item.count, true)"
+          design="small"
+        >
+          <AppFlex v-if="item.icon2" gap="tiny" class="association">
+            <AppIcon :icon="item.icon" />
+            <svg viewBox="0 0 9 2" class="line">
+              <line x1="0" y1="1" x2="9" y2="1" />
+            </svg>
+            <AppIcon :icon="item.icon2" />
+          </AppFlex>
+        </AppTile>
+      </AppGallery>
+    </div>
+  </AppSection>
+
+  <!--KG's Tools and Resources-->
+  <AppSection width="big" design="bare" class="section">
+    <AppHeading class="fullWidthHeader"
+      >Knowledge Graph's Tools and Resources</AppHeading
     >
-  </div>
+    <AppFlex gap="big" class="tools">
+      <AppTileCard
+        title="Graph"
+        content="Dive into the Monarch Knowledge Graph, where complex biological data is interconnected. This section lets you explore relationships between genes, diseases, phenotypes, and more, providing deep insights to accelerate scientific discovery."
+        button-text="Explore"
+      />
+
+      <AppTileCard
+        title="Phenotype Explore"
+        content="The Phenotype Explorer enables you to investigate phenotypic data, linking observable traits to genetic information. Use this tool to explore how phenotypes are connected to genetic variations and their role in diseases."
+        button-text="Explore"
+      />
+      <AppTileCard
+        title="Text Annotator"
+        content="The Text Annotator is a powerful tool for extracting biological knowledge from scientific literature. It helps researchers identify key biological concepts and relationships within text, enhancing the search for relevant data and insights."
+        button-text="Explore"
+      />
+
+      <AppTileCard
+        title="Tools"
+        content="Access a wealth of resources that support your research, including tools, datasets, and documentation. This section provides the essential data and information needed to make the most of Monarch's integrated biological knowledge"
+        button-text="Explore"
+      />
+    </AppFlex>
+  </AppSection>
+
+  <!--Title Placeholder - Has to be replaced with real content-->
+  <AppSection width="big" class="section" design="bare">
+    <AppHeading class="fullWidthHeader">Title Placeholder</AppHeading>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+      velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+      est laborum.
+    </p>
+    <iframe
+      title="Monarch Initiative: Resource Overview"
+      class="ORIP-video"
+      src="https://www.youtube.com/embed/25e88kbjKtU?si=lG88-c2fZcKHxIhm"
+      frameborder="0"
+      allow="autoplay; picture-in-picture"
+      allowfullscreen
+    ></iframe>
+  </AppSection>
+
+  <!--contact-->
+  <AppSection width="big" design="bare">
+    <p class="info">
+      If you have any questions, fell free to reach out to us at :
+      <a>info@monarchinitiative.org</a>
+    </p></AppSection
+  >
 </template>
 
 <script setup lang="ts">
@@ -155,11 +151,9 @@ import { formatNumber } from "@/util/string";
 
 <style lang="scss" scoped>
 $wrap: 1000px;
+
 .section.big {
   padding-bottom: unset;
-}
-.container {
-  gap: 1em;
 }
 
 .fullWidthHeader {
