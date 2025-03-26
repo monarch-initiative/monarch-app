@@ -36,11 +36,16 @@ import { onMounted, onUpdated, ref } from "vue";
 type Props = {
   text?: string;
   isSvg?: boolean;
+
+  // Truncating text in SVG is not possible using "text-overflow: ellipses",
+  // so we use our own strategy.
+  truncateWidth?: number;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   text: "",
   isSvg: false,
+  truncateWidth: undefined,
 });
 
 const container = ref<HTMLSpanElement | SVGTSpanElement | null>(null);
@@ -147,7 +152,7 @@ const replacementTags = new Map([
 ]);
 
 function buildDOM(containerEl: Element) {
-  const text = props.text;
+  const { text, truncateWidth, isSvg } = props;
 
   const containsOnlyText =
     containerEl.childNodes.length === 1 &&
@@ -210,16 +215,79 @@ function buildDOM(containerEl: Element) {
     range.setEndBefore(endNode!);
 
     // Surround that range with the appropriate DOM element.
-    const el = createSurroundingEl(props.isSvg);
+    const el = createSurroundingEl(isSvg);
     range.surroundContents(el);
 
     // Run any code required after the container element is mounted.
-    afterMount(props.isSvg, el);
+    afterMount(isSvg, el);
 
     // Remove the start and end tag text nodes
     startNode!.parentNode!.removeChild(startNode!);
     endNode!.parentNode!.removeChild(endNode!);
   });
+
+  // This is an SVG and we have been told to truncate it at a certain width.
+  if (isSvg && truncateWidth) {
+    const tspan = containerEl as SVGTSpanElement;
+
+    // Create a DOMPoint of the character where the text should be truncated.
+    const pos = tspan.getStartPositionOfChar(0);
+    pos.x += truncateWidth;
+
+    // Find the character (if any) where the string should be truncated.
+    const endChar = tspan.getCharNumAtPosition(pos);
+
+    if (endChar > 0) {
+      const textNodes = getAllTextNodes(containerEl);
+      let firstNodeOut: Text | null = null;
+      let curChar = 0;
+
+      textNodes.forEach((textNode) => {
+        if (firstNodeOut) {
+          // We've already truncated a node, so we can remove the content of
+          // any following node.
+          textNode.textContent = "";
+        } else if (curChar + textNode.length > endChar) {
+          // The character where we need to truncate is in this node. Get the
+          // offset where we need to truncate, then split the text node into
+          // two, and clear the contents of the second node.
+          const splitAt = endChar - curChar;
+          firstNodeOut = textNode.splitText(splitAt - 1);
+          if (firstNodeOut) {
+            firstNodeOut.textContent = "";
+          }
+          if (textNode.textContent) {
+            // If the text node that has been truncated ends in whitespace,
+            // remove that whitespace.
+            textNode.textContent = textNode.textContent.trimEnd();
+          }
+        } else {
+          // We haven't reached the text node where we need to truncate yet--
+          // just add the length to the counter and move on.
+          curChar += textNode.length;
+        }
+      });
+
+      const dotsText = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "tspan",
+      );
+      dotsText.textContent = "...";
+      containerEl.appendChild(dotsText);
+    }
+  }
+}
+
+function getAllTextNodes(container: Node) {
+  const textNodes: Text[] = [];
+  const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
+  while (walker.nextNode()) {
+    const node = walker.currentNode;
+    if (node.nodeType === Node.TEXT_NODE) {
+      textNodes.push(node as Text);
+    }
+  }
+  return textNodes;
 }
 
 onMounted(() => {
