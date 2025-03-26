@@ -13,8 +13,6 @@ biological data to reveal hidden relationships."
       <template #default> KnowledgeGraph </template>
     </PageTitle>
 
-    <!-- </AppSection> -->
-
     <!--WHat is KG-->
     <AppSection width="big" design="bare" class="section kg-about">
       <AppHeading class="fullWidthHeader">What is KnowledgeGraph?</AppHeading>
@@ -45,6 +43,8 @@ biological data to reveal hidden relationships."
         ></iframe>
       </div>
     </AppSection>
+
+    <!--Entity and Association statistics-->
     <AppSection width="big" design="bare">
       <div class="enity-association">
         <AppHeading :level="2">Entity and Association Statistics</AppHeading>
@@ -79,10 +79,10 @@ biological data to reveal hidden relationships."
       </div>
     </AppSection>
 
-    <!-- </AppSection> -->
+    <!--KG's Tools and Resources-->
     <AppSection width="big" design="bare" class="section">
       <AppHeading class="fullWidthHeader"
-        >Knowledge Graph's Ket Tools and Resources</AppHeading
+        >Knowledge Graph's Tools and Resources</AppHeading
       >
       <AppFlex gap="big" class="tools">
         <AppTileCard
@@ -110,6 +110,7 @@ biological data to reveal hidden relationships."
       </AppFlex>
     </AppSection>
 
+    <!--Title Placeholder - Has to be replaced with real content-->
     <AppSection width="big" class="section" design="bare">
       <AppHeading class="fullWidthHeader">Title Placeholder</AppHeading>
       <p>
@@ -130,6 +131,8 @@ biological data to reveal hidden relationships."
         allowfullscreen
       ></iframe>
     </AppSection>
+
+    <!--contact-->
     <AppSection width="big" design="bare">
       <p class="info">
         If you have any questions, fell free to reach out to us at :
@@ -158,6 +161,7 @@ $wrap: 1000px;
 .container {
   gap: 1em;
 }
+
 .fullWidthHeader {
   width: 100%;
   padding: 0.6em 0.5em;
@@ -171,7 +175,6 @@ $wrap: 1000px;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-
   gap: 4em;
 
   p {
@@ -183,7 +186,7 @@ $wrap: 1000px;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    gap: 1em;
+    gap: 1.3em;
   }
 }
 
@@ -218,6 +221,7 @@ iframe {
     max-width: 80%;
   }
 }
+
 .enity-association {
   display: flex;
   flex-direction: column;

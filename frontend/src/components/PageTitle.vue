@@ -27,8 +27,6 @@ $wrap: 1000px;
   align-items: center;
   padding: 0px 1.5em;
   text-align: center;
-  @media (max-width: $wrap) {
-  }
 }
 
 /* Keep heading and image aligned */
@@ -36,6 +34,12 @@ $wrap: 1000px;
   display: flex;
   align-items: center;
   gap: 0.5em;
+  h1 {
+    padding-bottom: 0;
+    @media (max-width: $wrap) {
+      padding-bottom: 0.2em;
+    }
+  }
 }
 
 /* Ensure the image is properly styled */
