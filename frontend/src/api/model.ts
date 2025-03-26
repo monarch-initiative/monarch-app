@@ -9,6 +9,7 @@ export type HistoBinId = string;
 export type MappingId = string;
 export type MultiEntityAssociationResultsId = string;
 export type NodeId = string;
+export type HighlightField = string;
 export type SearchResultId = string;
 /**
 * The directionality of an association as it relates to a specified entity, with edges being categorized as incoming or outgoing
@@ -257,6 +258,8 @@ export interface Association {
     object_specialization_qualifier_closure?: string,
     /** A closure of the object_specialization_qualifier, including the object_specialization_qualifier itself and all of its ancestors */
     object_specialization_qualifier_closure_label?: string,
+    /** Collection of highlighting responses with field name and highlighted text */
+    highlighting?: {[index: HighlightField]: Highlight },
 }
 
 
@@ -531,9 +534,25 @@ export interface Results {
 
 
 
-export interface SearchResult extends Entity {
+export interface Highlight {
+    /** field name */
+    field: string,
+    /** highlighted text snippet */
+    snippets?: string[],
+}
+
+
+
+export interface Highlighting {
     /** matching text snippet containing html tags */
-    highlight?: string,
+    highlights?: {[index: HighlightField]: Highlight },
+}
+
+
+
+export interface SearchResult extends Entity {
+    /** Collection of highlighting responses with field name and highlighted text */
+    highlighting?: {[index: HighlightField]: Highlight },
     score?: number,
 }
 

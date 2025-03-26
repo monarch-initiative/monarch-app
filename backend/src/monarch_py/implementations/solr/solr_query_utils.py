@@ -66,6 +66,7 @@ def build_association_query(
         # the visible fields in an association table plus their ID equivalents and use a wildcard query for substring matching
         query.q = q
         query.def_type = "edismax"
+        query.hl = True
         query.query_fields = association_search_query_fields()
     if sort:
         query.sort = ", ".join(sort)
@@ -169,12 +170,14 @@ def build_search_query(
     facet_fields: List[str] = None,
     facet_queries: List[str] = None,
     filter_queries: List[str] = None,
+    highlighting: bool = False,
     sort: Optional[str] = None,
 ) -> SolrQuery:
     query = SolrQuery(start=offset, rows=limit, sort=sort)
     query.q = q
     query.def_type = "edismax"
     query.query_fields = entity_query_fields()
+    query.hl = highlighting
     query.boost = entity_boost(empty_search=(q == "*:*"))
     if category:
         query.add_filter_query(" OR ".join(f'category:"{cat}"' for cat in category))

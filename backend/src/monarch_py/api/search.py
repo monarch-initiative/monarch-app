@@ -43,6 +43,7 @@ async def search(
         facet_fields=facet_fields,
         offset=pagination.offset,
         limit=pagination.limit,
+        highlighting=True,
     )
 
     return response

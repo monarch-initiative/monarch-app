@@ -38,6 +38,16 @@ def test_search_sort():
     assert response.items[0].name > response.items[-1].name
 
 
+def test_search_highlighting():
+    si = SolrImplementation()
+    response = si.search("marfan", highlighting=True)
+    assert response
+    assert response.total > 0
+    first_doc_highlights = response.highlight[response.items[0].id]
+    assert first_doc_highlights
+    assert "name" in first_doc_highlights
+
+
 def test_facet_fields():
     si = SolrImplementation()
     response = si.search("syndrome", facet_fields=["category", "in_taxon"])
