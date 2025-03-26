@@ -132,7 +132,7 @@ biological data to reveal hidden relationships."
   <!--contact-->
   <AppSection width="big" design="bare">
     <p class="info">
-      If you have any questions, fell free to reach out to us at :
+      If you have any questions, feel free to reach out to us at :
       <a>info@monarchinitiative.org</a>
     </p></AppSection
   >

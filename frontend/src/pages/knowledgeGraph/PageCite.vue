@@ -65,7 +65,7 @@
     </AppSection>
 
     <!-- citing data -->
-    <AppSection width="big" design="bare" class="citation">
+    <AppSection width="big" design="bare">
       <AppHeading level="2">Page or Algorithmic Results</AppHeading>
       <p>
         To link to a specific page or to algorithmic results presented on this
@@ -84,31 +84,36 @@
   <!--contact-->
   <AppSection width="big" design="bare">
     <p class="info">
-      If you have any questions, fell free to reach out to us at :
+      If you have any questions, feel free to reach out to us at :
       <a>info@monarchinitiative.org</a>
     </p></AppSection
   >
 </template>
 <script setup lang="ts">
+import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppCitation from "@/components/AppCitation.vue";
 import PageTitle from "@/components/PageTitle.vue";
 </script>
 <style lang="scss" scoped>
+$wrap: 1000px;
 .section.center[data-v-d078f057] {
   gap: 0.7em;
 }
 
 .section.big {
   padding-bottom: unset;
+  @media (max-width: $wrap) {
+    padding: 0 max(20px, (100% - 1200px) / 2);
+  }
 }
 .content {
   padding: 1.3em;
   background: #a6ecf257;
+  text-align: left;
 }
 .container {
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 .info {

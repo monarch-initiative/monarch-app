@@ -27,8 +27,8 @@
         "label": "How To & Help",
         "link": "/how-to",
         "key": "how-to-help",
-        "to": "/knowledge-graph/about",
-        "tooltip": "Find guides and help resources for the Knowledge Graph"
+        "to": "/knowledge-graph/help",
+        "tooltip": "Feedback,docs,guides and more"
       },
       {
         "label": "KG Status & QC",
