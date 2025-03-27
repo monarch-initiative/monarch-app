@@ -200,6 +200,24 @@ export const routes: RouteRecordRaw[] = [
     component: asyncRoute("knowledgeGraph/PageHelp"),
     meta: { breadcrumb: "How to & Help" },
   },
+  {
+    path: "/knowledge-graph/status",
+    name: "knowledge-graph-status-qc",
+    component: asyncRoute("knowledgeGraph/PageStatus"),
+    meta: { breadcrumb: "Status & QC" },
+  },
+  {
+    path: "/knowledge-graph/search",
+    name: "knowledge-graph-search",
+    component: asyncRoute("knowledgeGraph/PageSearch"),
+    meta: { breadcrumb: "Search" },
+  },
+  {
+    path: "/knowledge-graph/documentation",
+    name: "knowledge-graph-documentation",
+    component: asyncRoute("knowledgeGraph/PageDocumentation"),
+    meta: { breadcrumb: "Documentation" },
+  },
 ];
 
 /** insert descriptions from imported json into each route's metadata */

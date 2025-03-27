@@ -17,16 +17,16 @@
         "tooltip": "Learn how to cite the Knowledge Graph"
       },
       {
-        "label": "KG Tools",
-        "link": "/kg-tools",
-        "key": "kg-tools",
-        "to": "/knowledge-graph/about",
-        "tooltip": "Explore tools related to the Knowledge Graph"
+        "label": "Search",
+        "link": "/kg-search",
+        "key": "kg-search",
+        "to": "/knowledge-graph/search",
+        "tooltip": ""
       },
       {
         "label": "How To & Help",
-        "link": "/how-to",
-        "key": "how-to-help",
+        "link": "/help",
+        "key": "kg-help",
         "to": "/knowledge-graph/help",
         "tooltip": "Feedback,docs,guides and more"
       },
@@ -34,8 +34,15 @@
         "label": "KG Status & QC",
         "link": "/kg-status",
         "key": "kg-status-qc",
-        "to": "/knowledge-graph/about",
-        "tooltip": "Check the status and quality control of the Knowledge Graph"
+        "to": "/knowledge-graph/status",
+        "tooltip": ""
+      },
+      {
+        "label": "Documentation",
+        "link": "/kg-documentation",
+        "key": "kg-documentation",
+        "to": "/knowledge-graph/documentation",
+        "tooltip": ""
       }
     ]
   }

@@ -1,42 +1,47 @@
+<!--
+  help landing page
+-->
+
 <template>
   <AppBreadcrumb />
-  <PageTitle id="kg-help" title="Citation Guide for Knowledge Graph & Tools" />
+  <PageTitle id="kg-status" title="Status and QC" />
+  <!-- api and service statuses -->
   <AppSection width="big" design="bare">
     <p>
-      We welcome all questions, requests, and feedback! Request a feature,
-      report a bug, or chat with us about anything Monarch-related. We will
-      connect you with someone who can help.
+      Below is a list of our service status pages, including api, api-dev, and
+      others.These pages provide real-time updates on the availability and
+      performance of our services. If you’re experiencing any issues, you can
+      check here for:
     </p>
-    <AppFlex gap="big">
-      <AppTile
-        icon="question"
-        title="How to Use"
-        subtitle="Still confused?"
-        to="/how-to"
-      />
-      <AppTile
-        icon="comment"
-        title="Feedback Form"
-        subtitle="Right here, no account required"
-        to="/feedback"
-      />
-      <AppTile
-        icon="comments"
-        title="Help Desk"
-        subtitle="On GitHub, requires account"
-        to="https://github.com/monarch-initiative/helpdesk"
-      />
-    </AppFlex>
-  </AppSection>
 
-  <AppSection width="big" design="bare">
-    <AppHeading>Local Data</AppHeading>
+    <!-- main status of all checks -->
+    <AppStatus v-if="isLoading" code="loading">Loading checks</AppStatus>
+    <AppStatus v-if="isError" code="error">Error loading checks</AppStatus>
+
+    <!-- individual statuses -->
+    <AppGallery :cols="4">
+      <AppStatus
+        v-for="(uptime, index) in uptimes"
+        :key="index"
+        class="status"
+        :code="uptime.code"
+        :link="uptime.link"
+        >{{ uptime.text }}</AppStatus
+      >
+    </AppGallery>
     <p>
-      Clear all of your
-      <AppLink to="/terms#local-data">locally-saved data</AppLink>, such as your
-      recent searches and feedback form drafts.
+      For detailed status reports, visit our
+      <AppLink to="https://stats.uptimerobot.com/XPRo9s4BJ5"
+        >Live Status Dashboard</AppLink
+      >
     </p>
-    <AppButton text="Clear Local Data" icon="floppy-disk" @click="clearData" />
+
+    <!-- link to uptime bot site for full details -->
+    <!-- <AppButton
+      to="https://stats.uptimerobot.com/XPRo9s4BJ5"
+      text="More Details"
+      icon="arrow-right"
+    /> -->
   </AppSection>
 
   <AppSection width="big" design="bare">
