@@ -54,7 +54,7 @@
   </AppSection>
 
   <AppSection width="big" design="bare">
-    <p class="info">
+    <p class="content">
       If you have any questions, feel free to reach out to us at :
       <a>info@monarchinitiative.org</a>
     </p></AppSection
@@ -105,6 +105,12 @@ const cols = computed(() => (screenWidth.value <= 1300 ? 2 : 4));
 }
 
 .content {
-  text-align: center;
+  text-align: left;
+}
+
+@media (max-width: 600px) {
+  section.center[data-v-d078f057] {
+    align-items: unset;
+  }
 }
 </style>

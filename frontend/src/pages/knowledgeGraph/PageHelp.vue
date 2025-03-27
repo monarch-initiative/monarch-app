@@ -1,6 +1,6 @@
 <template>
   <AppBreadcrumb />
-  <PageTitle id="kg-help" title="Citation Guide for Knowledge Graph & Tools" />
+  <PageTitle id="kg-help" title="Help" />
   <AppSection width="big" design="bare">
     <p>
       We welcome all questions, requests, and feedback! Request a feature,
@@ -84,5 +84,10 @@ function clearData() {
   justify-content: flex-start;
   padding: 0;
   gap: 10px;
+}
+.section.big {
+  @media (max-width: 1000px) {
+    padding: 1em;
+  }
 }
 </style>

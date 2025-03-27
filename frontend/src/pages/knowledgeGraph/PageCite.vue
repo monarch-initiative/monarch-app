@@ -109,7 +109,7 @@ $wrap: 1000px;
 .content {
   padding: 1.3em;
   background: #a6ecf257;
-  text-align: left;
+  text-align: center;
 }
 .container {
   display: flex;

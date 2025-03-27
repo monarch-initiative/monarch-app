@@ -42,7 +42,7 @@ $wrap: 1000px;
     padding: 0;
     font-size: 2em;
     @media (max-width: $wrap) {
-      font-size: 1.8em;
+      font-size: 1.6em;
     }
   }
 }

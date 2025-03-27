@@ -218,6 +218,12 @@ export const routes: RouteRecordRaw[] = [
     component: asyncRoute("knowledgeGraph/PageDocumentation"),
     meta: { breadcrumb: "Documentation" },
   },
+  {
+    path: "/knowledge-graph/terms",
+    name: "knowledge-graph-terms",
+    component: asyncRoute("knowledgeGraph/PageTerms"),
+    meta: { breadcrumb: "Terms of Use" },
+  },
 ];
 
 /** insert descriptions from imported json into each route's metadata */
