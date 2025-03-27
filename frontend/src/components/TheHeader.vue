@@ -75,7 +75,7 @@
           <template #button>{{ menu.label }}</template>
 
           <template #default>
-            <li v-for="subItem in menu.subItems || []" :key="subItem.label">
+            <li v-for="subItem in menu.subItems || []" :key="subItem.key">
               <AppLink v-tooltip="subItem.tooltip" :to="subItem.to">
                 {{ subItem.label }}</AppLink
               >

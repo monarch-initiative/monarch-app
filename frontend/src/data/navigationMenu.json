@@ -4,45 +4,58 @@
     "subItems": [
       {
         "label": "About KG",
-        "link": "/about-kg",
         "key": "about-kg",
         "to": "/knowledge-graph/about",
         "tooltip": "About the Knowledge Graph"
       },
       {
-        "label": "Cite",
-        "link": "/cite",
-        "key": "cite",
-        "to": "/knowledge-graph/citation",
-        "tooltip": "Learn how to cite the Knowledge Graph"
-      },
-      {
         "label": "Search",
-        "link": "/kg-search",
         "key": "kg-search",
         "to": "/knowledge-graph/search",
         "tooltip": ""
       },
       {
-        "label": "How To & Help",
-        "link": "/help",
-        "key": "kg-help",
-        "to": "/knowledge-graph/help",
-        "tooltip": "Feedback,docs,guides and more"
+        "label": "API",
+        "key": "kg-api",
+        "to": "https://api-v3.monarchinitiative.org/v3/docs",
+        "tooltip": ""
       },
       {
-        "label": "KG Status & QC",
-        "link": "/kg-status",
+        "label": "Downloads",
+        "key": "kg-downloads",
+        "to": "https://data.monarchinitiative.org/",
+        "tooltip": ""
+      },
+      {
+        "label": "Status & QC",
         "key": "kg-status-qc",
         "to": "/knowledge-graph/status",
         "tooltip": ""
       },
       {
         "label": "Documentation",
-        "link": "/kg-documentation",
         "key": "kg-documentation",
         "to": "/knowledge-graph/documentation",
         "tooltip": ""
+      },
+      {
+        "label": "Terms of Use",
+        "key": "kg-terms",
+        "to": "/knowledge-graph/terms",
+        "tooltip": ""
+      },
+      {
+        "label": "Cite the KG",
+        "key": "cite",
+        "to": "/knowledge-graph/citation",
+        "tooltip": "Learn how to cite the Knowledge Graph"
+      },
+
+      {
+        "label": "How To & Help",
+        "key": "kg-help",
+        "to": "/knowledge-graph/help",
+        "tooltip": "Feedback,docs,guides and more"
       }
     ]
   }

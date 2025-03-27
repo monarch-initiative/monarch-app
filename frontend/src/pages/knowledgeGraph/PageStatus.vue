@@ -7,7 +7,7 @@
   <PageTitle id="kg-status" title="Status and QC" />
   <!-- api and service statuses -->
   <AppSection width="big" design="bare">
-    <p>
+    <p class="content">
       Below is a list of our service status pages, including api, api-dev, and
       others.These pages provide real-time updates on the availability and
       performance of our services. If you’re experiencing any issues, you can
@@ -19,7 +19,7 @@
     <AppStatus v-if="isError" code="error">Error loading checks</AppStatus>
 
     <!-- individual statuses -->
-    <AppGallery :cols="4">
+    <AppGallery :cols="cols">
       <AppStatus
         v-for="(uptime, index) in uptimes"
         :key="index"
@@ -42,6 +42,15 @@
       text="More Details"
       icon="arrow-right"
     /> -->
+
+    <p class="content">
+      Additionally, for data validation and quality control insights, visit our
+      <AppLink to="https://qc.monarchinitiative.org/"
+        >Quality Control (QC) Dashboard</AppLink
+      >. This dashboard provides reports on data consistency, error tracking,
+      and validation checks to ensure high-quality biomedical data integration
+      within our platform.
+    </p>
   </AppSection>
 
   <AppSection width="big" design="bare">
@@ -53,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import { getUptimes } from "@/api/uptime";
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import PageTitle from "@/components/PageTitle.vue";
@@ -69,19 +78,23 @@ const {
 
 onMounted(runGetUptimes);
 
-/** clear user localstorage data */
-function clearData() {
-  if (
-    window.confirm(
-      "Are you sure you want to clear your local data? This cannot be undone.",
-    )
-  ) {
-    window.localStorage.clear();
-    window.alert(
-      "Your local data has been cleared. Refresh the site for changes to take effect.",
-    );
-  }
-}
+const screenWidth = ref(window.innerWidth);
+
+const updateScreenWidth = () => {
+  screenWidth.value = window.innerWidth;
+};
+
+// Listen for window resize
+onMounted(() => {
+  window.addEventListener("resize", updateScreenWidth);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", updateScreenWidth);
+});
+
+// Dynamically adjust `cols`
+const cols = computed(() => (screenWidth.value <= 1300 ? 2 : 4));
 </script>
 
 <style lang="scss" scoped>
@@ -89,5 +102,9 @@ function clearData() {
   justify-content: flex-start;
   padding: 0;
   gap: 10px;
+}
+
+.content {
+  text-align: center;
 }
 </style>
