@@ -76,9 +76,17 @@
 
           <template #default>
             <li v-for="subItem in menu.subItems || []" :key="subItem.label">
-              <AppLink v-tooltip="subItem.tooltip" :to="subItem.to">
-                {{ subItem.label }}</AppLink
+              <AppLink
+                v-tooltip="subItem.tooltip"
+                :to="subItem.to"
+                class="linkItems"
               >
+                {{ subItem.label }}
+                <!-- Conditionally render icon if it's an absolute link -->
+                <span class="icon" v-if="subItem.icon">
+                  <AppIcon icon="arrow-up-right-from-square" />
+                </span>
+              </AppLink>
             </li>
           </template>
         </DropdownButton>
@@ -349,8 +357,8 @@ $wrap: 1000px;
   }
 }
 
-/**This is temperory. When we replce the whole navbigation menu with dropdowns, 
-we can remove this and adjust onw styling to the whole menu items. 
+/**This is temperory. When we replce the whole navbigation menu with dropdowns,
+we can remove this and adjust onw styling to the whole menu items.
 Its here to align with the styling of old nav items. */
 .dropdown-button {
   padding: 10px;
@@ -364,5 +372,14 @@ Its here to align with the styling of old nav items. */
 }
 .dropdown-menu li a {
   text-decoration: none !important;
+}
+.linkItems {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8em;
+}
+
+.icon {
+  height: 0.8em;
 }
 </style>

@@ -1,6 +1,6 @@
 [
   {
-    "label": "KG",
+    "label": "Knowledge Graph",
     "subItems": [
       {
         "label": "About KG",
@@ -18,13 +18,15 @@
         "label": "API",
         "key": "kg-api",
         "to": "https://api-v3.monarchinitiative.org/v3/docs",
-        "tooltip": ""
+        "tooltip": "",
+        "icon": true
       },
       {
         "label": "Downloads",
         "key": "kg-downloads",
         "to": "https://data.monarchinitiative.org/",
-        "tooltip": ""
+        "tooltip": "",
+        "icon": true
       },
       {
         "label": "Status & QC",
