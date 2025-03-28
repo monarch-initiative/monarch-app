@@ -55,13 +55,14 @@ $wrap: 1000px;
 .dropdown-btn {
   display: flex;
   gap: 0.2em;
+  white-space: nowrap;
 }
 
 /* Dropdown menu (hidden by default) */
 .dropdown-menu {
   position: absolute;
   top: calc(100% + 8px);
-  left: 0;
+  right: 0;
   min-width: 10em;
   transform: scaleY(0);
   transform-origin: top;
