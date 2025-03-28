@@ -574,7 +574,6 @@ watch(
   () => props.search,
   async () => {
     await queryAssociations(true);
-    console.log(props.search);
   },
   { immediate: true },
 );

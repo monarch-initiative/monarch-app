@@ -34,6 +34,7 @@ export const routes: RouteRecordRaw[] = [
     path: "/",
     name: "Home",
     component: asyncRoute("PageHome"),
+    meta: { breadcrumb: "Home" },
     beforeEnter: () => {
       /** look for redirect in session storage (saved from public/404.html page) */
       const redirect = window.sessionStorage.redirect || "";
@@ -68,6 +69,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/home",
     redirect: "/",
+    meta: { breadcrumb: "Home" },
   },
 
   /** top level pages */
@@ -178,6 +180,49 @@ export const routes: RouteRecordRaw[] = [
     path: "/:pathMatch(.*)*",
     name: "NotFound",
     component: asyncRoute("PageHome"),
+  },
+
+  {
+    path: "/knowledge-graph/about",
+    name: "knowledge-graph-about",
+    component: asyncRoute("knowledgeGraph/PageAbout"),
+    meta: { breadcrumb: "About KG" },
+  },
+  {
+    path: "/knowledge-graph/citation",
+    name: "knowledge-graph-cite",
+    component: asyncRoute("knowledgeGraph/PageCite"),
+    meta: { breadcrumb: "Citation" },
+  },
+  {
+    path: "/knowledge-graph/help",
+    name: "knowledge-graph-help",
+    component: asyncRoute("knowledgeGraph/PageHelp"),
+    meta: { breadcrumb: "How to & Help" },
+  },
+  {
+    path: "/knowledge-graph/status",
+    name: "knowledge-graph-status-qc",
+    component: asyncRoute("knowledgeGraph/PageStatus"),
+    meta: { breadcrumb: "Status & QC" },
+  },
+  {
+    path: "/knowledge-graph/search",
+    name: "knowledge-graph-search",
+    component: asyncRoute("knowledgeGraph/PageSearch"),
+    meta: { breadcrumb: "Search" },
+  },
+  {
+    path: "/knowledge-graph/documentation",
+    name: "knowledge-graph-documentation",
+    component: asyncRoute("knowledgeGraph/PageDocumentation"),
+    meta: { breadcrumb: "Documentation" },
+  },
+  {
+    path: "/knowledge-graph/terms",
+    name: "knowledge-graph-terms",
+    component: asyncRoute("knowledgeGraph/PageTerms"),
+    meta: { breadcrumb: "Terms of Use" },
   },
 ];
 
