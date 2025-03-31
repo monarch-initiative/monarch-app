@@ -156,6 +156,7 @@ const search = ref("");
 const highlighted = ref(0);
 /** whether input box focused and dropdown expanded */
 const expanded = ref(false);
+let closeDropdown = false;
 
 /** open results dropdown */
 async function open() {
@@ -166,6 +167,7 @@ async function open() {
 
 /** close results dropdown */
 function close() {
+  closeDropdown = true;
   expanded.value = false;
   highlighted.value = -1;
   results.value = [];
@@ -173,6 +175,10 @@ function close() {
 
 /** when user focuses box */
 function onFocus() {
+  if (closeDropdown) {
+    closeDropdown = false; // reset
+    return;
+  }
   emit("focus");
   open();
 }
@@ -291,6 +297,11 @@ watch(highlighted, () => {
   document
     .querySelector(`#option-${id}-${highlighted.value} > *`)
     ?.scrollIntoView({ block: "nearest" });
+});
+
+defineExpose({
+  close,
+  blur: () => anchor.value?.textbox?.blur(),
 });
 </script>
 

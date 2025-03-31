@@ -8,6 +8,7 @@
         :options="runGetAutocomplete"
         @change="onChange"
         @delete="onDelete"
+        ref="searchBox"
       />
       <AppButton
         v-tooltip="'How to use'"
@@ -43,7 +44,6 @@
       >No results</AppStatus
     >
 
-    {{ results.items.length }}
     <AppFlex
       v-for="(result, index) in results.items"
       :key="index"
@@ -156,6 +156,11 @@ const perPage = ref(10);
 
 const dropdownsPartial = ref<{ [key: string]: boolean }>({});
 
+type AppSelectAutocompleteExposed = {
+  close: () => void;
+};
+const searchBox = ref<AppSelectAutocompleteExposed | null>(null);
+
 /** autocomplete option for viewing all/detailed results on explore page */
 const viewAll: Option = {
   id: "ALL",
@@ -164,7 +169,7 @@ const viewAll: Option = {
   // info: "on explore page",
   special: true,
 };
-onMounted(() => console.log("search", search));
+
 /** get search results */
 const {
   query: runGetSearch,
@@ -232,6 +237,7 @@ onMounted(() => {
   if (search.value) {
     runGetSearch(true);
   }
+  searchBox.value?.close?.();
 });
 const facets = ref<FacetField[]>([]);
 const dropdownsOptions = ref<Record<string, MultiOptions>>({});
