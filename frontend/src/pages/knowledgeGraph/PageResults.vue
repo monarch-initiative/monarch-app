@@ -33,8 +33,7 @@
     </AppFlex>
   </AppWrapper>
 
-
-  <AppSection>
+  <AppSection v-if="true">
     <!-- status -->
     <AppStatus v-if="isLoading" code="loading">Loading results</AppStatus>
     <AppStatus v-else-if="isError" code="error"
@@ -44,7 +43,7 @@
       >No results</AppStatus
     >
 
-  {{ results.items.length }}
+    {{ results.items.length }}
     <AppFlex
       v-for="(result, index) in results.items"
       :key="index"
@@ -59,7 +58,7 @@
           class="title-name"
         />
         <AppButton
-          <v-if="result.in_taxon_label"
+          v-if="result.in_taxon_label"
           v-tooltip="'Taxon Name'"
           class="title-taxon"
           :text="result.in_taxon_label || ''"
@@ -122,6 +121,7 @@ import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
 import { getAutocomplete, getSearch } from "@/api/search";
 import AppButton from "@/components/AppButton.vue";
 import AppFlex from "@/components/AppFlex.vue";
+import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import type {
   Options as AutocompleteOptions,
   Option,
@@ -164,7 +164,7 @@ const viewAll: Option = {
   // info: "on explore page",
   special: true,
 };
-
+onMounted(() => console.log("search", search));
 /** get search results */
 const {
   query: runGetSearch,
@@ -291,7 +291,7 @@ function onChange(value: string | Option, originalSearch: string) {
     query[key] = options.map((opt) => opt.id).join(",");
   }
 
-  router.push({ name: "Explore", query });
+  // router.push({ name: "KnowledgeGraphSearch", query });
 }
 
 /** get autocomplete results */
@@ -378,11 +378,99 @@ onMounted(async () => {
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.title {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  text-align: left;
+}
+
+.title-name {
+  flex-grow: 0;
+}
+
+.title-name > :deep(svg) {
+  font-size: 2rem;
+}
+
+.title-taxon {
+  color: $dark-gray;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.title-id {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+  .title {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.names,
+.ids {
+  color: $dark-gray;
+  font-size: 0.9rem;
+  text-align: left;
+
+  span {
+    width: 100%;
+  }
+}
+
+.page-button {
+  height: 30px;
+  padding: 0 3px;
+  border-radius: $rounded;
+  color: $theme;
+  transition: box-shadow $fast;
+
+  &:hover {
+    box-shadow: $outline;
+  }
+}
+
+.header-box {
+  width: 100%;
+}
+.header-box :deep(input) {
+  border-top-width: 0;
+  border-right-width: 0;
+  border-left-width: 0;
+  border-radius: 0;
+  border-color: currentColor;
+  background: none;
+  color: currentColor;
+}
+
+.header-box :deep(.icon) {
+  color: currentColor !important;
+}
+
+.hilite {
+  font-style: normal;
+  font-weight: 600;
+}
+
+.help-icon {
+  margin-left: 10px;
+  font-weight: bolder;
+  font-size: 1.3em;
+}
+
 .help-icon-section {
   display: flex;
   align-items: center;
   width: 100%;
-  gap: 1rem;
+}
+
+.search-input {
+  flex-grow: 1;
 }
 </style>
