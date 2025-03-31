@@ -11,7 +11,7 @@
       {
         "label": "Search",
         "key": "kg-search",
-        "to": "/knowledge-graph/search",
+        "to": "/knowledge-graph",
         "tooltip": ""
       },
       {

@@ -32,7 +32,7 @@ const breadcrumbs = computed<Breadcrumb[]>(() => {
   } else {
     if (route.path.startsWith("/knowledge-graph")) {
       breadcrumbTrail.push({
-        path: "/knowledge-graph/search",
+        path: "/knowledge-graph",
         label: "Knowledge Graph",
       });
     }
