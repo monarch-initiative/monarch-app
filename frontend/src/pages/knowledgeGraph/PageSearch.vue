@@ -18,11 +18,43 @@
           @delete="onDelete"
         />
       </div>
-      <div class="tooltip-fake-link">
-        Need help searching?
-        <span class="tooltip-text"
-          >Learn how to use advanced search queries</span
-        >
+      <div class="suggestions">
+        <div class="tooltip-wrapper">
+          <span class="tooltip-trigger">Disease to Phenotype</span>
+          <div class="tooltip-box">
+            e.g: Explore the disease to phenotype relation for
+            <span
+              class="tooltip-suggestion"
+              @click="setSearch('Ehlers-Danlos Syndrome')"
+            >
+              Ehlers-Danlos Syndrome
+            </span>
+          </div>
+        </div>
+        <div class="tooltip-wrapper">
+          <span class="tooltip-trigger">Gene to Phenotype</span>
+          <div class="tooltip-box">
+            e.g: Explore the disease to phenotype relation for
+            <span
+              class="tooltip-suggestion"
+              @click="setSearch('Ehlers-Danlos Syndrome')"
+            >
+              Ehlers-Danlos Syndrome
+            </span>
+          </div>
+        </div>
+        <div class="tooltip-wrapper">
+          <span class="tooltip-trigger">Variant to Phenotype</span>
+          <div class="tooltip-box">
+            e.g: Explore the disease to phenotype relation for
+            <span
+              class="tooltip-suggestion"
+              @click="setSearch('Ehlers-Danlos Syndrome')"
+            >
+              Ehlers-Danlos Syndrome
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   </AppSection>
@@ -76,6 +108,10 @@ const viewAll: Option = {
   icon: "arrow-right",
   // info: "on explore page",
   special: true,
+};
+
+const setSearch = (value: string) => {
+  search.value = value;
 };
 
 /** when user "submits" search */
@@ -190,7 +226,6 @@ const onDelete = () => {
   width: 100%;
   height: 100%;
 
-  overflow: hidden;
   transition: all 0.3s ease;
 }
 
@@ -248,51 +283,79 @@ const onDelete = () => {
   height: 2em;
 }
 
-.tooltip-fake-link {
-  display: inline-block;
+.tooltip-wrapper {
+  display: inline-flex;
   position: relative;
-  margin-top: 8px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tooltip-trigger {
   color: #007bff;
   font-size: 0.9rem;
-  text-align: center;
   text-decoration: underline;
   cursor: pointer;
 }
-.tooltip-fake-link .tooltip-text {
-  display: block; /* 👈 Add this line */
-  visibility: hidden;
-  z-index: 1;
+
+/* Tooltip box positioned directly under the trigger */
+.tooltip-box {
+  z-index: 999;
   position: absolute;
-  bottom: 125%; /* Position above the link */
-  left: 50%;
-  width: 240px;
-  padding: 8px;
-  transform: translateX(-50%);
+  top: 100%; /* position below the trigger */
+  left: 50%; /* this is crucial! */
+  width: 40em;
+  margin-top: 1px;
+  padding: 8px 12px;
+  transform: translateX(-50%); /* center it */
+
   border-radius: 6px;
-  background-color: #333;
-  color: #d70909;
+  background-color: #e8e2e2;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  color: #000;
   font-size: 0.8rem;
-  text-align: center;
+  line-height: 1.4;
+  white-space: normal;
+  word-wrap: break-word;
+
+  visibility: hidden;
   opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
+  pointer-events: auto;
+  transition: opacity 0.2s ease;
+}
+
+/* Keep tooltip open if hovering on wrapper OR box */
+.tooltip-wrapper:hover .tooltip-box {
+  visibility: visible;
+  opacity: 1;
 }
 
 /* Tooltip arrow */
-.tooltip-fake-link .tooltip-text::after {
+.tooltip-box::after {
   position: absolute;
-  top: 100%; /* Arrow points down to the div */
+  top: -5px;
   left: 50%;
-  margin-left: -5px;
+  transform: translateX(-50%);
   border-width: 5px;
   border-style: solid;
-  border-color: #333 transparent transparent transparent;
+  border-color: transparent transparent #e8e2e2 transparent;
   content: "";
 }
 
-/* Show tooltip on hover */
-.tooltip-fake-link:hover .tooltip-text {
-  visibility: visible;
-  opacity: 1;
+/* Suggestion styling */
+.tooltip-suggestion {
+  margin-left: 4px;
+  color: hsl(185, 100%, 30%);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.tooltip-suggestion:hover {
+  color: #0056b3;
+}
+
+.suggestions {
+  display: flex;
+  margin: 1em;
+  gap: 1em;
 }
 </style>

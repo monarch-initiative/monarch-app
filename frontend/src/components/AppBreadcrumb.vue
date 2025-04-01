@@ -27,7 +27,7 @@ const breadcrumbs = computed<Breadcrumb[]>(() => {
   const breadcrumbTrail: Breadcrumb[] = [{ path: "/", label: "Home" }];
   const matchedRoutes = route.matched;
 
-  if (route.path === "/knowledge-graph/search") {
+  if (route.path === "/knowledge-graph") {
     breadcrumbTrail.push({ path: "/search", label: "Search" });
   } else {
     if (route.path.startsWith("/knowledge-graph")) {
