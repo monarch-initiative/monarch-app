@@ -5,13 +5,13 @@
       {
         "label": "About KG",
         "key": "about-kg",
-        "to": "/knowledge-graph/about",
+        "to": "/kg/about",
         "tooltip": "About the Knowledge Graph"
       },
       {
         "label": "Search",
         "key": "kg-search",
-        "to": "/knowledge-graph",
+        "to": "/kg",
         "tooltip": ""
       },
       {
@@ -31,32 +31,32 @@
       {
         "label": "Status & QC",
         "key": "kg-status-qc",
-        "to": "/knowledge-graph/status",
+        "to": "/kg/status",
         "tooltip": ""
       },
       {
         "label": "Documentation",
         "key": "kg-documentation",
-        "to": "/knowledge-graph/documentation",
+        "to": "/kg/documentation",
         "tooltip": ""
       },
       {
         "label": "Terms of Use",
         "key": "kg-terms",
-        "to": "/knowledge-graph/terms",
+        "to": "/kg/terms",
         "tooltip": ""
       },
       {
         "label": "Cite the KG",
         "key": "cite",
-        "to": "/knowledge-graph/citation",
+        "to": "/kg/citation",
         "tooltip": "Learn how to cite the Knowledge Graph"
       },
 
       {
         "label": "How To & Help",
         "key": "kg-help",
-        "to": "/knowledge-graph/help",
+        "to": "/kg/help",
         "tooltip": "Feedback,docs,guides and more"
       }
     ]

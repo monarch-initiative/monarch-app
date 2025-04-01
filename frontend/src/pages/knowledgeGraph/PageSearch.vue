@@ -20,36 +20,49 @@
       </div>
       <div class="suggestions">
         <div class="tooltip-wrapper">
-          <span class="tooltip-trigger">Disease to Phenotype</span>
+          <span class="tooltip-trigger">Disease to Gene</span>
           <div class="tooltip-box">
             e.g: Explore the disease to phenotype relation for
             <span
               class="tooltip-suggestion"
-              @click="setSearch('Ehlers-Danlos Syndrome')"
+              @click="handleSuggestionClick('Ehlers-Danlos syndrome')"
             >
               Ehlers-Danlos Syndrome
             </span>
           </div>
         </div>
+        <div class="tooltip-wrapper">
+          <span class="tooltip-trigger">Disease to Model</span>
+          <div class="tooltip-box">
+            e.g: Explore the disease to phenotype relation for
+            <span
+              class="tooltip-suggestion"
+              @click="handleSuggestionClick('Ehlers-Danlos syndrome')"
+            >
+              Ehlers-Danlos Syndrome
+            </span>
+          </div>
+        </div>
+        <div class="tooltip-wrapper">
+          <span class="tooltip-trigger">Variant to disease/Phenotype</span>
+          <div class="tooltip-box">
+            e.g: Explore the disease to phenotype relation for
+            <span
+              class="tooltip-suggestion"
+              @click="handleSuggestionClick('Ehlers-Danlos syndrome')"
+            >
+              Ehlers-Danlos Syndrome
+            </span>
+          </div>
+        </div>
+
         <div class="tooltip-wrapper">
           <span class="tooltip-trigger">Gene to Phenotype</span>
           <div class="tooltip-box">
             e.g: Explore the disease to phenotype relation for
             <span
               class="tooltip-suggestion"
-              @click="setSearch('Ehlers-Danlos Syndrome')"
-            >
-              Ehlers-Danlos Syndrome
-            </span>
-          </div>
-        </div>
-        <div class="tooltip-wrapper">
-          <span class="tooltip-trigger">Variant to Phenotype</span>
-          <div class="tooltip-box">
-            e.g: Explore the disease to phenotype relation for
-            <span
-              class="tooltip-suggestion"
-              @click="setSearch('Ehlers-Danlos Syndrome')"
+              @click="handleSuggestionClick('Ehlers-Danlos syndrome')"
             >
               Ehlers-Danlos Syndrome
             </span>
@@ -110,12 +123,36 @@ const viewAll: Option = {
   special: true,
 };
 
+const ENTITY_MAP: Record<string, { id: string; label: string }> = {
+  "Ehlers-Danlos syndrome": {
+    id: "MONDO:0020066",
+    label: "Ehlers-Danlos syndrome",
+  },
+};
+
 const setSearch = (value: string) => {
   search.value = value;
 };
 
+const handleSuggestionClick = async (term: string) => {
+  console.log("term", term);
+  const entity = ENTITY_MAP[term];
+  console.log("enity", entity);
+  if (entity?.id) {
+    await router.push("/" + entity.id);
+  } else {
+    console.warn("Entity not found, fallback to search");
+    await router.push({
+      name: "KnowledgeGraphResults",
+      query: { search: term },
+      hash: "#search",
+    });
+  }
+};
+
 /** when user "submits" search */
 async function onChange(value: string | Option, originalSearch: string) {
+  console.log({ value, originalSearch });
   if (typeof value !== "string" && value.id && value.id !== viewAll.id) {
     /** go directly to node page of selected option */
     await router.push("/" + value.id);
@@ -125,7 +162,7 @@ async function onChange(value: string | Option, originalSearch: string) {
     /** view all results on explore page */
 
     await router.push({
-      name: "KnowledgeGraphSearch",
+      name: "KnowledgeGraphResults",
       query: {
         search: originalSearch,
       },

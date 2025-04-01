@@ -5,28 +5,40 @@
   <PageTitle
     id="kg-about"
     title="KnowledgeGraph"
-    tagline="Discover the power of our Knowledge Graph, seamlessly connecting
-biological data to reveal hidden relationships."
     image-src="/icons/monarch-logo.svg"
   />
 
   <!--WHat is KG-->
   <AppSection width="big" design="bare" class="section kg-about">
-    <AppHeading class="fullWidthHeader">What is KnowledgeGraph?</AppHeading>
+    <AppHeading class="fullWidthHeader"
+      >What is Monarch Initiative Knowledge Graph (KG) ?
+    </AppHeading>
+    <p class="tagline">
+      Discover the power of our Knowledge Graph, seamlessly connecting
+      biological data to reveal hidden relationships.
+    </p>
     <div class="content-container">
       <div class="text-column">
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Lorem ipsum dolor sit amet,Lorem ipsum dolor sit amet,
-          consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud
-          exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-          dolore eu fugiat nulla pariatur. Lorem ipsum dolor sit amet,Lorem
-          ipsum dolor sit amet, consectetur adipiscing elit
+          The Monarch Knowledge Graph (KG) comprises the combined knowledge of
+          33 biomedical resources and biomedical ontologies, and is updated with
+          the latest data from each source once a month. The components of the
+          Monarch KG and the associations between them are represented as nodes,
+          edges, and labels. A data source ingest imports data from resources
+          such as the external Panther Database or Monarch’s disease annotations
+          to Human Phenotype Ontology terms (HPOA) and transforms them into the
+          Monarch KG schema. Ontologies are integrated into a ‘semantic layer,’
+          a Biolink-conformant representation of the Phenomics Integrated
+          Ontology (PHENIO), which serves as a hierarchical schema and
+          classification system for the integrated data.
+          <a
+            href="https://academic.oup.com/nar/article/52/D1/D938/7449493?login=false"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link"
+          >
+            Learn more
+          </a>
         </p>
       </div>
 
@@ -109,24 +121,57 @@ biological data to reveal hidden relationships."
 
   <!--Title Placeholder - Has to be replaced with real content-->
   <AppSection width="big" class="section" design="bare">
-    <AppHeading class="fullWidthHeader">Title Placeholder</AppHeading>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-      velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-      est laborum.
-    </p>
-    <iframe
-      title="Monarch Initiative: Resource Overview"
-      class="ORIP-video"
-      src="https://www.youtube.com/embed/25e88kbjKtU?si=lG88-c2fZcKHxIhm"
-      frameborder="0"
-      allow="autoplay; picture-in-picture"
-      allowfullscreen
-    ></iframe>
+    <AppHeading class="fullWidthHeader"
+      >Data Harmonization within the Monarch KG</AppHeading
+    >
+
+    <div class="figure-description">
+      <p>
+        The Monarch KG integrates <strong>genes</strong>,
+        <strong>diseases</strong>, and <strong>phenotypes</strong> (<span
+          class="label"
+          >A</span
+        >) using data from various biomedical sources. The figure below
+        illustrates how each entity’s <em>node</em> and <em>edge</em> counts are
+        represented, and how ontologies (<span class="label">C</span>) and
+        source data (<span class="label">B</span>) are harmonized through
+        unifying ontologies (<span class="label">D</span>).
+      </p>
+
+      <p>
+        <span class="label">E</span> highlights cross-species inference
+        mechanisms such as <strong>gene orthology</strong>,
+        <strong>anatomical homology</strong>, and
+        <strong>phenotype similarity</strong>. Finally,
+        <span class="label">(F)</span> shows how data is disseminated via the
+        <strong>Monarch API</strong>, <strong>Monarch UI</strong>, and the
+        clinical tool <strong>Exomiser</strong>. Column (D) includes:
+        <strong>GO</strong> (Gene Ontology), <strong>BP</strong> (Biological
+        Process), <strong>MF</strong> (Molecular Function), and
+        <strong>CC</strong> (Cellular Component).
+      </p>
+
+      <p class="note">
+        <em>Note:</em> This figure presents only a subset of the ontologies
+        used. See
+        <a
+          href="https://github.com/monarch-initiative/phenio/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="link"
+        >
+          PHENIO documentation</a
+        >
+        for the full list.
+      </p>
+    </div>
+
+    <figure>
+      <img
+        src="@/assets/architecture.png"
+        alt="Diagram of Monarch infrastructure, described below."
+      />
+    </figure>
   </AppSection>
 
   <!--contact-->
@@ -156,6 +201,14 @@ $wrap: 1000px;
   padding-bottom: unset;
 }
 
+.section.center {
+  gap: 1em;
+
+  @media (max-width: $wrap) {
+    gap: 1.5em;
+  }
+}
+
 .fullWidthHeader {
   width: 100%;
   padding: 0.6em 0.5em;
@@ -169,11 +222,6 @@ $wrap: 1000px;
   align-items: center;
   justify-content: space-between;
   gap: 4em;
-
-  p {
-    line-height: 1.6;
-    text-align: left;
-  }
   @media (max-width: $wrap) {
     display: flex;
     flex-direction: column;
@@ -207,7 +255,6 @@ iframe {
   width: 100%;
   max-width: 45%;
   height: 100%;
-
   @media (max-width: $wrap) {
     width: 100%;
     min-width: 380px;
@@ -244,7 +291,6 @@ h1 {
 
 .line {
   width: 10px;
-
   line {
     stroke: currentColor;
     stroke-width: 2;
@@ -252,6 +298,7 @@ h1 {
     stroke-linecap: round;
   }
 }
+
 .tools {
   display: flex;
   flex-wrap: wrap;
@@ -267,17 +314,79 @@ h1 {
 .info {
   padding: 1em;
 }
-
-.section.center {
-  gap: 1em;
-  @media (max-width: $wrap) {
-    gap: 1.5em;
-  }
-}
-
 .kg-about[data-v-55956969] {
   @media (max-width: $wrap) {
     padding-top: 0.7em;
+  }
+}
+.link {
+  border-bottom: 1px solid transparent;
+  color: #007bff;
+  font-weight: 500;
+  text-decoration: none;
+  transition:
+    color 0.3s ease,
+    border-bottom 0.3s ease;
+}
+
+.link:hover {
+  border-bottom: 1px solid #007bff;
+  color: #014791;
+}
+
+.tagline {
+  position: relative;
+  max-width: 800px;
+  margin: 1rem auto 2rem;
+  padding: 0 1rem;
+  color: #007c91;
+  font-weight: 500;
+  font-size: 1.1rem;
+  text-align: center;
+
+  @media (max-width: $wrap) {
+    margin: 0;
+  }
+}
+
+.tagline::after {
+  display: block;
+  width: 60px;
+  height: 2px;
+  margin: 0.75rem auto 0;
+  border-radius: 1px;
+  background-color: #007c91;
+  content: "";
+}
+
+figure {
+  margin: 1em 5em;
+  @media (max-width: 768px) {
+    margin: unset;
+  }
+}
+
+.figure-description {
+  font-size: 1rem;
+  line-height: 1.7;
+  p {
+    text-align: left;
+  }
+  .label {
+    color: #007c91;
+    font-weight: bold;
+    font-family: monospace;
+  }
+
+  strong {
+    color: #005b70;
+    font-weight: 600;
+  }
+
+  .note {
+    margin-top: 1rem;
+    color: #666;
+    font-style: italic;
   }
 }
 </style>

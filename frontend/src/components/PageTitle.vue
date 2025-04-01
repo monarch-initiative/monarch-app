@@ -34,6 +34,7 @@ $wrap: 1000px;
 
 .heading-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   margin-top: 1em;
@@ -48,12 +49,9 @@ $wrap: 1000px;
 }
 
 .title-image {
-  width: 40px;
-  max-height: 40px;
-  object-fit: contain;
+  height: 2em;
 }
 
-/* Style tagline */
 .tagline {
   margin: 0;
   color: hsl(185, 100%, 30%);

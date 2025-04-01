@@ -297,7 +297,7 @@ function onChange(value: string | Option, originalSearch: string) {
     query[key] = options.map((opt) => opt.id).join(",");
   }
 
-  // router.push({ name: "KnowledgeGraphSearch", query });
+  // router.push({ name: "KnowledgeGraphResullts", query });
 }
 
 /** get autocomplete results */
