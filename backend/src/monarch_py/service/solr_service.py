@@ -47,6 +47,7 @@ class SolrService(BaseModel):
                 "has_percentage_sortable_float",
             )
             SolrService._strip_json_by_suffix(doc, *FIELD_TYPE_SUFFIXES)
+            doc["highlighting"] = solr_query_result.highlighting.get(doc["id"], [])
 
         return solr_query_result
 

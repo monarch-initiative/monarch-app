@@ -132,6 +132,7 @@ classes:
       - items
       - facet_fields
       - facet_queries
+      - highlighting
     slot_usage:
       items:
         range: Association
@@ -316,7 +317,7 @@ classes:
       - limit
       - offset
       - total
-  Highlight:
+  FieldHighlight:
     slots:
       - field
       - snippets
@@ -324,9 +325,6 @@ classes:
       field:
         required: true
         identifier: true
-  Highlighting:
-    slots:
-      - highlights
   SearchResult:
     is_a: Entity
     slots:
@@ -528,14 +526,9 @@ slots:
     description: >-
       A count of the number of phenotypes that are known to be associated with this entity
     range: integer
-  highlights:
-    description: matching text snippet containing html tags
-    range: Highlight
-    multivalued: true
-    inlined: true
   highlighting:
     description: Collection of highlighting responses with field name and highlighted text
-    range: Highlight
+    range: FieldHighlight
     multivalued: true
     inlined: true
   id:
