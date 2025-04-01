@@ -1,5 +1,10 @@
 <template>
+  <AppBreadcrumb />
   <AppSection width="big" class="section" design="bare">
+    <div class="logo-container">
+      <img src="/icons/monarch-logo.svg" alt="logo" class="logo" />
+      <h3>{{ "Knowledge Graph" }}</h3>
+    </div>
     <div :class="{ 'search-active': search }" class="page-wrapper">
       <!-- Centered Search Box -->
       <div class="search-box">
@@ -13,6 +18,12 @@
           @delete="onDelete"
         />
       </div>
+      <div class="tooltip-fake-link">
+        Need help searching?
+        <span class="tooltip-text"
+          >Learn how to use advanced search queries</span
+        >
+      </div>
     </div>
   </AppSection>
 </template>
@@ -24,6 +35,7 @@ import { groupBy, mapValues, sortBy, startCase, uniq, uniqBy } from "lodash";
 import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
 import type { SearchResults } from "@/api/model";
 import { getAutocomplete, getSearch } from "@/api/search";
+import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppButton from "@/components/AppButton.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import type {
@@ -177,7 +189,7 @@ const onDelete = () => {
   justify-content: center;
   width: 100%;
   height: 100%;
-  padding: 2rem;
+
   overflow: hidden;
   transition: all 0.3s ease;
 }
@@ -217,14 +229,70 @@ const onDelete = () => {
 }
 
 .section.center {
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  height: 80vh;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
+  align-items: center;
+  gap: 6em;
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: column;
+
+  h3 {
+    padding: 0.2em;
+  }
+}
+
+.logo {
+  height: 2em;
+}
+
+.tooltip-fake-link {
+  display: inline-block;
+  position: relative;
+  margin-top: 8px;
+  color: #007bff;
+  font-size: 0.9rem;
+  text-align: center;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.tooltip-fake-link .tooltip-text {
+  display: block; /* 👈 Add this line */
+  visibility: hidden;
+  z-index: 1;
+  position: absolute;
+  bottom: 125%; /* Position above the link */
+  left: 50%;
+  width: 240px;
+  padding: 8px;
+  transform: translateX(-50%);
+  border-radius: 6px;
+  background-color: #333;
+  color: #d70909;
+  font-size: 0.8rem;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+/* Tooltip arrow */
+.tooltip-fake-link .tooltip-text::after {
+  position: absolute;
+  top: 100%; /* Arrow points down to the div */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+  content: "";
+}
+
+/* Show tooltip on hover */
+.tooltip-fake-link:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
 }
 </style>
