@@ -213,10 +213,10 @@ export const routes: RouteRecordRaw[] = [
     meta: { breadcrumb: "Search" },
   },
   {
-    path: "/knowledge-graph/search",
+    path: "/knowledge-graph",
     name: "KnowledgeGraphSearch",
     component: asyncRoute("knowledgeGraph/PageResults"),
-    meta: { breadcrumb: "Search" },
+    meta: { breadcrumb: "knowledge-graph" },
   },
   {
     path: "/knowledge-graph/documentation",
