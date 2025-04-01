@@ -54,7 +54,7 @@ async def autocomplete(
         default="*:*",
         title="Query string to autocomplete against",
         examples=["fanc", "ehler"],
-    )
+    ),
 ) -> SearchResults:
     """Autocomplete for entities by label
 
