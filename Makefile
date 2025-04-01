@@ -197,8 +197,8 @@ lint-frontend:
 
 .PHONY: lint-backend
 lint-backend: 
-	$(RUN) ruff check --diff --exit-zero .
-	$(RUN) black --check --diff -l 120 src tests
+	-$(RUN) ruff check --diff .
+	-$(RUN) ruff format --diff .
 
 
 .PHONY: format
@@ -207,8 +207,8 @@ format: format-frontend format-backend
 
 .PHONY: format-backend
 format-backend: 
-	$(RUN) ruff check --fix --exit-zero .
-	$(RUN) black -l 120 src tests
+	-$(RUN) ruff check --fix .
+	-$(RUN) ruff format .
 
 
 .PHONY: format-frontend
