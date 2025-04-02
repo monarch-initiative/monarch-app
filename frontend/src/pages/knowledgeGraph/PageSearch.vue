@@ -38,19 +38,29 @@
             <AppLink to="/kg/compare-phenotypes" class="tool"
               >Phenotype Similarity Search</AppLink
             >
-            <AppLink to="/kg/compare-phenotypes" class="tool"
+            <AppLink
+              to="https://monarch-initiative.github.io/monarchr/articles/monarchr"
+              class="tool"
               >Monarch R</AppLink
             >
-            <AppLink to="/kg/compare-phenotypes" class="tool">Neo4j</AppLink>
+            <AppLink
+              to="https://neo4j.monarchinitiative.org/browser/"
+              class="tool"
+              >Neo4j</AppLink
+            >
             <AppLink to="/kg/compare-phenotypes" class="tool"
               >Text Annotator</AppLink
             >
-            <AppLink to="/kg/compare-phenotypes" class="tool"
+            <AppLink
+              to="https://github.com/monarch-initiative/monarch-assistant-cypher"
+              class="tool"
               >Monarch Assistant</AppLink
             >
-            <AppLink to="/kg/compare-phenotypes" class="tool"
+            <AppLink
+              to="https://api-v3.monarchinitiative.org/v3/docs"
+              class="tool"
               >MonarchKG API</AppLink
-            
+            >
           </div>
         </div>
       </div>
@@ -252,7 +262,7 @@ const onDelete = () => {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0.7rem;
 
     .tool {
       color: #007bff;
