@@ -5,13 +5,7 @@
 -->
 
 <template>
-  <AppWrapper
-    tag="AppSection"
-    :wrap="!minimal"
-    width="big"
-    class="section"
-    design="bare"
-  >
+  <AppWrapper tag="AppSection" :wrap="!minimal" width="big" design="bare">
     <!-- search box -->
     <div class="help-icon-section">
       <AppSelectAutocomplete
@@ -52,7 +46,7 @@
     </AppFlex>
   </AppWrapper>
 
-  <AppSection v-if="!minimal" width="big" class="section" design="bare">
+  <AppSection v-if="!minimal" width="big" design="bare">
     <!-- status -->
     <AppStatus v-if="isLoading" code="loading">Loading results</AppStatus>
     <AppStatus v-else-if="isError" code="error"
@@ -515,6 +509,7 @@ watch(from, () => runGetSearch(false));
   display: flex;
   align-items: center;
   width: 100%;
+  max-width: 50em;
 }
 
 .search-input {

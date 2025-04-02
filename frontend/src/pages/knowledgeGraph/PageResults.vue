@@ -1,8 +1,7 @@
 <template>
   <AppBreadcrumb />
-  <AppSection width="big" class="section" design="bare">
-    <TabSearch />
-  </AppSection>
+
+  <TabSearch />
 </template>
 <script setup lang="ts">
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
