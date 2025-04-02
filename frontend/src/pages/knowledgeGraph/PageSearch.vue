@@ -18,55 +18,23 @@
           @delete="onDelete"
         />
       </div>
-      <div class="suggestions">
-        <div class="tooltip-wrapper">
-          <span class="tooltip-trigger">Disease to Gene</span>
-          <div class="tooltip-box">
-            e.g: Explore the disease to phenotype relation for
-            <span
-              class="tooltip-suggestion"
-              @click="handleSuggestionClick('Ehlers-Danlos syndrome')"
-            >
-              Ehlers-Danlos Syndrome
-            </span>
-          </div>
-        </div>
-        <div class="tooltip-wrapper">
-          <span class="tooltip-trigger">Disease to Model</span>
-          <div class="tooltip-box">
-            e.g: Explore the disease to phenotype relation for
-            <span
-              class="tooltip-suggestion"
-              @click="handleSuggestionClick('Ehlers-Danlos syndrome')"
-            >
-              Ehlers-Danlos Syndrome
-            </span>
-          </div>
-        </div>
-        <div class="tooltip-wrapper">
-          <span class="tooltip-trigger">Variant to disease/Phenotype</span>
-          <div class="tooltip-box">
-            e.g: Explore the disease to phenotype relation for
-            <span
-              class="tooltip-suggestion"
-              @click="handleSuggestionClick('Ehlers-Danlos syndrome')"
-            >
-              Ehlers-Danlos Syndrome
-            </span>
-          </div>
-        </div>
-
-        <div class="tooltip-wrapper">
-          <span class="tooltip-trigger">Gene to Phenotype</span>
-          <div class="tooltip-box">
-            e.g: Explore the disease to phenotype relation for
-            <span
-              class="tooltip-suggestion"
-              @click="handleSuggestionClick('Ehlers-Danlos syndrome')"
-            >
-              Ehlers-Danlos Syndrome
-            </span>
-          </div>
+      <SearchSuggestions
+        :suggestions="searchSuggestions"
+        @select="handleSuggestionClick"
+      />
+      <div class="toolSection">
+        <p>
+          In addition to the comprehensive search above you can explore the
+          Monarch KG with our cutting-edge tool suite
+        </p>
+        <div class="tools">
+          <span class="tool">{{ "Phenotype Similarity Compare" }}</span>
+          <span class="tool">{{ "Phenotype Similarity Search" }}</span>
+          <span class="tool">{{ " Monarch R" }}</span>
+          <span class="tool">{{ "Neo4j" }}</span>
+          <span class="tool">{{ "Text Annotator" }}</span>
+          <span class="tool">{{ "Monarch Assistant" }}</span>
+          <span class="tool">{{ " MonarchKG API" }}</span>
         </div>
       </div>
     </div>
@@ -95,6 +63,7 @@ import { useQuery } from "@/composables/use-query";
 import { deleteEntry, history } from "@/global/history";
 import { appTitle } from "@/global/meta";
 import { waitFor } from "@/util/dom";
+import SearchSuggestions from "./PageSearchSuggestions.vue";
 
 type Props = {
   /** whether to show pared down version with just search box */
@@ -123,23 +92,30 @@ const viewAll: Option = {
   special: true,
 };
 
-const ENTITY_MAP: Record<string, { id: string; label: string }> = {
+const ENTITY_MAP: Record<string, { id: string; label: string; to?: string }> = {
   "Ehlers-Danlos syndrome": {
     id: "MONDO:0020066",
     label: "Ehlers-Danlos syndrome",
+    to: "disease-to-phenotype",
   },
 };
 
-const setSearch = (value: string) => {
-  search.value = value;
-};
+const searchSuggestions = [
+  { label: "Disease to Gene", term: "Ehlers-Danlos syndrome" },
+  { label: "Disease to Model", term: "Ehlers-Danlos syndrome" },
+  {
+    label: "Variant to disease/Phenotype",
+    term: "Ehlers-Danlos syndrome",
+  },
+  { label: "Gene to Phenotype", term: "Ehlers-Danlos syndrome" },
+];
 
 const handleSuggestionClick = async (term: string) => {
   console.log("term", term);
   const entity = ENTITY_MAP[term];
   console.log("enity", entity);
   if (entity?.id) {
-    await router.push("/" + entity.id);
+    await router.push({ path: "/" + entity.id, hash: "#" + entity.to });
   } else {
     console.warn("Entity not found, fallback to search");
     await router.push({
@@ -177,7 +153,6 @@ async function runGetAutocomplete(
 ): Promise<AutocompleteOptions> {
   /** if something typed in, get autocomplete options from backend */
 
-  console.log("RUN AUTOCOMPLETE", search);
   if (search.trim())
     return [
       viewAll,
@@ -254,7 +229,7 @@ const onDelete = () => {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .page-wrapper {
   display: flex;
   flex-direction: column;
@@ -320,79 +295,35 @@ const onDelete = () => {
   height: 2em;
 }
 
-.tooltip-wrapper {
-  display: inline-flex;
-  position: relative;
-  flex-direction: column;
-  align-items: center;
-}
+.toolSection {
+  max-width: 35em;
+  margin: 3em auto;
+  font-size: 0.8em;
+  text-align: center;
 
-.tooltip-trigger {
-  color: #007bff;
-  font-size: 0.9rem;
-  text-decoration: underline;
-  cursor: pointer;
-}
+  p {
+    margin-bottom: 1em;
+    line-height: 1.6em;
+    text-align: center;
+  }
 
-/* Tooltip box positioned directly under the trigger */
-.tooltip-box {
-  z-index: 999;
-  position: absolute;
-  top: 100%; /* position below the trigger */
-  left: 50%; /* this is crucial! */
-  width: 40em;
-  margin-top: 1px;
-  padding: 8px 12px;
-  transform: translateX(-50%); /* center it */
+  .tools {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 
-  border-radius: 6px;
-  background-color: #e8e2e2;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  color: #000;
-  font-size: 0.8rem;
-  line-height: 1.4;
-  white-space: normal;
-  word-wrap: break-word;
-
-  visibility: hidden;
-  opacity: 0;
-  pointer-events: auto;
-  transition: opacity 0.2s ease;
-}
-
-/* Keep tooltip open if hovering on wrapper OR box */
-.tooltip-wrapper:hover .tooltip-box {
-  visibility: visible;
-  opacity: 1;
-}
-
-/* Tooltip arrow */
-.tooltip-box::after {
-  position: absolute;
-  top: -5px;
-  left: 50%;
-  transform: translateX(-50%);
-  border-width: 5px;
-  border-style: solid;
-  border-color: transparent transparent #e8e2e2 transparent;
-  content: "";
-}
-
-/* Suggestion styling */
-.tooltip-suggestion {
-  margin-left: 4px;
-  color: hsl(185, 100%, 30%);
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.tooltip-suggestion:hover {
-  color: #0056b3;
-}
-
-.suggestions {
-  display: flex;
-  margin: 1em;
-  gap: 1em;
+    .tool {
+      flex: 1 1 auto;
+      max-width: fit-content;
+      padding: 0.5em;
+      color: #007bff;
+      text-align: center;
+      text-decoration: underline;
+      white-space: normal;
+      cursor: pointer;
+      word-wrap: break-word;
+      font-weight: 500;
+    }
+  }
 }
 </style>
