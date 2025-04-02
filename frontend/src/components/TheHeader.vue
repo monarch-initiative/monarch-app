@@ -135,7 +135,8 @@ const search = computed(
   (): boolean =>
     !(
       route.hash === "#search" ||
-      (route.name === "Explore" && route.hash === "")
+      (route.name === "Explore" && route.hash === "") ||
+      (route.name === "KnowledgeGraph" && route.hash === "")
     ),
 );
 
