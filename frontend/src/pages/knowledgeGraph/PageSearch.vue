@@ -32,13 +32,25 @@
             Monarch KG with our cutting-edge tool suite
           </p>
           <div class="tools">
-            <span class="tool">Phenotype Similarity Compare</span>
-            <span class="tool">Phenotype Similarity Search</span>
-            <span class="tool">Monarch R</span>
-            <span class="tool">Neo4j</span>
-            <span class="tool">Text Annotator</span>
-            <span class="tool">Monarch Assistant</span>
-            <span class="tool">MonarchKG API</span>
+            <AppLink to="/kg/compare-phenotypes" class="tool"
+              >Phenotype Similarity Compare</AppLink
+            >
+            <AppLink to="/kg/compare-phenotypes" class="tool"
+              >Phenotype Similarity Search</AppLink
+            >
+            <AppLink to="/kg/compare-phenotypes" class="tool"
+              >Monarch R</AppLink
+            >
+            <AppLink to="/kg/compare-phenotypes" class="tool">Neo4j</AppLink>
+            <AppLink to="/kg/compare-phenotypes" class="tool"
+              >Text Annotator</AppLink
+            >
+            <AppLink to="/kg/compare-phenotypes" class="tool"
+              >Monarch Assistant</AppLink
+            >
+            <AppLink to="/kg/compare-phenotypes" class="tool"
+              >MonarchKG API</AppLink
+            
           </div>
         </div>
       </div>
