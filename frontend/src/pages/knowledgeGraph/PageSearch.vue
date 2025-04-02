@@ -1,44 +1,46 @@
 <template>
   <AppBreadcrumb />
-  <AppSection width="big" class="section" design="bare">
-    <div class="logo-container">
-      <img src="/icons/monarch-logo.svg" alt="logo" class="logo" />
-      <h3>{{ "Knowledge Graph" }}</h3>
-    </div>
-    <div :class="{ 'search-active': search }" class="page-wrapper">
-      <!-- Centered Search Box -->
-      <div class="search-box">
-        <AppSelectAutocomplete
-          :model-value="search"
-          name="Search"
-          placeholder="Gene, disease, phenotype, etc."
-          :options="runGetAutocomplete"
-          @focus="onFocus"
-          @change="onChange"
-          @delete="onDelete"
-        />
+  <div class="container">
+    <AppSection width="big" class="section" design="bare">
+      <div class="logo-container">
+        <img src="/icons/monarch-logo.svg" alt="logo" class="logo" />
+        <h3>{{ "Knowledge Graph" }}</h3>
       </div>
-      <SearchSuggestions
-        :suggestions="searchSuggestions"
-        @select="handleSuggestionClick"
-      />
-      <div class="toolSection">
-        <p>
-          In addition to the comprehensive search above you can explore the
-          Monarch KG with our cutting-edge tool suite
-        </p>
-        <div class="tools">
-          <span class="tool">{{ "Phenotype Similarity Compare" }}</span>
-          <span class="tool">{{ "Phenotype Similarity Search" }}</span>
-          <span class="tool">{{ " Monarch R" }}</span>
-          <span class="tool">{{ "Neo4j" }}</span>
-          <span class="tool">{{ "Text Annotator" }}</span>
-          <span class="tool">{{ "Monarch Assistant" }}</span>
-          <span class="tool">{{ " MonarchKG API" }}</span>
+      <div :class="{ 'search-active': search }" class="page-wrapper">
+        <!-- Centered Search Box -->
+        <div class="search-box">
+          <AppSelectAutocomplete
+            :model-value="search"
+            name="Search"
+            placeholder="Gene, disease, phenotype, etc."
+            :options="runGetAutocomplete"
+            @focus="onFocus"
+            @change="onChange"
+            @delete="onDelete"
+          />
+        </div>
+        <SearchSuggestions
+          :suggestions="searchSuggestions"
+          @select="handleSuggestionClick"
+        />
+        <div class="toolSection">
+          <p>
+            In addition to the comprehensive search above you can explore the
+            Monarch KG with our cutting-edge tool suite
+          </p>
+          <div class="tools">
+            <span class="tool">{{ "Phenotype Similarity Compare" }}</span>
+            <span class="tool">{{ "Phenotype Similarity Search" }}</span>
+            <span class="tool">{{ " Monarch R" }}</span>
+            <span class="tool">{{ "Neo4j" }}</span>
+            <span class="tool">{{ "Text Annotator" }}</span>
+            <span class="tool">{{ "Monarch Assistant" }}</span>
+            <span class="tool">{{ " MonarchKG API" }}</span>
+          </div>
         </div>
       </div>
-    </div>
-  </AppSection>
+    </AppSection>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -81,7 +83,7 @@ const props = defineProps<Props>();
 const search = ref("");
 /** route info */
 const router = useRouter();
-const route = useRoute();
+// Removed unused variable 'route'
 
 /** autocomplete option for viewing all/detailed results */
 const viewAll: Option = {
@@ -230,6 +232,13 @@ const onDelete = () => {
 </script>
 
 <style lang="scss" scoped>
+.container {
+  position: fixed;
+  top: 4.5em;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
 .page-wrapper {
   display: flex;
   flex-direction: column;

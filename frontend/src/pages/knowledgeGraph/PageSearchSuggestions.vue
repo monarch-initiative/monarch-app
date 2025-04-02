@@ -28,6 +28,9 @@ defineEmits<{
 <style lang="scss" scoped>
 .suggestions {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
   margin: 1em;
   gap: 1em;
 }
