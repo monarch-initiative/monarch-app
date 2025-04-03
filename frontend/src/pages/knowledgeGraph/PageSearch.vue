@@ -93,19 +93,53 @@ const viewAll: Option = {
   special: true,
 };
 
-const ENTITY_MAP: Record<string, { id: string; label: string; to?: string }> = {
+const ENTITY_MAP: Record<
+  string,
+  { id: string; label: string; to?: string; text?: string }
+> = {
   "Ehlers-Danlos syndrome": {
     id: "MONDO:0020066",
     label: "Ehlers-Danlos syndrome",
     to: "disease-to-phenotype",
   },
+  "Down syndrome": {
+    id: "MONDO:0008608",
+    label: "Down syndrome",
+    to: "model-to-disease",
+  },
+  "cystic fibrosis": {
+    id: "MONDO:0009061",
+    label: "Cystic fibrosis",
+    to: "variant-to-disease",
+  },
+  FBN1: {
+    id: "HGNC:3603",
+    label: "FBN1",
+    to: "gene-to-phenotype",
+  },
 };
 
 const searchSuggestions = [
-  { label: "Disease to Gene", term: "Ehlers-Danlos syndrome" },
-  { label: "Disease to Model", term: "Ehlers-Danlos syndrome" },
-  { label: "Variant to disease/Phenotype", term: "Ehlers-Danlos syndrome" },
-  { label: "Gene to Phenotype", term: "Ehlers-Danlos syndrome" },
+  {
+    label: "Disease to Gene",
+    term: "Ehlers-Danlos syndrome",
+    text: "e.g: Explore the disease to phenotype relation for",
+  },
+  {
+    label: "Model to Disease",
+    term: "Down syndrome",
+    text: "e.g: Explore the model to disease relation for",
+  },
+  {
+    label: "Variant to disease",
+    term: "cystic fibrosis",
+    text: "e.g: Explore the variant to disease relation for",
+  },
+  {
+    label: "Gene to Phenotype",
+    term: "FBN1",
+    text: "e.g: Explore the gene to phenotype relation for",
+  },
 ];
 
 const handleSuggestionClick = async (term: string) => {
@@ -217,7 +251,7 @@ const onDelete = () => {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 900px;
+  max-width: 60em;
   overflow-x: hidden;
   transition: all 0.3s ease;
 }

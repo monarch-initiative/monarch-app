@@ -3,7 +3,7 @@
     <div class="tooltip-wrapper" v-for="(s, i) in suggestions" :key="i">
       <span class="tooltip-trigger">{{ s.label }}</span>
       <div class="tooltip-box">
-        e.g: Explore the disease to phenotype relation for
+        {{ s.text }}
         <span class="tooltip-suggestion" @click="$emit('select', s.term)">
           {{ s.term }}
         </span>
@@ -17,6 +17,7 @@ defineProps<{
   suggestions: {
     label: string;
     term: string;
+    text: string;
   }[];
 }>();
 
