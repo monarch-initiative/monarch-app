@@ -35,7 +35,7 @@
             <AppLink to="/kg/compare-phenotypes" class="tool"
               >Phenotype Similarity Compare</AppLink
             >
-            <AppLink to="/kg/compare-phenotypes" class="tool"
+            <AppLink to="/kg/search-phenotypes" class="tool"
               >Phenotype Similarity Search</AppLink
             >
             <AppLink
@@ -225,7 +225,6 @@ const onDelete = () => {
 .search-box {
   width: 100%;
   max-width: 600px;
-  margin-bottom: 1.5rem;
 }
 
 .search-active .search-box {
@@ -262,7 +261,7 @@ const onDelete = () => {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 0.7rem;
+    gap: 0.9rem;
 
     .tool {
       color: #007bff;

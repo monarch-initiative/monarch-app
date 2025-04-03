@@ -31,7 +31,7 @@ defineEmits<{
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  margin: 1em;
+  margin: 0.7em;
   gap: 1em;
 }
 
