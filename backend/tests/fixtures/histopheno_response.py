@@ -5,7 +5,7 @@ import pytest
 def histopheno_response():
     return {
         "responseHeader": {
-            "QTime": 2,
+            "QTime": 1,
             "params": {
                 "facet.query": [
                     'object_closure:"UPHENO:0002964"',
@@ -45,23 +45,23 @@ def histopheno_response():
         "facet_counts": {
             "facet_fields": {},
             "facet_queries": {
-                'object_closure:"UPHENO:0002964"': 500,
-                'object_closure:"UPHENO:0004523"': 1042,
-                'object_closure:"UPHENO:0002764"': 594,
-                'object_closure:"UPHENO:0002635"': 49,
+                'object_closure:"UPHENO:0002964"': 504,
+                'object_closure:"UPHENO:0004523"': 1050,
+                'object_closure:"UPHENO:0002764"': 596,
+                'object_closure:"UPHENO:0002635"': 50,
                 'object_closure:"UPHENO:0003020"': 297,
                 'object_closure:"UPHENO:0080362"': 0,
                 'object_closure:"HP:0001939"': 222,
                 'object_closure:"UPHENO:0002642"': 47,
-                'object_closure:"UPHENO:0002833"': 147,
+                'object_closure:"UPHENO:0002833"': 162,
                 'object_closure:"HP:0002664"': 7,
-                'object_closure:"UPHENO:0004459"': 180,
+                'object_closure:"UPHENO:0004459"': 198,
                 'object_closure:"UPHENO:0002948"': 27,
                 'object_closure:"UPHENO:0003116"': 25,
-                'object_closure:"UPHENO:0002816"': 2035,
+                'object_closure:"UPHENO:0002816"': 2055,
                 'object_closure:"UPHENO:0004536"': 157,
                 'object_closure:"HP:0000598"': 21,
-                'object_closure:"UPHENO:0002712"': 175,
+                'object_closure:"UPHENO:0002712"': 179,
                 'object_closure:"UPHENO:0075949"': 21,
                 'object_closure:"UPHENO:0049874"': 32,
                 'object_closure:"UPHENO:0003013"': 1,
