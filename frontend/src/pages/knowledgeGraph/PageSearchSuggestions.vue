@@ -57,7 +57,8 @@ defineEmits<{
   position: absolute;
   top: 100%;
   left: 50%;
-  width: 40em;
+  width: max-content;
+  max-width: 40em;
   margin-top: 1px;
   padding: 8px;
   transform: translateX(-50%);
@@ -67,6 +68,7 @@ defineEmits<{
   color: #000;
   font-size: 0.8rem;
   line-height: 1.4;
+  white-space: normal;
   opacity: 0;
   pointer-events: auto;
   transition: opacity 0.2s ease;

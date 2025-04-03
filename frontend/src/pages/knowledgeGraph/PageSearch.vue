@@ -105,7 +105,7 @@ const ENTITY_MAP: Record<
   "Down syndrome": {
     id: "MONDO:0008608",
     label: "Down syndrome",
-    to: "model-to-disease",
+    to: "disease-model",
   },
   "cystic fibrosis": {
     id: "MONDO:0009061",
