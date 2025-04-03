@@ -236,6 +236,12 @@ export const routes: RouteRecordRaw[] = [
     component: asyncRoute("knowledgeGraph/PagePhenotypeCompare"),
     meta: { breadcrumb: "Phenotype Similarity Compare" },
   },
+  {
+    path: "/kg/search-phenotypes",
+    name: "KnowledgeGraphSearchPhenotypes",
+    component: asyncRoute("knowledgeGraph/PagePhenotypeSearch"),
+    meta: { breadcrumb: "Phenotype Similarity Search" },
+  },
 ];
 
 /** insert descriptions from imported json into each route's metadata */
