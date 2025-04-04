@@ -46,9 +46,7 @@
         placeholder="Search for phenotypes, genes, or diseases"
         :tooltip="multiTooltip"
         :description="description(aPhenotypes, aGeneratedFrom)"
-        @spread-options="
-          (option, options) => spreadOptions(option, options, 'a')
-        "
+        @spread-options="(option, options) => spreadOptions(option, options)"
       />
     </AppFlex>
 
@@ -184,8 +182,6 @@ const aGeneratedFrom = ref<GeneratedFrom>({});
 /** selected group for second set */
 const bGroup = useParam("b-group", optionParam, bGroupOptions[0]);
 
-/** "generated from" helpers after selecting gene or disease */
-const bGeneratedFrom = ref<GeneratedFrom>({});
 /** selected metric */
 const metric = ref<Option>(metricOptions[0]);
 
@@ -211,14 +207,12 @@ function doSimpleExample() {
   aPhenotypes.value = examples.a.options;
 
   aGeneratedFrom.value = examples.a;
-  bGeneratedFrom.value = examples.b;
 }
 
 function doBiggerExample() {
   aPhenotypes.value = examples.c.options;
 
   aGeneratedFrom.value = examples.c;
-  bGeneratedFrom.value = examples.d;
 }
 
 /** search analysis */
@@ -256,14 +250,15 @@ const isPending = computed(() => searchIsLoading.value || searchIsError.value);
 const isBlank = computed(() => !aPhenotypes.value.length);
 
 /** when multi select component runs spread options function */
-function spreadOptions(option: Option, options: Options, set: string) {
-  /** notify */
-  if (options.length === 0) snackbar("No associated phenotypes found");
-  else snackbar(`Selected ${options.length} phenotypes`);
+function spreadOptions(option: Option, options: Options) {
+  if (options.length === 0) {
+    snackbar("No associated phenotypes found");
+  } else {
+    snackbar(`Selected ${options.length} phenotypes`);
+  }
 
-  /** set "generated from" helpers */
-  if (set === "a") aGeneratedFrom.value = { option, options };
-  else if (set === "b") bGeneratedFrom.value = { option, options };
+  // Only updating "a" set now
+  aGeneratedFrom.value = { option, options };
 }
 
 /** clear/reset results */
