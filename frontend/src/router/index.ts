@@ -242,6 +242,12 @@ export const routes: RouteRecordRaw[] = [
     component: asyncRoute("knowledgeGraph/PagePhenotypeSearch"),
     meta: { breadcrumb: "Phenotype Similarity Search" },
   },
+  {
+    path: "/kg/text-annotator",
+    name: "KnowledgeGraphTextAnnotator",
+    component: asyncRoute("knowledgeGraph/PageTextAnnotator"),
+    meta: { breadcrumb: "Text Annotator" },
+  },
 ];
 
 /** insert descriptions from imported json into each route's metadata */

@@ -1,8 +1,8 @@
 <template>
   <AppBreadcrumb />
   <PageTitle title="Phenotype Similarity Compare" id="phenotype-compare" />
-  <AppSection width="big" design="bare">
-    <!-- Example Buttons -->
+
+  <AppSection design="bare">
     <AppFlex gap="small">
       <AppButton
         text="Try a simple example"
@@ -18,7 +18,6 @@
     </AppFlex>
 
     <AppSelectTags
-      class="select-tags"
       ref="aBox"
       v-model="aPhenotypes"
       name="First set of phenotypes"
@@ -31,7 +30,6 @@
 
     <strong>... to these phenotypes</strong>
     <AppSelectTags
-      class="select-tags"
       v-model="bPhenotypes"
       name="Second set of phenotypes"
       :options="getPhenotypes"
@@ -336,10 +334,7 @@ function ringPercent(score = 0) {
 .arrow {
   color: $gray;
 }
-.select-tags {
-  min-width: 19em;
-  max-width: 45em;
-}
+
 @media (max-width: 600px) {
   .match {
     flex-direction: column;

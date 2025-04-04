@@ -1,7 +1,14 @@
 <template>
   <AppBreadcrumb />
   <PageTitle title="Phenotype Similarity Search" id="phenotype-search" />
-  <AppSection width="big" design="bare">
+  <AppSection design="bare">
+    <p class="description">
+      This tool finds genes or diseases from a selected species or group that
+      show phenotypic similarity to a set of input phenotypes. Similarity is
+      computed using semantic metrics such as Jaccard, Information Content, or
+      Phenodigm.
+    </p>
+
     <!-- example -->
     <AppFlex gap="small">
       <AppButton
@@ -32,7 +39,6 @@
     <AppFlex gap="small" direction="col">
       <div class="label">similar to phenotypes..</div>
       <AppSelectTags
-        class="pheno-select"
         ref="aBox"
         v-model="aPhenotypes"
         name="First set of phenotypes"
@@ -177,8 +183,7 @@ const aGeneratedFrom = ref<GeneratedFrom>({});
 
 /** selected group for second set */
 const bGroup = useParam("b-group", optionParam, bGroupOptions[0]);
-/** second set of phenotypes */
-const bPhenotypes = useParam<Options>("b-set", optionsParam, []);
+
 /** "generated from" helpers after selecting gene or disease */
 const bGeneratedFrom = ref<GeneratedFrom>({});
 /** selected metric */
@@ -204,14 +209,14 @@ function ringPercent(score = 0) {
 /** example phenotype set comparison */
 function doSimpleExample() {
   aPhenotypes.value = examples.a.options;
-  bPhenotypes.value = examples.b.options;
+
   aGeneratedFrom.value = examples.a;
   bGeneratedFrom.value = examples.b;
 }
 
 function doBiggerExample() {
   aPhenotypes.value = examples.c.options;
-  bPhenotypes.value = examples.d.options;
+
   aGeneratedFrom.value = examples.c;
   bGeneratedFrom.value = examples.d;
 }
@@ -248,9 +253,7 @@ async function scrollToResults() {
 const isPending = computed(() => searchIsLoading.value || searchIsError.value);
 
 /** whether user hasn't inputted anything to analyze */
-const isBlank = computed(
-  () => !aPhenotypes.value.length || !bPhenotypes.value.length,
-);
+const isBlank = computed(() => !aPhenotypes.value.length);
 
 /** when multi select component runs spread options function */
 function spreadOptions(option: Option, options: Options, set: string) {
@@ -291,7 +294,7 @@ function description(
   return `(${description.join(", ")})`;
 }
 
-watch([aPhenotypes, bGroup, bPhenotypes, metric], clearResults, {
+watch([aPhenotypes, bGroup, metric], clearResults, {
   deep: true,
 });
 
@@ -378,8 +381,10 @@ $wrap: 1000px;
   min-width: 19em;
   max-width: 35em;
 }
-.pheno-select {
-  min-width: 19em;
-  max-width: 45em;
+.description {
+  text-align: left;
+}
+p {
+  text-align: left;
 }
 </style>

@@ -48,7 +48,7 @@
               class="tool"
               >Neo4j</AppLink
             >
-            <AppLink to="/kg/compare-phenotypes" class="tool"
+            <AppLink to="/kg/text-annotator" class="tool"
               >Text Annotator</AppLink
             >
             <AppLink

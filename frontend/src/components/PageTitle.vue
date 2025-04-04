@@ -41,9 +41,9 @@ $wrap: 1000px;
   gap: 0.5em;
   h1 {
     padding: 0;
-    font-size: 2em;
+    font-size: 1.6em;
     @media (max-width: $wrap) {
-      font-size: 1.6em;
+      font-size: 1.4em;
     }
   }
 }
