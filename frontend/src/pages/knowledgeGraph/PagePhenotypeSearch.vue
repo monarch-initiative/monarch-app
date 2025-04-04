@@ -68,136 +68,12 @@
 
   <!-- analysis status -->
   <AppSection v-if="isPending">
-    <AppStatus v-if="compareIsLoading || searchIsLoading" code="loading"
+    <AppStatus v-if="searchIsLoading" code="loading"
       >Running analysis</AppStatus
     >
-    <AppStatus v-if="compareIsError || searchIsError" code="error"
+    <AppStatus v-if="searchIsError" code="error"
       >Error running analysis</AppStatus
     >
-  </AppSection>
-
-  <!-- compare results -->
-  <AppSection
-    v-else-if="
-      compareResults.subjectMatches.length ||
-      compareResults.objectMatches.length ||
-      compareResults.subjectUnmatched.length ||
-      compareResults.objectUnmatched.length
-    "
-  >
-    <AppHeading>Similarity Comparison</AppHeading>
-
-    <AppTabs
-      v-model="compareTab"
-      name="Comparison direction"
-      :tabs="compareTabs"
-      :url="false"
-    />
-
-    <!-- list of compare results -->
-    <div class="triptych-scroll">
-      <div class="triptych">
-        <div>
-          <strong>{{ headings[0].name }}</strong>
-          <div class="weak">{{ headings[0].description }}</div>
-        </div>
-        <strong>Match</strong>
-        <div>
-          <strong>{{ headings[1].name }}</strong>
-          <div class="weak">{{ headings[1].description }}</div>
-        </div>
-
-        <template
-          v-for="(match, index) in compareTab === 'a-to-b'
-            ? compareResults.subjectMatches
-            : compareResults.objectMatches"
-          :key="index"
-        >
-          <AppNodeBadge
-            :node="{ id: match.source, name: match.source_label }"
-          />
-
-          <!-- score -->
-          <AppFlex align-h="left" gap="small">
-            <tooltip :append-to="appendToBody" :tag="null">
-              <AppPercentage
-                :score="match.score"
-                :percent="ringPercent(match.score)"
-                >{{ match.score.toFixed(1) }}</AppPercentage
-              >
-
-              <template #content>
-                <div class="mini-table">
-                  <span>Ancestor</span>
-                  <AppNodeBadge
-                    :node="{
-                      id: match.ancestor_id,
-                      name: match.ancestor_label,
-                    }"
-                    :absolute="true"
-                  />
-                  <AppLink
-                    to="https://incatools.github.io/ontology-access-kit/guide/similarity.html#information-content"
-                  >
-                    Ancestor IC
-                  </AppLink>
-                  <span>
-                    {{ match.ancestor_information_content?.toFixed(3) }}
-                  </span>
-                  <AppLink
-                    to="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3649640/"
-                  >
-                    Phenodigm
-                  </AppLink>
-                  <span>
-                    {{ match.phenodigm_score?.toFixed(3) }}
-                  </span>
-                  <AppLink
-                    to="https://incatools.github.io/ontology-access-kit/guide/similarity.html#jaccard-similarity"
-                  >
-                    Jaccard
-                  </AppLink>
-                  <span>{{ match.jaccard_similarity?.toFixed(3) }}</span>
-                </div>
-              </template>
-            </tooltip>
-
-            <AppIcon
-              v-if="match.jaccard_similarity === 1"
-              v-tooltip="'Equal by Jaccard similarity'"
-              icon="equals"
-              tabindex="0"
-            />
-          </AppFlex>
-
-          <AppNodeBadge
-            :node="{ id: match.target, name: match.target_label }"
-          />
-        </template>
-      </div>
-    </div>
-
-    <!-- unmatched phenotypes -->
-    <template
-      v-if="
-        (compareTab === 'a-to-b'
-          ? compareResults.subjectUnmatched
-          : compareResults.objectUnmatched
-        ).length
-      "
-    >
-      <AppHeading>Unmatched</AppHeading>
-
-      <AppFlex direction="col">
-        <AppNodeBadge
-          v-for="(unmatched, index) in compareTab === 'a-to-b'
-            ? compareResults.subjectUnmatched
-            : compareResults.objectUnmatched"
-          :key="index"
-          :node="{ id: unmatched.id, name: unmatched.label }"
-        />
-      </AppFlex>
-    </template>
   </AppSection>
 
   <!-- search results -->
@@ -230,7 +106,6 @@
       </div>
     </AppFlex>
 
-    <!-- phenogrid results -->
     <AppHeading>Detailed Comparison</AppHeading>
     <ThePhenogrid :data="searchResults.phenogrid" />
     <AppAlert
@@ -343,61 +218,6 @@ function doBiggerExample() {
   bGeneratedFrom.value = examples.d;
 }
 
-/** compare tab options */
-const compareTabs = [
-  { id: "a-to-b", text: "A → B" },
-  { id: "b-to-a", text: "B → A" },
-] as const;
-
-/** currently selected compare tab */
-const compareTab = ref<(typeof compareTabs)[number]["id"]>("a-to-b");
-
-/** headings for compare table */
-const headings = computed(() => {
-  const headings = [
-    {
-      name: "Set A",
-      description: description(aPhenotypes.value, aGeneratedFrom.value),
-    },
-    {
-      name: "Set B",
-      description: description(bPhenotypes.value, bGeneratedFrom.value),
-    },
-  ];
-
-  if (compareTab.value === "b-to-a") headings.reverse();
-
-  return headings;
-});
-
-/** comparison analysis */
-const {
-  query: runCompare,
-  data: compareResults,
-  isLoading: compareIsLoading,
-  isError: compareIsError,
-} = useQuery(
-  async function () {
-    scrollToResults();
-
-    return await compareSetToSet(
-      aPhenotypes.value.map(({ id }) => id),
-      bPhenotypes.value.map(({ id }) => id),
-      metric.value.id,
-    );
-  },
-
-  /** default value */
-  {
-    subjectMatches: [],
-    objectMatches: [],
-    subjectUnmatched: [],
-    objectUnmatched: [],
-  },
-
-  scrollToResults,
-);
-
 /** search analysis */
 const {
   query: runSearch,
@@ -447,12 +267,6 @@ function spreadOptions(option: Option, options: Options, set: string) {
 
 /** clear/reset results */
 function clearResults() {
-  compareResults.value = {
-    subjectMatches: [],
-    objectMatches: [],
-    subjectUnmatched: [],
-    objectUnmatched: [],
-  };
   searchResults.value = {
     summary: [],
     phenogrid: { cols: [], rows: [], cells: {}, unmatched: [] },
