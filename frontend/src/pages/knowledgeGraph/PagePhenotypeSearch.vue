@@ -277,12 +277,6 @@ const multiTooltip = `In this box, you can select phenotypes in 3 ways:<br>
     <li>Paste comma-separated phenotype IDs</li>
   </ol>`;
 
-/** options for mode of second set */
-const bModeOptions = [
-  { id: "these phenotypes ..." },
-  { id: "phenotypes from these genes/diseases ..." },
-];
-
 /** search group options */
 const bGroupOptions = groups.map((group) => ({ id: group, label: group }));
 
@@ -307,8 +301,7 @@ const optionsParam = arrayParam<Option>({
 const aPhenotypes = useParam<Options>("a-set", optionsParam, []);
 /** "generated from" helpers after selecting gene or disease */
 const aGeneratedFrom = ref<GeneratedFrom>({});
-/** selected mode of second set */
-const bMode = useParam("b-mode", optionParam, bModeOptions[0]);
+
 /** selected group for second set */
 const bGroup = useParam("b-group", optionParam, bGroupOptions[0]);
 /** second set of phenotypes */
@@ -341,7 +334,6 @@ function doSimpleExample() {
   bPhenotypes.value = examples.b.options;
   aGeneratedFrom.value = examples.a;
   bGeneratedFrom.value = examples.b;
-  bMode.value = bModeOptions[0];
 }
 
 function doBiggerExample() {
@@ -349,7 +341,6 @@ function doBiggerExample() {
   bPhenotypes.value = examples.d.options;
   aGeneratedFrom.value = examples.c;
   bGeneratedFrom.value = examples.d;
-  bMode.value = bModeOptions[0];
 }
 
 /** compare tab options */
@@ -435,22 +426,12 @@ async function scrollToResults() {
   scrollTo("#results");
 }
 
-/** current mode */
-const isCompare = computed(() => bMode.value.id.includes("these phenotypes"));
-onMounted(() => {
-  console.log("isCompare", isCompare);
-});
 /** is in loading/error state */
-const isPending = computed(() =>
-  isCompare.value
-    ? compareIsLoading.value || compareIsError.value
-    : searchIsLoading.value || searchIsError.value,
-);
+const isPending = computed(() => searchIsLoading.value || searchIsError.value);
 
 /** whether user hasn't inputted anything to analyze */
 const isBlank = computed(
-  () =>
-    !aPhenotypes.value.length || (isCompare.value && !bPhenotypes.value.length),
+  () => !aPhenotypes.value.length || !bPhenotypes.value.length,
 );
 
 /** when multi select component runs spread options function */
@@ -498,8 +479,7 @@ function description(
   return `(${description.join(", ")})`;
 }
 
-/** clear results when inputs are changed to avoid de-sync */
-watch([aPhenotypes, bMode, bGroup, bPhenotypes, metric], clearResults, {
+watch([aPhenotypes, bGroup, bPhenotypes, metric], clearResults, {
   deep: true,
 });
 
