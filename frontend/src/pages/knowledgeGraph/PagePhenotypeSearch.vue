@@ -29,9 +29,8 @@
     </AppFlex>
 
     <!-- set B -->
-    <AppFlex gap="small">
+    <AppFlex gap="small" direction="col">
       <div class="label">similar to phenotypes..</div>
-
       <AppSelectTags
         class="pheno-select"
         ref="aBox"
@@ -140,7 +139,6 @@ import { snackbar } from "@/components/TheSnackbar.vue";
 import { arrayParam, useParam, type Param } from "@/composables/use-param";
 import { useQuery } from "@/composables/use-query";
 import examples from "@/data/phenotype-explorer.json";
-import { appendToBody } from "@/global/tooltip";
 import { scrollTo } from "@/router";
 import { parse } from "@/util/object";
 
@@ -381,8 +379,7 @@ $wrap: 1000px;
   max-width: 35em;
 }
 .pheno-select {
-  width: 100%;
   min-width: 19em;
-  max-width: 65em;
+  max-width: 45em;
 }
 </style>

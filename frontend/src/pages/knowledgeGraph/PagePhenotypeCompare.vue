@@ -1,5 +1,7 @@
 <template>
-  <AppSection>
+  <AppBreadcrumb />
+  <PageTitle title="Phenotype Similarity Compare" id="phenotype-compare" />
+  <AppSection width="big" design="bare">
     <!-- Example Buttons -->
     <AppFlex gap="small">
       <AppButton
@@ -15,9 +17,8 @@
       />
     </AppFlex>
 
-    <strong>Compare these phenotypes ...</strong>
-
     <AppSelectTags
+      class="select-tags"
       ref="aBox"
       v-model="aPhenotypes"
       name="First set of phenotypes"
@@ -30,6 +31,7 @@
 
     <strong>... to these phenotypes</strong>
     <AppSelectTags
+      class="select-tags"
       v-model="bPhenotypes"
       name="Second set of phenotypes"
       :options="getPhenotypes"
@@ -134,6 +136,7 @@ import {
   getPhenotypes,
   metricOptions,
 } from "@/api/phenotype-explorer";
+import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppButton from "@/components/AppButton.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPercentage from "@/components/AppPercentage.vue";
@@ -141,6 +144,7 @@ import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import type { Option, Options } from "@/components/AppSelectTags.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
 import AppTabs from "@/components/AppTabs.vue";
+import PageTitle from "@/components/PageTitle.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
 import { useQuery } from "@/composables/use-query";
 import examples from "@/data/phenotype-explorer.json";
@@ -332,7 +336,10 @@ function ringPercent(score = 0) {
 .arrow {
   color: $gray;
 }
-
+.select-tags {
+  min-width: 19em;
+  max-width: 45em;
+}
 @media (max-width: 600px) {
   .match {
     flex-direction: column;
