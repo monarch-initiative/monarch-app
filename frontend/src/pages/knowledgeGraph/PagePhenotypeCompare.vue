@@ -17,7 +17,6 @@
 
     <strong>Compare these phenotypes ...</strong>
 
-    <!-- set A -->
     <AppSelectTags
       ref="aBox"
       v-model="aPhenotypes"
@@ -29,11 +28,7 @@
       @spread-options="(option, options) => spreadOptions(option, options, 'a')"
     />
 
-    <!-- Set B -->
-    <AppFlex gap="small">
-      <strong>... to these phenotypes</strong>
-    </AppFlex>
-
+    <strong>... to these phenotypes</strong>
     <AppSelectTags
       v-model="bPhenotypes"
       name="Second set of phenotypes"
@@ -157,12 +152,6 @@ const multiTooltip = `In this box, you can select phenotypes in 3 ways:<br>
     <li>Search for genes/diseases and get their associated phenotypes</li>
     <li>Paste comma-separated phenotype IDs</li>
   </ol>`;
-
-/** Options for mode of second set */
-const bModeOptions = [
-  { id: "these phenotypes ..." },
-  { id: "phenotypes from these genes/diseases ..." },
-];
 
 /** example data */
 type GeneratedFrom = {
