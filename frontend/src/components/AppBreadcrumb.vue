@@ -59,23 +59,27 @@ const breadcrumbs = computed<Breadcrumb[]>(() => {
 $wrap: 1000px;
 .breadcrumb {
   display: flex;
+  flex-wrap: wrap;
+  margin: 1em;
   padding: 0;
-  gap: 8px;
-  font-size: 14px;
+  gap: 0.25em; // Tighter gap for mobile
+  font-size: 0.9em;
+  line-height: 1.4;
   list-style: none;
-  @media (max-width: $wrap) {
-    padding: 0.2em;
-  }
 }
 
 .breadcrumb li {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-}
+  margin: unset;
+  white-space: nowrap;
 
-.breadcrumb li:not(:last-child)::after {
-  margin-left: 8px;
-  content: ">";
+  &:not(:last-child)::after {
+    margin-right: 0.25em;
+    margin-left: 0.25em;
+    content: ">";
+    color: #888;
+  }
 }
 
 .breadcrumb a {
@@ -85,5 +89,10 @@ $wrap: 1000px;
 
 .breadcrumb a:hover {
   text-decoration: underline;
+}
+
+.breadcrumb span {
+  color: #000;
+  font-weight: 500;
 }
 </style>

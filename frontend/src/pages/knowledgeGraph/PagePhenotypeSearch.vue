@@ -1,11 +1,7 @@
-<!--
-  phenotype explorer tab on explore page
-
-  compare sets of phenotypes and genes/diseases
--->
-
 <template>
-  <AppSection>
+  <AppBreadcrumb />
+  <PageTitle title="Phenotype Similarity Search" id="phenotype-search" />
+  <AppSection width="big" design="bare">
     <!-- example -->
     <AppFlex gap="small">
       <AppButton
@@ -20,25 +16,11 @@
         @click="doBiggerExample()"
       />
     </AppFlex>
-    <strong>Compare these phenotypes ...</strong>
-
-    <!-- set A -->
-    <AppSelectTags
-      ref="aBox"
-      v-model="aPhenotypes"
-      name="First set of phenotypes"
-      :options="getPhenotypes"
-      placeholder="Search for phenotypes, genes, or diseases"
-      :tooltip="multiTooltip"
-      :description="description(aPhenotypes, aGeneratedFrom)"
-      @spread-options="(option, options) => spreadOptions(option, options, 'a')"
-    />
 
     <!-- set B -->
-    <AppFlex gap="small">
-      <strong>... to phenotypes from </strong>
+    <AppFlex gap="small" class="select-single">
+      <strong>Find</strong>
 
-      <!-- on;ly for search -->
       <AppSelectSingle
         v-model="bGroup"
         name="Second set taxon"
@@ -46,8 +28,27 @@
       />
     </AppFlex>
 
-    <!-- for both  **-->
+    <!-- set B -->
     <AppFlex gap="small">
+      <div class="label">similar to phenotypes..</div>
+
+      <AppSelectTags
+        class="pheno-select"
+        ref="aBox"
+        v-model="aPhenotypes"
+        name="First set of phenotypes"
+        :options="getPhenotypes"
+        placeholder="Search for phenotypes, genes, or diseases"
+        :tooltip="multiTooltip"
+        :description="description(aPhenotypes, aGeneratedFrom)"
+        @spread-options="
+          (option, options) => spreadOptions(option, options, 'a')
+        "
+      />
+    </AppFlex>
+
+    <!-- for both  **-->
+    <AppFlex gap="small" class="select-single">
       <strong>... using metric</strong>
       <AppSelectSingle
         v-model="metric"
@@ -251,12 +252,14 @@ import {
   type Group,
 } from "@/api/phenotype-explorer";
 import AppAlert from "@/components/AppAlert.vue";
+import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPercentage from "@/components/AppPercentage.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import type { Option, Options } from "@/components/AppSelectTags.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
 import AppTabs from "@/components/AppTabs.vue";
+import PageTitle from "@/components/PageTitle.vue";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
 import { arrayParam, useParam, type Param } from "@/composables/use-param";
@@ -434,7 +437,9 @@ async function scrollToResults() {
 
 /** current mode */
 const isCompare = computed(() => bMode.value.id.includes("these phenotypes"));
-
+onMounted(() => {
+  console.log("isCompare", isCompare);
+});
 /** is in loading/error state */
 const isPending = computed(() =>
   isCompare.value
@@ -518,6 +523,7 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+$wrap: 1000px;
 .triptych-scroll {
   width: 100%;
   overflow-x: auto;
@@ -570,5 +576,19 @@ onMounted(() => {
   .details {
     width: 100%;
   }
+}
+.label {
+  width: auto;
+  min-width: fit-content;
+  font-weight: 600;
+}
+.select-single {
+  min-width: 19em;
+  max-width: 35em;
+}
+.pheno-select {
+  width: 100%;
+  min-width: 19em;
+  max-width: 65em;
 }
 </style>

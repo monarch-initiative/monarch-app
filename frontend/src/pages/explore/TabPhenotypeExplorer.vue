@@ -42,6 +42,8 @@
         name="Second set mode"
         :options="bModeOptions"
       />
+
+      <!-- on;ly for search -->
       <AppSelectSingle
         v-if="!isCompare"
         v-model="bGroup"
@@ -50,6 +52,7 @@
       />
     </AppFlex>
 
+    <!-- only for compare -->
     <AppSelectTags
       v-if="isCompare"
       v-model="bPhenotypes"
@@ -61,8 +64,7 @@
       @spread-options="(option, options) => spreadOptions(option, options, 'b')"
     />
 
-    <!-- similarity metric -->
-
+    <!-- for both  **-->
     <AppFlex gap="small">
       <strong>... using metric</strong>
       <AppSelectSingle
@@ -72,7 +74,7 @@
       />
     </AppFlex>
 
-    <!-- run analysis -->
+    <!-- for both  **-->
     <AppButton
       text="Analyze"
       icon="bars-progress"
