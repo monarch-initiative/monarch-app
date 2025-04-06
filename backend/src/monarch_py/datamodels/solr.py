@@ -45,6 +45,10 @@ class SolrQuery(BaseModel):
     facet_queries: Optional[List[str]] = Field(default_factory=list)
     filter_queries: Optional[List[str]] = Field(default_factory=list)
     facet_mincount: int = 1
+    group: bool = False
+    group_queries: Optional[List[str]] = Field(default_factory=list)
+    group_limit: int = 5
+    group_offset: int = 0
     query_fields: Optional[str] = None
     def_type: str = "edismax"
     q_op: str = "AND"  # See SOLR-8812, need this plus mm=100% to allow boolean operators in queries
@@ -88,6 +92,12 @@ class SolrQuery(BaseModel):
             return "fq"
         elif value == "facet_mincount":
             return "facet.mincount"
+        elif value == "group_queries":
+            return "group.query"
+        elif value == "group_limit":
+            return "group.limit"
+        elif value == "group_offset":
+            return "group.offset"
         elif value == "query_fields":
             return "qf"
         elif value == "def_type":
@@ -118,7 +128,18 @@ class SolrFacetCounts(BaseModel):
     facet_queries: Optional[Dict]
 
 
+class SolrQueryGroup(BaseModel):
+    matches: int
+    doclist: SolrQueryResponse
+
+
 class SolrQueryResult(BaseModel):
     responseHeader: SolrQueryResponseHeader
     response: SolrQueryResponse
+    facet_counts: Optional[SolrFacetCounts]
+
+
+class SolrGroupedQueryResult(BaseModel):
+    responseHeader: SolrQueryResponseHeader
+    grouped: Dict[str, SolrQueryGroup]
     facet_counts: Optional[SolrFacetCounts]
