@@ -63,7 +63,7 @@ type Props = {
   /** whether to show id. not shown by default, unless name/label empty. */
   showId?: boolean;
 };
-console.log("Indside v2");
+
 const props = withDefaults(defineProps<Props>(), {
   icon: true,
   link: true,

@@ -123,7 +123,6 @@ import { computed, onMounted, ref, watch } from "vue";
 import { isEqual } from "lodash";
 import {
   compareSetToGroup,
-  compareSetToSet,
   getPhenotypes,
   groups,
   metricOptions,
@@ -136,7 +135,6 @@ import AppPercentage from "@/components/AppPercentage.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import type { Option, Options } from "@/components/AppSelectTags.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
-import AppTabs from "@/components/AppTabs.vue";
 import PageTitle from "@/components/PageTitle.vue";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
