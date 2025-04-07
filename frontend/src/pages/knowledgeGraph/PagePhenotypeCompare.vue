@@ -104,7 +104,7 @@
             : compareResults.objectMatches"
           :key="index"
         >
-          <AppNodeBadge
+          <AppNodeBadgeV2
             :node="{ id: match.source, name: match.source_label }"
           />
 
@@ -117,7 +117,7 @@
             >
           </AppFlex>
 
-          <AppNodeBadge
+          <AppNodeBadgeV2
             :node="{ id: match.target, name: match.target_label }"
           />
         </template>
@@ -136,7 +136,7 @@ import {
 } from "@/api/phenotype-explorer";
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppButton from "@/components/AppButton.vue";
-import AppNodeBadge from "@/components/AppNodeBadge.vue";
+import AppNodeBadgev2 from "@/components/AppNodeBadgeV2.vue";
 import AppPercentage from "@/components/AppPercentage.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import type { Option, Options } from "@/components/AppSelectTags.vue";

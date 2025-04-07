@@ -68,7 +68,7 @@
         v-tooltip="
           'Send any annotations above that are phenotypes to Phenotype Explorer for comparison'
         "
-        to="/kg/search-phenotypes"
+        to="search-phenotypes"
         :state="{ phenotypes: getPhenotypes() }"
         text="Phenotype Explorer"
         icon="arrow-right"
