@@ -56,7 +56,9 @@
   <AppSection width="big" design="bare">
     <p class="content">
       If you have any questions, feel free to reach out to us at :
-      <a>info@monarchinitiative.org</a>
+      <AppLink to="mailto:info@monarchinitiative.org"
+        >info@monarchinitiative.org</AppLink
+      >
     </p></AppSection
   >
 </template>
