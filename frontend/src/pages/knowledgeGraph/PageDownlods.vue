@@ -19,10 +19,12 @@
     </section>
 
     <section>
-      <h2>Simplified TSV Exports</h2>
-      <p>
-        You can browse all TSV exports directly
-        <a :href="tsvIndexLink" target="_blank">here</a>.
+      <p class="tsv-export">
+        <a :href="tsvIndexLink" target="_blank"
+          >Browse Simplified TSV Downloads</a
+        >
+        : Pre-processed TSV versions of Monarch KG data, organized by entity
+        types and relationships You can browse all TSV exports directly .
       </p>
     </section>
   </AppSection>
@@ -59,5 +61,8 @@ h2 {
   padding-bottom: 0.3rem;
   border-bottom: 1px solid #ccc;
   font-size: 1.4rem;
+}
+.tsv-export {
+  text-align: center;
 }
 </style>
