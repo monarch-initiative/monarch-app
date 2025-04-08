@@ -3,7 +3,7 @@
 
   <PageTitle title="Downloads" id="downloads-page" />
   <AppSection width="big" design="bare">
-    <p class="description">
+    <p>
       Here you can find all the available downloads for the knowledge graph. The
       data is available in TSV format, and you can also download the knowledge
       graph in various formats.
@@ -19,7 +19,7 @@
     </section>
 
     <section>
-      <p class="tsv-export">
+      <p>
         <a :href="tsvIndexLink" target="_blank"
           >Browse Simplified TSV Downloads</a
         >
@@ -62,7 +62,7 @@ h2 {
   border-bottom: 1px solid #ccc;
   font-size: 1.4rem;
 }
-.tsv-export {
-  text-align: center;
+p {
+  text-align: left;
 }
 </style>
