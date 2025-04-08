@@ -38,23 +38,12 @@ import {
 </script>
 
 <style lang="scss" scoped>
-.downloads-page {
-  padding: 2rem;
-}
-
 section {
   width: 100%;
 }
 
-h1 {
-  margin-bottom: 1rem;
-  font-size: 2rem;
-}
-
 h2 {
   margin-bottom: 1rem;
-  padding-bottom: 0.3rem;
-
   font-size: 1.4rem;
 }
 p {
