@@ -14,18 +14,13 @@
     </section>
 
     <section>
-      <h2>Derived Artifacts</h2>
-      <DownloadTable :items="derivedArtifacts" />
+      <h2>Associations</h2>
+      <DownloadTable :items="associations" />
     </section>
 
     <section>
-      <p>
-        <a :href="tsvIndexLink" target="_blank"
-          >Browse Simplified TSV Downloads</a
-        >
-        : Pre-processed TSV versions of Monarch KG data, organized by entity
-        types and relationships You can browse all TSV exports directly .
-      </p>
+      <h2>Derived Artifacts</h2>
+      <DownloadTable :items="derivedArtifacts" />
     </section>
   </AppSection>
 </template>
@@ -36,9 +31,9 @@ import DownloadTable from "@/components/AppDownloadTable.vue";
 import AppSection from "@/components/AppSection.vue";
 import PageTitle from "@/components/PageTitle.vue";
 import {
+  associations,
   derivedArtifacts,
   knowledgeGraphDownloads,
-  tsvIndexLink,
 } from "@/data/downloads";
 </script>
 
@@ -59,7 +54,7 @@ h1 {
 h2 {
   margin-bottom: 1rem;
   padding-bottom: 0.3rem;
-  border-bottom: 1px solid #ccc;
+
   font-size: 1.4rem;
 }
 p {
