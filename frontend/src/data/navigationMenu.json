@@ -24,9 +24,8 @@
       {
         "label": "Downloads",
         "key": "kg-downloads",
-        "to": "https://data.monarchinitiative.org/",
-        "tooltip": "",
-        "icon": true
+        "to": "/kg/downloads",
+        "tooltip": ""
       },
       {
         "label": "Status & QC",
