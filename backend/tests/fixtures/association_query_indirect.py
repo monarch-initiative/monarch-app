@@ -33,4 +33,5 @@ def association_query_indirect():
         "mm": "100%",
         "boost": None,
         "sort": None,
+        "hl": True,
     }

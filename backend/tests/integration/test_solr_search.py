@@ -40,12 +40,12 @@ def test_search_sort():
 
 def test_search_highlighting():
     si = SolrImplementation()
-    response = si.search("marfan", highlighting=True)
+    response = si.search("fgf8a", highlighting=True)
     assert response
     assert response.total > 0
-    first_doc_highlights = response.highlight[response.items[0].id]
-    assert first_doc_highlights
-    assert "name" in first_doc_highlights
+    first_doc = response.items[0]
+    assert first_doc
+    assert "name" in first_doc.highlighting
 
 
 def test_facet_fields():

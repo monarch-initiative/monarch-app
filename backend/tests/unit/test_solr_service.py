@@ -19,7 +19,7 @@ def test_consolidate_highlights():
     # Expected consolidated highlights
     expected = {
         "MONDO:123": {
-            "name": ["<em>example</em> name", "another <em>example</em>", "a third <em>example</em> name"],
+            "name": ["<em>example</em> name", "a third <em>example</em> name", "another <em>example</em>"],
             "description": ["<em>example</em> description"],
         },
         "HGNC:456": {

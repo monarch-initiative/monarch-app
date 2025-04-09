@@ -86,6 +86,7 @@ class SolrService(BaseModel):
                             highlight[root_field] = highlight[field]
                         else:
                             highlight[root_field] = list(set(highlight[root_field] + highlight[field]))
+                            highlight[root_field].sort()
                         del highlight[field]
 
         return consolidated_highlights
