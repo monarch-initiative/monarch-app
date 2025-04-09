@@ -142,7 +142,7 @@
       </figure>
     </div>
     <p class="note">
-      <em>Note :</em> This is a partial view of ontologies used. See
+      Note: This is a partial view of ontologies used. See
       <a
         class="link"
         href="https://github.com/monarch-initiative/phenio/"
@@ -443,6 +443,10 @@ h1 {
       height: auto;
     }
   }
+}
+.note {
+  color: #3b3b3b;
+  font-size: 0.95rem;
 }
 p {
   padding-top: 0;
