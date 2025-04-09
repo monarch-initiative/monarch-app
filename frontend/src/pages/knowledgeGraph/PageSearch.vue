@@ -4,7 +4,7 @@
     <div class="container">
       <div class="logo-container">
         <img src="/icons/monarch-logo.svg" alt="logo" class="logo" />
-        <h3>Knowledge Graph</h3>
+        <h3 id="knowledge-graph">Knowledge Graph</h3>
       </div>
 
       <div :class="['page-wrapper', { 'search-active': search }]">
@@ -45,8 +45,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { nextTick, onMounted, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { groupBy, sortBy, uniqBy } from "lodash";
 import { getCategoryIcon } from "@/api/categories";
 import { getAutocomplete } from "@/api/search";
@@ -62,6 +62,7 @@ import { waitFor } from "@/util/dom";
 
 const search = ref("");
 const router = useRouter();
+const route = useRoute();
 
 const viewAll: Option = {
   id: "ALL",
@@ -70,16 +71,23 @@ const viewAll: Option = {
   special: true,
 };
 
+function scrollToHashWithOffset(hash: string, offset = 80) {
+  const el = document.querySelector(hash);
+  if (el) {
+    const y = el.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top: y, behavior: "smooth" });
+  }
+}
+
 const handleSuggestionClick = async (term: string) => {
   const entity = ENTITY_MAP[term];
   if (entity?.id) {
     await router.push({ path: "/" + entity.id, hash: "#" + entity.to });
-  } else {
-    await router.push({
-      name: "KnowledgeGraphResults",
-      query: { search: term },
-      hash: "#search",
-    });
+
+    await nextTick();
+    setTimeout(() => {
+      scrollToHashWithOffset(`#${entity.to}`, 80);
+    }, 1000);
   }
 };
 
