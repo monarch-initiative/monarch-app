@@ -77,8 +77,7 @@ defineExpose({ button });
     opacity $fast,
     box-shadow $fast;
 
-  &.normal {
-    min-width: min(200px, calc(100% - 40px));
+  &.button-base {
     min-height: 40px;
     padding: 5px 20px;
     border-radius: $rounded;
@@ -99,6 +98,16 @@ defineExpose({ button });
       outline: none;
       box-shadow: $outline;
     }
+  }
+
+  &.normal {
+    @extend .button-base;
+    min-width: min(200px, calc(100% - 40px));
+  }
+
+  &.tile {
+    @extend .button-base;
+    width: fit-content;
   }
 
   &.circle {
