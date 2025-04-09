@@ -142,7 +142,7 @@
       </figure>
     </div>
     <p class="note">
-      <em>Note:</em> This is a partial view of ontologies used. See
+      <em>Note :</em> This is a partial view of ontologies used. See
       <a
         class="link"
         href="https://github.com/monarch-initiative/phenio/"
@@ -386,40 +386,6 @@ h1 {
   }
 }
 
-figure {
-  margin: 1em 5em;
-
-  @media (max-width: 768px) {
-    margin: unset;
-  }
-}
-
-.figure-description {
-  font-size: 1rem;
-  line-height: 1.7;
-
-  p {
-    text-align: left;
-  }
-
-  .label {
-    color: #007c91;
-    font-weight: bold;
-    font-family: monospace;
-  }
-
-  strong {
-    color: #005b70;
-    font-weight: 600;
-  }
-
-  .note {
-    margin-top: 1rem;
-    color: #666;
-    font-style: italic;
-  }
-}
-
 .data-harmonization {
   display: flex;
   flex-direction: column;
@@ -467,15 +433,17 @@ figure {
   figure {
     align-self: center;
     width: 100%;
-    max-width: 800px;
-
+    max-width: 850px;
+    margin: 1em 4em;
+    @media (max-width: 768px) {
+      margin: unset;
+    }
     img {
       width: 100%;
       height: auto;
     }
   }
 }
-
 p {
   padding-top: 0;
   text-align: left;
