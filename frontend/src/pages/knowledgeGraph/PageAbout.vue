@@ -1,17 +1,15 @@
 <template>
   <AppBreadcrumb />
-  <!-- <AppSection width="big" class="section" design="bare"> -->
-
   <PageTitle
     id="kg-about"
     title="KnowledgeGraph"
     image-src="/icons/monarch-logo.svg"
   />
 
-  <!--WHat is KG-->
+  <!-- What is KG -->
   <AppSection width="big" design="bare" class="section kg-about">
-    <AppHeading class="fullWidthHeader"
-      >What is Monarch Initiative Knowledge Graph (KG)?
+    <AppHeading class="fullWidthHeader">
+      What is Monarch Initiative Knowledge Graph (KG)?
     </AppHeading>
     <p class="tagline">
       Discover the power of our Knowledge Graph, seamlessly connecting
@@ -41,7 +39,6 @@
           </a>
         </p>
       </div>
-
       <iframe
         title="What is KnowledgeGraph?"
         class="video"
@@ -53,12 +50,11 @@
     </div>
   </AppSection>
 
-  <!--Entity and Association statistics-->
+  <!-- Entity and Association statistics -->
   <AppSection width="big" design="bare">
     <div class="enity-association">
       <AppHeading :level="2">Entity and Association Statistics</AppHeading>
       <AppGallery :cols="4">
-        <!-- node counts -->
         <AppTile
           v-for="(item, index) in metadata.node"
           :key="index"
@@ -67,7 +63,6 @@
           :subtitle="formatNumber(item.count, true)"
           design="small"
         />
-        <!-- association counts -->
         <AppTile
           v-for="(item, index) in metadata.association"
           :key="index"
@@ -88,18 +83,17 @@
     </div>
   </AppSection>
 
-  <!--KG's Tools and Resources-->
+  <!-- KG's Tools and Resources -->
   <AppSection width="big" design="bare" class="section">
-    <AppHeading class="fullWidthHeader"
-      >Knowledge Graph's Tools and Resources</AppHeading
-    >
+    <AppHeading class="fullWidthHeader">
+      Knowledge Graph's Tools and Resources
+    </AppHeading>
     <AppFlex gap="big" class="tools">
       <AppTileCard
         title="Graph"
         content="Dive into the Monarch Knowledge Graph, where complex biological data is interconnected. This section lets you explore relationships between genes, diseases, phenotypes, and more, providing deep insights to accelerate scientific discovery."
         button-text="Explore"
       />
-
       <AppTileCard
         title="Phenotype Explore"
         content="The Phenotype Explorer enables you to investigate phenotypic data, linking observable traits to genetic information. Use this tool to explore how phenotypes are connected to genetic variations and their role in diseases."
@@ -110,7 +104,6 @@
         content="The Text Annotator is a powerful tool for extracting biological knowledge from scientific literature. It helps researchers identify key biological concepts and relationships within text, enhancing the search for relevant data and insights."
         button-text="Explore"
       />
-
       <AppTileCard
         title="Tools"
         content="Access a wealth of resources that support your research, including tools, datasets, and documentation. This section provides the essential data and information needed to make the most of Monarch's integrated biological knowledge"
@@ -119,15 +112,14 @@
     </AppFlex>
   </AppSection>
 
-  <!--Title Placeholder - Has to be replaced with real content-->
+  <!-- Data Harmonization section -->
   <AppSection width="big" class="section" design="bare">
-    <AppHeading class="fullWidthHeader"
-      >Data Harmonization within the Monarch KG</AppHeading
-    >
+    <AppHeading class="fullWidthHeader">
+      Data Harmonization within the Monarch KG
+    </AppHeading>
     <p class="note" style="margin: 1em">
       The descriptions (A–F) correspond to regions marked in the figure below.
     </p>
-
     <div class="data-harmonization">
       <div class="description-grid">
         <section
@@ -142,7 +134,6 @@
           <p>{{ point.description }}</p>
         </section>
       </div>
-
       <figure>
         <img
           src="@/assets/architecture.png"
@@ -150,18 +141,17 @@
         />
       </figure>
     </div>
-
     <p class="note">
       <em>Note:</em> This is a partial view of ontologies used. See
       <a
         class="link"
         href="https://github.com/monarch-initiative/phenio/"
         target="_blank"
-        >PHENIO documentation</a
+      >
+        PHENIO documentation</a
       >
       for the full list.
     </p>
-
     <p class="note">
       Follow the progress of the Monarch Initiative and explore related projects
       on
@@ -174,15 +164,15 @@
     </p>
   </AppSection>
 
-  <!--contact-->
+  <!-- Contact -->
   <AppSection width="big" design="bare">
     <p class="info">
       If you have any questions, feel free to reach out to us at :
-      <AppLink to="mailto:info@monarchinitiative.org"
-        >info@monarchinitiative.org</AppLink
-      >
-    </p></AppSection
-  >
+      <AppLink to="mailto:info@monarchinitiative.org">
+        info@monarchinitiative.org
+      </AppLink>
+    </p>
+  </AppSection>
 </template>
 
 <script setup lang="ts">
