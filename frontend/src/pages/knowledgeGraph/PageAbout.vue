@@ -431,7 +431,7 @@ figure {
     grid-template-columns: 1fr 1fr;
     gap: 1em;
 
-    @media (max-width: 768px) {
+    @media (max-width: $wrap) {
       grid-template-columns: 1fr;
     }
   }
