@@ -1,7 +1,3 @@
-<!--
-  looks like a button and either does something (<button>) or goes somewhere (<a>)
--->
-
 <template>
   <component
     :is="component"
