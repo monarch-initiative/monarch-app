@@ -1,6 +1,6 @@
 <template>
   <AppBreadcrumb class="breadcrumb" />
-  <AppSection width="big" class="section" design="bare">
+  <AppSection width="big" design="bare">
     <div class="container">
       <div class="logo-container">
         <img src="/icons/monarch-logo.svg" alt="logo" class="logo" />
@@ -208,6 +208,10 @@ const onDelete = () => {
 .breadcrumb {
   margin: 0;
 }
+
+.section {
+  justify-content: center;
+}
 .container {
   box-sizing: border-box;
   display: flex;
@@ -249,13 +253,15 @@ const onDelete = () => {
 }
 
 .tool-section {
+  display: flex;
+  flex-direction: column;
   max-width: 40em;
-  margin-top: 2rem;
+  margin: 2em;
+  gap: 1.2em;
+
   font-size: 0.9em;
-  word-break: break-word;
 
   p {
-    margin-bottom: 1rem;
     line-height: 1.5;
     text-align: center;
   }
