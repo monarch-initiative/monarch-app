@@ -5,7 +5,7 @@
       <p class="tile-content">{{ content }}</p>
     </div>
 
-    <AppButton to="" text="Explore" class="app-button" />
+    <AppButton to="" text="Explore" design="tile" />
   </div>
 </template>
 
@@ -24,8 +24,7 @@ $wrap: 1100px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 580px;
-
+  max-width: 580px;
   padding: 1.5em;
   gap: 10px;
   background-color: #a6ecf257;
@@ -46,13 +45,6 @@ $wrap: 1100px;
   font-size: 0.9rem;
 }
 
-.tile-button {
-  align-self: center;
-}
-
-.app-button {
-  min-width: unset !important;
-}
 h3 {
   padding: unset;
 }

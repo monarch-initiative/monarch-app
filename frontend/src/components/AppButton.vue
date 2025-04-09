@@ -30,7 +30,7 @@ type Props = {
   /** on click action */
   click?: () => unknown;
   /** visual design */
-  design?: "normal" | "circle" | "small";
+  design?: "normal" | "circle" | "small" | "tile";
   /** color */
   color?: "primary" | "secondary" | "none";
   /** whether to copy text prop to clipboard on click */
@@ -146,6 +146,30 @@ defineExpose({ button });
     &:hover,
     &:focus {
       color: $black;
+    }
+  }
+
+  &.tile {
+    width: fit-content;
+    min-height: 40px;
+    padding: 5px 20px;
+    border-radius: $rounded;
+    color: $off-black;
+    font-weight: 500;
+    font-size: 1rem;
+
+    &.primary {
+      background: $theme-light;
+    }
+
+    &.secondary {
+      background: $light-gray;
+    }
+
+    &:hover,
+    &:focus {
+      outline: none;
+      box-shadow: $outline;
     }
   }
 }
