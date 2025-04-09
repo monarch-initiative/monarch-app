@@ -27,35 +27,16 @@
             Monarch KG with our cutting-edge tool suite
           </p>
           <div class="tools">
-            <AppLink to="/kg/compare-phenotypes" class="tool"
-              >Phenotype Similarity Compare</AppLink
-            >
-            <AppLink to="/kg/search-phenotypes" class="tool"
-              >Phenotype Similarity Search</AppLink
-            >
             <AppLink
-              to="https://monarch-initiative.github.io/monarchr/articles/monarchr"
+              v-for="tool in TOOL_LINKS"
+              :key="tool.label"
+              :to="tool.to"
+              :external="tool.external"
               class="tool"
-              >Monarch R</AppLink
             >
-            <AppLink
-              to="https://neo4j.monarchinitiative.org/browser/"
-              class="tool"
-              >Neo4j</AppLink
-            >
-            <AppLink to="/kg/text-annotator" class="tool"
-              >Text Annotator</AppLink
-            >
-            <AppLink
-              to="https://github.com/monarch-initiative/monarch-assistant-cypher"
-              class="tool"
-              >Monarch Assistant</AppLink
-            >
-            <AppLink
-              to="https://api-v3.monarchinitiative.org/v3/docs"
-              class="tool"
-              >MonarchKG API</AppLink
-            >
+              {{ tool.label }}
+              <AppIcon v-if="tool.external" icon="arrow-up-right-from-square" />
+            </AppLink>
           </div>
         </div>
       </div>
@@ -75,6 +56,7 @@ import AppSelectAutocomplete, {
   type Option,
 } from "@/components/AppSelectAutocomplete.vue";
 import SearchSuggestions from "@/components/TheSearchSuggestions.vue";
+import { ENTITY_MAP, TOOL_LINKS } from "@/data/knowledgeGraphConfig";
 import { history } from "@/global/history";
 import { waitFor } from "@/util/dom";
 
@@ -86,32 +68,6 @@ const viewAll: Option = {
   label: "View all results...",
   icon: "arrow-right",
   special: true,
-};
-
-const ENTITY_MAP: Record<
-  string,
-  { id: string; label: string; to?: string; text?: string }
-> = {
-  "Ehlers-Danlos syndrome": {
-    id: "MONDO:0020066",
-    label: "Ehlers-Danlos syndrome",
-    to: "disease-to-phenotype",
-  },
-  "Down syndrome": {
-    id: "MONDO:0008608",
-    label: "Down syndrome",
-    to: "disease-model",
-  },
-  "cystic fibrosis": {
-    id: "MONDO:0009061",
-    label: "Cystic fibrosis",
-    to: "variant-to-disease",
-  },
-  FBN1: {
-    id: "HGNC:3603",
-    label: "FBN1",
-    to: "gene-to-phenotype",
-  },
 };
 
 const handleSuggestionClick = async (term: string) => {
@@ -228,10 +184,6 @@ const onDelete = () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  max-width: 60em;
-  overflow-x: hidden;
-  transition: all 0.3s ease;
 }
 
 .search-box {
