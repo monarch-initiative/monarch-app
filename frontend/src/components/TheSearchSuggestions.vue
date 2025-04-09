@@ -1,6 +1,6 @@
 <template>
   <div class="suggestions">
-    <div class="tooltip-wrapper" v-for="(s, i) in suggestions" :key="i">
+    <div class="tooltip-wrapper" v-for="(s, i) in searchSuggestions" :key="i">
       <span class="tooltip-trigger">{{ s.label }}</span>
       <div class="tooltip-box">
         {{ s.text }}
@@ -13,17 +13,32 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
-  suggestions: {
-    label: string;
-    term: string;
-    text: string;
-  }[];
-}>();
-
 defineEmits<{
   (e: "select", term: string): void;
 }>();
+
+const searchSuggestions = [
+  {
+    label: "Disease to Gene",
+    term: "Ehlers-Danlos syndrome",
+    text: "e.g: Explore the disease to phenotype relation for",
+  },
+  {
+    label: "Model to Disease",
+    term: "Down syndrome",
+    text: "e.g: Explore the model to disease relation for",
+  },
+  {
+    label: "Variant to disease",
+    term: "cystic fibrosis",
+    text: "e.g: Explore the variant to disease relation for",
+  },
+  {
+    label: "Gene to Phenotype",
+    term: "FBN1",
+    text: "e.g: Explore the gene to phenotype relation for",
+  },
+];
 </script>
 
 <style lang="scss" scoped>

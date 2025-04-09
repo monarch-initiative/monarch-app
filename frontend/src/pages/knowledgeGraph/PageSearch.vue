@@ -1,6 +1,5 @@
 <template>
-  <AppBreadcrumb />
-
+  <AppBreadcrumb class="breadcrumb" />
   <AppSection width="big" class="section" design="bare">
     <div class="container">
       <div class="logo-container">
@@ -20,11 +19,7 @@
             @delete="onDelete"
           />
         </div>
-
-        <SearchSuggestions
-          :suggestions="searchSuggestions"
-          @select="handleSuggestionClick"
-        />
+        <SearchSuggestions @select="handleSuggestionClick" />
 
         <div class="tool-section">
           <p>
@@ -79,9 +74,9 @@ import AppSelectAutocomplete, {
   type Options as AutocompleteOptions,
   type Option,
 } from "@/components/AppSelectAutocomplete.vue";
+import SearchSuggestions from "@/components/TheSearchSuggestions.vue";
 import { history } from "@/global/history";
 import { waitFor } from "@/util/dom";
-import SearchSuggestions from "./PageSearchSuggestions.vue";
 
 const search = ref("");
 const router = useRouter();
@@ -118,29 +113,6 @@ const ENTITY_MAP: Record<
     to: "gene-to-phenotype",
   },
 };
-
-const searchSuggestions = [
-  {
-    label: "Disease to Gene",
-    term: "Ehlers-Danlos syndrome",
-    text: "e.g: Explore the disease to phenotype relation for",
-  },
-  {
-    label: "Model to Disease",
-    term: "Down syndrome",
-    text: "e.g: Explore the model to disease relation for",
-  },
-  {
-    label: "Variant to disease",
-    term: "cystic fibrosis",
-    text: "e.g: Explore the variant to disease relation for",
-  },
-  {
-    label: "Gene to Phenotype",
-    term: "FBN1",
-    text: "e.g: Explore the gene to phenotype relation for",
-  },
-];
 
 const handleSuggestionClick = async (term: string) => {
   const entity = ENTITY_MAP[term];
@@ -233,6 +205,9 @@ const onDelete = () => {
 </script>
 
 <style scoped lang="scss">
+.breadcrumb {
+  margin: 0;
+}
 .container {
   box-sizing: border-box;
   display: flex;
@@ -240,7 +215,6 @@ const onDelete = () => {
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-height: 70vh;
   overflow-x: hidden;
   gap: 3em;
   text-align: center;
@@ -261,18 +235,13 @@ const onDelete = () => {
   max-width: 600px;
 }
 
-.search-active .search-box {
-  z-index: 10;
-  position: sticky;
-  top: 0;
-  background: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
 .logo-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  .h3 {
+    padding: 0;
+  }
 }
 
 .logo {
