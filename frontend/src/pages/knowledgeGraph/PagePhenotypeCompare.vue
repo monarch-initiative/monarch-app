@@ -136,7 +136,7 @@ import {
 } from "@/api/phenotype-explorer";
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppButton from "@/components/AppButton.vue";
-import AppNodeBadgev2 from "@/components/AppNodeBadgeV2.vue";
+import AppNodeBadgeV2 from "@/components/AppNodeBadgeV2.vue";
 import AppPercentage from "@/components/AppPercentage.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import type { Option, Options } from "@/components/AppSelectTags.vue";
@@ -267,7 +267,7 @@ const {
     objectUnmatched: [],
   },
 );
-
+console.log("compareResults", compareResults);
 /** Whether analysis is pending */
 const isPending = computed(
   () => compareIsLoading.value || compareIsError.value,
