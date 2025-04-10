@@ -70,10 +70,10 @@ export function useParam<T>(
       /** get updated value from url object */
       let newValue = "";
       /** if single value */
-
+      // @ts-expect-error
       if (typeof url.value[key] === "string") newValue = url.value[key];
       /** if multi-value, pick first */
-
+      // @ts-expect-error
       if (Array.isArray(url.value[key]) && url.value[key][0])
         newValue = url.value[key][0];
 
@@ -104,7 +104,9 @@ export function useParam<T>(
 
       /** set url value */
       if (newValue) {
+        // @ts-expect-error
         if (Array.isArray(url.value[key]) && url.value[key][0])
+          // @ts-expect-error
           url.value[key][0] = newValue;
         else url.value[key] = newValue;
         /** if "empty", such as empty string or array, delete param from url */
