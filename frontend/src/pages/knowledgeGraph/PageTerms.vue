@@ -7,7 +7,7 @@
 <template>
   <AppBreadcrumb />
   <PageTitle id="kg-terms" title="Terms of Use" />
-  <AppSection width="big" design="bare">
+  <AppSection width="big" design="bare" class="terms-section">
     <AppHeading>License</AppHeading>
     <p>
       This web application and its source code are licensed under the
@@ -138,3 +138,11 @@
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import PageTitle from "@/components/PageTitle.vue";
 </script>
+<style lang="scss" scoped>
+$wrap: 1000px;
+.section.center {
+  @media (max-width: $wrap) {
+    gap: 0.8em;
+  }
+}
+</style>
