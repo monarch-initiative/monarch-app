@@ -3,13 +3,12 @@
   <PageTitle title="Phenotype Similarity Search" id="phenotype-search" />
   <AppSection design="bare">
     <p class="description">
-      This tool finds genes or diseases from a selected species or group that
-      show phenotypic similarity to a set of input phenotypes. Similarity is
-      computed using semantic metrics such as Jaccard, Information Content, or
-      Phenodigm.
+      Phenotype similarity search tool finds genes or diseases from a selected
+      species or group that show phenotypic similarity to a set of input
+      phenotypes. Similarity is computed using semantic metrics such as Jaccard,
+      Information Content, or Phenodigm.
     </p>
 
-    <!-- example -->
     <AppFlex gap="small">
       <AppButton
         text="Try a simple example"
@@ -24,7 +23,6 @@
       />
     </AppFlex>
 
-    <!-- set B -->
     <AppFlex gap="small" class="select-single">
       <strong>Find</strong>
 
@@ -35,7 +33,6 @@
       />
     </AppFlex>
 
-    <!-- set B -->
     <AppFlex gap="small" direction="col">
       <div class="label">similar to phenotypes..</div>
       <AppSelectTags
@@ -50,7 +47,6 @@
       />
     </AppFlex>
 
-    <!-- for both  **-->
     <AppFlex gap="small" class="select-single">
       <strong>... using metric</strong>
       <AppSelectSingle
@@ -60,7 +56,6 @@
       />
     </AppFlex>
 
-    <!-- for both  **-->
     <AppButton
       text="Analyze"
       icon="bars-progress"
