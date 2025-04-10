@@ -44,14 +44,14 @@ import PageTitle from "@/components/PageTitle.vue";
 </script>
 <style lang="scss" scoped>
 .section.center[data-v-d078f057] {
-  gap: 25px;
+  gap: 1.8em;
 }
 ul {
-  padding-left: 20px;
+  padding-left: 1.2em;
   list-style-type: disc;
 }
 
 li {
-  margin-bottom: 13px;
+  margin-bottom: 1em;
 }
 </style>

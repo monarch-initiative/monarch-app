@@ -31,17 +31,10 @@
     </AppGallery>
     <p>
       For detailed status reports, visit our
-      <AppLink to="https://stats.uptimerobot.com/XPRo9s4BJ5"
+      <AppLink to="https://stats.uptimerobot.com/XPRo9s4BJ5" noIcon
         >Live Status Dashboard</AppLink
       >
     </p>
-
-    <!-- link to uptime bot site for full details -->
-    <!-- <AppButton
-      to="https://stats.uptimerobot.com/XPRo9s4BJ5"
-      text="More Details"
-      icon="arrow-right"
-    /> -->
 
     <p class="content">
       Additionally, for data validation and quality control insights, visit our
