@@ -10,8 +10,8 @@
 
   <template v-else-if="route.matched.length">
     <TheBanner v-if="apiName !== 'local'">
-      This repository is under review for potential modification
-      in compliance with Administration directives.
+      This repository is under review for potential modification in compliance
+      with Administration directives.
     </TheBanner>
     <TheBanner v-if="apiName !== 'prod'">
       This web app is the
