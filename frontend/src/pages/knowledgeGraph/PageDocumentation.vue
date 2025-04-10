@@ -11,7 +11,7 @@
       <li>
         <AppLink
           to="https://monarch-initiative.github.io/monarch-ingest/"
-          :noIcon="true"
+          :no-icon="true"
         >
           Monarch Ingest Documentation
         </AppLink>
@@ -20,7 +20,10 @@
         pipelines, and transformation processes
       </li>
       <li>
-        <AppLink to="https://monarch-app.monarchinitiative.org/" :noIcon="true">
+        <AppLink
+          to="https://monarch-app.monarchinitiative.org/"
+          :no-icon="true"
+        >
           Monarch Application Guide
         </AppLink>
         : This guide offers instructions on using the Monarch Knowledge Graph

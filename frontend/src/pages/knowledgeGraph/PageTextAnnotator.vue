@@ -6,7 +6,7 @@
 
 <template>
   <AppBreadcrumb />
-  <PageTitle title="Text Annotator" id="text-annotator" />
+  <PageTitle id="text-annotator" title="Text Annotator" />
   <AppSection design="bare">
     <AppTextbox
       v-model="content"

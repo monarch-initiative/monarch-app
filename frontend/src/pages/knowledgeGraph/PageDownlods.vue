@@ -1,7 +1,7 @@
 <template>
   <AppBreadcrumb />
 
-  <PageTitle title="Downloads" id="downloads-page" />
+  <PageTitle id="downloads-page" title="Downloads" />
   <AppSection width="big" design="bare">
     <p>
       Here you can find all the available downloads for the knowledge graph. The

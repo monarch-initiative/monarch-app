@@ -83,7 +83,7 @@
               >
                 {{ subItem.label }}
                 <!-- Conditionally render icon if it's an absolute link -->
-                <span class="icon" v-if="subItem.icon">
+                <span v-if="subItem.icon" class="icon">
                   <AppIcon icon="arrow-up-right-from-square" />
                 </span>
               </AppLink>

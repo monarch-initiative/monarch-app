@@ -6,8 +6,14 @@
         >&#9662;</span
       >
     </button>
-
-    <div v-if="isOpen" class="dropdown-menu" @click="closeMenu">
+    <div
+      v-if="isOpen"
+      class="dropdown-menu"
+      role="button"
+      tabindex="0"
+      @click="closeMenu"
+      @keydown.enter="closeMenu"
+    >
       <ul class="menu-list">
         <slot></slot>
       </ul>

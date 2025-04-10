@@ -1,6 +1,6 @@
 <template>
   <div class="suggestions">
-    <div class="tooltip-wrapper" v-for="(s, i) in searchSuggestions" :key="i">
+    <div v-for="(s, i) in searchSuggestions" :key="i" class="tooltip-wrapper">
       <span class="tooltip-trigger">{{ s.label }}</span>
       <div class="tooltip-box">
         {{ s.text }}
