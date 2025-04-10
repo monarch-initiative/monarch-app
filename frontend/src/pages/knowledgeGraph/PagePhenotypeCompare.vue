@@ -126,7 +126,7 @@ import AppButton from "@/components/AppButton.vue";
 import AppNodeBadgeV2 from "@/components/AppNodeBadgeV2.vue";
 import AppPercentage from "@/components/AppPercentage.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
-import type { Option, Options } from "@/components/AppSelectTags.vue";
+import type { Option } from "@/components/AppSelectTags.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
 import AppTabs from "@/components/AppTabs.vue";
 import PageTitle from "@/components/ThePageTitle.vue";
