@@ -1,7 +1,6 @@
 <template>
   <AppBreadcrumb />
   <PageTitle id="phenotype-compare" title="Phenotype Similarity Compare" />
-
   <AppSection design="bare">
     <AppFlex gap="small">
       <AppButton
@@ -16,7 +15,6 @@
         @click="doBiggerExample()"
       />
     </AppFlex>
-
     <AppSelectTags
       ref="aBox"
       v-model="aPhenotypes"
@@ -27,7 +25,6 @@
       :description="description(aPhenotypes, aGeneratedFrom)"
       @spread-options="(option, options) => spreadOptions(option, options, 'a')"
     />
-
     <strong>... to these phenotypes</strong>
     <AppSelectTags
       v-model="bPhenotypes"
@@ -38,7 +35,6 @@
       :description="description(bPhenotypes, bGeneratedFrom)"
       @spread-options="(option, options) => spreadOptions(option, options, 'b')"
     />
-
     <!-- Metric Selection -->
     <AppFlex gap="small">
       <strong>... using metric</strong>
@@ -48,7 +44,6 @@
         :options="metricOptions"
       />
     </AppFlex>
-
     <!-- Analyze Button -->
     <AppButton
       text="Analyze"
@@ -57,7 +52,6 @@
       @click="runCompare()"
     />
   </AppSection>
-
   <!-- Analysis Status -->
   <AppSection v-if="isPending">
     <AppStatus v-if="compareIsLoading" code="loading"
@@ -67,7 +61,6 @@
       >Error running analysis</AppStatus
     >
   </AppSection>
-
   <!-- Compare Results -->
   <AppSection
     v-else-if="
@@ -78,14 +71,12 @@
     "
   >
     <AppHeading>Similarity Comparison</AppHeading>
-
     <AppTabs
       v-model="compareTab"
       name="Comparison direction"
       :tabs="compareTabs"
       :url="false"
     />
-
     <div class="triptych-scroll">
       <div class="triptych">
         <div>
@@ -97,7 +88,6 @@
           <strong>{{ headings[1].name }}</strong>
           <div class="weak">{{ headings[1].description }}</div>
         </div>
-
         <template
           v-for="(match, index) in compareTab === 'a-to-b'
             ? compareResults.subjectMatches
@@ -107,7 +97,6 @@
           <AppNodeBadgeV2
             :node="{ id: match.source, name: match.source_label }"
           />
-
           <!-- Score -->
           <AppFlex align-h="left" gap="small">
             <AppPercentage
@@ -116,7 +105,6 @@
               >{{ match.score.toFixed(1) }}</AppPercentage
             >
           </AppFlex>
-
           <AppNodeBadgeV2
             :node="{ id: match.target, name: match.target_label }"
           />
