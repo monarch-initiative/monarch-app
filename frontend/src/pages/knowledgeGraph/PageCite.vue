@@ -121,4 +121,7 @@ $wrap: 1000px;
 .info {
   padding: 1em;
 }
+p {
+  text-align: left;
+}
 </style>
