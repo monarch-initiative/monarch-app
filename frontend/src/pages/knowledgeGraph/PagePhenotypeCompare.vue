@@ -128,7 +128,6 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { isEqual } from "lodash";
 import {
   compareSetToSet,
   getPhenotypes,
@@ -143,9 +142,18 @@ import type { Option, Options } from "@/components/AppSelectTags.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
 import AppTabs from "@/components/AppTabs.vue";
 import PageTitle from "@/components/PageTitle.vue";
-import { snackbar } from "@/components/TheSnackbar.vue";
+import { usePhenotypeSets } from "@/composables/use-phenotype-sets";
 import { useQuery } from "@/composables/use-query";
 import examples from "@/data/phenotype-explorer.json";
+
+const {
+  aPhenotypes,
+  bPhenotypes,
+  aGeneratedFrom,
+  bGeneratedFrom,
+  description,
+  spreadOptions,
+} = usePhenotypeSets();
 
 /** Tooltip for multi-select component */
 const multiTooltip = `In this box, you can select phenotypes in 3 ways:<br>
@@ -155,23 +163,8 @@ const multiTooltip = `In this box, you can select phenotypes in 3 ways:<br>
     <li>Paste comma-separated phenotype IDs</li>
   </ol>`;
 
-/** example data */
-type GeneratedFrom = {
-  /** the option (gene/disease/phenotype) that the phenotypes came from */
-  option?: Option;
-  /** the phenotypes themselves */
-  options?: Options;
-};
-
-/** First set of phenotypes */
-const aPhenotypes = ref<Options>([]);
-/** Second set of phenotypes */
-const bPhenotypes = ref<Options>([]);
 /** Metric for comparison */
 const metric = ref<Option>(metricOptions[0]);
-/** "generated from" helpers after selecting gene or disease */
-const aGeneratedFrom = ref<GeneratedFrom>({});
-const bGeneratedFrom = ref({});
 
 /** compare tab options */
 const compareTabs = [
@@ -213,37 +206,6 @@ function doBiggerExample() {
   bPhenotypes.value = examples.d.options;
   aGeneratedFrom.value = examples.c;
   bGeneratedFrom.value = examples.d;
-}
-
-/** get description to show below phenotypes select box */
-function description(
-  phenotypes: Options,
-  generatedFrom: GeneratedFrom,
-): string {
-  const description = [];
-
-  /** number of phenotypes */
-  description.push(`${phenotypes.length} phenotypes`);
-
-  /** to avoid misleading text, only show if lists match exactly */
-  if (isEqual(generatedFrom.options, phenotypes))
-    description.push(
-      `generated from "${
-        generatedFrom.option?.label || generatedFrom.option?.id
-      }"`,
-    );
-  return `(${description.join(", ")})`;
-}
-
-/** when multi select component runs spread options function */
-function spreadOptions(option: Option, options: Options, set: string) {
-  /** notify */
-  if (options.length === 0) snackbar("No associated phenotypes found");
-  else snackbar(`Selected ${options.length} phenotypes`);
-
-  /** set "generated from" helpers */
-  if (set === "a") aGeneratedFrom.value = { option, options };
-  else if (set === "b") bGeneratedFrom.value = { option, options };
 }
 
 /** Comparison results */

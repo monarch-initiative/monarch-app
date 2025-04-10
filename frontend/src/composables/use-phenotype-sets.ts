@@ -10,10 +10,7 @@ type GeneratedFrom = {
   option?: Option;
   options?: Options;
 };
-const optionParam: Param<Option> = {
-  parse: (value) => ({ id: value }),
-  stringify: (value) => String(value.id),
-};
+
 const optionsParam = arrayParam<Option>({
   parse: (value) => (value ? { id: value } : undefined),
   stringify: (value) => String(value.id),

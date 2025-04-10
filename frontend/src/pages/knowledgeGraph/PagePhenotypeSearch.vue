@@ -133,7 +133,7 @@ import type { Option, Options } from "@/components/AppSelectTags.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
 import PageTitle from "@/components/PageTitle.vue";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
-import { arrayParam, useParam, type Param } from "@/composables/use-param";
+import { useParam, type Param } from "@/composables/use-param";
 import { usePhenotypeSets } from "@/composables/use-phenotype-sets";
 import { useQuery } from "@/composables/use-query";
 import examples from "@/data/phenotype-explorer.json";
@@ -154,22 +154,10 @@ const multiTooltip = `In this box, you can select phenotypes in 3 ways:<br>
 /** search group options */
 const bGroupOptions = groups.map((group) => ({ id: group, label: group }));
 
-/** example data */
-type GeneratedFrom = {
-  /** the option (gene/disease/phenotype) that the phenotypes came from */
-  option?: Option;
-  /** the phenotypes themselves */
-  options?: Options;
-};
-
 const optionParam: Param<Option> = {
   parse: (value) => ({ id: value }),
   stringify: (value) => String(value.id),
 };
-const optionsParam = arrayParam<Option>({
-  parse: (value) => (value ? { id: value } : undefined),
-  stringify: (value) => String(value.id),
-});
 
 /** selected group for second set */
 const bGroup = useParam("b-group", optionParam, bGroupOptions[0]);
@@ -197,13 +185,11 @@ function ringPercent(score = 0) {
 /** example phenotype set comparison */
 function doSimpleExample() {
   aPhenotypes.value = examples.a.options;
-
   aGeneratedFrom.value = examples.a;
 }
 
 function doBiggerExample() {
   aPhenotypes.value = examples.c.options;
-
   aGeneratedFrom.value = examples.c;
 }
 
