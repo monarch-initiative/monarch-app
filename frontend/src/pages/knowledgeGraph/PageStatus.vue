@@ -28,7 +28,7 @@
     </AppGallery>
     <p>
       For detailed status reports, visit our
-      <AppLink to="https://stats.uptimerobot.com/XPRo9s4BJ5" no-icon="true"
+      <AppLink to="https://stats.uptimerobot.com/XPRo9s4BJ5" :no-icon="true"
         >Live Status Dashboard</AppLink
       >
     </p>

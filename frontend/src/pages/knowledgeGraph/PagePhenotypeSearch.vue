@@ -1,35 +1,37 @@
 <template>
-   <AppBreadcrumb /> <PageTitle
-    id="phenotype-search"
-    title="Phenotype Similarity Search"
-  /> <AppSection design="bare"
-    >
+  <AppBreadcrumb />
+  <PageTitle id="phenotype-search" title="Phenotype Similarity Search" />
+  <AppSection design="bare">
     <p class="description">
-       Phenotype similarity search tool finds genes or diseases from a selected
+      Phenotype similarity search tool finds genes or diseases from a selected
       species or group that show phenotypic similarity to a set of input
       phenotypes. Similarity is computed using semantic metrics such as Jaccard,
       Information Content, or Phenodigm.
     </p>
-     <AppFlex gap="small"
-      > <AppButton
+    <AppFlex gap="small">
+      <AppButton
         text="Try a simple example"
         design="small"
         @click="doSimpleExample()"
-      /> | <AppButton
+      />
+      |
+      <AppButton
         text="Try a bigger example"
         design="small"
         @click="doBiggerExample()"
-      /> </AppFlex
-    > <AppFlex gap="small" class="select-single"
-      > <strong>Find</strong> <AppSelectSingle
+      />
+    </AppFlex>
+    <AppFlex gap="small" class="select-single">
+      <strong>Find</strong>
+      <AppSelectSingle
         v-model="bGroup"
         name="Second set taxon"
         :options="bGroupOptions"
-      /> </AppFlex
-    > <AppFlex gap="small" direction="col"
-      >
+      />
+    </AppFlex>
+    <AppFlex gap="small" direction="col">
       <div class="label">similar to phenotypes..</div>
-       <AppSelectTags
+      <AppSelectTags
         ref="aBox"
         v-model="aPhenotypes"
         name="Phenotypes"
@@ -40,53 +42,65 @@
         @spread-options="
           (option, options) => spreadOptions(option, options, 'a')
         "
-      /> </AppFlex
-    > <AppFlex gap="small" class="select-single"
-      > <strong>... using metric</strong> <AppSelectSingle
+      />
+    </AppFlex>
+    <AppFlex gap="small" class="select-single">
+      <strong>... using metric</strong>
+      <AppSelectSingle
         v-model="metric"
         name="Similarity metric"
         :options="metricOptions"
-      /> </AppFlex
-    > <AppButton
+      />
+    </AppFlex>
+    <AppButton
       text="Analyze"
       icon="bars-progress"
       :disabled="isPending || isBlank"
       @click="runSearch()"
-    /> </AppSection
-  > <!-- analysis status --> <AppSection v-if="isPending"
-    > <AppStatus v-if="searchIsLoading" code="loading"
+    />
+  </AppSection>
+  <!-- analysis status -->
+  <AppSection v-if="isPending">
+    <AppStatus v-if="searchIsLoading" code="loading"
       >Running analysis</AppStatus
-    > <AppStatus v-if="searchIsError" code="error"
+    >
+    <AppStatus v-if="searchIsError" code="error"
       >Error running analysis</AppStatus
-    > </AppSection
-  > <!-- search results --> <AppSection v-else-if="searchResults.summary.length"
-    > <AppHeading>Similarity Comparison</AppHeading> <!-- heading -->
+    >
+  </AppSection>
+  <!-- search results -->
+  <AppSection v-else-if="searchResults.summary.length">
+    <AppHeading>Similarity Comparison</AppHeading>
+    <!-- heading -->
     <AppHeading
       >Top {{ Math.min(searchResults.summary.length, 10) }} most
       similar</AppHeading
-    > <!-- list of search results --> <AppFlex
-      >
+    >
+    <!-- list of search results -->
+    <AppFlex>
       <div
         v-for="(match, index) in searchResults.summary.slice(0, 10)"
         :key="index"
         class="match"
       >
-         <!-- score --> <AppPercentage
+        <!-- score -->
+        <AppPercentage
           :percent="ringPercent(match.score)"
           tooltip="Average similarity score"
           >{{ match.score.toFixed(1) }}</AppPercentage
-        > <AppFlex class="details" direction="col" align-h="left" gap="small"
-          > <AppNodeBadgeV2 :node="match.subject" /> </AppFlex
         >
+        <AppFlex class="details" direction="col" align-h="left" gap="small">
+          <AppNodeBadgeV2 :node="match.subject" />
+        </AppFlex>
       </div>
-       </AppFlex
-    > <AppHeading>Detailed Comparison</AppHeading> <ThePhenogrid
-      :data="searchResults.phenogrid"
-    /> <AppAlert
+    </AppFlex>
+    <AppHeading>Detailed Comparison</AppHeading>
+    <ThePhenogrid :data="searchResults.phenogrid" />
+    <AppAlert
       >This feature is still under development. Check back soon for
       more!</AppAlert
-    > </AppSection
-  >
+    >
+  </AppSection>
 </template>
 
 <script setup lang="ts">
@@ -303,4 +317,3 @@ p {
   text-align: left;
 }
 </style>
-
