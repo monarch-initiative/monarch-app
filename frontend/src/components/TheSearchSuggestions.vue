@@ -74,7 +74,7 @@ const searchSuggestions = [
   left: 50%;
   width: max-content;
   max-width: 40em;
-  margin-top: 1px;
+
   padding: 8px;
   transform: translateX(-50%);
   border-radius: 6px;
