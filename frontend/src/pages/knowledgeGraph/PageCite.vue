@@ -3,7 +3,7 @@
   <PageTitle id="kg-cite" title="Citation Guide for Knowledge Graph & Tools" />
   <div class="container">
     <AppSection width="big" design="bare" class="citation">
-      <AppHeading level="2">Acknowledgement</AppHeading>
+      <AppHeading :level="2">Acknowledgement</AppHeading>
       <p>
         If you use Monarch, please acknowledge us with a paragraph like the
         following:
@@ -19,7 +19,7 @@
     </AppSection>
 
     <AppSection width="big" design="bare" class="citation">
-      <AppHeading level="2">In Publications</AppHeading>
+      <AppHeading :level="2">In Publications</AppHeading>
       <p>
         To cite the use of Monarch in publications, please use these two
         references:
@@ -38,7 +38,7 @@
 
     <!-- citing data -->
     <AppSection width="big" design="bare" class="citation">
-      <AppHeading level="2">Data or Result</AppHeading>
+      <AppHeading :level="2">Data or Result</AppHeading>
 
       <p class="content">
         <span>
@@ -66,7 +66,7 @@
 
     <!-- citing data -->
     <AppSection width="big" design="bare">
-      <AppHeading level="2">Page or Algorithmic Results</AppHeading>
+      <AppHeading :level="2">Page or Algorithmic Results</AppHeading>
       <p>
         To link to a specific page or to algorithmic results presented on this
         website, please use the URL in your browser's address bar. For example,
