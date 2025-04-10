@@ -115,7 +115,7 @@ import { useRoute } from "vue-router";
 import TheLogo from "@/assets/TheLogo.vue";
 import navigationMenus from "@/data/navigationMenu.json";
 import TabSearch from "@/pages/explore/TabSearch.vue";
-import DropdownButton from "./DropdownButton.vue";
+import DropdownButton from "./TheDropdownButton.vue";
 import TheNexus from "./TheNexus.vue";
 
 /** route info */
