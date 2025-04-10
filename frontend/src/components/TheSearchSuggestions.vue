@@ -4,7 +4,13 @@
       <span class="tooltip-trigger">{{ s.label }}</span>
       <div class="tooltip-box">
         {{ s.text }}
-        <span class="tooltip-suggestion" @click="$emit('select', s.term)">
+        <span
+          class="tooltip-suggestion"
+          role="button"
+          tabindex="0"
+          @click="$emit('select', s.term)"
+          @keydown.enter="$emit('select', s.term)"
+        >
           {{ s.term }}
         </span>
       </div>

@@ -20,12 +20,12 @@
           />
         </div>
         <SearchSuggestions @select="handleSuggestionClick" />
-
         <div class="tool-section">
           <p>
             In addition to the comprehensive search above you can explore the
             Monarch KG with our cutting-edge tool suite
           </p>
+
           <div class="tools">
             <AppLink
               v-for="tool in TOOL_LINKS"
@@ -45,8 +45,8 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { nextTick, ref } from "vue";
+import { useRouter } from "vue-router";
 import { groupBy, sortBy, uniqBy } from "lodash";
 import { getCategoryIcon } from "@/api/categories";
 import { getAutocomplete } from "@/api/search";
@@ -62,7 +62,6 @@ import { waitFor } from "@/util/dom";
 
 const search = ref("");
 const router = useRouter();
-const route = useRoute();
 
 const viewAll: Option = {
   id: "ALL",

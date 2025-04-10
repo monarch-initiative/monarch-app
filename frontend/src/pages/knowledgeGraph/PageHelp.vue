@@ -1,6 +1,5 @@
 <template>
-  <AppBreadcrumb />
-  <PageTitle id="kg-help" title="Help" />
+  <AppBreadcrumb /> <PageTitle id="kg-help" title="Help" />
   <AppSection width="big" design="bare">
     <p>
       We welcome all questions, requests, and feedback! Request a feature,
@@ -28,7 +27,6 @@
       />
     </AppFlex>
   </AppSection>
-
   <AppSection width="big" design="bare">
     <AppHeading>Local Data</AppHeading>
     <p>
@@ -38,7 +36,6 @@
     </p>
     <AppButton text="Clear Local Data" icon="floppy-disk" @click="clearData" />
   </AppSection>
-
   <AppSection width="big" design="bare">
     <p class="info">
       If you have any questions, feel free to reach out to us at :
@@ -50,21 +47,8 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
-import { getUptimes } from "@/api/uptime";
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import PageTitle from "@/components/ThePageTitle.vue";
-import { useQuery } from "@/composables/use-query";
-
-/** list of status checks to display */
-const {
-  query: runGetUptimes,
-  data: uptimes,
-  isLoading,
-  isError,
-} = useQuery(getUptimes, []);
-
-onMounted(runGetUptimes);
 
 /** clear user localstorage data */
 function clearData() {

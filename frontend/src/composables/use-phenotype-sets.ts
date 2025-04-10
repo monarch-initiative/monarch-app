@@ -1,9 +1,9 @@
 // src/composables/usePhenotypeSets.ts
-import { computed, ref } from "vue";
+import { ref } from "vue";
 import { isEqual } from "lodash";
 import type { Option, Options } from "@/components/AppSelectTags.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
-import { arrayParam, useParam, type Param } from "@/composables/use-param";
+import { arrayParam, useParam } from "@/composables/use-param";
 import examples from "@/data/phenotype-explorer.json";
 
 type GeneratedFrom = {

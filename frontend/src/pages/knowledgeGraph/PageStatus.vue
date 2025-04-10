@@ -2,57 +2,54 @@
   help landing page
 -->
 <template>
-   <AppBreadcrumb /> <PageTitle id="kg-status" title="Status and QC" /> <!-- api and service statuses -->
-  <AppSection width="big" design="bare"
-    >
+  <AppBreadcrumb /> <PageTitle id="kg-status" title="Status and QC" />
+  <!-- api and service statuses -->
+  <AppSection width="big" design="bare">
     <p class="content">
-       Below is a list of our service status pages, including api, api-dev, and
+      Below is a list of our service status pages, including api, api-dev, and
       others.These pages provide real-time updates on the availability and
       performance of our services. If you’re experiencing any issues, you can
       check here for:
     </p>
-     <!-- main status of all checks --> <AppStatus
-      v-if="isLoading"
-      code="loading"
-      >Loading checks</AppStatus
-    > <AppStatus v-if="isError" code="error">Error loading checks</AppStatus> <!-- individual statuses -->
-    <AppGallery :cols="cols"
-      > <AppStatus
+    <!-- main status of all checks -->
+    <AppStatus v-if="isLoading" code="loading">Loading checks</AppStatus>
+    <AppStatus v-if="isError" code="error">Error loading checks</AppStatus>
+    <!-- individual statuses -->
+    <AppGallery :cols="cols">
+      <AppStatus
         v-for="(uptime, index) in uptimes"
         :key="index"
         class="status"
         :code="uptime.code"
         :link="uptime.link"
-        > {{ uptime.text }}</AppStatus
-      > </AppGallery
-    >
+      >
+        {{ uptime.text }}</AppStatus
+      >
+    </AppGallery>
     <p>
-       For detailed status reports, visit our <AppLink
-        to="https://stats.uptimerobot.com/XPRo9s4BJ5"
-        no-icon="true"
+      For detailed status reports, visit our
+      <AppLink to="https://stats.uptimerobot.com/XPRo9s4BJ5" no-icon="true"
         >Live Status Dashboard</AppLink
       >
     </p>
 
     <p class="content">
-       Additionally, for data validation and quality control insights, visit our
+      Additionally, for data validation and quality control insights, visit our
       <AppLink to="https://qc.monarchinitiative.org/"
         >Quality Control (QC) Dashboard</AppLink
       >. This dashboard provides reports on data consistency, error tracking,
       and validation checks to ensure high-quality biomedical data integration
       within our platform.
     </p>
-     </AppSection
-  > <AppSection width="big" design="bare"
-    >
+  </AppSection>
+  <AppSection width="big" design="bare">
     <p class="content">
-       If you have any questions, feel free to reach out to us at : <AppLink
-        to="mailto:info@monarchinitiative.org"
-        >info@monarchinitiative.org </AppLink
-      >
+      If you have any questions, feel free to reach out to us at :
+      <AppLink to="mailto:info@monarchinitiative.org"
+        >info@monarchinitiative.org
+      </AppLink>
     </p>
-     </AppSection
-  >
+  </AppSection>
 </template>
 
 <script setup lang="ts">
@@ -108,4 +105,3 @@ const cols = computed(() => (screenWidth.value <= 1300 ? 2 : 4));
   }
 }
 </style>
-
