@@ -29,7 +29,7 @@
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import DownloadTable from "@/components/AppDownloadTable.vue";
 import AppSection from "@/components/AppSection.vue";
-import PageTitle from "@/components/PageTitle.vue";
+import PageTitle from "@/components/ThePageTitle.vue";
 import {
   associations,
   derivedArtifacts,

@@ -131,7 +131,7 @@ import AppPercentage from "@/components/AppPercentage.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import type { Option, Options } from "@/components/AppSelectTags.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
-import PageTitle from "@/components/PageTitle.vue";
+import PageTitle from "@/components/ThePageTitle.vue";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
 import { useParam, type Param } from "@/composables/use-param";
 import { usePhenotypeSets } from "@/composables/use-phenotype-sets";

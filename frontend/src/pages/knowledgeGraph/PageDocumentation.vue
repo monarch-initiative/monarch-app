@@ -40,7 +40,7 @@
 <script setup lang="ts">
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppSection from "@/components/AppSection.vue";
-import PageTitle from "@/components/PageTitle.vue";
+import PageTitle from "@/components/ThePageTitle.vue";
 </script>
 <style lang="scss" scoped>
 .section.center[data-v-d078f057] {

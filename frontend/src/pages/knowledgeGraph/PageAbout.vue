@@ -181,7 +181,7 @@ import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppHeading from "@/components/AppHeading.vue";
 import AppSection from "@/components/AppSection.vue";
 import AppTileCard from "@/components/AppTileCard.vue";
-import PageTitle from "@/components/PageTitle.vue";
+import PageTitle from "@/components/ThePageTitle.vue";
 import metadata from "@/pages/explore/metadata.json";
 import { formatNumber } from "@/util/string";
 

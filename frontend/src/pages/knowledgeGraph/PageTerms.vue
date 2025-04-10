@@ -136,7 +136,7 @@
 </template>
 <script setup lang="ts">
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
-import PageTitle from "@/components/PageTitle.vue";
+import PageTitle from "@/components/ThePageTitle.vue";
 </script>
 <style lang="scss" scoped>
 $wrap: 1000px;

@@ -87,7 +87,7 @@ import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppTextbox from "@/components/AppTextbox.vue";
 import AppUpload from "@/components/AppUpload.vue";
-import PageTitle from "@/components/PageTitle.vue";
+import PageTitle from "@/components/ThePageTitle.vue";
 import { useQuery } from "@/composables/use-query";
 import example from "@/data/text-annotator.json";
 import { appendToBody } from "@/global/tooltip";

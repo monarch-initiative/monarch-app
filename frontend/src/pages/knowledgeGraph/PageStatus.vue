@@ -60,7 +60,7 @@
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import { getUptimes } from "@/api/uptime";
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
-import PageTitle from "@/components/PageTitle.vue";
+import PageTitle from "@/components/ThePageTitle.vue";
 import { useQuery } from "@/composables/use-query";
 
 /** list of status checks to display */

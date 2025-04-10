@@ -141,7 +141,7 @@ import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import type { Option, Options } from "@/components/AppSelectTags.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
 import AppTabs from "@/components/AppTabs.vue";
-import PageTitle from "@/components/PageTitle.vue";
+import PageTitle from "@/components/ThePageTitle.vue";
 import { usePhenotypeSets } from "@/composables/use-phenotype-sets";
 import { useQuery } from "@/composables/use-query";
 import examples from "@/data/phenotype-explorer.json";
