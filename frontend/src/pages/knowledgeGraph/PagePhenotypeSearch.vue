@@ -38,7 +38,7 @@
       <AppSelectTags
         ref="aBox"
         v-model="aPhenotypes"
-        name="First set of phenotypes"
+        name="Phenotypes"
         :options="getPhenotypes"
         placeholder="Search for phenotypes, genes, or diseases"
         :tooltip="multiTooltip"
