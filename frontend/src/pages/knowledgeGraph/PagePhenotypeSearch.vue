@@ -43,7 +43,9 @@
         placeholder="Search for phenotypes, genes, or diseases"
         :tooltip="multiTooltip"
         :description="description(aPhenotypes, aGeneratedFrom)"
-        @spread-options="(option, options) => spreadOptions(option, options)"
+        @spread-options="
+          (option, options) => spreadOptions(option, options, 'a')
+        "
       />
     </AppFlex>
 
@@ -115,7 +117,6 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
-import { isEqual } from "lodash";
 import {
   compareSetToGroup,
   getPhenotypes,
@@ -132,12 +133,15 @@ import type { Option, Options } from "@/components/AppSelectTags.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
 import PageTitle from "@/components/PageTitle.vue";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
-import { snackbar } from "@/components/TheSnackbar.vue";
 import { arrayParam, useParam, type Param } from "@/composables/use-param";
+import { usePhenotypeSets } from "@/composables/use-phenotype-sets";
 import { useQuery } from "@/composables/use-query";
 import examples from "@/data/phenotype-explorer.json";
 import { scrollTo } from "@/router";
 import { parse } from "@/util/object";
+
+const { aPhenotypes, aGeneratedFrom, description, spreadOptions } =
+  usePhenotypeSets();
 
 /** common tooltip explaining how to use multi-select component */
 const multiTooltip = `In this box, you can select phenotypes in 3 ways:<br>
@@ -166,11 +170,6 @@ const optionsParam = arrayParam<Option>({
   parse: (value) => (value ? { id: value } : undefined),
   stringify: (value) => String(value.id),
 });
-
-/** first set of phenotypes */
-const aPhenotypes = useParam<Options>("a-set", optionsParam, []);
-/** "generated from" helpers after selecting gene or disease */
-const aGeneratedFrom = ref<GeneratedFrom>({});
 
 /** selected group for second set */
 const bGroup = useParam("b-group", optionParam, bGroupOptions[0]);
@@ -242,44 +241,12 @@ const isPending = computed(() => searchIsLoading.value || searchIsError.value);
 /** whether user hasn't inputted anything to analyze */
 const isBlank = computed(() => !aPhenotypes.value.length);
 
-/** when multi select component runs spread options function */
-function spreadOptions(option: Option, options: Options) {
-  if (options.length === 0) {
-    snackbar("No associated phenotypes found");
-  } else {
-    snackbar(`Selected ${options.length} phenotypes`);
-  }
-
-  // Only updating "a" set now
-  aGeneratedFrom.value = { option, options };
-}
-
 /** clear/reset results */
 function clearResults() {
   searchResults.value = {
     summary: [],
     phenogrid: { cols: [], rows: [], cells: {}, unmatched: [] },
   };
-}
-
-/** get description to show below phenotypes select box */
-function description(
-  phenotypes: Options,
-  generatedFrom: GeneratedFrom,
-): string {
-  const description = [];
-
-  /** number of phenotypes */
-  description.push(`${phenotypes.length} phenotypes`);
-
-  /** to avoid misleading text, only show if lists match exactly */
-  if (isEqual(generatedFrom.options, phenotypes))
-    description.push(
-      `generated from "${
-        generatedFrom.option?.label || generatedFrom.option?.id
-      }"`,
-    );
-  return `(${description.join(", ")})`;
 }
 
 watch([aPhenotypes, bGroup, metric], clearResults, {
