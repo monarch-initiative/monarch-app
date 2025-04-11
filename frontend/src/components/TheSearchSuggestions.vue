@@ -25,7 +25,7 @@ defineEmits<{
 
 const searchSuggestions = [
   {
-    label: "Disease to Gene",
+    label: "Disease to Phenotype",
     term: "Ehlers-Danlos syndrome",
     text: "e.g: Explore the disease to phenotype relation for",
   },
