@@ -46,7 +46,6 @@ export const getPhenotypes = async (search = ""): ReturnType<OptionsFunc> => {
         item.category?.startsWith("biolink:Pheno")
           ? undefined
           : async () => await getPhenotypeAssociations(item.id),
-      highlight: item.highlight,
       icon: "category-" + item.category,
       info: item.in_taxon_label || "",
     })),

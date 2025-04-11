@@ -22,12 +22,12 @@
     },
     {
       "label": "Variant to Disease",
-      "count": 1,
+      "count": 173,
       "category": "biolink:VariantToDiseaseAssociation"
     },
     {
       "label": "Disease Model",
-      "count": 239,
+      "count": 240,
       "category": "biolink:GenotypeToDiseaseAssociation"
     },
     {

@@ -3,22 +3,22 @@
   "items": [
     {
       "label": "musculature",
-      "count": 2035,
+      "count": 2055,
       "id": "UPHENO:0002816"
     },
     {
       "label": "nervous_system",
-      "count": 1042,
+      "count": 1050,
       "id": "UPHENO:0004523"
     },
     {
       "label": "head_neck",
-      "count": 594,
+      "count": 596,
       "id": "UPHENO:0002764"
     },
     {
       "label": "skeletal_system",
-      "count": 500,
+      "count": 504,
       "id": "UPHENO:0002964"
     },
     {
@@ -33,13 +33,18 @@
     },
     {
       "label": "blood",
-      "count": 180,
+      "count": 198,
       "id": "UPHENO:0004459"
     },
     {
       "label": "connective_tissue",
-      "count": 175,
+      "count": 179,
       "id": "UPHENO:0002712"
+    },
+    {
+      "label": "digestive_system",
+      "count": 162,
+      "id": "UPHENO:0002833"
     },
     {
       "label": "respiratory",
@@ -47,13 +52,8 @@
       "id": "UPHENO:0004536"
     },
     {
-      "label": "digestive_system",
-      "count": 147,
-      "id": "UPHENO:0002833"
-    },
-    {
       "label": "integument",
-      "count": 49,
+      "count": 50,
       "id": "UPHENO:0002635"
     },
     {

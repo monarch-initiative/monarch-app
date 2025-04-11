@@ -15,7 +15,8 @@ def mappings():
                 "object_id": "DOID:9884",
                 "object_label": "muscular dystrophy",
                 "mapping_justification": "semapv:UnspecifiedMatching",
-                "id": "8455f67d-5d08-4a66-8e5f-c427b2d7938c",
+                "id": "0e89fa5c-7ffd-48a3-bab5-09c61d384476",
+                "highlighting": [],
             },
             {
                 "subject_id": "MONDO:0020121",
@@ -24,7 +25,8 @@ def mappings():
                 "object_id": "ICD10CM:G71.0",
                 "object_label": "Muscular dystrophy",
                 "mapping_justification": "semapv:UnspecifiedMatching",
-                "id": "9e54ec61-241e-40ae-a0c2-8fa2b8d6064d",
+                "id": "c5c33f1c-51c1-42d1-a3c5-cd78ba0da8e0",
+                "highlighting": [],
             },
             {
                 "subject_id": "MONDO:0020121",
@@ -33,7 +35,8 @@ def mappings():
                 "object_id": "MEDGEN:44527",
                 "object_label": None,
                 "mapping_justification": "semapv:UnspecifiedMatching",
-                "id": "f5197cb5-7664-4237-bb93-2dc62b9202dd",
+                "id": "93ca6e0c-c2e5-4f69-888c-e8e1bb93973b",
+                "highlighting": [],
             },
             {
                 "subject_id": "MONDO:0020121",
@@ -42,7 +45,8 @@ def mappings():
                 "object_id": "NCIT:C84910",
                 "object_label": "Muscular Dystrophy",
                 "mapping_justification": "semapv:UnspecifiedMatching",
-                "id": "269439d9-e4ad-4a20-9700-79b0e335332a",
+                "id": "d52dddb1-df3e-4b52-8a2f-ea6d525eb1f2",
+                "highlighting": [],
             },
             {
                 "subject_id": "MONDO:0020121",
@@ -51,7 +55,8 @@ def mappings():
                 "object_id": "Orphanet:98473",
                 "object_label": "Muscular dystrophy",
                 "mapping_justification": "semapv:UnspecifiedMatching",
-                "id": "f05769c9-054b-46bd-8c86-c48a909dfd20",
+                "id": "a66b28a7-8b32-4e06-aac3-9a2eb716e3a7",
+                "highlighting": [],
             },
             {
                 "subject_id": "MONDO:0020121",
@@ -60,7 +65,8 @@ def mappings():
                 "object_id": "SCTID:73297009",
                 "object_label": None,
                 "mapping_justification": "semapv:UnspecifiedMatching",
-                "id": "522fe0bd-7b20-4e6c-85e1-9e0ff0a1f841",
+                "id": "a05b0fbb-8152-479f-bdde-a8c84d134967",
+                "highlighting": [],
             },
             {
                 "subject_id": "MONDO:0020121",
@@ -69,7 +75,8 @@ def mappings():
                 "object_id": "UMLS:C0026850",
                 "object_label": None,
                 "mapping_justification": "semapv:UnspecifiedMatching",
-                "id": "419450c7-7cec-412d-a438-00cbdc979ab1",
+                "id": "4df0992f-7b2a-4aeb-b303-1ca98ccf2cb7",
+                "highlighting": [],
             },
             {
                 "subject_id": "MONDO:0020121",
@@ -78,7 +85,8 @@ def mappings():
                 "object_id": "icd11.foundation:1464662404",
                 "object_label": None,
                 "mapping_justification": "semapv:UnspecifiedMatching",
-                "id": "0c5a4465-68aa-4287-8df6-af0407bf201c",
+                "id": "d2b8bee0-6abb-4523-8a16-e6236bafe406",
+                "highlighting": [],
             },
             {
                 "subject_id": "MONDO:0020121",
@@ -87,7 +95,8 @@ def mappings():
                 "object_id": "MESH:D009136",
                 "object_label": None,
                 "mapping_justification": "semapv:UnspecifiedMatching",
-                "id": "91fac932-a84a-4a63-8b95-8555d2b7993a",
+                "id": "eab58d87-e444-479b-9ab1-a58fd3622b86",
+                "highlighting": [],
             },
         ],
     }

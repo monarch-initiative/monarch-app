@@ -97,9 +97,13 @@ def get_fv_icon(category: str) -> str:
 
 def write_header_fixtures():
     association_headers = list(Association.model_fields)
+    # TODO: remove the highlighting append when we have highlighting in the model
+    association_headers.append("highlighting")
     histobin_headers = list(HistoBin.model_fields)
     node_headers = list(Node.model_fields)
     search_headers = list(SearchResult.model_fields)
+    # TODO: remove the highlighting append when we have highlighting in the model
+    search_headers.append("highlighting")
     file_contents = f"""
 import pytest
 

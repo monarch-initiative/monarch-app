@@ -56,4 +56,5 @@ def association_counts_query():
         "mm": "100%",
         "boost": None,
         "sort": None,
+        "hl": False,
     }
