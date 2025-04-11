@@ -4,6 +4,7 @@
   Selectively renders the following tags in HTML and SVG:
     - <sup>
     - <i>
+    - <b>
     - <a> with an `href` attribute surrounded in double quotes
 
   There are two alternatives to the approach taken here, but neither are
