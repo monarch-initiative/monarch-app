@@ -25,12 +25,15 @@
             "
             text="Include ortholog phenotypes"
           />
+
           <AppButton
             v-if="
               (node.category === 'biolink:Disease' &&
-                category?.id.startsWith('biolink:DiseaseToPheno')) ||
+                category?.id.startsWith('biolink:DiseaseToPheno') &&
+                (node.has_phenotype_count ?? 0) > 0) ||
               (node.category === 'biolink:Gene' &&
-                category?.id.startsWith('biolink:GeneToPheno'))
+                category?.id.startsWith('biolink:GeneToPheno') &&
+                (node.has_phenotype_count ?? 0) > 0)
             "
             v-tooltip="
               'Send these phenotypes to Phenotype Explorer for comparison'
