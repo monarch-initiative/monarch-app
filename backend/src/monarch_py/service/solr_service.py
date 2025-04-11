@@ -38,18 +38,22 @@ class SolrService(BaseModel):
             solr_query_result.highlighting, FIELD_TYPE_SUFFIXES
         )
         for doc in solr_query_result.response.docs:
-            SolrService._strip_json(
-                doc,
-                "_version_",
-                "iri",
-                "frequency_computed_sortable_float",
-                "has_quotient_sortable_float",
-                "has_percentage_sortable_float",
-            )
-            SolrService._strip_json_by_suffix(doc, *FIELD_TYPE_SUFFIXES)
+            SolrService._strip_fields(doc)
             doc["highlighting"] = solr_query_result.highlighting.get(doc["id"], [])
 
         return solr_query_result
+
+    @staticmethod
+    def _strip_excluded_fields(doc: dict):
+        SolrService._strip_json(
+            doc,
+            "_version_",
+            "iri",
+            "frequency_computed_sortable_float",
+            "has_quotient_sortable_float",
+            "has_percentage_sortable_float",
+        )
+        SolrService._strip_json_by_suffix(doc, *FIELD_TYPE_SUFFIXES)
 
     @staticmethod
     def _strip_json(doc: dict, *fields_to_remove: str):
