@@ -5,7 +5,7 @@ import pytest
 def search_response():
     return {
         "responseHeader": {
-            "QTime": 0,
+            "QTime": 10,
             "params": {
                 "mm": "100%",
                 "hl": "false",

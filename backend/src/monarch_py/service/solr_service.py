@@ -38,7 +38,7 @@ class SolrService(BaseModel):
             solr_query_result.highlighting, FIELD_TYPE_SUFFIXES
         )
         for doc in solr_query_result.response.docs:
-            SolrService._strip_fields(doc)
+            SolrService._strip_excluded_fields(doc)
             doc["highlighting"] = solr_query_result.highlighting.get(doc["id"], [])
 
         return solr_query_result

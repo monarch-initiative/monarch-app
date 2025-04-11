@@ -111,8 +111,6 @@ classes:
       - object_specialization_qualifier_category
       - object_specialization_qualifier_closure
       - object_specialization_qualifier_closure_label
-# TODO: re-enable when LinkML has multivalued SimpleDict support
-#      - highlighting
   AssociationCount:
     is_a: FacetValue
     slots:
@@ -133,8 +131,6 @@ classes:
       - items
       - facet_fields
       - facet_queries
-# TODO: re-enable when LinkML has multivalued SimpleDict support
-#      - highlighting
     slot_usage:
       items:
         range: Association
@@ -319,20 +315,9 @@ classes:
       - limit
       - offset
       - total
-  # TODO: re-enable when LinkML has multivalued SimpleDict support
-  # FieldHighlight:
-  #   slots:
-  #     - field
-  #     - snippets
-  #   slot_usage:
-  #     field:
-  #       required: true
-  #       identifier: true
   SearchResult:
     is_a: Entity
     slots:
-# TODO: re-enable when LinkML has multivalued SimpleDict support
-#      - highlighting
       - score
     slot_usage:
       category:
@@ -466,14 +451,6 @@ slots:
     inlined_as_list: true
     multivalued: true
     range: FacetValue
-  # TODO: re-enable when LinkML has multivalued SimpleDict support
-  # field: 
-  #   description: field name
-  #   range: string
-  # snippets:
-  #   description: highlighted text snippet
-  #   range: string
-  #   multivalued: true
   frequency_qualifier:
     range: string
   full_name:
