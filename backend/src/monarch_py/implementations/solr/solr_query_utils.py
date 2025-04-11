@@ -30,7 +30,6 @@ def build_association_query(
     offset: int = 0,
     limit: int = 20,
 ) -> SolrQuery:
-
     entity_fields = ["subject", "object", "disease_context_qualifier"]
     """Populate a SolrQuery object with association filters"""
     query = SolrQuery(start=offset, rows=limit)
