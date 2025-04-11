@@ -215,8 +215,8 @@ import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
 import type { Option } from "@/components/AppSelectSingle.vue";
 import AppTable from "@/components/AppTable.vue";
 import type { Cols, Sort } from "@/components/AppTable.vue";
-import TableControls from "@/components/TableContols.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
+import TableControls from "@/components/TheTableContols.vue";
 import { useQuery } from "@/composables/use-query";
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
 import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
@@ -574,7 +574,6 @@ watch(
   () => props.search,
   async () => {
     await queryAssociations(true);
-    console.log(props.search);
   },
   { immediate: true },
 );

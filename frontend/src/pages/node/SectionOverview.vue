@@ -138,6 +138,9 @@ import AppDetails from "@/components/AppDetails.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppNodeText from "@/components/AppNodeText.vue";
 
+// import { scrollTo } from "@/router";
+// import { sleep } from "@/util/debug";
+
 type Props = {
   /** current node */
   node: Node;
@@ -164,6 +167,11 @@ const otherMappings = computed(
       ({ id }) => !["OMIM:", "GARD:"].some((prefix) => id.startsWith(prefix)),
     ) || [],
 );
+
+// async function scrollToAssociations() {
+//   await sleep(100);
+//   scrollTo("#associations");
+// }
 </script>
 
 <style lang="scss" scoped>

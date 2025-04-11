@@ -1,0 +1,221 @@
+{
+  "a": {
+    "option": {
+      "id": "MONDO:0007523",
+      "label": "Ehlers-Danlos syndrome, classic type",
+      "highlight": "<em class=\"hilite\">Ehlers-Danlos</em>",
+      "icon": "category-disease",
+      "info": "Homo Sapiens"
+    },
+    "options": [
+      {
+        "id": "HP:0002616",
+        "name": "Aortic root aneurysm"
+      },
+      {
+        "id": "HP:0001763",
+        "name": "Pes planus"
+      },
+      {
+        "id": "HP:0004944",
+        "name": "Dilatation of the cerebral artery"
+      },
+      {
+        "id": "HP:0010749",
+        "name": "Blepharochalasis"
+      },
+      {
+        "id": "HP:0001533",
+        "name": "Slender build"
+      },
+      {
+        "id": "HP:0002020",
+        "name": "Gastroesophageal reflux"
+      },
+      {
+        "id": "HP:0012450",
+        "name": "Chronic constipation"
+      }
+    ]
+  },
+  "b": {
+    "option": {
+      "id": "MONDO:0007947",
+      "label": "Marfan Syndrome",
+      "highlight": "<em class=\"hilite\">Marfan Syndrome</em>",
+      "icon": "category-gene",
+      "info": "Homo Sapiens"
+    },
+    "options": [
+      {
+        "id": "HP:0002616",
+        "name": "Aortic root aneurysm"
+      },
+      {
+        "id": "HP:0001763",
+        "name": "Pes planus"
+      },
+      {
+        "id": "HP:0000767",
+        "name": "Pectus excavatum"
+      },
+      {
+        "id": "HP:0000023",
+        "name": "Inguinal hernia"
+      },
+      {
+        "id": "HP:0002108"
+      },
+      {
+        "id": "HP:0000490"
+      },
+      {
+        "id": "HP:0000545"
+      },
+      {
+        "id": "HP:0100785"
+      },
+      {
+        "id": "HP:0000268"
+      }
+    ]
+  },
+  "c": {
+    "option": {
+      "id": "MONDO:0007523",
+      "label": "Ehlers-Danlos syndrome, classic type",
+      "highlight": "<em class=\"hilite\">Ehlers-Danlos</em>",
+      "icon": "category-disease",
+      "info": "Homo Sapiens"
+    },
+    "options": [
+      {
+        "id": "HP:0002616",
+        "name": "Aortic root aneurysm"
+      },
+      {
+        "id": "HP:0001763",
+        "name": "Pes planus"
+      },
+      {
+        "id": "HP:0004944",
+        "name": "Dilatation of the cerebral artery"
+      },
+      {
+        "id": "HP:0010749",
+        "name": "Blepharochalasis"
+      },
+      {
+        "id": "HP:0001533",
+        "name": "Slender build"
+      },
+      {
+        "id": "HP:0002020",
+        "name": "Gastroesophageal reflux"
+      },
+      {
+        "id": "HP:0012450",
+        "name": "Chronic constipation"
+      },
+      {
+        "id": "HP:0003394"
+      },
+      {
+        "id": "HP:0003771"
+      },
+      {
+        "id": "HP:0012378"
+      },
+      {
+        "id": "HP:0001278"
+      },
+      {
+        "id": "HP:0002827"
+      },
+      {
+        "id": "HP:0002829"
+      },
+      {
+        "id": "HP:0002999"
+      },
+      {
+        "id": "HP:0003010"
+      }
+    ]
+  },
+  "d": {
+    "option": {
+      "id": "MONDO:0007947",
+      "label": "Marfan Syndrome",
+      "highlight": "<em class=\"hilite\">Marfan Syndrome</em>",
+      "icon": "category-gene",
+      "info": "Homo Sapiens"
+    },
+    "options": [
+      {
+        "id": "HP:0002616",
+        "name": "Aortic root aneurysm"
+      },
+      {
+        "id": "HP:0001763",
+        "name": "Pes planus"
+      },
+      {
+        "id": "HP:0000767",
+        "name": "Pectus excavatum"
+      },
+      {
+        "id": "HP:0000023",
+        "name": "Inguinal hernia"
+      },
+      {
+        "id": "HP:0002108"
+      },
+      {
+        "id": "HP:0000490"
+      },
+      {
+        "id": "HP:0000545"
+      },
+      {
+        "id": "HP:0100785"
+      },
+      {
+        "id": "HP:0000268"
+      },
+      {
+        "id": "HP:0001634"
+      },
+      {
+        "id": "HP:0001653"
+      },
+      {
+        "id": "HP:0001659"
+      },
+      {
+        "id": "HP:0002360"
+      },
+      {
+        "id": "HP:0003179"
+      },
+      {
+        "id": "HP:0004970"
+      },
+      {
+        "id": "HP:0005059"
+      },
+      {
+        "id": "HP:0002705"
+      },
+      {
+        "id": "HP:0012432"
+      },
+      {
+        "id": "HP:0007800"
+      },
+      {
+        "id": "HP:0001704"
+      }
+    ]
+  }
+}
