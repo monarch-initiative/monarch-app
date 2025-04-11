@@ -61,6 +61,7 @@
       >Error running analysis</AppStatus
     >
   </AppSection>
+
   <!-- Compare Results -->
   <AppSection
     v-else-if="
