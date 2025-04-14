@@ -1,6 +1,6 @@
 <template>
   <div ref="dropdown" class="dropdown" :class="{ 'is-open': isOpen }">
-    <button class="dropdown-btn" @click="toggleMenu">
+    <button class="dropdown-btn" ref="button" @click="toggleMenu">
       <slot name="button"></slot>
       <span class="dropdown-arrow" :class="{ 'is-rotated': isOpen }"
         >&#9662;</span
@@ -23,6 +23,8 @@
 
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from "vue";
+
+const button = ref<HTMLElement | null>(null);
 
 const isOpen = ref(false);
 const dropdown = ref<HTMLElement | null>(null);
@@ -56,21 +58,26 @@ $wrap: 1000px;
 .dropdown {
   display: inline-block;
   position: relative;
+  width: max-content;
+
+  :hover {
+    background: white;
+    color: hsl(185, 75%, 80%);
+  }
 }
 
 .dropdown-btn {
   display: flex;
+  padding: 5px;
   gap: 0.2em;
   white-space: nowrap;
 }
 
-/* Dropdown menu (hidden by default) */
 .dropdown-menu {
   position: absolute;
   top: calc(100% + 8px);
-  right: 0;
-  min-width: 10em;
-  transform: scaleY(0);
+  left: 0; // align to the left of the button
+  transform: scaleY(0); // no X-axis shifting needed
   transform-origin: top;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -92,11 +99,11 @@ $wrap: 1000px;
   opacity: 1;
 }
 
-/* Arrow pointing to button */
-.is-open .dropdown-menu::before {
+.dropdown-menu::before {
   position: absolute;
   top: -10px;
-  left: 20px;
+  left: 20px; // fixed distance from the left (aligns under arrow)
+  transform: none;
   border-right: 10px solid transparent;
   border-bottom: 10px solid white;
   border-left: 10px solid transparent;
