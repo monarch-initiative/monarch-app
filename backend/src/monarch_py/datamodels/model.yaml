@@ -508,12 +508,6 @@ slots:
     description: >-
       A count of the number of phenotypes that are known to be associated with this entity
     range: integer
-  # Re-enable when LinkML has multivalued SimpleDict support
-  # highlighting:
-  #   description: Collection of highlighting responses with field name and highlighted text
-  #   range: FieldHighlight
-  #   multivalued: true
-  #   inlined: true
   id:
     identifier: true
     range: string
