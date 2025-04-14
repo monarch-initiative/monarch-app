@@ -65,7 +65,7 @@
       align-h="stretch"
     >
       <div class="title">
-        <AppNodeBadge
+        <AppNodeBadgeV2
           :node="result"
           :state="{ fromSearch: search }"
           class="title-name"
@@ -134,7 +134,7 @@ import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
 import type { SearchResults } from "@/api/model";
 import { getAutocomplete, getSearch } from "@/api/search";
 import AppButton from "@/components/AppButton.vue";
-import AppNodeBadge from "@/components/AppNodeBadge.vue";
+import AppNodeBadgeV2 from "@/components/AppNodeBadgeV2.vue";
 import type {
   Options as AutocompleteOptions,
   Option,
