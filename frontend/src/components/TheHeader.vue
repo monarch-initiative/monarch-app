@@ -82,7 +82,6 @@
                 class="linkItems"
               >
                 {{ subItem.label }}
-                <!-- Conditionally render icon if it's an absolute link -->
                 <span v-if="subItem.icon" class="icon">
                   <AppIcon icon="arrow-up-right-from-square" />
                 </span>
@@ -90,13 +89,13 @@
             </li>
           </template>
         </DropdownButton>
-        <AppLink
+        <!-- <AppLink
           v-tooltip="'Citing, licensing, sources, and other info'"
           class="link"
           to="/about"
         >
           About
-        </AppLink>
+        </AppLink> -->
         <AppLink
           v-tooltip="'Feedback, docs, guides, contact, and more'"
           class="link"
@@ -348,6 +347,7 @@ $wrap: 1000px;
     flex-direction: column;
     align-items: unset;
     margin-right: auto;
+    gap: 0.1em;
   }
 }
 
@@ -368,6 +368,7 @@ Its here to align with the styling of old nav items. */
   }
 }
 .dropdown-menu li {
+  padding: 0;
   font-size: 0.8em;
   list-style: none;
 }

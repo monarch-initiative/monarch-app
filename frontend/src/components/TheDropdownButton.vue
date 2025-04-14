@@ -59,25 +59,25 @@ $wrap: 1000px;
   display: inline-block;
   position: relative;
   width: max-content;
-
-  :hover {
-    background: white;
-    color: hsl(185, 75%, 80%);
-  }
 }
 
 .dropdown-btn {
   display: flex;
-  padding: 5px;
+
   gap: 0.2em;
   white-space: nowrap;
+  :hover {
+    color: hsl(185, 75%, 80%);
+  }
 }
-
+li {
+  padding-left: 0;
+}
 .dropdown-menu {
   position: absolute;
-  top: calc(100% + 8px);
-  left: 0; // align to the left of the button
-  transform: scaleY(0); // no X-axis shifting needed
+  top: calc(100% + 4px);
+  width: max-content;
+  transform: scaleY(0);
   transform-origin: top;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -90,7 +90,7 @@ $wrap: 1000px;
 }
 
 .menu-list {
-  padding: 0.5rem 1em;
+  padding: 0.5rem 1.5em;
 }
 
 /* Show menu when isOpen is true */
@@ -102,7 +102,7 @@ $wrap: 1000px;
 .dropdown-menu::before {
   position: absolute;
   top: -10px;
-  left: 20px; // fixed distance from the left (aligns under arrow)
+  left: 20px;
   transform: none;
   border-right: 10px solid transparent;
   border-bottom: 10px solid white;
