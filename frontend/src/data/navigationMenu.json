@@ -59,5 +59,40 @@
         "tooltip": "Feedback,docs,guides and more"
       }
     ]
+  },
+  {
+    "label": "About",
+    "subItems": [
+      {
+        "label": "Our Story",
+        "key": "about-our-story",
+        "to": "/about/outstory",
+        "tooltip": "Our Story"
+      },
+      {
+        "label": "Team",
+        "key": "about-team",
+        "to": "/about/team",
+        "tooltip": ""
+      },
+      {
+        "label": "SAB",
+        "key": "about-sab",
+        "to": "/about/sab",
+        "tooltip": "SAB"
+      },
+      {
+        "label": "FAQs",
+        "key": "about-faqs",
+        "to": "/about/faqs",
+        "tooltip": "FAQs"
+      },
+      {
+        "label": "Contact Us",
+        "key": "about-contact-us",
+        "to": "/about/contact-us",
+        "tooltip": "Contact Us"
+      }
+    ]
   }
 ]
