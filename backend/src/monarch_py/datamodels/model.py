@@ -2729,11 +2729,6 @@ class SearchResult(Entity):
         }
     )
 
-    highlight: Optional[str] = Field(
-        None,
-        description="""matching text snippet containing html tags""",
-        json_schema_extra={"linkml_meta": {"alias": "highlight", "domain_of": ["SearchResult"]}},
-    )
     score: Optional[float] = Field(
         None,
         json_schema_extra={

@@ -532,8 +532,6 @@ export interface Results {
 
 
 export interface SearchResult extends Entity {
-    /** matching text snippet containing html tags */
-    highlight?: string,
     score?: number,
 }
 
