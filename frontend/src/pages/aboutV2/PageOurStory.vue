@@ -111,7 +111,7 @@ defineProps<{
 
 .story-image {
   max-width: 840px;
-  margin: 0 auto 2rem;
+  margin: 0 auto 5rem;
   border-radius: 30px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }

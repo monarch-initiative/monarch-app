@@ -1,9 +1,9 @@
 <template>
   <AppBreadcrumb />
-  <PageTitle id="our-story" title="Our Story" />
+  <PageTitle id="about-team" title="Meet the team" />
   <AppSection width="big" design="bare">
     <!-- Page Title -->
-    <section>
+    <section class="university-group">
       <p>
         Monarch is made possible thanks to a diverse and dedicated team of
         biologists, scientists, and programmers from various schools and
@@ -68,6 +68,41 @@
         </AppGallery>
       </div>
     </section>
+    <section>
+      <AppHeading>Funding</AppHeading>
+      <ul>
+        <li>
+          OFFICE OF THE DIRECTOR, NATIONAL INSTITUTES OF HEALTH
+          <br />
+          <AppLink to="https://reporter.nih.gov/project-details/10173498">
+            The Monarch Initiative: Linking diseases to model organism
+            resources</AppLink
+          >
+          <br />
+          2R24OD011883-10A1
+        </li>
+        <li>
+          NATIONAL HUMAN GENOME RESEARCH INSTITUTE, Center of Excellence in
+          Genome Sciences
+          <br />
+          <AppLink to="https://reporter.nih.gov/project-details/10448140">
+            A phenomics-first resource for interpretation of variants
+          </AppLink>
+          <br />
+          7RM1HG010860-02
+        </li>
+        <li>
+          NATIONAL HUMAN GENOME RESEARCH INSTITUTE
+          <br />
+          <AppLink to="https://reporter.nih.gov/project-details/10269338">
+            The Human Phenotype Ontology: Accelerating Computational Integration
+            of Clinical Data for Genomics</AppLink
+          >
+          <br />
+          1U24HG011449-01A1
+        </li>
+      </ul>
+    </section>
   </AppSection>
 </template>
 <script setup lang="ts">
@@ -87,6 +122,11 @@ html {
 
 :root {
   scroll-padding-top: 90px;
+}
+.university-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
 }
 
 .groups {
@@ -109,7 +149,7 @@ html {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 1rem;
+
   gap: 3em;
   @media (max-width: $wrap) {
     gap: 1.5em;
@@ -150,14 +190,16 @@ html {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  gap: 0.3em;
 }
 
 .university-header {
   width: 100%;
-  padding: 0.6rem;
+  padding: 0.5em;
   background-color: rgba(166, 236, 242, 0.3411764706);
-  font-weight: bold;
-  font-size: 1.2rem;
+  font-weight: 500;
+  font-size: 1.5rem;
   text-align: center;
 }
 
@@ -171,5 +213,9 @@ html {
   align-items: center;
   justify-content: center;
   min-height: 2em;
+}
+.members {
+  display: flex;
+  justify-content: center;
 }
 </style>
