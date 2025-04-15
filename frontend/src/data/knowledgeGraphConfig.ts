@@ -31,17 +31,17 @@ export const TOOL_LINKS: {
 }[] = [
   { label: "Phenotype Similarity Compare", to: "/kg/compare-phenotypes" },
   { label: "Phenotype Similarity Search", to: "/kg/search-phenotypes" },
-  {
-    label: "Monarch R",
-    to: "https://monarch-initiative.github.io/monarchr/articles/monarchr",
-    external: true,
-  },
+  { label: "Text Annotator", to: "/kg/text-annotator" },
   {
     label: "Neo4j",
     to: "https://neo4j.monarchinitiative.org/browser/",
     external: true,
   },
-  { label: "Text Annotator", to: "/kg/text-annotator" },
+  {
+    label: "Monarch R",
+    to: "https://monarch-initiative.github.io/monarchr/articles/monarchr",
+    external: true,
+  },
   {
     label: "Monarch Assistant",
     to: "https://github.com/monarch-initiative/monarch-assistant-cypher",
