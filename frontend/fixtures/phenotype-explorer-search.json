@@ -84,7 +84,7 @@
       "has_phenotype_count": 1,
       "type": ["SO:0001217"]
     },
-    "score": 2.2279974849991593,
+    "score": 2.2289917145710905,
     "similarity": {
       "subject_termset": {
         "ZP:0100010": {
@@ -93,8 +93,8 @@
         }
       },
       "object_termset": {
-        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" },
-        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" }
+        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" },
+        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" }
       },
       "subject_best_matches": {
         "ZP:0100010": {
@@ -102,7 +102,7 @@
           "match_source_label": "anatomical system quality, abnormal",
           "match_target": "HP:0002104",
           "match_target_label": "Apnea",
-          "score": 2.3492990516853536,
+          "score": 2.350309920394435,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -117,11 +117,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3492990516853536,
+            "ancestor_information_content": 2.350309920394435,
             "jaccard_similarity": 0.38235294117647056,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9477665335487364
+            "phenodigm_score": 0.9479704165948686
           },
           "score_metric": "ancestor_information_content"
         }
@@ -132,7 +132,7 @@
           "match_source_label": "Apnea",
           "match_target": "ZP:0100010",
           "match_target_label": "anatomical system quality, abnormal",
-          "score": 2.3492990516853536,
+          "score": 2.350309920394435,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -147,11 +147,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3492990516853536,
+            "ancestor_information_content": 2.350309920394435,
             "jaccard_similarity": 0.38235294117647056,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9477665335487364
+            "phenodigm_score": 0.9479704165948686
           },
           "score_metric": "ancestor_information_content"
         },
@@ -160,7 +160,7 @@
           "match_source_label": "Fatigue",
           "match_target": "ZP:0100010",
           "match_target_label": "anatomical system quality, abnormal",
-          "score": 1.8640927849405755,
+          "score": 1.8650370971010566,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -175,17 +175,17 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 1.8640927849405755,
+            "ancestor_information_content": 1.8650370971010566,
             "jaccard_similarity": 0.13043478260869565,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.4930948561546369
+            "phenodigm_score": 0.49321973634226063
           },
           "score_metric": "ancestor_information_content"
         }
       },
-      "average_score": 2.2279974849991593,
-      "best_score": 2.3492990516853536,
+      "average_score": 2.2289917145710905,
+      "best_score": 2.350309920394435,
       "metric": "AncestorInformationContent"
     }
   },
@@ -281,7 +281,7 @@
       "has_phenotype_count": 1,
       "type": ["SO:0001217"]
     },
-    "score": 2.2279974849991593,
+    "score": 2.2289917145710905,
     "similarity": {
       "subject_termset": {
         "ZP:0000115": {
@@ -290,8 +290,8 @@
         }
       },
       "object_termset": {
-        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" },
-        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" }
+        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" },
+        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" }
       },
       "subject_best_matches": {
         "ZP:0000115": {
@@ -299,7 +299,7 @@
           "match_source_label": "nervous system quality, abnormal",
           "match_target": "HP:0002104",
           "match_target_label": "Apnea",
-          "score": 2.3492990516853536,
+          "score": 2.350309920394435,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -314,11 +314,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3492990516853536,
+            "ancestor_information_content": 2.350309920394435,
             "jaccard_similarity": 0.35135135135135137,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9085314504947516
+            "phenodigm_score": 0.9087268933101252
           },
           "score_metric": "ancestor_information_content"
         }
@@ -329,7 +329,7 @@
           "match_source_label": "Apnea",
           "match_target": "ZP:0000115",
           "match_target_label": "nervous system quality, abnormal",
-          "score": 2.3492990516853536,
+          "score": 2.350309920394435,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -344,11 +344,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3492990516853536,
+            "ancestor_information_content": 2.350309920394435,
             "jaccard_similarity": 0.35135135135135137,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9085314504947516
+            "phenodigm_score": 0.9087268933101252
           },
           "score_metric": "ancestor_information_content"
         },
@@ -357,7 +357,7 @@
           "match_source_label": "Fatigue",
           "match_target": "ZP:0000115",
           "match_target_label": "nervous system quality, abnormal",
-          "score": 1.8640927849405755,
+          "score": 1.8650370971010566,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -372,17 +372,17 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 1.8640927849405755,
+            "ancestor_information_content": 1.8650370971010566,
             "jaccard_similarity": 0.11538461538461539,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.46377540796338573
+            "phenodigm_score": 0.463892862767951
           },
           "score_metric": "ancestor_information_content"
         }
       },
-      "average_score": 2.2279974849991593,
-      "best_score": 2.3492990516853536,
+      "average_score": 2.2289917145710905,
+      "best_score": 2.350309920394435,
       "metric": "AncestorInformationContent"
     }
   },
@@ -478,7 +478,7 @@
       "has_phenotype_count": 1,
       "type": ["SO:0001217"]
     },
-    "score": 2.2279974849991593,
+    "score": 2.2289917145710905,
     "similarity": {
       "subject_termset": {
         "ZP:0000115": {
@@ -487,8 +487,8 @@
         }
       },
       "object_termset": {
-        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" },
-        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" }
+        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" },
+        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" }
       },
       "subject_best_matches": {
         "ZP:0000115": {
@@ -496,7 +496,7 @@
           "match_source_label": "nervous system quality, abnormal",
           "match_target": "HP:0002104",
           "match_target_label": "Apnea",
-          "score": 2.3492990516853536,
+          "score": 2.350309920394435,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -511,11 +511,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3492990516853536,
+            "ancestor_information_content": 2.350309920394435,
             "jaccard_similarity": 0.35135135135135137,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9085314504947516
+            "phenodigm_score": 0.9087268933101252
           },
           "score_metric": "ancestor_information_content"
         }
@@ -526,7 +526,7 @@
           "match_source_label": "Apnea",
           "match_target": "ZP:0000115",
           "match_target_label": "nervous system quality, abnormal",
-          "score": 2.3492990516853536,
+          "score": 2.350309920394435,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -541,11 +541,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3492990516853536,
+            "ancestor_information_content": 2.350309920394435,
             "jaccard_similarity": 0.35135135135135137,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9085314504947516
+            "phenodigm_score": 0.9087268933101252
           },
           "score_metric": "ancestor_information_content"
         },
@@ -554,7 +554,7 @@
           "match_source_label": "Fatigue",
           "match_target": "ZP:0000115",
           "match_target_label": "nervous system quality, abnormal",
-          "score": 1.8640927849405755,
+          "score": 1.8650370971010566,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -569,17 +569,17 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 1.8640927849405755,
+            "ancestor_information_content": 1.8650370971010566,
             "jaccard_similarity": 0.11538461538461539,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.46377540796338573
+            "phenodigm_score": 0.463892862767951
           },
           "score_metric": "ancestor_information_content"
         }
       },
-      "average_score": 2.2279974849991593,
-      "best_score": 2.3492990516853536,
+      "average_score": 2.2289917145710905,
+      "best_score": 2.350309920394435,
       "metric": "AncestorInformationContent"
     }
   },
@@ -675,7 +675,7 @@
       "has_phenotype_count": 1,
       "type": ["SO:0001217"]
     },
-    "score": 2.2279974849991593,
+    "score": 2.2289917145710905,
     "similarity": {
       "subject_termset": {
         "ZP:0000115": {
@@ -693,7 +693,7 @@
           "match_source_label": "nervous system quality, abnormal",
           "match_target": "HP:0002104",
           "match_target_label": "Apnea",
-          "score": 2.3492990516853536,
+          "score": 2.350309920394435,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -708,11 +708,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3492990516853536,
+            "ancestor_information_content": 2.350309920394435,
             "jaccard_similarity": 0.35135135135135137,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9085314504947516
+            "phenodigm_score": 0.9087268933101252
           },
           "score_metric": "ancestor_information_content"
         }
@@ -723,7 +723,7 @@
           "match_source_label": "Apnea",
           "match_target": "ZP:0000115",
           "match_target_label": "nervous system quality, abnormal",
-          "score": 2.3492990516853536,
+          "score": 2.350309920394435,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -738,11 +738,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3492990516853536,
+            "ancestor_information_content": 2.350309920394435,
             "jaccard_similarity": 0.35135135135135137,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9085314504947516
+            "phenodigm_score": 0.9087268933101252
           },
           "score_metric": "ancestor_information_content"
         },
@@ -751,7 +751,7 @@
           "match_source_label": "Fatigue",
           "match_target": "ZP:0000115",
           "match_target_label": "nervous system quality, abnormal",
-          "score": 1.8640927849405755,
+          "score": 1.8650370971010566,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -766,17 +766,17 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 1.8640927849405755,
+            "ancestor_information_content": 1.8650370971010566,
             "jaccard_similarity": 0.11538461538461539,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.46377540796338573
+            "phenodigm_score": 0.463892862767951
           },
           "score_metric": "ancestor_information_content"
         }
       },
-      "average_score": 2.2279974849991593,
-      "best_score": 2.3492990516853536,
+      "average_score": 2.2289917145710905,
+      "best_score": 2.350309920394435,
       "metric": "AncestorInformationContent"
     }
   },
@@ -872,7 +872,7 @@
       "has_phenotype_count": 1,
       "type": ["SO:0001217"]
     },
-    "score": 2.2279974849991593,
+    "score": 2.2289917145710905,
     "similarity": {
       "subject_termset": {
         "ZP:0000115": {
@@ -890,7 +890,7 @@
           "match_source_label": "nervous system quality, abnormal",
           "match_target": "HP:0002104",
           "match_target_label": "Apnea",
-          "score": 2.3492990516853536,
+          "score": 2.350309920394435,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -905,11 +905,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3492990516853536,
+            "ancestor_information_content": 2.350309920394435,
             "jaccard_similarity": 0.35135135135135137,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9085314504947516
+            "phenodigm_score": 0.9087268933101252
           },
           "score_metric": "ancestor_information_content"
         }
@@ -920,7 +920,7 @@
           "match_source_label": "Apnea",
           "match_target": "ZP:0000115",
           "match_target_label": "nervous system quality, abnormal",
-          "score": 2.3492990516853536,
+          "score": 2.350309920394435,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -935,11 +935,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3492990516853536,
+            "ancestor_information_content": 2.350309920394435,
             "jaccard_similarity": 0.35135135135135137,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9085314504947516
+            "phenodigm_score": 0.9087268933101252
           },
           "score_metric": "ancestor_information_content"
         },
@@ -948,7 +948,7 @@
           "match_source_label": "Fatigue",
           "match_target": "ZP:0000115",
           "match_target_label": "nervous system quality, abnormal",
-          "score": 1.8640927849405755,
+          "score": 1.8650370971010566,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -963,17 +963,17 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 1.8640927849405755,
+            "ancestor_information_content": 1.8650370971010566,
             "jaccard_similarity": 0.11538461538461539,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.46377540796338573
+            "phenodigm_score": 0.463892862767951
           },
           "score_metric": "ancestor_information_content"
         }
       },
-      "average_score": 2.2279974849991593,
-      "best_score": 2.3492990516853536,
+      "average_score": 2.2289917145710905,
+      "best_score": 2.350309920394435,
       "metric": "AncestorInformationContent"
     }
   },
@@ -1077,7 +1077,7 @@
       "has_phenotype_count": 1,
       "type": ["SO:0001217"]
     },
-    "score": 2.2279974849991593,
+    "score": 2.2289917145710905,
     "similarity": {
       "subject_termset": {
         "ZP:0015347": {
@@ -1095,7 +1095,7 @@
           "match_source_label": "renal system neoplastic, abnormal",
           "match_target": "HP:0002104",
           "match_target_label": "Apnea",
-          "score": 2.3492990516853536,
+          "score": 2.350309920394435,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -1110,11 +1110,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3492990516853536,
+            "ancestor_information_content": 2.350309920394435,
             "jaccard_similarity": 0.3333333333333333,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.8849291971085133
+            "phenodigm_score": 0.885119562619355
           },
           "score_metric": "ancestor_information_content"
         }
@@ -1125,7 +1125,7 @@
           "match_source_label": "Apnea",
           "match_target": "ZP:0015347",
           "match_target_label": "renal system neoplastic, abnormal",
-          "score": 2.3492990516853536,
+          "score": 2.350309920394435,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -1140,11 +1140,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3492990516853536,
+            "ancestor_information_content": 2.350309920394435,
             "jaccard_similarity": 0.3333333333333333,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.8849291971085133
+            "phenodigm_score": 0.885119562619355
           },
           "score_metric": "ancestor_information_content"
         },
@@ -1153,7 +1153,7 @@
           "match_source_label": "Fatigue",
           "match_target": "ZP:0015347",
           "match_target_label": "renal system neoplastic, abnormal",
-          "score": 1.8640927849405755,
+          "score": 1.8650370971010566,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -1168,17 +1168,17 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 1.8640927849405755,
+            "ancestor_information_content": 1.8650370971010566,
             "jaccard_similarity": 0.10714285714285714,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.446905165508208
+            "phenodigm_score": 0.44701834778991734
           },
           "score_metric": "ancestor_information_content"
         }
       },
-      "average_score": 2.2279974849991593,
-      "best_score": 2.3492990516853536,
+      "average_score": 2.2289917145710905,
+      "best_score": 2.350309920394435,
       "metric": "AncestorInformationContent"
     }
   },
@@ -1315,16 +1315,16 @@
       "has_phenotype_count": 2,
       "type": ["SO:0001217"]
     },
-    "score": 2.2279974849991593,
+    "score": 2.2289917145710905,
     "similarity": {
       "subject_termset": {
-        "ZP:0001696": {
-          "id": "ZP:0001696",
-          "label": "swim bladder quality, abnormal"
-        },
         "ZP:0100010": {
           "id": "ZP:0100010",
           "label": "anatomical system quality, abnormal"
+        },
+        "ZP:0001696": {
+          "id": "ZP:0001696",
+          "label": "swim bladder quality, abnormal"
         }
       },
       "object_termset": {
@@ -1337,7 +1337,7 @@
           "match_source_label": "swim bladder quality, abnormal",
           "match_target": "HP:0002104",
           "match_target_label": "Apnea",
-          "score": 2.3492990516853536,
+          "score": 2.350309920394435,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -1352,11 +1352,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3492990516853536,
+            "ancestor_information_content": 2.350309920394435,
             "jaccard_similarity": 0.35135135135135137,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9085314504947516
+            "phenodigm_score": 0.9087268933101252
           },
           "score_metric": "ancestor_information_content"
         },
@@ -1365,7 +1365,7 @@
           "match_source_label": "anatomical system quality, abnormal",
           "match_target": "HP:0002104",
           "match_target_label": "Apnea",
-          "score": 2.3492990516853536,
+          "score": 2.350309920394435,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -1380,11 +1380,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3492990516853536,
+            "ancestor_information_content": 2.350309920394435,
             "jaccard_similarity": 0.38235294117647056,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9477665335487364
+            "phenodigm_score": 0.9479704165948686
           },
           "score_metric": "ancestor_information_content"
         }
@@ -1395,7 +1395,7 @@
           "match_source_label": "Apnea",
           "match_target": "ZP:0001696",
           "match_target_label": "swim bladder quality, abnormal",
-          "score": 2.3492990516853536,
+          "score": 2.350309920394435,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -1410,27 +1410,27 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3492990516853536,
+            "ancestor_information_content": 2.350309920394435,
             "jaccard_similarity": 0.35135135135135137,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9085314504947516
+            "phenodigm_score": 0.9087268933101252
           },
           "score_metric": "ancestor_information_content"
         },
         "HP:0012378": {
           "match_source": "HP:0012378",
           "match_source_label": "Fatigue",
-          "match_target": "ZP:0001696",
-          "match_target_label": "swim bladder quality, abnormal",
-          "score": 1.8640927849405755,
+          "match_target": "ZP:0100010",
+          "match_target_label": "anatomical system quality, abnormal",
+          "score": 1.8650370971010566,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
             "subject_id": "HP:0012378",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "ZP:0001696",
+            "object_id": "ZP:0100010",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "UPHENO:0001003",
@@ -1438,17 +1438,17 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 1.8640927849405755,
-            "jaccard_similarity": 0.11538461538461539,
+            "ancestor_information_content": 1.8650370971010566,
+            "jaccard_similarity": 0.13043478260869565,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.46377540796338573
+            "phenodigm_score": 0.49321973634226063
           },
           "score_metric": "ancestor_information_content"
         }
       },
-      "average_score": 2.2279974849991593,
-      "best_score": 2.3492990516853536,
+      "average_score": 2.2289917145710905,
+      "best_score": 2.350309920394435,
       "metric": "AncestorInformationContent"
     }
   },
@@ -1590,7 +1590,7 @@
       "has_phenotype_count": 1,
       "type": ["SO:0001217"]
     },
-    "score": 2.2279974849991593,
+    "score": 2.2289917145710905,
     "similarity": {
       "subject_termset": {
         "ZP:0001211": {
@@ -1608,7 +1608,7 @@
           "match_source_label": "swim bladder uninflated, abnormal",
           "match_target": "HP:0002104",
           "match_target_label": "Apnea",
-          "score": 2.3492990516853536,
+          "score": 2.350309920394435,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -1623,11 +1623,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3492990516853536,
+            "ancestor_information_content": 2.350309920394435,
             "jaccard_similarity": 0.325,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.8737975691186947
+            "phenodigm_score": 0.873985539999485
           },
           "score_metric": "ancestor_information_content"
         }
@@ -1638,7 +1638,7 @@
           "match_source_label": "Apnea",
           "match_target": "ZP:0001211",
           "match_target_label": "swim bladder uninflated, abnormal",
-          "score": 2.3492990516853536,
+          "score": 2.350309920394435,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -1653,11 +1653,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3492990516853536,
+            "ancestor_information_content": 2.350309920394435,
             "jaccard_similarity": 0.325,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.8737975691186947
+            "phenodigm_score": 0.873985539999485
           },
           "score_metric": "ancestor_information_content"
         },
@@ -1666,7 +1666,7 @@
           "match_source_label": "Fatigue",
           "match_target": "ZP:0001211",
           "match_target_label": "swim bladder uninflated, abnormal",
-          "score": 1.8640927849405755,
+          "score": 1.8650370971010566,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -1681,17 +1681,17 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 1.8640927849405755,
+            "ancestor_information_content": 1.8650370971010566,
             "jaccard_similarity": 0.10344827586206896,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.43913230881936377
+            "phenodigm_score": 0.4392435225633981
           },
           "score_metric": "ancestor_information_content"
         }
       },
-      "average_score": 2.2279974849991593,
-      "best_score": 2.3492990516853536,
+      "average_score": 2.2289917145710905,
+      "best_score": 2.350309920394435,
       "metric": "AncestorInformationContent"
     }
   },
@@ -1828,21 +1828,21 @@
       "has_phenotype_count": 2,
       "type": ["SO:0001217"]
     },
-    "score": 2.2279974849991593,
+    "score": 2.2289917145710905,
     "similarity": {
       "subject_termset": {
-        "ZP:0100010": {
-          "id": "ZP:0100010",
-          "label": "anatomical system quality, abnormal"
-        },
         "ZP:0001696": {
           "id": "ZP:0001696",
           "label": "swim bladder quality, abnormal"
+        },
+        "ZP:0100010": {
+          "id": "ZP:0100010",
+          "label": "anatomical system quality, abnormal"
         }
       },
       "object_termset": {
-        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" },
-        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" }
+        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" },
+        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" }
       },
       "subject_best_matches": {
         "ZP:0001696": {
@@ -1850,7 +1850,7 @@
           "match_source_label": "swim bladder quality, abnormal",
           "match_target": "HP:0002104",
           "match_target_label": "Apnea",
-          "score": 2.3492990516853536,
+          "score": 2.350309920394435,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -1865,11 +1865,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3492990516853536,
+            "ancestor_information_content": 2.350309920394435,
             "jaccard_similarity": 0.35135135135135137,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9085314504947516
+            "phenodigm_score": 0.9087268933101252
           },
           "score_metric": "ancestor_information_content"
         },
@@ -1878,7 +1878,7 @@
           "match_source_label": "anatomical system quality, abnormal",
           "match_target": "HP:0002104",
           "match_target_label": "Apnea",
-          "score": 2.3492990516853536,
+          "score": 2.350309920394435,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -1893,11 +1893,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3492990516853536,
+            "ancestor_information_content": 2.350309920394435,
             "jaccard_similarity": 0.38235294117647056,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9477665335487364
+            "phenodigm_score": 0.9479704165948686
           },
           "score_metric": "ancestor_information_content"
         }
@@ -1908,7 +1908,7 @@
           "match_source_label": "Apnea",
           "match_target": "ZP:0100010",
           "match_target_label": "anatomical system quality, abnormal",
-          "score": 2.3492990516853536,
+          "score": 2.350309920394435,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -1923,27 +1923,27 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3492990516853536,
+            "ancestor_information_content": 2.350309920394435,
             "jaccard_similarity": 0.38235294117647056,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9477665335487364
+            "phenodigm_score": 0.9479704165948686
           },
           "score_metric": "ancestor_information_content"
         },
         "HP:0012378": {
           "match_source": "HP:0012378",
           "match_source_label": "Fatigue",
-          "match_target": "ZP:0100010",
-          "match_target_label": "anatomical system quality, abnormal",
-          "score": 1.8640927849405755,
+          "match_target": "ZP:0001696",
+          "match_target_label": "swim bladder quality, abnormal",
+          "score": 1.8650370971010566,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
             "subject_id": "HP:0012378",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "ZP:0100010",
+            "object_id": "ZP:0001696",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "UPHENO:0001003",
@@ -1951,17 +1951,17 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 1.8640927849405755,
-            "jaccard_similarity": 0.13043478260869565,
+            "ancestor_information_content": 1.8650370971010566,
+            "jaccard_similarity": 0.11538461538461539,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.4930948561546369
+            "phenodigm_score": 0.463892862767951
           },
           "score_metric": "ancestor_information_content"
         }
       },
-      "average_score": 2.2279974849991593,
-      "best_score": 2.3492990516853536,
+      "average_score": 2.2289917145710905,
+      "best_score": 2.350309920394435,
       "metric": "AncestorInformationContent"
     }
   },
@@ -2098,7 +2098,7 @@
       "has_phenotype_count": 2,
       "type": ["SO:0001217"]
     },
-    "score": 2.2279974849991593,
+    "score": 2.2289917145710905,
     "similarity": {
       "subject_termset": {
         "ZP:0100010": {
@@ -2120,7 +2120,7 @@
           "match_source_label": "swim bladder quality, abnormal",
           "match_target": "HP:0002104",
           "match_target_label": "Apnea",
-          "score": 2.3492990516853536,
+          "score": 2.350309920394435,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -2135,11 +2135,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3492990516853536,
+            "ancestor_information_content": 2.350309920394435,
             "jaccard_similarity": 0.35135135135135137,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9085314504947516
+            "phenodigm_score": 0.9087268933101252
           },
           "score_metric": "ancestor_information_content"
         },
@@ -2148,7 +2148,7 @@
           "match_source_label": "anatomical system quality, abnormal",
           "match_target": "HP:0002104",
           "match_target_label": "Apnea",
-          "score": 2.3492990516853536,
+          "score": 2.350309920394435,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -2163,11 +2163,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3492990516853536,
+            "ancestor_information_content": 2.350309920394435,
             "jaccard_similarity": 0.38235294117647056,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9477665335487364
+            "phenodigm_score": 0.9479704165948686
           },
           "score_metric": "ancestor_information_content"
         }
@@ -2178,7 +2178,7 @@
           "match_source_label": "Apnea",
           "match_target": "ZP:0100010",
           "match_target_label": "anatomical system quality, abnormal",
-          "score": 2.3492990516853536,
+          "score": 2.350309920394435,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
@@ -2193,27 +2193,27 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3492990516853536,
+            "ancestor_information_content": 2.350309920394435,
             "jaccard_similarity": 0.38235294117647056,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9477665335487364
+            "phenodigm_score": 0.9479704165948686
           },
           "score_metric": "ancestor_information_content"
         },
         "HP:0012378": {
           "match_source": "HP:0012378",
           "match_source_label": "Fatigue",
-          "match_target": "ZP:0100010",
-          "match_target_label": "anatomical system quality, abnormal",
-          "score": 1.8640927849405755,
+          "match_target": "ZP:0001696",
+          "match_target_label": "swim bladder quality, abnormal",
+          "score": 1.8650370971010566,
           "match_subsumer": null,
           "match_subsumer_label": null,
           "similarity": {
             "subject_id": "HP:0012378",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "ZP:0100010",
+            "object_id": "ZP:0001696",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "UPHENO:0001003",
@@ -2221,17 +2221,17 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 1.8640927849405755,
-            "jaccard_similarity": 0.13043478260869565,
+            "ancestor_information_content": 1.8650370971010566,
+            "jaccard_similarity": 0.11538461538461539,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.4930948561546369
+            "phenodigm_score": 0.463892862767951
           },
           "score_metric": "ancestor_information_content"
         }
       },
-      "average_score": 2.2279974849991593,
-      "best_score": 2.3492990516853536,
+      "average_score": 2.2289917145710905,
+      "best_score": 2.350309920394435,
       "metric": "AncestorInformationContent"
     }
   }
