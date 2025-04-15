@@ -66,7 +66,7 @@
       {
         "label": "Our Story",
         "key": "about-our-story",
-        "to": "/about/outstory",
+        "to": "/about/our-story",
         "tooltip": "Our Story"
       },
       {
