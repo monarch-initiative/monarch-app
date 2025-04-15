@@ -3,23 +3,10 @@
     "label": "Knowledge Graph",
     "subItems": [
       {
-        "label": "About KG",
-        "key": "about-kg",
-        "to": "/kg/about",
-        "tooltip": "About the Knowledge Graph"
-      },
-      {
         "label": "Search",
         "key": "kg-search",
         "to": "/kg",
         "tooltip": ""
-      },
-      {
-        "label": "API",
-        "key": "kg-api",
-        "to": "https://api-v3.monarchinitiative.org/v3/docs",
-        "tooltip": "",
-        "icon": true
       },
       {
         "label": "Downloads",
@@ -32,6 +19,12 @@
         "key": "kg-status-qc",
         "to": "/kg/status",
         "tooltip": ""
+      },
+      {
+        "label": "How To & Help",
+        "key": "kg-help",
+        "to": "/kg/help",
+        "tooltip": "Feedback,docs,guides and more"
       },
       {
         "label": "Documentation",
@@ -53,10 +46,17 @@
       },
 
       {
-        "label": "How To & Help",
-        "key": "kg-help",
-        "to": "/kg/help",
-        "tooltip": "Feedback,docs,guides and more"
+        "label": "API",
+        "key": "kg-api",
+        "to": "https://api-v3.monarchinitiative.org/v3/docs",
+        "tooltip": "",
+        "icon": true
+      },
+      {
+        "label": "About KG",
+        "key": "about-kg",
+        "to": "/kg/about",
+        "tooltip": "About the Knowledge Graph"
       }
     ]
   },

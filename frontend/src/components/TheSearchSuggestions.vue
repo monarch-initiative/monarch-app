@@ -65,10 +65,8 @@ const searchSuggestions = [
 }
 
 .tooltip-trigger {
-  color: #007bff;
+  color: #4b7acb;
   font-size: 0.9rem;
-  text-decoration: underline;
-  cursor: pointer;
 }
 
 /* Tooltip box positioned directly under the trigger */
@@ -114,7 +112,7 @@ const searchSuggestions = [
 
 .tooltip-suggestion {
   margin-left: 4px;
-  color: hsl(185, 100%, 30%);
+  color: #007bff;
   text-decoration: underline;
   cursor: pointer;
 }
