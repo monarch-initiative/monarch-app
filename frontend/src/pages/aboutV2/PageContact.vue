@@ -58,10 +58,34 @@
       </div>
 
       <!-- form -->
-      <form class="form">
-        <input type="text" placeholder="Your name" />
-        <input type="email" placeholder="Email" />
-        <textarea placeholder="Message"></textarea>
+      <form
+        class="form"
+        action="https://formsubmit.co/1e225962d9acdf7ca6770483d79d43f2"
+        method="POST"
+      >
+        <input type="hidden" name="_next" value="/thank-you" />
+
+        <!-- honeypot to trap bots -->
+        <input
+          type="text"
+          name="_honey"
+          style="display: none"
+          tabindex="-1"
+          autocomplete="off"
+        />
+        <!-- Hidden settings -->
+        <input type="hidden" name="_captcha" value="false" />
+        <input
+          type="hidden"
+          name="_subject"
+          value="New message from Contact Form"
+        />
+        <input type="hidden" name="_template" value="box" />
+
+        <!-- Form fields -->
+        <input type="text" name="name" placeholder="Your name" required />
+        <input type="email" name="email" placeholder="Your email" required />
+        <textarea name="message" placeholder="Your message..." required />
         <button type="submit">Send</button>
       </form>
     </div>
