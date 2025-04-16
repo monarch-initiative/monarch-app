@@ -39,7 +39,7 @@ watch(
 );
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .sab-member-row {
   display: flex;
   align-items: center;
@@ -48,6 +48,12 @@ watch(
   gap: 1.5rem;
   color: inherit;
   text-decoration: none;
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
 }
 
 .image {
@@ -94,17 +100,19 @@ watch(
   font-size: 0.95rem;
   line-height: 1.4;
   text-align: left;
-}
-
-@media (max-width: 600px) {
-  .sab-member-row {
-    flex-direction: column;
+  @media (max-width: 800px) {
     align-items: center;
+    max-width: 25em;
     text-align: center;
   }
+}
 
-  .sab-info {
-    max-width: 90%;
+.sab-info {
+  display: flex;
+  flex-direction: column;
+  max-width: 90%;
+  @media (max-width: 800px) {
+    align-items: center;
   }
 }
 </style>

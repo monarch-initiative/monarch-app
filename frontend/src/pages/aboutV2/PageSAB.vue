@@ -1,11 +1,12 @@
 <template>
   <AppBreadcrumb />
   <ThePageTitle id="about-sab" title="Scientific Advisory Board Members" />
-  <div class="divider">
-    <hr class="top-line" />
-    <hr class="bottom-line" />
-  </div>
+
   <AppSection design="bare" width="big" class="container">
+    <div class="fancy-divider">
+      <hr class="line left" />
+      <hr class="line right" />
+    </div>
     <p class="description">
       Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
       dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
@@ -16,7 +17,7 @@
       gravida orci a odio
     </p>
 
-    <AppGallery :cols="2">
+    <AppGallery :cols="2" class="custom-gallery">
       <AppMemberCard
         v-for="(member, index) in sab.members"
         :key="index"
@@ -37,28 +38,44 @@ import sab from "@/data/sab.json";
 
 <style>
 .section[data-v-d078f057]:last-of-type {
-  margin: 3em;
+  padding-top: unset;
   gap: 4em;
 }
-.divider {
+.fancy-divider {
+  position: relative;
   width: 100%;
 }
-.top-line {
-  left: 0;
-  margin-left: 15em;
-}
-.bottom-line {
-  right: 0;
-  margin: 1.8em 15em;
-}
-.top-line,
-.bottom-line {
+
+.line {
   position: absolute;
-  max-width: 60%;
+  top: 0;
+  width: 80%;
+  height: 1px;
+  border: none;
   border-top: 1px solid #000;
 }
 
+.line.left {
+  left: 0;
+}
+
+.line.right {
+  top: 0.5rem; /* offsets it downward so it's visually separate */
+  right: 0;
+}
+
+@media (max-width: 600px) {
+  .line {
+    width: 80%;
+  }
+}
+@media (max-width: 800px) {
+  .custom-gallery {
+    --screen-cols: 1 !important;
+  }
+}
+
 .description {
-  font-size: 0.9em;
+  font-size: 1em;
 }
 </style>

@@ -110,6 +110,8 @@ defineProps<{
 }
 
 .story-image {
+  display: block;
+  width: 100%;
   max-width: 840px;
   margin: 0 auto 5rem;
   border-radius: 30px;

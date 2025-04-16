@@ -270,7 +270,13 @@ export const routes: RouteRecordRaw[] = [
     path: "/about/sab",
     name: "AboutSab",
     component: asyncRoute("aboutV2/PageSAB"),
-    meta: { breadcrumb: "Scientfic Advisory Board" },
+    meta: { breadcrumb: "Scientfic Advisory Board Members" },
+  },
+  {
+    path: "/about/contact-us",
+    name: "AboutContactUs",
+    component: asyncRoute("aboutV2/PageContact"),
+    meta: { breadcrumb: "Contact Us" },
   },
 ];
 
