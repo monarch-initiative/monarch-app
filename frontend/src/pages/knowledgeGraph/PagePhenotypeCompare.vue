@@ -95,7 +95,7 @@
             : compareResults.objectMatches"
           :key="index"
         >
-          <AppNodeBadgeV2
+          <AppNodeBadge
             :node="{ id: match.source, name: match.source_label }"
           />
           <!-- Score -->
@@ -106,7 +106,7 @@
               >{{ match.score.toFixed(1) }}</AppPercentage
             >
           </AppFlex>
-          <AppNodeBadgeV2
+          <AppNodeBadge
             :node="{ id: match.target, name: match.target_label }"
           />
         </template>
@@ -124,7 +124,7 @@ import {
 } from "@/api/phenotype-explorer";
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppButton from "@/components/AppButton.vue";
-import AppNodeBadgeV2 from "@/components/AppNodeBadgeV2.vue";
+import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPercentage from "@/components/AppPercentage.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import type { Option } from "@/components/AppSelectTags.vue";
@@ -218,7 +218,7 @@ const {
     objectUnmatched: [],
   },
 );
-console.log("compareResults", compareResults);
+
 /** Whether analysis is pending */
 const isPending = computed(
   () => compareIsLoading.value || compareIsError.value,
