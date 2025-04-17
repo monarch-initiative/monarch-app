@@ -7,7 +7,7 @@
   />
 
   <!-- What is KG -->
-  <AppSection width="big" design="bare" class="section kg-about">
+  <AppSection width="big" design="bare" class="kg-about">
     <AppHeading class="fullWidthHeader">
       What is Monarch Initiative Knowledge Graph (KG)?
     </AppHeading>
@@ -84,32 +84,28 @@
   </AppSection>
 
   <!-- KG's Tools and Resources -->
-  <AppSection width="big" design="bare" class="section">
+  <AppSection width="big" design="bare">
     <AppHeading class="fullWidthHeader">
-      Knowledge Graph's Tools and Resources
+      Key Features of the Monarch Knowledge Graph
     </AppHeading>
-    <AppFlex gap="big" class="tools">
+    <AppGallery :cols="2" class="tools">
       <AppTileCard
-        title="Graph"
-        content="Dive into the Monarch Knowledge Graph, where complex biological data is interconnected. This section lets you explore relationships between genes, diseases, phenotypes, and more, providing deep insights to accelerate scientific discovery."
-        button-text="Explore"
+        title="Accessible Data and APIs"
+        content="Monarch KG offers robust APIs and downloadable datasets, including ontologies, designed for easy integration into external research projects and tools."
       />
       <AppTileCard
-        title="Phenotype Explore"
-        content="The Phenotype Explorer enables you to investigate phenotypic data, linking observable traits to genetic information. Use this tool to explore how phenotypes are connected to genetic variations and their role in diseases."
-        button-text="Explore"
+        title="Standards-Based Integration"
+        content="Monarch KG follows the Biolink Model to ensure consistent and semantically rich connections across diverse biomedical data sources."
       />
       <AppTileCard
-        title="Text Annotator"
-        content="The Text Annotator is a powerful tool for extracting biological knowledge from scientific literature. It helps researchers identify key biological concepts and relationships within text, enhancing the search for relevant data and insights."
-        button-text="Explore"
+        title="Regular Updates"
+        content="The knowledge graph is updated on a monthly basis to incorporate the latest data and improvements."
       />
       <AppTileCard
-        title="Tools"
-        content="Access a wealth of resources that support your research, including tools, datasets, and documentation. This section provides the essential data and information needed to make the most of Monarch's integrated biological knowledge"
-        button-text="Explore"
+        title="Cross-Species Insight"
+        content="Monarch KG integrates data across multiple species, enabling powerful comparative analyses and translational research."
       />
-    </AppFlex>
+    </AppGallery>
   </AppSection>
 
   <!-- Data Harmonization section -->
@@ -325,14 +321,10 @@ h1 {
 }
 
 .tools {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  width: 100%;
-
-  @media (max-width: 1100px) {
-    flex-direction: column;
-    width: 100%;
+  margin-top: 0.5em;
+  gap: 25px !important;
+  @media (max-width: $wrap) {
+    margin-top: unset;
   }
 }
 
@@ -389,6 +381,7 @@ h1 {
 .data-harmonization {
   display: flex;
   flex-direction: column;
+
   gap: 1em;
 
   .description-grid {

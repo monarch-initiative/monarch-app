@@ -90,7 +90,7 @@
           >{{ match.score.toFixed(1) }}</AppPercentage
         >
         <AppFlex class="details" direction="col" align-h="left" gap="small">
-          <AppNodeBadgeV2 :node="match.subject" />
+          <AppNodeBadge :node="match.subject" />
         </AppFlex>
       </div>
     </AppFlex>
@@ -114,7 +114,7 @@ import {
 } from "@/api/phenotype-explorer";
 import AppAlert from "@/components/AppAlert.vue";
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
-import AppNodeBadgeV2 from "@/components/AppNodeBadgeV2.vue";
+import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPercentage from "@/components/AppPercentage.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import type { Option, Options } from "@/components/AppSelectTags.vue";

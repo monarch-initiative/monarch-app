@@ -5,7 +5,7 @@
       <p class="tile-content">{{ content }}</p>
     </div>
 
-    <AppButton to="" text="Explore" design="tile" />
+    <AppButton v-if="buttonText" to="" text="Explore" design="tile" />
   </div>
 </template>
 
@@ -25,6 +25,7 @@ $wrap: 1100px;
   flex-direction: column;
   align-items: center;
   max-width: 580px;
+  min-height: 157px;
   padding: 1.5em;
   gap: 10px;
   background-color: #a6ecf257;
