@@ -321,7 +321,11 @@ h1 {
 }
 
 .tools {
+  margin-top: 0.5em;
   gap: 25px !important;
+  @media (max-width: $wrap) {
+    margin-top: unset;
+  }
 }
 
 .info {
