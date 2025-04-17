@@ -3,6 +3,7 @@
   <PageTitle id="our-story" title="Our Story" />
 
   <AppSection width="big" design="bare">
+    <!-- We will replace this image soon -->
     <img class="story-image" src="@/assets/our-story.png" alt="timeline" />
 
     <!-- Headline -->
@@ -116,14 +117,6 @@ defineProps<{
   margin: 0 auto 5rem;
   border-radius: 30px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
-
-.about-monarch {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-  line-height: 1.6;
-  font-family: sans-serif;
 }
 
 .section {

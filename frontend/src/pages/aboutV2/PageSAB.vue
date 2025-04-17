@@ -3,7 +3,7 @@
   <ThePageTitle id="about-sab" title="Scientific Advisory Board Members" />
 
   <AppSection design="bare" width="big" class="container">
-    <div class="fancy-divider">
+    <div class="divider">
       <hr class="line left" />
       <hr class="line right" />
     </div>
@@ -41,7 +41,7 @@ import sab from "@/data/sab.json";
   padding-top: unset;
   gap: 4em;
 }
-.fancy-divider {
+.divider {
   position: relative;
   width: 100%;
 }
@@ -60,7 +60,7 @@ import sab from "@/data/sab.json";
 }
 
 .line.right {
-  top: 0.5rem; /* offsets it downward so it's visually separate */
+  top: 0.5rem;
   right: 0;
 }
 
