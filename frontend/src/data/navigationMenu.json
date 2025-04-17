@@ -82,12 +82,6 @@
         "tooltip": "SAB"
       },
       {
-        "label": "FAQs",
-        "key": "about-faqs",
-        "to": "/about/faqs",
-        "tooltip": "FAQs"
-      },
-      {
         "label": "Contact Us",
         "key": "about-contact-us",
         "to": "/about/contact-us",
