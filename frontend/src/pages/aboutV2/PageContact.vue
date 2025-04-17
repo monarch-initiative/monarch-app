@@ -58,43 +58,158 @@
       </div>
 
       <!-- form -->
-      <form
-        class="form"
-        action="https://formsubmit.co/1e225962d9acdf7ca6770483d79d43f2"
-        method="POST"
-      >
-        <input type="hidden" name="_next" value="/thank-you" />
-
-        <!-- honeypot to trap bots -->
-        <input
-          type="text"
-          name="_honey"
-          style="display: none"
-          tabindex="-1"
-          autocomplete="off"
+      <form class="form" @submit.prevent="runPostFeedback">
+        <AppTextbox
+          v-model.trim="name"
+          placeholder="Name"
+          @keydown="preventImplicit"
+          :required="true"
         />
-        <!-- Hidden settings -->
-        <input type="hidden" name="_captcha" value="false" />
-        <input
-          type="hidden"
-          name="_subject"
-          value="New message from Contact Form"
+        <AppTextbox
+          v-model.trim="email"
+          placeholder="Email"
+          type="email"
+          @keydown="preventImplicit"
+          :required="true"
         />
-        <input type="hidden" name="_template" value="box" />
+        <AppTextbox
+          v-model.trim="github"
+          placeholder="GitHub username (optional)"
+          @keydown="preventImplicit"
+        />
+        <AppTextbox
+          v-model="message"
+          placeholder="Message"
+          :required="true"
+          :multi="true"
+        />
+        <!-- status -->
+        <AppStatus v-if="isLoading" code="loading">
+          Sending your message...
+        </AppStatus>
+        <AppStatus v-if="isError" code="error">
+          Oops! Something went wrong. Please try again later.</AppStatus
+        >
+        <AppStatus v-if="isSuccess" code="success">
+          <template v-if="link">
+            <AppLink :to="link">View your message here.</AppLink>
+          </template>
+          <template v-else>
+            Thank you! Your message has been submitted successfully.
+          </template>
+        </AppStatus>
 
-        <!-- Form fields -->
-        <input type="text" name="name" placeholder="Your name" required />
-        <input type="email" name="email" placeholder="Your email" required />
-        <textarea name="message" placeholder="Your message..." required />
-        <button type="submit">Send</button>
+        <!-- submit button -->
+        <AppButton
+          v-else
+          text="Submit"
+          icon="paper-plane"
+          type="submit"
+          design="tile"
+        />
       </form>
     </div>
   </AppSection>
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+import { truncate } from "lodash";
+import parser from "ua-parser-js";
+import { useLocalStorage } from "@vueuse/core";
+import { postFeedback } from "@/api/feedback";
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
+import AppButton from "@/components/AppButton.vue";
+import AppTextbox from "@/components/AppTextbox.vue";
 import ThePageTitle from "@/components/ThePageTitle.vue";
+import { useQuery } from "@/composables/use-query";
+import { collapse } from "@/util/string";
+
+/** route info */
+const route = useRoute();
+
+/** user's name */
+const name = useLocalStorage("contact-form-name", "");
+/** user's email */
+const email = useLocalStorage("contact-form-email", "");
+/** user's message */
+const message = useLocalStorage("contact-form-message", "");
+/** user's github name */
+const github = useLocalStorage("contact-form-github", "");
+/** list of automatic details to record */
+const details = computed(() => {
+  /** get browser/device/os/etc details from ua parser library */
+  const { browser, device, os, engine, cpu } = parser();
+
+  /** filter and join strings together */
+  const concat = (...array: (string | undefined)[]) =>
+    array.filter((e) => e && e !== "()").join(" ");
+
+  /** make map of desired properties in desired stringified format */
+  return {
+    Page: route.fullPath,
+    Browser: concat(browser.name, browser.version),
+    Device: concat(device.vendor, device.model, device.type),
+    OS: concat(os.name, os.version, cpu.architecture),
+    Engine: concat(engine.name, engine.version),
+  };
+});
+
+/** https://stackoverflow.com/questions/895171/prevent-users-from-submitting-a-form-by-hitting-enter */
+async function preventImplicit(event: KeyboardEvent) {
+  if (event.key === "Enter") event.preventDefault();
+}
+
+/** post feedback to backend */
+const {
+  query: runPostFeedback,
+  data: link,
+  isLoading,
+  isError,
+  isSuccess,
+} = useQuery(async function () {
+  /** make issue title (unclear what char limit is?) */
+  const title = [
+    "Contact form",
+    truncate(name.value, { length: 20 }),
+    truncate(collapse(message.value), { length: 60 }),
+  ].join(" - ");
+
+  /** make issue body markdown */
+  const body = [
+    "**Name**",
+    name.value,
+    "",
+    "**Email**",
+    email.value,
+    "",
+    "**GitHub Username**",
+    github.value,
+
+    "",
+    "**Details**",
+    ...Object.entries(details.value).map(([key, value]) => `${key}: ${value}`),
+    "",
+    "",
+    message.value,
+  ].join("\n");
+
+  /** post feedback and get link of created issue */
+  const link = await postFeedback(title, body);
+
+  resetForm();
+
+  return link;
+}, "");
+
+/** clear form data from storage after successful submit */
+function resetForm() {
+  name.value = null;
+  email.value = null;
+  github.value = null;
+  message.value = null;
+}
 </script>
 
 <style scoped lang="scss">
