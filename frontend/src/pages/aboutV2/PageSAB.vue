@@ -44,13 +44,13 @@ import sab from "@/data/sab.json";
 .divider {
   position: relative;
   width: 100%;
+  height: 2em;
 }
 
 .line {
   position: absolute;
-  top: 0;
+  top: 50%;
   width: 80%;
-  height: 1px;
   border: none;
   border-top: 1px solid #000;
 }
