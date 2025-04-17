@@ -12,7 +12,7 @@
     />
     <AppLink
       v-if="isLink"
-      :to="`${absolute ? baseurl : ''}${node.id}`"
+      :to="`${absolute ? baseurl : '/'}${node.id}`"
       :state="
         breadcrumbs
           ? { breadcrumbs: [...currentBreadcrumbs, ...breadcrumbs] }
