@@ -222,6 +222,7 @@ $wrap: 768px;
   margin-top: 2rem;
   padding: 0 1rem;
   gap: 1.2rem;
+
   @media (max-width: $wrap) {
     flex-direction: column;
     align-content: center;
