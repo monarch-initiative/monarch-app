@@ -41,6 +41,7 @@ import sab from "@/data/sab.json";
   padding-top: unset;
   gap: 4em;
 }
+
 .divider {
   position: relative;
   width: 100%;
