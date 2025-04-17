@@ -44,7 +44,9 @@ import sab from "@/data/sab.json";
 .divider {
   position: relative;
   width: 100%;
-  height: 1.5em;
+  max-width: 60%;
+  height: 1px;
+  margin: 0 auto 1rem;
 }
 
 .line {
@@ -60,7 +62,7 @@ import sab from "@/data/sab.json";
 }
 
 .line.right {
-  top: 0.5rem;
+  top: 0.4rem;
   right: 0;
 }
 
