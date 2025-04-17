@@ -57,27 +57,54 @@
         :class="[home]"
       />
 
-      <AppLink
+      <!-- <AppLink
         v-tooltip="'Dive right in and use Monarch'"
         class="link"
         to="/explore"
       >
         Explore
-      </AppLink>
-      <AppLink
-        v-tooltip="'Citing, licensing, sources, and other info'"
-        class="link"
-        to="/about"
-      >
-        About
-      </AppLink>
-      <AppLink
-        v-tooltip="'Feedback, docs, guides, contact, and more'"
-        class="link"
-        to="/help"
-      >
-        Help
-      </AppLink>
+      </AppLink> -->
+      <div class="navItems">
+        <DropdownButton
+          v-for="(menu, index) in navigationMenus"
+          :key="menu.label"
+          :index="index"
+          :label="menu.label"
+          class="dropdown-button"
+        >
+          <template #button>{{ menu.label }}</template>
+
+          <template #default>
+            <li v-for="subItem in menu.subItems || []" :key="subItem.label">
+              <AppLink
+                v-tooltip="subItem.tooltip"
+                :to="subItem.to"
+                class="linkItems"
+              >
+                {{ subItem.label }}
+                <!-- Conditionally render icon if it's an absolute link -->
+                <span v-if="subItem.icon" class="icon">
+                  <AppIcon icon="arrow-up-right-from-square" />
+                </span>
+              </AppLink>
+            </li>
+          </template>
+        </DropdownButton>
+        <AppLink
+          v-tooltip="'Citing, licensing, sources, and other info'"
+          class="link"
+          to="/about"
+        >
+          About
+        </AppLink>
+        <AppLink
+          v-tooltip="'Feedback, docs, guides, contact, and more'"
+          class="link"
+          to="/help"
+        >
+          Help
+        </AppLink>
+      </div>
     </nav>
   </header>
 </template>
@@ -85,9 +112,10 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
-import { onClickOutside } from "@vueuse/core";
 import TheLogo from "@/assets/TheLogo.vue";
+import navigationMenus from "@/data/navigationMenu.json";
 import TabSearch from "@/pages/explore/TabSearch.vue";
+import DropdownButton from "./TheDropdownButton.vue";
 import TheNexus from "./TheNexus.vue";
 
 /** route info */
@@ -107,7 +135,8 @@ const search = computed(
   (): boolean =>
     !(
       route.hash === "#search" ||
-      (route.name === "Explore" && route.hash === "")
+      (route.name === "Explore" && route.hash === "") ||
+      (route.name === "KnowledgeGraph" && route.hash === "")
     ),
 );
 
@@ -118,9 +147,6 @@ function close() {
 
 /** close nav when page changes */
 watch(() => route.name, close);
-
-/** close nav when clicking outside header */
-onClickOutside(header, close);
 </script>
 
 <style lang="scss" scoped>
@@ -273,24 +299,6 @@ $wrap: 1000px;
   color: $white;
   text-align: center;
   text-decoration: none;
-
-  &:after {
-    position: absolute;
-    right: 50%;
-    bottom: 0;
-    left: 50%;
-    height: 2px;
-    background: $white;
-    content: "";
-    transition:
-      left $fast,
-      right $fast;
-  }
-
-  &:hover:after {
-    right: 5px;
-    left: 5px;
-  }
 }
 
 @media (max-width: $wrap) {
@@ -298,6 +306,10 @@ $wrap: 1000px;
     position: unset;
     flex-direction: column;
     margin-top: -10px;
+
+    &.expanded {
+      transition: max-height 0.3s ease-out;
+    }
   }
 
   .nav:not(.expanded) {
@@ -307,6 +319,10 @@ $wrap: 1000px;
   .link {
     width: 200px;
     padding: 5px;
+
+    @media (max-width: $wrap) {
+      text-align: left;
+    }
   }
 }
 
@@ -316,5 +332,55 @@ $wrap: 1000px;
     top: 0;
     right: 0;
   }
+}
+
+.navItems {
+  display: flex;
+  align-items: center;
+  .link:hover {
+    color: hsl(185, 75%, 80%);
+  }
+
+  .dropdown :hover {
+    color: hsl(185, 75%, 80%); /* Change color on hover */
+  }
+  @media (max-width: $wrap) {
+    flex-direction: column;
+    align-items: unset;
+    margin-right: auto;
+  }
+}
+
+/* Adjust TabSearch component when screen width is less than $wrap */
+@media (max-width: $wrap) {
+  .tab-search {
+    max-height: 20px;
+  }
+}
+
+/**This is temperory. When we replce the whole navbigation menu with dropdowns,
+we can remove this and adjust onw styling to the whole menu items.
+Its here to align with the styling of old nav items. */
+.dropdown-button {
+  padding: 10px;
+  @media (max-width: $wrap) {
+    padding: 6.5px;
+  }
+}
+.dropdown-menu li {
+  font-size: 0.8em;
+  list-style: none;
+}
+.dropdown-menu li a {
+  text-decoration: none !important;
+}
+.linkItems {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8em;
+}
+
+.icon {
+  height: 0.8em;
 }
 </style>

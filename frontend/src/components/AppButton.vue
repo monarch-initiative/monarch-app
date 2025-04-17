@@ -1,7 +1,3 @@
-<!--
-  looks like a button and either does something (<button>) or goes somewhere (<a>)
--->
-
 <template>
   <component
     :is="component"
@@ -30,7 +26,7 @@ type Props = {
   /** on click action */
   click?: () => unknown;
   /** visual design */
-  design?: "normal" | "circle" | "small";
+  design?: "normal" | "circle" | "small" | "tile";
   /** color */
   color?: "primary" | "secondary" | "none";
   /** whether to copy text prop to clipboard on click */
@@ -77,8 +73,7 @@ defineExpose({ button });
     opacity $fast,
     box-shadow $fast;
 
-  &.normal {
-    min-width: min(200px, calc(100% - 40px));
+  &.button-base {
     min-height: 40px;
     padding: 5px 20px;
     border-radius: $rounded;
@@ -99,6 +94,16 @@ defineExpose({ button });
       outline: none;
       box-shadow: $outline;
     }
+  }
+
+  &.normal {
+    @extend .button-base;
+    min-width: min(200px, calc(100% - 40px));
+  }
+
+  &.tile {
+    @extend .button-base;
+    width: fit-content;
   }
 
   &.circle {
@@ -146,6 +151,30 @@ defineExpose({ button });
     &:hover,
     &:focus {
       color: $black;
+    }
+  }
+
+  &.tile {
+    width: fit-content;
+    min-height: 40px;
+    padding: 5px 20px;
+    border-radius: $rounded;
+    color: $off-black;
+    font-weight: 500;
+    font-size: 1rem;
+
+    &.primary {
+      background: $theme-light;
+    }
+
+    &.secondary {
+      background: $light-gray;
+    }
+
+    &:hover,
+    &:focus {
+      outline: none;
+      box-shadow: $outline;
     }
   }
 }

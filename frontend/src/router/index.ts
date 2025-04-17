@@ -34,6 +34,7 @@ export const routes: RouteRecordRaw[] = [
     path: "/",
     name: "Home",
     component: asyncRoute("PageHome"),
+    meta: { breadcrumb: "Home" },
     beforeEnter: () => {
       /** look for redirect in session storage (saved from public/404.html page) */
       const redirect = window.sessionStorage.redirect || "";
@@ -68,6 +69,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/home",
     redirect: "/",
+    meta: { breadcrumb: "Home" },
   },
 
   /** top level pages */
@@ -178,6 +180,79 @@ export const routes: RouteRecordRaw[] = [
     path: "/:pathMatch(.*)*",
     name: "NotFound",
     component: asyncRoute("PageHome"),
+  },
+
+  {
+    path: "/kg/about",
+    name: "KnowledgeGraphAbout",
+    component: asyncRoute("knowledgeGraph/PageAbout"),
+    meta: { breadcrumb: "About KG" },
+  },
+  {
+    path: "/kg/citation",
+    name: "KnowledgeGraphCite",
+    component: asyncRoute("knowledgeGraph/PageCite"),
+    meta: { breadcrumb: "Citation" },
+  },
+  {
+    path: "/kg/help",
+    name: "KnowledgeGraphHelp",
+    component: asyncRoute("knowledgeGraph/PageHelp"),
+    meta: { breadcrumb: "How to & Help" },
+  },
+  {
+    path: "/kg/status",
+    name: "KnowldgeGraphStatusQc",
+    component: asyncRoute("knowledgeGraph/PageStatus"),
+    meta: { breadcrumb: "Status & QC" },
+  },
+  {
+    path: "/kg",
+    name: "KnowledgeGraph",
+    component: asyncRoute("knowledgeGraph/PageSearch"),
+    meta: { breadcrumb: "Search" },
+  },
+  {
+    path: "/kg/results",
+    name: "KnowledgeGraphResults",
+    component: asyncRoute("knowledgeGraph/PageResults"),
+    meta: { breadcrumb: "Search Results" },
+  },
+  {
+    path: "/kg/documentation",
+    name: "KnowledgeGraphDocumentation",
+    component: asyncRoute("knowledgeGraph/PageDocumentation"),
+    meta: { breadcrumb: "Documentation" },
+  },
+  {
+    path: "/kg/terms",
+    name: "KnowledgeGraphTerms",
+    component: asyncRoute("knowledgeGraph/PageTerms"),
+    meta: { breadcrumb: "Terms of Use" },
+  },
+  {
+    path: "/kg/compare-phenotypes",
+    name: "KnowledgeGraphComparePhenotypes",
+    component: asyncRoute("knowledgeGraph/PagePhenotypeCompare"),
+    meta: { breadcrumb: "Phenotype Similarity Compare" },
+  },
+  {
+    path: "/kg/search-phenotypes",
+    name: "KnowledgeGraphSearchPhenotypes",
+    component: asyncRoute("knowledgeGraph/PagePhenotypeSearch"),
+    meta: { breadcrumb: "Phenotype Similarity Search" },
+  },
+  {
+    path: "/kg/text-annotator",
+    name: "KnowledgeGraphTextAnnotator",
+    component: asyncRoute("knowledgeGraph/PageTextAnnotator"),
+    meta: { breadcrumb: "Text Annotator" },
+  },
+  {
+    path: "/kg/downloads",
+    name: "KnowledgeGraphDownloads",
+    component: asyncRoute("knowledgeGraph/PageDownlods"),
+    meta: { breadcrumb: "Downloads" },
   },
 ];
 
