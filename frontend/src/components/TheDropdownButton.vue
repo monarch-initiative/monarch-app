@@ -9,6 +9,7 @@
     <div
       v-if="isOpen"
       class="dropdown-menu"
+      ref="menu"
       role="button"
       tabindex="0"
       @click="closeMenu"
@@ -25,12 +26,39 @@
 import { onBeforeUnmount, onMounted, ref } from "vue";
 
 const button = ref<HTMLElement | null>(null);
+const menu = ref<HTMLElement | null>(null);
 
 const isOpen = ref(false);
 const dropdown = ref<HTMLElement | null>(null);
 
 const toggleMenu = () => {
   isOpen.value = !isOpen.value;
+
+  setTimeout(() => {
+    if (!isOpen.value || !menu.value || !button.value) return;
+
+    // Aligns dropdown with button and shifts left if it would overflow off the right edge.
+    const menuEl = menu.value;
+    const buttonEl = button.value;
+
+    // Align menu with the actual left edge of the button
+    const buttonLeft = buttonEl.offsetLeft;
+    menuEl.style.left = `${buttonLeft}px`;
+
+    // Check for right-edge overflow
+    const rect = menuEl.getBoundingClientRect();
+    const buffer = 19;
+    const overflowRight = rect.right - window.innerWidth;
+    console.log({
+      rectwight: rect.right,
+      windowWidth: window.innerWidth,
+      overflowRight,
+    });
+    if (overflowRight > -buffer) {
+      const shift = overflowRight + buffer;
+      menuEl.style.left = `${buttonLeft - shift}px`;
+    }
+  }, 0);
 };
 
 const closeMenu = () => {
@@ -76,6 +104,7 @@ li {
 .dropdown-menu {
   position: absolute;
   top: calc(100% + 4px);
+  left: 0;
   width: max-content;
   transform: scaleY(0);
   transform-origin: top;
