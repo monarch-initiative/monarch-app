@@ -38,6 +38,20 @@
         ><br />
         Grant ID: 1U24HG011449-01A1
       </li>
+
+      <li>
+        <strong
+          >EUNICE KENNEDY SHRIVER NATIONAL INSTITUTE OF CHILD HEALTH AND HUMAN
+          DEVELOPMENT </strong
+        ><br />
+        <AppLink
+          to="https://reporter.nih.gov/search/rGHPmb-5YkCYcrKTFLK0Sw/project-details/10843159"
+        >
+          Increasing the Yield and Utility of Pediatric Genomic Medicine with
+          Exomiser</AppLink
+        ><br />
+        Grant ID: 5R01HD103805-04
+      </li>
     </ul>
   </AppSection>
 </template>
