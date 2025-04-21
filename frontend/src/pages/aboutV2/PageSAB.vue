@@ -51,7 +51,7 @@ import sab from "@/data/sab.json";
   justify-content: center;
   width: 100%;
   height: 1rem;
-  margin: 0.5em 0;
+  margin: 0.7em 0;
   gap: 4px;
 }
 
