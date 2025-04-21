@@ -279,10 +279,10 @@ export const routes: RouteRecordRaw[] = [
     meta: { breadcrumb: "Contact Us" },
   },
   {
-    path: "/about/thank-you",
-    name: "Thankyou",
-    component: asyncRoute("aboutV2/PageConfirmation"),
-    meta: { breadcrumb: "" },
+    path: "/about/funding",
+    name: "AboutFunding",
+    component: asyncRoute("aboutV2/PageFunding"),
+    meta: { breadcrumb: "Funding" },
   },
 ];
 

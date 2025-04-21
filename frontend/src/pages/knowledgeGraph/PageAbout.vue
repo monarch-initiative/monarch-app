@@ -9,7 +9,7 @@
   <!-- What is KG -->
   <AppSection width="big" design="bare" class="kg-about">
     <AppHeading class="fullWidthHeader">
-      What is Monarch Initiative Knowledge Graph (KG)?
+      What is Monarch Initiative Knowledge Graph?
     </AppHeading>
     <p class="tagline">
       Discover the power of our Knowledge Graph, seamlessly connecting

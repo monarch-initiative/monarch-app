@@ -68,41 +68,6 @@
         </AppGallery>
       </div>
     </section>
-    <section>
-      <AppHeading>Funding</AppHeading>
-      <ul>
-        <li>
-          OFFICE OF THE DIRECTOR, NATIONAL INSTITUTES OF HEALTH
-          <br />
-          <AppLink to="https://reporter.nih.gov/project-details/10173498">
-            The Monarch Initiative: Linking diseases to model organism
-            resources</AppLink
-          >
-          <br />
-          2R24OD011883-10A1
-        </li>
-        <li>
-          NATIONAL HUMAN GENOME RESEARCH INSTITUTE, Center of Excellence in
-          Genome Sciences
-          <br />
-          <AppLink to="https://reporter.nih.gov/project-details/10448140">
-            A phenomics-first resource for interpretation of variants
-          </AppLink>
-          <br />
-          7RM1HG010860-02
-        </li>
-        <li>
-          NATIONAL HUMAN GENOME RESEARCH INSTITUTE
-          <br />
-          <AppLink to="https://reporter.nih.gov/project-details/10269338">
-            The Human Phenotype Ontology: Accelerating Computational Integration
-            of Clinical Data for Genomics</AppLink
-          >
-          <br />
-          1U24HG011449-01A1
-        </li>
-      </ul>
-    </section>
   </AppSection>
 </template>
 <script setup lang="ts">
