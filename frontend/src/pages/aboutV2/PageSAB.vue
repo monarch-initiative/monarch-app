@@ -35,7 +35,7 @@ import ThePageTitle from "@/components/ThePageTitle.vue";
 import sab from "@/data/sab.json";
 </script>
 
-<style>
+<style lang="scss" scoped>
 .section[data-v-d078f057]:last-of-type {
   padding-top: unset;
   gap: 2em;
