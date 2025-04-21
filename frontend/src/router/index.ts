@@ -284,6 +284,12 @@ export const routes: RouteRecordRaw[] = [
     component: asyncRoute("aboutV2/PageFunding"),
     meta: { breadcrumb: "Funding" },
   },
+  {
+    path: "/about/publications",
+    name: "AboutPublications",
+    component: asyncRoute("aboutV2/PagePublications"),
+    meta: { breadcrumb: "Publications" },
+  },
 ];
 
 /** insert descriptions from imported json into each route's metadata */

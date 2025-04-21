@@ -88,6 +88,12 @@
         "tooltip": "Contact Us"
       },
       {
+        "label": "Publications",
+        "key": "about-publications",
+        "to": "/about/publications",
+        "tooltip": "Publications"
+      },
+      {
         "label": "Funding",
         "key": "about-funding",
         "to": "/about/funding",
