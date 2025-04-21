@@ -1,7 +1,7 @@
 <template>
   <AppBreadcrumb />
   <PageTitle id="publications0" title="Monarch Publications" />
-  <AppSection design="bare" width="big">
+  <AppSection design="bare">
     <p class="metadata">
       This list includes papers by the Monarch Team that were foundational to
       the current Monarch work. The graph below shows the number of citations to
@@ -25,7 +25,7 @@
     </AppGallery>
   </AppSection>
 
-  <AppSection width="big" design="bare">
+  <AppSection design="bare">
     <AppHeading>Years</AppHeading>
     <!-- row of links to year sections -->
     <p>
@@ -43,10 +43,10 @@
 
   <!-- by year -->
   <AppSection
-    design="bare"
     v-for="(group, index) in publications.publications"
     :key="index"
     width="big"
+    design="bare"
   >
     <AppHeading>{{ group.year }}</AppHeading>
     <AppGallery>
