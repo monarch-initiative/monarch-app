@@ -57,13 +57,6 @@
         :class="[home]"
       />
 
-      <!-- <AppLink
-        v-tooltip="'Dive right in and use Monarch'"
-        class="link"
-        to="/explore"
-      >
-        Explore
-      </AppLink> -->
       <div class="navItems">
         <DropdownButton
           v-for="(menu, index) in navigationMenus"
@@ -89,20 +82,6 @@
             </li>
           </template>
         </DropdownButton>
-        <!-- <AppLink
-          v-tooltip="'Citing, licensing, sources, and other info'"
-          class="link"
-          to="/about"
-        >
-          About
-        </AppLink> -->
-        <!-- <AppLink
-          v-tooltip="'Feedback, docs, guides, contact, and more'"
-          class="link"
-          to="/help"
-        >
-          Help
-        </AppLink> -->
       </div>
     </nav>
   </header>
@@ -336,13 +315,13 @@ $wrap: 1000px;
 .navItems {
   display: flex;
   align-items: center;
-  .link:hover {
+  padding: 0 1.5rem;
+
+  .link:hover,
+  .dropdown:hover {
     color: hsl(185, 75%, 80%);
   }
 
-  .dropdown :hover {
-    color: hsl(185, 75%, 80%); /* Change color on hover */
-  }
   @media (max-width: $wrap) {
     flex-direction: column;
     align-items: unset;

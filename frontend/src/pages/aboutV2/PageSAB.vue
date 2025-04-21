@@ -9,13 +9,11 @@
     </div>
 
     <p class="description">
-      Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
-      dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-      proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      Curabitur pretium tincidunt lacus. Nulla gravida orci a odio.Excepteur
-      sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-      mollit anim id est laborum. Curabitur pretium tincidunt lacus. Nulla
-      gravida orci a odio
+      A priority of the Monarch Initiative is to base all research activities on
+      sound scientific data, analyses, and interpretations. The Scientific
+      Advisory Board (SAB) allows Monarch to receive peer review and advice
+      designed to make a positive difference in the production and use of
+      Monarch’s scientific products.
     </p>
 
     <AppGallery :cols="2" class="custom-gallery">
