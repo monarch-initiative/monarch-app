@@ -1,7 +1,11 @@
 <template>
-  <AppBreadcrumb />
-  <PageTitle id="publications0" title="Monarch Publications" />
-  <AppSection design="bare">
+  <AppBreadcrumb class="publications" />
+  <PageTitle
+    id="publications0"
+    title="Monarch Publications"
+    class="publications"
+  />
+  <AppSection>
     <p class="metadata">
       This list includes papers by the Monarch Team that were foundational to
       the current Monarch work. The graph below shows the number of citations to
@@ -25,7 +29,7 @@
     </AppGallery>
   </AppSection>
 
-  <AppSection design="bare">
+  <AppSection>
     <AppHeading>Years</AppHeading>
     <!-- row of links to year sections -->
     <p>
@@ -46,7 +50,6 @@
     v-for="(group, index) in publications.publications"
     :key="index"
     width="big"
-    design="bare"
   >
     <AppHeading>{{ group.year }}</AppHeading>
     <AppGallery>
@@ -153,5 +156,8 @@ const options: ApexOptions = {
 <style scoped lang="scss">
 .metadata {
   text-align: center;
+}
+.publications {
+  background-color: #ffffff;
 }
 </style>
