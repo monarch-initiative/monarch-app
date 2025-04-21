@@ -41,7 +41,7 @@ import sab from "@/data/sab.json";
   gap: 2em;
 }
 .section.big[data-v-d078f057] {
-  padding-top: unset;
+  padding-top: unset !important;
 }
 .divider {
   display: flex;
