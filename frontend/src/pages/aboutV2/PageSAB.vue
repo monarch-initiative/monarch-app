@@ -38,33 +38,36 @@ import sab from "@/data/sab.json";
 <style>
 .section[data-v-d078f057]:last-of-type {
   padding-top: unset;
-  gap: 4em;
+  gap: 2em;
 }
 .section.big[data-v-d078f057] {
   padding-top: unset;
 }
 .divider {
+  display: flex;
   position: relative;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  height: 1px;
-  margin: 0 auto 1rem;
+  height: 1rem;
+  margin: 0.5em 0;
+  gap: 4px;
 }
 
 .line {
-  position: absolute;
-  top: 50%;
   width: 80%;
+  margin: 0;
   border: none;
   border-top: 1px solid #000;
 }
 
 .line.left {
-  left: 0;
+  align-self: flex-start;
 }
 
 .line.right {
-  top: 0.4rem;
-  right: 0;
+  align-self: flex-end;
 }
 
 @media (max-width: 600px) {
