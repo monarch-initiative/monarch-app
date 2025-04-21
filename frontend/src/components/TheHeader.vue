@@ -315,7 +315,7 @@ $wrap: 1000px;
 .navItems {
   display: flex;
   align-items: center;
-  padding: 0 1.5rem;
+  padding: 0 1rem;
 
   .link:hover,
   .dropdown:hover {
@@ -326,6 +326,7 @@ $wrap: 1000px;
     flex-direction: column;
     align-items: unset;
     margin-right: auto;
+    padding: unset;
     gap: 0.1em;
   }
 }
