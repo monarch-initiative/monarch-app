@@ -96,13 +96,13 @@
         >
           About
         </AppLink> -->
-        <AppLink
+        <!-- <AppLink
           v-tooltip="'Feedback, docs, guides, contact, and more'"
           class="link"
           to="/help"
         >
           Help
-        </AppLink>
+        </AppLink> -->
       </div>
     </nav>
   </header>
