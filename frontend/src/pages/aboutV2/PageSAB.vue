@@ -36,11 +36,7 @@ import sab from "@/data/sab.json";
 </script>
 
 <style lang="scss" scoped>
-.section[data-v-d078f057]:last-of-type {
-  padding-top: unset;
-  gap: 2em;
-}
-.section.big[data-v-d078f057] {
+.section.big {
   padding-top: unset !important;
 }
 .divider {
