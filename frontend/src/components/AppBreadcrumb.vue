@@ -27,29 +27,18 @@ const breadcrumbs = computed<Breadcrumb[]>(() => {
   const breadcrumbTrail: Breadcrumb[] = [{ path: "/", label: "Home" }];
   const matchedRoutes = route.matched;
 
-  if (route.path === "/kg") {
-    breadcrumbTrail.push({ path: "/search", label: "Search" });
-  } else {
-    if (route.path.startsWith("/kg")) {
-      breadcrumbTrail.push({
-        path: "/kg",
-        label: "Knowledge Graph",
-      });
-    }
-
-    // Build the breadcrumb trail dynamically for the matched routes
-    matchedRoutes.forEach((route, index) => {
-      const fullPath = matchedRoutes
-        .slice(0, index + 1)
-        .map((r) => r.path)
-        .join("");
-      const label = route.meta.breadcrumb || route.name || "Unknown";
-      breadcrumbTrail.push({
-        path: fullPath,
-        label: label as string,
-      });
+  // Build the breadcrumb trail dynamically for the matched routes
+  matchedRoutes.forEach((route, index) => {
+    const fullPath = matchedRoutes
+      .slice(0, index + 1)
+      .map((r) => r.path)
+      .join("");
+    const label = route.meta.breadcrumb || route.name || "Unknown";
+    breadcrumbTrail.push({
+      path: fullPath,
+      label: label as string,
     });
-  }
+  });
 
   return breadcrumbTrail;
 });

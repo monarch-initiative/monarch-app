@@ -73,11 +73,7 @@
         "role": "Scientific Software Engineer",
         "link": "https://tislab.org/members/kevin-schaper.html"
       },
-      {
-        "name": "Letizia Vestito",
-        "role": "Research fellow in Computational Genomics",
-        "link": "https://www.linkedin.com/in/letiziavestito"
-      },
+
       {
         "name": "Madan Krishnamurthy",
         "role": "Semantic Engineer",
@@ -268,6 +264,11 @@
         "name": "Jules Jacobsen",
         "role": "Senior Software Developer",
         "link": "https://github.com/julesjacobsen"
+      },
+      {
+        "name": "Letizia Vestito",
+        "role": "Research fellow in Computational Genomics",
+        "link": "https://www.linkedin.com/in/letiziavestito"
       },
       {
         "name": "Valentina Cipriani",

@@ -3,12 +3,6 @@
     "label": "Knowledge Graph",
     "subItems": [
       {
-        "label": "Search",
-        "key": "kg-search",
-        "to": "/kg",
-        "tooltip": ""
-      },
-      {
         "label": "Downloads",
         "key": "kg-downloads",
         "to": "/kg/downloads",
