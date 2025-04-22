@@ -1,4 +1,3 @@
-// src/composables/usePhenotypeSets.ts
 import { ref } from "vue";
 import { isEqual } from "lodash";
 import type { Option, Options } from "@/components/AppSelectTags.vue";
