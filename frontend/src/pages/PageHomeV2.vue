@@ -25,7 +25,7 @@
       </div>
       <div class="card cyan">
         <div class="title">Registries</div>
-        <div class="subtitle">&...</div>
+        <div class="subtitle">&Hubs</div>
       </div>
     </section>
   </AppSection>
