@@ -1,6 +1,6 @@
 <template>
   <AppBreadcrumb /> <PageTitle id="kg-help" title="Help" />
-  <AppSection width="big" design="bare">
+  <AppSection width="big">
     <p>
       We welcome all questions, requests, and feedback! Request a feature,
       report a bug, or chat with us about anything Monarch-related. We will
@@ -27,7 +27,7 @@
       />
     </AppFlex>
   </AppSection>
-  <AppSection width="big" design="bare">
+  <AppSection width="big">
     <AppHeading>Local Data</AppHeading>
     <p>
       Clear all of your
@@ -36,14 +36,14 @@
     </p>
     <AppButton text="Clear Local Data" icon="floppy-disk" @click="clearData" />
   </AppSection>
-  <AppSection width="big" design="bare">
+  <AppSection width="big">
     <p class="info">
       If you have any questions, feel free to reach out to us at :
       <AppLink to="mailto:info@monarchinitiative.org"
         >info@monarchinitiative.org</AppLink
       >
-    </p></AppSection
-  >
+    </p>
+  </AppSection>
 </template>
 
 <script setup lang="ts">

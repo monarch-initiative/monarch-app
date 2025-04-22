@@ -1,7 +1,7 @@
 <template>
   <AppBreadcrumb />
   <PageTitle id="phenotype-compare" title="Phenotype Similarity Compare" />
-  <AppSection design="bare">
+  <AppSection>
     <AppFlex gap="small">
       <AppButton
         text="Try a simple example"

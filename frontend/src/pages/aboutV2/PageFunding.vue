@@ -2,7 +2,7 @@
   <AppBreadcrumb />
   <ThePageTitle id="funding-grants" title="Funding & Grants" />
 
-  <AppSection design="bare" width="big" class="container">
+  <AppSection width="big" class="container">
     <p class="page-description">
       The Monarch Initiative is supported by a range of federal funding programs
       that enable our research and infrastructure development. Below is a list

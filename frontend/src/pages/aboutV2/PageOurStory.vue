@@ -2,7 +2,7 @@
   <AppBreadcrumb />
   <PageTitle id="our-story" title="Our Story" />
 
-  <AppSection width="big" design="bare">
+  <AppSection width="big">
     <!-- We will replace this image soon -->
     <img class="story-image" src="@/assets/our-story.png" alt="timeline" />
 

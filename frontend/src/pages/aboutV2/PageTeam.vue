@@ -1,7 +1,7 @@
 <template>
   <AppBreadcrumb />
   <PageTitle id="about-team" title="Meet the team" />
-  <AppSection width="big" design="bare">
+  <AppSection width="big">
     <!-- Page Title -->
     <section class="university-group">
       <p>

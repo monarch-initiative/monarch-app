@@ -5,7 +5,7 @@
 -->
 
 <template>
-  <AppWrapper tag="AppSection" :wrap="!minimal" width="big" design="bare">
+  <AppWrapper tag="AppSection" :wrap="!minimal" width="big">
     <!-- search box -->
     <div class="help-icon-section">
       <AppSelectAutocomplete
@@ -46,7 +46,7 @@
     </AppFlex>
   </AppWrapper>
 
-  <AppSection v-if="!minimal" width="big" design="bare">
+  <AppSection v-if="!minimal" width="big">
     <!-- status -->
     <AppStatus v-if="isLoading" code="loading">Loading results</AppStatus>
     <AppStatus v-else-if="isError" code="error"

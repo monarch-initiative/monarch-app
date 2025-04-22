@@ -1,6 +1,6 @@
 <template>
   <AppBreadcrumb class="breadcrumb" />
-  <AppSection width="big" design="bare">
+  <AppSection width="big">
     <div class="container">
       <div class="logo-container">
         <img src="/icons/monarch-logo.svg" alt="logo" class="logo" />

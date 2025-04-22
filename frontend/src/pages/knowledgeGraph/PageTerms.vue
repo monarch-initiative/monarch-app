@@ -7,7 +7,7 @@
 <template>
   <AppBreadcrumb />
   <PageTitle id="kg-terms" title="Terms of Use" />
-  <AppSection width="big" design="bare" class="terms-section">
+  <AppSection width="big" class="terms-section">
     <AppHeading>License</AppHeading>
     <p>
       This web application and its source code are licensed under the
@@ -43,7 +43,7 @@
     </p>
   </AppSection>
 
-  <AppSection width="big" design="bare">
+  <AppSection width="big">
     <AppHeading>Definitions</AppHeading>
     <p>
       The first-party software and resources used and referenced on this website
@@ -105,7 +105,7 @@
     </p>
   </AppSection>
 
-  <AppSection width="big" design="bare">
+  <AppSection width="big">
     <AppHeading>Variant interpretation</AppHeading>
     <p>
       The Monarch Initiative sources variant interpretations as provided by the

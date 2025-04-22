@@ -1,7 +1,7 @@
 <template>
   <AppBreadcrumb />
   <PageTitle id="kg-about" title="Documentation" />
-  <AppSection width="big" design="bare">
+  <AppSection width="big">
     <p>
       The Monarch Initiative Documentation page provides resources on data
       ingestion processes and application usage. It includes guides on
@@ -33,7 +33,7 @@
     </ul>
   </AppSection>
 
-  <AppSection width="big" design="bare">
+  <AppSection width="big">
     <p>
       For further assistance, check out our
       <AppLink to="/knowledge-graph/help">How to & Help</AppLink>

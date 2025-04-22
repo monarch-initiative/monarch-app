@@ -7,7 +7,7 @@
 <template>
   <AppBreadcrumb />
   <PageTitle id="text-annotator" title="Text Annotator" />
-  <AppSection design="bare">
+  <AppSection>
     <AppTextbox
       v-model="content"
       :multi="true"

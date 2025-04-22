@@ -2,7 +2,7 @@
   <AppBreadcrumb />
   <ThePageTitle id="about-sab" title="Scientific Advisory Board Members" />
 
-  <AppSection design="bare" width="big" class="container">
+  <AppSection width="big" class="container">
     <div class="divider">
       <hr class="line left" />
       <hr class="line right" />

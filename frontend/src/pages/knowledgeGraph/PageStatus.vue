@@ -4,7 +4,7 @@
 <template>
   <AppBreadcrumb /> <PageTitle id="kg-status" title="Status and QC" />
   <!-- api and service statuses -->
-  <AppSection width="big" design="bare">
+  <AppSection width="big">
     <p class="content">
       Below is a list of our service status pages, including api, api-dev, and
       others.These pages provide real-time updates on the availability and
@@ -42,7 +42,7 @@
       within our platform.
     </p>
   </AppSection>
-  <AppSection width="big" design="bare">
+  <AppSection width="big">
     <p class="content">
       If you have any questions, feel free to reach out to us at :
       <AppLink to="mailto:info@monarchinitiative.org"

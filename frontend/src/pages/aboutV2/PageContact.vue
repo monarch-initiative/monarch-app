@@ -2,7 +2,7 @@
   <AppBreadcrumb />
   <ThePageTitle id="contact-us" title="Contact Us" />
 
-  <AppSection width="big" design="bare">
+  <AppSection width="big">
     <div class="contact-content">
       <!--Information -->
       <div class="left">

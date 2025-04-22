@@ -2,7 +2,7 @@
   <AppBreadcrumb />
 
   <PageTitle id="downloads-page" title="Downloads" />
-  <AppSection width="big" design="bare">
+  <AppSection width="big">
     <p>
       Here you can find all the available downloads for the knowledge graph. The
       data is available in TSV format, and you can also download the knowledge

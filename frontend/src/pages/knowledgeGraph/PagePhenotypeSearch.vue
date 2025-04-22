@@ -1,7 +1,7 @@
 <template>
   <AppBreadcrumb />
   <PageTitle id="phenotype-search" title="Phenotype Similarity Search" />
-  <AppSection design="bare">
+  <AppSection>
     <p class="description">
       Phenotype similarity search tool finds genes or diseases from a selected
       species or group that show phenotypic similarity to a set of input

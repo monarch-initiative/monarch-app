@@ -7,7 +7,7 @@
   />
 
   <!-- What is KG -->
-  <AppSection width="big" design="bare" class="kg-about">
+  <AppSection width="big" class="kg-about">
     <AppHeading class="fullWidthHeader">
       What is Monarch Initiative Knowledge Graph?
     </AppHeading>
@@ -51,7 +51,7 @@
   </AppSection>
 
   <!-- Entity and Association statistics -->
-  <AppSection width="big" design="bare">
+  <AppSection width="big">
     <div class="enity-association">
       <AppHeading :level="2">Entity and Association Statistics</AppHeading>
       <AppGallery :cols="4">
@@ -84,7 +84,7 @@
   </AppSection>
 
   <!-- KG's Tools and Resources -->
-  <AppSection width="big" design="bare">
+  <AppSection width="big">
     <AppHeading class="fullWidthHeader">
       Key Features of the Monarch Knowledge Graph
     </AppHeading>
@@ -109,7 +109,7 @@
   </AppSection>
 
   <!-- Data Harmonization section -->
-  <AppSection width="big" class="section" design="bare">
+  <AppSection width="big" class="section">
     <AppHeading class="fullWidthHeader">
       Data Harmonization within the Monarch KG
     </AppHeading>
@@ -161,7 +161,7 @@
   </AppSection>
 
   <!-- Contact -->
-  <AppSection width="big" design="bare">
+  <AppSection width="big">
     <p class="info">
       If you have any questions, feel free to reach out to us at :
       <AppLink to="mailto:info@monarchinitiative.org">
@@ -239,7 +239,7 @@ $wrap: 1000px;
 .fullWidthHeader {
   width: 100%;
   padding: 0.6em 0.5em;
-  background-color: #e0e0e0;
+  background-color: #d3e6eb;
   color: black;
   text-align: left;
 }

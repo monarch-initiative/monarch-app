@@ -2,7 +2,7 @@
   <AppBreadcrumb />
   <PageTitle id="kg-cite" title="Citation Guide for Knowledge Graph & Tools" />
   <div class="container">
-    <AppSection width="big" design="bare" class="citation">
+    <AppSection width="big" class="citation">
       <AppHeading :level="2">Acknowledgement</AppHeading>
       <p>
         If you use Monarch, please acknowledge us with a paragraph like the
@@ -18,7 +18,7 @@
       </p>
     </AppSection>
 
-    <AppSection width="big" design="bare" class="citation">
+    <AppSection width="big" class="citation">
       <AppHeading :level="2">In Publications</AppHeading>
       <p>
         To cite the use of Monarch in publications, please use these two
@@ -37,7 +37,7 @@
     </AppSection>
 
     <!-- citing data -->
-    <AppSection width="big" design="bare" class="citation">
+    <AppSection width="big" class="citation">
       <AppHeading :level="2">Data or Result</AppHeading>
 
       <p class="content">
@@ -65,7 +65,7 @@
     </AppSection>
 
     <!-- citing data -->
-    <AppSection width="big" design="bare">
+    <AppSection width="big">
       <AppHeading :level="2">Page or Algorithmic Results</AppHeading>
       <p>
         To link to a specific page or to algorithmic results presented on this
@@ -82,7 +82,7 @@
   </div>
 
   <!--contact-->
-  <AppSection width="big" design="bare">
+  <AppSection width="big">
     <p class="info">
       If you have any questions, feel free to reach out to us at :
       <AppLink to="mailto:info@monarchinitiative.org"
