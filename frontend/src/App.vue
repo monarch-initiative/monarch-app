@@ -30,7 +30,7 @@
       Disabling the banner is as simple as commenting out this section.
     </TheBanner> -->
 
-    <TheHeader />
+    <TheHeaderV2 />
     <main>
       <router-view />
       <TheFloatButtons />
@@ -46,7 +46,7 @@ import { useRoute } from "vue-router";
 import { apiName } from "@/api";
 import TheFloatButtons from "@/components/TheFloatButtons.vue";
 import TheFooter from "@/components/TheFooter.vue";
-import TheHeader from "@/components/TheHeader.vue";
+import TheHeaderV2 from "@/components/TheHeaderV2.vue";
 import { appDescription, appTitle, appUrl } from "@/global/meta";
 import TheBanner from "./components/TheBanner.vue";
 import TheSnackbar from "./components/TheSnackbar.vue";
