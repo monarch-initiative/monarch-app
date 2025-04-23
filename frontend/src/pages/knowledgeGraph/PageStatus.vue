@@ -7,9 +7,9 @@
   <AppSection width="big">
     <p class="content">
       Below is a list of our service status pages, including api, api-dev, and
-      others.These pages provide real-time updates on the availability and
+      others. These pages provide real-time updates on the availability and
       performance of our services. If you’re experiencing any issues, you can
-      check here for:
+      check here.
     </p>
     <!-- main status of all checks -->
     <AppStatus v-if="isLoading" code="loading">Loading checks</AppStatus>
@@ -42,6 +42,17 @@
       within our platform.
     </p>
   </AppSection>
+
+  <AppSection width="big">
+    <AppHeading>Local Data</AppHeading>
+    <p>
+      Clear all of your
+      <AppLink to="/terms#local-data">locally-saved data</AppLink>, such as your
+      recent searches and feedback form drafts.
+    </p>
+    <AppButton text="Clear Local Data" icon="floppy-disk" @click="clearData" />
+  </AppSection>
+
   <AppSection width="big">
     <p class="content">
       If you have any questions, feel free to reach out to us at :
@@ -86,6 +97,20 @@ onUnmounted(() => {
 
 // Dynamically adjust `cols`
 const cols = computed(() => (screenWidth.value <= 1300 ? 2 : 4));
+
+/** clear user localstorage data */
+function clearData() {
+  if (
+    window.confirm(
+      "Are you sure you want to clear your local data? This cannot be undone.",
+    )
+  ) {
+    window.localStorage.clear();
+    window.alert(
+      "Your local data has been cleared. Refresh the site for changes to take effect.",
+    );
+  }
+}
 </script>
 
 <style lang="scss" scoped>

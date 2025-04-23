@@ -1,20 +1,16 @@
 <template>
   <AppBreadcrumb />
-  <PageTitle
-    id="kg-about"
-    title="KnowledgeGraph"
-    image-src="/icons/monarch-logo.svg"
-  />
-
+  <PageTitle id="kg-about" title="About the Knowledge Graph" />
+  <p class="tagline">
+    Discover the power of our Knowledge Graph, seamlessly connecting biological
+    data to reveal hidden relationships.
+  </p>
   <!-- What is KG -->
   <AppSection width="big" class="kg-about">
     <AppHeading class="fullWidthHeader">
       What is Monarch Initiative Knowledge Graph?
     </AppHeading>
-    <p class="tagline">
-      Discover the power of our Knowledge Graph, seamlessly connecting
-      biological data to reveal hidden relationships.
-    </p>
+
     <div class="content-container">
       <div class="text-column">
         <p>
@@ -356,25 +352,15 @@ h1 {
 .tagline {
   position: relative;
   max-width: 800px;
-  margin: 1rem auto 2rem;
+  margin: 1rem auto 0 auto;
   padding: 0 1rem;
-  color: #007c91;
+
   font-weight: 500;
   font-size: 1.1rem;
   text-align: center;
 
   @media (max-width: $wrap) {
     margin: 0;
-  }
-
-  &::after {
-    display: block;
-    width: 60px;
-    height: 2px;
-    margin: 0.75rem auto 0;
-    border-radius: 1px;
-    background-color: #007c91;
-    content: "";
   }
 }
 

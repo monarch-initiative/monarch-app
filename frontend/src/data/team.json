@@ -111,22 +111,7 @@
       }
     ]
   },
-  {
-    "name": "University of Colorado",
-    "link": "https://medschool.cuanschutz.edu/",
-    "members": [
-      {
-        "name": "Katherina Cortes",
-        "role": "PhD Student",
-        "link": "https://github.com/kcortes133"
-      },
-      {
-        "name": "Megan Kraus",
-        "role": "PhD Student",
-        "link": "https://tislab.org/members/megan-kraus.html"
-      }
-    ]
-  },
+
   {
     "name": "Lawrence Berkeley National Laboratory",
     "link": "http://lbl.gov/",
@@ -173,58 +158,7 @@
       }
     ]
   },
-  {
-    "name": "Charite",
-    "link": "https://www.bihealth.org/en/",
-    "members": [
-      {
-        "name": "Peter Robinson",
-        "role": "Monarch PI",
-        "link": "https://www.jax.org/research-and-faculty/faculty/peter-robinson"
-      },
-      {
-        "name": "Leonardo Chimirri",
-        "role": "",
-        "link": "https://github.com/leokim-l"
-      },
-      {
-        "name": "Adam Graefe",
-        "role": "Student Assistant",
-        "link": "https://de.linkedin.com/in/adam-sl-graefe-71a0a522a"
-      },
-      {
-        "name": "Daniel Danis",
-        "role": "Computational Scientist",
-        "link": "https://www.jax.org/people/daniel-danis"
-      }
-    ]
-  },
-  {
-    "name": "The Jackson Laboratory",
-    "link": "https://www.jax.org/",
-    "members": [
-      {
-        "name": "Peter Robinson",
-        "role": "Monarch PI",
-        "link": "https://www.jax.org/research-and-faculty/faculty/peter-robinson"
-      },
-      {
-        "name": "Lauren Rekerle",
-        "role": "Bioinformatician",
-        "link": ""
-      },
-      {
-        "name": "Martha Beckwith",
-        "role": "",
-        "link": ""
-      },
-      {
-        "name": "Michael Gargano",
-        "role": "Software Engineer",
-        "link": "https://www.jax.org/people/michael-gargano"
-      }
-    ]
-  },
+
   {
     "name": "European Bioinformatics Institute",
     "link": "https://www.ebi.ac.uk/",
@@ -282,6 +216,23 @@
       }
     ]
   },
+
+  {
+    "name": "University of Colorado",
+    "link": "https://medschool.cuanschutz.edu/",
+    "members": [
+      {
+        "name": "Katherina Cortes",
+        "role": "PhD Student",
+        "link": "https://github.com/kcortes133"
+      },
+      {
+        "name": "Megan Kraus",
+        "role": "PhD Student",
+        "link": "https://tislab.org/members/megan-kraus.html"
+      }
+    ]
+  },
   {
     "name": "Johns Hopkins University",
     "link": "https://www.jhu.edu/",
@@ -303,6 +254,70 @@
       }
     ]
   },
+
+  {
+    "name": "Berlin Institute of Health at Charité",
+    "link": "https://www.bihealth.org/en/",
+    "members": [
+      {
+        "name": "Peter Robinson",
+        "role": "Monarch PI",
+        "link": "https://www.jax.org/research-and-faculty/faculty/peter-robinson"
+      },
+      {
+        "name": "Leonardo Chimirri",
+        "role": "",
+        "link": "https://github.com/leokim-l"
+      },
+      {
+        "name": "Adam Graefe",
+        "role": "Student Assistant",
+        "link": "https://de.linkedin.com/in/adam-sl-graefe-71a0a522a"
+      },
+      {
+        "name": "Daniel Danis",
+        "role": "Computational Scientist",
+        "link": "https://www.jax.org/people/daniel-danis"
+      }
+    ]
+  },
+  {
+    "name": "The Jackson Laboratory",
+    "link": "https://www.jax.org/",
+    "members": [
+      {
+        "name": "Peter Robinson",
+        "role": "Monarch PI",
+        "link": "https://www.jax.org/research-and-faculty/faculty/peter-robinson"
+      },
+      {
+        "name": "Lauren Rekerle",
+        "role": "Bioinformatician",
+        "link": ""
+      },
+      {
+        "name": "Martha Beckwith",
+        "role": "",
+        "link": ""
+      },
+      {
+        "name": "Michael Gargano",
+        "role": "Software Engineer",
+        "link": "https://www.jax.org/people/michael-gargano"
+      }
+    ]
+  },
+  {
+    "name": "Critical Path Institute",
+    "link": "https://c-path.org/",
+    "members": [
+      {
+        "name": "Nicole Vasilevsky",
+        "role": "Biocuration/Ontology Developer",
+        "link": "https://github.com/nicolevasilevsky"
+      }
+    ]
+  },
   {
     "name": "Consultants",
     "link": "",
@@ -321,24 +336,7 @@
         "name": "Sebastian Köhler",
         "role": "Software Developer",
         "link": "https://linkedin.com/in/koehlers"
-      }
-    ]
-  },
-  {
-    "name": "C-Path",
-    "link": "https://c-path.org/",
-    "members": [
-      {
-        "name": "Nicole Vasilevsky",
-        "role": "Biocuration/Ontology Developer",
-        "link": "https://github.com/nicolevasilevsky"
-      }
-    ]
-  },
-  {
-    "name": "Renaissance Computing Institute",
-    "link": "http://renci.org/",
-    "members": [
+      },
       {
         "name": "Jim Balhoff",
         "role": "Semantic Developer",
@@ -346,6 +344,7 @@
       }
     ]
   },
+
   {
     "name": "Alumni Members",
     "members": [
