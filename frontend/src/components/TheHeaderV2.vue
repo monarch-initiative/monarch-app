@@ -1,5 +1,8 @@
 <template>
   <header class="header">
+    <!-- header background visualization -->
+    <TheNexus v-if="home" />
+
     <div class="nav-wrapper">
       <!-- Top row: logo + hamburger -->
       <div class="branding">
@@ -46,16 +49,47 @@
         </DropdownButton>
       </div>
     </div>
+
+    <section class="search-hero" v-if="home">
+      <div class="search-box">
+        <TabSearch
+          v-if="search"
+          :minimal="true"
+          :header-box="true"
+          :home="home"
+          :class="[home]"
+        />
+      </div>
+    </section>
   </header>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
+import { useRoute } from "vue-router";
 import TheLogo from "@/assets/TheLogo.vue";
 import navigationMenus from "@/data/navigationMenu.json";
+import TabSearch from "@/pages/explore/TabSearch.vue";
 import DropdownButton from "./TheDropdownButton.vue";
+import TheNexus from "./TheNexus.vue";
 
+/** route info */
+const route = useRoute();
 const expanded = ref(false);
+
+/** whether to show search box */
+const search = computed(
+  (): boolean =>
+    !(
+      route.hash === "#search" ||
+      (route.name === "Explore" && route.hash === "") ||
+      (route.name === "KnowledgeGraph" && route.hash === "")
+    ),
+);
+
+/** is home page (big) version */
+const home = computed((): boolean => route.name === "Home");
+
 function handleResize() {
   if (window.innerWidth >= 1000) {
     expanded.value = false;
@@ -76,9 +110,24 @@ $wrap: 1000px;
 
 .header {
   z-index: 1010;
+  position: relative;
+  min-height: 300px;
   padding: 1rem;
+  overflow: hidden;
   background: $theme;
   color: $white;
+}
+
+:deep(.nexus-background) {
+  z-index: 0;
+  position: absolute;
+  inset: 0;
+}
+
+.nav-wrapper,
+.search-hero {
+  z-index: 1;
+  position: relative;
 }
 
 .nav-wrapper {
