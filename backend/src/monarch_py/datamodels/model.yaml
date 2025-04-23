@@ -318,7 +318,6 @@ classes:
   SearchResult:
     is_a: Entity
     slots:
-      - highlight
       - score
     slot_usage:
       category:
@@ -340,7 +339,6 @@ classes:
       - tokens
       - start
       - end
-
 slots:
   aggregator_knowledge_source:
     multivalued: true
@@ -510,9 +508,6 @@ slots:
     description: >-
       A count of the number of phenotypes that are known to be associated with this entity
     range: integer
-  highlight:
-    description: matching text snippet containing html tags
-    range: string
   id:
     identifier: true
     range: string
