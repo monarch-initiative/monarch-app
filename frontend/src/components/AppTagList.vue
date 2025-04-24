@@ -23,10 +23,10 @@ defineProps<{
 .synonym-tag {
   display: inline-block;
   padding: 0.35em 0.9em;
-  border: 0.07em solid #b2ebf2; // roughly 1px → 0.07em
+  border: 0.07em solid #b2ebf2;
   border-radius: 999em;
   background-color: #e0f7fa;
-  box-shadow: 0 0.07em 0.14em rgba(0, 0, 0, 0.04); // 1px 2px → em
+  box-shadow: 0 0.07em 0.14em rgba(0, 0, 0, 0.04);
   color: #006064;
   font-weight: 500;
   font-size: 0.85em;
