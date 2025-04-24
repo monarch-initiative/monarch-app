@@ -2,8 +2,8 @@
   <AppBreadcrumb />
   <PageTitle id="our-story" title="Our Story" />
   <p class="tagline">
-    Innovating with Purpose: Translating Data into, Breakthroughs for Rare
-    Disease.
+    Innovating with purpose: Translating data into breakthroughs for rare
+    diseases.
   </p>
   <AppSection width="big" class="our-story">
     <AppHeading class="fullWidthHeader"> Overview </AppHeading>
