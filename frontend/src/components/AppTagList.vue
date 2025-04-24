@@ -16,20 +16,20 @@ defineProps<{
 .tag-wrapper {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 0.5rem;
-  gap: 0.5rem;
+  margin-top: 0.5em;
+  gap: 0.5em;
 }
 
 .synonym-tag {
   display: inline-block;
   padding: 0.35em 0.9em;
-  border: 1px solid #b2ebf2;
-  border-radius: 999px;
+  border: 0.07em solid #b2ebf2; // roughly 1px → 0.07em
+  border-radius: 999em;
   background-color: #e0f7fa;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 0.07em 0.14em rgba(0, 0, 0, 0.04); // 1px 2px → em
   color: #006064;
   font-weight: 500;
-  font-size: 0.85rem;
+  font-size: 0.85em;
   transition: background-color 0.2s ease;
 
   &:hover {
