@@ -1,15 +1,11 @@
 <template>
   <div class="tile">
     <div class="left-icon">
-      <AppIcon v-if="icon" :icon="icon" :size="'2em'" class="icon" />
+      <AppIcon v-if="icon" :icon="icon" :size="'1.5em'" class="icon" />
     </div>
     <div class="tile-body">
       <h3 class="title">{{ title }}</h3>
       <p class="tile-content">{{ content }}</p>
-
-      <div class="button-wrapper" v-if="buttonText">
-        <AppButton to="" :text="buttonText" design="tile" />
-      </div>
     </div>
   </div>
 </template>
@@ -75,15 +71,5 @@ h3 {
 .tile-content {
   color: #333;
   font-size: 1rem;
-}
-
-.button-wrapper {
-  display: flex;
-  justify-content: flex-start;
-  margin-top: 1rem;
-
-  @media (max-width: $wrap) {
-    justify-content: center;
-  }
 }
 </style>
