@@ -35,6 +35,25 @@
       </button>
     </div>
 
+    <div v-if="!isMobile && home" class="hero-card">
+      <div class="card-title">
+        <TheLogo class="hero-logo" />
+        <h1>Comprehensive Search</h1>
+      </div>
+
+      <div class="hero-search">
+        <TabSearch
+          class="search-input"
+          :minimal="true"
+          :header-box="true"
+          :home="home"
+          :class="[home]"
+        />
+      </div>
+
+      <TheSearchTerms />
+    </div>
+
     <!-- navigation bar -->
     <nav :class="['nav', { home, expanded }]">
       <div class="home">
@@ -86,6 +105,7 @@
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import TheLogo from "@/assets/TheLogo.vue";
+import TheSearchTerms from "@/components/TheSearchTerms.vue";
 import navigationMenus from "@/data/navigationMenu.json";
 import TabSearch from "@/pages/explore/TabSearch.vue";
 import DropdownButton from "./TheDropdownButton.vue";
@@ -387,5 +407,104 @@ Its here to align with the styling of old nav items. */
 
 .icon {
   height: 0.8em;
+}
+
+//hero cars styles
+
+.hero-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  color: #333;
+  text-align: center;
+}
+
+.hero-logo {
+  height: 40px;
+}
+
+.hero-title {
+  margin-bottom: 1.5rem;
+  font-weight: 300;
+  font-size: 2rem;
+
+  strong {
+    font-weight: 600;
+  }
+}
+
+.hero-search {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  padding: 0.75rem 0;
+  gap: 10px;
+
+  .search-input {
+    flex: 1;
+    padding: 0.5rem;
+    border: none;
+    outline: none;
+    color: #333;
+    font-size: 1rem;
+  }
+
+  .icon {
+    color: #666;
+  }
+}
+
+.divider {
+  width: 100%;
+  margin: 1.5rem 0;
+  border: none;
+  border-top: 1px solid #ccc;
+}
+
+.hero-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+  color: #0077cc;
+  font-size: 0.95rem;
+
+  a {
+    color: #0077cc;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.note {
+  margin-bottom: 1rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.updated {
+  font-size: 0.85rem;
+
+  a {
+    margin-left: 0.25rem;
+    color: #0077cc;
+    font-weight: 500;
+    text-decoration: none;
+  }
+}
+.card-title {
+  display: flex;
+  align-items: center;
 }
 </style>
