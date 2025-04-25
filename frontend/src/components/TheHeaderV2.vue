@@ -272,7 +272,7 @@ $wrap: 1000px;
 .nav {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   width: 100%;
   padding: 15px;
   gap: 10px;
