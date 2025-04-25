@@ -45,7 +45,7 @@
       </div>
 
       <TabSearch
-        v-if="search"
+        v-if="search && (isMobile || !home)"
         :minimal="true"
         :header-box="true"
         :home="home"
@@ -83,7 +83,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import TheLogo from "@/assets/TheLogo.vue";
 import navigationMenus from "@/data/navigationMenu.json";
@@ -118,6 +118,22 @@ function close() {
   expanded.value = false;
 }
 
+const windowWidth = ref(window.innerWidth);
+
+const updateWidth = () => {
+  windowWidth.value = window.innerWidth;
+};
+
+onMounted(() => {
+  window.addEventListener("resize", updateWidth);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", updateWidth);
+});
+
+const isMobile = computed(() => windowWidth.value < 1000);
+console.log("isMobile", isMobile.value);
 /** close nav when page changes */
 watch(() => route.name, close);
 </script>
