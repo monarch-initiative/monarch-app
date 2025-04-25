@@ -415,9 +415,12 @@ Its here to align with the styling of old nav items. */
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 800px;
+  width: 100%;
+  max-width: 50em;
+  min-height: 300px;
   margin: 2rem auto;
   padding: 2rem;
+  gap: 1em;
   border-radius: 12px;
   background: white;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
@@ -505,6 +508,7 @@ Its here to align with the styling of old nav items. */
 }
 .card-title {
   display: flex;
+  flex-direction: column;
   align-items: center;
 }
 </style>
