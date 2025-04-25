@@ -1,28 +1,58 @@
+<!--
+  floating header at top of every page
+-->
+
 <template>
-  <header class="header">
+  <header ref="header" :class="['header', { home }]">
     <!-- header background visualization -->
     <TheNexus v-if="home" />
 
-    <div class="nav-wrapper">
-      <!-- Top row: logo + hamburger -->
-      <div class="branding">
-        <AppLink class="logo" to="/">
+    <!-- title bar -->
+    <div class="title">
+      <!-- logo image and text -->
+      <AppLink
+        v-tooltip="home ? '' : 'Homepage'"
+        :to="home ? '' : '/'"
+        :class="['navLogo', { home }]"
+      >
+        <TheLogo class="image" />
+        <!-- make logo text the h1 on homepage -->
+        <component :is="home ? 'h1' : 'div'" class="name">
+          Monarch Initiative
+        </component>
+      </AppLink>
+
+      <!-- nav toggle button -->
+      <button
+        v-tooltip="
+          expanded ? 'Close navigation menu' : 'Expand navigation menu'
+        "
+        class="button"
+        :aria-expanded="expanded"
+        @click="expanded = !expanded"
+      >
+        <AppIcon :icon="expanded ? 'xmark' : 'bars'" />
+      </button>
+    </div>
+
+    <!-- navigation bar -->
+    <nav :class="['nav', { home, expanded }]">
+      <div class="home">
+        <AppLink v-tooltip="'Go to the homepage'" class="logo" to="/">
           <TheLogo class="image" />
           <div class="name">Monarch Initiative</div>
         </AppLink>
-
-        <!-- Mobile menu toggle -->
-        <button
-          class="menu-toggle"
-          @click="expanded = !expanded"
-          :aria-expanded="expanded"
-        >
-          <AppIcon :icon="expanded ? 'xmark' : 'bars'" />
-        </button>
       </div>
 
-      <!-- Dropdown nav -->
-      <div class="navItems" :class="{ expanded }">
+      <TabSearch
+        v-if="search"
+        :minimal="true"
+        :header-box="true"
+        :home="home"
+        :class="[home]"
+      />
+
+      <div class="navItems">
         <DropdownButton
           v-for="(menu, index) in navigationMenus"
           :key="menu.label"
@@ -48,24 +78,12 @@
           </template>
         </DropdownButton>
       </div>
-    </div>
-
-    <section class="search-hero" v-if="home">
-      <div class="search-box">
-        <TabSearch
-          v-if="search"
-          :minimal="true"
-          :header-box="true"
-          :home="home"
-          :class="[home]"
-        />
-      </div>
-    </section>
+    </nav>
   </header>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import TheLogo from "@/assets/TheLogo.vue";
 import navigationMenus from "@/data/navigationMenu.json";
@@ -75,7 +93,15 @@ import TheNexus from "./TheNexus.vue";
 
 /** route info */
 const route = useRoute();
+
+/** is nav menu expanded */
 const expanded = ref(false);
+
+/** header element */
+const header = ref<HTMLElement>();
+
+/** is home page (big) version */
+const home = computed((): boolean => route.name === "Home");
 
 /** whether to show search box */
 const search = computed(
@@ -87,116 +113,242 @@ const search = computed(
     ),
 );
 
-/** is home page (big) version */
-const home = computed((): boolean => route.name === "Home");
-
-function handleResize() {
-  if (window.innerWidth >= 1000) {
-    expanded.value = false;
-  }
+/** close nav */
+function close() {
+  expanded.value = false;
 }
 
-onMounted(() => {
-  window.addEventListener("resize", handleResize);
-});
-
-onUnmounted(() => {
-  window.removeEventListener("resize", handleResize);
-});
+/** close nav when page changes */
+watch(() => route.name, close);
 </script>
 
 <style lang="scss" scoped>
 $wrap: 1000px;
 
+/** header */
+
 .header {
+  display: flex;
   z-index: 1010;
-  position: relative;
-  min-height: 300px;
-  padding: 1rem;
-  overflow: hidden;
+  position: sticky;
+  top: 0;
+  align-items: center;
+  justify-content: space-between;
+
   background: $theme;
   color: $white;
 }
-
-:deep(.nexus-background) {
-  z-index: 0;
-  position: absolute;
-  inset: 0;
-}
-
-.nav-wrapper,
-.search-hero {
-  z-index: 1;
-  position: relative;
-}
-
-.nav-wrapper {
-  display: flex;
-  flex-direction: column;
-
-  @media (min-width: $wrap) {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-}
-
-.branding {
+.navLogo {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  color: inherit;
+  padding: 10px;
+  color: $white;
   text-decoration: none;
-
-  .image {
-    height: 40px;
-    margin-right: 10px;
-  }
-
-  .name {
-    font-weight: bold;
-    text-transform: uppercase;
-  }
 }
-
-.menu-toggle {
-  border: none;
-  background: none;
-  color: white;
-  font-size: 1.5rem;
-
-  @media (min-width: $wrap) {
+@media not all and (max-width: $wrap) {
+  .navLogo {
     display: none;
   }
 }
 
-.navItems {
-  display: none;
+.header.home {
+  justify-content: center;
+}
 
-  &.expanded {
-    display: flex;
+@media (max-width: $wrap) {
+  .header {
     flex-direction: column;
-    margin-top: 1rem;
-    gap: 0.5rem;
   }
+
+  .header.home {
+    justify-content: space-between;
+  }
+}
+
+@media not all and (max-width: $wrap) {
+  .header.home {
+    //commenting this out makes the header not sticky
+    //position: relative;
+    min-height: 40em;
+  }
+  .header.home .title {
+    margin-top: 70px;
+    margin-bottom: 20px;
+  }
+}
+
+/** title bar (containing logo and nav toggle button) */
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.button {
+  width: 50px;
+  height: 50px;
+}
+
+@media not all and (max-width: $wrap) {
+  .button {
+    display: none;
+  }
+}
+
+@media (max-width: $wrap) {
+  .title {
+    width: 100%;
+  }
+}
+
+/** logo image and text */
+
+.logo {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  color: $white;
+  text-decoration: none;
+}
+
+.image {
+  height: 45px;
+  padding: 5px;
+}
+
+.name {
+  padding: 5px;
+  font-weight: 400;
+  font-size: 1.1rem;
+  line-height: $spacing - 0.3;
+  letter-spacing: 1px;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.slogan {
+  padding: 5px;
+  font-size: 1rem;
+}
+
+@media (max-width: $wrap) {
+  .logo {
+    padding: 5px;
+  }
+
+  .image {
+    height: 40px;
+  }
+
+  .name {
+    font-size: 1rem;
+    text-align: left;
+  }
+
+  .slogan {
+    display: none;
+  }
+}
+
+@media not all and (max-width: $wrap) {
+  .logo.home {
+    flex-direction: column;
+
+    .image {
+      height: 70px;
+    }
+
+    .name {
+      width: min-content;
+      font-size: 1.1rem;
+    }
+  }
+}
+
+/** navigation bar */
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 15px;
+  gap: 10px;
+}
+
+.link {
+  position: relative;
+  max-width: 100%;
+  padding: 10px;
+  color: $white;
+  text-align: center;
+  text-decoration: none;
+}
+
+@media (max-width: $wrap) {
+  .nav {
+    position: unset;
+    flex-direction: column;
+    margin-top: -10px;
+
+    &.expanded {
+      transition: max-height 0.3s ease-out;
+    }
+  }
+
+  .nav:not(.expanded) {
+    display: none;
+  }
+
+  .link {
+    width: 200px;
+    padding: 5px;
+
+    @media (max-width: $wrap) {
+      text-align: left;
+    }
+  }
+}
+
+@media not all and (max-width: $wrap) {
+  .nav.home {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+
+.navItems {
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+
+  .link:hover,
   .dropdown:hover {
     color: hsl(185, 75%, 80%);
   }
 
-  @media (min-width: $wrap) {
-    display: flex !important;
-    flex-direction: row;
-    margin-top: 0;
-    gap: 1rem;
+  @media (max-width: $wrap) {
+    flex-direction: column;
+    align-items: unset;
+    margin-right: auto;
+    padding: unset;
+    gap: 0.1em;
   }
 }
 
+/* Adjust TabSearch component when screen width is less than $wrap */
+@media (max-width: $wrap) {
+  .tab-search {
+    max-height: 20px;
+  }
+}
+
+/**This is temperory. When we replce the whole navbigation menu with dropdowns,
+we can remove this and adjust onw styling to the whole menu items.
+Its here to align with the styling of old nav items. */
 .dropdown-button {
   padding: 10px;
   @media (max-width: $wrap) {
@@ -210,6 +362,11 @@ $wrap: 1000px;
 }
 .dropdown-menu li a {
   text-decoration: none !important;
+}
+.linkItems {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8em;
 }
 
 .icon {
