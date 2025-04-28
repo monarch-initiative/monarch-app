@@ -1,7 +1,12 @@
 <template>
   <div class="suggestions">
     <span class="examples-label">Examples:</span>
-    <AppLink :to="`/${s.id}`" v-for="(s, i) in searchSuggestions" :key="i">
+    <AppLink
+      :to="`/${s.id}`"
+      v-for="(s, i) in searchSuggestions"
+      :key="i"
+      class="app-link"
+    >
       {{ s.term }}
     </AppLink>
   </div>
@@ -49,6 +54,6 @@ const goToEntity = (id: string) => {
   }
 }
 .app-link {
-  z-index: 1011;
+  text-decoration: none;
 }
 </style>
