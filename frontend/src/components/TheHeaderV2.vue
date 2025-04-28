@@ -3,26 +3,24 @@
 -->
 
 <template>
-  <header ref="header" :class="['header', { home }]">
-    <!-- header background visualization -->
+  <header ref="header" :class="['header', { home, sticky: !home || isMobile }]">
+    <!-- :style="{
+      position: !home || isMobile ? 'sticky' : 'static',
+    }" -->
     <TheNexus v-if="home" />
 
-    <!-- title bar -->
     <div class="title">
-      <!-- logo image and text -->
       <AppLink
         v-tooltip="home ? '' : 'Homepage'"
         :to="home ? '' : '/'"
         :class="['navLogo', { home }]"
       >
         <TheLogo class="image" />
-        <!-- make logo text the h1 on homepage -->
         <component :is="home ? 'h1' : 'div'" class="name">
           Monarch Initiative
         </component>
       </AppLink>
 
-      <!-- nav toggle button -->
       <button
         v-tooltip="
           expanded ? 'Close navigation menu' : 'Expand navigation menu'
@@ -36,25 +34,20 @@
     </div>
 
     <div v-if="!isMobile && home" class="hero-card">
-      <div class="card-title">
+      <div class="hero-header">
         <TheLogo class="hero-logo" />
-        <h1>Comprehensive Search</h1>
+        <h1>Search Across <strong>Genes, Diseases & Phenotypes</strong></h1>
+        <p class="hero-subtext">
+          Accelerating precision medicine through Open Data Science
+        </p>
       </div>
 
-      <div class="hero-search">
-        <TabSearch
-          class="search-input"
-          :minimal="true"
-          :header-box="true"
-          :home="home"
-          :class="[home]"
-        />
+      <div class="hero-search-wrapper">
+        <TabSearch :minimal="true" :header-box="true" :home="home" />
+        <TheSearchTerms />
       </div>
-
-      <TheSearchTerms />
     </div>
 
-    <!-- navigation bar -->
     <nav :class="['nav', { home, expanded }]">
       <div class="home">
         <AppLink v-tooltip="'Go to the homepage'" class="logo" to="/">
@@ -68,7 +61,6 @@
         :minimal="true"
         :header-box="true"
         :home="home"
-        :class="[home]"
       />
 
       <div class="navItems">
@@ -80,7 +72,6 @@
           class="dropdown-button"
         >
           <template #button>{{ menu.label }}</template>
-
           <template #default>
             <li v-for="subItem in menu.subItems || []" :key="subItem.label">
               <AppLink
@@ -153,7 +144,7 @@ onUnmounted(() => {
 });
 
 const isMobile = computed(() => windowWidth.value < 1000);
-console.log("isMobile", isMobile.value);
+
 /** close nav when page changes */
 watch(() => route.name, close);
 </script>
@@ -166,13 +157,15 @@ $wrap: 1000px;
 .header {
   display: flex;
   z-index: 1010;
-  position: sticky;
+  position: relative;
   top: 0;
   align-items: center;
   justify-content: space-between;
-
   background: $theme;
   color: $white;
+}
+.sticky {
+  position: sticky;
 }
 .navLogo {
   display: flex;
@@ -409,106 +402,53 @@ Its here to align with the styling of old nav items. */
   height: 0.8em;
 }
 
-//hero cars styles
-
 .hero-card {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 50em;
-  min-height: 300px;
-  margin: 2rem auto;
-  padding: 2rem;
-  gap: 1em;
-  border-radius: 12px;
+  max-width: 820px;
+  height: fit-content;
+  padding: 4rem;
+  gap: 2em;
+  border-radius: 20px;
   background: white;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-  color: #333;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  color: #222;
   text-align: center;
+  transition: box-shadow 0.3s ease;
 }
 
-.hero-logo {
-  height: 40px;
+.hero-card:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
 }
-
-.hero-title {
-  margin-bottom: 1.5rem;
-  font-weight: 300;
-  font-size: 2rem;
-
-  strong {
-    font-weight: 600;
-  }
-}
-
-.hero-search {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  max-width: 600px;
-  padding: 0.75rem 0;
-  gap: 10px;
-
-  .search-input {
-    flex: 1;
-    padding: 0.5rem;
-    border: none;
-    outline: none;
-    color: #333;
-    font-size: 1rem;
-  }
-
-  .icon {
-    color: #666;
-  }
-}
-
-.divider {
-  width: 100%;
-  margin: 1.5rem 0;
-  border: none;
-  border-top: 1px solid #ccc;
-}
-
-.hero-links {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-bottom: 1rem;
-  gap: 1rem;
-  color: #0077cc;
-  font-size: 0.95rem;
-
-  a {
-    color: #0077cc;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-}
-
-.note {
-  margin-bottom: 1rem;
-  color: #666;
-  font-size: 0.9rem;
-}
-
-.updated {
-  font-size: 0.85rem;
-
-  a {
-    margin-left: 0.25rem;
-    color: #0077cc;
-    font-weight: 500;
-    text-decoration: none;
-  }
-}
-.card-title {
+.hero-header {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.hero-header h1 {
+  font-weight: 600;
+  font-size: 1.75rem;
+  strong {
+    color: #0077cc;
+    font-weight: 700;
+  }
+}
+
+.hero-subtext {
+  color: #666;
+  font-size: 0.95rem;
+}
+.hero-search-wrapper {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+}
+
+.hero-logo {
+  height: 50px;
 }
 </style>

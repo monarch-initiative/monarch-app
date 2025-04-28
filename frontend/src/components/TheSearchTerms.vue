@@ -1,16 +1,9 @@
 <template>
   <div class="suggestions">
-    <span
-      v-for="(s, i) in searchSuggestions"
-      :key="i"
-      class="term"
-      role="link"
-      tabindex="0"
-      @click="goToEntity(s.id)"
-      @keydown.enter="goToEntity(s.id)"
-    >
+    <span class="examples-label">Examples:</span>
+    <AppLink :to="`/${s.id}`" v-for="(s, i) in searchSuggestions" :key="i">
       {{ s.term }}
-    </span>
+    </AppLink>
   </div>
 </template>
 
@@ -35,9 +28,16 @@ const goToEntity = (id: string) => {
 .suggestions {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  margin: 0.7em;
+  align-items: center;
+  justify-content: space-between;
+  width: 43em;
   gap: 1em;
+}
+
+.examples-label {
+  color: #555;
+  font-weight: 600;
+  font-size: 0.95rem;
 }
 
 .term {
@@ -47,5 +47,8 @@ const goToEntity = (id: string) => {
   &:hover {
     color: #0056b3;
   }
+}
+.app-link {
+  z-index: 1011;
 }
 </style>

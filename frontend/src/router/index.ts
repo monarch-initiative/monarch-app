@@ -33,7 +33,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "Home",
-    component: asyncRoute("PageHome"),
+    component: asyncRoute("PageHomeV2"),
     meta: { breadcrumb: "Home" },
     beforeEnter: () => {
       /** look for redirect in session storage (saved from public/404.html page) */
@@ -179,7 +179,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/:pathMatch(.*)*",
     name: "NotFound",
-    component: asyncRoute("PageHome"),
+    component: asyncRoute("PageHomeV2"),
   },
 
   {
