@@ -1,10 +1,6 @@
-<!--
-  homepage of entire site
--->
-
 <template>
   <AppSection width="big">
-    <PageTitle id="home" title="What is Monarch Initiative" />
+    <PageTitle id="home" title="What is Monarch Initiative?" />
     <p>
       The Monarch Initiative is an international consortium that leads key
       global standards and semantic data integration technologies. Monarch
@@ -21,45 +17,51 @@
   </AppSection>
 
   <AppSection width="big">
-    <AppGallery>
-      <template v-for="category in resources" :key="category">
-        <AppTile
-          v-for="(resource, resourceIndex) in category"
-          :key="resourceIndex"
-          :to="resource.link"
-          :icon="resource.icon"
-          :title="resource.name"
-          :subtitle="resource.description"
+    <AppHeading :level="1">Explore Monarch Initiative Tools</AppHeading>
+    <div class="custom-grid">
+      <template v-for="(tool, idx) in TOOL_LINKS" :key="idx">
+        <AppToolTile
+          :to="tool.to"
+          :icon="tool.icon"
+          :title="tool.label"
+          :color="tool.color"
         />
       </template>
-    </AppGallery>
+    </div>
   </AppSection>
 </template>
 
 <script setup lang="ts">
-import AppTile from "@/components/AppTile.vue";
+import AppToolTile from "@/components/AppToolTile.vue";
 import PageTitle from "@/components/ThePageTitle.vue";
-import resources from "./resources.json";
+import { TOOL_LINKS } from "@/data/knowledgeGraphConfig";
 </script>
 
 <style lang="scss" scoped>
-.association {
-  font-size: 2rem;
+.custom-grid {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1.5rem;
 }
 
-.video {
-  aspect-ratio: 16 / 9;
+.custom-grid > * {
+  display: flex;
+  flex: 0 0 7em;
+  flex-direction: column;
+  align-items: center;
+}
+
+.custom-grid > * .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4em;
+  height: 4em;
+}
+.custom-grid > * .icon svg {
   width: 100%;
-}
-
-.line {
-  width: 10px;
-
-  line {
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-dasharray: 1 3;
-    stroke-linecap: round;
-  }
+  height: 100%;
 }
 </style>
