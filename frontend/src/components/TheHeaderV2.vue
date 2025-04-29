@@ -36,10 +36,10 @@
     <div v-if="!isMobile && home" class="hero-card">
       <div class="hero-header">
         <TheLogo class="hero-logo" />
-        <h1>Search Across <strong>Genes, Diseases & Phenotypes</strong></h1>
-        <p class="hero-subtext">
-          Accelerating precision medicine through Open Data Science
-        </p>
+        <h1>
+          Search Across <br />
+          <strong>Genes, Diseases & Phenotypes</strong>
+        </h1>
       </div>
 
       <div class="hero-search-wrapper">
@@ -405,7 +405,7 @@ Its here to align with the styling of old nav items. */
 .hero-card {
   display: flex;
   flex-direction: column;
-  max-width: 820px;
+  max-width: 60em;
   height: fit-content;
   padding: 4rem;
   gap: 2em;
@@ -424,13 +424,13 @@ Its here to align with the styling of old nav items. */
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 1em;
 }
 
 .hero-header h1 {
   font-weight: 600;
   font-size: 1.75rem;
   strong {
-    color: #0077cc;
     font-weight: 700;
   }
 }
