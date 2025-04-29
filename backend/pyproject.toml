@@ -38,7 +38,6 @@ pytest = "^8.2.0"
 mkdocs = ">=1.6.0"
 mkdocs-material = ">=9.5.23"
 mkdocstrings = { version = ">=0.25.1", extras = ["python"] }
-black = "^24.4.2"
 ruff = "*"
 uvicorn = { extras = ["standard"], version = "^0.29.0" }
 httpx = "^0.27"
@@ -53,11 +52,13 @@ monarch-api = { callable = "monarch_py.api.main:run" }
 
 [tool.ruff]
 line-length = 120
+exclude = ["tests/fixtures/*.py", "src/monarch_py/datamodels/model.py"]
+# per-file-ignores = {"" = ""}
+
+[tool.ruff.lint]
 ignore = [
     "F541", # f-strings with no placeholders
 ]
-exclude = ["tests/fixtures/*.py", "src/monarch_py/datamodels/model.py"]
-# per-file-ignores = {"" = ""}
 
 
 [build-system]
