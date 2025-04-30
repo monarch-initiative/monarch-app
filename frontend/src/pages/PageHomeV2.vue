@@ -39,29 +39,33 @@ import { TOOL_LINKS } from "@/data/knowledgeGraphConfig";
 
 <style lang="scss" scoped>
 .custom-grid {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: flex-start;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7em, 1fr));
+  width: 100%;
   gap: 1.5rem;
+}
+
+@media (max-width: 1000px) {
+  .custom-grid {
+    grid-template-rows: repeat(2, auto);
+    grid-auto-columns: minmax(7em, 1fr);
+
+    grid-auto-flow: column;
+  }
+}
+
+@media (max-width: 600px) {
+  .custom-grid {
+    grid-template-rows: auto;
+    grid-template-columns: 1fr;
+    grid-auto-flow: row;
+  }
 }
 
 .custom-grid > * {
   display: flex;
-  flex: 0 0 7em;
   flex-direction: column;
   align-items: center;
-}
-
-.custom-grid > * .icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 4em;
-  height: 4em;
-}
-.custom-grid > * .icon svg {
   width: 100%;
-  height: 100%;
 }
 </style>
