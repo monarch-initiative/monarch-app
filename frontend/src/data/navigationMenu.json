@@ -47,7 +47,7 @@
         "icon": true
       },
       {
-        "label": "About KG",
+        "label": "About the KG",
         "key": "about-kg",
         "to": "/kg/about",
         "tooltip": "About the Knowledge Graph"

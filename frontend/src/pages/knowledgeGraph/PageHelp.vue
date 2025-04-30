@@ -27,15 +27,7 @@
       />
     </AppFlex>
   </AppSection>
-  <AppSection width="big">
-    <AppHeading>Local Data</AppHeading>
-    <p>
-      Clear all of your
-      <AppLink to="/terms#local-data">locally-saved data</AppLink>, such as your
-      recent searches and feedback form drafts.
-    </p>
-    <AppButton text="Clear Local Data" icon="floppy-disk" @click="clearData" />
-  </AppSection>
+
   <AppSection width="big">
     <p class="info">
       If you have any questions, feel free to reach out to us at :
@@ -49,20 +41,6 @@
 <script setup lang="ts">
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import PageTitle from "@/components/ThePageTitle.vue";
-
-/** clear user localstorage data */
-function clearData() {
-  if (
-    window.confirm(
-      "Are you sure you want to clear your local data? This cannot be undone.",
-    )
-  ) {
-    window.localStorage.clear();
-    window.alert(
-      "Your local data has been cleared. Refresh the site for changes to take effect.",
-    );
-  }
-}
 </script>
 
 <style lang="scss" scoped>

@@ -15,9 +15,9 @@
         >
           Monarch Ingest Documentation
         </AppLink>
-        : This documentation details the data ingestion process into the Monarch
-        Knowledge Graph, including information on data sources, ingestion
-        pipelines, and transformation processes
+        : This documentation details the data ingest process into the Monarch
+        Knowledge Graph, including information on data sources, ingest
+        pipelines, and transformation processes.
       </li>
       <li>
         <AppLink

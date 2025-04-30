@@ -4,9 +4,9 @@
 
   <AppSection width="big" class="container">
     <p class="page-description">
-      The Monarch Initiative is supported by a range of federal funding programs
-      that enable our research and infrastructure development. Below is a list
-      of current grants and project awards that contribute to our mission of
+      The Monarch Initiative is supported by a range of funding programs that
+      enable our research and infrastructure development. Below is a list of
+      current grants and project awards that contribute to our mission of
       advancing phenomics, genomics, and data integration across species.
     </p>
     <ul class="grants-list">
@@ -16,7 +16,7 @@
         <AppLink to="https://reporter.nih.gov/project-details/10173498">
           The Monarch Initiative: Linking diseases to model organism resources </AppLink
         ><br />
-        Grant ID: 2R24OD011883-10A1
+        Grant ID: 2R24OD011883
       </li>
 
       <li>
@@ -27,7 +27,7 @@
         <AppLink to="https://reporter.nih.gov/project-details/10448140">
           A phenomics-first resource for interpretation of variants </AppLink
         ><br />
-        Grant ID: 7RM1HG010860-02
+        Grant ID: 7RM1HG010860
       </li>
 
       <li>
@@ -36,7 +36,7 @@
           The Human Phenotype Ontology: Accelerating Computational Integration
           of Clinical Data for Genomics </AppLink
         ><br />
-        Grant ID: 1U24HG011449-01A1
+        Grant ID: 1U24HG011449
       </li>
 
       <li>
@@ -50,7 +50,7 @@
           Increasing the Yield and Utility of Pediatric Genomic Medicine with
           Exomiser</AppLink
         ><br />
-        Grant ID: 5R01HD103805-04
+        Grant ID: 5R01HD103805
       </li>
     </ul>
   </AppSection>
