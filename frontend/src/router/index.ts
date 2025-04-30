@@ -34,6 +34,7 @@ export const routes: RouteRecordRaw[] = [
     path: "/",
     name: "Home",
     component: asyncRoute("PageHome"),
+    meta: { breadcrumb: "Home" },
     beforeEnter: () => {
       /** look for redirect in session storage (saved from public/404.html page) */
       const redirect = window.sessionStorage.redirect || "";
@@ -68,6 +69,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/home",
     redirect: "/",
+    meta: { breadcrumb: "Home" },
   },
 
   /** top level pages */
@@ -178,6 +180,109 @@ export const routes: RouteRecordRaw[] = [
     path: "/:pathMatch(.*)*",
     name: "NotFound",
     component: asyncRoute("PageHome"),
+  },
+
+  {
+    path: "/kg/about",
+    name: "KnowledgeGraphAbout",
+    component: asyncRoute("knowledgeGraph/PageAbout"),
+    meta: { breadcrumb: "About the KG" },
+  },
+  {
+    path: "/kg/citation",
+    name: "KnowledgeGraphCite",
+    component: asyncRoute("knowledgeGraph/PageCite"),
+    meta: { breadcrumb: "Citation" },
+  },
+  {
+    path: "/kg/help",
+    name: "KnowledgeGraphHelp",
+    component: asyncRoute("knowledgeGraph/PageHelp"),
+    meta: { breadcrumb: "How to & Help" },
+  },
+  {
+    path: "/kg/status",
+    name: "KnowldgeGraphStatusQc",
+    component: asyncRoute("knowledgeGraph/PageStatus"),
+    meta: { breadcrumb: "Status & QC" },
+  },
+  {
+    path: "/kg/results",
+    name: "KnowledgeGraphResults",
+    component: asyncRoute("knowledgeGraph/PageResults"),
+    meta: { breadcrumb: "Search Results" },
+  },
+  {
+    path: "/kg/documentation",
+    name: "KnowledgeGraphDocumentation",
+    component: asyncRoute("knowledgeGraph/PageDocumentation"),
+    meta: { breadcrumb: "Documentation" },
+  },
+  {
+    path: "/kg/terms",
+    name: "KnowledgeGraphTerms",
+    component: asyncRoute("knowledgeGraph/PageTerms"),
+    meta: { breadcrumb: "Terms of Use" },
+  },
+  {
+    path: "/kg/compare-phenotypes",
+    name: "KnowledgeGraphComparePhenotypes",
+    component: asyncRoute("knowledgeGraph/PagePhenotypeCompare"),
+    meta: { breadcrumb: "Phenotype Similarity Compare" },
+  },
+  {
+    path: "/kg/search-phenotypes",
+    name: "KnowledgeGraphSearchPhenotypes",
+    component: asyncRoute("knowledgeGraph/PagePhenotypeSearch"),
+    meta: { breadcrumb: "Phenotype Similarity Search" },
+  },
+  {
+    path: "/kg/text-annotator",
+    name: "KnowledgeGraphTextAnnotator",
+    component: asyncRoute("knowledgeGraph/PageTextAnnotator"),
+    meta: { breadcrumb: "Text Annotator" },
+  },
+  {
+    path: "/kg/downloads",
+    name: "KnowledgeGraphDownloads",
+    component: asyncRoute("knowledgeGraph/PageDownlods"),
+    meta: { breadcrumb: "Downloads" },
+  },
+  {
+    path: "/about/our-story",
+    name: "AboutOurStory",
+    component: asyncRoute("aboutV2/PageOurStory"),
+    meta: { breadcrumb: "Our Story" },
+  },
+  {
+    path: "/about/team",
+    name: "AboutTeam",
+    component: asyncRoute("aboutV2/PageTeam"),
+    meta: { breadcrumb: "Team" },
+  },
+  {
+    path: "/about/sab",
+    name: "AboutSab",
+    component: asyncRoute("aboutV2/PageSAB"),
+    meta: { breadcrumb: "Scientfic Advisory Board Members" },
+  },
+  {
+    path: "/about/contact-us",
+    name: "AboutContactUs",
+    component: asyncRoute("aboutV2/PageContact"),
+    meta: { breadcrumb: "Contact Us" },
+  },
+  {
+    path: "/about/funding",
+    name: "AboutFunding",
+    component: asyncRoute("aboutV2/PageFunding"),
+    meta: { breadcrumb: "Funding" },
+  },
+  {
+    path: "/about/publications",
+    name: "AboutPublications",
+    component: asyncRoute("aboutV2/PagePublications"),
+    meta: { breadcrumb: "Publications" },
   },
 ];
 

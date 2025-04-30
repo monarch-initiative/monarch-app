@@ -3,7 +3,6 @@
 
   compare sets of phenotypes and genes/diseases
 -->
-
 <template>
   <AppSection>
     <!-- example -->
@@ -20,8 +19,8 @@
         @click="doBiggerExample()"
       />
     </AppFlex>
-    <strong>Compare these phenotypes ...</strong>
 
+    <strong>Compare these phenotypes ...</strong>
     <!-- set A -->
     <AppSelectTags
       ref="aBox"
@@ -33,7 +32,6 @@
       :description="description(aPhenotypes, aGeneratedFrom)"
       @spread-options="(option, options) => spreadOptions(option, options, 'a')"
     />
-
     <!-- set B -->
     <AppFlex gap="small">
       <strong>... to</strong>
@@ -49,7 +47,6 @@
         :options="bGroupOptions"
       />
     </AppFlex>
-
     <AppSelectTags
       v-if="isCompare"
       v-model="bPhenotypes"
@@ -60,9 +57,7 @@
       :description="description(bPhenotypes, bGeneratedFrom)"
       @spread-options="(option, options) => spreadOptions(option, options, 'b')"
     />
-
     <!-- similarity metric -->
-
     <AppFlex gap="small">
       <strong>... using metric</strong>
       <AppSelectSingle
@@ -71,7 +66,6 @@
         :options="metricOptions"
       />
     </AppFlex>
-
     <!-- run analysis -->
     <AppButton
       text="Analyze"
@@ -80,7 +74,6 @@
       @click="isCompare ? runCompare() : runSearch()"
     />
   </AppSection>
-
   <!-- analysis status -->
   <AppSection v-if="isPending">
     <AppStatus v-if="compareIsLoading || searchIsLoading" code="loading"
@@ -90,7 +83,6 @@
       >Error running analysis</AppStatus
     >
   </AppSection>
-
   <!-- compare results -->
   <AppSection
     v-else-if="
@@ -101,14 +93,12 @@
     "
   >
     <AppHeading>Similarity Comparison</AppHeading>
-
     <AppTabs
       v-model="compareTab"
       name="Comparison direction"
       :tabs="compareTabs"
       :url="false"
     />
-
     <!-- list of compare results -->
     <div class="triptych-scroll">
       <div class="triptych">
@@ -121,7 +111,6 @@
           <strong>{{ headings[1].name }}</strong>
           <div class="weak">{{ headings[1].description }}</div>
         </div>
-
         <template
           v-for="(match, index) in compareTab === 'a-to-b'
             ? compareResults.subjectMatches
@@ -131,7 +120,6 @@
           <AppNodeBadge
             :node="{ id: match.source, name: match.source_label }"
           />
-
           <!-- score -->
           <AppFlex align-h="left" gap="small">
             <tooltip :append-to="appendToBody" :tag="null">
@@ -140,7 +128,6 @@
                 :percent="ringPercent(match.score)"
                 >{{ match.score.toFixed(1) }}</AppPercentage
               >
-
               <template #content>
                 <div class="mini-table">
                   <span>Ancestor</span>
@@ -164,9 +151,7 @@
                   >
                     Phenodigm
                   </AppLink>
-                  <span>
-                    {{ match.phenodigm_score?.toFixed(3) }}
-                  </span>
+                  <span> {{ match.phenodigm_score?.toFixed(3) }} </span>
                   <AppLink
                     to="https://incatools.github.io/ontology-access-kit/guide/similarity.html#jaccard-similarity"
                   >
@@ -176,7 +161,6 @@
                 </div>
               </template>
             </tooltip>
-
             <AppIcon
               v-if="match.jaccard_similarity === 1"
               v-tooltip="'Equal by Jaccard similarity'"
@@ -184,14 +168,12 @@
               tabindex="0"
             />
           </AppFlex>
-
           <AppNodeBadge
             :node="{ id: match.target, name: match.target_label }"
           />
         </template>
       </div>
     </div>
-
     <!-- unmatched phenotypes -->
     <template
       v-if="
@@ -202,7 +184,6 @@
       "
     >
       <AppHeading>Unmatched</AppHeading>
-
       <AppFlex direction="col">
         <AppNodeBadge
           v-for="(unmatched, index) in compareTab === 'a-to-b'
@@ -214,17 +195,14 @@
       </AppFlex>
     </template>
   </AppSection>
-
   <!-- search results -->
   <AppSection v-else-if="searchResults.summary.length">
     <AppHeading>Similarity Comparison</AppHeading>
-
     <!-- heading -->
     <AppHeading
       >Top {{ Math.min(searchResults.summary.length, 10) }} most
       similar</AppHeading
     >
-
     <!-- list of search results -->
     <AppFlex>
       <div
@@ -238,13 +216,11 @@
           tooltip="Average similarity score"
           >{{ match.score.toFixed(1) }}</AppPercentage
         >
-
         <AppFlex class="details" direction="col" align-h="left" gap="small">
           <AppNodeBadge :node="match.subject" />
         </AppFlex>
       </div>
     </AppFlex>
-
     <!-- phenogrid results -->
     <AppHeading>Detailed Comparison</AppHeading>
     <ThePhenogrid :data="searchResults.phenogrid" />

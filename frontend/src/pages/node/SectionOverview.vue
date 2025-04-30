@@ -3,7 +3,7 @@
 -->
 
 <template>
-  <AppSection design="bare" width="full" alignment="left">
+  <AppSection width="full" alignment="left">
     <AppDetails>
       <!-- symbol (gene specific) -->
       <AppDetail
@@ -72,9 +72,7 @@
         title="Also Known As"
         :full="true"
       >
-        <p class="truncate-2" tabindex="0">
-          <AppNodeText :text="node.synonym?.join(',\n&nbsp;')" />
-        </p>
+        <AppTagList :tags="node.synonym ?? []" />
       </AppDetail>
 
       <!-- URI -->
@@ -137,6 +135,10 @@ import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppNodeText from "@/components/AppNodeText.vue";
+import AppTagList from "@/components/AppTagList.vue";
+
+// import { scrollTo } from "@/router";
+// import { sleep } from "@/util/debug";
 
 type Props = {
   /** current node */
@@ -164,6 +166,11 @@ const otherMappings = computed(
       ({ id }) => !["OMIM:", "GARD:"].some((prefix) => id.startsWith(prefix)),
     ) || [],
 );
+
+// async function scrollToAssociations() {
+//   await sleep(100);
+//   scrollTo("#associations");
+// }
 </script>
 
 <style lang="scss" scoped>
