@@ -21,19 +21,28 @@
     <AppSection width="big" class="citation">
       <AppHeading :level="2">In Publications</AppHeading>
       <p>
-        To cite the use of Monarch in publications, please use these two
-        references:
+        To cite the use of Monarch in publications, please use this reference:
       </p>
-      <AppCitation
-        class="content"
-        title="The Monarch Initiative in 2024: an analytic platform integrating phenotypes, genes and diseases across species"
-        authors="Putman et al."
-        :details="[
-          'Nucleic Acids Research',
-          '2024 Jan 5; Volume 52, Issue D1: D938–D949. Published online 2023, November 24.',
-          '10.1093/nar/gkad1082',
-        ]"
-      />
+      <p class="content">
+        Tim E Putman, Kevin Schaper, Nicolas Matentzoglu, Vincent P Rubinetti,
+        Faisal S Alquaddoomi, Corey Cox, J Harry Caufield, Glass Elsarboukh,
+        Sarah Gehrke, Harshad Hegde, Justin T Reese, Ian Braun, Richard M
+        Bruskiewich, Luca Cappelletti, Seth Carbon, Anita R Caron, Lauren E
+        Chan, Christopher G Chute, Katherina G Cortes, Vinícius De Souza,
+        Tommaso Fontana, Nomi L Harris, Emily L Hartley, Eric Hurwitz, Julius O
+        B Jacobsen, Madan Krishnamurthy, Bryan J Laraway, James A McLaughlin,
+        Julie A McMurry, Sierra A T Moxon, Kathleen R Mullen, Shawn T O’Neil,
+        Kent A Shefchek, Ray Stefancsik, Sabrina Toro, Nicole A Vasilevsky,
+        Ramona L Walls, Patricia L Whetzel, David Osumi-Sutherland, Damian
+        Smedley, Peter N Robinson, Christopher J Mungall, Melissa A Haendel,
+        Monica C Munoz-Torres, The Monarch Initiative in 2024: an analytic
+        platform integrating phenotypes, genes and diseases across species,
+        Nucleic Acids Research, Volume 52, Issue D1, 5 January 2024, Pages
+        D938–D949,
+        <AppLink to="https://doi.org/10.1093/nar/gkad1082"
+          >https://doi.org/10.1093/nar/gkad1082</AppLink
+        >.
+      </p>
     </AppSection>
 
     <!-- citing data -->
