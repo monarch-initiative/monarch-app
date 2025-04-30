@@ -10,7 +10,7 @@
 <script setup lang="ts">
 interface Props {
   icon?: string;
-  to: string; // no “?” here
+  to: string;
   title?: string;
 }
 
@@ -33,7 +33,6 @@ defineProps<Props>();
   justify-content: center;
   width: 7em;
   height: 7em;
-  /* now using border in ::after */
   overflow: visible;
   border-radius: 50%;
   background: radial-gradient(circle at center, #e0f7fa 0%, #afeaf4 80%);

@@ -196,8 +196,6 @@ $wrap: 1000px;
 
 @media not all and (max-width: $wrap) {
   .header.home {
-    //commenting this out makes the header not sticky
-    //position: relative;
     min-height: 40em;
   }
   .header.home .title {
@@ -405,8 +403,9 @@ Its here to align with the styling of old nav items. */
 .hero-card {
   display: flex;
   flex-direction: column;
+  width: 70%;
   max-width: 60em;
-  height: fit-content;
+  margin: 0 auto;
   padding: 4rem;
   gap: 2em;
   border-radius: 20px;
@@ -428,17 +427,16 @@ Its here to align with the styling of old nav items. */
 }
 
 .hero-header h1 {
+  color: #333;
   font-weight: 600;
-  font-size: 1.75rem;
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-size: 1.75em;
   strong {
-    font-weight: 700;
+    display: block;
+    font-size: 1.1em;
   }
 }
 
-.hero-subtext {
-  color: #666;
-  font-size: 0.95rem;
-}
 .hero-search-wrapper {
   display: flex;
   position: relative;

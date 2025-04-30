@@ -1,27 +1,57 @@
 <template>
   <div class="suggestions">
-    <span class="examples-label">Examples:</span>
-    <AppLink
-      :to="`/${s.id}`"
-      v-for="(s, i) in searchSuggestions"
+    <AppNodeBadge
+      class="terms"
+      v-for="(terms, i) in searchSuggestions"
       :key="i"
-      class="app-link"
-    >
-      {{ s.term }}
-    </AppLink>
+      :node="{ label: terms.term, id: terms.id, category: terms.category }"
+      :icon="true"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useRouter } from "vue-router";
+import AppNodeBadge from "@/components/AppNodeBadge.vue";
 
 const router = useRouter();
 
 const searchSuggestions = [
-  { term: "Ehlers-Danlos syndrome", id: "MONDO:0007523" },
-  { term: "Arachnodactyly", id: "HP:0001166" },
-  { term: "vestibular organ", id: "UBERON:0006585" },
-  { term: "FBN1", id: "HGNC:3603" },
+  {
+    term: "Ehlers-Danlos syndrome",
+    id: "MONDO:0007523",
+    category: "biolink:Disease",
+  },
+  { term: "Fanconi anemia", id: "MONDO:0019391", category: "biolink:Disease" },
+  {
+    term: "Loeys-Dietz syndrome",
+    id: "MONDO:0018954",
+    category: "biolink:Disease",
+  },
+  {
+    term: "Atrial septal defect",
+    id: "HP:0001631",
+    category: "PhenotypicFeature",
+  },
+  {
+    term: "Wiedemann-Steiner syndrome",
+    id: "MONDO:0011518",
+    category: "biolink:Disease",
+  },
+  { term: "Arachnodactyly", id: "HP:0001166", category: "PhenotypicFeature" },
+
+  {
+    term: "heart",
+    id: "UBERON:0000948",
+    category: "biolink:AnatomicalEntity",
+  },
+  {
+    term: "vestibular organ",
+    id: "UBERON:0006585",
+    category: "biolink:AnatomicalEntity",
+  },
+  { term: "HTT", id: "HGNC:4851", category: "biolink:Gene" },
+  { term: "FBN1", id: "HGNC:3603", category: "biolink:Gene" },
 ];
 
 const goToEntity = (id: string) => {
@@ -34,26 +64,37 @@ const goToEntity = (id: string) => {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  width: 43em;
-  gap: 1em;
+  justify-content: center;
+  gap: 0.8rem;
 }
 
-.examples-label {
-  color: #555;
-  font-weight: 600;
+.terms {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.9rem;
+  border-radius: 0.375rem;
+  background: #f3f3f3;
+  color: #222;
   font-size: 0.95rem;
-}
-
-.term {
-  color: hsl(185, 100%, 30%);
-  font-size: 0.95rem;
-  cursor: pointer;
-  &:hover {
-    color: #0056b3;
+  text-decoration: none;
+  transition: background 0.2s;
+  ::v-deep(svg circle) {
+    fill: rgb(126, 120, 120) !important;
   }
 }
-.app-link {
-  text-decoration: none;
+
+.terms:hover {
+  background: #e1e1e1;
+}
+
+.terms ::v-deep a {
+  color: rgb(90, 95, 95);
+  font-weight: 600;
+  font-size: 0.9em;
+  text-decoration: none !important;
+}
+
+.terms ::v-deep svg {
+  --color: unset;
 }
 </style>
