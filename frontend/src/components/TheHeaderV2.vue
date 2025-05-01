@@ -406,7 +406,7 @@ Its here to align with the styling of old nav items. */
   width: 70%;
   max-width: 60em;
   margin: 0 auto;
-  padding: 4rem;
+  padding: 3rem;
   gap: 2em;
   border-radius: 20px;
   background: white;
@@ -414,11 +414,18 @@ Its here to align with the styling of old nav items. */
   color: #222;
   text-align: center;
   transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  }
+
+  @media (max-width: 1100px) {
+    width: 90%;
+    padding: 2rem;
+    gap: 1.5rem;
+  }
 }
 
-.hero-card:hover {
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
-}
 .hero-header {
   display: flex;
   flex-direction: column;

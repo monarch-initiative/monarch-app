@@ -31,18 +31,18 @@ export const TOOL_LINKS: {
   external?: boolean;
   color?: string;
 }[] = [
-  {
-    label: "Phenotype Similarity Compare",
-    icon: "tool-resource-hpo",
-    to: "/kg/compare-phenotypes",
-  },
+  // {
+  //   label: "Phenotype Similarity Compare",
+  //   icon: "tool-resource-hpo",
+  //   to: "/kg/compare-phenotypes",
+  // },
   {
     label: "Phenotype Similarity Search",
     icon: "tool-phenotype-search",
 
-    to: "/kg/search-phenotypes",
+    to: "/search-phenotypes",
   },
-  { label: "Text Annotator", icon: "text-annotator", to: "/kg/text-annotator" },
+  { label: "Text Annotator", icon: "text-annotator", to: "/text-annotator" },
   {
     label: "Neo4j",
     icon: "neoj",

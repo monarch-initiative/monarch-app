@@ -231,13 +231,13 @@ export const routes: RouteRecordRaw[] = [
     meta: { breadcrumb: "Phenotype Similarity Compare" },
   },
   {
-    path: "/kg/search-phenotypes",
+    path: "/search-phenotypes",
     name: "KnowledgeGraphSearchPhenotypes",
-    component: asyncRoute("knowledgeGraph/PagePhenotypeSearch"),
+    component: asyncRoute("knowledgeGraph/PagePhenotypeExplore"),
     meta: { breadcrumb: "Phenotype Similarity Search" },
   },
   {
-    path: "/kg/text-annotator",
+    path: "/text-annotator",
     name: "KnowledgeGraphTextAnnotator",
     component: asyncRoute("knowledgeGraph/PageTextAnnotator"),
     meta: { breadcrumb: "Text Annotator" },
