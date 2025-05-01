@@ -38,9 +38,13 @@ import { TOOL_LINKS } from "@/data/knowledgeGraphConfig";
 </script>
 
 <style lang="scss" scoped>
+.section:last-of-type {
+  margin-bottom: 3em;
+}
 .custom-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(7em, 1fr));
+  align-items: center;
   width: 100%;
   gap: 1.5rem;
 }
@@ -49,7 +53,6 @@ import { TOOL_LINKS } from "@/data/knowledgeGraphConfig";
   .custom-grid {
     grid-template-rows: repeat(2, auto);
     grid-auto-columns: minmax(7em, 1fr);
-
     grid-auto-flow: column;
   }
 }
