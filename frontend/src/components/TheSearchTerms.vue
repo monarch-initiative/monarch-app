@@ -78,9 +78,9 @@ const goToEntity = (id: string) => {
   font-size: 0.95rem;
   text-decoration: none;
   transition: background 0.2s;
-  ::v-deep(svg circle) {
-    fill: rgb(126, 120, 120) !important;
-  }
+  // ::v-deep(svg circle) {
+  //   fill: rgb(126, 120, 120) !important;
+  // }
 }
 
 .terms:hover {
