@@ -73,7 +73,7 @@
         >
           <template #button>{{ menu.label }}</template>
           <template #default>
-            <li v-for="subItem in menu.subItems || []" :key="subItem.key">
+            <li v-for="subItem in menu.subItems || []" :key="subItem.label">
               <AppLink
                 v-tooltip="subItem.tooltip"
                 :to="subItem.to"
@@ -196,7 +196,7 @@ $wrap: 1000px;
 
 @media not all and (max-width: $wrap) {
   .header.home {
-    min-height: 100vh;
+    min-height: 48em;
   }
   .header.home .title {
     margin-top: 70px;
@@ -403,28 +403,22 @@ Its here to align with the styling of old nav items. */
 .hero-card {
   display: flex;
   flex-direction: column;
-  width: clamp(60%, 80vw, 40em);
+  width: 70%;
+  max-width: 60em;
   margin: 0 auto;
-  padding: clamp(1.5rem, 5vw, 3rem);
-  gap: clamp(1rem, 4vw, 2em);
+  padding: 3em;
+  gap: 2em;
   border-radius: 20px;
   background: white;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
   color: #222;
   text-align: center;
   transition: box-shadow 0.3s ease;
-
-  &:hover {
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
-  }
-
-  @media (max-width: 600px) {
-    width: 95%;
-    padding: 1rem;
-    gap: 1rem;
-  }
 }
 
+.hero-card:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
 .hero-header {
   display: flex;
   flex-direction: column;

@@ -3,7 +3,8 @@
     <div class="container">
       <div class="logo-column">
         <ResourceIcon class="footer-logo" />
-        <p>© Monarch Initiative 2025. BSD-3</p>
+        <p>© Monarch Initiative</p>
+        <p>2025. BSD-3</p>
       </div>
 
       <div
@@ -27,6 +28,70 @@
           </li>
         </ul>
       </div>
+
+      <div
+        v-for="(column, index) in navigationMenus"
+        :key="index"
+        class="footer-column"
+      >
+        <h4>{{ column.label }}</h4>
+        <ul>
+          <li v-for="subItem in column.subItems" :key="subItem.key">
+            <AppLink
+              v-tooltip="subItem.tooltip"
+              :to="subItem.to"
+              class="app-link"
+            >
+              {{ subItem.label }}
+              <span v-if="subItem.icon" class="icon">
+                <AppIcon icon="arrow-up-right-from-square" />
+              </span>
+            </AppLink>
+          </li>
+        </ul>
+      </div>
+
+      <div class="social">
+        <p>Follow us on:</p>
+        <div class="icons">
+          <AppLink
+            v-tooltip="'Subscribe'"
+            to="https://groups.google.com/g/monarch-friends/"
+            class="social-icon"
+          >
+            <AppIcon icon="envelope" />
+          </AppLink>
+          <AppLink
+            v-tooltip="'Medium'"
+            to="https://medium.com/@MonarchInit"
+            class="social-icon"
+          >
+            <AppIcon icon="medium" />
+          </AppLink>
+          <AppLink
+            v-tooltip="'GitHub'"
+            to="https://github.com/monarch-initiative"
+            class="social-icon"
+          >
+            <AppIcon icon="github" />
+          </AppLink>
+          <AppLink
+            v-tooltip="'LinkedIn'"
+            to="https://www.linkedin.com/company/the-monarch-initiative"
+            class="social-icon"
+          >
+            <AppIcon icon="linkedin" />
+          </AppLink>
+
+          <AppLink
+            v-tooltip="'YouTube'"
+            to="https://www.youtube.com/@monarchinitiative"
+            class="social-icon"
+          >
+            <AppIcon icon="youtube" />
+          </AppLink>
+        </div>
+      </div>
     </div>
   </footer>
 </template>
@@ -36,6 +101,7 @@ import ResourceIcon from "@/assets/icons/resource-monarch-black.svg";
 import AppLink from "@/components/AppLink.vue";
 import navigationMenus from "@/data/navigationMenu.json";
 </script>
+
 <style scoped lang="scss">
 .footer {
   padding: 30px max(20px, (100% - 1200px) / 2);
@@ -45,10 +111,10 @@ import navigationMenus from "@/data/navigationMenu.json";
   .container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: space-between;
     max-width: 1000px;
 
-    gap: 4rem;
+    gap: 2rem;
   }
 
   .logo-column {
@@ -101,5 +167,53 @@ import navigationMenus from "@/data/navigationMenu.json";
 }
 .app-link {
   font-weight: 500;
+}
+.social-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+
+  h4 {
+    margin: 0;
+    font-weight: bold;
+  }
+}
+.social {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.social-icon {
+  margin-right: 0.5rem;
+  font-size: 1.4rem;
+
+  .app-icon {
+    vertical-align: middle;
+
+    &:hover {
+      transform: scale(1.1);
+      opacity: 0.8;
+      transition: all 0.2s ease;
+    }
+  }
+
+  .app-icon[data-icon="github"] {
+    color: #181717;
+  }
+
+  .app-icon[data-icon="linkedin"] {
+    color: #0a66c2;
+  }
+
+  .app-icon[data-icon="youtube"] {
+    color: #ff0000;
+  }
+
+  .app-icon[data-icon="envelope"] {
+    color: #007acc;
+  }
 }
 </style>
