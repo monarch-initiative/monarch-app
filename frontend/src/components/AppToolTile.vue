@@ -36,6 +36,10 @@ defineProps<Props>();
   overflow: visible;
   border-radius: 50%;
   background: radial-gradient(circle at center, #e0f7fa 0%, #afeaf4 80%);
+  @media (max-width: 1100px) {
+    width: 5em;
+    height: 5em;
+  }
 }
 
 .icon {
@@ -43,6 +47,11 @@ defineProps<Props>();
   position: relative;
   width: 4em;
   height: 4em;
+
+  @media (max-width: 1100px) {
+    width: 3em;
+    height: 3em;
+  }
 }
 
 .title {

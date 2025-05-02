@@ -196,7 +196,7 @@ $wrap: 1000px;
 
 @media not all and (max-width: $wrap) {
   .header.home {
-    min-height: 40em;
+    min-height: 100vh;
   }
   .header.home .title {
     margin-top: 70px;
@@ -403,11 +403,10 @@ Its here to align with the styling of old nav items. */
 .hero-card {
   display: flex;
   flex-direction: column;
-  width: 70%;
-  max-width: 60em;
+  width: clamp(60%, 80vw, 40em);
   margin: 0 auto;
-  padding: 3rem;
-  gap: 2em;
+  padding: clamp(1.5rem, 5vw, 3rem);
+  gap: clamp(1rem, 4vw, 2em);
   border-radius: 20px;
   background: white;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
@@ -419,10 +418,10 @@ Its here to align with the styling of old nav items. */
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
   }
 
-  @media (max-width: 1100px) {
-    width: 90%;
-    padding: 2rem;
-    gap: 1.5rem;
+  @media (max-width: 600px) {
+    width: 95%;
+    padding: 1rem;
+    gap: 1rem;
   }
 }
 
