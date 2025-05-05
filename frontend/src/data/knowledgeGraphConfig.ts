@@ -58,7 +58,7 @@ export const TOOL_LINKS: {
   },
   {
     label: "Monarch Assistant",
-    icon: "person-running",
+    icon: "monarch-assistant",
     to: "https://github.com/monarch-initiative/monarch-assistant-cypher",
     external: true,
   },
