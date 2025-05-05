@@ -37,7 +37,7 @@ export const TOOL_LINKS: {
   //   to: "/kg/compare-phenotypes",
   // },
   {
-    label: "Phenotype Similarity Search",
+    label: "Phenotype  Search",
     icon: "tool-phenotype-search",
 
     to: "/search-phenotypes",

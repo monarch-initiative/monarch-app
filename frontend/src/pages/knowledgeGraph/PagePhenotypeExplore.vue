@@ -3,40 +3,39 @@
   <PageTitle id="phenotype-similarity" title="Phenotype Similarity Tools" />
 
   <AppSection width="big">
-    <div class="header">
-      <p class="description">
-        Use powerful semantic similarity tools—based on metrics like Jaccard,
-        Ancestor Information Content, and Phenodigm—to
-        <strong>search</strong> for related genes and diseases, or directly
-        <strong>compare</strong> two sets of phenotypes to reveal deeper
-        biological insights.
-      </p>
-    </div>
+    <p class="description">
+      Use powerful semantic similarity tools — based on metrics like Jaccard,
+      Ancestor Information Content, and Phenodigm.
+    </p>
 
     <div class="tabs">
-      <AppButton
-        :class="{ active: activeTab === 'search' }"
-        @click="setTab('search')"
-        text=" Similarity Search"
-        icon="magnifying-glass"
-        v-tooltip="
-          `Find genes or diseases from a species or
-            group based on input phenotypes.`
-        "
-        color="none"
-      />
+      <div class="tab-item">
+        <AppButton
+          :class="{ active: activeTab === 'search' }"
+          @click="setTab('search')"
+          text="Similarity Search"
+          icon="magnifying-glass"
+          v-tooltip="
+            `Find genes or diseases from a species or group based on input phenotypes.`
+          "
+          color="none"
+        />
+        <p class="tab-description">Search for related genes and diseases</p>
+      </div>
 
-      <AppButton
-        :class="{ active: activeTab === 'compare' }"
-        @click="setTab('compare')"
-        text="Similarity Compare"
-        icon="compare-icon"
-        color="none"
-        v-tooltip="
-          `Directly compare two sets of phenotypes to
-            evaluate their similarity.`
-        "
-      />
+      <div class="tab-item">
+        <AppButton
+          :class="{ active: activeTab === 'compare' }"
+          @click="setTab('compare')"
+          text="Similarity Compare"
+          icon="compare-icon"
+          color="none"
+          v-tooltip="
+            `Directly compare two sets of phenotypes to evaluate their similarity.`
+          "
+        />
+        <p class="tab-description">Compare two sets of phenotypes</p>
+      </div>
     </div>
 
     <div>
@@ -62,29 +61,12 @@ function setTab(tab: "search" | "compare") {
 
 <style scoped lang="scss">
 $wrap: 1000px;
-.page {
-  width: 100%;
-}
-
-.header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2em;
-  text-align: center;
-
-  .title {
-    font-weight: bold;
-    font-size: 2rem;
-  }
-}
 
 .tabs {
   display: flex;
   width: 80%;
   overflow: hidden;
   border-radius: 12px 12px 0 0;
-  background: #f3f3f3;
 
   :deep(.button) {
     &:hover,
@@ -95,19 +77,13 @@ $wrap: 1000px;
   }
 
   button {
-    flex: 1;
-    width: 30%;
-    padding: 0.75rem;
-    border: none;
-    background: transparent;
-    color: #555;
-    font-weight: 600;
-    font-size: 1rem;
+    width: 100%;
+    background-color: $light-gray;
+    white-space: nowrap;
     cursor: pointer;
     transition:
       background 0.3s,
       color 0.3s;
-
     &.active {
       background: $theme-light;
     }
@@ -119,31 +95,28 @@ $wrap: 1000px;
       background: #e7e7e7;
     }
 
-    :deep(.app-icon) {
-      width: 1.2rem;
-      height: 1.5rem;
-      font-size: 2rem;
-    }
-
+    :deep(.app-icon),
     :deep(svg) {
-      width: 1.5rem;
-      height: 1.5rem;
+      display: inline-block;
+      width: 1.5rem !important;
+      height: 1.5rem !important;
+      vertical-align: middle;
     }
   }
 }
 
-.tagline {
-  position: relative;
-  max-width: 800px;
-  margin: 1rem auto 0 auto;
-  padding: 0 1rem;
-
-  font-weight: 500;
-  font-size: 1.1rem;
+.tab-item {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: stretch;
+  align-items: center;
   text-align: center;
+}
 
-  @media (max-width: $wrap) {
-    margin: 0;
-  }
+.tab-description {
+  padding: 0.5em;
+  color: #555;
+  text-align: center;
 }
 </style>
