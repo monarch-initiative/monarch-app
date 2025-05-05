@@ -11,28 +11,28 @@
     <div class="tabs">
       <div class="tab-item">
         <AppButton
-          :class="{ active: activeTab === 'search' }"
-          @click="setTab('search')"
-          text="Similarity Search"
-          icon="magnifying-glass"
           v-tooltip="
             `Find genes or diseases from a species or group based on input phenotypes.`
           "
+          :class="{ active: activeTab === 'search' }"
+          text="Similarity Search"
+          icon="magnifying-glass"
           color="none"
+          @click="setTab('search')"
         />
         <p class="tab-description">Search for related genes and diseases</p>
       </div>
 
       <div class="tab-item">
         <AppButton
-          :class="{ active: activeTab === 'compare' }"
-          @click="setTab('compare')"
-          text="Similarity Compare"
-          icon="compare-icon"
-          color="none"
           v-tooltip="
             `Directly compare two sets of phenotypes to evaluate their similarity.`
           "
+          :class="{ active: activeTab === 'compare' }"
+          text="Similarity Compare"
+          icon="compare-icon"
+          color="none"
+          @click="setTab('compare')"
         />
         <p class="tab-description">Compare two sets of phenotypes</p>
       </div>

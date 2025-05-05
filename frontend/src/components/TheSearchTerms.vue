@@ -1,9 +1,9 @@
 <template>
   <div class="suggestions">
     <AppNodeBadge
-      class="terms"
       v-for="(terms, i) in searchSuggestions"
       :key="i"
+      class="terms"
       :node="{ label: terms.term, id: terms.id, category: terms.category }"
       :icon="true"
     />

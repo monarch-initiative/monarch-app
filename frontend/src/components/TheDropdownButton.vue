@@ -1,6 +1,6 @@
 <template>
   <div ref="dropdown" class="dropdown" :class="{ 'is-open': isOpen }">
-    <button class="dropdown-btn" ref="button" @click="toggleMenu">
+    <button ref="button" class="dropdown-btn" @click="toggleMenu">
       <slot name="button"></slot>
       <span class="dropdown-arrow" :class="{ 'is-rotated': isOpen }"
         >&#9662;</span
@@ -8,8 +8,8 @@
     </button>
     <div
       v-if="isOpen"
-      class="dropdown-menu"
       ref="menu"
+      class="dropdown-menu"
       role="button"
       tabindex="0"
       @click="closeMenu"
