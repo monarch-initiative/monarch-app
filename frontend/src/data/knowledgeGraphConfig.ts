@@ -51,7 +51,7 @@ export const TOOL_LINKS: {
   },
   {
     label: "Monarch R",
-    icon: "diagram-project",
+    icon: "monarchr",
     to: "https://monarch-initiative.github.io/monarchr/articles/monarchr",
     external: true,
     color: "#FFB470",
