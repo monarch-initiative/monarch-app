@@ -29,28 +29,6 @@
         </ul>
       </div>
 
-      <div
-        v-for="(column, index) in navigationMenus"
-        :key="index"
-        class="footer-column"
-      >
-        <h4>{{ column.label }}</h4>
-        <ul>
-          <li v-for="subItem in column.subItems" :key="subItem.key">
-            <AppLink
-              v-tooltip="subItem.tooltip"
-              :to="subItem.to"
-              class="app-link"
-            >
-              {{ subItem.label }}
-              <span v-if="subItem.icon" class="icon">
-                <AppIcon icon="arrow-up-right-from-square" />
-              </span>
-            </AppLink>
-          </li>
-        </ul>
-      </div>
-
       <div class="social">
         <p>Follow us on:</p>
         <div class="icons">
@@ -104,6 +82,8 @@ import navigationMenus from "@/data/navigationMenu.json";
 
 <style scoped lang="scss">
 .footer {
+  display: flex;
+  justify-content: center;
   padding: 30px max(20px, (100% - 1200px) / 2);
   background: #d3e6eb;
   font-size: 0.9rem;

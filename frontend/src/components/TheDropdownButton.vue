@@ -105,7 +105,7 @@ li {
 .dropdown-menu::before {
   position: absolute;
   top: -10px;
-  right: 6px;
+  right: 8px;
   transform: none;
   border-right: 10px solid transparent;
   border-bottom: 10px solid white;
