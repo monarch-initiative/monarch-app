@@ -78,6 +78,7 @@ $wrap: 1000px;
 
   button {
     width: 100%;
+    border-radius: unset !important;
     background-color: $light-gray;
     white-space: nowrap;
     cursor: pointer;

@@ -65,22 +65,20 @@ const goToEntity = (id: string) => {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
+
   gap: 0.8rem;
 }
 
 .terms {
   display: inline-flex;
   align-items: center;
-  padding: 0.5rem 0.9rem;
+  padding: 0.5rem 0.5rem;
   border-radius: 0.375rem;
   background: #f3f3f3;
   color: #222;
   font-size: 0.95rem;
   text-decoration: none;
   transition: background 0.2s;
-  // ::v-deep(svg circle) {
-  //   fill: rgb(126, 120, 120) !important;
-  // }
 }
 
 .terms:hover {
