@@ -85,14 +85,14 @@ const goToEntity = (id: string) => {
   background: #e1e1e1;
 }
 
-.terms ::v-deep a {
+:deep(.terms a) {
   color: rgb(90, 95, 95);
   font-weight: 600;
   font-size: 0.9em;
   text-decoration: none !important;
 }
 
-.terms ::v-deep svg {
+:deep(.terms svg) {
   --color: unset;
 }
 </style>
