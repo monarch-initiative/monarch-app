@@ -7,18 +7,10 @@ log();
 /** pages to test */
 const paths = [
   "/",
-  "/explore#search",
-  "/explore#text-annotator",
-  "/explore#phenotype-explorer",
-  "/about",
-  "/help",
-  "/cite",
-  "/team",
-  "/publications",
-  "/terms",
-  "/feedback",
-  "/MONDO:0007523",
-  "/testbed",
+  "/kg/about",
+  "/search-phenotypes",
+  "/text-annotator",
+  "/about/our-story",
 ];
 
 /** axe rule overrides */
