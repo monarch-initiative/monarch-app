@@ -8,9 +8,21 @@ log();
 const paths = [
   "/",
   "/kg/about",
+  "/kg/citation",
+  "/kg/help",
+  "/kg/status",
+  "/results",
+  "/kg/documentation",
+  "/kg/downloads",
+  "kg/terms",
   "/search-phenotypes",
   "/text-annotator",
   "/about/our-story",
+  "/about/team",
+  "/about/contact-us",
+  "/about/sab",
+  "/about/funding",
+  "/about/publications",
 ];
 
 /** axe rule overrides */

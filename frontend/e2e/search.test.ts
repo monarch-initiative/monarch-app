@@ -4,7 +4,7 @@ import { log } from "../playwright.config";
 log();
 
 test("Recent/frequent results show", async ({ page }) => {
-  await page.goto("/explore");
+  await page.goto("/");
 
   const nodes = [
     "MONDO:0007523",
@@ -22,7 +22,7 @@ test("Recent/frequent results show", async ({ page }) => {
     await expect(page.locator("#hierarchy")).toBeVisible();
   }
 
-  await page.goto("/explore");
+  await page.goto("/");
   await page.locator("input").focus();
   const options = page.locator("[role='option']");
 
@@ -65,7 +65,7 @@ test("Recent/frequent results show", async ({ page }) => {
 
 test("Autocomplete results show", async ({ page }) => {
   /** type something in search box for regular backend autocomplete results */
-  await page.goto("/explore");
+  await page.goto("/");
   await page.locator("input").fill("Fanconi");
   await expect(
     page.getByText(/Fanconi renotubular syndrome/i).first(),
@@ -73,23 +73,35 @@ test("Autocomplete results show", async ({ page }) => {
 });
 
 test("Basic search results show", async ({ page }) => {
-  await page.goto("/explore");
+  await page.goto("/");
+  // Fill input
   await page.locator("input").fill("Fanconi");
+  // Start waiting *before* triggering the event
+  const navigationPromise = page.waitForURL(/\/results.*/);
+  // Fire the event
   await page.locator("input").dispatchEvent("change");
+  // Now wait until page actually navigates
+  await navigationPromise;
 
   /** search result with link shows */
   const result = await page
     .getByRole("link")
     .filter({ hasText: /Fanconi anemia/i })
     .first();
+
   await expect(result).toHaveAttribute("href", /MONDO:0019391/i);
 });
 
 test("Pagination works", async ({ page }) => {
-  await page.goto("/explore");
+  await page.goto("/");
+  // Fill input
   await page.locator("input").fill("Fanconi");
+  // Start waiting *before* triggering the event
+  const navigationPromise = page.waitForURL(/\/results.*/);
+  // Fire the event
   await page.locator("input").dispatchEvent("change");
-
+  // Now wait until page actually navigates
+  await navigationPromise;
   /** pagination text, and click through to next page */
   await expect(page.getByText(/1 to 20 of \d+ results/).first()).toBeVisible();
   await page.locator("button", { hasText: /^2$/ }).first().click();
@@ -98,18 +110,21 @@ test("Pagination works", async ({ page }) => {
 
 test("Filters show", async ({ page }) => {
   test.fixme(true, "Facets are not implemented on the backend yet");
-
-  await page.goto("/explore");
+  await page.goto("/");
   await page.locator("input").fill("Fanconi");
+  // Start waiting *before* triggering the event
+  const navigationPromise = page.waitForURL(/\/results.*/);
   await page.locator("input").dispatchEvent("change");
 
+  // Wait for the redirect to /results
+  await navigationPromise;
   /** filters show */
-  /** actual filtering done by backend, so not much to test here */
   await page
     .getByText(/category/i)
     .first()
     .click();
   await expect(page.getByText(/disease*.25/i).first()).toBeVisible();
+
   await page.getByText(/taxon/i).first().click();
   await expect(page.getByText(/gallus gallus*.1/i).first()).toBeVisible();
 });
