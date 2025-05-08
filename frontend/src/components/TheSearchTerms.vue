@@ -11,10 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from "vue-router";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
-
-const router = useRouter();
 
 const searchSuggestions = [
   {

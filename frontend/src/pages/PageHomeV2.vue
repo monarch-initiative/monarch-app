@@ -21,9 +21,9 @@
     <div class="custom-grid">
       <template v-for="(tool, idx) in TOOL_LINKS" :key="idx">
         <AppToolTile
+          v-tooltip="tool.tooltip"
           :to="tool.to"
           :icon="tool.icon"
-          v-tooltip="tool.tooltip"
           :title="tool.label"
         />
       </template>

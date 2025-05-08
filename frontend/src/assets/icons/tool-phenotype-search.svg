@@ -4,7 +4,6 @@
   fill="none"
   stroke="currentColor"
   stroke-linecap="round"
- 
 >
   <g transform="translate(43,43) scale(0.5) translate(-50,-50)">
     <circle stroke-width="6" cx="50" cy="42" r="18" />
