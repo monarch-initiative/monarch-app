@@ -48,7 +48,12 @@
 
     <nav :class="['nav', { home, expanded }]">
       <div class="home">
-        <AppLink v-tooltip="'Go to the homepage'" class="logo" to="/">
+        <AppLink
+          v-if="!isMobile"
+          v-tooltip="'Go to the homepage'"
+          class="logo"
+          to="/"
+        >
           <TheLogo class="image" />
           <div class="name">Monarch Initiative</div>
         </AppLink>

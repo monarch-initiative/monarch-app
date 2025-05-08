@@ -24,7 +24,7 @@
           :to="tool.to"
           :icon="tool.icon"
           :title="tool.label"
-          :color="tool.color"
+          v-tooltip="tool.tooltip"
         />
       </template>
     </div>
