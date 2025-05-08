@@ -12,7 +12,7 @@
         :key="index"
         class="footer-column"
       >
-        <h4>{{ column.label }}</h4>
+        <p>{{ column.label }}</p>
         <ul>
           <li v-for="subItem in column.subItems" :key="subItem.key">
             <AppLink
@@ -113,7 +113,7 @@ import navigationMenus from "@/data/navigationMenu.json";
     flex-direction: column;
     align-items: center;
 
-    h4 {
+    p {
       margin: unset;
       font-weight: bold;
     }

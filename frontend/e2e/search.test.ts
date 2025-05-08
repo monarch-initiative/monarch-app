@@ -20,46 +20,27 @@ test("Recent/frequent results show", async ({ page }) => {
   for (const node of nodes) {
     await page.goto("/" + node);
     await expect(page.locator("#hierarchy")).toBeVisible();
+    await page.waitForTimeout(500);
+
+    await page.goto("/");
+    await page.waitForSelector("input");
+    await page.locator("input").focus();
+    await page.waitForTimeout(300); // Give search system time to update
   }
 
-  await page.goto("/");
-  await page.locator("input").focus();
   const options = page.locator("[role='option']");
 
-  /** recent */
+  // Recent
+  await expect(options.nth(0).getByText(/Dural ectasia/i)).toBeVisible();
   await expect(
-    options
-      .nth(0)
-      .getByText(/Dural ectasia/i)
-      .first(),
+    options.nth(1).getByText(/Ehlers-Danlos syndrome, hypermobility/i),
   ).toBeVisible();
-  await expect(
-    options
-      .nth(1)
-      .getByText(/Ehlers-Danlos syndrome, hypermobility/i)
-      .first(),
-  ).toBeVisible();
-  await expect(
-    options
-      .nth(2)
-      .getByText(/Protrusio acetabuli/i)
-      .first(),
-  ).toBeVisible();
+  await expect(options.nth(2).getByText(/Protrusio acetabuli/i)).toBeVisible();
 
-  /** frequent */
+  // Frequent
+  await expect(options.nth(3).getByText(/Protrusio acetabuli/i)).toBeVisible();
   await expect(
-    page
-      .locator("[role='option']")
-      .nth(3)
-      .getByText(/Protrusio acetabuli/i)
-      .first(),
-  ).toBeVisible();
-  await expect(
-    page
-      .locator("[role='option']")
-      .nth(4)
-      .getByText(/Ehlers-Danlos syndrome, hypermobility/i)
-      .first(),
+    options.nth(4).getByText(/Ehlers-Danlos syndrome, hypermobility/i),
   ).toBeVisible();
 });
 

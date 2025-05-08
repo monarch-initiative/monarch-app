@@ -2,7 +2,7 @@
   <div class="title-container">
     <div class="heading-container">
       <img v-if="imageSrc" :src="imageSrc" :alt="title" class="title-image" />
-      <h2>{{ title }}</h2>
+      <h1>{{ title }}</h1>
     </div>
     <p v-if="tagline" class="tagline">{{ tagline }}</p>
   </div>
@@ -39,12 +39,9 @@ $wrap: 1000px;
   justify-content: center;
   margin-top: 1em;
   gap: 0.5em;
-  h2 {
+  h1 {
     padding: 0;
     font-size: 1.6em;
-    @media (max-width: $wrap) {
-      font-size: 1.4em;
-    }
   }
 }
 

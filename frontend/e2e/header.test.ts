@@ -8,6 +8,7 @@ test("Header nav bar collapses on small screens", async ({ page }) => {
   await page.goto("/");
   await page.setViewportSize({ width: 320, height: 568 });
 
+  await page.evaluate(() => window.dispatchEvent(new Event("resize")));
   /** get elements of interest */
   const toggle = page.locator("header button").first();
   const nav = page.locator("nav a").first();

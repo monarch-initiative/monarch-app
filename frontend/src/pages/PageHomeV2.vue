@@ -1,6 +1,6 @@
 <template>
+  <PageTitle id="home" title="What is Monarch Initiative?" class="home-title" />
   <AppSection width="big">
-    <PageTitle id="home" title="What is Monarch Initiative?" />
     <p>
       The Monarch Initiative is an international consortium that leads key
       global standards and semantic data integration technologies. Monarch
@@ -70,5 +70,9 @@ import { TOOL_LINKS } from "@/data/knowledgeGraphConfig";
   flex-direction: column;
   align-items: center;
   width: 100%;
+}
+
+.home-title {
+  margin-top: 2em;
 }
 </style>

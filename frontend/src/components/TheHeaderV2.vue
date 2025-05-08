@@ -16,9 +16,7 @@
         :class="['navLogo', { home }]"
       >
         <TheLogo class="image" />
-        <component :is="home ? 'h1' : 'div'" class="name">
-          Monarch Initiative
-        </component>
+        <component :is="'div'" class="name"> Monarch Initiative </component>
       </AppLink>
 
       <button
