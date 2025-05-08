@@ -111,13 +111,11 @@ import {
   type Group,
 } from "@/api/phenotype-explorer";
 import AppAlert from "@/components/AppAlert.vue";
-import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPercentage from "@/components/AppPercentage.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import type { Option, Options } from "@/components/AppSelectTags.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
-import PageTitle from "@/components/ThePageTitle.vue";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
 import { useParam, type Param } from "@/composables/use-param";
 import { usePhenotypeSets } from "@/composables/use-phenotype-sets";

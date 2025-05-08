@@ -53,10 +53,6 @@ const searchSuggestions = [
   { term: "HTT", id: "HGNC:4851", category: "biolink:Gene" },
   { term: "FBN1", id: "HGNC:3603", category: "biolink:Gene" },
 ];
-
-const goToEntity = (id: string) => {
-  router.push({ path: `/${encodeURIComponent(id)}` });
-};
 </script>
 
 <style scoped lang="scss">

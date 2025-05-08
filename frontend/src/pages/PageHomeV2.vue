@@ -23,8 +23,8 @@
         <AppToolTile
           :to="tool.to"
           :icon="tool.icon"
-          :title="tool.label"
           v-tooltip="tool.tooltip"
+          :title="tool.label"
         />
       </template>
     </div>
