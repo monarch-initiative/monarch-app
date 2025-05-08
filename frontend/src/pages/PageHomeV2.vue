@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import AppToolTile from "@/components/AppToolTile.vue";
 import PageTitle from "@/components/ThePageTitle.vue";
-import { TOOL_LINKS } from "@/data/knowledgeGraphConfig";
+import { TOOL_LINKS } from "@/data/toolConfig";
 </script>
 
 <style lang="scss" scoped>

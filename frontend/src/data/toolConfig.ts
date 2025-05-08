@@ -1,29 +1,3 @@
-export const ENTITY_MAP: Record<
-  string,
-  { id: string; label: string; to?: string; text?: string }
-> = {
-  "Ehlers-Danlos syndrome": {
-    id: "MONDO:0020066",
-    label: "Ehlers-Danlos syndrome",
-    to: "disease-to-phenotype",
-  },
-  "Down syndrome": {
-    id: "MONDO:0008608",
-    label: "Down syndrome",
-    to: "disease-model",
-  },
-  "cystic fibrosis": {
-    id: "MONDO:0009061",
-    label: "Cystic fibrosis",
-    to: "variant-to-disease",
-  },
-  FBN1: {
-    id: "HGNC:3603",
-    label: "FBN1",
-    to: "gene-to-phenotype",
-  },
-};
-
 export const TOOL_LINKS: {
   label: string;
   to: string;

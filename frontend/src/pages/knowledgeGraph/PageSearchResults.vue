@@ -1,17 +1,9 @@
-<!--
-  search tab on explore page
-
-  search for nodes in knowledge graph
--->
-
 <template>
   <AppBreadcrumb />
-
   <PageTitle
     id="page-results"
     title="Search Results Across Genes, Diseases & Phenotypes"
   />
-
   <AppWrapper tag="AppSection" :wrap="!minimal" width="big">
     <!-- search box -->
     <div class="help-icon-section">

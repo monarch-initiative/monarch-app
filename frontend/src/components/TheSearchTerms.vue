@@ -2,7 +2,7 @@
   <div class="suggestions">
     <AppNodeBadge
       v-for="(terms, i) in searchSuggestions"
-      :key="i"
+      :key="terms.id"
       class="terms"
       :node="{ label: terms.term, id: terms.id, category: terms.category }"
       :icon="true"
@@ -58,7 +58,6 @@ const searchSuggestions = [
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-
   gap: 0.8rem;
 }
 

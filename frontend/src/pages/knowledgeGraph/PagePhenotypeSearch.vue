@@ -1,11 +1,5 @@
 <template>
   <AppSection width="big">
-    <!-- <p class="description">
-      Phenotype similarity search tool finds genes or diseases from a selected
-      species or group that show phenotypic similarity to a set of input
-      phenotypes. Similarity is computed using semantic metrics such as Jaccard,
-      Information Content, or Phenodigm.
-    </p> -->
     <AppFlex gap="small">
       <AppButton
         text="Try a simple example"

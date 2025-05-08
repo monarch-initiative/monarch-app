@@ -272,7 +272,6 @@ useIntervalFn(pulse, 10000);
   height: 100%;
   overflow: hidden;
   animation: fade-in forwards 1s linear;
-  pointer-events: none;
 }
 
 @keyframes fade-in {
