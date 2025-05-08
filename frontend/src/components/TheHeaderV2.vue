@@ -156,7 +156,6 @@ watch(() => route.name, close);
 $wrap: 1000px;
 
 /** header */
-
 .header {
   display: flex;
   z-index: 1010;
