@@ -186,14 +186,14 @@ onUnmounted(() => {
   window.removeEventListener("resize", updateWidth);
 });
 
-const isMobile = computed(() => windowWidth.value < 1000);
+const isMobile = computed(() => windowWidth.value < 800);
 
 /** close nav when page changes */
 watch(() => route.name, close);
 </script>
 
 <style lang="scss" scoped>
-$wrap: 1000px;
+$wrap: 800px;
 
 /** header */
 .header {
@@ -458,7 +458,7 @@ Its here to align with the styling of old nav items. */
   width: 80%;
   max-width: 68em;
   margin: 0 auto;
-  padding: 3em;
+  padding: 3.5em 2em;
   gap: 1.2em;
   border-radius: 20px;
   background: white;

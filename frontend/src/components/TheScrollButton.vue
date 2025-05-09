@@ -18,8 +18,6 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick } from "vue";
-
 function scrollToHomePageSection() {
   const el = document.getElementById("home-page");
   if (el) {
