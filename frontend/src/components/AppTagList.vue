@@ -1,6 +1,6 @@
 <template>
   <div class="tag-wrapper">
-    <span class="synonym-tag" v-for="(tag, index) in tags" :key="index">
+    <span v-for="(tag, index) in tags" :key="index" class="synonym-tag">
       {{ tag }}
     </span>
   </div>

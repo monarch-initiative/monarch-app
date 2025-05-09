@@ -1,123 +1,157 @@
 <template>
-  <div class="suggestions">
-    <div v-for="(s, i) in searchSuggestions" :key="i" class="tooltip-wrapper">
-      <span class="tooltip-trigger">{{ s.label }}</span>
-      <div class="tooltip-box">
-        {{ s.text }}
-        <span
-          class="tooltip-suggestion"
-          role="button"
-          tabindex="0"
-          @click="$emit('select', s.term)"
-          @keydown.enter="$emit('select', s.term)"
-        >
-          {{ s.term }}
-        </span>
+  <div class="container">
+    <hr />
+    <p class="label">Examples of relationships you can explore</p>
+    <div class="suggestions">
+      <div
+        v-for="(search, i) in searchSuggestions"
+        :key="i"
+        class="suggestion-line"
+      >
+        <AppNodeBadge
+          :node="search.source"
+          size="small"
+          :icon="true"
+          class="clickable"
+        />
+        <span>to</span>
+        <AppNodeBadge
+          :node="search.target"
+          size="small"
+          :icon="true"
+          class="clickable"
+        />
+        <span>relationship in</span>
+        <AppNodeBadge :node="search.example" class="clickable" :icon="true" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import AppNodeBadge from "@/components/AppNodeBadge.vue";
+
 defineEmits<{
-  (e: "select", term: string): void;
+  (e: "select", nodeId: string): void;
 }>();
 
 const searchSuggestions = [
   {
-    label: "Disease to Phenotype",
-    term: "Ehlers-Danlos syndrome",
-    text: "e.g: Explore the disease to phenotype relation for",
+    source: {
+      id: "MONDO:0000001",
+      name: "disease",
+      category: "biolink:Disease",
+    },
+    target: {
+      id: "UPHENO:0001001",
+      name: "phenotype",
+      category: "PhenotypicFeature",
+    },
+    example: {
+      id: "MONDO:0020066",
+      name: "Ehlers-Danlos syndrome",
+      category: "biolink:Disease",
+    },
   },
   {
-    label: "Model to Disease",
-    term: "Down syndrome",
-    text: "e.g: Explore the model to disease relation for",
+    source: { id: "SO:0000704", name: "gene", category: "biolink:Gene" },
+    target: {
+      id: "UPHENO:0001001",
+      name: "phenotype",
+      category: "PhenotypicFeature",
+    },
+    example: { id: "HGNC:3603", name: "FBN1", category: "biolink:Gene" },
   },
   {
-    label: "Variant to disease",
-    term: "cystic fibrosis",
-    text: "e.g: Explore the variant to disease relation for",
+    source: {
+      id: "Reactome:R-GGA-167826",
+      name: "model",
+      category: "biolink:Pathway",
+    },
+    target: {
+      id: "MONDO:0000001",
+      name: "disease",
+      category: "biolink:Disease",
+    },
+    example: {
+      id: "MONDO:0008608",
+      name: "Down syndrome",
+      category: "biolink:Disease",
+    },
   },
   {
-    label: "Gene to Phenotype",
-    term: "FBN1",
-    text: "e.g: Explore the gene to phenotype relation for",
+    source: { id: "SO:0001060", name: "variant", category: "variant" },
+    target: {
+      id: "MONDO:0000001",
+      name: "disease",
+      category: "biolink:Disease",
+    },
+    example: {
+      id: "MONDO:0009061",
+      name: "cystic fibrosis",
+      category: "biolink:Disease",
+    },
   },
 ];
 </script>
 
 <style lang="scss" scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 0.9em;
+}
+.label {
+  font-weight: 500;
+  text-align: center;
+}
+
+span {
+  color: black;
+}
+
 .suggestions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  margin: 0.7em;
-  gap: 1em;
-}
 
-.tooltip-wrapper {
+  gap: 0.3rem;
+  border-radius: 0.5rem;
+}
+.suggestion-line {
   display: inline-flex;
-  position: relative;
-  flex-direction: column;
   align-items: center;
+
+  border-radius: 0.375rem;
+  background: #f3f3f3;
+  color: #222;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: background 0.2s;
 }
 
-.tooltip-trigger {
-  color: #4b7acb;
-  font-size: 0.9rem;
+.clickable {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+
+  color: #222;
+
+  text-decoration: none;
+  transition: background 0.2s;
+  &:hover {
+    color: #0056b3;
+  }
 }
+:deep(.clickable a) {
+  color: #3885dd;
 
-/* Tooltip box positioned directly under the trigger */
-.tooltip-box {
-  visibility: hidden;
-  z-index: 999;
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  width: max-content;
-  max-width: 40em;
-
-  padding: 8px;
-  transform: translateX(-50%);
-  border-radius: 6px;
-  background-color: #e8e2e2;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  color: #000;
-  font-size: 0.8rem;
-  line-height: 1.4;
-  white-space: normal;
-  opacity: 0;
-  pointer-events: auto;
-  transition: opacity 0.2s ease;
-}
-
-/* Keep tooltip open if hovering on wrapper OR box */
-.tooltip-wrapper:hover .tooltip-box {
-  visibility: visible;
-  opacity: 1;
-}
-
-.tooltip-box::after {
-  position: absolute;
-  top: -5px;
-  left: 50%;
-  transform: translateX(-50%);
-  border-width: 5px;
-  border-style: solid;
-  border-color: transparent transparent #e8e2e2 transparent;
-  content: "";
-}
-
-.tooltip-suggestion {
-  margin-left: 4px;
-  color: #007bff;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.tooltip-suggestion:hover {
-  color: #0056b3;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none !important;
 }
 </style>

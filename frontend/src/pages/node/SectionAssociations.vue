@@ -38,7 +38,7 @@
             v-tooltip="
               'Send these phenotypes to Phenotype Explorer for comparison'
             "
-            to="/kg/search-phenotypes"
+            to="/search-phenotypes"
             :state="{ search: node.id }"
             text="Phenotype Explorer"
             icon="arrow-right"

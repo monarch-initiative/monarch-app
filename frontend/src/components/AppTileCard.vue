@@ -4,7 +4,7 @@
       <AppIcon v-if="icon" :icon="icon" :size="'1.5em'" class="icon" />
     </div>
     <div class="tile-body">
-      <h3 class="title">{{ title }}</h3>
+      <h2>{{ title }}</h2>
       <p class="tile-content">{{ content }}</p>
     </div>
   </div>
@@ -32,7 +32,7 @@ $wrap: 1100px;
   border-radius: 12px;
   background-color: #e6fbff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
+  line-height: unset;
   @media (max-width: $wrap) {
     flex-direction: column;
     align-items: left;
@@ -57,16 +57,14 @@ $wrap: 1100px;
   flex: 1;
   flex-direction: column;
   gap: 0.8rem;
-}
+  h2 {
+    margin: 0;
+    padding: 0;
+    font-weight: 600;
+    font-size: 1.25rem;
 
-.title {
-  margin: 0;
-  font-weight: 600;
-  font-size: 1.25rem;
-  text-align: left;
-}
-h3 {
-  padding: 0;
+    text-align: left;
+  }
 }
 .tile-content {
   color: #333;

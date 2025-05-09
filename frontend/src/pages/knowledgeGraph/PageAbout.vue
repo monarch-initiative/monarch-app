@@ -49,7 +49,7 @@
   <!-- Entity and Association statistics -->
   <AppSection width="big">
     <div class="enity-association">
-      <AppHeading :level="2">Entity and Association Statistics</AppHeading>
+      <AppHeading>Entity and Association Statistics</AppHeading>
       <AppGallery :cols="4">
         <AppTile
           v-for="(item, index) in metadata.node"
@@ -123,10 +123,10 @@
           :key="index"
           class="figure-point"
         >
-          <h4>
+          <h3>
             <span class="label">{{ point.label }}</span>
             {{ point.title }}
-          </h4>
+          </h3>
           <p>{{ point.description }}</p>
         </section>
       </div>
@@ -287,6 +287,9 @@ $wrap: 1000px;
   padding: 2em;
   gap: 3em;
   background-color: #a6ecf257;
+  h1 {
+    font-size: 1.4em;
+  }
 }
 
 .ORIP-video {
@@ -377,7 +380,7 @@ h1 {
   .description-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1em;
+    gap: 1.5em;
 
     @media (max-width: $wrap) {
       grid-template-columns: 1fr;
@@ -385,13 +388,12 @@ h1 {
   }
 
   .figure-point {
-    h4 {
+    h3 {
       display: flex;
       align-items: center;
       margin-bottom: 0.1em;
+      padding: 0;
       gap: 0.5em;
-      font-weight: 600;
-      font-size: 1em;
 
       .label {
         display: inline-block;
