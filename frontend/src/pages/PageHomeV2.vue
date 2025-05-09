@@ -1,5 +1,10 @@
 <template>
-  <PageTitle id="home" title="What is Monarch Initiative?" class="home-title" />
+  <PageTitle
+    id="home-page"
+    title="What is Monarch Initiative?"
+    class="home-title"
+  />
+
   <AppSection width="big">
     <p>
       The Monarch Initiative is an international consortium that leads key
@@ -34,7 +39,7 @@
 <script setup lang="ts">
 import AppToolTile from "@/components/AppToolTile.vue";
 import PageTitle from "@/components/ThePageTitle.vue";
-import { TOOL_LINKS } from "@/data/toolConfig";
+import { TOOL_LINKS } from "@/data/toolEntityConfig";
 </script>
 
 <style lang="scss" scoped>

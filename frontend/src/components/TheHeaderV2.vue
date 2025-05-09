@@ -30,19 +30,22 @@
         <AppIcon :icon="expanded ? 'xmark' : 'bars'" />
       </button>
     </div>
+    <div class="center-section" v-if="!isMobile && home">
+      <div v-if="!isMobile && home" class="hero-card">
+        <div class="hero-header">
+          <TheLogo class="hero-logo" />
+          <h1>
+            Search Across <br />
+            <strong>Genes, Diseases & Phenotypes</strong>
+          </h1>
+        </div>
 
-    <div v-if="!isMobile && home" class="hero-card">
-      <div class="hero-header">
-        <TheLogo class="hero-logo" />
-        <h1>
-          Search Across <br />
-          <strong>Genes, Diseases & Phenotypes</strong>
-        </h1>
-      </div>
+        <div class="hero-search-wrapper">
+          <TabSearch :minimal="true" :header-box="true" :home="home" />
+          <TheSearchTerms />
 
-      <div class="hero-search-wrapper">
-        <TabSearch :minimal="true" :header-box="true" :home="home" />
-        <TheSearchTerms />
+          <TheSearchSuggestions @select="handleSuggestionClick" />
+        </div>
       </div>
     </div>
 
@@ -92,22 +95,41 @@
         </DropdownButton>
       </div>
     </nav>
+
+    <!-- <button class="scroll-button" @click="scrollToHomePageSection">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="32"
+        height="32"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="feather feather-chevron-down"
+        viewBox="0 0 24 24"
+      >
+        <polyline points="6 9 12 15 18 9" />
+      </svg>
+    </button> -->
   </header>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch } from "vue";
-import { useRoute } from "vue-router";
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import TheLogo from "@/assets/TheLogo.vue";
 import TheSearchTerms from "@/components/TheSearchTerms.vue";
 import navigationMenus from "@/data/navigationMenu.json";
+import { ENTITY_MAP } from "@/data/toolEntityConfig";
 import TabSearch from "@/pages/explore/TabSearch.vue";
 import DropdownButton from "./TheDropdownButton.vue";
 import TheNexus from "./TheNexus.vue";
+import TheSearchSuggestions from "./TheSearchSuggestions.vue";
 
 /** route info */
 const route = useRoute();
-
+const router = useRouter();
 /** is nav menu expanded */
 const expanded = ref(false);
 
@@ -126,6 +148,38 @@ const search = computed(
       (route.name === "KnowledgeGraph" && route.hash === "")
     ),
 );
+
+async function scrollToHomePageSection() {
+  await nextTick(); // wait for DOM update
+  setTimeout(() => {
+    const el = document.getElementById("home-page");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    } else {
+      console.warn("home-page not found");
+    }
+  }, 300); // 300ms gives time for Vue to render home component
+}
+
+function scrollToHashWithOffset(hash: string, offset = 80) {
+  const el = document.querySelector(hash);
+  if (el) {
+    const y = el.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top: y, behavior: "smooth" });
+  }
+}
+
+const handleSuggestionClick = async (term: string) => {
+  const entity = ENTITY_MAP[term];
+  if (entity?.id) {
+    await router.push({ path: "/" + entity.id, hash: "#" + entity.to });
+
+    await nextTick();
+    setTimeout(() => {
+      scrollToHashWithOffset(`#${entity.to}`, 80);
+    }, 1000);
+  }
+};
 
 /** close nav */
 function close() {
@@ -161,6 +215,7 @@ $wrap: 1000px;
   z-index: 1010;
   position: relative;
   top: 0;
+  // flex-direction: column;
   align-items: center;
   justify-content: space-between;
   background: $theme;
@@ -198,7 +253,7 @@ $wrap: 1000px;
 
 @media not all and (max-width: $wrap) {
   .header.home {
-    min-height: 48em;
+    min-height: 100vh;
   }
   .header.home .title {
     margin-top: 70px;
@@ -231,6 +286,15 @@ $wrap: 1000px;
   }
 }
 
+.center-section {
+  display: flex;
+  z-index: 1010;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0 1rem;
+}
 /** logo image and text */
 
 .logo {
@@ -405,8 +469,8 @@ Its here to align with the styling of old nav items. */
 .hero-card {
   display: flex;
   flex-direction: column;
-  width: 70%;
-  max-width: 60em;
+  width: 80%;
+  max-width: 68em;
   margin: 0 auto;
   padding: 3em;
   gap: 2em;
@@ -450,5 +514,25 @@ Its here to align with the styling of old nav items. */
 
 .hero-logo {
   height: 50px;
+}
+
+.scroll-button {
+  margin-top: 2rem;
+  border: none;
+  border-radius: 50%;
+  background: white;
+  color: #555;
+  animation: bounce 2s infinite;
+  cursor: pointer;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
 }
 </style>

@@ -76,11 +76,11 @@ li {
   padding-left: 0;
 }
 .dropdown-menu {
+  z-index: 1011;
   position: absolute;
   top: calc(100% + 4px);
   right: 10%;
   width: max-content;
-
   transform-origin: top;
   border: 1px solid #ddd;
   border-radius: 4px;
