@@ -96,22 +96,7 @@
       </div>
     </nav>
 
-    <!-- <button class="scroll-button" @click="scrollToHomePageSection">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="32"
-        height="32"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        class="feather feather-chevron-down"
-        viewBox="0 0 24 24"
-      >
-        <polyline points="6 9 12 15 18 9" />
-      </svg>
-    </button> -->
+    <TheScrollButton v-if="!isMobile && home" />
   </header>
 </template>
 
@@ -125,6 +110,7 @@ import { ENTITY_MAP } from "@/data/toolEntityConfig";
 import TabSearch from "@/pages/explore/TabSearch.vue";
 import DropdownButton from "./TheDropdownButton.vue";
 import TheNexus from "./TheNexus.vue";
+import TheScrollButton from "./TheScrollButton.vue";
 import TheSearchSuggestions from "./TheSearchSuggestions.vue";
 
 /** route info */
@@ -215,7 +201,7 @@ $wrap: 1000px;
   z-index: 1010;
   position: relative;
   top: 0;
-  // flex-direction: column;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
   background: $theme;
@@ -237,9 +223,9 @@ $wrap: 1000px;
   }
 }
 
-.header.home {
-  justify-content: center;
-}
+// .header.home {
+//   justify-content: center;
+// }
 
 @media (max-width: $wrap) {
   .header {
@@ -253,7 +239,7 @@ $wrap: 1000px;
 
 @media not all and (max-width: $wrap) {
   .header.home {
-    min-height: 100vh;
+    min-height: calc(100vh - 64px);
   }
   .header.home .title {
     margin-top: 70px;
@@ -473,13 +459,17 @@ Its here to align with the styling of old nav items. */
   max-width: 68em;
   margin: 0 auto;
   padding: 3em;
-  gap: 2em;
+  gap: 1.2em;
   border-radius: 20px;
   background: white;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
   color: #222;
   text-align: center;
   transition: box-shadow 0.3s ease;
+
+  @media (max-width: 1200px) {
+    padding: 1.8em;
+  }
 }
 
 .hero-card:hover {
@@ -514,25 +504,5 @@ Its here to align with the styling of old nav items. */
 
 .hero-logo {
   height: 50px;
-}
-
-.scroll-button {
-  margin-top: 2rem;
-  border: none;
-  border-radius: 50%;
-  background: white;
-  color: #555;
-  animation: bounce 2s infinite;
-  cursor: pointer;
-}
-
-@keyframes bounce {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(8px);
-  }
 }
 </style>
