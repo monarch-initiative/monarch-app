@@ -52,7 +52,7 @@ const searchSuggestions = [
     },
     target: {
       id: "FYPO:0000001",
-      name: "Phenotype",
+      name: "Phenotypes",
       category: "PhenotypicFeature",
     },
   },
@@ -64,7 +64,7 @@ const searchSuggestions = [
     },
     target: {
       id: "SO:0000704",
-      name: "Phenotype",
+      name: "Phenotypes",
       category: "PhenotypicFeature",
     },
   },
@@ -76,7 +76,7 @@ const searchSuggestions = [
     },
     target: {
       id: "Reactome:R-GGA-167826",
-      name: "Model",
+      name: "Models",
       category: "model",
     },
   },
@@ -88,7 +88,7 @@ const searchSuggestions = [
     },
     target: {
       id: "MONDO:0000001",
-      name: "Variant",
+      name: "Variants",
       category: "variant",
     },
   },
