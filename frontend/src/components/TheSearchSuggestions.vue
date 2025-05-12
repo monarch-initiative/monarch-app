@@ -94,6 +94,10 @@ const searchSuggestions = [
   },
 ];
 
+/**
+ * Scrolls smoothly to the element identified by the hash, after ensuring it is
+ * present in the DOM and has settled in layout.
+ */
 function scrollToHashWithOffset(hash: string, offset = 80) {
   let attempts = 0;
   const maxAttempts = 30;
@@ -102,6 +106,7 @@ function scrollToHashWithOffset(hash: string, offset = 80) {
   const tryScroll = () => {
     const el = document.querySelector(hash);
     if (!el) {
+      // retry if element not yet present
       if (attempts++ < maxAttempts) {
         requestAnimationFrame(tryScroll);
       } else {
@@ -112,24 +117,35 @@ function scrollToHashWithOffset(hash: string, offset = 80) {
 
     const y = el.getBoundingClientRect().top + window.scrollY - offset;
 
-    // check if element has settled
+    // if element's position has stabilized or max attempts reached, scroll
     if (Math.abs(y - lastY) <= 2 || attempts > maxAttempts) {
       window.scrollTo({ top: y, behavior: "smooth" });
     } else {
+      // wait and try again until element settles
       lastY = y;
       attempts++;
       requestAnimationFrame(tryScroll);
     }
   };
 
+  // start trying
   requestAnimationFrame(tryScroll);
 }
 
+/**
+ * Navigates to a new route and scrolls to the associated hash only after route
+ * change and component rendering is complete.
+ */
 const handleSuggestionClick = async (name: string) => {
   const entity = ENTITY_MAP[name.trim()];
   if (entity?.id) {
+    // navigate to the route with hash
     await router.push({ path: "/" + entity.id, hash: "#" + entity.to });
+
+    // wait for DOM to render
     await nextTick();
+
+    // delay before trying to scroll, to give DOM more time to render
     setTimeout(() => {
       scrollToHashWithOffset(`#${entity.to}`, 80);
     }, 1000);
@@ -139,6 +155,7 @@ const handleSuggestionClick = async (name: string) => {
 
 <style lang="scss" scoped>
 $wrap: 1000px;
+
 .container {
   display: flex;
   flex-direction: column;
@@ -210,6 +227,7 @@ span {
     color: #0056b3;
   }
 }
+
 :deep(.clickable a) {
   color: #3885dd;
 
