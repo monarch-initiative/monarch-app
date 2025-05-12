@@ -341,7 +341,23 @@ export const history = createWebHistory(import.meta.env.BASE_URL);
 const router = createRouter({
   history,
   routes,
-  scrollBehavior,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      // User used browser back/forward — restore previous scroll
+      return savedPosition;
+    }
+
+    if (to.hash) {
+      // Navigating to a section (e.g., #section-id)
+      return {
+        el: to.hash,
+        behavior: "smooth",
+      };
+    }
+
+    // Default scroll to top for normal route changes
+    return { top: 0 };
+  },
 });
 
 /** hook up use-param composable to router */
