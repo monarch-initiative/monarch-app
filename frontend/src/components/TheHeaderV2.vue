@@ -30,7 +30,7 @@
         <AppIcon :icon="expanded ? 'xmark' : 'bars'" />
       </button>
     </div>
-    <div class="center-section" v-if="!isMobile && home">
+    <div v-if="!isMobile && home" class="center-section">
       <div v-if="!isMobile && home" class="hero-card">
         <div class="hero-header">
           <TheLogo class="hero-logo" />
