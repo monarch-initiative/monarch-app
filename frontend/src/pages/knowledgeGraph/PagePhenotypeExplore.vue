@@ -65,7 +65,6 @@ $wrap: 1000px;
 .tabs {
   display: flex;
   width: 80%;
-  gap: 0;
 
   background-color: #fff;
   :deep(.button) {
