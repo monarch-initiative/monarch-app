@@ -9,7 +9,7 @@
     </p>
 
     <div class="tabs">
-      <div class="tab-item">
+      <div class="tab-item" :class="{ active: activeTab === 'search' }">
         <AppButton
           v-tooltip="
             `Find genes or diseases from a species or group based on input phenotypes.`
@@ -23,7 +23,7 @@
         <p class="tab-description">Search for related genes and diseases</p>
       </div>
 
-      <div class="tab-item">
+      <div class="tab-item" :class="{ active: activeTab === 'compare' }">
         <AppButton
           v-tooltip="
             `Directly compare two sets of phenotypes to evaluate their similarity.`
@@ -65,9 +65,9 @@ $wrap: 1000px;
 .tabs {
   display: flex;
   width: 80%;
-  overflow: hidden;
-  border-radius: 12px 12px 0 0;
+  gap: 0;
 
+  background-color: #fff;
   :deep(.button) {
     &:hover,
     &:focus {
@@ -75,25 +75,65 @@ $wrap: 1000px;
       box-shadow: none !important;
     }
   }
+  .tab-item.active {
+    border-bottom: 1px solid #ccc;
+    border-bottom: none;
+    border: 1px solid #ccc;
+    background-color: $theme;
+    color: $white;
+
+    .tab-description {
+      color: $white;
+    }
+
+    :deep(.button) {
+      background-color: transparent !important; // or inherit
+      color: $white !important;
+    }
+  }
+
+  .tab-item:not(.active) {
+    border-bottom: 3px solid $theme;
+    background-color: $light-gray;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #cccccc;
+    }
+
+    .tab-description {
+      color: #555;
+    }
+
+    :deep(.button) {
+      background-color: transparent !important;
+      color: $theme;
+    }
+  }
 
   button {
     width: 100%;
-    border-radius: unset !important;
-    background-color: $light-gray;
+    border: none !important;
+
+    font-weight: bold;
     white-space: nowrap;
     cursor: pointer;
     transition:
       background 0.3s,
       color 0.3s;
     &.active {
-      background: $theme-light;
-    }
-    :hover {
-      box-shadow: unset;
+      z-index: 1;
+      transition:
+        background 0.3s,
+        color 0.3s;
     }
 
+    &:not(.active) {
+      border-bottom: 3px solid $theme;
+      background-color: $light-gray;
+    }
     &:not(.active):hover {
-      background: #e7e7e7;
+      background-color: #cccccc;
     }
 
     :deep(.app-icon),
@@ -116,8 +156,9 @@ $wrap: 1000px;
 }
 
 .tab-description {
-  padding: 0.5em;
+  padding-bottom: 0.2em;
   color: #555;
+  font-size: 0.8em;
   text-align: center;
 }
 </style>
