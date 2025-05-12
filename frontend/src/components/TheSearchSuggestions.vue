@@ -12,8 +12,20 @@
         @click="handleSuggestionClick(search.source.name)"
         @keydown.enter="handleSuggestionClick(search.source.name)"
       >
-        <AppNodeBadge :node="search.source" :icon="true" class="badge" />
-        <AppNodeBadge :node="search.target" :icon="true" class="badge" />
+        <span class="node">
+          <AppIcon
+            class="icon"
+            :icon="getCategoryIcon(search.source.category)"
+          />
+          <AppNodeText :text="search.source.name" />
+        </span>
+        <span class="node">
+          <AppIcon
+            class="icon"
+            :icon="getCategoryIcon(search.target.category)"
+          />
+          <AppNodeText :text="search.target.name" />
+        </span>
       </div>
     </div>
   </div>
@@ -22,7 +34,8 @@
 <script setup lang="ts">
 import { nextTick } from "vue";
 import { useRouter } from "vue-router";
-import AppNodeBadge from "@/components/AppNodeBadge.vue";
+import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
+import AppNodeText from "@/components/AppNodeText.vue";
 import { ENTITY_MAP } from "@/data/toolEntityConfig";
 
 const router = useRouter();
@@ -39,14 +52,14 @@ const searchSuggestions = [
     },
     target: {
       id: "FYPO:0000001",
-      name: "phenotype",
+      name: "Phenotype",
       category: "PhenotypicFeature",
     },
   },
   {
     source: {
       id: "HGNC:3603",
-      name: "FBN1 ",
+      name: "FBN1",
       category: "biolink:Gene",
     },
     target: {
@@ -62,7 +75,7 @@ const searchSuggestions = [
       category: "biolink:Disease",
     },
     target: {
-      id: "MONDO:0000001",
+      id: "Reactome:R-GGA-167826",
       name: "Models",
       category: "model",
     },
@@ -90,7 +103,8 @@ function scrollToHashWithOffset(hash: string, offset = 80) {
 }
 
 const handleSuggestionClick = async (name: string) => {
-  const entity = ENTITY_MAP[name];
+  const trimmedName = name.trim();
+  const entity = ENTITY_MAP[trimmedName];
 
   if (entity?.id) {
     await router.push({ path: "/" + entity.id, hash: "#" + entity.to });
@@ -154,6 +168,10 @@ span {
 
 .badge {
   font-weight: 600;
+  pointer-events: none;
+}
+span {
+  color: rgb(90, 95, 95);
 }
 
 .clickable {
@@ -161,8 +179,9 @@ span {
   align-items: center;
   padding: 0.5rem;
   border-radius: 0.375rem;
-  color: #3885dd;
-  font-weight: 700;
+
+  font-weight: 500;
+  font-size: 0.95em;
   text-decoration: none;
   white-space: nowrap;
   transition: background 0.2s;
@@ -188,5 +207,12 @@ span {
   align-items: center;
   padding-left: 0.4em;
   white-space: nowrap;
+}
+
+.icon {
+  position: relative;
+  top: -1px;
+  margin-right: 0.4em;
+  vertical-align: middle;
 }
 </style>
