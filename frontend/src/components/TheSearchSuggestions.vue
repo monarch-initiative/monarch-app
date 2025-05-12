@@ -64,8 +64,8 @@ const searchSuggestions = [
     },
     target: {
       id: "SO:0000704",
-      name: "Gene",
-      category: "gene",
+      name: "Phenotype",
+      category: "PhenotypicFeature",
     },
   },
   {
