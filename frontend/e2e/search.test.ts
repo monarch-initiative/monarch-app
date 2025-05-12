@@ -25,7 +25,7 @@ test("Recent/frequent results show", async ({ page }) => {
     await page.goto("/");
     await page.waitForSelector("input");
     await page.locator("input").focus();
-    await page.waitForTimeout(300); // Give search system time to update
+    await page.waitForTimeout(300);
   }
 
   const options = page.locator("[role='option']");
