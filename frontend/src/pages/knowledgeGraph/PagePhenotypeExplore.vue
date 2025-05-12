@@ -65,7 +65,6 @@ $wrap: 1000px;
 .tabs {
   display: flex;
   width: 80%;
-
   background-color: #fff;
   :deep(.button) {
     &:hover,
@@ -75,9 +74,8 @@ $wrap: 1000px;
     }
   }
   .tab-item.active {
-    border-bottom: 1px solid #ccc;
-    border-bottom: none;
     border: 1px solid #ccc;
+    border-bottom: 3px solid $theme; // keep consistent height
     background-color: $theme;
     color: $white;
 
@@ -86,12 +84,13 @@ $wrap: 1000px;
     }
 
     :deep(.button) {
-      background-color: transparent !important; // or inherit
+      background-color: transparent !important;
       color: $white !important;
     }
   }
 
   .tab-item:not(.active) {
+    border: 1px solid transparent;
     border-bottom: 3px solid $theme;
     background-color: $light-gray;
     transition: background-color 0.3s;
