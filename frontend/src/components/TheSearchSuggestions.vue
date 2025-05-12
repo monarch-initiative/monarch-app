@@ -95,17 +95,38 @@ const searchSuggestions = [
 ];
 
 function scrollToHashWithOffset(hash: string, offset = 80) {
-  const el = document.querySelector(hash);
-  if (el) {
+  let attempts = 0;
+  const maxAttempts = 30;
+  let lastY = -1;
+
+  const tryScroll = () => {
+    const el = document.querySelector(hash);
+    if (!el) {
+      if (attempts++ < maxAttempts) {
+        requestAnimationFrame(tryScroll);
+      } else {
+        console.warn(`Element ${hash} not found after ${maxAttempts} attempts`);
+      }
+      return;
+    }
+
     const y = el.getBoundingClientRect().top + window.scrollY - offset;
-    window.scrollTo({ top: y, behavior: "smooth" });
-  }
+
+    // check if element has settled
+    if (Math.abs(y - lastY) <= 2 || attempts > maxAttempts) {
+      window.scrollTo({ top: y, behavior: "smooth" });
+    } else {
+      lastY = y;
+      attempts++;
+      requestAnimationFrame(tryScroll);
+    }
+  };
+
+  requestAnimationFrame(tryScroll);
 }
 
 const handleSuggestionClick = async (name: string) => {
-  const trimmedName = name.trim();
-  const entity = ENTITY_MAP[trimmedName];
-
+  const entity = ENTITY_MAP[name.trim()];
   if (entity?.id) {
     await router.push({ path: "/" + entity.id, hash: "#" + entity.to });
     await nextTick();
