@@ -21,7 +21,6 @@ test("Recent/frequent results show", async ({ page }) => {
     await page.goto("/" + node);
     await expect(page.locator("#hierarchy")).toBeVisible();
     await page.waitForTimeout(500);
-
     await page.goto("/");
     await page.waitForSelector("input");
     await page.locator("input").focus();
