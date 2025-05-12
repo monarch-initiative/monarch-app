@@ -76,7 +76,7 @@ const searchSuggestions = [
     },
     target: {
       id: "Reactome:R-GGA-167826",
-      name: "Models",
+      name: "Model",
       category: "model",
     },
   },
@@ -88,7 +88,7 @@ const searchSuggestions = [
     },
     target: {
       id: "MONDO:0000001",
-      name: "Variants",
+      name: "Variant",
       category: "variant",
     },
   },
