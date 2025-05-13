@@ -30,7 +30,7 @@ jobs:
           registry: us-central1-docker.pkg.dev
           project_id: monarch-initiative
           image_name: monarch-api/monarch-api
-          image_tag: ${{ steps.get-tag.outputs.IMAGE_TAG }}, ${{ github.sha }}, ${{ github.ref_name }}
+          image_tag: ${{ github.sha }}, ${{ github.ref_name }}
           dockerfile: ./backend/Dockerfile
 
   build-and-push-frontend-image:
@@ -74,6 +74,6 @@ jobs:
           registry: us-central1-docker.pkg.dev
           project_id: monarch-initiative
           image_name: monarch-api/monarch-ui
-          image_tag: ${{ steps.get-tag.outputs.IMAGE_TAG }}, ${{ github.sha }}, ${{ github.ref_name }}
+          image_tag: ${{ github.sha }}, ${{ github.ref_name }}
           dockerfile: ./services/nginx/Dockerfile
           context: .
