@@ -183,7 +183,6 @@ span {
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
-
   margin: 0 auto;
   gap: 0.5rem;
 }
@@ -217,9 +216,8 @@ span {
   align-items: center;
   padding: 0.5rem;
   border-radius: 0.375rem;
-
   font-weight: 500;
-  font-size: 0.95em;
+  font-size: 0.85em;
   text-decoration: none;
   white-space: nowrap;
   transition: background 0.2s;
