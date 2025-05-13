@@ -11,7 +11,7 @@
       </p>
 
       <div class="groups-container">
-        <div class="group-box" v-for="i in 2" :key="i">
+        <div v-for="i in 2" :key="i" class="group-box">
           <ul>
             <li
               v-for="(group, index) in team.slice(
@@ -31,9 +31,9 @@
 
     <section
       v-for="(group, groupIndex) in team"
+      :id="kebabCase(group.name)"
       :key="groupIndex"
       class="university-block"
-      :id="kebabCase(group.name)"
     >
       <div class="university-header">{{ group.name }}</div>
       <div class="group-logo-wrapper">

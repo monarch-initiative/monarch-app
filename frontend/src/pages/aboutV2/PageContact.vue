@@ -62,15 +62,15 @@
         <AppTextbox
           v-model.trim="name"
           placeholder="Name"
-          @keydown="preventImplicit"
           :required="true"
+          @keydown="preventImplicit"
         />
         <AppTextbox
           v-model.trim="email"
           placeholder="Email"
           type="email"
-          @keydown="preventImplicit"
           :required="true"
+          @keydown="preventImplicit"
         />
         <AppTextbox
           v-model.trim="github"

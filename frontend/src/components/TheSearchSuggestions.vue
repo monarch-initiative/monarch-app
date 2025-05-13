@@ -1,17 +1,30 @@
 <template>
-  <div class="suggestions">
-    <div v-for="(s, i) in searchSuggestions" :key="i" class="tooltip-wrapper">
-      <span class="tooltip-trigger">{{ s.label }}</span>
-      <div class="tooltip-box">
-        {{ s.text }}
-        <span
-          class="tooltip-suggestion"
-          role="button"
-          tabindex="0"
-          @click="$emit('select', s.term)"
-          @keydown.enter="$emit('select', s.term)"
-        >
-          {{ s.term }}
+  <div class="container">
+    <hr />
+    <p class="label">Examples of relationships you can explore</p>
+    <div class="suggestions">
+      <div
+        v-for="(search, i) in searchSuggestions"
+        :key="i"
+        class="suggestion-pair clickable"
+        role="button"
+        tabindex="0"
+        @click="handleSuggestionClick(search.source.name)"
+        @keydown.enter="handleSuggestionClick(search.source.name)"
+      >
+        <span class="node">
+          <AppIcon
+            class="icon"
+            :icon="getCategoryIcon(search.source.category)"
+          />
+          <AppNodeText :text="search.source.name" />
+        </span>
+        <span class="node">
+          <AppIcon
+            class="icon"
+            :icon="getCategoryIcon(search.target.category)"
+          />
+          <AppNodeText :text="search.target.name" />
         </span>
       </div>
     </div>
@@ -19,105 +32,226 @@
 </template>
 
 <script setup lang="ts">
+import { nextTick } from "vue";
+import { useRouter } from "vue-router";
+import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
+import AppNodeText from "@/components/AppNodeText.vue";
+import { ENTITY_MAP } from "@/data/toolEntityConfig";
+
+const router = useRouter();
 defineEmits<{
-  (e: "select", term: string): void;
+  (e: "select", nodeId: string): void;
 }>();
 
 const searchSuggestions = [
   {
-    label: "Disease to Phenotype",
-    term: "Ehlers-Danlos syndrome",
-    text: "e.g: Explore the disease to phenotype relation for",
+    source: {
+      id: "MONDO:0020066",
+      name: "Ehlers-Danlos syndrome",
+      category: "biolink:Disease",
+    },
+    target: {
+      id: "FYPO:0000001",
+      name: "Phenotypes",
+      category: "PhenotypicFeature",
+    },
   },
   {
-    label: "Model to Disease",
-    term: "Down syndrome",
-    text: "e.g: Explore the model to disease relation for",
+    source: {
+      id: "HGNC:3603",
+      name: "FBN1",
+      category: "biolink:Gene",
+    },
+    target: {
+      id: "SO:0000704",
+      name: "Phenotypes",
+      category: "PhenotypicFeature",
+    },
   },
   {
-    label: "Variant to disease",
-    term: "cystic fibrosis",
-    text: "e.g: Explore the variant to disease relation for",
+    source: {
+      id: "MONDO:0008608",
+      name: "Down syndrome ",
+      category: "biolink:Disease",
+    },
+    target: {
+      id: "Reactome:R-GGA-167826",
+      name: "Models",
+      category: "model",
+    },
   },
   {
-    label: "Gene to Phenotype",
-    term: "FBN1",
-    text: "e.g: Explore the gene to phenotype relation for",
+    source: {
+      id: "MONDO:0009061",
+      name: "cystic fibrosis ",
+      category: "biolink:Disease",
+    },
+    target: {
+      id: "MONDO:0000001",
+      name: "Variants",
+      category: "variant",
+    },
   },
 ];
+
+/**
+ * Scrolls smoothly to the element identified by the hash, after ensuring it is
+ * present in the DOM and has settled in layout.
+ */
+function scrollToHashWithOffset(hash: string, offset = 80) {
+  let attempts = 0;
+  const maxAttempts = 30;
+  let lastY = -1;
+
+  const tryScroll = () => {
+    const el = document.querySelector(hash);
+    if (!el) {
+      // retry if element not yet present
+      if (attempts++ < maxAttempts) {
+        requestAnimationFrame(tryScroll);
+      } else {
+        console.warn(`Element ${hash} not found after ${maxAttempts} attempts`);
+      }
+      return;
+    }
+
+    const y = el.getBoundingClientRect().top + window.scrollY - offset;
+
+    // if element's position has stabilized or max attempts reached, scroll
+    if (Math.abs(y - lastY) <= 2 || attempts > maxAttempts) {
+      window.scrollTo({ top: y, behavior: "smooth" });
+    } else {
+      // wait and try again until element settles
+      lastY = y;
+      attempts++;
+      requestAnimationFrame(tryScroll);
+    }
+  };
+
+  // start trying
+  requestAnimationFrame(tryScroll);
+}
+
+/**
+ * Navigates to a new route and scrolls to the associated hash only after route
+ * change and component rendering is complete.
+ */
+const handleSuggestionClick = async (name: string) => {
+  const entity = ENTITY_MAP[name.trim()];
+  if (entity?.id) {
+    // navigate to the route with hash
+    await router.push({ path: "/" + entity.id, hash: "#" + entity.to });
+
+    // wait for DOM to render
+    await nextTick();
+
+    // delay before trying to scroll, to give DOM more time to render
+    setTimeout(() => {
+      scrollToHashWithOffset(`#${entity.to}`, 80);
+    }, 1000);
+  }
+};
 </script>
 
 <style lang="scss" scoped>
+$wrap: 1000px;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 0.6em;
+
+  @media (max-width: $wrap) {
+    width: 100%;
+    gap: 0.3em;
+  }
+}
+.label {
+  font-weight: 600;
+  text-align: center;
+}
+
+span {
+  color: black;
+  white-space: nowrap;
+}
+
 .suggestions {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   justify-content: center;
-  margin: 0.7em;
-  gap: 1em;
+  width: 100%;
+
+  margin: 0 auto;
+  gap: 0.5rem;
 }
 
-.tooltip-wrapper {
-  display: inline-flex;
-  position: relative;
-  flex-direction: column;
+.suggestion-pair {
+  display: flex;
   align-items: center;
-}
-
-.tooltip-trigger {
-  color: #4b7acb;
-  font-size: 0.9rem;
-}
-
-/* Tooltip box positioned directly under the trigger */
-.tooltip-box {
-  visibility: hidden;
-  z-index: 999;
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  width: max-content;
-  max-width: 40em;
-
-  padding: 8px;
-  transform: translateX(-50%);
-  border-radius: 6px;
-  background-color: #e8e2e2;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  color: #000;
-  font-size: 0.8rem;
-  line-height: 1.4;
-  white-space: normal;
-  opacity: 0;
-  pointer-events: auto;
-  transition: opacity 0.2s ease;
-}
-
-/* Keep tooltip open if hovering on wrapper OR box */
-.tooltip-wrapper:hover .tooltip-box {
-  visibility: visible;
-  opacity: 1;
-}
-
-.tooltip-box::after {
-  position: absolute;
-  top: -5px;
-  left: 50%;
-  transform: translateX(-50%);
-  border-width: 5px;
-  border-style: solid;
-  border-color: transparent transparent #e8e2e2 transparent;
-  content: "";
-}
-
-.tooltip-suggestion {
-  margin-left: 4px;
-  color: #007bff;
-  text-decoration: underline;
+  padding: 0.5rem 1rem;
+  gap: 0.6rem;
+  border-radius: 0.5rem;
+  background: #f3f3f3;
+  white-space: nowrap;
   cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: #e0e0e0;
+  }
 }
 
-.tooltip-suggestion:hover {
-  color: #0056b3;
+.badge {
+  font-weight: 600;
+  pointer-events: none;
+}
+span {
+  color: rgb(90, 95, 95);
+}
+
+.clickable {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+
+  font-weight: 500;
+  font-size: 0.95em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s;
+  &:hover {
+    color: #0056b3;
+  }
+}
+
+:deep(.clickable a) {
+  color: #3885dd;
+
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none !important;
+  white-space: nowrap;
+  &:hover {
+    color: #0056b3;
+  }
+}
+
+.example {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 0.4em;
+  white-space: nowrap;
+}
+
+.icon {
+  position: relative;
+  top: -1px;
+  margin-right: 0.4em;
+  vertical-align: middle;
 }
 </style>

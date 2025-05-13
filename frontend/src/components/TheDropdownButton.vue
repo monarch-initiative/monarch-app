@@ -1,6 +1,6 @@
 <template>
   <div ref="dropdown" class="dropdown" :class="{ 'is-open': isOpen }">
-    <button class="dropdown-btn" ref="button" @click="toggleMenu">
+    <button ref="button" class="dropdown-btn" @click="toggleMenu">
       <slot name="button"></slot>
       <span class="dropdown-arrow" :class="{ 'is-rotated': isOpen }"
         >&#9662;</span
@@ -8,8 +8,8 @@
     </button>
     <div
       v-if="isOpen"
-      class="dropdown-menu"
       ref="menu"
+      class="dropdown-menu"
       role="button"
       tabindex="0"
       @click="closeMenu"
@@ -33,32 +33,6 @@ const dropdown = ref<HTMLElement | null>(null);
 
 const toggleMenu = () => {
   isOpen.value = !isOpen.value;
-
-  setTimeout(() => {
-    if (!isOpen.value || !menu.value || !button.value) return;
-
-    // Aligns dropdown with button and shifts left if it would overflow off the right edge.
-    const menuEl = menu.value;
-    const buttonEl = button.value;
-
-    // Align menu with the actual left edge of the button
-    const buttonLeft = buttonEl.offsetLeft;
-    menuEl.style.left = `${buttonLeft}px`;
-
-    // Check for right-edge overflow
-    const rect = menuEl.getBoundingClientRect();
-    const buffer = 19;
-    const overflowRight = rect.right - window.innerWidth;
-    console.log({
-      rectwight: rect.right,
-      windowWidth: window.innerWidth,
-      overflowRight,
-    });
-    if (overflowRight > -buffer) {
-      const shift = overflowRight + buffer;
-      menuEl.style.left = `${buttonLeft - shift}px`;
-    }
-  }, 0);
 };
 
 const closeMenu = () => {
@@ -102,11 +76,11 @@ li {
   padding-left: 0;
 }
 .dropdown-menu {
+  z-index: 1011;
   position: absolute;
   top: calc(100% + 4px);
-  left: 0;
+  right: 10%;
   width: max-content;
-  transform: scaleY(0);
   transform-origin: top;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -131,7 +105,7 @@ li {
 .dropdown-menu::before {
   position: absolute;
   top: -10px;
-  left: 20px;
+  right: 8px;
   transform: none;
   border-right: 10px solid transparent;
   border-bottom: 10px solid white;

@@ -1,13 +1,5 @@
 <template>
-  <AppBreadcrumb />
-  <PageTitle id="phenotype-search" title="Phenotype Similarity Search" />
-  <AppSection>
-    <p class="description">
-      Phenotype similarity search tool finds genes or diseases from a selected
-      species or group that show phenotypic similarity to a set of input
-      phenotypes. Similarity is computed using semantic metrics such as Jaccard,
-      Information Content, or Phenodigm.
-    </p>
+  <AppSection width="big">
     <AppFlex gap="small">
       <AppButton
         text="Try a simple example"
@@ -113,13 +105,11 @@ import {
   type Group,
 } from "@/api/phenotype-explorer";
 import AppAlert from "@/components/AppAlert.vue";
-import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPercentage from "@/components/AppPercentage.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import type { Option, Options } from "@/components/AppSelectTags.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
-import PageTitle from "@/components/ThePageTitle.vue";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
 import { useParam, type Param } from "@/composables/use-param";
 import { usePhenotypeSets } from "@/composables/use-phenotype-sets";

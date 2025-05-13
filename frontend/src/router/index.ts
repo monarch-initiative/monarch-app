@@ -33,7 +33,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "Home",
-    component: asyncRoute("PageHome"),
+    component: asyncRoute("PageHomeV2"),
     meta: { breadcrumb: "Home" },
     beforeEnter: () => {
       /** look for redirect in session storage (saved from public/404.html page) */
@@ -179,7 +179,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/:pathMatch(.*)*",
     name: "NotFound",
-    component: asyncRoute("PageHome"),
+    component: asyncRoute("PageHomeV2"),
   },
 
   {
@@ -207,9 +207,9 @@ export const routes: RouteRecordRaw[] = [
     meta: { breadcrumb: "Status & QC" },
   },
   {
-    path: "/kg/results",
+    path: "/results",
     name: "KnowledgeGraphResults",
-    component: asyncRoute("knowledgeGraph/PageResults"),
+    component: asyncRoute("knowledgeGraph/PageSearchResults"),
     meta: { breadcrumb: "Search Results" },
   },
   {
@@ -225,19 +225,13 @@ export const routes: RouteRecordRaw[] = [
     meta: { breadcrumb: "Terms of Use" },
   },
   {
-    path: "/kg/compare-phenotypes",
-    name: "KnowledgeGraphComparePhenotypes",
-    component: asyncRoute("knowledgeGraph/PagePhenotypeCompare"),
-    meta: { breadcrumb: "Phenotype Similarity Compare" },
-  },
-  {
-    path: "/kg/search-phenotypes",
+    path: "/search-phenotypes",
     name: "KnowledgeGraphSearchPhenotypes",
-    component: asyncRoute("knowledgeGraph/PagePhenotypeSearch"),
+    component: asyncRoute("knowledgeGraph/PagePhenotypeExplore"),
     meta: { breadcrumb: "Phenotype Similarity Search" },
   },
   {
-    path: "/kg/text-annotator",
+    path: "/text-annotator",
     name: "KnowledgeGraphTextAnnotator",
     component: asyncRoute("knowledgeGraph/PageTextAnnotator"),
     meta: { breadcrumb: "Text Annotator" },

@@ -1,7 +1,5 @@
 <template>
-  <AppBreadcrumb />
-  <PageTitle id="phenotype-compare" title="Phenotype Similarity Compare" />
-  <AppSection>
+  <AppSection width="big">
     <AppFlex gap="small">
       <AppButton
         text="Try a simple example"
@@ -122,7 +120,6 @@ import {
   getPhenotypes,
   metricOptions,
 } from "@/api/phenotype-explorer";
-import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppButton from "@/components/AppButton.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPercentage from "@/components/AppPercentage.vue";
@@ -130,7 +127,6 @@ import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import type { Option } from "@/components/AppSelectTags.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
 import AppTabs from "@/components/AppTabs.vue";
-import PageTitle from "@/components/ThePageTitle.vue";
 import { usePhenotypeSets } from "@/composables/use-phenotype-sets";
 import { useQuery } from "@/composables/use-query";
 import examples from "@/data/phenotype-explorer.json";
