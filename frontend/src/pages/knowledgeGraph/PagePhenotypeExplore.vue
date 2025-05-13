@@ -64,8 +64,13 @@ $wrap: 1000px;
 
 .tabs {
   display: flex;
+  flex-wrap: wrap;
   width: 80%;
   background-color: #fff;
+
+  @media (max-width: $wrap) {
+    width: 90%;
+  }
   :deep(.button) {
     &:hover,
     &:focus {
