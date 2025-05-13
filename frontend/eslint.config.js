@@ -4,36 +4,36 @@ import pluginVue from "eslint-plugin-vue";
 import { FlatCompat } from "@eslint/eslintrc";
 import js from "@eslint/js";
 import prettierConfig from "@vue/eslint-config-prettier";
-import vueTsEslintConfig from "@vue/eslint-config-typescript";
+import {
+  defineConfigWithVueTs,
+  vueTsConfigs,
+} from "@vue/eslint-config-typescript";
 
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const compat = new FlatCompat({
   baseDirectory: __dirname,
   recommendedConfig: js.configs.recommended,
-  // allConfig: js.configs.all,
 });
 
-export default [
-  /** Extend recommended configs */
-  ...compat.extends(
-    "plugin:vue/vue3-recommended",
+export default defineConfigWithVueTs(
+  compat.extends(
     "plugin:vuejs-accessibility/recommended",
     "eslint:recommended",
     "@vue/eslint-config-prettier/skip-formatting",
   ),
-  ...pluginVue.configs["flat/recommended"],
-  ...vueTsEslintConfig(),
   eslintPluginPrettierRecommended,
+  pluginVue.configs["flat/recommended"],
   prettierConfig,
+  vueTsConfigs.recommended,
   {
     ignores: [
       "node_modules",
       "dist",
-      "mockServiceWorker.js",
+      "public/mockServiceWorker.js",
       "src/api/model.ts",
     ],
   },
-  /** Configuration */
+  /** Additional Configuration */
   {
     languageOptions: {
       parserOptions: {
@@ -83,4 +83,4 @@ export default [
       "vuejs-accessibility/mouse-events-have-key-events": ["off"],
     },
   },
-];
+);
