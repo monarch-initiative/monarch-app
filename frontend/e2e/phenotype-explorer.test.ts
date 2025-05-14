@@ -1,73 +1,44 @@
 import type { Locator } from "@playwright/test";
 import { expect, test } from "@playwright/test";
-import { log } from "../playwright.config";
 
-log();
-
-// https://github.com/microsoft/playwright/issues/8114
+// helper to simulate paste action
 export const paste = async (locator: Locator, value: string) => {
   await locator.fill(value);
   await locator.dispatchEvent("paste");
 };
 
-test("Populating example works", async ({ page }) => {
-  await page.goto("/explore#phenotype-explorer");
+test("Similarity Search: Populating example works", async ({ page }) => {
+  await page.goto("/search-phenotypes");
 
-  /** click example button, check tags select component has selected entries */
+  // switch to 'Similarity Search' tab
+  await page.getByRole("button", { name: /Similarity Search/i }).click();
+
+  // click example button and expect multiple tags to appear
   await page
-    .getByText(/example/)
+    .getByText(/example/i)
     .first()
     .click();
-  await expect(
-    await page.locator(".select-tags > .box > button").count(),
-  ).toBeGreaterThan(5);
+  const count = await page.locator(".select-tags > .box > button").count();
+  expect(count).toBeGreaterThan(5);
 });
 
-test("Phenotype set vs phenotype set works", async ({ page }) => {
-  test.skip(true, "Fixture data not stable yet");
+// test("Similarity Compare: Phenotype set vs set", async ({ page }) => {
+//   await page.goto("/search-phenotypes");
 
-  await page.goto("/explore#phenotype-explorer");
+//   // switch to 'Similarity Compare' tab
+//   await page.getByRole("button", { name: /Similarity Compare/i }).click();
 
-  /** paste specific fake phenotypes */
-  await paste(
-    page.locator("input").first(),
-    "HP:0004970,HP:0004933,HP:0004927",
-  );
-  await paste(page.locator("input").last(), "HP:0004970,HP:0004933,HP:0004927");
+//   // paste phenotypes into both input boxes
+//   await paste(
+//     page.locator("input").first(),
+//     "HP:0004970,HP:0004933,HP:0004927",
+//   );
+//   await paste(page.locator("input").last(), "HP:0004970,HP:0004933,HP:0004927");
 
-  /** run analysis, and look for expected results */
-  await page
-    .getByText(/Analyze/)
-    .first()
-    .click();
-  await expect(page.getByText(/0/).first()).toBeVisible();
-  await expect(page.getByText(/female sterile/).first()).toBeVisible();
-});
-
-test("Phenotype set vs group works", async ({ page }) => {
-  test.skip(true, "API endpoint not implemented yet");
-
-  await page.goto("/explore#phenotype-explorer");
-
-  /** go to right mode */
-  await page
-    .locator("button", { hasText: /these phenotypes/i })
-    .first()
-    .click();
-  await page
-    .locator("[role='option'] > *", { hasText: /all genes/i })
-    .first()
-    .click();
-
-  /** paste specific fake phenotypes */
-  await paste(page.locator("input"), "HP:0004970,HP:0004933,HP:0004927");
-
-  /** run analysis, and look for expected results */
-  await page
-    .getByText(/Analyze/i)
-    .first()
-    .click();
-  await expect(page.getByText(/55/i).first()).toBeVisible();
-  await expect(page.getByText(/1600029I14Rik/i).first()).toBeVisible();
-  await expect(page.getByText(/Mus musculus/i).first()).toBeVisible();
-});
+//   // click analyze and verify result
+//   await page
+//     .getByText(/Analyze/i)
+//     .first()
+//     .click();
+//   await expect(page.getByText(/female sterile/i)).toBeVisible();
+// });
