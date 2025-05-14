@@ -36,7 +36,7 @@
   <AppSection width="big">
     <p>
       For further assistance, check out our
-      <AppLink to="/knowledge-graph/help">How to & Help</AppLink>
+      <AppLink to="/kg/help">How to & Help</AppLink>
     </p>
   </AppSection>
 </template>
