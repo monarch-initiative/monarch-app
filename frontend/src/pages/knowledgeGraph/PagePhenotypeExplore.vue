@@ -3,7 +3,7 @@
   <PageTitle id="phenotype-similarity" title="Phenotype Similarity Tools" />
 
   <AppSection>
-    <p class="description">
+    <p class="tagline">
       Use powerful semantic similarity tools — based on metrics like Jaccard,
       Ancestor Information Content, and Phenodigm.
     </p>
@@ -60,7 +60,9 @@ function setTab(tab: "search" | "compare") {
 
 <style scoped lang="scss">
 $wrap: 1000px;
-
+.tagline {
+  text-align: center;
+}
 .tabs {
   display: flex;
   flex-wrap: wrap;
