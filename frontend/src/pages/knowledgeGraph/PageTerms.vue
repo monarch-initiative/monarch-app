@@ -18,7 +18,7 @@
       <AppLink to="https://monarch-initiative.github.io/monarch-ingest/Sources"
         >sources page</AppLink
       >. Licensing information for tools, APIs, algorithms, and workflows can be
-      found on the <AppLink to="/overview">overview page</AppLink>.
+      found on the <AppLink to="/kg/status">Status and QC</AppLink> page.
     </p>
     <AppHeading>Tracking</AppHeading>
     <p>
@@ -50,7 +50,9 @@
       &mdash; including but not limited to the Monarch Website (this website
       itself), BioLink, and Exomiser &mdash; are hereby referred to as the
       "Monarch Tools". The associated
-      <AppLink to="/team">Universities, Institutions, and other groups</AppLink>
+      <AppLink to="/about/team"
+        >Universities, Institutions, and other groups</AppLink
+      >
       that develop and maintain the Monarch Tools are hereby collectively
       refered to as the "Monarch Initiative".
     </p>

@@ -3,7 +3,11 @@
 -->
 
 <template>
-  <header ref="header" :class="['header', { home, sticky: !home || isMobile }]">
+  <header
+    id="header"
+    ref="header"
+    :class="['header', { home, sticky: !home || isMobile }]"
+  >
     <!-- :style="{
       position: !home || isMobile ? 'sticky' : 'static',
     }" -->
@@ -70,6 +74,12 @@
       />
 
       <div class="navItems">
+        <AppLink
+          class="link"
+          to="https://exomiser.monarchinitiative.org/exomiser/"
+        >
+          Exomiser
+        </AppLink>
         <DropdownButton
           v-for="(menu, index) in navigationMenus"
           :key="menu.label"

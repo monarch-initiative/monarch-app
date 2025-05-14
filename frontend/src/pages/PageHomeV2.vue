@@ -19,15 +19,30 @@
       submission. Learn more about the complete suite of Monarch resources on
       our organization's documentation pages.
     </p>
+    <div class="custom-grid">
+      <div v-for="(tool, id) in TOOL_LINKS" :key="id">
+        <AppLink :to="tool.to">
+          <AppIcon
+            v-if="tool.icon"
+            v-tooltip="tool.tooltip"
+            :aria-label="tool.tooltip"
+            :icon="tool.icon"
+            class="icon"
+          />
+          <span class="sr-only">{{ tool.tooltip }}</span>
+        </AppLink>
+      </div>
+    </div>
   </AppSection>
 
   <AppSection width="big">
-    <AppHeading :level="1">Explore Monarch Initiative Tools</AppHeading>
-    <div class="custom-grid">
-      <template v-for="(tool, idx) in TOOL_LINKS" :key="idx">
+    <AppHeading :level="1">Explore Knowledge Graph Tools</AppHeading>
+    <div class="custom-grid kg-tools">
+      <template v-for="(tool, id) in KG_TOOL_LINKS" :key="id">
         <AppToolTile
           v-tooltip="tool.tooltip"
           :to="tool.to"
+          :aria-label="tool.tooltip"
           :icon="tool.icon"
           :title="tool.label"
         />
@@ -39,19 +54,24 @@
 <script setup lang="ts">
 import AppToolTile from "@/components/AppToolTile.vue";
 import PageTitle from "@/components/ThePageTitle.vue";
-import { TOOL_LINKS } from "@/data/toolEntityConfig";
+import { KG_TOOL_LINKS, TOOL_LINKS } from "@/data/toolEntityConfig";
 </script>
 
 <style lang="scss" scoped>
 .section:last-of-type {
   margin-bottom: 3em;
+  padding-top: 0;
+}
+.section.center {
+  gap: 0;
 }
 .custom-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(7em, 1fr));
   align-items: center;
+  justify-items: center;
   width: 100%;
-  gap: 1.5rem;
+  max-width: 60em;
 }
 
 @media (max-width: 1000px) {
@@ -79,5 +99,43 @@ import { TOOL_LINKS } from "@/data/toolEntityConfig";
 
 .home-title {
   margin-top: 2em;
+}
+
+.icon {
+  z-index: 2;
+  position: relative;
+  width: 12em;
+  height: 12em;
+  border-radius: 50em;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  @media (max-width: 1000px) {
+    width: 9em;
+    height: 9em;
+  }
+}
+
+.icon:hover {
+  transform: scale(1.08);
+}
+
+a:focus,
+.icon:focus {
+  outline: none;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  white-space: nowrap;
+}
+.kg-tools {
+  margin-top: 2.5em;
 }
 </style>

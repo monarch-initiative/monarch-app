@@ -24,7 +24,7 @@ export const ENTITY_MAP: Record<
   },
 };
 
-export const TOOL_LINKS: {
+export const KG_TOOL_LINKS: {
   label: string;
   to: string;
   icon?: string;
@@ -60,19 +60,42 @@ export const TOOL_LINKS: {
       "Query and manipulate Monarch KG data in a tidy-inspired R interface",
     external: true,
   },
+];
+
+export const TOOL_LINKS: {
+  label: string;
+  to: string;
+  icon?: string;
+  external?: boolean;
+  tooltip?: string;
+}[] = [
   {
-    label: "Monarch Assistant",
-    icon: "monarch-assistant",
-    to: "https://github.com/monarch-initiative/monarch-assistant-cypher",
-    tooltip:
-      "Browse Cypher query code and graph tools for the Monarch Assistant on GitHub",
+    label: "Exomiser",
+    icon: "exomiser-banner",
+    to: "https://exomiser.monarchinitiative.org/exomiser/",
+    tooltip: "Explore and prioritize genetic variants",
     external: true,
   },
   {
-    label: "MonarchKG API",
-    icon: "code",
-    to: "https://api-v3.monarchinitiative.org/v3/docs",
-    tooltip: "Access the interactive documentation for Monarch's API v3",
+    label: "Phenopackets",
+    icon: "phenopackets-banner",
+    to: "http://phenopackets.org/",
+    tooltip: "Standard format for sharing phenotypic and clinical data",
+    external: true,
+  },
+  {
+    label: "Mondo",
+    icon: "mondo-banner",
+    to: "https://mondo.monarchinitiative.org/",
+    tooltip:
+      "Standardized vocabulary for diseases across clinical and research resources",
+    external: true,
+  },
+  {
+    label: "Knowledge Graph",
+    icon: "kg-banner",
+    to: "#header",
+    tooltip: "Search and explore genes, diseases, phenotypes, and more",
     external: true,
   },
 ];

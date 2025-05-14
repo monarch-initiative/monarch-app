@@ -72,73 +72,18 @@ export const routes: RouteRecordRaw[] = [
     meta: { breadcrumb: "Home" },
   },
 
-  /** top level pages */
-  {
-    path: "/explore",
-    name: "Explore",
-    component: asyncRoute("explore/PageExplore"),
-  },
-  {
-    path: "/about",
-    name: "About",
-    component: asyncRoute("about/PageAbout"),
-  },
-  {
-    path: "/help",
-    name: "Help",
-    component: asyncRoute("help/PageHelp"),
-  },
-
-  /** about pages */
   {
     path: "/overview",
     name: "Overview",
     component: () => import("../pages/about/PageOverview.vue"),
   },
-  {
-    path: "/cite",
-    name: "Cite",
-    component: asyncRoute("about/PageCite"),
-  },
-  {
-    path: "/team",
-    name: "Team",
-    component: asyncRoute("about/PageTeam"),
-  },
-  {
-    path: "/publications",
-    name: "Publications",
-    component: asyncRoute("about/PagePublications"),
-  },
-  {
-    path: "/terms",
-    name: "Terms",
-    component: asyncRoute("about/PageTerms"),
-  },
-  {
-    path: "/phenomics-first",
-    name: "PhenomicsFirst",
-    component: asyncRoute("about/PagePhenomicsFirst"),
-  },
-  {
-    path: "/outreach",
-    name: "Outreach",
-    component: asyncRoute("about/PageOutreach"),
-  },
+
   {
     path: "/how-to",
     name: "HowTo",
     component: asyncRoute("about/PageHowTo"),
   },
 
-  /** resources page */
-  {
-    path: "/resources",
-    name: "Resources",
-    component: () => import("../pages/resources/PageResources.vue"),
-  },
-
-  /** help pages */
   {
     path: "/feedback",
     name: "Feedback",

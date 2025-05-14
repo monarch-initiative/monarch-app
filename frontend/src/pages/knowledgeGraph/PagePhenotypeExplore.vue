@@ -2,8 +2,8 @@
   <AppBreadcrumb />
   <PageTitle id="phenotype-similarity" title="Phenotype Similarity Tools" />
 
-  <AppSection width="big">
-    <p class="description">
+  <AppSection>
+    <p class="tagline">
       Use powerful semantic similarity tools — based on metrics like Jaccard,
       Ancestor Information Content, and Phenodigm.
     </p>
@@ -37,12 +37,11 @@
         <p class="tab-description">Compare two sets of phenotypes</p>
       </div>
     </div>
-
-    <div>
-      <PagePhenotypeSearch v-if="activeTab === 'search'" />
-      <PagePhenotypeCompare v-else />
-    </div>
   </AppSection>
+  <div class="tabWidth">
+    <PagePhenotypeSearch v-if="activeTab === 'search'" />
+    <PagePhenotypeCompare v-else />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -61,7 +60,9 @@ function setTab(tab: "search" | "compare") {
 
 <style scoped lang="scss">
 $wrap: 1000px;
-
+.tagline {
+  text-align: center;
+}
 .tabs {
   display: flex;
   flex-wrap: wrap;
@@ -163,5 +164,11 @@ $wrap: 1000px;
   color: #555;
   font-size: 0.8em;
   text-align: center;
+}
+
+.tabWidth {
+  align-self: center;
+  width: 100%;
+  max-width: 800px;
 }
 </style>
