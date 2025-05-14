@@ -25,9 +25,11 @@
           <AppIcon
             v-if="tool.icon"
             v-tooltip="tool.tooltip"
+            :aria-label="tool.tooltip"
             :icon="tool.icon"
             class="icon"
           />
+          <span class="sr-only">{{ tool.tooltip }}</span>
         </AppLink>
       </div>
     </div>
@@ -40,6 +42,7 @@
         <AppToolTile
           v-tooltip="tool.tooltip"
           :to="tool.to"
+          :aria-label="tool.tooltip"
           :icon="tool.icon"
           :title="tool.label"
         />
@@ -116,5 +119,16 @@ import { KG_TOOL_LINKS, TOOL_LINKS } from "@/data/toolEntityConfig";
 a:focus,
 .icon:focus {
   outline: none;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  white-space: nowrap;
 }
 </style>
