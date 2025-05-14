@@ -93,6 +93,7 @@ import { KG_TOOL_LINKS, TOOL_LINKS } from "@/data/toolEntityConfig";
   align-items: center;
   width: 100%;
 }
+
 .home-title {
   margin-top: 2em;
 }
