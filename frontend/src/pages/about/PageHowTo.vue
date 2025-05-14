@@ -173,7 +173,7 @@
         Here are some quick links for some of the most frequently requested
         information about the Monarch Initiative. For additional information,
         please see
-        <AppLink to="about"> our about page </AppLink>.
+        <AppLink to="kg/status"> our Status and QC </AppLink>.
       </p>
       <AppTile
         to="kg/citation"
@@ -201,11 +201,11 @@
       />
       <p style="padding-top: 1.5rem">
         Use the buttons above to go directly to the information listed.
-        Additional information may be available on the about page.
+        Additional information may be available on the Status and QC page.
       </p>
       <AppButton
-        to="about"
-        text="Take me to the full about page..."
+        to="kg/status"
+        text="Take me to the Status and QC..."
         icon="arrow-right"
       />
     </div>
