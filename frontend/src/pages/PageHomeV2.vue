@@ -66,7 +66,6 @@ import { KG_TOOL_LINKS, TOOL_LINKS } from "@/data/toolEntityConfig";
   justify-items: center;
   width: 100%;
   max-width: 60em;
-  gap: 0;
 }
 
 @media (max-width: 1000px) {
@@ -74,7 +73,6 @@ import { KG_TOOL_LINKS, TOOL_LINKS } from "@/data/toolEntityConfig";
     grid-template-rows: repeat(2, auto);
     grid-auto-columns: minmax(7em, 1fr);
     grid-auto-flow: column;
-    gap: 1em;
   }
 }
 
@@ -104,6 +102,11 @@ import { KG_TOOL_LINKS, TOOL_LINKS } from "@/data/toolEntityConfig";
   border-radius: 50em;
   cursor: pointer;
   transition: transform 0.2s ease;
+
+  @media (max-width: 1000px) {
+    width: 9em;
+    height: 9em;
+  }
 }
 
 .icon:hover {
