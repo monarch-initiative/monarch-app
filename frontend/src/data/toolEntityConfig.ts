@@ -73,7 +73,7 @@ export const TOOL_LINKS: {
     label: "Exomiser",
     icon: "exomiser-banner",
     to: "https://exomiser.monarchinitiative.org/exomiser/",
-    tooltip: "Explore and prioritize genetic variants with Exomiser",
+    tooltip: "Explore and prioritize genetic variants",
     external: true,
   },
   {
