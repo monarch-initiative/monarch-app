@@ -262,7 +262,11 @@ $wrap: 1000px;
   flex: 1 1 48%;
   max-width: 100%;
 }
-
+.text-column {
+  @media (max-width: 1100px) {
+    text-align: center;
+  }
+}
 .video {
   aspect-ratio: 16 / 9;
   width: 100%;

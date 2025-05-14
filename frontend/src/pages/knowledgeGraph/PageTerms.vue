@@ -18,7 +18,7 @@
       <AppLink to="https://monarch-initiative.github.io/monarch-ingest/Sources"
         >sources page</AppLink
       >. Licensing information for tools, APIs, algorithms, and workflows can be
-      found on the <AppLink to="/overview">overview page</AppLink>.
+      found on the <AppLink to="/kg/status">Status and QC</AppLink> page.
     </p>
     <AppHeading>Tracking</AppHeading>
     <p>
