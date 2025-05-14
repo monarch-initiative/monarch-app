@@ -101,7 +101,15 @@ import { KG_TOOL_LINKS, TOOL_LINKS } from "@/data/toolEntityConfig";
   position: relative;
   width: 12em;
   height: 12em;
+  border-radius: 50em;
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
+
+.icon:hover {
+  transform: scale(1.08);
+}
+
 a:focus,
 .icon:focus {
   outline: none;
