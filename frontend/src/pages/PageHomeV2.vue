@@ -23,8 +23,8 @@
       <div v-for="(tool, id) in TOOL_LINKS" :key="id">
         <AppLink :to="tool.to">
           <AppIcon
-            v-tooltip="tool.tooltip"
             v-if="tool.icon"
+            v-tooltip="tool.tooltip"
             :icon="tool.icon"
             class="icon"
           />

@@ -4,9 +4,9 @@
 
 <template>
   <header
+    id="header"
     ref="header"
     :class="['header', { home, sticky: !home || isMobile }]"
-    id="header"
   >
     <!-- :style="{
       position: !home || isMobile ? 'sticky' : 'static',
