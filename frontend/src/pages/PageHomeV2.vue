@@ -19,12 +19,23 @@
       submission. Learn more about the complete suite of Monarch resources on
       our organization's documentation pages.
     </p>
-  </AppSection>
-
-  <AppSection width="big">
-    <AppHeading :level="1">Explore Monarch Initiative Tools</AppHeading>
     <div class="custom-grid">
-      <template v-for="(tool, idx) in TOOL_LINKS" :key="idx">
+      <div v-for="(tool, id) in TOOL_LINKS" :key="id">
+        <AppIcon
+          v-tooltip="tool.tooltip"
+          v-if="tool.icon"
+          :icon="tool.icon"
+          :to="tool.to"
+          class="icon"
+        />
+      </div>
+    </div>
+  </AppSection>
+  <
+  <AppSection width="big">
+    <AppHeading :level="1">Explore Knowledge Graph Initiative Tools</AppHeading>
+    <div class="custom-grid">
+      <template v-for="(tool, idx) in KG_TOOL_LINKS" :key="id">
         <AppToolTile
           v-tooltip="tool.tooltip"
           :to="tool.to"
@@ -39,19 +50,22 @@
 <script setup lang="ts">
 import AppToolTile from "@/components/AppToolTile.vue";
 import PageTitle from "@/components/ThePageTitle.vue";
-import { TOOL_LINKS } from "@/data/toolEntityConfig";
+import { KG_TOOL_LINKS, TOOL_LINKS } from "@/data/toolEntityConfig";
 </script>
 
 <style lang="scss" scoped>
 .section:last-of-type {
   margin-bottom: 3em;
+  padding-top: 0;
 }
 .custom-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(7em, 1fr));
   align-items: center;
+  justify-items: center;
   width: 100%;
-  gap: 1.5rem;
+  max-width: 60em;
+  gap: 0;
 }
 
 @media (max-width: 1000px) {
@@ -59,6 +73,7 @@ import { TOOL_LINKS } from "@/data/toolEntityConfig";
     grid-template-rows: repeat(2, auto);
     grid-auto-columns: minmax(7em, 1fr);
     grid-auto-flow: column;
+    gap: 1em;
   }
 }
 
@@ -76,8 +91,14 @@ import { TOOL_LINKS } from "@/data/toolEntityConfig";
   align-items: center;
   width: 100%;
 }
-
 .home-title {
   margin-top: 2em;
+}
+
+.icon {
+  z-index: 2;
+  position: relative;
+  width: 12em;
+  height: 12em;
 }
 </style>
