@@ -94,7 +94,7 @@ export const TOOL_LINKS: {
   {
     label: "Knowledge Graph",
     icon: "kg-banner",
-    to: "https://next.monarchinitiative.org/",
+    to: "#header",
     tooltip: "Search and explore genes, diseases, phenotypes, and more",
     external: true,
   },

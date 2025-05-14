@@ -21,21 +21,22 @@
     </p>
     <div class="custom-grid">
       <div v-for="(tool, id) in TOOL_LINKS" :key="id">
-        <AppIcon
-          v-tooltip="tool.tooltip"
-          v-if="tool.icon"
-          :icon="tool.icon"
-          :to="tool.to"
-          class="icon"
-        />
+        <AppLink :to="tool.to">
+          <AppIcon
+            v-tooltip="tool.tooltip"
+            v-if="tool.icon"
+            :icon="tool.icon"
+            class="icon"
+          />
+        </AppLink>
       </div>
     </div>
   </AppSection>
-  <
+
   <AppSection width="big">
-    <AppHeading :level="1">Explore Knowledge Graph Initiative Tools</AppHeading>
+    <AppHeading :level="1">Explore Knowledge Graph Tools</AppHeading>
     <div class="custom-grid">
-      <template v-for="(tool, idx) in KG_TOOL_LINKS" :key="id">
+      <template v-for="(tool, id) in KG_TOOL_LINKS" :key="id">
         <AppToolTile
           v-tooltip="tool.tooltip"
           :to="tool.to"
@@ -100,5 +101,9 @@ import { KG_TOOL_LINKS, TOOL_LINKS } from "@/data/toolEntityConfig";
   position: relative;
   width: 12em;
   height: 12em;
+}
+a:focus,
+.icon:focus {
+  outline: none;
 }
 </style>
