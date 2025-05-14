@@ -176,19 +176,19 @@
         <AppLink to="about"> our about page </AppLink>.
       </p>
       <AppTile
-        to="/cite"
+        to="kg/citation"
         icon="feather-pointed"
         title="Cite"
         subtitle="How to cite and attribute Monarch"
       />
       <AppTile
-        to="/overview"
+        to="/"
         icon="cogs"
         title="Overview"
         subtitle="How all the pieces of Monarch fit together"
       />
       <AppTile
-        to="/team"
+        to="/about/team"
         icon="users"
         title="Team"
         subtitle="The people behind Monarch"
