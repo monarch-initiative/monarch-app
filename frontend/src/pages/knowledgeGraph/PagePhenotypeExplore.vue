@@ -37,12 +37,11 @@
         <p class="tab-description">Compare two sets of phenotypes</p>
       </div>
     </div>
-
-    <div>
-      <PagePhenotypeSearch v-if="activeTab === 'search'" />
-      <PagePhenotypeCompare v-else />
-    </div>
   </AppSection>
+  <div>
+    <PagePhenotypeSearch v-if="activeTab === 'search'" />
+    <PagePhenotypeCompare v-else />
+  </div>
 </template>
 
 <script setup lang="ts">
