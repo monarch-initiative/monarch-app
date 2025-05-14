@@ -37,7 +37,7 @@
 
   <AppSection width="big">
     <AppHeading :level="1">Explore Knowledge Graph Tools</AppHeading>
-    <div class="custom-grid">
+    <div class="custom-grid kg-tools">
       <template v-for="(tool, id) in KG_TOOL_LINKS" :key="id">
         <AppToolTile
           v-tooltip="tool.tooltip"
@@ -61,6 +61,9 @@ import { KG_TOOL_LINKS, TOOL_LINKS } from "@/data/toolEntityConfig";
 .section:last-of-type {
   margin-bottom: 3em;
   padding-top: 0;
+}
+.section.center {
+  gap: 0;
 }
 .custom-grid {
   display: grid;
@@ -131,5 +134,8 @@ a:focus,
   clip: rect(0, 0, 0, 0);
   border: 0;
   white-space: nowrap;
+}
+.kg-tools {
+  margin-top: 2.5em;
 }
 </style>
