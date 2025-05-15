@@ -50,7 +50,7 @@
     </ul>
   </AppSection>
   <AppSection width="big">
-    <AppHeading class="fullWidthHeader"> Citation </AppHeading>
+    <AppHeading class="fullWidthHeader">Citation</AppHeading>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
       tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
