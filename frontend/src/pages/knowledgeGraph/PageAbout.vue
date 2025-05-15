@@ -160,7 +160,7 @@
     </p>
   </AppSection>
 
-  <!-- Contact -->
+  <!-- Contact info-->
   <AppSection width="big">
     <p class="info">
       If you have any questions, feel free to reach out to us at :
