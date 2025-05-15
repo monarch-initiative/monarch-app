@@ -1,6 +1,6 @@
 import type { Component } from "vue";
 import { expect, test } from "vitest";
-import TableControls from "@/components/TableContols.vue";
+import TableControls from "@/components/TheTableContols.vue";
 import { emitted, mount } from "./setup";
 
 const data = [
