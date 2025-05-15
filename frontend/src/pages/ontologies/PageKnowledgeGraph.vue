@@ -39,6 +39,17 @@
     </figure>
   </AppSection>
   <AppSection width="big">
+    <AppHeading class="fullWidthHeader"> Resources & Downloads </AppHeading>
+    <ul class="links">
+      <li>
+        <a href="https://github.com/exomiser">https://github.com/exomiser</a>
+      </li>
+      <li>
+        <a href="https://github.com/uberon">https://github.com/uberon</a>
+      </li>
+    </ul>
+  </AppSection>
+  <AppSection width="big">
     <AppHeading class="fullWidthHeader"> Citation </AppHeading>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
@@ -52,7 +63,7 @@
   </AppSection>
   <AppSection width="big">
     <AppHeading class="fullWidthHeader"> Contact </AppHeading>
-    <!-- Contact Section -->
+
     <section id="contact">
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
@@ -63,14 +74,6 @@
         occaecat cupidatat non proident, sunt in culpa qui officia deserunt
         mollit anim id est laborum.
       </p>
-      <ul class="links">
-        <li>
-          <a href="https://github.com/exomiser">https://github.com/exomiser</a>
-        </li>
-        <li>
-          <a href="https://github.com/uberon">https://github.com/uberon</a>
-        </li>
-      </ul>
     </section>
   </AppSection>
 </template>
@@ -156,7 +159,6 @@ figure {
   }
 }
 .links {
-  margin-top: 1em;
   li {
     margin-bottom: 0.5em;
   }
