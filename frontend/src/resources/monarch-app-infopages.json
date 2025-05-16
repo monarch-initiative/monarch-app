@@ -1,0 +1,560 @@
+{
+  "ontologies": {
+    "ecto": {
+      "about": null,
+      "contact": {
+        "email": "cjmungall@lbl.gov",
+        "github": "@cmungall",
+        "name": "Chris Mungall",
+        "orcid": "https://orcid.org/0000-0002-6601-2165"
+      },
+      "description": null,
+      "icon": null,
+      "license": null,
+      "see_also": {
+        "documentation": "https://github.com/EnvironmentOntology/environmental-exposure-ontology",
+        "other": null,
+        "repository": null,
+        "website": null
+      },
+      "tagline": null,
+      "title": "Environmental Exposure Ontology",
+      "title_short": "ECTO",
+      "visual_explainer": null
+    },
+    "geno": {
+      "about": "An ontology that represents the levels of genetic variation specified in genotypes.",
+      "contact": {
+        "email": "matt@tislab.org",
+        "github": "@mbrush",
+        "name": "Matt Brush",
+        "orcid": "https://orcid.org/0000-0002-1048-5019"
+      },
+      "description": "An ontology that represents the levels of genetic variation specified in genotypes.",
+      "icon": null,
+      "license": null,
+      "see_also": {
+        "documentation": "https://github.com/monarch-initiative/GENO-ontology",
+        "other": null,
+        "repository": "https://github.com/monarch-initiative/GENO-ontology",
+        "website": "https://github.com/monarch-initiative/GENO-ontology"
+      },
+      "tagline": null,
+      "title": "Genotype Ontology",
+      "title_short": "GENO",
+      "visual_explainer": null
+    },
+    "hp": {
+      "about": "The **Human Phenotype Ontology (HPO)** is a structured vocabulary used to describe human health conditions and symptoms in a standardized way. It helps doctors, researchers, and computer systems consistently record and analyze patient characteristics, especially in the context of rare diseases. By organizing thousands of clinical features into a searchable hierarchy, HPO supports better diagnosis, data sharing, and discovery in genetic medicine.",
+      "contact": {
+        "email": "Peter.Robinson@jax.org",
+        "github": "@pnrobinson",
+        "name": "Peter Robinson",
+        "orcid": "https://orcid.org/0000-0002-0736-9199"
+      },
+      "description": "The **Human Phenotype Ontology (HPO)** is a structured vocabulary used to describe human health conditions and symptoms in a standardized way. It helps doctors, researchers, and computer systems consistently record and analyze patient characteristics, especially in the context of rare diseases. By organizing thousands of clinical features into a searchable hierarchy, HPO supports better diagnosis, data sharing, and discovery in genetic medicine.",
+      "icon": "resource-hpo",
+      "license": "JAX-CUSTOM",
+      "see_also": {
+        "documentation": "https://obophenotype.github.io/human-phenotype-ontology/",
+        "other": [],
+        "repository": "https://github.com/obophenotype/human-phenotype-ontology",
+        "website": "https://hpo.jax.org/app/"
+      },
+      "tagline": "A standardized vocabulary of phenotypic abnormalities in human disease.",
+      "title": "Human Phenotype Ontology",
+      "title_short": "HPO",
+      "visual_explainer": "https://github.com/jmcmurry/open-illustrations/tree/master/logos"
+    },
+    "maxo": {
+      "about": null,
+      "contact": {
+        "email": "Peter.Robinson@jax.org",
+        "github": "@pnrobinson",
+        "name": "Peter Robinson",
+        "orcid": "https://orcid.org/0000-0002-0736-9199"
+      },
+      "description": null,
+      "icon": null,
+      "license": null,
+      "see_also": {
+        "documentation": "https://github.com/monarch-initiative/MAxO",
+        "other": null,
+        "repository": null,
+        "website": null
+      },
+      "tagline": null,
+      "title": "Medical Action Ontology",
+      "title_short": "MAxO",
+      "visual_explainer": null
+    },
+    "mondo": {
+      "about": "A disease ontology that integrates and harmonizes disease definitions from multiple sources.",
+      "contact": {
+        "email": "cjmungall@lbl.gov",
+        "github": "@cmungall",
+        "name": "Chris Mungall",
+        "orcid": "https://orcid.org/0000-0002-6601-2165"
+      },
+      "description": "A disease ontology that integrates and harmonizes disease definitions from multiple sources.",
+      "icon": "resource-mondo",
+      "license": "CC-BY-4.0",
+      "see_also": {
+        "documentation": "https://mondo.readthedocs.io/en/latest/",
+        "other": null,
+        "repository": "https://github.com/monarch-initiative/mondo",
+        "website": "https://mondo.monarchinitiative.org/"
+      },
+      "tagline": "Harmonizing disease definitions globally",
+      "title": "Mondo Disease Ontology",
+      "title_short": "Mondo",
+      "visual_explainer": null
+    },
+    "oba": {
+      "about": null,
+      "contact": {
+        "email": "cjmungall@lbl.gov",
+        "github": "@cmungall",
+        "name": "Chris Mungall",
+        "orcid": "https://orcid.org/0000-0002-6601-2165"
+      },
+      "description": null,
+      "icon": null,
+      "license": null,
+      "see_also": {
+        "documentation": "https://obophenotype.github.io/upheno/",
+        "other": null,
+        "repository": null,
+        "website": null
+      },
+      "tagline": null,
+      "title": "Ontology of Biological Attributes",
+      "title_short": "OBA",
+      "visual_explainer": null
+    },
+    "phenio": {
+      "about": null,
+      "contact": {
+        "email": "cjmungall@lbl.gov",
+        "github": "@cmungall",
+        "name": "Chris Mungall",
+        "orcid": "https://orcid.org/0000-0002-6601-2165"
+      },
+      "description": null,
+      "icon": null,
+      "license": null,
+      "see_also": {
+        "documentation": null,
+        "other": null,
+        "repository": null,
+        "website": null
+      },
+      "tagline": null,
+      "title": "Phenomics Integrated Ontology (PHENIO)",
+      "title_short": "Phenomics Integrated Ontology (PHENIO)",
+      "visual_explainer": null
+    },
+    "sepio": {
+      "about": "An ontology that supports the description of evidence and provenance information for scientific claims.",
+      "contact": {
+        "email": "matt@tislab.org",
+        "github": "@mbrush",
+        "name": "Matt Brush",
+        "orcid": "https://orcid.org/0000-0002-1048-5019"
+      },
+      "description": "An ontology that supports the description of evidence and provenance information for scientific claims.",
+      "icon": null,
+      "license": null,
+      "see_also": {
+        "documentation": "https://github.com/monarch-initiative/SEPIO-ontology",
+        "other": null,
+        "repository": "https://github.com/monarch-initiative/SEPIO-ontology",
+        "website": "https://github.com/monarch-initiative/SEPIO-ontology"
+      },
+      "tagline": null,
+      "title": "Scientific Evidence and Provenance Information Ontology",
+      "title_short": "SEPIO",
+      "visual_explainer": null
+    },
+    "uberon": {
+      "about": "An integrated cross-species anatomy ontology.",
+      "contact": {
+        "email": "cjmungall@lbl.gov",
+        "github": "@cmungall",
+        "name": "Chris Mungall",
+        "orcid": "https://orcid.org/0000-0002-6601-2165"
+      },
+      "description": "An integrated cross-species anatomy ontology.",
+      "icon": "resource-uberon",
+      "license": null,
+      "see_also": {
+        "documentation": "https://obophenotype.github.io/uberon/",
+        "other": null,
+        "repository": null,
+        "website": "https://obophenotype.github.io/uberon/"
+      },
+      "tagline": null,
+      "title": "Uberon Anatomy Ontology",
+      "title_short": "Uberon",
+      "visual_explainer": null
+    },
+    "upheno": {
+      "about": "Aims to unify the annotation of phenotypes across species.",
+      "contact": {
+        "email": "jmcl@ebi.ac.uk",
+        "github": "@udp",
+        "name": "James McLaughlin",
+        "orcid": "https://orcid.org/0000-0002-8361-2795"
+      },
+      "description": "Aims to unify the annotation of phenotypes across species.",
+      "icon": "resource-upheno",
+      "license": null,
+      "see_also": {
+        "documentation": "https://obophenotype.github.io/upheno/",
+        "other": null,
+        "repository": "https://obophenotype.github.io/upheno/",
+        "website": "https://obophenotype.github.io/upheno/"
+      },
+      "tagline": null,
+      "title": "The Unified Phenotype Ontology (uPheno)",
+      "title_short": "uPheno",
+      "visual_explainer": null
+    },
+    "vbo": {
+      "about": "An ontology created to serve as a single computable resource for vertebrate breed names.",
+      "contact": {
+        "email": "sabrina@tislab.org",
+        "github": "@sabrinatoro",
+        "name": "Sabrina Toro",
+        "orcid": "https://orcid.org/0000-0002-4142-7153"
+      },
+      "description": "An ontology created to serve as a single computable resource for vertebrate breed names.",
+      "icon": null,
+      "license": null,
+      "see_also": {
+        "documentation": "https://github.com/monarch-initiative/vertebrate-breed-ontology",
+        "other": null,
+        "repository": "https://github.com/monarch-initiative/vertebrate-breed-ontology",
+        "website": "https://github.com/monarch-initiative/vertebrate-breed-ontology"
+      },
+      "tagline": null,
+      "title": "Vertebrate Breed Ontology",
+      "title_short": "VBO",
+      "visual_explainer": null
+    }
+  },
+  "registries": {
+    "kg_hub": {
+      "about": "A collection of biological and biomedical Knowledge Graphs, including their component data sources.",
+      "contact": {
+        "email": "cjmungall@lbl.gov",
+        "github": "@cmungall",
+        "name": "Chris Mungall",
+        "orcid": "https://orcid.org/0000-0002-6601-2165"
+      },
+      "description": "A collection of biological and biomedical Knowledge Graphs, including their component data sources.",
+      "icon": null,
+      "license": null,
+      "see_also": {
+        "documentation": "https://github.com/Knowledge-Graph-Hub/knowledge-graph-hub.github.io",
+        "other": null,
+        "repository": "https://github.com/Knowledge-Graph-Hub/knowledge-graph-hub.github.io",
+        "website": "https://kghub.org/"
+      },
+      "tagline": null,
+      "title": "KG Hub",
+      "title_short": "KG Hub",
+      "visual_explainer": null
+    },
+    "kg_registry": {
+      "about": "A simple registry for knowledge graphs, including KG-Hub projects.",
+      "contact": {
+        "email": "cjmungall@lbl.gov",
+        "github": "@cmungall",
+        "name": "Chris Mungall",
+        "orcid": "https://orcid.org/0000-0002-6601-2165"
+      },
+      "description": "A simple registry for knowledge graphs, including KG-Hub projects.",
+      "icon": "onto-gpt",
+      "license": null,
+      "see_also": {
+        "documentation": "https://github.com/Knowledge-Graph-Hub/kg-registry",
+        "other": null,
+        "repository": "https://github.com/Knowledge-Graph-Hub/kg-registry",
+        "website": "https://kghub.org/kg-registry/"
+      },
+      "tagline": null,
+      "title": "KG Registry",
+      "title_short": "KG Registry",
+      "visual_explainer": null
+    },
+    "linkml_registry": {
+      "about": "A collection of LinkML schemas.",
+      "contact": {
+        "email": "cjmungall@lbl.gov",
+        "github": "@cmungall",
+        "name": "Chris Mungall",
+        "orcid": "https://orcid.org/0000-0002-6601-2165"
+      },
+      "description": "A collection of LinkML schemas.",
+      "icon": null,
+      "license": null,
+      "see_also": {
+        "documentation": "https://linkml.io/linkml-registry/registry/",
+        "other": null,
+        "repository": "https://github.com/linkml/linkml-registry",
+        "website": "https://linkml.io/linkml-registry/registry/"
+      },
+      "tagline": null,
+      "title": "LinkML Registry",
+      "title_short": "LinkML Registry",
+      "visual_explainer": null
+    },
+    "monarch_mapping_commons": {
+      "about": "SSSOM Mappings collected and curated by the Monarch Initiative.",
+      "contact": {
+        "email": "kevin@tislab.org",
+        "github": "@kevinschaper",
+        "name": "Kevin Schaper",
+        "orcid": "https://orcid.org/0000-0003-3311-7320"
+      },
+      "description": "SSSOM Mappings collected and curated by the Monarch Initiative.",
+      "icon": "resource-monarch",
+      "license": null,
+      "see_also": {
+        "documentation": "https://github.com/monarch-initiative/monarch-mapping-commons",
+        "other": null,
+        "repository": "https://github.com/monarch-initiative/monarch-mapping-commons",
+        "website": "https://github.com/monarch-initiative/monarch-mapping-commons"
+      },
+      "tagline": null,
+      "title": "Monarch Mapping Commons",
+      "title_short": "Monarch Mapping Commons",
+      "visual_explainer": null
+    },
+    "monarch_ols": {
+      "about": "An instance of EBI's OLS with Monarch-specific ontologies.",
+      "contact": {
+        "email": "nicolas.matentzoglu@gmail.com",
+        "github": "@matentzn",
+        "name": "Nicolas Matentzoglu",
+        "orcid": "https://orcid.org/0000-0002-7356-1779"
+      },
+      "description": "An instance of EBI's OLS with Monarch-specific ontologies.",
+      "icon": null,
+      "license": null,
+      "see_also": {
+        "documentation": "https://github.com/monarch-initiative/ontotools-docker",
+        "other": null,
+        "repository": null,
+        "website": "https://ols.monarchinitiative.org/"
+      },
+      "tagline": null,
+      "title": "Monarch OLS",
+      "title_short": "Monarch OLS",
+      "visual_explainer": null
+    }
+  },
+  "standards": {
+    "phenopackets": {
+      "about": "An ISO-endorsed open standard for sharing disease and phenotype information.",
+      "contact": {
+        "email": "Peter.Robinson@jax.org",
+        "github": "@pnrobinson",
+        "name": "Peter Robinson",
+        "orcid": "https://orcid.org/0000-0002-0736-9199"
+      },
+      "description": "An ISO-endorsed open standard for sharing disease and phenotype information.",
+      "icon": "resource-phenopackets",
+      "license": null,
+      "see_also": {
+        "documentation": "https://phenopacket-schema.readthedocs.io/en/latest/",
+        "other": null,
+        "repository": "https://github.com/phenopackets/phenopacket-schema",
+        "website": "http://phenopackets.org/"
+      },
+      "tagline": null,
+      "title": "Phenopackets",
+      "title_short": "Phenopackets",
+      "visual_explainer": null
+    },
+    "sssom": {
+      "about": "A simple metadata standard for describing semantic mappings.",
+      "contact": {
+        "email": "nicolas.matentzoglu@gmail.com",
+        "github": "@matentzn",
+        "name": "Nicolas Matentzoglu",
+        "orcid": "https://orcid.org/0000-0002-7356-1779"
+      },
+      "description": "A simple metadata standard for describing semantic mappings.",
+      "icon": "resource-sssom",
+      "license": null,
+      "see_also": {
+        "documentation": "https://mapping-commons.github.io/sssom/spec/",
+        "other": null,
+        "repository": "https://github.com/mapping-commons/sssom/",
+        "website": "https://mapping-commons.github.io/sssom/spec/"
+      },
+      "tagline": null,
+      "title": "Simple Standard for Ontology Mappings (SSSOM)",
+      "title_short": "SSSOM",
+      "visual_explainer": null
+    }
+  },
+  "tools": {
+    "curate_gpt": {
+      "about": "AI Assisted Ontology Curation.",
+      "contact": {
+        "email": "cjmungall@lbl.gov",
+        "github": "@cmungall",
+        "name": "Chris Mungall",
+        "orcid": "https://orcid.org/0000-0002-6601-2165"
+      },
+      "description": "AI Assisted Ontology Curation.",
+      "icon": "curate-gpt",
+      "license": null,
+      "see_also": {
+        "documentation": "https://github.com/monarch-initiative/curate-gpt",
+        "other": null,
+        "repository": "https://github.com/monarch-initiative/curate-gpt",
+        "website": "https://curategpt.io/"
+      },
+      "tagline": null,
+      "title": "CurateGPT",
+      "title_short": "CurateGPT",
+      "visual_explainer": null
+    },
+    "exomiser": {
+      "about": "A tool for finding potential disease-causing variants in whole-exome or whole-genome sequencing data.",
+      "contact": {
+        "email": "j.jacobsen@qmul.ac.uk",
+        "github": "@julesjacobsen",
+        "name": "Jules Jacobsen",
+        "orcid": "https://orcid.org/0000-0002-3265-1591"
+      },
+      "description": "A tool for finding potential disease-causing variants in whole-exome or whole-genome sequencing data.",
+      "icon": "resource-exomiser",
+      "license": null,
+      "see_also": {
+        "documentation": "https://exomiser.readthedocs.io/en/latest/",
+        "other": null,
+        "repository": "https://github.com/exomiser/Exomiser",
+        "website": "https://exomiser.monarchinitiative.org/exomiser/"
+      },
+      "tagline": null,
+      "title": "Exomiser",
+      "title_short": "Exomiser",
+      "visual_explainer": null
+    },
+    "linkml": {
+      "about": "The Linked Data Modeling Language (LinkML) is a flexible modeling language that allows you to author schemas (models) in YAML that describe the structure of your data.",
+      "contact": {
+        "email": "cjmungall@lbl.gov",
+        "github": "@cmungall",
+        "name": "Chris Mungall",
+        "orcid": "https://orcid.org/0000-0002-6601-2165"
+      },
+      "description": "The Linked Data Modeling Language (LinkML) is a flexible modeling language that allows you to author schemas (models) in YAML that describe the structure of your data.",
+      "icon": "resource-linkml",
+      "license": null,
+      "see_also": {
+        "documentation": "https://linkml.io/linkml-model/docs/",
+        "other": null,
+        "repository": "https://github.com/linkml/linkml",
+        "website": "https://linkml.io/"
+      },
+      "tagline": null,
+      "title": "LinkML",
+      "title_short": "LinkML",
+      "visual_explainer": null
+    },
+    "oak": {
+      "about": "A python toolkit for accessing and visualising ontologies.",
+      "contact": {
+        "email": "cjmungall@lbl.gov",
+        "github": "@cmungall",
+        "name": "Chris Mungall",
+        "orcid": "https://orcid.org/0000-0002-6601-2165"
+      },
+      "description": "A python toolkit for accessing and visualising ontologies.",
+      "icon": "resource-oak",
+      "license": null,
+      "see_also": {
+        "documentation": "https://incatools.github.io/ontology-access-kit/",
+        "other": null,
+        "repository": "https://github.com/INCATools/ontology-access-kit",
+        "website": "https://github.com/INCATools/ontology-access-kit"
+      },
+      "tagline": null,
+      "title": "Ontology Access Kit (OAK)",
+      "title_short": "OAK",
+      "visual_explainer": null
+    },
+    "odk": {
+      "about": "A toolkit and workflow system for managing the ontology life-cycle.",
+      "contact": {
+        "email": "nicolas.matentzoglu@gmail.com",
+        "github": "@matentzn",
+        "name": "Nicolas Matentzoglu",
+        "orcid": "https://orcid.org/0000-0002-7356-1779"
+      },
+      "description": "A toolkit and workflow system for managing the ontology life-cycle.",
+      "icon": null,
+      "license": null,
+      "see_also": {
+        "documentation": "https://github.com/INCATools/ontology-development-kit",
+        "other": null,
+        "repository": null,
+        "website": null
+      },
+      "tagline": null,
+      "title": "Ontology Development Kit (ODK)",
+      "title_short": "ODK",
+      "visual_explainer": null
+    },
+    "ontogpt": {
+      "about": "OntoGPT is a Python package for extracting structured information from text with large language models (LLMs), instruction prompts, and ontology-based grounding.",
+      "contact": {
+        "email": "cjmungall@lbl.gov",
+        "github": "@cmungall",
+        "name": "Chris Mungall",
+        "orcid": "https://orcid.org/0000-0002-6601-2165"
+      },
+      "description": "OntoGPT is a Python package for extracting structured information from text with large language models (LLMs), instruction prompts, and ontology-based grounding.",
+      "icon": "onto-gpt",
+      "license": null,
+      "see_also": {
+        "documentation": "https://monarch-initiative.github.io/ontogpt/",
+        "other": null,
+        "repository": "https://github.com/monarch-initiative/ontogpt",
+        "website": "https://github.com/monarch-initiative/ontogpt"
+      },
+      "tagline": null,
+      "title": "OntoGPT",
+      "title_short": "OntoGPT",
+      "visual_explainer": null
+    },
+    "pheval": {
+      "about": "PhEval is a Python package for evaluating phenotype-powered variant prioritisation systems such as Exomiser.",
+      "contact": {
+        "email": "j.jacobsen@qmul.ac.uk",
+        "github": "@julesjacobsen",
+        "name": "Jules Jacobsen",
+        "orcid": "https://orcid.org/0000-0002-3265-1591"
+      },
+      "description": "PhEval is a Python package for evaluating phenotype-powered variant prioritisation systems such as Exomiser.",
+      "icon": null,
+      "license": null,
+      "see_also": {
+        "documentation": "https://monarch-initiative.github.io/pheval/",
+        "other": null,
+        "repository": "https://github.com/monarch-initiative/pheval",
+        "website": null
+      },
+      "tagline": null,
+      "title": "PhEval",
+      "title_short": "PhEval",
+      "visual_explainer": null
+    }
+  }
+}
