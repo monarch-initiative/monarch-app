@@ -23,7 +23,7 @@
       "visual_explainer": null
     },
     "geno": {
-      "about": "An ontology that represents the levels of genetic variation specified in genotypes.",
+      "about": "An ontology that represents the levels of genetic variation specified in genotypes",
       "contact": {
         "email": "matt@tislab.org",
         "github": "@mbrush",

@@ -90,6 +90,7 @@ def association_headers():
         "object_specialization_qualifier_category",
         "object_specialization_qualifier_closure",
         "object_specialization_qualifier_closure_label",
+        "highlighting",
     ]
 
 
@@ -155,6 +156,6 @@ def search_headers():
         "has_phenotype_closure",
         "has_phenotype_closure_label",
         "has_phenotype_count",
-        "highlight",
         "score",
+        "highlighting",
     ]

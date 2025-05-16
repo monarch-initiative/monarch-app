@@ -28,6 +28,7 @@ def association_counts_query():
             '(category:"biolink:GenotypeToPhenotypicFeatureAssociation") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")',
             '(category:"biolink:GenotypeToDiseaseAssociation") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")',
             '(category:"biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")',
+            '(category:"biolink:VariantToPhenotypicFeatureAssociation") AND (subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121")',
             '(category:"biolink:DiseaseToPhenotypicFeatureAssociation") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121" OR disease_context_qualifier:"MONDO:0020121" OR disease_context_qualifier_closure:"MONDO:0020121")',
             '(category:"biolink:GeneToPhenotypicFeatureAssociation") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121" OR disease_context_qualifier:"MONDO:0020121" OR disease_context_qualifier_closure:"MONDO:0020121")',
             '(category:"biolink:PairwiseGeneToGeneInteraction") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121" OR disease_context_qualifier:"MONDO:0020121" OR disease_context_qualifier_closure:"MONDO:0020121")',
@@ -45,6 +46,7 @@ def association_counts_query():
             '(category:"biolink:GenotypeToPhenotypicFeatureAssociation") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121" OR disease_context_qualifier:"MONDO:0020121" OR disease_context_qualifier_closure:"MONDO:0020121")',
             '(category:"biolink:GenotypeToDiseaseAssociation") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121" OR disease_context_qualifier:"MONDO:0020121" OR disease_context_qualifier_closure:"MONDO:0020121")',
             '(category:"biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121" OR disease_context_qualifier:"MONDO:0020121" OR disease_context_qualifier_closure:"MONDO:0020121")',
+            '(category:"biolink:VariantToPhenotypicFeatureAssociation") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121" OR disease_context_qualifier:"MONDO:0020121" OR disease_context_qualifier_closure:"MONDO:0020121")',
         ],
         "filter_queries": [
             'subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121" OR object:"MONDO:0020121" OR object_closure:"MONDO:0020121" OR disease_context_qualifier:"MONDO:0020121" OR disease_context_qualifier_closure:"MONDO:0020121"'
@@ -56,4 +58,5 @@ def association_counts_query():
         "mm": "100%",
         "boost": None,
         "sort": None,
+        "hl": False,
     }

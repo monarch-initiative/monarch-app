@@ -160,12 +160,12 @@
     },
     {
       "label": "Variant to Disease",
-      "count": 1,
+      "count": 173,
       "category": "biolink:VariantToDiseaseAssociation"
     },
     {
       "label": "Disease Model",
-      "count": 239,
+      "count": 240,
       "category": "biolink:GenotypeToDiseaseAssociation"
     },
     {
@@ -244,28 +244,6 @@
       }
     ],
     "sub_classes": [
-      {
-        "id": "MONDO:0100228",
-        "category": "biolink:Disease",
-        "name": "LAMA2-related muscular dystrophy",
-        "full_name": null,
-        "deprecated": null,
-        "description": null,
-        "xref": null,
-        "provided_by": null,
-        "in_taxon": null,
-        "in_taxon_label": null,
-        "symbol": null,
-        "synonym": null,
-        "uri": null,
-        "iri": null,
-        "namespace": null,
-        "has_phenotype": null,
-        "has_phenotype_label": null,
-        "has_phenotype_closure": null,
-        "has_phenotype_closure_label": null,
-        "has_phenotype_count": null
-      },
       {
         "id": "MONDO:0008028",
         "category": "biolink:Disease",
@@ -490,6 +468,28 @@
         "id": "MONDO:0023204",
         "category": "biolink:Disease",
         "name": "Fukuda-Miyanomae-Nakata syndrome",
+        "full_name": null,
+        "deprecated": null,
+        "description": null,
+        "xref": null,
+        "provided_by": null,
+        "in_taxon": null,
+        "in_taxon_label": null,
+        "symbol": null,
+        "synonym": null,
+        "uri": null,
+        "iri": null,
+        "namespace": null,
+        "has_phenotype": null,
+        "has_phenotype_label": null,
+        "has_phenotype_closure": null,
+        "has_phenotype_closure_label": null,
+        "has_phenotype_count": null
+      },
+      {
+        "id": "MONDO:0100228",
+        "category": "biolink:Disease",
+        "name": "LAMA2-related muscular dystrophy",
         "full_name": null,
         "deprecated": null,
         "description": null,

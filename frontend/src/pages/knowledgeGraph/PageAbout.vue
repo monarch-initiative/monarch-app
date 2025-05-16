@@ -8,7 +8,7 @@
   <!-- What is KG -->
   <AppSection width="big" class="kg-about">
     <AppHeading class="fullWidthHeader">
-      What is Monarch Initiative Knowledge Graph?
+      What is the Monarch Initiative Knowledge Graph?
     </AppHeading>
 
     <div class="content-container">
@@ -160,7 +160,7 @@
     </p>
   </AppSection>
 
-  <!-- Contact -->
+  <!-- Contact info-->
   <AppSection width="big">
     <p class="info">
       If you have any questions, feel free to reach out to us at :

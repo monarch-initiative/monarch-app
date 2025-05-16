@@ -1,7 +1,7 @@
 <template>
   <PageTitle
     id="home-page"
-    title="What is Monarch Initiative?"
+    title="What is the Monarch Initiative?"
     class="home-title"
   />
 

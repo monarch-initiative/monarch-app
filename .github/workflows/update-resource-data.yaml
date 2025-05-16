@@ -1,0 +1,28 @@
+name: Update Resource Data
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 12 * * 1"
+jobs:
+  update_context:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Work around permission issue
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Update Resource Data
+        run: |
+          wget "https://raw.githubusercontent.com/monarch-initiative/monarch-documentation/refs/heads/main/src/docs/resources/monarch-app-infopages.json" -O frontend/src/resources/monarch-app-infopages.json
+
+      - name: Update Resource Data
+        uses: peter-evans/create-pull-request@v3
+        if: ${{ success() }}
+        with:
+          commit-message: Update Resource Data from the Monarch Documentation
+          title: 'Update Resource Data'
+          body: |
+            This pull request updates the Resource Data for the Info Pages.
+          assignees: varun-divya
