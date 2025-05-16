@@ -8,7 +8,6 @@
         "name": "Chris Mungall",
         "orcid": "https://orcid.org/0000-0002-6601-2165"
       },
-      "description": null,
       "icon": null,
       "license": null,
       "see_also": {
@@ -23,14 +22,13 @@
       "visual_explainer": null
     },
     "geno": {
-      "about": "An ontology that represents the levels of genetic variation specified in genotypes",
+      "about": "An ontology that represents the levels of genetic variation specified in genotypes.",
       "contact": {
         "email": "matt@tislab.org",
         "github": "@mbrush",
         "name": "Matt Brush",
         "orcid": "https://orcid.org/0000-0002-1048-5019"
       },
-      "description": "An ontology that represents the levels of genetic variation specified in genotypes.",
       "icon": null,
       "license": null,
       "see_also": {
@@ -52,7 +50,6 @@
         "name": "Peter Robinson",
         "orcid": "https://orcid.org/0000-0002-0736-9199"
       },
-      "description": "The **Human Phenotype Ontology (HPO)** is a structured vocabulary used to describe human health conditions and symptoms in a standardized way. It helps doctors, researchers, and computer systems consistently record and analyze patient characteristics, especially in the context of rare diseases. By organizing thousands of clinical features into a searchable hierarchy, HPO supports better diagnosis, data sharing, and discovery in genetic medicine.",
       "icon": "resource-hpo",
       "license": "JAX-CUSTOM",
       "see_also": {
@@ -74,7 +71,6 @@
         "name": "Peter Robinson",
         "orcid": "https://orcid.org/0000-0002-0736-9199"
       },
-      "description": null,
       "icon": null,
       "license": null,
       "see_also": {
@@ -96,7 +92,6 @@
         "name": "Chris Mungall",
         "orcid": "https://orcid.org/0000-0002-6601-2165"
       },
-      "description": "A disease ontology that integrates and harmonizes disease definitions from multiple sources.",
       "icon": "resource-mondo",
       "license": "CC-BY-4.0",
       "see_also": {
@@ -118,7 +113,6 @@
         "name": "Chris Mungall",
         "orcid": "https://orcid.org/0000-0002-6601-2165"
       },
-      "description": null,
       "icon": null,
       "license": null,
       "see_also": {
@@ -140,7 +134,6 @@
         "name": "Chris Mungall",
         "orcid": "https://orcid.org/0000-0002-6601-2165"
       },
-      "description": null,
       "icon": null,
       "license": null,
       "see_also": {
@@ -162,7 +155,6 @@
         "name": "Matt Brush",
         "orcid": "https://orcid.org/0000-0002-1048-5019"
       },
-      "description": "An ontology that supports the description of evidence and provenance information for scientific claims.",
       "icon": null,
       "license": null,
       "see_also": {
@@ -184,7 +176,6 @@
         "name": "Chris Mungall",
         "orcid": "https://orcid.org/0000-0002-6601-2165"
       },
-      "description": "An integrated cross-species anatomy ontology.",
       "icon": "resource-uberon",
       "license": null,
       "see_also": {
@@ -206,7 +197,6 @@
         "name": "James McLaughlin",
         "orcid": "https://orcid.org/0000-0002-8361-2795"
       },
-      "description": "Aims to unify the annotation of phenotypes across species.",
       "icon": "resource-upheno",
       "license": null,
       "see_also": {
@@ -228,7 +218,6 @@
         "name": "Sabrina Toro",
         "orcid": "https://orcid.org/0000-0002-4142-7153"
       },
-      "description": "An ontology created to serve as a single computable resource for vertebrate breed names.",
       "icon": null,
       "license": null,
       "see_also": {
@@ -252,7 +241,6 @@
         "name": "Chris Mungall",
         "orcid": "https://orcid.org/0000-0002-6601-2165"
       },
-      "description": "A collection of biological and biomedical Knowledge Graphs, including their component data sources.",
       "icon": null,
       "license": null,
       "see_also": {
@@ -274,7 +262,6 @@
         "name": "Chris Mungall",
         "orcid": "https://orcid.org/0000-0002-6601-2165"
       },
-      "description": "A simple registry for knowledge graphs, including KG-Hub projects.",
       "icon": "onto-gpt",
       "license": null,
       "see_also": {
@@ -296,7 +283,6 @@
         "name": "Chris Mungall",
         "orcid": "https://orcid.org/0000-0002-6601-2165"
       },
-      "description": "A collection of LinkML schemas.",
       "icon": null,
       "license": null,
       "see_also": {
@@ -318,7 +304,6 @@
         "name": "Kevin Schaper",
         "orcid": "https://orcid.org/0000-0003-3311-7320"
       },
-      "description": "SSSOM Mappings collected and curated by the Monarch Initiative.",
       "icon": "resource-monarch",
       "license": null,
       "see_also": {
@@ -340,7 +325,6 @@
         "name": "Nicolas Matentzoglu",
         "orcid": "https://orcid.org/0000-0002-7356-1779"
       },
-      "description": "An instance of EBI's OLS with Monarch-specific ontologies.",
       "icon": null,
       "license": null,
       "see_also": {
@@ -364,7 +348,6 @@
         "name": "Peter Robinson",
         "orcid": "https://orcid.org/0000-0002-0736-9199"
       },
-      "description": "An ISO-endorsed open standard for sharing disease and phenotype information.",
       "icon": "resource-phenopackets",
       "license": null,
       "see_also": {
@@ -386,7 +369,6 @@
         "name": "Nicolas Matentzoglu",
         "orcid": "https://orcid.org/0000-0002-7356-1779"
       },
-      "description": "A simple metadata standard for describing semantic mappings.",
       "icon": "resource-sssom",
       "license": null,
       "see_also": {
@@ -410,7 +392,6 @@
         "name": "Chris Mungall",
         "orcid": "https://orcid.org/0000-0002-6601-2165"
       },
-      "description": "AI Assisted Ontology Curation.",
       "icon": "curate-gpt",
       "license": null,
       "see_also": {
@@ -432,7 +413,6 @@
         "name": "Jules Jacobsen",
         "orcid": "https://orcid.org/0000-0002-3265-1591"
       },
-      "description": "A tool for finding potential disease-causing variants in whole-exome or whole-genome sequencing data.",
       "icon": "resource-exomiser",
       "license": null,
       "see_also": {
@@ -454,7 +434,6 @@
         "name": "Chris Mungall",
         "orcid": "https://orcid.org/0000-0002-6601-2165"
       },
-      "description": "The Linked Data Modeling Language (LinkML) is a flexible modeling language that allows you to author schemas (models) in YAML that describe the structure of your data.",
       "icon": "resource-linkml",
       "license": null,
       "see_also": {
@@ -476,7 +455,6 @@
         "name": "Chris Mungall",
         "orcid": "https://orcid.org/0000-0002-6601-2165"
       },
-      "description": "A python toolkit for accessing and visualising ontologies.",
       "icon": "resource-oak",
       "license": null,
       "see_also": {
@@ -498,7 +476,6 @@
         "name": "Nicolas Matentzoglu",
         "orcid": "https://orcid.org/0000-0002-7356-1779"
       },
-      "description": "A toolkit and workflow system for managing the ontology life-cycle.",
       "icon": null,
       "license": null,
       "see_also": {
@@ -520,7 +497,6 @@
         "name": "Chris Mungall",
         "orcid": "https://orcid.org/0000-0002-6601-2165"
       },
-      "description": "OntoGPT is a Python package for extracting structured information from text with large language models (LLMs), instruction prompts, and ontology-based grounding.",
       "icon": "onto-gpt",
       "license": null,
       "see_also": {
@@ -542,7 +518,6 @@
         "name": "Jules Jacobsen",
         "orcid": "https://orcid.org/0000-0002-3265-1591"
       },
-      "description": "PhEval is a Python package for evaluating phenotype-powered variant prioritisation systems such as Exomiser.",
       "icon": null,
       "license": null,
       "see_also": {
