@@ -112,7 +112,7 @@ import { KG_TOOL_LINKS, TOOL_LINKS } from "@/data/toolEntityConfig";
 
   @media (max-width: 1000px) {
     width: 9em;
-    height: 9em;
+    height: 7em;
   }
 }
 
@@ -137,5 +137,9 @@ a:focus,
 }
 .kg-tools {
   margin-top: 2.5em;
+
+  @media (max-width: 1000px) {
+    gap: 2.5em;
+  }
 }
 </style>
