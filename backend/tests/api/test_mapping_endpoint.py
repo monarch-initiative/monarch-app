@@ -20,6 +20,7 @@ def test_mappings(search):
     assert response.headers["content-type"] == "application/json"
     assert response.json() == search
 
+
 @patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_mappings")
 def test_mappings_params(mock_get_mappings, mappings):
     mock_get_mappings.return_value = MagicMock()
@@ -45,6 +46,7 @@ def test_mappings_params(mock_get_mappings, mappings):
         limit=20,
     )
 
+
 @patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_mappings")
 def test_empty_response(mock_get_mappings):
     empty_mapping_result = MappingResults(items=[], offset=0, limit=20, total=0)
@@ -69,10 +71,3 @@ def test_tsv_format(mock_get_mappings, mappings):
         assert response.headers["content-type"] == "text/tab-separated-values; charset=utf-8"
         assert response.text == expected_result
         mock_to_tsv.assert_called_with(mapping_res, print_output=False)
-
-
-
-
-
-
-
