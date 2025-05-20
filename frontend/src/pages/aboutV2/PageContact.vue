@@ -116,7 +116,7 @@
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 import { truncate } from "lodash";
-import parser from "ua-parser-js";
+import { UAParser } from "ua-parser-js";
 import { useLocalStorage } from "@vueuse/core";
 import { postFeedback } from "@/api/feedback";
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
@@ -140,13 +140,22 @@ const github = useLocalStorage("contact-form-github", "");
 /** list of automatic details to record */
 const details = computed(() => {
   /** get browser/device/os/etc details from ua parser library */
-  const { browser, device, os, engine, cpu } = parser();
+  const { browser, device, os, engine, cpu } = UAParser();
 
   /** filter and join strings together */
   const concat = (...array: (string | undefined)[]) =>
     array.filter((e) => e && e !== "()").join(" ");
 
   /** make map of desired properties in desired stringified format */
+  const response = {
+    browser: concat(browser.name, browser.version),
+    device: concat(device.vendor, device.model, device.type),
+    os: concat(os.name, os.version),
+    engine: concat(engine.name, engine.version),
+    cpu: concat(cpu.architecture),
+  };
+  console.debug({ response });
+
   return {
     Page: route.fullPath,
     Browser: concat(browser.name, browser.version),
