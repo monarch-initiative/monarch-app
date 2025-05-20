@@ -20,7 +20,6 @@ def test_mappings(search):
     assert response.headers["content-type"] == "application/json"
     assert response.json() == search
 
-
 @patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_mappings")
 def test_mappings_params(mock_get_mappings, mappings):
     mock_get_mappings.return_value = MagicMock()
@@ -45,3 +44,35 @@ def test_mappings_params(mock_get_mappings, mappings):
         offset=0,
         limit=20,
     )
+
+@patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_mappings")
+def test_empty_response(mock_get_mappings):
+    empty_mapping_result = MappingResults(items=[], offset=0, limit=20, total=0)
+    mock_get_mappings.return_value = empty_mapping_result
+
+    response = client.get("/mappings?entity_id=NONEXISTENT:ID")
+    assert response.status_code == 200
+    assert response.json() == {"items": [], "offset": 0, "limit": 20, "total": 0}
+    assert response.text == '{"limit":20,"offset":0,"total":0,"items":[]}'
+    mock_get_mappings.assert_called_once()
+
+
+@patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_mappings")
+def test_tsv_format(mock_get_mappings, mappings):
+    mapping_res = MappingResults(**mappings)
+    mock_get_mappings.return_value = mapping_res
+    with patch("monarch_py.api.search.to_tsv") as mock_to_tsv:
+        expected_result = "header1\theader2\nvalue1\tvalue2\n"
+        mock_to_tsv.return_value = expected_result
+        response = client.get("/mappings?entity_id=ANY:0000015&format=tsv")
+        assert response.status_code == 200
+        assert response.headers["content-type"] == "text/tab-separated-values; charset=utf-8"
+        assert response.text == expected_result
+        mock_to_tsv.assert_called_with(mapping_res, print_output=False)
+
+
+
+
+
+
+

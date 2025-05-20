@@ -181,7 +181,7 @@
     <AppTable
       id="testbed"
       v-model:sort="table.sort"
-      v-model:selectedFilters="table.selectedFilters"
+      v-model:selected-filters="table.selectedFilters"
       v-model:per-page="table.perPage"
       v-model:start="table.start"
       v-model:search="table.search"

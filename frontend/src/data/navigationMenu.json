@@ -1,0 +1,98 @@
+[
+  {
+    "label": "Knowledge Graph",
+    "subItems": [
+      {
+        "label": "Downloads",
+        "key": "kg-downloads",
+        "to": "/kg/downloads",
+        "tooltip": ""
+      },
+      {
+        "label": "Status & QC",
+        "key": "kg-status-qc",
+        "to": "/kg/status",
+        "tooltip": ""
+      },
+      {
+        "label": "How To & Help",
+        "key": "kg-help",
+        "to": "/kg/help",
+        "tooltip": "Feedback,docs,guides and more"
+      },
+      {
+        "label": "Documentation",
+        "key": "kg-documentation",
+        "to": "/kg/documentation",
+        "tooltip": ""
+      },
+      {
+        "label": "Terms of Use",
+        "key": "kg-terms",
+        "to": "/kg/terms",
+        "tooltip": ""
+      },
+      {
+        "label": "Cite the KG",
+        "key": "cite",
+        "to": "/kg/citation",
+        "tooltip": "Learn how to cite the Knowledge Graph"
+      },
+
+      {
+        "label": "API",
+        "key": "kg-api",
+        "to": "https://api-v3.monarchinitiative.org/v3/docs",
+        "tooltip": "",
+        "icon": true
+      },
+      {
+        "label": "About the KG",
+        "key": "about-kg",
+        "to": "/kg/about",
+        "tooltip": "About the Knowledge Graph"
+      }
+    ]
+  },
+  {
+    "label": "About",
+    "subItems": [
+      {
+        "label": "Our Story",
+        "key": "about-our-story",
+        "to": "/about/our-story",
+        "tooltip": "Our Story"
+      },
+      {
+        "label": "Team",
+        "key": "about-team",
+        "to": "/about/team",
+        "tooltip": ""
+      },
+      {
+        "label": "SAB",
+        "key": "about-sab",
+        "to": "/about/sab",
+        "tooltip": "SAB"
+      },
+      {
+        "label": "Contact Us",
+        "key": "about-contact-us",
+        "to": "/about/contact-us",
+        "tooltip": "Contact Us"
+      },
+      {
+        "label": "Publications",
+        "key": "about-publications",
+        "to": "/about/publications",
+        "tooltip": "Publications"
+      },
+      {
+        "label": "Funding",
+        "key": "about-funding",
+        "to": "/about/funding",
+        "tooltip": "Funding"
+      }
+    ]
+  }
+]

@@ -3,7 +3,7 @@
 -->
 
 <template>
-  <AppSection design="bare" width="full" alignment="left" class="section">
+  <AppSection width="full" alignment="left" class="section">
     <AppFlex direction="col">
       <AppFlex align-h="right">
         <span>

@@ -8,6 +8,7 @@
     width="full"
     alignment="left"
     class="inset"
+    design="bare"
   >
     <AppHeading icon="sitemap">Hierarchy</AppHeading>
 

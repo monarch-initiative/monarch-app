@@ -10,6 +10,7 @@
     width="full"
     class="inset"
     alignment="left"
+    design="bare"
   >
     <AppHeading icon="chart-bar">HistoPheno</AppHeading>
     <HistoPheno :node="node" />
