@@ -180,7 +180,6 @@ $wrap: 1000px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-
   gap: 1rem;
 }
 
@@ -244,7 +243,7 @@ $wrap: 1000px;
   flex-direction: column;
   align-items: flex-start;
   padding: 1em;
-  gap: 1rem;
+  gap: 1.3rem;
   border-radius: 6px;
   background-color: #f4f8fb;
 
