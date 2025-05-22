@@ -11,6 +11,7 @@ const icons = [
   fab.faLinkedin,
   fab.faMedium,
   fab.faYoutube,
+  fab.faBluesky,
   far.faChartBar,
   far.faCircleCheck,
   far.faCirclePause,

@@ -94,5 +94,58 @@
         "tooltip": "Funding"
       }
     ]
+  },
+  {
+    "label": "Community",
+    "subItems": [
+      {
+        "label": "Get Involved",
+        "key": "community-get-involved",
+        "to": "/community/get-involved",
+        "tooltip": "Get Involved"
+      },
+      {
+        "label": "Blog",
+        "key": "community-blog",
+        "to": "/community/blog",
+        "tooltip": "Blog"
+      },
+      {
+        "label": "News",
+        "key": "news",
+        "to": "/community/news",
+        "tooltip": ""
+      },
+      {
+        "label": "Linekdin",
+        "key": "community-linkedin",
+        "to": "https://www.linkedin.com/company/the-monarch-initiative",
+        "tooltip": "LinkedIn"
+      },
+      {
+        "label": "BlueSky",
+        "key": "community-bluesky",
+        "to": "https://bsky.app/profile/monarchinitiative.bsky.social",
+        "tooltip": "LinkedIn"
+      },
+      {
+        "label": "Youtube",
+        "key": "community-youtube",
+        "to": "https://www.youtube.com/@monarchinitiative",
+        "tooltip": "Youtube"
+      },
+      {
+        "label": "Publications",
+        "key": "community-publications",
+        "to": "community/publications",
+        "tooltip": "Youtube"
+      },
+      {
+        "label": "User Stories",
+        "key": "community-user-stories",
+        "to": "community/UserStories",
+        "tooltip": "User Stories"
+      }
+    ]
   }
 ]
