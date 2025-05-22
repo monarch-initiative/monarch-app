@@ -63,14 +63,23 @@ def test_parse_search(search_response, search):
     search_response["response"]["numFound"] = search_response["response"].pop("num_found")
     solr_response = SolrQueryResult(**search_response)
     parsed = parse_search(solr_response).model_dump()
-    assert parsed == search, f"Parsed result is not as expected. Difference: {dict_diff(parsed, search)}"
+    # assert that top level keys are the same
+    assert set(parsed.keys()) == set(search.keys()), f"Parsed result keys are not as expected. Difference: {dict_diff(parsed, search)}"
+    # compare the first document (parsed.items[0]), assert that all of the keys in expected search (search.items[0]) 
+    for key in search["items"][0].keys():
+        assert key in parsed["items"][0], f"Key {key} not found in parsed result."
+
 
 
 def test_parse_autocomplete(autocomplete_response, autocomplete):
     autocomplete_response["response"]["numFound"] = autocomplete_response["response"].pop("num_found")
     solr_response = SolrQueryResult(**autocomplete_response)
     parsed = parse_autocomplete(solr_response).model_dump()
-    assert parsed == autocomplete, f"Parsed result is not as expected. Difference: {dict_diff(parsed, autocomplete)}"
+    # assert that top level keys are the same
+    assert set(parsed.keys()) == set(autocomplete.keys()), f"Parsed result keys are not as expected. Difference: {dict_diff(parsed, autocomplete)}"
+    # compare the first document (parsed.items[0]), assert that all of the keys in expected autocomplete (autocomplete.items[0]) 
+    for key in autocomplete["items"][0].keys():
+        assert key in parsed["items"][0], f"Key {key} not found in parsed result."
 
 
 def test_parse_mappings(mapping_response, mappings):

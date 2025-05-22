@@ -219,6 +219,10 @@ classes:
       - in_taxon_label
       - symbol
       - synonym
+      - broad_synonym
+      - exact_synonym
+      - narrow_synonym
+      - related_synonym
       - uri
       - iri
       - namespace
@@ -615,6 +619,18 @@ slots:
       Whether the association type is symmetric, i.e. the subject and object labels are interchangeable.
     range: boolean
   synonym:
+    multivalued: true
+  broad_synonym:
+    description: A broader synonym for the entity
+    multivalued: true
+  exact_synonym:
+    description: An exact synonym for the entity
+    multivalued: true
+  narrow_synonym:
+    description: A narrower synonym for the entity
+    multivalued: true
+  related_synonym:
+    description: A related synonym for the entity
     multivalued: true
   total:
     description: total number of items matching a query
