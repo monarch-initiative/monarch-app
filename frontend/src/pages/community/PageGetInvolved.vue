@@ -25,7 +25,7 @@
         </p>
         <div class="info-box">
           <div class="info-line">
-            <span class="emoji">📌</span>
+            <span class="emoji">🗣️ </span>
             <span>
               The Mondo Outreach calls aim to bring together stakeholders and
               clinical terminology experts to discuss specific use cases and

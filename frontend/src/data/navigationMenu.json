@@ -38,7 +38,6 @@
         "to": "/kg/citation",
         "tooltip": "Learn how to cite the Knowledge Graph"
       },
-
       {
         "label": "API",
         "key": "kg-api",
@@ -107,7 +106,7 @@
       {
         "label": "Blog",
         "key": "community-blog",
-        "to": "/community/blog",
+        "to": "https://monarchinit.medium.com",
         "tooltip": "Blog"
       },
       {
@@ -127,13 +126,6 @@
         "key": "community-youtube",
         "to": "https://www.youtube.com/@monarchinitiative",
         "tooltip": "Youtube"
-      },
-
-      {
-        "label": "User Stories",
-        "key": "community-user-stories",
-        "to": "community/UserStories",
-        "tooltip": "User Stories"
       }
     ]
   }
