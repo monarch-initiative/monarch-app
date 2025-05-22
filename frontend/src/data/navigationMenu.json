@@ -107,25 +107,29 @@
         "label": "Blog",
         "key": "community-blog",
         "to": "https://monarchinit.medium.com",
-        "tooltip": "Blog"
+        "tooltip": "Blog",
+        "icon": true
       },
       {
         "label": "Linekdin",
         "key": "community-linkedin",
         "to": "https://www.linkedin.com/company/the-monarch-initiative",
-        "tooltip": "LinkedIn"
+        "tooltip": "LinkedIn",
+        "icon": true
       },
       {
         "label": "BlueSky",
         "key": "community-bluesky",
         "to": "https://bsky.app/profile/monarchinitiative.bsky.social",
-        "tooltip": "LinkedIn"
+        "tooltip": "BLueSky",
+        "icon": true
       },
       {
         "label": "Youtube",
         "key": "community-youtube",
         "to": "https://www.youtube.com/@monarchinitiative",
-        "tooltip": "Youtube"
+        "tooltip": "Youtube",
+        "icon": true
       }
     ]
   }

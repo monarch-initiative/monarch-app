@@ -14,25 +14,14 @@
     <div class="card-grid">
       <!-- Mondo Card -->
       <div class="info-card">
-        <h2>
-          <AppLink to="https://mondo.monarchinitiative.org">
-            Mondo Disease Ontology (Mondo)
-          </AppLink>
-        </h2>
+        <h2>Mondo Disease Ontology: Monthly Outreach Calls</h2>
         <p>
-          Mondo aims to harmonize disease definitions across the world. The name
-          comes from the Latin word ‘mundus’ and means ‘for the world.’
+          The Mondo Outreach calls aim to bring together stakeholders and
+          clinical terminology experts to discuss specific use cases and
+          requirements. Our goal is to improve Mondo with a focus on our user
+          needs.
         </p>
         <div class="info-box">
-          <div class="info-line">
-            <span class="emoji">🗣️ </span>
-            <span>
-              The Mondo Outreach calls aim to bring together stakeholders and
-              clinical terminology experts to discuss specific use cases and
-              requirements. Our goal is to improve Mondo with a focus on our
-              user needs.</span
-            >
-          </div>
           <div class="info-line">
             <span class="emoji">📅</span>
             <span>
@@ -57,18 +46,25 @@
       </div>
 
       <div class="info-card">
-        <h2>
-          <AppLink
-            to="https://monarch-initiative.github.io/monarch-documentation/seminars"
-          >
-            Monarch Seminar Series
-          </AppLink>
-        </h2>
+        <h2>Monarch Seminar Series</h2>
         <p>
           A monthly forum for exploring topics central to the Monarch
           Initiative.
         </p>
         <div class="info-box">
+          <div class="info-line">
+            <span class="emoji">📅</span>
+            <span>
+              You can find more information about the series
+              <AppLink
+                to="https://monarch-initiative.github.io/monarch-documentation/seminars"
+              >
+                here
+              </AppLink>
+
+              .</span
+            >
+          </div>
           <div class="info-line">
             <span class="emoji">▶️</span>
             <span>
@@ -94,26 +90,25 @@
 
       <!-- OBO Academy Card -->
       <div class="info-card">
-        <h2>
-          <AppLink
-            to="https://oboacademy.github.io/obook/courses/monarch-obo-training/"
-          >
-            OBO Academy: Monarch Training Series
-          </AppLink>
-        </h2>
+        <h2>OBO Academy: Monarch Training Series</h2>
         <p>
           Training for Semantic Engineers, Ontology Curators, and Knowledge
           Scientists on basic technologies in and around the Monarch Initiative
-          and Open Biological and Biomedical Ontologies (OBO).
+          and Open Biological and Biomedical Ontologies (OBO).The OBO Academy
+          develops self-paced tutorials in the OBOOK, hosts monthly live
+          training sessions on Zoom, and maintains a YouTube channel with lesson
+          recordings.
         </p>
 
         <div class="info-box">
           <div class="info-line">
             <span class="emoji">🎓</span>
             <span>
-              The OBO Academy develops self-paced tutorials in the OBOOK, hosts
-              fortnightly live training sessions on Zoom, and maintains a
-              YouTube channel with lesson recordings.
+              You can find more information about
+              <AppLink
+                to="https://oboacademy.github.io/obook/courses/monarch-obo-training/"
+                >the OBO Academy</AppLink
+              >
             </span>
           </div>
 
@@ -203,8 +198,6 @@ $wrap: 1000px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
   h2 {
     margin-bottom: 0.75rem;
-    color: #005580;
-    font-size: 1.2rem;
   }
 
   p {
