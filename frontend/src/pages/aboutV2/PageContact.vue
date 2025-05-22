@@ -53,6 +53,14 @@
             >
               <AppIcon icon="youtube" />
             </AppLink>
+
+            <AppLink
+              v-tooltip="'blusky'"
+              to="https://bsky.app/profile/monarchinitiative.bsky.social"
+              class="social-icon"
+            >
+              <AppIcon icon="bluesky" />
+            </AppLink>
           </div>
         </div>
       </div>
@@ -336,6 +344,10 @@ $wrap: 768px;
 
   .app-icon[data-icon="envelope"] {
     color: #007acc;
+  }
+
+  .app-icon[data-icon="bluesky"] {
+    color: #1185fe;
   }
 }
 </style>

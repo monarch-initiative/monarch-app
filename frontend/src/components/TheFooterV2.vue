@@ -68,6 +68,13 @@
           >
             <AppIcon icon="youtube" />
           </AppLink>
+          <AppLink
+            v-tooltip="'blusky'"
+            to="https://bsky.app/profile/monarchinitiative.bsky.social"
+            class="social-icon"
+          >
+            <AppIcon icon="bluesky" />
+          </AppLink>
         </div>
       </div>
     </div>
@@ -194,6 +201,10 @@ import navigationMenus from "@/data/navigationMenu.json";
 
   .app-icon[data-icon="envelope"] {
     color: #007acc;
+  }
+
+  .app-icon[data-icon="bluesky"] {
+    color: #1185fe;
   }
 }
 </style>
