@@ -111,12 +111,6 @@
         "tooltip": "Blog"
       },
       {
-        "label": "News",
-        "key": "news",
-        "to": "/community/news",
-        "tooltip": ""
-      },
-      {
         "label": "Linekdin",
         "key": "community-linkedin",
         "to": "https://www.linkedin.com/company/the-monarch-initiative",
@@ -134,12 +128,7 @@
         "to": "https://www.youtube.com/@monarchinitiative",
         "tooltip": "Youtube"
       },
-      {
-        "label": "Publications",
-        "key": "community-publications",
-        "to": "community/publications",
-        "tooltip": "Youtube"
-      },
+
       {
         "label": "User Stories",
         "key": "community-user-stories",

@@ -56,6 +56,42 @@
         </div>
       </div>
 
+      <div class="info-card">
+        <h2>
+          <AppLink
+            to="https://monarch-initiative.github.io/monarch-documentation/seminars"
+          >
+            Monarch Seminar Series
+          </AppLink>
+        </h2>
+        <p>
+          A monthly forum for exploring topics central to the Monarch
+          Initiative.
+        </p>
+        <div class="info-box">
+          <div class="info-line">
+            <span class="emoji">▶️</span>
+            <span>
+              Recordings of the series are uploaded to our
+              <AppLink to="https://www.youtube.com/@monarchinitiative"
+                >YouTube channel</AppLink
+              >
+              .</span
+            >
+          </div>
+          <div class="info-line">
+            <span class="emoji">📧</span>
+            <span>
+              To join the Monarch Seminar Series, please email
+              <a href="mailto:info@monarchinitiative.org"
+                >info@monarchinitiative.org</a
+              >
+              with the subject line: "Join the Monarch Seminar Series."
+            </span>
+          </div>
+        </div>
+      </div>
+
       <!-- OBO Academy Card -->
       <div class="info-card">
         <h2>
@@ -82,7 +118,7 @@
           </div>
 
           <div class="info-line">
-            <span class="emoji">📺</span>
+            <span class="emoji">▶️</span>
             <span>
               YouTube channel:
               <AppLink to="https://www.youtube.com/@obo-academy"
@@ -242,7 +278,7 @@ $wrap: 1000px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 1em;
+  padding: 1.3em;
   gap: 1.3rem;
   border-radius: 6px;
   background-color: #f4f8fb;
