@@ -224,7 +224,7 @@ export const routes: RouteRecordRaw[] = [
     meta: { breadcrumb: "Publications" },
   },
   {
-    path: "/ontologies/kg",
+    path: "/ontologies/page-info",
     name: "KnowledgeGraph",
     component: asyncRoute("ontologies/PageInfo"),
     meta: { breadcrumb: "Knowledge Graph" },
