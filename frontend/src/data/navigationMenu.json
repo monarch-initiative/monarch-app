@@ -118,7 +118,7 @@
         "icon": true
       },
       {
-        "label": "BlueSky",
+        "label": "Bluesky",
         "key": "community-bluesky",
         "to": "https://bsky.app/profile/monarchinitiative.bsky.social",
         "tooltip": "BLueSky",
