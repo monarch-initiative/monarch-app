@@ -140,7 +140,8 @@
             Sign up for OBO Academy updates via the
             <AppLink to="https://groups.google.com/g/monarch-tutorials"
               >Monarch Tutorials and Learning mailing list</AppLink
-            >" .
+            >
+            .
           </span>
         </div>
       </PageInfoCard>
