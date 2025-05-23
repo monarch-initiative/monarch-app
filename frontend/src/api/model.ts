@@ -392,6 +392,8 @@ export interface Entity {
     narrow_synonym?: string[],
     /** A related synonym for the entity */
     related_synonym?: string[],
+    /** A list of subsets that the entity belongs to */
+    subsets?: string[],
     /** The URI of the entity */
     uri?: string,
     iri?: string,

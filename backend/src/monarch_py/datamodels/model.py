@@ -1833,6 +1833,11 @@ class Entity(ConfiguredBaseModel):
         description="""A related synonym for the entity""",
         json_schema_extra={"linkml_meta": {"alias": "related_synonym", "domain_of": ["Entity"]}},
     )
+    subsets: Optional[List[str]] = Field(
+        None,
+        description="""A list of subsets that the entity belongs to""",
+        json_schema_extra={"linkml_meta": {"alias": "subsets", "domain_of": ["Entity"]}},
+    )
     uri: Optional[str] = Field(
         None,
         description="""The URI of the entity""",
@@ -2224,6 +2229,11 @@ class Node(Entity):
         None,
         description="""A related synonym for the entity""",
         json_schema_extra={"linkml_meta": {"alias": "related_synonym", "domain_of": ["Entity"]}},
+    )
+    subsets: Optional[List[str]] = Field(
+        None,
+        description="""A list of subsets that the entity belongs to""",
+        json_schema_extra={"linkml_meta": {"alias": "subsets", "domain_of": ["Entity"]}},
     )
     uri: Optional[str] = Field(
         None,
@@ -2870,6 +2880,11 @@ class SearchResult(Entity):
         None,
         description="""A related synonym for the entity""",
         json_schema_extra={"linkml_meta": {"alias": "related_synonym", "domain_of": ["Entity"]}},
+    )
+    subsets: Optional[List[str]] = Field(
+        None,
+        description="""A list of subsets that the entity belongs to""",
+        json_schema_extra={"linkml_meta": {"alias": "subsets", "domain_of": ["Entity"]}},
     )
     uri: Optional[str] = Field(
         None,
