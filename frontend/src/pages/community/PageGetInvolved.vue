@@ -259,7 +259,7 @@ $wrap: 1000px;
 
   .app-icon {
     height: 1.2em;
-    margin-top: 0.3em;
+    margin-top: 0.45em;
   }
 }
 
