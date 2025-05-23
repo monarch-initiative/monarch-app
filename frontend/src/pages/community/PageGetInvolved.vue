@@ -32,7 +32,7 @@
         ></span>
         <span class="social-icon bluesky"
           ><AppLink to="https://bsky.app/profile/monarchinitiative.bsky.social">
-            <AppIcon icon="square-bluesky" /></AppLink
+            <AppIcon icon="social-bluesky" /></AppLink
         ></span>
       </div>
     </div>

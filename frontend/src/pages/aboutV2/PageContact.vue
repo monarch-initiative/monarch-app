@@ -59,7 +59,7 @@
               to="https://bsky.app/profile/monarchinitiative.bsky.social"
               class="social-icon"
             >
-              <AppIcon icon="square-bluesky" />
+              <AppIcon icon="social-bluesky" />
             </AppLink>
           </div>
         </div>
