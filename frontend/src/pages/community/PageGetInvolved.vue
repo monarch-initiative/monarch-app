@@ -120,8 +120,8 @@
             <AppLink
               to="https://oboacademy.github.io/obook/courses/monarch-obo-training/"
             >
-              OBO Academy site
-            </AppLink>
+              OBO Academy site</AppLink
+            >
             .
           </span>
         </div>
