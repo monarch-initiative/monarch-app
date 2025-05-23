@@ -81,13 +81,7 @@
         <div class="info-line">
           <AppIcon icon="book-open-reader" />
           <span>
-            Learn more about the series in our
-            <AppLink
-              to="https://monarch-initiative.github.io/monarch-documentation/seminars"
-            >
-              seminar archive
-            </AppLink>
-            to learn more about the series, including the past and upcoming
+            Learn more about the series, including the past and upcoming
             schedule, at our
             <AppLink
               to="https://monarch-initiative.github.io/monarch-documentation"
@@ -152,11 +146,7 @@
         <div class="info-line">
           <AppIcon icon="envelope" />
           <span>
-            Sign up for updates via the
-            <AppLink to="https://groups.google.com/g/monarch-tutorials">
-              OBO Academy Google Group
-            </AppLink>
-            to sign up for OBO Academy updates via the
+            Sign up for OBO Academy updates via the
             <AppLink to="https://groups.google.com/g/monarch-tutorials"
               >Monarch Tutorials and Learning mailing list</AppLink
             >" .
