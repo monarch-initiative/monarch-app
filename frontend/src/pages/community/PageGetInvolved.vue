@@ -255,7 +255,12 @@ $wrap: 1000px;
 }
 
 .social-icon.bluesky {
-  background-color: #1185fe;
+  background-color: rgba(48, 184, 230, 0.2);
+
+  .app-icon {
+    height: 1.2em;
+    margin-top: 0.3em;
+  }
 }
 
 //icons in the content
