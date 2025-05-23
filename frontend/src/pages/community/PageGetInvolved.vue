@@ -68,8 +68,7 @@
             <AppLink to="https://groups.google.com/g/mondo-users"
               >Mondo users mailing list</AppLink
             >
-            via Google Groups to stay up to date on Mondo and the Mondo Outreach
-            call.
+            to stay up to date on Mondo and the Mondo Outreach call.
           </span>
         </div>
       </PageInfoCard>
