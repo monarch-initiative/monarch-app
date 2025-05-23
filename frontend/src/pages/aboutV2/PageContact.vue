@@ -54,13 +54,13 @@
               <AppIcon icon="youtube" />
             </AppLink>
 
-            <AppLink
+            <!-- <AppLink
               v-tooltip="'blusky'"
               to="https://bsky.app/profile/monarchinitiative.bsky.social"
               class="social-icon"
             >
               <AppIcon icon="bluesky" />
-            </AppLink>
+            </AppLink> -->
           </div>
         </div>
       </div>

@@ -30,10 +30,10 @@
           ><AppLink to="https://www.youtube.com/@monarchinitiative"
             ><AppIcon icon="youtube" /></AppLink
         ></span>
-        <span class="social-icon bluesky"
+        <!-- <span class="social-icon bluesky"
           ><AppLink to="https://bsky.app/profile/monarchinitiative.bsky.social"
             ><AppIcon icon="bluesky" /></AppLink
-        ></span>
+        ></span> -->
       </div>
     </div>
   </AppSection>
