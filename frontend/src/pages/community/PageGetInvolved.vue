@@ -91,11 +91,10 @@
         <div class="info-line">
           <AppIcon icon="youtube" />
           <span>
-            Browse past recordings on
-            <AppLink to="https://www.youtube.com/@monarchinitiative">
-              YouTube channel
-            </AppLink>
-            .
+            Browse session recordings on the
+            <AppLink to="https://www.youtube.com/@monarchinitiative"
+              >Monarch Initiative YouTube channel</AppLink
+            >.
           </span>
         </div>
         <div class="info-line">
@@ -131,11 +130,7 @@
           <span>
             Watch recorded lessons on the
             <AppLink to="https://www.youtube.com/@obo-academy">
-              Academy YouTube channel</AppLink
-            >
-            and browse session recordings on the
-            <AppLink to="https://www.youtube.com/@monarchinitiative"
-              >Monarch Initiative YouTube channel</AppLink
+              OBO Academy YouTube channel</AppLink
             >.
           </span>
         </div>
