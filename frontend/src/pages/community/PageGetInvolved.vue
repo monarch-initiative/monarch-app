@@ -102,13 +102,7 @@
         <div class="info-line">
           <AppIcon icon="envelope" />
           <span>
-            To participate, send an email to
-            <a href="mailto:info@monarchinitiative.org">
-              info@monarchinitiative.org
-            </a>
-            with the subject:
-            <strong>"Join the Monarch Seminar Series"</strong> to sign up for
-            Monarch Seminar Series updates via the
+            Sign up for Monarch Seminar Series updates via the
             <AppLink to="https://groups.google.com/g/monarch-tutorials"
               >Monarch Tutorials and Learning mailing list</AppLink
             >
