@@ -10,173 +10,163 @@
     </p>
     <div class="social-follow">
       <div class="icons">
-        <span class="social-icon email"
-          ><AppLink to="https://groups.google.com/g/monarch-friends/"
-            ><AppIcon icon="envelope" /></AppLink
-        ></span>
-        <span class="social-icon medium"
-          ><AppLink to="https://medium.com/@MonarchInit"
-            ><AppIcon icon="medium" /></AppLink
-        ></span>
-        <span class="social-icon linkedin"
-          ><AppLink to="https://www.linkedin.com/company/the-monarch-initiative"
-            ><AppIcon icon="linkedin" /></AppLink
-        ></span>
-        <span class="social-icon github"
-          ><AppLink to="https://github.com/monarch-initiative"
-            ><AppIcon icon="github" /></AppLink
-        ></span>
-        <span class="social-icon youtube"
-          ><AppLink to="https://www.youtube.com/@monarchinitiative"
-            ><AppIcon icon="youtube" /></AppLink
-        ></span>
-        <span class="social-icon bluesky"
-          ><AppLink to="https://bsky.app/profile/monarchinitiative.bsky.social">
-            <AppIcon icon="social-bluesky" /></AppLink
-        ></span>
+        <AppSocialIcon
+          type="email"
+          icon="envelope"
+          url="https://groups.google.com/g/monarch-friends/"
+        />
+        <AppSocialIcon
+          type="medium"
+          icon="medium"
+          url="https://medium.com/@MonarchInit"
+        />
+        <AppSocialIcon
+          type="linkedin"
+          icon="linkedin"
+          url="https://www.linkedin.com/company/the-monarch-initiative"
+        />
+        <AppSocialIcon
+          type="github"
+          icon="github"
+          url="https://github.com/monarch-initiative"
+        />
+        <AppSocialIcon
+          type="youtube"
+          icon="youtube"
+          url="https://www.youtube.com/@monarchinitiative"
+        />
+        <AppSocialIcon
+          type="bluesky"
+          icon="social-bluesky"
+          url="https://bsky.app/profile/monarchinitiative.bsky.social"
+        />
       </div>
     </div>
   </AppSection>
 
   <AppSection width="big">
     <div class="card-grid">
-      <!-- Mondo Card -->
-      <div class="info-card">
-        <h2>Mondo Disease Ontology: Monthly Outreach Calls</h2>
-        <p>
-          The Mondo Outreach calls aim to bring together stakeholders and
-          clinical terminology experts to discuss specific use cases and
-          requirements. Our goal is to improve Mondo with a focus on our user
-          needs.
-        </p>
-        <div class="info-box">
-          <div class="info-line">
-            <AppIcon icon="calendar-week" />
-            <span>
-              These calls are scheduled monthly. Explore details on
-              <AppLink
-                to="https://mondo.monarchinitiative.org/pages/workshop/#outreach"
-              >
-                our workshop page</AppLink
-              ></span
+      <PageInfoCard
+        title="Mondo Disease Ontology: Monthly Outreach Calls"
+        description="The Mondo Outreach calls aim to bring together stakeholders and clinical terminology experts to discuss specific use cases and requirements. Our goal is to improve Mondo with a focus on our user needs."
+      >
+        <div class="info-line">
+          <AppIcon icon="calendar-week" />
+          <span>
+            These calls are scheduled monthly. Explore details on
+            <AppLink
+              to="https://mondo.monarchinitiative.org/pages/workshop/#outreach"
             >
-          </div>
-          <div class="info-line">
-            <AppIcon icon="envelope" />
-            <span>
-              Subscribe to the Mondo users mailing list via
-              <AppLink to="https://groups.google.com/g/mondo-users">
-                Google Groups
-              </AppLink></span
-            >
-          </div>
+              our workshop page
+            </AppLink>
+          </span>
         </div>
-      </div>
-
-      <div class="info-card">
-        <h2>Monarch Seminar Series</h2>
-        <p>
-          A monthly forum for exploring topics central to the Monarch
-          Initiative.
-        </p>
-        <div class="info-box">
-          <div class="info-line">
-            <AppIcon icon="book-open-reader" />
-
-            <span>
-              Learn more about the series in our
-              <AppLink
-                to="https://monarch-initiative.github.io/monarch-documentation/seminars"
-              >
-                seminar archive
-              </AppLink>
-
-              .</span
-            >
-          </div>
-          <div class="info-line">
-            <AppIcon icon="youtube" />
-            <span>
-              Browse past recordings on our
-              <AppLink to="https://www.youtube.com/@monarchinitiative"
-                >YouTube channel</AppLink
-              >
-              .</span
-            >
-          </div>
-          <div class="info-line">
-            <AppIcon icon="envelope" />
-            <span>
-              To participate, send an email to
-              <a href="mailto:info@monarchinitiative.org"
-                >info@monarchinitiative.org</a
-              >
-              with the subject:
-              <strong>"Join the Monarch Seminar Series"</strong>.
-            </span>
-          </div>
+        <div class="info-line">
+          <AppIcon icon="envelope" />
+          <span>
+            Subscribe to the Mondo users mailing list via
+            <AppLink to="https://groups.google.com/g/mondo-users">
+              Google Groups
+            </AppLink>
+          </span>
         </div>
-      </div>
+      </PageInfoCard>
 
-      <!-- OBO Academy Card -->
-      <div class="info-card">
-        <h2>OBO Academy: Monarch Training Series</h2>
-        <p>
-          Training for Semantic Engineers, Ontology Curators, and Knowledge
-          Scientists on basic technologies in and around the Monarch Initiative
-          and Open Biological and Biomedical Ontologies (OBO).The OBO Academy
-          develops self-paced tutorials in the OBOOK, hosts monthly live
-          training sessions on Zoom, and maintains a YouTube channel with lesson
-          recordings.
-        </p>
-
-        <div class="info-box">
-          <div class="info-line">
-            <AppIcon icon="graduation-cap" />
-            <span>
-              Learn more about the curriculum at the
-              <AppLink
-                to="https://oboacademy.github.io/obook/courses/monarch-obo-training/"
-              >
-                OBO Academy
-              </AppLink>
-              site.
-            </span>
-          </div>
-
-          <div class="info-line">
-            <AppIcon icon="youtube" />
-            <span>
-              Watch recorded lessons on
-              <AppLink to="https://www.youtube.com/@obo-academy">
-                our YouTube channel</AppLink
-              >.
-            </span>
-          </div>
-
-          <div class="info-line">
-            <AppIcon icon="envelope" />
-            <span>
-              Sign up for updates via the
-              <AppLink to="https://groups.google.com/g/monarch-tutorials">
-                OBO Academy Google Group </AppLink
-              >.
-            </span>
-          </div>
+      <PageInfoCard
+        title="Monarch Seminar Series"
+        description="A monthly forum for exploring topics central to the Monarch Initiative."
+      >
+        <div class="info-line">
+          <AppIcon icon="book-open-reader" />
+          <span>
+            Learn more about the series in our
+            <AppLink
+              to="https://monarch-initiative.github.io/monarch-documentation/seminars"
+            >
+              seminar archive
+            </AppLink>
+            .
+          </span>
         </div>
-      </div>
+        <div class="info-line">
+          <AppIcon icon="youtube" />
+          <span>
+            Browse past recordings on our
+            <AppLink to="https://www.youtube.com/@monarchinitiative">
+              YouTube channel
+            </AppLink>
+            .
+          </span>
+        </div>
+        <div class="info-line">
+          <AppIcon icon="envelope" />
+          <span>
+            To participate, send an email to
+            <a href="mailto:info@monarchinitiative.org">
+              info@monarchinitiative.org
+            </a>
+            with the subject:
+            <strong>"Join the Monarch Seminar Series"</strong>.
+          </span>
+        </div>
+      </PageInfoCard>
+
+      <PageInfoCard
+        title="OBO Academy: Monarch Training Series"
+        description="Training for Semantic Engineers, Ontology Curators, and Knowledge Scientists on basic technologies in and around the Monarch Initiative and Open Biological and Biomedical Ontologies (OBO). The OBO Academy develops self-paced tutorials in the OBOOK, hosts monthly live training sessions on Zoom, and maintains a YouTube channel with lesson recordings."
+      >
+        <div class="info-line">
+          <AppIcon icon="graduation-cap" />
+          <span>
+            Learn more about the curriculum at the
+            <AppLink
+              to="https://oboacademy.github.io/obook/courses/monarch-obo-training/"
+            >
+              OBO Academy
+            </AppLink>
+            site.
+          </span>
+        </div>
+        <div class="info-line">
+          <AppIcon icon="youtube" />
+          <span>
+            Watch recorded lessons on
+            <AppLink to="https://www.youtube.com/@obo-academy">
+              our YouTube channel
+            </AppLink>
+            .
+          </span>
+        </div>
+        <div class="info-line">
+          <AppIcon icon="envelope" />
+          <span>
+            Sign up for updates via the
+            <AppLink to="https://groups.google.com/g/monarch-tutorials">
+              OBO Academy Google Group
+            </AppLink>
+            .
+          </span>
+        </div>
+      </PageInfoCard>
     </div>
   </AppSection>
 </template>
 
 <script setup lang="ts">
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
+import AppSocialIcon from "@/components/AppSocialIcon.vue";
 import PageTitle from "@/components/ThePageTitle.vue";
+import PageInfoCard from "./PageInfoCard.vue";
 </script>
+
 <style scoped lang="scss">
 $wrap: 1000px;
 .section:last-of-type {
   margin-bottom: 3em;
+
+  @media (max-width: $wrap) {
+    padding-top: 0;
+  }
 }
 .section:first-of-type {
   gap: 1em;
@@ -187,80 +177,17 @@ $wrap: 1000px;
 
 .intro-text {
   max-width: 80%;
-
   color: #333;
   font-size: 1.1rem;
   text-align: center;
-}
-
-.info-card {
-  padding: 1rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-  h2 {
-    margin-bottom: 0.75rem;
-  }
-
-  p {
-    margin-bottom: 0.75rem;
-  }
 }
 
 .icons {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  width: 100%;
   gap: 1rem;
-}
-
-.social-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background-color: #000;
-  transition: transform 0.2s ease;
-
-  .app-icon {
-    color: white;
-    font-size: 1rem;
-  }
-
-  &:hover {
-    transform: scale(1.1);
-  }
-}
-
-// Platform-specific colors
-.social-icon.email {
-  background-color: #007acc;
-}
-
-.social-icon.medium {
-  background-color: #000000;
-}
-
-.social-icon.github {
-  background-color: #333333;
-}
-
-.social-icon.linkedin {
-  background-color: #0a66c2;
-}
-
-.social-icon.youtube {
-  background-color: #ff0000;
-}
-
-.social-icon.bluesky {
-  background-color: rgba(48, 184, 230, 0.2);
-
-  .app-icon {
-    height: 1.2em;
-    margin-top: 0.45em;
-  }
 }
 
 //icons in the content
@@ -288,35 +215,10 @@ $wrap: 1000px;
   display: flex;
   flex-direction: column;
   align-items: left;
+  max-width: 60%;
   gap: 1.2rem;
   h2 {
     text-align: left;
-  }
-}
-
-.info-box {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 1.3em;
-  gap: 1.3rem;
-  border-radius: 6px;
-  background-color: #f4f8fb;
-
-  p {
-    margin: 0;
-    color: #333;
-    text-align: left;
-
-    a {
-      color: #005580;
-      font-weight: 500;
-      text-decoration: underline;
-
-      &:hover {
-        text-decoration: none;
-      }
-    }
   }
 }
 
@@ -338,7 +240,7 @@ $wrap: 1000px;
 
   .label {
     padding: 0.5rem 1rem;
-    background: #708090; // slate gray like your screenshot
+    background: #708090;
     color: white;
     font-weight: 500;
     font-size: 0.9rem;
