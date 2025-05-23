@@ -111,10 +111,17 @@
         "icon": true
       },
       {
-        "label": "Linekdin",
+        "label": "LinkedIn",
         "key": "community-linkedin",
         "to": "https://www.linkedin.com/company/the-monarch-initiative",
         "tooltip": "LinkedIn",
+        "icon": true
+      },
+      {
+        "label": "YouTube",
+        "key": "community-youtube",
+        "to": "https://www.youtube.com/@monarchinitiative",
+        "tooltip": "Youtube",
         "icon": true
       },
       {
@@ -122,13 +129,6 @@
         "key": "community-bluesky",
         "to": "https://bsky.app/profile/monarchinitiative.bsky.social",
         "tooltip": "BLueSky",
-        "icon": true
-      },
-      {
-        "label": "Youtube",
-        "key": "community-youtube",
-        "to": "https://www.youtube.com/@monarchinitiative",
-        "tooltip": "Youtube",
         "icon": true
       }
     ]
