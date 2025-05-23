@@ -53,28 +53,30 @@
         <div class="info-line">
           <AppIcon icon="calendar-week" />
           <span>
-            These calls are scheduled monthly. Explore details on
+            These calls are scheduled monthly. Explore details on the
             <AppLink
               to="https://mondo.monarchinitiative.org/pages/workshop/#outreach"
             >
-              our workshop page
-            </AppLink>
+              Mondo workshop page </AppLink
+            >.
           </span>
         </div>
         <div class="info-line">
           <AppIcon icon="envelope" />
           <span>
-            Subscribe to the Mondo users mailing list via
-            <AppLink to="https://groups.google.com/g/mondo-users">
-              Google Groups
-            </AppLink>
+            Subscribe to the
+            <AppLink to="https://groups.google.com/g/mondo-users"
+              >Mondo users mailing list</AppLink
+            >
+            via Google Groups to stay up to date on Mondo and the Mondo Outreach
+            call.
           </span>
         </div>
       </PageInfoCard>
 
       <PageInfoCard
         title="Monarch Seminar Series"
-        description="A monthly forum for exploring topics central to the Monarch Initiative."
+        description="A monthly forum where we explore topics central to the Monarch Initiative."
       >
         <div class="info-line">
           <AppIcon icon="book-open-reader" />
@@ -85,13 +87,18 @@
             >
               seminar archive
             </AppLink>
-            .
+            to learn more about the series, including the past and upcoming
+            schedule, at our
+            <AppLink
+              to="https://monarch-initiative.github.io/monarch-documentation"
+              >Monarch documentation site</AppLink
+            >.
           </span>
         </div>
         <div class="info-line">
           <AppIcon icon="youtube" />
           <span>
-            Browse past recordings on our
+            Browse past recordings on
             <AppLink to="https://www.youtube.com/@monarchinitiative">
               YouTube channel
             </AppLink>
@@ -106,7 +113,12 @@
               info@monarchinitiative.org
             </a>
             with the subject:
-            <strong>"Join the Monarch Seminar Series"</strong>.
+            <strong>"Join the Monarch Seminar Series"</strong> to sign up for
+            Monarch Seminar Series updates via the
+            <AppLink to="https://groups.google.com/g/monarch-tutorials"
+              >Monarch Tutorials and Learning mailing list</AppLink
+            >
+            .
           </span>
         </div>
       </PageInfoCard>
@@ -132,7 +144,7 @@
           <span>
             Watch recorded lessons on
             <AppLink to="https://www.youtube.com/@obo-academy">
-              our YouTube channel
+              YouTube channel
             </AppLink>
             .
           </span>
@@ -144,7 +156,10 @@
             <AppLink to="https://groups.google.com/g/monarch-tutorials">
               OBO Academy Google Group
             </AppLink>
-            .
+            to sign up for OBO Academy updates via the
+            <AppLink to="https://groups.google.com/g/monarch-tutorials"
+              >Monarch Tutorials and Learning mailing list</AppLink
+            >" .
           </span>
         </div>
       </PageInfoCard>
@@ -208,7 +223,7 @@ $wrap: 1000px;
 }
 
 .info-line .app-icon[data-icon="graduation-cap"] {
-  color: #7d4cdb;
+  color: #25547e;
 }
 
 .social-follow {
@@ -224,7 +239,7 @@ $wrap: 1000px;
 
 .info-line {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.5em;
   color: #333;
   text-align: left;
