@@ -439,7 +439,7 @@ $wrap: 800px;
 we can remove this and adjust onw styling to the whole menu items.
 Its here to align with the styling of old nav items. */
 .dropdown-button {
-  padding: 10px;
+  padding: 8px;
   @media (max-width: $wrap) {
     padding: 6.5px;
   }
