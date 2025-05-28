@@ -72,7 +72,7 @@ defineSlots<Slots>();
   }
 
   &:not(.full) {
-    width: calc((100% - 30px - 30px) / 3);
+    width: calc((100% - 30px - 30px) / 4);
   }
 
   @media (max-width: 700px) {

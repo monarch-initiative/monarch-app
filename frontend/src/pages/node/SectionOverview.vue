@@ -4,7 +4,7 @@
 
 <template>
   <AppSection width="full" alignment="left">
-    <AppDetails>
+    <AppDetails gap="20px">
       <!-- symbol (gene specific) -->
       <AppDetail
         v-if="node.category === 'biolink:Gene'"
@@ -64,6 +64,10 @@
             :node="omit(gene, 'in_taxon_label')"
           />
         </AppFlex>
+      </AppDetail>
+
+      <AppDetail v-if="node.category === 'biolink:Disease'" title="Frequency">
+        <span>{{ node?.subsets?.includes("rare") ? "Rare" : "Common" }}</span>
       </AppDetail>
 
       <!-- synonyms -->
@@ -146,7 +150,7 @@ type Props = {
 };
 
 const props = defineProps<Props>();
-
+console.log("props", props.node?.subsets);
 /** separate out mappings into categories */
 const clinicalSynopsis = computed(
   () =>
