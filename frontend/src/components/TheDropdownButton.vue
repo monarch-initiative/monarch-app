@@ -65,7 +65,6 @@ $wrap: 1000px;
 
 .dropdown-btn {
   display: flex;
-
   gap: 0.2em;
   white-space: nowrap;
   :hover {

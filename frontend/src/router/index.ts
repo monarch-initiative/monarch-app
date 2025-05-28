@@ -126,7 +126,20 @@ export const routes: RouteRecordRaw[] = [
     name: "NotFound",
     component: asyncRoute("PageHomeV2"),
   },
+  {
+    path: "/search-phenotypes",
+    name: "KnowledgeGraphSearchPhenotypes",
+    component: asyncRoute("knowledgeGraph/PagePhenotypeExplore"),
+    meta: { breadcrumb: "Phenotype Similarity Search" },
+  },
+  {
+    path: "/text-annotator",
+    name: "KnowledgeGraphTextAnnotator",
+    component: asyncRoute("knowledgeGraph/PageTextAnnotator"),
+    meta: { breadcrumb: "Text Annotator" },
+  },
 
+  // Knowledge Graph Dropdown
   {
     path: "/kg/about",
     name: "KnowledgeGraphAbout",
@@ -170,23 +183,13 @@ export const routes: RouteRecordRaw[] = [
     meta: { breadcrumb: "Terms of Use" },
   },
   {
-    path: "/search-phenotypes",
-    name: "KnowledgeGraphSearchPhenotypes",
-    component: asyncRoute("knowledgeGraph/PagePhenotypeExplore"),
-    meta: { breadcrumb: "Phenotype Similarity Search" },
-  },
-  {
-    path: "/text-annotator",
-    name: "KnowledgeGraphTextAnnotator",
-    component: asyncRoute("knowledgeGraph/PageTextAnnotator"),
-    meta: { breadcrumb: "Text Annotator" },
-  },
-  {
     path: "/kg/downloads",
     name: "KnowledgeGraphDownloads",
     component: asyncRoute("knowledgeGraph/PageDownlods"),
     meta: { breadcrumb: "Downloads" },
   },
+
+  // About Dropdown
   {
     path: "/about/our-story",
     name: "AboutOurStory",
@@ -222,6 +225,14 @@ export const routes: RouteRecordRaw[] = [
     name: "AboutPublications",
     component: asyncRoute("aboutV2/PagePublications"),
     meta: { breadcrumb: "Publications" },
+  },
+
+  // Community Dropdown
+  {
+    path: "/community/get-involved",
+    name: "CoummunityGetInvolved",
+    component: asyncRoute("community/PageGetInvolved"),
+    meta: { breadcrumb: "Get Involved" },
   },
 ];
 

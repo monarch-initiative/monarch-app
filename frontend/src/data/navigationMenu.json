@@ -38,7 +38,6 @@
         "to": "/kg/citation",
         "tooltip": "Learn how to cite the Knowledge Graph"
       },
-
       {
         "label": "API",
         "key": "kg-api",
@@ -92,6 +91,45 @@
         "key": "about-funding",
         "to": "/about/funding",
         "tooltip": "Funding"
+      }
+    ]
+  },
+  {
+    "label": "Community",
+    "subItems": [
+      {
+        "label": "Get Involved",
+        "key": "community-get-involved",
+        "to": "/community/get-involved",
+        "tooltip": "Get Involved"
+      },
+      {
+        "label": "Blog",
+        "key": "community-blog",
+        "to": "https://monarchinit.medium.com",
+        "tooltip": "Blog",
+        "icon": true
+      },
+      {
+        "label": "LinkedIn",
+        "key": "community-linkedin",
+        "to": "https://www.linkedin.com/company/the-monarch-initiative",
+        "tooltip": "LinkedIn",
+        "icon": true
+      },
+      {
+        "label": "YouTube",
+        "key": "community-youtube",
+        "to": "https://www.youtube.com/@monarchinitiative",
+        "tooltip": "Youtube",
+        "icon": true
+      },
+      {
+        "label": "Bluesky",
+        "key": "community-bluesky",
+        "to": "https://bsky.app/profile/monarchinitiative.bsky.social",
+        "tooltip": "BLueSky",
+        "icon": true
       }
     ]
   }
