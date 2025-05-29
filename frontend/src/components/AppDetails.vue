@@ -13,6 +13,7 @@ defineProps<{
   gap?: string;
 }>();
 </script>
+
 <style lang="scss" scoped>
 .details {
   display: flex;
