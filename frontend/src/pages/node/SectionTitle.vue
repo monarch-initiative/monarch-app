@@ -90,7 +90,6 @@ const fromSearch = computed(() =>
 .tag {
   padding: 4px 10px;
   border-radius: 8px;
-
   background-color: #eef6f9;
   color: $theme;
   font-weight: 600;
