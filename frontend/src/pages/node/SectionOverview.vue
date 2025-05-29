@@ -150,7 +150,7 @@ type Props = {
 };
 
 const props = defineProps<Props>();
-console.log("props", props.node?.subsets);
+
 /** separate out mappings into categories */
 const clinicalSynopsis = computed(
   () =>
