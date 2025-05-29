@@ -66,6 +66,7 @@
         </AppFlex>
       </AppDetail>
 
+      <!-- disease frequecy -->
       <AppDetail v-if="node.category === 'biolink:Disease'" title="Frequency">
         <span>{{ node?.subsets?.includes("rare") ? "Rare" : "Common" }}</span>
       </AppDetail>

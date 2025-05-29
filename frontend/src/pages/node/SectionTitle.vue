@@ -75,6 +75,7 @@ const fromSearch = computed(() =>
 
 .heading {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   padding: 0;
   gap: 0.5em;
