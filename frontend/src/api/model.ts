@@ -384,6 +384,16 @@ export interface Entity {
     in_taxon_label?: string,
     symbol?: string,
     synonym?: string[],
+    /** A broader synonym for the entity */
+    broad_synonym?: string[],
+    /** An exact synonym for the entity */
+    exact_synonym?: string[],
+    /** A narrower synonym for the entity */
+    narrow_synonym?: string[],
+    /** A related synonym for the entity */
+    related_synonym?: string[],
+    /** A list of subsets that the entity belongs to */
+    subsets?: string[],
     /** The URI of the entity */
     uri?: string,
     iri?: string,
@@ -532,8 +542,6 @@ export interface Results {
 
 
 export interface SearchResult extends Entity {
-    /** matching text snippet containing html tags */
-    highlight?: string,
     score?: number,
 }
 

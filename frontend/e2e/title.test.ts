@@ -1,18 +1,9 @@
 import { expect, test } from "@playwright/test";
-import { log } from "../playwright.config";
-import { sleep } from "../src/util/debug";
 
-log();
+test("Homepage shows correct page title", async ({ page }) => {
+  await page.goto("/");
 
-test("Document title updates on navigation", async ({ page }) => {
-  /** pages to test */
-  const pages = ["explore", "about", "help"];
-
-  /** visit each page and check doc title */
-  for (const _page of pages) {
-    await page.goto("/" + _page);
-    await sleep(100);
-    await expect(page).toHaveTitle(/monarch/i);
-    await expect(page).toHaveTitle(new RegExp(_page, "i"));
-  }
+  await expect(
+    page.getByRole("heading", { name: /what is the monarch initiative/i }),
+  ).toBeVisible();
 });

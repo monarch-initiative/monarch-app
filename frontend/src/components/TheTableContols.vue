@@ -46,14 +46,14 @@
       <template v-if="showControls">
         <AppButton
           v-tooltip="'Go to next page'"
-          :disabled="start + perPage > total"
+          :disabled="start + perPage >= total"
           icon="angle-right"
           design="small"
           @click="clickNext"
         />
         <AppButton
           v-tooltip="'Go to last page'"
-          :disabled="start + perPage > total"
+          :disabled="start + perPage >= total"
           icon="angles-right"
           design="small"
           @click="clickLast"

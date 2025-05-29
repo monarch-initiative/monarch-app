@@ -15,6 +15,7 @@
     :icon="fontAwesome"
     class="app-icon"
     aria-hidden="true"
+    :style="props.size ? { fontSize: props.size } : undefined"
   />
   <svg
     v-else-if="initials"
@@ -43,6 +44,7 @@ type Props = {
    * prefix. for custom icon, match filename, without extension.
    */
   icon: string;
+  size?: string;
 };
 
 const props = defineProps<Props>();

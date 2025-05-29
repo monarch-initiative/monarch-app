@@ -28,7 +28,7 @@ jobs:
           echo "IMAGE_TAG=${IMAGE_TAG//v}" >> $GITHUB_OUTPUT
 
       - name: Build and Push Image
-        uses: RafikFarhad/push-to-gcr-github-action@v5-beta
+        uses: RafikFarhad/push-to-gcr-github-action@v5-rc1
         with:
           gcloud_service_key: ${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }}
           registry: us-central1-docker.pkg.dev
@@ -51,7 +51,7 @@ jobs:
           fetch-depth: 0 # to get all tags
 
       - name: Set up Bun
-        uses: oven-sh/setup-bun@v1
+        uses: oven-sh/setup-bun@v2
 
       - name: Install packages
         run: bun install
@@ -72,7 +72,7 @@ jobs:
       # ./services/nginx/config/, copied to /etc/nginx/conf.d/ in the image
 
       - name: Build and Push Image
-        uses: RafikFarhad/push-to-gcr-github-action@v5-beta
+        uses: RafikFarhad/push-to-gcr-github-action@v5-rc1
         with:
           gcloud_service_key: ${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }}
           registry: us-central1-docker.pkg.dev

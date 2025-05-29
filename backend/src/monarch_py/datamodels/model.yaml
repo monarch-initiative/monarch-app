@@ -219,6 +219,11 @@ classes:
       - in_taxon_label
       - symbol
       - synonym
+      - broad_synonym
+      - exact_synonym
+      - narrow_synonym
+      - related_synonym
+      - subsets
       - uri
       - iri
       - namespace
@@ -318,7 +323,6 @@ classes:
   SearchResult:
     is_a: Entity
     slots:
-      - highlight
       - score
     slot_usage:
       category:
@@ -340,7 +344,6 @@ classes:
       - tokens
       - start
       - end
-
 slots:
   aggregator_knowledge_source:
     multivalued: true
@@ -510,9 +513,6 @@ slots:
     description: >-
       A count of the number of phenotypes that are known to be associated with this entity
     range: integer
-  highlight:
-    description: matching text snippet containing html tags
-    range: string
   id:
     identifier: true
     range: string
@@ -621,6 +621,25 @@ slots:
     range: boolean
   synonym:
     multivalued: true
+  broad_synonym:
+    description: A broader synonym for the entity
+    multivalued: true
+  exact_synonym:
+    description: An exact synonym for the entity
+    multivalued: true
+  narrow_synonym:
+    description: A narrower synonym for the entity
+    multivalued: true
+  related_synonym:
+    description: A related synonym for the entity
+    multivalued: true
+  subsets:
+    description: A list of subsets that the entity belongs to
+    range: string
+    multivalued: true
+  type:
+    description: The type of the entity (e.g. sequence onotology type for genes etc)
+    range: string
   total:
     description: total number of items matching a query
     range: integer

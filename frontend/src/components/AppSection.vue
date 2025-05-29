@@ -14,7 +14,7 @@ type Props = {
   /** width of section */
   width?: "full" | "medium" | "big";
   /** visual design */
-  design?: "normal" | "fill" | "bare";
+  design?: "normal" | "fill" | "bare" | "light";
   alignment?: "left" | "center";
   inset?: boolean;
   node?: boolean;
@@ -22,7 +22,7 @@ type Props = {
 
 withDefaults(defineProps<Props>(), {
   width: "medium",
-  design: "normal",
+  design: "light",
   alignment: "center",
   inset: false,
 });
@@ -84,6 +84,14 @@ defineSlots<Slots>();
 
   &:last-of-type {
     flex-grow: 1;
+  }
+
+  &.light {
+    background: $white;
+  }
+
+  &.bare {
+    background: $light-gray;
   }
 }
 </style>

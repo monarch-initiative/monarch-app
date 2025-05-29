@@ -1813,6 +1813,31 @@ class Entity(ConfiguredBaseModel):
     synonym: Optional[List[str]] = Field(
         None, json_schema_extra={"linkml_meta": {"alias": "synonym", "domain_of": ["Entity"]}}
     )
+    broad_synonym: Optional[List[str]] = Field(
+        None,
+        description="""A broader synonym for the entity""",
+        json_schema_extra={"linkml_meta": {"alias": "broad_synonym", "domain_of": ["Entity"]}},
+    )
+    exact_synonym: Optional[List[str]] = Field(
+        None,
+        description="""An exact synonym for the entity""",
+        json_schema_extra={"linkml_meta": {"alias": "exact_synonym", "domain_of": ["Entity"]}},
+    )
+    narrow_synonym: Optional[List[str]] = Field(
+        None,
+        description="""A narrower synonym for the entity""",
+        json_schema_extra={"linkml_meta": {"alias": "narrow_synonym", "domain_of": ["Entity"]}},
+    )
+    related_synonym: Optional[List[str]] = Field(
+        None,
+        description="""A related synonym for the entity""",
+        json_schema_extra={"linkml_meta": {"alias": "related_synonym", "domain_of": ["Entity"]}},
+    )
+    subsets: Optional[List[str]] = Field(
+        None,
+        description="""A list of subsets that the entity belongs to""",
+        json_schema_extra={"linkml_meta": {"alias": "subsets", "domain_of": ["Entity"]}},
+    )
     uri: Optional[str] = Field(
         None,
         description="""The URI of the entity""",
@@ -2184,6 +2209,31 @@ class Node(Entity):
     symbol: Optional[str] = Field(None, json_schema_extra={"linkml_meta": {"alias": "symbol", "domain_of": ["Entity"]}})
     synonym: Optional[List[str]] = Field(
         None, json_schema_extra={"linkml_meta": {"alias": "synonym", "domain_of": ["Entity"]}}
+    )
+    broad_synonym: Optional[List[str]] = Field(
+        None,
+        description="""A broader synonym for the entity""",
+        json_schema_extra={"linkml_meta": {"alias": "broad_synonym", "domain_of": ["Entity"]}},
+    )
+    exact_synonym: Optional[List[str]] = Field(
+        None,
+        description="""An exact synonym for the entity""",
+        json_schema_extra={"linkml_meta": {"alias": "exact_synonym", "domain_of": ["Entity"]}},
+    )
+    narrow_synonym: Optional[List[str]] = Field(
+        None,
+        description="""A narrower synonym for the entity""",
+        json_schema_extra={"linkml_meta": {"alias": "narrow_synonym", "domain_of": ["Entity"]}},
+    )
+    related_synonym: Optional[List[str]] = Field(
+        None,
+        description="""A related synonym for the entity""",
+        json_schema_extra={"linkml_meta": {"alias": "related_synonym", "domain_of": ["Entity"]}},
+    )
+    subsets: Optional[List[str]] = Field(
+        None,
+        description="""A list of subsets that the entity belongs to""",
+        json_schema_extra={"linkml_meta": {"alias": "subsets", "domain_of": ["Entity"]}},
     )
     uri: Optional[str] = Field(
         None,
@@ -2729,11 +2779,6 @@ class SearchResult(Entity):
         }
     )
 
-    highlight: Optional[str] = Field(
-        None,
-        description="""matching text snippet containing html tags""",
-        json_schema_extra={"linkml_meta": {"alias": "highlight", "domain_of": ["SearchResult"]}},
-    )
     score: Optional[float] = Field(
         None,
         json_schema_extra={
@@ -2815,6 +2860,31 @@ class SearchResult(Entity):
     symbol: Optional[str] = Field(None, json_schema_extra={"linkml_meta": {"alias": "symbol", "domain_of": ["Entity"]}})
     synonym: Optional[List[str]] = Field(
         None, json_schema_extra={"linkml_meta": {"alias": "synonym", "domain_of": ["Entity"]}}
+    )
+    broad_synonym: Optional[List[str]] = Field(
+        None,
+        description="""A broader synonym for the entity""",
+        json_schema_extra={"linkml_meta": {"alias": "broad_synonym", "domain_of": ["Entity"]}},
+    )
+    exact_synonym: Optional[List[str]] = Field(
+        None,
+        description="""An exact synonym for the entity""",
+        json_schema_extra={"linkml_meta": {"alias": "exact_synonym", "domain_of": ["Entity"]}},
+    )
+    narrow_synonym: Optional[List[str]] = Field(
+        None,
+        description="""A narrower synonym for the entity""",
+        json_schema_extra={"linkml_meta": {"alias": "narrow_synonym", "domain_of": ["Entity"]}},
+    )
+    related_synonym: Optional[List[str]] = Field(
+        None,
+        description="""A related synonym for the entity""",
+        json_schema_extra={"linkml_meta": {"alias": "related_synonym", "domain_of": ["Entity"]}},
+    )
+    subsets: Optional[List[str]] = Field(
+        None,
+        description="""A list of subsets that the entity belongs to""",
+        json_schema_extra={"linkml_meta": {"alias": "subsets", "domain_of": ["Entity"]}},
     )
     uri: Optional[str] = Field(
         None,
