@@ -140,7 +140,9 @@ def parse_association_table(
     for doc in query_result.response.docs:
         try:
             direction = get_association_direction(entity, doc)
-            association = DirectionalAssociation(**doc, direction=direction)
+            association_highlighting = AssociationHighlighting(**doc.highlighting)
+            doc.highlighting = None
+            association = DirectionalAssociation(**doc, direction=direction, highlighting= association_highlighting)
             association.provided_by_link = (
                 get_provided_by_link(association.provided_by) if association.provided_by else []
             )

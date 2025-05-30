@@ -35,7 +35,7 @@ class SolrService(BaseModel):
         response.raise_for_status()
         solr_query_result = SolrQueryResult.model_validate(data, from_attributes=True)
         solr_query_result.highlighting = SolrService._consolidate_highlights(
-            solr_query_result.highlighting, FIELD_TYPE_SUFFIXES
+        solr_query_result.highlighting, FIELD_TYPE_SUFFIXES
         )
         for doc in solr_query_result.response.docs:
             SolrService._strip_excluded_fields(doc)
