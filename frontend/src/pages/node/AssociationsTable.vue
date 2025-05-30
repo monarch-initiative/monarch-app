@@ -230,7 +230,7 @@ import {
 import { getCategoryLabel } from "@/api/categories";
 import {
   AssociationDirectionEnum,
-  type DirectionalAssociationWithHighlighting,
+  type AssociationWithHighlighting,
   type Node,
 } from "@/api/model";
 import AppModal from "@/components/AppModal.vue";
@@ -262,14 +262,12 @@ type Props = {
 const props = defineProps<Props>();
 
 const showModal = ref(false);
-const selectedAssociation = ref<DirectionalAssociationWithHighlighting | null>(
-  null,
-);
+const selectedAssociation = ref<AssociationWithHighlighting | null>(null);
 const start = ref(0);
 const sort = ref<Sort>();
 const perPage = ref(5);
 
-function openModal(association: DirectionalAssociationWithHighlighting) {
+function openModal(association: AssociationWithHighlighting) {
   selectedAssociation.value = association;
   showModal.value = true;
 }
@@ -280,7 +278,7 @@ watch(showModal, (newValue) => {
   }
 });
 
-type Datum = keyof DirectionalAssociationWithHighlighting;
+type Datum = keyof AssociationWithHighlighting;
 
 const getHighlightedText = (
   text: string,
@@ -503,7 +501,7 @@ const {
   isError,
 } = useQuery<
   {
-    items: DirectionalAssociationWithHighlighting[];
+    items: AssociationWithHighlighting[];
     total: number;
     limit: number;
     offset: number;
@@ -565,7 +563,7 @@ async function download() {
 }
 
 /** get phenotype frequency percentage 0-1 */
-const frequencyPercentage = (row: DirectionalAssociationWithHighlighting) => {
+const frequencyPercentage = (row: AssociationWithHighlighting) => {
   /** frequency from % out of 100 */
   if (row.has_percentage != undefined) return row.has_percentage / 100;
 
@@ -592,7 +590,7 @@ const frequencyPercentage = (row: DirectionalAssociationWithHighlighting) => {
 };
 
 /** get frequency tooltip */
-const frequencyTooltip = (row: DirectionalAssociationWithHighlighting) => {
+const frequencyTooltip = (row: AssociationWithHighlighting) => {
   // display fraction if possible
   if (row.has_count != undefined && row.has_total != undefined) {
     return `${row.has_count} of ${row.has_total} cases`;

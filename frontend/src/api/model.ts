@@ -621,7 +621,6 @@ export interface Highlighting {
   predicate?: string[];
 }
 
-export interface DirectionalAssociationWithHighlighting
-  extends DirectionalAssociation {
+export interface AssociationWithHighlighting extends DirectionalAssociation {
   highlighting?: Highlighting;
 }
