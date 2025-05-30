@@ -285,14 +285,11 @@ const getHighlightedText = (
   transformFn?: (text: string) => string,
 ): string => {
   if (!text) return "";
-  if (transformFn) {
-    text = transformFn(text); // Apply the transformation logic if provided
-  }
-  if (!props.search) return text; // If no search term, return the original text
-
-  const searchRegex = new RegExp(props.search, "gi"); // Case-insensitive search
-  return text.replace(
-    searchRegex,
+  const transformed = transformFn ? transformFn(text) : text;
+  if (!props.search) return transformed;
+  const regex = new RegExp(props.search, "gi");
+  return transformed.replace(
+    regex,
     (match) => `<span style="background: #FFFF00;"><em>${match}</em></span>`,
   );
 };

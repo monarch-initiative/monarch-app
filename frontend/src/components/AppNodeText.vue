@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUpdated, ref, useAttrs } from "vue";
+import { computed, onMounted, onUpdated, ref } from "vue";
 
 type Props = {
   text?: string;
@@ -48,7 +48,6 @@ const props = withDefaults(defineProps<Props>(), {
 const container = ref<HTMLSpanElement | SVGTSpanElement | null>(null);
 
 // Use $attrs to capture external classes and styles
-const { $attrs } = useAttrs();
 
 type ReplacedTag = "sup" | "a" | "i" | "b";
 
