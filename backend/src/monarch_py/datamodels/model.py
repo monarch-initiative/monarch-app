@@ -52,7 +52,7 @@ linkml_meta = LinkMLMeta(
             "biolink": {"prefix_prefix": "biolink", "prefix_reference": "https://w3id.org/biolink/vocab/"},
             "linkml": {"prefix_prefix": "linkml", "prefix_reference": "https://w3id.org/linkml/"},
         },
-        "source_file": "/Users/kschaper/Monarch/monarch-app/backend/src/monarch_py/datamodels/model.yaml",
+        "source_file": "/Users/divya/Documents/Dev/monarch-app/backend/src/monarch_py/datamodels/model.yaml",
     }
 )
 
@@ -103,6 +103,7 @@ class TermPairwiseSimilarity(PairwiseSimilarity):
                     "CompactAssociation",
                     "AssociationTypeMapping",
                     "Mapping",
+                    "AssociationHighlighting",
                 ],
                 "is_a": "name",
             }
@@ -135,6 +136,7 @@ class TermPairwiseSimilarity(PairwiseSimilarity):
                     "CompactAssociation",
                     "AssociationTypeMapping",
                     "Mapping",
+                    "AssociationHighlighting",
                 ],
                 "is_a": "name",
             }
@@ -453,6 +455,7 @@ class Association(ConfiguredBaseModel):
                     "CompactAssociation",
                     "AssociationTypeMapping",
                     "Mapping",
+                    "AssociationHighlighting",
                 ],
                 "is_a": "name",
             }
@@ -461,7 +464,9 @@ class Association(ConfiguredBaseModel):
     subject_closure_label: Optional[List[str]] = Field(
         None,
         description="""Field containing subject name and the names of all of it's ancestors""",
-        json_schema_extra={"linkml_meta": {"alias": "subject_closure_label", "domain_of": ["Association"]}},
+        json_schema_extra={
+            "linkml_meta": {"alias": "subject_closure_label", "domain_of": ["Association", "AssociationHighlighting"]}
+        },
     )
     subject_taxon: Optional[str] = Field(
         None,
@@ -475,7 +480,12 @@ class Association(ConfiguredBaseModel):
     )
     predicate: str = Field(
         ...,
-        json_schema_extra={"linkml_meta": {"alias": "predicate", "domain_of": ["Association", "CompactAssociation"]}},
+        json_schema_extra={
+            "linkml_meta": {
+                "alias": "predicate",
+                "domain_of": ["Association", "CompactAssociation", "AssociationHighlighting"],
+            }
+        },
     )
     original_predicate: Optional[str] = Field(
         None,
@@ -517,6 +527,7 @@ class Association(ConfiguredBaseModel):
                     "CompactAssociation",
                     "AssociationTypeMapping",
                     "Mapping",
+                    "AssociationHighlighting",
                 ],
                 "is_a": "name",
             }
@@ -525,7 +536,9 @@ class Association(ConfiguredBaseModel):
     object_closure_label: Optional[List[str]] = Field(
         None,
         description="""Field containing object name and the names of all of it's ancestors""",
-        json_schema_extra={"linkml_meta": {"alias": "object_closure_label", "domain_of": ["Association"]}},
+        json_schema_extra={
+            "linkml_meta": {"alias": "object_closure_label", "domain_of": ["Association", "AssociationHighlighting"]}
+        },
     )
     object_taxon: Optional[str] = Field(
         None,
@@ -1002,6 +1015,7 @@ class CompactAssociation(ConfiguredBaseModel):
                     "CompactAssociation",
                     "AssociationTypeMapping",
                     "Mapping",
+                    "AssociationHighlighting",
                 ],
                 "is_a": "name",
             }
@@ -1009,7 +1023,12 @@ class CompactAssociation(ConfiguredBaseModel):
     )
     predicate: str = Field(
         ...,
-        json_schema_extra={"linkml_meta": {"alias": "predicate", "domain_of": ["Association", "CompactAssociation"]}},
+        json_schema_extra={
+            "linkml_meta": {
+                "alias": "predicate",
+                "domain_of": ["Association", "CompactAssociation", "AssociationHighlighting"],
+            }
+        },
     )
     object: str = Field(
         ..., json_schema_extra={"linkml_meta": {"alias": "object", "domain_of": ["Association", "CompactAssociation"]}}
@@ -1026,6 +1045,7 @@ class CompactAssociation(ConfiguredBaseModel):
                     "CompactAssociation",
                     "AssociationTypeMapping",
                     "Mapping",
+                    "AssociationHighlighting",
                 ],
                 "is_a": "name",
             }
@@ -1091,6 +1111,7 @@ class AssociationTypeMapping(ConfiguredBaseModel):
                     "CompactAssociation",
                     "AssociationTypeMapping",
                     "Mapping",
+                    "AssociationHighlighting",
                 ],
                 "is_a": "name",
             }
@@ -1108,6 +1129,7 @@ class AssociationTypeMapping(ConfiguredBaseModel):
                     "CompactAssociation",
                     "AssociationTypeMapping",
                     "Mapping",
+                    "AssociationHighlighting",
                 ],
                 "is_a": "name",
             }
@@ -1143,12 +1165,22 @@ class DirectionalAssociation(Association):
     An association that gives it's direction relative to a specified entity
     """
 
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({"from_schema": "https://w3id.org/monarch/monarch-py"})
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
+        {
+            "from_schema": "https://w3id.org/monarch/monarch-py",
+            "slot_usage": {"highlighting": {"name": "highlighting", "range": "AssociationHighlighting"}},
+        }
+    )
 
     direction: AssociationDirectionEnum = Field(
         ...,
         description="""The directionality of the association relative to a given entity for an association_count. If the entity is the subject or in the subject closure, the direction is forwards, if it is the object or in the object closure, the direction is backwards.""",
         json_schema_extra={"linkml_meta": {"alias": "direction", "domain_of": ["DirectionalAssociation"]}},
+    )
+    highlighting: Optional[AssociationHighlighting] = Field(
+        None,
+        description="""Optional highlighting information for search results""",
+        json_schema_extra={"linkml_meta": {"alias": "highlighting", "domain_of": ["DirectionalAssociation"]}},
     )
     id: str = Field(
         ...,
@@ -1224,6 +1256,7 @@ class DirectionalAssociation(Association):
                     "CompactAssociation",
                     "AssociationTypeMapping",
                     "Mapping",
+                    "AssociationHighlighting",
                 ],
                 "is_a": "name",
             }
@@ -1232,7 +1265,9 @@ class DirectionalAssociation(Association):
     subject_closure_label: Optional[List[str]] = Field(
         None,
         description="""Field containing subject name and the names of all of it's ancestors""",
-        json_schema_extra={"linkml_meta": {"alias": "subject_closure_label", "domain_of": ["Association"]}},
+        json_schema_extra={
+            "linkml_meta": {"alias": "subject_closure_label", "domain_of": ["Association", "AssociationHighlighting"]}
+        },
     )
     subject_taxon: Optional[str] = Field(
         None,
@@ -1246,7 +1281,12 @@ class DirectionalAssociation(Association):
     )
     predicate: str = Field(
         ...,
-        json_schema_extra={"linkml_meta": {"alias": "predicate", "domain_of": ["Association", "CompactAssociation"]}},
+        json_schema_extra={
+            "linkml_meta": {
+                "alias": "predicate",
+                "domain_of": ["Association", "CompactAssociation", "AssociationHighlighting"],
+            }
+        },
     )
     original_predicate: Optional[str] = Field(
         None,
@@ -1288,6 +1328,7 @@ class DirectionalAssociation(Association):
                     "CompactAssociation",
                     "AssociationTypeMapping",
                     "Mapping",
+                    "AssociationHighlighting",
                 ],
                 "is_a": "name",
             }
@@ -1296,7 +1337,9 @@ class DirectionalAssociation(Association):
     object_closure_label: Optional[List[str]] = Field(
         None,
         description="""Field containing object name and the names of all of it's ancestors""",
-        json_schema_extra={"linkml_meta": {"alias": "object_closure_label", "domain_of": ["Association"]}},
+        json_schema_extra={
+            "linkml_meta": {"alias": "object_closure_label", "domain_of": ["Association", "AssociationHighlighting"]}
+        },
     )
     object_taxon: Optional[str] = Field(
         None,
@@ -2041,6 +2084,7 @@ class Mapping(ConfiguredBaseModel):
                     "CompactAssociation",
                     "AssociationTypeMapping",
                     "Mapping",
+                    "AssociationHighlighting",
                 ],
                 "is_a": "name",
             }
@@ -2065,6 +2109,7 @@ class Mapping(ConfiguredBaseModel):
                     "CompactAssociation",
                     "AssociationTypeMapping",
                     "Mapping",
+                    "AssociationHighlighting",
                 ],
                 "is_a": "name",
             }
@@ -3024,6 +3069,83 @@ class TextAnnotationResult(ConfiguredBaseModel):
     )
 
 
+class AssociationHighlighting(ConfiguredBaseModel):
+    """
+    Optional highlighting information for search results
+    """
+
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
+        {
+            "from_schema": "https://w3id.org/monarch/monarch-py",
+            "slot_usage": {
+                "object_label": {"multivalued": True, "name": "object_label", "required": False},
+                "predicate": {"multivalued": True, "name": "predicate", "required": False},
+                "subject_label": {"multivalued": True, "name": "subject_label", "required": False},
+            },
+        }
+    )
+
+    object_label: Optional[List[str]] = Field(
+        None,
+        description="""The name of the object entity""",
+        json_schema_extra={
+            "linkml_meta": {
+                "alias": "object_label",
+                "domain_of": [
+                    "TermPairwiseSimilarity",
+                    "Association",
+                    "CompactAssociation",
+                    "AssociationTypeMapping",
+                    "Mapping",
+                    "AssociationHighlighting",
+                ],
+                "is_a": "name",
+            }
+        },
+    )
+    object_closure_label: Optional[List[str]] = Field(
+        None,
+        description="""Field containing object name and the names of all of it's ancestors""",
+        json_schema_extra={
+            "linkml_meta": {"alias": "object_closure_label", "domain_of": ["Association", "AssociationHighlighting"]}
+        },
+    )
+    subject_label: Optional[List[str]] = Field(
+        None,
+        description="""The name of the subject entity""",
+        json_schema_extra={
+            "linkml_meta": {
+                "alias": "subject_label",
+                "domain_of": [
+                    "TermPairwiseSimilarity",
+                    "Association",
+                    "CompactAssociation",
+                    "AssociationTypeMapping",
+                    "Mapping",
+                    "AssociationHighlighting",
+                ],
+                "is_a": "name",
+            }
+        },
+    )
+    subject_closure_label: Optional[List[str]] = Field(
+        None,
+        description="""Field containing subject name and the names of all of it's ancestors""",
+        json_schema_extra={
+            "linkml_meta": {"alias": "subject_closure_label", "domain_of": ["Association", "AssociationHighlighting"]}
+        },
+    )
+    predicate: Optional[List[str]] = Field(
+        None,
+        json_schema_extra={
+            "linkml_meta": {
+                "alias": "predicate",
+                "domain_of": ["Association", "CompactAssociation", "AssociationHighlighting"],
+            }
+        },
+    )
+
+
 # Model rebuild
 # see https://pydantic-docs.helpmanual.io/usage/models/#rebuilding-a-model
 PairwiseSimilarity.model_rebuild()
@@ -3059,3 +3181,4 @@ MultiEntityAssociationResults.model_rebuild()
 SearchResult.model_rebuild()
 SearchResults.model_rebuild()
 TextAnnotationResult.model_rebuild()
+AssociationHighlighting.model_rebuild()
