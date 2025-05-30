@@ -54,16 +54,27 @@
 
     <!-- subject -->
     <template #subject="{ row }">
-      <AppNodeBadge
-        :node="{
-          id: row.subject,
-          name: row.subject_label,
-          category: row.subject_category,
-          info: row.subject_taxon_label,
-        }"
-        :breadcrumbs="getBreadcrumbs(node, row, 'subject')"
-        :getHighlightedText="getHighlightedText"
-      />
+      <div class="badgeColumn">
+        <AppNodeBadge
+          :node="{
+            id: row.subject,
+            name:
+              row?.highlighting?.subject_closure_label?.[0] ||
+              row.subject_label,
+            category: row.subject_category,
+            info: row.subject_taxon_label,
+          }"
+          :breadcrumbs="getBreadcrumbs(node, row, 'subject')"
+          :getHighlightedText="getHighlightedText"
+        />
+
+        <AppNodeText
+          v-if="row?.highlighting?.subject_closure_label?.[0]"
+          :text="`Ancestor: ${row.highlighting.subject_closure_label[0]}`"
+          class="text-sm"
+          :getHighlightedText="getHighlightedText"
+        />
+      </div>
     </template>
 
     <!-- predicate -->
@@ -81,16 +92,25 @@
 
     <!-- object-->
     <template #object="{ row }">
-      <AppNodeBadge
-        :node="{
-          id: row.object,
-          name: row.object_label,
-          category: row.object_category,
-          info: row.object_taxon_label,
-        }"
-        :breadcrumbs="getBreadcrumbs(node, row, 'object')"
-        :getHighlightedText="getHighlightedText"
-      />
+      <div class="badgeColumn">
+        <AppNodeBadge
+          :node="{
+            id: row.object,
+            name:
+              row?.highlighting?.object_closure_label?.[0] || row.object_label,
+            category: row.object_category,
+            info: row.object_taxon_label,
+          }"
+          :breadcrumbs="getBreadcrumbs(node, row, 'object')"
+          :getHighlightedText="getHighlightedText"
+        />
+        <AppNodeText
+          v-if="row?.highlighting?.object_closure_label?.[0]"
+          :text="`Ancestor: ${row.highlighting.object_closure_label[0]}`"
+          class="text-sm"
+          :getHighlightedText="getHighlightedText"
+        />
+      </div>
     </template>
 
     <template #extension="{ row }">
@@ -210,11 +230,12 @@ import {
 import { getCategoryLabel } from "@/api/categories";
 import {
   AssociationDirectionEnum,
-  type DirectionalAssociation,
+  type DirectionalAssociationWithHighlighting,
   type Node,
 } from "@/api/model";
 import AppModal from "@/components/AppModal.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
+import AppNodeText from "@/components/AppNodeText.vue";
 import AppPercentage from "@/components/AppPercentage.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
 import type { Option } from "@/components/AppSelectSingle.vue";
@@ -241,12 +262,14 @@ type Props = {
 const props = defineProps<Props>();
 
 const showModal = ref(false);
-const selectedAssociation = ref<DirectionalAssociation | null>(null);
+const selectedAssociation = ref<DirectionalAssociationWithHighlighting | null>(
+  null,
+);
 const start = ref(0);
 const sort = ref<Sort>();
 const perPage = ref(5);
 
-function openModal(association: DirectionalAssociation) {
+function openModal(association: DirectionalAssociationWithHighlighting) {
   selectedAssociation.value = association;
   showModal.value = true;
 }
@@ -257,7 +280,7 @@ watch(showModal, (newValue) => {
   }
 });
 
-type Datum = keyof DirectionalAssociation;
+type Datum = keyof DirectionalAssociationWithHighlighting;
 
 const getHighlightedText = (
   text: string,
@@ -272,8 +295,7 @@ const getHighlightedText = (
   const searchRegex = new RegExp(props.search, "gi"); // Case-insensitive search
   return text.replace(
     searchRegex,
-    (match) => `<span style="
-   background: #FFFF00;">${match}</span>`,
+    (match) => `<span style="background: #FFFF00;"><em>${match}</em></span>`,
   );
 };
 
@@ -479,7 +501,15 @@ const {
   data: associations,
   isLoading,
   isError,
-} = useQuery(
+} = useQuery<
+  {
+    items: DirectionalAssociationWithHighlighting[];
+    total: number;
+    limit: number;
+    offset: number;
+  },
+  [boolean]
+>(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async function (fresh: boolean) /**
    * whether to perform "fresh" search, without filters/pagination/etc. true when
@@ -503,7 +533,7 @@ const {
       props.search,
       sort.value,
     );
-
+    console.log("reposnse", response);
     return response;
   },
 
@@ -535,7 +565,7 @@ async function download() {
 }
 
 /** get phenotype frequency percentage 0-1 */
-const frequencyPercentage = (row: DirectionalAssociation) => {
+const frequencyPercentage = (row: DirectionalAssociationWithHighlighting) => {
   /** frequency from % out of 100 */
   if (row.has_percentage != undefined) return row.has_percentage / 100;
 
@@ -562,7 +592,7 @@ const frequencyPercentage = (row: DirectionalAssociation) => {
 };
 
 /** get frequency tooltip */
-const frequencyTooltip = (row: DirectionalAssociation) => {
+const frequencyTooltip = (row: DirectionalAssociationWithHighlighting) => {
   // display fraction if possible
   if (row.has_count != undefined && row.has_total != undefined) {
     return `${row.has_count} of ${row.has_total} cases`;
@@ -640,5 +670,16 @@ onMounted(() => queryAssociations(true));
   100% {
     opacity: 0.7;
   }
+}
+
+.badgeColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+}
+
+.text-sm {
+  color: $dark-gray;
+  font-size: 0.9em;
 }
 </style>
