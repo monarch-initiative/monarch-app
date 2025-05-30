@@ -491,6 +491,7 @@ const cols = computed((): Cols<Datum> => {
 });
 
 /** get table association data */
+
 const {
   query: queryAssociations,
   data: associations,
@@ -528,7 +529,6 @@ const {
       props.search,
       sort.value,
     );
-    console.log("reposnse", response);
     return response;
   },
 
@@ -587,6 +587,7 @@ const frequencyPercentage = (row: AssociationWithHighlighting) => {
 };
 
 /** get frequency tooltip */
+
 const frequencyTooltip = (row: AssociationWithHighlighting) => {
   // display fraction if possible
   if (row.has_count != undefined && row.has_total != undefined) {
