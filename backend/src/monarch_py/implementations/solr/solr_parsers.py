@@ -27,7 +27,7 @@ from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQueryResult
 from monarch_py.service.curie_service import converter
 from monarch_py.utils.association_type_utils import get_association_type_mapping_by_query_string
 from monarch_py.utils.utils import get_links_for_field, get_provided_by_link
-
+from monarch_py.datamodels.solr import AssociationHighlighting
 ####################
 # Parser functions #
 ####################
