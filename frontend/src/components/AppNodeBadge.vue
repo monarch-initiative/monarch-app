@@ -19,11 +19,11 @@
           : state || undefined
       "
     >
-      <AppNodeText :text="name" :getHighlightedText="getHighlightedText" />
+      <AppNodeText :text="name" :get-highlighted-text="getHighlightedText" />
     </AppLink>
     <span v-else>
       <span class="name">
-        <AppNodeText :text="name" :getHighlightedText="getHighlightedText" />
+        <AppNodeText :text="name" :get-highlighted-text="getHighlightedText" />
       </span>
       <span v-if="info">({{ info }})</span>
     </span>

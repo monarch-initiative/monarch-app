@@ -5,7 +5,7 @@ import pytest
 def search_response():
     return {
         "responseHeader": {
-            "QTime": 2,
+            "QTime": 0,
             "params": {
                 "mm": "100%",
                 "hl": "false",
@@ -4544,7 +4544,7 @@ def search_response():
                         "spinal cord",
                         "autonomic nervous system phenotype",
                     ],
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:0001083",
@@ -4586,7 +4586,7 @@ def search_response():
                     "subsets": ["gard_rare", "nord_rare", "otar", "rare"],
                     "namespace": "MONDO",
                     "has_phenotype_count": 0,
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:1011504",
@@ -4597,7 +4597,7 @@ def search_response():
                     "xref": ["OMIA:000366-9796"],
                     "namespace": "MONDO",
                     "has_phenotype_count": 0,
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:1011502",
@@ -4608,7 +4608,7 @@ def search_response():
                     "xref": ["OMIA:000366-9913"],
                     "namespace": "MONDO",
                     "has_phenotype_count": 0,
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:0007600",
@@ -5852,7 +5852,7 @@ def search_response():
                         "decreased functionality of the tube",
                         "urine hydrogencarbonate level phenotype",
                     ],
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:0009217",
@@ -6356,7 +6356,7 @@ def search_response():
                         "cell",
                         "lateral structure phenotype",
                     ],
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:0060778",
@@ -6380,7 +6380,7 @@ def search_response():
                         "Clinical modifier",
                         "Clinical course",
                     ],
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:0060779",
@@ -6394,7 +6394,7 @@ def search_response():
                     "subsets": ["gard_rare", "otar", "rare"],
                     "namespace": "MONDO",
                     "has_phenotype_count": 0,
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:1011503",
@@ -6405,7 +6405,7 @@ def search_response():
                     "xref": ["OMIA:000366-9615"],
                     "namespace": "MONDO",
                     "has_phenotype_count": 0,
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:0014275",
@@ -7318,7 +7318,7 @@ def search_response():
                         "increased level of chemical entity in urine",
                         "Abnormality of the lower limb",
                     ],
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:0030056",
@@ -8446,7 +8446,7 @@ def search_response():
                         "subdivision of organism along appendicular axis, curved phenotype",
                         "limb segment phenotype",
                     ],
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:0024525",
@@ -9299,7 +9299,7 @@ def search_response():
                         "potassium atom level phenotype",
                         "role bodily fluid level phenotype",
                     ],
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:0013247",
@@ -10218,7 +10218,7 @@ def search_response():
                         "kidney mesenchyme phenotype",
                         "organic molecule",
                     ],
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:0100238",
@@ -10232,7 +10232,7 @@ def search_response():
                     "subsets": ["gard_rare", "rare"],
                     "namespace": "MONDO",
                     "has_phenotype_count": 0,
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "HP:0001994",
@@ -10245,7 +10245,7 @@ def search_response():
                     "exact_synonyms": ["De toni-fanconi-debre syndrome|Renal tubular fanconi syndrome"],
                     "namespace": "HP",
                     "has_phenotype_count": 0,
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:0010953",
@@ -12428,7 +12428,7 @@ def search_response():
                         "subdivision of organism along appendicular axis phenotype",
                         "manual digit 1 or 5",
                     ],
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:0044325",
@@ -14264,7 +14264,7 @@ def search_response():
                         "decreased qualitatively signal release",
                         "hematopoietic system morphology phenotype",
                     ],
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:1011448",
@@ -14275,7 +14275,7 @@ def search_response():
                     "xref": ["OMIA:000366"],
                     "namespace": "MONDO",
                     "has_phenotype_count": 0,
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:0012186",
@@ -17734,7 +17734,7 @@ def search_response():
                         "negative regulation of macromolecule metabolic process",
                         "biosynthetic process phenotype",
                     ],
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:0011584",
@@ -18874,7 +18874,7 @@ def search_response():
                         "bone marrow cell",
                         "bone marrow",
                     ],
-                    "highlighting": [],
+                    "highlighting": None,
                 },
             ],
         },

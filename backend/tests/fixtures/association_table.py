@@ -575,7 +575,7 @@ def association_table():
                 "object_specialization_qualifier_closure": None,
                 "object_specialization_qualifier_closure_label": None,
                 "direction": "outgoing",
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "uuid:292ee13a-198e-11f0-be82-6045bdb3d4c0",
@@ -818,7 +818,7 @@ def association_table():
                 "object_specialization_qualifier_closure": None,
                 "object_specialization_qualifier_closure_label": None,
                 "direction": "outgoing",
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "uuid:292ee15b-198e-11f0-be82-6045bdb3d4c0",
@@ -1247,7 +1247,7 @@ def association_table():
                 "object_specialization_qualifier_closure": None,
                 "object_specialization_qualifier_closure_label": None,
                 "direction": "outgoing",
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "uuid:292ee13c-198e-11f0-be82-6045bdb3d4c0",
@@ -1460,7 +1460,7 @@ def association_table():
                 "object_specialization_qualifier_closure": None,
                 "object_specialization_qualifier_closure_label": None,
                 "direction": "outgoing",
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "uuid:2372d469-198e-11f0-be82-6045bdb3d4c0",
@@ -1706,7 +1706,7 @@ def association_table():
                 "object_specialization_qualifier_closure": None,
                 "object_specialization_qualifier_closure_label": None,
                 "direction": "outgoing",
-                "highlighting": [],
+                "highlighting": None,
             },
         ],
         "facet_fields": [],

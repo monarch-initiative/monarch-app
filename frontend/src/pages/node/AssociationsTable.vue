@@ -65,14 +65,14 @@
             info: row.subject_taxon_label,
           }"
           :breadcrumbs="getBreadcrumbs(node, row, 'subject')"
-          :getHighlightedText="getHighlightedText"
+          :get-highlighted-text="getHighlightedText"
         />
 
         <AppNodeText
           v-if="row?.highlighting?.subject_closure_label?.[0]"
           :text="`Ancestor: ${row.highlighting.subject_closure_label[0]}`"
           class="text-sm"
-          :getHighlightedText="getHighlightedText"
+          :get-highlighted-text="getHighlightedText"
         />
       </div>
     </template>
@@ -81,7 +81,7 @@
     <template #predicate="{ row }">
       <AppPredicateBadge
         :association="row"
-        :getHighlightedText="getHighlightedText"
+        :get-highlighted-text="getHighlightedText"
       />
     </template>
 
@@ -102,13 +102,13 @@
             info: row.object_taxon_label,
           }"
           :breadcrumbs="getBreadcrumbs(node, row, 'object')"
-          :getHighlightedText="getHighlightedText"
+          :get-highlighted-text="getHighlightedText"
         />
         <AppNodeText
           v-if="row?.highlighting?.object_closure_label?.[0]"
           :text="`Ancestor: ${row.highlighting.object_closure_label[0]}`"
           class="text-sm"
-          :getHighlightedText="getHighlightedText"
+          :get-highlighted-text="getHighlightedText"
         />
       </div>
     </template>

@@ -599,7 +599,7 @@
       "object_specialization_qualifier_closure": null,
       "object_specialization_qualifier_closure_label": null,
       "direction": "outgoing",
-      "highlighting": []
+      "highlighting": null
     },
     {
       "id": "uuid:292ee13a-198e-11f0-be82-6045bdb3d4c0",
@@ -871,7 +871,7 @@
       "object_specialization_qualifier_closure": null,
       "object_specialization_qualifier_closure_label": null,
       "direction": "outgoing",
-      "highlighting": []
+      "highlighting": null
     },
     {
       "id": "uuid:292ee15b-198e-11f0-be82-6045bdb3d4c0",
@@ -1317,7 +1317,7 @@
       "object_specialization_qualifier_closure": null,
       "object_specialization_qualifier_closure_label": null,
       "direction": "outgoing",
-      "highlighting": []
+      "highlighting": null
     },
     {
       "id": "uuid:292ee13c-198e-11f0-be82-6045bdb3d4c0",
@@ -1547,7 +1547,7 @@
       "object_specialization_qualifier_closure": null,
       "object_specialization_qualifier_closure_label": null,
       "direction": "outgoing",
-      "highlighting": []
+      "highlighting": null
     },
     {
       "id": "uuid:2372d469-198e-11f0-be82-6045bdb3d4c0",
@@ -1807,7 +1807,7 @@
       "object_specialization_qualifier_closure": null,
       "object_specialization_qualifier_closure_label": null,
       "direction": "outgoing",
-      "highlighting": []
+      "highlighting": null
     }
   ],
   "facet_fields": [],

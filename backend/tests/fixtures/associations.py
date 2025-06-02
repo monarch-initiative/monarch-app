@@ -338,7 +338,7 @@ def associations():
                 "object_specialization_qualifier_category": None,
                 "object_specialization_qualifier_closure": None,
                 "object_specialization_qualifier_closure_label": None,
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "uuid:11cb9476-198e-11f0-be82-6045bdb3d4c0",
@@ -712,7 +712,7 @@ def associations():
                 "object_specialization_qualifier_category": None,
                 "object_specialization_qualifier_closure": None,
                 "object_specialization_qualifier_closure_label": None,
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "uuid:11cb9477-198e-11f0-be82-6045bdb3d4c0",
@@ -1102,7 +1102,7 @@ def associations():
                 "object_specialization_qualifier_category": None,
                 "object_specialization_qualifier_closure": None,
                 "object_specialization_qualifier_closure_label": None,
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "uuid:11cb94f1-198e-11f0-be82-6045bdb3d4c0",
@@ -1496,7 +1496,7 @@ def associations():
                 "object_specialization_qualifier_category": None,
                 "object_specialization_qualifier_closure": None,
                 "object_specialization_qualifier_closure_label": None,
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "uuid:11cb9500-198e-11f0-be82-6045bdb3d4c0",
@@ -1702,7 +1702,7 @@ def associations():
                 "object_specialization_qualifier_category": None,
                 "object_specialization_qualifier_closure": None,
                 "object_specialization_qualifier_closure_label": None,
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "uuid:11cb9504-198e-11f0-be82-6045bdb3d4c0",
@@ -2122,7 +2122,7 @@ def associations():
                 "object_specialization_qualifier_category": None,
                 "object_specialization_qualifier_closure": None,
                 "object_specialization_qualifier_closure_label": None,
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "uuid:11cb9605-198e-11f0-be82-6045bdb3d4c0",
@@ -2610,7 +2610,7 @@ def associations():
                 "object_specialization_qualifier_category": None,
                 "object_specialization_qualifier_closure": None,
                 "object_specialization_qualifier_closure_label": None,
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "uuid:11cb96b0-198e-11f0-be82-6045bdb3d4c0",
@@ -2970,7 +2970,7 @@ def associations():
                 "object_specialization_qualifier_category": None,
                 "object_specialization_qualifier_closure": None,
                 "object_specialization_qualifier_closure_label": None,
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "uuid:11b22887-198e-11f0-be82-6045bdb3d4c0",
@@ -3206,7 +3206,7 @@ def associations():
                 "object_specialization_qualifier_category": None,
                 "object_specialization_qualifier_closure": None,
                 "object_specialization_qualifier_closure_label": None,
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "uuid:11b22926-198e-11f0-be82-6045bdb3d4c0",
@@ -3620,7 +3620,7 @@ def associations():
                 "object_specialization_qualifier_category": None,
                 "object_specialization_qualifier_closure": None,
                 "object_specialization_qualifier_closure_label": None,
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "uuid:11b22a57-198e-11f0-be82-6045bdb3d4c0",
@@ -3759,7 +3759,7 @@ def associations():
                 "object_specialization_qualifier_category": None,
                 "object_specialization_qualifier_closure": None,
                 "object_specialization_qualifier_closure_label": None,
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "uuid:11cb9185-198e-11f0-be82-6045bdb3d4c0",
@@ -4123,7 +4123,7 @@ def associations():
                 "object_specialization_qualifier_category": None,
                 "object_specialization_qualifier_closure": None,
                 "object_specialization_qualifier_closure_label": None,
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "uuid:11cb91f8-198e-11f0-be82-6045bdb3d4c0",
@@ -4389,7 +4389,7 @@ def associations():
                 "object_specialization_qualifier_category": None,
                 "object_specialization_qualifier_closure": None,
                 "object_specialization_qualifier_closure_label": None,
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "uuid:11cb925e-198e-11f0-be82-6045bdb3d4c0",
@@ -4805,7 +4805,7 @@ def associations():
                 "object_specialization_qualifier_category": None,
                 "object_specialization_qualifier_closure": None,
                 "object_specialization_qualifier_closure_label": None,
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "uuid:11cb925f-198e-11f0-be82-6045bdb3d4c0",
@@ -5311,7 +5311,7 @@ def associations():
                 "object_specialization_qualifier_category": None,
                 "object_specialization_qualifier_closure": None,
                 "object_specialization_qualifier_closure_label": None,
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "uuid:11cb9260-198e-11f0-be82-6045bdb3d4c0",
@@ -5555,7 +5555,7 @@ def associations():
                 "object_specialization_qualifier_category": None,
                 "object_specialization_qualifier_closure": None,
                 "object_specialization_qualifier_closure_label": None,
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "uuid:11cb9261-198e-11f0-be82-6045bdb3d4c0",
@@ -6081,7 +6081,7 @@ def associations():
                 "object_specialization_qualifier_category": None,
                 "object_specialization_qualifier_closure": None,
                 "object_specialization_qualifier_closure_label": None,
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "uuid:11cb9281-198e-11f0-be82-6045bdb3d4c0",
@@ -6323,7 +6323,7 @@ def associations():
                 "object_specialization_qualifier_category": None,
                 "object_specialization_qualifier_closure": None,
                 "object_specialization_qualifier_closure_label": None,
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "uuid:11cb948b-198e-11f0-be82-6045bdb3d4c0",
@@ -6454,7 +6454,7 @@ def associations():
                 "object_specialization_qualifier_category": None,
                 "object_specialization_qualifier_closure": None,
                 "object_specialization_qualifier_closure_label": None,
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "uuid:11cb94c4-198e-11f0-be82-6045bdb3d4c0",
@@ -6886,7 +6886,7 @@ def associations():
                 "object_specialization_qualifier_category": None,
                 "object_specialization_qualifier_closure": None,
                 "object_specialization_qualifier_closure_label": None,
-                "highlighting": [],
+                "highlighting": None,
             },
         ],
         "facet_fields": [],

@@ -25,7 +25,7 @@
   <tspan v-if="isSvg" ref="container">
     {{ text }}
   </tspan>
-  <span v-else ref="container" v-html="highlightedText" v-bind="$attrs"> </span>
+  <span v-else ref="container" v-bind="$attrs" v-html="highlightedText"> </span>
 </template>
 
 <script setup lang="ts">

@@ -4533,7 +4533,7 @@
       "exact_synonyms": [
         "Fanconi anemia|Fanconi pancytopenia|Fanconi panmyelopathy|Fanconi's anaemia|Fanconi's anemia|Panmyelopathy, Fanconi|pancytopenia, congenital|primary erythroid hypoplasia"
       ],
-      "highlighting": []
+      "highlighting": null
     },
     {
       "id": "MONDO:0001083",
@@ -4593,7 +4593,7 @@
       "related_synonyms": [
         "infantile nephropathic cystinosis|toni-debre-Fanconi syndrome"
       ],
-      "highlighting": []
+      "highlighting": null
     },
     {
       "id": "MONDO:1011504",
@@ -4622,7 +4622,7 @@
       "has_phenotype_closure_label": null,
       "has_phenotype_count": 0,
       "score": null,
-      "highlighting": []
+      "highlighting": null
     },
     {
       "id": "MONDO:1011502",
@@ -4651,7 +4651,7 @@
       "has_phenotype_closure_label": null,
       "has_phenotype_count": 0,
       "score": null,
-      "highlighting": []
+      "highlighting": null
     },
     {
       "id": "MONDO:0007600",
@@ -5925,7 +5925,7 @@
       "narrow_synonyms": [
         "FRTS1|Fanconi renotubular syndrome 1|primary Fanconi renotubular syndrome"
       ],
-      "highlighting": []
+      "highlighting": null
     },
     {
       "id": "MONDO:0009217",
@@ -6448,7 +6448,7 @@
       "has_phenotype_count": 5,
       "score": null,
       "exact_synonyms": ["Fanconi-like syndrome"],
-      "highlighting": []
+      "highlighting": null
     },
     {
       "id": "MONDO:0060778",
@@ -6490,7 +6490,7 @@
       "has_phenotype_count": 1,
       "score": null,
       "exact_synonyms": ["adult Fanconi syndrome|adult Fanconi's syndrome"],
-      "highlighting": []
+      "highlighting": null
     },
     {
       "id": "MONDO:0060779",
@@ -6525,7 +6525,7 @@
       "has_phenotype_count": 0,
       "score": null,
       "exact_synonyms": ["acquired Fanconi syndrome"],
-      "highlighting": []
+      "highlighting": null
     },
     {
       "id": "MONDO:1011503",
@@ -6554,7 +6554,7 @@
       "has_phenotype_closure_label": null,
       "has_phenotype_count": 0,
       "score": null,
-      "highlighting": []
+      "highlighting": null
     },
     {
       "id": "MONDO:0014275",
@@ -7485,7 +7485,7 @@
         "EHHADH Fanconi syndrome|Fanconi renotubular syndrome 3|Fanconi renotubular syndrome type 3|Fanconi syndrome caused by mutation in EHHADH"
       ],
       "related_synonyms": ["FRTS3"],
-      "highlighting": []
+      "highlighting": null
     },
     {
       "id": "MONDO:0030056",
@@ -8632,7 +8632,7 @@
       "exact_synonyms": [
         "FANCONI RENOTUBULAR SYNDROME 5|FRTS5|Fanconi Renotubular Syndrome, Acadian Variant|Fanconi renotubular syndrome 5"
       ],
-      "highlighting": []
+      "highlighting": null
     },
     {
       "id": "MONDO:0024525",
@@ -9503,7 +9503,7 @@
       "related_synonyms": [
         "Fanconi renotubular syndrome|Fanconi syndrome without cystinosis|Luder-Sheldon syndrome|adult Fanconi syndrome|renal Fanconi syndrome"
       ],
-      "highlighting": []
+      "highlighting": null
     },
     {
       "id": "MONDO:0013247",
@@ -10440,7 +10440,7 @@
         "Fanconi renotubular syndrome 2|Fanconi renotubular syndrome type 2|Fanconi syndrome caused by mutation in SLC34A1|SLC34A1 Fanconi syndrome"
       ],
       "related_synonyms": ["FRTS2"],
-      "highlighting": []
+      "highlighting": null
     },
     {
       "id": "MONDO:0100238",
@@ -10470,7 +10470,7 @@
       "has_phenotype_count": 0,
       "score": null,
       "exact_synonyms": ["hereditary Fanconi renotubular syndrome"],
-      "highlighting": []
+      "highlighting": null
     },
     {
       "id": "HP:0001994",
@@ -10509,7 +10509,7 @@
       "exact_synonyms": [
         "De toni-fanconi-debre syndrome|Renal tubular fanconi syndrome"
       ],
-      "highlighting": []
+      "highlighting": null
     },
     {
       "id": "MONDO:0010953",
@@ -12704,7 +12704,7 @@
         "FACE|FANCE|FANCE Fanconi anaemia|FANCE Fanconi anemia|Fanconi Anemia, complementation group type E|Fanconi anaemia caused by mutation in FANCE|Fanconi anaemia complementation group type E|Fanconi anemia caused by mutation in FANCE|Fanconi anemia complementation group E|Fanconi anemia complementation group type E|face"
       ],
       "related_synonyms": ["Fanconi anemia, complementation group E"],
-      "highlighting": []
+      "highlighting": null
     },
     {
       "id": "MONDO:0044325",
@@ -14558,7 +14558,7 @@
       "score": null,
       "exact_synonyms": ["Fanconi anemia, complementation group W"],
       "related_synonyms": ["FANCW"],
-      "highlighting": []
+      "highlighting": null
     },
     {
       "id": "MONDO:1011448",
@@ -14587,7 +14587,7 @@
       "has_phenotype_closure_label": null,
       "has_phenotype_count": 0,
       "score": null,
-      "highlighting": []
+      "highlighting": null
     },
     {
       "id": "MONDO:0012186",
@@ -18058,7 +18058,7 @@
       "related_synonyms": [
         "Fanconi Anemia, complementation Group 1|Fanconi anemia, complementation group I"
       ],
-      "highlighting": []
+      "highlighting": null
     },
     {
       "id": "MONDO:0011584",
@@ -19218,7 +19218,7 @@
       "related_synonyms": [
         "Fad1|Fanconi anemia, complementation group D1|inherited cancer-predisposing syndrome due to biallelic BRCA2 mutations"
       ],
-      "highlighting": []
+      "highlighting": null
     }
   ],
   "facet_fields": [],

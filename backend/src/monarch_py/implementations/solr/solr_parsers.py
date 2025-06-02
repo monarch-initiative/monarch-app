@@ -5,7 +5,6 @@ from pydantic import ValidationError
 
 from monarch_py.datamodels.model import (
     Association,
-    AssociationHighlighting,
     CompactAssociation,
     CompactAssociationResults,
     AssociationCount,
@@ -28,6 +27,7 @@ from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQueryResult
 from monarch_py.service.curie_service import converter
 from monarch_py.utils.association_type_utils import get_association_type_mapping_by_query_string
 from monarch_py.utils.utils import get_links_for_field, get_provided_by_link
+
 ####################
 # Parser functions #
 ####################
@@ -140,9 +140,7 @@ def parse_association_table(
     for doc in query_result.response.docs:
         try:
             direction = get_association_direction(entity, doc)
-            association_highlighting = AssociationHighlighting(**doc.highlighting)
-            doc.highlighting = None
-            association = DirectionalAssociation(**doc, direction=direction, highlighting= association_highlighting)
+            association = DirectionalAssociation(**doc, direction=direction)
             association.provided_by_link = (
                 get_provided_by_link(association.provided_by) if association.provided_by else []
             )

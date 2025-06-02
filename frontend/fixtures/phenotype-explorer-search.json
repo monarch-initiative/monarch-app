@@ -98,8 +98,8 @@
         }
       },
       "object_termset": {
-        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" },
-        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" }
+        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" },
+        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" }
       },
       "subject_best_matches": {
         "ZP:0100010": {
@@ -300,8 +300,8 @@
         }
       },
       "object_termset": {
-        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" },
-        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" }
+        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" },
+        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" }
       },
       "subject_best_matches": {
         "ZP:0000115": {
@@ -502,8 +502,8 @@
         }
       },
       "object_termset": {
-        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" },
-        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" }
+        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" },
+        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" }
       },
       "subject_best_matches": {
         "ZP:0000115": {
@@ -704,8 +704,8 @@
         }
       },
       "object_termset": {
-        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" },
-        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" }
+        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" },
+        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" }
       },
       "subject_best_matches": {
         "ZP:0000115": {
@@ -906,8 +906,8 @@
         }
       },
       "object_termset": {
-        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" },
-        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" }
+        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" },
+        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" }
       },
       "subject_best_matches": {
         "ZP:0000115": {
@@ -1116,8 +1116,8 @@
         }
       },
       "object_termset": {
-        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" },
-        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" }
+        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" },
+        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" }
       },
       "subject_best_matches": {
         "ZP:0015347": {
@@ -1353,13 +1353,13 @@
     "score": 2.2289917145710905,
     "similarity": {
       "subject_termset": {
-        "ZP:0001696": {
-          "id": "ZP:0001696",
-          "label": "swim bladder quality, abnormal"
-        },
         "ZP:0100010": {
           "id": "ZP:0100010",
           "label": "anatomical system quality, abnormal"
+        },
+        "ZP:0001696": {
+          "id": "ZP:0001696",
+          "label": "swim bladder quality, abnormal"
         }
       },
       "object_termset": {
@@ -1456,8 +1456,8 @@
         "HP:0012378": {
           "match_source": "HP:0012378",
           "match_source_label": "Fatigue",
-          "match_target": "ZP:0100010",
-          "match_target_label": "anatomical system quality, abnormal",
+          "match_target": "ZP:0001696",
+          "match_target_label": "swim bladder quality, abnormal",
           "score": 1.8650370971010566,
           "match_subsumer": null,
           "match_subsumer_label": null,
@@ -1465,7 +1465,7 @@
             "subject_id": "HP:0012378",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "ZP:0100010",
+            "object_id": "ZP:0001696",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "UPHENO:0001003",
@@ -1474,10 +1474,10 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 1.8650370971010566,
-            "jaccard_similarity": 0.13043478260869565,
+            "jaccard_similarity": 0.11538461538461539,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.49321973634226063
+            "phenodigm_score": 0.463892862767951
           },
           "score_metric": "ancestor_information_content"
         }
@@ -1639,8 +1639,8 @@
         }
       },
       "object_termset": {
-        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" },
-        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" }
+        "HP:0002104": { "id": "HP:0002104", "label": "Apnea" },
+        "HP:0012378": { "id": "HP:0012378", "label": "Fatigue" }
       },
       "subject_best_matches": {
         "ZP:0001211": {
@@ -2226,8 +2226,8 @@
         "HP:0002104": {
           "match_source": "HP:0002104",
           "match_source_label": "Apnea",
-          "match_target": "ZP:0001696",
-          "match_target_label": "swim bladder quality, abnormal",
+          "match_target": "ZP:0100010",
+          "match_target_label": "anatomical system quality, abnormal",
           "score": 2.350309920394435,
           "match_subsumer": null,
           "match_subsumer_label": null,
@@ -2235,7 +2235,7 @@
             "subject_id": "HP:0002104",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "ZP:0001696",
+            "object_id": "ZP:0100010",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "UPHENO:0002963",
@@ -2244,18 +2244,18 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 2.350309920394435,
-            "jaccard_similarity": 0.35135135135135137,
+            "jaccard_similarity": 0.38235294117647056,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9087268933101252
+            "phenodigm_score": 0.9479704165948686
           },
           "score_metric": "ancestor_information_content"
         },
         "HP:0012378": {
           "match_source": "HP:0012378",
           "match_source_label": "Fatigue",
-          "match_target": "ZP:0001696",
-          "match_target_label": "swim bladder quality, abnormal",
+          "match_target": "ZP:0100010",
+          "match_target_label": "anatomical system quality, abnormal",
           "score": 1.8650370971010566,
           "match_subsumer": null,
           "match_subsumer_label": null,
@@ -2263,7 +2263,7 @@
             "subject_id": "HP:0012378",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "ZP:0001696",
+            "object_id": "ZP:0100010",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "UPHENO:0001003",
@@ -2272,10 +2272,10 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 1.8650370971010566,
-            "jaccard_similarity": 0.11538461538461539,
+            "jaccard_similarity": 0.13043478260869565,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.463892862767951
+            "phenodigm_score": 0.49321973634226063
           },
           "score_metric": "ancestor_information_content"
         }
