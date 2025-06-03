@@ -17,6 +17,14 @@
     aria-hidden="true"
     :style="props.size ? { fontSize: props.size } : undefined"
   />
+  <img
+    v-else-if="isPng"
+    :src="`/icons/${props.icon}`"
+    :alt="props.icon"
+    class="app-icon img"
+    aria-hidden="true"
+    v-tooltip="props.tooltip"
+  />
   <svg
     v-else-if="initials"
     viewBox="0 0 100 100"
@@ -45,10 +53,11 @@ type Props = {
    */
   icon: string;
   size?: string;
+  tooltip?: string;
 };
 
 const props = defineProps<Props>();
-
+console.log(props);
 /** look for font awesome icon with matching name */
 const fontAwesome = computed(() => {
   for (const prefix of ["fas", "far", "fab"]) {
@@ -62,9 +71,14 @@ const fontAwesome = computed(() => {
 });
 
 const isCustom = ref(true);
+const isPng = computed(() => props.icon.endsWith(".png"));
 
 /** look for custom icon with matching name */
 const customIcon = defineAsyncComponent(async () => {
+  if (isPng.value) {
+    isCustom.value = false;
+    return;
+  }
   try {
     return await import(`../assets/icons/${kebabCase(props.icon)}.svg`);
   } catch {
@@ -122,7 +136,10 @@ function customMounted(element: VNode["el"], createCircle = false) {
 .app-icon {
   height: 1em;
 }
-
+.app-icon.img {
+  width: auto;
+  object-fit: contain;
+}
 .category {
   fill: none;
   stroke: $white;

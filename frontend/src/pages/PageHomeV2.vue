@@ -24,12 +24,11 @@
         <AppLink :to="tool.to">
           <AppIcon
             v-if="tool.icon"
-            v-tooltip="tool.tooltip"
+            :tooltip="tool.tooltip"
             :aria-label="tool.tooltip"
             :icon="tool.icon"
             class="icon"
           />
-          <span class="sr-only">{{ tool.tooltip }}</span>
         </AppLink>
       </div>
     </div>
@@ -72,6 +71,8 @@ import { KG_TOOL_LINKS, TOOL_LINKS } from "@/data/toolEntityConfig";
   justify-items: center;
   width: 100%;
   max-width: 60em;
+  overflow: visible;
+  gap: 1.2em;
 }
 
 @media (max-width: 1000px) {
@@ -104,6 +105,7 @@ import { KG_TOOL_LINKS, TOOL_LINKS } from "@/data/toolEntityConfig";
 .icon {
   z-index: 2;
   position: relative;
+  position: relative;
   width: 12em;
   height: 12em;
   border-radius: 50em;
@@ -124,17 +126,7 @@ a:focus,
 .icon:focus {
   outline: none;
 }
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
-  white-space: nowrap;
-}
+
 .kg-tools {
   margin-top: 2.5em;
 

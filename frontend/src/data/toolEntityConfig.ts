@@ -71,21 +71,21 @@ export const TOOL_LINKS: {
 }[] = [
   {
     label: "Exomiser",
-    icon: "exomiser-banner",
+    icon: "exomiser-logo-banner.png",
     to: "https://exomiser.monarchinitiative.org/exomiser/",
     tooltip: "Explore and prioritize genetic variants",
     external: true,
   },
   {
     label: "Phenopackets",
-    icon: "phenopackets-banner",
+    icon: "phenopackets-logo.png",
     to: "http://phenopackets.org/",
     tooltip: "Standard format for sharing phenotypic and clinical data",
     external: true,
   },
   {
     label: "Mondo",
-    icon: "mondo-banner",
+    icon: "mondo-logo-banner.png",
     to: "https://mondo.monarchinitiative.org/",
     tooltip:
       "Standardized vocabulary for diseases across clinical and research resources",
