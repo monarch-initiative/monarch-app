@@ -29,6 +29,9 @@
         >
           <AppNodeText :text="node.name" />
         </span>
+        <p class="tag" v-if="node.id?.includes('MONDO')">
+          {{ node.id }}
+        </p>
         <template v-if="node.deprecated"> (OBSOLETE)</template>
       </AppHeading>
 
@@ -71,7 +74,11 @@ const fromSearch = computed(() =>
 }
 
 .heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   padding: 0;
+  gap: 0.5em;
   font-size: 1.2rem;
 }
 
@@ -79,5 +86,16 @@ const fromSearch = computed(() =>
   color: $dark-gray;
   font-style: italic;
   font-size: 0.9rem;
+}
+
+.tag {
+  padding: 4px 10px;
+  border-radius: 8px;
+  background-color: #eef6f9;
+  color: $theme;
+  font-weight: 600;
+  font-size: 0.85rem;
+  font-family: monospace;
+  letter-spacing: 0.5px;
 }
 </style>
