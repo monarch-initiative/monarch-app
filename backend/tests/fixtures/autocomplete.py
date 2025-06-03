@@ -2216,7 +2216,7 @@ def autocomplete():
                 "related_synonyms": [
                     "Estren-Dameshek variant of Fanconi Anaemia|Estren-Dameshek variant of Fanconi Anemia|Estren-Dameshek variant of Fanconi pancytopenia|Fanconi Anaemia|Fanconi Anemia|Fanconi Anemia, Estren-Dameshek variant|Fanconi anemia, complementation group A"
                 ],
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "MONDO:0013566",
@@ -5169,7 +5169,7 @@ def autocomplete():
                 "related_synonyms": [
                     "Fanconi Anemia, complementation Group 50|Fanconi anemia, complementation group L"
                 ],
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "MONDO:0010953",
@@ -7357,7 +7357,7 @@ def autocomplete():
                     "FACE|FANCE|FANCE Fanconi anaemia|FANCE Fanconi anemia|Fanconi Anemia, complementation group type E|Fanconi anaemia caused by mutation in FANCE|Fanconi anaemia complementation group type E|Fanconi anemia caused by mutation in FANCE|Fanconi anemia complementation group E|Fanconi anemia complementation group type E|face"
                 ],
                 "related_synonyms": ["Fanconi anemia, complementation group E"],
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "MONDO:0001083",
@@ -7415,7 +7415,7 @@ def autocomplete():
                 ],
                 "narrow_synonyms": ["adult Fanconi syndrome|congenital Fanconi syndrome"],
                 "related_synonyms": ["infantile nephropathic cystinosis|toni-debre-Fanconi syndrome"],
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "MONDO:0019391",
@@ -11947,7 +11947,7 @@ def autocomplete():
                 "exact_synonyms": [
                     "Fanconi anemia|Fanconi pancytopenia|Fanconi panmyelopathy|Fanconi's anaemia|Fanconi's anemia|Panmyelopathy, Fanconi|pancytopenia, congenital|primary erythroid hypoplasia"
                 ],
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "MONDO:0013248",
@@ -13420,7 +13420,7 @@ def autocomplete():
                     "FANCO|Fanconi Anemia, complementation group type O|Fanconi anaemia caused by mutation in RAD51C|Fanconi anaemia caused by mutation in Rad51C|Fanconi anaemia complementation group type O|Fanconi anemia caused by mutation in RAD51C|Fanconi anemia caused by mutation in Rad51C|Fanconi anemia complementation group type O|RAD51C Fanconi anaemia|RAD51C Fanconi anemia|Rad51C Fanconi anaemia|Rad51C Fanconi anemia"
                 ],
                 "related_synonyms": ["Fanconi anemia, complementation group O"],
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "MONDO:0013499",
@@ -15357,7 +15357,7 @@ def autocomplete():
                     "FANCP|Fanconi Anemia, complementation group type P|Fanconi anaemia caused by mutation in SLX4|Fanconi anaemia caused by mutation in Slx4|Fanconi anaemia complementation group type P|Fanconi anemia caused by mutation in SLX4|Fanconi anemia caused by mutation in Slx4|Fanconi anemia complementation group type P|SLX4 Fanconi anaemia|SLX4 Fanconi anemia|Slx4 Fanconi anaemia|Slx4 Fanconi anemia"
                 ],
                 "related_synonyms": ["Fanconi anemia, complementation group P"],
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "MONDO:0024525",
@@ -16223,7 +16223,7 @@ def autocomplete():
                 "related_synonyms": [
                     "Fanconi renotubular syndrome|Fanconi syndrome without cystinosis|Luder-Sheldon syndrome|adult Fanconi syndrome|renal Fanconi syndrome"
                 ],
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "MONDO:0014985",
@@ -17050,7 +17050,7 @@ def autocomplete():
                     "FANCV|Fanconi Anemia, complementation group V|Fanconi Anemia, complementation group type V|Fanconi anaemia caused by mutation in MAD2L2|Fanconi anaemia complementation group type V|Fanconi anemia caused by mutation in MAD2L2|Fanconi anemia complementation group type V|MAD2L2 Fanconi anaemia|MAD2L2 Fanconi anemia"
                 ],
                 "related_synonyms": ["Fanconi Anemia, complementation Group 5|Fanconi anemia, complementation GROUP V"],
-                "highlighting": [],
+                "highlighting": None,
             },
             {
                 "id": "MONDO:0014986",
@@ -18822,7 +18822,7 @@ def autocomplete():
                     "FANCR|Fanconi Anemia, complementation group R|Fanconi Anemia, complementation group type R|Fanconi anaemia caused by mutation in RAD51|Fanconi anaemia complementation group type R|Fanconi anemia caused by mutation in RAD51|Fanconi anemia complementation group type R|RAD51 Fanconi anaemia|RAD51 Fanconi anemia"
                 ],
                 "related_synonyms": ["Fanconi anemia, complementation GROUP R"],
-                "highlighting": [],
+                "highlighting": None,
             },
         ],
         "facet_fields": None,

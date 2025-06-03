@@ -299,7 +299,7 @@ def association_response():
                     "frequency_qualifier_namespace": "HP",
                     "evidence_count": 1,
                     "grouping_key": "HGNC:27337||biolink:has_phenotype|HP:0001371",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "uuid:11cb9476-198e-11f0-be82-6045bdb3d4c0",
@@ -618,7 +618,7 @@ def association_response():
                     "frequency_qualifier_namespace": "HP",
                     "evidence_count": 1,
                     "grouping_key": "HGNC:27337||biolink:has_phenotype|HP:0009053",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "uuid:11cb9477-198e-11f0-be82-6045bdb3d4c0",
@@ -953,7 +953,7 @@ def association_response():
                     "frequency_qualifier_namespace": "HP",
                     "evidence_count": 1,
                     "grouping_key": "HGNC:27337||biolink:has_phenotype|HP:0100297",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "uuid:11cb94f1-198e-11f0-be82-6045bdb3d4c0",
@@ -1292,7 +1292,7 @@ def association_response():
                     "frequency_qualifier_namespace": "HP",
                     "evidence_count": 1,
                     "grouping_key": "HGNC:37276||biolink:has_phenotype|HP:0000478",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "uuid:11cb9500-198e-11f0-be82-6045bdb3d4c0",
@@ -1443,7 +1443,7 @@ def association_response():
                     "frequency_qualifier_namespace": "HP",
                     "evidence_count": 1,
                     "grouping_key": "HGNC:50800||biolink:has_phenotype|HP:0004673",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "uuid:11cb9504-198e-11f0-be82-6045bdb3d4c0",
@@ -1808,7 +1808,7 @@ def association_response():
                     "frequency_qualifier_namespace": "HP",
                     "evidence_count": 1,
                     "grouping_key": "HGNC:53924||biolink:has_phenotype|HP:0007149",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "uuid:11cb9605-198e-11f0-be82-6045bdb3d4c0",
@@ -2241,7 +2241,7 @@ def association_response():
                     "frequency_qualifier_namespace": "HP",
                     "evidence_count": 1,
                     "grouping_key": "HGNC:1480||biolink:has_phenotype|HP:0001239",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "uuid:11cb96b0-198e-11f0-be82-6045bdb3d4c0",
@@ -2546,7 +2546,7 @@ def association_response():
                     "frequency_qualifier_namespace": "HP",
                     "evidence_count": 1,
                     "grouping_key": "HGNC:2188||biolink:has_phenotype|HP:0000174",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "uuid:11b22887-198e-11f0-be82-6045bdb3d4c0",
@@ -2722,7 +2722,7 @@ def association_response():
                     ],
                     "evidence_count": 0,
                     "grouping_key": "HGNC:2933||biolink:has_phenotype|HP:0011705",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "uuid:11b22926-198e-11f0-be82-6045bdb3d4c0",
@@ -3076,7 +3076,7 @@ def association_response():
                     ],
                     "evidence_count": 0,
                     "grouping_key": "HGNC:3622||biolink:has_phenotype|HP:0000501",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "uuid:11b22a57-198e-11f0-be82-6045bdb3d4c0",
@@ -3167,7 +3167,7 @@ def association_response():
                     ],
                     "evidence_count": 1,
                     "grouping_key": "HGNC:5006||biolink:has_phenotype|HP:0003593",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "uuid:11cb9185-198e-11f0-be82-6045bdb3d4c0",
@@ -3476,7 +3476,7 @@ def association_response():
                     ],
                     "evidence_count": 1,
                     "grouping_key": "HGNC:15999||biolink:has_phenotype|HP:0002650",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "uuid:11cb91f8-198e-11f0-be82-6045bdb3d4c0",
@@ -3682,7 +3682,7 @@ def association_response():
                     ],
                     "evidence_count": 0,
                     "grouping_key": "HGNC:25751||biolink:has_phenotype|HP:0001332",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "uuid:11cb925e-198e-11f0-be82-6045bdb3d4c0",
@@ -4038,7 +4038,7 @@ def association_response():
                     ],
                     "evidence_count": 0,
                     "grouping_key": "HGNC:17997||biolink:has_phenotype|HP:0003749",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "uuid:11cb925f-198e-11f0-be82-6045bdb3d4c0",
@@ -4484,7 +4484,7 @@ def association_response():
                     ],
                     "evidence_count": 0,
                     "grouping_key": "HGNC:17997||biolink:has_phenotype|HP:0001302",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "uuid:11cb9260-198e-11f0-be82-6045bdb3d4c0",
@@ -4668,7 +4668,7 @@ def association_response():
                     ],
                     "evidence_count": 0,
                     "grouping_key": "HGNC:17997||biolink:has_phenotype|HP:0003560",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "uuid:11cb9261-198e-11f0-be82-6045bdb3d4c0",
@@ -5134,7 +5134,7 @@ def association_response():
                     ],
                     "evidence_count": 0,
                     "grouping_key": "HGNC:17997||biolink:has_phenotype|HP:0000557",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "uuid:11cb9281-198e-11f0-be82-6045bdb3d4c0",
@@ -5316,7 +5316,7 @@ def association_response():
                     ],
                     "evidence_count": 0,
                     "grouping_key": "HGNC:28472||biolink:has_phenotype|HP:0003560",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "uuid:11cb948b-198e-11f0-be82-6045bdb3d4c0",
@@ -5387,7 +5387,7 @@ def association_response():
                     ],
                     "evidence_count": 0,
                     "grouping_key": "HGNC:22082||biolink:has_phenotype|HP:0003829",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "uuid:11cb94c4-198e-11f0-be82-6045bdb3d4c0",
@@ -5764,7 +5764,7 @@ def association_response():
                     ],
                     "evidence_count": 1,
                     "grouping_key": "HGNC:26814||biolink:has_phenotype|HP:0002174",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
             ],
         },

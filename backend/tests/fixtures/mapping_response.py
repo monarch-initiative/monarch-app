@@ -32,7 +32,7 @@ def mapping_response():
                     "object_label": "muscular dystrophy",
                     "mapping_justification": "semapv:UnspecifiedMatching",
                     "id": "d6f4912e-e8d2-47dd-b14a-f2efd84a3b36",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "subject_id": "MONDO:0020121",
@@ -42,7 +42,7 @@ def mapping_response():
                     "object_label": "Muscular dystrophy",
                     "mapping_justification": "semapv:UnspecifiedMatching",
                     "id": "17f6c4c5-70cf-4001-8914-b8f288645676",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "subject_id": "MONDO:0020121",
@@ -51,7 +51,7 @@ def mapping_response():
                     "object_id": "MEDGEN:44527",
                     "mapping_justification": "semapv:UnspecifiedMatching",
                     "id": "4e470e9e-b905-4a09-b987-de84f2ee762b",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "subject_id": "MONDO:0020121",
@@ -61,7 +61,7 @@ def mapping_response():
                     "object_label": "Muscular Dystrophy",
                     "mapping_justification": "semapv:UnspecifiedMatching",
                     "id": "d3ba48e4-2ec1-4e34-8c4d-fa072bcb41fa",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "subject_id": "MONDO:0020121",
@@ -71,7 +71,7 @@ def mapping_response():
                     "object_label": "Muscular dystrophy",
                     "mapping_justification": "semapv:UnspecifiedMatching",
                     "id": "a1ea5870-f75d-423a-b622-95cfa54898e8",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "subject_id": "MONDO:0020121",
@@ -80,7 +80,7 @@ def mapping_response():
                     "object_id": "SCTID:73297009",
                     "mapping_justification": "semapv:UnspecifiedMatching",
                     "id": "a12abca5-8f84-487d-90db-c99acfcadfc0",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "subject_id": "MONDO:0020121",
@@ -89,7 +89,7 @@ def mapping_response():
                     "object_id": "UMLS:C0026850",
                     "mapping_justification": "semapv:UnspecifiedMatching",
                     "id": "1e4de186-708f-4f8a-b042-cfbb13ec6350",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "subject_id": "MONDO:0020121",
@@ -98,7 +98,7 @@ def mapping_response():
                     "object_id": "icd11.foundation:1464662404",
                     "mapping_justification": "semapv:UnspecifiedMatching",
                     "id": "f9d8aea9-dd23-4131-b003-0833cdc60b5a",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "subject_id": "MONDO:0020121",
@@ -107,7 +107,7 @@ def mapping_response():
                     "object_id": "MESH:D009136",
                     "mapping_justification": "semapv:UnspecifiedMatching",
                     "id": "dae0a57e-5336-4c25-9c45-af869077be29",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
             ],
         },

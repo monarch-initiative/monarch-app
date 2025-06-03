@@ -2221,7 +2221,7 @@ def autocomplete_response():
                         "subdivision of organism along appendicular axis phenotype",
                         "manual digit 1 or 5",
                     ],
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:0013566",
@@ -5162,7 +5162,7 @@ def autocomplete_response():
                         "zeugopodial skeleton",
                         "number of anatomical entities of type anatomical entity in blood phenotype",
                     ],
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:0010953",
@@ -7345,7 +7345,7 @@ def autocomplete_response():
                         "subdivision of organism along appendicular axis phenotype",
                         "manual digit 1 or 5",
                     ],
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:0001083",
@@ -7387,7 +7387,7 @@ def autocomplete_response():
                     "subsets": ["gard_rare", "nord_rare", "otar", "rare"],
                     "namespace": "MONDO",
                     "has_phenotype_count": 0,
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:0019391",
@@ -11907,7 +11907,7 @@ def autocomplete_response():
                         "spinal cord",
                         "autonomic nervous system phenotype",
                     ],
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:0013248",
@@ -13368,7 +13368,7 @@ def autocomplete_response():
                         "regulation of gene expression",
                         "homeostatic process phenotype",
                     ],
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:0013499",
@@ -15293,7 +15293,7 @@ def autocomplete_response():
                         "epithelial fold",
                         "eye primordium",
                     ],
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:0024525",
@@ -16146,7 +16146,7 @@ def autocomplete_response():
                         "potassium atom level phenotype",
                         "role bodily fluid level phenotype",
                     ],
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:0014985",
@@ -16963,7 +16963,7 @@ def autocomplete_response():
                         "Abnormal cellular physiology",
                         "decreased size of the material anatomical entity",
                     ],
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "MONDO:0014986",
@@ -18723,7 +18723,7 @@ def autocomplete_response():
                         "immaterial anatomical entity",
                         "neural plate phenotype",
                     ],
-                    "highlighting": [],
+                    "highlighting": None,
                 },
             ],
         },

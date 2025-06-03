@@ -199,6 +199,10 @@ classes:
       An association that gives it's direction relative to a specified entity
     slots:
       - direction
+      - highlighting
+    slot_usage:
+      highlighting:
+        range: AssociationHighlighting
   ExpandedCurie:
     description: A curie bundled along with its expanded url
     slots:
@@ -344,6 +348,25 @@ classes:
       - tokens
       - start
       - end
+  AssociationHighlighting:
+    description: Optional highlighting information for search results
+    slots:
+      - object_label
+      - object_closure_label
+      - subject_label
+      - subject_closure_label
+      - predicate
+    slot_usage:
+      object_label:
+        multivalued: true
+        required: false
+      subject_label:
+        multivalued: true
+        required: false
+      predicate:
+        multivalued: true
+        required: false
+
 slots:
   aggregator_knowledge_source:
     multivalued: true
@@ -399,13 +422,13 @@ slots:
       A context qualifier representing a disease or condition in which a relationship expressed in an association took place.
     examples:
       - value: MONDO:0004979 # Asthma
-      - value: MONDO:0005148 # type 2 diabetes mellitus  
+      - value: MONDO:0005148 # type 2 diabetes mellitus
     range: string
   species_context_qualifier:
     description: >-
       A context qualifier representing a species in which a relationship expressed in an association took place.
     examples:
-      - value: NCBITaxon:9606 
+      - value: NCBITaxon:9606
     range: string
   evidence_count:
     description: count of supporting documents, evidence codes, and sources supplying evidence
@@ -880,3 +903,7 @@ slots:
   metadata: string
   graph_stats: string
   qc_report: string
+
+  highlighting:
+    description: Optional highlighting information for search results
+    multivalued: false

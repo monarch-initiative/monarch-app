@@ -535,7 +535,7 @@ def association_table_response():
                     ],
                     "evidence_count": 6,
                     "grouping_key": "MONDO:0958235|False|biolink:has_phenotype|HP:0006094",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "uuid:292ee13a-198e-11f0-be82-6045bdb3d4c0",
@@ -718,7 +718,7 @@ def association_table_response():
                     ],
                     "evidence_count": 6,
                     "grouping_key": "MONDO:0958235|False|biolink:has_phenotype|HP:0001252",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "uuid:292ee15b-198e-11f0-be82-6045bdb3d4c0",
@@ -1083,7 +1083,7 @@ def association_table_response():
                     ],
                     "evidence_count": 4,
                     "grouping_key": "MONDO:0958235|False|biolink:has_phenotype|HP:0003557",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "uuid:292ee13c-198e-11f0-be82-6045bdb3d4c0",
@@ -1232,7 +1232,7 @@ def association_table_response():
                     ],
                     "evidence_count": 4,
                     "grouping_key": "MONDO:0958235|False|biolink:has_phenotype|HP:0001270",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
                 {
                     "id": "uuid:2372d469-198e-11f0-be82-6045bdb3d4c0",
@@ -1415,7 +1415,7 @@ def association_table_response():
                     ],
                     "evidence_count": 3,
                     "grouping_key": "MONDO:0024530|False|biolink:has_phenotype|HP:0003701",
-                    "highlighting": [],
+                    "highlighting": None,
                 },
             ],
         },
