@@ -59,20 +59,22 @@ import { KG_TOOL_LINKS, TOOL_LINKS } from "@/data/toolEntityConfig";
 <style lang="scss" scoped>
 .section:last-of-type {
   margin-bottom: 3em;
-  padding-top: 0;
-}
-.section.center {
   gap: 0;
 }
+
+.section:first-of-type {
+  gap: 3em;
+}
+
 .custom-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(7em, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-items: center;
+  justify-content: center;
   width: 100%;
   max-width: 60em;
-  overflow: visible;
-  gap: 1.2em;
+
+  gap: 2em;
 }
 
 @media (max-width: 1000px) {
@@ -93,9 +95,10 @@ import { KG_TOOL_LINKS, TOOL_LINKS } from "@/data/toolEntityConfig";
 
 .custom-grid > * {
   display: flex;
+  flex: 1 1 7em;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  max-width: 100%;
 }
 
 .home-title {
@@ -107,8 +110,8 @@ import { KG_TOOL_LINKS, TOOL_LINKS } from "@/data/toolEntityConfig";
   position: relative;
   position: relative;
   width: 12em;
-  height: 12em;
-  border-radius: 50em;
+  height: 6em;
+
   cursor: pointer;
   transition: transform 0.2s ease;
 

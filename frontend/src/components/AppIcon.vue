@@ -9,6 +9,7 @@
     :class="['app-icon', type]"
     aria-hidden="true"
     @vue:updated="({ el }: VNode) => customMounted(el, true)"
+    v-tooltip="props.tooltip"
   />
   <FontAwesomeIcon
     v-else-if="fontAwesome"
@@ -27,6 +28,7 @@
   />
   <svg
     v-else-if="initials"
+    v-tooltip="props.tooltip"
     viewBox="0 0 100 100"
     class="app-icon initials"
     @vue:mounted="({ el }: VNode) => customMounted(el)"
