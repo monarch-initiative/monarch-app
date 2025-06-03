@@ -230,7 +230,7 @@ import {
 import { getCategoryLabel } from "@/api/categories";
 import {
   AssociationDirectionEnum,
-  type AssociationWithHighlighting,
+  type DirectionalAssociation,
   type Node,
 } from "@/api/model";
 import AppModal from "@/components/AppModal.vue";
@@ -262,12 +262,12 @@ type Props = {
 const props = defineProps<Props>();
 
 const showModal = ref(false);
-const selectedAssociation = ref<AssociationWithHighlighting | null>(null);
+const selectedAssociation = ref<DirectionalAssociation | null>(null);
 const start = ref(0);
 const sort = ref<Sort>();
 const perPage = ref(5);
 
-function openModal(association: AssociationWithHighlighting) {
+function openModal(association: DirectionalAssociation) {
   selectedAssociation.value = association;
   showModal.value = true;
 }
@@ -278,7 +278,7 @@ watch(showModal, (newValue) => {
   }
 });
 
-type Datum = keyof AssociationWithHighlighting;
+type Datum = keyof DirectionalAssociation;
 
 const getHighlightedText = (
   text: string,
@@ -499,7 +499,7 @@ const {
   isError,
 } = useQuery<
   {
-    items: AssociationWithHighlighting[];
+    items: DirectionalAssociation[];
     total: number;
     limit: number;
     offset: number;
@@ -560,7 +560,7 @@ async function download() {
 }
 
 /** get phenotype frequency percentage 0-1 */
-const frequencyPercentage = (row: AssociationWithHighlighting) => {
+const frequencyPercentage = (row: DirectionalAssociation) => {
   /** frequency from % out of 100 */
   if (row.has_percentage != undefined) return row.has_percentage / 100;
 
@@ -588,7 +588,7 @@ const frequencyPercentage = (row: AssociationWithHighlighting) => {
 
 /** get frequency tooltip */
 
-const frequencyTooltip = (row: AssociationWithHighlighting) => {
+const frequencyTooltip = (row: DirectionalAssociation) => {
   // display fraction if possible
   if (row.has_count != undefined && row.has_total != undefined) {
     return `${row.has_count} of ${row.has_total} cases`;
