@@ -14,6 +14,7 @@ defineProps<{
   description: string;
 }>();
 </script>
+
 <style scoped lang="scss">
 .info-card {
   padding: 1rem;
