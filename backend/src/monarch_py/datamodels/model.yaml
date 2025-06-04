@@ -199,6 +199,10 @@ classes:
       An association that gives it's direction relative to a specified entity
     slots:
       - direction
+      - highlighting
+    slot_usage:
+      highlighting:
+        range: AssociationHighlighting
   ExpandedCurie:
     description: A curie bundled along with its expanded url
     slots:
@@ -219,6 +223,11 @@ classes:
       - in_taxon_label
       - symbol
       - synonym
+      - broad_synonym
+      - exact_synonym
+      - narrow_synonym
+      - related_synonym
+      - subsets
       - uri
       - iri
       - namespace
@@ -339,6 +348,25 @@ classes:
       - tokens
       - start
       - end
+  AssociationHighlighting:
+    description: Optional highlighting information for search results
+    slots:
+      - object_label
+      - object_closure_label
+      - subject_label
+      - subject_closure_label
+      - predicate
+    slot_usage:
+      object_label:
+        multivalued: true
+        required: false
+      subject_label:
+        multivalued: true
+        required: false
+      predicate:
+        multivalued: true
+        required: false
+
 slots:
   aggregator_knowledge_source:
     multivalued: true
@@ -394,13 +422,13 @@ slots:
       A context qualifier representing a disease or condition in which a relationship expressed in an association took place.
     examples:
       - value: MONDO:0004979 # Asthma
-      - value: MONDO:0005148 # type 2 diabetes mellitus  
+      - value: MONDO:0005148 # type 2 diabetes mellitus
     range: string
   species_context_qualifier:
     description: >-
       A context qualifier representing a species in which a relationship expressed in an association took place.
     examples:
-      - value: NCBITaxon:9606 
+      - value: NCBITaxon:9606
     range: string
   evidence_count:
     description: count of supporting documents, evidence codes, and sources supplying evidence
@@ -616,6 +644,25 @@ slots:
     range: boolean
   synonym:
     multivalued: true
+  broad_synonym:
+    description: A broader synonym for the entity
+    multivalued: true
+  exact_synonym:
+    description: An exact synonym for the entity
+    multivalued: true
+  narrow_synonym:
+    description: A narrower synonym for the entity
+    multivalued: true
+  related_synonym:
+    description: A related synonym for the entity
+    multivalued: true
+  subsets:
+    description: A list of subsets that the entity belongs to
+    range: string
+    multivalued: true
+  type:
+    description: The type of the entity (e.g. sequence onotology type for genes etc)
+    range: string
   total:
     description: total number of items matching a query
     range: integer
@@ -856,3 +903,7 @@ slots:
   metadata: string
   graph_stats: string
   qc_report: string
+
+  highlighting:
+    description: Optional highlighting information for search results
+    multivalued: false

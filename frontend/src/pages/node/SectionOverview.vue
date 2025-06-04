@@ -4,7 +4,7 @@
 
 <template>
   <AppSection width="full" alignment="left">
-    <AppDetails>
+    <AppDetails gap="20px">
       <!-- symbol (gene specific) -->
       <AppDetail
         v-if="node.category === 'biolink:Gene'"
@@ -64,6 +64,11 @@
             :node="omit(gene, 'in_taxon_label')"
           />
         </AppFlex>
+      </AppDetail>
+
+      <!-- disease frequecy -->
+      <AppDetail v-if="node.category === 'biolink:Disease'" title="Frequency">
+        <span>{{ node?.subsets?.includes("rare") ? "Rare" : "Common" }}</span>
       </AppDetail>
 
       <!-- synonyms -->

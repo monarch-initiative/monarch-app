@@ -21,15 +21,14 @@
     </p>
     <div class="custom-grid">
       <div v-for="(tool, id) in TOOL_LINKS" :key="id">
-        <AppLink :to="tool.to">
+        <AppLink :to="tool.to" :aria-label="tool.tooltip">
           <AppIcon
             v-if="tool.icon"
-            v-tooltip="tool.tooltip"
+            :tooltip="tool.tooltip"
             :aria-label="tool.tooltip"
             :icon="tool.icon"
             class="icon"
           />
-          <span class="sr-only">{{ tool.tooltip }}</span>
         </AppLink>
       </div>
     </div>
@@ -60,18 +59,22 @@ import { KG_TOOL_LINKS, TOOL_LINKS } from "@/data/toolEntityConfig";
 <style lang="scss" scoped>
 .section:last-of-type {
   margin-bottom: 3em;
-  padding-top: 0;
-}
-.section.center {
   gap: 0;
 }
+
+.section:first-of-type {
+  gap: 3em;
+}
+
 .custom-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(7em, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-items: center;
+  justify-content: center;
   width: 100%;
   max-width: 60em;
+
+  gap: 2em;
 }
 
 @media (max-width: 1000px) {
@@ -92,9 +95,10 @@ import { KG_TOOL_LINKS, TOOL_LINKS } from "@/data/toolEntityConfig";
 
 .custom-grid > * {
   display: flex;
+  flex: 1 1 7em;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  max-width: 100%;
 }
 
 .home-title {
@@ -104,15 +108,16 @@ import { KG_TOOL_LINKS, TOOL_LINKS } from "@/data/toolEntityConfig";
 .icon {
   z-index: 2;
   position: relative;
+  position: relative;
   width: 12em;
-  height: 12em;
-  border-radius: 50em;
+  height: 6em;
+
   cursor: pointer;
   transition: transform 0.2s ease;
 
   @media (max-width: 1000px) {
     width: 9em;
-    height: 9em;
+    height: 7em;
   }
 }
 
@@ -124,18 +129,12 @@ a:focus,
 .icon:focus {
   outline: none;
 }
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
-  white-space: nowrap;
-}
+
 .kg-tools {
   margin-top: 2.5em;
+
+  @media (max-width: 1000px) {
+    gap: 2.5em;
+  }
 }
 </style>
