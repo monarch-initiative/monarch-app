@@ -41,7 +41,7 @@ $wrap: 1000px;
   gap: 0.5em;
   h1 {
     padding: 0;
-    font-size: 1.6em;
+    font-size: 1.8em;
   }
 }
 

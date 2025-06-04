@@ -1,6 +1,6 @@
 <template>
-  <nav aria-label="breadcrumb">
-    <ul class="breadcrumb">
+  <nav aria-label="breadcrumb" class="breadcrumb">
+    <ul>
       <li v-for="(crumb, index) in breadcrumbs" :key="index">
         <router-link v-if="index !== breadcrumbs.length - 1" :to="crumb.path">
           {{ crumb.label }}
@@ -49,6 +49,7 @@ $wrap: 1000px;
 .breadcrumb {
   display: flex;
   flex-wrap: wrap;
+  max-width: 100vw;
   margin: 1em;
   padding: 0;
   gap: 0.25em; // Tighter gap for mobile
