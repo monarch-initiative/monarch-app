@@ -12,8 +12,8 @@
   <PageTile
     id="page-mondo"
     title="Mondo"
-    :imgSrc="MondoLogo"
-    :isInfoPage="true"
+    :img-src="MondoLogo"
+    :is-info-page="true"
   />
 
   <p class="tagline">
@@ -22,7 +22,7 @@
     breakthroughs in research.
   </p>
 
-  <AppSection width="big" id="about">
+  <AppSection id="about" width="big">
     <div class="row">
       <div class="column left">
         <AppHeading class="header"> About </AppHeading>
@@ -51,7 +51,7 @@
     </div>
   </AppSection>
 
-  <AppSection width="big" id="cite">
+  <AppSection id="cite" width="big">
     <div class="row">
       <div class="column left">
         <AppHeading class="header"> Citation </AppHeading>
@@ -81,7 +81,7 @@
     </div>
   </AppSection>
 
-  <AppSection width="big" id="contact">
+  <AppSection id="contact" width="big">
     <p class="contact-text">
       Need more information or support? Don't hesitate to
       <AppLink to="/about/contact-us">Contact Us</AppLink> – we're happy to
@@ -89,7 +89,7 @@
     </p>
   </AppSection>
 
-  <AppSection width="big" id="license">
+  <AppSection id="license" width="big">
     <p class="license-text">
       The resources and tools provided on this site are released under an open
       license to encourage reuse and collaboration. Click
