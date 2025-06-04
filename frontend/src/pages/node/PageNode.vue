@@ -28,7 +28,6 @@
     <SectionAssociations :node="node" />
     <SectionBreadcrumbs :node="node" />
     <SectionHierarchy :node="node" />
-    <SectionExtra :node="node" />
     <Teleport to="body">
       <TheTableOfContents />
     </Teleport>
@@ -45,7 +44,6 @@ import { addEntry } from "@/global/history";
 import { appDescription, appTitle } from "@/global/meta";
 import SectionBreadcrumbs from "@/pages/node/SectionBreadcrumbs.vue";
 import SectionAssociations from "./SectionAssociations.vue";
-import SectionExtra from "./SectionExtra.vue";
 import SectionHierarchy from "./SectionHierarchy.vue";
 import SectionOverview from "./SectionOverview.vue";
 import SectionTitle from "./SectionTitle.vue";
