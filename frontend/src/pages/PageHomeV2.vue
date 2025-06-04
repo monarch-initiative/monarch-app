@@ -21,7 +21,7 @@
     </p>
     <div class="custom-grid">
       <div v-for="(tool, id) in TOOL_LINKS" :key="id">
-        <AppLink :to="tool.to">
+        <AppLink :to="tool.to" :aria-label="tool.tooltip">
           <AppIcon
             v-if="tool.icon"
             :tooltip="tool.tooltip"
