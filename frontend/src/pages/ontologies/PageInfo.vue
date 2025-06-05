@@ -10,107 +10,101 @@
   </nav>
 
   <PageTile
-    id="page-mondo"
-    title="Mondo"
+    id="page-{{ item?.id || 'not-found' }}"
+    :title="item?.title"
     :img-src="MondoLogo"
     :is-info-page="true"
+    :tagline="item?.tagline"
   />
 
-  <p class="tagline">
-    Bridging the gap between data and discovery by providing powerful,
-    cutting-edge bioinformatics tools that drive innovation and accelerate
-    breakthroughs in research.
-  </p>
-
   <AppSection id="about" width="big">
-    <div class="row">
-      <div class="column left">
-        <AppHeading class="header"> About </AppHeading>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet,
-          consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
-          labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-          exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.
-        </p>
-      </div>
-      <div class="column right">
-        <figure>
-          <img
-            src="@/assets/architecture.png"
-            alt="Diagram of Monarch infrastructure, described below."
-          />
-        </figure>
-      </div>
+    <AppHeading class="header">About</AppHeading>
+    <p>{{ item.description }}</p>
+    <figure v-if="item.visual_explainer" class="figure">
+      <img
+        :src="`/assets/${item.visual_explainer}`"
+        alt="Visual explanation."
+      />
+    </figure>
+  </AppSection>
+
+  <!-- Citation & Resources Section -->
+  <AppSection id="cite" width="big" v-if="item.Citation">
+    <AppHeading class="header">Citation</AppHeading>
+    <div class="citation-container">
+      <p v-html="formattedCitation"></p>
     </div>
   </AppSection>
 
-  <AppSection id="cite" width="big">
-    <div class="row">
-      <div class="column left">
-        <AppHeading class="header"> Citation </AppHeading>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.consectetur adipiscing elit. Sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.
-        </p>
-      </div>
-      <div class="column right resource">
-        <AppHeading class="header"> Resources & Downloads </AppHeading>
-        <ul class="links">
-          <li>
-            <a href="https://github.com/exomiser"
-              >https://github.com/exomiser</a
-            >
-          </li>
-          <li>
-            <a href="https://github.com/uberon">https://github.com/uberon</a>
-          </li>
-        </ul>
-      </div>
-    </div>
+  <AppSection width="big" v-if="resourceLinks.length">
+    <AppHeading class="header" id="resources">Resources & Downloads</AppHeading>
+
+    <AppLink
+      v-for="link in resourceLinks"
+      :key="link.key"
+      :to="link.value"
+      :noIcon="true"
+    >
+      {{ link.value }}
+    </AppLink>
   </AppSection>
 
+  <!-- Contact Section -->
   <AppSection id="contact" width="big">
-    <p class="contact-text">
-      Need more information or support? Don't hesitate to
-      <AppLink to="/about/contact-us">Contact Us</AppLink> – we're happy to
-      assist you.
-    </p>
+    <div class="contact-section">
+      <AppHeading class="header">Contact Us</AppHeading>
+      <p>
+        Have any questions or require assistance? Our support team is happy to
+        help.
+        <AppLink to="/about/contact-us" class="contact-link">
+          Contact us
+        </AppLink>
+        today.
+      </p>
+    </div>
   </AppSection>
 
+  <!-- License Section -->
   <AppSection id="license" width="big">
-    <p class="license-text">
-      The resources and tools provided on this site are released under an open
-      license to encourage reuse and collaboration. Click
-      <AppLink
-        to="https://exomiser.monarchinitiative.org/exomiser/legal"
-        target="_blank"
-      >
-        here
-      </AppLink>
-      to see full liscence information
-    </p>
+    <div class="license-section">
+      <AppHeading class="header">License</AppHeading>
+      <p v-if="item.license.startsWith('http')">
+        This project is licensed.View the full license
+        <AppLink
+          :to="item.license"
+          target="_blank"
+          class="license-link"
+          :noIcon="true"
+        >
+          here </AppLink
+        >.
+      </p>
+      <p v-else>
+        Content licensed under:
+        <span class="license-badge">{{ item.license }}</span>
+      </p>
+    </div>
   </AppSection>
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import MondoLogo from "@/assets/icons/resource-mondo-black.svg?url";
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
+import AppLink from "@/components/AppLink.vue";
+import AppSection from "@/components/AppSection.vue";
 import PageTile from "@/components/ThePageTitle.vue";
+import data from "@/data/info-pages.json";
+
+const props = defineProps<{
+  itemType: "ontology" | "registry" | "standard" | "tool";
+  id: string;
+}>();
 
 const isScrolled = ref(false);
+
+const items = data[props.itemType] as Array<any> | undefined;
+const item = computed(() => items?.find((entry) => entry.id === props.id));
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 10;
@@ -123,13 +117,82 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener("scroll", handleScroll);
 });
+
+if (!item.value) {
+  console.warn(`No item found for type=${props.itemType} and id=${props.id}`);
+}
+
+//resource links
+const resourceLinks = computed(() => {
+  const links = [
+    { key: "repository", value: item.value?.repository },
+    { key: "documentation", value: item.value?.documentation },
+    { key: "website", value: item.value?.website },
+    { key: "other_link", value: item.value?.other_link },
+  ];
+
+  // Remove empty values and duplicate URLs
+  const seen = new Set<string>();
+  const uniqueLinks = [];
+
+  for (const link of links) {
+    if (link.value && !seen.has(link.value)) {
+      seen.add(link.value);
+      uniqueLinks.push(link);
+    }
+  }
+
+  return uniqueLinks;
+});
+
+//citation
+
+const formattedCitation = computed(() => {
+  if (!item.value?.Citation) return "";
+  const citation = item.value.Citation;
+  const doiRegex = /(https?:\/\/[^\s]+)/g;
+  const citationWithLink = citation.replace(doiRegex, (match) => {
+    return `<a href="${match}" target="_blank" class="doi-link">${match}</a>`;
+  });
+  return citationWithLink;
+});
 </script>
 
 <style scoped lang="scss">
-.section.big {
-  padding: 0 max(20px, (100% - 1200px) / 2) 10px;
-}
+.section {
+  &.big {
+    align-items: unset;
+    padding: 0 max(20px, (100% - 1200px) / 2) 10px;
+    text-align: left;
+  }
 
+  &.center {
+    gap: 10px;
+  }
+  a {
+    color: #005580;
+    text-decoration: none;
+    &:hover {
+      color: #0077a6;
+    }
+  }
+
+  figure {
+    max-width: 50em;
+    margin: 1rem auto;
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+  }
+}
+.section:last-of-type {
+  margin-bottom: 2em;
+}
+:deep([id]) {
+  scroll-margin-top: 180px;
+}
 .tagline {
   width: 60%;
   margin: 1.2em auto;
@@ -146,7 +209,7 @@ onBeforeUnmount(() => {
   background-color: #fff;
   transition: box-shadow 0.3s ease;
 
-  .navbar.shadow {
+  &.shadow {
     box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.1);
   }
 
@@ -162,6 +225,7 @@ onBeforeUnmount(() => {
     border-radius: 4px;
     font-size: 1.1rem;
     transition: background 0.3s ease;
+
     &:hover {
       background: #e2f0f5;
     }
@@ -183,32 +247,26 @@ onBeforeUnmount(() => {
 
   .column {
     flex: 1;
-    &.left {
-      max-width: 50%;
-    }
-    &.right {
-      max-width: 50%;
-      margin-top: 2em;
+  }
 
-      figure {
-        margin: 0;
+  &.single-column {
+    flex-direction: column;
+    align-items: flex-start; // align children left
+    justify-content: flex-start;
 
-        img {
-          display: block;
-          width: 100%;
-          height: auto;
-        }
-      }
+    .column {
+      max-width: 100%;
+      text-align: left;
     }
-    &.resource {
-      margin: 0;
+
+    .column.right {
+      display: none;
     }
   }
 }
 
 .header {
   width: 100%;
-  margin-bottom: 1rem;
   color: #1c1c1c;
   font-weight: 700;
   font-size: 1.4rem;
@@ -225,33 +283,62 @@ onBeforeUnmount(() => {
     a {
       color: #005580;
       text-decoration: underline;
+
+      &:hover {
+        color: #0077a6;
+      }
     }
   }
 }
 
-#contact,
-#license {
-  text-align: center;
-  .header {
-    text-align: center;
-  }
+.citation-container {
+  font-size: 0.95em;
+  line-height: 1.6;
+  word-wrap: break-word;
+  padding: 1rem;
 
-  p {
-    margin: 0.5em 0;
-    color: #333;
-  }
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  white-space: pre-line;
+  overflow-wrap: break-word;
 
-  a {
+  a.doi-link {
     color: #005580;
     font-weight: 500;
     text-decoration: underline;
+
     &:hover {
       color: #0077a6;
     }
   }
 }
 
-.section:last-of-type {
-  margin-bottom: 4em;
+#contact,
+#license {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+  border-radius: 8px;
+  background-color: #f9f9f9; // soft background
+
+  .header {
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: #444;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  a {
+    color: #0077a6;
+    font-weight: 500;
+    text-decoration: underline;
+
+    &:hover {
+      color: #005580;
+    }
+  }
 }
 </style>

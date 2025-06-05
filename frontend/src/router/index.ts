@@ -226,18 +226,41 @@ export const routes: RouteRecordRaw[] = [
     component: asyncRoute("aboutV2/PagePublications"),
     meta: { breadcrumb: "Publications" },
   },
-  {
-    path: "/ontologies/page-info",
-    name: "KnowledgeGraph",
-    component: asyncRoute("ontologies/PageInfo"),
-    meta: { breadcrumb: "Knowledge Graph" },
-  },
   // Community Dropdown
   {
     path: "/community/get-involved",
     name: "CoummunityGetInvolved",
     component: asyncRoute("community/PageGetInvolved"),
     meta: { breadcrumb: "Get Involved" },
+  },
+
+  {
+    path: "/ontology/:id",
+    name: "OntologyPage",
+    component: asyncRoute("ontologies/PageInfo"),
+    props: (route) => ({ itemType: "ontology", id: route.params.id }),
+    meta: { breadcrumb: "Ontology Info Page" },
+  },
+  {
+    path: "/registry/:id",
+    name: "RegistryPage",
+    component: asyncRoute("ontologies/PageInfo"),
+    props: (route) => ({ itemType: "registry", id: route.params.id }),
+    meta: { breadcrumb: "Registry Info Page" },
+  },
+  {
+    path: "/standard/:id",
+    name: "StandardPage",
+    component: asyncRoute("ontologies/PageInfo"),
+    props: (route) => ({ itemType: "standard", id: route.params.id }),
+    meta: { breadcrumb: "Standard Info Page" },
+  },
+  {
+    path: "/tool/:id",
+    name: "ToolPage",
+    component: asyncRoute("ontologies/PageInfo"),
+    props: (route) => ({ itemType: "tool", id: route.params.id }),
+    meta: { breadcrumb: "Tool Info Page" },
   },
 ];
 

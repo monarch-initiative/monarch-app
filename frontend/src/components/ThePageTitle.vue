@@ -27,6 +27,7 @@ $wrap: 1000px;
   align-items: center;
   align-items: center;
   padding: 0px 1.5em;
+  gap: 0.5em;
   text-align: center;
   @media (max-width: $wrap) {
     padding: 0.5em 1.5em;
@@ -57,7 +58,7 @@ $wrap: 1000px;
 
 .tagline {
   margin: 0;
-  color: hsl(185, 100%, 30%);
+  color: #666666;
   font-weight: 500;
   font-size: 1rem;
   @media (max-width: $wrap) {
