@@ -275,22 +275,6 @@
       "documentation": "https://phenopacket-schema.readthedocs.io/en/latest/",
       "website": "http://phenopackets.org/",
       "other link": null
-    },
-    {
-      "title": "Simple Standard for Ontology Mappings (SSSOM)",
-      "item_type": "standard",
-      "id": "sssom",
-      "title_short": "SSSOM",
-      "icon": "resource-sssom",
-      "license": null,
-      "Citation": null,
-      "description": "A simple metadata standard for describing semantic mappings.",
-      "tagline": null,
-      "visual_explainer": null,
-      "repository": "https://github.com/mapping-commons/sssom/",
-      "documentation": "https://mapping-commons.github.io/sssom/spec/",
-      "website": "https://mapping-commons.github.io/sssom/spec/",
-      "other link": null
     }
   ],
   "tool": [
@@ -304,7 +288,7 @@
       "Citation": "Bone WP, Washington NL, Buske OJ, Adams DR, Davis J, Draper D, Flynn ED, Girdea M, Godfrey R, Golas G, Groden C, Jacobsen J, K\u00f6hler S, Lee EM, Links AE, Markello TC, Mungall CJ, Nehrebecky M, Robinson PN, Sincan M, Soldatos AG, Tifft CJ, Toro C, Trang H, Valkanas E, Vasilevsky N, Wahl C, Wolfe LA, Boerkoel CF, Brudno M, Haendel MA, Gahl WA, Smedley D. Computational evaluation of exome sequence data using human and model organism phenotypes improves diagnostic efficiency. Genet Med. 2016 Jun;18(6):608-17. doi: 10.1038/gim.2015.137. Epub 2015 Nov 12. PMID: 26562225; PMCID: PMC4916229.",
       "description": "A command-line utility for phenotype-based prioritisation of Human disease-causing variants from VCF files.",
       "tagline": null,
-      "visual_explainer": "Introduction to Exomiser\nPhenotype-based prioritisation of variants with Exomiser",
+      "visual_explainer": "",
       "repository": "https://github.com/exomiser/Exomiser",
       "documentation": "https://exomiser.readthedocs.io/",
       "website": "https://exomiser.monarchinitiative.org/exomiser/",
@@ -404,6 +388,22 @@
       "repository": "https://github.com/linkml/linkml-registry",
       "documentation": "https://linkml.io/linkml-model/docs/",
       "website": "https://linkml.io/",
+      "other link": null
+    },
+    {
+      "title": "Simple Standard for Ontology Mappings (SSSOM)",
+      "item_type": "standard",
+      "id": "sssom",
+      "title_short": "SSSOM",
+      "icon": "resource-sssom",
+      "license": null,
+      "Citation": null,
+      "description": "A simple metadata standard for describing semantic mappings.",
+      "tagline": null,
+      "visual_explainer": null,
+      "repository": "https://github.com/mapping-commons/sssom/",
+      "documentation": "https://mapping-commons.github.io/sssom/spec/",
+      "website": "https://mapping-commons.github.io/sssom/spec/",
       "other link": null
     }
   ]
