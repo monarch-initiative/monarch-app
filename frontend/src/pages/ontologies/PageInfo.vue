@@ -2,9 +2,9 @@
   <AppBreadcrumb />
   <nav :class="['navbar', { shadow: isScrolled }]">
     <ul>
-      <li><a href="#about">About</a></li>
-      <li><a href="#resources">Resources</a></li>
-      <li><a href="#cite">Cite</a></li>
+      <li v-if="item.description"><a href="#about">About</a></li>
+      <li v-if="resourceLinks.length"><a href="#resources">Resources</a></li>
+      <li v-if="item.Citation"><a href="#cite">Cite</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
@@ -65,7 +65,7 @@
   </AppSection>
 
   <!-- License Section -->
-  <AppSection id="license" width="big">
+  <AppSection id="license" width="big" v-if="item.license">
     <div class="license-section">
       <AppHeading class="header">License</AppHeading>
       <p v-if="item.license.startsWith('http')">
@@ -141,17 +141,14 @@ const resourceLinks = computed(() => {
       uniqueLinks.push(link);
     }
   }
-
   return uniqueLinks;
 });
-
-//citation
 
 const formattedCitation = computed(() => {
   if (!item.value?.Citation) return "";
   const citation = item.value.Citation;
   const doiRegex = /(https?:\/\/[^\s]+)/g;
-  const citationWithLink = citation.replace(doiRegex, (match) => {
+  const citationWithLink = citation.replace(doiRegex, (match: string) => {
     return `<a href="${match}" target="_blank" class="doi-link">${match}</a>`;
   });
   return citationWithLink;
