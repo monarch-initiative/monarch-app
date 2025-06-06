@@ -1,5 +1,46 @@
 [
   {
+    "label": "About",
+    "subItems": [
+      {
+        "label": "Our Story",
+        "key": "about-our-story",
+        "to": "/about/our-story",
+        "tooltip": ""
+      },
+      {
+        "label": "Team",
+        "key": "about-team",
+        "to": "/about/team",
+        "tooltip": ""
+      },
+      {
+        "label": "SAB",
+        "key": "about-sab",
+        "to": "/about/sab",
+        "tooltip": ""
+      },
+      {
+        "label": "Contact Us",
+        "key": "about-contact-us",
+        "to": "/about/contact-us",
+        "tooltip": ""
+      },
+      {
+        "label": "Publications",
+        "key": "about-publications",
+        "to": "/about/publications",
+        "tooltip": ""
+      },
+      {
+        "label": "Funding",
+        "key": "about-funding",
+        "to": "/about/funding",
+        "tooltip": ""
+      }
+    ]
+  },
+  {
     "label": "Knowledge Graph",
     "subItems": [
       {
@@ -18,7 +59,7 @@
         "label": "How To & Help",
         "key": "kg-help",
         "to": "/kg/help",
-        "tooltip": "Feedback,docs,guides and more"
+        "tooltip": ""
       },
       {
         "label": "Documentation",
@@ -36,7 +77,7 @@
         "label": "Cite the KG",
         "key": "cite",
         "to": "/kg/citation",
-        "tooltip": "Learn how to cite the Knowledge Graph"
+        "tooltip": ""
       },
       {
         "label": "API",
@@ -49,48 +90,166 @@
         "label": "About the KG",
         "key": "about-kg",
         "to": "/kg/about",
-        "tooltip": "About the Knowledge Graph"
+        "tooltip": ""
       }
     ]
   },
   {
-    "label": "About",
+    "label": "Ontologies",
     "subItems": [
       {
-        "label": "Our Story",
-        "key": "about-our-story",
-        "to": "/about/our-story",
-        "tooltip": "Our Story"
-      },
-      {
-        "label": "Team",
-        "key": "about-team",
-        "to": "/about/team",
+        "label": "Mondo",
+        "key": "ontology-mondo",
+        "to": "/ontology/mondo",
         "tooltip": ""
       },
       {
-        "label": "SAB",
-        "key": "about-sab",
-        "to": "/about/sab",
-        "tooltip": "SAB"
+        "label": "Uberon",
+        "key": "ontology-uberon",
+        "to": "/ontology/uberon",
+        "tooltip": ""
       },
       {
-        "label": "Contact Us",
-        "key": "about-contact-us",
-        "to": "/about/contact-us",
-        "tooltip": "Contact Us"
+        "label": "uPheno",
+        "key": "ontology-uPeheno",
+        "to": "/ontology/upheno",
+        "tooltip": ""
       },
       {
-        "label": "Publications",
-        "key": "about-publications",
-        "to": "/about/publications",
-        "tooltip": "Publications"
+        "label": "HPO",
+        "key": "ontology-hpo",
+        "to": "/ontology/hp",
+        "tooltip": ""
       },
       {
-        "label": "Funding",
-        "key": "about-funding",
-        "to": "/about/funding",
-        "tooltip": "Funding"
+        "label": "Phenio",
+        "key": "ontology-phenio",
+        "to": "/ontology/phenio",
+        "tooltip": ""
+      },
+      {
+        "label": "OBA",
+        "key": "ontology-oba",
+        "to": "/ontology/oba",
+        "tooltip": ""
+      },
+      {
+        "label": "VBO",
+        "key": "ontology-vbo",
+        "to": "/ontology/vbo",
+        "tooltip": ""
+      },
+      {
+        "label": "Geno",
+        "key": "ontology-geno",
+        "to": "/ontology/geno",
+        "tooltip": ""
+      },
+      {
+        "label": "Sepio",
+        "key": "ontology-sepio",
+        "to": "/ontology/sepio",
+        "tooltip": ""
+      },
+      {
+        "label": "ECTO",
+        "key": "ontology-ecto",
+        "to": "/ontology/ecto",
+        "tooltip": ""
+      }
+    ]
+  },
+  {
+    "label": "Technology & Tools",
+    "subItems": [
+      {
+        "label": "Exomiser",
+        "key": "exomiser",
+        "to": "/tool/exomiser",
+        "tooltip": ""
+      },
+      {
+        "label": "PhEval",
+        "key": "pheval",
+        "to": "/tool/pheval",
+        "tooltip": ""
+      },
+      {
+        "label": "LinkML",
+        "key": "linkml-cde",
+        "to": "/tool/linkml",
+        "tooltip": ""
+      },
+      {
+        "label": "SSSOM",
+        "key": "sssom",
+        "to": "/tool/sssom",
+        "tooltip": ""
+      },
+      {
+        "label": "OAK",
+        "key": "oak",
+        "to": "/tool/oak",
+        "tooltip": ""
+      },
+      {
+        "label": "ODK",
+        "key": "odk",
+        "to": "/tool/odk",
+        "tooltip": ""
+      },
+      {
+        "label": "OntoGPT",
+        "key": "ontogpt",
+        "to": "/tool/ontogpt",
+        "tooltip": ""
+      },
+      {
+        "label": "CurateGPT",
+        "key": "curate-gpt",
+        "to": "/tool/curate_gpt",
+        "tooltip": ""
+      },
+      {
+        "label": "Phenopackets",
+        "key": "pehnopackets",
+        "to": "/standard/phenopackets",
+        "tooltip": ""
+      }
+    ]
+  },
+  {
+    "label": "Registries & Hubs",
+    "subItems": [
+      {
+        "label": "Monarch OLS",
+        "key": "monarch_ols",
+        "to": "/registry/monarch_ols",
+        "tooltip": ""
+      },
+      {
+        "label": "Monarch Mapping Commons",
+        "key": "monarch_mapping_commons",
+        "to": "/registry/monarch_mapping_commons",
+        "tooltip": ""
+      },
+      {
+        "label": "KG Hub",
+        "key": "kg_hub",
+        "to": "/registry/kg_hub",
+        "tooltip": ""
+      },
+      {
+        "label": "KG Registry",
+        "key": "kg_registry",
+        "to": "/registry/kg_registry",
+        "tooltip": ""
+      },
+      {
+        "label": "LinkML Registry",
+        "key": "linkml_registry",
+        "to": "/registry/linkml_registry",
+        "tooltip": ""
       }
     ]
   },
@@ -101,34 +260,34 @@
         "label": "Get Involved",
         "key": "community-get-involved",
         "to": "/community/get-involved",
-        "tooltip": "Get Involved"
+        "tooltip": ""
       },
       {
         "label": "Blog",
         "key": "community-blog",
         "to": "https://monarchinit.medium.com",
-        "tooltip": "Blog",
+        "tooltip": "",
         "icon": true
       },
       {
         "label": "LinkedIn",
         "key": "community-linkedin",
         "to": "https://www.linkedin.com/company/the-monarch-initiative",
-        "tooltip": "LinkedIn",
+        "tooltip": "",
         "icon": true
       },
       {
         "label": "YouTube",
         "key": "community-youtube",
         "to": "https://www.youtube.com/@monarchinitiative",
-        "tooltip": "Youtube",
+        "tooltip": "",
         "icon": true
       },
       {
         "label": "Bluesky",
         "key": "community-bluesky",
         "to": "https://bsky.app/profile/monarchinitiative.bsky.social",
-        "tooltip": "BLueSky",
+        "tooltip": "",
         "icon": true
       }
     ]

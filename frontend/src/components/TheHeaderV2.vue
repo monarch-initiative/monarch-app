@@ -145,18 +145,6 @@ const search = computed(
     ),
 );
 
-async function scrollToHomePageSection() {
-  await nextTick(); // wait for DOM update
-  setTimeout(() => {
-    const el = document.getElementById("home-page");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    } else {
-      console.warn("home-page not found");
-    }
-  }, 300); // 300ms gives time for Vue to render home component
-}
-
 function scrollToHashWithOffset(hash: string, offset = 80) {
   const el = document.querySelector(hash);
   if (el) {
