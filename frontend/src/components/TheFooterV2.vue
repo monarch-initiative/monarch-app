@@ -99,7 +99,6 @@ import navigationMenus from "@/data/navigationMenu.json";
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    max-width: 1000px;
 
     gap: 2rem;
   }

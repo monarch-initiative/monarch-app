@@ -74,12 +74,6 @@
       />
 
       <div class="navItems">
-        <AppLink
-          class="link"
-          to="https://exomiser.monarchinitiative.org/exomiser/"
-        >
-          Exomiser
-        </AppLink>
         <DropdownButton
           v-for="(menu, index) in navigationMenus"
           :key="menu.label"
