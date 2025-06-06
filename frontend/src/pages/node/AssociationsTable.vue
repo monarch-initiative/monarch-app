@@ -58,9 +58,7 @@
         <AppNodeBadge
           :node="{
             id: row.subject,
-            name:
-              row?.highlighting?.subject_closure_label?.[0] ||
-              row.subject_label,
+            name: row.subject_label,
             category: row.subject_category,
             info: row.subject_taxon_label,
           }"
@@ -96,8 +94,7 @@
         <AppNodeBadge
           :node="{
             id: row.object,
-            name:
-              row?.highlighting?.object_closure_label?.[0] || row.object_label,
+            name: row.object_label,
             category: row.object_category,
             info: row.object_taxon_label,
           }"
