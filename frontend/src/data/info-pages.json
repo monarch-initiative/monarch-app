@@ -163,7 +163,7 @@
       "other link": null
     },
     {
-      "title": "The Unified Phenotype Ontology (uPheno)",
+      "title": "The Unified Phenotype Ontology ",
       "item_type": "ontology",
       "id": "upheno",
       "title_short": "uPheno",
@@ -334,7 +334,7 @@
       "icon": "resource-pheval",
       "license": "Apache-2.0 license",
       "Citation": "Bridges Y, Souza V, Cortes KG, Haendel M, Harris NL, Korn DR, Marinakis NM, Matentzoglu N, McLaughlin JA, Mungall CJ, Odell A, Osumi-Sutherland D, Robinson PN, Smedley D, Jacobsen JOB. Towards a standard benchmark for phenotype-driven variant and gene prioritisation algorithms: PhEval - Phenotypic inference Evaluation framework. BMC Bioinformatics. 2025 Mar 22;26(1):87. doi: 10.1186/s12859-025-06105-4. PMID: 40121479; PMCID: PMC11929307.",
-      "description": "A Python library for assisting in benchmarking tools for Variant/Gene/Disease prioritisation.",
+      "description": "A Python library for assisting in benchmarking tools for Variant/Gene/Disease prioritisation.A Python library for assisting in benchmarking tools for Variant/Gene/Disease prioritisation.A Python library for assisting in benchmarking tools for Variant/Gene/Disease prioritisation.",
       "tagline": null,
       "visual_explainer": "https://www.youtube.com/watch?v=nIPzVN99UWc",
       "repository": "https://github.com/monarch-initiative/pheval",
