@@ -1,7 +1,10 @@
 <template>
   <div :id="id" class="title-container">
     <div class="heading-container">
-      <img v-if="imgSrc" :src="imgSrc" :alt="title" class="title-image" />
+      <template v-if="imgSrc">
+        <AppIcon :icon="imgSrc" />
+      </template>
+
       <h1 :class="{ info: isInfoPage }">{{ title }}</h1>
     </div>
     <p v-if="tagline" class="tagline">{{ tagline }}</p>
@@ -9,6 +12,8 @@
 </template>
 
 <script setup lang="ts">
+import AppIcon from "./AppIcon.vue";
+
 defineProps<{
   title: string;
   tagline?: string;
@@ -25,13 +30,17 @@ $wrap: 1000px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  align-items: center;
   padding: 0px 1.5em;
   gap: 0.5em;
   text-align: center;
   @media (max-width: $wrap) {
     padding: 0.5em 1.5em;
   }
+}
+.title-container .app-icon {
+  width: 4em;
+  height: 4em;
+  fill: #000;
 }
 
 .heading-container {
@@ -53,7 +62,9 @@ $wrap: 1000px;
 
 .title-image {
   display: block;
+  width: 4em;
   height: 4em;
+  fill: #000;
 }
 
 .tagline {

@@ -1,15 +1,14 @@
 <template>
   <div class="page-container">
     <AppBreadcrumb :dynamicBreadcrumb="item?.title" />
-
     <PageTile
+      :key="`page-${item?.id}`"
       id="page-{{ item?.id || 'not-found' }}"
       :title="item?.title"
-      :img-src="MondoLogo"
+      :img-src="item.icon"
       :is-info-page="true"
       :tagline="item?.tagline"
     />
-
     <!-- Tabs -->
     <div class="main-content">
       <div class="tabs">
@@ -103,8 +102,7 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import MondoLogo from "@/assets/icons/resource-mondo-black.svg?url";
+import { useRouter } from "vue-router";
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppLink from "@/components/AppLink.vue";
 import AppSection from "@/components/AppSection.vue";
@@ -112,7 +110,7 @@ import PageTile from "@/components/ThePageTitle.vue";
 import data from "@/data/info-pages.json";
 
 const props = defineProps<{
-  itemType: "ontology" | "registry" | "standard" | "tool";
+  itemType: "ontology" | "registry" | "tool";
   id: string;
 }>();
 const router = useRouter();

@@ -213,7 +213,7 @@
       {
         "label": "Phenopackets",
         "key": "pehnopackets",
-        "to": "/standard/phenopackets",
+        "to": "/tool/phenopackets",
         "tooltip": ""
       }
     ]

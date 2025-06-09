@@ -247,12 +247,6 @@ export const routes: RouteRecordRaw[] = [
     props: (route) => ({ itemType: "registry", id: route.params.id }),
   },
   {
-    path: "/standard/:id",
-    name: "StandardPage",
-    component: asyncRoute("PageInfo"),
-    props: (route) => ({ itemType: "standard", id: route.params.id }),
-  },
-  {
     path: "/tool/:id",
     name: "ToolPage",
     component: asyncRoute("PageInfo"),
