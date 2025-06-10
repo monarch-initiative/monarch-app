@@ -252,7 +252,7 @@ watch(item, (newItem) => {
 }
 
 .tab-content {
-  margin: auto;
+  margin: 2.5em auto 0 auto;
 }
 
 .header {

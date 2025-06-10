@@ -178,14 +178,14 @@ onUnmounted(() => {
   window.removeEventListener("resize", updateWidth);
 });
 
-const isMobile = computed(() => windowWidth.value < 800);
+const isMobile = computed(() => windowWidth.value < 1120);
 
 /** close nav when page changes */
 watch(() => route.name, close);
 </script>
 
 <style lang="scss" scoped>
-$wrap: 800px;
+$wrap: 1120px;
 
 /** header */
 .header {
@@ -214,10 +214,6 @@ $wrap: 800px;
     display: none;
   }
 }
-
-// .header.home {
-//   justify-content: center;
-// }
 
 @media (max-width: $wrap) {
   .header {
