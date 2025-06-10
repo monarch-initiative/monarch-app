@@ -40,7 +40,11 @@ $wrap: 1000px;
 .title-container .app-icon {
   width: 4em;
   height: 4em;
-  fill: #000;
+
+  &.img {
+    width: 3.5em;
+    height: 3.5em;
+  }
 }
 
 .heading-container {
@@ -64,7 +68,11 @@ $wrap: 1000px;
   display: block;
   width: 4em;
   height: 4em;
-  fill: #000;
+}
+.title-container .app-icon :deep(*) {
+  fill: inherit !important;
+  color: inherit;
+  filter: none !important;
 }
 
 .tagline {

@@ -282,7 +282,7 @@
       "item_type": "tool",
       "id": "exomiser",
       "title_short": "Exomiser",
-      "icon": "resource-exomiser",
+      "icon": "resource-exomiser.png",
       "license": "AGPL-3.0 license",
       "Citation": "Bone WP, Washington NL, Buske OJ, Adams DR, Davis J, Draper D, Flynn ED, Girdea M, Godfrey R, Golas G, Groden C, Jacobsen J, K\u00f6hler S, Lee EM, Links AE, Markello TC, Mungall CJ, Nehrebecky M, Robinson PN, Sincan M, Soldatos AG, Tifft CJ, Toro C, Trang H, Valkanas E, Vasilevsky N, Wahl C, Wolfe LA, Boerkoel CF, Brudno M, Haendel MA, Gahl WA, Smedley D. Computational evaluation of exome sequence data using human and model organism phenotypes improves diagnostic efficiency. Genet Med. 2016 Jun;18(6):608-17. doi: 10.1038/gim.2015.137. Epub 2015 Nov 12. PMID: 26562225; PMCID: PMC4916229.",
       "description": "A command-line utility for phenotype-based prioritisation of Human disease-causing variants from VCF files.",

@@ -210,6 +210,7 @@ watch(item, (newItem) => {
   display: flex;
   flex-direction: column;
   min-height: 70vh;
+  gap: 2.5em;
 }
 
 .main-content {
@@ -228,7 +229,7 @@ watch(item, (newItem) => {
 .tabs {
   display: flex;
   justify-content: center;
-  margin: 2rem 0;
+
   gap: 1rem;
 
   button {
