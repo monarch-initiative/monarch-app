@@ -1,9 +1,9 @@
 <template>
   <div class="page-container">
-    <AppBreadcrumb :dynamicBreadcrumb="item?.title" />
+    <AppBreadcrumb :dynamic-breadcrumb="item?.title" />
     <PageTile
-      :key="`page-${item?.id}`"
       id="page-{{ item?.id || 'not-found' }}"
+      :key="`page-${item?.id}`"
       :title="item?.title"
       :img-src="item.icon"
       :is-info-page="true"
@@ -25,11 +25,11 @@
       <!-- Tab Content -->
       <div class="tab-content">
         <AppSection
-          width="big"
           v-if="activeTab === 'about' && item.description"
+          width="big"
         >
           <p>{{ item.description }}</p>
-          <div class="visual-explainer" v-if="item.visual_explainer">
+          <div v-if="item.visual_explainer" class="visual-explainer">
             <figure v-if="visualExplainerType === 'image'" class="figure">
               <img :src="item.visual_explainer" alt="Visual explanation." />
             </figure>
@@ -40,13 +40,14 @@
               class="video"
               allow="autoplay; picture-in-picture"
               allowfullscreen
+              :title="`Visual explainer video for ${item.title}`"
             ></iframe>
           </div>
         </AppSection>
 
         <AppSection
-          width="big"
           v-if="activeTab === 'citation' && item.Citation"
+          width="big"
         >
           <div class="citation-container">
             <p v-html="formattedCitation"></p>
@@ -54,14 +55,14 @@
         </AppSection>
 
         <AppSection
-          width="big"
           v-if="activeTab === 'resources' && resourceLinks.length"
+          width="big"
         >
           <AppLink
             v-for="link in resourceLinks"
             :key="link.key"
             :to="link.value"
-            :noIcon="true"
+            :no-icon="true"
           >
             {{ link.value }}
           </AppLink>
@@ -86,7 +87,7 @@
               :to="item.license"
               target="_blank"
               class="license-link"
-              :noIcon="true"
+              :no-icon="true"
               >here</AppLink
             >.
           </p>

@@ -29,7 +29,7 @@
         >
           <AppNodeText :text="node.name" />
         </span>
-        <p class="tag" v-if="node.id?.includes('MONDO')">
+        <p v-if="node.id?.includes('MONDO')" class="tag">
           {{ node.id }}
         </p>
         <template v-if="node.deprecated"> (OBSOLETE)</template>
