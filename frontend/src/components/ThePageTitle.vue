@@ -1,19 +1,25 @@
 <template>
   <div :id="id" class="title-container">
     <div class="heading-container">
-      <img v-if="imageSrc" :src="imageSrc" :alt="title" class="title-image" />
-      <h1>{{ title }}</h1>
+      <template v-if="imgSrc">
+        <AppIcon :icon="imgSrc" />
+      </template>
+
+      <h1 :class="{ info: isInfoPage }">{{ title }}</h1>
     </div>
     <p v-if="tagline" class="tagline">{{ tagline }}</p>
   </div>
 </template>
 
 <script setup lang="ts">
+import AppIcon from "./AppIcon.vue";
+
 defineProps<{
   title: string;
   tagline?: string;
-  imageSrc?: string;
+  imgSrc?: string;
   id: string;
+  isInfoPage?: boolean;
 }>();
 </script>
 
@@ -24,17 +30,26 @@ $wrap: 1000px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  align-items: center;
   padding: 0px 1.5em;
+  gap: 0.5em;
   text-align: center;
   @media (max-width: $wrap) {
     padding: 0.5em 1.5em;
   }
 }
+.title-container .app-icon {
+  width: 4em;
+  height: 4em;
+
+  &.img {
+    width: 3.5em;
+    height: 3.5em;
+  }
+}
 
 .heading-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   margin-top: 1em;
@@ -42,16 +57,27 @@ $wrap: 1000px;
   h1 {
     padding: 0;
     font-size: 1.8em;
+
+    &.info {
+      font-size: 2em;
+    }
   }
 }
 
 .title-image {
-  height: 2em;
+  display: block;
+  width: 4em;
+  height: 4em;
+}
+.title-container .app-icon :deep(*) {
+  fill: inherit !important;
+  color: inherit;
+  filter: none !important;
 }
 
 .tagline {
   margin: 0;
-  color: hsl(185, 100%, 30%);
+  color: #666666;
   font-weight: 500;
   font-size: 1rem;
   @media (max-width: $wrap) {

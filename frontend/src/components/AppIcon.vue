@@ -6,10 +6,10 @@
   <component
     :is="customIcon"
     v-if="isCustom"
+    v-tooltip="props.tooltip"
     :class="['app-icon', type]"
     aria-hidden="true"
     @vue:updated="({ el }: VNode) => customMounted(el, true)"
-    v-tooltip="props.tooltip"
   />
   <FontAwesomeIcon
     v-else-if="fontAwesome"
@@ -20,11 +20,11 @@
   />
   <img
     v-else-if="isPng"
+    v-tooltip="props.tooltip"
     :src="`/icons/${props.icon}`"
     :alt="props.icon"
     class="app-icon img"
     aria-hidden="true"
-    v-tooltip="props.tooltip"
   />
   <svg
     v-else-if="initials"
@@ -59,7 +59,7 @@ type Props = {
 };
 
 const props = defineProps<Props>();
-console.log(props);
+
 /** look for font awesome icon with matching name */
 const fontAwesome = computed(() => {
   for (const prefix of ["fas", "far", "fab"]) {
