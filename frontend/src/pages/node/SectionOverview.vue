@@ -113,6 +113,11 @@
           </AppLink>
         </AppFlex>
       </AppDetail>
+      <AppDetail :blank="!node.provided_by_link" title="Ingest Documentation">
+        <AppLink :to="node.provided_by_link?.url || ''">
+          {{ node.provided_by_link?.id || node.provided_by }}
+        </AppLink>
+      </AppDetail>
       <AppDetail
         :blank="!otherMappings.length"
         title="Other Mappings"
@@ -126,6 +131,21 @@
           >
             {{ mapping.id }}
           </AppLink>
+        </AppFlex>
+      </AppDetail>
+      <!-- external references -->
+      <AppDetail
+        :blank="!node.external_links?.length"
+        title="External References"
+        :full="true"
+      >
+        <AppFlex align-h="left" gap="small">
+          <AppLink
+            v-for="(link, index) of node.external_links"
+            :key="index"
+            :to="link.url || ''"
+            >{{ link.id }}</AppLink
+          >
         </AppFlex>
       </AppDetail>
     </AppDetails>
