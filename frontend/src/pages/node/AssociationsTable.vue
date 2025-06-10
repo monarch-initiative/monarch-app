@@ -3,6 +3,20 @@
 -->
 
 <template>
+  <div class="association-tabs">
+    <button
+      :class="{ active: selectedTab === 'all' }"
+      @click="selectedTab = 'all'"
+    >
+      All
+    </button>
+    <button
+      :class="{ active: selectedTab === 'direct' }"
+      @click="selectedTab = 'direct'"
+    >
+      Direct
+    </button>
+  </div>
   <!-- status -->
   <AppStatus
     v-if="isLoading"
@@ -260,12 +274,18 @@ type Props = {
 };
 
 const props = defineProps<Props>();
-
+const selectedTab = ref<"all" | "direct">("all");
 const showModal = ref(false);
 const selectedAssociation = ref<DirectionalAssociation | null>(null);
 const start = ref(0);
 const sort = ref<Sort>();
 const perPage = ref(5);
+
+const directParam = computed(() => {
+  return selectedTab.value === "direct"
+    ? { id: true, label: "Direct" }
+    : { id: undefined, label: "All" };
+});
 
 function openModal(association: DirectionalAssociation) {
   selectedAssociation.value = association;
@@ -519,15 +539,30 @@ const {
       start.value = 0;
     }
 
+    const params: any = {
+      nodeId: props.node.id,
+      categoryId: props.category.id,
+      start: start.value,
+      limit: perPage.value,
+      includeOrthologs: props.includeOrthologs,
+      search: props.search,
+      sort: sort.value,
+    };
+
+    //  Only add direct param if defined
+    if (directParam.value.id !== undefined) {
+      params.direct = directParam.value.id;
+    }
+
     const response = await getAssociations(
-      props.node.id,
-      props.category.id,
-      start.value,
-      perPage.value,
-      props.includeOrthologs,
-      props.direct.id,
-      props.search,
-      sort.value,
+      params.nodeId,
+      params.categoryId,
+      params.start,
+      params.limit,
+      params.includeOrthologs,
+      params.direct,
+      params.search,
+      params.sort,
     );
     return response;
   },
@@ -615,7 +650,7 @@ watch(
   async () => await queryAssociations(true),
 );
 watch(
-  () => props.direct,
+  () => directParam.value,
   async () => await queryAssociations(true),
 );
 

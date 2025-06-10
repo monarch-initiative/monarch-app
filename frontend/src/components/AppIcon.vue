@@ -59,7 +59,7 @@ type Props = {
 };
 
 const props = defineProps<Props>();
-console.log(props);
+
 /** look for font awesome icon with matching name */
 const fontAwesome = computed(() => {
   for (const prefix of ["fas", "far", "fab"]) {
