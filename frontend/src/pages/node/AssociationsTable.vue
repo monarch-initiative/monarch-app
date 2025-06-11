@@ -107,6 +107,10 @@
     <!-- object-->
     <template #object="{ row }">
       <div class="badgeColumn">
+        <span v-if="row?.negated === true && selectedTab === 'direct'">
+          Does <span class="negated-text">NOT</span> have
+        </span>
+
         <AppNodeBadge
           :node="{
             id: row.object,
@@ -274,6 +278,7 @@ type Props = {
 };
 
 const props = defineProps<Props>();
+
 const selectedTab = ref<"all" | "direct">("all");
 const showModal = ref(false);
 const selectedAssociation = ref<DirectionalAssociation | null>(null);
@@ -283,7 +288,7 @@ const perPage = ref(5);
 
 const directParam = computed(() => {
   return selectedTab.value === "direct"
-    ? { id: true, label: "Direct Associations" }
+    ? { id: "true", label: "Direct Associations" }
     : { id: undefined, label: "All Associations" };
 });
 
@@ -400,7 +405,7 @@ const cols = computed((): Cols<Datum> => {
   }
 
   /** standard columns, always present */
-  const baseCols: Cols<Datum> = [
+  let baseCols: Cols<Datum> = [
     {
       slot: "subject",
       key: "subject_label",
@@ -441,6 +446,12 @@ const cols = computed((): Cols<Datum> => {
       slot: "taxon",
       heading: "Taxon",
     });
+  }
+  // Remove first two columns if selectedTab is 'direct'
+  if (selectedTab.value === "direct") {
+    baseCols = baseCols.filter(
+      (col) => col.key !== "subject_label" && col.key !== "predicate",
+    );
   }
 
   if (
@@ -669,6 +680,11 @@ onMounted(() => queryAssociations(true));
 </script>
 
 <style lang="scss" scoped>
+.negated-text {
+  color: $error;
+  font-weight: bold;
+}
+
 .arrow {
   color: $gray;
 }
@@ -716,53 +732,41 @@ onMounted(() => queryAssociations(true));
 
 .association-tabs {
   display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  background-color: #fff;
+  border-bottom: 3px solid $theme;
+
   button {
-    padding: 0.5em 1em;
-
-    background-color: #f0f0f0;
+    position: relative;
+    padding: 0.9em 1.9em;
+    border: none;
+    background: none;
+    color: #333;
+    font-weight: 500;
+    font-size: 1em;
     cursor: pointer;
-    transition: background-color 0.3s;
-  }
-
-  :deep(.button) {
-    &:hover,
-    &:focus {
-      outline: none !important;
-      box-shadow: none !important;
-    }
-  }
-  button.active {
-    border: 1px solid #ccc;
-    border-bottom: 3px solid $theme;
-    background-color: $theme;
-    color: $white;
-
-    :deep(.button) {
-      background-color: transparent !important;
-      color: $white !important;
-    }
-  }
-
-  button:not(.active) {
-    border: 1px solid transparent;
-    border-bottom: 3px solid $theme;
-    background-color: $light-gray;
-    transition: background-color 0.3s;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
 
     &:hover {
-      background-color: #cccccc;
+      background-color: #f5f5f5;
     }
 
-    .tab-description {
+    &.active {
+      border-radius: 5px 5px 0 0;
+      background-color: $theme;
+      color: white;
+      font-weight: 600;
+
+      &::after {
+        display: none;
+        content: "";
+      }
+    }
+
+    &:not(.active) {
+      background-color: #f0f0f0;
       color: #555;
-    }
-
-    :deep(.button) {
-      background-color: transparent !important;
-      color: $theme;
+      font-weight: 500;
     }
   }
 }

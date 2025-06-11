@@ -49,8 +49,12 @@
           <AppTextbox
             v-model="searchValues[category.id]"
             placeholder="Search table data..."
-            @debounce="(value) => (debouncedSearchValues[category.id] = value)"
-            @change="(value) => (debouncedSearchValues[category.id] = value)"
+            @debounce="
+              (value: string) => (debouncedSearchValues[category.id] = value)
+            "
+            @change="
+              (value: string) => (debouncedSearchValues[category.id] = value)
+            "
           />
         </div>
       </div>
@@ -62,7 +66,7 @@
           :category="category"
           :include-orthologs="includeOrthologs"
           :direct="direct"
-          :search="debouncedSearchValues[category.id]"
+          :search="debouncedSearchValues[category.id] || ''"
         />
       </template>
     </AppSection>
