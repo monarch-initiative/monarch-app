@@ -718,10 +718,10 @@ onMounted(() => queryAssociations(true));
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  border-bottom: 3px solid $theme;
+  background-color: #fff;
   button {
     padding: 0.5em 1em;
-    border: none;
+
     background-color: #f0f0f0;
     cursor: pointer;
     transition: background-color 0.3s;
@@ -736,7 +736,7 @@ onMounted(() => queryAssociations(true));
   }
   button.active {
     border: 1px solid #ccc;
-
+    border-bottom: 3px solid $theme;
     background-color: $theme;
     color: $white;
 
@@ -748,7 +748,7 @@ onMounted(() => queryAssociations(true));
 
   button:not(.active) {
     border: 1px solid transparent;
-
+    border-bottom: 3px solid $theme;
     background-color: $light-gray;
     transition: background-color 0.3s;
 
