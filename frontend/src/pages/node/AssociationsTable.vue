@@ -8,13 +8,13 @@
       :class="{ active: selectedTab === 'all' }"
       @click="selectedTab = 'all'"
     >
-      All
+      All Associations
     </button>
     <button
       :class="{ active: selectedTab === 'direct' }"
       @click="selectedTab = 'direct'"
     >
-      Direct
+      Direct Associations
     </button>
   </div>
   <!-- status -->
@@ -283,8 +283,8 @@ const perPage = ref(5);
 
 const directParam = computed(() => {
   return selectedTab.value === "direct"
-    ? { id: true, label: "Direct" }
-    : { id: undefined, label: "All" };
+    ? { id: true, label: "Direct Associations" }
+    : { id: undefined, label: "All Associations" };
 });
 
 function openModal(association: DirectionalAssociation) {
@@ -712,5 +712,58 @@ onMounted(() => queryAssociations(true));
 .text-sm {
   color: $dark-gray;
   font-size: 0.9em;
+}
+
+.association-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  border-bottom: 3px solid $theme;
+  button {
+    padding: 0.5em 1em;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  :deep(.button) {
+    &:hover,
+    &:focus {
+      outline: none !important;
+      box-shadow: none !important;
+    }
+  }
+  button.active {
+    border: 1px solid #ccc;
+
+    background-color: $theme;
+    color: $white;
+
+    :deep(.button) {
+      background-color: transparent !important;
+      color: $white !important;
+    }
+  }
+
+  button:not(.active) {
+    border: 1px solid transparent;
+
+    background-color: $light-gray;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #cccccc;
+    }
+
+    .tab-description {
+      color: #555;
+    }
+
+    :deep(.button) {
+      background-color: transparent !important;
+      color: $theme;
+    }
+  }
 }
 </style>
