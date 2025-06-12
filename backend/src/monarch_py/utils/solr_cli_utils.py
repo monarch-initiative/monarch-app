@@ -60,7 +60,7 @@ def check_for_solr(dc: docker.DockerClient, quiet: bool = False):
 def get_solr(update: bool = False):
     """Checks for Solr data and container, and returns a SolrImplementation."""
     if update:
-        ensure_solr(update)
+        ensure_solr(overwrite=update)
     if check_for_solr(dc=docker.from_env(), quiet=True):
         return SolrImplementation()
     else:
