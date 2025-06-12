@@ -16,12 +16,14 @@
         <button
           :class="{ active: selectedTabs[category.id] === 'all' }"
           @click="selectedTabs[category.id] = 'all'"
+          :disabled="isLoading"
         >
           All Associations
         </button>
         <button
           :class="{ active: selectedTabs[category.id] === 'direct' }"
           @click="selectedTabs[category.id] = 'direct'"
+          :disabled="isLoading"
         >
           Direct Associations
         </button>
