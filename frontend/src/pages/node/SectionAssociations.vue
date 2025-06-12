@@ -28,19 +28,6 @@
       </div>
 
       <div class="actions-row">
-        <div class="search-wrapper">
-          <AppTextbox
-            v-model="searchValues[category.id]"
-            class="search-box"
-            placeholder="Search table data..."
-            @debounce="
-              (value: string) => (debouncedSearchValues[category.id] = value)
-            "
-            @change="
-              (value: string) => (debouncedSearchValues[category.id] = value)
-            "
-          />
-        </div>
         <AppButton
           v-if="
             selectedTabs[category.id] === 'direct' &&
@@ -59,6 +46,19 @@
           text="Phenotype Explorer"
           icon="arrow-right"
         />
+        <div class="search-wrapper">
+          <AppTextbox
+            v-model="searchValues[category.id]"
+            class="search-box"
+            placeholder="Search table data..."
+            @debounce="
+              (value: string) => (debouncedSearchValues[category.id] = value)
+            "
+            @change="
+              (value: string) => (debouncedSearchValues[category.id] = value)
+            "
+          />
+        </div>
       </div>
 
       <template v-if="category && direct">
@@ -169,7 +169,7 @@ watch(
 .actions-row {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: flex-end;
   width: 100%;
   margin: 1rem 0;
   gap: 1rem;
@@ -177,7 +177,7 @@ watch(
 
 .search-wrapper {
   flex: 1 1 auto;
-  max-width: 600px;
+  max-width: 500px;
 }
 
 .association-tabs {
