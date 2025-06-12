@@ -54,20 +54,33 @@
 
     <!-- subject -->
     <template #subject="{ row }">
-      <AppNodeBadge
-        :node="{
-          id: row.subject,
-          name: row.subject_label,
-          category: row.subject_category,
-          info: row.subject_taxon_label,
-        }"
-        :breadcrumbs="getBreadcrumbs(node, row, 'subject')"
-      />
+      <div class="badgeColumn">
+        <AppNodeBadge
+          :node="{
+            id: row.subject,
+            name: row.subject_label,
+            category: row.subject_category,
+            info: row.subject_taxon_label,
+          }"
+          :breadcrumbs="getBreadcrumbs(node, row, 'subject')"
+          :get-highlighted-text="getHighlightedText"
+        />
+
+        <AppNodeText
+          v-if="row?.highlighting?.subject_closure_label?.[0]"
+          :text="`Ancestor: ${row.highlighting.subject_closure_label[0]}`"
+          class="text-sm"
+          :get-highlighted-text="getHighlightedText"
+        />
+      </div>
     </template>
 
     <!-- predicate -->
     <template #predicate="{ row }">
-      <AppPredicateBadge :association="row" />
+      <AppPredicateBadge
+        :association="row"
+        :get-highlighted-text="getHighlightedText"
+      />
     </template>
 
     <!-- maxorelation -->
@@ -77,15 +90,24 @@
 
     <!-- object-->
     <template #object="{ row }">
-      <AppNodeBadge
-        :node="{
-          id: row.object,
-          name: row.object_label,
-          category: row.object_category,
-          info: row.object_taxon_label,
-        }"
-        :breadcrumbs="getBreadcrumbs(node, row, 'object')"
-      />
+      <div class="badgeColumn">
+        <AppNodeBadge
+          :node="{
+            id: row.object,
+            name: row.object_label,
+            category: row.object_category,
+            info: row.object_taxon_label,
+          }"
+          :breadcrumbs="getBreadcrumbs(node, row, 'object')"
+          :get-highlighted-text="getHighlightedText"
+        />
+        <AppNodeText
+          v-if="row?.highlighting?.object_closure_label?.[0]"
+          :text="`Ancestor: ${row.highlighting.object_closure_label[0]}`"
+          class="text-sm"
+          :get-highlighted-text="getHighlightedText"
+        />
+      </div>
     </template>
 
     <template #extension="{ row }">
@@ -213,6 +235,7 @@ import {
 } from "@/api/model";
 import AppModal from "@/components/AppModal.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
+import AppNodeText from "@/components/AppNodeText.vue";
 import AppPercentage from "@/components/AppPercentage.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
 import type { Option } from "@/components/AppSelectSingle.vue";
@@ -256,6 +279,20 @@ watch(showModal, (newValue) => {
 });
 
 type Datum = keyof DirectionalAssociation;
+
+const getHighlightedText = (
+  text: string,
+  transformFn?: (text: string) => string,
+): string => {
+  if (!text) return "";
+  const transformed = transformFn ? transformFn(text) : text;
+  if (!props.search) return transformed;
+  const regex = new RegExp(props.search, "gi");
+  return transformed.replace(
+    regex,
+    (match) => `<span style="background: #FFFF00;"><em>${match}</em></span>`,
+  );
+};
 
 /** Orholog columns */
 const orthologColoumns = computed<Cols<Datum>>(() => {
@@ -454,12 +491,21 @@ const cols = computed((): Cols<Datum> => {
 });
 
 /** get table association data */
+
 const {
   query: queryAssociations,
   data: associations,
   isLoading,
   isError,
-} = useQuery(
+} = useQuery<
+  {
+    items: DirectionalAssociation[];
+    total: number;
+    limit: number;
+    offset: number;
+  },
+  [boolean]
+>(
   async function (fresh: boolean) /**
    * whether to perform "fresh" search, without filters/pagination/etc. true when
    * search text changes, false when filters/pagination/etc change.
@@ -482,7 +528,6 @@ const {
       props.search,
       sort.value,
     );
-
     return response;
   },
 
@@ -541,6 +586,7 @@ const frequencyPercentage = (row: DirectionalAssociation) => {
 };
 
 /** get frequency tooltip */
+
 const frequencyTooltip = (row: DirectionalAssociation) => {
   // display fraction if possible
   if (row.has_count != undefined && row.has_total != undefined) {
@@ -619,5 +665,16 @@ onMounted(() => queryAssociations(true));
   100% {
     opacity: 0.7;
   }
+}
+
+.badgeColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+}
+
+.text-sm {
+  color: $dark-gray;
+  font-size: 0.9em;
 }
 </style>

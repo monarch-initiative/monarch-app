@@ -26,6 +26,17 @@
   "in_taxon_label": null,
   "symbol": null,
   "synonym": null,
+  "broad_synonym": null,
+  "exact_synonym": null,
+  "narrow_synonym": null,
+  "related_synonym": null,
+  "subsets": [
+    "disease_grouping",
+    "gard_rare",
+    "ordo_group_of_disorders",
+    "otar",
+    "rare"
+  ],
   "uri": "http://purl.obolibrary.org/obo/MONDO_0020121",
   "iri": null,
   "namespace": "MONDO",

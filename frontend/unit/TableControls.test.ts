@@ -43,3 +43,25 @@ test("Downloads", async () => {
   await wrapper.find(".controls div:nth-child(3) button").trigger("click");
   expect(emitted(wrapper, "download")).toEqual([]);
 });
+
+test("Terminal page switching buttons", async () => {
+  const fiveItemsProps = {
+    ...props,
+    perPage: 5,
+    start: 0,
+    total: 5,
+  };
+
+  const wrapper = mount(TableControls as unknown as Component, {
+    props: fiveItemsProps,
+  });
+  const navButtons = wrapper
+    .findAll(".controls div:nth-child(2) button")
+    .slice(1);
+
+  // first, prev, next, last
+  expect(navButtons.length).toEqual(4);
+  for (const button of navButtons) {
+    expect(button.attributes("disabled")).not.toBeUndefined();
+  }
+});

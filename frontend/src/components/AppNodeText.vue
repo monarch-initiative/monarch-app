@@ -25,25 +25,29 @@
   <tspan v-if="isSvg" ref="container">
     {{ text }}
   </tspan>
-  <span v-else ref="container">
-    {{ text }}
-  </span>
+  <span v-else ref="container" v-bind="$attrs" v-html="highlightedText"> </span>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUpdated, ref } from "vue";
+import { computed, onMounted, onUpdated, ref } from "vue";
 
 type Props = {
   text?: string;
   isSvg?: boolean;
+  getHighlightedText?: (
+    text: string,
+    transformFn?: (text: string) => string,
+  ) => string;
 };
-
 const props = withDefaults(defineProps<Props>(), {
   text: "",
   isSvg: false,
+  getHighlightedText: (text: string) => text,
 });
 
 const container = ref<HTMLSpanElement | SVGTSpanElement | null>(null);
+
+// Use $attrs to capture external classes and styles
 
 type ReplacedTag = "sup" | "a" | "i" | "b";
 
@@ -221,6 +225,12 @@ function buildDOM(containerEl: Element) {
     endNode!.parentNode!.removeChild(endNode!);
   });
 }
+
+const highlightedText = computed(() => {
+  return props.getHighlightedText
+    ? props.getHighlightedText(props.text || "")
+    : props.text || "";
+});
 
 onMounted(() => {
   if (!container.value) return;

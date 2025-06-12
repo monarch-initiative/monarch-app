@@ -3,10 +3,16 @@
 -->
 
 <template>
-  <div class="details">
+  <div class="details" :style="{ '--gap': gap || '30px' }">
     <slot />
   </div>
 </template>
+
+<script setup lang="ts">
+defineProps<{
+  gap?: string;
+}>();
+</script>
 
 <style lang="scss" scoped>
 .details {
@@ -14,6 +20,6 @@
   flex-wrap: wrap;
   align-items: flex-start;
   width: 100%;
-  gap: 30px;
+  gap: var(--gap);
 }
 </style>

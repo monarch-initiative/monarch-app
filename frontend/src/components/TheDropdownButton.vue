@@ -65,8 +65,7 @@ $wrap: 1000px;
 
 .dropdown-btn {
   display: flex;
-
-  gap: 0.2em;
+  gap: 0.1em;
   white-space: nowrap;
   :hover {
     color: hsl(185, 75%, 80%);
