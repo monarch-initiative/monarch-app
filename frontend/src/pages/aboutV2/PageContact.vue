@@ -148,7 +148,7 @@ const github = useLocalStorage("contact-form-github", "");
 /** list of automatic details to record */
 const details = computed(() => {
   /** get browser/device/os/etc details from ua parser library */
-  const { browser, device, os, engine, cpu } = UAParser();
+  const { browser, device, os, engine, cpu } = new UAParser().getResult();
 
   /** filter and join strings together */
   const concat = (...array: (string | undefined)[]) =>
