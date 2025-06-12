@@ -262,7 +262,6 @@ type Props = {
 };
 
 const props = defineProps<Props>();
-console.log("directParam", props.directParam);
 const showModal = ref(false);
 const selectedAssociation = ref<DirectionalAssociation | null>(null);
 const start = ref(0);
@@ -514,10 +513,16 @@ const {
   },
   [boolean]
 >(
-  async function (fresh: boolean) {
+  async function (
+    fresh: boolean /**
+     * - whether to perform "fresh" search, without filters/pagination/etc. true when
+     *   search text changes, false when filters/pagination/etc change.
+     */,
+  ) {
+    /** catch case where no association categories available */
     if (!props.node.association_counts.length)
       throw Error("No association info available");
-
+    /** get association data */
     if (fresh) {
       start.value = 0;
     }
@@ -536,6 +541,7 @@ const {
     return response;
   },
 
+  /** default value */
   { items: [], total: 0, limit: 0, offset: 0 },
 );
 
