@@ -3,20 +3,6 @@
 -->
 
 <template>
-  <div class="association-tabs">
-    <button
-      :class="{ active: selectedTab === 'all' }"
-      @click="selectedTab = 'all'"
-    >
-      All Associations
-    </button>
-    <button
-      :class="{ active: selectedTab === 'direct' }"
-      @click="selectedTab = 'direct'"
-    >
-      Direct Associations
-    </button>
-  </div>
   <!-- status -->
   <AppStatus
     v-if="isLoading"
@@ -72,9 +58,7 @@
         <AppNodeBadge
           :node="{
             id: row.subject,
-            name:
-              row?.highlighting?.subject_closure_label?.[0] ||
-              row.subject_label,
+            name: row.subject_label,
             category: row.subject_category,
             info: row.subject_taxon_label,
           }"
@@ -114,8 +98,7 @@
         <AppNodeBadge
           :node="{
             id: row.object,
-            name:
-              row?.highlighting?.object_closure_label?.[0] || row.object_label,
+            name: row.object_label,
             category: row.object_category,
             info: row.object_taxon_label,
           }"
@@ -270,27 +253,21 @@ type Props = {
   node: Node;
   /** selected association category */
   category: Option;
-  /** include orthologs */
-  includeOrthologs: boolean;
+
   direct: Option;
   /** search string */
   search: string;
+  selectedTab: "all" | "direct";
+  directParam: Option;
 };
 
 const props = defineProps<Props>();
-
-const selectedTab = ref<"all" | "direct">("all");
+console.log("directParam", props.directParam);
 const showModal = ref(false);
 const selectedAssociation = ref<DirectionalAssociation | null>(null);
 const start = ref(0);
 const sort = ref<Sort>();
 const perPage = ref(5);
-
-const directParam = computed(() => {
-  return selectedTab.value === "direct"
-    ? { id: "true", label: "Direct Associations" }
-    : { id: undefined, label: "All Associations" };
-});
 
 function openModal(association: DirectionalAssociation) {
   selectedAssociation.value = association;
@@ -448,7 +425,7 @@ const cols = computed((): Cols<Datum> => {
     });
   }
   // Remove first two columns if selectedTab is 'direct'
-  if (selectedTab.value === "direct") {
+  if (props.selectedTab === "direct") {
     baseCols = baseCols.filter(
       (col) => col.key !== "subject_label" && col.key !== "predicate",
     );
@@ -537,48 +514,28 @@ const {
   },
   [boolean]
 >(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async function (fresh: boolean) /**
-   * whether to perform "fresh" search, without filters/pagination/etc. true when
-   * search text changes, false when filters/pagination/etc change.
-   */ {
-    /** catch case where no association categories available */
+  async function (fresh: boolean) {
     if (!props.node.association_counts.length)
       throw Error("No association info available");
-    /** get association data */
+
     if (fresh) {
       start.value = 0;
     }
 
-    const params: any = {
-      nodeId: props.node.id,
-      categoryId: props.category.id,
-      start: start.value,
-      limit: perPage.value,
-      includeOrthologs: props.includeOrthologs,
-      search: props.search,
-      sort: sort.value,
-    };
-
-    //  Only add direct param if defined
-    if (directParam.value.id !== undefined) {
-      params.direct = directParam.value.id;
-    }
-
     const response = await getAssociations(
-      params.nodeId,
-      params.categoryId,
-      params.start,
-      params.limit,
-      params.includeOrthologs,
-      params.direct,
-      params.search,
-      params.sort,
+      props.node.id,
+      props.category.id,
+      start.value,
+      perPage.value,
+      true,
+      props.directParam.id,
+      props.search,
+      sort.value,
     );
+
     return response;
   },
 
-  /** default value */
   { items: [], total: 0, limit: 0, offset: 0 },
 );
 
@@ -598,7 +555,7 @@ async function download() {
   await downloadAssociations(
     props.node.id,
     props.category.id,
-    props.includeOrthologs,
+    true,
     props.direct.id,
     props.search,
     sort.value,
@@ -656,12 +613,9 @@ watch(
   () => props.category,
   async () => await queryAssociations(true),
 );
+
 watch(
-  () => props.includeOrthologs,
-  async () => await queryAssociations(true),
-);
-watch(
-  () => directParam.value,
+  () => props.directParam,
   async () => await queryAssociations(true),
 );
 
@@ -728,46 +682,5 @@ onMounted(() => queryAssociations(true));
 .text-sm {
   color: $dark-gray;
   font-size: 0.9em;
-}
-
-.association-tabs {
-  display: flex;
-  border-bottom: 3px solid $theme;
-
-  button {
-    position: relative;
-    padding: 0.9em 1.9em;
-    border: none;
-    background: none;
-    color: #333;
-    font-weight: 500;
-    font-size: 1em;
-    cursor: pointer;
-    transition:
-      background-color 0.3s ease,
-      color 0.3s ease;
-
-    &:hover {
-      background-color: #f5f5f5;
-    }
-
-    &.active {
-      border-radius: 5px 5px 0 0;
-      background-color: $theme;
-      color: white;
-      font-weight: 600;
-
-      &::after {
-        display: none;
-        content: "";
-      }
-    }
-
-    &:not(.active) {
-      background-color: #f0f0f0;
-      color: #555;
-      font-weight: 500;
-    }
-  }
 }
 </style>

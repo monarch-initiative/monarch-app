@@ -12,42 +12,26 @@
         >No associations with &nbsp;<AppNodeBadge :node="node" />
       </span>
 
-      <div class="topRow">
-        <AppFlex gap="small" class="leftColumn">
-          <AppCheckbox
-            v-if="
-              node.category === 'biolink:Gene' &&
-              category?.id.startsWith('biolink:GeneToPheno')
-            "
-            v-model="includeOrthologs"
-            v-tooltip="
-              'Include phenotypes for orthologous genes in the associations table'
-            "
-            text="Include ortholog phenotypes"
-          />
+      <div class="association-tabs">
+        <button
+          :class="{ active: selectedTabs[category.id] === 'all' }"
+          @click="selectedTabs[category.id] = 'all'"
+        >
+          All Associations
+        </button>
+        <button
+          :class="{ active: selectedTabs[category.id] === 'direct' }"
+          @click="selectedTabs[category.id] = 'direct'"
+        >
+          Direct Associations
+        </button>
+      </div>
 
-          <AppButton
-            v-if="
-              (node.category === 'biolink:Disease' &&
-                category?.id.startsWith('biolink:DiseaseToPheno') &&
-                (node.has_phenotype_count ?? 0) > 0) ||
-              (node.category === 'biolink:Gene' &&
-                category?.id.startsWith('biolink:GeneToPheno') &&
-                (node.has_phenotype_count ?? 0) > 0)
-            "
-            v-tooltip="
-              'Send these phenotypes to Phenotype Explorer for comparison'
-            "
-            to="/search-phenotypes"
-            :state="{ search: node.id }"
-            text="Phenotype Explorer"
-            icon="arrow-right"
-          />
-        </AppFlex>
-
-        <div class="rightColumn">
+      <div class="actions-row">
+        <div class="search-wrapper">
           <AppTextbox
             v-model="searchValues[category.id]"
+            class="search-box"
             placeholder="Search table data..."
             @debounce="
               (value: string) => (debouncedSearchValues[category.id] = value)
@@ -57,6 +41,24 @@
             "
           />
         </div>
+        <AppButton
+          v-if="
+            selectedTabs[category.id] === 'direct' &&
+            ((node.category === 'biolink:Disease' &&
+              category?.id.startsWith('biolink:DiseaseToPheno') &&
+              (node.has_phenotype_count ?? 0) > 0) ||
+              (node.category === 'biolink:Gene' &&
+                category?.id.startsWith('biolink:GeneToPheno') &&
+                (node.has_phenotype_count ?? 0) > 0))
+          "
+          v-tooltip="
+            'Send these phenotypes to Phenotype Explorer for comparison'
+          "
+          to="/search-phenotypes"
+          :state="{ search: node.id }"
+          text="Phenotype Explorer"
+          icon="arrow-right"
+        />
       </div>
 
       <template v-if="category && direct">
@@ -67,6 +69,8 @@
           :include-orthologs="includeOrthologs"
           :direct="direct"
           :search="debouncedSearchValues[category.id] || ''"
+          :selectedTab="selectedTabs[category.id] || 'all'"
+          :directParam="directParamForCategory(category.id)"
         />
       </template>
     </AppSection>
@@ -93,10 +97,16 @@ type Props = {
   node: Node;
 };
 
+const selectedTabs = ref<Record<string, "all" | "direct">>({});
+
 const props = defineProps<Props>();
 
-/** include orthologous genes in association table */
-const includeOrthologs = ref(false);
+const directParamForCategory = (categoryId: string) => {
+  return selectedTabs.value[categoryId] === "direct"
+    ? { id: "true", label: "Direct Associations" }
+    : { id: undefined, label: "All Associations" };
+};
+
 const direct = ref<Option>();
 
 const searchValues = ref<Record<string, string>>({});
@@ -134,6 +144,17 @@ watch(
   },
   { immediate: true },
 );
+watch(
+  categoryOptions,
+  (categories) => {
+    categories.forEach((cat) => {
+      if (!selectedTabs.value[cat.id]) {
+        selectedTabs.value[cat.id] = "all";
+      }
+    });
+  },
+  { immediate: true },
+);
 </script>
 
 <style lang="scss" scoped>
@@ -144,18 +165,59 @@ watch(
 .section {
   margin: 10px 20px 10px $toc-width + 20px !important;
 }
-.topRow {
+
+.actions-row {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: flex-start;
   width: 100%;
-  gap: 16px;
+  margin: 1rem 0;
+  gap: 1rem;
 }
-.leftColumn {
-  flex: 1;
-  min-width: 300px;
+
+.search-wrapper {
+  flex: 1 1 auto;
+  max-width: 600px;
 }
-.rightColumn {
-  min-width: 20em;
+
+.association-tabs {
+  display: flex;
+  border-bottom: 3px solid $theme;
+
+  button {
+    position: relative;
+    padding: 0.9em 1.9em;
+    border: none;
+    background: none;
+    color: #333;
+    font-weight: 500;
+    font-size: 1em;
+    cursor: pointer;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
+
+    &:hover {
+      background-color: #f5f5f5;
+    }
+
+    &.active {
+      border-radius: 5px 5px 0 0;
+      background-color: $theme;
+      color: white;
+      font-weight: 600;
+
+      &::after {
+        display: none;
+        content: "";
+      }
+    }
+
+    &:not(.active) {
+      background-color: #f0f0f0;
+      color: #555;
+      font-weight: 500;
+    }
+  }
 }
 </style>
