@@ -168,6 +168,7 @@ watch(
 
 .actions-row {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
   width: 100%;
