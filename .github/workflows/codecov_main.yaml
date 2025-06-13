@@ -29,7 +29,8 @@ jobs:
         uses: astral-sh/setup-uv@v6
 
       - name: Install library
-        run: uv pip install .[dev]
+        run: |
+          uv sync --extra dev
 
       - name: Run tests
         run: uv run pytest backend/tests
