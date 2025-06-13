@@ -31,4 +31,4 @@ import pytest
 def test_curie_expansion(curie, expected):
     expanded_curie = converter.expand(curie)
     # print(expanded_curie, expected)
-    assert expanded_curie in expected
+    assert expected in expanded_curie
