@@ -65,7 +65,7 @@ install: install-backend install-frontend
 .PHONY: install-backend
 install-backend:
 	cd backend && \
-		uv venv
+		uv sync --extra dev
 		uv pip install -e .[dev]
 
 
