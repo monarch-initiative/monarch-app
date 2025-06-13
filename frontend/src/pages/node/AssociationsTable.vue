@@ -77,7 +77,7 @@
 
     <!-- predicate -->
     <template #predicate="{ row }">
-      <AppPredicateBadge :association="row" />
+      <AppPredicateBadge :association="row" :highlight="true" />
     </template>
 
     <!-- maxorelation -->
@@ -509,7 +509,7 @@ const {
       props.search,
       sort.value,
     );
-
+    console.log("response", response);
     return response;
   },
 
