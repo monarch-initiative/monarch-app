@@ -1,6 +1,9 @@
+# Once uv supports setting dynamic versions, replace the version line with:
+# dynamic = ["version"]
+
 [project]
 name = "monarch-py"
-dynamic = ["version"]
+version = "0.0.0"
 description = "Python package for interacting with Monarch Initiative knowledge graph"
 authors = [
     { name = "The Monarch Initiative", email = "info@monarchinitiative.org" },
@@ -11,7 +14,6 @@ authors = [
 requires-python = ">=3.9, <4.0"
 
 dependencies = [
-    ### Core
     "pydantic>=2,<3",
     "curies<1",
     "linkml==1.8.3",
