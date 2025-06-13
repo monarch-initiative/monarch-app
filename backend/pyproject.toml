@@ -21,7 +21,7 @@ dependencies = [
     "bioregistry~=0.10.57",
     "oaklib>=0.6.6",
     "docker>=7.1.0",
-    "fastapi>=0.103.1",
+    "fastapi>=0.103.1,<1",
     "gunicorn>=22.0.0",
     "loguru",
     "pystow>=0.5.4",

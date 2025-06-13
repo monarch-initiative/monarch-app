@@ -1,5 +1,7 @@
 name: Build and Deploy Docs to GitHub Pages
+description: Test building docs on pull requests, only deploy when pushing to main.
 on:
+  pull_request:
   push:
     branches:
       - main
@@ -25,13 +27,15 @@ jobs:
         uses: astral-sh/setup-uv@v6
 
       - name: Install Dependencies
-        run: uv pip install --directory backend .[dev]
+        run: uv sync --directory backend --extra dev
 
       - name: Build Documentation
         run: make docs
 
+      # Only deploy pages when pushing to main
       - name: Deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@v4
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         with:
           folder: site
           target-folder: docs

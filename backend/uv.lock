@@ -1873,6 +1873,7 @@ wheels = [
 
 [[package]]
 name = "monarch-py"
+version = "0.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "beautifulsoup4" },
@@ -1915,7 +1916,7 @@ requires-dist = [
     { name = "coverage", marker = "extra == 'dev'", specifier = ">=7.5.1" },
     { name = "curies", specifier = "<1" },
     { name = "docker", specifier = ">=7.1.0" },
-    { name = "fastapi", specifier = ">=0.103.1" },
+    { name = "fastapi", specifier = ">=0.103.1,<1" },
     { name = "gunicorn", specifier = ">=22.0.0" },
     { name = "httpx", marker = "extra == 'dev'", specifier = ">=0.27" },
     { name = "linkml", specifier = "==1.8.3" },
