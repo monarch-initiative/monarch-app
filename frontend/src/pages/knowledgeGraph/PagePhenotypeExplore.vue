@@ -81,7 +81,7 @@ $wrap: 1000px;
   }
   .tab-item.active {
     border: 1px solid #ccc;
-    border-bottom: 3px solid $theme; // keep consistent height
+    border-bottom: 3px solid $theme;
     background-color: $theme;
     color: $white;
 
