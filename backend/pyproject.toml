@@ -11,26 +11,26 @@ authors = [
     { name = "glass-ships", email = "glass.ships@outlook.com" },
 ]
 
-requires-python = ">=3.9, <4.0"
+requires-python = ">=3.10, <4.0"
 
 dependencies = [
-    "pydantic>=2,<3",
-    "curies<1",
-    "linkml==1.8.3",
-    # "prefixmaps~=0.2",
-    "prefixmaps==0.2.4",
+    "beautifulsoup4>=4.13.4",
     "bioregistry~=0.10.57",
-    "oaklib>=0.6.6",
+    "curies<1",
     "docker>=7.1.0",
-    "fastapi>=0.103.1,<1",
-    "gunicorn>=22.0.0",
+    "fastapi>=0.115.12,<1",
+    "gunicorn>=23.0.0",
+    "linkml==1.8.3",
     "loguru",
+    "oaklib>=0.6.6",
+    "prefixmaps==0.2.4",
+    "pydantic>=2,<3",
     "pystow>=0.5.4",
     "requests>=2.31.0",
     "rich",
+    "spacy>=3.8.3",
+    "thinc==8.3.3",
     "typer>=0.12.0",
-    "beautifulsoup4>=4.12.3",
-    "spacy>=3.7.6",
 ]
 
 [project.optional-dependencies]

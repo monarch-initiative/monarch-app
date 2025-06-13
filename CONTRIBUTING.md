@@ -43,7 +43,7 @@ The Monarch Initiative website tool chain has a few requirements that you may ne
 
 ### Backend Requirements
 
-- Python - Most of us use Python version 3.10.12 for development and try to be compatible with versions 3.9-3.12.
+- Python - Most of us use Python version 3.10.12 for development and try to be compatible with versions 3.10 - 3.12.
 - [uv](https://docs.astral.sh/uv/) - We use `uv` to manage dependencies in `monarch-py`
 - [pyenv](https://github.com/pyenv/pyenv?tab=readme-ov-file#installation) (suggested) - I recommend using pyenv to manage your Python version within different projects
 

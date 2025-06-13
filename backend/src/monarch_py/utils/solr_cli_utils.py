@@ -43,7 +43,7 @@ def ensure_solr(version: str = "latest", overwrite: bool = False) -> None:
                 f"""
 Solr container requires write access to {monarchstow.base}.
 Please run the following command to set permissions:
-    [grey84 on black]sudo chgrp -R 8983 {monarchstow.base} && \ [/]
+    [grey84 on black]sudo chgrp -R 8983 {monarchstow.base} && \\ [/]
     [grey84 on black]sudo chmod -R g+w {monarchstow.base}[/]
             """
             )

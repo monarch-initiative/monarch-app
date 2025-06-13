@@ -1,13 +1,12 @@
 # This Dockerfile is used to build the Docker image for the Monarch API.
 # It assumes that the build context is the root of the repository.
-# The image is built using the following command structure:
-#  (from the root of the repository, i.e. .../monarch-app)
-#  docker build -f backend/Dockerfile .
+# From the root of the repository, i.e. .../monarch-app:
+#   docker build -f backend/Dockerfile .
 
 ###############################################
 # Base Image
 ###############################################
-FROM python:3.9-slim as python-base
+FROM python:3.12-slim AS python-base
 
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
@@ -16,6 +15,8 @@ ENV PYTHONUNBUFFERED=1 \
     PIP_DEFAULT_TIMEOUT=100 \
     PYSETUP_PATH="/opt/pysetup" \
     VENV_PATH="/opt/pysetup/.venv"
+
+ENV PATH="/root/.local/bin/:$PATH"
 
 ###############################################
 # Builder Image
@@ -32,6 +33,7 @@ COPY . /opt/monarch-app/
 
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
+
 ###############################################
 # Production Image
 ###############################################
@@ -43,7 +45,7 @@ WORKDIR /opt/monarch-app/backend
 
 RUN ls -l . && \
     uv venv && \
-    uv pip install .
+    uv pip install .[dev]
 
 CMD /opt/monarch-app/backend/start_api.sh
 
