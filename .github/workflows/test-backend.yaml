@@ -7,9 +7,9 @@ on:
 env:
   PYTHONPATH: ${{ github.workspace }}/backend
 
-# defaults:
-#   run:
-#     working-directory: ./backend
+defaults:
+  run:
+    working-directory: ./backend
 
 jobs:
   test-backend:
