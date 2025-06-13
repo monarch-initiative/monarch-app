@@ -82,6 +82,14 @@ const icons = [
   fas.faUsers,
   fas.faUserGear,
   fas.faXmark,
+  far.faFaceMeh,
+  fas.faDatabase,
+  fas.faSitemap,
+  fas.faRotate,
+  fas.faMicroscope,
+  fas.faCalendarWeek,
+  fas.faGraduationCap,
+  fas.faBookOpenReader,
 ];
 
 library.add(...icons);

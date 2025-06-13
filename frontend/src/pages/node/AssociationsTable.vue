@@ -4,7 +4,11 @@
 
 <template>
   <!-- status -->
-  <AppStatus v-if="isLoading" code="loading"
+  <AppStatus
+    v-if="isLoading"
+    code="loading"
+    class="loading"
+    :style="{ minHeight: dynamicMinHeight + 'em' }"
     >Loading tabulated association data</AppStatus
   >
   <AppStatus v-else-if="isError" code="error"
@@ -18,7 +22,6 @@
     v-model:sort="sort"
     v-model:per-page="perPage"
     v-model:start="start"
-    v-model:search="search"
     :cols="cols"
     :rows="associations.items"
     :total="associations.total"
@@ -51,20 +54,33 @@
 
     <!-- subject -->
     <template #subject="{ row }">
-      <AppNodeBadge
-        :node="{
-          id: row.subject,
-          name: row.subject_label,
-          category: row.subject_category,
-          info: row.subject_taxon_label,
-        }"
-        :breadcrumbs="getBreadcrumbs(node, row, 'subject')"
-      />
+      <div class="badgeColumn">
+        <AppNodeBadge
+          :node="{
+            id: row.subject,
+            name: row.subject_label,
+            category: row.subject_category,
+            info: row.subject_taxon_label,
+          }"
+          :breadcrumbs="getBreadcrumbs(node, row, 'subject')"
+          :get-highlighted-text="getHighlightedText"
+        />
+
+        <AppNodeText
+          v-if="row?.highlighting?.subject_closure_label?.[0]"
+          :text="`Ancestor: ${row.highlighting.subject_closure_label[0]}`"
+          class="text-sm"
+          :get-highlighted-text="getHighlightedText"
+        />
+      </div>
     </template>
 
     <!-- predicate -->
     <template #predicate="{ row }">
-      <AppPredicateBadge :association="row" />
+      <AppPredicateBadge
+        :association="row"
+        :get-highlighted-text="getHighlightedText"
+      />
     </template>
 
     <!-- maxorelation -->
@@ -74,15 +90,24 @@
 
     <!-- object-->
     <template #object="{ row }">
-      <AppNodeBadge
-        :node="{
-          id: row.object,
-          name: row.object_label,
-          category: row.object_category,
-          info: row.object_taxon_label,
-        }"
-        :breadcrumbs="getBreadcrumbs(node, row, 'object')"
-      />
+      <div class="badgeColumn">
+        <AppNodeBadge
+          :node="{
+            id: row.object,
+            name: row.object_label,
+            category: row.object_category,
+            info: row.object_taxon_label,
+          }"
+          :breadcrumbs="getBreadcrumbs(node, row, 'object')"
+          :get-highlighted-text="getHighlightedText"
+        />
+        <AppNodeText
+          v-if="row?.highlighting?.object_closure_label?.[0]"
+          :text="`Ancestor: ${row.highlighting.object_closure_label[0]}`"
+          class="text-sm"
+          :get-highlighted-text="getHighlightedText"
+        />
+      </div>
     </template>
 
     <template #extension="{ row }">
@@ -174,6 +199,16 @@
     <!-- publication specific -->
     <!-- no template needed because info just plain text -->
   </AppTable>
+
+  <TableControls
+    id="showControls"
+    v-model:per-page="perPage"
+    v-model:start="start"
+    :rows="associations.items"
+    :total="associations.total"
+    @download="download"
+  />
+
   <AppModal v-model="showModal" label="Association Details">
     <SectionAssociationDetails
       :node="node"
@@ -197,12 +232,14 @@ import {
 } from "@/api/model";
 import AppModal from "@/components/AppModal.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
+import AppNodeText from "@/components/AppNodeText.vue";
 import AppPercentage from "@/components/AppPercentage.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
 import type { Option } from "@/components/AppSelectSingle.vue";
 import AppTable from "@/components/AppTable.vue";
 import type { Cols, Sort } from "@/components/AppTable.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
+import TableControls from "@/components/TheTableContols.vue";
 import { useQuery } from "@/composables/use-query";
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
 import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
@@ -215,12 +252,17 @@ type Props = {
   /** include orthologs */
   includeOrthologs: boolean;
   direct: Option;
+  /** search string */
+  search: string;
 };
 
 const props = defineProps<Props>();
 
 const showModal = ref(false);
 const selectedAssociation = ref<DirectionalAssociation | null>(null);
+const start = ref(0);
+const sort = ref<Sort>();
+const perPage = ref(5);
 
 function openModal(association: DirectionalAssociation) {
   selectedAssociation.value = association;
@@ -233,32 +275,23 @@ watch(showModal, (newValue) => {
   }
 });
 
-// type Emits = {
-//   /** change selected association */
-//   select: [value?: DirectionalAssociation];
-// };
-//
-// const emit = defineEmits<Emits>();
-//
-// emit("select", (value) => {
-//   if (value) {
-//     console.log("emitting association detail event");
-//     console.log(value);
-//     association.value = value;
-//     showModal.value = true;
-//   }
-// });
-
-/** table state */
-const sort = ref<Sort>();
-const perPage = ref(5);
-const start = ref(0);
-const search = ref("");
-
 type Datum = keyof DirectionalAssociation;
 
-/** Orholog columns */
+const getHighlightedText = (
+  text: string,
+  transformFn?: (text: string) => string,
+): string => {
+  if (!text) return "";
+  const transformed = transformFn ? transformFn(text) : text;
+  if (!props.search) return transformed;
+  const regex = new RegExp(props.search, "gi");
+  return transformed.replace(
+    regex,
+    (match) => `<span style="background: #FFFF00;"><em>${match}</em></span>`,
+  );
+};
 
+/** Orholog columns */
 const orthologColoumns = computed<Cols<Datum>>(() => {
   return [
     {
@@ -289,6 +322,12 @@ const orthologColoumns = computed<Cols<Datum>>(() => {
       align: "center",
     },
   ];
+});
+
+//calculate dynamic min height of table
+const dynamicMinHeight = computed(() => {
+  const itemHeight = 3.6;
+  return perPage.value * itemHeight;
 });
 
 const medicalActionCategory =
@@ -449,12 +488,21 @@ const cols = computed((): Cols<Datum> => {
 });
 
 /** get table association data */
+
 const {
   query: queryAssociations,
   data: associations,
   isLoading,
   isError,
-} = useQuery(
+} = useQuery<
+  {
+    items: DirectionalAssociation[];
+    total: number;
+    limit: number;
+    offset: number;
+  },
+  [boolean]
+>(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async function (fresh: boolean) /**
    * whether to perform "fresh" search, without filters/pagination/etc. true when
@@ -467,6 +515,7 @@ const {
     if (fresh) {
       start.value = 0;
     }
+
     const response = await getAssociations(
       props.node.id,
       props.category.id,
@@ -474,10 +523,9 @@ const {
       perPage.value,
       props.includeOrthologs,
       props.direct.id,
-      search.value,
+      props.search,
       sort.value,
     );
-
     return response;
   },
 
@@ -503,7 +551,7 @@ async function download() {
     props.category.id,
     props.includeOrthologs,
     props.direct.id,
-    search.value,
+    props.search,
     sort.value,
   );
 }
@@ -536,6 +584,7 @@ const frequencyPercentage = (row: DirectionalAssociation) => {
 };
 
 /** get frequency tooltip */
+
 const frequencyTooltip = (row: DirectionalAssociation) => {
   // display fraction if possible
   if (row.has_count != undefined && row.has_total != undefined) {
@@ -566,10 +615,16 @@ watch(
   () => props.direct,
   async () => await queryAssociations(true),
 );
+
 watch(
-  [perPage, start, search, sort],
-  async () => await queryAssociations(false),
+  () => props.search,
+  async () => {
+    await queryAssociations(true);
+  },
+  { immediate: true },
 );
+
+watch([perPage, sort, start], async () => await queryAssociations(false));
 
 /** get associations on load */
 onMounted(() => queryAssociations(true));
@@ -587,5 +642,37 @@ onMounted(() => queryAssociations(true));
 
 .empty {
   color: $gray;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.7;
+  }
+}
+
+.badgeColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+}
+
+.text-sm {
+  color: $dark-gray;
+  font-size: 0.9em;
 }
 </style>

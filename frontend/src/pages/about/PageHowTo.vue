@@ -42,11 +42,7 @@
         Any of these descriptors can be entered into the search bar directly.
         Press enter or select a suggestion to search.
       </p>
-      <AppButton
-        to="explore#search"
-        text="Take me to search..."
-        icon="arrow-right"
-      />
+      <AppButton to="/#header" text="Take me to search..." icon="arrow-right" />
     </div>
     <div v-if="selectedOption.id === 'textAnnotator'">
       <AppHeading> Annotating text with terms from the Monarch KG. </AppHeading>
@@ -68,7 +64,7 @@
         </ul>
       </AppHighlight>
       <AppButton
-        to="explore#text-annotator"
+        to="/text-annotator"
         text="Take me to text annotator..."
         icon="arrow-right"
       />
@@ -98,7 +94,7 @@
         </ul>
       </AppHighlight>
       <AppButton
-        to="explore#phenotype-explorer"
+        to="/search-phenotypes"
         text="Take me to phenotype explorer..."
         icon="arrow-right"
       />
@@ -177,22 +173,22 @@
         Here are some quick links for some of the most frequently requested
         information about the Monarch Initiative. For additional information,
         please see
-        <AppLink to="about"> our about page </AppLink>.
+        <AppLink to="kg/status"> our Status and QC </AppLink>.
       </p>
       <AppTile
-        to="/cite"
+        to="kg/citation"
         icon="feather-pointed"
         title="Cite"
         subtitle="How to cite and attribute Monarch"
       />
       <AppTile
-        to="/overview"
+        to="/"
         icon="cogs"
         title="Overview"
         subtitle="How all the pieces of Monarch fit together"
       />
       <AppTile
-        to="/team"
+        to="/about/team"
         icon="users"
         title="Team"
         subtitle="The people behind Monarch"
@@ -205,11 +201,11 @@
       />
       <p style="padding-top: 1.5rem">
         Use the buttons above to go directly to the information listed.
-        Additional information may be available on the about page.
+        Additional information may be available on the Status and QC page.
       </p>
       <AppButton
-        to="about"
-        text="Take me to the full about page..."
+        to="kg/status"
+        text="Take me to the Status and QC..."
         icon="arrow-right"
       />
     </div>

@@ -72,4 +72,4 @@ style = "pep440"
 
 
 [tool.pytest.ini_options]
-pythonpath = ["src"]
+pythonpath = [".", "src"]

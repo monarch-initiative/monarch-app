@@ -352,6 +352,8 @@ export interface CategoryGroupedAssociationResults extends Results {
 export interface DirectionalAssociation extends Association {
     /** The directionality of the association relative to a given entity for an association_count. If the entity is the subject or in the subject closure, the direction is forwards, if it is the object or in the object closure, the direction is backwards. */
     direction: string,
+    /** Optional highlighting information for search results */
+    highlighting?: AssociationHighlighting,
 }
 
 
@@ -384,6 +386,16 @@ export interface Entity {
     in_taxon_label?: string,
     symbol?: string,
     synonym?: string[],
+    /** A broader synonym for the entity */
+    broad_synonym?: string[],
+    /** An exact synonym for the entity */
+    exact_synonym?: string[],
+    /** A narrower synonym for the entity */
+    narrow_synonym?: string[],
+    /** A related synonym for the entity */
+    related_synonym?: string[],
+    /** A list of subsets that the entity belongs to */
+    subsets?: string[],
     /** The URI of the entity */
     uri?: string,
     iri?: string,
@@ -544,8 +556,6 @@ export interface Results {
 
 
 export interface SearchResult extends Entity {
-    /** matching text snippet containing html tags */
-    highlight?: string,
     score?: number,
 }
 
@@ -571,6 +581,22 @@ export interface TextAnnotationResult {
     start?: number,
     /** end position of the annotation */
     end?: number,
+}
+
+
+/**
+ * Optional highlighting information for search results
+ */
+export interface AssociationHighlighting {
+    /** The name of the object entity */
+    object_label?: string[],
+    /** Field containing object name and the names of all of it's ancestors */
+    object_closure_label?: string[],
+    /** The name of the subject entity */
+    subject_label?: string[],
+    /** Field containing subject name and the names of all of it's ancestors */
+    subject_closure_label?: string[],
+    predicate?: string[],
 }
 
 

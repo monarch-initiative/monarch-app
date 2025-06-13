@@ -1,4 +1,4 @@
-RUN = poetry -C backend run
+RUN = cd backend && poetry run
 VERSION = $(shell poetry -C backend version -s)
 ROOTDIR = $(shell pwd)
 SCHEMADIR = $(ROOTDIR)/backend/src/monarch_py/datamodels
@@ -77,8 +77,8 @@ install-frontend:
 
 .PHONY: model
 model: install-backend	
-	$(RUN) gen-pydantic --extra-fields allow $(SCHEMADIR)/model.yaml > $(SCHEMADIR)/model.py
-	$(RUN) gen-typescript $(SCHEMADIR)/model.yaml > frontend/src/api/model.ts
+	$(RUN) gen-pydantic --meta None --extra-fields allow $(SCHEMADIR)/model.yaml > $(SCHEMADIR)/model.py
+	$(RUN) gen-typescript $(SCHEMADIR)/model.yaml > $(ROOTDIR)/frontend/src/api/model.ts
 	make format
 
 
@@ -90,8 +90,8 @@ docs/Data-Model:
 .PHONY: docs
 docs: install-backend docs/Data-Model
 	$(RUN) gen-doc -d $(ROOTDIR)/docs/Data-Model/ $(SCHEMADIR)/model.yaml
-	$(RUN) typer backend/src/monarch_py/cli.py utils docs --name monarch --output docs/Usage/CLI.md
-	$(RUN) mkdocs build
+	$(RUN) typer $(ROOTDIR)/backend/src/monarch_py/cli.py utils docs --name monarch --output $(ROOTDIR)/docs/Usage/CLI.md
+	$(RUN) mkdocs build -f ../mkdocs.yaml
 
 
 ### Data/Fixtures ###
@@ -99,14 +99,14 @@ docs: install-backend docs/Data-Model
 .PHONY: fixtures
 fixtures: 
 	@echo "Generating fixtures and data..."
-	$(RUN) python scripts/generate_fixtures.py --all-fixtures
+	$(RUN) python ../scripts/generate_fixtures.py --all-fixtures
 	make format
 
 
 .PHONY: data
 data:
 	@echo "Generating frontpage metadata..."
-	$(RUN) python scripts/generate_fixtures.py --metadata
+	$(RUN) python ../scripts/generate_fixtures.py --metadata
 	@echo "Generating resources data..."
 	wget https://raw.githubusercontent.com/monarch-initiative/monarch-documentation/main/src/docs/resources/monarch-app-resources.json -O frontend/src/pages/resources/resources.json
 	make format-frontend
@@ -114,12 +114,12 @@ data:
 .PHONY: update_publications
 update_publications:
 	@echo "Generating publications data..."
-	$(RUN) python scripts/get_publications.py update --update-data
+	$(RUN) python ../scripts/get_publications.py update --update-data
 
 .PHONY: category-enums
 category-enums:
 	@echo "Generating category enums..."
-	$(RUN) python scripts/generate_category_enums.py
+	$(RUN) python ../scripts/generate_category_enums.py
 	make format-backend
 	
 
@@ -131,7 +131,7 @@ test: test-backend test-frontend
 
 .PHONY: test-backend
 test-backend: 
-	$(RUN) pytest backend/tests
+	$(RUN) pytest tests
 
 
 .PHONY: test-frontend
@@ -150,8 +150,7 @@ dev-frontend: frontend/src/api/model.ts
 
 .PHONY: dev-api
 dev-api: 
-	cd backend && \
-		poetry run uvicorn src.monarch_py.api.main:app --reload
+	$(RUN) uvicorn src.monarch_py.api.main:app --reload
 
 
 ### Docker ###
@@ -198,8 +197,8 @@ lint-frontend:
 
 .PHONY: lint-backend
 lint-backend: 
-	$(RUN) ruff check --diff --exit-zero backend
-	$(RUN) black --check --diff -l 120 backend/src backend/tests
+	$(RUN) ruff check --diff --exit-zero .
+	$(RUN) black --check --diff -l 120 src tests
 
 
 .PHONY: format
@@ -208,8 +207,8 @@ format: format-frontend format-backend
 
 .PHONY: format-backend
 format-backend: 
-	$(RUN) ruff check --fix --exit-zero backend
-	$(RUN) black -l 120 backend/src backend/tests
+	$(RUN) ruff check --fix --exit-zero .
+	$(RUN) black -l 120 src tests
 
 
 .PHONY: format-frontend

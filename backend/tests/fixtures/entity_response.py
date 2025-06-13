@@ -25,6 +25,7 @@ def entity_response():
             "UMLS:C0026850",
             "icd11.foundation:1464662404",
         ],
+        "subsets": ["disease_grouping", "gard_rare", "ordo_group_of_disorders", "otar", "rare"],
         "namespace": "MONDO",
         "has_phenotype_count": 0,
     }

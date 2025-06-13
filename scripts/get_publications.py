@@ -1,7 +1,7 @@
 """
 This script is intended to assist in updating the publications page of the Monarch website.
 
-It uses the scholarly package to search for publications citing the Monarch Initiative and 
+It uses the scholarly package to search for publications citing the Monarch Initiative and
 metadata (counts of publications citing Monarch) from Google Scholar.
 """
 
@@ -45,6 +45,10 @@ default_publications_file = (
 
 @dataclass
 class MonarchPublication:
+    """
+    A publication from Google Scholar.
+    """
+
     title: str
     authors: str
     year: int
@@ -53,6 +57,11 @@ class MonarchPublication:
     link: Optional[str]
 
     def key(self):
+        """
+        Return a unique key for a publication.
+
+        This key is the title, as lowercase, with any non-alphanumeric characters removed.
+        """
         return title_to_key(self.title)
 
 
@@ -60,7 +69,13 @@ def title_to_key(title: str) -> str:
     return re.sub(r"\W", "", title.lower())
 
 
-def replace_links(pubs: list[MonarchPublication]):
+def replace_links(pubs: list[MonarchPublication]) -> None:
+    """
+    Given a list of publications, replace the links of publications whose values are set in the KNOWN_LINKS dictionary
+    defined at the top of this file.
+
+    Edits are done in-place, potentially mutating the members of the list.
+    """
     links_by_title = {pub.key(): pub for pub in pubs}
 
     for title, link in KNOWN_LINKS.items():
@@ -71,13 +86,17 @@ def replace_links(pubs: list[MonarchPublication]):
 
 @cache
 def get_scholarly_author() -> Author:
+    """
+    Fetch the scholarly.Author entity representing the Monarch Initiative from Google Scholar.
+    """
     author = scholarly.search_author_id(id=MONARCH_GOOGLE_SCHOLAR_ID)
     scholarly.fill(author, sections=["basics", "indices", "counts", "publications"])  # type: ignore
     return author
 
 
-def fetch_citation_metadata():
-    """Get citation metadata from google scholar
+def fetch_citation_metadata() -> dict[str, int]:
+    """
+    Get citation metadata from Google Scholar.
 
     See https://scholarly.readthedocs.io/en/latest/DataTypes.html?highlight=hindex for details
     """
@@ -98,13 +117,16 @@ def fetch_citation_metadata():
 
 
 def fetch_scholarly_publications() -> List[MonarchPublication]:
-    """Search for Monarch publications using scholarly"""
+    """
+    Search for Monarch publications from Google Scholar.
+    """
     author = get_scholarly_author()
     publications = author["publications"]  # type: ignore
     pubs: List[MonarchPublication] = []
 
     for p in publications:
         scholarly.fill(p, sections=["bib"])  # type: ignore
+
         bib = p["bib"]  # type: ignore
 
         title = bib["title"]  # type: ignore
@@ -127,11 +149,11 @@ def fetch_scholarly_publications() -> List[MonarchPublication]:
         if "pages" in bib:
             issue += f":{bib['pages']}"
 
-        link = (
-            f"{p['pub_url']}"
-            if ("pub_url" in p and "scholar.google" not in p["pub_url"])
-            else None
-        )
+        link = p.get("pub_url", None)
+
+        # Don't count links from Google Scholar as valid.
+        if link and "scholar.google.com" in link:
+            link = None
 
         pubs.append(
             MonarchPublication(
@@ -147,12 +169,17 @@ def fetch_scholarly_publications() -> List[MonarchPublication]:
     return pubs
 
 
-def combine_publications(pub1: MonarchPublication, pub2: MonarchPublication):
-    """Return publication with most info from two publications"""
-    # Copy the publication from the first candidate
+def combine_publications(pub1: MonarchPublication, pub2: MonarchPublication) -> MonarchPublication:
+    """
+    Given two publications, combine their metadata.
+
+    Return publication with most info from two publications
+    """
+    # Use the first publication as the original source of truth.
     new_pub = replace(pub1)
 
-    # pick year from publication with link
+    # If the second publication has a link, and the first one does not, then use the second publication as the source
+    # of truth for both `link` and `year`.
     if not pub1.link and pub2.link:
         new_pub.link = pub2.link
         new_pub.year = pub2.year
@@ -172,8 +199,10 @@ def combine_publications(pub1: MonarchPublication, pub2: MonarchPublication):
     return new_pub
 
 
-def dedup_publications(publication_list: List[MonarchPublication]):
-    """Check for duplicate publications from scholarly and pick best info from each"""
+def dedup_publications(publication_list: List[MonarchPublication]) -> List[MonarchPublication]:
+    """
+    Check for duplicate publications from scholarly and pick best info from each.
+    """
     publication_list = sorted(publication_list, key=lambda p: p.key())
     pubs_by_key = itertools.groupby(publication_list, key=lambda p: p.key())
 
@@ -193,8 +222,10 @@ def dedup_publications(publication_list: List[MonarchPublication]):
 
 def extend_current_pubs(
     current_pubs: List[MonarchPublication], scholarly_pubs: List[MonarchPublication]
-):
-    """Find publications in scholarly_data that are already in publications.json"""
+) -> List[MonarchPublication]:
+    """
+    Combine a list of current publications and new publications and merge them into one list.
+    """
     existing_by_key = {pub.key(): pub for pub in current_pubs}
 
     new_pubs_ct = 0
@@ -206,6 +237,7 @@ def extend_current_pubs(
     for pub in scholarly_pubs:
         existing_pub = existing_by_key.get(pub.key(), None)
 
+        # If the year has been updated in Google Scholar, use that year.
         if existing_pub:
             if pub.year > existing_pub.year:
                 logger.info(
@@ -231,8 +263,10 @@ def extend_current_pubs(
 
 def add_scholarly_publications(
     scholarly_file: Path, existing_publications_file: Optional[Path]
-):
-    """Add scholarly publications to an existing publications.json file."""
+) -> List[MonarchPublication]:
+    """
+    Add scholarly publications to an existing publications.json file.
+    """
 
     with open(scholarly_file) as fd:
         scholarly_pubs = [MonarchPublication(**pub_dict) for pub_dict in json.load(fd)]
@@ -273,7 +307,6 @@ def update(
     metadata_file: Annotated[
         Path,
         typer.Argument(
-            exists=True,
             file_okay=True,
             dir_okay=False,
             readable=True,
@@ -282,7 +315,6 @@ def update(
     publications_file: Annotated[
         Path,
         typer.Argument(
-            exists=True,
             file_okay=True,
             dir_okay=False,
             readable=True,
@@ -291,7 +323,6 @@ def update(
     existing_data_file: Annotated[
         Optional[Path],
         typer.Argument(
-            exists=True,
             file_okay=True,
             dir_okay=False,
             readable=True,
@@ -307,11 +338,26 @@ def update(
             readable=True,
         ),
     ] = default_publications_file,
-    update_data: bool = False
-):
+    update_data: bool = False,
+) -> None:
+    """
+    Update the publications.json file.
+    """
     if update_data:
         fetch_metadata()
         fetch_publications()
+
+    if not metadata_file.exists():
+        print(
+            "No metadata file exists. Create it by passing the `--update-data` flag, or running `get_publications.py fetch_metadata`."
+        )
+        raise typer.Exit(code=1)
+
+    if not publications_file.exists():
+        print(
+            "No publications file exists. Create it by passing the `--update-data` flag, or running `get_publications.py fetch_scholarly_publications`."
+        )
+        raise typer.Exit(code=1)
 
     pubs = add_scholarly_publications(publications_file, existing_data_file)
 
@@ -345,8 +391,10 @@ def update(
 @app.command()
 def fetch_metadata(
     outfile: Annotated[Path, typer.Option("--output", "-o")] = default_metadata_file,
-):
-    """Fetch the latest citation metadata from Google Scholar."""
+) -> None:
+    """
+    Fetch the latest citation metadata from Google Scholar.
+    """
     citation_metadata = fetch_citation_metadata()
     output = json.dumps(citation_metadata, indent=2)
 
@@ -358,8 +406,10 @@ def fetch_metadata(
 @app.command()
 def fetch_publications(
     outfile: Annotated[Path, typer.Option("--output", "-o")] = default_scholarly_data,
-):
-    """Fetch the latest publication list from Google Scholar."""
+) -> None:
+    """
+    Fetch the latest publication list from Google Scholar.
+    """
     publications = fetch_scholarly_publications()
     output = json.dumps([asdict(pub) for pub in publications], indent=2)
 

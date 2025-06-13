@@ -1,0 +1,41 @@
+{
+  "name": "Scientific Advisory Board",
+  "link": "https://monarchinit.medium.com/introducing-the-monarch-initiatives-scientific-advisory-board-40f7e1584269",
+  "members": [
+    {
+      "name": "Elissa Chesler",
+      "link": "https://www.jax.org/research-and-faculty/faculty/elissa-chesler",
+      "descripion": "Professor, The Ann Watson Symington Chair in Addiction Research and Senior Director, Integrative Data Science"
+    },
+    {
+      "name": "Michael Hoffman",
+      "link": "https://hoffmanlab.org",
+      "description": "Chair and Senior Scientist, University Health Network/Associate Professor, University of Toronto"
+    },
+    {
+      "name": "Kent Lloyd",
+      "link": "https://health.ucdavis.edu/medical-center/team/21942/kevin-lloyd---genetics---cancer/",
+      "description": "Distinguished Professor- Department of Surgery, Director-UC Davis Mouse Biology Program"
+    },
+    {
+      "name": "Heidi Rehm",
+      "link": "https://www.broadinstitute.org/bios/heidi-rehm",
+      "descripion": "Institute Member, Co-director of the Program in Medical and Population Genetics"
+    },
+    {
+      "name": "Susheel Varma",
+      "link": "https://susheelvarma.com/about/",
+      "description": "Head of Artificial Intelligence and Data Science at the Information Commissioner’s Office (ICO)"
+    },
+    {
+      "name": "Matthew Wheeler",
+      "link": "https://med.stanford.edu/profiles/matthew-wheeler",
+      "description": "Associate Professor of Medicine (Cardiovascular Medicine), Stanford Medicine"
+    },
+    {
+      "name": "Jason Williams",
+      "link": "https://dnalc.cshl.edu/about/staff-bio.html#williams",
+      "description": "Assistant Director,DNA Learning Center"
+    }
+  ]
+}

@@ -18,7 +18,7 @@
         stroke-width="5"
         stroke-linecap="round"
         mask="url(#logo-mask)"
-        d="M 5 10 L 5 -20 A 25 25 0 1 0 -20 5 L -15 5"
+        d="M 5 5 L 5 -20 A 25 25 0 1 0 -20 5 L -16 5"
       />
       <path
         class="logo-path"
@@ -27,7 +27,7 @@
         stroke-width="5"
         stroke-linecap="round"
         mask="url(#logo-mask)"
-        d="M -5 10 L -5 -20 A 15 15 0 1 0 -20 -5 L -15 -5"
+        d="M -5 5 L -5 -20 A 15 15 0 1 0 -20 -5 L -16 -5"
       />
       <path
         class="logo-path"
@@ -36,7 +36,7 @@
         stroke-width="5"
         stroke-linecap="round"
         mask="url(#logo-mask)"
-        d="M -5 15 L -5 20 A 25 25 0 1 0 20 -5 L 10 -5"
+        d="M -5 15 L -5 20 A 25 25 0 1 0 20 -5 L 15 -5"
       />
       <path
         class="logo-path"
@@ -45,7 +45,7 @@
         stroke-width="5"
         stroke-linecap="round"
         mask="url(#logo-mask)"
-        d="M 5 15 L 5 20 A 15 15 0 1 0 20 5 L 10 5"
+        d="M 5 15 L 5 20 A 15 15 0 1 0 20 5 L 15 5"
       />
     </g>
   </svg>
