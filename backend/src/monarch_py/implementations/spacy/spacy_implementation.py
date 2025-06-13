@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List
+from typing import List, Optional
 
 import spacy
 
@@ -15,8 +15,8 @@ import tarfile
 class SpacyImplementation(TextAnnotatorInterface):
     """Implementation of Monarch Interfaces for SPACY"""
 
-    nlp = None
-    grounding_implementation = None
+    nlp: Optional[spacy.language.Language] = None
+    grounding_implementation: Optional[GroundingInterface] = None
 
     def init_spacy(self, grounding_implementation: GroundingInterface):
         # Define the URL for the Spacy model

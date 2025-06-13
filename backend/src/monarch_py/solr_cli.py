@@ -49,7 +49,7 @@ def callback(
 @solr_app.command("start")
 def start(update: bool = False):
     """Starts a local Solr container."""
-    ensure_solr(overwrite=False)
+    ensure_solr(overwrite=update)
     start_solr()
 
 
