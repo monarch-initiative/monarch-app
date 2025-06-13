@@ -22,44 +22,30 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
-      #----------------------------------------------
-      #          install & configure poetry
-      #----------------------------------------------
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
 
-      #----------------------------------------------
-      #    install your root project, if required
-      #----------------------------------------------
       - name: Install library
-        run: poetry -C backend install --no-interaction
+        run: uv pip install .[dev]
 
-      #----------------------------------------------
-      #              run pytest
-      #----------------------------------------------
       - name: Run tests
         run: |
-          poetry -C backend run pytest tests
+          uv run pytest tests
         shell: bash
 
-      #----------------------------------------------
-      #              coverage report
-      #----------------------------------------------
-      - name: Generate coverage results
+      - name: Generate coverage report
         run: |
-          poetry -C backend run coverage run -m pytest tests
-          poetry -C backend run coverage xml
-          poetry -C backend run coverage report -m
+          uv run coverage run -m pytest tests
+          uv run coverage xml
+          uv run coverage report -m
         shell: bash
 
-      #----------------------------------------------
-      #           upload coverage results
-      #----------------------------------------------
       - name: Upload coverage report
         if: github.repository == 'monarch-initiative/monarch-app'
         uses: codecov/codecov-action@v5
@@ -68,4 +54,3 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage.xml
           fail_ci_if_error: true
-

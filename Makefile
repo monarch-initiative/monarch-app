@@ -1,5 +1,5 @@
-RUN = cd backend && poetry run
-VERSION = $(shell poetry -C backend version -s)
+RUN = cd backend && uv run
+VERSION = $(shell uv --directory backend version -s)
 ROOTDIR = $(shell pwd)
 SCHEMADIR = $(ROOTDIR)/backend/src/monarch_py/datamodels
 
@@ -65,7 +65,8 @@ install: install-backend install-frontend
 .PHONY: install-backend
 install-backend:
 	cd backend && \
-		poetry install --with dev
+		uv venv
+		uv pip install -e .[dev]
 
 
 .PHONY: install-frontend

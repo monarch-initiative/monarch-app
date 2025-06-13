@@ -16,7 +16,7 @@ or using `uvicorn`:
 
 ```bash
 # Using uvicorn directly:
-poetry run uvicorn src.monarch_py.api.main:app --reload
+uv run uvicorn src.monarch_py.api.main:app --reload
 
 # Using the Makefile shortcut:
 cd <path-to>/monarch-app

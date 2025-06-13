@@ -44,7 +44,7 @@ The Monarch Initiative website tool chain has a few requirements that you may ne
 ### Backend Requirements
 
 - Python - Most of us use Python version 3.10.12 for development and try to be compatible with versions 3.9-3.12.
-- [Poetry](https://python-poetry.org/docs/#installation) - We use Poetry to manage dependencies in `monarch-py`
+- [uv](https://docs.astral.sh/uv/) - We use `uv` to manage dependencies in `monarch-py`
 - [pyenv](https://github.com/pyenv/pyenv?tab=readme-ov-file#installation) (suggested) - I recommend using pyenv to manage your Python version within different projects
 
 ### Frontend Requirements
@@ -73,7 +73,7 @@ pyenv local 3.10.12
 python -m venv .venv
 ```
 
-When the new virtual environment is created, you may want to do some peronal modifications to the envoronment. I edit the `activate` script to name the virtual environment more meaningfully and also install `poetry` locally (my preference, `activate` then run `pip install poetry`). After the virtual environment is set up you will want to start it before each development session by running `activate` (or in your IDE). To exit the environment run `deactivate`.
+When the new virtual environment is created, you may want to do some peronal modifications to the envoronment. I edit the `activate` script to name the virtual environment more meaningfully and also install `uv` locally (my preference, `activate` then run `pip install uv`). After the virtual environment is set up you will want to start it before each development session by running `activate` (or in your IDE). To exit the environment run `deactivate`.
 
 ### Makefile
 
