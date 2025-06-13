@@ -17,6 +17,7 @@ from monarch_py.datamodels.model import (
     Node,
     NodeHierarchy,
     SearchResults,
+    CrossSpeciesTermClique,
 )
 from monarch_py.datamodels.solr import core
 from monarch_py.datamodels.category_enums import (
@@ -62,6 +63,10 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
     """Implementation of Monarch Interfaces for Solr endpoint"""
 
     base_url: str = os.getenv("MONARCH_SOLR_URL", "http://localhost:8983/solr")
+
+    # Prefixes representing ontologies used for cross-species term cliques
+    CROSS_SPECIES_PREFIXES = ["UPHENO", "UBERON"]
+    CROSS_SPECIES_CLIQUE_CATEGORIES = ["biolink:PhenotypicFeature", "biolink:AnatomicalEntity"]
 
     def solr_is_available(self) -> bool:
         """Check if the Solr instance is available"""
@@ -124,6 +129,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             ]
         node: Node = Node(
             **entity.model_dump(),
+            cross_species_term_clique=self._get_cross_species_term_clique(entity),
             node_hierarchy=self._get_node_hierarchy(entity),
             association_counts=self.get_association_counts(id).items,
             external_links=get_links_for_field(entity.xref) if entity.xref else [],
@@ -172,8 +178,12 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         this_entity: Entity,
         entity: Optional[str] = None,
         subject: Optional[str] = None,
+        subject_category: Optional[List[EntityCategory]] = None,
+        subject_namespace: Optional[List[str]] = None,
         predicate: List[AssociationPredicate] = None,
         object: Optional[str] = None,
+        object_category: Optional[List[EntityCategory]] = None,
+        object_namespace: Optional[List[str]] = None,
     ) -> List[Entity]:
         """
         Get a list of entities directly associated with this_entity fetched from associations
@@ -191,13 +201,75 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             for association in self.get_associations(
                 entity=entity,
                 subject=subject,
+                subject_category=subject_category,
+                subject_namespace=subject_namespace,
                 predicate=predicate,
                 object=object,
+                object_category=object_category,
+                object_namespace=object_namespace,
                 direct=True,
                 limit=1000,
                 offset=0,
             ).items
         ]
+
+    def _get_cross_species_term_clique(self, entity: Entity) -> Optional[CrossSpeciesTermClique]:
+        """Get a CrossSpeciesTermClique for the given entity"""
+
+        if entity.category not in self.CROSS_SPECIES_CLIQUE_CATEGORIES:
+            return None
+
+        # Check if entity is a root term (from one of our prefixes)
+        is_root_term = any(entity.id.startswith(f"{prefix}:") for prefix in self.CROSS_SPECIES_PREFIXES)
+
+        if is_root_term:
+            parent = self.get_entity(entity.id, extra=False)
+            possible_children = self.get_counterpart_entities(
+                this_entity=parent,
+                subject_category=["biolink:PhenotypicFeature"],
+                predicate=[AssociationPredicate.SUBCLASS_OF],
+                object=parent.id,
+            )
+            # Filter out children that are also root terms
+            children = [
+                child
+                for child in possible_children
+                if not any(child.id.startswith(f"{prefix}:") for prefix in self.CROSS_SPECIES_PREFIXES)
+            ]
+            return CrossSpeciesTermClique(root_term=parent, entities=children, associations=[])
+        else:
+            possible_parents = self.get_counterpart_entities(
+                this_entity=entity,
+                subject=entity.id,
+                predicate=[AssociationPredicate.SUBCLASS_OF],
+                object_category=[EntityCategory.PHENOTYPIC_FEATURE],
+                object_namespace=self.CROSS_SPECIES_PREFIXES,
+            )
+            # It might be too big of an assumption that there's a single parent,
+            # TODO: this is worth checking
+            parent = possible_parents[0] if possible_parents else None
+            if parent is None:
+                return None
+
+            # If a parent is found, get its children
+            possible_children = self.get_counterpart_entities(
+                this_entity=parent,
+                object=parent.id,
+                predicate=[AssociationPredicate.SUBCLASS_OF],
+                subject_category=[EntityCategory.PHENOTYPIC_FEATURE],
+            )
+            # Filter out children that are also root terms
+            children = [
+                child
+                for child in possible_children
+                if not any(child.id.startswith(f"{prefix}:") for prefix in self.CROSS_SPECIES_PREFIXES)
+            ]
+            # This probably can't happen, since we we would be on a phenotype term
+            # that went up to a parent, so this entity should be a child of that parent
+            if children is None:
+                return None
+
+            return CrossSpeciesTermClique(root_term=parent, entities=children, associations=[])
 
     def _get_node_hierarchy(self, entity: Entity) -> NodeHierarchy:
         """
