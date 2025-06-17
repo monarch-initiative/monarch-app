@@ -88,6 +88,10 @@
     <!-- object-->
     <template #object="{ row }">
       <div class="badgeColumn">
+        <span v-if="row?.negated === true && selectedTab === 'direct'">
+          Does <span class="negated-text">NOT</span> have
+        </span>
+
         <AppNodeBadge
           :node="{
             id: row.object,
@@ -246,15 +250,15 @@ type Props = {
   node: Node;
   /** selected association category */
   category: Option;
-  /** include orthologs */
-  includeOrthologs: boolean;
+
   direct: Option;
   /** search string */
   search: string;
+  selectedTab: "all" | "direct";
+  directParam: Option;
 };
 
 const props = defineProps<Props>();
-
 const showModal = ref(false);
 const selectedAssociation = ref<DirectionalAssociation | null>(null);
 const start = ref(0);
@@ -360,7 +364,7 @@ const cols = computed((): Cols<Datum> => {
   }
 
   /** standard columns, always present */
-  const baseCols: Cols<Datum> = [
+  let baseCols: Cols<Datum> = [
     {
       slot: "subject",
       key: "subject_label",
@@ -401,6 +405,12 @@ const cols = computed((): Cols<Datum> => {
       slot: "taxon",
       heading: "Taxon",
     });
+  }
+  // Remove first two columns if selectedTab is 'direct'
+  if (props.selectedTab === "direct") {
+    baseCols = baseCols.filter(
+      (col) => col.key !== "subject_label" && col.key !== "predicate",
+    );
   }
 
   if (
@@ -486,11 +496,12 @@ const {
   },
   [boolean]
 >(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async function (fresh: boolean) /**
-   * whether to perform "fresh" search, without filters/pagination/etc. true when
-   * search text changes, false when filters/pagination/etc change.
-   */ {
+  async function (
+    fresh: boolean /**
+     * - whether to perform "fresh" search, without filters/pagination/etc. true when
+     *   search text changes, false when filters/pagination/etc change.
+     */,
+  ) {
     /** catch case where no association categories available */
     if (!props.node.association_counts.length)
       throw Error("No association info available");
@@ -504,8 +515,8 @@ const {
       props.category.id,
       start.value,
       perPage.value,
-      props.includeOrthologs,
-      props.direct.id,
+      true,
+      props.directParam.id,
       props.search,
       sort.value,
     );
@@ -533,7 +544,7 @@ async function download() {
   await downloadAssociations(
     props.node.id,
     props.category.id,
-    props.includeOrthologs,
+    true,
     props.direct.id,
     props.search,
     sort.value,
@@ -591,12 +602,9 @@ watch(
   () => props.category,
   async () => await queryAssociations(true),
 );
+
 watch(
-  () => props.includeOrthologs,
-  async () => await queryAssociations(true),
-);
-watch(
-  () => props.direct,
+  () => props.directParam,
   async () => await queryAssociations(true),
 );
 
@@ -615,6 +623,11 @@ onMounted(() => queryAssociations(true));
 </script>
 
 <style lang="scss" scoped>
+.negated-text {
+  color: $error;
+  font-weight: bold;
+}
+
 .arrow {
   color: $gray;
 }

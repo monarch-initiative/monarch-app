@@ -5,7 +5,7 @@
 <template>
   <!-- status -->
   <template v-if="isLoading || isError">
-    <AppSection width="full" design="fill" class="bare node">
+    <AppSection width="full" design="fill" class="node">
       <AppHeading class="heading">
         {{ $route.params.id }}
       </AppHeading>

@@ -11,7 +11,7 @@
   <AppFlex direction="col" align-h="left" :class="['container']">
     <div v-if="total === 0" class="emptyState">
       <AppIcon icon="face-meh" size="lg" />
-      <div class="noResults">No matching results!</div>
+      <div class="noResults">No results or data found!</div>
     </div>
     <div v-else ref="scroll" style="width: 100%">
       <table
