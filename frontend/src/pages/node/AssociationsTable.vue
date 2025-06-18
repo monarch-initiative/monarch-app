@@ -58,31 +58,26 @@
         <AppNodeBadge
           :node="{
             id: row.subject,
-            name:
-              row?.highlighting?.subject_closure_label?.[0] ||
-              row.subject_label,
+            name: row.highlighting?.subject_label?.[0] || row.subject_label,
             category: row.subject_category,
             info: row.subject_taxon_label,
           }"
           :breadcrumbs="getBreadcrumbs(node, row, 'subject')"
-          :get-highlighted-text="getHighlightedText"
+          :highlight="true"
         />
 
         <AppNodeText
           v-if="row?.highlighting?.subject_closure_label?.[0]"
           :text="`Ancestor: ${row.highlighting.subject_closure_label[0]}`"
           class="text-sm"
-          :get-highlighted-text="getHighlightedText"
+          :highlight="true"
         />
       </div>
     </template>
 
     <!-- predicate -->
     <template #predicate="{ row }">
-      <AppPredicateBadge
-        :association="row"
-        :get-highlighted-text="getHighlightedText"
-      />
+      <AppPredicateBadge :association="row" :highlight="true" />
     </template>
 
     <!-- maxorelation -->
@@ -96,19 +91,18 @@
         <AppNodeBadge
           :node="{
             id: row.object,
-            name:
-              row?.highlighting?.object_closure_label?.[0] || row.object_label,
+            name: row.highlighting?.object_label?.[0] || row.object_label,
             category: row.object_category,
             info: row.object_taxon_label,
           }"
           :breadcrumbs="getBreadcrumbs(node, row, 'object')"
-          :get-highlighted-text="getHighlightedText"
+          :highlight="true"
         />
         <AppNodeText
           v-if="row?.highlighting?.object_closure_label?.[0]"
           :text="`Ancestor: ${row.highlighting.object_closure_label[0]}`"
           class="text-sm"
-          :get-highlighted-text="getHighlightedText"
+          :highlight="true"
         />
       </div>
     </template>
@@ -279,20 +273,6 @@ watch(showModal, (newValue) => {
 });
 
 type Datum = keyof DirectionalAssociation;
-
-const getHighlightedText = (
-  text: string,
-  transformFn?: (text: string) => string,
-): string => {
-  if (!text) return "";
-  const transformed = transformFn ? transformFn(text) : text;
-  if (!props.search) return transformed;
-  const regex = new RegExp(props.search, "gi");
-  return transformed.replace(
-    regex,
-    (match) => `<span style="background: #FFFF00;"><em>${match}</em></span>`,
-  );
-};
 
 /** Orholog columns */
 const orthologColoumns = computed<Cols<Datum>>(() => {
@@ -529,6 +509,7 @@ const {
       props.search,
       sort.value,
     );
+
     return response;
   },
 
