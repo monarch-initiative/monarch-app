@@ -8,8 +8,8 @@
     <span v-if="association.negated" class="negated-text">NOT</span>
 
     <span
-      v-html="getFormattedPredicateLabel(predicate)"
       :class="{ 'highlighted-text': highlight }"
+      v-html="getFormattedPredicateLabel(predicate)"
     />
 
     <AppIcon v-if="arrows" class="arrow" :icon="`arrow-${arrowDirection}`" />
