@@ -100,61 +100,61 @@
       {
         "label": "Mondo",
         "key": "ontology-mondo",
-        "to": "/ontology/mondo",
+        "to": "/ontologies/mondo",
         "tooltip": ""
       },
       {
         "label": "Uberon",
         "key": "ontology-uberon",
-        "to": "/ontology/uberon",
+        "to": "/ontologies/uberon",
         "tooltip": ""
       },
       {
         "label": "uPheno",
         "key": "ontology-uPeheno",
-        "to": "/ontology/upheno",
+        "to": "/ontologies/upheno",
         "tooltip": ""
       },
       {
         "label": "HPO",
         "key": "ontology-hpo",
-        "to": "/ontology/hp",
+        "to": "/ontologies/hp",
         "tooltip": ""
       },
       {
         "label": "Phenio",
         "key": "ontology-phenio",
-        "to": "/ontology/phenio",
+        "to": "/ontologies/phenio",
         "tooltip": ""
       },
       {
         "label": "OBA",
         "key": "ontology-oba",
-        "to": "/ontology/oba",
+        "to": "/ontologies/oba",
         "tooltip": ""
       },
       {
         "label": "VBO",
         "key": "ontology-vbo",
-        "to": "/ontology/vbo",
+        "to": "/ontologies/vbo",
         "tooltip": ""
       },
       {
         "label": "Geno",
         "key": "ontology-geno",
-        "to": "/ontology/geno",
+        "to": "/ontologies/geno",
         "tooltip": ""
       },
       {
         "label": "Sepio",
         "key": "ontology-sepio",
-        "to": "/ontology/sepio",
+        "to": "/ontologies/sepio",
         "tooltip": ""
       },
       {
         "label": "ECTO",
         "key": "ontology-ecto",
-        "to": "/ontology/ecto",
+        "to": "/ontologies/ecto",
         "tooltip": ""
       }
     ]
@@ -165,55 +165,55 @@
       {
         "label": "Exomiser",
         "key": "exomiser",
-        "to": "/tool/exomiser",
+        "to": "/tools/exomiser",
         "tooltip": ""
       },
       {
         "label": "PhEval",
         "key": "pheval",
-        "to": "/tool/pheval",
+        "to": "/tools/pheval",
         "tooltip": ""
       },
       {
         "label": "LinkML",
         "key": "linkml-cde",
-        "to": "/tool/linkml",
+        "to": "/tools/linkml",
         "tooltip": ""
       },
       {
         "label": "SSSOM",
         "key": "sssom",
-        "to": "/tool/sssom",
+        "to": "/tools/sssom",
         "tooltip": ""
       },
       {
         "label": "OAK",
         "key": "oak",
-        "to": "/tool/oak",
+        "to": "/tools/oak",
         "tooltip": ""
       },
       {
         "label": "ODK",
         "key": "odk",
-        "to": "/tool/odk",
+        "to": "/tools/odk",
         "tooltip": ""
       },
       {
         "label": "OntoGPT",
         "key": "ontogpt",
-        "to": "/tool/ontogpt",
+        "to": "/tools/ontogpt",
         "tooltip": ""
       },
       {
         "label": "CurateGPT",
         "key": "curate-gpt",
-        "to": "/tool/curate_gpt",
+        "to": "/tools/curate_gpt",
         "tooltip": ""
       },
       {
         "label": "Phenopackets",
         "key": "pehnopackets",
-        "to": "/tool/phenopackets",
+        "to": "/tools/phenopackets",
         "tooltip": ""
       }
     ]
@@ -224,31 +224,31 @@
       {
         "label": "Monarch OLS",
         "key": "monarch_ols",
-        "to": "/registry/monarch_ols",
+        "to": "/registries/monarch_ols",
         "tooltip": ""
       },
       {
         "label": "Monarch Mapping Commons",
         "key": "monarch_mapping_commons",
-        "to": "/registry/monarch_mapping_commons",
+        "to": "/registries/monarch_mapping_commons",
         "tooltip": ""
       },
       {
         "label": "KG Hub",
         "key": "kg_hub",
-        "to": "/registry/kg_hub",
+        "to": "/registries/kg_hub",
         "tooltip": ""
       },
       {
         "label": "KG Registry",
         "key": "kg_registry",
-        "to": "/registry/kg_registry",
+        "to": "/registries/kg_registry",
         "tooltip": ""
       },
       {
         "label": "LinkML Registry",
         "key": "linkml_registry",
-        "to": "/registry/linkml_registry",
+        "to": "/registries/linkml_registry",
         "tooltip": ""
       }
     ]

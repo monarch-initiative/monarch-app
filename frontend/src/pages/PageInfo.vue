@@ -2,10 +2,10 @@
   <div class="page-container">
     <AppBreadcrumb :dynamic-breadcrumb="item?.title" />
     <PageTile
-      id="page-{{ item?.id || 'not-found' }}"
-      :key="`page-${item?.id}`"
+      :id="item?.title_short?.toLowerCase() ?? 'not-found'"
+      :key="`page-${item?.title_short}`"
       :title="item?.title"
-      :img-src="item.icon"
+      :img-src="item?.icon || ''"
       :is-info-page="true"
       :tagline="item?.tagline"
     />
@@ -24,33 +24,58 @@
 
       <!-- Tab Content -->
       <div class="tab-content">
-        <AppSection
-          v-if="activeTab === 'about' && item.description"
-          width="big"
-        >
-          <p>{{ item.description }}</p>
+        <AppSection v-if="activeTab === 'about' && item?.about" width="big">
+          <p>{{ item.about }}</p>
           <div v-if="item.visual_explainer" class="visual-explainer">
-            <figure v-if="visualExplainerType === 'image'" class="figure">
-              <img :src="item.visual_explainer" alt="Visual explanation." />
-            </figure>
-            <iframe
-              v-else-if="visualExplainerType === 'youtube'"
-              :src="embedYouTubeUrl(item.visual_explainer)"
-              frameborder="0"
+            <div
               class="video"
-              allow="autoplay; picture-in-picture"
-              allowfullscreen
-              :title="`Visual explainer video for ${item.title}`"
-            ></iframe>
+              v-if="
+                explainerParts.videoUrl &&
+                /youtu\.?be/.test(explainerParts.videoUrl)
+              "
+            >
+              <h2>Watch: What Is {{ item?.title }} and Why It Matters</h2>
+              <!-- YouTube video -->
+              <iframe
+                :src="embedYouTubeUrl(explainerParts.videoUrl)"
+                frameborder="0"
+                allow="autoplay; picture-in-picture"
+                allowfullscreen
+                :title="`Visual explainer video for ${item.title}`"
+              ></iframe>
+            </div>
+
+            <!-- Description Text -->
+            <p v-if="explainerParts.description">
+              {{ explainerParts.description }}
+            </p>
+
+            <!-- Image -->
+            <figure v-if="explainerParts.imageId">
+              <img
+                :src="`/icons/${explainerParts.imageId}.png`"
+                :alt="`Visual explainer image for ${item.title}`"
+              />
+            </figure>
           </div>
         </AppSection>
 
         <AppSection
-          v-if="activeTab === 'citation' && item.Citation"
+          v-if="activeTab === 'citation' && item.citation"
           width="big"
         >
           <div class="citation-container">
-            <p v-html="formattedCitation"></p>
+            <pre ref="citationText" class="citation-box"
+              >{{ item.citation }}
+    </pre
+            >
+
+            <AppButton
+              text="Copy Citation"
+              @click="copyCitation"
+              class="copy-btn"
+            />
+            <span v-if="copied" class="copied-msg">Copied!</span>
           </div>
         </AppSection>
 
@@ -103,90 +128,92 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppLink from "@/components/AppLink.vue";
 import AppSection from "@/components/AppSection.vue";
 import PageTile from "@/components/ThePageTitle.vue";
-import data from "@/data/info-pages.json";
+import rawData from "@/resources/monarch-app-infopages.json";
 
+/* ------------------------------------------------------------------ */
+/* 1. Type helpers – keep them minimal so we don’t over-specify       */
+/* ------------------------------------------------------------------ */
+type CategoryKey = "ontologies" | "registries" | "standards" | "tools";
+type ItemRecord = Record<string, any>; // one item (ecto / hp / etc.)
+type DataShape = Record<CategoryKey, ItemRecord>; // whole JSON file
+
+const data = rawData as DataShape; // cast once, use everywhere
+
+/* ------------------------------------------------------------------ */
+/* 2. Props from router / parent                                      */
+/* ------------------------------------------------------------------ */
 const props = defineProps<{
-  itemType: "ontology" | "registry" | "tool";
+  itemType: CategoryKey;
   id: string;
 }>();
-const router = useRouter();
-const isScrolled = ref(false);
-const activeTab = ref("about");
 
+/* ------------------------------------------------------------------ */
+/* 3. Reactive state                                                 */
+/* ------------------------------------------------------------------ */
+const router = useRouter();
+const route = useRoute();
+const isScrolled = ref(false);
+const activeTab = ref<"about" | "citation" | "resources">("about");
+
+/* ------------------------------------------------------------------ */
+/* 4. Lookup the single item directly (object pattern)                */
+/* ------------------------------------------------------------------ */
+
+const item = computed(() => data[props.itemType]?.[props.id] ?? null);
+
+/* ------------------------------------------------------------------ */
+/* 5. Tabs logic                                                      */
+/* ------------------------------------------------------------------ */
 const tabs = [
   { key: "about", label: "About" },
   { key: "citation", label: "Citation" },
   { key: "resources", label: "Resources" },
 ];
 
-const items = data[props.itemType] as Array<any> | undefined;
-const item = computed(() => items?.find((entry) => entry.id === props.id));
-
-const visibleTabs = computed(() => {
-  return tabs.filter((tab) => {
-    return (
-      (tab.key === "about" && item.value?.description) ||
-      (tab.key === "citation" && item.value?.Citation) ||
-      (tab.key === "resources" && resourceLinks.value.length)
-    );
-  });
-});
-
-const handleScroll = () => {
-  isScrolled.value = window.scrollY > 10;
-};
-
-onMounted(() => {
-  window.addEventListener("scroll", handleScroll);
-});
-
-onBeforeUnmount(() => {
-  window.removeEventListener("scroll", handleScroll);
-});
-
-if (!item.value) {
-  console.warn(`No item found for type=${props.itemType} and id=${props.id}`);
-}
-
 const resourceLinks = computed(() => {
+  const sel = item.value?.see_also ?? {};
   const links = [
-    { key: "repository", value: item.value?.repository },
-    { key: "documentation", value: item.value?.documentation },
-    { key: "website", value: item.value?.website },
-    { key: "other_link", value: item.value?.other_link },
+    { key: "repository", value: sel.repository },
+    { key: "documentation", value: sel.documentation },
+    { key: "website", value: sel.website },
+    { key: "other", value: sel.other },
   ];
   const seen = new Set<string>();
-  const uniqueLinks = [];
-  for (const link of links) {
-    if (link.value && !seen.has(link.value)) {
-      seen.add(link.value);
-      uniqueLinks.push(link);
-    }
-  }
-  return uniqueLinks;
+  return links.filter(
+    (l) => l.value && !seen.has(l.value) && seen.add(l.value),
+  );
 });
 
-const formattedCitation = computed(() => {
-  if (!item.value?.Citation) return "";
-  const citation = item.value.Citation;
-  const doiRegex = /(https?:\/\/[^\s]+)/g;
-  return citation.replace(doiRegex, (match: string) => {
-    return `<a href="${match}" target="_blank" class="doi-link">${match}</a>`;
-  });
-});
+const visibleTabs = computed(() =>
+  tabs.filter(
+    (t) =>
+      (t.key === "about" && item.value?.about) ||
+      (t.key === "citation" && item.value?.citation) ||
+      (t.key === "resources" && resourceLinks.value.length),
+  ),
+);
 
-const visualExplainerType = computed(() => {
-  if (!item.value?.visual_explainer) return null;
-  return item.value.visual_explainer.includes("youtube.com") ||
-    item.value.visual_explainer.includes("youtu.be")
-    ? "youtube"
-    : "image";
-});
+/* ------------------------------------------------------------------ */
+/* 6. Helpers – citation formatting & media type detection            */
+/* ------------------------------------------------------------------ */
+// const formattedCitation = computed(() => {
+//   const text = item.value?.Citation ?? "";
+//   return text.replace(
+//     /(https?:\/\/[^\s]+)/g,
+//     (m) => `<a href="${m}" target="_blank" class="doi-link">${m}</a>`,
+//   );
+// });
+
+// const visualExplainerType = computed<"youtube" | "image" | null>(() => {
+//   const v = item.value?.visual_explainer;
+//   if (!v) return null;
+//   return /youtu\.?be/.test(v) ? "youtube" : "image";
+// });
 
 const embedYouTubeUrl = (url: string) => {
   const videoIdMatch = url.match(
@@ -195,14 +222,75 @@ const embedYouTubeUrl = (url: string) => {
   if (videoIdMatch && videoIdMatch[1]) {
     return `https://www.youtube.com/embed/${videoIdMatch[1]}`;
   }
-  return url;
+  return url; // fallback: just return original
 };
 
-watch(item, (newItem) => {
-  if (newItem?.title) {
-    router.currentRoute.value.meta.breadcrumb = newItem.title;
+const explainerParts = computed(() => {
+  const raw = item.value?.visual_explainer;
+  if (!raw) return {};
+
+  const parts = raw
+    .split("|||")
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  let videoUrl: string | undefined;
+  let imageId: string | undefined;
+  let description = "";
+
+  for (const p of parts) {
+    if (/youtu\.?be|youtube\.com/.test(p)) {
+      // video?
+      videoUrl = p;
+    } else if (p.startsWith("figure-")) {
+      // image reference?
+      imageId = p; // keep the id (no extension)
+    } else {
+      // anything else is text
+      description = p;
+    }
   }
+  console.log({ videoUrl, imageId, description });
+  return { videoUrl, imageId, description };
 });
+
+/* ------------------------------------------------------------------ */
+/* Scroll / breadcrumb effects                                     */
+/* ------------------------------------------------------------------ */
+const handleScroll = () => (isScrolled.value = window.scrollY > 10);
+onMounted(() => window.addEventListener("scroll", handleScroll));
+onBeforeUnmount(() => window.removeEventListener("scroll", handleScroll));
+
+/* ------------------------------------------------------------------ */
+/*  Copy Citation                        */
+/* ------------------------------------------------------------------ */
+const copied = ref(false);
+const citationText = ref<HTMLElement | null>(null);
+
+function copyCitation() {
+  if (citationText.value) {
+    const text = citationText.value.innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      copied.value = true;
+      setTimeout(() => (copied.value = false), 2000);
+    });
+  }
+}
+
+watch(item, (newItem) => {
+  if (newItem?.title) router.currentRoute.value.meta.breadcrumb = newItem.title;
+});
+
+watch(
+  () => route.params.id,
+  () => {
+    // force recomputation of `item`
+    item.value = data[route.params.itemType]?.[route.params.id];
+  },
+);
+
+if (!item.value)
+  console.warn(`No item found for ${props.itemType}/${props.id}`);
 </script>
 
 <style scoped lang="scss">
@@ -286,26 +374,66 @@ watch(item, (newItem) => {
   font-size: 0.9em;
 }
 
-.figure {
-  max-width: 100%;
-  margin: 1rem auto 2rem;
-  text-align: center;
-}
-
 .visual-explainer {
-  width: 70%;
-  padding: 2em;
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 1.2em auto;
+  gap: 2rem;
+  h2 {
+    text-align: left;
+  }
   .video {
-    aspect-ratio: 16 / 9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
+    gap: 1rem;
+    iframe {
+      aspect-ratio: 16 / 9;
+      width: 70%;
+      border-radius: 8px;
+    }
   }
 }
+
 .contact-section {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
   text-align: center;
+}
+
+.citation-box {
+  padding: 1rem;
+  border-radius: 8px;
+  background: #f7f7f7;
+  font-family: monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.copy-btn {
+  margin-top: 0.5rem;
+  padding: 0.4rem 1rem;
+  border: none;
+  border-radius: 5px;
+  background-color: $theme-light;
+  color: black;
+
+  cursor: pointer;
+}
+
+.copy-btn:hover {
+  background-color: #005580;
+}
+
+.copied-msg {
+  display: inline-block;
+  margin-left: 1rem;
+  color: green;
+  font-size: 0.9rem;
 }
 </style>

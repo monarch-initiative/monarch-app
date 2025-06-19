@@ -235,22 +235,28 @@ export const routes: RouteRecordRaw[] = [
   },
 
   {
-    path: "/ontology/:id",
+    path: "/ontologies/:id",
     name: "OntologyPage",
     component: asyncRoute("PageInfo"),
-    props: (route) => ({ itemType: "ontology", id: route.params.id }),
+    props: (route) => ({ itemType: "ontologies", id: route.params.id }),
   },
   {
-    path: "/registry/:id",
+    path: "/registries/:id",
     name: "RegistryPage",
     component: asyncRoute("PageInfo"),
-    props: (route) => ({ itemType: "registry", id: route.params.id }),
+    props: (route) => ({ itemType: "registries", id: route.params.id }),
   },
   {
-    path: "/tool/:id",
+    path: "/tools/:id",
     name: "ToolPage",
     component: asyncRoute("PageInfo"),
-    props: (route) => ({ itemType: "tool", id: route.params.id }),
+    props: (route) => ({ itemType: "tools", id: route.params.id }),
+  },
+  {
+    path: "/standards/:id",
+    name: "StndardPage",
+    component: asyncRoute("PageInfo"),
+    props: (route) => ({ itemType: "standards", id: route.params.id }),
   },
 ];
 
