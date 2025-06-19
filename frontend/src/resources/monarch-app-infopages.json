@@ -285,7 +285,7 @@
         "name": "Chris Mungall",
         "orcid": "https://orcid.org/0000-0002-6601-2165"
       },
-      "icon": "onto-gpt",
+      "icon": null,
       "license": null,
       "see_also": {
         "documentation": "https://github.com/Knowledge-Graph-Hub/kg-registry",
@@ -421,7 +421,7 @@
         "name": "Chris Mungall",
         "orcid": "https://orcid.org/0000-0002-6601-2165"
       },
-      "icon": "curate-gpt",
+      "icon": null,
       "license": "BSD-3-Clause",
       "see_also": {
         "documentation": "https://monarch-initiative.github.io/curategpt/",
@@ -476,7 +476,7 @@
       "tagline": "A general purpose modeling language that can be used with linked data, JSON, and other formalisms",
       "title": "Linked Data Modeling Language",
       "title_short": "LinkML",
-      "visual_explainer": "https://www.youtube.com/@LinkML-org"
+      "visual_explainer": "https://www.youtube.com/watch?v=nuy_yGT9g2U"
     },
     "oak": {
       "about": "The Ontology Access Kit (OAK) is for both technical and non-technical users of ontologies. Non-technical users can use the command line interface to query ontologies in a variety of ways. Technical users can write Python code that uses the OAK library to perform ontology-related tasks.\nOAK provides a collection of interfaces for various ontology operations, including: - look up basic features of an ontology element, such as its label, definition, relationships, or aliases - search an ontology for a term - validate an ontology - modify or delete terms - generate and visualize subgraphs - identify lexical matches and export as SSSOM mapping tables - perform more advanced operations, such as graph traversal, OWL axiom processing, or text annotation\nThese interfaces are separated from any particular backend, for which there a number of different adapters. This means the same Python API and command line can be used regardless of whether the ontology: - is served by a remote API such as OLS or BioPortal - is present locally on the filesystem in owl, obo, obojson, or sqlite formats - is to be downloaded from a remote repository such as the OBO library - is queried from a remote database, including SPARQL endpoints (Ontobee/Ubergraph), a SQL database, a Solr/ES endpoint\n",
@@ -501,7 +501,7 @@
       "visual_explainer": "https://www.youtube.com/watch?v=zO6tS7gZtvw"
     },
     "odk": {
-      "about": "\"Manage your ontology's life cycle with the Ontology Development Kit (ODK)!\nThe ODK is:\n- a toolbox of various ontology related tools such as ROBOT, owltools, dosdp-tools and many more,\nbundled as a docker image.\n- a set of executable workflows for managing your ontology's continuous integration, quality control,\nreleases and dynamic imports.\"\n",
+      "about": "Manage your ontology's life cycle with the Ontology Development Kit (ODK)!\nThe ODK is:\n- a toolbox of various ontology related tools such as ROBOT, owltools, dosdp-tools and many more,\nbundled as a docker image.\n- a set of executable workflows for managing your ontology's continuous integration, quality control,\nreleases and dynamic imports.\n",
       "citation": "Nicolas Matentzoglu, Damien Goutte-Gattat, Shawn Zheng Kai Tan, James P Balhoff, Seth Carbon, Anita R Caron, William D Duncan, Joe E Flack, Melissa Haendel, Nomi L Harris, William R Hogan, Charles Tapley Hoyt, Rebecca C Jackson, HyeongSik Kim, Huseyin Kir, Martin Larralde, Julie A McMurry, James A Overton, Bjoern Peters, Clare Pilgrim, Ray Stefancsik, Sofia MC Robb, Sabrina Toro, Nicole A Vasilevsky, Ramona Walls, Christopher J Mungall, David Osumi-Sutherland, Ontology Development Kit: a toolkit for building, maintaining and standardizing biomedical ontologies, Database, Volume 2022, 2022, baac087, https://doi.org/10.1093/database/baac087",
       "contact": {
         "email": "nicolas.matentzoglu@gmail.com",
@@ -531,7 +531,7 @@
         "name": "Chris Mungall",
         "orcid": "https://orcid.org/0000-0002-6601-2165"
       },
-      "icon": "onto-gpt",
+      "icon": null,
       "license": "BSD-3-Clause",
       "see_also": {
         "documentation": "https://monarch-initiative.github.io/ontogpt/",
