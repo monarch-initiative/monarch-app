@@ -164,7 +164,17 @@ const activeTab = ref<"about" | "citation" | "resources">("about");
 /* 4. Lookup the single item directly (object pattern)                */
 /* ------------------------------------------------------------------ */
 
-const item = computed(() => data[props.itemType]?.[props.id] ?? null);
+const item = computed(() => {
+  const isStandardAliasedAsTool =
+    props.itemType === "tools" && ["phenopackets", "sssom"].includes(props.id);
+
+  // Pull from standards if aliased, otherwise normal lookup
+  if (isStandardAliasedAsTool) {
+    return data.standards?.[props.id] ?? null;
+  }
+
+  return data[props.itemType]?.[props.id] ?? null;
+});
 
 /* ------------------------------------------------------------------ */
 /* 5. Tabs logic                                                      */
@@ -250,7 +260,7 @@ const explainerParts = computed(() => {
       description = p;
     }
   }
-  console.log({ videoUrl, imageId, description });
+
   return { videoUrl, imageId, description };
 });
 
@@ -389,12 +399,16 @@ if (!item.value)
     flex-direction: column;
     align-items: center;
     width: 100%;
-    gap: 1rem;
+    gap: 1.5rem;
     iframe {
       aspect-ratio: 16 / 9;
       width: 70%;
       border-radius: 8px;
     }
+  }
+  img {
+    align-self: center;
+    width: 70%;
   }
 }
 

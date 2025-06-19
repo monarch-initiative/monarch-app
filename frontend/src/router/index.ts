@@ -252,12 +252,6 @@ export const routes: RouteRecordRaw[] = [
     component: asyncRoute("PageInfo"),
     props: (route) => ({ itemType: "tools", id: route.params.id }),
   },
-  {
-    path: "/standards/:id",
-    name: "StndardPage",
-    component: asyncRoute("PageInfo"),
-    props: (route) => ({ itemType: "standards", id: route.params.id }),
-  },
 ];
 
 /** insert descriptions from imported json into each route's metadata */

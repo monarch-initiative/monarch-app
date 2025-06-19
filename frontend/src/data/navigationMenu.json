@@ -228,9 +228,9 @@
         "tooltip": ""
       },
       {
-        "label": "Monarch Mapping Commons",
-        "key": "monarch_mapping_commons",
-        "to": "/registries/monarch_mapping_commons",
+        "label": "Monarch Mapping Registry",
+        "key": "monarch_mapping_registry",
+        "to": "/registries/monarch_mapping_registry",
         "tooltip": ""
       },
       {
