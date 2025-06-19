@@ -2,6 +2,7 @@
   "ontologies": {
     "ecto": {
       "about": "The Environmental Conditions, Treatments and Exposures Ontology (ECTO) describes exposures to experimental treatments of plants and model organisms (e.g. exposures to modification of diet, lighting levels, temperature); exposures of humans or any other organisms to stressors through a variety of routes, for purposes of public health, environmental monitoring etc, stimuli, natural and experimental, any kind of environmental condition or change in condition that can be experienced by an organism or population of organisms on earth. The scope is very general and can include for example plant treatment regimens, as well as human clinical exposures (although these may better be handled by a more specialized ontology).",
+      "citation": "https://link.springer.com/article/10.1186/s13326-023-00283-x",
       "contact": {
         "email": "cjmungall@lbl.gov",
         "github": "@cmungall",
@@ -23,6 +24,7 @@
     },
     "geno": {
       "about": "GENO is an OWL2 ontology that represents the levels of genetic variation specified in genotypes, to support genotype-to-phenotype (G2P) data aggregation and analysis across diverse research communities and sources. The core of the ontology is a graph decomposing a genotype into smaller components of variation, from a complete genotype specifying sequence variation across an entire genome, down to specific allelic variants and sequence alterations. Structuring genotype instance data according to this model supports a primary use case of GENO to enable integrated analysis of G2P data where phenotype annotations are made at different levels of granularity in this genotype partonomy. GENO also enables description of various attributes of genotypes and genetic variants. These attributes include zygosity, genomic position, expression, dominance, and functional dependencies or consequences of a given variant. In addition to heritable variation in genomic sequence specified by traditional genotypes, GENO also represents transient variation in gene expression, as seen in experiments where genes are targeted by knockdown reagents or overexpressed by DNA constructs at the time a phenotype is assessed. This variation in gene expression is represented in terms of the targeted genes themselves, to parallel representation of sequence variation and facilitate integrated description and analysis of data about any genetic contribution to a measured phenotype. Finally, GENO also supports modelling of G2P associations, focusing on the interplay between genotype, phenotype, and environment. GENO describes provenance and experimental evidence for these associations using the Scientific Evidence and Provenance Information Ontology (SEPIO) model.",
+      "citation": "Cite the GH repo: https://github.com/monarch-initiative/GENO-ontology",
       "contact": {
         "email": "matt@tislab.org",
         "github": "@mbrush",
@@ -44,6 +46,7 @@
     },
     "hp": {
       "about": "The Human Phenotype Ontology (HPO) is a structured vocabulary used to describe human health conditions and symptoms in a standardized way. It helps doctors, researchers, and computer systems consistently record and analyze patient characteristics, especially in the context of rare diseases. By organizing thousands of clinical features into a searchable hierarchy, HPO supports better diagnosis, data sharing, and discovery in genetic medicine.",
+      "citation": "Gargano MA, Matentzoglu N, Coleman B, Addo-Lartey EB, Anagnostopoulos AV, Anderton J, Avillach P, Bagley AM, Bakštein E, Balhoff JP, Baynam G, Bello SM, Berk M, Bertram H, Bishop S, Blau H, Bodenstein DF, Botas P, Boztug K, Čady J, Callahan TJ, Cameron R, Carbon SJ, Castellanos F, Caufield JH, Chan LE, Chute CG, Cruz-Rojo J, Dahan-Oliel N, Davids JR, de Dieuleveult M, de Souza V, de Vries BBA, de Vries E, DePaulo JR, Derfalvi B, Dhombres F, Diaz-Byrd C, Dingemans AJM, Donadille B, Duyzend M, Elfeky R, Essaid S, Fabrizzi C, Fico G, Firth HV, Freudenberg-Hua Y, Fullerton JM, Gabriel DL, Gilmour K, Giordano J, Goes FS, Moses RG, Green I, Griese M, Groza T, Gu W, Guthrie J, Gyori B, Hamosh A, Hanauer M, Hanušová K, He YO, Hegde H, Helbig I, Holasová K, Hoyt CT, Huang S, Hurwitz E, Jacobsen JOB, Jiang X, Joseph L, Keramatian K, King B, Knoflach K, Koolen DA, Kraus ML, Kroll C, Kusters M, Ladewig MS, Lagorce D, Lai MC, Lapunzina P, Laraway B, Lewis-Smith D, Li X, Lucano C, Majd M, Marazita ML, Martinez-Glez V, McHenry TH, McInnis MG, McMurry JA, Mihulová M, Millett CE, Mitchell PB, Moslerová V, Narutomi K, Nematollahi S, Nevado J, Nierenberg AA, Čajbiková NN, Nurnberger JI Jr, Ogishima S, Olson D, Ortiz A, Pachajoa H, Perez de Nanclares G, Peters A, Putman T, Rapp CK, Rath A, Reese J, Rekerle L, Roberts AM, Roy S, Sanders SJ, Schuetz C, Schulte EC, Schulze TG, Schwarz M, Scott K, Seelow D, Seitz B, Shen Y, Similuk MN, Simon ES, Singh B, Smedley D, Smith CL, Smolinsky JT, Sperry S, Stafford E, Stefancsik R, Steinhaus R, Strawbridge R, Sundaramurthi JC, Talapova P, Tenorio Castano JA, Tesner P, Thomas RH, Thurm A, Turnovec M, van Gijn ME, Vasilevsky NA, Vlčková M, Walden A, Wang K, Wapner R, Ware JS, Wiafe AA, Wiafe SA, Wiggins LD, Williams AE, Wu C, Wyrwoll MJ, Xiong H, Yalin N, Yamamoto Y, Yatham LN, Yocum AK, Young AH, Yüksel Z, Zandi PP, Zankl A, Zarante I, Zvolský M, Toro S, Carmody LC, Harris NL, Munoz-Torres MC, Danis D, Mungall CJ, Köhler S, Haendel MA, Robinson PN. The Human Phenotype Ontology in 2024: phenotypes around the world. Nucleic Acids Res. 2024 Jan 5;52(D1):D1333-D1346. doi: 10.1093/nar/gkad1005. PMID: 37953324; PMCID: PMC10767975., https://doi.org/10.1093/nar/gkad1005",
       "contact": {
         "email": "Peter.Robinson@jax.org",
         "github": "@pnrobinson",
@@ -65,6 +68,7 @@
     },
     "maxo": {
       "about": null,
+      "citation": null,
       "contact": {
         "email": "Peter.Robinson@jax.org",
         "github": "@pnrobinson",
@@ -86,6 +90,7 @@
     },
     "mondo": {
       "about": "The Mondo Disease Ontology (Mondo) aims to harmonize disease definitions across the world, with a particular focus on rare diseases. Mondo goes beyond loose database cross-references. It curates precise 1:1 equivalence axioms connecting to other resources, validated by OWL reasoning. This means it is safe to propagate across these from Online Mendelian Inheritance in Man (OMIM), ORDO (Orphanet), Experimental Factor Ontology (EFO), Disease Ontology (DOID) and the neoplasm branch of National Cancer Institute Thesaurus (NCIt).",
+      "citation": "Mondo: Unifying diseases for the world, by the world, Nicole A Vasilevsky, Nicolas A Matentzoglu, Sabrina Toro, Joe E Flack, Harshad Hegde, Deepak R Unni, Gioconda Alyea, Joanna S Amberger, Larry Babb, James P Balhoff, Taylor I Bingaman, Gully A Burns, Tiffany J Callahan, Leigh C Carmody, Lauren E Chan, George S Chang, Michel Dumontier, Laura E Failla, May J Flowers, H A Garrett, Dylan Gration, Tudor Groza, Marc Hanauer, Nomi L Harris, Ingo Helbig, Jason A Hilton, Daniel S Himmelstein, Charles T Hoyt, Megan S Kane, Sebastian Köhler, David Lagorce, Martin Larralde, Antonia Lock, Irene López Santiago, Donna R Maglott, Adriana J Malheiro, Birgit HM Meldal, Julie A McMurry, Moni Munoz-Torres, Tristan H Nelson, David Ochoa, Tudor I Oprea, David Osumi-Sutherland, Helen Parkinson, Zoë M Pendlington, Ana Rath, Heidi L Rehm, Lyubov Remennik, Erin R Riggs, Paola Roncaglia, Justyne E Ross, Marion F Shadbolt, Kent A Shefchek, Morgan N Similuk, Nicholas Sioutos, Rachel Sparks, Ray Stefancsik, Ralf Stephan, Doron Stupp, Jagadish Chandrabose Sundaramurthi, Imke Tammen, Courtney L Thaxton, Eloise Valasek, Alex H Wagner, Danielle Welter, Patricia L Whetzel, Lori L Whiteman, Valerie Wood, Colleen H Xu, Andreas Zankl, Xingmin A Zhang, Christopher G Chute, Peter N Robinson, Christopher J Mungall, Ada Hamosh, Melissa A Haendel, medRxiv 2022.04.13.22273750; doi: https://doi.org/10.1101/2022.04.13.22273750",
       "contact": {
         "email": "cjmungall@lbl.gov",
         "github": "@cmungall",
@@ -109,6 +114,7 @@
     },
     "oba": {
       "about": "The Ontology of Biological Attributes (OBA) is a formalised, species-independent collection of interoperable phenotypic trait categories that is intended to fulfil a data integration role. OBA is a standardised representational framework for observable attributes that are characteristics of biological entities, organisms, or parts of organisms. It is a collection of biological attributes (traits) covering all kingdoms of life and is interoperable with other ontologies in the Open Biological and Biomedical Ontologies Foundry.",
+      "citation": "Stefancsik, R., Balhoff, J.P., Balk, M.A. et al. The Ontology of Biological Attributes (OBA)—computational traits for the life sciences. Mamm Genome 34, 364–378 (2023). https://doi.org/10.1007/s00335-023-09992-1",
       "contact": {
         "email": "cjmungall@lbl.gov",
         "github": "@cmungall",
@@ -132,6 +138,7 @@
     },
     "phenio": {
       "about": "An ontology for accessing and comparing knowledge concerning phenotypes across species and genetic backgrounds.",
+      "citation": "Cite the GH repo: https://github.com/monarch-initiative/phenio",
       "contact": {
         "email": "cjmungall@lbl.gov",
         "github": "@cmungall",
@@ -153,6 +160,7 @@
     },
     "sepio": {
       "about": "The Scientific Evidence and Provenance Information Ontology (SEPIO) was developed to support description of evidence and provenance information for scientific claims. The core model represents the relationships between claims, their evidence lines, the information items that comprise these lines of evidence, and the methods, tools, and agents involved in the creation of these entities. Use cases driving SEPIO development include integration of scientific claims and their associated evidence/provenance metadata, and support for the discovery, analysis, and evaluation of claims based on this metadata.",
+      "citation": "Cite the GH repo: https://github.com/monarch-initiative/SEPIO-ontology",
       "contact": {
         "email": "matt@tislab.org",
         "github": "@mbrush",
@@ -174,6 +182,7 @@
     },
     "uberon": {
       "about": "Uberon is an anatomical ontology that represents body parts, organs and tissues in a variety of animal species, with a focus on vertebrates. It has been constructed to integrate seamlessly with other ontologies, such as the Cell Ontology workflows, the Gene Ontology, Trait and Phenotype ontologies, as well as other anatomical ontologies. The ontology includes comprehensive relationships to taxon-specific anatomical ontologies, allowing integration of functional, phenotype and expression data. Currently Uberon consists of over 13000 classes representing structures that are shared across a variety of metazoans.",
+      "citation": "(1) Uberon, an integrative multi-species anatomy ontology Mungall, C. J., Torniai, C., Gkoutos, G. V., Lewis, S. E., and Haendel, M. A. (2012) Genome Biology 13, R5. PMID:22293552 (2) Unification of multi-species vertebrate anatomy ontologies for comparative biology in Uberon Haendel, Melissa A; Balhoff, James P; Bastian, Frederic B; Blackburn, David C; Blake, Judith A; Bradford, Yvonne; Comte, Aurelie; Dahdul, Wasila M; Dececchi, Thomas A; Druzinsky, Robert E; Hayamizu, Terry F; Ibrahim, Nizar; Lewis, Suzanna E; Mabee, Paula M; Niknejad, Anne; Robinson-Rechavi, Marc; Sereno, Paul C; Mungall, Christopher J (2014) Journal of Biomedical Semantics, 5(1), 21. doi:10.1186/2041-1480-5-21",
       "contact": {
         "email": "cjmungall@lbl.gov",
         "github": "@cmungall",
@@ -195,6 +204,7 @@
     },
     "upheno": {
       "about": "The Unified Phenotype Ontology (uPheno) framework is a community effort to provide an integration layer over domain-specific phenotype ontologies, as a single, unified, logical representation. It comprises (1) a system for consistent computational definition of phenotype terms using ontology design patterns, maintained as a community library; (2) a hierarchical vocabulary of species-neutral phenotype terms under which their species-specific counterparts are grouped; and (3) mapping tables between species-specific ontologies.",
+      "citation": "Nicolas Matentzoglu, Susan M. Bello, Ray Stefancsik, Sarah M. Alghamdi, Anna V. Anagnostopoulos, James P. Balhoff, Meghan A. Balk, Yvonne M. Bradford, Yasemin Bridges, Tiffany J. Callahan, Harry Caufield, Alayne Cuzick, Leigh C. Carmody, Anita R. Caron, Vinicius de Souza, Stacia R. Engel, Petra Fey, Malcolm Fisher, Sarah Gehrke, Christian Grove, Peter Hansen, Nomi L. Harris, Midori A. Harris, Laura Harris, Arwa Ibrahim, Julius O. B. Jacobsen, Sebastian Köhler, Julie A. McMurry, Violeta Munoz-Fuentes, Monica C. Munoz-Torres, Helen Parkinson, Zoë M. Pendlington, Clare Pilgrim, Sofia M. Robb, Peter N. Robinson, James Seager, Erik Segerdell, Damian Smedley, Elliot Sollis, Sabrina Toro, Nicole Vasilevsky, Valerie Wood, Melissa A. Haendel, Christopher J. Mungall, James A. McLaughlin, and David Osumi-Sutherland. 2025. \"The Unified Phenotype Ontology: A Framework for Cross-Species Integrative Phenomics.\" Genetics 229 (3): iyaf027. https://doi.org/10.1093/genetics/iyaf027.",
       "contact": {
         "email": "jmcl@ebi.ac.uk",
         "github": "@udp",
@@ -218,6 +228,7 @@
     },
     "vbo": {
       "about": "The Vertebrate Breed Ontology (VBO) is an open, community-driven ontology representing over 19,500 livestock and companion animal breed concepts covering 49 species. Breeds are classified based on community and expert conventions (e.g., cattle breed) and supported by relations to the breed's genus and species indicated by National Center for Biotechnology Information (NCBI) Taxonomy terms. Relationships between VBO terms (e.g., relating breeds to their foundation stock) provide additional context to support advanced data analytics. VBO term metadata includes synonyms, breed identifiers/codes, and attributed cross-references to other databases.",
+      "citation": "Mullen, K. R., Tammen, I., Matentzoglu, N. A., Mather, M., Balhoff, J. P., Esdaile, E., Leroy, G., Park, C. A., Rando, H. M., Saklou, N. T., Webb, T. L., Vasilevsky, N. A., Mungall, C. J., Haendel, M. A., Nicholas, F. W., & Toro, S. (2025). The Vertebrate Breed Ontology: Toward effective breed data standardization. Journal of Veterinary Internal Medicine, 39(4), e70133. https://doi.org/10.1111/jvim.70133",
       "contact": {
         "email": "sabrina@tislab.org",
         "github": "@sabrinatoro",
@@ -243,6 +254,7 @@
   "registries": {
     "kg_hub": {
       "about": "The Knowledge Graph Hub (KG-Hub) is a platform that provides software development patterns for the standardized construction, exchange, and reuse of knowledge graphs. Features include a simple, modular extract-transform-load (ETL) pattern for ingest of upstream data in a Biolink-model compliant manner, cached downloads of upstream data, versioned and automatically updated builds, web-browsable storage of KG artifacts on cloud infrastructure, easy reuse of transformed subgraphs of upstream data across different projects, and easy integration of any OBO ontology.",
+      "citation": "Caufield JH, Putman T, Schaper K, Unni DR, Hegde H, Callahan TJ, Cappelletti L, Moxon SAT, Ravanmehr V, Carbon S, Chan LE, Cortes K, Shefchek KA, Elsarboukh G, Balhoff JP, Fontana T, Matentzoglu N, Bruskiewich RM, Thessen AE, Harris NL, Munoz-Torres MC, Haendel MA, Robinson PN, Joachimiak MP, Mungall CJ, Reese JT. KG-Hub -- Building and Exchanging Biological Knowledge Graphs. arXiv [q-bio.QM]. 2023. http://arxiv.org/abs/2302.10800",
       "contact": {
         "email": "cjmungall@lbl.gov",
         "github": "@cmungall",
@@ -266,6 +278,7 @@
     },
     "kg_registry": {
       "about": "A simple registry for knowledge graphs, including Knowledge Graph Hub (KG-Hub) projects.",
+      "citation": "Cite the GH repo: https://github.com/Knowledge-Graph-Hub/kg-registry",
       "contact": {
         "email": "cjmungall@lbl.gov",
         "github": "@cmungall",
@@ -287,6 +300,7 @@
     },
     "linkml_registry": {
       "about": "A collection of Linked Data Modeling Language (LinkML)schemas.",
+      "citation": "Cite the GH repo: https://github.com/linkml/linkml-registry",
       "contact": {
         "email": "cjmungall@lbl.gov",
         "github": "@cmungall",
@@ -308,6 +322,7 @@
     },
     "monarch_mapping_registry": {
       "about": "Simple Standard for Ontology Mappings (SSSOM) mappings collected and curated by the Monarch Initiative.",
+      "citation": "Cite the GH repo: https://github.com/monarch-initiative/monarch-mapping-commons",
       "contact": {
         "email": "kevin@tislab.org",
         "github": "@kevinschaper",
@@ -329,6 +344,7 @@
     },
     "monarch_ols": {
       "about": "A browsable collection of ontologies provided by the Monarch Initiative using OLS4 (developed by EMBL-EBI). This instance of OLS is tailored to the needs of the Monarch Initiative and provides access to a range of ontologies relevant to genomics, phenomics, and biomedical research, which are not available through normal OLS.  It also provides development snapshots of various unreleased ontologies for early access of the wider community.\n",
+      "citation": "Cite the EBI OLS GH: https://github.com/EBISPOT/ols4",
       "contact": {
         "email": "nicolas.matentzoglu@gmail.com",
         "github": "@matentzn",
@@ -352,6 +368,7 @@
   "standards": {
     "phenopackets": {
       "about": "The Phenopacket Schema represents an open standard for sharing disease and phenotype information to improve our ability to understand, diagnose, and treat both rare and common diseases. A Phenopacket links detailed phenotype descriptions with disease, patient, and genetic information, enabling clinicians, biologists, and disease and drug researchers to build more complete models of disease. The standard is designed to encourage wide adoption and synergy between the people, organizations and systems that comprise the joint effort to address human disease and biological understanding.",
+      "citation": "M. S. Ladewig, J. O. B. Jacobsen, A. H. Wagner, D. Danis, B. El Kassaby, M. Gargano, T. Groza, M. Baudis, R. Steinhaus, D. Seelow, N. E. Bechrakis, C. J. Mungall, P. N. Schofield, O. Elemento, L. Smith, J. A. McMurry, M. Munoz-Torres, M. A. Haendel, P. N. Robinson, GA4GH Phenopackets: A Practical Introduction. Advanced Genetics 2023, 4, 2200016. https://doi.org/10.1002/ggn2.202200016",
       "contact": {
         "email": "Peter.Robinson@jax.org",
         "github": "@pnrobinson",
@@ -373,6 +390,7 @@
     },
     "sssom": {
       "about": "SSSOM is a Simple Standard for Sharing Ontological Mappings, providing - a TSV-based representation for ontology term mappings - a comprehensive set of standard metadata elements to describe mappings, and - a standard translation between the TSV and the Web Ontology Language (OWL). The SSSOM TSV format in particular is geared towards the needs of the wider bioinformatics community as a way to safely exchange mappings in an easily readable yet semantically well-specified manner.",
+      "citation": "Nicolas Matentzoglu, James P Balhoff, Susan M Bello, Chris Bizon, Matthew Brush, Tiffany J Callahan, Christopher G Chute, William D Duncan, Chris T Evelo, Davera Gabriel, John Graybeal, Alasdair Gray,  Benjamin M Gyori, Melissa Haendel, Henriette Harmse, Nomi L Harris, Ian Harrow, Harshad B Hegde, Amelia L Hoyt, Charles T Hoyt, Dazhi Jiao, Ernesto Jiménez-Ruiz, Simon Jupp, Hyeongsik Kim, Sebastian Koehler,  Thomas Liener, Qinqin Long, James Malone, James A McLaughlin, Julie A McMurry, Sierra Moxon, Monica C Munoz-Torres, David Osumi-Sutherland, James A Overton, Bjoern Peters, Tim Putman, Núria Queralt-Rosinach,  Kent Shefchek, Harold Solbrig, Anne Thessen, Tania Tudorache, Nicole Vasilevsky, Alex H Wagner, Christopher J Mungall. A Simple Standard for Sharing Ontological Mappings (SSSOM).  Database 2022: baac035. https://doi.org/10.1093/database/baac035\n",
       "contact": {
         "email": "nicolas.matentzoglu@gmail.com",
         "github": "@matentzn",
@@ -396,6 +414,7 @@
   "tools": {
     "curate_gpt": {
       "about": "CurateGPT is a prototype web application and framework for performing general purpose AI-guided curation and curation-related operations over collections of objects. CurateGPT melds the power of generative AI together with trusted knowledge bases and literature sources. CurateGPT streamlines the curation process, enhancing collaboration and efficiency in common workflows. Compared to direct interaction with an LLM, CurateGPT's agents enable access to information beyond that in the LLM's training data and they provide direct links to the data supporting each claim. This helps curators, researchers, and engineers scale up curation efforts to keep pace with the ever-increasing volume of scientific data.",
+      "citation": "Caufield H, Kroll C, O’Neil ST, Reese JT, Joachimiak MP, Hegde H, Harris NL, Krishnamurthy M, McLaughlin JA, Smedley D, Haendel MA, Robinson PN, Mungall CJ. CurateGPT: A flexible language-model assisted biocuration tool. arXiv [cs.CL]. 2024. Available from: http://arxiv.org/abs/2411.00046",
       "contact": {
         "email": "cjmungall@lbl.gov",
         "github": "@cmungall",
@@ -417,6 +436,7 @@
     },
     "exomiser": {
       "about": "The Exomiser is a Java program that finds potential disease-causing variants from whole-exome or whole-genome sequencing data.\nStarting from a VCF file and a set of phenotypes encoded using the Human Phenotype Ontology (HPO) it will annotate, filter and prioritise likely causative variants. The program does this based on user-defined criteria such as a variant's predicted pathogenicity, frequency of occurrence in a population and also how closely the given phenotype matches the known phenotype of diseased genes from human and model organism data.\nThe functional annotation of variants is handled by Jannovar and uses any of UCSC, RefSeq or Ensembl KnownGene transcript definitions and hg19 or hg38 genomic coordinates.\nVariants are prioritised according to user-defined criteria on variant frequency, pathogenicity, quality, inheritance pattern, and model organism phenotype data. Predicted pathogenicity data is extracted from the dbNSFP resource. Variant frequency data is taken from the 1000 Genomes, ESP, TOPMed, UK10K, ExAC and gnomAD datasets. Subsets of these frequency and pathogenicity data can be defined to further tune the analysis. Cross-species phenotype comparisons come from our PhenoDigm tool powered by the OWLTools OWLSim algorithm.",
+      "citation": "A Whole-Genome Analysis Framework for Effective Identification of Pathogenic Regulatory Variants in Mendelian Disease. Smedley D, Schubach M, Jacobsen JOB, Köhler S, Zemojtel T, Spielmann M, Jäger M, Hochheiser H, Washington NL, McMurry JA, Haendel MA, Mungall CJ, Lewis SE, Groza T, Valentini G, Robinson PN. The American Journal of Human Genetics 2016;99(3):595-606. PMID:27569544. DOI:10.1016/j.ajhg.2016.07.005",
       "contact": {
         "email": "j.jacobsen@qmul.ac.uk",
         "github": "@julesjacobsen",
@@ -438,6 +458,7 @@
     },
     "linkml": {
       "about": "The Linked Data Modeling Language (LinkML) is a flexible modeling language that allows you to author schemas in YAML that describe the structure of your data. Additionally, it is a framework for working with and validating data in a variety of formats (JSON, RDF, TSV), with generators for compiling LinkML schemas to other frameworks.",
+      "citation": "Vita R, et al. FAIR principles and the IEDB: short-term improvements and a long-term vision of OBO-foundry mediated machine-actionable interoperability. Database (Oxford). 2018 Jan 1;2018:bax105. doi: 10.1093/database/bax105. PMID: 29688354; PMC5819722",
       "contact": {
         "email": "cjmungall@lbl.gov",
         "github": "@cmungall",
@@ -459,6 +480,7 @@
     },
     "oak": {
       "about": "The Ontology Access Kit (OAK) is for both technical and non-technical users of ontologies. Non-technical users can use the command line interface to query ontologies in a variety of ways. Technical users can write Python code that uses the OAK library to perform ontology-related tasks.\nOAK provides a collection of interfaces for various ontology operations, including: - look up basic features of an ontology element, such as its label, definition, relationships, or aliases - search an ontology for a term - validate an ontology - modify or delete terms - generate and visualize subgraphs - identify lexical matches and export as SSSOM mapping tables - perform more advanced operations, such as graph traversal, OWL axiom processing, or text annotation\nThese interfaces are separated from any particular backend, for which there a number of different adapters. This means the same Python API and command line can be used regardless of whether the ontology: - is served by a remote API such as OLS or BioPortal - is present locally on the filesystem in owl, obo, obojson, or sqlite formats - is to be downloaded from a remote repository such as the OBO library - is queried from a remote database, including SPARQL endpoints (Ontobee/Ubergraph), a SQL database, a Solr/ES endpoint\n",
+      "citation": "Cite the GH repo: https://github.com/INCATools/ontology-access-kit",
       "contact": {
         "email": "cjmungall@lbl.gov",
         "github": "@cmungall",
@@ -480,6 +502,7 @@
     },
     "odk": {
       "about": "\"Manage your ontology's life cycle with the Ontology Development Kit (ODK)!\nThe ODK is:\n- a toolbox of various ontology related tools such as ROBOT, owltools, dosdp-tools and many more,\nbundled as a docker image.\n- a set of executable workflows for managing your ontology's continuous integration, quality control,\nreleases and dynamic imports.\"\n",
+      "citation": "Nicolas Matentzoglu, Damien Goutte-Gattat, Shawn Zheng Kai Tan, James P Balhoff, Seth Carbon, Anita R Caron, William D Duncan, Joe E Flack, Melissa Haendel, Nomi L Harris, William R Hogan, Charles Tapley Hoyt, Rebecca C Jackson, HyeongSik Kim, Huseyin Kir, Martin Larralde, Julie A McMurry, James A Overton, Bjoern Peters, Clare Pilgrim, Ray Stefancsik, Sofia MC Robb, Sabrina Toro, Nicole A Vasilevsky, Ramona Walls, Christopher J Mungall, David Osumi-Sutherland, Ontology Development Kit: a toolkit for building, maintaining and standardizing biomedical ontologies, Database, Volume 2022, 2022, baac087, https://doi.org/10.1093/database/baac087",
       "contact": {
         "email": "nicolas.matentzoglu@gmail.com",
         "github": "@matentzn",
@@ -501,6 +524,7 @@
     },
     "ontogpt": {
       "about": "OntoGPT is a Python package for extracting structured information from text with large language models (LLMs), instruction prompts, and ontology-based grounding. It works well with OpenAI's GPT models as well as a selection of other LLMs. OntoGPT's output can be used for general-purpose natural language tasks (e.g., named entity recognition and relation extraction), summarization, knowledge base and knowledge graph construction, and more.",
+      "citation": "Caufield JH, Hegde H, Emonet V, Harris NL, Joachimiak MP, Matentzoglu N, Kim H, Moxon S, Reese JT, Haendel MA, Robinson PN, Mungall CJ. Structured Prompt Interrogation and Recursive Extraction of Semantics (SPIRES): a method for populating knowledge bases using zero-shot learning. Bioinformatics. Oxford University Press (OUP); 2024 Mar 4;40(3). http://dx.doi.org/10.1093/bioinformatics/btae104 PMCID: PMC10924283\n",
       "contact": {
         "email": "cjmungall@lbl.gov",
         "github": "@cmungall",
@@ -522,6 +546,7 @@
     },
     "pheval": {
       "about": "The absence of standardised benchmarks and data standardisation for Variant and Gene Prioritisation Algorithms (VGPAs) presents a significant challenge in the field of genomic research. PhEval addresses this gap. It is a novel framework designed to streamline the evaluation of VGPAs that incorporate phenotypic data. PhEval offers several key benefits:\n- Automated Processes: Reduces manual effort by automating various evaluation tasks, thus enhancing efficiency. - Standardisation: Ensures consistency and comparability in evaluation methodologies, leading to more reliable and standardised assessments. - Reproducibility: Facilitates reproducibility in research by providing a standardised platform, allowing for consistent validation of algorithms. - Comprehensive Benchmarking: Enables thorough benchmarking of algorithms, providing well-founded comparisons and deeper insights into their performance.\nPhEval is a valuable tool for researchers looking to improve the accuracy and reliability of VGPA evaluations through a structured and standardised approach.\n",
+      "citation": "Bridges Y, Souza V, Cortes KG, Haendel M, Harris NL, Korn DR, Marinakis NM, Matentzoglu N, McLaughlin JA, Mungall CJ, Odell A, Osumi-Sutherland D, Robinson PN, Smedley D, Jacobsen JOB. Towards a standard benchmark for phenotype-driven variant and gene prioritisation algorithms: PhEval - Phenotypic inference Evaluation framework. BMC Bioinformatics. 2025 Mar 22;26(1):87. doi: 10.1186/s12859-025-06105-4. PMID: 40121479; PMCID: PMC11929307.\n",
       "contact": {
         "email": "j.jacobsen@qmul.ac.uk",
         "github": "@julesjacobsen",
