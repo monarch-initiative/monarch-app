@@ -100,10 +100,12 @@
       "icon": "resource-mondo",
       "license": "CC-BY-4.0",
       "see_also": {
-        "documentation": "https://mondo.readthedocs.io/en/latest/",
-        "other": ["https://monarch-initiative.github.io/mondo-ingest/"],
+        "documentation": "https://mondo.readthedocs.io/en/latest",
+        "other": [
+          "https://monarch-initiative.github.io/mondo-ingest"
+        ],
         "repository": "https://github.com/monarch-initiative/mondo",
-        "website": "https://mondo.monarchinitiative.org/"
+        "website": "https://mondo.monarchinitiative.org"
       },
       "tagline": "A unified disease ontology that harmonizes diverse disease terminologies into a consistent, computable framework.",
       "title": "Mondo Disease Ontology",
@@ -122,8 +124,10 @@
       "icon": null,
       "license": "CC0",
       "see_also": {
-        "documentation": "https://obophenotype.github.io/bio-attribute-ontology/",
-        "other": ["https://obophenotype.github.io/upheno/"],
+        "documentation": "https://obophenotype.github.io/bio-attribute-ontology",
+        "other": [
+          "https://obophenotype.github.io/upheno"
+        ],
         "repository": "https://github.com/obophenotype/bio-attribute-ontology",
         "website": "https://obofoundry.org/ontology/oba.html"
       },
@@ -144,7 +148,7 @@
       "icon": null,
       "license": "BSD-3-Clause",
       "see_also": {
-        "documentation": "https://monarch-initiative.github.io/phenio/",
+        "documentation": "https://monarch-initiative.github.io/phenio",
         "other": null,
         "repository": "https://github.com/monarch-initiative/phenio",
         "website": null
@@ -177,7 +181,7 @@
       "visual_explainer": null
     },
     "uberon": {
-      "about": "Uberon is an anatomical ontology that represents body parts, organs and tissues in a variety of animal species, with a focus on vertebrates. It has been constructed to integrate seamlessly with other ontologies, such as the Cell Ontology workflows, the Gene Ontology, Trait and Phenotype ontologies, as well as other anatomical ontologies. The ontology includes comprehensive relationships to taxon-specific anatomical ontologies, allowing integration of functional, phenotype and expression data. Currently Uberon consists of over 13000 classes representing structures that are shared across a variety of metazoans.",
+      "about": "Uberon is an anatomical ontology that represents body parts, organs and tissues in a variety of animal species, with a focus on vertebrates. It has been constructed to integrate seamlessly with other ontologies, such as the Cell Ontology workflows, the Gene Ontology, Trait and Phenotype ontologies, as well as other anatomical ontologies. The ontology includes comprehensive relationships to taxon-specific anatomical ontologies, allowing integration of functional, phenotype and expression data. Currently Uberon consists of over 13000 classes representing structures that are shared across a variety of metazoans.As one of the main uses of Uberon is translational science, we have extensive coverage of structures shared between humans and other species. However, thanks to the involvement of many collaborators, we have deep coverage of broad areas of anatomy across diverse taxa. We also make available an ontology called composite-metazoan which brings in subsets of federated ontologies, with a total of over 40000 classes.",
       "citation": "(1) Uberon, an integrative multi-species anatomy ontology Mungall, C. J., Torniai, C., Gkoutos, G. V., Lewis, S. E., and Haendel, M. A. (2012) Genome Biology 13, R5. PMID:22293552 (2) Unification of multi-species vertebrate anatomy ontologies for comparative biology in Uberon Haendel, Melissa A; Balhoff, James P; Bastian, Frederic B; Blackburn, David C; Blake, Judith A; Bradford, Yvonne; Comte, Aurelie; Dahdul, Wasila M; Dececchi, Thomas A; Druzinsky, Robert E; Hayamizu, Terry F; Ibrahim, Nizar; Lewis, Suzanna E; Mabee, Paula M; Niknejad, Anne; Robinson-Rechavi, Marc; Sereno, Paul C; Mungall, Christopher J (2014) Journal of Biomedical Semantics, 5(1), 21. doi:10.1186/2041-1480-5-21",
       "contact": {
         "email": "cjmungall@lbl.gov",
@@ -188,15 +192,15 @@
       "icon": "resource-uberon",
       "license": "CC0",
       "see_also": {
-        "documentation": "https://obophenotype.github.io/uberon/",
+        "documentation": "https://obophenotype.github.io/uberon",
         "other": null,
         "repository": "https://github.com/obophenotype/uberon",
-        "website": "https://obophenotype.github.io/uberon/"
+        "website": "https://obophenotype.github.io/uberon"
       },
       "tagline": "An integrated cross-species anatomy ontology",
       "title": "Uberon Anatomy Ontology",
       "title_short": "Uberon",
-      "visual_explainer": "https://www.youtube.com/watch?v=HmFhTk0Bahs|||figure-uberon|||  As one of the main uses of Uberon is translational science, we have extensive coverage of structures shared between humans and other species. However, thanks to the involvement of many collaborators, we have deep coverage of broad areas of anatomy across diverse taxa. We also make available an ontology called composite-metazoan which brings in subsets of federated ontologies, with a total of over 40000 classes."
+      "visual_explainer": "https://www.youtube.com/watch?v=HmFhTk0Bahs"
     },
     "upheno": {
       "about": "The Unified Phenotype Ontology (uPheno) framework is a community effort to provide an integration layer over domain-specific phenotype ontologies, as a single, unified, logical representation. It comprises (1) a system for consistent computational definition of phenotype terms using ontology design patterns, maintained as a community library; (2) a hierarchical vocabulary of species-neutral phenotype terms under which their species-specific counterparts are grouped; and (3) mapping tables between species-specific ontologies.",
@@ -210,17 +214,17 @@
       "icon": "resource-upheno",
       "license": "CC0",
       "see_also": {
-        "documentation": "https://obophenotype.github.io/upheno/",
+        "documentation": "https://obophenotype.github.io/upheno",
         "other": [
           "https://ols.monarchinitiative.org/ontologies/upheno_reordered"
         ],
         "repository": "https://github.com/obophenotype/upheno",
-        "website": "https://obophenotype.github.io/upheno/"
+        "website": "https://obophenotype.github.io/upheno"
       },
       "tagline": "A framework for cross-species integrative phenomics",
       "title": "The Unified Phenotype Ontology (uPheno)",
       "title_short": "uPheno",
-      "visual_explainer": "figure-upheno|||Structure of the uPheno ontology. uPheno is a framework for consistent and logical definition of phenotype categories using ontology design patterns that provides a hierarchical vocabulary of species-neutral phenotype terms under which their species-specific counterparts are grouped. The ontology design templates are based on shared features of existing phenotypic descriptions from various model organisms and represent community consensus. The phenotype pattern template-adherent terms are adopted by species-specific ontologies, thereby contributing to the community-built uPheno framework. uPheno accelerates cross-species inference and computationally amenable comparative phenotype analysis. For example, the interoperable representation of heart phenotypes characterized by increased size, compared with wild-type in distinct species, such as zebrafish and humans, allows the cross-species identification of genes whose alleles can cause similar phenotypes. uPheno contextual hierarchy for increased size of the heart as displayed in the OLS."
+      "visual_explainer": "Structure of the uPheno ontology. uPheno is a framework for consistent and logical definition of phenotype categories using ontology design patterns that provides a hierarchical vocabulary of species-neutral phenotype terms under which their species-specific counterparts are grouped. The ontology design templates are based on shared features of existing phenotypic descriptions from various model organisms and represent community consensus. The phenotype pattern template-adherent terms are adopted by species-specific ontologies, thereby contributing to the community-built uPheno framework. uPheno accelerates cross-species inference and computationally amenable comparative phenotype analysis. For example, the interoperable representation of heart phenotypes characterized by increased size, compared with wild-type in distinct species, such as zebrafish and humans, allows the cross-species identification of genes whose alleles can cause similar phenotypes. uPheno contextual hierarchy for increased size of the heart as displayed in the OLS."
     },
     "vbo": {
       "about": "The Vertebrate Breed Ontology (VBO) is an open, community-driven ontology representing over 19,500 livestock and companion animal breed concepts covering 49 species. Breeds are classified based on community and expert conventions (e.g., cattle breed) and supported by relations to the breed's genus and species indicated by National Center for Biotechnology Information (NCBI) Taxonomy terms. Relationships between VBO terms (e.g., relating breeds to their foundation stock) provide additional context to support advanced data analytics. VBO term metadata includes synonyms, breed identifiers/codes, and attributed cross-references to other databases.",
@@ -234,8 +238,10 @@
       "icon": null,
       "license": "CC-BY-4.0",
       "see_also": {
-        "documentation": "https://monarch-initiative.github.io/vertebrate-breed-ontology/",
-        "other": ["https://ols.monarchinitiative.org/ontologies/vbo"],
+        "documentation": "https://monarch-initiative.github.io/vertebrate-breed-ontology",
+        "other": [
+          "https://ols.monarchinitiative.org/ontologies/vbo"
+        ],
         "repository": "https://github.com/monarch-initiative/vertebrate-breed-ontology",
         "website": "https://github.com/monarch-initiative/vertebrate-breed-ontology"
       },
@@ -280,12 +286,12 @@
         "orcid": "https://orcid.org/0000-0002-6601-2165"
       },
       "icon": null,
-      "license": null,
+      "license": "BSD-3-Clause",
       "see_also": {
         "documentation": "https://github.com/Knowledge-Graph-Hub/kg-registry",
         "other": null,
         "repository": "https://github.com/Knowledge-Graph-Hub/kg-registry",
-        "website": "https://kghub.org/kg-registry/"
+        "website": "https://kghub.org/kg-registry"
       },
       "tagline": "An aggregation of Knowledge Graphs and their parts.",
       "title": "Knowledge Graph Registry",
@@ -304,10 +310,10 @@
       "icon": null,
       "license": "CC0",
       "see_also": {
-        "documentation": "https://linkml.io/linkml-registry/registry/",
+        "documentation": "https://linkml.io/linkml-registry/registry",
         "other": null,
         "repository": "https://github.com/linkml/linkml-registry",
-        "website": "https://linkml.io/linkml-registry/registry/"
+        "website": "https://linkml.io/linkml-registry/registry"
       },
       "tagline": "A collection of LinkML schemas",
       "title": "LinkML Registry",
@@ -351,7 +357,7 @@
         "documentation": "https://github.com/monarch-initiative/ontotools-docker",
         "other": null,
         "repository": "https://github.com/monarch-initiative/ontotools-docker",
-        "website": "https://ols.monarchinitiative.org/"
+        "website": "https://ols.monarchinitiative.org"
       },
       "tagline": "A Monarch Ontology specific instance of the EMBL European Bioinformatics Institute's OLS.",
       "title": "Monarch OLS",
@@ -394,10 +400,10 @@
       "icon": "resource-sssom",
       "license": "BSD-3-Clause",
       "see_also": {
-        "documentation": "https://mapping-commons.github.io/sssom/",
+        "documentation": "https://mapping-commons.github.io/sssom",
         "other": null,
-        "repository": "https://github.com/mapping-commons/sssom/",
-        "website": "https://mapping-commons.github.io/sssom/spec/"
+        "repository": "https://github.com/mapping-commons/sssom",
+        "website": "https://mapping-commons.github.io/sssom/spec"
       },
       "tagline": "A simple metadata standard for describing semantic mappings",
       "title": "Simple Standard for Ontology Mappings (SSSOM)",
@@ -418,10 +424,10 @@
       "icon": null,
       "license": "BSD-3-Clause",
       "see_also": {
-        "documentation": "https://monarch-initiative.github.io/curategpt/",
+        "documentation": "https://monarch-initiative.github.io/curategpt",
         "other": null,
         "repository": "https://github.com/monarch-initiative/curate-gpt",
-        "website": "https://curategpt.io/"
+        "website": "https://curategpt.io"
       },
       "tagline": "A large language model-driven curation assistance tool",
       "title": "CurateGPT",
@@ -440,10 +446,10 @@
       "icon": "resource-exomiser",
       "license": "AGPL-3.0",
       "see_also": {
-        "documentation": "https://exomiser.readthedocs.io/",
+        "documentation": "https://exomiser.readthedocs.io",
         "other": null,
         "repository": "https://github.com/exomiser/Exomiser",
-        "website": "https://exomiser.monarchinitiative.org/exomiser/"
+        "website": "https://exomiser.monarchinitiative.org/exomiser"
       },
       "tagline": "A Tool to Annotate and Prioritize Exome Variants",
       "title": "Exomiser",
@@ -462,10 +468,10 @@
       "icon": "resource-linkml",
       "license": "CC0",
       "see_also": {
-        "documentation": "https://linkml.io/linkml-model/docs/",
+        "documentation": "https://linkml.io/linkml-model/docs",
         "other": null,
-        "repository": "https://github.com/linkml/",
-        "website": "https://linkml.io/"
+        "repository": "https://github.com/linkml",
+        "website": "https://linkml.io"
       },
       "tagline": "A general purpose modeling language that can be used with linked data, JSON, and other formalisms",
       "title": "Linked Data Modeling Language",
@@ -484,7 +490,7 @@
       "icon": "resource-oak",
       "license": "Apache-2.0",
       "see_also": {
-        "documentation": "https://incatools.github.io/ontology-access-kit/",
+        "documentation": "https://incatools.github.io/ontology-access-kit",
         "other": null,
         "repository": "https://github.com/INCATools/ontology-access-kit",
         "website": "https://github.com/INCATools/ontology-access-kit"
@@ -528,7 +534,7 @@
       "icon": null,
       "license": "BSD-3-Clause",
       "see_also": {
-        "documentation": "https://monarch-initiative.github.io/ontogpt/",
+        "documentation": "https://monarch-initiative.github.io/ontogpt",
         "other": null,
         "repository": "https://github.com/monarch-initiative/ontogpt",
         "website": "https://github.com/monarch-initiative/ontogpt"
@@ -550,10 +556,10 @@
       "icon": "resource-pheval",
       "license": "Apache-2.0",
       "see_also": {
-        "documentation": "https://monarch-initiative.github.io/pheval/",
+        "documentation": "https://monarch-initiative.github.io/pheval",
         "other": null,
         "repository": "https://github.com/monarch-initiative/pheval",
-        "website": "https://monarch-initiative.github.io/pheval/"
+        "website": "https://monarch-initiative.github.io/pheval"
       },
       "tagline": "A Python library for assisting in benchmarking tools for Variant, Gene, and Disease prioritisation",
       "title": "PhEval",
