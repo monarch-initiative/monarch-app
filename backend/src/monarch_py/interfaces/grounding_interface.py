@@ -1,4 +1,5 @@
 from abc import ABC
+from typing import List
 
 from monarch_py.datamodels.model import Entity
 
@@ -6,7 +7,7 @@ from monarch_py.datamodels.model import Entity
 class GroundingInterface(ABC):
     """Abstract interface for grounding text to entities"""
 
-    def ground_entity(self, text: str) -> Entity:
+    def ground_entity(self, text: str) -> List[Entity]:
         """
         Grounds a single entity
 
