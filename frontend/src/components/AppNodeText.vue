@@ -30,8 +30,8 @@
     v-else
     ref="container"
     v-bind="$attrs"
-    v-html="text"
     :class="{ 'highlight-text': highlight }"
+    v-html="text"
   />
 </template>
 
