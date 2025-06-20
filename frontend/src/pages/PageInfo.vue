@@ -194,10 +194,14 @@ const tabs: { key: "about" | "citation" | "resources"; label: string }[] = [
 const resourceLinks = computed(() => {
   const raw = item.value?.see_also ?? {};
   const links: { key: string; value: string }[] = [];
+  const seen = new Set<string>();
 
   // Prioritize 'website' if it exists
-  if (typeof raw.website === "string") {
-    links.push({ key: "website", value: raw.website });
+  if (typeof raw.website === "string" && raw.website.trim()) {
+    if (!seen.has(raw.website)) {
+      links.push({ key: "website", value: raw.website });
+      seen.add(raw.website);
+    }
   }
 
   // Iterate through remaining entries (excluding 'website')
@@ -207,8 +211,9 @@ const resourceLinks = computed(() => {
     const urls = Array.isArray(val) ? val : [val];
 
     urls.forEach((url) => {
-      if (typeof url === "string" && url.trim()) {
+      if (typeof url === "string" && url.trim() && !seen.has(url)) {
         links.push({ key: `${key}-${url}`, value: url });
+        seen.add(url);
       }
     });
   });
