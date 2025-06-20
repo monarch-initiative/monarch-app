@@ -35,7 +35,7 @@
               "
             >
               <h2>Watch: What Is {{ item?.title }} and Why It Matters</h2>
-              <!-- YouTube video -->
+      
               <iframe
                 :src="embedYouTubeUrl(explainerParts.videoUrl)"
                 frameborder="0"
@@ -185,26 +185,39 @@ const item = computed(() => {
 /* ------------------------------------------------------------------ */
 /* 5. Tabs logic                                                      */
 /* ------------------------------------------------------------------ */
-const tabs = [
+const tabs: { key: "about" | "citation" | "resources"; label: string }[] = [
   { key: "about", label: "About" },
   { key: "citation", label: "Citation" },
   { key: "resources", label: "Resources" },
 ];
 
 const resourceLinks = computed(() => {
-  const sel = item.value?.see_also ?? {};
-  const links = [
-    { key: "website", value: sel.website },
-    { key: "repository", value: sel.repository },
-    { key: "documentation", value: sel.documentation },
+  const raw = item.value?.see_also ?? {};
+  const links: { key: string; value: string }[] = [];
 
-    { key: "other", value: sel.other },
-  ];
-  const seen = new Set<string>();
-  return links.filter(
-    (l) => l.value && !seen.has(l.value) && seen.add(l.value),
-  );
+  // Prioritize 'website' if it exists
+  if (typeof raw.website === "string") {
+    links.push({ key: "website", value: raw.website });
+  }
+
+  // Iterate through remaining entries (excluding 'website')
+  Object.entries(raw).forEach(([key, val]) => {
+    if (key === "website") return;
+
+    const urls = Array.isArray(val) ? val : [val];
+
+    urls.forEach((url) => {
+      if (typeof url === "string" && url.trim()) {
+        links.push({ key: `${key}-${url}`, value: url });
+      }
+    });
+  });
+
+  return links;
 });
+
+
+
 
 const visibleTabs = computed(() =>
   tabs.filter(
@@ -215,22 +228,7 @@ const visibleTabs = computed(() =>
   ),
 );
 
-/* ------------------------------------------------------------------ */
-/* 6. Helpers – citation formatting & media type detection            */
-/* ------------------------------------------------------------------ */
-// const formattedCitation = computed(() => {
-//   const text = item.value?.Citation ?? "";
-//   return text.replace(
-//     /(https?:\/\/[^\s]+)/g,
-//     (m) => `<a href="${m}" target="_blank" class="doi-link">${m}</a>`,
-//   );
-// });
 
-// const visualExplainerType = computed<"youtube" | "image" | null>(() => {
-//   const v = item.value?.visual_explainer;
-//   if (!v) return null;
-//   return /youtu\.?be/.test(v) ? "youtube" : "image";
-// });
 
 const embedYouTubeUrl = (url: string) => {
   const videoIdMatch = url.match(
@@ -239,7 +237,7 @@ const embedYouTubeUrl = (url: string) => {
   if (videoIdMatch && videoIdMatch[1]) {
     return `https://www.youtube.com/embed/${videoIdMatch[1]}`;
   }
-  return url; // fallback: just return original
+  return url; 
 };
 
 const explainerParts = computed(() => {
@@ -257,13 +255,10 @@ const explainerParts = computed(() => {
 
   for (const p of parts) {
     if (/youtu\.?be|youtube\.com/.test(p)) {
-      // video?
       videoUrl = p;
     } else if (p.startsWith("figure-")) {
-      // image reference?
-      imageId = p; // keep the id (no extension)
-    } else {
-      // anything else is text
+      imageId = p; 
+    } else {     
       description = p;
     }
   }
@@ -271,16 +266,7 @@ const explainerParts = computed(() => {
   return { videoUrl, imageId, description };
 });
 
-/* ------------------------------------------------------------------ */
-/* Scroll / breadcrumb effects                                     */
-/* ------------------------------------------------------------------ */
-const handleScroll = () => (isScrolled.value = window.scrollY > 10);
-onMounted(() => window.addEventListener("scroll", handleScroll));
-onBeforeUnmount(() => window.removeEventListener("scroll", handleScroll));
 
-/* ------------------------------------------------------------------ */
-/*  Copy Citation                        */
-/* ------------------------------------------------------------------ */
 const copied = ref(false);
 const citationText = ref<HTMLElement | null>(null);
 
@@ -296,6 +282,7 @@ function copyCitation() {
 
 watch(item, (newItem) => {
   if (newItem?.title) router.currentRoute.value.meta.breadcrumb = newItem.title;
+    activeTab.value = "about"; 
 });
 
 if (!item.value)
@@ -303,6 +290,7 @@ if (!item.value)
 </script>
 
 <style scoped lang="scss">
+
 .page-container {
   display: flex;
   flex-direction: column;
@@ -407,7 +395,7 @@ if (!item.value)
   }
   img {
     align-self: center;
-    width: 70%;
+    width: 100%;
   }
 }
 
@@ -439,14 +427,18 @@ if (!item.value)
   cursor: pointer;
 }
 
-.copy-btn:hover {
-  background-color: #005580;
-}
-
 .copied-msg {
   display: inline-block;
   margin-left: 1rem;
-  color: green;
+  color: $theme;
   font-size: 0.9rem;
+}
+
+.inline-contact a {
+  text-decoration: none;
+}
+
+.inline-contact a:hover {
+  text-decoration: underline;
 }
 </style>
