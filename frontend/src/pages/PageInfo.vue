@@ -94,28 +94,34 @@
         </AppSection>
       </div>
 
-      <!-- Contact & License (Always Visible) -->
       <AppSection width="big">
         <div class="contact-section">
-          <!-- <AppHeading class="header">Contact Us</AppHeading> -->
-          <p>
-            Have any questions or require assistance? Our support team is happy
-            to help.
-            <AppLink to="/about/contact-us" class="contact-link"
-              >Contact us</AppLink
-            >
-            today.
-          </p>
-          <p v-if="item.license && item.license.startsWith('http')">
-            This project is licensed. View the full license
-            <AppLink
-              :to="item.license"
-              target="_blank"
-              class="license-link"
-              :no-icon="true"
-              >here</AppLink
-            >.
-          </p>
+          <div class="contact-section-inline">
+            <p class="inline-contact">
+              Contact:
+              <span v-if="item.contact?.name">{{ item.contact.name }}</span>
+              <span v-if="item.contact?.email">
+                |
+                <a :href="`mailto:${item.contact.email}`">{{
+                  item.contact.email
+                }}</a></span
+              >
+              <span v-if="item.contact?.github">
+                | GitHub:
+                <a
+                  :href="`https://github.com/${item.contact.github.replace('@', '')}`"
+                  target="_blank"
+                  >{{ item.contact.github }}</a
+                ></span
+              >
+              <span v-if="item.contact?.orcid">
+                | ORCID:
+                <a :href="item.contact.orcid" target="_blank">{{
+                  item.contact.orcid.replace("https://", "")
+                }}</a></span
+              >
+            </p>
+          </div>
           <p v-if="item.license && !item.license.startsWith('http')">
             Content licensed under:
             <span class="license-badge">{{ item.license }}</span>
@@ -188,9 +194,10 @@ const tabs = [
 const resourceLinks = computed(() => {
   const sel = item.value?.see_also ?? {};
   const links = [
+    { key: "website", value: sel.website },
     { key: "repository", value: sel.repository },
     { key: "documentation", value: sel.documentation },
-    { key: "website", value: sel.website },
+
     { key: "other", value: sel.other },
   ];
   const seen = new Set<string>();
@@ -241,7 +248,7 @@ const explainerParts = computed(() => {
 
   const parts = raw
     .split("|||")
-    .map((s) => s.trim())
+    .map((s: string) => s.trim())
     .filter(Boolean);
 
   let videoUrl: string | undefined;
@@ -290,14 +297,6 @@ function copyCitation() {
 watch(item, (newItem) => {
   if (newItem?.title) router.currentRoute.value.meta.breadcrumb = newItem.title;
 });
-
-watch(
-  () => route.params.id,
-  () => {
-    // force recomputation of `item`
-    item.value = data[route.params.itemType]?.[route.params.id];
-  },
-);
 
 if (!item.value)
   console.warn(`No item found for ${props.itemType}/${props.id}`);
