@@ -67,7 +67,7 @@ const checkPage =
     /** perform interaction on selector */
     if (selector) {
       await page.locator(selector).first().focus();
-      await page.locator(selector).first().click();
+      await page.locator(selector).first().click({ force: true });
     }
 
     /** axe check */

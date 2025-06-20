@@ -226,13 +226,31 @@ export const routes: RouteRecordRaw[] = [
     component: asyncRoute("aboutV2/PagePublications"),
     meta: { breadcrumb: "Publications" },
   },
-
   // Community Dropdown
   {
     path: "/community/get-involved",
     name: "CoummunityGetInvolved",
     component: asyncRoute("community/PageGetInvolved"),
     meta: { breadcrumb: "Get Involved" },
+  },
+
+  {
+    path: "/ontologies/:id",
+    name: "OntologyPage",
+    component: asyncRoute("PageInfo"),
+    props: (route) => ({ itemType: "ontologies", id: route.params.id }),
+  },
+  {
+    path: "/registries/:id",
+    name: "RegistryPage",
+    component: asyncRoute("PageInfo"),
+    props: (route) => ({ itemType: "registries", id: route.params.id }),
+  },
+  {
+    path: "/tools/:id",
+    name: "ToolPage",
+    component: asyncRoute("PageInfo"),
+    props: (route) => ({ itemType: "tools", id: route.params.id }),
   },
 ];
 
