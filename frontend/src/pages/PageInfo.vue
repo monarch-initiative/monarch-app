@@ -35,7 +35,7 @@
               "
             >
               <h2>Watch: What Is {{ item?.title }} and Why It Matters</h2>
-      
+
               <iframe
                 :src="embedYouTubeUrl(explainerParts.videoUrl)"
                 frameborder="0"
@@ -216,9 +216,6 @@ const resourceLinks = computed(() => {
   return links;
 });
 
-
-
-
 const visibleTabs = computed(() =>
   tabs.filter(
     (t) =>
@@ -228,8 +225,6 @@ const visibleTabs = computed(() =>
   ),
 );
 
-
-
 const embedYouTubeUrl = (url: string) => {
   const videoIdMatch = url.match(
     /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/,
@@ -237,7 +232,7 @@ const embedYouTubeUrl = (url: string) => {
   if (videoIdMatch && videoIdMatch[1]) {
     return `https://www.youtube.com/embed/${videoIdMatch[1]}`;
   }
-  return url; 
+  return url;
 };
 
 const explainerParts = computed(() => {
@@ -257,15 +252,14 @@ const explainerParts = computed(() => {
     if (/youtu\.?be|youtube\.com/.test(p)) {
       videoUrl = p;
     } else if (p.startsWith("figure-")) {
-      imageId = p; 
-    } else {     
+      imageId = p;
+    } else {
       description = p;
     }
   }
 
   return { videoUrl, imageId, description };
 });
-
 
 const copied = ref(false);
 const citationText = ref<HTMLElement | null>(null);
@@ -282,7 +276,7 @@ function copyCitation() {
 
 watch(item, (newItem) => {
   if (newItem?.title) router.currentRoute.value.meta.breadcrumb = newItem.title;
-    activeTab.value = "about"; 
+  activeTab.value = "about";
 });
 
 if (!item.value)
@@ -290,7 +284,7 @@ if (!item.value)
 </script>
 
 <style scoped lang="scss">
-
+$wrap: 1000px;
 .page-container {
   display: flex;
   flex-direction: column;
@@ -391,11 +385,15 @@ if (!item.value)
       aspect-ratio: 16 / 9;
       width: 70%;
       border-radius: 8px;
+
+      @media (max-width: $wrap) {
+        width: 100%;
+      }
     }
   }
   img {
     align-self: center;
-    width: 100%;
+    width: 70%;
   }
 }
 
