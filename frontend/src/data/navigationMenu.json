@@ -140,13 +140,13 @@
         "tooltip": ""
       },
       {
-        "label": "Geno",
+        "label": "GENO",
         "key": "ontology-geno",
         "to": "/ontologies/geno",
         "tooltip": ""
       },
       {
-        "label": "Sepio",
+        "label": "SEPIO",
         "key": "ontology-sepio",
         "to": "/ontologies/sepio",
         "tooltip": ""
