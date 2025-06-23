@@ -65,10 +65,9 @@
           width="big"
         >
           <div class="citation-container">
-            <pre ref="citationText" class="citation-box"
-              >{{ item.citation }}
-    </pre
-            >
+            <pre ref="citationText" class="citation-box">{{
+              formatApaCitation(item.citation)
+            }}</pre>
 
             <AppButton
               text="Copy Citation"
@@ -287,6 +286,37 @@ function copyCitation() {
       setTimeout(() => (copied.value = false), 2000);
     });
   }
+}
+
+function formatApaCitation(rawCitation: string): string {
+  const trimmed = rawCitation.trim();
+
+  // Case 1: "Cite the GH repo" type
+  if (/^Cite the GH repo/i.test(trimmed)) {
+    const url = trimmed.split(":")[1]?.trim();
+    const project =
+      url?.split("/").pop()?.replace(/-/g, " ") || "GitHub Project";
+    return `${capitalizeWords(project)}. (n.d.). Retrieved from ${url}`;
+  }
+
+  // Case 2: Bare URL
+  if (/^https?:\/\//.test(trimmed)) {
+    const url = new URL(trimmed);
+    return `${url.hostname.replace("www.", "")}. (n.d.). Retrieved from ${trimmed}`;
+  }
+
+  // Case 3: Contains DOI/PMID/PMCID or journal-looking content
+  if (/doi|PMID|PMCID|[A-Z][a-z]+ J[a-z]*\./.test(trimmed)) {
+    const sentenceEnded = trimmed.endsWith(".") ? trimmed : trimmed + ".";
+    return sentenceEnded;
+  }
+
+  // Case 4: Fallback
+  return `(n.d.). ${trimmed}`;
+}
+
+function capitalizeWords(str: string): string {
+  return str.replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
 watch(item, (newItem) => {
