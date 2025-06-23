@@ -61,7 +61,7 @@
       <div
         v-for="(column, index) in navigationMenus"
         :key="index"
-        class="footer-column"
+        class="right-column"
       >
         <p>{{ column.label }}</p>
         <ul>
@@ -93,37 +93,41 @@ import navigationMenus from "@/data/navigationMenu.json";
 .footer {
   display: flex;
   justify-content: center;
-  padding: 30px max(20px, (100% - 1200px) / 2);
+  padding: 30px 0;
   background: #d3e6eb;
   font-size: 0.9rem;
 
   .container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-
-    gap: 2rem;
+    justify-content: flex-start;
+    gap: 1rem;
   }
 
   .logo-column {
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-weight: 600;
+
     text-align: center;
     > svg {
       margin: 0;
     }
   }
 
-  .footer-column {
+  .right-column {
     display: flex;
+    flex: 1;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
+    min-width: 120px;
+    text-align: left;
 
     p {
-      margin: unset;
+      padding-left: 0.7em;
       font-weight: bold;
+      text-align: left;
+      word-break: keep-all;
     }
 
     ul {
