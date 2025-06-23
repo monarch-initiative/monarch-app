@@ -83,14 +83,18 @@
           v-if="activeTab === 'resources' && resourceLinks.length"
           width="big"
         >
-          <AppLink
-            v-for="link in resourceLinks"
-            :key="link.key"
-            :to="link.value"
-            :no-icon="true"
-          >
-            {{ link.value }}
-          </AppLink>
+          <div v-for="link in resourceLinks">
+            {{ formatLabel(link.key) }}:
+
+            <AppLink
+              :key="`${link.key}-${link.value}`"
+              :to="link.value"
+              :no-icon="true"
+              class="resource-link"
+            >
+              {{ link.value }}
+            </AppLink>
+          </div>
         </AppSection>
       </div>
 
@@ -191,32 +195,38 @@ const tabs: { key: "about" | "citation" | "resources"; label: string }[] = [
   { key: "resources", label: "Resources" },
 ];
 
+const formatLabel = (label: string) => {
+  return label
+    .replace(/_/g, " ") // replace underscores with spaces
+    .replace(/^\w/, (c) => c.toUpperCase()); // capitalize first letter
+};
+
 const resourceLinks = computed(() => {
   const raw = item.value?.see_also ?? {};
-  const links: { key: string; value: string }[] = [];
   const seen = new Set<string>();
+  const links: { key: string; value: string }[] = [];
 
-  // Prioritize 'website' if it exists
-  if (typeof raw.website === "string" && raw.website.trim()) {
-    if (!seen.has(raw.website)) {
-      links.push({ key: "website", value: raw.website });
-      seen.add(raw.website);
+  const add = (key: string, url: string) => {
+    if (url && !seen.has(url)) {
+      links.push({ key, value: url });
+      seen.add(url);
     }
-  }
+  };
 
-  // Iterate through remaining entries (excluding 'website')
-  Object.entries(raw).forEach(([key, val]) => {
-    if (key === "website") return;
+  add("website", raw.website);
 
-    const urls = Array.isArray(val) ? val : [val];
-
-    urls.forEach((url) => {
-      if (typeof url === "string" && url.trim() && !seen.has(url)) {
-        links.push({ key: `${key}-${url}`, value: url });
-        seen.add(url);
-      }
+  Object.keys(raw)
+    .filter((k) => k !== "website" && k !== "other")
+    .sort()
+    .forEach((k) => {
+      const urls = Array.isArray(raw[k]) ? raw[k] : [raw[k]];
+      urls.forEach((url) => typeof url === "string" && add(k, url.trim()));
     });
-  });
+
+  const other = raw.other;
+  (Array.isArray(other) ? other : [other]).forEach(
+    (url) => typeof url === "string" && add("other", url.trim()),
+  );
 
   return links;
 });
@@ -443,5 +453,8 @@ $wrap: 1000px;
 
 .inline-contact a:hover {
   text-decoration: underline;
+}
+.resource-link {
+  text-decoration: none;
 }
 </style>
