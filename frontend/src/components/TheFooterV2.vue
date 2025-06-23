@@ -5,7 +5,7 @@
       <div class="left-column">
         <div class="logo-column">
           <ResourceIcon class="footer-logo" />
-          <p>© Monarch Initiative</p>
+          <p>Monarch Initiative</p>
           <p>2025. BSD-3</p>
         </div>
         <div class="social">
@@ -177,6 +177,7 @@ import navigationMenus from "@/data/navigationMenu.json";
   flex-direction: column;
   align-items: center;
   gap: 2em;
+  font-weight: 500;
 }
 
 .social-icon {
