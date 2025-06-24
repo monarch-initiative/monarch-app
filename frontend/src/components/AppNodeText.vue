@@ -25,7 +25,14 @@
   <tspan v-if="isSvg" ref="container">
     {{ text }}
   </tspan>
-  <span v-else ref="container" v-bind="$attrs" v-html="highlightedText"> </span>
+
+  <span
+    v-else
+    ref="container"
+    v-bind="$attrs"
+    :class="{ 'highlight-text': highlight }"
+    v-html="text"
+  />
 </template>
 
 <script setup lang="ts">
@@ -34,15 +41,12 @@ import { computed, onMounted, onUpdated, ref } from "vue";
 type Props = {
   text?: string;
   isSvg?: boolean;
-  getHighlightedText?: (
-    text: string,
-    transformFn?: (text: string) => string,
-  ) => string;
+  highlight?: boolean;
 };
 const props = withDefaults(defineProps<Props>(), {
   text: "",
   isSvg: false,
-  getHighlightedText: (text: string) => text,
+  highlight: false,
 });
 
 const container = ref<HTMLSpanElement | SVGTSpanElement | null>(null);
@@ -226,12 +230,6 @@ function buildDOM(containerEl: Element) {
   });
 }
 
-const highlightedText = computed(() => {
-  return props.getHighlightedText
-    ? props.getHighlightedText(props.text || "")
-    : props.text || "";
-});
-
 onMounted(() => {
   if (!container.value) return;
   buildDOM(container.value);
@@ -252,5 +250,8 @@ onUpdated(() => {
 }
 .svg-bold {
   font-weight: bold;
+}
+.highlight-text em {
+  background-color: yellow;
 }
 </style>

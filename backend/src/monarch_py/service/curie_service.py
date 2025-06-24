@@ -10,4 +10,5 @@ __all__ = [
 # (https://github.com/linkml/prefixmaps/blob/main/src/prefixmaps/data/merged.csv)
 converter = load_converter("merged")
 converter.add_prefix("GARD", "https://rarediseases.info.nih.gov/diseases/")
+converter.add_prefix("NORD", "https://rarediseases.org/?p=")
 converter.add_prefix("Orphanet", "https://www.orpha.net/en/disease/detail/", merge=True)
