@@ -108,10 +108,10 @@
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import TheLogo from "@/assets/TheLogo.vue";
+import TabSearch from "@/components/TabSearch.vue";
 import TheSearchTerms from "@/components/TheSearchTerms.vue";
 import navigationMenus from "@/data/navigationMenu.json";
 import { ENTITY_MAP } from "@/data/toolEntityConfig";
-import TabSearch from "@/pages/explore/TabSearch.vue";
 import DropdownButton from "./TheDropdownButton.vue";
 import TheNexus from "./TheNexus.vue";
 import TheScrollButton from "./TheScrollButton.vue";

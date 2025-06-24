@@ -1,10 +1,11 @@
+<!--
+  search tab on explore page
+
+  search for nodes in knowledge graph
+-->
+
 <template>
-  <AppBreadcrumb />
-  <PageTitle
-    id="page-results"
-    title="Search Results Across Genes, Diseases & Phenotypes"
-  />
-  <AppWrapper tag="AppSection" :wrap="!minimal" width="big">
+  <AppWrapper tag="AppSection" :wrap="!minimal">
     <!-- search box -->
     <div class="help-icon-section">
       <AppSelectAutocomplete
@@ -24,7 +25,7 @@
         text="?"
         design="circle"
         color="secondary"
-        to="help"
+        to="how-to"
       />
     </div>
 
@@ -45,7 +46,7 @@
     </AppFlex>
   </AppWrapper>
 
-  <AppSection v-if="!minimal" width="big">
+  <AppSection v-if="!minimal">
     <!-- status -->
     <AppStatus v-if="isLoading" code="loading">Loading results</AppStatus>
     <AppStatus v-else-if="isError" code="error"
@@ -132,7 +133,6 @@ import { groupBy, mapValues, sortBy, startCase, uniq, uniqBy } from "lodash";
 import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
 import type { SearchResults } from "@/api/model";
 import { getAutocomplete, getSearch } from "@/api/search";
-import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppButton from "@/components/AppButton.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import type {
@@ -143,7 +143,6 @@ import AppSelectAutocomplete from "@/components/AppSelectAutocomplete.vue";
 import type { Options as MultiOptions } from "@/components/AppSelectMulti.vue";
 import AppSelectMulti from "@/components/AppSelectMulti.vue";
 import AppWrapper from "@/components/AppWrapper.vue";
-import PageTitle from "@/components/ThePageTitle.vue";
 import { useQuery } from "@/composables/use-query";
 import { deleteEntry, history } from "@/global/history";
 import { appTitle } from "@/global/meta";
@@ -510,8 +509,6 @@ watch(from, () => runGetSearch(false));
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 50em;
-  margin-top: 2em;
 }
 
 .search-input {
