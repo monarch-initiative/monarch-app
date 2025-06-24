@@ -25,7 +25,20 @@
       <!-- Tab Content -->
       <div class="tab-content">
         <AppSection v-if="activeTab === 'about' && item?.about" width="big">
-          <p>{{ item.about }}</p>
+          <p>
+            {{ item.about }}
+            <template v-if="externalLink">
+              Learn more about
+              <AppLink
+                :to="externalLink.href"
+                :no-icon="true"
+                class="external-link"
+              >
+                {{ externalLink.text }}.
+              </AppLink>
+            </template>
+          </p>
+
           <div v-if="item.visual_explainer" class="visual-explainer">
             <div
               class="video"
@@ -142,6 +155,7 @@ import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppLink from "@/components/AppLink.vue";
 import AppSection from "@/components/AppSection.vue";
 import PageTile from "@/components/ThePageTitle.vue";
+import { ABOUT_PAGE_LINKS } from "@/data/aboutPageLinks";
 import rawData from "@/resources/monarch-app-infopages.json";
 
 /* ------------------------------------------------------------------ */
@@ -193,6 +207,12 @@ const tabs: { key: "about" | "citation" | "resources"; label: string }[] = [
   { key: "citation", label: "Citation" },
   { key: "resources", label: "Resources" },
 ];
+
+const externalLink = computed(() => {
+  console.log("item", item.value);
+  const title = item?.value?.title;
+  return ABOUT_PAGE_LINKS[title || ""];
+});
 
 const formatLabel = (label: string) => {
   return label
@@ -496,6 +516,9 @@ $wrap: 1000px;
   text-decoration: underline;
 }
 .resource-link {
+  text-decoration: none;
+}
+.external-link {
   text-decoration: none;
 }
 </style>
