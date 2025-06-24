@@ -10,6 +10,7 @@ import { sleep } from "@/util/debug";
 import { waitFor } from "@/util/dom";
 import { parse } from "@/util/object";
 
+
 /**
  * generate async loaded route. normal lazy loaded route renders homepage/root
  * route as loading fallback, this allows any loading fallback.
@@ -263,7 +264,19 @@ for (const route of routes) {
 }
 
 /** vue-router's scroll behavior handler */
-const scrollBehavior: RouterScrollBehavior = async () => {};
+const scrollBehavior: RouterScrollBehavior = async (
+  to,
+  from,
+  savedPosition,
+) => {
+  // if browser back/forward button
+  if (savedPosition) return savedPosition;
+
+  if (to.hash) return;
+  // scroll to top
+  return { left: 0, top: 0 };
+};
+
 
 /** given element, get (possibly) modified target */
 const getTarget = (element: Element): Element => {
