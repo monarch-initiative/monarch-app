@@ -136,7 +136,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { computed, nextTick, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppLink from "@/components/AppLink.vue";
@@ -311,7 +311,6 @@ function formatApaCitation(rawCitation: string): string {
     return sentenceEnded;
   }
 
-  // Case 4: Fallback
   return `(n.d.). ${trimmed}`;
 }
 
@@ -319,10 +318,22 @@ function capitalizeWords(str: string): string {
   return str.replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
-watch(item, (newItem) => {
-  if (newItem?.title) router.currentRoute.value.meta.breadcrumb = newItem.title;
-  activeTab.value = "about";
-});
+watch(
+  () => [route.fullPath, item.value?.title],
+  async () => {
+    await nextTick(); // wait for DOM and reactivity to settle
+
+    if (item.value?.title) {
+      document.title = item.value.title;
+      router.currentRoute.value.meta.breadcrumb = item.value.title;
+    } else {
+      document.title = "Monarch Initiative";
+    }
+
+    activeTab.value = "about";
+  },
+  { immediate: true },
+);
 
 if (!item.value)
   console.warn(`No item found for ${props.itemType}/${props.id}`);
