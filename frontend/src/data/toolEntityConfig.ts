@@ -72,21 +72,21 @@ export const TOOL_LINKS: {
   {
     label: "Exomiser",
     icon: "exomiser-logo-banner.png",
-    to: "https://exomiser.monarchinitiative.org/exomiser/",
+    to: "/tools/exomiser",
     tooltip: "Explore and prioritize genetic variants",
     external: true,
   },
   {
     label: "Phenopackets",
     icon: "phenopackets-logo.png",
-    to: "http://phenopackets.org/",
+    to: "/tools/phenopackets",
     tooltip: "Standard format for sharing phenotypic and clinical data",
     external: true,
   },
   {
     label: "Mondo",
     icon: "mondo-logo-banner.png",
-    to: "https://mondo.monarchinitiative.org/",
+    to: "/ontologies/mondo",
     tooltip:
       "Standardized vocabulary for diseases across clinical and research resources",
     external: true,
