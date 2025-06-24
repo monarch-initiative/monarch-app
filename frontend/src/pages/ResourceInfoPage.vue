@@ -188,7 +188,6 @@ const resourceLinks = computed(() => {
 // ------------------------------
 // 7. Visual explainer (video, image, description)
 // ------------------------------
-
 const explainerParts = computed(() => {
   const raw = item.value?.visual_explainer;
   if (!raw) return {};
@@ -218,7 +217,6 @@ const explainerParts = computed(() => {
 // ------------------------------
 // 10. Watch route & title updates
 // ------------------------------
-
 watch(
   () => [route.fullPath, item.value?.title],
   async () => {
