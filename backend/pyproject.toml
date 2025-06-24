@@ -57,6 +57,11 @@ build-backend = "hatchling.build"
 [tool.hatch.version]
 source = "uv-dynamic-versioning"
 
+[tool.uv-dynamic-versioning]
+vcs = "git"
+style = "pep440"
+fallback-version = "0.0.0"
+
 [tool.pytest.ini_options]
 pythonpath = [".", "src"]
 
