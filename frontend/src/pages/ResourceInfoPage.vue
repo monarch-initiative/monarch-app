@@ -85,43 +85,41 @@ import AboutTab from "@/components/ResourceInfoPage/tabs/AboutTab.vue";
 import CitationTab from "@/components/ResourceInfoPage/tabs/CitationTab.vue";
 import ResourcesTab from "@/components/ResourceInfoPage/tabs/ResourcesTab.vue";
 import PageTile from "@/components/ThePageTitle.vue";
+// Static data and constants
 import { ABOUT_PAGE_LINKS } from "@/data/aboutPageLinks";
 import rawData from "@/resources/monarch-app-infopages.json";
 
-/* ------------------------------------------------------------------ */
-/* 1. Type helpers – keep them minimal so we don’t over-specify       */
-/* ------------------------------------------------------------------ */
+// ------------------------------
+// 1. Type helpers
+// ------------------------------
 type CategoryKey = "ontologies" | "registries" | "standards" | "tools";
 type ItemRecord = Record<string, any>; // one item (ecto / hp / etc.)
 type DataShape = Record<CategoryKey, ItemRecord>; // whole JSON file
 
 const data = rawData as DataShape; // cast once, use everywhere
 
-/* ------------------------------------------------------------------ */
-/* 2. Props from router / parent                                      */
-/* ------------------------------------------------------------------ */
+// ------------------------------
+// 2. Props passed from the router
+// ------------------------------
 const props = defineProps<{
   itemType: CategoryKey;
   id: string;
 }>();
 
-/* ------------------------------------------------------------------ */
-/* 3. Reactive state                                                 */
-/* ------------------------------------------------------------------ */
+// ------------------------------
+// 3. State and route control
+// ------------------------------
 const router = useRouter();
 const route = useRoute();
-const isScrolled = ref(false);
 const activeTab = ref<"about" | "citation" | "resources">("about");
 
-/* ------------------------------------------------------------------ */
-/* 4. Lookup the single item directly (object pattern)                */
-/* ------------------------------------------------------------------ */
-
+// ------------------------------
+// 4. Lookup item based on route props
+// ------------------------------
 const item = computed(() => {
   const isStandardAliasedAsTool =
     props.itemType === "tools" && ["phenopackets", "sssom"].includes(props.id);
 
-  // Pull from standards if aliased, otherwise normal lookup
   if (isStandardAliasedAsTool) {
     return data.standards?.[props.id] ?? null;
   }
@@ -129,14 +127,23 @@ const item = computed(() => {
   return data[props.itemType]?.[props.id] ?? null;
 });
 
-/* ------------------------------------------------------------------ */
-/* 5. Tabs logic                                                      */
-/* ------------------------------------------------------------------ */
+// ------------------------------
+// 5. Tabs logic and visibility
+// ------------------------------
 const tabs: { key: "about" | "citation" | "resources"; label: string }[] = [
   { key: "about", label: "About" },
   { key: "citation", label: "Citation" },
   { key: "resources", label: "Resources" },
 ];
+
+const visibleTabs = computed(() =>
+  tabs.filter(
+    (t) =>
+      (t.key === "about" && item.value?.about) ||
+      (t.key === "citation" && item.value?.citation) ||
+      (t.key === "resources" && resourceLinks.value.length),
+  ),
+);
 
 const externalLink = computed(() => {
   console.log("item", item.value);
@@ -144,6 +151,9 @@ const externalLink = computed(() => {
   return ABOUT_PAGE_LINKS[title || ""];
 });
 
+// ------------------------------
+// 9. Resource Links Formatting
+// ------------------------------
 const resourceLinks = computed(() => {
   const raw = item.value?.see_also ?? {};
   const seen = new Set<string>();
@@ -174,24 +184,9 @@ const resourceLinks = computed(() => {
   return links;
 });
 
-const visibleTabs = computed(() =>
-  tabs.filter(
-    (t) =>
-      (t.key === "about" && item.value?.about) ||
-      (t.key === "citation" && item.value?.citation) ||
-      (t.key === "resources" && resourceLinks.value.length),
-  ),
-);
-
-const embedYouTubeUrl = (url: string) => {
-  const videoIdMatch = url.match(
-    /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/,
-  );
-  if (videoIdMatch && videoIdMatch[1]) {
-    return `https://www.youtube.com/embed/${videoIdMatch[1]}`;
-  }
-  return url;
-};
+// ------------------------------
+// 7. Visual explainer (video, image, description)
+// ------------------------------
 
 const explainerParts = computed(() => {
   const raw = item.value?.visual_explainer;
@@ -219,48 +214,9 @@ const explainerParts = computed(() => {
   return { videoUrl, imageId, description };
 });
 
-const copied = ref(false);
-const citationText = ref<HTMLElement | null>(null);
-
-function copyCitation() {
-  if (citationText.value) {
-    const text = citationText.value.innerText;
-    navigator.clipboard.writeText(text).then(() => {
-      copied.value = true;
-      setTimeout(() => (copied.value = false), 2000);
-    });
-  }
-}
-
-function formatApaCitation(rawCitation: string): string {
-  const trimmed = rawCitation.trim();
-
-  // Case 1: "Cite the GH repo" type
-  if (/^Cite the GH repo/i.test(trimmed)) {
-    const url = trimmed.split(":")[1]?.trim();
-    const project =
-      url?.split("/").pop()?.replace(/-/g, " ") || "GitHub Project";
-    return `${capitalizeWords(project)}. (n.d.). Retrieved from ${url}`;
-  }
-
-  // Case 2: Bare URL
-  if (/^https?:\/\//.test(trimmed)) {
-    const url = new URL(trimmed);
-    return `${url.hostname.replace("www.", "")}. (n.d.). Retrieved from ${trimmed}`;
-  }
-
-  // Case 3: Contains DOI/PMID/PMCID or journal-looking content
-  if (/doi|PMID|PMCID|[A-Z][a-z]+ J[a-z]*\./.test(trimmed)) {
-    const sentenceEnded = trimmed.endsWith(".") ? trimmed : trimmed + ".";
-    return sentenceEnded;
-  }
-
-  return `(n.d.). ${trimmed}`;
-}
-
-function capitalizeWords(str: string): string {
-  return str.replace(/\b\w/g, (char) => char.toUpperCase());
-}
+// ------------------------------
+// 10. Watch route & title updates
+// ------------------------------
 
 watch(
   () => [route.fullPath, item.value?.title],
