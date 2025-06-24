@@ -40,11 +40,11 @@ jobs:
         run: uv sync --extra dev
 
       - name: Run tests
-        run: uv run pytest backend/tests
+        run: uv run pytest tests
 
       - name: Generate coverage report
         run: |
-          uv run coverage run -m pytest backend/tests
+          uv run coverage run -m pytest tests
           uv run coverage xml
           uv run coverage report -m
         shell: bash
