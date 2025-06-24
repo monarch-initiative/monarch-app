@@ -30,7 +30,7 @@ jobs:
 
       - name: Verify lockfile is up-to-date
         run: |
-          uv lock --check
+          uv lock --directory backend --check
 
       - name: Install Dependencies
         run: uv sync --directory backend --extra dev
