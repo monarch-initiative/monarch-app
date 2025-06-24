@@ -24,6 +24,10 @@ jobs:
         with:
           version: "0.7.x"
 
+      - name: Verify lockfile is up-to-date
+        run: |
+          uv lock --check
+
       - name: Build
         run: |
           uv version $(git describe --tags --abbrev=0)
