@@ -146,7 +146,6 @@ const visibleTabs = computed(() =>
 );
 
 const externalLink = computed(() => {
-  console.log("item", item.value);
   const title = item?.value?.title;
   return ABOUT_PAGE_LINKS[title || ""];
 });
@@ -173,12 +172,14 @@ const resourceLinks = computed(() => {
     .sort()
     .forEach((k) => {
       const urls = Array.isArray(raw[k]) ? raw[k] : [raw[k]];
-      urls.forEach((url) => typeof url === "string" && add(k, url.trim()));
+      urls.forEach(
+        (url: string) => typeof url === "string" && add(k, url.trim()),
+      );
     });
 
   const other = raw.other;
   (Array.isArray(other) ? other : [other]).forEach(
-    (url) => typeof url === "string" && add("other", url.trim()),
+    (url: string) => typeof url === "string" && add("other", url.trim()),
   );
 
   return links;

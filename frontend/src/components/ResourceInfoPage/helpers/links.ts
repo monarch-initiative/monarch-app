@@ -20,13 +20,15 @@ export function normalizeResourceLinks(raw: Record<string, any>) {
     .sort()
     .forEach((k) => {
       const urls = Array.isArray(raw[k]) ? raw[k] : [raw[k]];
-      urls.forEach((url) => typeof url === "string" && add(k, url.trim()));
+      urls.forEach((url: string) => {
+        if (typeof url === "string") add(k, url.trim());
+      });
     });
 
   const other = raw.other;
-  (Array.isArray(other) ? other : [other]).forEach(
-    (url) => typeof url === "string" && add("other", url.trim()),
-  );
+  (Array.isArray(other) ? other : [other]).forEach((url: string) => {
+    if (typeof url === "string") add("other", url.trim());
+  });
 
   return links;
 }
