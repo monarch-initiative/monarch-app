@@ -6,6 +6,7 @@ on:
 
 env:
   PYTHONPATH: ${{ github.workspace }}/backend
+  UV_VERSION: "0.7.x"
 
 defaults:
   run:
@@ -18,7 +19,6 @@ jobs:
       matrix:
         python-version: ["3.10", "3.11", "3.12"]
         os: [ubuntu-latest]
-        #os: [ ubuntu-latest, windows-latest ]
 
     steps:
       - uses: actions/checkout@v4
@@ -31,7 +31,8 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v6
         with:
-          version: "0.7.x"
+          enable-cache: true
+          version: $ {{ env.UV_VERSION}}
 
       - name: Verify lockfile is up-to-date
         run: |
