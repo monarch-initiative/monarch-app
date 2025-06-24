@@ -10,7 +10,6 @@ import { sleep } from "@/util/debug";
 import { waitFor } from "@/util/dom";
 import { parse } from "@/util/object";
 
-
 /**
  * generate async loaded route. normal lazy loaded route renders homepage/root
  * route as loading fallback, this allows any loading fallback.
@@ -238,19 +237,19 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/ontologies/:id",
     name: "OntologyPage",
-    component: asyncRoute("PageInfo"),
+    component: asyncRoute("ResourceInfoPage"),
     props: (route) => ({ itemType: "ontologies", id: route.params.id }),
   },
   {
     path: "/registries/:id",
     name: "RegistryPage",
-    component: asyncRoute("PageInfo"),
+    component: asyncRoute("ResourceInfoPage"),
     props: (route) => ({ itemType: "registries", id: route.params.id }),
   },
   {
     path: "/tools/:id",
     name: "ToolPage",
-    component: asyncRoute("PageInfo"),
+    component: asyncRoute("ResourceInfoPage"),
     props: (route) => ({ itemType: "tools", id: route.params.id }),
   },
 ];
@@ -276,7 +275,6 @@ const scrollBehavior: RouterScrollBehavior = async (
   // scroll to top
   return { left: 0, top: 0 };
 };
-
 
 /** given element, get (possibly) modified target */
 const getTarget = (element: Element): Element => {
