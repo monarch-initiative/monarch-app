@@ -370,10 +370,10 @@
       "about": "The Phenopacket Schema represents an open standard for sharing disease and phenotype information to improve our ability to understand, diagnose, and treat both rare and common diseases. A Phenopacket links detailed phenotype descriptions with disease, patient, and genetic information, enabling clinicians, biologists, and disease and drug researchers to build more complete models of disease. The standard is designed to encourage wide adoption and synergy between the people, organizations and systems that comprise the joint effort to address human disease and biological understanding.",
       "citation": "Ladewig, M. S., Jacobsen, J. O. B., Wagner, A. H., Danis, D., El Kassaby, B., Gargano, M., Groza, T., Baudis, M., Steinhaus, R., Seelow, D., Bechrakis, N. E., Mungall, C. J., Schofield, P. N., Elemento, O., Smith, L., McMurry, J. A., Munoz-Torres, M., Haendel, M. A., & Robinson, P. N. (2023). GA4GH Phenopackets: A practical introduction. Advanced Genetics, 4(1), 2200016. https://doi.org/10.1002/ggn2.202200016",
       "contact": {
-        "email": "Peter.Robinson@jax.org",
-        "github": "@pnrobinson",
-        "name": "Peter Robinson",
-        "orcid": "https://orcid.org/0000-0002-0736-9199"
+        "email": "j.jacobsen@qmul.ac.uk",
+        "github": "@julesjacobsen",
+        "name": "Jules Jacobsen",
+        "orcid": "https://orcid.org/0000-0002-3265-1591"
       },
       "icon": "resource-phenopackets",
       "license": "BSD-3-Clause",
