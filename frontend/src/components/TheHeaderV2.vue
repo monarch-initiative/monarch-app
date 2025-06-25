@@ -43,7 +43,7 @@
           <TheSearchTerms />
           <TheSearchSuggestions @select="handleSuggestionClick" />
           <div class="hero-tool-links">
-            <p class="hero-tools-label">Explore our advanced tools:</p>
+            <h3 class="hero-tools-label">Explore knowledge graph tools:</h3>
             <AppLink to="/phenotype-similarity">Phenotype Search</AppLink>
             <span>|</span>
             <AppLink to="/text-annotator">Text Annotator</AppLink>
@@ -463,7 +463,6 @@ Its here to align with the styling of old nav items. */
   .hero-header h1 {
     color: #333;
     font-weight: 600;
-    font-size: clamp(1.75rem, 5vw, 2.5rem);
     font-size: 1.75em;
     strong {
       display: block;
@@ -485,10 +484,12 @@ Its here to align with the styling of old nav items. */
   }
   .hero-tool-links {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-wrap: nowrap;
+
     margin-top: 1.8rem;
     gap: 0.75rem;
+    font-size: 1.1em;
+    white-space: nowrap;
     a {
       color: #007c8a;
       font-weight: 500;
@@ -502,11 +503,11 @@ Its here to align with the styling of old nav items. */
     span {
       color: #aaa;
     }
+    h3 {
+      padding: 0;
+    }
   }
   .hero-tools-label {
-    display: flex;
-    align-items: center;
-    gap: 0.3em;
     color: rgb(90, 95, 95);
     font-weight: 500;
     text-align: center;
