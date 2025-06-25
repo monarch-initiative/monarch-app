@@ -252,6 +252,11 @@ export const routes: RouteRecordRaw[] = [
     component: asyncRoute("ResourceInfoPage"),
     props: (route) => ({ itemType: "tools", id: route.params.id }),
   },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "NotFound",
+    component: asyncRoute("PageNotFound"),
+  },
 ];
 
 /** insert descriptions from imported json into each route's metadata */

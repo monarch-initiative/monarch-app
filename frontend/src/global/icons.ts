@@ -1,7 +1,7 @@
-import { library } from '@fortawesome/fontawesome-svg-core';
-import * as fab from '@fortawesome/free-brands-svg-icons';
-import * as far from '@fortawesome/free-regular-svg-icons';
-import * as fas from '@fortawesome/free-solid-svg-icons';
+import { library } from "@fortawesome/fontawesome-svg-core";
+import * as fab from "@fortawesome/free-brands-svg-icons";
+import * as far from "@fortawesome/free-regular-svg-icons";
+import * as fas from "@fortawesome/free-solid-svg-icons";
 
 /** prefer using "regular" over "solid" where available */
 

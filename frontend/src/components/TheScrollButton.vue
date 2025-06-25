@@ -1,5 +1,9 @@
 <template>
-  <button class="scroll-button" aria-label="Scroll to content" @click="scrollToHomePageSection">
+  <button
+    class="scroll-button"
+    aria-label="Scroll to content"
+    @click="scrollToHomePageSection"
+  >
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="32"
@@ -18,26 +22,26 @@
 </template>
 
 <script setup lang="ts">
-  function scrollToHomePageSection() {
-    const el = document.getElementById('home-page');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      console.warn('home-page not found');
-    }
+function scrollToHomePageSection() {
+  const el = document.getElementById("home-page");
+  if (el) {
+    el.scrollIntoView({ behavior: "smooth" });
+  } else {
+    console.warn("home-page not found");
   }
+}
 </script>
 
 <style scoped>
-  .scroll-button {
-    margin: 2rem;
-    border: none;
-    border-radius: 50%;
-    background: white;
-    color: #555;
-    animation: bounce 2s infinite;
-    cursor: pointer;
-    cursor: pointer;
-    filter: drop-shadow(rgba(0, 0, 0, 0.5) 1px 1px 2px);
-  }
+.scroll-button {
+  margin: 2rem;
+  border: none;
+  border-radius: 50%;
+  background: white;
+  color: #555;
+  animation: bounce 2s infinite;
+  cursor: pointer;
+  cursor: pointer;
+  filter: drop-shadow(rgba(0, 0, 0, 0.5) 1px 1px 2px);
+}
 </style>

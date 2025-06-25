@@ -101,9 +101,7 @@
       "license": "CC-BY-4.0",
       "see_also": {
         "documentation": "https://mondo.readthedocs.io/en/latest",
-        "other": [
-          "https://monarch-initiative.github.io/mondo-ingest"
-        ],
+        "other": ["https://monarch-initiative.github.io/mondo-ingest"],
         "repository": "https://github.com/monarch-initiative/mondo",
         "website": "https://mondo.monarchinitiative.org"
       },
@@ -125,9 +123,7 @@
       "license": "CC0",
       "see_also": {
         "documentation": "https://obophenotype.github.io/bio-attribute-ontology",
-        "other": [
-          "https://obophenotype.github.io/upheno"
-        ],
+        "other": ["https://obophenotype.github.io/upheno"],
         "repository": "https://github.com/obophenotype/bio-attribute-ontology",
         "website": "https://obofoundry.org/ontology/oba.html"
       },
@@ -239,9 +235,7 @@
       "license": "CC-BY-4.0",
       "see_also": {
         "documentation": "https://monarch-initiative.github.io/vertebrate-breed-ontology",
-        "other": [
-          "https://ols.monarchinitiative.org/ontologies/vbo"
-        ],
+        "other": ["https://ols.monarchinitiative.org/ontologies/vbo"],
         "repository": "https://github.com/monarch-initiative/vertebrate-breed-ontology",
         "website": "https://github.com/monarch-initiative/vertebrate-breed-ontology"
       },
