@@ -1,6 +1,6 @@
 <template>
   <div class="hero-tool-links">
-    <h3 class="hero-tools-label">Explore knowledge graph tools:</h3>
+    <p class="hero-tools-label">Explore knowledge graph tools:</p>
     <AppLink to="/search-phenotypes">Phenotype Search</AppLink>
     <span>|</span>
     <AppLink to="/text-annotator">Text Annotator</AppLink>
@@ -15,7 +15,7 @@
 .hero-tool-links {
   display: flex;
   flex-wrap: nowrap;
-
+  align-items: center;
   margin-top: 1.8rem;
   gap: 0.75rem;
   font-size: 1.1em;
