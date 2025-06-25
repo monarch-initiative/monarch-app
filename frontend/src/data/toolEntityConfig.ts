@@ -41,20 +41,6 @@ export const KG_TOOL_LINKS: {
     to: '/text-annotator',
     tooltip: 'Paste or upload text to find references to Monarch Knowledge Graph entities',
   },
-  {
-    label: 'Neo4j',
-    icon: 'neoj',
-    to: 'https://neo4j.monarchinitiative.org/browser/',
-    tooltip: 'Explore the Monarch Knowledge Graph directly in the Neo4j browser',
-    external: true,
-  },
-  {
-    label: 'Monarch R',
-    icon: 'monarchr',
-    to: 'https://monarch-initiative.github.io/monarchr/articles/monarchr',
-    tooltip: 'Query and manipulate Monarch KG data in a tidy-inspired R interface',
-    external: true,
-  },
 ];
 
 export const TOOL_LINKS: {
