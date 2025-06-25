@@ -42,12 +42,7 @@
           <TabSearch :minimal="true" :header-box="true" :home="home" />
           <TheSearchTerms />
           <TheSearchSuggestions @select="handleSuggestionClick" />
-          <div class="hero-tool-links">
-            <h3 class="hero-tools-label">Explore knowledge graph tools:</h3>
-            <AppLink to="/phenotype-similarity">Phenotype Search</AppLink>
-            <span>|</span>
-            <AppLink to="/text-annotator">Text Annotator</AppLink>
-          </div>
+          <TheHeroTools />
         </div>
       </div>
     </div>
@@ -103,6 +98,7 @@
   import navigationMenus from "@/data/navigationMenu.json";
   import { ENTITY_MAP } from "@/data/toolEntityConfig";
   import DropdownButton from "./TheDropdownButton.vue";
+  import TheHeroTools from "./TheHeroTools.vue";
   import TheNexus from "./TheNexus.vue";
   import TheScrollButton from "./TheScrollButton.vue";
   import TheSearchSuggestions from "./TheSearchSuggestions.vue";
@@ -481,35 +477,5 @@ Its here to align with the styling of old nav items. */
 
   .hero-logo {
     height: 50px;
-  }
-  .hero-tool-links {
-    display: flex;
-    flex-wrap: nowrap;
-
-    margin-top: 1.8rem;
-    gap: 0.75rem;
-    font-size: 1.1em;
-    white-space: nowrap;
-    a {
-      color: #007c8a;
-      font-weight: 500;
-      text-decoration: none;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-
-    span {
-      color: #aaa;
-    }
-    h3 {
-      padding: 0;
-    }
-  }
-  .hero-tools-label {
-    color: rgb(90, 95, 95);
-    font-weight: 500;
-    text-align: center;
   }
 </style>
