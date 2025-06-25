@@ -97,6 +97,9 @@
             </li>
           </template>
         </DropdownButton>
+        <div class="hero-tools">
+          <TheHeroTools v-if="isMobile" />
+        </div>
       </div>
     </nav>
 
