@@ -80,6 +80,12 @@
         "tooltip": ""
       },
       {
+        "label": "About the KG",
+        "key": "about-kg",
+        "to": "/kg/about",
+        "tooltip": ""
+      },
+      {
         "label": "API",
         "key": "kg-api",
         "to": "https://api-v3.monarchinitiative.org/v3/docs",
@@ -87,10 +93,18 @@
         "icon": true
       },
       {
-        "label": "About the KG",
-        "key": "about-kg",
-        "to": "/kg/about",
-        "tooltip": ""
+        "label": "Neo4j",
+        "key": "about-neo4J",
+        "to": "https://neo4j.monarchinitiative.org/browser/",
+        "tooltip": "",
+        "icon": true
+      },
+      {
+        "label": "Monarch R",
+        "key": "about-monarchr",
+        "to": "https://monarch-initiative.github.io/monarchr/articles/monarchr",
+        "tooltip": "",
+        "icon": true
       }
     ]
   },
