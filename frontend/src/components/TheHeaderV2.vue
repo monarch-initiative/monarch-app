@@ -43,10 +43,10 @@
           <TheSearchTerms />
           <TheSearchSuggestions @select="handleSuggestionClick" />
           <div class="hero-tool-links">
-            <p class="hero-tools-label"><AppIcon icon="wrench" />Explore our advanced tools:</p>
-            <RouterLink to="/phenotype-similarity">Phenotype Search</RouterLink>
+            <p class="hero-tools-label">Explore our advanced tools:</p>
+            <AppLink to="/phenotype-similarity">Phenotype Search</AppLink>
             <span>|</span>
-            <RouterLink to="/text-annotator">Text Annotator</RouterLink>
+            <AppLink to="/text-annotator">Text Annotator</AppLink>
           </div>
         </div>
       </div>
@@ -507,6 +507,7 @@ Its here to align with the styling of old nav items. */
     display: flex;
     align-items: center;
     gap: 0.3em;
+    color: rgb(90, 95, 95);
     font-weight: 500;
     text-align: center;
   }
