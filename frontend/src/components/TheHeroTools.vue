@@ -7,10 +7,6 @@
   </div>
 </template>
 
-<script setup lang="ts">
-// No logic required right now
-</script>
-
 <style scoped lang="scss">
 $wrap: 1120px;
 .hero-tool-links {
