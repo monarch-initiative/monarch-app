@@ -124,7 +124,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/:pathMatch(.*)*",
     name: "NotFound",
-    component: asyncRoute("PageHomeV2"),
+    component: asyncRoute("PageNotFound"),
   },
   {
     path: "/search-phenotypes",

@@ -1,78 +1,88 @@
 <template>
   <div class="page-container">
-    <AppBreadcrumb :dynamic-breadcrumb="item?.title" />
-    <PageTile
-      :id="item?.title_short?.toLowerCase() ?? 'not-found'"
-      :key="`page-${item?.title_short}`"
-      :title="item?.title"
-      :img-src="item?.icon || ''"
-      :is-info-page="true"
-      :tagline="item?.tagline"
-    />
-    <!-- Tabs -->
-    <div class="main-content">
-      <div class="tabs">
-        <button
-          v-for="tab in visibleTabs"
-          :key="tab.key"
-          :class="{ active: activeTab === tab.key }"
-          @click="activeTab = tab.key"
-        >
-          {{ tab.label }}
-        </button>
-      </div>
-
-      <!-- Tab Content -->
-      <div class="tab-content">
-        <AboutTab
-          v-if="activeTab === 'about' && item?.about"
-          :item="item"
-          :external-link="externalLink"
-          :explainer-parts="explainerParts"
-        />
-        <CitationTab
-          v-if="activeTab === 'citation' && item?.citation"
-          :item="item"
-        />
-        <ResourcesTab
-          v-if="activeTab === 'resources' && item?.see_also"
-          :item="item"
-        />
-      </div>
-
-      <AppSection width="big">
-        <div class="contact-section">
-          <p class="inline-contact">
-            Contact:
-            <span v-if="item.contact?.name">{{ item.contact.name }}</span>
-            <span v-if="item.contact?.email">
-              |
-              <a :href="`mailto:${item.contact.email}`">{{
-                item.contact.email
-              }}</a></span
-            >
-            <span v-if="item.contact?.github">
-              | GitHub:
-              <a
-                :href="`https://github.com/${item.contact.github.replace('@', '')}`"
-                target="_blank"
-                >{{ item.contact.github }}</a
-              ></span
-            >
-            <span v-if="item.contact?.orcid">
-              | ORCID:
-              <a :href="item.contact.orcid" target="_blank">{{
-                item.contact.orcid.replace("https://", "")
-              }}</a></span
-            >
-          </p>
-          <p v-if="item.license && !item.license.startsWith('http')">
-            Content licensed under:
-            <span class="license-badge">{{ item.license }}</span>
-          </p>
+    <template v-if="item">
+      <AppBreadcrumb :dynamic-breadcrumb="item?.title" />
+      <PageTile
+        :id="item?.title_short?.toLowerCase() ?? 'not-found'"
+        :key="`page-${item?.title_short}`"
+        :title="item?.title"
+        :img-src="item?.icon || ''"
+        :is-info-page="true"
+        :tagline="item?.tagline"
+      />
+      <!-- Tabs -->
+      <div class="main-content">
+        <div class="tabs">
+          <button
+            v-for="tab in visibleTabs"
+            :key="tab.key"
+            :class="{ active: activeTab === tab.key }"
+            @click="activeTab = tab.key"
+          >
+            {{ tab.label }}
+          </button>
         </div>
-      </AppSection>
-    </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+          <AboutTab
+            v-if="activeTab === 'about' && item?.about"
+            :item="item"
+            :external-link="externalLink"
+            :explainer-parts="explainerParts"
+          />
+          <CitationTab
+            v-if="activeTab === 'citation' && item?.citation"
+            :item="item"
+          />
+          <ResourcesTab
+            v-if="activeTab === 'resources' && item?.see_also"
+            :item="item"
+          />
+        </div>
+
+        <AppSection width="big">
+          <div class="contact-section">
+            <p class="inline-contact">
+              Contact:
+              <span v-if="item.contact?.name">{{ item.contact.name }}</span>
+              <span v-if="item.contact?.email">
+                |
+                <a :href="`mailto:${item.contact.email}`">{{
+                  item.contact.email
+                }}</a></span
+              >
+              <span v-if="item.contact?.github">
+                | GitHub:
+                <a
+                  :href="`https://github.com/${item.contact.github.replace('@', '')}`"
+                  target="_blank"
+                  >{{ item.contact.github }}</a
+                ></span
+              >
+              <span v-if="item.contact?.orcid">
+                | ORCID:
+                <a :href="item.contact.orcid" target="_blank">{{
+                  item.contact.orcid.replace("https://", "")
+                }}</a></span
+              >
+            </p>
+            <p v-if="item.license && !item.license.startsWith('http')">
+              Content licensed under:
+              <span class="license-badge">{{ item.license }}</span>
+            </p>
+          </div>
+        </AppSection>
+      </div>
+    </template>
+
+    <template v-else>
+      <div class="not-found">
+        <h1>404: Page Not Found</h1>
+        <p>The item you are looking for does not exist.</p>
+        <RouterLink to="/">Return to homepage</RouterLink>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -126,7 +136,7 @@ const item = computed(() => {
 
   return data[props.itemType]?.[props.id] ?? null;
 });
-
+console.log("item", item.value);
 // ------------------------------
 // 5. Tabs logic and visibility
 // ------------------------------
@@ -316,5 +326,21 @@ $wrap: 1000px;
 
 .external-link {
   text-decoration: none;
+}
+
+.not-found {
+  margin: 4rem auto;
+  color: #555;
+  text-align: center;
+
+  h1 {
+    margin-bottom: 0.5em;
+    font-size: 2rem;
+  }
+
+  a {
+    color: $theme;
+    text-decoration: underline;
+  }
 }
 </style>
