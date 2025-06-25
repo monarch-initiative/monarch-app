@@ -54,6 +54,6 @@ function copyCitation() {
 
 .copied-msg {
   margin-left: 1rem;
-  color: green;
+  color: $black;
 }
 </style>
