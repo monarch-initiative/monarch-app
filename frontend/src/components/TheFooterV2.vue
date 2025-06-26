@@ -6,7 +6,6 @@
         <div class="logo-column">
           <ResourceIcon class="footer-logo" />
           <p>Monarch Initiative</p>
-          <p>2025. BSD-3</p>
         </div>
         <div class="social">
           <p>Follow us on</p>
