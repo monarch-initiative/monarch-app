@@ -457,8 +457,8 @@
       "visual_explainer": "https://www.youtube.com/watch?v=XU10oT7c2VI|||https://www.youtube.com/watch?v=tzwvWkb3s8A"
     },
     "linkml": {
-      "about": "The Linked Data Modeling Language (LinkML) is a flexible modeling language that allows you to author schemas in YAML that describe the structure of your data. Additionally, it is a framework for working with and validating data in a variety of formats (JSON, RDF, TSV), with generators for compiling LinkML schemas to other frameworks.",
-      "citation": "Vita, R., et al. (2018). FAIR principles and the IEDB: Short-term improvements and a long-term vision of OBO-foundry mediated machine-actionable interoperability. Database, 2018, bax105. https://doi.org/10.1093/database/bax105",
+      "about": "LinkML (Linked data Modeling Language; linkml.io) is an open and extensible data modeling framework that provides a simple and structured way to describe and validate data. It includes a set of tools that make it easy to author, validate, and share data. LinkML can describe a range of data structures, from flat, list-based models to complex, interrelated, and normalized models that utilize polymorphism and compound inheritance. It offers an approachable syntax that is not tied to any one technical architecture, and can be integrated seamlessly with many existing frameworks. Its low barrier to entry allows people from different backgrounds and levels of technical expertise to collaborate to form a shared understanding of the underlying data semantics, providing an easy-to-understand basis for interdisciplinary collaboration. Its metamodel syntax allows modelers to focus on creating well-defined, stable, ontology-based data structures instead of a mixture of customized models and free text. LinkML helps reduce heterogeneity, complexity, and the proliferation of single-use data models while simultaneously enabling compliance with FAIR data standards.",
+      "citation": "Moxon, S., Solbrig, H., Unni, D., Jiao, D., Bruskiewich, R., Balhoff, J., Vaidya, G., Duncan, W., Hegde, H., Miller, M., Brush, M., Harris, N., Haendel, M., & Mungall, C. (2021). The Linked Data Modeling Language (LinkML): A general-purpose data modeling framework grounded in machine-readable semantics. CEUR Workshop Proceedings, 3073, 148–151",
       "contact": {
         "email": "cjmungall@lbl.gov",
         "github": "@cmungall",
@@ -468,7 +468,7 @@
       "icon": "resource-linkml",
       "license": "CC0",
       "see_also": {
-        "documentation": "https://linkml.io/linkml-model/docs",
+        "documentation": "https://linkml.io/linkml/",
         "other": null,
         "repository": "https://github.com/linkml",
         "website": "https://linkml.io"
