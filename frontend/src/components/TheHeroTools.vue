@@ -1,6 +1,6 @@
 <template>
   <div class="hero-tool-links">
-    <p class="hero-tools-label">Explore knowledge graph tools:</p>
+    <p class="hero-tools-label">Knowledge Graph Tools:</p>
     <AppLink to="/search-phenotypes">Phenotype Search</AppLink>
     <span>|</span>
     <AppLink to="/text-annotator">Text Annotator</AppLink>
@@ -50,7 +50,6 @@ $wrap: 1120px;
   }
 }
 .hero-tools-label {
-  color: rgb(90, 95, 95);
   font-weight: 500;
   text-align: center;
   @media (max-width: $wrap) {
