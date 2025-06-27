@@ -300,7 +300,22 @@ classes:
       - external_links
       - provided_by_link
       - association_counts
+      - cross_species_term_clique
       - node_hierarchy
+  
+  CrossSpeciesTermClique:
+    slots:
+      - root_term
+      - entities
+      - associations
+    slot_usage:
+      root_term:
+        required: true
+      entities:
+        required: true
+      associations:
+        required: true
+
   NodeHierarchy:
     slots:
       - super_classes
@@ -857,6 +872,28 @@ slots:
     range: string
     description: >-
       A closure of the object_specialization_qualifier, including the object_specialization_qualifier itself and all of its ancestors
+  cross_species_term_clique:
+    range: CrossSpeciesTermClique
+  root_term:
+    range: Entity
+    inlined: true
+    description: >-
+      The parent portion of a CrossSpeciesTermClique
+  entities:
+    range: Entity
+    inlined: true
+    inlined_as_list: true
+    multivalued: true
+    description: >-
+      A collection of nodes / entities
+  associations:
+    range: Association
+    inlined: true
+    inlined_as_list: true
+    multivalued: true
+    description: >-
+      A collection of edges / associations
+    
   mappings:
     description: List of ExpandedCuries with id and url for mapped entities
     range: ExpandedCurie
