@@ -87,12 +87,14 @@
     <AppGallery :cols="2" class="tools">
       <AppTileCard
         title="Accessible Data and APIs"
-        content="Monarch KG offers robust APIs and downloadable datasets, including ontologies, designed for easy integration into external research projects and tools."
+        content="Monarch KG offers robust APIs and downloadable datasets, including ontologies,
+        designed for easy integration into external research projects and tools."
         icon="database"
       />
       <AppTileCard
         title="Standards-Based Integration"
-        content="Monarch KG follows the Biolink Model to ensure consistent and semantically rich connections across diverse biomedical data sources."
+        content="Monarch KG follows the Biolink Model to ensure consistent and 
+        semantically rich connections across diverse biomedical data sources."
         icon="sitemap"
       />
       <AppTileCard
@@ -102,7 +104,8 @@
       />
       <AppTileCard
         title="Cross-Species Insight"
-        content="Monarch KG integrates data across multiple species, enabling powerful comparative analyses and translational research."
+        content="Monarch KG integrates data across multiple species, 
+        enabling powerful comparative analyses and translational research."
         icon="microscope"
       />
     </AppGallery>
