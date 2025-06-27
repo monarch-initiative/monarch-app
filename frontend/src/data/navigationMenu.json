@@ -50,6 +50,27 @@
         "tooltip": ""
       },
       {
+        "label": "API",
+        "key": "kg-api",
+        "to": "https://api-v3.monarchinitiative.org/v3/docs",
+        "tooltip": "",
+        "icon": true
+      },
+      {
+        "label": "Neo4j",
+        "key": "about-neo4J",
+        "to": "https://neo4j.monarchinitiative.org/browser/",
+        "tooltip": "",
+        "icon": true
+      },
+      {
+        "label": "Monarch R",
+        "key": "about-monarchr",
+        "to": "https://monarch-initiative.github.io/monarchr/articles/monarchr",
+        "tooltip": "",
+        "icon": true
+      },
+      {
         "label": "Status & QC",
         "key": "kg-status-qc",
         "to": "/kg/status",
@@ -84,28 +105,8 @@
         "key": "about-kg",
         "to": "/kg/about",
         "tooltip": ""
-      },
-      {
-        "label": "API",
-        "key": "kg-api",
-        "to": "https://api-v3.monarchinitiative.org/v3/docs",
-        "tooltip": "",
-        "icon": true
-      },
-      {
-        "label": "Neo4j",
-        "key": "about-neo4J",
-        "to": "https://neo4j.monarchinitiative.org/browser/",
-        "tooltip": "",
-        "icon": true
-      },
-      {
-        "label": "Monarch R",
-        "key": "about-monarchr",
-        "to": "https://monarch-initiative.github.io/monarchr/articles/monarchr",
-        "tooltip": "",
-        "icon": true
       }
+      
     ]
   },
   {
