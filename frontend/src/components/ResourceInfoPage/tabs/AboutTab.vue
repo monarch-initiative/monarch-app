@@ -78,7 +78,7 @@ const formattedAbout = computed(() => {
 <style scoped lang="scss">
 $wrap: 1000px;
 .section.center {
-  align-items: unset;
+    align-items: unset;
 }
 .visual-explainer {
   display: flex;
