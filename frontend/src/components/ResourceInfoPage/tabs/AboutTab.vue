@@ -1,14 +1,10 @@
 <template>
   <AppSection v-if="item?.about" width="big">
-    <div class="formatted-about" v-html="formattedAbout"></div>
+    <div class="formatted-about" v-html="formattedAbout"/>
 
-
-    
-      <AppLink v-if="externalLink" :to="externalLink.href" :no-icon="true" class="learn-more">
-        Learn more about  {{ externalLink.text }}   here.
-      </AppLink>
-    
-
+    <AppLink v-if="externalLink" :to="externalLink.href" :no-icon="true" class="learn-more">
+      Learn more about {{ externalLink.text }} here.
+    </AppLink>
 
     <div v-if="item.visual_explainer" class="visual-explainer">
       <div class="video" v-if="
@@ -81,7 +77,9 @@ const formattedAbout = computed(() => {
 
 <style scoped lang="scss">
 $wrap: 1000px;
-
+.section.center {
+  align-items: unset;
+}
 .visual-explainer {
   display: flex;
   flex-direction: column;
