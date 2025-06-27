@@ -2,7 +2,7 @@
      <hr />
   <div class="hero-tool-links">
     <p class="hero-tools-label">Knowledge Graph Tools:</p>
-    <AppLink to="/search-phenotypes">Phenotype Search</AppLink>
+    <AppLink to="/search-phenotypes">Phenotype Similarity Tools</AppLink>
     <span>|</span>
     <AppLink to="/text-annotator">Text Annotator</AppLink>
   </div>
