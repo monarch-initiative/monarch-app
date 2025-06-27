@@ -1,39 +1,28 @@
 <template>
   <AppSection v-if="item?.about" width="big">
     <div class="formatted-about" v-html="formattedAbout"></div>
-    <p>
-      <template v-if="externalLink">
-        Learn more about
-        <AppLink :to="externalLink.href" :no-icon="true" class="external-link">
-          {{ externalLink.text }}.
-        </AppLink>
-      </template>
-    </p>
+
+
+    
+      <AppLink v-if="externalLink" :to="externalLink.href" :no-icon="true" class="learn-more">
+        Learn more about  {{ externalLink.text }}   here.
+      </AppLink>
+    
+
 
     <div v-if="item.visual_explainer" class="visual-explainer">
-      <div
-        class="video"
-        v-if="
-          explainerParts.videoUrl && /youtu\.?be/.test(explainerParts.videoUrl)
-        "
-      >
+      <div class="video" v-if="
+        explainerParts.videoUrl && /youtu\.?be/.test(explainerParts.videoUrl)
+      ">
         <h2>Watch: What Is {{ item?.title }} and Why It Matters</h2>
-        <iframe
-          :src="embedYouTubeUrl(explainerParts.videoUrl)"
-          frameborder="0"
-          allow="autoplay; picture-in-picture"
-          allowfullscreen
-          :title="`Visual explainer video for ${item.title}`"
-        ></iframe>
+        <iframe :src="embedYouTubeUrl(explainerParts.videoUrl)" frameborder="0" allow="autoplay; picture-in-picture"
+          allowfullscreen :title="`Visual explainer video for ${item.title}`"></iframe>
       </div>
 
       <p v-if="explainerParts.description">{{ explainerParts.description }}</p>
 
       <figure v-if="explainerParts.imageId">
-        <img
-          :src="`/icons/${explainerParts.imageId}.png`"
-          :alt="`Visual explainer image for ${item.title}`"
-        />
+        <img :src="`/icons/${explainerParts.imageId}.png`" :alt="`Visual explainer image for ${item.title}`" />
       </figure>
     </div>
   </AppSection>
@@ -93,25 +82,24 @@ const formattedAbout = computed(() => {
 <style scoped lang="scss">
 $wrap: 1000px;
 
-.external-link {
-  text-decoration: none;
-}
 .visual-explainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-
   gap: 2rem;
+
   h2 {
     text-align: left;
   }
+
   .video {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
     gap: 1.5rem;
+
     iframe {
       aspect-ratio: 16 / 9;
       width: 70%;
@@ -122,11 +110,13 @@ $wrap: 1000px;
       }
     }
   }
+
   img {
     align-self: center;
     width: 70%;
   }
 }
+
 .formatted-about ::v-deep p {
   margin-bottom: 0.5em;
 }
@@ -138,5 +128,12 @@ $wrap: 1000px;
 
 .formatted-about ul li {
   margin-bottom: 0.5em;
+}
+
+.learn-more {
+  width: 100%;
+  text-align: left;
+  text-decoration: none;
+
 }
 </style>
