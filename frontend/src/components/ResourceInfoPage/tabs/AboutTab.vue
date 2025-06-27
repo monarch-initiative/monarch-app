@@ -54,53 +54,39 @@ const props = defineProps<{
     description?: string;
   };
 }>();
-console.log('about',props.item.about)
 
+//Formatting about section
 const formattedAbout = computed(() => {
   const text = props.item.about ?? "";
+  const lines = text.split("\n");
+  const html: string[] = [];
+  let inList = false;
 
-  const blocks = text.split(/\n{2,}|\n/).filter(Boolean);
-
-  const formatted = blocks.map((block: string) => {
-    // If block has multiple inline dashes and one or more " - "
-    const dashSegments = block.split(/\s-\s/);
-
-    if (dashSegments.length > 2) {
-      const intro = dashSegments[0].trim();
-      const bullets = dashSegments.slice(1);
-
-      const listItems: string[] = [];
-      let trailingParagraph = "";
-
-      bullets.forEach((b, index) => {
-        const trimmed = b.trim();
-
-        // If last bullet has a period and trailing sentence, split it out
-        if (index === bullets.length - 1) {
-          const periodIdx = trimmed.indexOf(". ");
-          if (periodIdx > -1 && periodIdx < trimmed.length - 1) {
-            listItems.push(`<li>${trimmed.slice(0, periodIdx + 1)}</li>`);
-            trailingParagraph = trimmed.slice(periodIdx + 1).trim();
-          } else {
-            listItems.push(`<li>${trimmed}</li>`);
-          }
-        } else {
-          listItems.push(`<li>${trimmed}</li>`);
-        }
-      });
-
-      return `<p>${intro}</p><ul>${listItems.join("")}</ul>${
-        trailingParagraph ? `<p>${trailingParagraph}</p>` : ""
-      }`;
+  for (let raw of lines) {
+    const line = raw.trim();
+    if (line.startsWith("- ")) {
+      if (!inList) {
+        html.push("<ul>");
+        inList = true;
+      }
+      html.push(`<li>${line.slice(2)}</li>`);
+    } else {
+      if (inList) {
+        html.push("</ul>");
+        inList = false;
+      }
+      if (line) {
+        html.push(`<p>${line}</p>`);
+      }
     }
+  }
 
-    return `<p>${block.trim()}</p>`;
-  });
+  if (inList) {
+    html.push("</ul>");
+  }
 
-  return formatted.join("");
+  return html.join("");
 });
-
-
 
 </script>
 
@@ -110,7 +96,6 @@ $wrap: 1000px;
 .external-link {
   text-decoration: none;
 }
-
 .visual-explainer {
   display: flex;
   flex-direction: column;
@@ -142,18 +127,16 @@ $wrap: 1000px;
     width: 70%;
   }
 }
-// .formatted-about ::v-deep p {
-//   margin-bottom: 1em;
-// }
+.formatted-about ::v-deep p {
+  margin-bottom: 0.5em;
+}
 
 .formatted-about ul {
-  margin-bottom: 1em;
-  padding-left: 1.25em; /* optional: indent list */
+  padding-left: 1.5em;
+  list-style-position: inside;
 }
 
-.formatted-about li {
-  margin-bottom: 0.25em; /* optional: space between list items */
+.formatted-about ul li {
+  margin-bottom: 0.5em;
 }
-
-
 </style>
