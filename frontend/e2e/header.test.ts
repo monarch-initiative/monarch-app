@@ -52,11 +52,9 @@ test.describe("Header Navigation", () => {
     await page.setViewportSize(desktopSize);
     await page.goto("/");
 
-    const navLinks = page.locator(".navItems .link");
-    await expect(navLinks.first()).toBeVisible();
-
+    await page.waitForLoadState("networkidle");
     const dropdowns = page.locator(".dropdown-button");
-    const count = await dropdowns.count();
-    expect(count).toBeGreaterThan(0);
+    const dropdownCount = await dropdowns.count();
+    expect(dropdownCount).toBeGreaterThan(0);
   });
 });

@@ -94,11 +94,17 @@
   <AppSection width="big">
     <p class="info">
       If you have any questions, feel free to reach out to us at :
-      <AppLink to="mailto:info@monarchinitiative.org"
+      <AppLink to="mailto:info@monarchinitiative.org" noIcon="true"
         >info@monarchinitiative.org</AppLink
       >
-    </p></AppSection
-  >
+    </p>
+    <p class="license-note">
+      Monarch Initiative 2025 — Released under the
+      <AppLink noIcon="true" to="https://opensource.org/licenses/BSD-3-Clause"
+        >BSD 3-Clause License</AppLink
+      >.
+    </p>
+  </AppSection>
 </template>
 <script setup lang="ts">
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
@@ -131,5 +137,11 @@ $wrap: 1000px;
 }
 p {
   text-align: left;
+}
+.license-note {
+  margin-bottom: 1em;
+  color: #444;
+  font-size: 0.9em;
+  text-align: center;
 }
 </style>

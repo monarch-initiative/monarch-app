@@ -202,7 +202,7 @@ async function onChange(value: string | Option, originalSearch: string) {
     if (props.headerBox && !originalSearch) return;
     /** view all results on explore page */
     await router.push({
-      name: "KnowledgeGraphResults",
+      path: "/results",
       query: {
         search: originalSearch,
       },

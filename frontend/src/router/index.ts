@@ -124,17 +124,17 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/:pathMatch(.*)*",
     name: "NotFound",
-    component: asyncRoute("PageHomeV2"),
+    component: asyncRoute("PageNotFound"),
   },
   {
     path: "/search-phenotypes",
-    name: "KnowledgeGraphSearchPhenotypes",
+    name: "Phenotype Similarity Search",
     component: asyncRoute("knowledgeGraph/PagePhenotypeExplore"),
     meta: { breadcrumb: "Phenotype Similarity Search" },
   },
   {
     path: "/text-annotator",
-    name: "KnowledgeGraphTextAnnotator",
+    name: "Text Annotator",
     component: asyncRoute("knowledgeGraph/PageTextAnnotator"),
     meta: { breadcrumb: "Text Annotator" },
   },
@@ -142,49 +142,49 @@ export const routes: RouteRecordRaw[] = [
   // Knowledge Graph Dropdown
   {
     path: "/kg/about",
-    name: "KnowledgeGraphAbout",
+    name: "About KG",
     component: asyncRoute("knowledgeGraph/PageAbout"),
     meta: { breadcrumb: "About the KG" },
   },
   {
     path: "/kg/citation",
-    name: "KnowledgeGraphCite",
+    name: "Citation",
     component: asyncRoute("knowledgeGraph/PageCite"),
     meta: { breadcrumb: "Citation" },
   },
   {
     path: "/kg/help",
-    name: "KnowledgeGraphHelp",
+    name: "Help",
     component: asyncRoute("knowledgeGraph/PageHelp"),
     meta: { breadcrumb: "How to & Help" },
   },
   {
     path: "/kg/status",
-    name: "KnowldgeGraphStatusQc",
+    name: "Status & QC",
     component: asyncRoute("knowledgeGraph/PageStatus"),
     meta: { breadcrumb: "Status & QC" },
   },
   {
     path: "/results",
-    name: "KnowledgeGraphResults",
+    name: "Search Results",
     component: asyncRoute("knowledgeGraph/PageSearchResults"),
     meta: { breadcrumb: "Search Results" },
   },
   {
     path: "/kg/documentation",
-    name: "KnowledgeGraphDocumentation",
+    name: "Documentation",
     component: asyncRoute("knowledgeGraph/PageDocumentation"),
     meta: { breadcrumb: "Documentation" },
   },
   {
     path: "/kg/terms",
-    name: "KnowledgeGraphTerms",
+    name: "Terms of Use",
     component: asyncRoute("knowledgeGraph/PageTerms"),
     meta: { breadcrumb: "Terms of Use" },
   },
   {
     path: "/kg/downloads",
-    name: "KnowledgeGraphDownloads",
+    name: "Downloads",
     component: asyncRoute("knowledgeGraph/PageDownlods"),
     meta: { breadcrumb: "Downloads" },
   },
@@ -192,47 +192,65 @@ export const routes: RouteRecordRaw[] = [
   // About Dropdown
   {
     path: "/about/our-story",
-    name: "AboutOurStory",
+    name: "Our Story",
     component: asyncRoute("aboutV2/PageOurStory"),
     meta: { breadcrumb: "Our Story" },
   },
   {
     path: "/about/team",
-    name: "AboutTeam",
+    name: "Team",
     component: asyncRoute("aboutV2/PageTeam"),
     meta: { breadcrumb: "Team" },
   },
   {
     path: "/about/sab",
-    name: "AboutSab",
+    name: "Scientfic Advisory Board Members",
     component: asyncRoute("aboutV2/PageSAB"),
     meta: { breadcrumb: "Scientfic Advisory Board Members" },
   },
   {
     path: "/about/contact-us",
-    name: "AboutContactUs",
+    name: "Contact Us",
     component: asyncRoute("aboutV2/PageContact"),
     meta: { breadcrumb: "Contact Us" },
   },
   {
     path: "/about/funding",
-    name: "AboutFunding",
+    name: "Funding",
     component: asyncRoute("aboutV2/PageFunding"),
     meta: { breadcrumb: "Funding" },
   },
   {
     path: "/about/publications",
-    name: "AboutPublications",
+    name: "Publications",
     component: asyncRoute("aboutV2/PagePublications"),
     meta: { breadcrumb: "Publications" },
   },
-
   // Community Dropdown
   {
     path: "/community/get-involved",
-    name: "CoummunityGetInvolved",
+    name: "Get Involved",
     component: asyncRoute("community/PageGetInvolved"),
     meta: { breadcrumb: "Get Involved" },
+  },
+
+  {
+    path: "/ontologies/:id",
+    name: "OntologyPage",
+    component: asyncRoute("ResourceInfoPage"),
+    props: (route) => ({ itemType: "ontologies", id: route.params.id }),
+  },
+  {
+    path: "/registries/:id",
+    name: "RegistryPage",
+    component: asyncRoute("ResourceInfoPage"),
+    props: (route) => ({ itemType: "registries", id: route.params.id }),
+  },
+  {
+    path: "/tools/:id",
+    name: "ToolPage",
+    component: asyncRoute("ResourceInfoPage"),
+    props: (route) => ({ itemType: "tools", id: route.params.id }),
   },
 ];
 
@@ -245,7 +263,18 @@ for (const route of routes) {
 }
 
 /** vue-router's scroll behavior handler */
-const scrollBehavior: RouterScrollBehavior = async () => {};
+const scrollBehavior: RouterScrollBehavior = async (
+  to,
+  from,
+  savedPosition,
+) => {
+  // if browser back/forward button
+  if (savedPosition) return savedPosition;
+
+  if (to.hash) return;
+  // scroll to top
+  return { left: 0, top: 0 };
+};
 
 /** given element, get (possibly) modified target */
 const getTarget = (element: Element): Element => {
