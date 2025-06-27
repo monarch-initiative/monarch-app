@@ -33,7 +33,7 @@
     </div>
   </AppSection>
 
-  <AppSection width="big">
+  <!-- <AppSection width="big">
     <AppHeading :level="1">Explore Knowledge Graph Tools</AppHeading>
     <div class="custom-grid kg-tools">
       <template v-for="(tool, id) in KG_TOOL_LINKS" :key="id">
@@ -46,13 +46,13 @@
         />
       </template>
     </div>
-  </AppSection>
+  </AppSection> -->
 </template>
 
 <script setup lang="ts">
 import AppToolTile from "@/components/AppToolTile.vue";
 import PageTitle from "@/components/ThePageTitle.vue";
-import { KG_TOOL_LINKS, TOOL_LINKS } from "@/data/toolEntityConfig";
+import { TOOL_LINKS } from "@/data/toolEntityConfig";
 </script>
 
 <style lang="scss" scoped>

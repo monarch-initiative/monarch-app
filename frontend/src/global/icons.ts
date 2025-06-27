@@ -90,6 +90,7 @@ const icons = [
   fas.faCalendarWeek,
   fas.faGraduationCap,
   fas.faBookOpenReader,
+  fas.faWrench,
 ];
 
 library.add(...icons);
