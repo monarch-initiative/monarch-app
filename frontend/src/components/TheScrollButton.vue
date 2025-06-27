@@ -34,7 +34,7 @@ function scrollToHomePageSection() {
 
 <style scoped>
 .scroll-button {
-  margin: 2rem;
+  margin: 1.2rem;
   border: none;
   border-radius: 50%;
   background: white;

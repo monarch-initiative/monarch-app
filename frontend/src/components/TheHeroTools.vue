@@ -1,4 +1,5 @@
 <template>
+     <hr />
   <div class="hero-tool-links">
     <p class="hero-tools-label">Knowledge Graph Tools:</p>
     <AppLink to="/search-phenotypes">Phenotype Search</AppLink>
@@ -13,7 +14,6 @@ $wrap: 1120px;
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
-  margin-top: 1.8rem;
   gap: 0.75rem;
   font-size: 1.1em;
   white-space: nowrap;
