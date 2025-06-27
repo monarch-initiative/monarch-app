@@ -389,7 +389,7 @@
       "visual_explainer": "https://www.youtube.com/watch?v=Ym5rC2Op_PM"
     },
     "sssom": {
-      "about": "SSSOM is a Simple Standard for Sharing Ontological Mappings, providing\n\n- a TSV-based representation for ontology term mappings\n- a comprehensive set of standard metadata elements to describe mappings, and\n- a standard translation between the TSV and the Web Ontology Language (OWL).\nThe SSSOM TSV format in particular is geared towards the needs of the wider bioinformatics community\nas a way to safely exchange mappings in an easily readable yet semantically well-specified manner.\n",
+      "about": "SSSOM is a Simple Standard for Sharing Ontological Mappings, providing\n\n- a TSV-based representation for ontology term mappings\n- a comprehensive set of standard metadata elements to describe mappings, and\n- a standard translation between the TSV and the Web Ontology Language (OWL).\nThe SSSOM TSV format in particular is geared towards the needs of the wider bioinformatics community as a way to safely exchange mappings in an easily readable yet semantically well-specified manner.\n",
       "citation": "Matentzoglu, N., Balhoff, J. P., Bello, S. M., Bizon, C., Brush, M., Callahan, T. J., Chute, C. G., Duncan, W. D., Evelo, C. T., Gabriel, D., Graybeal, J., Gray, A., Gyori, B. M., Haendel, M., Harmse, H., Harris, N. L., Harrow, I., Hegde, H. B., Hoyt, A. L., Hoyt, C. T., Jiao, D., Jiménez-Ruiz, E., Jupp, S., Kim, H., Köhler, S., Liener, T., Long, Q., Malone, J., McLaughlin, J. A., McMurry, J. A., Moxon, S., Munoz-Torres, M. C., Osumi-Sutherland, D., Overton, J. A., Peters, B., Putman, T., Queralt-Rosinach, N., Shefchek, K., Solbrig, H., Thessen, A., Tudorache, T., Vasilevsky, N., Wagner, A. H., & Mungall, C. J. (2022). A simple standard for sharing ontological mappings (SSSOM). Database, 2022, baac035. https://doi.org/10.1093/database/baac035\n",
       "contact": {
         "email": "nicolas.matentzoglu@gmail.com",
@@ -501,7 +501,7 @@
       "visual_explainer": "https://www.youtube.com/watch?v=zO6tS7gZtvw"
     },
     "odk": {
-      "about": "Manage your ontology's life cycle with the Ontology Development Kit (ODK)!The ODK is:\n\n- a toolbox of various ontology related tools such as ROBOT, owltools, dosdp-tools and many more,\nbundled as a docker image.\n- a set of executable workflows for managing your ontology's continuous integration, quality control,\nreleases and dynamic imports.\n",
+      "about": "Manage your ontology's life cycle with the Ontology Development Kit (ODK)!The ODK is:\n\n- a toolbox of various ontology related tools such as ROBOT, owltools, dosdp-tools and many more, bundled as a docker image.\n- a set of executable workflows for managing your ontology's continuous integration, quality control, releases and dynamic imports.\n",
       "citation": "Matentzoglu, N., Goutte-Gattat, D., Tan, S. Z. K., Balhoff, J. P., Carbon, S., Caron, A. R., Duncan, W. D., Flack, J. E., Haendel, M., Harris, N. L., Hogan, W. R., Hoyt, C. T., Jackson, R. C., Kim, H., Kir, H., Larralde, M., McMurry, J. A., Overton, J. A., Peters, B., Pilgrim, C., Stefancsik, R., Robb, S. M. C., Toro, S., Vasilevsky, N. A., Walls, R., Mungall, C. J., & Osumi-Sutherland, D. (2022). Ontology Development Kit: A toolkit for building, maintaining and standardizing biomedical ontologies. Database, 2022, baac087. https://doi.org/10.1093/database/baac087",
       "contact": {
         "email": "nicolas.matentzoglu@gmail.com",
