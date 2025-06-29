@@ -318,6 +318,7 @@ classes:
       - metadata
       - graph_stats
       - qc_report
+      - deployment_date
   Results:
     abstract: true
     slots:
@@ -903,6 +904,9 @@ slots:
   metadata: string
   graph_stats: string
   qc_report: string
+  deployment_date:
+    description: Date when this KG version was deployed to production
+    range: string
 
   highlighting:
     description: Optional highlighting information for search results
