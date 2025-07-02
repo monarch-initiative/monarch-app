@@ -19,7 +19,6 @@ export default defineConfigWithVueTs(
   compat.extends(
     "plugin:vuejs-accessibility/recommended",
     "eslint:recommended",
-    "@vue/eslint-config-prettier/skip-formatting",
   ),
   eslintPluginPrettierRecommended,
   pluginVue.configs["flat/recommended"],
