@@ -2,15 +2,15 @@
   "ontologies": {
     "ecto": {
       "about": "The Environmental Conditions, Treatments and Exposures Ontology (ECTO) describes exposures to experimental treatments of plants and model organisms (e.g. exposures to modification of diet, lighting levels, temperature); exposures of humans or any other organisms to stressors through a variety of routes, for purposes of public health, environmental monitoring etc, stimuli, natural and experimental, any kind of environmental condition or change in condition that can be experienced by an organism or population of organisms on earth. The scope is very general and can include for example plant treatment regimens, as well as human clinical exposures (although these may better be handled by a more specialized ontology).",
-      "citation": "Matentzoglu, N. A., Vasilevsky, N. A., Balhoff, J. P., Bello, S. M., Brush, M. H., Carbon, S., Carmody, L. C., Cooper, L., Courtot, M., Diehl, A. D., Duncan, W.   D., Harris, N. L., Haendel, M. A., Mungall, C. J.,  Osumi-Sutherland, D., Relevo, R., Segerdell, E., Smith, C. L., & Robinson, P. N. (2023). Improving phenotype representation with the Human Phenotype Ontology: A community perspective. Journal of Biomedical Semantics, 14, 7. https://doi.org/10.1186/s13326-023-00283-x",
+      "citation": "Matentzoglu, N. A., Vasilevsky, N. A., Balhoff, J. P., Bello, S. M., Brush, M. H., Carbon, S., Carmody, L. C., Cooper, L., Courtot, M., Diehl, A. D., Duncan, W.   D., Harris, N. L., Haendel, M. A., Mungall, C. J.,  Osumi-Sutherland, D., Relevo, R., Segerdell, E., Smith, C. L., & Robinson, P. N. (2023). The Environmental Conditions, Treatments, and Exposures Ontology (ECTO): connecting toxicology and exposure to human health and beyond https://doi.org/10.1186/s13326-023-00283-x",
       "contact": {
-        "email": "cjmungall@lbl.gov",
-        "github": "@cmungall",
-        "name": "Chris Mungall",
-        "orcid": "https://orcid.org/0000-0002-6601-2165"
+        "email": "thessena@oregonstate.edu",
+        "github": "@diatomsRcool",
+        "name": "Anne Thessen",
+        "orcid": "https://orcid.org/0000-0002-2908-3327"
       },
       "icon": "resource-ecto",
-      "license": "CC-BY-3.0",
+      "license": "CC0",
       "see_also": {
         "documentation": "https://github.com/EnvironmentOntology/environmental-exposure-ontology",
         "other": null,
@@ -23,7 +23,7 @@
       "visual_explainer": "figure-ecto|||ECTO unifies exposure attributes. Existing ontologies contain terms describing common exposure stimuli, exposure routes, and potential exposure media, however unifying terms to describe the exposure process were not yet represented. Utilizing the schema of the Exposure Ontology (ExO), ECTO classes can coordinate the stimulus, route, and exposure components into a single process term for consistent exposure classes. Logical axioms can be used to define the relationships between exposure receptors, ECTO classes, and documented exposure outcomes from the literature. Instance level schemas can also be developed using individual data points as the exposure receptor or exposure outcomes. Abbreviations: ENVO, The Environment Ontology; ChEBI, Chemical Entities of Biological Interest; NCBI Taxon, National Center for Biotechnology Information Taxonomy; FoodOn, Food Ontology; NCIt, National Cancer Institute Thesaurus; MAxO, Medical Actions Ontology; HPO, Human Phenotype Ontology; Mondo, Mondo Disease Ontology; GO, Gene Ontology\n"
     },
     "geno": {
-      "about": "GENO is an OWL2 ontology that represents the levels of genetic variation specified in genotypes, to support genotype-to-phenotype (G2P) data aggregation and analysis across diverse research communities and sources. The core of the ontology is a graph decomposing a genotype into smaller components of variation, from a complete genotype specifying sequence variation across an entire genome, down to specific allelic variants and sequence alterations. Structuring genotype instance data according to this model supports a primary use case of GENO to enable integrated analysis of G2P data where phenotype annotations are made at different levels of granularity in this genotype partonomy. GENO also enables description of various attributes of genotypes and genetic variants. These attributes include zygosity, genomic position, expression, dominance, and functional dependencies or consequences of a given variant. In addition to heritable variation in genomic sequence specified by traditional genotypes, GENO also represents transient variation in gene expression, as seen in experiments where genes are targeted by knockdown reagents or overexpressed by DNA constructs at the time a phenotype is assessed. This variation in gene expression is represented in terms of the targeted genes themselves, to parallel representation of sequence variation and facilitate integrated description and analysis of data about any genetic contribution to a measured phenotype. Finally, GENO also supports modelling of G2P associations, focusing on the interplay between genotype, phenotype, and environment. GENO describes provenance and experimental evidence for these associations using the Scientific Evidence and Provenance Information Ontology (SEPIO) model.",
+      "about": "The Genotype Ontology (GENO) is an OWL2 ontology that represents the levels of genetic variation specified in genotypes, to support genotype-to-phenotype (G2P) data aggregation and analysis across diverse research communities and sources. The core of the ontology is a graph decomposing a genotype into smaller components of variation, from a complete genotype specifying sequence variation across an entire genome, down to specific allelic variants and sequence alterations. Structuring genotype instance data according to this model supports a primary use case of GENO to enable integrated analysis of G2P data where phenotype annotations are made at different levels of granularity in this genotype partonomy. GENO also enables description of various attributes of genotypes and genetic variants. These attributes include zygosity, genomic position, expression, dominance, and functional dependencies or consequences of a given variant. \n\nIn addition to heritable variation in genomic sequence specified by traditional genotypes, GENO also represents transient variation in gene expression, as seen in experiments where genes are targeted by knockdown reagents or overexpressed by DNA constructs at the time a phenotype is assessed. This variation in gene expression is represented in terms of the targeted genes themselves, to parallel representation of sequence variation and facilitate integrated description and analysis of data about any genetic contribution to a measured phenotype.\n\nFinally, GENO also supports modelling of G2P associations, focusing on the interplay between genotype, phenotype, and environment. GENO describes provenance and experimental evidence for these associations using the Scientific Evidence and Provenance Information Ontology (SEPIO) model.\"\n",
       "citation": "Monarch Initiative. (n.d.). GENO-ontology [Source code]. GitHub. https://github.com/monarch-initiative/GENO-ontology",
       "contact": {
         "email": "matt@tislab.org",
@@ -92,10 +92,10 @@
       "about": "The Mondo Disease Ontology (Mondo) aims to harmonize disease definitions across the world, with a particular focus on rare diseases. Mondo goes beyond loose database cross-references. It curates precise 1:1 equivalence axioms connecting to other resources, validated by OWL reasoning. This means it is safe to propagate across these from Online Mendelian Inheritance in Man (OMIM), ORDO (Orphanet), Experimental Factor Ontology (EFO), Disease Ontology (DOID) and the neoplasm branch of National Cancer Institute Thesaurus (NCIt).",
       "citation": "Vasilevsky, N. A., Matentzoglu, N. A., Toro, S., Flack, J. E., Hegde, H., Unni, D. R., Alyea, G., Amberger, J. S., Babb, L., Balhoff, J. P., Bingaman, T. I., Burns, G. A., Callahan, T. J., Carmody, L. C., Chan, L. E., Chang, G. S., Dumontier, M., Failla, L. E., Flowers, M. J., Garrett, H. A., Gration, D., Groza, T., Hanauer, M., Harris, N. L., Helbig, I., Hilton, J. A., Himmelstein, D. S., Hoyt, C. T., Kane, M. S., Köhler, S., Lagorce, D., Larralde, M., Lock, A., López Santiago, I., Maglott, D. R., Malheiro, A. J., Meldal, B. H. M., McMurry, J. A., Munoz-Torres, M., Nelson, T. H., Ochoa, D., Oprea, T. I., Osumi-Sutherland, D., Parkinson, H., Pendlington, Z. M., Rath, A., Rehm, H. L., Remennik, L., Riggs, E. R., Roncaglia, P., Ross, J. E., Shadbolt, M. F., Shefchek, K. A., Similuk, M. N., Sioutos, N., Sparks, R., Stefancsik, R., Stephan, R., Stupp, D., Sundaramurthi, J. C., Tammen, I., Thaxton, C. L., Valasek, E., Wagner, A. H., Welter, D., Whetzel, P. L., Whiteman, L. L., Wood, V., Xu, C. H., Zankl, A., Zhang, X. A., Chute, C. G., Robinson, P. N., Mungall, C. J., Hamosh, A., & Haendel, M. A. (2022). Mondo: Unifying diseases for the world, by the world [Preprint]. medRxiv. https://doi.org/10.1101/2022.04.13.22273750",
       "contact": {
-        "email": "cjmungall@lbl.gov",
-        "github": "@cmungall",
-        "name": "Chris Mungall",
-        "orcid": "https://orcid.org/0000-0002-6601-2165"
+        "email": "sabrina@tislab.org",
+        "github": "@sabrinatoro",
+        "name": "Sabrina Toro",
+        "orcid": "https://orcid.org/0000-0002-4142-7153"
       },
       "icon": "resource-mondo",
       "license": "CC-BY-4.0",
@@ -114,7 +114,7 @@
     },
     "oba": {
       "about": "The Ontology of Biological Attributes (OBA) is a formalised, species-independent collection of interoperable phenotypic trait categories that is intended to fulfil a data integration role. OBA is a standardised representational framework for observable attributes that are characteristics of biological entities, organisms, or parts of organisms. It is a collection of biological attributes (traits) covering all kingdoms of life and is interoperable with other ontologies in the Open Biological and Biomedical Ontologies Foundry.",
-      "citation": "Stefancsik, R., Balhoff, J. P., Balk, M. A., et al. (2023). The Ontology of Biological Attributes (OBA)—Computational traits for the life sciences. Mammalian Genome, 34, 364–378. https://doi.  org/10.1007/s00335-023-09992-1",
+      "citation": "Stefancsik, R., Balhoff, J. P., Balk, M. A., et al. (2023). The Ontology of Biological Attributes (OBA)—Computational traits for the life sciences. Mammalian Genome, 34, 364–378. https://doi.org/10.1007/s00335-023-09992-1",
       "contact": {
         "email": "cjmungall@lbl.gov",
         "github": "@cmungall",
@@ -125,9 +125,7 @@
       "license": "CC0",
       "see_also": {
         "documentation": "https://obophenotype.github.io/bio-attribute-ontology",
-        "other": [
-          "https://obophenotype.github.io/upheno"
-        ],
+        "other": null,
         "repository": "https://github.com/obophenotype/bio-attribute-ontology",
         "website": "https://obofoundry.org/ontology/oba.html"
       },
@@ -137,13 +135,13 @@
       "visual_explainer": null
     },
     "phenio": {
-      "about": "An ontology for accessing and comparing knowledge concerning phenotypes across species and genetic backgrounds.",
+      "about": "The Phenomics Integrated Ontology (Phenio) is an ontology for accessing and comparing knowledge concerning phenotypes across species and genetic backgrounds.",
       "citation": "Monarch Initiative. (n.d.). phenio [Source code]. GitHub. https://github.com/monarch-initiative/phenio",
       "contact": {
-        "email": "cjmungall@lbl.gov",
-        "github": "@cmungall",
-        "name": "Chris Mungall",
-        "orcid": "https://orcid.org/0000-0002-6601-2165"
+        "email": "jhc@lbl.gov",
+        "github": "@caufieldjh",
+        "name": "Harry Caufield",
+        "orcid": "https://orcid.org/0000-0001-5705-7831"
       },
       "icon": null,
       "license": "BSD-3-Clause",
@@ -154,7 +152,7 @@
         "website": null
       },
       "tagline": "An integrated ontology for Phenomics",
-      "title": "Phenomics Integrated Ontology (PHENIO)",
+      "title": "Phenomics Integrated Ontology",
       "title_short": "PHENIO",
       "visual_explainer": null
     },
@@ -181,8 +179,8 @@
       "visual_explainer": null
     },
     "uberon": {
-      "about": "Uberon is an anatomical ontology that represents body parts, organs and tissues in a variety of animal species, with a focus on vertebrates. It has been constructed to integrate seamlessly with other ontologies, such as the Cell Ontology workflows, the Gene Ontology, Trait and Phenotype ontologies, as well as other anatomical ontologies. The ontology includes comprehensive relationships to taxon-specific anatomical ontologies, allowing integration of functional, phenotype and expression data. Currently Uberon consists of over 13000 classes representing structures that are shared across a variety of metazoans.As one of the main uses of Uberon is translational science, we have extensive coverage of structures shared between humans and other species. However, thanks to the involvement of many collaborators, we have deep coverage of broad areas of anatomy across diverse taxa. We also make available an ontology called composite-metazoan which brings in subsets of federated ontologies, with a total of over 40000 classes.",
-      "citation": "1) Mungall, C. J., Torniai, C., Gkoutos, G. V., Lewis, S. E., & Haendel, M. A. (2012). Uberon, an integrative multi-species anatomy ontology. Genome Biology, 13, R5. PMID:22293552. 2) Haendel, M. A., Balhoff, J. P., Bastian, F. B., Blackburn, D. C., Blake, J. A., Bradford, Y., Comte, A., Dahdul, W. M., Dececchi, T. A., Druzinsky, R. E., Hayamizu, T. F., Ibrahim, N., Lewis, S. E., Mabee, P. M., Niknejad, A., Robinson-Rechavi, M., Sereno, P. C., & Mungall, C. J. (2014). Unification of multi-species vertebrate anatomy ontologies for comparative biology in Uberon. Journal of Biomedical Semantics, 5(1), 21. https://doi.org/10.1186/2041-1480-5-21",
+      "about": "Uberon is an anatomical ontology that represents body parts, organs and tissues in a variety of animal species, with a focus on vertebrates. It has been constructed to integrate seamlessly with other ontologies, such as the Cell Ontology workflows, the Gene Ontology, Trait and Phenotype ontologies, as well as other anatomical ontologies. The ontology includes comprehensive relationships to taxon-specific anatomical ontologies, allowing integration of functional, phenotype and expression data. Currently Uberon consists of over 13,000 classes representing structures that are shared across a variety of metazoans. As one of the main uses of Uberon is translational science, we have extensive coverage of structures shared between humans and other species. However, thanks to the involvement of many collaborators, we have deep coverage of broad areas of anatomy across diverse taxa. We also make available an ontology called composite-metazoan which brings in subsets of federated ontologies, with a total of over 40,000 classes.",
+      "citation": "- Mungall, C. J., Torniai, C., Gkoutos, G. V., Lewis, S. E., & Haendel, M. A. (2012). Uberon, an integrative multi-species anatomy ontology. Genome Biology, 13(1), R5.  \n  DOI: https://doi.org/10.1186/gb-2012-13-1-r5  \n  PubMed: https://pubmed.ncbi.nlm.nih.gov/22293552/\n\n- Haendel, M. A., Balhoff, J. P., Bastian, F. B., Blackburn, D. C., Blake, J. A., Bradford, Y., Comte, A., Dahdul, W. M., Dececchi, T. A., Druzinsky, R. E., Hayamizu, T. F., Ibrahim, N., Lewis, S. E., Mabee, P. M., Niknejad, A., Robinson-Rechavi, M., Sereno, P. C., & Mungall, C. J. (2014). Unification of multi-species vertebrate anatomy ontologies for comparative biology in Uberon. Journal of Biomedical Semantics, 5(1), 21.  \n  DOI: https://doi.org/10.1186/2041-1480-5-21  \n  PubMed: https://pubmed.ncbi.nlm.nih.gov/24742169/\n",
       "contact": {
         "email": "cjmungall@lbl.gov",
         "github": "@cmungall",
@@ -190,7 +188,7 @@
         "orcid": "https://orcid.org/0000-0002-6601-2165"
       },
       "icon": "resource-uberon",
-      "license": "CC0",
+      "license": "CC-BY-3.0",
       "see_also": {
         "documentation": "https://obophenotype.github.io/uberon",
         "other": null,
@@ -203,7 +201,7 @@
       "visual_explainer": "https://www.youtube.com/watch?v=HmFhTk0Bahs"
     },
     "upheno": {
-      "about": "The Unified Phenotype Ontology (uPheno) framework is a community effort to provide an integration layer over domain-specific phenotype ontologies, as a single, unified, logical representation.uPheno comprises:\n\n- a system for consistent computational definition of phenotype terms using ontology design patterns, maintained as a community library  \n- a hierarchical vocabulary of species-neutral phenotype terms under which their species-specific counterparts are grouped  \n- mapping tables between species-specific ontologies\n",
+      "about": "The Unified Phenotype Ontology (uPheno) framework is a community effort to provide an integration layer over domain-specific phenotype ontologies, as a single, unified, logical representation. uPheno comprises:\n\n- a system for consistent computational definition of phenotype terms using ontology design patterns, maintained as a community library  \n- a hierarchical vocabulary of species-neutral phenotype terms under which their species-specific counterparts are grouped  \n- mapping tables between species-specific ontologies\n",
       "citation": "Matentzoglu, N., Bello, S. M., Stefancsik, R., Alghamdi, S. M., Anagnostopoulos, A. V., Balhoff, J. P., Balk, M. A., Bradford, Y. M., Bridges, Y., Callahan, T. J., Caufield, H., Cuzick, A., Carmody, L. C., Caron, A. R., de Souza, V., Engel, S. R., Fey, P., Fisher, M., Gehrke, S., Grove, C., Hansen, P., Harris, N. L., Harris, M. A., Harris, L., Ibrahim, A., Jacobsen, J. O. B., Köhler, S., McMurry, J. A., Munoz-Fuentes, V., Munoz-Torres, M. C., Parkinson, H., Pendlington, Z. M., Pilgrim, C., Robb, S. M., Robinson, P. N., Seager, J., Segerdell, E., Smedley, D., Sollis, E., Toro, S., Vasilevsky, N., Wood, V., Haendel, M. A., Mungall, C. J., McLaughlin, J. A., & Osumi-Sutherland, D. (2025). The Unified Phenotype Ontology: A framework for cross-species integrative phenomics. Genetics, 229(3), iyaf027. https://doi.org/10.1093/genetics/iyaf027",
       "contact": {
         "email": "jmcl@ebi.ac.uk",
@@ -216,15 +214,15 @@
       "see_also": {
         "documentation": "https://obophenotype.github.io/upheno",
         "other": [
-          "https://ols.monarchinitiative.org/ontologies/upheno_reordered"
+          "https://www.ebi.ac.uk/ols4/ontologies/upheno"
         ],
         "repository": "https://github.com/obophenotype/upheno",
         "website": "https://obophenotype.github.io/upheno"
       },
       "tagline": "A framework for cross-species integrative phenomics",
-      "title": "The Unified Phenotype Ontology (uPheno)",
+      "title": "The Unified Phenotype Ontology",
       "title_short": "uPheno",
-      "visual_explainer": "Structure of the uPheno ontology. uPheno is a framework for consistent and logical definition of phenotype categories using ontology design patterns that provides a hierarchical vocabulary of species-neutral phenotype terms under which their species-specific counterparts are grouped. The ontology design templates are based on shared features of existing phenotypic descriptions from various model organisms and represent community consensus. The phenotype pattern template-adherent terms are adopted by species-specific ontologies, thereby contributing to the community-built uPheno framework. uPheno accelerates cross-species inference and computationally amenable comparative phenotype analysis. For example, the interoperable representation of heart phenotypes characterized by increased size, compared with wild-type in distinct species, such as zebrafish and humans, allows the cross-species identification of genes whose alleles can cause similar phenotypes. uPheno contextual hierarchy for increased size of the heart as displayed in the OLS."
+      "visual_explainer": "uPheno is a framework for consistent and logical definition of phenotype categories using ontology design patterns that provides a hierarchical vocabulary of species-neutral phenotype terms under which their species-specific counterparts are grouped. The ontology design templates are based on shared features of existing phenotypic descriptions from various model organisms and represent community consensus. The phenotype pattern template-adherent terms are adopted by species-specific ontologies, thereby contributing to the community-built uPheno framework. uPheno accelerates cross-species inference and computationally amenable comparative phenotype analysis. For example, the interoperable representation of heart phenotypes characterized by increased size, compared with wild-type in distinct species, such as zebrafish and humans, allows the cross-species identification of genes whose alleles can cause similar phenotypes. uPheno contextual hierarchy for increased size of the heart as displayed in the OLS."
     },
     "vbo": {
       "about": "The Vertebrate Breed Ontology (VBO) is an open, community-driven ontology representing over 19,500 livestock and companion animal breed concepts covering 49 species. Breeds are classified based on community and expert conventions (e.g., cattle breed) and supported by relations to the breed's genus and species indicated by National Center for Biotechnology Information (NCBI) Taxonomy terms. Relationships between VBO terms (e.g., relating breeds to their foundation stock) provide additional context to support advanced data analytics. VBO term metadata includes synonyms, breed identifiers/codes, and attributed cross-references to other databases.",
@@ -324,10 +322,10 @@
       "about": "Simple Standard for Ontology Mappings (SSSOM) mappings collected and curated by the Monarch Initiative.",
       "citation": "Monarch Initiative. (n.d.). monarch-mapping-commons [Source code]. GitHub. https://github.com/monarch-initiative/monarch-mapping-commons",
       "contact": {
-        "email": "kevin@tislab.org",
-        "github": "@kevinschaper",
-        "name": "Kevin Schaper",
-        "orcid": "https://orcid.org/0000-0003-3311-7320"
+        "email": "nicolas.matentzoglu@gmail.com",
+        "github": "@matentzn",
+        "name": "Nicolas Matentzoglu",
+        "orcid": "https://orcid.org/0000-0002-7356-1779"
       },
       "icon": "resource-monarch",
       "license": "CC0",
@@ -389,7 +387,7 @@
       "visual_explainer": "https://www.youtube.com/watch?v=Ym5rC2Op_PM"
     },
     "sssom": {
-      "about": "SSSOM is a Simple Standard for Sharing Ontological Mappings, providing\n\n- a TSV-based representation for ontology term mappings\n- a comprehensive set of standard metadata elements to describe mappings, and\n- a standard translation between the TSV and the Web Ontology Language (OWL).\nThe SSSOM TSV format in particular is geared towards the needs of the wider bioinformatics community as a way to safely exchange mappings in an easily readable yet semantically well-specified manner.\n",
+      "about": "The Simple Standard for Sharing Ontological Mappings (SSSOM), provides:\n\n- a TSV-based representation for ontology term mappings\n- a comprehensive set of standard metadata elements to describe mappings, and\n- a standard translation between the TSV and the Web Ontology Language (OWL).\nThe SSSOM TSV format in particular is geared towards the needs of the wider bioinformatics community as a way to safely exchange mappings in an easily readable yet semantically well-specified manner.\n",
       "citation": "Matentzoglu, N., Balhoff, J. P., Bello, S. M., Bizon, C., Brush, M., Callahan, T. J., Chute, C. G., Duncan, W. D., Evelo, C. T., Gabriel, D., Graybeal, J., Gray, A., Gyori, B. M., Haendel, M., Harmse, H., Harris, N. L., Harrow, I., Hegde, H. B., Hoyt, A. L., Hoyt, C. T., Jiao, D., Jiménez-Ruiz, E., Jupp, S., Kim, H., Köhler, S., Liener, T., Long, Q., Malone, J., McLaughlin, J. A., McMurry, J. A., Moxon, S., Munoz-Torres, M. C., Osumi-Sutherland, D., Overton, J. A., Peters, B., Putman, T., Queralt-Rosinach, N., Shefchek, K., Solbrig, H., Thessen, A., Tudorache, T., Vasilevsky, N., Wagner, A. H., & Mungall, C. J. (2022). A simple standard for sharing ontological mappings (SSSOM). Database, 2022, baac035. https://doi.org/10.1093/database/baac035\n",
       "contact": {
         "email": "nicolas.matentzoglu@gmail.com",
@@ -406,7 +404,7 @@
         "website": "https://mapping-commons.github.io/sssom/spec"
       },
       "tagline": "A simple metadata standard for describing semantic mappings",
-      "title": "Simple Standard for Ontology Mappings (SSSOM)",
+      "title": "Simple Standard for Ontology Mappings",
       "title_short": "SSSOM",
       "visual_explainer": "https://www.youtube.com/watch?v=T-YP-Lv9k2s"
     }
@@ -496,7 +494,7 @@
         "website": "https://github.com/INCATools/ontology-access-kit"
       },
       "tagline": "A python toolkit for accessing and visualising ontologies",
-      "title": "Ontology Access Kit (OAK)",
+      "title": "Ontology Access Kit",
       "title_short": "OAK",
       "visual_explainer": "https://www.youtube.com/watch?v=zO6tS7gZtvw"
     },
@@ -531,7 +529,7 @@
         "name": "Chris Mungall",
         "orcid": "https://orcid.org/0000-0002-6601-2165"
       },
-      "icon": null,
+      "icon": "resource-ontogpt",
       "license": "BSD-3-Clause",
       "see_also": {
         "documentation": "https://monarch-initiative.github.io/ontogpt",
