@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 import uvicorn
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
@@ -16,11 +17,12 @@ app = FastAPI(
 )
 
 
-@app.on_event("startup")
-async def initialize_app():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     semsimian()
     spacyner()
     # oak()
+    yield
 
 
 app.include_router(association.router, prefix=f"{PREFIX}/association")
