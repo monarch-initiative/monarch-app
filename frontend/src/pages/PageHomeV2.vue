@@ -33,27 +33,11 @@
       </div>
     </div>
   </AppSection>
-
-  <AppSection width="big">
-    <AppHeading :level="1">Explore Knowledge Graph Tools</AppHeading>
-    <div class="custom-grid kg-tools">
-      <template v-for="(tool, id) in KG_TOOL_LINKS" :key="id">
-        <AppToolTile
-          v-tooltip="tool.tooltip"
-          :to="tool.to"
-          :aria-label="tool.tooltip"
-          :icon="tool.icon"
-          :title="tool.label"
-        />
-      </template>
-    </div>
-  </AppSection>
 </template>
 
 <script setup lang="ts">
-import AppToolTile from "@/components/AppToolTile.vue";
 import PageTitle from "@/components/ThePageTitle.vue";
-import { KG_TOOL_LINKS, TOOL_LINKS } from "@/data/toolEntityConfig";
+import { TOOL_LINKS } from "@/data/toolEntityConfig";
 </script>
 
 <style lang="scss" scoped>
@@ -128,13 +112,5 @@ import { KG_TOOL_LINKS, TOOL_LINKS } from "@/data/toolEntityConfig";
 a:focus,
 .icon:focus {
   outline: none;
-}
-
-.kg-tools {
-  margin-top: 2.5em;
-
-  @media (max-width: 1000px) {
-    gap: 2.5em;
-  }
 }
 </style>
