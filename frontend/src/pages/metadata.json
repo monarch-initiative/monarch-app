@@ -3,22 +3,22 @@
     {
       "label": "Genes",
       "icon": "category-gene",
-      "count": 563419
+      "count": 591016
     },
     {
       "label": "Phenotypes",
       "icon": "category-phenotypic-quality",
-      "count": 151521
+      "count": 151876
     },
     {
       "label": "Diseases",
       "icon": "category-disease",
-      "count": 29916
+      "count": 30284
     },
     {
       "label": "Total Nodes",
       "icon": "node",
-      "count": 1092405
+      "count": 1327109
     }
   ],
   "association": [
@@ -26,24 +26,24 @@
       "label": "Gene to Disease",
       "icon": "category-gene",
       "icon2": "category-disease",
-      "count": 15319
+      "count": 15475
     },
     {
       "label": "Gene to Phenotype",
       "icon": "category-gene",
       "icon2": "category-phenotypic-quality",
-      "count": 964732
+      "count": 973087
     },
     {
       "label": "Disease to Phenotype",
       "icon": "category-disease",
       "icon2": "category-phenotypic-quality",
-      "count": 252172
+      "count": 255171
     },
     {
       "label": "Total Associations",
       "icon": "association",
-      "count": 11701549
+      "count": 13593171
     }
   ]
 }

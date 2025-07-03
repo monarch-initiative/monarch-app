@@ -25,25 +25,33 @@
   <tspan v-if="isSvg" ref="container">
     {{ text }}
   </tspan>
-  <span v-else ref="container">
-    {{ text }}
-  </span>
+
+  <span
+    v-else
+    ref="container"
+    v-bind="$attrs"
+    :class="{ 'highlight-text': highlight }"
+    v-html="text"
+  />
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUpdated, ref } from "vue";
+import { computed, onMounted, onUpdated, ref } from "vue";
 
 type Props = {
   text?: string;
   isSvg?: boolean;
+  highlight?: boolean;
 };
-
 const props = withDefaults(defineProps<Props>(), {
   text: "",
   isSvg: false,
+  highlight: false,
 });
 
 const container = ref<HTMLSpanElement | SVGTSpanElement | null>(null);
+
+// Use $attrs to capture external classes and styles
 
 type ReplacedTag = "sup" | "a" | "i" | "b";
 
@@ -242,5 +250,8 @@ onUpdated(() => {
 }
 .svg-bold {
   font-weight: bold;
+}
+.highlight-text em {
+  background-color: yellow;
 }
 </style>

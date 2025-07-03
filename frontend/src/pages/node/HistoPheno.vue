@@ -11,6 +11,7 @@
     type="bar"
     :options="options"
     :series="series"
+    :height="chartHeight"
   />
 
   <div v-else>No info</div>
@@ -81,6 +82,13 @@ const options = computed<ApexOptions>(() => ({
     },
   },
 }));
+
+const chartHeight = computed(() => {
+  const barCount = series.value[0]?.data.length || 1;
+  const desiredBarHeight = 50;
+  const extraPadding = 90;
+  return barCount * desiredBarHeight + extraPadding;
+});
 
 /** get chart data */
 const {

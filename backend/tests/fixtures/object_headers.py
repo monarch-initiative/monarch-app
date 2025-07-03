@@ -90,6 +90,7 @@ def association_headers():
         "object_specialization_qualifier_category",
         "object_specialization_qualifier_closure",
         "object_specialization_qualifier_closure_label",
+        "highlighting",
     ]
 
 
@@ -113,6 +114,11 @@ def node_headers():
         "in_taxon_label",
         "symbol",
         "synonym",
+        "broad_synonym",
+        "exact_synonym",
+        "narrow_synonym",
+        "related_synonym",
+        "subsets",
         "uri",
         "iri",
         "namespace",
@@ -147,6 +153,11 @@ def search_headers():
         "in_taxon_label",
         "symbol",
         "synonym",
+        "broad_synonym",
+        "exact_synonym",
+        "narrow_synonym",
+        "related_synonym",
+        "subsets",
         "uri",
         "iri",
         "namespace",
@@ -155,6 +166,6 @@ def search_headers():
         "has_phenotype_closure",
         "has_phenotype_closure_label",
         "has_phenotype_count",
-        "highlight",
         "score",
+        "highlighting",
     ]

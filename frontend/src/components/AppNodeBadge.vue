@@ -12,18 +12,18 @@
     />
     <AppLink
       v-if="isLink"
-      :to="`${absolute ? baseurl : ''}${node.id}`"
+      :to="`${absolute ? baseurl : '/'}${node.id}`"
       :state="
         breadcrumbs
           ? { breadcrumbs: [...currentBreadcrumbs, ...breadcrumbs] }
           : state || undefined
       "
     >
-      <AppNodeText :text="name" />
+      <AppNodeText :text="name" :highlight="highlight" />
     </AppLink>
     <span v-else>
       <span class="name">
-        <AppNodeText :text="name" />
+        <AppNodeText :text="name" :highlight="highlight" />
       </span>
       <span v-if="info">({{ info }})</span>
     </span>
@@ -61,6 +61,8 @@ type Props = {
   absolute?: boolean;
   /** whether to show id. not shown by default, unless name/label empty. */
   showId?: boolean;
+  /** boolen to use for highlighting */
+  highlight: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -70,6 +72,7 @@ const props = withDefaults(defineProps<Props>(), {
   state: undefined,
   absolute: false,
   showId: false,
+  highlight: false,
 });
 
 /** name/label */

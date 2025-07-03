@@ -3,8 +3,8 @@
 -->
 
 <template>
-  <AppSection design="bare" width="full" alignment="left">
-    <AppDetails>
+  <AppSection width="full" alignment="left">
+    <AppDetails gap="20px">
       <!-- symbol (gene specific) -->
       <AppDetail
         v-if="node.category === 'biolink:Gene'"
@@ -66,15 +66,18 @@
         </AppFlex>
       </AppDetail>
 
+      <!-- disease frequecy -->
+      <AppDetail v-if="node.category === 'biolink:Disease'" title="Frequency">
+        <span>{{ node?.subsets?.includes("rare") ? "Rare" : "Common" }}</span>
+      </AppDetail>
+
       <!-- synonyms -->
       <AppDetail
         :blank="!node.synonym?.length"
         title="Also Known As"
         :full="true"
       >
-        <p class="truncate-2" tabindex="0">
-          <AppNodeText :text="node.synonym?.join(',\n&nbsp;')" />
-        </p>
+        <AppTagList :tags="node.synonym ?? []" />
       </AppDetail>
 
       <!-- URI -->
@@ -110,6 +113,11 @@
           </AppLink>
         </AppFlex>
       </AppDetail>
+      <AppDetail :blank="!node.provided_by_link" title="Ingest Documentation">
+        <AppLink :to="node.provided_by_link?.url || ''">
+          {{ node.provided_by_link?.id || node.provided_by }}
+        </AppLink>
+      </AppDetail>
       <AppDetail
         :blank="!otherMappings.length"
         title="Other Mappings"
@@ -125,6 +133,21 @@
           </AppLink>
         </AppFlex>
       </AppDetail>
+      <!-- external references -->
+      <AppDetail
+        :blank="!node.external_links?.length"
+        title="External References"
+        :full="true"
+      >
+        <AppFlex align-h="left" gap="small">
+          <AppLink
+            v-for="(link, index) of node.external_links"
+            :key="index"
+            :to="link.url || ''"
+            >{{ link.id }}</AppLink
+          >
+        </AppFlex>
+      </AppDetail>
     </AppDetails>
   </AppSection>
 </template>
@@ -137,8 +160,10 @@ import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppNodeText from "@/components/AppNodeText.vue";
-import { scrollTo } from "@/router";
-import { sleep } from "@/util/debug";
+import AppTagList from "@/components/AppTagList.vue";
+
+// import { scrollTo } from "@/router";
+// import { sleep } from "@/util/debug";
 
 type Props = {
   /** current node */
@@ -167,10 +192,10 @@ const otherMappings = computed(
     ) || [],
 );
 
-async function scrollToAssociations() {
-  await sleep(100);
-  scrollTo("#associations");
-}
+// async function scrollToAssociations() {
+//   await sleep(100);
+//   scrollTo("#associations");
+// }
 </script>
 
 <style lang="scss" scoped>

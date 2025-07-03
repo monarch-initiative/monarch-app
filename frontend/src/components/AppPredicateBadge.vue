@@ -6,7 +6,12 @@
   <span class="predicate">
     <AppIcon v-if="arrows" class="arrow" :icon="`arrow-${arrowDirection}`" />
     <span v-if="association.negated" class="negated-text">NOT</span>
-    {{ startCase(getCategoryLabel(association.predicate)).toLowerCase() }}
+
+    <span
+      :class="{ 'highlighted-text': highlight }"
+      v-html="getFormattedPredicateLabel(predicate)"
+    />
+
     <AppIcon v-if="arrows" class="arrow" :icon="`arrow-${arrowDirection}`" />
   </span>
 </template>
@@ -25,9 +30,24 @@ type Props = {
   /** whether to display arrows vertically */
   vertical?: boolean;
   arrows?: boolean;
+  /** boolean to use for hightlighting */
+  highlight?: boolean;
 };
 
 const props = defineProps<Props>();
+
+const predicate = computed(
+  () =>
+    props?.association?.highlighting?.predicate?.[0] ??
+    props.association.predicate,
+);
+const getFormattedPredicateLabel = (category?: string | string[]) => {
+  const raw = Array.isArray(category) ? category[0] : category;
+  if (!raw) return "";
+
+  const value = raw.replace(/^biolink:/, "").replace(/_/g, " ");
+  return value;
+};
 
 /** direction of arrows */
 const arrowDirection = computed(() =>
@@ -60,9 +80,12 @@ const arrowDirection = computed(() =>
     margin-left: 0.5em;
   }
 }
-
 .negated-text {
   color: $error;
   font-weight: 600;
+}
+
+.highlighted-text ::v-deep(em) {
+  background-color: yellow;
 }
 </style>

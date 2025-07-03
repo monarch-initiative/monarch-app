@@ -54,20 +54,30 @@
 
     <!-- subject -->
     <template #subject="{ row }">
-      <AppNodeBadge
-        :node="{
-          id: row.subject,
-          name: row.subject_label,
-          category: row.subject_category,
-          info: row.subject_taxon_label,
-        }"
-        :breadcrumbs="getBreadcrumbs(node, row, 'subject')"
-      />
+      <div class="badgeColumn">
+        <AppNodeBadge
+          :node="{
+            id: row.subject,
+            name: row.highlighting?.subject_label?.[0] || row.subject_label,
+            category: row.subject_category,
+            info: row.subject_taxon_label,
+          }"
+          :breadcrumbs="getBreadcrumbs(node, row, 'subject')"
+          :highlight="true"
+        />
+
+        <AppNodeText
+          v-if="row?.highlighting?.subject_closure_label?.[0]"
+          :text="`Ancestor: ${row.highlighting.subject_closure_label[0]}`"
+          class="text-sm"
+          :highlight="true"
+        />
+      </div>
     </template>
 
     <!-- predicate -->
     <template #predicate="{ row }">
-      <AppPredicateBadge :association="row" />
+      <AppPredicateBadge :association="row" :highlight="true" />
     </template>
 
     <!-- maxorelation -->
@@ -77,15 +87,24 @@
 
     <!-- object-->
     <template #object="{ row }">
-      <AppNodeBadge
-        :node="{
-          id: row.object,
-          name: row.object_label,
-          category: row.object_category,
-          info: row.object_taxon_label,
-        }"
-        :breadcrumbs="getBreadcrumbs(node, row, 'object')"
-      />
+      <div class="badgeColumn">
+        <AppNodeBadge
+          :node="{
+            id: row.object,
+            name: row.highlighting?.object_label?.[0] || row.object_label,
+            category: row.object_category,
+            info: row.object_taxon_label,
+          }"
+          :breadcrumbs="getBreadcrumbs(node, row, 'object')"
+          :highlight="true"
+        />
+        <AppNodeText
+          v-if="row?.highlighting?.object_closure_label?.[0]"
+          :text="`Ancestor: ${row.highlighting.object_closure_label[0]}`"
+          class="text-sm"
+          :highlight="true"
+        />
+      </div>
     </template>
 
     <template #extension="{ row }">
@@ -210,13 +229,14 @@ import {
 } from "@/api/model";
 import AppModal from "@/components/AppModal.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
+import AppNodeText from "@/components/AppNodeText.vue";
 import AppPercentage from "@/components/AppPercentage.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
 import type { Option } from "@/components/AppSelectSingle.vue";
 import AppTable from "@/components/AppTable.vue";
 import type { Cols, Sort } from "@/components/AppTable.vue";
-import TableControls from "@/components/TableContols.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
+import TableControls from "@/components/TheTableContols.vue";
 import { useQuery } from "@/composables/use-query";
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
 import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
@@ -451,12 +471,21 @@ const cols = computed((): Cols<Datum> => {
 });
 
 /** get table association data */
+
 const {
   query: queryAssociations,
   data: associations,
   isLoading,
   isError,
-} = useQuery(
+} = useQuery<
+  {
+    items: DirectionalAssociation[];
+    total: number;
+    limit: number;
+    offset: number;
+  },
+  [boolean]
+>(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async function (fresh: boolean) /**
    * whether to perform "fresh" search, without filters/pagination/etc. true when
@@ -539,6 +568,7 @@ const frequencyPercentage = (row: DirectionalAssociation) => {
 };
 
 /** get frequency tooltip */
+
 const frequencyTooltip = (row: DirectionalAssociation) => {
   // display fraction if possible
   if (row.has_count != undefined && row.has_total != undefined) {
@@ -574,7 +604,6 @@ watch(
   () => props.search,
   async () => {
     await queryAssociations(true);
-    console.log(props.search);
   },
   { immediate: true },
 );
@@ -618,5 +647,16 @@ onMounted(() => queryAssociations(true));
   100% {
     opacity: 0.7;
   }
+}
+
+.badgeColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+}
+
+.text-sm {
+  color: $dark-gray;
+  font-size: 0.9em;
 }
 </style>
