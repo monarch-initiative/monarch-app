@@ -113,6 +113,4 @@ a:focus,
 .icon:focus {
   outline: none;
 }
-
-
 </style>
