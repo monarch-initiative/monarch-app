@@ -17,15 +17,6 @@
         @change="onChange"
         @delete="onDelete"
       />
-      <AppButton
-        v-if="!minimal"
-        v-tooltip="'How to use'"
-        class="help-icon"
-        text="?"
-        design="circle"
-        color="secondary"
-        to="help"
-      />
     </div>
 
     <!-- facet dropdown filters -->
