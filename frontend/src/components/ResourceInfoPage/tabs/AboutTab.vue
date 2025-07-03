@@ -1,31 +1,47 @@
 <template>
   <AppSection v-if="item?.about" width="big">
-    <div class="formatted-about" v-html="formattedAbout"/>
+    <div class="formatted-about" v-html="formattedAbout" />
 
-    <AppLink v-if="externalLink" :to="externalLink.href" :no-icon="true" class="learn-more">
+    <AppLink
+      v-if="externalLink"
+      :to="externalLink.href"
+      :no-icon="true"
+      class="learn-more"
+    >
       Learn more about {{ externalLink.text }} here.
     </AppLink>
 
     <div v-if="item.visual_explainer" class="visual-explainer">
-      <div class="video" v-if="
-        explainerParts.videoUrl && /youtu\.?be/.test(explainerParts.videoUrl)
-      ">
+      <div
+        v-if="
+          explainerParts.videoUrl && /youtu\.?be/.test(explainerParts.videoUrl)
+        "
+        class="video"
+      >
         <h2>Watch: What Is {{ item?.title }} and Why It Matters</h2>
-        <iframe :src="embedYouTubeUrl(explainerParts.videoUrl)" frameborder="0" allow="autoplay; picture-in-picture"
-          allowfullscreen :title="`Visual explainer video for ${item.title}`"></iframe>
+        <iframe
+          :src="embedYouTubeUrl(explainerParts.videoUrl)"
+          frameborder="0"
+          allow="autoplay; picture-in-picture"
+          allowfullscreen
+          :title="`Visual explainer video for ${item.title}`"
+        ></iframe>
       </div>
 
       <p v-if="explainerParts.description">{{ explainerParts.description }}</p>
 
       <figure v-if="explainerParts.imageId">
-        <img :src="`/icons/${explainerParts.imageId}.png`" :alt="`Visual explainer image for ${item.title}`" />
+        <img
+          :src="`/icons/${explainerParts.imageId}.png`"
+          :alt="`Visual explainer image for ${item.title}`"
+        />
       </figure>
     </div>
   </AppSection>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed } from "vue";
 import AppLink from "@/components/AppLink.vue";
 import AppSection from "@/components/AppSection.vue";
 import { embedYouTubeUrl } from "../helpers/youtube";
@@ -72,13 +88,12 @@ const formattedAbout = computed(() => {
 
   return html.join("");
 });
-
 </script>
 
 <style scoped lang="scss">
 $wrap: 1000px;
 .section.center {
-    align-items: unset;
+  align-items: unset;
 }
 .visual-explainer {
   display: flex;
@@ -132,6 +147,5 @@ $wrap: 1000px;
   width: 100%;
   text-align: left;
   text-decoration: none;
-
 }
 </style>

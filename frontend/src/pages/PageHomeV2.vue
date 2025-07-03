@@ -16,7 +16,8 @@
       composed of multiple open-source, open-access components. We promote
       provenance and transparency, enhanced use of standards and new
       technologies and improved data accessibility, end-user utility, and data
-      submission. Explore this site to learn more about the complete suite of Monarch resources.
+      submission. Explore this site to learn more about the complete suite of
+      Monarch resources.
     </p>
     <div class="custom-grid">
       <div v-for="(tool, id) in TOOL_LINKS" :key="id">

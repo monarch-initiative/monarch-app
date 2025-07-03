@@ -94,13 +94,13 @@
   <AppSection width="big">
     <p class="info">
       If you have any questions, feel free to reach out to us at :
-      <AppLink to="mailto:info@monarchinitiative.org" noIcon="true"
+      <AppLink to="mailto:info@monarchinitiative.org" :no-icon="true"
         >info@monarchinitiative.org</AppLink
       >
     </p>
     <p class="license-note">
       Monarch Initiative 2025 — Released under the
-      <AppLink noIcon="true" to="https://opensource.org/licenses/BSD-3-Clause"
+      <AppLink :no-icon="true" to="https://opensource.org/licenses/BSD-3-Clause"
         >BSD 3-Clause License</AppLink
       >.
     </p>
