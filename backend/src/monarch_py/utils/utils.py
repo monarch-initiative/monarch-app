@@ -1,3 +1,4 @@
+import os
 import sys
 from typing import List
 
@@ -92,29 +93,106 @@ def get_provided_by_link(provided_by: str) -> ExpandedCurie:
 ### Release info methods ###
 
 
+def get_github_release_dates():
+    """Get GitHub releases with their deployment dates."""
+    try:
+        res = requests.get("https://api.github.com/repos/monarch-initiative/monarch-app/releases?per_page=100")
+        res.raise_for_status()
+        releases = res.json()
+
+        # Create mapping of version to deployment date
+        release_dates = {}
+        for release in releases:
+            tag_name = release.get("tag_name", "")
+            published_at = release.get("published_at")
+            if published_at:
+                # Extract version from tag (e.g., "v1.17.0" -> "1.17.0")
+                version = tag_name.lstrip("v")
+                release_dates[version] = published_at
+
+        return release_dates
+    except Exception:
+        return {}
+
+
+def map_kg_to_deployment_date(kg_version: str, github_releases: dict) -> str:
+    """Map a KG version to its deployment date from GitHub releases.
+
+    Finds the first app release that happened after the KG build date.
+    """
+    if not kg_version or not github_releases:
+        return None
+
+    # Extract date from KG version (format: YYYY-MM-DD)
+    if len(kg_version) >= 10 and kg_version.count("-") == 2:
+        kg_date = kg_version[:10]  # Get YYYY-MM-DD part
+
+        try:
+            from datetime import datetime, timedelta, timezone
+
+            kg_datetime = datetime.strptime(kg_date, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+
+            # Find releases after this KG date, sorted by date
+            matching_releases = []
+            for version, published_at in github_releases.items():
+                release_datetime = datetime.fromisoformat(published_at.replace("Z", "+00:00"))
+
+                # If release is after KG date and within reasonable timeframe (60 days)
+                if kg_datetime <= release_datetime <= kg_datetime + timedelta(days=60):
+                    matching_releases.append((release_datetime, published_at))
+
+            # Return the earliest matching release
+            if matching_releases:
+                matching_releases.sort()
+                return matching_releases[0][1]
+
+        except ValueError:
+            pass
+
+    return None
+
+
 def get_release_versions(dev: bool = False, limit: int = 0, print_info: bool = False):
     url = f"{KG_DEV_URL if dev else KG_URL}/index.html"
     res = requests.get(url)
     res.raise_for_status()
     soup = bs4.BeautifulSoup(res.text, "html.parser")
     directories = soup.select("h5 + ul > li > a")
-    releases = [
-        {"version": directory.text, "url": directory["href"]}
-        for directory in directories
-        if directory.text not in ["..", "kgx"]
-        # if directory.text != ".."]
-    ]
+
+    # Get GitHub release dates for deployment mapping
+    github_releases = get_github_release_dates()
+
+    releases = []
+    for directory in directories:
+        if directory.text not in ["..", "kgx"]:
+            version = directory.text
+            deployment_date = map_kg_to_deployment_date(version, github_releases)
+
+            release_info = {
+                "version": version,
+                "url": directory["href"],
+                "release_date": version if version.count("-") == 2 and len(version) >= 10 else None,
+                "deployment_date": deployment_date,
+            }
+            releases.append(release_info)
+
     releases.reverse()
     if limit:
         releases = releases[:limit]
     if print_info:
         for release in releases:
-            console.print(f"Version: {release['version']:11s}{' ':—<3} URL: {release['url']}")
+            deployment_info = f"Deployed: {release.get('deployment_date', 'N/A')}"
+            console.print(f"Version: {release['version']:11s}{' ':—<3} URL: {release['url']} {deployment_info}")
     return releases
 
 
 def get_release_metadata(release: str, dev: bool = False):
     release_url = f"{KG_DEV_URL if dev else KG_URL}/{release}"
+
+    # Get deployment date for this release
+    github_releases = get_github_release_dates()
+    deployment_date = map_kg_to_deployment_date(release, github_releases)
+
     release_info = Release(
         version=release,
         url=f"{release_url}/index.html",
@@ -125,6 +203,8 @@ def get_release_metadata(release: str, dev: bool = False):
         metadata=f"{release_url}/metadata.yaml",
         graph_stats=f"{release_url}/merged_graph_stats.yaml",
         qc_report=f"{release_url}/qc_report.yaml",
+        release_date=release if release.count("-") == 2 and len(release) >= 10 else None,
+        deployment_date=deployment_date,
     )
     return release_info
 
@@ -132,3 +212,21 @@ def get_release_metadata(release: str, dev: bool = False):
 def print_release_info(release_info: Release):
     for key, value in release_info.model_dump().items():
         console.print(f"{key+' ':—<12} {value}")
+
+
+def get_current_deployment_info():
+    """Get information about the currently deployed KG version in production.
+
+    This reads environment variables set during deployment to provide
+    the actual production deployment information.
+    """
+    kg_version = os.getenv("MONARCH_KG_VERSION")
+    deployment_date = os.getenv("KG_DEPLOYMENT_DATE")
+    api_version = os.getenv("MONARCH_API_VERSION")
+
+    return {
+        "kg_version": kg_version,
+        "deployment_date": deployment_date,
+        "api_version": api_version,
+        "release_date": kg_version if kg_version and kg_version.count("-") == 2 and len(kg_version) >= 10 else None,
+    }
