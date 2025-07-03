@@ -1,5 +1,5 @@
 <template>
-     <hr />
+  <hr />
   <div class="hero-tool-links">
     <p class="hero-tools-label">Knowledge Graph Tools:</p>
     <AppLink to="/search-phenotypes">Phenotype Similarity Tools</AppLink>
