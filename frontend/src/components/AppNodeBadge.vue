@@ -19,11 +19,11 @@
           : state || undefined
       "
     >
-      <AppNodeText :text="name" :get-highlighted-text="getHighlightedText" />
+      <AppNodeText :text="name" :highlight="highlight" />
     </AppLink>
     <span v-else>
       <span class="name">
-        <AppNodeText :text="name" :get-highlighted-text="getHighlightedText" />
+        <AppNodeText :text="name" :highlight="highlight" />
       </span>
       <span v-if="info">({{ info }})</span>
     </span>
@@ -61,11 +61,8 @@ type Props = {
   absolute?: boolean;
   /** whether to show id. not shown by default, unless name/label empty. */
   showId?: boolean;
-  /** function for highlighting the search text */
-  getHighlightedText?: (
-    text: string,
-    transformFn?: (text: string) => string,
-  ) => string;
+  /** boolen to use for highlighting */
+  highlight: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -75,7 +72,7 @@ const props = withDefaults(defineProps<Props>(), {
   state: undefined,
   absolute: false,
   showId: false,
-  getHighlightedText: (text: string) => text,
+  highlight: false,
 });
 
 /** name/label */
