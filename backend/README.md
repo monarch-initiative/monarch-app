@@ -8,8 +8,8 @@ Monarch-Py is a Python library for interfacing with the Monarch Initiative Knowl
 
 If you are running the whole monarch-app suite locally you will want to review the [README.md](../README.md) or [CONTRIBUTING.md](../CONTRIBUTING.md) files in the repository root for information on the requirements for monarch-app at large. If you intend to run just the backend for end-user usage or testing you will only need the following prerequisites.
 
-- Python version 3.9+, version 3.10.12 recommended for development.
-- [Poetry](https://python-poetry.org/docs/#installation) - For managing dependencies in monarch-py.
+- Python >= 3.10 recommended for development.
+- [uv](https://docs.astral.sh/uv/) - For managing dependencies in monarch-py.
 - [Docker](https://docs.docker.com/get-docker/) - For running the Solr instance locally.
 - [Rust](https://www.rust-lang.org/tools/install) - For running the semsimian server locally.
 
@@ -24,7 +24,7 @@ pip install monarch-py
 ```
 
 The monarch-py module and CLI use the Monarch-KG using a Solr instance running locally.  
-This requires Docker to be installed and running on your computer.  
+This requires Docker to be installed and running on your computer.
 
 ```
 monarch solr download
@@ -32,7 +32,7 @@ monarch solr start
 ```
 
 This will download and then run the monarch Solr image locally on port 8983.  
-*Note* You may need to change permissions on the file in order to install and run the Solr container.
+_Note_ You may need to change permissions on the file in order to install and run the Solr container.
 
 ```
 sudo chgrp -R 8983 ~/.data/monarch

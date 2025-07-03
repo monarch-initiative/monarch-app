@@ -5,7 +5,7 @@
         >{{ formatApaCitation(item.citation) }}
       </pre>
 
-      <AppButton text="Copy Citation" @click="copyCitation" class="copy-btn" />
+      <AppButton text="Copy Citation" class="copy-btn" @click="copyCitation" />
       <span v-if="copied" class="copied-msg">Copied!</span>
     </div>
   </AppSection>

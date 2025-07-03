@@ -70,8 +70,9 @@ To host the API locally using the backend development in this repo first see fro
 
 ```
 cd ../backend
-poetry install
-poetry run monarch solr download
+uv venv
+uv pip install .
+uv run monarch solr download
 ```
 
 _Note_ You may need to change permissions on the file in order to install and run the Solr container.
@@ -84,7 +85,7 @@ sudo chmod -R g+w ~/.data/monarch
 If the permissions are correct you can then run the Solr instance with:
 
 ```
-poetry run monarch solr start
+uv run monarch solr start
 ```
 
 In a seperate terminal run the API (this will need to stay running will you are using the UI). Go to monarch-app root and run:

@@ -98,8 +98,6 @@ jobs:
 
       - name: "Set up Cloud SDK"
         uses: "google-github-actions/setup-gcloud@v2"
-        with:
-          version: ">= 447.0.0"
 
       - name: "Cache SSH Key"
         uses: actions/cache@v4

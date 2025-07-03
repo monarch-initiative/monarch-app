@@ -9,11 +9,11 @@ export const ABOUT_PAGE_LINKS: Record<string, { text: string; href: string }> =
       href: "/tools/linkml",
     },
     "Monarch Mapping Registry": {
-      text: "SSSOM.",
+      text: "SSSOM",
       href: "/tools/sssom",
     },
     "Genotype Ontology": {
-      text: "SEPIO.",
+      text: "SEPIO",
       href: "/ontologies/sepio",
     },
   };
