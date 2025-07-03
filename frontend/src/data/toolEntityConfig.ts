@@ -24,27 +24,6 @@ export const ENTITY_MAP: Record<
   },
 };
 
-// export const KG_TOOL_LINKS: {
-//   label: string;
-//   to: string;
-//   icon?: string;
-//   external?: boolean;
-//   tooltip?: string;
-// }[] = [
-//   {
-//     label: "Phenotype Search",
-//     icon: "tool-phenotype-search",
-//     to: "/search-phenotypes",
-//     tooltip: "Start exploring genes and diseases based on phenotype similarity",
-//   },
-//   {
-//     label: "Text Annotator",
-//     icon: "text-annotator",
-//     to: "/text-annotator",
-//     tooltip: "Paste or upload text to find references to Monarch Knowledge Graph entities",
-//   },
-// ];
-
 export const TOOL_LINKS: {
   label: string;
   to: string;
