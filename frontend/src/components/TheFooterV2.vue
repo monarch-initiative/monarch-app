@@ -1,62 +1,6 @@
 <template>
   <footer class="footer">
     <div class="container">
-      <!-- Logo & Social -->
-      <div class="left-column">
-        <div class="logo-column">
-          <ResourceIcon class="footer-logo" />
-          <p>Monarch Initiative</p>
-        </div>
-        <div class="social">
-          <p>Follow us on</p>
-          <div class="icons">
-            <AppLink
-              v-tooltip="'Subscribe'"
-              to="https://groups.google.com/g/monarch-friends/"
-              class="social-icon"
-            >
-              <AppIcon icon="envelope" />
-            </AppLink>
-            <AppLink
-              v-tooltip="'Medium'"
-              to="https://medium.com/@MonarchInit"
-              class="social-icon"
-            >
-              <AppIcon icon="medium" />
-            </AppLink>
-            <AppLink
-              v-tooltip="'GitHub'"
-              to="https://github.com/monarch-initiative"
-              class="social-icon"
-            >
-              <AppIcon icon="github" />
-            </AppLink>
-            <AppLink
-              v-tooltip="'LinkedIn'"
-              to="https://www.linkedin.com/company/the-monarch-initiative"
-              class="social-icon"
-            >
-              <AppIcon icon="linkedin" />
-            </AppLink>
-
-            <AppLink
-              v-tooltip="'YouTube'"
-              to="https://www.youtube.com/@monarchinitiative"
-              class="social-icon"
-            >
-              <AppIcon icon="youtube" />
-            </AppLink>
-            <AppLink
-              v-tooltip="'blusky'"
-              to="https://bsky.app/profile/monarchinitiative.bsky.social"
-              class="social-icon"
-            >
-              <AppIcon icon="social-bluesky" />
-            </AppLink>
-          </div>
-        </div>
-      </div>
-
       <div
         v-for="(column, index) in navigationMenus"
         :key="index"
@@ -79,6 +23,61 @@
         </ul>
       </div>
     </div>
+    <!-- Logo & Social -->
+    <div class="left-column">
+      <div class="logo-column">
+        <ResourceIcon class="footer-logo" />
+        <p>Monarch Initiative</p>
+      </div>
+      <div class="social">
+        <p>Follow us on</p>
+        <div class="icons">
+          <AppLink
+            v-tooltip="'Subscribe'"
+            to="https://groups.google.com/g/monarch-friends/"
+            class="social-icon"
+          >
+            <AppIcon icon="envelope" />
+          </AppLink>
+          <AppLink
+            v-tooltip="'Medium'"
+            to="https://medium.com/@MonarchInit"
+            class="social-icon"
+          >
+            <AppIcon icon="medium" />
+          </AppLink>
+          <AppLink
+            v-tooltip="'GitHub'"
+            to="https://github.com/monarch-initiative"
+            class="social-icon"
+          >
+            <AppIcon icon="github" />
+          </AppLink>
+          <AppLink
+            v-tooltip="'LinkedIn'"
+            to="https://www.linkedin.com/company/the-monarch-initiative"
+            class="social-icon"
+          >
+            <AppIcon icon="linkedin" />
+          </AppLink>
+
+          <AppLink
+            v-tooltip="'YouTube'"
+            to="https://www.youtube.com/@monarchinitiative"
+            class="social-icon"
+          >
+            <AppIcon icon="youtube" />
+          </AppLink>
+          <AppLink
+            v-tooltip="'blusky'"
+            to="https://bsky.app/profile/monarchinitiative.bsky.social"
+            class="social-icon"
+          >
+            <AppIcon icon="social-bluesky" />
+          </AppLink>
+        </div>
+      </div>
+    </div>
   </footer>
 </template>
 
@@ -93,9 +92,10 @@ import navigationMenus from "@/data/navigationMenu.json";
   display: flex;
   justify-content: center;
   margin: 10px 20px 10px $toc-width + 20px;
-  padding: 30px 10px;
+  padding: 30px 20px;
   background: #d3e6eb;
   font-size: 0.9rem;
+
   @media (max-width: 1240) {
     margin: unset !important;
   }
@@ -223,10 +223,21 @@ import navigationMenus from "@/data/navigationMenu.json";
   align-items: center;
 }
 
-@media (max-width: 1250px) {
+@media (max-width: 1240px) {
   footer {
     margin: unset !important;
     padding: 10px;
+  }
+  .footer .left-column {
+    width: 20%;
+  }
+  .footer .container {
+    justify-content: center;
+    text-align: center;
+  }
+  .footer .right-column {
+    flex: 0 0 10%;
+    max-width: 50%;
   }
 }
 </style>
