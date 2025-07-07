@@ -79,15 +79,15 @@ const toc = ref<InstanceType<typeof AppFlex>>();
 
 /** listen for close event */
 useEventListener(window, "closetoc", () => (expanded.value = false));
-useEventListener(window, 'resize', () => {
+useEventListener(window, "resize", () => {
   if (window.innerWidth < 1240) {
     // on narrow, always collapse
-    expanded.value = false
+    expanded.value = false;
   } else {
     // on wide, always expand
-    expanded.value = true
+    expanded.value = true;
   }
-})
+});
 
 /** update toc position */
 async function updatePosition() {
