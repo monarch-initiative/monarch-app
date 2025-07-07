@@ -91,11 +91,14 @@ import navigationMenus from "@/data/navigationMenu.json";
 <style scoped lang="scss">
 .footer {
   display: flex;
-  z-index: 1010;
   justify-content: center;
-  padding: 30px 0;
+  margin: 10px 20px 10px $toc-width + 20px;
+  padding: 30px 10px;
   background: #d3e6eb;
   font-size: 0.9rem;
+  @media (max-width: 1240) {
+    margin: unset !important;
+  }
   .container {
     display: flex;
     flex-wrap: wrap;
@@ -175,7 +178,7 @@ import navigationMenus from "@/data/navigationMenu.json";
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2em;
+  gap: 0.5em;
   font-weight: 500;
 }
 
@@ -218,5 +221,12 @@ import navigationMenus from "@/data/navigationMenu.json";
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+@media (max-width: 1250px) {
+  footer {
+    margin: unset !important;
+    padding: 10px;
+  }
 }
 </style>
