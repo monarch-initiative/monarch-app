@@ -528,6 +528,8 @@ export interface Release {
     metadata?: string,
     graph_stats?: string,
     qc_report?: string,
+    /** Date when this KG version was deployed to production */
+    deployment_date?: string,
 }
 
 

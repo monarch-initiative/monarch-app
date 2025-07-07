@@ -7,7 +7,7 @@ from fastapi.responses import RedirectResponse
 from monarch_py.api import association, entity, histopheno, search, semsim, text_annotation
 from monarch_py.api.config import semsimian, spacyner
 from monarch_py.api.middleware.logging_middleware import LoggingMiddleware
-from monarch_py.utils.utils import get_release_metadata, get_release_versions
+from monarch_py.utils.utils import get_release_metadata, get_release_versions, get_current_deployment_info
 
 PREFIX = "/v3/api"
 
@@ -70,6 +70,12 @@ async def _v3(
     if release is None:
         return get_release_versions(dev=dev, limit=limit)
     return get_release_metadata(release=release, dev=dev)
+
+
+@app.get(f"{PREFIX}/releases/current")
+async def get_current_production_release():
+    """Get information about the currently deployed KG version in production."""
+    return get_current_deployment_info()
 
 
 def run():
