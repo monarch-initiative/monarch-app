@@ -22,59 +22,59 @@
           </li>
         </ul>
       </div>
-    </div>
-    <!-- Logo & Social -->
-    <div class="left-column">
-      <div class="logo-column">
-        <ResourceIcon class="footer-logo" />
-        <p>Monarch Initiative</p>
-      </div>
-      <div class="social">
-        <p>Follow us on</p>
-        <div class="icons">
-          <AppLink
-            v-tooltip="'Subscribe'"
-            to="https://groups.google.com/g/monarch-friends/"
-            class="social-icon"
-          >
-            <AppIcon icon="envelope" />
-          </AppLink>
-          <AppLink
-            v-tooltip="'Medium'"
-            to="https://medium.com/@MonarchInit"
-            class="social-icon"
-          >
-            <AppIcon icon="medium" />
-          </AppLink>
-          <AppLink
-            v-tooltip="'GitHub'"
-            to="https://github.com/monarch-initiative"
-            class="social-icon"
-          >
-            <AppIcon icon="github" />
-          </AppLink>
-          <AppLink
-            v-tooltip="'LinkedIn'"
-            to="https://www.linkedin.com/company/the-monarch-initiative"
-            class="social-icon"
-          >
-            <AppIcon icon="linkedin" />
-          </AppLink>
+      <!-- Logo & Social -->
+      <div class="left-column">
+        <div class="logo-column">
+          <ResourceIcon class="footer-logo" />
+          <p>Monarch Initiative</p>
+        </div>
+        <div class="social">
+          <p>Follow us on</p>
+          <div class="icons">
+            <AppLink
+              v-tooltip="'Subscribe'"
+              to="https://groups.google.com/g/monarch-friends/"
+              class="social-icon"
+            >
+              <AppIcon icon="envelope" />
+            </AppLink>
+            <AppLink
+              v-tooltip="'Medium'"
+              to="https://medium.com/@MonarchInit"
+              class="social-icon"
+            >
+              <AppIcon icon="medium" />
+            </AppLink>
+            <AppLink
+              v-tooltip="'GitHub'"
+              to="https://github.com/monarch-initiative"
+              class="social-icon"
+            >
+              <AppIcon icon="github" />
+            </AppLink>
+            <AppLink
+              v-tooltip="'LinkedIn'"
+              to="https://www.linkedin.com/company/the-monarch-initiative"
+              class="social-icon"
+            >
+              <AppIcon icon="linkedin" />
+            </AppLink>
 
-          <AppLink
-            v-tooltip="'YouTube'"
-            to="https://www.youtube.com/@monarchinitiative"
-            class="social-icon"
-          >
-            <AppIcon icon="youtube" />
-          </AppLink>
-          <AppLink
-            v-tooltip="'blusky'"
-            to="https://bsky.app/profile/monarchinitiative.bsky.social"
-            class="social-icon"
-          >
-            <AppIcon icon="social-bluesky" />
-          </AppLink>
+            <AppLink
+              v-tooltip="'YouTube'"
+              to="https://www.youtube.com/@monarchinitiative"
+              class="social-icon"
+            >
+              <AppIcon icon="youtube" />
+            </AppLink>
+            <AppLink
+              v-tooltip="'blusky'"
+              to="https://bsky.app/profile/monarchinitiative.bsky.social"
+              class="social-icon"
+            >
+              <AppIcon icon="social-bluesky" />
+            </AppLink>
+          </div>
         </div>
       </div>
     </div>
@@ -103,7 +103,6 @@ import navigationMenus from "@/data/navigationMenu.json";
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
-    gap: 1rem;
   }
 
   .logo-column {
