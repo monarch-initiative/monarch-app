@@ -56,4 +56,10 @@ $wrap: 1120px;
     color: $white;
   }
 }
+@media (max-width: 1000px) {
+  hr {
+    height: 1px;
+    margin: 10px 0;
+  }
+}
 </style>
