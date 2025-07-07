@@ -66,7 +66,7 @@ type Entries = {
 /** toc entries */
 const entries = ref<Entries>([]);
 /** whether toc is open or not */
-const expanded = ref(window.innerWidth > 1400);
+const expanded = ref(window.innerWidth > 1240);
 /** how much to push downward to make room for header if in view */
 const nudge = ref(0);
 /** whether to only show one section at a time */

@@ -91,11 +91,11 @@ import navigationMenus from "@/data/navigationMenu.json";
 <style scoped lang="scss">
 .footer {
   display: flex;
+  z-index: 1010;
   justify-content: center;
   padding: 30px 0;
   background: #d3e6eb;
   font-size: 0.9rem;
-
   .container {
     display: flex;
     flex-wrap: wrap;

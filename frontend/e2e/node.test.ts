@@ -5,7 +5,7 @@ log();
 
 test("Table of contents works", async ({ page }) => {
   await page.goto("/MONDO:0007523");
-  await page.setViewportSize({ width: 800, height: 1000 });
+  await page.setViewportSize({ width: 1400, height: 1000 });
 
   /** toggle button exists */
   await expect(page.locator(".toc")).toHaveAttribute(
