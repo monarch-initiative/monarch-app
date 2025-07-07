@@ -130,5 +130,8 @@ onMounted(runGetNode);
 /** make room for the table of contents **/
 .section {
   margin: 10px 20px 10px $toc-width + 20px !important;
+  @media (max-width: 1240px) {
+    margin: 10px 20px 10px 20px !important;
+  }
 }
 </style>
