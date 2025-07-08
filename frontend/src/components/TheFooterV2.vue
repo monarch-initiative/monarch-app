@@ -1,6 +1,27 @@
 <template>
   <footer class="footer">
     <div class="container">
+      <div
+        v-for="(column, index) in navigationMenus"
+        :key="index"
+        class="right-column"
+      >
+        <p>{{ column.label }}</p>
+        <ul>
+          <li v-for="subItem in column.subItems" :key="subItem.key">
+            <AppLink
+              v-tooltip="subItem.tooltip"
+              :to="subItem.to"
+              class="app-link"
+            >
+              {{ subItem.label }}
+              <span v-if="subItem.icon" class="icon">
+                <AppIcon icon="arrow-up-right-from-square" />
+              </span>
+            </AppLink>
+          </li>
+        </ul>
+      </div>
       <!-- Logo & Social -->
       <div class="left-column">
         <div class="logo-column">
@@ -56,28 +77,6 @@
           </div>
         </div>
       </div>
-
-      <div
-        v-for="(column, index) in navigationMenus"
-        :key="index"
-        class="right-column"
-      >
-        <p>{{ column.label }}</p>
-        <ul>
-          <li v-for="subItem in column.subItems" :key="subItem.key">
-            <AppLink
-              v-tooltip="subItem.tooltip"
-              :to="subItem.to"
-              class="app-link"
-            >
-              {{ subItem.label }}
-              <span v-if="subItem.icon" class="icon">
-                <AppIcon icon="arrow-up-right-from-square" />
-              </span>
-            </AppLink>
-          </li>
-        </ul>
-      </div>
     </div>
   </footer>
 </template>
@@ -91,16 +90,19 @@ import navigationMenus from "@/data/navigationMenu.json";
 <style scoped lang="scss">
 .footer {
   display: flex;
+  z-index: 1010;
   justify-content: center;
-  padding: 30px 0;
+  padding: 30px 20px;
   background: #d3e6eb;
   font-size: 0.9rem;
 
+  @media (max-width: 1240) {
+    margin: unset !important;
+  }
   .container {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
-    gap: 1rem;
   }
 
   .logo-column {
@@ -175,7 +177,7 @@ import navigationMenus from "@/data/navigationMenu.json";
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2em;
+  gap: 0.5em;
   font-weight: 500;
 }
 
@@ -218,5 +220,23 @@ import navigationMenus from "@/data/navigationMenu.json";
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+@media (max-width: 1240px) {
+  footer {
+    margin: unset !important;
+    padding: 10px;
+  }
+  .footer .left-column {
+    width: 20%;
+  }
+  .footer .container {
+    justify-content: center;
+    text-align: center;
+  }
+  .footer .right-column {
+    flex: 0 0 10%;
+    max-width: 50%;
+  }
 }
 </style>
