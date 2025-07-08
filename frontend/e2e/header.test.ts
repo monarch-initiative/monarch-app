@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 // Adjust viewport to simulate mobile and desktop
 const mobileSize = { width: 375, height: 667 };
-const desktopSize = { width: 1280, height: 800 };
+const desktopSize = { width: 1400, height: 900 };
 
 test.describe("Header Navigation", () => {
   test("toggle menu works on mobile", async ({ page }) => {
