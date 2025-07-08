@@ -90,8 +90,8 @@ import navigationMenus from "@/data/navigationMenu.json";
 <style scoped lang="scss">
 .footer {
   display: flex;
+  z-index: 1010;
   justify-content: center;
-  margin: 10px 20px 10px $toc-width + 20px;
   padding: 30px 20px;
   background: #d3e6eb;
   font-size: 0.9rem;
