@@ -79,6 +79,7 @@ const toc = ref<InstanceType<typeof AppFlex>>();
 
 /** listen for close event */
 useEventListener(window, "closetoc", () => (expanded.value = false));
+/** toggle expanded state */
 useEventListener(window, "resize", () => {
   if (window.innerWidth < 1240) {
     // on narrow, always collapse
