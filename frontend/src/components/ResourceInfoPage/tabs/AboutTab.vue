@@ -12,7 +12,7 @@
     </AppLink>
     <AppButton
       v-if="showKgExplore"
-      :text="`Explore ${item.title_short} in Monarch KG`"
+      :text="`Explore ${item.title_short} in the Monarch KG`"
       icon="search"
       class="find-kg-button"
       @click="goToKg"
