@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUpdated, ref } from "vue";
+import { onMounted, onUpdated, ref } from "vue";
 
 type Props = {
   text?: string;
