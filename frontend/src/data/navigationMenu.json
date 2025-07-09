@@ -1,5 +1,46 @@
 [
   {
+    "label": "About",
+    "subItems": [
+      {
+        "label": "Our Story",
+        "key": "about-our-story",
+        "to": "/about/our-story",
+        "tooltip": ""
+      },
+      {
+        "label": "Team",
+        "key": "about-team",
+        "to": "/about/team",
+        "tooltip": ""
+      },
+      {
+        "label": "SAB",
+        "key": "about-sab",
+        "to": "/about/sab",
+        "tooltip": ""
+      },
+      {
+        "label": "Contact Us",
+        "key": "about-contact-us",
+        "to": "/about/contact-us",
+        "tooltip": ""
+      },
+      {
+        "label": "Publications",
+        "key": "about-publications",
+        "to": "/about/publications",
+        "tooltip": ""
+      },
+      {
+        "label": "Funding",
+        "key": "about-funding",
+        "to": "/about/funding",
+        "tooltip": ""
+      }
+    ]
+  },
+  {
     "label": "Knowledge Graph",
     "subItems": [
       {
@@ -7,6 +48,27 @@
         "key": "kg-downloads",
         "to": "/kg/downloads",
         "tooltip": ""
+      },
+      {
+        "label": "API",
+        "key": "kg-api",
+        "to": "https://api-v3.monarchinitiative.org/v3/docs",
+        "tooltip": "",
+        "icon": true
+      },
+      {
+        "label": "Neo4j",
+        "key": "about-neo4J",
+        "to": "https://neo4j.monarchinitiative.org/browser/",
+        "tooltip": "",
+        "icon": true
+      },
+      {
+        "label": "Monarch R",
+        "key": "about-monarchr",
+        "to": "https://monarch-initiative.github.io/monarchr/articles/monarchr",
+        "tooltip": "",
+        "icon": true
       },
       {
         "label": "Status & QC",
@@ -18,7 +80,7 @@
         "label": "How To & Help",
         "key": "kg-help",
         "to": "/kg/help",
-        "tooltip": "Feedback,docs,guides and more"
+        "tooltip": ""
       },
       {
         "label": "Documentation",
@@ -36,61 +98,172 @@
         "label": "Cite the KG",
         "key": "cite",
         "to": "/kg/citation",
-        "tooltip": "Learn how to cite the Knowledge Graph"
-      },
-      {
-        "label": "API",
-        "key": "kg-api",
-        "to": "https://api-v3.monarchinitiative.org/v3/docs",
-        "tooltip": "",
-        "icon": true
+        "tooltip": ""
       },
       {
         "label": "About the KG",
         "key": "about-kg",
         "to": "/kg/about",
-        "tooltip": "About the Knowledge Graph"
+        "tooltip": ""
       }
     ]
   },
   {
-    "label": "About",
+    "label": "Ontologies",
     "subItems": [
       {
-        "label": "Our Story",
-        "key": "about-our-story",
-        "to": "/about/our-story",
-        "tooltip": "Our Story"
-      },
-      {
-        "label": "Team",
-        "key": "about-team",
-        "to": "/about/team",
+        "label": "Mondo",
+        "key": "ontology-mondo",
+        "to": "/ontologies/mondo",
         "tooltip": ""
       },
       {
-        "label": "SAB",
-        "key": "about-sab",
-        "to": "/about/sab",
-        "tooltip": "SAB"
+        "label": "Uberon",
+        "key": "ontology-uberon",
+        "to": "/ontologies/uberon",
+        "tooltip": ""
       },
       {
-        "label": "Contact Us",
-        "key": "about-contact-us",
-        "to": "/about/contact-us",
-        "tooltip": "Contact Us"
+        "label": "uPheno",
+        "key": "ontology-uPeheno",
+        "to": "/ontologies/upheno",
+        "tooltip": ""
       },
       {
-        "label": "Publications",
-        "key": "about-publications",
-        "to": "/about/publications",
-        "tooltip": "Publications"
+        "label": "HPO",
+        "key": "ontology-hpo",
+        "to": "/ontologies/hp",
+        "tooltip": ""
       },
       {
-        "label": "Funding",
-        "key": "about-funding",
-        "to": "/about/funding",
-        "tooltip": "Funding"
+        "label": "Phenio",
+        "key": "ontology-phenio",
+        "to": "/ontologies/phenio",
+        "tooltip": ""
+      },
+      {
+        "label": "OBA",
+        "key": "ontology-oba",
+        "to": "/ontologies/oba",
+        "tooltip": ""
+      },
+      {
+        "label": "VBO",
+        "key": "ontology-vbo",
+        "to": "/ontologies/vbo",
+        "tooltip": ""
+      },
+      {
+        "label": "GENO",
+        "key": "ontology-geno",
+        "to": "/ontologies/geno",
+        "tooltip": ""
+      },
+      {
+        "label": "SEPIO",
+        "key": "ontology-sepio",
+        "to": "/ontologies/sepio",
+        "tooltip": ""
+      },
+      {
+        "label": "ECTO",
+        "key": "ontology-ecto",
+        "to": "/ontologies/ecto",
+        "tooltip": ""
+      }
+    ]
+  },
+  {
+    "label": "Technology & Tools",
+    "subItems": [
+      {
+        "label": "Exomiser",
+        "key": "exomiser",
+        "to": "/tools/exomiser",
+        "tooltip": ""
+      },
+      {
+        "label": "PhEval",
+        "key": "pheval",
+        "to": "/tools/pheval",
+        "tooltip": ""
+      },
+      {
+        "label": "LinkML",
+        "key": "linkml-cde",
+        "to": "/tools/linkml",
+        "tooltip": ""
+      },
+      {
+        "label": "SSSOM",
+        "key": "sssom",
+        "to": "/tools/sssom",
+        "tooltip": ""
+      },
+      {
+        "label": "OAK",
+        "key": "oak",
+        "to": "/tools/oak",
+        "tooltip": ""
+      },
+      {
+        "label": "ODK",
+        "key": "odk",
+        "to": "/tools/odk",
+        "tooltip": ""
+      },
+      {
+        "label": "OntoGPT",
+        "key": "ontogpt",
+        "to": "/tools/ontogpt",
+        "tooltip": ""
+      },
+      {
+        "label": "CurateGPT",
+        "key": "curate-gpt",
+        "to": "/tools/curate_gpt",
+        "tooltip": ""
+      },
+      {
+        "label": "Phenopackets",
+        "key": "pehnopackets",
+        "to": "/tools/phenopackets",
+        "tooltip": ""
+      }
+    ]
+  },
+  {
+    "label": "Registries & Hubs",
+    "subItems": [
+      {
+        "label": "Monarch OLS",
+        "key": "monarch_ols",
+        "to": "/registries/monarch_ols",
+        "tooltip": ""
+      },
+      {
+        "label": "Monarch Mapping Registry",
+        "key": "monarch_mapping_registry",
+        "to": "/registries/monarch_mapping_registry",
+        "tooltip": ""
+      },
+      {
+        "label": "KG Hub",
+        "key": "kg_hub",
+        "to": "/registries/kg_hub",
+        "tooltip": ""
+      },
+      {
+        "label": "KG Registry",
+        "key": "kg_registry",
+        "to": "/registries/kg_registry",
+        "tooltip": ""
+      },
+      {
+        "label": "LinkML Registry",
+        "key": "linkml_registry",
+        "to": "/registries/linkml_registry",
+        "tooltip": ""
       }
     ]
   },
@@ -101,34 +274,34 @@
         "label": "Get Involved",
         "key": "community-get-involved",
         "to": "/community/get-involved",
-        "tooltip": "Get Involved"
+        "tooltip": ""
       },
       {
         "label": "Blog",
         "key": "community-blog",
         "to": "https://monarchinit.medium.com",
-        "tooltip": "Blog",
+        "tooltip": "",
         "icon": true
       },
       {
         "label": "LinkedIn",
         "key": "community-linkedin",
         "to": "https://www.linkedin.com/company/the-monarch-initiative",
-        "tooltip": "LinkedIn",
+        "tooltip": "",
         "icon": true
       },
       {
         "label": "YouTube",
         "key": "community-youtube",
         "to": "https://www.youtube.com/@monarchinitiative",
-        "tooltip": "Youtube",
+        "tooltip": "",
         "icon": true
       },
       {
         "label": "Bluesky",
         "key": "community-bluesky",
         "to": "https://bsky.app/profile/monarchinitiative.bsky.social",
-        "tooltip": "BLueSky",
+        "tooltip": "",
         "icon": true
       }
     ]
