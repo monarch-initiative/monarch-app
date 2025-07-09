@@ -73,7 +73,7 @@ const kgExploreLinks: Record<string, string> = {
   uPheno: "/UPHENO:0001001",
 };
 
-//  Computed: grab the correct link (or undefined)
+// Get the correct link (or return undefined)
 const kgExploreLink = computed(() => {
   const key = props.item?.title_short;
   return key && kgExploreLinks[key];
@@ -86,7 +86,7 @@ const goToKg = () => {
   }
 };
 
-// Computed: should we render the button?
+// Boolean to check  if we should rnder the button
 const showKgExplore = computed(() => Boolean(kgExploreLink.value));
 
 //Formatting about section
