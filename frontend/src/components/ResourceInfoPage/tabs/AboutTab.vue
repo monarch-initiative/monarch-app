@@ -10,7 +10,13 @@
     >
       Learn more about {{ externalLink.text }} here.
     </AppLink>
-
+    <AppButton
+      v-if="showKgExplore"
+      :text="`Explore ${item.title_short} in Monarch KG`"
+      @click="goToKg"
+      icon="search"
+      class="find-kg-button"
+    />
     <div v-if="item.visual_explainer" class="visual-explainer">
       <div
         v-if="
@@ -42,9 +48,12 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useRouter } from "vue-router";
 import AppLink from "@/components/AppLink.vue";
 import AppSection from "@/components/AppSection.vue";
 import { embedYouTubeUrl } from "../helpers/youtube";
+
+const router = useRouter();
 
 const props = defineProps<{
   item: Record<string, any>;
@@ -55,6 +64,30 @@ const props = defineProps<{
     description?: string;
   };
 }>();
+
+//  Map from short_name → Monarch KG URL
+const kgExploreLinks: Record<string, string> = {
+  Mondo: "/MONDO:0000001",
+  HPO: "/HP:0000118",
+  Uberon: "/UBERON:0000061",
+  uPheno: "/UPHENO:0001001",
+};
+
+//  Computed: grab the correct link (or undefined)
+const kgExploreLink = computed(() => {
+  const key = props.item?.title_short;
+  return key && kgExploreLinks[key];
+});
+
+//function to navigate to the KG explore page
+const goToKg = () => {
+  if (kgExploreLink.value) {
+    router.push(kgExploreLink.value);
+  }
+};
+
+// Computed: should we render the button?
+const showKgExplore = computed(() => Boolean(kgExploreLink.value));
 
 //Formatting about section
 const formattedAbout = computed(() => {
@@ -130,7 +163,7 @@ $wrap: 1000px;
   }
 }
 
-.formatted-about ::v-deep p {
+.formatted-about ::v-deep(p) {
   margin-bottom: 0.5em;
 }
 
@@ -147,5 +180,10 @@ $wrap: 1000px;
   width: 100%;
   text-align: left;
   text-decoration: none;
+}
+.find-kg-button {
+  width: 100%;
+  max-width: fit-content;
+  margin: 0 auto 1em auto;
 }
 </style>
