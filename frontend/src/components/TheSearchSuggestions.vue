@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { nextTick } from "vue";
 import { useRouter } from "vue-router";
-import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
+import { getCategoryIcon } from "@/api/categories";
 import AppNodeText from "@/components/AppNodeText.vue";
 import { ENTITY_MAP } from "@/data/toolEntityConfig";
 
