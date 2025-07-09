@@ -184,6 +184,6 @@ $wrap: 1000px;
 .find-kg-button {
   width: 100%;
   max-width: fit-content;
-  margin: 0 auto 1em auto;
+  margin: 1em auto;
 }
 </style>
