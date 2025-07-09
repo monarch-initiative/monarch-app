@@ -13,9 +13,9 @@
     <AppButton
       v-if="showKgExplore"
       :text="`Explore ${item.title_short} in Monarch KG`"
-      @click="goToKg"
       icon="search"
       class="find-kg-button"
+      @click="goToKg"
     />
     <div v-if="item.visual_explainer" class="visual-explainer">
       <div
