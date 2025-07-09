@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { log } from "../playwright.config";
 
+test.use({ viewport: { width: 1400, height: 900 } });
 log();
 
 test("Recent/frequent results show", async ({ page }) => {

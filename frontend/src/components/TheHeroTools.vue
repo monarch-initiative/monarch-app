@@ -26,7 +26,7 @@ $wrap: 1120px;
     white-space: wrap;
   }
   a {
-    color: #007c8a;
+    color: $white;
     font-weight: 500;
     text-decoration: none;
 
@@ -56,7 +56,7 @@ $wrap: 1120px;
     color: $white;
   }
 }
-@media (max-width: 1000px) {
+@media (max-width: 1350) {
   hr {
     height: 1px;
     margin: 10px 0;
