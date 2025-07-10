@@ -9,7 +9,7 @@
 </template>
 
 <style scoped lang="scss">
-$wrap: 1120px;
+$wrap: 1350px;
 .hero-tool-links {
   display: flex;
   flex-wrap: nowrap;
@@ -26,7 +26,6 @@ $wrap: 1120px;
     white-space: wrap;
   }
   a {
-    color: $white;
     font-weight: 500;
     text-decoration: none;
 
