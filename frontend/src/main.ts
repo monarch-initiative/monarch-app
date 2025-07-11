@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-import VueGtag from "vue-gtag";
+import { createGtag } from "vue-gtag";
 import Hotjar from "vue-hotjar";
 import * as Sentry from "@sentry/vue";
 import App from "@/App.vue";
@@ -42,7 +42,10 @@ if (new URL(window.location.href).hostname.endsWith("monarchinitiative.org")) {
   app.use(Hotjar, { id: "3100256" });
 
   /** google analytics */
-  app.use(VueGtag, { config: { id: "G-TWM5ED4QJB" } }, router);
+  const gtag = createGtag({
+    tagId: "G-TWM5ED4QJB",
+  });
+  app.use(gtag);
 }
 
 (async () => {
