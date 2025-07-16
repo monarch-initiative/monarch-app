@@ -95,7 +95,6 @@ import AboutTab from "@/components/ResourceInfoPage/tabs/AboutTab.vue";
 import CitationTab from "@/components/ResourceInfoPage/tabs/CitationTab.vue";
 import ResourcesTab from "@/components/ResourceInfoPage/tabs/ResourcesTab.vue";
 import PageTile from "@/components/ThePageTitle.vue";
-// Static data and constants
 import { ABOUT_PAGE_LINKS } from "@/data/aboutPageLinks";
 import rawData from "@/resources/monarch-app-infopages.json";
 
