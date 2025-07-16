@@ -101,9 +101,7 @@
       "license": "CC-BY-4.0",
       "see_also": {
         "documentation": "https://mondo.readthedocs.io/en/latest",
-        "other": [
-          "https://monarch-initiative.github.io/mondo-ingest"
-        ],
+        "other": ["https://monarch-initiative.github.io/mondo-ingest"],
         "repository": "https://github.com/monarch-initiative/mondo",
         "website": "https://mondo.monarchinitiative.org"
       },
@@ -213,9 +211,7 @@
       "license": "CC0",
       "see_also": {
         "documentation": "https://obophenotype.github.io/upheno",
-        "other": [
-          "https://www.ebi.ac.uk/ols4/ontologies/upheno"
-        ],
+        "other": ["https://www.ebi.ac.uk/ols4/ontologies/upheno"],
         "repository": "https://github.com/obophenotype/upheno",
         "website": "https://obophenotype.github.io/upheno"
       },
@@ -237,9 +233,7 @@
       "license": "CC-BY-4.0",
       "see_also": {
         "documentation": "https://monarch-initiative.github.io/vertebrate-breed-ontology",
-        "other": [
-          "https://ols.monarchinitiative.org/ontologies/vbo"
-        ],
+        "other": ["https://ols.monarchinitiative.org/ontologies/vbo"],
         "repository": "https://github.com/monarch-initiative/vertebrate-breed-ontology",
         "website": "https://github.com/monarch-initiative/vertebrate-breed-ontology"
       },
@@ -477,7 +471,7 @@
       "visual_explainer": "https://www.youtube.com/watch?v=nuy_yGT9g2U"
     },
     "oak": {
-      "about": "<p> The Ontology Access Kit (OAK) is for both technical and non-technical users of ontologies. Non-technical users can use the command line interface to query ontologies in a variety of ways. Technical users can write Python code that uses the OAK library to perform ontology-related tasks. </p> <p>OAK provides a collection of interfaces for various ontology operations, including - </p> <ul> <li>Lookup features of an ontology element such as its label, definition, relationships, or aliases</li> <li>search an ontology for a term</li> <li>validate an ontology</li> <li>modify or delete terms</li> <li>generate and visualize subgraphs</li> <li>identify lexical matches and export as SSSOM mapping tables</li> <li>perform more advanced operations, such as graph traversal, OWL axiom processing, or text annotation</li> </ul> <p> These interfaces are separated from any particular backend, for which there are a number of different adapters. This means the same Python API and command line can be used regardless of whether the ontology - </p> <ul> <li>is served by a remote API such as OLS or BioPortal</li> <li>is present locally on the filesystem in owl, obo, obojson, or sqlite formats</li> <li>is to be downloaded from a remote repository such as the OBO library</li> <li>is queried from a remote database, including SPARQL endpoints (Ontobee/Ubergraph), a SQL database, a Solr/ES endpoint</li> </ul>",
+      "about": "<p> The Ontology Access Kit (OAK) is for both technical and non-technical users of ontologies. Non-technical users can use the command line interface to query ontologies in a variety of ways. Technical users can write Python code that uses the OAK library to perform ontology-related tasks. </p> <p>OAK provides a collection of interfaces for various ontology operations, including - </p> <ul> <li>lookup features of an ontology element such as its label, definition, relationships, or aliases</li> <li>search an ontology for a term</li> <li>validate an ontology</li> <li>modify or delete terms</li> <li>generate and visualize subgraphs</li> <li>identify lexical matches and export as SSSOM mapping tables</li> <li>perform more advanced operations, such as graph traversal, OWL axiom processing, or text annotation</li> </ul> <p> These interfaces are separated from any particular backend, for which there are a number of different adapters. This means the same Python API and command line can be used regardless of whether the ontology - </p> <ul> <li>is served by a remote API such as OLS or BioPortal</li> <li>is present locally on the filesystem in owl, obo, obojson, or sqlite formats</li> <li>is to be downloaded from a remote repository such as the OBO library</li> <li>is queried from a remote database, including SPARQL endpoints (Ontobee/Ubergraph), a SQL database, a Solr/ES endpoint</li> </ul>",
       "citation": "INCATools. (n.d.). ontology-access-kit [Source code]. GitHub. https://github.com/INCATools/ontology-access-kit",
       "contact": {
         "email": "cjmungall@lbl.gov",
