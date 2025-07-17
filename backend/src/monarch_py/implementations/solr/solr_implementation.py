@@ -18,7 +18,7 @@ from monarch_py.datamodels.model import (
     NodeHierarchy,
     SearchResults,
 )
-from monarch_py.datamodels.solr import core
+from monarch_py.datamodels.solr import SolrQuery, core
 from monarch_py.datamodels.category_enums import (
     AssociationCategory,
     AssociationPredicate,
@@ -222,6 +222,32 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             super_classes=super_classes,
             sub_classes=sub_classes,
         )
+
+    def get_infores(self, id: str) -> Optional[Entity]:
+        """Retrieve a specific information resource by exact ID match
+        
+        Args:
+            id (str): id of the information resource to search for.
+            
+        Returns:
+            Entity: Information resource entity or None if not found.
+        """
+        solr = SolrService(base_url=self.base_url, core=core.INFORES)
+        solr_document = solr.get(id)
+        if solr_document is None:
+            return None
+        return solr_document
+
+    def get_infores_catalog(self) -> List[dict]:
+        """Retrieve all information resources from the infores catalog
+        
+        Returns:
+            List[dict]: All information resources in the catalog as raw documents
+        """
+        solr = SolrService(base_url=self.base_url, core=core.INFORES)
+        response = solr.query(SolrQuery(q="*:*", limit=10000, offset=0))
+
+        return response.response.docs if response and response.response and response.response.docs else []
 
     ####################################
     # Implements: AssociationInterface #
