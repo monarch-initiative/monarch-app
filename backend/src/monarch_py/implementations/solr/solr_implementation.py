@@ -12,6 +12,7 @@ from monarch_py.datamodels.model import (
     CategoryGroupedAssociationResults,
     Entity,
     HistoPheno,
+    InformationResource,
     MappingResults,
     MultiEntityAssociationResults,
     Node,
@@ -223,31 +224,32 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             sub_classes=sub_classes,
         )
 
-    def get_infores(self, id: str) -> Optional[Entity]:
+    def get_infores(self, id: str) -> Optional[InformationResource]:
         """Retrieve a specific information resource by exact ID match
-        
+
         Args:
             id (str): id of the information resource to search for.
-            
+
         Returns:
-            Entity: Information resource entity or None if not found.
+            InformationResource: Information resource entity or None if not found.
         """
         solr = SolrService(base_url=self.base_url, core=core.INFORES)
         solr_document = solr.get(id)
         if solr_document is None:
             return None
-        return solr_document
+        return InformationResource(**solr_document)  # Direct unpacking!
 
-    def get_infores_catalog(self) -> List[dict]:
+    def get_infores_catalog(self) -> List[InformationResource]:
         """Retrieve all information resources from the infores catalog
-        
+
         Returns:
-            List[dict]: All information resources in the catalog as raw documents
+            List[InformationResource]: All information resources in the catalog
         """
         solr = SolrService(base_url=self.base_url, core=core.INFORES)
         response = solr.query(SolrQuery(q="*:*", limit=10000, offset=0))
-
-        return response.response.docs if response and response.response and response.response.docs else []
+        if not response or not response.response or not response.response.docs:
+            return []
+        return [InformationResource(**doc) for doc in response.response.docs]  # Direct unpacking!
 
     ####################################
     # Implements: AssociationInterface #
