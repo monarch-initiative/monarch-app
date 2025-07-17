@@ -5,8 +5,8 @@
 import { apiUrl, request } from "@/api";
 
 /**
- * Interface for the API response structure from the /association endpoint. The
- * API returns `facet_counts` containing `facet_fields` for knowledge sources.
+ * The API returns `facet_counts` containing `facet_fields` for knowledge
+ * sources.
  */
 export interface FacetAPIResponse {
   facet_fields: {
