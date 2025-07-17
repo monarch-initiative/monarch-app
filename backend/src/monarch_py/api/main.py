@@ -5,7 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 
 from monarch_py.api import association, entity, histopheno, infores, search, semsim, text_annotation
-from monarch_py.api.config import semsimian, spacyner
+from monarch_py.api.config import semsimian, spacyner, settings
+
 from monarch_py.api.middleware.logging_middleware import LoggingMiddleware
 from monarch_py.utils.utils import get_release_metadata, get_release_versions
 
@@ -71,6 +72,15 @@ async def _v3(
     if release is None:
         return get_release_versions(dev=dev, limit=limit)
     return get_release_metadata(release=release, dev=dev)
+
+
+@app.get(f"{PREFIX}/version")
+async def _version():
+    return {
+        "monarch_kg_version": settings.monarch_kg_version,
+        "monarch_api_version": settings.monarch_api_version,
+        "monarch_kg_source": settings.monarch_kg_source,
+    }
 
 
 def run():
