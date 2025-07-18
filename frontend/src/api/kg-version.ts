@@ -1,4 +1,3 @@
-// src/api/version.ts
 import { apiUrl, request } from "@/api";
 
 /** Each entry returned by GET /releases */
