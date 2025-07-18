@@ -1,4 +1,3 @@
-// src/composables/use-latest-kg-release-date.ts
 import { getLatestKGReleaseDate } from "@/api/kg-version";
 import { useQuery } from "@/composables/use-query";
 
