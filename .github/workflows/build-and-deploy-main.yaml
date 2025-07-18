@@ -1,0 +1,105 @@
+name: Build and Deploy Main Branch to Dev
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+# This workflow builds and deploys main branch changes to the dev environment
+jobs:
+  build-and-push-api-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build and Push Image
+        uses: RafikFarhad/push-to-gcr-github-action@v5-rc1
+        with:
+          gcloud_service_key: ${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }}
+          registry: us-central1-docker.pkg.dev
+          project_id: monarch-initiative
+          image_name: monarch-api/monarch-api
+          image_tag: main-${{ github.sha }}, latest-dev, ${{ github.sha }}
+          dockerfile: ./backend/Dockerfile
+
+  build-and-push-frontend-image:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install packages
+        run: bun install
+
+      - name: Build app
+        run: bun run build
+
+      - name: Build and Push Image
+        uses: RafikFarhad/push-to-gcr-github-action@v5-rc1
+        with:
+          gcloud_service_key: ${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }}
+          registry: us-central1-docker.pkg.dev
+          project_id: monarch-initiative
+          image_name: monarch-api/monarch-ui
+          image_tag: main-${{ github.sha }}, latest-dev, ${{ github.sha }}
+          dockerfile: ./services/nginx/Dockerfile
+          context: .
+
+  update-dev-services:
+    runs-on: ubuntu-latest
+    needs: [build-and-push-api-image, build-and-push-frontend-image]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - id: "auth"
+        uses: "google-github-actions/auth@v2"
+        with:
+          credentials_json: "${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }}"
+
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v2"
+
+      - name: "Cache SSH Key"
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.ssh/google_compute_engine
+            ~/.ssh/google_compute_engine.pub
+          key: ${{ runner.os }}-ssh-key
+
+      - name: "Remove old SSH keys"
+        run: |
+          if [[ $(gcloud compute os-login ssh-keys list | grep -v FINGERPRINT) ]]; then
+            for i in $(gcloud compute os-login ssh-keys list | grep -v FINGERPRINT)
+            do 
+              echo $i
+              gcloud compute os-login ssh-keys remove --key $i
+            done
+          fi
+
+      - name: "Update API Service on Dev"
+        run: |
+          gcloud compute ssh --ssh-key-expiration 60m --zone us-central1-a monarch-v3-dev-manager -- sudo docker system prune -f
+          gcloud compute ssh --ssh-key-expiration 60m --zone us-central1-a monarch-v3-dev-manager -- sudo docker service update monarch-v3_api --with-registry-auth  --update-order=start-first --force --image us-central1-docker.pkg.dev/monarch-initiative/monarch-api/monarch-api:${{ github.sha }}
+
+      - name: "Update UI Service on Dev"
+        run: |
+          gcloud compute ssh --ssh-key-expiration 60m --zone us-central1-a monarch-v3-dev-manager -- sudo docker system prune -f
+          gcloud compute ssh --ssh-key-expiration 60m --zone us-central1-a monarch-v3-dev-manager -- sudo docker service update monarch-v3_nginx --with-registry-auth  --update-order=start-first --force --image us-central1-docker.pkg.dev/monarch-initiative/monarch-api/monarch-ui:${{ github.sha }}

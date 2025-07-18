@@ -1,36 +1,49 @@
-name: Build and Push to GCR for specific branches
+name: Build Images for Specific Branches
+
 on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch name to build (leave empty to build current branch)'
+        required: false
+        type: string
   push:
     branches:
-      - issue-982-about-dropdown
+      # Add specific branch names here when needed for automatic builds
+      # Example: - feature-xyz
+      # Currently empty - use workflow_dispatch for on-demand builds
 
-# This job uses RafikFarhad's GitHub action to build and
-# push a docker image to a specified GCP repository
+# This workflow builds images for specific branches for testing purposes
+# Images are tagged with branch name and commit SHA but do not deploy anywhere
 jobs:
-  build-and-push-to-gcr:
+  build-and-push-api-image:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # to get all tags
+          ref: ${{ inputs.branch || github.ref }}
+          fetch-depth: 0
 
-      - name: Generate Image Tag
-        id: get-tag
+      - name: Get branch name
+        id: branch-name
         run: |
-          REV=$(git rev-list --tags --max-count=1)
-          IMAGE_TAG=$(git describe --tags $REV)
-          echo "IMAGE_TAG=${IMAGE_TAG//v}"
-          echo "IMAGE_TAG=${IMAGE_TAG//v}" >> $GITHUB_OUTPUT
+          if [ -n "${{ inputs.branch }}" ]; then
+            BRANCH_NAME="${{ inputs.branch }}"
+          else
+            BRANCH_NAME="${{ github.ref_name }}"
+          fi
+          echo "BRANCH_NAME=${BRANCH_NAME}" >> $GITHUB_OUTPUT
+          echo "Building branch: ${BRANCH_NAME}"
 
       - name: Build and Push Image
-        uses: RafikFarhad/push-to-gcr-github-action@v5-beta
+        uses: RafikFarhad/push-to-gcr-github-action@v5-rc1
         with:
-          gcloud_service_key: ${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }} # not needed if you use google-github-actions/auth
+          gcloud_service_key: ${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }}
           registry: us-central1-docker.pkg.dev
           project_id: monarch-initiative
           image_name: monarch-api/monarch-api
-          image_tag: ${{ github.sha }}, ${{ github.ref_name }}
+          image_tag: ${{ steps.branch-name.outputs.BRANCH_NAME }}-${{ github.sha }}, ${{ github.sha }}
           dockerfile: ./backend/Dockerfile
 
   build-and-push-frontend-image:
@@ -44,7 +57,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # to get all tags
+          ref: ${{ inputs.branch || github.ref }}
+          fetch-depth: 0
 
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
@@ -55,25 +69,26 @@ jobs:
       - name: Build app
         run: bun run build
 
-      - name: Generate Image Tag for Frontend Dir
-        id: get-tag
+      - name: Get branch name
+        id: branch-name
         run: |
-          REV=$(git rev-list --tags --max-count=1 )
-          IMAGE_TAG=$(git describe --tags $REV)
-          echo "IMAGE_TAG=${IMAGE_TAG//v}"
-          echo "IMAGE_TAG=${IMAGE_TAG//v}" >> $GITHUB_OUTPUT
-
-      # the monarch-ui Dockerfile pulls from two places:
-      # ./frontend/dist/, copied to /var/www/ in the image
-      # ./services/nginx/config/, copied to /etc/nginx/conf.d/ in the image
+          if [ -n "${{ inputs.branch }}" ]; then
+            BRANCH_NAME="${{ inputs.branch }}"
+          else
+            BRANCH_NAME="${{ github.ref_name }}"
+          fi
+          echo "BRANCH_NAME=${BRANCH_NAME}" >> $GITHUB_OUTPUT
+          echo "Building frontend for branch: ${BRANCH_NAME}"
 
       - name: Build and Push Image
-        uses: RafikFarhad/push-to-gcr-github-action@v5-beta
+        uses: RafikFarhad/push-to-gcr-github-action@v5-rc1
         with:
           gcloud_service_key: ${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }}
           registry: us-central1-docker.pkg.dev
           project_id: monarch-initiative
           image_name: monarch-api/monarch-ui
-          image_tag: ${{ github.sha }}, ${{ github.ref_name }}
+          image_tag: ${{ steps.branch-name.outputs.BRANCH_NAME }}-${{ github.sha }}, ${{ github.sha }}
           dockerfile: ./services/nginx/Dockerfile
           context: .
+
+  # Note: This workflow does NOT deploy anywhere - it only builds images for testing
