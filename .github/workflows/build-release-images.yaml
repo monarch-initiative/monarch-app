@@ -1,0 +1,77 @@
+name: Build Release Images
+
+on:
+  release:
+    types: [published]
+
+# This workflow builds production-ready images when a release is published
+jobs:
+  build-and-push-api-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get Release Tag
+        id: get-tag
+        run: |
+          # Get the actual release tag from the GitHub event
+          RELEASE_TAG=${GITHUB_REF#refs/tags/}
+          echo "RELEASE_TAG=${RELEASE_TAG//v}" >> $GITHUB_OUTPUT
+          echo "Building release: ${RELEASE_TAG//v}"
+
+      - name: Build and Push Image
+        uses: RafikFarhad/push-to-gcr-github-action@v5-rc1
+        with:
+          gcloud_service_key: ${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }}
+          registry: us-central1-docker.pkg.dev
+          project_id: monarch-initiative
+          image_name: monarch-api/monarch-api
+          image_tag: latest, ${{ steps.get-tag.outputs.RELEASE_TAG }}, ${{ github.sha }}
+          dockerfile: ./backend/Dockerfile
+
+  build-and-push-frontend-image:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install packages
+        run: bun install
+
+      - name: Build app
+        run: bun run build
+
+      - name: Get Release Tag
+        id: get-tag
+        run: |
+          # Get the actual release tag from the GitHub event
+          RELEASE_TAG=${GITHUB_REF#refs/tags/}
+          echo "RELEASE_TAG=${RELEASE_TAG//v}" >> $GITHUB_OUTPUT
+          echo "Building frontend release: ${RELEASE_TAG//v}"
+
+      - name: Build and Push Image
+        uses: RafikFarhad/push-to-gcr-github-action@v5-rc1
+        with:
+          gcloud_service_key: ${{ secrets.JSON_GCLOUD_SERVICE_ACCOUNT_JSON }}
+          registry: us-central1-docker.pkg.dev
+          project_id: monarch-initiative
+          image_name: monarch-api/monarch-ui
+          image_tag: latest, ${{ steps.get-tag.outputs.RELEASE_TAG }}, ${{ github.sha }}
+          dockerfile: ./services/nginx/Dockerfile
+          context: .
+
+  # Note: This workflow does NOT deploy to dev - releases are production images
+  # Dev environment continues to run the latest main branch via build-and-deploy-main.yaml

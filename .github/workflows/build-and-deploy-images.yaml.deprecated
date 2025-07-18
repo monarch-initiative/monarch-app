@@ -1,12 +1,27 @@
-name: Build and Deploy Docker Images
+# DEPRECATED: This workflow has been replaced by separate workflows for better clarity
+# 
+# Issues with this workflow:
+# - Tagged images with old release versions on every main branch push
+# - Mixed development and release concerns in one workflow
+# - Caused confusion about when releases were actually happening
+#
+# Replaced by:
+# - build-and-deploy-main.yaml (for main branch dev deployment)
+# - build-release-images.yaml (for actual releases)
+# - build-images-for-branch.yaml (for branch testing)
+#
+# This file is kept for reference but should not be used.
+
+name: Build and Deploy Docker Images (DEPRECATED)
 
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-  release:
-    types: [published]
+  # Disabled - triggers moved to separate workflows
+  # workflow_dispatch:
+  # push:
+  #   branches:
+  #     - main
+  # release:
+  #   types: [published]
 
 # This job uses RafikFarhad's GitHub action to build and
 # push a docker image to a specified GCP repository
