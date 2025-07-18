@@ -6,15 +6,7 @@ interface ReleaseEntry {
   url: string;
 }
 
-/**
- * Fetches the most recent Knowledge Graph release version.
- *
- * @async
- * @function getLatestKGReleaseDate
- * @returns {Promise<string>} A promise that resolves to the latest release
- *   version.
- * @throws {Error} If the API returns no releases.
- */
+// Fetches the latest Knowledge Graph release version
 export const getLatestKGReleaseDate = async (): Promise<string> => {
   const url = `${apiUrl}/releases`;
   const releases = await request<ReleaseEntry[]>(url, { limit: 2 });
