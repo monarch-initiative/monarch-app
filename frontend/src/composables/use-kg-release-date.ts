@@ -5,7 +5,7 @@ import { useQuery } from "@/composables/use-query";
  * Composable hook to fetch and manage the latest Monarch Knowledge Graph
  * release info.
  *
- * @returns {latestRelease:
+ * @returns {latestRelease: string,
  *   isLoading: boolean,
  *   latestReleaseDate: string,
  *   isError: boolean,
