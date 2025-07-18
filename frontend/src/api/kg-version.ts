@@ -1,17 +1,18 @@
 import { apiUrl, request } from "@/api";
 
-/** Each entry returned by GET /releases */
-interface ReleaseEntry {
-  version: string;
-  url: string;
+/** Response from GET /version */
+interface VersionResponse {
+  monarch_kg_version: string;
+  monarch_api_version: string;
+  monarch_kg_source: string;
 }
 
 // Fetches the latest Knowledge Graph release version
 export const getLatestKGReleaseDate = async (): Promise<string> => {
-  const url = `${apiUrl}/releases`;
-  const releases = await request<ReleaseEntry[]>(url, { limit: 2 });
-  if (!Array.isArray(releases) || releases.length === 0) {
-    throw new Error("No KG releases found");
+  const url = `${apiUrl}/version`;
+  const versionInfo = await request<VersionResponse>(url);
+  if (!versionInfo || !versionInfo.monarch_kg_version) {
+    throw new Error("No KG version found");
   }
-  return releases[1].version;
+  return versionInfo.monarch_kg_version;
 };
