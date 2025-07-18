@@ -367,6 +367,39 @@ classes:
         multivalued: true
         required: false
 
+  InformationResource:  # FROM INFORES REGISTRY
+    description: A database or knowledgebase and its supporting ecosystem of interfaces and services that deliver content to consumers
+    aliases: ['knowledgebase']
+    slots:
+      - id              # Core identifier
+      - name            # Human-readable name
+      - description     # Free-text description
+      - status          # Status of the resource (required)
+      - knowledge_level # Existing slot
+      - agent_type      # Existing slot
+      - xref            # Database cross references
+      - synonym         # Alternate names
+      - consumes        # Resources consumed
+      - consumed_by     # Resources that consume this
+    slot_usage:
+      id:
+        required: true
+        description: Unique identifier (CURIE or complete URI)
+      name:
+        aliases: ['label', 'display name', 'title']
+        description: Human-readable name for the resource
+      status:
+        required: true
+        description: Status of the information resource identifier
+      xref:
+        aliases: ['dbxref', 'record_url']
+        description: Database cross references or alternative identifiers
+      synonym:
+        description: Alternate human-readable names
+      description:
+        aliases: ['comment', 'note', 'definition']
+        description: Free-text description of the resource
+
 slots:
   aggregator_knowledge_source:
     multivalued: true
@@ -907,3 +940,18 @@ slots:
   highlighting:
     description: Optional highlighting information for search results
     multivalued: false
+
+  # Information Resource Registry slots - FROM INFORES REGISTRY
+  status:
+    description: Status of the information resource identifier
+    range: string
+
+  consumes:
+    description: Information resources consumed by this resource
+    range: string
+    multivalued: true
+
+  consumed_by:
+    description: Information resources consuming this resource
+    range: string
+    multivalued: true
