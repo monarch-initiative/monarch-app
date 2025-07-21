@@ -27,43 +27,31 @@
         </button>
       </div>
 
-      <div class="topRow">
-        <AppFlex gap="small" class="leftColumn">
-          <AppCheckbox
-            v-if="
-              node.category === 'biolink:Gene' &&
-              category?.id.startsWith('biolink:GeneToPheno')
-            "
-            v-model="includeOrthologs"
-            v-tooltip="
-              'Include phenotypes for orthologous genes in the associations table'
-            "
-            text="Include ortholog phenotypes"
-          />
+      <div class="actions-row">
+        <AppButton
+          v-if="
+            (selectedTabs[category.id] === 'direct' &&
+              node.category === 'biolink:Disease' &&
+              category?.id.startsWith('biolink:DiseaseToPheno') &&
+              (node.has_phenotype_count ?? 0) > 0) ||
+            (node.category === 'biolink:Gene' &&
+              category?.id.startsWith('biolink:GeneToPheno') &&
+              (node.has_phenotype_count ?? 0) > 0)
+          "
+          v-tooltip="
+            'Send these phenotypes to Phenotype Explorer for comparison'
+          "
+          to="/search-phenotypes"
+          :state="{ search: node.id }"
+          text="Phenotype Explorer"
+          icon="arrow-right"
+        />
 
-          <AppButton
-            v-if="
-              (node.category === 'biolink:Disease' &&
-                category?.id.startsWith('biolink:DiseaseToPheno') &&
-                (node.has_phenotype_count ?? 0) > 0) ||
-              (node.category === 'biolink:Gene' &&
-                category?.id.startsWith('biolink:GeneToPheno') &&
-                (node.has_phenotype_count ?? 0) > 0)
-            "
-            v-tooltip="
-              'Send these phenotypes to Phenotype Explorer for comparison'
-            "
-            to="/search-phenotypes"
-            :state="{ search: node.id }"
-            text="Phenotype Explorer"
-            icon="arrow-right"
-          />
-        </AppFlex>
-
-        <div class="rightColumn">
+        <div class="search-wrapper">
           <AppTextbox
             v-model="searchValues[category.id]"
             placeholder="Search table data..."
+            class="search-box"
             @debounce="(value) => (debouncedSearchValues[category.id] = value)"
             @change="(value) => (debouncedSearchValues[category.id] = value)"
           />
@@ -75,7 +63,6 @@
         <AssociationsTable
           :node="node"
           :category="category"
-          :include-orthologs="includeOrthologs"
           :direct="{
             id: selectedTabs[category.id] === 'direct' ? 'true' : 'false',
             label:
@@ -188,5 +175,20 @@ function setDirect(categoryId: string, directId: "true" | "false") {
       font-weight: 500;
     }
   }
+}
+
+.actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  margin: 1rem 0;
+  gap: 1rem;
+}
+
+.search-wrapper {
+  flex: 1 1 auto;
+  max-width: 500px;
 }
 </style>

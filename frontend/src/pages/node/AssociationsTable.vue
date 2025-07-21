@@ -246,8 +246,7 @@ type Props = {
   node: Node;
   /** selected association category */
   category: Option;
-  /** include orthologs */
-  includeOrthologs: boolean;
+
   direct: Option;
   /** search string */
   search: string;
@@ -498,13 +497,12 @@ const {
     if (fresh) {
       start.value = 0;
     }
-
     const response = await getAssociations(
       props.node.id,
       props.category.id,
       start.value,
       perPage.value,
-      props.includeOrthologs,
+      true,
       props.direct.id,
       props.search,
       sort.value,
@@ -533,7 +531,7 @@ async function download() {
   await downloadAssociations(
     props.node.id,
     props.category.id,
-    props.includeOrthologs,
+    true,
     props.direct.id,
     props.search,
     sort.value,
@@ -591,10 +589,7 @@ watch(
   () => props.category,
   async () => await queryAssociations(true),
 );
-watch(
-  () => props.includeOrthologs,
-  async () => await queryAssociations(true),
-);
+
 watch(
   () => props.direct,
   async () => await queryAssociations(true),
