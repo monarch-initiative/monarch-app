@@ -88,6 +88,9 @@
     <!-- object-->
     <template #object="{ row }">
       <div class="badgeColumn">
+        <span v-if="row?.negated === true && direct.id === 'true'">
+          Does <span class="negated-text">NOT</span> have
+        </span>
         <AppNodeBadge
           :node="{
             id: row.object,
@@ -359,7 +362,7 @@ const cols = computed((): Cols<Datum> => {
   }
 
   /** standard columns, always present */
-  const baseCols: Cols<Datum> = [
+  let baseCols: Cols<Datum> = [
     {
       slot: "subject",
       key: "subject_label",
@@ -400,6 +403,13 @@ const cols = computed((): Cols<Datum> => {
       slot: "taxon",
       heading: "Taxon",
     });
+  }
+
+  // if tab is direct, take out subject label and predicate columns
+  if (props.direct.id === "true") {
+    baseCols = baseCols.filter(
+      (col) => col.key !== "subject_label" && col.key !== "predicate",
+    );
   }
 
   if (

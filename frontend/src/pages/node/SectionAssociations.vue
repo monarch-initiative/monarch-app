@@ -82,7 +82,6 @@
 import { computed, ref, watch } from "vue";
 import { startCase } from "lodash";
 import type { Node } from "@/api/model";
-import AppCheckbox from "@/components/AppCheckbox.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import type { Option, Options } from "@/components/AppSelectSingle.vue";
 import AppTextbox from "@/components/AppTextbox.vue";
@@ -95,8 +94,6 @@ type Props = {
 
 const props = defineProps<Props>();
 
-/** include orthologous genes in association table */
-const includeOrthologs = ref(false);
 const selectedTabs = ref<Record<string, "all" | "direct">>({});
 const searchValues = ref<Record<string, string>>({});
 const debouncedSearchValues = ref<Record<string, string>>({});
