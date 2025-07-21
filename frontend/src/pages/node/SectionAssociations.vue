@@ -12,6 +12,21 @@
         >No associations with &nbsp;<AppNodeBadge :node="node" />
       </span>
 
+      <div class="association-tabs">
+        <button
+          :class="{ active: (selectedTabs[category.id] || 'all') === 'all' }"
+          @click="setDirect(category.id, 'false')"
+        >
+          All Associations
+        </button>
+        <button
+          :class="{ active: selectedTabs[category.id] === 'direct' }"
+          @click="setDirect(category.id, 'true')"
+        >
+          Direct Associations
+        </button>
+      </div>
+
       <div class="topRow">
         <AppFlex gap="small" class="leftColumn">
           <AppCheckbox
@@ -72,7 +87,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { startCase } from "lodash";
 import type { Node } from "@/api/model";
 import AppCheckbox from "@/components/AppCheckbox.vue";
@@ -94,7 +109,7 @@ const props = defineProps<Props>();
 /** include orthologous genes in association table */
 const includeOrthologs = ref(false);
 const direct = ref<Option>();
-
+const selectedTabs = ref<Record<string, "all" | "direct">>({});
 const searchValues = ref<Record<string, string>>({});
 const debouncedSearchValues = ref<Record<string, string>>({});
 
@@ -107,6 +122,17 @@ const categoryOptions = computed(
       count: association_count.count,
     })) || [],
 );
+
+function setDirect(categoryId: string, directId: "true" | "false") {
+  // update local state
+  selectedTabs.value[categoryId] = directId === "true" ? "direct" : "all";
+  direct.value = directOptions.value.find((o) => o.id === directId)!;
+
+  //update the URL bar without navigation/scroll
+  const url = new URL(window.location.href);
+  url.searchParams.set("direct", directId);
+  window.history.replaceState({}, "", url);
+}
 
 const directOptions = computed(
   (): Options => [
@@ -156,5 +182,40 @@ watch(
 }
 .rightColumn {
   min-width: 20em;
+}
+.association-tabs {
+  display: flex;
+  border-bottom: 3px solid $theme;
+  button {
+    position: relative;
+    padding: 0.9em 1.9em;
+    border: none;
+    background: none;
+    color: #333;
+    font-weight: 500;
+    font-size: 1em;
+    cursor: pointer;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
+    &:hover {
+      background-color: #f5f5f5;
+    }
+    &.active {
+      border-radius: 5px 5px 0 0;
+      background-color: $theme;
+      color: white;
+      font-weight: 600;
+      &::after {
+        display: none;
+        content: "";
+      }
+    }
+    &:not(.active) {
+      background-color: #f0f0f0;
+      color: #555;
+      font-weight: 500;
+    }
+  }
 }
 </style>
