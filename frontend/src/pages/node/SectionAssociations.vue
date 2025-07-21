@@ -70,13 +70,19 @@
         </div>
       </div>
 
-      <template v-if="category && direct">
+      <template v-if="category">
         <!-- table view of associations -->
         <AssociationsTable
           :node="node"
           :category="category"
           :include-orthologs="includeOrthologs"
-          :direct="direct"
+          :direct="{
+            id: selectedTabs[category.id] === 'direct' ? 'true' : 'false',
+            label:
+              selectedTabs[category.id] === 'direct'
+                ? 'directly'
+                : 'including sub-classes',
+          }"
           :search="debouncedSearchValues[category.id]"
         />
       </template>
@@ -87,7 +93,6 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
 import { startCase } from "lodash";
 import type { Node } from "@/api/model";
 import AppCheckbox from "@/components/AppCheckbox.vue";
@@ -95,9 +100,6 @@ import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import type { Option, Options } from "@/components/AppSelectSingle.vue";
 import AppTextbox from "@/components/AppTextbox.vue";
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
-
-/** route info */
-const route = useRoute();
 
 type Props = {
   /** current node */
@@ -108,7 +110,6 @@ const props = defineProps<Props>();
 
 /** include orthologous genes in association table */
 const includeOrthologs = ref(false);
-const direct = ref<Option>();
 const selectedTabs = ref<Record<string, "all" | "direct">>({});
 const searchValues = ref<Record<string, string>>({});
 const debouncedSearchValues = ref<Record<string, string>>({});
@@ -124,38 +125,8 @@ const categoryOptions = computed(
 );
 
 function setDirect(categoryId: string, directId: "true" | "false") {
-  // update local state
   selectedTabs.value[categoryId] = directId === "true" ? "direct" : "all";
-  direct.value = directOptions.value.find((o) => o.id === directId)!;
-
-  //update the URL bar without navigation/scroll
-  const url = new URL(window.location.href);
-  url.searchParams.set("direct", directId);
-  window.history.replaceState({}, "", url);
 }
-
-const directOptions = computed(
-  (): Options => [
-    { id: "false", label: "including sub-classes" },
-    { id: "true", label: "directly" },
-  ],
-);
-
-watch(
-  () => route.query,
-  () => {
-    if (!route.query.direct) {
-      direct.value = directOptions.value.find(
-        (option) => option.id === "false",
-      ); // Set default value
-    } else {
-      direct.value = directOptions.value.find(
-        (option) => option.id === route.query.direct,
-      );
-    }
-  },
-  { immediate: true },
-);
 </script>
 
 <style lang="scss" scoped>
