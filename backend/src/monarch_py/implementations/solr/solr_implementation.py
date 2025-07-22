@@ -237,7 +237,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         solr_document = solr.get(id)
         if solr_document is None:
             return None
-        return InformationResource(**solr_document)  # Direct unpacking!
+        return InformationResource(**solr_document)  # Convert the Solr document into an InformationResource object by unpacking its fields.
 
     def get_infores_catalog(self) -> List[InformationResource]:
         """Retrieve all information resources from the infores catalog
