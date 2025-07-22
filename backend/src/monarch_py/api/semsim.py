@@ -61,8 +61,8 @@ def _compare(
     print(
         f"""
     Running semsim compare:
-        subjects: {subjects.split(',')}
-        objects: {objects.split(',')}
+        subjects: {subjects.split(",")}
+        objects: {objects.split(",")}
         metric: {metric}
     """
     )

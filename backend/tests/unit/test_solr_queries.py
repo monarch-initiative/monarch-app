@@ -72,9 +72,9 @@ def test_build_association_multiple_predicates():
     )
     assert len(query.filter_queries) > 0, "filter_queries is empty"
     predicate_filter = [fq for fq in query.filter_queries if fq.startswith("predicate:")][0]
-    assert (
-        predicate_filter == "predicate:biolink\\:has_phenotype OR predicate:biolink\\:expressed_in"
-    ), "multiple predicate filter is not as expected"
+    assert predicate_filter == "predicate:biolink\\:has_phenotype OR predicate:biolink\\:expressed_in", (
+        "multiple predicate filter is not as expected"
+    )
 
 
 def test_build_association_multiple_entites():

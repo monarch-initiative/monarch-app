@@ -16,7 +16,7 @@ class Settings(BaseModel):
 
     semsim_server_host: str = os.getenv("SEMSIM_SERVER_HOST", "127.0.0.1")
     semsim_server_port: str = os.getenv("SEMSIM_SERVER_PORT", 9999)
-    
+
     monarch_kg_version: str = os.getenv("MONARCH_KG_VERSION", "unknown")
     monarch_api_version: str = os.getenv("MONARCH_API_VERSION", "unknown")
     monarch_kg_source: str = os.getenv("MONARCH_KG_SOURCE", "unknown")
