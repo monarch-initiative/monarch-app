@@ -249,7 +249,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         response = solr.query(SolrQuery(q="*:*", limit=10000, offset=0))
         if not response or not response.response or not response.response.docs:
             return []
-        return [InformationResource(**doc) for doc in response.response.docs]  # Direct unpacking!
+        return [InformationResource(**doc) for doc in response.response.docs]  # Convert Solr documents to InformationResource objects
 
     ####################################
     # Implements: AssociationInterface #
