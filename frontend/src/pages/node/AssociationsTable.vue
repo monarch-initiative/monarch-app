@@ -249,7 +249,7 @@ type Props = {
   node: Node;
   /** selected association category */
   category: Option;
-
+  /** "true" = direct only, "false" = include subclasses */
   direct: Option;
   /** search string */
   search: string;
