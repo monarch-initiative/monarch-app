@@ -104,7 +104,7 @@
         <div class="hero-tools">
           <TheHeroTools v-if="isMobile" />
         </div>
-        <div v-if="formattedReleaseDate" class="release-date">
+        <div v-if="isMobile && formattedReleaseDate" class="release-date">
           <span v-if="isLoading">Loading release date..</span>
           Monarch KG release: <strong>{{ formattedReleaseDate }}</strong>
         </div>
