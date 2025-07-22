@@ -664,4 +664,8 @@ onMounted(() => queryAssociations(true));
   color: $dark-gray;
   font-size: 0.9em;
 }
+.negated-text {
+  color: $error;
+  font-weight: bold;
+}
 </style>
