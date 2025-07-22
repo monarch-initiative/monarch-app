@@ -17,7 +17,12 @@
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 
+const props = defineProps<{
+  dynamicBreadcrumb?: string;
+}>();
+
 const route = useRoute();
+
 interface Breadcrumb {
   path: string;
   label: string;
@@ -27,13 +32,23 @@ const breadcrumbs = computed<Breadcrumb[]>(() => {
   const breadcrumbTrail: Breadcrumb[] = [{ path: "/", label: "Home" }];
   const matchedRoutes = route.matched;
 
-  // Build the breadcrumb trail dynamically for the matched routes
-  matchedRoutes.forEach((route, index) => {
+  matchedRoutes.forEach((matchedRoute, index) => {
     const fullPath = matchedRoutes
       .slice(0, index + 1)
       .map((r) => r.path)
       .join("");
-    const label = route.meta.breadcrumb || route.name || "Unknown";
+
+    let label = matchedRoute.meta.breadcrumb || matchedRoute.name || "Unknown";
+
+    // Use dynamicBreadcrumb if available and we are at the last breadcrumb
+    if (
+      index === matchedRoutes.length - 1 &&
+      props.dynamicBreadcrumb &&
+      props.dynamicBreadcrumb.trim() !== ""
+    ) {
+      label = props.dynamicBreadcrumb;
+    }
+
     breadcrumbTrail.push({
       path: fullPath,
       label: label as string,

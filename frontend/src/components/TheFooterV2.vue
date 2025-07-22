@@ -1,16 +1,10 @@
 <template>
   <footer class="footer">
     <div class="container">
-      <div class="logo-column">
-        <ResourceIcon class="footer-logo" />
-        <p>© Monarch Initiative</p>
-        <p>2025. BSD-3</p>
-      </div>
-
       <div
         v-for="(column, index) in navigationMenus"
         :key="index"
-        class="footer-column"
+        class="right-column"
       >
         <p>{{ column.label }}</p>
         <ul>
@@ -28,53 +22,59 @@
           </li>
         </ul>
       </div>
+      <!-- Logo & Social -->
+      <div class="left-column">
+        <div class="logo-column">
+          <ResourceIcon class="footer-logo" />
+          <p>Monarch Initiative</p>
+        </div>
+        <div class="social">
+          <p>Follow us on</p>
+          <div class="icons">
+            <AppLink
+              v-tooltip="'Subscribe'"
+              to="https://groups.google.com/g/monarch-friends/"
+              class="social-icon"
+            >
+              <AppIcon icon="envelope" />
+            </AppLink>
+            <AppLink
+              v-tooltip="'Medium'"
+              to="https://medium.com/@MonarchInit"
+              class="social-icon"
+            >
+              <AppIcon icon="medium" />
+            </AppLink>
+            <AppLink
+              v-tooltip="'GitHub'"
+              to="https://github.com/monarch-initiative"
+              class="social-icon"
+            >
+              <AppIcon icon="github" />
+            </AppLink>
+            <AppLink
+              v-tooltip="'LinkedIn'"
+              to="https://www.linkedin.com/company/the-monarch-initiative"
+              class="social-icon"
+            >
+              <AppIcon icon="linkedin" />
+            </AppLink>
 
-      <div class="social">
-        <p>Follow us on:</p>
-        <div class="icons">
-          <AppLink
-            v-tooltip="'Subscribe'"
-            to="https://groups.google.com/g/monarch-friends/"
-            class="social-icon"
-          >
-            <AppIcon icon="envelope" />
-          </AppLink>
-          <AppLink
-            v-tooltip="'Medium'"
-            to="https://medium.com/@MonarchInit"
-            class="social-icon"
-          >
-            <AppIcon icon="medium" />
-          </AppLink>
-          <AppLink
-            v-tooltip="'GitHub'"
-            to="https://github.com/monarch-initiative"
-            class="social-icon"
-          >
-            <AppIcon icon="github" />
-          </AppLink>
-          <AppLink
-            v-tooltip="'LinkedIn'"
-            to="https://www.linkedin.com/company/the-monarch-initiative"
-            class="social-icon"
-          >
-            <AppIcon icon="linkedin" />
-          </AppLink>
-
-          <AppLink
-            v-tooltip="'YouTube'"
-            to="https://www.youtube.com/@monarchinitiative"
-            class="social-icon"
-          >
-            <AppIcon icon="youtube" />
-          </AppLink>
-          <AppLink
-            v-tooltip="'blusky'"
-            to="https://bsky.app/profile/monarchinitiative.bsky.social"
-            class="social-icon"
-          >
-            <AppIcon icon="social-bluesky" />
-          </AppLink>
+            <AppLink
+              v-tooltip="'YouTube'"
+              to="https://www.youtube.com/@monarchinitiative"
+              class="social-icon"
+            >
+              <AppIcon icon="youtube" />
+            </AppLink>
+            <AppLink
+              v-tooltip="'blusky'"
+              to="https://bsky.app/profile/monarchinitiative.bsky.social"
+              class="social-icon"
+            >
+              <AppIcon icon="social-bluesky" />
+            </AppLink>
+          </div>
         </div>
       </div>
     </div>
@@ -90,39 +90,45 @@ import navigationMenus from "@/data/navigationMenu.json";
 <style scoped lang="scss">
 .footer {
   display: flex;
+  z-index: 1010;
   justify-content: center;
-  padding: 30px max(20px, (100% - 1200px) / 2);
+  padding: 30px 20px;
   background: #d3e6eb;
   font-size: 0.9rem;
 
+  @media (max-width: 1240) {
+    margin: unset !important;
+  }
   .container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    max-width: 1000px;
-
-    gap: 2rem;
+    justify-content: flex-start;
   }
 
   .logo-column {
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-weight: 600;
+
     text-align: center;
     > svg {
       margin: 0;
     }
   }
 
-  .footer-column {
+  .right-column {
     display: flex;
+    flex: 1;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
+    min-width: 120px;
+    text-align: left;
 
     p {
-      margin: unset;
+      padding-left: 0.7em;
       font-weight: bold;
+      text-align: left;
+      word-break: keep-all;
     }
 
     ul {
@@ -167,10 +173,12 @@ import navigationMenus from "@/data/navigationMenu.json";
     font-weight: bold;
   }
 }
-.social {
+.left-column {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 0.5em;
+  font-weight: 500;
 }
 
 .social-icon {
@@ -205,6 +213,30 @@ import navigationMenus from "@/data/navigationMenu.json";
 
   .app-icon[data-icon="bluesky"] {
     color: #1185fe;
+  }
+}
+
+.social {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (max-width: 1240px) {
+  footer {
+    margin: unset !important;
+    padding: 10px;
+  }
+  .footer .left-column {
+    width: 20%;
+  }
+  .footer .container {
+    justify-content: center;
+    text-align: center;
+  }
+  .footer .right-column {
+    flex: 0 0 10%;
+    max-width: 50%;
   }
 }
 </style>

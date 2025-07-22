@@ -19,6 +19,7 @@
           />
           <AppNodeText :text="search.source.name" />
         </span>
+        <span class="separator">-</span>
         <span class="node">
           <AppIcon
             class="icon"
@@ -34,7 +35,7 @@
 <script setup lang="ts">
 import { nextTick } from "vue";
 import { useRouter } from "vue-router";
-import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
+import { getCategoryIcon } from "@/api/categories";
 import AppNodeText from "@/components/AppNodeText.vue";
 import { ENTITY_MAP } from "@/data/toolEntityConfig";
 
@@ -191,7 +192,7 @@ span {
   display: flex;
   align-items: center;
   padding: 0.5rem 1rem;
-  gap: 0.6rem;
+  gap: 0.3rem;
   border-radius: 0.5rem;
   background: #f3f3f3;
   white-space: nowrap;
@@ -251,5 +252,8 @@ span {
   top: -1px;
   margin-right: 0.4em;
   vertical-align: middle;
+}
+.separator {
+  user-select: none;
 }
 </style>

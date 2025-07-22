@@ -47,8 +47,12 @@
         <div class="hero-search-wrapper">
           <TabSearch :minimal="true" :header-box="true" :home="home" />
           <TheSearchTerms />
-
           <TheSearchSuggestions @select="handleSuggestionClick" />
+          <TheHeroTools />
+        </div>
+        <div v-if="formattedReleaseDate" class="release-date">
+          <span v-if="isLoading">Loading release date..</span>
+          Monarch KG release: <strong>{{ formattedReleaseDate }}</strong>
         </div>
       </div>
     </div>
@@ -74,12 +78,6 @@
       />
 
       <div class="navItems">
-        <AppLink
-          class="link"
-          to="https://exomiser.monarchinitiative.org/exomiser/"
-        >
-          Exomiser
-        </AppLink>
         <DropdownButton
           v-for="(menu, index) in navigationMenus"
           :key="menu.label"
@@ -103,6 +101,13 @@
             </li>
           </template>
         </DropdownButton>
+        <div class="hero-tools">
+          <TheHeroTools v-if="isMobile" />
+        </div>
+        <div v-if="isMobile && formattedReleaseDate" class="release-date">
+          <span v-if="isLoading">Loading release date..</span>
+          Monarch KG release: <strong>{{ formattedReleaseDate }}</strong>
+        </div>
       </div>
     </nav>
 
@@ -114,11 +119,14 @@
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import TheLogo from "@/assets/TheLogo.vue";
+import TabSearch from "@/components/TabSearch.vue";
 import TheSearchTerms from "@/components/TheSearchTerms.vue";
+import { useLatestKGReleaseDate } from "@/composables/use-kg-release-date";
 import navigationMenus from "@/data/navigationMenu.json";
 import { ENTITY_MAP } from "@/data/toolEntityConfig";
-import TabSearch from "@/pages/explore/TabSearch.vue";
+import { formatReleaseDate } from "@/util/formatDate";
 import DropdownButton from "./TheDropdownButton.vue";
+import TheHeroTools from "./TheHeroTools.vue";
 import TheNexus from "./TheNexus.vue";
 import TheScrollButton from "./TheScrollButton.vue";
 import TheSearchSuggestions from "./TheSearchSuggestions.vue";
@@ -135,6 +143,16 @@ const header = ref<HTMLElement>();
 /** is home page (big) version */
 const home = computed((): boolean => route.name === "Home");
 
+const { latestReleaseDate, fetchReleaseDate, isLoading } =
+  useLatestKGReleaseDate();
+
+// Compute formatted date string
+const formattedReleaseDate = computed(() => {
+  return latestReleaseDate.value
+    ? formatReleaseDate(latestReleaseDate.value)
+    : null;
+});
+
 /** whether to show search box */
 const search = computed(
   (): boolean =>
@@ -144,18 +162,6 @@ const search = computed(
       (route.name === "KnowledgeGraph" && route.hash === "")
     ),
 );
-
-async function scrollToHomePageSection() {
-  await nextTick(); // wait for DOM update
-  setTimeout(() => {
-    const el = document.getElementById("home-page");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    } else {
-      console.warn("home-page not found");
-    }
-  }, 300); // 300ms gives time for Vue to render home component
-}
 
 function scrollToHashWithOffset(hash: string, offset = 80) {
   const el = document.querySelector(hash);
@@ -189,6 +195,10 @@ const updateWidth = () => {
 };
 
 onMounted(() => {
+  // Kick off the KG release-date fetch
+  fetchReleaseDate();
+
+  // Listen for window resizes
   window.addEventListener("resize", updateWidth);
 });
 
@@ -196,14 +206,14 @@ onUnmounted(() => {
   window.removeEventListener("resize", updateWidth);
 });
 
-const isMobile = computed(() => windowWidth.value < 800);
+const isMobile = computed(() => windowWidth.value < 1350);
 
 /** close nav when page changes */
 watch(() => route.name, close);
 </script>
 
 <style lang="scss" scoped>
-$wrap: 800px;
+$wrap: 1350px;
 
 /** header */
 .header {
@@ -232,10 +242,6 @@ $wrap: 800px;
     display: none;
   }
 }
-
-// .header.home {
-//   justify-content: center;
-// }
 
 @media (max-width: $wrap) {
   .header {
@@ -468,7 +474,7 @@ Its here to align with the styling of old nav items. */
   width: 80%;
   max-width: 68em;
   margin: 0 auto;
-  padding: 3.5em 2em;
+  padding: 2.5em 2em;
   gap: 1.2em;
   border-radius: 20px;
   background: white;
@@ -477,7 +483,7 @@ Its here to align with the styling of old nav items. */
   text-align: center;
   transition: box-shadow 0.3s ease;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1300px) {
     padding: 1.8em;
   }
 }
@@ -495,7 +501,6 @@ Its here to align with the styling of old nav items. */
 .hero-header h1 {
   color: #333;
   font-weight: 600;
-  font-size: clamp(1.75rem, 5vw, 2.5rem);
   font-size: 1.75em;
   strong {
     display: block;
@@ -514,5 +519,17 @@ Its here to align with the styling of old nav items. */
 
 .hero-logo {
   height: 50px;
+}
+
+.release-date {
+  align-self: flex-end;
+  color: #666;
+  font-size: 0.7rem;
+  @media (max-width: $wrap) {
+    align-self: flex-start;
+    margin-top: 1.7em;
+    color: $white;
+    font-size: 0.6rem;
+  }
 }
 </style>
