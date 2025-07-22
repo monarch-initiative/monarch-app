@@ -54,6 +54,7 @@ export default defineConfigWithVueTs(
       "no-constant-binary-expression": ["off"],
       "prefer-const": "off",
       "@typescript-eslint/no-empty-object-type": ["warn"],
+      "@typescript-eslint/no-explicit-any": ["warn"],
       "@typescript-eslint/no-unused-expressions": ["off"],
       "@typescript-eslint/no-unused-vars": ["off"],
       "prettier/prettier": ["warn", {}, { usePrettierrc: true }],
