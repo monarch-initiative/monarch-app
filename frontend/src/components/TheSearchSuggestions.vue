@@ -19,6 +19,7 @@
           />
           <AppNodeText :text="search.source.name" />
         </span>
+        <span class="separator">-</span>
         <span class="node">
           <AppIcon
             class="icon"
@@ -191,7 +192,7 @@ span {
   display: flex;
   align-items: center;
   padding: 0.5rem 1rem;
-  gap: 0.6rem;
+  gap: 0.3rem;
   border-radius: 0.5rem;
   background: #f3f3f3;
   white-space: nowrap;
@@ -251,5 +252,8 @@ span {
   top: -1px;
   margin-right: 0.4em;
   vertical-align: middle;
+}
+.separator {
+  user-select: none;
 }
 </style>

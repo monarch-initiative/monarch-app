@@ -18,8 +18,6 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { startCase } from "lodash";
-import { getCategoryLabel } from "@/api/categories";
 import { type DirectionalAssociation } from "@/api/model";
 
 type Props = {

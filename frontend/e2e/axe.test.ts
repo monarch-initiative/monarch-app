@@ -63,8 +63,10 @@ const checkPage = (title: string, path: string, selector?: string) =>
 
     /** perform interaction on selector */
     if (selector) {
-      await page.locator(selector).first().focus();
-      await page.locator(selector).first().click({ force: true });
+      const target = page.locator(selector).first();
+      await target.focus(); // Trigger focus
+      await target.press("ArrowDown"); // Simulate user interaction
+      await page.waitForTimeout(500); // Give dropdown time to render
     }
 
     /** axe check */

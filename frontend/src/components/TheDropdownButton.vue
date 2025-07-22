@@ -55,7 +55,7 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss" scoped>
-$wrap: 1120px;
+$wrap: 1350px;
 
 .dropdown {
   display: inline-block;
