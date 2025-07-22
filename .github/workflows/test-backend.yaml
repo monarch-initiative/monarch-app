@@ -40,7 +40,7 @@ jobs:
 
       - name: Install library
         run: |
-          uv sync --extra dev
+          uv sync
 
       - name: Run tests
         run: |

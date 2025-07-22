@@ -35,7 +35,7 @@ jobs:
           uv lock --directory backend --check
 
       - name: Install Dependencies
-        run: uv sync --directory backend --extra dev
+        run: uv sync --directory backend 
 
       - name: Build Documentation
         run: make docs

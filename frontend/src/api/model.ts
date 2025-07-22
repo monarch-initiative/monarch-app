@@ -10,6 +10,7 @@ export type MappingId = string;
 export type MultiEntityAssociationResultsId = string;
 export type NodeId = string;
 export type SearchResultId = string;
+export type InformationResourceId = string;
 /**
 * The directionality of an association as it relates to a specified entity, with edges being categorized as incoming or outgoing
 */
@@ -585,6 +586,33 @@ export interface AssociationHighlighting {
     /** Field containing subject name and the names of all of it's ancestors */
     subject_closure_label?: string[],
     predicate?: string[],
+}
+
+
+/**
+ * A database or knowledgebase and its supporting ecosystem of interfaces and services that deliver content to consumers
+ */
+export interface InformationResource {
+    /** Unique identifier (CURIE or complete URI) */
+    id: string,
+    /** Human-readable name for the resource */
+    name?: string,
+    /** Free-text description of the resource */
+    description?: string,
+    /** Status of the information resource identifier */
+    status: string,
+    /** Describes the level of knowledge expressed in a statement, based on the reasoning or analysis methods used to generate the statement, or the scope or specificity of what the statement expresses to be true. */
+    knowledge_level: string,
+    /** Describes the high-level category of agent who originally generated a  statement of knowledge or other type of information. */
+    agent_type: string,
+    /** Database cross references or alternative identifiers */
+    xref?: string[],
+    /** Alternate human-readable names */
+    synonym?: string[],
+    /** Information resources consumed by this resource */
+    consumes?: string[],
+    /** Information resources consuming this resource */
+    consumed_by?: string[],
 }
 
 

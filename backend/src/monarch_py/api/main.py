@@ -4,8 +4,9 @@ from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 
-from monarch_py.api import association, entity, histopheno, search, semsim, text_annotation
+from monarch_py.api import association, entity, histopheno, infores, search, semsim, text_annotation
 from monarch_py.api.config import semsimian, spacyner, settings
+
 from monarch_py.api.middleware.logging_middleware import LoggingMiddleware
 from monarch_py.utils.utils import get_release_metadata, get_release_versions
 
@@ -28,6 +29,7 @@ async def lifespan(app: FastAPI):
 app.include_router(association.router, prefix=f"{PREFIX}/association")
 app.include_router(entity.router, prefix=f"{PREFIX}/entity")
 app.include_router(histopheno.router, prefix=f"{PREFIX}/histopheno")
+app.include_router(infores.router, prefix=f"{PREFIX}/infores")
 app.include_router(search.router, prefix=PREFIX)
 app.include_router(semsim.router, prefix=f"{PREFIX}/semsim")
 app.include_router(text_annotation.router, prefix=PREFIX)
