@@ -1,7 +1,6 @@
 <template>
   <hr />
   <div class="hero-tool-links">
-    <p class="hero-tools-label">Knowledge Graph Tools:</p>
     <AppLink to="/search-phenotypes">Phenotype Similarity Tools</AppLink>
     <span>|</span>
     <AppLink to="/text-annotator">Text Annotator</AppLink>
@@ -9,7 +8,7 @@
 </template>
 
 <style scoped lang="scss">
-$wrap: 1120px;
+$wrap: 1350px;
 .hero-tool-links {
   display: flex;
   flex-wrap: nowrap;
@@ -26,7 +25,6 @@ $wrap: 1120px;
     white-space: wrap;
   }
   a {
-    color: #007c8a;
     font-weight: 500;
     text-decoration: none;
 
@@ -49,14 +47,8 @@ $wrap: 1120px;
     }
   }
 }
-.hero-tools-label {
-  font-weight: 500;
-  text-align: center;
-  @media (max-width: $wrap) {
-    color: $white;
-  }
-}
-@media (max-width: 1000px) {
+
+@media (max-width: 1350) {
   hr {
     height: 1px;
     margin: 10px 0;

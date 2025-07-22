@@ -105,6 +105,12 @@
         "key": "about-kg",
         "to": "/kg/about",
         "tooltip": ""
+      },
+      {
+        "label": "KG Sources",
+        "key": "kg-sources",
+        "to": "/kg/sources",
+        "tooltip": ""
       }
     ]
   },

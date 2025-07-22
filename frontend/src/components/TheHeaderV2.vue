@@ -50,6 +50,10 @@
           <TheSearchSuggestions @select="handleSuggestionClick" />
           <TheHeroTools />
         </div>
+        <div v-if="formattedReleaseDate" class="release-date">
+          <span v-if="isLoading">Loading release date..</span>
+          Monarch KG release: <strong>{{ formattedReleaseDate }}</strong>
+        </div>
       </div>
     </div>
 
@@ -100,6 +104,10 @@
         <div class="hero-tools">
           <TheHeroTools v-if="isMobile" />
         </div>
+        <div v-if="isMobile && formattedReleaseDate" class="release-date">
+          <span v-if="isLoading">Loading release date..</span>
+          Monarch KG release: <strong>{{ formattedReleaseDate }}</strong>
+        </div>
       </div>
     </nav>
 
@@ -113,8 +121,10 @@ import { useRoute, useRouter } from "vue-router";
 import TheLogo from "@/assets/TheLogo.vue";
 import TabSearch from "@/components/TabSearch.vue";
 import TheSearchTerms from "@/components/TheSearchTerms.vue";
+import { useLatestKGReleaseDate } from "@/composables/use-kg-release-date";
 import navigationMenus from "@/data/navigationMenu.json";
 import { ENTITY_MAP } from "@/data/toolEntityConfig";
+import { formatReleaseDate } from "@/util/formatDate";
 import DropdownButton from "./TheDropdownButton.vue";
 import TheHeroTools from "./TheHeroTools.vue";
 import TheNexus from "./TheNexus.vue";
@@ -132,6 +142,16 @@ const header = ref<HTMLElement>();
 
 /** is home page (big) version */
 const home = computed((): boolean => route.name === "Home");
+
+const { latestReleaseDate, fetchReleaseDate, isLoading } =
+  useLatestKGReleaseDate();
+
+// Compute formatted date string
+const formattedReleaseDate = computed(() => {
+  return latestReleaseDate.value
+    ? formatReleaseDate(latestReleaseDate.value)
+    : null;
+});
 
 /** whether to show search box */
 const search = computed(
@@ -175,6 +195,10 @@ const updateWidth = () => {
 };
 
 onMounted(() => {
+  // Kick off the KG release-date fetch
+  fetchReleaseDate();
+
+  // Listen for window resizes
   window.addEventListener("resize", updateWidth);
 });
 
@@ -182,14 +206,14 @@ onUnmounted(() => {
   window.removeEventListener("resize", updateWidth);
 });
 
-const isMobile = computed(() => windowWidth.value < 1120);
+const isMobile = computed(() => windowWidth.value < 1350);
 
 /** close nav when page changes */
 watch(() => route.name, close);
 </script>
 
 <style lang="scss" scoped>
-$wrap: 1120px;
+$wrap: 1350px;
 
 /** header */
 .header {
@@ -495,5 +519,17 @@ Its here to align with the styling of old nav items. */
 
 .hero-logo {
   height: 50px;
+}
+
+.release-date {
+  align-self: flex-end;
+  color: #666;
+  font-size: 0.7rem;
+  @media (max-width: $wrap) {
+    align-self: flex-start;
+    margin-top: 1.7em;
+    color: $white;
+    font-size: 0.6rem;
+  }
 }
 </style>
