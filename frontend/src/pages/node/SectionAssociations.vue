@@ -11,20 +11,35 @@
       <span v-if="!categoryOptions.length"
         >No associations with &nbsp;<AppNodeBadge :node="node" />
       </span>
-
+      <p v-if="isLoadingDirectCount">Loading direct association data...</p>
+      <p v-else-if="isErrorDirectCount" class="error">
+        Failed to load direct data.
+      </p>
       <div class="association-tabs">
-        <button
-          :class="{ active: (selectedTabs[category.id] || 'all') === 'all' }"
+        <AppButton
+          :class="[
+            'app-button',
+            { active: (selectedTabs[category.id] || 'all') === 'all' },
+          ]"
           @click="setDirect(category.id, 'false')"
+          text=" All Associations"
+          color="none"
         >
-          All Associations
-        </button>
-        <button
-          :class="{ active: selectedTabs[category.id] === 'direct' }"
+        </AppButton>
+        <AppButton
+          :class="[
+            'app-button',
+            { active: selectedTabs[category.id] === 'direct' },
+          ]"
           @click="setDirect(category.id, 'true')"
+          :disabled="
+            isLoadingDirectCount ||
+            !hasDirectAssociationsForCategory(category.id)
+          "
+          text="Direct Associations"
+          color="none"
         >
-          Direct Associations
-        </button>
+        </AppButton>
       </div>
 
       <div class="actions-row">
@@ -79,12 +94,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { startCase } from "lodash";
+import { getDirectAssociationFacetCounts } from "@/api/associations";
 import type { Node } from "@/api/model";
+import AppButton from "@/components/AppButton.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
-import type { Option, Options } from "@/components/AppSelectSingle.vue";
+import type { Options } from "@/components/AppSelectSingle.vue";
 import AppTextbox from "@/components/AppTextbox.vue";
+import { useQuery } from "@/composables/use-query";
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
 
 type Props = {
@@ -111,6 +129,42 @@ const categoryOptions = computed(
 function setDirect(categoryId: string, directId: "true" | "false") {
   selectedTabs.value[categoryId] = directId === "true" ? "direct" : "all";
 }
+// // Initialize a query for fetching direct association facet counts per category for a node.
+const {
+  query: queryDirectFacetCount,
+  data: directFacetData,
+  isLoading: isLoadingDirectCount,
+  isError: isErrorDirectCount,
+} = useQuery<
+  {
+    facet_field: string;
+    facet_counts: { label: string; count: number }[];
+  },
+  []
+>(
+  // Fetch facet counts grouped by association category, specific to this node
+  async function () {
+    return await getDirectAssociationFacetCounts(props.node.id);
+  },
+  { facet_field: "category", facet_counts: [] },
+);
+
+// Helper function to check if a specific category has any direct associations
+function hasDirectAssociationsForCategory(categoryId: string): boolean {
+  return directFacetData.value.facet_counts.some(
+    (item) => item.label === categoryId && item.count > 0,
+  );
+}
+
+watch(
+  () => props.node.id,
+  async (nodeId) => {
+    if (nodeId) {
+      await queryDirectFacetCount();
+    }
+  },
+  { immediate: true },
+);
 </script>
 
 <style lang="scss" scoped>
@@ -140,36 +194,31 @@ function setDirect(categoryId: string, directId: "true" | "false") {
 }
 .association-tabs {
   display: flex;
-  border-bottom: 3px solid $theme;
-  button {
+
+  .app-button {
+    z-index: 0;
     position: relative;
-    padding: 0.9em 1.9em;
+    margin-right: 0.25rem;
+    padding: 0.8rem 1.5rem;
     border: none;
-    background: none;
-    color: #333;
-    font-weight: 500;
-    font-size: 1em;
-    cursor: pointer;
-    transition:
-      background-color 0.3s ease,
-      color 0.3s ease;
-    &:hover {
-      background-color: #f5f5f5;
-    }
+    border-radius: 8px 8px 0 0;
+    background-color: $light-gray;
+
     &.active {
-      border-radius: 5px 5px 0 0;
+      z-index: 1;
       background-color: $theme;
+      box-shadow: 0 3px 0 0 $theme; // gives the illusion of continuing the border
       color: white;
-      font-weight: 600;
-      &::after {
-        display: none;
-        content: "";
-      }
     }
-    &:not(.active) {
-      background-color: #f0f0f0;
-      color: #555;
-      font-weight: 500;
+  }
+  :deep(.app-button) {
+    &:hover {
+      outline: none !important;
+      box-shadow: none !important;
+    }
+    &:focus {
+      outline: none !important;
+      box-shadow: none !important;
     }
   }
 }

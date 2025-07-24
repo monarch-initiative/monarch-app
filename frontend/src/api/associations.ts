@@ -93,3 +93,30 @@ export const getTopAssociations = async (
   nodeId = "",
   associationCategory = "",
 ) => await getAssociations(nodeId, associationCategory, 0, 5);
+
+/** Get direct association facet counts for a node */
+export const getDirectAssociationFacetCounts = async (nodeId = "") => {
+  const params = {
+    entity: nodeId,
+    direct: true,
+    facet_fields: "category",
+    compact: false,
+    format: "json",
+    limit: 0,
+    offset: 0,
+  };
+
+  const url = `${apiUrl}/association`;
+  const rawResponse = await request<any>(url, params);
+  console.log("rawResponse", rawResponse);
+  // 👇 Transform the nested structure into what the UI expects
+
+  const categoryFacet = rawResponse.facet_fields?.find(
+    (item: any) => item.label === "category",
+  );
+  console.log("categoryFacet", categoryFacet);
+  return {
+    facet_field: "category",
+    facet_counts: categoryFacet?.facet_values || [],
+  };
+};
