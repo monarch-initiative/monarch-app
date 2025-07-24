@@ -22,7 +22,7 @@
             { active: (selectedTabs[category.id] || 'all') === 'all' },
           ]"
           @click="setDirect(category.id, 'false')"
-          text=" All Associations"
+          :text="`All Associations (${totalAssociations[category.id] || 0})`"
           color="none"
         >
         </AppButton>
@@ -36,7 +36,7 @@
             isLoadingDirectCount ||
             !hasDirectAssociationsForCategory(category.id)
           "
-          text="Direct Associations"
+          :text="`Direct Associations (${getDirectAssociationCount(category.id)})`"
           color="none"
         >
         </AppButton>
@@ -86,6 +86,9 @@
                 : 'including sub-classes',
           }"
           :search="debouncedSearchValues[category.id]"
+          @totalAssociations="
+            (total) => handleTotalAssociations(category.id, total)
+          "
         />
       </template>
     </AppSection>
@@ -94,7 +97,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { startCase } from "lodash";
 import { getDirectAssociationFacetCounts } from "@/api/associations";
 import type { Node } from "@/api/model";
@@ -115,6 +118,7 @@ const props = defineProps<Props>();
 const selectedTabs = ref<Record<string, "all" | "direct">>({});
 const searchValues = ref<Record<string, string>>({});
 const debouncedSearchValues = ref<Record<string, string>>({});
+const totalAssociations = ref<Record<string, number>>({});
 
 /** list of options for dropdown */
 const categoryOptions = computed(
@@ -154,6 +158,16 @@ function hasDirectAssociationsForCategory(categoryId: string): boolean {
   return directFacetData.value.facet_counts.some(
     (item) => item.label === categoryId && item.count > 0,
   );
+}
+function getDirectAssociationCount(categoryId: string): number {
+  const item = directFacetData.value.facet_counts.find(
+    (c) => c.label === categoryId,
+  );
+  return item?.count ?? 0;
+}
+
+function handleTotalAssociations(categoryId: string, total: number) {
+  totalAssociations.value[categoryId] = total;
 }
 
 watch(
@@ -212,11 +226,16 @@ watch(
     }
   }
   :deep(.app-button) {
-    &:hover {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+
+    &:focus {
       outline: none !important;
       box-shadow: none !important;
     }
-    &:focus {
+
+    &:hover {
       outline: none !important;
       box-shadow: none !important;
     }

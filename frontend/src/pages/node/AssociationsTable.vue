@@ -263,6 +263,10 @@ const start = ref(0);
 const sort = ref<Sort>();
 const perPage = ref(5);
 
+const emit = defineEmits<{
+  (e: "totalAssociations", value: number): void;
+}>();
+
 function openModal(association: DirectionalAssociation) {
   selectedAssociation.value = association;
   showModal.value = true;
@@ -517,7 +521,7 @@ const {
       props.search,
       sort.value,
     );
-
+    emit("totalAssociations", response.total);
     return response;
   },
 
