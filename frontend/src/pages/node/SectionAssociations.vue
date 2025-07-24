@@ -22,7 +22,7 @@
             { active: (selectedTabs[category.id] || 'all') === 'all' },
           ]"
           @click="setDirect(category.id, 'false')"
-          :text="`All Associations (${totalAssociations[category.id] || 0})`"
+          :text="`All Associations (${(totalAssociations[category.id] || 0).toLocaleString()})`"
           color="none"
         >
         </AppButton>
@@ -36,7 +36,7 @@
             isLoadingDirectCount ||
             !hasDirectAssociationsForCategory(category.id)
           "
-          :text="`Direct Associations (${getDirectAssociationCount(category.id)})`"
+          :text="`Direct Associations (${(getDirectAssociationCount(category.id) || 0).toLocaleString()})`"
           color="none"
         >
         </AppButton>
