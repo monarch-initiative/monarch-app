@@ -44,7 +44,7 @@
           to="/search-phenotypes"
           :state="{ search: node.id }"
           text="Phenotype Explorer"
-          icon="arrow-right"
+          icon="search"
         />
 
         <div class="search-wrapper">
