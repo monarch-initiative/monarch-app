@@ -19,16 +19,6 @@
         <AppButton
           :class="[
             'app-button',
-            { active: (selectedTabs[category.id] || 'all') === 'all' },
-          ]"
-          @click="setDirect(category.id, 'false')"
-          :text="`All Associations (${(totalAssociations[category.id] || 0).toLocaleString()})`"
-          color="none"
-        >
-        </AppButton>
-        <AppButton
-          :class="[
-            'app-button',
             { active: selectedTabs[category.id] === 'direct' },
           ]"
           @click="setDirect(category.id, 'true')"
@@ -37,6 +27,16 @@
             !hasDirectAssociationsForCategory(category.id)
           "
           :text="`Direct Associations (${(getDirectAssociationCount(category.id) || 0).toLocaleString()})`"
+          color="none"
+        >
+        </AppButton>
+        <AppButton
+          :class="[
+            'app-button',
+            { active: (selectedTabs[category.id] || 'all') === 'all' },
+          ]"
+          @click="setDirect(category.id, 'false')"
+          :text="`All Associations (${(totalAssociations[category.id] || 0).toLocaleString()})`"
           color="none"
         >
         </AppButton>
@@ -78,13 +78,7 @@
         <AssociationsTable
           :node="node"
           :category="category"
-          :direct="{
-            id: selectedTabs[category.id] === 'direct' ? 'true' : 'false',
-            label:
-              selectedTabs[category.id] === 'direct'
-                ? 'directly'
-                : 'including sub-classes',
-          }"
+          :direct="getDirectProps(category.id)"
           :search="debouncedSearchValues[category.id]"
           @totalAssociations="
             (total) => handleTotalAssociations(category.id, total)
@@ -130,10 +124,11 @@ const categoryOptions = computed(
     })) || [],
 );
 
-function setDirect(categoryId: string, directId: "true" | "false") {
+const setDirect = (categoryId: string, directId: "true" | "false") => {
   selectedTabs.value[categoryId] = directId === "true" ? "direct" : "all";
-}
-// // Initialize a query for fetching direct association facet counts per category for a node.
+};
+
+// Initialize a query for fetching direct association facet counts per category for a node.
 const {
   query: queryDirectFacetCount,
   data: directFacetData,
@@ -154,21 +149,30 @@ const {
 );
 
 // Helper function to check if a specific category has any direct associations
-function hasDirectAssociationsForCategory(categoryId: string): boolean {
+const hasDirectAssociationsForCategory = (categoryId: string): boolean => {
   return directFacetData.value.facet_counts.some(
     (item) => item.label === categoryId && item.count > 0,
   );
-}
-function getDirectAssociationCount(categoryId: string): number {
+};
+
+const getDirectAssociationCount = (categoryId: string): number => {
   const item = directFacetData.value.facet_counts.find(
     (c) => c.label === categoryId,
   );
   return item?.count ?? 0;
-}
+};
 
-function handleTotalAssociations(categoryId: string, total: number) {
+const handleTotalAssociations = (categoryId: string, total: number) => {
   totalAssociations.value[categoryId] = total;
-}
+};
+
+const getDirectProps = (categoryId: string) => {
+  const isDirect = selectedTabs.value[categoryId] === "direct";
+  return {
+    id: isDirect ? "true" : "false",
+    label: isDirect ? "directly" : "including sub-classes",
+  };
+};
 
 watch(
   () => props.node.id,
