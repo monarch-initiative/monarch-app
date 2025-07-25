@@ -82,8 +82,11 @@
                 category.id.includes('DiseaseToPhenotypicFeatureAssociation')
               "
             >
-              {{ directAssociationCount(category.id).toLocaleString() }} unique
-              direct phenotypes across sources
+              <template v-if="showAllTab(category.count ?? 0, category.id)">
+                {{ directAssociationCount(category.id).toLocaleString() }}
+                unique direct phenotypes across sources
+              </template>
+              <template v-else> No subclasses exist </template>
             </span>
           </div>
           <div class="tab-item">
