@@ -15,31 +15,81 @@
       <p v-else-if="isErrorDirectCount" class="error">
         Failed to load direct data.
       </p>
+
       <div class="association-tabs">
-        <AppButton
-          :class="[
-            'app-button',
-            { active: selectedTabs[category.id] === 'direct' },
-          ]"
-          @click="setDirect(category.id, 'true')"
-          :disabled="
-            isLoadingDirectCount ||
-            !hasDirectAssociationsForCategory(category.id)
-          "
-          :text="`Direct Associations (${(getDirectAssociationCount(category.id) || 0).toLocaleString()})`"
-          color="none"
-        >
-        </AppButton>
-        <AppButton
-          :class="[
-            'app-button',
-            { active: (selectedTabs[category.id] || 'all') === 'all' },
-          ]"
-          @click="setDirect(category.id, 'false')"
-          :text="`All Associations (${(totalAssociations[category.id] || 0).toLocaleString()})`"
-          color="none"
-        >
-        </AppButton>
+        <!-- Non-disease pages: show “All” first, then “Direct” -->
+        <template v-if="!isDiseaseNode">
+          <AppButton
+            v-if="showAllTab(category.count ?? 0, category.id)"
+            :class="[
+              'app-button',
+              {
+                active:
+                  (selectedTabs[category.id] ?? defaultTab(category.id)) ===
+                  'all',
+              },
+            ]"
+            @click="setDirect(category.id, 'false')"
+            v-tooltip="'Include subclass associations'"
+            text="All Associations"
+            color="none"
+          />
+          <AppButton
+            :class="[
+              'app-button',
+              {
+                active:
+                  (selectedTabs[category.id] ?? defaultTab(category.id)) ===
+                  'direct',
+              },
+            ]"
+            @click="setDirect(category.id, 'true')"
+            :disabled="
+              isLoadingDirectCount ||
+              !hasDirectAssociationsForCategory(category.id)
+            "
+            :text="`Direct Associations`"
+            v-tooltip="'Exclude subclass associations'"
+            color="none"
+          />
+        </template>
+
+        <!-- Disease pages: show “Direct” first, then “All” -->
+        <template v-else>
+          <AppButton
+            :class="[
+              'app-button',
+              {
+                active:
+                  (selectedTabs[category.id] ?? defaultTab(category.id)) ===
+                  'direct',
+              },
+            ]"
+            @click="setDirect(category.id, 'true')"
+            :disabled="
+              isLoadingDirectCount ||
+              !hasDirectAssociationsForCategory(category.id)
+            "
+            :text="`Direct Associations`"
+            v-tooltip="'Exclude subclass associations'"
+            color="none"
+          />
+          <AppButton
+            v-if="showAllTab(category.count ?? 0, category.id)"
+            :class="[
+              'app-button',
+              {
+                active:
+                  (selectedTabs[category.id] ?? defaultTab(category.id)) ===
+                  'all',
+              },
+            ]"
+            @click="setDirect(category.id, 'false')"
+            v-tooltip="'Include subclass associations'"
+            text="All Associations"
+            color="none"
+          />
+        </template>
       </div>
 
       <div class="actions-row">
@@ -80,9 +130,6 @@
           :category="category"
           :direct="getDirectProps(category.id)"
           :search="debouncedSearchValues[category.id]"
-          @totalAssociations="
-            (total) => handleTotalAssociations(category.id, total)
-          "
         />
       </template>
     </AppSection>
@@ -109,10 +156,14 @@ type Props = {
 
 const props = defineProps<Props>();
 
+const { category: nodeCategory } = props.node;
+
 const selectedTabs = ref<Record<string, "all" | "direct">>({});
 const searchValues = ref<Record<string, string>>({});
 const debouncedSearchValues = ref<Record<string, string>>({});
 const totalAssociations = ref<Record<string, number>>({});
+
+const isDiseaseNode = computed(() => nodeCategory === "biolink:Disease");
 
 /** list of options for dropdown */
 const categoryOptions = computed(
@@ -155,19 +206,32 @@ const hasDirectAssociationsForCategory = (categoryId: string): boolean => {
   );
 };
 
-const getDirectAssociationCount = (categoryId: string): number => {
+const directAssociationCount = (categoryId: string): number => {
   const item = directFacetData.value.facet_counts.find(
     (c) => c.label === categoryId,
   );
   return item?.count ?? 0;
 };
 
-const handleTotalAssociations = (categoryId: string, total: number) => {
-  totalAssociations.value[categoryId] = total;
-};
+const showAllTab = computed(() => {
+  return (categoryCount: number, categoryId: string): boolean => {
+    return categoryCount > directAssociationCount(categoryId);
+  };
+});
 
+/**
+ * For disease‐nodes, default to the “direct” tab; for everything else default
+ * to “all”.
+ */
+const defaultTab = (categoryId: string): "direct" | "all" =>
+  isDiseaseNode.value ? "direct" : "all";
+
+console.log("defaultTab", defaultTab);
 const getDirectProps = (categoryId: string) => {
-  const isDirect = selectedTabs.value[categoryId] === "direct";
+  // pick the tab (direct vs all) based on user click or our default rule
+  const selected = selectedTabs.value[categoryId] ?? defaultTab(categoryId);
+
+  const isDirect = selected === "direct";
   return {
     id: isDirect ? "true" : "false",
     label: isDirect ? "directly" : "including sub-classes",
