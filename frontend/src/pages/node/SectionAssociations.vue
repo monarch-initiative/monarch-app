@@ -22,7 +22,7 @@
           <AppButton
             v-if="showAllTab(category.count ?? 0, category.id)"
             :class="[
-              'app-button',
+              'tab-button',
               {
                 active:
                   (selectedTabs[category.id] ?? defaultTab(category.id)) ===
@@ -36,7 +36,7 @@
           />
           <AppButton
             :class="[
-              'app-button',
+              'tab-button',
               {
                 active:
                   (selectedTabs[category.id] ?? defaultTab(category.id)) ===
@@ -59,7 +59,7 @@
           <div class="tab-item">
             <AppButton
               :class="[
-                'app-button',
+                'tab-button',
                 {
                   active:
                     (selectedTabs[category.id] ?? defaultTab(category.id)) ===
@@ -83,14 +83,14 @@
               "
             >
               {{ directAssociationCount(category.id).toLocaleString() }} unique
-              across sources
+              direct phenotypes across sources
             </span>
           </div>
           <div class="tab-item">
             <AppButton
               v-if="showAllTab(category.count ?? 0, category.id)"
               :class="[
-                'app-button',
+                'tab-button',
                 {
                   active:
                     (selectedTabs[category.id] ?? defaultTab(category.id)) ===
@@ -105,10 +105,11 @@
             <span
               class="tab-count"
               v-if="
+                showAllTab(category.count ?? 0, category.id) &&
                 category.id.includes('DiseaseToPhenotypicFeatureAssociation')
               "
             >
-              {{ (category.count ?? 0).toLocaleString() }} total associations
+              {{ (category.count ?? 0).toLocaleString() }} phenotypes
             </span>
           </div>
         </template>
@@ -298,16 +299,18 @@ watch(
 }
 .association-tabs {
   display: flex;
+  gap: 0.25em;
 
-  .app-button {
+  .tab-button {
     z-index: 0;
     position: relative;
-    margin-right: 0.25rem;
+
+    min-width: 22em;
+
     padding: 0.8rem 1.5rem;
     border: none;
     border-radius: 8px 8px 0 0;
     background-color: $light-gray;
-
     &.active {
       z-index: 1;
       background-color: $theme;
@@ -315,7 +318,7 @@ watch(
       color: white;
     }
   }
-  :deep(.app-button) {
+  :deep(.tab-button) {
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
