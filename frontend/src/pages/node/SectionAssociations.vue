@@ -56,39 +56,61 @@
 
         <!-- Disease pages: show “Direct” first, then “All” -->
         <template v-else>
-          <AppButton
-            :class="[
-              'app-button',
-              {
-                active:
-                  (selectedTabs[category.id] ?? defaultTab(category.id)) ===
-                  'direct',
-              },
-            ]"
-            @click="setDirect(category.id, 'true')"
-            :disabled="
-              isLoadingDirectCount ||
-              !hasDirectAssociationsForCategory(category.id)
-            "
-            :text="`Direct Associations`"
-            v-tooltip="'Exclude subclass associations'"
-            color="none"
-          />
-          <AppButton
-            v-if="showAllTab(category.count ?? 0, category.id)"
-            :class="[
-              'app-button',
-              {
-                active:
-                  (selectedTabs[category.id] ?? defaultTab(category.id)) ===
-                  'all',
-              },
-            ]"
-            @click="setDirect(category.id, 'false')"
-            v-tooltip="'Include subclass associations'"
-            text="All Associations"
-            color="none"
-          />
+          <div class="tab-item">
+            <AppButton
+              :class="[
+                'app-button',
+                {
+                  active:
+                    (selectedTabs[category.id] ?? defaultTab(category.id)) ===
+                    'direct',
+                },
+              ]"
+              @click="setDirect(category.id, 'true')"
+              :disabled="
+                isLoadingDirectCount ||
+                !hasDirectAssociationsForCategory(category.id)
+              "
+              :text="`Direct Associations`"
+              v-tooltip="'Exclude subclass associations'"
+              color="none"
+            />
+
+            <span
+              class="tab-count"
+              v-if="
+                category.id.includes('DiseaseToPhenotypicFeatureAssociation')
+              "
+            >
+              {{ directAssociationCount(category.id).toLocaleString() }} unique
+              across sources
+            </span>
+          </div>
+          <div class="tab-item">
+            <AppButton
+              v-if="showAllTab(category.count ?? 0, category.id)"
+              :class="[
+                'app-button',
+                {
+                  active:
+                    (selectedTabs[category.id] ?? defaultTab(category.id)) ===
+                    'all',
+                },
+              ]"
+              @click="setDirect(category.id, 'false')"
+              v-tooltip="'Include subclass associations'"
+              text="All Associations"
+              color="none"
+            />
+            <span
+              class="tab-count"
+              v-if="
+                category.id.includes('DiseaseToPhenotypicFeatureAssociation')
+              "
+            >
+              {{ (category.count ?? 0).toLocaleString() }} total associations
+            </span>
+          </div>
         </template>
       </div>
 
@@ -323,5 +345,18 @@ watch(
 .search-wrapper {
   flex: 1 1 auto;
   max-width: 500px;
+}
+
+.tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tab-count {
+  color: #888; /* muted grey */
+  font-size: 0.875rem;
+  white-space: nowrap;
 }
 </style>
