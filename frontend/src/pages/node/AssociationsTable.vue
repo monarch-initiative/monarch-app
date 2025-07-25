@@ -88,6 +88,9 @@
     <!-- object-->
     <template #object="{ row }">
       <div class="badgeColumn">
+        <span v-if="row?.negated === true && direct.id === 'true'">
+          Does <span class="negated-text">NOT</span> have
+        </span>
         <AppNodeBadge
           :node="{
             id: row.object,
@@ -246,8 +249,7 @@ type Props = {
   node: Node;
   /** selected association category */
   category: Option;
-  /** include orthologs */
-  includeOrthologs: boolean;
+  /** "true" = direct only, "false" = include subclasses */
   direct: Option;
   /** search string */
   search: string;
@@ -360,7 +362,7 @@ const cols = computed((): Cols<Datum> => {
   }
 
   /** standard columns, always present */
-  const baseCols: Cols<Datum> = [
+  let baseCols: Cols<Datum> = [
     {
       slot: "subject",
       key: "subject_label",
@@ -401,6 +403,13 @@ const cols = computed((): Cols<Datum> => {
       slot: "taxon",
       heading: "Taxon",
     });
+  }
+
+  // if tab is direct, take out subject label and predicate columns
+  if (props.direct.id === "true") {
+    baseCols = baseCols.filter(
+      (col) => col.key !== "subject_label" && col.key !== "predicate",
+    );
   }
 
   if (
@@ -498,13 +507,12 @@ const {
     if (fresh) {
       start.value = 0;
     }
-
     const response = await getAssociations(
       props.node.id,
       props.category.id,
       start.value,
       perPage.value,
-      props.includeOrthologs,
+      true,
       props.direct.id,
       props.search,
       sort.value,
@@ -533,7 +541,7 @@ async function download() {
   await downloadAssociations(
     props.node.id,
     props.category.id,
-    props.includeOrthologs,
+    true,
     props.direct.id,
     props.search,
     sort.value,
@@ -591,10 +599,7 @@ watch(
   () => props.category,
   async () => await queryAssociations(true),
 );
-watch(
-  () => props.includeOrthologs,
-  async () => await queryAssociations(true),
-);
+
 watch(
   () => props.direct,
   async () => await queryAssociations(true),
@@ -658,5 +663,9 @@ onMounted(() => queryAssociations(true));
 .text-sm {
   color: $dark-gray;
   font-size: 0.9em;
+}
+.negated-text {
+  color: $error;
+  font-weight: bold;
 }
 </style>
