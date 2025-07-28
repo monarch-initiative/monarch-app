@@ -192,14 +192,33 @@ const totalAssociations = ref<Record<string, number>>({});
 const isDiseaseNode = computed(() => nodeCategory === "biolink:Disease");
 
 /** list of options for dropdown */
-const categoryOptions = computed(
-  (): Options =>
+const categoryOptions = computed<Options>(() => {
+  const options =
     props.node.association_counts?.map((association_count) => ({
       id: association_count.category || "",
       label: startCase(association_count.label),
       count: association_count.count,
-    })) || [],
-);
+    })) || [];
+
+  // clone so we don’t mutate the original
+  const ordered = [...options];
+
+  // hack: ensure CausalGene sits immediately before Gene→to-Phenotype
+  const idxCausal = ordered.findIndex(
+    (item) => item.id === "biolink:CausalGeneToDiseaseAssociation",
+  );
+  const idxGenePhen = ordered.findIndex(
+    (item) => item.id === "biolink:GeneToPhenotypicFeatureAssociation",
+  );
+
+  if (idxCausal > -1 && idxGenePhen > -1 && idxCausal > idxGenePhen) {
+    // remove and re-insert at the target position
+    const [causalEntry] = ordered.splice(idxCausal, 1);
+    ordered.splice(idxGenePhen, 0, causalEntry);
+  }
+
+  return ordered;
+});
 
 const setDirect = (categoryId: string, directId: "true" | "false") => {
   selectedTabs.value[categoryId] = directId === "true" ? "direct" : "all";
