@@ -405,11 +405,22 @@ const cols = computed((): Cols<Datum> => {
     });
   }
 
-  // if tab is direct, take out subject label and predicate columns
   if (props.direct.id === "true") {
-    baseCols = baseCols.filter(
-      (col) => col.key !== "subject_label" && col.key !== "predicate",
-    );
+    // CorrelatedGene & Desease model: keep subject_label & predicate, only drop object_label
+    if (
+      props.category.id === "biolink:CorrelatedGeneToDiseaseAssociation" ||
+      props.category.id === "biolink:GenotypeToDiseaseAssociation"
+    ) {
+      baseCols = baseCols.filter((col) => col.key !== "object_label");
+    }
+    //  All other direct‐only cases (except Gene-Phenotype): drop subject_label & predicate
+    else if (
+      props.category.id !== "biolink:GeneToPhenotypicFeatureAssociation"
+    ) {
+      baseCols = baseCols.filter(
+        (col) => col.key !== "subject_label" && col.key !== "predicate",
+      );
+    }
   }
 
   if (
