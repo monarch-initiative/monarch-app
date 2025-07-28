@@ -67,6 +67,7 @@
                 },
               ]"
               @click="setDirect(category.id, 'true')"
+              v-if="hasDirectAssociationsForCategory(category.id)"
               :disabled="
                 isLoadingDirectCount ||
                 !hasDirectAssociationsForCategory(category.id)
@@ -187,7 +188,6 @@ const { category: nodeCategory } = props.node;
 const selectedTabs = ref<Record<string, "all" | "direct">>({});
 const searchValues = ref<Record<string, string>>({});
 const debouncedSearchValues = ref<Record<string, string>>({});
-const totalAssociations = ref<Record<string, number>>({});
 
 const isDiseaseNode = computed(() => nodeCategory === "biolink:Disease");
 
@@ -253,7 +253,7 @@ const hasDirectAssociationsForCategory = (categoryId: string): boolean => {
 
 const directAssociationCount = (categoryId: string): number => {
   const item = directFacetData.value.facet_counts.find(
-    (c) => c.label === categoryId,
+    (item) => item.label === categoryId,
   );
   return item?.count ?? 0;
 };
@@ -264,14 +264,24 @@ const showAllTab = computed(() => {
   };
 });
 
-/**
- * For disease‐nodes, default to the “direct” tab; for everything else default
- * to “all”.
+/*
+ * For disease nodes, defaults to:
+ *  - "all" if there are zero direct associations
+ *  - "direct" otherwise
+ * Non-disease nodes always default to "all".
  */
-const defaultTab = (categoryId: string): "direct" | "all" =>
-  isDiseaseNode.value ? "direct" : "all";
+function defaultTab(categoryId: string): "direct" | "all" {
+  const directCount = directAssociationCount(categoryId);
+  const isDisease = isDiseaseNode.value;
 
-console.log("defaultTab", defaultTab);
+  if (!isDisease) {
+    return "all";
+  }
+
+  // disease node: no direct → all, else → direct
+  return directCount > 0 ? "direct" : "all";
+}
+
 const getDirectProps = (categoryId: string) => {
   // pick the tab (direct vs all) based on user click or our default rule
   const selected = selectedTabs.value[categoryId] ?? defaultTab(categoryId);
@@ -326,9 +336,7 @@ watch(
   .tab-button {
     z-index: 0;
     position: relative;
-
     min-width: 22em;
-
     padding: 0.8rem 1.5rem;
     border: none;
     border-radius: 8px 8px 0 0;
@@ -336,23 +344,22 @@ watch(
     &.active {
       z-index: 1;
       background-color: $theme;
-      box-shadow: 0 3px 0 0 $theme; // gives the illusion of continuing the border
+      box-shadow: 0 3px 0 0 $theme;
       color: white;
     }
   }
   :deep(.tab-button) {
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
+    border: none;
+    outline: none;
+    box-shadow: none;
 
     &:focus {
-      outline: none !important;
-      box-shadow: none !important;
+      outline: none;
+      box-shadow: none;
     }
-
     &:hover {
-      outline: none !important;
-      box-shadow: none !important;
+      outline: none;
+      box-shadow: none;
     }
   }
 }
