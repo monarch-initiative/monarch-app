@@ -36,8 +36,27 @@
         </p>
       </AppDetail>
 
-      <!-- inheritance -->
+      <!-- synonyms -->
       <AppDetail
+        :blank="!node.synonym?.length"
+        title="Also Known As"
+        :full="true"
+        :direction="'row'"
+      >
+        <AppTagList :tags="node.synonym ?? []" />
+      </AppDetail>
+
+      <!-- clinical resources -->
+      <SectionClinicalReources
+        :clinicalSynopsis="clinicalSynopsis"
+        :infoForPatients="infoForPatients"
+        :nodeInheritance="node.inheritance"
+        :casualGenes="node.causal_gene"
+        :frequencyLabel="frequencyLabel"
+      />
+
+      <!-- inheritance -->
+      <!-- <AppDetail
         v-if="node.category === 'biolink:Disease'"
         :blank="!node.inheritance"
         title="Heritability"
@@ -49,10 +68,10 @@
             >{{ node.inheritance?.name }}</AppLink
           >
         </AppFlex>
-      </AppDetail>
+      </AppDetail> -->
 
       <!-- disease causal genes -->
-      <AppDetail
+      <!-- <AppDetail
         v-if="node.category === 'biolink:Disease'"
         :blank="!node.causal_gene?.length"
         title="Causal Genes"
@@ -64,31 +83,17 @@
             :node="omit(gene, 'in_taxon_label')"
           />
         </AppFlex>
-      </AppDetail>
+      </AppDetail> -->
 
       <!-- disease frequecy -->
-      <AppDetail v-if="node.category === 'biolink:Disease'" title="Frequency">
+      <!-- <AppDetail v-if="node.category === 'biolink:Disease'" title="Frequency">
         <span>{{ node?.subsets?.includes("rare") ? "Rare" : "Common" }}</span>
-      </AppDetail>
-
-      <!-- synonyms -->
-      <AppDetail
-        :blank="!node.synonym?.length"
-        title="Also Known As"
-        :full="true"
-      >
-        <AppTagList :tags="node.synonym ?? []" />
-      </AppDetail>
+      </AppDetail> -->
 
       <!-- URI -->
-      <AppDetail :blank="!node.uri" title="URI">
-        <AppLink :to="node.uri || ''">
-          {{ node.id }}
-        </AppLink>
-      </AppDetail>
 
       <!-- mappings -->
-      <AppDetail :blank="!clinicalSynopsis.length" title="Clinical Synopsis">
+      <!-- <AppDetail :blank="!clinicalSynopsis.length" title="Clinical Synopsis">
         <AppFlex align-h="left" gap="small">
           <AppLink
             v-for="(mapping, index) in clinicalSynopsis"
@@ -98,8 +103,8 @@
             {{ mapping.id }}
           </AppLink>
         </AppFlex>
-      </AppDetail>
-      <AppDetail
+      </AppDetail> -->
+      <!-- <AppDetail
         :blank="!infoForPatients.length"
         title="Clinical Info for Patients"
       >
@@ -112,15 +117,11 @@
             {{ mapping.id }}
           </AppLink>
         </AppFlex>
-      </AppDetail>
-      <AppDetail :blank="!node.provided_by_link" title="Ingest Documentation">
-        <AppLink :to="node.provided_by_link?.url || ''">
-          {{ node.provided_by_link?.id || node.provided_by }}
-        </AppLink>
-      </AppDetail>
+      </AppDetail> -->
+
       <AppDetail
         :blank="!otherMappings.length"
-        title="Other Mappings"
+        title="Equivalent disease concepts in other termiologies :"
         :full="true"
       >
         <AppFlex align-h="left" gap="small">
@@ -148,6 +149,18 @@
           >
         </AppFlex>
       </AppDetail>
+
+      <AppDetail :blank="!node.uri" title="URI">
+        <AppLink :to="node.uri || ''">
+          {{ node.id }}
+        </AppLink>
+      </AppDetail>
+
+      <AppDetail :blank="!node.provided_by_link" title="Ingest Documentation">
+        <AppLink :to="node.provided_by_link?.url || ''">
+          {{ node.provided_by_link?.id || node.provided_by }}
+        </AppLink>
+      </AppDetail>
     </AppDetails>
   </AppSection>
 </template>
@@ -155,12 +168,14 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { omit } from "lodash";
+import { faCaretSquareLeft } from "@fortawesome/free-regular-svg-icons";
 import type { Node } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppNodeText from "@/components/AppNodeText.vue";
 import AppTagList from "@/components/AppTagList.vue";
+import SectionClinicalReources from "./SectionClinicalReources.vue";
 
 // import { scrollTo } from "@/router";
 // import { sleep } from "@/util/debug";
@@ -192,6 +207,9 @@ const otherMappings = computed(
     ) || [],
 );
 
+const frequencyLabel = computed((): "Rare" | "Common" => {
+  return props.node.subsets?.includes("rare") ? "Rare" : "Common";
+});
 // async function scrollToAssociations() {
 //   await sleep(100);
 //   scrollTo("#associations");
