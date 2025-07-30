@@ -53,71 +53,8 @@
         :nodeInheritance="node.inheritance"
         :casualGenes="node.causal_gene"
         :frequencyLabel="frequencyLabel"
+        :node="node"
       />
-
-      <!-- inheritance -->
-      <!-- <AppDetail
-        v-if="node.category === 'biolink:Disease'"
-        :blank="!node.inheritance"
-        title="Heritability"
-      >
-        <AppFlex align-h="left" gap="small">
-          <AppLink
-            v-tooltip="node.inheritance?.name"
-            :to="node.inheritance?.id || ''"
-            >{{ node.inheritance?.name }}</AppLink
-          >
-        </AppFlex>
-      </AppDetail> -->
-
-      <!-- disease causal genes -->
-      <!-- <AppDetail
-        v-if="node.category === 'biolink:Disease'"
-        :blank="!node.causal_gene?.length"
-        title="Causal Genes"
-      >
-        <AppFlex align-h="left">
-          <AppNodeBadge
-            v-for="(gene, index) in node.causal_gene"
-            :key="index"
-            :node="omit(gene, 'in_taxon_label')"
-          />
-        </AppFlex>
-      </AppDetail> -->
-
-      <!-- disease frequecy -->
-      <!-- <AppDetail v-if="node.category === 'biolink:Disease'" title="Frequency">
-        <span>{{ node?.subsets?.includes("rare") ? "Rare" : "Common" }}</span>
-      </AppDetail> -->
-
-      <!-- URI -->
-
-      <!-- mappings -->
-      <!-- <AppDetail :blank="!clinicalSynopsis.length" title="Clinical Synopsis">
-        <AppFlex align-h="left" gap="small">
-          <AppLink
-            v-for="(mapping, index) in clinicalSynopsis"
-            :key="index"
-            :to="mapping.url || ''"
-          >
-            {{ mapping.id }}
-          </AppLink>
-        </AppFlex>
-      </AppDetail> -->
-      <!-- <AppDetail
-        :blank="!infoForPatients.length"
-        title="Clinical Info for Patients"
-      >
-        <AppFlex align-h="left" gap="small">
-          <AppLink
-            v-for="(mapping, index) in infoForPatients"
-            :key="index"
-            :to="mapping.url || ''"
-          >
-            {{ mapping.id }}
-          </AppLink>
-        </AppFlex>
-      </AppDetail> -->
 
       <AppDetail
         :blank="!otherMappings.length"
@@ -135,6 +72,7 @@
         </AppFlex>
       </AppDetail>
       <!-- external references -->
+      {{ node.external_links }}
       <AppDetail
         :blank="!node.external_links?.length"
         title="External References"
@@ -169,16 +107,13 @@
 import { computed } from "vue";
 import { omit } from "lodash";
 import { faCaretSquareLeft } from "@fortawesome/free-regular-svg-icons";
-import type { Node } from "@/api/model";
+import type { ExpandedCurie, Node } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppNodeText from "@/components/AppNodeText.vue";
 import AppTagList from "@/components/AppTagList.vue";
 import SectionClinicalReources from "./SectionClinicalReources.vue";
-
-// import { scrollTo } from "@/router";
-// import { sleep } from "@/util/debug";
 
 type Props = {
   /** current node */
@@ -187,6 +122,59 @@ type Props = {
 
 const props = defineProps<Props>();
 
+// The prefixes and their icon filenames
+const RESOURCE_DEFS = [
+  { prefix: "OMIM:", key: "omim", icon: "omim.png" },
+  { prefix: "NORD:", key: "nord", icon: "nord.png" },
+  { prefix: "GARD:", key: "gard", icon: "gard.png" },
+  { prefix: "Orphanet:", key: "orphanet", icon: "orphanet.png" },
+  { prefix: "MEDGEN:", key: "medgen", icon: "medgen.png" },
+] as const;
+
+type ResourceEntry = {
+  id: string;
+  url: string;
+  icon: string;
+  source: "external" | "mapping";
+};
+
+// Compute all five entries, in order, if they exist:
+const clinicalResources = computed<ResourceEntry[]>(() => {
+  const out: ResourceEntry[] = [];
+
+  for (const { prefix, icon } of RESOURCE_DEFS) {
+    // 1) try external_links
+    const ext = props.node.external_links?.find((l: ExpandedCurie) =>
+      l.id.startsWith(prefix),
+    );
+    if (ext) {
+      out.push({
+        id: ext.id,
+        url: ext.url || "",
+        icon,
+        source: "external",
+      });
+      continue;
+    }
+
+    // 2) fallback to mappings
+    const map = props.node.mappings?.find((m: ExpandedCurie) =>
+      m.id.startsWith(prefix),
+    );
+    if (map) {
+      out.push({
+        id: map.id,
+        url: map.url || "",
+        icon,
+        source: "mapping",
+      });
+    }
+  }
+
+  return out;
+});
+
+console.log("clinicalResources", clinicalResources);
 /** separate out mappings into categories */
 const clinicalSynopsis = computed(
   () =>

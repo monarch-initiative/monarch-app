@@ -1,13 +1,13 @@
 <template>
   <AppDetail
     :blank="!clinicalResources.length"
-    title="Clinical Resources"
+    title="Patient and Clinical Resources"
     :full="true"
     class="clinical-resources"
   >
     <div class="custom-grid">
-      <div v-for="(res, id) in clinicalResources" :key="id">
-        <AppLink :to="res.to" :aria-label="res.tooltip">
+      <div v-for="(res, id) in clinicalResources" :key="id" class="logo">
+        <AppLink :to="res.url" :aria-label="res.tooltip">
           <AppIcon
             v-if="res.icon"
             :tooltip="res.tooltip"
@@ -19,9 +19,9 @@
       </div>
     </div>
 
-    <AppFlex direction="col" align-h="left" class="sub-items">
+    <div class="sub-items">
       <div v-if="clinicalSynopsis.length">
-        <span> Clinical Synopsis :</span>
+        <span class="info-label"> Clinical Synopsis </span> :
         <AppLink
           v-for="(mapping, index) in clinicalSynopsis"
           :key="index"
@@ -32,7 +32,7 @@
       </div>
 
       <div v-if="infoForPatients.length">
-        <span> Info for patients : </span>
+        <span class="info-label"> Info for patients : </span>
         <AppLink
           v-for="(mapping, index) in infoForPatients"
           :key="index"
@@ -43,7 +43,7 @@
       </div>
 
       <div v-if="nodeInheritance">
-        <span> Heritability : </span>
+        <span class="info-label"> Heritability : </span>
         <AppLink
           v-tooltip="nodeInheritance?.name"
           :to="nodeInheritance?.id || ''"
@@ -52,7 +52,7 @@
       </div>
 
       <div v-if="casualGenes.length">
-        <span> Casual Genes : </span>
+        <span class="info-label"> Casual Genes : </span>
         <AppNodeBadge
           v-for="(gene, index) in casualGenes"
           :key="index"
@@ -61,18 +61,19 @@
       </div>
 
       <div>
-        <span> Frequency : </span>
+        <span class="info-label"> Frequency : </span>
         <span>{{ frequencyLabel }}</span>
       </div>
-    </AppFlex>
+    </div>
   </AppDetail>
 </template>
 
 <script setup lang="ts">
+import type { ExpandedCurie, Node as ModelNode } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppLink from "@/components/AppLink.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
-import { clinicalResources } from "@/data/clinicalResources";
+import { useClinicalResources } from "@/composables/use-clinical-resources";
 
 type Props = {
   /** current node */
@@ -86,22 +87,27 @@ type Props = {
   };
   casualGenes: { id: string; name: string }[];
   frequencyLabel: "Rare" | "Common";
+  /** current node */
+  node: ModelNode;
 };
-
 const props = defineProps<Props>();
+const { clinicalResources } = useClinicalResources(props.node);
+
+console.log("clinicalResources", clinicalResources);
 </script>
 <style lang="scss" scoped>
 .custom-grid {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: 60em;
-  margin: 1em;
-  gap: 2em;
-}
+  justify-content: flex-start;
 
+  gap: 2rem;
+}
+.custom-grid img {
+  width: auto;
+  height: px;
+  object-fit: contain;
+}
 @media (max-width: 1000px) {
   .custom-grid {
     grid-template-rows: repeat(2, auto);
@@ -120,10 +126,10 @@ const props = defineProps<Props>();
 
 .custom-grid > * {
   display: flex;
-  flex: 1 1 7em;
-  flex-direction: column;
-  align-items: center;
-  max-width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  gap: 3rem;
 }
 .icon {
   z-index: 2;
@@ -141,6 +147,22 @@ const props = defineProps<Props>();
   }
 }
 
+.logo {
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 60px;
+  padding: 2px;
+}
+.logo img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
 .icon:hover {
   transform: scale(1.08);
 }
@@ -153,9 +175,25 @@ a:focus,
 .clinical-resources {
   display: flex;
   flex-direction: column;
+  margin: 1rem 0;
+  padding: 1.5rem 1.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background-color: #f7fbfe;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
+
+.info-label {
+  padding: 0.1rem;
+  border-radius: 10%;
+}
+
 .sub-items {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   margin-top: 1em;
-  margin: 1em 4em;
+  gap: 0.5em;
+  font-size: 0.9em;
 }
 </style>
