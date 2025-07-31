@@ -45,6 +45,16 @@
       >
         <AppTagList :tags="node.synonym ?? []" />
       </AppDetail>
+      <div v-if="isDiseaseNode">
+        <!-- clinical resources -->
+        <SectionClinicalReources
+          :clinicalSynopsis="clinicalSynopsis"
+          :infoForPatients="infoForPatients"
+          :nodeInheritance="node.inheritance"
+          :casualGenes="node.causal_gene"
+          :frequencyLabel="frequencyLabel"
+          :node="node"
+        />
 
       <div v-if="isDiseaseNode">
         <!-- clinical resources -->

@@ -10,11 +10,14 @@ const RESOURCE_DEFS = [
   { prefix: "MEDGEN:", icon: "medgen.png" },
 ] as const;
 
+const RESOURCE_PREFIXES = RESOURCE_DEFS.map((r) => r.prefix);
+
 export type ResourceEntry = {
   id: string;
   url: string;
   icon: string;
   source: "external" | "mapping";
+  tooltip?: string;
 };
 
 export function useClinicalResources(node: Node) {
@@ -38,5 +41,20 @@ export function useClinicalResources(node: Node) {
     return out;
   });
 
-  return { clinicalResources };
+  // Other mappings: exclude all clinical prefixes
+  const otherMappings = computed(
+    () =>
+      node.mappings?.filter(
+        (m) => !RESOURCE_PREFIXES.some((p) => m.id.startsWith(p)),
+      ) || [],
+  );
+
+  // External references excluding clinical prefixes
+  const externalRefs = computed<ExpandedCurie[]>(
+    () =>
+      node.external_links?.filter(
+        (l) => !RESOURCE_PREFIXES.some((p) => l.id.startsWith(p)),
+      ) || [],
+  );
+  return { clinicalResources, otherMappings, externalRefs };
 }

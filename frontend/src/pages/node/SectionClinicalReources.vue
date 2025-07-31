@@ -77,13 +77,15 @@ import { useClinicalResources } from "@/composables/use-clinical-resources";
 
 type Props = {
   /** current node */
-  clinicalSynopsis: { id: string; url?: string }[];
+  clinicalSynopsis?: { id: string; url?: string }[];
   /* Info for patients */
-  infoForPatients: { id: string; url?: string }[];
-  /** node object */
+  infoForPatients?: { id: string; url?: string }[];
+  /** Inheritance data if available */
   nodeInheritance?: Entity;
+  /** Causal genes array */
   casualGenes?: Entity[];
-  frequencyLabel: "Rare" | "Common";
+  /** 'Rare' or 'Common' */
+  frequencyLabel?: "Rare" | "Common";
   /** current node */
   node: ModelNode;
 };
@@ -146,7 +148,6 @@ console.log("clinicalResources", clinicalResources);
 
 .logo {
   box-sizing: border-box;
-
   display: flex;
   align-items: center;
   justify-content: center;
