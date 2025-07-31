@@ -91,16 +91,13 @@ type Props = {
 };
 const props = defineProps<Props>();
 const { clinicalResources } = useClinicalResources(props.node);
-
-console.log("clinicalResources", clinicalResources);
 </script>
 <style lang="scss" scoped>
 .custom-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-
-  gap: 2rem;
+  gap: 1em;
 }
 .custom-grid img {
   width: auto;
