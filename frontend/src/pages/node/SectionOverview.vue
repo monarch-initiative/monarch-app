@@ -46,47 +46,51 @@
         <AppTagList :tags="node.synonym ?? []" />
       </AppDetail>
 
-      <!-- clinical resources -->
-      <SectionClinicalReources
-        :clinicalSynopsis="clinicalSynopsis"
-        :infoForPatients="infoForPatients"
-        :nodeInheritance="node.inheritance"
-        :casualGenes="node.causal_gene"
-        :frequencyLabel="frequencyLabel"
-        :node="node"
-      />
+      <div v-if="isDiseaseNode">
+        <!-- clinical resources -->
+        <SectionClinicalReources
+          :clinicalSynopsis="clinicalSynopsis"
+          :infoForPatients="infoForPatients"
+          :nodeInheritance="node.inheritance"
+          :casualGenes="node.causal_gene"
+          :frequencyLabel="frequencyLabel"
+          :node="node"
+        />
 
-      <AppDetail
-        :blank="!otherMappings.length"
-        title="Equivalent disease concepts in other termiologies :"
-        :full="true"
-      >
-        <AppFlex align-h="left" gap="small">
-          <AppLink
-            v-for="(mapping, index) in otherMappings"
-            :key="index"
-            :to="mapping.url || ''"
-          >
-            {{ mapping.id }}
-          </AppLink>
-        </AppFlex>
-      </AppDetail>
-      <!-- external references -->
-      {{ node.external_links }}
-      <AppDetail
-        :blank="!node.external_links?.length"
-        title="External References"
-        :full="true"
-      >
-        <AppFlex align-h="left" gap="small">
-          <AppLink
-            v-for="(link, index) of node.external_links"
-            :key="index"
-            :to="link.url || ''"
-            >{{ link.id }}</AppLink
-          >
-        </AppFlex>
-      </AppDetail>
+        <AppDetail
+          :blank="!otherMappings.length"
+          title="Equivalent disease concepts in other termiologies"
+          :full="true"
+        >
+          <AppFlex align-h="left" gap="small">
+            <AppLink
+              v-for="(mapping, index) in otherMappings"
+              :key="index"
+              :to="mapping.url || ''"
+            >
+              {{ mapping.id }}
+            </AppLink>
+          </AppFlex>
+        </AppDetail>
+        <!-- external references -->
+
+        <AppDetail
+          :blank="!externalRefs?.length"
+          title="External References"
+          :full="true"
+        >
+          <AppFlex align-h="left" gap="small">
+            <AppLink
+              v-for="(link, index) of externalRefs"
+              :key="index"
+              :to="link.url || ''"
+              >{{ link.id }}</AppLink
+            >
+          </AppFlex>
+        </AppDetail>
+      </div>
+
+      <div v-else></div>
 
       <AppDetail :blank="!node.uri" title="URI">
         <AppLink :to="node.uri || ''">
@@ -105,14 +109,13 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { omit } from "lodash";
-import { faCaretSquareLeft } from "@fortawesome/free-regular-svg-icons";
-import type { ExpandedCurie, Node } from "@/api/model";
+import type { Node } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppNodeText from "@/components/AppNodeText.vue";
 import AppTagList from "@/components/AppTagList.vue";
+import { useClinicalResources } from "@/composables/use-clinical-resources";
 import SectionClinicalReources from "./SectionClinicalReources.vue";
 
 type Props = {
@@ -121,60 +124,9 @@ type Props = {
 };
 
 const props = defineProps<Props>();
+console.log("node", props.node);
 
-// The prefixes and their icon filenames
-const RESOURCE_DEFS = [
-  { prefix: "OMIM:", key: "omim", icon: "omim.png" },
-  { prefix: "NORD:", key: "nord", icon: "nord.png" },
-  { prefix: "GARD:", key: "gard", icon: "gard.png" },
-  { prefix: "Orphanet:", key: "orphanet", icon: "orphanet.png" },
-  { prefix: "MEDGEN:", key: "medgen", icon: "medgen.png" },
-] as const;
-
-type ResourceEntry = {
-  id: string;
-  url: string;
-  icon: string;
-  source: "external" | "mapping";
-};
-
-// Compute all five entries, in order, if they exist:
-const clinicalResources = computed<ResourceEntry[]>(() => {
-  const out: ResourceEntry[] = [];
-
-  for (const { prefix, icon } of RESOURCE_DEFS) {
-    // 1) try external_links
-    const ext = props.node.external_links?.find((l: ExpandedCurie) =>
-      l.id.startsWith(prefix),
-    );
-    if (ext) {
-      out.push({
-        id: ext.id,
-        url: ext.url || "",
-        icon,
-        source: "external",
-      });
-      continue;
-    }
-
-    // 2) fallback to mappings
-    const map = props.node.mappings?.find((m: ExpandedCurie) =>
-      m.id.startsWith(prefix),
-    );
-    if (map) {
-      out.push({
-        id: map.id,
-        url: map.url || "",
-        icon,
-        source: "mapping",
-      });
-    }
-  }
-
-  return out;
-});
-
-console.log("clinicalResources", clinicalResources);
+const isDiseaseNode = computed(() => props.node.category === "biolink:Disease");
 /** separate out mappings into categories */
 const clinicalSynopsis = computed(
   () =>
@@ -188,16 +140,18 @@ const infoForPatients = computed(
       ["GARD:"].some((prefix) => id.startsWith(prefix)),
     ) || [],
 );
-const otherMappings = computed(
-  () =>
-    props.node.mappings?.filter(
-      ({ id }) => !["OMIM:", "GARD:"].some((prefix) => id.startsWith(prefix)),
-    ) || [],
-);
+// const otherMappings = computed(
+//   () =>
+//     props.node.mappings?.filter(
+//       ({ id }) => !["OMIM:", "GARD:"].some((prefix) => id.startsWith(prefix)),
+//     ) || [],
+// );
 
 const frequencyLabel = computed((): "Rare" | "Common" => {
   return props.node.subsets?.includes("rare") ? "Rare" : "Common";
 });
+
+const { otherMappings, externalRefs } = useClinicalResources(props.node);
 // async function scrollToAssociations() {
 //   await sleep(100);
 //   scrollTo("#associations");

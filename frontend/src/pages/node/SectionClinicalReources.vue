@@ -7,11 +7,10 @@
   >
     <div class="custom-grid">
       <div v-for="(res, id) in clinicalResources" :key="id" class="logo">
-        <AppLink :to="res.url" :aria-label="res.tooltip">
+        <AppLink :to="res.url" :aria-label="res.id">
           <AppIcon
             v-if="res.icon"
-            :tooltip="res.tooltip"
-            :aria-label="res.tooltip"
+            :aria-label="res.id"
             :icon="res.icon"
             class="icon"
           />
@@ -20,7 +19,7 @@
     </div>
 
     <div class="sub-items">
-      <div v-if="clinicalSynopsis.length">
+      <div v-if="clinicalSynopsis?.length">
         <span class="info-label"> Clinical Synopsis </span> :
         <AppLink
           v-for="(mapping, index) in clinicalSynopsis"
@@ -31,7 +30,7 @@
         </AppLink>
       </div>
 
-      <div v-if="infoForPatients.length">
+      <div v-if="infoForPatients?.length">
         <span class="info-label"> Info for patients : </span>
         <AppLink
           v-for="(mapping, index) in infoForPatients"
@@ -51,7 +50,7 @@
         >
       </div>
 
-      <div v-if="casualGenes.length">
+      <div v-if="casualGenes?.length">
         <span class="info-label"> Casual Genes : </span>
         <AppNodeBadge
           v-for="(gene, index) in casualGenes"
@@ -69,7 +68,8 @@
 </template>
 
 <script setup lang="ts">
-import type { ExpandedCurie, Node as ModelNode } from "@/api/model";
+import { omit } from "lodash";
+import type { Entity, ExpandedCurie, Node as ModelNode } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppLink from "@/components/AppLink.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
@@ -81,11 +81,8 @@ type Props = {
   /* Info for patients */
   infoForPatients: { id: string; url?: string }[];
   /** node object */
-  nodeInheritance: {
-    id: string;
-    name: string;
-  };
-  casualGenes: { id: string; name: string }[];
+  nodeInheritance?: Entity;
+  casualGenes?: Entity[];
   frequencyLabel: "Rare" | "Common";
   /** current node */
   node: ModelNode;
