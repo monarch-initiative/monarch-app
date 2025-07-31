@@ -16,46 +16,11 @@
         Failed to load direct data.
       </p>
 
-      <div class="association-tabs">
-        <!-- Non-disease pages: show “All” first, then “Direct” -->
-        <template v-if="!isDiseaseNode">
-          <AppButton
-            v-if="showAllTab(category.count ?? 0, category.id)"
-            :class="[
-              'tab-button',
-              {
-                active:
-                  (selectedTabs[category.id] ?? defaultTab(category.id)) ===
-                  'all',
-              },
-            ]"
-            @click="setDirect(category.id, 'false')"
-            v-tooltip="'Include subclass associations'"
-            text="All Associations"
-            color="none"
-          />
-          <AppButton
-            :class="[
-              'tab-button',
-              {
-                active:
-                  (selectedTabs[category.id] ?? defaultTab(category.id)) ===
-                  'direct',
-              },
-            ]"
-            @click="setDirect(category.id, 'true')"
-            :disabled="
-              isLoadingDirectCount ||
-              !hasDirectAssociationsForCategory(category.id)
-            "
-            :text="`Direct Associations`"
-            v-tooltip="'Exclude subclass associations'"
-            color="none"
-          />
-        </template>
+      <!--tabs omly if its disease node-->
+      <template v-if="isDiseaseNode">
+        <div class="association-tabs">
+          <!-- Non-disease pages: show “All” first, then “Direct” -->
 
-        <!-- Disease pages: show “Direct” first, then “All” -->
-        <template v-else>
           <div class="tab-item">
             <AppButton
               :class="[
@@ -116,8 +81,10 @@
               {{ (category.count ?? 0).toLocaleString() }} phenotypes
             </span>
           </div>
-        </template>
-      </div>
+
+          <!-- Disease pages: show “Direct” first, then “All” -->
+        </div>
+      </template>
 
       <div class="actions-row">
         <AppButton
@@ -270,6 +237,7 @@ const showAllTab = computed(() => {
  *  - "direct" otherwise
  * Non-disease nodes always default to "all".
  */
+
 function defaultTab(categoryId: string): "direct" | "all" {
   const directCount = directAssociationCount(categoryId);
   const isDisease = isDiseaseNode.value;
@@ -281,6 +249,12 @@ function defaultTab(categoryId: string): "direct" | "all" {
   // disease node: no direct → all, else → direct
   return directCount > 0 ? "direct" : "all";
 }
+
+/**
+ * - For non-disease pages(temperory, will change once we get the new layout):
+ * - 1. defaultTab(categoryId) → "all" when isDiseaseNode is false
+ * - 2. If hasDirectAssociationsForCategory(...) is false, omit the “Direct” tab
+ */
 
 const getDirectProps = (categoryId: string) => {
   // pick the tab (direct vs all) based on user click or our default rule
