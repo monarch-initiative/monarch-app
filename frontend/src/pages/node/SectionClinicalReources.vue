@@ -97,7 +97,8 @@ const { clinicalResources } = useClinicalResources(props.node);
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  gap: 1em;
+  margin-top: 0.5em;
+  gap: 0.8em;
 }
 .custom-grid img {
   width: auto;
@@ -124,7 +125,7 @@ const { clinicalResources } = useClinicalResources(props.node);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
   gap: 3rem;
 }
 .icon {
@@ -132,7 +133,7 @@ const { clinicalResources } = useClinicalResources(props.node);
   position: relative;
   position: relative;
   width: 10em;
-  height: 5em;
+  height: 3em;
 
   cursor: pointer;
   transition: transform 0.2s ease;
@@ -171,7 +172,7 @@ a:focus,
   display: flex;
   flex-direction: column;
   margin: 1rem 0;
-  padding: 1.5rem 1.5rem;
+  padding: 1.2rem 1.5rem;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
   background-color: #f7fbfe;
@@ -187,7 +188,7 @@ a:focus,
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-top: 1em;
+
   gap: 0.5em;
   font-size: 0.9em;
 }
