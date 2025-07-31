@@ -1,6 +1,6 @@
 <template>
   <AppDetail
-    :blank="!clinicalResources.length"
+    :blank="!clinicalResources?.length"
     title="Patient and Clinical Resources"
     :full="true"
     class="clinical-resources"
