@@ -98,7 +98,7 @@ const { clinicalResources } = useClinicalResources(props.node);
   flex-wrap: wrap;
   justify-content: flex-start;
   margin-top: 0.5em;
-  gap: 0.8em;
+  gap: 1.5em;
 }
 .custom-grid img {
   width: auto;
