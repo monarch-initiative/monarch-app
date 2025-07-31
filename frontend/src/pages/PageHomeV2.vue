@@ -57,7 +57,6 @@ import { TOOL_LINKS } from "@/data/toolEntityConfig";
   justify-content: center;
   width: 100%;
   max-width: 60em;
-
   gap: 2em;
 }
 

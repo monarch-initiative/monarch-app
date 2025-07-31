@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="100" viewBox="0 0 400 100"
+     xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">MedGen Logo</title>
+  <desc id="desc">MedGen in white on purple, with tagline</desc>
+
+  <!-- Background rectangle -->
+  <rect width="400" height="100" fill="#675ba0" rx="4" ry="4"/>
+
+  <!-- Main wordmark -->
+  <text x="20" y="45"
+        font-family="Montserrat, sans-serif"
+        font-weight="700"
+        font-size="36"
+        fill="#ffffff">
+    MedGen
+  </text>
+
+  <!-- Tagline -->
+  <text x="20" y="75"
+        font-family="Open Sans, sans-serif"
+        font-weight="400"
+        font-size="14"
+        fill="#f0f0f0">
+    Conditions with a genetic component
+  </text>
+</svg>
