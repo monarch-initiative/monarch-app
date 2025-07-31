@@ -56,17 +56,6 @@
           :node="node"
         />
 
-      <div v-if="isDiseaseNode">
-        <!-- clinical resources -->
-        <SectionClinicalReources
-          :clinicalSynopsis="clinicalSynopsis"
-          :infoForPatients="infoForPatients"
-          :nodeInheritance="node.inheritance"
-          :casualGenes="node.causal_gene"
-          :frequencyLabel="frequencyLabel"
-          :node="node"
-        />
-
         <AppDetail
           :blank="!otherMappings.length"
           title="Equivalent disease concepts in other termiologies"
@@ -99,8 +88,6 @@
           </AppFlex>
         </AppDetail>
       </div>
-
-      <div v-else></div>
 
       <AppDetail :blank="!node.uri" title="URI">
         <AppLink :to="node.uri || ''">
