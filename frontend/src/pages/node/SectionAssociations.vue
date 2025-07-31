@@ -16,46 +16,11 @@
         Failed to load direct data.
       </p>
 
-      <div class="association-tabs">
-        <!-- Non-disease pages: show “All” first, then “Direct” -->
-        <template v-if="!isDiseaseNode">
-          <AppButton
-            v-if="showAllTab(category.count ?? 0, category.id)"
-            :class="[
-              'tab-button',
-              {
-                active:
-                  (selectedTabs[category.id] ?? defaultTab(category.id)) ===
-                  'all',
-              },
-            ]"
-            @click="setDirect(category.id, 'false')"
-            v-tooltip="'Include subclass associations'"
-            text="All Associations"
-            color="none"
-          />
-          <AppButton
-            :class="[
-              'tab-button',
-              {
-                active:
-                  (selectedTabs[category.id] ?? defaultTab(category.id)) ===
-                  'direct',
-              },
-            ]"
-            @click="setDirect(category.id, 'true')"
-            :disabled="
-              isLoadingDirectCount ||
-              !hasDirectAssociationsForCategory(category.id)
-            "
-            :text="`Direct Associations`"
-            v-tooltip="'Exclude subclass associations'"
-            color="none"
-          />
-        </template>
+      <!--tabs omly if its disease node-->
+      <template v-if="isDiseaseNode">
+        <div class="association-tabs">
+          <!-- Non-disease pages: show “All” first, then “Direct” -->
 
-        <!-- Disease pages: show “Direct” first, then “All” -->
-        <template v-else>
           <div class="tab-item">
             <AppButton
               :class="[
@@ -116,8 +81,10 @@
               {{ (category.count ?? 0).toLocaleString() }} phenotypes
             </span>
           </div>
-        </template>
-      </div>
+
+          <!-- Disease pages: show “Direct” first, then “All” -->
+        </div>
+      </template>
 
       <div class="actions-row">
         <AppButton
