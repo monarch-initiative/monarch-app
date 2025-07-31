@@ -237,6 +237,7 @@ const showAllTab = computed(() => {
  *  - "direct" otherwise
  * Non-disease nodes always default to "all".
  */
+
 function defaultTab(categoryId: string): "direct" | "all" {
   const directCount = directAssociationCount(categoryId);
   const isDisease = isDiseaseNode.value;
@@ -248,6 +249,12 @@ function defaultTab(categoryId: string): "direct" | "all" {
   // disease node: no direct → all, else → direct
   return directCount > 0 ? "direct" : "all";
 }
+
+/**
+ * - For non-disease pages(temperory, will change once we get the new layout):
+ * - 1. defaultTab(categoryId) → "all" when isDiseaseNode is false
+ * - 2. If hasDirectAssociationsForCategory(...) is false, omit the “Direct” tab
+ */
 
 const getDirectProps = (categoryId: string) => {
   // pick the tab (direct vs all) based on user click or our default rule
