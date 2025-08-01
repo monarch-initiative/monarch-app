@@ -330,11 +330,6 @@ const medicalActionColumns = computed<Cols<Datum>>(() => {
       heading: "Extension",
     },
     {
-      slot: "maxorelation",
-      key: "original_predicate",
-      heading: "MaXO Relation",
-    },
-    {
       slot: "object",
       key: "object_label",
       heading: "Phenotype",
@@ -404,8 +399,8 @@ const cols = computed((): Cols<Datum> => {
       heading: "Taxon",
     });
   }
-
-  if (props.direct.id === "true") {
+  console.log("props.node.categor", props.node.category);
+  if (props.direct.id === "true" && props.node.category === "biolink:Disease") {
     // CorrelatedGene & Desease model: keep subject_label & predicate, only drop object_label
     if (
       props.category.id === "biolink:CorrelatedGeneToDiseaseAssociation" ||
