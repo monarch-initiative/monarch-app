@@ -62,7 +62,7 @@ type Props = {
   /** whether to show id. not shown by default, unless name/label empty. */
   showId?: boolean;
   /** boolen to use for highlighting */
-  highlight: boolean;
+  highlight?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {

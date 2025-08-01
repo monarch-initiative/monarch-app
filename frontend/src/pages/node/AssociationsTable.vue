@@ -88,6 +88,9 @@
     <!-- object-->
     <template #object="{ row }">
       <div class="badgeColumn">
+        <span v-if="row?.negated === true && direct.id === 'true'">
+          Does <span class="negated-text">NOT</span> have
+        </span>
         <AppNodeBadge
           :node="{
             id: row.object,
@@ -246,8 +249,7 @@ type Props = {
   node: Node;
   /** selected association category */
   category: Option;
-  /** include orthologs */
-  includeOrthologs: boolean;
+  /** "true" = direct only, "false" = include subclasses */
   direct: Option;
   /** search string */
   search: string;
@@ -328,11 +330,6 @@ const medicalActionColumns = computed<Cols<Datum>>(() => {
       heading: "Extension",
     },
     {
-      slot: "maxorelation",
-      key: "original_predicate",
-      heading: "MaXO Relation",
-    },
-    {
       slot: "object",
       key: "object_label",
       heading: "Phenotype",
@@ -360,7 +357,7 @@ const cols = computed((): Cols<Datum> => {
   }
 
   /** standard columns, always present */
-  const baseCols: Cols<Datum> = [
+  let baseCols: Cols<Datum> = [
     {
       slot: "subject",
       key: "subject_label",
@@ -401,6 +398,24 @@ const cols = computed((): Cols<Datum> => {
       slot: "taxon",
       heading: "Taxon",
     });
+  }
+  console.log("props.node.categor", props.node.category);
+  if (props.direct.id === "true" && props.node.category === "biolink:Disease") {
+    // CorrelatedGene & Desease model: keep subject_label & predicate, only drop object_label
+    if (
+      props.category.id === "biolink:CorrelatedGeneToDiseaseAssociation" ||
+      props.category.id === "biolink:GenotypeToDiseaseAssociation"
+    ) {
+      baseCols = baseCols.filter((col) => col.key !== "object_label");
+    }
+    //  All other direct‐only cases (except Gene-Phenotype): drop subject_label & predicate
+    else if (
+      props.category.id !== "biolink:GeneToPhenotypicFeatureAssociation"
+    ) {
+      baseCols = baseCols.filter(
+        (col) => col.key !== "subject_label" && col.key !== "predicate",
+      );
+    }
   }
 
   if (
@@ -498,13 +513,12 @@ const {
     if (fresh) {
       start.value = 0;
     }
-
     const response = await getAssociations(
       props.node.id,
       props.category.id,
       start.value,
       perPage.value,
-      props.includeOrthologs,
+      true,
       props.direct.id,
       props.search,
       sort.value,
@@ -533,7 +547,7 @@ async function download() {
   await downloadAssociations(
     props.node.id,
     props.category.id,
-    props.includeOrthologs,
+    true,
     props.direct.id,
     props.search,
     sort.value,
@@ -591,10 +605,7 @@ watch(
   () => props.category,
   async () => await queryAssociations(true),
 );
-watch(
-  () => props.includeOrthologs,
-  async () => await queryAssociations(true),
-);
+
 watch(
   () => props.direct,
   async () => await queryAssociations(true),
@@ -658,5 +669,9 @@ onMounted(() => queryAssociations(true));
 .text-sm {
   color: $dark-gray;
   font-size: 0.9em;
+}
+.negated-text {
+  color: $error;
+  font-weight: bold;
 }
 </style>
