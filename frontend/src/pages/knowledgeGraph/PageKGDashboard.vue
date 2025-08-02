@@ -96,11 +96,56 @@
             />
           </div>
         </div>
+
+        <!-- Charts Section -->
+        <div class="dashboard-section">
+          <h3>Data Visualizations</h3>
+          
+          <!-- Sankey Chart - Knowledge Flow -->
+          <SankeyChart
+            title="Knowledge Graph Flow"
+            data-source="edge_report"
+            sql="
+              SELECT
+              replace(subject_category, 'biolink:', '') as subject_category,
+              replace(predicate, 'biolink:', '') as predicate,
+              replace(object_category, 'biolink:', '') || ' ' as object_category,
+              SUM(count) as count
+              FROM edge_report
+              GROUP BY subject_category, predicate, object_category
+              ORDER BY count DESC
+              LIMIT 50
+            "
+            :show-controls="true"
+            :allow-export="true"
+            height="800px"
+          />
+          
+          <!-- Chord Chart - Category Connections -->
+          <ChordChart
+            title="Knowledge Graph Category Connections"
+            data-source="edge_report"
+            sql="
+              SELECT
+              replace(subject_category, 'biolink:', '') as subject_category,
+              replace(object_category, 'biolink:', '') as object_category,
+              SUM(count) as count
+              FROM edge_report
+              GROUP BY all
+              HAVING count > 1000
+              ORDER BY count DESC
+
+            "
+            :show-controls="true"
+            :allow-export="true"
+            height="600px"
+          />
+        </div>
       </KGDashboard>
 
-      <!-- Charts Section -->
+      <!-- Placeholder Charts Section -->
       <div class="charts-section">
-        <h3>Data Visualizations</h3>
+        <h3>Future Visualizations</h3>
         <div class="charts-grid">
           <!-- Placeholder for Bar Chart -->
           <div class="chart-placeholder">
@@ -110,18 +155,6 @@
               <p>Bar Chart Component</p>
               <p class="placeholder-desc">
                 Coming Soon: Distribution of entities by biomedical category
-              </p>
-            </div>
-          </div>
-
-          <!-- Placeholder for Sankey Chart -->
-          <div class="chart-placeholder">
-            <h4>Knowledge Flow Diagram</h4>
-            <div class="placeholder-content">
-              <AppIcon icon="shuffle" />
-              <p>Sankey Chart Component</p>
-              <p class="placeholder-desc">
-                Coming Soon: Data source → category → association flow
               </p>
             </div>
           </div>
@@ -165,6 +198,8 @@ import AppSection from "@/components/AppSection.vue";
 import DataSource from "@/components/dashboard/DataSource.vue";
 import KGDashboard from "@/components/dashboard/KGDashboard.vue";
 import KGMetricCard from "@/components/dashboard/KGMetricCard.vue";
+import SankeyChart from "@/components/dashboard/SankeyChart.vue";
+import ChordChart from "@/components/dashboard/ChordChart.vue";
 import PageTitle from "@/components/ThePageTitle.vue";
 </script>
 
