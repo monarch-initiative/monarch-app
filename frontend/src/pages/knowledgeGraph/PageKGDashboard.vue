@@ -140,21 +140,53 @@
             :allow-export="true"
             height="600px"
           />
+          
+          <!-- Bar Chart - Node Distribution by Category -->
+          <BarChart
+            title="Node Distribution by Category"
+            data-source="node_report"
+            sql="
+              SELECT
+              replace(category, 'biolink:', '') as category,
+              SUM(count) as count
+              FROM node_report
+              WHERE category IS NOT NULL
+              GROUP BY category
+              ORDER BY count DESC
+              LIMIT 15
+            "
+            :show-controls="true"
+            :allow-export="true"
+            orientation="horizontal"
+            height="600px"
+          />
         </div>
       </KGDashboard>
 
-      <!-- Placeholder Charts Section -->
+      <!-- Future Visualizations Section -->
       <div class="charts-section">
         <h3>Future Visualizations</h3>
         <div class="charts-grid">
-          <!-- Placeholder for Bar Chart -->
+          <!-- Placeholder for Time Series Chart -->
           <div class="chart-placeholder">
-            <h4>Node Distribution by Category</h4>
+            <h4>Data Growth Over Time</h4>
             <div class="placeholder-content">
-              <AppIcon icon="bar-chart-2" />
-              <p>Bar Chart Component</p>
+              <AppIcon icon="trending-up" />
+              <p>Time Series Chart</p>
               <p class="placeholder-desc">
-                Coming Soon: Distribution of entities by biomedical category
+                Coming Soon: Track KG growth and updates over time
+              </p>
+            </div>
+          </div>
+          
+          <!-- Placeholder for Network Graph -->
+          <div class="chart-placeholder">
+            <h4>Interactive Network Graph</h4>
+            <div class="placeholder-content">
+              <AppIcon icon="share-2" />
+              <p>Network Visualization</p>
+              <p class="placeholder-desc">
+                Coming Soon: Explore entity relationships interactively
               </p>
             </div>
           </div>
@@ -200,6 +232,7 @@ import KGDashboard from "@/components/dashboard/KGDashboard.vue";
 import KGMetricCard from "@/components/dashboard/KGMetricCard.vue";
 import SankeyChart from "@/components/dashboard/SankeyChart.vue";
 import ChordChart from "@/components/dashboard/ChordChart.vue";
+import BarChart from "@/components/dashboard/BarChart.vue";
 import PageTitle from "@/components/ThePageTitle.vue";
 </script>
 
