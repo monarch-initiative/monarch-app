@@ -138,6 +138,29 @@ export function useDuckDB(config: DuckDBConfig = {}) {
     }
   };
 
+  /** Load a CSV file from URL */
+  const loadCSV = async (url: string, tableName: string): Promise<void> => {
+    if (!connection.value) {
+      throw new Error("DuckDB not initialized");
+    }
+
+    try {
+      isLoading.value = true;
+      error.value = null;
+
+      // Create table from CSV file with header detection
+      const sql = `CREATE OR REPLACE TABLE ${tableName} AS SELECT * FROM read_csv_auto('${url}')`;
+      await connection.value.query(sql);
+      
+    } catch (err) {
+      error.value =
+        err instanceof Error ? err.message : "Failed to load CSV file";
+      throw err;
+    } finally {
+      isLoading.value = false;
+    }
+  };
+
   /** Execute a SQL query */
   const query = async (sql: string): Promise<QueryResult> => {
     if (!connection.value) {
@@ -199,6 +222,7 @@ export function useDuckDB(config: DuckDBConfig = {}) {
     error,
     initDB,
     loadParquet,
+    loadCSV,
     query,
     cleanup,
   };

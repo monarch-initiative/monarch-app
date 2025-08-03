@@ -12,6 +12,7 @@ interface Props {
   url: string;
   description?: string;
   baseUrl?: string;
+  format?: 'parquet' | 'csv';
 }
 
 const props = defineProps<Props>();
@@ -36,6 +37,7 @@ if (dashboardContext) {
     url: props.url,
     description: props.description,
     baseUrl: props.baseUrl,
+    format: props.format,
   });
 }
 

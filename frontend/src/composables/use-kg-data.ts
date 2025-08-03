@@ -7,6 +7,7 @@ export interface DataSourceConfig {
   url: string;
   description?: string;
   baseUrl?: string;
+  format?: 'parquet' | 'csv';
 }
 
 export interface DataSource extends DataSourceConfig {
@@ -56,13 +57,18 @@ export function useKGData() {
       const version = await getLatestKGReleaseDate();
       const sourceUrl = await getKGSourceUrl();
       
+      // Check if API returned "unknown" or invalid data
+      if (version === "unknown" || sourceUrl === "unknown" || !version || !sourceUrl) {
+        throw new Error("API returned unknown or invalid data");
+      }
+      
       kgVersion.value = version;
       // Use the source URL directly from the API (includes full path)
       kgSourceUrl.value = sourceUrl.endsWith('/') ? sourceUrl.slice(0, -1) : sourceUrl;
     } catch (err) {
-      // Fallback to a default version if API fails
-      kgVersion.value = "2025-07-09";
-      kgSourceUrl.value = `https://data.monarchinitiative.org/monarch-kg/${kgVersion.value}`;
+      // Fallback to latest dev version if API fails or returns "unknown"
+      kgVersion.value = "latest";
+      kgSourceUrl.value = "https://data.monarchinitiative.org/monarch-kg-dev/latest";
     }
   };
 
@@ -102,8 +108,13 @@ export function useKGData() {
         ? `${source.baseUrl}/${source.url}`
         : source.url;
 
-      // Load parquet file into DuckDB
-      await duckDB.loadParquet(fullUrl, name);
+      // Load file into DuckDB based on format
+      const format = source.format || 'parquet'; // Default to parquet
+      if (format === 'csv') {
+        await duckDB.loadCSV(fullUrl, name);
+      } else {
+        await duckDB.loadParquet(fullUrl, name);
+      }
 
       // Update source status
       source.isLoaded = true;

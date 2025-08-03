@@ -25,6 +25,12 @@
           url="qc/edge_report.parquet"
           description="Edge/association statistics from KG quality control"
         />
+        <DataSource
+          name="gene_connection_report"
+          url="qc/gene_connection_report.tsv"
+          description="Gene ortholog and phenotype connection analysis"
+          format="csv"
+        />
 
         <!-- Knowledge Graph Metrics -->
         <div class="dashboard-section">
@@ -161,6 +167,7 @@
             height="600px"
           />
         </div>
+
       </KGDashboard>
 
       <!-- Future Visualizations Section -->
@@ -258,6 +265,17 @@ import PageTitle from "@/components/ThePageTitle.vue";
     color: #374151;
     font-weight: 600;
     font-size: 1.25rem;
+  }
+
+  .section-description {
+    margin: 0 0 2rem 0;
+    padding: 1rem 1.5rem;
+    border-left: 4px solid #3b82f6;
+    background-color: #f8faff;
+    color: #374151;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    border-radius: 0 6px 6px 0;
   }
 }
 
