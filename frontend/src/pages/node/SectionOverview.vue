@@ -49,11 +49,11 @@
       <!--Temperory condition for diesease node-->
       <AppDetails v-if="isDiseaseNode" gap="20px">
         <SectionClinicalReources
-          :clinicalSynopsis="clinicalSynopsis"
-          :infoForPatients="infoForPatients"
-          :nodeInheritance="node.inheritance"
-          :casualGenes="node.causal_gene"
-          :frequencyLabel="frequencyLabel"
+          :clinical-synopsis="clinicalSynopsis"
+          :info-for-patients="infoForPatients"
+          :node-inheritance="node.inheritance"
+          :casual-genes="node.causal_gene"
+          :frequency-label="frequencyLabel"
           :node="node"
         />
         <!--other mappings-->
@@ -103,7 +103,7 @@
       </AppDetails>
 
       <!--For all other nodes other than diesease nodes-->
-      <AppDetails gap="20px" v-else>
+      <AppDetails v-else gap="20px">
         <!-- URI -->
         <AppDetail :blank="!node.uri" title="URI">
           <AppLink :to="node.uri || ''">

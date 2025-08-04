@@ -23,6 +23,8 @@
 
           <div class="tab-item">
             <AppButton
+              v-if="hasDirectAssociationsForCategory(category.id)"
+              v-tooltip="'Exclude subclass associations'"
               :class="[
                 'tab-button',
                 {
@@ -31,22 +33,20 @@
                     'direct',
                 },
               ]"
-              @click="setDirect(category.id, 'true')"
-              v-if="hasDirectAssociationsForCategory(category.id)"
               :disabled="
                 isLoadingDirectCount ||
                 !hasDirectAssociationsForCategory(category.id)
               "
               :text="`Direct Associations`"
-              v-tooltip="'Exclude subclass associations'"
               color="none"
+              @click="setDirect(category.id, 'true')"
             />
 
             <span
-              class="tab-count"
               v-if="
                 category.id.includes('DiseaseToPhenotypicFeatureAssociation')
               "
+              class="tab-count"
             >
               <template v-if="showAllTab(category.count ?? 0, category.id)">
                 {{ directAssociationCount(category.id).toLocaleString() }}
@@ -58,6 +58,7 @@
           <div class="tab-item">
             <AppButton
               v-if="showAllTab(category.count ?? 0, category.id)"
+              v-tooltip="'Include subclass associations'"
               :class="[
                 'tab-button',
                 {
@@ -66,17 +67,16 @@
                     'all',
                 },
               ]"
-              @click="setDirect(category.id, 'false')"
-              v-tooltip="'Include subclass associations'"
               text="All Associations"
               color="none"
+              @click="setDirect(category.id, 'false')"
             />
             <span
-              class="tab-count"
               v-if="
                 showAllTab(category.count ?? 0, category.id) &&
                 category.id.includes('DiseaseToPhenotypicFeatureAssociation')
               "
+              class="tab-count"
             >
               {{ (category.count ?? 0).toLocaleString() }} phenotypes
             </span>
