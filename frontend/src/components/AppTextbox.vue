@@ -3,7 +3,7 @@
 -->
 
 <template>
-  <label class="label">
+  <label class="label" for="textbox">
     <div v-if="title" class="title">
       {{ title }}
       <AppIcon v-if="required" icon="asterisk" class="asterisk" />
