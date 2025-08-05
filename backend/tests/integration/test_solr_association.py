@@ -68,7 +68,6 @@ def test_entity():
     assert response
     assert response.total > 50
     for association in response.items:
-
         if (
             association.subject_closure is None or len(association.subject_closure) == 0
         ) and association.disease_context_qualifier is None:
