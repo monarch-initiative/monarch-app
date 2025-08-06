@@ -10,7 +10,7 @@ const RESOURCE_DEFS = [
   { prefix: "MEDGEN:", icon: "medgen.png" },
 ] as const;
 
-const RESOURCE_PREFIXES = RESOURCE_DEFS.map((r) => r.prefix);
+const RESOURCE_PREFIXES = RESOURCE_DEFS.map((rec) => rec.prefix);
 
 export type ResourceEntry = {
   id: string;
@@ -31,8 +31,8 @@ export function useClinicalResources(node: Node) {
         out.push({ id: ext.id, url: ext.url || "", icon, source: "external" });
         continue;
       }
-      const map = node.mappings?.find((m: ExpandedCurie) =>
-        m.id.startsWith(prefix),
+      const map = node.mappings?.find((item: ExpandedCurie) =>
+        item.id.startsWith(prefix),
       );
       if (map) {
         out.push({ id: map.id, url: map.url || "", icon, source: "mapping" });
@@ -45,7 +45,7 @@ export function useClinicalResources(node: Node) {
   const otherMappings = computed(
     () =>
       node.mappings?.filter(
-        (m) => !RESOURCE_PREFIXES.some((p) => m.id.startsWith(p)),
+        (item) => !RESOURCE_PREFIXES.some((pre) => item.id.startsWith(pre)),
       ) || [],
   );
 
@@ -53,7 +53,7 @@ export function useClinicalResources(node: Node) {
   const externalRefs = computed<ExpandedCurie[]>(
     () =>
       node.external_links?.filter(
-        (l) => !RESOURCE_PREFIXES.some((p) => l.id.startsWith(p)),
+        (link) => !RESOURCE_PREFIXES.some((pre) => link.id.startsWith(pre)),
       ) || [],
   );
   return { clinicalResources, otherMappings, externalRefs };
