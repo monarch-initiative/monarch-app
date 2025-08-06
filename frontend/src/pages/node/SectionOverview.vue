@@ -231,7 +231,6 @@ type Props = {
 };
 
 const props = defineProps<Props>();
-console.log("node", props.node);
 
 const isDiseaseNode = computed(() => props.node.category === "biolink:Disease");
 /** separate out mappings into categories */
