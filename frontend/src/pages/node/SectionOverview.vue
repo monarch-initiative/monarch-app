@@ -47,71 +47,71 @@
       </AppDetail>
 
       <!--Temperory condition for diesease node-->
-      <!-- <AppDetails v-if="isDiseaseNode" gap="20px"> -->
-      <SectionClinicalReources
-        :clinical-synopsis="clinicalSynopsis"
-        :info-for-patients="infoForPatients"
-        :node-inheritance="node.inheritance"
-        :casual-genes="node.causal_gene"
-        :frequency-label="frequencyLabel"
-        :node="node"
-      />
-      <!--other mappings-->
+      <AppDetails v-if="isDiseaseNode" gap="20px">
+        <SectionClinicalReources
+          :clinical-synopsis="clinicalSynopsis"
+          :info-for-patients="infoForPatients"
+          :node-inheritance="node.inheritance"
+          :casual-genes="node.causal_gene"
+          :frequency-label="frequencyLabel"
+          :node="node"
+        />
+        <!--other mappings-->
 
-      <AppDetail
-        :blank="!otherMappings.length"
-        :title="mappingTitle"
-        :full="true"
-      >
-        <AppFlex align-h="left" gap="small">
-          <AppLink
-            v-for="(mapping, index) in otherMappings"
-            :key="index"
-            :to="mapping.url || ''"
-          >
-            {{ mapping.id }}
-          </AppLink>
-        </AppFlex>
-      </AppDetail>
-      <!-- external references -->
-      <AppDetail
-        :blank="!externalRefs?.length"
-        title="External References"
-        :full="true"
-      >
-        <AppFlex align-h="left" gap="small">
-          <AppLink
-            v-for="(link, index) of externalRefs"
-            :key="index"
-            :to="link.url || ''"
-            >{{ link.id }}</AppLink
-          >
-        </AppFlex>
-      </AppDetail>
+        <AppDetail
+          :blank="!otherMappings.length"
+          title="Equivalent disease concepts in other termiologies"
+          :full="true"
+        >
+          <AppFlex align-h="left" gap="small">
+            <AppLink
+              v-for="(mapping, index) in otherMappings"
+              :key="index"
+              :to="mapping.url || ''"
+            >
+              {{ mapping.id }}
+            </AppLink>
+          </AppFlex>
+        </AppDetail>
+        <!-- external references -->
+        <AppDetail
+          :blank="!externalRefs?.length"
+          title="External References"
+          :full="true"
+        >
+          <AppFlex align-h="left" gap="small">
+            <AppLink
+              v-for="(link, index) of externalRefs"
+              :key="index"
+              :to="link.url || ''"
+              >{{ link.id }}</AppLink
+            >
+          </AppFlex>
+        </AppDetail>
 
-      <AppDetail :blank="!node.uri" title="URI">
-        <AppLink :to="node.uri || ''">
-          {{ node.id }}
-        </AppLink>
-      </AppDetail>
-
-      <AppDetail :blank="!node.provided_by_link" title="Ingest Documentation">
-        <AppLink :to="node.provided_by_link?.url || ''">
-          {{ node.provided_by_link?.id || node.provided_by }}
-        </AppLink>
-      </AppDetail>
-      <!-- </AppDetails> -->
-
-      <!--For all other nodes other than diesease nodes-->
-      <!-- <AppDetails v-else gap="20px"> -->
-      <!-- URI -->
-      <!-- <AppDetail :blank="!node.uri" title="URI">
+        <AppDetail :blank="!node.uri" title="URI">
           <AppLink :to="node.uri || ''">
             {{ node.id }}
           </AppLink>
-        </AppDetail> -->
-      <!-- inheritance -->
-      <!-- <AppDetail
+        </AppDetail>
+
+        <AppDetail :blank="!node.provided_by_link" title="Ingest Documentation">
+          <AppLink :to="node.provided_by_link?.url || ''">
+            {{ node.provided_by_link?.id || node.provided_by }}
+          </AppLink>
+        </AppDetail>
+      </AppDetails>
+
+      <!--For all other nodes other than diesease nodes-->
+      <AppDetails v-else gap="20px">
+        <!-- URI -->
+        <AppDetail :blank="!node.uri" title="URI">
+          <AppLink :to="node.uri || ''">
+            {{ node.id }}
+          </AppLink>
+        </AppDetail>
+        <!-- inheritance -->
+        <AppDetail
           v-if="node.category === 'biolink:Disease'"
           :blank="!node.inheritance"
           title="Heritability"
@@ -123,10 +123,10 @@
               >{{ node.inheritance?.name }}</AppLink
             >
           </AppFlex>
-        </AppDetail> -->
+        </AppDetail>
 
-      <!-- disease causal genes -->
-      <!-- <AppDetail
+        <!-- disease causal genes -->
+        <AppDetail
           v-if="node.category === 'biolink:Disease'"
           :blank="!node.causal_gene?.length"
           title="Causal Genes"
@@ -138,15 +138,15 @@
               :node="omit(gene, 'in_taxon_label')"
             />
           </AppFlex>
-        </AppDetail> -->
+        </AppDetail>
 
-      <!-- disease frequecy -->
-      <!-- <AppDetail v-if="node.category === 'biolink:Disease'" title="Frequency">
+        <!-- disease frequecy -->
+        <AppDetail v-if="node.category === 'biolink:Disease'" title="Frequency">
           <span>{{ node?.subsets?.includes("rare") ? "Rare" : "Common" }}</span>
-        </AppDetail> -->
+        </AppDetail>
 
-      <!-- mappings -->
-      <!-- <AppDetail :blank="!clinicalSynopsis.length" title="Clinical Synopsis">
+        <!-- mappings -->
+        <AppDetail :blank="!clinicalSynopsis.length" title="Clinical Synopsis">
           <AppFlex align-h="left" gap="small">
             <AppLink
               v-for="(mapping, index) in clinicalSynopsis"
@@ -156,8 +156,8 @@
               {{ mapping.id }}
             </AppLink>
           </AppFlex>
-        </AppDetail> -->
-      <!-- <AppDetail
+        </AppDetail>
+        <AppDetail
           :blank="!infoForPatients.length"
           title="Clinical Info for Patients"
         >
@@ -170,15 +170,15 @@
               {{ mapping.id }}
             </AppLink>
           </AppFlex>
-        </AppDetail> -->
+        </AppDetail>
 
-      <!-- <AppDetail :blank="!node.provided_by_link" title="Ingest Documentation">
+        <AppDetail :blank="!node.provided_by_link" title="Ingest Documentation">
           <AppLink :to="node.provided_by_link?.url || ''">
             {{ node.provided_by_link?.id || node.provided_by }}
           </AppLink>
-        </AppDetail> -->
+        </AppDetail>
 
-      <!-- <AppDetail
+        <AppDetail
           :blank="!otherMappings.length"
           title="Other Mappings"
           :full="true"
@@ -192,9 +192,9 @@
               {{ mapping.id }}
             </AppLink>
           </AppFlex>
-        </AppDetail> -->
-      <!-- external references -->
-      <!-- <AppDetail
+        </AppDetail>
+        <!-- external references -->
+        <AppDetail
           :blank="!node.external_links?.length"
           title="External References"
           :full="true"
@@ -207,8 +207,8 @@
               >{{ link.id }}</AppLink
             >
           </AppFlex>
-        </AppDetail> -->
-      <!-- </AppDetails> -->
+        </AppDetail>
+      </AppDetails>
     </AppDetails>
   </AppSection>
 </template>
@@ -231,14 +231,8 @@ type Props = {
 };
 
 const props = defineProps<Props>();
-console.log("props.node.category", props.node.category);
+
 const isDiseaseNode = computed(() => props.node.category === "biolink:Disease");
-const isPhenotypeNode = computed(
-  () => props.node.category === "biolink:PhenotypicFeature",
-);
-
-const isGeneNode = computed(() => props.node.category === "biolink:Gene");
-
 /** separate out mappings into categories */
 const clinicalSynopsis = computed(
   () =>
@@ -268,19 +262,6 @@ const { otherMappings, externalRefs } = useClinicalResources(props.node);
 //   await sleep(100);
 //   scrollTo("#associations");
 // }
-
-const typeMap = {
-  "biolink:PhenotypicFeature": "phenotype concepts",
-  "biolink:Gene": "gene concepts",
-  "biolink:Disease": "disease concepts",
-};
-
-const mappingType = computed(
-  () => typeMap[props.node.category as keyof typeof typeMap] || "concepts",
-);
-const mappingTitle = computed(
-  () => `Equivalent ${mappingType.value} in other terminologies`,
-);
 </script>
 
 <style lang="scss" scoped>
