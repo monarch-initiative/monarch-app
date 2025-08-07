@@ -6,20 +6,24 @@
     class="clinical-resources"
   >
     <div class="custom-grid">
-      <div v-for="(res, id) in clinicalResources" :key="id" class="logo">
-        <AppLink :to="res.url" :aria-label="res.id">
-          <AppIcon
-            v-if="res.icon"
-            :aria-label="res.id"
-            :icon="res.icon"
-            class="icon"
-          />
-        </AppLink>
+      <div
+        v-for="(res, id) in clinicalResources"
+        :key="id"
+        class="linkout"
+        v-tooltip="getTooltipText(res.id)"
+      >
+        <AppButton
+          :text="res.label"
+          :to="res.url"
+          :aria-label="res.id"
+          design="big"
+        />
+        <span>{{ res.id }}</span>
       </div>
     </div>
 
     <div class="sub-items">
-      <div v-if="clinicalSynopsis?.length">
+      <!-- <div v-if="clinicalSynopsis?.length">
         <span class="info-label"> Clinical Synopsis </span> :
         <AppLink
           v-for="(mapping, index) in clinicalSynopsis"
@@ -39,7 +43,7 @@
         >
           {{ mapping.id }}
         </AppLink>
-      </div>
+      </div> -->
 
       <div v-if="nodeInheritance">
         <span class="info-label"> Heritability : </span>
@@ -91,13 +95,30 @@ type Props = {
 };
 const props = defineProps<Props>();
 const { clinicalResources } = useClinicalResources(props.node);
+const tooltipMap: Record<string, string> = {
+  OMIM: "Clinical Synopsis",
+  GARD: "Info for patients",
+};
+
+const getTooltipText = (id: string): string | null => {
+  const match = Object.entries(tooltipMap).find(([prefix]) =>
+    id.startsWith(`${prefix}:`),
+  );
+
+  if (match) {
+    const [, label] = match;
+    return `${label}: ${id}`;
+  }
+  return id;
+};
+console.log("infoForPatients", props.infoForPatients);
 </script>
 <style lang="scss" scoped>
 .custom-grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
-  margin-top: 0.5em;
+  justify-content: center;
+  padding: 1em 0;
   gap: 1.5em;
 }
 .custom-grid img {
@@ -121,13 +142,6 @@ const { clinicalResources } = useClinicalResources(props.node);
   }
 }
 
-.custom-grid > * {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-bottom: 0.5rem;
-  gap: 3rem;
-}
 .icon {
   z-index: 2;
   position: relative;
@@ -144,30 +158,22 @@ const { clinicalResources } = useClinicalResources(props.node);
   }
 }
 
-.logo {
+.linkout {
   box-sizing: border-box;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  width: 120px;
-  height: 60px;
-  padding: 2px;
-}
-.logo img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
+  gap: 0.3em;
 
-.icon:hover {
-  transform: scale(1.08);
+  a:focus,
+  a:hover {
+    transform: scale(1.08);
+  }
 }
-
-a:focus,
-.icon:focus {
-  outline: none;
+.linkout span {
+  color: $off-black;
+  font-size: 0.9em;
 }
-
 .clinical-resources {
   display: flex;
   flex-direction: column;
