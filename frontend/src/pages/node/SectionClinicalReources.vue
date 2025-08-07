@@ -1,6 +1,6 @@
 <template>
   <AppDetail
-    :blank="!clinicalResources?.length"
+    v-if="clinicalResources?.length"
     title="Patient and Clinical Resources"
     :full="true"
     class="clinical-resources"
@@ -111,7 +111,6 @@ const getTooltipText = (id: string): string | null => {
   }
   return id;
 };
-console.log("infoForPatients", props.infoForPatients);
 </script>
 <style lang="scss" scoped>
 .custom-grid {
