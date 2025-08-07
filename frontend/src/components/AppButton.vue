@@ -26,7 +26,7 @@ type Props = {
   /** on click action */
   click?: () => unknown;
   /** visual design */
-  design?: "normal" | "circle" | "small" | "tile";
+  design?: "normal" | "circle" | "small" | "tile" | "big";
   /** color */
   color?: "primary" | "secondary" | "none";
   /** whether to copy text prop to clipboard on click */
@@ -104,6 +104,12 @@ defineExpose({ button });
   &.tile {
     @extend .button-base;
     width: fit-content;
+  }
+
+  &.big {
+    min-width: min(300px, 100% - 40px);
+    padding: 0px 30px;
+    font-size: 1.75rem;
   }
 
   &.circle {
