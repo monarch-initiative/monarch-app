@@ -3,11 +3,11 @@ import { computed } from "vue";
 import type { ExpandedCurie, Node } from "@/api/model";
 
 const RESOURCE_DEFS = [
-  { prefix: "OMIM:", icon: "omim.png" },
-  { prefix: "NORD:", icon: "nord.png" },
-  { prefix: "GARD:", icon: "gard.png" },
-  { prefix: "Orphanet:", icon: "orphanet.png" },
-  { prefix: "MEDGEN:", icon: "medgen.png" },
+  { prefix: "OMIM:", label: "OMIM" },
+  { prefix: "NORD:", label: "NORD" },
+  { prefix: "GARD:", label: "GARD" },
+  { prefix: "Orphanet:", label: "ORPHANET" },
+  { prefix: "MEDGEN:", label: "MEDGEN" },
 ] as const;
 
 const RESOURCE_PREFIXES = RESOURCE_DEFS.map((rec) => rec.prefix);
@@ -15,7 +15,7 @@ const RESOURCE_PREFIXES = RESOURCE_DEFS.map((rec) => rec.prefix);
 export type ResourceEntry = {
   id: string;
   url: string;
-  icon: string;
+  label: string;
   source: "external" | "mapping";
   tooltip?: string;
 };
@@ -23,19 +23,19 @@ export type ResourceEntry = {
 export function useClinicalResources(node: Node) {
   const clinicalResources = computed<ResourceEntry[]>(() => {
     const out: ResourceEntry[] = [];
-    for (const { prefix, icon } of RESOURCE_DEFS) {
+    for (const { prefix, label } of RESOURCE_DEFS) {
       const ext = node.external_links?.find((l: ExpandedCurie) =>
         l.id.startsWith(prefix),
       );
       if (ext) {
-        out.push({ id: ext.id, url: ext.url || "", icon, source: "external" });
+        out.push({ id: ext.id, url: ext.url || "", label, source: "external" });
         continue;
       }
       const map = node.mappings?.find((item: ExpandedCurie) =>
         item.id.startsWith(prefix),
       );
       if (map) {
-        out.push({ id: map.id, url: map.url || "", icon, source: "mapping" });
+        out.push({ id: map.id, url: map.url || "", label, source: "mapping" });
       }
     }
     return out;
