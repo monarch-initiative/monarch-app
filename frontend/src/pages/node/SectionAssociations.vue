@@ -17,74 +17,72 @@
       </p>
 
       <!--tabs omly if its disease node-->
-      <template v-if="isDiseaseNode">
-        <div class="association-tabs">
-          <!-- Non-disease pages: show “All” first, then “Direct” -->
+      <!-- <template v-if="isDiseaseNode"> -->
+      <div class="association-tabs">
+        <!-- Non-disease pages: show “All” first, then “Direct” -->
 
-          <div class="tab-item">
-            <AppButton
-              v-if="hasDirectAssociationsForCategory(category.id)"
-              v-tooltip="'Exclude subclass associations'"
-              :class="[
-                'tab-button',
-                {
-                  active:
-                    (selectedTabs[category.id] ?? defaultTab(category.id)) ===
-                    'direct',
-                },
-              ]"
-              :disabled="
-                isLoadingDirectCount ||
-                !hasDirectAssociationsForCategory(category.id)
-              "
-              :text="`Direct Associations`"
-              color="none"
-              @click="setDirect(category.id, 'true')"
-            />
+        <div class="tab-item">
+          <AppButton
+            v-if="hasDirectAssociationsForCategory(category.id)"
+            v-tooltip="'Exclude subclass associations'"
+            :class="[
+              'tab-button',
+              {
+                active:
+                  (selectedTabs[category.id] ?? defaultTab(category.id)) ===
+                  'direct',
+              },
+            ]"
+            :disabled="
+              isLoadingDirectCount ||
+              !hasDirectAssociationsForCategory(category.id)
+            "
+            :text="`Direct Associations`"
+            color="none"
+            @click="setDirect(category.id, 'true')"
+          />
 
-            <span
-              v-if="
-                category.id.includes('DiseaseToPhenotypicFeatureAssociation')
-              "
-              class="tab-count"
-            >
-              <template v-if="showAllTab(category.count ?? 0, category.id)">
-                {{ directAssociationCount(category.id).toLocaleString() }}
-                unique direct phenotypes across sources
-              </template>
-              <template v-else> No subclasses exist </template>
-            </span>
-          </div>
-          <div class="tab-item">
-            <AppButton
-              v-if="showAllTab(category.count ?? 0, category.id)"
-              v-tooltip="'Include subclass associations'"
-              :class="[
-                'tab-button',
-                {
-                  active:
-                    (selectedTabs[category.id] ?? defaultTab(category.id)) ===
-                    'all',
-                },
-              ]"
-              text="All Associations"
-              color="none"
-              @click="setDirect(category.id, 'false')"
-            />
-            <span
-              v-if="
-                showAllTab(category.count ?? 0, category.id) &&
-                category.id.includes('DiseaseToPhenotypicFeatureAssociation')
-              "
-              class="tab-count"
-            >
-              {{ (category.count ?? 0).toLocaleString() }} phenotypes
-            </span>
-          </div>
-
-          <!-- Disease pages: show “Direct” first, then “All” -->
+          <span
+            v-if="category.id.includes('DiseaseToPhenotypicFeatureAssociation')"
+            class="tab-count"
+          >
+            <template v-if="showAllTab(category.count ?? 0, category.id)">
+              {{ directAssociationCount(category.id).toLocaleString() }}
+              unique direct phenotypes across sources
+            </template>
+            <template v-else> No subclasses exist </template>
+          </span>
         </div>
-      </template>
+        <div class="tab-item">
+          <AppButton
+            v-if="showAllTab(category.count ?? 0, category.id)"
+            v-tooltip="'Include subclass associations'"
+            :class="[
+              'tab-button',
+              {
+                active:
+                  (selectedTabs[category.id] ?? defaultTab(category.id)) ===
+                  'all',
+              },
+            ]"
+            text="All Associations"
+            color="none"
+            @click="setDirect(category.id, 'false')"
+          />
+          <span
+            v-if="
+              showAllTab(category.count ?? 0, category.id) &&
+              category.id.includes('DiseaseToPhenotypicFeatureAssociation')
+            "
+            class="tab-count"
+          >
+            {{ (category.count ?? 0).toLocaleString() }} phenotypes
+          </span>
+        </div>
+
+        <!-- Disease pages: show “Direct” first, then “All” -->
+      </div>
+      <!-- </template> -->
 
       <div class="actions-row">
         <AppButton
@@ -240,11 +238,11 @@ const showAllTab = computed(() => {
 
 function defaultTab(categoryId: string): "direct" | "all" {
   const directCount = directAssociationCount(categoryId);
-  const isDisease = isDiseaseNode.value;
+  // const isDisease = isDiseaseNode.value;
 
-  if (!isDisease) {
-    return "all";
-  }
+  // if (!isDisease) {
+  //   return "all";
+  // }
 
   // disease node: no direct → all, else → direct
   return directCount > 0 ? "direct" : "all";
