@@ -37,7 +37,7 @@
                 isLoadingDirectCount ||
                 !hasDirectAssociationsForCategory(category.id)
               "
-              :text="`Direct Associations`"
+              :text="`Directly associated phenotypes`"
               color="none"
               @click="setDirect(category.id, 'true')"
             />
@@ -50,7 +50,8 @@
             >
               <template v-if="showAllTab(category.count ?? 0, category.id)">
                 {{ directAssociationCount(category.id).toLocaleString() }}
-                unique direct phenotypes across sources
+
+                phenotypes directly associated with {{ node.name }}
               </template>
               <template v-else> No subclasses exist </template>
             </span>
@@ -67,7 +68,7 @@
                     'all',
                 },
               ]"
-              text="All Associations"
+              text="Inferred associated phenotypes"
               color="none"
               @click="setDirect(category.id, 'false')"
             />
@@ -78,11 +79,12 @@
               "
               class="tab-count"
             >
-              {{ (category.count ?? 0).toLocaleString() }} phenotypes
+              {{ directAssociationCount(category.id).toLocaleString() }}
+
+              phenotypes directly associated with {{ node.name }}, as well as
+              it's subclasses
             </span>
           </div>
-
-          <!-- Disease pages: show “Direct” first, then “All” -->
         </div>
       </template>
 
@@ -151,7 +153,7 @@ type Props = {
 const props = defineProps<Props>();
 
 const { category: nodeCategory } = props.node;
-
+console.log("props.node", props.node);
 const selectedTabs = ref<Record<string, "all" | "direct">>({});
 const searchValues = ref<Record<string, string>>({});
 const debouncedSearchValues = ref<Record<string, string>>({});
@@ -310,7 +312,7 @@ watch(
   .tab-button {
     z-index: 0;
     position: relative;
-    min-width: 22em;
+    min-width: 24em;
     padding: 0.8rem 1.5rem;
     border: none;
     border-radius: 8px 8px 0 0;
@@ -361,8 +363,10 @@ watch(
 }
 
 .tab-count {
+  max-width: 26em;
   color: #888; /* muted grey */
   font-size: 0.875rem;
-  white-space: nowrap;
+  white-space: normal;
+  word-break: break-word;
 }
 </style>
