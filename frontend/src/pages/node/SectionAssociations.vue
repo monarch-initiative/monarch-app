@@ -141,7 +141,6 @@ const onDiseaseSubjectLabel = (label: string) => {
   diseaseSubject.value = label;
 };
 
-console.log("isDiseaseNode:", diseaseSubject.value);
 /** list of options for dropdown */
 const categoryOptions = computed<Options>(() => {
   const options =

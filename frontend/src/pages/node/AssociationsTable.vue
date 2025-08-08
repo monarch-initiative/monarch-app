@@ -263,6 +263,10 @@ const start = ref(0);
 const sort = ref<Sort>();
 const perPage = ref(5);
 
+const emit = defineEmits<{
+  (e: "update:diseaseSubjectLabel", label: string): void;
+}>();
+
 function openModal(association: DirectionalAssociation) {
   selectedAssociation.value = association;
   showModal.value = true;
@@ -492,48 +496,57 @@ const cols = computed((): Cols<Datum> => {
 
 /** get table association data */
 
+// 1) query direct‐only once:
 const {
-  query: queryAssociations,
-  data: associations,
-  isLoading,
-  isError,
-} = useQuery<
-  {
-    items: DirectionalAssociation[];
-    total: number;
-    limit: number;
-    offset: number;
-  },
-  [boolean]
->(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async function (fresh: boolean) /**
-   * whether to perform "fresh" search, without filters/pagination/etc. true when
-   * search text changes, false when filters/pagination/etc change.
-   */ {
-    /** catch case where no association categories available */
-    if (!props.node.association_counts.length)
-      throw Error("No association info available");
-    /** get association data */
-    if (fresh) {
-      start.value = 0;
-    }
-    const response = await getAssociations(
+  data: directData,
+  query: fetchDirect,
+  isLoading: loadingDirect,
+  isError: errorDirect,
+} = useQuery(
+  () =>
+    getAssociations(
       props.node.id,
       props.category.id,
       start.value,
       perPage.value,
       true,
-      props.direct.id,
+      "true",
       props.search,
       sort.value,
-    );
-
-    return response;
-  },
-
-  /** default value */
+    ),
   { items: [], total: 0, limit: 0, offset: 0 },
+);
+
+// 2) query all‐(inferred) once:
+const {
+  data: allData,
+  query: fetchAll,
+  isLoading: loadingAll,
+  isError: errorAll,
+} = useQuery(
+  () =>
+    getAssociations(
+      props.node.id,
+      props.category.id,
+      start.value,
+      perPage.value,
+      true,
+      "false",
+      props.search,
+      sort.value,
+    ),
+  { items: [], total: 0, limit: 0, offset: 0 },
+);
+
+// pick the right one for rendering:
+const associations = computed(() =>
+  props.direct.id === "true" ? directData.value : allData.value,
+);
+const isLoading = computed(() =>
+  props.direct.id === "true" ? loadingDirect.value : loadingAll.value,
+);
+const isError = computed(() =>
+  props.direct.id === "true" ? errorDirect.value : errorAll.value,
 );
 
 /** download table data */
@@ -605,29 +618,59 @@ const frequencyTooltip = (row: DirectionalAssociation) => {
   return "No info";
 };
 
-/** get associations when category or table state changes */
-watch(
-  () => props.category,
-  async () => await queryAssociations(true),
-);
-
-watch(
-  () => props.direct,
-  async () => await queryAssociations(true),
-);
-
 watch(
   () => props.search,
-  async () => {
-    await queryAssociations(true);
+  async (newSearch, oldSearch) => {
+    if (props.direct.id === "true") {
+      await fetchDirect();
+    } else {
+      await fetchAll();
+    }
   },
   { immediate: true },
 );
 
-watch([perPage, sort, start], async () => await queryAssociations(false));
+watch([perPage, sort, start], async () => {
+  if (props.direct.id === "true") {
+    await fetchDirect();
+  } else {
+    await fetchAll();
+  }
+});
 
-/** get associations on load */
-onMounted(() => queryAssociations(true));
+const inferredDiseaseSubject = computed(() => {
+  const rows = allData.value?.items ?? [];
+  const hit = rows.find(
+    (r) =>
+      r.category === "biolink:DiseaseToPhenotypicFeatureAssociation" &&
+      typeof r.subject_label === "string" &&
+      r.subject_label.length > 0,
+  );
+  return hit?.subject_label ?? "";
+});
+
+// emit when the inferred subject appears
+let emittedOnce = false;
+watch(
+  () => inferredDiseaseSubject.value,
+  (label) => {
+    if (!label || emittedOnce) return; // remove the flag if you want re-emits
+    emit("update:diseaseSubjectLabel", label);
+    emittedOnce = true;
+  },
+  { immediate: true },
+);
+
+// reset the "once" flag when node/category changes
+watch([() => props.node.id, () => props.category.id], () => {
+  emittedOnce = false;
+});
+
+// still kick off both queries on mount (no manual emit here)
+onMounted(() => {
+  fetchDirect();
+  fetchAll();
+});
 </script>
 
 <style lang="scss" scoped>
