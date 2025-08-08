@@ -9,6 +9,12 @@
   >
     <span v-if="text" class="truncate">{{ text }}</span>
     <AppIcon v-if="icon" :icon="icon" />
+    <AppIcon
+      v-if="info"
+      icon="info-circle"
+      v-tooltip="infoTooltip"
+      class="info-icon"
+    />
   </component>
 </template>
 
@@ -33,6 +39,10 @@ type Props = {
   copy?: boolean;
   /** html button type attribute */
   type?: string;
+  /** show an “i” info icon on the right */
+  info?: boolean;
+  /** tooltip text for the info icon */
+  infoTooltip?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -44,6 +54,8 @@ const props = withDefaults(defineProps<Props>(), {
   color: "primary",
   copy: false,
   type: "button",
+  info: false,
+  infoTooltip: "",
 });
 
 /** element ref */
@@ -184,12 +196,15 @@ defineExpose({ button });
     }
   }
 }
-</style>
 
-<style lang="scss">
 .fill {
   .button.circle.primary {
     background: $theme-mid;
   }
 }
+.info-icon {
+  margin-left: 0.5em;
+}
 </style>
+
+<style lang="scss"></style>
