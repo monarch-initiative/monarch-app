@@ -23,8 +23,9 @@
 
           <div class="tab-item">
             <AppButton
+              :info="true"
+              :info-tooltip="`${directAssociationCount(category.id).toLocaleString()} phenotypes directly associated with ${node.name}`"
               v-if="hasDirectAssociationsForCategory(category.id)"
-              v-tooltip="'Exclude subclass associations'"
               :class="[
                 'tab-button',
                 {
@@ -41,25 +42,12 @@
               color="none"
               @click="setDirect(category.id, 'true')"
             />
-
-            <span
-              v-if="
-                category.id.includes('DiseaseToPhenotypicFeatureAssociation')
-              "
-              class="tab-count"
-            >
-              <template v-if="showAllTab(category.count ?? 0, category.id)">
-                {{ directAssociationCount(category.id).toLocaleString() }}
-
-                phenotypes directly associated with {{ node.name }}
-              </template>
-              <template v-else> No subclasses exist </template>
-            </span>
           </div>
           <div class="tab-item">
             <AppButton
+              :info="true"
+              :info-tooltip="`${directAssociationCount(category.id).toLocaleString()} phenotypes directly associated with ${node.name}, as well as its subclasses such as ${diseaseSubject}`"
               v-if="showAllTab(category.count ?? 0, category.id)"
-              v-tooltip="'Include subclass associations'"
               :class="[
                 'tab-button',
                 {
@@ -72,18 +60,6 @@
               color="none"
               @click="setDirect(category.id, 'false')"
             />
-            <span
-              v-if="
-                showAllTab(category.count ?? 0, category.id) &&
-                category.id.includes('DiseaseToPhenotypicFeatureAssociation')
-              "
-              class="tab-count"
-            >
-              {{ directAssociationCount(category.id).toLocaleString() }}
-
-              phenotypes directly associated with {{ node.name }}, as well as
-              it's subclasses
-            </span>
           </div>
         </div>
       </template>
@@ -126,6 +102,7 @@
           :category="category"
           :direct="getDirectProps(category.id)"
           :search="debouncedSearchValues[category.id]"
+          @update:diseaseSubjectLabel="onDiseaseSubjectLabel"
         />
       </template>
     </AppSection>
@@ -134,7 +111,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { startCase } from "lodash";
 import { getDirectAssociationFacetCounts } from "@/api/associations";
 import type { Node } from "@/api/model";
@@ -153,13 +130,18 @@ type Props = {
 const props = defineProps<Props>();
 
 const { category: nodeCategory } = props.node;
-console.log("props.node", props.node);
+const diseaseSubject = ref("");
+
 const selectedTabs = ref<Record<string, "all" | "direct">>({});
 const searchValues = ref<Record<string, string>>({});
 const debouncedSearchValues = ref<Record<string, string>>({});
 
 const isDiseaseNode = computed(() => nodeCategory === "biolink:Disease");
+const onDiseaseSubjectLabel = (label: string) => {
+  diseaseSubject.value = label;
+};
 
+console.log("isDiseaseNode:", diseaseSubject.value);
 /** list of options for dropdown */
 const categoryOptions = computed<Options>(() => {
   const options =
@@ -312,7 +294,7 @@ watch(
   .tab-button {
     z-index: 0;
     position: relative;
-    min-width: 24em;
+    min-width: 22em;
     padding: 0.8rem 1.5rem;
     border: none;
     border-radius: 8px 8px 0 0;
