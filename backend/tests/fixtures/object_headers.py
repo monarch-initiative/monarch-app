@@ -134,6 +134,7 @@ def node_headers():
         "external_links",
         "provided_by_link",
         "association_counts",
+        "cross_species_term_clique",
         "node_hierarchy",
     ]
 

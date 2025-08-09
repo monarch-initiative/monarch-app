@@ -95,6 +95,7 @@ def node():
                 "category": "biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation",
             },
         ],
+        "cross_species_term_clique": None,
         "node_hierarchy": {
             "super_classes": [
                 {

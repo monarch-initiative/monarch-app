@@ -30,43 +30,40 @@
     "score": 9.309592608380008,
     "similarity": {
       "subject_termset": {
-        "HP:0002020": {
-          "id": "HP:0002020",
-          "label": "Gastroesophageal reflux"
-        },
-        "HP:0001533": { "id": "HP:0001533", "label": "Slender build" },
-        "HP:0001763": { "id": "HP:0001763", "label": "Pes planus" },
-        "HP:0010749": { "id": "HP:0010749", "label": "Blepharochalasis" },
-        "HP:0012450": { "id": "HP:0012450", "label": "Chronic constipation" },
         "HP:0002616": { "id": "HP:0002616", "label": "Aortic root aneurysm" },
+        "HP:0012450": { "id": "HP:0012450", "label": "Chronic constipation" },
+        "HP:0001533": { "id": "HP:0001533", "label": "Slender build" },
+        "HP:0010749": { "id": "HP:0010749", "label": "Blepharochalasis" },
         "HP:0004944": {
           "id": "HP:0004944",
           "label": "Dilatation of the cerebral artery"
-        }
+        },
+        "HP:0001763": { "id": "HP:0001763", "label": "Pes planus" },
+        "HP:0002020": { "id": "HP:0002020", "label": "Gastroesophageal reflux" }
       },
       "object_termset": {
         "MP:0011960": {
           "id": "MP:0011960",
           "label": "abnormal eye anterior chamber depth"
         },
-        "MP:0001262": { "id": "MP:0001262", "label": "decreased body weight" },
+        "MP:0003731": {
+          "id": "MP:0003731",
+          "label": "abnormal retina outer nuclear layer morphology"
+        },
         "MP:0008489": {
           "id": "MP:0008489",
           "label": "slow postnatal weight gain"
         },
-        "MP:0003731": {
-          "id": "MP:0003731",
-          "label": "abnormal retina outer nuclear layer morphology"
+        "MP:0011965": {
+          "id": "MP:0011965",
+          "label": "decreased total retina thickness"
         },
         "MP:0002834": { "id": "MP:0002834", "label": "decreased heart weight" },
         "MP:0011962": {
           "id": "MP:0011962",
           "label": "increased cornea thickness"
         },
-        "MP:0011965": {
-          "id": "MP:0011965",
-          "label": "decreased total retina thickness"
-        },
+        "MP:0001262": { "id": "MP:0001262", "label": "decreased body weight" },
         "MP:0003291": {
           "id": "MP:0003291",
           "label": "interstinal hyperperistalsis"
@@ -76,8 +73,8 @@
         "HP:0001533": {
           "match_source": "HP:0001533",
           "match_source_label": "Slender build",
-          "match_target": "MP:0001262",
-          "match_target_label": "decreased body weight",
+          "match_target": "MP:0008489",
+          "match_target_label": "slow postnatal weight gain",
           "score": 14.009562576992773,
           "match_subsumer": null,
           "match_subsumer_label": null,
@@ -85,7 +82,7 @@
             "subject_id": "HP:0001533",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "MP:0001262",
+            "object_id": "MP:0008489",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "UPHENO:0082794",
@@ -94,10 +91,10 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 14.009562576992773,
-            "jaccard_similarity": 0.4067796610169492,
+            "jaccard_similarity": 0.3582089552238806,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 2.3872170232437724
+            "phenodigm_score": 2.2401675771799208
           },
           "score_metric": "ancestor_information_content"
         },
@@ -216,8 +213,8 @@
         "HP:0010749": {
           "match_source": "HP:0010749",
           "match_source_label": "Blepharochalasis",
-          "match_target": "MP:0003731",
-          "match_target_label": "abnormal retina outer nuclear layer morphology",
+          "match_target": "MP:0011962",
+          "match_target_label": "increased cornea thickness",
           "score": 7.825513756616914,
           "match_subsumer": null,
           "match_subsumer_label": null,
@@ -225,7 +222,7 @@
             "subject_id": "HP:0010749",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "MP:0003731",
+            "object_id": "MP:0011962",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "UPHENO:0086486",
@@ -234,10 +231,10 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 7.825513756616914,
-            "jaccard_similarity": 0.5,
+            "jaccard_similarity": 0.46938775510204084,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 1.9780689771361506
+            "phenodigm_score": 1.9165595046172064
           },
           "score_metric": "ancestor_information_content"
         },
@@ -529,40 +526,27 @@
       "has_phenotype_closure_label": null,
       "has_phenotype_count": null
     },
-    "score": 7.787184678083154,
+    "score": 7.787184678083153,
     "similarity": {
       "subject_termset": {
-        "HP:0010749": { "id": "HP:0010749", "label": "Blepharochalasis" },
-        "HP:0001533": { "id": "HP:0001533", "label": "Slender build" },
         "HP:0002020": {
           "id": "HP:0002020",
           "label": "Gastroesophageal reflux"
         },
+        "HP:0001533": { "id": "HP:0001533", "label": "Slender build" },
+        "HP:0001763": { "id": "HP:0001763", "label": "Pes planus" },
         "HP:0012450": { "id": "HP:0012450", "label": "Chronic constipation" },
         "HP:0002616": { "id": "HP:0002616", "label": "Aortic root aneurysm" },
         "HP:0004944": {
           "id": "HP:0004944",
           "label": "Dilatation of the cerebral artery"
         },
-        "HP:0001763": { "id": "HP:0001763", "label": "Pes planus" }
+        "HP:0010749": { "id": "HP:0010749", "label": "Blepharochalasis" }
       },
       "object_termset": {
-        "MP:0002834": { "id": "MP:0002834", "label": "decreased heart weight" },
-        "MP:0000233": {
-          "id": "MP:0000233",
-          "label": "abnormal blood flow velocity"
-        },
         "MP:0004021": {
           "id": "MP:0004021",
           "label": "abnormal rod electrophysiology"
-        },
-        "MP:0000230": {
-          "id": "MP:0000230",
-          "label": "abnormal systemic arterial blood pressure"
-        },
-        "MP:0003026": {
-          "id": "MP:0003026",
-          "label": "decreased vasoconstriction"
         },
         "MP:0009862": {
           "id": "MP:0009862",
@@ -572,17 +556,30 @@
           "id": "MP:0004022",
           "label": "abnormal cone electrophysiology"
         },
-        "MP:0000272": {
-          "id": "MP:0000272",
-          "label": "abnormal aorta morphology"
-        },
         "MP:0006264": {
           "id": "MP:0006264",
           "label": "decreased systemic arterial systolic blood pressure"
         },
+        "MP:0003026": {
+          "id": "MP:0003026",
+          "label": "decreased vasoconstriction"
+        },
+        "MP:0000230": {
+          "id": "MP:0000230",
+          "label": "abnormal systemic arterial blood pressure"
+        },
+        "MP:0002834": { "id": "MP:0002834", "label": "decreased heart weight" },
+        "MP:0000233": {
+          "id": "MP:0000233",
+          "label": "abnormal blood flow velocity"
+        },
         "MP:0003070": {
           "id": "MP:0003070",
           "label": "increased vascular permeability"
+        },
+        "MP:0000272": {
+          "id": "MP:0000272",
+          "label": "abnormal aorta morphology"
         }
       },
       "subject_best_matches": {
@@ -701,8 +698,8 @@
         "HP:0004944": {
           "match_source": "HP:0004944",
           "match_source_label": "Dilatation of the cerebral artery",
-          "match_target": "MP:0009862",
-          "match_target_label": "abnormal aorta elastic tissue morphology",
+          "match_target": "MP:0000272",
+          "match_target_label": "abnormal aorta morphology",
           "score": 7.489271298013046,
           "match_subsumer": null,
           "match_subsumer_label": null,
@@ -710,7 +707,7 @@
             "subject_id": "HP:0004944",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "MP:0009862",
+            "object_id": "MP:0000272",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "UPHENO:0076729",
@@ -719,18 +716,18 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 7.489271298013046,
-            "jaccard_similarity": 0.32407407407407407,
+            "jaccard_similarity": 0.26436781609195403,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 1.5579084252269504
+            "phenodigm_score": 1.4070971171798565
           },
           "score_metric": "ancestor_information_content"
         },
         "HP:0010749": {
           "match_source": "HP:0010749",
           "match_source_label": "Blepharochalasis",
-          "match_target": "MP:0004021",
-          "match_target_label": "abnormal rod electrophysiology",
+          "match_target": "MP:0004022",
+          "match_target_label": "abnormal cone electrophysiology",
           "score": 6.320729478499664,
           "match_subsumer": null,
           "match_subsumer_label": null,
@@ -738,7 +735,7 @@
             "subject_id": "HP:0010749",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "MP:0004021",
+            "object_id": "MP:0004022",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "UPHENO:0005097",
@@ -757,8 +754,8 @@
         "HP:0012450": {
           "match_source": "HP:0012450",
           "match_source_label": "Chronic constipation",
-          "match_target": "MP:0003026",
-          "match_target_label": "decreased vasoconstriction",
+          "match_target": "MP:0006264",
+          "match_target_label": "decreased systemic arterial systolic blood pressure",
           "score": 6.147183512343251,
           "match_subsumer": null,
           "match_subsumer_label": null,
@@ -766,7 +763,7 @@
             "subject_id": "HP:0012450",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "MP:0003026",
+            "object_id": "MP:0006264",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "UPHENO:0002269",
@@ -775,10 +772,10 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 6.147183512343251,
-            "jaccard_similarity": 0.20238095238095238,
+            "jaccard_similarity": 0.4358974358974359,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 1.115380138647141
+            "phenodigm_score": 1.636930521134424
           },
           "score_metric": "ancestor_information_content"
         }
@@ -1011,8 +1008,8 @@
         "MP:0006264": {
           "match_source": "MP:0006264",
           "match_source_label": "decreased systemic arterial systolic blood pressure",
-          "match_target": "HP:0002020",
-          "match_target_label": "Gastroesophageal reflux",
+          "match_target": "HP:0012450",
+          "match_target_label": "Chronic constipation",
           "score": 6.147183512343251,
           "match_subsumer": null,
           "match_subsumer_label": null,
@@ -1020,7 +1017,7 @@
             "subject_id": "MP:0006264",
             "subject_label": null,
             "subject_source": null,
-            "object_id": "HP:0002020",
+            "object_id": "HP:0012450",
             "object_label": null,
             "object_source": null,
             "ancestor_id": "UPHENO:0002269",
@@ -1029,10 +1026,10 @@
             "object_information_content": null,
             "subject_information_content": null,
             "ancestor_information_content": 6.147183512343251,
-            "jaccard_similarity": 0.24324324324324326,
+            "jaccard_similarity": 0.4358974358974359,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 1.2228085926888819
+            "phenodigm_score": 1.636930521134424
           },
           "score_metric": "ancestor_information_content"
         },
@@ -1065,7 +1062,7 @@
           "score_metric": "ancestor_information_content"
         }
       },
-      "average_score": 7.787184678083154,
+      "average_score": 7.787184678083153,
       "best_score": 10.736544082586356,
       "metric": "AncestorInformationContent"
     }

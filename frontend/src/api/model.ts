@@ -504,7 +504,19 @@ export interface Node extends Entity {
     /** A link to the docs for the knowledge source that provided the node/edge. */
     provided_by_link?: ExpandedCurie,
     association_counts: AssociationCount[],
+    cross_species_term_clique?: CrossSpeciesTermClique,
     node_hierarchy?: NodeHierarchy,
+}
+
+
+
+export interface CrossSpeciesTermClique {
+    /** The parent portion of a CrossSpeciesTermClique */
+    root_term: Entity,
+    /** A collection of nodes / entities */
+    entities: Entity[],
+    /** A collection of edges / associations */
+    associations: Association[],
 }
 
 
