@@ -12,13 +12,14 @@ from monarch_py.datamodels.model import (
     CategoryGroupedAssociationResults,
     Entity,
     HistoPheno,
+    InformationResource,
     MappingResults,
     MultiEntityAssociationResults,
     Node,
     NodeHierarchy,
     SearchResults,
 )
-from monarch_py.datamodels.solr import core
+from monarch_py.datamodels.solr import SolrQuery, core
 from monarch_py.datamodels.category_enums import (
     AssociationCategory,
     AssociationPredicate,
@@ -222,6 +223,33 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             super_classes=super_classes,
             sub_classes=sub_classes,
         )
+
+    def get_infores(self, id: str) -> Optional[InformationResource]:
+        """Retrieve a specific information resource by exact ID match
+
+        Args:
+            id (str): id of the information resource to search for.
+
+        Returns:
+            InformationResource: Information resource entity or None if not found.
+        """
+        solr = SolrService(base_url=self.base_url, core=core.INFORES)
+        solr_document = solr.get(id)
+        if solr_document is None:
+            return None
+        return InformationResource(**solr_document)  # Convert the Solr document into an InformationResource object by unpacking its fields.
+
+    def get_infores_catalog(self) -> List[InformationResource]:
+        """Retrieve all information resources from the infores catalog
+
+        Returns:
+            List[InformationResource]: All information resources in the catalog
+        """
+        solr = SolrService(base_url=self.base_url, core=core.INFORES)
+        response = solr.query(SolrQuery(q="*:*", limit=10000, offset=0))
+        if not response or not response.response or not response.response.docs:
+            return []
+        return [InformationResource(**doc) for doc in response.response.docs]  # Convert Solr documents to InformationResource objects
 
     ####################################
     # Implements: AssociationInterface #
