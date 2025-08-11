@@ -218,7 +218,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch, watchEffect } from "vue";
 import {
   downloadAssociations,
   getAssociations,
@@ -243,6 +243,7 @@ import TableControls from "@/components/TheTableContols.vue";
 import { useQuery } from "@/composables/use-query";
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
 import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
+import { fieldFor, TYPE_CONFIG } from "@/util/type-config";
 
 type Props = {
   /** current node */
@@ -266,6 +267,7 @@ const perPage = ref(5);
 const emit = defineEmits<{
   (e: "update:diseaseSubjectLabel", label: string): void;
   (e: "totals", payload: { direct: number; all: number }): void;
+  (e: "inferred-label", payload: { categoryId: string; label: string }): void;
 }>();
 
 function openModal(association: DirectionalAssociation) {
@@ -615,34 +617,56 @@ watch([perPage, sort, start], async () => {
   }
 });
 
-const inferredDiseaseSubject = computed(() => {
+const inferredLabel = computed(() => {
   const rows = allData.value?.items ?? [];
+  console.log("rows", rows);
+  const useField = fieldFor(props.category.id);
   const hit = rows.find(
     (r) =>
-      r.category === "biolink:DiseaseToPhenotypicFeatureAssociation" &&
-      typeof r.subject_label === "string" &&
-      r.subject_label.length > 0,
+      typeof (r as any)[useField] === "string" &&
+      (r as any)[useField].trim().length > 0,
   );
-  return hit?.subject_label ?? "";
+  return (hit as any)?.[useField] ?? "";
 });
 
+// watchEffect(() => {
+//   console.log(
+//     "CAT",
+//     props.category.id,
+//     "items",
+//     allData.value?.items?.length ?? 0,
+//     "inferred",
+//     inferredDiseaseSubject.value,
+//   );
+// });
+
 // emit when the inferred subject appears
-let emittedOnce = false;
+// let emittedOnce = false;
+// watch(
+//   () => inferredDiseaseSubject.value,
+//   (label) => {
+//     // remove the flag if you want re-emits
+//     if (!label || emittedOnce) return;
+//     emit("update:diseaseSubjectLabel", label);
+//     emittedOnce = true;
+//   },
+//   { immediate: true },
+// );
+
+// // reset the "once" flag when node/category changes
+// watch([() => props.node.id, () => props.category.id], () => {
+//   emittedOnce = false;
+// });
+
 watch(
-  () => inferredDiseaseSubject.value,
+  () => inferredLabel.value,
   (label) => {
-    // remove the flag if you want re-emits
-    if (!label || emittedOnce) return;
-    emit("update:diseaseSubjectLabel", label);
-    emittedOnce = true;
+    if (label) {
+      emit("inferred-label", { categoryId: String(props.category.id), label });
+    }
   },
   { immediate: true },
 );
-
-// reset the "once" flag when node/category changes
-watch([() => props.node.id, () => props.category.id], () => {
-  emittedOnce = false;
-});
 
 onMounted(async () => {
   // Trigger both queries

@@ -36,7 +36,7 @@
                 isLoadingDirectCount ||
                 !hasDirectAssociationsForCategory(category.id)
               "
-              :text="`Directly associated ${typeMapping[category.id] ?? 'phenotypes'}`"
+              :text="`Directly associated ${labelFor(category.id)}`"
               color="none"
               @click="setDirect(category.id, 'true')"
             />
@@ -54,7 +54,7 @@
                     'all',
                 },
               ]"
-              :text="`Inferred associated ${typeMapping[category.id] ?? 'phenotypes'}`"
+              :text="`Inferred associated ${labelFor(category.id)}`"
               color="none"
               @click="setDirect(category.id, 'false')"
             />
@@ -102,6 +102,7 @@
           :search="debouncedSearchValues[category.id]"
           @update:diseaseSubjectLabel="onDiseaseSubjectLabel"
           @totals="(p) => onTotals({ categoryId: String(category.id), ...p })"
+          @inferred-label="onInferredLabel"
         />
       </template>
     </AppSection>
@@ -120,6 +121,7 @@ import type { Options } from "@/components/AppSelectSingle.vue";
 import AppTextbox from "@/components/AppTextbox.vue";
 import { useQuery } from "@/composables/use-query";
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
+import { labelFor, TYPE_CONFIG } from "@/util/type-config";
 
 type Props = {
   /** current node */
@@ -138,14 +140,8 @@ const diseaseSubject = ref("");
 const selectedTabs = ref<Record<string, "all" | "direct">>({});
 const searchValues = ref<Record<string, string>>({});
 const debouncedSearchValues = ref<Record<string, string>>({});
+const inferredByCategory = ref<Record<string, string>>({});
 
-const typeMapping: { [key: string]: string } = {
-  "biolink:DiseaseToPhenotypicFeatureAssociation": "phenotypes",
-  "biolink:GeneToPhenotypicFeatureAssociation": "Gene To Phenotypes",
-  "biolink:CausalGeneToDiseaseAssociation": "Causal Genes",
-  "biolink:CorrelatedGeneToDiseaseAssociation": "Correlated Genes",
-  "biolink:GenotypeToDiseaseAssociation": " Genotype to Disease",
-};
 // parent <script setup>
 const onTotals = ({
   categoryId,
@@ -171,6 +167,17 @@ const diffFor = (id: string) => {
   const diff = allFor(id) - directFor(id);
   return Number.isFinite(diff) ? Math.max(0, diff) : 0;
 };
+
+const onInferredLabel = ({
+  categoryId,
+  label,
+}: {
+  categoryId: string;
+  label: string;
+}) => {
+  inferredByCategory.value[categoryId] = label;
+};
+
 /** list of options for dropdown */
 const categoryOptions = computed<Options>(() => {
   const options =
@@ -206,21 +213,26 @@ const setDirect = (categoryId: string, directId: "true" | "false") => {
 
 // Tooltip builders
 const directTooltip = (categoryId: string): string | undefined => {
-  const n = totalsByCategory.value[categoryId]?.direct;
+  const n = totalsByCategory.value[categoryId]?.direct ?? 0;
   if (typeof n === "number" && Number.isFinite(n) && n > 0) {
-    return `${n.toLocaleString()} phenotypes directly associated with ${props.node.name}`;
+    return `${n.toLocaleString()} ${labelFor(categoryId)} directly associated with ${props.node.name}`;
   }
   return undefined;
 };
 
 const inferredTooltip = (categoryId: string): string | undefined => {
   const all = totalsByCategory.value[categoryId]?.all;
-  console.log("inferredTooltip", all);
+  const direct =
+    totalsByCategory.value[categoryId]?.direct > 0
+      ? totalsByCategory.value[categoryId]?.direct
+      : "";
   if (typeof all === "number" && Number.isFinite(all) && all > 0) {
-    const subclassNote = diseaseSubject.value
-      ? `  subclasses such as ${diseaseSubject.value}`
+    const label = inferredByCategory.value[categoryId];
+
+    const subclassNote = label
+      ? `  subclasses such as ${label}`
       : " subclasses";
-    return `${all.toLocaleString()} phenotypes direcly associated with ${props.node.name} as well as ${diffFor(categoryId)} ${subclassNote}`;
+    return `${direct.toLocaleString()} ${labelFor(categoryId)} direcly associated with ${props.node.name} as well as ${diffFor(categoryId)} ${subclassNote}`;
   }
   return undefined;
 };
