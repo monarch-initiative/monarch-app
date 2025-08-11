@@ -265,6 +265,7 @@ const perPage = ref(5);
 
 const emit = defineEmits<{
   (e: "update:diseaseSubjectLabel", label: string): void;
+  (e: "totals", payload: { direct: number; all: number }): void;
 }>();
 
 function openModal(association: DirectionalAssociation) {
@@ -463,30 +464,6 @@ const cols = computed((): Cols<Datum> => {
       sortable: true,
     });
   }
-  /** publication specific columns */
-  // if (props.category.label === "biolink:Publication")
-  //   extraCols.push(
-  //     {
-  //       key: "author",
-  //       heading: "Author",
-  //     },
-  //     {
-  //       key: "year",
-  //       heading: "Year",
-  //       align: "center",
-  //     },
-  //     {
-  //       key: "publisher",
-  //       heading: "Publisher",
-  //     },
-  //   );
-
-  /** filter out extra columns with nothing in them (all rows for that col falsy) */
-  // extraCols = extraCols.filter((col) =>
-  //   associations.value.items.some((association) =>
-  //     col.key ? association[col.key] : true,
-  //   ),
-  // );
 
   /** put divider to separate base cols from extra cols */
   if (extraCols[0]) extraCols.unshift({ slot: "divider" });
@@ -654,7 +631,8 @@ let emittedOnce = false;
 watch(
   () => inferredDiseaseSubject.value,
   (label) => {
-    if (!label || emittedOnce) return; // remove the flag if you want re-emits
+    // remove the flag if you want re-emits
+    if (!label || emittedOnce) return;
     emit("update:diseaseSubjectLabel", label);
     emittedOnce = true;
   },
@@ -666,11 +644,22 @@ watch([() => props.node.id, () => props.category.id], () => {
   emittedOnce = false;
 });
 
-// still kick off both queries on mount (no manual emit here)
-onMounted(() => {
-  fetchDirect();
-  fetchAll();
+onMounted(async () => {
+  // Trigger both queries
+  await Promise.all([fetchDirect(), fetchAll()]);
 });
+
+// Whenever either total changes, emit new totals
+watch(
+  [() => directData.value?.total, () => allData.value?.total],
+  ([newDirectTotal, newAllTotal]) => {
+    emit("totals", {
+      direct: newDirectTotal ?? 0,
+      all: newAllTotal ?? 0,
+    });
+  },
+  { immediate: true },
+);
 </script>
 
 <style lang="scss" scoped>

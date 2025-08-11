@@ -19,12 +19,10 @@
       <!--tabs omly if its disease node-->
       <template v-if="isDiseaseNode">
         <div class="association-tabs">
-          <!-- Non-disease pages: show “All” first, then “Direct” -->
-
           <div class="tab-item">
             <AppButton
               :info="true"
-              :info-tooltip="`${directAssociationCount(category.id).toLocaleString()} phenotypes directly associated with ${node.name}`"
+              :info-tooltip="directTooltip(category.id)"
               v-if="hasDirectAssociationsForCategory(category.id)"
               :class="[
                 'tab-button',
@@ -38,7 +36,7 @@
                 isLoadingDirectCount ||
                 !hasDirectAssociationsForCategory(category.id)
               "
-              :text="`Directly associated phenotypes`"
+              :text="`Directly associated ${typeMapping[category.id] ?? 'phenotypes'}`"
               color="none"
               @click="setDirect(category.id, 'true')"
             />
@@ -46,7 +44,7 @@
           <div class="tab-item">
             <AppButton
               :info="true"
-              :info-tooltip="`${directAssociationCount(category.id).toLocaleString()} phenotypes directly associated with ${node.name}, as well as its subclasses such as ${diseaseSubject}`"
+              :info-tooltip="inferredTooltip(category.id)"
               v-if="showAllTab(category.count ?? 0, category.id)"
               :class="[
                 'tab-button',
@@ -56,7 +54,7 @@
                     'all',
                 },
               ]"
-              text="Inferred associated phenotypes"
+              :text="`Inferred associated ${typeMapping[category.id] ?? 'phenotypes'}`"
               color="none"
               @click="setDirect(category.id, 'false')"
             />
@@ -103,6 +101,7 @@
           :direct="getDirectProps(category.id)"
           :search="debouncedSearchValues[category.id]"
           @update:diseaseSubjectLabel="onDiseaseSubjectLabel"
+          @totals="(p) => onTotals({ categoryId: String(category.id), ...p })"
         />
       </template>
     </AppSection>
@@ -111,7 +110,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, ref, watch, watchEffect } from "vue";
 import { startCase } from "lodash";
 import { getDirectAssociationFacetCounts } from "@/api/associations";
 import type { Node } from "@/api/model";
@@ -129,6 +128,10 @@ type Props = {
 
 const props = defineProps<Props>();
 
+type Totals = { direct: number; all: number };
+type TotalsMap = Record<string, Totals>;
+const totalsByCategory = ref<TotalsMap>({});
+
 const { category: nodeCategory } = props.node;
 const diseaseSubject = ref("");
 
@@ -136,11 +139,38 @@ const selectedTabs = ref<Record<string, "all" | "direct">>({});
 const searchValues = ref<Record<string, string>>({});
 const debouncedSearchValues = ref<Record<string, string>>({});
 
+const typeMapping: { [key: string]: string } = {
+  "biolink:DiseaseToPhenotypicFeatureAssociation": "phenotypes",
+  "biolink:GeneToPhenotypicFeatureAssociation": "Gene To Phenotypes",
+  "biolink:CausalGeneToDiseaseAssociation": "Causal Genes",
+  "biolink:CorrelatedGeneToDiseaseAssociation": "Correlated Genes",
+  "biolink:GenotypeToDiseaseAssociation": " Genotype to Disease",
+};
+// parent <script setup>
+const onTotals = ({
+  categoryId,
+  direct,
+  all,
+}: {
+  categoryId: string;
+  direct: number;
+  all: number;
+}) => {
+  totalsByCategory.value[categoryId] = { direct, all };
+};
+
 const isDiseaseNode = computed(() => nodeCategory === "biolink:Disease");
 const onDiseaseSubjectLabel = (label: string) => {
   diseaseSubject.value = label;
 };
 
+const directFor = (id: string) => totalsByCategory.value[id]?.direct ?? 0;
+const allFor = (id: string) => totalsByCategory.value[id]?.all ?? 0;
+
+const diffFor = (id: string) => {
+  const diff = allFor(id) - directFor(id);
+  return Number.isFinite(diff) ? Math.max(0, diff) : 0;
+};
 /** list of options for dropdown */
 const categoryOptions = computed<Options>(() => {
   const options =
@@ -172,6 +202,27 @@ const categoryOptions = computed<Options>(() => {
 
 const setDirect = (categoryId: string, directId: "true" | "false") => {
   selectedTabs.value[categoryId] = directId === "true" ? "direct" : "all";
+};
+
+// Tooltip builders
+const directTooltip = (categoryId: string): string | undefined => {
+  const n = totalsByCategory.value[categoryId]?.direct;
+  if (typeof n === "number" && Number.isFinite(n) && n > 0) {
+    return `${n.toLocaleString()} phenotypes directly associated with ${props.node.name}`;
+  }
+  return undefined;
+};
+
+const inferredTooltip = (categoryId: string): string | undefined => {
+  const all = totalsByCategory.value[categoryId]?.all;
+  console.log("inferredTooltip", all);
+  if (typeof all === "number" && Number.isFinite(all) && all > 0) {
+    const subclassNote = diseaseSubject.value
+      ? `  subclasses such as ${diseaseSubject.value}`
+      : " subclasses";
+    return `${all.toLocaleString()} phenotypes direcly associated with ${props.node.name} as well as ${diffFor(categoryId)} ${subclassNote}`;
+  }
+  return undefined;
 };
 
 // Initialize a query for fetching direct association facet counts per category for a node.
