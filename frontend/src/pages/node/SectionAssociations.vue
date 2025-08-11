@@ -178,6 +178,9 @@ const onInferredLabel = ({
   inferredByCategory.value[categoryId] = label;
 };
 
+const HIDDEN_CATEGORIES = new Set([
+  "biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation",
+]);
 /** list of options for dropdown */
 const categoryOptions = computed<Options>(() => {
   const options =
@@ -188,7 +191,7 @@ const categoryOptions = computed<Options>(() => {
     })) || [];
 
   // clone so we don’t mutate the original
-  const ordered = [...options];
+  const ordered = options.filter((o) => !HIDDEN_CATEGORIES.has(o.id));
 
   // hack: ensure CausalGene sits immediately before Gene→to-Phenotype
   const idxCausal = ordered.findIndex(
