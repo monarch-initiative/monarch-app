@@ -507,8 +507,6 @@ const frequencyPercentage = (row: DirectionalAssociation) => {
     }
 };
 
-/** get frequency tooltip */
-
 const frequencyTooltip = (row: DirectionalAssociation) => {
   // display fraction if possible
   if (row.has_count != undefined && row.has_total != undefined) {
@@ -525,6 +523,43 @@ const frequencyTooltip = (row: DirectionalAssociation) => {
   // finally, there is no frequency info at all
   return "No info";
 };
+
+// which side is relevant for this category?
+const side = computed<"subject" | "object">(() => fieldFor(props.category.id));
+const idKey = computed<"subject" | "object">(() => side.value);
+const closureKey = computed<"subject_closure" | "object_closure">(
+  () => `${side.value}_closure` as const,
+);
+
+// const closureKey = computed<
+//   "subject_closure" | "object_closure" | "disease_context_qualifier_closure"
+// >(() => {
+//   return props.category.id === "biolink:GeneToPhenotypicFeatureAssociation"
+//     ? "disease_context_qualifier_closure"
+//     : (`${side.value}_closure` as const);
+// });
+const labelKey = computed<"subject_label" | "object_label">(
+  () => `${side.value}_label` as const,
+);
+
+// row comes from a subclass of the current page node?
+const isSubclassRow = (row: any, currentNodeId: string): boolean => {
+  const id = row?.[idKey.value] as string | undefined;
+  const closure: string[] = Array.isArray(row?.[closureKey.value])
+    ? row[closureKey.value]
+    : [];
+  return !!id && id !== currentNodeId && closure.includes(currentNodeId);
+};
+
+// pick the first subclass row in the inferred/all set and return its label
+const inferredSubclassLabel = computed<string>(() => {
+  const rows = allData.value?.items ?? [];
+  const pageId = props.node.id;
+
+  const hit = rows.find((row) => isSubclassRow(row, pageId));
+  const label = hit?.[labelKey.value];
+  return typeof label === "string" ? label : "";
+});
 
 watch(
   () => props.search,
@@ -546,57 +581,6 @@ watch([perPage, sort, start], async () => {
   }
 });
 
-const inferredLabel = computed(() => {
-  const rows = allData.value?.items ?? [];
-  console.log("rows", rows);
-  const useField = fieldFor(props.category.id);
-  const hit = rows.find(
-    (r) =>
-      typeof (r as any)[useField] === "string" &&
-      (r as any)[useField].trim().length > 0,
-  );
-  return (hit as any)?.[useField] ?? "";
-});
-
-// watchEffect(() => {
-//   console.log(
-//     "CAT",
-//     props.category.id,
-//     "items",
-//     allData.value?.items?.length ?? 0,
-//     "inferred",
-//     inferredDiseaseSubject.value,
-//   );
-// });
-
-// emit when the inferred subject appears
-// let emittedOnce = false;
-// watch(
-//   () => inferredDiseaseSubject.value,
-//   (label) => {
-//     // remove the flag if you want re-emits
-//     if (!label || emittedOnce) return;
-//     emit("update:diseaseSubjectLabel", label);
-//     emittedOnce = true;
-//   },
-//   { immediate: true },
-// );
-
-// // reset the "once" flag when node/category changes
-// watch([() => props.node.id, () => props.category.id], () => {
-//   emittedOnce = false;
-// });
-
-watch(
-  () => inferredLabel.value,
-  (label) => {
-    if (label) {
-      emit("inferred-label", { categoryId: String(props.category.id), label });
-    }
-  },
-  { immediate: true },
-);
-
 onMounted(async () => {
   // Trigger both queries
   await Promise.all([fetchDirect(), fetchAll()]);
@@ -604,12 +588,23 @@ onMounted(async () => {
 
 // Whenever either total changes, emit new totals
 watch(
-  [() => directData.value?.total, () => allData.value?.total],
-  ([newDirectTotal, newAllTotal]) => {
-    emit("totals", {
-      direct: newDirectTotal ?? 0,
-      all: newAllTotal ?? 0,
-    });
+  [
+    () => inferredSubclassLabel.value,
+    () => directData.value?.total ?? 0,
+    () => allData.value?.total ?? 0,
+  ],
+  ([label, direct, all], [prevLabel, prevDirect, prevAll]) => {
+    // emit inferred label only when present and changed
+    if (label && label !== prevLabel) {
+      emit("inferred-label", { categoryId: String(props.category.id), label });
+    }
+
+    // emit totals only when they change
+    if (direct !== prevDirect || all !== prevAll) {
+      emit("totals", { direct, all });
+    }
+
+    console.log("ASSPCIATION", allData.value);
   },
   { immediate: true },
 );
