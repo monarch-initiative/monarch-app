@@ -11,10 +11,6 @@
       <span v-if="!categoryOptions.length"
         >No associations with &nbsp;<AppNodeBadge :node="node" />
       </span>
-      <p v-if="isLoadingDirectCount">Loading direct association data...</p>
-      <p v-else-if="isErrorDirectCount" class="error">
-        Failed to load direct data.
-      </p>
 
       <!--tabs omly if its disease node-->
       <template v-if="isDiseaseNode">
@@ -32,10 +28,7 @@
                     'direct',
                 },
               ]"
-              :disabled="
-                isLoadingDirectCount ||
-                !hasDirectAssociationsForCategory(category.id)
-              "
+              :disabled="!hasDirectAssociationsForCategory(category.id)"
               :text="`Directly associated ${labelFor(category.id)}`"
               color="none"
               @click="setDirect(category.id, 'true')"
@@ -240,43 +233,21 @@ const inferredTooltip = (categoryId: string): string | undefined => {
   return undefined;
 };
 
-// Initialize a query for fetching direct association facet counts per category for a node.
-const {
-  query: queryDirectFacetCount,
-  data: directFacetData,
-  isLoading: isLoadingDirectCount,
-  isError: isErrorDirectCount,
-} = useQuery<
-  {
-    facet_field: string;
-    facet_counts: { label: string; count: number }[];
-  },
-  []
->(
-  // Fetch facet counts grouped by association category, specific to this node
-  async function () {
-    return await getDirectAssociationFacetCounts(props.node.id);
-  },
-  { facet_field: "category", facet_counts: [] },
-);
-
 // Helper function to check if a specific category has any direct associations
 const hasDirectAssociationsForCategory = (categoryId: string): boolean => {
-  return directFacetData.value.facet_counts.some(
-    (item) => item.label === categoryId && item.count > 0,
-  );
+  return directFor(categoryId) > 0;
 };
 
-const directAssociationCount = (categoryId: string): number => {
-  const item = directFacetData.value.facet_counts.find(
-    (item) => item.label === categoryId,
-  );
-  return item?.count ?? 0;
-};
+// const directAssociationCount = (categoryId: string): number => {
+//   const item = directFacetData.value.facet_counts.find(
+//     (item) => item.label === categoryId,
+//   );
+//   return item?.count ?? 0;
+// };
 
 const showAllTab = computed(() => {
   return (categoryCount: number, categoryId: string): boolean => {
-    return categoryCount > directAssociationCount(categoryId);
+    return categoryCount > directFor(categoryId);
   };
 });
 
@@ -288,7 +259,7 @@ const showAllTab = computed(() => {
  */
 
 function defaultTab(categoryId: string): "direct" | "all" {
-  const directCount = directAssociationCount(categoryId);
+  const directCount = directFor(categoryId);
   const isDisease = isDiseaseNode.value;
 
   if (!isDisease) {
@@ -315,16 +286,6 @@ const getDirectProps = (categoryId: string) => {
     label: isDirect ? "directly" : "including sub-classes",
   };
 };
-
-watch(
-  () => props.node.id,
-  async (nodeId) => {
-    if (nodeId) {
-      await queryDirectFacetCount();
-    }
-  },
-  { immediate: true },
-);
 </script>
 
 <style lang="scss" scoped>
