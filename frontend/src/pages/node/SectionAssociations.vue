@@ -217,6 +217,9 @@ const directTooltip = (categoryId: string): string | undefined => {
 };
 
 const inferredTooltip = (categoryId: string): string | undefined => {
+  if (directFor(categoryId) === 0) {
+    return `${allFor(categoryId)} ${labelFor(categoryId)} associated with ${props.node.name}`;
+  }
   const all = totalsByCategory.value[categoryId]?.all;
   const direct =
     totalsByCategory.value[categoryId]?.direct > 0

@@ -7,7 +7,7 @@ export const TYPE_CONFIG: Record<string, TypeCfg> = {
     side: "subject",
   },
   "biolink:GeneToPhenotypicFeatureAssociation": {
-    label: "Gene To Phenotypes",
+    label: "Gene to phenotypes",
     side: "subject",
   },
   "biolink:CausalGeneToDiseaseAssociation": {
@@ -19,7 +19,7 @@ export const TYPE_CONFIG: Record<string, TypeCfg> = {
     side: "object",
   },
   "biolink:GenotypeToDiseaseAssociation": {
-    label: "Genotype to Disease",
+    label: "Genotype to disease",
     side: "object",
   },
 };
