@@ -1,31 +1,31 @@
-export type UseField = "subject_label" | "object_label";
-export type TypeCfg = { label: string; use: UseField };
+export type UseField = "subject" | "object";
+export type TypeCfg = { label: string; side: UseField };
 
 export const TYPE_CONFIG: Record<string, TypeCfg> = {
   "biolink:DiseaseToPhenotypicFeatureAssociation": {
     label: "phenotypes",
-    use: "subject_label",
+    side: "subject",
   },
   "biolink:GeneToPhenotypicFeatureAssociation": {
     label: "Gene To Phenotypes",
-    use: "subject_label",
+    side: "subject",
   },
   "biolink:CausalGeneToDiseaseAssociation": {
     label: "Causal Genes",
-    use: "object_label",
+    side: "object",
   },
   "biolink:CorrelatedGeneToDiseaseAssociation": {
     label: "Correlated Genes",
-    use: "object_label",
+    side: "object",
   },
   "biolink:GenotypeToDiseaseAssociation": {
     label: "Genotype to Disease",
-    use: "object_label",
+    side: "object",
   },
 };
 
 export const labelFor = (id: string, fallback = "phenotypes") =>
   TYPE_CONFIG[id]?.label ?? fallback;
 
-export const fieldFor = (id: string, fallback: UseField = "subject_label") =>
-  TYPE_CONFIG[id]?.use ?? fallback;
+export const fieldFor = (id: string, fallback: UseField = "subject") =>
+  TYPE_CONFIG[id]?.side ?? fallback;
