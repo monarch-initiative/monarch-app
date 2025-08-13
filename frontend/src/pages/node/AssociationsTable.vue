@@ -341,6 +341,7 @@ const cols = computed((): Cols<Datum> => {
     });
   }
 
+  // *** disease context column. only for G2P ***
   if (props.direct.id === "true") {
     // CorrelatedGene & Desease model: keep subject_label & predicate, only drop object_label
     if (
@@ -359,17 +360,35 @@ const cols = computed((): Cols<Datum> => {
     }
   }
 
+  // Show "Disease Context" only for G2P, only on inferred/all,
+  // and place it to the LEFT of the gene (subject) column.
   if (
-    props.node.in_taxon_label == "Homo sapiens" &&
-    props.category.id.includes("GeneToPhenotypicFeature")
+    props.category.id === "biolink:GeneToPhenotypicFeatureAssociation" &&
+    props.direct.id === "false"
   ) {
-    extraCols.push({
-      slot: "disease_context",
-      key: "disease_context_qualifier",
-      heading: "Disease Context",
-      sortable: true,
-    });
+    const hasAnyDiseaseContext = (associations.value.items ?? []).some(
+      (r: any) => !!r?.disease_context_qualifier,
+    );
+
+    if (hasAnyDiseaseContext) {
+      const diseaseCol = {
+        slot: "disease_context",
+        key: "disease_context_qualifier",
+        heading: "Disease Context",
+        sortable: true,
+      } as const;
+
+      // Insert right before the subject (gene) column
+      const idxSubject = baseCols.findIndex((c) => c.key === "subject_label");
+      if (idxSubject > -1) {
+        baseCols.splice(idxSubject, 0, diseaseCol);
+      } else {
+        // fallback: put it at the very start
+        baseCols.unshift(diseaseCol);
+      }
+    }
   }
+
   /** phenotype specific columns */
   if (props.category.id.includes("PhenotypicFeature")) {
     extraCols.push(
@@ -531,13 +550,6 @@ const closureKey = computed<"subject_closure" | "object_closure">(
   () => `${side.value}_closure` as const,
 );
 
-// const closureKey = computed<
-//   "subject_closure" | "object_closure" | "disease_context_qualifier_closure"
-// >(() => {
-//   return props.category.id === "biolink:GeneToPhenotypicFeatureAssociation"
-//     ? "disease_context_qualifier_closure"
-//     : (`${side.value}_closure` as const);
-// });
 const labelKey = computed<"subject_label" | "object_label">(
   () => `${side.value}_label` as const,
 );
@@ -555,6 +567,15 @@ const isSubclassRow = (row: any, currentNodeId: string): boolean => {
 const inferredSubclassLabel = computed<string>(() => {
   const rows = allData.value?.items ?? [];
   const pageId = props.node.id;
+
+  if (props.category.id === "biolink:GeneToPhenotypicFeatureAssociation") {
+    const hit = rows.find(
+      (r: any) =>
+        typeof r?.disease_context_qualifier_label === "string" &&
+        r.disease_context_qualifier_label.trim().length > 0,
+    );
+    if (hit) return hit.disease_context_qualifier_label as string;
+  }
 
   const hit = rows.find((row) => isSubclassRow(row, pageId));
   const label = hit?.[labelKey.value];
