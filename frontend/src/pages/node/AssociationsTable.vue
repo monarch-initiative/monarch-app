@@ -224,7 +224,6 @@ import TableControls from "@/components/TheTableContols.vue";
 import { useQuery } from "@/composables/use-query";
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
 import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
-import { swapCols } from "@/util/swapColumns";
 import { fieldFor, TYPE_CONFIG } from "@/util/type-config";
 
 type Props = {

@@ -29,7 +29,7 @@
                 },
               ]"
               :disabled="!hasDirectAssociationsForCategory(category.id)"
-              :text="`Directly associated ${labelFor(category.id)}`"
+              :text="tabLabel(category.id, 'direct')"
               color="none"
               @click="setDirect(category.id, 'true')"
             />
@@ -47,7 +47,7 @@
                     'all',
                 },
               ]"
-              :text="`Inferred associated ${labelFor(category.id)}`"
+              :text="tabLabel(category.id, 'inferred')"
               color="none"
               @click="setDirect(category.id, 'false')"
             />
@@ -114,6 +114,7 @@ import type { Options } from "@/components/AppSelectSingle.vue";
 import AppTextbox from "@/components/AppTextbox.vue";
 import { useQuery } from "@/composables/use-query";
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
+import { tabLabel } from "@/util/tabText";
 import { formatDirectTooltip, formatInferredTooltip } from "@/util/tooltipText";
 import { labelFor } from "@/util/type-config";
 

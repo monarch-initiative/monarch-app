@@ -60,7 +60,7 @@ const INFERRED: Record<string, Fmt> = {
     example,
   }) =>
     (n ?? 0) > 0
-      ? `Phenotypes of ${all?.toLocaleString()} genes that cause   ${node} such as ${q(example)}`
+      ? `Phenotypes of the ${all?.toLocaleString()} genes that cause subclasses of ${node} such as ${q(example)}`
       : `${(all ?? 0).toLocaleString()} Genes with phenotypes associated with ${node}`,
   "biolink:CausalGeneToDiseaseAssociation": ({
     all,
