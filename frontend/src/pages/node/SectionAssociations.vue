@@ -114,7 +114,8 @@ import type { Options } from "@/components/AppSelectSingle.vue";
 import AppTextbox from "@/components/AppTextbox.vue";
 import { useQuery } from "@/composables/use-query";
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
-import { labelFor, TYPE_CONFIG } from "@/util/type-config";
+import { formatDirectTooltip, formatInferredTooltip } from "@/util/tooltipText";
+import { labelFor } from "@/util/type-config";
 
 type Props = {
   /** current node */
@@ -206,35 +207,57 @@ const categoryOptions = computed<Options>(() => {
 const setDirect = (categoryId: string, directId: "true" | "false") => {
   selectedTabs.value[categoryId] = directId === "true" ? "direct" : "all";
 };
-
-// Tooltip builders
 const directTooltip = (categoryId: string): string | undefined => {
-  const n = totalsByCategory.value[categoryId]?.direct ?? 0;
-  if (typeof n === "number" && Number.isFinite(n) && n > 0) {
-    return `${n.toLocaleString()} ${labelFor(categoryId)} directly associated with ${props.node.name}`;
-  }
-  return undefined;
+  return formatDirectTooltip(categoryId, {
+    node: props.node.name,
+    label: labelFor(categoryId),
+    n: directFor(categoryId),
+  });
 };
 
 const inferredTooltip = (categoryId: string): string | undefined => {
-  if (directFor(categoryId) === 0) {
-    return `${allFor(categoryId)} ${labelFor(categoryId)} associated with ${props.node.name}`;
-  }
-  const all = totalsByCategory.value[categoryId]?.all;
-  const direct =
-    totalsByCategory.value[categoryId]?.direct > 0
-      ? totalsByCategory.value[categoryId]?.direct
-      : "";
-  if (typeof all === "number" && Number.isFinite(all) && all > 0) {
-    const label = inferredByCategory.value[categoryId];
-
-    const subclassNote = label
-      ? `  subclasses such as ${label}`
-      : " subclasses";
-    return `${direct.toLocaleString()} ${labelFor(categoryId)} direcly associated with ${props.node.name} as well as ${diffFor(categoryId)} ${subclassNote}`;
-  }
-  return undefined;
+  return formatInferredTooltip(categoryId, {
+    node: props.node.name,
+    label: labelFor(categoryId),
+    all: allFor(categoryId),
+    n: directFor(categoryId),
+    diff: diffFor(categoryId),
+    example: inferredByCategory.value[categoryId], // optional subclass example text
+  });
 };
+
+// const setDirect = (categoryId: string, directId: "true" | "false") => {
+//   selectedTabs.value[categoryId] = directId === "true" ? "direct" : "all";
+// };
+
+// // Tooltip builders
+// const directTooltip = (categoryId: string): string | undefined => {
+//   const n = totalsByCategory.value[categoryId]?.direct ?? 0;
+//   if (typeof n === "number" && Number.isFinite(n) && n > 0) {
+//     return `${n.toLocaleString()} ${labelFor(categoryId)} directly associated with ${props.node.name}`;
+//   }
+//   return undefined;
+// };
+
+// const inferredTooltip = (categoryId: string): string | undefined => {
+//   if (directFor(categoryId) === 0) {
+//     return `${allFor(categoryId)} ${labelFor(categoryId)} associated with ${props.node.name}`;
+//   }
+//   const all = totalsByCategory.value[categoryId]?.all;
+//   const direct =
+//     totalsByCategory.value[categoryId]?.direct > 0
+//       ? totalsByCategory.value[categoryId]?.direct
+//       : "";
+//   if (typeof all === "number" && Number.isFinite(all) && all > 0) {
+//     const label = inferredByCategory.value[categoryId];
+
+//     const subclassNote = label
+//       ? `  subclasses such as ${label}`
+//       : " subclasses";
+//     return `${direct.toLocaleString()} ${labelFor(categoryId)} direcly associated with ${props.node.name} as well as ${diffFor(categoryId)} ${subclassNote}`;
+//   }
+//   return undefined;
+// };
 
 // Helper function to check if a specific category has any direct associations
 const hasDirectAssociationsForCategory = (categoryId: string): boolean => {
