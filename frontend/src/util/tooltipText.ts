@@ -1,5 +1,9 @@
-// src/util/tooltip-text.ts
 import { labelFor } from "@/util/type-config";
+import { pluralize } from "./plural";
+
+// diff can be number | undefined
+
+// → "1 subclass", "5 subclasses", or "" when 0/undefined
 
 export type Vars = {
   node?: string;
@@ -11,6 +15,10 @@ export type Vars = {
 };
 
 type Fmt = (v: Vars) => string;
+
+// quoted example (no bold/italic)
+// quoted example (no bold/italic), also collapses whitespace
+const q = (s?: string) => (s ? `“${s.replace(/\s+/g, " ").trim()}”` : "");
 
 // ----- DIRECT (only shown when n > 0) -----
 const DIRECT: Record<string, Fmt> = {
@@ -42,7 +50,7 @@ const INFERRED: Record<string, Fmt> = {
     example,
   }) =>
     (n ?? 0) > 0
-      ? `${(n ?? 0).toLocaleString()} phenotypes directly associated with ${node} as well as ${(diff ?? 0).toLocaleString()} subclasses${example ? ` such as ${example}` : ""}`
+      ? `${(n ?? 0).toLocaleString()} phenotypes directly associated with ${node} as well as ${pluralize(diff, "subclass", "subclasses")} ${example ? ` such as ${q(example)}` : ""}`
       : `${(all ?? 0).toLocaleString()} phenotypes associated with ${node}`,
   "biolink:GeneToPhenotypicFeatureAssociation": ({
     all,
@@ -52,7 +60,7 @@ const INFERRED: Record<string, Fmt> = {
     example,
   }) =>
     (n ?? 0) > 0
-      ? `Phenotypes of ${all} genes that cause   ${node} such as ${example}`
+      ? `Phenotypes of ${all?.toLocaleString()} genes that cause   ${node} such as ${q(example)}`
       : `${(all ?? 0).toLocaleString()} Genes with phenotypes associated with ${node}`,
   "biolink:CausalGeneToDiseaseAssociation": ({
     all,
@@ -62,8 +70,8 @@ const INFERRED: Record<string, Fmt> = {
     example,
   }) =>
     (n ?? 0) > 0
-      ? `${(n ?? 0).toLocaleString()} genes for ${node} plus ${(diff ?? 0).toLocaleString()} via subclasses${example ? ` (e.g., ${example})` : ""}`
-      : `${(all ?? 0).toLocaleString()} genes that cause subtypes of ${node} such as ${example}`,
+      ? `${(n ?? 0).toLocaleString()} genes for ${node} as well as  ${(diff ?? 0).toLocaleString()} such as  ${example ? ` (e.g., ${q(example)})` : ""}`
+      : `${(all ?? 0).toLocaleString()} genes that cause subtypes of ${node} such as ${q(example)}`,
   "biolink:CorrelatedGeneToDiseaseAssociation": ({
     all,
     n,
@@ -72,18 +80,18 @@ const INFERRED: Record<string, Fmt> = {
     example,
   }) =>
     (n ?? 0) > 0
-      ? `${(n ?? 0).toLocaleString()} correlated genes for ${node} plus ${(diff ?? 0).toLocaleString()} via subclasses${example ? ` (e.g., ${example})` : ""}`
+      ? `${(n ?? 0).toLocaleString()} correlated genes for ${node} as wells as  ${pluralize(diff, "subclass", "subclasses")} such as ${example ? ` such as ${q(example)}` : ""}`
       : `${(all ?? 0).toLocaleString()} correlated genes associated with ${node}`,
   "biolink:GenotypeToDiseaseAssociation": ({ all, n, diff, node, example }) =>
     (n ?? 0) > 0
-      ? `${(n ?? 0).toLocaleString()} genotypes that model ${node} plus ${(diff ?? 0).toLocaleString()} via subclasses${example ? ` (e.g., ${example})` : ""}`
-      : `${(all ?? 0).toLocaleString()} genotypes associated with ${node}`,
+      ? `${(n ?? 0).toLocaleString()} disease models that are assciated with ${node} as well as ${pluralize(diff, "subclass", "subclasses")} such as ${example ? ` (e.g., ${q(example)})` : ""}`
+      : `${(all ?? 0).toLocaleString()} disease models that are assciated with ${node}`,
 };
 
 // default inferred template (fallback)
 const defaultInferred: Fmt = ({ all, n, diff, node, label, example }) =>
   (n ?? 0) > 0
-    ? `${(n ?? 0).toLocaleString()} ${label} directly associated with ${node} as well as ${(diff ?? 0).toLocaleString()} subclasses${example ? ` such as ${example}` : ""}`
+    ? `${(n ?? 0).toLocaleString()} ${label} directly associated with ${node} as well as ${pluralize(diff, "subclass", "subclasses")} such as ${example ? ` such as ${q(example)}` : ""}`
     : `${(all ?? 0).toLocaleString()} ${label} associated with ${node}`;
 
 export function formatDirectTooltip(

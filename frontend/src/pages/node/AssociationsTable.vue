@@ -104,6 +104,18 @@
         />
       </div>
     </template>
+    <template #primary_knowledge_source="{ row }">
+      {{
+        (Array.isArray(row.primary_knowledge_source)
+          ? row.primary_knowledge_source
+          : row.primary_knowledge_source
+            ? [row.primary_knowledge_source]
+            : []
+        )
+          .map((s) => (String(s).split(":").pop() || "").toUpperCase())
+          .join(", ")
+      }}
+    </template>
 
     <template #disease="{ row }">
       <AppNodeBadge
@@ -212,6 +224,7 @@ import TableControls from "@/components/TheTableContols.vue";
 import { useQuery } from "@/composables/use-query";
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
 import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
+import { swapCols } from "@/util/swapColumns";
 import { fieldFor, TYPE_CONFIG } from "@/util/type-config";
 
 type Props = {
@@ -297,6 +310,12 @@ const cols = computed((): Cols<Datum> => {
     return orthologColoumns.value;
   }
 
+  // Utility: does this columns array already include a slot with the given name?
+  // We can’t rely on `key` for non-data (templated) columns like "taxon" or "divider",
+  // so this checks by `slot` to avoid adding duplicate slot-based columns.
+  const hasSlot = (cols: Array<{ slot?: string }>, name: string) =>
+    cols.some((c) => c.slot === name);
+
   /** standard columns, always present */
   let baseCols: Cols<Datum> = [
     {
@@ -360,6 +379,63 @@ const cols = computed((): Cols<Datum> => {
     }
   }
 
+  // --- Genotype→Disease (G2D): remove "Association", add "Taxon" on both tabs,
+  if (props.category.id === "biolink:GenotypeToDiseaseAssociation") {
+    // 1) remove the Association column
+    baseCols = baseCols.filter((c) => c.key !== "predicate");
+
+    // 2) ensure Taxon exists
+    const hasSlot = (cols: Array<{ slot?: string }>, name: string) =>
+      cols.some((c) => c.slot === name);
+    if (!hasSlot(baseCols, "taxon")) {
+      const taxonCol = {
+        slot: "taxon",
+        heading: "Taxon",
+      } as const;
+      const iSubject = baseCols.findIndex((c) => c.key === "subject_label");
+      if (iSubject > -1) baseCols.splice(iSubject, 0, taxonCol);
+      else baseCols.unshift(taxonCol);
+    }
+
+    // 3) add Source only on Direct tab
+    if (
+      props.direct.id === "true" &&
+      !baseCols.some((c) => c.key === "primary_knowledge_source")
+    ) {
+      const sourceCol = {
+        slot: "primary_knowledge_source",
+        key: "primary_knowledge_source" as Datum,
+        heading: "Source",
+        sortable: true,
+      };
+      const iDetails = baseCols.findIndex((c) => c.key === "evidence_count");
+      if (iDetails > -1) baseCols.splice(iDetails, 0, sourceCol);
+      else baseCols.push(sourceCol);
+    }
+  }
+
+  // Always drop the "Association" column for D2P and G2P
+  if (
+    props.category.id === "biolink:DiseaseToPhenotypicFeatureAssociation" ||
+    props.category.id === "biolink:GeneToPhenotypicFeatureAssociation"
+  ) {
+    baseCols = baseCols.filter((col) => col.key !== "predicate");
+  }
+
+  /* --- D2P: swap Disease (subject) and Phenotype (object) on the inferred/all tab --- */
+  if (
+    props.category.id === "biolink:DiseaseToPhenotypicFeatureAssociation" &&
+    props.direct.id === "false" // only on Inferred/All
+  ) {
+    const iSub = baseCols.findIndex((c) => c.key === "subject_label"); // Disease
+    const iObj = baseCols.findIndex((c) => c.key === "object_label"); // Phenotypic Feature
+    if (iSub > -1 && iObj > -1) {
+      // simple swap
+      const tmp = baseCols[iSub];
+      baseCols[iSub] = baseCols[iObj];
+      baseCols[iObj] = tmp;
+    }
+  }
   // Show "Disease Context" only for G2P, only on inferred/all,
   // and place it to the LEFT of the gene (subject) column.
   if (
