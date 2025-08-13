@@ -7,7 +7,9 @@
   <div v-for="category in categoryOptions" :key="category.id">
     <!-- Association table -->
     <AppSection alignment="left" width="full" class="inset">
-      <AppHeading :level="3">{{ category.label }}</AppHeading>
+      <AppHeading :level="3">{{
+        sectionTitle(category.id, category.label)
+      }}</AppHeading>
       <span v-if="!categoryOptions.length"
         >No associations with &nbsp;<AppNodeBadge :node="node" />
       </span>
@@ -104,16 +106,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, watchEffect } from "vue";
+import { computed, ref } from "vue";
 import { startCase } from "lodash";
-import { getDirectAssociationFacetCounts } from "@/api/associations";
 import type { Node } from "@/api/model";
 import AppButton from "@/components/AppButton.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import type { Options } from "@/components/AppSelectSingle.vue";
 import AppTextbox from "@/components/AppTextbox.vue";
-import { useQuery } from "@/composables/use-query";
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
+import { sectionTitle } from "@/util/sectionTitles";
 import { tabLabel } from "@/util/tabText";
 import { formatDirectTooltip, formatInferredTooltip } from "@/util/tooltipText";
 import { labelFor } from "@/util/type-config";
