@@ -1,4 +1,3 @@
-// src/util/tab-text.ts
 import { labelFor } from "@/util/type-config";
 
 type TabKind = "direct" | "inferred";

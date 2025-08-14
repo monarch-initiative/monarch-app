@@ -1,4 +1,3 @@
-// Brand keys we support
 export type BrandKey = "gard" | "omim" | "orphanet" | "medgen" | "nord";
 
 // Very-near but NOT exact colors + safe font stacks (no brand fonts)

@@ -1,4 +1,3 @@
-// src/composables/useClinicalResources.ts
 import { computed } from "vue";
 import type { ExpandedCurie, Node } from "@/api/model";
 
