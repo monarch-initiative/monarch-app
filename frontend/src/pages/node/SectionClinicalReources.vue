@@ -3,69 +3,48 @@
     v-if="clinicalResources?.length"
     title="Patient and Clinical Resources"
     :full="true"
-    class="clinical-resources"
   >
-    <div class="custom-grid">
-      <div
-        v-for="(res, id) in clinicalResources"
-        :key="id"
-        class="linkout"
-        v-tooltip="getTooltipText(res.id)"
-      >
-        <AppButton
-          :text="res.label"
-          :to="res.url"
-          :aria-label="res.id"
-          design="big"
-        />
-        <span>{{ res.id }}</span>
-      </div>
-    </div>
-
-    <div class="sub-items">
-      <!-- <div v-if="clinicalSynopsis?.length">
-        <span class="info-label"> Clinical Synopsis </span> :
-        <AppLink
-          v-for="(mapping, index) in clinicalSynopsis"
-          :key="index"
-          :to="mapping.url || ''"
-        >
-          {{ mapping.id }}
-        </AppLink>
+    <div class="clinical-resources">
+      <div class="custom-grid">
+        <div v-for="(res, id) in clinicalResources" :key="id" class="linkout">
+          <AppLink
+            :to="res.url || ''"
+            class="brand-chip"
+            :style="chipStyle(res)"
+            :aria-label="res.label || res.id"
+            v-tooltip="tipText(res)"
+          >
+            <span class="brand-wordmark">{{
+              brandText(res.id, res.label)
+            }}</span>
+          </AppLink>
+          <!-- removed the bottom ID display -->
+        </div>
       </div>
 
-      <div v-if="infoForPatients?.length">
-        <span class="info-label"> Info for patients : </span>
-        <AppLink
-          v-for="(mapping, index) in infoForPatients"
-          :key="index"
-          :to="mapping.url || ''"
-        >
-          {{ mapping.id }}
-        </AppLink>
-      </div> -->
+      <div class="sub-items">
+        <div v-if="nodeInheritance">
+          <span class="info-label"> Heritability : </span>
+          <AppLink
+            v-tooltip="nodeInheritance?.name"
+            :to="nodeInheritance?.id || ''"
+            >{{ nodeInheritance?.name }}</AppLink
+          >
+        </div>
 
-      <div v-if="nodeInheritance">
-        <span class="info-label"> Heritability : </span>
-        <AppLink
-          v-tooltip="nodeInheritance?.name"
-          :to="nodeInheritance?.id || ''"
-          >{{ nodeInheritance?.name }}</AppLink
-        >
-      </div>
+        <div v-if="casualGenes?.length">
+          <span class="info-label"> Casual Genes : </span>
+          <AppNodeBadge
+            v-for="(gene, index) in casualGenes"
+            :key="index"
+            :node="omit(gene, 'in_taxon_label')"
+          />
+        </div>
 
-      <div v-if="casualGenes?.length">
-        <span class="info-label"> Casual Genes : </span>
-        <AppNodeBadge
-          v-for="(gene, index) in casualGenes"
-          :key="index"
-          :node="omit(gene, 'in_taxon_label')"
-        />
-      </div>
-
-      <div>
-        <span class="info-label"> Frequency : </span>
-        <span>{{ frequencyLabel }}</span>
+        <div>
+          <span class="info-label"> Frequency : </span>
+          <span>{{ frequencyLabel }}</span>
+        </div>
       </div>
     </div>
   </AppDetail>
@@ -73,128 +52,142 @@
 
 <script setup lang="ts">
 import { omit } from "lodash";
-import type { Entity, ExpandedCurie, Node as ModelNode } from "@/api/model";
+import type { Entity, Node as ModelNode } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppLink from "@/components/AppLink.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import { useClinicalResources } from "@/composables/use-clinical-resources";
+import { BRAND_STYLES, brandFromId } from "@/util/linkout";
+
+type ClinicalResource = {
+  id: string;
+  url?: string;
+  label?: string;
+  /** dynamic overrides coming from API */
+  bg?: string;
+  fg?: string;
+  border?: string;
+  tooltip?: string;
+};
 
 type Props = {
-  /** current node */
   clinicalSynopsis?: { id: string; url?: string }[];
-  /* Info for patients */
   infoForPatients?: { id: string; url?: string }[];
-  /** Inheritance data if available */
   nodeInheritance?: Entity;
-  /** Causal genes array */
   casualGenes?: Entity[];
-  /** 'Rare' or 'Common' */
   frequencyLabel?: "Rare" | "Common";
-  /** current node */
   node: ModelNode;
 };
+
 const props = defineProps<Props>();
 const { clinicalResources } = useClinicalResources(props.node);
-const tooltipMap: Record<string, string> = {
-  OMIM: "Clinical Synopsis",
-  GARD: "Info for patients",
+
+/** dynamic tooltip from res.tooltip -> mapped text -> id */
+// const tooltipMap: Record<string, string> = {
+//   OMIM: "Clinical Synopsis",
+//   GARD: "Info for patients",
+// };
+// const mappedTooltip = (id: string): string => {
+//   const match = Object.entries(tooltipMap).find(([prefix]) =>
+//     id.startsWith(`${prefix}:`),
+//   );
+//   return match ? `${match[1]}: ${id}` : id;
+// };
+// const tooltip = (res: ClinicalResource): string =>
+//   res.tooltip || mappedTooltip(res.id);
+
+/** style helpers: allow res.* to override brand defaults */
+const chipStyle = (res: ClinicalResource) => {
+  const k = brandFromId(res.id);
+  const s = k ? BRAND_STYLES[k] : null;
+  return {
+    "--brand-bg": s?.bg ?? "#666",
+    "--brand-fg": s?.fg ?? "#FFFFFF", // ← text color from brand map
+    "--brand-border": s?.border ?? "#444",
+    fontFamily: s?.font ?? "system-ui, Segoe UI, Roboto, Arial, sans-serif", // ← font from brand map
+    textTransform: s?.transform ?? "none",
+    letterSpacing: s?.letterSpacing ?? "0.01em",
+    fontWeight: s?.weight ?? 700,
+  } as Record<string, string | number>;
 };
 
-const getTooltipText = (id: string): string | null => {
-  const match = Object.entries(tooltipMap).find(([prefix]) =>
-    id.startsWith(`${prefix}:`),
-  );
+const brandText = (id: string, fallback?: string) => {
+  const k = brandFromId(id);
+  return k ? BRAND_STYLES[k].label : fallback || id.split(":")[0];
+};
 
-  if (match) {
-    const [, label] = match;
-    return `${label}: ${id}`;
-  }
-  return id;
+const tipText = (res: ClinicalResource) => {
+  const desc = res.tooltip ?? res.label ?? "";
+  return desc ? `${res.id} - ${desc}` : res.id;
 };
 </script>
+
 <style lang="scss" scoped>
 .custom-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  padding: 1em 0;
-  gap: 1.5em;
-}
-.custom-grid img {
-  width: auto;
-  height: px;
-  object-fit: contain;
-}
-@media (max-width: 1000px) {
-  .custom-grid {
-    grid-template-rows: repeat(2, auto);
-    grid-auto-columns: minmax(7em, 1fr);
-    grid-auto-flow: column;
-  }
-}
-
-@media (max-width: 600px) {
-  .custom-grid {
-    grid-template-rows: auto;
-    grid-template-columns: 1fr;
-    grid-auto-flow: row;
-  }
-}
-
-.icon {
-  z-index: 2;
-  position: relative;
-  position: relative;
-  width: 10em;
-  height: 3em;
-
-  cursor: pointer;
-  transition: transform 0.2s ease;
-
-  @media (max-width: 1000px) {
-    width: 9em;
-    height: 7em;
-  }
+  padding: 1em 1em;
+  gap: 1.25em;
 }
 
 .linkout {
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.3em;
-
-  a:focus,
-  a:hover {
-    transform: scale(1.08);
-  }
+  gap: 0.35em;
 }
-.linkout span {
-  color: $off-black;
-  font-size: 0.9em;
+
+.brand-chip {
+  /* base color comes from chipStyle → --brand-bg */
+  --bg-base: var(--brand-bg);
+
+  /* default = slightly lighter than brand; hover = a bit closer to brand */
+  --bg-lite: color-mix(in srgb, var(--bg-base) 80%, white); /* 20% white */
+  --bg-hover: color-mix(in srgb, var(--bg-base) 90%, white); /* 10% white */
+  --bd-col: color-mix(in srgb, var(--bg-base) 70%, black);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 4.5rem;
+  min-height: 1.25rem;
+  padding: 0.6rem 1rem;
+  border-radius: 12px;
+  background: var(--bg-lite);
+  box-shadow: 0 16px 38px rgba(16, 24, 40, 0.12);
+  color: var(--brand-fg);
+
+  font-size: 1rem;
+  text-decoration: none;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    transform 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.brand-chip:hover,
+.brand-chip:focus {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--bg-base) 80%, black);
+  background: var(--bg-hover);
+  box-shadow: 0 6px 18px rgba(16, 24, 40, 0.12);
 }
 .clinical-resources {
   display: flex;
   flex-direction: column;
-  margin: 1rem 0;
-  padding: 1.2rem 1.5rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
+  align-items: flex-start;
+  width: 100%;
+  padding: 0.5em 0em;
+  gap: 0.2em;
   background-color: #f7fbfe;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
-
-.info-label {
-  padding: 0.1rem;
-  border-radius: 10%;
-}
-
 .sub-items {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-
+  padding-left: 1em;
   gap: 0.5em;
-  font-size: 0.9em;
 }
+/* removed .brand-id entirely */
 </style>
