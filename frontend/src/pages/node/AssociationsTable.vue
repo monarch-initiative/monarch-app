@@ -359,8 +359,7 @@ const cols = computed((): Cols<Datum> => {
     });
   }
 
-  // *** disease context column. only for G2P ***
-  if (props.direct.id === "true") {
+  if (props.direct.id === "true" && props.node.category === "biolink:Disease") {
     // CorrelatedGene & Desease model: keep subject_label & predicate, only drop object_label
     if (
       props.category.id === "biolink:CorrelatedGeneToDiseaseAssociation" ||

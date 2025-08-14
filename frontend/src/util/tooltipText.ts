@@ -84,7 +84,7 @@ const INFERRED: Record<string, Fmt> = {
       : `${(all ?? 0).toLocaleString()} correlated genes associated with ${node}`,
   "biolink:GenotypeToDiseaseAssociation": ({ all, n, diff, node, example }) =>
     (n ?? 0) > 0
-      ? `${(n ?? 0).toLocaleString()} disease models that are assciated with ${node} as well as ${pluralize(diff, "subclass", "subclasses")} such as ${example ? ` (e.g., ${q(example)})` : ""}`
+      ? `${(n ?? 0).toLocaleString()} disease models that are assciated with ${node} as well as ${pluralize(diff, "subclass", "subclasses")} such as ${example ? ` ${q(example)}` : ""}`
       : `${(all ?? 0).toLocaleString()} disease models that are assciated with ${node}`,
 };
 
