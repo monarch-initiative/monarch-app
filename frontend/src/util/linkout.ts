@@ -26,10 +26,10 @@ export const BRAND_STYLES: Record<
   },
   omim: {
     label: "OMIM",
-    bg: "#fbc249ff",
+    bg: "#e75b2a",
     fg: "#ffffff",
     border: "#cc8a00",
-    font: "Georgia, 'Times New Roman', Times, serif",
+    font: "system-ui, Segoe UI, Roboto, Arial, sans-serif",
     transform: "uppercase",
     letterSpacing: "0.04em",
     weight: 700,

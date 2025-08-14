@@ -82,21 +82,6 @@ type Props = {
 const props = defineProps<Props>();
 const { clinicalResources } = useClinicalResources(props.node);
 
-/** dynamic tooltip from res.tooltip -> mapped text -> id */
-// const tooltipMap: Record<string, string> = {
-//   OMIM: "Clinical Synopsis",
-//   GARD: "Info for patients",
-// };
-// const mappedTooltip = (id: string): string => {
-//   const match = Object.entries(tooltipMap).find(([prefix]) =>
-//     id.startsWith(`${prefix}:`),
-//   );
-//   return match ? `${match[1]}: ${id}` : id;
-// };
-// const tooltip = (res: ClinicalResource): string =>
-//   res.tooltip || mappedTooltip(res.id);
-
-/** style helpers: allow res.* to override brand defaults */
 const chipStyle = (res: ClinicalResource) => {
   const k = brandFromId(res.id);
   const s = k ? BRAND_STYLES[k] : null;
@@ -174,6 +159,7 @@ const tipText = (res: ClinicalResource) => {
   background: var(--bg-hover);
   box-shadow: 0 6px 18px rgba(16, 24, 40, 0.12);
 }
+
 .clinical-resources {
   display: flex;
   flex-direction: column;
@@ -183,6 +169,7 @@ const tipText = (res: ClinicalResource) => {
   gap: 0.2em;
   background-color: #f7fbfe;
 }
+
 .sub-items {
   display: flex;
   flex-direction: column;
