@@ -67,6 +67,10 @@ pythonpath = [".", "src"]
 
 [tool.ruff]
 line-length = 120
+exclude = ["tests/fixtures/*.py", "src/monarch_py/datamodels/model.py"]
+# per-file-ignores = {"" = ""}
+
+[tool.ruff.lint]
 ignore = [
     "F541", # f-strings with no placeholders
 ]
