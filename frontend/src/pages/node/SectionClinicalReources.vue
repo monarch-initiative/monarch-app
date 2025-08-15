@@ -162,8 +162,8 @@ const brandText = (id: string, fallback?: string) => {
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
-  padding: 1.2em 0em;
-  gap: 0.2em;
+  padding: 0.8em 0em;
+  gap: 0.6em;
   background-color: #f7fbfe;
 }
 
