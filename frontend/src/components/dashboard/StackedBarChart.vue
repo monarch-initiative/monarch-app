@@ -151,7 +151,7 @@ const stackedData = computed(() => {
   const seriesData = [
     {
       name: 'Human + Ortholog Phenotypes',
-      type: 'bar',
+      type: 'bar' as const,
       stack: 'total',
       emphasis: { focus: 'series' },
       data: [processedData.find(d => d.category === 'Human + Ortholog Phenotypes')?.count || 0],
@@ -159,7 +159,7 @@ const stackedData = computed(() => {
     },
     {
       name: 'Ortholog Phenotypes Only',
-      type: 'bar', 
+      type: 'bar' as const, 
       stack: 'total',
       emphasis: { focus: 'series' },
       data: [processedData.find(d => d.category === 'Ortholog Phenotypes Only')?.count || 0],
@@ -167,7 +167,7 @@ const stackedData = computed(() => {
     },
     {
       name: 'Human Phenotypes Only',
-      type: 'bar',
+      type: 'bar' as const,
       stack: 'total',
       emphasis: { focus: 'series' },
       data: [processedData.find(d => d.category === 'Human Phenotypes Only')?.count || 0],
@@ -175,7 +175,7 @@ const stackedData = computed(() => {
     },
     {
       name: 'No Phenotype Information',
-      type: 'bar',
+      type: 'bar' as const,
       stack: 'total', 
       emphasis: { focus: 'series' },
       data: [processedData.find(d => d.category === 'No Phenotype Information')?.count || 0],
@@ -187,7 +187,7 @@ const stackedData = computed(() => {
 });
 
 /** Generate ECharts Stacked Bar configuration */
-const chartOptions = computed((): EChartsOption => {
+const chartOptions = computed((): any => {
   const { categories, series } = stackedData.value;
 
   if (categories.length === 0) {

@@ -156,7 +156,7 @@ const chordData = computed(() => {
 });
 
 /** Generate ECharts Chord configuration */
-const chartOptions = computed((): EChartsOption => {
+const chartOptions = computed((): any => {
   const { categories, matrix } = chordData.value;
 
   if (categories.length === 0) {
@@ -175,7 +175,7 @@ const chartOptions = computed((): EChartsOption => {
     },
     tooltip: {
       trigger: 'item',
-      position: function(point: number[], params: any, dom: HTMLElement, rect: any, size: any) {
+      position: function(point: number[], params: any, dom: any, rect: any, size: any) {
         console.log('Tooltip position called:', { point, params, size });
         
         // Safety checks for required parameters
@@ -366,7 +366,7 @@ const chartOptions = computed((): EChartsOption => {
       z: -1
     }],
     series: [{
-      type: 'graph',
+      type: 'graph' as const,
       layout: 'none',
       data: categories.map((name, index) => {
         const angle = (2 * Math.PI * index) / categories.length;

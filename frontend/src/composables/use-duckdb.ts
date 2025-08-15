@@ -172,13 +172,13 @@ export function useDuckDB(config: DuckDBConfig = {}) {
       error.value = null;
 
       const result = await connection.value.query(sql);
-      const columns = result.schema.fields.map((field) => field.name);
+      const columns = result.schema.fields.map((field: any) => field.name);
       
       // Get raw data and process to ensure proper data types
-      const rawData = result.toArray().map((row) => row.toJSON());
+      const rawData = result.toArray().map((row: any) => row.toJSON());
       
       // Post-process to convert JSON-serialized values to proper types
-      const data = rawData.map((row) => {
+      const data = rawData.map((row: any) => {
         const processedRow: Record<string, any> = {};
         Object.entries(row).forEach(([key, value]) => {
           processedRow[key] = processValue(value);

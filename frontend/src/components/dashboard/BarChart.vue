@@ -208,12 +208,14 @@ const chartOptions = computed((): EChartsOption => {
       bottom: isHorizontal ? '10%' : '15%',
       containLabel: true
     },
-    xAxis: {
-      type: isHorizontal ? 'value' : 'category',
-      data: isHorizontal ? undefined : categories,
+    xAxis: isHorizontal ? {
+      type: 'value' as const
+    } : {
+      type: 'category' as const,
+      data: categories,
       axisLabel: {
         interval: 0,
-        rotate: isHorizontal ? 0 : 45,
+        rotate: 45,
         fontSize: 10,
         formatter: function(value: string) {
           // Truncate long labels
@@ -224,23 +226,27 @@ const chartOptions = computed((): EChartsOption => {
         alignWithLabel: true
       }
     },
-    yAxis: {
-      type: isHorizontal ? 'category' : 'value',
-      data: isHorizontal ? categories : undefined,
+    yAxis: isHorizontal ? {
+      type: 'category' as const,
+      data: categories,
       axisLabel: {
         fontSize: 10,
         formatter: function(value: any) {
-          if (isHorizontal) {
-            // For horizontal bars, truncate category names
-            const str = String(value);
-            return str.length > 15 ? str.substring(0, 12) + '...' : str;
-          } else {
-            // For vertical bars, format numbers
-            const num = Number(value);
-            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-            return String(num);
-          }
+          // For horizontal bars, truncate category names
+          const str = String(value);
+          return str.length > 15 ? str.substring(0, 12) + '...' : str;
+        }
+      }
+    } : {
+      type: 'value' as const,
+      axisLabel: {
+        fontSize: 10,
+        formatter: function(value: any) {
+          // For vertical bars, format numbers
+          const num = Number(value);
+          if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+          if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+          return String(num);
         }
       }
     },

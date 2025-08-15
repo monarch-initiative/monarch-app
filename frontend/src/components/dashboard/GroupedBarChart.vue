@@ -155,21 +155,21 @@ const groupedData = computed(() => {
   const series = [
     {
       name: 'Genes with Both Sources',
-      type: 'bar',
+      type: 'bar' as const,
       emphasis: { focus: 'series' },
       data: [genesWithBothInfo, 0], // Only appears in ortholog category
       itemStyle: { color: '#059669' } // Dark green - best case
     },
     {
       name: 'Genes with Ortholog Only',
-      type: 'bar',
+      type: 'bar' as const,
       emphasis: { focus: 'series' },
       data: [genesWithOrthologOnlyInfo, 0], // Only appears in ortholog category
       itemStyle: { color: '#3b82f6' } // Blue - ortholog value
     },
     {
       name: 'Genes with Human Only',
-      type: 'bar',
+      type: 'bar' as const,
       emphasis: { focus: 'series' },
       data: [0, genesWithHumanOnlyInfo], // Only appears in human-only category
       itemStyle: { color: '#f59e0b' } // Orange - human only
@@ -180,7 +180,7 @@ const groupedData = computed(() => {
 });
 
 /** Generate ECharts Grouped Bar configuration */
-const chartOptions = computed((): EChartsOption => {
+const chartOptions = computed((): any => {
   const { categories, series } = groupedData.value;
 
   if (categories.length === 0) {
@@ -234,13 +234,15 @@ const chartOptions = computed((): EChartsOption => {
       bottom: '20%',
       containLabel: true
     },
-    xAxis: {
-      type: isHorizontal ? 'value' : 'category',
-      data: isHorizontal ? undefined : categories,
+    xAxis: isHorizontal ? {
+      type: 'value' as const
+    } : {
+      type: 'category' as const,
+      data: categories,
       axisLabel: {
         fontSize: 12,
         interval: 0,
-        rotate: isHorizontal ? 0 : 15,
+        rotate: 15,
         formatter: function(value: string) {
           // Break long labels into multiple lines
           if (value.length > 20) {
@@ -252,21 +254,25 @@ const chartOptions = computed((): EChartsOption => {
         }
       }
     },
-    yAxis: {
-      type: isHorizontal ? 'category' : 'value',
-      data: isHorizontal ? categories : undefined,
+    yAxis: isHorizontal ? {
+      type: 'category' as const,
+      data: categories,
       axisLabel: {
         fontSize: 10,
         formatter: function(value: any) {
-          if (isHorizontal) {
-            const str = String(value);
-            return str.length > 15 ? str.substring(0, 12) + '...' : str;
-          } else {
-            const num = Number(value);
-            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-            return String(num);
-          }
+          const str = String(value);
+          return str.length > 15 ? str.substring(0, 12) + '...' : str;
+        }
+      }
+    } : {
+      type: 'value' as const,
+      axisLabel: {
+        fontSize: 10,
+        formatter: function(value: any) {
+          const num = Number(value);
+          if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+          if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+          return String(num);
         }
       }
     },

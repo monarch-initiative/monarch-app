@@ -80,3 +80,11 @@ export const emitted = <Event = unknown>(
 
 /** mock functions that will throw error vitest environment */
 window.scrollTo = vi.fn(() => null);
+
+// Mock canvas for tests that use dom.ts - must be defined before imports
+global.HTMLCanvasElement.prototype.getContext = vi.fn(() => ({
+  measureText: vi.fn(() => ({ width: 100 })),
+  font: '',
+  fillText: vi.fn(),
+  clearRect: vi.fn(),
+}));
