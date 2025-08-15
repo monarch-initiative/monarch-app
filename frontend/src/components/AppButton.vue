@@ -205,20 +205,15 @@ defineExpose({ button });
     }
   }
 
-  /* NEW — link-style button (for Back to top) */
+  /* link-style button*/
   &.link {
     min-height: unset;
-    padding: 0; /* behaves like a text link */
+    padding: 0;
     gap: 6px;
-    border: none;
     background: transparent;
-    color: $theme; /* site teal */
-    font-weight: 700;
-
-    /* underline only the text span, not the icon */
+    color: $theme;
     text-decoration: none;
 
-    /* AppLink inside may render <a> — keep hover/focus consistent */
     &:hover .truncate,
     &:focus .truncate {
       text-decoration: underline;
@@ -247,7 +242,7 @@ defineExpose({ button });
 }
 
 .icon {
-  margin-left: 0.5em; /* keep spacing consistent across designs */
+  margin-left: 0.5em;
 }
 
 /* When icon is on the LEFT, remove the left margin and add a right one */
