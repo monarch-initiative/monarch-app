@@ -1,4 +1,4 @@
-import { labelFor } from "@/util/type-config";
+import { labelFor } from "@/util/typeConfig";
 import { pluralize } from "./plural";
 
 // diff can be number | undefined

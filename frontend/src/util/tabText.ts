@@ -1,4 +1,4 @@
-import { labelFor } from "@/util/type-config";
+import { labelFor } from "@/util/typeConfig";
 
 type TabKind = "direct" | "inferred";
 type Ctx = { label: string };

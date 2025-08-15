@@ -117,7 +117,7 @@ import AssociationsTable from "@/pages/node/AssociationsTable.vue";
 import { sectionTitle } from "@/util/sectionTitles";
 import { tabLabel } from "@/util/tabText";
 import { formatDirectTooltip, formatInferredTooltip } from "@/util/tooltipText";
-import { labelFor } from "@/util/type-config";
+import { labelFor } from "@/util/typeConfig";
 
 type Props = {
   /** current node */
