@@ -71,7 +71,7 @@ export function useKGData() {
       kgSourceUrl.value = "https://data.monarchinitiative.org/monarch-kg-dev/latest";
     }
   };
-
+ 
   /** Register a data source */
   const registerDataSource = (config: DataSourceConfig): void => {
     const source: DataSource = {
@@ -125,6 +125,11 @@ export function useKGData() {
         err instanceof Error ? err.message : "Failed to load data source";
       source.loadError = errorMessage;
       dataSources.value.set(name, source);
+      
+      // Don't throw DuckDB initialization errors - let them be handled silently
+      if (errorMessage.includes("DuckDB not initialized")) {
+        return;
+      }
       throw err;
     } finally {
       isLoading.value = false;

@@ -145,7 +145,35 @@ const chartOptions = computed((): EChartsOption => {
   const { categories, values, data } = barData.value;
 
   if (categories.length === 0) {
-    return {};
+    // Return minimal valid configuration when no data
+    return {
+      title: {
+        text: props.title,
+        left: 'center',
+        top: 20,
+        textStyle: {
+          fontSize: 16,
+          fontWeight: 'normal'
+        }
+      },
+      grid: {
+        left: '10%',
+        right: '10%',
+        top: '15%',
+        bottom: '10%'
+      },
+      xAxis: {
+        type: 'category',
+        data: []
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [{
+        type: 'bar',
+        data: []
+      }]
+    };
   }
 
   const isHorizontal = props.orientation === 'horizontal';

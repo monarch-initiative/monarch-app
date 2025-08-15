@@ -182,6 +182,11 @@ export function useSqlQuery(config: SqlQueryConfig) {
   // Auto-execute if configured
   if (shouldAutoExecute.value) {
     executeQuery().catch((err) => {
+      // Suppress DuckDB initialization errors during startup
+      if (err.message?.includes("DuckDB not initialized")) {
+        // Silently handle initialization errors - they'll resolve once DuckDB is ready
+        return;
+      }
       console.error("Auto-execute failed:", err);
     });
   }
@@ -195,6 +200,10 @@ export function useSqlQuery(config: SqlQueryConfig) {
         const cacheKey = getCacheKey(sql, dataSources);
         queryCache.value.delete(cacheKey);
         executeQuery().catch((err) => {
+          // Suppress DuckDB initialization errors during polling
+          if (err.message?.includes("DuckDB not initialized")) {
+            return;
+          }
           console.error("Polling execution failed:", err);
         });
       }

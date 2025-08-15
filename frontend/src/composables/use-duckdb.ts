@@ -117,7 +117,7 @@ export function useDuckDB(config: DuckDBConfig = {}) {
 
   /** Load a parquet file from URL */
   const loadParquet = async (url: string, tableName: string): Promise<void> => {
-    if (!connection.value) {
+    if (!connection.value || !isInitialized.value) {
       throw new Error("DuckDB not initialized");
     }
 
@@ -140,7 +140,7 @@ export function useDuckDB(config: DuckDBConfig = {}) {
 
   /** Load a CSV file from URL */
   const loadCSV = async (url: string, tableName: string): Promise<void> => {
-    if (!connection.value) {
+    if (!connection.value || !isInitialized.value) {
       throw new Error("DuckDB not initialized");
     }
 
@@ -163,7 +163,7 @@ export function useDuckDB(config: DuckDBConfig = {}) {
 
   /** Execute a SQL query */
   const query = async (sql: string): Promise<QueryResult> => {
-    if (!connection.value) {
+    if (!connection.value || !isInitialized.value) {
       throw new Error("DuckDB not initialized");
     }
 
