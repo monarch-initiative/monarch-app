@@ -36,6 +36,10 @@ const RESOURCE_DEFS = [
 
 const RESOURCE_PREFIXES = RESOURCE_DEFS.map((rec) => rec.prefix);
 
+// helper: does an id start with any clinical prefix?
+const isClinicalId = (id: string) =>
+  RESOURCE_PREFIXES.some((pre) => id.startsWith(pre));
+
 export type ResourceEntry = {
   id: string;
   url: string;
@@ -48,8 +52,8 @@ export function useClinicalResources(node: Node) {
   const clinicalResources = computed<ResourceEntry[]>(() => {
     const out: ResourceEntry[] = [];
     for (const { prefix, label, tooltip } of RESOURCE_DEFS) {
-      const ext = node.external_links?.find((l: ExpandedCurie) =>
-        l.id.startsWith(prefix),
+      const ext = node.external_links?.find((link: ExpandedCurie) =>
+        link.id.startsWith(prefix),
       );
       if (ext) {
         out.push({
@@ -77,20 +81,15 @@ export function useClinicalResources(node: Node) {
     return out;
   });
 
-  // Other mappings: exclude all clinical prefixes
+  // mappings not in clinical set
   const otherMappings = computed(
-    () =>
-      node.mappings?.filter(
-        (item) => !RESOURCE_PREFIXES.some((pre) => item.id.startsWith(pre)),
-      ) || [],
+    () => node.mappings?.filter((mapping) => !isClinicalId(mapping.id)) || [],
   );
 
-  // External references excluding clinical prefixes
+  // external refs not in clinical set
   const externalRefs = computed<ExpandedCurie[]>(
-    () =>
-      node.external_links?.filter(
-        (link) => !RESOURCE_PREFIXES.some((pre) => link.id.startsWith(pre)),
-      ) || [],
+    () => node.external_links?.filter((link) => !isClinicalId(link.id)) || [],
   );
+
   return { clinicalResources, otherMappings, externalRefs };
 }
