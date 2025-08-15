@@ -12,12 +12,14 @@
             class="brand-chip"
             :style="chipStyle(res)"
             :aria-label="res.label || res.id"
-            v-tooltip="tipText(res)"
+            v-tooltip="res.tooltip"
           >
-            <span class="brand-wordmark">{{
-              brandText(res.id, res.label)
-            }}</span>
+            <span>
+              {{ brandText(res.id, res.label) }}
+            </span>
+            <small class="brand-id">{{ res.id }}</small>
           </AppLink>
+
           <!-- removed the bottom ID display -->
         </div>
       </div>
@@ -100,11 +102,6 @@ const brandText = (id: string, fallback?: string) => {
   const k = brandFromId(id);
   return k ? BRAND_STYLES[k].label : fallback || id.split(":")[0];
 };
-
-const tipText = (res: ClinicalResource) => {
-  const desc = res.tooltip ?? res.label ?? "";
-  return desc ? `${res.id} - ${desc}` : res.id;
-};
 </script>
 
 <style lang="scss" scoped>
@@ -176,5 +173,17 @@ const tipText = (res: ClinicalResource) => {
   padding-left: 1em;
   gap: 0.5em;
 }
+
+.brand-chip {
+  flex-direction: column; /* stack text + id vertically */
+}
+
+.brand-id {
+  margin-top: 0.15rem;
+  font-size: 0.7rem;
+  line-height: 1;
+  opacity: 0.75;
+}
+
 /* removed .brand-id entirely */
 </style>

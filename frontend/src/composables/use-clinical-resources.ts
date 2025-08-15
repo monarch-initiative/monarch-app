@@ -6,30 +6,31 @@ const RESOURCE_DEFS = [
     prefix: "OMIM:",
     label: "OMIM",
     tooltip:
-      "A curated catalog of human genes, variants, and genetic phenotypes",
+      "Online Mendelian Inheritance in Man: A curated catalog of human genes, variants, and genetic phenotypes—primarily for clinicians and researchers.",
   },
   {
     prefix: "NORD:",
     label: "NORD",
     tooltip:
-      "Lay-friendly rare disease summaries, advocacy resources, and support services",
+      "National Organization for Rare Disorders: Lay-friendly rare disease summaries, advocacy resources, and support services—for patients, families, and healthcare providers",
   },
   {
     prefix: "GARD:",
     label: "GARD",
-    tooltip: "Health information on genetic and rare conditions",
+    tooltip:
+      "Genetic and Rare Diseases Information Center: health information on genetic and rare conditions—for patients, caregivers, and providers seeking plain-language guidance.",
   },
   {
     prefix: "Orphanet:",
     label: "ORPHANET",
     tooltip:
-      "European reference portal on rare diseases and orphan drugs with disease pages, epidemiology, coding, and expert centers",
+      "Orphanet: European reference portal on rare diseases and orphan drugs with disease pages, epidemiology, coding, and expert centers—for clinicians, researchers, policymakers, and patient communities.",
   },
   {
     prefix: "MEDGEN:",
     label: "MEDGEN",
     tooltip:
-      "NCBI’s structured knowledge base linking diseases, phenotypes, genes, and clinical resources",
+      "Medical Genetics: NCBI’s structured knowledge base linking diseases, phenotypes, genes, and clinical resources—for clinical geneticists, informaticians, and researchers",
   },
 ] as const;
 
