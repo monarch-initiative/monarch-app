@@ -1,5 +1,5 @@
 <template>
-  <div class="toc-back" v-show="show">
+  <div class="toc-top" v-show="show">
     <AppButton
       design="link"
       color="none"
@@ -13,13 +13,15 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { computed } from "vue";
+import { useWindowScroll, useWindowSize } from "@vueuse/core";
 import AppButton from "@/components/AppButton.vue";
 
+// Props
 const props = withDefaults(
   defineProps<{
-    targetId?: string;
-    thresholdVH?: number;
+    targetId?: string; // anchor to scroll to
+    thresholdVH?: number; // show after this % of viewport
     label?: string;
     ariaLabel?: string;
   }>(),
@@ -31,31 +33,24 @@ const props = withDefaults(
   },
 );
 
-const show = ref(false);
+// Reactive scroll/viewport
+const { y } = useWindowScroll();
+const { height } = useWindowSize();
 
-const evaluate = () => {
-  show.value = window.scrollY > window.innerHeight * props.thresholdVH;
-};
+// Show control after threshold
+const show = computed(() => y.value > height.value * props.thresholdVH);
 
+// Smooth scroll to anchor or page top
 const scrollTop = () => {
   const el = document.getElementById(props.targetId);
-  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-  else window.scrollTo({ top: 0, behavior: "smooth" });
+  el
+    ? el.scrollIntoView({ behavior: "smooth", block: "start" })
+    : window.scrollTo({ top: 0, behavior: "smooth" });
 };
-
-onMounted(() => {
-  evaluate();
-  window.addEventListener("scroll", evaluate, { passive: true });
-  window.addEventListener("resize", evaluate);
-});
-onBeforeUnmount(() => {
-  window.removeEventListener("scroll", evaluate);
-  window.removeEventListener("resize", evaluate);
-});
 </script>
 
 <style scoped lang="scss">
-.toc-back {
+.toc-top {
   display: flex;
   z-index: 1;
   justify-content: center;

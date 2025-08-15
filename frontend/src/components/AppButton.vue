@@ -7,19 +7,14 @@
     :type="type"
     @click="copy ? copyToClipboard(text) : click"
   >
-    <!-- icon on the LEFT when requested -->
     <AppIcon v-if="icon && iconPosition === 'left'" :icon="icon" class="icon" />
-
-    <!-- label -->
     <span v-if="text" class="truncate">{{ text }}</span>
-
     <!-- icon on the RIGHT (default) -->
     <AppIcon
       v-if="icon && iconPosition === 'right'"
       :icon="icon"
       class="icon"
     />
-
     <!-- optional info icon -->
     <AppIcon
       v-if="info"
