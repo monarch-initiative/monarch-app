@@ -1,7 +1,3 @@
-<!--
-  node page associations section, table mode. all associations.
--->
-
 <template>
   <!-- status -->
   <AppStatus
@@ -483,6 +479,20 @@ const cols = computed((): Cols<Datum> => {
       sortable: true,
     });
   }
+  // --- RENAME HEADERS FOR G2P  ---
+
+  if (
+    props.node.category === "biolink:Disease" &&
+    props.category.id === "biolink:GeneToPhenotypicFeatureAssociation"
+  ) {
+    const iSub = baseCols.findIndex((c) => c.key === "subject_label");
+    if (iSub > -1)
+      baseCols[iSub] = { ...baseCols[iSub], heading: "Causal Genes" };
+
+    const iObj = baseCols.findIndex((c) => c.key === "object_label");
+    if (iObj > -1)
+      baseCols[iObj] = { ...baseCols[iObj], heading: "Causal Gene Phenotypes" };
+  }
 
   /** put divider to separate base cols from extra cols */
   if (extraCols[0]) extraCols.unshift({ slot: "divider" });
@@ -657,7 +667,6 @@ const toLabel = (v: unknown) =>
 const resourceFullName = (label?: string) =>
   RESOURCE_NAME_MAP[(label ?? "").toUpperCase()] ?? label ?? "";
 
-console.log("resourceFullName", resourceFullName("AGRKB"));
 const sourceNames = (val?: string | string[]) => {
   const list = Array.isArray(val) ? val : val ? [val] : [];
   const seen = new Set<string>();
