@@ -11,6 +11,10 @@ export default mergeConfig(
       environment: "jsdom",
       include: ["./unit/**/*.test.ts"],
       root: fileURLToPath(new URL("./", import.meta.url)),
+      globals: true,
+      env: {
+        NODE_ENV: 'test'
+      }
     },
   }),
 );
