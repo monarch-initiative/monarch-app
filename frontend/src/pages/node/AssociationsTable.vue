@@ -105,16 +105,10 @@
       </div>
     </template>
     <template #primary_knowledge_source="{ row }">
-      {{
-        (Array.isArray(row.primary_knowledge_source)
-          ? row.primary_knowledge_source
-          : row.primary_knowledge_source
-            ? [row.primary_knowledge_source]
-            : []
-        )
-          .map((s) => (String(s).split(":").pop() || "").toUpperCase())
-          .join(", ")
-      }}
+      <span v-if="sourceNames(row.primary_knowledge_source).length">
+        {{ sourceNames(row.primary_knowledge_source).join(", ") }}
+      </span>
+      <span v-else class="empty">No info</span>
     </template>
 
     <template #disease="{ row }">
@@ -222,6 +216,7 @@ import type { Cols, Sort } from "@/components/AppTable.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
 import TableControls from "@/components/TheTableContols.vue";
 import { useQuery } from "@/composables/use-query";
+import { RESOURCE_NAME_MAP } from "@/config/resourceNames";
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
 import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
 import { fieldFor, TYPE_CONFIG } from "@/util/typeConfig";
@@ -656,6 +651,26 @@ const inferredSubclassLabel = computed<string>(() => {
   return typeof label === "string" ? label : "";
 });
 
+const toLabel = (v: unknown) =>
+  (String(v).split(":").pop() || "").toUpperCase();
+
+const resourceFullName = (label?: string) =>
+  RESOURCE_NAME_MAP[(label ?? "").toUpperCase()] ?? label ?? "";
+
+console.log("resourceFullName", resourceFullName("AGRKB"));
+const sourceNames = (val?: string | string[]) => {
+  const list = Array.isArray(val) ? val : val ? [val] : [];
+  const seen = new Set<string>();
+  return list
+    .map(toLabel) // e.g., "infores:uniprot" -> "UNIPROT"
+    .map(resourceFullName) // -> "Universal Protein Resource"
+    .filter((n) => {
+      if (!n || seen.has(n)) return false;
+      seen.add(n);
+      return true;
+    });
+};
+
 watch(
   () => props.search,
   async (newSearch, oldSearch) => {
@@ -698,8 +713,6 @@ watch(
     if (direct !== prevDirect || all !== prevAll) {
       emit("totals", { direct, all });
     }
-
-    console.log("ASSPCIATION", allData.value);
   },
   { immediate: true },
 );
