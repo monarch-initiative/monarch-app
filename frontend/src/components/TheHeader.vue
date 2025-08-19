@@ -106,7 +106,7 @@ const expanded = ref(false);
 const header = ref<HTMLElement>();
 
 /** is home page (big) version */
-const home = computed(() => route.matched.at(-1)?.path === "/");
+const home = computed((): boolean => route.name === "Home");
 
 /** whether to show search box */
 const search = computed(
@@ -122,27 +122,9 @@ const search = computed(
 function close() {
   expanded.value = false;
 }
-// TEMP debug (remove later)
-const dbg = (...a: any[]) => {
-  if (new URLSearchParams(location.search).has("debug")) console.log(...a);
-};
-watch(
-  () => route.fullPath,
-  () => {
-    dbg("[Header]", {
-      fullPath: route.fullPath,
-      home: home.value,
-      matched: route.matched.map((r) => ({
-        name: r.name,
-        path: r.path,
-        isHome: r.meta?.isHome,
-      })),
-    });
-  },
-);
+
 /** close nav when page changes */
 watch(() => route.name, close);
-watch(() => route.fullPath, close);
 </script>
 
 <style lang="scss" scoped>

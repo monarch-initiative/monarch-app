@@ -141,10 +141,7 @@ const expanded = ref(false);
 const header = ref<HTMLElement>();
 
 /** is home page (big) version */
-const home = computed(() => {
-  const last = route.matched[route.matched.length - 1];
-  return route.path === "/";
-});
+const home = computed(() => route.path === "/");
 
 const { latestReleaseDate, fetchReleaseDate, isLoading } =
   useLatestKGReleaseDate();
