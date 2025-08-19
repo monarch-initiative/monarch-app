@@ -122,7 +122,24 @@ const search = computed(
 function close() {
   expanded.value = false;
 }
-
+// TEMP debug (remove later)
+const dbg = (...a: any[]) => {
+  if (new URLSearchParams(location.search).has("debug")) console.log(...a);
+};
+watch(
+  () => route.fullPath,
+  () => {
+    dbg("[Header]", {
+      fullPath: route.fullPath,
+      home: home.value,
+      matched: route.matched.map((r) => ({
+        name: r.name,
+        path: r.path,
+        isHome: r.meta?.isHome,
+      })),
+    });
+  },
+);
 /** close nav when page changes */
 watch(() => route.name, close);
 watch(() => route.fullPath, close);
