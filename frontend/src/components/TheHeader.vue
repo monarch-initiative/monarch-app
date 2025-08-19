@@ -106,7 +106,7 @@ const expanded = ref(false);
 const header = ref<HTMLElement>();
 
 /** is home page (big) version */
-const home = computed((): boolean => route.name === "Home");
+const home = computed(() => route.path === "/");
 
 /** whether to show search box */
 const search = computed(
@@ -125,6 +125,7 @@ function close() {
 
 /** close nav when page changes */
 watch(() => route.name, close);
+watch(() => route.fullPath, close);
 </script>
 
 <style lang="scss" scoped>
