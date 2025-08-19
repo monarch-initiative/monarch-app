@@ -13,7 +13,7 @@
       aria-label="Page table of contents"
       @click.stop
     >
-      <!-- entries -->
+      <!-- entries --->
       <AppLink
         v-for="(entry, index) in entries"
         :key="index"
