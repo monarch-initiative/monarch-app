@@ -95,7 +95,6 @@
           :category="category"
           :direct="getDirectProps(category.id)"
           :search="debouncedSearchValues[category.id]"
-          @update:diseaseSubjectLabel="onDiseaseSubjectLabel"
           @totals="(p) => onTotals({ categoryId: String(category.id), ...p })"
           @inferred-label="onInferredLabel"
         />
@@ -131,7 +130,6 @@ type TotalsMap = Record<string, Totals>;
 const totalsByCategory = ref<TotalsMap>({});
 
 const { category: nodeCategory } = props.node;
-const diseaseSubject = ref("");
 
 const selectedTabs = ref<Record<string, "all" | "direct">>({});
 const searchValues = ref<Record<string, string>>({});
@@ -152,9 +150,6 @@ const onTotals = ({
 };
 
 const isDiseaseNode = computed(() => nodeCategory === "biolink:Disease");
-const onDiseaseSubjectLabel = (label: string) => {
-  diseaseSubject.value = label;
-};
 
 const directFor = (id: string) => totalsByCategory.value[id]?.direct ?? 0;
 const allFor = (id: string) => totalsByCategory.value[id]?.all ?? 0;
