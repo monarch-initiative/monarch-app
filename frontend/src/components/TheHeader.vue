@@ -106,7 +106,7 @@ const expanded = ref(false);
 const header = ref<HTMLElement>();
 
 /** is home page (big) version */
-const home = computed(() => route.path === "/");
+const home = computed(() => route.matched.at(-1)?.path === "/");
 
 /** whether to show search box */
 const search = computed(
