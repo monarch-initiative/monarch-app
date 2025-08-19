@@ -13,7 +13,7 @@
       aria-label="Page table of contents"
       @click.stop
     >
-      <AppBackToTopButton />
+      <!-- <AppBackToTopButton /> -->
       <!-- entries -->
       <AppLink
         v-for="(entry, index) in entries"
