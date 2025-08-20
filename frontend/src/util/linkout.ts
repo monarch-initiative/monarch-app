@@ -1,66 +1,49 @@
 export type BrandKey = "gard" | "omim" | "orphanet" | "medgen" | "nord";
 
-// Very-near but NOT exact colors + safe font stacks (no brand fonts)
 export const BRAND_STYLES: Record<
   BrandKey,
   {
     label: string;
     bg: string;
     fg: string;
+    hover: string;
     border: string;
-    font: string;
-    transform?: "uppercase" | "capitalize";
-    letterSpacing?: string;
-    weight?: number;
   }
 > = {
   gard: {
     label: "GARD",
-    bg: "#5C4377",
+    bg: "#7D6992",
     fg: "#FFFFFF",
-    border: "#49355F",
-    font: "system-ui, Segoe UI, Roboto, Arial, sans-serif",
-    transform: "uppercase",
-    letterSpacing: "0.06em",
-    weight: 800,
+    hover: "#6C5685",
+    border: "#402F53",
   },
   omim: {
     label: "OMIM",
-    bg: "#e75b2a",
-    fg: "#ffffff",
-    border: "#cc8a00",
-    font: "system-ui, Segoe UI, Roboto, Arial, sans-serif",
-    transform: "uppercase",
-    letterSpacing: "0.04em",
-    weight: 700,
+    bg: "#EC7C55",
+    fg: "#FFFFFF",
+    hover: "#E96B3F",
+    border: "#A2401D",
   },
   orphanet: {
     label: "Orphanet",
-    bg: "#0072BB",
-    fg: "#ffffff",
-    border: "#004F84",
-    font: "system-ui, Segoe UI, Roboto, Arial, sans-serif",
-    transform: "capitalize",
-    letterSpacing: "0.02em",
-    weight: 700,
+    bg: "#338EC9",
+    fg: "#FFFFFF",
+    hover: "#1980C2",
+    border: "#005083",
   },
   medgen: {
     label: "MedGen",
-    bg: "#0B3D91",
+    bg: "#3C64A7",
     fg: "#FFFFFF",
-    border: "#082E6B",
-    font: "system-ui, Segoe UI, Roboto, Arial, sans-serif",
-    weight: 700,
+    hover: "#23509C",
+    border: "#082B66",
   },
   nord: {
     label: "NORD",
-    bg: "#F26F21", // banner orange
-    fg: "#FFFFFF", // white text
-    border: "#D94F1C", // slightly darker orange
-    font: "system-ui, Segoe UI, Roboto, Arial, sans-serif",
-    transform: "uppercase",
-    letterSpacing: "0.06em",
-    weight: 900,
+    bg: "#F58C4D",
+    fg: "#FFFFFF",
+    hover: "#F37D37",
+    border: "#A94E17",
   },
 };
 

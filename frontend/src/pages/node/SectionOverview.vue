@@ -49,15 +49,11 @@
       <!--Temperory condition for diesease node-->
       <AppDetails v-if="isDiseaseNode" gap="20px">
         <SectionClinicalReources
-          :clinical-synopsis="clinicalSynopsis"
-          :info-for-patients="infoForPatients"
           :node-inheritance="node.inheritance"
-          :casual-genes="node.causal_gene"
+          :causal-genes="node.causal_gene"
           :frequency-label="frequencyLabel"
           :node="node"
         />
-        <!--other mappings-->
-
         <AppDetail
           :blank="!otherMappings.length"
           title="Equivalent disease concepts in other termiologies"

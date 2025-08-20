@@ -86,16 +86,13 @@ const { clinicalResources } = useClinicalResources(props.node);
 
 const chipStyle = (res: ClinicalResource) => {
   const k = brandFromId(res.id);
-  const s = k ? BRAND_STYLES[k] : null;
+  const s = k ? BRAND_STYLES[k] : undefined;
   return {
     "--brand-bg": s?.bg ?? "#666",
-    "--brand-fg": s?.fg ?? "#FFFFFF", // ← text color from brand map
+    "--brand-hover": s?.hover ?? s?.bg ?? "#666",
+    "--brand-fg": s?.fg ?? "#fff",
     "--brand-border": s?.border ?? "#444",
-    fontFamily: s?.font ?? "system-ui, Segoe UI, Roboto, Arial, sans-serif", // ← font from brand map
-    textTransform: s?.transform ?? "none",
-    letterSpacing: s?.letterSpacing ?? "0.01em",
-    fontWeight: s?.weight ?? 700,
-  } as Record<string, string | number>;
+  } as Record<string, string>;
 };
 
 const brandText = (id: string, fallback?: string) => {
@@ -121,39 +118,27 @@ const brandText = (id: string, fallback?: string) => {
 }
 
 .brand-chip {
-  /* base color comes from chipStyle → --brand-bg */
-  --bg-base: var(--brand-bg);
-
-  /* default = slightly lighter than brand; hover = a bit closer to brand */
-  --bg-lite: color-mix(in srgb, var(--bg-base) 80%, white); /* 20% white */
-  --bg-hover: color-mix(in srgb, var(--bg-base) 90%, white); /* 10% white */
-  --bd-col: color-mix(in srgb, var(--bg-base) 70%, black);
-
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-width: 4.5rem;
-  min-height: 1.25rem;
   padding: 0.6rem 1rem;
+  gap: 0.15em;
   border-radius: 12px;
-  background: var(--bg-lite);
+  background: var(--brand-bg);
   box-shadow: 0 16px 38px rgba(16, 24, 40, 0.12);
   color: var(--brand-fg);
-
-  font-size: 1rem;
+  font-weight: 700;
   text-decoration: none;
   transition:
     background-color 120ms ease,
-    border-color 120ms ease,
     transform 120ms ease,
     box-shadow 120ms ease;
 }
-
 .brand-chip:hover,
 .brand-chip:focus {
   transform: translateY(-1px);
-  border-color: color-mix(in srgb, var(--bg-base) 80%, black);
-  background: var(--bg-hover);
+  background: var(--brand-hover);
   box-shadow: 0 6px 18px rgba(16, 24, 40, 0.12);
 }
 
@@ -167,23 +152,9 @@ const brandText = (id: string, fallback?: string) => {
   background-color: #f7fbfe;
 }
 
-.sub-items {
-  display: flex;
-  flex-direction: column;
-  padding-left: 1em;
-  gap: 0.5em;
-}
-
-.brand-chip {
-  flex-direction: column; /* stack text + id vertically */
-}
-
 .brand-id {
-  margin-top: 0.15rem;
   font-size: 0.7rem;
   line-height: 1;
   opacity: 0.75;
 }
-
-/* removed .brand-id entirely */
 </style>
