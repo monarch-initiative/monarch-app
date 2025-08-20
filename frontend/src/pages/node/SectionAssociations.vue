@@ -38,7 +38,8 @@
       <div class="actions-row">
         <AppButton
           v-if="
-            (selectedTabs[category.id] === 'direct' &&
+            (hasTotals(category.id) &&
+              activeTabIsDirect(category.id) &&
               node.category === 'biolink:Disease' &&
               category?.id.startsWith('biolink:DiseaseToPheno') &&
               (node.has_phenotype_count ?? 0) > 0) ||
@@ -137,6 +138,9 @@ const diffFor = (id: string) => {
   const diff = allFor(id) - directFor(id);
   return Number.isFinite(diff) ? Math.max(0, diff) : 0;
 };
+const hasTotals = (id: string) => totalsByCategory.value[id] !== undefined;
+const activeTabIsDirect = (id: string) =>
+  (selectedTabs.value[id] ?? defaultTab(id)) === "direct";
 
 const onInferredLabel = ({
   categoryId,
