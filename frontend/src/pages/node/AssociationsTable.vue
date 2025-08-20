@@ -164,11 +164,6 @@
       />
       <span v-else class="empty">No info</span>
     </template>
-    <!-- phenotype specific -->
-    <!-- no template needed because info just plain text -->
-
-    <!-- publication specific -->
-    <!-- no template needed because info just plain text -->
   </AppTable>
 
   <TableControls
@@ -299,7 +294,7 @@ const dynamicMinHeight = computed(() => {
 /** table columns */
 const cols = computed((): Cols<Datum> => {
   if (props.category.id.includes("GeneToGeneHomology")) {
-    return orthologColoumns.value; // (or rename to orthologColumns)
+    return orthologColoumns.value;
   }
 
   return buildAssociationCols({
@@ -310,8 +305,6 @@ const cols = computed((): Cols<Datum> => {
     getCategoryLabel,
   });
 });
-
-/** get table association data */
 
 // 1) query direct‐only once:
 const {

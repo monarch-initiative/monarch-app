@@ -112,6 +112,7 @@ import AppButton from "@/components/AppButton.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import type { Options } from "@/components/AppSelectSingle.vue";
 import AppTextbox from "@/components/AppTextbox.vue";
+import { useAssociationCategories } from "@/composables/use-association-categories";
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
 import { sectionTitle } from "@/util/sectionTitles";
 import { tabLabel } from "@/util/tabText";
@@ -136,6 +137,9 @@ const searchValues = ref<Record<string, string>>({});
 const debouncedSearchValues = ref<Record<string, string>>({});
 const inferredByCategory = ref<Record<string, string>>({});
 
+const { options: categoryOptions } = useAssociationCategories(props.node);
+
+console.log("categoryOptions", categoryOptions);
 // parent <script setup>
 const onTotals = ({
   categoryId,
@@ -169,38 +173,6 @@ const onInferredLabel = ({
   inferredByCategory.value[categoryId] = label;
 };
 
-const HIDDEN_CATEGORIES = new Set([
-  "biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation",
-]);
-/** list of options for dropdown */
-const categoryOptions = computed<Options>(() => {
-  const options =
-    props.node.association_counts?.map((association_count) => ({
-      id: association_count.category || "",
-      label: startCase(association_count.label),
-      count: association_count.count,
-    })) || [];
-
-  // clone so we don’t mutate the original
-  const ordered = options.filter((o) => !HIDDEN_CATEGORIES.has(o.id));
-
-  // hack: ensure CausalGene sits immediately before Gene→to-Phenotype
-  const idxCausal = ordered.findIndex(
-    (item) => item.id === "biolink:CausalGeneToDiseaseAssociation",
-  );
-  const idxGenePhen = ordered.findIndex(
-    (item) => item.id === "biolink:GeneToPhenotypicFeatureAssociation",
-  );
-
-  if (idxCausal > -1 && idxGenePhen > -1 && idxCausal > idxGenePhen) {
-    // remove and re-insert at the target position
-    const [causalEntry] = ordered.splice(idxCausal, 1);
-    ordered.splice(idxGenePhen, 0, causalEntry);
-  }
-
-  return ordered;
-});
-
 const setDirect = (categoryId: string, directId: "true" | "false") => {
   selectedTabs.value[categoryId] = directId === "true" ? "direct" : "all";
 };
@@ -223,50 +195,10 @@ const inferredTooltip = (categoryId: string): string | undefined => {
   });
 };
 
-// const setDirect = (categoryId: string, directId: "true" | "false") => {
-//   selectedTabs.value[categoryId] = directId === "true" ? "direct" : "all";
-// };
-
-// // Tooltip builders
-// const directTooltip = (categoryId: string): string | undefined => {
-//   const n = totalsByCategory.value[categoryId]?.direct ?? 0;
-//   if (typeof n === "number" && Number.isFinite(n) && n > 0) {
-//     return `${n.toLocaleString()} ${labelFor(categoryId)} directly associated with ${props.node.name}`;
-//   }
-//   return undefined;
-// };
-
-// const inferredTooltip = (categoryId: string): string | undefined => {
-//   if (directFor(categoryId) === 0) {
-//     return `${allFor(categoryId)} ${labelFor(categoryId)} associated with ${props.node.name}`;
-//   }
-//   const all = totalsByCategory.value[categoryId]?.all;
-//   const direct =
-//     totalsByCategory.value[categoryId]?.direct > 0
-//       ? totalsByCategory.value[categoryId]?.direct
-//       : "";
-//   if (typeof all === "number" && Number.isFinite(all) && all > 0) {
-//     const label = inferredByCategory.value[categoryId];
-
-//     const subclassNote = label
-//       ? `  subclasses such as ${label}`
-//       : " subclasses";
-//     return `${direct.toLocaleString()} ${labelFor(categoryId)} direcly associated with ${props.node.name} as well as ${diffFor(categoryId)} ${subclassNote}`;
-//   }
-//   return undefined;
-// };
-
 // Helper function to check if a specific category has any direct associations
 const hasDirectAssociationsForCategory = (categoryId: string): boolean => {
   return directFor(categoryId) > 0;
 };
-
-// const directAssociationCount = (categoryId: string): number => {
-//   const item = directFacetData.value.facet_counts.find(
-//     (item) => item.label === categoryId,
-//   );
-//   return item?.count ?? 0;
-// };
 
 const showAllTab = computed(() => {
   return (categoryCount: number, categoryId: string): boolean => {
@@ -288,7 +220,6 @@ function defaultTab(categoryId: string): "direct" | "all" {
   if (!isDisease) {
     return "all";
   }
-
   // disease node: no direct → all, else → direct
   return directCount > 0 ? "direct" : "all";
 }
