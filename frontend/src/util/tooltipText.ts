@@ -1,10 +1,6 @@
 import { labelFor } from "@/util/typeConfig";
 import { pluralize } from "./plural";
 
-// diff can be number | undefined
-
-// → "1 subclass", "5 subclasses", or "" when 0/undefined
-
 export type Vars = {
   node?: string;
   label?: string;
@@ -16,7 +12,6 @@ export type Vars = {
 
 type Fmt = (v: Vars) => string;
 
-// quoted example (no bold/italic)
 // quoted example (no bold/italic), also collapses whitespace
 const q = (s?: string) => (s ? `“${s.replace(/\s+/g, " ").trim()}”` : "");
 

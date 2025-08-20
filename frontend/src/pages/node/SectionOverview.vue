@@ -242,12 +242,6 @@ const infoForPatients = computed(
       ["GARD:"].some((prefix) => id.startsWith(prefix)),
     ) || [],
 );
-// const otherMappings = computed(
-//   () =>
-//     props.node.mappings?.filter(
-//       ({ id }) => !["OMIM:", "GARD:"].some((prefix) => id.startsWith(prefix)),
-//     ) || [],
-// );
 
 const frequencyLabel = computed((): "Rare" | "Common" => {
   return props.node.subsets?.includes("rare") ? "Rare" : "Common";
