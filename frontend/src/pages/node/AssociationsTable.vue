@@ -528,9 +528,6 @@ watch(
     if (label && label !== prevLabel) {
       emit("inferred-label", { categoryId: String(props.category.id), label });
     }
-    console.log("String(props.category.id)", String(props.category.id));
-    console.log("directData.value?.total", directData.value?.total);
-    console.log("allData.value?.total", allData.value?.total);
     // emit totals only when they change
     if (direct !== prevDirect || all !== prevAll) {
       emit("totals", { direct, all });
@@ -538,14 +535,6 @@ watch(
   },
   { immediate: true },
 );
-
-// watch(
-//   () => associations.value,
-//   (newAssociations, oldAssociations) => {
-//     // If the items change, we need to update the disease subject label
-//     console.log("association", newAssociations.items);
-//   },
-// );
 </script>
 
 <style lang="scss" scoped>
