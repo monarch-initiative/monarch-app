@@ -213,6 +213,10 @@ import { snackbar } from "@/components/TheSnackbar.vue";
 import TableControls from "@/components/TheTableContols.vue";
 import { useQuery } from "@/composables/use-query";
 import { RESOURCE_NAME_MAP } from "@/config/resourceNames";
+import {
+  buildAssociationCols,
+  type Datum,
+} from "@/pages/node/associationColumns";
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
 import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
 import { fieldFor, TYPE_CONFIG } from "@/util/typeConfig";
@@ -252,8 +256,6 @@ watch(showModal, (newValue) => {
     selectedAssociation.value = null;
   }
 });
-
-type Datum = keyof DirectionalAssociation;
 
 /** Orholog columns */
 const orthologColoumns = computed<Cols<Datum>>(() => {
@@ -297,207 +299,16 @@ const dynamicMinHeight = computed(() => {
 /** table columns */
 const cols = computed((): Cols<Datum> => {
   if (props.category.id.includes("GeneToGeneHomology")) {
-    return orthologColoumns.value;
+    return orthologColoumns.value; // (or rename to orthologColumns)
   }
 
-  // Utility: does this columns array already include a slot with the given name?
-  // We can’t rely on `key` for non-data (templated) columns like "taxon" or "divider",
-  // so this checks by `slot` to avoid adding duplicate slot-based columns.
-  const hasSlot = (cols: Array<{ slot?: string }>, name: string) =>
-    cols.some((c) => c.slot === name);
-
-  /** standard columns, always present */
-  let baseCols: Cols<Datum> = [
-    {
-      slot: "subject",
-      key: "subject_label",
-      heading: getCategoryLabel(
-        associations.value.items[0]?.subject_category || "Subject",
-      ),
-      sortable: true,
-    },
-    {
-      slot: "predicate",
-      key: "predicate",
-      heading: "Association",
-      sortable: true,
-    },
-    {
-      slot: "object",
-      key: "object_label",
-      heading: getCategoryLabel(
-        associations.value.items[0]?.object_category || "Object",
-      ),
-      sortable: true,
-    },
-    {
-      slot: "details",
-      key: "evidence_count",
-      heading: "Details",
-      align: "center",
-      sortable: true,
-    },
-  ];
-
-  /** extra, supplemental columns for certain association types */
-  let extraCols: Cols<Datum> = [];
-
-  /** taxon column. exists for many categories, so just add if any row has taxon. */
-  if (props.category.id.includes("Interaction")) {
-    extraCols.push({
-      slot: "taxon",
-      heading: "Taxon",
-    });
-  }
-
-  if (props.direct.id === "true" && props.node.category === "biolink:Disease") {
-    // CorrelatedGene & Desease model: keep subject_label & predicate, only drop object_label
-    if (
-      props.category.id === "biolink:CorrelatedGeneToDiseaseAssociation" ||
-      props.category.id === "biolink:GenotypeToDiseaseAssociation"
-    ) {
-      baseCols = baseCols.filter((col) => col.key !== "object_label");
-    }
-    //  All other direct‐only cases (except Gene-Phenotype): drop subject_label & predicate
-    else if (
-      props.category.id !== "biolink:GeneToPhenotypicFeatureAssociation"
-    ) {
-      baseCols = baseCols.filter(
-        (col) => col.key !== "subject_label" && col.key !== "predicate",
-      );
-    }
-  }
-
-  // --- Genotype→Disease (G2D): remove "Association", add "Taxon" on both tabs,
-  if (props.category.id === "biolink:GenotypeToDiseaseAssociation") {
-    // 1) remove the Association column
-    baseCols = baseCols.filter((c) => c.key !== "predicate");
-
-    // 2) ensure Taxon exists
-    const hasSlot = (cols: Array<{ slot?: string }>, name: string) =>
-      cols.some((c) => c.slot === name);
-    if (!hasSlot(baseCols, "taxon")) {
-      const taxonCol = {
-        slot: "taxon",
-        heading: "Taxon",
-      } as const;
-      const iSubject = baseCols.findIndex((c) => c.key === "subject_label");
-      if (iSubject > -1) baseCols.splice(iSubject, 0, taxonCol);
-      else baseCols.unshift(taxonCol);
-    }
-
-    // 3) add Source only on Direct tab
-    if (
-      props.direct.id === "true" &&
-      !baseCols.some((c) => c.key === "primary_knowledge_source")
-    ) {
-      const sourceCol = {
-        slot: "primary_knowledge_source",
-        key: "primary_knowledge_source" as Datum,
-        heading: "Source",
-        sortable: true,
-      };
-      const iDetails = baseCols.findIndex((c) => c.key === "evidence_count");
-      if (iDetails > -1) baseCols.splice(iDetails, 0, sourceCol);
-      else baseCols.push(sourceCol);
-    }
-  }
-
-  // Always drop the "Association" column for D2P and G2P
-  if (
-    props.category.id === "biolink:DiseaseToPhenotypicFeatureAssociation" ||
-    props.category.id === "biolink:GeneToPhenotypicFeatureAssociation"
-  ) {
-    baseCols = baseCols.filter((col) => col.key !== "predicate");
-  }
-
-  /* --- D2P: swap Disease (subject) and Phenotype (object) on the inferred/all tab --- */
-  if (
-    props.category.id === "biolink:DiseaseToPhenotypicFeatureAssociation" &&
-    props.direct.id === "false" // only on Inferred/All
-  ) {
-    const iSub = baseCols.findIndex((c) => c.key === "subject_label"); // Disease
-    const iObj = baseCols.findIndex((c) => c.key === "object_label"); // Phenotypic Feature
-    if (iSub > -1 && iObj > -1) {
-      // simple swap
-      const tmp = baseCols[iSub];
-      baseCols[iSub] = baseCols[iObj];
-      baseCols[iObj] = tmp;
-    }
-  }
-  // Show "Disease Context" only for G2P, only on inferred/all,
-  // and place it to the LEFT of the gene (subject) column.
-  if (
-    props.category.id === "biolink:GeneToPhenotypicFeatureAssociation" &&
-    props.direct.id === "false"
-  ) {
-    const hasAnyDiseaseContext = (associations.value.items ?? []).some(
-      (r: any) => !!r?.disease_context_qualifier,
-    );
-
-    if (hasAnyDiseaseContext) {
-      const diseaseCol = {
-        slot: "disease_context",
-        key: "disease_context_qualifier",
-        heading: "Disease Context",
-        sortable: true,
-      } as const;
-
-      // Insert right before the subject (gene) column
-      const idxSubject = baseCols.findIndex((c) => c.key === "subject_label");
-      if (idxSubject > -1) {
-        baseCols.splice(idxSubject, 0, diseaseCol);
-      } else {
-        // fallback: put it at the very start
-        baseCols.unshift(diseaseCol);
-      }
-    }
-  }
-
-  /** phenotype specific columns */
-  if (props.category.id.includes("PhenotypicFeature")) {
-    extraCols.push(
-      {
-        slot: "frequency",
-        key: "frequency_qualifier",
-        heading: "Frequency",
-        sortable: true,
-      },
-      {
-        key: "onset_qualifier_label",
-        heading: "Onset",
-        sortable: true,
-      },
-    );
-  }
-
-  //include original subject and call it Source for D2P
-  if (props.category.id.includes("DiseaseToPhenotypicFeature")) {
-    extraCols.push({
-      key: "original_subject",
-      heading: "Source",
-      sortable: true,
-    });
-  }
-  // --- RENAME HEADERS FOR G2P  ---
-
-  if (
-    props.node.category === "biolink:Disease" &&
-    props.category.id === "biolink:GeneToPhenotypicFeatureAssociation"
-  ) {
-    const iSub = baseCols.findIndex((c) => c.key === "subject_label");
-    if (iSub > -1)
-      baseCols[iSub] = { ...baseCols[iSub], heading: "Causal Genes" };
-
-    const iObj = baseCols.findIndex((c) => c.key === "object_label");
-    if (iObj > -1)
-      baseCols[iObj] = { ...baseCols[iObj], heading: "Causal Gene Phenotypes" };
-  }
-
-  /** put divider to separate base cols from extra cols */
-  if (extraCols[0]) extraCols.unshift({ slot: "divider" });
-
-  return [...baseCols, ...extraCols];
+  return buildAssociationCols({
+    categoryId: props.category.id,
+    nodeCategory: props.node.category ?? "",
+    isDirect: props.direct.id === "true",
+    items: associations.value.items as DirectionalAssociation[],
+    getCategoryLabel,
+  });
 });
 
 /** get table association data */
@@ -717,7 +528,9 @@ watch(
     if (label && label !== prevLabel) {
       emit("inferred-label", { categoryId: String(props.category.id), label });
     }
-
+    console.log("String(props.category.id)", String(props.category.id));
+    console.log("directData.value?.total", directData.value?.total);
+    console.log("allData.value?.total", allData.value?.total);
     // emit totals only when they change
     if (direct !== prevDirect || all !== prevAll) {
       emit("totals", { direct, all });
@@ -725,6 +538,14 @@ watch(
   },
   { immediate: true },
 );
+
+// watch(
+//   () => associations.value,
+//   (newAssociations, oldAssociations) => {
+//     // If the items change, we need to update the disease subject label
+//     console.log("association", newAssociations.items);
+//   },
+// );
 </script>
 
 <style lang="scss" scoped>
