@@ -15,47 +15,25 @@
       </span>
 
       <!--tabs omly if its disease node-->
-      <template v-if="isDiseaseNode">
-        <div class="association-tabs">
-          <div class="tab-item">
-            <AppButton
-              :info="true"
-              :info-tooltip="directTooltip(category.id)"
-              v-if="hasDirectAssociationsForCategory(category.id)"
-              :class="[
-                'tab-button',
-                {
-                  active:
-                    (selectedTabs[category.id] ?? defaultTab(category.id)) ===
-                    'direct',
-                },
-              ]"
-              :disabled="!hasDirectAssociationsForCategory(category.id)"
-              :text="tabLabel(category.id, 'direct')"
-              color="none"
-              @click="setDirect(category.id, 'true')"
-            />
-          </div>
-          <div class="tab-item">
-            <AppButton
-              :info="true"
-              :info-tooltip="inferredTooltip(category.id)"
-              v-if="showAllTab(category.count ?? 0, category.id)"
-              :class="[
-                'tab-button',
-                {
-                  active:
-                    (selectedTabs[category.id] ?? defaultTab(category.id)) ===
-                    'all',
-                },
-              ]"
-              :text="tabLabel(category.id, 'inferred')"
-              color="none"
-              @click="setDirect(category.id, 'false')"
-            />
-          </div>
-        </div>
-      </template>
+      <AppAssociationTabs
+        v-if="isDiseaseNode"
+        :has-direct-associations="hasDirectAssociationsForCategory(category.id)"
+        :show-all-tab="showAllTab(category.count ?? 0, category.id)"
+        :direct-active="
+          (selectedTabs[category.id] ?? defaultTab(category.id)) === 'direct'
+        "
+        :all-active="
+          (selectedTabs[category.id] ?? defaultTab(category.id)) === 'all'
+        "
+        :direct-label="tabLabel(category.id, 'direct')"
+        :inferred-label="tabLabel(category.id, 'inferred')"
+        :direct-tooltip="directTooltip(category.id)"
+        :inferred-tooltip="inferredTooltip(category.id)"
+        @select="
+          (which: string) =>
+            setDirect(category.id, which === 'direct' ? 'true' : 'false')
+        "
+      />
 
       <div class="actions-row">
         <AppButton
@@ -100,17 +78,15 @@
         />
       </template>
     </AppSection>
-    <!-- details viewer of association -->
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { startCase } from "lodash";
 import type { Node } from "@/api/model";
+import AppAssociationTabs from "@/components/AppAssociationTabs.vue";
 import AppButton from "@/components/AppButton.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
-import type { Options } from "@/components/AppSelectSingle.vue";
 import AppTextbox from "@/components/AppTextbox.vue";
 import { useAssociationCategories } from "@/composables/use-association-categories";
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
@@ -139,7 +115,6 @@ const inferredByCategory = ref<Record<string, string>>({});
 
 const { options: categoryOptions } = useAssociationCategories(props.node);
 
-console.log("categoryOptions", categoryOptions);
 // parent <script setup>
 const onTotals = ({
   categoryId,
@@ -267,40 +242,6 @@ const getDirectProps = (categoryId: string) => {
 .rightColumn {
   min-width: 20em;
 }
-.association-tabs {
-  display: flex;
-  gap: 0.25em;
-
-  .tab-button {
-    z-index: 0;
-    position: relative;
-    min-width: 22em;
-    padding: 0.8rem 1.5rem;
-    border: none;
-    border-radius: 8px 8px 0 0;
-    background-color: $light-gray;
-    &.active {
-      z-index: 1;
-      background-color: $theme;
-      box-shadow: 0 3px 0 0 $theme;
-      color: white;
-    }
-  }
-  :deep(.tab-button) {
-    border: none;
-    outline: none;
-    box-shadow: none;
-
-    &:focus {
-      outline: none;
-      box-shadow: none;
-    }
-    &:hover {
-      outline: none;
-      box-shadow: none;
-    }
-  }
-}
 
 .actions-row {
   display: flex;
@@ -315,20 +256,5 @@ const getDirectProps = (categoryId: string) => {
 .search-wrapper {
   flex: 1 1 auto;
   max-width: 500px;
-}
-
-.tab-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.tab-count {
-  max-width: 26em;
-  color: #888; /* muted grey */
-  font-size: 0.875rem;
-  white-space: normal;
-  word-break: break-word;
 }
 </style>
