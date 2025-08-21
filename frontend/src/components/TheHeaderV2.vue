@@ -47,7 +47,7 @@
         <div class="hero-search-wrapper">
           <TabSearch :minimal="true" :header-box="true" :home="home" />
           <TheSearchTerms />
-          <TheSearchSuggestions @select="handleSuggestionClick" />
+          <TheSearchSuggestions />
           <TheHeroTools />
         </div>
         <div v-if="formattedReleaseDate" class="release-date">
@@ -123,7 +123,6 @@ import TabSearch from "@/components/TabSearch.vue";
 import TheSearchTerms from "@/components/TheSearchTerms.vue";
 import { useLatestKGReleaseDate } from "@/composables/use-kg-release-date";
 import navigationMenus from "@/data/navigationMenu.json";
-import { ENTITY_MAP } from "@/data/toolEntityConfig";
 import { formatReleaseDate } from "@/util/formatDate";
 import DropdownButton from "./TheDropdownButton.vue";
 import TheHeroTools from "./TheHeroTools.vue";
@@ -170,18 +169,6 @@ function scrollToHashWithOffset(hash: string, offset = 80) {
     window.scrollTo({ top: y, behavior: "smooth" });
   }
 }
-
-const handleSuggestionClick = async (term: string) => {
-  const entity = ENTITY_MAP[term];
-  if (entity?.id) {
-    await router.push({ path: "/" + entity.id, hash: "#" + entity.to });
-
-    await nextTick();
-    setTimeout(() => {
-      scrollToHashWithOffset(`#${entity.to}`, 80);
-    }, 1000);
-  }
-};
 
 /** close nav */
 function close() {
