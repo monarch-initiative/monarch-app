@@ -27,6 +27,8 @@ const DIRECT: Record<string, Fmt> = {
     `${(n ?? 0).toLocaleString()} correlated genes for ${node}`,
   "biolink:GenotypeToDiseaseAssociation": ({ n, node }) =>
     `${(n ?? 0).toLocaleString()} genotypes that model ${node}`,
+  "biolink:VariantToDiseaseAssociation": ({ n, node }) =>
+    `${(n ?? 0).toLocaleString()} directly associated variants for ${node}`,
 };
 
 // default direct template (fallback)
@@ -81,6 +83,10 @@ const INFERRED: Record<string, Fmt> = {
     (n ?? 0) > 0
       ? `${(n ?? 0).toLocaleString()} disease models that are assciated with ${node} as well as ${pluralize(diff, "subclass", "subclasses")} such as ${example ? ` ${q(example)}` : ""}`
       : `${(all ?? 0).toLocaleString()} disease models that are assciated with ${node}`,
+  "biolink:VariantToDiseaseAssociation": ({ all, n, diff, node, example }) =>
+    (n ?? 0) > 0
+      ? `${(n ?? 0).toLocaleString()} variants that are assciated with ${node} as well as ${pluralize(diff, "subclass", "subclasses")} such as ${example ? ` ${q(example)}` : ""}`
+      : `${(all ?? 0).toLocaleString()} variants that are assciated with ${node}`,
 };
 
 // default inferred template (fallback)

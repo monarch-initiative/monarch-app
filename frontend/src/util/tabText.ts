@@ -26,6 +26,10 @@ const OVERRIDES: Record<string, Entry> = {
     direct: () => "Directly associated disease models",
     inferred: () => "Inferred associated disease models",
   },
+  "biolink:VariantToDiseaseAssociation": {
+    direct: () => "Directly Associated Disease Variants",
+    inferred: () => "Inferred Associated Disease Variants",
+  },
 };
 
 const DEFAULTS: Entry = {

@@ -32,7 +32,7 @@ export const RESOURCE_NAME_MAP: Record<string, string> = {
   SYNGO: "SynGO (Synaptic Gene Ontology)",
   HPA: "Human Protein Atlas",
   GOC: "Gene Ontology Consortium",
-  CLINVAR: "ClinVar (Clinical Variants Resource)",
+  CLINVAR: "Clinical Variants Resource(ClinVar)",
   DICTYBASE: "dictyBase (Dictyostelium Model Organism Database)",
   WBBT: "WormBase Anatomy Ontology (WBbt)",
   MP: "Mammalian Phenotype Ontology",
