@@ -54,12 +54,7 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
       sortable: true,
     },
   ];
-
-  if (isDirect && categoryId === "biolink:CausalGeneToDiseaseAssociation") {
-    baseCols = baseCols.filter(
-      (col) => col.key !== "object_label" && col.key !== "predicate",
-    );
-  }
+  const isDisease = nodeCategory === "biolink:Disease";
 
   const extraCols: Cols<Datum> = [];
 
@@ -81,92 +76,94 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
   if (categoryId.includes("Interaction")) {
     extraCols.push({ slot: "taxon", heading: "Taxon" } as any);
   }
-
-  // Direct tab for Disease node: hide “object” or “subject+predicate” depending on category
-  if (isDirect && nodeCategory === "biolink:Disease") {
-    if (
-      categoryId === "biolink:CorrelatedGeneToDiseaseAssociation" ||
-      categoryId === "biolink:GenotypeToDiseaseAssociation"
-    ) {
-      baseCols = baseCols.filter((col) => col.key !== "object_label");
-    } else if (
-      categoryId !== "biolink:GeneToPhenotypicFeatureAssociation" &&
-      categoryId !== "biolink:CausalGeneToDiseaseAssociation"
-    ) {
+  if (isDisease) {
+    // Causal Gene to Disease: gene only on Direct
+    if (isDirect && categoryId === "biolink:CausalGeneToDiseaseAssociation") {
       baseCols = baseCols.filter(
-        (col) => col.key !== "subject_label" && col.key !== "predicate",
+        (col) => col.key !== "object_label" && col.key !== "predicate",
       );
     }
-  }
 
-  // Genotype→Disease tweaks: drop "Association"; add "Taxon"; add "Source" on Direct
-  if (
-    categoryId === "biolink:GenotypeToDiseaseAssociation" &&
-    nodeCategory === "biolink:Disease"
-  ) {
-    baseCols = baseCols.filter((c) => c.key !== "predicate"); // remove "Association"
-    ensureTaxonColumn();
+    // Direct tab for Disease node: hide “object” or “subject+predicate” depending on category
+    if (isDirect) {
+      if (
+        categoryId === "biolink:CorrelatedGeneToDiseaseAssociation" ||
+        categoryId === "biolink:GenotypeToDiseaseAssociation"
+      ) {
+        baseCols = baseCols.filter((col) => col.key !== "object_label");
+      } else if (
+        categoryId !== "biolink:GeneToPhenotypicFeatureAssociation" &&
+        categoryId !== "biolink:CausalGeneToDiseaseAssociation"
+      ) {
+        baseCols = baseCols.filter(
+          (col) => col.key !== "subject_label" && col.key !== "predicate",
+        );
+      }
+    }
 
+    // Genotype→Disease tweaks: drop "Association"; add "Taxon"; add "Source" on Direct
+    if (categoryId === "biolink:GenotypeToDiseaseAssociation") {
+      baseCols = baseCols.filter((c) => c.key !== "predicate"); // remove "Association"
+      ensureTaxonColumn();
+
+      if (
+        isDirect &&
+        !baseCols.some((c) => c.key === "primary_knowledge_source")
+      ) {
+        const sourceCol = {
+          slot: "primary_knowledge_source",
+          key: "primary_knowledge_source" as Datum,
+          heading: "Source",
+          sortable: true,
+        };
+        const iDetails = baseCols.findIndex((c) => c.key === "evidence_count");
+        if (iDetails > -1) baseCols.splice(iDetails, 0, sourceCol);
+        else baseCols.push(sourceCol);
+      }
+    }
+
+    // Always drop "Association" for D2P and G2P
     if (
-      isDirect &&
-      !baseCols.some((c) => c.key === "primary_knowledge_source")
+      categoryId === "biolink:DiseaseToPhenotypicFeatureAssociation" ||
+      categoryId === "biolink:GeneToPhenotypicFeatureAssociation"
     ) {
-      const sourceCol = {
-        slot: "primary_knowledge_source",
-        key: "primary_knowledge_source" as Datum,
-        heading: "Source",
-        sortable: true,
-      };
-      const iDetails = baseCols.findIndex((c) => c.key === "evidence_count");
-      if (iDetails > -1) baseCols.splice(iDetails, 0, sourceCol);
-      else baseCols.push(sourceCol);
+      baseCols = baseCols.filter((col) => col.key !== "predicate");
     }
-  }
 
-  // Always drop "Association" for D2P and G2P
-  if (
-    (categoryId === "biolink:DiseaseToPhenotypicFeatureAssociation" ||
-      categoryId === "biolink:GeneToPhenotypicFeatureAssociation") &&
-    nodeCategory === "biolink:Disease"
-  ) {
-    baseCols = baseCols.filter((col) => col.key !== "predicate");
-  }
-
-  // D2P on All tab: swap Disease(subject) and Phenotype(object)
-  if (
-    categoryId === "biolink:DiseaseToPhenotypicFeatureAssociation" &&
-    !isDirect &&
-    nodeCategory === "biolink:Disease"
-  ) {
-    const iSub = baseCols.findIndex((c) => c.key === "subject_label");
-    const iObj = baseCols.findIndex((c) => c.key === "object_label");
-    if (iSub > -1 && iObj > -1) {
-      const tmp = baseCols[iSub];
-      baseCols[iSub] = baseCols[iObj];
-      baseCols[iObj] = tmp;
+    // D2P on All tab: swap Disease(subject) and Phenotype(object)
+    if (
+      categoryId === "biolink:DiseaseToPhenotypicFeatureAssociation" &&
+      !isDirect
+    ) {
+      const iSub = baseCols.findIndex((c) => c.key === "subject_label");
+      const iObj = baseCols.findIndex((c) => c.key === "object_label");
+      if (iSub > -1 && iObj > -1) {
+        const tmp = baseCols[iSub];
+        baseCols[iSub] = baseCols[iObj];
+        baseCols[iObj] = tmp;
+      }
     }
-  }
 
-  // G2P on All tab: show "Disease Context" (left of subject) if any row has it
-  if (
-    categoryId === "biolink:GeneToPhenotypicFeatureAssociation" &&
-    !isDirect &&
-    nodeCategory === "biolink:Disease"
-  ) {
-    const hasAnyDiseaseContext = (items ?? []).some(
-      (r) => !!(r as any)?.disease_context_qualifier,
-    );
-    if (hasAnyDiseaseContext) {
-      const diseaseCol = {
-        slot: "disease_context",
-        key: "disease_context_qualifier" as Datum,
-        heading: "Disease Context",
-        sortable: true,
-      } as const;
+    // G2P on All tab: show "Disease Context" (left of subject) if any row has it
+    if (
+      categoryId === "biolink:GeneToPhenotypicFeatureAssociation" &&
+      !isDirect
+    ) {
+      const hasAnyDiseaseContext = (items ?? []).some(
+        (r) => !!(r as any)?.disease_context_qualifier,
+      );
+      if (hasAnyDiseaseContext) {
+        const diseaseCol = {
+          slot: "disease_context",
+          key: "disease_context_qualifier" as Datum,
+          heading: "Disease Context",
+          sortable: true,
+        } as const;
 
-      const idxSubject = baseCols.findIndex((c) => c.key === "subject_label");
-      if (idxSubject > -1) baseCols.splice(idxSubject, 0, diseaseCol as any);
-      else baseCols.unshift(diseaseCol as any);
+        const idxSubject = baseCols.findIndex((c) => c.key === "subject_label");
+        if (idxSubject > -1) baseCols.splice(idxSubject, 0, diseaseCol as any);
+        else baseCols.unshift(diseaseCol as any);
+      }
     }
   }
 
