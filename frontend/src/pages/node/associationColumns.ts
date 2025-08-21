@@ -83,7 +83,11 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
         (col) => col.key !== "object_label" && col.key !== "predicate",
       );
     }
-
+    if (categoryId === "biolink:VariantToDiseaseAssociation") {
+      if (isDirect) {
+        baseCols = baseCols.filter((col) => col.key !== "object_label");
+      }
+    }
     // Direct tab for Disease node: hide “object” or “subject+predicate” depending on category
     if (isDirect) {
       if (
@@ -93,7 +97,8 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
         baseCols = baseCols.filter((col) => col.key !== "object_label");
       } else if (
         categoryId !== "biolink:GeneToPhenotypicFeatureAssociation" &&
-        categoryId !== "biolink:CausalGeneToDiseaseAssociation"
+        categoryId !== "biolink:CausalGeneToDiseaseAssociation" &&
+        categoryId !== "biolink:VariantToDiseaseAssociation"
       ) {
         baseCols = baseCols.filter(
           (col) => col.key !== "subject_label" && col.key !== "predicate",
