@@ -34,7 +34,6 @@
             setDirect(category.id, which === 'direct' ? 'true' : 'false')
         "
       />
-
       <div class="actions-row">
         <AppButton
           v-if="
