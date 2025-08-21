@@ -22,7 +22,7 @@ const DIRECT: Record<string, Fmt> = {
   "biolink:GeneToPhenotypicFeatureAssociation": ({ n, node }) =>
     `${(n ?? 0).toLocaleString()} genes with phenotypes that are directly associated with ${node}`,
   "biolink:CausalGeneToDiseaseAssociation": ({ n, node }) =>
-    `${(n ?? 0).toLocaleString()} causal genes for ${node}`,
+    `${(n ?? 0).toLocaleString()} ${pluralize(n, "causal gene", "causal genes")} for ${node}`,
   "biolink:CorrelatedGeneToDiseaseAssociation": ({ n, node }) =>
     `${(n ?? 0).toLocaleString()} correlated genes for ${node}`,
   "biolink:GenotypeToDiseaseAssociation": ({ n, node }) =>
