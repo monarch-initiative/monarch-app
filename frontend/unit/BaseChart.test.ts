@@ -17,8 +17,8 @@ vi.mock("echarts", () => ({
 vi.mock("@/components/AppButton.vue", () => ({
   default: {
     name: "AppButton",
-    template: "<button @click=\"$emit('click')\"><slot /></button>",
-    props: ["size", "variant"],
+    template: "<button @click=\"$emit('click')\">{{ text }}<slot /></button>",
+    props: ["text", "design", "color"],
     emits: ["click"],
   },
 }));
@@ -42,9 +42,11 @@ describe("BaseChart", () => {
   });
 
   afterEach(() => {
-    if (wrapper) {
+    if (wrapper && wrapper.vm) {
       wrapper.unmount();
     }
+    wrapper = null as any;
+    vi.clearAllMocks();
   });
 
   describe("rendering", () => {

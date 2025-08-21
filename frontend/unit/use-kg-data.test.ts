@@ -26,6 +26,7 @@ vi.mock("@/composables/use-duckdb", () => ({
 
 vi.mock("@/api/kg-version", () => ({
   getLatestKGReleaseDate: vi.fn().mockResolvedValue("2025-07-09"),
+  getKGSourceUrl: vi.fn().mockResolvedValue("https://data.monarchinitiative.org/monarch-kg/2025-07-09"),
 }));
 
 describe("useKGData", () => {
@@ -71,16 +72,19 @@ describe("useKGData", () => {
     });
 
     it("should fallback to default version on API failure", async () => {
-      const { getLatestKGReleaseDate } = await import("@/api/kg-version");
+      const { getLatestKGReleaseDate, getKGSourceUrl } = await import("@/api/kg-version");
       vi.mocked(getLatestKGReleaseDate).mockRejectedValueOnce(
+        new Error("API failed"),
+      );
+      vi.mocked(getKGSourceUrl).mockRejectedValueOnce(
         new Error("API failed"),
       );
 
       await kgData.init();
 
-      expect(kgData.kgVersion.value).toBe("2025-07-09");
+      expect(kgData.kgVersion.value).toBe("latest");
       expect(kgData.kgSourceUrl.value).toBe(
-        "https://data.monarchinitiative.org/monarch-kg/2025-07-09",
+        "https://data.monarchinitiative.org/monarch-kg-dev/latest",
       );
     });
 

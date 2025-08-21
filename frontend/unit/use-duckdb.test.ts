@@ -26,6 +26,12 @@ vi.mock("@duckdb/duckdb-wasm", () => ({
     terminate: vi.fn().mockResolvedValue(undefined),
   })),
   ConsoleLogger: vi.fn().mockImplementation(() => ({})),
+  LogLevel: {
+    DEBUG: 0,
+    INFO: 1,
+    WARNING: 2,
+    ERROR: 3,
+  },
 }));
 
 // Mock Worker
