@@ -22,6 +22,10 @@ export const TYPE_CONFIG: Record<string, TypeCfg> = {
     label: "Genotype to disease",
     side: "object",
   },
+  "biolink:VariantToDiseaseAssociation": {
+    label: "Disease Variants",
+    side: "object",
+  },
 };
 
 export const labelFor = (id: string, fallback = "phenotypes") =>

@@ -5,6 +5,7 @@ const TITLES_BY_ID: Record<string, string> = {
   "biolink:GeneToPhenotypicFeatureAssociation": "Causal Gene Phenotypes",
   "biolink:CorrelatedGeneToDiseaseAssociation": "Correlated Genes",
   "biolink:GenotypeToDiseaseAssociation": "Disease Models",
+  "biolink:VariantToDiseaseAssociation": "Disease Variants",
 };
 
 export function sectionTitle(
