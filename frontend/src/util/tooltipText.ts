@@ -15,20 +15,38 @@ type Fmt = (v: Vars) => string;
 // quoted example (no bold/italic), also collapses whitespace
 const q = (s?: string) => (s ? `“${s.replace(/\s+/g, " ").trim()}”` : "");
 
+// Keep the word only (strip any leading number that pluralize might add)
+const pluralWord = (
+  n: number | null | undefined,
+  singular: string,
+  plural: string,
+) =>
+  String(pluralize(n ?? 0, singular, plural)).replace(
+    /^\s*[+-]?\d{1,3}(?:,\d{3})*(?:\.\d+)?\s*/,
+    "",
+  );
+
+const fmtCount = (n: number | null | undefined) => (n ?? 0).toLocaleString();
+
 // ----- DIRECT (only shown when n > 0) -----
 const DIRECT: Record<string, Fmt> = {
   "biolink:DiseaseToPhenotypicFeatureAssociation": ({ n, node }) =>
-    `${(n ?? 0).toLocaleString()} phenotypes directly associated with ${node}`,
+    `${fmtCount(n)} ${pluralWord(n, "phenotype", "phenotypes")} directly associated with ${node}`,
+
   "biolink:GeneToPhenotypicFeatureAssociation": ({ n, node }) =>
-    `${(n ?? 0).toLocaleString()} genes with phenotypes that are directly associated with ${node}`,
+    `${fmtCount(n)} ${pluralWord(n, "gene with phenotypes", "genes with phenotypes")} that are directly associated with ${node}`,
+
   "biolink:CausalGeneToDiseaseAssociation": ({ n, node }) =>
-    `${(n ?? 0).toLocaleString()} ${pluralize(n, "causal gene", "causal genes")} for ${node}`,
+    `${fmtCount(n)} ${pluralWord(n, "causal gene", "causal genes")} for ${node}`,
+
   "biolink:CorrelatedGeneToDiseaseAssociation": ({ n, node }) =>
-    `${(n ?? 0).toLocaleString()} correlated genes for ${node}`,
+    `${fmtCount(n)} ${pluralWord(n, "correlated gene", "correlated genes")} for ${node}`,
+
   "biolink:GenotypeToDiseaseAssociation": ({ n, node }) =>
-    `${(n ?? 0).toLocaleString()} genotypes that model ${node}`,
+    `${fmtCount(n)} ${pluralWord(n, "genotype", "genotypes")} that model ${node}`,
+
   "biolink:VariantToDiseaseAssociation": ({ n, node }) =>
-    `${(n ?? 0).toLocaleString()} directly associated variants for ${node}`,
+    `${fmtCount(n)} ${pluralWord(n, "variant", "variants")} directly associated with ${node}`,
 };
 
 // default direct template (fallback)
@@ -47,8 +65,8 @@ const INFERRED: Record<string, Fmt> = {
     example,
   }) =>
     (n ?? 0) > 0
-      ? `${(n ?? 0).toLocaleString()} phenotypes directly associated with ${node} as well as ${pluralize(diff, "subclass", "subclasses")} ${example ? ` such as ${q(example)}` : ""}`
-      : `${(all ?? 0).toLocaleString()} phenotypes associated with ${node}`,
+      ? `${pluralize(n, "phenotype", "phenotypes")} directly associated with ${node} as well as ${pluralize(diff, "subclass", "subclasses")} ${example ? ` such as ${q(example)}` : ""}`
+      : `${fmtCount(all)} phenotypes associated with ${node}`,
   "biolink:GeneToPhenotypicFeatureAssociation": ({
     all,
     n,
@@ -57,8 +75,8 @@ const INFERRED: Record<string, Fmt> = {
     example,
   }) =>
     (n ?? 0) > 0
-      ? `Phenotypes of the ${all?.toLocaleString()} genes that cause subclasses of ${node} such as ${q(example)}`
-      : `${(all ?? 0).toLocaleString()} Genes with phenotypes associated with ${node}`,
+      ? `Phenotypes of the ${pluralize(n, "gene", "genes")} that cause subclasses of ${node} such as ${q(example)}`
+      : ` ${pluralize(all, "gene", "genes")} with phenotypes associated with ${node}`,
   "biolink:CausalGeneToDiseaseAssociation": ({
     all,
     n,
@@ -67,8 +85,8 @@ const INFERRED: Record<string, Fmt> = {
     example,
   }) =>
     (n ?? 0) > 0
-      ? `${(n ?? 0).toLocaleString()} genes for ${node} as well as  ${(diff ?? 0).toLocaleString()} such as  ${example ? ` (e.g., ${q(example)})` : ""}`
-      : `${(all ?? 0).toLocaleString()} genes that cause subtypes of ${node} such as ${q(example)}`,
+      ? ` ${pluralize(n, "gene", "genes")}for ${node} as well as  ${(diff ?? 0).toLocaleString()} such as  ${example ? ` (e.g., ${q(example)})` : ""}`
+      : `${pluralize(all, "gene", "genes")} that cause subtypes of ${node} such as ${q(example)}`,
   "biolink:CorrelatedGeneToDiseaseAssociation": ({
     all,
     n,
@@ -77,16 +95,16 @@ const INFERRED: Record<string, Fmt> = {
     example,
   }) =>
     (n ?? 0) > 0
-      ? `${(n ?? 0).toLocaleString()} correlated genes for ${node} as wells as  ${pluralize(diff, "subclass", "subclasses")} such as ${example ? ` such as ${q(example)}` : ""}`
-      : `${(all ?? 0).toLocaleString()} correlated genes associated with ${node}`,
+      ? `  ${pluralize(n, "correlated gene", "correlated genes")} for ${node} as wells as  ${pluralize(diff, "subclass", "subclasses")} such as ${example ? ` such as ${q(example)}` : ""}`
+      : ` ${pluralize(all, "correlated gene", "correlated genes")} associated with ${node}`,
   "biolink:GenotypeToDiseaseAssociation": ({ all, n, diff, node, example }) =>
     (n ?? 0) > 0
-      ? `${(n ?? 0).toLocaleString()} disease models that are assciated with ${node} as well as ${pluralize(diff, "subclass", "subclasses")} such as ${example ? ` ${q(example)}` : ""}`
-      : `${(all ?? 0).toLocaleString()} disease models that are assciated with ${node}`,
+      ? `${pluralize(n, "disease model", "disease models")} that are assciated with ${node} as well as ${pluralize(diff, "subclass", "subclasses")} such as ${example ? ` ${q(example)}` : ""}`
+      : `$ ${pluralize(all, "disease model", "disease models")} that are assciated with ${node}`,
   "biolink:VariantToDiseaseAssociation": ({ all, n, diff, node, example }) =>
     (n ?? 0) > 0
-      ? `${(n ?? 0).toLocaleString()} variants that are assciated with ${node} as well as ${pluralize(diff, "subclass", "subclasses")} such as ${example ? ` ${q(example)}` : ""}`
-      : `${(all ?? 0).toLocaleString()} variants that are assciated with ${node}`,
+      ? ` ${pluralize(n, "variant", "variants")} that are assciated with ${node} as well as ${pluralize(diff, "subclass", "subclasses")} such as ${example ? ` ${q(example)}` : ""}`
+      : ` ${pluralize(all, "variant", "variants")} that are assciated with ${node}`,
 };
 
 // default inferred template (fallback)
