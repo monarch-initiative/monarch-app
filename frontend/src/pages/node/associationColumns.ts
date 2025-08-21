@@ -55,6 +55,12 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
     },
   ];
 
+  if (isDirect && categoryId === "biolink:CausalGeneToDiseaseAssociation") {
+    baseCols = baseCols.filter(
+      (col) => col.key !== "object_label" && col.key !== "predicate",
+    );
+  }
+
   const extraCols: Cols<Datum> = [];
 
   // ---- Helpers ----
@@ -83,7 +89,10 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
       categoryId === "biolink:GenotypeToDiseaseAssociation"
     ) {
       baseCols = baseCols.filter((col) => col.key !== "object_label");
-    } else if (categoryId !== "biolink:GeneToPhenotypicFeatureAssociation") {
+    } else if (
+      categoryId !== "biolink:GeneToPhenotypicFeatureAssociation" &&
+      categoryId !== "biolink:CausalGeneToDiseaseAssociation"
+    ) {
       baseCols = baseCols.filter(
         (col) => col.key !== "subject_label" && col.key !== "predicate",
       );
@@ -91,7 +100,10 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
   }
 
   // Genotype→Disease tweaks: drop "Association"; add "Taxon"; add "Source" on Direct
-  if (categoryId === "biolink:GenotypeToDiseaseAssociation") {
+  if (
+    categoryId === "biolink:GenotypeToDiseaseAssociation" &&
+    nodeCategory === "biolink:Disease"
+  ) {
     baseCols = baseCols.filter((c) => c.key !== "predicate"); // remove "Association"
     ensureTaxonColumn();
 
@@ -113,8 +125,9 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
 
   // Always drop "Association" for D2P and G2P
   if (
-    categoryId === "biolink:DiseaseToPhenotypicFeatureAssociation" ||
-    categoryId === "biolink:GeneToPhenotypicFeatureAssociation"
+    (categoryId === "biolink:DiseaseToPhenotypicFeatureAssociation" ||
+      categoryId === "biolink:GeneToPhenotypicFeatureAssociation") &&
+    nodeCategory === "biolink:Disease"
   ) {
     baseCols = baseCols.filter((col) => col.key !== "predicate");
   }
@@ -122,7 +135,8 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
   // D2P on All tab: swap Disease(subject) and Phenotype(object)
   if (
     categoryId === "biolink:DiseaseToPhenotypicFeatureAssociation" &&
-    !isDirect
+    !isDirect &&
+    nodeCategory === "biolink:Disease"
   ) {
     const iSub = baseCols.findIndex((c) => c.key === "subject_label");
     const iObj = baseCols.findIndex((c) => c.key === "object_label");
@@ -136,7 +150,8 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
   // G2P on All tab: show "Disease Context" (left of subject) if any row has it
   if (
     categoryId === "biolink:GeneToPhenotypicFeatureAssociation" &&
-    !isDirect
+    !isDirect &&
+    nodeCategory === "biolink:Disease"
   ) {
     const hasAnyDiseaseContext = (items ?? []).some(
       (r) => !!(r as any)?.disease_context_qualifier,
