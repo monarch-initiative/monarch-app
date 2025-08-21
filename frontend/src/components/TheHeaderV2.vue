@@ -148,9 +148,7 @@ const { latestReleaseDate, fetchReleaseDate, isLoading } =
 
 // Compute formatted date string
 const formattedReleaseDate = computed(() => {
-  return latestReleaseDate.value
-    ? formatReleaseDate(latestReleaseDate.value)
-    : null;
+  return formatReleaseDate(latestReleaseDate.value);
 });
 
 /** whether to show search box */
