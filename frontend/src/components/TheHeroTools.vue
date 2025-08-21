@@ -8,7 +8,7 @@
 </template>
 
 <style scoped lang="scss">
-$wrap: 1350px;
+$wrap: 900px;
 .hero-tool-links {
   display: flex;
   flex-wrap: nowrap;
@@ -48,7 +48,7 @@ $wrap: 1350px;
   }
 }
 
-@media (max-width: 1350) {
+@media (max-width: 900) {
   hr {
     height: 1px;
     margin: 10px 0;
