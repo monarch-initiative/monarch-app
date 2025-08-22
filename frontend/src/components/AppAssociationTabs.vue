@@ -45,8 +45,10 @@ defineEmits<{
 </script>
 
 <style scoped lang="scss">
+$wrap: 900px;
 .association-tabs {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.25em;
   .tab-button {
     z-index: 0;
