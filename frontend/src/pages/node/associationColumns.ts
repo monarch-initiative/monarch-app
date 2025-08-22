@@ -82,7 +82,24 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
       baseCols = baseCols.filter(
         (col) => col.key !== "object_label" && col.key !== "predicate",
       );
+
+      if (
+        !baseCols.some((c) => c.key === ("primary_knowledge_source" as Datum))
+      ) {
+        const sourceCol = {
+          slot: "primary_knowledge_source",
+          key: "primary_knowledge_source" as Datum,
+          heading: "Source",
+          sortable: true,
+        } as const;
+        const iDetails = baseCols.findIndex(
+          (c) => c.key === ("evidence_count" as Datum),
+        );
+        if (iDetails > -1) baseCols.splice(iDetails, 0, sourceCol as any);
+        else baseCols.push(sourceCol as any);
+      }
     }
+
     if (categoryId === "biolink:VariantToDiseaseAssociation") {
       if (isDirect) {
         baseCols = baseCols.filter((col) => col.key !== "object_label");
