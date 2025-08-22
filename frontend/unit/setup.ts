@@ -79,15 +79,15 @@ export const emitted = <Event = unknown>(
 };
 
 /** mock functions that will throw error vitest environment */
-Object.defineProperty(window, 'scrollTo', {
+Object.defineProperty(window, "scrollTo", {
   value: vi.fn(() => null),
-  writable: true
+  writable: true,
 });
 
 // Mock for JSDOM virtual console to suppress scrollTo errors
 const originalConsoleError = console.error;
 console.error = (message, ...args) => {
-  if (typeof message === 'string' && message.includes('window.scrollTo')) {
+  if (typeof message === "string" && message.includes("window.scrollTo")) {
     return; // Suppress scrollTo errors
   }
   originalConsoleError(message, ...args);
@@ -100,4 +100,3 @@ afterEach(() => {
     global.gc();
   }
 });
-

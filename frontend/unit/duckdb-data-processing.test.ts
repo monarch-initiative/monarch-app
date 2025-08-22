@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 /**
- * Test the data processing logic for DuckDB query results
- * This isolates the value conversion logic to understand and fix the issue
+ * Test the data processing logic for DuckDB query results This isolates the
+ * value conversion logic to understand and fix the issue
  */
 describe("DuckDB Data Processing", () => {
   // Helper function to simulate what we're doing in use-duckdb.ts
@@ -11,32 +11,39 @@ describe("DuckDB Data Processing", () => {
     if (value instanceof Uint32Array) {
       return value[0];
     }
-    
-    if (typeof value === 'bigint') {
+
+    if (typeof value === "bigint") {
       return Number(value);
     }
-    
-    if (value instanceof Int32Array || value instanceof Float64Array || value instanceof Float32Array) {
+
+    if (
+      value instanceof Int32Array ||
+      value instanceof Float64Array ||
+      value instanceof Float32Array
+    ) {
       return value[0];
     }
 
     // Handle JSON-serialized strings
-    if (typeof value !== 'string') {
+    if (typeof value !== "string") {
       return value;
     }
 
     // Handle empty string case - don't convert to number
-    if (value === '') {
+    if (value === "") {
       return value;
     }
 
     let processedValue = value;
-    
+
     // Try multiple rounds of JSON parsing for deeply nested quotes
     try {
       // Keep parsing until we can't parse anymore or get a non-string
-      while (typeof processedValue === 'string' && 
-             (processedValue.startsWith('"') && processedValue.endsWith('"'))) {
+      while (
+        typeof processedValue === "string" &&
+        processedValue.startsWith('"') &&
+        processedValue.endsWith('"')
+      ) {
         processedValue = JSON.parse(processedValue);
       }
     } catch {
@@ -44,7 +51,7 @@ describe("DuckDB Data Processing", () => {
     }
 
     // Now try to convert to number if it looks numeric
-    if (typeof processedValue === 'string' && processedValue.trim() !== '') {
+    if (typeof processedValue === "string" && processedValue.trim() !== "") {
       const numValue = Number(processedValue);
       if (!isNaN(numValue)) {
         return numValue;
@@ -131,12 +138,12 @@ describe("DuckDB Data Processing", () => {
     it("should process typical query result", () => {
       // Simulate what DuckDB might return
       const mockDuckDBResult = [
-        { "total_nodes": '"3398"' },
-        { "human_genes": '"243"' },
-        { "total_edges": '"14040235"' }
+        { total_nodes: '"3398"' },
+        { human_genes: '"243"' },
+        { total_edges: '"14040235"' },
       ];
 
-      const processed = mockDuckDBResult.map(row => {
+      const processed = mockDuckDBResult.map((row) => {
         const processedRow: Record<string, any> = {};
         Object.entries(row).forEach(([key, value]) => {
           processedRow[key] = processValue(value);
@@ -145,23 +152,23 @@ describe("DuckDB Data Processing", () => {
       });
 
       expect(processed).toEqual([
-        { "total_nodes": 3398 },
-        { "human_genes": 243 },
-        { "total_edges": 14040235 }
+        { total_nodes: 3398 },
+        { human_genes: 243 },
+        { total_edges: 14040235 },
       ]);
     });
 
     it("should handle mixed data types", () => {
       const mockResult = [
-        { 
-          "count": '"123"',
-          "name": '"gene_name"',
-          "score": '"0.95"',
-          "category": '"biolink:Gene"'
-        }
+        {
+          count: '"123"',
+          name: '"gene_name"',
+          score: '"0.95"',
+          category: '"biolink:Gene"',
+        },
       ];
 
-      const processed = mockResult.map(row => {
+      const processed = mockResult.map((row) => {
         const processedRow: Record<string, any> = {};
         Object.entries(row).forEach(([key, value]) => {
           processedRow[key] = processValue(value);
@@ -171,11 +178,11 @@ describe("DuckDB Data Processing", () => {
 
       expect(processed).toEqual([
         {
-          "count": 123,
-          "name": "gene_name",
-          "score": 0.95,
-          "category": "biolink:Gene"
-        }
+          count: 123,
+          name: "gene_name",
+          score: 0.95,
+          category: "biolink:Gene",
+        },
       ]);
     });
   });

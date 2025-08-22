@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { useSqlQuery } from "@/composables/use-sql-query";
 
 // Mock the useKGData composable

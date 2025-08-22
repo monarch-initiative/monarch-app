@@ -1,6 +1,6 @@
+import { computed, ref } from "vue";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { mount, type VueWrapper } from "@vue/test-utils";
-import { ref, computed } from "vue";
 import KGMetricCard from "@/components/dashboard/KGMetricCard.vue";
 
 // Mock the composables and components
@@ -431,8 +431,8 @@ describe("KGMetricCard", () => {
   describe("lifecycle", () => {
     it("should execute query on mount when autoExecute is false", async () => {
       // Wait for mount to complete
-      await new Promise(resolve => setTimeout(resolve, 0));
-      
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
       wrapper = mount(KGMetricCard, {
         props: {
           title: "Manual Execute",
@@ -444,7 +444,7 @@ describe("KGMetricCard", () => {
 
       // Wait for mounted hook
       await wrapper.vm.$nextTick();
-      
+
       expect(mockExecuteQuery).toHaveBeenCalled();
     });
 

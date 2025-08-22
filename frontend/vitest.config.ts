@@ -13,8 +13,8 @@ export default mergeConfig(
       root: fileURLToPath(new URL("./", import.meta.url)),
       globals: true,
       env: {
-        NODE_ENV: 'test'
-      }
+        NODE_ENV: "test",
+      },
     },
   }),
 );
