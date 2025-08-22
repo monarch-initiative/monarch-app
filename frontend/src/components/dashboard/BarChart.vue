@@ -16,14 +16,18 @@
     <!-- The actual Bar chart will be rendered by ECharts in the BaseChart canvas -->
 
     <!-- Export Menu Overlay -->
+    <!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
     <div
       v-if="showExportMenu"
       class="export-overlay"
       role="dialog"
       aria-modal="true"
       aria-label="Export chart dialog"
+      tabindex="0"
       @click.self="showExportMenu = false"
       @keydown.escape="showExportMenu = false"
+      @keydown.enter="showExportMenu = false"
+      @keydown.space="showExportMenu = false"
     >
       <div class="export-menu">
         <div class="export-header">

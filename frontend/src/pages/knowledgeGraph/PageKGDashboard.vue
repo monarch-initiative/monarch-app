@@ -46,8 +46,6 @@
               subtitle="relationships"
               description="Number of semantic relationships between entities"
             />
-
-
           </div>
         </div>
 
@@ -60,7 +58,6 @@
               title="Genes"
               data-source="node_report"
               sql="SELECT SUM(count) as genes FROM node_report WHERE category = 'biolink:Gene'"
-                            
               description="Number of gene entities in the knowledge graph"
             />
 
@@ -68,7 +65,6 @@
               title="Diseases"
               data-source="node_report"
               sql="SELECT SUM(count) as diseases FROM node_report WHERE category = 'biolink:Disease'"
-              
               description="Total disease entities"
             />
 
@@ -76,7 +72,6 @@
               title="Phenotypes"
               data-source="node_report"
               sql="SELECT SUM(count) as phenotypes FROM node_report WHERE category = 'biolink:PhenotypicFeature'"
-              
               description="Total number of phenotype entities in the knowledge graph"
             />
           </div>
@@ -85,7 +80,7 @@
         <!-- Charts Section -->
         <div class="dashboard-section">
           <h3>Data Visualizations</h3>
-          
+
           <!-- Chord Chart - Category Connections -->
           <ChordChart
             title="Knowledge Graph Category Connections"
@@ -125,7 +120,7 @@
             :allow-export="true"
             height="800px"
           />
-                    
+
           <!-- Bar Chart - Node Distribution by Category -->
           <BarChart
             title="Node Distribution by Category"
@@ -146,7 +141,6 @@
             height="600px"
           />
         </div>
-
       </KGDashboard>
     </AppSection>
   </div>
@@ -155,12 +149,12 @@
 <script setup lang="ts">
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppSection from "@/components/AppSection.vue";
+import BarChart from "@/components/dashboard/BarChart.vue";
+import ChordChart from "@/components/dashboard/ChordChart.vue";
 import DataSource from "@/components/dashboard/DataSource.vue";
 import KGDashboard from "@/components/dashboard/KGDashboard.vue";
 import KGMetricCard from "@/components/dashboard/KGMetricCard.vue";
 import SankeyChart from "@/components/dashboard/SankeyChart.vue";
-import ChordChart from "@/components/dashboard/ChordChart.vue";
-import BarChart from "@/components/dashboard/BarChart.vue";
 import PageTitle from "@/components/ThePageTitle.vue";
 </script>
 
@@ -192,11 +186,11 @@ import PageTitle from "@/components/ThePageTitle.vue";
     margin: 0 0 2rem 0;
     padding: 1rem 1.5rem;
     border-left: 4px solid #3b82f6;
+    border-radius: 0 6px 6px 0;
     background-color: #f8faff;
     color: #374151;
     font-size: 0.95rem;
     line-height: 1.6;
-    border-radius: 0 6px 6px 0;
   }
 }
 
@@ -207,16 +201,10 @@ import PageTitle from "@/components/ThePageTitle.vue";
   gap: 1.5rem;
 }
 
-
-
 @media (max-width: 768px) {
   .metrics-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-
-
-
 }
-
 </style>

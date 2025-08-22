@@ -1,5 +1,6 @@
 <template>
   <BaseChart
+    ref="baseChartRef"
     :title="title"
     :is-loading="isLoading"
     :error="error"
@@ -11,40 +12,53 @@
     :height="height"
     @retry="handleRetry"
     @export="handleExport"
-    ref="baseChartRef"
   >
     <!-- The actual Grouped Bar chart will be rendered by ECharts in the BaseChart canvas -->
-    
+
     <!-- Export Menu Overlay -->
-    <div v-if="showExportMenu" class="export-overlay" @click.self="showExportMenu = false">
+    <!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
+    <div
+      v-if="showExportMenu"
+      class="export-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Export chart dialog"
+      tabindex="0"
+      @click.self="showExportMenu = false"
+      @keydown.escape="showExportMenu = false"
+      @keydown.enter="showExportMenu = false"
+      @keydown.space="showExportMenu = false"
+    >
       <div class="export-menu">
         <div class="export-header">
           <h3>Export Chart</h3>
-          <button @click="showExportMenu = false" class="close-button">×</button>
+          <button class="close-button" @click="showExportMenu = false">
+            ×
+          </button>
         </div>
         <div class="export-options">
-          <button @click="exportAsPNG" class="export-option">
+          <button class="export-option" @click="exportAsPNG">
             <span class="export-icon">🖼️</span>
             <div class="export-details">
               <div class="export-title">PNG Image</div>
               <div class="export-desc">Standard resolution for web use</div>
             </div>
           </button>
-          <button @click="exportAsHighResPNG" class="export-option">
+          <button class="export-option" @click="exportAsHighResPNG">
             <span class="export-icon">📷</span>
             <div class="export-details">
               <div class="export-title">High-Res PNG</div>
               <div class="export-desc">4x resolution for print quality</div>
             </div>
           </button>
-          <button @click="exportAsSVG" class="export-option">
+          <button class="export-option" @click="exportAsSVG">
             <span class="export-icon">📐</span>
             <div class="export-details">
               <div class="export-title">SVG Vector</div>
               <div class="export-desc">Scalable vector format</div>
             </div>
           </button>
-          <button @click="exportAsJSON" class="export-option">
+          <button class="export-option" @click="exportAsJSON">
             <span class="export-icon">📄</span>
             <div class="export-details">
               <div class="export-title">JSON Data</div>
@@ -60,9 +74,8 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import * as echarts from "echarts";
-import type { EChartsOption } from "echarts";
-import BaseChart from "./BaseChart.vue";
 import { useSqlQuery } from "@/composables/use-sql-query";
+import BaseChart from "./BaseChart.vue";
 
 export interface Props {
   title: string;
@@ -74,7 +87,7 @@ export interface Props {
   autoExecute?: boolean;
   pollInterval?: number;
   height?: string;
-  orientation?: 'horizontal' | 'vertical';
+  orientation?: "horizontal" | "vertical";
 }
 
 interface Emits {
@@ -87,8 +100,9 @@ const props = withDefaults(defineProps<Props>(), {
   allowExport: true,
   showDataPreview: false,
   autoExecute: true,
+  pollInterval: undefined,
   height: "500px",
-  orientation: "vertical"
+  orientation: "vertical",
 });
 
 const emit = defineEmits<Emits>();
@@ -119,8 +133,8 @@ const groupedData = computed(() => {
   }
 
   // Process data to compare ortholog vs human-only information sources
-  const categories = ['Genes with Ortholog Info', 'Genes with Human Info Only'];
-  
+  const categories = ["Genes with Ortholog Info", "Genes with Human Info Only"];
+
   const processedData = queryResult.value.data.map((row: any) => {
     const count = Number(row.count || 0);
     const hasHumanPhenotype = row.has_phenotype_or_disease;
@@ -131,49 +145,45 @@ const groupedData = computed(() => {
       count,
       hasHumanPhenotype,
       hasOrtholog,
-      hasOrthologPhenotype
+      hasOrthologPhenotype,
     };
   });
 
   // Calculate totals for each category
-  const genesWithOrthologInfo = processedData
-    .filter(d => d.hasOrtholog && d.hasOrthologPhenotype)
-    .reduce((sum, d) => sum + d.count, 0);
-    
   const genesWithHumanOnlyInfo = processedData
-    .filter(d => d.hasHumanPhenotype && !d.hasOrthologPhenotype)
+    .filter((d) => d.hasHumanPhenotype && !d.hasOrthologPhenotype)
     .reduce((sum, d) => sum + d.count, 0);
 
   const genesWithBothInfo = processedData
-    .filter(d => d.hasHumanPhenotype && d.hasOrthologPhenotype)
+    .filter((d) => d.hasHumanPhenotype && d.hasOrthologPhenotype)
     .reduce((sum, d) => sum + d.count, 0);
 
   const genesWithOrthologOnlyInfo = processedData
-    .filter(d => !d.hasHumanPhenotype && d.hasOrthologPhenotype)
+    .filter((d) => !d.hasHumanPhenotype && d.hasOrthologPhenotype)
     .reduce((sum, d) => sum + d.count, 0);
 
   const series = [
     {
-      name: 'Genes with Both Sources',
-      type: 'bar' as const,
-      emphasis: { focus: 'series' },
+      name: "Genes with Both Sources",
+      type: "bar" as const,
+      emphasis: { focus: "series" },
       data: [genesWithBothInfo, 0], // Only appears in ortholog category
-      itemStyle: { color: '#059669' } // Dark green - best case
+      itemStyle: { color: "#059669" }, // Dark green - best case
     },
     {
-      name: 'Genes with Ortholog Only',
-      type: 'bar' as const,
-      emphasis: { focus: 'series' },
+      name: "Genes with Ortholog Only",
+      type: "bar" as const,
+      emphasis: { focus: "series" },
       data: [genesWithOrthologOnlyInfo, 0], // Only appears in ortholog category
-      itemStyle: { color: '#3b82f6' } // Blue - ortholog value
+      itemStyle: { color: "#3b82f6" }, // Blue - ortholog value
     },
     {
-      name: 'Genes with Human Only',
-      type: 'bar' as const,
-      emphasis: { focus: 'series' },
+      name: "Genes with Human Only",
+      type: "bar" as const,
+      emphasis: { focus: "series" },
       data: [0, genesWithHumanOnlyInfo], // Only appears in human-only category
-      itemStyle: { color: '#f59e0b' } // Orange - human only
-    }
+      itemStyle: { color: "#f59e0b" }, // Orange - human only
+    },
   ];
 
   return { categories, series, processedData };
@@ -187,103 +197,111 @@ const chartOptions = computed((): any => {
     return {};
   }
 
-  const isHorizontal = props.orientation === 'horizontal';
+  const isHorizontal = props.orientation === "horizontal";
 
   return {
     title: {
       text: props.title,
-      left: 'center',
+      left: "center",
       top: 20,
       textStyle: {
         fontSize: 16,
-        fontWeight: 'normal'
-      }
+        fontWeight: "normal",
+      },
     },
     tooltip: {
-      trigger: 'axis',
+      trigger: "axis",
       axisPointer: {
-        type: 'shadow'
+        type: "shadow",
       },
-      formatter: function(params: any) {
-        if (!Array.isArray(params) || params.length === 0) return '';
-        
+      formatter: function (params: any) {
+        if (!Array.isArray(params) || params.length === 0) return "";
+
         const category = params[0].name;
         let tooltip = `<strong>${category}</strong><br/>`;
-        
+
         params.forEach((param: any) => {
           if (param.value > 0) {
             tooltip += `${param.marker} ${param.seriesName}: ${param.value.toLocaleString()}<br/>`;
           }
         });
-        
+
         return tooltip;
-      }
+      },
     },
     legend: {
-      orient: 'horizontal',
-      left: 'center',
+      orient: "horizontal",
+      left: "center",
       bottom: 10,
       textStyle: {
-        fontSize: 11
-      }
+        fontSize: 11,
+      },
     },
     grid: {
-      left: isHorizontal ? '15%' : '10%',
-      right: '10%',
-      top: '20%',
-      bottom: '20%',
-      containLabel: true
+      left: isHorizontal ? "15%" : "10%",
+      right: "10%",
+      top: "20%",
+      bottom: "20%",
+      containLabel: true,
     },
-    xAxis: isHorizontal ? {
-      type: 'value' as const
-    } : {
-      type: 'category' as const,
-      data: categories,
-      axisLabel: {
-        fontSize: 12,
-        interval: 0,
-        rotate: 15,
-        formatter: function(value: string) {
-          // Break long labels into multiple lines
-          if (value.length > 20) {
-            const words = value.split(' ');
-            const mid = Math.ceil(words.length / 2);
-            return words.slice(0, mid).join(' ') + '\n' + words.slice(mid).join(' ');
-          }
-          return value;
+    xAxis: isHorizontal
+      ? {
+          type: "value" as const,
         }
-      }
-    },
-    yAxis: isHorizontal ? {
-      type: 'category' as const,
-      data: categories,
-      axisLabel: {
-        fontSize: 10,
-        formatter: function(value: any) {
-          const str = String(value);
-          return str.length > 15 ? str.substring(0, 12) + '...' : str;
+      : {
+          type: "category" as const,
+          data: categories,
+          axisLabel: {
+            fontSize: 12,
+            interval: 0,
+            rotate: 15,
+            formatter: function (value: string) {
+              // Break long labels into multiple lines
+              if (value.length > 20) {
+                const words = value.split(" ");
+                const mid = Math.ceil(words.length / 2);
+                return (
+                  words.slice(0, mid).join(" ") +
+                  "\n" +
+                  words.slice(mid).join(" ")
+                );
+              }
+              return value;
+            },
+          },
+        },
+    yAxis: isHorizontal
+      ? {
+          type: "category" as const,
+          data: categories,
+          axisLabel: {
+            fontSize: 10,
+            formatter: function (value: any) {
+              const str = String(value);
+              return str.length > 15 ? str.substring(0, 12) + "..." : str;
+            },
+          },
         }
-      }
-    } : {
-      type: 'value' as const,
-      axisLabel: {
-        fontSize: 10,
-        formatter: function(value: any) {
-          const num = Number(value);
-          if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-          if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-          return String(num);
-        }
-      }
-    },
-    series: series.map(s => ({
+      : {
+          type: "value" as const,
+          axisLabel: {
+            fontSize: 10,
+            formatter: function (value: any) {
+              const num = Number(value);
+              if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
+              if (num >= 1000) return (num / 1000).toFixed(1) + "K";
+              return String(num);
+            },
+          },
+        },
+    series: series.map((s) => ({
       ...s,
-      animationDelay: function(idx: number) {
-        return idx * 100;
-      }
+      animationDelay: function (_idx: number) {
+        return _idx * 100;
+      },
     })),
-    animationEasing: 'cubicOut',
-    animationDuration: 1000
+    animationEasing: "cubicOut",
+    animationDuration: 1000,
   };
 });
 
@@ -311,16 +329,16 @@ const handleExport = (): void => {
 
 /** Export functions */
 const generateFilename = (): string => {
-  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  return `${props.title.replace(/\s+/g, '_').toLowerCase()}_${timestamp}`;
+  const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+  return `${props.title.replace(/\s+/g, "_").toLowerCase()}_${timestamp}`;
 };
 
 const exportAsPNG = (): void => {
   if (!baseChartRef.value?.chart) return;
   const url = baseChartRef.value.chart.getDataURL({
-    type: 'png',
+    type: "png",
     pixelRatio: 2,
-    backgroundColor: '#fff'
+    backgroundColor: "#fff",
   });
   downloadFile(url, `${generateFilename()}.png`);
   showExportMenu.value = false;
@@ -328,47 +346,46 @@ const exportAsPNG = (): void => {
 
 const exportAsSVG = (): void => {
   if (!baseChartRef.value?.chart) return;
-  
-  const tempContainer = document.createElement('div');
-  tempContainer.style.width = '1000px';
-  tempContainer.style.height = '600px';
-  tempContainer.style.position = 'absolute';
-  tempContainer.style.left = '-9999px';
+
+  const tempContainer = document.createElement("div");
+  tempContainer.style.width = "1000px";
+  tempContainer.style.height = "600px";
+  tempContainer.style.position = "absolute";
+  tempContainer.style.left = "-9999px";
   document.body.appendChild(tempContainer);
-  
+
   try {
-    const svgChart = echarts.init(tempContainer, null, { 
-      renderer: 'svg',
+    const svgChart = echarts.init(tempContainer, null, {
+      renderer: "svg",
       width: 1000,
-      height: 600
+      height: 600,
     });
-    
+
     svgChart.setOption(chartOptions.value);
-    
+
     setTimeout(() => {
       try {
         let svgString = svgChart.renderToSVGString();
-        svgString = svgString.replace(/viewBox="[^"]*"/, '');
+        svgString = svgString.replace(/viewBox="[^"]*"/, "");
         svgString = svgString.replace(
           /<svg[^>]*>/,
-          '<svg width="1000" height="600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full">'
+          '<svg width="1000" height="600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full">',
         );
-        
-        const blob = new Blob([svgString], { type: 'image/svg+xml' });
+
+        const blob = new Blob([svgString], { type: "image/svg+xml" });
         const url = URL.createObjectURL(blob);
         downloadFile(url, `${generateFilename()}.svg`);
         URL.revokeObjectURL(url);
       } catch (err) {
-        console.error('SVG export failed:', err);
+        console.error("SVG export failed:", err);
       } finally {
         svgChart.dispose();
         document.body.removeChild(tempContainer);
         showExportMenu.value = false;
       }
     }, 200);
-    
   } catch (error) {
-    console.error('SVG export failed:', error);
+    console.error("SVG export failed:", error);
     document.body.removeChild(tempContainer);
     showExportMenu.value = false;
   }
@@ -377,9 +394,9 @@ const exportAsSVG = (): void => {
 const exportAsHighResPNG = (): void => {
   if (!baseChartRef.value?.chart) return;
   const url = baseChartRef.value.chart.getDataURL({
-    type: 'png',
+    type: "png",
     pixelRatio: 4,
-    backgroundColor: '#fff'
+    backgroundColor: "#fff",
   });
   downloadFile(url, `${generateFilename()}_hires.png`);
   showExportMenu.value = false;
@@ -394,7 +411,7 @@ const exportAsJSON = (): void => {
     timestamp: new Date().toISOString(),
   };
   const dataStr = JSON.stringify(exportData, null, 2);
-  const blob = new Blob([dataStr], { type: 'application/json' });
+  const blob = new Blob([dataStr], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   downloadFile(url, `${generateFilename()}.json`);
   URL.revokeObjectURL(url);
@@ -403,7 +420,7 @@ const exportAsJSON = (): void => {
 
 /** Helper function to download files */
 const downloadFile = (url: string, filename: string): void => {
-  const link = document.createElement('a');
+  const link = document.createElement("a");
   link.href = url;
   link.download = filename;
   document.body.appendChild(link);
@@ -420,7 +437,7 @@ watch(
       emit("data-changed", queryResult.value.data);
     }
   },
-  { deep: true }
+  { deep: true },
 );
 
 // Watch for errors and emit events
@@ -448,11 +465,11 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .export-overlay {
+  display: flex;
+  z-index: 1000;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000;
-  display: flex;
   align-items: center;
   justify-content: center;
   width: 100vw;
@@ -516,10 +533,10 @@ onUnmounted(() => {
   width: 100%;
   margin-bottom: 8px;
   padding: 16px;
+  gap: 16px;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   background: white;
-  gap: 16px;
   cursor: pointer;
   transition: all 0.2s ease;
 
@@ -528,9 +545,9 @@ onUnmounted(() => {
   }
 
   &:hover {
+    transform: translateY(-1px);
     border-color: #3b82f6;
     background-color: #f8faff;
-    transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
   }
 
@@ -565,8 +582,8 @@ onUnmounted(() => {
 
 @media (max-width: 480px) {
   .export-menu {
-    margin: 20px;
     min-width: auto;
+    margin: 20px;
   }
 
   .export-option {

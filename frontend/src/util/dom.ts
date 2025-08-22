@@ -54,14 +54,18 @@ let canvas: HTMLCanvasElement | null = null;
 let ctx: CanvasRenderingContext2D | null = null;
 
 // Skip canvas creation in test environment
-if (typeof document !== 'undefined' && typeof process !== 'undefined' && process.env.NODE_ENV !== 'test') {
+if (
+  typeof document !== "undefined" &&
+  typeof process !== "undefined" &&
+  process.env.NODE_ENV !== "test"
+) {
   try {
     canvas = document.createElement("canvas");
     ctx = canvas.getContext("2d");
   } catch (error) {
     ctx = null;
   }
-} else if (typeof document !== 'undefined' && typeof process === 'undefined') {
+} else if (typeof document !== "undefined" && typeof process === "undefined") {
   // Browser environment
   try {
     canvas = document.createElement("canvas");

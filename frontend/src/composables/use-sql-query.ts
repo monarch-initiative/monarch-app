@@ -22,7 +22,10 @@ export interface SqlQueryResult {
  */
 export function useSqlQuery(config: SqlQueryConfig) {
   // Try to inject KG data from dashboard context first, fallback to creating new instance
-  const injectedKgData = inject<ReturnType<typeof useKGData> | null>("kg-data", null);
+  const injectedKgData = inject<ReturnType<typeof useKGData> | null>(
+    "kg-data",
+    null,
+  );
   const kgData = injectedKgData || useKGData();
 
   const isLoading = ref(false);
@@ -112,7 +115,6 @@ export function useSqlQuery(config: SqlQueryConfig) {
       const data = await kgData.executeQuery(queryToExecute, sourcesToUse);
       const endTime = performance.now();
 
-
       // Process results
       const columns = data.length > 0 ? Object.keys(data[0]) : [];
       const queryResult: SqlQueryResult = {
@@ -156,8 +158,13 @@ export function useSqlQuery(config: SqlQueryConfig) {
     // Process the value to handle DuckDB data types
     const processValue = (value: any): any => {
       if (value instanceof Uint32Array) return value[0];
-      if (typeof value === 'bigint') return Number(value);
-      if (value instanceof Int32Array || value instanceof Float64Array || value instanceof Float32Array) return value[0];
+      if (typeof value === "bigint") return Number(value);
+      if (
+        value instanceof Int32Array ||
+        value instanceof Float64Array ||
+        value instanceof Float32Array
+      )
+        return value[0];
       return value;
     };
 

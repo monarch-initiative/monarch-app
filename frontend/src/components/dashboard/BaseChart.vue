@@ -3,10 +3,10 @@
     <div v-if="title" class="chart-header">
       <h3 class="chart-title">{{ title }}</h3>
       <div v-if="showControls" class="chart-controls">
-        <AppButton 
-          v-if="sql" 
+        <AppButton
+          v-if="sql"
           :text="showSQL ? 'Hide SQL' : 'Show SQL'"
-          design="small" 
+          design="small"
           color="secondary"
           @click="toggleSQL"
         />
@@ -37,31 +37,36 @@
     <div v-if="hasError" class="chart-error">
       <AppIcon icon="alert-triangle" />
       <span>{{ errorMessage }}</span>
-      <AppButton 
-        v-if="allowRetry" 
-        text="Retry"
-        design="small" 
-        @click="retry"
-      />
+      <AppButton v-if="allowRetry" text="Retry" design="small" @click="retry" />
     </div>
 
     <div v-if="showSQL && sql" class="chart-sql">
       <h4>SQL Query:</h4>
       <pre><code>{{ sql }}</code></pre>
-      
-      <div v-if="processedData && processedData.length > 0" class="query-results">
+
+      <div
+        v-if="processedData && processedData.length > 0"
+        class="query-results"
+      >
         <h4>Query Results ({{ processedData.length }} rows):</h4>
         <pre><code>{{ JSON.stringify(processedData, null, 2) }}</code></pre>
       </div>
-      
-      <div v-else-if="processedData && processedData.length === 0" class="query-results">
+
+      <div
+        v-else-if="processedData && processedData.length === 0"
+        class="query-results"
+      >
         <h4>Query Results:</h4>
         <p><em>Query executed successfully but returned no rows.</em></p>
       </div>
-      
+
       <div v-else class="query-results">
         <h4>Query Results:</h4>
-        <p><em>No data available - query may not have executed yet or failed.</em></p>
+        <p>
+          <em
+            >No data available - query may not have executed yet or failed.</em
+          >
+        </p>
       </div>
     </div>
 
@@ -69,7 +74,9 @@
       v-if="showDataPreview && processedData && processedData.length > 0"
       class="chart-data-preview"
     >
-      <h4>Data Preview (first {{ Math.min(5, processedData.length) }} rows):</h4>
+      <h4>
+        Data Preview (first {{ Math.min(5, processedData.length) }} rows):
+      </h4>
       <table class="data-table">
         <thead>
           <tr>
@@ -115,9 +122,12 @@ interface Emits {
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  title: undefined,
   height: "400px",
   isLoading: false,
   error: null,
+  data: () => [],
+  sql: undefined,
   showControls: true,
   allowExport: true,
   allowRetry: true,
@@ -141,38 +151,47 @@ const processValue = (value: any): any => {
   if (value instanceof Uint32Array) {
     return value[0];
   }
-  
-  if (typeof value === 'bigint') {
+
+  if (typeof value === "bigint") {
     return Number(value);
   }
-  
-  if (value instanceof Int32Array || value instanceof Float64Array || value instanceof Float32Array) {
+
+  if (
+    value instanceof Int32Array ||
+    value instanceof Float64Array ||
+    value instanceof Float32Array
+  ) {
     return value[0];
   }
 
   // Handle JSON-serialized strings (original logic)
-  if (typeof value !== 'string') return value;
-  if (value === '') return value;
-  
+  if (typeof value !== "string") return value;
+  if (value === "") return value;
+
   let processedValue = value;
   try {
-    while (typeof processedValue === 'string' && 
-           (processedValue.startsWith('"') && processedValue.endsWith('"'))) {
+    while (
+      typeof processedValue === "string" &&
+      processedValue.startsWith('"') &&
+      processedValue.endsWith('"')
+    ) {
       processedValue = JSON.parse(processedValue);
     }
-  } catch { /* ignore parsing errors */ }
-  
-  if (typeof processedValue === 'string' && processedValue.trim() !== '') {
+  } catch {
+    /* ignore parsing errors */
+  }
+
+  if (typeof processedValue === "string" && processedValue.trim() !== "") {
     const numValue = Number(processedValue);
     if (!isNaN(numValue)) return numValue;
   }
-  
+
   return processedValue;
 };
 
 const processedData = computed(() => {
   if (!props.data || props.data.length === 0) return [];
-  
+
   return props.data.map((row) => {
     const processedRow: Record<string, any> = {};
     Object.entries(row).forEach(([key, value]) => {
@@ -186,7 +205,6 @@ const dataColumns = computed(() => {
   if (!processedData.value || processedData.value.length === 0) return [];
   return Object.keys(processedData.value[0]);
 });
-
 
 /** Initialize ECharts instance */
 const initChart = async (): Promise<void> => {
@@ -388,10 +406,10 @@ defineExpose({
   }
 
   pre {
-    margin: 0;
     max-height: 300px;
-    overflow-y: auto;
+    margin: 0;
     padding: 8px;
+    overflow-y: auto;
     border: 1px solid #e5e7eb;
     border-radius: 4px;
     background-color: #f8fafc;
@@ -405,8 +423,8 @@ defineExpose({
   p {
     margin: 0;
     color: #6b7280;
-    font-size: 0.875rem;
     font-style: italic;
+    font-size: 0.875rem;
   }
 }
 

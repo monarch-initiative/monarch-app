@@ -30,34 +30,41 @@ export function useDuckDB(config: DuckDBConfig = {}) {
       // For Uint32Array, take the first element which contains the actual value
       return value[0];
     }
-    
-    if (typeof value === 'bigint') {
+
+    if (typeof value === "bigint") {
       // Convert BigInt to regular number (may lose precision for very large numbers)
       return Number(value);
     }
-    
-    if (value instanceof Int32Array || value instanceof Float64Array || value instanceof Float32Array) {
+
+    if (
+      value instanceof Int32Array ||
+      value instanceof Float64Array ||
+      value instanceof Float32Array
+    ) {
       // Handle other typed arrays
       return value[0];
     }
 
     // Handle JSON-serialized strings (original logic)
-    if (typeof value !== 'string') {
+    if (typeof value !== "string") {
       return value;
     }
 
     // Handle empty string case - don't convert to number
-    if (value === '') {
+    if (value === "") {
       return value;
     }
 
     let processedValue = value;
-    
+
     // Try multiple rounds of JSON parsing for deeply nested quotes
     try {
       // Keep parsing until we can't parse anymore or get a non-string
-      while (typeof processedValue === 'string' && 
-             (processedValue.startsWith('"') && processedValue.endsWith('"'))) {
+      while (
+        typeof processedValue === "string" &&
+        processedValue.startsWith('"') &&
+        processedValue.endsWith('"')
+      ) {
         processedValue = JSON.parse(processedValue);
       }
     } catch {
@@ -65,7 +72,7 @@ export function useDuckDB(config: DuckDBConfig = {}) {
     }
 
     // Now try to convert to number if it looks numeric
-    if (typeof processedValue === 'string' && processedValue.trim() !== '') {
+    if (typeof processedValue === "string" && processedValue.trim() !== "") {
       const numValue = Number(processedValue);
       if (!isNaN(numValue)) {
         return numValue;
@@ -84,9 +91,10 @@ export function useDuckDB(config: DuckDBConfig = {}) {
       error.value = null;
 
       // Use local WASM files served by Vite instead of CDN to avoid CORS issues
-      const baseUrl = import.meta.env.BASE_URL || '/';
+      const baseUrl = import.meta.env.BASE_URL || "/";
       const wasmUrl = config.wasmUrl || `${baseUrl}duckdb/duckdb-mvp.wasm`;
-      const workerUrl = config.workerUrl || `${baseUrl}duckdb/duckdb-browser-mvp.worker.js`;
+      const workerUrl =
+        config.workerUrl || `${baseUrl}duckdb/duckdb-browser-mvp.worker.js`;
 
       const bundle = await duckdb.selectBundle({
         mvp: {
@@ -128,7 +136,6 @@ export function useDuckDB(config: DuckDBConfig = {}) {
       // Create table from parquet file
       const sql = `CREATE OR REPLACE TABLE ${tableName} AS SELECT * FROM read_parquet('${url}')`;
       await connection.value.query(sql);
-      
     } catch (err) {
       error.value =
         err instanceof Error ? err.message : "Failed to load parquet file";
@@ -151,7 +158,6 @@ export function useDuckDB(config: DuckDBConfig = {}) {
       // Create table from CSV file with header detection
       const sql = `CREATE OR REPLACE TABLE ${tableName} AS SELECT * FROM read_csv_auto('${url}')`;
       await connection.value.query(sql);
-      
     } catch (err) {
       error.value =
         err instanceof Error ? err.message : "Failed to load CSV file";
@@ -173,10 +179,10 @@ export function useDuckDB(config: DuckDBConfig = {}) {
 
       const result = await connection.value.query(sql);
       const columns = result.schema.fields.map((field: any) => field.name);
-      
+
       // Get raw data and process to ensure proper data types
       const rawData = result.toArray().map((row: any) => row.toJSON());
-      
+
       // Post-process to convert JSON-serialized values to proper types
       const data = rawData.map((row: any) => {
         const processedRow: Record<string, any> = {};

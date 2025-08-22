@@ -1,5 +1,5 @@
 import { computed, ref, type Ref } from "vue";
-import { getLatestKGReleaseDate, getKGSourceUrl } from "@/api/kg-version";
+import { getKGSourceUrl, getLatestKGReleaseDate } from "@/api/kg-version";
 import { useDuckDB } from "./use-duckdb";
 
 export interface DataSourceConfig {
@@ -7,7 +7,7 @@ export interface DataSourceConfig {
   url: string;
   description?: string;
   baseUrl?: string;
-  format?: 'parquet' | 'csv';
+  format?: "parquet" | "csv";
 }
 
 export interface DataSource extends DataSourceConfig {
@@ -56,22 +56,30 @@ export function useKGData() {
       // Get KG version and source URL from API
       const version = await getLatestKGReleaseDate();
       const sourceUrl = await getKGSourceUrl();
-      
+
       // Check if API returned "unknown" or invalid data
-      if (version === "unknown" || sourceUrl === "unknown" || !version || !sourceUrl) {
+      if (
+        version === "unknown" ||
+        sourceUrl === "unknown" ||
+        !version ||
+        !sourceUrl
+      ) {
         throw new Error("API returned unknown or invalid data");
       }
-      
+
       kgVersion.value = version;
       // Use the source URL directly from the API (includes full path)
-      kgSourceUrl.value = sourceUrl.endsWith('/') ? sourceUrl.slice(0, -1) : sourceUrl;
+      kgSourceUrl.value = sourceUrl.endsWith("/")
+        ? sourceUrl.slice(0, -1)
+        : sourceUrl;
     } catch (err) {
       // Fallback to latest dev version if API fails or returns "unknown"
       kgVersion.value = "latest";
-      kgSourceUrl.value = "https://data.monarchinitiative.org/monarch-kg-dev/latest";
+      kgSourceUrl.value =
+        "https://data.monarchinitiative.org/monarch-kg-dev/latest";
     }
   };
- 
+
   /** Register a data source */
   const registerDataSource = (config: DataSourceConfig): void => {
     const source: DataSource = {
@@ -109,8 +117,8 @@ export function useKGData() {
         : source.url;
 
       // Load file into DuckDB based on format
-      const format = source.format || 'parquet'; // Default to parquet
-      if (format === 'csv') {
+      const format = source.format || "parquet"; // Default to parquet
+      if (format === "csv") {
         await duckDB.loadCSV(fullUrl, name);
       } else {
         await duckDB.loadParquet(fullUrl, name);
@@ -125,7 +133,7 @@ export function useKGData() {
         err instanceof Error ? err.message : "Failed to load data source";
       source.loadError = errorMessage;
       dataSources.value.set(name, source);
-      
+
       // Don't throw DuckDB initialization errors - let them be handled silently
       if (errorMessage.includes("DuckDB not initialized")) {
         return;

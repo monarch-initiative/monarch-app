@@ -24,11 +24,11 @@
             <AppIcon icon="database" />
             Data Sources ({{ registeredSources.length }})
           </h4>
-          <AppButton 
+          <AppButton
             :text="showDataSourceDetails ? 'Hide Details' : 'Show Details'"
-            design="small" 
+            design="small"
             color="secondary"
-            @click="toggleDataSourceInfo" 
+            @click="toggleDataSourceInfo"
           />
         </div>
 
@@ -127,8 +127,6 @@ const initError = ref<string | null>(null);
 // Initialize KG data system
 const kgData = useKGData();
 const {
-  isLoading,
-  error,
   kgVersion,
   kgSourceUrl,
   init,

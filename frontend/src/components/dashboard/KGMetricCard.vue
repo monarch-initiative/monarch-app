@@ -67,7 +67,12 @@ interface Emits {
 
 const props = withDefaults(defineProps<Props>(), {
   format: "number",
+  subtitle: undefined,
+  description: undefined,
   autoExecute: true,
+  pollInterval: undefined,
+  showTrend: false,
+  trendValue: null,
   trendSuffix: "%",
 });
 
@@ -179,7 +184,6 @@ const handleRetry = async (): Promise<void> => {
   }
 };
 
-
 // Watch for value changes and emit events
 watch(rawValue, (newValue) => {
   if (newValue !== null && newValue !== undefined) {
@@ -193,7 +197,6 @@ watch(error, (newError) => {
     emit("error", newError);
   }
 });
-
 
 // Execute query on mount if auto-execute is disabled
 onMounted(async () => {

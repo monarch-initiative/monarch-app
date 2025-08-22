@@ -1,5 +1,6 @@
 <template>
   <BaseChart
+    ref="baseChartRef"
     :title="title"
     :is-loading="isLoading"
     :error="error"
@@ -11,40 +12,53 @@
     :height="height"
     @retry="handleRetry"
     @export="handleExport"
-    ref="baseChartRef"
   >
     <!-- The actual Donut chart will be rendered by ECharts in the BaseChart canvas -->
-    
+
     <!-- Export Menu Overlay -->
-    <div v-if="showExportMenu" class="export-overlay" @click.self="showExportMenu = false">
+    <!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
+    <div
+      v-if="showExportMenu"
+      class="export-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Export chart dialog"
+      tabindex="0"
+      @click.self="showExportMenu = false"
+      @keydown.escape="showExportMenu = false"
+      @keydown.enter="showExportMenu = false"
+      @keydown.space="showExportMenu = false"
+    >
       <div class="export-menu">
         <div class="export-header">
           <h3>Export Chart</h3>
-          <button @click="showExportMenu = false" class="close-button">×</button>
+          <button class="close-button" @click="showExportMenu = false">
+            ×
+          </button>
         </div>
         <div class="export-options">
-          <button @click="exportAsPNG" class="export-option">
+          <button class="export-option" @click="exportAsPNG">
             <span class="export-icon">🖼️</span>
             <div class="export-details">
               <div class="export-title">PNG Image</div>
               <div class="export-desc">Standard resolution for web use</div>
             </div>
           </button>
-          <button @click="exportAsHighResPNG" class="export-option">
+          <button class="export-option" @click="exportAsHighResPNG">
             <span class="export-icon">📷</span>
             <div class="export-details">
               <div class="export-title">High-Res PNG</div>
               <div class="export-desc">4x resolution for print quality</div>
             </div>
           </button>
-          <button @click="exportAsSVG" class="export-option">
+          <button class="export-option" @click="exportAsSVG">
             <span class="export-icon">📐</span>
             <div class="export-details">
               <div class="export-title">SVG Vector</div>
               <div class="export-desc">Scalable vector format</div>
             </div>
           </button>
-          <button @click="exportAsJSON" class="export-option">
+          <button class="export-option" @click="exportAsJSON">
             <span class="export-icon">📄</span>
             <div class="export-details">
               <div class="export-title">JSON Data</div>
@@ -61,8 +75,8 @@
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import * as echarts from "echarts";
 import type { EChartsOption } from "echarts";
-import BaseChart from "./BaseChart.vue";
 import { useSqlQuery } from "@/composables/use-sql-query";
+import BaseChart from "./BaseChart.vue";
 
 export interface Props {
   title: string;
@@ -86,7 +100,8 @@ const props = withDefaults(defineProps<Props>(), {
   allowExport: true,
   showDataPreview: false,
   autoExecute: true,
-  height: "500px"
+  pollInterval: undefined,
+  height: "500px",
 });
 
 const emit = defineEmits<Emits>();
@@ -119,7 +134,7 @@ const donutData = computed(() => {
   // Process the boolean combinations for outer ring (ortholog availability)
   const orthologAvailability = new Map();
   const phenotypeBreakdown = new Map();
-  
+
   queryResult.value.data.forEach((row: any) => {
     const count = Number(row.count || 0);
     const hasOrtholog = row.has_ortholog;
@@ -127,57 +142,63 @@ const donutData = computed(() => {
     const hasOrthologPhenotype = row.has_ortholog_phenotype;
 
     // Outer ring: Ortholog availability
-    const orthologKey = hasOrtholog ? 'Has Ortholog' : 'No Ortholog';
-    orthologAvailability.set(orthologKey, (orthologAvailability.get(orthologKey) || 0) + count);
+    const orthologKey = hasOrtholog ? "Has Ortholog" : "No Ortholog";
+    orthologAvailability.set(
+      orthologKey,
+      (orthologAvailability.get(orthologKey) || 0) + count,
+    );
 
     // Inner ring: Phenotype information breakdown
-    let phenotypeCategory = 'No Information';
+    let phenotypeCategory = "No Information";
     if (hasHumanPhenotype && hasOrthologPhenotype) {
-      phenotypeCategory = 'Human + Ortholog Phenotypes';
+      phenotypeCategory = "Human + Ortholog Phenotypes";
     } else if (hasHumanPhenotype && !hasOrthologPhenotype) {
-      phenotypeCategory = 'Human Only';
+      phenotypeCategory = "Human Only";
     } else if (!hasHumanPhenotype && hasOrthologPhenotype) {
-      phenotypeCategory = 'Ortholog Only';
+      phenotypeCategory = "Ortholog Only";
     }
-    
-    phenotypeBreakdown.set(phenotypeCategory, (phenotypeBreakdown.get(phenotypeCategory) || 0) + count);
+
+    phenotypeBreakdown.set(
+      phenotypeCategory,
+      (phenotypeBreakdown.get(phenotypeCategory) || 0) + count,
+    );
   });
 
   // Convert to arrays with colors
   const outerData = [
     {
-      name: 'Has Ortholog',
-      value: orthologAvailability.get('Has Ortholog') || 0,
-      itemStyle: { color: '#10b981' } // Green - has ortholog
+      name: "Has Ortholog",
+      value: orthologAvailability.get("Has Ortholog") || 0,
+      itemStyle: { color: "#10b981" }, // Green - has ortholog
     },
     {
-      name: 'No Ortholog',
-      value: orthologAvailability.get('No Ortholog') || 0,
-      itemStyle: { color: '#6b7280' } // Gray - no ortholog
-    }
+      name: "No Ortholog",
+      value: orthologAvailability.get("No Ortholog") || 0,
+      itemStyle: { color: "#6b7280" }, // Gray - no ortholog
+    },
   ];
 
   const innerData = [
     {
-      name: 'Human + Ortholog Phenotypes',
-      value: phenotypeBreakdown.get('Human + Ortholog Phenotypes') || 0,
-      itemStyle: { color: '#059669' } // Darker green - best case
+      name: "Human + Ortholog Phenotypes",
+      value: phenotypeBreakdown.get("Human + Ortholog Phenotypes") || 0,
+      itemStyle: { color: "#059669" }, // Darker green - best case
     },
     {
-      name: 'Ortholog Only',
-      value: phenotypeBreakdown.get('Ortholog Only') || 0,
-      itemStyle: { color: '#3b82f6' } // Blue - ortholog value
+      name: "Ortholog Only",
+      value: phenotypeBreakdown.get("Ortholog Only") || 0,
+      itemStyle: { color: "#3b82f6" }, // Blue - ortholog value
     },
     {
-      name: 'Human Only',
-      value: phenotypeBreakdown.get('Human Only') || 0,
-      itemStyle: { color: '#f59e0b' } // Orange - human only
+      name: "Human Only",
+      value: phenotypeBreakdown.get("Human Only") || 0,
+      itemStyle: { color: "#f59e0b" }, // Orange - human only
     },
     {
-      name: 'No Information',
-      value: phenotypeBreakdown.get('No Information') || 0,
-      itemStyle: { color: '#9ca3af' } // Light gray - no info
-    }
+      name: "No Information",
+      value: phenotypeBreakdown.get("No Information") || 0,
+      itemStyle: { color: "#9ca3af" }, // Light gray - no info
+    },
   ];
 
   return { outerData, innerData };
@@ -194,100 +215,104 @@ const chartOptions = computed((): EChartsOption => {
   return {
     title: {
       text: props.title,
-      left: 'center',
+      left: "center",
       top: 20,
       textStyle: {
         fontSize: 16,
-        fontWeight: 'normal'
-      }
+        fontWeight: "normal",
+      },
     },
     tooltip: {
-      trigger: 'item',
-      formatter: function(params: any) {
+      trigger: "item",
+      formatter: function (params: any) {
         const percentage = params.percent;
         const value = params.value;
         return `${params.seriesName}<br/>${params.name}: ${value.toLocaleString()} (${percentage}%)`;
-      }
+      },
     },
     legend: {
-      type: 'scroll',
-      orient: 'horizontal',
-      left: 'center',
+      type: "scroll",
+      orient: "horizontal",
+      left: "center",
       bottom: 10,
       textStyle: {
-        fontSize: 11
-      }
+        fontSize: 11,
+      },
     },
     series: [
       {
-        name: 'Ortholog Availability',
-        type: 'pie',
-        radius: ['40%', '55%'],
-        center: ['50%', '55%'],
+        name: "Ortholog Availability",
+        type: "pie",
+        radius: ["40%", "55%"],
+        center: ["50%", "55%"],
         data: outerData,
         emphasis: {
           itemStyle: {
             shadowBlur: 10,
             shadowOffsetX: 0,
-            shadowColor: 'rgba(0, 0, 0, 0.5)'
-          }
+            shadowColor: "rgba(0, 0, 0, 0.5)",
+          },
         },
         label: {
           show: true,
-          position: 'outside',
+          position: "outside",
           fontSize: 12,
-          formatter: function(params: any) {
+          formatter: function (params: any) {
             return `${params.name}\n${params.percent}%`;
-          }
+          },
         },
         labelLine: {
           show: true,
           length: 15,
-          length2: 10
+          length2: 10,
         },
-        animationType: 'scale',
-        animationEasing: 'elasticOut',
-        animationDelay: function(idx: number) {
+        animationType: "scale",
+        animationEasing: "elasticOut",
+        animationDelay: function () {
           return Math.random() * 200;
-        }
+        },
       },
       {
-        name: 'Phenotype Information',
-        type: 'pie',
-        radius: ['0%', '35%'],
-        center: ['50%', '55%'],
+        name: "Phenotype Information",
+        type: "pie",
+        radius: ["0%", "35%"],
+        center: ["50%", "55%"],
         data: innerData,
         emphasis: {
           itemStyle: {
             shadowBlur: 10,
             shadowOffsetX: 0,
-            shadowColor: 'rgba(0, 0, 0, 0.5)'
-          }
+            shadowColor: "rgba(0, 0, 0, 0.5)",
+          },
         },
         label: {
           show: true,
-          position: 'inside',
+          position: "inside",
           fontSize: 10,
-          fontWeight: 'bold',
-          color: '#fff',
-          formatter: function(params: any) {
+          fontWeight: "bold",
+          color: "#fff",
+          formatter: function (params: any) {
             // Only show label if slice is large enough
-            return params.percent > 8 ? `${params.percent}%` : '';
-          }
+            return params.percent > 8 ? `${params.percent}%` : "";
+          },
         },
-        animationType: 'scale',
-        animationEasing: 'elasticOut',
-        animationDelay: function(idx: number) {
+        animationType: "scale",
+        animationEasing: "elasticOut",
+        animationDelay: function () {
           return Math.random() * 200;
-        }
-      }
-    ]
+        },
+      },
+    ],
   };
 });
 
 /** Update chart when data changes */
 const updateChart = () => {
-  if (baseChartRef.value?.chart && (donutData.value.outerData.length > 0 || donutData.value.innerData.length > 0)) {
+  if (
+    baseChartRef.value?.chart &&
+    (donutData.value.outerData.length > 0 ||
+      donutData.value.innerData.length > 0)
+  ) {
     baseChartRef.value.updateChart(chartOptions.value);
   }
 };
@@ -309,16 +334,16 @@ const handleExport = (): void => {
 
 /** Export functions */
 const generateFilename = (): string => {
-  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  return `${props.title.replace(/\s+/g, '_').toLowerCase()}_${timestamp}`;
+  const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+  return `${props.title.replace(/\s+/g, "_").toLowerCase()}_${timestamp}`;
 };
 
 const exportAsPNG = (): void => {
   if (!baseChartRef.value?.chart) return;
   const url = baseChartRef.value.chart.getDataURL({
-    type: 'png',
+    type: "png",
     pixelRatio: 2,
-    backgroundColor: '#fff'
+    backgroundColor: "#fff",
   });
   downloadFile(url, `${generateFilename()}.png`);
   showExportMenu.value = false;
@@ -326,47 +351,46 @@ const exportAsPNG = (): void => {
 
 const exportAsSVG = (): void => {
   if (!baseChartRef.value?.chart) return;
-  
-  const tempContainer = document.createElement('div');
-  tempContainer.style.width = '800px';
-  tempContainer.style.height = '600px';
-  tempContainer.style.position = 'absolute';
-  tempContainer.style.left = '-9999px';
+
+  const tempContainer = document.createElement("div");
+  tempContainer.style.width = "800px";
+  tempContainer.style.height = "600px";
+  tempContainer.style.position = "absolute";
+  tempContainer.style.left = "-9999px";
   document.body.appendChild(tempContainer);
-  
+
   try {
-    const svgChart = echarts.init(tempContainer, null, { 
-      renderer: 'svg',
+    const svgChart = echarts.init(tempContainer, null, {
+      renderer: "svg",
       width: 800,
-      height: 600
+      height: 600,
     });
-    
+
     svgChart.setOption(chartOptions.value);
-    
+
     setTimeout(() => {
       try {
         let svgString = svgChart.renderToSVGString();
-        svgString = svgString.replace(/viewBox="[^"]*"/, '');
+        svgString = svgString.replace(/viewBox="[^"]*"/, "");
         svgString = svgString.replace(
           /<svg[^>]*>/,
-          '<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full">'
+          '<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full">',
         );
-        
-        const blob = new Blob([svgString], { type: 'image/svg+xml' });
+
+        const blob = new Blob([svgString], { type: "image/svg+xml" });
         const url = URL.createObjectURL(blob);
         downloadFile(url, `${generateFilename()}.svg`);
         URL.revokeObjectURL(url);
       } catch (err) {
-        console.error('SVG export failed:', err);
+        console.error("SVG export failed:", err);
       } finally {
         svgChart.dispose();
         document.body.removeChild(tempContainer);
         showExportMenu.value = false;
       }
     }, 200);
-    
   } catch (error) {
-    console.error('SVG export failed:', error);
+    console.error("SVG export failed:", error);
     document.body.removeChild(tempContainer);
     showExportMenu.value = false;
   }
@@ -375,9 +399,9 @@ const exportAsSVG = (): void => {
 const exportAsHighResPNG = (): void => {
   if (!baseChartRef.value?.chart) return;
   const url = baseChartRef.value.chart.getDataURL({
-    type: 'png',
+    type: "png",
     pixelRatio: 4,
-    backgroundColor: '#fff'
+    backgroundColor: "#fff",
   });
   downloadFile(url, `${generateFilename()}_hires.png`);
   showExportMenu.value = false;
@@ -392,7 +416,7 @@ const exportAsJSON = (): void => {
     timestamp: new Date().toISOString(),
   };
   const dataStr = JSON.stringify(exportData, null, 2);
-  const blob = new Blob([dataStr], { type: 'application/json' });
+  const blob = new Blob([dataStr], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   downloadFile(url, `${generateFilename()}.json`);
   URL.revokeObjectURL(url);
@@ -401,7 +425,7 @@ const exportAsJSON = (): void => {
 
 /** Helper function to download files */
 const downloadFile = (url: string, filename: string): void => {
-  const link = document.createElement('a');
+  const link = document.createElement("a");
   link.href = url;
   link.download = filename;
   document.body.appendChild(link);
@@ -418,7 +442,7 @@ watch(
       emit("data-changed", queryResult.value.data);
     }
   },
-  { deep: true }
+  { deep: true },
 );
 
 // Watch for errors and emit events
@@ -446,11 +470,11 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .export-overlay {
+  display: flex;
+  z-index: 1000;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000;
-  display: flex;
   align-items: center;
   justify-content: center;
   width: 100vw;
@@ -514,10 +538,10 @@ onUnmounted(() => {
   width: 100%;
   margin-bottom: 8px;
   padding: 16px;
+  gap: 16px;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   background: white;
-  gap: 16px;
   cursor: pointer;
   transition: all 0.2s ease;
 
@@ -526,9 +550,9 @@ onUnmounted(() => {
   }
 
   &:hover {
+    transform: translateY(-1px);
     border-color: #3b82f6;
     background-color: #f8faff;
-    transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
   }
 
@@ -563,8 +587,8 @@ onUnmounted(() => {
 
 @media (max-width: 480px) {
   .export-menu {
-    margin: 20px;
     min-width: auto;
+    margin: 20px;
   }
 
   .export-option {

@@ -4,7 +4,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, onMounted, onUnmounted } from "vue";
+import { inject, onUnmounted } from "vue";
 import type { DataSourceConfig } from "@/composables/use-kg-data";
 
 interface Props {
@@ -12,10 +12,14 @@ interface Props {
   url: string;
   description?: string;
   baseUrl?: string;
-  format?: 'parquet' | 'csv';
+  format?: "parquet" | "csv";
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  description: undefined,
+  baseUrl: undefined,
+  format: "parquet",
+});
 
 // Inject the dashboard context
 const dashboardContext = inject<{
