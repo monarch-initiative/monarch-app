@@ -105,7 +105,6 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
         baseCols = baseCols.filter((col) => col.key !== "object_label");
       }
 
-      // Add Source (same pattern as Genotype→Disease)
       if (
         !baseCols.some((c) => c.key === ("primary_knowledge_source" as Datum))
       ) {
