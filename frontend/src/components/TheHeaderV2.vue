@@ -70,12 +70,9 @@
         </AppLink>
       </div>
 
-      <TabSearch
-        v-if="search && (isMobile || !home)"
-        :minimal="true"
-        :header-box="true"
-        :home="home"
-      />
+      <div v-if="search && (isMobile || !home)" class="navSearch">
+        <TabSearch :minimal="true" :header-box="true" :home="home" />
+      </div>
 
       <div class="navItems">
         <DropdownButton
@@ -556,6 +553,29 @@ Its here to align with the styling of old nav items. */
     margin-top: 1.7em;
     color: $white;
     font-size: 0.6rem;
+  }
+}
+.navSearch {
+  width: 100%;
+}
+@media (max-width: 1350px) and (min-width: 1001px) {
+  .header:not(.home) .nav {
+    flex-wrap: wrap;
+    gap: 0;
+  }
+  .header:not(.home) .home {
+    order: 1;
+  }
+  .header:not(.home) .navItems {
+    order: 2;
+    min-width: 0;
+  }
+  .header:not(.home) :deep(.navSearch) {
+    align-self: center;
+    order: 3;
+    min-width: 0;
+
+    margin: 0 auto;
   }
 }
 </style>
