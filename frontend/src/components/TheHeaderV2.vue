@@ -571,8 +571,8 @@ Its here to align with the styling of old nav items. */
   .header:not(.home) :deep(.navSearch) {
     align-self: center;
     order: 3;
+    width: 60%;
     min-width: 0;
-
     margin: 0 auto;
   }
 }
