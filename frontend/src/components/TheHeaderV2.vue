@@ -208,8 +208,8 @@ onUnmounted(() => {
 
 // const isMobile = computed(() => windowWidth.value < 1350);
 // <script setup>
-const LG_BREAKPOINT = 1000;
-const isMobile = computed(() => windowWidth.value < LG_BREAKPOINT);
+const MOBILE_BREAKPOINT = 1000;
+const isMobile = computed(() => windowWidth.value <= MOBILE_BREAKPOINT);
 const isDesktop = computed(() => !isMobile.value);
 
 const isHome = home; // alias for readability
