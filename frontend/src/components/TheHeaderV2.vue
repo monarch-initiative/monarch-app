@@ -440,10 +440,9 @@ $wrap: 1000px;
 
 .navItems {
   display: flex;
-  flex: 1 1 auto;
-  align-items: center;
+
   justify-content: flex-end;
-  min-width: 0; /* critical for flex children to shrink */
+
   gap: 0.15em;
 
   text-wrap: wrap;
