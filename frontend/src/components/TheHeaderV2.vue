@@ -99,9 +99,7 @@
           </template>
         </DropdownButton>
 
-        <div class="hero-tools">
-          <TheHeroTools v-if="isMobile" />
-        </div>
+        <TheHeroTools v-if="isMobile" />
 
         <div v-if="isMobile && formattedReleaseDate" class="release-date">
           <span v-if="isLoading">Loading release date..</span>
