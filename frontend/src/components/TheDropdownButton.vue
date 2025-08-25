@@ -55,7 +55,7 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss" scoped>
-$wrap: 1350px;
+$wrap: 1000px;
 
 .dropdown {
   display: inline-block;
@@ -65,11 +65,15 @@ $wrap: 1350px;
 
 .dropdown-btn {
   display: flex;
+  min-width: max-content;
   gap: 0.1em;
   font-size: 0.9em;
   white-space: nowrap;
   :hover {
     color: hsl(185, 75%, 80%);
+  }
+  @media (max-width: 1100px) {
+    font-size: 0.85em;
   }
 }
 li {

@@ -8,9 +8,6 @@
     ref="header"
     :class="['header', { home, sticky: !home || isMobile }]"
   >
-    <!-- :style="{
-      position: !home || isMobile ? 'sticky' : 'static',
-    }" -->
     <TheNexus v-if="home" />
 
     <div class="title">
@@ -20,7 +17,7 @@
         :class="['navLogo', { home }]"
       >
         <TheLogo class="image" />
-        <component :is="'div'" class="name"> Monarch Initiative </component>
+        <div class="name">Monarch Initiative</div>
       </AppLink>
 
       <button
@@ -34,8 +31,10 @@
         <AppIcon :icon="expanded ? 'xmark' : 'bars'" />
       </button>
     </div>
-    <div v-if="!isMobile && home" class="center-section">
-      <div v-if="!isMobile && home" class="hero-card">
+
+    <!-- Desktop Home hero -->
+    <div v-if="home && !isMobile" class="center-section">
+      <div class="hero-card">
         <div class="hero-header">
           <TheLogo class="hero-logo" />
           <h1>
@@ -50,6 +49,7 @@
           <TheSearchSuggestions />
           <TheHeroTools />
         </div>
+
         <div v-if="formattedReleaseDate" class="release-date">
           <span v-if="isLoading">Loading release date..</span>
           Monarch KG release: <strong>{{ formattedReleaseDate }}</strong>
@@ -70,12 +70,9 @@
         </AppLink>
       </div>
 
-      <TabSearch
-        v-if="search && (isMobile || !home)"
-        :minimal="true"
-        :header-box="true"
-        :home="home"
-      />
+      <div v-if="search && (isMobile || !home)" class="navSearch">
+        <TabSearch :minimal="true" :header-box="true" :home="home" />
+      </div>
 
       <div class="navItems">
         <DropdownButton
@@ -101,9 +98,9 @@
             </li>
           </template>
         </DropdownButton>
-        <div class="hero-tools">
-          <TheHeroTools v-if="isMobile" />
-        </div>
+
+        <TheHeroTools v-if="isMobile" />
+
         <div v-if="isMobile && formattedReleaseDate" class="release-date">
           <span v-if="isLoading">Loading release date..</span>
           Monarch KG release: <strong>{{ formattedReleaseDate }}</strong>
@@ -147,9 +144,7 @@ const { latestReleaseDate, fetchReleaseDate, isLoading } =
 
 // Compute formatted date string
 const formattedReleaseDate = computed(() => {
-  return latestReleaseDate.value
-    ? formatReleaseDate(latestReleaseDate.value)
-    : null;
+  return formatReleaseDate(latestReleaseDate.value);
 });
 
 /** whether to show search box */
@@ -193,14 +188,37 @@ onUnmounted(() => {
   window.removeEventListener("resize", updateWidth);
 });
 
-const isMobile = computed(() => windowWidth.value < 1350);
+// const isMobile = computed(() => windowWidth.value < 1350);
+// <script setup>
+const MOBILE_BREAKPOINT = 1000;
+const isMobile = computed(() => windowWidth.value <= MOBILE_BREAKPOINT);
+const isDesktop = computed(() => !isMobile.value);
+
+const isHome = home; // alias for readability
+const hasDate = computed(() => !!formattedReleaseDate.value);
+
+const stickyHeader = computed(() => !isHome.value || isMobile.value);
+const showHero = computed(() => isHome.value && isDesktop.value);
+
+// If you want loading to be visible before the date arrives:
+const showReleaseDesktop = computed(
+  () => showHero.value && (isLoading.value || hasDate.value),
+);
+const showReleaseMobile = computed(
+  () => isMobile.value && (isLoading.value || hasDate.value),
+);
+
+// Current search rule, but clearer:
+const showSearchBox = computed(
+  () => search.value && (isMobile.value || !isHome.value),
+);
 
 /** close nav when page changes */
 watch(() => route.name, close);
 </script>
 
 <style lang="scss" scoped>
-$wrap: 1350px;
+$wrap: 1000px;
 
 /** header */
 .header {
@@ -404,9 +422,12 @@ $wrap: 1350px;
 
 .navItems {
   display: flex;
-  align-items: center;
-  padding: 0 1rem;
 
+  justify-content: flex-end;
+
+  gap: 0.15em;
+
+  text-wrap: wrap;
   .link:hover,
   .dropdown:hover {
     color: hsl(185, 75%, 80%);
@@ -432,7 +453,7 @@ $wrap: 1350px;
 we can remove this and adjust onw styling to the whole menu items.
 Its here to align with the styling of old nav items. */
 .dropdown-button {
-  padding: 8px;
+  padding: 3px;
   @media (max-width: $wrap) {
     padding: 6.5px;
   }
@@ -517,6 +538,29 @@ Its here to align with the styling of old nav items. */
     margin-top: 1.7em;
     color: $white;
     font-size: 0.6rem;
+  }
+}
+.navSearch {
+  width: 100%;
+}
+@media (max-width: 1350px) and (min-width: 1001px) {
+  .header:not(.home) .nav {
+    flex-wrap: wrap;
+    gap: 0;
+  }
+  .header:not(.home) .home {
+    order: 1;
+  }
+  .header:not(.home) .navItems {
+    order: 2;
+    min-width: 0;
+  }
+  .header:not(.home) :deep(.navSearch) {
+    align-self: center;
+    order: 3;
+    width: 60%;
+    min-width: 0;
+    margin: 0 auto;
   }
 }
 </style>
