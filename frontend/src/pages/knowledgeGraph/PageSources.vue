@@ -45,7 +45,7 @@
                 source.id
               }}</a>
             </td>
-            <td>{{ source.count }}</td>
+            <td>{{ source.count.toLocaleString() }}</td>
           </tr>
         </tbody>
       </table>
