@@ -100,7 +100,7 @@ const INFERRED: Record<string, Fmt> = {
   "biolink:GenotypeToDiseaseAssociation": ({ all, n, diff, node, example }) =>
     (n ?? 0) > 0
       ? `${pluralize(n, "disease model", "disease models")} that are assciated with ${node} as well as ${pluralize(diff, "subclass", "subclasses")} such as ${example ? ` ${q(example)}` : ""}`
-      : `$ ${pluralize(all, "disease model", "disease models")} that are assciated with ${node}`,
+      : ` ${pluralize(all, "disease model", "disease models")} that are assciated with ${node}`,
   "biolink:VariantToDiseaseAssociation": ({ all, n, diff, node, example }) =>
     (n ?? 0) > 0
       ? ` ${pluralize(n, "variant", "variants")} that are assciated with ${node} as well as ${pluralize(diff, "subclass", "subclasses")} such as ${example ? ` ${q(example)}` : ""}`
