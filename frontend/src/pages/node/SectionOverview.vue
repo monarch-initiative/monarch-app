@@ -26,7 +26,7 @@
       </AppDetail>
 
       <!-- paragraph description -->
-      <AppDetail :blank="!node.description" title="Description" :full="true">
+      <AppDetail v-if="node.description" title="Description" :full="true">
         <p
           v-tooltip="'Click to expand'"
           class="description truncate-10"
@@ -38,7 +38,7 @@
 
       <!-- synonyms -->
       <AppDetail
-        :blank="!node.synonym?.length"
+        v-if="node.synonym?.length"
         title="Also Known As"
         :full="true"
         :direction="'row'"
