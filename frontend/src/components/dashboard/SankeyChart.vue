@@ -305,7 +305,6 @@ const exportAsSVG = (): void => {
 
     // Get current chart options
     const currentOptions = baseChartRef.value.chart.getOption();
-    console.log("Original options:", currentOptions);
 
     // Create completely new options optimized for export
     const exportOptions = {
