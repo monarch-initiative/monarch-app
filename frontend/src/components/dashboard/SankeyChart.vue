@@ -288,12 +288,6 @@ const exportAsSVG = (): void => {
   tempContainer.style.backgroundColor = "#ffffff";
   document.body.appendChild(tempContainer);
 
-  console.log(
-    "Container size:",
-    tempContainer.offsetWidth,
-    "x",
-    tempContainer.offsetHeight,
-  );
 
   try {
     // Initialize chart with SVG renderer and explicit size
@@ -357,15 +351,7 @@ const exportAsSVG = (): void => {
     // Give the chart time to render and then export
     setTimeout(() => {
       try {
-        console.log(
-          "Chart size:",
-          svgChart.getWidth(),
-          "x",
-          svgChart.getHeight(),
-        );
         let svgString = svgChart.renderToSVGString();
-        console.log("SVG string length:", svgString.length);
-        console.log("SVG starts with:", svgString.substring(0, 200));
 
         // Remove viewBox constraint so SVG doesn't scale content to fit
         svgString = svgString.replace(/viewBox="[^"]*"/, "");
@@ -376,7 +362,6 @@ const exportAsSVG = (): void => {
           '<svg width="2400" height="900" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full">',
         );
 
-        console.log("Modified SVG starts with:", svgString.substring(0, 200));
 
         const blob = new Blob([svgString], { type: "image/svg+xml" });
         const url = URL.createObjectURL(blob);

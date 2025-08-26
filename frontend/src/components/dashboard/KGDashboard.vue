@@ -191,7 +191,6 @@ const handleRegisterDataSource = (config: DataSourceConfig): void => {
 const handleUnregisterDataSource = (name: string): void => {
   // Note: The composable doesn't have an unregister method yet
   // For now, we'll just log this - in practice, data sources usually persist
-  console.debug(`DataSource "${name}" component unmounted`);
 };
 
 // Provide context for child DataSource components and KGMetricCard components

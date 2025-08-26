@@ -196,24 +196,16 @@ const chartOptions = computed((): any => {
         rect: any,
         size: any,
       ) {
-        console.log("Tooltip position called:", { point, params, size });
 
         // Safety checks for required parameters
         if (!point || !size || !size.contentSize) {
-          console.log("Missing required parameters, using fallback");
           return [point[0] + 15, point[1] - 15]; // Fallback position
         }
 
         // For nodes, position tooltip outside the circle based on node position
         // Check if this is a node (not an edge/link)
-        console.log("Checking params for node:", {
-          dataType: params.dataType,
-          seriesType: params.seriesType,
-          data: params.data,
-        });
 
         if (params.dataType === "node") {
-          console.log("Processing node tooltip positioning");
           const chartWidth = size.contentSize[0];
           const chartHeight = size.contentSize[1];
           // Estimate tooltip size since tooltipSize isn't available yet
@@ -228,28 +220,12 @@ const chartOptions = computed((): any => {
           const nodeX = params.data.x;
           const nodeY = params.data.y;
 
-          console.log("Node actual position:", {
-            nodeX,
-            nodeY,
-            centerX,
-            centerY,
-          });
 
           // Calculate angle from center to actual node position
           const dx = nodeX - centerX;
           const dy = nodeY - centerY;
           const angle = Math.atan2(dy, dx);
 
-          console.log("Tooltip positioning:", {
-            point,
-            centerX,
-            centerY,
-            dx,
-            dy,
-            angle: (angle * 180) / Math.PI,
-            isLeft: Math.cos(angle) < 0,
-            isTop: Math.sin(angle) < 0,
-          });
 
           // Use mouse position as base, but adjust based on node's side of circle
           let x = point[0];
@@ -272,15 +248,6 @@ const chartOptions = computed((): any => {
             y = point[1] + 20;
           }
 
-          console.log("Before clamping:", {
-            x,
-            y,
-            point,
-            chartWidth,
-            chartHeight,
-            tooltipWidth,
-            tooltipHeight,
-          });
 
           // Allow tooltip to extend beyond chart bounds if needed
           const originalX = x;
@@ -301,19 +268,7 @@ const chartOptions = computed((): any => {
           // Clamp Y to reasonable viewport bounds
           y = Math.max(10, Math.min(y, viewportHeight - tooltipHeight - 10));
 
-          console.log("After clamping:", {
-            originalX,
-            x,
-            viewportWidth,
-            isLeft: Math.cos(angle) < 0,
-          });
 
-          console.log("Final tooltip position:", {
-            x,
-            y,
-            tooltipWidth,
-            tooltipHeight,
-          });
 
           return [x, y];
         } else {
