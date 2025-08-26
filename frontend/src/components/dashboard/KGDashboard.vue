@@ -90,7 +90,7 @@
     <!-- Debug panel (development only) -->
     <div v-if="showDebugInfo && isDevelopment" class="debug-panel">
       <details>
-        <summary>🔍 Debug Info</summary>
+        <summary><AppIcon icon="magnifying-glass" /> Debug Info</summary>
         <div class="debug-content">
           <h5>KG Version: {{ kgVersion || "Not loaded" }}</h5>
           <h5>Source URL: {{ kgSourceUrl || "Not set" }}</h5>

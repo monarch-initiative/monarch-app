@@ -38,28 +38,28 @@
         </div>
         <div class="export-options">
           <button class="export-option" @click="exportAsPNG">
-            <span class="export-icon">🖼️</span>
+            <AppIcon icon="download" class="export-icon" />
             <div class="export-details">
               <div class="export-title">PNG Image</div>
               <div class="export-desc">Standard resolution for web use</div>
             </div>
           </button>
           <button class="export-option" @click="exportAsHighResPNG">
-            <span class="export-icon">📷</span>
+            <AppIcon icon="download" class="export-icon" />
             <div class="export-details">
               <div class="export-title">High-Res PNG</div>
               <div class="export-desc">4x resolution for print quality</div>
             </div>
           </button>
           <button class="export-option" @click="exportAsSVG">
-            <span class="export-icon">📐</span>
+            <AppIcon icon="code" class="export-icon" />
             <div class="export-details">
               <div class="export-title">SVG Vector</div>
               <div class="export-desc">Scalable vector format</div>
             </div>
           </button>
           <button class="export-option" @click="exportAsJSON">
-            <span class="export-icon">📄</span>
+            <AppIcon icon="file-lines" class="export-icon" />
             <div class="export-details">
               <div class="export-title">JSON Data</div>
               <div class="export-desc">Raw data and SQL query</div>
@@ -76,6 +76,7 @@ import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import * as echarts from "echarts";
 import type { EChartsOption } from "echarts";
 import { useSqlQuery } from "@/composables/use-sql-query";
+import AppIcon from "@/components/AppIcon.vue";
 import BaseChart from "./BaseChart.vue";
 
 export interface Props {
