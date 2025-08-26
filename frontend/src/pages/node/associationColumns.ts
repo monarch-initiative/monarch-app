@@ -17,10 +17,7 @@ export interface ColumnContext {
   getCategoryLabel: (idOrDefault: string) => string;
 }
 
-/**
- * Build the AppTable columns for an association category. Mirrors the existing
- * in-component logic, but as a pure function.
- */
+/** Build the AppTable columns for an association category. . */
 export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
   const { categoryId, nodeCategory, isDirect, items, getCategoryLabel } = ctx;
 
