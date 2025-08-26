@@ -352,7 +352,6 @@ const exportAsSVG = (): void => {
       ],
     };
 
-    console.log("Export options:", exportOptions);
     svgChart.setOption(exportOptions);
 
     // Give the chart time to render and then export
