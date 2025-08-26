@@ -49,8 +49,6 @@
       <!--Temperory condition for diesease node-->
       <AppDetails v-if="isDiseaseNode" gap="20px">
         <SectionClinicalReources
-          :node-inheritance="node.inheritance"
-          :causal-genes="node.causal_gene"
           :frequency-label="frequencyLabel"
           :node="node"
         />
@@ -211,7 +209,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { omit } from "lodash";
+import omit from "lodash/omit";
 import type { Node } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
@@ -221,33 +219,29 @@ import AppTagList from "@/components/AppTagList.vue";
 import { useClinicalResources } from "@/composables/use-clinical-resources";
 import SectionClinicalReources from "./SectionClinicalReources.vue";
 
-type Props = {
-  /** current node */
-  node: Node;
-};
+type Props = { node: Node };
 
-const props = defineProps<Props>();
-
-const isDiseaseNode = computed(() => props.node.category === "biolink:Disease");
+const { node } = defineProps<Props>();
+const isDiseaseNode = computed(() => node.category === "biolink:Disease");
 /** separate out mappings into categories */
 const clinicalSynopsis = computed(
   () =>
-    props.node.mappings?.filter(({ id }) =>
+    node.mappings?.filter(({ id }) =>
       ["OMIM:"].some((prefix) => id.startsWith(prefix)),
     ) || [],
 );
 const infoForPatients = computed(
   () =>
-    props.node.external_links?.filter(({ id }) =>
+    node.external_links?.filter(({ id }) =>
       ["GARD:"].some((prefix) => id.startsWith(prefix)),
     ) || [],
 );
 
 const frequencyLabel = computed((): "Rare" | "Common" => {
-  return props.node.subsets?.includes("rare") ? "Rare" : "Common";
+  return node.subsets?.includes("rare") ? "Rare" : "Common";
 });
 
-const { otherMappings, externalRefs } = useClinicalResources(props.node);
+const { otherMappings, externalRefs } = useClinicalResources(node);
 // async function scrollToAssociations() {
 //   await sleep(100);
 //   scrollTo("#associations");

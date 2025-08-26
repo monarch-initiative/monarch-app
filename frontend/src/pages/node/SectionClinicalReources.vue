@@ -25,19 +25,19 @@
       </div>
 
       <div class="sub-items">
-        <div v-if="nodeInheritance">
+        <div v-if="node?.inheritance">
           <span class="info-label"> Heritability : </span>
           <AppLink
-            v-tooltip="nodeInheritance?.name"
-            :to="nodeInheritance?.id || ''"
-            >{{ nodeInheritance?.name }}</AppLink
+            v-tooltip="node?.inheritance?.name"
+            :to="node?.inheritance?.id || ''"
+            >{{ node?.inheritance?.name }}</AppLink
           >
         </div>
 
-        <div v-if="casualGenes?.length">
+        <div v-if="node?.causal_gene?.length">
           <span class="info-label"> Casual Genes : </span>
           <AppNodeBadge
-            v-for="(gene, index) in casualGenes"
+            v-for="(gene, index) in node?.causal_gene"
             :key="index"
             :node="omit(gene, 'in_taxon_label')"
           />
@@ -53,38 +53,28 @@
 </template>
 
 <script setup lang="ts">
-import { omit } from "lodash";
+import { computed, type ComputedRef } from "vue";
+import omit from "lodash/omit";
 import type { Entity, Node as ModelNode } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppLink from "@/components/AppLink.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import { useClinicalResources } from "@/composables/use-clinical-resources";
+import type { ClinicalResourceEntry } from "@/composables/use-clinical-resources";
 import { BRAND_STYLES, brandFromId } from "@/util/linkout";
-
-type ClinicalResource = {
-  id: string;
-  url?: string;
-  label?: string;
-  /** dynamic overrides coming from API */
-  bg?: string;
-  fg?: string;
-  border?: string;
-  tooltip?: string;
-};
 
 type Props = {
   clinicalSynopsis?: { id: string; url?: string }[];
   infoForPatients?: { id: string; url?: string }[];
-  nodeInheritance?: Entity;
-  casualGenes?: Entity[];
   frequencyLabel?: "Rare" | "Common";
   node: ModelNode;
 };
 
-const props = defineProps<Props>();
-const { clinicalResources } = useClinicalResources(props.node);
-
-const chipStyle = (res: ClinicalResource) => {
+const { node, frequencyLabel } = defineProps<Props>();
+console.log("node in clinical resources", node);
+const clinicalResources = useClinicalResources(node)
+  .clinicalResources as ComputedRef<ClinicalResourceEntry[]>;
+const chipStyle = (res: ClinicalResourceEntry) => {
   const k = brandFromId(res.id);
   const s = k ? BRAND_STYLES[k] : undefined;
   return {
@@ -102,12 +92,27 @@ const brandText = (id: string, fallback?: string) => {
 </script>
 
 <style lang="scss" scoped>
+.clinical-resources {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  padding: 1em;
+  gap: 1.5em;
+  background-color: #f7fbfe;
+}
 .custom-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  padding: 1em 1em;
   gap: 1.25em;
+}
+
+.sub-items {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 0.4em;
 }
 
 .linkout {
@@ -140,16 +145,6 @@ const brandText = (id: string, fallback?: string) => {
   transform: translateY(-1px);
   background: var(--brand-hover);
   box-shadow: 0 6px 18px rgba(16, 24, 40, 0.12);
-}
-
-.clinical-resources {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
-  padding: 0.8em 0em;
-  gap: 0.6em;
-  background-color: #f7fbfe;
 }
 
 .brand-id {

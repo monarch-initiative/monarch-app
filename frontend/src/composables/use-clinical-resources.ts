@@ -40,7 +40,7 @@ const RESOURCE_PREFIXES = RESOURCE_DEFS.map((rec) => rec.prefix);
 const isClinicalId = (id: string) =>
   RESOURCE_PREFIXES.some((pre) => id.startsWith(pre));
 
-export type ResourceEntry = {
+export type ClinicalResourceEntry = {
   id: string;
   url: string;
   label: string;
@@ -49,8 +49,8 @@ export type ResourceEntry = {
 };
 
 export function useClinicalResources(node: Node) {
-  const clinicalResources = computed<ResourceEntry[]>(() => {
-    const out: ResourceEntry[] = [];
+  const clinicalResources = computed<ClinicalResourceEntry[]>(() => {
+    const out: ClinicalResourceEntry[] = [];
     for (const { prefix, label, tooltip } of RESOURCE_DEFS) {
       const ext = node.external_links?.find((link: ExpandedCurie) =>
         link.id.startsWith(prefix),
