@@ -73,7 +73,11 @@ const options = computed<ApexOptions>(() => ({
       color: "#000000",
     },
   },
-  yaxis: {},
+  yaxis: {
+    labels: {
+      formatter: (val: string | number) => String(val).replace(/_/g, " "),
+    },
+  },
   grid: {
     xaxis: {
       lines: {
