@@ -28,17 +28,28 @@
 <script setup lang="ts">
 import AppButton from "@/components/AppButton.vue";
 
-defineProps<{
-  hasDirectAssociations: boolean;
-  showAllTab: boolean;
-  directActive: boolean;
-  allActive: boolean;
-  directLabel: string;
-  inferredLabel: string;
-  directTooltip?: string;
-  inferredTooltip?: string;
-}>();
-
+const props = withDefaults(
+  defineProps<{
+    hasDirectAssociations: boolean;
+    showAllTab: boolean;
+    directActive: boolean;
+    allActive: boolean;
+    directLabel: string;
+    inferredLabel: string;
+    directTooltip?: string;
+    inferredTooltip?: string;
+  }>(),
+  {
+    hasDirectAssociations: true,
+    showAllTab: true,
+    directActive: true,
+    allActive: false,
+    directLabel: "Direct",
+    inferredLabel: "All",
+    directTooltip: undefined,
+    inferredTooltip: undefined,
+  },
+);
 defineEmits<{
   (e: "select", which: "direct" | "all"): void;
 }>();
