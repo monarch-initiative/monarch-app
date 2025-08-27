@@ -1,22 +1,17 @@
-/** Converts an ISO date string to a localized, readable date. */
+/**
+ * Converts an ISO date string to a localized, readable date. Returns null if
+ * value is missing or not parseable as a date.
+ */
 export function formatReleaseDate(
-  isoDate: string,
+  isoDate: string | null | undefined,
   locale: string = navigator.language || "en-US",
-): string {
-  if (!isoDate || typeof isoDate !== "string") {
-    return `Invalid date: ${isoDate}`;
-  }
-
-  const dt = new Date(isoDate);
-
-  // Check if date is valid
-  if (isNaN(dt.getTime())) {
-    return `Invalid date: ${isoDate}`;
-  }
-
+): string | null {
+  if (!isoDate) return null;
+  const parsedTime = Date.parse(isoDate);
+  if (Number.isNaN(parsedTime)) return null;
   return new Intl.DateTimeFormat(locale, {
     year: "numeric",
     month: "long",
     day: "numeric",
-  }).format(dt);
+  }).format(new Date(parsedTime));
 }

@@ -39,13 +39,13 @@
         </thead>
         <tbody>
           <tr v-for="source in currentSources" :key="source.id">
-            <td>{{ source.label }}</td>
+            <td>{{ resourceFullName(source.label) }}</td>
             <td>
               <a :href="generateInforesLink(source.id)" target="_blank">{{
                 source.id
               }}</a>
             </td>
-            <td>{{ source.count }}</td>
+            <td>{{ source.count.toLocaleString() }}</td>
           </tr>
         </tbody>
       </table>
@@ -59,6 +59,7 @@ import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppSection from "@/components/AppSection.vue";
 import PageTitle from "@/components/ThePageTitle.vue";
 import { useKnowledgeSources } from "@/composables/use-knowledge-sources";
+import { RESOURCE_NAME_MAP } from "@/config/resourceNames";
 
 const activeTab = ref<"primary" | "aggregator">("primary");
 
@@ -77,7 +78,8 @@ onMounted(() => fetchAll());
 function generateInforesLink(id: string) {
   return `https://w3id.org/information-resource-registry/${id.replace("infores:", "")}`;
 }
-
+const resourceFullName = (label?: string) =>
+  RESOURCE_NAME_MAP[(label ?? "").toUpperCase()] ?? label ?? "";
 const currentSources = computed(() =>
   activeTab.value === "primary"
     ? primarySources.value
