@@ -173,15 +173,6 @@ const chartOptions = computed((): EChartsOption => {
   if (categories.length === 0) {
     // Return minimal valid configuration when no data
     return {
-      title: {
-        text: props.title,
-        left: "center",
-        top: 20,
-        textStyle: {
-          fontSize: 16,
-          fontWeight: "normal",
-        },
-      },
       grid: {
         left: "10%",
         right: "10%",
@@ -207,15 +198,6 @@ const chartOptions = computed((): EChartsOption => {
   const isHorizontal = props.orientation === "horizontal";
 
   return {
-    title: {
-      text: props.title,
-      left: "center",
-      top: 20,
-      textStyle: {
-        fontSize: 16,
-        fontWeight: "normal",
-      },
-    },
     tooltip: {
       trigger: "axis",
       axisPointer: {

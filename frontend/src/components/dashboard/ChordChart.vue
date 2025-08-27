@@ -179,15 +179,6 @@ const chartOptions = computed((): any => {
   }
 
   return {
-    title: {
-      text: props.title,
-      left: "center",
-      top: 20,
-      textStyle: {
-        fontSize: 16,
-        fontWeight: "normal",
-      },
-    },
     tooltip: {
       trigger: "item",
       position: function (

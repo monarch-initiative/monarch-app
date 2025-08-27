@@ -78,9 +78,7 @@
         </div>
 
         <!-- Charts Section -->
-        <div class="dashboard-section">
-          <h3>Data Visualizations</h3>
-
+        <div class="charts-container">
           <!-- Chord Chart - Category Connections -->
           <ChordChart
             title="Knowledge Graph Category Connections"
@@ -191,6 +189,18 @@ import PageTitle from "@/components/ThePageTitle.vue";
     color: #374151;
     font-size: 0.95rem;
     line-height: 1.6;
+  }
+}
+
+.charts-container {
+  margin: 2rem 0;
+
+  > * {
+    margin-bottom: 2rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 }
 
