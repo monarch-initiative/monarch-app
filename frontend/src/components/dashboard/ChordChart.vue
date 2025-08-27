@@ -74,8 +74,8 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import * as echarts from "echarts";
-import { useSqlQuery } from "@/composables/use-sql-query";
 import AppIcon from "@/components/AppIcon.vue";
+import { useSqlQuery } from "@/composables/use-sql-query";
 import BaseChart from "./BaseChart.vue";
 
 export interface Props {
@@ -188,7 +188,6 @@ const chartOptions = computed((): any => {
         rect: any,
         size: any,
       ) {
-
         // Safety checks for required parameters
         if (!point || !size || !size.contentSize) {
           return [point[0] + 15, point[1] - 15]; // Fallback position
@@ -212,12 +211,10 @@ const chartOptions = computed((): any => {
           const nodeX = params.data.x;
           const nodeY = params.data.y;
 
-
           // Calculate angle from center to actual node position
           const dx = nodeX - centerX;
           const dy = nodeY - centerY;
           const angle = Math.atan2(dy, dx);
-
 
           // Use mouse position as base, but adjust based on node's side of circle
           let x = point[0];
@@ -240,9 +237,7 @@ const chartOptions = computed((): any => {
             y = point[1] + 20;
           }
 
-
           // Allow tooltip to extend beyond chart bounds if needed
-          const originalX = x;
 
           // Only clamp to prevent going off the viewport/page, not the chart container
           // Use much more generous bounds (assume viewport is at least 1200px wide)
@@ -259,8 +254,6 @@ const chartOptions = computed((): any => {
 
           // Clamp Y to reasonable viewport bounds
           y = Math.max(10, Math.min(y, viewportHeight - tooltipHeight - 10));
-
-
 
           return [x, y];
         } else {
