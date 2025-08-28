@@ -40,6 +40,7 @@
             v-for="(gene, index) in node?.causal_gene"
             :key="index"
             :node="omit(gene, 'in_taxon_label')"
+            class="causal-gene"
           />
         </div>
 
@@ -151,5 +152,8 @@ const brandText = (id: string, fallback?: string) => {
   font-size: 0.7rem;
   line-height: 1;
   opacity: 0.75;
+}
+.causal-gene {
+  padding: 0 0.3em;
 }
 </style>
