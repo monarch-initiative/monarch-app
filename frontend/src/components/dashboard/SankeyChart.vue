@@ -75,8 +75,8 @@
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import * as echarts from "echarts";
 import type { EChartsOption } from "echarts";
-import { useSqlQuery } from "@/composables/use-sql-query";
 import AppIcon from "@/components/AppIcon.vue";
+import { useSqlQuery } from "@/composables/use-sql-query";
 import BaseChart from "./BaseChart.vue";
 
 export interface Props {
@@ -280,7 +280,6 @@ const exportAsSVG = (): void => {
   tempContainer.style.backgroundColor = "#ffffff";
   document.body.appendChild(tempContainer);
 
-
   try {
     // Initialize chart with SVG renderer and explicit size
     const svgChart = echarts.init(tempContainer, null, {
@@ -353,7 +352,6 @@ const exportAsSVG = (): void => {
           /<svg[^>]*>/,
           '<svg width="2400" height="900" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full">',
         );
-
 
         const blob = new Blob([svgString], { type: "image/svg+xml" });
         const url = URL.createObjectURL(blob);

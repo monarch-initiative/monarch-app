@@ -75,8 +75,8 @@
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import * as echarts from "echarts";
 import type { EChartsOption } from "echarts";
-import { useSqlQuery } from "@/composables/use-sql-query";
 import AppIcon from "@/components/AppIcon.vue";
+import { useSqlQuery } from "@/composables/use-sql-query";
 import BaseChart from "./BaseChart.vue";
 
 export interface Props {
