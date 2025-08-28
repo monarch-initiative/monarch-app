@@ -14,6 +14,9 @@
       @click.stop
     >
       <AppBackToTopButton />
+
+      <SectionHierarchy v-if="node" :node="node" :child-limit="6" />
+
       <!-- entries -->
       <AppLink
         v-for="(entry, index) in entries"
@@ -53,7 +56,9 @@ import {
   useEventListener,
   useMutationObserver,
 } from "@vueuse/core";
+import type { Node as ApiNode } from "@/api/model";
 import AppBackToTopButton from "@/components/AppBackToTopButton.vue";
+import SectionHierarchy from "@/pages/node/SectionHierarchy.vue";
 import { firstInView } from "@/util/dom";
 import AppCheckbox from "./AppCheckbox.vue";
 import type AppFlex from "./AppFlex.vue";
@@ -64,7 +69,7 @@ type Entries = {
   icon: string;
   text: string;
 }[];
-
+const props = defineProps<{ node: ApiNode | null }>();
 /** toc entries */
 const entries = ref<Entries>([]);
 /** whether toc is open or not */

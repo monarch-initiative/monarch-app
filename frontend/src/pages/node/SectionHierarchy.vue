@@ -1,86 +1,255 @@
-<!--
-  node page hierarchy section. super/sub/equivalent classes of current node.
--->
-
 <template>
-  <AppSection
-    v-if="node.category !== 'biolink:Gene'"
-    width="full"
-    alignment="left"
-    class="inset"
-  >
-    <AppHeading icon="sitemap">Hierarchy</AppHeading>
+  <div class="toc-hier" role="group" aria-label="Hierarchy preview">
+    <!-- PARENTS (multi) -->
+    <div class="parents">
+      <div class="parent-row" v-for="p in parents" :key="p.id">
+        <span class="bar" aria-hidden="true"></span>
+        <RouterLink :to="`/${p.id}`" :title="labelOf(p)" class="row-text">
+          {{ labelOf(p) }}
+        </RouterLink>
+      </div>
+    </div>
 
-    <AppDetails>
-      <!-- nodes that are "parents" of node -->
-      <AppDetail
-        title="Super-classes"
-        icon="angle-up"
-        :blank="!node.node_hierarchy?.super_classes.length"
-        :full="true"
-        :v-tooltip="`Nodes that are &quot;parents&quot; of this node`"
-      >
-        <AppFlex class="flex" align-h="left" gap="small">
-          <AppNodeBadge
-            v-for="(_class, index) in node.node_hierarchy?.super_classes"
-            :key="index"
-            :node="_class"
-            :breadcrumbs="[
-              {
-                node: toBreadcrumbNode(node),
-                association: {
-                  predicate: 'is super class of',
-                  direction: AssociationDirectionEnum.incoming,
-                },
-              },
-            ]"
-          />
-        </AppFlex>
-      </AppDetail>
+    <!-- CURRENT NODE -->
+    <div class="current-row">
+      <span class="bar" aria-hidden="true"></span>
+      <strong class="row-text" :title="labelOf(node)">{{
+        labelOf(node)
+      }}</strong>
+    </div>
 
-      <!-- nodes that are "children" of node -->
-      <AppDetail
-        :title="`Sub-classes (${node.node_hierarchy?.sub_classes.length})`"
-        icon="angle-down"
-        :blank="!node.node_hierarchy?.sub_classes.length"
-        :full="true"
-        :v-tooltip="`Nodes that are &quot;children&quot; of this node`"
+    <!-- CHILDREN -->
+    <div class="children">
+      <div class="child-row" v-for="c in shownChildren" :key="c.id">
+        <span class="bar" aria-hidden="true"></span>
+        <span class="connector" aria-hidden="true"></span>
+        <!-- NEW -->
+        <RouterLink :to="`/${c.id}`" class="row-text" :title="labelOf(c)">
+          {{ labelOf(c) }}
+        </RouterLink>
+      </div>
+
+      <RouterLink
+        v-if="moreCount > 0"
+        :to="'#Hierarchy'"
+        class="more"
+        title="Show full list in the Hierarchy section"
       >
-        <AppFlex class="flex" align-h="left" gap="small">
-          <AppNodeBadge
-            v-for="(_class, index) in node.node_hierarchy?.sub_classes"
-            :key="index"
-            :node="_class"
-            :breadcrumbs="[
-              {
-                node: toBreadcrumbNode(node),
-                association: { predicate: 'is sub class of' },
-              },
-            ]"
-          />
-        </AppFlex>
-      </AppDetail>
-    </AppDetails>
-  </AppSection>
+        + {{ moreCount }} more…
+      </RouterLink>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { AssociationDirectionEnum, type Node } from "@/api/model";
-import AppDetail from "@/components/AppDetail.vue";
-import AppDetails from "@/components/AppDetails.vue";
-import AppNodeBadge from "@/components/AppNodeBadge.vue";
-import { toBreadcrumbNode } from "@/global/breadcrumbs";
+import { computed } from "vue";
+import type { Node } from "@/api/model";
+import AppNodeText from "@/components/AppNodeText.vue";
+import AppTile from "@/components/AppTile.vue";
+import ThePageTitle from "@/components/ThePageTitle.vue";
+import { appTitle } from "@/global/meta";
 
-type Props = {
-  /** current node */
-  node: Node;
-};
+const props = defineProps<{ node: Node; childLimit?: number }>();
 
-defineProps<Props>();
+const parents = computed<any[]>(
+  () => props.node.node_hierarchy?.super_classes ?? [],
+);
+const children = computed<any[]>(
+  () => props.node.node_hierarchy?.sub_classes ?? [],
+);
+
+const limit = computed(() => props.childLimit ?? 6);
+const shownChildren = computed(() => children.value.slice(0, limit.value));
+const moreCount = computed(() =>
+  Math.max(0, children.value.length - shownChildren.value.length),
+);
+
+function labelOf(n: any): string {
+  return n?.name ?? n?.label ?? n?.id ?? "";
+}
 </script>
 
 <style lang="scss" scoped>
-.flex {
-  column-gap: 20px !important;
+/* Fully aligned hierarchy styles: bar | connector | text
+   - spine is row-scoped (per .child-row)
+   - tick is attached to the child text (::before), so it aligns with the first line
+*/
+.toc-hier {
+  /* perceived indents (bar widths) */
+  --bar-h: 6px;
+  --parent-bar: 2em;
+  --current-bar: 3em;
+  --child-bar: 4em;
+
+  /* spacing */
+  --bar-gap: 4px; /* gap between any bar end and the spine */
+  --spine-w: 1px; /* vertical line width */
+  --hyphen-w: 8px; /* child tick length */
+  --child-gap: 6px; /* space after tick before text */
+  /* connector column = spine + tick + gap to text */
+  --connector-w: calc(var(--spine-w) + var(--hyphen-w) + var(--child-gap));
+  /* single source of truth for spine X positions */
+  --current-spine-x: calc(var(--current-bar) + var(--bar-gap));
+  --child-spine-x: calc(var(--child-bar) + var(--bar-gap));
+  /* tick baseline alignment (relative to first line of text) */
+  --tick-top: 0.7em;
+  /* general spacing */
+  --gap: 6px;
+  --bottom-gap: 10px;
+  margin: 2em 1.5em 3em 1.5em;
+  padding-bottom: var(--bottom-gap);
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 14px;
+  line-height: 1.5;
+  .more {
+    margin-top: 2px;
+  }
+}
+
+.toc-hier-title {
+  display: flex;
+
+  font-weight: 600;
+  font-size: 12px;
+}
+
+/* ===== Parents (bar | text) ===== */
+.parent-row {
+  display: grid;
+  position: relative;
+  grid-template-columns: var(--parent-bar) 1fr;
+  column-gap: var(--gap);
+  align-items: center;
+  margin: 4px 0;
+}
+.parent-row .bar {
+  box-sizing: content-box;
+  justify-self: end; /* bar right edge = column edge */
+  width: var(--parent-bar);
+  height: var(--bar-h);
+  border-radius: 3px;
+  background: #e5e7eb;
+}
+.parent-row .row-text,
+.current-row .row-text {
+  display: block;
+  grid-column: 2; /* text column */
+  min-width: 0; /* REQUIRED in CSS Grid to allow shrink */
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* ===== Current (bar | text) + spine stub ===== */
+.current-row {
+  display: grid;
+  position: relative;
+  grid-template-columns: var(--current-bar) 1fr;
+  column-gap: var(--gap);
+  align-items: center;
+  margin: 4px 0;
+}
+.current-row .bar {
+  box-sizing: content-box;
+  justify-self: end;
+  width: var(--current-bar);
+  height: var(--bar-h);
+  border-radius: 3px;
+  background: #e5e7eb;
+}
+/* spine at end of current bar */
+.current-row::after {
+  z-index: 1;
+  position: absolute;
+  top: -0.25em;
+  bottom: -0.15em;
+  left: var(--current-spine-x);
+  width: var(--spine-w);
+  background: #111827;
+  content: "";
+}
+
+/* ===== Children (bar | connector | text) ===== */
+.children {
+  margin: 4px 0;
+}
+
+.child-row {
+  display: grid;
+  position: relative;
+  grid-template-columns: var(--child-bar) var(--connector-w) 1fr; /* bar | connector | text */
+  column-gap: 0; /* connector encodes spacing */
+
+  align-items: center;
+  margin: 4px 0;
+}
+
+/* child bar ends flush with connector */
+.child-row .bar {
+  box-sizing: content-box;
+  top: var(--child-bar-offset-y);
+  justify-self: end;
+  width: var(--child-bar);
+  height: var(--bar-h);
+  border-radius: 3px;
+  background: #e5e7eb;
+}
+
+.connector {
+  position: relative;
+  height: 1.2em; /* enough to cover the first line */
+}
+
+.connector::before {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  left: 0;
+  width: var(--spine-w);
+  background: #111827;
+  content: ""; /* vertical spine */
+}
+.connector::after {
+  position: absolute;
+  top: var(--tick-top);
+  left: var(--spine-w);
+  width: var(--hyphen-w);
+  height: 1px;
+  background: #111827;
+  content: ""; /* horizontal tick */
+}
+
+/* child text sits in column 3 */
+.child-row .row-text {
+  display: block;
+  grid-column: 3;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden; /* key for ellipsis */
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /* color: #2563eb;  // if you’re not using $theme */
+}
+
+/* Links */
+.row-text {
+  text-decoration: none;
+}
+.row-text:hover {
+  text-decoration: underline;
+}
+
+/* “+ more…” aligned with the child text column */
+.more {
+  display: inline-block;
+  margin-left: calc(
+    var(--child-bar) + var(--bar-gap) + var(--spine-w) + var(--hyphen-w) +
+      var(--child-gap)
+  );
+  color: #6b7280;
+  text-decoration: none;
+}
+.more:hover {
+  text-decoration: underline;
 }
 </style>
