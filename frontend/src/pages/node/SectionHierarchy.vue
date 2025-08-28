@@ -1,5 +1,6 @@
 <template>
   <div class="toc-hier" role="group" aria-label="Hierarchy preview">
+    <div class="toc-hier-title">Hierarchy</div>
     <!-- PARENTS (multi) -->
     <div class="parents">
       <div class="parent-row" v-for="p in parents" :key="p.id">
@@ -51,6 +52,7 @@ import { appTitle } from "@/global/meta";
 
 const props = defineProps<{ node: Node; childLimit?: number }>();
 
+console.log("props", props.node);
 const parents = computed<any[]>(
   () => props.node.node_hierarchy?.super_classes ?? [],
 );
@@ -95,7 +97,12 @@ function labelOf(n: any): string {
   --tick-top: 0.7em;
   /* general spacing */
   --gap: 6px;
-  --bottom-gap: 10px;
+  --bottom-gap: 1.5em;
+
+  --row-gap-parent: 4px; /* spacing between parent rows */
+  --row-gap-current: 6px; /* spacing above/below current row */
+  --row-gap-child: 6px; /* spacing between child rows */
+
   margin: 2em 1.5em 3em 1.5em;
   padding-bottom: var(--bottom-gap);
   border-bottom: 1px solid #e5e7eb;
@@ -108,9 +115,9 @@ function labelOf(n: any): string {
 
 .toc-hier-title {
   display: flex;
-
-  font-weight: 600;
-  font-size: 12px;
+  padding-bottom: 0.8em;
+  font-weight: 400;
+  font-size: 15px;
 }
 
 /* ===== Parents (bar | text) ===== */
@@ -124,18 +131,16 @@ function labelOf(n: any): string {
 }
 .parent-row .bar {
   box-sizing: content-box;
-  justify-self: end; /* bar right edge = column edge */
+  justify-self: end;
   width: var(--parent-bar);
   height: var(--bar-h);
-  border-radius: 3px;
   background: #e5e7eb;
 }
 .parent-row .row-text,
 .current-row .row-text {
   display: block;
-  grid-column: 2; /* text column */
-  min-width: 0; /* REQUIRED in CSS Grid to allow shrink */
-  max-width: 100%;
+  grid-column: 2;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -154,7 +159,6 @@ function labelOf(n: any): string {
   justify-self: end;
   width: var(--current-bar);
   height: var(--bar-h);
-  border-radius: 3px;
   background: #e5e7eb;
 }
 /* spine at end of current bar */
@@ -178,7 +182,7 @@ function labelOf(n: any): string {
   display: grid;
   position: relative;
   grid-template-columns: var(--child-bar) var(--connector-w) 1fr; /* bar | connector | text */
-  column-gap: 0; /* connector encodes spacing */
+  column-gap: 0.3em; /* connector encodes spacing */
 
   align-items: center;
   margin: 4px 0;
@@ -191,7 +195,6 @@ function labelOf(n: any): string {
   justify-self: end;
   width: var(--child-bar);
   height: var(--bar-h);
-  border-radius: 3px;
   background: #e5e7eb;
 }
 
@@ -251,5 +254,19 @@ function labelOf(n: any): string {
 }
 .more:hover {
   text-decoration: underline;
+}
+
+.parent-row {
+  margin-block: var(--row-gap-parent);
+}
+.current-row {
+  margin-block: var(--row-gap-current);
+}
+.child-row {
+  margin-block: var(--row-gap-child);
+}
+.connector {
+  /* was: height: 1.2em; */
+  height: calc(1.2em + var(--row-gap-child));
 }
 </style>
