@@ -36,12 +36,12 @@
 
         <div v-if="node?.causal_gene?.length">
           <span class="info-label"> Casual Genes : </span>
-          <AppNodeBadge
-            v-for="(gene, index) in node?.causal_gene"
-            :key="index"
-            :node="omit(gene, 'in_taxon_label')"
-            class="causal-gene"
-          />
+          <AppFlex align-h="left" gap="small">
+            <AppNodeBadge
+              v-for="(gene, index) in node?.causal_gene"
+              :key="index"
+              :node="omit(gene, 'in_taxon_label')"
+          /></AppFlex>
         </div>
 
         <div>
@@ -152,8 +152,5 @@ const brandText = (id: string, fallback?: string) => {
   font-size: 0.7rem;
   line-height: 1;
   opacity: 0.75;
-}
-.causal-gene {
-  padding: 0 0.3em;
 }
 </style>
