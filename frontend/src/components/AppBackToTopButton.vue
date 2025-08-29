@@ -52,10 +52,10 @@ const scrollTop = () => {
 <style scoped lang="scss">
 .toc-top {
   display: flex;
-  z-index: 1;
   justify-content: center;
   padding: 1em;
   border-bottom: 1px solid #e9eef0;
   background: #fff;
+  font-size: 0.8em;
 }
 </style>

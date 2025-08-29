@@ -27,9 +27,9 @@
     <SectionVisualization :node="node" />
     <SectionAssociations :node="node" />
     <SectionBreadcrumbs :node="node" />
-    <SectionHierarchy :node="node" />
+    <!-- <SectionHierarchy :node="node" /> -->
     <Teleport to="body">
-      <TheTableOfContents />
+      <TheTableOfContents :node="node" />
     </Teleport>
   </template>
 </template>
