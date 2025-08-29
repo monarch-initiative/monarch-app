@@ -30,21 +30,35 @@
         </RouterLink>
       </div>
 
-      <RouterLink
+      <button
         v-if="moreCount > 0"
-        :to="'#Hierarchy'"
+        type="button"
         class="more"
-        title="Show full list in the Hierarchy section"
+        @click="openModal"
+        title="Show full list"
       >
         + {{ moreCount }} more…
-      </RouterLink>
+      </button>
+
+      <AppModal v-model="showAll" :label="modalTitle">
+        <h2 class="modal-title">{{ modalTitle }}</h2>
+
+        <ul class="hier-modal-list">
+          <li v-for="c in remainingChildren" :key="c.id">
+            <RouterLink :to="`/${c.id}`" @click="closeModal">
+              {{ labelOf(c) }}
+            </RouterLink>
+          </li>
+        </ul>
+      </AppModal>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import type { Node } from "@/api/model";
+import AppModal from "@/components/AppModal.vue";
 
 const props = defineProps<{ node: Node; childLimit?: number }>();
 
@@ -53,7 +67,7 @@ const LABELS = new Map<string, string>([
   ["biolink:PhenotypicFeature", "Phenotype"],
   ["biolink:AnatomicalEntity", "Anatomical entity"],
 ]);
-
+console.log(props.node);
 const typeNoun = computed(
   () => LABELS.get(props.node?.category ?? "") ?? "Hierarchy",
 );
@@ -72,16 +86,49 @@ const moreCount = computed(() =>
   Math.max(0, children.value.length - shownChildren.value.length),
 );
 
-function labelOf(n: any): string {
+const labelOf = (n: any): string => {
   return n?.name ?? n?.label ?? n?.id ?? "";
-}
+};
+
+const showAll = ref(false);
+// everything after the inline list
+const remainingChildren = computed(() => children.value.slice(limit.value));
+const openModal = () => (showAll.value = true);
+const closeModal = () => (showAll.value = false);
+
+// Count descendants for a node (uses whatever field you have available)
+const countFor = (n: any): number =>
+  n?.descendants ??
+  n?.descendant_count ??
+  n?.children_count ??
+  (Array.isArray(n?.sub_classes) ? n.sub_classes.length : 0) ??
+  0;
+
+// Collect counts for the visible rows
+const parentCounts = computed(() => parents.value.map(countFor));
+const childCounts = computed(() => shownChildren.value.map(countFor));
+const selfCount = computed(() => countFor(props.node));
+
+// One max shared across parents + current + visible children
+const maxShownDescendants = computed(() =>
+  Math.max(10, selfCount.value, ...parentCounts.value, ...childCounts.value),
+);
+console.log("maxShownDescendants", maxShownDescendants.value);
+// 0–1 ratio for a bar
+const barRatioFor = (n: any): number =>
+  Math.min(1, countFor(n) / maxShownDescendants.value);
+
+// Modal
+const nodeName = computed(() => labelOf(props.node));
+const totalChildren = computed(() => children.value.length);
+
+const modalTitle = computed(
+  () =>
+    `${totalChildren.value === 1 ? "Subclass" : "Subclasses"} of ${nodeName.value}`,
+);
 </script>
 
 <style lang="scss" scoped>
-/* Fully aligned hierarchy styles: bar | connector | text
-   - spine is row-scoped (per .child-row)
-   - tick is attached to the child text (::before), so it aligns with the first line
-*/
 .toc-hier {
   /* perceived indents (bar widths) */
   --bar-h: 6px;
@@ -125,7 +172,7 @@ function labelOf(n: any): string {
 
   color: $off-black;
   font-weight: 500;
-  font-size: 0.9em;
+  font-size: 1em;
 }
 
 /* ===== Parents (bar | text) ===== */
@@ -275,5 +322,43 @@ function labelOf(n: any): string {
 }
 .connector {
   height: calc(1.2em + var(--row-gap-child));
+}
+
+.modal-title {
+  width: fit-content;
+  color: #111827;
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: center;
+}
+.hier-modal-list {
+  inline-size: fit-content;
+  margin: 0;
+  padding: 6px 0; /* top/bottom breathing room */
+  list-style: circle;
+}
+
+/* comfy items + subtle hover */
+.hier-modal-list li {
+  padding: 5px 12px;
+  border-radius: 10px;
+  color: $theme;
+  transition:
+    background 150ms ease,
+    transform 150ms ease;
+}
+
+.hier-modal-list a {
+  display: block;
+  color: inherit;
+  line-height: 1.25;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.hier-modal-list li:hover,
+.hier-modal-list a:focus-visible {
+  transform: translateX(2px);
+  background: #f3f4f6; /* soft highlight */
 }
 </style>
