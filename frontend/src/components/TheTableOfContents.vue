@@ -38,11 +38,11 @@
       <div class="spacer"></div>
 
       <!-- options -->
-      <AppCheckbox
+      <!-- <AppCheckbox
         v-model="oneAtATime"
         v-tooltip="'Only show one section at a time'"
         text="Show single section"
-      />
+      /> -->
     </AppFlex>
   </aside>
 </template>
