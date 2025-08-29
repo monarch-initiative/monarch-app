@@ -15,7 +15,11 @@
     >
       <AppBackToTopButton />
 
-      <SectionHierarchy v-if="node" :node="node" :child-limit="6" />
+      <SectionHierarchy
+        v-if="node && showHierarchy"
+        :node="node"
+        :child-limit="10"
+      />
 
       <!-- entries -->
       <AppLink
@@ -50,7 +54,7 @@ export const closeToc = (): unknown =>
 </script>
 
 <script setup lang="ts">
-import { nextTick, onMounted, ref, watch } from "vue";
+import { computed, nextTick, onMounted, ref, watch } from "vue";
 import {
   onClickOutside,
   useEventListener,
@@ -69,7 +73,13 @@ type Entries = {
   icon: string;
   text: string;
 }[];
-const props = defineProps<{ node: ApiNode | null }>();
+
+const CATEGORIES = [
+  "biolink:Disease",
+  "biolink:PhenotypicFeature",
+  "biolink:AnatomicalEntity",
+];
+const { node } = defineProps<{ node: ApiNode | null }>();
 /** toc entries */
 const entries = ref<Entries>([]);
 /** whether toc is open or not */
@@ -80,10 +90,9 @@ const nudge = ref(0);
 const oneAtATime = ref(false);
 /** active (in view or selected) section */
 const active = ref(0);
-
+const showHierarchy = computed(() => CATEGORIES.includes(node?.category ?? ""));
 /** table of contents panel element */
 const toc = ref<InstanceType<typeof AppFlex>>();
-
 /** listen for close event */
 useEventListener(window, "closetoc", () => (expanded.value = false));
 /** toggle expanded state */

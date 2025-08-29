@@ -1,6 +1,6 @@
 <template>
   <div class="toc-hier" role="group" aria-label="Hierarchy preview">
-    <div class="toc-hier-title">Hierarchy</div>
+    <div class="toc-hier-title">{{ title }}</div>
     <!-- PARENTS (multi) -->
     <div class="parents">
       <div class="parent-row" v-for="p in parents" :key="p.id">
@@ -45,14 +45,20 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import type { Node } from "@/api/model";
-import AppNodeText from "@/components/AppNodeText.vue";
-import AppTile from "@/components/AppTile.vue";
-import ThePageTitle from "@/components/ThePageTitle.vue";
-import { appTitle } from "@/global/meta";
 
 const props = defineProps<{ node: Node; childLimit?: number }>();
 
-console.log("props", props.node);
+const LABELS = new Map<string, string>([
+  ["biolink:Disease", "Disease"],
+  ["biolink:PhenotypicFeature", "Phenotype"],
+  ["biolink:AnatomicalEntity", "Anatomical entity"],
+]);
+
+const typeNoun = computed(
+  () => LABELS.get(props.node?.category ?? "") ?? "Hierarchy",
+);
+const title = computed(() => `${typeNoun.value} hierarchy`);
+
 const parents = computed<any[]>(
   () => props.node.node_hierarchy?.super_classes ?? [],
 );
@@ -115,9 +121,11 @@ function labelOf(n: any): string {
 
 .toc-hier-title {
   display: flex;
-  padding-bottom: 0.8em;
-  font-weight: 400;
-  font-size: 15px;
+  padding-bottom: 0.9em;
+
+  color: $off-black;
+  font-weight: 500;
+  font-size: 0.9em;
 }
 
 /* ===== Parents (bar | text) ===== */
@@ -266,7 +274,6 @@ function labelOf(n: any): string {
   margin-block: var(--row-gap-child);
 }
 .connector {
-  /* was: height: 1.2em; */
   height: calc(1.2em + var(--row-gap-child));
 }
 </style>
