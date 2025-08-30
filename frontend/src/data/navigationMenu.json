@@ -50,6 +50,12 @@
         "tooltip": ""
       },
       {
+        "label": "Dashboard",
+        "key": "kg-dashboard",
+        "to": "/kg/dashboard",
+        "tooltip": "Interactive KG data visualizations"
+      },
+      {
         "label": "API",
         "key": "kg-api",
         "to": "https://api-v3.monarchinitiative.org/v3/docs",
