@@ -25,6 +25,7 @@
 
   <!-- Year Tabs using the same style as KG Sources page -->
   <AppSection width="big">
+    <AppHeading>Publications by Year </AppHeading>
     <div class="tab-container">
       <div class="tabs" role="tablist" aria-label="Publication years">
         <div
@@ -202,6 +203,12 @@ onMounted(() => setActiveYear(activeYear.value));
 </script>
 
 <style scoped lang="scss">
+.section.center {
+  padding-bottom: 10px;
+}
+.section.big {
+  gap: 20px;
+}
 .metadata {
   text-align: center;
 }
