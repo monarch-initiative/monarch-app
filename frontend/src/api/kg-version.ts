@@ -16,3 +16,13 @@ export const getLatestKGReleaseDate = async (): Promise<string> => {
   }
   return versionInfo.monarch_kg_version;
 };
+
+// Fetches the Knowledge Graph source URL
+export const getKGSourceUrl = async (): Promise<string> => {
+  const url = `${apiUrl}/version`;
+  const versionInfo = await request<VersionResponse>(url);
+  if (!versionInfo || !versionInfo.monarch_kg_source) {
+    throw new Error("No KG source URL found");
+  }
+  return versionInfo.monarch_kg_source;
+};

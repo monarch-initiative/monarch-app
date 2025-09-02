@@ -1,29 +1,39 @@
 <template>
   <hr />
   <div class="hero-tool-links">
-    <AppLink to="/search-phenotypes">Phenotype Similarity Tools</AppLink>
-    <span>|</span>
-    <AppLink to="/text-annotator">Text Annotator</AppLink>
+    <AppLink to="/search-phenotypes" class="link"
+      >Phenotype Similarity Tools</AppLink
+    >
+    <!-- <span>|</span> -->
+    <AppLink to="/text-annotator" class="link">Text Annotator</AppLink>
   </div>
 </template>
 
 <style scoped lang="scss">
-$wrap: 1350px;
+$wrap: 1000px;
 .hero-tool-links {
   display: flex;
+
+  display: flex;
+  flex: 0 0 100%;
   flex-wrap: nowrap;
   align-items: center;
-  gap: 0.75rem;
+  justify-content: center;
+  gap: 12px;
   font-size: 1.1em;
-  white-space: nowrap;
-
-  @media (max-width: $wrap) {
-    flex-wrap: wrap;
-    margin-top: 0.8rem;
+  white-space: normal;
+  .link {
+    padding: 0.8em;
+    border-radius: 0.2em;
+    background-color: $theme;
     color: $white;
-    font-size: 0.9em;
-    white-space: wrap;
+    font-size: 0.8em;
+    @media (max-width: $wrap) {
+      background-color: $white;
+      color: $theme;
+    }
   }
+
   a {
     font-weight: 500;
     text-decoration: none;
@@ -32,26 +42,34 @@ $wrap: 1350px;
       color: $white;
     }
     &:hover {
-      text-decoration: underline;
+      background-color: $theme-light;
+      color: $black;
     }
   }
 
   span {
     color: #aaa;
   }
+
+  @media (max-width: $wrap) {
+    flex-wrap: wrap;
+    margin-top: 0.8rem;
+
+    font-size: 0.9em;
+    white-space: wrap;
+  }
+
   h3 {
     padding: 0;
-
     @media (max-width: $wrap) {
       color: $white;
     }
   }
 }
 
-@media (max-width: 1350) {
+@media (max-width: $wrap) {
   hr {
-    height: 1px;
-    margin: 10px 0;
+    display: none;
   }
 }
 </style>

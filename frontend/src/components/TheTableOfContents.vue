@@ -13,6 +13,7 @@
       aria-label="Page table of contents"
       @click.stop
     >
+      <AppBackToTopButton />
       <!-- entries -->
       <AppLink
         v-for="(entry, index) in entries"
@@ -52,6 +53,7 @@ import {
   useEventListener,
   useMutationObserver,
 } from "@vueuse/core";
+import AppBackToTopButton from "@/components/AppBackToTopButton.vue";
 import { firstInView } from "@/util/dom";
 import AppCheckbox from "./AppCheckbox.vue";
 import type AppFlex from "./AppFlex.vue";

@@ -7,8 +7,21 @@
     :type="type"
     @click="copy ? copyToClipboard(text) : click"
   >
+    <AppIcon v-if="icon && iconPosition === 'left'" :icon="icon" class="icon" />
     <span v-if="text" class="truncate">{{ text }}</span>
-    <AppIcon v-if="icon" :icon="icon" />
+    <!-- icon on the RIGHT (default) -->
+    <AppIcon
+      v-if="icon && iconPosition === 'right'"
+      :icon="icon"
+      class="icon"
+    />
+    <!-- optional info icon -->
+    <AppIcon
+      v-if="info"
+      icon="info-circle"
+      v-tooltip="infoTooltip"
+      class="info-icon"
+    />
   </component>
 </template>
 
@@ -21,29 +34,38 @@ type Props = {
   text?: string;
   /** icon to show */
   icon?: string;
+  /** where to place the icon relative to text */
+  iconPosition?: "left" | "right";
   /** location to link to */
   to?: string;
   /** on click action */
   click?: () => unknown;
   /** visual design */
-  design?: "normal" | "circle" | "small" | "tile";
+  design?: "normal" | "circle" | "small" | "tile" | "big" | "link";
   /** color */
   color?: "primary" | "secondary" | "none";
   /** whether to copy text prop to clipboard on click */
   copy?: boolean;
   /** html button type attribute */
   type?: string;
+  /** show an “i” info icon on the right */
+  info?: boolean;
+  /** tooltip text for the info icon */
+  infoTooltip?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   text: "",
   icon: "",
+  iconPosition: "right",
   to: "",
   click: undefined,
   design: "normal",
   color: "primary",
   copy: false,
   type: "button",
+  info: false,
+  infoTooltip: "",
 });
 
 /** element ref */
@@ -84,7 +106,6 @@ defineExpose({ button });
     &.primary {
       background: $theme-light;
     }
-
     &.secondary {
       background: $light-gray;
     }
@@ -106,6 +127,12 @@ defineExpose({ button });
     width: fit-content;
   }
 
+  &.big {
+    min-width: min(300px, 100% - 40px);
+    padding: 0px 30px;
+    font-size: 1.75rem;
+  }
+
   &.circle {
     border-radius: 999px;
     color: $off-black;
@@ -115,7 +142,6 @@ defineExpose({ button });
       min-height: 2em;
       padding: 0.25em 0.75em;
     }
-
     &:not(.text) {
       width: 2.5em;
       height: 2.5em;
@@ -124,7 +150,6 @@ defineExpose({ button });
     &.primary {
       background: $theme-light;
     }
-
     &.secondary {
       background: $light-gray;
     }
@@ -143,11 +168,9 @@ defineExpose({ button });
     &.primary {
       color: $theme;
     }
-
     &.secondary {
       color: $off-black;
     }
-
     &:hover,
     &:focus {
       color: $black;
@@ -166,7 +189,6 @@ defineExpose({ button });
     &.primary {
       background: $theme-light;
     }
-
     &.secondary {
       background: $light-gray;
     }
@@ -177,13 +199,61 @@ defineExpose({ button });
       box-shadow: $outline;
     }
   }
-}
-</style>
 
-<style lang="scss">
+  /* link-style button*/
+  &.link {
+    min-height: unset;
+    padding: 0;
+    gap: 6px;
+    background: transparent;
+    color: $theme;
+    text-decoration: none;
+
+    &:hover .truncate,
+    &:focus .truncate {
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 3px;
+    }
+
+    .truncate {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    &:focus {
+      border-radius: 6px;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba($theme, 0.25);
+    }
+  }
+}
+
 .fill {
   .button.circle.primary {
     background: $theme-mid;
   }
+}
+
+.icon {
+  margin-left: 0.5em;
+}
+
+/* When icon is on the LEFT, remove the left margin and add a right one */
+.button.link .icon,
+.button.normal .icon,
+.button.small .icon,
+.button.tile .icon,
+.button.big .icon {
+  margin-left: 0.5em;
+}
+.button.link.icon-left .icon {
+  margin-right: 0.25em;
+  margin-left: 0;
+}
+
+.info-icon {
+  margin-left: 0.5em;
 }
 </style>

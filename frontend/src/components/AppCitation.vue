@@ -33,6 +33,15 @@ type Props = {
 
 const props = defineProps<Props>();
 
+/** name/label */
+const title = computed(() => props.title || "");
+
+/** link */
+const link = computed(() => props.link || "");
+
+/** authors */
+const authors = computed(() => props.authors || "");
+
 /** joined details as string */
 const detailsString = computed(() =>
   (props.details || []).filter((e) => e).join("&nbsp; · &nbsp;"),

@@ -17,7 +17,9 @@
 import type { DownloadItem } from "@/data/downloads";
 import AppButton from "./AppButton.vue";
 
-defineProps<{ items: DownloadItem[] }>();
+const { items } = withDefaults(defineProps<{ items?: DownloadItem[] }>(), {
+  items: () => [],
+});
 </script>
 
 <style scoped>

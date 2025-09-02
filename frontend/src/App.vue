@@ -30,7 +30,7 @@
       Disabling the banner is as simple as commenting out this section.
     </TheBanner> -->
 
-    <TheHeaderV2 />
+    <TheHeaderV2 :key="route.path" />
     <main>
       <router-view />
       <TheFloatButtons />

@@ -135,7 +135,6 @@ const item = computed(() => {
 
   return data[props.itemType]?.[props.id] ?? null;
 });
-console.log("item", item.value);
 // ------------------------------
 // 5. Tabs logic and visibility
 // ------------------------------
