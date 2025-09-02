@@ -5,6 +5,8 @@
     title="Monarch Publications"
     class="publications"
   />
+
+  <!-- Top metadata section -->
   <AppSection>
     <p class="metadata">
       This list includes papers by the Monarch Team that were foundational to
@@ -21,41 +23,51 @@
     </AppGallery>
   </AppSection>
 
-  <AppSection>
-    <AppHeading>Years</AppHeading>
-    <!-- row of links to year sections -->
-    <p>
-      <template
-        v-for="(group, index) in publications.publications"
-        :key="index"
-      >
-        <AppLink :to="'#year-' + group.year" :replace="true">
-          {{ group.year }}</AppLink
+  <!-- Year Tabs using the same style as KG Sources page -->
+  <AppSection width="big">
+    <div class="tab-container">
+      <div class="tabs" role="tablist" aria-label="Publication years">
+        <div
+          v-for="year in years"
+          :key="year"
+          class="tab-item"
+          :class="{ active: activeYear === year }"
         >
-        <span v-if="index !== publications.publications.length - 1"> · </span>
-      </template>
-    </p>
+          <AppButton
+            :text="year"
+            color="none"
+            :aria-selected="activeYear === year"
+            role="tab"
+            :class="{ active: activeYear === year }"
+            @click="setActiveYear(year)"
+          />
+        </div>
+      </div>
+
+      <!-- Current year's publications -->
+      <div
+        class="year-content"
+        role="tabpanel"
+        :aria-labelledby="`tab-${activeYear}`"
+      >
+        <!-- <AppHeading :id="'year-' + activeYear">{{ activeYear }}</AppHeading> -->
+        <AppGallery>
+          <AppCitation
+            v-for="(publication, idx) in currentGroup.items"
+            :key="idx"
+            :link="publication.link"
+            :title="publication.title"
+            :authors="publication.authors"
+            :details="[publication.journal, publication.issue]"
+          />
+        </AppGallery>
+      </div>
+    </div>
   </AppSection>
 
-  <!-- by year -->
-  <AppSection
-    v-for="(group, index) in publications.publications"
-    :key="index"
-    width="big"
-  >
-    <AppHeading :id="'year-' + group.year">{{ group.year }}</AppHeading>
-    <AppGallery>
-      <AppCitation
-        v-for="(publication, item) in group.items"
-        :key="item"
-        :link="publication.link"
-        :title="publication.title"
-        :authors="publication.authors"
-        :details="[publication.journal, publication.issue]"
-      />
-    </AppGallery>
-  </AppSection>
+  <!-- Citations chart -->
   <AppSection>
+    <AppHeading>Yearly Citation Trend </AppHeading>
     <Apex
       class="chart"
       type="bar"
@@ -68,15 +80,31 @@
 
 <script setup lang="ts">
 /** https://apexcharts.com/docs/vue-charts/ */
+import { computed, nextTick, onMounted, ref } from "vue";
 import Apex from "vue3-apexcharts";
+import ApexCharts from "apexcharts";
 import type { ApexOptions } from "apexcharts";
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
+import AppButton from "@/components/AppButton.vue";
 import AppCitation from "@/components/AppCitation.vue";
 import AppSection from "@/components/AppSection.vue";
 import PageTitle from "@/components/ThePageTitle.vue";
 import publications from "@/data/publications.json";
 
-/** data for chart */
+/** ----- Publications groups & tabs ----- */
+// Types inferred from JSON shape
+type PublicationsData = typeof publications;
+type PublicationGroup = PublicationsData["publications"][number];
+
+const groups = publications.publications as PublicationGroup[];
+const years = computed(() => groups.map((g) => String(g.year)));
+const activeYear = ref<string>(years.value[0] ?? ""); // default to first group
+
+const currentGroup = computed<PublicationGroup>(() => {
+  return groups.find((g) => String(g.year) === activeYear.value) || groups[0];
+});
+
+/** ----- Chart series ----- */
 const citesPerYear = {
   name: "citations",
   data: Object.entries(publications.metadata.cites_per_year).map(
@@ -84,7 +112,7 @@ const citesPerYear = {
   ),
 };
 
-/** extra metadata fields */
+/** ----- Meta cards ----- */
 const metadata: {
   name: string;
   key: keyof (typeof publications)["metadata"];
@@ -94,7 +122,7 @@ const metadata: {
   { name: "Citations in last 5 years", key: "last_5_yrs" },
 ];
 
-/** chart options */
+/** ----- Base chart options ----- */
 const options: ApexOptions = {
   chart: {
     id: "citations",
@@ -111,6 +139,12 @@ const options: ApexOptions = {
       dataLabels: {
         orientation: "vertical",
       },
+    },
+  },
+  states: {
+    active: {
+      allowMultipleDataPointsSelection: false,
+      filter: { type: "lighten", value: 0.15 },
     },
   },
   tooltip: {
@@ -153,6 +187,18 @@ const options: ApexOptions = {
     },
   },
 };
+function setActiveYear(year: string) {
+  activeYear.value = year;
+  nextTick(() => {
+    const idx = citesPerYear.data.findIndex((p) => String(p.x) === year);
+    if (idx >= 0) {
+      ApexCharts.exec("citations", "clearSelectedDataPoints");
+      ApexCharts.exec("citations", "toggleDataPointSelection", 0, idx);
+    }
+  });
+}
+
+onMounted(() => setActiveYear(activeYear.value));
 </script>
 
 <style scoped lang="scss">
@@ -161,5 +207,67 @@ const options: ApexOptions = {
 }
 .publications {
   background-color: #ffffff;
+}
+
+/* --- Reused tab styling (same as KG Sources page) --- */
+.tab-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1rem;
+  gap: 1.5em;
+}
+
+.tabs {
+  display: flex;
+  width: 100%;
+  margin-bottom: 1rem;
+  overflow-x: auto;
+  gap: 0.3rem;
+  border-bottom: 3px solid $theme;
+  background-color: #fff;
+}
+
+.tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.tab-item.active {
+  border: 1px solid #ccc;
+  border-bottom: 0;
+  background-color: #008080;
+  color: #fff;
+}
+
+.tab-item.active :deep(.button) {
+  color: #fff !important;
+}
+
+.tab-item:not(.active) {
+  border: 1px solid transparent;
+  border-bottom: 0;
+  background-color: #f5f5f5;
+}
+
+:deep(.button) {
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  font-weight: bold;
+  cursor: pointer;
+  &:hover,
+  &:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}
+
+.year-content {
+  width: 100%;
 }
 </style>
