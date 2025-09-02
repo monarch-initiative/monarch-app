@@ -12,14 +12,6 @@
       Monarch papers over time.
     </p>
 
-    <Apex
-      class="chart"
-      type="bar"
-      :options="options"
-      :series="[citesPerYear]"
-      height="300px"
-    />
-
     <AppGallery>
       <p v-for="(item, index) in metadata" :key="index" class="metadata">
         <strong>{{ item.name }}</strong>
@@ -63,6 +55,15 @@
       />
     </AppGallery>
   </AppSection>
+  <AppSection>
+    <Apex
+      class="chart"
+      type="bar"
+      :options="options"
+      :series="[citesPerYear]"
+      height="300px"
+    />
+  </AppSection>
 </template>
 
 <script setup lang="ts">
@@ -71,6 +72,7 @@ import Apex from "vue3-apexcharts";
 import type { ApexOptions } from "apexcharts";
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppCitation from "@/components/AppCitation.vue";
+import AppSection from "@/components/AppSection.vue";
 import PageTitle from "@/components/ThePageTitle.vue";
 import publications from "@/data/publications.json";
 
