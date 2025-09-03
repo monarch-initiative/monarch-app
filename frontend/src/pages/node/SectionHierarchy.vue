@@ -108,6 +108,7 @@ const modalTitle = computed(
   --gap: 4px;
   --tick-top: 0.7em;
   margin: 1em;
+  padding: 0.5em;
   border-bottom: 1px solid $light-gray;
   font-size: 14px;
   line-height: 1.5;
@@ -125,52 +126,51 @@ const modalTitle = computed(
 .parent-row {
   padding-left: var(--indent-parent);
 }
-.current-row {
+.current-row,
+.child-row {
   position: relative;
+}
+.current-row {
   padding-left: calc(var(--indent-current) + var(--tick-w) + var(--gap));
-}
-/* current-node spine + tick */
-.current-row::before {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: var(--indent-current);
-  width: var(--spine-w);
-  background: #111827;
-  content: "";
-}
-.current-row::after {
-  position: absolute;
-  top: var(--tick-top);
-  left: var(--indent-current);
-  width: var(--tick-w);
-  height: 1px;
-  background: #111827;
-  content: "";
 }
 
 /* Children show a vertical spine + a small tick before each label */
 .child-row {
-  position: relative;
   padding-left: calc(var(--indent-child) + var(--tick-w) + var(--gap));
 }
+.current-row::before,
 .child-row::before {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: var(--indent-child);
   width: var(--spine-w);
   background: #111827;
   content: "";
 }
+/* current-node spine + tick */
+.current-row::before {
+  left: var(--indent-current);
+}
+
+.child-row::before {
+  left: var(--indent-child);
+}
+
+.current-row::after,
 .child-row::after {
   position: absolute;
   top: var(--tick-top);
-  left: var(--indent-child);
   width: var(--tick-w);
   height: 1px;
   background: #111827;
   content: "";
+}
+.current-row::after {
+  left: var(--indent-current);
+}
+
+.child-row::after {
+  left: var(--indent-child);
 }
 
 .row-text {
@@ -188,7 +188,7 @@ const modalTitle = computed(
 
 .more {
   display: inline-block;
-  margin-top: 0.5em;
+  margin: 0.5em 0;
   margin-left: calc(var(--indent-child) + var(--tick-w) + var(--gap));
   border: 0;
   background: none;
