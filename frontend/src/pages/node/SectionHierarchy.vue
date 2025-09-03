@@ -1,7 +1,8 @@
 <template>
   <div class="toc-hier" role="group" aria-label="Hierarchy preview">
     <div class="toc-hier-title">{{ title }}</div>
-    <!-- PARENTS (multi) -->
+
+    <!-- PARENTS (keep spacing, hide bars) -->
     <div class="parents">
       <div class="parent-row" v-for="p in parents" :key="p.id">
         <span class="bar" aria-hidden="true"></span>
@@ -11,7 +12,7 @@
       </div>
     </div>
 
-    <!-- CURRENT NODE -->
+    <!-- CURRENT NODE (keep spacing + spine, hide bar) -->
     <div class="current-row">
       <span class="bar" aria-hidden="true"></span>
       <strong class="row-text" :title="labelOf(node)">{{
@@ -19,12 +20,11 @@
       }}</strong>
     </div>
 
-    <!-- CHILDREN -->
+    <!-- CHILDREN (keep connector + spacing, hide child bars) -->
     <div class="children">
       <div class="child-row" v-for="c in shownChildren" :key="c.id">
         <span class="bar" aria-hidden="true"></span>
         <span class="connector" aria-hidden="true"></span>
-        <!-- NEW -->
         <RouterLink :to="`/${c.id}`" class="row-text" :title="labelOf(c)">
           {{ labelOf(c) }}
         </RouterLink>
@@ -67,7 +67,7 @@ const LABELS = new Map<string, string>([
   ["biolink:PhenotypicFeature", "Phenotype"],
   ["biolink:AnatomicalEntity", "Anatomical entity"],
 ]);
-console.log(props.node);
+
 const typeNoun = computed(
   () => LABELS.get(props.node?.category ?? "") ?? "Hierarchy",
 );
@@ -91,37 +91,13 @@ const labelOf = (n: any): string => {
 };
 
 const showAll = ref(false);
-// everything after the inline list
 const remainingChildren = computed(() => children.value.slice(limit.value));
 const openModal = () => (showAll.value = true);
 const closeModal = () => (showAll.value = false);
 
-// Count descendants for a node (uses whatever field you have available)
-const countFor = (n: any): number =>
-  n?.descendants ??
-  n?.descendant_count ??
-  n?.children_count ??
-  (Array.isArray(n?.sub_classes) ? n.sub_classes.length : 0) ??
-  0;
-
-// Collect counts for the visible rows
-const parentCounts = computed(() => parents.value.map(countFor));
-const childCounts = computed(() => shownChildren.value.map(countFor));
-const selfCount = computed(() => countFor(props.node));
-
-// One max shared across parents + current + visible children
-const maxShownDescendants = computed(() =>
-  Math.max(10, selfCount.value, ...parentCounts.value, ...childCounts.value),
-);
-console.log("maxShownDescendants", maxShownDescendants.value);
-// 0–1 ratio for a bar
-const barRatioFor = (n: any): number =>
-  Math.min(1, countFor(n) / maxShownDescendants.value);
-
 // Modal
 const nodeName = computed(() => labelOf(props.node));
 const totalChildren = computed(() => children.value.length);
-
 const modalTitle = computed(
   () =>
     `${totalChildren.value === 1 ? "Subclass" : "Subclasses"} of ${nodeName.value}`,
@@ -130,7 +106,7 @@ const modalTitle = computed(
 
 <style lang="scss" scoped>
 .toc-hier {
-  /* perceived indents (bar widths) */
+  /* perceived indents (bar widths retained for spacing) */
   --bar-h: 6px;
   --parent-bar: 2em;
   --current-bar: 3em;
@@ -152,14 +128,12 @@ const modalTitle = computed(
   --gap: 6px;
   --bottom-gap: 1.5em;
 
-  --row-gap-parent: 4px; /* spacing between parent rows */
-  --row-gap-current: 6px; /* spacing above/below current row */
   --row-gap-child: 6px; /* spacing between child rows */
 
   margin: 2em 1.5em 3em 1.5em;
   padding-bottom: var(--bottom-gap);
   border-bottom: 1px solid #e5e7eb;
-  font-size: 14px;
+  font-size: 0.9em;
   line-height: 1.5;
   .more {
     margin-top: 2px;
@@ -169,28 +143,21 @@ const modalTitle = computed(
 .toc-hier-title {
   display: flex;
   padding-bottom: 0.9em;
-
   color: $off-black;
   font-weight: 500;
   font-size: 1em;
 }
 
-/* ===== Parents (bar | text) ===== */
+/* ===== Parents (placeholder column | text) ===== */
 .parent-row {
   display: grid;
   position: relative;
-  grid-template-columns: var(--parent-bar) 1fr;
+  grid-template-columns: var(--parent-bar) 1fr; /* keep indent */
   column-gap: var(--gap);
   align-items: center;
   margin: 4px 0;
 }
-.parent-row .bar {
-  box-sizing: content-box;
-  justify-self: end;
-  width: var(--parent-bar);
-  height: var(--bar-h);
-  background: #e5e7eb;
-}
+
 .parent-row .row-text,
 .current-row .row-text {
   display: block;
@@ -200,23 +167,18 @@ const modalTitle = computed(
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-/* ===== Current (bar | text) + spine stub ===== */
+
+/* ===== Current (placeholder column | text) + spine stub ===== */
 .current-row {
   display: grid;
   position: relative;
-  grid-template-columns: var(--current-bar) 1fr;
+  grid-template-columns: var(--current-bar) 1fr; /* keep indent */
   column-gap: var(--gap);
   align-items: center;
   margin: 4px 0;
 }
-.current-row .bar {
-  box-sizing: content-box;
-  justify-self: end;
-  width: var(--current-bar);
-  height: var(--bar-h);
-  background: #e5e7eb;
-}
-/* spine at end of current bar */
+
+/* spine at end of current indent (same as before) */
 .current-row::after {
   z-index: 1;
   position: absolute;
@@ -228,34 +190,19 @@ const modalTitle = computed(
   content: "";
 }
 
-/* ===== Children (bar | connector | text) ===== */
-.children {
-  margin: 4px 0;
-}
+/* ===== Children (placeholder column | connector | text) ===== */
 
 .child-row {
   display: grid;
   position: relative;
-  grid-template-columns: var(--child-bar) var(--connector-w) 1fr; /* bar | connector | text */
-  column-gap: 0.3em; /* connector encodes spacing */
-
+  grid-template-columns: var(--child-bar) var(--connector-w) 1fr; /* keep indent */
   align-items: center;
   margin: 4px 0;
 }
 
-/* child bar ends flush with connector */
-.child-row .bar {
-  box-sizing: content-box;
-  top: var(--child-bar-offset-y);
-  justify-self: end;
-  width: var(--child-bar);
-  height: var(--bar-h);
-  background: #e5e7eb;
-}
-
 .connector {
   position: relative;
-  height: 1.2em; /* enough to cover the first line */
+  height: 1.2em;
 }
 
 .connector::before {
@@ -265,7 +212,7 @@ const modalTitle = computed(
   left: 0;
   width: var(--spine-w);
   background: #111827;
-  content: ""; /* vertical spine */
+  content: "";
 }
 .connector::after {
   position: absolute;
@@ -274,7 +221,7 @@ const modalTitle = computed(
   width: var(--hyphen-w);
   height: 1px;
   background: #111827;
-  content: ""; /* horizontal tick */
+  content: "";
 }
 
 /* child text sits in column 3 */
@@ -283,10 +230,9 @@ const modalTitle = computed(
   grid-column: 3;
   min-width: 0;
   max-width: 100%;
-  overflow: hidden; /* key for ellipsis */
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  /* color: #2563eb;  // if you’re not using $theme */
 }
 
 /* Links */
@@ -311,36 +257,24 @@ const modalTitle = computed(
   text-decoration: underline;
 }
 
-.parent-row {
-  margin-block: var(--row-gap-parent);
-}
-.current-row {
-  margin-block: var(--row-gap-current);
-}
-.child-row {
-  margin-block: var(--row-gap-child);
-}
 .connector {
   height: calc(1.2em + var(--row-gap-child));
 }
 
 .modal-title {
-  width: fit-content;
-  color: #111827;
   font-weight: 600;
   font-size: 1rem;
   text-align: center;
 }
 .hier-modal-list {
   inline-size: fit-content;
-  margin: 0;
-  padding: 6px 0; /* top/bottom breathing room */
+  font-size: 01em;
   list-style: circle;
 }
 
 /* comfy items + subtle hover */
 .hier-modal-list li {
-  padding: 5px 12px;
+  padding: 1px 12px;
   border-radius: 10px;
   color: $theme;
   transition:
@@ -351,7 +285,7 @@ const modalTitle = computed(
 .hier-modal-list a {
   display: block;
   color: inherit;
-  line-height: 1.25;
+
   text-decoration: none;
   overflow-wrap: anywhere;
 }
