@@ -47,11 +47,10 @@
 
       <!-- Current year's publications -->
       <div
-        class="year-content"
+        class="citations"
         role="tabpanel"
         :aria-labelledby="`tab-${activeYear}`"
       >
-        <!-- <AppHeading :id="'year-' + activeYear">{{ activeYear }}</AppHeading> -->
         <AppGallery>
           <AppCitation
             v-for="(publication, idx) in currentGroup.items"
@@ -274,7 +273,20 @@ onMounted(() => setActiveYear(activeYear.value));
   }
 }
 
-.year-content {
-  width: 100%;
+.citations {
+  max-height: 32rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-color: rgba(0, 128, 128, 0.7) rgba(0, 0, 0, 0.08);
+  scrollbar-gutter: stable both-edges;
+  /* Firefox */
+  scrollbar-width: thin;
+}
+
+/* WebKit (Chrome/Edge/Safari) — use :deep with scoped styles */
+@media (prefers-color-scheme: dark) {
+  .citations {
+    scrollbar-color: rgba(0, 200, 200, 0.7) rgba(255, 255, 255, 0.08);
+  }
 }
 </style>
