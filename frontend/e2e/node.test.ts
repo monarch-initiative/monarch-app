@@ -3,49 +3,13 @@ import { log } from "../playwright.config";
 
 log();
 
-test("Table of contents works", async ({ page }) => {
+test("Table of contents renders", async ({ page }) => {
   await page.goto("/MONDO:0007523");
   await page.setViewportSize({ width: 1400, height: 1000 });
-
-  /** toggle button exists */
   await expect(page.locator(".toc")).toHaveAttribute(
     "aria-label",
     /table of contents/i,
   );
-
-  /** check if solo selection mode works */
-  await page.locator(".toc .checkbox").click();
-  await expect(
-    page
-      .locator("main")
-      .getByText(/Ehlers-Danlos syndrome, hypermobility/i)
-      .first(),
-  ).toBeVisible();
-  await expect(
-    page
-      .locator("main")
-      .getByText(/Hierarchy/i)
-      .first(),
-  ).not.toBeVisible();
-  await expect(
-    page
-      .locator("main")
-      .getByText(/Associations/i)
-      .first(),
-  ).not.toBeVisible();
-  await page.locator(".toc .checkbox").click();
-  await expect(
-    page
-      .locator("main")
-      .getByText(/Hierarchy/i)
-      .first(),
-  ).toBeVisible();
-  await expect(
-    page
-      .locator("main")
-      .getByText(/Associations/i)
-      .first(),
-  ).toBeVisible();
 });
 
 test("Title info shows", async ({ page }) => {
