@@ -23,7 +23,6 @@
     </AppGallery>
   </AppSection>
 
-  <!-- Year Tabs using the same style as KG Sources page -->
   <AppSection width="big">
     <AppHeading>Publications by Year </AppHeading>
     <div class="tab-container">
