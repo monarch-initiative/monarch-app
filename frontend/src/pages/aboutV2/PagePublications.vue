@@ -95,25 +95,17 @@ import AppSection from "@/components/AppSection.vue";
 import PageTitle from "@/components/ThePageTitle.vue";
 import publications from "@/data/publications.json";
 
-/** ----- Publications groups & tabs ----- */
 // Types inferred directly from JSON for safety and IntelliSense
 type PublicationsData = typeof publications;
-// Each group contains a year and its items
 type PublicationGroup = PublicationsData["publications"][number];
-
-// Array of year-grouped publications
 const groups = publications.publications as PublicationGroup[];
-// Tab labels as strings because we use them for comparisons/ids
 const years = computed(() => groups.map((g) => String(g.year)));
-// Default to the first year group (if present)
 const activeYear = ref<string>(years.value[0] ?? "");
 
-// Currently selected group for the panel; fall back to first group safely
 const currentGroup = computed<PublicationGroup>(() => {
   return groups.find((g) => String(g.year) === activeYear.value) || groups[0];
 });
 
-/** ----- Chart series ----- */
 // Convert the cites_per_year object into [{ x: year, y: count }, ...]
 const citesPerYear = {
   name: "citations",
