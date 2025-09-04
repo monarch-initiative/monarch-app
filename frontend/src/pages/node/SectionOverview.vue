@@ -47,13 +47,13 @@
       </AppDetail>
 
       <!--Temperory condition for diesease node-->
-      <AppDetails v-if="isDiseaseNode" gap="20px">
+      <AppDetails v-if="isDiseaseNode || isphenotypeNode" gap="20px">
         <SectionClinicalReources
           :frequency-label="frequencyLabel"
           :node="node"
         />
         <AppDetail
-          :blank="!otherMappings.length"
+          v-if="otherMappings.length"
           title="Equivalent disease concepts in other termiologies"
           :full="true"
         >
@@ -69,7 +69,7 @@
         </AppDetail>
         <!-- external references -->
         <AppDetail
-          :blank="!externalRefs?.length"
+          v-if="externalRefs?.length"
           title="External References"
           :full="true"
         >
@@ -83,13 +83,13 @@
           </AppFlex>
         </AppDetail>
 
-        <AppDetail :blank="!node.uri" title="URI">
+        <AppDetail v-if="node.uri" title="URI">
           <AppLink :to="node.uri || ''">
             {{ node.id }}
           </AppLink>
         </AppDetail>
 
-        <AppDetail :blank="!node.provided_by_link" title="Ingest Documentation">
+        <AppDetail v-if="node.provided_by_link" title="Ingest Documentation">
           <AppLink :to="node.provided_by_link?.url || ''">
             {{ node.provided_by_link?.id || node.provided_by }}
           </AppLink>
@@ -99,48 +99,14 @@
       <!--For all other nodes other than diesease nodes-->
       <AppDetails v-else gap="20px">
         <!-- URI -->
-        <AppDetail :blank="!node.uri" title="URI">
+        <AppDetail v-if="node.uri" title="URI">
           <AppLink :to="node.uri || ''">
             {{ node.id }}
           </AppLink>
         </AppDetail>
-        <!-- inheritance -->
-        <AppDetail
-          v-if="node.category === 'biolink:Disease'"
-          :blank="!node.inheritance"
-          title="Heritability"
-        >
-          <AppFlex align-h="left" gap="small">
-            <AppLink
-              v-tooltip="node.inheritance?.name"
-              :to="node.inheritance?.id || ''"
-              >{{ node.inheritance?.name }}</AppLink
-            >
-          </AppFlex>
-        </AppDetail>
-
-        <!-- disease causal genes -->
-        <AppDetail
-          v-if="node.category === 'biolink:Disease'"
-          :blank="!node.causal_gene?.length"
-          title="Causal Genes"
-        >
-          <AppFlex align-h="left">
-            <AppNodeBadge
-              v-for="(gene, index) in node.causal_gene"
-              :key="index"
-              :node="omit(gene, 'in_taxon_label')"
-            />
-          </AppFlex>
-        </AppDetail>
-
-        <!-- disease frequecy -->
-        <AppDetail v-if="node.category === 'biolink:Disease'" title="Frequency">
-          <span>{{ node?.subsets?.includes("rare") ? "Rare" : "Common" }}</span>
-        </AppDetail>
 
         <!-- mappings -->
-        <AppDetail :blank="!clinicalSynopsis.length" title="Clinical Synopsis">
+        <AppDetail v-if="clinicalSynopsis.length" title="Clinical Synopsis">
           <AppFlex align-h="left" gap="small">
             <AppLink
               v-for="(mapping, index) in clinicalSynopsis"
@@ -152,7 +118,7 @@
           </AppFlex>
         </AppDetail>
         <AppDetail
-          :blank="!infoForPatients.length"
+          v-if="infoForPatients.length"
           title="Clinical Info for Patients"
         >
           <AppFlex align-h="left" gap="small">
@@ -166,14 +132,14 @@
           </AppFlex>
         </AppDetail>
 
-        <AppDetail :blank="!node.provided_by_link" title="Ingest Documentation">
+        <AppDetail v-if="node.provided_by_link" title="Ingest Documentation">
           <AppLink :to="node.provided_by_link?.url || ''">
             {{ node.provided_by_link?.id || node.provided_by }}
           </AppLink>
         </AppDetail>
 
         <AppDetail
-          :blank="!otherMappings.length"
+          v-if="otherMappings.length"
           title="Other Mappings"
           :full="true"
         >
@@ -189,7 +155,7 @@
         </AppDetail>
         <!-- external references -->
         <AppDetail
-          :blank="!node.external_links?.length"
+          v-if="node.external_links?.length"
           title="External References"
           :full="true"
         >
@@ -223,6 +189,9 @@ type Props = { node: Node };
 
 const { node } = defineProps<Props>();
 const isDiseaseNode = computed(() => node.category === "biolink:Disease");
+const isphenotypeNode = computed(
+  () => node.category === "biolink:PhenotypicFeature",
+);
 /** separate out mappings into categories */
 const clinicalSynopsis = computed(
   () =>
