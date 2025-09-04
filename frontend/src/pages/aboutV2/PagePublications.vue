@@ -6,12 +6,16 @@
     class="publications"
   />
 
-  <!-- Top metadata section -->
-  <AppSection>
+  <!-- Top metadata section: short description + key metrics -->
+  <AppSection width="big">
     <p class="metadata">
-      This list includes papers by the Monarch Team that were foundational to
-      the current Monarch work. The graph below shows the number of citations to
-      Monarch papers over time.
+      The Monarch Initiative maintains a rich and foundational body of
+      publications that trace back to its early days, underscoring how these
+      works have been pivotal in shaping the fields of variant interpretation,
+      knowledge graphs, and disease gene discovery. Committed to open science,
+      Monarch shares much of this work as preprints or in open-access venues,
+      ensuring broad, transparent, and lasting accessibility. Use this page to
+      explore Monarch’s full body of publications.
     </p>
 
     <AppGallery>
@@ -23,8 +27,10 @@
     </AppGallery>
   </AppSection>
 
+  <!-- Publications grouped by year with a simple tab UI -->
   <AppSection width="big">
     <AppHeading>Publications by Year </AppHeading>
+
     <div class="tab-container">
       <div class="tabs" role="tablist" aria-label="Publication years">
         <div
@@ -44,7 +50,7 @@
         </div>
       </div>
 
-      <!-- Current year's publications -->
+      <!-- Panel shows items for the currently active year -->
       <div
         class="citations"
         role="tabpanel"
@@ -64,7 +70,7 @@
     </div>
   </AppSection>
 
-  <!-- Citations chart -->
+  <!-- Citations bar chart (ApexCharts) -->
   <AppSection>
     <AppHeading>Yearly Citation Trend </AppHeading>
     <Apex
@@ -78,7 +84,6 @@
 </template>
 
 <script setup lang="ts">
-/** https://apexcharts.com/docs/vue-charts/ */
 import { computed, nextTick, onMounted, ref } from "vue";
 import Apex from "vue3-apexcharts";
 import ApexCharts from "apexcharts";
@@ -91,19 +96,25 @@ import PageTitle from "@/components/ThePageTitle.vue";
 import publications from "@/data/publications.json";
 
 /** ----- Publications groups & tabs ----- */
-// Types inferred from JSON shape
+// Types inferred directly from JSON for safety and IntelliSense
 type PublicationsData = typeof publications;
+// Each group contains a year and its items
 type PublicationGroup = PublicationsData["publications"][number];
 
+// Array of year-grouped publications
 const groups = publications.publications as PublicationGroup[];
+// Tab labels as strings because we use them for comparisons/ids
 const years = computed(() => groups.map((g) => String(g.year)));
-const activeYear = ref<string>(years.value[0] ?? ""); // default to first group
+// Default to the first year group (if present)
+const activeYear = ref<string>(years.value[0] ?? "");
 
+// Currently selected group for the panel; fall back to first group safely
 const currentGroup = computed<PublicationGroup>(() => {
   return groups.find((g) => String(g.year) === activeYear.value) || groups[0];
 });
 
 /** ----- Chart series ----- */
+// Convert the cites_per_year object into [{ x: year, y: count }, ...]
 const citesPerYear = {
   name: "citations",
   data: Object.entries(publications.metadata.cites_per_year).map(
@@ -111,7 +122,7 @@ const citesPerYear = {
   ),
 };
 
-/** ----- Meta cards ----- */
+// Cards shown above the tabs (keys reference publications.metadata fields)
 const metadata: {
   name: string;
   key: keyof (typeof publications)["metadata"];
@@ -126,12 +137,12 @@ const options: ApexOptions = {
   chart: {
     id: "citations",
     type: "bar",
-    redrawOnParentResize: true,
+    redrawOnParentResize: true, // keep chart responsive inside containers
   },
   title: {
     text: `Monarch Citations`,
   },
-  colors: ["#00acc1"],
+  colors: ["#00acc1"], // single series color
   plotOptions: {
     bar: {
       horizontal: false,
@@ -147,56 +158,48 @@ const options: ApexOptions = {
     },
   },
   tooltip: {
-    enabled: false,
+    enabled: false, // declutter; rely on selection highlight
   },
   xaxis: {
-    title: {
-      text: "Year",
-    },
-    axisBorder: {
-      color: "#000000",
-    },
-    axisTicks: {
-      show: true,
-      color: "#000000",
-    },
+    title: { text: "Year" },
+    axisBorder: { color: "#000000" },
+    axisTicks: { show: true, color: "#000000" },
   },
   yaxis: {
-    title: {
-      text: "# of Citations",
-    },
-    axisBorder: {
-      color: "#000000",
-    },
-    axisTicks: {
-      show: true,
-      color: "#000000",
-    },
+    title: { text: "# of Citations" },
+    axisBorder: { color: "#000000" },
+    axisTicks: { show: true, color: "#000000" },
   },
   grid: {
-    xaxis: {
-      lines: {
-        show: false,
-      },
-    },
-    yaxis: {
-      lines: {
-        show: false,
-      },
-    },
+    xaxis: { lines: { show: false } },
+    yaxis: { lines: { show: false } },
   },
 };
+
+/**
+ * Update activeYear and mirror the selection on the bar chart for context. We
+ * clear any previous selection and then select the data point at index
+ * `dataPointIndex`.
+ */
 function setActiveYear(year: string) {
   activeYear.value = year;
   nextTick(() => {
-    const idx = citesPerYear.data.findIndex((p) => String(p.x) === year);
-    if (idx >= 0) {
+    const dataPointIndex = citesPerYear.data.findIndex(
+      (item) => String(item.x) === year,
+    );
+    if (dataPointIndex >= 0) {
       ApexCharts.exec("citations", "clearSelectedDataPoints");
-      ApexCharts.exec("citations", "toggleDataPointSelection", 0, idx);
+      ApexCharts.exec(
+        "citations",
+        "toggleDataPointSelection",
+        0,
+        dataPointIndex,
+      );
     }
   });
 }
 
+// Initialize selection on mount so the default tab and the chart match
 onMounted(() => setActiveYear(activeYear.value));
 </script>
 
@@ -204,17 +207,14 @@ onMounted(() => setActiveYear(activeYear.value));
 .section.center {
   padding-bottom: 10px;
 }
-.section.big {
-  gap: 20px;
-}
+
 .metadata {
-  text-align: center;
+  text-align: left;
 }
 .publications {
   background-color: #ffffff;
 }
 
-/* --- Reused tab styling (same as KG Sources page) --- */
 .tab-container {
   display: flex;
   flex-direction: column;
@@ -249,6 +249,7 @@ onMounted(() => setActiveYear(activeYear.value));
   color: #fff;
 }
 
+/* Ensure AppButton text remains readable in active tab */
 .tab-item.active :deep(.button) {
   color: #fff !important;
 }
@@ -276,13 +277,12 @@ onMounted(() => setActiveYear(activeYear.value));
   max-height: 32rem;
   overflow-x: hidden;
   overflow-y: auto;
-  scrollbar-color: rgba(0, 128, 128, 0.7) rgba(0, 0, 0, 0.08);
+  scrollbar-color: $theme;
   scrollbar-gutter: stable both-edges;
-  /* Firefox */
   scrollbar-width: thin;
 }
 
-/* WebKit (Chrome/Edge/Safari) — use :deep with scoped styles */
+/* Subtle dark-mode contrast for the custom scrollbar colors */
 @media (prefers-color-scheme: dark) {
   .citations {
     scrollbar-color: rgba(0, 200, 200, 0.7) rgba(255, 255, 255, 0.08);
