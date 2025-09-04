@@ -1,9 +1,4 @@
-// tests/TocHier.spec.ts
 /**
- * Unit tests for the TocHier.vue component.
- *
- * Goals:
- *
  * - Validate title text derived from the node's category mapping.
  * - Ensure parents/current/children render with truncation class.
  * - Verify the inline child list respects `childLimit` and that the modal shows
