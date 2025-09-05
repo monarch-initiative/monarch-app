@@ -1,5 +1,5 @@
 <template>
-  <div class="toc-top" v-show="show">
+  <div v-show="show" class="toc-top">
     <AppButton
       design="link"
       color="none"

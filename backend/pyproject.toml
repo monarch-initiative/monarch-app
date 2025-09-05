@@ -20,7 +20,7 @@ dependencies = [
     "docker>=7.1.0",
     "fastapi>=0.115.12,<1",
     "gunicorn>=23.0.0",
-    "linkml==1.8.3",
+    "linkml==1.9.3",
     "loguru",
     "oaklib>=0.6.6",
     "prefixmaps==0.2.4",

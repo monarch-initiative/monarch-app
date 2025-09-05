@@ -7,7 +7,7 @@
   <div v-for="category in categoryOptions" :key="category.id">
     <!-- Association table -->
     <AppSection alignment="left" width="full" class="inset">
-      <AppHeading :level="3" :id="category.label">{{
+      <AppHeading :id="category.label" :level="3">{{
         sectionTitle(category.id, category.label)
       }}</AppHeading>
       <span v-if="!categoryOptions.length"
