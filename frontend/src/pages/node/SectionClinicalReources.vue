@@ -6,22 +6,20 @@
   >
     <div class="clinical-resources">
       <div class="custom-grid">
-        <div v-for="(res, id) in clinicalResources" :key="id" class="linkout">
-          <AppLink
-            :to="res.url || ''"
-            class="brand-chip"
-            :style="chipStyle(res)"
-            :aria-label="res.label || res.id"
-            v-tooltip="res.tooltip"
-          >
-            <span>
-              {{ brandText(res.id, res.label) }}
-            </span>
-            <small class="brand-id">{{ res.id }}</small>
-          </AppLink>
-
-          <!-- removed the bottom ID display -->
-        </div>
+        <AppLink
+          v-for="(res, id) in clinicalResources"
+          :key="id"
+          :to="res.url || ''"
+          class="brand-chip"
+          :style="chipStyle(res)"
+          :aria-label="res.label || res.id"
+          v-tooltip="res.tooltip"
+        >
+          <span>
+            {{ brandText(res.id, res.label) }}
+          </span>
+          <small class="brand-id">{{ res.id }}</small>
+        </AppLink>
       </div>
 
       <div class="sub-items">
@@ -115,13 +113,6 @@ const brandText = (id: string, fallback?: string) => {
   flex-direction: column;
   flex-wrap: wrap;
   gap: 0.4em;
-}
-
-.linkout {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.35em;
 }
 
 .brand-chip {
