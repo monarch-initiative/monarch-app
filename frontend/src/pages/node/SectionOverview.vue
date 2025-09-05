@@ -46,15 +46,17 @@
         <AppTagList :tags="node.synonym ?? []" />
       </AppDetail>
 
-      <!--Temperory condition for diesease node-->
-      <AppDetails v-if="isDiseaseNode || isphenotypeNode" gap="20px">
-        <SectionClinicalReources
-          :frequency-label="frequencyLabel"
-          :node="node"
-        />
+      <SectionDiseaseOverview v-if="isDiseaseNode" :node="node" />
+      <!--For all other nodes other than diesease nodes-->
+      <AppDetails v-else gap="20px">
         <AppDetail
           v-if="otherMappings.length"
-          title="Equivalent disease concepts in other termiologies"
+          title="`Equivalent"
+          ${categoryLabel}
+          concepts
+          in
+          other
+          termiologies``
           :full="true"
         >
           <AppFlex align-h="left" gap="small">
@@ -69,13 +71,13 @@
         </AppDetail>
         <!-- external references -->
         <AppDetail
-          v-if="externalRefs?.length"
+          v-if="node.external_links?.length"
           title="External References"
           :full="true"
         >
           <AppFlex align-h="left" gap="small">
             <AppLink
-              v-for="(link, index) of externalRefs"
+              v-for="(link, index) of node.external_links"
               :key="index"
               :to="link.url || ''"
               >{{ link.id }}</AppLink
@@ -83,21 +85,6 @@
           </AppFlex>
         </AppDetail>
 
-        <AppDetail v-if="node.uri" title="URI">
-          <AppLink :to="node.uri || ''">
-            {{ node.id }}
-          </AppLink>
-        </AppDetail>
-
-        <AppDetail v-if="node.provided_by_link" title="Ingest Documentation">
-          <AppLink :to="node.provided_by_link?.url || ''">
-            {{ node.provided_by_link?.id || node.provided_by }}
-          </AppLink>
-        </AppDetail>
-      </AppDetails>
-
-      <!--For all other nodes other than diesease nodes-->
-      <AppDetails v-else gap="20px">
         <!-- URI -->
         <AppDetail v-if="node.uri" title="URI">
           <AppLink :to="node.uri || ''">
@@ -137,37 +124,6 @@
             {{ node.provided_by_link?.id || node.provided_by }}
           </AppLink>
         </AppDetail>
-
-        <AppDetail
-          v-if="otherMappings.length"
-          title="Other Mappings"
-          :full="true"
-        >
-          <AppFlex align-h="left" gap="small">
-            <AppLink
-              v-for="(mapping, index) in otherMappings"
-              :key="index"
-              :to="mapping.url || ''"
-            >
-              {{ mapping.id }}
-            </AppLink>
-          </AppFlex>
-        </AppDetail>
-        <!-- external references -->
-        <AppDetail
-          v-if="node.external_links?.length"
-          title="External References"
-          :full="true"
-        >
-          <AppFlex align-h="left" gap="small">
-            <AppLink
-              v-for="(link, index) of node.external_links"
-              :key="index"
-              :to="link.url || ''"
-              >{{ link.id }}</AppLink
-            >
-          </AppFlex>
-        </AppDetail>
       </AppDetails>
     </AppDetails>
   </AppSection>
@@ -179,19 +135,24 @@ import omit from "lodash/omit";
 import type { Node } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
-import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppNodeText from "@/components/AppNodeText.vue";
 import AppTagList from "@/components/AppTagList.vue";
 import { useClinicalResources } from "@/composables/use-clinical-resources";
 import SectionClinicalReources from "./SectionClinicalReources.vue";
+import SectionDiseaseOverview from "./SectionDiseaseOverview.vue";
 
 type Props = { node: Node };
 
 const { node } = defineProps<Props>();
 const isDiseaseNode = computed(() => node.category === "biolink:Disease");
-const isphenotypeNode = computed(
+const isPhenotypeNode = computed(
   () => node.category === "biolink:PhenotypicFeature",
 );
+const { otherMappings, externalRefs } = useClinicalResources(node);
+const CATEGORY_MAP: Record<string, string> = {
+  "biolink:Disease": "disease",
+  "biolink:PhenotypicFeature": "phenotype",
+};
 /** separate out mappings into categories */
 const clinicalSynopsis = computed(
   () =>
@@ -210,11 +171,9 @@ const frequencyLabel = computed((): "Rare" | "Common" => {
   return node.subsets?.includes("rare") ? "Rare" : "Common";
 });
 
-const { otherMappings, externalRefs } = useClinicalResources(node);
-// async function scrollToAssociations() {
-//   await sleep(100);
-//   scrollTo("#associations");
-// }
+const categoryLabel = computed(
+  () => CATEGORY_MAP[node?.category ?? ""] ?? node?.category ?? "",
+);
 </script>
 
 <style lang="scss" scoped>

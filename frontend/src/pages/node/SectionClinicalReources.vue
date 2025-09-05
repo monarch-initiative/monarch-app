@@ -50,13 +50,36 @@
       </div>
     </div>
   </AppDetail>
+  <AppDetails v-else>
+    <AppDetail v-if="node?.inheritance" title="Heritability" :full="true">
+      <AppLink
+        v-tooltip="node?.inheritance?.name"
+        :to="node?.inheritance?.id || ''"
+        >{{ node?.inheritance?.name }}</AppLink
+      >
+    </AppDetail>
+    <AppDetail
+      v-if="node?.causal_gene?.length"
+      title="Casual Genes"
+      :full="true"
+    >
+      <AppFlex align-h="left" gap="small">
+        <AppNodeBadge
+          v-for="(gene, index) in node?.causal_gene"
+          :key="index"
+          :node="omit(gene, 'in_taxon_label')"
+        />
+      </AppFlex>
+    </AppDetail>
+  </AppDetails>
 </template>
 
 <script setup lang="ts">
-import { computed, type ComputedRef } from "vue";
+import { type ComputedRef } from "vue";
 import omit from "lodash/omit";
 import type { Entity, Node as ModelNode } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
+import AppDetails from "@/components/AppDetails.vue";
 import AppLink from "@/components/AppLink.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import { useClinicalResources } from "@/composables/use-clinical-resources";

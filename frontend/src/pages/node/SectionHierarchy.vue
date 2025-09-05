@@ -38,7 +38,6 @@
         </AppFlex>
       </AppDetail>
 
-      <!-- nodes that are "children" of node -->
       <AppDetail
         :title="`Sub-classes (${node.node_hierarchy?.sub_classes.length})`"
         icon="angle-down"

@@ -33,7 +33,7 @@
 
 type Props = {
   /** title of info block */
-  title: string;
+  title?: string;
   /** icon next to title */
   icon?: string;
   /** number next to title */
