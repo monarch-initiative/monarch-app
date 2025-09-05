@@ -8,11 +8,11 @@
       <div class="custom-grid">
         <div v-for="(res, id) in clinicalResources" :key="id" class="linkout">
           <AppLink
+            v-tooltip="res.tooltip"
             :to="res.url || ''"
             class="brand-chip"
             :style="chipStyle(res)"
             :aria-label="res.label || res.id"
-            v-tooltip="res.tooltip"
           >
             <span>
               {{ brandText(res.id, res.label) }}
