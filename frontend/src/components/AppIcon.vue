@@ -115,7 +115,7 @@ const initials = computed(
 );
 
 /** when custom icon mounted */
-function customMounted(element: VNode["el"], createCircle = false) {
+const customMounted = (element: VNode["el"], createCircle = false) => {
   /** add child elements to category icon */
   if (
     element &&
@@ -138,7 +138,7 @@ function customMounted(element: VNode["el"], createCircle = false) {
       element.insertBefore(outline, element.firstChild!);
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

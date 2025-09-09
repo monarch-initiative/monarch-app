@@ -18,7 +18,7 @@ export interface ColumnContext {
 }
 
 /** Build the AppTable columns for an association category. . */
-export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
+export const buildAssociationCols = (ctx: ColumnContext): Cols<Datum> => {
   const { categoryId, nodeCategory, isDirect, items, getCategoryLabel } = ctx;
 
   const first = items?.[0];
@@ -251,4 +251,4 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
   if (extraCols.length) (extraCols as any).unshift({ slot: "divider" });
 
   return [...baseCols, ...extraCols];
-}
+};

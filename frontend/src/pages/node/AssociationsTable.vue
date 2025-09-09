@@ -243,10 +243,10 @@ const emit = defineEmits<{
   (e: "inferred-label", payload: { categoryId: string; label: string }): void;
 }>();
 
-function openModal(association: DirectionalAssociation) {
+const openModal = (association: DirectionalAssociation) => {
   selectedAssociation.value = association;
   showModal.value = true;
-}
+};
 
 watch(showModal, (newValue) => {
   if (!newValue) {
