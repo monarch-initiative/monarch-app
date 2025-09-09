@@ -16,7 +16,7 @@
 
       <!--tabs omly if its disease node-->
       <AppAssociationTabs
-        v-if="isDiseaseNode"
+        v-if="isDiseaseNode || isPhenotypeNode"
         :has-direct-associations="hasDirectAssociationsForCategory(category.id)"
         :show-all-tab="showAllTab(category.count ?? 0, category.id)"
         :direct-active="
@@ -129,7 +129,10 @@ const onTotals = ({
 };
 
 const isDiseaseNode = computed(() => nodeCategory === "biolink:Disease");
-
+const isPhenotypeNode = computed(
+  () => nodeCategory === "biolink:PhenotypicFeature",
+);
+console.log("nodeCategory", nodeCategory);
 const directFor = (id: string) => totalsByCategory.value[id]?.direct ?? 0;
 const allFor = (id: string) => totalsByCategory.value[id]?.all ?? 0;
 
@@ -191,16 +194,18 @@ const showAllTab = computed(() => {
  * Non-disease nodes always default to "all".
  */
 
-function defaultTab(categoryId: string): "direct" | "all" {
+const defaultTab = (categoryId: string): "direct" | "all" => {
   const directCount = directFor(categoryId);
   const isDisease = isDiseaseNode.value;
 
-  if (!isDisease) {
-    return "all";
+  // Disease or Phenotype: default to Direct if any direct rows exist, else Inferred (all)
+  if (isDiseaseNode.value || isPhenotypeNode.value) {
+    return directCount > 0 ? "direct" : "all";
   }
-  // disease node: no direct → all, else → direct
-  return directCount > 0 ? "direct" : "all";
-}
+
+  // Other node types: default to Inferred (all)
+  return "all";
+};
 
 /**
  * - For non-disease pages(temperory, will change once we get the new layout):

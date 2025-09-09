@@ -51,12 +51,7 @@
       <AppDetails v-else gap="20px">
         <AppDetail
           v-if="otherMappings.length"
-          title="`Equivalent"
-          ${categoryLabel}
-          concepts
-          in
-          other
-          termiologies``
+          :title="`Equivalent ${categoryLabel} concepts in other terminologies`"
           :full="true"
         >
           <AppFlex align-h="left" gap="small">
