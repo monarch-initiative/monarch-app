@@ -227,7 +227,9 @@ type Props = {
   search: string;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  search: "",
+});
 
 const showModal = ref(false);
 const selectedAssociation = ref<DirectionalAssociation | null>(null);

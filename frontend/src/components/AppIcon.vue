@@ -41,7 +41,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, ref, type VNode } from "vue";
+import {
+  computed,
+  defineAsyncComponent,
+  defineComponent,
+  ref,
+  type VNode,
+} from "vue";
 import { kebabCase } from "lodash";
 import type { IconName, IconPrefix } from "@fortawesome/fontawesome-svg-core";
 import { findIconDefinition } from "@fortawesome/fontawesome-svg-core";
@@ -74,12 +80,13 @@ const fontAwesome = computed(() => {
 
 const isCustom = ref(true);
 const isPng = computed(() => props.icon.endsWith(".png"));
+const Noop = defineComponent({ name: "Noop", setup: () => () => null });
 
 /** look for custom icon with matching name */
 const customIcon = defineAsyncComponent(async () => {
   if (isPng.value) {
     isCustom.value = false;
-    return;
+    return Noop;
   }
   try {
     return await import(`../assets/icons/${kebabCase(props.icon)}.svg`);
