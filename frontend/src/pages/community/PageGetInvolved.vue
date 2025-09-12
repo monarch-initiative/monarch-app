@@ -48,7 +48,9 @@
     <div class="card-grid">
       <PageInfoCard
         title="Mondo Disease Ontology: Monthly Outreach Calls"
-        description="The Mondo Outreach calls aim to bring together stakeholders and clinical terminology experts to discuss specific use cases and requirements. Our goal is to improve Mondo with a focus on our user needs."
+        description="The Mondo Outreach calls aim to bring together stakeholders 
+        and clinical terminology experts to discuss specific use cases and requirements.
+        Our goal is to improve Mondo with a focus on our user needs."
       >
         <div class="info-line">
           <AppIcon icon="calendar-week" />
@@ -111,7 +113,10 @@
 
       <PageInfoCard
         title="OBO Academy: Monarch Training Series"
-        description="Training for Semantic Engineers, Ontology Curators, and Knowledge Scientists on basic technologies in and around the Monarch Initiative and Open Biological and Biomedical Ontologies (OBO). The OBO Academy develops self-paced tutorials in the OBOOK, hosts monthly live training sessions on Zoom, and maintains a YouTube channel with lesson recordings."
+        description="Training for Semantic Engineers, Ontology Curators, and Knowledge Scientists
+        on basic technologies in and around the Monarch Initiative and Open Biological and Biomedical Ontologies (OBO).
+        The OBO Academy develops self-paced tutorials in the OBOOK, hosts monthly live training sessions on Zoom,
+        and maintains a YouTube channel with lesson recordings."
       >
         <div class="info-line">
           <AppIcon icon="graduation-cap" />
