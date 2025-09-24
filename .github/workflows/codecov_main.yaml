@@ -37,7 +37,7 @@ jobs:
         run: uv lock --check
 
       - name: Install library
-        run: uv sync --extra dev
+        run: uv sync
 
       - name: Run tests
         run: uv run pytest tests

@@ -10,6 +10,7 @@ class core(Enum):
     ENTITY = "entity"
     ASSOCIATION = "association"
     SSSOM = "sssom"
+    INFORES = "infores"
 
 
 class HistoPhenoKeys(Enum):
