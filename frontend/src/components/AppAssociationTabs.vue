@@ -1,6 +1,6 @@
 <template>
   <div class="association-tabs">
-    <div class="tab-item" v-if="hasDirectAssociations">
+    <div v-if="hasDirectAssociations" class="tab-item">
       <AppButton
         :info="true"
         :info-tooltip="directTooltip"
@@ -12,7 +12,7 @@
       />
     </div>
 
-    <div class="tab-item" v-if="showAllTab">
+    <div v-if="showAllTab" class="tab-item">
       <AppButton
         :info="true"
         :info-tooltip="inferredTooltip"

@@ -4,7 +4,7 @@
 
     <!-- PARENTS -->
     <div class="parents">
-      <div class="parent-row" v-for="p in parents" :key="p.id">
+      <div v-for="p in parents" :key="p.id" class="parent-row">
         <RouterLink :to="`/${p.id}`" :title="labelOf(p)" class="row-text">
           {{ labelOf(p) }}
         </RouterLink>
@@ -20,7 +20,7 @@
 
     <!-- CHILDREN (tree connectors only) -->
     <div class="children">
-      <div class="child-row" v-for="c in shownChildren" :key="c.id">
+      <div v-for="c in shownChildren" :key="c.id" class="child-row">
         <RouterLink :to="`/${c.id}`" class="row-text" :title="labelOf(c)">
           {{ labelOf(c) }}
         </RouterLink>
@@ -30,8 +30,8 @@
         v-if="moreCount > 0"
         type="button"
         class="more"
-        @click="openModal"
         title="Show full list"
+        @click="openModal"
       >
         + {{ moreCount }} more…
       </button>
