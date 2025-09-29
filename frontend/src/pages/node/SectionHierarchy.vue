@@ -1,86 +1,210 @@
-<!--
-  node page hierarchy section. super/sub/equivalent classes of current node.
--->
-
 <template>
-  <AppSection
-    v-if="node.category !== 'biolink:Gene'"
-    width="full"
-    alignment="left"
-    class="inset"
-  >
-    <AppHeading icon="sitemap">Hierarchy</AppHeading>
+  <div class="toc-hier" role="group" aria-label="Hierarchy preview">
+    <div class="toc-hier-title">{{ title }}</div>
 
-    <AppDetails>
-      <!-- nodes that are "parents" of node -->
-      <AppDetail
-        title="Super-classes"
-        icon="angle-up"
-        :blank="!node.node_hierarchy?.super_classes.length"
-        :full="true"
-        :v-tooltip="`Nodes that are &quot;parents&quot; of this node`"
-      >
-        <AppFlex class="flex" align-h="left" gap="small">
-          <AppNodeBadge
-            v-for="(_class, index) in node.node_hierarchy?.super_classes"
-            :key="index"
-            :node="_class"
-            :breadcrumbs="[
-              {
-                node: toBreadcrumbNode(node),
-                association: {
-                  predicate: 'is super class of',
-                  direction: AssociationDirectionEnum.incoming,
-                },
-              },
-            ]"
-          />
-        </AppFlex>
-      </AppDetail>
+    <!-- PARENTS -->
+    <div class="parents">
+      <div v-for="p in parents" :key="p.id" class="parent-row">
+        <RouterLink :to="`/${p.id}`" :title="labelOf(p)" class="row-text">
+          {{ labelOf(p) }}
+        </RouterLink>
+      </div>
+    </div>
 
-      <!-- nodes that are "children" of node -->
-      <AppDetail
-        :title="`Sub-classes (${node.node_hierarchy?.sub_classes.length})`"
-        icon="angle-down"
-        :blank="!node.node_hierarchy?.sub_classes.length"
-        :full="true"
-        :v-tooltip="`Nodes that are &quot;children&quot; of this node`"
+    <!-- CURRENT NODE -->
+    <div class="current-row">
+      <strong class="row-text" :title="labelOf(node)">{{
+        labelOf(node)
+      }}</strong>
+    </div>
+
+    <!-- CHILDREN (tree connectors only) -->
+    <div class="children">
+      <div v-for="c in shownChildren" :key="c.id" class="child-row">
+        <RouterLink :to="`/${c.id}`" class="row-text" :title="labelOf(c)">
+          {{ labelOf(c) }}
+        </RouterLink>
+      </div>
+
+      <button
+        v-if="moreCount > 0"
+        type="button"
+        class="more"
+        title="Show full list"
+        @click="openModal"
       >
-        <AppFlex class="flex" align-h="left" gap="small">
-          <AppNodeBadge
-            v-for="(_class, index) in node.node_hierarchy?.sub_classes"
-            :key="index"
-            :node="_class"
-            :breadcrumbs="[
-              {
-                node: toBreadcrumbNode(node),
-                association: { predicate: 'is sub class of' },
-              },
-            ]"
-          />
-        </AppFlex>
-      </AppDetail>
-    </AppDetails>
-  </AppSection>
+        + {{ moreCount }} more…
+      </button>
+
+      <AppModal v-model="showAll" :label="modalTitle">
+        <h2 class="modal-title">{{ modalTitle }}</h2>
+        <ul class="hier-modal-list">
+          <li v-for="c in remainingChildren" :key="c.id">
+            <RouterLink :to="`/${c.id}`" @click="closeModal">
+              {{ labelOf(c) }}
+            </RouterLink>
+          </li>
+        </ul>
+      </AppModal>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { AssociationDirectionEnum, type Node } from "@/api/model";
-import AppDetail from "@/components/AppDetail.vue";
-import AppDetails from "@/components/AppDetails.vue";
-import AppNodeBadge from "@/components/AppNodeBadge.vue";
-import { toBreadcrumbNode } from "@/global/breadcrumbs";
+import { computed, ref } from "vue";
+import type { Node } from "@/api/model";
+import AppModal from "@/components/AppModal.vue";
 
-type Props = {
-  /** current node */
-  node: Node;
-};
+const props = defineProps<{ node: Node; childLimit?: number }>();
 
-defineProps<Props>();
+const LABELS = new Map<string, string>([
+  ["biolink:Disease", "Disease"],
+  ["biolink:PhenotypicFeature", "Phenotype"],
+  ["biolink:AnatomicalEntity", "Anatomical entity"],
+]);
+
+const typeNoun = computed(
+  () => LABELS.get(props.node?.category ?? "") ?? "Hierarchy",
+);
+const title = computed(() => `${typeNoun.value} hierarchy`);
+
+const parents = computed<any[]>(
+  () => props.node.node_hierarchy?.super_classes ?? [],
+);
+const children = computed<any[]>(
+  () => props.node.node_hierarchy?.sub_classes ?? [],
+);
+
+const limit = computed(() => props.childLimit ?? 6);
+const shownChildren = computed(() => children.value.slice(0, limit.value));
+const moreCount = computed(() =>
+  Math.max(0, children.value.length - shownChildren.value.length),
+);
+
+const labelOf = (n: any): string => n?.name ?? n?.label ?? n?.id ?? "";
+
+const showAll = ref(false);
+const remainingChildren = computed(() => children.value.slice(limit.value));
+const openModal = () => (showAll.value = true);
+const closeModal = () => (showAll.value = false);
+
+// Modal
+const nodeName = computed(() => labelOf(props.node));
+const totalChildren = computed(() => children.value.length);
+const modalTitle = computed(
+  () =>
+    `${totalChildren.value === 1 ? "Subclass" : "Subclasses"} of ${nodeName.value}`,
+);
 </script>
 
 <style lang="scss" scoped>
-.flex {
-  column-gap: 20px !important;
+/* Minimal styles to keep tree layout (no bars) */
+.toc-hier {
+  --indent-parent: 2em;
+  --indent-current: 3em;
+  --indent-child: 4em;
+  --spine-w: 1px;
+  --tick-w: 8px;
+  --gap: 4px;
+  --tick-top: 0.7em;
+  margin: 1em;
+  padding: 0.5em;
+  border-bottom: 1px solid $light-gray;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.toc-hier-title {
+  margin-bottom: 0.7em;
+  font-weight: 500;
+}
+.parent-row,
+.current-row,
+.child-row {
+  margin: 4px 0;
+}
+.parent-row {
+  padding-left: var(--indent-parent);
+}
+.current-row,
+.child-row {
+  position: relative;
+}
+.current-row {
+  padding-left: calc(var(--indent-current) + var(--tick-w) + var(--gap));
+}
+
+/* Children show a vertical spine + a small tick before each label */
+.child-row {
+  padding-left: calc(var(--indent-child) + var(--tick-w) + var(--gap));
+}
+.current-row::before,
+.child-row::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--spine-w);
+  background: #111827;
+  content: "";
+}
+/* current-node spine + tick */
+.current-row::before {
+  left: var(--indent-current);
+}
+
+.child-row::before {
+  left: var(--indent-child);
+}
+
+.current-row::after,
+.child-row::after {
+  position: absolute;
+  top: var(--tick-top);
+  width: var(--tick-w);
+  height: 1px;
+  background: #111827;
+  content: "";
+}
+.current-row::after {
+  left: var(--indent-current);
+}
+
+.child-row::after {
+  left: var(--indent-child);
+}
+
+.row-text {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.row-text:hover {
+  text-decoration: underline;
+}
+
+.more {
+  display: inline-block;
+  margin: 0.5em 0;
+  margin-left: calc(var(--indent-child) + var(--tick-w) + var(--gap));
+  border: 0;
+  background: none;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+.modal-title {
+  font-weight: 600;
+  font-size: 1rem;
+}
+.hier-modal-list {
+  margin: 0;
+  padding: 6px 0;
+}
+.hier-modal-list li {
+  list-style: circle; /* optional: per-item override */
 }
 </style>

@@ -7,7 +7,7 @@ export type DownloadItem = {
 export const knowledgeGraphDownloads: DownloadItem[] = [
   {
     label: "KGX TSV",
-    url: "http://data.monarchinitiative.org/monarch-kg/latest/monarch-kg.tar.gz",
+    url: "https://data.monarchinitiative.org/monarch-kg/latest/monarch-kg.tar.gz",
   },
   {
     label: "KGX JSON Lines",

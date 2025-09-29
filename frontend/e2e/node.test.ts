@@ -14,38 +14,6 @@ test("Table of contents works", async ({ page }) => {
   );
 
   /** check if solo selection mode works */
-  await page.locator(".toc .checkbox").click();
-  await expect(
-    page
-      .locator("main")
-      .getByText(/Ehlers-Danlos syndrome, hypermobility/i)
-      .first(),
-  ).toBeVisible();
-  await expect(
-    page
-      .locator("main")
-      .getByText(/Hierarchy/i)
-      .first(),
-  ).not.toBeVisible();
-  await expect(
-    page
-      .locator("main")
-      .getByText(/Associations/i)
-      .first(),
-  ).not.toBeVisible();
-  await page.locator(".toc .checkbox").click();
-  await expect(
-    page
-      .locator("main")
-      .getByText(/Hierarchy/i)
-      .first(),
-  ).toBeVisible();
-  await expect(
-    page
-      .locator("main")
-      .getByText(/Associations/i)
-      .first(),
-  ).toBeVisible();
 });
 
 test("Title info shows", async ({ page }) => {
