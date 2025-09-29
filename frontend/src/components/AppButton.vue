@@ -18,8 +18,8 @@
     <!-- optional info icon -->
     <AppIcon
       v-if="info"
-      icon="info-circle"
       v-tooltip="infoTooltip"
+      icon="info-circle"
       class="info-icon"
     />
   </component>
