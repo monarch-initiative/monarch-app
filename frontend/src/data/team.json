@@ -34,11 +34,6 @@
         "link": "https://tislab.org/members/bryan-laraway.html"
       },
       {
-        "name": "Carlo Kroll",
-        "role": "Scientific Software Engineer",
-        "link": ""
-      },
-      {
         "name": "Corey Cox",
         "role": "Scientific Software Engineer",
         "link": "https://github.com/amc-corey-cox"
@@ -348,6 +343,10 @@
   {
     "name": "Alumni Members",
     "members": [
+      {
+        "name": "Carlo Kroll",
+        "role": "Scientific Software Engineer"
+      },
       {
         "name": "Monica Munoz-Torres",
         "role": "Program Director"
