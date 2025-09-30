@@ -5,7 +5,7 @@
     <!-- PARENTS -->
     <div class="parents">
       <div v-for="p in parents" :key="p.id" class="parent-row">
-        <RouterLink :to="`/${p.id}`" :title="labelOf(p)" class="row-text">
+        <RouterLink :to="`/${p.id}`" v-tooltip="labelOf(p)" class="row-text">
           {{ labelOf(p) }}
         </RouterLink>
       </div>
@@ -13,7 +13,7 @@
 
     <!-- CURRENT NODE -->
     <div class="current-row">
-      <strong class="row-text" :title="labelOf(node)">{{
+      <strong class="row-text" v-tooltip="labelOf(node)">{{
         labelOf(node)
       }}</strong>
     </div>
@@ -21,7 +21,7 @@
     <!-- CHILDREN (tree connectors only) -->
     <div class="children">
       <div v-for="c in shownChildren" :key="c.id" class="child-row">
-        <RouterLink :to="`/${c.id}`" class="row-text" :title="labelOf(c)">
+        <RouterLink :to="`/${c.id}`" class="row-text" v-tooltip="labelOf(c)">
           {{ labelOf(c) }}
         </RouterLink>
       </div>
