@@ -1,27 +1,27 @@
 {
   "metadata": {
-    "total": 14115,
-    "num_publications": 156,
-    "last_5_yrs": 9657,
+    "total": 15984,
+    "num_publications": 161,
+    "last_5_yrs": 11456,
     "cites_per_year": {
-      "2013": 44,
-      "2014": 175,
-      "2015": 489,
-      "2016": 621,
-      "2017": 850,
-      "2018": 939,
-      "2019": 1209,
-      "2020": 1193,
-      "2021": 1421,
-      "2022": 1907,
-      "2023": 2048,
-      "2024": 2587,
-      "2025": 458
+      "2013": 42,
+      "2014": 178,
+      "2015": 487,
+      "2016": 630,
+      "2017": 873,
+      "2018": 940,
+      "2019": 1228,
+      "2020": 1188,
+      "2021": 1448,
+      "2022": 1913,
+      "2023": 2036,
+      "2024": 2488,
+      "2025": 2336
     },
-    "hindex": 53,
-    "hindex5y": 46,
-    "i10index": 104,
-    "i10index5y": 95
+    "hindex": 57,
+    "hindex5y": 51,
+    "i10index": 113,
+    "i10index5y": 103
   },
   "publications": [
     {
@@ -66,6 +66,46 @@
           "journal": "Nature",
           "issue": ":1-9",
           "link": "https://www.nature.com/articles/s41586-025-08623-w"
+        },
+        {
+          "title": "GA4GH Phenopacket-Driven Characterization of Genotype-Phenotype Correlations in Mendelian Disorders",
+          "authors": "Lauren Rekerle, Daniel Danis, Filip Rehburg, Adam SL Graefe, Viktor Bily, Andres Caballero-Oteyza, Pilar Cacheiro, Leonardo Chimirri, Jessica X Chong, Evan Connelly, Bert BA de Vries, Alexander JM Dingemans, Michael H Duyzend, Tomas Freiberger, Petra Gehle, Tudor Groza, Peter Hansen, Julius Jacobsen, Adam Klocperk, Markus S Ladewig, Michael I Love, Allison J Marcello, Alexander Mordhorst, Monica C Munoz-Torres, Justin Reese, Catharina Schuetz, Damian Smedley, Timmy Strauss, Ondrej Vladyka, David Zocche, Sylvia Thun, Christopher J Mungall, Melissa A Haendel, Peter N Robinson",
+          "year": 2025,
+          "journal": "medRxiv",
+          "issue": ":2025.03. 05.25323315",
+          "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11908317/"
+        },
+        {
+          "title": "Human Phenotype Ontology Annotations for Rare Congenital Conditions: Application to Arthrogryposis Multiplex Congenita",
+          "authors": "Shahrzad Nematollahi, Reggie C Hamdy, Harold van Bosse, Joyce Li, Daniel Blanshay\u2010Goldberg, Johanna IP de Vries, Klaus Dieterich, Isabel Filges, Tanya Bedard, Melissa Haendel, Monica Munoz Torres, Peter N Robinson, No\u00e9mi Dahan\u2010Oliel",
+          "year": 2025,
+          "journal": "American Journal of Medical Genetics Part A",
+          "issue": ":e64067",
+          "link": "https://onlinelibrary.wiley.com/doi/abs/10.1002/ajmg.a.64067"
+        },
+        {
+          "title": "Improving Biomedical Knowledge Graph Quality: A Community Approach",
+          "authors": "Katherina G Cortes, Shilpa Sundar, Sarah Gehrke, Keenan Manpearl, Junxia Lin, Daniel Robert Korn, Harry Caufield, Kevin Schaper, Justin Reese, Kushal Koirala, Lawrence E Hunter, E Kathleen Carter, Marcello DeLuca, Arjun Krishnan, Chris Mungall, Melissa Haendel",
+          "year": 2025,
+          "journal": "arXiv preprint arXiv:2508.21774",
+          "issue": "",
+          "link": "https://arxiv.org/abs/2508.21774"
+        },
+        {
+          "title": "Koza and Koza-Hub for born-interoperable knowledge graph generation using KGX",
+          "authors": "Daniel R Korn, Patrick Golden, Aaron Odell, Katherina Cortes, Shilpa Sundar, Kevin Schaper, Sarah Gehrke, Corey Cox, Harry Caufield, Justin Reese, Evan Morris, Christopher J Mungall, Melissa Haendel",
+          "year": 2025,
+          "journal": "arXiv preprint arXiv:2509.09096",
+          "issue": "",
+          "link": "https://arxiv.org/abs/2509.09096"
+        },
+        {
+          "title": "The Cell Ontology in the age of single-cell omics",
+          "authors": "Shawn Zheng Kai Tan, Aleix Puig-Barbe, Damien Goutte-Gattat, Caroline Eastwood, Brian Aevermann, Alida Avola, James P Balhoff, Ismail Ugur Bayindir, Jasmine Belfiore, Anita Reane Caron, David S Fischer, Nancy George, Benjamin M Gyori, Melissa A Haendel, Charles Tapley Hoyt, Huseyin Kir, Tiago Lubiana, Nicolas Matentzoglu, James A Overton, Beverly Peng, Bjoern Peters, Ellen M Quardokus, Patrick L Ray, Paola Roncaglia, Andrea D Rivera, Ray Stefancsik, Wei Kheng Teh, Sabrina Toro, Nicole Vasilevsky, Chuan Xu, Yun Zhang, Richard H Scheuermann, Chirstopher J Mungall, Alexander D Diehl, David Osumi-Sutherland",
+          "year": 2025,
+          "journal": "arXiv preprint arXiv:2506.10037",
+          "issue": "",
+          "link": "https://arxiv.org/abs/2506.10037"
         }
       ]
     },

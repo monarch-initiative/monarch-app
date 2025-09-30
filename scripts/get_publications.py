@@ -32,6 +32,10 @@ KNOWN_LINKS = {
     "The Human Phenotype Ontology in 2024: phenotypes around the world": "https://doi.org/10.1093/nar/gkad1005",
     "Metrics to assess value of biomedical digital repositories: response to RFI NOT-OD-16-133": "https://zenodo.org/records/203295",
     "The GA4GH Phenopacket schema: A computable representation of clinical data for precision medicine": "https://www.medrxiv.org/content/10.1101/2021.11.27.21266944v1",
+    "Evaluation of phenotype-driven gene prioritization methods for Mendelian diseases": "https://academic.oup.com/bib/article/23/2/bbac019/6521702",
+    "The case for open science: rare diseases": "https://academic.oup.com/jamiaopen/article/3/3/472/5904414",
+    "The Unified Phenotype Ontology (uPheno): A framework for cross-species integrative phenomics": "https://academic.oup.com/genetics/article/229/3/iyaf027/8058751",
+    "Towards a standard benchmark for variant and gene prioritisation algorithms: PhEval-Phenotypic inference Evaluation framework": "https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-025-06105-4",
 }
 
 
