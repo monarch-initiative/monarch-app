@@ -1036,7 +1036,7 @@
 <p>URI: <a href="https://w3id.org/monarch/monarch-py/TextAnnotationResult">https://w3id.org/monarch/monarch-py/TextAnnotationResult</a></p>
 <div class="highlight"><pre><span></span><code> classDiagram
     class TextAnnotationResult
-    click TextAnnotationResult href &quot;../TextAnnotationResult&quot;
+    click TextAnnotationResult href &quot;../TextAnnotationResult/&quot;
       TextAnnotationResult : end
 
       TextAnnotationResult : start
@@ -1048,8 +1048,9 @@
 
 
 
-    TextAnnotationResult --&gt; &quot;*&quot; Entity : tokens
-    click Entity href &quot;../Entity&quot;
+
+        TextAnnotationResult --&gt; &quot;*&quot; Entity : tokens
+        click Entity href &quot;../Entity/&quot;
 </code></pre></div>
 <!-- no inheritance hierarchy -->
 

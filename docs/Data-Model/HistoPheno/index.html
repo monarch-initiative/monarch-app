@@ -1036,7 +1036,7 @@
 <p>URI: <a href="https://w3id.org/monarch/monarch-py/HistoPheno">https://w3id.org/monarch/monarch-py/HistoPheno</a></p>
 <div class="highlight"><pre><span></span><code> classDiagram
     class HistoPheno
-    click HistoPheno href &quot;../HistoPheno&quot;
+    click HistoPheno href &quot;../HistoPheno/&quot;
       HistoPheno : id
 
       HistoPheno : items
@@ -1044,8 +1044,9 @@
 
 
 
-    HistoPheno --&gt; &quot;1..*&quot; HistoBin : items
-    click HistoBin href &quot;../HistoBin&quot;
+
+        HistoPheno --&gt; &quot;1..*&quot; HistoBin : items
+        click HistoBin href &quot;../HistoBin/&quot;
 </code></pre></div>
 <!-- no inheritance hierarchy -->
 

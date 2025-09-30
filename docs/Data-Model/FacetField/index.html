@@ -1045,14 +1045,16 @@
 <p>URI: <a href="https://w3id.org/monarch/monarch-py/FacetField">https://w3id.org/monarch/monarch-py/FacetField</a></p>
 <div class="highlight"><pre><span></span><code> classDiagram
     class FacetField
-    click FacetField href &quot;../FacetField&quot;
+    click FacetField href &quot;../FacetField/&quot;
       FacetField : facet_values
 
 
 
 
-    FacetField --&gt; &quot;*&quot; FacetValue : facet_values
-    click FacetValue href &quot;../FacetValue&quot;
+
+        FacetField --&gt; &quot;*&quot; FacetValue : facet_values
+        click FacetValue href &quot;../FacetValue/&quot;
+
 
 
       FacetField : label

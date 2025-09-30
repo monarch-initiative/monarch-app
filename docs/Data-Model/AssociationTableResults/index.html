@@ -1045,17 +1045,19 @@
 <p>URI: <a href="https://w3id.org/monarch/monarch-py/AssociationTableResults">https://w3id.org/monarch/monarch-py/AssociationTableResults</a></p>
 <div class="highlight"><pre><span></span><code> classDiagram
     class AssociationTableResults
-    click AssociationTableResults href &quot;../AssociationTableResults&quot;
+    click AssociationTableResults href &quot;../AssociationTableResults/&quot;
       Results &lt;|-- AssociationTableResults
-        click Results href &quot;../Results&quot;
+        click Results href &quot;../Results/&quot;
 
       AssociationTableResults : facet_fields
 
 
 
 
-    AssociationTableResults --&gt; &quot;*&quot; FacetField : facet_fields
-    click FacetField href &quot;../FacetField&quot;
+
+        AssociationTableResults --&gt; &quot;*&quot; FacetField : facet_fields
+        click FacetField href &quot;../FacetField/&quot;
+
 
 
       AssociationTableResults : facet_queries
@@ -1063,8 +1065,10 @@
 
 
 
-    AssociationTableResults --&gt; &quot;*&quot; FacetValue : facet_queries
-    click FacetValue href &quot;../FacetValue&quot;
+
+        AssociationTableResults --&gt; &quot;*&quot; FacetValue : facet_queries
+        click FacetValue href &quot;../FacetValue/&quot;
+
 
 
       AssociationTableResults : items
@@ -1072,8 +1076,10 @@
 
 
 
-    AssociationTableResults --&gt; &quot;1..*&quot; DirectionalAssociation : items
-    click DirectionalAssociation href &quot;../DirectionalAssociation&quot;
+
+        AssociationTableResults --&gt; &quot;1..*&quot; DirectionalAssociation : items
+        click DirectionalAssociation href &quot;../DirectionalAssociation/&quot;
+
 
 
       AssociationTableResults : limit

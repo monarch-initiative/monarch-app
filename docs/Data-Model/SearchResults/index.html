@@ -1045,17 +1045,19 @@
 <p>URI: <a href="https://w3id.org/monarch/monarch-py/SearchResults">https://w3id.org/monarch/monarch-py/SearchResults</a></p>
 <div class="highlight"><pre><span></span><code> classDiagram
     class SearchResults
-    click SearchResults href &quot;../SearchResults&quot;
+    click SearchResults href &quot;../SearchResults/&quot;
       Results &lt;|-- SearchResults
-        click Results href &quot;../Results&quot;
+        click Results href &quot;../Results/&quot;
 
       SearchResults : facet_fields
 
 
 
 
-    SearchResults --&gt; &quot;*&quot; FacetField : facet_fields
-    click FacetField href &quot;../FacetField&quot;
+
+        SearchResults --&gt; &quot;*&quot; FacetField : facet_fields
+        click FacetField href &quot;../FacetField/&quot;
+
 
 
       SearchResults : facet_queries
@@ -1063,8 +1065,10 @@
 
 
 
-    SearchResults --&gt; &quot;*&quot; FacetValue : facet_queries
-    click FacetValue href &quot;../FacetValue&quot;
+
+        SearchResults --&gt; &quot;*&quot; FacetValue : facet_queries
+        click FacetValue href &quot;../FacetValue/&quot;
+
 
 
       SearchResults : items
@@ -1072,8 +1076,10 @@
 
 
 
-    SearchResults --&gt; &quot;1..*&quot; SearchResult : items
-    click SearchResult href &quot;../SearchResult&quot;
+
+        SearchResults --&gt; &quot;1..*&quot; SearchResult : items
+        click SearchResult href &quot;../SearchResult/&quot;
+
 
 
       SearchResults : limit

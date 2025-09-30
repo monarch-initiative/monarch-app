@@ -1046,17 +1046,19 @@
 <p>URI: <a href="https://w3id.org/monarch/monarch-py/MappingResults">https://w3id.org/monarch/monarch-py/MappingResults</a></p>
 <div class="highlight"><pre><span></span><code> classDiagram
     class MappingResults
-    click MappingResults href &quot;../MappingResults&quot;
+    click MappingResults href &quot;../MappingResults/&quot;
       Results &lt;|-- MappingResults
-        click Results href &quot;../Results&quot;
+        click Results href &quot;../Results/&quot;
 
       MappingResults : items
 
 
 
 
-    MappingResults --&gt; &quot;1..*&quot; Mapping : items
-    click Mapping href &quot;../Mapping&quot;
+
+        MappingResults --&gt; &quot;1..*&quot; Mapping : items
+        click Mapping href &quot;../Mapping/&quot;
+
 
 
       MappingResults : limit

@@ -1054,9 +1054,9 @@
 <p>URI: <a href="https://w3id.org/monarch/monarch-py/CategoryGroupedAssociationResults">https://w3id.org/monarch/monarch-py/CategoryGroupedAssociationResults</a></p>
 <div class="highlight"><pre><span></span><code> classDiagram
     class CategoryGroupedAssociationResults
-    click CategoryGroupedAssociationResults href &quot;../CategoryGroupedAssociationResults&quot;
+    click CategoryGroupedAssociationResults href &quot;../CategoryGroupedAssociationResults/&quot;
       Results &lt;|-- CategoryGroupedAssociationResults
-        click Results href &quot;../Results&quot;
+        click Results href &quot;../Results/&quot;
 
       CategoryGroupedAssociationResults : counterpart_category
 
@@ -1065,8 +1065,10 @@
 
 
 
-    CategoryGroupedAssociationResults --&gt; &quot;1..*&quot; Association : items
-    click Association href &quot;../Association&quot;
+
+        CategoryGroupedAssociationResults --&gt; &quot;1..*&quot; Association : items
+        click Association href &quot;../Association/&quot;
+
 
 
       CategoryGroupedAssociationResults : limit

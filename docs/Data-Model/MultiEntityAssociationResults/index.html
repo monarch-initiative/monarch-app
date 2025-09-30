@@ -1045,17 +1045,19 @@
 <p>URI: <a href="https://w3id.org/monarch/monarch-py/MultiEntityAssociationResults">https://w3id.org/monarch/monarch-py/MultiEntityAssociationResults</a></p>
 <div class="highlight"><pre><span></span><code> classDiagram
     class MultiEntityAssociationResults
-    click MultiEntityAssociationResults href &quot;../MultiEntityAssociationResults&quot;
+    click MultiEntityAssociationResults href &quot;../MultiEntityAssociationResults/&quot;
       Results &lt;|-- MultiEntityAssociationResults
-        click Results href &quot;../Results&quot;
+        click Results href &quot;../Results/&quot;
 
       MultiEntityAssociationResults : associated_categories
 
 
 
 
-    MultiEntityAssociationResults --&gt; &quot;1..*&quot; CategoryGroupedAssociationResults : associated_categories
-    click CategoryGroupedAssociationResults href &quot;../CategoryGroupedAssociationResults&quot;
+
+        MultiEntityAssociationResults --&gt; &quot;1..*&quot; CategoryGroupedAssociationResults : associated_categories
+        click CategoryGroupedAssociationResults href &quot;../CategoryGroupedAssociationResults/&quot;
+
 
 
       MultiEntityAssociationResults : id

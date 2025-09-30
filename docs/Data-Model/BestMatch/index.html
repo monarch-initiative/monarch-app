@@ -1045,7 +1045,7 @@
 <p>URI: <a href="https://w3id.org/monarch/monarch-py/BestMatch">https://w3id.org/monarch/monarch-py/BestMatch</a></p>
 <div class="highlight"><pre><span></span><code> classDiagram
     class BestMatch
-    click BestMatch href &quot;../BestMatch&quot;
+    click BestMatch href &quot;../BestMatch/&quot;
       BestMatch : match_source
 
       BestMatch : match_source_label
@@ -1065,8 +1065,9 @@
 
 
 
-    BestMatch --&gt; &quot;1&quot; TermPairwiseSimilarity : similarity
-    click TermPairwiseSimilarity href &quot;../TermPairwiseSimilarity&quot;
+
+        BestMatch --&gt; &quot;1&quot; TermPairwiseSimilarity : similarity
+        click TermPairwiseSimilarity href &quot;../TermPairwiseSimilarity/&quot;
 </code></pre></div>
 <!-- no inheritance hierarchy -->
 

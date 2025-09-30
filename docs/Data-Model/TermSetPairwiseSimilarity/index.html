@@ -1055,9 +1055,9 @@
 <p>URI: <a href="https://w3id.org/monarch/monarch-py/TermSetPairwiseSimilarity">https://w3id.org/monarch/monarch-py/TermSetPairwiseSimilarity</a></p>
 <div class="highlight"><pre><span></span><code> classDiagram
     class TermSetPairwiseSimilarity
-    click TermSetPairwiseSimilarity href &quot;../TermSetPairwiseSimilarity&quot;
+    click TermSetPairwiseSimilarity href &quot;../TermSetPairwiseSimilarity/&quot;
       PairwiseSimilarity &lt;|-- TermSetPairwiseSimilarity
-        click PairwiseSimilarity href &quot;../PairwiseSimilarity&quot;
+        click PairwiseSimilarity href &quot;../PairwiseSimilarity/&quot;
 
       TermSetPairwiseSimilarity : average_score
 
@@ -1070,8 +1070,10 @@
 
 
 
-    TermSetPairwiseSimilarity --&gt; &quot;*&quot; BestMatch : object_best_matches
-    click BestMatch href &quot;../BestMatch&quot;
+
+        TermSetPairwiseSimilarity --&gt; &quot;*&quot; BestMatch : object_best_matches
+        click BestMatch href &quot;../BestMatch/&quot;
+
 
 
       TermSetPairwiseSimilarity : object_termset
@@ -1079,8 +1081,10 @@
 
 
 
-    TermSetPairwiseSimilarity --&gt; &quot;*&quot; TermInfo : object_termset
-    click TermInfo href &quot;../TermInfo&quot;
+
+        TermSetPairwiseSimilarity --&gt; &quot;*&quot; TermInfo : object_termset
+        click TermInfo href &quot;../TermInfo/&quot;
+
 
 
       TermSetPairwiseSimilarity : subject_best_matches
@@ -1088,8 +1092,10 @@
 
 
 
-    TermSetPairwiseSimilarity --&gt; &quot;*&quot; BestMatch : subject_best_matches
-    click BestMatch href &quot;../BestMatch&quot;
+
+        TermSetPairwiseSimilarity --&gt; &quot;*&quot; BestMatch : subject_best_matches
+        click BestMatch href &quot;../BestMatch/&quot;
+
 
 
       TermSetPairwiseSimilarity : subject_termset
@@ -1097,8 +1103,9 @@
 
 
 
-    TermSetPairwiseSimilarity --&gt; &quot;*&quot; TermInfo : subject_termset
-    click TermInfo href &quot;../TermInfo&quot;
+
+        TermSetPairwiseSimilarity --&gt; &quot;*&quot; TermInfo : subject_termset
+        click TermInfo href &quot;../TermInfo/&quot;
 </code></pre></div>
 <h2 id="inheritance">Inheritance</h2>
 <ul>

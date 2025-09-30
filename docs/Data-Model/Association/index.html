@@ -1054,9 +1054,9 @@
 <p>URI: <a href="https://w3id.org/monarch/monarch-py/Association">https://w3id.org/monarch/monarch-py/Association</a></p>
 <div class="highlight"><pre><span></span><code> classDiagram
     class Association
-    click Association href &quot;../Association&quot;
+    click Association href &quot;../Association/&quot;
       Association &lt;|-- DirectionalAssociation
-        click DirectionalAssociation href &quot;../DirectionalAssociation&quot;
+        click DirectionalAssociation href &quot;../DirectionalAssociation/&quot;
 
       Association : agent_type
 
@@ -1097,8 +1097,10 @@
 
 
 
-    Association --&gt; &quot;*&quot; ExpandedCurie : has_evidence_links
-    click ExpandedCurie href &quot;../ExpandedCurie&quot;
+
+        Association --&gt; &quot;*&quot; ExpandedCurie : has_evidence_links
+        click ExpandedCurie href &quot;../ExpandedCurie/&quot;
+
 
 
       Association : has_percentage
@@ -1168,8 +1170,10 @@
 
 
 
-    Association --&gt; &quot;0..1&quot; ExpandedCurie : provided_by_link
-    click ExpandedCurie href &quot;../ExpandedCurie&quot;
+
+        Association --&gt; &quot;0..1&quot; ExpandedCurie : provided_by_link
+        click ExpandedCurie href &quot;../ExpandedCurie/&quot;
+
 
 
       Association : publications
@@ -1179,8 +1183,10 @@
 
 
 
-    Association --&gt; &quot;*&quot; ExpandedCurie : publications_links
-    click ExpandedCurie href &quot;../ExpandedCurie&quot;
+
+        Association --&gt; &quot;*&quot; ExpandedCurie : publications_links
+        click ExpandedCurie href &quot;../ExpandedCurie/&quot;
+
 
 
       Association : qualifier

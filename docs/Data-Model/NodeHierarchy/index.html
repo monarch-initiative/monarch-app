@@ -1045,14 +1045,16 @@
 <p>URI: <a href="https://w3id.org/monarch/monarch-py/NodeHierarchy">https://w3id.org/monarch/monarch-py/NodeHierarchy</a></p>
 <div class="highlight"><pre><span></span><code> classDiagram
     class NodeHierarchy
-    click NodeHierarchy href &quot;../NodeHierarchy&quot;
+    click NodeHierarchy href &quot;../NodeHierarchy/&quot;
       NodeHierarchy : sub_classes
 
 
 
 
-    NodeHierarchy --&gt; &quot;1..*&quot; Entity : sub_classes
-    click Entity href &quot;../Entity&quot;
+
+        NodeHierarchy --&gt; &quot;1..*&quot; Entity : sub_classes
+        click Entity href &quot;../Entity/&quot;
+
 
 
       NodeHierarchy : super_classes
@@ -1060,8 +1062,9 @@
 
 
 
-    NodeHierarchy --&gt; &quot;1..*&quot; Entity : super_classes
-    click Entity href &quot;../Entity&quot;
+
+        NodeHierarchy --&gt; &quot;1..*&quot; Entity : super_classes
+        click Entity href &quot;../Entity/&quot;
 </code></pre></div>
 <!-- no inheritance hierarchy -->
 

@@ -1037,14 +1037,15 @@
 <p>URI: <a href="https://w3id.org/monarch/monarch-py/AssociationCountList">https://w3id.org/monarch/monarch-py/AssociationCountList</a></p>
 <div class="highlight"><pre><span></span><code> classDiagram
     class AssociationCountList
-    click AssociationCountList href &quot;../AssociationCountList&quot;
+    click AssociationCountList href &quot;../AssociationCountList/&quot;
       AssociationCountList : items
 
 
 
 
-    AssociationCountList --&gt; &quot;1..*&quot; AssociationCount : items
-    click AssociationCount href &quot;../AssociationCount&quot;
+
+        AssociationCountList --&gt; &quot;1..*&quot; AssociationCount : items
+        click AssociationCount href &quot;../AssociationCount/&quot;
 </code></pre></div>
 <!-- no inheritance hierarchy -->
 

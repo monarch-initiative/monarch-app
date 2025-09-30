@@ -1036,7 +1036,7 @@
 <p>URI: <a href="https://w3id.org/monarch/monarch-py/SemsimSearchResult">https://w3id.org/monarch/monarch-py/SemsimSearchResult</a></p>
 <div class="highlight"><pre><span></span><code> classDiagram
     class SemsimSearchResult
-    click SemsimSearchResult href &quot;../SemsimSearchResult&quot;
+    click SemsimSearchResult href &quot;../SemsimSearchResult/&quot;
       SemsimSearchResult : score
 
       SemsimSearchResult : similarity
@@ -1044,8 +1044,10 @@
 
 
 
-    SemsimSearchResult --&gt; &quot;0..1&quot; TermSetPairwiseSimilarity : similarity
-    click TermSetPairwiseSimilarity href &quot;../TermSetPairwiseSimilarity&quot;
+
+        SemsimSearchResult --&gt; &quot;0..1&quot; TermSetPairwiseSimilarity : similarity
+        click TermSetPairwiseSimilarity href &quot;../TermSetPairwiseSimilarity/&quot;
+
 
 
       SemsimSearchResult : subject
@@ -1053,8 +1055,9 @@
 
 
 
-    SemsimSearchResult --&gt; &quot;1&quot; Entity : subject
-    click Entity href &quot;../Entity&quot;
+
+        SemsimSearchResult --&gt; &quot;1&quot; Entity : subject
+        click Entity href &quot;../Entity/&quot;
 </code></pre></div>
 <!-- no inheritance hierarchy -->
 

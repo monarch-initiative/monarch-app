@@ -1045,17 +1045,19 @@
 <p>URI: <a href="https://w3id.org/monarch/monarch-py/CompactAssociationResults">https://w3id.org/monarch/monarch-py/CompactAssociationResults</a></p>
 <div class="highlight"><pre><span></span><code> classDiagram
     class CompactAssociationResults
-    click CompactAssociationResults href &quot;../CompactAssociationResults&quot;
+    click CompactAssociationResults href &quot;../CompactAssociationResults/&quot;
       Results &lt;|-- CompactAssociationResults
-        click Results href &quot;../Results&quot;
+        click Results href &quot;../Results/&quot;
 
       CompactAssociationResults : facet_fields
 
 
 
 
-    CompactAssociationResults --&gt; &quot;*&quot; FacetField : facet_fields
-    click FacetField href &quot;../FacetField&quot;
+
+        CompactAssociationResults --&gt; &quot;*&quot; FacetField : facet_fields
+        click FacetField href &quot;../FacetField/&quot;
+
 
 
       CompactAssociationResults : facet_queries
@@ -1063,8 +1065,10 @@
 
 
 
-    CompactAssociationResults --&gt; &quot;*&quot; FacetValue : facet_queries
-    click FacetValue href &quot;../FacetValue&quot;
+
+        CompactAssociationResults --&gt; &quot;*&quot; FacetValue : facet_queries
+        click FacetValue href &quot;../FacetValue/&quot;
+
 
 
       CompactAssociationResults : items
@@ -1072,8 +1076,10 @@
 
 
 
-    CompactAssociationResults --&gt; &quot;1..*&quot; CompactAssociation : items
-    click CompactAssociation href &quot;../CompactAssociation&quot;
+
+        CompactAssociationResults --&gt; &quot;1..*&quot; CompactAssociation : items
+        click CompactAssociation href &quot;../CompactAssociation/&quot;
+
 
 
       CompactAssociationResults : limit

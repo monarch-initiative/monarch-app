@@ -1055,9 +1055,9 @@
 <p>URI: <a href="https://w3id.org/monarch/monarch-py/DirectionalAssociation">https://w3id.org/monarch/monarch-py/DirectionalAssociation</a></p>
 <div class="highlight"><pre><span></span><code> classDiagram
     class DirectionalAssociation
-    click DirectionalAssociation href &quot;../DirectionalAssociation&quot;
+    click DirectionalAssociation href &quot;../DirectionalAssociation/&quot;
       Association &lt;|-- DirectionalAssociation
-        click Association href &quot;../Association&quot;
+        click Association href &quot;../Association/&quot;
 
       DirectionalAssociation : agent_type
 
@@ -1070,8 +1070,10 @@
 
 
 
-    DirectionalAssociation --&gt; &quot;1&quot; AssociationDirectionEnum : direction
-    click AssociationDirectionEnum href &quot;../AssociationDirectionEnum&quot;
+
+        DirectionalAssociation --&gt; &quot;1&quot; AssociationDirectionEnum : direction
+        click AssociationDirectionEnum href &quot;../AssociationDirectionEnum/&quot;
+
 
 
       DirectionalAssociation : disease_context_qualifier
@@ -1107,8 +1109,10 @@
 
 
 
-    DirectionalAssociation --&gt; &quot;*&quot; ExpandedCurie : has_evidence_links
-    click ExpandedCurie href &quot;../ExpandedCurie&quot;
+
+        DirectionalAssociation --&gt; &quot;*&quot; ExpandedCurie : has_evidence_links
+        click ExpandedCurie href &quot;../ExpandedCurie/&quot;
+
 
 
       DirectionalAssociation : has_percentage
@@ -1122,8 +1126,10 @@
 
 
 
-    DirectionalAssociation --&gt; &quot;0..1&quot; AssociationHighlighting : highlighting
-    click AssociationHighlighting href &quot;../AssociationHighlighting&quot;
+
+        DirectionalAssociation --&gt; &quot;0..1&quot; AssociationHighlighting : highlighting
+        click AssociationHighlighting href &quot;../AssociationHighlighting/&quot;
+
 
 
       DirectionalAssociation : id
@@ -1187,8 +1193,10 @@
 
 
 
-    DirectionalAssociation --&gt; &quot;0..1&quot; ExpandedCurie : provided_by_link
-    click ExpandedCurie href &quot;../ExpandedCurie&quot;
+
+        DirectionalAssociation --&gt; &quot;0..1&quot; ExpandedCurie : provided_by_link
+        click ExpandedCurie href &quot;../ExpandedCurie/&quot;
+
 
 
       DirectionalAssociation : publications
@@ -1198,8 +1206,10 @@
 
 
 
-    DirectionalAssociation --&gt; &quot;*&quot; ExpandedCurie : publications_links
-    click ExpandedCurie href &quot;../ExpandedCurie&quot;
+
+        DirectionalAssociation --&gt; &quot;*&quot; ExpandedCurie : publications_links
+        click ExpandedCurie href &quot;../ExpandedCurie/&quot;
+
 
 
       DirectionalAssociation : qualifier

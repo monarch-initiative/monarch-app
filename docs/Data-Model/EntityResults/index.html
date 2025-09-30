@@ -1045,17 +1045,19 @@
 <p>URI: <a href="https://w3id.org/monarch/monarch-py/EntityResults">https://w3id.org/monarch/monarch-py/EntityResults</a></p>
 <div class="highlight"><pre><span></span><code> classDiagram
     class EntityResults
-    click EntityResults href &quot;../EntityResults&quot;
+    click EntityResults href &quot;../EntityResults/&quot;
       Results &lt;|-- EntityResults
-        click Results href &quot;../Results&quot;
+        click Results href &quot;../Results/&quot;
 
       EntityResults : items
 
 
 
 
-    EntityResults --&gt; &quot;1..*&quot; Entity : items
-    click Entity href &quot;../Entity&quot;
+
+        EntityResults --&gt; &quot;1..*&quot; Entity : items
+        click Entity href &quot;../Entity/&quot;
+
 
 
       EntityResults : limit

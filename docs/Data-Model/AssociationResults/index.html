@@ -1045,17 +1045,19 @@
 <p>URI: <a href="https://w3id.org/monarch/monarch-py/AssociationResults">https://w3id.org/monarch/monarch-py/AssociationResults</a></p>
 <div class="highlight"><pre><span></span><code> classDiagram
     class AssociationResults
-    click AssociationResults href &quot;../AssociationResults&quot;
+    click AssociationResults href &quot;../AssociationResults/&quot;
       Results &lt;|-- AssociationResults
-        click Results href &quot;../Results&quot;
+        click Results href &quot;../Results/&quot;
 
       AssociationResults : facet_fields
 
 
 
 
-    AssociationResults --&gt; &quot;*&quot; FacetField : facet_fields
-    click FacetField href &quot;../FacetField&quot;
+
+        AssociationResults --&gt; &quot;*&quot; FacetField : facet_fields
+        click FacetField href &quot;../FacetField/&quot;
+
 
 
       AssociationResults : facet_queries
@@ -1063,8 +1065,10 @@
 
 
 
-    AssociationResults --&gt; &quot;*&quot; FacetValue : facet_queries
-    click FacetValue href &quot;../FacetValue&quot;
+
+        AssociationResults --&gt; &quot;*&quot; FacetValue : facet_queries
+        click FacetValue href &quot;../FacetValue/&quot;
+
 
 
       AssociationResults : items
@@ -1072,8 +1076,10 @@
 
 
 
-    AssociationResults --&gt; &quot;1..*&quot; Association : items
-    click Association href &quot;../Association&quot;
+
+        AssociationResults --&gt; &quot;1..*&quot; Association : items
+        click Association href &quot;../Association/&quot;
+
 
 
       AssociationResults : limit

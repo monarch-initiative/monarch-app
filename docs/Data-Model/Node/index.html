@@ -1046,17 +1046,19 @@
 <p>URI: <a href="https://w3id.org/monarch/monarch-py/Node">https://w3id.org/monarch/monarch-py/Node</a></p>
 <div class="highlight"><pre><span></span><code> classDiagram
     class Node
-    click Node href &quot;../Node&quot;
+    click Node href &quot;../Node/&quot;
       Entity &lt;|-- Node
-        click Entity href &quot;../Entity&quot;
+        click Entity href &quot;../Entity/&quot;
 
       Node : association_counts
 
 
 
 
-    Node --&gt; &quot;1..*&quot; AssociationCount : association_counts
-    click AssociationCount href &quot;../AssociationCount&quot;
+
+        Node --&gt; &quot;1..*&quot; AssociationCount : association_counts
+        click AssociationCount href &quot;../AssociationCount/&quot;
+
 
 
       Node : broad_synonym
@@ -1068,8 +1070,10 @@
 
 
 
-    Node --&gt; &quot;*&quot; Entity : causal_gene
-    click Entity href &quot;../Entity&quot;
+
+        Node --&gt; &quot;*&quot; Entity : causal_gene
+        click Entity href &quot;../Entity/&quot;
+
 
 
       Node : causes_disease
@@ -1077,8 +1081,10 @@
 
 
 
-    Node --&gt; &quot;*&quot; Entity : causes_disease
-    click Entity href &quot;../Entity&quot;
+
+        Node --&gt; &quot;*&quot; Entity : causes_disease
+        click Entity href &quot;../Entity/&quot;
+
 
 
       Node : deprecated
@@ -1092,11 +1098,19 @@
 
 
 
-    Node --&gt; &quot;*&quot; ExpandedCurie : external_links
-    click ExpandedCurie href &quot;../ExpandedCurie&quot;
+
+        Node --&gt; &quot;*&quot; ExpandedCurie : external_links
+        click ExpandedCurie href &quot;../ExpandedCurie/&quot;
+
 
 
       Node : full_name
+
+      Node : has_descendant
+
+      Node : has_descendant_count
+
+      Node : has_descendant_label
 
       Node : has_phenotype
 
@@ -1119,8 +1133,10 @@
 
 
 
-    Node --&gt; &quot;0..1&quot; Entity : inheritance
-    click Entity href &quot;../Entity&quot;
+
+        Node --&gt; &quot;0..1&quot; Entity : inheritance
+        click Entity href &quot;../Entity/&quot;
+
 
 
       Node : iri
@@ -1130,8 +1146,10 @@
 
 
 
-    Node --&gt; &quot;*&quot; ExpandedCurie : mappings
-    click ExpandedCurie href &quot;../ExpandedCurie&quot;
+
+        Node --&gt; &quot;*&quot; ExpandedCurie : mappings
+        click ExpandedCurie href &quot;../ExpandedCurie/&quot;
+
 
 
       Node : name
@@ -1145,8 +1163,10 @@
 
 
 
-    Node --&gt; &quot;0..1&quot; NodeHierarchy : node_hierarchy
-    click NodeHierarchy href &quot;../NodeHierarchy&quot;
+
+        Node --&gt; &quot;0..1&quot; NodeHierarchy : node_hierarchy
+        click NodeHierarchy href &quot;../NodeHierarchy/&quot;
+
 
 
       Node : provided_by
@@ -1156,8 +1176,10 @@
 
 
 
-    Node --&gt; &quot;0..1&quot; ExpandedCurie : provided_by_link
-    click ExpandedCurie href &quot;../ExpandedCurie&quot;
+
+        Node --&gt; &quot;0..1&quot; ExpandedCurie : provided_by_link
+        click ExpandedCurie href &quot;../ExpandedCurie/&quot;
+
 
 
       Node : related_synonym
@@ -1386,6 +1408,24 @@
 <td><a href="../has_phenotype_count/">has_phenotype_count</a></td>
 <td>0..1 <br/> <a href="../Integer/">Integer</a></td>
 <td>A count of the number of phenotypes that are known to be associated with this...</td>
+<td><a href="../Entity/">Entity</a></td>
+</tr>
+<tr>
+<td><a href="../has_descendant/">has_descendant</a></td>
+<td>* <br/> <a href="../String/">String</a></td>
+<td>A list of entity identifiers that are known to be descendants of this entity</td>
+<td><a href="../Entity/">Entity</a></td>
+</tr>
+<tr>
+<td><a href="../has_descendant_label/">has_descendant_label</a></td>
+<td>* <br/> <a href="../String/">String</a></td>
+<td>A list of entity labels that are known to be descendants of this entity</td>
+<td><a href="../Entity/">Entity</a></td>
+</tr>
+<tr>
+<td><a href="../has_descendant_count/">has_descendant_count</a></td>
+<td>0..1 <br/> <a href="../Integer/">Integer</a></td>
+<td>A count of the number of entities that are known to be descendants of this en...</td>
 <td><a href="../Entity/">Entity</a></td>
 </tr>
 </tbody>
@@ -1825,6 +1865,45 @@
 <span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
 <span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">has_phenotype_count</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Node</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Entity</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">integer</span>
+<span class="w">  </span><span class="nt">has_descendant</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">has_descendant</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A list of entity identifiers that are known to be descendants of</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">this entity</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">has_descendant</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Node</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Entity</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">    </span><span class="nt">multivalued</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">inlined</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">inlined_as_list</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">has_descendant_label</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">has_descendant_label</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A list of entity labels that are known to be descendants of this</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">entity</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">has_descendant_label</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Node</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Entity</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">    </span><span class="nt">multivalued</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">inlined</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">inlined_as_list</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">has_descendant_count</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">has_descendant_count</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A count of the number of entities that are known to be descendants</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">of this entity</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">has_descendant_count</span>
 <span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Node</span>
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Entity</span>
