@@ -2,12 +2,12 @@
   "items": [
     {
       "label": "Disease to Phenotype",
-      "count": 4192,
+      "count": 4193,
       "category": "biolink:DiseaseToPhenotypicFeatureAssociation"
     },
     {
       "label": "Gene to Phenotype",
-      "count": 6475,
+      "count": 2907,
       "category": "biolink:GeneToPhenotypicFeatureAssociation"
     },
     {
@@ -17,17 +17,17 @@
     },
     {
       "label": "Correlated Gene",
-      "count": 149,
+      "count": 150,
       "category": "biolink:CorrelatedGeneToDiseaseAssociation"
     },
     {
       "label": "Variant to Disease",
-      "count": 211,
+      "count": 340,
       "category": "biolink:VariantToDiseaseAssociation"
     },
     {
       "label": "Disease Model",
-      "count": 242,
+      "count": 243,
       "category": "biolink:GenotypeToDiseaseAssociation"
     },
     {

@@ -1,5 +1,5 @@
-import pytest
 
+import pytest
 
 @pytest.fixture
 def node_json():
@@ -51,6 +51,405 @@ def node_json():
     "has_phenotype_closure": null,
     "has_phenotype_closure_label": null,
     "has_phenotype_count": 0,
+    "has_descendant": [
+        "MONDO:0013162",
+        "MONDO:0971171",
+        "MONDO:0018951",
+        "MONDO:0035648",
+        "MONDO:0010678",
+        "MONDO:0011787",
+        "MONDO:0013158",
+        "MONDO:0019950",
+        "MONDO:0013159",
+        "MONDO:0011968",
+        "MONDO:0010400",
+        "MONDO:0012277",
+        "MONDO:0000727",
+        "MONDO:0012215",
+        "MONDO:0016108",
+        "MONDO:0000173",
+        "MONDO:0024530",
+        "MONDO:0009675",
+        "MONDO:0024607",
+        "MONDO:0017892",
+        "MONDO:0007614",
+        "MONDO:0014071",
+        "MONDO:0013049",
+        "MONDO:0030456",
+        "MONDO:0023671",
+        "MONDO:0029133",
+        "MONDO:0018281",
+        "MONDO:0021569",
+        "MONDO:0015151",
+        "MONDO:0030712",
+        "MONDO:0018939",
+        "MONDO:1040033",
+        "MONDO:0009683",
+        "MONDO:0011246",
+        "MONDO:0014788",
+        "MONDO:0013155",
+        "MONDO:0010676",
+        "MONDO:0009690",
+        "MONDO:0700285",
+        "MONDO:0033556",
+        "MONDO:0035649",
+        "MONDO:0014683",
+        "MONDO:0009678",
+        "MONDO:0010311",
+        "MONDO:0958233",
+        "MONDO:0010870",
+        "MONDO:0000172",
+        "MONDO:0013297",
+        "MONDO:0010884",
+        "MONDO:0023595",
+        "MONDO:0009677",
+        "MONDO:0035647",
+        "MONDO:0010401",
+        "MONDO:0010677",
+        "MONDO:0014782",
+        "MONDO:0008030",
+        "MONDO:0014140",
+        "MONDO:0021018",
+        "MONDO:0018759",
+        "MONDO:0011266",
+        "MONDO:0008034",
+        "MONDO:0100228",
+        "MONDO:0012193",
+        "MONDO:0014489",
+        "MONDO:0029136",
+        "MONDO:0013550",
+        "MONDO:0012248",
+        "MONDO:0012652",
+        "MONDO:0013904",
+        "MONDO:0009676",
+        "MONDO:0012410",
+        "MONDO:0013160",
+        "MONDO:0957270",
+        "MONDO:0014896",
+        "MONDO:0012138",
+        "MONDO:0013178",
+        "MONDO:0025193",
+        "MONDO:0010684",
+        "MONDO:0008028",
+        "MONDO:0014654",
+        "MONDO:0024545",
+        "MONDO:0030355",
+        "MONDO:0012127",
+        "MONDO:0010680",
+        "MONDO:0009682",
+        "MONDO:0018949",
+        "MONDO:0011271",
+        "MONDO:0009685",
+        "MONDO:0009680",
+        "MONDO:0016049",
+        "MONDO:0000171",
+        "MONDO:0013440",
+        "MONDO:0018280",
+        "MONDO:0012262",
+        "MONDO:0958236",
+        "MONDO:0012270",
+        "MONDO:0014142",
+        "MONDO:0020121",
+        "MONDO:0016971",
+        "MONDO:0018276",
+        "MONDO:0008031",
+        "MONDO:0011362",
+        "MONDO:0014538",
+        "MONDO:0958353",
+        "MONDO:0016107",
+        "MONDO:0015152",
+        "MONDO:0018278",
+        "MONDO:0011423",
+        "MONDO:0958234",
+        "MONDO:0100531",
+        "MONDO:0009181",
+        "MONDO:0013222",
+        "MONDO:0011688",
+        "MONDO:0008409",
+        "MONDO:0013161",
+        "MONDO:0018371",
+        "MONDO:0012034",
+        "MONDO:0035646",
+        "MONDO:0008116",
+        "MONDO:0008029",
+        "MONDO:0001347",
+        "MONDO:0013177",
+        "MONDO:0024771",
+        "MONDO:0011181",
+        "MONDO:0014900",
+        "MONDO:0014141",
+        "MONDO:0030354",
+        "MONDO:0034022",
+        "MONDO:0958077",
+        "MONDO:0009681",
+        "MONDO:0029135",
+        "MONDO:0013071",
+        "MONDO:0008049",
+        "MONDO:0958195",
+        "MONDO:0011028",
+        "MONDO:0958235",
+        "MONDO:0011170",
+        "MONDO:0018006",
+        "MONDO:0009667",
+        "MONDO:0010679",
+        "MONDO:0014101",
+        "MONDO:0030014",
+        "MONDO:0958176",
+        "MONDO:0014144",
+        "MONDO:0023204",
+        "MONDO:0011466",
+        "MONDO:0018098",
+        "MONDO:0014877",
+        "MONDO:0013835",
+        "MONDO:0035650",
+        "MONDO:0008056",
+        "MONDO:0009364",
+        "MONDO:0013157",
+        "MONDO:0014676",
+        "MONDO:0016830",
+        "MONDO:0975918",
+        "MONDO:0008050",
+        "MONDO:0700075",
+        "MONDO:0800318",
+        "MONDO:0014800",
+        "MONDO:0011721",
+        "MONDO:0014474",
+        "MONDO:0013154",
+        "MONDO:0009679",
+        "MONDO:0020336",
+        "MONDO:0035432",
+        "MONDO:0018370",
+        "MONDO:0014023",
+        "MONDO:0012699",
+        "MONDO:0012130",
+        "MONDO:0010912",
+        "MONDO:0013221",
+        "MONDO:0011925",
+        "MONDO:0021083",
+        "MONDO:0019951",
+        "MONDO:0014022",
+        "MONDO:0013390",
+        "MONDO:0011486",
+        "MONDO:0014977",
+        "MONDO:0013156",
+        "MONDO:0000355",
+        "MONDO:0012310",
+        "MONDO:0013072",
+        "MONDO:0013677",
+        "MONDO:0016097",
+        "MONDO:0014120",
+        "MONDO:0004495",
+        "MONDO:0010675",
+        "MONDO:0100584",
+        "MONDO:0016106",
+        "MONDO:0012286",
+        "MONDO:0013686",
+        "MONDO:0020793",
+        "MONDO:0030134",
+        "MONDO:0014945",
+        "MONDO:0019398",
+        "MONDO:0800209"
+    ],
+    "has_descendant_label": [
+        "autosomal recessive limb-girdle muscular dystrophy type 2N",
+        "muscular dystrophy, limb-girdle, autosomal recessive 29",
+        "distal myopathy with vocal cord weakness",
+        "juvenile-onset Steinert myotonic dystrophy",
+        "muscular dystrophy, progressive Pectorodorsal",
+        "autosomal recessive limb-girdle muscular dystrophy type 2I",
+        "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A6",
+        "congenital muscular dystrophy",
+        "muscular dystrophy-dystroglycanopathy (congenital with intellectual disability), type B1",
+        "autosomal recessive limb-girdle muscular dystrophy type 2D",
+        "X-linked scapuloperoneal muscular dystrophy",
+        "myofibrillar myopathy 4",
+        "scapuloperoneal myopathy",
+        "myofibrillar myopathy 3",
+        "autosomal dominant distal myopathy",
+        "muscular dystrophy-dystroglycanopathy, type C",
+        "Bethlem myopathy 1A",
+        "autosomal recessive limb-girdle muscular dystrophy type 2A",
+        "congenital muscular dystrophy with cataracts and intellectual disability",
+        "autosomal recessive myogenic arthrogryposis multiplex congenita",
+        "congenital fibrosis of extraocular muscles",
+        "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type a, 11",
+        "DPM3-congenital disorder of glycosylation",
+        "muscular dystrophy, limb-girdle, autosomal recessive 27",
+        "oculopharyngodistal myopathy 3",
+        "muscular dystrophy, limb-girdle, autosomal dominant 4",
+        "congenital muscular dystrophy with hyperlaxity",
+        "Emery-Dreifuss muscular dystrophy 2, autosomal dominant",
+        "muscular dystrophy, limb-girdle, autosomal dominant",
+        "oculopharyngodistal myopathy 4",
+        "muscle-eye-brain disease",
+        "congenital muscular dystrophy without intellectual disability",
+        "autosomal recessive limb-girdle muscular dystrophy type 2H",
+        "megaconial type congenital muscular dystrophy",
+        "autosomal recessive limb-girdle muscular dystrophy type 2W",
+        "muscular dystrophy-dystroglycanopathy (congenital with intellectual disability), type B3",
+        "muscular dystrophy, Hemizygous lethal type",
+        "congenital myasthenic syndrome 10",
+        "DMD-related muscular dystrophy",
+        "muscular dystrophy-dystroglycanopathy (congenital with impaired intellectual development), type B, 15",
+        "adult-onset Steinert myotonic dystrophy",
+        "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A9",
+        "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A, 4",
+        "Becker muscular dystrophy",
+        "Bethlem myopathy 1B",
+        "tibial muscular dystrophy",
+        "muscular dystrophy-dystroglycanopathy, type B",
+        "autosomal dominant limb-girdle muscular dystrophy type 1H",
+        "muscular dystrophy, scapulohumeral",
+        "congenital myotonic dystrophy",
+        "autosomal recessive limb-girdle muscular dystrophy type 2C",
+        "childhood-onset Steinert myotonic dystrophy",
+        "X-linked myopathy with postural muscle atrophy",
+        "muscular dystrophy, Mabry type",
+        "autosomal recessive limb-girdle muscular dystrophy type 2X",
+        "facioscapulohumeral muscular dystrophy 1",
+        "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A14",
+        "autosomal dominant limb-girdle muscular dystrophy type 1D (DNAJB6)",
+        "childhood-onset progressive contractures-limb-girdle weakness-muscle dystrophy syndrome",
+        "myotonic dystrophy type 2",
+        "muscular dystrophy, pseudohypertrophic, with Internalized capillaries",
+        "LAMA2-related muscular dystrophy",
+        "autosomal dominant limb-girdle muscular dystrophy type 1G",
+        "limb-girdle muscular dystrophy due to POMK deficiency",
+        "muscular dystrophy, limb-girdle, autosomal recessive 23",
+        "distal myopathy with posterior leg and anterior hand involvement",
+        "autosomal recessive limb-girdle muscular dystrophy type 2K",
+        "autosomal recessive limb-girdle muscular dystrophy type 2L",
+        "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type a, 8",
+        "autosomal recessive limb-girdle muscular dystrophy type 2B",
+        "Finnish upper limb-onset distal myopathy",
+        "muscular dystrophy-dystroglycanopathy (congenital with intellectual disability), type B2",
+        "muscular dystrophy, limb-girdle, autosomal recessive 28",
+        "congenital muscular dystrophy-respiratory failure-skin abnormalities-joint hyperlaxity syndrome",
+        "muscular dystrophy-dystroglycanopathy type B6",
+        "congenital muscular dystrophy due to LMNA mutation",
+        "oculopharyngodistal myopathy",
+        "X-linked myopathy with excessive autophagy",
+        "muscular dystrophy, Barnes type",
+        "Ullrich congenital muscular dystrophy 2",
+        "Miyoshi muscular dystrophy 1",
+        "facioscapulohumeral muscular dystrophy 4, digenic",
+        "autosomal recessive limb-girdle muscular dystrophy type 2J",
+        "X-linked Emery-Dreifuss muscular dystrophy",
+        "muscular dystrophy, congenital, with rapid progression",
+        "distal myopathy",
+        "rigid spine muscular dystrophy 1",
+        "Miyoshi myopathy",
+        "congenital muscular dystrophy-infantile cataract-hypogonadism syndrome",
+        "congenital myopathy, Paradas type",
+        "muscular dystrophy-dystroglycanopathy, type A",
+        "autosomal recessive limb-girdle muscular dystrophy type 2P",
+        "muscle-eye-brain disease with bilateral multicystic leucodystrophy",
+        "fibrosis of extraocular muscles, congenital, 3c",
+        "Ullrich congenital muscular dystrophy 1C",
+        "Tukel syndrome",
+        "autosomal recessive limb-girdle muscular dystrophy type 2T",
+        "muscular dystrophy",
+        "limb-girdle muscular dystrophy",
+        "muscular dystrophy-dystroglycanopathy",
+        "facioscapulohumeral muscular dystrophy 2",
+        "myopathy, myofibrillar, 9, with early respiratory failure",
+        "fibrosis of extraocular muscles, congenital, 5",
+        "intermediate collagen VI-related muscular dystrophy",
+        "myotonic dystrophy",
+        "autosomal recessive limb-girdle muscular dystrophy",
+        "congenital muscular dystrophy with intellectual disability",
+        "autosomal recessive limb-girdle muscular dystrophy type 2E",
+        "Bethlem myopathy 1C",
+        "Emery-Dreifuss muscular dystrophy 1, X-linked",
+        "epidermolysis bullosa simplex 5B, with muscular dystrophy",
+        "Miyoshi muscular dystrophy 3",
+        "muscular dystrophy-dystroglycanopathy type B5",
+        "congenital myopathy 7A, myosin storage, autosomal dominant",
+        "autosomal recessive limb-girdle muscular dystrophy type 2O",
+        "nebulin-related early-onset distal myopathy",
+        "autosomal dominant limb-girdle muscular dystrophy type 1F",
+        "congenital-onset Steinert myotonic dystrophy",
+        "oculopharyngeal muscular dystrophy",
+        "Bethlem myopathy",
+        "facioscapulohumeral muscular dystrophy",
+        "congenital muscular dystrophy due to integrin alpha-7 deficiency",
+        "myopathy, distal, 7, adult-onset, X-linked",
+        "fibrosis of extraocular muscles, congenital, 2",
+        "autosomal recessive limb-girdle muscular dystrophy type 2Y",
+        "muscular dystrophy-dystroglycanopathy (congenital with intellectual disability), type B14",
+        "facioscapulohumeral muscular dystrophy 3, digenic",
+        "Bethlem myopathy 2",
+        "collagen 6-related congenital muscular dystrophy",
+        "Ullrich congenital muscular dystrophy 1A",
+        "muscular dystrophy-dystroglycanopathy (limb-girdle), type C, 8",
+        "Emery-Dreifuss muscular dystrophy 4, autosomal dominant",
+        "myopathy, distal, infantile-onset",
+        "oculopharyngeal muscular dystrophy 2",
+        "autosomal recessive limb-girdle muscular dystrophy type 2F",
+        "Ullrich congenital muscular dystrophy 1B",
+        "autosomal recessive limb-girdle muscular dystrophy type 2G",
+        "adult-onset distal myopathy due to VCP mutation",
+        "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A3",
+        "Duchenne muscular dystrophy",
+        "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type a, 12",
+        "muscular dystrophy, limb-girdle, autosomal recessive 26",
+        "oculopharyngeal muscular dystrophy 1",
+        "autosomal recessive limb-girdle muscular dystrophy type R18",
+        "Fukuda-Miyanomae-Nakata syndrome",
+        "distal myopathy, Welander type",
+        "autosomal dominant limb-girdle muscular dystrophy type 1E (DES)",
+        "myopathy, distal, 5",
+        "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A, 7",
+        "late-onset Steinert myotonic dystrophy",
+        "myotonic dystrophy type 1",
+        "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A1",
+        "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A5",
+        "Emery-Dreifuss muscular dystrophy 3, autosomal recessive",
+        "Emery-Dreifuss muscular dystrophy",
+        "asymptomatic hyperckemia-myalgia-rhabdomyolysis syndrome",
+        "MYH7-related skeletal myopathy",
+        "congenital muscular dystrophy caused by variation in POMGNT2",
+        "Emery-Dreifuss muscular dystrophy 6, X-linked",
+        "progressive scapulohumeroperoneal distal myopathy",
+        "distal myopathy with anterior tibial onset",
+        "autosomal recessive limb-girdle muscular dystrophy type 2U",
+        "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A2",
+        "arthrogryposis due to muscular dystrophy",
+        "autosomal dominant Emery-Dreifuss muscular dystrophy",
+        "POMGNT2-related limb-girdle muscular dystrophy R24",
+        "KLHL9-related early-onset distal myopathy",
+        "congenital muscular dystrophy with intellectual disability and severe epilepsy",
+        "autosomal recessive limb-girdle muscular dystrophy type 2M",
+        "myofibrillar myopathy 2",
+        "fibrosis of extraocular muscles, congenital, 3A, with or without extraocular involvement",
+        "Miyoshi muscular dystrophy 2",
+        "congenital merosin-deficient muscular dystrophy 1A",
+        "congenital fibrosis of extraocular muscles type 1",
+        "rigid spine syndrome",
+        "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type a, 10",
+        "autosomal recessive limb-girdle muscular dystrophy type 2Q",
+        "congenital muscular dystrophy 1B",
+        "autosomal recessive limb-girdle muscular dystrophy type 2R1",
+        "muscular dystrophy-dystroglycanopathy (congenital without intellectual disability), type B4",
+        "Ullrich congenital muscular dystrophy",
+        "fibrosis of extraocular muscles, congenital, with synergistic divergence",
+        "Emery-Dreifuss muscular dystrophy 5, autosomal dominant",
+        "Emery-Dreifuss muscular dystrophy 7, autosomal dominant",
+        "symptomatic form of muscular dystrophy of Duchenne and Becker in female carriers",
+        "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A13",
+        "myotonic cataract",
+        "muscular dystrophy, cardiac type",
+        "SNUPN-related muscular dystrophy with or without multi-system involvement",
+        "progressive muscular dystrophy",
+        "myopathy, autophagic vacuolar, infantile-onset",
+        "distal myopathy, Tateyama type",
+        "oculopharyngodistal myopathy 1",
+        "oculopharyngodistal myopathy 2",
+        "myopathy, distal, with rimmed vacuoles",
+        "desmin-related myopathy with Mallory body-like inclusions",
+        "fibrosis of extraocular muscles, congenital, 3b"
+    ],
+    "has_descendant_count": 197,
     "inheritance": null,
     "causal_gene": [],
     "causes_disease": null,
@@ -157,12 +556,12 @@ def node_json():
     "association_counts": [
         {
             "label": "Disease to Phenotype",
-            "count": 4192,
+            "count": 4193,
             "category": "biolink:DiseaseToPhenotypicFeatureAssociation"
         },
         {
             "label": "Gene to Phenotype",
-            "count": 6475,
+            "count": 2907,
             "category": "biolink:GeneToPhenotypicFeatureAssociation"
         },
         {
@@ -172,17 +571,17 @@ def node_json():
         },
         {
             "label": "Correlated Gene",
-            "count": 149,
+            "count": 150,
             "category": "biolink:CorrelatedGeneToDiseaseAssociation"
         },
         {
             "label": "Variant to Disease",
-            "count": 211,
+            "count": 340,
             "category": "biolink:VariantToDiseaseAssociation"
         },
         {
             "label": "Disease Model",
-            "count": 242,
+            "count": 243,
             "category": "biolink:GenotypeToDiseaseAssociation"
         },
         {
@@ -218,7 +617,10 @@ def node_json():
                 "has_phenotype_label": null,
                 "has_phenotype_closure": null,
                 "has_phenotype_closure_label": null,
-                "has_phenotype_count": null
+                "has_phenotype_count": null,
+                "has_descendant": null,
+                "has_descendant_label": null,
+                "has_descendant_count": null
             },
             {
                 "id": "MONDO:0100546",
@@ -245,7 +647,10 @@ def node_json():
                 "has_phenotype_label": null,
                 "has_phenotype_closure": null,
                 "has_phenotype_closure_label": null,
-                "has_phenotype_count": null
+                "has_phenotype_count": null,
+                "has_descendant": null,
+                "has_descendant_label": null,
+                "has_descendant_count": null
             },
             {
                 "id": "MONDO:0700223",
@@ -272,14 +677,17 @@ def node_json():
                 "has_phenotype_label": null,
                 "has_phenotype_closure": null,
                 "has_phenotype_closure_label": null,
-                "has_phenotype_count": null
+                "has_phenotype_count": null,
+                "has_descendant": null,
+                "has_descendant_label": null,
+                "has_descendant_count": null
             }
         ],
         "sub_classes": [
             {
-                "id": "MONDO:0010675",
+                "id": "MONDO:0019950",
                 "category": "biolink:Disease",
-                "name": "muscular dystrophy, cardiac type",
+                "name": "congenital muscular dystrophy",
                 "full_name": null,
                 "deprecated": null,
                 "description": null,
@@ -301,142 +709,10 @@ def node_json():
                 "has_phenotype_label": null,
                 "has_phenotype_closure": null,
                 "has_phenotype_closure_label": null,
-                "has_phenotype_count": null
-            },
-            {
-                "id": "MONDO:0010676",
-                "category": "biolink:Disease",
-                "name": "muscular dystrophy, Hemizygous lethal type",
-                "full_name": null,
-                "deprecated": null,
-                "description": null,
-                "xref": null,
-                "provided_by": null,
-                "in_taxon": null,
-                "in_taxon_label": null,
-                "symbol": null,
-                "synonym": null,
-                "broad_synonym": null,
-                "exact_synonym": null,
-                "narrow_synonym": null,
-                "related_synonym": null,
-                "subsets": null,
-                "uri": null,
-                "iri": null,
-                "namespace": null,
-                "has_phenotype": null,
-                "has_phenotype_label": null,
-                "has_phenotype_closure": null,
-                "has_phenotype_closure_label": null,
-                "has_phenotype_count": null
-            },
-            {
-                "id": "MONDO:0010677",
-                "category": "biolink:Disease",
-                "name": "muscular dystrophy, Mabry type",
-                "full_name": null,
-                "deprecated": null,
-                "description": null,
-                "xref": null,
-                "provided_by": null,
-                "in_taxon": null,
-                "in_taxon_label": null,
-                "symbol": null,
-                "synonym": null,
-                "broad_synonym": null,
-                "exact_synonym": null,
-                "narrow_synonym": null,
-                "related_synonym": null,
-                "subsets": null,
-                "uri": null,
-                "iri": null,
-                "namespace": null,
-                "has_phenotype": null,
-                "has_phenotype_label": null,
-                "has_phenotype_closure": null,
-                "has_phenotype_closure_label": null,
-                "has_phenotype_count": null
-            },
-            {
-                "id": "MONDO:0010678",
-                "category": "biolink:Disease",
-                "name": "muscular dystrophy, progressive Pectorodorsal",
-                "full_name": null,
-                "deprecated": null,
-                "description": null,
-                "xref": null,
-                "provided_by": null,
-                "in_taxon": null,
-                "in_taxon_label": null,
-                "symbol": null,
-                "synonym": null,
-                "broad_synonym": null,
-                "exact_synonym": null,
-                "narrow_synonym": null,
-                "related_synonym": null,
-                "subsets": null,
-                "uri": null,
-                "iri": null,
-                "namespace": null,
-                "has_phenotype": null,
-                "has_phenotype_label": null,
-                "has_phenotype_closure": null,
-                "has_phenotype_closure_label": null,
-                "has_phenotype_count": null
-            },
-            {
-                "id": "MONDO:0008028",
-                "category": "biolink:Disease",
-                "name": "muscular dystrophy, Barnes type",
-                "full_name": null,
-                "deprecated": null,
-                "description": null,
-                "xref": null,
-                "provided_by": null,
-                "in_taxon": null,
-                "in_taxon_label": null,
-                "symbol": null,
-                "synonym": null,
-                "broad_synonym": null,
-                "exact_synonym": null,
-                "narrow_synonym": null,
-                "related_synonym": null,
-                "subsets": null,
-                "uri": null,
-                "iri": null,
-                "namespace": null,
-                "has_phenotype": null,
-                "has_phenotype_label": null,
-                "has_phenotype_closure": null,
-                "has_phenotype_closure_label": null,
-                "has_phenotype_count": null
-            },
-            {
-                "id": "MONDO:0016106",
-                "category": "biolink:Disease",
-                "name": "progressive muscular dystrophy",
-                "full_name": null,
-                "deprecated": null,
-                "description": null,
-                "xref": null,
-                "provided_by": null,
-                "in_taxon": null,
-                "in_taxon_label": null,
-                "symbol": null,
-                "synonym": null,
-                "broad_synonym": null,
-                "exact_synonym": null,
-                "narrow_synonym": null,
-                "related_synonym": null,
-                "subsets": null,
-                "uri": null,
-                "iri": null,
-                "namespace": null,
-                "has_phenotype": null,
-                "has_phenotype_label": null,
-                "has_phenotype_closure": null,
-                "has_phenotype_closure_label": null,
-                "has_phenotype_count": null
+                "has_phenotype_count": null,
+                "has_descendant": null,
+                "has_descendant_label": null,
+                "has_descendant_count": null
             },
             {
                 "id": "MONDO:0018949",
@@ -463,12 +739,15 @@ def node_json():
                 "has_phenotype_label": null,
                 "has_phenotype_closure": null,
                 "has_phenotype_closure_label": null,
-                "has_phenotype_count": null
+                "has_phenotype_count": null,
+                "has_descendant": null,
+                "has_descendant_label": null,
+                "has_descendant_count": null
             },
             {
-                "id": "MONDO:0019950",
+                "id": "MONDO:0016106",
                 "category": "biolink:Disease",
-                "name": "congenital muscular dystrophy",
+                "name": "progressive muscular dystrophy",
                 "full_name": null,
                 "deprecated": null,
                 "description": null,
@@ -490,12 +769,15 @@ def node_json():
                 "has_phenotype_label": null,
                 "has_phenotype_closure": null,
                 "has_phenotype_closure_label": null,
-                "has_phenotype_count": null
+                "has_phenotype_count": null,
+                "has_descendant": null,
+                "has_descendant_label": null,
+                "has_descendant_count": null
             },
             {
-                "id": "MONDO:0023204",
+                "id": "MONDO:0010677",
                 "category": "biolink:Disease",
-                "name": "Fukuda-Miyanomae-Nakata syndrome",
+                "name": "muscular dystrophy, Mabry type",
                 "full_name": null,
                 "deprecated": null,
                 "description": null,
@@ -517,7 +799,100 @@ def node_json():
                 "has_phenotype_label": null,
                 "has_phenotype_closure": null,
                 "has_phenotype_closure_label": null,
-                "has_phenotype_count": null
+                "has_phenotype_count": null,
+                "has_descendant": null,
+                "has_descendant_label": null,
+                "has_descendant_count": null
+            },
+            {
+                "id": "MONDO:0010675",
+                "category": "biolink:Disease",
+                "name": "muscular dystrophy, cardiac type",
+                "full_name": null,
+                "deprecated": null,
+                "description": null,
+                "xref": null,
+                "provided_by": null,
+                "in_taxon": null,
+                "in_taxon_label": null,
+                "symbol": null,
+                "synonym": null,
+                "broad_synonym": null,
+                "exact_synonym": null,
+                "narrow_synonym": null,
+                "related_synonym": null,
+                "subsets": null,
+                "uri": null,
+                "iri": null,
+                "namespace": null,
+                "has_phenotype": null,
+                "has_phenotype_label": null,
+                "has_phenotype_closure": null,
+                "has_phenotype_closure_label": null,
+                "has_phenotype_count": null,
+                "has_descendant": null,
+                "has_descendant_label": null,
+                "has_descendant_count": null
+            },
+            {
+                "id": "MONDO:0010678",
+                "category": "biolink:Disease",
+                "name": "muscular dystrophy, progressive Pectorodorsal",
+                "full_name": null,
+                "deprecated": null,
+                "description": null,
+                "xref": null,
+                "provided_by": null,
+                "in_taxon": null,
+                "in_taxon_label": null,
+                "symbol": null,
+                "synonym": null,
+                "broad_synonym": null,
+                "exact_synonym": null,
+                "narrow_synonym": null,
+                "related_synonym": null,
+                "subsets": null,
+                "uri": null,
+                "iri": null,
+                "namespace": null,
+                "has_phenotype": null,
+                "has_phenotype_label": null,
+                "has_phenotype_closure": null,
+                "has_phenotype_closure_label": null,
+                "has_phenotype_count": null,
+                "has_descendant": null,
+                "has_descendant_label": null,
+                "has_descendant_count": null
+            },
+            {
+                "id": "MONDO:0008028",
+                "category": "biolink:Disease",
+                "name": "muscular dystrophy, Barnes type",
+                "full_name": null,
+                "deprecated": null,
+                "description": null,
+                "xref": null,
+                "provided_by": null,
+                "in_taxon": null,
+                "in_taxon_label": null,
+                "symbol": null,
+                "synonym": null,
+                "broad_synonym": null,
+                "exact_synonym": null,
+                "narrow_synonym": null,
+                "related_synonym": null,
+                "subsets": null,
+                "uri": null,
+                "iri": null,
+                "namespace": null,
+                "has_phenotype": null,
+                "has_phenotype_label": null,
+                "has_phenotype_closure": null,
+                "has_phenotype_closure_label": null,
+                "has_phenotype_count": null,
+                "has_descendant": null,
+                "has_descendant_label": null,
+                "has_descendant_count": null
             },
             {
                 "id": "MONDO:0100228",
@@ -544,7 +919,10 @@ def node_json():
                 "has_phenotype_label": null,
                 "has_phenotype_closure": null,
                 "has_phenotype_closure_label": null,
-                "has_phenotype_count": null
+                "has_phenotype_count": null,
+                "has_descendant": null,
+                "has_descendant_label": null,
+                "has_descendant_count": null
             },
             {
                 "id": "MONDO:0700285",
@@ -571,43 +949,104 @@ def node_json():
                 "has_phenotype_label": null,
                 "has_phenotype_closure": null,
                 "has_phenotype_closure_label": null,
-                "has_phenotype_count": null
+                "has_phenotype_count": null,
+                "has_descendant": null,
+                "has_descendant_label": null,
+                "has_descendant_count": null
+            },
+            {
+                "id": "MONDO:0010676",
+                "category": "biolink:Disease",
+                "name": "muscular dystrophy, Hemizygous lethal type",
+                "full_name": null,
+                "deprecated": null,
+                "description": null,
+                "xref": null,
+                "provided_by": null,
+                "in_taxon": null,
+                "in_taxon_label": null,
+                "symbol": null,
+                "synonym": null,
+                "broad_synonym": null,
+                "exact_synonym": null,
+                "narrow_synonym": null,
+                "related_synonym": null,
+                "subsets": null,
+                "uri": null,
+                "iri": null,
+                "namespace": null,
+                "has_phenotype": null,
+                "has_phenotype_label": null,
+                "has_phenotype_closure": null,
+                "has_phenotype_closure_label": null,
+                "has_phenotype_count": null,
+                "has_descendant": null,
+                "has_descendant_label": null,
+                "has_descendant_count": null
+            },
+            {
+                "id": "MONDO:0023204",
+                "category": "biolink:Disease",
+                "name": "Fukuda-Miyanomae-Nakata syndrome",
+                "full_name": null,
+                "deprecated": null,
+                "description": null,
+                "xref": null,
+                "provided_by": null,
+                "in_taxon": null,
+                "in_taxon_label": null,
+                "symbol": null,
+                "synonym": null,
+                "broad_synonym": null,
+                "exact_synonym": null,
+                "narrow_synonym": null,
+                "related_synonym": null,
+                "subsets": null,
+                "uri": null,
+                "iri": null,
+                "namespace": null,
+                "has_phenotype": null,
+                "has_phenotype_label": null,
+                "has_phenotype_closure": null,
+                "has_phenotype_closure_label": null,
+                "has_phenotype_count": null,
+                "has_descendant": null,
+                "has_descendant_label": null,
+                "has_descendant_count": null
             }
         ]
     }
 }
 """
 
-
 @pytest.fixture
 def node_tsv():
     return """
-id	category	name	full_name	deprecated	description	xref	provided_by	in_taxon	in_taxon_label	symbol	synonym	broad_synonym	exact_synonym	narrow_synonym	related_synonym	subsets	uri	iri	namespace	has_phenotype	has_phenotype_label	has_phenotype_closure	has_phenotype_closure_label	has_phenotype_count	inheritance	causal_gene	causes_disease	mappings	external_links	provided_by_link	association_counts	node_hierarchy
-MONDO:0020121	biolink:Disease	muscular dystrophy	None	None	Muscular dystrophy (MD) refers to a group of more than 30 genetic diseases characterized by progressive weakness and degeneration of the skeletal muscles that control movement. Some forms of MD are seen in newborns, infants or children, while others have late-onset and may not appear until middle age or later. The disorders differ in terms of the distribution and extent of muscle weakness (some forms of MD also affect cardiac muscle), age of onset, rate of progression, and pattern of inheritance. The prognosis for people with MD varies according to the type and progression of the disorder. There is no specific treatment to stop or reverse any form of MD. Treatment is supportive and may include physical therapy, respiratory therapy, speech therapy, orthopedic appliances used for support, corrective orthopedic surgery, and medicationsincluding corticosteroids, anticonvulsants (seizure medications), immunosuppressants, and antibiotics. Some individuals may need assisted ventilation to treat respiratory muscle weaknessor a pacemaker for cardiac (heart)abnormalities.	['DOID:9884', 'GARD:7922', 'ICD10CM:G71.0', 'ICD9:359.1', 'MEDGEN:44527', 'MESH:D009136', 'MedDRA:10028356', 'NANDO:1200486', 'NANDO:2100233', 'NCIT:C84910', 'Orphanet:98473', 'SCTID:73297009', 'UMLS:C0026850', 'icd11.foundation:1464662404']	phenio_nodes	None	None	None	None	None	None	None	None	['disease_grouping', 'gard_rare', 'ordo_group_of_disorders', 'otar', 'rare']	http://purl.obolibrary.org/obo/MONDO_0020121	None	MONDO	None	None	None	None	0	None	[]	None	[{'id': 'DOID:9884', 'url': 'http://purl.obolibrary.org/obo/DOID_9884'}, {'id': 'ICD10CM:G71.0', 'url': 'https://icd.codes/icd10cm/G71.0'}, {'id': 'MEDGEN:44527', 'url': 'http://identifiers.org/medgen/44527'}, {'id': 'NCIT:C84910', 'url': 'http://purl.obolibrary.org/obo/NCIT_C84910'}, {'id': 'Orphanet:98473', 'url': 'https://www.orpha.net/en/disease/detail/98473'}, {'id': 'SCTID:73297009', 'url': 'http://identifiers.org/snomedct/73297009'}, {'id': 'UMLS:C0026850', 'url': 'http://identifiers.org/umls/C0026850'}, {'id': 'icd11.foundation:1464662404', 'url': None}, {'id': 'MESH:D009136', 'url': 'http://identifiers.org/mesh/D009136'}]	[{'id': 'DOID:9884', 'url': 'http://purl.obolibrary.org/obo/DOID_9884'}, {'id': 'GARD:7922', 'url': 'https://rarediseases.info.nih.gov/diseases/7922/index'}, {'id': 'ICD10CM:G71.0', 'url': 'https://icd.codes/icd10cm/G71.0'}, {'id': 'ICD9:359.1', 'url': None}, {'id': 'MEDGEN:44527', 'url': 'http://identifiers.org/medgen/44527'}, {'id': 'MESH:D009136', 'url': 'http://identifiers.org/mesh/D009136'}, {'id': 'MedDRA:10028356', 'url': None}, {'id': 'NANDO:1200486', 'url': 'http://identifiers.org/NANDO/1200486'}, {'id': 'NANDO:2100233', 'url': 'http://identifiers.org/NANDO/2100233'}, {'id': 'NCIT:C84910', 'url': 'http://purl.obolibrary.org/obo/NCIT_C84910'}, {'id': 'Orphanet:98473', 'url': 'https://www.orpha.net/en/disease/detail/98473'}, {'id': 'SCTID:73297009', 'url': 'http://identifiers.org/snomedct/73297009'}, {'id': 'UMLS:C0026850', 'url': 'http://identifiers.org/umls/C0026850'}, {'id': 'icd11.foundation:1464662404', 'url': None}]	{'id': 'phenio', 'url': 'https://monarch-initiative.github.io/monarch-ingest/Sources/phenio/#'}	[{'label': 'Disease to Phenotype', 'count': 4192, 'category': 'biolink:DiseaseToPhenotypicFeatureAssociation'}, {'label': 'Gene to Phenotype', 'count': 6475, 'category': 'biolink:GeneToPhenotypicFeatureAssociation'}, {'label': 'Causal Gene', 'count': 126, 'category': 'biolink:CausalGeneToDiseaseAssociation'}, {'label': 'Correlated Gene', 'count': 149, 'category': 'biolink:CorrelatedGeneToDiseaseAssociation'}, {'label': 'Variant to Disease', 'count': 211, 'category': 'biolink:VariantToDiseaseAssociation'}, {'label': 'Disease Model', 'count': 242, 'category': 'biolink:GenotypeToDiseaseAssociation'}, {'label': 'Medical Action', 'count': 4, 'category': 'biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation'}]	{'super_classes': [{'id': 'MONDO:0005336', 'category': 'biolink:Disease', 'name': 'myopathy', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None}, {'id': 'MONDO:0100546', 'category': 'biolink:Disease', 'name': 'hereditary neuromuscular disease', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None}, {'id': 'MONDO:0700223', 'category': 'biolink:Disease', 'name': 'hereditary skeletal muscle disorder', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None}], 'sub_classes': [{'id': 'MONDO:0010675', 'category': 'biolink:Disease', 'name': 'muscular dystrophy, cardiac type', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None}, {'id': 'MONDO:0010676', 'category': 'biolink:Disease', 'name': 'muscular dystrophy, Hemizygous lethal type', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None}, {'id': 'MONDO:0010677', 'category': 'biolink:Disease', 'name': 'muscular dystrophy, Mabry type', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None}, {'id': 'MONDO:0010678', 'category': 'biolink:Disease', 'name': 'muscular dystrophy, progressive Pectorodorsal', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None}, {'id': 'MONDO:0008028', 'category': 'biolink:Disease', 'name': 'muscular dystrophy, Barnes type', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None}, {'id': 'MONDO:0016106', 'category': 'biolink:Disease', 'name': 'progressive muscular dystrophy', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None}, {'id': 'MONDO:0018949', 'category': 'biolink:Disease', 'name': 'distal myopathy', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None}, {'id': 'MONDO:0019950', 'category': 'biolink:Disease', 'name': 'congenital muscular dystrophy', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None}, {'id': 'MONDO:0023204', 'category': 'biolink:Disease', 'name': 'Fukuda-Miyanomae-Nakata syndrome', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None}, {'id': 'MONDO:0100228', 'category': 'biolink:Disease', 'name': 'LAMA2-related muscular dystrophy', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None}, {'id': 'MONDO:0700285', 'category': 'biolink:Disease', 'name': 'DMD-related muscular dystrophy', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None}]}
+id	category	name	full_name	deprecated	description	xref	provided_by	in_taxon	in_taxon_label	symbol	synonym	broad_synonym	exact_synonym	narrow_synonym	related_synonym	subsets	uri	iri	namespace	has_phenotype	has_phenotype_label	has_phenotype_closure	has_phenotype_closure_label	has_phenotype_count	has_descendant	has_descendant_label	has_descendant_count	inheritance	causal_gene	causes_disease	mappings	external_links	provided_by_link	association_counts	node_hierarchy
+MONDO:0020121	biolink:Disease	muscular dystrophy	None	None	Muscular dystrophy (MD) refers to a group of more than 30 genetic diseases characterized by progressive weakness and degeneration of the skeletal muscles that control movement. Some forms of MD are seen in newborns, infants or children, while others have late-onset and may not appear until middle age or later. The disorders differ in terms of the distribution and extent of muscle weakness (some forms of MD also affect cardiac muscle), age of onset, rate of progression, and pattern of inheritance. The prognosis for people with MD varies according to the type and progression of the disorder. There is no specific treatment to stop or reverse any form of MD. Treatment is supportive and may include physical therapy, respiratory therapy, speech therapy, orthopedic appliances used for support, corrective orthopedic surgery, and medicationsincluding corticosteroids, anticonvulsants (seizure medications), immunosuppressants, and antibiotics. Some individuals may need assisted ventilation to treat respiratory muscle weaknessor a pacemaker for cardiac (heart)abnormalities.	['DOID:9884', 'GARD:7922', 'ICD10CM:G71.0', 'ICD9:359.1', 'MEDGEN:44527', 'MESH:D009136', 'MedDRA:10028356', 'NANDO:1200486', 'NANDO:2100233', 'NCIT:C84910', 'Orphanet:98473', 'SCTID:73297009', 'UMLS:C0026850', 'icd11.foundation:1464662404']	phenio_nodes	None	None	None	None	None	None	None	None	['disease_grouping', 'gard_rare', 'ordo_group_of_disorders', 'otar', 'rare']	http://purl.obolibrary.org/obo/MONDO_0020121	None	MONDO	None	None	None	None	0	['MONDO:0013162', 'MONDO:0971171', 'MONDO:0018951', 'MONDO:0035648', 'MONDO:0010678', 'MONDO:0011787', 'MONDO:0013158', 'MONDO:0019950', 'MONDO:0013159', 'MONDO:0011968', 'MONDO:0010400', 'MONDO:0012277', 'MONDO:0000727', 'MONDO:0012215', 'MONDO:0016108', 'MONDO:0000173', 'MONDO:0024530', 'MONDO:0009675', 'MONDO:0024607', 'MONDO:0017892', 'MONDO:0007614', 'MONDO:0014071', 'MONDO:0013049', 'MONDO:0030456', 'MONDO:0023671', 'MONDO:0029133', 'MONDO:0018281', 'MONDO:0021569', 'MONDO:0015151', 'MONDO:0030712', 'MONDO:0018939', 'MONDO:1040033', 'MONDO:0009683', 'MONDO:0011246', 'MONDO:0014788', 'MONDO:0013155', 'MONDO:0010676', 'MONDO:0009690', 'MONDO:0700285', 'MONDO:0033556', 'MONDO:0035649', 'MONDO:0014683', 'MONDO:0009678', 'MONDO:0010311', 'MONDO:0958233', 'MONDO:0010870', 'MONDO:0000172', 'MONDO:0013297', 'MONDO:0010884', 'MONDO:0023595', 'MONDO:0009677', 'MONDO:0035647', 'MONDO:0010401', 'MONDO:0010677', 'MONDO:0014782', 'MONDO:0008030', 'MONDO:0014140', 'MONDO:0021018', 'MONDO:0018759', 'MONDO:0011266', 'MONDO:0008034', 'MONDO:0100228', 'MONDO:0012193', 'MONDO:0014489', 'MONDO:0029136', 'MONDO:0013550', 'MONDO:0012248', 'MONDO:0012652', 'MONDO:0013904', 'MONDO:0009676', 'MONDO:0012410', 'MONDO:0013160', 'MONDO:0957270', 'MONDO:0014896', 'MONDO:0012138', 'MONDO:0013178', 'MONDO:0025193', 'MONDO:0010684', 'MONDO:0008028', 'MONDO:0014654', 'MONDO:0024545', 'MONDO:0030355', 'MONDO:0012127', 'MONDO:0010680', 'MONDO:0009682', 'MONDO:0018949', 'MONDO:0011271', 'MONDO:0009685', 'MONDO:0009680', 'MONDO:0016049', 'MONDO:0000171', 'MONDO:0013440', 'MONDO:0018280', 'MONDO:0012262', 'MONDO:0958236', 'MONDO:0012270', 'MONDO:0014142', 'MONDO:0020121', 'MONDO:0016971', 'MONDO:0018276', 'MONDO:0008031', 'MONDO:0011362', 'MONDO:0014538', 'MONDO:0958353', 'MONDO:0016107', 'MONDO:0015152', 'MONDO:0018278', 'MONDO:0011423', 'MONDO:0958234', 'MONDO:0100531', 'MONDO:0009181', 'MONDO:0013222', 'MONDO:0011688', 'MONDO:0008409', 'MONDO:0013161', 'MONDO:0018371', 'MONDO:0012034', 'MONDO:0035646', 'MONDO:0008116', 'MONDO:0008029', 'MONDO:0001347', 'MONDO:0013177', 'MONDO:0024771', 'MONDO:0011181', 'MONDO:0014900', 'MONDO:0014141', 'MONDO:0030354', 'MONDO:0034022', 'MONDO:0958077', 'MONDO:0009681', 'MONDO:0029135', 'MONDO:0013071', 'MONDO:0008049', 'MONDO:0958195', 'MONDO:0011028', 'MONDO:0958235', 'MONDO:0011170', 'MONDO:0018006', 'MONDO:0009667', 'MONDO:0010679', 'MONDO:0014101', 'MONDO:0030014', 'MONDO:0958176', 'MONDO:0014144', 'MONDO:0023204', 'MONDO:0011466', 'MONDO:0018098', 'MONDO:0014877', 'MONDO:0013835', 'MONDO:0035650', 'MONDO:0008056', 'MONDO:0009364', 'MONDO:0013157', 'MONDO:0014676', 'MONDO:0016830', 'MONDO:0975918', 'MONDO:0008050', 'MONDO:0700075', 'MONDO:0800318', 'MONDO:0014800', 'MONDO:0011721', 'MONDO:0014474', 'MONDO:0013154', 'MONDO:0009679', 'MONDO:0020336', 'MONDO:0035432', 'MONDO:0018370', 'MONDO:0014023', 'MONDO:0012699', 'MONDO:0012130', 'MONDO:0010912', 'MONDO:0013221', 'MONDO:0011925', 'MONDO:0021083', 'MONDO:0019951', 'MONDO:0014022', 'MONDO:0013390', 'MONDO:0011486', 'MONDO:0014977', 'MONDO:0013156', 'MONDO:0000355', 'MONDO:0012310', 'MONDO:0013072', 'MONDO:0013677', 'MONDO:0016097', 'MONDO:0014120', 'MONDO:0004495', 'MONDO:0010675', 'MONDO:0100584', 'MONDO:0016106', 'MONDO:0012286', 'MONDO:0013686', 'MONDO:0020793', 'MONDO:0030134', 'MONDO:0014945', 'MONDO:0019398', 'MONDO:0800209']	['autosomal recessive limb-girdle muscular dystrophy type 2N', 'muscular dystrophy, limb-girdle, autosomal recessive 29', 'distal myopathy with vocal cord weakness', 'juvenile-onset Steinert myotonic dystrophy', 'muscular dystrophy, progressive Pectorodorsal', 'autosomal recessive limb-girdle muscular dystrophy type 2I', 'muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A6', 'congenital muscular dystrophy', 'muscular dystrophy-dystroglycanopathy (congenital with intellectual disability), type B1', 'autosomal recessive limb-girdle muscular dystrophy type 2D', 'X-linked scapuloperoneal muscular dystrophy', 'myofibrillar myopathy 4', 'scapuloperoneal myopathy', 'myofibrillar myopathy 3', 'autosomal dominant distal myopathy', 'muscular dystrophy-dystroglycanopathy, type C', 'Bethlem myopathy 1A', 'autosomal recessive limb-girdle muscular dystrophy type 2A', 'congenital muscular dystrophy with cataracts and intellectual disability', 'autosomal recessive myogenic arthrogryposis multiplex congenita', 'congenital fibrosis of extraocular muscles', 'muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type a, 11', 'DPM3-congenital disorder of glycosylation', 'muscular dystrophy, limb-girdle, autosomal recessive 27', 'oculopharyngodistal myopathy 3', 'muscular dystrophy, limb-girdle, autosomal dominant 4', 'congenital muscular dystrophy with hyperlaxity', 'Emery-Dreifuss muscular dystrophy 2, autosomal dominant', 'muscular dystrophy, limb-girdle, autosomal dominant', 'oculopharyngodistal myopathy 4', 'muscle-eye-brain disease', 'congenital muscular dystrophy without intellectual disability', 'autosomal recessive limb-girdle muscular dystrophy type 2H', 'megaconial type congenital muscular dystrophy', 'autosomal recessive limb-girdle muscular dystrophy type 2W', 'muscular dystrophy-dystroglycanopathy (congenital with intellectual disability), type B3', 'muscular dystrophy, Hemizygous lethal type', 'congenital myasthenic syndrome 10', 'DMD-related muscular dystrophy', 'muscular dystrophy-dystroglycanopathy (congenital with impaired intellectual development), type B, 15', 'adult-onset Steinert myotonic dystrophy', 'muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A9', 'muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A, 4', 'Becker muscular dystrophy', 'Bethlem myopathy 1B', 'tibial muscular dystrophy', 'muscular dystrophy-dystroglycanopathy, type B', 'autosomal dominant limb-girdle muscular dystrophy type 1H', 'muscular dystrophy, scapulohumeral', 'congenital myotonic dystrophy', 'autosomal recessive limb-girdle muscular dystrophy type 2C', 'childhood-onset Steinert myotonic dystrophy', 'X-linked myopathy with postural muscle atrophy', 'muscular dystrophy, Mabry type', 'autosomal recessive limb-girdle muscular dystrophy type 2X', 'facioscapulohumeral muscular dystrophy 1', 'muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A14', 'autosomal dominant limb-girdle muscular dystrophy type 1D (DNAJB6)', 'childhood-onset progressive contractures-limb-girdle weakness-muscle dystrophy syndrome', 'myotonic dystrophy type 2', 'muscular dystrophy, pseudohypertrophic, with Internalized capillaries', 'LAMA2-related muscular dystrophy', 'autosomal dominant limb-girdle muscular dystrophy type 1G', 'limb-girdle muscular dystrophy due to POMK deficiency', 'muscular dystrophy, limb-girdle, autosomal recessive 23', 'distal myopathy with posterior leg and anterior hand involvement', 'autosomal recessive limb-girdle muscular dystrophy type 2K', 'autosomal recessive limb-girdle muscular dystrophy type 2L', 'muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type a, 8', 'autosomal recessive limb-girdle muscular dystrophy type 2B', 'Finnish upper limb-onset distal myopathy', 'muscular dystrophy-dystroglycanopathy (congenital with intellectual disability), type B2', 'muscular dystrophy, limb-girdle, autosomal recessive 28', 'congenital muscular dystrophy-respiratory failure-skin abnormalities-joint hyperlaxity syndrome', 'muscular dystrophy-dystroglycanopathy type B6', 'congenital muscular dystrophy due to LMNA mutation', 'oculopharyngodistal myopathy', 'X-linked myopathy with excessive autophagy', 'muscular dystrophy, Barnes type', 'Ullrich congenital muscular dystrophy 2', 'Miyoshi muscular dystrophy 1', 'facioscapulohumeral muscular dystrophy 4, digenic', 'autosomal recessive limb-girdle muscular dystrophy type 2J', 'X-linked Emery-Dreifuss muscular dystrophy', 'muscular dystrophy, congenital, with rapid progression', 'distal myopathy', 'rigid spine muscular dystrophy 1', 'Miyoshi myopathy', 'congenital muscular dystrophy-infantile cataract-hypogonadism syndrome', 'congenital myopathy, Paradas type', 'muscular dystrophy-dystroglycanopathy, type A', 'autosomal recessive limb-girdle muscular dystrophy type 2P', 'muscle-eye-brain disease with bilateral multicystic leucodystrophy', 'fibrosis of extraocular muscles, congenital, 3c', 'Ullrich congenital muscular dystrophy 1C', 'Tukel syndrome', 'autosomal recessive limb-girdle muscular dystrophy type 2T', 'muscular dystrophy', 'limb-girdle muscular dystrophy', 'muscular dystrophy-dystroglycanopathy', 'facioscapulohumeral muscular dystrophy 2', 'myopathy, myofibrillar, 9, with early respiratory failure', 'fibrosis of extraocular muscles, congenital, 5', 'intermediate collagen VI-related muscular dystrophy', 'myotonic dystrophy', 'autosomal recessive limb-girdle muscular dystrophy', 'congenital muscular dystrophy with intellectual disability', 'autosomal recessive limb-girdle muscular dystrophy type 2E', 'Bethlem myopathy 1C', 'Emery-Dreifuss muscular dystrophy 1, X-linked', 'epidermolysis bullosa simplex 5B, with muscular dystrophy', 'Miyoshi muscular dystrophy 3', 'muscular dystrophy-dystroglycanopathy type B5', 'congenital myopathy 7A, myosin storage, autosomal dominant', 'autosomal recessive limb-girdle muscular dystrophy type 2O', 'nebulin-related early-onset distal myopathy', 'autosomal dominant limb-girdle muscular dystrophy type 1F', 'congenital-onset Steinert myotonic dystrophy', 'oculopharyngeal muscular dystrophy', 'Bethlem myopathy', 'facioscapulohumeral muscular dystrophy', 'congenital muscular dystrophy due to integrin alpha-7 deficiency', 'myopathy, distal, 7, adult-onset, X-linked', 'fibrosis of extraocular muscles, congenital, 2', 'autosomal recessive limb-girdle muscular dystrophy type 2Y', 'muscular dystrophy-dystroglycanopathy (congenital with intellectual disability), type B14', 'facioscapulohumeral muscular dystrophy 3, digenic', 'Bethlem myopathy 2', 'collagen 6-related congenital muscular dystrophy', 'Ullrich congenital muscular dystrophy 1A', 'muscular dystrophy-dystroglycanopathy (limb-girdle), type C, 8', 'Emery-Dreifuss muscular dystrophy 4, autosomal dominant', 'myopathy, distal, infantile-onset', 'oculopharyngeal muscular dystrophy 2', 'autosomal recessive limb-girdle muscular dystrophy type 2F', 'Ullrich congenital muscular dystrophy 1B', 'autosomal recessive limb-girdle muscular dystrophy type 2G', 'adult-onset distal myopathy due to VCP mutation', 'muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A3', 'Duchenne muscular dystrophy', 'muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type a, 12', 'muscular dystrophy, limb-girdle, autosomal recessive 26', 'oculopharyngeal muscular dystrophy 1', 'autosomal recessive limb-girdle muscular dystrophy type R18', 'Fukuda-Miyanomae-Nakata syndrome', 'distal myopathy, Welander type', 'autosomal dominant limb-girdle muscular dystrophy type 1E (DES)', 'myopathy, distal, 5', 'muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A, 7', 'late-onset Steinert myotonic dystrophy', 'myotonic dystrophy type 1', 'muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A1', 'muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A5', 'Emery-Dreifuss muscular dystrophy 3, autosomal recessive', 'Emery-Dreifuss muscular dystrophy', 'asymptomatic hyperckemia-myalgia-rhabdomyolysis syndrome', 'MYH7-related skeletal myopathy', 'congenital muscular dystrophy caused by variation in POMGNT2', 'Emery-Dreifuss muscular dystrophy 6, X-linked', 'progressive scapulohumeroperoneal distal myopathy', 'distal myopathy with anterior tibial onset', 'autosomal recessive limb-girdle muscular dystrophy type 2U', 'muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A2', 'arthrogryposis due to muscular dystrophy', 'autosomal dominant Emery-Dreifuss muscular dystrophy', 'POMGNT2-related limb-girdle muscular dystrophy R24', 'KLHL9-related early-onset distal myopathy', 'congenital muscular dystrophy with intellectual disability and severe epilepsy', 'autosomal recessive limb-girdle muscular dystrophy type 2M', 'myofibrillar myopathy 2', 'fibrosis of extraocular muscles, congenital, 3A, with or without extraocular involvement', 'Miyoshi muscular dystrophy 2', 'congenital merosin-deficient muscular dystrophy 1A', 'congenital fibrosis of extraocular muscles type 1', 'rigid spine syndrome', 'muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type a, 10', 'autosomal recessive limb-girdle muscular dystrophy type 2Q', 'congenital muscular dystrophy 1B', 'autosomal recessive limb-girdle muscular dystrophy type 2R1', 'muscular dystrophy-dystroglycanopathy (congenital without intellectual disability), type B4', 'Ullrich congenital muscular dystrophy', 'fibrosis of extraocular muscles, congenital, with synergistic divergence', 'Emery-Dreifuss muscular dystrophy 5, autosomal dominant', 'Emery-Dreifuss muscular dystrophy 7, autosomal dominant', 'symptomatic form of muscular dystrophy of Duchenne and Becker in female carriers', 'muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A13', 'myotonic cataract', 'muscular dystrophy, cardiac type', 'SNUPN-related muscular dystrophy with or without multi-system involvement', 'progressive muscular dystrophy', 'myopathy, autophagic vacuolar, infantile-onset', 'distal myopathy, Tateyama type', 'oculopharyngodistal myopathy 1', 'oculopharyngodistal myopathy 2', 'myopathy, distal, with rimmed vacuoles', 'desmin-related myopathy with Mallory body-like inclusions', 'fibrosis of extraocular muscles, congenital, 3b']	197	None	[]	None	[{'id': 'DOID:9884', 'url': 'http://purl.obolibrary.org/obo/DOID_9884'}, {'id': 'ICD10CM:G71.0', 'url': 'https://icd.codes/icd10cm/G71.0'}, {'id': 'MEDGEN:44527', 'url': 'http://identifiers.org/medgen/44527'}, {'id': 'NCIT:C84910', 'url': 'http://purl.obolibrary.org/obo/NCIT_C84910'}, {'id': 'Orphanet:98473', 'url': 'https://www.orpha.net/en/disease/detail/98473'}, {'id': 'SCTID:73297009', 'url': 'http://identifiers.org/snomedct/73297009'}, {'id': 'UMLS:C0026850', 'url': 'http://identifiers.org/umls/C0026850'}, {'id': 'icd11.foundation:1464662404', 'url': None}, {'id': 'MESH:D009136', 'url': 'http://identifiers.org/mesh/D009136'}]	[{'id': 'DOID:9884', 'url': 'http://purl.obolibrary.org/obo/DOID_9884'}, {'id': 'GARD:7922', 'url': 'https://rarediseases.info.nih.gov/diseases/7922/index'}, {'id': 'ICD10CM:G71.0', 'url': 'https://icd.codes/icd10cm/G71.0'}, {'id': 'ICD9:359.1', 'url': None}, {'id': 'MEDGEN:44527', 'url': 'http://identifiers.org/medgen/44527'}, {'id': 'MESH:D009136', 'url': 'http://identifiers.org/mesh/D009136'}, {'id': 'MedDRA:10028356', 'url': None}, {'id': 'NANDO:1200486', 'url': 'http://identifiers.org/NANDO/1200486'}, {'id': 'NANDO:2100233', 'url': 'http://identifiers.org/NANDO/2100233'}, {'id': 'NCIT:C84910', 'url': 'http://purl.obolibrary.org/obo/NCIT_C84910'}, {'id': 'Orphanet:98473', 'url': 'https://www.orpha.net/en/disease/detail/98473'}, {'id': 'SCTID:73297009', 'url': 'http://identifiers.org/snomedct/73297009'}, {'id': 'UMLS:C0026850', 'url': 'http://identifiers.org/umls/C0026850'}, {'id': 'icd11.foundation:1464662404', 'url': None}]	{'id': 'phenio', 'url': 'https://monarch-initiative.github.io/monarch-ingest/Sources/phenio/#'}	[{'label': 'Disease to Phenotype', 'count': 4193, 'category': 'biolink:DiseaseToPhenotypicFeatureAssociation'}, {'label': 'Gene to Phenotype', 'count': 2907, 'category': 'biolink:GeneToPhenotypicFeatureAssociation'}, {'label': 'Causal Gene', 'count': 126, 'category': 'biolink:CausalGeneToDiseaseAssociation'}, {'label': 'Correlated Gene', 'count': 150, 'category': 'biolink:CorrelatedGeneToDiseaseAssociation'}, {'label': 'Variant to Disease', 'count': 340, 'category': 'biolink:VariantToDiseaseAssociation'}, {'label': 'Disease Model', 'count': 243, 'category': 'biolink:GenotypeToDiseaseAssociation'}, {'label': 'Medical Action', 'count': 4, 'category': 'biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation'}]	{'super_classes': [{'id': 'MONDO:0005336', 'category': 'biolink:Disease', 'name': 'myopathy', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None, 'has_descendant': None, 'has_descendant_label': None, 'has_descendant_count': None}, {'id': 'MONDO:0100546', 'category': 'biolink:Disease', 'name': 'hereditary neuromuscular disease', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None, 'has_descendant': None, 'has_descendant_label': None, 'has_descendant_count': None}, {'id': 'MONDO:0700223', 'category': 'biolink:Disease', 'name': 'hereditary skeletal muscle disorder', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None, 'has_descendant': None, 'has_descendant_label': None, 'has_descendant_count': None}], 'sub_classes': [{'id': 'MONDO:0019950', 'category': 'biolink:Disease', 'name': 'congenital muscular dystrophy', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None, 'has_descendant': None, 'has_descendant_label': None, 'has_descendant_count': None}, {'id': 'MONDO:0018949', 'category': 'biolink:Disease', 'name': 'distal myopathy', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None, 'has_descendant': None, 'has_descendant_label': None, 'has_descendant_count': None}, {'id': 'MONDO:0016106', 'category': 'biolink:Disease', 'name': 'progressive muscular dystrophy', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None, 'has_descendant': None, 'has_descendant_label': None, 'has_descendant_count': None}, {'id': 'MONDO:0010677', 'category': 'biolink:Disease', 'name': 'muscular dystrophy, Mabry type', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None, 'has_descendant': None, 'has_descendant_label': None, 'has_descendant_count': None}, {'id': 'MONDO:0010675', 'category': 'biolink:Disease', 'name': 'muscular dystrophy, cardiac type', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None, 'has_descendant': None, 'has_descendant_label': None, 'has_descendant_count': None}, {'id': 'MONDO:0010678', 'category': 'biolink:Disease', 'name': 'muscular dystrophy, progressive Pectorodorsal', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None, 'has_descendant': None, 'has_descendant_label': None, 'has_descendant_count': None}, {'id': 'MONDO:0008028', 'category': 'biolink:Disease', 'name': 'muscular dystrophy, Barnes type', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None, 'has_descendant': None, 'has_descendant_label': None, 'has_descendant_count': None}, {'id': 'MONDO:0100228', 'category': 'biolink:Disease', 'name': 'LAMA2-related muscular dystrophy', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None, 'has_descendant': None, 'has_descendant_label': None, 'has_descendant_count': None}, {'id': 'MONDO:0700285', 'category': 'biolink:Disease', 'name': 'DMD-related muscular dystrophy', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None, 'has_descendant': None, 'has_descendant_label': None, 'has_descendant_count': None}, {'id': 'MONDO:0010676', 'category': 'biolink:Disease', 'name': 'muscular dystrophy, Hemizygous lethal type', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None, 'has_descendant': None, 'has_descendant_label': None, 'has_descendant_count': None}, {'id': 'MONDO:0023204', 'category': 'biolink:Disease', 'name': 'Fukuda-Miyanomae-Nakata syndrome', 'full_name': None, 'deprecated': None, 'description': None, 'xref': None, 'provided_by': None, 'in_taxon': None, 'in_taxon_label': None, 'symbol': None, 'synonym': None, 'broad_synonym': None, 'exact_synonym': None, 'narrow_synonym': None, 'related_synonym': None, 'subsets': None, 'uri': None, 'iri': None, 'namespace': None, 'has_phenotype': None, 'has_phenotype_label': None, 'has_phenotype_closure': None, 'has_phenotype_closure_label': None, 'has_phenotype_count': None, 'has_descendant': None, 'has_descendant_label': None, 'has_descendant_count': None}]}
 """
-
 
 @pytest.fixture
 def node_yaml():
     return """
 association_counts:
 - category: biolink:DiseaseToPhenotypicFeatureAssociation
-  count: 4192
+  count: 4193
   label: Disease to Phenotype
 - category: biolink:GeneToPhenotypicFeatureAssociation
-  count: 6475
+  count: 2907
   label: Gene to Phenotype
 - category: biolink:CausalGeneToDiseaseAssociation
   count: 126
   label: Causal Gene
 - category: biolink:CorrelatedGeneToDiseaseAssociation
-  count: 149
+  count: 150
   label: Correlated Gene
 - category: biolink:VariantToDiseaseAssociation
-  count: 211
+  count: 340
   label: Variant to Disease
 - category: biolink:GenotypeToDiseaseAssociation
-  count: 242
+  count: 243
   label: Disease Model
 - category: biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation
   count: 4
@@ -661,6 +1100,424 @@ external_links:
 - id: icd11.foundation:1464662404
   url: null
 full_name: null
+has_descendant:
+- MONDO:0013162
+- MONDO:0971171
+- MONDO:0018951
+- MONDO:0035648
+- MONDO:0010678
+- MONDO:0011787
+- MONDO:0013158
+- MONDO:0019950
+- MONDO:0013159
+- MONDO:0011968
+- MONDO:0010400
+- MONDO:0012277
+- MONDO:0000727
+- MONDO:0012215
+- MONDO:0016108
+- MONDO:0000173
+- MONDO:0024530
+- MONDO:0009675
+- MONDO:0024607
+- MONDO:0017892
+- MONDO:0007614
+- MONDO:0014071
+- MONDO:0013049
+- MONDO:0030456
+- MONDO:0023671
+- MONDO:0029133
+- MONDO:0018281
+- MONDO:0021569
+- MONDO:0015151
+- MONDO:0030712
+- MONDO:0018939
+- MONDO:1040033
+- MONDO:0009683
+- MONDO:0011246
+- MONDO:0014788
+- MONDO:0013155
+- MONDO:0010676
+- MONDO:0009690
+- MONDO:0700285
+- MONDO:0033556
+- MONDO:0035649
+- MONDO:0014683
+- MONDO:0009678
+- MONDO:0010311
+- MONDO:0958233
+- MONDO:0010870
+- MONDO:0000172
+- MONDO:0013297
+- MONDO:0010884
+- MONDO:0023595
+- MONDO:0009677
+- MONDO:0035647
+- MONDO:0010401
+- MONDO:0010677
+- MONDO:0014782
+- MONDO:0008030
+- MONDO:0014140
+- MONDO:0021018
+- MONDO:0018759
+- MONDO:0011266
+- MONDO:0008034
+- MONDO:0100228
+- MONDO:0012193
+- MONDO:0014489
+- MONDO:0029136
+- MONDO:0013550
+- MONDO:0012248
+- MONDO:0012652
+- MONDO:0013904
+- MONDO:0009676
+- MONDO:0012410
+- MONDO:0013160
+- MONDO:0957270
+- MONDO:0014896
+- MONDO:0012138
+- MONDO:0013178
+- MONDO:0025193
+- MONDO:0010684
+- MONDO:0008028
+- MONDO:0014654
+- MONDO:0024545
+- MONDO:0030355
+- MONDO:0012127
+- MONDO:0010680
+- MONDO:0009682
+- MONDO:0018949
+- MONDO:0011271
+- MONDO:0009685
+- MONDO:0009680
+- MONDO:0016049
+- MONDO:0000171
+- MONDO:0013440
+- MONDO:0018280
+- MONDO:0012262
+- MONDO:0958236
+- MONDO:0012270
+- MONDO:0014142
+- MONDO:0020121
+- MONDO:0016971
+- MONDO:0018276
+- MONDO:0008031
+- MONDO:0011362
+- MONDO:0014538
+- MONDO:0958353
+- MONDO:0016107
+- MONDO:0015152
+- MONDO:0018278
+- MONDO:0011423
+- MONDO:0958234
+- MONDO:0100531
+- MONDO:0009181
+- MONDO:0013222
+- MONDO:0011688
+- MONDO:0008409
+- MONDO:0013161
+- MONDO:0018371
+- MONDO:0012034
+- MONDO:0035646
+- MONDO:0008116
+- MONDO:0008029
+- MONDO:0001347
+- MONDO:0013177
+- MONDO:0024771
+- MONDO:0011181
+- MONDO:0014900
+- MONDO:0014141
+- MONDO:0030354
+- MONDO:0034022
+- MONDO:0958077
+- MONDO:0009681
+- MONDO:0029135
+- MONDO:0013071
+- MONDO:0008049
+- MONDO:0958195
+- MONDO:0011028
+- MONDO:0958235
+- MONDO:0011170
+- MONDO:0018006
+- MONDO:0009667
+- MONDO:0010679
+- MONDO:0014101
+- MONDO:0030014
+- MONDO:0958176
+- MONDO:0014144
+- MONDO:0023204
+- MONDO:0011466
+- MONDO:0018098
+- MONDO:0014877
+- MONDO:0013835
+- MONDO:0035650
+- MONDO:0008056
+- MONDO:0009364
+- MONDO:0013157
+- MONDO:0014676
+- MONDO:0016830
+- MONDO:0975918
+- MONDO:0008050
+- MONDO:0700075
+- MONDO:0800318
+- MONDO:0014800
+- MONDO:0011721
+- MONDO:0014474
+- MONDO:0013154
+- MONDO:0009679
+- MONDO:0020336
+- MONDO:0035432
+- MONDO:0018370
+- MONDO:0014023
+- MONDO:0012699
+- MONDO:0012130
+- MONDO:0010912
+- MONDO:0013221
+- MONDO:0011925
+- MONDO:0021083
+- MONDO:0019951
+- MONDO:0014022
+- MONDO:0013390
+- MONDO:0011486
+- MONDO:0014977
+- MONDO:0013156
+- MONDO:0000355
+- MONDO:0012310
+- MONDO:0013072
+- MONDO:0013677
+- MONDO:0016097
+- MONDO:0014120
+- MONDO:0004495
+- MONDO:0010675
+- MONDO:0100584
+- MONDO:0016106
+- MONDO:0012286
+- MONDO:0013686
+- MONDO:0020793
+- MONDO:0030134
+- MONDO:0014945
+- MONDO:0019398
+- MONDO:0800209
+has_descendant_count: 197
+has_descendant_label:
+- autosomal recessive limb-girdle muscular dystrophy type 2N
+- muscular dystrophy, limb-girdle, autosomal recessive 29
+- distal myopathy with vocal cord weakness
+- juvenile-onset Steinert myotonic dystrophy
+- muscular dystrophy, progressive Pectorodorsal
+- autosomal recessive limb-girdle muscular dystrophy type 2I
+- muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies),
+  type A6
+- congenital muscular dystrophy
+- muscular dystrophy-dystroglycanopathy (congenital with intellectual disability),
+  type B1
+- autosomal recessive limb-girdle muscular dystrophy type 2D
+- X-linked scapuloperoneal muscular dystrophy
+- myofibrillar myopathy 4
+- scapuloperoneal myopathy
+- myofibrillar myopathy 3
+- autosomal dominant distal myopathy
+- muscular dystrophy-dystroglycanopathy, type C
+- Bethlem myopathy 1A
+- autosomal recessive limb-girdle muscular dystrophy type 2A
+- congenital muscular dystrophy with cataracts and intellectual disability
+- autosomal recessive myogenic arthrogryposis multiplex congenita
+- congenital fibrosis of extraocular muscles
+- muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies),
+  type a, 11
+- DPM3-congenital disorder of glycosylation
+- muscular dystrophy, limb-girdle, autosomal recessive 27
+- oculopharyngodistal myopathy 3
+- muscular dystrophy, limb-girdle, autosomal dominant 4
+- congenital muscular dystrophy with hyperlaxity
+- Emery-Dreifuss muscular dystrophy 2, autosomal dominant
+- muscular dystrophy, limb-girdle, autosomal dominant
+- oculopharyngodistal myopathy 4
+- muscle-eye-brain disease
+- congenital muscular dystrophy without intellectual disability
+- autosomal recessive limb-girdle muscular dystrophy type 2H
+- megaconial type congenital muscular dystrophy
+- autosomal recessive limb-girdle muscular dystrophy type 2W
+- muscular dystrophy-dystroglycanopathy (congenital with intellectual disability),
+  type B3
+- muscular dystrophy, Hemizygous lethal type
+- congenital myasthenic syndrome 10
+- DMD-related muscular dystrophy
+- muscular dystrophy-dystroglycanopathy (congenital with impaired intellectual development),
+  type B, 15
+- adult-onset Steinert myotonic dystrophy
+- muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies),
+  type A9
+- muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies),
+  type A, 4
+- Becker muscular dystrophy
+- Bethlem myopathy 1B
+- tibial muscular dystrophy
+- muscular dystrophy-dystroglycanopathy, type B
+- autosomal dominant limb-girdle muscular dystrophy type 1H
+- muscular dystrophy, scapulohumeral
+- congenital myotonic dystrophy
+- autosomal recessive limb-girdle muscular dystrophy type 2C
+- childhood-onset Steinert myotonic dystrophy
+- X-linked myopathy with postural muscle atrophy
+- muscular dystrophy, Mabry type
+- autosomal recessive limb-girdle muscular dystrophy type 2X
+- facioscapulohumeral muscular dystrophy 1
+- muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies),
+  type A14
+- autosomal dominant limb-girdle muscular dystrophy type 1D (DNAJB6)
+- childhood-onset progressive contractures-limb-girdle weakness-muscle dystrophy syndrome
+- myotonic dystrophy type 2
+- muscular dystrophy, pseudohypertrophic, with Internalized capillaries
+- LAMA2-related muscular dystrophy
+- autosomal dominant limb-girdle muscular dystrophy type 1G
+- limb-girdle muscular dystrophy due to POMK deficiency
+- muscular dystrophy, limb-girdle, autosomal recessive 23
+- distal myopathy with posterior leg and anterior hand involvement
+- autosomal recessive limb-girdle muscular dystrophy type 2K
+- autosomal recessive limb-girdle muscular dystrophy type 2L
+- muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies),
+  type a, 8
+- autosomal recessive limb-girdle muscular dystrophy type 2B
+- Finnish upper limb-onset distal myopathy
+- muscular dystrophy-dystroglycanopathy (congenital with intellectual disability),
+  type B2
+- muscular dystrophy, limb-girdle, autosomal recessive 28
+- congenital muscular dystrophy-respiratory failure-skin abnormalities-joint hyperlaxity
+  syndrome
+- muscular dystrophy-dystroglycanopathy type B6
+- congenital muscular dystrophy due to LMNA mutation
+- oculopharyngodistal myopathy
+- X-linked myopathy with excessive autophagy
+- muscular dystrophy, Barnes type
+- Ullrich congenital muscular dystrophy 2
+- Miyoshi muscular dystrophy 1
+- facioscapulohumeral muscular dystrophy 4, digenic
+- autosomal recessive limb-girdle muscular dystrophy type 2J
+- X-linked Emery-Dreifuss muscular dystrophy
+- muscular dystrophy, congenital, with rapid progression
+- distal myopathy
+- rigid spine muscular dystrophy 1
+- Miyoshi myopathy
+- congenital muscular dystrophy-infantile cataract-hypogonadism syndrome
+- congenital myopathy, Paradas type
+- muscular dystrophy-dystroglycanopathy, type A
+- autosomal recessive limb-girdle muscular dystrophy type 2P
+- muscle-eye-brain disease with bilateral multicystic leucodystrophy
+- fibrosis of extraocular muscles, congenital, 3c
+- Ullrich congenital muscular dystrophy 1C
+- Tukel syndrome
+- autosomal recessive limb-girdle muscular dystrophy type 2T
+- muscular dystrophy
+- limb-girdle muscular dystrophy
+- muscular dystrophy-dystroglycanopathy
+- facioscapulohumeral muscular dystrophy 2
+- myopathy, myofibrillar, 9, with early respiratory failure
+- fibrosis of extraocular muscles, congenital, 5
+- intermediate collagen VI-related muscular dystrophy
+- myotonic dystrophy
+- autosomal recessive limb-girdle muscular dystrophy
+- congenital muscular dystrophy with intellectual disability
+- autosomal recessive limb-girdle muscular dystrophy type 2E
+- Bethlem myopathy 1C
+- Emery-Dreifuss muscular dystrophy 1, X-linked
+- epidermolysis bullosa simplex 5B, with muscular dystrophy
+- Miyoshi muscular dystrophy 3
+- muscular dystrophy-dystroglycanopathy type B5
+- congenital myopathy 7A, myosin storage, autosomal dominant
+- autosomal recessive limb-girdle muscular dystrophy type 2O
+- nebulin-related early-onset distal myopathy
+- autosomal dominant limb-girdle muscular dystrophy type 1F
+- congenital-onset Steinert myotonic dystrophy
+- oculopharyngeal muscular dystrophy
+- Bethlem myopathy
+- facioscapulohumeral muscular dystrophy
+- congenital muscular dystrophy due to integrin alpha-7 deficiency
+- myopathy, distal, 7, adult-onset, X-linked
+- fibrosis of extraocular muscles, congenital, 2
+- autosomal recessive limb-girdle muscular dystrophy type 2Y
+- muscular dystrophy-dystroglycanopathy (congenital with intellectual disability),
+  type B14
+- facioscapulohumeral muscular dystrophy 3, digenic
+- Bethlem myopathy 2
+- collagen 6-related congenital muscular dystrophy
+- Ullrich congenital muscular dystrophy 1A
+- muscular dystrophy-dystroglycanopathy (limb-girdle), type C, 8
+- Emery-Dreifuss muscular dystrophy 4, autosomal dominant
+- myopathy, distal, infantile-onset
+- oculopharyngeal muscular dystrophy 2
+- autosomal recessive limb-girdle muscular dystrophy type 2F
+- Ullrich congenital muscular dystrophy 1B
+- autosomal recessive limb-girdle muscular dystrophy type 2G
+- adult-onset distal myopathy due to VCP mutation
+- muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies),
+  type A3
+- Duchenne muscular dystrophy
+- muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies),
+  type a, 12
+- muscular dystrophy, limb-girdle, autosomal recessive 26
+- oculopharyngeal muscular dystrophy 1
+- autosomal recessive limb-girdle muscular dystrophy type R18
+- Fukuda-Miyanomae-Nakata syndrome
+- distal myopathy, Welander type
+- autosomal dominant limb-girdle muscular dystrophy type 1E (DES)
+- myopathy, distal, 5
+- muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies),
+  type A, 7
+- late-onset Steinert myotonic dystrophy
+- myotonic dystrophy type 1
+- muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies),
+  type A1
+- muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies),
+  type A5
+- Emery-Dreifuss muscular dystrophy 3, autosomal recessive
+- Emery-Dreifuss muscular dystrophy
+- asymptomatic hyperckemia-myalgia-rhabdomyolysis syndrome
+- MYH7-related skeletal myopathy
+- congenital muscular dystrophy caused by variation in POMGNT2
+- Emery-Dreifuss muscular dystrophy 6, X-linked
+- progressive scapulohumeroperoneal distal myopathy
+- distal myopathy with anterior tibial onset
+- autosomal recessive limb-girdle muscular dystrophy type 2U
+- muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies),
+  type A2
+- arthrogryposis due to muscular dystrophy
+- autosomal dominant Emery-Dreifuss muscular dystrophy
+- POMGNT2-related limb-girdle muscular dystrophy R24
+- KLHL9-related early-onset distal myopathy
+- congenital muscular dystrophy with intellectual disability and severe epilepsy
+- autosomal recessive limb-girdle muscular dystrophy type 2M
+- myofibrillar myopathy 2
+- fibrosis of extraocular muscles, congenital, 3A, with or without extraocular involvement
+- Miyoshi muscular dystrophy 2
+- congenital merosin-deficient muscular dystrophy 1A
+- congenital fibrosis of extraocular muscles type 1
+- rigid spine syndrome
+- muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies),
+  type a, 10
+- autosomal recessive limb-girdle muscular dystrophy type 2Q
+- congenital muscular dystrophy 1B
+- autosomal recessive limb-girdle muscular dystrophy type 2R1
+- muscular dystrophy-dystroglycanopathy (congenital without intellectual disability),
+  type B4
+- Ullrich congenital muscular dystrophy
+- fibrosis of extraocular muscles, congenital, with synergistic divergence
+- Emery-Dreifuss muscular dystrophy 5, autosomal dominant
+- Emery-Dreifuss muscular dystrophy 7, autosomal dominant
+- symptomatic form of muscular dystrophy of Duchenne and Becker in female carriers
+- muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies),
+  type A13
+- myotonic cataract
+- muscular dystrophy, cardiac type
+- SNUPN-related muscular dystrophy with or without multi-system involvement
+- progressive muscular dystrophy
+- myopathy, autophagic vacuolar, infantile-onset
+- distal myopathy, Tateyama type
+- oculopharyngodistal myopathy 1
+- oculopharyngodistal myopathy 2
+- myopathy, distal, with rimmed vacuoles
+- desmin-related myopathy with Mallory body-like inclusions
+- fibrosis of extraocular muscles, congenital, 3b
 has_phenotype: null
 has_phenotype_closure: null
 has_phenotype_closure_label: null
@@ -701,181 +1558,9 @@ node_hierarchy:
     description: null
     exact_synonym: null
     full_name: null
-    has_phenotype: null
-    has_phenotype_closure: null
-    has_phenotype_closure_label: null
-    has_phenotype_count: null
-    has_phenotype_label: null
-    id: MONDO:0010675
-    in_taxon: null
-    in_taxon_label: null
-    iri: null
-    name: muscular dystrophy, cardiac type
-    namespace: null
-    narrow_synonym: null
-    provided_by: null
-    related_synonym: null
-    subsets: null
-    symbol: null
-    synonym: null
-    uri: null
-    xref: null
-  - broad_synonym: null
-    category: biolink:Disease
-    deprecated: null
-    description: null
-    exact_synonym: null
-    full_name: null
-    has_phenotype: null
-    has_phenotype_closure: null
-    has_phenotype_closure_label: null
-    has_phenotype_count: null
-    has_phenotype_label: null
-    id: MONDO:0010676
-    in_taxon: null
-    in_taxon_label: null
-    iri: null
-    name: muscular dystrophy, Hemizygous lethal type
-    namespace: null
-    narrow_synonym: null
-    provided_by: null
-    related_synonym: null
-    subsets: null
-    symbol: null
-    synonym: null
-    uri: null
-    xref: null
-  - broad_synonym: null
-    category: biolink:Disease
-    deprecated: null
-    description: null
-    exact_synonym: null
-    full_name: null
-    has_phenotype: null
-    has_phenotype_closure: null
-    has_phenotype_closure_label: null
-    has_phenotype_count: null
-    has_phenotype_label: null
-    id: MONDO:0010677
-    in_taxon: null
-    in_taxon_label: null
-    iri: null
-    name: muscular dystrophy, Mabry type
-    namespace: null
-    narrow_synonym: null
-    provided_by: null
-    related_synonym: null
-    subsets: null
-    symbol: null
-    synonym: null
-    uri: null
-    xref: null
-  - broad_synonym: null
-    category: biolink:Disease
-    deprecated: null
-    description: null
-    exact_synonym: null
-    full_name: null
-    has_phenotype: null
-    has_phenotype_closure: null
-    has_phenotype_closure_label: null
-    has_phenotype_count: null
-    has_phenotype_label: null
-    id: MONDO:0010678
-    in_taxon: null
-    in_taxon_label: null
-    iri: null
-    name: muscular dystrophy, progressive Pectorodorsal
-    namespace: null
-    narrow_synonym: null
-    provided_by: null
-    related_synonym: null
-    subsets: null
-    symbol: null
-    synonym: null
-    uri: null
-    xref: null
-  - broad_synonym: null
-    category: biolink:Disease
-    deprecated: null
-    description: null
-    exact_synonym: null
-    full_name: null
-    has_phenotype: null
-    has_phenotype_closure: null
-    has_phenotype_closure_label: null
-    has_phenotype_count: null
-    has_phenotype_label: null
-    id: MONDO:0008028
-    in_taxon: null
-    in_taxon_label: null
-    iri: null
-    name: muscular dystrophy, Barnes type
-    namespace: null
-    narrow_synonym: null
-    provided_by: null
-    related_synonym: null
-    subsets: null
-    symbol: null
-    synonym: null
-    uri: null
-    xref: null
-  - broad_synonym: null
-    category: biolink:Disease
-    deprecated: null
-    description: null
-    exact_synonym: null
-    full_name: null
-    has_phenotype: null
-    has_phenotype_closure: null
-    has_phenotype_closure_label: null
-    has_phenotype_count: null
-    has_phenotype_label: null
-    id: MONDO:0016106
-    in_taxon: null
-    in_taxon_label: null
-    iri: null
-    name: progressive muscular dystrophy
-    namespace: null
-    narrow_synonym: null
-    provided_by: null
-    related_synonym: null
-    subsets: null
-    symbol: null
-    synonym: null
-    uri: null
-    xref: null
-  - broad_synonym: null
-    category: biolink:Disease
-    deprecated: null
-    description: null
-    exact_synonym: null
-    full_name: null
-    has_phenotype: null
-    has_phenotype_closure: null
-    has_phenotype_closure_label: null
-    has_phenotype_count: null
-    has_phenotype_label: null
-    id: MONDO:0018949
-    in_taxon: null
-    in_taxon_label: null
-    iri: null
-    name: distal myopathy
-    namespace: null
-    narrow_synonym: null
-    provided_by: null
-    related_synonym: null
-    subsets: null
-    symbol: null
-    synonym: null
-    uri: null
-    xref: null
-  - broad_synonym: null
-    category: biolink:Disease
-    deprecated: null
-    description: null
-    exact_synonym: null
-    full_name: null
+    has_descendant: null
+    has_descendant_count: null
+    has_descendant_label: null
     has_phenotype: null
     has_phenotype_closure: null
     has_phenotype_closure_label: null
@@ -901,16 +1586,19 @@ node_hierarchy:
     description: null
     exact_synonym: null
     full_name: null
+    has_descendant: null
+    has_descendant_count: null
+    has_descendant_label: null
     has_phenotype: null
     has_phenotype_closure: null
     has_phenotype_closure_label: null
     has_phenotype_count: null
     has_phenotype_label: null
-    id: MONDO:0023204
+    id: MONDO:0018949
     in_taxon: null
     in_taxon_label: null
     iri: null
-    name: Fukuda-Miyanomae-Nakata syndrome
+    name: distal myopathy
     namespace: null
     narrow_synonym: null
     provided_by: null
@@ -926,6 +1614,149 @@ node_hierarchy:
     description: null
     exact_synonym: null
     full_name: null
+    has_descendant: null
+    has_descendant_count: null
+    has_descendant_label: null
+    has_phenotype: null
+    has_phenotype_closure: null
+    has_phenotype_closure_label: null
+    has_phenotype_count: null
+    has_phenotype_label: null
+    id: MONDO:0016106
+    in_taxon: null
+    in_taxon_label: null
+    iri: null
+    name: progressive muscular dystrophy
+    namespace: null
+    narrow_synonym: null
+    provided_by: null
+    related_synonym: null
+    subsets: null
+    symbol: null
+    synonym: null
+    uri: null
+    xref: null
+  - broad_synonym: null
+    category: biolink:Disease
+    deprecated: null
+    description: null
+    exact_synonym: null
+    full_name: null
+    has_descendant: null
+    has_descendant_count: null
+    has_descendant_label: null
+    has_phenotype: null
+    has_phenotype_closure: null
+    has_phenotype_closure_label: null
+    has_phenotype_count: null
+    has_phenotype_label: null
+    id: MONDO:0010677
+    in_taxon: null
+    in_taxon_label: null
+    iri: null
+    name: muscular dystrophy, Mabry type
+    namespace: null
+    narrow_synonym: null
+    provided_by: null
+    related_synonym: null
+    subsets: null
+    symbol: null
+    synonym: null
+    uri: null
+    xref: null
+  - broad_synonym: null
+    category: biolink:Disease
+    deprecated: null
+    description: null
+    exact_synonym: null
+    full_name: null
+    has_descendant: null
+    has_descendant_count: null
+    has_descendant_label: null
+    has_phenotype: null
+    has_phenotype_closure: null
+    has_phenotype_closure_label: null
+    has_phenotype_count: null
+    has_phenotype_label: null
+    id: MONDO:0010675
+    in_taxon: null
+    in_taxon_label: null
+    iri: null
+    name: muscular dystrophy, cardiac type
+    namespace: null
+    narrow_synonym: null
+    provided_by: null
+    related_synonym: null
+    subsets: null
+    symbol: null
+    synonym: null
+    uri: null
+    xref: null
+  - broad_synonym: null
+    category: biolink:Disease
+    deprecated: null
+    description: null
+    exact_synonym: null
+    full_name: null
+    has_descendant: null
+    has_descendant_count: null
+    has_descendant_label: null
+    has_phenotype: null
+    has_phenotype_closure: null
+    has_phenotype_closure_label: null
+    has_phenotype_count: null
+    has_phenotype_label: null
+    id: MONDO:0010678
+    in_taxon: null
+    in_taxon_label: null
+    iri: null
+    name: muscular dystrophy, progressive Pectorodorsal
+    namespace: null
+    narrow_synonym: null
+    provided_by: null
+    related_synonym: null
+    subsets: null
+    symbol: null
+    synonym: null
+    uri: null
+    xref: null
+  - broad_synonym: null
+    category: biolink:Disease
+    deprecated: null
+    description: null
+    exact_synonym: null
+    full_name: null
+    has_descendant: null
+    has_descendant_count: null
+    has_descendant_label: null
+    has_phenotype: null
+    has_phenotype_closure: null
+    has_phenotype_closure_label: null
+    has_phenotype_count: null
+    has_phenotype_label: null
+    id: MONDO:0008028
+    in_taxon: null
+    in_taxon_label: null
+    iri: null
+    name: muscular dystrophy, Barnes type
+    namespace: null
+    narrow_synonym: null
+    provided_by: null
+    related_synonym: null
+    subsets: null
+    symbol: null
+    synonym: null
+    uri: null
+    xref: null
+  - broad_synonym: null
+    category: biolink:Disease
+    deprecated: null
+    description: null
+    exact_synonym: null
+    full_name: null
+    has_descendant: null
+    has_descendant_count: null
+    has_descendant_label: null
     has_phenotype: null
     has_phenotype_closure: null
     has_phenotype_closure_label: null
@@ -951,6 +1782,9 @@ node_hierarchy:
     description: null
     exact_synonym: null
     full_name: null
+    has_descendant: null
+    has_descendant_count: null
+    has_descendant_label: null
     has_phenotype: null
     has_phenotype_closure: null
     has_phenotype_closure_label: null
@@ -970,6 +1804,62 @@ node_hierarchy:
     synonym: null
     uri: null
     xref: null
+  - broad_synonym: null
+    category: biolink:Disease
+    deprecated: null
+    description: null
+    exact_synonym: null
+    full_name: null
+    has_descendant: null
+    has_descendant_count: null
+    has_descendant_label: null
+    has_phenotype: null
+    has_phenotype_closure: null
+    has_phenotype_closure_label: null
+    has_phenotype_count: null
+    has_phenotype_label: null
+    id: MONDO:0010676
+    in_taxon: null
+    in_taxon_label: null
+    iri: null
+    name: muscular dystrophy, Hemizygous lethal type
+    namespace: null
+    narrow_synonym: null
+    provided_by: null
+    related_synonym: null
+    subsets: null
+    symbol: null
+    synonym: null
+    uri: null
+    xref: null
+  - broad_synonym: null
+    category: biolink:Disease
+    deprecated: null
+    description: null
+    exact_synonym: null
+    full_name: null
+    has_descendant: null
+    has_descendant_count: null
+    has_descendant_label: null
+    has_phenotype: null
+    has_phenotype_closure: null
+    has_phenotype_closure_label: null
+    has_phenotype_count: null
+    has_phenotype_label: null
+    id: MONDO:0023204
+    in_taxon: null
+    in_taxon_label: null
+    iri: null
+    name: Fukuda-Miyanomae-Nakata syndrome
+    namespace: null
+    narrow_synonym: null
+    provided_by: null
+    related_synonym: null
+    subsets: null
+    symbol: null
+    synonym: null
+    uri: null
+    xref: null
   super_classes:
   - broad_synonym: null
     category: biolink:Disease
@@ -977,6 +1867,9 @@ node_hierarchy:
     description: null
     exact_synonym: null
     full_name: null
+    has_descendant: null
+    has_descendant_count: null
+    has_descendant_label: null
     has_phenotype: null
     has_phenotype_closure: null
     has_phenotype_closure_label: null
@@ -1002,6 +1895,9 @@ node_hierarchy:
     description: null
     exact_synonym: null
     full_name: null
+    has_descendant: null
+    has_descendant_count: null
+    has_descendant_label: null
     has_phenotype: null
     has_phenotype_closure: null
     has_phenotype_closure_label: null
@@ -1027,6 +1923,9 @@ node_hierarchy:
     description: null
     exact_synonym: null
     full_name: null
+    has_descendant: null
+    has_descendant_count: null
+    has_descendant_label: null
     has_phenotype: null
     has_phenotype_closure: null
     has_phenotype_closure_label: null
