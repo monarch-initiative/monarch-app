@@ -44,6 +44,12 @@
     "label": "Knowledge Graph",
     "subItems": [
       {
+        "label": "Dashboard",
+        "key": "kg-dashboard",
+        "to": "/kg/dashboard",
+        "tooltip": ""
+      },
+      {
         "label": "Downloads",
         "key": "kg-downloads",
         "to": "/kg/downloads",
