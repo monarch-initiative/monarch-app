@@ -85,11 +85,7 @@
           <template #button>{{ menu.label }}</template>
           <template #default>
             <li v-for="subItem in menu.subItems || []" :key="subItem.label">
-              <AppLink
-                v-tooltip="subItem.tooltip"
-                :to="subItem.to"
-                class="linkItems"
-              >
+              <AppLink :to="subItem.to" class="linkItems">
                 {{ subItem.label }}
                 <span v-if="subItem.icon" class="icon">
                   <AppIcon icon="arrow-up-right-from-square" />

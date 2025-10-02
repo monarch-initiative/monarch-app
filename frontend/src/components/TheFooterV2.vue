@@ -9,11 +9,7 @@
         <p>{{ column.label }}</p>
         <ul>
           <li v-for="subItem in column.subItems" :key="subItem.key">
-            <AppLink
-              v-tooltip="subItem.tooltip"
-              :to="subItem.to"
-              class="app-link"
-            >
+            <AppLink :to="subItem.to" class="app-link">
               {{ subItem.label }}
               <span v-if="subItem.icon" class="icon">
                 <AppIcon icon="arrow-up-right-from-square" />
