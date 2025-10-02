@@ -5,38 +5,32 @@
       {
         "label": "Our Story",
         "key": "about-our-story",
-        "to": "/about/our-story",
-        "tooltip": ""
+        "to": "/about/our-story"
       },
       {
         "label": "Team",
         "key": "about-team",
-        "to": "/about/team",
-        "tooltip": ""
+        "to": "/about/team"
       },
       {
         "label": "SAB",
         "key": "about-sab",
-        "to": "/about/sab",
-        "tooltip": ""
+        "to": "/about/sab"
       },
       {
         "label": "Contact Us",
         "key": "about-contact-us",
-        "to": "/about/contact-us",
-        "tooltip": ""
+        "to": "/about/contact-us"
       },
       {
         "label": "Publications",
         "key": "about-publications",
-        "to": "/about/publications",
-        "tooltip": ""
+        "to": "/about/publications"
       },
       {
         "label": "Funding",
         "key": "about-funding",
-        "to": "/about/funding",
-        "tooltip": ""
+        "to": "/about/funding"
       }
     ]
   },
@@ -46,77 +40,68 @@
       {
         "label": "Dashboard",
         "key": "kg-dashboard",
-        "to": "/kg/dashboard",
-        "tooltip": ""
+        "to": "/kg/dashboard"
       },
       {
         "label": "Downloads",
         "key": "kg-downloads",
-        "to": "/kg/downloads",
-        "tooltip": ""
+        "to": "/kg/downloads"
       },
       {
         "label": "API",
         "key": "kg-api",
         "to": "https://api-v3.monarchinitiative.org/v3/docs",
-        "tooltip": "",
+
         "icon": true
       },
       {
         "label": "Neo4j",
         "key": "about-neo4J",
         "to": "https://neo4j.monarchinitiative.org/browser/",
-        "tooltip": "",
+
         "icon": true
       },
       {
         "label": "Monarch R",
         "key": "about-monarchr",
         "to": "https://monarch-initiative.github.io/monarchr/articles/monarchr",
-        "tooltip": "",
+
         "icon": true
       },
       {
         "label": "Status & QC",
         "key": "kg-status-qc",
-        "to": "/kg/status",
-        "tooltip": ""
+        "to": "/kg/status"
       },
       {
         "label": "How To & Help",
         "key": "kg-help",
-        "to": "/kg/help",
-        "tooltip": ""
+        "to": "/kg/help"
       },
       {
         "label": "Documentation",
         "key": "kg-documentation",
-        "to": "/kg/documentation",
-        "tooltip": ""
+        "to": "/kg/documentation"
       },
       {
         "label": "Terms of Use",
         "key": "kg-terms",
-        "to": "/kg/terms",
-        "tooltip": ""
+        "to": "/kg/terms"
       },
       {
         "label": "Cite the KG",
         "key": "cite",
-        "to": "/kg/citation",
-        "tooltip": ""
+        "to": "/kg/citation"
       },
       {
         "label": "About the KG",
         "key": "about-kg",
-        "to": "/kg/about",
-        "tooltip": ""
+        "to": "/kg/about"
       },
       {
         "label": "KG Sources",
         "key": "kg-sources",
-        "to": "/kg/sources",
-        "tooltip": ""
+        "to": "/kg/sources"
       }
     ]
   },
@@ -126,62 +111,52 @@
       {
         "label": "Mondo",
         "key": "ontology-mondo",
-        "to": "/ontologies/mondo",
-        "tooltip": ""
+        "to": "/ontologies/mondo"
       },
       {
         "label": "Uberon",
         "key": "ontology-uberon",
-        "to": "/ontologies/uberon",
-        "tooltip": ""
+        "to": "/ontologies/uberon"
       },
       {
         "label": "uPheno",
         "key": "ontology-uPeheno",
-        "to": "/ontologies/upheno",
-        "tooltip": ""
+        "to": "/ontologies/upheno"
       },
       {
         "label": "HPO",
         "key": "ontology-hpo",
-        "to": "/ontologies/hp",
-        "tooltip": ""
+        "to": "/ontologies/hp"
       },
       {
         "label": "Phenio",
         "key": "ontology-phenio",
-        "to": "/ontologies/phenio",
-        "tooltip": ""
+        "to": "/ontologies/phenio"
       },
       {
         "label": "OBA",
         "key": "ontology-oba",
-        "to": "/ontologies/oba",
-        "tooltip": ""
+        "to": "/ontologies/oba"
       },
       {
         "label": "VBO",
         "key": "ontology-vbo",
-        "to": "/ontologies/vbo",
-        "tooltip": ""
+        "to": "/ontologies/vbo"
       },
       {
         "label": "GENO",
         "key": "ontology-geno",
-        "to": "/ontologies/geno",
-        "tooltip": ""
+        "to": "/ontologies/geno"
       },
       {
         "label": "SEPIO",
         "key": "ontology-sepio",
-        "to": "/ontologies/sepio",
-        "tooltip": ""
+        "to": "/ontologies/sepio"
       },
       {
         "label": "ECTO",
         "key": "ontology-ecto",
-        "to": "/ontologies/ecto",
-        "tooltip": ""
+        "to": "/ontologies/ecto"
       }
     ]
   },
@@ -191,56 +166,47 @@
       {
         "label": "Exomiser",
         "key": "exomiser",
-        "to": "/tools/exomiser",
-        "tooltip": ""
+        "to": "/tools/exomiser"
       },
       {
         "label": "PhEval",
         "key": "pheval",
-        "to": "/tools/pheval",
-        "tooltip": ""
+        "to": "/tools/pheval"
       },
       {
         "label": "LinkML",
         "key": "linkml-cde",
-        "to": "/tools/linkml",
-        "tooltip": ""
+        "to": "/tools/linkml"
       },
       {
         "label": "SSSOM",
         "key": "sssom",
-        "to": "/tools/sssom",
-        "tooltip": ""
+        "to": "/tools/sssom"
       },
       {
         "label": "OAK",
         "key": "oak",
-        "to": "/tools/oak",
-        "tooltip": ""
+        "to": "/tools/oak"
       },
       {
         "label": "ODK",
         "key": "odk",
-        "to": "/tools/odk",
-        "tooltip": ""
+        "to": "/tools/odk"
       },
       {
         "label": "OntoGPT",
         "key": "ontogpt",
-        "to": "/tools/ontogpt",
-        "tooltip": ""
+        "to": "/tools/ontogpt"
       },
       {
         "label": "CurateGPT",
         "key": "curate-gpt",
-        "to": "/tools/curate_gpt",
-        "tooltip": ""
+        "to": "/tools/curate_gpt"
       },
       {
         "label": "Phenopackets",
         "key": "pehnopackets",
-        "to": "/tools/phenopackets",
-        "tooltip": ""
+        "to": "/tools/phenopackets"
       }
     ]
   },
@@ -250,32 +216,27 @@
       {
         "label": "Monarch OLS",
         "key": "monarch_ols",
-        "to": "/registries/monarch_ols",
-        "tooltip": ""
+        "to": "/registries/monarch_ols"
       },
       {
         "label": "Monarch Mapping Registry",
         "key": "monarch_mapping_registry",
-        "to": "/registries/monarch_mapping_registry",
-        "tooltip": ""
+        "to": "/registries/monarch_mapping_registry"
       },
       {
         "label": "KG Hub",
         "key": "kg_hub",
-        "to": "/registries/kg_hub",
-        "tooltip": ""
+        "to": "/registries/kg_hub"
       },
       {
         "label": "KG Registry",
         "key": "kg_registry",
-        "to": "/registries/kg_registry",
-        "tooltip": ""
+        "to": "/registries/kg_registry"
       },
       {
         "label": "LinkML Registry",
         "key": "linkml_registry",
-        "to": "/registries/linkml_registry",
-        "tooltip": ""
+        "to": "/registries/linkml_registry"
       }
     ]
   },
@@ -285,35 +246,34 @@
       {
         "label": "Get Involved",
         "key": "community-get-involved",
-        "to": "/community/get-involved",
-        "tooltip": ""
+        "to": "/community/get-involved"
       },
       {
         "label": "Blog",
         "key": "community-blog",
         "to": "https://monarchinit.medium.com",
-        "tooltip": "",
+
         "icon": true
       },
       {
         "label": "LinkedIn",
         "key": "community-linkedin",
         "to": "https://www.linkedin.com/company/the-monarch-initiative",
-        "tooltip": "",
+
         "icon": true
       },
       {
         "label": "YouTube",
         "key": "community-youtube",
         "to": "https://www.youtube.com/@monarchinitiative",
-        "tooltip": "",
+
         "icon": true
       },
       {
         "label": "Bluesky",
         "key": "community-bluesky",
         "to": "https://bsky.app/profile/monarchinitiative.bsky.social",
-        "tooltip": "",
+
         "icon": true
       }
     ]
