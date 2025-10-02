@@ -33,7 +33,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "Home",
-    component: asyncRoute("PageHomeV2"),
+    component: asyncRoute("PageHome"),
     meta: { breadcrumb: "Home" },
     beforeEnter: () => {
       /** look for redirect in session storage (saved from public/404.html page) */
@@ -72,23 +72,23 @@ export const routes: RouteRecordRaw[] = [
     meta: { breadcrumb: "Home" },
   },
 
-  {
-    path: "/overview",
-    name: "Overview",
-    component: () => import("../pages/about/PageOverview.vue"),
-  },
+  // {
+  //   path: "/overview",
+  //   name: "Overview",
+  //   component: () => import("../pages/about/PageOverview.vue"),
+  // },
 
-  {
-    path: "/how-to",
-    name: "HowTo",
-    component: asyncRoute("about/PageHowTo"),
-  },
+  // {
+  //   path: "/how-to",
+  //   name: "HowTo",
+  //   component: asyncRoute("about/PageHowTo"),
+  // },
 
-  {
-    path: "/feedback",
-    name: "Feedback",
-    component: asyncRoute("help/PageFeedback"),
-  },
+  // {
+  //   path: "/feedback",
+  //   name: "Feedback",
+  //   component: asyncRoute("help/PageFeedback"),
+  // },
 
   /** node pages */
   {
@@ -98,20 +98,20 @@ export const routes: RouteRecordRaw[] = [
   },
 
   /** phenogrid compare iframe widget page */
-  {
-    path: "/phenogrid-search",
-    name: "Phenogrid",
-    component: asyncRoute("explore/PagePhenogridSearch"),
-    meta: { bare: true },
-  },
+  // {
+  //   path: "/phenogrid-search",
+  //   name: "Phenogrid",
+  //   component: asyncRoute("explore/PagePhenogridSearch"),
+  //   meta: { bare: true },
+  // },
 
-  /** phenogrid multi-compare iframe widget page */
-  {
-    path: "/phenogrid-multi-compare",
-    name: "PhenogridMultiCompare",
-    component: asyncRoute("explore/PagePhenogridMulticompare"),
-    meta: { bare: true },
-  },
+  // /** phenogrid multi-compare iframe widget page */
+  // {
+  //   path: "/phenogrid-multi-compare",
+  //   name: "PhenogridMultiCompare",
+  //   component: asyncRoute("explore/PagePhenogridMulticompare"),
+  //   meta: { bare: true },
+  // },
 
   /** test pages (comment this out when we release app) */
   {
@@ -204,37 +204,37 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/about/our-story",
     name: "Our Story",
-    component: asyncRoute("aboutV2/PageOurStory"),
+    component: asyncRoute("about/PageOurStory"),
     meta: { breadcrumb: "Our Story" },
   },
   {
     path: "/about/team",
     name: "Team",
-    component: asyncRoute("aboutV2/PageTeam"),
+    component: asyncRoute("about/PageTeam"),
     meta: { breadcrumb: "Team" },
   },
   {
     path: "/about/sab",
     name: "Scientfic Advisory Board Members",
-    component: asyncRoute("aboutV2/PageSAB"),
+    component: asyncRoute("about/PageSAB"),
     meta: { breadcrumb: "Scientfic Advisory Board Members" },
   },
   {
     path: "/about/contact-us",
     name: "Contact Us",
-    component: asyncRoute("aboutV2/PageContact"),
+    component: asyncRoute("about/PageContact"),
     meta: { breadcrumb: "Contact Us" },
   },
   {
     path: "/about/funding",
     name: "Funding",
-    component: asyncRoute("aboutV2/PageFunding"),
+    component: asyncRoute("about/PageFunding"),
     meta: { breadcrumb: "Funding" },
   },
   {
     path: "/about/publications",
     name: "Publications",
-    component: asyncRoute("aboutV2/PagePublications"),
+    component: asyncRoute("about/PagePublications"),
     meta: { breadcrumb: "Publications" },
   },
   // Community Dropdown

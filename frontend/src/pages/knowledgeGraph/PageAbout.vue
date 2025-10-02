@@ -178,7 +178,7 @@ import AppHeading from "@/components/AppHeading.vue";
 import AppSection from "@/components/AppSection.vue";
 import AppTileCard from "@/components/AppTileCard.vue";
 import PageTitle from "@/components/ThePageTitle.vue";
-import metadata from "@/pages/explore/metadata.json";
+import metadata from "@/data/metadata.json";
 import { formatNumber } from "@/util/string";
 
 const points = [
