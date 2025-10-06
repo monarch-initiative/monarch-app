@@ -1,4 +1,3 @@
-import { nextTick } from "vue";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { mount, VueWrapper } from "@vue/test-utils";
 import Suggestions from "@/components/TheSearchTerms.vue";

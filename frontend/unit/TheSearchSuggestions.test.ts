@@ -1,4 +1,3 @@
-// __tests__/Suggestions.spec.ts
 import { nextTick } from "vue";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { mount, VueWrapper } from "@vue/test-utils";
@@ -47,7 +46,7 @@ describe("Suggestions.vue", () => {
     vi.useFakeTimers();
     // Spy on scrollTo since component calls window.scrollTo
     vi.spyOn(window, "scrollTo").mockImplementation(() => {});
-    // Provide a minimal DOM for querySelector to find the target hash
+
     document.body.innerHTML = `
       <div id="app">
         <div id="section-phenotypes" style="height:20px"></div>
