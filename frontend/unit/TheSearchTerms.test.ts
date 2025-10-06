@@ -5,7 +5,6 @@ import TheSearchTerms from "@/components/TheSearchTerms.vue";
 const AppNodeBadgeStub = {
   name: "AppNodeBadge",
   props: ["node", "icon"],
-  // Keep the same root class the parent applies, and expose a test hook
   template: `<div class="terms" data-test="badge">{{ node.label }}</div>`,
 };
 
