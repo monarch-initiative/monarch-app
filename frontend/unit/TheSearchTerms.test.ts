@@ -24,11 +24,6 @@ vi.mock("@/data/toolEntityConfig", () => ({
   },
 }));
 
-const flushTimers = async () => {
-  vi.runAllTimers();
-  await Promise.resolve();
-};
-
 describe("Suggestions.vue", () => {
   let wrapper: VueWrapper<any>;
 
