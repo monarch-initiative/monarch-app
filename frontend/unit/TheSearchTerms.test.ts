@@ -18,7 +18,6 @@ describe("TheSearchTerms.vue", () => {
     wrapper = mount(TheSearchTerms, {
       global: {
         stubs: {
-          // IMPORTANT: use global.stubs (not global.components)
           AppNodeBadge: AppNodeBadgeStub,
         },
       },
