@@ -3,7 +3,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { mount, VueWrapper } from "@vue/test-utils";
 import Suggestions from "@/components/TheSearchSuggestions.vue";
 
-// --- test doubles / stubs ---
 vi.mock("vue-router", () => {
   const push = vi.fn(() => Promise.resolve());
   return {
