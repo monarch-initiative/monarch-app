@@ -68,6 +68,7 @@
 
       <template v-if="category">
         <!-- table view of associations -->
+        {{ category.id }}
         <AssociationsTable
           :node="node"
           :category="category"
@@ -106,7 +107,7 @@ type Totals = { direct: number; all: number };
 type TotalsMap = Record<string, Totals>;
 const totalsByCategory = ref<TotalsMap>({});
 
-const { category: nodeCategory } = props.node;
+const nodeCategory: string = props.node?.category ?? "";
 
 const selectedTabs = ref<Record<string, "all" | "direct">>({});
 const searchValues = ref<Record<string, string>>({});
@@ -132,7 +133,7 @@ const isDiseaseNode = computed(() => nodeCategory === "biolink:Disease");
 const isPhenotypeNode = computed(
   () => nodeCategory === "biolink:PhenotypicFeature",
 );
-console.log("nodeCategory", nodeCategory);
+
 const directFor = (id: string) => totalsByCategory.value[id]?.direct ?? 0;
 const allFor = (id: string) => totalsByCategory.value[id]?.all ?? 0;
 
@@ -158,7 +159,7 @@ const setDirect = (categoryId: string, directId: "true" | "false") => {
   selectedTabs.value[categoryId] = directId === "true" ? "direct" : "all";
 };
 const directTooltip = (categoryId: string): string | undefined => {
-  return formatDirectTooltip(categoryId, {
+  return formatDirectTooltip(categoryId, nodeCategory, {
     node: props.node.name,
     label: labelFor(categoryId),
     n: directFor(categoryId),
@@ -166,13 +167,13 @@ const directTooltip = (categoryId: string): string | undefined => {
 };
 
 const inferredTooltip = (categoryId: string): string | undefined => {
-  return formatInferredTooltip(categoryId, {
+  return formatInferredTooltip(categoryId, nodeCategory, {
     node: props.node.name,
     label: labelFor(categoryId),
     all: allFor(categoryId),
     n: directFor(categoryId),
     diff: diffFor(categoryId),
-    example: inferredByCategory.value[categoryId], // optional subclass example text
+    example: inferredByCategory.value[categoryId],
   });
 };
 
