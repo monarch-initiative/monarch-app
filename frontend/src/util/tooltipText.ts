@@ -1,6 +1,7 @@
 import { labelFor } from "@/util/typeConfig";
 import { pluralize } from "./plural";
 
+// ---------- Types ----------
 export type Vars = {
   node?: string;
   label?: string;
@@ -11,6 +12,19 @@ export type Vars = {
 };
 
 type Fmt = (v: Vars) => string;
+type NodeCategoryId = "biolink:Disease" | "biolink:PhenotypicFeature"; // add more later
+type AssocId =
+  | "biolink:DiseaseToPhenotypicFeatureAssociation"
+  | "biolink:GeneToPhenotypicFeatureAssociation"
+  | "biolink:CausalGeneToDiseaseAssociation"
+  | "biolink:CorrelatedGeneToDiseaseAssociation"
+  | "biolink:GenotypeToDiseaseAssociation"
+  | "biolink:VariantToDiseaseAssociation";
+
+type TemplatesByAssoc = Partial<Record<AssocId, Fmt>>;
+type TemplatesByNodeCategory = Partial<
+  Record<NodeCategoryId, TemplatesByAssoc>
+>;
 
 // quoted example (no bold/italic), also collapses whitespace
 const q = (s?: string) => (s ? `“${s.replace(/\s+/g, " ").trim()}”` : "");
@@ -27,21 +41,6 @@ const pluralWord = (
   );
 
 const fmtCount = (n: number | null | undefined) => (n ?? 0).toLocaleString();
-
-// ---------- Types ----------
-type NodeCategoryId = "biolink:Disease" | "biolink:PhenotypicFeature"; // add more later
-type AssocId =
-  | "biolink:DiseaseToPhenotypicFeatureAssociation"
-  | "biolink:GeneToPhenotypicFeatureAssociation"
-  | "biolink:CausalGeneToDiseaseAssociation"
-  | "biolink:CorrelatedGeneToDiseaseAssociation"
-  | "biolink:GenotypeToDiseaseAssociation"
-  | "biolink:VariantToDiseaseAssociation";
-
-type TemplatesByAssoc = Partial<Record<AssocId, Fmt>>;
-type TemplatesByNodeCategory = Partial<
-  Record<NodeCategoryId, TemplatesByAssoc>
->;
 
 const DIRECT_TEMPLATES: TemplatesByNodeCategory = {
   // Existing copy for Disease nodes
