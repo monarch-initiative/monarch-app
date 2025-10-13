@@ -68,7 +68,6 @@
 
       <template v-if="category">
         <!-- table view of associations -->
-        {{ category.id }}
         <AssociationsTable
           :node="node"
           :category="category"

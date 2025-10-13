@@ -94,7 +94,6 @@ type Props = {
 };
 
 const { node, frequencyLabel } = defineProps<Props>();
-console.log("node in clinical resources", node);
 const clinicalResources = useClinicalResources(node)
   .clinicalResources as ComputedRef<ClinicalResourceEntry[]>;
 const chipStyle = (res: ClinicalResourceEntry) => {
