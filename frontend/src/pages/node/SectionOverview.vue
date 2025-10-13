@@ -126,24 +126,20 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import omit from "lodash/omit";
 import type { Node } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
 import AppNodeText from "@/components/AppNodeText.vue";
 import AppTagList from "@/components/AppTagList.vue";
 import { useClinicalResources } from "@/composables/use-clinical-resources";
-import SectionClinicalReources from "./SectionClinicalReources.vue";
 import SectionDiseaseOverview from "./SectionDiseaseOverview.vue";
 
 type Props = { node: Node };
 
 const { node } = defineProps<Props>();
 const isDiseaseNode = computed(() => node.category === "biolink:Disease");
-const isPhenotypeNode = computed(
-  () => node.category === "biolink:PhenotypicFeature",
-);
-const { otherMappings, externalRefs } = useClinicalResources(node);
+
+const { otherMappings } = useClinicalResources(node);
 const CATEGORY_MAP: Record<string, string> = {
   "biolink:Disease": "disease",
   "biolink:PhenotypicFeature": "phenotype",
@@ -161,10 +157,6 @@ const infoForPatients = computed(
       ["GARD:"].some((prefix) => id.startsWith(prefix)),
     ) || [],
 );
-
-const frequencyLabel = computed((): "Rare" | "Common" => {
-  return node.subsets?.includes("rare") ? "Rare" : "Common";
-});
 
 const categoryLabel = computed(
   () => CATEGORY_MAP[node?.category ?? ""] ?? node?.category ?? "",
