@@ -76,27 +76,6 @@ const DIRECT_TEMPLATES: TemplatesByNodeCategory = {
   },
 };
 
-// ----- DIRECT (only shown when n > 0) -----
-// const DIRECT: Record<string, Fmt> = {
-//   "biolink:DiseaseToPhenotypicFeatureAssociation": ({ n, node }) =>
-//     `${fmtCount(n)} ${pluralWord(n, "phenotype", "phenotypes")} directly associated with ${node}`,
-
-//   "biolink:GeneToPhenotypicFeatureAssociation": ({ n, node }) =>
-//     `${fmtCount(n)} ${pluralWord(n, "gene with phenotypes", "genes with phenotypes")} that are directly associated with ${node}`,
-
-//   "biolink:CausalGeneToDiseaseAssociation": ({ n, node }) =>
-//     `${fmtCount(n)} ${pluralWord(n, "causal gene", "causal genes")} that causes ${node}`,
-
-//   "biolink:CorrelatedGeneToDiseaseAssociation": ({ n, node }) =>
-//     `${fmtCount(n)} ${pluralWord(n, "correlated gene", "correlated genes")} for ${node}`,
-
-//   "biolink:GenotypeToDiseaseAssociation": ({ n, node }) =>
-//     `${fmtCount(n)} ${pluralWord(n, "genotype", "genotypes")} that model ${node}`,
-
-//   "biolink:VariantToDiseaseAssociation": ({ n, node }) =>
-//     `${fmtCount(n)} ${pluralWord(n, "variant", "variants")} directly associated with ${node}`,
-// };
-
 // default direct template (fallback)
 const defaultDirect: Fmt = ({ n, node, label }) =>
   `${(n ?? 0).toLocaleString()} ${label} directly associated with ${node}`;
@@ -107,7 +86,6 @@ const defaultDirect: Fmt = ({ n, node, label }) =>
 
 const INFERRED_TEMPLATES: TemplatesByNodeCategory = {
   // When the node is a Disease
-
   "biolink:Disease": {
     "biolink:DiseaseToPhenotypicFeatureAssociation": ({
       all,
@@ -147,7 +125,7 @@ const INFERRED_TEMPLATES: TemplatesByNodeCategory = {
       example,
     }) =>
       (n ?? 0) > 0
-        ? `  ${pluralize(n, "correlated gene", "correlated genes")} for ${node} as wells as  ${pluralize(diff, "subclass", "subclasses")} such as ${example ? `${q(example)}` : ""}`
+        ? `  ${pluralize(n, "correlated gene", "correlated genes")} for ${node} as well as  ${pluralize(diff, "subclass", "subclasses")} such as ${example ? `${q(example)}` : ""}`
         : ` ${pluralize(all, "correlated gene", "correlated genes")} associated with ${node}`,
     "biolink:GenotypeToDiseaseAssociation": ({
       all,
@@ -157,12 +135,12 @@ const INFERRED_TEMPLATES: TemplatesByNodeCategory = {
       example,
     }) =>
       (n ?? 0) > 0
-        ? `${pluralize(n, "disease model", "disease models")} that are assciated with ${node} as well as ${pluralize(diff, "subclass", "subclasses")} such as ${example ? ` ${q(example)}` : ""}`
-        : ` ${pluralize(all, "disease model", "disease models")} that are assciated with ${node}`,
+        ? `${pluralize(n, "disease model", "disease models")} that are associated with ${node} as well as ${pluralize(diff, "subclass", "subclasses")} such as ${example ? ` ${q(example)}` : ""}`
+        : ` ${pluralize(all, "disease model", "disease models")} that are associated with ${node}`,
     "biolink:VariantToDiseaseAssociation": ({ all, n, diff, node, example }) =>
       (n ?? 0) > 0
-        ? ` ${pluralize(n, "variant", "variants")} that are assciated with ${node} as well as ${pluralize(diff, "subclass", "subclasses")} such as ${example ? ` ${q(example)}` : ""}`
-        : ` ${pluralize(all, "variant", "variants")} that are assciated with ${node}`,
+        ? ` ${pluralize(n, "variant", "variants")} that are associated with ${node} as well as ${pluralize(diff, "subclass", "subclasses")} such as ${example ? ` ${q(example)}` : ""}`
+        : ` ${pluralize(all, "variant", "variants")} that are associated with ${node}`,
   },
   // When the node is a Phenotypic Feature
   "biolink:PhenotypicFeature": {
