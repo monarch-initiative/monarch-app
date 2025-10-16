@@ -141,7 +141,7 @@ const isDiseaseNode = computed(() => node.category === "biolink:Disease");
 const isPhenotypeNode = computed(
   () => node.category === "biolink:PhenotypicFeature",
 );
-console.log("node.category", node.category);
+
 const { otherMappings } = useClinicalResources(node);
 const CATEGORY_MAP: Record<string, string> = {
   "biolink:Disease": "disease",
