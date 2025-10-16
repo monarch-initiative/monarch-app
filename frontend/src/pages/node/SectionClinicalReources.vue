@@ -11,8 +11,8 @@
           :key="id"
           :to="res.url || ''"
           class="brand-chip"
-          :style="chipStyle(res)"
           v-tooltip="res.tooltip"
+          :style="chipStyle(res)"
           :aria-label="res.label || res.id"
         >
           <span>
@@ -77,7 +77,7 @@
 <script setup lang="ts">
 import { type ComputedRef } from "vue";
 import omit from "lodash/omit";
-import type { Entity, Node as ModelNode } from "@/api/model";
+import type { Node as ModelNode } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
 import AppLink from "@/components/AppLink.vue";

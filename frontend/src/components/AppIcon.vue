@@ -80,7 +80,7 @@ const fontAwesome = computed(() => {
 
 const isCustom = ref(true);
 const isPng = computed(() => props.icon.endsWith(".png"));
-const AppNoop = defineComponent({ name: "Noop", setup: () => () => null });
+const AppNoop = defineComponent({ name: "AppNoop", setup: () => () => null });
 
 /** look for custom icon with matching name */
 const customIcon = defineAsyncComponent(async () => {

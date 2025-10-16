@@ -125,7 +125,7 @@ import TheSearchSuggestions from "./TheSearchSuggestions.vue";
 
 /** route info */
 const route = useRoute();
-const router = useRouter();
+
 /** is nav menu expanded */
 const expanded = ref(false);
 
