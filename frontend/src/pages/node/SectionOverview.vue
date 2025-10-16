@@ -50,7 +50,7 @@
       <!--For all other nodes other than diesease nodes-->
       <AppDetails v-else gap="20px">
         <AppDetail
-          v-if="otherMappings.length"
+          v-if="otherMappings.length && !isPhenotypeNode"
           :title="`Equivalent ${categoryLabel} concepts in other terminologies`"
           :full="true"
         >
@@ -138,7 +138,10 @@ type Props = { node: Node };
 
 const { node } = defineProps<Props>();
 const isDiseaseNode = computed(() => node.category === "biolink:Disease");
-
+const isPhenotypeNode = computed(
+  () => node.category === "biolink:PhenotypicFeature",
+);
+console.log("node.category", node.category);
 const { otherMappings } = useClinicalResources(node);
 const CATEGORY_MAP: Record<string, string> = {
   "biolink:Disease": "disease",
