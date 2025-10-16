@@ -184,7 +184,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch, watchEffect } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import {
   downloadAssociations,
   getAssociations,
@@ -214,7 +214,7 @@ import {
 } from "@/pages/node/associationColumns";
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
 import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
-import { fieldFor, TYPE_CONFIG } from "@/util/typeConfig";
+import { fieldFor } from "@/util/typeConfig";
 
 type Props = {
   /** current node */

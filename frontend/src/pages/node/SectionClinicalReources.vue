@@ -12,8 +12,8 @@
           :to="res.url || ''"
           class="brand-chip"
           :style="chipStyle(res)"
-          :aria-label="res.label || res.id"
           v-tooltip="res.tooltip"
+          :aria-label="res.label || res.id"
         >
           <span>
             {{ brandText(res.id, res.label) }}

@@ -196,7 +196,6 @@ const showAllTab = computed(() => {
 
 const defaultTab = (categoryId: string): "direct" | "all" => {
   const directCount = directFor(categoryId);
-  const isDisease = isDiseaseNode.value;
 
   // Disease or Phenotype: default to Direct if any direct rows exist, else Inferred (all)
   if (isDiseaseNode.value || isPhenotypeNode.value) {

@@ -80,13 +80,13 @@ const fontAwesome = computed(() => {
 
 const isCustom = ref(true);
 const isPng = computed(() => props.icon.endsWith(".png"));
-const Noop = defineComponent({ name: "Noop", setup: () => () => null });
+const AppNoop = defineComponent({ name: "Noop", setup: () => () => null });
 
 /** look for custom icon with matching name */
 const customIcon = defineAsyncComponent(async () => {
   if (isPng.value) {
     isCustom.value = false;
-    return Noop;
+    return AppNoop;
   }
   try {
     return await import(`../assets/icons/${kebabCase(props.icon)}.svg`);

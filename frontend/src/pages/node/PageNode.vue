@@ -44,7 +44,6 @@ import { addEntry } from "@/global/history";
 import { appDescription, appTitle } from "@/global/meta";
 import SectionBreadcrumbs from "@/pages/node/SectionBreadcrumbs.vue";
 import SectionAssociations from "./SectionAssociations.vue";
-import SectionHierarchy from "./SectionHierarchy.vue";
 import SectionOverview from "./SectionOverview.vue";
 import SectionTitle from "./SectionTitle.vue";
 import SectionVisualization from "./SectionVisualization.vue";

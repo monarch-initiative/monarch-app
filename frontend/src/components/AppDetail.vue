@@ -52,6 +52,7 @@ withDefaults(defineProps<Props>(), {
   count: undefined,
   blank: false,
   full: false,
+  title: "",
 });
 
 type Slots = {
