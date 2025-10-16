@@ -66,7 +66,7 @@ const DIRECT_TEMPLATES: TemplatesByNodeCategory = {
     "biolink:DiseaseToPhenotypicFeatureAssociation": ({ n, node }) =>
       `${fmtCount(n)} ${pluralWord(n, "disease", "diseases")} directly associated with ${node}`,
     "biolink:GeneToPhenotypicFeatureAssociation": ({ n, node }) =>
-      `${fmtCount(n)} ${pluralWord(n, "gene", "genes")} with phenotypic feature ${node}`,
+      `${fmtCount(n)} ${pluralWord(n, "gene", "genes")} associated with phenotypic feature ${node}`,
     "biolink:CausalGeneToDiseaseAssociation": ({ n, node }) =>
       `${fmtCount(n)} ${pluralWord(n, "causal gene", "causal genes")} for diseases that exhibit ${node}`,
     "biolink:CorrelatedGeneToDiseaseAssociation": ({ n, node }) =>
@@ -75,6 +75,10 @@ const DIRECT_TEMPLATES: TemplatesByNodeCategory = {
       `${fmtCount(n)} ${pluralWord(n, "genotype", "genotypes")} that model diseases exhibiting ${node}`,
     "biolink:VariantToDiseaseAssociation": ({ n, node }) =>
       `${fmtCount(n)} ${pluralWord(n, "variant", "variants")} for diseases that exhibit ${node}`,
+    "biolink:GenotypeToPhenotypicFeatureAssociation": ({ n, node }) =>
+      `${fmtCount(n)} ${pluralWord(n, "genotype", "genotypes")} associated with phenotypic feature ${node}`,
+    "biolink:VariantToPhenotypicFeatureAssociation": ({ n, node }) =>
+      `${fmtCount(n)} ${pluralWord(n, "variant", "variants")} associated with phenotypic feature  ${node}`,
   },
 };
 
@@ -127,7 +131,7 @@ const INFERRED_TEMPLATES: TemplatesByNodeCategory = {
       example,
     }) =>
       (n ?? 0) > 0
-        ? `  ${pluralize(n, "correlated gene", "correlated genes")} for ${node} as wells as  ${pluralize(diff, "subclass", "subclasses")} such as ${example ? `${q(example)}` : ""}`
+        ? `  ${pluralize(n, "correlated gene", "correlated genes")} for ${node} as well as  ${pluralize(diff, "subclass", "subclasses")} such as ${example ? `${q(example)}` : ""}`
         : ` ${pluralize(all, "correlated gene", "correlated genes")} associated with ${node}`,
     "biolink:GenotypeToDiseaseAssociation": ({
       all,
@@ -165,8 +169,8 @@ const INFERRED_TEMPLATES: TemplatesByNodeCategory = {
       example,
     }) =>
       (n ?? 0) > 0
-        ? `${fmtCount(n)} ${pluralWord(n, "gene", "genes")} with the phenotypic feature ${node} as well as ${pluralize(diff, "subclass", "subclasses")}${example ? ` such as  ${q(example)}` : ""}`
-        : `${fmtCount(all)} ${pluralWord(all, "gene", "genes")} with phe phenotypic feature  ${node}`,
+        ? `${fmtCount(n)} ${pluralWord(n, "gene", "genes")} associated with the phenotypic feature ${node} as well as ${pluralize(diff, "subclass", "subclasses")}${example ? ` such as  ${q(example)}` : ""}`
+        : `${fmtCount(all)} ${pluralWord(all, "gene", "genes")} associated with phenotypic feature  ${node}`,
 
     "biolink:CausalGeneToDiseaseAssociation": ({
       all,
@@ -213,8 +217,8 @@ const INFERRED_TEMPLATES: TemplatesByNodeCategory = {
       diff,
     }) =>
       (n ?? 0) > 0
-        ? `${fmtCount(n)} ${pluralWord(n, "genotype", "genotypes")} associated with ${node} as well as  ${pluralize(diff, "subclass", "subclasses")}  ${example ? `  such as  ${q(example)}` : ""}`
-        : `${fmtCount(all)} ${pluralWord(all, "genotype", "genotypes")} associated with ${node}`,
+        ? `${fmtCount(n)} ${pluralWord(n, "genotype", "genotypes")} associated with phenotypic feature ${node} as well as  ${pluralize(diff, "subclass", "subclasses")}  ${example ? `  such as  ${q(example)}` : ""}`
+        : `${fmtCount(all)} ${pluralWord(all, "genotype", "genotypes")} associated with phenotypic feature ${node}`,
     "biolink:VariantToPhenotypicFeatureAssociation": ({
       all,
       n,
@@ -223,8 +227,8 @@ const INFERRED_TEMPLATES: TemplatesByNodeCategory = {
       diff,
     }) =>
       (n ?? 0) > 0
-        ? `${fmtCount(n)} ${pluralWord(n, "genotype", "genotypes")} associated with ${node} as well as  ${pluralize(diff, "subclass", "subclasses")}  ${example ? `  such as  ${q(example)}` : ""}`
-        : `${fmtCount(all)} ${pluralWord(all, "genotype", "genotypes")} associated with ${node}`,
+        ? `${fmtCount(n)} ${pluralWord(n, "variant", "variants")} associated with associated with phenotypic feature ${node} as well as  ${pluralize(diff, "subclass", "subclasses")}  ${example ? `  such as  ${q(example)}` : ""}`
+        : `${fmtCount(all)} ${pluralWord(all, "variant", "variants")} associated with associated with phenotypic feature  ${node}`,
   },
 };
 

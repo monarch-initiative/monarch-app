@@ -205,16 +205,10 @@ export const buildAssociationCols = (ctx: ColumnContext): Cols<Datum> => {
     }
   }
 
-  if (isPhenotype) {
-    if (categoryId === "biolink:DiseaseToPhenotypicFeatureAssociation") {
-      baseCols = baseCols.filter((col) => col.key !== "object_label");
-    }
-    if (
-      categoryId === "biolink:DiseaseToPhenotypicFeatureAssociation" ||
-      categoryId === "biolink:GeneToPhenotypicFeatureAssociation"
-    ) {
-      baseCols = baseCols.filter((col) => col.key !== "predicate");
-    }
+  if (isPhenotype && isDirect) {
+    baseCols = baseCols.filter(
+      (col) => col.key !== "object_label" && col.key !== "predicate",
+    );
   }
   // Phenotype categories: add frequency + onset
   if (categoryId.includes("PhenotypicFeature")) {
