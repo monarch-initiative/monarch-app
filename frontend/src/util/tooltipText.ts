@@ -64,7 +64,7 @@ const DIRECT_TEMPLATES: TemplatesByNodeCategory = {
   // New copy for PhenotypicFeature nodes
   "biolink:PhenotypicFeature": {
     "biolink:DiseaseToPhenotypicFeatureAssociation": ({ n, node }) =>
-      `${fmtCount(n)} ${pluralWord(n, "disease", "diseases")} directly associated with ${node}`,
+      `${fmtCount(n)} ${pluralWord(n, "disease", "diseases")} directly associated with phenotypic feature ${node}`,
     "biolink:GeneToPhenotypicFeatureAssociation": ({ n, node }) =>
       `${fmtCount(n)} ${pluralWord(n, "gene", "genes")} associated with phenotypic feature ${node}`,
     "biolink:CausalGeneToDiseaseAssociation": ({ n, node }) =>
@@ -158,7 +158,7 @@ const INFERRED_TEMPLATES: TemplatesByNodeCategory = {
       example,
     }) =>
       (n ?? 0) > 0
-        ? `${fmtCount(n)} ${pluralWord(n, "disease", "diseases")} directly associated with ${node} as well as ${pluralize(diff, "subclass", "subclasses")}${example ? ` such as ${q(example)}` : ""}`
+        ? `${fmtCount(n)} ${pluralWord(n, "disease", "diseases")} directly associated with phenotypic feature ${node} as well as ${pluralize(diff, "subclass", "subclasses")}${example ? ` such as ${q(example)}` : ""}`
         : `${fmtCount(all)} ${pluralWord(all, "disease", "diseases")} associated with ${node}`,
 
     "biolink:GeneToPhenotypicFeatureAssociation": ({
