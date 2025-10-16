@@ -411,6 +411,12 @@ export interface Entity {
     has_phenotype_closure_label?: string[],
     /** A count of the number of phenotypes that are known to be associated with this entity */
     has_phenotype_count?: number,
+    /** A list of entity identifiers that are known to be descendants of this entity */
+    has_descendant?: string[],
+    /** A list of entity labels that are known to be descendants of this entity */
+    has_descendant_label?: string[],
+    /** A count of the number of entities that are known to be descendants of this entity */
+    has_descendant_count?: number,
 }
 
 

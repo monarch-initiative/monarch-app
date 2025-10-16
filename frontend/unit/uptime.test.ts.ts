@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
+import PageHelp from "@/pages/knowledgeGraph/PageHelp.vue";
 import { apiCall, mount } from "./setup";
-import PageHelp from "../src/pages/help/PageHelp.vue";
 
 test("Help page renders uptimerobot statuses", async () => {
   /** mount and wait until async rendering is done */
