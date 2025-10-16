@@ -109,7 +109,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onMounted, onUnmounted, ref, watch } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import TheLogo from "@/assets/TheLogo.vue";
 import TabSearch from "@/components/TabSearch.vue";
@@ -125,7 +125,7 @@ import TheSearchSuggestions from "./TheSearchSuggestions.vue";
 
 /** route info */
 const route = useRoute();
-const router = useRouter();
+
 /** is nav menu expanded */
 const expanded = ref(false);
 
@@ -152,14 +152,6 @@ const search = computed(
       (route.name === "KnowledgeGraph" && route.hash === "")
     ),
 );
-
-function scrollToHashWithOffset(hash: string, offset = 80) {
-  const el = document.querySelector(hash);
-  if (el) {
-    const y = el.getBoundingClientRect().top + window.scrollY - offset;
-    window.scrollTo({ top: y, behavior: "smooth" });
-  }
-}
 
 /** close nav */
 function close() {
@@ -188,26 +180,6 @@ onUnmounted(() => {
 // <script setup>
 const MOBILE_BREAKPOINT = 1000;
 const isMobile = computed(() => windowWidth.value <= MOBILE_BREAKPOINT);
-const isDesktop = computed(() => !isMobile.value);
-
-const isHome = home; // alias for readability
-const hasDate = computed(() => !!formattedReleaseDate.value);
-
-const stickyHeader = computed(() => !isHome.value || isMobile.value);
-const showHero = computed(() => isHome.value && isDesktop.value);
-
-// If you want loading to be visible before the date arrives:
-const showReleaseDesktop = computed(
-  () => showHero.value && (isLoading.value || hasDate.value),
-);
-const showReleaseMobile = computed(
-  () => isMobile.value && (isLoading.value || hasDate.value),
-);
-
-// Current search rule, but clearer:
-const showSearchBox = computed(
-  () => search.value && (isMobile.value || !isHome.value),
-);
 
 /** close nav when page changes */
 watch(() => route.name, close);

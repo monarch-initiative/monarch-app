@@ -41,7 +41,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, ref, type VNode } from "vue";
+import {
+  computed,
+  defineAsyncComponent,
+  defineComponent,
+  ref,
+  type VNode,
+} from "vue";
 import { kebabCase } from "lodash";
 import type { IconName, IconPrefix } from "@fortawesome/fontawesome-svg-core";
 import { findIconDefinition } from "@fortawesome/fontawesome-svg-core";
@@ -74,12 +80,13 @@ const fontAwesome = computed(() => {
 
 const isCustom = ref(true);
 const isPng = computed(() => props.icon.endsWith(".png"));
+const AppNoop = defineComponent({ name: "AppNoop", setup: () => () => null });
 
 /** look for custom icon with matching name */
 const customIcon = defineAsyncComponent(async () => {
   if (isPng.value) {
     isCustom.value = false;
-    return;
+    return AppNoop;
   }
   try {
     return await import(`../assets/icons/${kebabCase(props.icon)}.svg`);
@@ -108,7 +115,7 @@ const initials = computed(
 );
 
 /** when custom icon mounted */
-function customMounted(element: VNode["el"], createCircle = false) {
+const customMounted = (element: VNode["el"], createCircle = false) => {
   /** add child elements to category icon */
   if (
     element &&
@@ -131,7 +138,7 @@ function customMounted(element: VNode["el"], createCircle = false) {
       element.insertBefore(outline, element.firstChild!);
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

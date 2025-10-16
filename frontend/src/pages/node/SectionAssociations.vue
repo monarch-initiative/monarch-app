@@ -16,7 +16,7 @@
 
       <!--tabs omly if its disease node-->
       <AppAssociationTabs
-        v-if="isDiseaseNode"
+        v-if="isDiseaseNode || isPhenotypeNode"
         :has-direct-associations="hasDirectAssociationsForCategory(category.id)"
         :show-all-tab="showAllTab(category.count ?? 0, category.id)"
         :direct-active="
@@ -106,7 +106,7 @@ type Totals = { direct: number; all: number };
 type TotalsMap = Record<string, Totals>;
 const totalsByCategory = ref<TotalsMap>({});
 
-const { category: nodeCategory } = props.node;
+const nodeCategory: string = props.node?.category ?? "";
 
 const selectedTabs = ref<Record<string, "all" | "direct">>({});
 const searchValues = ref<Record<string, string>>({});
@@ -129,6 +129,9 @@ const onTotals = ({
 };
 
 const isDiseaseNode = computed(() => nodeCategory === "biolink:Disease");
+const isPhenotypeNode = computed(
+  () => nodeCategory === "biolink:PhenotypicFeature",
+);
 
 const directFor = (id: string) => totalsByCategory.value[id]?.direct ?? 0;
 const allFor = (id: string) => totalsByCategory.value[id]?.all ?? 0;
@@ -155,7 +158,7 @@ const setDirect = (categoryId: string, directId: "true" | "false") => {
   selectedTabs.value[categoryId] = directId === "true" ? "direct" : "all";
 };
 const directTooltip = (categoryId: string): string | undefined => {
-  return formatDirectTooltip(categoryId, {
+  return formatDirectTooltip(categoryId, nodeCategory, {
     node: props.node.name,
     label: labelFor(categoryId),
     n: directFor(categoryId),
@@ -163,13 +166,13 @@ const directTooltip = (categoryId: string): string | undefined => {
 };
 
 const inferredTooltip = (categoryId: string): string | undefined => {
-  return formatInferredTooltip(categoryId, {
+  return formatInferredTooltip(categoryId, nodeCategory, {
     node: props.node.name,
     label: labelFor(categoryId),
     all: allFor(categoryId),
     n: directFor(categoryId),
     diff: diffFor(categoryId),
-    example: inferredByCategory.value[categoryId], // optional subclass example text
+    example: inferredByCategory.value[categoryId],
   });
 };
 
@@ -191,16 +194,17 @@ const showAllTab = computed(() => {
  * Non-disease nodes always default to "all".
  */
 
-function defaultTab(categoryId: string): "direct" | "all" {
+const defaultTab = (categoryId: string): "direct" | "all" => {
   const directCount = directFor(categoryId);
-  const isDisease = isDiseaseNode.value;
 
-  if (!isDisease) {
-    return "all";
+  // Disease or Phenotype: default to Direct if any direct rows exist, else Inferred (all)
+  if (isDiseaseNode.value || isPhenotypeNode.value) {
+    return directCount > 0 ? "direct" : "all";
   }
-  // disease node: no direct → all, else → direct
-  return directCount > 0 ? "direct" : "all";
-}
+
+  // Other node types: default to Inferred (all)
+  return "all";
+};
 
 /**
  * - For non-disease pages(temperory, will change once we get the new layout):

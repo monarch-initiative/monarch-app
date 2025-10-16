@@ -184,7 +184,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch, watchEffect } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import {
   downloadAssociations,
   getAssociations,
@@ -214,7 +214,7 @@ import {
 } from "@/pages/node/associationColumns";
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
 import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
-import { fieldFor, TYPE_CONFIG } from "@/util/typeConfig";
+import { fieldFor } from "@/util/typeConfig";
 
 type Props = {
   /** current node */
@@ -227,7 +227,9 @@ type Props = {
   search: string;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  search: "",
+});
 
 const showModal = ref(false);
 const selectedAssociation = ref<DirectionalAssociation | null>(null);
@@ -241,10 +243,10 @@ const emit = defineEmits<{
   (e: "inferred-label", payload: { categoryId: string; label: string }): void;
 }>();
 
-function openModal(association: DirectionalAssociation) {
+const openModal = (association: DirectionalAssociation) => {
   selectedAssociation.value = association;
   showModal.value = true;
-}
+};
 
 watch(showModal, (newValue) => {
   if (!newValue) {

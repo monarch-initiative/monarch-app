@@ -18,7 +18,7 @@ export interface ColumnContext {
 }
 
 /** Build the AppTable columns for an association category. . */
-export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
+export const buildAssociationCols = (ctx: ColumnContext): Cols<Datum> => {
   const { categoryId, nodeCategory, isDirect, items, getCategoryLabel } = ctx;
 
   const first = items?.[0];
@@ -52,6 +52,7 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
     },
   ];
   const isDisease = nodeCategory === "biolink:Disease";
+  const isPhenotype = nodeCategory === "biolink:PhenotypicFeature";
 
   const extraCols: Cols<Datum> = [];
 
@@ -204,6 +205,11 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
     }
   }
 
+  if (isPhenotype && isDirect) {
+    baseCols = baseCols.filter(
+      (col) => col.key !== "object_label" && col.key !== "predicate",
+    );
+  }
   // Phenotype categories: add frequency + onset
   if (categoryId.includes("PhenotypicFeature")) {
     extraCols.push(
@@ -235,7 +241,7 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
     nodeCategory === "biolink:Disease" &&
     categoryId === "biolink:GeneToPhenotypicFeatureAssociation"
   ) {
-    const iSub = baseCols.findIndex((c) => c.key === "subject_label");
+    const iSub = baseCols.findIndex((col) => col.key === "subject_label");
     if (iSub > -1)
       baseCols[iSub] = { ...baseCols[iSub], heading: "Causal Genes" };
 
@@ -251,4 +257,4 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
   if (extraCols.length) (extraCols as any).unshift({ slot: "divider" });
 
   return [...baseCols, ...extraCols];
-}
+};
