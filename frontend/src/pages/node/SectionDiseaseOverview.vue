@@ -12,11 +12,11 @@
     >
       <AppFlex align-h="left" gap="small">
         <AppLink
-          v-for="m in otherMappings"
-          :key="m.id || m.url"
-          :to="m.url || ''"
+          v-for="(mapping, index) in otherMappings"
+          :key="index"
+          :to="mapping.url || ''"
         >
-          {{ m.id }}
+          {{ mapping.id }}
         </AppLink>
       </AppFlex>
     </AppDetail>
@@ -29,12 +29,11 @@
     >
       <AppFlex align-h="left" gap="small">
         <AppLink
-          v-for="(link, i) in externalRefs"
-          :key="i"
+          v-for="(link, index) of node.external_links"
+          :key="index"
           :to="link.url || ''"
+          >{{ link.id }}</AppLink
         >
-          {{ link.id }}
-        </AppLink>
       </AppFlex>
     </AppDetail>
 

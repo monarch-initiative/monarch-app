@@ -74,6 +74,11 @@ def get_links_for_field(field: List[str]) -> List[ExpandedCurie]:
 
 def get_link_for_curie(curie: str) -> ExpandedCurie:
     url = converter.expand(curie.replace("PMID", "PUBMED"))
+    
+    ###force identifiers.org to CURIE (colon) form + https
+     if url and "identifiers.org" in url:
+        url = f"https://identifiers.org/{curie}"
+
     if curie.startswith("GARD:"):
         url += "/index"
     return url
