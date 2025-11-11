@@ -1,0 +1,306 @@
+<template>
+  <div :class="['predicate-detail-panel', { compact }]">
+    <div v-if="!selectedPredicate" class="empty-state">
+      <div class="empty-icon">
+        <AppIcon icon="chart-bar" />
+      </div>
+      <h3>Select a Predicate</h3>
+      <p>Click on a predicate in the bar chart to view detailed information</p>
+    </div>
+
+    <div v-else class="detail-content">
+      <!-- Biolink Definition Section -->
+      <div class="detail-section">
+        <div v-if="biolinkLoading" class="definition-line">
+          <h4 class="section-title-inline">
+            <AppIcon icon="book" class="section-icon" />
+            Biolink Definition
+          </h4>
+          <div class="loading-state-inline">
+            <div class="spinner"></div>
+            <span>Loading biolink model...</span>
+          </div>
+        </div>
+        <div v-else-if="biolinkError" class="definition-line">
+          <h4 class="section-title-inline">
+            <AppIcon icon="book" class="section-icon" />
+            Biolink Definition
+          </h4>
+          <div class="error-state-inline">
+            <AppIcon icon="circle-exclamation" />
+            <span>{{ biolinkError }}</span>
+          </div>
+        </div>
+        <div v-else-if="predicateInfo?.description" class="definition-line">
+          <h4 class="section-title-inline">
+            <AppIcon icon="book" class="section-icon" />
+            Biolink Definition
+          </h4>
+          <span class="definition-text">{{ predicateInfo.description }}</span>
+        </div>
+        <div v-else class="definition-line">
+          <h4 class="section-title-inline">
+            <AppIcon icon="book" class="section-icon" />
+            Biolink Definition
+          </h4>
+          <span class="info-state-inline">
+            <AppIcon icon="circle-info" />
+            No biolink definition found for this predicate
+          </span>
+        </div>
+      </div>
+
+      <!-- Node Connection Visualization Section -->
+      <div class="detail-section">
+        <h4 class="section-title">
+          <AppIcon icon="diagram-project" class="section-icon" />
+          Edge Type Network
+        </h4>
+        <NetworkChart
+          ref="connectionChartRef"
+          :title="''"
+          data-source="edge_report"
+          :sql="connectionSQL"
+          :predicate="selectedPredicate || ''"
+          :height="'400px'"
+          :show-controls="false"
+          :allow-export="true"
+          @data-changed="onChartDataChanged"
+        />
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { computed, onMounted, ref, watch } from "vue";
+import AppIcon from "@/components/AppIcon.vue";
+import { useBiolinkModel } from "@/composables/use-biolink-model";
+import type { PredicateInfo } from "@/composables/use-biolink-model";
+import NetworkChart from "./NetworkChart.vue";
+
+export interface Props {
+  selectedPredicate: string | null;
+  predicateCount: number;
+  compact?: boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  selectedPredicate: null,
+  predicateCount: 0,
+  compact: false,
+});
+
+const connectionChartRef = ref<InstanceType<typeof NetworkChart>>();
+const predicateInfo = ref<PredicateInfo | null>(null);
+
+// Biolink model composable
+const {
+  isLoading: biolinkLoading,
+  error: biolinkError,
+  loadBiolinkModel,
+  getPredicateInfo,
+} = useBiolinkModel();
+
+/** SQL query for subject-object connections for the selected predicate */
+const connectionSQL = computed(() => {
+  if (!props.selectedPredicate) return "";
+
+  return `
+    SELECT
+      replace(subject_category, 'biolink:', '') as subject_category,
+      replace(object_category, 'biolink:', '') as object_category,
+      SUM(count) as count
+    FROM edge_report
+    WHERE replace(predicate, 'biolink:', '') = '${props.selectedPredicate}'
+    GROUP BY subject_category, object_category
+    ORDER BY count DESC
+    LIMIT 30
+  `;
+});
+
+/** Load predicate info from biolink model */
+const loadPredicateInfo = async () => {
+  if (!props.selectedPredicate) {
+    predicateInfo.value = null;
+    return;
+  }
+
+  // Get predicate info
+  predicateInfo.value = getPredicateInfo(props.selectedPredicate);
+};
+
+/** Handle chart data changes */
+const onChartDataChanged = (data: any[]) => {
+  // Network chart data updated
+  console.debug("Network chart loaded with", data.length, "edges");
+};
+
+// Watch for selected predicate changes
+watch(
+  () => props.selectedPredicate,
+  () => {
+    loadPredicateInfo();
+  },
+);
+
+// Load biolink model on mount
+onMounted(async () => {
+  await loadBiolinkModel();
+  if (props.selectedPredicate) {
+    loadPredicateInfo();
+  }
+});
+</script>
+
+<style lang="scss" scoped>
+.predicate-detail-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 400px;
+  padding: 1.5rem;
+  overflow-y: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: white;
+
+  &.compact {
+    min-height: auto;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #6b7280;
+  text-align: center;
+
+  .empty-icon {
+    margin-bottom: 1rem;
+    color: #9ca3af;
+    font-size: 3rem;
+  }
+
+  h3 {
+    margin: 0 0 0.5rem 0;
+    color: #374151;
+    font-weight: 600;
+    font-size: 1.25rem;
+  }
+
+  p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.95rem;
+  }
+}
+
+.detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .compact & {
+    gap: 0.75rem;
+  }
+}
+
+.detail-section {
+  .section-title {
+    display: flex;
+    align-items: center;
+    margin: 0 0 0.75rem 0;
+    gap: 0.5rem;
+    color: #1f2937;
+    font-weight: 600;
+    font-size: 1rem;
+
+    .section-icon {
+      color: #3b82f6;
+    }
+  }
+
+  .section-title-inline {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    gap: 0.5rem;
+    color: #1f2937;
+    font-weight: 600;
+    font-size: 0.95rem;
+    white-space: nowrap;
+
+    .section-icon {
+      color: #3b82f6;
+    }
+  }
+}
+
+.definition-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  line-height: 1.5;
+}
+
+.definition-text {
+  flex: 1;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.loading-state-inline,
+.error-state-inline,
+.info-state-inline {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.loading-state-inline {
+  color: #0369a1;
+
+  .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #bae6fd;
+    border-radius: 50%;
+    border-top-color: #0369a1;
+    animation: spin 0.8s linear infinite;
+  }
+}
+
+.error-state-inline {
+  color: #dc2626;
+}
+
+.info-state-inline {
+  color: #d97706;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .predicate-detail-panel {
+    padding: 1rem;
+  }
+
+  .section-title {
+    font-size: 1rem;
+  }
+}
+</style>
