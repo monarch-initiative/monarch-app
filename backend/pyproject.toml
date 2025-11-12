@@ -18,6 +18,7 @@ dependencies = [
     "bioregistry~=0.10.57",
     "curies<1",
     "docker>=7.1.0",
+    "duckdb>=1.1.0",
     "fastapi>=0.115.12,<1",
     "gunicorn>=23.0.0",
     "linkml==1.9.3",

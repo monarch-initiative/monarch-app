@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import List, Union
 
+import duckdb
 import pystow
 from loguru import logger
 from pydantic import ValidationError
@@ -17,7 +18,8 @@ from monarch_py.datamodels.model import (
 from monarch_py.interfaces.association_interface import AssociationInterface
 from monarch_py.interfaces.entity_interface import EntityInterface
 from monarch_py.service.curie_service import converter
-from monarch_py.utils.utils import SQL_DATA_URL, dict_factory
+from monarch_py.utils.utils import SQL_DATA_URL
+from monarch_py.utils.sql_utils import build_association_query, build_association_count_query
 
 monarchstow = pystow.module("monarch")
 
@@ -42,23 +44,27 @@ class SQLImplementation(EntityInterface, AssociationInterface):
             Entity: Dataclass representing results of an entity search.
         """
 
-        with monarchstow.ensure_open_sqlite_gz("sql", url=SQL_DATA_URL, force=update) as db:
-            db.row_factory = dict_factory
-            cur = db.cursor()
-            sql_data = cur.execute(f"SELECT * FROM nodes WHERE id = '{id}'").fetchone()
+        db_path = monarchstow.ensure("monarch", "sql", url=SQL_DATA_URL, force=update)
+        conn = duckdb.connect(str(db_path), read_only=True)
+        # Use fetchdf() to get results as a DataFrame, then convert to dict
+        result_df = conn.execute(f"SELECT * FROM nodes WHERE id = '{id}'").fetchdf()
+        conn.close()
 
-        if not sql_data:
+        if result_df.empty:
             return None
+
+        sql_data = result_df.to_dict('records')[0]
+
         results = {
             "id": sql_data["id"],
-            "category": sql_data["category"],  # .split("|"), # This will become a list in the future
+            "category": sql_data["category"],
             "name": sql_data["name"],
             "description": sql_data["description"],
-            "xref": sql_data["xref"].split("|"),
-            "provided_by": sql_data["provided_by"],
-            "in_taxon": sql_data["in_taxon"],
-            "symbol": sql_data["symbol"],
-            "synonym": sql_data["synonym"].split("|"),
+            "xref": sql_data["xref"].split("|") if sql_data.get("xref") else [],
+            "provided_by": sql_data.get("provided_by"),
+            "in_taxon": sql_data.get("in_taxon"),
+            "symbol": sql_data.get("symbol"),
+            "synonym": sql_data["synonym"].split("|") if sql_data.get("synonym") else [],
             "uri": converter.expand(sql_data["id"]),
         }
         try:
@@ -199,54 +205,38 @@ class SQLImplementation(EntityInterface, AssociationInterface):
             AssociationResults: Dataclass representing results of an association search.
         """
 
-        clauses = []
-        if category:
-            clauses.append(" OR ".join([f"category = '{c}'" for c in category]))
-        if subject:
-            if direct:
-                clauses.append(" OR ".join([f"subject = '{s}'" for s in subject]))
-            else:
-                clauses.append(" OR ".join([f"subject = '{s}' OR subject_closure like '%{s}%'" for s in subject]))
-        if predicate:
-            clauses.append(" OR ".join([f"predicate = '{p}'" for p in predicate]))
-        if object:
-            if direct:
-                clauses.append(" OR ".join([f"object = '{o}'" for o in object]))
-            else:
-                clauses.append(" OR ".join([f"object = '{o}' OR object_closure like '%{o}%'" for o in object]))
-        if subject_closure:
-            clauses.append(f"subject_closure like '%{subject_closure}%'")
-        if object_closure:
-            clauses.append(f"object_closure like '%{object_closure}%'")
-        if entity:
-            if direct:
-                clauses.append(" OR ".join([f"subject = '{e}' OR object = '{e}'" for e in entity]))
-            else:
-                clauses.append(
-                    " OR ".join(
-                        [
-                            f"subject = '{e}' OR object = '{e}' OR subject_closure like '%{e}%' OR object_closure like '%{e}%'"
-                            for e in entity
-                        ]
-                    )
-                )
+        query = build_association_query(
+            category=category,
+            subject=subject,
+            predicate=predicate,
+            object=object,
+            subject_closure=subject_closure,
+            object_closure=object_closure,
+            entity=entity,
+            direct=direct,
+            limit=limit,
+            offset=offset,
+        )
 
-        query = f"SELECT * FROM denormalized_edges "
-        if clauses:
-            query += "WHERE " + " AND ".join(clauses)
-        if limit:
-            query += f" LIMIT {limit} OFFSET {offset}"
+        count_query = build_association_count_query(
+            category=category,
+            subject=subject,
+            predicate=predicate,
+            object=object,
+            subject_closure=subject_closure,
+            object_closure=object_closure,
+            entity=entity,
+            direct=direct,
+        )
 
-        count_query = f"SELECT COUNT(*) FROM denormalized_edges "
-        if clauses:
-            count_query += "WHERE " + " AND ".join(clauses)
+        db_path = monarchstow.ensure("monarch", "sql", url=SQL_DATA_URL)
+        conn = duckdb.connect(str(db_path), read_only=True)
+        results_df = conn.execute(query).fetchdf()
+        count_result = conn.execute(count_query).fetchone()
+        conn.close()
 
-        with monarchstow.ensure_open_sqlite_gz("sql", url=SQL_DATA_URL) as db:
-            db.row_factory = dict_factory
-            cur = db.cursor()
-            results = cur.execute(query).fetchall()
-            count = cur.execute(count_query).fetchone()
-            total = count[f"COUNT(*)"]
+        total = count_result[0]
+        results = results_df.to_dict('records')
 
         associations = []
         if compact:
