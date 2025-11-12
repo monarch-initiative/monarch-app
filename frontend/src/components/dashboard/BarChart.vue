@@ -135,8 +135,6 @@ const barData = computed(() => {
     return { categories: [], values: [], data: [] };
   }
 
-  // TODO: Make this component more generic by accepting props for column names
-  // instead of hardcoding fallback logic (e.g., labelColumn and valueColumn props)
   // Assume data has 'category' and 'count' columns (or similar)
   const categories: string[] = [];
   const values: number[] = [];
