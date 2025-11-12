@@ -16,13 +16,12 @@
     <!-- The actual Network chart will be rendered by ECharts in the BaseChart canvas -->
 
     <!-- Export Menu Overlay -->
-    <div
+    <button
       v-if="showExportMenu"
       class="export-overlay"
       role="dialog"
       aria-modal="true"
       aria-label="Export chart dialog"
-      tabindex="0"
       @click.self="showExportMenu = false"
       @keydown.escape="showExportMenu = false"
     >
@@ -64,7 +63,7 @@
           </button>
         </div>
       </div>
-    </div>
+    </button>
   </BaseChart>
 </template>
 
@@ -269,8 +268,6 @@ const chartOptions = computed((): EChartsOption => {
           symbolSize: [0, 12],
           symbolOffset: [0, -5],
         })),
-        roam: false, // Disable zoom and pan
-        draggable: false, // Disable node dragging
         emphasis: {
           focus: "adjacency",
           label: {

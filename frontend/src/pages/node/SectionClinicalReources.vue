@@ -55,9 +55,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, type ComputedRef } from "vue";
+import type { ComputedRef } from "vue";
 import omit from "lodash/omit";
-import type { Entity, Node as ModelNode } from "@/api/model";
+import type { Node as ModelNode } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppLink from "@/components/AppLink.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";

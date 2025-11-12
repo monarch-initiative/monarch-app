@@ -16,7 +16,14 @@
     <div v-else-if="tableData.length > 0" class="predicate-table">
       <!-- Header -->
       <div class="table-header">
-        <div class="header-cell predicate-col" @click="toggleSort('predicate')">
+        <div
+          class="header-cell predicate-col"
+          role="button"
+          tabindex="0"
+          @click="toggleSort('predicate')"
+          @keydown.enter="toggleSort('predicate')"
+          @keydown.space.prevent="toggleSort('predicate')"
+        >
           <span>Predicate</span>
           <AppIcon
             v-if="sortKey === 'predicate'"
@@ -24,7 +31,14 @@
             class="sort-icon"
           />
         </div>
-        <div class="header-cell count-col" @click="toggleSort('count')">
+        <div
+          class="header-cell count-col"
+          role="button"
+          tabindex="0"
+          @click="toggleSort('count')"
+          @keydown.enter="toggleSort('count')"
+          @keydown.space.prevent="toggleSort('count')"
+        >
           <span>Edge Count</span>
           <AppIcon
             v-if="sortKey === 'count'"
@@ -38,14 +52,18 @@
       <!-- Rows -->
       <div class="table-body">
         <div
-          v-for="(row, index) in sortedData"
+          v-for="row in sortedData"
           :key="row.predicate"
           class="table-row-wrapper"
         >
           <!-- Main row -->
           <div
             :class="['table-row', { expanded: expandedRow === row.predicate }]"
+            role="button"
+            tabindex="0"
             @click="toggleRow(row.predicate, row.count)"
+            @keydown.enter="toggleRow(row.predicate, row.count)"
+            @keydown.space.prevent="toggleRow(row.predicate, row.count)"
           >
             <div class="body-cell predicate-col">
               <span class="predicate-name">{{ row.predicate }}</span>

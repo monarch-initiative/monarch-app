@@ -188,7 +188,7 @@ const handleRegisterDataSource = (config: DataSourceConfig): void => {
 };
 
 /** Handle data source unregistration (when DataSource components unmount) */
-const handleUnregisterDataSource = (name: string): void => {
+const handleUnregisterDataSource = (): void => {
   // Note: The composable doesn't have an unregister method yet
   // For now, we'll just log this - in practice, data sources usually persist
 };

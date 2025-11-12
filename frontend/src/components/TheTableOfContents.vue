@@ -64,7 +64,6 @@ import type { Node as ApiNode } from "@/api/model";
 import AppBackToTopButton from "@/components/AppBackToTopButton.vue";
 import SectionHierarchy from "@/pages/node/SectionHierarchy.vue";
 import { firstInView } from "@/util/dom";
-import AppCheckbox from "./AppCheckbox.vue";
 import type AppFlex from "./AppFlex.vue";
 
 type Entries = {
