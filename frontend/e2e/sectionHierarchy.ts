@@ -20,7 +20,10 @@ import SectionHeirarchy from "@/pages/node/SectionHierarchy.vue"; //
  */
 const AppModalStub = defineComponent({
   name: "AppModal",
-  props: { modelValue: { type: Boolean, default: false }, label: String },
+  props: {
+    modelValue: { type: Boolean, default: false },
+    label: { type: String, default: undefined },
+  },
   emits: ["update:modelValue"],
   template: `<div v-if="modelValue" data-stub="modal"><slot /></div>`,
 });

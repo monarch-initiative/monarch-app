@@ -67,13 +67,7 @@ const INFERRED: Record<string, Fmt> = {
     (n ?? 0) > 0
       ? `${pluralize(n, "phenotype", "phenotypes")} directly associated with ${node} as well as ${pluralize(diff, "subclass", "subclasses")} ${example ? ` such as ${q(example)}` : ""}`
       : `${fmtCount(all)} phenotypes associated with ${node}`,
-  "biolink:GeneToPhenotypicFeatureAssociation": ({
-    all,
-    n,
-    diff,
-    node,
-    example,
-  }) =>
+  "biolink:GeneToPhenotypicFeatureAssociation": ({ all, n, node, example }) =>
     (n ?? 0) > 0
       ? `Phenotypes of the ${pluralize(n, "gene", "genes")} that cause subclasses of ${node} such as ${q(example)}`
       : ` ${pluralize(all, "gene", "genes")} with phenotypes associated with ${node}`,

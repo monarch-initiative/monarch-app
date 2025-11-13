@@ -143,12 +143,10 @@ const chordData = computed(() => {
     categorySet.add(subjectCategory);
     categorySet.add(objectCategory);
 
-    // Create bidirectional connection key
-    const key1 = `${subjectCategory}→${objectCategory}`;
-    const key2 = `${objectCategory}→${subjectCategory}`;
+    // Create directional connection key (not bidirectional)
+    const key = `${subjectCategory}→${objectCategory}`;
 
-    connections.set(key1, (connections.get(key1) || 0) + count);
-    connections.set(key2, (connections.get(key2) || 0) + count);
+    connections.set(key, (connections.get(key) || 0) + count);
   });
 
   const categories = Array.from(categorySet);

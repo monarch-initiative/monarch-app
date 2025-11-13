@@ -13,21 +13,17 @@
     @retry="handleRetry"
     @export="handleExport"
   >
-    <!-- The actual Bar chart will be rendered by ECharts in the BaseChart canvas -->
+    <!-- The actual Network chart will be rendered by ECharts in the BaseChart canvas -->
 
     <!-- Export Menu Overlay -->
-    <!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
-    <div
+    <button
       v-if="showExportMenu"
       class="export-overlay"
       role="dialog"
       aria-modal="true"
       aria-label="Export chart dialog"
-      tabindex="0"
       @click.self="showExportMenu = false"
       @keydown.escape="showExportMenu = false"
-      @keydown.enter="showExportMenu = false"
-      @keydown.space="showExportMenu = false"
     >
       <div class="export-menu">
         <div class="export-header">
@@ -67,7 +63,7 @@
           </button>
         </div>
       </div>
-    </div>
+    </button>
   </BaseChart>
 </template>
 
@@ -83,29 +79,28 @@ export interface Props {
   title: string;
   dataSource: string;
   sql: string;
+  predicate?: string;
   showControls?: boolean;
   allowExport?: boolean;
   showDataPreview?: boolean;
   autoExecute?: boolean;
   pollInterval?: number;
   height?: string;
-  orientation?: "horizontal" | "vertical";
 }
 
 interface Emits {
   (e: "data-changed", data: any[]): void;
   (e: "error", error: string): void;
-  (e: "bar-clicked", name: string, value: number): void;
 }
 
 const props = withDefaults(defineProps<Props>(), {
+  predicate: "",
   showControls: true,
   allowExport: true,
   showDataPreview: false,
   autoExecute: true,
   pollInterval: undefined,
-  height: "500px",
-  orientation: "vertical",
+  height: "600px",
 });
 
 const emit = defineEmits<Emits>();
@@ -129,208 +124,210 @@ const {
   cleanup,
 } = sqlQuery;
 
-/** Process raw SQL data into Bar chart format */
-const barData = computed(() => {
+/** Process raw SQL data into Network graph format */
+const networkData = computed(() => {
   if (!queryResult.value?.data || queryResult.value.data.length === 0) {
-    return { categories: [], values: [], data: [] };
+    return { nodes: [], links: [], selfLoops: new Map() };
   }
 
-  // Assume data has 'category' and 'count' columns (or similar)
-  const categories: string[] = [];
-  const values: number[] = [];
-  const data: Array<{ name: string; value: number }> = [];
+  const nodeSet = new Map<
+    string,
+    { name: string; value: number; selfLoopCount: number }
+  >();
+  const links: Array<{ source: string; target: string; value: number }> = [];
+  const selfLoops = new Map<string, number>();
 
   queryResult.value.data.forEach((row: any) => {
-    // Try different possible column names for category
-    const category =
-      row.category ||
-      row.name ||
-      row.subject_category ||
-      row.object_category ||
-      row.label ||
-      "Unknown";
-    // Try different possible column names for count
-    const count = Number(
-      row.count || row.value || row.total || row.frequency || 0,
-    );
+    const source = row.subject_category || "Unknown";
+    const target = row.object_category || "Unknown";
+    const count = Number(row.count) || 0;
 
-    const cleanCategory =
-      typeof category === "string"
-        ? category.replace("biolink:", "")
-        : String(category);
+    // Initialize nodes
+    if (!nodeSet.has(source)) {
+      nodeSet.set(source, { name: source, value: 0, selfLoopCount: 0 });
+    }
+    if (!nodeSet.has(target)) {
+      nodeSet.set(target, { name: target, value: 0, selfLoopCount: 0 });
+    }
 
-    categories.push(cleanCategory);
-    values.push(count);
-    data.push({ name: cleanCategory, value: count });
+    // Handle self-loops separately
+    if (source === target) {
+      selfLoops.set(source, count);
+      nodeSet.get(source)!.selfLoopCount = count;
+      nodeSet.get(source)!.value += count;
+    } else {
+      // Regular connections
+      nodeSet.get(source)!.value += count;
+      nodeSet.get(target)!.value += count;
+
+      links.push({
+        source,
+        target,
+        value: count,
+      });
+    }
   });
 
-  return { categories, values, data };
+  const nodes = Array.from(nodeSet.values());
+
+  return { nodes, links, selfLoops };
 });
 
-/** Generate ECharts Bar configuration */
+/** Generate ECharts Network graph configuration */
 const chartOptions = computed((): EChartsOption => {
-  const { categories, data } = barData.value;
+  const { nodes, links } = networkData.value;
 
-  if (categories.length === 0) {
-    // Return minimal valid configuration when no data
-    return {
-      grid: {
-        left: "10%",
-        right: "10%",
-        top: "15%",
-        bottom: "10%",
-      },
-      xAxis: {
-        type: "category",
-        data: [],
-      },
-      yAxis: {
-        type: "value",
-      },
-      series: [
-        {
-          type: "bar",
-          data: [],
-        },
-      ],
-    };
+  if (nodes.length === 0) {
+    return {};
   }
 
-  const isHorizontal = props.orientation === "horizontal";
+  // Calculate node sizes based on their total connection values
+  const maxNodeValue = Math.max(...nodes.map((n) => n.value), 1);
+  const minNodeSize = 20;
+  const maxNodeSize = 80;
+
+  // Calculate zoom based on number of nodes to fit them in the panel
+  const nodeCount = nodes.length;
+  let zoom = 1.0;
+  if (nodeCount > 15) {
+    zoom = 0.55;
+  } else if (nodeCount > 10) {
+    zoom = 0.7;
+  } else if (nodeCount > 7) {
+    zoom = 0.85;
+  }
 
   return {
+    animation: false,
+    grid: {
+      left: "5%",
+      right: "5%",
+      top: "10%",
+      bottom: "10%",
+      containLabel: true,
+    },
     tooltip: {
-      trigger: "axis",
-      axisPointer: {
-        type: "shadow",
-      },
-      formatter: function (params: any) {
-        if (Array.isArray(params) && params.length > 0) {
-          const param = params[0];
-          return `${param.name}<br/>Count: ${param.value.toLocaleString()}`;
+      trigger: "item",
+      formatter: (params: any) => {
+        if (params.dataType === "node") {
+          const hasSelfLoop = params.data.selfLoopCount > 0;
+          let tooltip = `<strong>${params.data.name}</strong><br/>`;
+          tooltip += `Total connections: ${params.data.value.toLocaleString()}`;
+          if (hasSelfLoop && props.predicate) {
+            tooltip += `<br/><span style="color: #3b82f6;">↻ ${params.data.name} ${props.predicate} ${params.data.name}: ${params.data.selfLoopCount.toLocaleString()}</span>`;
+          }
+          return tooltip;
+        } else if (params.dataType === "edge") {
+          const predicate = props.predicate || "relates to";
+          return `<strong>${params.data.source} → ${predicate} → ${params.data.target}</strong><br/>Count: ${params.data.value.toLocaleString()}`;
         }
         return "";
       },
     },
-    grid: {
-      left: isHorizontal ? "35%" : "10%",
-      right: "10%",
-      top: "15%",
-      bottom: isHorizontal ? "10%" : "15%",
-      containLabel: true,
-    },
-    xAxis: isHorizontal
-      ? {
-          type: "value" as const,
-        }
-      : {
-          type: "category" as const,
-          data: categories,
-          axisLabel: {
-            interval: 0,
-            rotate: 45,
-            fontSize: 10,
-            formatter: function (value: string) {
-              // Truncate long labels
-              return value.length > 12 ? value.substring(0, 10) + "..." : value;
-            },
-          },
-          axisTick: {
-            alignWithLabel: true,
-          },
-        },
-    yAxis: isHorizontal
-      ? {
-          type: "category" as const,
-          data: categories,
-          axisLabel: {
-            fontSize: 11,
-            formatter: function (value: any) {
-              // For horizontal bars, allow longer labels
-              const str = String(value);
-              return str.length > 40 ? str.substring(0, 37) + "..." : str;
-            },
-          },
-        }
-      : {
-          type: "value" as const,
-          axisLabel: {
-            fontSize: 10,
-            formatter: function (value: any) {
-              // For vertical bars, format numbers
-              const num = Number(value);
-              if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
-              if (num >= 1000) return (num / 1000).toFixed(1) + "K";
-              return String(num);
-            },
-          },
-        },
     series: [
       {
-        type: "bar",
-        data: data.map((item, index) => ({
-          name: item.name,
-          value: item.value,
-          itemStyle: {
-            color: (function () {
-              const colors = [
-                "#3b82f6",
-                "#10b981",
-                "#f59e0b",
-                "#ef4444",
-                "#8b5cf6",
-                "#06b6d4",
-                "#84cc16",
-                "#f97316",
-                "#ec4899",
-                "#6366f1",
-              ];
-              return colors[index % colors.length];
-            })(),
+        type: "graph",
+        layout: "force",
+        data: nodes.map((node) => {
+          const hasSelfLoop = node.selfLoopCount > 0;
+          return {
+            name: node.name,
+            value: node.value,
+            selfLoopCount: node.selfLoopCount,
+            symbolSize:
+              minNodeSize +
+              (node.value / maxNodeValue) * (maxNodeSize - minNodeSize),
+            label: {
+              show: true,
+              position: "top" as const,
+              fontSize: 10,
+              fontWeight: "normal",
+              color: "#374151",
+            },
+            itemStyle: {
+              color: generateColor(node.name),
+              borderColor: hasSelfLoop ? "#3b82f6" : "#fff",
+              borderWidth: hasSelfLoop ? 3 : 2,
+              shadowColor: hasSelfLoop
+                ? "rgba(59, 130, 246, 0.5)"
+                : "transparent",
+              shadowBlur: hasSelfLoop ? 10 : 0,
+            },
+          };
+        }),
+        links: links.map((link) => ({
+          source: link.source,
+          target: link.target,
+          value: link.value,
+          lineStyle: {
+            width: Math.max(1, Math.min(10, link.value / 100000)),
+            opacity: 0.6,
+            curveness: 0.2,
           },
+          symbol: ["none", "arrow"],
+          symbolSize: [0, 12],
+          symbolOffset: [0, -5],
         })),
         emphasis: {
-          itemStyle: {
-            shadowBlur: 10,
-            shadowOffsetX: 0,
-            shadowColor: "rgba(0, 0, 0, 0.5)",
+          focus: "adjacency",
+          label: {
+            fontSize: 14,
+          },
+          lineStyle: {
+            width: 2,
           },
         },
-        animationDelay: function (idx: number) {
-          return idx * 50; // Stagger animation
+        force: {
+          repulsion: 600,
+          edgeLength: [120, 280],
+          gravity: 0.15,
+          layoutAnimation: false,
+          friction: 0.6,
+        },
+        center: ["50%", "50%"],
+        zoom: zoom,
+        scaleLimit: {
+          min: 0.5,
+          max: 1.5,
+        },
+        animation: false,
+        animationDuration: 0,
+        animationEasing: "linear",
+        lineStyle: {
+          color: "source",
+          curveness: 0.3,
         },
       },
     ],
-    animationEasing: "elasticOut",
-    animationDelayUpdate: function (idx: number) {
-      return idx * 20;
-    },
   };
 });
 
-/** Update chart when data changes */
-const updateChart = () => {
-  if (baseChartRef.value?.chart && barData.value.categories.length > 0) {
-    baseChartRef.value.updateChart(chartOptions.value);
-    setupClickHandler();
+/** Generate color based on category name */
+const generateColor = (name: string): string => {
+  const colors = [
+    "#5470c6",
+    "#91cc75",
+    "#fac858",
+    "#ee6666",
+    "#73c0de",
+    "#3ba272",
+    "#fc8452",
+    "#9a60b4",
+    "#ea7ccc",
+  ];
+
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
   }
+  return colors[Math.abs(hash) % colors.length];
 };
 
-/** Setup click handler for bar clicks */
-const setupClickHandler = () => {
-  if (!baseChartRef.value?.chart) return;
-
-  // Remove any existing click handlers
-  baseChartRef.value.chart.off("click");
-
-  // Add new click handler
-  baseChartRef.value.chart.on("click", (params: any) => {
-    if (params.componentType === "series") {
-      const name = params.data?.name || params.name;
-      const value = params.data?.value || params.value || 0;
-      emit("bar-clicked", name, value);
-    }
-  });
+/** Update chart when data changes */
+const updateChart = () => {
+  if (baseChartRef.value?.chart && networkData.value.nodes.length > 0) {
+    baseChartRef.value.updateChart(chartOptions.value);
+  }
 };
 
 /** Handle retry action */
@@ -368,10 +365,9 @@ const exportAsPNG = (): void => {
 const exportAsSVG = (): void => {
   if (!baseChartRef.value?.chart) return;
 
-  // Create temporary SVG chart for export
   const tempContainer = document.createElement("div");
-  tempContainer.style.width = "1000px";
-  tempContainer.style.height = "600px";
+  tempContainer.style.width = "1200px";
+  tempContainer.style.height = "800px";
   tempContainer.style.position = "absolute";
   tempContainer.style.left = "-9999px";
   document.body.appendChild(tempContainer);
@@ -379,8 +375,8 @@ const exportAsSVG = (): void => {
   try {
     const svgChart = echarts.init(tempContainer, null, {
       renderer: "svg",
-      width: 1000,
-      height: 600,
+      width: 1200,
+      height: 800,
     });
 
     svgChart.setOption(chartOptions.value);
@@ -391,7 +387,7 @@ const exportAsSVG = (): void => {
         svgString = svgString.replace(/viewBox="[^"]*"/, "");
         svgString = svgString.replace(
           /<svg[^>]*>/,
-          '<svg width="1000" height="600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full">',
+          '<svg width="1200" height="800" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full">',
         );
 
         const blob = new Blob([svgString], { type: "image/svg+xml" });
@@ -429,7 +425,7 @@ const exportAsJSON = (): void => {
     title: props.title,
     sql: props.sql,
     data: queryResult.value?.data || [],
-    barData: barData.value,
+    networkData: networkData.value,
     timestamp: new Date().toISOString(),
   };
   const dataStr = JSON.stringify(exportData, null, 2);
