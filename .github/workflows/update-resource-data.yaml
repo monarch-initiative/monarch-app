@@ -17,7 +17,18 @@ jobs:
         run: |
           wget "https://raw.githubusercontent.com/monarch-initiative/monarch-documentation/refs/heads/main/src/docs/resources/monarch-app-infopages.json" -O frontend/src/resources/monarch-app-infopages.json
 
-      - name: Update Resource Data
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install packages
+        working-directory: ./frontend
+        run: bun install
+
+      - name: Format with Prettier
+        working-directory: ./frontend
+        run: npx prettier --write src/resources/monarch-app-infopages.json
+
+      - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         if: ${{ success() }}
         with:
