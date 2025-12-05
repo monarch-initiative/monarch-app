@@ -1,27 +1,27 @@
 {
   "metadata": {
-    "total": 15984,
-    "num_publications": 161,
-    "last_5_yrs": 11456,
+    "total": 16398,
+    "num_publications": 167,
+    "last_5_yrs": 11861,
     "cites_per_year": {
-      "2013": 42,
+      "2013": 43,
       "2014": 178,
       "2015": 487,
-      "2016": 630,
-      "2017": 873,
-      "2018": 940,
-      "2019": 1228,
-      "2020": 1188,
-      "2021": 1448,
-      "2022": 1913,
-      "2023": 2036,
-      "2024": 2488,
-      "2025": 2336
+      "2016": 633,
+      "2017": 872,
+      "2018": 939,
+      "2019": 1233,
+      "2020": 1187,
+      "2021": 1451,
+      "2022": 1915,
+      "2023": 2041,
+      "2024": 2505,
+      "2025": 2710
     },
     "hindex": 57,
-    "hindex5y": 51,
-    "i10index": 113,
-    "i10index5y": 103
+    "hindex5y": 52,
+    "i10index": 114,
+    "i10index5y": 104
   },
   "publications": [
     {
@@ -106,6 +106,54 @@
           "journal": "arXiv preprint arXiv:2506.10037",
           "issue": "",
           "link": "https://arxiv.org/abs/2506.10037"
+        },
+        {
+          "title": "Consistent performance of large language models in rare disease diagnosis across ten languages and 4917 cases",
+          "authors": "Leonardo Chimirri, J Harry Caufield, Yasemin Bridges, Nicolas Matentzoglu, Michael Gargano, Mario Cazalla, Shihan Chen, Daniel Danis, Alexander JM Dingemans, Klara Gehle, Petra Gehle, Adam SL Graefe, Weihong Gu, Markus S Ladewig, Pablo Lapunzina, Juli\u00e1n Nevado, Enock Niyonkuru, Soichi Ogishima, Dominik Seelow, Jair A Tenorio Casta\u00f1o, Marek Turnovec, Bert BA de Vries, Kai Wang, Kyran Wissink, Zafer Y\u00fcksel, Gabriele Zucca, Melissa A Haendel, Christopher J Mungall, Justin Reese, Peter N Robinson",
+          "year": 2025,
+          "journal": "EBioMedicine",
+          "issue": "121",
+          "link": "https://www.thelancet.com/journals/ebiom/article/PIIS2352-3964(25)00401-3/fulltext"
+        },
+        {
+          "title": "Leveraging generative AI to assist biocuration of medical actions for rare disease",
+          "authors": "Enock Niyonkuru, J Harry Caufield, Leigh C Carmody, Michael A Gargano, Sabrina Toro, Patricia L Whetzel, Hannah Blau, Mauricio Soto Gomez, Elena Casiraghi, Leonardo Chimirri, Justin T Reese, Giorgio Valentini, Melissa A Haendel, Christopher J Mungall, Peter N Robinson",
+          "year": 2025,
+          "journal": "Bioinformatics Advances",
+          "issue": "5(1):vbaf141",
+          "link": "https://academic.oup.com/bioinformaticsadvances/article/5/1/vbaf141/8160944"
+        },
+        {
+          "title": "monarchr: an R package for querying biomedical knowledge graphs",
+          "authors": "Shawn T O\u2019Neil, Brian M Schilder, Kevin Schaper, Corey Cox, Daniel Korn, Sarah Gehrke, Christopher J Mungall, Melissa A Haendel",
+          "year": 2025,
+          "journal": "Bioinformatics",
+          "issue": "41(10):btaf549",
+          "link": "https://academic.oup.com/bioinformatics/article-abstract/41/10/btaf549/8266340"
+        },
+        {
+          "title": "Mondo: Integrating Disease Terminology Across Communities",
+          "authors": "Nicole A Vasilevsky, Sabrina Toro, Nicolas Matentzoglu, Joseph E Flack, Kathleen R Mullen, Harshad Hegde, Sarah Gehrke, Patricia L Whetzel, Yousif Shwetar, Nomi L Harris, Mee S Ngu, Gioconda L Alyea, Megan S Kane, Paola Roncaglia, Eric Sid, Courtney L Thaxton, Valerie Wood, Roshini S Abraham, Maria Isabel Achatz, Pamela Ajuyah, Joanna S Amberger, Lawrence Babb, Jasmine Baker, James P Balhoff, Jonathan S Berg, Amol Bhalla, Xavier Bofill-De Ros, Ian R Braun, Eleanor C Broeren, Blake K Byer, Alicia B Byrne, Tiffany J Callahan, Leigh C Carmody, Lauren E Chan, Amanda R Clause, Julie S Cohen, Marcello DeLuca, Natalie T Deuitch, May Flowers, Jamie Fraser, Toyofumi Fujiwara, Vanessa Gitau, Jennifer L Goldstein, Dylan Gration, Tudor Groza, Benjamin M Gyori, William Hankey, Jason A Hilton, Daniel S Himmelstein, Stephanie S Hong, Charles T Hoyt, Robert Huether, Eric Hurwitz, Julius OB Jacobsen, Atsuo Kikuchi, Sebastian K\u00f6hler, Daniel R Korn, David Lagorce, Bryan J Laraway, Jane Y Li, Adriana J Malheiro, James McLaughlin, Birgit HM Meldal, Shruthi Mohan, Sierra AT Moxon, Monica C Munoz-Torres, Tristan H Nelson, Frank W Nicholas, David Ochoa, Daniel Olson, Tudor I Oprea, Tomiko T Oskotsky, David Osumi-Sutherland, Kelley Paris, Helen E Parkinson, Zo\u00eb M Pendlington, Xiao P Peng, Amy Pizzino, Sharon E Plon, Bradford C Powell, Julie C Ratliff, Heidi L Rehm, Lyubov Remennik, Erin R Riggs, Sean Roberts, Peter N Robinson, Justyne E Ross, Kevin Schaper, Brian M Schilder, Johanna L Schmidt, Elliott W Sharp, Morgan N Similuk, Damian Smedley, Tam P Sneddon, Rachel Sparks, Ray Stefancsik, Gregory S Stupp, Shilpa Sundar, Terue Takatsuki, Imke Tammen, Kezang C Tshering, Deepak R Unni, Eloise Valasek, Adeline Vanderver, Alex H Wagner, Ryan F Webb, Danielle Welter, Doron Yaya-Stupp, Andreas Zankl, Xingmin Aaron Zhang, Julie A McMurry, Christopher G Chute, Ada Hamosh, Christopher J Mungall, Melissa A Haendel",
+          "year": 2025,
+          "journal": "Genetics",
+          "issue": ":iyaf215",
+          "link": "https://academic.oup.com/genetics/advance-article-abstract/doi/10.1093/genetics/iyaf215/8276117"
+        },
+        {
+          "title": "OLS4: a new Ontology Lookup Service for a growing interdisciplinary knowledge ecosystem",
+          "authors": "James McLaughlin, Josh Lagrimas, Haider Iqbal, Helen Parkinson, Henriette Harmse",
+          "year": 2025,
+          "journal": "Bioinformatics",
+          "issue": "41(5):btaf279",
+          "link": "https://academic.oup.com/bioinformatics/article-abstract/41/5/btaf279/8125017"
+        },
+        {
+          "title": "Why we need all the organisms: an exploration of the Monarch knowledge graph to aid mechanism discovery",
+          "authors": "Katherina Cortes, Daniel Korn, Sarah Gehrke, Kevin Schaper, Corey Cox, Patrick Golden, Aaron Odell, Bryan Laraway, Madan Krishnamurthy, Justin Reese, Harry Caufield, Sierra Moxon, Ellen Elias, Christopher J Mungall, Melissa Haendel",
+          "year": 2025,
+          "journal": "arXiv preprint arXiv:2509.18050",
+          "issue": "",
+          "link": "https://arxiv.org/abs/2509.18050"
         }
       ]
     },
