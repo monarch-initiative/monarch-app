@@ -43,7 +43,7 @@ script_dir = Path(__file__).parent
 default_metadata_file = script_dir / "metadata.json"
 default_scholarly_data = script_dir / "scholarly_output.json"
 default_publications_file = (
-    script_dir.parent / "frontend/src/pages/about/publications.json"
+    script_dir.parent / "frontend/src/data/publications.json"
 )
 
 
