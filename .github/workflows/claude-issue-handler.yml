@@ -1,0 +1,86 @@
+name: Claude Code Issue Handler
+
+on:
+  issue_comment:
+    types: [created]
+  issues:
+    types: [labeled]
+
+permissions:
+  issues: write
+  pull-requests: write
+  contents: write
+
+jobs:
+  check-permissions:
+    runs-on: ubuntu-latest
+    outputs:
+      has-permission: ${{ steps.check.outputs.has-permission }}
+    steps:
+      - name: Check user permissions
+        id: check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Only allow users with write, maintain, or admin permissions
+            const allowedAssociations = ['OWNER', 'MEMBER', 'COLLABORATOR'];
+            const association = context.payload.comment?.author_association || context.payload.issue?.author_association;
+
+            // Also check actual repository permissions
+            let hasPermission = allowedAssociations.includes(association);
+
+            // Double-check with API for more accurate permission check
+            try {
+              const { data: permissionLevel } = await github.rest.repos.getCollaboratorPermissionLevel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                username: context.payload.sender.login
+              });
+
+              // Allow write, maintain, or admin
+              hasPermission = ['write', 'maintain', 'admin'].includes(permissionLevel.permission);
+            } catch (error) {
+              console.log('Could not check permission level, falling back to association check');
+            }
+
+            core.setOutput('has-permission', hasPermission);
+
+            if (!hasPermission) {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: '⚠️ Sorry, only repository collaborators with write access can use @claude in this repository.'
+              });
+            }
+
+            return hasPermission;
+
+  claude:
+    runs-on: ubuntu-latest
+    needs: check-permissions
+    if: |
+      needs.check-permissions.outputs.has-permission == 'true' &&
+      (
+        (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
+        (github.event_name == 'issues' && contains(github.event.issue.labels.*.name, 'claude'))
+      )
+
+    steps:
+      - name: React to comment
+        if: github.event_name == 'issue_comment'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.reactions.createForIssueComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: context.payload.comment.id,
+              content: 'eyes'
+            });
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.CLAUDE_CODE_OATH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          claude_args: "--max-turns 15 --model claude-sonnet-4-5-20250929"
