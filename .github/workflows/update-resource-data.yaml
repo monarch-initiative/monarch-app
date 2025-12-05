@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        
+
       - name: Work around permission issue
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
@@ -33,7 +33,7 @@ jobs:
         if: ${{ success() }}
         with:
           commit-message: Update Resource Data from the Monarch Documentation
-          title: 'Update Resource Data'
+          title: "Update Resource Data"
           body: |
             This pull request updates the Resource Data for the Info Pages.
           assignees: varun-divya
