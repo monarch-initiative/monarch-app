@@ -79,6 +79,9 @@ jobs:
               content: 'eyes'
             });
 
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_OATH_TOKEN }}
