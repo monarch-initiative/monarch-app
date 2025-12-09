@@ -23,7 +23,7 @@ export const knowledgeGraphDownloads: DownloadItem[] = [
   },
   {
     label: "DuckDB Database",
-    url: "https://data.monarchinitiative.org/monarch-kg/latest/monarch-kg.duckdb.gz",
+    url: "https://data.monarchinitiative.org/monarch-kg/latest/monarch-kg.duckdb",
   },
 ];
 
@@ -111,10 +111,6 @@ export const derivedArtifacts: DownloadItem[] = [
   {
     label: "Phenio SQLite (semsql)",
     url: "https://data.monarchinitiative.org/monarch-kg/latest/phenio.db.gz",
-  },
-  {
-    label: "Denormalized Associations",
-    url: "https://data.monarchinitiative.org/monarch-kg/latest/monarch-kg-denormalized-edges.tsv.gz",
   },
   {
     label: "Solr Data",
