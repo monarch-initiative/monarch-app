@@ -267,25 +267,31 @@ const chartOptions = computed((): any => {
           const nodeName = params.data.name;
           const totalConnections = params.data.value;
 
-          // Get all connections for this node
-          const connections = [];
-          for (let i = 0; i < matrix[nodeIndex].length; i++) {
-            if (i !== nodeIndex && matrix[nodeIndex][i] > 0) {
-              connections.push({
-                target: categories[i].replace("biolink:", ""),
-                count: matrix[nodeIndex][i],
-              });
+          // Get all connections for this node (both directions combined)
+          const connectionMap = new Map<string, number>();
+          for (let i = 0; i < categories.length; i++) {
+            if (i !== nodeIndex) {
+              const categoryName = categories[i].replace("biolink:", "");
+              // Sum outgoing (this node as subject) and incoming (this node as object)
+              const outgoing = matrix[nodeIndex][i] || 0;
+              const incoming = matrix[i][nodeIndex] || 0;
+              const total = outgoing + incoming;
+              if (total > 0) {
+                connectionMap.set(categoryName, total);
+              }
             }
           }
 
-          // Sort connections by count (descending)
-          connections.sort((a, b) => b.count - a.count);
+          // Convert to array and sort by count (descending)
+          const connections = Array.from(connectionMap.entries())
+            .map(([target, count]) => ({ target, count }))
+            .sort((a, b) => b.count - a.count);
 
           let tooltip = `<strong>${nodeName}</strong><br/>`;
           tooltip += `Total Connections: ${totalConnections.toLocaleString()}<br/><br/>`;
 
           if (connections.length > 0) {
-            tooltip += "<strong>Connections to:</strong><br/>";
+            tooltip += "<strong>Connected to:</strong><br/>";
             const connectionsToShow = connections; // Show all connections
 
             // Color palette matching our chart
@@ -389,18 +395,19 @@ const chartOptions = computed((): any => {
             "#ec4899",
             "#6366f1",
           ];
+          // Calculate total connections (both outgoing and incoming)
+          const outgoing = matrix[index].reduce((sum, val) => sum + val, 0);
+          const incoming = matrix.reduce(
+            (sum, row) => sum + (row[index] || 0),
+            0,
+          );
+          const totalConnections = outgoing + incoming;
           return {
             name: name.replace("biolink:", ""),
-            value: matrix[index].reduce((sum, val) => sum + val, 0),
+            value: totalConnections,
             x: Math.cos(angle) * radius + 300,
             y: Math.sin(angle) * radius + 300,
-            symbolSize: Math.max(
-              15,
-              Math.min(
-                40,
-                matrix[index].reduce((sum, val) => sum + val, 0) / 2000,
-              ),
-            ),
+            symbolSize: Math.max(15, Math.min(40, totalConnections / 2000)),
             category: index,
             itemStyle: {
               color: colors[index % colors.length],
