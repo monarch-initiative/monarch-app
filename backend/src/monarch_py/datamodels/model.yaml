@@ -297,6 +297,7 @@ classes:
       - in_taxon
       - in_taxon_label
       - inheritance
+      - has_biological_sex
       - causal_gene
       - causes_disease
       - mappings
@@ -559,6 +560,9 @@ slots:
     identifier: true
     range: string
     required: true
+  has_biological_sex:
+    description: The biological sex of an individual entity.
+    range: string
   in_taxon:
     description: The biolink taxon that the entity is in the closure of.
     range: string
