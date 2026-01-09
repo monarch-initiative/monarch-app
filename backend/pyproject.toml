@@ -23,7 +23,7 @@ dependencies = [
     "linkml==1.9.3",
     "loguru",
     "oaklib>=0.6.6",
-    "prefixmaps==0.2.4",
+    "prefixmaps>=0.2.5",
     "pydantic>=2,<3",
     "pystow>=0.5.4",
     "requests>=2.31.0",

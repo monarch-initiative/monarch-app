@@ -26,6 +26,7 @@ import pytest
         ("OMIM:613647", "identifiers.org/mim/613647"),
         ("UBERON:0000001", "purl.obolibrary.org/obo/UBERON_0000001"),
         ("WormBase:WBGene00000001", "identifiers.org/wb/WBGene00000001"),
+        ("NANDO:2200622", "identifiers.org/NANDO:2200622"),
     ],
 )
 def test_curie_expansion(curie, expected):
