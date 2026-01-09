@@ -15,12 +15,24 @@ def expansion_patch(url: str):
     # rather than https://identifiers.org/MGI:97486
     pattern = r"/MGI/(\d+)$"
     replacement = r"/MGI:\1"
-    return re.sub(pattern, replacement, url)
+    url = re.sub(pattern, replacement, url)
+
+    # Fix phenopacket.store URLs to include /phenopackets/ subdirectory and .json extension
+    # Input:  .../notebooks/GENE/FILENAME
+    # Output: .../notebooks/GENE/phenopackets/FILENAME.json
+    phenopacket_pattern = r"(phenopacket-store/blob/main/notebooks/[^/]+)/(.+)$"
+    phenopacket_replacement = r"\1/phenopackets/\2.json"
+    url = re.sub(phenopacket_pattern, phenopacket_replacement, url)
+
+    return url
 
 
-def get_uri(id: str) -> str:
-    """Returns the URI for the given CURIE."""
-    return expansion_patch(converter.expand(id))
+def get_uri(id: str) -> str | None:
+    """Returns the URI for the given CURIE, or None if the prefix is unknown."""
+    expanded = converter.expand(id)
+    if expanded is None:
+        return None
+    return expansion_patch(expanded)
 
 
 def get_expanded_curie(id: str) -> ExpandedCurie:
