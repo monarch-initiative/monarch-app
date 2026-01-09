@@ -18,11 +18,15 @@ def expansion_patch(url: str):
     url = re.sub(pattern, replacement, url)
 
     # Fix phenopacket.store URLs to include /phenopackets/ subdirectory and .json extension
-    # Input:  .../notebooks/GENE/FILENAME
-    # Output: .../notebooks/GENE/phenopackets/FILENAME.json
-    phenopacket_pattern = r"(phenopacket-store/blob/main/notebooks/[^/]+)/(.+)$"
-    phenopacket_replacement = r"\1/phenopackets/\2.json"
-    url = re.sub(phenopacket_pattern, phenopacket_replacement, url)
+    # ID format: phenopacket.store:GENE.FILENAME (dot separator)
+    # Pedigree notation in IDs uses dots (e.g., IV.12) but filenames use underscores (IV_12)
+    # Input:  .../notebooks/GENE.FILENAME_WITH.DOTS
+    # Output: .../notebooks/GENE/phenopackets/FILENAME_WITH_DOTS.json
+    phenopacket_match = re.search(r"(.+phenopacket-store/blob/main/notebooks/)([^.]+)\.(.+)$", url)
+    if phenopacket_match:
+        prefix, gene, filename = phenopacket_match.groups()
+        filename = filename.replace(".", "_")  # Convert pedigree dots to underscores
+        url = f"{prefix}{gene}/phenopackets/{filename}.json"
 
     return url
 

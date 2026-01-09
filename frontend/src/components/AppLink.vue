@@ -96,6 +96,11 @@ const plainText = computed(
 </script>
 
 <style lang="scss" scoped>
+a {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
 .icon {
   margin-left: 5px;
 }
