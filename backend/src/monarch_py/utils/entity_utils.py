@@ -41,4 +41,4 @@ def get_uri(id: str) -> str | None:
 
 def get_expanded_curie(id: str) -> ExpandedCurie:
     """Returns the URI for the given CURIE."""
-    return ExpandedCurie(id=id, url=converter.expand(id))
+    return ExpandedCurie(id=id, url=get_uri(id))
