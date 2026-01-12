@@ -98,11 +98,6 @@
         "name": "Shawn O'Neil",
         "role": "DevOps, Bioinformatics, and Data Engineer",
         "link": "https://tislab.org/members/shawn-oneil.html"
-      },
-      {
-        "name": "Trish Whetzel",
-        "role": "Semantic Curation Engineer",
-        "link": "https://github.com/twhetzel"
       }
     ]
   },
@@ -343,6 +338,11 @@
   {
     "name": "Alumni Members",
     "members": [
+      {
+        "name": "Trish Whetzel",
+        "role": "Semantic Curation Engineer",
+        "link": "https://github.com/twhetzel"
+      },
       {
         "name": "Carlo Kroll",
         "role": "Scientific Software Engineer"
