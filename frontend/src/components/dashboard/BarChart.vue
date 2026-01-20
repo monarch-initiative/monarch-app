@@ -95,6 +95,7 @@ export interface Props {
 interface Emits {
   (e: "data-changed", data: any[]): void;
   (e: "error", error: string): void;
+  (e: "bar-clicked", name: string, value: number): void;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -212,7 +213,7 @@ const chartOptions = computed((): EChartsOption => {
       },
     },
     grid: {
-      left: isHorizontal ? "15%" : "10%",
+      left: isHorizontal ? "35%" : "10%",
       right: "10%",
       top: "15%",
       bottom: isHorizontal ? "10%" : "15%",
@@ -243,11 +244,11 @@ const chartOptions = computed((): EChartsOption => {
           type: "category" as const,
           data: categories,
           axisLabel: {
-            fontSize: 10,
+            fontSize: 11,
             formatter: function (value: any) {
-              // For horizontal bars, truncate category names
+              // For horizontal bars, allow longer labels
               const str = String(value);
-              return str.length > 15 ? str.substring(0, 12) + "..." : str;
+              return str.length > 40 ? str.substring(0, 37) + "..." : str;
             },
           },
         }
@@ -311,7 +312,25 @@ const chartOptions = computed((): EChartsOption => {
 const updateChart = () => {
   if (baseChartRef.value?.chart && barData.value.categories.length > 0) {
     baseChartRef.value.updateChart(chartOptions.value);
+    setupClickHandler();
   }
+};
+
+/** Setup click handler for bar clicks */
+const setupClickHandler = () => {
+  if (!baseChartRef.value?.chart) return;
+
+  // Remove any existing click handlers
+  baseChartRef.value.chart.off("click");
+
+  // Add new click handler
+  baseChartRef.value.chart.on("click", (params: any) => {
+    if (params.componentType === "series") {
+      const name = params.data?.name || params.name;
+      const value = params.data?.value || params.value || 0;
+      emit("bar-clicked", name, value);
+    }
+  });
 };
 
 /** Handle retry action */

@@ -98,10 +98,35 @@
             :allow-export="true"
             height="600px"
           />
+        </div>
 
-          <!-- Sankey Chart - Knowledge Flow -->
+        <!-- Predicate Analysis Section -->
+        <div class="dashboard-section">
+          <h3>Predicate Analysis</h3>
+          <div class="section-description">
+            Click on a predicate row to explore its definition from the Biolink
+            Model and view the types of entities it connects.
+          </div>
+
+          <PredicateTable
+            data-source="edge_report"
+            sql="
+              SELECT
+                replace(predicate, 'biolink:', '') as category,
+                SUM(count) as count
+              FROM edge_report
+              WHERE predicate IS NOT NULL
+              GROUP BY predicate
+              ORDER BY count DESC
+            "
+            @predicate-selected="onPredicateSelected"
+          />
+        </div>
+
+        <!-- Sankey Chart - Knowledge Flow -->
+        <div class="dashboard-section">
           <SankeyChart
-            title="Knowledge Graph Flow"
+            title="Knowledge Graph Flow (Top 50 Edge Type Combinations)"
             data-source="edge_report"
             sql="
               SELECT
@@ -118,8 +143,10 @@
             :allow-export="true"
             height="800px"
           />
+        </div>
 
-          <!-- Bar Chart - Node Distribution by Category -->
+        <!-- Bar Chart - Node Distribution by Category -->
+        <div class="dashboard-section">
           <BarChart
             title="Node Distribution by Category"
             data-source="node_report"
@@ -152,8 +179,14 @@ import ChordChart from "@/components/dashboard/ChordChart.vue";
 import DataSource from "@/components/dashboard/DataSource.vue";
 import KGDashboard from "@/components/dashboard/KGDashboard.vue";
 import KGMetricCard from "@/components/dashboard/KGMetricCard.vue";
+import PredicateTable from "@/components/dashboard/PredicateTable.vue";
 import SankeyChart from "@/components/dashboard/SankeyChart.vue";
 import PageTitle from "@/components/ThePageTitle.vue";
+
+// Handle predicate selection (for analytics/tracking)
+const onPredicateSelected = (predicate: string, count: number) => {
+  console.debug("Predicate selected:", predicate, count);
+};
 </script>
 
 <style lang="scss" scoped>

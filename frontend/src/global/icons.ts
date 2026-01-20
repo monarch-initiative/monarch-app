@@ -51,6 +51,8 @@ const icons = [
   fas.faBook,
   fas.faBullhorn,
   fas.faCheck,
+  fas.faChevronDown,
+  fas.faChevronUp,
   fas.faCircleExclamation,
   fas.faCircleInfo,
   fas.faClipboardList,

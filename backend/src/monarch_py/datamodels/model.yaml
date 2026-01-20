@@ -236,6 +236,9 @@ classes:
       - has_phenotype_closure
       - has_phenotype_closure_label
       - has_phenotype_count
+      - has_descendant
+      - has_descendant_label
+      - has_descendant_count
   EntityResults:
     is_a: Results
     slots:
@@ -294,6 +297,7 @@ classes:
       - in_taxon
       - in_taxon_label
       - inheritance
+      - has_biological_sex
       - causal_gene
       - causes_disease
       - mappings
@@ -536,10 +540,29 @@ slots:
     description: >-
       A count of the number of phenotypes that are known to be associated with this entity
     range: integer
+  has_descendant:
+    description: >-
+      A list of entity identifiers that are known to be descendants of this entity
+    range: string
+    multivalued: true
+    inlined_as_list: true
+  has_descendant_label:
+    description: >-
+      A list of entity labels that are known to be descendants of this entity
+    range: string
+    multivalued: true
+    inlined_as_list: true
+  has_descendant_count:
+    description: >-
+      A count of the number of entities that are known to be descendants of this entity
+    range: integer    
   id:
     identifier: true
     range: string
     required: true
+  has_biological_sex:
+    description: The biological sex of an individual entity.
+    range: string
   in_taxon:
     description: The biolink taxon that the entity is in the closure of.
     range: string

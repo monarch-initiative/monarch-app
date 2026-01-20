@@ -9,10 +9,6 @@
   </template>
 
   <template v-else-if="route.matched.length">
-    <TheBanner v-if="apiName !== 'local'">
-      This repository is under review for potential modification in compliance
-      with Administration directives.
-    </TheBanner>
     <TheBanner v-if="apiName !== 'prod'">
       This web app is the
       <strong v-if="apiName === 'local'">LOCAL VERSION</strong>
@@ -30,13 +26,13 @@
       Disabling the banner is as simple as commenting out this section.
     </TheBanner> -->
 
-    <TheHeaderV2 :key="route.path" />
+    <TheHeader :key="route.path" />
     <main>
       <router-view />
       <TheFloatButtons />
       <TheSnackbar />
     </main>
-    <TheFooterV2 />
+    <TheFooter />
   </template>
 </template>
 
@@ -45,8 +41,8 @@ import { watch } from "vue";
 import { useRoute } from "vue-router";
 import { apiName } from "@/api";
 import TheFloatButtons from "@/components/TheFloatButtons.vue";
-import TheFooterV2 from "@/components/TheFooterV2.vue";
-import TheHeaderV2 from "@/components/TheHeaderV2.vue";
+import TheFooter from "@/components/TheFooter.vue";
+import TheHeader from "@/components/TheHeader.vue";
 import { appDescription, appTitle, appUrl } from "@/global/meta";
 import TheBanner from "./components/TheBanner.vue";
 import TheSnackbar from "./components/TheSnackbar.vue";

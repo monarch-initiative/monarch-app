@@ -21,7 +21,7 @@
       "match_source_label": "no abnormal phenotype detected",
       "match_target": "HP:0004325",
       "match_target_label": "Decreased body weight",
-      "score": 1.8650370971010566,
+      "score": 2.0271052787428347,
       "match_subsumer": null,
       "match_subsumer_label": null,
       "similarity": {
@@ -36,11 +36,11 @@
         "ancestor_source": null,
         "object_information_content": null,
         "subject_information_content": null,
-        "ancestor_information_content": 1.8650370971010566,
-        "jaccard_similarity": 0.07142857142857142,
+        "ancestor_information_content": 2.0271052787428347,
+        "jaccard_similarity": 0.06666666666666667,
         "cosine_similarity": null,
         "dice_similarity": null,
-        "phenodigm_score": 0.36498895258242864
+        "phenodigm_score": 0.36761440656779076
       },
       "score_metric": "ancestor_information_content"
     },
@@ -49,7 +49,7 @@
       "match_source_label": "integument phenotype",
       "match_target": "HP:0004325",
       "match_target_label": "Decreased body weight",
-      "score": 2.0449509585115817,
+      "score": 2.0436656756586724,
       "match_subsumer": null,
       "match_subsumer_label": null,
       "similarity": {
@@ -64,11 +64,11 @@
         "ancestor_source": null,
         "object_information_content": null,
         "subject_information_content": null,
-        "ancestor_information_content": 2.0449509585115817,
-        "jaccard_similarity": 0.2222222222222222,
+        "ancestor_information_content": 2.0436656756586724,
+        "jaccard_similarity": 0.21621621621621623,
         "cosine_similarity": null,
         "dice_similarity": null,
-        "phenodigm_score": 0.6741168640049787
+        "phenodigm_score": 0.6647357817974561
       },
       "score_metric": "ancestor_information_content"
     }
@@ -79,7 +79,7 @@
       "match_source_label": "Decreased body weight",
       "match_target": "MP:0010771",
       "match_target_label": "integument phenotype",
-      "score": 2.0449509585115817,
+      "score": 2.0436656756586724,
       "match_subsumer": null,
       "match_subsumer_label": null,
       "similarity": {
@@ -94,16 +94,16 @@
         "ancestor_source": null,
         "object_information_content": null,
         "subject_information_content": null,
-        "ancestor_information_content": 2.0449509585115817,
-        "jaccard_similarity": 0.2222222222222222,
+        "ancestor_information_content": 2.0436656756586724,
+        "jaccard_similarity": 0.21621621621621623,
         "cosine_similarity": null,
         "dice_similarity": null,
-        "phenodigm_score": 0.6741168640049787
+        "phenodigm_score": 0.6647357817974561
       },
       "score_metric": "ancestor_information_content"
     }
   },
-  "average_score": 1.9999724931589504,
-  "best_score": 2.0449509585115817,
+  "average_score": 2.039525576429713,
+  "best_score": 2.0436656756586724,
   "metric": "AncestorInformationContent"
 }
