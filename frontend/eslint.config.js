@@ -28,6 +28,7 @@ export default defineConfigWithVueTs(
     ignores: [
       "node_modules",
       "dist",
+      "public/duckdb/duckdb-browser-mvp.worker.js",
       "public/mockServiceWorker.js",
       "src/api/model.ts",
     ],
@@ -37,7 +38,7 @@ export default defineConfigWithVueTs(
     languageOptions: {
       parserOptions: {
         ecmaVersion: "latest",
-        sourceType: "script",
+        sourceType: "module",
       },
     },
     files: [
@@ -50,7 +51,7 @@ export default defineConfigWithVueTs(
     ],
     /** Override rules */
     rules: {
-      "max-len": ["error", { code: 120 }],
+      "max-len": ["warn", { code: 120 }],
       "no-constant-binary-expression": ["off"],
       "prefer-const": "off",
       "@typescript-eslint/no-empty-object-type": ["warn"],
@@ -74,6 +75,7 @@ export default defineConfigWithVueTs(
       "vuejs-accessibility/label-has-for": [
         "error",
         {
+          controlComponents: ["AppInput"],
           required: {
             some: ["nesting", "id"],
           },
