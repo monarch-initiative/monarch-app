@@ -1,12 +1,16 @@
 <!--
   Section wrapper for Case-Phenotype Grid visualization on disease pages.
   Shows cases (from phenopackets) with their phenotypes grouped by body system.
+
+  Only shown for specific diseases, not grouping classes (determined by Mondo subsets).
 -->
 
 <template>
-  <!-- Render for diseases, hide after load if no cases -->
+  <!-- Render for specific diseases (not grouping classes), hide after load if no cases -->
   <AppSection
-    v-if="node.category === 'biolink:Disease' && !hideSection"
+    v-if="
+      node.category === 'biolink:Disease' && !isGroupingClass && !hideSection
+    "
     width="full"
     class="inset"
     alignment="left"
@@ -70,6 +74,31 @@ type Props = {
 
 const props = defineProps<Props>();
 
+/**
+ * Subset markers that indicate a disease is a grouping class (not a specific
+ * diagnosable entity). These are curated by Mondo/Orphanet to distinguish
+ * organizational categories from actual diseases.
+ */
+const GROUPING_SUBSET_MARKERS = [
+  "disease_grouping",
+  "ordo_group_of_disorders",
+  "rare_grouping",
+];
+
+/**
+ * Check if this disease is a grouping class based on Mondo subsets. Grouping
+ * classes are organizational categories (like "Ehlers-Danlos syndrome") rather
+ * than specific diagnosable diseases (like "Ehlers-Danlos syndrome,
+ * hypermobility type").
+ */
+const isGroupingClass = computed(() => {
+  // subsets is an array, often with a single pipe-delimited string
+  const subsets = props.node.subsets ?? [];
+  // Parse pipe-delimited values and flatten
+  const allSubsets = subsets.flatMap((s) => s.split("|"));
+  return allSubsets.some((s) => GROUPING_SUBSET_MARKERS.includes(s));
+});
+
 /** Modal state */
 const showModal = ref(false);
 const selectedCase = ref<CaseEntity | null>(null);
@@ -107,10 +136,16 @@ function handleCellClick(
   showModal.value = true;
 }
 
-/** Refetch when route or node changes */
-watch([() => route.path, () => props.node.id], runGetMatrix, {
-  immediate: true,
-});
+/** Refetch when route or node changes, but skip for grouping classes */
+watch(
+  [() => route.path, () => props.node.id],
+  () => {
+    if (!isGroupingClass.value) {
+      runGetMatrix();
+    }
+  },
+  { immediate: true },
+);
 </script>
 
 <style lang="scss" scoped>

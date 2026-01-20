@@ -39,18 +39,16 @@
                 v-tooltip="getBinCellTooltip(bin, caseEntity)"
                 class="data-cell bin-data-cell"
               >
-                <span
+                <div
                   v-if="getBinSummary(bin.id, caseEntity.id).presentCount > 0"
-                  class="cell-icon present"
-                  >●</span
-                >
-                <span
+                  class="cell-square present"
+                ></div>
+                <div
                   v-else-if="
                     getBinSummary(bin.id, caseEntity.id).negatedCount > 0
                   "
-                  class="cell-icon negated"
-                  >○</span
-                >
+                  class="cell-square negated"
+                ></div>
               </td>
             </tr>
 
@@ -77,19 +75,17 @@
                 }"
                 @click="handleCellClick(caseEntity.id, phenotypeId)"
               >
-                <span
+                <div
                   v-if="
                     getCellData(caseEntity.id, phenotypeId)?.present &&
                     !getCellData(caseEntity.id, phenotypeId)?.negated
                   "
-                  class="cell-icon present"
-                  >●</span
-                >
-                <span
+                  class="cell-square present"
+                ></div>
+                <div
                   v-else-if="getCellData(caseEntity.id, phenotypeId)?.negated"
-                  class="cell-icon negated"
-                  >○</span
-                >
+                  class="cell-square negated"
+                ></div>
               </td>
             </tr>
           </template>
@@ -153,10 +149,10 @@ const getBinCellTooltip = (
 
   let html = `<strong>${bin.label}</strong><br>Case: ${caseLabel}`;
   if (summary.presentCount > 0) {
-    html += `<br><span style="color: #16a34a">● ${summary.presentCount} present</span>`;
+    html += `<br><span style="display: inline-flex; align-items: center; gap: 4px;"><span style="display: inline-block; width: 10px; height: 10px; background: hsla(185, 100%, 30%, 0.85); border-radius: 2px;"></span> ${summary.presentCount} present</span>`;
   }
   if (summary.negatedCount > 0) {
-    html += `<br><span style="color: #dc2626">○ ${summary.negatedCount} excluded</span>`;
+    html += `<br><span style="display: inline-flex; align-items: center; gap: 4px;"><span style="display: inline-block; width: 10px; height: 10px; background: hsla(0, 70%, 50%, 0.7); border-radius: 2px;"></span> ${summary.negatedCount} excluded</span>`;
   }
   return html;
 };
@@ -204,12 +200,15 @@ const getCellTooltip = (
     return `<strong>${phenotypeLabel}</strong><br>Case: ${caseLabel}<br><em>No data</em>`;
   }
 
-  const statusColor = cellData.negated ? "#dc2626" : "#16a34a";
-  const statusText = cellData.negated ? "○ Excluded" : "● Present";
+  const statusBg = cellData.negated
+    ? "hsla(0, 70%, 50%, 0.7)"
+    : "hsla(185, 100%, 30%, 0.85)";
+  const statusText = cellData.negated ? "Excluded" : "Present";
+  const statusSquare = `<span style="display: inline-block; width: 10px; height: 10px; background: ${statusBg}; border-radius: 2px; vertical-align: middle;"></span>`;
 
   let html = `<strong>${phenotypeLabel}</strong>`;
   html += `<br>Case: ${caseLabel}`;
-  html += `<br><span style="color: ${statusColor}">${statusText}</span>`;
+  html += `<br>${statusSquare} ${statusText}`;
 
   if (cellData.onset) {
     html += `<br>Onset: ${cellData.onset}`;
@@ -262,22 +261,24 @@ const handleCellClick = (caseId: string, phenotypeId: string) => {
 // Header styles
 thead {
   .header-cell {
-    padding: 0.75rem 1rem;
+    padding: 0.4rem 0.5rem;
     border-bottom: 2px solid #e5e7eb;
     background: #f9fafb;
     font-weight: 600;
+    font-size: 0.8rem;
     text-align: center;
     white-space: nowrap;
 
     &.sticky-col {
-      min-width: 200px;
+      min-width: 180px;
       background: #f9fafb;
       text-align: left;
     }
   }
 
   .case-header {
-    min-width: 40px;
+    min-width: 28px;
+    padding: 0.4rem 0.25rem;
     cursor: help;
   }
 }
@@ -313,14 +314,15 @@ tbody {
   .bin-cell {
     display: flex;
     align-items: center;
-    padding: 0.75rem 1rem;
-    gap: 0.5rem;
+    padding: 0.35rem 0.5rem;
+    gap: 0.35rem;
     font-weight: 500;
+    font-size: 0.8rem;
 
     .expand-icon {
-      width: 1rem;
+      width: 0.8rem;
       color: #6b7280;
-      font-size: 0.75rem;
+      font-size: 0.65rem;
     }
 
     .bin-label {
@@ -330,7 +332,7 @@ tbody {
     .bin-count {
       color: #6b7280;
       font-weight: 400;
-      font-size: 0.85rem;
+      font-size: 0.75rem;
     }
   }
 
@@ -352,19 +354,20 @@ tbody {
   }
 
   .phenotype-cell {
-    padding: 0.5rem 1rem 0.5rem 2.5rem;
+    padding: 0.25rem 0.5rem 0.25rem 1.5rem;
 
     .phenotype-label {
       color: #374151;
-      font-size: 0.85rem;
+      font-size: 0.75rem;
     }
   }
 
   // Data cell styles
   .data-cell {
-    padding: 0.5rem;
+    padding: 2px;
     border-bottom: 1px solid #f3f4f6;
     text-align: center;
+    vertical-align: middle;
 
     &.clickable {
       cursor: pointer;
@@ -380,30 +383,32 @@ tbody {
   }
 }
 
-// Cell icon styles
-.cell-icon {
-  font-size: 1rem;
-  line-height: 1;
+// Cell square styles (phenogrid-like)
+.cell-square {
+  width: 18px;
+  height: 18px;
+  margin: auto;
+  border-radius: 2px;
 
   &.present {
-    color: #16a34a;
+    background-color: hsla(185, 100%, 30%, 0.85);
   }
 
   &.negated {
-    color: #dc2626;
+    background-color: hsla(0, 70%, 50%, 0.7);
   }
 }
 
 // Responsive
 @media (max-width: 768px) {
   .sticky-col {
-    min-width: 150px;
+    min-width: 120px;
   }
 
   .header-cell,
   .bin-cell,
   .phenotype-cell {
-    padding: 0.5rem;
+    padding: 0.25rem;
   }
 }
 </style>
