@@ -14,7 +14,7 @@
     "composite": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["src/*"]
     },
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "resolveJsonModule": true,

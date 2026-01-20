@@ -34,6 +34,7 @@ describe("useClinicalResources", () => {
     ]);
 
     const omim = clinicalResources.value[0];
+    if (!omim) throw new Error("Expected OMIM resource");
     expect(omim.label).toBe("OMIM");
     expect(omim.source).toBe("external");
     expect(omim.url).toBe("https://omim.org/entry/123");
@@ -41,6 +42,7 @@ describe("useClinicalResources", () => {
     expect(omim.tooltip!.toLowerCase()).toContain("mendelian");
 
     const gard = clinicalResources.value[1];
+    if (!gard) throw new Error("Expected GARD resource");
     expect(gard.label).toBe("GARD");
     expect(gard.source).toBe("external");
   });
@@ -50,7 +52,7 @@ describe("useClinicalResources", () => {
       external_links: [{ id: "OMIM:999" }], // no url
     });
     const { clinicalResources } = useClinicalResources(node);
-    expect(clinicalResources.value[0].url).toBe("");
+    expect(clinicalResources.value[0]?.url).toBe("");
   });
 
   it("uses mappings when external_links for a prefix are absent", () => {
@@ -66,8 +68,8 @@ describe("useClinicalResources", () => {
       "NORD:55",
       "Orphanet:777",
     ]);
-    expect(clinicalResources.value[0].source).toBe("mapping");
-    expect(clinicalResources.value[1].source).toBe("mapping");
+    expect(clinicalResources.value[0]?.source).toBe("mapping");
+    expect(clinicalResources.value[1]?.source).toBe("mapping");
   });
 
   it("prefers external over mapping when both exist for the same prefix", () => {
@@ -126,7 +128,7 @@ describe("useClinicalResources", () => {
       "OMIM:9",
       "GARD:9",
     ]);
-    expect(clinicalResources.value[0].source).toBe("external");
-    expect(clinicalResources.value[1].source).toBe("mapping");
+    expect(clinicalResources.value[0]?.source).toBe("external");
+    expect(clinicalResources.value[1]?.source).toBe("mapping");
   });
 });
