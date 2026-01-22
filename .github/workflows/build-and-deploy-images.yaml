@@ -22,10 +22,18 @@ jobs:
       - name: Generate Image Tag
         id: get-tag
         run: |
-          REV=$(git rev-list --tags --max-count=1)
-          IMAGE_TAG=$(git describe --tags $REV)
-          echo "IMAGE_TAG=${IMAGE_TAG//v}"
-          echo "IMAGE_TAG=${IMAGE_TAG//v}" >> $GITHUB_OUTPUT
+          if [ "${{ github.event_name }}" = "release" ]; then
+            # For releases, use the actual release tag
+            RELEASE_TAG=${GITHUB_REF#refs/tags/}
+            echo "IMAGE_TAG=${RELEASE_TAG//v}" >> $GITHUB_OUTPUT
+            echo "TAGS=latest,${RELEASE_TAG//v},${{ github.sha }}" >> $GITHUB_OUTPUT
+            echo "Building release: ${RELEASE_TAG//v}"
+          else
+            # For main branch pushes, use dev-specific tags (no 'latest')
+            echo "IMAGE_TAG=main-${{ github.sha }}" >> $GITHUB_OUTPUT
+            echo "TAGS=latest-dev,main-${{ github.sha }},${{ github.sha }}" >> $GITHUB_OUTPUT
+            echo "Building main branch: main-${{ github.sha }}"
+          fi
 
       - name: Build and Push Image
         uses: RafikFarhad/push-to-gcr-github-action@v5-rc1
@@ -34,7 +42,7 @@ jobs:
           registry: us-central1-docker.pkg.dev
           project_id: monarch-initiative
           image_name: monarch-api/monarch-api
-          image_tag: latest, ${{ steps.get-tag.outputs.IMAGE_TAG }}, ${{ github.sha }}
+          image_tag: ${{ steps.get-tag.outputs.TAGS }}
           dockerfile: ./backend/Dockerfile
 
   build-and-push-frontend-image:
@@ -62,10 +70,18 @@ jobs:
       - name: Generate Image Tag for Frontend Dir
         id: get-tag
         run: |
-          REV=$(git rev-list --tags --max-count=1 )
-          IMAGE_TAG=$(git describe --tags $REV)
-          echo "IMAGE_TAG=${IMAGE_TAG//v}"
-          echo "IMAGE_TAG=${IMAGE_TAG//v}" >> $GITHUB_OUTPUT
+          if [ "${{ github.event_name }}" = "release" ]; then
+            # For releases, use the actual release tag
+            RELEASE_TAG=${GITHUB_REF#refs/tags/}
+            echo "IMAGE_TAG=${RELEASE_TAG//v}" >> $GITHUB_OUTPUT
+            echo "TAGS=latest,${RELEASE_TAG//v},${{ github.sha }}" >> $GITHUB_OUTPUT
+            echo "Building frontend release: ${RELEASE_TAG//v}"
+          else
+            # For main branch pushes, use dev-specific tags (no 'latest')
+            echo "IMAGE_TAG=main-${{ github.sha }}" >> $GITHUB_OUTPUT
+            echo "TAGS=latest-dev,main-${{ github.sha }},${{ github.sha }}" >> $GITHUB_OUTPUT
+            echo "Building frontend main branch: main-${{ github.sha }}"
+          fi
 
       # the monarch-ui Dockerfile pulls from two places:
       # ./frontend/dist/, copied to /var/www/ in the image
@@ -78,7 +94,7 @@ jobs:
           registry: us-central1-docker.pkg.dev
           project_id: monarch-initiative
           image_name: monarch-api/monarch-ui
-          image_tag: latest, ${{ steps.get-tag.outputs.IMAGE_TAG }}, ${{ github.sha }}
+          image_tag: ${{ steps.get-tag.outputs.TAGS }}
           dockerfile: ./services/nginx/Dockerfile
           context: .
 
