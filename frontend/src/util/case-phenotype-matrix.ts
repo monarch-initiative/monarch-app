@@ -59,10 +59,16 @@ export function buildMatrix(
   const casesMap = new Map<string, CaseEntity>();
   for (const assoc of caseAssociations) {
     if (!casesMap.has(assoc.subject)) {
+      // Track source disease info from the association
+      // The association's object field contains the actual disease this case is linked to
+      const isDirect = assoc.object === diseaseId;
       casesMap.set(assoc.subject, {
         id: assoc.subject,
         label: assoc.subject_label,
         fullId: assoc.original_subject,
+        sourceDiseaseId: assoc.object,
+        sourceDiseaseLabel: assoc.object_label,
+        isDirect: isDirect,
       });
     }
   }

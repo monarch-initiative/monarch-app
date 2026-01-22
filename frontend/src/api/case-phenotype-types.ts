@@ -9,6 +9,12 @@ export interface CaseEntity {
   id: string;
   label?: string;
   fullId?: string;
+  /** The actual disease ID this case is associated with */
+  sourceDiseaseId?: string;
+  /** The disease label for tooltip display */
+  sourceDiseaseLabel?: string;
+  /** True if directly associated with the queried disease (not via descendants) */
+  isDirect?: boolean;
 }
 
 export interface HistoPhenoBin {

@@ -98,6 +98,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import type {
+  CaseEntity,
   CasePhenotypeCellData,
   CasePhenotypeMatrix,
 } from "@/api/case-phenotype-types";
@@ -123,15 +124,18 @@ const emit = defineEmits<Emits>();
 const expandedBin = ref<string | null>(null);
 
 // Get tooltip for case header
-const getCaseTooltip = (
-  caseEntity: { id: string; label?: string; fullId?: string },
-  index: number,
-): string => {
+const getCaseTooltip = (caseEntity: CaseEntity, index: number): string => {
   let html = `<strong>Case ${index + 1}</strong>`;
   if (caseEntity.label) {
     html += `<br>${caseEntity.label}`;
   }
   html += `<br><small>${caseEntity.id}</small>`;
+
+  // Show source disease if from a descendant (not direct)
+  if (!caseEntity.isDirect && caseEntity.sourceDiseaseLabel) {
+    html += `<br><br><em>Disease: ${caseEntity.sourceDiseaseLabel}</em>`;
+  }
+
   return html;
 };
 

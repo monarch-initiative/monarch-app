@@ -6,8 +6,8 @@ import type { Association, AssociationResults } from "./model";
 import { buildMatrix } from "../util/case-phenotype-matrix";
 
 /**
- * Batch size for case phenotype requests.
- * Keep small due to URL length limits with unicode characters in case IDs.
+ * Batch size for case phenotype requests. Keep small due to URL length limits
+ * with unicode characters in case IDs.
  */
 const CASE_BATCH_SIZE = 5;
 
@@ -15,15 +15,19 @@ const CASE_BATCH_SIZE = 5;
  * Fetch CaseToDiseaseAssociations where disease is the object
  *
  * @param diseaseId - The disease ID to fetch cases for
+ * @param direct - If true, only return direct associations; if false, include
+ *   descendants via closure query
  * @returns Association results containing cases associated with the disease
  */
 export const getCasesForDisease = async (
   diseaseId: string,
+  direct: boolean = true,
 ): Promise<AssociationResults> => {
   const params = {
     category: "biolink:CaseToDiseaseAssociation",
     object: diseaseId,
     limit: 500,
+    direct: direct,
   };
 
   const url = `${apiUrl}/association`;
@@ -80,14 +84,17 @@ export const getCasePhenotypes = async (
  *
  * @param diseaseId - The disease ID to build the matrix for
  * @param diseaseName - Optional disease name for display
+ * @param direct - If true, only include direct cases; if false, include
+ *   descendants
  * @returns The case-phenotype matrix or null if no cases found
  */
 export const getCasePhenotypeMatrix = async (
   diseaseId: string,
   diseaseName?: string,
+  direct: boolean = true,
 ): Promise<CasePhenotypeMatrix | null> => {
   /** Fetch cases associated with the disease */
-  const casesResponse = await getCasesForDisease(diseaseId);
+  const casesResponse = await getCasesForDisease(diseaseId, direct);
 
   if (casesResponse.items.length === 0) {
     return null;
