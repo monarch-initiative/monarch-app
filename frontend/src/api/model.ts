@@ -10,6 +10,9 @@ export type MappingId = string;
 export type MultiEntityAssociationResultsId = string;
 export type NodeId = string;
 export type SearchResultId = string;
+export type CaseEntityId = string;
+export type CasePhenotypeId = string;
+export type HistoPhenoBinId = string;
 /**
 * The directionality of an association as it relates to a specified entity, with edges being categorized as incoming or outgoing
 */
@@ -499,6 +502,8 @@ export interface Node extends Entity {
     /** The label of the biolink taxon that the entity is in the closure of. */
     in_taxon_label?: string,
     inheritance?: Entity,
+    /** The biological sex of an individual entity. */
+    has_biological_sex?: string,
     /** A list of genes that are known to be causally associated with a disease */
     causal_gene?: Entity[],
     /** A list of diseases that are known to be causally associated with a gene */
@@ -591,6 +596,82 @@ export interface AssociationHighlighting {
     /** Field containing subject name and the names of all of it's ancestors */
     subject_closure_label?: string[],
     predicate?: string[],
+}
+
+
+/**
+ * Complete case-phenotype matrix for a disease
+ */
+export interface CasePhenotypeMatrixResponse {
+    /** The identifier for a disease entity */
+    disease_id: string,
+    /** The name of a disease entity */
+    disease_name?: string,
+    /** Total number of cases in the matrix */
+    total_cases: number,
+    /** Total number of phenotypes in the matrix */
+    total_phenotypes: number,
+    /** List of case entities in the matrix */
+    cases?: CaseEntity[],
+    /** List of phenotype entities in the matrix */
+    phenotypes?: CasePhenotype[],
+    /** List of histopheno bins for grouping phenotypes */
+    bins?: HistoPhenoBin[],
+    /** Map of case-phenotype cell data keyed by case_id:phenotype_id */
+    cells?: CasePhenotypeCellData[],
+}
+
+
+/**
+ * A case (patient) in the matrix
+ */
+export interface CaseEntity {
+    id: string,
+    label?: string,
+    /** The full identifier for an entity */
+    full_id?: string,
+    /** The disease ID that a case is indirectly associated with (for descendant diseases) */
+    source_disease_id?: string,
+    /** The label of the source disease for indirect case associations */
+    source_disease_label?: string,
+    /** Whether the case is directly associated with the disease or via a descendant */
+    is_direct: boolean,
+}
+
+
+/**
+ * A phenotype observed in at least one case
+ */
+export interface CasePhenotype {
+    id: string,
+    label?: string,
+    /** The identifier for the histopheno bin a phenotype belongs to */
+    bin_id: string,
+}
+
+
+/**
+ * A body system category for grouping phenotypes
+ */
+export interface HistoPhenoBin {
+    id: string,
+    label: string,
+    /** Number of phenotypes in a bin */
+    phenotype_count: number,
+}
+
+
+/**
+ * Data for a single case-phenotype cell in the matrix
+ */
+export interface CasePhenotypeCellData {
+    /** Whether the phenotype is present for a case */
+    present: boolean,
+    negated?: boolean,
+    onset_qualifier?: string,
+    /** The name of the onset_qualifier entity */
+    onset_qualifier_label?: string,
+    publications?: string[],
 }
 
 

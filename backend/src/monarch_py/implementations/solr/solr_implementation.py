@@ -9,6 +9,7 @@ from monarch_py.datamodels.model import (
     AssociationCountList,
     AssociationResults,
     AssociationTableResults,
+    CasePhenotypeMatrixResponse,
     CategoryGroupedAssociationResults,
     Entity,
     HistoPheno,
@@ -42,6 +43,8 @@ from monarch_py.implementations.solr.solr_query_utils import (
     build_association_query,
     build_association_table_query,
     build_autocomplete_query,
+    build_case_disease_query,
+    build_case_phenotype_query,
     build_histopheno_query,
     build_mapping_query,
     build_multi_entity_association_query,
@@ -53,6 +56,7 @@ from monarch_py.interfaces.entity_interface import EntityInterface
 from monarch_py.interfaces.search_interface import SearchInterface
 from monarch_py.interfaces.grounding_interface import GroundingInterface
 from monarch_py.service.solr_service import SolrService
+from monarch_py.utils.case_phenotype_utils import build_matrix
 from monarch_py.utils.entity_utils import get_expanded_curie, get_uri
 from monarch_py.utils.utils import get_provided_by_link, get_links_for_field
 
@@ -557,3 +561,123 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         search_result = parse_search(query_result)
         entities = [entity for entity in search_result.items[:3]]
         return entities
+
+    #######################################
+    # Case-Phenotype Matrix               #
+    #######################################
+
+    def get_case_phenotype_matrix(
+        self,
+        disease_id: str,
+        direct_only: bool = True,
+        limit: int = 200,
+    ) -> CasePhenotypeMatrixResponse:
+        """Fetch case-phenotype matrix for a disease.
+
+        Execution flow:
+        1. Query for case-disease associations to get case list and count
+        2. Check count against limit, raise error if exceeded
+        3. Query for case-phenotype associations with JOIN (includes facets)
+        4. Build and return matrix response
+
+        Args:
+            disease_id: MONDO disease ID (e.g., "MONDO:0007078")
+            direct_only: If True, only cases with exactly this disease
+            limit: Maximum number of cases allowed
+
+        Returns:
+            CasePhenotypeMatrixResponse with complete matrix data
+
+        Raises:
+            ValueError: If case count exceeds limit
+        """
+        # Step 1: Get cases for this disease
+        case_query_params = build_case_disease_query(
+            disease_id=disease_id,
+            direct_only=direct_only,
+            rows=limit + 1,
+        )
+        case_result = self._raw_solr_query(case_query_params)
+        case_docs = case_result.get("response", {}).get("docs", [])
+
+        # Step 2: Check limit
+        if len(case_docs) > limit:
+            raise ValueError(
+                f"Case count ({len(case_docs)}) exceeds limit ({limit}). "
+                f"Use direct=true or increase limit."
+            )
+
+        # Handle no cases
+        if not case_docs:
+            return CasePhenotypeMatrixResponse(
+                disease_id=disease_id,
+                disease_name=self._get_disease_name(disease_id),
+                total_cases=0,
+                total_phenotypes=0,
+                cases=[],
+                phenotypes=[],
+                bins=[],
+                cells={},
+            )
+
+        # Step 3: Get phenotype associations via JOIN query
+        phenotype_query_params = build_case_phenotype_query(
+            disease_id=disease_id,
+            direct_only=direct_only,
+        )
+        phenotype_result = self._raw_solr_query(phenotype_query_params)
+        phenotype_docs = phenotype_result.get("response", {}).get("docs", [])
+        facet_counts = phenotype_result.get("facet_counts", {}).get("facet_queries", {})
+
+        # Step 4: Build matrix
+        return build_matrix(
+            disease_id=disease_id,
+            disease_name=self._get_disease_name(disease_id),
+            case_docs=case_docs,
+            phenotype_docs=phenotype_docs,
+            facet_counts=facet_counts,
+        )
+
+    def _raw_solr_query(self, params: dict) -> dict:
+        """Execute a raw Solr query with dictionary parameters.
+
+        Args:
+            params: Dictionary of Solr query parameters
+
+        Returns:
+            Raw JSON response from Solr as a dictionary
+        """
+        from urllib.parse import urlencode
+
+        # Handle list parameters (like facet.query)
+        query_parts = []
+        for key, value in params.items():
+            if isinstance(value, list):
+                for item in value:
+                    query_parts.append(f"{key}={requests.utils.quote(str(item))}")
+            elif isinstance(value, bool):
+                query_parts.append(f"{key}={str(value).lower()}")
+            else:
+                query_parts.append(f"{key}={requests.utils.quote(str(value))}")
+
+        query_string = "&".join(query_parts)
+        url = f"{self.base_url}/{core.ASSOCIATION.value}/select?{query_string}"
+
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
+
+    def _get_disease_name(self, disease_id: str) -> str:
+        """Fetch human-readable disease name.
+
+        Args:
+            disease_id: MONDO disease ID
+
+        Returns:
+            Disease name or the ID if name cannot be fetched
+        """
+        try:
+            entity = self.get_entity(disease_id, extra=False)
+            return entity.name if entity and entity.name else disease_id
+        except Exception:
+            return disease_id

@@ -441,6 +441,7 @@ class Node(Entity):
     in_taxon: Optional[str] = Field(default=None, description="""The biolink taxon that the entity is in the closure of.""")
     in_taxon_label: Optional[str] = Field(default=None, description="""The label of the biolink taxon that the entity is in the closure of.""")
     inheritance: Optional[Entity] = Field(default=None)
+    has_biological_sex: Optional[str] = Field(default=None, description="""The biological sex of an individual entity.""")
     causal_gene: Optional[list[Entity]] = Field(default=None, description="""A list of genes that are known to be causally associated with a disease""")
     causes_disease: Optional[list[Entity]] = Field(default=None, description="""A list of diseases that are known to be causally associated with a gene""")
     mappings: Optional[list[ExpandedCurie]] = Field(default=None, description="""List of ExpandedCuries with id and url for mapped entities""")
@@ -622,6 +623,61 @@ class AssociationHighlighting(ConfiguredBaseModel):
     predicate: Optional[list[str]] = Field(default=None)
 
 
+class CasePhenotypeMatrixResponse(ConfiguredBaseModel):
+    """
+    Complete case-phenotype matrix for a disease
+    """
+    disease_id: str = Field(default=..., description="""The identifier for a disease entity""")
+    disease_name: Optional[str] = Field(default=None, description="""The name of a disease entity""")
+    total_cases: int = Field(default=..., description="""Total number of cases in the matrix""")
+    total_phenotypes: int = Field(default=..., description="""Total number of phenotypes in the matrix""")
+    cases: Optional[list[CaseEntity]] = Field(default=None, description="""List of case entities in the matrix""")
+    phenotypes: Optional[list[CasePhenotype]] = Field(default=None, description="""List of phenotype entities in the matrix""")
+    bins: Optional[list[HistoPhenoBin]] = Field(default=None, description="""List of histopheno bins for grouping phenotypes""")
+    cells: Optional[dict[str, CasePhenotypeCellData]] = Field(default=None, description="""Map of case-phenotype cell data keyed by case_id:phenotype_id""")
+
+
+class CaseEntity(ConfiguredBaseModel):
+    """
+    A case (patient) in the matrix
+    """
+    id: str = Field(default=...)
+    label: Optional[str] = Field(default=None)
+    full_id: Optional[str] = Field(default=None, description="""The full identifier for an entity""")
+    source_disease_id: Optional[str] = Field(default=None, description="""The disease ID that a case is indirectly associated with (for descendant diseases)""")
+    source_disease_label: Optional[str] = Field(default=None, description="""The label of the source disease for indirect case associations""")
+    is_direct: bool = Field(default=..., description="""Whether the case is directly associated with the disease or via a descendant""")
+
+
+class CasePhenotype(ConfiguredBaseModel):
+    """
+    A phenotype observed in at least one case
+    """
+    id: str = Field(default=...)
+    label: Optional[str] = Field(default=None)
+    bin_id: str = Field(default=..., description="""The identifier for the histopheno bin a phenotype belongs to""")
+
+
+class HistoPhenoBin(ConfiguredBaseModel):
+    """
+    A body system category for grouping phenotypes
+    """
+    id: str = Field(default=...)
+    label: str = Field(default=...)
+    phenotype_count: int = Field(default=..., description="""Number of phenotypes in a bin""")
+
+
+class CasePhenotypeCellData(ConfiguredBaseModel):
+    """
+    Data for a single case-phenotype cell in the matrix
+    """
+    present: bool = Field(default=..., description="""Whether the phenotype is present for a case""")
+    negated: Optional[bool] = Field(default=None)
+    onset_qualifier: Optional[str] = Field(default=None)
+    onset_qualifier_label: Optional[str] = Field(default=None, description="""The name of the onset_qualifier entity""")
+    publications: Optional[list[str]] = Field(default=None)
+
+
 # Model rebuild
 # see https://pydantic-docs.helpmanual.io/usage/models/#rebuilding-a-model
 PairwiseSimilarity.model_rebuild()
@@ -658,4 +714,9 @@ SearchResult.model_rebuild()
 SearchResults.model_rebuild()
 TextAnnotationResult.model_rebuild()
 AssociationHighlighting.model_rebuild()
+CasePhenotypeMatrixResponse.model_rebuild()
+CaseEntity.model_rebuild()
+CasePhenotype.model_rebuild()
+HistoPhenoBin.model_rebuild()
+CasePhenotypeCellData.model_rebuild()
 

@@ -370,6 +370,99 @@ classes:
       predicate:
         multivalued: true
         required: false
+  CasePhenotypeMatrixResponse:
+    description: Complete case-phenotype matrix for a disease
+    slots:
+      - disease_id
+      - disease_name
+      - total_cases
+      - total_phenotypes
+      - cases
+      - phenotypes
+      - bins
+      - cells
+    slot_usage:
+      disease_id:
+        required: true
+      total_cases:
+        required: true
+      total_phenotypes:
+        required: true
+      cases:
+        range: CaseEntity
+        multivalued: true
+        inlined_as_list: true
+      phenotypes:
+        range: CasePhenotype
+        multivalued: true
+        inlined_as_list: true
+      bins:
+        range: HistoPhenoBin
+        multivalued: true
+        inlined_as_list: true
+      cells:
+        range: CasePhenotypeCellData
+        multivalued: true
+        inlined: true
+        inlined_as_list: false
+  CaseEntity:
+    description: A case (patient) in the matrix
+    slots:
+      - id
+      - label
+      - full_id
+      - source_disease_id
+      - source_disease_label
+      - is_direct
+    slot_usage:
+      id:
+        required: true
+        identifier: true
+      label:
+        required: false
+      is_direct:
+        required: true
+  CasePhenotype:
+    description: A phenotype observed in at least one case
+    slots:
+      - id
+      - label
+      - bin_id
+    slot_usage:
+      id:
+        required: true
+        identifier: true
+      label:
+        required: false
+      bin_id:
+        required: true
+  HistoPhenoBin:
+    description: A body system category for grouping phenotypes
+    slots:
+      - id
+      - label
+      - phenotype_count
+    slot_usage:
+      id:
+        required: true
+        identifier: true
+      label:
+        required: true
+      phenotype_count:
+        required: true
+  CasePhenotypeCellData:
+    description: Data for a single case-phenotype cell in the matrix
+    slots:
+      - present
+      - negated
+      - onset_qualifier
+      - onset_qualifier_label
+      - publications
+    slot_usage:
+      present:
+        required: true
+      publications:
+        multivalued: true
 
 slots:
   aggregator_knowledge_source:
@@ -930,3 +1023,59 @@ slots:
   highlighting:
     description: Optional highlighting information for search results
     multivalued: false
+
+  # Case-phenotype matrix slots
+  disease_id:
+    description: The identifier for a disease entity
+    range: string
+  disease_name:
+    description: The name of a disease entity
+    range: string
+  total_cases:
+    description: Total number of cases in the matrix
+    range: integer
+  total_phenotypes:
+    description: Total number of phenotypes in the matrix
+    range: integer
+  cases:
+    description: List of case entities in the matrix
+    range: CaseEntity
+    multivalued: true
+    inlined_as_list: true
+  phenotypes:
+    description: List of phenotype entities in the matrix
+    range: CasePhenotype
+    multivalued: true
+    inlined_as_list: true
+  bins:
+    description: List of histopheno bins for grouping phenotypes
+    range: HistoPhenoBin
+    multivalued: true
+    inlined_as_list: true
+  cells:
+    description: Map of case-phenotype cell data keyed by case_id:phenotype_id
+    range: CasePhenotypeCellData
+    multivalued: true
+    inlined: true
+    inlined_as_list: false
+  source_disease_id:
+    description: The disease ID that a case is indirectly associated with (for descendant diseases)
+    range: string
+  source_disease_label:
+    description: The label of the source disease for indirect case associations
+    range: string
+  is_direct:
+    description: Whether the case is directly associated with the disease or via a descendant
+    range: boolean
+  bin_id:
+    description: The identifier for the histopheno bin a phenotype belongs to
+    range: string
+  phenotype_count:
+    description: Number of phenotypes in a bin
+    range: integer
+  present:
+    description: Whether the phenotype is present for a case
+    range: boolean
+  full_id:
+    description: The full identifier for an entity
+    range: string

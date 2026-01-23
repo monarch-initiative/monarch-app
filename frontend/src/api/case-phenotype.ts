@@ -1,116 +1,247 @@
-/** API functions for fetching case-phenotype data for grid visualization */
-
-import { apiUrl, request } from "./";
-import type { CasePhenotypeMatrix } from "./case-phenotype-types";
-import type { Association, AssociationResults } from "./model";
-import { buildMatrix } from "../util/case-phenotype-matrix";
-
 /**
- * Batch size for case phenotype requests. Keep small due to URL length limits
- * with unicode characters in case IDs.
+ * API functions for fetching case-phenotype data for grid visualization. Uses
+ * the single backend endpoint that handles all the complex Solr queries.
  */
-const CASE_BATCH_SIZE = 5;
 
-/**
- * Fetch CaseToDiseaseAssociations where disease is the object
- *
- * @param diseaseId - The disease ID to fetch cases for
- * @param direct - If true, only return direct associations; if false, include
- *   descendants via closure query
- * @returns Association results containing cases associated with the disease
- */
-export const getCasesForDisease = async (
-  diseaseId: string,
-  direct: boolean = true,
-): Promise<AssociationResults> => {
-  const params = {
-    category: "biolink:CaseToDiseaseAssociation",
-    object: diseaseId,
-    limit: 500,
-    direct: direct,
-  };
+import { apiUrl } from "./";
+import type {
+  CaseEntity,
+  CasePhenotype,
+  CasePhenotypeCellData,
+  CasePhenotypeMatrix,
+  HistoPhenoBin,
+} from "./case-phenotype-types";
 
-  const url = `${apiUrl}/association`;
-  return await request<AssociationResults>(url, params);
-};
-
-/**
- * Fetch CaseToPhenotypicFeatureAssociations for multiple cases Batches requests
- * in groups of 50 case IDs to avoid URL length limits
- *
- * @param caseIds - Array of case IDs to fetch phenotypes for
- * @returns Flattened array of all associations from all batches
- */
-export const getCasePhenotypes = async (
-  caseIds: string[],
-): Promise<Association[]> => {
-  if (caseIds.length === 0) {
-    return [];
-  }
-
-  const allAssociations: Association[] = [];
-  const limit = 500;
-
-  /** Batch requests to avoid URL length limits */
-  for (let i = 0; i < caseIds.length; i += CASE_BATCH_SIZE) {
-    const batchIds = caseIds.slice(i, i + CASE_BATCH_SIZE);
-    let offset = 0;
-    let hasMore = true;
-
-    /** Paginate through results for this batch */
-    while (hasMore) {
-      const params = {
-        category: "biolink:CaseToPhenotypicFeatureAssociation",
-        subject: batchIds,
-        limit,
-        offset,
-      };
-
-      const url = `${apiUrl}/association`;
-      const response = await request<AssociationResults>(url, params);
-      allAssociations.push(...response.items);
-
-      /** Check if there are more results */
-      hasMore = offset + response.items.length < response.total;
-      offset += limit;
+/** Response type from the backend API */
+interface BackendMatrixResponse {
+  disease_id: string;
+  disease_name: string | null;
+  total_cases: number;
+  total_phenotypes: number;
+  cases: Array<{
+    id: string;
+    label: string | null;
+    full_id?: string | null;
+    source_disease_id?: string | null;
+    source_disease_label?: string | null;
+    is_direct: boolean;
+  }>;
+  phenotypes: Array<{
+    id: string;
+    label: string | null;
+    bin_id: string;
+  }>;
+  bins: Array<{
+    id: string;
+    label: string;
+    phenotype_count: number;
+  }>;
+  cells: Record<
+    string,
+    {
+      present: boolean;
+      negated?: boolean | null;
+      onset_qualifier?: string | null;
+      onset_qualifier_label?: string | null;
+      publications?: string[] | null;
     }
-  }
+  >;
+}
 
-  return allAssociations;
-};
+/** Options for the getCasePhenotypeMatrix function */
+export interface CasePhenotypeMatrixOptions {
+  /** Only include cases directly associated with this disease (default: true) */
+  direct?: boolean;
+  /** Maximum number of cases allowed (default: 1000) */
+  limit?: number;
+}
+
+/** Error thrown when case count exceeds the configured limit */
+export class CaseLimitExceededError extends Error {
+  constructor(
+    public actual: number,
+    public limit: number,
+    public diseaseId: string,
+  ) {
+    super(
+      `Disease ${diseaseId} has ${actual} cases, exceeding limit of ${limit}. ` +
+        `Use direct=true to filter to direct cases only, or increase the limit.`,
+    );
+    this.name = "CaseLimitExceededError";
+  }
+}
 
 /**
- * Orchestrate fetching and building the case-phenotype matrix for a disease
+ * Fetch case-phenotype matrix from the backend.
  *
- * @param diseaseId - The disease ID to build the matrix for
- * @param diseaseName - Optional disease name for display
- * @param direct - If true, only include direct cases; if false, include
- *   descendants
+ * This replaces the old batched approach with a single API call that handles
+ * all the Solr queries server-side.
+ *
+ * @param diseaseId - MONDO disease ID to fetch matrix for
+ * @param options - Options for the request
  * @returns The case-phenotype matrix or null if no cases found
+ * @throws CaseLimitExceededError if case count exceeds limit
+ * @throws Error for other API errors
  */
-export const getCasePhenotypeMatrix = async (
+export async function getCasePhenotypeMatrix(
   diseaseId: string,
-  diseaseName?: string,
-  direct: boolean = true,
-): Promise<CasePhenotypeMatrix | null> => {
-  /** Fetch cases associated with the disease */
-  const casesResponse = await getCasesForDisease(diseaseId, direct);
+  options: CasePhenotypeMatrixOptions = {},
+): Promise<CasePhenotypeMatrix | null> {
+  const { direct = true, limit = 1000 } = options;
 
-  if (casesResponse.items.length === 0) {
+  const params = new URLSearchParams();
+  params.set("direct", String(direct));
+  params.set("limit", String(limit));
+
+  const url = `${apiUrl}/case-phenotype-matrix/${encodeURIComponent(diseaseId)}?${params}`;
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    const detail = errorData.detail || "Unknown error";
+
+    // Parse case limit exceeded errors
+    if (response.status === 400 && detail.includes("exceeds limit")) {
+      const match = detail.match(/\((\d+)\).*\((\d+)\)/);
+      if (match) {
+        throw new CaseLimitExceededError(
+          parseInt(match[1]),
+          parseInt(match[2]),
+          diseaseId,
+        );
+      }
+    }
+
+    throw new Error(`API error (${response.status}): ${detail}`);
+  }
+
+  const data: BackendMatrixResponse = await response.json();
+
+  // Return null if no cases found
+  if (data.total_cases === 0) {
     return null;
   }
 
-  /** Extract case IDs from the associations */
-  const caseIds = casesResponse.items.map((assoc) => assoc.subject);
+  // Transform backend response to frontend types
+  return transformResponse(data);
+}
 
-  /** Fetch phenotypes for all cases */
-  const phenotypeAssociations = await getCasePhenotypes(caseIds);
+/**
+ * Transform backend response to frontend CasePhenotypeMatrix format. Handles
+ * snake_case to camelCase conversion and Map creation.
+ */
+function transformResponse(data: BackendMatrixResponse): CasePhenotypeMatrix {
+  // Transform cases
+  const cases: CaseEntity[] = data.cases.map((c) => ({
+    id: c.id,
+    label: c.label ?? undefined,
+    fullId: c.full_id ?? undefined,
+    sourceDiseaseId: c.source_disease_id ?? undefined,
+    sourceDiseaseLabel: c.source_disease_label ?? undefined,
+    isDirect: c.is_direct,
+  }));
 
-  /** Build and return the matrix */
-  return buildMatrix(
-    diseaseId,
-    diseaseName,
-    casesResponse.items,
-    phenotypeAssociations,
-  );
-};
+  // Transform phenotypes
+  const phenotypes: CasePhenotype[] = data.phenotypes.map((p) => ({
+    id: p.id,
+    label: p.label ?? undefined,
+    binId: p.bin_id,
+  }));
+
+  // Transform bins - group phenotypes by bin
+  const phenotypesByBin = new Map<string, string[]>();
+  for (const p of phenotypes) {
+    const list = phenotypesByBin.get(p.binId) || [];
+    list.push(p.id);
+    phenotypesByBin.set(p.binId, list);
+  }
+
+  const bins: HistoPhenoBin[] = data.bins.map((b) => ({
+    id: b.id,
+    label: b.label,
+    phenotypeIds: phenotypesByBin.get(b.id) || [],
+    expanded: false,
+    count: b.phenotype_count,
+  }));
+
+  // Transform cells - convert object to Map
+  const cells = new Map<string, CasePhenotypeCellData>();
+  for (const [key, cell] of Object.entries(data.cells)) {
+    cells.set(key, {
+      present: cell.present,
+      negated: cell.negated ?? undefined,
+      onset: cell.onset_qualifier_label ?? undefined,
+      onsetId: cell.onset_qualifier ?? undefined,
+      publications: cell.publications ?? undefined,
+    });
+  }
+
+  return {
+    diseaseId: data.disease_id,
+    diseaseName: data.disease_name ?? undefined,
+    cases,
+    bins,
+    phenotypes,
+    cells,
+    totalCases: data.total_cases,
+    totalPhenotypes: data.total_phenotypes,
+  };
+}
+
+/**
+ * Create a cell lookup key from case and phenotype IDs. Must match the format
+ * used by the backend.
+ */
+export function makeCellKey(caseId: string, phenotypeId: string): string {
+  return `${caseId}:${phenotypeId}`;
+}
+
+/**
+ * Fetch case counts for a disease (used for tab labels). Makes lightweight
+ * requests just to get counts without full matrix data.
+ *
+ * @param diseaseId - MONDO disease ID
+ * @returns Object with direct and all case counts
+ */
+export async function getCaseCounts(
+  diseaseId: string,
+): Promise<{ direct: number; all: number }> {
+  // Use limit=1 to minimize data transfer, we just want the count
+  const [directResponse, allResponse] = await Promise.all([
+    fetch(
+      `${apiUrl}/case-phenotype-matrix/${encodeURIComponent(diseaseId)}?direct=true&limit=1000`,
+    ),
+    fetch(
+      `${apiUrl}/case-phenotype-matrix/${encodeURIComponent(diseaseId)}?direct=false&limit=1000`,
+    ),
+  ]);
+
+  let directCount = 0;
+  let allCount = 0;
+
+  if (directResponse.ok) {
+    const data = await directResponse.json();
+    directCount = data.total_cases;
+  } else if (directResponse.status === 400) {
+    // Case limit exceeded - parse from error message
+    const errorData = await directResponse.json().catch(() => ({}));
+    const match = errorData.detail?.match(/\((\d+)\)/);
+    if (match) {
+      directCount = parseInt(match[1]);
+    }
+  }
+
+  if (allResponse.ok) {
+    const data = await allResponse.json();
+    allCount = data.total_cases;
+  } else if (allResponse.status === 400) {
+    // Case limit exceeded - parse from error message
+    const errorData = await allResponse.json().catch(() => ({}));
+    const match = errorData.detail?.match(/\((\d+)\)/);
+    if (match) {
+      allCount = parseInt(match[1]);
+    }
+  }
+
+  return { direct: directCount, all: allCount };
+}

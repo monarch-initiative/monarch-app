@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQuery
 from monarch_py.datamodels.category_enums import AssociationPredicate
@@ -326,3 +326,104 @@ def association_search_query_fields():
         " object object_label^2 object_label_t object_closure object_closure_label object_closure_label_t"
         " publications has_evidence primary_knowledge_source aggregator_knowledge_source provided_by "
     )
+
+
+def build_case_phenotype_query(
+    disease_id: str,
+    direct_only: bool,
+    rows: int = 50000,
+) -> Dict[str, Any]:
+    """Build Solr query for case-phenotype matrix.
+
+    Uses Solr's JOIN query parser to find all phenotype associations
+    for cases that have a specific disease association.
+
+    The query structure:
+    1. Main query: JOIN from CaseToDiseaseAssociation to CaseToPhenotypicFeatureAssociation
+       - Joins on `subject` field (the case ID)
+       - Inner query filters diseases by object (direct) or object_closure (indirect)
+    2. Filter query: Restrict results to phenotype associations only
+    3. Facet queries: Count phenotypes per HistoPheno bin
+
+    Args:
+        disease_id: MONDO disease ID to query
+        direct_only: If True, only cases with exactly this disease;
+                     If False, includes cases with descendant diseases
+        rows: Maximum results to return
+
+    Returns:
+        Dict of Solr query parameters ready for requests
+
+    Example direct query:
+        {!join from=subject to=subject}(
+            category:"biolink:CaseToDiseaseAssociation"
+            AND object:"MONDO:0007078"
+        )
+
+    Example indirect query (via closure):
+        {!join from=subject to=subject}(
+            category:"biolink:CaseToDiseaseAssociation"
+            AND object_closure:"MONDO:0007078"
+        )
+    """
+    disease_field = "object" if direct_only else "object_closure"
+
+    join_query = (
+        '{!join from=subject to=subject}'
+        f'(category:"biolink:CaseToDiseaseAssociation" '
+        f'AND {disease_field}:"{disease_id}")'
+    )
+
+    facet_queries = [
+        f'object_closure:"{bin_key.value}"'
+        for bin_key in HistoPhenoKeys
+    ]
+
+    return {
+        "q": join_query,
+        "fq": 'category:"biolink:CaseToPhenotypicFeatureAssociation"',
+        "rows": rows,
+        "fl": ",".join([
+            "subject",           # Case ID
+            "subject_label",     # Case label
+            "object",            # Phenotype ID
+            "object_label",      # Phenotype label
+            "object_closure",    # For bin assignment
+            "negated",           # Explicit absence
+            "publications",      # Supporting evidence
+            "onset_qualifier",   # Age of onset (ISO8601)
+            "onset_qualifier_label",
+        ]),
+        "facet": "true",
+        "facet.query": facet_queries,
+    }
+
+
+def build_case_disease_query(
+    disease_id: str,
+    direct_only: bool,
+    rows: int = 50000,
+) -> Dict[str, Any]:
+    """Build Solr query to get cases for a disease.
+
+    This is a simpler query to get CaseToDiseaseAssociation documents,
+    which we need to determine:
+    1. Total case count (for limit checking before full matrix fetch)
+    2. Which specific disease each case has (for direct/indirect flagging)
+
+    Args:
+        disease_id: MONDO disease ID to query
+        direct_only: If True, only cases with exactly this disease
+        rows: Maximum results to return
+
+    Returns:
+        Dict of Solr query parameters
+    """
+    disease_field = "object" if direct_only else "object_closure"
+
+    return {
+        "q": f'{disease_field}:"{disease_id}"',
+        "fq": 'category:"biolink:CaseToDiseaseAssociation"',
+        "rows": rows,
+        "fl": "subject,subject_label,object,object_label",
+    }
