@@ -3,14 +3,23 @@
   Shows cases (from phenopackets) with their phenotypes grouped by body system.
 
   Only shown for specific diseases, not grouping classes (determined by Mondo subsets).
-  Also limited to diseases with <= 1000 cases to avoid performance issues.
+  Silently hidden for diseases with 0 cases or > 100 cases (uses association_counts
+  from the node to avoid expensive API calls for high-level disease terms).
 -->
 
 <template>
-  <!-- Render for specific diseases (not grouping classes), hide after load if no cases -->
+  <!--
+    Only render for diseases that:
+    - Are biolink:Disease category
+    - Are not grouping classes (based on Mondo subsets)
+    - Have 1-100 cases (from association_counts - no expensive API needed to check)
+  -->
   <AppSection
     v-if="
-      node.category === 'biolink:Disease' && !isGroupingClass && !hideSection
+      node.category === 'biolink:Disease' &&
+      !isGroupingClass &&
+      caseCountFromAssociations > 0 &&
+      caseCountFromAssociations <= MAX_CASES_LIMIT
     "
     width="full"
     class="inset"
@@ -18,14 +27,9 @@
   >
     <AppHeading icon="table">Case Phenotypes</AppHeading>
 
-    <!-- Tabs for Direct/All (hidden when limit exceeded) -->
+    <!-- Tabs for Direct/All -->
     <AppAssociationTabs
-      v-if="
-        !isLoading &&
-        !isError &&
-        !exceedsLimit &&
-        (directCount > 0 || allCount > 0)
-      "
+      v-if="!isLoading && !isError && (directCount > 0 || allCount > 0)"
       :has-direct-associations="directCount > 0"
       :show-all-tab="allCount > directCount"
       :direct-active="selectedTab === 'direct'"
@@ -46,13 +50,6 @@
     <AppStatus v-else-if="isError" code="error">
       {{ errorMessage || "Error loading case phenotype data" }}
     </AppStatus>
-
-    <!-- Limit exceeded message -->
-    <p v-else-if="exceedsLimit" class="limit-message">
-      This disease has {{ allCount }} associated cases, which exceeds the
-      display limit of {{ MAX_CASES_LIMIT }}. The grid visualization is only
-      shown for diseases with fewer cases.
-    </p>
 
     <!-- Grid content -->
     <template v-else-if="matrix">
@@ -84,11 +81,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import { useRoute } from "vue-router";
-import {
-  CaseLimitExceededError,
-  getCaseCounts,
-  getCasePhenotypeMatrix,
-} from "@/api/case-phenotype";
+import { getCasePhenotypeMatrix } from "@/api/case-phenotype";
 import type {
   CaseEntity,
   CasePhenotype,
@@ -110,12 +103,22 @@ type Props = {
 const props = defineProps<Props>();
 
 /**
- * Maximum number of cases to display in the grid. Diseases with more cases than
- * this limit are typically high-level grouping terms where the grid becomes
- * unwieldy and expensive to render. The limit also reduces backend load by
- * skipping the expensive phenotype fetching for large case sets.
+ * Maximum number of cases to display in the grid. We use association_counts
+ * (already loaded with the node) to gate whether to show this section at all,
+ * avoiding expensive API calls for high-level disease terms with many cases.
  */
-const MAX_CASES_LIMIT = 1000;
+const MAX_CASES_LIMIT = 100;
+
+/**
+ * Get case count from node's association_counts. This is already loaded with
+ * the node data, so no additional API call needed. Returns 0 if not found.
+ */
+const caseCountFromAssociations = computed(() => {
+  const caseAssoc = props.node.association_counts?.find(
+    (a) => a.category === "biolink:CaseToDiseaseAssociation",
+  );
+  return caseAssoc?.count ?? 0;
+});
 
 /**
  * Subset markers that indicate a disease is a grouping class (not a specific
@@ -144,8 +147,18 @@ const isGroupingClass = computed(() => {
 
 /** Tab state */
 const selectedTab = ref<"direct" | "all">("direct");
-const directCount = ref(0);
-const allCount = ref(0);
+
+/**
+ * Direct count is derived from the matrix after fetching. We count cases where
+ * isDirect is true.
+ */
+const directCount = computed(() => {
+  if (!matrix.value) return 0;
+  return matrix.value.cases.filter((c) => c.isDirect).length;
+});
+
+/** All count comes from association_counts (includes descendants). */
+const allCount = computed(() => caseCountFromAssociations.value);
 
 /** Loading and error state */
 const isLoading = ref(false);
@@ -180,28 +193,7 @@ const selectedCase = ref<CaseEntity | null>(null);
 const selectedPhenotype = ref<CasePhenotype | null>(null);
 const selectedCellData = ref<CasePhenotypeCellData | null>(null);
 
-/** Fetch case counts for both tabs */
-async function fetchCounts() {
-  try {
-    const counts = await getCaseCounts(props.node.id || "");
-    directCount.value = counts.direct;
-    allCount.value = counts.all;
-
-    // Default to "all" tab if no direct cases but there are descendant cases
-    if (counts.direct === 0 && counts.all > 0) {
-      selectedTab.value = "all";
-    } else {
-      // Reset to direct if we have direct cases
-      selectedTab.value = "direct";
-    }
-  } catch (e) {
-    console.error("Failed to fetch case counts:", e);
-    directCount.value = 0;
-    allCount.value = 0;
-  }
-}
-
-/** Fetch matrix data using the new single-endpoint API */
+/** Fetch matrix data from the backend API */
 async function fetchMatrix() {
   isLoading.value = true;
   isError.value = false;
@@ -214,28 +206,21 @@ async function fetchMatrix() {
       direct: isDirect,
       limit: MAX_CASES_LIMIT,
     });
+
+    // If direct tab has no cases but there are descendant cases, switch to all
+    if (isDirect && matrix.value && matrix.value.totalCases === 0) {
+      if (caseCountFromAssociations.value > 0) {
+        selectedTab.value = "all";
+        // The tab watcher will trigger a refetch
+      }
+    }
   } catch (e) {
     isError.value = true;
-    if (e instanceof CaseLimitExceededError) {
-      errorMessage.value =
-        `This disease has ${e.actual} cases, which exceeds the display limit. ` +
-        `Switch to "Direct" tab to see only directly-annotated cases.`;
-    } else {
-      errorMessage.value =
-        e instanceof Error ? e.message : "Failed to load data";
-    }
+    errorMessage.value = e instanceof Error ? e.message : "Failed to load data";
   } finally {
     isLoading.value = false;
   }
 }
-
-/** Check if case count exceeds our display limit */
-const exceedsLimit = computed(() => allCount.value > MAX_CASES_LIMIT);
-
-/** Hide section if loading finished and no data in either tab */
-const hideSection = computed(
-  () => !isLoading.value && !isError.value && allCount.value === 0,
-);
 
 /** Handle cell click to open modal */
 function handleCellClick(
@@ -254,26 +239,29 @@ function handleCellClick(
   showModal.value = true;
 }
 
-/** Refetch when route or node changes, but skip for grouping classes */
+/**
+ * Fetch matrix when route/node changes. The section is only rendered if
+ * caseCountFromAssociations is in [1, MAX_CASES_LIMIT], so we know it's safe to
+ * fetch when this component is mounted.
+ */
 watch(
   [() => route.path, () => props.node.id],
-  async () => {
-    if (!isGroupingClass.value) {
-      await fetchCounts();
-      // Skip expensive matrix fetch if case count exceeds limit
-      if (allCount.value <= MAX_CASES_LIMIT) {
-        fetchMatrix();
-      }
+  () => {
+    // Only fetch if we're within the display limit (template already gates this)
+    if (
+      !isGroupingClass.value &&
+      caseCountFromAssociations.value > 0 &&
+      caseCountFromAssociations.value <= MAX_CASES_LIMIT
+    ) {
+      fetchMatrix();
     }
   },
   { immediate: true },
 );
 
-/** Refetch matrix when tab changes, but only if within limit */
+/** Refetch matrix when tab changes */
 watch(selectedTab, () => {
-  if (allCount.value <= MAX_CASES_LIMIT) {
-    fetchMatrix();
-  }
+  fetchMatrix();
 });
 </script>
 
@@ -281,15 +269,5 @@ watch(selectedTab, () => {
 .description {
   margin-bottom: 1rem;
   color: var(--dark-gray);
-}
-
-.limit-message {
-  color: var(--dark-gray);
-  font-style: italic;
-}
-
-.no-data {
-  color: var(--dark-gray);
-  font-style: italic;
 }
 </style>

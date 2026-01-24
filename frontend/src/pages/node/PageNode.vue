@@ -25,7 +25,6 @@
     <SectionTitle :node="node" />
     <SectionOverview :node="node" />
     <SectionVisualization :node="node" />
-    <SectionCasePhenotypeGrid :node="node" />
     <SectionAssociations :node="node" />
     <SectionBreadcrumbs :node="node" />
     <!-- <SectionHierarchy :node="node" /> -->
@@ -45,7 +44,6 @@ import { addEntry } from "@/global/history";
 import { appDescription, appTitle } from "@/global/meta";
 import SectionBreadcrumbs from "@/pages/node/SectionBreadcrumbs.vue";
 import SectionAssociations from "./SectionAssociations.vue";
-import SectionCasePhenotypeGrid from "./SectionCasePhenotypeGrid.vue";
 import SectionOverview from "./SectionOverview.vue";
 import SectionTitle from "./SectionTitle.vue";
 import SectionVisualization from "./SectionVisualization.vue";
