@@ -79,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { getCasePhenotypeMatrix } from "@/api/case-phenotype";
 import type {
@@ -182,9 +182,10 @@ const allTooltip = computed(() => {
   return `${allCount.value} total cases including ${inferredCount} from sub-diseases`;
 });
 
-/** Handle tab selection */
+/** Handle tab selection - user clicked a tab */
 function handleTabSelect(which: "direct" | "all") {
   selectedTab.value = which;
+  fetchMatrix();
 }
 
 /** Modal state */
@@ -202,18 +203,26 @@ async function fetchMatrix() {
 
   try {
     const isDirect = selectedTab.value === "direct";
-    matrix.value = await getCasePhenotypeMatrix(props.node.id || "", {
+    const result = await getCasePhenotypeMatrix(props.node.id || "", {
       direct: isDirect,
       limit: MAX_CASES_LIMIT,
     });
 
     // If direct tab has no cases but there are descendant cases, switch to all
-    if (isDirect && matrix.value && matrix.value.totalCases === 0) {
+    // and fetch again immediately
+    if (isDirect && result && result.totalCases === 0) {
       if (caseCountFromAssociations.value > 0) {
         selectedTab.value = "all";
-        // The tab watcher will trigger a refetch
+        // Fetch again with all cases
+        matrix.value = await getCasePhenotypeMatrix(props.node.id || "", {
+          direct: false,
+          limit: MAX_CASES_LIMIT,
+        });
+        return; // Exit early, finally block will run
       }
     }
+
+    matrix.value = result;
   } catch (e) {
     isError.value = true;
     errorMessage.value = e instanceof Error ? e.message : "Failed to load data";
@@ -240,29 +249,21 @@ function handleCellClick(
 }
 
 /**
- * Fetch matrix when route/node changes. The section is only rendered if
- * caseCountFromAssociations is in [1, MAX_CASES_LIMIT], so we know it's safe to
- * fetch when this component is mounted.
+ * Fetch matrix on mount. The section is only rendered if caseCountFromAssociations
+ * is in [1, MAX_CASES_LIMIT], so we know it's safe to fetch when mounted.
  */
+onMounted(() => {
+  fetchMatrix();
+});
+
+/** Refetch when navigating to a different disease */
 watch(
   [() => route.path, () => props.node.id],
   () => {
-    // Only fetch if we're within the display limit (template already gates this)
-    if (
-      !isGroupingClass.value &&
-      caseCountFromAssociations.value > 0 &&
-      caseCountFromAssociations.value <= MAX_CASES_LIMIT
-    ) {
-      fetchMatrix();
-    }
+    fetchMatrix();
   },
-  { immediate: true },
 );
 
-/** Refetch matrix when tab changes */
-watch(selectedTab, () => {
-  fetchMatrix();
-});
 </script>
 
 <style lang="scss" scoped>

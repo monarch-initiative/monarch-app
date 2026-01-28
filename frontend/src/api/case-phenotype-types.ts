@@ -1,10 +1,28 @@
 /**
- * Types for Case-Phenotype Grid visualization These are UI-specific types,
- * separate from the LinkML-generated model.ts
+ * Types for Case-Phenotype Grid visualization.
+ * These are UI-specific types, separate from the LinkML-generated model.ts.
+ *
+ * Note: Generic types are available in '@/api/entity-grid/types' for new use cases.
  */
 
 import type { ExpandedCurie } from "./model";
 
+// Re-export generic types for new code
+export {
+  type ColumnEntity,
+  type RowEntity,
+  type RowBin,
+  type CellData,
+  type CellQualifier,
+  type EntityGridMatrix,
+  type EntityGridConfig,
+  HISTOPHENO_BINS,
+  HISTOPHENO_BIN_IDS,
+} from "./entity-grid/types";
+
+/**
+ * Case entity for case-phenotype grid (column in the grid).
+ */
 export interface CaseEntity {
   id: string;
   label?: string;
@@ -17,20 +35,29 @@ export interface CaseEntity {
   isDirect?: boolean;
 }
 
+/**
+ * HistoPheno bin for grouping phenotypes by body system.
+ */
 export interface HistoPhenoBin {
-  id: string; // UPHENO/HP ID
-  label: string; // Human-readable label
+  id: string;
+  label: string;
   phenotypeIds: string[];
   expanded: boolean;
   count: number;
 }
 
+/**
+ * Phenotype entity for case-phenotype grid (row in the grid).
+ */
 export interface CasePhenotype {
   id: string;
   label?: string;
   binId: string;
 }
 
+/**
+ * Cell data for case-phenotype grid.
+ */
 export interface CasePhenotypeCellData {
   present: boolean;
   negated?: boolean;
@@ -42,40 +69,16 @@ export interface CasePhenotypeCellData {
   source?: string;
 }
 
+/**
+ * Complete matrix structure for case-phenotype grid visualization.
+ */
 export interface CasePhenotypeMatrix {
   diseaseId: string;
   diseaseName?: string;
   cases: CaseEntity[];
   bins: HistoPhenoBin[];
   phenotypes: CasePhenotype[];
-  cells: Map<string, CasePhenotypeCellData>; // key: "caseId:phenotypeId"
+  cells: Map<string, CasePhenotypeCellData>;
   totalCases: number;
   totalPhenotypes: number;
 }
-
-/** HistoPheno bin IDs mapped to human-readable labels */
-export const HISTOPHENO_BINS: Record<string, string> = {
-  "UPHENO:0002964": "Skeletal System",
-  "UPHENO:0004523": "Nervous System",
-  "UPHENO:0002764": "Head and Neck",
-  "UPHENO:0002635": "Integument",
-  "UPHENO:0003020": "Eye",
-  "UPHENO:0080362": "Cardiovascular System",
-  "HP:0001939": "Metabolism and Homeostasis",
-  "UPHENO:0002642": "Genitourinary System",
-  "UPHENO:0002833": "Digestive System",
-  "HP:0002664": "Neoplasm",
-  "UPHENO:0004459": "Blood",
-  "UPHENO:0002948": "Immune System",
-  "UPHENO:0003116": "Endocrine",
-  "UPHENO:0002816": "Musculature",
-  "UPHENO:0004536": "Respiratory",
-  "HP:0000598": "Ear",
-  "UPHENO:0002712": "Connective Tissue",
-  "UPHENO:0075949": "Prenatal or Birth",
-  "UPHENO:0049874": "Growth",
-  "UPHENO:0003013": "Breast",
-};
-
-/** Set of all histopheno bin IDs for quick lookup */
-export const HISTOPHENO_BIN_IDS = new Set(Object.keys(HISTOPHENO_BINS));

@@ -427,3 +427,105 @@ def build_case_disease_query(
         "rows": rows,
         "fl": "subject,subject_label,object,object_label",
     }
+
+
+def build_grid_column_query(
+    context_id: str,
+    config: "GridTypeConfig",
+    direct_only: bool,
+    rows: int = 50000,
+) -> Dict[str, Any]:
+    """Build Solr query to get column entities for a grid.
+
+    First hop: Context Entity -> Column Entities
+
+    Args:
+        context_id: The context entity ID (e.g., disease ID, gene ID)
+        config: Grid type configuration
+        direct_only: If True, only direct associations; if False, use closure
+        rows: Maximum results to return
+
+    Returns:
+        Dict of Solr query parameters
+    """
+    from monarch_py.datamodels.grid_configs import GridTypeConfig
+
+    context_field = config.context_field if direct_only else config.context_closure_field
+
+    return {
+        "q": f'{context_field}:"{context_id}"',
+        "fq": f'category:"{config.column_assoc_category.value}"',
+        "rows": rows,
+        "fl": ",".join([
+            config.column_field,
+            f"{config.column_field}_label",
+            config.context_field,
+            f"{config.context_field}_label",
+            "subject_taxon",
+            "subject_taxon_label",
+            "object_taxon",
+            "object_taxon_label",
+        ]),
+    }
+
+
+def build_grid_row_query(
+    context_id: str,
+    config: "GridTypeConfig",
+    grouping: "RowGroupingConfig",
+    direct_only: bool,
+    rows: int = 50000,
+) -> Dict[str, Any]:
+    """Build Solr query for grid row entities using JOIN.
+
+    Second hop: Column Entities -> Row Entities
+
+    Uses Solr's JOIN query parser to find all row associations
+    for column entities that are associated with the context entity.
+
+    Args:
+        context_id: The context entity ID
+        config: Grid type configuration
+        grouping: Row grouping configuration (for facet queries)
+        direct_only: If True, only direct associations; if False, use closure
+        rows: Maximum results to return
+
+    Returns:
+        Dict of Solr query parameters
+    """
+    from monarch_py.datamodels.grid_configs import GridTypeConfig
+    from monarch_py.datamodels.grid_groupings import RowGroupingConfig
+
+    context_field = config.context_field if direct_only else config.context_closure_field
+
+    # JOIN query: Find row associations for column entities associated with context
+    join_query = (
+        f'{{!join from={config.column_field} to={config.row_context_field}}}'
+        f'(category:"{config.column_assoc_category.value}" '
+        f'AND {context_field}:"{context_id}")'
+    )
+
+    # Build facet queries for bin counts
+    facet_queries = [
+        f'{config.row_entity_field}_closure:"{bin_id}"'
+        for bin_id in grouping.bin_ids
+    ]
+
+    return {
+        "q": join_query,
+        "fq": f'category:"{config.row_assoc_category.value}"',
+        "rows": rows,
+        "fl": ",".join([
+            config.row_context_field,                      # Column entity ID
+            f"{config.row_context_field}_label",           # Column entity label
+            config.row_entity_field,                       # Row entity ID
+            f"{config.row_entity_field}_label",            # Row entity label
+            f"{config.row_entity_field}_closure",          # For bin assignment
+            "negated",
+            "publications",
+            "onset_qualifier",
+            "onset_qualifier_label",
+        ]),
+        "facet": "true",
+        "facet.query": facet_queries,
+    }

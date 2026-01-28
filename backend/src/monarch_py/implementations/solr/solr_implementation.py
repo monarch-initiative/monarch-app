@@ -12,6 +12,7 @@ from monarch_py.datamodels.model import (
     CasePhenotypeMatrixResponse,
     CategoryGroupedAssociationResults,
     Entity,
+    EntityGridResponse,
     HistoPheno,
     MappingResults,
     MultiEntityAssociationResults,
@@ -45,6 +46,8 @@ from monarch_py.implementations.solr.solr_query_utils import (
     build_autocomplete_query,
     build_case_disease_query,
     build_case_phenotype_query,
+    build_grid_column_query,
+    build_grid_row_query,
     build_histopheno_query,
     build_mapping_query,
     build_multi_entity_association_query,
@@ -57,6 +60,9 @@ from monarch_py.interfaces.search_interface import SearchInterface
 from monarch_py.interfaces.grounding_interface import GroundingInterface
 from monarch_py.service.solr_service import SolrService
 from monarch_py.utils.case_phenotype_utils import build_matrix
+from monarch_py.utils.entity_grid_utils import build_entity_grid
+from monarch_py.datamodels.grid_configs import get_grid_config
+from monarch_py.datamodels.grid_groupings import get_row_grouping
 from monarch_py.utils.entity_utils import get_expanded_curie, get_uri
 from monarch_py.utils.utils import get_provided_by_link, get_links_for_field
 
@@ -637,6 +643,113 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             phenotype_docs=phenotype_docs,
             facet_counts=facet_counts,
         )
+
+    def get_entity_grid(
+        self,
+        context_id: str,
+        grid_type: str,
+        direct_only: bool = True,
+        limit: int = 200,
+    ) -> EntityGridResponse:
+        """Fetch entity grid for any supported grid type.
+
+        This is a generic 2-hop query that works for multiple grid types:
+        - case-phenotype: Disease -> Case × Phenotype
+        - disease-phenotype: Gene -> Disease × Phenotype
+        - ortholog-phenotype: Gene -> Ortholog × Phenotype
+
+        Execution flow:
+        1. Get grid configuration for the specified type
+        2. Query for column entities (first hop)
+        3. Check count against limit
+        4. Query for row associations via JOIN (second hop, includes facets)
+        5. Build and return grid response
+
+        Args:
+            context_id: The context entity ID (e.g., disease ID, gene ID)
+            grid_type: The type of grid to generate
+            direct_only: If True, only direct associations; if False, use closure
+            limit: Maximum number of column entities allowed
+
+        Returns:
+            EntityGridResponse with complete grid data
+
+        Raises:
+            ValueError: If column count exceeds limit or grid type is unknown
+        """
+        # Step 1: Get configuration
+        config = get_grid_config(grid_type)
+        grouping = get_row_grouping(config.row_entity_category.value)
+
+        # Step 2: Get column entities
+        col_params = build_grid_column_query(
+            context_id=context_id,
+            config=config,
+            direct_only=direct_only,
+            rows=limit + 1,
+        )
+        col_result = self._raw_solr_query(col_params)
+        col_docs = col_result.get("response", {}).get("docs", [])
+
+        # Step 3: Check limit
+        if len(col_docs) > limit:
+            raise ValueError(
+                f"Column count ({len(col_docs)}) exceeds limit ({limit}). "
+                f"Use direct=true or reduce the scope."
+            )
+
+        # Handle no columns
+        if not col_docs:
+            context_name = self._get_entity_name(context_id)
+            return EntityGridResponse(
+                context_id=context_id,
+                context_name=context_name,
+                context_category=config.context_category.value,
+                total_columns=0,
+                total_rows=0,
+                columns=[],
+                rows=[],
+                bins=[],
+                cells={},
+            )
+
+        # Step 4: Get row associations via JOIN query
+        row_params = build_grid_row_query(
+            context_id=context_id,
+            config=config,
+            grouping=grouping,
+            direct_only=direct_only,
+        )
+        row_result = self._raw_solr_query(row_params)
+        row_docs = row_result.get("response", {}).get("docs", [])
+        facet_counts = row_result.get("facet_counts", {}).get("facet_queries", {})
+
+        # Step 5: Build grid
+        return build_entity_grid(
+            context_id=context_id,
+            context_name=self._get_entity_name(context_id),
+            context_category=config.context_category.value,
+            config=config,
+            grouping=grouping,
+            column_docs=col_docs,
+            row_docs=row_docs,
+            facet_counts=facet_counts,
+        )
+
+    def _get_entity_name(self, entity_id: str) -> str:
+        """Fetch human-readable entity name.
+
+        Args:
+            entity_id: Entity ID
+
+        Returns:
+            Entity name or the ID if name cannot be fetched
+        """
+        try:
+            entity = self.get_entity(entity_id, extra=False)
+            return entity.name if entity and entity.name else entity_id
+        except Exception:
+            return entity_id
 
     def _raw_solr_query(self, params: dict) -> dict:
         """Execute a raw Solr query with dictionary parameters.
