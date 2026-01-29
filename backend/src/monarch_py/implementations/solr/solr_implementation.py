@@ -30,6 +30,7 @@ from monarch_py.datamodels.category_enums import (
 from monarch_py.implementations.solr.solr_parsers import (
     convert_facet_fields,
     convert_facet_queries,
+    normalize_solr_doc_for_model,
     parse_association_counts,
     parse_association_table,
     parse_associations,
@@ -103,7 +104,9 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             return parse_entity(solr_document)
 
         # Get extra data (this logic is very tricky to test because of the calls to Solr)
-        entity = Entity(**solr_document)
+        # Normalize for Node since that's the target model with additional fields
+        normalized_doc = normalize_solr_doc_for_model(solr_document, Node)
+        entity = Entity(**normalized_doc)
         entity.uri = get_uri(entity.id)
         if "biolink:Disease" == entity.category:
             # Get mode of inheritance
