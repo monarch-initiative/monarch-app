@@ -209,8 +209,8 @@ async function fetchMatrix() {
     });
 
     // If direct tab has no cases but there are descendant cases, switch to all
-    // and fetch again immediately
-    if (isDirect && result && result.totalCases === 0) {
+    // and fetch again immediately. Note: API returns null when totalCases === 0
+    if (isDirect && !result) {
       if (caseCountFromAssociations.value > 0) {
         selectedTab.value = "all";
         // Fetch again with all cases
