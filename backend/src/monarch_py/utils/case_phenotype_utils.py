@@ -33,7 +33,7 @@ def build_matrix(
     case_map = {c.id: c for c in cases}
     phenotypes, phenotype_to_bin = _build_phenotypes(phenotype_docs)
     cells = _build_cells(phenotype_docs, case_map)
-    bins = _build_bins(facet_counts)
+    bins = _build_bins(phenotype_docs, facet_counts)
 
     return CasePhenotypeMatrixResponse(
         disease_id=disease_id,
@@ -175,15 +175,30 @@ def _build_cells(phenotype_docs: List[dict], case_map: Dict[str, CaseEntity]) ->
     return cells
 
 
-def _build_bins(facet_counts: Dict[str, int]) -> List[HistoPhenoBin]:
-    """Build bin list from Solr facet query results.
+def _build_bins(phenotype_docs: List[dict], facet_counts: Dict[str, int]) -> List[HistoPhenoBin]:
+    """Build bin list with phenotype IDs from Solr documents.
 
     Args:
+        phenotype_docs: List of CaseToPhenotypicFeatureAssociation Solr documents
         facet_counts: Dict of facet query results
 
     Returns:
-        List of HistoPhenoBin objects in HistoPhenoKeys order
+        List of HistoPhenoBin objects with phenotype_ids populated
     """
+    # Collect phenotypes per bin by checking closures
+    bin_phenotypes: Dict[str, Set[str]] = {key.value: set() for key in HistoPhenoKeys}
+
+    for doc in phenotype_docs:
+        phenotype_id = doc.get("object")
+        if not phenotype_id:
+            continue
+        closure = set(doc.get("object_closure", []))
+
+        # Add phenotype to ALL matching bins (not just first)
+        for key in HistoPhenoKeys:
+            if key.value in closure:
+                bin_phenotypes[key.value].add(phenotype_id)
+
     bins = []
 
     for key in HistoPhenoKeys:
@@ -195,6 +210,7 @@ def _build_bins(facet_counts: Dict[str, int]) -> List[HistoPhenoBin]:
             id=bin_id,
             label=HISTOPHENO_BIN_LABELS.get(bin_id, bin_id),
             phenotype_count=count,
+            phenotype_ids=sorted(bin_phenotypes[bin_id]),
         )
         bins.append(bin_obj)
 

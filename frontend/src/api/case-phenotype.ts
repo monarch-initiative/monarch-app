@@ -35,6 +35,7 @@ interface BackendMatrixResponse {
     id: string;
     label: string;
     phenotype_count: number;
+    phenotype_ids: string[];
   }>;
   cells: Record<
     string,
@@ -148,18 +149,11 @@ function transformResponse(data: BackendMatrixResponse): CasePhenotypeMatrix {
     binId: p.bin_id,
   }));
 
-  // Transform bins - group phenotypes by bin
-  const phenotypesByBin = new Map<string, string[]>();
-  for (const p of phenotypes) {
-    const list = phenotypesByBin.get(p.binId) || [];
-    list.push(p.id);
-    phenotypesByBin.set(p.binId, list);
-  }
-
+  // Transform bins - phenotypeIds now comes from backend (multi-bin assignment)
   const bins: HistoPhenoBin[] = data.bins.map((b) => ({
     id: b.id,
     label: b.label,
-    phenotypeIds: phenotypesByBin.get(b.id) || [],
+    phenotypeIds: b.phenotype_ids || [],
     expanded: false,
     count: b.phenotype_count,
   }));

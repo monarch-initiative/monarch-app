@@ -665,6 +665,7 @@ class HistoPhenoBin(ConfiguredBaseModel):
     id: str = Field(default=...)
     label: str = Field(default=...)
     phenotype_count: int = Field(default=..., description="""Number of phenotypes in a bin""")
+    phenotype_ids: list[str] = Field(default_factory=list, description="""List of phenotype IDs in this bin""")
 
 
 class CasePhenotypeCellData(ConfiguredBaseModel):
