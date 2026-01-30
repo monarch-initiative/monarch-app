@@ -349,6 +349,7 @@ const handleCellClick = (columnId: string, rowId: string) => {
   left: 0;
   border-right: 2px solid #e5e7eb;
   background: white;
+  text-align: left;
 }
 
 // Header styles

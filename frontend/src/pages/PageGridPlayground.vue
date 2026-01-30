@@ -59,24 +59,25 @@
       </div>
 
       <div class="control-group">
-        <label>
+        <label>Category Grid Lines:</label>
+        <label class="toggle-switch">
           <input v-model="playgroundGroupByCategory" type="checkbox" />
-          Group columns by category
+          <span class="toggle-slider"></span>
+          <span class="toggle-label">{{ playgroundGroupByCategory ? 'On' : 'Off' }}</span>
         </label>
       </div>
 
       <div class="control-group">
-        <label>Column Headers:</label>
-        <div class="radio-group">
-          <label>
-            <input v-model="columnDisplayMode" type="radio" value="numeric" />
-            Numbers
-          </label>
-          <label>
-            <input v-model="columnDisplayMode" type="radio" value="labeled" />
-            Labels
-          </label>
-        </div>
+        <label>Column Labels:</label>
+        <label class="toggle-switch">
+          <input
+            type="checkbox"
+            :checked="columnDisplayMode === 'labeled'"
+            @change="columnDisplayMode = ($event.target as HTMLInputElement).checked ? 'labeled' : 'numeric'"
+          />
+          <span class="toggle-slider"></span>
+          <span class="toggle-label">{{ columnDisplayMode === 'labeled' ? 'On' : 'Off' }}</span>
+        </label>
       </div>
 
       <AppButton
@@ -320,8 +321,8 @@ const playgroundColumnCategories = ref([
 const playgroundRowCategories = ref([
   { id: "biolink:DiseaseToPhenotypicFeatureAssociation" },
 ]);
-const playgroundGroupByCategory = ref(false);
-const columnDisplayMode = ref<"numeric" | "labeled">("numeric");
+const playgroundGroupByCategory = ref(true);
+const columnDisplayMode = ref<"numeric" | "labeled">("labeled");
 const playgroundLoading = ref(false);
 const playgroundError = ref("");
 const playgroundMatrix = ref<EntityGridMatrix | null>(null);
@@ -478,18 +479,55 @@ function handlePlaygroundCellClick(
   }
 }
 
-.radio-group {
+// Toggle switch styles
+.toggle-switch {
   display: flex;
-  gap: 1rem;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
 
-  label {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    color: #333;
-    font-weight: 400;
-    font-size: 0.875rem;
-    cursor: pointer;
+  input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+
+  .toggle-slider {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+    border-radius: 11px;
+    background-color: #ccc;
+    transition: background-color 0.2s;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background-color: white;
+      transition: transform 0.2s;
+    }
+  }
+
+  input:checked + .toggle-slider {
+    background-color: #2196f3;
+
+    &::before {
+      transform: translateX(18px);
+    }
+  }
+
+  .toggle-label {
+    min-width: 24px;
+    color: #666;
+    font-weight: 500;
+    font-size: 0.8rem;
   }
 }
 
