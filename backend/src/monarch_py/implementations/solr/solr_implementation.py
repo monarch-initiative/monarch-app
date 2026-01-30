@@ -804,7 +804,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         else:
             grouping = get_empty_grouping()
 
-        # Step 1: Get column entities
+        # Step 1: Get column entities (filtering out columns with no row associations)
         col_params = build_multi_category_column_query(
             context_id=context_id,
             column_assoc_categories=column_assoc_categories,
@@ -812,6 +812,9 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             context_closure_field=context_closure_field,
             column_field=column_field,
             direct_only=direct_only,
+            row_assoc_categories=row_assoc_categories,
+            row_context_field=row_context_field,
+            filter_empty_columns=True,
             rows=limit + 1,
         )
         col_result = self._raw_solr_query(col_params)

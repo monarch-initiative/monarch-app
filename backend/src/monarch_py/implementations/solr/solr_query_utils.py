@@ -433,6 +433,7 @@ def build_grid_column_query(
     context_id: str,
     config: "GridTypeConfig",
     direct_only: bool,
+    filter_empty_columns: bool = True,
     rows: int = 50000,
 ) -> Dict[str, Any]:
     """Build Solr query to get column entities for a grid.
@@ -443,6 +444,7 @@ def build_grid_column_query(
         context_id: The context entity ID (e.g., disease ID, gene ID)
         config: Grid type configuration
         direct_only: If True, only direct associations; if False, use closure
+        filter_empty_columns: If True, exclude columns with no row associations
         rows: Maximum results to return
 
     Returns:
@@ -452,9 +454,28 @@ def build_grid_column_query(
 
     context_field = config.context_field if direct_only else config.context_closure_field
 
+    # Base filter for column association category
+    fq = [f'category:"{config.column_assoc_category.value}"']
+
+    # Build main query
+    if filter_empty_columns:
+        # Use JOIN to find column associations where the column entity
+        # appears in row associations. This filters out columns with no rows.
+        # JOIN: from=row_context_field (e.g., subject in phenotype assocs)
+        #       to=column_field (e.g., object in homology assocs)
+        existence_join = (
+            f'{{!join from={config.row_context_field} to={config.column_field}}}'
+            f'category:"{config.row_assoc_category.value}"'
+        )
+        q = existence_join
+        # Add context filter to fq instead of q
+        fq.append(f'{context_field}:"{context_id}"')
+    else:
+        q = f'{context_field}:"{context_id}"'
+
     return {
-        "q": f'{context_field}:"{context_id}"',
-        "fq": f'category:"{config.column_assoc_category.value}"',
+        "q": q,
+        "fq": fq,
         "rows": rows,
         "fl": ",".join([
             config.column_field,
@@ -476,6 +497,9 @@ def build_multi_category_column_query(
     context_closure_field: str,
     column_field: str,
     direct_only: bool,
+    row_assoc_categories: Optional[List[str]] = None,
+    row_context_field: Optional[str] = None,
+    filter_empty_columns: bool = True,
     rows: int = 50000,
 ) -> Dict[str, Any]:
     """Build Solr query to get column entities from multiple association categories.
@@ -489,6 +513,9 @@ def build_multi_category_column_query(
         context_closure_field: Field for indirect context matching
         column_field: Field containing column entity ID
         direct_only: If True, only direct associations; if False, use closure
+        row_assoc_categories: List of row association categories (for empty column filtering)
+        row_context_field: Field in row associations linking to columns (for filtering)
+        filter_empty_columns: If True, exclude columns with no row associations
         rows: Maximum results to return
 
     Returns:
@@ -496,12 +523,30 @@ def build_multi_category_column_query(
     """
     ctx_field = context_field if direct_only else context_closure_field
 
-    # Build OR query for multiple categories
-    category_filter = " OR ".join(f'category:"{cat}"' for cat in column_assoc_categories)
+    # Build OR query for multiple column categories
+    column_category_filter = " OR ".join(f'category:"{cat}"' for cat in column_assoc_categories)
+
+    # Base filter queries
+    fq = [f'({column_category_filter})']
+
+    # Build main query
+    if filter_empty_columns and row_assoc_categories and row_context_field:
+        # Use JOIN to find column associations where the column entity
+        # appears in row associations. This filters out columns with no rows.
+        row_category_filter = " OR ".join(f'category:"{cat}"' for cat in row_assoc_categories)
+        existence_join = (
+            f'{{!join from={row_context_field} to={column_field}}}'
+            f'({row_category_filter})'
+        )
+        q = existence_join
+        # Add context filter to fq instead of q
+        fq.append(f'{ctx_field}:"{context_id}"')
+    else:
+        q = f'{ctx_field}:"{context_id}"'
 
     return {
-        "q": f'{ctx_field}:"{context_id}"',
-        "fq": f'({category_filter})',
+        "q": q,
+        "fq": fq,
         "rows": rows,
         "fl": ",".join([
             column_field,
