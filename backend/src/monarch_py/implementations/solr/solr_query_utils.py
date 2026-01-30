@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQuery
 from monarch_py.datamodels.category_enums import AssociationPredicate
@@ -326,3 +326,380 @@ def association_search_query_fields():
         " object object_label^2 object_label_t object_closure object_closure_label object_closure_label_t"
         " publications has_evidence primary_knowledge_source aggregator_knowledge_source provided_by "
     )
+
+
+def build_case_phenotype_query(
+    disease_id: str,
+    direct_only: bool,
+    rows: int = 50000,
+) -> Dict[str, Any]:
+    """Build Solr query for case-phenotype matrix.
+
+    Uses Solr's JOIN query parser to find all phenotype associations
+    for cases that have a specific disease association.
+
+    The query structure:
+    1. Main query: JOIN from CaseToDiseaseAssociation to CaseToPhenotypicFeatureAssociation
+       - Joins on `subject` field (the case ID)
+       - Inner query filters diseases by object (direct) or object_closure (indirect)
+    2. Filter query: Restrict results to phenotype associations only
+    3. Facet queries: Count phenotypes per HistoPheno bin
+
+    Args:
+        disease_id: MONDO disease ID to query
+        direct_only: If True, only cases with exactly this disease;
+                     If False, includes cases with descendant diseases
+        rows: Maximum results to return
+
+    Returns:
+        Dict of Solr query parameters ready for requests
+
+    Example direct query:
+        {!join from=subject to=subject}(
+            category:"biolink:CaseToDiseaseAssociation"
+            AND object:"MONDO:0007078"
+        )
+
+    Example indirect query (via closure):
+        {!join from=subject to=subject}(
+            category:"biolink:CaseToDiseaseAssociation"
+            AND object_closure:"MONDO:0007078"
+        )
+    """
+    disease_field = "object" if direct_only else "object_closure"
+
+    join_query = (
+        '{!join from=subject to=subject}'
+        f'(category:"biolink:CaseToDiseaseAssociation" '
+        f'AND {disease_field}:"{disease_id}")'
+    )
+
+    facet_queries = [
+        f'object_closure:"{bin_key.value}"'
+        for bin_key in HistoPhenoKeys
+    ]
+
+    return {
+        "q": join_query,
+        "fq": 'category:"biolink:CaseToPhenotypicFeatureAssociation"',
+        "rows": rows,
+        "fl": ",".join([
+            "subject",           # Case ID
+            "subject_label",     # Case label
+            "object",            # Phenotype ID
+            "object_label",      # Phenotype label
+            "object_closure",    # For bin assignment
+            "negated",           # Explicit absence
+            "publications",      # Supporting evidence
+            "onset_qualifier",   # Age of onset (ISO8601)
+            "onset_qualifier_label",
+        ]),
+        "facet": "true",
+        "facet.query": facet_queries,
+    }
+
+
+def build_case_disease_query(
+    disease_id: str,
+    direct_only: bool,
+    rows: int = 50000,
+) -> Dict[str, Any]:
+    """Build Solr query to get cases for a disease.
+
+    This is a simpler query to get CaseToDiseaseAssociation documents,
+    which we need to determine:
+    1. Total case count (for limit checking before full matrix fetch)
+    2. Which specific disease each case has (for direct/indirect flagging)
+
+    Args:
+        disease_id: MONDO disease ID to query
+        direct_only: If True, only cases with exactly this disease
+        rows: Maximum results to return
+
+    Returns:
+        Dict of Solr query parameters
+    """
+    disease_field = "object" if direct_only else "object_closure"
+
+    return {
+        "q": f'{disease_field}:"{disease_id}"',
+        "fq": 'category:"biolink:CaseToDiseaseAssociation"',
+        "rows": rows,
+        "fl": "subject,subject_label,object,object_label",
+    }
+
+
+def build_grid_column_query(
+    context_id: str,
+    config: "GridTypeConfig",
+    direct_only: bool,
+    filter_empty_columns: bool = True,
+    rows: int = 50000,
+) -> Dict[str, Any]:
+    """Build Solr query to get column entities for a grid.
+
+    First hop: Context Entity -> Column Entities
+
+    Args:
+        context_id: The context entity ID (e.g., disease ID, gene ID)
+        config: Grid type configuration
+        direct_only: If True, only direct associations; if False, use closure
+        filter_empty_columns: If True, exclude columns with no row associations
+        rows: Maximum results to return
+
+    Returns:
+        Dict of Solr query parameters
+    """
+    from monarch_py.datamodels.grid_configs import GridTypeConfig
+
+    context_field = config.context_field if direct_only else config.context_closure_field
+
+    # Base filter for column association category
+    fq = [f'category:"{config.column_assoc_category.value}"']
+
+    # Build main query
+    if filter_empty_columns:
+        # Use JOIN to find column associations where the column entity
+        # appears in row associations. This filters out columns with no rows.
+        # JOIN: from=row_context_field (e.g., subject in phenotype assocs)
+        #       to=column_field (e.g., object in homology assocs)
+        existence_join = (
+            f'{{!join from={config.row_context_field} to={config.column_field}}}'
+            f'category:"{config.row_assoc_category.value}"'
+        )
+        q = existence_join
+        # Add context filter to fq instead of q
+        fq.append(f'{context_field}:"{context_id}"')
+    else:
+        q = f'{context_field}:"{context_id}"'
+
+    return {
+        "q": q,
+        "fq": fq,
+        "rows": rows,
+        "fl": ",".join([
+            config.column_field,
+            f"{config.column_field}_label",
+            config.context_field,
+            f"{config.context_field}_label",
+            "subject_taxon",
+            "subject_taxon_label",
+            "object_taxon",
+            "object_taxon_label",
+        ]),
+    }
+
+
+def build_multi_category_column_query(
+    context_id: str,
+    column_assoc_categories: List[str],
+    context_field: str,
+    context_closure_field: str,
+    column_field: str,
+    direct_only: bool,
+    row_assoc_categories: Optional[List[str]] = None,
+    row_context_field: Optional[str] = None,
+    filter_empty_columns: bool = True,
+    rows: int = 50000,
+) -> Dict[str, Any]:
+    """Build Solr query to get column entities from multiple association categories.
+
+    First hop: Context Entity -> Column Entities (with multiple category support)
+
+    Args:
+        context_id: The context entity ID (e.g., gene ID)
+        column_assoc_categories: List of association category values
+        context_field: Field in associations containing context ID
+        context_closure_field: Field for indirect context matching
+        column_field: Field containing column entity ID
+        direct_only: If True, only direct associations; if False, use closure
+        row_assoc_categories: List of row association categories (for empty column filtering)
+        row_context_field: Field in row associations linking to columns (for filtering)
+        filter_empty_columns: If True, exclude columns with no row associations
+        rows: Maximum results to return
+
+    Returns:
+        Dict of Solr query parameters
+    """
+    ctx_field = context_field if direct_only else context_closure_field
+
+    # Build OR query for multiple column categories
+    column_category_filter = " OR ".join(f'category:"{cat}"' for cat in column_assoc_categories)
+
+    # Base filter queries
+    fq = [f'({column_category_filter})']
+
+    # Build main query
+    if filter_empty_columns and row_assoc_categories and row_context_field:
+        # Use JOIN to find column associations where the column entity
+        # appears in row associations. This filters out columns with no rows.
+        row_category_filter = " OR ".join(f'category:"{cat}"' for cat in row_assoc_categories)
+        existence_join = (
+            f'{{!join from={row_context_field} to={column_field}}}'
+            f'({row_category_filter})'
+        )
+        q = existence_join
+        # Add context filter to fq instead of q
+        fq.append(f'{ctx_field}:"{context_id}"')
+    else:
+        q = f'{ctx_field}:"{context_id}"'
+
+    return {
+        "q": q,
+        "fq": fq,
+        "rows": rows,
+        "fl": ",".join([
+            column_field,
+            f"{column_field}_label",
+            context_field,
+            f"{context_field}_label",
+            "subject_taxon",
+            "subject_taxon_label",
+            "object_taxon",
+            "object_taxon_label",
+            # Include source association fields
+            "category",
+            "predicate",
+            "publications",
+            "has_evidence",
+            "primary_knowledge_source",
+        ]),
+    }
+
+
+def build_multi_category_row_query(
+    context_id: str,
+    column_assoc_categories: List[str],
+    row_assoc_categories: List[str],
+    context_field: str,
+    context_closure_field: str,
+    column_field: str,
+    row_context_field: str,
+    row_entity_field: str,
+    grouping: "RowGroupingConfig",
+    direct_only: bool,
+    rows: int = 50000,
+) -> Dict[str, Any]:
+    """Build Solr query for grid row entities using JOIN with multiple column categories.
+
+    Second hop: Column Entities -> Row Entities (supporting multiple column categories)
+
+    Args:
+        context_id: The context entity ID
+        column_assoc_categories: List of association categories for the column hop
+        row_assoc_categories: List of association categories for the row hop
+        context_field: Field in column associations containing context ID
+        context_closure_field: Field for indirect context matching
+        column_field: Field containing column entity ID
+        row_context_field: Field in row associations to join on
+        row_entity_field: Field containing row entity ID
+        grouping: Row grouping configuration (for facet queries)
+        direct_only: If True, only direct associations; if False, use closure
+        rows: Maximum results to return
+
+    Returns:
+        Dict of Solr query parameters
+    """
+    from monarch_py.datamodels.grid_groupings import RowGroupingConfig
+
+    ctx_field = context_field if direct_only else context_closure_field
+
+    # Build OR query for multiple categories in the JOIN
+    category_filter = " OR ".join(f'category:"{cat}"' for cat in column_assoc_categories)
+
+    # JOIN query: Find row associations for column entities associated with context
+    join_query = (
+        f'{{!join from={column_field} to={row_context_field}}}'
+        f'(({category_filter}) '
+        f'AND {ctx_field}:"{context_id}")'
+    )
+
+    # Build facet queries for bin counts
+    facet_queries = [
+        f'{row_entity_field}_closure:"{bin_id}"'
+        for bin_id in grouping.bin_ids
+    ]
+
+    # Build OR query for multiple row categories
+    row_category_filter = " OR ".join(f'category:"{cat}"' for cat in row_assoc_categories)
+
+    return {
+        "q": join_query,
+        "fq": f'({row_category_filter})',
+        "rows": rows,
+        "fl": ",".join([
+            row_context_field,                      # Column entity ID
+            f"{row_context_field}_label",           # Column entity label
+            row_entity_field,                       # Row entity ID
+            f"{row_entity_field}_label",            # Row entity label
+            f"{row_entity_field}_closure",          # For bin assignment
+            "negated",
+            "publications",
+            "onset_qualifier",
+            "onset_qualifier_label",
+        ]),
+        "facet": "true",
+        "facet.query": facet_queries,
+    }
+
+
+def build_grid_row_query(
+    context_id: str,
+    config: "GridTypeConfig",
+    grouping: "RowGroupingConfig",
+    direct_only: bool,
+    rows: int = 50000,
+) -> Dict[str, Any]:
+    """Build Solr query for grid row entities using JOIN.
+
+    Second hop: Column Entities -> Row Entities
+
+    Uses Solr's JOIN query parser to find all row associations
+    for column entities that are associated with the context entity.
+
+    Args:
+        context_id: The context entity ID
+        config: Grid type configuration
+        grouping: Row grouping configuration (for facet queries)
+        direct_only: If True, only direct associations; if False, use closure
+        rows: Maximum results to return
+
+    Returns:
+        Dict of Solr query parameters
+    """
+    from monarch_py.datamodels.grid_configs import GridTypeConfig
+    from monarch_py.datamodels.grid_groupings import RowGroupingConfig
+
+    context_field = config.context_field if direct_only else config.context_closure_field
+
+    # JOIN query: Find row associations for column entities associated with context
+    join_query = (
+        f'{{!join from={config.column_field} to={config.row_context_field}}}'
+        f'(category:"{config.column_assoc_category.value}" '
+        f'AND {context_field}:"{context_id}")'
+    )
+
+    # Build facet queries for bin counts
+    facet_queries = [
+        f'{config.row_entity_field}_closure:"{bin_id}"'
+        for bin_id in grouping.bin_ids
+    ]
+
+    return {
+        "q": join_query,
+        "fq": f'category:"{config.row_assoc_category.value}"',
+        "rows": rows,
+        "fl": ",".join([
+            config.row_context_field,                      # Column entity ID
+            f"{config.row_context_field}_label",           # Column entity label
+            config.row_entity_field,                       # Row entity ID
+            f"{config.row_entity_field}_label",            # Row entity label
+            f"{config.row_entity_field}_closure",          # For bin assignment
+            "negated",
+            "publications",
+            "onset_qualifier",
+            "onset_qualifier_label",
+        ]),
+        "facet": "true",
+        "facet.query": facet_queries,
+    }

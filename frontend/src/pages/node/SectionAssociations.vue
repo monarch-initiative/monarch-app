@@ -78,6 +78,12 @@
         />
       </template>
     </AppSection>
+
+    <!-- Case-Phenotype Grid shown after Cases section -->
+    <SectionCasePhenotypeGrid
+      v-if="category.id === 'biolink:CaseToDiseaseAssociation'"
+      :node="node"
+    />
   </div>
 </template>
 
@@ -90,6 +96,7 @@ import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppTextbox from "@/components/AppTextbox.vue";
 import { useAssociationCategories } from "@/composables/use-association-categories";
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
+import SectionCasePhenotypeGrid from "@/pages/node/SectionCasePhenotypeGrid.vue";
 import { sectionTitle } from "@/util/sectionTitles";
 import { tabLabel } from "@/util/tabText";
 import { formatDirectTooltip, formatInferredTooltip } from "@/util/tooltipText";

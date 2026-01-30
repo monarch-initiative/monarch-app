@@ -167,3 +167,67 @@ def test_blank_search_boost():
     assert boost.startswith("product(")
     assert boost.endswith(")")
     assert 'if(termfreq(id,"MONDO:0007523"),12,1)' in boost
+
+
+# === Entity Grid Query Tests ===
+
+from monarch_py.implementations.solr.solr_query_utils import build_multi_category_row_query
+from monarch_py.datamodels.grid_groupings import RowGroupingConfig, GroupingType
+
+
+def test_build_multi_category_row_query_multiple_row_categories():
+    """Query builder should accept multiple row categories and build OR filter."""
+    grouping = RowGroupingConfig(
+        grouping_type=GroupingType.CLOSURE_ROOTS,
+        bin_ids=["HP:0000001"],
+        bin_labels={"HP:0000001": "All"},
+    )
+
+    query_params = build_multi_category_row_query(
+        context_id="MONDO:0005148",
+        column_assoc_categories=["biolink:DiseaseToPhenotypicFeatureAssociation"],
+        row_assoc_categories=[
+            "biolink:DiseaseToPhenotypicFeatureAssociation",
+            "biolink:CaseToPhenotypicFeatureAssociation",
+        ],
+        context_field="object",
+        context_closure_field="object_closure",
+        column_field="subject",
+        row_context_field="subject",
+        row_entity_field="object",
+        grouping=grouping,
+        direct_only=True,
+    )
+
+    # Should build OR filter for multiple categories
+    fq = query_params.get("fq", "")
+    assert "biolink:DiseaseToPhenotypicFeatureAssociation" in fq
+    assert "biolink:CaseToPhenotypicFeatureAssociation" in fq
+    assert " OR " in fq
+
+
+def test_build_multi_category_row_query_single_row_category_in_list():
+    """Single row category passed as list should work."""
+    grouping = RowGroupingConfig(
+        grouping_type=GroupingType.CLOSURE_ROOTS,
+        bin_ids=["HP:0000001"],
+        bin_labels={"HP:0000001": "All"},
+    )
+
+    query_params = build_multi_category_row_query(
+        context_id="MONDO:0005148",
+        column_assoc_categories=["biolink:DiseaseToPhenotypicFeatureAssociation"],
+        row_assoc_categories=["biolink:DiseaseToPhenotypicFeatureAssociation"],
+        context_field="object",
+        context_closure_field="object_closure",
+        column_field="subject",
+        row_context_field="subject",
+        row_entity_field="object",
+        grouping=grouping,
+        direct_only=True,
+    )
+
+    fq = query_params.get("fq", "")
+    assert "biolink:DiseaseToPhenotypicFeatureAssociation" in fq
+    # Single category should still be wrapped in parens (from OR join)
+    assert fq == '(category:"biolink:DiseaseToPhenotypicFeatureAssociation")'

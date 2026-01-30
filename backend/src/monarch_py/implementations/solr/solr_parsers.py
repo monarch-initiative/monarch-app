@@ -1,7 +1,7 @@
-from typing import Dict, List
+from typing import Any, Dict, List, Type, Union, get_args, get_origin, get_type_hints
 
 from loguru import logger
-from pydantic import ValidationError
+from pydantic import BaseModel, ValidationError
 
 from monarch_py.datamodels.model import (
     Association,
@@ -27,6 +27,80 @@ from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQueryResult
 from monarch_py.service.curie_service import converter
 from monarch_py.utils.association_type_utils import get_association_type_mapping_by_query_string
 from monarch_py.utils.utils import get_links_for_field, get_provided_by_link
+
+
+#############################
+# Solr document normalizers #
+#############################
+
+
+def _is_scalar_type(type_hint: Any) -> bool:
+    """
+    Check if a type hint represents a scalar (non-list) type.
+
+    Handles Optional[T], Union[T, None], and plain types.
+    Returns True for str, int, bool, float, etc.
+    Returns False for list[T], List[T], etc.
+    """
+    origin = get_origin(type_hint)
+
+    # Handle Optional[T] which is Union[T, None]
+    if origin is Union:
+        args = get_args(type_hint)
+        # Filter out NoneType and check remaining types
+        non_none_args = [a for a in args if a is not type(None)]
+        if len(non_none_args) == 1:
+            return _is_scalar_type(non_none_args[0])
+        return False
+
+    # list, List[T] have origin of list
+    if origin is list:
+        return False
+
+    # Plain types (str, int, bool, etc.) have no origin
+    if origin is None:
+        return type_hint in (str, int, float, bool)
+
+    return False
+
+
+def normalize_solr_doc_for_model(doc: Dict, model_class: Type[BaseModel]) -> Dict:
+    """
+    Normalize a Solr document to match Pydantic model field types.
+
+    Solr often returns single values as lists when the field schema isn't
+    pre-defined (dynamic fields default to multiValued). This converts
+    single-element lists to scalars for fields that expect scalar types
+    in the target Pydantic model.
+
+    Args:
+        doc: Raw Solr document dictionary
+        model_class: Target Pydantic model class to normalize for
+
+    Returns:
+        Normalized document with list-to-scalar conversions applied
+    """
+    try:
+        hints = get_type_hints(model_class)
+    except Exception:
+        # If we can't get type hints, return doc unchanged
+        return doc
+
+    normalized = dict(doc)
+
+    for field_name, value in doc.items():
+        if field_name not in hints:
+            continue
+        if not isinstance(value, list):
+            continue
+
+        field_type = hints[field_name]
+        if _is_scalar_type(field_type):
+            # Convert list to scalar: take first element or None
+            normalized[field_name] = value[0] if value else None
+
+    return normalized
+
 
 ####################
 # Parser functions #

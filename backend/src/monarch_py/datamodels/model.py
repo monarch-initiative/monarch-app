@@ -441,6 +441,7 @@ class Node(Entity):
     in_taxon: Optional[str] = Field(default=None, description="""The biolink taxon that the entity is in the closure of.""")
     in_taxon_label: Optional[str] = Field(default=None, description="""The label of the biolink taxon that the entity is in the closure of.""")
     inheritance: Optional[Entity] = Field(default=None)
+    has_biological_sex: Optional[str] = Field(default=None, description="""The biological sex of an individual entity.""")
     causal_gene: Optional[list[Entity]] = Field(default=None, description="""A list of genes that are known to be causally associated with a disease""")
     causes_disease: Optional[list[Entity]] = Field(default=None, description="""A list of diseases that are known to be causally associated with a gene""")
     mappings: Optional[list[ExpandedCurie]] = Field(default=None, description="""List of ExpandedCuries with id and url for mapped entities""")
@@ -622,6 +623,142 @@ class AssociationHighlighting(ConfiguredBaseModel):
     predicate: Optional[list[str]] = Field(default=None)
 
 
+class CasePhenotypeMatrixResponse(ConfiguredBaseModel):
+    """
+    Complete case-phenotype matrix for a disease
+    """
+    disease_id: str = Field(default=..., description="""The identifier for a disease entity""")
+    disease_name: Optional[str] = Field(default=None, description="""The name of a disease entity""")
+    total_cases: int = Field(default=..., description="""Total number of cases in the matrix""")
+    total_phenotypes: int = Field(default=..., description="""Total number of phenotypes in the matrix""")
+    cases: Optional[list[CaseEntity]] = Field(default=None, description="""List of case entities in the matrix""")
+    phenotypes: Optional[list[CasePhenotype]] = Field(default=None, description="""List of phenotype entities in the matrix""")
+    bins: Optional[list[HistoPhenoBin]] = Field(default=None, description="""List of histopheno bins for grouping phenotypes""")
+    cells: Optional[dict[str, CasePhenotypeCellData]] = Field(default=None, description="""Map of case-phenotype cell data keyed by case_id:phenotype_id""")
+
+
+class CaseEntity(ConfiguredBaseModel):
+    """
+    A case (patient) in the matrix
+    """
+    id: str = Field(default=...)
+    label: Optional[str] = Field(default=None)
+    full_id: Optional[str] = Field(default=None, description="""The full identifier for an entity""")
+    source_disease_id: Optional[str] = Field(default=None, description="""The disease ID that a case is indirectly associated with (for descendant diseases)""")
+    source_disease_label: Optional[str] = Field(default=None, description="""The label of the source disease for indirect case associations""")
+    is_direct: bool = Field(default=..., description="""Whether the case is directly associated with the disease or via a descendant""")
+
+
+class CasePhenotype(ConfiguredBaseModel):
+    """
+    A phenotype observed in at least one case
+    """
+    id: str = Field(default=...)
+    label: Optional[str] = Field(default=None)
+    bin_id: str = Field(default=..., description="""The identifier for the histopheno bin a phenotype belongs to""")
+
+
+class HistoPhenoBin(ConfiguredBaseModel):
+    """
+    A body system category for grouping phenotypes
+    """
+    id: str = Field(default=...)
+    label: str = Field(default=...)
+    phenotype_count: int = Field(default=..., description="""Number of phenotypes in a bin""")
+    phenotype_ids: list[str] = Field(default_factory=list, description="""List of phenotype IDs in this bin""")
+
+
+class CasePhenotypeCellData(ConfiguredBaseModel):
+    """
+    Data for a single case-phenotype cell in the matrix
+    """
+    present: bool = Field(default=..., description="""Whether the phenotype is present for a case""")
+    negated: Optional[bool] = Field(default=None)
+    onset_qualifier: Optional[str] = Field(default=None)
+    onset_qualifier_label: Optional[str] = Field(default=None, description="""The name of the onset_qualifier entity""")
+    publications: Optional[list[str]] = Field(default=None)
+
+
+class GridColumnEntity(ConfiguredBaseModel):
+    """
+    A column entity in the grid (case, disease, ortholog, etc.)
+    """
+    id: str = Field(default=...)
+    label: Optional[str] = Field(default=None)
+    category: str = Field(default=..., description="""The biolink category of the column entity""")
+    is_direct: bool = Field(default=True, description="""Whether the entity is directly associated with the context or via closure""")
+    source_id: Optional[str] = Field(default=None, description="""For indirect associations, the ID of the direct entity""")
+    source_label: Optional[str] = Field(default=None, description="""For indirect associations, the label of the direct entity""")
+    taxon: Optional[str] = Field(default=None, description="""The taxon ID of the entity (for genes/orthologs)""")
+    taxon_label: Optional[str] = Field(default=None, description="""The taxon label of the entity""")
+    # Source association fields (context -> column)
+    source_association_category: Optional[str] = Field(
+        default=None,
+        description="""The biolink category of the source association (e.g., biolink:CausalGeneToDiseaseAssociation)"""
+    )
+    source_association_predicate: Optional[str] = Field(
+        default=None,
+        description="""The predicate of the source association (e.g., biolink:causes)"""
+    )
+    source_association_publications: Optional[list[str]] = Field(
+        default=None,
+        description="""Publication CURIEs supporting the source association"""
+    )
+    source_association_evidence_count: Optional[int] = Field(
+        default=None,
+        description="""Number of evidence items supporting the source association"""
+    )
+    source_association_primary_knowledge_source: Optional[str] = Field(
+        default=None,
+        description="""Primary knowledge source for the source association"""
+    )
+
+
+class GridRowEntity(ConfiguredBaseModel):
+    """
+    A row entity in the grid (phenotype, GO term, anatomy, etc.)
+    """
+    id: str = Field(default=...)
+    label: Optional[str] = Field(default=None)
+    category: str = Field(default=..., description="""The biolink category of the row entity""")
+    bin_id: str = Field(default=..., description="""The identifier of the bin this entity belongs to""")
+
+
+class GridBin(ConfiguredBaseModel):
+    """
+    A grouping bin for row entities
+    """
+    id: str = Field(default=...)
+    label: str = Field(default=...)
+    count: int = Field(default=..., description="""Number of row entities in this bin""")
+
+
+class GridCellData(ConfiguredBaseModel):
+    """
+    Data for a cell in the grid
+    """
+    present: bool = Field(default=True, description="""Whether the association is present""")
+    negated: Optional[bool] = Field(default=None, description="""Whether the association is negated""")
+    qualifiers: Optional[dict[str, Any]] = Field(default=None, description="""Additional qualifiers for the association""")
+    publications: Optional[list[str]] = Field(default=None, description="""Publication references for the association""")
+    evidence_count: Optional[int] = Field(default=None, description="""Number of evidence items supporting the association""")
+
+
+class EntityGridResponse(ConfiguredBaseModel):
+    """
+    Generic entity x entity grid response
+    """
+    context_id: str = Field(default=..., description="""The identifier of the context entity (e.g., disease, gene)""")
+    context_name: Optional[str] = Field(default=None, description="""The name of the context entity""")
+    context_category: str = Field(default=..., description="""The biolink category of the context entity""")
+    total_columns: int = Field(default=..., description="""Total number of column entities in the grid""")
+    total_rows: int = Field(default=..., description="""Total number of row entities in the grid""")
+    columns: list[GridColumnEntity] = Field(default=..., description="""List of column entities in the grid""")
+    rows: list[GridRowEntity] = Field(default=..., description="""List of row entities in the grid""")
+    bins: list[GridBin] = Field(default=..., description="""List of bins for grouping row entities""")
+    cells: dict[str, GridCellData] = Field(default=..., description="""Map of column_id:row_id to cell data""")
+
+
 # Model rebuild
 # see https://pydantic-docs.helpmanual.io/usage/models/#rebuilding-a-model
 PairwiseSimilarity.model_rebuild()
@@ -658,4 +795,13 @@ SearchResult.model_rebuild()
 SearchResults.model_rebuild()
 TextAnnotationResult.model_rebuild()
 AssociationHighlighting.model_rebuild()
-
+CasePhenotypeMatrixResponse.model_rebuild()
+CaseEntity.model_rebuild()
+CasePhenotype.model_rebuild()
+HistoPhenoBin.model_rebuild()
+CasePhenotypeCellData.model_rebuild()
+GridColumnEntity.model_rebuild()
+GridRowEntity.model_rebuild()
+GridBin.model_rebuild()
+GridCellData.model_rebuild()
+EntityGridResponse.model_rebuild()
