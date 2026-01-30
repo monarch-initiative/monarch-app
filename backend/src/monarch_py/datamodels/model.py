@@ -691,6 +691,27 @@ class GridColumnEntity(ConfiguredBaseModel):
     source_label: Optional[str] = Field(default=None, description="""For indirect associations, the label of the direct entity""")
     taxon: Optional[str] = Field(default=None, description="""The taxon ID of the entity (for genes/orthologs)""")
     taxon_label: Optional[str] = Field(default=None, description="""The taxon label of the entity""")
+    # Source association fields (context -> column)
+    source_association_category: Optional[str] = Field(
+        default=None,
+        description="""The biolink category of the source association (e.g., biolink:CausalGeneToDiseaseAssociation)"""
+    )
+    source_association_predicate: Optional[str] = Field(
+        default=None,
+        description="""The predicate of the source association (e.g., biolink:causes)"""
+    )
+    source_association_publications: Optional[list[str]] = Field(
+        default=None,
+        description="""Publication CURIEs supporting the source association"""
+    )
+    source_association_evidence_count: Optional[int] = Field(
+        default=None,
+        description="""Number of evidence items supporting the source association"""
+    )
+    source_association_primary_knowledge_source: Optional[str] = Field(
+        default=None,
+        description="""Primary knowledge source for the source association"""
+    )
 
 
 class GridRowEntity(ConfiguredBaseModel):

@@ -739,6 +739,191 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             facet_counts=facet_counts,
         )
 
+    def get_generic_entity_grid(
+        self,
+        context_id: str,
+        column_assoc_categories: List[str],
+        row_assoc_categories: List[str],
+        row_grouping: str = "histopheno",
+        group_columns_by_category: bool = False,
+        direct_only: bool = True,
+        limit: int = 500,
+    ) -> EntityGridResponse:
+        """Fetch generic entity grid with configurable association categories.
+
+        This method allows specifying association categories directly,
+        enabling flexible grid construction without predefined configurations.
+
+        Args:
+            context_id: The context entity ID (e.g., gene ID, disease ID)
+            column_assoc_categories: List of association category values for context -> column
+            row_assoc_categories: List of association category values for column -> row
+            row_grouping: How to group rows ("histopheno" or "none")
+            group_columns_by_category: If True, sort columns by their source association category
+            direct_only: If True, only direct associations; if False, use closure
+            limit: Maximum number of column entities
+
+        Returns:
+            EntityGridResponse with complete grid data
+
+        Raises:
+            ValueError: If column count exceeds limit or configuration is invalid
+        """
+        from monarch_py.datamodels.grid_configs import GridTypeConfig
+        from monarch_py.datamodels.grid_groupings import get_row_grouping, get_empty_grouping
+        from monarch_py.datamodels.category_enums import AssociationCategory, EntityCategory
+        from monarch_py.implementations.solr.solr_query_utils import (
+            build_multi_category_column_query,
+            build_multi_category_row_query,
+        )
+        from monarch_py.utils.entity_grid_utils import build_entity_grid, sort_columns_by_category
+
+        # Determine field mappings based on first column category
+        # This uses heuristics based on common patterns
+        first_col_cat = column_assoc_categories[0]
+
+        # Most gene->disease associations have gene as subject
+        if "Gene" in first_col_cat:
+            context_field = "subject"
+            column_field = "object"
+            context_closure_field = "subject_closure"
+        else:
+            # For case-disease, disease is object
+            context_field = "object"
+            column_field = "subject"
+            context_closure_field = "object_closure"
+
+        # Row association field mappings
+        # Most phenotype associations have phenotype as object
+        row_context_field = "subject"
+        row_entity_field = "object"
+
+        # Get grouping
+        if row_grouping == "histopheno":
+            grouping = get_row_grouping(EntityCategory.PHENOTYPIC_FEATURE.value)
+        else:
+            grouping = get_empty_grouping()
+
+        # Step 1: Get column entities
+        col_params = build_multi_category_column_query(
+            context_id=context_id,
+            column_assoc_categories=column_assoc_categories,
+            context_field=context_field,
+            context_closure_field=context_closure_field,
+            column_field=column_field,
+            direct_only=direct_only,
+            rows=limit + 1,
+        )
+        col_result = self._raw_solr_query(col_params)
+        col_docs = col_result.get("response", {}).get("docs", [])
+
+        # Step 2: Check limit
+        if len(col_docs) > limit:
+            raise ValueError(
+                f"Column count ({len(col_docs)}) exceeds limit ({limit}). "
+                f"Use direct=true or reduce the scope."
+            )
+
+        # Step 3: Handle no columns
+        if not col_docs:
+            context_entity = self.get_entity(context_id, extra=False)
+            context_category = context_entity.category if context_entity else "biolink:NamedThing"
+            if isinstance(context_category, list):
+                context_category = context_category[0] if context_category else "biolink:NamedThing"
+
+            return EntityGridResponse(
+                context_id=context_id,
+                context_name=self._get_entity_name(context_id),
+                context_category=context_category,
+                total_columns=0,
+                total_rows=0,
+                columns=[],
+                rows=[],
+                bins=[],
+                cells={},
+            )
+
+        # Step 4: Get row associations via JOIN query
+        row_params = build_multi_category_row_query(
+            context_id=context_id,
+            column_assoc_categories=column_assoc_categories,
+            row_assoc_categories=row_assoc_categories,
+            context_field=context_field,
+            context_closure_field=context_closure_field,
+            column_field=column_field,
+            row_context_field=row_context_field,
+            row_entity_field=row_entity_field,
+            grouping=grouping,
+            direct_only=direct_only,
+        )
+        row_result = self._raw_solr_query(row_params)
+        row_docs = row_result.get("response", {}).get("docs", [])
+        facet_counts = row_result.get("facet_counts", {}).get("facet_queries", {})
+
+        # Get context entity info
+        context_entity = self.get_entity(context_id, extra=False)
+        context_category = context_entity.category if context_entity else "biolink:NamedThing"
+        if isinstance(context_category, list):
+            context_category = context_category[0] if context_category else "biolink:NamedThing"
+
+        # Create a dynamic config for build_entity_grid
+        # Determine column entity category from association type
+        if "Disease" in column_assoc_categories[0]:
+            col_entity_cat = EntityCategory.DISEASE
+        elif "Homology" in column_assoc_categories[0]:
+            col_entity_cat = EntityCategory.GENE
+        elif "CaseToDisease" in column_assoc_categories[0]:
+            col_entity_cat = EntityCategory.CASE
+        else:
+            col_entity_cat = EntityCategory.NAMED_THING
+
+        # Determine row entity category (check if any category involves phenotypes)
+        row_has_phenotype = any(
+            "Phenotype" in cat or "Phenotypic" in cat for cat in row_assoc_categories
+        )
+        if row_has_phenotype:
+            row_entity_cat = EntityCategory.PHENOTYPIC_FEATURE
+        else:
+            row_entity_cat = EntityCategory.NAMED_THING
+
+        # Build a temporary config (using first row category for config compatibility)
+        temp_config = GridTypeConfig(
+            name="Generic Grid",
+            context_category=EntityCategory.NAMED_THING,
+            column_assoc_categories=[
+                AssociationCategory(cat) for cat in column_assoc_categories
+            ],
+            row_assoc_category=AssociationCategory(row_assoc_categories[0]),
+            row_entity_category=row_entity_cat,
+            column_entity_category=col_entity_cat,
+            context_field=context_field,
+            column_field=column_field,
+            row_context_field=row_context_field,
+            row_entity_field=row_entity_field,
+            context_closure_field=context_closure_field,
+        )
+
+        # Step 5: Build grid
+        grid = build_entity_grid(
+            context_id=context_id,
+            context_name=self._get_entity_name(context_id),
+            context_category=context_category,
+            config=temp_config,
+            grouping=grouping,
+            column_docs=col_docs,
+            row_docs=row_docs,
+            facet_counts=facet_counts,
+        )
+
+        # Step 6: Optionally sort columns by category
+        if group_columns_by_category and len(column_assoc_categories) > 1:
+            grid.columns = sort_columns_by_category(
+                grid.columns,
+                column_assoc_categories,
+            )
+
+        return grid
+
     def _get_entity_name(self, entity_id: str) -> str:
         """Fetch human-readable entity name.
 

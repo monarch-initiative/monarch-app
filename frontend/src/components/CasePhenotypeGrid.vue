@@ -20,9 +20,9 @@ import type {
   CasePhenotypeCellData,
   CasePhenotypeMatrix,
 } from "@/api/case-phenotype-types";
-import type { EntityGridConfig, ColumnEntity } from "@/api/entity-grid/types";
-import EntityGrid from "@/components/EntityGrid/EntityGrid.vue";
+import type { ColumnEntity, EntityGridConfig } from "@/api/entity-grid/types";
 import { casePhenotypeToEntityGrid } from "@/components/EntityGrid/entity-grid-utils";
+import EntityGrid from "@/components/EntityGrid/EntityGrid.vue";
 
 interface Props {
   matrix: CasePhenotypeMatrix;
@@ -41,7 +41,9 @@ const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
 // Transform CasePhenotypeMatrix to EntityGridMatrix
-const entityGridMatrix = computed(() => casePhenotypeToEntityGrid(props.matrix));
+const entityGridMatrix = computed(() =>
+  casePhenotypeToEntityGrid(props.matrix),
+);
 
 // Case-phenotype-specific grid configuration
 const gridConfig: EntityGridConfig = {
@@ -76,7 +78,8 @@ const handleCellClick = (
   cellData: any,
 ) => {
   // Get original cell data from the CasePhenotypeMatrix
-  const originalCellData = props.matrix.cells.get(`${columnId}:${rowId}`) || null;
+  const originalCellData =
+    props.matrix.cells.get(`${columnId}:${rowId}`) || null;
   emit("cell-click", columnId, rowId, originalCellData);
 };
 </script>

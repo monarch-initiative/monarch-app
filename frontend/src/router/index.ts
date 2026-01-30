@@ -119,6 +119,12 @@ export const routes: RouteRecordRaw[] = [
     name: "Testbed",
     component: asyncRoute("PageTestbed"),
   },
+  {
+    path: "/grid-playground",
+    name: "Grid Playground",
+    component: asyncRoute("PageGridPlayground"),
+    meta: { breadcrumb: "Grid Playground" },
+  },
 
   /** if no other route match found (404) */
   {

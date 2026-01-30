@@ -24,6 +24,7 @@
       :aria-controls="`list-${id}`"
       aria-haspopup="listbox"
       aria-autocomplete="list"
+      autocomplete="off"
       @focus="onFocus"
       @blur="onBlur"
       @debounce="onDebounce"

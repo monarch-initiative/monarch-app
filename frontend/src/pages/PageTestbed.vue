@@ -8,9 +8,9 @@
     <AppHeading>Testbed</AppHeading>
   </AppSection>
 
-  <!-- entity grid -->
+  <!-- entity grid (mock data) -->
   <AppSection width="full">
-    <AppHeading>Entity Grid (Generic)</AppHeading>
+    <AppHeading>Entity Grid (Mock Data)</AppHeading>
     <p style="margin-bottom: 1rem; color: #666">
       Generic grid component for entity × grouped-class matrices. Click bins to
       expand, click cells for details.
@@ -233,6 +233,7 @@ import AppSelectAutocomplete from "@/components/AppSelectAutocomplete.vue";
 import AppSelectMulti from "@/components/AppSelectMulti.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
+import AppStatus from "@/components/AppStatus.vue";
 import type { Sort } from "@/components/AppTable.vue";
 import AppTable from "@/components/AppTable.vue";
 import AppTabs from "@/components/AppTabs.vue";
@@ -254,9 +255,19 @@ const icons = Object.values(import.meta.glob("@/assets/icons/*.svg")).map(
 const mockColumns: ColumnEntity[] = [
   { id: "case:001", label: "Patient A", isDirect: true },
   { id: "case:002", label: "Patient B", isDirect: true },
-  { id: "case:003", label: "Patient C", isDirect: false, sourceEntityLabel: "Sub-disease X" },
+  {
+    id: "case:003",
+    label: "Patient C",
+    isDirect: false,
+    sourceEntityLabel: "Sub-disease X",
+  },
   { id: "case:004", label: "Patient D", isDirect: true },
-  { id: "case:005", label: "Patient E", isDirect: false, sourceEntityLabel: "Sub-disease Y" },
+  {
+    id: "case:005",
+    label: "Patient E",
+    isDirect: false,
+    sourceEntityLabel: "Sub-disease Y",
+  },
 ];
 
 /** Mock rows (e.g., phenotypes, anatomy terms) */
@@ -273,10 +284,30 @@ const mockRows: RowEntity[] = [
 
 /** Mock bins (groupings) */
 const mockBins = [
-  { id: "nervous", label: "Nervous System", rowEntityIds: ["HP:0001250", "HP:0001249", "HP:0000729"], count: 3 },
-  { id: "head", label: "Head and Neck", rowEntityIds: ["HP:0000252", "HP:0000316"], count: 2 },
-  { id: "skeletal", label: "Skeletal System", rowEntityIds: ["HP:0001182", "HP:0002650"], count: 2 },
-  { id: "cardio", label: "Cardiovascular", rowEntityIds: ["HP:0001631"], count: 1 },
+  {
+    id: "nervous",
+    label: "Nervous System",
+    rowEntityIds: ["HP:0001250", "HP:0001249", "HP:0000729"],
+    count: 3,
+  },
+  {
+    id: "head",
+    label: "Head and Neck",
+    rowEntityIds: ["HP:0000252", "HP:0000316"],
+    count: 2,
+  },
+  {
+    id: "skeletal",
+    label: "Skeletal System",
+    rowEntityIds: ["HP:0001182", "HP:0002650"],
+    count: 2,
+  },
+  {
+    id: "cardio",
+    label: "Cardiovascular",
+    rowEntityIds: ["HP:0001631"],
+    count: 1,
+  },
 ];
 
 /** Mock cell data */

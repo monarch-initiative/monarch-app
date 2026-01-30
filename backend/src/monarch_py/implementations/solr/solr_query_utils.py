@@ -469,6 +469,135 @@ def build_grid_column_query(
     }
 
 
+def build_multi_category_column_query(
+    context_id: str,
+    column_assoc_categories: List[str],
+    context_field: str,
+    context_closure_field: str,
+    column_field: str,
+    direct_only: bool,
+    rows: int = 50000,
+) -> Dict[str, Any]:
+    """Build Solr query to get column entities from multiple association categories.
+
+    First hop: Context Entity -> Column Entities (with multiple category support)
+
+    Args:
+        context_id: The context entity ID (e.g., gene ID)
+        column_assoc_categories: List of association category values
+        context_field: Field in associations containing context ID
+        context_closure_field: Field for indirect context matching
+        column_field: Field containing column entity ID
+        direct_only: If True, only direct associations; if False, use closure
+        rows: Maximum results to return
+
+    Returns:
+        Dict of Solr query parameters
+    """
+    ctx_field = context_field if direct_only else context_closure_field
+
+    # Build OR query for multiple categories
+    category_filter = " OR ".join(f'category:"{cat}"' for cat in column_assoc_categories)
+
+    return {
+        "q": f'{ctx_field}:"{context_id}"',
+        "fq": f'({category_filter})',
+        "rows": rows,
+        "fl": ",".join([
+            column_field,
+            f"{column_field}_label",
+            context_field,
+            f"{context_field}_label",
+            "subject_taxon",
+            "subject_taxon_label",
+            "object_taxon",
+            "object_taxon_label",
+            # Include source association fields
+            "category",
+            "predicate",
+            "publications",
+            "has_evidence",
+            "primary_knowledge_source",
+        ]),
+    }
+
+
+def build_multi_category_row_query(
+    context_id: str,
+    column_assoc_categories: List[str],
+    row_assoc_categories: List[str],
+    context_field: str,
+    context_closure_field: str,
+    column_field: str,
+    row_context_field: str,
+    row_entity_field: str,
+    grouping: "RowGroupingConfig",
+    direct_only: bool,
+    rows: int = 50000,
+) -> Dict[str, Any]:
+    """Build Solr query for grid row entities using JOIN with multiple column categories.
+
+    Second hop: Column Entities -> Row Entities (supporting multiple column categories)
+
+    Args:
+        context_id: The context entity ID
+        column_assoc_categories: List of association categories for the column hop
+        row_assoc_categories: List of association categories for the row hop
+        context_field: Field in column associations containing context ID
+        context_closure_field: Field for indirect context matching
+        column_field: Field containing column entity ID
+        row_context_field: Field in row associations to join on
+        row_entity_field: Field containing row entity ID
+        grouping: Row grouping configuration (for facet queries)
+        direct_only: If True, only direct associations; if False, use closure
+        rows: Maximum results to return
+
+    Returns:
+        Dict of Solr query parameters
+    """
+    from monarch_py.datamodels.grid_groupings import RowGroupingConfig
+
+    ctx_field = context_field if direct_only else context_closure_field
+
+    # Build OR query for multiple categories in the JOIN
+    category_filter = " OR ".join(f'category:"{cat}"' for cat in column_assoc_categories)
+
+    # JOIN query: Find row associations for column entities associated with context
+    join_query = (
+        f'{{!join from={column_field} to={row_context_field}}}'
+        f'(({category_filter}) '
+        f'AND {ctx_field}:"{context_id}")'
+    )
+
+    # Build facet queries for bin counts
+    facet_queries = [
+        f'{row_entity_field}_closure:"{bin_id}"'
+        for bin_id in grouping.bin_ids
+    ]
+
+    # Build OR query for multiple row categories
+    row_category_filter = " OR ".join(f'category:"{cat}"' for cat in row_assoc_categories)
+
+    return {
+        "q": join_query,
+        "fq": f'({row_category_filter})',
+        "rows": rows,
+        "fl": ",".join([
+            row_context_field,                      # Column entity ID
+            f"{row_context_field}_label",           # Column entity label
+            row_entity_field,                       # Row entity ID
+            f"{row_entity_field}_label",            # Row entity label
+            f"{row_entity_field}_closure",          # For bin assignment
+            "negated",
+            "publications",
+            "onset_qualifier",
+            "onset_qualifier_label",
+        ]),
+        "facet": "true",
+        "facet.query": facet_queries,
+    }
+
+
 def build_grid_row_query(
     context_id: str,
     config: "GridTypeConfig",

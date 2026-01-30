@@ -249,21 +249,18 @@ function handleCellClick(
 }
 
 /**
- * Fetch matrix on mount. The section is only rendered if caseCountFromAssociations
- * is in [1, MAX_CASES_LIMIT], so we know it's safe to fetch when mounted.
+ * Fetch matrix on mount. The section is only rendered if
+ * caseCountFromAssociations is in [1, MAX_CASES_LIMIT], so we know it's safe to
+ * fetch when mounted.
  */
 onMounted(() => {
   fetchMatrix();
 });
 
 /** Refetch when navigating to a different disease */
-watch(
-  [() => route.path, () => props.node.id],
-  () => {
-    fetchMatrix();
-  },
-);
-
+watch([() => route.path, () => props.node.id], () => {
+  fetchMatrix();
+});
 </script>
 
 <style lang="scss" scoped>
