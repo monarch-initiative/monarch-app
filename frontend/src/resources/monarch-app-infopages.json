@@ -450,12 +450,12 @@
     },
     "linkml": {
       "about": "LinkML (Linked data Modeling Language; linkml.io) is an open and extensible data modeling framework that provides a simple and structured way to describe and validate data. It includes a set of tools that make it easy to author, validate, and share data. LinkML can describe a range of data structures, from flat, list-based models to complex, interrelated, and normalized models that utilize polymorphism and compound inheritance. It offers an approachable syntax that is not tied to any one technical architecture, and can be integrated seamlessly with many existing frameworks. Its low barrier to entry allows people from different backgrounds and levels of technical expertise to collaborate to form a shared understanding of the underlying data semantics, providing an easy-to-understand basis for interdisciplinary collaboration. Its metamodel syntax allows modelers to focus on creating well-defined, stable, ontology-based data structures instead of a mixture of customized models and free text. LinkML helps reduce heterogeneity, complexity, and the proliferation of single-use data models while simultaneously enabling compliance with FAIR data standards.",
-      "citation": "Moxon, S., Solbrig, H., Unni, D., Jiao, D., Bruskiewich, R., Balhoff, J., Vaidya, G., Duncan, W., Hegde, H., Miller, M., Brush, M., Harris, N., Haendel, M., & Mungall, C. (2021). The Linked Data Modeling Language (LinkML): A general-purpose data modeling framework grounded in machine-readable semantics. CEUR Workshop Proceedings, 3073, 148–151",
+      "citation": "Moxon SAT, Solbrig H, Harris NL, Kalita P, Miller MA, Patil S, Schaper K, Bizon C, Caufield JH, Cuesta SC, Cox C, Dekervel F, Dooley DM, Duncan WD, Fliss T, Gehrke S, Graefe ASL, Hegde H, Ireland AJ, Jacobsen JOB, Krishnamurthy M, Kroll C, Linke D, Ly R, Matentzoglu N, Overton JA, Saunders JL, Unni DR, Vaidya G, Vierdag W-MAM, Ruebel O, Chute CG, Brush MH, Haendel MA, Mungall CJ. LinkML: An open data modeling framework. Gigascience. Oxford University Press (OUP); 2025 Dec 12;(giaf152):giaf152. https://academic.oup.com/gigascience/advance-article/doi/10.1093/gigascience/giaf152/8378082 PMID: 41384800",
       "contact": {
-        "email": "cjmungall@lbl.gov",
-        "github": "@cmungall",
-        "name": "Chris Mungall",
-        "orcid": "https://orcid.org/0000-0002-6601-2165"
+        "email": "smoxon@lbl.gov",
+        "github": "@sierra-moxon",
+        "name": "Sierra Moxon",
+        "orcid": "https://orcid.org/0000-0002-8719-7760"
       },
       "icon": "resource-linkml",
       "license": "CC0",
@@ -465,7 +465,7 @@
         "repository": "https://github.com/linkml",
         "website": "https://linkml.io"
       },
-      "tagline": "A general purpose modeling language that can be used with linked data, JSON, and other formalisms",
+      "tagline": "An open data modeling framework that simplifies the process of authoring, validating, and sharing data",
       "title": "Linked Data Modeling Language",
       "title_short": "LinkML",
       "visual_explainer": "https://www.youtube.com/watch?v=nuy_yGT9g2U"
