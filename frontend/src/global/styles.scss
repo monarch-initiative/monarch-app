@@ -281,9 +281,9 @@ strong {
 
   .truncate-#{$i}:not(:focus) {
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: $i;
     display: -webkit-box;
     max-width: 100%;
+    -webkit-line-clamp: $i;
     overflow: hidden;
   }
 

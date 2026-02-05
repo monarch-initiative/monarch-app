@@ -145,25 +145,25 @@ function customMounted(element: VNode["el"], createCircle = false) {
 .category {
   fill: none;
   stroke: $white;
-  stroke-width: 5;
   stroke-linecap: round;
   stroke-linejoin: round;
+  stroke-width: 5;
 }
 
 :deep(.outline) {
-  stroke: none;
-  fill: var(--color, currentColor);
   transform: scale(1.1);
   transform-box: fill-box;
   transform-origin: center;
+  fill: var(--color, currentColor);
+  stroke: none;
 }
 
 .initials {
   text {
     fill: $white;
-    text-anchor: middle;
-    dominant-baseline: middle;
     font-size: 50px;
+    dominant-baseline: middle;
+    text-anchor: middle;
   }
 }
 
