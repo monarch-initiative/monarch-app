@@ -1,5 +1,5 @@
 {
-  "extends": ["@tsconfig/node20/tsconfig.json", "@vue/tsconfig/tsconfig.json"],
+  "extends": ["@tsconfig/node24/tsconfig.json", "@vue/tsconfig/tsconfig.json"],
   "include": [
     "env.d.ts",
     "playwright.config.ts",
@@ -14,7 +14,7 @@
     "composite": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["src/*"]
     },
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "resolveJsonModule": true,

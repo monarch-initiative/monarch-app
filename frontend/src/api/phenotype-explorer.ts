@@ -159,7 +159,7 @@ export function processMulticompareResponse(
     total: 0,
   }));
   let rows: Phenogrid["cols"] = Object.values(
-    response[0].similarity?.subject_termset || [],
+    response[0]?.similarity?.subject_termset || [],
   ).map((entry) => ({
     id: entry.id,
     label: entry.label,

@@ -43,12 +43,9 @@ const rules = [
   { id: "region", selector: ":not([role='listbox']" },
 ];
 
-type Test = Parameters<typeof test>[1];
-
-/** generic page axe test */
-const checkPage =
-  (path: string, selector?: string): Test =>
-  async ({ page, browserName }) => {
+/** Reusable test for each page */
+const checkPage = (title: string, path: string, selector?: string) =>
+  test(title, async ({ page, browserName }) => {
     test.skip(browserName !== "chromium", "Only test Axe on chromium");
 
     /** navigate to page */
@@ -76,25 +73,27 @@ const checkPage =
     const violations = await getViolations(page);
     const violationsMessage = JSON.stringify(violations, null, 2);
     expect(violationsMessage).toBe("[]");
-  };
+  });
 
-/** check all pages */
-for (const path of paths) test("Accessibility check " + path, checkPage(path));
+for (const path of paths) checkPage("Accessibility check " + path, path);
 
-/** extra testbed component tests */
-test(
+checkPage(
   "Accessibility check /testbed (select single)",
-  checkPage("/testbed", ".select-single button"),
+  "/testbed",
+  ".select-single button",
 );
-test(
+checkPage(
   "Accessibility check /testbed (select multi)",
-  checkPage("/testbed", ".select-multi button"),
+  "/testbed",
+  ".select-multi button",
 );
-test(
+checkPage(
   "Accessibility check /testbed (select tags)",
-  checkPage("/testbed", ".select-tags input"),
+  "/testbed",
+  ".select-tags input",
 );
-test(
+checkPage(
   "Accessibility check /testbed (select autocomplete)",
-  checkPage("/testbed", ".select-autocomplete input"),
+  "/testbed",
+  ".select-autocomplete input",
 );

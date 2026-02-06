@@ -72,7 +72,7 @@ export const emitted = <Event = unknown>(
   event = "update:modelValue",
 ): Array<Event> => {
   try {
-    return wrapper.emitted()[event].pop() as Array<Event>;
+    return wrapper.emitted()[event]!.pop() as Array<Event>;
   } catch (error) {
     throw Error(`No "${event}" event emitted`);
   }
