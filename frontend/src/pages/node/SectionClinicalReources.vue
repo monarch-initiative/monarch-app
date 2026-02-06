@@ -26,27 +26,29 @@
 
       <div class="sub-items">
         <div v-if="node?.inheritance">
-          <span class="info-label"> Heritability : </span>
-          <AppLink
-            v-tooltip="node?.inheritance?.name"
-            :to="node?.inheritance?.id || ''"
-            >{{ node?.inheritance?.name }}</AppLink
-          >
+          <span> Heritability : </span>
+          <AppFlex align-h="left" gap="small">
+            <AppLink
+              v-tooltip="node?.inheritance?.name"
+              :to="node?.inheritance?.id || ''"
+              >{{ node?.inheritance?.name }}</AppLink
+            >
+          </AppFlex>
         </div>
 
         <div v-if="node?.causal_gene?.length">
-          <span class="info-label"> Casual Genes : </span>
-          <div class="causal-gene">
+          <span> Casual Genes : </span>
+          <AppFlex align-h="left" gap="small">
             <AppNodeBadge
               v-for="(gene, index) in node?.causal_gene"
               :key="index"
               :node="omit(gene, 'in_taxon_label')"
             />
-          </div>
+          </AppFlex>
         </div>
 
         <div>
-          <span class="info-label"> Frequency : </span>
+          <span> Frequency : </span>
           <span>{{ frequencyLabel }}</span>
         </div>
       </div>
@@ -101,7 +103,8 @@ const brandText = (id: string, fallback?: string) => {
   width: 100%;
   padding: 1em;
   gap: 1.5em;
-  background-color: #f7fbfe;
+  border: 1px solid $light-gray;
+  background-color: $light-blue;
 }
 .custom-grid {
   display: flex;
@@ -114,7 +117,7 @@ const brandText = (id: string, fallback?: string) => {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  gap: 0.4em;
+  gap: 0.9em;
 }
 
 .linkout {
@@ -154,10 +157,10 @@ const brandText = (id: string, fallback?: string) => {
   line-height: 1;
   opacity: 0.75;
 }
-.causal-gene {
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.4em;
+.causal-genes {
+  display: inline-flex !important;
+  flex-wrap: wrap; /* wrap to next line when needed */
+  gap: 0.8em;
+  vertical-align: middle;
 }
 </style>
