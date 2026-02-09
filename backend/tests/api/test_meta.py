@@ -24,7 +24,8 @@ def test_meta_endpoint_returns_html_with_og_tags(mock_get_entity, client, node):
     assert response.headers["content-type"] == "text/html; charset=utf-8"
 
     html = response.text
-    assert "MONDO:0020121" in html or "muscular dystrophy" in html.lower()
+    assert "MONDO:0020121" in html
+    assert "muscular dystrophy" in html.lower()
     assert 'og:title' in html
     assert 'og:description' in html
     assert 'og:url' in html
@@ -58,3 +59,100 @@ def test_meta_endpoint_escapes_html_in_content(mock_get_entity, client):
     # Jinja2 autoescape should escape angle brackets
     assert "<script>" not in html
     assert "&lt;script&gt;" in html
+
+
+@patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_entity")
+def test_meta_endpoint_truncates_long_description(mock_get_entity, client):
+    """Test that very long descriptions are truncated at a word boundary."""
+    long_description = "word " * 200  # 1000 chars, well over the 300 limit
+    mock_get_entity.return_value = Node(
+        id="TEST:002",
+        category="biolink:Disease",
+        name="Test Entity",
+        description=long_description.strip(),
+        provided_by="test",
+        association_counts=[],
+    )
+    response = client.get("/v3/api/meta/TEST:002")
+
+    assert response.status_code == 200
+    html = response.text
+    assert "..." in html
+    # Description (including "Test Entity - " prefix) should be truncated near the limit
+    assert long_description.strip() not in html
+
+
+@patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_entity")
+def test_meta_endpoint_entity_with_no_name(mock_get_entity, client):
+    """Test that entities without a name use the entity ID instead."""
+    mock_get_entity.return_value = Node(
+        id="TEST:003",
+        category="biolink:Disease",
+        name=None,
+        description="A test description",
+        provided_by="test",
+        association_counts=[],
+    )
+    response = client.get("/v3/api/meta/TEST:003")
+
+    assert response.status_code == 200
+    html = response.text
+    assert "TEST:003 | Monarch Initiative" in html
+    assert "A test description" in html
+
+
+@patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_entity")
+def test_meta_endpoint_entity_with_no_description(mock_get_entity, client):
+    """Test that entities without a description still produce valid OG tags."""
+    mock_get_entity.return_value = Node(
+        id="TEST:004",
+        category="biolink:Disease",
+        name="Test Entity",
+        description=None,
+        provided_by="test",
+        association_counts=[],
+    )
+    response = client.get("/v3/api/meta/TEST:004")
+
+    assert response.status_code == 200
+    html = response.text
+    assert "Test Entity | Monarch Initiative" in html
+    assert 'og:description' in html
+
+
+@patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_entity")
+def test_meta_endpoint_entity_with_no_name_or_description(mock_get_entity, client):
+    """Test that entities with neither name nor description use fallback text."""
+    mock_get_entity.return_value = Node(
+        id="TEST:005",
+        category="biolink:Disease",
+        name=None,
+        description=None,
+        provided_by="test",
+        association_counts=[],
+    )
+    response = client.get("/v3/api/meta/TEST:005")
+
+    assert response.status_code == 200
+    html = response.text
+    assert "TEST:005 | Monarch Initiative" in html
+    assert "View TEST:005 on Monarch Initiative" in html
+
+
+@patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_entity")
+def test_meta_endpoint_returns_cache_control_header(mock_get_entity, client, node):
+    """Test that the response includes a Cache-Control header."""
+    mock_get_entity.return_value = Node(**node)
+    response = client.get("/v3/api/meta/MONDO:0020121")
+
+    assert response.status_code == 200
+    assert response.headers["cache-control"] == "public, max-age=3600"
+
+
+@patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_entity")
+def test_meta_endpoint_returns_500_for_unexpected_errors(mock_get_entity, client):
+    """Test that unexpected exceptions return 500 instead of 404."""
+    mock_get_entity.side_effect = RuntimeError("connection failed")
+    response = client.get("/v3/api/meta/TEST:006")
+
+    assert response.status_code == 500

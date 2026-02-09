@@ -13,6 +13,8 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["meta"])
 
+MAX_DESCRIPTION_LENGTH = 300
+
 TEMPLATES_DIR = Path(__file__).parent / "templates"
 jinja_env = Environment(
     loader=FileSystemLoader(TEMPLATES_DIR),
@@ -53,9 +55,12 @@ async def get_meta_page(entity_id: str, request: Request) -> HTMLResponse:
     """
     try:
         entity = solr().get_entity(entity_id, extra=False)
-    except Exception as e:
-        logger.warning(f"Failed to fetch entity {entity_id}: {e}")
+    except ValueError as e:
+        logger.warning(f"Invalid entity request {entity_id}: {e}")
         raise HTTPException(status_code=404, detail=f"Entity not found: {entity_id}")
+    except Exception as e:
+        logger.error(f"Unexpected error fetching entity {entity_id}: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
 
     if entity is None:
         raise HTTPException(status_code=404, detail=f"Entity not found: {entity_id}")
@@ -77,9 +82,8 @@ async def get_meta_page(entity_id: str, request: Request) -> HTMLResponse:
     else:
         description = f"View {entity_id} on Monarch Initiative"
 
-    max_description_length = 300
-    if len(description) > max_description_length:
-        description = description[: max_description_length - 3] + "..."
+    if len(description) > MAX_DESCRIPTION_LENGTH:
+        description = description[:MAX_DESCRIPTION_LENGTH].rsplit(" ", 1)[0] + "..."
 
     template = jinja_env.get_template("meta.html")
     html_content = template.render(
@@ -89,4 +93,8 @@ async def get_meta_page(entity_id: str, request: Request) -> HTMLResponse:
         image=get_default_image(request),
     )
 
-    return HTMLResponse(content=html_content, status_code=200)
+    return HTMLResponse(
+        content=html_content,
+        status_code=200,
+        headers={"Cache-Control": "public, max-age=3600"},
+    )
