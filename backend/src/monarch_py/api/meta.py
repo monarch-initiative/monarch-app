@@ -31,7 +31,7 @@ def get_default_image(request: Request) -> str:
     return f"{get_base_url(request)}/share-thumbnail.jpg"
 
 
-@router.get("/meta/{entity_id:path}", response_class=HTMLResponse)
+@router.get("/meta/{entity_id:path}", response_class=HTMLResponse, include_in_schema=False)
 async def get_meta_page(entity_id: str, request: Request) -> HTMLResponse:
     """
     Return an HTML page with dynamic Open Graph meta tags for the given entity.
