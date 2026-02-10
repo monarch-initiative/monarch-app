@@ -1,6 +1,5 @@
 """Meta endpoint for serving HTML with dynamic Open Graph tags to social media crawlers."""
 
-import logging
 from pathlib import Path
 
 from fastapi import APIRouter, HTTPException, Request
@@ -8,8 +7,6 @@ from fastapi.responses import HTMLResponse
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from monarch_py.api.config import solr
-
-logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["meta"])
 
@@ -53,15 +50,7 @@ async def get_meta_page(entity_id: str, request: Request) -> HTMLResponse:
     Raises:
         HTTPException: 404 if entity not found
     """
-    try:
-        entity = solr().get_entity(entity_id, extra=False)
-    except ValueError as e:
-        logger.warning(f"Invalid entity request {entity_id}: {e}")
-        raise HTTPException(status_code=404, detail=f"Entity not found: {entity_id}")
-    except Exception as e:
-        logger.error(f"Unexpected error fetching entity {entity_id}: {e}")
-        raise HTTPException(status_code=500, detail="Internal server error")
-
+    entity = solr().get_entity(entity_id, extra=False)
     if entity is None:
         raise HTTPException(status_code=404, detail=f"Entity not found: {entity_id}")
 

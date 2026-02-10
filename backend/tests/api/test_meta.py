@@ -147,12 +147,3 @@ def test_meta_endpoint_returns_cache_control_header(mock_get_entity, client, nod
 
     assert response.status_code == 200
     assert response.headers["cache-control"] == "public, max-age=3600"
-
-
-@patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_entity")
-def test_meta_endpoint_returns_500_for_unexpected_errors(mock_get_entity, client):
-    """Test that unexpected exceptions return 500 instead of 404."""
-    mock_get_entity.side_effect = RuntimeError("connection failed")
-    response = client.get("/v3/api/meta/TEST:006")
-
-    assert response.status_code == 500
