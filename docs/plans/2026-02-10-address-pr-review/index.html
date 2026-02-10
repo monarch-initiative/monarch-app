@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://monarch-app.monarchinitiative.org/docs/Data-Model/object_closure_label/">
+        <link rel="canonical" href="https://monarch-app.monarchinitiative.org/docs/plans/2026-02-10-address-pr-review/">
       
       
       
@@ -18,7 +18,7 @@
     
     
       
-        <title>Slot: object_closure_label - Monarch KG Tools</title>
+        <title>Address PR #1251 Review Feedback - Monarch KG Tools</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#slot-object_closure_label" class="md-skip">
+        <a href="#address-pr-1251-review-feedback" class="md-skip">
           Skip to content
         </a>
       
@@ -107,7 +107,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Slot: object_closure_label
+              Address PR #1251 Review Feedback
             
           </span>
         </div>
@@ -434,7 +434,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../" class="md-nav__link">
+      <a href="../../Data-Model/" class="md-nav__link">
         
   
   
@@ -939,37 +939,37 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#applicable-classes" class="md-nav__link">
+  <a href="#summary-of-changes" class="md-nav__link">
     <span class="md-ellipsis">
-      Applicable Classes
+      Summary of Changes
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#properties" class="md-nav__link">
-    <span class="md-ellipsis">
-      Properties
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#identifier-and-mapping-information" class="md-nav__link">
-    <span class="md-ellipsis">
-      Identifier and Mapping Information
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Identifier and Mapping Information">
+    <nav class="md-nav" aria-label="Summary of Changes">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#schema-source" class="md-nav__link">
+  <a href="#task-1-simplify-error-handling-in-metapy" class="md-nav__link">
     <span class="md-ellipsis">
-      Schema Source
+      Task 1: Simplify error handling in meta.py
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-2-remove-nginx-shell-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task 2: Remove nginx shell tests
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-3-hide-meta-endpoint-from-api-docs-optional-confirm-with-kevin" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task 3: Hide meta endpoint from API docs (optional — confirm with Kevin)
     </span>
   </a>
   
@@ -981,18 +981,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#mappings" class="md-nav__link">
+  <a href="#items-not-addressed-and-why" class="md-nav__link">
     <span class="md-ellipsis">
-      Mappings
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#linkml-source" class="md-nav__link">
-    <span class="md-ellipsis">
-      LinkML Source
+      Items NOT addressed (and why)
     </span>
   </a>
   
@@ -1017,86 +1008,137 @@
   
 
 
-<h1 id="slot-object_closure_label">Slot: object_closure_label</h1>
-<p><em>Field containing object name and the names of all of it's ancestors</em></p>
-<p>URI: <a href="https://w3id.org/monarch/monarch-py/object_closure_label">https://w3id.org/monarch/monarch-py/object_closure_label</a>
-Alias: object_closure_label</p>
-<!-- no inheritance hierarchy -->
+<h1 id="address-pr-1251-review-feedback">Address PR #1251 Review Feedback</h1>
+<blockquote>
+<p><strong>For Claude:</strong> REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.</p>
+</blockquote>
+<p><strong>Goal:</strong> Address ptgolden's review feedback on the link previews PR.</p>
+<p><strong>Architecture:</strong> Simplify the meta endpoint error handling to match the existing <code>entity.py</code> pattern, remove out-of-place nginx shell tests, and optionally hide the meta endpoint from API docs.</p>
+<p><strong>Tech Stack:</strong> Python/FastAPI, pytest, nginx</p>
+<hr />
+<h2 id="summary-of-changes">Summary of Changes</h2>
+<p>ptgolden requested two concrete changes:
+1. Remove the unnecessary try/catch block in <code>meta.py</code> — <code>get_entity</code> returns <code>None</code> (never raises <code>ValueError</code>), and FastAPI already handles uncaught exceptions as 500s
+2. Remove the nginx shell test file — it's outside the testing framework and a maintenance burden</p>
+<p>Additionally, Kevin mentioned hiding the meta endpoint from the API docs (optional).</p>
+<hr />
+<h3 id="task-1-simplify-error-handling-in-metapy">Task 1: Simplify error handling in meta.py</h3>
+<p><strong>Files:</strong>
+- Modify: <code>backend/src/monarch_py/api/meta.py:56-66</code>
+- Modify: <code>backend/tests/api/test_meta.py:152-158</code> (remove 500 test that tests removed behavior)</p>
+<p><strong>Step 1: Update meta.py to remove try/catch</strong></p>
+<p>Replace lines 56-66:
+<div class="highlight"><pre><span></span><code>    <span class="k">try</span><span class="p">:</span>
+        <span class="n">entity</span> <span class="o">=</span> <span class="n">solr</span><span class="p">()</span><span class="o">.</span><span class="n">get_entity</span><span class="p">(</span><span class="n">entity_id</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid entity request </span><span class="si">{</span><span class="n">entity_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">404</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Entity not found: </span><span class="si">{</span><span class="n">entity_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected error fetching entity </span><span class="si">{</span><span class="n">entity_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Internal server error&quot;</span><span class="p">)</span>
 
-<h2 id="applicable-classes">Applicable Classes</h2>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-<th>Modifies Slot</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="../DirectionalAssociation/">DirectionalAssociation</a></td>
-<td>An association that gives it's direction relative to a specified entity</td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../AssociationHighlighting/">AssociationHighlighting</a></td>
-<td>Optional highlighting information for search results</td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../Association/">Association</a></td>
-<td></td>
-<td>no</td>
-</tr>
-</tbody>
-</table>
-<h2 id="properties">Properties</h2>
-<ul>
-<li>
-<p>Range: <a href="../String/">String</a></p>
-</li>
-<li>
-<p>Multivalued: True</p>
-</li>
-</ul>
-<h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
-<h3 id="schema-source">Schema Source</h3>
-<ul>
-<li>from schema: <a href="https://w3id.org/monarch/monarch-py">https://w3id.org/monarch/monarch-py</a></li>
-</ul>
-<h2 id="mappings">Mappings</h2>
-<table>
-<thead>
-<tr>
-<th>Mapping Type</th>
-<th>Mapped Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>self</td>
-<td><a href="https://w3id.org/monarch/monarch-py/object_closure_label">https://w3id.org/monarch/monarch-py/object_closure_label</a></td>
-</tr>
-<tr>
-<td>native</td>
-<td><a href="https://w3id.org/monarch/monarch-py/object_closure_label">https://w3id.org/monarch/monarch-py/object_closure_label</a></td>
-</tr>
-</tbody>
-</table>
-<h2 id="linkml-source">LinkML Source</h2>
-<details>
-<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_closure_label</span>
-<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Field containing object name and the names of all of it&#39;s ancestors</span>
-<span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
-<span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_closure_label</span>
-<span class="nt">domain_of</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationHighlighting</span>
-<span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="nt">multivalued</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="k">if</span> <span class="n">entity</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">404</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Entity not found: </span><span class="si">{</span><span class="n">entity_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div></p>
+<p>With the simple pattern matching <code>entity.py</code>:
+<div class="highlight"><pre><span></span><code>    <span class="n">entity</span> <span class="o">=</span> <span class="n">solr</span><span class="p">()</span><span class="o">.</span><span class="n">get_entity</span><span class="p">(</span><span class="n">entity_id</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">entity</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">404</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Entity not found: </span><span class="si">{</span><span class="n">entity_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div></p>
+<p>Also remove the <code>import logging</code> and <code>logger = logging.getLogger(__name__)</code> lines since they're no longer used.</p>
+<p><strong>Step 2: Remove the 500 error test</strong></p>
+<p>Delete <code>test_meta_endpoint_returns_500_for_unexpected_errors</code> from <code>test_meta.py</code> — it tested the explicit <code>except Exception</code> handler we just removed. FastAPI's default 500 behavior doesn't need a test from us.</p>
+<p><strong>Step 3: Run tests to verify nothing breaks</strong></p>
+<p>Run: <code>cd backend &amp;&amp; poetry run pytest tests/api/test_meta.py -v</code>
+Expected: All remaining 8 tests PASS</p>
+<p><strong>Step 4: Commit</strong></p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>backend/src/monarch_py/api/meta.py<span class="w"> </span>backend/tests/api/test_meta.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;fix: simplify meta endpoint error handling per review</span>
+
+<span class="s2">Remove unnecessary try/catch — get_entity returns None (doesn&#39;t raise),</span>
+<span class="s2">and FastAPI handles uncaught exceptions as 500s already. Matches the</span>
+<span class="s2">pattern in entity.py.&quot;</span>
 </code></pre></div>
-</details>
+<hr />
+<h3 id="task-2-remove-nginx-shell-tests">Task 2: Remove nginx shell tests</h3>
+<p><strong>Files:</strong>
+- Delete: <code>services/nginx/tests/test_bot_detection.sh</code></p>
+<p><strong>Step 1: Delete the file</strong></p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>rm<span class="w"> </span>services/nginx/tests/test_bot_detection.sh
+</code></pre></div>
+<p><strong>Step 2: Check if the tests/ directory is now empty and can be removed</strong></p>
+<div class="highlight"><pre><span></span><code>ls<span class="w"> </span>services/nginx/tests/
+<span class="c1"># If empty, rmdir services/nginx/tests/</span>
+</code></pre></div>
+<p><strong>Step 3: Commit</strong></p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;chore: remove nginx shell tests per review</span>
+
+<span class="s2">These don&#39;t fit the project&#39;s testing framework and add maintenance</span>
+<span class="s2">burden for shell code.&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="task-3-hide-meta-endpoint-from-api-docs-optional-confirm-with-kevin">Task 3: Hide meta endpoint from API docs (optional — confirm with Kevin)</h3>
+<p><strong>Files:</strong>
+- Modify: <code>backend/src/monarch_py/api/meta.py:37</code></p>
+<p><strong>Step 1: Add <code>include_in_schema=False</code> to the route decorator</strong></p>
+<p>Change:
+<div class="highlight"><pre><span></span><code><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/meta/{entity_id:path}&quot;</span><span class="p">,</span> <span class="n">response_class</span><span class="o">=</span><span class="n">HTMLResponse</span><span class="p">)</span>
+</code></pre></div>
+To:
+<div class="highlight"><pre><span></span><code><span class="nd">@router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/meta/{entity_id:path}&quot;</span><span class="p">,</span> <span class="n">response_class</span><span class="o">=</span><span class="n">HTMLResponse</span><span class="p">,</span> <span class="n">include_in_schema</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div></p>
+<p><strong>Step 2: Run tests</strong></p>
+<p>Run: <code>cd backend &amp;&amp; poetry run pytest tests/api/test_meta.py -v</code>
+Expected: All tests still PASS (this only affects OpenAPI docs generation)</p>
+<p><strong>Step 3: Commit</strong></p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>backend/src/monarch_py/api/meta.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;chore: hide meta endpoint from API docs</span>
+
+<span class="s2">This is an internal endpoint for bot crawlers, not part of the public API.&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="items-not-addressed-and-why">Items NOT addressed (and why)</h2>
+<table>
+<thead>
+<tr>
+<th>Suggestion</th>
+<th>Source</th>
+<th>Disposition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rate limiting</td>
+<td>bot reviewer</td>
+<td>Infrastructure concern, not in scope for this PR</td>
+</tr>
+<tr>
+<td>Stricter CURIE regex</td>
+<td>bot reviewer</td>
+<td>Current pattern matches all Monarch CURIEs; tighter could break valid ones</td>
+</tr>
+<tr>
+<td>TEMPLATES_DIR validation</td>
+<td>bot reviewer</td>
+<td>Fails at import if wrong, which is appropriate</td>
+</tr>
+<tr>
+<td>Description truncation no-spaces edge</td>
+<td>bot reviewer</td>
+<td>Entity descriptions always contain spaces</td>
+</tr>
+<tr>
+<td>Nginx <code>if</code> anti-pattern refactor</td>
+<td>bot reviewer</td>
+<td>Works correctly, low-priority refactor</td>
+</tr>
+<tr>
+<td>Meta refresh open redirect</td>
+<td>bot reviewer</td>
+<td>URL derived from nginx-controlled headers + CURIE-validated entity_id, minimal risk</td>
+</tr>
+</tbody>
+</table>
 
 
 
