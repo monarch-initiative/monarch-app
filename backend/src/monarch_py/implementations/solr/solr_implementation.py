@@ -27,6 +27,7 @@ from monarch_py.datamodels.category_enums import (
     EntityCategory,
     MappingPredicate,
 )
+from monarch_py.utils.association_type_utils import AssociationTypeMappings
 from monarch_py.implementations.solr.solr_parsers import (
     convert_facet_fields,
     convert_facet_queries,
@@ -778,20 +779,49 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         )
         from monarch_py.utils.entity_grid_utils import build_entity_grid, sort_columns_by_category
 
-        # Determine field mappings based on first column category
-        # This uses heuristics based on common patterns
-        first_col_cat = column_assoc_categories[0]
+        # Get context entity's category to determine field mappings
+        context_entity = self.get_entity(context_id, extra=False)
+        if not context_entity:
+            raise ValueError(f"Context entity not found: {context_id}")
 
-        # Most gene->disease associations have gene as subject
-        if "Gene" in first_col_cat:
-            context_field = "subject"
-            column_field = "object"
-            context_closure_field = "subject_closure"
+        context_category = context_entity.category
+        if isinstance(context_category, list):
+            context_category = context_category[0] if context_category else "biolink:NamedThing"
+
+        # Determine field mappings using association type metadata
+        first_col_cat = column_assoc_categories[0]
+        mapping = AssociationTypeMappings.get_mapping(first_col_cat)
+
+        if mapping and mapping.subject_category and mapping.object_category:
+            # Use YAML metadata to determine direction
+            if context_category == mapping.subject_category:
+                context_field = "subject"
+                column_field = "object"
+                context_closure_field = "subject_closure"
+            elif context_category == mapping.object_category:
+                context_field = "object"
+                column_field = "subject"
+                context_closure_field = "object_closure"
+            else:
+                # Context category doesn't match either side - try heuristic fallback
+                if "Gene" in first_col_cat:
+                    context_field = "subject"
+                    column_field = "object"
+                    context_closure_field = "subject_closure"
+                else:
+                    context_field = "object"
+                    column_field = "subject"
+                    context_closure_field = "object_closure"
         else:
-            # For case-disease, disease is object
-            context_field = "object"
-            column_field = "subject"
-            context_closure_field = "object_closure"
+            # No metadata available - fall back to heuristics
+            if "Gene" in first_col_cat:
+                context_field = "subject"
+                column_field = "object"
+                context_closure_field = "subject_closure"
+            else:
+                context_field = "object"
+                column_field = "subject"
+                context_closure_field = "object_closure"
 
         # Row association field mappings
         # Most phenotype associations have phenotype as object
@@ -829,11 +859,6 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
 
         # Step 3: Handle no columns
         if not col_docs:
-            context_entity = self.get_entity(context_id, extra=False)
-            context_category = context_entity.category if context_entity else "biolink:NamedThing"
-            if isinstance(context_category, list):
-                context_category = context_category[0] if context_category else "biolink:NamedThing"
-
             return EntityGridResponse(
                 context_id=context_id,
                 context_name=self._get_entity_name(context_id),

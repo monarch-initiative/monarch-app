@@ -24,12 +24,54 @@ class AssociationTypeMappings:
             AssociationTypeMappings()
         return AssociationTypeMappings.__instance.mappings
 
-    def get_mapping(self, category: str):
+    @staticmethod
+    def get_mapping(category: str):
         if AssociationTypeMappings.__instance is None:
             AssociationTypeMappings()
-        for mapping in self.mappings:
+        for mapping in AssociationTypeMappings.__instance.mappings:
             if mapping.category == category:
                 return mapping
+        return None
+
+    @staticmethod
+    def get_traversable_associations(entity_category: str) -> List[dict]:
+        """Get associations traversable from a given entity category.
+
+        Returns associations where the entity can be either subject or object,
+        with direction info indicating which field the entity occupies.
+
+        Args:
+            entity_category: The biolink category of the context entity (e.g., "biolink:Gene")
+
+        Returns:
+            List of dicts with:
+            - category: association category string
+            - label: display label for UI
+            - context_field: "subject" or "object" (where context entity appears)
+            - target_category: what entity type the other end is
+        """
+        if AssociationTypeMappings.__instance is None:
+            AssociationTypeMappings()
+
+        results = []
+        for mapping in AssociationTypeMappings.__instance.mappings:
+            # Check if entity can be the subject
+            if mapping.subject_category == entity_category:
+                results.append({
+                    "category": mapping.category,
+                    "label": mapping.subject_label or mapping.category,
+                    "context_field": "subject",
+                    "target_category": mapping.object_category,
+                })
+            # Check if entity can be the object (reverse traversal)
+            if mapping.object_category == entity_category:
+                results.append({
+                    "category": mapping.category,
+                    "label": mapping.object_label or mapping.category,
+                    "context_field": "object",
+                    "target_category": mapping.subject_category,
+                })
+        return results
 
     def load_mappings(self):
         mapping_data = pkgutil.get_data(__package__, "./association_type_mappings.yaml")

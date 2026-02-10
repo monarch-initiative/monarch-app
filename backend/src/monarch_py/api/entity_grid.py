@@ -13,6 +13,7 @@ from fastapi import APIRouter, HTTPException, Query, Path
 from monarch_py.api.config import solr
 from monarch_py.datamodels.model import EntityGridResponse
 from monarch_py.datamodels.category_enums import AssociationCategory, EntityCategory
+from monarch_py.utils.association_type_utils import AssociationTypeMappings
 
 
 # Define row grouping options
@@ -320,3 +321,48 @@ async def get_generic_entity_grid(
         )
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+
+# =============================================================================
+# Traversable Associations Metadata Endpoint
+# =============================================================================
+
+
+@router.get(
+    "-grid/traversable-associations/{entity_category}",
+    summary="Get traversable associations for an entity type",
+    description="""
+    Returns association types that can be traversed from a given entity category.
+
+    For each association, returns:
+    - **category**: The biolink association category
+    - **label**: Human-readable label for UI display
+    - **context_field**: Which field ("subject" or "object") the context entity occupies
+    - **target_category**: The biolink category of entities at the other end
+
+    This enables dynamic UI that shows only valid association options based on
+    the selected entity type, supporting bidirectional traversal of associations.
+
+    Example: For biolink:Gene, this returns gene-disease, gene-phenotype, gene-homology, etc.
+    For biolink:Disease, this returns disease-phenotype, and also gene-disease (reverse direction).
+    """,
+)
+async def get_traversable_associations(
+    entity_category: str = Path(
+        ...,
+        description="The biolink category of the context entity",
+        examples=["biolink:Gene", "biolink:Disease", "biolink:Case"],
+    ),
+) -> List[dict]:
+    """Get associations traversable from a given entity category.
+
+    Returns a list of association options with direction information,
+    enabling the frontend to build dynamic association selection UIs.
+    """
+    associations = AssociationTypeMappings.get_traversable_associations(entity_category)
+    if not associations:
+        raise HTTPException(
+            status_code=404,
+            detail=f"No traversable associations found for entity category: {entity_category}",
+        )
+    return associations

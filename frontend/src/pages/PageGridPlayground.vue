@@ -124,9 +124,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { getCategoryIcon } from "@/api/categories";
-import { getEntityGrid } from "@/api/entity-grid";
+import {
+  getEntityGrid,
+  getTraversableAssociations,
+  type TraversableAssociation,
+} from "@/api/entity-grid";
 import type {
   CellData,
   ColumnEntity,
@@ -222,6 +226,10 @@ async function loadExample(example: Example) {
 const searchText = ref("");
 /** Selected entity ID */
 const selectedEntityId = ref("");
+/** Selected entity's biolink category */
+const selectedEntityCategory = ref("");
+/** Traversable associations for the selected entity type */
+const traversableAssociations = ref<TraversableAssociation[]>([]);
 
 /** Get autocomplete results from the search API */
 async function runGetAutocomplete(
@@ -252,61 +260,177 @@ async function onEntitySelect(value: string | Option) {
   await fetchEntityAssociations(entityId);
 }
 
-/** Fetch entity data and populate association category options with counts */
+/** Fetch entity data and populate association category options dynamically */
 async function fetchEntityAssociations(entityId: string) {
   fetchingEntityData.value = true;
   try {
+    // Fetch the node to get its category and association counts
     const node = await getNode(entityId);
 
-    // Build column options from association counts
+    // Store entity category
+    const category = Array.isArray(node.category)
+      ? node.category[0]
+      : node.category;
+    selectedEntityCategory.value = category || "";
+
+    // Fetch traversable associations for this entity type
+    if (category) {
+      try {
+        traversableAssociations.value =
+          await getTraversableAssociations(category);
+      } catch (e) {
+        console.warn("Failed to fetch traversable associations:", e);
+        traversableAssociations.value = [];
+      }
+    }
+
+    // Build column options from traversable associations, with counts from node data
+    const countsByCategory = new Map<string, number>();
+    for (const assocCount of node.association_counts || []) {
+      const cat = assocCount.category || assocCount.label;
+      if (cat) {
+        countsByCategory.set(cat, assocCount.count || 0);
+      }
+    }
+
+    // Filter traversable associations to those with counts > 0 (or all if no counts)
     const newColumnOptions: Array<{
       id: string;
       label: string;
       count?: number;
+      targetCategory?: string;
     }> = [];
 
-    for (const assocCount of node.association_counts || []) {
-      // The category field contains the association type
-      const category = assocCount.category || assocCount.label;
-      if (category && allColumnCategoryOptions[category]) {
+    for (const assoc of traversableAssociations.value) {
+      // Skip associations that go directly to phenotypes - those are row options, not column options
+      if (assoc.targetCategory === "biolink:PhenotypicFeature") {
+        continue;
+      }
+      const count = countsByCategory.get(assoc.category) || 0;
+      // Include associations that have counts, or all if no counts available
+      if (count > 0 || countsByCategory.size === 0) {
         newColumnOptions.push({
-          id: category,
-          label: `${allColumnCategoryOptions[category]} (${assocCount.count || 0})`,
-          count: assocCount.count,
+          id: assoc.category,
+          label: count > 0 ? `${assoc.label} (${count})` : assoc.label,
+          count,
+          targetCategory: assoc.targetCategory,
         });
       }
     }
 
-    // Sort by count descending, filter out zero counts
+    // Sort by count descending
     newColumnOptions.sort((a, b) => (b.count || 0) - (a.count || 0));
-    const filteredOptions = newColumnOptions.filter((o) => (o.count || 0) > 0);
 
-    if (filteredOptions.length > 0) {
-      columnCategoryOptions.value = filteredOptions;
+    if (newColumnOptions.length > 0) {
+      columnCategoryOptions.value = newColumnOptions;
       // Auto-select first option if nothing selected
       if (playgroundColumnCategories.value.length === 0) {
-        playgroundColumnCategories.value = [{ id: filteredOptions[0].id }];
+        playgroundColumnCategories.value = [{ id: newColumnOptions[0].id }];
       }
     } else {
-      // Fallback to all options if no counts found
-      columnCategoryOptions.value = Object.entries(
-        allColumnCategoryOptions,
-      ).map(([id, label]) => ({
-        id,
-        label,
-      }));
+      // No traversable associations found - clear options
+      columnCategoryOptions.value = [];
     }
+
+    // Update row options based on initial column selection
+    updateRowOptions();
   } catch (e) {
     console.warn("Failed to fetch entity associations:", e);
-    // Fallback to all options on error
-    columnCategoryOptions.value = Object.entries(allColumnCategoryOptions).map(
-      ([id, label]) => ({
-        id,
-        label,
-      }),
-    );
+    columnCategoryOptions.value = [];
+    traversableAssociations.value = [];
   } finally {
     fetchingEntityData.value = false;
+  }
+}
+
+/** Update row options based on selected column associations' target categories */
+function updateRowOptions() {
+  // Get target categories from selected column associations
+  const selectedColumnIds = playgroundColumnCategories.value.map((c) => c.id);
+  const targetCategories = new Set<string>();
+
+  for (const colId of selectedColumnIds) {
+    const assoc = traversableAssociations.value.find(
+      (a) => a.category === colId,
+    );
+    if (assoc?.targetCategory) {
+      targetCategories.add(assoc.targetCategory);
+    }
+  }
+
+  // Find row associations that go FROM the target categories TO phenotypes
+  const newRowOptions: Array<{ id: string; label: string }> = [];
+
+  // Row associations map: target category -> phenotype associations
+  const rowAssociationMap: Record<
+    string,
+    Array<{ category: string; label: string }>
+  > = {
+    "biolink:Disease": [
+      {
+        category: "biolink:DiseaseToPhenotypicFeatureAssociation",
+        label: "Disease-Phenotype",
+      },
+    ],
+    "biolink:Gene": [
+      {
+        category: "biolink:GeneToPhenotypicFeatureAssociation",
+        label: "Gene-Phenotype",
+      },
+    ],
+    "biolink:Case": [
+      {
+        category: "biolink:CaseToPhenotypicFeatureAssociation",
+        label: "Case-Phenotype",
+      },
+    ],
+    "biolink:Genotype": [
+      {
+        category: "biolink:GenotypeToPhenotypicFeatureAssociation",
+        label: "Genotype-Phenotype",
+      },
+    ],
+    "biolink:SequenceVariant": [
+      {
+        category: "biolink:VariantToPhenotypicFeatureAssociation",
+        label: "Variant-Phenotype",
+      },
+    ],
+  };
+
+  // Collect row options from all target categories
+  const seenRowCategories = new Set<string>();
+  for (const targetCat of targetCategories) {
+    const rowAssocs = rowAssociationMap[targetCat] || [];
+    for (const rowAssoc of rowAssocs) {
+      if (!seenRowCategories.has(rowAssoc.category)) {
+        seenRowCategories.add(rowAssoc.category);
+        newRowOptions.push({
+          id: rowAssoc.category,
+          label: rowAssoc.label,
+        });
+      }
+    }
+  }
+
+  if (newRowOptions.length > 0) {
+    rowCategoryOptions.value = newRowOptions;
+    // Auto-select first row option if nothing selected or if current selection is invalid
+    const currentIds = playgroundRowCategories.value.map((r) => r.id);
+    const validSelection = currentIds.some((id) =>
+      newRowOptions.some((opt) => opt.id === id),
+    );
+    if (
+      playgroundRowCategories.value.length === 0 ||
+      !validSelection
+    ) {
+      playgroundRowCategories.value = [{ id: newRowOptions[0].id }];
+    }
+  } else {
+    // No valid row options - use default phenotype associations
+    rowCategoryOptions.value = Object.entries(allRowCategoryOptions).map(
+      ([id, label]) => ({ id, label }),
+    );
   }
 }
 
@@ -333,8 +457,6 @@ const allColumnCategoryOptions: Record<string, string> = {
   "biolink:CorrelatedGeneToDiseaseAssociation": "Correlated Gene-Disease",
   "biolink:CaseToDiseaseAssociation": "Case-Disease",
   "biolink:GeneToGeneHomologyAssociation": "Gene Homology (Orthologs)",
-  "biolink:GeneToPhenotypicFeatureAssociation": "Gene-Phenotype",
-  "biolink:DiseaseToPhenotypicFeatureAssociation": "Disease-Phenotype",
 };
 
 /** All possible row category options */
@@ -360,6 +482,18 @@ const rowCategoryOptions = ref<Array<{ id: string; label: string }>>(
 
 /** Loading state for fetching entity data */
 const fetchingEntityData = ref(false);
+
+/** Watch column category selection to update row options */
+watch(
+  playgroundColumnCategories,
+  () => {
+    // Only update if we have traversable associations loaded
+    if (traversableAssociations.value.length > 0) {
+      updateRowOptions();
+    }
+  },
+  { deep: true },
+);
 
 /** Playground config (computed to react to display mode changes) */
 const playgroundConfig = computed<EntityGridConfig>(() => ({

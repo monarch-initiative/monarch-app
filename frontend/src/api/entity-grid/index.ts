@@ -222,6 +222,64 @@ export async function getEntityGrid(
   return transformResponse(data);
 }
 
+// =============================================================================
+// Traversable Associations API
+// =============================================================================
+
+/**
+ * Represents an association type that can be traversed from a given entity category.
+ */
+export interface TraversableAssociation {
+  /** The biolink association category (e.g., "biolink:CausalGeneToDiseaseAssociation") */
+  category: string;
+  /** Human-readable label for UI display */
+  label: string;
+  /** Which field the context entity occupies ("subject" or "object") */
+  contextField: "subject" | "object";
+  /** The biolink category of entities at the other end of the association */
+  targetCategory: string;
+}
+
+/**
+ * Fetch associations that can be traversed from a given entity category.
+ *
+ * This enables dynamic UI that shows only valid association options based on
+ * the selected entity type, supporting bidirectional traversal.
+ *
+ * @param entityCategory - The biolink category of the context entity (e.g., "biolink:Gene")
+ * @returns Promise resolving to list of traversable associations
+ * @throws Error if the API request fails or no associations found
+ */
+export async function getTraversableAssociations(
+  entityCategory: string,
+): Promise<TraversableAssociation[]> {
+  const url = `${apiUrl}/entity-grid/traversable-associations/${encodeURIComponent(entityCategory)}`;
+
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`API error (${response.status}): ${errorText}`);
+  }
+
+  const data = await response.json();
+
+  // Transform snake_case to camelCase
+  return data.map(
+    (item: {
+      category: string;
+      label: string;
+      context_field: string;
+      target_category: string;
+    }) => ({
+      category: item.category,
+      label: item.label,
+      contextField: item.context_field as "subject" | "object",
+      targetCategory: item.target_category,
+    }),
+  );
+}
+
 // Re-export types from types.ts
 export type { EntityGridConfig, ColumnGroup } from "./types";
 // Note: EntityGridMatrix, ColumnEntity, RowEntity, RowBin, CellData are imported from types.ts

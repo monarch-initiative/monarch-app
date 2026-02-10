@@ -256,6 +256,8 @@ class AssociationTypeMapping(ConfiguredBaseModel):
     object_label: Optional[str] = Field(default=None, description="""A label to describe the objects of the association type as a whole for use in the UI""")
     symmetric: bool = Field(default=False, description="""Whether the association type is symmetric, meaning that the subject and object labels should be interchangeable""")
     category: str = Field(default=..., description="""The biolink category to use in queries for this association type""")
+    subject_category: Optional[str] = Field(default=None, description="""The biolink category of entities in the subject position of this association type""")
+    object_category: Optional[str] = Field(default=None, description="""The biolink category of entities in the object position of this association type""")
 
 
 class DirectionalAssociation(Association):
