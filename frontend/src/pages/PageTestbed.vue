@@ -159,6 +159,61 @@
     {{ tab }}
   </AppSection>
 
+  <!-- node text component -->
+  <AppSection>
+    <AppHeading>Labels with markup and truncation</AppHeading>
+
+    <div id="labels-grid">
+      <div>
+        <AppHeading :level="3">HTML</AppHeading>
+        <AppFlex direction="col" gap="none">
+          <div v-for="(text, index) of nodeText" :key="index">
+            <AppNodeText :text="text.value" />
+          </div>
+        </AppFlex>
+      </div>
+
+      <div>
+        <AppHeading :level="3">HTML (truncated)</AppHeading>
+        <AppFlex direction="col" gap="none">
+          <div v-for="(text, index) of nodeText" :key="index">
+            <AppNodeText :text="text.value" :truncate-width="text.truncate" />
+          </div>
+        </AppFlex>
+      </div>
+
+      <div>
+        <AppHeading :level="3">SVG</AppHeading>
+        <svg :height="nodeText.length * 24">
+          <g
+            v-for="(text, index) of nodeText"
+            :key="index"
+            :transform="`translate(0, ${24 * index})`"
+          >
+            <AppNodeText :text="text.value" is-svg />
+          </g>
+        </svg>
+      </div>
+
+      <div>
+        <AppHeading :level="3">SVG (truncated)</AppHeading>
+        <svg :height="nodeText.length * 24">
+          <g
+            v-for="(text, index) of nodeText"
+            :key="index"
+            :transform="`translate(0, ${24 * index})`"
+          >
+            <AppNodeText
+              :text="text.value"
+              :truncate-width="text.truncate"
+              is-svg
+            />
+          </g>
+        </svg>
+      </div>
+    </div>
+  </AppSection>
+
   <!-- status component -->
   <AppSection>
     <AppHeading>Status</AppHeading>
@@ -198,6 +253,7 @@ import { omit } from "lodash";
 import { useEventListener } from "@vueuse/core";
 import AppButton from "@/components/AppButton.vue";
 import AppInput from "@/components/AppInput.vue";
+import AppNodeText from "@/components/AppNodeText.vue";
 import AppPercentage from "@/components/AppPercentage.vue";
 import AppSelectAutocomplete from "@/components/AppSelectAutocomplete.vue";
 import AppSelectMulti from "@/components/AppSelectMulti.vue";
@@ -401,6 +457,19 @@ const tabs = [
 /** selected tab */
 const tab = ref(tabs[0].id);
 
+/** node text */
+const nodeText = [
+  { value: "Plain text", truncate: 50 },
+  { value: "Text which has been <b>bolded</b>", truncate: 200 },
+  { value: "Text which has been <i>italicized</i>", truncate: 200 },
+  { value: "Text which has been <sup>superscripted</sup>", truncate: 200 },
+  { value: "Text with <s>tags that are not whitelisted</s>", truncate: 200 },
+  {
+    value: 'Text with a <a href="https://example.com/">link in it</a>',
+    truncate: 120,
+  },
+];
+
 /** table input props */
 const table = ref({
   cols: [
@@ -461,5 +530,15 @@ iframe {
 .icons {
   color: $theme;
   font-size: 4rem;
+}
+
+#labels-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+}
+
+#labels-grid h3 {
+  margin-bottom: 0;
 }
 </style>
