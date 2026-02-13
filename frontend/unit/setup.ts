@@ -79,4 +79,24 @@ export const emitted = <Event = unknown>(
 };
 
 /** mock functions that will throw error vitest environment */
-window.scrollTo = vi.fn(() => null);
+Object.defineProperty(window, "scrollTo", {
+  value: vi.fn(() => null),
+  writable: true,
+});
+
+// Mock for JSDOM virtual console to suppress scrollTo errors
+const originalConsoleError = console.error;
+console.error = (message, ...args) => {
+  if (typeof message === "string" && message.includes("window.scrollTo")) {
+    return; // Suppress scrollTo errors
+  }
+  originalConsoleError(message, ...args);
+};
+
+/** ensure components are properly cleaned up between tests */
+afterEach(() => {
+  // Force cleanup of any remaining Vue instances
+  if (global.gc) {
+    global.gc();
+  }
+});

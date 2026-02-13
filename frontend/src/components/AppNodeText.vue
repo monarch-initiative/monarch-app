@@ -14,9 +14,13 @@
       {{ text }}
     </span>
   </foreignObject>
-  <span v-else ref="container">
-    {{ text }}
-  </span>
+  <span
+    v-else
+    ref="container"
+    v-bind="$attrs"
+    :class="{ 'highlight-text': highlight }"
+    v-html="text"
+  />
 </template>
 
 <script setup lang="ts">
@@ -26,15 +30,18 @@ type Props = {
   text?: string;
   isSvg?: boolean;
   truncateWidth?: number;
+  highlight?: boolean;
 };
-
 const props = withDefaults(defineProps<Props>(), {
   text: "",
   isSvg: false,
   truncateWidth: undefined,
+  highlight: false,
 });
 
 const container = ref<HTMLSpanElement | null>(null);
+
+// Use $attrs to capture external classes and styles
 
 function makeEscapedTagPattern(tagName: string, attrsPattern: string = "") {
   return new RegExp(
@@ -114,3 +121,9 @@ onUpdated(() => {
   buildDOM(container.value);
 });
 </script>
+
+<style>
+.highlight-text em {
+  background-color: yellow;
+}
+</style>

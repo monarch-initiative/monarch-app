@@ -13,6 +13,14 @@
       aria-label="Page table of contents"
       @click.stop
     >
+      <AppBackToTopButton />
+
+      <SectionHierarchy
+        v-if="node && showHierarchy"
+        :node="node"
+        :child-limit="10"
+      />
+
       <!-- entries -->
       <AppLink
         v-for="(entry, index) in entries"
@@ -30,11 +38,11 @@
       <div class="spacer"></div>
 
       <!-- options -->
-      <AppCheckbox
+      <!-- <AppCheckbox
         v-model="oneAtATime"
         v-tooltip="'Only show one section at a time'"
         text="Show single section"
-      />
+      /> -->
     </AppFlex>
   </aside>
 </template>
@@ -46,14 +54,16 @@ export const closeToc = (): unknown =>
 </script>
 
 <script setup lang="ts">
-import { nextTick, onMounted, ref, watch } from "vue";
+import { computed, nextTick, onMounted, ref, watch } from "vue";
 import {
   onClickOutside,
   useEventListener,
   useMutationObserver,
 } from "@vueuse/core";
+import type { Node as ApiNode } from "@/api/model";
+import AppBackToTopButton from "@/components/AppBackToTopButton.vue";
+import SectionHierarchy from "@/pages/node/SectionHierarchy.vue";
 import { firstInView } from "@/util/dom";
-import AppCheckbox from "./AppCheckbox.vue";
 import type AppFlex from "./AppFlex.vue";
 
 type Entries = {
@@ -63,22 +73,37 @@ type Entries = {
   text: string;
 }[];
 
+const CATEGORIES = [
+  "biolink:Disease",
+  "biolink:PhenotypicFeature",
+  "biolink:AnatomicalEntity",
+];
+const { node } = defineProps<{ node: ApiNode | null }>();
 /** toc entries */
 const entries = ref<Entries>([]);
 /** whether toc is open or not */
-const expanded = ref(window.innerWidth > 1400);
+const expanded = ref(window.innerWidth > 1240);
 /** how much to push downward to make room for header if in view */
 const nudge = ref(0);
 /** whether to only show one section at a time */
 const oneAtATime = ref(false);
 /** active (in view or selected) section */
 const active = ref(0);
-
+const showHierarchy = computed(() => CATEGORIES.includes(node?.category ?? ""));
 /** table of contents panel element */
 const toc = ref<InstanceType<typeof AppFlex>>();
-
 /** listen for close event */
 useEventListener(window, "closetoc", () => (expanded.value = false));
+/** toggle expanded state */
+useEventListener(window, "resize", () => {
+  if (window.innerWidth < 1240) {
+    // on narrow, always collapse
+    expanded.value = false;
+  } else {
+    // on wide, always expand
+    expanded.value = true;
+  }
+});
 
 /** update toc position */
 async function updatePosition() {
@@ -221,5 +246,8 @@ useMutationObserver(
 
 .checkbox {
   font-size: 0.9rem;
+}
+.toc:not(.expanded) {
+  transform: translateX(-100%);
 }
 </style>

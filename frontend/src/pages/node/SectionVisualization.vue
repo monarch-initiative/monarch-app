@@ -11,7 +11,7 @@
     class="inset"
     alignment="left"
   >
-    <AppHeading icon="chart-bar">HistoPheno</AppHeading>
+    <AppHeading icon="chart-bar">Phenotype Overview</AppHeading>
     <HistoPheno :node="node" />
   </AppSection>
 </template>

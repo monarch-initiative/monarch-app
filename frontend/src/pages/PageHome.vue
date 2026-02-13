@@ -1,225 +1,115 @@
-<!--
-  homepage of entire site
--->
-
 <template>
+  <PageTitle
+    id="home-page"
+    title="What is the Monarch Initiative?"
+    class="home-title"
+  />
+
   <AppSection width="big">
-    <AppGallery>
-      <template v-for="category in resources" :key="category">
-        <AppTile
-          v-for="(resource, resourceIndex) in category"
-          :key="resourceIndex"
-          :to="resource.link"
-          :icon="resource.icon"
-          :title="resource.name"
-          :subtitle="resource.description"
-        />
-      </template>
-    </AppGallery>
-  </AppSection>
-
-  <!--  <AppSection design="fill">-->
-  <!--    <AppTabs-->
-  <!--      v-model="tab"-->
-  <!--      name="Explore Mode"-->
-  <!--      :tabs="tabs"-->
-  <!--      navigate="Explore"-->
-  <!--    />-->
-  <!--    <TabSearch :minimal="true" :focus-explore="true" />-->
-  <!--  </AppSection>-->
-
-  <AppSection>
-    <AppHeading>What is Monarch?</AppHeading>
-
-    <!-- high level description of monarch as a whole. "elevator pitch" -->
-    <!-- eslint-disable-next-line -->
-    <iframe
-      title="Monarch Initiative: Resource Overview"
-      class="video"
-      src="https://www.youtube.com/embed/25e88kbjKtU?si=lG88-c2fZcKHxIhm"
-      frameborder="0"
-      allow="autoplay; picture-in-picture"
-      allowfullscreen
-    ></iframe>
-
-    <AppGallery :cols="2">
-      <AppTile
-        icon="people"
-        title="For informaticians, patients, clinicians, researchers, and more"
-      />
-      <AppTile
-        icon="knowledge-graph"
-        title="An extensive, cross-species, semantic knowledge graph"
-      />
-      <AppTile
-        icon="phenotype-search"
-        title="A website for quick and easy exploration of the graph"
-      />
-      <AppTile
-        icon="toolbox"
-        title="Powerful API and ecosystem of related tools"
-      />
-    </AppGallery>
-    <!-- KG counts (for advertising) -->
-    <!-- <AppButton to="/about" text="Learn more" icon="arrow-right" /> -->
-  </AppSection>
-
-  <!-- specific feature demos  -->
-
-  <!-- <AppSection>
-    <AppHeading>Highlights</AppHeading>
-
-    <p>Some cool things you can do on this website.</p>
-
-    <AppHighlight :src="search">
-      Quickly and easily browse nodes. Filter by category and taxon. See your
-      recent and frequent searches.
-    </AppHighlight>
-
-    <AppHighlight :src="textAnnotator">
-      Easily search our knowledge graph for multiple nodes from free text.
-      Download the results or send them to the phenotype explorer tool for
-      analysis.
-    </AppHighlight>
-
-    <AppHighlight :src="phenotypeExplorer">
-      Compare a set of phenotypes to another set of phenotypes, or to all
-      genes/diseases of a species. See a rich comparison of the overlap between
-      the two sets.
-    </AppHighlight>
-
-    <AppHighlight :src="nodePage">
-      See rich details about each node. Traverse between nodes via associations
-      between them, and view the evidence for those associations.
-    </AppHighlight>
-  </AppSection> -->
-
-  <!-- news -->
-  <AppSection>
-    <AppHeading>News</AppHeading>
-
-    <p>Latest posts about Monarch.</p>
-
-    <!-- status -->
-    <AppStatus v-if="isLoading" code="loading">Loading posts</AppStatus>
-    <AppStatus v-if="isError" code="error">Error loading posts</AppStatus>
-
-    <!-- list of posts -->
-    <AppFlex v-if="blogPosts.length" direction="col" gap="big">
-      <AppPost
-        v-for="(item, index) in blogPosts.slice(0, 3)"
-        :key="index"
-        class="blog-post"
-        :image="item.thumbnail"
-        :date="item.date"
-        :link="item.link"
-        :title="item.title"
-        :description="item.description"
-      />
-    </AppFlex>
-
-    <AppButton
-      to="https://monarchinit.medium.com/"
-      text="More on Medium"
-      icon="medium"
-    />
-  </AppSection>
-
-  <AppSection>
-    <iframe
-      title="Monarch Initiative: User Experience"
-      class="video"
-      src="https://www.youtube.com/embed/kYyP6My2tWA?si=k-d_jM-01rUuBBG5"
-      frameborder="0"
-      allow="autoplay; picture-in-picture"
-      allowfullscreen
-    ></iframe>
-  </AppSection>
-
-  <!-- social media -->
-  <AppSection width="big">
-    <AppHeading>Follow</AppHeading>
-
-    <p>Be the first to know when we have major updates or other fun news.</p>
-
-    <AppFlex align-v="top">
-      <AppTile
-        to="https://groups.google.com/g/monarch-friends/"
-        icon="envelope"
-        title="Subscribe"
-        subtitle="Mailing list"
-        design="small"
-      />
-      <AppTile
-        to="https://medium.com/@MonarchInit"
-        icon="medium"
-        title="Medium"
-        subtitle="Blog posts"
-        design="small"
-      />
-      <AppTile
-        to="https://github.com/monarch-initiative"
-        icon="github"
-        title="GitHub"
-        subtitle="Source code"
-        design="small"
-      />
-      <AppTile
-        to="https://www.youtube.com/@monarchinitiative"
-        icon="youtube"
-        title="YouTube"
-        subtitle="Videos"
-        design="small"
-      />
-      <AppTile
-        to="https://www.linkedin.com/company/the-monarch-initiative"
-        icon="linkedin"
-        title="LinkedIn"
-        subtitle="Social updates"
-        design="small"
-      />
-    </AppFlex>
+    <p>
+      The Monarch Initiative is an international consortium that leads key
+      global standards and semantic data integration technologies. Monarch
+      resources and integrated data are also foundational to many downstream
+      applications and contexts; we work closely with a variety of stakeholders
+      and resource-development communities to capture feedback and make
+      improvements. To maximize utility and impact, the Monarch platform is
+      composed of multiple open-source, open-access components. We promote
+      provenance and transparency, enhanced use of standards and new
+      technologies and improved data accessibility, end-user utility, and data
+      submission. Explore this site to learn more about the complete suite of
+      Monarch resources.
+    </p>
+    <div class="custom-grid">
+      <div v-for="(tool, id) in TOOL_LINKS" :key="id">
+        <AppLink :to="tool.to" :aria-label="tool.tooltip">
+          <AppIcon
+            v-if="tool.icon"
+            :tooltip="tool.tooltip"
+            :aria-label="tool.tooltip"
+            :icon="tool.icon"
+            class="icon"
+          />
+        </AppLink>
+      </div>
+    </div>
   </AppSection>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
-import { getBlogPosts } from "@/api/blog";
-import AppPost from "@/components/AppPost.vue";
-import AppTile from "@/components/AppTile.vue";
-import { useQuery } from "@/composables/use-query";
-import resources from "./resources.json";
-
-const {
-  query: runGetBlogPosts,
-  data: blogPosts,
-  isLoading,
-  isError,
-} = useQuery(async function () {
-  return await getBlogPosts();
-}, []);
-
-onMounted(runGetBlogPosts);
+import PageTitle from "@/components/ThePageTitle.vue";
+import { TOOL_LINKS } from "@/data/toolEntityConfig";
 </script>
 
 <style lang="scss" scoped>
-.association {
-  font-size: 2rem;
+.section:last-of-type {
+  margin-bottom: 3em;
+  gap: 0;
 }
 
-.video {
-  aspect-ratio: 16 / 9;
+.section:first-of-type {
+  gap: 3em;
+}
+
+.custom-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
   width: 100%;
+  max-width: 60em;
+  gap: 2em;
 }
 
-.line {
-  width: 10px;
-
-  line {
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-dasharray: 1 3;
-    stroke-linecap: round;
+@media (max-width: 1000px) {
+  .custom-grid {
+    grid-template-rows: repeat(2, auto);
+    grid-auto-columns: minmax(7em, 1fr);
+    grid-auto-flow: column;
   }
+}
+
+@media (max-width: 600px) {
+  .custom-grid {
+    grid-template-rows: auto;
+    grid-template-columns: 1fr;
+    grid-auto-flow: row;
+  }
+}
+
+.custom-grid > * {
+  display: flex;
+  flex: 1 1 7em;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+}
+
+.home-title {
+  margin-top: 2em;
+}
+
+.icon {
+  z-index: 2;
+  position: relative;
+  position: relative;
+  width: 12em;
+  height: 6em;
+
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  @media (max-width: 1000px) {
+    width: 9em;
+    height: 7em;
+  }
+}
+
+.icon:hover {
+  transform: scale(1.08);
+}
+
+a:focus,
+.icon:focus {
+  outline: none;
 }
 </style>

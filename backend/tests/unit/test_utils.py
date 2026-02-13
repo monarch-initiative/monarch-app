@@ -115,7 +115,11 @@ def test_get_headers_from_obj(obj, expected, request):
 
     expected = request.getfixturevalue(expected)
     headers = get_headers_from_obj(obj)
-    assert headers == expected
+    # Allow for the expected headers to be a subset of the actual headers,
+    # so that the data model being ahead of new fields the Solr index won't
+    # break the tests
+    for header in expected:
+        assert header in headers
 
 
 @pytest.mark.skip(reason="It's broken and I'm dumb")

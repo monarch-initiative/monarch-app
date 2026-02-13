@@ -51,3 +51,21 @@
 - subject_label: Medical Action
   object_label: Medical Action
   category: "biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation"
+- subject_label: Variant to Phenotype
+  object_label: Variant to Phenotype
+  category: "biolink:VariantToPhenotypicFeatureAssociation"
+- subject_label: Genotype to Gene
+  object_label: Genotype to Gene
+  category: "biolink:GenotypeToGeneAssociation"
+- subject_label: Genotype to Variant
+  object_label: Genotype to Variant
+  category: "biolink:GenotypeToVariantAssociation"
+- subject_label: Case Phenotypes
+  object_label: Cases
+  category: "biolink:CaseToPhenotypicFeatureAssociation"
+- subject_label: Case Diseases
+  object_label: Cases
+  category: "biolink:CaseToDiseaseAssociation"
+- subject_label: Case Genes
+  object_label: Cases
+  category: "biolink:CaseToGeneAssociation"

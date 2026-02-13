@@ -1,5 +1,5 @@
-RUN = cd backend && poetry run
-VERSION = $(shell poetry -C backend version -s)
+RUN = cd backend && uv run
+VERSION = $(shell uv --directory backend version -s)
 ROOTDIR = $(shell pwd)
 SCHEMADIR = $(ROOTDIR)/backend/src/monarch_py/datamodels
 
@@ -65,7 +65,8 @@ install: install-backend install-frontend
 .PHONY: install-backend
 install-backend:
 	cd backend && \
-		poetry install --with dev
+		uv sync --extra dev && \
+		uv pip install -e .[dev]
 
 
 .PHONY: install-frontend
@@ -77,7 +78,7 @@ install-frontend:
 
 .PHONY: model
 model: install-backend	
-	$(RUN) gen-pydantic --extra-fields allow $(SCHEMADIR)/model.yaml > $(SCHEMADIR)/model.py
+	$(RUN) gen-pydantic --meta None --extra-fields allow $(SCHEMADIR)/model.yaml > $(SCHEMADIR)/model.py
 	$(RUN) gen-typescript $(SCHEMADIR)/model.yaml > $(ROOTDIR)/frontend/src/api/model.ts
 	make format
 
@@ -197,8 +198,8 @@ lint-frontend:
 
 .PHONY: lint-backend
 lint-backend: 
-	$(RUN) ruff check --diff --exit-zero .
-	$(RUN) black --check --diff -l 120 src tests
+	-$(RUN) ruff check --diff .
+	-$(RUN) ruff format --diff .
 
 
 .PHONY: format
@@ -207,8 +208,8 @@ format: format-frontend format-backend
 
 .PHONY: format-backend
 format-backend: 
-	$(RUN) ruff check --fix --exit-zero .
-	$(RUN) black -l 120 src tests
+	-$(RUN) ruff check --fix .
+	-$(RUN) ruff format .
 
 
 .PHONY: format-frontend

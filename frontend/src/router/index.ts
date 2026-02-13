@@ -34,6 +34,7 @@ export const routes: RouteRecordRaw[] = [
     path: "/",
     name: "Home",
     component: asyncRoute("PageHome"),
+    meta: { breadcrumb: "Home" },
     beforeEnter: () => {
       /** look for redirect in session storage (saved from public/404.html page) */
       const redirect = window.sessionStorage.redirect || "";
@@ -68,80 +69,26 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/home",
     redirect: "/",
+    meta: { breadcrumb: "Home" },
   },
 
-  /** top level pages */
-  {
-    path: "/explore",
-    name: "Explore",
-    component: asyncRoute("explore/PageExplore"),
-  },
-  {
-    path: "/about",
-    name: "About",
-    component: asyncRoute("about/PageAbout"),
-  },
-  {
-    path: "/help",
-    name: "Help",
-    component: asyncRoute("help/PageHelp"),
-  },
+  // {
+  //   path: "/overview",
+  //   name: "Overview",
+  //   component: () => import("../pages/about/PageOverview.vue"),
+  // },
 
-  /** about pages */
-  {
-    path: "/overview",
-    name: "Overview",
-    component: () => import("../pages/about/PageOverview.vue"),
-  },
-  {
-    path: "/cite",
-    name: "Cite",
-    component: asyncRoute("about/PageCite"),
-  },
-  {
-    path: "/team",
-    name: "Team",
-    component: asyncRoute("about/PageTeam"),
-  },
-  {
-    path: "/publications",
-    name: "Publications",
-    component: asyncRoute("about/PagePublications"),
-  },
-  {
-    path: "/terms",
-    name: "Terms",
-    component: asyncRoute("about/PageTerms"),
-  },
-  {
-    path: "/phenomics-first",
-    name: "PhenomicsFirst",
-    component: asyncRoute("about/PagePhenomicsFirst"),
-  },
-  {
-    path: "/outreach",
-    name: "Outreach",
-    component: asyncRoute("about/PageOutreach"),
-  },
-  {
-    path: "/how-to",
-    name: "HowTo",
-    component: asyncRoute("about/PageHowTo"),
-  },
+  // {
+  //   path: "/how-to",
+  //   name: "HowTo",
+  //   component: asyncRoute("about/PageHowTo"),
+  // },
 
-  /** resources page */
-  {
-    path: "/resources",
-    name: "Resources",
-    component: () => import("../pages/resources/PageResources.vue"),
-  },
-
-  /** help pages */
-  {
-    path: "/feedback",
-    name: "Feedback",
-    component: asyncRoute("help/PageFeedback"),
-  },
+  // {
+  //   path: "/feedback",
+  //   name: "Feedback",
+  //   component: asyncRoute("help/PageFeedback"),
+  // },
 
   /** node pages */
   {
@@ -151,20 +98,20 @@ export const routes: RouteRecordRaw[] = [
   },
 
   /** phenogrid compare iframe widget page */
-  {
-    path: "/phenogrid-search",
-    name: "Phenogrid",
-    component: asyncRoute("explore/PagePhenogridSearch"),
-    meta: { bare: true },
-  },
+  // {
+  //   path: "/phenogrid-search",
+  //   name: "Phenogrid",
+  //   component: asyncRoute("explore/PagePhenogridSearch"),
+  //   meta: { bare: true },
+  // },
 
-  /** phenogrid multi-compare iframe widget page */
-  {
-    path: "/phenogrid-multi-compare",
-    name: "PhenogridMultiCompare",
-    component: asyncRoute("explore/PagePhenogridMulticompare"),
-    meta: { bare: true },
-  },
+  // /** phenogrid multi-compare iframe widget page */
+  // {
+  //   path: "/phenogrid-multi-compare",
+  //   name: "PhenogridMultiCompare",
+  //   component: asyncRoute("explore/PagePhenogridMulticompare"),
+  //   meta: { bare: true },
+  // },
 
   /** test pages (comment this out when we release app) */
   {
@@ -177,7 +124,144 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/:pathMatch(.*)*",
     name: "NotFound",
-    component: asyncRoute("PageHome"),
+    component: asyncRoute("PageNotFound"),
+  },
+  {
+    path: "/search-phenotypes",
+    name: "Phenotype Similarity Search",
+    component: asyncRoute("knowledgeGraph/PagePhenotypeExplore"),
+    meta: { breadcrumb: "Phenotype Similarity Search" },
+  },
+  {
+    path: "/text-annotator",
+    name: "Text Annotator",
+    component: asyncRoute("knowledgeGraph/PageTextAnnotator"),
+    meta: { breadcrumb: "Text Annotator" },
+  },
+
+  // Knowledge Graph Dropdown
+  {
+    path: "/kg/about",
+    name: "About KG",
+    component: asyncRoute("knowledgeGraph/PageAbout"),
+    meta: { breadcrumb: "About the KG" },
+  },
+  {
+    path: "/kg/citation",
+    name: "Citation",
+    component: asyncRoute("knowledgeGraph/PageCite"),
+    meta: { breadcrumb: "Citation" },
+  },
+  {
+    path: "/kg/help",
+    name: "Help",
+    component: asyncRoute("knowledgeGraph/PageHelp"),
+    meta: { breadcrumb: "How to & Help" },
+  },
+  {
+    path: "/kg/status",
+    name: "Status & QC",
+    component: asyncRoute("knowledgeGraph/PageStatus"),
+    meta: { breadcrumb: "Status & QC" },
+  },
+  {
+    path: "/kg/dashboard",
+    name: "KG Dashboard",
+    component: asyncRoute("knowledgeGraph/PageKGDashboard"),
+    meta: { breadcrumb: "KG Dashboard" },
+  },
+  {
+    path: "/results",
+    name: "Search Results",
+    component: asyncRoute("knowledgeGraph/PageSearchResults"),
+    meta: { breadcrumb: "Search Results" },
+  },
+  {
+    path: "/kg/documentation",
+    name: "Documentation",
+    component: asyncRoute("knowledgeGraph/PageDocumentation"),
+    meta: { breadcrumb: "Documentation" },
+  },
+  {
+    path: "/kg/terms",
+    name: "Terms of Use",
+    component: asyncRoute("knowledgeGraph/PageTerms"),
+    meta: { breadcrumb: "Terms of Use" },
+  },
+  {
+    path: "/kg/downloads",
+    name: "Downloads",
+    component: asyncRoute("knowledgeGraph/PageDownloads"),
+    meta: { breadcrumb: "Downloads" },
+  },
+  {
+    path: "/kg/sources",
+    name: "Sources",
+    component: asyncRoute("knowledgeGraph/PageSources"),
+    meta: { breadcrumb: "KG Sources" },
+  },
+  // About Dropdown
+  {
+    path: "/about/our-story",
+    name: "Our Story",
+    component: asyncRoute("about/PageOurStory"),
+    meta: { breadcrumb: "Our Story" },
+  },
+  {
+    path: "/about/team",
+    name: "Team",
+    component: asyncRoute("about/PageTeam"),
+    meta: { breadcrumb: "Team" },
+  },
+  {
+    path: "/about/sab",
+    name: "Scientfic Advisory Board Members",
+    component: asyncRoute("about/PageSAB"),
+    meta: { breadcrumb: "Scientfic Advisory Board Members" },
+  },
+  {
+    path: "/about/contact-us",
+    name: "Contact Us",
+    component: asyncRoute("about/PageContact"),
+    meta: { breadcrumb: "Contact Us" },
+  },
+  {
+    path: "/about/funding",
+    name: "Funding",
+    component: asyncRoute("about/PageFunding"),
+    meta: { breadcrumb: "Funding" },
+  },
+  {
+    path: "/about/publications",
+    name: "Publications",
+    component: asyncRoute("about/PagePublications"),
+    meta: { breadcrumb: "Publications" },
+  },
+  // Community Dropdown
+  {
+    path: "/community/get-involved",
+    name: "Get Involved",
+    component: asyncRoute("community/PageGetInvolved"),
+    meta: { breadcrumb: "Get Involved" },
+  },
+
+  {
+    path: "/ontologies/:id",
+    name: "OntologyPage",
+    component: asyncRoute("ResourceInfoPage"),
+    props: (route) => ({ itemType: "ontologies", id: route.params.id }),
+  },
+  {
+    path: "/registries/:id",
+    name: "RegistryPage",
+    component: asyncRoute("ResourceInfoPage"),
+    props: (route) => ({ itemType: "registries", id: route.params.id }),
+  },
+  {
+    path: "/tools/:id",
+    name: "ToolPage",
+    component: asyncRoute("ResourceInfoPage"),
+    props: (route) => ({ itemType: "tools", id: route.params.id }),
   },
 ];
 
@@ -190,7 +274,18 @@ for (const route of routes) {
 }
 
 /** vue-router's scroll behavior handler */
-const scrollBehavior: RouterScrollBehavior = async () => {};
+const scrollBehavior: RouterScrollBehavior = async (
+  to,
+  from,
+  savedPosition,
+) => {
+  // if browser back/forward button
+  if (savedPosition) return savedPosition;
+
+  if (to.hash) return;
+  // scroll to top
+  return { left: 0, top: 0 };
+};
 
 /** given element, get (possibly) modified target */
 const getTarget = (element: Element): Element => {

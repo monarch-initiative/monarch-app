@@ -9,10 +9,6 @@
   </template>
 
   <template v-else-if="route.matched.length">
-    <TheBanner v-if="apiName !== 'local'">
-      This repository is under review for potential modification
-      in compliance with Administration directives.
-    </TheBanner>
     <TheBanner v-if="apiName !== 'prod'">
       This web app is the
       <strong v-if="apiName === 'local'">LOCAL VERSION</strong>
@@ -30,7 +26,7 @@
       Disabling the banner is as simple as commenting out this section.
     </TheBanner> -->
 
-    <TheHeader />
+    <TheHeader :key="route.path" />
     <main>
       <router-view />
       <TheFloatButtons />

@@ -5,7 +5,7 @@
 <template>
   <!-- status -->
   <template v-if="isLoading || isError">
-    <AppSection width="full" design="fill" class="bare node">
+    <AppSection width="full" design="fill" class="node">
       <AppHeading class="heading">
         {{ $route.params.id }}
       </AppHeading>
@@ -27,10 +27,9 @@
     <SectionVisualization :node="node" />
     <SectionAssociations :node="node" />
     <SectionBreadcrumbs :node="node" />
-    <SectionHierarchy :node="node" />
-    <SectionExtra :node="node" />
+    <!-- <SectionHierarchy :node="node" /> -->
     <Teleport to="body">
-      <TheTableOfContents />
+      <TheTableOfContents :node="node" />
     </Teleport>
   </template>
 </template>
@@ -45,8 +44,6 @@ import { addEntry } from "@/global/history";
 import { appDescription, appTitle } from "@/global/meta";
 import SectionBreadcrumbs from "@/pages/node/SectionBreadcrumbs.vue";
 import SectionAssociations from "./SectionAssociations.vue";
-import SectionExtra from "./SectionExtra.vue";
-import SectionHierarchy from "./SectionHierarchy.vue";
 import SectionOverview from "./SectionOverview.vue";
 import SectionTitle from "./SectionTitle.vue";
 import SectionVisualization from "./SectionVisualization.vue";
@@ -131,6 +128,9 @@ onMounted(runGetNode);
 
 /** make room for the table of contents **/
 .section {
-  margin: 10px 20px 10px $toc-width + 20px !important;
+  margin: 10px 20px 10px $toc-width + 20px;
+  @media (max-width: 1240px) {
+    margin: 10px 20px 10px 20px;
+  }
 }
 </style>

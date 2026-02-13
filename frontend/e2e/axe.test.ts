@@ -7,18 +7,22 @@ log();
 /** pages to test */
 const paths = [
   "/",
-  "/explore#search",
-  "/explore#text-annotator",
-  "/explore#phenotype-explorer",
-  "/about",
-  "/help",
-  "/cite",
-  "/team",
-  "/publications",
-  "/terms",
-  "/feedback",
-  "/MONDO:0007523",
-  "/testbed",
+  "/kg/about",
+  "/kg/citation",
+  "/kg/help",
+  "/kg/status",
+  "/results",
+  "/kg/documentation",
+  "/kg/downloads",
+  "kg/terms",
+  "/search-phenotypes",
+  "/text-annotator",
+  "/about/our-story",
+  "/about/team",
+  "/about/contact-us",
+  "/about/sab",
+  "/about/funding",
+  "/about/publications",
 ];
 
 /** axe rule overrides */
@@ -62,8 +66,10 @@ const checkPage =
 
     /** perform interaction on selector */
     if (selector) {
-      await page.locator(selector).first().focus();
-      await page.locator(selector).first().click();
+      const target = page.locator(selector).first();
+      await target.focus(); // Trigger focus
+      await target.press("ArrowDown"); // Simulate user interaction
+      await page.waitForTimeout(500); // Give dropdown time to render
     }
 
     /** axe check */

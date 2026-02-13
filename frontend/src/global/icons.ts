@@ -51,6 +51,8 @@ const icons = [
   fas.faBook,
   fas.faBullhorn,
   fas.faCheck,
+  fas.faChevronDown,
+  fas.faChevronUp,
   fas.faCircleExclamation,
   fas.faCircleInfo,
   fas.faClipboardList,
@@ -83,6 +85,14 @@ const icons = [
   fas.faUserGear,
   fas.faXmark,
   far.faFaceMeh,
+  fas.faDatabase,
+  fas.faSitemap,
+  fas.faRotate,
+  fas.faMicroscope,
+  fas.faCalendarWeek,
+  fas.faGraduationCap,
+  fas.faBookOpenReader,
+  fas.faWrench,
 ];
 
 library.add(...icons);

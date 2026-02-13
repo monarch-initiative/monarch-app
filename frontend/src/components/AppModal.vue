@@ -151,7 +151,7 @@ onBeforeUpdate(async () => {
   max-height: calc(100vh - 80px);
   padding: 40px;
   overflow-y: auto;
-  gap: 40px;
+  gap: 12px;
   background: $white;
 }
 

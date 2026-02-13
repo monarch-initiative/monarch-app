@@ -7,6 +7,8 @@ from monarch_py.datamodels.solr import SolrQuery, SolrQueryResult, core
 from monarch_py.utils.utils import escape
 from pydantic import BaseModel
 
+FIELD_TYPE_SUFFIXES = ["_t", "_ac", "_grounding", "_sortable_float"]
+
 
 class SolrService(BaseModel):
     base_url: str
@@ -32,25 +34,66 @@ class SolrService(BaseModel):
             logger.error("Solr error message: " + data["error"]["msg"])
         response.raise_for_status()
         solr_query_result = SolrQueryResult.model_validate(data, from_attributes=True)
+        solr_query_result.highlighting = SolrService._consolidate_highlights(
+            solr_query_result.highlighting, FIELD_TYPE_SUFFIXES
+        )
         for doc in solr_query_result.response.docs:
-            self._strip_json(
-                doc,
-                "_version_",
-                "iri",
-                "frequency_computed_sortable_float",
-                "has_quotient_sortable_float",
-                "has_percentage_sortable_float",
-            )
+            SolrService._strip_excluded_fields(doc)
+            doc["highlighting"] = solr_query_result.highlighting.get(doc["id"], None)
 
         return solr_query_result
 
-    def _strip_json(self, doc: dict, *fields_to_remove: str):
+    @staticmethod
+    def _strip_excluded_fields(doc: dict):
+        SolrService._strip_json(
+            doc,
+            "_version_",
+            "iri",
+            "frequency_computed_sortable_float",
+            "has_quotient_sortable_float",
+            "has_percentage_sortable_float",
+        )
+        SolrService._strip_json_by_suffix(doc, *FIELD_TYPE_SUFFIXES)
+
+    @staticmethod
+    def _strip_json(doc: dict, *fields_to_remove: str):
         for field in fields_to_remove:
             try:
                 del doc[field]
             except KeyError:
                 pass
         return doc
+
+    @staticmethod
+    def _strip_json_by_suffix(doc: dict, *suffixes_to_remove: str):
+        for suffix in suffixes_to_remove:
+            for key in list(doc.keys()):
+                if key.endswith(suffix):
+                    del doc[key]
+
+    @staticmethod
+    def _consolidate_highlights(
+        highlights: Dict[str, Dict[str, List[str]]], suffixes: List[str]
+    ) -> Dict[str, Dict[str, List[str]]]:
+        """
+        For each field that's returned, collapse specified suffix highlighting down to the root field. For example, each
+        highlight for name_t and name_ac should be merged into a unique list for name and the specified suffix fields should
+        be removed from the highlights.
+        """
+        consolidated_highlights = highlights.copy()
+        for id, highlight in consolidated_highlights.items():
+            for field in list(highlight.keys()):
+                for suffix in suffixes:
+                    if field.endswith(suffix):
+                        root_field = field[: -len(suffix)]
+                        if root_field not in highlight:
+                            highlight[root_field] = highlight[field]
+                        else:
+                            highlight[root_field] = list(set(highlight[root_field] + highlight[field]))
+                            highlight[root_field].sort()
+                        del highlight[field]
+
+        return consolidated_highlights
 
     # Solr returns facet values and counts as a list, they make much more
     # sense as a dictionary
