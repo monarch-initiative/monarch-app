@@ -52,8 +52,11 @@ test("Renders superscripted as a span in SVG", async () => {
   expect(htmlEl.get("span span").text()).toEqual("name");
 });
 
+// FIXME: This fails on non-SVG text because the HTML <span> element in
+// AppNodeText.vue takes `v-html` rather than `v-text`. This was done to
+// support highlighting in a0f2eefb75b79def58940a652f4fdf7a23c8c931.
 test("Escapes non-whitelisted 'tags'", async () => {
-  const props = { text: "Node <test>name</test>" };
+  const props = { text: "Node <test>name</test>", isSvg: true };
 
   const htmlEl = mount(AppNodeText, { props });
   expect(htmlEl.get("span").text()).toEqual("Node <test>name</test>");
