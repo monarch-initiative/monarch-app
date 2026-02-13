@@ -10,21 +10,49 @@ nav:
     - Usage: 'Usage/index.md'
     - CLI: 'Usage/CLI.md'
     - Data Model: 'Data-Model/index.md'
-    - Interfaces: 
+    - Interfaces:
       - Overview: 'Usage/Interfaces/index.md'
       - Entity: 'Usage/Interfaces/Entity.md'
       - Association: 'Usage/Interfaces/Association.md'
       - Query: 'Usage/Interfaces/Query.md'
       - Search: 'Usage/Interfaces/Search.md'
-    - Implementations: 
+    - Implementations:
       - Overview: 'Usage/Implementations/index.md'
       - Solr: 'Usage/Implementations/Solr.md'
       - SQL: 'Usage/Implementations/SQL.md'
-      # - OAK: 'Usage/Implementations/OAK.md'
+  - KG Build:
+    - KG Build Process: 'KG-Build-Process/kg-build-process.md'
+    - Modeling Principles: 'Principles/modeling-principles.md'
+    - Creating an Ingest: 'Creating-an-Ingest.md'
+  - Data Sources:
+    - Overview: 'Sources/index.md'
+    - Alliance: 'Sources/alliance.md'
+    - BGee: 'Sources/bgee.md'
+    - BioGRID: 'Sources/biogrid.md'
+    - ClinGen: 'Sources/clingen.md'
+    - ClinVar: 'Sources/clinvar.md'
+    - CTD: 'Sources/ctd.md'
+    - Dictybase: 'Sources/dictybase.md'
+    - DisMech: 'Sources/dismech.md'
+    - GO: 'Sources/go.md'
+    - HGNC: 'Sources/hgnc.md'
+    - HPOA: 'Sources/hpoa.md'
+    - MAXO: 'Sources/maxo.md'
+    - MMRRC: 'Sources/mmrrc.md'
+    - NCBI: 'Sources/ncbi.md'
+    - OMIM: 'Sources/omim.md'
+    - Panther: 'Sources/panther.md'
+    - Phenio: 'Sources/phenio.md'
+    - Phenopacket: 'Sources/phenopacket.md'
+    - Pombase: 'Sources/pombase.md'
+    - Reactome: 'Sources/reactome.md'
+    - String: 'Sources/string.md'
+    - Xenbase: 'Sources/xenbase.md'
+    - ZFIN: 'Sources/zfin.md'
   - Release Process: 'release-process.md'
-  - FastAPI: 
+  - FastAPI:
     - Overview: 'FastAPI/index.md'
-    - Endpoints: 
+    - Endpoints:
       - 'FastAPI/Endpoints/index.md'
 
 
