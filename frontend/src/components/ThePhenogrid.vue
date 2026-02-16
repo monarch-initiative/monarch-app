@@ -79,11 +79,7 @@
                 cellSize * 0.25
               }) rotate(-45)`"
             >
-              <AppNodeText
-                is-svg
-                :text="col.label"
-                :truncate-width="marginLeft * 0.8"
-              />
+              {{ truncateLabels ? truncate(col.label) : col.label }}
             </text>
             <template #content>
               <AppNodeBadge :node="col" :absolute="true" :show-id="true" />
@@ -120,11 +116,7 @@
                 (0.5 + rowIndex) * cellSize
               })`"
             >
-              <AppNodeText
-                is-svg
-                :text="row.label"
-                :truncate-width="marginLeft * 0.8"
-              />
+              {{ truncateLabels ? truncate(row.label) : row.label }}
             </text>
             <template #content>
               <AppNodeBadge :node="row" :absolute="true" :show-id="true" />
@@ -372,11 +364,10 @@ import { useResizeObserver, useScroll } from "@vueuse/core";
 import type { TermInfo, TermPairwiseSimilarity } from "@/api/model";
 import AppCheckbox from "@/components/AppCheckbox.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
-import AppNodeText from "@/components/AppNodeText.vue";
 import AppSelectSingle, { type Option } from "@/components/AppSelectSingle.vue";
 import { appendToBody } from "@/global/tooltip";
 import { frame } from "@/util/debug";
-import { screenToSvgCoords } from "@/util/dom";
+import { screenToSvgCoords, truncateBySize } from "@/util/dom";
 import { downloadSvg } from "@/util/download";
 import { copyToClipboard } from "@/util/string";
 import type AppFlex from "./AppFlex.vue";
@@ -497,6 +488,15 @@ async function download() {
 function copy() {
   copyToClipboard(
     props.data.unmatched.map((phenotype) => phenotype.id).join(","),
+  );
+}
+
+/** truncate labels */
+function truncate(text?: string) {
+  return truncateBySize(
+    text || "",
+    marginLeft * 0.9,
+    cellSize * 0.5 + "px Poppins",
   );
 }
 
