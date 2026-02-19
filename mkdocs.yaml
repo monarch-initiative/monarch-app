@@ -19,7 +19,6 @@ nav:
     - HGNC: 'Sources/hgnc.md'
     - HPOA: 'Sources/hpoa.md'
     - MAXO: 'Sources/maxo.md'
-    - MMRRC: 'Sources/mmrrc.md'
     - NCBI: 'Sources/ncbi.md'
     - OMIM: 'Sources/omim.md'
     - Panther: 'Sources/panther.md'
