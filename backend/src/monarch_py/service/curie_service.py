@@ -12,6 +12,9 @@ converter = load_converter("merged")
 converter.add_prefix("GARD", "https://rarediseases.info.nih.gov/diseases/")
 converter.add_prefix("NORD", "https://rarediseases.org/?p=")
 converter.add_prefix("Orphanet", "https://www.orpha.net/en/disease/detail/", merge=True)
+# icd.codes is dead/returning 403s, override to use bioportal via purl.bioontology.org
+# (add_prefix merge only adds as synonym, so patch prefix_map directly)
+converter.prefix_map["ICD10CM"] = "http://purl.bioontology.org/ontology/ICD10CM/"
 converter.add_prefix(
     "phenopacket.store",
     "https://github.com/monarch-initiative/phenopacket-store/blob/main/notebooks/",
