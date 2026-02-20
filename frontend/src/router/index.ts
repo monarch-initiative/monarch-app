@@ -98,20 +98,20 @@ export const routes: RouteRecordRaw[] = [
   },
 
   /** phenogrid compare iframe widget page */
-  // {
-  //   path: "/phenogrid-search",
-  //   name: "Phenogrid",
-  //   component: asyncRoute("explore/PagePhenogridSearch"),
-  //   meta: { bare: true },
-  // },
+  {
+    path: "/phenogrid-search",
+    name: "Phenogrid",
+    component: asyncRoute("explore/PagePhenogridSearch"),
+    meta: { bare: true },
+  },
 
-  // /** phenogrid multi-compare iframe widget page */
-  // {
-  //   path: "/phenogrid-multi-compare",
-  //   name: "PhenogridMultiCompare",
-  //   component: asyncRoute("explore/PagePhenogridMulticompare"),
-  //   meta: { bare: true },
-  // },
+  /** phenogrid multi-compare iframe widget page */
+  {
+    path: "/phenogrid-multi-compare",
+    name: "PhenogridMultiCompare",
+    component: asyncRoute("explore/PagePhenogridMulticompare"),
+    meta: { bare: true },
+  },
 
   /** test pages (comment this out when we release app) */
   {
