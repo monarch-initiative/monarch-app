@@ -8,9 +8,9 @@ The KG must be conformant with The Monarch Biolink Specification.
 The final KG must have Nodes normalized to the canonical prefix for any given node type.
 The canonical prefix should be determined by The Monarch Biolink Model Specification.
 
-## Authoratative Source
+## Authoritative Source
 Providers of Associations are not the authoratative sources for the Nodes in general. Nodes should be ingested from their
-own authoratative source, seperate from edge ingests.
+own authoritative source, separate from edge ingests.
 
 ## Genes and Proteins
 Genes and reference Proteins shall be treated as equivalent.

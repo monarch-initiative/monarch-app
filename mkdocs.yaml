@@ -1,4 +1,4 @@
-site_name: 'Monarch KG Tools'
+site_name: 'Monarch KG Documentation'
 repo_name: 'monarch-app/backend'
 repo_url: 'https://github.com/monarch-initiative/monarch-app/tree/main/backend'
 site_url: 'https://monarch-app.monarchinitiative.org/docs/'
@@ -33,6 +33,8 @@ nav:
     - KG Build Process: 'KG-Build-Process/kg-build-process.md'
     - Modeling Principles: 'Principles/modeling-principles.md'
     - Creating an Ingest: 'Creating-an-Ingest.md'
+  - Neo4J: 'Neo4J/index.md'
+  - Monarch R: 'MonarchR/index.md'
   - FastAPI:
     - Overview: 'FastAPI/index.md'
     - Endpoints:
@@ -53,6 +55,7 @@ nav:
       - Solr: 'Usage/Implementations/Solr.md'
       - SQL: 'Usage/Implementations/SQL.md'
   - Release Process: 'release-process.md'
+  - Licensing: 'Licensing/index.md'
 
 theme:
   name: 'material'

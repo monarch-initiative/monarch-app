@@ -3,7 +3,7 @@
 ![architecture image](architecture.png)
 
 ## Download
-A weekly job indepent from the KG build process runs to download data sources and store then on a cloud bucket. This replaces [DipperCache](https://github.com/monarch-initiative/DipperCache) from the old pipeline. [KGHub Downloader](https://github.com/monarch-initiative/kghub-downloader) reads from [downloads.yaml](https://github.com/monarch-initiative/monarch-ingest/blob/main/src/monarch_ingest/download.yaml) to download each file. Some post-processing is done in [a shell script](https://github.com/monarch-initiative/monarch-ingest/blob/main/scripts/after_download.sh) before the files are uploaded to the cloud bucket.
+A weekly job independent from the KG build process runs to download data sources and store them on a cloud bucket. This replaces [DipperCache](https://github.com/monarch-initiative/DipperCache) from the old pipeline. [KGHub Downloader](https://github.com/monarch-initiative/kghub-downloader) reads from [downloads.yaml](https://github.com/monarch-initiative/monarch-ingest/blob/main/src/monarch_ingest/download.yaml) to download each file. Some post-processing is done in [a shell script](https://github.com/monarch-initiative/monarch-ingest/blob/main/scripts/after_download.sh) before the files are uploaded to the cloud bucket.
 
 At the start of the main ingest build, data files are copied from the cloud bucket.
 
