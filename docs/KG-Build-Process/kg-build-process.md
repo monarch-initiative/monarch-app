@@ -60,7 +60,7 @@ The [`ingest` CLI](https://github.com/monarch-initiative/monarch-ingest/blob/mai
 Ingests are documented individually in the Sources section of this documentation. There are two kinds of ingests:
 
 - **Koza ingests** use a local [Koza](https://github.com/monarch-initiative/koza) transform configuration to read from downloaded source files and produce KGX node/edge TSV files.
-- **Modular ingests** download pre-built KGX TSV files from separate ingest repositories (e.g. [bgee-ingest](https://github.com/monarch-initiative/bgee-ingest), [string-ingest](https://github.com/monarch-initiative/string-ingest)). These repos run their own Koza transforms and publish the output as release artifacts.
+- **Modular ingests** download pre-built KGX TSV files from separate ingest repositories managed on [KozaHub](https://kozahub.monarchinitiative.org) (e.g. [bgee-ingest](https://github.com/monarch-initiative/bgee-ingest), [string-ingest](https://github.com/monarch-initiative/string-ingest)). These repos run their own Koza transforms and publish the output as release artifacts.
 
 Ingests are either node or edge specific, and use IDs as defined in the source data files without additional re-mapping of identifiers. The primary role they have is to represent sources in biolink model and KGX format, and secondarily they may also subset from the source files. The output of individual ingests can be found in the [transform_output](https://data.monarchinitiative.org/monarch-kg-dev/latest/transform_output/index.html) directory in each release.
 
