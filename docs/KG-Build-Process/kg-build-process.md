@@ -64,7 +64,7 @@ For Solr (and secondarily SQLite) we produce a denormalized edge file, which inc
 
 ## SQLite
 
-A SQLite database file is produced by loading node and edge files into a SQLite database using [a simple shell script](https://github.com/monarch-initiative/monarch-ingest/blob/main/scripts/load_sqlite.sh), along with the primary node and edge tables, edge tables for danging and denormalized edges are included as well. 
+A SQLite database file is produced by loading node and edge files into a SQLite database using [a simple shell script](https://github.com/monarch-initiative/monarch-ingest/blob/main/scripts/load_sqlite.sh), along with the primary node and edge tables, edge tables for dangling and denormalized edges are included as well. 
 
 ## Solr
 
