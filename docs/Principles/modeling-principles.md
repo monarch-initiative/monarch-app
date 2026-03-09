@@ -24,4 +24,3 @@ If they are rolled up, then a subject_modifier = Variant Id.
 ## Gene to Disease Associations
 Gene to Disease Associations should come from high quality sources that have been vetted by domain experts within Monarch.
 Gene to Disease Associations must not confuse single Gene causal Mendelian Associations with otherwise associated Genes. (e.g. contributing or associated Genes)
-

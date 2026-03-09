@@ -6,6 +6,10 @@ site_url: 'https://monarch-app.monarchinitiative.org/docs/'
 
 nav:
   - KG Data Sources:
+    # NOTE: The files listed under Sources/ (except index.md) are auto-generated
+    # by running 'make fetch-docs'. They are excluded from version control via
+    # .gitignore. Running 'mkdocs build' without first running 'make fetch-docs'
+    # will fail with missing-file errors.
     - Overview: 'Sources/index.md'
     - Alliance: 'Sources/alliance.md'
     - BGee: 'Sources/bgee.md'
@@ -19,6 +23,7 @@ nav:
     - HGNC: 'Sources/hgnc.md'
     - HPOA: 'Sources/hpoa.md'
     - MAXO: 'Sources/maxo.md'
+    - MMRRC: 'Sources/mmrrc.md'
     - NCBI: 'Sources/ncbi.md'
     - OMIM: 'Sources/omim.md'
     - Panther: 'Sources/panther.md'
