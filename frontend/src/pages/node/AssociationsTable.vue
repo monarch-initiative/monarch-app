@@ -187,6 +187,7 @@ import {
   downloadAssociations,
   getAssociations,
   maxDownload,
+  TRAVERSE_ORTHOLOG_CATEGORIES,
 } from "@/api/associations";
 import { getCategoryLabel } from "@/api/categories";
 import {
@@ -246,13 +247,6 @@ const emit = defineEmits<{
     options: { id: string; label: string; count: number }[],
   ): void;
 }>();
-
-/** categories where ortholog traversal adds value */
-const TRAVERSE_ORTHOLOG_CATEGORIES = new Set([
-  "biolink:GeneToPhenotypicFeatureAssociation",
-  "biolink:CausalGeneToDiseaseAssociation",
-  "biolink:CorrelatedGeneToDiseaseAssociation",
-]);
 
 const shouldTraverseOrthologs = computed(() =>
   TRAVERSE_ORTHOLOG_CATEGORIES.has(props.category.id),

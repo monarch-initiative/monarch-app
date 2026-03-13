@@ -2,6 +2,13 @@ import { apiUrl, request } from "@/api";
 import type { AssociationTableResults } from "@/api/model";
 import type { Sort } from "@/components/AppTable.vue";
 
+/** categories where the association query traverses orthologs */
+export const TRAVERSE_ORTHOLOG_CATEGORIES = new Set([
+  "biolink:GeneToPhenotypicFeatureAssociation",
+  "biolink:CausalGeneToDiseaseAssociation",
+  "biolink:CorrelatedGeneToDiseaseAssociation",
+]);
+
 /** get associations between a node and a category */
 export const getAssociations = async (
   nodeId = "",
