@@ -20,6 +20,8 @@ help:
 	@echo "│     clobber             Clean up generated files          │"
 	@echo "│                                                           │"
 	@echo "│     docs                Generate documentation            │"
+	@echo "│     docs-full           Fetch source docs, then build    │"
+	@echo "│     fetch-docs          Fetch ingest source documentation │"
 	@echo "│     model               Generate model files              │"
 	@echo "|     fixtures            Generate data fixtures            │"
 	@echo "|     data                Generate data files               │"
@@ -88,11 +90,18 @@ model: install-backend
 docs/Data-Model:
 	mkdir -p $@
 
+.PHONY: fetch-docs
+fetch-docs:
+	$(RUN) python $(ROOTDIR)/scripts/fetch-source-docs.py
+
 .PHONY: docs
 docs: install-backend docs/Data-Model
 	$(RUN) gen-doc -d $(ROOTDIR)/docs/Data-Model/ $(SCHEMADIR)/model.yaml
 	$(RUN) typer $(ROOTDIR)/backend/src/monarch_py/cli.py utils docs --name monarch --output $(ROOTDIR)/docs/Usage/CLI.md
 	$(RUN) mkdocs build -f ../mkdocs.yaml
+
+.PHONY: docs-full
+docs-full: fetch-docs docs
 
 
 ### Data/Fixtures ###
