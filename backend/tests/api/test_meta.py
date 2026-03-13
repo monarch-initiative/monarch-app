@@ -26,10 +26,10 @@ def test_meta_endpoint_returns_html_with_og_tags(mock_get_entity, client, node):
     html = response.text
     assert "MONDO:0020121" in html
     assert "muscular dystrophy" in html.lower()
-    assert 'og:title' in html
-    assert 'og:description' in html
-    assert 'og:url' in html
-    assert 'testserver/MONDO:0020121' in html
+    assert "og:title" in html
+    assert "og:description" in html
+    assert "og:url" in html
+    assert "testserver/MONDO:0020121" in html
 
 
 @patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_entity")
@@ -117,7 +117,7 @@ def test_meta_endpoint_entity_with_no_description(mock_get_entity, client):
     assert response.status_code == 200
     html = response.text
     assert "Test Entity | Monarch Initiative" in html
-    assert 'og:description' in html
+    assert "og:description" in html
 
 
 @patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_entity")

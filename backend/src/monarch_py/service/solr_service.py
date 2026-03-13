@@ -26,8 +26,10 @@ class SolrService(BaseModel):
         return entity
 
     def query(self, q: SolrQuery) -> SolrQueryResult:
-        url = f"{self.base_url}/{self.core.value}/select?{q.query_string()}"
-        response = requests.get(url)
+        url = f"{self.base_url}/{self.core.value}/select"
+        response = requests.post(
+            url, data=q.query_string(), headers={"Content-Type": "application/x-www-form-urlencoded"}
+        )
         logger.debug(f"SolrService.query: {url}")
         data = json.loads(response.text)
         if "error" in data:

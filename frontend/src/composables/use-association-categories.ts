@@ -12,7 +12,7 @@ export function useAssociationCategories(node: Node) {
       node.association_counts?.map((ac) => ({
         id: ac.category || "",
         label: startCase(ac.label),
-        count: ac.count,
+        count: ac.count_with_orthologs ?? ac.count,
       })) ?? [];
 
     const ordered = opts.filter((o) => !HIDDEN_CATEGORIES.has(o.id));

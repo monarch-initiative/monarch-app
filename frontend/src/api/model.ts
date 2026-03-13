@@ -263,6 +263,10 @@ export interface Association {
 
 export interface AssociationCount extends FacetValue {
     category?: string,
+    /** Count of direct associations (no closure/descendants) */
+    count_direct?: number,
+    /** Count including associations from orthologous genes */
+    count_with_orthologs?: number,
 }
 
 
@@ -499,6 +503,8 @@ export interface Node extends Entity {
     /** The label of the biolink taxon that the entity is in the closure of. */
     in_taxon_label?: string,
     inheritance?: Entity,
+    /** The biological sex of an individual entity. */
+    has_biological_sex?: string,
     /** A list of genes that are known to be causally associated with a disease */
     causal_gene?: Entity[],
     /** A list of diseases that are known to be causally associated with a gene */

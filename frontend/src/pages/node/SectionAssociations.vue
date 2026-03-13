@@ -55,6 +55,22 @@
           icon="search"
         />
 
+        <AppSelectMulti
+          v-if="
+            isTaxonFilterable(String(category.id)) &&
+            (taxonOptionsByCategory[category.id]?.length ?? 0) > 1
+          "
+          :name="'Filter by Taxon'"
+          :options="taxonOptionsByCategory[category.id] ?? []"
+          :model-value="
+            selectedTaxonsByCategory[category.id] ??
+            taxonOptionsByCategory[category.id] ??
+            []
+          "
+          design="normal"
+          @change="(value) => onTaxonFilterChange(String(category.id), value)"
+        />
+
         <div class="search-wrapper">
           <AppTextbox
             v-model="searchValues[category.id]"
@@ -73,8 +89,10 @@
           :category="category"
           :direct="getDirectProps(category.id)"
           :search="debouncedSearchValues[category.id]"
+          :taxon-filters="selectedTaxonLabels(String(category.id))"
           @totals="(p) => onTotals({ categoryId: String(category.id), ...p })"
           @inferred-label="onInferredLabel"
+          @taxon-options="(opts) => onTaxonOptions(String(category.id), opts)"
         />
       </template>
     </AppSection>
@@ -87,11 +105,14 @@ import type { Node } from "@/api/model";
 import AppAssociationTabs from "@/components/AppAssociationTabs.vue";
 import AppButton from "@/components/AppButton.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
+import AppSelectMulti from "@/components/AppSelectMulti.vue";
+import type { Options as MultiSelectOptions } from "@/components/AppSelectMulti.vue";
 import AppTextbox from "@/components/AppTextbox.vue";
 import { useAssociationCategories } from "@/composables/use-association-categories";
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
 import { sectionTitle } from "@/util/sectionTitles";
 import { tabLabel } from "@/util/tabText";
+import { isTaxonFilterable } from "@/util/taxonFilterConfig";
 import { formatDirectTooltip, formatInferredTooltip } from "@/util/tooltipText";
 import { labelFor } from "@/util/typeConfig";
 
@@ -112,6 +133,35 @@ const selectedTabs = ref<Record<string, "all" | "direct">>({});
 const searchValues = ref<Record<string, string>>({});
 const debouncedSearchValues = ref<Record<string, string>>({});
 const inferredByCategory = ref<Record<string, string>>({});
+
+/** taxon filter state per category */
+const taxonOptionsByCategory = ref<Record<string, MultiSelectOptions>>({});
+const selectedTaxonsByCategory = ref<Record<string, MultiSelectOptions>>({});
+
+/** handle taxon options emitted from AssociationsTable */
+const onTaxonOptions = (
+  categoryId: string,
+  options: { id: string; label: string; count: number }[],
+) => {
+  taxonOptionsByCategory.value[categoryId] = options;
+};
+
+/** handle taxon filter selection changes */
+const onTaxonFilterChange = (categoryId: string, value: MultiSelectOptions) => {
+  selectedTaxonsByCategory.value[categoryId] = value;
+};
+
+/**
+ * extract label strings from selected taxon options for passing to
+ * AssociationsTable
+ */
+const selectedTaxonLabels = (categoryId: string): string[] => {
+  const selected = selectedTaxonsByCategory.value[categoryId];
+  const allOptions = taxonOptionsByCategory.value[categoryId];
+  if (!selected || !allOptions || selected.length === 0) return [];
+  if (selected.length === allOptions.length) return [];
+  return selected.map((opt) => opt.id);
+};
 
 const { options: categoryOptions } = useAssociationCategories(props.node);
 

@@ -76,8 +76,9 @@ describe("useKGData", () => {
     });
 
     it("should fallback to default version on API failure", async () => {
-      const { getLatestKGReleaseDate, getKGSourceUrl } =
-        await import("@/api/kg-version");
+      const { getLatestKGReleaseDate, getKGSourceUrl } = await import(
+        "@/api/kg-version"
+      );
       vi.mocked(getLatestKGReleaseDate).mockRejectedValueOnce(
         new Error("API failed"),
       );

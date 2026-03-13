@@ -401,6 +401,8 @@ class FacetValue(ConfiguredBaseModel):
 
 class AssociationCount(FacetValue):
     category: Optional[str] = Field(default=None)
+    count_direct: Optional[int] = Field(default=None, description="""Count of direct associations (no closure/descendants)""")
+    count_with_orthologs: Optional[int] = Field(default=None, description="""Count including associations from orthologous genes""")
     label: str = Field(default=...)
     count: Optional[int] = Field(default=None, description="""count of documents""")
 
@@ -441,6 +443,7 @@ class Node(Entity):
     in_taxon: Optional[str] = Field(default=None, description="""The biolink taxon that the entity is in the closure of.""")
     in_taxon_label: Optional[str] = Field(default=None, description="""The label of the biolink taxon that the entity is in the closure of.""")
     inheritance: Optional[Entity] = Field(default=None)
+    has_biological_sex: Optional[str] = Field(default=None, description="""The biological sex of an individual entity.""")
     causal_gene: Optional[list[Entity]] = Field(default=None, description="""A list of genes that are known to be causally associated with a disease""")
     causes_disease: Optional[list[Entity]] = Field(default=None, description="""A list of diseases that are known to be causally associated with a gene""")
     mappings: Optional[list[ExpandedCurie]] = Field(default=None, description="""List of ExpandedCuries with id and url for mapped entities""")

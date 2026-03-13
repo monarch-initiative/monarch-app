@@ -89,34 +89,103 @@ def parse_associations(
         )
 
 
-def parse_association_counts(query_result: SolrQueryResult, entity: str) -> AssociationCountList:
-    subject_query = f'AND (subject:"{entity}" OR subject_closure:"{entity}")'
-    object_query = f'AND (object:"{entity}" OR object_closure:"{entity}" OR disease_context_qualifier:"{entity}" OR disease_context_qualifier_closure:"{entity}")'
-    association_count_dict: Dict[str, AssociationCount] = {}
+def parse_association_counts(query_result: SolrQueryResult, entities: List[str]) -> AssociationCountList:
+    """Parse facet query results into AssociationCount objects with direct, closure, and ortholog counts.
+
+    Args:
+        query_result: Solr query result containing facet queries
+        entities: List of entity IDs (primary entity first, then orthologs)
+    """
+    entity = entities[0]
+    has_orthologs = len(entities) > 1
+
+    # Build the suffix strings that were used in the facet queries
+    direct_subject = f'AND subject:"{entity}"'
+    direct_object = f'AND (object:"{entity}" OR disease_context_qualifier:"{entity}")'
+    closure_subject = f'AND (subject:"{entity}" OR subject_closure:"{entity}")'
+    closure_object = f'AND (object:"{entity}" OR object_closure:"{entity}" OR disease_context_qualifier:"{entity}" OR disease_context_qualifier_closure:"{entity}")'
+
+    ortho_subject = None
+    ortho_object = None
+    if has_orthologs:
+        all_subjects = " OR ".join(f'subject:"{e}" OR subject_closure:"{e}"' for e in entities)
+        all_objects = " OR ".join(
+            f'object:"{e}" OR object_closure:"{e}" OR disease_context_qualifier:"{e}" OR disease_context_qualifier_closure:"{e}"'
+            for e in entities
+        )
+        ortho_subject = f"AND ({all_subjects})"
+        ortho_object = f"AND ({all_objects})"
+
+    # Collect counts into a dict keyed by (label, category)
+    # Each entry accumulates direct, closure, and ortholog counts
+    count_data: Dict[str, Dict] = {}
+
+    def _ensure_entry(label: str, category: str):
+        if label not in count_data:
+            count_data[label] = {"category": category, "direct": 0, "closure": 0, "orthologs": 0}
+
     for k, v in query_result.facet_counts.facet_queries.items():
-        if v > 0:
-            if k.endswith(subject_query):
-                original_query = k.replace(f" {subject_query}", "").lstrip("(").rstrip(")")
-                agm = get_association_type_mapping_by_query_string(original_query)
-                label = agm.subject_label
-            elif k.endswith(object_query):
-                original_query = k.replace(f" {object_query}", "").lstrip("(").rstrip(")")
-                agm = get_association_type_mapping_by_query_string(original_query)
-                label = agm.object_label
-                # always use forward for symmetric association types
-            else:
-                raise ValueError(f"Unexpected facet query when building association counts: {k}")
-            # Symmetric associations need to be summed together, since both directions will be returned
-            # when searching for associations by type
-            if label in association_count_dict and agm.symmetric:
-                association_count_dict[label].count += v
-            else:
-                association_count_dict[label] = AssociationCount(
-                    label=label,
-                    count=v,
-                    category=agm.category,
-                )
-    return AssociationCountList(items=list(association_count_dict.values()))
+        if v == 0:
+            continue
+
+        # Determine which suffix matches and which count level it represents
+        count_level = None
+        is_subject_direction = None
+
+        if k.endswith(direct_subject):
+            original_query = k.replace(f" {direct_subject}", "").lstrip("(").rstrip(")")
+            count_level = "direct"
+            is_subject_direction = True
+        elif k.endswith(direct_object):
+            original_query = k.replace(f" {direct_object}", "").lstrip("(").rstrip(")")
+            count_level = "direct"
+            is_subject_direction = False
+        elif ortho_subject and k.endswith(ortho_subject):
+            original_query = k.replace(f" {ortho_subject}", "").lstrip("(").rstrip(")")
+            count_level = "orthologs"
+            is_subject_direction = True
+        elif ortho_object and k.endswith(ortho_object):
+            original_query = k.replace(f" {ortho_object}", "").lstrip("(").rstrip(")")
+            count_level = "orthologs"
+            is_subject_direction = False
+        elif k.endswith(closure_subject):
+            original_query = k.replace(f" {closure_subject}", "").lstrip("(").rstrip(")")
+            count_level = "closure"
+            is_subject_direction = True
+        elif k.endswith(closure_object):
+            original_query = k.replace(f" {closure_object}", "").lstrip("(").rstrip(")")
+            count_level = "closure"
+            is_subject_direction = False
+        else:
+            raise ValueError(f"Unexpected facet query when building association counts: {k}")
+
+        agm = get_association_type_mapping_by_query_string(original_query)
+        label = agm.subject_label if is_subject_direction else agm.object_label
+
+        _ensure_entry(label, agm.category)
+
+        # For symmetric associations, sum both directions
+        if agm.symmetric and count_data[label][count_level] > 0:
+            count_data[label][count_level] += v
+        elif agm.symmetric:
+            count_data[label][count_level] = v
+        else:
+            count_data[label][count_level] = v
+
+    # Build AssociationCount objects
+    items = []
+    for label, data in count_data.items():
+        items.append(
+            AssociationCount(
+                label=label,
+                count=data["closure"],
+                count_direct=data["direct"],
+                count_with_orthologs=data["orthologs"] if has_orthologs else None,
+                category=data["category"],
+            )
+        )
+
+    return AssociationCountList(items=items)
 
 
 def parse_entity(solr_document: Dict) -> Entity:

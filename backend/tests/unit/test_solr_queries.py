@@ -109,7 +109,7 @@ def test_build_association_multiple_objects():
 
 
 def test_build_association_counts_query(association_counts_query, node):
-    query = build_association_counts_query(entity=Node(**node).id).model_dump()
+    query = build_association_counts_query(entities=[Node(**node).id]).model_dump()
     expected = association_counts_query
     assert compare_dicts(query, expected), f"Query is not as expected. Difference: {dict_diff(query, expected)}"
 

@@ -116,18 +116,44 @@ def build_association_table_query(
     return query
 
 
-def build_association_counts_query(entity: str) -> SolrQuery:
-    subject_query = f'AND (subject:"{entity}" OR subject_closure:"{entity}")'
-    object_query = f'AND (object:"{entity}" OR object_closure:"{entity}" OR disease_context_qualifier:"{entity}" OR disease_context_qualifier_closure:"{entity}")'
+def build_association_counts_query(entities: List[str]) -> SolrQuery:
+    """Build a query that produces three levels of association counts via facet queries.
 
-    # Run the same facet_queries constrained to matches against either the subject or object
-    # to know which kind of label will be needed in the UI to refer to the opposite side of the association
+    Args:
+        entities: List of entity IDs. The first is the primary entity; the rest are orthologs.
+                  If only one entity is provided, ortholog counts are skipped.
+    """
+    entity = entities[0]
+
+    # Direct counts: exact subject/object match only (no closure)
+    direct_subject = f'AND subject:"{entity}"'
+    direct_object = f'AND (object:"{entity}" OR disease_context_qualifier:"{entity}")'
+
+    # Closure counts (current behavior): subject/object + closure
+    closure_subject = f'AND (subject:"{entity}" OR subject_closure:"{entity}")'
+    closure_object = f'AND (object:"{entity}" OR object_closure:"{entity}" OR disease_context_qualifier:"{entity}" OR disease_context_qualifier_closure:"{entity}")'
+
     facet_queries = []
-    for field_query in [subject_query, object_query]:
+    for field_query in [direct_subject, direct_object, closure_subject, closure_object]:
         for agm in AssociationTypeMappings.get_mappings():
             association_type_query = get_solr_query_fragment(agm)
             facet_queries.append(f"({association_type_query}) {field_query}")
-    query = build_association_query(entity=[entity], facet_queries=facet_queries)
+
+    # Ortholog counts: closure queries over all entities (primary + orthologs)
+    if len(entities) > 1:
+        all_subjects = " OR ".join(f'subject:"{e}" OR subject_closure:"{e}"' for e in entities)
+        all_objects = " OR ".join(
+            f'object:"{e}" OR object_closure:"{e}" OR disease_context_qualifier:"{e}" OR disease_context_qualifier_closure:"{e}"'
+            for e in entities
+        )
+        ortho_subject = f"AND ({all_subjects})"
+        ortho_object = f"AND ({all_objects})"
+        for field_query in [ortho_subject, ortho_object]:
+            for agm in AssociationTypeMappings.get_mappings():
+                association_type_query = get_solr_query_fragment(agm)
+                facet_queries.append(f"({association_type_query}) {field_query}")
+
+    query = build_association_query(entity=entities, facet_queries=facet_queries)
     return query
 
 

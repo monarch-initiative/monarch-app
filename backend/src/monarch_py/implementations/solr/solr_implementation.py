@@ -125,7 +125,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         node: Node = Node(
             **entity.model_dump(),
             node_hierarchy=self._get_node_hierarchy(entity),
-            association_counts=self.get_association_counts(id).items,
+            association_counts=self.get_association_counts(id, entity_category=entity.category).items,
             external_links=get_links_for_field(entity.xref) if entity.xref else [],
             provided_by_link=get_provided_by_link(entity.provided_by),
             mappings=self._get_mapped_entities(entity),
@@ -422,12 +422,28 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         results = parse_autocomplete(query_result)
         return results
 
-    def get_association_counts(self, entity: str) -> AssociationCountList:
-        """Get list of association counts for a given entity"""
-        query = build_association_counts_query(entity)
+    def get_association_counts(self, entity: str, entity_category: Optional[str] = None) -> AssociationCountList:
+        """Get list of association counts for a given entity
+
+        Args:
+            entity: The entity ID to get association counts for.
+            entity_category: The biolink category of the entity (e.g. 'biolink:Gene').
+                If the entity is a gene, ortholog associations will also be counted.
+        """
+        entities = [entity]
+        if entity_category == "biolink:Gene":
+            ortholog_associations = self.get_associations(
+                entity=[entity], predicate=[AssociationPredicate.ORTHOLOGOUS_TO]
+            )
+            orthologous_entities = [
+                self._get_counterpart_entity(a, Entity(id=entity)) for a in ortholog_associations.items
+            ]
+            entities.extend([ent.id for ent in orthologous_entities])
+
+        query = build_association_counts_query(entities)
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
         query_result = solr.query(query)
-        association_counts = parse_association_counts(query_result, entity)
+        association_counts = parse_association_counts(query_result, entities)
         return association_counts
 
     def get_association_facets(
