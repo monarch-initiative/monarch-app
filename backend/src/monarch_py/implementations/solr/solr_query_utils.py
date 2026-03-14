@@ -305,7 +305,7 @@ def autocomplete_query_fields():
     """
     Fields and boosts used for autocomplete
     """
-    return "id^100 name^10 name_t^5 name_ac symbol^10 symbol_t^5 symbol_ac synonym synonym_t synonym_ac"
+    return "id^100 name^10 name_t^5 name_ac symbol^10 symbol_t^5 symbol_ac synonym synonym_t synonym_ac in_taxon_label_t"
 
 
 def entity_query_fields():
