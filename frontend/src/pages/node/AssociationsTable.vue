@@ -214,7 +214,7 @@ import {
 } from "@/pages/node/associationColumns";
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
 import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
-import { isTaxonFilterable, taxonFieldFor } from "@/util/taxonFilterConfig";
+import { taxonFieldFor } from "@/util/taxonFilterConfig";
 import { fieldFor } from "@/util/typeConfig";
 
 type Props = {
@@ -251,9 +251,6 @@ const emit = defineEmits<{
 const shouldTraverseOrthologs = computed(() =>
   TRAVERSE_ORTHOLOG_CATEGORIES.has(props.category.id),
 );
-
-/** whether this category supports taxon filtering */
-const taxonFilterEnabled = computed(() => isTaxonFilterable(props.category.id));
 
 /** the single taxon field to facet/filter on for this category */
 const taxonField = computed(() => taxonFieldFor(props.category.id));

@@ -14,8 +14,8 @@ export function useAssociationCategories(node: Node) {
         id: ac.category || "",
         label: startCase(ac.label),
         count: TRAVERSE_ORTHOLOG_CATEGORIES.has(ac.category || "")
-          ? ac.count_with_orthologs ?? ac.count
-          : ac.count ?? 0,
+          ? (ac.count_with_orthologs ?? ac.count)
+          : (ac.count ?? 0),
       })) ?? [];
 
     const ordered = opts.filter(
