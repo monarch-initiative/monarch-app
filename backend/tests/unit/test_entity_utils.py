@@ -1,4 +1,3 @@
-import pytest
 from unittest.mock import patch
 
 from monarch_py.utils.entity_utils import expansion_patch, get_uri, get_expanded_curie

@@ -305,7 +305,7 @@ def main(
     if backend or all_fixtures:
         print(f"{'-'*120}\n\tGenerating extra backend fixtures...")
         extra_fixtures["association-counts-query"] = build_association_counts_query(
-            entity=NODE_ID
+            entities=[NODE_ID]
         )
         extra_fixtures["association-query-params"] = {
             "category": [CATEGORY.value],
