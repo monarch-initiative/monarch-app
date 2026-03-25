@@ -208,7 +208,9 @@ def parse_association_table(
     )
     for item, doc in zip(results.items, query_result.response.docs):
         if item.subject != doc["subject"]:
-            raise ValueError(f"Parsed association subject {item.subject} does not match document subject {doc['subject']}")
+            raise ValueError(
+                f"Parsed association subject {item.subject} does not match document subject {doc['subject']}"
+            )
     return results
 
 
