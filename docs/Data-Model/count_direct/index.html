@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://monarch-app.monarchinitiative.org/docs/Data-Model/label/">
+        <link rel="canonical" href="https://monarch-app.monarchinitiative.org/docs/Data-Model/count_direct/">
       
       
       
@@ -18,7 +18,7 @@
     
     
       
-        <title>Slot: label - Monarch KG Documentation</title>
+        <title>Slot: count_direct - Monarch KG Documentation</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#slot-label" class="md-skip">
+        <a href="#slot-count_direct" class="md-skip">
           Skip to content
         </a>
       
@@ -107,7 +107,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Slot: label
+              Slot: count_direct
             
           </span>
         </div>
@@ -1901,9 +1901,10 @@
   
 
 
-<h1 id="slot-label">Slot: label</h1>
-<p>URI: <a href="https://w3id.org/monarch/monarch-py/label">https://w3id.org/monarch/monarch-py/label</a>
-Alias: label</p>
+<h1 id="slot-count_direct">Slot: count_direct</h1>
+<p><em>Count of direct associations (no closure/descendants)</em></p>
+<p>URI: <a href="https://w3id.org/monarch/monarch-py/count_direct">https://w3id.org/monarch/monarch-py/count_direct</a>
+Alias: count_direct</p>
 <!-- no inheritance hierarchy -->
 
 <h2 id="applicable-classes">Applicable Classes</h2>
@@ -1917,27 +1918,7 @@ Alias: label</p>
 </thead>
 <tbody>
 <tr>
-<td><a href="../FacetField/">FacetField</a></td>
-<td></td>
-<td>no</td>
-</tr>
-<tr>
 <td><a href="../AssociationCount/">AssociationCount</a></td>
-<td></td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../HistoBin/">HistoBin</a></td>
-<td></td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../FacetValue/">FacetValue</a></td>
-<td></td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../TermInfo/">TermInfo</a></td>
 <td></td>
 <td>no</td>
 </tr>
@@ -1945,12 +1926,7 @@ Alias: label</p>
 </table>
 <h2 id="properties">Properties</h2>
 <ul>
-<li>
-<p>Range: <a href="../String/">String</a></p>
-</li>
-<li>
-<p>Required: True</p>
-</li>
+<li>Range: <a href="../Integer/">Integer</a></li>
 </ul>
 <h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
 <h3 id="schema-source">Schema Source</h3>
@@ -1968,26 +1944,24 @@ Alias: label</p>
 <tbody>
 <tr>
 <td>self</td>
-<td><a href="https://w3id.org/monarch/monarch-py/label">https://w3id.org/monarch/monarch-py/label</a></td>
+<td><a href="https://w3id.org/monarch/monarch-py/count_direct">https://w3id.org/monarch/monarch-py/count_direct</a></td>
 </tr>
 <tr>
 <td>native</td>
-<td><a href="https://w3id.org/monarch/monarch-py/label">https://w3id.org/monarch/monarch-py/label</a></td>
+<td><a href="https://w3id.org/monarch/monarch-py/count_direct">https://w3id.org/monarch/monarch-py/count_direct</a></td>
 </tr>
 </tbody>
 </table>
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
-<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">label</span>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">count_direct</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Count of direct associations (no closure/descendants)</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">label</span>
+<span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">count_direct</span>
 <span class="nt">domain_of</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FacetValue</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FacetField</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermInfo</span>
-<span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationCount</span>
+<span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">integer</span>
 </code></pre></div>
 </details>
 
