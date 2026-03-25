@@ -433,7 +433,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         entities = [entity]
         if entity_category == "biolink:Gene":
             ortholog_associations = self.get_associations(
-                entity=[entity], predicate=[AssociationPredicate.ORTHOLOGOUS_TO]
+                entity=[entity], predicate=[AssociationPredicate.ORTHOLOGOUS_TO], limit=500
             )
             orthologous_entities = [
                 self._get_counterpart_entity(a, Entity(id=entity)) for a in ortholog_associations.items
@@ -506,7 +506,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         entities = [entity]
         if traverse_orthologs:
             ortholog_associations = self.get_associations(
-                entity=[entity], predicate=[AssociationPredicate.ORTHOLOGOUS_TO]
+                entity=[entity], predicate=[AssociationPredicate.ORTHOLOGOUS_TO], limit=500
             )
             orthologous_entities = [
                 self._get_counterpart_entity(a, Entity(id=entity)) for a in ortholog_associations.items

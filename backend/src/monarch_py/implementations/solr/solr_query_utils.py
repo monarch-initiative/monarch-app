@@ -1,9 +1,73 @@
-from typing import List, Optional
+from dataclasses import dataclass
+from typing import Dict, List, Optional
 
 from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQuery
 from monarch_py.datamodels.category_enums import AssociationPredicate
 from monarch_py.utils.association_type_utils import AssociationTypeMappings, get_solr_query_fragment
 from monarch_py.utils.utils import escape
+
+
+@dataclass
+class AssociationCountSuffixes:
+    """Suffix strings used to build and parse facet queries for association counts."""
+
+    direct_subject: str
+    direct_object: str
+    closure_subject: str
+    closure_object: str
+    ortho_subject: Optional[str] = None
+    ortho_object: Optional[str] = None
+
+    @property
+    def all_suffixes(self) -> Dict[str, str]:
+        """Return a mapping of count_level+direction to suffix string."""
+        result = {
+            "direct_subject": self.direct_subject,
+            "direct_object": self.direct_object,
+            "closure_subject": self.closure_subject,
+            "closure_object": self.closure_object,
+        }
+        if self.ortho_subject:
+            result["orthologs_subject"] = self.ortho_subject
+        if self.ortho_object:
+            result["orthologs_object"] = self.ortho_object
+        return result
+
+
+def build_association_count_suffixes(entities: List[str]) -> AssociationCountSuffixes:
+    """Build the suffix strings used in facet queries for association counts.
+
+    Shared between query building and response parsing to keep them in sync.
+
+    Args:
+        entities: List of entity IDs (primary entity first, then orthologs).
+    """
+    entity = entities[0]
+
+    direct_subject = f'AND subject:"{entity}"'
+    direct_object = f'AND (object:"{entity}" OR disease_context_qualifier:"{entity}")'
+    closure_subject = f'AND (subject:"{entity}" OR subject_closure:"{entity}")'
+    closure_object = f'AND (object:"{entity}" OR object_closure:"{entity}" OR disease_context_qualifier:"{entity}" OR disease_context_qualifier_closure:"{entity}")'
+
+    ortho_subject = None
+    ortho_object = None
+    if len(entities) > 1:
+        all_subjects = " OR ".join(f'subject:"{e}" OR subject_closure:"{e}"' for e in entities)
+        all_objects = " OR ".join(
+            f'object:"{e}" OR object_closure:"{e}" OR disease_context_qualifier:"{e}" OR disease_context_qualifier_closure:"{e}"'
+            for e in entities
+        )
+        ortho_subject = f"AND ({all_subjects})"
+        ortho_object = f"AND ({all_objects})"
+
+    return AssociationCountSuffixes(
+        direct_subject=direct_subject,
+        direct_object=direct_object,
+        closure_subject=closure_subject,
+        closure_object=closure_object,
+        ortho_subject=ortho_subject,
+        ortho_object=ortho_object,
+    )
 
 
 def build_association_query(
@@ -30,8 +94,8 @@ def build_association_query(
     offset: int = 0,
     limit: int = 20,
 ) -> SolrQuery:
-    entity_fields = ["subject", "object", "disease_context_qualifier"]
     """Populate a SolrQuery object with association filters"""
+    entity_fields = ["subject", "object", "disease_context_qualifier"]
     query = SolrQuery(start=offset, rows=limit)
     query.add_field_filter_query("category", None if not category else [c for c in category])
     query.add_field_filter_query("predicate", None if not predicate else [p for p in predicate])
@@ -123,35 +187,13 @@ def build_association_counts_query(entities: List[str]) -> SolrQuery:
         entities: List of entity IDs. The first is the primary entity; the rest are orthologs.
                   If only one entity is provided, ortholog counts are skipped.
     """
-    entity = entities[0]
-
-    # Direct counts: exact subject/object match only (no closure)
-    direct_subject = f'AND subject:"{entity}"'
-    direct_object = f'AND (object:"{entity}" OR disease_context_qualifier:"{entity}")'
-
-    # Closure counts (current behavior): subject/object + closure
-    closure_subject = f'AND (subject:"{entity}" OR subject_closure:"{entity}")'
-    closure_object = f'AND (object:"{entity}" OR object_closure:"{entity}" OR disease_context_qualifier:"{entity}" OR disease_context_qualifier_closure:"{entity}")'
+    suffixes = build_association_count_suffixes(entities)
 
     facet_queries = []
-    for field_query in [direct_subject, direct_object, closure_subject, closure_object]:
+    for suffix in suffixes.all_suffixes.values():
         for agm in AssociationTypeMappings.get_mappings():
             association_type_query = get_solr_query_fragment(agm)
-            facet_queries.append(f"({association_type_query}) {field_query}")
-
-    # Ortholog counts: closure queries over all entities (primary + orthologs)
-    if len(entities) > 1:
-        all_subjects = " OR ".join(f'subject:"{e}" OR subject_closure:"{e}"' for e in entities)
-        all_objects = " OR ".join(
-            f'object:"{e}" OR object_closure:"{e}" OR disease_context_qualifier:"{e}" OR disease_context_qualifier_closure:"{e}"'
-            for e in entities
-        )
-        ortho_subject = f"AND ({all_subjects})"
-        ortho_object = f"AND ({all_objects})"
-        for field_query in [ortho_subject, ortho_object]:
-            for agm in AssociationTypeMappings.get_mappings():
-                association_type_query = get_solr_query_fragment(agm)
-                facet_queries.append(f"({association_type_query}) {field_query}")
+            facet_queries.append(f"({association_type_query}) {suffix}")
 
     query = build_association_query(entity=entities, facet_queries=facet_queries)
     return query

@@ -25,6 +25,7 @@ from monarch_py.datamodels.model import (
 )
 from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQueryResult
 from monarch_py.service.curie_service import converter
+from monarch_py.implementations.solr.solr_query_utils import build_association_count_suffixes
 from monarch_py.utils.association_type_utils import get_association_type_mapping_by_query_string
 from monarch_py.utils.utils import get_links_for_field, get_provided_by_link
 
@@ -96,25 +97,18 @@ def parse_association_counts(query_result: SolrQueryResult, entities: List[str])
         query_result: Solr query result containing facet queries
         entities: List of entity IDs (primary entity first, then orthologs)
     """
-    entity = entities[0]
     has_orthologs = len(entities) > 1
+    suffixes = build_association_count_suffixes(entities)
 
-    # Build the suffix strings that were used in the facet queries
-    direct_subject = f'AND subject:"{entity}"'
-    direct_object = f'AND (object:"{entity}" OR disease_context_qualifier:"{entity}")'
-    closure_subject = f'AND (subject:"{entity}" OR subject_closure:"{entity}")'
-    closure_object = f'AND (object:"{entity}" OR object_closure:"{entity}" OR disease_context_qualifier:"{entity}" OR disease_context_qualifier_closure:"{entity}")'
-
-    ortho_subject = None
-    ortho_object = None
-    if has_orthologs:
-        all_subjects = " OR ".join(f'subject:"{e}" OR subject_closure:"{e}"' for e in entities)
-        all_objects = " OR ".join(
-            f'object:"{e}" OR object_closure:"{e}" OR disease_context_qualifier:"{e}" OR disease_context_qualifier_closure:"{e}"'
-            for e in entities
-        )
-        ortho_subject = f"AND ({all_subjects})"
-        ortho_object = f"AND ({all_objects})"
+    # Map from suffix key to (count_level, is_subject_direction)
+    suffix_metadata = {
+        "direct_subject": ("direct", True),
+        "direct_object": ("direct", False),
+        "closure_subject": ("closure", True),
+        "closure_object": ("closure", False),
+        "orthologs_subject": ("orthologs", True),
+        "orthologs_object": ("orthologs", False),
+    }
 
     # Collect counts into a dict keyed by (label, category)
     # Each entry accumulates direct, closure, and ortholog counts
@@ -131,32 +125,15 @@ def parse_association_counts(query_result: SolrQueryResult, entities: List[str])
         # Determine which suffix matches and which count level it represents
         count_level = None
         is_subject_direction = None
+        original_query = None
 
-        if k.endswith(direct_subject):
-            original_query = k.replace(f" {direct_subject}", "").lstrip("(").rstrip(")")
-            count_level = "direct"
-            is_subject_direction = True
-        elif k.endswith(direct_object):
-            original_query = k.replace(f" {direct_object}", "").lstrip("(").rstrip(")")
-            count_level = "direct"
-            is_subject_direction = False
-        elif ortho_subject and k.endswith(ortho_subject):
-            original_query = k.replace(f" {ortho_subject}", "").lstrip("(").rstrip(")")
-            count_level = "orthologs"
-            is_subject_direction = True
-        elif ortho_object and k.endswith(ortho_object):
-            original_query = k.replace(f" {ortho_object}", "").lstrip("(").rstrip(")")
-            count_level = "orthologs"
-            is_subject_direction = False
-        elif k.endswith(closure_subject):
-            original_query = k.replace(f" {closure_subject}", "").lstrip("(").rstrip(")")
-            count_level = "closure"
-            is_subject_direction = True
-        elif k.endswith(closure_object):
-            original_query = k.replace(f" {closure_object}", "").lstrip("(").rstrip(")")
-            count_level = "closure"
-            is_subject_direction = False
-        else:
+        for suffix_key, suffix_str in suffixes.all_suffixes.items():
+            if k.endswith(suffix_str):
+                original_query = k.replace(f" {suffix_str}", "").lstrip("(").rstrip(")")
+                count_level, is_subject_direction = suffix_metadata[suffix_key]
+                break
+
+        if count_level is None:
             raise ValueError(f"Unexpected facet query when building association counts: {k}")
 
         agm = get_association_type_mapping_by_query_string(original_query)
@@ -164,11 +141,9 @@ def parse_association_counts(query_result: SolrQueryResult, entities: List[str])
 
         _ensure_entry(label, agm.category)
 
-        # For symmetric associations, sum both directions
+        # For symmetric associations, sum both directions; otherwise set the value
         if agm.symmetric and count_data[label][count_level] > 0:
             count_data[label][count_level] += v
-        elif agm.symmetric:
-            count_data[label][count_level] = v
         else:
             count_data[label][count_level] = v
 
@@ -231,8 +206,9 @@ def parse_association_table(
         facet_fields=convert_facet_fields(query_result.facet_counts.facet_fields),
         facet_queries=convert_facet_queries(query_result.facet_counts.facet_queries),
     )
-    for i in zip(results.items, query_result.response.docs):
-        assert i[0].subject == i[1]["subject"]
+    for item, doc in zip(results.items, query_result.response.docs):
+        if item.subject != doc["subject"]:
+            raise ValueError(f"Parsed association subject {item.subject} does not match document subject {doc['subject']}")
     return results
 
 
