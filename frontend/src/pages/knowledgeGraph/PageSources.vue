@@ -35,7 +35,7 @@
             <th>Resource</th>
             <th>Link</th>
             <th>Associations</th>
-            <th>Dashboard</th>
+            <th v-if="activeTab === 'primary'">Dashboard</th>
           </tr>
         </thead>
         <tbody>
@@ -47,7 +47,7 @@
               }}</a>
             </td>
             <td>{{ source.count.toLocaleString() }}</td>
-            <td>
+            <td v-if="activeTab === 'primary'">
               <router-link
                 :to="`/kg/sources/${source.id.replace('infores:', '')}`"
                 class="explore-link"
