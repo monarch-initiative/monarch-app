@@ -81,7 +81,7 @@
       "provided_by": "clinvar_variant_edges",
       "provided_by_link": {
         "id": "clinvar_variant",
-        "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/clinvar/#variant"
+        "url": "https://monarch-app.monarchinitiative.org/Sources/clinvar/"
       },
       "publications": null,
       "publications_links": [],
@@ -512,7 +512,7 @@
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
-        "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/hpoa/#disease_to_phenotype"
+        "url": "https://monarch-app.monarchinitiative.org/Sources/hpoa/"
       },
       "publications": ["PMID:37167966"],
       "publications_links": [
@@ -908,7 +908,7 @@
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
-        "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/hpoa/#disease_to_phenotype"
+        "url": "https://monarch-app.monarchinitiative.org/Sources/hpoa/"
       },
       "publications": ["PMID:36745799"],
       "publications_links": [
@@ -1200,7 +1200,7 @@
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
-        "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/hpoa/#disease_to_phenotype"
+        "url": "https://monarch-app.monarchinitiative.org/Sources/hpoa/"
       },
       "publications": ["PMID:37167966"],
       "publications_links": [
@@ -1478,7 +1478,7 @@
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
-        "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/hpoa/#disease_to_phenotype"
+        "url": "https://monarch-app.monarchinitiative.org/Sources/hpoa/"
       },
       "publications": ["PMID:37167966"],
       "publications_links": [
@@ -1698,7 +1698,7 @@
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
-        "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/hpoa/#disease_to_phenotype"
+        "url": "https://monarch-app.monarchinitiative.org/Sources/hpoa/"
       },
       "publications": ["PMID:36745799"],
       "publications_links": [
@@ -2042,7 +2042,7 @@
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
-        "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/hpoa/#disease_to_phenotype"
+        "url": "https://monarch-app.monarchinitiative.org/Sources/hpoa/"
       },
       "publications": ["PMID:23359570"],
       "publications_links": [
@@ -2538,7 +2538,7 @@
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
-        "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/hpoa/#disease_to_phenotype"
+        "url": "https://monarch-app.monarchinitiative.org/Sources/hpoa/"
       },
       "publications": ["PMID:23359570"],
       "publications_links": [
@@ -2800,7 +2800,7 @@
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
-        "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/hpoa/#disease_to_phenotype"
+        "url": "https://monarch-app.monarchinitiative.org/Sources/hpoa/"
       },
       "publications": null,
       "publications_links": [],
@@ -3013,7 +3013,7 @@
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
-        "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/hpoa/#disease_to_phenotype"
+        "url": "https://monarch-app.monarchinitiative.org/Sources/hpoa/"
       },
       "publications": ["PMID:23359570"],
       "publications_links": [
@@ -3493,7 +3493,7 @@
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
-        "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/hpoa/#disease_to_phenotype"
+        "url": "https://monarch-app.monarchinitiative.org/Sources/hpoa/"
       },
       "publications": null,
       "publications_links": [],
@@ -3996,7 +3996,7 @@
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
-        "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/hpoa/#disease_to_phenotype"
+        "url": "https://monarch-app.monarchinitiative.org/Sources/hpoa/"
       },
       "publications": null,
       "publications_links": [],
@@ -4227,7 +4227,7 @@
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
-        "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/hpoa/#disease_to_phenotype"
+        "url": "https://monarch-app.monarchinitiative.org/Sources/hpoa/"
       },
       "publications": null,
       "publications_links": [],
@@ -4536,7 +4536,7 @@
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
-        "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/hpoa/#disease_to_phenotype"
+        "url": "https://monarch-app.monarchinitiative.org/Sources/hpoa/"
       },
       "publications": ["PMID:23359570"],
       "publications_links": [
@@ -4970,7 +4970,7 @@
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
-        "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/hpoa/#disease_to_phenotype"
+        "url": "https://monarch-app.monarchinitiative.org/Sources/hpoa/"
       },
       "publications": ["PMID:23359570"],
       "publications_links": [
@@ -5356,7 +5356,7 @@
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
-        "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/hpoa/#disease_to_phenotype"
+        "url": "https://monarch-app.monarchinitiative.org/Sources/hpoa/"
       },
       "publications": null,
       "publications_links": [],
@@ -5677,7 +5677,7 @@
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
-        "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/hpoa/#disease_to_phenotype"
+        "url": "https://monarch-app.monarchinitiative.org/Sources/hpoa/"
       },
       "publications": ["PMID:23359570"],
       "publications_links": [
@@ -6225,7 +6225,7 @@
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
-        "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/hpoa/#disease_to_phenotype"
+        "url": "https://monarch-app.monarchinitiative.org/Sources/hpoa/"
       },
       "publications": null,
       "publications_links": [],
@@ -6474,7 +6474,7 @@
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
-        "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/hpoa/#disease_to_phenotype"
+        "url": "https://monarch-app.monarchinitiative.org/Sources/hpoa/"
       },
       "publications": null,
       "publications_links": [],
@@ -6853,7 +6853,7 @@
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
-        "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/hpoa/#disease_to_phenotype"
+        "url": "https://monarch-app.monarchinitiative.org/Sources/hpoa/"
       },
       "publications": null,
       "publications_links": [],

@@ -529,7 +529,7 @@
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
-        "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/hpoa/#disease_to_phenotype"
+        "url": "https://monarch-app.monarchinitiative.org/Sources/hpoa/"
       },
       "publications": [
         "PMID:16075202",
@@ -804,7 +804,7 @@
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
-        "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/hpoa/#disease_to_phenotype"
+        "url": "https://monarch-app.monarchinitiative.org/Sources/hpoa/"
       },
       "publications": [
         "PMID:16075202",
@@ -1265,7 +1265,7 @@
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
-        "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/hpoa/#disease_to_phenotype"
+        "url": "https://monarch-app.monarchinitiative.org/Sources/hpoa/"
       },
       "publications": ["PMID:16075202", "PMID:11381124", "PMID:20106987"],
       "publications_links": [
@@ -1498,7 +1498,7 @@
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
-        "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/hpoa/#disease_to_phenotype"
+        "url": "https://monarch-app.monarchinitiative.org/Sources/hpoa/"
       },
       "publications": ["PMID:16075202", "PMID:11506412", "PMID:20729548"],
       "publications_links": [
@@ -1763,7 +1763,7 @@
       "provided_by": "hpoa_disease_to_phenotype_edges",
       "provided_by_link": {
         "id": "hpoa_disease_to_phenotype",
-        "url": "https://monarch-initiative.github.io/monarch-ingest/Sources/hpoa/#disease_to_phenotype"
+        "url": "https://monarch-app.monarchinitiative.org/Sources/hpoa/"
       },
       "publications": ["PMID:30808312", "PMID:17886299"],
       "publications_links": [
