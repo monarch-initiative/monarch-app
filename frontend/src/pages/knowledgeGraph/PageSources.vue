@@ -100,7 +100,7 @@ const isLoading = computed(
 const isError = computed(() => isErrorPrimary.value || isErrorAggregator.value);
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .tab-container {
   display: flex;
   flex-direction: column;
@@ -121,18 +121,18 @@ const isError = computed(() => isErrorPrimary.value || isErrorAggregator.value);
 .sources-table th,
 .sources-table td {
   padding: 12px;
-  border: 1px solid #ddd;
+  border: 1px solid $light-gray;
   text-align: left;
   word-wrap: break-word;
 }
 
 .sources-table th {
-  background-color: #f5f5f5;
+  background-color: $off-white;
   font-weight: bold;
 }
 
 .explore-link {
-  color: #008080;
+  color: $theme;
   font-weight: 600;
   text-decoration: none;
 }
@@ -145,7 +145,7 @@ const isError = computed(() => isErrorPrimary.value || isErrorAggregator.value);
   display: flex;
   width: 100%;
   margin-bottom: 1rem;
-  background-color: #fff;
+  background-color: $white;
 }
 
 .tab-item {
@@ -157,28 +157,28 @@ const isError = computed(() => isErrorPrimary.value || isErrorAggregator.value);
 }
 
 .tab-item.active {
-  border: 1px solid #ccc;
-  border-bottom: 3px solid #008080;
-  background-color: #008080;
-  color: #fff;
+  border: 1px solid $gray;
+  border-bottom: 3px solid $theme;
+  background-color: $theme;
+  color: $white;
 }
 
 .tab-item.active .tab-description {
-  color: #fff;
+  color: $white;
 }
 
 .tab-item.active :deep(.button) {
-  color: #fff !important;
+  color: $white !important;
 }
 
 .tab-item:not(.active) {
   border: 1px solid transparent;
-  border-bottom: 3px solid #008080;
-  background-color: #f5f5f5;
+  border-bottom: 3px solid $theme;
+  background-color: $off-white;
 }
 
 .tab-item:not(.active) .tab-description {
-  color: #555;
+  color: $dark-gray;
 }
 
 .tab-description {

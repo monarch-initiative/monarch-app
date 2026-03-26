@@ -34,33 +34,3 @@ export const getSourceAssociations = async (
   const response = await request<AssociationResults>(url, params);
   return response;
 };
-
-/** max rows supported in single download */
-export const maxSourceDownload = 500;
-
-/** download associations as TSV, optionally filtered by primary knowledge source */
-export const downloadSourceAssociations = async (
-  primaryKnowledgeSource?: string,
-  filterQueries?: string[],
-  sort: Sort = null,
-  search?: string,
-) => {
-  let sortBy = sort?.key;
-  if (sortBy === "frequency_qualifier") {
-    sortBy = "frequency_computed_sortable_float";
-  }
-
-  const params = {
-    primary_knowledge_source: primaryKnowledgeSource || undefined,
-    limit: maxSourceDownload,
-    query: search || undefined,
-    sort: sort
-      ? `${sortBy} ${sort.direction === "up" ? "asc" : "desc"}`
-      : undefined,
-    format: "tsv",
-    filter_queries: filterQueries,
-  };
-
-  const url = `${apiUrl}/association`;
-  await request(url, params, {}, "text", true);
-};

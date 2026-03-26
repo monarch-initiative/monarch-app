@@ -104,9 +104,12 @@
         <AppStatus v-if="isLoading && !results" code="loading"
           >Loading associations...</AppStatus
         >
-        <AppStatus v-else-if="isError" code="error"
-          >Error loading associations</AppStatus
-        >
+        <AppStatus v-else-if="isError" code="error">
+          Error loading associations.
+          <button class="retry-button" @click="fetchAssociations">
+            Retry
+          </button>
+        </AppStatus>
 
         <template v-else-if="results">
           <!-- Table controls (pagination + download) -->
@@ -477,44 +480,44 @@ type DetailProperty = {
 const associationProperties = computed((): DetailProperty[] => {
   const a = selectedAssociation.value;
   if (!a) return [];
-  const props: DetailProperty[] = [];
+  const details: DetailProperty[] = [];
 
   if (a.negated != null) {
-    props.push({
+    details.push({
       label: "Negated",
       value: a.negated ? "Yes" : "No",
       isNegated: a.negated,
     });
   }
   if (a.category) {
-    props.push({ label: "Category", value: formatCategory(a.category) });
+    details.push({ label: "Category", value: formatCategory(a.category) });
   }
   if (a.subject_taxon_label || a.subject_taxon) {
-    props.push({
+    details.push({
       label: "Subject Taxon",
       value: a.subject_taxon_label || a.subject_taxon || "",
     });
   }
   if (a.object_taxon_label || a.object_taxon) {
-    props.push({
+    details.push({
       label: "Object Taxon",
       value: a.object_taxon_label || a.object_taxon || "",
     });
   }
   if (a.primary_knowledge_source) {
-    props.push({
+    details.push({
       label: "Primary Knowledge Source",
       value: a.primary_knowledge_source,
     });
   }
   if (a.aggregator_knowledge_source?.length) {
-    props.push({
+    details.push({
       label: "Aggregator Knowledge Source",
       value: a.aggregator_knowledge_source.join(", "),
     });
   }
   if (a.provided_by) {
-    props.push({
+    details.push({
       label: "Provided By",
       value: a.provided_by,
       isLink: !!a.provided_by_link?.url,
@@ -529,7 +532,7 @@ const associationProperties = computed((): DetailProperty[] => {
     });
   }
   if (a.has_evidence_links?.length) {
-    props.push({
+    details.push({
       label: "Evidence",
       value: "",
       isLink: true,
@@ -539,10 +542,10 @@ const associationProperties = computed((): DetailProperty[] => {
       })),
     });
   } else if (a.has_evidence?.length) {
-    props.push({ label: "Evidence", value: a.has_evidence.join(", ") });
+    details.push({ label: "Evidence", value: a.has_evidence.join(", ") });
   }
   if (a.publications_links?.length) {
-    props.push({
+    details.push({
       label: "Publications",
       value: "",
       isLink: true,
@@ -552,36 +555,36 @@ const associationProperties = computed((): DetailProperty[] => {
       })),
     });
   } else if (a.publications?.length) {
-    props.push({ label: "Publications", value: a.publications.join(", ") });
+    details.push({ label: "Publications", value: a.publications.join(", ") });
   }
   if (a.frequency_qualifier_label || a.frequency_qualifier) {
-    props.push({
+    details.push({
       label: "Frequency",
       value: a.frequency_qualifier_label || a.frequency_qualifier || "",
     });
   }
   if (a.onset_qualifier_label || a.onset_qualifier) {
-    props.push({
+    details.push({
       label: "Onset",
       value: a.onset_qualifier_label || a.onset_qualifier || "",
     });
   }
   if (a.sex_qualifier_label || a.sex_qualifier) {
-    props.push({
+    details.push({
       label: "Sex",
       value: a.sex_qualifier_label || a.sex_qualifier || "",
     });
   }
   if (a.knowledge_level) {
-    props.push({ label: "Knowledge Level", value: a.knowledge_level });
+    details.push({ label: "Knowledge Level", value: a.knowledge_level });
   }
   if (a.agent_type) {
-    props.push({ label: "Agent Type", value: a.agent_type });
+    details.push({ label: "Agent Type", value: a.agent_type });
   }
   if (a.id) {
-    props.push({ label: "Association ID", value: a.id });
+    details.push({ label: "Association ID", value: a.id });
   }
-  return props;
+  return details;
 });
 
 /** fetch associations from API */
@@ -659,15 +662,15 @@ watch(
   margin-bottom: 0.75rem;
   padding: 0.4rem 0.8rem;
   gap: 0.4rem;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  background: #fff;
-  color: #374151;
+  border: 1px solid $light-gray;
+  border-radius: $rounded;
+  background: $white;
+  color: $off-black;
   font-size: 0.85rem;
   cursor: pointer;
 
   &:hover {
-    background: #f3f4f6;
+    background: $light-gray;
   }
 }
 
@@ -685,9 +688,9 @@ watch(
   max-height: calc(100vh - 2rem);
   padding: 0.75rem;
   overflow-y: auto;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  background: #fafafa;
+  border: 1px solid $light-gray;
+  border-radius: $rounded;
+  background: $off-white;
 }
 
 .sidebar-header {
@@ -696,11 +699,11 @@ watch(
   justify-content: space-between;
   margin-bottom: 0.75rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid $light-gray;
 }
 
 .sidebar-title {
-  color: #374151;
+  color: $off-black;
   font-weight: 700;
   font-size: 0.95rem;
   letter-spacing: 0.03em;
@@ -711,7 +714,7 @@ watch(
   padding: 0;
   border: none;
   background: none;
-  color: #008080;
+  color: $theme;
   font-size: 0.8rem;
   cursor: pointer;
 
@@ -727,7 +730,7 @@ watch(
   gap: 0.25rem;
 
   label {
-    color: #374151;
+    color: $off-black;
     font-weight: 600;
     font-size: 0.75rem;
     text-transform: uppercase;
@@ -736,20 +739,20 @@ watch(
   input {
     width: 100%;
     padding: 0.4rem 0.5rem;
-    border: 1px solid #d1d5db;
-    border-radius: 4px;
+    border: 1px solid $light-gray;
+    border-radius: $rounded;
     font-size: 0.85rem;
 
     &:focus {
-      border-color: #008080;
+      border-color: $theme;
       outline: none;
-      box-shadow: 0 0 0 2px rgba(0, 128, 128, 0.2);
+      box-shadow: $outline;
     }
   }
 }
 
 .facet-heading {
-  color: #374151;
+  color: $off-black;
   font-weight: 600;
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -771,20 +774,20 @@ watch(
   border-left: 3px solid transparent;
   border-radius: 0;
   background: none;
-  color: #374151;
+  color: $off-black;
   font-size: 0.82rem;
   text-align: left;
   cursor: pointer;
 
   &:hover {
-    background: #e0f2f1;
-    color: #00695c;
+    background: $theme-light;
+    color: $theme;
   }
 
   &--active {
-    border-left-color: #008080;
-    background: #e0f2f1;
-    color: #00695c;
+    border-left-color: $theme;
+    background: $theme-light;
+    color: $theme;
     font-weight: 600;
   }
 }
@@ -792,7 +795,7 @@ watch(
 .facet-count {
   flex-shrink: 0;
   margin-left: 0.5rem;
-  color: #9ca3af;
+  color: $gray;
   font-weight: 400;
   font-size: 0.78rem;
 }
@@ -801,7 +804,7 @@ watch(
   padding: 0.15rem 0.4rem;
   border: none;
   background: none;
-  color: #008080;
+  color: $theme;
   font-size: 0.78rem;
   text-align: left;
   cursor: pointer;
@@ -831,7 +834,7 @@ watch(
 }
 
 .active-filters-label {
-  color: #6b7280;
+  color: $dark-gray;
   font-size: 0.85rem;
 }
 
@@ -842,13 +845,13 @@ watch(
   gap: 0.3rem;
   border: none;
   border-radius: 999px;
-  background: #e0f2f1;
-  color: #00695c;
+  background: $theme-light;
+  color: $theme;
   font-size: 0.8rem;
   cursor: pointer;
 
   &:hover {
-    background: #b2dfdb;
+    background: $theme-mid;
   }
 }
 
@@ -869,7 +872,7 @@ watch(
 
   h3 {
     margin: 0 0 1.5rem 0;
-    color: #374151;
+    color: $off-black;
     font-size: 1.15rem;
   }
 }
@@ -881,8 +884,8 @@ watch(
   margin-bottom: 1.5rem;
   padding: 1rem;
   gap: 10px 20px;
-  border-radius: 8px;
-  background: #f9fafb;
+  border-radius: $rounded;
+  background: $off-white;
 }
 
 .detail-table {
@@ -892,21 +895,21 @@ watch(
   th,
   td {
     padding: 0.5rem 0.75rem;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid $light-gray;
     text-align: left;
     vertical-align: top;
   }
 
   th {
     width: 180px;
-    color: #6b7280;
+    color: $dark-gray;
     font-weight: 600;
     font-size: 0.85rem;
     white-space: nowrap;
   }
 
   td {
-    color: #374151;
+    color: $off-black;
     font-size: 0.9rem;
     word-break: break-word;
   }
@@ -915,15 +918,30 @@ watch(
 .detail-link {
   display: inline-block;
   margin-right: 0.5rem;
-  color: #008080;
+  color: $theme;
 
   &:hover {
     text-decoration: underline;
   }
 }
 
+.retry-button {
+  margin-left: 0.5rem;
+  padding: 0.3rem 0.8rem;
+  border: 1px solid currentcolor;
+  border-radius: $rounded;
+  background: none;
+  color: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+}
+
 .negated-value {
-  color: #dc2626;
+  color: $error;
   font-weight: 600;
 }
 
