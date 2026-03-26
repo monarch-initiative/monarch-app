@@ -31,32 +31,48 @@
           />
         </div>
 
-        <!-- Data-driven facet selects -->
+        <!-- Data-driven facet link lists -->
         <div
           v-for="facet in facetConfigs"
           :key="facet.filterKey"
           class="sidebar-section"
         >
-          <label :for="`filter-${facet.filterKey}`">{{ facet.label }}</label>
-          <select
-            :id="`filter-${facet.filterKey}`"
-            :value="filters[facet.filterKey]"
-            @change="
-              setFilter(
-                facet.filterKey,
-                ($event.target as HTMLSelectElement).value,
-              )
+          <span class="facet-heading">{{ facet.label }}</span>
+          <ul v-if="facet.values.value.length" class="facet-list">
+            <li
+              v-for="f in getVisibleValues(facet.filterKey, facet.values.value)"
+              :key="f.label"
+            >
+              <button
+                class="facet-link"
+                :class="{
+                  'facet-link--active': filters[facet.filterKey] === f.label,
+                }"
+                @click="
+                  setFilter(
+                    facet.filterKey,
+                    filters[facet.filterKey] === f.label ? '' : f.label,
+                  )
+                "
+              >
+                <span>{{ facet.formatter(f.label) }}</span>
+                <span class="facet-count">{{ f.count?.toLocaleString() }}</span>
+              </button>
+            </li>
+          </ul>
+          <button
+            v-if="facet.values.value.length > FACET_COLLAPSE_LIMIT"
+            class="facet-toggle"
+            @click="
+              expandedFacets[facet.filterKey] = !expandedFacets[facet.filterKey]
             "
           >
-            <option value="">All</option>
-            <option
-              v-for="f in facet.values.value"
-              :key="f.label"
-              :value="f.label"
-            >
-              {{ facet.formatter(f.label) }} ({{ f.count?.toLocaleString() }})
-            </option>
-          </select>
+            {{
+              expandedFacets[facet.filterKey]
+                ? "Show less \u25B2"
+                : `Show ${facet.values.value.length - FACET_COLLAPSE_LIMIT} more \u25BC`
+            }}
+          </button>
         </div>
       </aside>
 
@@ -102,7 +118,6 @@
             :show-controls="true"
             @update:per-page="onPerPageChange"
             @update:start="onStartChange"
-            @download="onDownload"
           />
 
           <!-- Association table -->
@@ -232,7 +247,6 @@
             :show-controls="true"
             @update:per-page="onPerPageChange"
             @update:start="onStartChange"
-            @download="onDownload"
           />
         </template>
 
@@ -245,12 +259,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, type ComputedRef } from "vue";
+import { computed, reactive, ref, watch, type ComputedRef } from "vue";
 import type { Association, AssociationResults, FacetValue } from "@/api/model";
-import {
-  downloadSourceAssociations,
-  getSourceAssociations,
-} from "@/api/source-associations";
+import { getSourceAssociations } from "@/api/source-associations";
 import AppModal from "@/components/AppModal.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
@@ -260,7 +271,7 @@ import TheTableControls from "@/components/TheTableContols.vue";
 import type { SourceFilters } from "@/composables/use-source-dashboard";
 
 type Props = {
-  inforesId: string;
+  inforesId?: string;
   filters: SourceFilters;
   filterQueries: string[];
   offset: number;
@@ -270,7 +281,9 @@ type Props = {
   clearFilters: () => void;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  inforesId: "",
+});
 
 const emit = defineEmits<{
   "update:offset": [number];
@@ -294,6 +307,7 @@ const facetFields = [
   "agent_type",
   "provided_by",
   "negated",
+  "primary_knowledge_source",
 ];
 
 /** extract facet values for a given field from the results */
@@ -314,6 +328,9 @@ const knowledgeLevelFacets = computed(() => getFacetValues("knowledge_level"));
 const agentTypeFacets = computed(() => getFacetValues("agent_type"));
 const providedByFacets = computed(() => getFacetValues("provided_by"));
 const negatedFacets = computed(() => getFacetValues("negated"));
+const primaryKnowledgeSourceFacets = computed(() =>
+  getFacetValues("primary_knowledge_source"),
+);
 
 /** format biolink categories for display */
 const formatCategory = (value: string) =>
@@ -325,6 +342,16 @@ const identity = (value: string) => value;
 /** sidebar open state (for mobile toggle) */
 const sidebarOpen = ref(true);
 
+/** how many facet values to show before "Show more" */
+const FACET_COLLAPSE_LIMIT = 5;
+
+/** tracks which facets are expanded past the collapse limit */
+const expandedFacets = reactive<Record<string, boolean>>({});
+
+/** get visible facet values, respecting expand/collapse state */
+const getVisibleValues = (key: string, values: FacetValue[]) =>
+  expandedFacets[key] ? values : values.slice(0, FACET_COLLAPSE_LIMIT);
+
 /** data-driven facet config for the sidebar */
 type FacetConfig = {
   filterKey: keyof SourceFilters;
@@ -333,62 +360,74 @@ type FacetConfig = {
   formatter: (v: string) => string;
 };
 
-const facetConfigs: FacetConfig[] = [
-  {
-    filterKey: "subjectCategory",
-    label: "Subject Category",
-    values: subjectCategoryFacets,
-    formatter: formatCategory,
-  },
-  {
-    filterKey: "objectCategory",
-    label: "Object Category",
-    values: objectCategoryFacets,
-    formatter: formatCategory,
-  },
-  {
-    filterKey: "predicate",
-    label: "Predicate",
-    values: predicateFacets,
-    formatter: formatCategory,
-  },
-  {
-    filterKey: "subjectTaxon",
-    label: "Subject Taxon",
-    values: subjectTaxonFacets,
-    formatter: identity,
-  },
-  {
-    filterKey: "objectTaxon",
-    label: "Object Taxon",
-    values: objectTaxonFacets,
-    formatter: identity,
-  },
-  {
-    filterKey: "knowledgeLevel",
-    label: "Knowledge Level",
-    values: knowledgeLevelFacets,
-    formatter: identity,
-  },
-  {
-    filterKey: "agentType",
-    label: "Agent Type",
-    values: agentTypeFacets,
-    formatter: identity,
-  },
-  {
-    filterKey: "providedBy",
-    label: "Provided By",
-    values: providedByFacets,
-    formatter: identity,
-  },
-  {
-    filterKey: "negated",
-    label: "Negated",
-    values: negatedFacets,
-    formatter: identity,
-  },
-];
+const facetConfigs = computed<FacetConfig[]>(() => {
+  const configs: FacetConfig[] = [];
+  if (!props.inforesId) {
+    configs.push({
+      filterKey: "primaryKnowledgeSource",
+      label: "Source",
+      values: primaryKnowledgeSourceFacets,
+      formatter: identity,
+    });
+  }
+  configs.push(
+    {
+      filterKey: "subjectCategory",
+      label: "Subject Category",
+      values: subjectCategoryFacets,
+      formatter: formatCategory,
+    },
+    {
+      filterKey: "predicate",
+      label: "Predicate",
+      values: predicateFacets,
+      formatter: formatCategory,
+    },
+    {
+      filterKey: "objectCategory",
+      label: "Object Category",
+      values: objectCategoryFacets,
+      formatter: formatCategory,
+    },
+    {
+      filterKey: "subjectTaxonLabel",
+      label: "Subject Taxon",
+      values: subjectTaxonFacets,
+      formatter: identity,
+    },
+    {
+      filterKey: "objectTaxonLabel",
+      label: "Object Taxon",
+      values: objectTaxonFacets,
+      formatter: identity,
+    },
+    {
+      filterKey: "knowledgeLevel",
+      label: "Knowledge Level",
+      values: knowledgeLevelFacets,
+      formatter: identity,
+    },
+    {
+      filterKey: "agentType",
+      label: "Agent Type",
+      values: agentTypeFacets,
+      formatter: identity,
+    },
+    {
+      filterKey: "providedBy",
+      label: "Provided By",
+      values: providedByFacets,
+      formatter: identity,
+    },
+    {
+      filterKey: "negated",
+      label: "Negated",
+      values: negatedFacets,
+      formatter: identity,
+    },
+  );
+  return configs;
+});
 
 /** table columns */
 const cols: Cols<keyof Association> = [
@@ -551,7 +590,7 @@ const fetchAssociations = async () => {
   isError.value = false;
   try {
     results.value = await getSourceAssociations(
-      props.inforesId,
+      props.inforesId || undefined,
       props.offset,
       props.limit,
       facetFields,
@@ -592,16 +631,6 @@ const onStartChange = (start?: number) => {
 /** sort handler */
 const onSortChange = (newSort?: Sort) => {
   sort.value = newSort ?? null;
-};
-
-/** download handler */
-const onDownload = async () => {
-  await downloadSourceAssociations(
-    props.inforesId,
-    props.filterQueries.length > 0 ? props.filterQueries : undefined,
-    sort.value,
-    props.filters.search || undefined,
-  );
 };
 
 /** watch for changes and refetch */
@@ -704,7 +733,6 @@ watch(
     text-transform: uppercase;
   }
 
-  select,
   input {
     width: 100%;
     padding: 0.4rem 0.5rem;
@@ -720,10 +748,78 @@ watch(
   }
 }
 
+.facet-heading {
+  color: #374151;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.facet-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.facet-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.2rem 0.4rem;
+  border: none;
+  border-left: 3px solid transparent;
+  border-radius: 0;
+  background: none;
+  color: #374151;
+  font-size: 0.82rem;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    background: #e0f2f1;
+    color: #00695c;
+  }
+
+  &--active {
+    border-left-color: #008080;
+    background: #e0f2f1;
+    color: #00695c;
+    font-weight: 600;
+  }
+}
+
+.facet-count {
+  flex-shrink: 0;
+  margin-left: 0.5rem;
+  color: #9ca3af;
+  font-weight: 400;
+  font-size: 0.78rem;
+}
+
+.facet-toggle {
+  padding: 0.15rem 0.4rem;
+  border: none;
+  background: none;
+  color: #008080;
+  font-size: 0.78rem;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 .content-area {
   position: relative;
   flex: 1;
   min-width: 0;
+
+  :deep(td) {
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+  }
 }
 
 .active-filters {

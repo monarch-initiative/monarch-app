@@ -7,25 +7,27 @@ export interface SourceFilters {
   subjectCategory: string;
   objectCategory: string;
   predicate: string;
-  subjectTaxon: string;
-  objectTaxon: string;
+  subjectTaxonLabel: string;
+  objectTaxonLabel: string;
   knowledgeLevel: string;
   agentType: string;
   providedBy: string;
   negated: string;
+  primaryKnowledgeSource: string;
   search: string;
 }
 
-const emptyFilters = (): SourceFilters => ({
+export const emptyFilters = (): SourceFilters => ({
   subjectCategory: "",
   objectCategory: "",
   predicate: "",
-  subjectTaxon: "",
-  objectTaxon: "",
+  subjectTaxonLabel: "",
+  objectTaxonLabel: "",
   knowledgeLevel: "",
   agentType: "",
   providedBy: "",
   negated: "",
+  primaryKnowledgeSource: "",
   search: "",
 });
 
@@ -59,15 +61,17 @@ export const useSourceDashboard = () => {
     if (filters.objectCategory)
       fqs.push(`object_category:"${filters.objectCategory}"`);
     if (filters.predicate) fqs.push(`predicate:"${filters.predicate}"`);
-    if (filters.subjectTaxon)
-      fqs.push(`subject_taxon_label:"${filters.subjectTaxon}"`);
-    if (filters.objectTaxon)
-      fqs.push(`object_taxon_label:"${filters.objectTaxon}"`);
+    if (filters.subjectTaxonLabel)
+      fqs.push(`subject_taxon_label:"${filters.subjectTaxonLabel}"`);
+    if (filters.objectTaxonLabel)
+      fqs.push(`object_taxon_label:"${filters.objectTaxonLabel}"`);
     if (filters.knowledgeLevel)
       fqs.push(`knowledge_level:"${filters.knowledgeLevel}"`);
     if (filters.agentType) fqs.push(`agent_type:"${filters.agentType}"`);
     if (filters.providedBy) fqs.push(`provided_by:"${filters.providedBy}"`);
     if (filters.negated) fqs.push(`negated:${filters.negated}`);
+    if (filters.primaryKnowledgeSource)
+      fqs.push(`primary_knowledge_source:"${filters.primaryKnowledgeSource}"`);
     return fqs;
   });
 
