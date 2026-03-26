@@ -83,7 +83,7 @@ def test_get_links_for_field():
 
 def test_get_provided_by_link():
     assert get_provided_by_link("alliance_gene_nodes") == ExpandedCurie(
-        id="alliance_gene", url="https://monarch-initiative.github.io/monarch-ingest/Sources/alliance/#gene"
+        id="alliance_gene", url="https://monarch-app.monarchinitiative.org/Sources/alliance/"
     )
 
 
