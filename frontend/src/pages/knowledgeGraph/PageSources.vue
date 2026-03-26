@@ -35,6 +35,7 @@
             <th>Resource</th>
             <th>Link</th>
             <th>Associations</th>
+            <th>Dashboard</th>
           </tr>
         </thead>
         <tbody>
@@ -46,6 +47,14 @@
               }}</a>
             </td>
             <td>{{ source.count.toLocaleString() }}</td>
+            <td>
+              <router-link
+                :to="`/kg/sources/${source.id.replace('infores:', '')}`"
+                class="explore-link"
+              >
+                Explore in KG
+              </router-link>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -120,6 +129,16 @@ const isError = computed(() => isErrorPrimary.value || isErrorAggregator.value);
 .sources-table th {
   background-color: #f5f5f5;
   font-weight: bold;
+}
+
+.explore-link {
+  color: #008080;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.explore-link:hover {
+  text-decoration: underline;
 }
 
 .tabs {
