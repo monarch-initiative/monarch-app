@@ -16,7 +16,14 @@ from monarch_py.implementations.solr.solr_query_utils import (
     entity_predicate_boost,
     category_boost,
     blank_search_boost,
+    build_association_count_suffixes,
+    build_grid_column_query,
+    build_grid_row_query,
+    build_multi_category_column_query,
+    build_multi_category_row_query,
 )
+from monarch_py.datamodels.grid_configs import get_grid_config
+from monarch_py.datamodels.grid_groupings import RowGroupingConfig, GroupingType
 from monarch_py.utils.utils import compare_dicts, dict_diff
 
 
@@ -204,3 +211,242 @@ def test_build_association_query_with_q_parameter():
     assert query.q == "BRCA1"
     assert query.def_type == "edismax"
     assert query.hl is True
+
+
+# =====================================================================
+# Tests for AssociationCountSuffixes
+# =====================================================================
+
+
+@pytest.mark.parametrize(
+    "entities,expect_orthologs",
+    [
+        (["HGNC:1100"], False),
+        (["HGNC:1100", "MGI:88276"], True),
+    ],
+    ids=["single-entity", "multi-entity"],
+)
+def test_suffixes_ortholog_presence(entities, expect_orthologs):
+    suffixes = build_association_count_suffixes(entities)
+    all_s = suffixes.all_suffixes
+    assert "direct_subject" in all_s
+    assert "direct_object" in all_s
+    assert "closure_subject" in all_s
+    assert "closure_object" in all_s
+    assert ("orthologs_subject" in all_s) == expect_orthologs
+    assert ("orthologs_object" in all_s) == expect_orthologs
+    if expect_orthologs:
+        assert len(all_s) == 6
+
+
+def test_suffix_strings_contain_entity():
+    suffixes = build_association_count_suffixes(["HGNC:1100"])
+    assert 'subject:"HGNC:1100"' in suffixes.direct_subject
+    assert 'object:"HGNC:1100"' in suffixes.direct_object
+    assert 'subject:"HGNC:1100"' in suffixes.closure_subject
+    assert 'object:"HGNC:1100"' in suffixes.closure_object
+
+
+def test_ortho_suffixes_contain_all_entities():
+    entities = ["HGNC:1100", "MGI:88276", "ZFIN:ZDB"]
+    suffixes = build_association_count_suffixes(entities)
+    for ent in entities:
+        assert ent in suffixes.ortho_subject
+        assert ent in suffixes.ortho_object
+
+
+# =====================================================================
+# Tests for build_grid_column_query
+# =====================================================================
+
+
+@pytest.mark.parametrize(
+    "direct_only,expected_field",
+    [(True, 'object:"MONDO:0007078"'), (False, 'object_closure:"MONDO:0007078"')],
+    ids=["direct", "indirect"],
+)
+def test_column_query_direct_vs_indirect(direct_only, expected_field):
+    config = get_grid_config("case-phenotype")
+    params = build_grid_column_query(
+        context_id="MONDO:0007078",
+        config=config,
+        direct_only=direct_only,
+    )
+    fq_str = str(params.get("fq", ""))
+    assert expected_field in fq_str
+
+
+@pytest.mark.parametrize(
+    "filter_empty,expect_join",
+    [(True, True), (False, False)],
+    ids=["with-join", "without-join"],
+)
+def test_column_query_join_filtering(filter_empty, expect_join):
+    config = get_grid_config("case-phenotype")
+    params = build_grid_column_query(
+        context_id="MONDO:0007078",
+        config=config,
+        direct_only=True,
+        filter_empty_columns=filter_empty,
+    )
+    assert ("{!join" in params["q"]) == expect_join
+
+
+# =====================================================================
+# Tests for build_grid_row_query
+# =====================================================================
+
+
+def test_row_query_structure():
+    config = get_grid_config("case-phenotype")
+    grouping = RowGroupingConfig(
+        grouping_type=GroupingType.CLOSURE_ROOTS,
+        bin_ids=["BIN:001"],
+        bin_labels={"BIN:001": "Bin 1"},
+    )
+    params = build_grid_row_query(
+        context_id="MONDO:0007078",
+        config=config,
+        grouping=grouping,
+        direct_only=True,
+    )
+    assert "{!join" in params["q"]
+    assert 'category:"biolink:CaseToPhenotypicFeatureAssociation"' in params["fq"]
+    assert params["facet"] == "true"
+    assert 'object_closure:"BIN:001"' in params["facet.query"]
+
+
+def test_row_query_indirect():
+    config = get_grid_config("case-phenotype")
+    grouping = RowGroupingConfig(
+        grouping_type=GroupingType.CLOSURE_ROOTS,
+        bin_ids=["BIN:001"],
+        bin_labels={"BIN:001": "Bin 1"},
+    )
+    params = build_grid_row_query(
+        context_id="MONDO:0007078",
+        config=config,
+        grouping=grouping,
+        direct_only=False,
+    )
+    assert "object_closure" in params["q"]
+
+
+# =====================================================================
+# Tests for build_multi_category_column_query
+# =====================================================================
+
+
+def test_multi_category_column_query_multiple_categories():
+    params = build_multi_category_column_query(
+        context_id="HGNC:4851",
+        column_assoc_categories=[
+            "biolink:CausalGeneToDiseaseAssociation",
+            "biolink:CorrelatedGeneToDiseaseAssociation",
+        ],
+        context_field="subject",
+        context_closure_field="subject_closure",
+        column_field="object",
+        direct_only=True,
+    )
+    fq_str = str(params.get("fq", ""))
+    assert "CausalGeneToDiseaseAssociation" in fq_str
+    assert "CorrelatedGeneToDiseaseAssociation" in fq_str
+    assert " OR " in fq_str
+
+
+@pytest.mark.parametrize(
+    "filter_empty,expect_join",
+    [(True, True), (False, False)],
+    ids=["with-join", "without-join"],
+)
+def test_multi_category_column_query_join_filtering(filter_empty, expect_join):
+    extra_kwargs = {}
+    if filter_empty:
+        extra_kwargs["row_assoc_categories"] = ["biolink:DiseaseToPhenotypicFeatureAssociation"]
+        extra_kwargs["row_context_field"] = "subject"
+    params = build_multi_category_column_query(
+        context_id="HGNC:4851",
+        column_assoc_categories=["biolink:CausalGeneToDiseaseAssociation"],
+        context_field="subject",
+        context_closure_field="subject_closure",
+        column_field="object",
+        direct_only=True,
+        filter_empty_columns=filter_empty,
+        **extra_kwargs,
+    )
+    assert ("{!join" in params["q"]) == expect_join
+
+
+def test_multi_category_column_query_includes_source_fields():
+    params = build_multi_category_column_query(
+        context_id="HGNC:4851",
+        column_assoc_categories=["biolink:CausalGeneToDiseaseAssociation"],
+        context_field="subject",
+        context_closure_field="subject_closure",
+        column_field="object",
+        direct_only=True,
+    )
+    fl = params["fl"]
+    assert "category" in fl
+    assert "predicate" in fl
+    assert "publications" in fl
+    assert "has_evidence" in fl
+
+
+def test_build_multi_category_row_query_multiple_row_categories():
+    """Query builder should accept multiple row categories and build OR filter."""
+    grouping = RowGroupingConfig(
+        grouping_type=GroupingType.CLOSURE_ROOTS,
+        bin_ids=["HP:0000001"],
+        bin_labels={"HP:0000001": "All"},
+    )
+
+    query_params = build_multi_category_row_query(
+        context_id="MONDO:0005148",
+        column_assoc_categories=["biolink:DiseaseToPhenotypicFeatureAssociation"],
+        row_assoc_categories=[
+            "biolink:DiseaseToPhenotypicFeatureAssociation",
+            "biolink:CaseToPhenotypicFeatureAssociation",
+        ],
+        context_field="object",
+        context_closure_field="object_closure",
+        column_field="subject",
+        row_context_field="subject",
+        row_entity_field="object",
+        grouping=grouping,
+        direct_only=True,
+    )
+
+    # Should build OR filter for multiple categories
+    fq = query_params.get("fq", "")
+    assert "biolink:DiseaseToPhenotypicFeatureAssociation" in fq
+    assert "biolink:CaseToPhenotypicFeatureAssociation" in fq
+    assert " OR " in fq
+
+
+def test_build_multi_category_row_query_single_row_category_in_list():
+    """Single row category passed as list should work."""
+    grouping = RowGroupingConfig(
+        grouping_type=GroupingType.CLOSURE_ROOTS,
+        bin_ids=["HP:0000001"],
+        bin_labels={"HP:0000001": "All"},
+    )
+
+    query_params = build_multi_category_row_query(
+        context_id="MONDO:0005148",
+        column_assoc_categories=["biolink:DiseaseToPhenotypicFeatureAssociation"],
+        row_assoc_categories=["biolink:DiseaseToPhenotypicFeatureAssociation"],
+        context_field="object",
+        context_closure_field="object_closure",
+        column_field="subject",
+        row_context_field="subject",
+        row_entity_field="object",
+        grouping=grouping,
+        direct_only=True,
+    )
+
+    fq = query_params.get("fq", "")
+    assert "biolink:DiseaseToPhenotypicFeatureAssociation" in fq
+    # Single category should still be wrapped in parens (from OR join)
+    assert fq == '(category:"biolink:DiseaseToPhenotypicFeatureAssociation")'
