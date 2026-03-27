@@ -55,7 +55,11 @@
                   )
                 "
               >
-                <span v-tooltip="facet.formatter(f.label)" class="facet-label">{{ facet.formatter(f.label) }}</span>
+                <span
+                  v-tooltip="facet.formatter(f.label)"
+                  class="facet-label"
+                  >{{ facet.formatter(f.label) }}</span
+                >
                 <span class="facet-count">{{ f.count?.toLocaleString() }}</span>
               </button>
             </li>
@@ -80,7 +84,9 @@
       <div class="content-area">
         <!-- Total count -->
         <div v-if="results" class="total-count">
-          {{ results.total.toLocaleString() }} association{{ results.total === 1 ? '' : 's' }}
+          {{ results.total.toLocaleString() }} association{{
+            results.total === 1 ? "" : "s"
+          }}
         </div>
 
         <!-- Active filter pills -->
@@ -111,9 +117,7 @@
         >
         <AppStatus v-else-if="isError" code="error">
           Error loading associations.
-          <button class="retry-button" @click="fetchAssociations">
-            Retry
-          </button>
+          <button class="retry-button" @click="fetchAssociations">Retry</button>
         </AppStatus>
 
         <template v-else-if="results">
@@ -132,14 +136,23 @@
                   :node="{
                     id: row.subject,
                     category: row.subject_category || '',
-                    name: getHighlight(row, 'subject_label') || row.subject_label || row.subject,
+                    name:
+                      getHighlight(row, 'subject_label') ||
+                      row.subject_label ||
+                      row.subject,
                   }"
                   :is-link="true"
                   :icon="true"
                   :highlight="true"
                 />
                 <AppNodeText
-                  v-if="getAncestorHighlight(row, 'subject_closure_label', 'subject_label')"
+                  v-if="
+                    getAncestorHighlight(
+                      row,
+                      'subject_closure_label',
+                      'subject_label',
+                    )
+                  "
                   :text="`Ancestor: ${getAncestorHighlight(row, 'subject_closure_label', 'subject_label')}`"
                   class="text-sm"
                   :highlight="true"
@@ -148,7 +161,11 @@
             </template>
 
             <template #predicate="{ row }">
-              <AppPredicateBadge :association="row" :arrows="true" :highlight="true" />
+              <AppPredicateBadge
+                :association="row"
+                :arrows="true"
+                :highlight="true"
+              />
             </template>
 
             <template #object="{ row }">
@@ -157,14 +174,23 @@
                   :node="{
                     id: row.object,
                     category: row.object_category || '',
-                    name: getHighlight(row, 'object_label') || row.object_label || row.object,
+                    name:
+                      getHighlight(row, 'object_label') ||
+                      row.object_label ||
+                      row.object,
                   }"
                   :is-link="true"
                   :icon="true"
                   :highlight="true"
                 />
                 <AppNodeText
-                  v-if="getAncestorHighlight(row, 'object_closure_label', 'object_label')"
+                  v-if="
+                    getAncestorHighlight(
+                      row,
+                      'object_closure_label',
+                      'object_label',
+                    )
+                  "
                   :text="`Ancestor: ${getAncestorHighlight(row, 'object_closure_label', 'object_label')}`"
                   class="text-sm"
                   :highlight="true"
@@ -834,8 +860,8 @@ watch(
 }
 
 .facet-label {
-  overflow: hidden;
   min-width: 0;
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

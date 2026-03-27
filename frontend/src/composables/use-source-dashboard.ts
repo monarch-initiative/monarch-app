@@ -78,7 +78,15 @@ export const useAssociationFilters = () => {
     Object.values(filters).some((v) => v !== ""),
   );
 
-  return { filters, filterQueries, offset, limit, setFilter, clearFilters, hasActiveFilters };
+  return {
+    filters,
+    filterQueries,
+    offset,
+    limit,
+    setFilter,
+    clearFilters,
+    hasActiveFilters,
+  };
 };
 
 /** composable for source-specific dashboard pages (reads infores from route) */
