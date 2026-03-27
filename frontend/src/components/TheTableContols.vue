@@ -61,7 +61,7 @@
       </template>
     </div>
 
-    <div>
+    <div v-if="showDownload">
       <AppButton
         v-tooltip="'Download table data'"
         icon="download"
@@ -91,6 +91,8 @@ type Props = {
    * yet)
    */
   showControls?: boolean;
+  /** whether to show the download button */
+  showDownload?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -98,6 +100,7 @@ const props = withDefaults(defineProps<Props>(), {
   start: 0,
   total: 0,
   showControls: true,
+  showDownload: true,
 });
 
 type Emits = {

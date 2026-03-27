@@ -43,6 +43,11 @@
         "to": "/kg/dashboard"
       },
       {
+        "label": "Association Browser",
+        "key": "kg-associations",
+        "to": "/kg/associations"
+      },
+      {
         "label": "Downloads",
         "key": "kg-downloads",
         "to": "/kg/downloads"

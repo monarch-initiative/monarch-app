@@ -15,6 +15,8 @@
   "Terms of Use": "Legal terms, disclaimers, and permitted use.",
   "Downloads": "Downloads for the knowledge graph available in TSV format, ",
   "Sources": "List of primary and aggreator sources for the knowledge graph.",
+  "Association Browser": "Browse and filter all associations in the Monarch Knowledge Graph.",
+  "Source Dashboard": "Explore data from a specific knowledge source in the Monarch Knowledge Graph.",
   "Our Story": "Background, mission, and the core values of Monarch.",
   "Team": "Meet the people building and maintaining Monarch.",
   "Scientfic Advisory Board Members": "Members of the Scientific Advisory Board.",

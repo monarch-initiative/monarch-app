@@ -201,10 +201,22 @@ export const routes: RouteRecordRaw[] = [
     meta: { breadcrumb: "Downloads" },
   },
   {
+    path: "/kg/associations",
+    name: "Association Browser",
+    component: asyncRoute("knowledgeGraph/PageAssociationBrowser"),
+    meta: { breadcrumb: "Association Browser" },
+  },
+  {
     path: "/kg/sources",
     name: "Sources",
     component: asyncRoute("knowledgeGraph/PageSources"),
     meta: { breadcrumb: "KG Sources" },
+  },
+  {
+    path: "/kg/sources/:infores",
+    name: "Source Dashboard",
+    component: asyncRoute("knowledgeGraph/PageSourceDashboard"),
+    meta: { breadcrumb: "Source Dashboard" },
   },
   // About Dropdown
   {

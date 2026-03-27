@@ -48,11 +48,12 @@ def test_associations_params(mock_get_assoc):
         "limit": 20,
     }
     query_string = urllib.parse.urlencode(params, doseq=True)
-    print(query_string)
     client.get(f"/all?{query_string}")
 
     params["category"] = [AssociationCategory.ASSOCIATION, AssociationCategory.GENE_TO_PHENOTYPIC_FEATURE_ASSOCIATION]
     params["subject_category"] = [EntityCategory.DISEASE, EntityCategory.GENE]
     params["object_category"] = [EntityCategory.GENE, EntityCategory.PHENOTYPIC_FEATURE]
     params["predicate"] = [AssociationPredicate.INTERACTS_WITH]
+    params["primary_knowledge_source"] = None
+    params["q"] = None
     mock_get_assoc.assert_called_with(**params)

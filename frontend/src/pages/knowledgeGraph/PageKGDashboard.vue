@@ -13,7 +13,7 @@
       </p>
 
       <!-- KG Dashboard with Data Sources -->
-      <KGDashboard>
+      <KGDashboard :show-data-source-info="false">
         <!-- Declare parquet data sources from KG QC directory -->
         <DataSource
           name="node_report"

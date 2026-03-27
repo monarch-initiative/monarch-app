@@ -195,6 +195,24 @@ def test_blank_search_boost():
     assert 'if(termfreq(id,"MONDO:0007523"),12,1)' in boost
 
 
+def test_build_association_query_with_primary_knowledge_source():
+    """Test that primary_knowledge_source param adds the correct filter query."""
+    query = build_association_query(
+        primary_knowledge_source=["infores:hpo-annotations"],
+    )
+    pks_filters = [fq for fq in query.filter_queries if "primary_knowledge_source" in fq]
+    assert len(pks_filters) == 1, "Expected one primary_knowledge_source filter"
+    assert "infores" in pks_filters[0]
+
+
+def test_build_association_query_with_q_parameter():
+    """Test that q param enables edismax search with highlighting."""
+    query = build_association_query(q="BRCA1")
+    assert query.q == "BRCA1"
+    assert query.def_type == "edismax"
+    assert query.hl is True
+
+
 # =====================================================================
 # Tests for AssociationCountSuffixes
 # =====================================================================
