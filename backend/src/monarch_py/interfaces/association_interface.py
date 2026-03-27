@@ -17,6 +17,7 @@ class AssociationInterface(ABC):
         object: List[str] = None,
         object_closure: str = None,
         entity: List[str] = None,
+        primary_knowledge_source: List[str] = None,
         offset: int = 0,
         limit: int = 20,
     ) -> AssociationResults:

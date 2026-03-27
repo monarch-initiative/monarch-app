@@ -55,4 +55,5 @@ def test_associations_params(mock_get_assoc):
     params["subject_category"] = [EntityCategory.DISEASE, EntityCategory.GENE]
     params["object_category"] = [EntityCategory.GENE, EntityCategory.PHENOTYPIC_FEATURE]
     params["predicate"] = [AssociationPredicate.INTERACTS_WITH]
+    params["primary_knowledge_source"] = None
     mock_get_assoc.assert_called_with(**params)

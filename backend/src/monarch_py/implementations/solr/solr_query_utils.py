@@ -84,6 +84,7 @@ def build_association_query(
     object_namespace: Optional[List[str]] = None,
     object_taxon: Optional[List[str]] = None,
     entity: Optional[List[str]] = None,
+    primary_knowledge_source: Optional[List[str]] = None,
     direct: bool = False,
     q: Optional[str] = None,
     sort: Optional[List[str]] = None,
@@ -107,6 +108,7 @@ def build_association_query(
     query.add_field_filter_query("object_category", None if not object_category else [c for c in object_category])
     query.add_field_filter_query("object_namespace", object_namespace)
     query.add_field_filter_query("object_taxon", object_taxon)
+    query.add_field_filter_query("primary_knowledge_source", primary_knowledge_source)
     if subject:
         if direct:
             query.add_field_filter_query("subject", " OR ".join(subject))
