@@ -1,5 +1,5 @@
-import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { defineComponent, h } from "vue";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { mount as vtuMount, type VueWrapper } from "@vue/test-utils";
 import SourceAssociationBrowser from "@/components/dashboard/SourceAssociationBrowser.vue";
 import components from "@/global/components";
@@ -57,7 +57,10 @@ vi.mock("@/api/source-associations", () => ({
 
 /** stub components that use import.meta.env (not available in test SSR context) */
 const StubComponent = defineComponent({
-  props: { node: Object, association: Object },
+  props: {
+    node: { type: Object, default: () => ({}) },
+    association: { type: Object, default: () => ({}) },
+  },
   setup(props) {
     return () => h("span", { class: "stub" }, props.node?.name || "stub");
   },

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import {
-  useAssociationFilters,
   emptyFilters,
+  useAssociationFilters,
   type SourceFilters,
 } from "@/composables/use-source-dashboard";
 
@@ -89,9 +89,7 @@ describe("useAssociationFilters", () => {
     setFilter("negated", "true");
 
     expect(filterQueries.value).toContain('category:"biolink:Association"');
-    expect(filterQueries.value).toContain(
-      'predicate:"biolink:has_phenotype"',
-    );
+    expect(filterQueries.value).toContain('predicate:"biolink:has_phenotype"');
     expect(filterQueries.value).toContain("negated:true");
   });
 

@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getSourceAssociations } from "@/api/source-associations";
 
 /** mock the api module's request function */
@@ -50,28 +50,14 @@ describe("getSourceAssociations", () => {
 
   it("formats sort parameter with direction", async () => {
     const sort = { key: "subject_label" as const, direction: "up" as const };
-    await getSourceAssociations(
-      undefined,
-      0,
-      20,
-      undefined,
-      undefined,
-      sort,
-    );
+    await getSourceAssociations(undefined, 0, 20, undefined, undefined, sort);
     const [, params] = mockRequest.mock.calls[0];
     expect(params.sort).toBe("subject_label asc");
   });
 
   it("maps desc sort direction", async () => {
     const sort = { key: "predicate" as const, direction: "down" as const };
-    await getSourceAssociations(
-      undefined,
-      0,
-      20,
-      undefined,
-      undefined,
-      sort,
-    );
+    await getSourceAssociations(undefined, 0, 20, undefined, undefined, sort);
     const [, params] = mockRequest.mock.calls[0];
     expect(params.sort).toBe("predicate desc");
   });
@@ -81,14 +67,7 @@ describe("getSourceAssociations", () => {
       key: "frequency_qualifier" as const,
       direction: "up" as const,
     };
-    await getSourceAssociations(
-      undefined,
-      0,
-      20,
-      undefined,
-      undefined,
-      sort,
-    );
+    await getSourceAssociations(undefined, 0, 20, undefined, undefined, sort);
     const [, params] = mockRequest.mock.calls[0];
     expect(params.sort).toBe("frequency_computed_sortable_float asc");
   });
