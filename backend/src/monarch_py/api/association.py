@@ -34,6 +34,7 @@ async def _get_associations(
     facet_queries: List[str] = Query(default_factory=list),
     filter_queries: List[str] = Query(default_factory=list),
     compact: bool = Query(default=False),
+    query: Union[str, None] = Query(default=None, description="Search query to filter associations"),
     pagination: PaginationParams = Depends(),
     format: OutputFormat = Query(
         default=OutputFormat.json,
@@ -57,6 +58,7 @@ async def _get_associations(
         object_namespace=object_namespace,
         direct=direct,
         compact=compact,
+        q=query,
         facet_fields=facet_fields,
         facet_queries=facet_queries,
         filter_queries=filter_queries,

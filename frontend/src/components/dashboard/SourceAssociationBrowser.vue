@@ -127,35 +127,49 @@
             @update:sort="onSortChange"
           >
             <template #subject="{ row }">
-              <AppNodeBadge
-                :node="{
-                  id: row.subject,
-                  category: row.subject_category || '',
-                  name: row.subject_label || row.subject,
-                  label: row.subject_label || row.subject,
-                }"
-                :name="row.subject_label || row.subject"
-                :is-link="true"
-                :icon="true"
-              />
+              <div class="badgeColumn">
+                <AppNodeBadge
+                  :node="{
+                    id: row.subject,
+                    category: row.subject_category || '',
+                    name: getHighlight(row, 'subject_label') || row.subject_label || row.subject,
+                  }"
+                  :is-link="true"
+                  :icon="true"
+                  :highlight="true"
+                />
+                <AppNodeText
+                  v-if="getAncestorHighlight(row, 'subject_closure_label', 'subject_label')"
+                  :text="`Ancestor: ${getAncestorHighlight(row, 'subject_closure_label', 'subject_label')}`"
+                  class="text-sm"
+                  :highlight="true"
+                />
+              </div>
             </template>
 
             <template #predicate="{ row }">
-              <AppPredicateBadge :association="row" :arrows="true" />
+              <AppPredicateBadge :association="row" :arrows="true" :highlight="true" />
             </template>
 
             <template #object="{ row }">
-              <AppNodeBadge
-                :node="{
-                  id: row.object,
-                  category: row.object_category || '',
-                  name: row.object_label || row.object,
-                  label: row.object_label || row.object,
-                }"
-                :name="row.object_label || row.object"
-                :is-link="true"
-                :icon="true"
-              />
+              <div class="badgeColumn">
+                <AppNodeBadge
+                  :node="{
+                    id: row.object,
+                    category: row.object_category || '',
+                    name: getHighlight(row, 'object_label') || row.object_label || row.object,
+                  }"
+                  :is-link="true"
+                  :icon="true"
+                  :highlight="true"
+                />
+                <AppNodeText
+                  v-if="getAncestorHighlight(row, 'object_closure_label', 'object_label')"
+                  :text="`Ancestor: ${getAncestorHighlight(row, 'object_closure_label', 'object_label')}`"
+                  class="text-sm"
+                  :highlight="true"
+                />
+              </div>
             </template>
 
             <template #details="{ row }">
@@ -263,6 +277,7 @@ import type { Association, AssociationResults, FacetValue } from "@/api/model";
 import { getSourceAssociations } from "@/api/source-associations";
 import AppModal from "@/components/AppModal.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
+import AppNodeText from "@/components/AppNodeText.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
 import AppStatus from "@/components/AppStatus.vue";
 import AppTable, { type Cols, type Sort } from "@/components/AppTable.vue";
@@ -288,6 +303,27 @@ const emit = defineEmits<{
   "update:offset": [number];
   "update:limit": [number];
 }>();
+
+/** Get a highlighted field value from an association's Solr highlighting data */
+const getHighlight = (row: Association, field: string): string | undefined => {
+  return (row as any).highlighting?.[field]?.[0];
+};
+
+/** Strip HTML tags for plain-text comparison */
+const stripTags = (html: string) => html.replace(/<[^>]*>/g, "");
+
+/** Get ancestor highlight only if it differs from the entity label */
+const getAncestorHighlight = (
+  row: Association,
+  closureField: string,
+  labelField: "subject_label" | "object_label",
+): string | undefined => {
+  const hl = getHighlight(row, closureField);
+  if (!hl) return undefined;
+  const plain = stripTags(hl);
+  const label = (row as any)[labelField] || "";
+  return plain === label ? undefined : hl;
+};
 
 const isLoading = ref(false);
 const isError = ref(false);
@@ -961,6 +997,17 @@ watch(
   &:hover {
     background: rgba(0, 0, 0, 0.05);
   }
+}
+
+.badgeColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+}
+
+.text-sm {
+  color: $dark-gray;
+  font-size: 0.9em;
 }
 
 .negated-value {
