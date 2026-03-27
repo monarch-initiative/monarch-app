@@ -1,9 +1,9 @@
 import { defineComponent, h } from "vue";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { mount, type VueWrapper } from "@vue/test-utils";
-import PageAssociationBrowser from "@/pages/knowledgeGraph/PageAssociationBrowser.vue";
 import components from "@/global/components";
 import plugins from "@/global/plugins";
+import PageAssociationBrowser from "@/pages/knowledgeGraph/PageAssociationBrowser.vue";
 import "@/global/icons";
 
 vi.mock("vue-router", () => ({

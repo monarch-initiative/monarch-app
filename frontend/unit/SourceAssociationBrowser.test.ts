@@ -379,8 +379,8 @@ describe("SourceAssociationBrowser", () => {
       await wrapper.vm.$nextTick();
 
       const rows = wrapper.findAll(".detail-table tr");
-      const negatedRow = rows.find(
-        (r: { text: () => string }) => r.text().includes("Negated"),
+      const negatedRow = rows.find((r: { text: () => string }) =>
+        r.text().includes("Negated"),
       );
       expect(negatedRow?.text()).toContain("No");
     });

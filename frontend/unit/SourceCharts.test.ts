@@ -1,4 +1,4 @@
-import { defineComponent, h, nextTick, provide, ref } from "vue";
+import { defineComponent, h } from "vue";
 import {
   afterEach,
   beforeEach,
@@ -8,7 +8,7 @@ import {
   vi,
   type Mock,
 } from "vitest";
-import { mount, type VueWrapper, flushPromises } from "@vue/test-utils";
+import { flushPromises, mount, type VueWrapper } from "@vue/test-utils";
 import SourceCharts from "@/components/dashboard/SourceCharts.vue";
 import components from "@/global/components";
 import plugins from "@/global/plugins";
@@ -25,7 +25,14 @@ const StubKGMetricCard = defineComponent({
 
 const StubChordChart = defineComponent({
   name: "ChordChart",
-  props: ["title", "dataSource", "sql", "showControls", "allowExport", "height"],
+  props: [
+    "title",
+    "dataSource",
+    "sql",
+    "showControls",
+    "allowExport",
+    "height",
+  ],
   setup() {
     return () => h("div", { class: "stub-chord-chart" });
   },
@@ -46,7 +53,14 @@ const StubPredicateTable = defineComponent({
 
 const StubSankeyChart = defineComponent({
   name: "SankeyChart",
-  props: ["title", "dataSource", "sql", "showControls", "allowExport", "height"],
+  props: [
+    "title",
+    "dataSource",
+    "sql",
+    "showControls",
+    "allowExport",
+    "height",
+  ],
   setup() {
     return () => h("div", { class: "stub-sankey-chart" });
   },

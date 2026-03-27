@@ -1,11 +1,10 @@
-import { defineComponent, h, ref, computed, reactive } from "vue";
+import { computed, defineComponent, h, reactive, ref } from "vue";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { mount, type VueWrapper } from "@vue/test-utils";
-import PageSourceDashboard from "@/pages/knowledgeGraph/PageSourceDashboard.vue";
 import components from "@/global/components";
 import plugins from "@/global/plugins";
+import PageSourceDashboard from "@/pages/knowledgeGraph/PageSourceDashboard.vue";
 import "@/global/icons";
-import { emptyFilters } from "@/composables/use-source-dashboard";
 
 const mockSetFilter = vi.fn();
 const mockClearFilters = vi.fn();
@@ -72,7 +71,8 @@ describe("PageSourceDashboard", () => {
           KGDashboard: defineComponent({
             props: ["showDataSourceInfo"],
             setup(_, { slots }) {
-              return () => h("div", { class: "stub-kg-dashboard" }, slots.default?.());
+              return () =>
+                h("div", { class: "stub-kg-dashboard" }, slots.default?.());
             },
           }),
           DataSource: { template: "<div />" },
@@ -113,10 +113,7 @@ describe("PageSourceDashboard", () => {
 
   it("onFilterCategory calls setFilter with category type", async () => {
     wrapper = mountPage();
-    (wrapper.vm as any).onFilterCategory(
-      "biolink:Gene",
-      "subjectCategory",
-    );
+    (wrapper.vm as any).onFilterCategory("biolink:Gene", "subjectCategory");
     expect(mockSetFilter).toHaveBeenCalledWith(
       "subjectCategory",
       "biolink:Gene",
