@@ -1,6 +1,16 @@
-from monarch_py.datamodels.model import Node
+from typing import Optional, List, Union
+
+import pytest
+from pydantic import BaseModel
+
+from monarch_py.datamodels.model import AssociationDirectionEnum, Node
 from monarch_py.datamodels.solr import SolrQueryResult
 from monarch_py.implementations.solr.solr_parsers import (
+    _is_scalar_type,
+    convert_facet_fields,
+    convert_facet_queries,
+    get_association_direction,
+    normalize_solr_doc_for_model,
     parse_association_counts,
     parse_association_table,
     parse_associations,
@@ -90,3 +100,196 @@ def test_parse_mappings(mapping_response, mappings):
     solr_response = SolrQueryResult(**mapping_response)
     parsed = parse_mappings(solr_response).model_dump()
     assert parsed == mappings, f"Parsed result is not as expected. Difference: {dict_diff(parsed, mappings)}"
+
+
+# =====================================================================
+# Tests for _is_scalar_type
+# =====================================================================
+
+
+@pytest.mark.parametrize(
+    "type_hint,expected",
+    [
+        (str, True),
+        (int, True),
+        (float, True),
+        (bool, True),
+        (Optional[str], True),
+        (Optional[int], True),
+        (List[str], False),
+        (list, False),
+        (Optional[List[str]], False),
+        (Union[str, int], False),
+        (dict, False),
+    ],
+    ids=[
+        "str",
+        "int",
+        "float",
+        "bool",
+        "Optional[str]",
+        "Optional[int]",
+        "List[str]",
+        "list",
+        "Optional[List]",
+        "Union[str,int]",
+        "dict",
+    ],
+)
+def test_is_scalar_type(type_hint, expected):
+    assert _is_scalar_type(type_hint) is expected
+
+
+# =====================================================================
+# Tests for normalize_solr_doc_for_model
+# =====================================================================
+
+
+def test_normalize_converts_single_list_to_scalar():
+    class MyModel(BaseModel):
+        name: str
+        count: int
+
+    doc = {"name": ["Alice"], "count": [42]}
+    result = normalize_solr_doc_for_model(doc, MyModel)
+    assert result["name"] == "Alice"
+    assert result["count"] == 42
+
+
+def test_normalize_leaves_list_fields_as_lists():
+    class MyModel(BaseModel):
+        tags: List[str]
+
+    doc = {"tags": ["a", "b", "c"]}
+    result = normalize_solr_doc_for_model(doc, MyModel)
+    assert result["tags"] == ["a", "b", "c"]
+
+
+def test_normalize_leaves_non_list_values_unchanged():
+    class MyModel(BaseModel):
+        name: str
+
+    doc = {"name": "Alice"}
+    result = normalize_solr_doc_for_model(doc, MyModel)
+    assert result["name"] == "Alice"
+
+
+def test_normalize_converts_empty_list_to_none():
+    class MyModel(BaseModel):
+        name: Optional[str] = None
+
+    doc = {"name": []}
+    result = normalize_solr_doc_for_model(doc, MyModel)
+    assert result["name"] is None
+
+
+def test_normalize_ignores_unknown_fields():
+    class MyModel(BaseModel):
+        name: str
+
+    doc = {"name": "Alice", "extra_field": ["ignored"]}
+    result = normalize_solr_doc_for_model(doc, MyModel)
+    assert result["extra_field"] == ["ignored"]
+
+
+def test_normalize_handles_optional_scalar():
+    class MyModel(BaseModel):
+        label: Optional[str] = None
+
+    doc = {"label": ["Test Label"]}
+    result = normalize_solr_doc_for_model(doc, MyModel)
+    assert result["label"] == "Test Label"
+
+
+# =====================================================================
+# Tests for convert_facet_fields and convert_facet_queries
+# =====================================================================
+
+
+def test_convert_facet_fields():
+    solr_facet_fields = {"category": ["biolink:Gene", 10, "biolink:Disease", 5]}
+    result = convert_facet_fields(solr_facet_fields)
+    assert len(result) == 1
+    assert result[0].label == "category"
+    assert len(result[0].facet_values) == 2
+    assert result[0].facet_values[0].label == "biolink:Gene"
+    assert result[0].facet_values[0].count == 10
+
+
+def test_convert_facet_fields_empty():
+    assert convert_facet_fields({}) == []
+
+
+def test_convert_facet_queries():
+    solr_facet_queries = {'category:"biolink:Gene"': 10, 'category:"biolink:Disease"': 5}
+    result = convert_facet_queries(solr_facet_queries)
+    assert len(result) == 2
+    assert result[0].label == 'category:"biolink:Gene"'
+    assert result[0].count == 10
+
+
+def test_convert_facet_queries_empty():
+    assert convert_facet_queries({}) == []
+
+
+# =====================================================================
+# Tests for get_association_direction
+# =====================================================================
+
+
+@pytest.mark.parametrize(
+    "entity,doc,expected",
+    [
+        (
+            ["HGNC:4851"],
+            {"subject": "HGNC:4851", "object": "MONDO:0007078"},
+            AssociationDirectionEnum.outgoing,
+        ),
+        (
+            ["MONDO:0007078"],
+            {"subject": "HGNC:4851", "object": "MONDO:0007078"},
+            AssociationDirectionEnum.incoming,
+        ),
+        (
+            ["HGNC:parent"],
+            {"subject": "HGNC:4851", "subject_closure": ["HGNC:4851", "HGNC:parent"], "object": "MONDO:0007078"},
+            AssociationDirectionEnum.outgoing,
+        ),
+        (
+            ["MONDO:parent"],
+            {"subject": "HGNC:4851", "object": "MONDO:0007078", "object_closure": ["MONDO:0007078", "MONDO:parent"]},
+            AssociationDirectionEnum.incoming,
+        ),
+        (
+            ["MONDO:0007078"],
+            {"subject": "DRUG:001", "object": "HP:001", "disease_context_qualifier": "MONDO:0007078"},
+            AssociationDirectionEnum.incoming,
+        ),
+        (
+            ["MONDO:parent"],
+            {
+                "subject": "DRUG:001",
+                "object": "HP:001",
+                "disease_context_qualifier": "MONDO:child",
+                "disease_context_qualifier_closure": ["MONDO:child", "MONDO:parent"],
+            },
+            AssociationDirectionEnum.incoming,
+        ),
+    ],
+    ids=[
+        "outgoing-subject",
+        "incoming-object",
+        "outgoing-subject-closure",
+        "incoming-object-closure",
+        "incoming-disease-qualifier",
+        "incoming-disease-qualifier-closure",
+    ],
+)
+def test_get_association_direction(entity, doc, expected):
+    assert get_association_direction(entity, doc) == expected
+
+
+def test_get_association_direction_raises_when_not_found():
+    doc = {"subject": "HGNC:4851", "object": "MONDO:0007078"}
+    with pytest.raises(ValueError, match="not found in association"):
+        get_association_direction(["UNKNOWN:001"], doc)
