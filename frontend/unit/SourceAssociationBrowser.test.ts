@@ -267,4 +267,247 @@ describe("SourceAssociationBrowser", () => {
     // Should have been called twice: once on mount (failed), once on retry
     expect(mockGetSourceAssociations).toHaveBeenCalledTimes(2);
   });
+
+  describe("detail modal and associationProperties", () => {
+    /** Fully populated association for exercising all property branches */
+    const fullAssociation = {
+      id: "uuid:full",
+      subject: "HGNC:1100",
+      subject_label: "BRCA1",
+      subject_category: "biolink:Gene",
+      predicate: "biolink:has_phenotype",
+      object: "HP:0000001",
+      object_label: "All",
+      object_category: "biolink:PhenotypicFeature",
+      negated: true,
+      category: "biolink:GeneToPhenotypicFeatureAssociation",
+      subject_taxon: "NCBITaxon:9606",
+      subject_taxon_label: "Homo sapiens",
+      object_taxon: "NCBITaxon:9606",
+      object_taxon_label: "Homo sapiens",
+      primary_knowledge_source: "infores:hpo-annotations",
+      aggregator_knowledge_source: ["infores:monarchinitiative"],
+      provided_by: "hpoa_gene_to_phenotype_edges",
+      provided_by_link: {
+        id: "hpoa",
+        url: "https://example.com/hpoa",
+      },
+      has_evidence: ["ECO:0000269"],
+      has_evidence_links: [
+        { id: "ECO:0000269", url: "https://example.com/eco" },
+      ],
+      publications: ["PMID:12345"],
+      publications_links: [
+        { id: "PMID:12345", url: "https://pubmed.ncbi.nlm.nih.gov/12345" },
+      ],
+      frequency_qualifier: "HP:0040281",
+      frequency_qualifier_label: "Very frequent",
+      onset_qualifier: "HP:0003581",
+      onset_qualifier_label: "Adult onset",
+      sex_qualifier: "PATO:0000384",
+      sex_qualifier_label: "Male",
+      knowledge_level: "knowledge_assertion",
+      agent_type: "manual_agent",
+    };
+
+    const fullResults = {
+      items: [fullAssociation],
+      total: 1,
+      facet_fields: [],
+    };
+
+    it("openDetails sets selectedAssociation and shows modal", async () => {
+      mockGetSourceAssociations.mockResolvedValueOnce(fullResults);
+      wrapper = await mountBrowser();
+
+      // Find and click the details button
+      const detailBtn = wrapper.find('[design="small"]');
+      if (detailBtn.exists()) {
+        await detailBtn.trigger("click");
+      } else {
+        // Fallback: call openDetails via component instance
+        (wrapper.vm as any).openDetails(fullAssociation);
+      }
+      await wrapper.vm.$nextTick();
+
+      expect(wrapper.find(".detail-modal").exists()).toBe(true);
+      expect(wrapper.text()).toContain("Association Details");
+    });
+
+    it("associationProperties returns all expected labels for a full association", async () => {
+      mockGetSourceAssociations.mockResolvedValueOnce(fullResults);
+      wrapper = await mountBrowser();
+
+      // Open the detail modal
+      (wrapper.vm as any).openDetails(fullAssociation);
+      await wrapper.vm.$nextTick();
+
+      const detailText = wrapper.find(".detail-table")?.text() || "";
+      expect(detailText).toContain("Negated");
+      expect(detailText).toContain("Yes");
+      expect(detailText).toContain("Category");
+      expect(detailText).toContain("Subject Taxon");
+      expect(detailText).toContain("Object Taxon");
+      expect(detailText).toContain("Primary Knowledge Source");
+      expect(detailText).toContain("Aggregator Knowledge Source");
+      expect(detailText).toContain("Provided By");
+      expect(detailText).toContain("Evidence");
+      expect(detailText).toContain("Publications");
+      expect(detailText).toContain("Frequency");
+      expect(detailText).toContain("Onset");
+      expect(detailText).toContain("Sex");
+      expect(detailText).toContain("Knowledge Level");
+      expect(detailText).toContain("Agent Type");
+      expect(detailText).toContain("Association ID");
+    });
+
+    it("associationProperties returns empty when no association selected", async () => {
+      wrapper = await mountBrowser();
+      // Don't open details - the computed should return []
+      expect(wrapper.find(".detail-table").exists()).toBe(false);
+    });
+
+    it("shows negated as 'No' when negated is false", async () => {
+      const nonNegated = { ...fullAssociation, negated: false };
+      mockGetSourceAssociations.mockResolvedValueOnce({
+        items: [nonNegated],
+        total: 1,
+        facet_fields: [],
+      });
+      wrapper = await mountBrowser();
+      (wrapper.vm as any).openDetails(nonNegated);
+      await wrapper.vm.$nextTick();
+
+      const rows = wrapper.findAll(".detail-table tr");
+      const negatedRow = rows.find(
+        (r: { text: () => string }) => r.text().includes("Negated"),
+      );
+      expect(negatedRow?.text()).toContain("No");
+    });
+
+    it("uses subject_taxon fallback when subject_taxon_label is missing", async () => {
+      const fallback = {
+        ...fullAssociation,
+        subject_taxon_label: "",
+        subject_taxon: "NCBITaxon:9606",
+      };
+      mockGetSourceAssociations.mockResolvedValueOnce({
+        items: [fallback],
+        total: 1,
+        facet_fields: [],
+      });
+      wrapper = await mountBrowser();
+      (wrapper.vm as any).openDetails(fallback);
+      await wrapper.vm.$nextTick();
+
+      const detailText = wrapper.find(".detail-table")?.text() || "";
+      expect(detailText).toContain("NCBITaxon:9606");
+    });
+
+    it("uses has_evidence fallback when has_evidence_links is empty", async () => {
+      const noLinks = {
+        ...fullAssociation,
+        has_evidence_links: [],
+        has_evidence: ["ECO:0000269"],
+      };
+      mockGetSourceAssociations.mockResolvedValueOnce({
+        items: [noLinks],
+        total: 1,
+        facet_fields: [],
+      });
+      wrapper = await mountBrowser();
+      (wrapper.vm as any).openDetails(noLinks);
+      await wrapper.vm.$nextTick();
+
+      const detailText = wrapper.find(".detail-table")?.text() || "";
+      expect(detailText).toContain("ECO:0000269");
+    });
+
+    it("uses publications fallback when publications_links is empty", async () => {
+      const noLinks = {
+        ...fullAssociation,
+        publications_links: [],
+        publications: ["PMID:12345"],
+      };
+      mockGetSourceAssociations.mockResolvedValueOnce({
+        items: [noLinks],
+        total: 1,
+        facet_fields: [],
+      });
+      wrapper = await mountBrowser();
+      (wrapper.vm as any).openDetails(noLinks);
+      await wrapper.vm.$nextTick();
+
+      const detailText = wrapper.find(".detail-table")?.text() || "";
+      expect(detailText).toContain("PMID:12345");
+    });
+  });
+
+  describe("pagination and sort handlers", () => {
+    it("onPerPageChange emits update:limit and update:offset", async () => {
+      wrapper = await mountBrowser();
+
+      // Call the handler directly
+      (wrapper.vm as any).onPerPageChange(50);
+
+      expect(wrapper.emitted("update:limit")).toBeTruthy();
+      expect(wrapper.emitted("update:limit")![0]).toEqual([50]);
+      expect(wrapper.emitted("update:offset")).toBeTruthy();
+      expect(wrapper.emitted("update:offset")![0]).toEqual([0]);
+    });
+
+    it("onPerPageChange does nothing when value is null", async () => {
+      wrapper = await mountBrowser();
+      (wrapper.vm as any).onPerPageChange(null);
+      expect(wrapper.emitted("update:limit")).toBeFalsy();
+    });
+
+    it("onStartChange emits update:offset", async () => {
+      wrapper = await mountBrowser();
+      (wrapper.vm as any).onStartChange(20);
+      expect(wrapper.emitted("update:offset")).toBeTruthy();
+      expect(wrapper.emitted("update:offset")![0]).toEqual([20]);
+    });
+
+    it("onStartChange does nothing when value is null", async () => {
+      wrapper = await mountBrowser();
+      (wrapper.vm as any).onStartChange(null);
+      expect(wrapper.emitted("update:offset")).toBeFalsy();
+    });
+
+    it("onSortChange updates sort value", async () => {
+      wrapper = await mountBrowser();
+      (wrapper.vm as any).onSortChange({
+        key: "subject_label",
+        direction: "asc",
+      });
+      await vi.runAllTimersAsync();
+      await wrapper.vm.$nextTick();
+
+      // Sort change should trigger a re-fetch
+      expect(mockGetSourceAssociations).toHaveBeenCalledTimes(2);
+    });
+
+    it("onSortChange resets sort to null when undefined", async () => {
+      wrapper = await mountBrowser();
+      // First set a sort value to change from null
+      (wrapper.vm as any).onSortChange({
+        key: "subject_label",
+        direction: "asc",
+      });
+      await vi.runAllTimersAsync();
+      await wrapper.vm.$nextTick();
+      const callCountAfterSort = mockGetSourceAssociations.mock.calls.length;
+
+      // Now reset to undefined → null
+      (wrapper.vm as any).onSortChange(undefined);
+      await vi.runAllTimersAsync();
+      await wrapper.vm.$nextTick();
+
+      // Should have triggered another re-fetch
+      expect(mockGetSourceAssociations.mock.calls.length).toBeGreaterThan(
+        callCountAfterSort,
+      );
+    });
+  });
 });

@@ -2,11 +2,13 @@ import { describe, expect, it, vi } from "vitest";
 import {
   emptyFilters,
   useAssociationFilters,
+  useSourceDashboard,
   type SourceFilters,
 } from "@/composables/use-source-dashboard";
 
+const mockRoute = { params: { infores: "monarchinitiative" } };
 vi.mock("vue-router", () => ({
-  useRoute: () => ({ params: { infores: "monarchinitiative" } }),
+  useRoute: () => mockRoute,
 }));
 
 describe("emptyFilters", () => {
@@ -104,5 +106,57 @@ describe("useAssociationFilters", () => {
     setFilter("negated", "true");
     expect(filterQueries.value).toContain("negated:true");
     expect(filterQueries.value).not.toContain('negated:"true"');
+  });
+});
+
+describe("useSourceDashboard", () => {
+  it("returns inforesId from route params", () => {
+    mockRoute.params = { infores: "monarchinitiative" };
+    const { inforesId } = useSourceDashboard();
+    expect(inforesId.value).toBe("infores:monarchinitiative");
+  });
+
+  it("returns sourceName from RESOURCE_NAME_MAP for known key", () => {
+    mockRoute.params = { infores: "hpo-annotations" };
+    const { sourceName } = useSourceDashboard();
+    expect(sourceName.value).toBe("Human Phenotype Ontology Annotations");
+  });
+
+  it("returns uppercased key for unknown source", () => {
+    mockRoute.params = { infores: "unknown-source" };
+    const { sourceName } = useSourceDashboard();
+    expect(sourceName.value).toBe("UNKNOWN-SOURCE");
+  });
+
+  it("returns 'Unknown Source' when route param is empty", () => {
+    mockRoute.params = { infores: "" };
+    const { sourceName } = useSourceDashboard();
+    expect(sourceName.value).toBe("Unknown Source");
+  });
+
+  it("returns all expected properties", () => {
+    mockRoute.params = { infores: "monarchinitiative" };
+    const result = useSourceDashboard();
+    expect(result).toHaveProperty("inforesId");
+    expect(result).toHaveProperty("sourceName");
+    expect(result).toHaveProperty("filters");
+    expect(result).toHaveProperty("filterQueries");
+    expect(result).toHaveProperty("offset");
+    expect(result).toHaveProperty("limit");
+    expect(result).toHaveProperty("setFilter");
+    expect(result).toHaveProperty("clearFilters");
+    expect(result).toHaveProperty("hasActiveFilters");
+  });
+
+  it("setFilter and clearFilters work correctly", () => {
+    mockRoute.params = { infores: "monarchinitiative" };
+    const { filters, setFilter, clearFilters, hasActiveFilters } =
+      useSourceDashboard();
+    setFilter("predicate", "biolink:has_phenotype");
+    expect(filters.predicate).toBe("biolink:has_phenotype");
+    expect(hasActiveFilters.value).toBe(true);
+    clearFilters();
+    expect(filters.predicate).toBe("");
+    expect(hasActiveFilters.value).toBe(false);
   });
 });
