@@ -33,7 +33,10 @@
             >
               <template v-if="config.columnDisplayMode === 'labeled'">
                 <div class="diagonal-header">
-                  <span class="diagonal-text">
+                  <router-link
+                    :to="`/${column.id}`"
+                    class="diagonal-text column-link"
+                  >
                     <span class="entity-name">{{
                       column.label || column.id
                     }}</span>
@@ -43,11 +46,13 @@
                     >
                       {{ column.taxonLabel || column.taxonId }}
                     </span>
-                  </span>
+                  </router-link>
                 </div>
               </template>
               <template v-else>
-                {{ index + 1 }}
+                <router-link :to="`/${column.id}`" class="column-link">
+                  {{ index + 1 }}
+                </router-link>
               </template>
             </th>
           </tr>
@@ -180,14 +185,14 @@ const isColumnGroupBoundary = (index: number): boolean => {
   );
 };
 
-// Get tooltip for column header
+// Get tooltip for column header (click-triggered with link to entity page)
 const getColumnTooltip = (column: ColumnEntity, index: number): string => {
   // Use custom formatter if provided
   if (props.config.columnTooltipFormatter) {
     return props.config.columnTooltipFormatter(column, index);
   }
 
-  // Default tooltip
+  // Default tooltip with link to entity page
   let html = `<strong>${props.config.columnLabel} ${index + 1}</strong>`;
   if (column.label) {
     html += `<br>${column.label}`;
@@ -199,7 +204,7 @@ const getColumnTooltip = (column: ColumnEntity, index: number): string => {
 
   // Show source entity if from a descendant (not direct)
   if (!column.isDirect && column.sourceEntityLabel) {
-    html += `<br><br><em>Source: ${column.sourceEntityLabel}</em>`;
+    html += `<br><em>Source: ${column.sourceEntityLabel}</em>`;
   }
 
   return html;
@@ -391,8 +396,8 @@ thead {
       max-width: 28px;
       height: 160px;
       padding: 0;
-      vertical-align: bottom;
       background: transparent;
+      vertical-align: bottom;
       cursor: default;
 
       // Remove column group border from header (doesn't work with diagonal labels)
@@ -416,10 +421,10 @@ thead {
   }
 
   .diagonal-text {
+    display: block;
     position: absolute;
     bottom: 0;
     left: 0;
-    display: block;
     max-width: 200px;
     overflow: hidden;
     transform: rotate(-45deg);
@@ -437,6 +442,15 @@ thead {
       color: #666;
       font-weight: 400;
       font-size: 0.65rem;
+    }
+  }
+
+  .column-link {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
     }
   }
 }
