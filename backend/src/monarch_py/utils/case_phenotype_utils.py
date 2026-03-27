@@ -8,6 +8,7 @@ from monarch_py.datamodels.model import (
     CasePhenotypeCellData,
 )
 from monarch_py.datamodels.solr import HistoPhenoKeys, HISTOPHENO_BIN_LABELS
+from monarch_py.utils.entity_grid_utils import make_cell_key
 
 
 def build_matrix(
@@ -217,14 +218,3 @@ def _build_bins(phenotype_docs: List[dict], facet_counts: Dict[str, int]) -> Lis
     return bins
 
 
-def make_cell_key(case_id: str, phenotype_id: str) -> str:
-    """Create a cell key for looking up cell data.
-
-    Args:
-        case_id: The case/patient ID
-        phenotype_id: The phenotype ID
-
-    Returns:
-        Cell key in format "case_id:phenotype_id"
-    """
-    return f"{case_id}:{phenotype_id}"

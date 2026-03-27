@@ -6,14 +6,17 @@ Provides generic entity x entity grid endpoints that support:
 - Gene -> Ortholog × Phenotype (ortholog-phenotype-grid)
 - Generic grids with configurable association categories
 """
+import logging
 from enum import Enum
-from typing import List, Optional
+from typing import List
 from fastapi import APIRouter, HTTPException, Query, Path
 
 from monarch_py.api.config import solr
 from monarch_py.datamodels.model import EntityGridResponse
 from monarch_py.datamodels.category_enums import AssociationCategory, EntityCategory
 from monarch_py.utils.association_type_utils import AssociationTypeMappings
+
+logger = logging.getLogger(__name__)
 
 
 # Define row grouping options
@@ -69,7 +72,8 @@ def _validate_entity_category(entity_id: str, expected_category: EntityCategory)
             )
     except HTTPException:
         raise
-    except Exception:
+    except Exception as exc:
+        logger.error("Error validating entity %s: %s", entity_id, exc)
         raise HTTPException(
             status_code=404,
             detail=f"Entity {entity_id} not found",

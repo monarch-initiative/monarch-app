@@ -44,7 +44,7 @@ def test_get_generic_entity_grid_accepts_multiple_row_categories():
 
 
 # =====================================================================
-# Tests for _get_entity_name and _get_disease_name
+# Tests for _get_entity_name
 # =====================================================================
 
 
@@ -77,15 +77,6 @@ def test_get_entity_name_on_exception():
         assert SolrImplementation()._get_entity_name("MONDO:0007078") == "MONDO:0007078"
 
 
-def test_get_disease_name_returns_name():
-    with patch.object(SolrImplementation, "get_entity", return_value=_make_named_entity("Achondroplasia")):
-        assert SolrImplementation()._get_disease_name("MONDO:0007078") == "Achondroplasia"
-
-
-def test_get_disease_name_on_exception():
-    with patch.object(SolrImplementation, "get_entity", side_effect=Exception("err")):
-        assert SolrImplementation()._get_disease_name("MONDO:0007078") == "MONDO:0007078"
-
 
 # =====================================================================
 # Tests for get_case_phenotype_matrix
@@ -95,7 +86,7 @@ def test_get_disease_name_on_exception():
 def test_case_phenotype_matrix_empty():
     with (
         patch.object(SolrImplementation, "_raw_solr_query") as mock_query,
-        patch.object(SolrImplementation, "_get_disease_name", return_value="Test Disease"),
+        patch.object(SolrImplementation, "_get_entity_name", return_value="Test Disease"),
     ):
         mock_query.return_value = {"response": {"docs": []}}
         result = SolrImplementation().get_case_phenotype_matrix("MONDO:0007078")
@@ -144,7 +135,7 @@ def test_case_phenotype_matrix_complete_flow():
 
     with (
         patch.object(SolrImplementation, "_raw_solr_query", side_effect=side_effect),
-        patch.object(SolrImplementation, "_get_disease_name", return_value="Test Disease"),
+        patch.object(SolrImplementation, "_get_entity_name", return_value="Test Disease"),
     ):
         result = SolrImplementation().get_case_phenotype_matrix("MONDO:0007078")
         assert result.total_cases == 1

@@ -1,3 +1,4 @@
+import logging
 import os
 from dataclasses import dataclass
 from typing import List, Union, Optional
@@ -67,6 +68,8 @@ from monarch_py.datamodels.grid_configs import get_grid_config
 from monarch_py.datamodels.grid_groupings import get_row_grouping
 from monarch_py.utils.entity_utils import get_expanded_curie, get_uri
 from monarch_py.utils.utils import get_provided_by_link, get_links_for_field
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -637,7 +640,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         if not case_docs:
             return CasePhenotypeMatrixResponse(
                 disease_id=disease_id,
-                disease_name=self._get_disease_name(disease_id),
+                disease_name=self._get_entity_name(disease_id),
                 total_cases=0,
                 total_phenotypes=0,
                 cases=[],
@@ -658,7 +661,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         # Step 4: Build matrix
         return build_matrix(
             disease_id=disease_id,
-            disease_name=self._get_disease_name(disease_id),
+            disease_name=self._get_entity_name(disease_id),
             case_docs=case_docs,
             phenotype_docs=phenotype_docs,
             facet_counts=facet_counts,
@@ -820,6 +823,12 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                 context_closure_field = "object_closure"
             else:
                 # Context category doesn't match either side - try heuristic fallback
+                logger.warning(
+                    "Context category %s doesn't match mapping for %s "
+                    "(subject=%s, object=%s). Falling back to string heuristic.",
+                    context_category, first_col_cat,
+                    mapping.subject_category, mapping.object_category,
+                )
                 if "Gene" in first_col_cat:
                     context_field = "subject"
                     column_field = "object"
@@ -830,6 +839,11 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                     context_closure_field = "object_closure"
         else:
             # No metadata available - fall back to heuristics
+            logger.warning(
+                "No association type mapping found for %s. "
+                "Falling back to string heuristic for field direction.",
+                first_col_cat,
+            )
             if "Gene" in first_col_cat:
                 context_field = "subject"
                 column_field = "object"
@@ -903,12 +917,6 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         row_result = self._raw_solr_query(row_params)
         row_docs = row_result.get("response", {}).get("docs", [])
         facet_counts = row_result.get("facet_counts", {}).get("facet_queries", {})
-
-        # Get context entity info
-        context_entity = self.get_entity(context_id, extra=False)
-        context_category = context_entity.category if context_entity else "biolink:NamedThing"
-        if isinstance(context_category, list):
-            context_category = context_category[0] if context_category else "biolink:NamedThing"
 
         # Create a dynamic config for build_entity_grid
         # Determine column entity category from association type
@@ -992,8 +1000,6 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         Returns:
             Raw JSON response from Solr as a dictionary
         """
-        from urllib.parse import urlencode
-
         # Handle list parameters (like facet.query)
         query_parts = []
         for key, value in params.items():
@@ -1012,17 +1018,3 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         response.raise_for_status()
         return response.json()
 
-    def _get_disease_name(self, disease_id: str) -> str:
-        """Fetch human-readable disease name.
-
-        Args:
-            disease_id: MONDO disease ID
-
-        Returns:
-            Disease name or the ID if name cannot be fetched
-        """
-        try:
-            entity = self.get_entity(disease_id, extra=False)
-            return entity.name if entity and entity.name else disease_id
-        except Exception:
-            return disease_id

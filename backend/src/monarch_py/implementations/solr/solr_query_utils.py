@@ -522,8 +522,13 @@ def build_grid_column_query(
 
     context_field = config.context_field if direct_only else config.context_closure_field
 
-    # Base filter for column association category
-    fq = [f'category:"{config.column_assoc_category.value}"']
+    # Base filter for column association category (handles single or multi-category configs)
+    column_categories = config.get_column_assoc_categories()
+    if len(column_categories) == 1:
+        category_filter = f'category:"{column_categories[0].value}"'
+    else:
+        category_filter = "(" + " OR ".join(f'category:"{c.value}"' for c in column_categories) + ")"
+    fq = [category_filter]
 
     # Build main query
     if filter_empty_columns:
@@ -740,10 +745,17 @@ def build_grid_row_query(
 
     context_field = config.context_field if direct_only else config.context_closure_field
 
+    # Build column category filter (handles single or multi-category configs)
+    column_categories = config.get_column_assoc_categories()
+    if len(column_categories) == 1:
+        col_cat_filter = f'category:"{column_categories[0].value}"'
+    else:
+        col_cat_filter = "(" + " OR ".join(f'category:"{c.value}"' for c in column_categories) + ")"
+
     # JOIN query: Find row associations for column entities associated with context
     join_query = (
         f'{{!join from={config.column_field} to={config.row_context_field}}}'
-        f'(category:"{config.column_assoc_category.value}" '
+        f'({col_cat_filter} '
         f'AND {context_field}:"{context_id}")'
     )
 
