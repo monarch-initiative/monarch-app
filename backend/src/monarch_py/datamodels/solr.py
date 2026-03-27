@@ -35,6 +35,52 @@ class HistoPhenoKeys(Enum):
     breast = "UPHENO:0003013"  # "HP:0000769"
 
 
+# Complete mapping of HistoPhenoKeys values to human-readable labels
+# These labels match the body system terminology used in the frontend
+HISTOPHENO_BIN_LABELS: Dict[str, str] = {
+    "UPHENO:0002964": "skeletal system",
+    "UPHENO:0004523": "nervous system",
+    "UPHENO:0002764": "head/neck",
+    "UPHENO:0002635": "integument",
+    "UPHENO:0003020": "eye",
+    "UPHENO:0080362": "cardiovascular system",
+    "HP:0001939": "metabolism/homeostasis",
+    "UPHENO:0002642": "genitourinary system",
+    "UPHENO:0002833": "digestive system",
+    "HP:0002664": "neoplasm",
+    "UPHENO:0004459": "blood/blood-forming tissues",
+    "UPHENO:0002948": "immune system",
+    "UPHENO:0003116": "endocrine system",
+    "UPHENO:0002816": "musculature",
+    "UPHENO:0004536": "respiratory system",
+    "HP:0000598": "ear",
+    "UPHENO:0002712": "connective tissue",
+    "UPHENO:0075949": "prenatal/birth",
+    "UPHENO:0049874": "growth",
+    "UPHENO:0003013": "breast",
+}
+
+
+def get_bin_label(bin_id: str) -> str:
+    """Get human-readable label for a HistoPheno bin ID.
+
+    Args:
+        bin_id: The HistoPheno ontology term ID (e.g., "UPHENO:0002964")
+
+    Returns:
+        Human-readable label (e.g., "skeletal system")
+
+    Raises:
+        KeyError: If bin_id is not a known HistoPheno bin
+    """
+    return HISTOPHENO_BIN_LABELS[bin_id]
+
+
+def get_all_bin_ids() -> list[str]:
+    """Return list of all HistoPheno bin IDs in display order."""
+    return list(HISTOPHENO_BIN_LABELS.keys())
+
+
 class SolrQuery(BaseModel):
     q: str = "*:*"
     rows: int = 20
