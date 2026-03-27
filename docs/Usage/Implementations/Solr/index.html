@@ -1781,6 +1781,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_case_phenotype_matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_case_phenotype_matrix
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_counterpart_entities" class="md-nav__link">
     <span class="md-ellipsis">
       get_counterpart_entities
@@ -1793,6 +1802,24 @@
   <a href="#src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_entity" class="md-nav__link">
     <span class="md-ellipsis">
       get_entity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_entity_grid" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_entity_grid
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_generic_entity_grid" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_generic_entity_grid
     </span>
   </a>
   
@@ -1992,6 +2019,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_case_phenotype_matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_case_phenotype_matrix
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_counterpart_entities" class="md-nav__link">
     <span class="md-ellipsis">
       get_counterpart_entities
@@ -2004,6 +2040,24 @@
   <a href="#src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_entity" class="md-nav__link">
     <span class="md-ellipsis">
       get_entity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_entity_grid" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_entity_grid
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_generic_entity_grid" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_generic_entity_grid
     </span>
   </a>
   
@@ -2493,6 +2547,138 @@ If the entity is a gene, ortholog associations will also be counted.</p>
 <div class="doc doc-object doc-function">
 
 
+<h3 id="src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_case_phenotype_matrix" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">get_case_phenotype_matrix</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Fetch case-phenotype matrix for a disease.</p>
+<p>Execution flow:
+1. Query for case-disease associations to get case list and count
+2. Check count against limit, raise error if exceeded
+3. Query for case-phenotype associations with JOIN (includes facets)
+4. Build and return matrix response</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>disease_id</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>MONDO disease ID (e.g., "MONDO:0007078")</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>direct_only</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If True, only cases with exactly this disease</p>
+              </div>
+            </td>
+            <td>
+                  <code>True</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>limit</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Maximum number of cases allowed</p>
+              </div>
+            </td>
+            <td>
+                  <code>200</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="monarch_py.datamodels.model.CasePhenotypeMatrixResponse">CasePhenotypeMatrixResponse</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>CasePhenotypeMatrixResponse with complete matrix data</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/exceptions.html#ValueError">ValueError</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If case count exceeds limit</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
 <h3 id="src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_counterpart_entities" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">get_counterpart_entities</span></code>
 
@@ -2691,6 +2877,352 @@ in the Solr index</p>
             <td>
               <div class="doc-md-description">
                 <p>Dataclass representing results of an entity search with extra=True.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_entity_grid" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">get_entity_grid</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Fetch entity grid for any supported grid type.</p>
+<p>This is a generic 2-hop query that works for multiple grid types:
+- case-phenotype: Disease -&gt; Case × Phenotype
+- disease-phenotype: Gene -&gt; Disease × Phenotype
+- ortholog-phenotype: Gene -&gt; Ortholog × Phenotype</p>
+<p>Execution flow:
+1. Get grid configuration for the specified type
+2. Query for column entities (first hop)
+3. Check count against limit
+4. Query for row associations via JOIN (second hop, includes facets)
+5. Build and return grid response</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>context_id</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The context entity ID (e.g., disease ID, gene ID)</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>grid_type</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The type of grid to generate</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>direct_only</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If True, only direct associations; if False, use closure</p>
+              </div>
+            </td>
+            <td>
+                  <code>True</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>limit</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Maximum number of column entities allowed</p>
+              </div>
+            </td>
+            <td>
+                  <code>200</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="monarch_py.datamodels.model.EntityGridResponse">EntityGridResponse</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>EntityGridResponse with complete grid data</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/exceptions.html#ValueError">ValueError</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If column count exceeds limit or grid type is unknown</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="src.monarch_py.implementations.solr.solr_implementation.SolrImplementation.get_generic_entity_grid" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">get_generic_entity_grid</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Fetch generic entity grid with configurable association categories.</p>
+<p>This method allows specifying association categories directly,
+enabling flexible grid construction without predefined configurations.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>context_id</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The context entity ID (e.g., gene ID, disease ID)</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>column_assoc_categories</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>List of association category values for context -&gt; column</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>row_assoc_categories</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>List of association category values for column -&gt; row</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>row_grouping</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>How to group rows ("histopheno" or "none")</p>
+              </div>
+            </td>
+            <td>
+                  <code>&#39;histopheno&#39;</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>group_columns_by_category</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If True, sort columns by their source association category</p>
+              </div>
+            </td>
+            <td>
+                  <code>False</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>direct_only</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If True, only direct associations; if False, use closure</p>
+              </div>
+            </td>
+            <td>
+                  <code>True</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>limit</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Maximum number of column entities</p>
+              </div>
+            </td>
+            <td>
+                  <code>500</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="monarch_py.datamodels.model.EntityGridResponse">EntityGridResponse</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>EntityGridResponse with complete grid data</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/exceptions.html#ValueError">ValueError</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If column count exceeds limit or configuration is invalid</p>
               </div>
             </td>
           </tr>

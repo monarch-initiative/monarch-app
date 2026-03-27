@@ -2020,6 +2020,22 @@
 <td></td>
 </tr>
 <tr>
+<td><a href="CaseEntity/">CaseEntity</a></td>
+<td>A case (patient) in the matrix</td>
+</tr>
+<tr>
+<td><a href="CasePhenotype/">CasePhenotype</a></td>
+<td>A phenotype observed in at least one case</td>
+</tr>
+<tr>
+<td><a href="CasePhenotypeCellData/">CasePhenotypeCellData</a></td>
+<td>Data for a single case-phenotype cell in the matrix</td>
+</tr>
+<tr>
+<td><a href="CasePhenotypeMatrixResponse/">CasePhenotypeMatrixResponse</a></td>
+<td>Complete case-phenotype matrix for a disease</td>
+</tr>
+<tr>
 <td><a href="CompactAssociation/">CompactAssociation</a></td>
 <td></td>
 </tr>
@@ -2058,6 +2074,10 @@
 <tr>
 <td><a href="HistoPheno/">HistoPheno</a></td>
 <td></td>
+</tr>
+<tr>
+<td><a href="HistoPhenoBin/">HistoPhenoBin</a></td>
+<td>A body system category for grouping phenotypes</td>
 </tr>
 <tr>
 <td><a href="Mapping/">Mapping</a></td>
@@ -2183,8 +2203,20 @@
 <td></td>
 </tr>
 <tr>
+<td><a href="bin_id/">bin_id</a></td>
+<td>The identifier for the histopheno bin a phenotype belongs to</td>
+</tr>
+<tr>
+<td><a href="bins/">bins</a></td>
+<td>List of histopheno bins for grouping phenotypes</td>
+</tr>
+<tr>
 <td><a href="broad_synonym/">broad_synonym</a></td>
 <td>A broader synonym for the entity</td>
+</tr>
+<tr>
+<td><a href="cases/">cases</a></td>
+<td>List of case entities in the matrix</td>
 </tr>
 <tr>
 <td><a href="category/">category</a></td>
@@ -2197,6 +2229,10 @@
 <tr>
 <td><a href="causes_disease/">causes_disease</a></td>
 <td>A list of diseases that are known to be causally associated with a gene</td>
+</tr>
+<tr>
+<td><a href="cells/">cells</a></td>
+<td>Map of case-phenotype cell data keyed by case_id:phenotype_id</td>
 </tr>
 <tr>
 <td><a href="cosine_similarity/">cosine_similarity</a></td>
@@ -2259,6 +2295,14 @@
 <td>The namespace/prefix of the disease_context_qualifier entity</td>
 </tr>
 <tr>
+<td><a href="disease_id/">disease_id</a></td>
+<td>The identifier for a disease entity</td>
+</tr>
+<tr>
+<td><a href="disease_name/">disease_name</a></td>
+<td>The name of a disease entity</td>
+</tr>
+<tr>
 <td><a href="end/">end</a></td>
 <td>end position of the annotation</td>
 </tr>
@@ -2301,6 +2345,10 @@
 <tr>
 <td><a href="frequency_qualifier_namespace/">frequency_qualifier_namespace</a></td>
 <td>The namespace/prefix of the frequency_qualifier entity</td>
+</tr>
+<tr>
+<td><a href="full_id/">full_id</a></td>
+<td>The full identifier for an entity</td>
 </tr>
 <tr>
 <td><a href="full_name/">full_name</a></td>
@@ -2405,6 +2453,10 @@
 <tr>
 <td><a href="iri/">iri</a></td>
 <td></td>
+</tr>
+<tr>
+<td><a href="is_direct/">is_direct</a></td>
+<td>Whether the case is directly associated with the disease or via a descendant</td>
 </tr>
 <tr>
 <td><a href="items/">items</a></td>
@@ -2619,12 +2671,24 @@
 <td>the geometric mean of the jaccard similarity and the information content</td>
 </tr>
 <tr>
+<td><a href="phenotype_count/">phenotype_count</a></td>
+<td>Number of phenotypes in a bin</td>
+</tr>
+<tr>
+<td><a href="phenotypes/">phenotypes</a></td>
+<td>List of phenotype entities in the matrix</td>
+</tr>
+<tr>
 <td><a href="predicate/">predicate</a></td>
 <td></td>
 </tr>
 <tr>
 <td><a href="predicate_id/">predicate_id</a></td>
 <td></td>
+</tr>
+<tr>
+<td><a href="present/">present</a></td>
+<td>Whether the phenotype is present for a case</td>
 </tr>
 <tr>
 <td><a href="primary_knowledge_source/">primary_knowledge_source</a></td>
@@ -2721,6 +2785,14 @@
 <tr>
 <td><a href="solr/">solr</a></td>
 <td></td>
+</tr>
+<tr>
+<td><a href="source_disease_id/">source_disease_id</a></td>
+<td>The disease ID that a case is indirectly associated with (for descendant dise...</td>
+</tr>
+<tr>
+<td><a href="source_disease_label/">source_disease_label</a></td>
+<td>The label of the source disease for indirect case associations</td>
 </tr>
 <tr>
 <td><a href="species_context_qualifier/">species_context_qualifier</a></td>
@@ -2881,6 +2953,14 @@
 <tr>
 <td><a href="total/">total</a></td>
 <td>total number of items matching a query</td>
+</tr>
+<tr>
+<td><a href="total_cases/">total_cases</a></td>
+<td>Total number of cases in the matrix</td>
+</tr>
+<tr>
+<td><a href="total_phenotypes/">total_phenotypes</a></td>
+<td>Total number of phenotypes in the matrix</td>
 </tr>
 <tr>
 <td><a href="type/">type</a></td>
