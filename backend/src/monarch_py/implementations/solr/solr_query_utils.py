@@ -439,7 +439,7 @@ def build_case_phenotype_query(
     join_query = (
         '{!join from=subject to=subject}'
         f'(category:"biolink:CaseToDiseaseAssociation" '
-        f'AND {disease_field}:"{disease_id}")'
+        f'AND {disease_field}:"{escape(disease_id)}")'
     )
 
     facet_queries = [
@@ -490,7 +490,7 @@ def build_case_disease_query(
     disease_field = "object" if direct_only else "object_closure"
 
     return {
-        "q": f'{disease_field}:"{disease_id}"',
+        "q": f'{disease_field}:"{escape(disease_id)}"',
         "fq": 'category:"biolink:CaseToDiseaseAssociation"',
         "rows": rows,
         "fl": "subject,subject_label,object,object_label",

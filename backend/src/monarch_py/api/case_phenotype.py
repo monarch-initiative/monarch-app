@@ -1,9 +1,12 @@
 """API endpoint for case-phenotype matrix."""
+import logging
 import re
 from fastapi import APIRouter, HTTPException, Query, Path
 
 from monarch_py.api.config import solr
-from monarch_py.datamodels.model import CasePhenotypeMatrixResponse
+from monarch_py.datamodels.model import CasePhenotypeMatrixResponse, Node
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(
     tags=["case-phenotype"],
@@ -48,7 +51,7 @@ def validate_disease_id(disease_id: str) -> str:
     return normalized
 
 
-def _is_disease_entity(entity) -> bool:
+def _is_disease_entity(entity: Node) -> bool:
     """Check if entity is a disease.
 
     Args:
@@ -135,11 +138,12 @@ async def get_case_phenotype_matrix(
             )
     except HTTPException:
         raise
-    except Exception:
+    except Exception as e:
+        logger.exception("Error looking up entity %s", normalized_id)
         raise HTTPException(
-            status_code=404,
-            detail=f"Disease {normalized_id} not found",
-        )
+            status_code=500,
+            detail=f"Error looking up disease {normalized_id}",
+        ) from e
 
     # Get the matrix
     try:

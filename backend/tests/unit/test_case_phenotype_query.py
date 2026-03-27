@@ -5,14 +5,15 @@ from monarch_py.implementations.solr.solr_query_utils import (
     build_case_phenotype_query,
     build_case_disease_query,
 )
+from monarch_py.utils.utils import escape
 
 
 class TestBuildCasePhenotypeQuery:
     """Test Solr query construction for case-phenotype matrix."""
 
     @pytest.mark.parametrize("direct_only,expected_field,unexpected_field", [
-        (True, 'object:"MONDO:0007078"', "object_closure"),
-        (False, 'object_closure:"MONDO:0007078"', None),
+        (True, f'object:"{escape("MONDO:0007078")}"', "object_closure"),
+        (False, f'object_closure:"{escape("MONDO:0007078")}"', None),
     ])
     def test_direct_vs_all_cases_query(self, direct_only, expected_field, unexpected_field):
         """Query should use correct object field based on direct_only flag."""
@@ -31,9 +32,9 @@ class TestBuildCasePhenotypeQuery:
         "MONDO:0000001",
     ])
     def test_disease_id_in_query(self, disease_id):
-        """Query should include the specified disease ID."""
+        """Query should include the escaped disease ID."""
         params = build_case_phenotype_query(disease_id=disease_id, direct_only=True)
-        assert disease_id in params["q"]
+        assert escape(disease_id) in params["q"]
 
     def test_filter_query_present(self):
         """Should filter to CaseToPhenotypicFeatureAssociation."""
@@ -131,9 +132,9 @@ class TestBuildCaseDiseaseQuery:
         "MONDO:0005071",
     ])
     def test_disease_id_in_query(self, disease_id):
-        """Query should include the specified disease ID."""
+        """Query should include the escaped disease ID."""
         params = build_case_disease_query(disease_id=disease_id, direct_only=True)
-        assert disease_id in params["q"]
+        assert escape(disease_id) in params["q"]
 
     def test_filter_query_present(self):
         """Should filter to CaseToDiseaseAssociation."""
