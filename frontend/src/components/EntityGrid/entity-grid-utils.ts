@@ -1,19 +1,11 @@
 /** Utility functions for EntityGrid component */
 
 import type {
-  CaseEntity,
-  CasePhenotype,
-  CasePhenotypeCellData,
-  CasePhenotypeMatrix,
-  HistoPhenoBin,
-} from "@/api/case-phenotype-types";
-import type {
   CellData,
   ColumnEntity,
   ColumnGroup,
   EntityGridMatrix,
   RowBin,
-  RowEntity,
 } from "@/api/entity-grid/types";
 
 /**
@@ -71,15 +63,8 @@ export function getBinCellSummary(
     if (cellData) {
       if (cellData.negated) {
         negatedCount++;
-      } else {
-        // Check for presence - handle both generic (hasData) and case-phenotype (present) cells
-        const hasPresence =
-          "present" in cellData
-            ? (cellData as { present: boolean }).present
-            : cellData.hasData;
-        if (hasPresence) {
-          presentCount++;
-        }
+      } else if (cellData.hasData) {
+        presentCount++;
       }
     }
   }
@@ -135,163 +120,6 @@ export function getColumnsWithData(
   }
 
   return columnIds;
-}
-
-// =============================================================================
-// Case-Phenotype Matrix Transformation
-// =============================================================================
-
-/**
- * Transform a CasePhenotypeMatrix to a generic EntityGridMatrix. This allows
- * the case-phenotype-specific data to be rendered by the generic EntityGrid.
- *
- * @param matrix - The case-phenotype matrix
- * @returns An EntityGridMatrix compatible with the generic grid
- */
-export function casePhenotypeToEntityGrid(
-  matrix: CasePhenotypeMatrix,
-): EntityGridMatrix<ColumnEntity, RowEntity, CellData> {
-  // Transform cases to columns
-  const columns: ColumnEntity[] = matrix.cases.map((c: CaseEntity) => ({
-    id: c.id,
-    label: c.label,
-    fullId: c.fullId,
-    isDirect: c.isDirect,
-    sourceEntityId: c.sourceDiseaseId,
-    sourceEntityLabel: c.sourceDiseaseLabel,
-  }));
-
-  // Transform phenotypes to rows
-  const rows: RowEntity[] = matrix.phenotypes.map((p: CasePhenotype) => ({
-    id: p.id,
-    label: p.label,
-    binId: p.binId,
-  }));
-
-  // Transform bins
-  const bins: RowBin[] = matrix.bins.map((b: HistoPhenoBin) => ({
-    id: b.id,
-    label: b.label,
-    rowEntityIds: b.phenotypeIds,
-    count: b.count,
-    expanded: b.expanded,
-  }));
-
-  // Transform cells - add hasData field for generic compatibility
-  const cells = new Map<string, CellData>();
-  for (const [key, cellData] of matrix.cells.entries()) {
-    const genericCell: CellData = {
-      hasData: cellData.present || cellData.negated || false,
-      negated: cellData.negated,
-      publications: cellData.publications,
-      publicationLinks: cellData.publicationLinks,
-      source: cellData.source,
-      // Store case-phenotype specific fields in details
-      details: {
-        present: cellData.present,
-        onset: cellData.onset,
-        onsetId: cellData.onsetId,
-        frequency: cellData.frequency,
-      },
-    };
-
-    // Add qualifiers for onset and frequency
-    const qualifiers = [];
-    if (cellData.onset) {
-      qualifiers.push({
-        type: "onset" as const,
-        id: cellData.onsetId,
-        label: cellData.onset,
-      });
-    }
-    if (cellData.frequency) {
-      qualifiers.push({
-        type: "frequency" as const,
-        label: cellData.frequency,
-      });
-    }
-    if (qualifiers.length > 0) {
-      genericCell.qualifiers = qualifiers;
-    }
-
-    cells.set(key, genericCell);
-  }
-
-  return {
-    contextId: matrix.diseaseId,
-    contextName: matrix.diseaseName,
-    columns,
-    bins,
-    rows,
-    cells,
-    totalColumns: matrix.totalCases,
-    totalRows: matrix.totalPhenotypes,
-  };
-}
-
-/**
- * Transform a generic EntityGridMatrix back to CasePhenotypeMatrix. Useful if
- * you need to pass data back to case-phenotype-specific code.
- *
- * @param matrix - The generic entity grid matrix
- * @returns A CasePhenotypeMatrix
- */
-export function entityGridToCasePhenotype(
-  matrix: EntityGridMatrix,
-): CasePhenotypeMatrix {
-  // Transform columns to cases
-  const cases: CaseEntity[] = matrix.columns.map((c) => ({
-    id: c.id,
-    label: c.label,
-    fullId: c.fullId,
-    isDirect: c.isDirect,
-    sourceDiseaseId: c.sourceEntityId,
-    sourceDiseaseLabel: c.sourceEntityLabel,
-  }));
-
-  // Transform rows to phenotypes
-  const phenotypes: CasePhenotype[] = matrix.rows.map((r) => ({
-    id: r.id,
-    label: r.label,
-    binId: r.binId,
-  }));
-
-  // Transform bins
-  const bins: HistoPhenoBin[] = matrix.bins.map((b) => ({
-    id: b.id,
-    label: b.label,
-    phenotypeIds: b.rowEntityIds,
-    count: b.count,
-    expanded: b.expanded ?? false,
-  }));
-
-  // Transform cells
-  const cells = new Map<string, CasePhenotypeCellData>();
-  for (const [key, cellData] of matrix.cells.entries()) {
-    const details = cellData.details || {};
-    const casePhenotypeCell: CasePhenotypeCellData = {
-      present: (details.present as boolean) ?? cellData.hasData,
-      negated: cellData.negated,
-      onset: details.onset as string | undefined,
-      onsetId: details.onsetId as string | undefined,
-      frequency: details.frequency as string | undefined,
-      publications: cellData.publications,
-      publicationLinks: cellData.publicationLinks,
-      source: cellData.source,
-    };
-    cells.set(key, casePhenotypeCell);
-  }
-
-  return {
-    diseaseId: matrix.contextId,
-    diseaseName: matrix.contextName,
-    cases,
-    bins,
-    phenotypes,
-    cells,
-    totalCases: matrix.totalColumns,
-    totalPhenotypes: matrix.totalRows,
-  };
 }
 
 // =============================================================================

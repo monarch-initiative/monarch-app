@@ -254,12 +254,7 @@ const getCellData = (columnId: string, rowId: string): CellData | null => {
 const isCellPresent = (columnId: string, rowId: string): boolean => {
   const cellData = getCellData(columnId, rowId);
   if (!cellData) return false;
-  // Check hasData for generic cells, or present for case-phenotype cells
-  const hasPresence =
-    "present" in cellData
-      ? (cellData as { present: boolean }).present
-      : cellData.hasData;
-  return Boolean(hasPresence) && !cellData.negated;
+  return cellData.hasData && !cellData.negated;
 };
 
 // Check if cell is negated

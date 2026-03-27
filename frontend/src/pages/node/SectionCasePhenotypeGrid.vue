@@ -54,8 +54,8 @@
     <!-- Grid content -->
     <template v-else-if="matrix">
       <p class="description">
-        Phenotypes observed in {{ matrix.totalCases }} case{{
-          matrix.totalCases !== 1 ? "s" : ""
+        Phenotypes observed in {{ matrix.totalColumns }} case{{
+          matrix.totalColumns !== 1 ? "s" : ""
         }}
         {{ selectedTab === "direct" ? "directly" : "" }} associated with
         {{ node.name
@@ -63,16 +63,21 @@
         grouped by body system.
       </p>
 
-      <CasePhenotypeGrid :matrix="matrix" @cell-click="handleCellClick" />
+      <EntityGrid
+        :matrix="matrix"
+        :config="gridConfig"
+        @cell-click="handleCellClick"
+      />
 
       <!-- Detail modal -->
-      <CasePhenotypeModal
+      <EntityGridModal
         v-model="showModal"
-        :case-id="selectedCase?.id || ''"
-        :case-label="selectedCase?.label"
-        :phenotype-id="selectedPhenotype?.id || ''"
-        :phenotype-label="selectedPhenotype?.label"
+        :column-id="selectedColumn?.id || ''"
+        :column-label="selectedColumn?.label"
+        :row-id="selectedRow?.id || ''"
+        :row-label="selectedRow?.label"
         :cell-data="selectedCellData"
+        :config="gridConfig"
       />
     </template>
   </AppSection>
@@ -81,17 +86,18 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
-import { getCasePhenotypeMatrix } from "@/api/case-phenotype";
+import { getEntityGrid } from "@/api/entity-grid";
 import type {
-  CaseEntity,
-  CasePhenotype,
-  CasePhenotypeCellData,
-  CasePhenotypeMatrix,
-} from "@/api/case-phenotype-types";
+  CellData,
+  ColumnEntity,
+  EntityGridConfig,
+  EntityGridMatrix,
+  RowEntity,
+} from "@/api/entity-grid/types";
 import type { Node } from "@/api/model";
 import AppAssociationTabs from "@/components/AppAssociationTabs.vue";
-import CasePhenotypeGrid from "@/components/CasePhenotypeGrid.vue";
-import CasePhenotypeModal from "@/components/CasePhenotypeModal.vue";
+import EntityGrid from "@/components/EntityGrid/EntityGrid.vue";
+import EntityGridModal from "@/components/EntityGrid/EntityGridModal.vue";
 
 const route = useRoute();
 
@@ -145,16 +151,41 @@ const isGroupingClass = computed(() => {
   return allSubsets.some((s) => GROUPING_SUBSET_MARKERS.includes(s));
 });
 
+/** Grid config for case-phenotype display */
+const gridConfig: EntityGridConfig = {
+  columnLabel: "Case",
+  columnLabelPlural: "Cases",
+  rowLabel: "Phenotype",
+  rowLabelPlural: "Phenotypes",
+  binLabel: "System",
+  cellDisplayMode: "binary",
+  showNegated: true,
+  columnTooltipFormatter: (column: ColumnEntity, index: number): string => {
+    let html = `<strong>Case ${index + 1}</strong>`;
+    if (column.label) {
+      html += `<br>${column.label}`;
+    }
+    html += `<br><small>${column.id}</small>`;
+
+    // Show source disease if from a descendant (not direct)
+    if (!column.isDirect && column.sourceEntityLabel) {
+      html += `<br><br><em>Disease: ${column.sourceEntityLabel}</em>`;
+    }
+
+    return html;
+  },
+};
+
 /** Tab state */
 const selectedTab = ref<"direct" | "all">("direct");
 
 /**
- * Direct count is derived from the matrix after fetching. We count cases where
- * isDirect is true.
+ * Direct count is derived from the matrix after fetching. We count columns
+ * where isDirect is true.
  */
 const directCount = computed(() => {
   if (!matrix.value) return 0;
-  return matrix.value.cases.filter((c) => c.isDirect).length;
+  return matrix.value.columns.filter((c) => c.isDirect).length;
 });
 
 /** All count comes from association_counts (includes descendants). */
@@ -166,7 +197,7 @@ const isError = ref(false);
 const errorMessage = ref<string | null>(null);
 
 /** Matrix data */
-const matrix = ref<CasePhenotypeMatrix | null>(null);
+const matrix = ref<EntityGridMatrix | null>(null);
 
 /** Tab labels */
 const directTabLabel = computed(() => `Direct (${directCount.value})`);
@@ -190,9 +221,9 @@ function handleTabSelect(which: "direct" | "all") {
 
 /** Modal state */
 const showModal = ref(false);
-const selectedCase = ref<CaseEntity | null>(null);
-const selectedPhenotype = ref<CasePhenotype | null>(null);
-const selectedCellData = ref<CasePhenotypeCellData | null>(null);
+const selectedColumn = ref<ColumnEntity | null>(null);
+const selectedRow = ref<RowEntity | null>(null);
+const selectedCellData = ref<CellData | null>(null);
 
 /** Fetch matrix data from the backend API */
 async function fetchMatrix() {
@@ -203,18 +234,24 @@ async function fetchMatrix() {
 
   try {
     const isDirect = selectedTab.value === "direct";
-    const result = await getCasePhenotypeMatrix(props.node.id || "", {
+    const result = await getEntityGrid(props.node.id || "", {
+      columnAssociationCategory: ["biolink:CaseToDiseaseAssociation"],
+      rowAssociationCategory: ["biolink:CaseToPhenotypicFeatureAssociation"],
       direct: isDirect,
       limit: MAX_CASES_LIMIT,
     });
 
-    // If direct tab has no cases but there are descendant cases, switch to all
-    // and fetch again immediately. Note: API returns null when totalCases === 0
-    if (isDirect && !result) {
+    // If direct tab has no columns but there are descendant cases, switch to all
+    // and fetch again immediately. New API returns {totalColumns: 0} instead of null.
+    if (isDirect && result.totalColumns === 0) {
       if (caseCountFromAssociations.value > 0) {
         selectedTab.value = "all";
         // Fetch again with all cases
-        matrix.value = await getCasePhenotypeMatrix(props.node.id || "", {
+        matrix.value = await getEntityGrid(props.node.id || "", {
+          columnAssociationCategory: ["biolink:CaseToDiseaseAssociation"],
+          rowAssociationCategory: [
+            "biolink:CaseToPhenotypicFeatureAssociation",
+          ],
           direct: false,
           limit: MAX_CASES_LIMIT,
         });
@@ -222,7 +259,7 @@ async function fetchMatrix() {
       }
     }
 
-    matrix.value = result;
+    matrix.value = result.totalColumns > 0 ? result : null;
   } catch (e) {
     isError.value = true;
     errorMessage.value = e instanceof Error ? e.message : "Failed to load data";
@@ -233,16 +270,16 @@ async function fetchMatrix() {
 
 /** Handle cell click to open modal */
 function handleCellClick(
-  caseId: string,
-  phenotypeId: string,
-  cellData: CasePhenotypeCellData | null,
+  columnId: string,
+  rowId: string,
+  cellData: CellData | null,
 ) {
   if (!matrix.value) return;
 
-  // Find case and phenotype info
-  selectedCase.value = matrix.value.cases.find((c) => c.id === caseId) || null;
-  selectedPhenotype.value =
-    matrix.value.phenotypes.find((p) => p.id === phenotypeId) || null;
+  // Find column and row info
+  selectedColumn.value =
+    matrix.value.columns.find((c) => c.id === columnId) || null;
+  selectedRow.value = matrix.value.rows.find((r) => r.id === rowId) || null;
   selectedCellData.value = cellData;
 
   showModal.value = true;

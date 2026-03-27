@@ -3,6 +3,7 @@
 import { apiUrl } from "@/api";
 import type {
   CellData,
+  CellQualifier,
   ColumnEntity,
   EntityGridMatrix,
   RowBin,
@@ -125,13 +126,39 @@ function transformBin(bin: GridBinResponse, rows: RowEntity[]): RowBin {
 }
 
 function transformCell(cell: GridCellDataResponse): CellData {
+  // Parse qualifiers from the backend response into CellQualifier[] for the modal
+  const qualifiers: CellQualifier[] = [];
+  if (cell.qualifiers) {
+    for (const [key, value] of Object.entries(cell.qualifiers)) {
+      if (value != null) {
+        const qualifier: CellQualifier =
+          typeof value === "object" && value !== null && "id" in value
+            ? {
+                type: key,
+                id: (value as { id?: string }).id,
+                label:
+                  (value as { label?: string }).label ||
+                  (value as { id?: string }).id ||
+                  String(value),
+              }
+            : { type: key, label: String(value) };
+        qualifiers.push(qualifier);
+      }
+    }
+  }
+
+  // Build publicationLinks fallback from raw CURIEs so the modal can display them
+  const publicationLinks =
+    cell.publications?.map((curie) => ({ id: curie, url: "" })) ?? undefined;
+
   return {
     hasData: cell.present || cell.negated || false,
     negated: cell.negated,
     publications: cell.publications,
+    publicationLinks,
+    qualifiers: qualifiers.length > 0 ? qualifiers : undefined,
     details: {
       present: cell.present,
-      qualifiers: cell.qualifiers,
       evidenceCount: cell.evidence_count,
     },
   };
@@ -227,10 +254,14 @@ export async function getEntityGrid(
 // =============================================================================
 
 /**
- * Represents an association type that can be traversed from a given entity category.
+ * Represents an association type that can be traversed from a given entity
+ * category.
  */
 export interface TraversableAssociation {
-  /** The biolink association category (e.g., "biolink:CausalGeneToDiseaseAssociation") */
+  /**
+   * The biolink association category (e.g.,
+   * "biolink:CausalGeneToDiseaseAssociation")
+   */
   category: string;
   /** Human-readable label for UI display */
   label: string;
@@ -246,7 +277,8 @@ export interface TraversableAssociation {
  * This enables dynamic UI that shows only valid association options based on
  * the selected entity type, supporting bidirectional traversal.
  *
- * @param entityCategory - The biolink category of the context entity (e.g., "biolink:Gene")
+ * @param entityCategory - The biolink category of the context entity (e.g.,
+ *   "biolink:Gene")
  * @returns Promise resolving to list of traversable associations
  * @throws Error if the API request fails or no associations found
  */
