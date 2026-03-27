@@ -15,25 +15,25 @@
         <KGMetricCard
           title="Total Associations"
           data-source="edge_report"
-          :sql="`SELECT SUM(count) as total FROM edge_report WHERE primary_knowledge_source = '${inforesId}'`"
+          :sql="`SELECT SUM(count) as total FROM edge_report WHERE primary_knowledge_source = '${safeInforesId}'`"
           subtitle="associations from this source"
         />
         <KGMetricCard
           title="Subject Categories"
           data-source="edge_report"
-          :sql="`SELECT COUNT(DISTINCT subject_category) as total FROM edge_report WHERE primary_knowledge_source = '${inforesId}'`"
+          :sql="`SELECT COUNT(DISTINCT subject_category) as total FROM edge_report WHERE primary_knowledge_source = '${safeInforesId}'`"
           subtitle="unique subject categories"
         />
         <KGMetricCard
           title="Object Categories"
           data-source="edge_report"
-          :sql="`SELECT COUNT(DISTINCT object_category) as total FROM edge_report WHERE primary_knowledge_source = '${inforesId}'`"
+          :sql="`SELECT COUNT(DISTINCT object_category) as total FROM edge_report WHERE primary_knowledge_source = '${safeInforesId}'`"
           subtitle="unique object categories"
         />
         <KGMetricCard
           title="Predicates"
           data-source="edge_report"
-          :sql="`SELECT COUNT(DISTINCT predicate) as total FROM edge_report WHERE primary_knowledge_source = '${inforesId}'`"
+          :sql="`SELECT COUNT(DISTINCT predicate) as total FROM edge_report WHERE primary_knowledge_source = '${safeInforesId}'`"
           subtitle="unique predicates"
         />
       </div>
@@ -114,6 +114,14 @@ const emit = defineEmits<{
   "filter-category": [string, "subjectCategory" | "objectCategory"];
 }>();
 
+/**
+ * Sanitize inforesId for use in SQL WHERE clauses (alphanumeric, colons,
+ * hyphens, underscores only)
+ */
+const safeInforesId = computed(() =>
+  props.inforesId.replace(/[^a-zA-Z0-9:_-]/g, ""),
+);
+
 type Tier = "simple" | "moderate" | "complex";
 
 const tier = ref<Tier | null>(null);
@@ -142,7 +150,7 @@ const runProbe = async () => {
         COUNT(DISTINCT object_category) as oc,
         COUNT(DISTINCT predicate) as p
        FROM edge_report
-       WHERE primary_knowledge_source = '${props.inforesId}'`,
+       WHERE primary_knowledge_source = '${safeInforesId.value}'`,
       ["edge_report"],
     );
     if (result.length === 0) {
@@ -168,7 +176,7 @@ const runProbe = async () => {
       const pbResult = await kgData.executeQuery(
         `SELECT provided_by, SUM(count) as count
          FROM edge_report
-         WHERE primary_knowledge_source = '${props.inforesId}'
+         WHERE primary_knowledge_source = '${safeInforesId.value}'
          GROUP BY provided_by
          ORDER BY count DESC`,
         ["edge_report"],
@@ -204,7 +212,7 @@ onMounted(() => {
 
 /** SQL queries for each chart type, filtered by source */
 const whereClause = computed(
-  () => `WHERE primary_knowledge_source = '${props.inforesId}'`,
+  () => `WHERE primary_knowledge_source = '${safeInforesId.value}'`,
 );
 
 const predicateTableSql = computed(
