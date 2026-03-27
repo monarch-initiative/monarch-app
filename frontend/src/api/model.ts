@@ -266,6 +266,10 @@ export interface Association {
 
 export interface AssociationCount extends FacetValue {
     category?: string,
+    /** Count of direct associations (no closure/descendants) */
+    count_direct?: number,
+    /** Count including associations from orthologous genes */
+    count_with_orthologs?: number,
 }
 
 

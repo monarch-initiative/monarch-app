@@ -109,9 +109,28 @@ def test_build_association_multiple_objects():
 
 
 def test_build_association_counts_query(association_counts_query, node):
-    query = build_association_counts_query(entity=Node(**node).id).model_dump()
+    query = build_association_counts_query(entities=[Node(**node).id]).model_dump()
     expected = association_counts_query
     assert compare_dicts(query, expected), f"Query is not as expected. Difference: {dict_diff(query, expected)}"
+
+
+def test_build_association_counts_query_with_orthologs():
+    """Test that multi-entity queries include ortho_subject/ortho_object facet queries."""
+    entities = ["HGNC:1100", "MGI:88276", "ZFIN:ZDB-GENE-040426-2889"]
+    query = build_association_counts_query(entities=entities)
+
+    # Should have 6 groups of facet queries: direct_subject, direct_object,
+    # closure_subject, closure_object, ortho_subject, ortho_object
+    from monarch_py.utils.association_type_utils import AssociationTypeMappings
+
+    n_mappings = len(AssociationTypeMappings.get_mappings())
+    assert len(query.facet_queries) == n_mappings * 6
+
+    # Verify ortholog facet queries reference all entities
+    ortho_queries = query.facet_queries[n_mappings * 4 :]
+    for fq in ortho_queries:
+        for ent in entities:
+            assert ent in fq, f"Expected entity {ent} in ortholog facet query: {fq}"
 
 
 def test_build_histopheno_query(histopheno_query):

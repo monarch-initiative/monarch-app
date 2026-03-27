@@ -32,7 +32,7 @@ def test_parse_associations_compact(association_response, associations_compact):
 def test_parse_association_counts(association_counts_response, association_counts, node):
     association_counts_response["response"]["numFound"] = association_counts_response["response"].pop("num_found")
     solr_response = SolrQueryResult(**association_counts_response)
-    parsed = parse_association_counts(solr_response, entity=Node(**node).id).model_dump()
+    parsed = parse_association_counts(solr_response, entities=[Node(**node).id]).model_dump()
     assert parsed == association_counts, (
         f"Parsed result is not as expected. Difference: {dict_diff(parsed, association_counts)}"
     )

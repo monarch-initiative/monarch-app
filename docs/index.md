@@ -1,15 +1,34 @@
-# monarch-py
+# Monarch KG Documentation
 
-## Introduction
+Welcome to the documentation for the [Monarch Initiative](https://monarchinitiative.org/) knowledge graph and its associated tools.
 
-**monarch-py** is a Python library for interacting with and querying the  
+The Monarch Knowledge Graph integrates data from dozens of biomedical sources, linking genes, diseases, phenotypes, and other biological entities to support translational research and clinical diagnostics.
+
+## What's in this documentation
+
+- **[KG Data Sources](Sources/index.md)** — Descriptions of each data source ingested into the Monarch KG
+- **[KG Build Process](KG-Build-Process/kg-build-process.md)** — How the knowledge graph is assembled: download, transform, merge, and load
+- **[Modeling Principles](Principles/modeling-principles.md)** — Guiding principles for data modeling in the Monarch KG
+- **[Creating an Ingest](Creating-an-Ingest.md)** — How to add a new data source to the KG
+- **[Neo4J](Neo4J/index.md)** — Access the Monarch KG via the Neo4j graph database browser
+- **[Monarch R](MonarchR/index.md)** — The monarchr R package for accessing the Monarch KG from R
+- **[FastAPI](FastAPI/index.md)** — The Monarch API backend
+- **[monarch-py](#monarch-py)** — Python library for querying the Monarch KG
+- **[Release Process](release-process.md)** — How Monarch KG releases are managed
+- **[Licensing](Licensing/index.md)** — License recommendations for Monarch software and data
+
+---
+
+## monarch-py
+
+**monarch-py** is a Python library for interacting with and querying the
 Monarch knowledge graph, with implementations for Solr and SQLite backends.
 
 This means the same API methods can be used regardless of the implementation.
 
 This library provides a collection of interfaces for graph operations such as retrieving entities and browsing associations.
 
-## Installation
+### Installation
 
 Requires Python 3.8 or higher
 
@@ -19,11 +38,11 @@ This library is available via pip or pipx:
 pip install monarch-py
 ```
 
-## Usage
+### Usage
 
 Full usage instructions [here](./Usage/index.md)
 
-### Basic Example - CLI
+#### Basic Example - CLI
 
 ```bash
 $ monarch sql entity MONDO:0012933
@@ -53,7 +72,7 @@ $ monarch associations --subject MONDO:0012933 --limit 5
 }
 ```
 
-### Basic Example - As a Module
+#### Basic Example - As a Module
 
 ```python
 >>> from monarch_py.implementations.solr.solr_implementation import SolrImplementation

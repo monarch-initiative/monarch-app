@@ -321,9 +321,9 @@ h1 {
 
   line {
     stroke: currentColor;
-    stroke-width: 2;
     stroke-dasharray: 1 3;
     stroke-linecap: round;
+    stroke-width: 2;
   }
 }
 

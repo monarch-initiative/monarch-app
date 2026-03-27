@@ -115,6 +115,8 @@ classes:
     is_a: FacetValue
     slots:
       - category
+      - count_direct
+      - count_with_orthologs
     slot_usage:
       category:
         multivalued: false
@@ -493,6 +495,12 @@ slots:
     inlined_as_list: true
   count:
     description: count of documents
+    range: integer
+  count_direct:
+    description: Count of direct associations (no closure/descendants)
+    range: integer
+  count_with_orthologs:
+    description: Count including associations from orthologous genes
     range: integer
   counterpart_category:
     description: >-

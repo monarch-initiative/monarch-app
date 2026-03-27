@@ -3,48 +3,48 @@
   "items": [
     {
       "label": "musculature",
-      "count": 2135,
+      "count": 2176,
       "id": "UPHENO:0002816"
     },
     {
       "label": "nervous_system",
-      "count": 1042,
+      "count": 1062,
       "id": "UPHENO:0004523"
     },
     {
       "label": "head_neck",
-      "count": 608,
+      "count": 607,
       "id": "UPHENO:0002764"
     },
     {
       "label": "skeletal_system",
-      "count": 524,
+      "count": 536,
       "id": "UPHENO:0002964"
     },
     {
       "label": "eye",
-      "count": 300,
+      "count": 299,
       "id": "UPHENO:0003020"
     },
     {
       "label": "metabolism_homeostasis",
-      "count": 229,
+      "count": 232,
       "id": "HP:0001939"
     },
     {
       "label": "blood",
-      "count": 204,
+      "count": 207,
       "id": "UPHENO:0004459"
+    },
+    {
+      "label": "connective_tissue",
+      "count": 191,
+      "id": "UPHENO:0002712"
     },
     {
       "label": "digestive_system",
       "count": 188,
       "id": "UPHENO:0002833"
-    },
-    {
-      "label": "connective_tissue",
-      "count": 187,
-      "id": "UPHENO:0002712"
     },
     {
       "label": "respiratory",
@@ -53,7 +53,7 @@
     },
     {
       "label": "integument",
-      "count": 51,
+      "count": 52,
       "id": "UPHENO:0002635"
     },
     {
@@ -68,7 +68,7 @@
     },
     {
       "label": "growth",
-      "count": 33,
+      "count": 34,
       "id": "UPHENO:0049874"
     },
     {

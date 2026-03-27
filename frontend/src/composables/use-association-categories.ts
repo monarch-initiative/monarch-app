@@ -1,5 +1,6 @@
 import { computed } from "vue";
 import { startCase } from "lodash";
+import { TRAVERSE_ORTHOLOG_CATEGORIES } from "@/api/associations";
 import type { Node } from "@/api/model";
 
 const HIDDEN_CATEGORIES = new Set([
@@ -12,10 +13,14 @@ export function useAssociationCategories(node: Node) {
       node.association_counts?.map((ac) => ({
         id: ac.category || "",
         label: startCase(ac.label),
-        count: ac.count,
+        count: TRAVERSE_ORTHOLOG_CATEGORIES.has(ac.category || "")
+          ? (ac.count_with_orthologs ?? ac.count)
+          : (ac.count ?? 0),
       })) ?? [];
 
-    const ordered = opts.filter((o) => !HIDDEN_CATEGORIES.has(o.id));
+    const ordered = opts.filter(
+      (o) => !HIDDEN_CATEGORIES.has(o.id) && (o.count ?? 0) > 0,
+    );
 
     // keep current special-order rule exactly
     const idxCausal = ordered.findIndex(

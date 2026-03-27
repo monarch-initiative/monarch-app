@@ -31,7 +31,6 @@
           id: row.object,
           name: row.object_label,
           category: 'biolink:Gene',
-          info: row.object_taxon_label,
         }"
         :breadcrumbs="getBreadcrumbs(node, row, 'subject')"
       />
@@ -42,7 +41,6 @@
           id: row.subject,
           name: row.subject_label,
           category: 'biolink:Gene',
-          info: row.subject_taxon_label,
         }"
         :breadcrumbs="getBreadcrumbs(node, row, 'object')"
       />
@@ -56,7 +54,7 @@
             id: row.subject,
             name: row.highlighting?.subject_label?.[0] || row.subject_label,
             category: row.subject_category,
-            info: row.subject_taxon_label,
+            info: row.subject === node.id ? undefined : row.subject_taxon_label,
           }"
           :breadcrumbs="getBreadcrumbs(node, row, 'subject')"
           :highlight="true"
@@ -87,7 +85,7 @@
             id: row.object,
             name: row.highlighting?.object_label?.[0] || row.object_label,
             category: row.object_category,
-            info: row.object_taxon_label,
+            info: row.object === node.id ? undefined : row.object_taxon_label,
           }"
           :breadcrumbs="getBreadcrumbs(node, row, 'object')"
           :highlight="true"
@@ -189,11 +187,13 @@ import {
   downloadAssociations,
   getAssociations,
   maxDownload,
+  TRAVERSE_ORTHOLOG_CATEGORIES,
 } from "@/api/associations";
 import { getCategoryLabel } from "@/api/categories";
 import {
   AssociationDirectionEnum,
   type DirectionalAssociation,
+  type FacetField,
   type Node,
 } from "@/api/model";
 import AppModal from "@/components/AppModal.vue";
@@ -214,6 +214,7 @@ import {
 } from "@/pages/node/associationColumns";
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
 import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
+import { taxonFieldFor } from "@/util/taxonFilterConfig";
 import { fieldFor } from "@/util/typeConfig";
 
 type Props = {
@@ -225,6 +226,8 @@ type Props = {
   direct: Option;
   /** search string */
   search: string;
+  /** selected taxon labels to filter by */
+  taxonFilters?: string[];
 };
 
 const props = defineProps<Props>();
@@ -239,7 +242,58 @@ const emit = defineEmits<{
   (e: "update:diseaseSubjectLabel", label: string): void;
   (e: "totals", payload: { direct: number; all: number }): void;
   (e: "inferred-label", payload: { categoryId: string; label: string }): void;
+  (
+    e: "taxon-options",
+    options: { id: string; label: string; count: number }[],
+  ): void;
 }>();
+
+const shouldTraverseOrthologs = computed(() =>
+  TRAVERSE_ORTHOLOG_CATEGORIES.has(props.category.id),
+);
+
+/** the single taxon field to facet/filter on for this category */
+const taxonField = computed(() => taxonFieldFor(props.category.id));
+
+/** facet fields to request when taxon filtering is enabled */
+const facetFields = computed(() =>
+  taxonField.value ? [taxonField.value] : undefined,
+);
+
+/** build filter queries from selected taxon labels */
+const filterQueries = computed(() => {
+  if (!props.taxonFilters?.length || !taxonField.value) return undefined;
+  const clauses = props.taxonFilters.map((t) => `${taxonField.value}:"${t}"`);
+  return [clauses.join(" OR ")];
+});
+
+/** track last emitted taxon options to avoid redundant emits */
+let lastTaxonOptionsKey = "";
+
+/** extract taxon options from the single facet field for this category */
+function emitTaxonOptions(facetFieldsData?: FacetField[]) {
+  if (!taxonField.value || !facetFieldsData) return;
+
+  /**
+   * Only populate dropdown options from unfiltered queries. When a filter is
+   * active, the facets only reflect filtered results — emitting them would
+   * replace the full option list and trap the user in their current selection.
+   */
+  if (props.taxonFilters?.length) return;
+
+  const field = facetFieldsData.find((f) => f.label === taxonField.value);
+  const options = (field?.facet_values ?? [])
+    .filter((fv) => fv.label)
+    .map((fv) => ({ id: fv.label, label: fv.label, count: fv.count ?? 0 }))
+    .sort((a, b) => b.count - a.count);
+
+  /** only emit when options actually changed */
+  const key = JSON.stringify(options);
+  if (key === lastTaxonOptionsKey) return;
+  lastTaxonOptionsKey = key;
+
+  emit("taxon-options", options);
+}
 
 function openModal(association: DirectionalAssociation) {
   selectedAssociation.value = association;
@@ -319,10 +373,12 @@ const {
       props.category.id,
       start.value,
       perPage.value,
-      true,
+      shouldTraverseOrthologs.value,
       "true",
       props.search,
       sort.value,
+      facetFields.value,
+      filterQueries.value,
     ),
   { items: [], total: 0, limit: 0, offset: 0 },
 );
@@ -340,10 +396,12 @@ const {
       props.category.id,
       start.value,
       perPage.value,
-      true,
+      shouldTraverseOrthologs.value,
       "false",
       props.search,
       sort.value,
+      facetFields.value,
+      filterQueries.value,
     ),
   { items: [], total: 0, limit: 0, offset: 0 },
 );
@@ -375,10 +433,11 @@ async function download() {
   await downloadAssociations(
     props.node.id,
     props.category.id,
-    true,
+    shouldTraverseOrthologs.value,
     props.direct.id,
     props.search,
     sort.value,
+    filterQueries.value,
   );
 }
 
@@ -504,10 +563,33 @@ watch([perPage, sort, start], async () => {
   }
 });
 
+/** refetch when taxon filters change (compare by value, not reference) */
+watch(
+  () => JSON.stringify(props.taxonFilters ?? []),
+  async () => {
+    start.value = 0;
+    if (props.direct.id === "true") {
+      await fetchDirect();
+    } else {
+      await fetchAll();
+    }
+  },
+);
+
 onMounted(async () => {
   // Trigger both queries
   await Promise.all([fetchDirect(), fetchAll()]);
 });
+
+/** emit taxon options whenever data changes */
+watch(
+  () =>
+    props.direct.id === "true"
+      ? directData.value?.facet_fields
+      : allData.value?.facet_fields,
+  (facetFieldsData) => emitTaxonOptions(facetFieldsData),
+  { immediate: true },
+);
 
 // Whenever either total changes, emit new totals
 watch(

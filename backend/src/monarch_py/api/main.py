@@ -4,7 +4,7 @@ from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 
-from monarch_py.api import association, case_phenotype, entity, entity_grid, histopheno, search, semsim, text_annotation
+from monarch_py.api import association, case_phenotype, entity, entity_grid, histopheno, meta, search, semsim, text_annotation
 from monarch_py.api.config import semsimian, spacyner, settings
 from monarch_py.api.middleware.logging_middleware import LoggingMiddleware
 from monarch_py.utils.utils import get_release_metadata, get_release_versions
@@ -30,6 +30,7 @@ app.include_router(case_phenotype.router, prefix=f"{PREFIX}/case-phenotype-matri
 app.include_router(entity.router, prefix=f"{PREFIX}/entity")
 app.include_router(entity_grid.router, prefix=f"{PREFIX}/entity")
 app.include_router(histopheno.router, prefix=f"{PREFIX}/histopheno")
+app.include_router(meta.router, prefix=PREFIX)
 app.include_router(search.router, prefix=PREFIX)
 app.include_router(semsim.router, prefix=f"{PREFIX}/semsim")
 app.include_router(text_annotation.router, prefix=PREFIX)

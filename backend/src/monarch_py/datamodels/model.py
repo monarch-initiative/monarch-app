@@ -403,6 +403,8 @@ class FacetValue(ConfiguredBaseModel):
 
 class AssociationCount(FacetValue):
     category: Optional[str] = Field(default=None)
+    count_direct: Optional[int] = Field(default=None, description="""Count of direct associations (no closure/descendants)""")
+    count_with_orthologs: Optional[int] = Field(default=None, description="""Count including associations from orthologous genes""")
     label: str = Field(default=...)
     count: Optional[int] = Field(default=None, description="""count of documents""")
 
