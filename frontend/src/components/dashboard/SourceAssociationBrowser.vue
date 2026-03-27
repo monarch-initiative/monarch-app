@@ -55,7 +55,7 @@
                   )
                 "
               >
-                <span>{{ facet.formatter(f.label) }}</span>
+                <span v-tooltip="facet.formatter(f.label)" class="facet-label">{{ facet.formatter(f.label) }}</span>
                 <span class="facet-count">{{ f.count?.toLocaleString() }}</span>
               </button>
             </li>
@@ -78,6 +78,11 @@
 
       <!-- Content area -->
       <div class="content-area">
+        <!-- Total count -->
+        <div v-if="results" class="total-count">
+          {{ results.total.toLocaleString() }} association{{ results.total === 1 ? '' : 's' }}
+        </div>
+
         <!-- Active filter pills -->
         <div v-if="hasActiveFilters" class="active-filters">
           <span class="active-filters-label">Active filters:</span>
@@ -112,17 +117,6 @@
         </AppStatus>
 
         <template v-else-if="results">
-          <!-- Table controls (pagination + download) -->
-          <TheTableControls
-            :rows="results.items"
-            :per-page="limit"
-            :start="offset"
-            :total="results.total"
-            :show-controls="true"
-            @update:per-page="onPerPageChange"
-            @update:start="onStartChange"
-          />
-
           <!-- Association table -->
           <AppTable
             id="source-associations"
@@ -243,11 +237,13 @@
 
           <!-- Bottom pagination -->
           <TheTableControls
+            class="bottom-pagination"
             :rows="results.items"
             :per-page="limit"
             :start="offset"
             :total="results.total"
             :show-controls="true"
+            :show-download="false"
             @update:per-page="onPerPageChange"
             @update:start="onStartChange"
           />
@@ -301,6 +297,7 @@ let searchDebounce: ReturnType<typeof setTimeout> | null = null;
 
 /** facet fields we request from the API */
 const facetFields = [
+  "category",
   "subject_category",
   "object_category",
   "predicate",
@@ -318,6 +315,7 @@ const getFacetValues = (field: string): FacetValue[] =>
   results.value?.facet_fields?.find((f) => f.label === field)?.facet_values ??
   [];
 
+const categoryFacets = computed(() => getFacetValues("category"));
 const subjectCategoryFacets = computed(() =>
   getFacetValues("subject_category"),
 );
@@ -364,16 +362,13 @@ type FacetConfig = {
 };
 
 const facetConfigs = computed<FacetConfig[]>(() => {
-  const configs: FacetConfig[] = [];
-  if (!props.inforesId) {
-    configs.push({
-      filterKey: "primaryKnowledgeSource",
-      label: "Source",
-      values: primaryKnowledgeSourceFacets,
-      formatter: identity,
-    });
-  }
-  configs.push(
+  const configs: FacetConfig[] = [
+    {
+      filterKey: "category",
+      label: "Association Type",
+      values: categoryFacets,
+      formatter: formatCategory,
+    },
     {
       filterKey: "subjectCategory",
       label: "Subject Category",
@@ -417,6 +412,12 @@ const facetConfigs = computed<FacetConfig[]>(() => {
       formatter: identity,
     },
     {
+      filterKey: "primaryKnowledgeSource",
+      label: "Source",
+      values: primaryKnowledgeSourceFacets,
+      formatter: identity,
+    },
+    {
       filterKey: "providedBy",
       label: "Provided By",
       values: providedByFacets,
@@ -428,7 +429,11 @@ const facetConfigs = computed<FacetConfig[]>(() => {
       values: negatedFacets,
       formatter: identity,
     },
-  );
+  ];
+  // When scoped to a source, hide the source facet (it's redundant)
+  if (props.inforesId) {
+    return configs.filter((c) => c.filterKey !== "primaryKnowledgeSource");
+  }
   return configs;
 });
 
@@ -792,6 +797,13 @@ watch(
   }
 }
 
+.facet-label {
+  overflow: hidden;
+  min-width: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .facet-count {
   flex-shrink: 0;
   margin-left: 0.5rem;
@@ -823,6 +835,17 @@ watch(
     padding-top: 0.6rem;
     padding-bottom: 0.6rem;
   }
+}
+
+.bottom-pagination {
+  margin-top: 1rem;
+}
+
+.total-count {
+  margin-bottom: 0.75rem;
+  color: $dark-gray;
+  font-weight: 600;
+  font-size: 1.1rem;
 }
 
 .active-filters {

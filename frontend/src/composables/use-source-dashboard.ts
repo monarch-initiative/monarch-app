@@ -4,6 +4,7 @@ import { RESOURCE_NAME_MAP } from "@/config/resourceNames";
 
 /** filter state for source dashboard */
 export interface SourceFilters {
+  category: string;
   subjectCategory: string;
   objectCategory: string;
   predicate: string;
@@ -18,6 +19,7 @@ export interface SourceFilters {
 }
 
 export const emptyFilters = (): SourceFilters => ({
+  category: "",
   subjectCategory: "",
   objectCategory: "",
   predicate: "",
@@ -34,6 +36,7 @@ export const emptyFilters = (): SourceFilters => ({
 /** build Solr filter_queries array from active filters */
 const buildFilterQueries = (filters: SourceFilters): string[] => {
   const fqs: string[] = [];
+  if (filters.category) fqs.push(`category:"${filters.category}"`);
   if (filters.subjectCategory)
     fqs.push(`subject_category:"${filters.subjectCategory}"`);
   if (filters.objectCategory)
