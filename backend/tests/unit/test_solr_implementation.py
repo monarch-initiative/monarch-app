@@ -14,11 +14,16 @@ def test_get_counterpart_entities_limit():
 
 def test_get_generic_entity_grid_accepts_multiple_row_categories():
     """get_generic_entity_grid should accept row_assoc_categories as a list."""
-    si = SolrImplementation()
+    mock_entity = MagicMock()
+    mock_entity.category = "biolink:Disease"
+    mock_entity.configure_mock(name="Type 2 diabetes mellitus")
 
-    # Mock _raw_solr_query to avoid actual Solr calls
-    with patch.object(si, "_raw_solr_query") as mock_query:
+    with patch.object(SolrImplementation, "get_entity", return_value=mock_entity), \
+         patch.object(SolrImplementation, "_get_entity_name", return_value="Type 2 diabetes mellitus"), \
+         patch.object(SolrImplementation, "_raw_solr_query") as mock_query:
         mock_query.return_value = {"response": {"docs": []}}
+
+        si = SolrImplementation()
 
         # This should not raise TypeError - it should accept row_assoc_categories
         result = si.get_generic_entity_grid(

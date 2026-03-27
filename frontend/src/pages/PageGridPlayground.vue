@@ -24,8 +24,9 @@
 
     <div class="playground-controls">
       <div class="control-group entity-search">
-        <label>Context Entity:</label>
+        <label for="entity-search">Context Entity:</label>
         <AppSelectAutocomplete
+          id="entity-search"
           v-model="searchText"
           name="Entity Search"
           placeholder="Search for gene, disease, phenotype..."
@@ -41,8 +42,9 @@
       </div>
 
       <div class="control-group">
-        <label>Column Association(s):</label>
+        <label for="column-categories">Column Association(s):</label>
         <AppSelectMulti
+          id="column-categories"
           v-model="playgroundColumnCategories"
           name="Column Categories"
           :options="columnCategoryOptions"
@@ -50,8 +52,9 @@
       </div>
 
       <div class="control-group">
-        <label>Row Association(s):</label>
+        <label for="row-categories">Row Association(s):</label>
         <AppSelectMulti
+          id="row-categories"
           v-model="playgroundRowCategories"
           name="Row Categories"
           :options="rowCategoryOptions"
@@ -59,24 +62,37 @@
       </div>
 
       <div class="control-group">
-        <label>Category Grid Lines:</label>
-        <label class="toggle-switch">
-          <input v-model="playgroundGroupByCategory" type="checkbox" />
+        <label for="group-by-category">Category Grid Lines:</label>
+        <label class="toggle-switch" for="group-by-category">
+          <input
+            id="group-by-category"
+            v-model="playgroundGroupByCategory"
+            type="checkbox"
+          />
           <span class="toggle-slider"></span>
-          <span class="toggle-label">{{ playgroundGroupByCategory ? 'On' : 'Off' }}</span>
+          <span class="toggle-label">{{
+            playgroundGroupByCategory ? "On" : "Off"
+          }}</span>
         </label>
       </div>
 
       <div class="control-group">
-        <label>Column Labels:</label>
-        <label class="toggle-switch">
+        <label for="column-display-mode">Column Labels:</label>
+        <label class="toggle-switch" for="column-display-mode">
           <input
+            id="column-display-mode"
             type="checkbox"
             :checked="columnDisplayMode === 'labeled'"
-            @change="columnDisplayMode = ($event.target as HTMLInputElement).checked ? 'labeled' : 'numeric'"
+            @change="
+              columnDisplayMode = ($event.target as HTMLInputElement).checked
+                ? 'labeled'
+                : 'numeric'
+            "
           />
           <span class="toggle-slider"></span>
-          <span class="toggle-label">{{ columnDisplayMode === 'labeled' ? 'On' : 'Off' }}</span>
+          <span class="toggle-label">{{
+            columnDisplayMode === "labeled" ? "On" : "Off"
+          }}</span>
         </label>
       </div>
 
@@ -420,10 +436,7 @@ function updateRowOptions() {
     const validSelection = currentIds.some((id) =>
       newRowOptions.some((opt) => opt.id === id),
     );
-    if (
-      playgroundRowCategories.value.length === 0 ||
-      !validSelection
-    ) {
+    if (playgroundRowCategories.value.length === 0 || !validSelection) {
       playgroundRowCategories.value = [{ id: newRowOptions[0].id }];
     }
   } else {
@@ -628,8 +641,8 @@ function handlePlaygroundCellClick(
   }
 
   .toggle-slider {
-    position: relative;
     display: inline-block;
+    position: relative;
     width: 40px;
     height: 22px;
     border-radius: 11px;
@@ -637,7 +650,6 @@ function handlePlaygroundCellClick(
     transition: background-color 0.2s;
 
     &::before {
-      content: "";
       position: absolute;
       top: 2px;
       left: 2px;
@@ -645,6 +657,7 @@ function handlePlaygroundCellClick(
       height: 18px;
       border-radius: 50%;
       background-color: white;
+      content: "";
       transition: transform 0.2s;
     }
   }
