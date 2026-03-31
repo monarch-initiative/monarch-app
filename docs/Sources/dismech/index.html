@@ -2315,9 +2315,18 @@ claude
 &gt; Validate references in kb/disorders/Lupus.yaml
 &gt; Which files have the lowest compliance scores?
 </code></pre></div>
-<p><strong>Optional — deep research provider:</strong> For comprehensive literature search, set up an <a href="https://platform.edisonscientific.com/">Edison Scientific</a> API key:
+<p><strong>Optional — deep research providers:</strong></p>
+<p>For narrative-style deep research, set up an <a href="https://platform.edisonscientific.com/">Edison Scientific</a> API key:
 <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">EDISON_API_KEY</span><span class="o">=</span>your_key_here
 </code></pre></div></p>
+<p>For literature-search-style retrieval via Asta, request an API key from <a href="https://allenai.org/asta/resources/mcp">Allen AI Asta</a> and export:
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">ASTA_API_KEY</span><span class="o">=</span>your_key_here
+</code></pre></div></p>
+<p>Then run:
+<div class="highlight"><pre><span></span><code>just<span class="w"> </span>research-disorder<span class="w"> </span>asta<span class="w"> </span>Liver_Cirrhosis
+</code></pre></div></p>
+<p>Asta outputs are typically literature packets rather than polished narrative reports:
+they prioritize relevant papers, summaries, snippets, and metadata such as PMID/DOI.</p>
 <h3 id="route-2-use-claude-code-on-the-web">Route 2: Use Claude Code on the web</h3>
 <p>Best for quick contributions — no local setup required.</p>
 <ol>
