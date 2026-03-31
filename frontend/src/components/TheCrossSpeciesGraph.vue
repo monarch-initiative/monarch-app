@@ -13,15 +13,23 @@
       :viewBox="`0 0 ${svgWidth} ${svgHeight}`"
     >
       <!-- Vertical edges (children → root) -->
-      <line
-        v-for="(child, i) in childNodes"
-        :key="'v-' + i"
-        :x1="rootNode.x"
-        :y1="rootNode.y + rootNode.h / 2"
-        :x2="child.x"
-        :y2="child.y - child.h / 2"
-        class="edge edge-vertical"
-      />
+      <g v-for="(edge, i) in verticalEdges" :key="'v-' + i">
+        <line
+          :x1="rootNode.x"
+          :y1="rootNode.y + rootNode.h / 2"
+          :x2="edge.child.x"
+          :y2="edge.child.y - edge.child.h / 2"
+          class="edge edge-vertical"
+        />
+        <text
+          :x="edge.child.x"
+          :y="edge.child.y - edge.child.h / 2 - 14"
+          class="edge-label"
+          text-anchor="middle"
+        >
+          {{ edge.label }}
+        </text>
+      </g>
 
       <!-- Horizontal edges (same_as / homologous_to between children) -->
       <g v-for="(edge, i) in sidewaysEdges" :key="'h-' + i">
@@ -90,11 +98,11 @@
               child.entity.id === currentId ? 'node-current' : '',
             ]"
           />
-          <!-- Taxon icon -->
+          <!-- Taxon icon (top-left badge) -->
           <image
             v-if="getTaxonIcon(child.entity)"
-            :x="child.x - 10"
-            :y="child.y - child.h / 2 + 6"
+            :x="child.x - child.w / 2 + 5"
+            :y="child.y - child.h / 2 + 3"
             width="20"
             height="20"
             :href="getTaxonIcon(child.entity)"
@@ -127,6 +135,7 @@ import type { CrossSpeciesTermClique, Entity } from "@/api/model";
 import humanIcon from "@/assets/icons/humanIcon.svg?url";
 import mouseIcon from "@/assets/icons/mouseIcon.svg?url";
 import zebrafishIcon from "@/assets/icons/zebrafishIcon.svg?url";
+import frogIcon from "@/assets/icons/frogIcon.svg?url";
 
 const props = defineProps<{
   clique: CrossSpeciesTermClique;
@@ -139,6 +148,7 @@ const ICON_MAP: Record<string, string> = {
   HP: humanIcon,
   MP: mouseIcon,
   ZP: zebrafishIcon,
+  XPO: frogIcon,
 };
 
 const NODE_W = 140;
@@ -161,6 +171,8 @@ interface SidewaysEdge {
   sourceNode: LayoutNode;
   targetNode: LayoutNode;
   predicate: string;
+  /** Vertical offset index for stacking multiple edges between the same pair */
+  offsetIndex: number;
 }
 
 const numChildren = computed(() => props.clique.clique_entities.length);
@@ -169,7 +181,13 @@ const svgWidth = computed(
   () => Math.max(numChildren.value, 1) * SPACING + SPACING,
 );
 
-const svgHeight = computed(() => CHILD_Y + NODE_H + 20);
+const svgHeight = computed(() => {
+  const maxDepth = sidewaysEdges.value.reduce(
+    (max, edge) => Math.max(max, curveDepth(edge)),
+    20,
+  );
+  return CHILD_Y + NODE_H / 2 + maxDepth * 0.5 + 28;
+});
 
 const rootNode = computed(() => ({
   entity: props.clique.root_term,
@@ -192,10 +210,30 @@ const childNodes = computed<LayoutNode[]>(() => {
   }));
 });
 
+const verticalEdges = computed(() => {
+  const assocMap = new Map<string, string>();
+  for (const assoc of props.clique.clique_associations) {
+    if (
+      assoc.predicate !== "biolink:same_as" &&
+      assoc.predicate !== "biolink:homologous_to"
+    ) {
+      assocMap.set(assoc.subject, assoc.predicate);
+    }
+  }
+  return childNodes.value.map((child) => {
+    const predicate = assocMap.get(child.entity.id) ?? "subclass_of";
+    return {
+      child,
+      label: predicate.replace("biolink:", "").replace(/_/g, " "),
+    };
+  });
+});
+
 const sidewaysEdges = computed<SidewaysEdge[]>(() => {
   const childMap = new Map<string, LayoutNode>();
   childNodes.value.forEach((n) => childMap.set(n.entity.id, n));
 
+  const pairCount = new Map<string, number>();
   const edges: SidewaysEdge[] = [];
   for (const assoc of props.clique.clique_associations) {
     if (
@@ -205,10 +243,14 @@ const sidewaysEdges = computed<SidewaysEdge[]>(() => {
       const source = childMap.get(assoc.subject);
       const target = childMap.get(assoc.object);
       if (source && target) {
+        const pairKey = [assoc.subject, assoc.object].sort().join("--");
+        const idx = pairCount.get(pairKey) ?? 0;
+        pairCount.set(pairKey, idx + 1);
         edges.push({
           sourceNode: source,
           targetNode: target,
           predicate: assoc.predicate,
+          offsetIndex: idx,
         });
       }
     }
@@ -216,17 +258,23 @@ const sidewaysEdges = computed<SidewaysEdge[]>(() => {
   return edges;
 });
 
+function curveDepth(edge: SidewaysEdge): number {
+  const span = Math.abs(edge.targetNode.x - edge.sourceNode.x);
+  return span * 0.15 + edge.offsetIndex * 20;
+}
+
 function sidewaysPath(edge: SidewaysEdge): string {
-  const y = edge.sourceNode.y + edge.sourceNode.h / 2 + 12;
+  const nodeBottom = edge.sourceNode.y + edge.sourceNode.h / 2;
   const x1 = edge.sourceNode.x;
   const x2 = edge.targetNode.x;
   const midX = (x1 + x2) / 2;
-  const curveOffset = 15;
-  return `M ${x1} ${y - curveOffset} Q ${midX} ${y + curveOffset} ${x2} ${y - curveOffset}`;
+  const depth = curveDepth(edge);
+  return `M ${x1} ${nodeBottom} Q ${midX} ${nodeBottom + depth} ${x2} ${nodeBottom}`;
 }
 
 function sidewaysLabelY(edge: SidewaysEdge): number {
-  return edge.sourceNode.y + edge.sourceNode.h / 2 + 28;
+  const nodeBottom = edge.sourceNode.y + edge.sourceNode.h / 2;
+  return nodeBottom + curveDepth(edge) * 0.5 + 12;
 }
 
 function getTaxonIcon(entity: Entity): string | undefined {
