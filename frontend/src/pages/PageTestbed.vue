@@ -328,6 +328,14 @@ const cardiomegalyClique: CrossSpeciesTermClique = {
       knowledge_level: "knowledge_assertion",
       agent_type: "automated_agent",
     },
+    {
+      id: "clique:mp-zp-homologous",
+      subject: "MP:0000274",
+      predicate: "biolink:homologous_to",
+      object: "ZP:0005438",
+      knowledge_level: "knowledge_assertion",
+      agent_type: "automated_agent",
+    },
   ],
 };
 
