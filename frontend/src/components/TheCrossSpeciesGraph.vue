@@ -251,27 +251,27 @@ svg {
 }
 
 .edge {
-  stroke-width: 2;
+  stroke-width: 1.5;
 }
 
 .edge-vertical {
-  stroke: #999;
+  stroke: #b0b0b0;
 }
 
 .edge-same-as {
-  stroke: #2196f3;
-  stroke-width: 2;
+  stroke: hsl(185, 40%, 55%);
+  stroke-width: 1.5;
 }
 
 .edge-homologous {
-  stroke: #9c27b0;
-  stroke-width: 2;
+  stroke: hsl(240, 15%, 62%);
+  stroke-width: 1.5;
   stroke-dasharray: 6 3;
 }
 
 .edge-label {
   font-size: 10px;
-  fill: #666;
+  fill: #888;
 }
 
 .node {
@@ -279,28 +279,28 @@ svg {
 }
 
 .node-root {
-  fill: #1f77b4;
-  stroke: #1565c0;
+  fill: hsl(185, 55%, 38%);
+  stroke: hsl(185, 55%, 30%);
 }
 
 .node-child {
-  fill: #ff7f0e;
-  stroke: #e65100;
+  fill: hsl(200, 15%, 55%);
+  stroke: hsl(200, 15%, 45%);
 }
 
 .node-current {
-  fill: none;
-  stroke: #f0a737;
-  stroke-width: 3;
+  fill: hsl(185, 50%, 94%);
+  stroke: hsl(185, 60%, 42%);
+  stroke-width: 2.5;
 }
 
 .node-current .node-id,
 .node-current .node-name {
-  fill: #333;
+  fill: #404040;
 }
 
 .node-text {
-  font-family: Arial, sans-serif;
+  font-family: "Poppins", sans-serif;
   pointer-events: none;
 }
 
@@ -312,12 +312,12 @@ svg {
 
 .node-name {
   font-size: 11px;
-  fill: #fff;
+  fill: hsla(0, 0%, 100%, 0.9);
 }
 
 .node-current ~ text .node-id,
 a:has(.node-current) .node-id,
 a:has(.node-current) .node-name {
-  fill: #333;
+  fill: #404040;
 }
 </style>
