@@ -520,6 +520,7 @@ export interface Node extends Entity {
     provided_by_link?: ExpandedCurie,
     association_counts: AssociationCount[],
     node_hierarchy?: NodeHierarchy,
+    cross_species_term_clique?: CrossSpeciesTermClique,
 }
 
 
@@ -527,6 +528,19 @@ export interface Node extends Entity {
 export interface NodeHierarchy {
     super_classes: Entity[],
     sub_classes: Entity[],
+}
+
+
+/**
+ * A grouping of species-specific terms under a common cross-species parent
+ */
+export interface CrossSpeciesTermClique {
+    /** The species-independent grouping term (UPHENO/UBERON) */
+    root_term: Entity,
+    /** Species-specific child terms (HP, MP, ZP, etc.) */
+    clique_entities: Entity[],
+    /** Vertical (subclass_of) and horizontal (same_as, homologous_to) associations */
+    clique_associations: Association[],
 }
 
 

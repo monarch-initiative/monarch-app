@@ -12,6 +12,7 @@ from monarch_py.datamodels.model import (
     AssociationTableResults,
     CasePhenotypeMatrixResponse,
     CategoryGroupedAssociationResults,
+    CrossSpeciesTermClique,
     Entity,
     EntityGridResponse,
     HistoPheno,
@@ -78,6 +79,10 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
 
     base_url: str = os.getenv("MONARCH_SOLR_URL", "http://localhost:8983/solr")
 
+    CROSS_SPECIES_PREFIXES = ["UPHENO", "UBERON"]
+    CROSS_SPECIES_CLIQUE_CATEGORIES = ["biolink:PhenotypicFeature", "biolink:AnatomicalEntity"]
+    SIDEWAYS_PREDICATES = [AssociationPredicate.SAME_AS, AssociationPredicate.HOMOLOGOUS_TO]
+
     def solr_is_available(self) -> bool:
         """Check if the Solr instance is available"""
         try:
@@ -141,6 +146,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             ]
         node: Node = Node(
             **entity.model_dump(),
+            cross_species_term_clique=self._get_cross_species_term_clique(entity),
             node_hierarchy=self._get_node_hierarchy(entity),
             association_counts=self.get_association_counts(id, entity_category=entity.category).items,
             external_links=get_links_for_field(entity.xref) if entity.xref else [],
@@ -239,6 +245,99 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             super_classes=super_classes,
             sub_classes=sub_classes,
         )
+
+    ### Cross-species term clique ###
+
+    def _get_cross_species_term_clique(self, entity: Entity) -> Optional[CrossSpeciesTermClique]:
+        """Get a CrossSpeciesTermClique for the given entity.
+
+        Finds the UPHENO/UBERON parent and species-specific children, then fetches
+        vertical (subclass_of) and horizontal (same_as, homologous_to) associations
+        between clique members.
+        """
+        if entity.category not in self.CROSS_SPECIES_CLIQUE_CATEGORIES:
+            return None
+
+        is_root_term = any(entity.id.startswith(f"{prefix}:") for prefix in self.CROSS_SPECIES_PREFIXES)
+
+        if is_root_term:
+            root_term = entity
+            children = self._get_species_specific_children(entity.id)
+        else:
+            root_term = self._find_cross_species_parent(entity)
+            if root_term is None:
+                return None
+            children = self._get_species_specific_children(root_term.id)
+
+        if not children:
+            return None
+
+        # Collect vertical associations (children → root via subclass_of)
+        child_ids = [c.id for c in children]
+        vertical_assocs = self.get_associations(
+            subject=child_ids,
+            object=[root_term.id],
+            predicate=[AssociationPredicate.SUBCLASS_OF],
+            direct=True,
+            limit=500,
+        ).items
+
+        # Collect sideways associations (same_as, homologous_to between children)
+        sideways_assocs = []
+        if len(child_ids) > 1:
+            all_sideways = self.get_associations(
+                subject=child_ids,
+                predicate=self.SIDEWAYS_PREDICATES,
+                direct=True,
+                limit=500,
+            ).items
+            # Filter to only edges where both endpoints are in this clique
+            child_id_set = set(child_ids)
+            sideways_assocs = [a for a in all_sideways if a.object in child_id_set]
+            sideways_assocs = self._deduplicate_sideways(sideways_assocs)
+
+        return CrossSpeciesTermClique(
+            root_term=root_term,
+            clique_entities=children,
+            clique_associations=vertical_assocs + sideways_assocs,
+        )
+
+    def _find_cross_species_parent(self, entity: Entity) -> Optional[Entity]:
+        """Find the UPHENO/UBERON parent of a species-specific term."""
+        parents = self.get_counterpart_entities(
+            this_entity=entity,
+            subject=entity.id,
+            predicate=[AssociationPredicate.SUBCLASS_OF],
+        )
+        cross_species_parents = [
+            p for p in parents
+            if any(p.id.startswith(f"{prefix}:") for prefix in self.CROSS_SPECIES_PREFIXES)
+        ]
+        return cross_species_parents[0] if cross_species_parents else None
+
+    def _get_species_specific_children(self, root_id: str) -> list[Entity]:
+        """Get species-specific (non-UPHENO/UBERON) children of a cross-species root term."""
+        all_children = self.get_counterpart_entities(
+            this_entity=Entity(id=root_id),
+            object=root_id,
+            predicate=[AssociationPredicate.SUBCLASS_OF],
+        )
+        return [
+            c for c in all_children
+            if not any(c.id.startswith(f"{prefix}:") for prefix in self.CROSS_SPECIES_PREFIXES)
+        ]
+
+    @staticmethod
+    def _deduplicate_sideways(assocs: list[Association]) -> list[Association]:
+        """Keep one direction per (subject, predicate, object) pair for bidirectional edges."""
+        seen = set()
+        deduped = []
+        for a in assocs:
+            key = tuple(sorted([a.subject, a.object])) + (a.predicate,)
+            if key not in seen:
+                seen.add(key)
+                deduped.append(a)
+        return deduped
 
     ####################################
     # Implements: AssociationInterface #

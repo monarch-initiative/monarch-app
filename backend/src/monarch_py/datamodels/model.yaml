@@ -307,6 +307,22 @@ classes:
       - provided_by_link
       - association_counts
       - node_hierarchy
+      - cross_species_term_clique
+  CrossSpeciesTermClique:
+    description: >-
+      A grouping of species-specific terms (HP, MP, ZP) under a common
+      cross-species parent (UPHENO/UBERON), with associations between them.
+    slots:
+      - root_term
+      - clique_entities
+      - clique_associations
+    slot_usage:
+      root_term:
+        required: true
+      clique_entities:
+        required: true
+      clique_associations:
+        required: true
   NodeHierarchy:
     slots:
       - super_classes
@@ -699,6 +715,27 @@ slots:
   node_hierarchy:
     range: NodeHierarchy
     inlined: true
+  cross_species_term_clique:
+    range: CrossSpeciesTermClique
+    inlined: true
+  root_term:
+    description: The species-independent grouping term (UPHENO/UBERON) that serves as the cross-species bridge
+    range: Entity
+    inlined: true
+  clique_entities:
+    description: Species-specific child terms (HP, MP, ZP, etc.) that are subclasses of the root term
+    range: Entity
+    inlined: true
+    inlined_as_list: true
+    multivalued: true
+  clique_associations:
+    description: >-
+      All associations within this clique: vertical (subclass_of from children
+      to root) and horizontal (same_as, homologous_to between children)
+    range: Association
+    inlined: true
+    inlined_as_list: true
+    multivalued: true
   object:
     range: string
     required: true

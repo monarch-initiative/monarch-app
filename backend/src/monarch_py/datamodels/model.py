@@ -453,6 +453,7 @@ class Node(Entity):
     provided_by_link: Optional[ExpandedCurie] = Field(default=None, description="""A link to the docs for the knowledge source that provided the node/edge.""")
     association_counts: list[AssociationCount] = Field(default=...)
     node_hierarchy: Optional[NodeHierarchy] = Field(default=None)
+    cross_species_term_clique: Optional[CrossSpeciesTermClique] = Field(default=None)
     id: str = Field(default=...)
     category: Optional[str] = Field(default=None)
     name: Optional[str] = Field(default=None)
@@ -479,6 +480,16 @@ class Node(Entity):
     has_descendant: Optional[list[str]] = Field(default=None, description="""A list of entity identifiers that are known to be descendants of this entity""")
     has_descendant_label: Optional[list[str]] = Field(default=None, description="""A list of entity labels that are known to be descendants of this entity""")
     has_descendant_count: Optional[int] = Field(default=None, description="""A count of the number of entities that are known to be descendants of this entity""")
+
+
+class CrossSpeciesTermClique(ConfiguredBaseModel):
+    """
+    A grouping of species-specific terms (HP, MP, ZP) under a common
+    cross-species parent (UPHENO/UBERON), with associations between them.
+    """
+    root_term: Entity = Field(default=..., description="""The species-independent grouping term (UPHENO/UBERON) that serves as the cross-species bridge""")
+    clique_entities: list[Entity] = Field(default=..., description="""Species-specific child terms (HP, MP, ZP, etc.) that are subclasses of the root term""")
+    clique_associations: list[Association] = Field(default=..., description="""All associations within this clique: vertical (subclass_of from children to root) and horizontal (same_as, homologous_to between children)""")
 
 
 class NodeHierarchy(ConfiguredBaseModel):
