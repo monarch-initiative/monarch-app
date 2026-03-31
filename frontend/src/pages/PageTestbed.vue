@@ -31,6 +31,15 @@
     />
   </AppSection>
 
+  <!-- cross-species graph -->
+  <AppSection>
+    <AppHeading>Cross-Species Graph (Cardiomegaly)</AppHeading>
+    <TheCrossSpeciesGraph
+      :clique="cardiomegalyClique"
+      current-id="HP:0001640"
+    />
+  </AppSection>
+
   <!-- phenogrid -->
   <AppSection>
     <AppHeading>Phenogrid - Search mode</AppHeading>
@@ -240,12 +249,87 @@ import AppTabs from "@/components/AppTabs.vue";
 import AppTextbox from "@/components/AppTextbox.vue";
 import EntityGrid from "@/components/EntityGrid/EntityGrid.vue";
 import EntityGridModal from "@/components/EntityGrid/EntityGridModal.vue";
+import TheCrossSpeciesGraph from "@/components/TheCrossSpeciesGraph.vue";
+import type { CrossSpeciesTermClique } from "@/api/model";
 import { sleep } from "@/util/debug";
 
 /** get all files in custom icon folder */
 const icons = Object.values(import.meta.glob("@/assets/icons/*.svg")).map(
   (icon) => (icon.name.split("/").pop() || "").replace(/\.svg$/, ""),
 );
+
+// =============================================================================
+// Cross-Species Graph Demo (Cardiomegaly)
+// =============================================================================
+
+const cardiomegalyClique: CrossSpeciesTermClique = {
+  root_term: {
+    id: "UPHENO:0001471",
+    name: "increased size of the heart",
+  },
+  clique_entities: [
+    {
+      id: "HP:0001640",
+      name: "Cardiomegaly",
+      in_taxon: "NCBITaxon:9606",
+      in_taxon_label: "Homo sapiens",
+    },
+    {
+      id: "MP:0000274",
+      name: "enlarged heart",
+      in_taxon: "NCBITaxon:10090",
+      in_taxon_label: "Mus musculus",
+    },
+    {
+      id: "ZP:0005438",
+      name: "increased heart size",
+      in_taxon: "NCBITaxon:7955",
+      in_taxon_label: "Danio rerio",
+    },
+  ],
+  clique_associations: [
+    {
+      id: "clique:hp-upheno",
+      subject: "HP:0001640",
+      predicate: "biolink:subclass_of",
+      object: "UPHENO:0001471",
+      knowledge_level: "logical_entailment",
+      agent_type: "automated_agent",
+    },
+    {
+      id: "clique:mp-upheno",
+      subject: "MP:0000274",
+      predicate: "biolink:subclass_of",
+      object: "UPHENO:0001471",
+      knowledge_level: "logical_entailment",
+      agent_type: "automated_agent",
+    },
+    {
+      id: "clique:zp-upheno",
+      subject: "ZP:0005438",
+      predicate: "biolink:subclass_of",
+      object: "UPHENO:0001471",
+      knowledge_level: "logical_entailment",
+      agent_type: "automated_agent",
+    },
+    {
+      id: "clique:hp-mp-same",
+      subject: "HP:0001640",
+      predicate: "biolink:same_as",
+      object: "MP:0000274",
+      knowledge_level: "knowledge_assertion",
+      agent_type: "automated_agent",
+    },
+    {
+      id: "clique:hp-zp-same",
+      subject: "HP:0001640",
+      predicate: "biolink:same_as",
+      object: "ZP:0005438",
+      knowledge_level: "knowledge_assertion",
+      agent_type: "automated_agent",
+    },
+  ],
+};
 
 // =============================================================================
 // Entity Grid Demo
