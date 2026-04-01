@@ -1,4 +1,5 @@
 """Utilities for building case-phenotype matrices."""
+
 from typing import Dict, List, Optional, Set
 from monarch_py.datamodels.model import (
     CasePhenotypeMatrixResponse,
@@ -216,5 +217,3 @@ def _build_bins(phenotype_docs: List[dict], facet_counts: Dict[str, int]) -> Lis
         bins.append(bin_obj)
 
     return bins
-
-

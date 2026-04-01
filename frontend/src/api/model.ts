@@ -13,6 +13,9 @@ export type SearchResultId = string;
 export type CaseEntityId = string;
 export type CasePhenotypeId = string;
 export type HistoPhenoBinId = string;
+export type GridColumnEntityId = string;
+export type GridRowEntityId = string;
+export type GridBinId = string;
 /**
 * The directionality of an association as it relates to a specified entity, with edges being categorized as incoming or outgoing
 */
@@ -341,6 +344,10 @@ export interface AssociationTypeMapping {
     symmetric: boolean,
     /** The biolink category to use in queries for this association type */
     category: string,
+    /** The biolink category of entities in the subject position of this association type */
+    subject_category?: string,
+    /** The biolink category of entities in the object position of this association type */
+    object_category?: string,
 }
 
 
@@ -521,7 +528,19 @@ export interface Node extends Entity {
     association_counts: AssociationCount[],
     cross_species_term_clique?: CrossSpeciesTermClique,
     node_hierarchy?: NodeHierarchy,
-    cross_species_term_clique?: CrossSpeciesTermClique,
+}
+
+
+/**
+ * A grouping of species-specific terms (HP, MP, ZP) under a common cross-species parent (UPHENO/UBERON), with associations between them.
+ */
+export interface CrossSpeciesTermClique {
+    /** The species-independent grouping term (UPHENO/UBERON) that serves as the cross-species bridge */
+    root_term: Entity,
+    /** Species-specific child terms (HP, MP, ZP, etc.) that are subclasses of the root term */
+    clique_entities: Entity[],
+    /** All associations within this clique: vertical (subclass_of from children to root) and horizontal (same_as, homologous_to between children) */
+    clique_associations: Association[],
 }
 
 
@@ -529,19 +548,6 @@ export interface Node extends Entity {
 export interface NodeHierarchy {
     super_classes: Entity[],
     sub_classes: Entity[],
-}
-
-
-/**
- * A grouping of species-specific terms under a common cross-species parent
- */
-export interface CrossSpeciesTermClique {
-    /** The species-independent grouping term (UPHENO/UBERON) */
-    root_term: Entity,
-    /** Species-specific child terms (HP, MP, ZP, etc.) */
-    clique_entities: Entity[],
-    /** Vertical (subclass_of) and horizontal (same_as, homologous_to) associations */
-    clique_associations: Association[],
 }
 
 
@@ -691,6 +697,99 @@ export interface CasePhenotypeCellData {
     /** The name of the onset_qualifier entity */
     onset_qualifier_label?: string,
     publications?: string[],
+}
+
+
+/**
+ * A column entity in the grid (case, disease, ortholog, etc.)
+ */
+export interface GridColumnEntity {
+    id: string,
+    label?: string,
+    category: string,
+    /** Whether the case is directly associated with the disease or via a descendant */
+    is_direct?: boolean,
+    /** For indirect associations, the ID of the direct entity */
+    source_id?: string,
+    /** For indirect associations, the label of the direct entity */
+    source_label?: string,
+    /** The taxon ID of the entity */
+    taxon?: string,
+    /** The taxon label of the entity */
+    taxon_label?: string,
+    /** The biolink category of the source association */
+    source_association_category?: string,
+    /** The predicate of the source association */
+    source_association_predicate?: string,
+    /** Publication CURIEs supporting the source association */
+    source_association_publications?: string[],
+    /** Number of evidence items supporting the source association */
+    source_association_evidence_count?: number,
+    /** Primary knowledge source for the source association */
+    source_association_primary_knowledge_source?: string,
+}
+
+
+/**
+ * A row entity in the grid (phenotype, GO term, anatomy, etc.)
+ */
+export interface GridRowEntity {
+    id: string,
+    label?: string,
+    category: string,
+    /** The identifier for the histopheno bin a phenotype belongs to */
+    bin_id: string,
+}
+
+
+/**
+ * A grouping bin for row entities
+ */
+export interface GridBin {
+    id: string,
+    label: string,
+    /** count of documents */
+    count: number,
+}
+
+
+/**
+ * Data for a cell in the grid
+ */
+export interface GridCellData {
+    /** Whether the phenotype is present for a case */
+    present: boolean,
+    negated?: boolean,
+    /** Additional qualifiers for the association */
+    qualifiers?: string[],
+    publications?: string[],
+    /** count of supporting documents, evidence codes, and sources supplying evidence */
+    evidence_count?: number,
+}
+
+
+/**
+ * Generic entity x entity grid response
+ */
+export interface EntityGridResponse {
+    /** The identifier of the context entity (e.g., disease, gene) */
+    context_id: string,
+    /** The name of the context entity */
+    context_name?: string,
+    /** The biolink category of the context entity */
+    context_category: string,
+    /** Total number of column entities in the grid */
+    total_columns: number,
+    /** Total number of row entities in the grid */
+    total_rows: number,
+    /** List of column entities in the grid */
+    columns: GridColumnEntity[],
+    /** List of row entities in the grid */
+    rows: GridRowEntity[],
+    /** List of bins for grouping row entities */
+    bins: GridBin[],
+    /** Map of column_id:row_id to cell data */
+    cells: GridCellData[],
 }
 
 

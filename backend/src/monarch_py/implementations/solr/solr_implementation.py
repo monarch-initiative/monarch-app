@@ -318,8 +318,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             predicate=[AssociationPredicate.SUBCLASS_OF],
         )
         cross_species_parents = [
-            p for p in parents
-            if any(p.id.startswith(f"{prefix}:") for prefix in self.CROSS_SPECIES_PREFIXES)
+            p for p in parents if any(p.id.startswith(f"{prefix}:") for prefix in self.CROSS_SPECIES_PREFIXES)
         ]
         return cross_species_parents[0] if cross_species_parents else None
 
@@ -331,8 +330,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             predicate=[AssociationPredicate.SUBCLASS_OF],
         )
         return [
-            c for c in all_children
-            if not any(c.id.startswith(f"{prefix}:") for prefix in self.CROSS_SPECIES_PREFIXES)
+            c for c in all_children if not any(c.id.startswith(f"{prefix}:") for prefix in self.CROSS_SPECIES_PREFIXES)
         ]
 
     @staticmethod
@@ -741,8 +739,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         # Step 2: Check limit
         if len(case_docs) > limit:
             raise ValueError(
-                f"Case count ({len(case_docs)}) exceeds limit ({limit}). "
-                f"Use direct=true or increase limit."
+                f"Case count ({len(case_docs)}) exceeds limit ({limit}). Use direct=true or increase limit."
             )
 
         # Handle no cases
@@ -826,8 +823,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         # Step 3: Check limit
         if len(col_docs) > limit:
             raise ValueError(
-                f"Column count ({len(col_docs)}) exceeds limit ({limit}). "
-                f"Use direct=true or reduce the scope."
+                f"Column count ({len(col_docs)}) exceeds limit ({limit}). Use direct=true or reduce the scope."
             )
 
         # Handle no columns
@@ -935,8 +931,10 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                 logger.warning(
                     "Context category %s doesn't match mapping for %s "
                     "(subject=%s, object=%s). Falling back to string heuristic.",
-                    context_category, first_col_cat,
-                    mapping.subject_category, mapping.object_category,
+                    context_category,
+                    first_col_cat,
+                    mapping.subject_category,
+                    mapping.object_category,
                 )
                 if "Gene" in first_col_cat:
                     context_field = "subject"
@@ -949,8 +947,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         else:
             # No metadata available - fall back to heuristics
             logger.warning(
-                "No association type mapping found for %s. "
-                "Falling back to string heuristic for field direction.",
+                "No association type mapping found for %s. Falling back to string heuristic for field direction.",
                 first_col_cat,
             )
             if "Gene" in first_col_cat:
@@ -992,8 +989,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         # Step 2: Check limit
         if len(col_docs) > limit:
             raise ValueError(
-                f"Column count ({len(col_docs)}) exceeds limit ({limit}). "
-                f"Use direct=true or reduce the scope."
+                f"Column count ({len(col_docs)}) exceeds limit ({limit}). Use direct=true or reduce the scope."
             )
 
         # Step 3: Handle no columns
@@ -1039,9 +1035,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             col_entity_cat = EntityCategory.NAMED_THING
 
         # Determine row entity category (check if any category involves phenotypes)
-        row_has_phenotype = any(
-            "Phenotype" in cat or "Phenotypic" in cat for cat in row_assoc_categories
-        )
+        row_has_phenotype = any("Phenotype" in cat or "Phenotypic" in cat for cat in row_assoc_categories)
         if row_has_phenotype:
             row_entity_cat = EntityCategory.PHENOTYPIC_FEATURE
         else:
@@ -1051,9 +1045,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         temp_config = GridTypeConfig(
             name="Generic Grid",
             context_category=EntityCategory.NAMED_THING,
-            column_assoc_categories=[
-                AssociationCategory(cat) for cat in column_assoc_categories
-            ],
+            column_assoc_categories=[AssociationCategory(cat) for cat in column_assoc_categories],
             row_assoc_category=AssociationCategory(row_assoc_categories[0]),
             row_entity_category=row_entity_cat,
             column_entity_category=col_entity_cat,
@@ -1126,4 +1118,3 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         response = requests.get(url)
         response.raise_for_status()
         return response.json()
-

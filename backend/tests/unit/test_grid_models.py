@@ -1,5 +1,5 @@
 """Unit tests for grid data models."""
-import pytest
+
 from monarch_py.datamodels.model import GridColumnEntity
 
 

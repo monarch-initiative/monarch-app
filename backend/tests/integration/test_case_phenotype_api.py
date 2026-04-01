@@ -1,4 +1,5 @@
 """Integration tests for case-phenotype API endpoint."""
+
 import pytest
 from fastapi.testclient import TestClient
 from monarch_py.api.main import app
@@ -69,15 +70,18 @@ class TestCasePhenotypeEndpoint:
         detail = response.json()["detail"].lower()
         assert "invalid" in detail or "mondo" in detail
 
-    @pytest.mark.parametrize("limit,should_succeed", [
-        (1, True),
-        (50, True),
-        (200, True),
-        (1000, True),
-        (0, False),
-        (-1, False),
-        (1001, False),
-    ])
+    @pytest.mark.parametrize(
+        "limit,should_succeed",
+        [
+            (1, True),
+            (50, True),
+            (200, True),
+            (1000, True),
+            (0, False),
+            (-1, False),
+            (1001, False),
+        ],
+    )
     def test_limit_validation(self, client, limit, should_succeed):
         response = client.get(f"/v3/api/case-phenotype-matrix/MONDO:0007078?limit={limit}")
         if should_succeed:

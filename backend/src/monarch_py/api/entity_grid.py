@@ -6,6 +6,7 @@ Provides generic entity x entity grid endpoints that support:
 - Gene -> Ortholog × Phenotype (ortholog-phenotype-grid)
 - Generic grids with configurable association categories
 """
+
 import logging
 from enum import Enum
 from typing import List
@@ -22,8 +23,10 @@ logger = logging.getLogger(__name__)
 # Define row grouping options
 class RowGrouping(str, Enum):
     """Row grouping options."""
+
     HISTOPHENO = "histopheno"
     NONE = "none"
+
 
 router = APIRouter(
     tags=["entity-grid"],

@@ -1,4 +1,5 @@
 """Utilities for building generic entity grids."""
+
 from typing import Dict, List, Optional, Set
 
 from monarch_py.datamodels.model import (

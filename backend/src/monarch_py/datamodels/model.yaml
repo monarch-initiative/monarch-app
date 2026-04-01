@@ -172,6 +172,8 @@ classes:
       - object_label
       - symmetric
       - category
+      - subject_category
+      - object_category
     slot_usage:
       subject_label:
         description: A label to describe the subjects of the association type as a whole for use in the UI
@@ -187,6 +189,10 @@ classes:
         description: The biolink category to use in queries for this association type
         required: true
         multivalued: false
+      subject_category:
+        description: The biolink category of entities in the subject position of this association type
+      object_category:
+        description: The biolink category of entities in the object position of this association type
   CategoryGroupedAssociationResults:
     is_a: Results
     slots:
@@ -481,6 +487,126 @@ classes:
         required: true
       publications:
         multivalued: true
+  GridColumnEntity:
+    description: A column entity in the grid (case, disease, ortholog, etc.)
+    slots:
+      - id
+      - label
+      - category
+      - is_direct
+      - source_id
+      - source_label
+      - taxon
+      - taxon_label
+      - source_association_category
+      - source_association_predicate
+      - source_association_publications
+      - source_association_evidence_count
+      - source_association_primary_knowledge_source
+    slot_usage:
+      id:
+        required: true
+        identifier: true
+      category:
+        required: true
+      label:
+        required: false
+      is_direct:
+        required: false
+  GridRowEntity:
+    description: A row entity in the grid (phenotype, GO term, anatomy, etc.)
+    slots:
+      - id
+      - label
+      - category
+      - bin_id
+    slot_usage:
+      id:
+        required: true
+        identifier: true
+      category:
+        required: true
+      label:
+        required: false
+      bin_id:
+        required: true
+  GridBin:
+    description: A grouping bin for row entities
+    slots:
+      - id
+      - label
+      - count
+    slot_usage:
+      id:
+        required: true
+        identifier: true
+      label:
+        required: true
+      count:
+        required: true
+  GridCellData:
+    description: Data for a cell in the grid
+    slots:
+      - present
+      - negated
+      - qualifiers
+      - publications
+      - evidence_count
+    slot_usage:
+      present:
+        required: true
+      qualifiers:
+        description: Additional qualifiers for the association
+        range: string
+        multivalued: true
+      publications:
+        multivalued: true
+  EntityGridResponse:
+    description: Generic entity x entity grid response
+    slots:
+      - context_id
+      - context_name
+      - context_category
+      - total_columns
+      - total_rows
+      - columns
+      - rows
+      - bins
+      - cells
+    slot_usage:
+      context_id:
+        required: true
+      context_category:
+        required: true
+      total_columns:
+        required: true
+      total_rows:
+        required: true
+      columns:
+        description: List of column entities in the grid
+        range: GridColumnEntity
+        multivalued: true
+        inlined_as_list: true
+        required: true
+      rows:
+        description: List of row entities in the grid
+        range: GridRowEntity
+        multivalued: true
+        inlined_as_list: true
+        required: true
+      bins:
+        description: List of bins for grouping row entities
+        range: GridBin
+        multivalued: true
+        inlined_as_list: true
+        required: true
+      cells:
+        description: Map of column_id:row_id to cell data
+        range: GridCellData
+        multivalued: true
+        inlined: true
+        inlined_as_list: false
+        required: true
 
 slots:
   aggregator_knowledge_source:
@@ -1123,4 +1249,57 @@ slots:
     range: boolean
   full_id:
     description: The full identifier for an entity
+    range: string
+  context_id:
+    description: The identifier of the context entity (e.g., disease, gene)
+    range: string
+  context_name:
+    description: The name of the context entity
+    range: string
+  context_category:
+    description: The biolink category of the context entity
+    range: string
+  total_columns:
+    description: Total number of column entities in the grid
+    range: integer
+  total_rows:
+    description: Total number of row entities in the grid
+    range: integer
+  columns:
+    description: List of column entities
+    range: string
+    multivalued: true
+    inlined_as_list: true
+  rows:
+    description: List of row entities
+    range: string
+    multivalued: true
+    inlined_as_list: true
+  source_id:
+    description: For indirect associations, the ID of the direct entity
+    range: string
+  source_label:
+    description: For indirect associations, the label of the direct entity
+    range: string
+  taxon:
+    description: The taxon ID of the entity
+    range: string
+  taxon_label:
+    description: The taxon label of the entity
+    range: string
+  source_association_category:
+    description: The biolink category of the source association
+    range: string
+  source_association_predicate:
+    description: The predicate of the source association
+    range: string
+  source_association_publications:
+    description: Publication CURIEs supporting the source association
+    range: string
+    multivalued: true
+  source_association_evidence_count:
+    description: Number of evidence items supporting the source association
+    range: integer
+  source_association_primary_knowledge_source:
+    description: Primary knowledge source for the source association
     range: string

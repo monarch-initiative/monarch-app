@@ -57,20 +57,24 @@ class AssociationTypeMappings:
         for mapping in AssociationTypeMappings.__instance.mappings:
             # Check if entity can be the subject
             if mapping.subject_category == entity_category:
-                results.append({
-                    "category": mapping.category,
-                    "label": mapping.subject_label or mapping.category,
-                    "context_field": "subject",
-                    "target_category": mapping.object_category,
-                })
+                results.append(
+                    {
+                        "category": mapping.category,
+                        "label": mapping.subject_label or mapping.category,
+                        "context_field": "subject",
+                        "target_category": mapping.object_category,
+                    }
+                )
             # Check if entity can be the object (reverse traversal)
             if mapping.object_category == entity_category:
-                results.append({
-                    "category": mapping.category,
-                    "label": mapping.object_label or mapping.category,
-                    "context_field": "object",
-                    "target_category": mapping.subject_category,
-                })
+                results.append(
+                    {
+                        "category": mapping.category,
+                        "label": mapping.object_label or mapping.category,
+                        "context_field": "object",
+                        "target_category": mapping.subject_category,
+                    }
+                )
         return results
 
     def load_mappings(self):

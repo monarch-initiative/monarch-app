@@ -6,7 +6,7 @@
 -->
 
 <template>
-  <div ref="container" class="cross-species-graph">
+  <div class="cross-species-graph">
     <svg
       :width="svgWidth"
       :height="svgHeight"
@@ -130,19 +130,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import type { CrossSpeciesTermClique, Entity } from "@/api/model";
+import frogIcon from "@/assets/icons/frogIcon.svg?url";
 import humanIcon from "@/assets/icons/humanIcon.svg?url";
 import mouseIcon from "@/assets/icons/mouseIcon.svg?url";
 import zebrafishIcon from "@/assets/icons/zebrafishIcon.svg?url";
-import frogIcon from "@/assets/icons/frogIcon.svg?url";
 
 const props = defineProps<{
   clique: CrossSpeciesTermClique;
   currentId: string;
 }>();
-
-const container = ref<HTMLElement | null>(null);
 
 const ICON_MAP: Record<string, string> = {
   HP: humanIcon,
@@ -313,13 +311,13 @@ svg {
 
 .edge-homologous {
   stroke: hsl(240, 15%, 62%);
-  stroke-width: 1.5;
   stroke-dasharray: 6 3;
+  stroke-width: 1.5;
 }
 
 .edge-label {
-  font-size: 10px;
   fill: #888;
+  font-size: 10px;
 }
 
 .node {
@@ -342,28 +340,22 @@ svg {
   stroke-width: 2.5;
 }
 
-.node-current .node-id,
-.node-current .node-name {
-  fill: #404040;
-}
-
 .node-text {
   font-family: "Poppins", sans-serif;
   pointer-events: none;
 }
 
 .node-id {
-  font-size: 12px;
-  font-weight: bold;
   fill: #fff;
+  font-weight: bold;
+  font-size: 12px;
 }
 
 .node-name {
-  font-size: 11px;
   fill: hsla(0, 0%, 100%, 0.9);
+  font-size: 11px;
 }
 
-.node-current ~ text .node-id,
 a:has(.node-current) .node-id,
 a:has(.node-current) .node-name {
   fill: #404040;

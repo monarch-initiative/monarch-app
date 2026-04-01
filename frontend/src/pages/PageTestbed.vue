@@ -222,39 +222,6 @@
       <template #arbitrary>Arbitrary slot content</template>
     </AppTable>
   </AppSection>
-
-  <AppSection>
-    <TheUphenoGraph
-      :data="{
-        upheno_parent: {
-          id: 'UPHENO:0001471',
-          label: 'increased size of the heart',
-          ontology: 'uPheno',
-        },
-        species_specific_children: [
-          {
-            id: 'HP:0001640',
-            label: 'cardiomegaly',
-            ontology: 'HP',
-            taxon: 'human',
-          },
-          {
-            id: 'ZP:0000532',
-            label: 'heart enlarged, abnormal',
-            ontology: 'ZP',
-            taxon: 'zebrafish',
-          },
-          {
-            id: 'MP:0000274',
-            label: 'enlarged heart',
-            ontology: 'MP',
-            taxon: 'mouse',
-          },
-        ],
-      }"
-      :current-id="'MP:0000274'"
-    />
-  </AppSection>
 </template>
 
 <script setup lang="ts">
@@ -268,6 +235,7 @@ import type {
   EntityGridMatrix,
   RowEntity,
 } from "@/api/entity-grid/types";
+import type { CrossSpeciesTermClique } from "@/api/model";
 import AppButton from "@/components/AppButton.vue";
 import AppInput from "@/components/AppInput.vue";
 import AppPercentage from "@/components/AppPercentage.vue";
@@ -283,8 +251,6 @@ import AppTextbox from "@/components/AppTextbox.vue";
 import EntityGrid from "@/components/EntityGrid/EntityGrid.vue";
 import EntityGridModal from "@/components/EntityGrid/EntityGridModal.vue";
 import TheCrossSpeciesGraph from "@/components/TheCrossSpeciesGraph.vue";
-import TheUphenoGraph from "@/components/TheUphenoGraph.vue";
-import type { CrossSpeciesTermClique } from "@/api/model";
 import { sleep } from "@/util/debug";
 
 /** get all files in custom icon folder */

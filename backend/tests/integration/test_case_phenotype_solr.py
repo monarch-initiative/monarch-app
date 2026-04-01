@@ -1,4 +1,5 @@
 """Integration tests for case-phenotype Solr queries."""
+
 import pytest
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 

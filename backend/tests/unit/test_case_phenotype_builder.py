@@ -1,10 +1,7 @@
 """Tests for case-phenotype matrix construction."""
+
 import pytest
 from monarch_py.utils.case_phenotype_utils import build_matrix
-from monarch_py.datamodels.model import (
-    CasePhenotypeMatrixResponse,
-    CaseEntity,
-)
 
 
 class TestBuildMatrix:
@@ -163,14 +160,22 @@ class TestBuildMatrix:
         assert nervous_bin is not None
         assert nervous_bin.phenotype_count == 2
 
-    @pytest.mark.parametrize("query_disease,case_disease,expected_direct,expected_source_id", [
-        ("MONDO:0007078", "MONDO:0007078", True, None),
-        ("MONDO:0007078", "MONDO:0007079", False, "MONDO:0007079"),
-        ("MONDO:0005071", "MONDO:0007080", False, "MONDO:0007080"),
-    ])
+    @pytest.mark.parametrize(
+        "query_disease,case_disease,expected_direct,expected_source_id",
+        [
+            ("MONDO:0007078", "MONDO:0007078", True, None),
+            ("MONDO:0007078", "MONDO:0007079", False, "MONDO:0007079"),
+            ("MONDO:0005071", "MONDO:0007080", False, "MONDO:0007080"),
+        ],
+    )
     def test_direct_indirect_case_flag(
-        self, sample_phenotype_docs, sample_facet_counts,
-        query_disease, case_disease, expected_direct, expected_source_id
+        self,
+        sample_phenotype_docs,
+        sample_facet_counts,
+        query_disease,
+        case_disease,
+        expected_direct,
+        expected_source_id,
     ):
         """Should correctly flag cases as direct or indirect based on disease match."""
         case_docs = [

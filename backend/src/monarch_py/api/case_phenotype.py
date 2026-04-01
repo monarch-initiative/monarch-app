@@ -1,4 +1,5 @@
 """API endpoint for case-phenotype matrix."""
+
 import logging
 import re
 from fastapi import APIRouter, HTTPException, Query, Path

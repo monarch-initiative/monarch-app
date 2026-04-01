@@ -1,4 +1,5 @@
 """Performance benchmark tests for case-phenotype matrix."""
+
 import time
 import pytest
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
@@ -18,10 +19,12 @@ def solr():
 
 
 class TestCasePhenotypePerformance:
-
-    @pytest.mark.parametrize("disease_id,max_seconds,description", [
-        ("MONDO:0007078", THRESHOLD_SMALL_DISEASE, "Achondroplasia (~85 cases)"),
-    ])
+    @pytest.mark.parametrize(
+        "disease_id,max_seconds,description",
+        [
+            ("MONDO:0007078", THRESHOLD_SMALL_DISEASE, "Achondroplasia (~85 cases)"),
+        ],
+    )
     def test_direct_cases_performance(self, solr, disease_id, max_seconds, description):
         start = time.perf_counter()
         result = solr.get_case_phenotype_matrix(
