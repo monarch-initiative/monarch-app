@@ -43,10 +43,17 @@ interface GridBinResponse {
   count: number;
 }
 
+interface QualifierResponse {
+  id: string;
+  value?: string;
+  label?: string;
+}
+
 interface GridCellDataResponse {
+  id: string;
   present: boolean;
   negated?: boolean;
-  qualifiers?: Record<string, unknown>;
+  qualifiers?: Record<string, QualifierResponse>;
   publications?: string[];
   evidence_count?: number;
 }
@@ -129,20 +136,13 @@ function transformCell(cell: GridCellDataResponse): CellData {
   // Parse qualifiers from the backend response into CellQualifier[] for the modal
   const qualifiers: CellQualifier[] = [];
   if (cell.qualifiers) {
-    for (const [key, value] of Object.entries(cell.qualifiers)) {
-      if (value != null) {
-        const qualifier: CellQualifier =
-          typeof value === "object" && value !== null && "id" in value
-            ? {
-                type: key,
-                id: (value as { id?: string }).id,
-                label:
-                  (value as { label?: string }).label ||
-                  (value as { id?: string }).id ||
-                  String(value),
-              }
-            : { type: key, label: String(value) };
-        qualifiers.push(qualifier);
+    for (const [key, qual] of Object.entries(cell.qualifiers)) {
+      if (qual != null) {
+        qualifiers.push({
+          type: key,
+          id: qual.value,
+          label: qual.label || qual.value || key,
+        });
       }
     }
   }

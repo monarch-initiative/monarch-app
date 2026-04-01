@@ -481,12 +481,16 @@ classes:
   CasePhenotypeCellData:
     description: Data for a single case-phenotype cell in the matrix
     slots:
+      - id
       - present
       - negated
       - onset_qualifier
       - onset_qualifier_label
       - publications
     slot_usage:
+      id:
+        identifier: true
+        required: true
       present:
         required: true
       publications:
@@ -548,21 +552,39 @@ classes:
         required: true
       count:
         required: true
+  Qualifier:
+    description: A qualifier key-value pair for an association
+    slots:
+      - id
+      - value
+      - label
+    slot_usage:
+      id:
+        identifier: true
+        required: true
+      label:
+        required: false
   GridCellData:
     description: Data for a cell in the grid
     slots:
+      - id
       - present
       - negated
       - qualifiers
       - publications
       - evidence_count
     slot_usage:
+      id:
+        identifier: true
+        required: true
       present:
         required: true
       qualifiers:
         description: Additional qualifiers for the association
-        range: string
+        range: Qualifier
         multivalued: true
+        inlined: true
+        inlined_as_list: false
       publications:
         multivalued: true
   EntityGridResponse:
@@ -1186,6 +1208,9 @@ slots:
     range: integer
 
   # release slots
+  value:
+    description: The value of a qualifier
+    range: string
   version: string
   kg: string
   sqlite: string

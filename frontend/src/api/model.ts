@@ -13,9 +13,12 @@ export type SearchResultId = string;
 export type CaseEntityId = string;
 export type CasePhenotypeId = string;
 export type HistoPhenoBinId = string;
+export type CasePhenotypeCellDataId = string;
 export type GridColumnEntityId = string;
 export type GridRowEntityId = string;
 export type GridBinId = string;
+export type QualifierId = string;
+export type GridCellDataId = string;
 /**
 * The directionality of an association as it relates to a specified entity, with edges being categorized as incoming or outgoing
 */
@@ -643,7 +646,7 @@ export interface CasePhenotypeMatrixResponse {
     /** List of histopheno bins for grouping phenotypes */
     bins?: HistoPhenoBin[],
     /** Map of case-phenotype cell data keyed by case_id:phenotype_id */
-    cells?: CasePhenotypeCellData[],
+    cells?: {[index: CasePhenotypeCellDataId]: CasePhenotypeCellData },
 }
 
 
@@ -692,6 +695,7 @@ export interface HistoPhenoBin {
  * Data for a single case-phenotype cell in the matrix
  */
 export interface CasePhenotypeCellData {
+    id: string,
     /** Whether the phenotype is present for a case */
     present: boolean,
     negated?: boolean,
@@ -756,14 +760,26 @@ export interface GridBin {
 
 
 /**
+ * A qualifier key-value pair for an association
+ */
+export interface Qualifier {
+    id: string,
+    /** The value of a qualifier */
+    value?: string,
+    label?: string,
+}
+
+
+/**
  * Data for a cell in the grid
  */
 export interface GridCellData {
+    id: string,
     /** Whether the phenotype is present for a case */
     present: boolean,
     negated?: boolean,
     /** Additional qualifiers for the association */
-    qualifiers?: string[],
+    qualifiers?: {[index: QualifierId]: Qualifier },
     publications?: string[],
     /** count of supporting documents, evidence codes, and sources supplying evidence */
     evidence_count?: number,
@@ -791,7 +807,7 @@ export interface EntityGridResponse {
     /** List of bins for grouping row entities */
     bins: GridBin[],
     /** Map of column_id:row_id to cell data */
-    cells: GridCellData[],
+    cells: {[index: GridCellDataId]: GridCellData },
 }
 
 

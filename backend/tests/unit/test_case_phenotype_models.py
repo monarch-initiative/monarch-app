@@ -69,13 +69,13 @@ class TestCasePhenotypeCellData:
     @pytest.mark.parametrize(
         "cell_kwargs,expected_attr,expected_value",
         [
-            ({"present": True}, "present", True),
-            ({"present": True}, "negated", None),
-            ({"present": True, "negated": True}, "negated", True),
-            ({"present": True, "negated": False}, "negated", False),
-            ({"present": True, "onset_qualifier": "P2Y"}, "onset_qualifier", "P2Y"),
-            ({"present": True, "onset_qualifier": "P6M"}, "onset_qualifier", "P6M"),
-            ({"present": True, "onset_qualifier_label": "2 years"}, "onset_qualifier_label", "2 years"),
+            ({"id": "c1", "present": True}, "present", True),
+            ({"id": "c1", "present": True}, "negated", None),
+            ({"id": "c1", "present": True, "negated": True}, "negated", True),
+            ({"id": "c1", "present": True, "negated": False}, "negated", False),
+            ({"id": "c1", "present": True, "onset_qualifier": "P2Y"}, "onset_qualifier", "P2Y"),
+            ({"id": "c1", "present": True, "onset_qualifier": "P6M"}, "onset_qualifier", "P6M"),
+            ({"id": "c1", "present": True, "onset_qualifier_label": "2 years"}, "onset_qualifier_label", "2 years"),
         ],
     )
     def test_cell_attributes(self, cell_kwargs, expected_attr, expected_value):
@@ -94,7 +94,7 @@ class TestCasePhenotypeCellData:
     )
     def test_cell_publications(self, publications, expected_count):
         """Cell should handle publication lists."""
-        cell = CasePhenotypeCellData(present=True, publications=publications)
+        cell = CasePhenotypeCellData(id="c1", present=True, publications=publications)
         if expected_count is None:
             assert cell.publications is None
         else:
@@ -125,7 +125,7 @@ class TestCasePhenotypeMatrixResponse:
         phenotype = CasePhenotype(id="HP:0001250", label="Seizure", bin_id="UPHENO:0004523")
         bin = HistoPhenoBin(id="UPHENO:0004523", label="nervous system", phenotype_count=1)
         cell_key = "MONARCH:case1:HP:0001250"
-        cell = CasePhenotypeCellData(present=True)
+        cell = CasePhenotypeCellData(id=cell_key, present=True)
 
         matrix = CasePhenotypeMatrixResponse(
             disease_id="MONDO:0007078",

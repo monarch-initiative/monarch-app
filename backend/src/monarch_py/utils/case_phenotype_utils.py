@@ -166,6 +166,7 @@ def _build_cells(phenotype_docs: List[dict], case_map: Dict[str, CaseEntity]) ->
 
         cell_key = make_cell_key(case_id, phenotype_id)
         cell = CasePhenotypeCellData(
+            id=cell_key,
             present=True,
             negated=doc.get("negated"),
             onset_qualifier=doc.get("onset_qualifier"),

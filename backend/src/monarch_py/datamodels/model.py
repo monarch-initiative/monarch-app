@@ -648,7 +648,7 @@ class CasePhenotypeMatrixResponse(ConfiguredBaseModel):
     cases: Optional[list[CaseEntity]] = Field(default=None, description="""List of case entities in the matrix""")
     phenotypes: Optional[list[CasePhenotype]] = Field(default=None, description="""List of phenotype entities in the matrix""")
     bins: Optional[list[HistoPhenoBin]] = Field(default=None, description="""List of histopheno bins for grouping phenotypes""")
-    cells: Optional[list[CasePhenotypeCellData]] = Field(default=None, description="""Map of case-phenotype cell data keyed by case_id:phenotype_id""")
+    cells: Optional[dict[str, CasePhenotypeCellData]] = Field(default=None, description="""Map of case-phenotype cell data keyed by case_id:phenotype_id""")
 
 
 class CaseEntity(ConfiguredBaseModel):
@@ -686,6 +686,7 @@ class CasePhenotypeCellData(ConfiguredBaseModel):
     """
     Data for a single case-phenotype cell in the matrix
     """
+    id: str = Field(default=...)
     present: bool = Field(default=..., description="""Whether the phenotype is present for a case""")
     negated: Optional[bool] = Field(default=None)
     onset_qualifier: Optional[str] = Field(default=None)
@@ -731,13 +732,23 @@ class GridBin(ConfiguredBaseModel):
     count: int = Field(default=..., description="""count of documents""")
 
 
+class Qualifier(ConfiguredBaseModel):
+    """
+    A qualifier key-value pair for an association
+    """
+    id: str = Field(default=...)
+    value: Optional[str] = Field(default=None, description="""The value of a qualifier""")
+    label: Optional[str] = Field(default=None)
+
+
 class GridCellData(ConfiguredBaseModel):
     """
     Data for a cell in the grid
     """
+    id: str = Field(default=...)
     present: bool = Field(default=..., description="""Whether the phenotype is present for a case""")
     negated: Optional[bool] = Field(default=None)
-    qualifiers: Optional[list[str]] = Field(default=None, description="""Additional qualifiers for the association""")
+    qualifiers: Optional[dict[str, Qualifier]] = Field(default=None, description="""Additional qualifiers for the association""")
     publications: Optional[list[str]] = Field(default=None)
     evidence_count: Optional[int] = Field(default=None, description="""count of supporting documents, evidence codes, and sources supplying evidence""")
 
@@ -754,7 +765,7 @@ class EntityGridResponse(ConfiguredBaseModel):
     columns: list[GridColumnEntity] = Field(default=..., description="""List of column entities in the grid""")
     rows: list[GridRowEntity] = Field(default=..., description="""List of row entities in the grid""")
     bins: list[GridBin] = Field(default=..., description="""List of bins for grouping row entities""")
-    cells: list[GridCellData] = Field(default=..., description="""Map of column_id:row_id to cell data""")
+    cells: dict[str, GridCellData] = Field(default=..., description="""Map of column_id:row_id to cell data""")
 
 
 # Model rebuild
@@ -802,6 +813,7 @@ CasePhenotypeCellData.model_rebuild()
 GridColumnEntity.model_rebuild()
 GridRowEntity.model_rebuild()
 GridBin.model_rebuild()
+Qualifier.model_rebuild()
 GridCellData.model_rebuild()
 EntityGridResponse.model_rebuild()
 
