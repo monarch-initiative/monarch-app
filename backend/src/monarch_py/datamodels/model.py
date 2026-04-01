@@ -648,7 +648,7 @@ class CasePhenotypeMatrixResponse(ConfiguredBaseModel):
     cases: Optional[list[CaseEntity]] = Field(default=None, description="""List of case entities in the matrix""")
     phenotypes: Optional[list[CasePhenotype]] = Field(default=None, description="""List of phenotype entities in the matrix""")
     bins: Optional[list[HistoPhenoBin]] = Field(default=None, description="""List of histopheno bins for grouping phenotypes""")
-    cells: Optional[dict[str, CasePhenotypeCellData]] = Field(default=None, description="""Map of case-phenotype cell data keyed by case_id:phenotype_id""")
+    cells: Optional[list[CasePhenotypeCellData]] = Field(default=None, description="""Map of case-phenotype cell data keyed by case_id:phenotype_id""")
 
 
 class CaseEntity(ConfiguredBaseModel):
@@ -679,6 +679,7 @@ class HistoPhenoBin(ConfiguredBaseModel):
     id: str = Field(default=...)
     label: str = Field(default=...)
     phenotype_count: int = Field(default=..., description="""Number of phenotypes in a bin""")
+    phenotype_ids: Optional[list[str]] = Field(default=None, description="""List of phenotype identifiers belonging to a bin""")
 
 
 class CasePhenotypeCellData(ConfiguredBaseModel):
@@ -736,7 +737,7 @@ class GridCellData(ConfiguredBaseModel):
     """
     present: bool = Field(default=..., description="""Whether the phenotype is present for a case""")
     negated: Optional[bool] = Field(default=None)
-    qualifiers: Optional[dict[str, Any]] = Field(default=None, description="""Additional qualifiers for the association""")
+    qualifiers: Optional[list[str]] = Field(default=None, description="""Additional qualifiers for the association""")
     publications: Optional[list[str]] = Field(default=None)
     evidence_count: Optional[int] = Field(default=None, description="""count of supporting documents, evidence codes, and sources supplying evidence""")
 
@@ -753,7 +754,7 @@ class EntityGridResponse(ConfiguredBaseModel):
     columns: list[GridColumnEntity] = Field(default=..., description="""List of column entities in the grid""")
     rows: list[GridRowEntity] = Field(default=..., description="""List of row entities in the grid""")
     bins: list[GridBin] = Field(default=..., description="""List of bins for grouping row entities""")
-    cells: dict[str, GridCellData] = Field(default=..., description="""Map of column_id:row_id to cell data""")
+    cells: list[GridCellData] = Field(default=..., description="""Map of column_id:row_id to cell data""")
 
 
 # Model rebuild

@@ -683,6 +683,8 @@ export interface HistoPhenoBin {
     label: string,
     /** Number of phenotypes in a bin */
     phenotype_count: number,
+    /** List of phenotype identifiers belonging to a bin */
+    phenotype_ids?: string[],
 }
 
 

@@ -466,6 +466,7 @@ classes:
       - id
       - label
       - phenotype_count
+      - phenotype_ids
     slot_usage:
       id:
         required: true
@@ -474,6 +475,9 @@ classes:
         required: true
       phenotype_count:
         required: true
+      phenotype_ids:
+        multivalued: true
+        required: false
   CasePhenotypeCellData:
     description: Data for a single case-phenotype cell in the matrix
     slots:
@@ -1244,6 +1248,9 @@ slots:
   phenotype_count:
     description: Number of phenotypes in a bin
     range: integer
+  phenotype_ids:
+    description: List of phenotype identifiers belonging to a bin
+    multivalued: true
   present:
     description: Whether the phenotype is present for a case
     range: boolean
