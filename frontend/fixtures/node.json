@@ -448,16 +448,28 @@
       "url": "https://www.icd10data.com/search?s=G71.0"
     },
     {
-      "id": "Orphanet:98473",
-      "url": "https://www.orpha.net/en/disease/detail/98473"
+      "id": "icd11.foundation:1464662404",
+      "url": null
+    },
+    {
+      "id": "SCTID:73297009",
+      "url": "http://identifiers.org/snomedct/73297009"
+    },
+    {
+      "id": "DOID:9884",
+      "url": "http://purl.obolibrary.org/obo/DOID_9884"
+    },
+    {
+      "id": "MEDGEN:44527",
+      "url": "http://identifiers.org/medgen/44527"
     },
     {
       "id": "NCIT:C84910",
       "url": "http://purl.obolibrary.org/obo/NCIT_C84910"
     },
     {
-      "id": "DOID:9884",
-      "url": "http://purl.obolibrary.org/obo/DOID_9884"
+      "id": "Orphanet:98473",
+      "url": "https://www.orpha.net/en/disease/detail/98473"
     },
     {
       "id": "UMLS:C0026850",
@@ -466,18 +478,6 @@
     {
       "id": "MESH:D009136",
       "url": "http://identifiers.org/mesh/D009136"
-    },
-    {
-      "id": "SCTID:73297009",
-      "url": "http://identifiers.org/snomedct/73297009"
-    },
-    {
-      "id": "MEDGEN:44527",
-      "url": "http://identifiers.org/medgen/44527"
-    },
-    {
-      "id": "icd11.foundation:1464662404",
-      "url": null
     }
   ],
   "external_links": [
@@ -545,21 +545,21 @@
   "association_counts": [
     {
       "label": "Disease Model",
-      "count": 244,
+      "count": 240,
       "category": "biolink:GenotypeToDiseaseAssociation",
       "count_direct": 13,
       "count_with_orthologs": null
     },
     {
       "label": "Disease to Phenotype",
-      "count": 4231,
+      "count": 4226,
       "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
       "count_direct": 0,
       "count_with_orthologs": null
     },
     {
       "label": "Causal Gene",
-      "count": 132,
+      "count": 130,
       "category": "biolink:CausalGeneToDiseaseAssociation",
       "count_direct": 0,
       "count_with_orthologs": null
@@ -573,14 +573,14 @@
     },
     {
       "label": "Variant to Disease",
-      "count": 490,
+      "count": 483,
       "category": "biolink:VariantToDiseaseAssociation",
       "count_direct": 0,
       "count_with_orthologs": null
     },
     {
       "label": "Medical Action",
-      "count": 4,
+      "count": 10,
       "category": "biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation",
       "count_direct": 0,
       "count_with_orthologs": null
@@ -597,9 +597,9 @@
   "node_hierarchy": {
     "super_classes": [
       {
-        "id": "MONDO:0100546",
+        "id": "MONDO:0700223",
         "category": "biolink:Disease",
-        "name": "hereditary neuromuscular disease",
+        "name": "hereditary skeletal muscle disorder",
         "full_name": null,
         "deprecated": null,
         "description": null,
@@ -657,9 +657,9 @@
         "has_descendant_count": null
       },
       {
-        "id": "MONDO:0700223",
+        "id": "MONDO:0100546",
         "category": "biolink:Disease",
-        "name": "hereditary skeletal muscle disorder",
+        "name": "hereditary neuromuscular disease",
         "full_name": null,
         "deprecated": null,
         "description": null,
@@ -689,9 +689,9 @@
     ],
     "sub_classes": [
       {
-        "id": "MONDO:0100228",
+        "id": "MONDO:0019950",
         "category": "biolink:Disease",
-        "name": "LAMA2-related muscular dystrophy",
+        "name": "congenital muscular dystrophy",
         "full_name": null,
         "deprecated": null,
         "description": null,
@@ -719,39 +719,9 @@
         "has_descendant_count": null
       },
       {
-        "id": "MONDO:0700285",
+        "id": "MONDO:0010675",
         "category": "biolink:Disease",
-        "name": "DMD-related muscular dystrophy",
-        "full_name": null,
-        "deprecated": null,
-        "description": null,
-        "xref": null,
-        "provided_by": null,
-        "in_taxon": null,
-        "in_taxon_label": null,
-        "symbol": null,
-        "synonym": null,
-        "broad_synonym": null,
-        "exact_synonym": null,
-        "narrow_synonym": null,
-        "related_synonym": null,
-        "subsets": null,
-        "uri": null,
-        "iri": null,
-        "namespace": null,
-        "has_phenotype": null,
-        "has_phenotype_label": null,
-        "has_phenotype_closure": null,
-        "has_phenotype_closure_label": null,
-        "has_phenotype_count": null,
-        "has_descendant": null,
-        "has_descendant_label": null,
-        "has_descendant_count": null
-      },
-      {
-        "id": "MONDO:0018949",
-        "category": "biolink:Disease",
-        "name": "distal myopathy",
+        "name": "muscular dystrophy, cardiac type",
         "full_name": null,
         "deprecated": null,
         "description": null,
@@ -809,36 +779,6 @@
         "has_descendant_count": null
       },
       {
-        "id": "MONDO:0019950",
-        "category": "biolink:Disease",
-        "name": "congenital muscular dystrophy",
-        "full_name": null,
-        "deprecated": null,
-        "description": null,
-        "xref": null,
-        "provided_by": null,
-        "in_taxon": null,
-        "in_taxon_label": null,
-        "symbol": null,
-        "synonym": null,
-        "broad_synonym": null,
-        "exact_synonym": null,
-        "narrow_synonym": null,
-        "related_synonym": null,
-        "subsets": null,
-        "uri": null,
-        "iri": null,
-        "namespace": null,
-        "has_phenotype": null,
-        "has_phenotype_label": null,
-        "has_phenotype_closure": null,
-        "has_phenotype_closure_label": null,
-        "has_phenotype_count": null,
-        "has_descendant": null,
-        "has_descendant_label": null,
-        "has_descendant_count": null
-      },
-      {
         "id": "MONDO:0008028",
         "category": "biolink:Disease",
         "name": "muscular dystrophy, Barnes type",
@@ -869,9 +809,9 @@
         "has_descendant_count": null
       },
       {
-        "id": "MONDO:0010675",
+        "id": "MONDO:0018949",
         "category": "biolink:Disease",
-        "name": "muscular dystrophy, cardiac type",
+        "name": "distal myopathy",
         "full_name": null,
         "deprecated": null,
         "description": null,
@@ -959,9 +899,39 @@
         "has_descendant_count": null
       },
       {
-        "id": "MONDO:0010678",
+        "id": "MONDO:0700285",
         "category": "biolink:Disease",
-        "name": "muscular dystrophy, progressive Pectorodorsal",
+        "name": "DMD-related muscular dystrophy",
+        "full_name": null,
+        "deprecated": null,
+        "description": null,
+        "xref": null,
+        "provided_by": null,
+        "in_taxon": null,
+        "in_taxon_label": null,
+        "symbol": null,
+        "synonym": null,
+        "broad_synonym": null,
+        "exact_synonym": null,
+        "narrow_synonym": null,
+        "related_synonym": null,
+        "subsets": null,
+        "uri": null,
+        "iri": null,
+        "namespace": null,
+        "has_phenotype": null,
+        "has_phenotype_label": null,
+        "has_phenotype_closure": null,
+        "has_phenotype_closure_label": null,
+        "has_phenotype_count": null,
+        "has_descendant": null,
+        "has_descendant_label": null,
+        "has_descendant_count": null
+      },
+      {
+        "id": "MONDO:0100228",
+        "category": "biolink:Disease",
+        "name": "LAMA2-related muscular dystrophy",
         "full_name": null,
         "deprecated": null,
         "description": null,
@@ -992,6 +962,36 @@
         "id": "MONDO:0016106",
         "category": "biolink:Disease",
         "name": "progressive muscular dystrophy",
+        "full_name": null,
+        "deprecated": null,
+        "description": null,
+        "xref": null,
+        "provided_by": null,
+        "in_taxon": null,
+        "in_taxon_label": null,
+        "symbol": null,
+        "synonym": null,
+        "broad_synonym": null,
+        "exact_synonym": null,
+        "narrow_synonym": null,
+        "related_synonym": null,
+        "subsets": null,
+        "uri": null,
+        "iri": null,
+        "namespace": null,
+        "has_phenotype": null,
+        "has_phenotype_label": null,
+        "has_phenotype_closure": null,
+        "has_phenotype_closure_label": null,
+        "has_phenotype_count": null,
+        "has_descendant": null,
+        "has_descendant_label": null,
+        "has_descendant_count": null
+      },
+      {
+        "id": "MONDO:0010678",
+        "category": "biolink:Disease",
+        "name": "muscular dystrophy, progressive Pectorodorsal",
         "full_name": null,
         "deprecated": null,
         "description": null,
