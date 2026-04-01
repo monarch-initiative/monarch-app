@@ -54,36 +54,42 @@
       </g>
 
       <!-- Root node -->
-      <g>
-        <rect
-          :x="rootNode.x - rootNode.w / 2"
-          :y="rootNode.y - rootNode.h / 2"
-          :width="rootNode.w"
-          :height="rootNode.h"
-          rx="8"
-          ry="8"
-          class="node node-root"
-        />
-        <text
-          :x="rootNode.x"
-          :y="rootNode.y - 8"
-          class="node-text node-id"
-          text-anchor="middle"
-        >
-          {{ clique.root_term.id }}
-        </text>
-        <text
-          :x="rootNode.x"
-          :y="rootNode.y + 10"
-          class="node-text node-name"
-          text-anchor="middle"
-        >
-          {{ truncate(clique.root_term.name || "", 30) }}
-        </text>
+      <g v-tooltip="nodeTooltip(clique.root_term)">
+        <a :href="`/${clique.root_term.id}`">
+          <rect
+            :x="rootNode.x - rootNode.w / 2"
+            :y="rootNode.y - rootNode.h / 2"
+            :width="rootNode.w"
+            :height="rootNode.h"
+            rx="8"
+            ry="8"
+            class="node node-root"
+          />
+          <text
+            :x="rootNode.x"
+            :y="rootNode.y - 8"
+            class="node-text node-id"
+            text-anchor="middle"
+          >
+            {{ clique.root_term.id }}
+          </text>
+          <text
+            :x="rootNode.x"
+            :y="rootNode.y + 10"
+            class="node-text node-name"
+            text-anchor="middle"
+          >
+            {{ truncate(clique.root_term.name || "", 30) }}
+          </text>
+        </a>
       </g>
 
       <!-- Child nodes -->
-      <g v-for="(child, i) in childNodes" :key="'n-' + i">
+      <g
+        v-for="(child, i) in childNodes"
+        :key="'n-' + i"
+        v-tooltip="nodeTooltip(child.entity)"
+      >
         <a :href="`/${child.entity.id}`">
           <rect
             :x="child.x - child.w / 2"
@@ -283,6 +289,10 @@ function getTaxonIcon(entity: Entity): string | undefined {
 function truncate(text: string, max: number): string {
   return text.length > max ? text.slice(0, max - 1) + "\u2026" : text;
 }
+
+function nodeTooltip(entity: Entity): string {
+  return `<strong>${entity.id}</strong><br/>${entity.name || ""}`;
+}
 </script>
 
 <style scoped>
@@ -327,6 +337,11 @@ svg {
 .node-root {
   fill: hsl(185, 55%, 38%);
   stroke: hsl(185, 55%, 30%);
+  cursor: pointer;
+}
+
+.node-root:hover {
+  fill: hsl(185, 55%, 45%);
 }
 
 .node-child {
@@ -342,7 +357,6 @@ svg {
 
 .node-text {
   font-family: "Poppins", sans-serif;
-  pointer-events: none;
 }
 
 .node-id {
