@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Optional
 
 from monarch_py.datamodels.model import AssociationTableResults, FacetValue, SearchResults
 
@@ -81,11 +81,13 @@ class SearchInterface(ABC):
         """
         raise NotImplementedError
 
-    def get_association_counts(self, entity: str) -> List[FacetValue]:
+    def get_association_counts(self, entity: str, entity_category: Optional[str] = None) -> List[FacetValue]:
         """
         Get counts of associations for a given entity
         Args:
             entity (str): Entity to get association counts for
+            entity_category (str, optional): The biolink category of the entity. If 'biolink:Gene',
+                ortholog associations will also be counted.
         Returns:
             List[FacetValue]: List of FacetValue objects representing the counts of associations for the given entity
         """

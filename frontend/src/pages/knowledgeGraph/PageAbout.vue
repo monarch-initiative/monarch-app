@@ -178,7 +178,7 @@ import AppHeading from "@/components/AppHeading.vue";
 import AppSection from "@/components/AppSection.vue";
 import AppTileCard from "@/components/AppTileCard.vue";
 import PageTitle from "@/components/ThePageTitle.vue";
-import metadata from "@/pages/explore/metadata.json";
+import metadata from "@/data/metadata.json";
 import { formatNumber } from "@/util/string";
 
 const points = [
@@ -321,9 +321,9 @@ h1 {
 
   line {
     stroke: currentColor;
-    stroke-width: 2;
     stroke-dasharray: 1 3;
     stroke-linecap: round;
+    stroke-width: 2;
   }
 }
 

@@ -17,15 +17,6 @@
         @change="onChange"
         @delete="onDelete"
       />
-      <AppButton
-        v-if="!minimal"
-        v-tooltip="'How to use'"
-        class="help-icon"
-        text="?"
-        design="circle"
-        color="secondary"
-        to="help"
-      />
     </div>
 
     <!-- facet dropdown filters -->
@@ -202,7 +193,7 @@ async function onChange(value: string | Option, originalSearch: string) {
     if (props.headerBox && !originalSearch) return;
     /** view all results on explore page */
     await router.push({
-      name: "KnowledgeGraphResults",
+      path: "/results",
       query: {
         search: originalSearch,
       },

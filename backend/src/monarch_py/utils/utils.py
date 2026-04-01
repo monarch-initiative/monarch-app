@@ -81,12 +81,10 @@ def get_link_for_curie(curie: str) -> ExpandedCurie:
 
 def get_provided_by_link(provided_by: str) -> ExpandedCurie:
     """Returns a link to the provided_by resource."""
-    base_url = "https://monarch-initiative.github.io/monarch-ingest/Sources"
-    pb = provided_by.replace("_nodes", "").replace("_edges", "").split("_")
-    slug = f"{pb[0]}/#{'_'.join(pb[1:])}"
-    return ExpandedCurie(
-        id=provided_by.replace("_nodes", "").replace("_edges", "") if provided_by else None, url=f"{base_url}/{slug}"
-    )
+    base_url = "https://monarch-app.monarchinitiative.org/Sources"
+    pb = provided_by.replace("_nodes", "").replace("_edges", "")
+    source = pb.split("_")[0]
+    return ExpandedCurie(id=pb if provided_by else None, url=f"{base_url}/{source}/")
 
 
 ### Release info methods ###
@@ -131,4 +129,4 @@ def get_release_metadata(release: str, dev: bool = False):
 
 def print_release_info(release_info: Release):
     for key, value in release_info.model_dump().items():
-        console.print(f"{key+' ':—<12} {value}")
+        console.print(f"{key + ' ':—<12} {value}")

@@ -16,7 +16,7 @@ import AppNodeBadge from "@/components/AppNodeBadge.vue";
 const searchSuggestions = [
   {
     term: "Ehlers-Danlos syndrome",
-    id: "MONDO:0007523",
+    id: "MONDO:0020066",
     category: "biolink:Disease",
   },
   { term: "Fanconi anemia", id: "MONDO:0019391", category: "biolink:Disease" },

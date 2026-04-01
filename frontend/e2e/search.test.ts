@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { log } from "../playwright.config";
 
+test.use({ viewport: { width: 1400, height: 900 } });
 log();
 
 test("Recent/frequent results show", async ({ page }) => {
@@ -19,7 +20,7 @@ test("Recent/frequent results show", async ({ page }) => {
 
   for (const node of nodes) {
     await page.goto("/" + node);
-    await expect(page.locator("#hierarchy")).toBeVisible();
+    await expect(page.locator("#breadcrumbs")).toBeVisible();
     await page.waitForTimeout(500);
     await page.goto("/");
     await page.waitForSelector("input");

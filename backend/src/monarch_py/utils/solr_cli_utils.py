@@ -43,7 +43,7 @@ def ensure_solr(version: str = "latest", overwrite: bool = False) -> None:
                 f"""
 Solr container requires write access to {monarchstow.base}.
 Please run the following command to set permissions:
-    [grey84 on black]sudo chgrp -R 8983 {monarchstow.base} && \ [/]
+    [grey84 on black]sudo chgrp -R 8983 {monarchstow.base} && \\ [/]
     [grey84 on black]sudo chmod -R g+w {monarchstow.base}[/]
             """
             )
@@ -60,7 +60,7 @@ def check_for_solr(dc: docker.DockerClient, quiet: bool = False):
 def get_solr(update: bool = False):
     """Checks for Solr data and container, and returns a SolrImplementation."""
     if update:
-        ensure_solr(update)
+        ensure_solr(overwrite=update)
     if check_for_solr(dc=docker.from_env(), quiet=True):
         return SolrImplementation()
     else:

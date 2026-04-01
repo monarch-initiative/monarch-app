@@ -8,6 +8,38 @@
     <AppHeading>Testbed</AppHeading>
   </AppSection>
 
+  <!-- entity grid (mock data) -->
+  <AppSection width="full">
+    <AppHeading>Entity Grid (Mock Data)</AppHeading>
+    <p style="margin-bottom: 1rem; color: #666">
+      Generic grid component for entity × grouped-class matrices. Click bins to
+      expand, click cells for details.
+    </p>
+    <EntityGrid
+      :matrix="entityGridMatrix"
+      :config="entityGridConfig"
+      @cell-click="handleEntityGridCellClick"
+    />
+    <EntityGridModal
+      v-model="showEntityGridModal"
+      :column-id="selectedColumn?.id || ''"
+      :column-label="selectedColumn?.label"
+      :row-id="selectedRow?.id || ''"
+      :row-label="selectedRow?.label"
+      :cell-data="selectedCellData"
+      :config="entityGridConfig"
+    />
+  </AppSection>
+
+  <!-- cross-species graph -->
+  <AppSection>
+    <AppHeading>Cross-Species Graph (Cardiomegaly)</AppHeading>
+    <TheCrossSpeciesGraph
+      :clique="cardiomegalyClique"
+      current-id="HP:0001640"
+    />
+  </AppSection>
+
   <!-- phenogrid -->
   <AppSection>
     <AppHeading>Phenogrid - Search mode</AppHeading>
@@ -229,6 +261,13 @@
 import { ref } from "vue";
 import { omit } from "lodash";
 import { useEventListener } from "@vueuse/core";
+import type {
+  CellData,
+  ColumnEntity,
+  EntityGridConfig,
+  EntityGridMatrix,
+  RowEntity,
+} from "@/api/entity-grid/types";
 import AppButton from "@/components/AppButton.vue";
 import AppInput from "@/components/AppInput.vue";
 import AppPercentage from "@/components/AppPercentage.vue";
@@ -236,17 +275,227 @@ import AppSelectAutocomplete from "@/components/AppSelectAutocomplete.vue";
 import AppSelectMulti from "@/components/AppSelectMulti.vue";
 import AppSelectSingle from "@/components/AppSelectSingle.vue";
 import AppSelectTags from "@/components/AppSelectTags.vue";
+import AppStatus from "@/components/AppStatus.vue";
 import type { Sort } from "@/components/AppTable.vue";
 import AppTable from "@/components/AppTable.vue";
 import AppTabs from "@/components/AppTabs.vue";
 import AppTextbox from "@/components/AppTextbox.vue";
+import EntityGrid from "@/components/EntityGrid/EntityGrid.vue";
+import EntityGridModal from "@/components/EntityGrid/EntityGridModal.vue";
+import TheCrossSpeciesGraph from "@/components/TheCrossSpeciesGraph.vue";
 import TheUphenoGraph from "@/components/TheUphenoGraph.vue";
+import type { CrossSpeciesTermClique } from "@/api/model";
 import { sleep } from "@/util/debug";
 
 /** get all files in custom icon folder */
 const icons = Object.values(import.meta.glob("@/assets/icons/*.svg")).map(
   (icon) => (icon.name.split("/").pop() || "").replace(/\.svg$/, ""),
 );
+
+// =============================================================================
+// Cross-Species Graph Demo (Cardiomegaly)
+// =============================================================================
+
+const cardiomegalyClique: CrossSpeciesTermClique = {
+  root_term: {
+    id: "UPHENO:0001471",
+    name: "increased size of the heart",
+  },
+  clique_entities: [
+    {
+      id: "HP:0001640",
+      name: "Cardiomegaly",
+      in_taxon: "NCBITaxon:9606",
+      in_taxon_label: "Homo sapiens",
+    },
+    {
+      id: "MP:0000274",
+      name: "enlarged heart",
+      in_taxon: "NCBITaxon:10090",
+      in_taxon_label: "Mus musculus",
+    },
+    {
+      id: "ZP:0005438",
+      name: "increased heart size",
+      in_taxon: "NCBITaxon:7955",
+      in_taxon_label: "Danio rerio",
+    },
+  ],
+  clique_associations: [
+    {
+      id: "clique:hp-upheno",
+      subject: "HP:0001640",
+      predicate: "biolink:subclass_of",
+      object: "UPHENO:0001471",
+      knowledge_level: "logical_entailment",
+      agent_type: "automated_agent",
+    },
+    {
+      id: "clique:mp-upheno",
+      subject: "MP:0000274",
+      predicate: "biolink:subclass_of",
+      object: "UPHENO:0001471",
+      knowledge_level: "logical_entailment",
+      agent_type: "automated_agent",
+    },
+    {
+      id: "clique:zp-upheno",
+      subject: "ZP:0005438",
+      predicate: "biolink:subclass_of",
+      object: "UPHENO:0001471",
+      knowledge_level: "logical_entailment",
+      agent_type: "automated_agent",
+    },
+    {
+      id: "clique:hp-mp-same",
+      subject: "HP:0001640",
+      predicate: "biolink:same_as",
+      object: "MP:0000274",
+      knowledge_level: "knowledge_assertion",
+      agent_type: "automated_agent",
+    },
+    {
+      id: "clique:hp-zp-same",
+      subject: "HP:0001640",
+      predicate: "biolink:same_as",
+      object: "ZP:0005438",
+      knowledge_level: "knowledge_assertion",
+      agent_type: "automated_agent",
+    },
+    {
+      id: "clique:mp-zp-homologous",
+      subject: "MP:0000274",
+      predicate: "biolink:homologous_to",
+      object: "ZP:0005438",
+      knowledge_level: "knowledge_assertion",
+      agent_type: "automated_agent",
+    },
+  ],
+};
+
+// =============================================================================
+// Entity Grid Demo
+// =============================================================================
+
+/** Mock columns (e.g., cases, diseases, orthologs) */
+const mockColumns: ColumnEntity[] = [
+  { id: "case:001", label: "Patient A", isDirect: true },
+  { id: "case:002", label: "Patient B", isDirect: true },
+  {
+    id: "case:003",
+    label: "Patient C",
+    isDirect: false,
+    sourceEntityLabel: "Sub-disease X",
+  },
+  { id: "case:004", label: "Patient D", isDirect: true },
+  {
+    id: "case:005",
+    label: "Patient E",
+    isDirect: false,
+    sourceEntityLabel: "Sub-disease Y",
+  },
+];
+
+/** Mock rows (e.g., phenotypes, anatomy terms) */
+const mockRows: RowEntity[] = [
+  { id: "HP:0001250", label: "Seizures", binId: "nervous" },
+  { id: "HP:0001249", label: "Intellectual disability", binId: "nervous" },
+  { id: "HP:0000729", label: "Autistic behavior", binId: "nervous" },
+  { id: "HP:0000252", label: "Microcephaly", binId: "head" },
+  { id: "HP:0000316", label: "Hypertelorism", binId: "head" },
+  { id: "HP:0001182", label: "Brachydactyly", binId: "skeletal" },
+  { id: "HP:0002650", label: "Scoliosis", binId: "skeletal" },
+  { id: "HP:0001631", label: "Atrial septal defect", binId: "cardio" },
+];
+
+/** Mock bins (groupings) */
+const mockBins = [
+  {
+    id: "nervous",
+    label: "Nervous System",
+    rowEntityIds: ["HP:0001250", "HP:0001249", "HP:0000729"],
+    count: 3,
+  },
+  {
+    id: "head",
+    label: "Head and Neck",
+    rowEntityIds: ["HP:0000252", "HP:0000316"],
+    count: 2,
+  },
+  {
+    id: "skeletal",
+    label: "Skeletal System",
+    rowEntityIds: ["HP:0001182", "HP:0002650"],
+    count: 2,
+  },
+  {
+    id: "cardio",
+    label: "Cardiovascular",
+    rowEntityIds: ["HP:0001631"],
+    count: 1,
+  },
+];
+
+/** Mock cell data */
+const mockCells = new Map<string, CellData>([
+  ["case:001:HP:0001250", { hasData: true, negated: false }],
+  ["case:001:HP:0001249", { hasData: true, negated: false }],
+  ["case:001:HP:0000252", { hasData: true, negated: true }],
+  ["case:002:HP:0001250", { hasData: true, negated: false }],
+  ["case:002:HP:0000729", { hasData: true, negated: false }],
+  ["case:002:HP:0001182", { hasData: true, negated: false }],
+  ["case:003:HP:0001249", { hasData: true, negated: false }],
+  ["case:003:HP:0000316", { hasData: true, negated: false }],
+  ["case:003:HP:0002650", { hasData: true, negated: false }],
+  ["case:003:HP:0001631", { hasData: true, negated: false }],
+  ["case:004:HP:0001250", { hasData: true, negated: false }],
+  ["case:004:HP:0000252", { hasData: true, negated: false }],
+  ["case:004:HP:0001182", { hasData: true, negated: true }],
+  ["case:005:HP:0000729", { hasData: true, negated: false }],
+  ["case:005:HP:0000316", { hasData: true, negated: false }],
+  ["case:005:HP:0001631", { hasData: true, negated: false }],
+]);
+
+/** Entity grid matrix */
+const entityGridMatrix: EntityGridMatrix = {
+  contextId: "MONDO:0007078",
+  contextName: "Achondroplasia",
+  columns: mockColumns,
+  bins: mockBins,
+  rows: mockRows,
+  cells: mockCells,
+  totalColumns: mockColumns.length,
+  totalRows: mockRows.length,
+};
+
+/** Entity grid configuration */
+const entityGridConfig: EntityGridConfig = {
+  columnLabel: "Case",
+  columnLabelPlural: "Cases",
+  rowLabel: "Phenotype",
+  rowLabelPlural: "Phenotypes",
+  binLabel: "System",
+  cellDisplayMode: "binary",
+  showNegated: true,
+};
+
+/** Modal state */
+const showEntityGridModal = ref(false);
+const selectedColumn = ref<ColumnEntity | null>(null);
+const selectedRow = ref<RowEntity | null>(null);
+const selectedCellData = ref<CellData | null>(null);
+
+/** Handle cell click */
+function handleEntityGridCellClick(
+  columnId: string,
+  rowId: string,
+  cellData: CellData | null,
+) {
+  selectedColumn.value = mockColumns.find((c) => c.id === columnId) || null;
+  selectedRow.value = mockRows.find((r) => r.id === rowId) || null;
+  selectedCellData.value = cellData;
+  showEntityGridModal.value = true;
+}
 
 /** test phenogrid iframe embedding */
 useEventListener(

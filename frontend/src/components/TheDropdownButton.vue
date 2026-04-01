@@ -65,10 +65,15 @@ $wrap: 1000px;
 
 .dropdown-btn {
   display: flex;
+  min-width: max-content;
   gap: 0.1em;
+  font-size: 0.9em;
   white-space: nowrap;
   :hover {
     color: hsl(185, 75%, 80%);
+  }
+  @media (max-width: 1100px) {
+    font-size: 0.85em;
   }
 }
 li {
@@ -93,6 +98,7 @@ li {
 
 .menu-list {
   padding: 0.5rem 1.5em;
+  font-size: 1em;
 }
 
 /* Show menu when isOpen is true */

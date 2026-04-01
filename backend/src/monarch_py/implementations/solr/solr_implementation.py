@@ -1,3 +1,4 @@
+import logging
 import os
 from dataclasses import dataclass
 from typing import List, Union, Optional
@@ -9,15 +10,17 @@ from monarch_py.datamodels.model import (
     AssociationCountList,
     AssociationResults,
     AssociationTableResults,
+    CasePhenotypeMatrixResponse,
     CategoryGroupedAssociationResults,
+    CrossSpeciesTermClique,
     Entity,
+    EntityGridResponse,
     HistoPheno,
     MappingResults,
     MultiEntityAssociationResults,
     Node,
     NodeHierarchy,
     SearchResults,
-    CrossSpeciesTermClique,
 )
 from monarch_py.datamodels.solr import core
 from monarch_py.datamodels.category_enums import (
@@ -26,9 +29,11 @@ from monarch_py.datamodels.category_enums import (
     EntityCategory,
     MappingPredicate,
 )
+from monarch_py.utils.association_type_utils import AssociationTypeMappings
 from monarch_py.implementations.solr.solr_parsers import (
     convert_facet_fields,
     convert_facet_queries,
+    normalize_solr_doc_for_model,
     parse_association_counts,
     parse_association_table,
     parse_associations,
@@ -43,6 +48,10 @@ from monarch_py.implementations.solr.solr_query_utils import (
     build_association_query,
     build_association_table_query,
     build_autocomplete_query,
+    build_case_disease_query,
+    build_case_phenotype_query,
+    build_grid_column_query,
+    build_grid_row_query,
     build_histopheno_query,
     build_mapping_query,
     build_multi_entity_association_query,
@@ -54,8 +63,14 @@ from monarch_py.interfaces.entity_interface import EntityInterface
 from monarch_py.interfaces.search_interface import SearchInterface
 from monarch_py.interfaces.grounding_interface import GroundingInterface
 from monarch_py.service.solr_service import SolrService
+from monarch_py.utils.case_phenotype_utils import build_matrix
+from monarch_py.utils.entity_grid_utils import build_entity_grid
+from monarch_py.datamodels.grid_configs import get_grid_config
+from monarch_py.datamodels.grid_groupings import get_row_grouping
 from monarch_py.utils.entity_utils import get_expanded_curie, get_uri
 from monarch_py.utils.utils import get_provided_by_link, get_links_for_field
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -64,9 +79,9 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
 
     base_url: str = os.getenv("MONARCH_SOLR_URL", "http://localhost:8983/solr")
 
-    # Prefixes representing ontologies used for cross-species term cliques
     CROSS_SPECIES_PREFIXES = ["UPHENO", "UBERON"]
     CROSS_SPECIES_CLIQUE_CATEGORIES = ["biolink:PhenotypicFeature", "biolink:AnatomicalEntity"]
+    SIDEWAYS_PREDICATES = [AssociationPredicate.SAME_AS, AssociationPredicate.HOMOLOGOUS_TO]
 
     def solr_is_available(self) -> bool:
         """Check if the Solr instance is available"""
@@ -98,7 +113,9 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             return parse_entity(solr_document)
 
         # Get extra data (this logic is very tricky to test because of the calls to Solr)
-        entity = Entity(**solr_document)
+        # Normalize for Node since that's the target model with additional fields
+        normalized_doc = normalize_solr_doc_for_model(solr_document, Node)
+        entity = Entity(**normalized_doc)
         entity.uri = get_uri(entity.id)
         if "biolink:Disease" == entity.category:
             # Get mode of inheritance
@@ -131,7 +148,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             **entity.model_dump(),
             cross_species_term_clique=self._get_cross_species_term_clique(entity),
             node_hierarchy=self._get_node_hierarchy(entity),
-            association_counts=self.get_association_counts(id).items,
+            association_counts=self.get_association_counts(id, entity_category=entity.category).items,
             external_links=get_links_for_field(entity.xref) if entity.xref else [],
             provided_by_link=get_provided_by_link(entity.provided_by),
             mappings=self._get_mapped_entities(entity),
@@ -213,64 +230,6 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             ).items
         ]
 
-    def _get_cross_species_term_clique(self, entity: Entity) -> Optional[CrossSpeciesTermClique]:
-        """Get a CrossSpeciesTermClique for the given entity"""
-
-        if entity.category not in self.CROSS_SPECIES_CLIQUE_CATEGORIES:
-            return None
-
-        # Check if entity is a root term (from one of our prefixes)
-        is_root_term = any(entity.id.startswith(f"{prefix}:") for prefix in self.CROSS_SPECIES_PREFIXES)
-
-        if is_root_term:
-            parent = self.get_entity(entity.id, extra=False)
-            possible_children = self.get_counterpart_entities(
-                this_entity=parent,
-                subject_category=["biolink:PhenotypicFeature"],
-                predicate=[AssociationPredicate.SUBCLASS_OF],
-                object=parent.id,
-            )
-            # Filter out children that are also root terms
-            children = [
-                child
-                for child in possible_children
-                if not any(child.id.startswith(f"{prefix}:") for prefix in self.CROSS_SPECIES_PREFIXES)
-            ]
-            return CrossSpeciesTermClique(root_term=parent, entities=children, associations=[])
-        else:
-            possible_parents = self.get_counterpart_entities(
-                this_entity=entity,
-                subject=entity.id,
-                predicate=[AssociationPredicate.SUBCLASS_OF],
-                object_category=[EntityCategory.PHENOTYPIC_FEATURE],
-                object_namespace=self.CROSS_SPECIES_PREFIXES,
-            )
-            # It might be too big of an assumption that there's a single parent,
-            # TODO: this is worth checking
-            parent = possible_parents[0] if possible_parents else None
-            if parent is None:
-                return None
-
-            # If a parent is found, get its children
-            possible_children = self.get_counterpart_entities(
-                this_entity=parent,
-                object=parent.id,
-                predicate=[AssociationPredicate.SUBCLASS_OF],
-                subject_category=[EntityCategory.PHENOTYPIC_FEATURE],
-            )
-            # Filter out children that are also root terms
-            children = [
-                child
-                for child in possible_children
-                if not any(child.id.startswith(f"{prefix}:") for prefix in self.CROSS_SPECIES_PREFIXES)
-            ]
-            # This probably can't happen, since we we would be on a phenotype term
-            # that went up to a parent, so this entity should be a child of that parent
-            if children is None:
-                return None
-
-            return CrossSpeciesTermClique(root_term=parent, entities=children, associations=[])
-
     def _get_node_hierarchy(self, entity: Entity) -> NodeHierarchy:
         """
         Get a NodeHierarchy for the given entity
@@ -295,6 +254,99 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             sub_classes=sub_classes,
         )
 
+    ### Cross-species term clique ###
+
+    def _get_cross_species_term_clique(self, entity: Entity) -> Optional[CrossSpeciesTermClique]:
+        """Get a CrossSpeciesTermClique for the given entity.
+
+        Finds the UPHENO/UBERON parent and species-specific children, then fetches
+        vertical (subclass_of) and horizontal (same_as, homologous_to) associations
+        between clique members.
+        """
+        if entity.category not in self.CROSS_SPECIES_CLIQUE_CATEGORIES:
+            return None
+
+        is_root_term = any(entity.id.startswith(f"{prefix}:") for prefix in self.CROSS_SPECIES_PREFIXES)
+
+        if is_root_term:
+            root_term = entity
+            children = self._get_species_specific_children(entity.id)
+        else:
+            root_term = self._find_cross_species_parent(entity)
+            if root_term is None:
+                return None
+            children = self._get_species_specific_children(root_term.id)
+
+        if not children:
+            return None
+
+        # Collect vertical associations (children → root via subclass_of)
+        child_ids = [c.id for c in children]
+        vertical_assocs = self.get_associations(
+            subject=child_ids,
+            object=[root_term.id],
+            predicate=[AssociationPredicate.SUBCLASS_OF],
+            direct=True,
+            limit=500,
+        ).items
+
+        # Collect sideways associations (same_as, homologous_to between children)
+        sideways_assocs = []
+        if len(child_ids) > 1:
+            all_sideways = self.get_associations(
+                subject=child_ids,
+                predicate=self.SIDEWAYS_PREDICATES,
+                direct=True,
+                limit=500,
+            ).items
+            # Filter to only edges where both endpoints are in this clique
+            child_id_set = set(child_ids)
+            sideways_assocs = [a for a in all_sideways if a.object in child_id_set]
+            sideways_assocs = self._deduplicate_sideways(sideways_assocs)
+
+        return CrossSpeciesTermClique(
+            root_term=root_term,
+            clique_entities=children,
+            clique_associations=vertical_assocs + sideways_assocs,
+        )
+
+    def _find_cross_species_parent(self, entity: Entity) -> Optional[Entity]:
+        """Find the UPHENO/UBERON parent of a species-specific term."""
+        parents = self.get_counterpart_entities(
+            this_entity=entity,
+            subject=entity.id,
+            predicate=[AssociationPredicate.SUBCLASS_OF],
+        )
+        cross_species_parents = [
+            p for p in parents
+            if any(p.id.startswith(f"{prefix}:") for prefix in self.CROSS_SPECIES_PREFIXES)
+        ]
+        return cross_species_parents[0] if cross_species_parents else None
+
+    def _get_species_specific_children(self, root_id: str) -> list[Entity]:
+        """Get species-specific (non-UPHENO/UBERON) children of a cross-species root term."""
+        all_children = self.get_counterpart_entities(
+            this_entity=Entity(id=root_id),
+            object=root_id,
+            predicate=[AssociationPredicate.SUBCLASS_OF],
+        )
+        return [
+            c for c in all_children
+            if not any(c.id.startswith(f"{prefix}:") for prefix in self.CROSS_SPECIES_PREFIXES)
+        ]
+
+    @staticmethod
+    def _deduplicate_sideways(assocs: list[Association]) -> list[Association]:
+        """Keep one direction per (subject, predicate, object) pair for bidirectional edges."""
+        seen = set()
+        deduped = []
+        for a in assocs:
+            key = tuple(sorted([a.subject, a.object])) + (a.predicate,)
+            if key not in seen:
+                seen.add(key)
+                deduped.append(a)
+        return deduped
+
     ####################################
     # Implements: AssociationInterface #
     ####################################
@@ -314,6 +366,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         object_namespace: Optional[List[str]] = None,
         object_taxon: Optional[List[str]] = None,
         entity: Optional[List[str]] = None,
+        primary_knowledge_source: Optional[List[str]] = None,
         direct: bool = False,
         q: Optional[str] = None,
         facet_fields: Optional[List[str]] = None,
@@ -359,6 +412,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             object_category=[c.value for c in object_category] if object_category else [],
             object_taxon=[object_taxon] if isinstance(object_taxon, str) else object_taxon,
             object_namespace=[object_namespace] if isinstance(object_namespace, str) else object_namespace,
+            primary_knowledge_source=primary_knowledge_source,
             direct=direct,
             q=q,
             facet_fields=facet_fields,
@@ -494,12 +548,28 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         results = parse_autocomplete(query_result)
         return results
 
-    def get_association_counts(self, entity: str) -> AssociationCountList:
-        """Get list of association counts for a given entity"""
-        query = build_association_counts_query(entity)
+    def get_association_counts(self, entity: str, entity_category: Optional[str] = None) -> AssociationCountList:
+        """Get list of association counts for a given entity
+
+        Args:
+            entity: The entity ID to get association counts for.
+            entity_category: The biolink category of the entity (e.g. 'biolink:Gene').
+                If the entity is a gene, ortholog associations will also be counted.
+        """
+        entities = [entity]
+        if entity_category == "biolink:Gene":
+            ortholog_associations = self.get_associations(
+                entity=[entity], predicate=[AssociationPredicate.ORTHOLOGOUS_TO], limit=500
+            )
+            orthologous_entities = [
+                self._get_counterpart_entity(a, Entity(id=entity)) for a in ortholog_associations.items
+            ]
+            entities.extend([ent.id for ent in orthologous_entities])
+
+        query = build_association_counts_query(entities)
         solr = SolrService(base_url=self.base_url, core=core.ASSOCIATION)
         query_result = solr.query(query)
-        association_counts = parse_association_counts(query_result, entity)
+        association_counts = parse_association_counts(query_result, entities)
         return association_counts
 
     def get_association_facets(
@@ -562,7 +632,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         entities = [entity]
         if traverse_orthologs:
             ortholog_associations = self.get_associations(
-                entity=[entity], predicate=[AssociationPredicate.ORTHOLOGOUS_TO]
+                entity=[entity], predicate=[AssociationPredicate.ORTHOLOGOUS_TO], limit=500
             )
             orthologous_entities = [
                 self._get_counterpart_entity(a, Entity(id=entity)) for a in ortholog_associations.items
@@ -629,3 +699,431 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         search_result = parse_search(query_result)
         entities = [entity for entity in search_result.items[:3]]
         return entities
+
+    #######################################
+    # Case-Phenotype Matrix               #
+    #######################################
+
+    def get_case_phenotype_matrix(
+        self,
+        disease_id: str,
+        direct_only: bool = True,
+        limit: int = 200,
+    ) -> CasePhenotypeMatrixResponse:
+        """Fetch case-phenotype matrix for a disease.
+
+        Execution flow:
+        1. Query for case-disease associations to get case list and count
+        2. Check count against limit, raise error if exceeded
+        3. Query for case-phenotype associations with JOIN (includes facets)
+        4. Build and return matrix response
+
+        Args:
+            disease_id: MONDO disease ID (e.g., "MONDO:0007078")
+            direct_only: If True, only cases with exactly this disease
+            limit: Maximum number of cases allowed
+
+        Returns:
+            CasePhenotypeMatrixResponse with complete matrix data
+
+        Raises:
+            ValueError: If case count exceeds limit
+        """
+        # Step 1: Get cases for this disease
+        case_query_params = build_case_disease_query(
+            disease_id=disease_id,
+            direct_only=direct_only,
+            rows=limit + 1,
+        )
+        case_result = self._raw_solr_query(case_query_params)
+        case_docs = case_result.get("response", {}).get("docs", [])
+
+        # Step 2: Check limit
+        if len(case_docs) > limit:
+            raise ValueError(
+                f"Case count ({len(case_docs)}) exceeds limit ({limit}). "
+                f"Use direct=true or increase limit."
+            )
+
+        # Handle no cases
+        if not case_docs:
+            return CasePhenotypeMatrixResponse(
+                disease_id=disease_id,
+                disease_name=self._get_entity_name(disease_id),
+                total_cases=0,
+                total_phenotypes=0,
+                cases=[],
+                phenotypes=[],
+                bins=[],
+                cells={},
+            )
+
+        # Step 3: Get phenotype associations via JOIN query
+        phenotype_query_params = build_case_phenotype_query(
+            disease_id=disease_id,
+            direct_only=direct_only,
+        )
+        phenotype_result = self._raw_solr_query(phenotype_query_params)
+        phenotype_docs = phenotype_result.get("response", {}).get("docs", [])
+        facet_counts = phenotype_result.get("facet_counts", {}).get("facet_queries", {})
+
+        # Step 4: Build matrix
+        return build_matrix(
+            disease_id=disease_id,
+            disease_name=self._get_entity_name(disease_id),
+            case_docs=case_docs,
+            phenotype_docs=phenotype_docs,
+            facet_counts=facet_counts,
+        )
+
+    def get_entity_grid(
+        self,
+        context_id: str,
+        grid_type: str,
+        direct_only: bool = True,
+        limit: int = 200,
+    ) -> EntityGridResponse:
+        """Fetch entity grid for any supported grid type.
+
+        This is a generic 2-hop query that works for multiple grid types:
+        - case-phenotype: Disease -> Case × Phenotype
+        - disease-phenotype: Gene -> Disease × Phenotype
+        - ortholog-phenotype: Gene -> Ortholog × Phenotype
+
+        Execution flow:
+        1. Get grid configuration for the specified type
+        2. Query for column entities (first hop)
+        3. Check count against limit
+        4. Query for row associations via JOIN (second hop, includes facets)
+        5. Build and return grid response
+
+        Args:
+            context_id: The context entity ID (e.g., disease ID, gene ID)
+            grid_type: The type of grid to generate
+            direct_only: If True, only direct associations; if False, use closure
+            limit: Maximum number of column entities allowed
+
+        Returns:
+            EntityGridResponse with complete grid data
+
+        Raises:
+            ValueError: If column count exceeds limit or grid type is unknown
+        """
+        # Step 1: Get configuration
+        config = get_grid_config(grid_type)
+        grouping = get_row_grouping(config.row_entity_category.value)
+
+        # Step 2: Get column entities
+        col_params = build_grid_column_query(
+            context_id=context_id,
+            config=config,
+            direct_only=direct_only,
+            rows=limit + 1,
+        )
+        col_result = self._raw_solr_query(col_params)
+        col_docs = col_result.get("response", {}).get("docs", [])
+
+        # Step 3: Check limit
+        if len(col_docs) > limit:
+            raise ValueError(
+                f"Column count ({len(col_docs)}) exceeds limit ({limit}). "
+                f"Use direct=true or reduce the scope."
+            )
+
+        # Handle no columns
+        if not col_docs:
+            context_name = self._get_entity_name(context_id)
+            return EntityGridResponse(
+                context_id=context_id,
+                context_name=context_name,
+                context_category=config.context_category.value,
+                total_columns=0,
+                total_rows=0,
+                columns=[],
+                rows=[],
+                bins=[],
+                cells={},
+            )
+
+        # Step 4: Get row associations via JOIN query
+        row_params = build_grid_row_query(
+            context_id=context_id,
+            config=config,
+            grouping=grouping,
+            direct_only=direct_only,
+        )
+        row_result = self._raw_solr_query(row_params)
+        row_docs = row_result.get("response", {}).get("docs", [])
+        facet_counts = row_result.get("facet_counts", {}).get("facet_queries", {})
+
+        # Step 5: Build grid
+        return build_entity_grid(
+            context_id=context_id,
+            context_name=self._get_entity_name(context_id),
+            context_category=config.context_category.value,
+            config=config,
+            grouping=grouping,
+            column_docs=col_docs,
+            row_docs=row_docs,
+            facet_counts=facet_counts,
+        )
+
+    def get_generic_entity_grid(
+        self,
+        context_id: str,
+        column_assoc_categories: List[str],
+        row_assoc_categories: List[str],
+        row_grouping: str = "histopheno",
+        group_columns_by_category: bool = False,
+        direct_only: bool = True,
+        limit: int = 500,
+    ) -> EntityGridResponse:
+        """Fetch generic entity grid with configurable association categories.
+
+        This method allows specifying association categories directly,
+        enabling flexible grid construction without predefined configurations.
+
+        Args:
+            context_id: The context entity ID (e.g., gene ID, disease ID)
+            column_assoc_categories: List of association category values for context -> column
+            row_assoc_categories: List of association category values for column -> row
+            row_grouping: How to group rows ("histopheno" or "none")
+            group_columns_by_category: If True, sort columns by their source association category
+            direct_only: If True, only direct associations; if False, use closure
+            limit: Maximum number of column entities
+
+        Returns:
+            EntityGridResponse with complete grid data
+
+        Raises:
+            ValueError: If column count exceeds limit or configuration is invalid
+        """
+        from monarch_py.datamodels.grid_configs import GridTypeConfig
+        from monarch_py.datamodels.grid_groupings import get_row_grouping, get_empty_grouping
+        from monarch_py.datamodels.category_enums import AssociationCategory, EntityCategory
+        from monarch_py.implementations.solr.solr_query_utils import (
+            build_multi_category_column_query,
+            build_multi_category_row_query,
+        )
+        from monarch_py.utils.entity_grid_utils import build_entity_grid, sort_columns_by_category
+
+        # Get context entity's category to determine field mappings
+        context_entity = self.get_entity(context_id, extra=False)
+        if not context_entity:
+            raise ValueError(f"Context entity not found: {context_id}")
+
+        context_category = context_entity.category
+        if isinstance(context_category, list):
+            context_category = context_category[0] if context_category else "biolink:NamedThing"
+
+        # Determine field mappings using association type metadata
+        first_col_cat = column_assoc_categories[0]
+        mapping = AssociationTypeMappings.get_mapping(first_col_cat)
+
+        if mapping and mapping.subject_category and mapping.object_category:
+            # Use YAML metadata to determine direction
+            if context_category == mapping.subject_category:
+                context_field = "subject"
+                column_field = "object"
+                context_closure_field = "subject_closure"
+            elif context_category == mapping.object_category:
+                context_field = "object"
+                column_field = "subject"
+                context_closure_field = "object_closure"
+            else:
+                # Context category doesn't match either side - try heuristic fallback
+                logger.warning(
+                    "Context category %s doesn't match mapping for %s "
+                    "(subject=%s, object=%s). Falling back to string heuristic.",
+                    context_category, first_col_cat,
+                    mapping.subject_category, mapping.object_category,
+                )
+                if "Gene" in first_col_cat:
+                    context_field = "subject"
+                    column_field = "object"
+                    context_closure_field = "subject_closure"
+                else:
+                    context_field = "object"
+                    column_field = "subject"
+                    context_closure_field = "object_closure"
+        else:
+            # No metadata available - fall back to heuristics
+            logger.warning(
+                "No association type mapping found for %s. "
+                "Falling back to string heuristic for field direction.",
+                first_col_cat,
+            )
+            if "Gene" in first_col_cat:
+                context_field = "subject"
+                column_field = "object"
+                context_closure_field = "subject_closure"
+            else:
+                context_field = "object"
+                column_field = "subject"
+                context_closure_field = "object_closure"
+
+        # Row association field mappings
+        # Most phenotype associations have phenotype as object
+        row_context_field = "subject"
+        row_entity_field = "object"
+
+        # Get grouping
+        if row_grouping == "histopheno":
+            grouping = get_row_grouping(EntityCategory.PHENOTYPIC_FEATURE.value)
+        else:
+            grouping = get_empty_grouping()
+
+        # Step 1: Get column entities (filtering out columns with no row associations)
+        col_params = build_multi_category_column_query(
+            context_id=context_id,
+            column_assoc_categories=column_assoc_categories,
+            context_field=context_field,
+            context_closure_field=context_closure_field,
+            column_field=column_field,
+            direct_only=direct_only,
+            row_assoc_categories=row_assoc_categories,
+            row_context_field=row_context_field,
+            filter_empty_columns=True,
+            rows=limit + 1,
+        )
+        col_result = self._raw_solr_query(col_params)
+        col_docs = col_result.get("response", {}).get("docs", [])
+
+        # Step 2: Check limit
+        if len(col_docs) > limit:
+            raise ValueError(
+                f"Column count ({len(col_docs)}) exceeds limit ({limit}). "
+                f"Use direct=true or reduce the scope."
+            )
+
+        # Step 3: Handle no columns
+        if not col_docs:
+            return EntityGridResponse(
+                context_id=context_id,
+                context_name=self._get_entity_name(context_id),
+                context_category=context_category,
+                total_columns=0,
+                total_rows=0,
+                columns=[],
+                rows=[],
+                bins=[],
+                cells={},
+            )
+
+        # Step 4: Get row associations via JOIN query
+        row_params = build_multi_category_row_query(
+            context_id=context_id,
+            column_assoc_categories=column_assoc_categories,
+            row_assoc_categories=row_assoc_categories,
+            context_field=context_field,
+            context_closure_field=context_closure_field,
+            column_field=column_field,
+            row_context_field=row_context_field,
+            row_entity_field=row_entity_field,
+            grouping=grouping,
+            direct_only=direct_only,
+        )
+        row_result = self._raw_solr_query(row_params)
+        row_docs = row_result.get("response", {}).get("docs", [])
+        facet_counts = row_result.get("facet_counts", {}).get("facet_queries", {})
+
+        # Create a dynamic config for build_entity_grid
+        # Determine column entity category from association type
+        if "Disease" in column_assoc_categories[0]:
+            col_entity_cat = EntityCategory.DISEASE
+        elif "Homology" in column_assoc_categories[0]:
+            col_entity_cat = EntityCategory.GENE
+        elif "CaseToDisease" in column_assoc_categories[0]:
+            col_entity_cat = EntityCategory.CASE
+        else:
+            col_entity_cat = EntityCategory.NAMED_THING
+
+        # Determine row entity category (check if any category involves phenotypes)
+        row_has_phenotype = any(
+            "Phenotype" in cat or "Phenotypic" in cat for cat in row_assoc_categories
+        )
+        if row_has_phenotype:
+            row_entity_cat = EntityCategory.PHENOTYPIC_FEATURE
+        else:
+            row_entity_cat = EntityCategory.NAMED_THING
+
+        # Build a temporary config (using first row category for config compatibility)
+        temp_config = GridTypeConfig(
+            name="Generic Grid",
+            context_category=EntityCategory.NAMED_THING,
+            column_assoc_categories=[
+                AssociationCategory(cat) for cat in column_assoc_categories
+            ],
+            row_assoc_category=AssociationCategory(row_assoc_categories[0]),
+            row_entity_category=row_entity_cat,
+            column_entity_category=col_entity_cat,
+            context_field=context_field,
+            column_field=column_field,
+            row_context_field=row_context_field,
+            row_entity_field=row_entity_field,
+            context_closure_field=context_closure_field,
+        )
+
+        # Step 5: Build grid
+        grid = build_entity_grid(
+            context_id=context_id,
+            context_name=self._get_entity_name(context_id),
+            context_category=context_category,
+            config=temp_config,
+            grouping=grouping,
+            column_docs=col_docs,
+            row_docs=row_docs,
+            facet_counts=facet_counts,
+        )
+
+        # Step 6: Optionally sort columns by category
+        if group_columns_by_category and len(column_assoc_categories) > 1:
+            grid.columns = sort_columns_by_category(
+                grid.columns,
+                column_assoc_categories,
+            )
+
+        return grid
+
+    def _get_entity_name(self, entity_id: str) -> str:
+        """Fetch human-readable entity name.
+
+        Args:
+            entity_id: Entity ID
+
+        Returns:
+            Entity name or the ID if name cannot be fetched
+        """
+        try:
+            entity = self.get_entity(entity_id, extra=False)
+            return entity.name if entity and entity.name else entity_id
+        except Exception:
+            return entity_id
+
+    def _raw_solr_query(self, params: dict) -> dict:
+        """Execute a raw Solr query with dictionary parameters.
+
+        Args:
+            params: Dictionary of Solr query parameters
+
+        Returns:
+            Raw JSON response from Solr as a dictionary
+        """
+        # Handle list parameters (like facet.query)
+        query_parts = []
+        for key, value in params.items():
+            if isinstance(value, list):
+                for item in value:
+                    query_parts.append(f"{key}={requests.utils.quote(str(item))}")
+            elif isinstance(value, bool):
+                query_parts.append(f"{key}={str(value).lower()}")
+            else:
+                query_parts.append(f"{key}={requests.utils.quote(str(value))}")
+
+        query_string = "&".join(query_parts)
+        url = f"{self.base_url}/{core.ASSOCIATION.value}/select?{query_string}"
+
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
+

@@ -4,53 +4,51 @@ on:
     branches:
       - main
 
+defaults:
+  run:
+    working-directory: ./backend
+
+env:
+  UV_VERSION: "0.7.x"
+
 jobs:
   test-backend:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: ["3.9", "3.10", "3.11"]
+        python-version: ["3.10", "3.11", "3.12"]
         os: [ubuntu-latest]
-        #os: [ ubuntu-latest, windows-latest ]
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
-      #----------------------------------------------
-      #          install & configure poetry
-      #----------------------------------------------
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          version: ${{ env.UV_VERSION }}
 
-      #----------------------------------------------
-      #    install your root project, if required
-      #----------------------------------------------
+      - name: Verify lockfile is up-to-date
+        run: uv lock --check
+
       - name: Install library
-        run: poetry -C backend install --no-interaction
+        run: uv sync --extra dev
 
-      #----------------------------------------------
-      #              run pytest
-      #----------------------------------------------
       - name: Run tests
-        run: poetry -C backend run pytest backend/tests
+        run: uv run pytest tests
 
-      #----------------------------------------------
-      #              coverage report
-      #----------------------------------------------
-      - name: Generate coverage results
+      - name: Generate coverage report
         run: |
-          poetry -C backend run coverage run -m pytest backend/tests
-          poetry -C backend run coverage xml
-          poetry -C backend run coverage report -m
+          uv run coverage run -m pytest tests
+          uv run coverage xml
+          uv run coverage report -m
         shell: bash
 
-      #----------------------------------------------
-      #           upload coverage results
-      #----------------------------------------------
       - name: Upload coverage report
         if: github.repository == 'monarch-initiative/monarch-app'
         uses: codecov/codecov-action@v5
@@ -59,4 +57,3 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage.xml
           fail_ci_if_error: true
-

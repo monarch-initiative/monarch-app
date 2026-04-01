@@ -7,15 +7,17 @@
     <AppIcon v-if="arrows" class="arrow" :icon="`arrow-${arrowDirection}`" />
     <span v-if="association.negated" class="negated-text">NOT</span>
 
-    <span v-html="highlightedPredicate"></span>
+    <span
+      :class="{ 'highlighted-text': highlight }"
+      v-html="getFormattedPredicateLabel(predicate)"
+    />
+
     <AppIcon v-if="arrows" class="arrow" :icon="`arrow-${arrowDirection}`" />
   </span>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { startCase } from "lodash";
-import { getCategoryLabel } from "@/api/categories";
 import { type DirectionalAssociation } from "@/api/model";
 
 type Props = {
@@ -26,14 +28,24 @@ type Props = {
   /** whether to display arrows vertically */
   vertical?: boolean;
   arrows?: boolean;
-  /** function to hightlight search text */
-  getHighlightedText?: (
-    text: string,
-    transformFn?: (text: string) => string,
-  ) => string;
+  /** boolean to use for hightlighting */
+  highlight?: boolean;
 };
 
 const props = defineProps<Props>();
+
+const predicate = computed(
+  () =>
+    props?.association?.highlighting?.predicate?.[0] ??
+    props.association.predicate,
+);
+const getFormattedPredicateLabel = (category?: string | string[]) => {
+  const raw = Array.isArray(category) ? category[0] : category;
+  if (!raw) return "";
+
+  const value = raw.replace(/^biolink:/, "").replace(/_/g, " ");
+  return value;
+};
 
 /** direction of arrows */
 const arrowDirection = computed(() =>
@@ -45,13 +57,6 @@ const arrowDirection = computed(() =>
       ? "down"
       : "right",
 );
-
-const highlightedPredicate = computed(() => {
-  if (!props.getHighlightedText) return "";
-  const predicate = props.association.predicate || "";
-  const transformedText = startCase(getCategoryLabel(predicate)).toLowerCase();
-  return props.getHighlightedText(predicate, () => transformedText);
-});
 </script>
 
 <style lang="scss" scoped>
@@ -76,5 +81,9 @@ const highlightedPredicate = computed(() => {
 .negated-text {
   color: $error;
   font-weight: 600;
+}
+
+.highlighted-text ::v-deep(em) {
+  background-color: yellow;
 }
 </style>

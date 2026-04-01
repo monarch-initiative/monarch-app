@@ -3,32 +3,50 @@
   <PageTitle id="kg-about" title="Documentation" />
   <AppSection width="big">
     <p>
-      The Monarch Initiative Documentation page provides resources on data
-      ingestion processes and application usage. It includes guides on
-      configuring data ingests and utilizing Monarch's knowledge graph tools.
+      The Monarch Initiative Documentation provides comprehensive resources on
+      the Monarch Knowledge Graph, including data sources, the KG build
+      pipeline, query tools, and application usage.
     </p>
     <ul>
-      <li>
-        <AppLink
-          to="https://monarch-initiative.github.io/monarch-ingest/"
-          :no-icon="true"
-        >
-          Monarch Ingest Documentation
-        </AppLink>
-        : This documentation details the data ingest process into the Monarch
-        Knowledge Graph, including information on data sources, ingest
-        pipelines, and transformation processes.
-      </li>
       <li>
         <AppLink
           to="https://monarch-app.monarchinitiative.org/"
           :no-icon="true"
         >
-          Monarch Application Guide
+          Monarch KG Documentation
         </AppLink>
-        : This guide offers instructions on using the Monarch Knowledge Graph
-        tools, including installation procedures, usage examples, and
-        command-line interface (CLI) commands.
+        : The central documentation site covering KG data sources, the build
+        process, monarch-py, the API, Neo4j access, and more.
+      </li>
+      <li>
+        <AppLink
+          to="https://monarch-app.monarchinitiative.org/docs/Sources/"
+          :no-icon="true"
+        >
+          KG Data Sources
+        </AppLink>
+        : Detailed documentation of each data source ingested into the Monarch
+        Knowledge Graph.
+      </li>
+      <li>
+        <AppLink
+          to="https://monarch-app.monarchinitiative.org/docs/KG-Build-Process/kg-build-process/"
+          :no-icon="true"
+        >
+          KG Build Process
+        </AppLink>
+        : How the knowledge graph is assembled from download through transform,
+        merge, and load.
+      </li>
+      <li>
+        <AppLink
+          to="https://neo4j.monarchinitiative.org/browser/"
+          :no-icon="true"
+        >
+          Neo4j Browser
+        </AppLink>
+        : Query the Monarch KG directly using Cypher via the Neo4j browser
+        interface.
       </li>
     </ul>
   </AppSection>

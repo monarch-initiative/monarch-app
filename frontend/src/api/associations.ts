@@ -2,6 +2,13 @@ import { apiUrl, request } from "@/api";
 import type { AssociationTableResults } from "@/api/model";
 import type { Sort } from "@/components/AppTable.vue";
 
+/** categories where the association query traverses orthologs */
+export const TRAVERSE_ORTHOLOG_CATEGORIES = new Set([
+  "biolink:GeneToPhenotypicFeatureAssociation",
+  "biolink:CausalGeneToDiseaseAssociation",
+  "biolink:CorrelatedGeneToDiseaseAssociation",
+]);
+
 /** get associations between a node and a category */
 export const getAssociations = async (
   nodeId = "",
@@ -12,6 +19,8 @@ export const getAssociations = async (
   direct = "false",
   search?: string,
   sort: Sort = null,
+  facetFields?: string[],
+  filterQueries?: string[],
 ) => {
   /** make query params */
   let sortBy = sort?.key;
@@ -43,6 +52,8 @@ export const getAssociations = async (
     traverse_orthologs: !!traverseOrthologs,
     direct: direct,
     sort: sort ? `${sortBy} ${sort.direction === "up" ? "asc" : "desc"}` : null,
+    facet_fields: facetFields,
+    filter_queries: filterQueries,
   };
 
   /** make query */
@@ -63,6 +74,7 @@ export const downloadAssociations = async (
   direct = "false",
   search?: string,
   sort: Sort = null,
+  filterQueries?: string[],
 ) => {
   /** make query params */
 
@@ -81,6 +93,7 @@ export const downloadAssociations = async (
     sort: sort ? `${sortBy} ${sort.direction === "up" ? "asc" : "desc"}` : null,
     download: true,
     format: "tsv",
+    filter_queries: filterQueries,
   };
 
   /** make query */

@@ -5,6 +5,14 @@
     >Error loading histopheno data</AppStatus
   >
 
+  <!--
+    Moved chart title outside of ApexCharts SVG:
+    - SVG <text> cannot wrap responsively
+    - Placing title in plain HTML allows CSS control and wrapping on narrow screens
+  -->
+  <p class="title">
+    Breakdown of phenotypes associated with {{ props.node.name }}
+  </p>
   <!-- results -->
   <Apex
     v-if="series[0]?.data?.length"
@@ -44,9 +52,6 @@ const options = computed<ApexOptions>(() => ({
     type: "bar",
     redrawOnParentResize: true,
   },
-  title: {
-    text: `Breakdown of phenotypes associated with ${props.node.name}`,
-  },
   colors: ["#00acc1"],
   plotOptions: {
     bar: {
@@ -68,7 +73,11 @@ const options = computed<ApexOptions>(() => ({
       color: "#000000",
     },
   },
-  yaxis: {},
+  yaxis: {
+    labels: {
+      formatter: (val: string | number) => String(val).replace(/_/g, " "),
+    },
+  },
   grid: {
     xaxis: {
       lines: {
@@ -114,3 +123,10 @@ watch([() => route.path, () => props.node.id], runGetHistoPheno, {
   immediate: true,
 });
 </script>
+
+<style lang="scss" scoped>
+.title {
+  font-weight: 500;
+  text-align: left;
+}
+</style>

@@ -19,13 +19,14 @@
           : state || undefined
       "
     >
-      <AppNodeText :text="name" :get-highlighted-text="getHighlightedText" />
+      <AppNodeText :text="name" :highlight="highlight" />
+      <span v-if="info" class="info">({{ info }})</span>
     </AppLink>
     <span v-else>
       <span class="name">
-        <AppNodeText :text="name" :get-highlighted-text="getHighlightedText" />
+        <AppNodeText :text="name" :highlight="highlight" />
       </span>
-      <span v-if="info">({{ info }})</span>
+      <span v-if="info" class="info">({{ info }})</span>
     </span>
   </span>
 </template>
@@ -61,11 +62,8 @@ type Props = {
   absolute?: boolean;
   /** whether to show id. not shown by default, unless name/label empty. */
   showId?: boolean;
-  /** function for highlighting the search text */
-  getHighlightedText?: (
-    text: string,
-    transformFn?: (text: string) => string,
-  ) => string;
+  /** boolen to use for highlighting */
+  highlight?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -75,7 +73,7 @@ const props = withDefaults(defineProps<Props>(), {
   state: undefined,
   absolute: false,
   showId: false,
-  getHighlightedText: (text: string) => text,
+  highlight: false,
 });
 
 /** name/label */
@@ -96,9 +94,10 @@ const info = computed(() =>
 
 /** whether to make a link or plain text */
 const isLink = computed(() => {
-  /** make sure we're already on page we're linking to */
+  const decodedPath = decodeURIComponent(window.location.pathname);
+  /** make sure we're not already on the page we'd link to */
   return (
-    !window.location.pathname.endsWith("/" + (props.node.id || "")) &&
+    !decodedPath.endsWith("/" + (props.node.id || "")) &&
     /** make sure id is a valid curie */
     !!props.node.id?.match(/^\w/)
   );

@@ -1,7 +1,7 @@
-from typing import Dict, List
+from typing import Any, Dict, List, Type, Union, get_args, get_origin, get_type_hints
 
 from loguru import logger
-from pydantic import ValidationError
+from pydantic import BaseModel, ValidationError
 
 from monarch_py.datamodels.model import (
     Association,
@@ -25,8 +25,83 @@ from monarch_py.datamodels.model import (
 )
 from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQueryResult
 from monarch_py.service.curie_service import converter
+from monarch_py.implementations.solr.solr_query_utils import build_association_count_suffixes
 from monarch_py.utils.association_type_utils import get_association_type_mapping_by_query_string
 from monarch_py.utils.utils import get_links_for_field, get_provided_by_link
+
+
+#############################
+# Solr document normalizers #
+#############################
+
+
+def _is_scalar_type(type_hint: Any) -> bool:
+    """
+    Check if a type hint represents a scalar (non-list) type.
+
+    Handles Optional[T], Union[T, None], and plain types.
+    Returns True for str, int, bool, float, etc.
+    Returns False for list[T], List[T], etc.
+    """
+    origin = get_origin(type_hint)
+
+    # Handle Optional[T] which is Union[T, None]
+    if origin is Union:
+        args = get_args(type_hint)
+        # Filter out NoneType and check remaining types
+        non_none_args = [a for a in args if a is not type(None)]
+        if len(non_none_args) == 1:
+            return _is_scalar_type(non_none_args[0])
+        return False
+
+    # list, List[T] have origin of list
+    if origin is list:
+        return False
+
+    # Plain types (str, int, bool, etc.) have no origin
+    if origin is None:
+        return type_hint in (str, int, float, bool)
+
+    return False
+
+
+def normalize_solr_doc_for_model(doc: Dict, model_class: Type[BaseModel]) -> Dict:
+    """
+    Normalize a Solr document to match Pydantic model field types.
+
+    Solr often returns single values as lists when the field schema isn't
+    pre-defined (dynamic fields default to multiValued). This converts
+    single-element lists to scalars for fields that expect scalar types
+    in the target Pydantic model.
+
+    Args:
+        doc: Raw Solr document dictionary
+        model_class: Target Pydantic model class to normalize for
+
+    Returns:
+        Normalized document with list-to-scalar conversions applied
+    """
+    try:
+        hints = get_type_hints(model_class)
+    except Exception:
+        # If we can't get type hints, return doc unchanged
+        return doc
+
+    normalized = dict(doc)
+
+    for field_name, value in doc.items():
+        if field_name not in hints:
+            continue
+        if not isinstance(value, list):
+            continue
+
+        field_type = hints[field_name]
+        if _is_scalar_type(field_type):
+            # Convert list to scalar: take first element or None
+            normalized[field_name] = value[0] if value else None
+
+    return normalized
+
 
 ####################
 # Parser functions #
@@ -89,34 +164,77 @@ def parse_associations(
         )
 
 
-def parse_association_counts(query_result: SolrQueryResult, entity: str) -> AssociationCountList:
-    subject_query = f'AND (subject:"{entity}" OR subject_closure:"{entity}")'
-    object_query = f'AND (object:"{entity}" OR object_closure:"{entity}" OR disease_context_qualifier:"{entity}" OR disease_context_qualifier_closure:"{entity}")'
-    association_count_dict: Dict[str, AssociationCount] = {}
+def parse_association_counts(query_result: SolrQueryResult, entities: List[str]) -> AssociationCountList:
+    """Parse facet query results into AssociationCount objects with direct, closure, and ortholog counts.
+
+    Args:
+        query_result: Solr query result containing facet queries
+        entities: List of entity IDs (primary entity first, then orthologs)
+    """
+    has_orthologs = len(entities) > 1
+    suffixes = build_association_count_suffixes(entities)
+
+    # Map from suffix key to (count_level, is_subject_direction)
+    suffix_metadata = {
+        "direct_subject": ("direct", True),
+        "direct_object": ("direct", False),
+        "closure_subject": ("closure", True),
+        "closure_object": ("closure", False),
+        "orthologs_subject": ("orthologs", True),
+        "orthologs_object": ("orthologs", False),
+    }
+
+    # Collect counts into a dict keyed by (label, category)
+    # Each entry accumulates direct, closure, and ortholog counts
+    count_data: Dict[str, Dict] = {}
+
+    def _ensure_entry(label: str, category: str):
+        if label not in count_data:
+            count_data[label] = {"category": category, "direct": 0, "closure": 0, "orthologs": 0}
+
     for k, v in query_result.facet_counts.facet_queries.items():
-        if v > 0:
-            if k.endswith(subject_query):
-                original_query = k.replace(f" {subject_query}", "").lstrip("(").rstrip(")")
-                agm = get_association_type_mapping_by_query_string(original_query)
-                label = agm.subject_label
-            elif k.endswith(object_query):
-                original_query = k.replace(f" {object_query}", "").lstrip("(").rstrip(")")
-                agm = get_association_type_mapping_by_query_string(original_query)
-                label = agm.object_label
-                # always use forward for symmetric association types
-            else:
-                raise ValueError(f"Unexpected facet query when building association counts: {k}")
-            # Symmetric associations need to be summed together, since both directions will be returned
-            # when searching for associations by type
-            if label in association_count_dict and agm.symmetric:
-                association_count_dict[label].count += v
-            else:
-                association_count_dict[label] = AssociationCount(
-                    label=label,
-                    count=v,
-                    category=agm.category,
-                )
-    return AssociationCountList(items=list(association_count_dict.values()))
+        if v == 0:
+            continue
+
+        # Determine which suffix matches and which count level it represents
+        count_level = None
+        is_subject_direction = None
+        original_query = None
+
+        for suffix_key, suffix_str in suffixes.all_suffixes.items():
+            if k.endswith(suffix_str):
+                original_query = k.replace(f" {suffix_str}", "").lstrip("(").rstrip(")")
+                count_level, is_subject_direction = suffix_metadata[suffix_key]
+                break
+
+        if count_level is None:
+            raise ValueError(f"Unexpected facet query when building association counts: {k}")
+
+        agm = get_association_type_mapping_by_query_string(original_query)
+        label = agm.subject_label if is_subject_direction else agm.object_label
+
+        _ensure_entry(label, agm.category)
+
+        # For symmetric associations, sum both directions; otherwise set the value
+        if agm.symmetric and count_data[label][count_level] > 0:
+            count_data[label][count_level] += v
+        else:
+            count_data[label][count_level] = v
+
+    # Build AssociationCount objects
+    items = []
+    for label, data in count_data.items():
+        items.append(
+            AssociationCount(
+                label=label,
+                count=data["closure"],
+                count_direct=data["direct"],
+                count_with_orthologs=data["orthologs"] if has_orthologs else None,
+                category=data["category"],
+            )
+        )
+
+    return AssociationCountList(items=items)
 
 
 def parse_entity(solr_document: Dict) -> Entity:
@@ -162,8 +280,11 @@ def parse_association_table(
         facet_fields=convert_facet_fields(query_result.facet_counts.facet_fields),
         facet_queries=convert_facet_queries(query_result.facet_counts.facet_queries),
     )
-    for i in zip(results.items, query_result.response.docs):
-        assert i[0].subject == i[1]["subject"]
+    for item, doc in zip(results.items, query_result.response.docs):
+        if item.subject != doc["subject"]:
+            raise ValueError(
+                f"Parsed association subject {item.subject} does not match document subject {doc['subject']}"
+            )
     return results
 
 

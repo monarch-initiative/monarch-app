@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80" fill="#000000">
+  <!-- Body -->
+  <ellipse cx="50" cy="50" rx="28" ry="22" />
+  <!-- Head -->
+  <ellipse cx="50" cy="32" rx="22" ry="16" />
+  <!-- Left eye bump -->
+  <circle cx="36" cy="20" r="10" />
+  <!-- Right eye bump -->
+  <circle cx="64" cy="20" r="10" />
+  <!-- Left eye -->
+  <circle cx="36" cy="19" r="5" fill="#ffffff" />
+  <circle cx="37" cy="18.5" r="2.5" fill="#000000" />
+  <!-- Right eye -->
+  <circle cx="64" cy="19" r="5" fill="#ffffff" />
+  <circle cx="65" cy="18.5" r="2.5" fill="#000000" />
+  <!-- Mouth line -->
+  <path d="M34,38 Q50,44 66,38" stroke="#ffffff" stroke-width="1.5" fill="none" stroke-linecap="round" />
+  <!-- Left front leg -->
+  <path d="M26,52 L14,60 L10,58 M14,60 L12,64 M14,60 L17,63" stroke="#000000" stroke-width="4" fill="none" stroke-linecap="round" />
+  <!-- Right front leg -->
+  <path d="M74,52 L86,60 L90,58 M86,60 L88,64 M86,60 L83,63" stroke="#000000" stroke-width="4" fill="none" stroke-linecap="round" />
+  <!-- Left hind leg -->
+  <path d="M28,64 L18,74 L12,72 M18,74 L14,78 M18,74 L22,77" stroke="#000000" stroke-width="4" fill="none" stroke-linecap="round" />
+  <!-- Right hind leg -->
+  <path d="M72,64 L82,74 L88,72 M82,74 L86,78 M82,74 L78,77" stroke="#000000" stroke-width="4" fill="none" stroke-linecap="round" />
+</svg>

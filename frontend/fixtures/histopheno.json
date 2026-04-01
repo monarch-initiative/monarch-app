@@ -3,22 +3,22 @@
   "items": [
     {
       "label": "musculature",
-      "count": 2119,
+      "count": 2176,
       "id": "UPHENO:0002816"
     },
     {
       "label": "nervous_system",
-      "count": 1059,
+      "count": 1062,
       "id": "UPHENO:0004523"
     },
     {
       "label": "head_neck",
-      "count": 606,
+      "count": 607,
       "id": "UPHENO:0002764"
     },
     {
       "label": "skeletal_system",
-      "count": 523,
+      "count": 536,
       "id": "UPHENO:0002964"
     },
     {
@@ -28,22 +28,22 @@
     },
     {
       "label": "metabolism_homeostasis",
-      "count": 230,
+      "count": 232,
       "id": "HP:0001939"
     },
     {
       "label": "blood",
-      "count": 204,
+      "count": 207,
       "id": "UPHENO:0004459"
     },
     {
       "label": "connective_tissue",
-      "count": 187,
+      "count": 191,
       "id": "UPHENO:0002712"
     },
     {
       "label": "digestive_system",
-      "count": 166,
+      "count": 188,
       "id": "UPHENO:0002833"
     },
     {
@@ -53,7 +53,7 @@
     },
     {
       "label": "integument",
-      "count": 51,
+      "count": 52,
       "id": "UPHENO:0002635"
     },
     {
@@ -62,19 +62,19 @@
       "id": "UPHENO:0002642"
     },
     {
+      "label": "endocrine",
+      "count": 40,
+      "id": "UPHENO:0003116"
+    },
+    {
       "label": "growth",
-      "count": 32,
+      "count": 34,
       "id": "UPHENO:0049874"
     },
     {
       "label": "immune_system",
       "count": 28,
       "id": "UPHENO:0002948"
-    },
-    {
-      "label": "endocrine",
-      "count": 28,
-      "id": "UPHENO:0003116"
     },
     {
       "label": "ear",

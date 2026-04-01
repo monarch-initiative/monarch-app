@@ -115,6 +115,8 @@ classes:
     is_a: FacetValue
     slots:
       - category
+      - count_direct
+      - count_with_orthologs
     slot_usage:
       category:
         multivalued: false
@@ -236,6 +238,9 @@ classes:
       - has_phenotype_closure
       - has_phenotype_closure_label
       - has_phenotype_count
+      - has_descendant
+      - has_descendant_label
+      - has_descendant_count
   EntityResults:
     is_a: Results
     slots:
@@ -294,6 +299,7 @@ classes:
       - in_taxon
       - in_taxon_label
       - inheritance
+      - has_biological_sex
       - causal_gene
       - causes_disease
       - mappings
@@ -302,20 +308,21 @@ classes:
       - association_counts
       - cross_species_term_clique
       - node_hierarchy
-  
   CrossSpeciesTermClique:
+    description: >-
+      A grouping of species-specific terms (HP, MP, ZP) under a common
+      cross-species parent (UPHENO/UBERON), with associations between them.
     slots:
       - root_term
-      - entities
-      - associations
+      - clique_entities
+      - clique_associations
     slot_usage:
       root_term:
         required: true
-      entities:
+      clique_entities:
         required: true
-      associations:
+      clique_associations:
         required: true
-
   NodeHierarchy:
     slots:
       - super_classes
@@ -381,6 +388,99 @@ classes:
       predicate:
         multivalued: true
         required: false
+  CasePhenotypeMatrixResponse:
+    description: Complete case-phenotype matrix for a disease
+    slots:
+      - disease_id
+      - disease_name
+      - total_cases
+      - total_phenotypes
+      - cases
+      - phenotypes
+      - bins
+      - cells
+    slot_usage:
+      disease_id:
+        required: true
+      total_cases:
+        required: true
+      total_phenotypes:
+        required: true
+      cases:
+        range: CaseEntity
+        multivalued: true
+        inlined_as_list: true
+      phenotypes:
+        range: CasePhenotype
+        multivalued: true
+        inlined_as_list: true
+      bins:
+        range: HistoPhenoBin
+        multivalued: true
+        inlined_as_list: true
+      cells:
+        range: CasePhenotypeCellData
+        multivalued: true
+        inlined: true
+        inlined_as_list: false
+  CaseEntity:
+    description: A case (patient) in the matrix
+    slots:
+      - id
+      - label
+      - full_id
+      - source_disease_id
+      - source_disease_label
+      - is_direct
+    slot_usage:
+      id:
+        required: true
+        identifier: true
+      label:
+        required: false
+      is_direct:
+        required: true
+  CasePhenotype:
+    description: A phenotype observed in at least one case
+    slots:
+      - id
+      - label
+      - bin_id
+    slot_usage:
+      id:
+        required: true
+        identifier: true
+      label:
+        required: false
+      bin_id:
+        required: true
+  HistoPhenoBin:
+    description: A body system category for grouping phenotypes
+    slots:
+      - id
+      - label
+      - phenotype_count
+    slot_usage:
+      id:
+        required: true
+        identifier: true
+      label:
+        required: true
+      phenotype_count:
+        required: true
+  CasePhenotypeCellData:
+    description: Data for a single case-phenotype cell in the matrix
+    slots:
+      - present
+      - negated
+      - onset_qualifier
+      - onset_qualifier_label
+      - publications
+    slot_usage:
+      present:
+        required: true
+      publications:
+        multivalued: true
 
 slots:
   aggregator_knowledge_source:
@@ -411,6 +511,12 @@ slots:
     inlined_as_list: true
   count:
     description: count of documents
+    range: integer
+  count_direct:
+    description: Count of direct associations (no closure/descendants)
+    range: integer
+  count_with_orthologs:
+    description: Count including associations from orthologous genes
     range: integer
   counterpart_category:
     description: >-
@@ -551,10 +657,29 @@ slots:
     description: >-
       A count of the number of phenotypes that are known to be associated with this entity
     range: integer
+  has_descendant:
+    description: >-
+      A list of entity identifiers that are known to be descendants of this entity
+    range: string
+    multivalued: true
+    inlined_as_list: true
+  has_descendant_label:
+    description: >-
+      A list of entity labels that are known to be descendants of this entity
+    range: string
+    multivalued: true
+    inlined_as_list: true
+  has_descendant_count:
+    description: >-
+      A count of the number of entities that are known to be descendants of this entity
+    range: integer    
   id:
     identifier: true
     range: string
     required: true
+  has_biological_sex:
+    description: The biological sex of an individual entity.
+    range: string
   in_taxon:
     description: The biolink taxon that the entity is in the closure of.
     range: string
@@ -590,6 +715,27 @@ slots:
   node_hierarchy:
     range: NodeHierarchy
     inlined: true
+  cross_species_term_clique:
+    range: CrossSpeciesTermClique
+    inlined: true
+  root_term:
+    description: The species-independent grouping term (UPHENO/UBERON) that serves as the cross-species bridge
+    range: Entity
+    inlined: true
+  clique_entities:
+    description: Species-specific child terms (HP, MP, ZP, etc.) that are subclasses of the root term
+    range: Entity
+    inlined: true
+    inlined_as_list: true
+    multivalued: true
+  clique_associations:
+    description: >-
+      All associations within this clique: vertical (subclass_of from children
+      to root) and horizontal (same_as, homologous_to between children)
+    range: Association
+    inlined: true
+    inlined_as_list: true
+    multivalued: true
   object:
     range: string
     required: true
@@ -872,28 +1018,6 @@ slots:
     range: string
     description: >-
       A closure of the object_specialization_qualifier, including the object_specialization_qualifier itself and all of its ancestors
-  cross_species_term_clique:
-    range: CrossSpeciesTermClique
-  root_term:
-    range: Entity
-    inlined: true
-    description: >-
-      The parent portion of a CrossSpeciesTermClique
-  entities:
-    range: Entity
-    inlined: true
-    inlined_as_list: true
-    multivalued: true
-    description: >-
-      A collection of nodes / entities
-  associations:
-    range: Association
-    inlined: true
-    inlined_as_list: true
-    multivalued: true
-    description: >-
-      A collection of edges / associations
-    
   mappings:
     description: List of ExpandedCuries with id and url for mapped entities
     range: ExpandedCurie
@@ -944,3 +1068,59 @@ slots:
   highlighting:
     description: Optional highlighting information for search results
     multivalued: false
+
+  # Case-phenotype matrix slots
+  disease_id:
+    description: The identifier for a disease entity
+    range: string
+  disease_name:
+    description: The name of a disease entity
+    range: string
+  total_cases:
+    description: Total number of cases in the matrix
+    range: integer
+  total_phenotypes:
+    description: Total number of phenotypes in the matrix
+    range: integer
+  cases:
+    description: List of case entities in the matrix
+    range: CaseEntity
+    multivalued: true
+    inlined_as_list: true
+  phenotypes:
+    description: List of phenotype entities in the matrix
+    range: CasePhenotype
+    multivalued: true
+    inlined_as_list: true
+  bins:
+    description: List of histopheno bins for grouping phenotypes
+    range: HistoPhenoBin
+    multivalued: true
+    inlined_as_list: true
+  cells:
+    description: Map of case-phenotype cell data keyed by case_id:phenotype_id
+    range: CasePhenotypeCellData
+    multivalued: true
+    inlined: true
+    inlined_as_list: false
+  source_disease_id:
+    description: The disease ID that a case is indirectly associated with (for descendant diseases)
+    range: string
+  source_disease_label:
+    description: The label of the source disease for indirect case associations
+    range: string
+  is_direct:
+    description: Whether the case is directly associated with the disease or via a descendant
+    range: boolean
+  bin_id:
+    description: The identifier for the histopheno bin a phenotype belongs to
+    range: string
+  phenotype_count:
+    description: Number of phenotypes in a bin
+    range: integer
+  present:
+    description: Whether the phenotype is present for a case
+    range: boolean
+  full_id:
+    description: The full identifier for an entity
+    range: string

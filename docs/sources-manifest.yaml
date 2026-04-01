@@ -1,0 +1,84 @@
+# Source documentation manifest for Monarch ingest repositories.
+#
+# Each entry defines an upstream repo whose README will be fetched
+# and placed into docs/Sources/ as the given filename.
+#
+# Fields:
+#   repo      - GitHub org/repo (e.g. monarch-initiative/alliance-ingest)
+#   branch    - Git branch to fetch from
+#   filename  - Target markdown filename written to docs/Sources/
+#
+# Used by the fetch script (scripts/fetch-source-docs.py) to keep
+# ingest documentation in sync with the upstream repositories.
+
+sources:
+  - repo: monarch-initiative/alliance-ingest
+    branch: main
+    filename: alliance.md
+  - repo: monarch-initiative/bgee-ingest
+    branch: main
+    filename: bgee.md
+  - repo: monarch-initiative/biogrid-ingest
+    branch: main
+    filename: biogrid.md
+  - repo: monarch-initiative/clingen-ingest
+    branch: main
+    filename: clingen.md
+  - repo: monarch-initiative/clinvar-ingest
+    branch: main
+    filename: clinvar.md
+  - repo: monarch-initiative/ctd-ingest
+    branch: main
+    filename: ctd.md
+  - repo: monarch-initiative/dictybase-ingest
+    branch: main
+    filename: dictybase.md
+  - repo: monarch-initiative/dismech
+    branch: main
+    filename: dismech.md
+  - repo: monarch-initiative/go-ingest
+    branch: main
+    filename: go.md
+  - repo: monarch-initiative/hgnc-ingest
+    branch: main
+    filename: hgnc.md
+  - repo: monarch-initiative/maxo-annotation-ingest
+    branch: main
+    filename: maxo.md
+  - repo: monarch-initiative/mmrrc-ingest
+    branch: main
+    filename: mmrrc.md
+  - repo: monarch-initiative/monarch-phenotype-profile-ingest
+    branch: main
+    filename: hpoa.md
+  - repo: monarch-initiative/ncbi-gene
+    branch: main
+    filename: ncbi.md
+  - repo: monarch-initiative/omim-ingest
+    branch: main
+    filename: omim.md
+  - repo: monarch-initiative/pantherdb-orthologs-ingest
+    branch: main
+    filename: panther.md
+  - repo: monarch-initiative/phenopacket-ingest
+    branch: main
+    filename: phenopacket.md
+  - repo: monarch-initiative/pombase-ingest
+    branch: main
+    filename: pombase.md
+  - repo: monarch-initiative/reactome-ingest
+    branch: main
+    filename: reactome.md
+  - repo: monarch-initiative/string-ingest
+    branch: main
+    filename: string.md
+  - repo: monarch-initiative/xenbase-ingest
+    branch: main
+    filename: xenbase.md
+  - repo: monarch-initiative/zfin-ingest
+    branch: main
+    filename: zfin.md
+  # Special case: phenio is not a Koza ingest, lives in Knowledge-Graph-Hub
+  - repo: Knowledge-Graph-Hub/kg-phenio
+    branch: master
+    filename: phenio.md

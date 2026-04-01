@@ -1,7 +1,3 @@
-<!--
-  node page associations section, table mode. all associations.
--->
-
 <template>
   <!-- status -->
   <AppStatus
@@ -35,7 +31,6 @@
           id: row.object,
           name: row.object_label,
           category: 'biolink:Gene',
-          info: row.object_taxon_label,
         }"
         :breadcrumbs="getBreadcrumbs(node, row, 'subject')"
       />
@@ -46,7 +41,6 @@
           id: row.subject,
           name: row.subject_label,
           category: 'biolink:Gene',
-          info: row.subject_taxon_label,
         }"
         :breadcrumbs="getBreadcrumbs(node, row, 'object')"
       />
@@ -58,82 +52,57 @@
         <AppNodeBadge
           :node="{
             id: row.subject,
-            name: row.subject_label,
+            name: row.highlighting?.subject_label?.[0] || row.subject_label,
             category: row.subject_category,
-            info: row.subject_taxon_label,
+            info: row.subject === node.id ? undefined : row.subject_taxon_label,
           }"
           :breadcrumbs="getBreadcrumbs(node, row, 'subject')"
-          :get-highlighted-text="getHighlightedText"
+          :highlight="true"
         />
 
         <AppNodeText
           v-if="row?.highlighting?.subject_closure_label?.[0]"
           :text="`Ancestor: ${row.highlighting.subject_closure_label[0]}`"
           class="text-sm"
-          :get-highlighted-text="getHighlightedText"
+          :highlight="true"
         />
       </div>
     </template>
 
     <!-- predicate -->
     <template #predicate="{ row }">
-      <AppPredicateBadge
-        :association="row"
-        :get-highlighted-text="getHighlightedText"
-      />
-    </template>
-
-    <!-- maxorelation -->
-    <template #maxorelation="{ row }">
-      {{ row.original_predicate }}
+      <AppPredicateBadge :association="row" :highlight="true" />
     </template>
 
     <!-- object-->
     <template #object="{ row }">
       <div class="badgeColumn">
+        <span v-if="row?.negated === true && direct.id === 'true'">
+          Does <span class="negated-text">NOT</span> have
+        </span>
         <AppNodeBadge
           :node="{
             id: row.object,
-            name: row.object_label,
+            name: row.highlighting?.object_label?.[0] || row.object_label,
             category: row.object_category,
-            info: row.object_taxon_label,
+            info: row.object === node.id ? undefined : row.object_taxon_label,
           }"
           :breadcrumbs="getBreadcrumbs(node, row, 'object')"
-          :get-highlighted-text="getHighlightedText"
+          :highlight="true"
         />
         <AppNodeText
           v-if="row?.highlighting?.object_closure_label?.[0]"
           :text="`Ancestor: ${row.highlighting.object_closure_label[0]}`"
           class="text-sm"
-          :get-highlighted-text="getHighlightedText"
+          :highlight="true"
         />
       </div>
     </template>
-
-    <template #extension="{ row }">
-      <AppNodeBadge
-        v-if="row.subject_specialization_qualifier_label"
-        :node="{
-          id: row.subject_specialization_qualifier,
-          name: row.subject_specialization_qualifier_label,
-          category: row.subject_specialization_qualifier_category,
-        }"
-        :breadcrumbs="getBreadcrumbs(node, row, 'subject')"
-      />
-      <!-- unfortunate link hardcoding for CHEBI IDs that we don't have in the graph, TODO: replace with prefix expansion in the browser -->
-      <span
-        v-else-if="row.subject_specialization_qualifier?.startsWith('CHEBI')"
-      >
-        <AppLink
-          :to="
-            'http://purl.obolibrary.org/obo/CHEBI_' +
-            row.subject_specialization_qualifier.split(':')[1]
-          "
-        >
-          {{ row.subject_specialization_qualifier }}
-        </AppLink>
+    <template #primary_knowledge_source="{ row }">
+      <span v-if="sourceNames(row.primary_knowledge_source).length">
+        {{ sourceNames(row.primary_knowledge_source).join(", ") }}
       </span>
-      <span v-else>{{ row.subject_specialization_qualifier }}</span>
+      <span v-else class="empty">No info</span>
     </template>
 
     <template #disease="{ row }">
@@ -193,11 +162,6 @@
       />
       <span v-else class="empty">No info</span>
     </template>
-    <!-- phenotype specific -->
-    <!-- no template needed because info just plain text -->
-
-    <!-- publication specific -->
-    <!-- no template needed because info just plain text -->
   </AppTable>
 
   <TableControls
@@ -223,11 +187,13 @@ import {
   downloadAssociations,
   getAssociations,
   maxDownload,
+  TRAVERSE_ORTHOLOG_CATEGORIES,
 } from "@/api/associations";
 import { getCategoryLabel } from "@/api/categories";
 import {
   AssociationDirectionEnum,
   type DirectionalAssociation,
+  type FacetField,
   type Node,
 } from "@/api/model";
 import AppModal from "@/components/AppModal.vue";
@@ -241,19 +207,27 @@ import type { Cols, Sort } from "@/components/AppTable.vue";
 import { snackbar } from "@/components/TheSnackbar.vue";
 import TableControls from "@/components/TheTableContols.vue";
 import { useQuery } from "@/composables/use-query";
+import { RESOURCE_NAME_MAP } from "@/config/resourceNames";
+import {
+  buildAssociationCols,
+  type Datum,
+} from "@/pages/node/associationColumns";
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
 import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
+import { taxonFieldFor } from "@/util/taxonFilterConfig";
+import { fieldFor } from "@/util/typeConfig";
 
 type Props = {
   /** current node */
   node: Node;
   /** selected association category */
   category: Option;
-  /** include orthologs */
-  includeOrthologs: boolean;
+  /** "true" = direct only, "false" = include subclasses */
   direct: Option;
   /** search string */
   search: string;
+  /** selected taxon labels to filter by */
+  taxonFilters?: string[];
 };
 
 const props = defineProps<Props>();
@@ -263,6 +237,63 @@ const selectedAssociation = ref<DirectionalAssociation | null>(null);
 const start = ref(0);
 const sort = ref<Sort>();
 const perPage = ref(5);
+
+const emit = defineEmits<{
+  (e: "update:diseaseSubjectLabel", label: string): void;
+  (e: "totals", payload: { direct: number; all: number }): void;
+  (e: "inferred-label", payload: { categoryId: string; label: string }): void;
+  (
+    e: "taxon-options",
+    options: { id: string; label: string; count: number }[],
+  ): void;
+}>();
+
+const shouldTraverseOrthologs = computed(() =>
+  TRAVERSE_ORTHOLOG_CATEGORIES.has(props.category.id),
+);
+
+/** the single taxon field to facet/filter on for this category */
+const taxonField = computed(() => taxonFieldFor(props.category.id));
+
+/** facet fields to request when taxon filtering is enabled */
+const facetFields = computed(() =>
+  taxonField.value ? [taxonField.value] : undefined,
+);
+
+/** build filter queries from selected taxon labels */
+const filterQueries = computed(() => {
+  if (!props.taxonFilters?.length || !taxonField.value) return undefined;
+  const clauses = props.taxonFilters.map((t) => `${taxonField.value}:"${t}"`);
+  return [clauses.join(" OR ")];
+});
+
+/** track last emitted taxon options to avoid redundant emits */
+let lastTaxonOptionsKey = "";
+
+/** extract taxon options from the single facet field for this category */
+function emitTaxonOptions(facetFieldsData?: FacetField[]) {
+  if (!taxonField.value || !facetFieldsData) return;
+
+  /**
+   * Only populate dropdown options from unfiltered queries. When a filter is
+   * active, the facets only reflect filtered results — emitting them would
+   * replace the full option list and trap the user in their current selection.
+   */
+  if (props.taxonFilters?.length) return;
+
+  const field = facetFieldsData.find((f) => f.label === taxonField.value);
+  const options = (field?.facet_values ?? [])
+    .filter((fv) => fv.label)
+    .map((fv) => ({ id: fv.label, label: fv.label, count: fv.count ?? 0 }))
+    .sort((a, b) => b.count - a.count);
+
+  /** only emit when options actually changed */
+  const key = JSON.stringify(options);
+  if (key === lastTaxonOptionsKey) return;
+  lastTaxonOptionsKey = key;
+
+  emit("taxon-options", options);
+}
 
 function openModal(association: DirectionalAssociation) {
   selectedAssociation.value = association;
@@ -274,22 +305,6 @@ watch(showModal, (newValue) => {
     selectedAssociation.value = null;
   }
 });
-
-type Datum = keyof DirectionalAssociation;
-
-const getHighlightedText = (
-  text: string,
-  transformFn?: (text: string) => string,
-): string => {
-  if (!text) return "";
-  const transformed = transformFn ? transformFn(text) : text;
-  if (!props.search) return transformed;
-  const regex = new RegExp(props.search, "gi");
-  return transformed.replace(
-    regex,
-    (match) => `<span style="background: #FFFF00;"><em>${match}</em></span>`,
-  );
-};
 
 /** Orholog columns */
 const orthologColoumns = computed<Cols<Datum>>(() => {
@@ -330,207 +345,76 @@ const dynamicMinHeight = computed(() => {
   return perPage.value * itemHeight;
 });
 
-const medicalActionCategory =
-  "biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation";
-const medicalActionColumns = computed<Cols<Datum>>(() => {
-  return [
-    {
-      slot: "subject",
-      key: "subject_label",
-      heading: "Medical Action",
-    },
-    {
-      slot: "extension",
-      key: "subject_specialization_qualifier",
-      heading: "Extension",
-    },
-    {
-      slot: "maxorelation",
-      key: "original_predicate",
-      heading: "MaXO Relation",
-    },
-    {
-      slot: "object",
-      key: "object_label",
-      heading: "Phenotype",
-    },
-    {
-      slot: "disease",
-      key: "disease_context_qualifier_label",
-      heading: "Disease Context",
-    },
-    {
-      slot: "details",
-      key: "evidence_count",
-      heading: "Details",
-      align: "center",
-    },
-  ];
-});
-
 /** table columns */
 const cols = computed((): Cols<Datum> => {
   if (props.category.id.includes("GeneToGeneHomology")) {
     return orthologColoumns.value;
-  } else if (props.category.id == medicalActionCategory) {
-    return medicalActionColumns.value;
   }
 
-  /** standard columns, always present */
-  const baseCols: Cols<Datum> = [
-    {
-      slot: "subject",
-      key: "subject_label",
-      heading: getCategoryLabel(
-        associations.value.items[0]?.subject_category || "Subject",
-      ),
-      sortable: true,
-    },
-    {
-      slot: "predicate",
-      key: "predicate",
-      heading: "Association",
-      sortable: true,
-    },
-    {
-      slot: "object",
-      key: "object_label",
-      heading: getCategoryLabel(
-        associations.value.items[0]?.object_category || "Object",
-      ),
-      sortable: true,
-    },
-    {
-      slot: "details",
-      key: "evidence_count",
-      heading: "Details",
-      align: "center",
-      sortable: true,
-    },
-  ];
-
-  /** extra, supplemental columns for certain association types */
-  let extraCols: Cols<Datum> = [];
-
-  /** taxon column. exists for many categories, so just add if any row has taxon. */
-  if (props.category.id.includes("Interaction")) {
-    extraCols.push({
-      slot: "taxon",
-      heading: "Taxon",
-    });
-  }
-
-  if (
-    props.node.in_taxon_label == "Homo sapiens" &&
-    props.category.id.includes("GeneToPhenotypicFeature")
-  ) {
-    extraCols.push({
-      slot: "disease_context",
-      key: "disease_context_qualifier",
-      heading: "Disease Context",
-      sortable: true,
-    });
-  }
-  /** phenotype specific columns */
-  if (props.category.id.includes("PhenotypicFeature")) {
-    extraCols.push(
-      {
-        slot: "frequency",
-        key: "frequency_qualifier",
-        heading: "Frequency",
-        sortable: true,
-      },
-      {
-        key: "onset_qualifier_label",
-        heading: "Onset",
-        sortable: true,
-      },
-    );
-  }
-
-  //include original subject and call it Source for D2P
-  if (props.category.id.includes("DiseaseToPhenotypicFeature")) {
-    extraCols.push({
-      key: "original_subject",
-      heading: "Source",
-      sortable: true,
-    });
-  }
-  /** publication specific columns */
-  // if (props.category.label === "biolink:Publication")
-  //   extraCols.push(
-  //     {
-  //       key: "author",
-  //       heading: "Author",
-  //     },
-  //     {
-  //       key: "year",
-  //       heading: "Year",
-  //       align: "center",
-  //     },
-  //     {
-  //       key: "publisher",
-  //       heading: "Publisher",
-  //     },
-  //   );
-
-  /** filter out extra columns with nothing in them (all rows for that col falsy) */
-  // extraCols = extraCols.filter((col) =>
-  //   associations.value.items.some((association) =>
-  //     col.key ? association[col.key] : true,
-  //   ),
-  // );
-
-  /** put divider to separate base cols from extra cols */
-  if (extraCols[0]) extraCols.unshift({ slot: "divider" });
-
-  return [...baseCols, ...extraCols];
+  return buildAssociationCols({
+    categoryId: props.category.id,
+    nodeCategory: props.node.category ?? "",
+    isDirect: props.direct.id === "true",
+    items: associations.value.items as DirectionalAssociation[],
+    getCategoryLabel,
+  });
 });
 
-/** get table association data */
-
+// 1) query direct‐only once:
 const {
-  query: queryAssociations,
-  data: associations,
-  isLoading,
-  isError,
-} = useQuery<
-  {
-    items: DirectionalAssociation[];
-    total: number;
-    limit: number;
-    offset: number;
-  },
-  [boolean]
->(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async function (fresh: boolean) /**
-   * whether to perform "fresh" search, without filters/pagination/etc. true when
-   * search text changes, false when filters/pagination/etc change.
-   */ {
-    /** catch case where no association categories available */
-    if (!props.node.association_counts.length)
-      throw Error("No association info available");
-    /** get association data */
-    if (fresh) {
-      start.value = 0;
-    }
-
-    const response = await getAssociations(
+  data: directData,
+  query: fetchDirect,
+  isLoading: loadingDirect,
+  isError: errorDirect,
+} = useQuery(
+  () =>
+    getAssociations(
       props.node.id,
       props.category.id,
       start.value,
       perPage.value,
-      props.includeOrthologs,
-      props.direct.id,
+      shouldTraverseOrthologs.value,
+      "true",
       props.search,
       sort.value,
-    );
-    return response;
-  },
-
-  /** default value */
+      facetFields.value,
+      filterQueries.value,
+    ),
   { items: [], total: 0, limit: 0, offset: 0 },
+);
+
+// 2) query all‐(inferred) once:
+const {
+  data: allData,
+  query: fetchAll,
+  isLoading: loadingAll,
+  isError: errorAll,
+} = useQuery(
+  () =>
+    getAssociations(
+      props.node.id,
+      props.category.id,
+      start.value,
+      perPage.value,
+      shouldTraverseOrthologs.value,
+      "false",
+      props.search,
+      sort.value,
+      facetFields.value,
+      filterQueries.value,
+    ),
+  { items: [], total: 0, limit: 0, offset: 0 },
+);
+
+// pick the right one for rendering:
+const associations = computed(() =>
+  props.direct.id === "true" ? directData.value : allData.value,
+);
+const isLoading = computed(() =>
+  props.direct.id === "true" ? loadingDirect.value : loadingAll.value,
+);
+const isError = computed(() =>
+  props.direct.id === "true" ? errorDirect.value : errorAll.value,
 );
 
 /** download table data */
@@ -549,10 +433,11 @@ async function download() {
   await downloadAssociations(
     props.node.id,
     props.category.id,
-    props.includeOrthologs,
+    shouldTraverseOrthologs.value,
     props.direct.id,
     props.search,
     sort.value,
+    filterQueries.value,
   );
 }
 
@@ -583,8 +468,6 @@ const frequencyPercentage = (row: DirectionalAssociation) => {
     }
 };
 
-/** get frequency tooltip */
-
 const frequencyTooltip = (row: DirectionalAssociation) => {
   // display fraction if possible
   if (row.has_count != undefined && row.has_total != undefined) {
@@ -602,32 +485,131 @@ const frequencyTooltip = (row: DirectionalAssociation) => {
   return "No info";
 };
 
-/** get associations when category or table state changes */
-watch(
-  () => props.category,
-  async () => await queryAssociations(true),
+// which side is relevant for this category?
+const side = computed<"subject" | "object">(() => fieldFor(props.category.id));
+const idKey = computed<"subject" | "object">(() => side.value);
+const closureKey = computed<"subject_closure" | "object_closure">(
+  () => `${side.value}_closure` as const,
 );
-watch(
-  () => props.includeOrthologs,
-  async () => await queryAssociations(true),
+
+const labelKey = computed<"subject_label" | "object_label">(
+  () => `${side.value}_label` as const,
 );
-watch(
-  () => props.direct,
-  async () => await queryAssociations(true),
-);
+
+// row comes from a subclass of the current page node?
+const isSubclassRow = (row: any, currentNodeId: string): boolean => {
+  const id = row?.[idKey.value] as string | undefined;
+  const closure: string[] = Array.isArray(row?.[closureKey.value])
+    ? row[closureKey.value]
+    : [];
+  return !!id && id !== currentNodeId && closure.includes(currentNodeId);
+};
+
+// pick the first subclass row in the inferred/all set and return its label
+const inferredSubclassLabel = computed<string>(() => {
+  const rows = allData.value?.items ?? [];
+  const pageId = props.node.id;
+
+  if (props.category.id === "biolink:GeneToPhenotypicFeatureAssociation") {
+    const hit = rows.find(
+      (r: any) =>
+        typeof r?.disease_context_qualifier_label === "string" &&
+        r.disease_context_qualifier_label.trim().length > 0,
+    );
+    if (hit) return hit.disease_context_qualifier_label as string;
+  }
+
+  const hit = rows.find((row) => isSubclassRow(row, pageId));
+  const label = hit?.[labelKey.value];
+  return typeof label === "string" ? label : "";
+});
+
+const toLabel = (v: unknown) =>
+  (String(v).split(":").pop() || "").toUpperCase();
+
+const resourceFullName = (label?: string) =>
+  RESOURCE_NAME_MAP[(label ?? "").toUpperCase()] ?? label ?? "";
+
+const sourceNames = (val?: string | string[]) => {
+  const list = Array.isArray(val) ? val : val ? [val] : [];
+  const seen = new Set<string>();
+  return list
+    .map(toLabel) // e.g., "infores:uniprot" -> "UNIPROT"
+    .map(resourceFullName) // -> "Universal Protein Resource"
+    .filter((n) => {
+      if (!n || seen.has(n)) return false;
+      seen.add(n);
+      return true;
+    });
+};
 
 watch(
   () => props.search,
   async () => {
-    await queryAssociations(true);
+    if (props.direct.id === "true") {
+      await fetchDirect();
+    } else {
+      await fetchAll();
+    }
   },
   { immediate: true },
 );
 
-watch([perPage, sort, start], async () => await queryAssociations(false));
+watch([perPage, sort, start], async () => {
+  if (props.direct.id === "true") {
+    await fetchDirect();
+  } else {
+    await fetchAll();
+  }
+});
 
-/** get associations on load */
-onMounted(() => queryAssociations(true));
+/** refetch when taxon filters change (compare by value, not reference) */
+watch(
+  () => JSON.stringify(props.taxonFilters ?? []),
+  async () => {
+    start.value = 0;
+    if (props.direct.id === "true") {
+      await fetchDirect();
+    } else {
+      await fetchAll();
+    }
+  },
+);
+
+onMounted(async () => {
+  // Trigger both queries
+  await Promise.all([fetchDirect(), fetchAll()]);
+});
+
+/** emit taxon options whenever data changes */
+watch(
+  () =>
+    props.direct.id === "true"
+      ? directData.value?.facet_fields
+      : allData.value?.facet_fields,
+  (facetFieldsData) => emitTaxonOptions(facetFieldsData),
+  { immediate: true },
+);
+
+// Whenever either total changes, emit new totals
+watch(
+  [
+    () => inferredSubclassLabel.value,
+    () => directData.value?.total ?? 0,
+    () => allData.value?.total ?? 0,
+  ],
+  ([label, direct, all], [prevLabel, prevDirect, prevAll]) => {
+    // emit inferred label only when present and changed
+    if (label && label !== prevLabel) {
+      emit("inferred-label", { categoryId: String(props.category.id), label });
+    }
+    // emit totals only when they change
+    if (direct !== prevDirect || all !== prevAll) {
+      emit("totals", { direct, all });
+    }
+  },
+  { immediate: true },
+);
 </script>
 
 <style lang="scss" scoped>
@@ -674,5 +656,9 @@ onMounted(() => queryAssociations(true));
 .text-sm {
   color: $dark-gray;
   font-size: 0.9em;
+}
+.negated-text {
+  color: $error;
+  font-weight: bold;
 }
 </style>
