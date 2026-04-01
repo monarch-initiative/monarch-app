@@ -114,7 +114,7 @@ describe("Suggestions.vue", () => {
   it("is resilient when ENTITY_MAP has no matching id (no navigation)", async () => {
     // Temporarily remount with a broken ENTITY_MAP for the first item name
     const { ENTITY_MAP } = await import("@/data/toolEntityConfig");
-    // @ts-ignore override for test
+    // @ts-expect-error override for test
     ENTITY_MAP["Ehlers-Danlos syndrome"].id = undefined;
 
     const fresh = mount(Suggestions, {

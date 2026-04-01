@@ -277,8 +277,9 @@ test("Breadcrumbs section works", async ({ page, browserName }) => {
     "Has Phenotype",
     "Genu recurvatum",
   ];
-  for (let n = 0; n < chain.length; n += 2)
-    await page.getByText(new RegExp(chain[n], "i")).first().click();
+  for (let n = 0; n < chain.length; n += 2) {
+    await page.getByText(new RegExp(chain[n] || "", "i")).first().click();
+  }
 
   /** util func to get inner text of breadcrumbs */
   const checkBreadcrumbs = async (expectedArray: string[]) => {
@@ -286,7 +287,7 @@ test("Breadcrumbs section works", async ({ page, browserName }) => {
       .locator("#breadcrumbs ~ .flex > *")
       .allInnerTexts();
     for (const [index, actual] of Object.entries(items)) {
-      const expected = expectedArray[Number(index)];
+      const expected = expectedArray[Number(index)] || "";
       await expect(actual).toMatch(new RegExp(expected, "i"));
     }
   };

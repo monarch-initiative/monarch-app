@@ -118,5 +118,5 @@ test("Handles race conditions and calls success func", async () => {
 
   /** only final of concurrent queries should call onSuccess function. */
   expect(onSuccess.mock.calls.length).toBe(1);
-  expect(onSuccess.mock.calls[0][0]).toBe("second query");
+  expect(onSuccess.mock.calls[0]![0]).toBe("second query");
 });

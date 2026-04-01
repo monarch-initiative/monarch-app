@@ -93,9 +93,9 @@ describe("TocHier.vue", () => {
     // Parent rows exist and use the truncation class (.row-text).
     const parents = wrapper.findAll(".parents .parent-row .row-text");
     expect(parents.length).toBe(2);
-    expect(parents[0].classes()).toContain("row-text");
+    expect(parents[0]!.classes()).toContain("row-text");
     // We can’t assert actual CSS truncation, but text presence confirms binding.
-    expect(parents[0].text()).toContain("A very very very long parent name");
+    expect(parents[0]!.text()).toContain("A very very very long parent name");
   });
 
   it("renders current row with truncation", () => {

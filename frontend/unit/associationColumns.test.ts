@@ -58,6 +58,7 @@ describe("buildAssociationCols", () => {
     expect(end[1].slot).toBe("taxon");
   });
 
+  // eslint-disable-next-line max-len
   it("CausalGeneToDiseaseAssociation (Disease, Direct): removes object & predicate; inserts Source before Details", () => {
     const cols = buildAssociationCols(
       makeCtx({
@@ -155,6 +156,7 @@ describe("buildAssociationCols", () => {
     expect(iObj).toBeLessThan(iSub);
   });
 
+  // eslint-disable-next-line max-len
   it("GeneToPhenotypicFeatureAssociation (Disease, All): drops predicate and adds Disease Context if any row has it", () => {
     const cols = buildAssociationCols(
       makeCtx({

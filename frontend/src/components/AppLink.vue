@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useSlots } from "vue";
+import { computed, useSlots, type VNode } from "vue";
 import { useRouter, type RouteLocationRaw } from "vue-router";
 import { mapValues } from "lodash";
 import { stringify } from "@/util/object";
@@ -66,7 +66,7 @@ const props = withDefaults(defineProps<Props>(), {
 const slots = useSlots();
 
 type Slots = {
-  default: () => unknown;
+  default: () => VNode[];
 };
 
 defineSlots<Slots>();

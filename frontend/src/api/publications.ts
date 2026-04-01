@@ -11,6 +11,19 @@ export const getPublication = async (id = ""): Promise<Publication> => {
   const summary = (await getSummaries([id]))[id];
   const abstract = await getAbstract(id);
 
+  if (!summary) {
+    console.warn(`Publication not found: ${id}`);
+    return {
+      id,
+      title: "",
+      authors: [],
+      date: new Date(0),
+      doi: "",
+      journal: "",
+      abstract: "",
+    };
+  }
+
   return { ...summary, abstract };
 };
 

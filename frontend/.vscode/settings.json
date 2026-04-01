@@ -1,4 +1,7 @@
 {
+  "[javascript][javascriptreact][typescript][typescriptreact][json][jsonc]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
   "eslint.debug": true,
   "eslint.format.enable": true,
   "eslint.validate": ["vue", "javascript", "typescript"],

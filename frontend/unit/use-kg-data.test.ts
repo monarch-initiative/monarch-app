@@ -313,7 +313,7 @@ describe("useKGData", () => {
       await kgData.loadDataSource("nodes");
 
       expect(kgData.getLoadedDataSources.value).toHaveLength(1);
-      expect(kgData.getLoadedDataSources.value[0].name).toBe("nodes");
+      expect(kgData.getLoadedDataSources.value[0]?.name).toBe("nodes");
     });
   });
 

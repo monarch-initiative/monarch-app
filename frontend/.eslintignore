@@ -1,5 +1,0 @@
-node_modules
-dist
-public
-mockServiceWorker.js
-/src/api/model.ts
