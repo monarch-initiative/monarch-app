@@ -241,6 +241,10 @@ def parse_entity(solr_document: Dict) -> Entity:
     try:
         entity = Entity(**solr_document)
         entity.uri = converter.expand(entity.id)
+        # Strip bulky descendant lists - these can be 10+ MB for high-level ontology
+        # terms and are not used by the frontend. Keep has_descendant_count (an integer).
+        entity.has_descendant = None
+        entity.has_descendant_label = None
     except ValidationError:
         logger.error(f"Validation error for {solr_document}")
         raise

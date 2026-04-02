@@ -117,6 +117,10 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         normalized_doc = normalize_solr_doc_for_model(solr_document, Node)
         entity = Entity(**normalized_doc)
         entity.uri = get_uri(entity.id)
+        # Strip bulky descendant lists - these can be 10+ MB for high-level ontology
+        # terms and are not used by the frontend. Keep has_descendant_count (an integer).
+        entity.has_descendant = None
+        entity.has_descendant_label = None
         if "biolink:Disease" == entity.category:
             # Get mode of inheritance
             mode_of_inheritance_associations = self.get_associations(
