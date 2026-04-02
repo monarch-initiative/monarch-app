@@ -2,7 +2,7 @@
   Cross-species term clique visualization section.
   Shows the cross-species parent term and its species-specific children
   with their associations (subclass_of, same_as, homologous_to).
-  Only rendered when the node has a clique with 2+ species-specific entities.
+  Only rendered when the node has a clique with 1+ species-specific entities.
 -->
 
 <template>
@@ -28,6 +28,6 @@ const props = defineProps<Props>();
 
 const showSection = computed(() => {
   const clique = props.node.cross_species_term_clique;
-  return clique && clique.clique_entities.length >= 2;
+  return clique && clique.clique_entities.length >= 1;
 });
 </script>
