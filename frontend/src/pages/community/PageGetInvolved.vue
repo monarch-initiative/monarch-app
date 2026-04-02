@@ -11,39 +11,11 @@
     <div class="social-follow">
       <div class="icons">
         <AppSocialIcon
-          type="email"
-          icon="envelope"
-          url="https://groups.google.com/g/monarch-friends/"
-        />
-        <AppSocialIcon
-          type="slack"
-          icon="social-slack"
-          url="https://docs.google.com/forms/d/e/1FAIpQLSf0hOZv6UMW6PD1sRtK74OQLV8ZA8nFRICo0T0ngb2IKFBh5A/viewform"
-        />
-        <AppSocialIcon
-          type="medium"
-          icon="medium"
-          url="https://medium.com/@MonarchInit"
-        />
-        <AppSocialIcon
-          type="linkedin"
-          icon="linkedin"
-          url="https://www.linkedin.com/company/the-monarch-initiative"
-        />
-        <AppSocialIcon
-          type="github"
-          icon="github"
-          url="https://github.com/monarch-initiative"
-        />
-        <AppSocialIcon
-          type="youtube"
-          icon="youtube"
-          url="https://www.youtube.com/@monarchinitiative"
-        />
-        <AppSocialIcon
-          type="bluesky"
-          icon="social-bluesky"
-          url="https://bsky.app/profile/monarchinitiative.bsky.social"
+          v-for="link in COMMUNITY_SOCIAL_LINKS"
+          :key="link.id"
+          :type="link.socialIconType"
+          :icon="link.icon"
+          :url="link.url"
         />
       </div>
     </div>
@@ -155,6 +127,7 @@
 </template>
 
 <script setup lang="ts">
+import { COMMUNITY_SOCIAL_LINKS } from "@/constants/links";
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppSocialIcon from "@/components/AppSocialIcon.vue";
 import PageTitle from "@/components/ThePageTitle.vue";

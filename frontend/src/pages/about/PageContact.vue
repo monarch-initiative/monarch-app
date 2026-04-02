@@ -18,55 +18,16 @@
           <p>Follow us on:</p>
           <div class="icons">
             <AppLink
-              v-tooltip="'Subscribe'"
-              to="https://groups.google.com/g/monarch-friends/"
-              class="social-icon"
+              v-for="link in COMMUNITY_SOCIAL_LINKS"
+              :key="link.id"
+              v-tooltip="link.tooltip"
+              :to="link.url"
+              :class="[
+                'social-icon',
+                link.socialIconType === 'slack' ? 'social-icon-slack' : null,
+              ]"
             >
-              <AppIcon icon="envelope" />
-            </AppLink>
-            <AppLink
-              v-tooltip="'Slack'"
-              to="https://docs.google.com/forms/d/e/1FAIpQLSf0hOZv6UMW6PD1sRtK74OQLV8ZA8nFRICo0T0ngb2IKFBh5A/viewform"
-              class="social-icon social-icon-slack"
-            >
-              <AppIcon icon="social-slack" />
-            </AppLink>
-            <AppLink
-              v-tooltip="'Medium'"
-              to="https://medium.com/@MonarchInit"
-              class="social-icon"
-            >
-              <AppIcon icon="medium" />
-            </AppLink>
-            <AppLink
-              v-tooltip="'GitHub'"
-              to="https://github.com/monarch-initiative"
-              class="social-icon"
-            >
-              <AppIcon icon="github" />
-            </AppLink>
-            <AppLink
-              v-tooltip="'LinkedIn'"
-              to="https://www.linkedin.com/company/the-monarch-initiative"
-              class="social-icon"
-            >
-              <AppIcon icon="linkedin" />
-            </AppLink>
-
-            <AppLink
-              v-tooltip="'YouTube'"
-              to="https://www.youtube.com/@monarchinitiative"
-              class="social-icon"
-            >
-              <AppIcon icon="youtube" />
-            </AppLink>
-
-            <AppLink
-              v-tooltip="'blusky'"
-              to="https://bsky.app/profile/monarchinitiative.bsky.social"
-              class="social-icon"
-            >
-              <AppIcon icon="social-bluesky" />
+              <AppIcon :icon="link.icon" />
             </AppLink>
           </div>
         </div>
@@ -134,6 +95,7 @@ import { truncate } from "lodash";
 import parser from "ua-parser-js";
 import { useLocalStorage } from "@vueuse/core";
 import { postFeedback } from "@/api/feedback";
+import { COMMUNITY_SOCIAL_LINKS } from "@/constants/links";
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppButton from "@/components/AppButton.vue";
 import AppTextbox from "@/components/AppTextbox.vue";

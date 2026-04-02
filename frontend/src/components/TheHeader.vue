@@ -115,7 +115,7 @@ import TheLogo from "@/assets/TheLogo.vue";
 import TabSearch from "@/components/TabSearch.vue";
 import TheSearchTerms from "@/components/TheSearchTerms.vue";
 import { useLatestKGReleaseDate } from "@/composables/use-kg-release-date";
-import navigationMenus from "@/data/navigationMenu.json";
+import navigationMenus from "@/data/navigationMenu";
 import { formatReleaseDate } from "@/util/formatDate";
 import DropdownButton from "./TheDropdownButton.vue";
 import TheHeroTools from "./TheHeroTools.vue";

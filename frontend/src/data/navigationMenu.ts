@@ -1,4 +1,6 @@
-[
+import { getCommunityNavSection } from "@/constants/links";
+
+export default [
   {
     "label": "About",
     "subItems": [
@@ -56,21 +58,18 @@
         "label": "API",
         "key": "kg-api",
         "to": "https://api-v3.monarchinitiative.org/v3/docs",
-
         "icon": true
       },
       {
         "label": "Neo4j",
         "key": "about-neo4J",
         "to": "https://neo4j.monarchinitiative.org/browser/",
-
         "icon": true
       },
       {
         "label": "Monarch R",
         "key": "about-monarchr",
         "to": "https://monarch-initiative.github.io/monarchr/articles/monarchr",
-
         "icon": true
       },
       {
@@ -245,49 +244,5 @@
       }
     ]
   },
-  {
-    "label": "Community",
-    "subItems": [
-      {
-        "label": "Get Involved",
-        "key": "community-get-involved",
-        "to": "/community/get-involved"
-      },
-      {
-        "label": "Slack",
-        "key": "community-slack",
-        "to": "https://docs.google.com/forms/d/e/1FAIpQLSf0hOZv6UMW6PD1sRtK74OQLV8ZA8nFRICo0T0ngb2IKFBh5A/viewform",
-
-        "icon": true
-      },
-      {
-        "label": "Blog",
-        "key": "community-blog",
-        "to": "https://monarchinit.medium.com",
-
-        "icon": true
-      },
-      {
-        "label": "LinkedIn",
-        "key": "community-linkedin",
-        "to": "https://www.linkedin.com/company/the-monarch-initiative",
-
-        "icon": true
-      },
-      {
-        "label": "YouTube",
-        "key": "community-youtube",
-        "to": "https://www.youtube.com/@monarchinitiative",
-
-        "icon": true
-      },
-      {
-        "label": "Bluesky",
-        "key": "community-bluesky",
-        "to": "https://bsky.app/profile/monarchinitiative.bsky.social",
-
-        "icon": true
-      }
-    ]
-  }
-]
+  getCommunityNavSection()
+];
