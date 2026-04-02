@@ -25,6 +25,13 @@
               <AppIcon icon="envelope" />
             </AppLink>
             <AppLink
+              v-tooltip="'Slack'"
+              to="https://docs.google.com/forms/d/e/1FAIpQLSf0hOZv6UMW6PD1sRtK74OQLV8ZA8nFRICo0T0ngb2IKFBh5A/viewform"
+              class="social-icon social-icon-slack"
+            >
+              <AppIcon icon="social-slack" />
+            </AppLink>
+            <AppLink
               v-tooltip="'Medium'"
               to="https://medium.com/@MonarchInit"
               class="social-icon"
@@ -344,6 +351,12 @@ $wrap: 768px;
 
   .app-icon[data-icon="envelope"] {
     color: #007acc;
+  }
+
+  .social-icon-slack :deep(svg) {
+    display: block;
+    width: 1.35em;
+    height: 1.35em;
   }
 }
 </style>
