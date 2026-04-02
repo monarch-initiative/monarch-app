@@ -1940,6 +1940,16 @@ Alias: category</p>
 </thead>
 <tbody>
 <tr>
+<td><a href="../Association/">Association</a></td>
+<td></td>
+<td>no</td>
+</tr>
+<tr>
+<td><a href="../Node/">Node</a></td>
+<td>UI container class extending Entity with additional information</td>
+<td>no</td>
+</tr>
+<tr>
 <td><a href="../SearchResult/">SearchResult</a></td>
 <td></td>
 <td>yes</td>
@@ -1950,14 +1960,24 @@ Alias: category</p>
 <td>no</td>
 </tr>
 <tr>
-<td><a href="../AssociationTypeMapping/">AssociationTypeMapping</a></td>
-<td>A data class to hold the necessary information to produce association type co...</td>
+<td><a href="../GridColumnEntity/">GridColumnEntity</a></td>
+<td>A column entity in the grid (case, disease, ortholog, etc</td>
 <td>yes</td>
 </tr>
 <tr>
-<td><a href="../Association/">Association</a></td>
-<td></td>
+<td><a href="../DirectionalAssociation/">DirectionalAssociation</a></td>
+<td>An association that gives it's direction relative to a specified entity</td>
 <td>no</td>
+</tr>
+<tr>
+<td><a href="../GridRowEntity/">GridRowEntity</a></td>
+<td>A row entity in the grid (phenotype, GO term, anatomy, etc</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><a href="../AssociationTypeMapping/">AssociationTypeMapping</a></td>
+<td>A data class to hold the necessary information to produce association type co...</td>
+<td>yes</td>
 </tr>
 <tr>
 <td><a href="../AssociationCount/">AssociationCount</a></td>
@@ -1965,18 +1985,8 @@ Alias: category</p>
 <td>yes</td>
 </tr>
 <tr>
-<td><a href="../Node/">Node</a></td>
-<td>UI container class extending Entity with additional information</td>
-<td>no</td>
-</tr>
-<tr>
 <td><a href="../CompactAssociation/">CompactAssociation</a></td>
 <td></td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../DirectionalAssociation/">DirectionalAssociation</a></td>
-<td>An association that gives it's direction relative to a specified entity</td>
 <td>no</td>
 </tr>
 </tbody>
@@ -2021,6 +2031,8 @@ Alias: category</p>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CompactAssociation</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationTypeMapping</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Entity</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GridColumnEntity</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GridRowEntity</span>
 <span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
 <span class="nt">multivalued</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>

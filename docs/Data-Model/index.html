@@ -2056,6 +2056,10 @@
 <td></td>
 </tr>
 <tr>
+<td><a href="EntityGridResponse/">EntityGridResponse</a></td>
+<td>Generic entity x entity grid response</td>
+</tr>
+<tr>
 <td><a href="ExpandedCurie/">ExpandedCurie</a></td>
 <td>A curie bundled along with its expanded url</td>
 </tr>
@@ -2074,6 +2078,22 @@
 <tr>
 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="HistoBin/">HistoBin</a></td>
 <td></td>
+</tr>
+<tr>
+<td><a href="GridBin/">GridBin</a></td>
+<td>A grouping bin for row entities</td>
+</tr>
+<tr>
+<td><a href="GridCellData/">GridCellData</a></td>
+<td>Data for a cell in the grid</td>
+</tr>
+<tr>
+<td><a href="GridColumnEntity/">GridColumnEntity</a></td>
+<td>A column entity in the grid (case, disease, ortholog, etc</td>
+</tr>
+<tr>
+<td><a href="GridRowEntity/">GridRowEntity</a></td>
+<td>A row entity in the grid (phenotype, GO term, anatomy, etc</td>
 </tr>
 <tr>
 <td><a href="HistoPheno/">HistoPheno</a></td>
@@ -2102,6 +2122,10 @@
 <tr>
 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="TermSetPairwiseSimilarity/">TermSetPairwiseSimilarity</a></td>
 <td>A simple pairwise similarity between two sets of concepts/terms</td>
+</tr>
+<tr>
+<td><a href="Qualifier/">Qualifier</a></td>
+<td>A qualifier key-value pair for an association</td>
 </tr>
 <tr>
 <td><a href="Release/">Release</a></td>
@@ -2245,6 +2269,22 @@
 <tr>
 <td><a href="clique_entities/">clique_entities</a></td>
 <td>Species-specific child terms (HP, MP, ZP, etc</td>
+</tr>
+<tr>
+<td><a href="columns/">columns</a></td>
+<td>List of column entities</td>
+</tr>
+<tr>
+<td><a href="context_category/">context_category</a></td>
+<td>The biolink category of the context entity</td>
+</tr>
+<tr>
+<td><a href="context_id/">context_id</a></td>
+<td>The identifier of the context entity (e</td>
+</tr>
+<tr>
+<td><a href="context_name/">context_name</a></td>
+<td>The name of the context entity</td>
 </tr>
 <tr>
 <td><a href="cosine_similarity/">cosine_similarity</a></td>
@@ -2691,6 +2731,10 @@
 <td>Number of phenotypes in a bin</td>
 </tr>
 <tr>
+<td><a href="phenotype_ids/">phenotype_ids</a></td>
+<td>List of phenotype identifiers belonging to a bin</td>
+</tr>
+<tr>
 <td><a href="phenotypes/">phenotypes</a></td>
 <td>List of phenotype entities in the matrix</td>
 </tr>
@@ -2779,6 +2823,10 @@
 <td>The species-independent grouping term (UPHENO/UBERON) that serves as the cros...</td>
 </tr>
 <tr>
+<td><a href="rows/">rows</a></td>
+<td>List of row entities</td>
+</tr>
+<tr>
 <td><a href="score/">score</a></td>
 <td></td>
 </tr>
@@ -2807,12 +2855,40 @@
 <td></td>
 </tr>
 <tr>
+<td><a href="source_association_category/">source_association_category</a></td>
+<td>The biolink category of the source association</td>
+</tr>
+<tr>
+<td><a href="source_association_evidence_count/">source_association_evidence_count</a></td>
+<td>Number of evidence items supporting the source association</td>
+</tr>
+<tr>
+<td><a href="source_association_predicate/">source_association_predicate</a></td>
+<td>The predicate of the source association</td>
+</tr>
+<tr>
+<td><a href="source_association_primary_knowledge_source/">source_association_primary_knowledge_source</a></td>
+<td>Primary knowledge source for the source association</td>
+</tr>
+<tr>
+<td><a href="source_association_publications/">source_association_publications</a></td>
+<td>Publication CURIEs supporting the source association</td>
+</tr>
+<tr>
 <td><a href="source_disease_id/">source_disease_id</a></td>
 <td>The disease ID that a case is indirectly associated with (for descendant dise...</td>
 </tr>
 <tr>
 <td><a href="source_disease_label/">source_disease_label</a></td>
 <td>The label of the source disease for indirect case associations</td>
+</tr>
+<tr>
+<td><a href="source_id/">source_id</a></td>
+<td>For indirect associations, the ID of the direct entity</td>
+</tr>
+<tr>
+<td><a href="source_label/">source_label</a></td>
+<td>For indirect associations, the label of the direct entity</td>
 </tr>
 <tr>
 <td><a href="species_context_qualifier/">species_context_qualifier</a></td>
@@ -2963,6 +3039,14 @@
 <td></td>
 </tr>
 <tr>
+<td><a href="taxon/">taxon</a></td>
+<td>The taxon ID of the entity</td>
+</tr>
+<tr>
+<td><a href="taxon_label/">taxon_label</a></td>
+<td>The taxon label of the entity</td>
+</tr>
+<tr>
 <td><a href="text/">text</a></td>
 <td>text without tokens</td>
 </tr>
@@ -2979,8 +3063,16 @@
 <td>Total number of cases in the matrix</td>
 </tr>
 <tr>
+<td><a href="total_columns/">total_columns</a></td>
+<td>Total number of column entities in the grid</td>
+</tr>
+<tr>
 <td><a href="total_phenotypes/">total_phenotypes</a></td>
 <td>Total number of phenotypes in the matrix</td>
+</tr>
+<tr>
+<td><a href="total_rows/">total_rows</a></td>
+<td>Total number of row entities in the grid</td>
 </tr>
 <tr>
 <td><a href="type/">type</a></td>
@@ -2997,6 +3089,10 @@
 <tr>
 <td><a href="url/">url</a></td>
 <td></td>
+</tr>
+<tr>
+<td><a href="value/">value</a></td>
+<td>The value of a qualifier</td>
 </tr>
 <tr>
 <td><a href="version/">version</a></td>
