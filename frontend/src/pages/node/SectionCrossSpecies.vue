@@ -6,12 +6,7 @@
 -->
 
 <template>
-  <AppSection
-    v-if="showSection"
-    width="full"
-    class="inset"
-    alignment="left"
-  >
+  <AppSection v-if="showSection" width="full" class="inset" alignment="left">
     <AppHeading icon="sitemap">Cross-Species Equivalents</AppHeading>
     <TheCrossSpeciesGraph
       :clique="node.cross_species_term_clique!"

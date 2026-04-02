@@ -8,7 +8,7 @@
     },
     {
       "label": "nervous_system",
-      "count": 1062,
+      "count": 1060,
       "id": "UPHENO:0004523"
     },
     {
@@ -43,12 +43,12 @@
     },
     {
       "label": "digestive_system",
-      "count": 188,
+      "count": 187,
       "id": "UPHENO:0002833"
     },
     {
       "label": "respiratory",
-      "count": 161,
+      "count": 159,
       "id": "UPHENO:0004536"
     },
     {
@@ -63,7 +63,7 @@
     },
     {
       "label": "endocrine",
-      "count": 40,
+      "count": 39,
       "id": "UPHENO:0003116"
     },
     {

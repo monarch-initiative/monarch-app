@@ -1,4 +1,5 @@
 """Tests for case-phenotype Solr query construction."""
+
 import pytest
 from monarch_py.datamodels.solr import HistoPhenoKeys
 from monarch_py.implementations.solr.solr_query_utils import (
@@ -11,10 +12,13 @@ from monarch_py.utils.utils import escape
 class TestBuildCasePhenotypeQuery:
     """Test Solr query construction for case-phenotype matrix."""
 
-    @pytest.mark.parametrize("direct_only,expected_field,unexpected_field", [
-        (True, f'object:"{escape("MONDO:0007078")}"', "object_closure"),
-        (False, f'object_closure:"{escape("MONDO:0007078")}"', None),
-    ])
+    @pytest.mark.parametrize(
+        "direct_only,expected_field,unexpected_field",
+        [
+            (True, f'object:"{escape("MONDO:0007078")}"', "object_closure"),
+            (False, f'object_closure:"{escape("MONDO:0007078")}"', None),
+        ],
+    )
     def test_direct_vs_all_cases_query(self, direct_only, expected_field, unexpected_field):
         """Query should use correct object field based on direct_only flag."""
         params = build_case_phenotype_query(
@@ -22,15 +26,18 @@ class TestBuildCasePhenotypeQuery:
             direct_only=direct_only,
         )
         assert expected_field in params["q"]
-        assert '{!join from=subject to=subject}' in params["q"]
+        assert "{!join from=subject to=subject}" in params["q"]
         if unexpected_field:
             assert unexpected_field not in params["q"]
 
-    @pytest.mark.parametrize("disease_id", [
-        "MONDO:0007078",
-        "MONDO:0005071",
-        "MONDO:0000001",
-    ])
+    @pytest.mark.parametrize(
+        "disease_id",
+        [
+            "MONDO:0007078",
+            "MONDO:0005071",
+            "MONDO:0000001",
+        ],
+    )
     def test_disease_id_in_query(self, disease_id):
         """Query should include the escaped disease ID."""
         params = build_case_phenotype_query(disease_id=disease_id, direct_only=True)
@@ -115,10 +122,13 @@ class TestBuildCasePhenotypeQuery:
 class TestBuildCaseDiseaseQuery:
     """Test Solr query construction for case-disease lookup."""
 
-    @pytest.mark.parametrize("direct_only,expected_field", [
-        (True, "object:"),
-        (False, "object_closure:"),
-    ])
+    @pytest.mark.parametrize(
+        "direct_only,expected_field",
+        [
+            (True, "object:"),
+            (False, "object_closure:"),
+        ],
+    )
     def test_direct_vs_all_query(self, direct_only, expected_field):
         """Query should use correct object field based on direct_only flag."""
         params = build_case_disease_query(
@@ -127,10 +137,13 @@ class TestBuildCaseDiseaseQuery:
         )
         assert expected_field in params["q"]
 
-    @pytest.mark.parametrize("disease_id", [
-        "MONDO:0007078",
-        "MONDO:0005071",
-    ])
+    @pytest.mark.parametrize(
+        "disease_id",
+        [
+            "MONDO:0007078",
+            "MONDO:0005071",
+        ],
+    )
     def test_disease_id_in_query(self, disease_id):
         """Query should include the escaped disease ID."""
         params = build_case_disease_query(disease_id=disease_id, direct_only=True)

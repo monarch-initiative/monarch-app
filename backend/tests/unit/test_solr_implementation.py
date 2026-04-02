@@ -84,7 +84,6 @@ def test_get_entity_name_on_exception():
         assert SolrImplementation()._get_entity_name("MONDO:0007078") == "MONDO:0007078"
 
 
-
 # =====================================================================
 # Tests for get_case_phenotype_matrix
 # =====================================================================
@@ -533,9 +532,7 @@ def test_cross_species_clique_filters_non_clique_sideways():
         result = si._get_cross_species_term_clique(root)
 
         assert result is not None
-        sideways = [
-            a for a in result.clique_associations if a.predicate != "biolink:subclass_of"
-        ]
+        sideways = [a for a in result.clique_associations if a.predicate != "biolink:subclass_of"]
         assert len(sideways) == 1
         assert sideways[0].object == "MP:0000274"
 

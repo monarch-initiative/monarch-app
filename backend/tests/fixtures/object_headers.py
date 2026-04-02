@@ -11,7 +11,7 @@ def histobin_headers():
 
 @pytest.fixture
 def node_headers():
-    return ['id', 'category', 'name', 'full_name', 'deprecated', 'description', 'xref', 'provided_by', 'in_taxon', 'in_taxon_label', 'symbol', 'synonym', 'broad_synonym', 'exact_synonym', 'narrow_synonym', 'related_synonym', 'subsets', 'uri', 'iri', 'namespace', 'has_phenotype', 'has_phenotype_label', 'has_phenotype_closure', 'has_phenotype_closure_label', 'has_phenotype_count', 'has_descendant', 'has_descendant_label', 'has_descendant_count', 'inheritance', 'has_biological_sex', 'causal_gene', 'causes_disease', 'mappings', 'external_links', 'provided_by_link', 'association_counts', 'node_hierarchy']
+    return ['id', 'category', 'name', 'full_name', 'deprecated', 'description', 'xref', 'provided_by', 'in_taxon', 'in_taxon_label', 'symbol', 'synonym', 'broad_synonym', 'exact_synonym', 'narrow_synonym', 'related_synonym', 'subsets', 'uri', 'iri', 'namespace', 'has_phenotype', 'has_phenotype_label', 'has_phenotype_closure', 'has_phenotype_closure_label', 'has_phenotype_count', 'has_descendant', 'has_descendant_label', 'has_descendant_count', 'inheritance', 'has_biological_sex', 'causal_gene', 'causes_disease', 'mappings', 'external_links', 'provided_by_link', 'association_counts', 'cross_species_term_clique', 'node_hierarchy']
 
 @pytest.fixture
 def search_headers():

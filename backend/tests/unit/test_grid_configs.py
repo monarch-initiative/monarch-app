@@ -1,6 +1,7 @@
 """Unit tests for grid configuration."""
+
 import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from fastapi.testclient import TestClient
 from monarch_py.datamodels.grid_configs import GridTypeConfig, get_grid_config
 from monarch_py.datamodels.category_enums import AssociationCategory, EntityCategory

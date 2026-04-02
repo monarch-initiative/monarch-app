@@ -1,4 +1,5 @@
 """Tests for HistoPheno bin label mapping."""
+
 import pytest
 from monarch_py.datamodels.solr import (
     HistoPhenoKeys,

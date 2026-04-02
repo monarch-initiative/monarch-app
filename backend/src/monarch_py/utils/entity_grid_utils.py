@@ -1,4 +1,5 @@
 """Utilities for building generic entity grids."""
+
 from typing import Dict, List, Optional, Set
 
 from monarch_py.datamodels.model import (
@@ -7,6 +8,7 @@ from monarch_py.datamodels.model import (
     GridRowEntity,
     GridBin,
     GridCellData,
+    Qualifier,
 )
 from monarch_py.datamodels.grid_configs import GridTypeConfig
 from monarch_py.datamodels.grid_groupings import RowGroupingConfig
@@ -255,10 +257,14 @@ def _build_cells(
         # Build qualifiers dict from available qualifier fields
         qualifiers = {}
         if doc.get("onset_qualifier"):
-            qualifiers["onset_qualifier"] = doc.get("onset_qualifier")
-            qualifiers["onset_qualifier_label"] = doc.get("onset_qualifier_label")
+            qualifiers["onset_qualifier"] = Qualifier(
+                id="onset_qualifier",
+                value=doc.get("onset_qualifier"),
+                label=doc.get("onset_qualifier_label"),
+            )
 
         cell = GridCellData(
+            id=cell_key,
             present=True,
             negated=doc.get("negated"),
             qualifiers=qualifiers if qualifiers else None,

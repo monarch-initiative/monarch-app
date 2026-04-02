@@ -220,9 +220,7 @@ class SQLImplementation(EntityInterface, AssociationInterface):
         if object_closure:
             clauses.append(f"object_closure like '%{object_closure}%'")
         if primary_knowledge_source:
-            clauses.append(
-                " OR ".join([f"primary_knowledge_source = '{p}'" for p in primary_knowledge_source])
-            )
+            clauses.append(" OR ".join([f"primary_knowledge_source = '{p}'" for p in primary_knowledge_source]))
         if entity:
             if direct:
                 clauses.append(" OR ".join([f"subject = '{e}' OR object = '{e}'" for e in entity]))

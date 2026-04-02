@@ -2,6 +2,13 @@
 
 import { apiUrl } from "@/api";
 import type {
+  EntityGridResponse,
+  GridBin,
+  GridCellData,
+  GridColumnEntity,
+  GridRowEntity,
+} from "@/api/model";
+import type {
   CellData,
   CellQualifier,
   ColumnEntity,
@@ -9,59 +16,6 @@ import type {
   RowBin,
   RowEntity,
 } from "./types";
-
-// =============================================================================
-// API Response Types (from backend)
-// =============================================================================
-
-interface GridColumnEntityResponse {
-  id: string;
-  label?: string;
-  category: string;
-  is_direct: boolean;
-  source_id?: string;
-  source_label?: string;
-  taxon?: string;
-  taxon_label?: string;
-  source_association_category?: string;
-  source_association_predicate?: string;
-  source_association_publications?: string[];
-  source_association_evidence_count?: number;
-  source_association_primary_knowledge_source?: string;
-}
-
-interface GridRowEntityResponse {
-  id: string;
-  label?: string;
-  category: string;
-  bin_id: string;
-}
-
-interface GridBinResponse {
-  id: string;
-  label: string;
-  count: number;
-}
-
-interface GridCellDataResponse {
-  present: boolean;
-  negated?: boolean;
-  qualifiers?: Record<string, unknown>;
-  publications?: string[];
-  evidence_count?: number;
-}
-
-interface EntityGridResponse {
-  context_id: string;
-  context_name?: string;
-  context_category: string;
-  total_columns: number;
-  total_rows: number;
-  columns: GridColumnEntityResponse[];
-  rows: GridRowEntityResponse[];
-  bins: GridBinResponse[];
-  cells: Record<string, GridCellDataResponse>;
-}
 
 // =============================================================================
 // API Parameters
@@ -86,7 +40,7 @@ export interface GetEntityGridOptions {
 // Transform Functions
 // =============================================================================
 
-function transformColumn(col: GridColumnEntityResponse): ColumnEntity {
+function transformColumn(col: GridColumnEntity): ColumnEntity {
   return {
     id: col.id,
     label: col.label,
@@ -104,7 +58,7 @@ function transformColumn(col: GridColumnEntityResponse): ColumnEntity {
   };
 }
 
-function transformRow(row: GridRowEntityResponse): RowEntity {
+function transformRow(row: GridRowEntity): RowEntity {
   return {
     id: row.id,
     label: row.label,
@@ -112,7 +66,7 @@ function transformRow(row: GridRowEntityResponse): RowEntity {
   };
 }
 
-function transformBin(bin: GridBinResponse, rows: RowEntity[]): RowBin {
+function transformBin(bin: GridBin, rows: RowEntity[]): RowBin {
   // Find all rows in this bin
   const rowEntityIds = rows.filter((r) => r.binId === bin.id).map((r) => r.id);
 
@@ -125,24 +79,17 @@ function transformBin(bin: GridBinResponse, rows: RowEntity[]): RowBin {
   };
 }
 
-function transformCell(cell: GridCellDataResponse): CellData {
+function transformCell(cell: GridCellData): CellData {
   // Parse qualifiers from the backend response into CellQualifier[] for the modal
   const qualifiers: CellQualifier[] = [];
   if (cell.qualifiers) {
-    for (const [key, value] of Object.entries(cell.qualifiers)) {
-      if (value != null) {
-        const qualifier: CellQualifier =
-          typeof value === "object" && value !== null && "id" in value
-            ? {
-                type: key,
-                id: (value as { id?: string }).id,
-                label:
-                  (value as { label?: string }).label ||
-                  (value as { id?: string }).id ||
-                  String(value),
-              }
-            : { type: key, label: String(value) };
-        qualifiers.push(qualifier);
+    for (const [key, qual] of Object.entries(cell.qualifiers)) {
+      if (qual != null) {
+        qualifiers.push({
+          type: key,
+          id: qual.value,
+          label: qual.label || qual.value || key,
+        });
       }
     }
   }

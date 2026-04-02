@@ -375,7 +375,9 @@ def autocomplete_query_fields():
     """
     Fields and boosts used for autocomplete
     """
-    return "id^100 name^10 name_t^5 name_ac symbol^10 symbol_t^5 symbol_ac synonym synonym_t synonym_ac in_taxon_label_t"
+    return (
+        "id^100 name^10 name_t^5 name_ac symbol^10 symbol_t^5 symbol_ac synonym synonym_t synonym_ac in_taxon_label_t"
+    )
 
 
 def entity_query_fields():
@@ -439,31 +441,30 @@ def build_case_phenotype_query(
     disease_field = "object" if direct_only else "object_closure"
 
     join_query = (
-        '{!join from=subject to=subject}'
+        "{!join from=subject to=subject}"
         f'(category:"biolink:CaseToDiseaseAssociation" '
         f'AND {disease_field}:"{escape(disease_id)}")'
     )
 
-    facet_queries = [
-        f'object_closure:"{bin_key.value}"'
-        for bin_key in HistoPhenoKeys
-    ]
+    facet_queries = [f'object_closure:"{bin_key.value}"' for bin_key in HistoPhenoKeys]
 
     return {
         "q": join_query,
         "fq": 'category:"biolink:CaseToPhenotypicFeatureAssociation"',
         "rows": rows,
-        "fl": ",".join([
-            "subject",           # Case ID
-            "subject_label",     # Case label
-            "object",            # Phenotype ID
-            "object_label",      # Phenotype label
-            "object_closure",    # For bin assignment
-            "negated",           # Explicit absence
-            "publications",      # Supporting evidence
-            "onset_qualifier",   # Age of onset (ISO8601)
-            "onset_qualifier_label",
-        ]),
+        "fl": ",".join(
+            [
+                "subject",  # Case ID
+                "subject_label",  # Case label
+                "object",  # Phenotype ID
+                "object_label",  # Phenotype label
+                "object_closure",  # For bin assignment
+                "negated",  # Explicit absence
+                "publications",  # Supporting evidence
+                "onset_qualifier",  # Age of onset (ISO8601)
+                "onset_qualifier_label",
+            ]
+        ),
         "facet": "true",
         "facet.query": facet_queries,
     }
@@ -520,7 +521,6 @@ def build_grid_column_query(
     Returns:
         Dict of Solr query parameters
     """
-    from monarch_py.datamodels.grid_configs import GridTypeConfig
 
     context_field = config.context_field if direct_only else config.context_closure_field
 
@@ -539,7 +539,7 @@ def build_grid_column_query(
         # JOIN: from=row_context_field (e.g., subject in phenotype assocs)
         #       to=column_field (e.g., object in homology assocs)
         existence_join = (
-            f'{{!join from={config.row_context_field} to={config.column_field}}}'
+            f"{{!join from={config.row_context_field} to={config.column_field}}}"
             f'category:"{config.row_assoc_category.value}"'
         )
         q = existence_join
@@ -552,16 +552,18 @@ def build_grid_column_query(
         "q": q,
         "fq": fq,
         "rows": rows,
-        "fl": ",".join([
-            config.column_field,
-            f"{config.column_field}_label",
-            config.context_field,
-            f"{config.context_field}_label",
-            "subject_taxon",
-            "subject_taxon_label",
-            "object_taxon",
-            "object_taxon_label",
-        ]),
+        "fl": ",".join(
+            [
+                config.column_field,
+                f"{config.column_field}_label",
+                config.context_field,
+                f"{config.context_field}_label",
+                "subject_taxon",
+                "subject_taxon_label",
+                "object_taxon",
+                "object_taxon_label",
+            ]
+        ),
     }
 
 
@@ -602,17 +604,14 @@ def build_multi_category_column_query(
     column_category_filter = " OR ".join(f'category:"{cat}"' for cat in column_assoc_categories)
 
     # Base filter queries
-    fq = [f'({column_category_filter})']
+    fq = [f"({column_category_filter})"]
 
     # Build main query
     if filter_empty_columns and row_assoc_categories and row_context_field:
         # Use JOIN to find column associations where the column entity
         # appears in row associations. This filters out columns with no rows.
         row_category_filter = " OR ".join(f'category:"{cat}"' for cat in row_assoc_categories)
-        existence_join = (
-            f'{{!join from={row_context_field} to={column_field}}}'
-            f'({row_category_filter})'
-        )
+        existence_join = f"{{!join from={row_context_field} to={column_field}}}({row_category_filter})"
         q = existence_join
         # Add context filter to fq instead of q
         fq.append(f'{ctx_field}:"{context_id}"')
@@ -623,22 +622,24 @@ def build_multi_category_column_query(
         "q": q,
         "fq": fq,
         "rows": rows,
-        "fl": ",".join([
-            column_field,
-            f"{column_field}_label",
-            context_field,
-            f"{context_field}_label",
-            "subject_taxon",
-            "subject_taxon_label",
-            "object_taxon",
-            "object_taxon_label",
-            # Include source association fields
-            "category",
-            "predicate",
-            "publications",
-            "has_evidence",
-            "primary_knowledge_source",
-        ]),
+        "fl": ",".join(
+            [
+                column_field,
+                f"{column_field}_label",
+                context_field,
+                f"{context_field}_label",
+                "subject_taxon",
+                "subject_taxon_label",
+                "object_taxon",
+                "object_taxon_label",
+                # Include source association fields
+                "category",
+                "predicate",
+                "publications",
+                "has_evidence",
+                "primary_knowledge_source",
+            ]
+        ),
     }
 
 
@@ -675,7 +676,6 @@ def build_multi_category_row_query(
     Returns:
         Dict of Solr query parameters
     """
-    from monarch_py.datamodels.grid_groupings import RowGroupingConfig
 
     ctx_field = context_field if direct_only else context_closure_field
 
@@ -684,35 +684,32 @@ def build_multi_category_row_query(
 
     # JOIN query: Find row associations for column entities associated with context
     join_query = (
-        f'{{!join from={column_field} to={row_context_field}}}'
-        f'(({category_filter}) '
-        f'AND {ctx_field}:"{context_id}")'
+        f'{{!join from={column_field} to={row_context_field}}}(({category_filter}) AND {ctx_field}:"{context_id}")'
     )
 
     # Build facet queries for bin counts
-    facet_queries = [
-        f'{row_entity_field}_closure:"{bin_id}"'
-        for bin_id in grouping.bin_ids
-    ]
+    facet_queries = [f'{row_entity_field}_closure:"{bin_id}"' for bin_id in grouping.bin_ids]
 
     # Build OR query for multiple row categories
     row_category_filter = " OR ".join(f'category:"{cat}"' for cat in row_assoc_categories)
 
     return {
         "q": join_query,
-        "fq": f'({row_category_filter})',
+        "fq": f"({row_category_filter})",
         "rows": rows,
-        "fl": ",".join([
-            row_context_field,                      # Column entity ID
-            f"{row_context_field}_label",           # Column entity label
-            row_entity_field,                       # Row entity ID
-            f"{row_entity_field}_label",            # Row entity label
-            f"{row_entity_field}_closure",          # For bin assignment
-            "negated",
-            "publications",
-            "onset_qualifier",
-            "onset_qualifier_label",
-        ]),
+        "fl": ",".join(
+            [
+                row_context_field,  # Column entity ID
+                f"{row_context_field}_label",  # Column entity label
+                row_entity_field,  # Row entity ID
+                f"{row_entity_field}_label",  # Row entity label
+                f"{row_entity_field}_closure",  # For bin assignment
+                "negated",
+                "publications",
+                "onset_qualifier",
+                "onset_qualifier_label",
+            ]
+        ),
         "facet": "true",
         "facet.query": facet_queries,
     }
@@ -742,8 +739,6 @@ def build_grid_row_query(
     Returns:
         Dict of Solr query parameters
     """
-    from monarch_py.datamodels.grid_configs import GridTypeConfig
-    from monarch_py.datamodels.grid_groupings import RowGroupingConfig
 
     context_field = config.context_field if direct_only else config.context_closure_field
 
@@ -756,32 +751,31 @@ def build_grid_row_query(
 
     # JOIN query: Find row associations for column entities associated with context
     join_query = (
-        f'{{!join from={config.column_field} to={config.row_context_field}}}'
-        f'({col_cat_filter} '
+        f"{{!join from={config.column_field} to={config.row_context_field}}}"
+        f"({col_cat_filter} "
         f'AND {context_field}:"{context_id}")'
     )
 
     # Build facet queries for bin counts
-    facet_queries = [
-        f'{config.row_entity_field}_closure:"{bin_id}"'
-        for bin_id in grouping.bin_ids
-    ]
+    facet_queries = [f'{config.row_entity_field}_closure:"{bin_id}"' for bin_id in grouping.bin_ids]
 
     return {
         "q": join_query,
         "fq": f'category:"{config.row_assoc_category.value}"',
         "rows": rows,
-        "fl": ",".join([
-            config.row_context_field,                      # Column entity ID
-            f"{config.row_context_field}_label",           # Column entity label
-            config.row_entity_field,                       # Row entity ID
-            f"{config.row_entity_field}_label",            # Row entity label
-            f"{config.row_entity_field}_closure",          # For bin assignment
-            "negated",
-            "publications",
-            "onset_qualifier",
-            "onset_qualifier_label",
-        ]),
+        "fl": ",".join(
+            [
+                config.row_context_field,  # Column entity ID
+                f"{config.row_context_field}_label",  # Column entity label
+                config.row_entity_field,  # Row entity ID
+                f"{config.row_entity_field}_label",  # Row entity label
+                f"{config.row_entity_field}_closure",  # For bin assignment
+                "negated",
+                "publications",
+                "onset_qualifier",
+                "onset_qualifier_label",
+            ]
+        ),
         "facet": "true",
         "facet.query": facet_queries,
     }

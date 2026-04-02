@@ -235,6 +235,7 @@ import type {
   EntityGridMatrix,
   RowEntity,
 } from "@/api/entity-grid/types";
+import type { CrossSpeciesTermClique } from "@/api/model";
 import AppButton from "@/components/AppButton.vue";
 import AppInput from "@/components/AppInput.vue";
 import AppPercentage from "@/components/AppPercentage.vue";
@@ -250,7 +251,6 @@ import AppTextbox from "@/components/AppTextbox.vue";
 import EntityGrid from "@/components/EntityGrid/EntityGrid.vue";
 import EntityGridModal from "@/components/EntityGrid/EntityGridModal.vue";
 import TheCrossSpeciesGraph from "@/components/TheCrossSpeciesGraph.vue";
-import type { CrossSpeciesTermClique } from "@/api/model";
 import { sleep } from "@/util/debug";
 
 /** get all files in custom icon folder */

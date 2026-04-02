@@ -452,8 +452,8 @@ class Node(Entity):
     external_links: Optional[list[ExpandedCurie]] = Field(default=None, description="""ExpandedCurie with id and url for xrefs""")
     provided_by_link: Optional[ExpandedCurie] = Field(default=None, description="""A link to the docs for the knowledge source that provided the node/edge.""")
     association_counts: list[AssociationCount] = Field(default=...)
-    node_hierarchy: Optional[NodeHierarchy] = Field(default=None)
     cross_species_term_clique: Optional[CrossSpeciesTermClique] = Field(default=None)
+    node_hierarchy: Optional[NodeHierarchy] = Field(default=None)
     id: str = Field(default=...)
     category: Optional[str] = Field(default=None)
     name: Optional[str] = Field(default=None)
@@ -484,8 +484,7 @@ class Node(Entity):
 
 class CrossSpeciesTermClique(ConfiguredBaseModel):
     """
-    A grouping of species-specific terms (HP, MP, ZP) under a common
-    cross-species parent (UPHENO/UBERON), with associations between them.
+    A grouping of species-specific terms (HP, MP, ZP) under a common cross-species parent (UPHENO/UBERON), with associations between them.
     """
     root_term: Entity = Field(default=..., description="""The species-independent grouping term (UPHENO/UBERON) that serves as the cross-species bridge""")
     clique_entities: list[Entity] = Field(default=..., description="""Species-specific child terms (HP, MP, ZP, etc.) that are subclasses of the root term""")
@@ -680,13 +679,14 @@ class HistoPhenoBin(ConfiguredBaseModel):
     id: str = Field(default=...)
     label: str = Field(default=...)
     phenotype_count: int = Field(default=..., description="""Number of phenotypes in a bin""")
-    phenotype_ids: list[str] = Field(default_factory=list, description="""List of phenotype IDs in this bin""")
+    phenotype_ids: Optional[list[str]] = Field(default=None, description="""List of phenotype identifiers belonging to a bin""")
 
 
 class CasePhenotypeCellData(ConfiguredBaseModel):
     """
     Data for a single case-phenotype cell in the matrix
     """
+    id: str = Field(default=...)
     present: bool = Field(default=..., description="""Whether the phenotype is present for a case""")
     negated: Optional[bool] = Field(default=None)
     onset_qualifier: Optional[str] = Field(default=None)
@@ -700,33 +700,17 @@ class GridColumnEntity(ConfiguredBaseModel):
     """
     id: str = Field(default=...)
     label: Optional[str] = Field(default=None)
-    category: str = Field(default=..., description="""The biolink category of the column entity""")
-    is_direct: bool = Field(default=True, description="""Whether the entity is directly associated with the context or via closure""")
+    category: str = Field(default=...)
+    is_direct: Optional[bool] = Field(default=None, description="""Whether the case is directly associated with the disease or via a descendant""")
     source_id: Optional[str] = Field(default=None, description="""For indirect associations, the ID of the direct entity""")
     source_label: Optional[str] = Field(default=None, description="""For indirect associations, the label of the direct entity""")
-    taxon: Optional[str] = Field(default=None, description="""The taxon ID of the entity (for genes/orthologs)""")
+    taxon: Optional[str] = Field(default=None, description="""The taxon ID of the entity""")
     taxon_label: Optional[str] = Field(default=None, description="""The taxon label of the entity""")
-    # Source association fields (context -> column)
-    source_association_category: Optional[str] = Field(
-        default=None,
-        description="""The biolink category of the source association (e.g., biolink:CausalGeneToDiseaseAssociation)"""
-    )
-    source_association_predicate: Optional[str] = Field(
-        default=None,
-        description="""The predicate of the source association (e.g., biolink:causes)"""
-    )
-    source_association_publications: Optional[list[str]] = Field(
-        default=None,
-        description="""Publication CURIEs supporting the source association"""
-    )
-    source_association_evidence_count: Optional[int] = Field(
-        default=None,
-        description="""Number of evidence items supporting the source association"""
-    )
-    source_association_primary_knowledge_source: Optional[str] = Field(
-        default=None,
-        description="""Primary knowledge source for the source association"""
-    )
+    source_association_category: Optional[str] = Field(default=None, description="""The biolink category of the source association""")
+    source_association_predicate: Optional[str] = Field(default=None, description="""The predicate of the source association""")
+    source_association_publications: Optional[list[str]] = Field(default=None, description="""Publication CURIEs supporting the source association""")
+    source_association_evidence_count: Optional[int] = Field(default=None, description="""Number of evidence items supporting the source association""")
+    source_association_primary_knowledge_source: Optional[str] = Field(default=None, description="""Primary knowledge source for the source association""")
 
 
 class GridRowEntity(ConfiguredBaseModel):
@@ -735,8 +719,8 @@ class GridRowEntity(ConfiguredBaseModel):
     """
     id: str = Field(default=...)
     label: Optional[str] = Field(default=None)
-    category: str = Field(default=..., description="""The biolink category of the row entity""")
-    bin_id: str = Field(default=..., description="""The identifier of the bin this entity belongs to""")
+    category: str = Field(default=...)
+    bin_id: str = Field(default=..., description="""The identifier for the histopheno bin a phenotype belongs to""")
 
 
 class GridBin(ConfiguredBaseModel):
@@ -745,18 +729,28 @@ class GridBin(ConfiguredBaseModel):
     """
     id: str = Field(default=...)
     label: str = Field(default=...)
-    count: int = Field(default=..., description="""Number of row entities in this bin""")
+    count: int = Field(default=..., description="""count of documents""")
+
+
+class Qualifier(ConfiguredBaseModel):
+    """
+    A qualifier key-value pair for an association
+    """
+    id: str = Field(default=...)
+    value: Optional[str] = Field(default=None, description="""The value of a qualifier""")
+    label: Optional[str] = Field(default=None)
 
 
 class GridCellData(ConfiguredBaseModel):
     """
     Data for a cell in the grid
     """
-    present: bool = Field(default=True, description="""Whether the association is present""")
-    negated: Optional[bool] = Field(default=None, description="""Whether the association is negated""")
-    qualifiers: Optional[dict[str, Any]] = Field(default=None, description="""Additional qualifiers for the association""")
-    publications: Optional[list[str]] = Field(default=None, description="""Publication references for the association""")
-    evidence_count: Optional[int] = Field(default=None, description="""Number of evidence items supporting the association""")
+    id: str = Field(default=...)
+    present: bool = Field(default=..., description="""Whether the phenotype is present for a case""")
+    negated: Optional[bool] = Field(default=None)
+    qualifiers: Optional[dict[str, Qualifier]] = Field(default=None, description="""Additional qualifiers for the association""")
+    publications: Optional[list[str]] = Field(default=None)
+    evidence_count: Optional[int] = Field(default=None, description="""count of supporting documents, evidence codes, and sources supplying evidence""")
 
 
 class EntityGridResponse(ConfiguredBaseModel):
@@ -796,6 +790,7 @@ HistoPheno.model_rebuild()
 HistoBin.model_rebuild()
 Mapping.model_rebuild()
 Node.model_rebuild()
+CrossSpeciesTermClique.model_rebuild()
 NodeHierarchy.model_rebuild()
 Release.model_rebuild()
 Results.model_rebuild()
@@ -818,5 +813,7 @@ CasePhenotypeCellData.model_rebuild()
 GridColumnEntity.model_rebuild()
 GridRowEntity.model_rebuild()
 GridBin.model_rebuild()
+Qualifier.model_rebuild()
 GridCellData.model_rebuild()
 EntityGridResponse.model_rebuild()
+

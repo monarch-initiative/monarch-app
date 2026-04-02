@@ -3,7 +3,8 @@
 This module defines the configuration for each type of entity grid,
 specifying the 2-hop traversal pattern from context entity to row entities.
 """
-from dataclasses import dataclass, field
+
+from dataclasses import dataclass
 from typing import Dict, List, Optional
 
 from monarch_py.datamodels.category_enums import AssociationCategory, EntityCategory
@@ -31,6 +32,7 @@ class GridTypeConfig:
         row_entity_field: Field in row associations containing row entity ID
         context_closure_field: Field for indirect context matching
     """
+
     name: str
     context_category: EntityCategory
     row_assoc_category: AssociationCategory
@@ -120,8 +122,5 @@ def get_grid_config(grid_type: str) -> GridTypeConfig:
         ValueError: If no configuration exists for the grid type
     """
     if grid_type not in GRID_TYPE_CONFIGS:
-        raise ValueError(
-            f"Unknown grid type: {grid_type}. "
-            f"Available types: {list(GRID_TYPE_CONFIGS.keys())}"
-        )
+        raise ValueError(f"Unknown grid type: {grid_type}. Available types: {list(GRID_TYPE_CONFIGS.keys())}")
     return GRID_TYPE_CONFIGS[grid_type]

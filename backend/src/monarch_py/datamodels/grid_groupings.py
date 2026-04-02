@@ -3,15 +3,17 @@
 This module defines how row entities (phenotypes, diseases, anatomy, etc.)
 are grouped into bins for display in entity grids.
 """
+
 from dataclasses import dataclass
 from enum import Enum
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 from monarch_py.datamodels.solr import HistoPhenoKeys, HISTOPHENO_BIN_LABELS
 
 
 class GroupingType(Enum):
     """Type of grouping mechanism for row entities."""
+
     CLOSURE_ROOTS = "closure_roots"
     # All Alliance slims (HistoPheno, DO_AGR, UBERON, GO) use closure-based matching:
     # Check if any bin ID appears in the entity's object_closure field
@@ -26,6 +28,7 @@ class RowGroupingConfig:
         bin_ids: Ordered list of bin IDs (determines display order)
         bin_labels: Mapping of bin IDs to human-readable labels
     """
+
     grouping_type: GroupingType
     bin_ids: List[str]
     bin_labels: Dict[str, str]

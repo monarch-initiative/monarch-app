@@ -6,7 +6,7 @@
 -->
 
 <template>
-  <div ref="container" class="cross-species-graph">
+  <div class="cross-species-graph">
     <svg
       :width="svgWidth"
       :height="svgHeight"
@@ -54,36 +54,42 @@
       </g>
 
       <!-- Root node -->
-      <g>
-        <rect
-          :x="rootNode.x - rootNode.w / 2"
-          :y="rootNode.y - rootNode.h / 2"
-          :width="rootNode.w"
-          :height="rootNode.h"
-          rx="8"
-          ry="8"
-          class="node node-root"
-        />
-        <text
-          :x="rootNode.x"
-          :y="rootNode.y - 8"
-          class="node-text node-id"
-          text-anchor="middle"
-        >
-          {{ clique.root_term.id }}
-        </text>
-        <text
-          :x="rootNode.x"
-          :y="rootNode.y + 10"
-          class="node-text node-name"
-          text-anchor="middle"
-        >
-          {{ truncate(clique.root_term.name || "", 30) }}
-        </text>
+      <g v-tooltip="nodeTooltip(clique.root_term)">
+        <a :href="`/${clique.root_term.id}`">
+          <rect
+            :x="rootNode.x - rootNode.w / 2"
+            :y="rootNode.y - rootNode.h / 2"
+            :width="rootNode.w"
+            :height="rootNode.h"
+            rx="8"
+            ry="8"
+            class="node node-root"
+          />
+          <text
+            :x="rootNode.x"
+            :y="rootNode.y - 8"
+            class="node-text node-id"
+            text-anchor="middle"
+          >
+            {{ clique.root_term.id }}
+          </text>
+          <text
+            :x="rootNode.x"
+            :y="rootNode.y + 10"
+            class="node-text node-name"
+            text-anchor="middle"
+          >
+            {{ truncate(clique.root_term.name || "", 30) }}
+          </text>
+        </a>
       </g>
 
       <!-- Child nodes -->
-      <g v-for="(child, i) in childNodes" :key="'n-' + i">
+      <g
+        v-for="(child, i) in childNodes"
+        :key="'n-' + i"
+        v-tooltip="nodeTooltip(child.entity)"
+      >
         <a :href="`/${child.entity.id}`">
           <rect
             :x="child.x - child.w / 2"
@@ -130,19 +136,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import type { CrossSpeciesTermClique, Entity } from "@/api/model";
+import frogIcon from "@/assets/icons/frogIcon.svg?url";
 import humanIcon from "@/assets/icons/humanIcon.svg?url";
 import mouseIcon from "@/assets/icons/mouseIcon.svg?url";
 import zebrafishIcon from "@/assets/icons/zebrafishIcon.svg?url";
-import frogIcon from "@/assets/icons/frogIcon.svg?url";
 
 const props = defineProps<{
   clique: CrossSpeciesTermClique;
   currentId: string;
 }>();
-
-const container = ref<HTMLElement | null>(null);
 
 const ICON_MAP: Record<string, string> = {
   HP: humanIcon,
@@ -285,6 +289,10 @@ function getTaxonIcon(entity: Entity): string | undefined {
 function truncate(text: string, max: number): string {
   return text.length > max ? text.slice(0, max - 1) + "\u2026" : text;
 }
+
+function nodeTooltip(entity: Entity): string {
+  return `<strong>${entity.id}</strong><br/>${entity.name || ""}`;
+}
 </script>
 
 <style scoped>
@@ -313,13 +321,13 @@ svg {
 
 .edge-homologous {
   stroke: hsl(240, 15%, 62%);
-  stroke-width: 1.5;
   stroke-dasharray: 6 3;
+  stroke-width: 1.5;
 }
 
 .edge-label {
-  font-size: 10px;
   fill: #888;
+  font-size: 10px;
 }
 
 .node {
@@ -329,6 +337,11 @@ svg {
 .node-root {
   fill: hsl(185, 55%, 38%);
   stroke: hsl(185, 55%, 30%);
+  cursor: pointer;
+}
+
+.node-root:hover {
+  fill: hsl(185, 55%, 45%);
 }
 
 .node-child {
@@ -342,28 +355,21 @@ svg {
   stroke-width: 2.5;
 }
 
-.node-current .node-id,
-.node-current .node-name {
-  fill: #404040;
-}
-
 .node-text {
   font-family: "Poppins", sans-serif;
-  pointer-events: none;
 }
 
 .node-id {
-  font-size: 12px;
-  font-weight: bold;
   fill: #fff;
+  font-weight: bold;
+  font-size: 12px;
 }
 
 .node-name {
-  font-size: 11px;
   fill: hsla(0, 0%, 100%, 0.9);
+  font-size: 11px;
 }
 
-.node-current ~ text .node-id,
 a:has(.node-current) .node-id,
 a:has(.node-current) .node-name {
   fill: #404040;

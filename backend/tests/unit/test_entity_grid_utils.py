@@ -282,7 +282,8 @@ def test_build_cells_with_qualifiers():
     cells = _build_cells(docs, column_map, config)
     cell = cells["CASE:001:HP:001"]
     assert cell.qualifiers is not None
-    assert cell.qualifiers["onset_qualifier"] == "HP:0003577"
+    assert cell.qualifiers["onset_qualifier"].value == "HP:0003577"
+    assert cell.qualifiers["onset_qualifier"].label == "Congenital onset"
 
 
 def test_build_cells_without_qualifiers():

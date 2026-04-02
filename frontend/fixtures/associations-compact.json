@@ -1,93 +1,93 @@
 {
   "limit": 20,
   "offset": 0,
-  "total": 5895,
+  "total": 5881,
   "items": [
     {
+      "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
+      "subject": "MONDO:0010870",
+      "subject_label": "tibial muscular dystrophy",
+      "predicate": "biolink:has_phenotype",
+      "object": "HP:0002878",
+      "object_label": "Respiratory failure",
+      "negated": true
+    },
+    {
       "category": "biolink:VariantToDiseaseAssociation",
-      "subject": "CLINVAR:198031",
-      "subject_label": "NM_000023.4(SGCA):c.700G>A (p.Asp234Asn)",
+      "subject": "CLINVAR:836267",
+      "subject_label": "NM_000231.3(SGCG):c.703-1G>C",
       "predicate": "biolink:associated_with_increased_likelihood_of",
+      "object": "MONDO:0015152",
+      "object_label": "autosomal recessive limb-girdle muscular dystrophy",
+      "negated": false
+    },
+    {
+      "category": "biolink:GenotypeToDiseaseAssociation",
+      "subject": "ZFIN:ZDB-FISH-150901-14025",
+      "subject_label": "dmd<sup>ta222a/ta222a</sup>",
+      "predicate": "biolink:model_of",
+      "object": "MONDO:0010679",
+      "object_label": "Duchenne muscular dystrophy",
+      "negated": null
+    },
+    {
+      "category": "biolink:VariantToDiseaseAssociation",
+      "subject": "CLINVAR:288647",
+      "subject_label": "NM_001130987.2(DYSF):c.5646G>A (p.Trp1882Ter)",
+      "predicate": "biolink:causes",
       "object": "MONDO:0015152",
       "object_label": "autosomal recessive limb-girdle muscular dystrophy",
       "negated": null
     },
     {
+      "category": "biolink:GenotypeToDiseaseAssociation",
+      "subject": "ZFIN:ZDB-FISH-150901-4684",
+      "subject_label": "WT + MO1-crppa",
+      "predicate": "biolink:model_of",
+      "object": "MONDO:0000171",
+      "object_label": "muscular dystrophy-dystroglycanopathy, type A",
+      "negated": null
+    },
+    {
       "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
-      "subject": "MONDO:0957270",
-      "subject_label": "muscular dystrophy, limb-girdle, autosomal recessive 28",
+      "subject": "MONDO:0007614",
+      "subject_label": "congenital fibrosis of extraocular muscles",
       "predicate": "biolink:has_phenotype",
-      "object": "HP:0030099",
-      "object_label": "Reduced muscle fiber alpha dystroglycan",
+      "object": "HP:0025186",
+      "object_label": "Marcus Gunn jaw winking synkinesis",
+      "negated": false
+    },
+    {
+      "category": "biolink:DiseaseOrPhenotypicFeatureToGeneticInheritanceAssociation",
+      "subject": "MONDO:0012034",
+      "subject_label": "autosomal dominant limb-girdle muscular dystrophy type 1F",
+      "predicate": "biolink:has_mode_of_inheritance",
+      "object": "HP:0000006",
+      "object_label": "Autosomal dominant inheritance",
+      "negated": null
+    },
+    {
+      "category": "biolink:VariantToDiseaseAssociation",
+      "subject": "CLINVAR:96688",
+      "subject_label": "NM_213599.3(ANO5):c.989dup (p.Leu330fs)",
+      "predicate": "biolink:causes",
+      "object": "MONDO:0015152",
+      "object_label": "autosomal recessive limb-girdle muscular dystrophy",
+      "negated": false
+    },
+    {
+      "category": "biolink:VariantToDiseaseAssociation",
+      "subject": "CLINVAR:166790",
+      "subject_label": "NM_000070.3(CAPN3):c.1468C>T (p.Arg490Trp)",
+      "predicate": "biolink:causes",
+      "object": "MONDO:0015152",
+      "object_label": "autosomal recessive limb-girdle muscular dystrophy",
       "negated": false
     },
     {
       "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
-      "subject": "MONDO:0957270",
-      "subject_label": "muscular dystrophy, limb-girdle, autosomal recessive 28",
-      "predicate": "biolink:has_phenotype",
-      "object": "HP:0008997",
-      "object_label": "Proximal upper limb muscle weakness",
-      "negated": false
-    },
-    {
-      "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
-      "subject": "MONDO:0957270",
-      "subject_label": "muscular dystrophy, limb-girdle, autosomal recessive 28",
-      "predicate": "biolink:has_phenotype",
-      "object": "HP:0012240",
-      "object_label": "Increased intramyocellular lipid droplets",
-      "negated": false
-    },
-    {
-      "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
-      "subject": "MONDO:0957270",
-      "subject_label": "muscular dystrophy, limb-girdle, autosomal recessive 28",
-      "predicate": "biolink:has_phenotype",
-      "object": "HP:0002747",
-      "object_label": "Respiratory insufficiency due to muscle weakness",
-      "negated": false
-    },
-    {
-      "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
-      "subject": "MONDO:0957270",
-      "subject_label": "muscular dystrophy, limb-girdle, autosomal recessive 28",
-      "predicate": "biolink:has_phenotype",
-      "object": "HP:0004887",
-      "object_label": "Respiratory failure requiring assisted ventilation",
-      "negated": false
-    },
-    {
-      "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
-      "subject": "MONDO:0014120",
-      "subject_label": "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A13",
-      "predicate": "biolink:has_phenotype",
-      "object": "HP:0002365",
-      "object_label": "Hypoplasia of the brainstem",
-      "negated": false
-    },
-    {
-      "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
-      "subject": "MONDO:0014120",
-      "subject_label": "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A13",
-      "predicate": "biolink:has_phenotype",
-      "object": "HP:0007260",
-      "object_label": "Type II lissencephaly",
-      "negated": false
-    },
-    {
-      "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
-      "subject": "MONDO:0014120",
-      "subject_label": "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A13",
-      "predicate": "biolink:has_phenotype",
-      "object": "HP:0001263",
-      "object_label": "Global developmental delay",
-      "negated": false
-    },
-    {
-      "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
-      "subject": "MONDO:0014120",
-      "subject_label": "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A13",
+      "subject": "MONDO:0014023",
+      "subject_label": "congenital muscular dystrophy with intellectual disability and severe epilepsy",
       "predicate": "biolink:has_phenotype",
       "object": "HP:0001250",
       "object_label": "Seizure",
@@ -95,92 +95,92 @@
     },
     {
       "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
-      "subject": "MONDO:0014120",
-      "subject_label": "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A13",
+      "subject": "MONDO:0009680",
+      "subject_label": "congenital muscular dystrophy-infantile cataract-hypogonadism syndrome",
       "predicate": "biolink:has_phenotype",
-      "object": "HP:0002085",
-      "object_label": "Occipital encephalocele",
+      "object": "HP:0000518",
+      "object_label": "Cataract",
+      "negated": false
+    },
+    {
+      "category": "biolink:CausalGeneToDiseaseAssociation",
+      "subject": "HGNC:2213",
+      "subject_label": "COL6A3",
+      "predicate": "biolink:causes",
+      "object": "MONDO:0958234",
+      "object_label": "Bethlem myopathy 1C",
+      "negated": null
+    },
+    {
+      "category": "biolink:VariantToDiseaseAssociation",
+      "subject": "CLINVAR:242418",
+      "subject_label": "NM_001130987.2(DYSF):c.3167G>A (p.Arg1056Gln)",
+      "predicate": "biolink:causes",
+      "object": "MONDO:0015152",
+      "object_label": "autosomal recessive limb-girdle muscular dystrophy",
+      "negated": null
+    },
+    {
+      "category": "biolink:VariantToDiseaseAssociation",
+      "subject": "CLINVAR:978048",
+      "subject_label": "NM_000023.4(SGCA):c.957-11C>G",
+      "predicate": "biolink:associated_with_increased_likelihood_of",
+      "object": "MONDO:0015152",
+      "object_label": "autosomal recessive limb-girdle muscular dystrophy",
+      "negated": false
+    },
+    {
+      "category": "biolink:Association",
+      "subject": "MONDO:0011170",
+      "subject_label": "autosomal recessive limb-girdle muscular dystrophy type 2G",
+      "predicate": "biolink:subclass_of",
+      "object": "MONDO:0015152",
+      "object_label": "autosomal recessive limb-girdle muscular dystrophy",
+      "negated": null
+    },
+    {
+      "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
+      "subject": "MONDO:0012248",
+      "subject_label": "autosomal recessive limb-girdle muscular dystrophy type 2K",
+      "predicate": "biolink:has_phenotype",
+      "object": "HP:0003551",
+      "object_label": "Difficulty climbing stairs",
       "negated": false
     },
     {
       "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
-      "subject": "MONDO:0014120",
-      "subject_label": "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A13",
+      "subject": "MONDO:0023671",
+      "subject_label": "oculopharyngodistal myopathy 3",
       "predicate": "biolink:has_phenotype",
-      "object": "HP:0001093",
-      "object_label": "Optic nerve dysplasia",
+      "object": "HP:0000508",
+      "object_label": "Ptosis",
       "negated": false
     },
     {
       "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
-      "subject": "MONDO:0014120",
-      "subject_label": "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A13",
+      "subject": "MONDO:0012699",
+      "subject_label": "autosomal recessive limb-girdle muscular dystrophy type 2M",
       "predicate": "biolink:has_phenotype",
-      "object": "HP:0003560",
-      "object_label": "Muscular dystrophy",
+      "object": "HP:0002359",
+      "object_label": "Frequent falls",
       "negated": false
     },
     {
       "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
-      "subject": "MONDO:0014120",
-      "subject_label": "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A13",
+      "subject": "MONDO:0024530",
+      "subject_label": "Bethlem myopathy 1A",
       "predicate": "biolink:has_phenotype",
-      "object": "HP:0008734",
-      "object_label": "Decreased testicular size",
+      "object": "HP:0002650",
+      "object_label": "Scoliosis",
       "negated": false
     },
     {
       "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
-      "subject": "MONDO:0014120",
-      "subject_label": "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A13",
+      "subject": "MONDO:0009364",
+      "subject_label": "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A1",
       "predicate": "biolink:has_phenotype",
-      "object": "HP:0002500",
-      "object_label": "Abnormal cerebral white matter morphology",
-      "negated": false
-    },
-    {
-      "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
-      "subject": "MONDO:0014120",
-      "subject_label": "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A13",
-      "predicate": "biolink:has_phenotype",
-      "object": "HP:0003236",
-      "object_label": "Elevated circulating creatine kinase concentration",
-      "negated": false
-    },
-    {
-      "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
-      "subject": "MONDO:0014120",
-      "subject_label": "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A13",
-      "predicate": "biolink:has_phenotype",
-      "object": "HP:0100565",
-      "object_label": "Hydromyelia",
-      "negated": false
-    },
-    {
-      "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
-      "subject": "MONDO:0014120",
-      "subject_label": "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A13",
-      "predicate": "biolink:has_phenotype",
-      "object": "HP:0000238",
-      "object_label": "Hydrocephalus",
-      "negated": false
-    },
-    {
-      "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
-      "subject": "MONDO:0014120",
-      "subject_label": "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A13",
-      "predicate": "biolink:has_phenotype",
-      "object": "HP:0006829",
-      "object_label": "Severe muscular hypotonia",
-      "negated": false
-    },
-    {
-      "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
-      "subject": "MONDO:0014120",
-      "subject_label": "muscular dystrophy-dystroglycanopathy (congenital with brain and eye anomalies), type A13",
-      "predicate": "biolink:has_phenotype",
-      "object": "HP:0000126",
-      "object_label": "Hydronephrosis",
+      "object": "HP:0000175",
+      "object_label": "Cleft palate",
       "negated": false
     }
   ],
