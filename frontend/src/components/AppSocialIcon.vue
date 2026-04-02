@@ -15,6 +15,7 @@ defineProps<{
 </script>
 <style scoped lang="scss">
 .social-icon {
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,7 +23,23 @@ defineProps<{
   height: 30px;
   border-radius: 50%;
   background-color: #000;
+  line-height: 0;
   transition: transform 0.2s ease;
+
+  /** Inline <a> + svg baseline gaps otherwise throw off vertical centering vs FA icons */
+  :deep(a) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  :deep(svg.app-icon) {
+    display: block;
+  }
 
   .app-icon {
     color: white;
@@ -41,6 +58,17 @@ defineProps<{
 
 .social-icon.medium {
   background-color: #000000;
+}
+
+.social-icon.slack {
+  border: 1px solid rgba(74, 21, 75, 0.12);
+  background-color: #ffffff;
+
+  .app-icon {
+    width: 1.05em;
+    height: 1.05em;
+    color: inherit;
+  }
 }
 
 .social-icon.github {

@@ -11,7 +11,7 @@
           <li v-for="subItem in column.subItems" :key="subItem.key">
             <AppLink :to="subItem.to" class="app-link">
               {{ subItem.label }}
-              <span v-if="subItem.icon" class="icon">
+              <span v-if="showExternalNavIcon(subItem)" class="icon">
                 <AppIcon icon="arrow-up-right-from-square" />
               </span>
             </AppLink>
@@ -28,47 +28,16 @@
           <p>Follow us on</p>
           <div class="icons">
             <AppLink
-              v-tooltip="'Subscribe'"
-              to="https://groups.google.com/g/monarch-friends/"
-              class="social-icon"
+              v-for="link in COMMUNITY_SOCIAL_LINKS"
+              :key="link.id"
+              v-tooltip="link.tooltip"
+              :to="link.url"
+              :class="[
+                'social-icon',
+                link.socialIconType === 'slack' ? 'social-icon-slack' : null,
+              ]"
             >
-              <AppIcon icon="envelope" />
-            </AppLink>
-            <AppLink
-              v-tooltip="'Medium'"
-              to="https://medium.com/@MonarchInit"
-              class="social-icon"
-            >
-              <AppIcon icon="medium" />
-            </AppLink>
-            <AppLink
-              v-tooltip="'GitHub'"
-              to="https://github.com/monarch-initiative"
-              class="social-icon"
-            >
-              <AppIcon icon="github" />
-            </AppLink>
-            <AppLink
-              v-tooltip="'LinkedIn'"
-              to="https://www.linkedin.com/company/the-monarch-initiative"
-              class="social-icon"
-            >
-              <AppIcon icon="linkedin" />
-            </AppLink>
-
-            <AppLink
-              v-tooltip="'YouTube'"
-              to="https://www.youtube.com/@monarchinitiative"
-              class="social-icon"
-            >
-              <AppIcon icon="youtube" />
-            </AppLink>
-            <AppLink
-              v-tooltip="'blusky'"
-              to="https://bsky.app/profile/monarchinitiative.bsky.social"
-              class="social-icon"
-            >
-              <AppIcon icon="social-bluesky" />
+              <AppIcon :icon="link.icon" />
             </AppLink>
           </div>
         </div>
@@ -80,7 +49,9 @@
 <script setup lang="ts">
 import ResourceIcon from "@/assets/icons/resource-monarch-black.svg";
 import AppLink from "@/components/AppLink.vue";
-import navigationMenus from "@/data/navigationMenu.json";
+import { COMMUNITY_SOCIAL_LINKS } from "@/constants/links";
+import navigationMenus from "@/data/navigationMenu";
+import { showExternalNavIcon } from "@/util/navigation-menu";
 </script>
 
 <style scoped lang="scss">
@@ -205,6 +176,12 @@ import navigationMenus from "@/data/navigationMenu.json";
 
   .app-icon[data-icon="envelope"] {
     color: #007acc;
+  }
+
+  .social-icon-slack :deep(svg) {
+    display: block;
+    width: 1.3em;
+    height: 1.3em;
   }
 
   .app-icon[data-icon="bluesky"] {

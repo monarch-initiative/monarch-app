@@ -18,48 +18,16 @@
           <p>Follow us on:</p>
           <div class="icons">
             <AppLink
-              v-tooltip="'Subscribe'"
-              to="https://groups.google.com/g/monarch-friends/"
-              class="social-icon"
+              v-for="social in COMMUNITY_SOCIAL_LINKS"
+              :key="social.id"
+              v-tooltip="social.tooltip"
+              :to="social.url"
+              :class="[
+                'social-icon',
+                social.socialIconType === 'slack' ? 'social-icon-slack' : null,
+              ]"
             >
-              <AppIcon icon="envelope" />
-            </AppLink>
-            <AppLink
-              v-tooltip="'Medium'"
-              to="https://medium.com/@MonarchInit"
-              class="social-icon"
-            >
-              <AppIcon icon="medium" />
-            </AppLink>
-            <AppLink
-              v-tooltip="'GitHub'"
-              to="https://github.com/monarch-initiative"
-              class="social-icon"
-            >
-              <AppIcon icon="github" />
-            </AppLink>
-            <AppLink
-              v-tooltip="'LinkedIn'"
-              to="https://www.linkedin.com/company/the-monarch-initiative"
-              class="social-icon"
-            >
-              <AppIcon icon="linkedin" />
-            </AppLink>
-
-            <AppLink
-              v-tooltip="'YouTube'"
-              to="https://www.youtube.com/@monarchinitiative"
-              class="social-icon"
-            >
-              <AppIcon icon="youtube" />
-            </AppLink>
-
-            <AppLink
-              v-tooltip="'blusky'"
-              to="https://bsky.app/profile/monarchinitiative.bsky.social"
-              class="social-icon"
-            >
-              <AppIcon icon="social-bluesky" />
+              <AppIcon :icon="social.icon" />
             </AppLink>
           </div>
         </div>
@@ -132,6 +100,7 @@ import AppButton from "@/components/AppButton.vue";
 import AppTextbox from "@/components/AppTextbox.vue";
 import ThePageTitle from "@/components/ThePageTitle.vue";
 import { useQuery } from "@/composables/use-query";
+import { COMMUNITY_SOCIAL_LINKS } from "@/constants/links";
 import { collapse } from "@/util/string";
 
 /** route info */
@@ -344,6 +313,12 @@ $wrap: 768px;
 
   .app-icon[data-icon="envelope"] {
     color: #007acc;
+  }
+
+  .social-icon-slack :deep(svg) {
+    display: block;
+    width: 1.35em;
+    height: 1.35em;
   }
 }
 </style>
