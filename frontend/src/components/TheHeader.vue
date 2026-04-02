@@ -87,7 +87,7 @@
             <li v-for="subItem in menu.subItems || []" :key="subItem.label">
               <AppLink :to="subItem.to" class="linkItems">
                 {{ subItem.label }}
-                <span v-if="subItem.icon" class="icon">
+                <span v-if="showExternalNavIcon(subItem)" class="icon">
                   <AppIcon icon="arrow-up-right-from-square" />
                 </span>
               </AppLink>
@@ -117,6 +117,7 @@ import TheSearchTerms from "@/components/TheSearchTerms.vue";
 import { useLatestKGReleaseDate } from "@/composables/use-kg-release-date";
 import navigationMenus from "@/data/navigationMenu";
 import { formatReleaseDate } from "@/util/formatDate";
+import { showExternalNavIcon } from "@/util/navigation-menu";
 import DropdownButton from "./TheDropdownButton.vue";
 import TheHeroTools from "./TheHeroTools.vue";
 import TheNexus from "./TheNexus.vue";

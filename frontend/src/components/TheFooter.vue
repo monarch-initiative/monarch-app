@@ -11,7 +11,7 @@
           <li v-for="subItem in column.subItems" :key="subItem.key">
             <AppLink :to="subItem.to" class="app-link">
               {{ subItem.label }}
-              <span v-if="showExternalLinkIcon(subItem)" class="icon">
+              <span v-if="showExternalNavIcon(subItem)" class="icon">
                 <AppIcon icon="arrow-up-right-from-square" />
               </span>
             </AppLink>
@@ -51,10 +51,7 @@ import ResourceIcon from "@/assets/icons/resource-monarch-black.svg";
 import AppLink from "@/components/AppLink.vue";
 import { COMMUNITY_SOCIAL_LINKS } from "@/constants/links";
 import navigationMenus from "@/data/navigationMenu";
-
-function showExternalLinkIcon(subItem: { icon?: boolean }) {
-  return Boolean(subItem.icon);
-}
+import { showExternalNavIcon } from "@/util/navigation-menu";
 </script>
 
 <style scoped lang="scss">

@@ -2,247 +2,247 @@ import { getCommunityNavSection } from "@/constants/links";
 
 export default [
   {
-    "label": "About",
-    "subItems": [
+    label: "About",
+    subItems: [
       {
-        "label": "Our Story",
-        "key": "about-our-story",
-        "to": "/about/our-story"
+        label: "Our Story",
+        key: "about-our-story",
+        to: "/about/our-story",
       },
       {
-        "label": "Team",
-        "key": "about-team",
-        "to": "/about/team"
+        label: "Team",
+        key: "about-team",
+        to: "/about/team",
       },
       {
-        "label": "SAB",
-        "key": "about-sab",
-        "to": "/about/sab"
+        label: "SAB",
+        key: "about-sab",
+        to: "/about/sab",
       },
       {
-        "label": "Contact Us",
-        "key": "about-contact-us",
-        "to": "/about/contact-us"
+        label: "Contact Us",
+        key: "about-contact-us",
+        to: "/about/contact-us",
       },
       {
-        "label": "Publications",
-        "key": "about-publications",
-        "to": "/about/publications"
+        label: "Publications",
+        key: "about-publications",
+        to: "/about/publications",
       },
       {
-        "label": "Funding",
-        "key": "about-funding",
-        "to": "/about/funding"
-      }
-    ]
+        label: "Funding",
+        key: "about-funding",
+        to: "/about/funding",
+      },
+    ],
   },
   {
-    "label": "Knowledge Graph",
-    "subItems": [
+    label: "Knowledge Graph",
+    subItems: [
       {
-        "label": "Dashboard",
-        "key": "kg-dashboard",
-        "to": "/kg/dashboard"
+        label: "Dashboard",
+        key: "kg-dashboard",
+        to: "/kg/dashboard",
       },
       {
-        "label": "Association Browser",
-        "key": "kg-associations",
-        "to": "/kg/associations"
+        label: "Association Browser",
+        key: "kg-associations",
+        to: "/kg/associations",
       },
       {
-        "label": "Downloads",
-        "key": "kg-downloads",
-        "to": "/kg/downloads"
+        label: "Downloads",
+        key: "kg-downloads",
+        to: "/kg/downloads",
       },
       {
-        "label": "API",
-        "key": "kg-api",
-        "to": "https://api-v3.monarchinitiative.org/v3/docs",
-        "icon": true
+        label: "API",
+        key: "kg-api",
+        to: "https://api-v3.monarchinitiative.org/v3/docs",
+        icon: true,
       },
       {
-        "label": "Neo4j",
-        "key": "about-neo4J",
-        "to": "https://neo4j.monarchinitiative.org/browser/",
-        "icon": true
+        label: "Neo4j",
+        key: "about-neo4J",
+        to: "https://neo4j.monarchinitiative.org/browser/",
+        icon: true,
       },
       {
-        "label": "Monarch R",
-        "key": "about-monarchr",
-        "to": "https://monarch-initiative.github.io/monarchr/articles/monarchr",
-        "icon": true
+        label: "Monarch R",
+        key: "about-monarchr",
+        to: "https://monarch-initiative.github.io/monarchr/articles/monarchr",
+        icon: true,
       },
       {
-        "label": "Status & QC",
-        "key": "kg-status-qc",
-        "to": "/kg/status"
+        label: "Status & QC",
+        key: "kg-status-qc",
+        to: "/kg/status",
       },
       {
-        "label": "How To & Help",
-        "key": "kg-help",
-        "to": "/kg/help"
+        label: "How To & Help",
+        key: "kg-help",
+        to: "/kg/help",
       },
       {
-        "label": "Documentation",
-        "key": "kg-documentation",
-        "to": "/kg/documentation"
+        label: "Documentation",
+        key: "kg-documentation",
+        to: "/kg/documentation",
       },
       {
-        "label": "Terms of Use",
-        "key": "kg-terms",
-        "to": "/kg/terms"
+        label: "Terms of Use",
+        key: "kg-terms",
+        to: "/kg/terms",
       },
       {
-        "label": "Cite the KG",
-        "key": "cite",
-        "to": "/kg/citation"
+        label: "Cite the KG",
+        key: "cite",
+        to: "/kg/citation",
       },
       {
-        "label": "About the KG",
-        "key": "about-kg",
-        "to": "/kg/about"
+        label: "About the KG",
+        key: "about-kg",
+        to: "/kg/about",
       },
       {
-        "label": "KG Sources",
-        "key": "kg-sources",
-        "to": "/kg/sources"
-      }
-    ]
+        label: "KG Sources",
+        key: "kg-sources",
+        to: "/kg/sources",
+      },
+    ],
   },
   {
-    "label": "Ontologies",
-    "subItems": [
+    label: "Ontologies",
+    subItems: [
       {
-        "label": "Mondo",
-        "key": "ontology-mondo",
-        "to": "/ontologies/mondo"
+        label: "Mondo",
+        key: "ontology-mondo",
+        to: "/ontologies/mondo",
       },
       {
-        "label": "Uberon",
-        "key": "ontology-uberon",
-        "to": "/ontologies/uberon"
+        label: "Uberon",
+        key: "ontology-uberon",
+        to: "/ontologies/uberon",
       },
       {
-        "label": "uPheno",
-        "key": "ontology-uPeheno",
-        "to": "/ontologies/upheno"
+        label: "uPheno",
+        key: "ontology-uPeheno",
+        to: "/ontologies/upheno",
       },
       {
-        "label": "HPO",
-        "key": "ontology-hpo",
-        "to": "/ontologies/hp"
+        label: "HPO",
+        key: "ontology-hpo",
+        to: "/ontologies/hp",
       },
       {
-        "label": "Phenio",
-        "key": "ontology-phenio",
-        "to": "/ontologies/phenio"
+        label: "Phenio",
+        key: "ontology-phenio",
+        to: "/ontologies/phenio",
       },
       {
-        "label": "OBA",
-        "key": "ontology-oba",
-        "to": "/ontologies/oba"
+        label: "OBA",
+        key: "ontology-oba",
+        to: "/ontologies/oba",
       },
       {
-        "label": "VBO",
-        "key": "ontology-vbo",
-        "to": "/ontologies/vbo"
+        label: "VBO",
+        key: "ontology-vbo",
+        to: "/ontologies/vbo",
       },
       {
-        "label": "GENO",
-        "key": "ontology-geno",
-        "to": "/ontologies/geno"
+        label: "GENO",
+        key: "ontology-geno",
+        to: "/ontologies/geno",
       },
       {
-        "label": "SEPIO",
-        "key": "ontology-sepio",
-        "to": "/ontologies/sepio"
+        label: "SEPIO",
+        key: "ontology-sepio",
+        to: "/ontologies/sepio",
       },
       {
-        "label": "ECTO",
-        "key": "ontology-ecto",
-        "to": "/ontologies/ecto"
-      }
-    ]
+        label: "ECTO",
+        key: "ontology-ecto",
+        to: "/ontologies/ecto",
+      },
+    ],
   },
   {
-    "label": "Technology & Tools",
-    "subItems": [
+    label: "Technology & Tools",
+    subItems: [
       {
-        "label": "Exomiser",
-        "key": "exomiser",
-        "to": "/tools/exomiser"
+        label: "Exomiser",
+        key: "exomiser",
+        to: "/tools/exomiser",
       },
       {
-        "label": "PhEval",
-        "key": "pheval",
-        "to": "/tools/pheval"
+        label: "PhEval",
+        key: "pheval",
+        to: "/tools/pheval",
       },
       {
-        "label": "LinkML",
-        "key": "linkml-cde",
-        "to": "/tools/linkml"
+        label: "LinkML",
+        key: "linkml-cde",
+        to: "/tools/linkml",
       },
       {
-        "label": "SSSOM",
-        "key": "sssom",
-        "to": "/tools/sssom"
+        label: "SSSOM",
+        key: "sssom",
+        to: "/tools/sssom",
       },
       {
-        "label": "OAK",
-        "key": "oak",
-        "to": "/tools/oak"
+        label: "OAK",
+        key: "oak",
+        to: "/tools/oak",
       },
       {
-        "label": "ODK",
-        "key": "odk",
-        "to": "/tools/odk"
+        label: "ODK",
+        key: "odk",
+        to: "/tools/odk",
       },
       {
-        "label": "OntoGPT",
-        "key": "ontogpt",
-        "to": "/tools/ontogpt"
+        label: "OntoGPT",
+        key: "ontogpt",
+        to: "/tools/ontogpt",
       },
       {
-        "label": "CurateGPT",
-        "key": "curate-gpt",
-        "to": "/tools/curate_gpt"
+        label: "CurateGPT",
+        key: "curate-gpt",
+        to: "/tools/curate_gpt",
       },
       {
-        "label": "Phenopackets",
-        "key": "pehnopackets",
-        "to": "/tools/phenopackets"
-      }
-    ]
+        label: "Phenopackets",
+        key: "pehnopackets",
+        to: "/tools/phenopackets",
+      },
+    ],
   },
   {
-    "label": "Registries & Hubs",
-    "subItems": [
+    label: "Registries & Hubs",
+    subItems: [
       {
-        "label": "Monarch OLS",
-        "key": "monarch_ols",
-        "to": "/registries/monarch_ols"
+        label: "Monarch OLS",
+        key: "monarch_ols",
+        to: "/registries/monarch_ols",
       },
       {
-        "label": "Monarch Mapping Registry",
-        "key": "monarch_mapping_registry",
-        "to": "/registries/monarch_mapping_registry"
+        label: "Monarch Mapping Registry",
+        key: "monarch_mapping_registry",
+        to: "/registries/monarch_mapping_registry",
       },
       {
-        "label": "KG Hub",
-        "key": "kg_hub",
-        "to": "/registries/kg_hub"
+        label: "KG Hub",
+        key: "kg_hub",
+        to: "/registries/kg_hub",
       },
       {
-        "label": "KG Registry",
-        "key": "kg_registry",
-        "to": "/registries/kg_registry"
+        label: "KG Registry",
+        key: "kg_registry",
+        to: "/registries/kg_registry",
       },
       {
-        "label": "LinkML Registry",
-        "key": "linkml_registry",
-        "to": "/registries/linkml_registry"
-      }
-    ]
+        label: "LinkML Registry",
+        key: "linkml_registry",
+        to: "/registries/linkml_registry",
+      },
+    ],
   },
-  getCommunityNavSection()
+  getCommunityNavSection(),
 ];

@@ -127,10 +127,10 @@
 </template>
 
 <script setup lang="ts">
-import { COMMUNITY_SOCIAL_LINKS } from "@/constants/links";
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppSocialIcon from "@/components/AppSocialIcon.vue";
 import PageTitle from "@/components/ThePageTitle.vue";
+import { COMMUNITY_SOCIAL_LINKS } from "@/constants/links";
 import PageInfoCard from "./PageInfoCard.vue";
 </script>
 

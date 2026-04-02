@@ -23,8 +23,8 @@ defineProps<{
   height: 30px;
   border-radius: 50%;
   background-color: #000;
-  transition: transform 0.2s ease;
   line-height: 0;
+  transition: transform 0.2s ease;
 
   /** Inline <a> + svg baseline gaps otherwise throw off vertical centering vs FA icons */
   :deep(a) {
@@ -65,9 +65,9 @@ defineProps<{
   background-color: #ffffff;
 
   .app-icon {
-    color: inherit;
     width: 1.05em;
     height: 1.05em;
+    color: inherit;
   }
 }
 

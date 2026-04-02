@@ -1,4 +1,7 @@
-/** Google Form used to request an invite to the Monarch Initiative Slack workspace. */
+/**
+ * Google Form used to request an invite to the Monarch Initiative Slack
+ * workspace.
+ */
 export const MONARCH_SLACK_SIGNUP_FORM_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSf0hOZv6UMW6PD1sRtK74OQLV8ZA8nFRICo0T0ngb2IKFBh5A/viewform";
 
@@ -25,8 +28,8 @@ export interface CommunitySocialLink {
 }
 
 /**
- * Social / community links shown on Get Involved, footer, and Contact (same order).
- * Subset with `nav` populate the Community menu after “Get Involved”.
+ * Social / community links shown on Get Involved, footer, and Contact (same
+ * order). Subset with `nav` populate the Community menu after “Get Involved”.
  */
 export const COMMUNITY_SOCIAL_LINKS: CommunitySocialLink[] = [
   {
@@ -93,7 +96,10 @@ const COMMUNITY_NAV_EXTERNAL_ORDER = [
   "bluesky",
 ] as const;
 
-/** Header/footer `Community` column (dropdown), including “Get Involved” + external links. */
+/**
+ * Header/footer `Community` column (dropdown), including “Get Involved” +
+ * external links.
+ */
 export function getCommunityNavSection() {
   const external = COMMUNITY_NAV_EXTERNAL_ORDER.map((id) => {
     const link = COMMUNITY_SOCIAL_LINKS.find((l) => l.id === id);

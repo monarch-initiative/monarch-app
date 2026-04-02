@@ -18,16 +18,16 @@
           <p>Follow us on:</p>
           <div class="icons">
             <AppLink
-              v-for="link in COMMUNITY_SOCIAL_LINKS"
-              :key="link.id"
-              v-tooltip="link.tooltip"
-              :to="link.url"
+              v-for="social in COMMUNITY_SOCIAL_LINKS"
+              :key="social.id"
+              v-tooltip="social.tooltip"
+              :to="social.url"
               :class="[
                 'social-icon',
-                link.socialIconType === 'slack' ? 'social-icon-slack' : null,
+                social.socialIconType === 'slack' ? 'social-icon-slack' : null,
               ]"
             >
-              <AppIcon :icon="link.icon" />
+              <AppIcon :icon="social.icon" />
             </AppLink>
           </div>
         </div>
@@ -95,12 +95,12 @@ import { truncate } from "lodash";
 import parser from "ua-parser-js";
 import { useLocalStorage } from "@vueuse/core";
 import { postFeedback } from "@/api/feedback";
-import { COMMUNITY_SOCIAL_LINKS } from "@/constants/links";
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppButton from "@/components/AppButton.vue";
 import AppTextbox from "@/components/AppTextbox.vue";
 import ThePageTitle from "@/components/ThePageTitle.vue";
 import { useQuery } from "@/composables/use-query";
+import { COMMUNITY_SOCIAL_LINKS } from "@/constants/links";
 import { collapse } from "@/util/string";
 
 /** route info */

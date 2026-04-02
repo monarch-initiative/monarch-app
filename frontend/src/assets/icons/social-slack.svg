@@ -1,4 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 127 127" aria-hidden="true">
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 127 127"
+  aria-hidden="true"
+>
   <!-- Slack hash mark; geometry and brand palette per Slack/Wikimedia Commons (Slack_icon_2019.svg). -->
   <path
     d="M27.2 80c0 7.3-5.9 13.2-13.2 13.2C6.7 93.2.8 87.3.8 80c0-7.3 5.9-13.2 13.2-13.2h13.2V80zm6.6 0c0-7.3 5.9-13.2 13.2-13.2 7.3 0 13.2 5.9 13.2 13.2v33c0 7.3-5.9 13.2-13.2 13.2-7.3 0-13.2-5.9-13.2-13.2V80z"
