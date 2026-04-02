@@ -62,6 +62,15 @@ def test_parse_entity(entity_response, node):
     assert all(parsed[k] == v for k, v in parsed.items() if k in node)
 
 
+def test_parse_entity_strips_descendant_lists(entity_response):
+    """has_descendant and has_descendant_label should be stripped to avoid multi-MB responses."""
+    assert entity_response.get("has_descendant"), "fixture should have has_descendant to test stripping"
+    entity = parse_entity(entity_response)
+    assert entity.has_descendant is None
+    assert entity.has_descendant_label is None
+    assert entity.has_descendant_count is not None  # count (integer) should be preserved
+
+
 def test_parse_histopheno(histopheno_response, histopheno, node):
     histopheno_response["response"]["numFound"] = histopheno_response["response"].pop("num_found")
     solr_response = SolrQueryResult(**histopheno_response)

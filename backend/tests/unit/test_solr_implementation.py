@@ -51,6 +51,40 @@ def test_get_generic_entity_grid_accepts_multiple_row_categories():
 
 
 # =====================================================================
+# Tests for get_entity descendant stripping
+# =====================================================================
+
+
+def test_get_entity_strips_descendant_lists():
+    """get_entity should strip has_descendant/has_descendant_label from the response."""
+    solr_doc = {
+        "id": "UBERON:0000061",
+        "category": "biolink:AnatomicalEntity",
+        "name": "anatomical structure",
+        "provided_by": "phenio_nodes",
+        "has_descendant": [f"UBERON:{i:07d}" for i in range(100)],
+        "has_descendant_label": [f"structure {i}" for i in range(100)],
+        "has_descendant_count": 100,
+    }
+
+    with (
+        patch("monarch_py.implementations.solr.solr_implementation.SolrService") as mock_solr_cls,
+        patch.object(SolrImplementation, "_get_cross_species_term_clique", return_value=None),
+        patch.object(SolrImplementation, "_get_node_hierarchy", return_value=None),
+        patch.object(SolrImplementation, "get_association_counts") as mock_counts,
+        patch.object(SolrImplementation, "_get_mapped_entities", return_value=[]),
+    ):
+        mock_solr_cls.return_value.get.return_value = solr_doc
+        mock_counts.return_value.items = []
+
+        node = SolrImplementation().get_entity("UBERON:0000061", extra=True)
+
+        assert node.has_descendant is None
+        assert node.has_descendant_label is None
+        assert node.has_descendant_count == 100
+
+
+# =====================================================================
 # Tests for _get_entity_name
 # =====================================================================
 
