@@ -127,16 +127,33 @@
             class="node-text node-name"
             text-anchor="middle"
           >
-            {{ truncate(child.entity.name || "", 18) }}
+            {{ truncate(child.entity.name || "", 22) }}
           </text>
         </a>
+        <!-- "+N more" badge when collapsed -->
+        <text
+          v-if="visibleChildren.groupCounts.get(child.entity.id)"
+          :x="child.x"
+          :y="child.y + child.h / 2 + 16"
+          class="more-badge"
+          text-anchor="middle"
+        >
+          +{{ visibleChildren.groupCounts.get(child.entity.id) }} more
+        </text>
       </g>
     </svg>
+    <button
+      v-if="hiddenCount > 0 || expanded"
+      class="toggle-btn"
+      @click="expanded = !expanded"
+    >
+      {{ expanded ? "Show 1 per species" : `Show all ${totalChildren} children` }}
+    </button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import type { CrossSpeciesTermClique, Entity } from "@/api/model";
 import frogIcon from "@/assets/icons/frogIcon.svg?url";
 import humanIcon from "@/assets/icons/humanIcon.svg?url";
@@ -155,11 +172,11 @@ const ICON_MAP: Record<string, string> = {
   XPO: frogIcon,
 };
 
-const NODE_W = 140;
+const NODE_W = 170;
 const NODE_H = 60;
 const ROOT_W = 200;
 const ROOT_H = 50;
-const SPACING = 160;
+const SPACING = 190;
 const PARENT_Y = 50;
 const CHILD_Y = 180;
 
@@ -179,7 +196,38 @@ interface SidewaysEdge {
   offsetIndex: number;
 }
 
-const numChildren = computed(() => props.clique.clique_entities.length);
+/** Collapse/expand state */
+const expanded = ref(false);
+
+/** Group clique entities by ID prefix; return visible entities and per-prefix counts */
+const visibleChildren = computed(() => {
+  const all = props.clique.clique_entities;
+  const groups = new Map<string, Entity[]>();
+  for (const entity of all) {
+    const prefix = entity.id.split(":")[0];
+    if (!groups.has(prefix)) groups.set(prefix, []);
+    groups.get(prefix)!.push(entity);
+  }
+  if (expanded.value) {
+    return { entities: all, groupCounts: new Map<string, number>() };
+  }
+  const entities: Entity[] = [];
+  const groupCounts = new Map<string, number>();
+  for (const [, members] of groups) {
+    entities.push(members[0]);
+    if (members.length > 1) {
+      groupCounts.set(members[0].id, members.length - 1);
+    }
+  }
+  return { entities, groupCounts };
+});
+
+const totalChildren = computed(() => props.clique.clique_entities.length);
+const hiddenCount = computed(
+  () => totalChildren.value - visibleChildren.value.entities.length,
+);
+
+const numChildren = computed(() => visibleChildren.value.entities.length);
 
 const svgWidth = computed(
   () => Math.max(numChildren.value, 1) * SPACING + SPACING,
@@ -205,7 +253,7 @@ const childNodes = computed<LayoutNode[]>(() => {
   const n = numChildren.value;
   const totalWidth = (n - 1) * SPACING;
   const startX = svgWidth.value / 2 - totalWidth / 2;
-  return props.clique.clique_entities.map((entity, i) => ({
+  return visibleChildren.value.entities.map((entity, i) => ({
     entity,
     x: startX + i * SPACING,
     y: CHILD_Y,
@@ -373,5 +421,29 @@ svg {
 a:has(.node-current) .node-id,
 a:has(.node-current) .node-name {
   fill: #404040;
+}
+
+.more-badge {
+  fill: hsl(200, 15%, 40%);
+  font-size: 11px;
+  font-style: italic;
+  font-family: "Poppins", sans-serif;
+}
+
+.toggle-btn {
+  display: block;
+  margin: 8px auto 0;
+  padding: 4px 14px;
+  border: 1px solid hsl(200, 15%, 70%);
+  border-radius: 4px;
+  background: #fff;
+  color: hsl(200, 15%, 35%);
+  font-size: 13px;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+}
+
+.toggle-btn:hover {
+  background: hsl(200, 15%, 95%);
 }
 </style>
