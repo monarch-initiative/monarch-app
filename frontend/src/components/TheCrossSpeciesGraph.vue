@@ -22,6 +22,9 @@
           class="edge edge-vertical"
         />
         <text
+          v-tooltip="
+            edgeTooltip(edge.predicate, edge.source, edge.subject, edge.object)
+          "
           :x="edge.child.x"
           :y="edge.child.y - edge.child.h / 2 - 14"
           class="edge-label"
@@ -44,6 +47,9 @@
           fill="none"
         />
         <text
+          v-tooltip="
+            edgeTooltip(edge.predicate, edge.source, edge.subject, edge.object)
+          "
           :x="(edge.sourceNode.x + edge.targetNode.x) / 2"
           :y="sidewaysLabelY(edge)"
           class="edge-label"
@@ -147,7 +153,9 @@
       class="toggle-btn"
       @click="expanded = !expanded"
     >
-      {{ expanded ? "Show 1 per species" : `Show all ${totalChildren} children` }}
+      {{
+        expanded ? "Show 1 per species" : `Show all ${totalChildren} children`
+      }}
     </button>
   </div>
 </template>
@@ -194,12 +202,18 @@ interface SidewaysEdge {
   predicate: string;
   /** Vertical offset index for stacking multiple edges between the same pair */
   offsetIndex: number;
+  source?: string;
+  subject: string;
+  object: string;
 }
 
 /** Collapse/expand state */
 const expanded = ref(false);
 
-/** Group clique entities by ID prefix; return visible entities and per-prefix counts */
+/**
+ * Group clique entities by ID prefix; return visible entities and per-prefix
+ * counts
+ */
 const visibleChildren = computed(() => {
   const all = props.clique.clique_entities;
   const groups = new Map<string, Entity[]>();
@@ -263,20 +277,32 @@ const childNodes = computed<LayoutNode[]>(() => {
 });
 
 const verticalEdges = computed(() => {
-  const assocMap = new Map<string, string>();
+  const assocMap = new Map<
+    string,
+    { predicate: string; source?: string; object: string }
+  >();
   for (const assoc of props.clique.clique_associations) {
     if (
       assoc.predicate !== "biolink:same_as" &&
       assoc.predicate !== "biolink:homologous_to"
     ) {
-      assocMap.set(assoc.subject, assoc.predicate);
+      assocMap.set(assoc.subject, {
+        predicate: assoc.predicate,
+        source: assoc.primary_knowledge_source,
+        object: assoc.object,
+      });
     }
   }
   return childNodes.value.map((child) => {
-    const predicate = assocMap.get(child.entity.id) ?? "subclass_of";
+    const info = assocMap.get(child.entity.id);
+    const predicate = info?.predicate ?? "biolink:subclass_of";
     return {
       child,
       label: predicate.replace("biolink:", "").replace(/_/g, " "),
+      predicate,
+      source: info?.source,
+      subject: child.entity.id,
+      object: info?.object ?? props.clique.root_term.id,
     };
   });
 });
@@ -303,6 +329,9 @@ const sidewaysEdges = computed<SidewaysEdge[]>(() => {
           targetNode: target,
           predicate: assoc.predicate,
           offsetIndex: idx,
+          source: assoc.primary_knowledge_source,
+          subject: assoc.subject,
+          object: assoc.object,
         });
       }
     }
@@ -341,6 +370,17 @@ function truncate(text: string, max: number): string {
 function nodeTooltip(entity: Entity): string {
   return `<strong>${entity.id}</strong><br/>${entity.name || ""}`;
 }
+
+function edgeTooltip(
+  predicate: string,
+  source: string | undefined,
+  subject: string,
+  object: string,
+): string {
+  let html = `<strong>${predicate}</strong><br/>${subject} → ${object}`;
+  if (source) html += `<br/>Source: ${source}`;
+  return html;
+}
 </script>
 
 <style scoped>
@@ -376,6 +416,7 @@ svg {
 .edge-label {
   fill: #888;
   font-size: 10px;
+  cursor: help;
 }
 
 .node {
@@ -425,8 +466,8 @@ a:has(.node-current) .node-name {
 
 .more-badge {
   fill: hsl(200, 15%, 40%);
-  font-size: 11px;
   font-style: italic;
+  font-size: 11px;
   font-family: "Poppins", sans-serif;
 }
 
@@ -439,8 +480,8 @@ a:has(.node-current) .node-name {
   background: #fff;
   color: hsl(200, 15%, 35%);
   font-size: 13px;
-  cursor: pointer;
   font-family: "Poppins", sans-serif;
+  cursor: pointer;
 }
 
 .toggle-btn:hover {
