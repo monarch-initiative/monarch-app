@@ -13,7 +13,13 @@
       :viewBox="`0 0 ${svgWidth} ${svgHeight}`"
     >
       <!-- Vertical edges (children → root) -->
-      <g v-for="(edge, i) in verticalEdges" :key="'v-' + i">
+      <g
+        v-for="(edge, i) in verticalEdges"
+        :key="'v-' + i"
+        v-tooltip="
+          edgeTooltip(edge.predicate, edge.source, edge.subject, edge.object)
+        "
+      >
         <line
           :x1="rootNode.x"
           :y1="rootNode.y + rootNode.h / 2"
@@ -32,7 +38,13 @@
       </g>
 
       <!-- Horizontal edges (same_as / homologous_to between children) -->
-      <g v-for="(edge, i) in sidewaysEdges" :key="'h-' + i">
+      <g
+        v-for="(edge, i) in sidewaysEdges"
+        :key="'h-' + i"
+        v-tooltip="
+          edgeTooltip(edge.predicate, edge.source, edge.subject, edge.object)
+        "
+      >
         <path
           :d="sidewaysPath(edge)"
           :class="[
@@ -127,16 +139,35 @@
             class="node-text node-name"
             text-anchor="middle"
           >
-            {{ truncate(child.entity.name || "", 18) }}
+            {{ truncate(child.entity.name || "", 22) }}
           </text>
         </a>
+        <!-- "+N more" badge when collapsed -->
+        <text
+          v-if="visibleChildren.groupCounts.get(child.entity.id)"
+          :x="child.x"
+          :y="child.y + child.h / 2 + 16"
+          class="more-badge"
+          text-anchor="middle"
+        >
+          +{{ visibleChildren.groupCounts.get(child.entity.id) }} more
+        </text>
       </g>
     </svg>
+    <button
+      v-if="hiddenCount > 0 || expanded"
+      class="toggle-btn"
+      @click="expanded = !expanded"
+    >
+      {{
+        expanded ? "Show 1 per species" : `Show all ${totalChildren} children`
+      }}
+    </button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
 import type { CrossSpeciesTermClique, Entity } from "@/api/model";
 import frogIcon from "@/assets/icons/frogIcon.svg?url";
 import humanIcon from "@/assets/icons/humanIcon.svg?url";
@@ -155,11 +186,11 @@ const ICON_MAP: Record<string, string> = {
   XPO: frogIcon,
 };
 
-const NODE_W = 140;
+const NODE_W = 170;
 const NODE_H = 60;
 const ROOT_W = 200;
 const ROOT_H = 50;
-const SPACING = 160;
+const SPACING = 190;
 const PARENT_Y = 50;
 const CHILD_Y = 180;
 
@@ -177,9 +208,55 @@ interface SidewaysEdge {
   predicate: string;
   /** Vertical offset index for stacking multiple edges between the same pair */
   offsetIndex: number;
+  source?: string;
+  subject: string;
+  object: string;
 }
 
-const numChildren = computed(() => props.clique.clique_entities.length);
+/** Collapse/expand state — reset when navigating to a different clique */
+const expanded = ref(false);
+watch(
+  () => props.clique,
+  () => {
+    expanded.value = false;
+  },
+);
+
+/**
+ * Group clique entities by ID prefix; return visible entities and per-prefix
+ * counts
+ */
+const visibleChildren = computed(() => {
+  const all = props.clique.clique_entities;
+  const groups = new Map<string, Entity[]>();
+  for (const entity of all) {
+    const prefix = entity.id.split(":")[0];
+    if (!groups.has(prefix)) groups.set(prefix, []);
+    groups.get(prefix)!.push(entity);
+  }
+  if (expanded.value) {
+    return { entities: all, groupCounts: new Map<string, number>() };
+  }
+  const entities: Entity[] = [];
+  const groupCounts = new Map<string, number>();
+  for (const [, members] of groups) {
+    // Prefer the current node as the visible representative for its group
+    const current = members.find((m) => m.id === props.currentId);
+    const rep = current ?? members[0];
+    entities.push(rep);
+    if (members.length > 1) {
+      groupCounts.set(rep.id, members.length - 1);
+    }
+  }
+  return { entities, groupCounts };
+});
+
+const totalChildren = computed(() => props.clique.clique_entities.length);
+const hiddenCount = computed(
+  () => totalChildren.value - visibleChildren.value.entities.length,
+);
+
+const numChildren = computed(() => visibleChildren.value.entities.length);
 
 const svgWidth = computed(
   () => Math.max(numChildren.value, 1) * SPACING + SPACING,
@@ -205,7 +282,7 @@ const childNodes = computed<LayoutNode[]>(() => {
   const n = numChildren.value;
   const totalWidth = (n - 1) * SPACING;
   const startX = svgWidth.value / 2 - totalWidth / 2;
-  return props.clique.clique_entities.map((entity, i) => ({
+  return visibleChildren.value.entities.map((entity, i) => ({
     entity,
     x: startX + i * SPACING,
     y: CHILD_Y,
@@ -215,20 +292,32 @@ const childNodes = computed<LayoutNode[]>(() => {
 });
 
 const verticalEdges = computed(() => {
-  const assocMap = new Map<string, string>();
+  const assocMap = new Map<
+    string,
+    { predicate: string; source?: string; object: string }
+  >();
   for (const assoc of props.clique.clique_associations) {
     if (
       assoc.predicate !== "biolink:same_as" &&
       assoc.predicate !== "biolink:homologous_to"
     ) {
-      assocMap.set(assoc.subject, assoc.predicate);
+      assocMap.set(assoc.subject, {
+        predicate: assoc.predicate,
+        source: assoc.primary_knowledge_source,
+        object: assoc.object,
+      });
     }
   }
   return childNodes.value.map((child) => {
-    const predicate = assocMap.get(child.entity.id) ?? "subclass_of";
+    const info = assocMap.get(child.entity.id);
+    const predicate = info?.predicate ?? "biolink:subclass_of";
     return {
       child,
       label: predicate.replace("biolink:", "").replace(/_/g, " "),
+      predicate,
+      source: info?.source,
+      subject: child.entity.id,
+      object: info?.object ?? props.clique.root_term.id,
     };
   });
 });
@@ -255,6 +344,9 @@ const sidewaysEdges = computed<SidewaysEdge[]>(() => {
           targetNode: target,
           predicate: assoc.predicate,
           offsetIndex: idx,
+          source: assoc.primary_knowledge_source,
+          subject: assoc.subject,
+          object: assoc.object,
         });
       }
     }
@@ -293,6 +385,17 @@ function truncate(text: string, max: number): string {
 function nodeTooltip(entity: Entity): string {
   return `<strong>${entity.id}</strong><br/>${entity.name || ""}`;
 }
+
+function edgeTooltip(
+  predicate: string,
+  source: string | undefined,
+  subject: string,
+  object: string,
+): string {
+  let html = `<strong>${predicate}</strong><br/>${subject} → ${object}`;
+  if (source) html += `<br/>Source: ${source}`;
+  return html;
+}
 </script>
 
 <style scoped>
@@ -328,6 +431,7 @@ svg {
 .edge-label {
   fill: #888;
   font-size: 10px;
+  cursor: help;
 }
 
 .node {
@@ -373,5 +477,29 @@ svg {
 a:has(.node-current) .node-id,
 a:has(.node-current) .node-name {
   fill: #404040;
+}
+
+.more-badge {
+  fill: hsl(200, 15%, 40%);
+  font-style: italic;
+  font-size: 11px;
+  font-family: "Poppins", sans-serif;
+}
+
+.toggle-btn {
+  display: block;
+  margin: 8px auto 0;
+  padding: 4px 14px;
+  border: 1px solid hsl(200, 15%, 70%);
+  border-radius: 4px;
+  background: #fff;
+  color: hsl(200, 15%, 35%);
+  font-size: 13px;
+  font-family: "Poppins", sans-serif;
+  cursor: pointer;
+}
+
+.toggle-btn:hover {
+  background: hsl(200, 15%, 95%);
 }
 </style>

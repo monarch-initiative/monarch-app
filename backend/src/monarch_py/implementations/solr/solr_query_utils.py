@@ -111,12 +111,12 @@ def build_association_query(
     query.add_field_filter_query("primary_knowledge_source", primary_knowledge_source)
     if subject:
         if direct:
-            query.add_field_filter_query("subject", " OR ".join(subject))
+            query.add_field_filter_query("subject", subject)
         else:
             query.add_filter_query(" OR ".join([f'subject:"{s}" OR subject_closure:"{s}"' for s in subject]))
     if object:
         if direct:
-            query.add_field_filter_query("object", " OR ".join(object))
+            query.add_field_filter_query("object", object)
         else:
             query.add_filter_query(" OR ".join([f'object:"{o}" OR object_closure:"{o}"' for o in object]))
     if entity:
