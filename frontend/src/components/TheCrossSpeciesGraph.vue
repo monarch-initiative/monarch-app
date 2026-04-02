@@ -161,7 +161,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import type { CrossSpeciesTermClique, Entity } from "@/api/model";
 import frogIcon from "@/assets/icons/frogIcon.svg?url";
 import humanIcon from "@/assets/icons/humanIcon.svg?url";
@@ -207,8 +207,14 @@ interface SidewaysEdge {
   object: string;
 }
 
-/** Collapse/expand state */
+/** Collapse/expand state — reset when navigating to a different clique */
 const expanded = ref(false);
+watch(
+  () => props.clique,
+  () => {
+    expanded.value = false;
+  },
+);
 
 /**
  * Group clique entities by ID prefix; return visible entities and per-prefix
@@ -228,9 +234,12 @@ const visibleChildren = computed(() => {
   const entities: Entity[] = [];
   const groupCounts = new Map<string, number>();
   for (const [, members] of groups) {
-    entities.push(members[0]);
+    // Prefer the current node as the visible representative for its group
+    const current = members.find((m) => m.id === props.currentId);
+    const rep = current ?? members[0];
+    entities.push(rep);
     if (members.length > 1) {
-      groupCounts.set(members[0].id, members.length - 1);
+      groupCounts.set(rep.id, members.length - 1);
     }
   }
   return { entities, groupCounts };
