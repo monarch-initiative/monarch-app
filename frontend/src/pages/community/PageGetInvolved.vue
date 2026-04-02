@@ -16,6 +16,11 @@
           url="https://groups.google.com/g/monarch-friends/"
         />
         <AppSocialIcon
+          type="slack"
+          icon="social-slack"
+          url="https://docs.google.com/forms/d/e/1FAIpQLSf0hOZv6UMW6PD1sRtK74OQLV8ZA8nFRICo0T0ngb2IKFBh5A/viewform"
+        />
+        <AppSocialIcon
           type="medium"
           icon="medium"
           url="https://medium.com/@MonarchInit"
@@ -182,6 +187,7 @@ $wrap: 1000px;
 .icons {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
   width: 100%;
   gap: 1rem;
