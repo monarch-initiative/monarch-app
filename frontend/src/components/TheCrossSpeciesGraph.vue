@@ -13,7 +13,13 @@
       :viewBox="`0 0 ${svgWidth} ${svgHeight}`"
     >
       <!-- Vertical edges (children → root) -->
-      <g v-for="(edge, i) in verticalEdges" :key="'v-' + i">
+      <g
+        v-for="(edge, i) in verticalEdges"
+        :key="'v-' + i"
+        v-tooltip="
+          edgeTooltip(edge.predicate, edge.source, edge.subject, edge.object)
+        "
+      >
         <line
           :x1="rootNode.x"
           :y1="rootNode.y + rootNode.h / 2"
@@ -22,9 +28,6 @@
           class="edge edge-vertical"
         />
         <text
-          v-tooltip="
-            edgeTooltip(edge.predicate, edge.source, edge.subject, edge.object)
-          "
           :x="edge.child.x"
           :y="edge.child.y - edge.child.h / 2 - 14"
           class="edge-label"
@@ -35,7 +38,13 @@
       </g>
 
       <!-- Horizontal edges (same_as / homologous_to between children) -->
-      <g v-for="(edge, i) in sidewaysEdges" :key="'h-' + i">
+      <g
+        v-for="(edge, i) in sidewaysEdges"
+        :key="'h-' + i"
+        v-tooltip="
+          edgeTooltip(edge.predicate, edge.source, edge.subject, edge.object)
+        "
+      >
         <path
           :d="sidewaysPath(edge)"
           :class="[
@@ -47,9 +56,6 @@
           fill="none"
         />
         <text
-          v-tooltip="
-            edgeTooltip(edge.predicate, edge.source, edge.subject, edge.object)
-          "
           :x="(edge.sourceNode.x + edge.targetNode.x) / 2"
           :y="sidewaysLabelY(edge)"
           class="edge-label"
