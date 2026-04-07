@@ -795,6 +795,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#cx2-export-for-ndex" class="md-nav__link">
+    <span class="md-ellipsis">
+      CX2 Export For NDEx
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2111,6 +2120,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#cx2-export-for-ndex" class="md-nav__link">
+    <span class="md-ellipsis">
+      CX2 Export For NDEx
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2292,6 +2310,32 @@ just<span class="w"> </span>compliance-weighted
 <p>YAML files are rendered to browsable HTML pages with clickable ontology term links.</p>
 <div class="highlight"><pre><span></span><code>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>dismech.render<span class="w"> </span>--all
 </code></pre></div>
+<h3 id="cx2-export-for-ndex">CX2 Export For NDEx</h3>
+<p>Disorder pathographs can also be exported as CX2 networks for publication to NDEx.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Write CX2 JSON to a file</span>
+uv<span class="w"> </span>run<span class="w"> </span>dismech-cx2<span class="w"> </span>kb/disorders/Stargardt_Disease.yaml<span class="w"> </span>-o<span class="w"> </span>Stargardt_Disease.cx2.json
+
+<span class="c1"># Same flow via justfile target</span>
+just<span class="w"> </span>export-cx2<span class="w"> </span>kb/disorders/Stargardt_Disease.yaml<span class="w"> </span>-o<span class="w"> </span>Stargardt_Disease.cx2.json
+
+<span class="c1"># Export all disorders to a directory, skipping those with no pathograph edges</span>
+just<span class="w"> </span>export-cx2-all<span class="w"> </span>-o<span class="w"> </span>/tmp/cx2
+
+<span class="c1"># Upload directly to NDEx using env vars</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">NDEX_USERNAME</span><span class="o">=</span>...
+<span class="nb">export</span><span class="w"> </span><span class="nv">NDEX_PASSWORD</span><span class="o">=</span>...
+uv<span class="w"> </span>run<span class="w"> </span>dismech-cx2<span class="w"> </span>kb/disorders/Stargardt_Disease.yaml<span class="w"> </span>--ndex-upload
+
+<span class="c1"># Bulk upload all disorders to the NDEx test server</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">NDEX_USERNAME</span><span class="o">=</span>...
+<span class="nb">export</span><span class="w"> </span><span class="nv">NDEX_PASSWORD</span><span class="o">=</span>...
+just<span class="w"> </span>upload-cx2-test-all
+</code></pre></div>
+<p><code>dismech-cx2</code> uses the existing pathograph graph model, preserves node and edge metadata,
+and applies a deterministic layout so the uploaded network is immediately viewable in
+NDEx. Add <code>--dot-layout</code> if Graphviz and <code>pydot</code> are available and you want a Graphviz
+layout instead of the built-in layered layout. The default NDEx upload visibility is
+<code>PUBLIC</code>, and the <code>just</code> upload targets default the host to <code>https://test.ndexbio.org</code>.</p>
 <h2 id="agentic-curation-guide">Agentic Curation Guide</h2>
 <p>This knowledge base is curated with <strong>Claude Code</strong> — an AI agent that knows the schema, validates ontology terms, and checks evidence against PubMed abstracts. There are two ways to start curating:</p>
 <h3 id="route-1-clone-the-repo-and-use-claude-code-cli">Route 1: Clone the repo and use Claude Code CLI</h3>
