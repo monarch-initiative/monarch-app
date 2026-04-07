@@ -141,6 +141,10 @@
          <lastmod>2026-04-07</lastmod>
     </url>
     <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/FDA_adverse_event_level/</loc>
+         <lastmod>2026-04-07</lastmod>
+    </url>
+    <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/FacetField/</loc>
          <lastmod>2026-04-07</lastmod>
     </url>
@@ -729,6 +733,10 @@
          <lastmod>2026-04-07</lastmod>
     </url>
     <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/object_aspect_qualifier/</loc>
+         <lastmod>2026-04-07</lastmod>
+    </url>
+    <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/object_best_matches/</loc>
          <lastmod>2026-04-07</lastmod>
     </url>
@@ -1142,6 +1150,10 @@
     </url>
     <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/super_classes/</loc>
+         <lastmod>2026-04-07</lastmod>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/supporting_text/</loc>
          <lastmod>2026-04-07</lastmod>
     </url>
     <url>

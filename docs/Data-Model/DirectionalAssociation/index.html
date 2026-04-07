@@ -1974,6 +1974,8 @@
 
       DirectionalAssociation : evidence_count
 
+      DirectionalAssociation : FDA_adverse_event_level
+
       DirectionalAssociation : frequency_qualifier
 
       DirectionalAssociation : frequency_qualifier_category
@@ -2020,9 +2022,13 @@
 
       DirectionalAssociation : knowledge_level
 
+      DirectionalAssociation : knowledge_source
+
       DirectionalAssociation : negated
 
       DirectionalAssociation : object
+
+      DirectionalAssociation : object_aspect_qualifier
 
       DirectionalAssociation : object_category
 
@@ -2163,6 +2169,8 @@
       DirectionalAssociation : subject_taxon
 
       DirectionalAssociation : subject_taxon_label
+
+      DirectionalAssociation : supporting_text
 
 </code></pre>
 <h2 id="inheritance">Inheritance</h2>
@@ -2709,6 +2717,30 @@
 <td><a href="../object_specialization_qualifier_closure_label/">object_specialization_qualifier_closure_label</a></td>
 <td>0..1 <br/> <a href="../String/">String</a></td>
 <td>A closure of the object_specialization_qualifier, including the object_specia...</td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../FDA_adverse_event_level/">FDA_adverse_event_level</a></td>
+<td>0..1 <br/> <a href="../String/">String</a></td>
+<td>The level of FDA adverse event reporting for a drug-condition association</td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../knowledge_source/">knowledge_source</a></td>
+<td>* <br/> <a href="../String/">String</a></td>
+<td></td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../object_aspect_qualifier/">object_aspect_qualifier</a></td>
+<td>0..1 <br/> <a href="../String/">String</a></td>
+<td>Composes with the core concept (+ qualifier) to describe new concepts of a mo...</td>
+<td><a href="../Association/">Association</a></td>
+</tr>
+<tr>
+<td><a href="../supporting_text/">supporting_text</a></td>
+<td>* <br/> <a href="../String/">String</a></td>
+<td>The text in a publication that supports the assertion in the association</td>
 <td><a href="../Association/">Association</a></td>
 </tr>
 </tbody>
@@ -3788,6 +3820,57 @@
 <span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
 <span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">  </span><span class="nt">FDA_adverse_event_level</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FDA_adverse_event_level</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The level of FDA adverse event reporting for a drug-condition association.</span>
+<span class="w">    </span><span class="nt">notes</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The range in this schema is represented as a string, but corresponds to biolink:FDAIDAAdverseEventEnum</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">at ingest time.</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">slot_uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">biolink:FDA_adverse_event_level</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FDA_adverse_event_level</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DirectionalAssociation</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">  </span><span class="nt">knowledge_source</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">knowledge_source</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">knowledge_source</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DirectionalAssociation</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">    </span><span class="nt">multivalued</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">object_aspect_qualifier</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_aspect_qualifier</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Composes with the core concept (+ qualifier) to describe new concepts</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">of a more specific kind. The aspect qualifier represents an attribute of the</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">object that is the focus of the relationship (e.g. for an association where</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">the object is a gene, this might be the expression, abundance, activity, or</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">stability of the gene).</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">slot_uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">biolink:object_aspect_qualifier</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">object_aspect_qualifier</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DirectionalAssociation</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">  </span><span class="nt">supporting_text</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">supporting_text</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The text in a publication that supports the assertion in the association.</span>
+<span class="w">    </span><span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
+<span class="w">    </span><span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="w">    </span><span class="nt">slot_uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">biolink:supporting_text</span>
+<span class="w">    </span><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">supporting_text</span>
+<span class="w">    </span><span class="nt">owner</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DirectionalAssociation</span>
+<span class="w">    </span><span class="nt">domain_of</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
+<span class="w">    </span><span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">    </span><span class="nt">multivalued</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 </details>
 

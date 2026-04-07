@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://monarch-app.monarchinitiative.org/docs/Data-Model/label/">
+        <link rel="canonical" href="https://monarch-app.monarchinitiative.org/docs/Data-Model/FDA_adverse_event_level/">
       
       
       
@@ -18,7 +18,7 @@
     
     
       
-        <title>Slot: label - Monarch KG Documentation</title>
+        <title>Slot: FDA_adverse_event_level - Monarch KG Documentation</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#slot-label" class="md-skip">
+        <a href="#slot-fda_adverse_event_level" class="md-skip">
           Skip to content
         </a>
       
@@ -107,7 +107,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Slot: label
+              Slot: FDA_adverse_event_level
             
           </span>
         </div>
@@ -1901,9 +1901,10 @@
   
 
 
-<h1 id="slot-label">Slot: label</h1>
-<p>URI: <a href="https://w3id.org/monarch/monarch-py/label">https://w3id.org/monarch/monarch-py/label</a>
-Alias: label</p>
+<h1 id="slot-fda_adverse_event_level">Slot: FDA_adverse_event_level</h1>
+<p><em>The level of FDA adverse event reporting for a drug-condition association.</em></p>
+<p>URI: <a href="https://w3id.org/biolink/vocab/FDA_adverse_event_level">biolink:FDA_adverse_event_level</a>
+Alias: FDA_adverse_event_level</p>
 <!-- no inheritance hierarchy -->
 
 <h2 id="applicable-classes">Applicable Classes</h2>
@@ -1917,75 +1918,20 @@ Alias: label</p>
 </thead>
 <tbody>
 <tr>
-<td><a href="../CasePhenotype/">CasePhenotype</a></td>
-<td>A phenotype observed in at least one case</td>
-<td>yes</td>
-</tr>
-<tr>
-<td><a href="../HistoBin/">HistoBin</a></td>
+<td><a href="../Association/">Association</a></td>
 <td></td>
 <td>no</td>
 </tr>
 <tr>
-<td><a href="../FacetField/">FacetField</a></td>
-<td></td>
+<td><a href="../DirectionalAssociation/">DirectionalAssociation</a></td>
+<td>An association that gives it's direction relative to a specified entity</td>
 <td>no</td>
-</tr>
-<tr>
-<td><a href="../FacetValue/">FacetValue</a></td>
-<td></td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../CaseEntity/">CaseEntity</a></td>
-<td>A case (patient) in the matrix</td>
-<td>yes</td>
-</tr>
-<tr>
-<td><a href="../AssociationCount/">AssociationCount</a></td>
-<td></td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../GridRowEntity/">GridRowEntity</a></td>
-<td>A row entity in the grid (phenotype, GO term, anatomy, etc</td>
-<td>yes</td>
-</tr>
-<tr>
-<td><a href="../HistoPhenoBin/">HistoPhenoBin</a></td>
-<td>A body system category for grouping phenotypes</td>
-<td>yes</td>
-</tr>
-<tr>
-<td><a href="../TermInfo/">TermInfo</a></td>
-<td></td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../GridBin/">GridBin</a></td>
-<td>A grouping bin for row entities</td>
-<td>yes</td>
-</tr>
-<tr>
-<td><a href="../GridColumnEntity/">GridColumnEntity</a></td>
-<td>A column entity in the grid (case, disease, ortholog, etc</td>
-<td>yes</td>
-</tr>
-<tr>
-<td><a href="../Qualifier/">Qualifier</a></td>
-<td>A qualifier key-value pair for an association</td>
-<td>yes</td>
 </tr>
 </tbody>
 </table>
 <h2 id="properties">Properties</h2>
 <ul>
-<li>
-<p>Range: <a href="../String/">String</a></p>
-</li>
-<li>
-<p>Required: True</p>
-</li>
+<li>Range: <a href="../String/">String</a></li>
 </ul>
 <h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
 <h3 id="schema-source">Schema Source</h3>
@@ -2003,33 +1949,28 @@ Alias: label</p>
 <tbody>
 <tr>
 <td>self</td>
-<td><a href="https://w3id.org/monarch/monarch-py/label">https://w3id.org/monarch/monarch-py/label</a></td>
+<td>biolink:FDA_adverse_event_level</td>
 </tr>
 <tr>
 <td>native</td>
-<td><a href="https://w3id.org/monarch/monarch-py/label">https://w3id.org/monarch/monarch-py/label</a></td>
+<td><a href="https://w3id.org/monarch/monarch-py/FDA_adverse_event_level">https://w3id.org/monarch/monarch-py/FDA_adverse_event_level</a></td>
 </tr>
 </tbody>
 </table>
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
-<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">label</span>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FDA_adverse_event_level</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The level of FDA adverse event reporting for a drug-condition association.</span>
+<span class="nt">notes</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The range in this schema is represented as a string, but corresponds to biolink:FDAIDAAdverseEventEnum</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">at ingest time.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">label</span>
+<span class="nt">slot_uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">biolink:FDA_adverse_event_level</span>
+<span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FDA_adverse_event_level</span>
 <span class="nt">domain_of</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FacetValue</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FacetField</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CaseEntity</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CasePhenotype</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HistoPhenoBin</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GridColumnEntity</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GridRowEntity</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GridBin</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Qualifier</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TermInfo</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
 <span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 </details>
 
