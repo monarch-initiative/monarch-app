@@ -80,7 +80,32 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
     base_url: str = os.getenv("MONARCH_SOLR_URL", "http://localhost:8983/solr")
 
     CROSS_SPECIES_PREFIXES = ["UPHENO", "UBERON"]
-    CROSS_SPECIES_CLIQUE_CATEGORIES = ["biolink:PhenotypicFeature", "biolink:AnatomicalEntity"]
+    SPECIES_SPECIFIC_PREFIXES = [
+        # Anatomy (children of UBERON)
+        "ZFA",
+        "EMAPA",
+        "FBbt",
+        "WBbt",
+        "XAO",
+        # Life stages (children of UBERON)
+        "HSAPDV",
+        "ZFS",
+        "FBdv",
+        "WBLS",
+        # Phenotypes (children of UPHENO)
+        "HP",
+        "MP",
+        "ZP",
+        "XPO",
+        "WBPhenotype",
+        "DDPHENO",
+        "FYPO",
+        "PHIPO",
+        "FBcv",
+        "PLANP",
+        "MGPO",
+        "APO",
+    ]
     SIDEWAYS_PREDICATES = [AssociationPredicate.SAME_AS, AssociationPredicate.HOMOLOGOUS_TO]
 
     def solr_is_available(self) -> bool:
@@ -267,10 +292,11 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         vertical (subclass_of) and horizontal (same_as, homologous_to) associations
         between clique members.
         """
-        if entity.category not in self.CROSS_SPECIES_CLIQUE_CATEGORIES:
-            return None
-
         is_root_term = any(entity.id.startswith(f"{prefix}:") for prefix in self.CROSS_SPECIES_PREFIXES)
+        is_species_specific = any(entity.id.startswith(f"{prefix}:") for prefix in self.SPECIES_SPECIFIC_PREFIXES)
+
+        if not is_root_term and not is_species_specific:
+            return None
 
         if is_root_term:
             root_term = entity
@@ -327,14 +353,16 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         return cross_species_parents[0] if cross_species_parents else None
 
     def _get_species_specific_children(self, root_id: str) -> list[Entity]:
-        """Get species-specific (non-UPHENO/UBERON) children of a cross-species root term."""
+        """Get species-specific children of a cross-species root term."""
         all_children = self.get_counterpart_entities(
             this_entity=Entity(id=root_id),
             object=root_id,
             predicate=[AssociationPredicate.SUBCLASS_OF],
         )
         return [
-            c for c in all_children if not any(c.id.startswith(f"{prefix}:") for prefix in self.CROSS_SPECIES_PREFIXES)
+            c
+            for c in all_children
+            if any(c.id.startswith(f"{prefix}:") for prefix in self.SPECIES_SPECIFIC_PREFIXES)
         ]
 
     @staticmethod
