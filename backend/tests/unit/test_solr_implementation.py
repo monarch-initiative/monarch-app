@@ -427,11 +427,51 @@ def _make_assoc_results(items):
 
 
 def test_cross_species_clique_non_phenotypic_returns_none():
-    """Non-phenotypic entities should return None."""
+    """Entities with prefixes not in CROSS_SPECIES or SPECIES_SPECIFIC lists should return None."""
     entity = _make_entity("HGNC:4851", category="biolink:Gene")
     si = SolrImplementation()
     result = si._get_cross_species_term_clique(entity)
     assert result is None
+
+
+def test_cross_species_clique_species_neutral_returns_none():
+    """Species-neutral ontologies like CL and GO should not get a clique."""
+    si = SolrImplementation()
+    for id, category in [("CL:0000540", "biolink:Cell"), ("GO:0110165", "biolink:CellularComponent")]:
+        entity = _make_entity(id, category=category)
+        result = si._get_cross_species_term_clique(entity)
+        assert result is None, f"{id} should not get a cross-species clique"
+
+
+def test_cross_species_clique_filters_species_neutral_children():
+    """CL and GO children of a UBERON root should be excluded from the clique."""
+    root = _make_entity("UBERON:0000061", category="biolink:AnatomicalEntity", name="anatomical structure")
+    zfa_child = _make_entity("ZFA:0000037", name="anatomical structure")
+    cl_child = _make_entity("CL:0000000", name="cell")
+
+    vertical_assocs = [
+        _make_association("ZFA:0000037", "biolink:subclass_of", "UBERON:0000061"),
+    ]
+
+    with (
+        patch.object(
+            SolrImplementation,
+            "get_counterpart_entities",
+            return_value=[zfa_child, cl_child],
+        ),
+        patch.object(
+            SolrImplementation,
+            "get_associations",
+            side_effect=[_make_assoc_results(vertical_assocs)],
+        ),
+    ):
+        si = SolrImplementation()
+        result = si._get_cross_species_term_clique(root)
+
+        assert result is not None
+        child_ids = [c.id for c in result.clique_entities]
+        assert "ZFA:0000037" in child_ids
+        assert "CL:0000000" not in child_ids
 
 
 def test_cross_species_clique_root_term():
