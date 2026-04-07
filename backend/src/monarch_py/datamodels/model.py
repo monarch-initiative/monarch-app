@@ -229,6 +229,10 @@ class Association(ConfiguredBaseModel):
     object_specialization_qualifier_category: Optional[str] = Field(default=None, description="""The category of the object_specialization_qualifier""")
     object_specialization_qualifier_closure: Optional[str] = Field(default=None, description="""A closure of the object_specialization_qualifier, including the object_specialization_qualifier itself and all of its ancestors""")
     object_specialization_qualifier_closure_label: Optional[str] = Field(default=None, description="""A closure of the object_specialization_qualifier, including the object_specialization_qualifier itself and all of its ancestors""")
+    FDA_adverse_event_level: Optional[str] = Field(default=None, description="""The level of FDA adverse event reporting for a drug-condition association.""")
+    knowledge_source: Optional[list[str]] = Field(default=None)
+    object_aspect_qualifier: Optional[str] = Field(default=None, description="""Composes with the core concept (+ qualifier) to describe new concepts of a more specific kind. The aspect qualifier represents an attribute of the object that is the focus of the relationship (e.g. for an association where the object is a gene, this might be the expression, abundance, activity, or stability of the gene).""")
+    supporting_text: Optional[list[str]] = Field(default=None, description="""The text in a publication that supports the assertion in the association.""")
 
 
 class AssociationCountList(ConfiguredBaseModel):
@@ -352,6 +356,10 @@ class DirectionalAssociation(Association):
     object_specialization_qualifier_category: Optional[str] = Field(default=None, description="""The category of the object_specialization_qualifier""")
     object_specialization_qualifier_closure: Optional[str] = Field(default=None, description="""A closure of the object_specialization_qualifier, including the object_specialization_qualifier itself and all of its ancestors""")
     object_specialization_qualifier_closure_label: Optional[str] = Field(default=None, description="""A closure of the object_specialization_qualifier, including the object_specialization_qualifier itself and all of its ancestors""")
+    FDA_adverse_event_level: Optional[str] = Field(default=None, description="""The level of FDA adverse event reporting for a drug-condition association.""")
+    knowledge_source: Optional[list[str]] = Field(default=None)
+    object_aspect_qualifier: Optional[str] = Field(default=None, description="""Composes with the core concept (+ qualifier) to describe new concepts of a more specific kind. The aspect qualifier represents an attribute of the object that is the focus of the relationship (e.g. for an association where the object is a gene, this might be the expression, abundance, activity, or stability of the gene).""")
+    supporting_text: Optional[list[str]] = Field(default=None, description="""The text in a publication that supports the assertion in the association.""")
 
 
 class ExpandedCurie(ConfiguredBaseModel):

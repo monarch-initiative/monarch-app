@@ -266,6 +266,13 @@ export interface Association {
     object_specialization_qualifier_closure?: string,
     /** A closure of the object_specialization_qualifier, including the object_specialization_qualifier itself and all of its ancestors */
     object_specialization_qualifier_closure_label?: string,
+    /** The level of FDA adverse event reporting for a drug-condition association. */
+    FDA_adverse_event_level?: string,
+    knowledge_source?: string[],
+    /** Composes with the core concept (+ qualifier) to describe new concepts of a more specific kind. The aspect qualifier represents an attribute of the object that is the focus of the relationship (e.g. for an association where the object is a gene, this might be the expression, abundance, activity, or stability of the gene). */
+    object_aspect_qualifier?: string,
+    /** The text in a publication that supports the assertion in the association. */
+    supporting_text?: string[],
 }
 
 

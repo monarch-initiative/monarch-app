@@ -111,6 +111,10 @@ classes:
       - object_specialization_qualifier_category
       - object_specialization_qualifier_closure
       - object_specialization_qualifier_closure_label
+      - FDA_adverse_event_level
+      - knowledge_source
+      - object_aspect_qualifier
+      - supporting_text
   AssociationCount:
     is_a: FacetValue
     slots:
@@ -849,6 +853,28 @@ slots:
     multivalued: true
     required: true
   knowledge_source:
+    multivalued: true
+  FDA_adverse_event_level:
+    description: >-
+      The level of FDA adverse event reporting for a drug-condition association.
+    slot_uri: biolink:FDA_adverse_event_level
+    notes: >-
+      The range in this schema is represented as a string, but corresponds to
+      biolink:FDAIDAAdverseEventEnum at ingest time.
+    range: string
+  object_aspect_qualifier:
+    description: >-
+      Composes with the core concept (+ qualifier) to describe new concepts of a more specific
+      kind. The aspect qualifier represents an attribute of the object that is the focus of the
+      relationship (e.g. for an association where the object is a gene, this might be the
+      expression, abundance, activity, or stability of the gene).
+    slot_uri: biolink:object_aspect_qualifier
+    range: string
+  supporting_text:
+    description: >-
+      The text in a publication that supports the assertion in the association.
+    slot_uri: biolink:supporting_text
+    range: string
     multivalued: true
   label:
     range: string
