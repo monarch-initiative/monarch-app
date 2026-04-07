@@ -40,16 +40,6 @@ export default [
     label: "Knowledge Graph",
     subItems: [
       {
-        label: "Dashboard",
-        key: "kg-dashboard",
-        to: "/kg/dashboard",
-      },
-      {
-        label: "Association Browser",
-        key: "kg-associations",
-        to: "/kg/associations",
-      },
-      {
         label: "Downloads",
         key: "kg-downloads",
         to: "/kg/downloads",
@@ -106,6 +96,16 @@ export default [
         label: "KG Sources",
         key: "kg-sources",
         to: "/kg/sources",
+      },
+      {
+        label: "Dashboard",
+        key: "kg-dashboard",
+        to: "/kg/dashboard",
+      },
+      {
+        label: "Association Browser",
+        key: "kg-associations",
+        to: "/kg/associations",
       },
     ],
   },
