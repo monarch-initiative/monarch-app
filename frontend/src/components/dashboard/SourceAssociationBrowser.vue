@@ -265,7 +265,13 @@
                           {{ link.text }}
                         </a>
                       </template>
-                      <span v-else :class="{ 'negated-value': prop.isNegated }">
+                      <span
+                        v-else
+                        :class="{
+                          'negated-value': prop.isNegated,
+                          'pre-wrap': prop.preWrap,
+                        }"
+                      >
                         {{ prop.value }}
                       </span>
                     </td>
@@ -540,6 +546,7 @@ type DetailProperty = {
   value: string;
   isLink?: boolean;
   isNegated?: boolean;
+  preWrap?: boolean;
   links?: { text: string; url: string }[];
 };
 
@@ -625,9 +632,13 @@ const associationProperties = computed((): DetailProperty[] => {
     details.push({ label: "Publications", value: a.publications.join(", ") });
   }
   if (a.supporting_text?.length) {
+    const texts = Array.isArray(a.supporting_text)
+      ? a.supporting_text
+      : [a.supporting_text];
     details.push({
       label: "Supporting Text",
-      value: a.supporting_text.join("\n\n"),
+      value: texts.join("\n\n"),
+      preWrap: true,
     });
   }
   if (a.frequency_qualifier_label || a.frequency_qualifier) {
@@ -1003,7 +1014,6 @@ watch(
     color: $off-black;
     font-size: 0.9rem;
     word-break: break-word;
-    white-space: pre-wrap;
   }
 }
 
@@ -1046,6 +1056,10 @@ watch(
 .negated-value {
   color: $error;
   font-weight: 600;
+}
+
+.pre-wrap {
+  white-space: pre-wrap;
 }
 
 @media (max-width: 768px) {
