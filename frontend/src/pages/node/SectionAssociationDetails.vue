@@ -62,6 +62,23 @@
           </AppLink>
         </AppFlex>
       </AppDetail>
+
+      <AppDetail
+        v-if="association.supporting_text?.length"
+        icon="quote-left"
+        title="Supporting Text"
+        :full="true"
+      >
+        <AppFlex direction="col" gap="small" align-h="left">
+          <blockquote
+            v-for="(text, index) in association.supporting_text"
+            :key="index"
+            class="supporting-text"
+          >
+            {{ text }}
+          </blockquote>
+        </AppFlex>
+      </AppDetail>
     </AppDetails>
   </AppSection>
 </template>
@@ -109,5 +126,12 @@ onMounted(scrollIntoView);
 
 .arrow {
   color: $gray;
+}
+
+.supporting-text {
+  margin: 0;
+  padding: 0.5em 0 0.5em 1em;
+  border-left: 3px solid $light-gray;
+  font-style: italic;
 }
 </style>

@@ -624,6 +624,12 @@ const associationProperties = computed((): DetailProperty[] => {
   } else if (a.publications?.length) {
     details.push({ label: "Publications", value: a.publications.join(", ") });
   }
+  if (a.supporting_text?.length) {
+    details.push({
+      label: "Supporting Text",
+      value: a.supporting_text.join("\n\n"),
+    });
+  }
   if (a.frequency_qualifier_label || a.frequency_qualifier) {
     details.push({
       label: "Frequency",
@@ -997,6 +1003,7 @@ watch(
     color: $off-black;
     font-size: 0.9rem;
     word-break: break-word;
+    white-space: pre-wrap;
   }
 }
 
