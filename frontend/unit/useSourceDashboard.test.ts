@@ -1,4 +1,6 @@
-import { describe, expect, it, vi } from "vitest";
+import { nextTick } from "vue";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { url } from "@/composables/use-param";
 import {
   emptyFilters,
   useAssociationFilters,
@@ -10,6 +12,13 @@ const mockRoute = { params: { infores: "monarchinitiative" } };
 vi.mock("vue-router", () => ({
   useRoute: () => mockRoute,
 }));
+
+/** clear shared URL state between tests to prevent leakage */
+beforeEach(() => {
+  for (const key of Object.keys(url.value)) {
+    delete url.value[key];
+  }
+});
 
 describe("emptyFilters", () => {
   it("returns an object with all empty string values", () => {
@@ -158,5 +167,77 @@ describe("useSourceDashboard", () => {
     clearFilters();
     expect(filters.predicate).toBe("");
     expect(hasActiveFilters.value).toBe(false);
+  });
+});
+
+describe("URL sync (deep linking)", () => {
+  it("setFilter updates URL query params", async () => {
+    const { setFilter } = useAssociationFilters();
+    setFilter("category", "biolink:GeneToPhenotypicFeatureAssociation");
+    await nextTick();
+    expect(url.value.category).toBe(
+      "biolink:GeneToPhenotypicFeatureAssociation",
+    );
+  });
+
+  it("multiple filters are reflected in URL", async () => {
+    const { setFilter } = useAssociationFilters();
+    setFilter("predicate", "biolink:has_phenotype");
+    setFilter("subjectTaxonLabel", "Homo sapiens");
+    await nextTick();
+    expect(url.value.predicate).toBe("biolink:has_phenotype");
+    expect(url.value.subjectTaxonLabel).toBe("Homo sapiens");
+  });
+
+  it("clearFilters removes filter keys from URL", async () => {
+    const { setFilter, clearFilters } = useAssociationFilters();
+    setFilter("category", "biolink:Association");
+    setFilter("predicate", "biolink:has_phenotype");
+    await nextTick();
+    clearFilters();
+    await nextTick();
+    expect(url.value.category).toBeUndefined();
+    expect(url.value.predicate).toBeUndefined();
+  });
+
+  it("initializes filters from existing URL params", async () => {
+    url.value.category = "biolink:Association";
+    url.value.predicate = "biolink:has_phenotype";
+    await nextTick();
+    const { filters } = useAssociationFilters();
+    expect(filters.category).toBe("biolink:Association");
+    expect(filters.predicate).toBe("biolink:has_phenotype");
+  });
+
+  it("offset syncs to URL when non-zero", async () => {
+    const { offset } = useAssociationFilters();
+    offset.value = 40;
+    await nextTick();
+    expect(url.value.offset).toBe("40");
+  });
+
+  it("limit syncs to URL when changed from default", async () => {
+    const { limit } = useAssociationFilters();
+    limit.value = 50;
+    await nextTick();
+    expect(url.value.limit).toBe("50");
+  });
+
+  it("default offset and limit do not appear in URL", async () => {
+    useAssociationFilters();
+    await nextTick();
+    expect(url.value.offset).toBeUndefined();
+    expect(url.value.limit).toBeUndefined();
+  });
+
+  it("setFilter resets offset in URL back to page 1", async () => {
+    const { offset, setFilter } = useAssociationFilters();
+    offset.value = 60;
+    await nextTick();
+    expect(url.value.offset).toBe("60");
+    setFilter("predicate", "biolink:has_phenotype");
+    await nextTick();
+    expect(offset.value).toBe(0);
+    expect(url.value.offset).toBeUndefined();
   });
 });

@@ -1,6 +1,13 @@
-import { computed, reactive, ref } from "vue";
+import { computed, reactive, type ShallowRef } from "vue";
 import { useRoute } from "vue-router";
+import { stringParam, useParam, type Param } from "@/composables/use-param";
 import { RESOURCE_NAME_MAP } from "@/config/resourceNames";
+
+/** number param that omits the default value from the URL */
+const defaultNumberParam = (defaultValue: number): Param<number> => ({
+  parse: (value) => Number(value) || defaultValue,
+  stringify: (value) => (value === defaultValue ? "" : String(value)),
+});
 
 /** filter state for source dashboard */
 export interface SourceFilters {
@@ -17,6 +24,21 @@ export interface SourceFilters {
   primaryKnowledgeSource: string;
   search: string;
 }
+
+const filterKeys: (keyof SourceFilters)[] = [
+  "category",
+  "subjectCategory",
+  "objectCategory",
+  "predicate",
+  "subjectTaxonLabel",
+  "objectTaxonLabel",
+  "knowledgeLevel",
+  "agentType",
+  "providedBy",
+  "negated",
+  "primaryKnowledgeSource",
+  "search",
+];
 
 export const emptyFilters = (): SourceFilters => ({
   category: "",
@@ -56,11 +78,28 @@ const buildFilterQueries = (filters: SourceFilters): string[] => {
   return fqs;
 };
 
-/** shared filter, pagination, and filter-query state (no route dependency) */
+/** shared filter, pagination, and filter-query state synced with URL */
 export const useAssociationFilters = () => {
-  const filters = reactive<SourceFilters>(emptyFilters());
-  const offset = ref(0);
-  const limit = ref(20);
+  /** create URL-synced refs for each filter key */
+  const paramRefs = {} as Record<keyof SourceFilters, ShallowRef<string>>;
+  for (const key of filterKeys) {
+    paramRefs[key] = useParam(key, stringParam(), "");
+  }
+
+  /** reactive filters object backed by URL-synced param refs */
+  const filtersSource: Record<string, unknown> = {};
+  for (const key of filterKeys) {
+    filtersSource[key] = computed({
+      get: () => paramRefs[key].value,
+      set: (v: string) => {
+        paramRefs[key].value = v;
+      },
+    });
+  }
+  const filters = reactive(filtersSource) as unknown as SourceFilters;
+
+  const offset = useParam("offset", defaultNumberParam(0), 0);
+  const limit = useParam("limit", defaultNumberParam(20), 20);
 
   const filterQueries = computed(() => buildFilterQueries(filters));
 
@@ -75,7 +114,7 @@ export const useAssociationFilters = () => {
   };
 
   const hasActiveFilters = computed(() =>
-    Object.values(filters).some((v) => v !== ""),
+    filterKeys.some((key) => paramRefs[key].value !== ""),
   );
 
   return {

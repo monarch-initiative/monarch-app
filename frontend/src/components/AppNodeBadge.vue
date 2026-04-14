@@ -33,11 +33,14 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useRoute } from "vue-router";
 import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
 import type { Node } from "@/api/model";
 import AppNodeText from "@/components/AppNodeText.vue";
 import { breadcrumbs as currentBreadcrumbs } from "@/global/breadcrumbs";
 import type { Breadcrumb } from "@/global/breadcrumbs";
+
+const route = useRoute();
 
 const { VITE_URL: baseurl } = import.meta.env;
 
@@ -94,7 +97,7 @@ const info = computed(() =>
 
 /** whether to make a link or plain text */
 const isLink = computed(() => {
-  const decodedPath = decodeURIComponent(window.location.pathname);
+  const decodedPath = decodeURIComponent(route.path);
   /** make sure we're not already on the page we'd link to */
   return (
     !decodedPath.endsWith("/" + (props.node.id || "")) &&
