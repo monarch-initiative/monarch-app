@@ -141,7 +141,10 @@
       <div class="actions-cell">
         <span
           v-if="row.agent_type"
-          v-tooltip="`<b>${getAgentTypeMeta(row.agent_type).label}</b><br>${getAgentTypeMeta(row.agent_type).description}`"
+          v-tooltip="
+            `<b>${getAgentTypeMeta(row.agent_type).label}</b><br>${getAgentTypeMeta(row.agent_type).description}`
+          "
+          :aria-label="`${getAgentTypeMeta(row.agent_type).label}: ${getAgentTypeMeta(row.agent_type).description}`"
         >
           <AppIcon :icon="getAgentTypeMeta(row.agent_type).icon" />
         </span>
@@ -350,6 +353,7 @@ const orthologColoumns = computed<Cols<Datum>>(() => {
       key: "evidence_count",
       heading: "",
       align: "center",
+      width: "80px",
     },
   ];
 });

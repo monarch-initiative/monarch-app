@@ -201,7 +201,10 @@
             <template #agent_type="{ row }">
               <span
                 v-if="row.agent_type"
-                v-tooltip="`<b>${getAgentTypeMeta(row.agent_type).label}</b><br>${getAgentTypeMeta(row.agent_type).description}`"
+                v-tooltip="
+                  `<b>${getAgentTypeMeta(row.agent_type).label}</b><br>${getAgentTypeMeta(row.agent_type).description}`
+                "
+                :aria-label="`${getAgentTypeMeta(row.agent_type).label}: ${getAgentTypeMeta(row.agent_type).description}`"
               >
                 <AppIcon :icon="getAgentTypeMeta(row.agent_type).icon" />
               </span>
@@ -682,7 +685,10 @@ const associationProperties = computed((): DetailProperty[] => {
   }
   if (a.agent_type) {
     const meta = getAgentTypeMeta(a.agent_type);
-    details.push({ label: "Agent Type", value: `${meta.label} \u2014 ${meta.description}` });
+    details.push({
+      label: "Agent Type",
+      value: `${meta.label} \u2014 ${meta.description}`,
+    });
   }
   if (a.id) {
     details.push({ label: "Association ID", value: a.id });

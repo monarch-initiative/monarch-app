@@ -84,7 +84,9 @@
             <AppIcon :icon="at.meta.icon" />
           </td>
           <td>{{ at.meta.label }}</td>
-          <td><code>{{ at.key }}</code></td>
+          <td>
+            <code>{{ at.key }}</code>
+          </td>
           <td>{{ at.meta.description }}</td>
         </tr>
       </tbody>
@@ -276,7 +278,7 @@ import AppTextbox from "@/components/AppTextbox.vue";
 import EntityGrid from "@/components/EntityGrid/EntityGrid.vue";
 import EntityGridModal from "@/components/EntityGrid/EntityGridModal.vue";
 import TheCrossSpeciesGraph from "@/components/TheCrossSpeciesGraph.vue";
-import { getAgentTypeMeta } from "@/util/agentType";
+import { AGENT_TYPE_KEYS, getAgentTypeMeta } from "@/util/agentType";
 import { sleep } from "@/util/debug";
 
 /** get all files in custom icon folder */
@@ -285,17 +287,7 @@ const icons = Object.values(import.meta.glob("@/assets/icons/*.svg")).map(
 );
 
 /** agent type enum values with metadata */
-const agentTypeKeys = [
-  "manual_agent",
-  "automated_agent",
-  "data_analysis_pipeline",
-  "computational_model",
-  "text_mining_agent",
-  "image_processing_agent",
-  "manual_validation_of_automated_agent",
-  "not_provided",
-];
-const agentTypes = agentTypeKeys.map((key) => ({
+const agentTypes = AGENT_TYPE_KEYS.map((key) => ({
   key,
   meta: getAgentTypeMeta(key),
 }));
@@ -777,9 +769,9 @@ iframe {
   }
 }
 
-.agent-type-icon-cell {
+.agent-type-table .agent-type-icon-cell {
   color: $theme;
   font-size: 1.1rem;
-  text-align: center !important;
+  text-align: center;
 }
 </style>

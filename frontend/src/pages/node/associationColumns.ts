@@ -48,6 +48,7 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
       key: "evidence_count" as Datum,
       heading: "",
       align: "center",
+      width: "80px",
     },
   ];
   const isDisease = nodeCategory === "biolink:Disease";

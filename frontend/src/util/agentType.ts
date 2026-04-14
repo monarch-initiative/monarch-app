@@ -2,7 +2,7 @@
 
 type AgentTypeMeta = { icon: string; label: string; description: string };
 
-const AGENT_TYPE_META: Record<string, AgentTypeMeta> = {
+export const AGENT_TYPE_META: Record<string, AgentTypeMeta> = {
   manual_agent: {
     icon: "user",
     label: "Manual Agent",
@@ -44,6 +44,8 @@ const AGENT_TYPE_META: Record<string, AgentTypeMeta> = {
     description: "Agent type not available",
   },
 };
+
+export const AGENT_TYPE_KEYS = Object.keys(AGENT_TYPE_META);
 
 const FALLBACK: AgentTypeMeta = {
   icon: "circle-question",
