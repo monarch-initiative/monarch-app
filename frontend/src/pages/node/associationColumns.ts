@@ -44,18 +44,10 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
       sortable: true,
     },
     {
-      slot: "agent_type",
-      key: "agent_type" as Datum,
-      heading: "Agent",
-      align: "center",
-      width: "60px",
-    },
-    {
-      slot: "details",
+      slot: "actions",
       key: "evidence_count" as Datum,
-      heading: "Details",
+      heading: "",
       align: "center",
-      sortable: true,
     },
   ];
   const isDisease = nodeCategory === "biolink:Disease";

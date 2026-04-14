@@ -136,19 +136,22 @@
       >
     </template>
 
-    <!-- agent type icon -->
-    <template #agent_type="{ row }">
-      <span
-        v-if="row.agent_type"
-        v-tooltip="`<b>${getAgentTypeMeta(row.agent_type).label}</b><br>${getAgentTypeMeta(row.agent_type).description}`"
-      >
-        <AppIcon :icon="getAgentTypeMeta(row.agent_type).icon" />
-      </span>
-    </template>
-
-    <!-- button to show details -->
-    <template #details="{ row }">
-      <AppButton text="Details" icon="info-circle" @click="openModal(row)" />
+    <!-- agent type + details icons -->
+    <template #actions="{ row }">
+      <div class="actions-cell">
+        <span
+          v-if="row.agent_type"
+          v-tooltip="`<b>${getAgentTypeMeta(row.agent_type).label}</b><br>${getAgentTypeMeta(row.agent_type).description}`"
+        >
+          <AppIcon :icon="getAgentTypeMeta(row.agent_type).icon" />
+        </span>
+        <AppButton
+          v-tooltip="'View association details'"
+          design="small"
+          icon="circle-info"
+          @click="openModal(row)"
+        />
+      </div>
     </template>
 
     <!-- extra columns -->
@@ -343,9 +346,9 @@ const orthologColoumns = computed<Cols<Datum>>(() => {
     },
     { slot: "divider" },
     {
-      slot: "details",
+      slot: "actions",
       key: "evidence_count",
-      heading: "Details",
+      heading: "",
       align: "center",
     },
   ];
@@ -672,5 +675,11 @@ watch(
 .negated-text {
   color: $error;
   font-weight: bold;
+}
+
+.actions-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 </style>
