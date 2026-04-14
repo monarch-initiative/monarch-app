@@ -1,7 +1,7 @@
 import { computed, reactive, type ShallowRef } from "vue";
 import { useRoute } from "vue-router";
+import { stringParam, useParam, type Param } from "@/composables/use-param";
 import { RESOURCE_NAME_MAP } from "@/config/resourceNames";
-import { useParam, stringParam, type Param } from "@/composables/use-param";
 
 /** number param that omits the default value from the URL */
 const defaultNumberParam = (defaultValue: number): Param<number> => ({
@@ -96,7 +96,7 @@ export const useAssociationFilters = () => {
       },
     });
   }
-  const filters = reactive(filtersSource) as SourceFilters;
+  const filters = reactive(filtersSource) as unknown as SourceFilters;
 
   const offset = useParam("offset", defaultNumberParam(0), 0);
   const limit = useParam("limit", defaultNumberParam(20), 20);
