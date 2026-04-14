@@ -2209,7 +2209,7 @@
 <h1 id="disorder-mechanisms-knowledge-base-dismech">Disorder Mechanisms Knowledge Base (dismech)</h1>
 <p>A curated knowledge base of disease pathophysiology, with structured evidence from the literature.</p>
 <h2 id="browse-the-knowledge-base">Browse the Knowledge Base</h2>
-<p><strong><a href="https://dismech.monarchinitiative.org/app/">View all disorders online</a></strong> | <strong><a href="https://dismech.monarchinitiative.org/dashboard/">QC Dashboard</a></strong></p>
+<p><strong><a href="https://dismech.monarchinitiative.org/app/">View all disorders online</a></strong> | <strong><a href="https://dismech.monarchinitiative.org/dashboard/">QC Dashboard</a></strong> | <strong><a href="https://dismech.monarchinitiative.org/dashboard/priority.html">Priority Dashboard</a></strong></p>
 <p>Each disorder page includes:
 - Disease mechanisms and pathophysiology
 - Clinical phenotypes with HPO term links
@@ -2304,8 +2304,17 @@ just<span class="w"> </span>compliance-weighted
 - Slot compliance comparison chart
 - Detailed views of the 10 lowest-compliance files (priority curation targets)
 - Full table of all files sorted by compliance
-- A dedicated <code>not_yet_curated.html</code> report listing referenced MONDO diseases that do not yet have local DisMech pages</p>
+- A dedicated <code>not_yet_curated.html</code> report listing referenced MONDO diseases that do not yet have local DisMech pages
+- A dedicated <code>priority.html</code> report ranking MONDO curation candidates with action recommendations and coverage summaries</p>
 <p>View online: <a href="https://dismech.monarchinitiative.org/dashboard/">QC Dashboard</a> or locally: <code>open dashboard/index.html</code></p>
+<p>Generate only the MONDO curation priority view:</p>
+<div class="highlight"><pre><span></span><code>just<span class="w"> </span>gen-priority-dashboard
+</code></pre></div>
+<p>Generate a local-only dashboard across all uncurated MONDO disease descendants:</p>
+<div class="highlight"><pre><span></span><code>just<span class="w"> </span>gen-priority-dashboard-all-mondo
+</code></pre></div>
+<p>This writes large artifacts under <code>tmp/priority-dashboard-all-mondo/</code> so they remain
+gitignored and do not get committed to GitHub by accident.</p>
 <h3 id="html-generation">HTML Generation</h3>
 <p>YAML files are rendered to browsable HTML pages with clickable ontology term links.</p>
 <div class="highlight"><pre><span></span><code>uv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>dismech.render<span class="w"> </span>--all
