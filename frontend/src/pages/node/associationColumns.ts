@@ -44,6 +44,13 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
       sortable: true,
     },
     {
+      slot: "agent_type",
+      key: "agent_type" as Datum,
+      heading: "Agent",
+      align: "center",
+      width: "60px",
+    },
+    {
       slot: "details",
       key: "evidence_count" as Datum,
       heading: "Details",

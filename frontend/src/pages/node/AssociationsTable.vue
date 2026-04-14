@@ -136,6 +136,16 @@
       >
     </template>
 
+    <!-- agent type icon -->
+    <template #agent_type="{ row }">
+      <span
+        v-if="row.agent_type"
+        v-tooltip="`<b>${getAgentTypeMeta(row.agent_type).label}</b><br>${getAgentTypeMeta(row.agent_type).description}`"
+      >
+        <AppIcon :icon="getAgentTypeMeta(row.agent_type).icon" />
+      </span>
+    </template>
+
     <!-- button to show details -->
     <template #details="{ row }">
       <AppButton text="Details" icon="info-circle" @click="openModal(row)" />
@@ -196,6 +206,7 @@ import {
   type FacetField,
   type Node,
 } from "@/api/model";
+import AppIcon from "@/components/AppIcon.vue";
 import AppModal from "@/components/AppModal.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppNodeText from "@/components/AppNodeText.vue";
@@ -214,6 +225,7 @@ import {
 } from "@/pages/node/associationColumns";
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
 import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
+import { getAgentTypeMeta } from "@/util/agentType";
 import { taxonFieldFor } from "@/util/taxonFilterConfig";
 import { fieldFor } from "@/util/typeConfig";
 

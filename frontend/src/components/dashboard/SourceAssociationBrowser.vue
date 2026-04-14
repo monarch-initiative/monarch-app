@@ -198,6 +198,15 @@
               </div>
             </template>
 
+            <template #agent_type="{ row }">
+              <span
+                v-if="row.agent_type"
+                v-tooltip="`<b>${getAgentTypeMeta(row.agent_type).label}</b><br>${getAgentTypeMeta(row.agent_type).description}`"
+              >
+                <AppIcon :icon="getAgentTypeMeta(row.agent_type).icon" />
+              </span>
+            </template>
+
             <template #details="{ row }">
               <AppButton
                 v-tooltip="'View association details'"
@@ -307,6 +316,7 @@
 import { computed, reactive, ref, watch, type ComputedRef } from "vue";
 import type { Association, AssociationResults, FacetValue } from "@/api/model";
 import { getSourceAssociations } from "@/api/source-associations";
+import AppIcon from "@/components/AppIcon.vue";
 import AppModal from "@/components/AppModal.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppNodeText from "@/components/AppNodeText.vue";
@@ -315,6 +325,7 @@ import AppStatus from "@/components/AppStatus.vue";
 import AppTable, { type Cols, type Sort } from "@/components/AppTable.vue";
 import TheTableControls from "@/components/TheTableContols.vue";
 import type { SourceFilters } from "@/composables/use-source-dashboard";
+import { formatAgentType, getAgentTypeMeta } from "@/util/agentType";
 
 type Props = {
   inforesId?: string;
@@ -477,7 +488,7 @@ const facetConfigs = computed<FacetConfig[]>(() => {
       filterKey: "agentType",
       label: "Agent Type",
       values: agentTypeFacets,
-      formatter: identity,
+      formatter: formatAgentType,
     },
     {
       filterKey: "primaryKnowledgeSource",
@@ -524,6 +535,13 @@ const cols: Cols<keyof Association> = [
     key: "object_label",
     heading: "Object",
     sortable: true,
+  },
+  {
+    slot: "agent_type",
+    key: "agent_type",
+    heading: "",
+    align: "center",
+    width: "40px",
   },
   {
     slot: "details",
@@ -663,7 +681,8 @@ const associationProperties = computed((): DetailProperty[] => {
     details.push({ label: "Knowledge Level", value: a.knowledge_level });
   }
   if (a.agent_type) {
-    details.push({ label: "Agent Type", value: a.agent_type });
+    const meta = getAgentTypeMeta(a.agent_type);
+    details.push({ label: "Agent Type", value: `${meta.label} \u2014 ${meta.description}` });
   }
   if (a.id) {
     details.push({ label: "Association ID", value: a.id });

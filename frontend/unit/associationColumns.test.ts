@@ -37,10 +37,11 @@ const keys = (cols: Array<{ key?: string; slot?: string }>) =>
 describe("buildAssociationCols", () => {
   it("builds base columns with headings derived from first item categories", () => {
     const cols = buildAssociationCols(makeCtx());
-    expect(keys(cols).slice(0, 4)).toEqual([
+    expect(keys(cols).slice(0, 5)).toEqual([
       "subject_label",
       "predicate",
       "object_label",
+      "agent_type",
       "evidence_count",
     ]);
     // headings reflect getCategoryLabel on subject/object categories

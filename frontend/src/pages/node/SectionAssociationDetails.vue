@@ -41,6 +41,11 @@
         </AppFlex>
       </AppDetail>
 
+      <AppDetail title="Agent Type" :icon="getAgentTypeMeta(association.agent_type || 'not_provided').icon">
+        <span>{{ getAgentTypeMeta(association.agent_type || 'not_provided').label }}</span>
+        <span class="agent-description"> &mdash; {{ getAgentTypeMeta(association.agent_type || 'not_provided').description }}</span>
+      </AppDetail>
+
       <AppDetail title="Primary Knowledge Source" icon="lightbulb">
         <span>{{ association.primary_knowledge_source }}</span>
       </AppDetail>
@@ -88,6 +93,7 @@ import { onMounted, watch } from "vue";
 import type { DirectionalAssociation, Node } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
+import { getAgentTypeMeta } from "@/util/agentType";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
 import { scrollTo } from "@/router";
@@ -133,5 +139,10 @@ onMounted(scrollIntoView);
   padding: 0.5em 0 0.5em 1em;
   border-left: 3px solid $light-gray;
   font-style: italic;
+}
+
+.agent-description {
+  color: $gray;
+  font-size: 0.9em;
 }
 </style>
