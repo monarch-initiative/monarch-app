@@ -20,7 +20,7 @@
       </li>
       <li>
         <AppLink
-          to="https://monarch-app.monarchinitiative.org/docs/Sources/"
+          to="https://monarch-app.monarchinitiative.org/Sources/"
           :no-icon="true"
         >
           KG Data Sources
@@ -30,7 +30,7 @@
       </li>
       <li>
         <AppLink
-          to="https://monarch-app.monarchinitiative.org/docs/KG-Build-Process/kg-build-process/"
+          to="https://monarch-app.monarchinitiative.org/KG-Build-Process/kg-build-process/"
           :no-icon="true"
         >
           KG Build Process
