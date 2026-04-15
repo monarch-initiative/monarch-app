@@ -66,6 +66,33 @@
     <AppButton text="Send Message" @click="postPhenogridMulti" />
   </AppSection>
 
+  <!-- agent type icons -->
+  <AppSection>
+    <AppHeading>Agent Type Icons</AppHeading>
+    <table class="agent-type-table">
+      <thead>
+        <tr>
+          <th>Icon</th>
+          <th>Label</th>
+          <th>Enum Value</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="at in agentTypes" :key="at.key">
+          <td class="agent-type-icon-cell">
+            <AppIcon :icon="at.meta.icon" />
+          </td>
+          <td>{{ at.meta.label }}</td>
+          <td>
+            <code>{{ at.key }}</code>
+          </td>
+          <td>{{ at.meta.description }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </AppSection>
+
   <!-- custom icons -->
   <AppSection>
     <AppHeading>Custom Icons</AppHeading>
@@ -251,12 +278,19 @@ import AppTextbox from "@/components/AppTextbox.vue";
 import EntityGrid from "@/components/EntityGrid/EntityGrid.vue";
 import EntityGridModal from "@/components/EntityGrid/EntityGridModal.vue";
 import TheCrossSpeciesGraph from "@/components/TheCrossSpeciesGraph.vue";
+import { AGENT_TYPE_KEYS, getAgentTypeMeta } from "@/util/agentType";
 import { sleep } from "@/util/debug";
 
 /** get all files in custom icon folder */
 const icons = Object.values(import.meta.glob("@/assets/icons/*.svg")).map(
   (icon) => (icon.name.split("/").pop() || "").replace(/\.svg$/, ""),
 );
+
+/** agent type enum values with metadata */
+const agentTypes = AGENT_TYPE_KEYS.map((key) => ({
+  key,
+  meta: getAgentTypeMeta(key),
+}));
 
 // =============================================================================
 // Cross-Species Graph Demo (Cardiomegaly)
@@ -710,5 +744,34 @@ iframe {
 .icons {
   color: $theme;
   font-size: 4rem;
+}
+
+.agent-type-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid $light-gray;
+    text-align: left;
+  }
+
+  th {
+    color: $dark-gray;
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+
+  code {
+    color: $gray;
+    font-size: 0.85rem;
+  }
+}
+
+.agent-type-table .agent-type-icon-cell {
+  color: $theme;
+  font-size: 1.1rem;
+  text-align: center;
 }
 </style>

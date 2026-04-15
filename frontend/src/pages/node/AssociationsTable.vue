@@ -136,9 +136,25 @@
       >
     </template>
 
-    <!-- button to show details -->
-    <template #details="{ row }">
-      <AppButton text="Details" icon="info-circle" @click="openModal(row)" />
+    <!-- agent type + details icons -->
+    <template #actions="{ row }">
+      <div class="actions-cell">
+        <span
+          v-if="row.agent_type"
+          v-tooltip="
+            `<b>${getAgentTypeMeta(row.agent_type).label}</b><br>${getAgentTypeMeta(row.agent_type).description}`
+          "
+          :aria-label="`${getAgentTypeMeta(row.agent_type).label}: ${getAgentTypeMeta(row.agent_type).description}`"
+        >
+          <AppIcon :icon="getAgentTypeMeta(row.agent_type).icon" />
+        </span>
+        <AppButton
+          v-tooltip="'View association details'"
+          design="small"
+          icon="circle-info"
+          @click="openModal(row)"
+        />
+      </div>
     </template>
 
     <!-- extra columns -->
@@ -196,6 +212,7 @@ import {
   type FacetField,
   type Node,
 } from "@/api/model";
+import AppIcon from "@/components/AppIcon.vue";
 import AppModal from "@/components/AppModal.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppNodeText from "@/components/AppNodeText.vue";
@@ -214,6 +231,7 @@ import {
 } from "@/pages/node/associationColumns";
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
 import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
+import { getAgentTypeMeta } from "@/util/agentType";
 import { taxonFieldFor } from "@/util/taxonFilterConfig";
 import { fieldFor } from "@/util/typeConfig";
 
@@ -331,10 +349,11 @@ const orthologColoumns = computed<Cols<Datum>>(() => {
     },
     { slot: "divider" },
     {
-      slot: "details",
+      slot: "actions",
       key: "evidence_count",
-      heading: "Details",
+      heading: "",
       align: "center",
+      width: "80px",
     },
   ];
 });
@@ -660,5 +679,11 @@ watch(
 .negated-text {
   color: $error;
   font-weight: bold;
+}
+
+.actions-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 </style>

@@ -41,6 +41,13 @@
         </AppFlex>
       </AppDetail>
 
+      <AppDetail v-if="agentMeta" title="Agent Type" :icon="agentMeta.icon">
+        <span>{{ agentMeta.label }}</span>
+        <span class="agent-description">
+          &mdash; {{ agentMeta.description }}
+        </span>
+      </AppDetail>
+
       <AppDetail title="Primary Knowledge Source" icon="lightbulb">
         <span>{{ association.primary_knowledge_source }}</span>
       </AppDetail>
@@ -84,13 +91,14 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch } from "vue";
+import { computed, onMounted, watch } from "vue";
 import type { DirectionalAssociation, Node } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
 import { scrollTo } from "@/router";
+import { getAgentTypeMeta } from "@/util/agentType";
 
 type Props = {
   /** current node */
@@ -100,6 +108,12 @@ type Props = {
 };
 
 const props = defineProps<Props>();
+
+const agentMeta = computed(() =>
+  props.association?.agent_type
+    ? getAgentTypeMeta(props.association.agent_type)
+    : null,
+);
 
 /** scroll details section into view */
 async function scrollIntoView() {
@@ -133,5 +147,10 @@ onMounted(scrollIntoView);
   padding: 0.5em 0 0.5em 1em;
   border-left: 3px solid $light-gray;
   font-style: italic;
+}
+
+.agent-description {
+  color: $gray;
+  font-size: 0.9em;
 }
 </style>
