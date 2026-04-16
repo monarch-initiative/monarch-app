@@ -7,7 +7,7 @@ specifying the 2-hop traversal pattern from context entity to row entities.
 from dataclasses import dataclass
 from typing import Dict, List, Optional
 
-from monarch_py.datamodels.category_enums import AssociationCategory, EntityCategory
+from monarch_py.datamodels.category_enums import AssociationCategory, AssociationPredicate, EntityCategory
 
 
 @dataclass
@@ -41,6 +41,8 @@ class GridTypeConfig:
     # Support both single category (backwards compat) and multiple categories
     column_assoc_category: Optional[AssociationCategory] = None
     column_assoc_categories: Optional[List[AssociationCategory]] = None
+    # Optional predicate filter for the column association hop
+    column_predicate: Optional[AssociationPredicate] = None
     context_field: str = "object"
     column_field: str = "subject"
     row_context_field: str = "subject"
@@ -90,6 +92,22 @@ GRID_TYPE_CONFIGS: Dict[str, GridTypeConfig] = {
         row_context_field="subject",
         row_entity_field="object",
         context_closure_field="subject_closure",
+    ),
+    # Disease Grouping Class -> Child Disease × Phenotype
+    # Context: Disease (grouping class), Columns: Child diseases, Rows: Phenotypes
+    "child-disease-phenotype": GridTypeConfig(
+        name="Child Disease-Phenotype",
+        context_category=EntityCategory.DISEASE,
+        column_assoc_category=AssociationCategory.ASSOCIATION,
+        column_predicate=AssociationPredicate.SUBCLASS_OF,
+        row_assoc_category=AssociationCategory.DISEASE_TO_PHENOTYPIC_FEATURE_ASSOCIATION,
+        row_entity_category=EntityCategory.PHENOTYPIC_FEATURE,
+        column_entity_category=EntityCategory.DISEASE,
+        context_field="object",
+        column_field="subject",
+        row_context_field="subject",
+        row_entity_field="object",
+        context_closure_field="object_closure",
     ),
     # Gene -> Ortholog × Phenotype
     # Context: Gene, Columns: Orthologs, Rows: Phenotypes

@@ -135,6 +135,102 @@ def test_traversable_associations_unknown_category(client):
 
 
 # =====================================================================
+# Tests for child-disease-phenotype-grid endpoint
+# =====================================================================
+
+
+def test_child_disease_phenotype_grid_endpoint(client, mock_grid_response):
+    """Child disease-phenotype grid endpoint should validate and call _get_grid."""
+    mock_entity = MagicMock()
+    mock_entity.category = "biolink:Disease"
+
+    with patch.object(SolrImplementation, "get_entity", return_value=mock_entity):
+        with patch.object(SolrImplementation, "get_entity_grid", return_value=mock_grid_response):
+            response = client.get("/v3/api/entity-grid/MONDO:0021060/child-disease-phenotype-grid")
+            assert response.status_code == 200
+            data = response.json()
+            assert data["context_id"] == "TEST:001"
+
+
+def test_child_disease_phenotype_grid_rejects_gene(client):
+    """Child disease-phenotype grid should reject non-disease entities."""
+    mock_entity = MagicMock()
+    mock_entity.category = "biolink:Gene"
+
+    with patch.object(SolrImplementation, "get_entity", return_value=mock_entity):
+        response = client.get("/v3/api/entity-grid/HGNC:4851/child-disease-phenotype-grid")
+        assert response.status_code == 400
+
+
+def test_child_disease_phenotype_grid_default_limit(client, mock_grid_response):
+    """Default limit should be 100 for child-disease-phenotype grid."""
+    mock_entity = MagicMock()
+    mock_entity.category = "biolink:Disease"
+
+    with patch.object(SolrImplementation, "get_entity", return_value=mock_entity):
+        with patch.object(SolrImplementation, "get_entity_grid", return_value=mock_grid_response) as mock_get_grid:
+            client.get("/v3/api/entity-grid/MONDO:0021060/child-disease-phenotype-grid")
+            call_kwargs = mock_get_grid.call_args.kwargs
+            assert call_kwargs["limit"] == 100
+            assert call_kwargs["grid_type"] == "child-disease-phenotype"
+
+
+# =====================================================================
+# Tests for generic endpoint with column_predicate
+# =====================================================================
+
+
+def test_generic_grid_with_column_predicate(client, mock_grid_response):
+    """Generic endpoint should accept column_predicate parameter."""
+    with patch.object(SolrImplementation, "get_generic_entity_grid", return_value=mock_grid_response) as mock_get_grid:
+        response = client.get(
+            "/v3/api/entity-grid/MONDO:0021060",
+            params={
+                "column_association_category": "biolink:Association",
+                "row_association_category": "biolink:DiseaseToPhenotypicFeatureAssociation",
+                "column_predicate": "biolink:subclass_of",
+            },
+        )
+        assert response.status_code == 200
+        call_kwargs = mock_get_grid.call_args.kwargs
+        assert call_kwargs["column_predicates"] == ["biolink:subclass_of"]
+
+
+def test_generic_grid_without_column_predicate(client, mock_grid_response):
+    """Generic endpoint should work without column_predicate (defaults to None)."""
+    with patch.object(SolrImplementation, "get_generic_entity_grid", return_value=mock_grid_response) as mock_get_grid:
+        response = client.get(
+            "/v3/api/entity-grid/MONDO:0021060",
+            params={
+                "column_association_category": "biolink:Association",
+                "row_association_category": "biolink:DiseaseToPhenotypicFeatureAssociation",
+            },
+        )
+        assert response.status_code == 200
+        call_kwargs = mock_get_grid.call_args.kwargs
+        assert call_kwargs["column_predicates"] is None
+
+
+def test_generic_grid_with_multiple_column_predicates(client, mock_grid_response):
+    """Generic endpoint should accept multiple column_predicate values."""
+    with patch.object(SolrImplementation, "get_generic_entity_grid", return_value=mock_grid_response) as mock_get_grid:
+        response = client.get(
+            "/v3/api/entity-grid/MONDO:0021060",
+            params={
+                "column_association_category": "biolink:Association",
+                "row_association_category": "biolink:DiseaseToPhenotypicFeatureAssociation",
+                "column_predicate": [
+                    "biolink:subclass_of",
+                    "biolink:has_phenotype",
+                ],
+            },
+        )
+        assert response.status_code == 200
+        call_kwargs = mock_get_grid.call_args.kwargs
+        assert len(call_kwargs["column_predicates"]) == 2
+
+
+# =====================================================================
 # Tests for RowGrouping enum
 # =====================================================================
 

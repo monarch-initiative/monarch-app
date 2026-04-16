@@ -9,12 +9,12 @@ Provides generic entity x entity grid endpoints that support:
 
 import logging
 from enum import Enum
-from typing import List
+from typing import List, Optional
 from fastapi import APIRouter, HTTPException, Query, Path
 
 from monarch_py.api.config import solr
 from monarch_py.datamodels.model import EntityGridResponse
-from monarch_py.datamodels.category_enums import AssociationCategory, EntityCategory
+from monarch_py.datamodels.category_enums import AssociationCategory, AssociationPredicate, EntityCategory
 from monarch_py.utils.association_type_utils import AssociationTypeMappings
 
 logger = logging.getLogger(__name__)
@@ -239,6 +239,50 @@ async def get_ortholog_phenotype_grid(
     return _get_grid(context_id, "ortholog-phenotype", direct, limit)
 
 
+@router.get(
+    "/{context_id}/child-disease-phenotype-grid",
+    response_model=EntityGridResponse,
+    summary="Get child disease-phenotype grid for a disease grouping class",
+    description="""
+    Returns a grid of child diseases and their phenotypes for a disease grouping class.
+
+    The grid shows diseases that are subclasses of the given grouping class and the
+    phenotypes associated with each child disease.
+
+    - **columns**: List of child disease entities (subclasses)
+    - **rows**: List of phenotypes observed across all child diseases
+    - **bins**: Body system categories (HistoPheno) with phenotype counts
+    - **cells**: Map of disease:phenotype pairs to observation details
+
+    Use `direct=true` (default) to get only immediate children.
+    Use `direct=false` to include all descendants.
+    """,
+)
+async def get_child_disease_phenotype_grid(
+    context_id: str = Path(
+        ...,
+        description="MONDO disease grouping class ID",
+        examples=["MONDO:0021060"],
+    ),
+    direct: bool = Query(
+        True,
+        description="Only include immediate child diseases (not all descendants)",
+    ),
+    limit: int = Query(
+        100,
+        ge=1,
+        le=200,
+        description="Maximum number of child diseases (columns)",
+    ),
+) -> EntityGridResponse:
+    """Get child disease-phenotype grid for a disease grouping class.
+
+    The context_id must be a disease ID (e.g., MONDO:0021060 - RASopathy).
+    """
+    _validate_entity_category(context_id, EntityCategory.DISEASE)
+    return _get_grid(context_id, "child-disease-phenotype", direct, limit)
+
+
 # =============================================================================
 # Generic Entity Grid Endpoint
 # =============================================================================
@@ -294,6 +338,10 @@ async def get_generic_entity_grid(
         False,
         description="Sort columns by association category",
     ),
+    column_predicate: Optional[List[AssociationPredicate]] = Query(
+        None,
+        description="Optional predicate filter(s) for context → column associations",
+    ),
     direct: bool = Query(
         True,
         description="Only include direct associations (not via closure)",
@@ -315,6 +363,7 @@ async def get_generic_entity_grid(
     # Convert enum values to strings
     column_categories = [cat.value for cat in column_association_category]
     row_categories = [cat.value for cat in row_association_category]
+    col_predicates = [p.value for p in column_predicate] if column_predicate else None
 
     try:
         return solr_impl.get_generic_entity_grid(
@@ -325,6 +374,7 @@ async def get_generic_entity_grid(
             group_columns_by_category=group_columns_by_category,
             direct_only=direct,
             limit=limit,
+            column_predicates=col_predicates,
         )
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))

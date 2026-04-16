@@ -13,6 +13,12 @@ from monarch_py.utils.entity_grid_utils import (
 from monarch_py.datamodels.grid_configs import get_grid_config
 from monarch_py.datamodels.grid_groupings import RowGroupingConfig, GroupingType
 from monarch_py.datamodels.model import GridColumnEntity, EntityGridResponse
+from monarch_py.implementations.solr.solr_query_utils import (
+    build_grid_column_query,
+    build_grid_row_query,
+    build_multi_category_column_query,
+    build_multi_category_row_query,
+)
 
 
 # =====================================================================
@@ -419,3 +425,126 @@ def test_build_entity_grid_empty():
     assert grid.total_columns == 0
     assert grid.total_rows == 0
     assert len(grid.cells) == 0
+
+
+# =====================================================================
+# Tests for predicate filtering in query builders
+# =====================================================================
+
+
+def test_build_grid_column_query_without_predicate():
+    """Column query without predicate should not include predicate filter."""
+    config = get_grid_config("case-phenotype")
+    result = build_grid_column_query("MONDO:0007078", config, direct_only=True)
+    # fq should not contain any predicate filter
+    fq_str = str(result["fq"])
+    assert "predicate:" not in fq_str
+
+
+def test_build_grid_column_query_with_config_predicate():
+    """Column query should include predicate from config.column_predicate."""
+    config = get_grid_config("child-disease-phenotype")
+    result = build_grid_column_query("MONDO:0021060", config, direct_only=True)
+    fq_str = str(result["fq"])
+    assert 'predicate:"biolink:subclass_of"' in fq_str
+
+
+def test_build_grid_column_query_with_explicit_predicate():
+    """Column query should include explicitly passed predicates."""
+    config = get_grid_config("case-phenotype")
+    result = build_grid_column_query(
+        "MONDO:0007078", config, direct_only=True,
+        column_predicates=["biolink:has_phenotype"],
+    )
+    fq_str = str(result["fq"])
+    assert 'predicate:"biolink:has_phenotype"' in fq_str
+
+
+def test_build_grid_row_query_without_predicate():
+    """Row query without predicate should not include predicate in JOIN."""
+    config = get_grid_config("case-phenotype")
+    grouping = RowGroupingConfig(
+        grouping_type=GroupingType.CLOSURE_ROOTS, bin_ids=["BIN:001"], bin_labels={"BIN:001": "Bin 1"},
+    )
+    result = build_grid_row_query("MONDO:0007078", config, grouping, direct_only=True)
+    assert "predicate:" not in result["q"]
+
+
+def test_build_grid_row_query_with_config_predicate():
+    """Row query should include predicate from config.column_predicate in JOIN."""
+    config = get_grid_config("child-disease-phenotype")
+    grouping = RowGroupingConfig(
+        grouping_type=GroupingType.CLOSURE_ROOTS, bin_ids=["BIN:001"], bin_labels={"BIN:001": "Bin 1"},
+    )
+    result = build_grid_row_query("MONDO:0021060", config, grouping, direct_only=True)
+    assert 'predicate:"biolink:subclass_of"' in result["q"]
+
+
+def test_build_multi_category_column_query_with_predicate():
+    """Multi-category column query should include predicate filter."""
+    result = build_multi_category_column_query(
+        context_id="MONDO:0021060",
+        column_assoc_categories=["biolink:Association"],
+        context_field="object",
+        context_closure_field="object_closure",
+        column_field="subject",
+        direct_only=True,
+        column_predicates=["biolink:subclass_of"],
+    )
+    fq_str = str(result["fq"])
+    assert 'predicate:"biolink:subclass_of"' in fq_str
+
+
+def test_build_multi_category_column_query_without_predicate():
+    """Multi-category column query without predicate should not filter."""
+    result = build_multi_category_column_query(
+        context_id="MONDO:0021060",
+        column_assoc_categories=["biolink:Association"],
+        context_field="object",
+        context_closure_field="object_closure",
+        column_field="subject",
+        direct_only=True,
+    )
+    fq_str = str(result["fq"])
+    assert "predicate:" not in fq_str
+
+
+def test_build_multi_category_row_query_with_predicate():
+    """Multi-category row query should include predicate in JOIN."""
+    grouping = RowGroupingConfig(
+        grouping_type=GroupingType.CLOSURE_ROOTS, bin_ids=["BIN:001"], bin_labels={"BIN:001": "Bin 1"},
+    )
+    result = build_multi_category_row_query(
+        context_id="MONDO:0021060",
+        column_assoc_categories=["biolink:Association"],
+        row_assoc_categories=["biolink:DiseaseToPhenotypicFeatureAssociation"],
+        context_field="object",
+        context_closure_field="object_closure",
+        column_field="subject",
+        row_context_field="subject",
+        row_entity_field="object",
+        grouping=grouping,
+        direct_only=True,
+        column_predicates=["biolink:subclass_of"],
+    )
+    assert 'predicate:"biolink:subclass_of"' in result["q"]
+
+
+def test_build_multi_category_row_query_without_predicate():
+    """Multi-category row query without predicate should not filter."""
+    grouping = RowGroupingConfig(
+        grouping_type=GroupingType.CLOSURE_ROOTS, bin_ids=["BIN:001"], bin_labels={"BIN:001": "Bin 1"},
+    )
+    result = build_multi_category_row_query(
+        context_id="MONDO:0021060",
+        column_assoc_categories=["biolink:Association"],
+        row_assoc_categories=["biolink:DiseaseToPhenotypicFeatureAssociation"],
+        context_field="object",
+        context_closure_field="object_closure",
+        column_field="subject",
+        row_context_field="subject",
+        row_entity_field="object",
+        grouping=grouping,
+        direct_only=True,
+    )
+    assert "predicate:" not in result["q"]

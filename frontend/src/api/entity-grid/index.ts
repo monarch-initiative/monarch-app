@@ -26,6 +26,8 @@ export interface GetEntityGridOptions {
   columnAssociationCategory: string[];
   /** Association category/categories for column → row (required) */
   rowAssociationCategory: string[];
+  /** Optional predicate filter(s) for context → column associations */
+  columnPredicate?: string[];
   /** How to group rows (default: "histopheno") */
   rowGrouping?: "histopheno" | "none";
   /** Sort columns by association category (default: false) */
@@ -162,6 +164,13 @@ export async function getEntityGrid(
   // Add row association categories (can be multiple)
   for (const cat of options.rowAssociationCategory) {
     params.append("row_association_category", cat);
+  }
+
+  // Add column predicate filters (can be multiple)
+  if (options.columnPredicate) {
+    for (const pred of options.columnPredicate) {
+      params.append("column_predicate", pred);
+    }
   }
 
   if (options.rowGrouping) {

@@ -4,7 +4,7 @@ import pytest
 from unittest.mock import patch
 from fastapi.testclient import TestClient
 from monarch_py.datamodels.grid_configs import GridTypeConfig, get_grid_config
-from monarch_py.datamodels.category_enums import AssociationCategory, EntityCategory
+from monarch_py.datamodels.category_enums import AssociationCategory, AssociationPredicate, EntityCategory
 from monarch_py.api.main import app
 
 
@@ -59,10 +59,51 @@ class TestGetGridConfig:
         assert config.name == "Disease-Phenotype"
         assert config.context_category == EntityCategory.GENE
 
+    def test_get_child_disease_phenotype_config(self):
+        """Should return child-disease-phenotype config."""
+        config = get_grid_config("child-disease-phenotype")
+        assert config.name == "Child Disease-Phenotype"
+        assert config.context_category == EntityCategory.DISEASE
+        assert config.column_assoc_category == AssociationCategory.ASSOCIATION
+        assert config.column_predicate == AssociationPredicate.SUBCLASS_OF
+        assert config.row_assoc_category == AssociationCategory.DISEASE_TO_PHENOTYPIC_FEATURE_ASSOCIATION
+        assert config.row_entity_category == EntityCategory.PHENOTYPIC_FEATURE
+        assert config.column_entity_category == EntityCategory.DISEASE
+        assert config.context_field == "object"
+        assert config.column_field == "subject"
+
     def test_get_unknown_config_raises(self):
         """Should raise ValueError for unknown grid type."""
         with pytest.raises(ValueError, match="Unknown grid type"):
             get_grid_config("unknown-type")
+
+
+class TestGridTypeConfigColumnPredicate:
+    """Test GridTypeConfig column_predicate field."""
+
+    def test_column_predicate_default_none(self):
+        """Configs without column_predicate should default to None."""
+        config = get_grid_config("case-phenotype")
+        assert config.column_predicate is None
+
+    def test_column_predicate_set(self):
+        """child-disease-phenotype config should have column_predicate set."""
+        config = get_grid_config("child-disease-phenotype")
+        assert config.column_predicate == AssociationPredicate.SUBCLASS_OF
+        assert config.column_predicate.value == "biolink:subclass_of"
+
+    def test_column_predicate_custom(self):
+        """Custom config with column_predicate should work."""
+        config = GridTypeConfig(
+            name="Test",
+            context_category=EntityCategory.DISEASE,
+            column_assoc_category=AssociationCategory.ASSOCIATION,
+            column_predicate=AssociationPredicate.HAS_PHENOTYPE,
+            row_assoc_category=AssociationCategory.DISEASE_TO_PHENOTYPIC_FEATURE_ASSOCIATION,
+            row_entity_category=EntityCategory.PHENOTYPIC_FEATURE,
+            column_entity_category=EntityCategory.DISEASE,
+        )
+        assert config.column_predicate == AssociationPredicate.HAS_PHENOTYPE
 
 
 class TestGenericEntityGridAPIMultiRowCategory:

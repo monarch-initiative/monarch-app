@@ -842,11 +842,15 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         config = get_grid_config(grid_type)
         grouping = get_row_grouping(config.row_entity_category.value)
 
+        # Resolve predicate filter from config
+        column_predicates = [config.column_predicate.value] if config.column_predicate else None
+
         # Step 2: Get column entities
         col_params = build_grid_column_query(
             context_id=context_id,
             config=config,
             direct_only=direct_only,
+            column_predicates=column_predicates,
             rows=limit + 1,
         )
         col_result = self._raw_solr_query(col_params)
@@ -879,6 +883,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             config=config,
             grouping=grouping,
             direct_only=direct_only,
+            column_predicates=column_predicates,
         )
         row_result = self._raw_solr_query(row_params)
         row_docs = row_result.get("response", {}).get("docs", [])
@@ -905,6 +910,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         group_columns_by_category: bool = False,
         direct_only: bool = True,
         limit: int = 500,
+        column_predicates: Optional[List[str]] = None,
     ) -> EntityGridResponse:
         """Fetch generic entity grid with configurable association categories.
 
@@ -1010,6 +1016,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             context_closure_field=context_closure_field,
             column_field=column_field,
             direct_only=direct_only,
+            column_predicates=column_predicates,
             row_assoc_categories=row_assoc_categories,
             row_context_field=row_context_field,
             filter_empty_columns=True,
@@ -1050,6 +1057,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             row_entity_field=row_entity_field,
             grouping=grouping,
             direct_only=direct_only,
+            column_predicates=column_predicates,
         )
         row_result = self._raw_solr_query(row_params)
         row_docs = row_result.get("response", {}).get("docs", [])

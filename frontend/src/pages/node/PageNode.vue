@@ -26,6 +26,7 @@
     <SectionOverview :node="node" />
     <SectionVisualization :node="node" />
     <SectionCrossSpecies :node="node" />
+    <SectionGroupingDiseasePhenotypeGrid :node="node" />
     <SectionAssociations :node="node" />
     <SectionBreadcrumbs :node="node" />
     <!-- <SectionHierarchy :node="node" /> -->
@@ -48,6 +49,7 @@ import SectionAssociations from "./SectionAssociations.vue";
 import SectionCrossSpecies from "./SectionCrossSpecies.vue";
 import SectionOverview from "./SectionOverview.vue";
 import SectionTitle from "./SectionTitle.vue";
+import SectionGroupingDiseasePhenotypeGrid from "./SectionGroupingDiseasePhenotypeGrid.vue";
 import SectionVisualization from "./SectionVisualization.vue";
 
 /** route info */

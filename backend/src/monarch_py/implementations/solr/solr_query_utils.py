@@ -504,6 +504,7 @@ def build_grid_column_query(
     context_id: str,
     config: "GridTypeConfig",
     direct_only: bool,
+    column_predicates: Optional[List[str]] = None,
     filter_empty_columns: bool = True,
     rows: int = 50000,
 ) -> Dict[str, Any]:
@@ -531,6 +532,14 @@ def build_grid_column_query(
     else:
         category_filter = "(" + " OR ".join(f'category:"{c.value}"' for c in column_categories) + ")"
     fq = [category_filter]
+
+    # Add predicate filter if specified (from config or explicit parameter)
+    predicates = column_predicates
+    if not predicates and config.column_predicate:
+        predicates = [config.column_predicate.value]
+    if predicates:
+        predicate_filter = " OR ".join(f'predicate:"{pred}"' for pred in predicates)
+        fq.append(f"({predicate_filter})")
 
     # Build main query
     if filter_empty_columns:
@@ -574,6 +583,7 @@ def build_multi_category_column_query(
     context_closure_field: str,
     column_field: str,
     direct_only: bool,
+    column_predicates: Optional[List[str]] = None,
     row_assoc_categories: Optional[List[str]] = None,
     row_context_field: Optional[str] = None,
     filter_empty_columns: bool = True,
@@ -605,6 +615,11 @@ def build_multi_category_column_query(
 
     # Base filter queries
     fq = [f"({column_category_filter})"]
+
+    # Add predicate filter if specified
+    if column_predicates:
+        predicate_filter = " OR ".join(f'predicate:"{pred}"' for pred in column_predicates)
+        fq.append(f"({predicate_filter})")
 
     # Build main query
     if filter_empty_columns and row_assoc_categories and row_context_field:
@@ -654,6 +669,7 @@ def build_multi_category_row_query(
     row_entity_field: str,
     grouping: "RowGroupingConfig",
     direct_only: bool,
+    column_predicates: Optional[List[str]] = None,
     rows: int = 50000,
 ) -> Dict[str, Any]:
     """Build Solr query for grid row entities using JOIN with multiple column categories.
@@ -682,10 +698,15 @@ def build_multi_category_row_query(
     # Build OR query for multiple categories in the JOIN
     category_filter = " OR ".join(f'category:"{cat}"' for cat in column_assoc_categories)
 
+    # Build JOIN inner query with optional predicate filter
+    join_inner_parts = [f"({category_filter})", f'{ctx_field}:"{context_id}"']
+    if column_predicates:
+        predicate_filter = " OR ".join(f'predicate:"{pred}"' for pred in column_predicates)
+        join_inner_parts.append(f"({predicate_filter})")
+
     # JOIN query: Find row associations for column entities associated with context
-    join_query = (
-        f'{{!join from={column_field} to={row_context_field}}}(({category_filter}) AND {ctx_field}:"{context_id}")'
-    )
+    join_inner = " AND ".join(join_inner_parts)
+    join_query = f"{{!join from={column_field} to={row_context_field}}}({join_inner})"
 
     # Build facet queries for bin counts
     facet_queries = [f'{row_entity_field}_closure:"{bin_id}"' for bin_id in grouping.bin_ids]
@@ -720,6 +741,7 @@ def build_grid_row_query(
     config: "GridTypeConfig",
     grouping: "RowGroupingConfig",
     direct_only: bool,
+    column_predicates: Optional[List[str]] = None,
     rows: int = 50000,
 ) -> Dict[str, Any]:
     """Build Solr query for grid row entities using JOIN.
@@ -749,11 +771,20 @@ def build_grid_row_query(
     else:
         col_cat_filter = "(" + " OR ".join(f'category:"{c.value}"' for c in column_categories) + ")"
 
+    # Build JOIN inner query with optional predicate filter
+    predicates = column_predicates
+    if not predicates and config.column_predicate:
+        predicates = [config.column_predicate.value]
+    join_inner_parts = [col_cat_filter, f'{context_field}:"{context_id}"']
+    if predicates:
+        predicate_filter = " OR ".join(f'predicate:"{pred}"' for pred in predicates)
+        join_inner_parts.append(f"({predicate_filter})")
+
     # JOIN query: Find row associations for column entities associated with context
+    join_inner = " AND ".join(join_inner_parts)
     join_query = (
         f"{{!join from={config.column_field} to={config.row_context_field}}}"
-        f"({col_cat_filter} "
-        f'AND {context_field}:"{context_id}")'
+        f"({join_inner})"
     )
 
     # Build facet queries for bin counts

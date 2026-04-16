@@ -98,6 +98,7 @@ import type { Node } from "@/api/model";
 import AppAssociationTabs from "@/components/AppAssociationTabs.vue";
 import EntityGrid from "@/components/EntityGrid/EntityGrid.vue";
 import EntityGridModal from "@/components/EntityGrid/EntityGridModal.vue";
+import { checkIsGroupingClass } from "@/util/groupingClassUtils";
 
 const route = useRoute();
 
@@ -127,29 +128,14 @@ const caseCountFromAssociations = computed(() => {
 });
 
 /**
- * Subset markers that indicate a disease is a grouping class (not a specific
- * diagnosable entity). These are curated by Mondo/Orphanet to distinguish
- * organizational categories from actual diseases.
- */
-const GROUPING_SUBSET_MARKERS = [
-  "disease_grouping",
-  "ordo_group_of_disorders",
-  "rare_grouping",
-];
-
-/**
  * Check if this disease is a grouping class based on Mondo subsets. Grouping
  * classes are organizational categories (like "Ehlers-Danlos syndrome") rather
  * than specific diagnosable diseases (like "Ehlers-Danlos syndrome,
  * hypermobility type").
  */
-const isGroupingClass = computed(() => {
-  // subsets is an array, often with a single pipe-delimited string
-  const subsets = props.node.subsets ?? [];
-  // Parse pipe-delimited values and flatten
-  const allSubsets = subsets.flatMap((s) => s.split("|"));
-  return allSubsets.some((s) => GROUPING_SUBSET_MARKERS.includes(s));
-});
+const isGroupingClass = computed(() =>
+  checkIsGroupingClass(props.node.subsets ?? []),
+);
 
 /** Grid config for case-phenotype display */
 const gridConfig: EntityGridConfig = {
