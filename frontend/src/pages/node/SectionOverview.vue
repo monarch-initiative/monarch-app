@@ -136,7 +136,7 @@
 
         <!-- disease frequecy -->
         <AppDetail v-if="node.category === 'biolink:Disease'" title="Frequency">
-          <span>{{ node?.subsets?.includes("rare") ? "Rare" : "Common" }}</span>
+          <span>{{ frequencyLabel }}</span>
         </AppDetail>
 
         <!-- mappings -->
@@ -238,7 +238,10 @@ const infoForPatients = computed(
 );
 
 const frequencyLabel = computed((): "Rare" | "Common" => {
-  return node.subsets?.includes("rare") ? "Rare" : "Common";
+  // subsets may be a true multi-valued array or a single pipe-delimited string;
+  // split on "|" to handle both
+  const allSubsets = (node.subsets ?? []).flatMap((s) => s.split("|"));
+  return allSubsets.includes("rare") ? "Rare" : "Common";
 });
 
 const { otherMappings, externalRefs } = useClinicalResources(node);
