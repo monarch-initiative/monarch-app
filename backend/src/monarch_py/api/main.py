@@ -13,6 +13,7 @@ from monarch_py.api import (
     meta,
     search,
     semsim,
+    sources_versions,
     text_annotation,
 )
 from monarch_py.api.config import semsimian, spacyner, settings
@@ -43,6 +44,7 @@ app.include_router(histopheno.router, prefix=f"{PREFIX}/histopheno")
 app.include_router(meta.router, prefix=PREFIX)
 app.include_router(search.router, prefix=PREFIX)
 app.include_router(semsim.router, prefix=f"{PREFIX}/semsim")
+app.include_router(sources_versions.router, prefix=PREFIX)
 app.include_router(text_annotation.router, prefix=PREFIX)
 
 # Allow CORS
