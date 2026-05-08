@@ -21,6 +21,16 @@ class Settings(BaseModel):
     monarch_api_version: str = os.getenv("MONARCH_API_VERSION", "unknown")
     monarch_kg_source: str = os.getenv("MONARCH_KG_SOURCE", "unknown")
 
+    # Read the build receipt from `data.m.o/monarch-kg-dev/` instead of
+    # `monarch-kg/` when the env var is truthy. Useful while the new-shape
+    # metadata.yaml has only landed on dev. Run as e.g.:
+    #   MONARCH_KG_USE_DEV=1 make dev-api
+    monarch_kg_use_dev: bool = os.getenv("MONARCH_KG_USE_DEV", "").lower() in (
+        "1",
+        "true",
+        "yes",
+    )
+
 
 settings = Settings()
 

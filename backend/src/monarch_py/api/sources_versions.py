@@ -9,6 +9,7 @@ import requests
 import yaml
 from fastapi import APIRouter, HTTPException
 
+from monarch_py.api.config import settings
 from monarch_py.utils.source_versions import (
     ResolvedReceipt,
     index_receipt,
@@ -87,12 +88,14 @@ def _serialize(receipt: ResolvedReceipt) -> dict:
 
 
 @router.get("/sources/versions")
-def sources_versions(release: str = "latest", dev: bool = False) -> dict:
+def sources_versions(release: str = "latest", dev: bool | None = None) -> dict:
     """Return the resolved version index for a given monarch-kg release.
 
     Default is `latest`, which resolves to the most recent published release
     on `data.monarchinitiative.org`. Specific dates (`2026-05-07`) are also
-    accepted for retrospective lookups. Pass `dev=true` to bypass the
-    production URL entirely and only consult `monarch-kg-dev/`.
+    accepted for retrospective lookups. Pass `dev=true` to read from
+    `monarch-kg-dev/`; otherwise the deployment-wide default applies (set
+    via the `MONARCH_KG_USE_DEV` env var, default false).
     """
-    return _serialize(_fetch_receipt(release, dev=dev))
+    use_dev = settings.monarch_kg_use_dev if dev is None else dev
+    return _serialize(_fetch_receipt(release, dev=use_dev))
