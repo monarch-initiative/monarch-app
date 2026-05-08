@@ -34,7 +34,10 @@ export const MONARCH_AGGREGATOR_INFORES = "infores:monarchinitiative";
 
 export const getSourcesVersions = async (
   release = "latest",
+  dev = import.meta.env.DEV,
 ): Promise<SourcesVersionsResponse> => {
-  const url = `${apiUrl}/sources/versions?release=${encodeURIComponent(release)}`;
+  const params = new URLSearchParams({ release });
+  if (dev) params.set("dev", "true");
+  const url = `${apiUrl}/sources/versions?${params.toString()}`;
   return await request<SourcesVersionsResponse>(url);
 };

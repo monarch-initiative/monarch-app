@@ -24,63 +24,46 @@ _CACHE_TTL_SECONDS = 300
 _cache: dict[tuple[str, bool], tuple[float, ResolvedReceipt]] = {}
 
 
-def _try_url(url: str) -> dict | None:
-    """GET the receipt; return parsed YAML on success, None on missing/legacy."""
-    try:
-        resp = requests.get(url, timeout=15)
-    except requests.RequestException:
-        return None
-    if resp.status_code != 200:
-        return None
-    try:
-        receipt = yaml.safe_load(resp.text)
-    except yaml.YAMLError:
-        return None
-    # The pre-collapse legacy `metadata.yaml` (kg-version + packages + data)
-    # has no top-level `id` — treat as missing so the caller can fall back.
-    if not isinstance(receipt, dict) or "id" not in receipt:
-        return None
-    return receipt
-
-
 def _fetch_receipt(release: str = "latest", dev: bool = False) -> ResolvedReceipt:
     """Fetch + parse + index `metadata.yaml` for the given release.
 
-    If `dev` is False (the default), tries the production
-    (`data.m.o/monarch-kg/...`) URL first, then transparently falls back
-    to the dev mirror — useful while the new-shape receipt has only
-    landed on dev. `dev=True` skips prod entirely.
-
-    Cached for `_CACHE_TTL_SECONDS` per (release, dev) pair.
+    `dev=False` (default) reads from the production
+    `data.m.o/monarch-kg/...` mirror; `dev=True` reads from the
+    `data.m.o/monarch-kg-dev/...` mirror — handy locally while the
+    new-shape receipt is still only landing on dev. Cached for
+    `_CACHE_TTL_SECONDS` per (release, dev) pair.
     """
     key = (release, dev)
     cached = _cache.get(key)
     if cached and (time.time() - cached[0]) < _CACHE_TTL_SECONDS:
         return cached[1]
 
-    candidates = (
-        [f"{KG_DEV_URL}/{release}/metadata.yaml"]
-        if dev
-        else [
-            f"{KG_URL}/{release}/metadata.yaml",
-            f"{KG_DEV_URL}/{release}/metadata.yaml",
-        ]
-    )
+    base = KG_DEV_URL if dev else KG_URL
+    url = f"{base}/{release}/metadata.yaml"
+    try:
+        resp = requests.get(url, timeout=15)
+        resp.raise_for_status()
+    except requests.RequestException as e:
+        raise HTTPException(
+            status_code=502,
+            detail=f"Failed to fetch build receipt from {url}: {e}",
+        ) from e
 
-    receipt: dict | None = None
-    last_url = ""
-    for url in candidates:
-        last_url = url
-        receipt = _try_url(url)
-        if receipt is not None:
-            break
+    try:
+        receipt = yaml.safe_load(resp.text)
+    except yaml.YAMLError as e:
+        raise HTTPException(
+            status_code=502,
+            detail=f"Build receipt at {url} is not valid YAML: {e}",
+        ) from e
 
-    if receipt is None:
+    if not isinstance(receipt, dict) or "id" not in receipt:
         raise HTTPException(
             status_code=502,
             detail=(
-                f"No new-shape build receipt found at any of: {', '.join(candidates)} "
-                "(production receipt may still be the pre-collapse format)."
+                f"Build receipt at {url} doesn't carry a top-level `id` "
+                "(probably the pre-collapse legacy shape). Pass `?dev=true` "
+                "to read from monarch-kg-dev/ in the meantime."
             ),
         )
 
