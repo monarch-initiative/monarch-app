@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#phenopacket-ingest" class="md-skip">
+        <a href="#phenopacket-store" class="md-skip">
           Skip to content
         </a>
       
@@ -935,45 +935,45 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#data-source" class="md-nav__link">
+  <a href="#case-entities" class="md-nav__link">
     <span class="md-ellipsis">
-      Data Source
+      Case Entities
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#output" class="md-nav__link">
+  <a href="#case-to-phenotype" class="md-nav__link">
     <span class="md-ellipsis">
-      Output
+      Case to Phenotype
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#entity-id-format" class="md-nav__link">
+  <a href="#case-to-disease" class="md-nav__link">
     <span class="md-ellipsis">
-      Entity ID Format
+      Case to Disease
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
+  <a href="#case-to-gene" class="md-nav__link">
     <span class="md-ellipsis">
-      Usage
+      Case to Gene
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#requirements" class="md-nav__link">
+  <a href="#citation" class="md-nav__link">
     <span class="md-ellipsis">
-      Requirements
+      Citation
     </span>
   </a>
   
@@ -1928,45 +1928,45 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#data-source" class="md-nav__link">
+  <a href="#case-entities" class="md-nav__link">
     <span class="md-ellipsis">
-      Data Source
+      Case Entities
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#output" class="md-nav__link">
+  <a href="#case-to-phenotype" class="md-nav__link">
     <span class="md-ellipsis">
-      Output
+      Case to Phenotype
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#entity-id-format" class="md-nav__link">
+  <a href="#case-to-disease" class="md-nav__link">
     <span class="md-ellipsis">
-      Entity ID Format
+      Case to Disease
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
+  <a href="#case-to-gene" class="md-nav__link">
     <span class="md-ellipsis">
-      Usage
+      Case to Gene
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#requirements" class="md-nav__link">
+  <a href="#citation" class="md-nav__link">
     <span class="md-ellipsis">
-      Requirements
+      Citation
     </span>
   </a>
   
@@ -2002,40 +2002,75 @@
 
 <!-- Auto-generated from https://github.com/monarch-initiative/phenopacket-ingest — do not edit manually -->
 
-<h1 id="phenopacket-ingest">phenopacket-ingest</h1>
-<p>Koza ingest for phenopacket data, transforming phenopackets from the <a href="https://github.com/monarch-initiative/phenopacket-store">phenopacket-store</a> into Biolink model format for knowledge graph integration.</p>
-<h2 id="data-source">Data Source</h2>
-<p><a href="https://github.com/monarch-initiative/phenopacket-store">Phenopacket Store</a> contains structured phenotypic data about rare disease cases in the GA4GH Phenopacket format.</p>
+<h1 id="phenopacket-store">Phenopacket Store</h1>
+<p><a href="https://github.com/monarch-initiative/phenopacket-store">Phenopacket Store</a> contains structured phenotypic data about rare disease cases in the <a href="https://phenopacket-schema.readthedocs.io/">GA4GH Phenopacket</a> format. Each phenopacket describes an individual case with observed phenotypic features, disease diagnoses, and genomic interpretations.</p>
 <p>Data is downloaded from: <code>https://github.com/monarch-initiative/phenopacket-store/releases/latest/download/all_phenopackets.zip</code></p>
-<h2 id="output">Output</h2>
-<p>This ingest produces:
-- <strong>Case nodes</strong> - Individual cases with subject information
-- <strong>Case-to-phenotype associations</strong> - Links cases to phenotypic features (HPO terms)
-- <strong>Case-to-disease associations</strong> - Links cases to diseases (MONDO terms)
-- <strong>Case-to-gene associations</strong> - Links cases to genes from interpretation data</p>
-<h2 id="entity-id-format">Entity ID Format</h2>
-<p>Case entities use IDs that include the cohort for proper URI resolution:
+<h2 id="case-entities">Case Entities</h2>
+<p>Case nodes represent individual subjects from phenopackets. Case IDs include the cohort for proper URI resolution:</p>
 <div class="highlight"><pre><span></span><code>phenopacket.store:{cohort}.{phenopacket_id}
-</code></pre></div></p>
-<h2 id="usage">Usage</h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># Install dependencies</span>
-just<span class="w"> </span>install
-
-<span class="c1"># Run full pipeline</span>
-just<span class="w"> </span>run
-
-<span class="c1"># Or run steps individually</span>
-just<span class="w"> </span>download<span class="w">      </span><span class="c1"># Download phenopacket data</span>
-just<span class="w"> </span>preprocess<span class="w">    </span><span class="c1"># Extract to JSONL</span>
-just<span class="w"> </span>transform-all<span class="w"> </span><span class="c1"># Run Koza transform</span>
-just<span class="w"> </span><span class="nb">test</span><span class="w">          </span><span class="c1"># Run tests</span>
 </code></pre></div>
-<h2 id="requirements">Requirements</h2>
+<p><strong>Biolink Captured:</strong></p>
 <ul>
-<li>Python 3.10+</li>
-<li><a href="https://github.com/astral-sh/uv">uv</a> package manager</li>
-<li><a href="https://github.com/casey/just">just</a> command runner</li>
+<li><code>biolink:Case</code><ul>
+<li>id (<code>phenopacket.store:{cohort}.{id}</code>)</li>
+<li>name (subject ID from phenopacket)</li>
+<li>has_biological_sex (when present)</li>
 </ul>
+</li>
+</ul>
+<h2 id="case-to-phenotype">Case to Phenotype</h2>
+<p>Links cases to their observed phenotypic features using HPO terms.</p>
+<p><strong>Biolink Captured:</strong></p>
+<ul>
+<li><code>biolink:CaseToPhenotypicFeatureAssociation</code><ul>
+<li>id (UUID)</li>
+<li>subject (case ID)</li>
+<li>predicate (<code>biolink:has_phenotype</code>)</li>
+<li>object (HPO term ID)</li>
+<li>negated (true when phenotypic feature is excluded)</li>
+<li>onset_qualifier (ISO8601 age duration, when onset is available)</li>
+<li>publications (PMIDs, when available)</li>
+<li>primary_knowledge_source (<code>infores:phenopacket-store</code>)</li>
+<li>knowledge_level (<code>observation</code>)</li>
+<li>agent_type (<code>manual_agent</code>)</li>
+</ul>
+</li>
+</ul>
+<h2 id="case-to-disease">Case to Disease</h2>
+<p>Links cases to their disease diagnoses.</p>
+<p><strong>Biolink Captured:</strong></p>
+<ul>
+<li><code>biolink:CaseToDiseaseAssociation</code><ul>
+<li>id (UUID)</li>
+<li>subject (case ID)</li>
+<li>predicate (<code>biolink:has_disease</code>)</li>
+<li>object (disease ID, typically MONDO)</li>
+<li>onset_qualifier (ISO8601 age duration, when onset is available)</li>
+<li>publications (PMIDs, when available)</li>
+<li>primary_knowledge_source (<code>infores:phenopacket-store</code>)</li>
+<li>knowledge_level (<code>observation</code>)</li>
+<li>agent_type (<code>manual_agent</code>)</li>
+</ul>
+</li>
+</ul>
+<h2 id="case-to-gene">Case to Gene</h2>
+<p>Links cases to genes from genomic interpretation data.</p>
+<p><strong>Biolink Captured:</strong></p>
+<ul>
+<li><code>biolink:CaseToGeneAssociation</code><ul>
+<li>id (UUID)</li>
+<li>subject (case ID)</li>
+<li>predicate (<code>biolink:has_gene</code>)</li>
+<li>object (gene ID)</li>
+<li>publications (PMIDs, when available)</li>
+<li>primary_knowledge_source (<code>infores:phenopacket-store</code>)</li>
+<li>knowledge_level (<code>observation</code>)</li>
+<li>agent_type (<code>manual_agent</code>)</li>
+</ul>
+</li>
+</ul>
+<h2 id="citation">Citation</h2>
+<p>Danis D, Bamshad MJ, Bridges Y, Cacheiro P, Carmody LC, Chong JX, Coleman B, Dalgleish R, Freeman PJ, Graefe ASL, Groza T, Jacobsen JOB, Klocperk A, Kusters M, Ladewig MS, Marcello AJ, Mattina T, Mungall CJ, Munoz-Torres MC, Reese JT, Rehburg F, Reis BCS, Schuetz C, Smedley D, Strauss T, Sundaramurthi JC, Thun S, Wissink K, Wagstaff JF, Zocche D, Haendel MA, Robinson PN. A corpus of GA4GH Phenopackets: case-level phenotyping for genomic diagnostics and discovery. HGG Advances. 2025;6(1):100371. doi: 10.1016/j.xhgg.2024.100371. PMID: 39394689</p>
 <h2 id="license">License</h2>
 <p>BSD-3-Clause</p>
 
