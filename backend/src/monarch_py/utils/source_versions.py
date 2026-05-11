@@ -49,7 +49,12 @@ class SourceVersion:
 
 @dataclass(frozen=True)
 class ResolvedReceipt:
-    """An indexed view of one `metadata.yaml` document."""
+    """An indexed view of one `metadata.yaml` document.
+
+    `frozen=True` blocks reassignment of the fields but not mutation of the
+    contained dicts — instances of this class are returned directly from the
+    receipt cache, so callers must treat the dicts as read-only.
+    """
 
     release: str
     generated_at: str

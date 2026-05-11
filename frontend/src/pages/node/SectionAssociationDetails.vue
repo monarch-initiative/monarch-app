@@ -72,8 +72,9 @@
             (via
             {{
               sourceVersion.aggregator.name || sourceVersion.aggregator.infores
-            }}
-            v{{ sourceVersion.aggregator.version }})
+            }}<template v-if="sourceVersion.aggregator.version">
+              v{{ sourceVersion.aggregator.version }}</template
+            >)
           </span>
         </span>
       </AppDetail>

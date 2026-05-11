@@ -185,4 +185,28 @@ describe("useSourceVersions", () => {
     expect(versionForInfores(null)).toBeNull();
     expect(versionForInfores(undefined)).toBeNull();
   });
+
+  it("allows a retry after a rejected fetch (inFlight is cleared)", async () => {
+    vi.resetModules();
+    const api = await import("@/api/source-versions");
+    const fetchMock = api.getSourcesVersions as unknown as ReturnType<
+      typeof vi.fn
+    >;
+    fetchMock.mockRejectedValueOnce(new Error("network"));
+    fetchMock.mockResolvedValueOnce(receipt());
+
+    const { useSourceVersions } =
+      await import("@/composables/use-source-versions");
+
+    // First consumer triggers the failing fetch.
+    const first = useSourceVersions();
+    await flushPromises().catch(() => {});
+    expect(first.isLoaded.value).toBe(false);
+
+    // Second consumer should kick off a fresh fetch, which succeeds.
+    const second = useSourceVersions();
+    await flushPromises();
+    expect(second.isLoaded.value).toBe(true);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
 });

@@ -141,6 +141,18 @@ def test_legacy_shape_without_top_level_id_returns_502(client):
     assert "dev=true" in r.json()["detail"]
 
 
+def test_release_with_path_traversal_returns_400(client):
+    """The `release` query param is interpolated into the upstream URL —
+    reject anything that could break out of the expected path segment."""
+    with patch("monarch_py.api.sources_versions.requests.get") as g:
+        r = client.get(
+            "/v3/api/sources/versions",
+            params={"release": "../latest"},
+        )
+    assert r.status_code == 400
+    g.assert_not_called()
+
+
 def test_settings_default_drives_dev_when_flag_unset(client):
     """When the client passes no `dev` query param, the route falls back to
     the `MONARCH_KG_USE_DEV` env-var-derived setting."""

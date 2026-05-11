@@ -155,13 +155,31 @@ def test_resolve_for_edge_aggregator_with_nested_mod():
 
 
 def test_resolve_for_edge_aggregator_without_nesting():
-    """ZFIN edge via the alliance-disease-association-ingest path — no
-    per-MOD nesting yet, so falls back to AGR's bundle-level entry."""
-    receipt = index_receipt(_receipt())
-    # Construct a hypothetical edge that came through AGR via the
-    # disease-only ingest, where infores:zfin isn't nested.
-    receipt.by_producer["alliance-ingest"].pop("infores:zfin")
-    receipt.by_producer["alliance-ingest"].pop("infores:mgi")
+    """ZFIN edge via an aggregator path with no per-MOD nesting — falls back
+    to AGR's bundle-level entry. Built as its own receipt rather than
+    mutating the shared fixture, so the test can't accidentally corrupt
+    cached state (`ResolvedReceipt.by_producer` is a live dict)."""
+    receipt = index_receipt(
+        {
+            "id": "monarch-kg",
+            "version": "2026-05-07",
+            "sources": [
+                {
+                    "id": "alliance-disease-association-ingest",
+                    "version": "8.3.0",
+                    "sources": [
+                        {
+                            "id": "infores:agr",
+                            "name": "Alliance of Genome Resources",
+                            "version": "8.3.0",
+                            "version_method": "alliance_fms_api",
+                            # No per-MOD nesting.
+                        },
+                    ],
+                },
+            ],
+        }
+    )
     sv = resolve_for_edge(
         receipt,
         primary_knowledge_source="infores:zfin",

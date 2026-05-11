@@ -80,10 +80,18 @@ const inFlight = ref<Promise<SourcesVersionsResponse> | null>(null);
 async function ensureLoaded(): Promise<SourcesVersionsResponse> {
   if (cache.value) return cache.value;
   if (!inFlight.value) {
-    inFlight.value = getSourcesVersions().then((r) => {
-      cache.value = r;
-      return r;
-    });
+    // Clear `inFlight` on rejection so a subsequent caller can retry —
+    // otherwise every consumer this session keeps awaiting the original
+    // settled-rejected promise.
+    inFlight.value = getSourcesVersions()
+      .then((r) => {
+        cache.value = r;
+        return r;
+      })
+      .catch((e) => {
+        inFlight.value = null;
+        throw e;
+      });
   }
   return await inFlight.value;
 }
@@ -106,8 +114,9 @@ export function useSourceVersions() {
   const isLoaded = computed(() => cache.value !== null);
 
   // Kick off the fetch on first call; consumers can ignore the promise and
-  // just react to `data` once it populates.
-  void ensureLoaded();
+  // just react to `data` once it populates. Swallow rejection here — the
+  // next `useSourceVersions()` call retries (see `ensureLoaded`).
+  ensureLoaded().catch(() => undefined);
 
   function versionForEdge(edge: {
     primary_knowledge_source?: string | null;
