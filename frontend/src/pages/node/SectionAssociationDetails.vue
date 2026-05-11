@@ -52,6 +52,33 @@
         <span>{{ association.primary_knowledge_source }}</span>
       </AppDetail>
 
+      <AppDetail v-if="sourceVersion" title="Source Version" icon="clock">
+        <span>
+          <span v-if="sourceVersion.primary.name">{{
+            sourceVersion.primary.name
+          }}</span>
+          <span v-else
+            ><code>{{ sourceVersion.primary.infores }}</code></span
+          >
+          <span v-if="sourceVersion.primary.version">
+            v{{ sourceVersion.primary.version }}</span
+          >
+          <span
+            v-if="
+              sourceVersion.aggregator &&
+              sourceVersion.aggregator.infores !== sourceVersion.primary.infores
+            "
+          >
+            (via
+            {{
+              sourceVersion.aggregator.name || sourceVersion.aggregator.infores
+            }}<template v-if="sourceVersion.aggregator.version">
+              v{{ sourceVersion.aggregator.version }}</template
+            >)
+          </span>
+        </span>
+      </AppDetail>
+
       <AppDetail title="Provided By" icon="notes-medical">
         <AppLink :to="association.provided_by_link?.url || ''" :replace="true">
           {{ association.provided_by_link?.id || association.provided_by }}
@@ -97,6 +124,7 @@ import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
+import { useSourceVersions } from "@/composables/use-source-versions";
 import { scrollTo } from "@/router";
 import { getAgentTypeMeta } from "@/util/agentType";
 
@@ -113,6 +141,11 @@ const agentMeta = computed(() =>
   props.association?.agent_type
     ? getAgentTypeMeta(props.association.agent_type)
     : null,
+);
+
+const { versionForEdge } = useSourceVersions();
+const sourceVersion = computed(() =>
+  props.association ? versionForEdge(props.association) : null,
 );
 
 /** scroll details section into view */

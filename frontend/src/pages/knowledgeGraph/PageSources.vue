@@ -8,6 +8,11 @@
     >
 
     <div v-else class="tab-container">
+      <p v-if="versionsRelease" class="receipt-subtitle">
+        Versions as of monarch-kg release
+        <strong>{{ versionsRelease }}</strong>
+      </p>
+
       <div class="tabs">
         <div class="tab-item" :class="{ active: activeTab === 'primary' }">
           <AppButton
@@ -34,6 +39,7 @@
           <tr>
             <th>Resource</th>
             <th>Link</th>
+            <th>Version</th>
             <th>Associations</th>
             <th v-if="activeTab === 'primary'">Dashboard</th>
           </tr>
@@ -45,6 +51,15 @@
               <a :href="generateInforesLink(source.id)" target="_blank">{{
                 source.id
               }}</a>
+            </td>
+            <td class="version-cell">
+              <template v-if="versionsById[source.id]">
+                <span v-if="versionsById[source.id].version">{{
+                  versionsById[source.id].version
+                }}</span>
+                <span v-else class="muted">unknown</span>
+              </template>
+              <span v-else class="muted">—</span>
             </td>
             <td>{{ source.count.toLocaleString() }}</td>
             <td v-if="activeTab === 'primary'">
@@ -64,10 +79,12 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
+import type { SourceVersion } from "@/api/source-versions";
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppSection from "@/components/AppSection.vue";
 import PageTitle from "@/components/ThePageTitle.vue";
 import { useKnowledgeSources } from "@/composables/use-knowledge-sources";
+import { useSourceVersions } from "@/composables/use-source-versions";
 import { RESOURCE_NAME_MAP } from "@/config/resourceNames";
 
 const activeTab = ref<"primary" | "aggregator">("primary");
@@ -81,6 +98,8 @@ const {
   isErrorAggregator,
   fetchAll,
 } = useKnowledgeSources();
+
+const { data: versionsData, versionForInfores } = useSourceVersions();
 
 onMounted(() => fetchAll());
 
@@ -98,6 +117,23 @@ const isLoading = computed(
   () => isLoadingPrimary.value || isLoadingAggregator.value,
 );
 const isError = computed(() => isErrorPrimary.value || isErrorAggregator.value);
+
+/**
+ * Resolve every visible source to a version once per render, keyed by id, so
+ * the template can reference values without calling the lookup repeatedly.
+ */
+const versionsById = computed<Record<string, SourceVersion>>(() => {
+  const out: Record<string, SourceVersion> = {};
+  for (const list of [primarySources.value, aggregatorSources.value]) {
+    for (const source of list) {
+      const v = versionForInfores(source.id);
+      if (v) out[source.id] = v;
+    }
+  }
+  return out;
+});
+
+const versionsRelease = computed(() => versionsData.value?.release ?? "");
 </script>
 
 <style lang="scss" scoped>
@@ -129,6 +165,17 @@ const isError = computed(() => isErrorPrimary.value || isErrorAggregator.value);
 .sources-table th {
   background-color: $off-white;
   font-weight: bold;
+}
+
+.muted {
+  color: $gray;
+}
+
+.receipt-subtitle {
+  width: 100%;
+  margin: 0 0 0.75rem;
+  color: $gray;
+  font-size: 0.95em;
 }
 
 .explore-link {

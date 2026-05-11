@@ -94,6 +94,10 @@
             {{ node.provided_by_link?.id || node.provided_by }}
           </AppLink>
         </AppDetail>
+
+        <AppDetail v-if="nodeVersion" :title="nodeVersionTitle">
+          <span>{{ nodeVersion.version || "unknown" }}</span>
+        </AppDetail>
       </AppDetails>
 
       <!--For all other nodes other than diesease nodes-->
@@ -172,6 +176,10 @@
           </AppLink>
         </AppDetail>
 
+        <AppDetail v-if="nodeVersion" :title="nodeVersionTitle">
+          <span>{{ nodeVersion.version || "unknown" }}</span>
+        </AppDetail>
+
         <AppDetail
           :blank="!otherMappings.length"
           title="Other Mappings"
@@ -217,6 +225,7 @@ import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppNodeText from "@/components/AppNodeText.vue";
 import AppTagList from "@/components/AppTagList.vue";
 import { useClinicalResources } from "@/composables/use-clinical-resources";
+import { useSourceVersions } from "@/composables/use-source-versions";
 import SectionClinicalReources from "./SectionClinicalReources.vue";
 
 type Props = { node: Node };
@@ -245,6 +254,29 @@ const frequencyLabel = computed((): "Rare" | "Common" => {
 });
 
 const { otherMappings, externalRefs } = useClinicalResources(node);
+
+/**
+ * Derive the infores from a node's curie prefix (e.g. MONDO:0007947 →
+ * infores:mondo). Lossy for sources whose infores name doesn't match the curie
+ * prefix lowercased — those silently fall through to no version.
+ */
+const { versionForInfores } = useSourceVersions();
+const nodeVersion = computed(() => {
+  const prefix = node.id?.split(":")[0];
+  if (!prefix) return null;
+  return versionForInfores(`infores:${prefix.toLowerCase()}`);
+});
+
+/**
+ * Use the source's own name in the field title (e.g. "Mondo Version") so
+ * disease/gene/etc. pages don't say a generic "Source Version".
+ */
+const nodeVersionTitle = computed(() => {
+  const v = nodeVersion.value;
+  if (!v) return "Source Version";
+  const label = v.name?.trim() || v.infores.replace(/^infores:/, "");
+  return `${label} Version`;
+});
 // async function scrollToAssociations() {
 //   await sleep(100);
 //   scrollTo("#associations");
