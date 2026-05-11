@@ -35,7 +35,7 @@
         </div>
 
         <div v-if="node?.causal_gene?.length">
-          <span class="info-label"> Casual Genes : </span>
+          <span class="info-label"> Causal Genes : </span>
           <div class="causal-gene">
             <AppNodeBadge
               v-for="(gene, index) in node?.causal_gene"
