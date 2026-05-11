@@ -66,9 +66,6 @@
             (via {{ sourceVersion.aggregator.name || sourceVersion.aggregator.infores }}
             v{{ sourceVersion.aggregator.version }})
           </span>
-          <span v-if="sourceVersion.primary.version_method" class="version-method">
-            · {{ sourceVersion.primary.version_method }}
-          </span>
         </span>
       </AppDetail>
 
@@ -166,11 +163,6 @@ onMounted(scrollIntoView);
 
 .arrow {
   color: $gray;
-}
-
-.version-method {
-  color: $gray;
-  font-size: 0.9em;
 }
 
 .supporting-text {

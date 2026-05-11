@@ -6,16 +6,53 @@
     <AppSection width="big">
       <!-- Source header info -->
       <div class="source-header">
-        <p class="source-id">
-          <strong>Infores ID:</strong>
-          <a
-            :href="`https://w3id.org/information-resource-registry/${inforesId.replace('infores:', '')}`"
-            target="_blank"
-            rel="noopener"
+        <p class="source-line">
+          <span>
+            <strong>Infores:</strong>
+            <a
+              :href="`https://w3id.org/information-resource-registry/${inforesId.replace('infores:', '')}`"
+              target="_blank"
+              rel="noopener"
+              >{{ inforesId }}</a
+            >
+          </span>
+          <span v-if="version">
+            <strong>Version:</strong>
+            {{ version.version || "unknown" }}
+          </span>
+          <span v-if="version?.version_method">
+            <strong>Version method:</strong>
+            {{ version.version_method }}
+          </span>
+          <span v-if="version?.retrieved_at">
+            <strong>Retrieved:</strong>
+            {{ version.retrieved_at }}
+          </span>
+          <button
+            v-if="version?.urls.length"
+            type="button"
+            class="source-urls-toggle"
+            :aria-expanded="urlsExpanded"
+            @click="urlsExpanded = !urlsExpanded"
           >
-            {{ inforesId }}
-          </a>
+            <strong>Source URLs:</strong>
+            {{ version.urls.length }}
+            <span class="caret" :class="{ open: urlsExpanded }">▾</span>
+          </button>
         </p>
+      </div>
+
+      <div v-if="version?.urls.length && urlsExpanded" class="url-panel">
+        <a
+          v-for="url in version.urls"
+          :key="url"
+          class="url-chip"
+          :href="url"
+          target="_blank"
+          rel="noopener"
+        >
+          {{ url }}
+        </a>
       </div>
 
       <!-- Dashboard charts section (DuckDB-WASM powered) -->
@@ -69,7 +106,9 @@ import KGDashboard from "@/components/dashboard/KGDashboard.vue";
 import SourceAssociationBrowser from "@/components/dashboard/SourceAssociationBrowser.vue";
 import SourceCharts from "@/components/dashboard/SourceCharts.vue";
 import PageTitle from "@/components/ThePageTitle.vue";
+import { computed, ref } from "vue";
 import { useSourceDashboard } from "@/composables/use-source-dashboard";
+import { useSourceVersions } from "@/composables/use-source-versions";
 
 const {
   inforesId,
@@ -82,6 +121,10 @@ const {
   clearFilters,
   hasActiveFilters,
 } = useSourceDashboard();
+
+const { versionForInfores } = useSourceVersions();
+const version = computed(() => versionForInfores(inforesId.value));
+const urlsExpanded = ref(false);
 
 /** Handle chart click events to filter the association browser */
 const onFilterPredicate = (predicate: string) => {
@@ -102,24 +145,90 @@ const onFilterCategory = (
 }
 
 .source-header {
-  margin-bottom: 2rem;
-  padding: 1rem 1.5rem;
-  border-left: 4px solid $theme;
-  border-radius: 0 $rounded $rounded 0;
-  background: $theme-light;
+  display: flex;
+  align-self: stretch;
+  flex-direction: column;
+  margin-bottom: 0.5rem;
+  gap: 0.75rem;
+  text-align: left;
 
-  .source-id {
-    margin: 0;
-    color: $off-black;
-    font-size: 0.95rem;
+  a {
+    color: $theme;
 
-    a {
-      color: $theme;
-
-      &:hover {
-        text-decoration: underline;
-      }
+    &:hover {
+      text-decoration: underline;
     }
+  }
+}
+
+.source-line {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0;
+  gap: 0.5rem 1.5rem;
+  color: $off-black;
+  font-size: 0.95rem;
+}
+
+.source-urls-toggle {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.7rem;
+  border: 1px solid $light-gray;
+  border-radius: $rounded;
+  background: $white;
+  color: $dark-gray;
+  font: inherit;
+  gap: 0.4rem;
+  cursor: pointer;
+
+  &:hover {
+    border-color: $gray;
+    color: $off-black;
+  }
+
+  strong {
+    color: $off-black;
+  }
+
+  .caret {
+    color: $gray;
+    font-size: 0.85em;
+    transition: transform 0.15s ease;
+
+    &.open {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.url-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-self: stretch;
+  margin: 0 0 1rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid $light-gray;
+  border-radius: $rounded;
+  background: $off-white;
+  gap: 0.4rem 0.6rem;
+}
+
+.url-chip {
+  padding: 0.25rem 0.6rem;
+  border: 1px solid $light-gray;
+  border-radius: 999px;
+  background: $white;
+  color: $theme;
+  font-size: 0.85rem;
+  text-decoration: none;
+  word-break: break-all;
+
+  &:hover {
+    border-color: $theme;
+    text-decoration: underline;
   }
 }
 

@@ -54,16 +54,10 @@
             </td>
             <td class="version-cell">
               <template v-if="versionsById[source.id]">
-                <code v-if="versionsById[source.id].version">{{
+                <span v-if="versionsById[source.id].version">{{
                   versionsById[source.id].version
-                }}</code>
+                }}</span>
                 <span v-else class="muted">unknown</span>
-                <span
-                  v-if="versionsById[source.id].version_method"
-                  class="version-method"
-                >
-                  · {{ versionsById[source.id].version_method }}
-                </span>
               </template>
               <span v-else class="muted">—</span>
             </td>
@@ -172,17 +166,6 @@ const versionsRelease = computed(() => versionsData.value?.release ?? "");
 .sources-table th {
   background-color: $off-white;
   font-weight: bold;
-}
-
-.version-cell code {
-  white-space: nowrap;
-  font-size: 0.95em;
-}
-
-.version-method {
-  margin-left: 0.4em;
-  color: $gray;
-  font-size: 0.85em;
 }
 
 .muted {

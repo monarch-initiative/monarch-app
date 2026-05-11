@@ -138,18 +138,30 @@ def _pick_canonical_producer(
         suffix = infores.split(":", 1)[-1] if ":" in infores else infores
         producers_with = [p for p, m in by_producer.items() if infores in m]
 
-        # 1. Self-named ingest match (hgnc → hgnc-ingest).
+        # 1. Self-named ingest match. Producer ids may be `hgnc-ingest` (legacy
+        # ingests.yaml id) or `infores:hgnc` (post-collapse Release.id).
         self_named = next(
-            (p for p in producers_with if p == suffix or p == f"{suffix}-ingest"),
+            (
+                p
+                for p in producers_with
+                if p in {suffix, f"{suffix}-ingest", infores}
+            ),
             None,
         )
         if self_named:
             canonical[infores] = self_named
             continue
 
-        # 2. phenio-bearing producer for ontology-style infores.
+        # 2. phenio-bearing producer for ontology-style infores. The producer
+        # is either *named* phenio (id `kg-phenio` / `infores:phenio`) or has
+        # `infores:phenio` somewhere in its subtree.
         phenio_bearer = next(
-            (p for p in producers_with if "phenio" in by_producer[p]),
+            (
+                p
+                for p in producers_with
+                if p in {"kg-phenio", "infores:phenio"}
+                or "infores:phenio" in by_producer[p]
+            ),
             None,
         )
         if phenio_bearer:

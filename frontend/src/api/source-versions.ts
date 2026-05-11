@@ -36,8 +36,10 @@ export const getSourcesVersions = async (
   release = "latest",
   dev = import.meta.env.DEV,
 ): Promise<SourcesVersionsResponse> => {
-  const params = new URLSearchParams({ release });
-  if (dev) params.set("dev", "true");
-  const url = `${apiUrl}/sources/versions?${params.toString()}`;
-  return await request<SourcesVersionsResponse>(url);
+  const params: Record<string, string> = { release };
+  if (dev) params.dev = "true";
+  return await request<SourcesVersionsResponse>(
+    `${apiUrl}/sources/versions`,
+    params,
+  );
 };
