@@ -59,8 +59,6 @@ class ResolvedReceipt:
     # infores in node-level lookups). Built from the heuristic in
     # `_pick_canonical_producer`.
     canonical_producer: dict[str, str]
-    disagreements: list[dict]
-    version_drift: list[dict]
 
 
 def index_receipt(receipt: dict) -> ResolvedReceipt:
@@ -82,8 +80,6 @@ def index_receipt(receipt: dict) -> ResolvedReceipt:
         generated_at=receipt.get("generated_at") or "",
         by_producer=by_producer,
         canonical_producer=canonical_producer,
-        disagreements=list(receipt.get("disagreements") or []),
-        version_drift=list(receipt.get("version_drift") or []),
     )
 
 

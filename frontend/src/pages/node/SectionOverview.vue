@@ -255,18 +255,22 @@ const frequencyLabel = computed((): "Rare" | "Common" => {
 
 const { otherMappings, externalRefs } = useClinicalResources(node);
 
-/** Derive the infores from a node's curie prefix (e.g. MONDO:0007947 →
- * infores:mondo). Lossy for sources whose infores name doesn't match the
- * curie prefix lowercased — those silently fall through to no version. */
+/**
+ * Derive the infores from a node's curie prefix (e.g. MONDO:0007947 →
+ * infores:mondo). Lossy for sources whose infores name doesn't match the curie
+ * prefix lowercased — those silently fall through to no version.
+ */
 const { versionForInfores } = useSourceVersions();
 const nodeVersion = computed(() => {
-  const prefix = node.id?.split(":", 1)[0];
+  const prefix = node.id?.split(":")[0];
   if (!prefix) return null;
   return versionForInfores(`infores:${prefix.toLowerCase()}`);
 });
 
-/** Use the source's own name in the field title (e.g. "Mondo Version") so
- * disease/gene/etc. pages don't say a generic "Source Version". */
+/**
+ * Use the source's own name in the field title (e.g. "Mondo Version") so
+ * disease/gene/etc. pages don't say a generic "Source Version".
+ */
 const nodeVersionTitle = computed(() => {
   const v = nodeVersion.value;
   if (!v) return "Source Version";
@@ -285,5 +289,4 @@ const nodeVersionTitle = computed(() => {
   overflow-x: auto;
   white-space: pre-line;
 }
-
 </style>

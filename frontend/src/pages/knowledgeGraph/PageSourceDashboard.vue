@@ -99,6 +99,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref } from "vue";
 import AppBreadcrumb from "@/components/AppBreadcrumb.vue";
 import AppSection from "@/components/AppSection.vue";
 import DataSource from "@/components/dashboard/DataSource.vue";
@@ -106,7 +107,6 @@ import KGDashboard from "@/components/dashboard/KGDashboard.vue";
 import SourceAssociationBrowser from "@/components/dashboard/SourceAssociationBrowser.vue";
 import SourceCharts from "@/components/dashboard/SourceCharts.vue";
 import PageTitle from "@/components/ThePageTitle.vue";
-import { computed, ref } from "vue";
 import { useSourceDashboard } from "@/composables/use-source-dashboard";
 import { useSourceVersions } from "@/composables/use-source-versions";
 
@@ -146,8 +146,8 @@ const onFilterCategory = (
 
 .source-header {
   display: flex;
-  align-self: stretch;
   flex-direction: column;
+  align-self: stretch;
   margin-bottom: 0.5rem;
   gap: 0.75rem;
   text-align: left;
@@ -176,12 +176,12 @@ const onFilterCategory = (
   display: inline-flex;
   align-items: center;
   padding: 0.25rem 0.7rem;
+  gap: 0.4rem;
   border: 1px solid $light-gray;
   border-radius: $rounded;
   background: $white;
   color: $dark-gray;
   font: inherit;
-  gap: 0.4rem;
   cursor: pointer;
 
   &:hover {
@@ -210,10 +210,10 @@ const onFilterCategory = (
   align-self: stretch;
   margin: 0 0 1rem;
   padding: 0.5rem 0.75rem;
+  gap: 0.4rem 0.6rem;
   border: 1px solid $light-gray;
   border-radius: $rounded;
   background: $off-white;
-  gap: 0.4rem 0.6rem;
 }
 
 .url-chip {

@@ -99,10 +99,7 @@ const {
   fetchAll,
 } = useKnowledgeSources();
 
-const {
-  data: versionsData,
-  versionForInfores,
-} = useSourceVersions();
+const { data: versionsData, versionForInfores } = useSourceVersions();
 
 onMounted(() => fetchAll());
 
@@ -121,8 +118,10 @@ const isLoading = computed(
 );
 const isError = computed(() => isErrorPrimary.value || isErrorAggregator.value);
 
-/** Resolve every visible source to a version once per render, keyed by id, so
- * the template can reference values without calling the lookup repeatedly. */
+/**
+ * Resolve every visible source to a version once per render, keyed by id, so
+ * the template can reference values without calling the lookup repeatedly.
+ */
 const versionsById = computed<Record<string, SourceVersion>>(() => {
   const out: Record<string, SourceVersion> = {};
   for (const list of [primarySources.value, aggregatorSources.value]) {

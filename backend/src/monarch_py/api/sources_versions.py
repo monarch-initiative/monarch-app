@@ -82,8 +82,6 @@ def _serialize(receipt: ResolvedReceipt) -> dict:
             for producer, entries in receipt.by_producer.items()
         },
         "canonical_producer": receipt.canonical_producer,
-        "disagreements": receipt.disagreements,
-        "version_drift": receipt.version_drift,
     }
 
 

@@ -1,9 +1,9 @@
 import { computed, ref } from "vue";
 import {
-  MONARCH_AGGREGATOR_INFORES,
-  type SourceVersion,
-  type SourcesVersionsResponse,
   getSourcesVersions,
+  MONARCH_AGGREGATOR_INFORES,
+  type SourcesVersionsResponse,
+  type SourceVersion,
 } from "@/api/source-versions";
 
 /**
@@ -12,13 +12,14 @@ import {
  * actually in the KG.
  *
  * Priority:
- *   1. The first non-monarch aggregator identifies the producing ingest.
- *      Look up the primary inside that ingest's subtree → per-component
- *      version (the `(producer, primary)` composite key).
- *   2. If the primary isn't nested there, fall back to the aggregator's
- *      bundle-level entry — accurate as a date-bound on the data.
- *   3. If only monarch is the aggregator, the edge came from a direct
- *      ingest; look the primary up under its canonical producer.
+ *
+ * 1. The first non-monarch aggregator identifies the producing ingest. Look up the
+ *    primary inside that ingest's subtree → per-component version (the
+ *    `(producer, primary)` composite key).
+ * 2. If the primary isn't nested there, fall back to the aggregator's bundle-level
+ *    entry — accurate as a date-bound on the data.
+ * 3. If only monarch is the aggregator, the edge came from a direct ingest; look
+ *    the primary up under its canonical producer.
  */
 function lookupForEdge(
   data: SourcesVersionsResponse | null,
@@ -97,8 +98,8 @@ export interface ResolvedEdgeVersion {
 /**
  * Composable consumed by association detail / table / node pages.
  *
- * Returns lazy lookup helpers; the underlying receipt is fetched once on
- * first call and cached for the rest of the session.
+ * Returns lazy lookup helpers; the underlying receipt is fetched once on first
+ * call and cached for the rest of the session.
  */
 export function useSourceVersions() {
   const data = computed(() => cache.value);
@@ -108,16 +109,14 @@ export function useSourceVersions() {
   // just react to `data` once it populates.
   void ensureLoaded();
 
-  function versionForEdge(
-    edge: {
-      primary_knowledge_source?: string | null;
-      aggregator_knowledge_source?: ReadonlyArray<string> | string | null;
-    },
-  ): ResolvedEdgeVersion | null {
+  function versionForEdge(edge: {
+    primary_knowledge_source?: string | null;
+    aggregator_knowledge_source?: ReadonlyArray<string> | string | null;
+  }): ResolvedEdgeVersion | null {
     const aggregators =
       typeof edge.aggregator_knowledge_source === "string"
         ? [edge.aggregator_knowledge_source]
-        : edge.aggregator_knowledge_source ?? [];
+        : (edge.aggregator_knowledge_source ?? []);
     const primary = lookupForEdge(
       cache.value,
       edge.primary_knowledge_source,
@@ -140,7 +139,9 @@ export function useSourceVersions() {
     return { primary, aggregator };
   }
 
-  function versionForInfores(infores: string | null | undefined): SourceVersion | null {
+  function versionForInfores(
+    infores: string | null | undefined,
+  ): SourceVersion | null {
     return lookupForInfores(cache.value, infores);
   }
 

@@ -222,10 +222,3 @@ def test_resolve_for_infores_data_source():
     assert sv.via == ()
 
 
-def test_index_carries_top_level_disagreements_and_drift():
-    receipt_doc = _receipt()
-    receipt_doc["disagreements"] = [{"id": "infores:foo"}]
-    receipt_doc["version_drift"] = [{"id": "infores:bar"}]
-    receipt = index_receipt(receipt_doc)
-    assert receipt.disagreements == [{"id": "infores:foo"}]
-    assert receipt.version_drift == [{"id": "infores:bar"}]

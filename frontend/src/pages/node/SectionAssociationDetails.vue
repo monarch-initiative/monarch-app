@@ -54,16 +54,25 @@
 
       <AppDetail v-if="sourceVersion" title="Source Version" icon="clock">
         <span>
-          <span v-if="sourceVersion.primary.name">{{ sourceVersion.primary.name }}</span>
-          <span v-else><code>{{ sourceVersion.primary.infores }}</code></span>
-          <span v-if="sourceVersion.primary.version"> v{{ sourceVersion.primary.version }}</span>
+          <span v-if="sourceVersion.primary.name">{{
+            sourceVersion.primary.name
+          }}</span>
+          <span v-else
+            ><code>{{ sourceVersion.primary.infores }}</code></span
+          >
+          <span v-if="sourceVersion.primary.version">
+            v{{ sourceVersion.primary.version }}</span
+          >
           <span
             v-if="
               sourceVersion.aggregator &&
               sourceVersion.aggregator.infores !== sourceVersion.primary.infores
             "
           >
-            (via {{ sourceVersion.aggregator.name || sourceVersion.aggregator.infores }}
+            (via
+            {{
+              sourceVersion.aggregator.name || sourceVersion.aggregator.infores
+            }}
             v{{ sourceVersion.aggregator.version }})
           </span>
         </span>
