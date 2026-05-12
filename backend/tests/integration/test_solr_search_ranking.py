@@ -21,7 +21,7 @@ EXACT_SYNONYM_CASES = [
     condition=not SolrImplementation().solr_is_available(),
     reason="Solr is not available",
 )
-def test_search_ranks_exact_synonym_first(text, acceptable_ids):
+def test_search_ranks_exact_synonym_first(text, acceptable_ids):  # pragma: no cover
     results = SolrImplementation().search(q=text)
     assert results.items
     assert results.items[0].id in acceptable_ids
@@ -32,7 +32,7 @@ def test_search_ranks_exact_synonym_first(text, acceptable_ids):
     condition=not SolrImplementation().solr_is_available(),
     reason="Solr is not available",
 )
-def test_autocomplete_ranks_exact_synonym_first(text, acceptable_ids):
+def test_autocomplete_ranks_exact_synonym_first(text, acceptable_ids):  # pragma: no cover
     results = SolrImplementation().autocomplete(q=text)
     assert results.items
     assert results.items[0].id in acceptable_ids
@@ -50,7 +50,7 @@ def test_autocomplete_ranks_exact_synonym_first(text, acceptable_ids):
     condition=not SolrImplementation().solr_is_available(),
     reason="Solr is not available",
 )
-def test_search_does_not_rank_partial_match_first(text, unwanted_id):
+def test_search_does_not_rank_partial_match_first(text, unwanted_id):  # pragma: no cover
     results = SolrImplementation().search(q=text)
     assert results.items
     assert results.items[0].id != unwanted_id

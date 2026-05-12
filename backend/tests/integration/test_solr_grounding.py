@@ -61,7 +61,7 @@ def test_grounding_should_not_match(text, unwanted_id):
     condition=not SolrImplementation().solr_is_available(),
     reason="Solr is not available",
 )
-def test_grounding_ranks_exact_synonym_first(text, expected_id):
+def test_grounding_ranks_exact_synonym_first(text, expected_id):  # pragma: no cover
     matching_results = SolrImplementation().ground_entity(text)
     assert matching_results
     assert matching_results[0].id == expected_id
@@ -80,7 +80,7 @@ def test_grounding_ranks_exact_synonym_first(text, expected_id):
     condition=not SolrImplementation().solr_is_available(),
     reason="Solr is not available",
 )
-def test_grounding_does_not_rank_partial_match_first(text, unwanted_id):
+def test_grounding_does_not_rank_partial_match_first(text, unwanted_id):  # pragma: no cover
     matching_results = SolrImplementation().ground_entity(text)
     assert matching_results
     assert matching_results[0].id != unwanted_id
