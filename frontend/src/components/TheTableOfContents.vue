@@ -8,7 +8,7 @@
       align-h="stretch"
       align-v="top"
       :class="['toc', { expanded }]"
-      :style="{ top: nudge + 'px' }"
+      :style="{ top: nudge + 'px', '--nudge': nudge + 'px' }"
       role="doc-toc"
       aria-label="Page table of contents"
       @click.stop
@@ -230,6 +230,17 @@ useMutationObserver(
 
 .entry:hover {
   background: $light-gray;
+}
+
+@media (max-height: 800px) {
+  .toc {
+    height: calc(100vh - var(--nudge, 0px));
+    overflow-y: auto;
+  }
+
+  .entry {
+    margin: 4px 0;
+  }
 }
 
 .entry-icon {
