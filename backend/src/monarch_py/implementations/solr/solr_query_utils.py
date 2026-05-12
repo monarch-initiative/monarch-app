@@ -247,7 +247,7 @@ def build_search_query(
     query.def_type = "edismax"
     query.query_fields = entity_query_fields()
     query.hl = highlighting
-    query.boost = entity_boost(empty_search=(q == "*:*"))
+    query.boost = entity_boost(text=q, empty_search=(q == "*:*"))
     if category:
         query.add_filter_query(" OR ".join(f'category:"{cat}"' for cat in category))
     if in_taxon_label:
@@ -273,7 +273,11 @@ def build_autocomplete_query(
     # match the query fields to start with
     query.query_fields = entity_query_fields()
     query.def_type = "edismax"
-    query.boost = entity_boost(prioritized_predicates=prioritized_predicates, empty_search=(q == "*:*"))
+    query.boost = entity_boost(
+        text=q,
+        prioritized_predicates=prioritized_predicates,
+        empty_search=(q == "*:*"),
+    )
     return query
 
 
@@ -303,9 +307,16 @@ def build_mapping_query(
 def build_grounding_query(text: str) -> SolrQuery:
     query = SolrQuery(q=text, rows=10, start=0)
     query.q = f'"{text}"'  # quoting so that the complete text is matched as a unit
-    # rather than _t (text) or _ac (autocomplete/starts-with), just use keyword fields
+    # Prefer keyword/string fields over tokenized fields, and prefer exact_synonym
+    # (scope = "this string IS another name for me") over the union `synonym` field
+    # (which includes broad/narrow/related scopes, so a generic label can pull in
+    # an entity that's only a parent or sibling of the intended one).
     query.query_fields = (
-        "id^100 name^10 symbol^10 synonym name_grounding full_name_grounding symbol_grounding synonym_grounding"
+        "id^100 "
+        "name_grounding^25 exact_synonym^20 "
+        "name^10 symbol^10 "
+        "full_name_grounding^5 symbol_grounding^5 "
+        "synonym^5"
     )
     query.def_type = "edismax"
     query.boost = obsolete_unboost(multiplier=0.001)
@@ -319,18 +330,38 @@ def obsolete_unboost(multiplier=0.1):
     return f'if(termfreq(deprecated,"true"),{multiplier},1)'
 
 
-def entity_boost(prioritized_predicates: List[AssociationPredicate] = None, empty_search: bool = False) -> str:
+def entity_boost(
+    text: Optional[str] = None,
+    prioritized_predicates: List[AssociationPredicate] = None,
+    empty_search: bool = False,
+) -> str:
     """Shared boost function between search and autocomplete"""
     phenotype_boost = category_boost("biolink:PhenotypicFeature", 1.1)
     disease_boost = category_boost("biolink:Disease", 1.3)
     human_gene_boost = category_boost("biolink:Gene", 1.1, taxon="NCBITaxon:9606")
 
     boosts = [phenotype_boost, disease_boost, human_gene_boost, obsolete_unboost()]
+    if text and not empty_search:
+        boosts.append(exact_match_boost(text))
     if prioritized_predicates:
         boosts.append(entity_predicate_boost(prioritized_predicates, 2.0))
     if empty_search:
         boosts.append(blank_search_boost())
     return f"product({','.join(boosts)})"
+
+
+def exact_match_boost(text: str, multiplier: float = 5.0) -> str:
+    """Multiplicative boost when the query text matches an `exact_synonym` value verbatim.
+
+    `exact_synonym` is a string-typed (keyword) field, so eDisMax's per-token qf
+    scoring doesn't reach it for unquoted multi-word input. A multiplicative
+    boost via query({!field}) bypasses that and lets a true exact-synonym match
+    outrank partial-name matches on unrelated records (e.g. `kidney disease`
+    must rank MONDO:0005240 above `chronic/cystic kidney disease`, which have
+    different `exact_synonym` values).
+    """
+    escaped = text.replace("'", "\\'")
+    return f"if(query({{!field f=exact_synonym v='{escaped}'}}),{multiplier},1)"
 
 
 def entity_predicate_boost(prioritized_predicates: List[AssociationPredicate], multiplier: float) -> str:
