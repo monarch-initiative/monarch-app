@@ -30,6 +30,8 @@ def _post_entities(request: TextAnnotationRequest) -> List[TextAnnotationResult]
 
 @router.get("/ground")
 def _ground(text: str = Query(default="", title="The text to ground to an entity")) -> List[Entity]:
+    if not text.strip():
+        return []
     return solr().ground_entity(text)
 
 
