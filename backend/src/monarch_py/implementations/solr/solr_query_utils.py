@@ -332,7 +332,7 @@ def obsolete_unboost(multiplier=0.1):
 
 def entity_boost(
     text: Optional[str] = None,
-    prioritized_predicates: List[AssociationPredicate] = None,
+    prioritized_predicates: Optional[List[AssociationPredicate]] = None,
     empty_search: bool = False,
 ) -> str:
     """Shared boost function between search and autocomplete"""
@@ -350,7 +350,7 @@ def entity_boost(
     return f"product({','.join(boosts)})"
 
 
-def exact_match_boost(text: str, multiplier: float = 5.0) -> str:
+def exact_match_boost(text: str) -> str:
     """Multiplicative boost when the query text matches an `exact_synonym` value verbatim.
 
     `exact_synonym` is a string-typed (keyword) field, so eDisMax's per-token qf
@@ -360,8 +360,9 @@ def exact_match_boost(text: str, multiplier: float = 5.0) -> str:
     must rank MONDO:0005240 above `chronic/cystic kidney disease`, which have
     different `exact_synonym` values).
     """
-    escaped = text.replace("'", "\\'")
-    return f"if(query({{!field f=exact_synonym v='{escaped}'}}),{multiplier},1)"
+    # Backslash first so the subsequent quote-escape doesn't double-escape its output.
+    escaped = text.replace("\\", "\\\\").replace("'", "\\'")
+    return f"if(query({{!field f=exact_synonym v='{escaped}'}}),5,1)"
 
 
 def entity_predicate_boost(prioritized_predicates: List[AssociationPredicate], multiplier: float) -> str:
