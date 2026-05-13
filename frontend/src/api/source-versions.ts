@@ -33,11 +33,16 @@ export interface SourcesVersionsResponse {
 export const MONARCH_AGGREGATOR_INFORES = "infores:monarchinitiative";
 
 export const getSourcesVersions = async (
-  release = "latest",
-  dev = import.meta.env.DEV,
+  release?: string,
+  dev?: boolean,
 ): Promise<SourcesVersionsResponse> => {
-  const params: Record<string, string> = { release };
-  if (dev) params.dev = "true";
+  // Both params are intentionally optional: the backend defaults `release` to
+  // the deployed `MONARCH_KG_VERSION` (so each environment reads its own
+  // build's receipt) and `dev` to its `MONARCH_KG_USE_DEV` env var. Passing
+  // them here would override those deploy-time decisions.
+  const params: Record<string, string> = {};
+  if (release !== undefined) params.release = release;
+  if (dev !== undefined) params.dev = dev ? "true" : "false";
   return await request<SourcesVersionsResponse>(
     `${apiUrl}/sources/versions`,
     params,

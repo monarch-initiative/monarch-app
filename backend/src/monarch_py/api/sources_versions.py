@@ -101,19 +101,36 @@ def _serialize(receipt: ResolvedReceipt) -> dict:
 
 
 @router.get("/sources/versions")
-def sources_versions(release: str = "latest", dev: bool | None = None) -> dict:
+def sources_versions(release: str | None = None, dev: bool | None = None) -> dict:
     """Return the resolved version index for a given monarch-kg release.
 
-    Default is `latest`, which resolves to the most recent published release
-    on `data.monarchinitiative.org`. Specific dates (`2026-05-07`) are also
-    accepted for retrospective lookups. Pass `dev=true` to read from
-    `monarch-kg-dev/`; otherwise the deployment-wide default applies (set
-    via the `MONARCH_KG_USE_DEV` env var, default false).
+    Default is the release this API was built against (the `MONARCH_KG_VERSION`
+    env var, surfaced in `/version`), so the receipt reflects the bytes
+    actually in the deployed Solr/DuckDB. Falls back to `latest` when the env
+    var is unset. Specific dates (`2026-05-07`) are also accepted for
+    retrospective lookups. Pass `dev=true` to read from `monarch-kg-dev/`;
+    otherwise the deployment-wide default applies (set via the
+    `MONARCH_KG_USE_DEV` env var, default false).
     """
-    if not _RELEASE_PATTERN.match(release):
+    resolved_release = release if release is not None else _default_release()
+    if not _RELEASE_PATTERN.match(resolved_release):
         raise HTTPException(
             status_code=400,
             detail="Invalid release identifier; expected alphanumerics, `.`, `_`, or `-`.",
         )
     use_dev = settings.monarch_kg_use_dev if dev is None else dev
-    return _serialize(_fetch_receipt(release, dev=use_dev))
+    return _serialize(_fetch_receipt(resolved_release, dev=use_dev))
+
+
+def _default_release() -> str:
+    """Pin the receipt URL to the deployed build when we know which one it is.
+
+    `MONARCH_KG_VERSION` is set per-deploy by monarch-stack-v3 and seeds
+    `settings.monarch_kg_version`. Unset → the Settings default `"unknown"`,
+    which means we're running locally or the deploy didn't pass it through;
+    fall back to `latest` so the endpoint still does something useful.
+    """
+    pinned = settings.monarch_kg_version
+    if not pinned or pinned == "unknown":
+        return "latest"
+    return pinned
