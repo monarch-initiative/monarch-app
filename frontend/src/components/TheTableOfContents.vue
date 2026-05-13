@@ -225,9 +225,9 @@ useMutationObserver(
 }
 
 .spacer {
+  flex-shrink: 0;
   width: 100%;
   height: 15px;
-  flex-shrink: 0;
   content: "";
 }
 
