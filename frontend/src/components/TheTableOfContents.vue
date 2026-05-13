@@ -8,7 +8,11 @@
       align-h="stretch"
       align-v="top"
       :class="['toc', { expanded }]"
-      :style="{ top: nudge + 'px', '--nudge': nudge + 'px' }"
+      :style="{
+        top: nudge + 'px',
+        '--nudge': nudge + 'px',
+        '--footer-overlap': footerOverlap + 'px',
+      }"
       role="doc-toc"
       aria-label="Page table of contents"
       @click.stop
@@ -85,6 +89,8 @@ const entries = ref<Entries>([]);
 const expanded = ref(window.innerWidth > 1240);
 /** how much to push downward to make room for header if in view */
 const nudge = ref(0);
+/** how much the footer overlaps the bottom of the viewport (so toc can shrink to avoid it) */
+const footerOverlap = ref(0);
 /** whether to only show one section at a time */
 const oneAtATime = ref(false);
 /** active (in view or selected) section */
@@ -110,6 +116,13 @@ async function updatePosition() {
   /** wait for rendering to finish */
   await nextTick();
 
+  /** calculate how much the footer is intruding into the viewport */
+  const footerEl = document.querySelector("footer");
+  if (footerEl) {
+    const footer = footerEl.getBoundingClientRect();
+    footerOverlap.value = Math.max(0, window.innerHeight - footer.top);
+  }
+
   /** get dimensions of header and "sub-header" (e.g. first section on node page) */
   const headerEl = document.querySelector("header");
   const subHeaderEl = document.querySelector("main > section:first-child");
@@ -117,7 +130,7 @@ async function updatePosition() {
   const header = headerEl.getBoundingClientRect();
 
   /** calculate nudge */
-  nudge.value = Math.max(header.top + header.height);
+  nudge.value = Math.max(0, header.top + header.height);
 
   /** find in view section */
   if (!oneAtATime.value)
@@ -189,7 +202,11 @@ useMutationObserver(
   top: 0;
   width: $toc-width;
   max-width: calc(100vw - 40px);
-  height: 100%;
+  height: calc(
+    100vh - var(--nudge, 0px) - var(--footer-overlap, 0px) - 20px
+  );
+  min-height: 0;
+  overflow-y: auto;
   background: $white;
   box-shadow: $shadow;
 }
@@ -220,6 +237,7 @@ useMutationObserver(
   display: flex;
   align-items: center;
   height: 40px;
+  margin: 4px 0;
   text-decoration: none;
   transition: background $fast;
 }
@@ -230,17 +248,6 @@ useMutationObserver(
 
 .entry:hover {
   background: $light-gray;
-}
-
-@media (max-height: 800px) {
-  .toc {
-    height: calc(100vh - var(--nudge, 0px));
-    overflow-y: auto;
-  }
-
-  .entry {
-    margin: 4px 0;
-  }
 }
 
 .entry-icon {
