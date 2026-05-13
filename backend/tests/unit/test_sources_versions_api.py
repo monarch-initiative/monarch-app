@@ -49,8 +49,11 @@ def _ok_response(text: str = VALID_RECEIPT_YAML):
 
 
 def test_endpoint_returns_serialized_receipt(client):
-    with patch("monarch_py.api.sources_versions.requests.get", return_value=_ok_response()) as g:
-        r = client.get("/v3/api/sources/versions")
+    # Force the unpinned-default path so this test doesn't depend on whatever
+    # `MONARCH_KG_VERSION` happens to be set to in the caller's environment.
+    with patch.object(route.settings, "monarch_kg_version", "unknown"):
+        with patch("monarch_py.api.sources_versions.requests.get", return_value=_ok_response()) as g:
+            r = client.get("/v3/api/sources/versions")
     assert r.status_code == 200
     body = r.json()
     assert body["release"] == "2026-05-07"
@@ -62,6 +65,27 @@ def test_endpoint_returns_serialized_receipt(client):
     assert "version_drift" not in body
     g.assert_called_once()
     assert "monarch-kg/latest/metadata.yaml" in g.call_args.args[0]
+
+
+def test_endpoint_defaults_to_deployed_release_when_env_pinned(client):
+    """When `MONARCH_KG_VERSION` is set, the endpoint reads that build's
+    receipt rather than `latest` — so each deploy sees the versions for the
+    bytes actually loaded into its Solr/DuckDB."""
+    with patch.object(route.settings, "monarch_kg_version", "2026-05-09"):
+        with patch("monarch_py.api.sources_versions.requests.get", return_value=_ok_response()) as g:
+            r = client.get("/v3/api/sources/versions")
+    assert r.status_code == 200
+    assert "monarch-kg/2026-05-09/metadata.yaml" in g.call_args.args[0]
+
+
+def test_endpoint_release_query_param_overrides_pinned_default(client):
+    """Explicit `release=` still wins over the env-var default — useful for
+    retrospective lookups from the same deploy."""
+    with patch.object(route.settings, "monarch_kg_version", "2026-05-09"):
+        with patch("monarch_py.api.sources_versions.requests.get", return_value=_ok_response()) as g:
+            r = client.get("/v3/api/sources/versions", params={"release": "2026-04-01"})
+    assert r.status_code == 200
+    assert "monarch-kg/2026-04-01/metadata.yaml" in g.call_args.args[0]
 
 
 def test_endpoint_caches_within_ttl(client):
@@ -87,8 +111,9 @@ def test_endpoint_refetches_when_ttl_expired(client):
 
 
 def test_dev_flag_hits_dev_mirror(client):
-    with patch("monarch_py.api.sources_versions.requests.get", return_value=_ok_response()) as g:
-        r = client.get("/v3/api/sources/versions", params={"dev": "true"})
+    with patch.object(route.settings, "monarch_kg_version", "unknown"):
+        with patch("monarch_py.api.sources_versions.requests.get", return_value=_ok_response()) as g:
+            r = client.get("/v3/api/sources/versions", params={"dev": "true"})
     assert r.status_code == 200
     assert "monarch-kg-dev/latest/metadata.yaml" in g.call_args.args[0]
 
