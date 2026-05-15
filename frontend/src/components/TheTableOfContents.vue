@@ -9,7 +9,7 @@
       align-v="top"
       :class="['toc', { expanded }]"
       :style="{
-        top: nudge - footerOverlap + 'px',
+        top: Math.max(0, nudge - footerOverlap) + 'px',
         '--nudge': nudge + 'px',
       }"
       role="doc-toc"
@@ -120,6 +120,8 @@ async function updatePosition() {
   if (footerEl) {
     const footer = footerEl.getBoundingClientRect();
     footerOverlap.value = Math.max(0, window.innerHeight - footer.top);
+  } else {
+    footerOverlap.value = 0;
   }
 
   /** get dimensions of header and "sub-header" (e.g. first section on node page) */
