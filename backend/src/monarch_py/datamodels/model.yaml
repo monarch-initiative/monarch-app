@@ -5,188 +5,94 @@ prefixes:
   linkml: https://w3id.org/linkml/
   biolink: https://w3id.org/biolink/vocab/
 imports:
-  - linkml:types
-  - similarity
+- linkml:types
+- similarity
+- monarch_kg_schema
 default_range: string
-
 enums:
   AssociationDirectionEnum:
-    description: >-
-      The directionality of an association as it relates to a specified entity, with edges being categorized
-      as incoming or outgoing
+    description: The directionality of an association as it relates to a specified
+      entity, with edges being categorized as incoming or outgoing
     permissible_values:
       incoming:
-        description: >-
-          An association for which a specified entity is the object or part of the object closure
+        description: An association for which a specified entity is the object or
+          part of the object closure
       outgoing:
-        description: >-
-          An association for which a specified entity is the subject or part of the subject closure
-
+        description: An association for which a specified entity is the subject or
+          part of the subject closure
 classes:
-  Association:
-    slots:
-      - id
-      - category
-      - subject
-      - original_subject
-      - subject_namespace
-      - subject_category
-      - subject_closure
-      - subject_label
-      - subject_closure_label
-      - subject_taxon
-      - subject_taxon_label
-      - predicate
-      - original_predicate
-      - object
-      - original_object
-      - object_namespace
-      - object_category
-      - object_closure
-      - object_label
-      - object_closure_label
-      - object_taxon
-      - object_taxon_label
-      - primary_knowledge_source
-      - aggregator_knowledge_source
-      - negated
-      - pathway
-      - evidence_count
-      - knowledge_level
-      - agent_type
-      - has_evidence
-      - has_evidence_links
-      - has_count
-      - has_total
-      - has_percentage
-      - has_quotient
-      - grouping_key
-      - provided_by
-      - provided_by_link
-      - publications
-      - publications_links
-      - frequency_qualifier
-      - onset_qualifier
-      - sex_qualifier
-      - stage_qualifier
-      - qualifiers
-      - qualifiers_label
-      - qualifiers_namespace
-      - qualifiers_category
-      - qualifier
-      - qualifier_label
-      - qualifier_namespace
-      - qualifier_category
-      - frequency_qualifier_label
-      - frequency_qualifier_namespace
-      - frequency_qualifier_category
-      - onset_qualifier_label
-      - onset_qualifier_namespace
-      - onset_qualifier_category
-      - sex_qualifier_label
-      - sex_qualifier_namespace
-      - sex_qualifier_category
-      - stage_qualifier_label
-      - stage_qualifier_namespace
-      - stage_qualifier_category
-      - disease_context_qualifier
-      - disease_context_qualifier_label
-      - disease_context_qualifier_namespace
-      - disease_context_qualifier_category
-      - disease_context_qualifier_closure
-      - disease_context_qualifier_closure_label
-      - species_context_qualifier
-      - species_context_qualifier_label
-      - species_context_qualifier_namespace
-      - species_context_qualifier_category
-      - subject_specialization_qualifier
-      - subject_specialization_qualifier_label
-      - subject_specialization_qualifier_namespace
-      - subject_specialization_qualifier_category
-      - subject_specialization_qualifier_closure
-      - subject_specialization_qualifier_closure_label
-      - object_specialization_qualifier
-      - object_specialization_qualifier_label
-      - object_specialization_qualifier_namespace
-      - object_specialization_qualifier_category
-      - object_specialization_qualifier_closure
-      - object_specialization_qualifier_closure_label
-      - FDA_adverse_event_level
-      - knowledge_source
-      - object_aspect_qualifier
-      - supporting_text
   AssociationCount:
     is_a: FacetValue
     slots:
-      - category
-      - count_direct
-      - count_with_orthologs
+    - category
+    - count_direct
+    - count_with_orthologs
     slot_usage:
       category:
         multivalued: false
   AssociationCountList:
     description: Container class for a list of association counts
     slots:
-      - items
+    - items
     slot_usage:
       items:
         range: AssociationCount
   AssociationResults:
     is_a: Results
     slots:
-      - items
-      - facet_fields
-      - facet_queries
+    - items
+    - facet_fields
+    - facet_queries
     slot_usage:
       items:
         range: Association
   CompactAssociation:
     slots:
-      - category
-      - subject
-      - subject_label
-      - predicate
-      - object
-      - object_label
-      - negated
+    - category
+    - subject
+    - subject_label
+    - predicate
+    - object
+    - object_label
+    - negated
   CompactAssociationResults:
     is_a: Results
     slots:
-      - items
-      - facet_fields
-      - facet_queries
+    - items
+    - facet_fields
+    - facet_queries
     slot_usage:
       items:
         range: CompactAssociation
   AssociationTableResults:
     is_a: Results
     slots:
-      - items
-      - facet_fields
-      - facet_queries
+    - items
+    - facet_fields
+    - facet_queries
     slot_usage:
       items:
         range: DirectionalAssociation
   AssociationTypeMapping:
-    description: >-
-      A data class to hold the necessary information to produce association type counts for given 
-      entities with appropriate directional labels
+    description: A data class to hold the necessary information to produce association
+      type counts for given  entities with appropriate directional labels
     slots:
-      - subject_label
-      - object_label
-      - symmetric
-      - category
-      - subject_category
-      - object_category
+    - subject_label
+    - object_label
+    - symmetric
+    - category
+    - subject_category
+    - object_category
     slot_usage:
       subject_label:
-        description: A label to describe the subjects of the association type as a whole for use in the UI
+        description: A label to describe the subjects of the association type as a
+          whole for use in the UI
       object_label:
-        description: A label to describe the objects of the association type as a whole for use in the UI
+        description: A label to describe the objects of the association type as a
+          whole for use in the UI
       symmetric:
-        description: >-
-          Whether the association type is symmetric, meaning that the subject and object labels should be
-          interchangeable
+        description: Whether the association type is symmetric, meaning that the subject
+          and object labels should be interchangeable
         ifabsent: false
         required: true
       category:
@@ -194,138 +100,107 @@ classes:
         required: true
         multivalued: false
       subject_category:
-        description: The biolink category of entities in the subject position of this association type
+        description: The biolink category of entities in the subject position of this
+          association type
       object_category:
-        description: The biolink category of entities in the object position of this association type
+        description: The biolink category of entities in the object position of this
+          association type
   CategoryGroupedAssociationResults:
     is_a: Results
     slots:
-      - counterpart_category
-      - items
+    - counterpart_category
+    - items
     slot_usage:
       items:
         range: Association
   DirectionalAssociation:
     is_a: Association
-    description: >-
-      An association that gives it's direction relative to a specified entity
+    description: An association that gives it's direction relative to a specified
+      entity
     slots:
-      - direction
-      - highlighting
+    - direction
+    - highlighting
     slot_usage:
       highlighting:
         range: AssociationHighlighting
   ExpandedCurie:
     description: A curie bundled along with its expanded url
     slots:
-      - id
-      - url
-  Entity:
-    description: Represents an Entity in the Monarch KG data model
-    slots:
-      - id
-      - category
-      - name
-      - full_name
-      - deprecated
-      - description
-      - xref
-      - provided_by
-      - in_taxon
-      - in_taxon_label
-      - symbol
-      - synonym
-      - broad_synonym
-      - exact_synonym
-      - narrow_synonym
-      - related_synonym
-      - subsets
-      - uri
-      - iri
-      - namespace
-      - has_phenotype
-      - has_phenotype_label
-      - has_phenotype_closure
-      - has_phenotype_closure_label
-      - has_phenotype_count
-      - has_descendant
-      - has_descendant_label
-      - has_descendant_count
+    - id
+    - url
   EntityResults:
     is_a: Results
     slots:
-      - items
+    - items
     slot_usage:
       items:
         range: Entity
   FacetValue:
     slots:
-      - label
-      - count
+    - label
+    - count
   FacetField:
     slots:
-      - label
-      - facet_values
+    - label
+    - facet_values
   HistoPheno:
     slots:
-      - id
-      - items
+    - id
+    - items
     slot_usage:
       items:
         range: HistoBin
   HistoBin:
     is_a: FacetValue
     slots:
-      - id
+    - id
   Mapping:
-    description: >-
-      A minimal class to hold a SSSOM mapping
+    description: A minimal class to hold a SSSOM mapping
     slots:
-      - subject_id
-      - subject_label
-      - predicate_id
-      - object_id
-      - object_label
-      - mapping_justification
-      - id
+    - subject_id
+    - subject_label
+    - predicate_id
+    - object_id
+    - object_label
+    - mapping_justification
+    - id
   MappingResults:
     description: SSSOM Mappings returned as a results collection
     is_a: Results
     slots:
-      - items
+    - items
     slot_usage:
       items:
         range: Mapping
   MultiEntityAssociationResults:
     is_a: Results
     slots:
-      - id
-      - name
-      - associated_categories
+    - id
+    - name
+    - associated_categories
   Node:
     description: UI container class extending Entity with additional information
     is_a: Entity
     slots:
-      - in_taxon
-      - in_taxon_label
-      - inheritance
-      - has_biological_sex
-      - causal_gene
-      - causes_disease
-      - mappings
-      - external_links
-      - provided_by_link
-      - association_counts
-      - cross_species_term_clique
-      - node_hierarchy
+    - in_taxon
+    - in_taxon_label
+    - inheritance
+    - has_biological_sex
+    - causal_gene
+    - causes_disease
+    - mappings
+    - external_links
+    - provided_by_link
+    - association_counts
+    - cross_species_term_clique
+    - node_hierarchy
   CrossSpeciesTermClique:
-    description: >-
-      A grouping of species-specific terms (HP, MP, ZP) under a common
+    description: A grouping of species-specific terms (HP, MP, ZP) under a common
       cross-species parent (UPHENO/UBERON), with associations between them.
     slots:
-      - root_term
-      - clique_entities
-      - clique_associations
+    - root_term
+    - clique_entities
+    - clique_associations
     slot_usage:
       root_term:
         required: true
@@ -335,31 +210,30 @@ classes:
         required: true
   NodeHierarchy:
     slots:
-      - super_classes
-      - sub_classes
+    - super_classes
+    - sub_classes
   Release:
-    description: >-
-      A class to hold information about a release of the Monarch KG
+    description: A class to hold information about a release of the Monarch KG
     slots:
-      - version
-      - url
-      - kg
-      - sqlite
-      - solr
-      - neo4j
-      - metadata
-      - graph_stats
-      - qc_report
+    - version
+    - url
+    - kg
+    - sqlite
+    - solr
+    - neo4j
+    - metadata
+    - graph_stats
+    - qc_report
   Results:
     abstract: true
     slots:
-      - limit
-      - offset
-      - total
+    - limit
+    - offset
+    - total
   SearchResult:
     is_a: Entity
     slots:
-      - score
+    - score
     slot_usage:
       category:
         required: true
@@ -368,26 +242,26 @@ classes:
   SearchResults:
     is_a: Results
     slots:
-      - items
-      - facet_fields
-      - facet_queries
+    - items
+    - facet_fields
+    - facet_queries
     slot_usage:
       items:
         range: SearchResult
   TextAnnotationResult:
     slots:
-      - text
-      - tokens
-      - start
-      - end
+    - text
+    - tokens
+    - start
+    - end
   AssociationHighlighting:
     description: Optional highlighting information for search results
     slots:
-      - object_label
-      - object_closure_label
-      - subject_label
-      - subject_closure_label
-      - predicate
+    - object_label
+    - object_closure_label
+    - subject_label
+    - subject_closure_label
+    - predicate
     slot_usage:
       object_label:
         multivalued: true
@@ -401,14 +275,14 @@ classes:
   CasePhenotypeMatrixResponse:
     description: Complete case-phenotype matrix for a disease
     slots:
-      - disease_id
-      - disease_name
-      - total_cases
-      - total_phenotypes
-      - cases
-      - phenotypes
-      - bins
-      - cells
+    - disease_id
+    - disease_name
+    - total_cases
+    - total_phenotypes
+    - cases
+    - phenotypes
+    - bins
+    - cells
     slot_usage:
       disease_id:
         required: true
@@ -436,12 +310,12 @@ classes:
   CaseEntity:
     description: A case (patient) in the matrix
     slots:
-      - id
-      - label
-      - full_id
-      - source_disease_id
-      - source_disease_label
-      - is_direct
+    - id
+    - label
+    - full_id
+    - source_disease_id
+    - source_disease_label
+    - is_direct
     slot_usage:
       id:
         required: true
@@ -453,9 +327,9 @@ classes:
   CasePhenotype:
     description: A phenotype observed in at least one case
     slots:
-      - id
-      - label
-      - bin_id
+    - id
+    - label
+    - bin_id
     slot_usage:
       id:
         required: true
@@ -467,10 +341,10 @@ classes:
   HistoPhenoBin:
     description: A body system category for grouping phenotypes
     slots:
-      - id
-      - label
-      - phenotype_count
-      - phenotype_ids
+    - id
+    - label
+    - phenotype_count
+    - phenotype_ids
     slot_usage:
       id:
         required: true
@@ -485,12 +359,12 @@ classes:
   CasePhenotypeCellData:
     description: Data for a single case-phenotype cell in the matrix
     slots:
-      - id
-      - present
-      - negated
-      - onset_qualifier
-      - onset_qualifier_label
-      - publications
+    - id
+    - present
+    - negated
+    - onset_qualifier
+    - onset_qualifier_label
+    - publications
     slot_usage:
       id:
         identifier: true
@@ -502,19 +376,19 @@ classes:
   GridColumnEntity:
     description: A column entity in the grid (case, disease, ortholog, etc.)
     slots:
-      - id
-      - label
-      - category
-      - is_direct
-      - source_id
-      - source_label
-      - taxon
-      - taxon_label
-      - source_association_category
-      - source_association_predicate
-      - source_association_publications
-      - source_association_evidence_count
-      - source_association_primary_knowledge_source
+    - id
+    - label
+    - category
+    - is_direct
+    - source_id
+    - source_label
+    - taxon
+    - taxon_label
+    - source_association_category
+    - source_association_predicate
+    - source_association_publications
+    - source_association_evidence_count
+    - source_association_primary_knowledge_source
     slot_usage:
       id:
         required: true
@@ -528,10 +402,10 @@ classes:
   GridRowEntity:
     description: A row entity in the grid (phenotype, GO term, anatomy, etc.)
     slots:
-      - id
-      - label
-      - category
-      - bin_id
+    - id
+    - label
+    - category
+    - bin_id
     slot_usage:
       id:
         required: true
@@ -545,9 +419,9 @@ classes:
   GridBin:
     description: A grouping bin for row entities
     slots:
-      - id
-      - label
-      - count
+    - id
+    - label
+    - count
     slot_usage:
       id:
         required: true
@@ -559,9 +433,9 @@ classes:
   Qualifier:
     description: A qualifier key-value pair for an association
     slots:
-      - id
-      - value
-      - label
+    - id
+    - value
+    - label
     slot_usage:
       id:
         identifier: true
@@ -571,12 +445,12 @@ classes:
   GridCellData:
     description: Data for a cell in the grid
     slots:
-      - id
-      - present
-      - negated
-      - qualifiers
-      - publications
-      - evidence_count
+    - id
+    - present
+    - negated
+    - qualifiers
+    - publications
+    - evidence_count
     slot_usage:
       id:
         identifier: true
@@ -594,15 +468,15 @@ classes:
   EntityGridResponse:
     description: Generic entity x entity grid response
     slots:
-      - context_id
-      - context_name
-      - context_category
-      - total_columns
-      - total_rows
-      - columns
-      - rows
-      - bins
-      - cells
+    - context_id
+    - context_name
+    - context_category
+    - total_columns
+    - total_rows
+    - columns
+    - rows
+    - bins
+    - cells
     slot_usage:
       context_id:
         required: true
@@ -637,7 +511,6 @@ classes:
         inlined: true
         inlined_as_list: false
         required: true
-
 slots:
   aggregator_knowledge_source:
     multivalued: true
@@ -654,14 +527,13 @@ slots:
   category:
     multivalued: false
   causal_gene:
-    description: >-
-      A list of genes that are known to be causally associated with a disease
+    description: A list of genes that are known to be causally associated with a disease
     range: Entity
     multivalued: true
     inlined_as_list: true
   causes_disease:
-    description: >-
-      A list of diseases that are known to be causally associated with a gene
+    description: A list of diseases that are known to be causally associated with
+      a gene
     range: Entity
     multivalued: true
     inlined_as_list: true
@@ -675,61 +547,57 @@ slots:
     description: Count including associations from orthologous genes
     range: integer
   counterpart_category:
-    description: >-
-      The category of the counterpart entity in a given association, 
-      eg. the category of the entity that is not the subject
+    description: The category of the counterpart entity in a given association,  eg.
+      the category of the entity that is not the subject
     range: string
   deprecated:
-    description: >-
-      A boolean flag indicating that an entity is no longer considered current or valid.
+    description: A boolean flag indicating that an entity is no longer considered
+      current or valid.
     range: boolean
     exact_mappings:
-      - oboInOwl:ObsoleteClass
+    - oboInOwl:ObsoleteClass
   description:
     range: string
   direction:
-    description: >-
-      The directionality of the association relative to a given entity for an association_count.
-      If the entity is the subject or in the subject closure, the direction is forwards, if it is
-      the object or in the object closure, the direction is backwards.
+    description: The directionality of the association relative to a given entity
+      for an association_count. If the entity is the subject or in the subject closure,
+      the direction is forwards, if it is the object or in the object closure, the
+      direction is backwards.
     range: AssociationDirectionEnum
     required: true
   disease_context_qualifier:
-    description: >-
-      A context qualifier representing a disease or condition in which a relationship expressed in an association took place.
+    description: A context qualifier representing a disease or condition in which
+      a relationship expressed in an association took place.
     examples:
-      - value: MONDO:0004979 # Asthma
-      - value: MONDO:0005148 # type 2 diabetes mellitus
+    - value: MONDO:0004979
+    - value: MONDO:0005148
     range: string
   species_context_qualifier:
-    description: >-
-      A context qualifier representing a species in which a relationship expressed in an association took place.
+    description: A context qualifier representing a species in which a relationship
+      expressed in an association took place.
     examples:
-      - value: NCBITaxon:9606
+    - value: NCBITaxon:9606
     range: string
   evidence_count:
-    description: count of supporting documents, evidence codes, and sources supplying evidence
+    description: count of supporting documents, evidence codes, and sources supplying
+      evidence
     range: integer
   knowledge_level:
-    description: >-
-      Describes the level of knowledge expressed in a statement, based on the
-      reasoning or analysis methods used to generate the statement, or the
+    description: Describes the level of knowledge expressed in a statement, based
+      on the reasoning or analysis methods used to generate the statement, or the
       scope or specificity of what the statement expresses to be true.
     slot_uri: biolink:knowledge_level
-    notes: >-
-      The range in this schema is represented as a string, but is constrained 
-      to values from biolink:KnowledgeLevelEnum at ingest time
+    notes: The range in this schema is represented as a string, but is constrained  to
+      values from biolink:KnowledgeLevelEnum at ingest time
     range: string
     multivalued: false
     required: true
   agent_type:
-    description: >-
-      Describes the high-level category of agent who originally generated a 
-      statement of knowledge or other type of information.
+    description: Describes the high-level category of agent who originally generated
+      a  statement of knowledge or other type of information.
     slot_uri: biolink:agent_type
-    notes: >-
-      The range in this schema is represented as a string, but is constrained 
-      to values from biolink:AgentTypeEnum at ingest time
+    notes: The range in this schema is represented as a string, but is constrained  to
+      values from biolink:AgentTypeEnum at ingest time
     range: string
     multivalued: false
     required: true
@@ -745,7 +613,8 @@ slots:
     multivalued: true
     range: FacetField
   facet_queries:
-    description: Collection of facet query responses with the query string values and counts
+    description: Collection of facet query responses with the query string values
+      and counts
     inlined: true
     inlined_as_list: true
     multivalued: true
@@ -762,7 +631,8 @@ slots:
     description: The long form name of an entity
     range: string
   grouping_key:
-    description: A concatenation of fields used to group associations with the same essential/defining properties
+    description: A concatenation of fields used to group associations with the same
+      essential/defining properties
     range: string
   has_count:
     description: count of out of has_total representing a frequency
@@ -771,7 +641,8 @@ slots:
     description: total, devided by has_count, representing a frequency
     range: integer
   has_percentage:
-    description: percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly, rounded to the integer level
+    description: percentage, which may be calculated from has_count and has_total,
+      as 100 * quotient or provided directly, rounded to the integer level
     range: float
   has_quotient:
     description: quotient, which should be 1/100 of has_percentage
@@ -786,49 +657,49 @@ slots:
     inlined: true
     inlined_as_list: true
   has_phenotype:
-    description: >-
-      A list of phenotype identifiers that are known to be associated with this entity
+    description: A list of phenotype identifiers that are known to be associated with
+      this entity
     range: string
     multivalued: true
     inlined_as_list: true
   has_phenotype_label:
-    description: >-
-      A list of phenotype labels that are known to be associated with this entity
+    description: A list of phenotype labels that are known to be associated with this
+      entity
     range: string
     multivalued: true
     inlined_as_list: true
   has_phenotype_closure:
-    description: >-
-      A list of phenotype identifiers that are known to be associated with this entity expanded to include all ancestors
+    description: A list of phenotype identifiers that are known to be associated with
+      this entity expanded to include all ancestors
     range: string
     multivalued: true
     inlined_as_list: true
   has_phenotype_closure_label:
-    description: >-
-      A list of phenotype labels that are known to be associated with this entity expanded to include all ancestors
+    description: A list of phenotype labels that are known to be associated with this
+      entity expanded to include all ancestors
     range: string
     multivalued: true
     inlined_as_list: true
   has_phenotype_count:
-    description: >-
-      A count of the number of phenotypes that are known to be associated with this entity
+    description: A count of the number of phenotypes that are known to be associated
+      with this entity
     range: integer
   has_descendant:
-    description: >-
-      A list of entity identifiers that are known to be descendants of this entity
+    description: A list of entity identifiers that are known to be descendants of
+      this entity
     range: string
     multivalued: true
     inlined_as_list: true
   has_descendant_label:
-    description: >-
-      A list of entity labels that are known to be descendants of this entity
+    description: A list of entity labels that are known to be descendants of this
+      entity
     range: string
     multivalued: true
     inlined_as_list: true
   has_descendant_count:
-    description: >-
-      A count of the number of entities that are known to be descendants of this entity
-    range: integer    
+    description: A count of the number of entities that are known to be descendants
+      of this entity
+    range: integer
   id:
     identifier: true
     range: string
@@ -840,7 +711,8 @@ slots:
     description: The biolink taxon that the entity is in the closure of.
     range: string
   in_taxon_label:
-    description: The label of the biolink taxon that the entity is in the closure of.
+    description: The label of the biolink taxon that the entity is in the closure
+      of.
     range: string
   inheritance:
     range: Entity
@@ -855,24 +727,21 @@ slots:
   knowledge_source:
     multivalued: true
   FDA_adverse_event_level:
-    description: >-
-      The level of FDA adverse event reporting for a drug-condition association.
+    description: The level of FDA adverse event reporting for a drug-condition association.
     slot_uri: biolink:FDA_adverse_event_level
-    notes: >-
-      The range in this schema is represented as a string, but corresponds to
+    notes: The range in this schema is represented as a string, but corresponds to
       biolink:FDAIDAAdverseEventEnum at ingest time.
     range: string
   object_aspect_qualifier:
-    description: >-
-      Composes with the core concept (+ qualifier) to describe new concepts of a more specific
-      kind. The aspect qualifier represents an attribute of the object that is the focus of the
-      relationship (e.g. for an association where the object is a gene, this might be the
-      expression, abundance, activity, or stability of the gene).
+    description: Composes with the core concept (+ qualifier) to describe new concepts
+      of a more specific kind. The aspect qualifier represents an attribute of the
+      object that is the focus of the relationship (e.g. for an association where
+      the object is a gene, this might be the expression, abundance, activity, or
+      stability of the gene).
     slot_uri: biolink:object_aspect_qualifier
     range: string
   supporting_text:
-    description: >-
-      The text in a publication that supports the assertion in the association.
+    description: The text in a publication that supports the assertion in the association.
     slot_uri: biolink:supporting_text
     range: string
     multivalued: true
@@ -897,19 +766,20 @@ slots:
     range: CrossSpeciesTermClique
     inlined: true
   root_term:
-    description: The species-independent grouping term (UPHENO/UBERON) that serves as the cross-species bridge
+    description: The species-independent grouping term (UPHENO/UBERON) that serves
+      as the cross-species bridge
     range: Entity
     inlined: true
   clique_entities:
-    description: Species-specific child terms (HP, MP, ZP, etc.) that are subclasses of the root term
+    description: Species-specific child terms (HP, MP, ZP, etc.) that are subclasses
+      of the root term
     range: Entity
     inlined: true
     inlined_as_list: true
     multivalued: true
   clique_associations:
-    description: >-
-      All associations within this clique: vertical (subclass_of from children
-      to root) and horizontal (same_as, homologous_to between children)
+    description: 'All associations within this clique: vertical (subclass_of from
+      children to root) and horizontal (same_as, homologous_to between children)'
     range: Association
     inlined: true
     inlined_as_list: true
@@ -927,8 +797,7 @@ slots:
     range: string
   original_predicate:
     range: string
-    description: >-
-      used to hold the original relation/predicate that an external knowledge
+    description: used to hold the original relation/predicate that an external knowledge
       source uses before transformation to match the biolink-model specification.
   original_subject:
     range: string
@@ -978,8 +847,8 @@ slots:
   symbol:
     range: string
   symmetric:
-    description: >-
-      Whether the association type is symmetric, i.e. the subject and object labels are interchangeable.
+    description: Whether the association type is symmetric, i.e. the subject and object
+      labels are interchangeable.
     range: boolean
   synonym:
     multivalued: true
@@ -1066,10 +935,12 @@ slots:
     description: The category of the frequency_qualifier entity
   qualifiers_closure:
     multivalued: true
-    description: Field containing frequency_qualifier id and the ids of all of it's ancestors
+    description: Field containing frequency_qualifier id and the ids of all of it's
+      ancestors
   qualifiers_closure_label:
     multivalued: true
-    description: Field containing frequency_qualifier name and the names of all of it's ancestors
+    description: Field containing frequency_qualifier name and the names of all of
+      it's ancestors
   qualifier:
     multivalued: true
   qualifier_label:
@@ -1128,10 +999,12 @@ slots:
     description: The category of the disease_context_qualifier entity
   disease_context_qualifier_closure:
     multivalued: true
-    description: Field containing disease_context_qualifier id and the ids of all of it's ancestors
+    description: Field containing disease_context_qualifier id and the ids of all
+      of it's ancestors
   disease_context_qualifier_closure_label:
     multivalued: true
-    description: Field containing disease_context_qualifier name and the names of all of it's ancestors
+    description: Field containing disease_context_qualifier name and the names of
+      all of it's ancestors
   species_context_qualifier_label:
     is_a: name
     description: The name of the species_context_qualifier entity
@@ -1141,61 +1014,54 @@ slots:
   species_context_qualifier_category:
     is_a: category
     description: The category of the species_context_qualifier entity
-  # sssom slots
   subject_specialization_qualifier:
     range: string
-    description: >-
-      A qualifier that composes with a core subject/object concept to define a more specific version of the
-      subject concept, specifically using an ontology term that is not a subclass or descendant of the core concept
-      and in the vast majority of cases, is of a different ontological namespace than the category or namespace of the
-      subject identifier.
+    description: A qualifier that composes with a core subject/object concept to define
+      a more specific version of the subject concept, specifically using an ontology
+      term that is not a subclass or descendant of the core concept and in the vast
+      majority of cases, is of a different ontological namespace than the category
+      or namespace of the subject identifier.
   subject_specialization_qualifier_label:
     range: string
-    description: >-
-      A label for the subject_specialization_qualifier
+    description: A label for the subject_specialization_qualifier
   subject_specialization_qualifier_namespace:
     range: string
-    description: >-
-      The namespace/prefix of the subject_specialization_qualifier
+    description: The namespace/prefix of the subject_specialization_qualifier
   subject_specialization_qualifier_category:
     range: string
-    description: >-
-      The category of the subject_specialization_qualifier
+    description: The category of the subject_specialization_qualifier
   subject_specialization_qualifier_closure:
     range: string
-    description: >-
-      A closure of the subject_specialization_qualifier, including the subject_specialization_qualifier itself and all of its ancestors
+    description: A closure of the subject_specialization_qualifier, including the
+      subject_specialization_qualifier itself and all of its ancestors
   subject_specialization_qualifier_closure_label:
     range: string
-    description: >-
-      A closure of the subject_specialization_qualifier, including the subject_specialization_qualifier itself and all of its ancestors
+    description: A closure of the subject_specialization_qualifier, including the
+      subject_specialization_qualifier itself and all of its ancestors
   object_specialization_qualifier:
     range: string
-    description: >-
-      A qualifier that composes with a core subject/object concept to define a more specific version of the
-      object concept, specifically using an ontology term that is not a subclass or descendant of the core concept
-      and in the vast majority of cases, is of a different ontological namespace than the category or namespace of the
-      object identifier.
+    description: A qualifier that composes with a core subject/object concept to define
+      a more specific version of the object concept, specifically using an ontology
+      term that is not a subclass or descendant of the core concept and in the vast
+      majority of cases, is of a different ontological namespace than the category
+      or namespace of the object identifier.
   object_specialization_qualifier_label:
     range: string
-    description: >-
-      A label for the object_specialization_qualifier
+    description: A label for the object_specialization_qualifier
   object_specialization_qualifier_namespace:
     range: string
-    description: >-
-      The namespace/prefix of the object_specialization_qualifier
+    description: The namespace/prefix of the object_specialization_qualifier
   object_specialization_qualifier_category:
     range: string
-    description: >-
-      The category of the object_specialization_qualifier
+    description: The category of the object_specialization_qualifier
   object_specialization_qualifier_closure:
     range: string
-    description: >-
-      A closure of the object_specialization_qualifier, including the object_specialization_qualifier itself and all of its ancestors
+    description: A closure of the object_specialization_qualifier, including the object_specialization_qualifier
+      itself and all of its ancestors
   object_specialization_qualifier_closure_label:
     range: string
-    description: >-
-      A closure of the object_specialization_qualifier, including the object_specialization_qualifier itself and all of its ancestors
+    description: A closure of the object_specialization_qualifier, including the object_specialization_qualifier
+      itself and all of its ancestors
   mappings:
     description: List of ExpandedCuries with id and url for mapped entities
     range: ExpandedCurie
@@ -1204,18 +1070,14 @@ slots:
   subject_id:
     range: string
     required: true
-  # subject label is already included in this schema
   predicate_id:
     range: string
     required: true
   object_id:
     range: string
     required: true
-  # object label is already included in this schema
   mapping_justification:
     range: string
-
-  # Text annotation
   text:
     description: text without tokens
     range: string
@@ -1232,8 +1094,6 @@ slots:
   end:
     description: end position of the annotation
     range: integer
-
-  # release slots
   value:
     description: The value of a qualifier
     range: string
@@ -1245,12 +1105,9 @@ slots:
   metadata: string
   graph_stats: string
   qc_report: string
-
   highlighting:
     description: Optional highlighting information for search results
     multivalued: false
-
-  # Case-phenotype matrix slots
   disease_id:
     description: The identifier for a disease entity
     range: string
@@ -1285,13 +1142,15 @@ slots:
     inlined: true
     inlined_as_list: false
   source_disease_id:
-    description: The disease ID that a case is indirectly associated with (for descendant diseases)
+    description: The disease ID that a case is indirectly associated with (for descendant
+      diseases)
     range: string
   source_disease_label:
     description: The label of the source disease for indirect case associations
     range: string
   is_direct:
-    description: Whether the case is directly associated with the disease or via a descendant
+    description: Whether the case is directly associated with the disease or via a
+      descendant
     range: boolean
   bin_id:
     description: The identifier for the histopheno bin a phenotype belongs to
