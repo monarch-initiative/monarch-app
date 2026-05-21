@@ -6,6 +6,9 @@
     >
     <!-- <span>|</span> -->
     <AppLink to="/text-annotator" class="link">Text Annotator</AppLink>
+    <AppLink to="https://openscientist.io" class="link" no-icon
+      >Open Scientist</AppLink
+    >
   </div>
 </template>
 
