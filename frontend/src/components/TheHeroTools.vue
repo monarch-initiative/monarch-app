@@ -6,8 +6,16 @@
     >
     <!-- <span>|</span> -->
     <AppLink to="/text-annotator" class="link">Text Annotator</AppLink>
+    <AppLink to="https://openscientist.io" class="link os-link">
+      <OpenScientistLogo class="os-logo" aria-hidden="true" />
+      Open Scientist
+    </AppLink>
   </div>
 </template>
+
+<script setup lang="ts">
+import OpenScientistLogo from "@/assets/openscientist-logo.svg";
+</script>
 
 <style scoped lang="scss">
 $wrap: 1000px;
@@ -32,6 +40,22 @@ $wrap: 1000px;
       background-color: $white;
       color: $theme;
     }
+  }
+
+  .os-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+  }
+
+  /* white badge keeps the multi-color logo legible on the teal button */
+  .os-logo {
+    box-sizing: border-box;
+    width: 1.5em;
+    height: 1.5em;
+    padding: 0.15em;
+    border-radius: 50%;
+    background-color: $white;
   }
 
   a {
