@@ -7,7 +7,7 @@
     <!-- <span>|</span> -->
     <AppLink to="/text-annotator" class="link">Text Annotator</AppLink>
     <AppLink to="https://openscientist.io" class="link os-link">
-      <OpenScientistLogo class="os-logo" />
+      <OpenScientistLogo class="os-logo" aria-hidden="true" />
       Open Scientist
     </AppLink>
   </div>
