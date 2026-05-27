@@ -21,6 +21,7 @@ import pytest
         ("SGD:S000000001", "identifiers.org/sgd/S000000001"),
         ("RGD:1", "identifiers.org/rgd/1"),
         ("HGNC:5", "identifiers.org/hgnc/5"),
+        ("NANDO:2200622", "identifiers.org/NANDO:2200622"),  # colon, not slash (issue #1221)
         ### These prefixes are currently broken in the curie service
         ("ENSEMBL:ENSG00000157764", "identifiers.org/ensembl/ENSG00000157764"),
         ("OMIM:613647", "identifiers.org/mim/613647"),
