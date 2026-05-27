@@ -135,8 +135,11 @@ markdown_extensions:
       smart_enable: all
   - pymdownx.snippets:
       check_paths: true
+      # 'make docs' runs mkdocs from backend/ (-f ../mkdocs.yaml), so '..'
+      # resolves to the repo root; '.' covers running from the repo root directly.
       base_path:
         - '.'
+        - '..'
   - pymdownx.tabbed:
       alternate_style: true
 
