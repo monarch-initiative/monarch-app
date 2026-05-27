@@ -26,8 +26,8 @@ See the [Events](#events) section for more details.
 
 Phenogrid can operate in multiple modes, which you can specify via the `src` URL.
 
-- [`/phenogrid-search`](#search-mode) - Compares a list of enumerated phenotypes (set A) against all the phenotypes from a gene or disease of interest (group B).
-- [`/phenogrid-multi-compare`](#multi-compare-mode) - Compares a list of enumerated phenotypes to _multiple_ enumerated other lists of phenotypes.
+- [`/phenogrid-search`](#search-mode-parameters) - Compares a list of enumerated phenotypes (set A) against all the phenotypes from a gene or disease of interest (group B).
+- [`/phenogrid-multi-compare`](#multi-compare-mode-parameters) - Compares a list of enumerated phenotypes to _multiple_ enumerated other lists of phenotypes.
 
 For more details on the parameters for each mode, see the respective sections below.
 

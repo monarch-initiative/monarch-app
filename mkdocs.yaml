@@ -40,6 +40,7 @@ nav:
     - Creating an Ingest: 'Creating-an-Ingest.md'
   - Neo4J: 'Neo4J/index.md'
   - Monarch R: 'MonarchR/index.md'
+  - Phenogrid: 'Phenogrid/index.md'
   - FastAPI:
     - Overview: 'FastAPI/index.md'
     - Endpoints:
@@ -134,6 +135,8 @@ markdown_extensions:
       smart_enable: all
   - pymdownx.snippets:
       check_paths: true
+      base_path:
+        - '.'
   - pymdownx.tabbed:
       alternate_style: true
 
