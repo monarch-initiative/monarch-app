@@ -1,9 +1,10 @@
 export type TermInfoId = string;
 export type BestMatchMatchSource = string;
+export type EntityId = string;
 export type AssociationId = string;
+export type ExpandedAssociationId = string;
 export type DirectionalAssociationId = string;
 export type ExpandedCurieId = string;
-export type EntityId = string;
 export type HistoPhenoId = string;
 export type HistoBinId = string;
 export type MappingId = string;
@@ -116,163 +117,186 @@ export interface SemsimSearchResult {
 }
 
 
-
-export interface Association {
+/**
+ * Post-closurize node shape (entity + closure expansion + per-predicate aggregations).
+ */
+export interface Entity {
     id: string,
     category?: string,
-    subject: string,
-    original_subject?: string,
-    /** The namespace/prefix of the subject entity */
-    subject_namespace?: string,
-    /** The category of the subject entity */
-    subject_category?: string,
-    /** Field containing subject id and the ids of all of it's ancestors */
-    subject_closure?: string[],
-    /** The name of the subject entity */
-    subject_label?: string,
-    /** Field containing subject name and the names of all of it's ancestors */
-    subject_closure_label?: string[],
-    subject_taxon?: string,
-    subject_taxon_label?: string,
+    name?: string,
+    description?: string,
+    xref?: string[],
+    synonym?: string[],
+    /** An exact synonym for the entity */
+    exact_synonym?: string[],
+    /** A broader synonym for the entity */
+    broad_synonym?: string[],
+    /** A narrower synonym for the entity */
+    narrow_synonym?: string[],
+    /** A related synonym for the entity */
+    related_synonym?: string[],
+    /** A boolean flag indicating that an entity is no longer considered current or valid. */
+    deprecated?: boolean,
+    /** The biolink taxon that the entity is in the closure of. */
+    in_taxon?: string,
+    /** The label of the biolink taxon that the entity is in the closure of. */
+    in_taxon_label?: string,
+    iri?: string,
+    same_as?: string[],
+    /** A list of subsets that the entity belongs to */
+    subsets?: string[],
+    /** Source file stem injected by koza at load time. */
+    file_source?: string,
+    provided_by?: string,
+    /** The long form name of an entity */
+    full_name?: string,
+    symbol?: string,
+    /** The type of the entity (e.g. sequence onotology type for genes etc) */
+    type?: string,
+    has_attribute?: string[],
+    /** The biological sex of an individual entity. */
+    has_biological_sex?: string,
+    synonyms?: string,
+    has_gene?: string[],
+    /** The namespace/prefix portion of this entity's identifier */
+    namespace?: string,
+    /** A list of phenotype identifiers that are known to be associated with this entity */
+    has_phenotype?: string[],
+    /** A list of phenotype labels that are known to be associated with this entity */
+    has_phenotype_label?: string[],
+    /** A count of the number of phenotypes that are known to be associated with this entity */
+    has_phenotype_count?: number,
+    /** A list of phenotype identifiers that are known to be associated with this entity expanded to include all ancestors */
+    has_phenotype_closure?: string[],
+    /** A list of phenotype labels that are known to be associated with this entity expanded to include all ancestors */
+    has_phenotype_closure_label?: string[],
+    /** A list of entity identifiers that are known to be descendants of this entity */
+    has_descendant?: string[],
+    /** A list of entity labels that are known to be descendants of this entity */
+    has_descendant_label?: string[],
+    /** A count of the number of entities that are known to be descendants of this entity */
+    has_descendant_count?: number,
+}
+
+
+/**
+ * Post-closurize edge shape (association + subject/object closure expansion).
+ */
+export interface Association {
+    id: string,
     predicate: string,
-    /** used to hold the original relation/predicate that an external knowledge source uses before transformation to match the biolink-model specification. */
-    original_predicate?: string,
-    object: string,
-    original_object?: string,
-    /** The namespace/prefix of the object entity */
-    object_namespace?: string,
-    /** The category of the object entity */
-    object_category?: string,
-    /** Field containing object id and the ids of all of it's ancestors */
-    object_closure?: string[],
-    /** The name of the object entity */
-    object_label?: string,
-    /** Field containing object name and the names of all of it's ancestors */
-    object_closure_label?: string[],
-    object_taxon?: string,
-    object_taxon_label?: string,
-    primary_knowledge_source?: string,
-    aggregator_knowledge_source?: string[],
-    negated?: boolean,
-    pathway?: string,
-    /** count of supporting documents, evidence codes, and sources supplying evidence */
-    evidence_count?: number,
-    /** Describes the level of knowledge expressed in a statement, based on the reasoning or analysis methods used to generate the statement, or the scope or specificity of what the statement expresses to be true. */
-    knowledge_level: string,
+    category?: string,
     /** Describes the high-level category of agent who originally generated a  statement of knowledge or other type of information. */
     agent_type: string,
+    aggregator_knowledge_source?: string[],
+    /** Describes the level of knowledge expressed in a statement, based on the reasoning or analysis methods used to generate the statement, or the scope or specificity of what the statement expresses to be true. */
+    knowledge_level: string,
+    /** used to hold the original relation/predicate that an external knowledge source uses before transformation to match the biolink-model specification. */
+    original_predicate?: string,
+    primary_knowledge_source?: string,
+    /** Source file stem injected by koza at load time. */
+    file_source?: string,
+    provided_by?: string,
+    publications?: string[],
+    qualifiers?: string[],
     has_evidence?: string[],
-    /** List of ExpandedCuries with id and url for evidence */
-    has_evidence_links?: ExpandedCurie[],
+    /** A qualifier that composes with a core subject/object concept to define a more specific version of the object concept, specifically using an ontology term that is not a subclass or descendant of the core concept and in the vast majority of cases, is of a different ontological namespace than the category or namespace of the object identifier. */
+    object_specialization_qualifier?: string,
+    /** The level of FDA adverse event reporting for a drug-condition association. */
+    FDA_adverse_event_level?: string,
+    /** A context qualifier representing a disease or condition in which a relationship expressed in an association took place. */
+    disease_context_qualifier?: string,
+    frequency_qualifier?: string,
     /** count of out of has_total representing a frequency */
     has_count?: number,
-    /** total, devided by has_count, representing a frequency */
-    has_total?: number,
     /** percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly, rounded to the integer level */
     has_percentage?: number,
     /** quotient, which should be 1/100 of has_percentage */
     has_quotient?: number,
-    /** A concatenation of fields used to group associations with the same essential/defining properties */
-    grouping_key?: string,
-    provided_by?: string,
-    /** A link to the docs for the knowledge source that provided the node/edge. */
-    provided_by_link?: ExpandedCurie,
-    publications?: string[],
-    /** List of ExpandedCuries with id and url for publications */
-    publications_links?: ExpandedCurie[],
-    frequency_qualifier?: string,
+    /** total, devided by has_count, representing a frequency */
+    has_total?: number,
+    negated?: boolean,
     onset_qualifier?: string,
     sex_qualifier?: string,
+    has_attribute?: string[],
+    /** Composes with the core concept (+ qualifier) to describe new concepts of a more specific kind. The aspect qualifier represents an attribute of the object that is the focus of the relationship (e.g. for an association where the object is a gene, this might be the expression, abundance, activity, or stability of the gene). */
+    object_aspect_qualifier?: string,
+    /** A context qualifier representing a species in which a relationship expressed in an association took place. */
+    species_context_qualifier?: string,
     stage_qualifier?: string,
-    qualifiers?: string[],
-    /** The name of the frequency_qualifier entity */
-    qualifiers_label?: string,
-    /** The namespace/prefix of the frequency_qualifier entity */
-    qualifiers_namespace?: string,
-    /** The category of the frequency_qualifier entity */
-    qualifiers_category?: string,
-    qualifier?: string[],
-    /** The name of the frequency_qualifier entity */
-    qualifier_label?: string,
-    /** The namespace/prefix of the frequency_qualifier entity */
-    qualifier_namespace?: string,
-    /** The category of the frequency_qualifier entity */
-    qualifier_category?: string,
-    /** The name of the frequency_qualifier entity */
-    frequency_qualifier_label?: string,
-    /** The namespace/prefix of the frequency_qualifier entity */
-    frequency_qualifier_namespace?: string,
-    /** The category of the frequency_qualifier entity */
-    frequency_qualifier_category?: string,
-    /** The name of the onset_qualifier entity */
-    onset_qualifier_label?: string,
-    /** The namespace/prefix of the onset_qualifier entity */
-    onset_qualifier_namespace?: string,
-    /** The category of the onset_qualifier entity */
-    onset_qualifier_category?: string,
-    /** The name of the sex_qualifier entity */
-    sex_qualifier_label?: string,
-    /** The namespace/prefix of the sex_qualifier entity */
-    sex_qualifier_namespace?: string,
-    /** The category of the sex_qualifier entity */
-    sex_qualifier_category?: string,
-    /** The name of the stage_qualifier entity */
-    stage_qualifier_label?: string,
-    /** The namespace/prefix of the stage_qualifier entity */
-    stage_qualifier_namespace?: string,
-    /** The category of the stage_qualifier entity */
-    stage_qualifier_category?: string,
-    /** A context qualifier representing a disease or condition in which a relationship expressed in an association took place. */
-    disease_context_qualifier?: string,
+    qualifier?: string,
+    subject: string,
+    object: string,
+    original_subject?: string,
+    original_object?: string,
+    /** count of supporting documents, evidence codes, and sources supplying evidence */
+    evidence_count?: number,
+    /** A concatenation of fields used to group associations with the same essential/defining properties */
+    grouping_key?: string,
+    /** The name of the subject entity */
+    subject_label?: string,
+    /** The category of the subject entity */
+    subject_category?: string,
+    /** The namespace/prefix of the subject entity */
+    subject_namespace?: string,
+    /** Field containing subject id and the ids of all of it's ancestors */
+    subject_closure?: string[],
+    /** Field containing subject name and the names of all of it's ancestors */
+    subject_closure_label?: string[],
+    subject_taxon?: string,
+    subject_taxon_label?: string,
+    /** The name of the object entity */
+    object_label?: string,
+    /** The category of the object entity */
+    object_category?: string,
+    /** The namespace/prefix of the object entity */
+    object_namespace?: string,
+    /** Field containing object id and the ids of all of it's ancestors */
+    object_closure?: string[],
+    /** Field containing object name and the names of all of it's ancestors */
+    object_closure_label?: string[],
+    object_taxon?: string,
+    object_taxon_label?: string,
     /** The name of the disease_context_qualifier entity */
     disease_context_qualifier_label?: string,
-    /** The namespace/prefix of the disease_context_qualifier entity */
-    disease_context_qualifier_namespace?: string,
     /** The category of the disease_context_qualifier entity */
     disease_context_qualifier_category?: string,
+    /** The namespace/prefix of the disease_context_qualifier entity */
+    disease_context_qualifier_namespace?: string,
     /** Field containing disease_context_qualifier id and the ids of all of it's ancestors */
     disease_context_qualifier_closure?: string[],
     /** Field containing disease_context_qualifier name and the names of all of it's ancestors */
     disease_context_qualifier_closure_label?: string[],
-    /** A context qualifier representing a species in which a relationship expressed in an association took place. */
-    species_context_qualifier?: string,
     /** The name of the species_context_qualifier entity */
     species_context_qualifier_label?: string,
-    /** The namespace/prefix of the species_context_qualifier entity */
-    species_context_qualifier_namespace?: string,
     /** The category of the species_context_qualifier entity */
     species_context_qualifier_category?: string,
-    /** A qualifier that composes with a core subject/object concept to define a more specific version of the subject concept, specifically using an ontology term that is not a subclass or descendant of the core concept and in the vast majority of cases, is of a different ontological namespace than the category or namespace of the subject identifier. */
-    subject_specialization_qualifier?: string,
-    /** A label for the subject_specialization_qualifier */
-    subject_specialization_qualifier_label?: string,
-    /** The namespace/prefix of the subject_specialization_qualifier */
-    subject_specialization_qualifier_namespace?: string,
-    /** The category of the subject_specialization_qualifier */
-    subject_specialization_qualifier_category?: string,
-    /** A closure of the subject_specialization_qualifier, including the subject_specialization_qualifier itself and all of its ancestors */
-    subject_specialization_qualifier_closure?: string,
-    /** A closure of the subject_specialization_qualifier, including the subject_specialization_qualifier itself and all of its ancestors */
-    subject_specialization_qualifier_closure_label?: string,
-    /** A qualifier that composes with a core subject/object concept to define a more specific version of the object concept, specifically using an ontology term that is not a subclass or descendant of the core concept and in the vast majority of cases, is of a different ontological namespace than the category or namespace of the object identifier. */
-    object_specialization_qualifier?: string,
-    /** A label for the object_specialization_qualifier */
-    object_specialization_qualifier_label?: string,
-    /** The namespace/prefix of the object_specialization_qualifier */
-    object_specialization_qualifier_namespace?: string,
-    /** The category of the object_specialization_qualifier */
-    object_specialization_qualifier_category?: string,
-    /** A closure of the object_specialization_qualifier, including the object_specialization_qualifier itself and all of its ancestors */
-    object_specialization_qualifier_closure?: string,
-    /** A closure of the object_specialization_qualifier, including the object_specialization_qualifier itself and all of its ancestors */
-    object_specialization_qualifier_closure_label?: string,
-    /** The level of FDA adverse event reporting for a drug-condition association. */
-    FDA_adverse_event_level?: string,
-    knowledge_source?: string[],
-    /** Composes with the core concept (+ qualifier) to describe new concepts of a more specific kind. The aspect qualifier represents an attribute of the object that is the focus of the relationship (e.g. for an association where the object is a gene, this might be the expression, abundance, activity, or stability of the gene). */
-    object_aspect_qualifier?: string,
-    /** The text in a publication that supports the assertion in the association. */
-    supporting_text?: string[],
+    /** The namespace/prefix of the species_context_qualifier entity */
+    species_context_qualifier_namespace?: string,
+    /** The name of the stage_qualifier entity */
+    stage_qualifier_label?: string,
+    /** The category of the stage_qualifier entity */
+    stage_qualifier_category?: string,
+    /** The namespace/prefix of the stage_qualifier entity */
+    stage_qualifier_namespace?: string,
+    /** The name of the sex_qualifier entity */
+    sex_qualifier_label?: string,
+    /** The category of the sex_qualifier entity */
+    sex_qualifier_category?: string,
+    /** The namespace/prefix of the sex_qualifier entity */
+    sex_qualifier_namespace?: string,
+    /** The name of the onset_qualifier entity */
+    onset_qualifier_label?: string,
+    /** The category of the onset_qualifier entity */
+    onset_qualifier_category?: string,
+    /** The namespace/prefix of the onset_qualifier entity */
+    onset_qualifier_namespace?: string,
+    /** The name of the frequency_qualifier entity */
+    frequency_qualifier_label?: string,
+    /** The category of the frequency_qualifier entity */
+    frequency_qualifier_category?: string,
+    /** The namespace/prefix of the frequency_qualifier entity */
+    frequency_qualifier_namespace?: string,
 }
 
 
@@ -298,7 +322,7 @@ export interface AssociationCountList {
 
 export interface AssociationResults extends Results {
     /** A collection of items, with the type to be overriden by slot_usage */
-    items: Association[],
+    items: ExpandedAssociation[],
     /** Collection of facet field responses with the field values and counts */
     facet_fields?: FacetField[],
     /** Collection of facet query responses with the query string values and counts */
@@ -366,18 +390,33 @@ export interface CategoryGroupedAssociationResults extends Results {
     /** The category of the counterpart entity in a given association,  eg. the category of the entity that is not the subject */
     counterpart_category?: string,
     /** A collection of items, with the type to be overriden by slot_usage */
-    items: Association[],
+    items: ExpandedAssociation[],
+}
+
+
+/**
+ * Association decorated with app-computed expansions returned by the API: ExpandedCurie links for provided_by/has_evidence/publications, optional Solr search-result highlighting, and other app-only fields that aren't stored in the KG. The bare imported `Association` represents only what's in Solr; every endpoint returns at least an ExpandedAssociation. Further context-specific decorations live on subclasses (e.g. DirectionalAssociation adds direction relative to an anchor entity).
+ */
+export interface ExpandedAssociation extends Association {
+    /** A link to the docs for the knowledge source that provided the node/edge. */
+    provided_by_link?: ExpandedCurie,
+    /** List of ExpandedCuries with id and url for evidence */
+    has_evidence_links?: ExpandedCurie[],
+    /** List of ExpandedCuries with id and url for publications */
+    publications_links?: ExpandedCurie[],
+    /** The text in a publication that supports the assertion in the association. */
+    supporting_text?: string[],
+    /** Optional highlighting information for search results */
+    highlighting?: AssociationHighlighting,
 }
 
 
 /**
  * An association that gives it's direction relative to a specified entity
  */
-export interface DirectionalAssociation extends Association {
+export interface DirectionalAssociation extends ExpandedAssociation {
     /** The directionality of the association relative to a given entity for an association_count. If the entity is the subject or in the subject closure, the direction is forwards, if it is the object or in the object closure, the direction is backwards. */
     direction: string,
-    /** Optional highlighting information for search results */
-    highlighting?: AssociationHighlighting,
 }
 
 
@@ -387,60 +426,6 @@ export interface DirectionalAssociation extends Association {
 export interface ExpandedCurie {
     id: string,
     url?: string,
-}
-
-
-/**
- * Represents an Entity in the Monarch KG data model
- */
-export interface Entity {
-    id: string,
-    category?: string,
-    name?: string,
-    /** The long form name of an entity */
-    full_name?: string,
-    /** A boolean flag indicating that an entity is no longer considered current or valid. */
-    deprecated?: boolean,
-    description?: string,
-    xref?: string[],
-    provided_by?: string,
-    /** The biolink taxon that the entity is in the closure of. */
-    in_taxon?: string,
-    /** The label of the biolink taxon that the entity is in the closure of. */
-    in_taxon_label?: string,
-    symbol?: string,
-    synonym?: string[],
-    /** A broader synonym for the entity */
-    broad_synonym?: string[],
-    /** An exact synonym for the entity */
-    exact_synonym?: string[],
-    /** A narrower synonym for the entity */
-    narrow_synonym?: string[],
-    /** A related synonym for the entity */
-    related_synonym?: string[],
-    /** A list of subsets that the entity belongs to */
-    subsets?: string[],
-    /** The URI of the entity */
-    uri?: string,
-    iri?: string,
-    /** The namespace/prefix portion of this entity's identifier */
-    namespace?: string,
-    /** A list of phenotype identifiers that are known to be associated with this entity */
-    has_phenotype?: string[],
-    /** A list of phenotype labels that are known to be associated with this entity */
-    has_phenotype_label?: string[],
-    /** A list of phenotype identifiers that are known to be associated with this entity expanded to include all ancestors */
-    has_phenotype_closure?: string[],
-    /** A list of phenotype labels that are known to be associated with this entity expanded to include all ancestors */
-    has_phenotype_closure_label?: string[],
-    /** A count of the number of phenotypes that are known to be associated with this entity */
-    has_phenotype_count?: number,
-    /** A list of entity identifiers that are known to be descendants of this entity */
-    has_descendant?: string[],
-    /** A list of entity labels that are known to be descendants of this entity */
-    has_descendant_label?: string[],
-    /** A count of the number of entities that are known to be descendants of this entity */
-    has_descendant_count?: number,
 }
 
 
@@ -518,6 +503,8 @@ export interface MultiEntityAssociationResults extends Results {
  * UI container class extending Entity with additional information
  */
 export interface Node extends Entity {
+    /** The URI of the entity */
+    uri?: string,
     /** The biolink taxon that the entity is in the closure of. */
     in_taxon?: string,
     /** The label of the biolink taxon that the entity is in the closure of. */
@@ -550,7 +537,7 @@ export interface CrossSpeciesTermClique {
     /** Species-specific child terms (HP, MP, ZP, etc.) that are subclasses of the root term */
     clique_entities: Entity[],
     /** All associations within this clique: vertical (subclass_of from children to root) and horizontal (same_as, homologous_to between children) */
-    clique_associations: Association[],
+    clique_associations: ExpandedAssociation[],
 }
 
 

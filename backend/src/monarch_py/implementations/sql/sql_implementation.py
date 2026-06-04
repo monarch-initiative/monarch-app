@@ -7,6 +7,7 @@ from pydantic import ValidationError
 
 from monarch_py.datamodels.model import (
     Association,
+    ExpandedAssociation,
     CompactAssociation,
     CompactAssociationResults,
     AssociationResults,
@@ -300,7 +301,11 @@ class SQLImplementation(EntityInterface, AssociationInterface):
                     if isinstance(result[key], list) and len(result[key]) == 1 and not result[key][0]:
                         result[key] = []
                 try:
-                    associations.append(Association(**result))
+                    # AssociationResults.items is list[ExpandedAssociation]; construct
+                    # the API class directly. This SQL path doesn't currently populate
+                    # the *_link fields — that's a pre-existing gap relative to the
+                    # Solr path, not introduced by the schema overlay.
+                    associations.append(ExpandedAssociation(**result))
                 except ValidationError:
                     logger.error(f"Validation error for {row}")
                     raise

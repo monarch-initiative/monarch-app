@@ -45,7 +45,7 @@ classes:
     - facet_queries
     slot_usage:
       items:
-        range: Association
+        range: ExpandedAssociation
   CompactAssociation:
     slots:
     - category
@@ -112,17 +112,32 @@ classes:
     - items
     slot_usage:
       items:
-        range: Association
-  DirectionalAssociation:
+        range: ExpandedAssociation
+  ExpandedAssociation:
     is_a: Association
-    description: An association that gives it's direction relative to a specified
-      entity
+    description: >-
+      Association decorated with app-computed expansions returned by the API:
+      ExpandedCurie links for provided_by/has_evidence/publications, optional
+      Solr search-result highlighting, and other app-only fields that aren't
+      stored in the KG. The bare imported `Association` represents only what's
+      in Solr; every endpoint returns at least an ExpandedAssociation. Further
+      context-specific decorations live on subclasses (e.g. DirectionalAssociation
+      adds direction relative to an anchor entity).
     slots:
-    - direction
+    - provided_by_link
+    - has_evidence_links
+    - publications_links
+    - supporting_text
     - highlighting
     slot_usage:
       highlighting:
         range: AssociationHighlighting
+  DirectionalAssociation:
+    is_a: ExpandedAssociation
+    description: An association that gives it's direction relative to a specified
+      entity
+    slots:
+    - direction
   ExpandedCurie:
     description: A curie bundled along with its expanded url
     slots:
@@ -182,6 +197,7 @@ classes:
     description: UI container class extending Entity with additional information
     is_a: Entity
     slots:
+    - uri
     - in_taxon
     - in_taxon_label
     - inheritance
@@ -780,7 +796,7 @@ slots:
   clique_associations:
     description: 'All associations within this clique: vertical (subclass_of from
       children to root) and horizontal (same_as, homologous_to between children)'
-    range: Association
+    range: ExpandedAssociation
     inlined: true
     inlined_as_list: true
     multivalued: true
@@ -941,8 +957,6 @@ slots:
     multivalued: true
     description: Field containing frequency_qualifier name and the names of all of
       it's ancestors
-  qualifier:
-    multivalued: true
   qualifier_label:
     is_a: name
     description: The name of the frequency_qualifier entity

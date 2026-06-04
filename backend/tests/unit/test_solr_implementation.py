@@ -3,7 +3,7 @@ from unittest.mock import patch, MagicMock
 
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 from monarch_py.datamodels.model import (
-    Association,
+    ExpandedAssociation,
     AssociationResults,
     CrossSpeciesTermClique,
     Entity,
@@ -411,7 +411,10 @@ def _make_entity(id, category=None, name=None):
 
 
 def _make_association(subject, predicate, obj, **kwargs):
-    return Association(
+    # API responses (and AssociationResults.items) carry ExpandedAssociation now
+    # (Association = imported Solr-truth shape; ExpandedAssociation = + app-computed
+    # link decorations). The test builds responses, so build the API class.
+    return ExpandedAssociation(
         id=f"{subject}-{predicate}-{obj}",
         subject=subject,
         predicate=predicate,

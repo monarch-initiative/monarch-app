@@ -1,0 +1,85 @@
+name: Update KG Schema
+
+# Refreshes the koza-produced monarch-kg-schema.yaml from the latest published KG release
+# and regenerates model.py / model.ts. Opens a PR only if there's an actual diff
+# (peter-evans/create-pull-request is a no-op when the working tree is clean).
+#
+# Drift surfaces here as a standalone PR — well ahead of any monarch-app release — so
+# breaking schema changes (cardinality shifts, dropped slots) are reviewed calmly with
+# the full test suite, not discovered mid-release. Release-time staleness is enforced
+# separately by the verify-model-up-to-date job in test-backend.yaml.
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Mondays 13:00 UTC, one hour after update-resource-data so they don't collide.
+    - cron: "0 13 * * 1"
+
+env:
+  SCHEMA_URL: "https://data.monarchinitiative.org/monarch-kg-dev/latest/monarch-kg-schema.yaml"
+  SCHEMA_PATH: "backend/src/monarch_py/datamodels/monarch_kg_schema.yaml"
+  UV_VERSION: "0.7.x"
+
+jobs:
+  update_schema:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Work around permission issue
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          version: ${{ env.UV_VERSION }}
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install backend
+        run: make install-backend
+
+      - name: Install frontend
+        working-directory: ./frontend
+        run: bun install
+
+      - name: Fetch latest KG schema
+        run: |
+          # Fail loud if the published artifact is missing — better than silently
+          # writing an empty/HTML 404 page and opening a noise PR.
+          curl --fail --silent --show-error --location \
+            "$SCHEMA_URL" -o "$SCHEMA_PATH"
+          # Sanity check: must look like a LinkML schema, not an HTML error page.
+          head -1 "$SCHEMA_PATH" | grep -qE "^(name|id|prefixes|imports):" \
+            || { echo "Fetched file does not look like a LinkML schema:"; head -5 "$SCHEMA_PATH"; exit 1; }
+
+      - name: Regenerate model.py and model.ts
+        run: make model
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        if: ${{ success() }}
+        with:
+          commit-message: "Update KG schema from latest release; regenerate model"
+          title: "Update KG schema and regenerate model"
+          branch: bot/update-kg-schema
+          delete-branch: true
+          body: |
+            Automated refresh of `monarch_kg_schema.yaml` from
+            `${{ env.SCHEMA_URL }}`, plus regenerated `backend/.../model.py` and
+            `frontend/src/api/model.ts`.
+
+            **Review carefully** — schema changes can shift slot cardinality, ranges,
+            or class membership, and may require corresponding updates to:
+              - `backend/src/monarch_py/implementations/solr/solr_parsers.py`
+              - app-side overlays in `backend/src/monarch_py/datamodels/model.yaml`
+              - frontend components that consume changed fields
+
+            CI will exercise the full backend test suite against the regenerated model.

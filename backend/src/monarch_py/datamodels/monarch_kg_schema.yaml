@@ -3,278 +3,369 @@ id: https://w3id.org/monarch-initiative/koza/graph-schema
 imports:
 - linkml:types
 prefixes:
-  linkml:
-    prefix_prefix: linkml
-    prefix_reference: https://w3id.org/linkml/
-  biolink:
-    prefix_prefix: biolink
-    prefix_reference: https://w3id.org/biolink/vocab/
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  biolink: https://w3id.org/biolink/vocab/
+  linkml: https://w3id.org/linkml/
+  dct: http://purl.org/dc/terms/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
 default_prefix: https://w3id.org/monarch-initiative/koza/graph-schema/
 default_range: string
 slots:
   file_source:
-    name: file_source
     description: Source file stem injected by koza at load time.
     range: string
     multivalued: false
   provided_by:
-    name: provided_by
+    description: Source file stem injected by koza at load time (KGX convention).
+    range: string
+    multivalued: false
   id:
-    name: id
+    exact_mappings:
+    - biolink:id
+    slot_uri: biolink:id
   category:
-    name: category
+    exact_mappings:
+    - biolink:category
+    slot_uri: biolink:category
+    range: uriorcurie
   name:
-    name: name
-  xref:
-    name: xref
-    multivalued: true
-  has_gene:
-    name: has_gene
-    multivalued: true
-  in_taxon:
-    name: in_taxon
-  in_taxon_label:
-    name: in_taxon_label
+    exact_mappings:
+    - biolink:name
+    slot_uri: rdfs:label
+    range: string
   description:
-    name: description
+    exact_mappings:
+    - biolink:description
+    slot_uri: dct:description
+    range: string
+  xref:
+    exact_mappings:
+    - biolink:xref
+    slot_uri: biolink:xref
+    range: uriorcurie
+    multivalued: true
   synonym:
-    name: synonym
+    exact_mappings:
+    - biolink:synonym
+    slot_uri: biolink:synonym
+    range: string
     multivalued: true
-  full_name:
-    name: full_name
-  symbol:
-    name: symbol
-  type:
-    name: type
-  has_attribute:
-    name: has_attribute
-    multivalued: true
-  has_biological_sex:
-    name: has_biological_sex
   exact_synonym:
-    name: exact_synonym
+    exact_mappings:
+    - biolink:exact_synonym
+    slot_uri: biolink:exact_synonym
     multivalued: true
   broad_synonym:
-    name: broad_synonym
+    exact_mappings:
+    - biolink:broad_synonym
+    slot_uri: biolink:broad_synonym
     multivalued: true
   narrow_synonym:
-    name: narrow_synonym
+    exact_mappings:
+    - biolink:narrow_synonym
+    slot_uri: biolink:narrow_synonym
     multivalued: true
   related_synonym:
-    name: related_synonym
+    exact_mappings:
+    - biolink:related_synonym
+    slot_uri: biolink:related_synonym
     multivalued: true
   deprecated:
-    name: deprecated
+    exact_mappings:
+    - biolink:deprecated
+    slot_uri: biolink:deprecated
+    range: boolean
+  in_taxon:
+    exact_mappings:
+    - biolink:in_taxon
+    slot_uri: biolink:in_taxon
+    range: uriorcurie
+  in_taxon_label:
+    exact_mappings:
+    - biolink:in_taxon_label
+    slot_uri: biolink:in_taxon_label
+    range: string
   iri:
-    name: iri
-  same_as:
-    name: same_as
-    multivalued: true
-  synonyms:
-    name: synonyms
+    exact_mappings:
+    - biolink:iri
+    slot_uri: biolink:iri
+    range: uriorcurie
   subsets:
-    name: subsets
+    exact_mappings:
+    - biolink:subsets
+    slot_uri: biolink:subsets
+    range: string
+    multivalued: true
+  full_name:
+    exact_mappings:
+    - biolink:full_name
+    slot_uri: biolink:full_name
+    range: string
+  symbol:
+    exact_mappings:
+    - biolink:symbol
+    slot_uri: biolink:symbol
+  type:
+    exact_mappings:
+    - biolink:type
+    slot_uri: rdf:type
+  has_attribute:
+    exact_mappings:
+    - biolink:has_attribute
+    slot_uri: biolink:has_attribute
+    range: uriorcurie
+    multivalued: true
+  has_biological_sex:
+    exact_mappings:
+    - biolink:has_biological_sex
+    slot_uri: biolink:has_biological_sex
+    range: uriorcurie
+  has_gene:
+    exact_mappings:
+    - biolink:has_gene
+    slot_uri: biolink:has_gene
+    range: uriorcurie
+    multivalued: true
+  same_as:
+    multivalued: true
+  synonyms: {}
   subject:
-    name: subject
+    exact_mappings:
+    - biolink:subject
+    slot_uri: rdf:subject
+    range: uriorcurie
   predicate:
-    name: predicate
+    exact_mappings:
+    - biolink:predicate
+    slot_uri: rdf:predicate
+    range: uriorcurie
   object:
-    name: object
+    exact_mappings:
+    - biolink:object
+    slot_uri: rdf:object
+    range: uriorcurie
   agent_type:
-    name: agent_type
+    exact_mappings:
+    - biolink:agent_type
+    slot_uri: biolink:agent_type
+    range: string
   aggregator_knowledge_source:
-    name: aggregator_knowledge_source
+    exact_mappings:
+    - biolink:aggregator_knowledge_source
+    slot_uri: biolink:aggregator_knowledge_source
     multivalued: true
   knowledge_level:
-    name: knowledge_level
+    exact_mappings:
+    - biolink:knowledge_level
+    slot_uri: biolink:knowledge_level
+    range: string
+  original_predicate:
+    exact_mappings:
+    - biolink:original_predicate
+    slot_uri: biolink:original_predicate
+    range: uriorcurie
   primary_knowledge_source:
-    name: primary_knowledge_source
+    exact_mappings:
+    - biolink:primary_knowledge_source
+    slot_uri: biolink:primary_knowledge_source
   publications:
-    name: publications
+    exact_mappings:
+    - biolink:publications
+    slot_uri: biolink:publications
+    range: uriorcurie
+    multivalued: true
+  qualifiers:
+    exact_mappings:
+    - biolink:qualifiers
+    slot_uri: biolink:qualifiers
+    range: uriorcurie
     multivalued: true
   has_evidence:
-    name: has_evidence
+    exact_mappings:
+    - biolink:has_evidence
+    slot_uri: biolink:has_evidence
+    range: uriorcurie
     multivalued: true
-  disease_context_qualifier:
-    name: disease_context_qualifier
-  original_predicate:
-    name: original_predicate
-  subject_specialization_qualifier:
-    name: subject_specialization_qualifier
-  qualifiers:
-    name: qualifiers
-    multivalued: true
-  stage_qualifier:
-    name: stage_qualifier
-  negated:
-    name: negated
-  object_aspect_qualifier:
-    name: object_aspect_qualifier
-  onset_qualifier:
-    name: onset_qualifier
-  knowledge_source:
-    name: knowledge_source
-  object_category:
-    name: object_category
-  subject_category:
-    name: subject_category
-  qualifier:
-    name: qualifier
-  frequency_qualifier:
-    name: frequency_qualifier
-  has_count:
-    name: has_count
-  has_percentage:
-    name: has_percentage
-  has_quotient:
-    name: has_quotient
-  has_total:
-    name: has_total
-  species_context_qualifier:
-    name: species_context_qualifier
-  sex_qualifier:
-    name: sex_qualifier
   object_specialization_qualifier:
-    name: object_specialization_qualifier
+    exact_mappings:
+    - biolink:object_specialization_qualifier
+    slot_uri: biolink:object_specialization_qualifier
+    range: uriorcurie
+  FDA_adverse_event_level:
+    exact_mappings:
+    - biolink:FDA_adverse_event_level
+    slot_uri: biolink:FDA_adverse_event_level
+    range: string
+  disease_context_qualifier:
+    exact_mappings:
+    - biolink:disease_context_qualifier
+    slot_uri: biolink:disease_context_qualifier
+    range: uriorcurie
+  frequency_qualifier:
+    exact_mappings:
+    - biolink:frequency_qualifier
+    slot_uri: biolink:frequency_qualifier
+    range: string
+  has_count:
+    exact_mappings:
+    - biolink:has_count
+    slot_uri: biolink:has_count
+    range: integer
+  has_percentage:
+    exact_mappings:
+    - biolink:has_percentage
+    slot_uri: biolink:has_percentage
+    range: double
+  has_quotient:
+    exact_mappings:
+    - biolink:has_quotient
+    slot_uri: biolink:has_quotient
+    range: double
+  has_total:
+    exact_mappings:
+    - biolink:has_total
+    slot_uri: biolink:has_total
+    range: integer
+  negated:
+    exact_mappings:
+    - biolink:negated
+    slot_uri: biolink:negated
+    range: boolean
+  onset_qualifier:
+    exact_mappings:
+    - biolink:onset_qualifier
+    slot_uri: biolink:onset_qualifier
+    range: uriorcurie
+  sex_qualifier:
+    exact_mappings:
+    - biolink:sex_qualifier
+    slot_uri: biolink:sex_qualifier
+    range: uriorcurie
+  object_category:
+    exact_mappings:
+    - biolink:object_category
+    slot_uri: biolink:object_category
+    range: uriorcurie
+  subject_category:
+    exact_mappings:
+    - biolink:subject_category
+    slot_uri: biolink:subject_category
+    range: uriorcurie
+  object_aspect_qualifier:
+    exact_mappings:
+    - biolink:object_aspect_qualifier
+    slot_uri: biolink:object_aspect_qualifier
+    range: string
+  species_context_qualifier:
+    exact_mappings:
+    - biolink:species_context_qualifier
+    slot_uri: biolink:species_context_qualifier
+    range: uriorcurie
+  stage_qualifier:
+    exact_mappings:
+    - biolink:stage_qualifier
+    slot_uri: biolink:stage_qualifier
+    range: uriorcurie
+  qualifier:
+    exact_mappings:
+    - biolink:qualifier
+    slot_uri: biolink:qualifier
   original_subject:
-    name: original_subject
     description: Subject ID before normalization (SSSOM-applied).
     range: string
     multivalued: false
   original_object:
-    name: original_object
     description: Object ID before normalization (SSSOM-applied).
     range: string
     multivalued: false
-  namespace:
-    name: namespace
+  namespace: {}
   has_phenotype:
-    name: has_phenotype
     multivalued: true
   has_phenotype_label:
-    name: has_phenotype_label
     multivalued: true
   has_phenotype_count:
-    name: has_phenotype_count
+    range: integer
   has_phenotype_closure:
-    name: has_phenotype_closure
     multivalued: true
   has_phenotype_closure_label:
-    name: has_phenotype_closure_label
     multivalued: true
   has_descendant:
-    name: has_descendant
     multivalued: true
   has_descendant_label:
-    name: has_descendant_label
     multivalued: true
   has_descendant_count:
-    name: has_descendant_count
+    range: integer
   evidence_count:
-    name: evidence_count
-  grouping_key:
-    name: grouping_key
-  subject_label:
-    name: subject_label
-  subject_namespace:
-    name: subject_namespace
+    range: integer
+  grouping_key: {}
+  subject_label: {}
+  subject_namespace: {}
   subject_closure:
-    name: subject_closure
     multivalued: true
   subject_closure_label:
-    name: subject_closure_label
     multivalued: true
-  subject_taxon:
-    name: subject_taxon
-  subject_taxon_label:
-    name: subject_taxon_label
-  object_label:
-    name: object_label
-  object_namespace:
-    name: object_namespace
+  subject_taxon: {}
+  subject_taxon_label: {}
+  object_label: {}
+  object_namespace: {}
   object_closure:
-    name: object_closure
     multivalued: true
   object_closure_label:
-    name: object_closure_label
     multivalued: true
-  object_taxon:
-    name: object_taxon
-  object_taxon_label:
-    name: object_taxon_label
-  disease_context_qualifier_label:
-    name: disease_context_qualifier_label
-  disease_context_qualifier_category:
-    name: disease_context_qualifier_category
-  disease_context_qualifier_namespace:
-    name: disease_context_qualifier_namespace
+  object_taxon: {}
+  object_taxon_label: {}
+  disease_context_qualifier_label: {}
+  disease_context_qualifier_category: {}
+  disease_context_qualifier_namespace: {}
   disease_context_qualifier_closure:
-    name: disease_context_qualifier_closure
     multivalued: true
   disease_context_qualifier_closure_label:
-    name: disease_context_qualifier_closure_label
     multivalued: true
-  species_context_qualifier_label:
-    name: species_context_qualifier_label
-  species_context_qualifier_category:
-    name: species_context_qualifier_category
-  species_context_qualifier_namespace:
-    name: species_context_qualifier_namespace
-  stage_qualifier_label:
-    name: stage_qualifier_label
-  stage_qualifier_category:
-    name: stage_qualifier_category
-  stage_qualifier_namespace:
-    name: stage_qualifier_namespace
-  sex_qualifier_label:
-    name: sex_qualifier_label
-  sex_qualifier_category:
-    name: sex_qualifier_category
-  sex_qualifier_namespace:
-    name: sex_qualifier_namespace
-  onset_qualifier_label:
-    name: onset_qualifier_label
-  onset_qualifier_category:
-    name: onset_qualifier_category
-  onset_qualifier_namespace:
-    name: onset_qualifier_namespace
-  frequency_qualifier_label:
-    name: frequency_qualifier_label
-  frequency_qualifier_category:
-    name: frequency_qualifier_category
-  frequency_qualifier_namespace:
-    name: frequency_qualifier_namespace
+  species_context_qualifier_label: {}
+  species_context_qualifier_category: {}
+  species_context_qualifier_namespace: {}
+  stage_qualifier_label: {}
+  stage_qualifier_category: {}
+  stage_qualifier_namespace: {}
+  sex_qualifier_label: {}
+  sex_qualifier_category: {}
+  sex_qualifier_namespace: {}
+  onset_qualifier_label: {}
+  onset_qualifier_category: {}
+  onset_qualifier_namespace: {}
+  frequency_qualifier_label: {}
+  frequency_qualifier_category: {}
+  frequency_qualifier_namespace: {}
 classes:
   Entity:
-    name: Entity
-    description: Post-closurizer node shape (entity + closure expansion + per-predicate
+    description: Post-closurize node shape (entity + closure expansion + per-predicate
       aggregations).
     slots:
     - id
     - category
     - name
+    - description
     - xref
-    - has_gene
+    - synonym
+    - exact_synonym
+    - broad_synonym
+    - narrow_synonym
+    - related_synonym
+    - deprecated
     - in_taxon
     - in_taxon_label
+    - iri
+    - same_as
+    - subsets
     - file_source
     - provided_by
-    - description
-    - synonym
     - full_name
     - symbol
     - type
     - has_attribute
     - has_biological_sex
     - synonyms
-    - exact_synonym
-    - broad_synonym
-    - narrow_synonym
-    - related_synonym
-    - deprecated
-    - iri
-    - same_as
-    - subsets
+    - has_gene
     - namespace
     - has_phenotype
     - has_phenotype_label
@@ -285,9 +376,7 @@ classes:
     - has_descendant_label
     - has_descendant_count
   Association:
-    name: Association
-    description: Post-closurizer edge shape (association + subject/object closure
-      expansion).
+    description: Post-closurize edge shape (association + subject/object closure expansion).
     slots:
     - id
     - predicate
@@ -295,30 +384,29 @@ classes:
     - agent_type
     - aggregator_knowledge_source
     - knowledge_level
+    - original_predicate
     - primary_knowledge_source
-    - publications
     - file_source
     - provided_by
-    - has_evidence
-    - disease_context_qualifier
-    - original_predicate
-    - subject_specialization_qualifier
+    - publications
     - qualifiers
-    - stage_qualifier
-    - has_attribute
-    - negated
-    - object_aspect_qualifier
-    - onset_qualifier
-    - knowledge_source
-    - qualifier
+    - has_evidence
+    - object_specialization_qualifier
+    - FDA_adverse_event_level
+    - disease_context_qualifier
     - frequency_qualifier
     - has_count
     - has_percentage
     - has_quotient
     - has_total
-    - species_context_qualifier
+    - negated
+    - onset_qualifier
     - sex_qualifier
-    - object_specialization_qualifier
+    - has_attribute
+    - object_aspect_qualifier
+    - species_context_qualifier
+    - stage_qualifier
+    - qualifier
     - subject
     - object
     - original_subject
