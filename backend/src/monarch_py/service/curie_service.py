@@ -6,9 +6,14 @@ __all__ = [
     "converter",
 ]
 
-# this is a magic keyword that represents the "merged" context from Chris M's algorithm
-# (https://github.com/linkml/prefixmaps/blob/main/src/prefixmaps/data/merged.csv)
-converter = load_converter("merged")
+# Use the Monarch-specific clone of the "merged" prefixmap context. Aligns
+# with kg-phenio's normalize step (also being moved to the same context to
+# fix the FBBT/WBBT prefix-casing issue that was dropping ~503k Alliance
+# gene-expression edges to dangling, see monarch-app#1319). Same canonical
+# behavior as "merged" today; standardizes the Monarch-facing label across
+# the stack.
+# (https://github.com/linkml/prefixmaps/blob/main/src/prefixmaps/data/merged.monarch.csv)
+converter = load_converter("merged.monarch")
 converter.add_prefix("GARD", "https://rarediseases.info.nih.gov/diseases/")
 converter.add_prefix("NORD", "https://rarediseases.org/?p=")
 converter.add_prefix("Orphanet", "https://www.orpha.net/en/disease/detail/", merge=True)
