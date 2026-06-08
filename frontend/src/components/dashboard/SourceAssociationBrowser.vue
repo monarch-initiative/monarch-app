@@ -317,7 +317,11 @@
 
 <script setup lang="ts">
 import { computed, reactive, ref, watch, type ComputedRef } from "vue";
-import type { Association, AssociationResults, FacetValue } from "@/api/model";
+import type {
+  AssociationResults,
+  ExpandedAssociation,
+  FacetValue,
+} from "@/api/model";
 import { getSourceAssociations } from "@/api/source-associations";
 import AppIcon from "@/components/AppIcon.vue";
 import AppModal from "@/components/AppModal.vue";
@@ -351,8 +355,16 @@ const emit = defineEmits<{
 }>();
 
 /** Get a highlighted field value from an association's Solr highlighting data */
-const getHighlight = (row: Association, field: string): string | undefined => {
-  return (row as any).highlighting?.[field]?.[0];
+const getHighlight = (
+  row: ExpandedAssociation,
+  field: string,
+): string | undefined => {
+  // `field` is a dynamic Solr field name; AssociationHighlighting has named
+  // slots per field, so a typed-record cast keeps the dynamic lookup safe.
+  const hl = row.highlighting as
+    | Record<string, string[] | undefined>
+    | undefined;
+  return hl?.[field]?.[0];
 };
 
 /** Strip HTML tags for plain-text comparison */
@@ -360,7 +372,7 @@ const stripTags = (html: string) => html.replace(/<[^>]*>/g, "");
 
 /** Get ancestor highlight only if it differs from the entity label */
 const getAncestorHighlight = (
-  row: Association,
+  row: ExpandedAssociation,
   closureField: string,
   labelField: "subject_label" | "object_label",
 ): string | undefined => {
@@ -520,7 +532,7 @@ const facetConfigs = computed<FacetConfig[]>(() => {
 });
 
 /** table columns */
-const cols: Cols<keyof Association> = [
+const cols: Cols<keyof ExpandedAssociation> = [
   {
     slot: "subject",
     key: "subject_label",
@@ -555,9 +567,9 @@ const cols: Cols<keyof Association> = [
 
 /** modal state for association details */
 const showModal = ref(false);
-const selectedAssociation = ref<Association | null>(null);
+const selectedAssociation = ref<ExpandedAssociation | null>(null);
 
-const openDetails = (row: Association) => {
+const openDetails = (row: ExpandedAssociation) => {
   selectedAssociation.value = row;
   showModal.value = true;
 };

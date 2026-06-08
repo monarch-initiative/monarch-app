@@ -4,7 +4,7 @@ from loguru import logger
 from pydantic import BaseModel, ValidationError
 
 from monarch_py.datamodels.model import (
-    Association,
+    ExpandedAssociation,
     CompactAssociation,
     CompactAssociationResults,
     AssociationCount,
@@ -140,7 +140,10 @@ def parse_associations(
     else:
         for doc in query_result.response.docs:
             try:
-                association = Association(**doc)
+                # ExpandedAssociation is the API contract: the imported Association
+                # (KG truth) plus app-computed link/expansion fields the parser sets
+                # below. AssociationResults.items declares list[ExpandedAssociation].
+                association = ExpandedAssociation(**doc)
             except ValidationError:
                 logger.error(f"Validation error for {doc}")
                 raise ValidationError
