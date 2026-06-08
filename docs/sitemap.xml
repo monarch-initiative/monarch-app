@@ -137,6 +137,10 @@
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/ExpandedAssociation/</loc>
+         <lastmod>2026-06-08</lastmod>
+    </url>
+    <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/ExpandedCurie/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
@@ -505,6 +509,10 @@
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/file_source/</loc>
+         <lastmod>2026-06-08</lastmod>
+    </url>
+    <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/frequency_qualifier/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
@@ -537,6 +545,10 @@
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/has_attribute/</loc>
+         <lastmod>2026-06-08</lastmod>
+    </url>
+    <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/has_biological_sex/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
@@ -562,6 +574,10 @@
     </url>
     <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/has_evidence_links/</loc>
+         <lastmod>2026-06-08</lastmod>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/has_gene/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
@@ -953,6 +969,10 @@
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/same_as/</loc>
+         <lastmod>2026-06-08</lastmod>
+    </url>
+    <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/score/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
@@ -1166,6 +1186,10 @@
     </url>
     <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/synonym/</loc>
+         <lastmod>2026-06-08</lastmod>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/synonyms/</loc>
          <lastmod>2026-06-08</lastmod>
     </url>
     <url>

@@ -1943,7 +1943,7 @@
 
 
 <h1 id="slot-qualifier">Slot: qualifier</h1>
-<p>URI: <a href="https://w3id.org/monarch/monarch-py/qualifier">https://w3id.org/monarch/monarch-py/qualifier</a>
+<p>URI: <a href="https://w3id.org/biolink/vocab/qualifier">biolink:qualifier</a>
 Alias: qualifier</p>
 <!-- no inheritance hierarchy -->
 
@@ -1959,7 +1959,7 @@ Alias: qualifier</p>
 <tbody>
 <tr>
 <td><a href="../Association/">Association</a></td>
-<td></td>
+<td>Post-closurize edge shape (association + subject/object closure expansion)</td>
 <td>no</td>
 </tr>
 <tr>
@@ -1967,16 +1967,16 @@ Alias: qualifier</p>
 <td>An association that gives it's direction relative to a specified entity</td>
 <td>no</td>
 </tr>
+<tr>
+<td><a href="../ExpandedAssociation/">ExpandedAssociation</a></td>
+<td>Association decorated with app-computed expansions returned by the API: Expan...</td>
+<td>no</td>
+</tr>
 </tbody>
 </table>
 <h2 id="properties">Properties</h2>
 <ul>
-<li>
-<p>Range: <a href="../String/">String</a></p>
-</li>
-<li>
-<p>Multivalued: True</p>
-</li>
+<li>Range: <a href="../String/">String</a></li>
 </ul>
 <h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
 <h3 id="schema-source">Schema Source</h3>
@@ -1994,11 +1994,15 @@ Alias: qualifier</p>
 <tbody>
 <tr>
 <td>self</td>
-<td><a href="https://w3id.org/monarch/monarch-py/qualifier">https://w3id.org/monarch/monarch-py/qualifier</a></td>
+<td>biolink:qualifier</td>
 </tr>
 <tr>
 <td>native</td>
 <td><a href="https://w3id.org/monarch/monarch-py/qualifier">https://w3id.org/monarch/monarch-py/qualifier</a></td>
+</tr>
+<tr>
+<td>exact</td>
+<td>biolink:qualifier</td>
 </tr>
 </tbody>
 </table>
@@ -2006,12 +2010,14 @@ Alias: qualifier</p>
 <details>
 <div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">qualifier</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
+<span class="nt">exact_mappings</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">biolink:qualifier</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
+<span class="nt">slot_uri</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">biolink:qualifier</span>
 <span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">qualifier</span>
 <span class="nt">domain_of</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
 <span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
-<span class="nt">multivalued</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
 </details>
 

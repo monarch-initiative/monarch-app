@@ -1958,13 +1958,8 @@ Alias: predicate</p>
 </thead>
 <tbody>
 <tr>
-<td><a href="../AssociationHighlighting/">AssociationHighlighting</a></td>
-<td>Optional highlighting information for search results</td>
-<td>yes</td>
-</tr>
-<tr>
 <td><a href="../Association/">Association</a></td>
-<td></td>
+<td>Post-closurize edge shape (association + subject/object closure expansion)</td>
 <td>no</td>
 </tr>
 <tr>
@@ -1973,8 +1968,18 @@ Alias: predicate</p>
 <td>no</td>
 </tr>
 <tr>
+<td><a href="../AssociationHighlighting/">AssociationHighlighting</a></td>
+<td>Optional highlighting information for search results</td>
+<td>yes</td>
+</tr>
+<tr>
 <td><a href="../CompactAssociation/">CompactAssociation</a></td>
 <td></td>
+<td>no</td>
+</tr>
+<tr>
+<td><a href="../ExpandedAssociation/">ExpandedAssociation</a></td>
+<td>Association decorated with app-computed expansions returned by the API: Expan...</td>
 <td>no</td>
 </tr>
 </tbody>
@@ -2019,9 +2024,9 @@ Alias: predicate</p>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 <span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">predicate</span>
 <span class="nt">domain_of</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CompactAssociation</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationHighlighting</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
 <span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
 <span class="nt">required</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="nt">multivalued</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
