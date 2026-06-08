@@ -16,6 +16,10 @@ converter.add_prefix("Orphanet", "https://www.orpha.net/en/disease/detail/", mer
 # icd.codes is dead/returning 403s, override to use icd10data.com search
 # (add_prefix merge only adds as synonym, so patch prefix_map directly)
 converter.prefix_map["ICD10CM"] = "https://www.icd10data.com/search?s="
+# bioregistry's canonical NANDO expansion uses a slash (.../NANDO/2200622),
+# which doesn't resolve; identifiers.org expects a colon (.../NANDO:2200622).
+# The colon form is only a prefix_alias upstream, so patch prefix_map directly.
+converter.prefix_map["NANDO"] = "http://identifiers.org/NANDO:"
 converter.add_prefix(
     "phenopacket.store",
     "https://github.com/monarch-initiative/phenopacket-store/blob/main/notebooks/",
