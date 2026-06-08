@@ -318,8 +318,8 @@
 <script setup lang="ts">
 import { computed, reactive, ref, watch, type ComputedRef } from "vue";
 import type {
-  ExpandedAssociation,
   AssociationResults,
+  ExpandedAssociation,
   FacetValue,
 } from "@/api/model";
 import { getSourceAssociations } from "@/api/source-associations";
@@ -361,7 +361,9 @@ const getHighlight = (
 ): string | undefined => {
   // `field` is a dynamic Solr field name; AssociationHighlighting has named
   // slots per field, so a typed-record cast keeps the dynamic lookup safe.
-  const hl = row.highlighting as Record<string, string[] | undefined> | undefined;
+  const hl = row.highlighting as
+    | Record<string, string[] | undefined>
+    | undefined;
   return hl?.[field]?.[0];
 };
 
