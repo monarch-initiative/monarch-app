@@ -7,11 +7,7 @@ __all__ = [
 ]
 
 # Use the Monarch-specific clone of the "merged" prefixmap context. Aligns
-# with kg-phenio's normalize step (also being moved to the same context to
-# fix the FBBT/WBBT prefix-casing issue that was dropping ~503k Alliance
-# gene-expression edges to dangling, see monarch-app#1319). Same canonical
-# behavior as "merged" today; standardizes the Monarch-facing label across
-# the stack.
+# with kg-phenio's normalize step 
 # (https://github.com/linkml/prefixmaps/blob/main/src/prefixmaps/data/merged.monarch.csv)
 converter = load_converter("merged.monarch")
 converter.add_prefix("GARD", "https://rarediseases.info.nih.gov/diseases/")
