@@ -238,5 +238,3 @@ def test_resolve_for_infores_data_source():
     assert sv is not None
     assert sv.version == "2026-05-01"
     assert sv.via == ()
-
-

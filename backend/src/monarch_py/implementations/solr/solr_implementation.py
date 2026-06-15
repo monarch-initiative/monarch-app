@@ -360,9 +360,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             predicate=[AssociationPredicate.SUBCLASS_OF],
         )
         return [
-            c
-            for c in all_children
-            if any(c.id.startswith(f"{prefix}:") for prefix in self.SPECIES_SPECIFIC_PREFIXES)
+            c for c in all_children if any(c.id.startswith(f"{prefix}:") for prefix in self.SPECIES_SPECIFIC_PREFIXES)
         ]
 
     @staticmethod
