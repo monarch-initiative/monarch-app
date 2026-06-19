@@ -516,6 +516,8 @@ export interface Node extends Entity {
     causal_gene?: Entity[],
     /** A list of diseases that are known to be causally associated with a gene */
     causes_disease?: Entity[],
+    /** A list of relationships from this node to counterpart entities, each retaining its original relation (e.g. an RO term) and that relation's human-readable label. Used for Mondo disease<->gene related_to associations. */
+    node_relationships?: NodeRelationship[],
     /** List of ExpandedCuries with id and url for mapped entities */
     mappings?: ExpandedCurie[],
     /** ExpandedCurie with id and url for xrefs */
@@ -525,6 +527,19 @@ export interface Node extends Entity {
     association_counts: AssociationCount[],
     cross_species_term_clique?: CrossSpeciesTermClique,
     node_hierarchy?: NodeHierarchy,
+}
+
+
+/**
+ * A relationship from a Node to a counterpart Entity that retains the original relation/predicate (e.g. an RO term) and its human-readable label, resolved from the KG. Used to surface Mondo disease<->gene related_to associations whose original_predicate is an RO term.
+ */
+export interface NodeRelationship {
+    /** The original relation/predicate CURIE connecting a node to a related entity (e.g. an RO term such as RO:0004003) */
+    relation?: string,
+    /** The human-readable label of the relation, resolved from the KG */
+    relation_label?: string,
+    /** The counterpart entity in the relationship */
+    related_entity?: Entity,
 }
 
 

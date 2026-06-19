@@ -204,12 +204,22 @@ classes:
     - has_biological_sex
     - causal_gene
     - causes_disease
+    - node_relationships
     - mappings
     - external_links
     - provided_by_link
     - association_counts
     - cross_species_term_clique
     - node_hierarchy
+  NodeRelationship:
+    description: A relationship from a Node to a counterpart Entity that retains the
+      original relation/predicate (e.g. an RO term) and its human-readable label,
+      resolved from the KG. Used to surface Mondo disease<->gene related_to associations
+      whose original_predicate is an RO term.
+    slots:
+    - relation
+    - relation_label
+    - related_entity
   CrossSpeciesTermClique:
     description: A grouping of species-specific terms (HP, MP, ZP) under a common
       cross-species parent (UPHENO/UBERON), with associations between them.
@@ -553,6 +563,24 @@ slots:
     range: Entity
     multivalued: true
     inlined_as_list: true
+  node_relationships:
+    description: A list of relationships from this node to counterpart entities,
+      each retaining its original relation (e.g. an RO term) and that relation's
+      human-readable label. Used for Mondo disease<->gene related_to associations.
+    range: NodeRelationship
+    multivalued: true
+    inlined_as_list: true
+  relation:
+    description: The original relation/predicate CURIE connecting a node to a
+      related entity (e.g. an RO term such as RO:0004003)
+    range: uriorcurie
+  relation_label:
+    description: The human-readable label of the relation, resolved from the KG
+    range: string
+  related_entity:
+    description: The counterpart entity in the relationship
+    range: Entity
+    inlined: true
   count:
     description: count of documents
     range: integer

@@ -46,6 +46,28 @@
         <AppTagList :tags="node.synonym ?? []" />
       </AppDetail>
 
+      <!--
+        Mondo disease<->gene relationships. These enter the KG with a generic
+        biolink:related_to predicate but retain the real relation (an RO term) in
+        original_predicate; the backend resolves that term's label from the KG.
+        Grouped by relation label so the RO term's meaning is revealed, and shown
+        for both disease and gene nodes (incl. non-human, non-model genes).
+      -->
+      <AppDetail
+        v-for="(group, index) in relationshipGroups"
+        :key="`rel-${index}`"
+        :title="group.label"
+        :full="true"
+      >
+        <AppFlex align-h="left">
+          <AppNodeBadge
+            v-for="(entity, i) in group.entities"
+            :key="i"
+            :node="entity"
+          />
+        </AppFlex>
+      </AppDetail>
+
       <!--Temperory condition for diesease node-->
       <AppDetails v-if="isDiseaseNode" gap="20px">
         <SectionClinicalReources
@@ -218,7 +240,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import omit from "lodash/omit";
-import type { Node } from "@/api/model";
+import type { Entity, Node } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
@@ -232,6 +254,25 @@ type Props = { node: Node };
 
 const { node } = defineProps<Props>();
 const isDiseaseNode = computed(() => node.category === "biolink:Disease");
+
+/**
+ * Group the node's Mondo disease<->gene relationships by their relation label
+ * so each RO relation (e.g. "has material basis in germline mutation in")
+ * becomes a titled block. Falls back to the relation CURIE if the KG had no
+ * label.
+ */
+const relationshipGroups = computed(() => {
+  const groups = new Map<string, { label: string; entities: Entity[] }>();
+  for (const rel of node.node_relationships ?? []) {
+    if (!rel.related_entity) continue;
+    const key = rel.relation_label || rel.relation || "Related to";
+    // Capitalize the first letter for a tidy section title.
+    const label = key.charAt(0).toUpperCase() + key.slice(1);
+    if (!groups.has(key)) groups.set(key, { label, entities: [] });
+    groups.get(key)?.entities.push(rel.related_entity);
+  }
+  return [...groups.values()];
+});
 /** separate out mappings into categories */
 const clinicalSynopsis = computed(
   () =>

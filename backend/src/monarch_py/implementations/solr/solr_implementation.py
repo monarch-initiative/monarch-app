@@ -20,6 +20,7 @@ from monarch_py.datamodels.model import (
     MultiEntityAssociationResults,
     Node,
     NodeHierarchy,
+    NodeRelationship,
     SearchResults,
 )
 from monarch_py.datamodels.solr import core
@@ -108,6 +109,22 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
     ]
     SIDEWAYS_PREDICATES = [AssociationPredicate.SAME_AS, AssociationPredicate.HOMOLOGOUS_TO]
 
+    # Mondo emits a number of disease<->X relationships behind a generic
+    # biolink:related_to predicate, retaining the real relation (an RO term) in
+    # original_predicate. This is the curated, ordered set we surface in the node
+    # header, grouped by the relation's KG label; the order here controls display
+    # order. Other Mondo related_to relations (e.g. PATO "has characteristic",
+    # "predisposes towards") are intentionally excluded to keep the header focused.
+    MONDO_HEADER_RELATIONS = (
+        "RO:0004003",  # has material basis in germline mutation in -> gene
+        "RO:0004004",  # has material basis in somatic mutation in -> gene
+        "RO:0004020",  # disease has basis in dysfunction of -> gene/cell
+        "RO:0004026",  # disease has location -> cell
+        "RO:0004030",  # disease arises from structure -> cell/chromosome
+        "RO:0004029",  # disease has feature -> disease
+        "RO:0014001",  # disease has infectious agent -> organism taxon
+    )
+
     def solr_is_available(self) -> bool:
         """Check if the Solr instance is available"""
         try:
@@ -163,6 +180,8 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                     category=[AssociationCategory.CAUSAL_GENE_TO_DISEASE_ASSOCIATION],
                 ).items
             ]
+            # Mondo disease->X related_to associations (RO original_predicate)
+            entity.node_relationships = self._get_node_relationships(entity)
         if "biolink:Gene" == entity.category:
             entity.causes_disease = [
                 self._get_counterpart_entity(association, entity)
@@ -173,6 +192,8 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                     category=[AssociationCategory.CAUSAL_GENE_TO_DISEASE_ASSOCIATION],
                 ).items
             ]
+            # Mondo gene<-disease related_to associations (RO original_predicate)
+            entity.node_relationships = self._get_node_relationships(entity)
         node: Node = Node(
             **entity.model_dump(),
             cross_species_term_clique=self._get_cross_species_term_clique(entity),
@@ -218,6 +239,61 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             raise ValueError(f"Association does not contain this_entity: {this_entity.id}")
 
         return entity
+
+    def _get_node_relationships(self, this_entity: Entity) -> List[NodeRelationship]:
+        """Surface Mondo disease<->X `related_to` associations on the node header.
+
+        Mondo emits disease<->gene (germline/somatic mutation), disease<->cell
+        (location, arises-from-structure), disease<->disease (has feature) and
+        disease<->pathogen (infectious agent) relationships behind a generic
+        `biolink:related_to` predicate, retaining the real relation (an RO term) in
+        `original_predicate`. They are not picked up by the causal_gene/causes_disease
+        fields nor any named association count, so they are otherwise invisible in the UI.
+
+        Only the curated `MONDO_HEADER_RELATIONS` are surfaced, ordered for a stable,
+        sensible display. The relation label is resolved from the KG itself (RO terms
+        are loaded as entities from phenio), looked up once per distinct relation CURIE.
+        """
+        is_disease = "biolink:Disease" == this_entity.category
+        # Disease is always the subject of these Mondo associations.
+        associations = self.get_associations(
+            subject=[this_entity.id] if is_disease else None,
+            object=[this_entity.id] if not is_disease else None,
+            predicate=[AssociationPredicate.RELATED_TO],
+            primary_knowledge_source=["infores:mondo"],
+            subject_category=None if is_disease else [EntityCategory.DISEASE],
+            direct=True,
+            limit=500,
+        ).items
+
+        # Keep only curated relations, ordered per MONDO_HEADER_RELATIONS.
+        relation_order = {relation: index for index, relation in enumerate(self.MONDO_HEADER_RELATIONS)}
+        associations = [a for a in associations if (a.original_predicate or a.predicate) in relation_order]
+        associations.sort(key=lambda a: relation_order[a.original_predicate or a.predicate])
+
+        relationships: List[NodeRelationship] = []
+        relation_label_cache: dict = {}
+        for association in associations:
+            relation = association.original_predicate or association.predicate
+            if relation not in relation_label_cache:
+                relation_entity = self.get_entity(relation, extra=False)
+                relation_label_cache[relation] = relation_entity.name if relation_entity is not None else None
+            counterpart = self._get_counterpart_entity(association, this_entity)
+            # Carry the counterpart's taxon so non-human genes show their species in the UI
+            if this_entity.id == association.subject:
+                counterpart.in_taxon = association.object_taxon
+                counterpart.in_taxon_label = association.object_taxon_label
+            else:
+                counterpart.in_taxon = association.subject_taxon
+                counterpart.in_taxon_label = association.subject_taxon_label
+            relationships.append(
+                NodeRelationship(
+                    relation=relation,
+                    relation_label=relation_label_cache[relation],
+                    related_entity=counterpart,
+                )
+            )
+        return relationships
 
     def get_counterpart_entities(
         self,
