@@ -23,17 +23,18 @@
           pathograph.sources.length === 1 ? "" : "s"
         }}.
       </template>
-      <template v-else>
-        Curated causal mechanism for {{ node.name }}.
-      </template>
-      Source:
-      <AppLink to="https://dismech.monarchinitiative.org">dismech</AppLink>.
-    </p>
-
-    <p class="disclaimer">
-      dismech is in pre-alpha development &mdash; its mechanism content is
-      actively being curated and may be incomplete or change. These mechanisms
-      come from dismech and are not part of the Monarch knowledge graph.
+      <template v-else> Causal mechanism for {{ node.name }}. </template>
+      Sourced from Dismech, a pre-alpha resource that is actively curated, may
+      be incomplete or change, and is not yet part of the Monarch knowledge
+      graph.
+      <AppLink :to="sourceLink">{{
+        pathograph.category === "disease"
+          ? "View this disorder on Dismech"
+          : "Explore these disorders on Dismech"
+      }}</AppLink>.
+      <AppLink to="https://dismech.monarchinitiative.org/details/"
+        >Learn more about Dismech</AppLink
+      >.
     </p>
 
     <div class="graph-scroll">
@@ -107,6 +108,9 @@
     >
       <li v-for="source in pathograph.sources" :key="source.id">
         <AppLink :to="`/${source.id}`">{{ source.name }}</AppLink>
+        <AppLink v-if="source.url" :to="source.url" class="legend-dismech"
+          >Dismech</AppLink
+        >
       </li>
     </ul>
   </AppSection>
@@ -128,6 +132,20 @@ import { appendToBody } from "@/global/tooltip";
 type Props = { node: Node };
 const props = defineProps<Props>();
 const route = useRoute();
+
+const DISMECH_HOME = "https://dismech.monarchinitiative.org";
+
+/**
+ * "Source" link target: when a single disorder backs this pathograph (every
+ * disease, and genes tied to just one disorder), deep-link straight to that
+ * disorder's dismech page; for multi-disorder gene merges the per-disorder
+ * legend below carries the individual links, so fall back to the dismech home.
+ */
+const sourceLink = computed(() => {
+  const sources = pathograph.value?.sources ?? [];
+  if (sources.length === 1 && sources[0]?.url) return sources[0].url;
+  return DISMECH_HOME;
+});
 
 /** node box geometry + layout spacing */
 const NODE_W = 184;
@@ -494,5 +512,11 @@ const nodeTooltip = (node: LaidOutNode): string => {
   gap: 6px 16px;
   font-size: 0.85rem;
   list-style: none;
+}
+
+.legend-dismech {
+  margin-left: 4px;
+  font-size: 0.75rem;
+  opacity: 0.7;
 }
 </style>

@@ -25,6 +25,8 @@ export type PathographSource = {
   /** mondo id */
   id: string;
   name: string;
+  /** direct link to this disorder's dismech page, when available */
+  url?: string | null;
 };
 
 export type Pathograph = {

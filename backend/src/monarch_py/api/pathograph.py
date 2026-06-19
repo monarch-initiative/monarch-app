@@ -86,7 +86,14 @@ def _anchor_id(node: dict[str, Any]) -> str | None:
     return None
 
 
-def _merge(graphs: list[tuple[str, str, dict]]) -> tuple[list[PathographNode], list[PathographEdge]]:
+def _disorder_url(slug: str | None) -> str | None:
+    """Deep link to a disorder's dismech page, from the slug carried in index.json."""
+    if not slug:
+        return None
+    return f"{settings.dismech_site_url.rstrip('/')}/pages/disorders/{slug}.html"
+
+
+def _merge(graphs: list[tuple[str, str, str | None, dict]]) -> tuple[list[PathographNode], list[PathographEdge]]:
     """Anchor-merge per-disorder graphs into one.
 
     Shared phenotypes/genes collapse to a single boxed node (carrying every
@@ -97,7 +104,7 @@ def _merge(graphs: list[tuple[str, str, dict]]) -> tuple[list[PathographNode], l
     nodes: dict[str, PathographNode] = {}
     edges: dict[tuple[str, str, str | None], PathographEdge] = {}
 
-    for mondo, _name, graph in graphs:
+    for mondo, _name, _slug, graph in graphs:
         local_to_gid: dict[str, str] = {}
         for node in graph.get("nodes", []):
             gid = _anchor_id(node) or f"{mondo}::{node['id']}"
@@ -147,15 +154,15 @@ def _merge(graphs: list[tuple[str, str, dict]]) -> tuple[list[PathographNode], l
     return list(nodes.values()), list(edges.values())
 
 
-def _collect_graphs(mondo_ids: list[str], index: dict) -> list[tuple[str, str, dict]]:
-    """Load every disorder graph for the given Mondo ids."""
-    collected: list[tuple[str, str, dict]] = []
+def _collect_graphs(mondo_ids: list[str], index: dict) -> list[tuple[str, str, str | None, dict]]:
+    """Load every disorder graph for the given Mondo ids (with name + dismech slug)."""
+    collected: list[tuple[str, str, str | None, dict]] = []
     for mondo in mondo_ids:
         for entry in index.get(mondo, []):
             text = _read_artifact(entry["file"])
             if text is None:
                 continue
-            collected.append((mondo, entry.get("name", mondo), json.loads(text)))
+            collected.append((mondo, entry.get("name", mondo), entry.get("slug"), json.loads(text)))
     return collected
 
 
@@ -200,14 +207,17 @@ def _get_pathograph(
 
     nodes, edges = _merge(graphs)
     # De-dupe contributing disorders, preserving first-seen order.
-    sources: dict[str, str] = {}
-    for mondo, name, _graph in graphs:
-        sources.setdefault(mondo, name)
+    sources: dict[str, tuple[str, str | None]] = {}
+    for mondo, name, slug, _graph in graphs:
+        sources.setdefault(mondo, (name, slug))
 
     return Pathograph(
         node_id=upper,
         category=category,
         nodes=nodes,
         edges=edges,
-        sources=[PathographSource(id=mondo, name=name) for mondo, name in sources.items()],
+        sources=[
+            PathographSource(id=mondo, name=name, url=_disorder_url(slug))
+            for mondo, (name, slug) in sources.items()
+        ],
     )

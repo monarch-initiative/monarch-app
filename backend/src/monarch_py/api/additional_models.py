@@ -98,6 +98,7 @@ class PathographEdge(BaseModel):
 class PathographSource(BaseModel):
     id: str = Field(..., title="Mondo id of a contributing disorder")
     name: str = Field(..., title="Disorder name")
+    url: Optional[str] = Field(None, title="Direct link to this disorder's dismech page")
 
 
 class Pathograph(BaseModel):

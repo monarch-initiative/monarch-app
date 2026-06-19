@@ -76,6 +76,8 @@ def test_disease_returns_passthrough_graph(client, artifact_dir):
     assert body["category"] == "disease"
     assert body["node_id"] == "MONDO:0000001"
     assert [s["id"] for s in body["sources"]] == ["MONDO:0000001"]
+    # Source deep-links to the disorder's dismech page, built from its slug.
+    assert body["sources"][0]["url"].endswith("/pages/disorders/Disease_A.html")
     assert len(body["nodes"]) == 3
     assert len(body["edges"]) == 2
     # The free-text mechanism node is namespaced by its Mondo id.
