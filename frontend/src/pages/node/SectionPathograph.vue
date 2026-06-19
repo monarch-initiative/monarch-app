@@ -30,6 +30,12 @@
       <AppLink to="https://dismech.monarchinitiative.org">dismech</AppLink>.
     </p>
 
+    <p class="disclaimer">
+      dismech is in pre-alpha development &mdash; its mechanism content is
+      actively being curated and may be incomplete or change. These mechanisms
+      come from dismech and are not part of the Monarch knowledge graph.
+    </p>
+
     <div class="graph-scroll">
       <svg
         :viewBox="`0 0 ${layout.width} ${layout.height}`"
@@ -407,6 +413,16 @@ const nodeTooltip = (node: LaidOutNode): string => {
   margin: 0 0 10px;
   color: $gray;
   font-size: 0.9rem;
+}
+
+.disclaimer {
+  margin: 0 0 12px;
+  padding: 6px 10px;
+  border-left: 3px solid $gray;
+  background: rgba(0, 0, 0, 0.03);
+  color: $gray;
+  font-size: 0.8rem;
+  line-height: 1.35;
 }
 
 .graph-scroll {

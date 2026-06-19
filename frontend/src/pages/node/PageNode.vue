@@ -25,7 +25,6 @@
     <SectionTitle :node="node" />
     <SectionOverview :node="node" />
     <SectionVisualization :node="node" />
-    <SectionPathograph :node="node" />
     <SectionCrossSpecies :node="node" />
     <SectionAssociations :node="node" />
     <SectionBreadcrumbs :node="node" />
@@ -48,7 +47,6 @@ import SectionBreadcrumbs from "@/pages/node/SectionBreadcrumbs.vue";
 import SectionAssociations from "./SectionAssociations.vue";
 import SectionCrossSpecies from "./SectionCrossSpecies.vue";
 import SectionOverview from "./SectionOverview.vue";
-import SectionPathograph from "./SectionPathograph.vue";
 import SectionTitle from "./SectionTitle.vue";
 import SectionVisualization from "./SectionVisualization.vue";
 
