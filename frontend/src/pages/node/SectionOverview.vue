@@ -46,34 +46,32 @@
         <AppTagList :tags="node.synonym ?? []" />
       </AppDetail>
 
-      <!--
-        Mondo disease<->gene relationships. These enter the KG with a generic
-        biolink:related_to predicate but retain the real relation (an RO term) in
-        original_predicate; the backend resolves that term's label from the KG.
-        Grouped by relation label so the RO term's meaning is revealed, and shown
-        for both disease and gene nodes (incl. non-human, non-model genes).
-      -->
-      <AppDetail
-        v-for="(group, index) in relationshipGroups"
-        :key="`rel-${index}`"
-        :title="group.label"
-        :full="true"
-      >
-        <AppFlex align-h="left">
-          <AppNodeBadge
-            v-for="(entity, i) in group.entities"
-            :key="i"
-            :node="entity"
-          />
-        </AppFlex>
-      </AppDetail>
-
       <!--Temperory condition for diesease node-->
       <AppDetails v-if="isDiseaseNode" gap="20px">
         <SectionClinicalReources
           :frequency-label="frequencyLabel"
           :node="node"
         />
+        <!--
+          Mondo disease<->X relationships. These enter the KG with a generic
+          biolink:related_to predicate but retain the real relation (an RO term)
+          in original_predicate; the backend resolves that term's label from the
+          KG. Grouped by relation label so the RO term's meaning is revealed.
+        -->
+        <AppDetail
+          v-for="(group, index) in relationshipGroups"
+          :key="`rel-${index}`"
+          :title="group.label"
+          :full="true"
+        >
+          <AppFlex align-h="left">
+            <AppNodeBadge
+              v-for="(entity, i) in group.entities"
+              :key="i"
+              :node="entity"
+            />
+          </AppFlex>
+        </AppDetail>
         <AppDetail
           :blank="!otherMappings.length"
           title="Equivalent disease concepts in other termiologies"
@@ -200,6 +198,22 @@
 
         <AppDetail v-if="nodeVersion" :title="nodeVersionTitle">
           <span>{{ nodeVersion.version || "unknown" }}</span>
+        </AppDetail>
+
+        <!-- Mondo related_to relationships (RO original_predicate), grouped by relation label -->
+        <AppDetail
+          v-for="(group, index) in relationshipGroups"
+          :key="`rel-${index}`"
+          :title="group.label"
+          :full="true"
+        >
+          <AppFlex align-h="left">
+            <AppNodeBadge
+              v-for="(entity, i) in group.entities"
+              :key="i"
+              :node="entity"
+            />
+          </AppFlex>
         </AppDetail>
 
         <AppDetail
