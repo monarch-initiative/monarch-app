@@ -24,9 +24,7 @@
         }}.
       </template>
       <template v-else> Causal mechanism for {{ node.name }}. </template>
-      Sourced from Dismech, a pre-alpha resource that is actively curated, may
-      be incomplete or change, and is not yet part of the Monarch knowledge
-      graph.
+      From Dismech &mdash; curated using AI, may have mistakes.
       <AppLink :to="sourceLink">{{
         pathograph.category === "disease"
           ? "View this disorder on Dismech"
