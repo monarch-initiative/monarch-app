@@ -11,8 +11,8 @@
         :tagline="item?.tagline"
       />
       <a
-        v-if="props.id === 'phenopackets'"
-        href="https://www.ga4gh.org/product/phenopackets/"
+        v-if="getGa4ghLogoUrl(props.id)"
+        :href="getGa4ghLogoUrl(props.id)!"
         target="_blank"
         rel="noopener"
         class="endorsement-link"
@@ -170,6 +170,21 @@ const externalLink = computed(() => {
   const title = item?.value?.title;
   return ABOUT_PAGE_LINKS[title || ""];
 });
+
+/**
+ * Returns the URL the GA4GH endorsement logo should link to for a given
+ * resource page id, or null if that page should not display the logo. Add a new
+ * entry here to surface the logo on another resource page.
+ */
+function getGa4ghLogoUrl(id: string): string | null {
+  if (id === "phenopackets") {
+    return "https://www.ga4gh.org/product/phenopackets/";
+  }
+  if (id === "mondo") {
+    return "https://www.ga4gh.org/news_item/ga4gh-launches-formal-endorsement-programme-for-externally-developed-standards-mondo-disease-ontology-named-first-recognised-resource/";
+  }
+  return null;
+}
 
 // ------------------------------
 // 9. Resource Links Formatting
