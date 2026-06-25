@@ -75,8 +75,9 @@ class Ducksim:
     # ---- setup ----------------------------------------------------------
 
     def _baked(self, name):
-        """True if the attached source carries a pre-built ducksim table — so we skip the runtime
-        build and just read it (shared via the OS page cache). Built by tools/bake_ducksim.py."""
+        """True if the attached source carries a pre-built semsim table — so we skip the runtime
+        build and just read it (shared via the OS page cache). Built by koza's `semsim-prep`
+        operation during the KG build (monarch-ingest)."""
         try:
             return self.con.execute(
                 "SELECT count(*) FROM duckdb_tables() WHERE database_name = 'src' AND table_name = ?",
@@ -87,8 +88,8 @@ class Ducksim:
     def _define_closure(self, source_sql, predicates):
         preds = _quote_list(predicates)
         self.con.execute(f"CREATE VIEW _clo AS SELECT s, o FROM ({source_sql}) WHERE p IN ({preds})")
-        if self._baked("ducksim_ic"):
-            self.con.execute("CREATE VIEW _ic AS SELECT term, ic FROM src.ducksim_ic")
+        if self._baked("semsim_ic"):
+            self.con.execute("CREATE VIEW _ic AS SELECT term, ic FROM src.semsim_ic")
         else:
             self.con.execute("""
                 CREATE TABLE _ic AS
@@ -102,8 +103,10 @@ class Ducksim:
 
     def _define_associations(self, assoc_sql):
         self.con.execute(f"CREATE VIEW _assoc AS {assoc_sql}")
-        if self._baked("ducksim_esize"):
-            self.con.execute("CREATE VIEW _esize AS SELECT entity, pn FROM src.ducksim_esize")
+        if self._baked("semsim_closure_size"):
+            self.con.execute(
+                "CREATE VIEW _esize AS SELECT entity, size AS pn FROM src.semsim_closure_size"
+            )
         else:
             self.con.execute("""
                 CREATE TABLE _esize AS
