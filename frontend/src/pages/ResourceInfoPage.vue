@@ -10,6 +10,19 @@
         :is-info-page="true"
         :tagline="item?.tagline"
       />
+      <a
+        v-if="props.id === 'phenopackets'"
+        href="https://www.ga4gh.org/product/phenopackets/"
+        target="_blank"
+        rel="noopener"
+        class="endorsement-link"
+      >
+        <img
+          src="/icons/ga4gh-logo.png"
+          alt="GA4GH logo"
+          class="endorsement-logo"
+        />
+      </a>
       <!-- Tabs -->
       <div class="main-content">
         <div class="tabs">
@@ -257,6 +270,18 @@ $wrap: 1000px;
 
 .main-content {
   flex: 1;
+}
+
+.endorsement-link {
+  display: block;
+  width: fit-content;
+  margin: -1em auto -0.5em;
+}
+
+.endorsement-logo {
+  display: block;
+  width: 200px;
+  height: auto;
 }
 
 .section {
