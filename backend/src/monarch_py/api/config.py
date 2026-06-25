@@ -17,6 +17,12 @@ class Settings(BaseModel):
     semsim_server_host: str = os.getenv("SEMSIM_SERVER_HOST", "127.0.0.1")
     semsim_server_port: str = os.getenv("SEMSIM_SERVER_PORT", 9999)
 
+    # similarity backend: "semsimian" (legacy HTTP semsimian-server, default) or "ducksim"
+    # (in-process DuckDB over monarch-kg.duckdb). Opt in with SEMSIM_BACKEND=ducksim, or per-request
+    # via the hidden ?engine=ducksim API param.
+    monarch_kg_duckdb_path: str = os.getenv("MONARCH_KG_DUCKDB_PATH", "/data/monarch-kg.duckdb")
+    semsim_backend: str = os.getenv("SEMSIM_BACKEND", "semsimian")
+
     monarch_kg_version: str = os.getenv("MONARCH_KG_VERSION", "unknown")
     monarch_api_version: str = os.getenv("MONARCH_API_VERSION", "unknown")
     monarch_kg_source: str = os.getenv("MONARCH_KG_SOURCE", "unknown")
@@ -41,12 +47,35 @@ def solr():
 
 
 @lru_cache(maxsize=1)
-def semsimian():
+def ducksim():
+    """In-process DuckDB similarity engine over the read-only monarch-kg.duckdb artifact."""
+    from monarch_py.service.ducksim import Ducksim
+    from monarch_py.service.ducksim_service import DucksimService
+
+    engine = Ducksim.from_duckdb(settings.monarch_kg_duckdb_path)
+    return DucksimService(engine=engine, entity_implementation=solr())
+
+
+@lru_cache(maxsize=1)
+def semsimian_http():
+    """Legacy similarity backend: HTTP calls to semsimian-server."""
     return SemsimianService(
         semsim_server_host=settings.semsim_server_host,
         semsim_server_port=settings.semsim_server_port,
         entity_implementation=solr(),
     )
+
+
+def semsim_service(engine: str = None):
+    """Resolve the similarity backend. A per-request `engine` ("ducksim" | "semsimian") overrides
+    the SEMSIM_BACKEND default — exposed via a hidden ?engine= API param for A/B comparison."""
+    chosen = (engine or settings.semsim_backend or "semsimian").lower()
+    return ducksim() if chosen == "ducksim" else semsimian_http()
+
+
+def semsimian():
+    """Default-backend resolver kept for existing callers (CLI, etc.)."""
+    return semsim_service()
 
 
 @lru_cache(maxsize=1)

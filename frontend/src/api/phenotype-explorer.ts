@@ -10,6 +10,16 @@ import { stringify } from "@/util/object";
 import { apiUrl, request } from "./";
 import { getAutocomplete } from "./search";
 
+/**
+ * Hidden A/B switch: a `?engine=ducksim|semsimian` param in the page URL routes all semsim API
+ * calls to that backend (default semsimian). Lets us compare engines in place. The backend exposes
+ * this as a hidden `engine` query param on the semsim endpoints.
+ */
+const engineParam = (): { engine?: string } => {
+  const engine = new URLSearchParams(window.location.search).get("engine");
+  return engine ? { engine } : {};
+};
+
 /** similarity metrics available for comparison */
 export const metricOptions = [
   { id: "ancestor_information_content", label: "Ancestor Information Content" },
@@ -91,7 +101,11 @@ export const compareSetToSet = async (
 
   /** make query */
   const url = `${apiUrl}/semsim/compare`;
-  const response = await request<TermSetPairwiseSimilarity>(url, {}, options);
+  const response = await request<TermSetPairwiseSimilarity>(
+    url,
+    engineParam(),
+    options,
+  );
 
   /** map matches into nicer format */
   const mapMatches = (
@@ -253,7 +267,11 @@ export const compareSetToSets = async (
 
   /** make query */
   const url = `${apiUrl}/semsim/multicompare`;
-  const response = await request<SemsimSearchResult[]>(url, {}, options);
+  const response = await request<SemsimSearchResult[]>(
+    url,
+    engineParam(),
+    options,
+  );
   return processMulticompareResponse(response, subjects, objectSets);
 };
 
@@ -272,7 +290,11 @@ export const compareSetToGroup = async (
 
   /** make query */
   const url = `${apiUrl}/semsim/search`;
-  const response = await request<SemsimSearchResult[]>(url, {}, options);
+  const response = await request<SemsimSearchResult[]>(
+    url,
+    engineParam(),
+    options,
+  );
 
   /** get high level data */
   let summary = response.map((match) => ({

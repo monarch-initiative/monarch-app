@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import APIRouter, Path, Query
 
 from monarch_py.api.additional_models import (
@@ -8,7 +10,10 @@ from monarch_py.api.additional_models import (
     SemsimMultiCompareRequest,
     SemsimDirectionality,
 )
-from monarch_py.api.config import semsimian, solr
+from monarch_py.api.config import semsim_service, solr
+
+# Hidden A/B-testing param: ?engine=ducksim|semsimian overrides the default similarity backend.
+EngineParam = Query(default=None, include_in_schema=False, title="Similarity backend override")
 from monarch_py.api.utils.similarity_utils import parse_similarity_prefix
 from monarch_py.datamodels.category_enums import AssociationPredicate, EntityCategory
 from monarch_py.datamodels.model import SearchResults
@@ -47,6 +52,7 @@ def _compare(
     subjects: str = Path(..., title="List of subjects for comparison"),
     objects: str = Path(..., title="List of objects for comparison"),
     metric: SemsimMetric = Query(SemsimMetric.ANCESTOR_INFORMATION_CONTENT, title="Similarity metric to use"),
+    engine: Optional[str] = EngineParam,
 ):
     """Get pairwise similarity between two sets of terms
 
@@ -66,7 +72,7 @@ def _compare(
         metric: {metric}
     """
     )
-    results = semsimian().compare(
+    results = semsim_service(engine).compare(
         subjects=subjects.split(","),
         objects=objects.split(","),
         metric=metric,
@@ -75,7 +81,7 @@ def _compare(
 
 
 @router.post("/compare")
-def _post_compare(request: SemsimCompareRequest):
+def _post_compare(request: SemsimCompareRequest, engine: Optional[str] = EngineParam):
     """
         Pairwise similarity between two sets of terms <br>
         <br>
@@ -88,12 +94,14 @@ def _post_compare(request: SemsimCompareRequest):
     }
     </pre>
     """
-    return semsimian().compare(subjects=request.subjects, objects=request.objects, metric=request.metric)
+    return semsim_service(engine).compare(
+        subjects=request.subjects, objects=request.objects, metric=request.metric
+    )
 
 
 # add a multicompare post endpoint
 @router.post("/multicompare")
-def _post_multicompare(request: SemsimMultiCompareRequest):
+def _post_multicompare(request: SemsimMultiCompareRequest, engine: Optional[str] = EngineParam):
     """
         Pairwise similarity between two sets of terms <br>
         <br>
@@ -117,7 +125,7 @@ def _post_multicompare(request: SemsimMultiCompareRequest):
     }
     </pre>
     """
-    return semsimian().multi_compare(request)
+    return semsim_service(engine).multi_compare(request)
 
 
 @router.get("/search/{termset}/{group}")
@@ -129,6 +137,7 @@ def _search(
         SemsimDirectionality.BIDIRECTIONAL, title="Directionality of the search"
     ),
     limit: int = Query(default=10, ge=1, le=50),
+    engine: Optional[str] = EngineParam,
 ):
     """Search for terms in a termset
 
@@ -142,14 +151,14 @@ def _search(
         List[str]: List of matching terms
     """
     terms = [term.strip() for term in termset.split(",")]
-    results = semsimian().search(
+    results = semsim_service(engine).search(
         termset=terms, prefix=parse_similarity_prefix(group), metric=metric, directionality=directionality, limit=limit
     )
     return results
 
 
 @router.post("/search")
-def _post_search(request: SemsimSearchRequest):
+def _post_search(request: SemsimSearchRequest, engine: Optional[str] = EngineParam):
     """
         Search for terms in a termset <br>
         <br>
@@ -163,7 +172,7 @@ def _post_search(request: SemsimSearchRequest):
     }
     </pre>
     """
-    return semsimian().search(
+    return semsim_service(engine).search(
         termset=request.termset,
         prefix=parse_similarity_prefix(request.group.value),
         metric=request.metric,
