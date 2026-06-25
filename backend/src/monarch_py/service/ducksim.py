@@ -74,25 +74,42 @@ class Ducksim:
 
     # ---- setup ----------------------------------------------------------
 
+    def _baked(self, name):
+        """True if the attached source carries a pre-built ducksim table — so we skip the runtime
+        build and just read it (shared via the OS page cache). Built by tools/bake_ducksim.py."""
+        try:
+            return self.con.execute(
+                "SELECT count(*) FROM duckdb_tables() WHERE database_name = 'src' AND table_name = ?",
+                [name]).fetchone()[0] > 0
+        except Exception:
+            return False
+
     def _define_closure(self, source_sql, predicates):
         preds = _quote_list(predicates)
         self.con.execute(f"CREATE VIEW _clo AS SELECT s, o FROM ({source_sql}) WHERE p IN ({preds})")
-        self.con.execute("""
-            CREATE TABLE _ic AS
-            WITH n AS (SELECT count(DISTINCT o) AS nn FROM _clo)
-            SELECT o AS term, -log2(count(*)::DOUBLE / (SELECT nn FROM n)) AS ic
-            FROM _clo GROUP BY o
-        """)
-        self.n = self.con.execute("SELECT count(DISTINCT o) FROM _clo").fetchone()[0]
+        if self._baked("ducksim_ic"):
+            self.con.execute("CREATE VIEW _ic AS SELECT term, ic FROM src.ducksim_ic")
+        else:
+            self.con.execute("""
+                CREATE TABLE _ic AS
+                WITH n AS (SELECT count(DISTINCT o) AS nn FROM _clo)
+                SELECT o AS term, -log2(count(*)::DOUBLE / (SELECT nn FROM n)) AS ic
+                FROM _clo GROUP BY o
+            """)
+        # N (distinct objects) == one row per term in _ic — cheap either way, no closure rescan
+        self.n = self.con.execute("SELECT count(*) FROM _ic").fetchone()[0]
         self.has_search = False
 
     def _define_associations(self, assoc_sql):
         self.con.execute(f"CREATE VIEW _assoc AS {assoc_sql}")
-        self.con.execute("""
-            CREATE TABLE _esize AS
-            SELECT a.entity, count(DISTINCT c.o) AS pn
-            FROM _assoc a JOIN _clo c ON c.s = a.phenotype GROUP BY a.entity
-        """)
+        if self._baked("ducksim_esize"):
+            self.con.execute("CREATE VIEW _esize AS SELECT entity, pn FROM src.ducksim_esize")
+        else:
+            self.con.execute("""
+                CREATE TABLE _esize AS
+                SELECT a.entity, count(DISTINCT c.o) AS pn
+                FROM _assoc a JOIN _clo c ON c.s = a.phenotype GROUP BY a.entity
+            """)
         self.has_search = True
 
     # ---- labels ---------------------------------------------------------

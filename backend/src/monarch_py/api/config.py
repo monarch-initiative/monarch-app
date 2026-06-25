@@ -22,6 +22,9 @@ class Settings(BaseModel):
     # via the hidden ?engine=ducksim API param.
     monarch_kg_duckdb_path: str = os.getenv("MONARCH_KG_DUCKDB_PATH", "/data/monarch-kg.duckdb")
     semsim_backend: str = os.getenv("SEMSIM_BACKEND", "semsimian")
+    # per-worker DuckDB caps (tunable for memory-constrained hosts: workers x limit must fit RAM)
+    ducksim_memory_limit: str = os.getenv("DUCKSIM_MEMORY_LIMIT", "2GB")
+    ducksim_threads: int = int(os.getenv("DUCKSIM_THREADS", "2"))
 
     monarch_kg_version: str = os.getenv("MONARCH_KG_VERSION", "unknown")
     monarch_api_version: str = os.getenv("MONARCH_API_VERSION", "unknown")
@@ -52,7 +55,11 @@ def ducksim():
     from monarch_py.service.ducksim import Ducksim
     from monarch_py.service.ducksim_service import DucksimService
 
-    engine = Ducksim.from_duckdb(settings.monarch_kg_duckdb_path)
+    engine = Ducksim.from_duckdb(
+        settings.monarch_kg_duckdb_path,
+        memory_limit=settings.ducksim_memory_limit,
+        threads=settings.ducksim_threads,
+    )
     return DucksimService(engine=engine, entity_implementation=solr())
 
 
