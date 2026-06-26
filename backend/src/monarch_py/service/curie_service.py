@@ -7,7 +7,7 @@ __all__ = [
 ]
 
 # Use the Monarch-specific clone of the "merged" prefixmap context. Aligns
-# with kg-phenio's normalize step 
+# with kg-phenio's normalize step
 # (https://github.com/linkml/prefixmaps/blob/main/src/prefixmaps/data/merged.monarch.csv)
 converter = load_converter("merged.monarch")
 converter.add_prefix("GARD", "https://rarediseases.info.nih.gov/diseases/")
