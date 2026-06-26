@@ -1958,9 +1958,29 @@ Alias: id</p>
 </thead>
 <tbody>
 <tr>
-<td><a href="../Association/">Association</a></td>
-<td>Post-closurize edge shape (association + subject/object closure expansion)</td>
+<td><a href="../Node/">Node</a></td>
+<td>UI container class extending Entity with additional information</td>
 <td>no</td>
+</tr>
+<tr>
+<td><a href="../SearchResult/">SearchResult</a></td>
+<td></td>
+<td>no</td>
+</tr>
+<tr>
+<td><a href="../GridCellData/">GridCellData</a></td>
+<td>Data for a cell in the grid</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><a href="../ExpandedAssociation/">ExpandedAssociation</a></td>
+<td>Association decorated with app-computed expansions returned by the API: Expan...</td>
+<td>no</td>
+</tr>
+<tr>
+<td><a href="../GridColumnEntity/">GridColumnEntity</a></td>
+<td>A column entity in the grid (case, disease, ortholog, etc</td>
+<td>yes</td>
 </tr>
 <tr>
 <td><a href="../HistoPheno/">HistoPheno</a></td>
@@ -1978,28 +1998,23 @@ Alias: id</p>
 <td>yes</td>
 </tr>
 <tr>
-<td><a href="../ExpandedAssociation/">ExpandedAssociation</a></td>
-<td>Association decorated with app-computed expansions returned by the API: Expan...</td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../Mapping/">Mapping</a></td>
-<td>A minimal class to hold a SSSOM mapping</td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../CaseEntity/">CaseEntity</a></td>
-<td>A case (patient) in the matrix</td>
+<td><a href="../Qualifier/">Qualifier</a></td>
+<td>A qualifier key-value pair for an association</td>
 <td>yes</td>
 </tr>
 <tr>
-<td><a href="../ExpandedCurie/">ExpandedCurie</a></td>
-<td>A curie bundled along with its expanded url</td>
+<td><a href="../HistoBin/">HistoBin</a></td>
+<td></td>
 <td>no</td>
 </tr>
 <tr>
-<td><a href="../Qualifier/">Qualifier</a></td>
-<td>A qualifier key-value pair for an association</td>
+<td><a href="../Association/">Association</a></td>
+<td>Post-closurize edge shape (association + subject/object closure expansion)</td>
+<td>no</td>
+</tr>
+<tr>
+<td><a href="../HistoPhenoBin/">HistoPhenoBin</a></td>
+<td>A body system category for grouping phenotypes</td>
 <td>yes</td>
 </tr>
 <tr>
@@ -2008,23 +2023,8 @@ Alias: id</p>
 <td>no</td>
 </tr>
 <tr>
-<td><a href="../DirectionalAssociation/">DirectionalAssociation</a></td>
-<td>An association that gives it's direction relative to a specified entity</td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../GridColumnEntity/">GridColumnEntity</a></td>
-<td>A column entity in the grid (case, disease, ortholog, etc</td>
-<td>yes</td>
-</tr>
-<tr>
 <td><a href="../CasePhenotypeCellData/">CasePhenotypeCellData</a></td>
 <td>Data for a single case-phenotype cell in the matrix</td>
-<td>yes</td>
-</tr>
-<tr>
-<td><a href="../HistoPhenoBin/">HistoPhenoBin</a></td>
-<td>A body system category for grouping phenotypes</td>
 <td>yes</td>
 </tr>
 <tr>
@@ -2033,8 +2033,8 @@ Alias: id</p>
 <td>yes</td>
 </tr>
 <tr>
-<td><a href="../Node/">Node</a></td>
-<td>UI container class extending Entity with additional information</td>
+<td><a href="../DirectionalAssociation/">DirectionalAssociation</a></td>
+<td>An association that gives it's direction relative to a specified entity</td>
 <td>no</td>
 </tr>
 <tr>
@@ -2043,23 +2043,23 @@ Alias: id</p>
 <td>yes</td>
 </tr>
 <tr>
-<td><a href="../GridCellData/">GridCellData</a></td>
-<td>Data for a cell in the grid</td>
-<td>yes</td>
-</tr>
-<tr>
 <td><a href="../Entity/">Entity</a></td>
 <td>Post-closurize node shape (entity + closure expansion + per-predicate aggrega...</td>
 <td>no</td>
 </tr>
 <tr>
-<td><a href="../SearchResult/">SearchResult</a></td>
-<td></td>
+<td><a href="../CaseEntity/">CaseEntity</a></td>
+<td>A case (patient) in the matrix</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><a href="../Mapping/">Mapping</a></td>
+<td>A minimal class to hold a SSSOM mapping</td>
 <td>no</td>
 </tr>
 <tr>
-<td><a href="../HistoBin/">HistoBin</a></td>
-<td></td>
+<td><a href="../ExpandedCurie/">ExpandedCurie</a></td>
+<td>A curie bundled along with its expanded url</td>
 <td>no</td>
 </tr>
 </tbody>
