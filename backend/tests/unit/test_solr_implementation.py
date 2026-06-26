@@ -21,6 +21,65 @@ def test_get_counterpart_entities_limit():
         assert mock_get_associations.call_args_list[0].kwargs["limit"] == 1000
 
 
+def test_deduplicate_entities_by_id():
+    """_deduplicate_entities keeps one entry per id, preserving first-seen order."""
+    entities = [
+        Entity(id="HGNC:3603", name="FBN1", category="biolink:Gene"),
+        Entity(id="HGNC:3603", name="FBN1", category="biolink:Gene"),
+        Entity(id="HGNC:1234", name="OTHER", category="biolink:Gene"),
+    ]
+    result = SolrImplementation._deduplicate_entities(entities)
+    assert [e.id for e in result] == ["HGNC:3603", "HGNC:1234"]
+
+
+def test_get_entity_deduplicates_causal_genes():
+    """The same causal gene asserted by multiple sources should appear once in causal_gene."""
+    solr_doc = {
+        "id": "MONDO:0007947",
+        "category": "biolink:Disease",
+        "name": "Marfan syndrome",
+        "provided_by": "phenio_nodes",
+    }
+
+    def causes_association(source):
+        return ExpandedAssociation(
+            id=f"uuid-{source}",
+            agent_type="not_provided",
+            knowledge_level="knowledge_assertion",
+            subject="HGNC:3603",
+            subject_label="FBN1",
+            subject_category="biolink:Gene",
+            predicate="biolink:causes",
+            object="MONDO:0007947",
+            object_label="Marfan syndrome",
+            object_category="biolink:Disease",
+            primary_knowledge_source=source,
+        )
+
+    # FBN1 asserted by both ClinGen and OMIM -> two associations, one gene.
+    associations = AssociationResults(
+        items=[causes_association("infores:clingen"), causes_association("infores:omim")],
+        limit=20,
+        offset=0,
+        total=2,
+    )
+
+    with (
+        patch("monarch_py.implementations.solr.solr_implementation.SolrService") as mock_solr_cls,
+        patch.object(SolrImplementation, "get_associations", return_value=associations),
+        patch.object(SolrImplementation, "_get_cross_species_term_clique", return_value=None),
+        patch.object(SolrImplementation, "_get_node_hierarchy", return_value=None),
+        patch.object(SolrImplementation, "get_association_counts") as mock_counts,
+        patch.object(SolrImplementation, "_get_mapped_entities", return_value=[]),
+    ):
+        mock_solr_cls.return_value.get.return_value = solr_doc
+        mock_counts.return_value.items = []
+
+        node = SolrImplementation().get_entity("MONDO:0007947", extra=True)
+
+    assert [g.id for g in node.causal_gene] == ["HGNC:3603"]
+
+
 def test_get_generic_entity_grid_accepts_multiple_row_categories():
     """get_generic_entity_grid should accept row_assoc_categories as a list."""
     mock_entity = MagicMock()

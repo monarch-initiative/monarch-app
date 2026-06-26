@@ -153,8 +153,10 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             )
             if mode_of_inheritance_associations is not None and len(mode_of_inheritance_associations.items) == 1:
                 entity.inheritance = self._get_counterpart_entity(mode_of_inheritance_associations.items[0], entity)
-            # Get causal gene
-            entity.causal_gene = [
+            # Get causal gene. The same gene->disease causal edge can be asserted by
+            # multiple sources (e.g. OMIM + ClinGen), yielding multiple associations
+            # for the same gene; dedupe by entity id so it isn't shown twice.
+            entity.causal_gene = self._deduplicate_entities(
                 self._get_counterpart_entity(association, entity)
                 for association in self.get_associations(
                     object=id,
@@ -162,9 +164,9 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                     predicate=[AssociationPredicate.CAUSES],
                     category=[AssociationCategory.CAUSAL_GENE_TO_DISEASE_ASSOCIATION],
                 ).items
-            ]
+            )
         if "biolink:Gene" == entity.category:
-            entity.causes_disease = [
+            entity.causes_disease = self._deduplicate_entities(
                 self._get_counterpart_entity(association, entity)
                 for association in self.get_associations(
                     subject=id,
@@ -172,7 +174,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                     predicate=[AssociationPredicate.CAUSES],
                     category=[AssociationCategory.CAUSAL_GENE_TO_DISEASE_ASSOCIATION],
                 ).items
-            ]
+            )
         node: Node = Node(
             **entity.model_dump(),
             cross_species_term_clique=self._get_cross_species_term_clique(entity),
@@ -218,6 +220,18 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             raise ValueError(f"Association does not contain this_entity: {this_entity.id}")
 
         return entity
+
+    @staticmethod
+    def _deduplicate_entities(entities) -> List[Entity]:
+        """Deduplicate an iterable of entities by id, preserving first-seen order."""
+        seen = set()
+        deduplicated = []
+        for entity in entities:
+            if entity.id in seen:
+                continue
+            seen.add(entity.id)
+            deduplicated.append(entity)
+        return deduplicated
 
     def get_counterpart_entities(
         self,
