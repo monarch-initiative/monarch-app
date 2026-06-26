@@ -13,6 +13,7 @@ shared ancestors; Phenodigm = sqrt(Resnik·Jaccard); termset score = bidirection
 
 from __future__ import annotations
 
+import math
 from statistics import mean
 
 import duckdb
@@ -48,6 +49,14 @@ class Ducksim:
 
     def __init__(self, con: duckdb.DuckDBPyConnection):
         self.con = con
+
+    def _read(self, sql, params=None):
+        """Run a read query on a fresh cursor off the shared connection. The endpoints are sync, so
+        FastAPI runs them in a threadpool; a single connection serializes on its lock, whereas a
+        cursor per call lets concurrent requests execute in parallel. Cursors share the same DuckDB
+        instance, so they see the attached `src` db and the `_clo`/`_ic`/`_assoc`/`_esize` objects."""
+        cur = self.con.cursor()
+        return cur.execute(sql, params) if params is not None else cur.execute(sql)
 
     @classmethod
     def from_duckdb(cls, path, *, closure_table="closure", subject_col="subject_id",
@@ -97,8 +106,6 @@ class Ducksim:
                 SELECT o AS term, -log2(count(*)::DOUBLE / (SELECT nn FROM n)) AS ic
                 FROM _clo GROUP BY o
             """)
-        # N (distinct objects) == one row per term in _ic — cheap either way, no closure rescan
-        self.n = self.con.execute("SELECT count(*) FROM _ic").fetchone()[0]
         self.has_search = False
 
     def _define_associations(self, assoc_sql):
@@ -122,14 +129,14 @@ class Ducksim:
         ids = [i for i in _dedupe(i for i in ids if i)]
         if not ids:
             return {}
-        rows = self.con.execute(
+        rows = self._read(
             f"SELECT id, name FROM src.nodes WHERE id IN (SELECT unnest([{_quote_list(ids)}]::VARCHAR[]))"
         ).fetchall()
         return {i: name for i, name in rows}
 
     def entity_phenotypes(self, entity_id) -> list:
         """The phenotype terms associated with an entity (for reranking / per-result similarity)."""
-        return [r[0] for r in self.con.execute(
+        return [r[0] for r in self._read(
             "SELECT DISTINCT phenotype FROM _assoc WHERE entity = ?", [entity_id]).fetchall()]
 
     # ---- pairwise detail ------------------------------------------------
@@ -138,7 +145,7 @@ class Ducksim:
         """For every (subject term × object term): jaccard, resnik, phenodigm, and the MICA
         (max-IC shared ancestor). One DuckDB query. Pairs with no shared ancestor are omitted."""
         S, O = _quote_list(subjects), _quote_list(objects)
-        rows = self.con.execute(f"""
+        rows = self._read(f"""
             WITH s_terms(t) AS (SELECT unnest([{S}]::VARCHAR[])),
                  o_terms(t) AS (SELECT unnest([{O}]::VARCHAR[])),
                  allterms AS (SELECT t FROM s_terms UNION SELECT t FROM o_terms),
@@ -188,6 +195,8 @@ class Ducksim:
                 score = d[metric_key] if d else 0.0
                 if score > best_score:
                     best_score, best_t, best_d = score, tgt, d
+            if best_score < 0.0:  # no targets at all — no match, score floors at 0
+                best_score = 0.0
             s_id, o_id = (best_t, src) if swapped else (src, best_t)
             result[src] = {"match_target": best_t, "score": best_score,
                            "match_subsumer": best_d["mica"] if best_d else None,
@@ -195,10 +204,15 @@ class Ducksim:
         return result
 
     def termset_pairwise_similarity(self, subjects, objects,
-                                    metric="ancestor_information_content") -> dict:
+                                    metric="ancestor_information_content",
+                                    direction="bidirectional") -> dict:
         """Full pairwise-similarity result (matches semsimian's TermSetPairwiseSimilarity shape):
-        per-term best matches with subsumer + similarity detail, the bidirectional average_score,
-        and best_score. Labels are filled in by the caller/service via `labels()`."""
+        per-term best matches with subsumer + similarity detail, the average_score, and best_score.
+        Labels are filled in by the caller/service via `labels()`.
+
+        `direction` selects how the per-term best matches collapse into average_score, so it lines up
+        with the search ranking: subject_to_object = mean over subject terms, object_to_subject =
+        mean over object terms, bidirectional = mean of the two."""
         mk = _METRIC_ALIASES.get(metric.lower())
         if mk is None:
             raise ValueError(f"unknown metric {metric!r}")
@@ -208,7 +222,16 @@ class Ducksim:
         object_bm = self._best_matches(obj, subj, pairs, mk, swapped=True)
         s_scores = [bm["score"] for bm in subject_bm.values()]
         o_scores = [bm["score"] for bm in object_bm.values()]
-        average_score = (mean(s_scores) + mean(o_scores)) / 2 if s_scores and o_scores else 0.0
+        s_avg = mean(s_scores) if s_scores else 0.0
+        o_avg = mean(o_scores) if o_scores else 0.0
+        average_by_direction = {
+            "subject_to_object": s_avg,
+            "object_to_subject": o_avg,
+            "bidirectional": (s_avg + o_avg) / 2 if s_scores and o_scores else 0.0,
+        }
+        if direction not in average_by_direction:
+            raise ValueError(f"unknown direction {direction!r}")
+        average_score = average_by_direction[direction]
         best_score = max(s_scores + o_scores, default=0.0)
         return {"metric": metric, "average_score": average_score, "best_score": best_score,
                 "subject_termset": subj, "object_termset": obj,
@@ -268,14 +291,14 @@ class Ducksim:
         FROM dir1 d1 FULL OUTER JOIN dir2 d2 ON d1.e = d2.e
         ORDER BY score DESC, entity {lim}
         """
-        return self.con.execute(sql).fetchall()
+        return self._read(sql).fetchall()
 
     def full_search(self, query_terms, *, limit=10, metric="ancestor_information_content",
                     prefix=None, direction="bidirectional"):
         """Score every entity (optionally restricted to CURIE `prefix`) by the termset
         best-match-average — one DuckDB query. Matches semsimian's Full mode; more accurate than
         Hybrid (no Jaccard prefilter dropping true-top entities)."""
-        ef = f"WHERE split_part(entity, ':', 1) = '{prefix}'" if prefix else ""
+        ef = f"WHERE split_part(entity, ':', 1) = {_quote_list([prefix])}" if prefix else ""
         return self._termset_search(query_terms, metric, ef, limit, direction)
 
     def hybrid_search(self, query_terms, *, limit=10, metric="ancestor_information_content",
@@ -286,7 +309,6 @@ class Ducksim:
         flat = self._flat(query_terms, prefix)
         if not flat:
             return []
-        import math
         scores = sorted({j for _, j in flat}, reverse=True)
         k = max(math.ceil((limit / 1000.0) * len(scores)), limit)
         cutoff = scores[k] if k < len(scores) else scores[-1]
@@ -297,8 +319,8 @@ class Ducksim:
     def _flat(self, query_terms, prefix):
         """Cheap set-Jaccard ranking of all (prefix) entities vs the query — Hybrid's candidate gen."""
         Q = _quote_list(set(query_terms))
-        pfilter = f"AND split_part(i.entity, ':', 1) = '{prefix}'" if prefix else ""
-        return self.con.execute(f"""
+        pfilter = f"AND split_part(i.entity, ':', 1) = {_quote_list([prefix])}" if prefix else ""
+        return self._read(f"""
             WITH qt(t) AS (SELECT unnest([{Q}]::VARCHAR[])),
                  q_anc AS (SELECT DISTINCT c.o AS a FROM _clo c JOIN qt ON c.s = qt.t),
                  qn AS (SELECT count(*) AS n FROM q_anc),

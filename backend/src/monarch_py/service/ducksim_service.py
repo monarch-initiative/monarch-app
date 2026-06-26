@@ -62,8 +62,10 @@ class DucksimService:
             termset, limit=limit, metric=str(metric), prefix=prefix, direction=direction)
         results = []
         for entity_id, score in ranked:
+            # entity phenotypes are the subjects, the query termset the objects — same orientation as
+            # the ranking, so `direction` makes similarity.average_score match the ranked `score`.
             comparison = self.engine.termset_pairwise_similarity(
-                self.engine.entity_phenotypes(entity_id), termset, str(metric))
+                self.engine.entity_phenotypes(entity_id), termset, str(metric), direction=direction)
             results.append(SemsimSearchResult(
                 subject=self.entity_implementation.get_entity(entity_id, extra=False),
                 score=score,

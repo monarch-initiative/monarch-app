@@ -31,9 +31,43 @@ def _mini_kg(tmp_path):
     return str(p)
 
 
+def _bake(path):
+    """Add the precompute tables koza's semsim-prep bakes into monarch-kg.duckdb, so the engine
+    reads them instead of building at startup. SQL mirrors tools/bake_ducksim.py."""
+    con = duckdb.connect(path)
+    con.execute("""CREATE TABLE semsim_ic AS
+        WITH clo AS (SELECT object_id AS o FROM closure WHERE predicate_id = 'rdfs:subClassOf'),
+             n AS (SELECT count(DISTINCT o) AS nn FROM clo)
+        SELECT o AS term, -log2(count(*)::DOUBLE / (SELECT nn FROM n)) AS ic FROM clo GROUP BY o""")
+    con.execute("""CREATE TABLE semsim_closure_size AS
+        SELECT e.subject AS entity, count(DISTINCT c.object_id) AS size
+        FROM edges e JOIN closure c ON c.subject_id = e.object GROUP BY e.subject""")
+    con.close()
+    return path
+
+
 @pytest.fixture
 def engine(tmp_path):
     return Ducksim.from_duckdb(_mini_kg(tmp_path))
+
+
+def test_baked_tables_used(tmp_path):
+    """The production path: engine reads pre-baked semsim_ic / semsim_closure_size and yields the
+    same scores as the runtime-built path (locks the 'same closure ⇒ same IC' invariant)."""
+    eng = Ducksim.from_duckdb(_bake(_mini_kg(tmp_path)))
+    assert eng._baked("semsim_ic") and eng._baked("semsim_closure_size")
+    # IC read from the baked table — identical to the built-path result
+    assert eng.termset_pairwise_similarity(["A1"], ["A1"])["average_score"] == pytest.approx(math.log2(5))
+    # search uses the baked closure-size table
+    assert [e for e, _ in eng.hybrid_search(["A1"], limit=3, prefix="E")][:2] == ["E:1", "E:3"]
+
+
+def test_compare_empty_objects_scores_zero(engine):
+    """No object terms ⇒ no matches; scores floor at 0.0 (no -1.0 sentinel leak)."""
+    r = engine.termset_pairwise_similarity(["A1"], [])
+    assert r["average_score"] == pytest.approx(0.0)
+    assert r["best_score"] == pytest.approx(0.0)
+    assert all(bm["score"] >= 0.0 for bm in r["subject_best_matches"].values())
 
 
 def test_self_compare_is_avg_ic(engine):
@@ -68,3 +102,16 @@ def test_directionality(engine):
     o2s = dict(engine.full_search(["A1"], prefix="E", direction="object_to_subject"))
     assert s2o["E:3"] == pytest.approx(math.log2(5) / 2)
     assert o2s["E:3"] == pytest.approx(math.log2(5))
+
+
+def test_termset_direction_matches_search(engine):
+    """compare's average_score honors `direction` and equals the directional search ranking for the
+    same entity (E:3 phenotypes {A1,B1} as subjects, query {A1} as objects — the search orientation)."""
+    s2o = engine.termset_pairwise_similarity(["A1", "B1"], ["A1"], direction="subject_to_object")
+    o2s = engine.termset_pairwise_similarity(["A1", "B1"], ["A1"], direction="object_to_subject")
+    assert s2o["average_score"] == pytest.approx(math.log2(5) / 2)
+    assert o2s["average_score"] == pytest.approx(math.log2(5))
+    assert s2o["average_score"] == pytest.approx(
+        dict(engine.full_search(["A1"], prefix="E", direction="subject_to_object"))["E:3"])
+    assert o2s["average_score"] == pytest.approx(
+        dict(engine.full_search(["A1"], prefix="E", direction="object_to_subject"))["E:3"])
