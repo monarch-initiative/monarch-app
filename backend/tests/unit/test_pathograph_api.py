@@ -84,7 +84,7 @@ def test_disease_returns_passthrough_graph(client, artifact_dir):
     ids = {n["id"] for n in body["nodes"]}
     assert "MONDO:0000001::Mechanism" in ids
     assert "HP:0001250" in ids  # phenotype anchored on its HP id
-    assert "GENE:hgnc:111" in ids  # gene anchored on its HGNC id
+    assert "HGNC:111" in ids  # gene anchored on its (real) HGNC curie
 
 
 def test_gene_merges_and_boxes_shared_nodes(client, artifact_dir):
@@ -96,7 +96,7 @@ def test_gene_merges_and_boxes_shared_nodes(client, artifact_dir):
 
     nodes = {n["id"]: n for n in body["nodes"]}
     # Shared gene and phenotype collapse to one node carrying both disorders.
-    assert sorted(nodes["GENE:hgnc:111"]["sources"]) == ["MONDO:0000001", "MONDO:0000002"]
+    assert sorted(nodes["HGNC:111"]["sources"]) == ["MONDO:0000001", "MONDO:0000002"]
     assert sorted(nodes["HP:0001250"]["sources"]) == ["MONDO:0000001", "MONDO:0000002"]
     # Same-named free-text mechanisms stay separate (one lane per disorder).
     assert "MONDO:0000001::Mechanism" in nodes
@@ -125,7 +125,7 @@ def test_hgnc_uppercase_resolves(client, artifact_dir):
 
 
 def test_upstream_error_returns_502(client, artifact_dir, monkeypatch):
-    def boom(name):
+    async def boom(_client, name):
         raise route.HTTPException(status_code=502, detail="upstream down")
 
     monkeypatch.setattr(route, "_read_artifact", boom)

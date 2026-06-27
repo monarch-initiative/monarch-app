@@ -44,7 +44,7 @@
       >
         <defs>
           <marker
-            id="pathograph-arrow"
+            :id="arrowId"
             viewBox="0 0 10 10"
             refX="9"
             refY="5"
@@ -62,7 +62,7 @@
           :key="`e${i}`"
           :d="edge.path"
           class="edge"
-          marker-end="url(#pathograph-arrow)"
+          :marker-end="`url(#${arrowId})`"
         >
           <title>
             {{ edge.predicate
@@ -116,7 +116,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from "vue";
+import { computed, getCurrentInstance, watch } from "vue";
 import { useRoute } from "vue-router";
 import dagre from "@dagrejs/dagre";
 import type { Node } from "@/api/model";
@@ -133,6 +133,9 @@ const props = defineProps<Props>();
 const route = useRoute();
 
 const DISMECH_HOME = "https://dismech.monarchinitiative.org";
+
+/** unique per-instance SVG marker id (a global id breaks if rendered twice) */
+const arrowId = `pathograph-arrow-${getCurrentInstance()?.uid ?? 0}`;
 
 /**
  * "Source" link target: when a single disorder backs this pathograph (every
@@ -192,12 +195,10 @@ type Point = { x: number; y: number };
 const nodeEntity = (
   node: PathographNode,
 ): { entityId?: string; link?: string } => {
-  if (node.id.startsWith("HP:"))
+  // Phenotype and single-gene nodes are anchored on their real curie (HP:…,
+  // HGNC:…), so they resolve directly to a Monarch node route.
+  if (node.id.startsWith("HP:") || node.id.startsWith("HGNC:"))
     return { entityId: node.id, link: `/${node.id}` };
-  if (node.id.startsWith("GENE:hgnc:")) {
-    const num = node.id.slice("GENE:hgnc:".length);
-    return { entityId: `HGNC:${num}`, link: `/HGNC:${num}` };
-  }
   const termId = (node.meta as Record<string, unknown> | undefined)?.term_id;
   if (typeof termId === "string" && termId.includes(":"))
     return { entityId: termId, link: `/${termId}` };

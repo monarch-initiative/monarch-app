@@ -11,6 +11,7 @@ prod, a local directory while developing against an un-pushed dismech export).
 
 from __future__ import annotations
 
+import asyncio
 import json
 import re
 import threading
@@ -18,7 +19,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-import requests
+import httpx
 from fastapi import APIRouter, HTTPException, Path as PathParam
 
 from monarch_py.api.additional_models import (
@@ -40,20 +41,23 @@ _index_cache: dict[str, tuple[float, dict]] = {}
 _index_lock = threading.Lock()
 
 
-def _read_artifact(name: str) -> str | None:
-    """Read one artifact file by name from the configured base (URL or dir)."""
+async def _read_artifact(client: httpx.AsyncClient, name: str) -> str | None:
+    """Read one artifact file by name from the configured base (URL or dir).
+
+    URL mode fetches over the shared async client (non-blocking); local-dir mode
+    reads from disk. ``name`` can come from the artifact's own index.json
+    (entry["file"]), so local reads are confined to the base directory.
+    """
     base = settings.dismech_pathographs_url
     if base.startswith(("http://", "https://")):
         try:
-            resp = requests.get(f"{base.rstrip('/')}/{name}", timeout=15)
-        except requests.RequestException as e:
+            resp = await client.get(f"{base.rstrip('/')}/{name}")
+        except httpx.HTTPError as e:
             raise HTTPException(status_code=502, detail=f"Failed to fetch {name}: {e}") from e
         if resp.status_code == 404:
             return None
         resp.raise_for_status()
         return resp.text
-    # Local-dir mode: ``name`` can come from the artifact's own index.json
-    # (entry["file"]), so confine the resolved path to the base directory.
     base_dir = Path(base).resolve()
     path = (base_dir / name).resolve()
     if not path.is_relative_to(base_dir):
@@ -69,13 +73,13 @@ def _parse_json(text: str, name: str) -> Any:
         raise HTTPException(status_code=502, detail=f"Pathograph artifact {name} is not valid JSON: {e}") from e
 
 
-def _load_index(name: str) -> dict:
+async def _load_index(client: httpx.AsyncClient, name: str) -> dict:
     """Load and cache a top-level index artifact (index.json or by_gene.json)."""
     with _index_lock:
         cached = _index_cache.get(name)
         if cached and (time.time() - cached[0]) < _INDEX_TTL_SECONDS:
             return cached[1]
-    text = _read_artifact(name)
+    text = await _read_artifact(client, name)
     if text is None:
         raise HTTPException(status_code=502, detail=f"Pathograph artifact {name} is unavailable")
     data = _parse_json(text, name)
@@ -94,8 +98,10 @@ def _anchor_id(node: dict[str, Any]) -> str | None:
     if node.get("node_type") == "phenotype" and meta.get("term_id"):
         return f"HP:{str(meta['term_id']).split(':')[-1]}"
     gene_ids = [gt["id"] for gt in (meta.get("gene_terms") or []) if gt.get("id")]
-    if node.get("node_type") == "genetic" and len(gene_ids) == 1:
-        return f"GENE:{gene_ids[0].lower()}"
+    # Anchor single-gene nodes on the real HGNC curie (e.g. "hgnc:1956" ->
+    # "HGNC:1956") so the id is a resolvable Monarch entity, not a pseudo-curie.
+    if node.get("node_type") == "genetic" and len(gene_ids) == 1 and gene_ids[0].lower().startswith("hgnc:"):
+        return gene_ids[0].upper()
     return None
 
 
@@ -167,20 +173,26 @@ def _merge(graphs: list[tuple[str, str, str | None, dict]]) -> tuple[list[Pathog
     return list(nodes.values()), list(edges.values())
 
 
-def _collect_graphs(mondo_ids: list[str], index: dict) -> list[tuple[str, str, str | None, dict]]:
-    """Load every disorder graph for the given Mondo ids (with name + dismech slug)."""
+async def _collect_graphs(
+    client: httpx.AsyncClient, mondo_ids: list[str], index: dict
+) -> list[tuple[str, str, str | None, dict]]:
+    """Load every disorder graph for the given Mondo ids (with name + dismech slug).
+
+    Disorder files are fetched concurrently — a gene linked to many disorders
+    would otherwise stack one blocking fetch per disorder.
+    """
+    entries = [(mondo, entry) for mondo in mondo_ids for entry in index.get(mondo, [])]
+    texts = await asyncio.gather(*(_read_artifact(client, entry["file"]) for _mondo, entry in entries))
     collected: list[tuple[str, str, str | None, dict]] = []
-    for mondo in mondo_ids:
-        for entry in index.get(mondo, []):
-            text = _read_artifact(entry["file"])
-            if text is None:
-                continue
-            collected.append((mondo, entry.get("name", mondo), entry.get("slug"), _parse_json(text, entry["file"])))
+    for (mondo, entry), text in zip(entries, texts):
+        if text is None:
+            continue
+        collected.append((mondo, entry.get("name", mondo), entry.get("slug"), _parse_json(text, entry["file"])))
     return collected
 
 
 @router.get("/{node_id}")
-def _get_pathograph(
+async def _get_pathograph(
     node_id: str = PathParam(
         title="Disease (MONDO) or gene (HGNC) id to fetch a pathograph for",
         examples=["MONDO:0018923", "HGNC:870"],
@@ -196,25 +208,26 @@ def _get_pathograph(
         raise HTTPException(status_code=400, detail="Invalid node id; expected a CURIE like MONDO:0018923")
 
     upper = node_id.upper()
-    index = _load_index("index.json")
+    async with httpx.AsyncClient(timeout=15) as client:
+        index = await _load_index(client, "index.json")
 
-    if upper.startswith("MONDO:"):
-        if upper not in index:
-            raise HTTPException(status_code=404, detail=f"No pathograph for {upper}")
-        mondo_ids = [upper]
-        category = "disease"
-    elif upper.startswith("HGNC:"):
-        by_gene = _load_index("by_gene.json")
-        mondo_ids = by_gene.get(node_id.lower())
-        if not mondo_ids:
-            raise HTTPException(status_code=404, detail=f"No pathographs reference {upper}")
-        category = "gene"
-    else:
-        raise HTTPException(
-            status_code=404, detail=f"Pathographs are only available for diseases and genes, not {upper}"
-        )
+        if upper.startswith("MONDO:"):
+            if upper not in index:
+                raise HTTPException(status_code=404, detail=f"No pathograph for {upper}")
+            mondo_ids = [upper]
+            category = "disease"
+        elif upper.startswith("HGNC:"):
+            by_gene = await _load_index(client, "by_gene.json")
+            mondo_ids = by_gene.get(node_id.lower())
+            if not mondo_ids:
+                raise HTTPException(status_code=404, detail=f"No pathographs reference {upper}")
+            category = "gene"
+        else:
+            raise HTTPException(
+                status_code=404, detail=f"Pathographs are only available for diseases and genes, not {upper}"
+            )
 
-    graphs = _collect_graphs(mondo_ids, index)
+        graphs = await _collect_graphs(client, mondo_ids, index)
     if not graphs:
         raise HTTPException(status_code=404, detail=f"No pathograph data found for {upper}")
 
