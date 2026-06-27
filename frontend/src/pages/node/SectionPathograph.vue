@@ -29,7 +29,8 @@
         pathograph.category === "disease"
           ? "View this disorder on Dismech"
           : "Explore these disorders on Dismech"
-      }}</AppLink>.
+      }}</AppLink
+      >.
       <AppLink to="https://dismech.monarchinitiative.org/details/"
         >Learn more about Dismech</AppLink
       >.
@@ -332,6 +333,13 @@ type Evidence = {
   supports?: string;
 };
 
+/**
+ * Only allow relative or http(s) hrefs in the hand-built tooltip HTML — never a
+ * javascript:/data: URI, even if the upstream artifact format ever changes.
+ */
+const safeHref = (href: string): string =>
+  /^(\/|https?:\/\/)/i.test(href) ? href : "#";
+
 /** PubMed link for a PMID reference, else no link (plain text) */
 const refUrl = (reference: string): string | undefined =>
   reference.startsWith("PMID:")
@@ -384,7 +392,7 @@ const nodeTooltip = (node: LaidOutNode): string => {
   if (node.entityId)
     parts.push(
       node.link
-        ? `<div style="font-size:0.74rem;margin-bottom:4px"><a href="${esc(node.link)}" target="_blank" rel="noopener noreferrer">${esc(node.entityId)} — open in Monarch ↗</a></div>`
+        ? `<div style="font-size:0.74rem;margin-bottom:4px"><a href="${esc(safeHref(node.link))}" target="_blank" rel="noopener noreferrer">${esc(node.entityId)} — open in Monarch ↗</a></div>`
         : `<div style="font-size:0.74rem;opacity:0.7;margin-bottom:4px;font-family:monospace">${esc(node.entityId)}</div>`,
     );
   if (node.description)
@@ -429,16 +437,6 @@ const nodeTooltip = (node: LaidOutNode): string => {
   margin: 0 0 10px;
   color: $gray;
   font-size: 0.9rem;
-}
-
-.disclaimer {
-  margin: 0 0 12px;
-  padding: 6px 10px;
-  border-left: 3px solid $gray;
-  background: rgba(0, 0, 0, 0.03);
-  color: $gray;
-  font-size: 0.8rem;
-  line-height: 1.35;
 }
 
 .graph-scroll {

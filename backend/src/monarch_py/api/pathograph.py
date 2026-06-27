@@ -52,8 +52,21 @@ def _read_artifact(name: str) -> str | None:
             return None
         resp.raise_for_status()
         return resp.text
-    path = Path(base) / name
+    # Local-dir mode: ``name`` can come from the artifact's own index.json
+    # (entry["file"]), so confine the resolved path to the base directory.
+    base_dir = Path(base).resolve()
+    path = (base_dir / name).resolve()
+    if not path.is_relative_to(base_dir):
+        raise HTTPException(status_code=400, detail="Invalid artifact path")
     return path.read_text() if path.exists() else None
+
+
+def _parse_json(text: str, name: str) -> Any:
+    """Parse an artifact body, surfacing a corrupt file as a 502 (not a 500)."""
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError as e:
+        raise HTTPException(status_code=502, detail=f"Pathograph artifact {name} is not valid JSON: {e}") from e
 
 
 def _load_index(name: str) -> dict:
@@ -65,7 +78,7 @@ def _load_index(name: str) -> dict:
     text = _read_artifact(name)
     if text is None:
         raise HTTPException(status_code=502, detail=f"Pathograph artifact {name} is unavailable")
-    data = json.loads(text)
+    data = _parse_json(text, name)
     with _index_lock:
         _index_cache[name] = (time.time(), data)
     return data
@@ -162,7 +175,7 @@ def _collect_graphs(mondo_ids: list[str], index: dict) -> list[tuple[str, str, s
             text = _read_artifact(entry["file"])
             if text is None:
                 continue
-            collected.append((mondo, entry.get("name", mondo), entry.get("slug"), json.loads(text)))
+            collected.append((mondo, entry.get("name", mondo), entry.get("slug"), _parse_json(text, entry["file"])))
     return collected
 
 
@@ -217,7 +230,6 @@ def _get_pathograph(
         nodes=nodes,
         edges=edges,
         sources=[
-            PathographSource(id=mondo, name=name, url=_disorder_url(slug))
-            for mondo, (name, slug) in sources.items()
+            PathographSource(id=mondo, name=name, url=_disorder_url(slug)) for mondo, (name, slug) in sources.items()
         ],
     )

@@ -117,3 +117,23 @@ def test_unknown_ids_return_404(client, artifact_dir):
 def test_malformed_curie_returns_400(client, artifact_dir):
     r = client.get("/v3/api/pathograph/FOO:bar-baz")
     assert r.status_code == 400
+
+
+def test_hgnc_uppercase_resolves(client, artifact_dir):
+    # by_gene.json keys are lowercase (hgnc:111); the endpoint accepts HGNC:111.
+    assert client.get("/v3/api/pathograph/HGNC:111").status_code == 200
+
+
+def test_upstream_error_returns_502(client, artifact_dir, monkeypatch):
+    def boom(name):
+        raise route.HTTPException(status_code=502, detail="upstream down")
+
+    monkeypatch.setattr(route, "_read_artifact", boom)
+    assert client.get("/v3/api/pathograph/MONDO:0000001").status_code == 502
+
+
+def test_malformed_artifact_json_returns_502(client, artifact_dir):
+    # Corrupt the index so json parsing fails — should be a clean 502, not a 500.
+    (artifact_dir / "index.json").write_text("{not valid json")
+    r = client.get("/v3/api/pathograph/MONDO:0000001")
+    assert r.status_code == 502
