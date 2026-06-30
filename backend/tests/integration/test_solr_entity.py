@@ -15,7 +15,10 @@ def test_entity():
 
 
 def test_hierarchy_limit():
+    # Verify node_hierarchy returns the full sub_class set (fetched with limit=1000), not a low cap.
+    # Needs an entity with many direct subclasses; "nervous system disorder" has ~70 (the previous
+    # entity, "human disease" / MONDO:0700096, was refactored down to 4 direct children).
     si = SolrImplementation()
-    entity = si.get_entity("MONDO:0700096", extra=True)
+    entity = si.get_entity("MONDO:0005071", extra=True)
     assert entity.node_hierarchy
     assert len(entity.node_hierarchy.sub_classes) > 20

@@ -32,7 +32,9 @@ class DucksimService:
     # ---- compare --------------------------------------------------------
 
     def compare(
-        self, subjects: List[str], objects: List[str],
+        self,
+        subjects: List[str],
+        objects: List[str],
         metric: SemsimMetric = SemsimMetric.ANCESTOR_INFORMATION_CONTENT,
     ) -> TermSetPairwiseSimilarity:
         result = self.engine.termset_pairwise_similarity(subjects, objects, str(metric))
@@ -43,11 +45,13 @@ class DucksimService:
         results = []
         for object_set in request.object_sets:
             comparison = self.compare(request.subjects, object_set.phenotypes, request.metric)
-            results.append(SemsimSearchResult(
-                subject=Entity(id=object_set.id, name=object_set.label),
-                score=comparison.average_score,
-                similarity=comparison,
-            ))
+            results.append(
+                SemsimSearchResult(
+                    subject=Entity(id=object_set.id, name=object_set.label),
+                    score=comparison.average_score,
+                    similarity=comparison,
+                )
+            )
         return results
 
     # ---- search ---------------------------------------------------------
@@ -64,8 +68,7 @@ class DucksimService:
         # The engine ranks and enriches the whole page in a constant number of DuckDB queries (no
         # per-result round-trips); the loop below is pure in-memory model shaping.
         direction = directionality.value if hasattr(directionality, "value") else str(directionality)
-        page = self.engine.search(
-            termset, limit=limit, metric=str(metric), prefix=prefix, direction=direction)
+        page = self.engine.search(termset, limit=limit, metric=str(metric), prefix=prefix, direction=direction)
         if not page:
             return []
         # all-DuckDB hydration of result entities from the KG `nodes` table — no external entity store
@@ -103,22 +106,34 @@ class DucksimService:
         """Every term/entity id a comparison's model will reference (for one batched label lookup)."""
         ids = set(r["subject_termset"]) | set(r["object_termset"])
         for bm in list(r["subject_best_matches"].values()) + list(r["object_best_matches"].values()):
-            ids.update([bm["match_target"], bm["match_subsumer"],
-                        bm["similarity"]["subject_id"], bm["similarity"]["object_id"]])
+            ids.update(
+                [
+                    bm["match_target"],
+                    bm["match_subsumer"],
+                    bm["similarity"]["subject_id"],
+                    bm["similarity"]["object_id"],
+                ]
+            )
         return {i for i in ids if i}
 
     def _to_model(self, r: dict, lab: dict) -> TermSetPairwiseSimilarity:
         def best_match(source: str, bm: dict) -> BestMatch:
             sim = bm["similarity"]
             return BestMatch(
-                match_source=source, match_source_label=lab.get(source),
-                match_target=bm["match_target"], match_target_label=lab.get(bm["match_target"]),
+                match_source=source,
+                match_source_label=lab.get(source),
+                match_target=bm["match_target"],
+                match_target_label=lab.get(bm["match_target"]),
                 score=bm["score"],
-                match_subsumer=bm["match_subsumer"], match_subsumer_label=lab.get(bm["match_subsumer"]),
+                match_subsumer=bm["match_subsumer"],
+                match_subsumer_label=lab.get(bm["match_subsumer"]),
                 similarity=TermPairwiseSimilarity(
-                    subject_id=sim["subject_id"], subject_label=lab.get(sim["subject_id"]),
-                    object_id=sim["object_id"], object_label=lab.get(sim["object_id"]),
-                    ancestor_id=sim["ancestor_id"], ancestor_label=lab.get(sim["ancestor_id"]),
+                    subject_id=sim["subject_id"],
+                    subject_label=lab.get(sim["subject_id"]),
+                    object_id=sim["object_id"],
+                    object_label=lab.get(sim["object_id"]),
+                    ancestor_id=sim["ancestor_id"],
+                    ancestor_label=lab.get(sim["ancestor_id"]),
                     # metric scores ride through as extra fields (model allows extra)
                     jaccard_similarity=sim["jaccard_similarity"],
                     ancestor_information_content=sim["ancestor_information_content"],
@@ -131,5 +146,7 @@ class DucksimService:
             object_termset={i: TermInfo(id=i, label=lab.get(i)) for i in r["object_termset"]},
             subject_best_matches={s: best_match(s, bm) for s, bm in r["subject_best_matches"].items()},
             object_best_matches={o: best_match(o, bm) for o, bm in r["object_best_matches"].items()},
-            average_score=r["average_score"], best_score=r["best_score"], metric=r["metric"],
+            average_score=r["average_score"],
+            best_score=r["best_score"],
+            metric=r["metric"],
         )

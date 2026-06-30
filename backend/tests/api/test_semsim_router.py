@@ -114,8 +114,11 @@ def test_post_search(mock_search):
 
     assert response.status_code == status.HTTP_200_OK
     mock_search.assert_called_once_with(
-        termset=["HP:123", "HP:456"], prefix=group.name, metric=metric,
-        directionality=directionality, limit=limit,
+        termset=["HP:123", "HP:456"],
+        prefix=group.name,
+        metric=metric,
+        directionality=directionality,
+        limit=limit,
     )
 
 

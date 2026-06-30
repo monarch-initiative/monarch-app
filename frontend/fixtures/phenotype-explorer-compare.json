@@ -16,61 +16,59 @@
     }
   },
   "subject_best_matches": {
-    "MP:0002169": {
-      "match_source": "MP:0002169",
-      "match_source_label": "no abnormal phenotype detected",
-      "match_target": "HP:0004325",
-      "match_target_label": "Decreased body weight",
-      "score": 2.0279795431440797,
-      "match_subsumer": null,
-      "match_subsumer_label": null,
-      "similarity": {
-        "subject_id": "MP:0002169",
-        "subject_label": null,
-        "subject_source": null,
-        "object_id": "HP:0004325",
-        "object_label": null,
-        "object_source": null,
-        "ancestor_id": "UPHENO:0001003",
-        "ancestor_label": "taxon specific phenotype",
-        "ancestor_source": null,
-        "object_information_content": null,
-        "subject_information_content": null,
-        "ancestor_information_content": 2.0279795431440797,
-        "jaccard_similarity": 0.06666666666666667,
-        "cosine_similarity": null,
-        "dice_similarity": null,
-        "phenodigm_score": 0.3676936717018738
-      },
-      "score_metric": "ancestor_information_content"
-    },
     "MP:0010771": {
       "match_source": "MP:0010771",
       "match_source_label": "integument phenotype",
       "match_target": "HP:0004325",
       "match_target_label": "Decreased body weight",
-      "score": 2.0446461061640195,
-      "match_subsumer": null,
-      "match_subsumer_label": null,
+      "score": 2.0645616988040345,
+      "match_subsumer": "UPHENO:0002949",
+      "match_subsumer_label": "multicellular organism phenotype",
       "similarity": {
         "subject_id": "MP:0010771",
-        "subject_label": null,
+        "subject_label": "integument phenotype",
         "subject_source": null,
         "object_id": "HP:0004325",
-        "object_label": null,
+        "object_label": "Decreased body weight",
         "object_source": null,
         "ancestor_id": "UPHENO:0002949",
         "ancestor_label": "multicellular organism phenotype",
         "ancestor_source": null,
         "object_information_content": null,
         "subject_information_content": null,
-        "ancestor_information_content": 2.0446461061640195,
+        "ancestor_information_content": 2.0645616988040345,
         "jaccard_similarity": 0.21621621621621623,
         "cosine_similarity": null,
         "dice_similarity": null,
-        "phenodigm_score": 0.6648952132298774
-      },
-      "score_metric": "ancestor_information_content"
+        "phenodigm_score": 0.668125526125392
+      }
+    },
+    "MP:0002169": {
+      "match_source": "MP:0002169",
+      "match_source_label": "no abnormal phenotype detected",
+      "match_target": "HP:0004325",
+      "match_target_label": "Decreased body weight",
+      "score": 2.049643051112686,
+      "match_subsumer": "UPHENO:0001003",
+      "match_subsumer_label": "taxon specific phenotype",
+      "similarity": {
+        "subject_id": "MP:0002169",
+        "subject_label": "no abnormal phenotype detected",
+        "subject_source": null,
+        "object_id": "HP:0004325",
+        "object_label": "Decreased body weight",
+        "object_source": null,
+        "ancestor_id": "UPHENO:0001003",
+        "ancestor_label": "taxon specific phenotype",
+        "ancestor_source": null,
+        "object_information_content": null,
+        "subject_information_content": null,
+        "ancestor_information_content": 2.049643051112686,
+        "jaccard_similarity": 0.06666666666666667,
+        "cosine_similarity": null,
+        "dice_similarity": null,
+        "phenodigm_score": 0.36965236381521904
+      }
     }
   },
   "object_best_matches": {
@@ -79,31 +77,30 @@
       "match_source_label": "Decreased body weight",
       "match_target": "MP:0010771",
       "match_target_label": "integument phenotype",
-      "score": 2.0446461061640195,
-      "match_subsumer": null,
-      "match_subsumer_label": null,
+      "score": 2.0645616988040345,
+      "match_subsumer": "UPHENO:0002949",
+      "match_subsumer_label": "multicellular organism phenotype",
       "similarity": {
-        "subject_id": "HP:0004325",
-        "subject_label": null,
+        "subject_id": "MP:0010771",
+        "subject_label": "integument phenotype",
         "subject_source": null,
-        "object_id": "MP:0010771",
-        "object_label": null,
+        "object_id": "HP:0004325",
+        "object_label": "Decreased body weight",
         "object_source": null,
         "ancestor_id": "UPHENO:0002949",
         "ancestor_label": "multicellular organism phenotype",
         "ancestor_source": null,
         "object_information_content": null,
         "subject_information_content": null,
-        "ancestor_information_content": 2.0446461061640195,
+        "ancestor_information_content": 2.0645616988040345,
         "jaccard_similarity": 0.21621621621621623,
         "cosine_similarity": null,
         "dice_similarity": null,
-        "phenodigm_score": 0.6648952132298774
-      },
-      "score_metric": "ancestor_information_content"
+        "phenodigm_score": 0.668125526125392
+      }
     }
   },
-  "average_score": 2.0404794654090344,
-  "best_score": 2.0446461061640195,
-  "metric": "AncestorInformationContent"
+  "average_score": 2.060832036881197,
+  "best_score": 2.0645616988040345,
+  "metric": "ancestor_information_content"
 }

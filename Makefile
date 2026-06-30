@@ -103,9 +103,9 @@ docs: install-backend fetch-docs docs/Data-Model
 ### Data/Fixtures ###
 
 .PHONY: fixtures
-fixtures: 
-	@echo "Generating fixtures and data..."
-	$(RUN) python ../scripts/generate_fixtures.py --all-fixtures
+fixtures:
+	@echo "Generating fixtures and data (semsim via SEMSIM_BACKEND, default ducksim)..."
+	$(RUN) env SEMSIM_BACKEND=$${SEMSIM_BACKEND:-ducksim} python ../scripts/generate_fixtures.py --all-fixtures
 	make format
 
 
