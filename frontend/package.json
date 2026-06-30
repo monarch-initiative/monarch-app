@@ -12,6 +12,7 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@dagrejs/dagre": "^3.0.0",
     "@duckdb/duckdb-wasm": "^1.28.0",
     "@floating-ui/dom": "^1.6.3",
     "@fortawesome/fontawesome-svg-core": "^6.5.1",

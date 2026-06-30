@@ -31,6 +31,18 @@ class Settings(BaseModel):
         "yes",
     )
 
+    # Base for the dismech pathograph artifact (index.json, by_gene.json,
+    # MONDO_<id>.json). Defaults to the published GitHub Pages location; point
+    # at a local directory while developing against an un-pushed dismech export:
+    #   DISMECH_PATHOGRAPHS_URL=/path/to/dismech/pathographs make dev-api
+    dismech_pathographs_url: str = os.getenv(
+        "DISMECH_PATHOGRAPHS_URL", "https://dismech.monarchinitiative.org/pathographs"
+    )
+
+    # Base for dismech's human-facing disorder pages, used to deep-link each
+    # contributing disorder back to its dismech page (pages/disorders/<slug>.html).
+    dismech_site_url: str = os.getenv("DISMECH_SITE_URL", "https://dismech.monarchinitiative.org")
+
 
 settings = Settings()
 
