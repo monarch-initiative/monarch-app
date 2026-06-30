@@ -539,7 +539,7 @@ export interface NodeRelationship {
     /** The human-readable label of the relation, resolved from the KG */
     relation_label?: string,
     /** The counterpart entity in the relationship */
-    related_entity?: Entity,
+    related_entity: Entity,
 }
 
 

@@ -554,7 +554,7 @@ class NodeRelationship(ConfiguredBaseModel):
     """
     relation: Optional[str] = Field(default=None, description="""The original relation/predicate CURIE connecting a node to a related entity (e.g. an RO term such as RO:0004003)""")
     relation_label: Optional[str] = Field(default=None, description="""The human-readable label of the relation, resolved from the KG""")
-    related_entity: Optional[Entity] = Field(default=None, description="""The counterpart entity in the relationship""")
+    related_entity: Entity = Field(default=..., description="""The counterpart entity in the relationship""")
 
 
 class CrossSpeciesTermClique(ConfiguredBaseModel):

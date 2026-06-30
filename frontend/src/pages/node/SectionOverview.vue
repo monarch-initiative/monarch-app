@@ -66,8 +66,8 @@
         >
           <AppFlex align-h="left">
             <AppNodeBadge
-              v-for="(entity, i) in group.entities"
-              :key="i"
+              v-for="entity in group.entities"
+              :key="entity.id"
               :node="entity"
             />
           </AppFlex>
@@ -209,8 +209,8 @@
         >
           <AppFlex align-h="left">
             <AppNodeBadge
-              v-for="(entity, i) in group.entities"
-              :key="i"
+              v-for="entity in group.entities"
+              :key="entity.id"
               :node="entity"
             />
           </AppFlex>
@@ -279,11 +279,18 @@ const relationshipGroups = computed(() => {
   const groups = new Map<string, { label: string; entities: Entity[] }>();
   for (const rel of node.node_relationships ?? []) {
     if (!rel.related_entity) continue;
+    // Group by relation (stable + unique per RO term); fall back to the CURIE
+    // only as a grouping key, never as a user-facing title.
     const key = rel.relation_label || rel.relation || "Related to";
-    // Capitalize the first letter for a tidy section title.
-    const label = key.charAt(0).toUpperCase() + key.slice(1);
-    if (!groups.has(key)) groups.set(key, { label, entities: [] });
-    groups.get(key)?.entities.push(rel.related_entity);
+    // Show a human label; avoid surfacing a raw RO CURIE if the KG had no label.
+    const rawLabel = rel.relation_label || "Related entity";
+    const label = rawLabel.charAt(0).toUpperCase() + rawLabel.slice(1);
+    let group = groups.get(key);
+    if (!group) {
+      group = { label, entities: [] };
+      groups.set(key, group);
+    }
+    group.entities.push(rel.related_entity);
   }
   return [...groups.values()];
 });

@@ -124,6 +124,8 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         "RO:0004029",  # disease has feature -> disease
         "RO:0014001",  # disease has infectious agent -> organism taxon
     )
+    # Inverse index for stable display ordering; computed once at class definition.
+    MONDO_HEADER_RELATION_ORDER = {relation: index for index, relation in enumerate(MONDO_HEADER_RELATIONS)}
 
     def solr_is_available(self) -> bool:
         """Check if the Solr instance is available"""
@@ -258,6 +260,9 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         """
         is_disease = "biolink:Disease" == this_entity.category
         # Disease is always the subject of these Mondo associations.
+        # The limit is applied by Solr before the curated-relation filter below, so an
+        # overflow could silently drop curated edges; warn if we ever hit the cap.
+        fetch_limit = 500
         associations = self.get_associations(
             subject=[this_entity.id] if is_disease else None,
             object=[this_entity.id] if not is_disease else None,
@@ -265,29 +270,43 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             primary_knowledge_source=["infores:mondo"],
             subject_category=None if is_disease else [EntityCategory.DISEASE],
             direct=True,
-            limit=500,
+            limit=fetch_limit,
         ).items
+        if len(associations) == fetch_limit:
+            logger.warning(
+                f"_get_node_relationships hit the {fetch_limit}-association fetch cap for {this_entity.id}; "
+                "some curated Mondo header relations may be truncated."
+            )
 
         # Keep only curated relations, ordered per MONDO_HEADER_RELATIONS.
-        relation_order = {relation: index for index, relation in enumerate(self.MONDO_HEADER_RELATIONS)}
+        relation_order = self.MONDO_HEADER_RELATION_ORDER
         associations = [a for a in associations if (a.original_predicate or a.predicate) in relation_order]
         associations.sort(key=lambda a: relation_order[a.original_predicate or a.predicate])
 
         relationships: List[NodeRelationship] = []
         relation_label_cache: dict = {}
+        seen: set = set()
         for association in associations:
             relation = association.original_predicate or association.predicate
             if relation not in relation_label_cache:
                 relation_entity = self.get_entity(relation, extra=False)
                 relation_label_cache[relation] = relation_entity.name if relation_entity is not None else None
             counterpart = self._get_counterpart_entity(association, this_entity)
-            # Carry the counterpart's taxon so non-human genes show their species in the UI
+            # Mondo may assert the same relation->counterpart from multiple rows; show it once.
+            if (relation, counterpart.id) in seen:
+                continue
+            seen.add((relation, counterpart.id))
+            # Carry the counterpart's taxon so non-human genes show their species in the UI.
+            # Only overwrite when the association supplies taxon data, so a real taxon already
+            # on the counterpart's Solr document isn't clobbered with None.
             if this_entity.id == association.subject:
-                counterpart.in_taxon = association.object_taxon
-                counterpart.in_taxon_label = association.object_taxon_label
+                if association.object_taxon:
+                    counterpart.in_taxon = association.object_taxon
+                    counterpart.in_taxon_label = association.object_taxon_label
             else:
-                counterpart.in_taxon = association.subject_taxon
-                counterpart.in_taxon_label = association.subject_taxon_label
+                if association.subject_taxon:
+                    counterpart.in_taxon = association.subject_taxon
+                    counterpart.in_taxon_label = association.subject_taxon_label
             relationships.append(
                 NodeRelationship(
                     relation=relation,
@@ -296,7 +315,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                 )
             )
         return relationships
-      
+
     @staticmethod
     def _deduplicate_entities(entities) -> List[Entity]:
         """Deduplicate an iterable of entities by id, preserving first-seen order."""

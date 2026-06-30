@@ -220,6 +220,9 @@ classes:
     - relation
     - relation_label
     - related_entity
+    slot_usage:
+      related_entity:
+        required: true
   CrossSpeciesTermClique:
     description: A grouping of species-specific terms (HP, MP, ZP) under a common
       cross-species parent (UPHENO/UBERON), with associations between them.

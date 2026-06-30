@@ -211,6 +211,27 @@ def test_get_node_relationships_orders_by_curated_sequence():
         relationships = SolrImplementation()._get_node_relationships(disease)
 
     assert [r.relation for r in relationships] == ["RO:0004003", "RO:0014001"]
+
+
+def test_get_node_relationships_dedupes_same_relation_and_counterpart():
+    """The same relation->counterpart asserted by multiple rows is surfaced once."""
+    disease = Entity(id="MONDO:1010417", name="d", category="biolink:Disease")
+    # Two associations, same relation (RO:0004003) and same gene, different row ids.
+    first = _mondo_related_to_association(id="row-1")
+    duplicate = _mondo_related_to_association(id="row-2")
+    associations = AssociationResults(items=[first, duplicate], limit=500, offset=0, total=2)
+    ro_term = Entity(id="RO:0004003", name="has material basis in germline mutation in", category="biolink:NamedThing")
+
+    with (
+        patch.object(SolrImplementation, "get_associations", return_value=associations),
+        patch.object(SolrImplementation, "get_entity", return_value=ro_term),
+    ):
+        relationships = SolrImplementation()._get_node_relationships(disease)
+
+    assert len(relationships) == 1
+    assert relationships[0].related_entity.id == "NCBIGene:281783"
+
+
 def test_deduplicate_entities_by_id():
     """_deduplicate_entities keeps one entry per id, preserving first-seen order."""
     entities = [
