@@ -181,10 +181,9 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                     predicate=[AssociationPredicate.CAUSES],
                     category=[AssociationCategory.CAUSAL_GENE_TO_DISEASE_ASSOCIATION],
                 ).items
-            ]
+            )
             # Mondo disease->X related_to associations (RO original_predicate)
             entity.node_relationships = self._get_node_relationships(entity)
-            )
         if "biolink:Gene" == entity.category:
             entity.causes_disease = self._deduplicate_entities(
                 self._get_counterpart_entity(association, entity)
@@ -194,10 +193,9 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                     predicate=[AssociationPredicate.CAUSES],
                     category=[AssociationCategory.CAUSAL_GENE_TO_DISEASE_ASSOCIATION],
                 ).items
-            ]
+            )
             # Mondo gene<-disease related_to associations (RO original_predicate)
             entity.node_relationships = self._get_node_relationships(entity)
-            )
         node: Node = Node(
             **entity.model_dump(),
             cross_species_term_clique=self._get_cross_species_term_clique(entity),
