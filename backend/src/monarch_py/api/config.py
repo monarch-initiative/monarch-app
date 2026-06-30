@@ -8,6 +8,16 @@ from monarch_py.implementations.spacy.spacy_implementation import SpacyImplement
 from monarch_py.service.semsim_service import SemsimianService
 
 
+def _int_env(name: str, default: int) -> int:
+    """Parse an int env var, falling back to `default` on missing/non-integer values.
+    Avoids crashing the whole API worker at import time if e.g. DUCKSIM_THREADS is set
+    to a non-integer."""
+    try:
+        return int(os.getenv(name, default))
+    except (TypeError, ValueError):
+        return default
+
+
 class Settings(BaseModel):
     solr_host: str = os.getenv("SOLR_HOST") if os.getenv("SOLR_HOST") else "127.0.0.1"
     solr_port: str = os.getenv("SOLR_PORT") if os.getenv("SOLR_PORT") else 8983
@@ -24,7 +34,7 @@ class Settings(BaseModel):
     semsim_backend: str = os.getenv("SEMSIM_BACKEND", "semsimian")
     # per-worker DuckDB caps (tunable for memory-constrained hosts: workers x limit must fit RAM)
     ducksim_memory_limit: str = os.getenv("DUCKSIM_MEMORY_LIMIT", "2GB")
-    ducksim_threads: int = int(os.getenv("DUCKSIM_THREADS", "2"))
+    ducksim_threads: int = _int_env("DUCKSIM_THREADS", 2)
 
     monarch_kg_version: str = os.getenv("MONARCH_KG_VERSION", "unknown")
     monarch_api_version: str = os.getenv("MONARCH_API_VERSION", "unknown")

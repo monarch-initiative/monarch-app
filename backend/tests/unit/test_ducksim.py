@@ -32,14 +32,16 @@ def _mini_kg(tmp_path):
 
 
 def _bake(path):
-    """Add the precompute tables koza's semsim-prep bakes into monarch-kg.duckdb, so the engine
-    reads them instead of building at startup. SQL mirrors tools/bake_ducksim.py."""
+    """Add the precompute tables koza's information-content op bakes into monarch-kg.duckdb, so the
+    engine reads them instead of building at startup. Table names MUST match what the engine's
+    _baked() checks (information_content / closure_size); SQL mirrors koza's information-content
+    operation (and the engine's own runtime-build fallback)."""
     con = duckdb.connect(path)
-    con.execute("""CREATE TABLE semsim_ic AS
+    con.execute("""CREATE TABLE information_content AS
         WITH clo AS (SELECT object_id AS o FROM closure WHERE predicate_id = 'rdfs:subClassOf'),
              n AS (SELECT count(DISTINCT o) AS nn FROM clo)
         SELECT o AS term, -log2(count(*)::DOUBLE / (SELECT nn FROM n)) AS ic FROM clo GROUP BY o""")
-    con.execute("""CREATE TABLE semsim_closure_size AS
+    con.execute("""CREATE TABLE closure_size AS
         SELECT e.subject AS entity, count(DISTINCT c.object_id) AS size
         FROM edges e JOIN closure c ON c.subject_id = e.object GROUP BY e.subject""")
     con.close()
@@ -52,10 +54,10 @@ def engine(tmp_path):
 
 
 def test_baked_tables_used(tmp_path):
-    """The production path: engine reads pre-baked semsim_ic / semsim_closure_size and yields the
+    """The production path: engine reads pre-baked information_content / closure_size and yields the
     same scores as the runtime-built path (locks the 'same closure ⇒ same IC' invariant)."""
     eng = Ducksim.from_duckdb(_bake(_mini_kg(tmp_path)))
-    assert eng._baked("semsim_ic") and eng._baked("semsim_closure_size")
+    assert eng._baked("information_content") and eng._baked("closure_size")
     # IC read from the baked table — identical to the built-path result
     assert eng.termset_pairwise_similarity(["A1"], ["A1"])["average_score"] == pytest.approx(math.log2(5))
     # search uses the baked closure-size table

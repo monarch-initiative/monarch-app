@@ -52,9 +52,12 @@ class Ducksim:
 
     def _read(self, sql, params=None):
         """Run a read query on a fresh cursor off the shared connection. The endpoints are sync, so
-        FastAPI runs them in a threadpool; a single connection serializes on its lock, whereas a
-        cursor per call lets concurrent requests execute in parallel. Cursors share the same DuckDB
-        instance, so they see the attached `src` db and the `_clo`/`_ic`/`_assoc`/`_esize` objects."""
+        FastAPI runs them in a threadpool; cursors from the same connection still serialize on the
+        connection's internal lock (so intra-worker queries don't truly run in parallel), but a
+        cursor per call keeps concurrent calls from clobbering each other's result state. Real
+        parallelism comes from each uvicorn/gunicorn worker holding its own connection. Cursors
+        share the same DuckDB instance, so they see the attached `src` db and the
+        `_clo`/`_ic`/`_assoc`/`_esize` objects."""
         cur = self.con.cursor()
         return cur.execute(sql, params) if params is not None else cur.execute(sql)
 
@@ -69,9 +72,13 @@ class Ducksim:
         the ontology resident; `memory_limit` caps each worker's buffer pool.
         """
         con = duckdb.connect()
-        con.execute(f"SET memory_limit = '{memory_limit}'")
-        con.execute(f"SET threads = {threads}")
-        con.execute(f"ATTACH '{path}' AS src (READ_ONLY)")
+        # Single-quote-escape values interpolated into SQL (path comes from the
+        # MONARCH_KG_DUCKDB_PATH env var; a quote in it would otherwise break the SQL).
+        safe_mem = memory_limit.replace("'", "''")
+        safe_path = str(path).replace("'", "''")
+        con.execute(f"SET memory_limit = '{safe_mem}'")
+        con.execute(f"SET threads = {int(threads)}")
+        con.execute(f"ATTACH '{safe_path}' AS src (READ_ONLY)")
         self = cls(con)
         self._define_closure(
             f"SELECT {subject_col} AS s, {predicate_col} AS p, {object_col} AS o "
