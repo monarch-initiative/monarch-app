@@ -153,19 +153,13 @@ class Ducksim:
         ).fetchall()
         return {i: name for i, name in rows}
 
-    def entity_phenotypes(self, entity_id) -> list:
-        """The phenotype terms associated with an entity (for reranking / per-result similarity)."""
-        return [r[0] for r in self._read(
-            "SELECT DISTINCT phenotype FROM _assoc WHERE entity = ?", [entity_id]).fetchall()]
-
     def entity_phenotypes_batch(self, entity_ids) -> dict:
-        """{entity -> [phenotype, ...]} for many entities in one query. Lets a whole search page be
-        enriched without a per-entity round-trip (the batched form of `entity_phenotypes`)."""
+        """{entity -> [phenotype, ...]} for many entities in one query — enriches a whole search page
+        without a per-entity round-trip."""
         ids = _dedupe(e for e in entity_ids if e)
         if not ids:
             return {}
-        # ORDER BY for a deterministic, reproducible best-match tie-break (the per-entity
-        # `entity_phenotypes` left phenotype order unspecified, so ties resolved arbitrarily).
+        # ORDER BY for a deterministic, reproducible best-match tie-break.
         rows = self._read(
             f"SELECT DISTINCT entity, phenotype FROM _assoc "
             f"WHERE entity IN (SELECT unnest([{_quote_list(ids)}]::VARCHAR[])) "

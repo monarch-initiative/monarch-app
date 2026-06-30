@@ -117,11 +117,10 @@ def test_negated_associations_excluded(engine):
     """A negated has_phenotype edge never enters the association set, so its entity has no phenotypes
     and is unsearchable. Locks the `negated` filter (try_cast to BOOLEAN — robust to casing / a future
     boolean column), which the rest of the fixture (all-NULL negated) otherwise never exercises."""
-    assert engine.entity_phenotypes("E:4") == []            # only edge is negated
-    assert engine.entity_phenotypes_batch(["E:4"]) == {}    # batched path agrees
+    assert engine.entity_phenotypes_batch(["E:4"]) == {}    # only edge is negated -> no phenotypes
     assert "E:4" not in [e for e, _ in engine.hybrid_search(["A1"], limit=10, prefix="E")]
     # the non-negated entities are unaffected
-    assert engine.entity_phenotypes("E:1") == ["A1"]
+    assert engine.entity_phenotypes_batch(["E:1"]) == {"E:1": ["A1"]}
 
 
 def test_search_hydrates_from_duckdb_without_entity_store(engine):
@@ -142,8 +141,11 @@ def test_batched_search_matches_per_entity_path(engine):
     per-entity termset_pairwise_similarity) — the refactor changed how, not what, is computed."""
     termset, prefix = ["A1", "B1"], "E"
     new = engine.search(termset, limit=5, prefix=prefix)
+    # readable reference: rank, then score each entity on its own (one termset_pairwise_similarity
+    # per entity) instead of the batched single-query path engine.search uses.
+    phenos = engine.entity_phenotypes_batch([e for e, _ in engine.hybrid_search(termset, limit=5, prefix=prefix)])
     ref = [
-        (e, s, engine.termset_pairwise_similarity(sorted(engine.entity_phenotypes(e)), termset))
+        (e, s, engine.termset_pairwise_similarity(sorted(phenos.get(e, [])), termset))
         for e, s in engine.hybrid_search(termset, limit=5, prefix=prefix)
     ]
     assert [e for e, _, _ in new] == [e for e, _, _ in ref]            # same ranking
