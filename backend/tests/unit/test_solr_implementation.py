@@ -10,6 +10,15 @@ from monarch_py.datamodels.model import (
     EntityGridResponse,
     CasePhenotypeMatrixResponse,
 )
+from monarch_py.datamodels.category_enums import EntityCategory
+
+
+@pytest.fixture(autouse=True)
+def _clear_relation_label_cache():
+    """The RO label cache is process-level; clear it so tests don't leak state."""
+    SolrImplementation._relation_label_cache.clear()
+    yield
+    SolrImplementation._relation_label_cache.clear()
 
 
 def test_get_counterpart_entities_limit():
@@ -19,6 +28,216 @@ def test_get_counterpart_entities_limit():
         si.get_counterpart_entities("MONDO:0007947")
         assert mock_get_associations.called
         assert mock_get_associations.call_args_list[0].kwargs["limit"] == 1000
+
+
+# =====================================================================
+# Tests for _get_node_relationships (Mondo disease<->gene related_to)
+# =====================================================================
+
+
+def _mondo_related_to_association(
+    subject="MONDO:1010417",
+    subject_label="myoclonus, GLRA1-related, cattle",
+    original_predicate="RO:0004003",
+    object="NCBIGene:281783",
+    object_label="GLRA1",
+    object_category="biolink:Gene",
+    object_taxon="NCBITaxon:9913",
+    object_taxon_label="Bos taurus",
+    id="uuid-1",
+):
+    return ExpandedAssociation(
+        id=id,
+        agent_type="not_provided",
+        knowledge_level="knowledge_assertion",
+        subject=subject,
+        subject_label=subject_label,
+        subject_category="biolink:Disease",
+        predicate="biolink:related_to",
+        original_predicate=original_predicate,
+        object=object,
+        object_label=object_label,
+        object_category=object_category,
+        object_taxon=object_taxon,
+        object_taxon_label=object_taxon_label,
+        primary_knowledge_source="infores:mondo",
+    )
+
+
+def _mondo_disease_gene_association():
+    return _mondo_related_to_association()
+
+
+def test_get_node_relationships_for_disease_resolves_ro_label():
+    """A disease node should surface its Mondo related_to gene with the RO label from the KG."""
+    disease = Entity(id="MONDO:1010417", name="myoclonus, GLRA1-related, cattle", category="biolink:Disease")
+    associations = AssociationResults(items=[_mondo_disease_gene_association()], limit=100, offset=0, total=1)
+    ro_term = Entity(id="RO:0004003", name="has material basis in germline mutation in", category="biolink:NamedThing")
+
+    with (
+        patch.object(SolrImplementation, "get_associations", return_value=associations) as mock_assoc,
+        patch.object(SolrImplementation, "get_entity", return_value=ro_term),
+    ):
+        relationships = SolrImplementation()._get_node_relationships(disease)
+
+    # Disease is the subject; we query the Mondo related_to edges by subject.
+    kwargs = mock_assoc.call_args.kwargs
+    assert kwargs["subject"] == ["MONDO:1010417"]
+    assert kwargs["object"] is None
+    assert kwargs["primary_knowledge_source"] == ["infores:mondo"]
+
+    assert len(relationships) == 1
+    rel = relationships[0]
+    assert rel.relation == "RO:0004003"
+    assert rel.relation_label == "has material basis in germline mutation in"
+    assert rel.related_entity.id == "NCBIGene:281783"
+    assert rel.related_entity.name == "GLRA1"
+    # Non-human species is carried through so the UI can show it
+    assert rel.related_entity.in_taxon_label == "Bos taurus"
+
+
+def test_get_node_relationships_for_gene_queries_by_object():
+    """A gene node should surface its Mondo related_to disease (counterpart is the subject)."""
+    gene = Entity(id="NCBIGene:281783", name="GLRA1", category="biolink:Gene")
+    associations = AssociationResults(items=[_mondo_disease_gene_association()], limit=100, offset=0, total=1)
+    ro_term = Entity(id="RO:0004003", name="has material basis in germline mutation in", category="biolink:NamedThing")
+
+    with (
+        patch.object(SolrImplementation, "get_associations", return_value=associations) as mock_assoc,
+        patch.object(SolrImplementation, "get_entity", return_value=ro_term),
+    ):
+        relationships = SolrImplementation()._get_node_relationships(gene)
+
+    kwargs = mock_assoc.call_args.kwargs
+    assert kwargs["object"] == ["NCBIGene:281783"]
+    assert kwargs["subject"] is None
+    assert kwargs["subject_category"] == [EntityCategory.DISEASE]
+
+    assert len(relationships) == 1
+    assert relationships[0].related_entity.id == "MONDO:1010417"
+    assert relationships[0].relation_label == "has material basis in germline mutation in"
+
+
+def test_get_node_relationships_caches_ro_label_lookup():
+    """The RO label should be resolved once per distinct relation CURIE."""
+    disease = Entity(id="MONDO:1010417", name="d", category="biolink:Disease")
+    a1 = _mondo_disease_gene_association()
+    a2 = _mondo_disease_gene_association()
+    a2.id = "uuid-2"
+    a2.object = "HGNC:4329"
+    a2.object_label = "GLRB"
+    associations = AssociationResults(items=[a1, a2], limit=100, offset=0, total=2)
+    ro_term = Entity(id="RO:0004003", name="has material basis in germline mutation in", category="biolink:NamedThing")
+
+    with (
+        patch.object(SolrImplementation, "get_associations", return_value=associations),
+        patch.object(SolrImplementation, "get_entity", return_value=ro_term) as mock_get_entity,
+    ):
+        relationships = SolrImplementation()._get_node_relationships(disease)
+
+    assert len(relationships) == 2
+    # Same relation CURIE for both -> only one entity lookup.
+    assert mock_get_entity.call_count == 1
+
+
+def test_get_node_relationships_handles_missing_ro_label():
+    """If the RO term can't be resolved, relation_label is None and the relationship still renders."""
+    disease = Entity(id="MONDO:1010417", name="d", category="biolink:Disease")
+    associations = AssociationResults(items=[_mondo_disease_gene_association()], limit=100, offset=0, total=1)
+
+    with (
+        patch.object(SolrImplementation, "get_associations", return_value=associations),
+        patch.object(SolrImplementation, "get_entity", return_value=None),
+    ):
+        relationships = SolrImplementation()._get_node_relationships(disease)
+
+    assert len(relationships) == 1
+    assert relationships[0].relation == "RO:0004003"
+    assert relationships[0].relation_label is None
+    assert relationships[0].related_entity.id == "NCBIGene:281783"
+
+
+def test_get_node_relationships_filters_to_curated_relations():
+    """Mondo related_to relations outside the curated allowlist are dropped from the header."""
+    disease = Entity(id="MONDO:0018310", name="Langerhans cell histiocytosis", category="biolink:Disease")
+    location = _mondo_related_to_association(  # RO:0004026 disease has location -> cell (curated)
+        subject="MONDO:0018310",
+        original_predicate="RO:0004026",
+        object="CL:0000453",
+        object_label="Langerhans cell",
+        object_category="biolink:Cell",
+        object_taxon=None,
+        object_taxon_label=None,
+        id="loc",
+    )
+    characteristic = _mondo_related_to_association(  # RO:0000053 has characteristic -> PATO (excluded)
+        subject="MONDO:0018310",
+        original_predicate="RO:0000053",
+        object="PATO:0000389",
+        object_label="acute",
+        object_category="biolink:NamedThing",
+        object_taxon=None,
+        object_taxon_label=None,
+        id="char",
+    )
+    associations = AssociationResults(items=[location, characteristic], limit=500, offset=0, total=2)
+    ro_term = Entity(id="RO:0004026", name="disease has location", category="biolink:NamedThing")
+
+    with (
+        patch.object(SolrImplementation, "get_associations", return_value=associations),
+        patch.object(SolrImplementation, "get_entity", return_value=ro_term),
+    ):
+        relationships = SolrImplementation()._get_node_relationships(disease)
+
+    assert [r.relation for r in relationships] == ["RO:0004026"]
+    assert relationships[0].related_entity.id == "CL:0000453"
+
+
+def test_get_node_relationships_orders_by_curated_sequence():
+    """Relationships are ordered per MONDO_HEADER_RELATIONS regardless of Solr order."""
+    disease = Entity(id="MONDO:1010417", name="d", category="biolink:Disease")
+    # Provided out of order: infectious agent (last) before germline gene (first).
+    agent = _mondo_related_to_association(
+        original_predicate="RO:0014001",
+        object="NCBITaxon:9606",
+        object_label="bug",
+        object_category="biolink:OrganismTaxon",
+        object_taxon=None,
+        object_taxon_label=None,
+        id="agent",
+    )
+    gene = _mondo_related_to_association(original_predicate="RO:0004003", id="gene")
+    associations = AssociationResults(items=[agent, gene], limit=500, offset=0, total=2)
+
+    def fake_get_entity(curie, extra):
+        return Entity(id=curie, name=f"label::{curie}", category="biolink:NamedThing")
+
+    with (
+        patch.object(SolrImplementation, "get_associations", return_value=associations),
+        patch.object(SolrImplementation, "get_entity", side_effect=fake_get_entity),
+    ):
+        relationships = SolrImplementation()._get_node_relationships(disease)
+
+    assert [r.relation for r in relationships] == ["RO:0004003", "RO:0014001"]
+
+
+def test_get_node_relationships_dedupes_same_relation_and_counterpart():
+    """The same relation->counterpart asserted by multiple rows is surfaced once."""
+    disease = Entity(id="MONDO:1010417", name="d", category="biolink:Disease")
+    # Two associations, same relation (RO:0004003) and same gene, different row ids.
+    first = _mondo_related_to_association(id="row-1")
+    duplicate = _mondo_related_to_association(id="row-2")
+    associations = AssociationResults(items=[first, duplicate], limit=500, offset=0, total=2)
+    ro_term = Entity(id="RO:0004003", name="has material basis in germline mutation in", category="biolink:NamedThing")
+
+    with (
+        patch.object(SolrImplementation, "get_associations", return_value=associations),
+        patch.object(SolrImplementation, "get_entity", return_value=ro_term),
+    ):
+        relationships = SolrImplementation()._get_node_relationships(disease)
+
+    assert len(relationships) == 1
+    assert relationships[0].related_entity.id == "NCBIGene:281783"
 
 
 def test_deduplicate_entities_by_id():
