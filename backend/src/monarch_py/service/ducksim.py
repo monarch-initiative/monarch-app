@@ -44,7 +44,11 @@ class Ducksim:
         "SELECT subject AS entity, object AS phenotype FROM src.edges "
         "WHERE category IN ('biolink:GeneToPhenotypicFeatureAssociation',"
         "'biolink:DiseaseToPhenotypicFeatureAssociation') "
-        "AND predicate = 'biolink:has_phenotype' AND (negated IS NULL OR negated = 'False')"
+        "AND predicate = 'biolink:has_phenotype' "
+        # keep everything that isn't explicitly negated. `negated` is a VARCHAR today ('True'/'False'/
+        # NULL), but try_cast-to-BOOLEAN keeps this correct across casing and a future boolean column;
+        # NULL (and any unparseable value) coalesces to false so the row is kept, never silently dropped.
+        "AND NOT coalesce(try_cast(negated AS BOOLEAN), false)"
     )
 
     def __init__(self, con: duckdb.DuckDBPyConnection):

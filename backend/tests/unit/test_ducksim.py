@@ -1,7 +1,7 @@
 """Unit tests for the DuckDB similarity engine + DucksimService, on a tiny synthetic monarch-kg.
 
 Ontology (reflexive subClassOf): A1 < A < R, B1 < B < R.  IC(A1) = -log2(1/5) = log2(5).
-Entities (has_phenotype): E:1->A1, E:2->B1, E:3->{A1,B1}.
+Entities (has_phenotype): E:1->A1, E:2->B1, E:3->{A1,B1}.  E:4->A1 but negated (excluded).
 """
 import math
 
@@ -22,8 +22,9 @@ def _mini_kg(tmp_path):
     con.execute("CREATE TABLE edges(subject VARCHAR, object VARCHAR, category VARCHAR, "
                 "predicate VARCHAR, negated VARCHAR)")
     con.executemany("INSERT INTO edges VALUES (?, ?, "
-                    "'biolink:DiseaseToPhenotypicFeatureAssociation', 'biolink:has_phenotype', NULL)",
-                    [("E:1", "A1"), ("E:2", "B1"), ("E:3", "A1"), ("E:3", "B1")])
+                    "'biolink:DiseaseToPhenotypicFeatureAssociation', 'biolink:has_phenotype', ?)",
+                    [("E:1", "A1", None), ("E:2", "B1", None), ("E:3", "A1", None), ("E:3", "B1", None),
+                     ("E:4", "A1", "True")])  # negated assoc (VARCHAR 'True') — must be excluded
     con.execute("CREATE TABLE nodes(id VARCHAR, name VARCHAR)")
     con.executemany("INSERT INTO nodes VALUES (?, ?)",
                     [("A1", "a one"), ("B1", "b one"), ("A", "a"), ("B", "b"), ("R", "root")])
@@ -104,6 +105,17 @@ def test_directionality(engine):
     o2s = dict(engine.full_search(["A1"], prefix="E", direction="object_to_subject"))
     assert s2o["E:3"] == pytest.approx(math.log2(5) / 2)
     assert o2s["E:3"] == pytest.approx(math.log2(5))
+
+
+def test_negated_associations_excluded(engine):
+    """A negated has_phenotype edge never enters the association set, so its entity has no phenotypes
+    and is unsearchable. Locks the `negated` filter (try_cast to BOOLEAN — robust to casing / a future
+    boolean column), which the rest of the fixture (all-NULL negated) otherwise never exercises."""
+    assert engine.entity_phenotypes("E:4") == []            # only edge is negated
+    assert engine.entity_phenotypes_batch(["E:4"]) == {}    # batched path agrees
+    assert "E:4" not in [e for e, _ in engine.hybrid_search(["A1"], limit=10, prefix="E")]
+    # the non-negated entities are unaffected
+    assert engine.entity_phenotypes("E:1") == ["A1"]
 
 
 def test_search_hydrates_from_duckdb_without_entity_store(engine):
