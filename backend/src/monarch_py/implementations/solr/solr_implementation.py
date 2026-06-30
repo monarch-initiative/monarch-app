@@ -295,15 +295,21 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         seen: set[tuple[str, str]] = set()
         for association in associations:
             relation = association.original_predicate or association.predicate
-            if relation not in self._relation_label_cache:
+            if relation in self._relation_label_cache:
+                relation_label = self._relation_label_cache[relation]
+            else:
                 # A failure resolving one RO term's label must not blank out the whole
                 # relationships block, so degrade to no label rather than propagating.
+                # Only memoize definitive results (resolved name or confirmed-missing);
+                # on a transient error leave the cache empty so a later request retries
+                # instead of being permanently poisoned with None.
                 try:
                     relation_entity = self.get_entity(relation, extra=False)
-                    self._relation_label_cache[relation] = relation_entity.name if relation_entity is not None else None
+                    relation_label = relation_entity.name if relation_entity is not None else None
+                    self._relation_label_cache[relation] = relation_label
                 except Exception:
                     logger.warning(f"Could not resolve label for relation {relation}", exc_info=True)
-                    self._relation_label_cache[relation] = None
+                    relation_label = None
             counterpart = self._get_counterpart_entity(association, this_entity)
             # Mondo may assert the same relation->counterpart from multiple rows; show it once.
             if (relation, counterpart.id) in seen:
@@ -325,7 +331,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             relationships.append(
                 NodeRelationship(
                     relation=relation,
-                    relation_label=self._relation_label_cache[relation],
+                    relation_label=relation_label,
                     related_entity=counterpart,
                 )
             )
