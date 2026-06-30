@@ -15,16 +15,25 @@ from __future__ import annotations
 
 import math
 from statistics import mean
+from typing import NamedTuple
 
 import duckdb
 
 DEFAULT_PREDICATES = ("rdfs:subClassOf",)
 
-# public metric names (semsimian's) -> internal detail key
-_METRIC_ALIASES = {
-    "ancestor_information_content": "resnik", "resnik": "resnik", "ic": "resnik",
-    "jaccard_similarity": "jaccard", "jaccard": "jaccard",
-    "phenodigm_score": "phenodigm", "phenodigm": "phenodigm",
+class _Metric(NamedTuple):
+    """How to score one semsimian metric. (Only Resnik's two fields differ:
+    "ancestor_information_content" is semsimian's name for the Resnik measure.)"""
+
+    detail_key: str  # which per-pair score to read out of an _all_pairs_detail() dict
+    sql_rank: str    # SQL expression over the `scored` CTE's resnik/jaccard columns to rank by
+
+
+# accepted semsimian metric name -> how to score it
+_METRICS = {
+    "ancestor_information_content": _Metric(detail_key="resnik", sql_rank="resnik"),
+    "jaccard_similarity": _Metric(detail_key="jaccard", sql_rank="jaccard"),
+    "phenodigm_score": _Metric(detail_key="phenodigm", sql_rank="sqrt(resnik * jaccard)"),
 }
 
 
@@ -256,21 +265,22 @@ class Ducksim:
         `direction` selects how the per-term best matches collapse into average_score, so it lines up
         with the search ranking: subject_to_object = mean over subject terms, object_to_subject =
         mean over object terms, bidirectional = mean of the two."""
-        mk = _METRIC_ALIASES.get(metric.lower())
-        if mk is None:
+        spec = _METRICS.get(metric.lower())
+        if spec is None:
             raise ValueError(f"unknown metric {metric!r}")
         subj, obj = _dedupe(subjects), _dedupe(objects)
         pairs = self._all_pairs_detail(subj, obj)
-        return self._shape_comparison(subj, obj, pairs, mk, metric, direction)
+        return self._shape_comparison(subj, obj, pairs, spec.detail_key, metric, direction)
 
-    def _shape_comparison(self, subj, obj, pairs, mk, metric, direction) -> dict:
+    def _shape_comparison(self, subj, obj, pairs, detail_key, metric, direction) -> dict:
         """Collapse a prefetched (subject×object) `pairs` detail map into the
         TermSetPairwiseSimilarity shape. Split out from `termset_pairwise_similarity` so search can
         compute `pairs` once for an entire result page (one DuckDB query) and shape every entity from
-        it in memory — no per-entity round-trips. `subj`/`obj` must be pre-deduped, `mk` a resolved
-        metric key; `pairs` may cover more terms than this one entity (extra keys are ignored)."""
-        subject_bm = self._best_matches(subj, obj, pairs, mk, swapped=False)
-        object_bm = self._best_matches(obj, subj, pairs, mk, swapped=True)
+        it in memory — no per-entity round-trips. `subj`/`obj` must be pre-deduped, `detail_key` the
+        per-pair score to rank by; `pairs` may cover more terms than this one entity (extra keys are
+        ignored)."""
+        subject_bm = self._best_matches(subj, obj, pairs, detail_key, swapped=False)
+        object_bm = self._best_matches(obj, subj, pairs, detail_key, swapped=True)
         s_scores = [bm["score"] for bm in subject_bm.values()]
         o_scores = [bm["score"] for bm in object_bm.values()]
         s_avg = mean(s_scores) if s_scores else 0.0
@@ -297,8 +307,8 @@ class Ducksim:
         query->entity (dir2), bidirectional = mean."""
         if not self.has_search:
             raise RuntimeError("search needs associations; pass associations= to from_duckdb")
-        mk = _METRIC_ALIASES.get(metric.lower())
-        if mk is None:
+        spec = _METRICS.get(metric.lower())
+        if spec is None:
             raise ValueError(f"unknown metric {metric!r}")
         score_combiner = {
             "subject_to_object": "coalesce(d1.avg1, 0)",
@@ -308,8 +318,7 @@ class Ducksim:
         if score_combiner is None:
             raise ValueError(f"unknown direction {direction!r}")
         Q = _quote_list(set(query_terms))
-        score_expr = {"resnik": "resnik", "jaccard": "jaccard",
-                      "phenodigm": "sqrt(resnik * jaccard)"}[mk]
+        score_expr = spec.sql_rank
         lim = "" if limit is None else f"LIMIT {int(limit)}"
         sql = f"""
         WITH qterms(q) AS (SELECT unnest([{Q}]::VARCHAR[])),
@@ -393,8 +402,8 @@ class Ducksim:
         `comparison` matches `termset_pairwise_similarity`'s shape (the entity's phenotypes are the
         subjects, the query terms the objects — so `comparison["average_score"]` equals `score`).
         Labels and entity hydration are added by the caller (also batched)."""
-        mk = _METRIC_ALIASES.get(metric.lower())
-        if mk is None:
+        spec = _METRICS.get(metric.lower())
+        if spec is None:
             raise ValueError(f"unknown metric {metric!r}")
         ranker = self.full_search if mode == "full" else self.hybrid_search
         ranked = ranker(query_terms, limit=limit, metric=metric, prefix=prefix, direction=direction)
@@ -410,6 +419,6 @@ class Ducksim:
         out = []
         for entity_id, score in ranked:
             subj = _dedupe(pheno_by_entity.get(entity_id, []))
-            comparison = self._shape_comparison(subj, obj, pairs, mk, metric, direction)
+            comparison = self._shape_comparison(subj, obj, pairs, spec.detail_key, metric, direction)
             out.append((entity_id, score, comparison))
         return out
