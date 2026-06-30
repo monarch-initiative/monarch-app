@@ -2,42 +2,42 @@
   "items": [
     {
       "label": "Disease Model",
-      "count": 240,
+      "count": 246,
       "category": "biolink:GenotypeToDiseaseAssociation",
-      "count_direct": 13,
+      "count_direct": 14,
       "count_with_orthologs": null
     },
     {
       "label": "Disease to Phenotype",
-      "count": 4226,
+      "count": 4247,
       "category": "biolink:DiseaseToPhenotypicFeatureAssociation",
       "count_direct": 0,
       "count_with_orthologs": null
     },
     {
       "label": "Causal Gene",
-      "count": 130,
+      "count": 133,
       "category": "biolink:CausalGeneToDiseaseAssociation",
       "count_direct": 0,
       "count_with_orthologs": null
     },
     {
       "label": "Correlated Gene",
-      "count": 152,
+      "count": 156,
       "category": "biolink:CorrelatedGeneToDiseaseAssociation",
       "count_direct": 0,
       "count_with_orthologs": null
     },
     {
       "label": "Variant to Disease",
-      "count": 483,
+      "count": 701,
       "category": "biolink:VariantToDiseaseAssociation",
       "count_direct": 0,
       "count_with_orthologs": null
     },
     {
       "label": "Medical Action",
-      "count": 10,
+      "count": 6,
       "category": "biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation",
       "count_direct": 0,
       "count_with_orthologs": null
