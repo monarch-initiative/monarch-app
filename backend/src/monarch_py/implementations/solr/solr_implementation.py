@@ -1,7 +1,7 @@
 import logging
 import os
 from dataclasses import dataclass
-from typing import List, Union, Optional
+from typing import ClassVar, Dict, List, Union, Optional
 
 import requests
 from monarch_py.datamodels.model import (
@@ -126,6 +126,11 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
     )
     # Inverse index for stable display ordering; computed once at class definition.
     MONDO_HEADER_RELATION_ORDER = {relation: index for index, relation in enumerate(MONDO_HEADER_RELATIONS)}
+    # Process-level cache of RO relation CURIE -> KG label. RO labels (loaded from
+    # phenio) are stable for the lifetime of a server process, so resolving each
+    # relation once avoids a per-page Solr round-trip. ClassVar keeps it off the
+    # dataclass field list.
+    _relation_label_cache: ClassVar[Dict[str, Optional[str]]] = {}
 
     def solr_is_available(self) -> bool:
         """Check if the Solr instance is available"""
@@ -284,21 +289,22 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         associations.sort(key=lambda a: relation_order[a.original_predicate or a.predicate])
 
         relationships: List[NodeRelationship] = []
-        relation_label_cache: dict = {}
         seen: set = set()
         for association in associations:
             relation = association.original_predicate or association.predicate
-            if relation not in relation_label_cache:
+            if relation not in self._relation_label_cache:
                 relation_entity = self.get_entity(relation, extra=False)
-                relation_label_cache[relation] = relation_entity.name if relation_entity is not None else None
+                self._relation_label_cache[relation] = relation_entity.name if relation_entity is not None else None
             counterpart = self._get_counterpart_entity(association, this_entity)
             # Mondo may assert the same relation->counterpart from multiple rows; show it once.
             if (relation, counterpart.id) in seen:
                 continue
             seen.add((relation, counterpart.id))
-            # Carry the counterpart's taxon so non-human genes show their species in the UI.
-            # Only overwrite when the association supplies taxon data, so a real taxon already
-            # on the counterpart's Solr document isn't clobbered with None.
+            # When this_entity is a Disease the counterpart is a gene/cell/pathogen, so carry
+            # its taxon (object_taxon) through to show non-human species in the UI. Only overwrite
+            # when the association supplies taxon data, so an existing taxon isn't clobbered with
+            # None. The else branch (gene/other node -> disease counterpart) is effectively a
+            # no-op since diseases carry no taxon, but is kept symmetric and defensive.
             if this_entity.id == association.subject:
                 if association.object_taxon:
                     counterpart.in_taxon = association.object_taxon
@@ -310,7 +316,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             relationships.append(
                 NodeRelationship(
                     relation=relation,
-                    relation_label=relation_label_cache[relation],
+                    relation_label=self._relation_label_cache[relation],
                     related_entity=counterpart,
                 )
             )

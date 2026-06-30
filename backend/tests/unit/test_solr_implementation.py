@@ -13,6 +13,14 @@ from monarch_py.datamodels.model import (
 from monarch_py.datamodels.category_enums import EntityCategory
 
 
+@pytest.fixture(autouse=True)
+def _clear_relation_label_cache():
+    """The RO label cache is process-level; clear it so tests don't leak state."""
+    SolrImplementation._relation_label_cache.clear()
+    yield
+    SolrImplementation._relation_label_cache.clear()
+
+
 def test_get_counterpart_entities_limit():
     # Make sure that we don't accidentally end up with the default limit again
     with patch.object(SolrImplementation, "get_associations") as mock_get_associations:

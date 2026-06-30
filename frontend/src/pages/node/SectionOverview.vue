@@ -59,8 +59,8 @@
           KG. Grouped by relation label so the RO term's meaning is revealed.
         -->
         <AppDetail
-          v-for="(group, index) in relationshipGroups"
-          :key="`rel-${index}`"
+          v-for="group in relationshipGroups"
+          :key="`rel-${group.label}`"
           :title="group.label"
           :full="true"
         >
@@ -202,8 +202,8 @@
 
         <!-- Mondo related_to relationships (RO original_predicate), grouped by relation label -->
         <AppDetail
-          v-for="(group, index) in relationshipGroups"
-          :key="`rel-${index}`"
+          v-for="group in relationshipGroups"
+          :key="`rel-${group.label}`"
           :title="group.label"
           :full="true"
         >
@@ -279,12 +279,10 @@ const relationshipGroups = computed(() => {
   const groups = new Map<string, { label: string; entities: Entity[] }>();
   for (const rel of node.node_relationships ?? []) {
     if (!rel.related_entity) continue;
-    // Group by relation (stable + unique per RO term); fall back to the CURIE
-    // only as a grouping key, never as a user-facing title.
+    // Prefer the KG-resolved label; fall back to the relation CURIE so distinct
+    // unlabeled relations stay distinguishable (same chain for key and title).
     const key = rel.relation_label || rel.relation || "Related to";
-    // Show a human label; avoid surfacing a raw RO CURIE if the KG had no label.
-    const rawLabel = rel.relation_label || "Related entity";
-    const label = rawLabel.charAt(0).toUpperCase() + rawLabel.slice(1);
+    const label = key.charAt(0).toUpperCase() + key.slice(1);
     let group = groups.get(key);
     if (!group) {
       group = { label, entities: [] };
