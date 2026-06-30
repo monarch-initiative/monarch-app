@@ -142,11 +142,7 @@ def _pick_canonical_producer(
         # 1. Self-named ingest match. Producer ids may be `hgnc-ingest` (legacy
         # ingests.yaml id) or `infores:hgnc` (post-collapse Release.id).
         self_named = next(
-            (
-                p
-                for p in producers_with
-                if p in {suffix, f"{suffix}-ingest", infores}
-            ),
+            (p for p in producers_with if p in {suffix, f"{suffix}-ingest", infores}),
             None,
         )
         if self_named:
@@ -157,12 +153,7 @@ def _pick_canonical_producer(
         # is either *named* phenio (id `kg-phenio` / `infores:phenio`) or has
         # `infores:phenio` somewhere in its subtree.
         phenio_bearer = next(
-            (
-                p
-                for p in producers_with
-                if p in {"kg-phenio", "infores:phenio"}
-                or "infores:phenio" in by_producer[p]
-            ),
+            (p for p in producers_with if p in {"kg-phenio", "infores:phenio"} or "infores:phenio" in by_producer[p]),
             None,
         )
         if phenio_bearer:
@@ -190,11 +181,7 @@ def resolve_for_edge(
     When no non-monarch aggregator is present (direct ingest), looks the
     primary up across all producers and uses the canonical match.
     """
-    aggregators = [
-        a
-        for a in (aggregator_knowledge_sources or ())
-        if a and a != MONARCH_AGGREGATOR_INFORES
-    ]
+    aggregators = [a for a in (aggregator_knowledge_sources or ()) if a and a != MONARCH_AGGREGATOR_INFORES]
 
     if aggregators:
         # Walk aggregators in declaration order; first one whose producer we

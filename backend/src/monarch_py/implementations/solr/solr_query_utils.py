@@ -312,11 +312,7 @@ def build_grounding_query(text: str) -> SolrQuery:
     # (which includes broad/narrow/related scopes, so a generic label can pull in
     # an entity that's only a parent or sibling of the intended one).
     query.query_fields = (
-        "id^100 "
-        "name_grounding^25 exact_synonym^20 "
-        "name^10 symbol^10 "
-        "full_name_grounding^5 symbol_grounding^5 "
-        "synonym^5"
+        "id^100 name_grounding^25 exact_synonym^20 name^10 symbol^10 full_name_grounding^5 symbol_grounding^5 synonym^5"
     )
     query.def_type = "edismax"
     query.boost = obsolete_unboost(multiplier=0.001)

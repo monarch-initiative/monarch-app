@@ -124,9 +124,25 @@ export interface Entity {
     id: string,
     category?: string,
     name?: string,
-    description?: string,
     xref?: string[],
     synonym?: string[],
+    /** The long form name of an entity */
+    full_name?: string,
+    /** The biolink taxon that the entity is in the closure of. */
+    in_taxon?: string,
+    /** The label of the biolink taxon that the entity is in the closure of. */
+    in_taxon_label?: string,
+    symbol?: string,
+    /** Source file stem injected by koza at load time. */
+    file_source?: string,
+    provided_by?: string,
+    /** The type of the entity (e.g. sequence onotology type for genes etc) */
+    type?: string,
+    iri?: string,
+    description?: string,
+    has_attribute?: string[],
+    /** The biological sex of an individual entity. */
+    has_biological_sex?: string,
     /** An exact synonym for the entity */
     exact_synonym?: string[],
     /** A broader synonym for the entity */
@@ -137,25 +153,9 @@ export interface Entity {
     related_synonym?: string[],
     /** A boolean flag indicating that an entity is no longer considered current or valid. */
     deprecated?: boolean,
-    /** The biolink taxon that the entity is in the closure of. */
-    in_taxon?: string,
-    /** The label of the biolink taxon that the entity is in the closure of. */
-    in_taxon_label?: string,
-    iri?: string,
     same_as?: string[],
     /** A list of subsets that the entity belongs to */
     subsets?: string[],
-    /** Source file stem injected by koza at load time. */
-    file_source?: string,
-    provided_by?: string,
-    /** The long form name of an entity */
-    full_name?: string,
-    symbol?: string,
-    /** The type of the entity (e.g. sequence onotology type for genes etc) */
-    type?: string,
-    has_attribute?: string[],
-    /** The biological sex of an individual entity. */
-    has_biological_sex?: string,
     synonyms?: string,
     has_gene?: string[],
     /** The namespace/prefix portion of this entity's identifier */
@@ -191,8 +191,6 @@ export interface Association {
     aggregator_knowledge_source?: string[],
     /** Describes the level of knowledge expressed in a statement, based on the reasoning or analysis methods used to generate the statement, or the scope or specificity of what the statement expresses to be true. */
     knowledge_level: string,
-    /** used to hold the original relation/predicate that an external knowledge source uses before transformation to match the biolink-model specification. */
-    original_predicate?: string,
     primary_knowledge_source?: string,
     /** Source file stem injected by koza at load time. */
     file_source?: string,
@@ -202,6 +200,8 @@ export interface Association {
     has_evidence?: string[],
     /** A qualifier that composes with a core subject/object concept to define a more specific version of the object concept, specifically using an ontology term that is not a subclass or descendant of the core concept and in the vast majority of cases, is of a different ontological namespace than the category or namespace of the object identifier. */
     object_specialization_qualifier?: string,
+    /** used to hold the original relation/predicate that an external knowledge source uses before transformation to match the biolink-model specification. */
+    original_predicate?: string,
     /** The level of FDA adverse event reporting for a drug-condition association. */
     FDA_adverse_event_level?: string,
     /** A context qualifier representing a disease or condition in which a relationship expressed in an association took place. */
