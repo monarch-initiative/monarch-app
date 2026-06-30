@@ -11,9 +11,10 @@ import { apiUrl, request } from "./";
 import { getAutocomplete } from "./search";
 
 /**
- * Hidden A/B switch: a `?engine=ducksim|semsimian` param in the page URL routes all semsim API
- * calls to that backend (default semsimian). Lets us compare engines in place. The backend exposes
- * this as a hidden `engine` query param on the semsim endpoints.
+ * Hidden A/B switch: a `?engine=ducksim|semsimian` param in the page URL routes
+ * all semsim API calls to that backend (default semsimian). Lets us compare
+ * engines in place. The backend exposes this as a hidden `engine` query param
+ * on the semsim endpoints.
  */
 const engineParam = (): { engine?: string } => {
   const engine = new URLSearchParams(window.location.search).get("engine");
