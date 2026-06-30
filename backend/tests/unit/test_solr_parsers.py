@@ -1,7 +1,7 @@
 from typing import Optional, List, Union
 
 import pytest
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 
 from monarch_py.datamodels.model import AssociationDirectionEnum, Node
 from monarch_py.datamodels.solr import SolrQueryResult
@@ -37,6 +37,21 @@ def test_parse_associations_compact(association_response, associations_compact):
     assert parsed == associations_compact, (
         f"Parsed result is not as expected. Difference: {dict_diff(parsed, associations_compact)}"
     )
+
+
+def test_parse_associations_reraises_validation_error(association_response):
+    """Regression: a malformed association doc must surface the real pydantic
+    ValidationError, not a TypeError. The handler previously did
+    `raise ValidationError` (the bare class), which under pydantic v2 raises
+    `TypeError: ValidationError.__new__() missing 2 required positional arguments`
+    and 500s the entity endpoint (wired to the LB healthcheck).
+    See docs/incidents/2026-06-10 in monarch-stack-v3."""
+    association_response["response"]["numFound"] = association_response["response"].pop("num_found")
+    solr_response = SolrQueryResult(**association_response)
+    # Drop a required field so ExpandedAssociation(**doc) fails validation.
+    solr_response.response.docs[0].pop("id", None)
+    with pytest.raises(ValidationError):
+        parse_associations(solr_response)
 
 
 def test_parse_association_counts(association_counts_response, association_counts, node):

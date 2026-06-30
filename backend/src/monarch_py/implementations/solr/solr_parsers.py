@@ -146,7 +146,7 @@ def parse_associations(
                 association = ExpandedAssociation(**doc)
             except ValidationError:
                 logger.error(f"Validation error for {doc}")
-                raise ValidationError
+                raise
             association.provided_by_link = (
                 get_provided_by_link(association.provided_by) if association.provided_by else []
             )
