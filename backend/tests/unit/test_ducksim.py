@@ -3,6 +3,7 @@
 Ontology (reflexive subClassOf): A1 < A < R, B1 < B < R.  IC(A1) = -log2(1/5) = log2(5).
 Entities (has_phenotype): E:1->A1, E:2->B1, E:3->{A1,B1}.  E:4->A1 but negated (excluded).
 """
+
 import math
 
 import duckdb
@@ -16,18 +17,33 @@ def _mini_kg(tmp_path):
     p = tmp_path / "mini.duckdb"
     con = duckdb.connect(str(p))
     con.execute("CREATE TABLE closure(subject_id VARCHAR, predicate_id VARCHAR, object_id VARCHAR)")
-    con.executemany("INSERT INTO closure VALUES (?, 'rdfs:subClassOf', ?)",
-                    [("R", "R"), ("A", "A"), ("A", "R"), ("B", "B"), ("B", "R"),
-                     ("A1", "A1"), ("A1", "A"), ("A1", "R"), ("B1", "B1"), ("B1", "B"), ("B1", "R")])
-    con.execute("CREATE TABLE edges(subject VARCHAR, object VARCHAR, category VARCHAR, "
-                "predicate VARCHAR, negated VARCHAR)")
-    con.executemany("INSERT INTO edges VALUES (?, ?, "
-                    "'biolink:DiseaseToPhenotypicFeatureAssociation', 'biolink:has_phenotype', ?)",
-                    [("E:1", "A1", None), ("E:2", "B1", None), ("E:3", "A1", None), ("E:3", "B1", None),
-                     ("E:4", "A1", "True")])  # negated assoc (VARCHAR 'True') — must be excluded
+    con.executemany(
+        "INSERT INTO closure VALUES (?, 'rdfs:subClassOf', ?)",
+        [
+            ("R", "R"),
+            ("A", "A"),
+            ("A", "R"),
+            ("B", "B"),
+            ("B", "R"),
+            ("A1", "A1"),
+            ("A1", "A"),
+            ("A1", "R"),
+            ("B1", "B1"),
+            ("B1", "B"),
+            ("B1", "R"),
+        ],
+    )
+    con.execute(
+        "CREATE TABLE edges(subject VARCHAR, object VARCHAR, category VARCHAR, predicate VARCHAR, negated VARCHAR)"
+    )
+    con.executemany(
+        "INSERT INTO edges VALUES (?, ?, 'biolink:DiseaseToPhenotypicFeatureAssociation', 'biolink:has_phenotype', ?)",
+        [("E:1", "A1", None), ("E:2", "B1", None), ("E:3", "A1", None), ("E:3", "B1", None), ("E:4", "A1", "True")],
+    )  # negated assoc (VARCHAR 'True') — must be excluded
     con.execute("CREATE TABLE nodes(id VARCHAR, name VARCHAR)")
-    con.executemany("INSERT INTO nodes VALUES (?, ?)",
-                    [("A1", "a one"), ("B1", "b one"), ("A", "a"), ("B", "b"), ("R", "root")])
+    con.executemany(
+        "INSERT INTO nodes VALUES (?, ?)", [("A1", "a one"), ("B1", "b one"), ("A", "a"), ("B", "b"), ("R", "root")]
+    )
     con.close()
     return str(p)
 
@@ -90,11 +106,11 @@ def test_service_compare_model(engine):
     assert tsps.metric == "ancestor_information_content"
     bm = tsps.subject_best_matches["A1"]
     assert bm.match_target == "B1"
-    assert bm.match_source_label == "a one"          # label pulled from nodes.name
-    assert bm.match_subsumer == "R"                  # A1 & B1 share only the root
+    assert bm.match_source_label == "a one"  # label pulled from nodes.name
+    assert bm.match_subsumer == "R"  # A1 & B1 share only the root
     assert bm.match_subsumer_label == "root"
-    assert bm.score == pytest.approx(0.0)            # IC(root) = -log2(5/5) = 0
-    assert tsps.model_dump_json()                    # serializes cleanly
+    assert bm.score == pytest.approx(0.0)  # IC(root) = -log2(5/5) = 0
+    assert tsps.model_dump_json()  # serializes cleanly
 
 
 def test_search_ranking(engine):
@@ -117,7 +133,7 @@ def test_negated_associations_excluded(engine):
     """A negated has_phenotype edge never enters the association set, so its entity has no phenotypes
     and is unsearchable. Locks the `negated` filter (try_cast to BOOLEAN — robust to casing / a future
     boolean column), which the rest of the fixture (all-NULL negated) otherwise never exercises."""
-    assert engine.entity_phenotypes_batch(["E:4"]) == {}    # only edge is negated -> no phenotypes
+    assert engine.entity_phenotypes_batch(["E:4"]) == {}  # only edge is negated -> no phenotypes
     assert "E:4" not in [e for e, _ in engine.hybrid_search(["A1"], limit=10, prefix="E")]
     # the non-negated entities are unaffected
     assert engine.entity_phenotypes_batch(["E:1"]) == {"E:1": ["A1"]}
@@ -133,7 +149,7 @@ def test_search_hydrates_from_duckdb_without_entity_store(engine):
     assert top.subject.name == "a one" or top.subject.id == "E:1"  # subject hydrated from nodes
     assert top.similarity.metric == "ancestor_information_content"
     assert top.score == pytest.approx(top.similarity.average_score)  # ranking == enriched score
-    assert top.similarity.model_dump_json()                          # serializes cleanly
+    assert top.similarity.model_dump_json()  # serializes cleanly
 
 
 def test_batched_search_matches_per_entity_path(engine):
@@ -148,7 +164,7 @@ def test_batched_search_matches_per_entity_path(engine):
         (e, s, engine.termset_pairwise_similarity(sorted(phenos.get(e, [])), termset))
         for e, s in engine.hybrid_search(termset, limit=5, prefix=prefix)
     ]
-    assert [e for e, _, _ in new] == [e for e, _, _ in ref]            # same ranking
+    assert [e for e, _, _ in new] == [e for e, _, _ in ref]  # same ranking
     for (_, ns, nc), (_, rs, rc) in zip(new, ref):
         assert ns == pytest.approx(rs)
         assert nc["average_score"] == pytest.approx(rc["average_score"])
@@ -167,6 +183,8 @@ def test_termset_direction_matches_search(engine):
     assert s2o["average_score"] == pytest.approx(math.log2(5) / 2)
     assert o2s["average_score"] == pytest.approx(math.log2(5))
     assert s2o["average_score"] == pytest.approx(
-        dict(engine.full_search(["A1"], prefix="E", direction="subject_to_object"))["E:3"])
+        dict(engine.full_search(["A1"], prefix="E", direction="subject_to_object"))["E:3"]
+    )
     assert o2s["average_score"] == pytest.approx(
-        dict(engine.full_search(["A1"], prefix="E", direction="object_to_subject"))["E:3"])
+        dict(engine.full_search(["A1"], prefix="E", direction="object_to_subject"))["E:3"]
+    )

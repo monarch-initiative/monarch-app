@@ -11,12 +11,12 @@ from monarch_py.api.additional_models import (
     SemsimDirectionality,
 )
 from monarch_py.api.config import semsim_service, solr
-
-# Hidden A/B-testing param: ?engine=ducksim|semsimian overrides the default similarity backend.
-EngineParam = Query(default=None, include_in_schema=False, title="Similarity backend override")
 from monarch_py.api.utils.similarity_utils import parse_similarity_prefix
 from monarch_py.datamodels.category_enums import AssociationPredicate, EntityCategory
 from monarch_py.datamodels.model import SearchResults
+
+# Hidden A/B-testing param: ?engine=ducksim|semsimian overrides the default similarity backend.
+EngineParam = Query(default=None, include_in_schema=False, title="Similarity backend override")
 
 router = APIRouter(tags=["semsim"], responses={404: {"description": "Not Found"}})
 
@@ -94,9 +94,7 @@ def _post_compare(request: SemsimCompareRequest, engine: Optional[str] = EngineP
     }
     </pre>
     """
-    return semsim_service(engine).compare(
-        subjects=request.subjects, objects=request.objects, metric=request.metric
-    )
+    return semsim_service(engine).compare(subjects=request.subjects, objects=request.objects, metric=request.metric)
 
 
 # add a multicompare post endpoint

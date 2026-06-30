@@ -25,12 +25,13 @@ import duckdb
 
 DEFAULT_PREDICATES = ("rdfs:subClassOf",)
 
+
 class _Metric(NamedTuple):
     """How to score one semsimian metric. (Only Resnik's two fields differ:
     "ancestor_information_content" is semsimian's name for the Resnik measure.)"""
 
     detail_key: str  # which per-pair score to read out of an _all_pairs_detail() dict
-    sql_rank: str    # SQL expression over the `scored` CTE's resnik/jaccard columns to rank by
+    sql_rank: str  # SQL expression over the `scored` CTE's resnik/jaccard columns to rank by
 
 
 # accepted semsimian metric name -> how to score it
@@ -79,10 +80,19 @@ class Ducksim:
         return cur.execute(sql, params) if params is not None else cur.execute(sql)
 
     @classmethod
-    def from_duckdb(cls, path, *, closure_table="closure", subject_col="subject_id",
-                    predicate_col="predicate_id", object_col="object_id",
-                    predicates=DEFAULT_PREDICATES, associations="default", memory_limit="2GB",
-                    threads=2):
+    def from_duckdb(
+        cls,
+        path,
+        *,
+        closure_table="closure",
+        subject_col="subject_id",
+        predicate_col="predicate_id",
+        object_col="object_id",
+        predicates=DEFAULT_PREDICATES,
+        associations="default",
+        memory_limit="2GB",
+        threads=2,
+    ):
         """Attach `path` read-only and define the closure/IC/association views over it.
 
         Read-only attach is what lets many workers share the OS page cache instead of each holding
@@ -99,11 +109,10 @@ class Ducksim:
         con.execute(f"ATTACH '{safe_path}' AS src (READ_ONLY)")
         self = cls(con)
         self._define_closure(
-            f"SELECT {subject_col} AS s, {predicate_col} AS p, {object_col} AS o "
-            f"FROM src.{closure_table}", predicates)
+            f"SELECT {subject_col} AS s, {predicate_col} AS p, {object_col} AS o FROM src.{closure_table}", predicates
+        )
         if associations is not None:
-            self._define_associations(cls.DEFAULT_ASSOCIATIONS if associations == "default"
-                                      else associations)
+            self._define_associations(cls.DEFAULT_ASSOCIATIONS if associations == "default" else associations)
         return self
 
     # ---- setup ----------------------------------------------------------
@@ -111,9 +120,12 @@ class Ducksim:
     def _baked(self, name):
         """True if the attached source carries the named precompute table."""
         try:
-            return self.con.execute(
-                "SELECT count(*) FROM duckdb_tables() WHERE database_name = 'src' AND table_name = ?",
-                [name]).fetchone()[0] > 0
+            return (
+                self.con.execute(
+                    "SELECT count(*) FROM duckdb_tables() WHERE database_name = 'src' AND table_name = ?", [name]
+                ).fetchone()[0]
+                > 0
+            )
         except duckdb.Error:
             return False
 
@@ -123,7 +135,8 @@ class Ducksim:
         if not self._baked(name):
             raise RuntimeError(
                 f"attached monarch-kg.duckdb is missing the '{name}' table; run koza's "
-                f"`information-content` operation (monarch-ingest) before using ducksim")
+                f"`information-content` operation (monarch-ingest) before using ducksim"
+            )
 
     def _define_closure(self, source_sql, predicates):
         preds = _quote_list(predicates)
@@ -163,7 +176,8 @@ class Ducksim:
         rows = self._read(
             f"SELECT DISTINCT entity, phenotype FROM _assoc "
             f"WHERE entity IN (SELECT unnest([{_quote_list(ids)}]::VARCHAR[])) "
-            f"ORDER BY entity, phenotype").fetchall()
+            f"ORDER BY entity, phenotype"
+        ).fetchall()
         out = {}
         for e, p in rows:
             out.setdefault(e, []).append(p)
@@ -175,9 +189,7 @@ class Ducksim:
         ids = _dedupe(e for e in entity_ids if e)
         if not ids:
             return {}
-        cur = self._read(
-            f"SELECT * FROM src.nodes "
-            f"WHERE id IN (SELECT unnest([{_quote_list(ids)}]::VARCHAR[]))")
+        cur = self._read(f"SELECT * FROM src.nodes WHERE id IN (SELECT unnest([{_quote_list(ids)}]::VARCHAR[]))")
         cols = [d[0] for d in cur.description]
         rows = (dict(zip(cols, row)) for row in cur.fetchall())
         return {r["id"]: r for r in rows}
@@ -187,10 +199,10 @@ class Ducksim:
     def _all_pairs_detail(self, subjects, objects) -> dict:
         """For every (subject term × object term): jaccard, resnik, phenodigm, and the MICA
         (max-IC shared ancestor). One DuckDB query. Pairs with no shared ancestor are omitted."""
-        S, O = _quote_list(subjects), _quote_list(objects)
+        subj_q, obj_q = _quote_list(subjects), _quote_list(objects)
         rows = self._read(f"""
-            WITH s_terms(t) AS (SELECT unnest([{S}]::VARCHAR[])),
-                 o_terms(t) AS (SELECT unnest([{O}]::VARCHAR[])),
+            WITH s_terms(t) AS (SELECT unnest([{subj_q}]::VARCHAR[])),
+                 o_terms(t) AS (SELECT unnest([{obj_q}]::VARCHAR[])),
                  allterms AS (SELECT t FROM s_terms UNION SELECT t FROM o_terms),
                  qanc AS (SELECT DISTINCT s AS t, o AS a FROM _clo WHERE s IN (SELECT t FROM allterms)),
                  sizes AS (SELECT t, count(*) AS sz FROM qanc GROUP BY t),
@@ -213,18 +225,28 @@ class Ducksim:
         out = {}
         for s, o, inter, resnik, mica, sz_s, sz_o in rows:
             jaccard = inter / (sz_s + sz_o - inter)
-            out[(s, o)] = {"jaccard": jaccard, "resnik": resnik,
-                           "phenodigm": (resnik * jaccard) ** 0.5, "mica": mica}
+            out[(s, o)] = {"jaccard": jaccard, "resnik": resnik, "phenodigm": (resnik * jaccard) ** 0.5, "mica": mica}
         return out
 
     def _similarity(self, s, o, d):
         """semsimian-style similarity map for a (subject, object) pair."""
         if d is None:
-            return {"subject_id": s, "object_id": o, "jaccard_similarity": 0.0,
-                    "ancestor_information_content": 0.0, "phenodigm_score": 0.0, "ancestor_id": None}
-        return {"subject_id": s, "object_id": o, "jaccard_similarity": d["jaccard"],
-                "ancestor_information_content": d["resnik"], "phenodigm_score": d["phenodigm"],
-                "ancestor_id": d["mica"]}
+            return {
+                "subject_id": s,
+                "object_id": o,
+                "jaccard_similarity": 0.0,
+                "ancestor_information_content": 0.0,
+                "phenodigm_score": 0.0,
+                "ancestor_id": None,
+            }
+        return {
+            "subject_id": s,
+            "object_id": o,
+            "jaccard_similarity": d["jaccard"],
+            "ancestor_information_content": d["resnik"],
+            "phenodigm_score": d["phenodigm"],
+            "ancestor_id": d["mica"],
+        }
 
     def _best_matches(self, sources, targets, pairs, metric_key, *, swapped):
         """For each source term, its best-matching target term (by metric_key) + similarity detail.
@@ -241,14 +263,17 @@ class Ducksim:
             if best_score < 0.0:  # no targets at all — no match, score floors at 0
                 best_score = 0.0
             s_id, o_id = (best_t, src) if swapped else (src, best_t)
-            result[src] = {"match_target": best_t, "score": best_score,
-                           "match_subsumer": best_d["mica"] if best_d else None,
-                           "similarity": self._similarity(s_id, o_id, best_d)}
+            result[src] = {
+                "match_target": best_t,
+                "score": best_score,
+                "match_subsumer": best_d["mica"] if best_d else None,
+                "similarity": self._similarity(s_id, o_id, best_d),
+            }
         return result
 
-    def termset_pairwise_similarity(self, subjects, objects,
-                                    metric="ancestor_information_content",
-                                    direction="bidirectional") -> dict:
+    def termset_pairwise_similarity(
+        self, subjects, objects, metric="ancestor_information_content", direction="bidirectional"
+    ) -> dict:
         """Full pairwise-similarity result (matches semsimian's TermSetPairwiseSimilarity shape):
         per-term best matches with subsumer + similarity detail, the average_score, and best_score.
         Labels are filled in by the caller/service via `labels()`.
@@ -285,9 +310,15 @@ class Ducksim:
             raise ValueError(f"unknown direction {direction!r}")
         average_score = average_by_direction[direction]
         best_score = max(s_scores + o_scores, default=0.0)
-        return {"metric": metric, "average_score": average_score, "best_score": best_score,
-                "subject_termset": subj, "object_termset": obj,
-                "subject_best_matches": subject_bm, "object_best_matches": object_bm}
+        return {
+            "metric": metric,
+            "average_score": average_score,
+            "best_score": best_score,
+            "subject_termset": subj,
+            "object_termset": obj,
+            "subject_best_matches": subject_bm,
+            "object_best_matches": object_bm,
+        }
 
     # ---- search ---------------------------------------------------------
 
@@ -344,16 +375,18 @@ class Ducksim:
         """
         return self._read(sql).fetchall()
 
-    def full_search(self, query_terms, *, limit=10, metric="ancestor_information_content",
-                    prefix=None, direction="bidirectional"):
+    def full_search(
+        self, query_terms, *, limit=10, metric="ancestor_information_content", prefix=None, direction="bidirectional"
+    ):
         """Score every entity (optionally restricted to CURIE `prefix`) by the termset
         best-match-average — one DuckDB query. Matches semsimian's Full mode; more accurate than
         Hybrid (no Jaccard prefilter dropping true-top entities)."""
         ef = f"WHERE split_part(entity, ':', 1) = {_quote_list([prefix])}" if prefix else ""
         return self._termset_search(query_terms, metric, ef, limit, direction)
 
-    def hybrid_search(self, query_terms, *, limit=10, metric="ancestor_information_content",
-                      prefix=None, direction="bidirectional"):
+    def hybrid_search(
+        self, query_terms, *, limit=10, metric="ancestor_information_content", prefix=None, direction="bidirectional"
+    ):
         """Hybrid search — semsimian's production mode: cheap Jaccard prefilter then termset rerank,
         as one query over the candidate set. (The Jaccard prefilter is direction-agnostic; the
         rerank honors `direction`.)"""
@@ -385,8 +418,16 @@ class Ducksim:
 
     # ---- search with full per-result detail -----------------------------
 
-    def search(self, query_terms, *, limit=10, metric="ancestor_information_content",
-               prefix=None, direction="bidirectional", mode="hybrid"):
+    def search(
+        self,
+        query_terms,
+        *,
+        limit=10,
+        metric="ancestor_information_content",
+        prefix=None,
+        direction="bidirectional",
+        mode="hybrid",
+    ):
         """All-DuckDB search: rank entities (Hybrid by default; Full when `mode="full"`), then enrich
         the whole page with full termset detail in a constant number of queries — independent of
         `limit`, no per-result round-trips. Returns [(entity_id, score, comparison)] where
