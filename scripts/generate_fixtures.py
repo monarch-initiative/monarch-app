@@ -1,6 +1,10 @@
 """
-Generate fixtures for monarch-app. 
-Requires a running instance of both Solr and semsimian_server.
+Generate fixtures for monarch-app.
+
+Requires a running Solr instance and a similarity backend. The backend is selected
+the same way the api selects it: the SEMSIM_BACKEND env var (semsimian | ducksim)
+and, for ducksim, MONARCH_KG_DUCKDB_PATH. `make fixtures` defaults SEMSIM_BACKEND to
+ducksim, which runs in-process over monarch-kg.duckdb (no semsimian_server needed).
 """
 import argparse
 import json
@@ -284,11 +288,17 @@ def main(
         # fixtures['node-publication-abstract'] =
         # fixtures['node-publication-summary'] =
         # fixtures['ontologies'] =
+        # These are FastAPI route handlers called directly, so pass every value explicitly — an unset
+        # param keeps its Query(...)/Path(...) default (a FieldInfo, not a real value). engine=None lets
+        # semsim_service fall back to SEMSIM_BACKEND (see module docstring; `make fixtures` -> ducksim).
         fixtures["phenotype-explorer-compare"] = _compare(
-            subjects="MP:0010771,MP:0002169", objects="HP:0004325"
+            subjects="MP:0010771,MP:0002169",
+            objects="HP:0004325",
+            metric=SemsimMetric.ANCESTOR_INFORMATION_CONTENT,
+            engine=None,
         )
         fixtures["phenotype-explorer-multi-compare"] = _post_multicompare(
-            request=semsim_multicompare_request
+            request=semsim_multicompare_request, engine=None
         )
         fixtures["phenotype-explorer-search"] = _search(
             termset="HP:0002104,HP:0012378,HP:0012378,HP:0012378",
@@ -296,6 +306,7 @@ def main(
             group=SemsimSearchGroup.ZFIN,
             directionality=SemsimDirectionality.BIDIRECTIONAL,
             limit=10,
+            engine=None,
         )
         fixtures["search"] = si.search(q="fanconi")
         # fixtures['text-annotator'] =
