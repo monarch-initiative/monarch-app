@@ -51,18 +51,24 @@ def _bake(path):
 
 @pytest.fixture
 def engine(tmp_path):
-    return Ducksim.from_duckdb(_mini_kg(tmp_path))
+    # ducksim reads koza's precompute tables; bake them like the KG build does (see _bake).
+    return Ducksim.from_duckdb(_bake(_mini_kg(tmp_path)))
 
 
-def test_baked_tables_used(tmp_path):
-    """The production path: engine reads pre-baked information_content / closure_size and yields the
-    same scores as the runtime-built path (locks the 'same closure ⇒ same IC' invariant)."""
+def test_reads_baked_precompute_tables(tmp_path):
+    """ducksim is a pure reader of koza's information_content / closure_size tables: IC scores come
+    from the baked table and search uses the baked closure sizes."""
     eng = Ducksim.from_duckdb(_bake(_mini_kg(tmp_path)))
     assert eng._baked("information_content") and eng._baked("closure_size")
-    # IC read from the baked table — identical to the built-path result
+    # IC(A1) = -log2(1/5); read straight from the baked information_content table
     assert eng.termset_pairwise_similarity(["A1"], ["A1"])["average_score"] == pytest.approx(math.log2(5))
-    # search uses the baked closure-size table
     assert [e for e, _ in eng.hybrid_search(["A1"], limit=3, prefix="E")][:2] == ["E:1", "E:3"]
+
+
+def test_missing_precompute_tables_fail_loud(tmp_path):
+    """A db without koza's precompute tables is rejected (no silent recompute that could diverge)."""
+    with pytest.raises(RuntimeError, match="information_content"):
+        Ducksim.from_duckdb(_mini_kg(tmp_path))  # _mini_kg has closure/edges/nodes but no precomputes
 
 
 def test_compare_empty_objects_scores_zero(engine):

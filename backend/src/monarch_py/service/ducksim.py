@@ -6,6 +6,10 @@ Validated bit-exact against semsimian's committed test values and to FP precisio
 library at scale (see the ducksim workspace; this is the production-only port — the equivalence
 harness and the SQLite/phenio test backend live there, not here).
 
+ducksim is a pure reader of the precompute tables koza's `information-content` operation bakes into
+the artifact during the KG build (monarch-ingest): `information_content` (term, ic) and
+`closure_size` (entity, size). It does not recompute them — a db missing them fails loud.
+
 Metric definitions:  IC(t) = -log2(freq/N) (freq = #closure triples with t as object, N = #distinct
 objects); closure is reflexive; Jaccard = |anc(a)∩anc(b)| / |anc(a)∪anc(b)|; Resnik = max IC over
 shared ancestors; Phenodigm = sqrt(Resnik·Jaccard); termset score = bidirectional best-match-average.
@@ -79,10 +83,11 @@ class Ducksim:
                     predicate_col="predicate_id", object_col="object_id",
                     predicates=DEFAULT_PREDICATES, associations="default", memory_limit="2GB",
                     threads=2):
-        """Attach `path` read-only and build the IC table + closure/association views.
+        """Attach `path` read-only and define the closure/IC/association views over it.
 
         Read-only attach is what lets many workers share the OS page cache instead of each holding
-        the ontology resident; `memory_limit` caps each worker's buffer pool.
+        the ontology resident; `memory_limit` caps each worker's buffer pool. The attached db must
+        carry koza's `information_content` / `closure_size` precompute tables (see module docstring).
         """
         con = duckdb.connect()
         # Single-quote-escape values interpolated into SQL (path comes from the
@@ -104,44 +109,36 @@ class Ducksim:
     # ---- setup ----------------------------------------------------------
 
     def _baked(self, name):
-        """True if the attached source carries a pre-built precompute table — so we skip the runtime
-        build and just read it (shared via the OS page cache). Built by koza's `information-content`
-        operation during the KG build (monarch-ingest)."""
+        """True if the attached source carries the named precompute table."""
         try:
             return self.con.execute(
                 "SELECT count(*) FROM duckdb_tables() WHERE database_name = 'src' AND table_name = ?",
                 [name]).fetchone()[0] > 0
         except duckdb.Error:
-            # A genuinely absent table is reported as count 0, not an error; only swallow DuckDB-level
-            # failures (so a programming error surfaces instead of silently forcing the build path).
             return False
+
+    def _require_baked(self, name):
+        """ducksim reads koza's precompute tables; it does not recompute them. Fail loud (rather than
+        silently rebuild, which would risk diverging from koza's definition) if one is missing."""
+        if not self._baked(name):
+            raise RuntimeError(
+                f"attached monarch-kg.duckdb is missing the '{name}' table; run koza's "
+                f"`information-content` operation (monarch-ingest) before using ducksim")
 
     def _define_closure(self, source_sql, predicates):
         preds = _quote_list(predicates)
+        # _clo: koza's precomputed (reflexive, transitive) closure, filtered to the chosen predicate
+        # and projected to (s, o) = (term, ancestor). A view, so the big table stays in the shared
+        # read-only source rather than being copied per worker.
         self.con.execute(f"CREATE VIEW _clo AS SELECT s, o FROM ({source_sql}) WHERE p IN ({preds})")
-        if self._baked("information_content"):
-            self.con.execute("CREATE VIEW _ic AS SELECT term, ic FROM src.information_content")
-        else:
-            self.con.execute("""
-                CREATE TABLE _ic AS
-                WITH n AS (SELECT count(DISTINCT o) AS nn FROM _clo)
-                SELECT o AS term, -log2(count(*)::DOUBLE / (SELECT nn FROM n)) AS ic
-                FROM _clo GROUP BY o
-            """)
+        self._require_baked("information_content")
+        self.con.execute("CREATE VIEW _ic AS SELECT term, ic FROM src.information_content")
         self.has_search = False
 
     def _define_associations(self, assoc_sql):
         self.con.execute(f"CREATE VIEW _assoc AS {assoc_sql}")
-        if self._baked("closure_size"):
-            self.con.execute(
-                "CREATE VIEW _esize AS SELECT entity, size AS pn FROM src.closure_size"
-            )
-        else:
-            self.con.execute("""
-                CREATE TABLE _esize AS
-                SELECT a.entity, count(DISTINCT c.o) AS pn
-                FROM _assoc a JOIN _clo c ON c.s = a.phenotype GROUP BY a.entity
-            """)
+        self._require_baked("closure_size")
+        self.con.execute("CREATE VIEW _esize AS SELECT entity, size AS pn FROM src.closure_size")
         self.has_search = True
 
     # ---- labels ---------------------------------------------------------
