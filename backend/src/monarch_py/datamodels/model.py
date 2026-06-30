@@ -512,6 +512,7 @@ class Node(Entity):
     has_biological_sex: Optional[str] = Field(default=None, description="""The biological sex of an individual entity.""")
     causal_gene: Optional[list[Entity]] = Field(default=None, description="""A list of genes that are known to be causally associated with a disease""")
     causes_disease: Optional[list[Entity]] = Field(default=None, description="""A list of diseases that are known to be causally associated with a gene""")
+    node_relationships: Optional[list[NodeRelationship]] = Field(default=None, description="""A list of relationships from this node to counterpart entities, each retaining its original relation (e.g. an RO term) and that relation's human-readable label. Used for Mondo disease<->gene related_to associations.""")
     mappings: Optional[list[ExpandedCurie]] = Field(default=None, description="""List of ExpandedCuries with id and url for mapped entities""")
     external_links: Optional[list[ExpandedCurie]] = Field(default=None, description="""ExpandedCurie with id and url for xrefs""")
     provided_by_link: Optional[ExpandedCurie] = Field(default=None, description="""A link to the docs for the knowledge source that provided the node/edge.""")
@@ -549,6 +550,15 @@ class Node(Entity):
     has_descendant: Optional[list[str]] = Field(default=None, description="""A list of entity identifiers that are known to be descendants of this entity""")
     has_descendant_label: Optional[list[str]] = Field(default=None, description="""A list of entity labels that are known to be descendants of this entity""")
     has_descendant_count: Optional[int] = Field(default=None, description="""A count of the number of entities that are known to be descendants of this entity""")
+
+
+class NodeRelationship(ConfiguredBaseModel):
+    """
+    A relationship from a Node to a counterpart Entity that retains the original relation/predicate (e.g. an RO term) and its human-readable label, resolved from the KG. Used to surface Mondo disease<->gene related_to associations whose original_predicate is an RO term.
+    """
+    relation: Optional[str] = Field(default=None, description="""The original relation/predicate CURIE connecting a node to a related entity (e.g. an RO term such as RO:0004003)""")
+    relation_label: Optional[str] = Field(default=None, description="""The human-readable label of the relation, resolved from the KG""")
+    related_entity: Entity = Field(default=..., description="""The counterpart entity in the relationship""")
 
 
 class CrossSpeciesTermClique(ConfiguredBaseModel):
@@ -866,6 +876,7 @@ HistoPheno.model_rebuild()
 HistoBin.model_rebuild()
 Mapping.model_rebuild()
 Node.model_rebuild()
+NodeRelationship.model_rebuild()
 CrossSpeciesTermClique.model_rebuild()
 NodeHierarchy.model_rebuild()
 Release.model_rebuild()

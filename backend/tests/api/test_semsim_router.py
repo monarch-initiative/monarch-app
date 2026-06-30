@@ -113,7 +113,10 @@ def test_post_search(mock_search):
     )
 
     assert response.status_code == status.HTTP_200_OK
-    mock_search.assert_called_once_with(termset=["HP:123", "HP:456"], prefix=group.name, metric=metric, limit=limit)
+    mock_search.assert_called_once_with(
+        termset=["HP:123", "HP:456"], prefix=group.name, metric=metric,
+        directionality=directionality, limit=limit,
+    )
 
 
 @patch("monarch_py.service.semsim_service.SemsimianService.multi_compare")

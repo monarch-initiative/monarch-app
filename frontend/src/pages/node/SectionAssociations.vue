@@ -97,6 +97,15 @@
       </template>
     </AppSection>
 
+    <!-- dismech pathograph shown directly under the phenotype table -->
+    <SectionPathograph
+      v-if="
+        category.id === 'biolink:DiseaseToPhenotypicFeatureAssociation' ||
+        category.id === 'biolink:GeneToPhenotypicFeatureAssociation'
+      "
+      :node="node"
+    />
+
     <!-- Case-Phenotype Grid shown after Cases section -->
     <SectionCasePhenotypeGrid
       v-if="category.id === 'biolink:CaseToDiseaseAssociation'"
@@ -117,6 +126,7 @@ import AppTextbox from "@/components/AppTextbox.vue";
 import { useAssociationCategories } from "@/composables/use-association-categories";
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
 import SectionCasePhenotypeGrid from "@/pages/node/SectionCasePhenotypeGrid.vue";
+import SectionPathograph from "@/pages/node/SectionPathograph.vue";
 import { sectionTitle } from "@/util/sectionTitles";
 import { tabLabel } from "@/util/tabText";
 import { isTaxonFilterable } from "@/util/taxonFilterConfig";

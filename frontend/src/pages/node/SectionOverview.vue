@@ -52,6 +52,7 @@
           :frequency-label="frequencyLabel"
           :node="node"
         />
+        <SectionNodeRelationships :node="node" />
         <AppDetail
           :blank="!otherMappings.length"
           title="Equivalent disease concepts in other termiologies"
@@ -180,6 +181,8 @@
           <span>{{ nodeVersion.version || "unknown" }}</span>
         </AppDetail>
 
+        <SectionNodeRelationships :node="node" />
+
         <AppDetail
           :blank="!otherMappings.length"
           title="Other Mappings"
@@ -227,11 +230,13 @@ import AppTagList from "@/components/AppTagList.vue";
 import { useClinicalResources } from "@/composables/use-clinical-resources";
 import { useSourceVersions } from "@/composables/use-source-versions";
 import SectionClinicalReources from "./SectionClinicalReources.vue";
+import SectionNodeRelationships from "./SectionNodeRelationships.vue";
 
 type Props = { node: Node };
 
 const { node } = defineProps<Props>();
 const isDiseaseNode = computed(() => node.category === "biolink:Disease");
+
 /** separate out mappings into categories */
 const clinicalSynopsis = computed(
   () =>

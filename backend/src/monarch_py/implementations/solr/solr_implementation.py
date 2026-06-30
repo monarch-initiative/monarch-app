@@ -1,7 +1,7 @@
 import logging
 import os
 from dataclasses import dataclass
-from typing import List, Union, Optional
+from typing import ClassVar, Dict, List, Union, Optional
 
 import requests
 from monarch_py.datamodels.model import (
@@ -20,6 +20,7 @@ from monarch_py.datamodels.model import (
     MultiEntityAssociationResults,
     Node,
     NodeHierarchy,
+    NodeRelationship,
     SearchResults,
 )
 from monarch_py.datamodels.solr import core
@@ -108,6 +109,32 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
     ]
     SIDEWAYS_PREDICATES = [AssociationPredicate.SAME_AS, AssociationPredicate.HOMOLOGOUS_TO]
 
+    # Mondo emits a number of disease<->X relationships behind a generic
+    # biolink:related_to predicate, retaining the real relation (an RO term) in
+    # original_predicate. This is the curated, ordered set we surface in the node
+    # header, grouped by the relation's KG label; the order here controls display
+    # order. Other Mondo related_to relations (e.g. PATO "has characteristic",
+    # "predisposes towards") are intentionally excluded to keep the header focused.
+    MONDO_HEADER_RELATIONS = (
+        "RO:0004003",  # has material basis in germline mutation in -> gene
+        "RO:0004004",  # has material basis in somatic mutation in -> gene
+        "RO:0004020",  # disease has basis in dysfunction of -> gene/cell
+        "RO:0004026",  # disease has location -> cell
+        "RO:0004030",  # disease arises from structure -> cell/chromosome
+        "RO:0004029",  # disease has feature -> disease
+        "RO:0014001",  # disease has infectious agent -> organism taxon
+    )
+    # Inverse index for stable display ordering; computed once at class definition.
+    MONDO_HEADER_RELATION_ORDER = {relation: index for index, relation in enumerate(MONDO_HEADER_RELATIONS)}
+    # Process-level cache of RO relation CURIE -> KG label. RO labels (loaded from
+    # phenio) are stable for the lifetime of a server process, so resolving each
+    # relation once avoids a per-page Solr round-trip. ClassVar keeps it off the
+    # dataclass field list. The check-then-write below is intentionally lock-free:
+    # concurrent requests racing on the same uncached relation may each do one extra
+    # Solr lookup at startup, but the write is idempotent, so the cost is bounded and
+    # not worth a lock.
+    _relation_label_cache: ClassVar[Dict[str, Optional[str]]] = {}
+
     def solr_is_available(self) -> bool:
         """Check if the Solr instance is available"""
         try:
@@ -165,6 +192,8 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                     category=[AssociationCategory.CAUSAL_GENE_TO_DISEASE_ASSOCIATION],
                 ).items
             )
+            # Mondo disease->X related_to associations (RO original_predicate)
+            entity.node_relationships = self._get_node_relationships(entity)
         if "biolink:Gene" == entity.category:
             entity.causes_disease = self._deduplicate_entities(
                 self._get_counterpart_entity(association, entity)
@@ -175,6 +204,8 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                     category=[AssociationCategory.CAUSAL_GENE_TO_DISEASE_ASSOCIATION],
                 ).items
             )
+            # Mondo gene<-disease related_to associations (RO original_predicate)
+            entity.node_relationships = self._get_node_relationships(entity)
         node: Node = Node(
             **entity.model_dump(),
             cross_species_term_clique=self._get_cross_species_term_clique(entity),
@@ -220,6 +251,91 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             raise ValueError(f"Association does not contain this_entity: {this_entity.id}")
 
         return entity
+
+    def _get_node_relationships(self, this_entity: Entity) -> List[NodeRelationship]:
+        """Surface Mondo disease<->X `related_to` associations on the node header.
+
+        Mondo emits disease<->gene (germline/somatic mutation), disease<->cell
+        (location, arises-from-structure), disease<->disease (has feature) and
+        disease<->pathogen (infectious agent) relationships behind a generic
+        `biolink:related_to` predicate, retaining the real relation (an RO term) in
+        `original_predicate`. They are not picked up by the causal_gene/causes_disease
+        fields nor any named association count, so they are otherwise invisible in the UI.
+
+        Only the curated `MONDO_HEADER_RELATIONS` are surfaced, ordered for a stable,
+        sensible display. The relation label is resolved from the KG itself (RO terms
+        are loaded as entities from phenio), looked up once per distinct relation CURIE.
+        """
+        is_disease = "biolink:Disease" == this_entity.category
+        # Disease is always the subject of these Mondo associations.
+        # The limit is applied by Solr before the curated-relation filter below, so an
+        # overflow could silently drop curated edges; warn if we ever hit the cap.
+        fetch_limit = 500
+        associations = self.get_associations(
+            subject=[this_entity.id] if is_disease else None,
+            object=[this_entity.id] if not is_disease else None,
+            predicate=[AssociationPredicate.RELATED_TO],
+            primary_knowledge_source=["infores:mondo"],
+            subject_category=None if is_disease else [EntityCategory.DISEASE],
+            direct=True,
+            limit=fetch_limit,
+        ).items
+        if len(associations) == fetch_limit:
+            logger.warning(
+                f"_get_node_relationships hit the {fetch_limit}-association fetch cap for {this_entity.id}; "
+                "some curated Mondo header relations may be truncated."
+            )
+
+        # Keep only curated relations, ordered per MONDO_HEADER_RELATIONS.
+        relation_order = self.MONDO_HEADER_RELATION_ORDER
+        associations = [a for a in associations if (a.original_predicate or a.predicate) in relation_order]
+        associations.sort(key=lambda a: relation_order[a.original_predicate or a.predicate])
+
+        relationships: List[NodeRelationship] = []
+        seen: set[tuple[str, str]] = set()
+        for association in associations:
+            relation = association.original_predicate or association.predicate
+            if relation in self._relation_label_cache:
+                relation_label = self._relation_label_cache[relation]
+            else:
+                # A failure resolving one RO term's label must not blank out the whole
+                # relationships block, so degrade to no label rather than propagating.
+                # Only memoize definitive results (resolved name or confirmed-missing);
+                # on a transient error leave the cache empty so a later request retries
+                # instead of being permanently poisoned with None.
+                try:
+                    relation_entity = self.get_entity(relation, extra=False)
+                    relation_label = relation_entity.name if relation_entity is not None else None
+                    self._relation_label_cache[relation] = relation_label
+                except Exception:
+                    logger.warning(f"Could not resolve label for relation {relation}", exc_info=True)
+                    relation_label = None
+            counterpart = self._get_counterpart_entity(association, this_entity)
+            # Mondo may assert the same relation->counterpart from multiple rows; show it once.
+            if (relation, counterpart.id) in seen:
+                continue
+            seen.add((relation, counterpart.id))
+            # When this_entity is a Disease the counterpart is a gene/cell/pathogen, so carry
+            # its taxon (object_taxon) through to show non-human species in the UI. Only overwrite
+            # when the association supplies taxon data, so an existing taxon isn't clobbered with
+            # None. The else branch (gene/other node -> disease counterpart) is effectively a
+            # no-op since diseases carry no taxon, but is kept symmetric and defensive.
+            if this_entity.id == association.subject:
+                if association.object_taxon:
+                    counterpart.in_taxon = association.object_taxon
+                    counterpart.in_taxon_label = association.object_taxon_label
+            else:
+                if association.subject_taxon:
+                    counterpart.in_taxon = association.subject_taxon
+                    counterpart.in_taxon_label = association.subject_taxon_label
+            relationships.append(
+                NodeRelationship(
+                    relation=relation,
+                    relation_label=relation_label,
+                    related_entity=counterpart,
+                )
+            )
+        return relationships
 
     @staticmethod
     def _deduplicate_entities(entities) -> List[Entity]:
