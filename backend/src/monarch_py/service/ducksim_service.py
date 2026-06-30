@@ -16,15 +16,18 @@ from monarch_py.datamodels.model import (
     TermPairwiseSimilarity,
     TermSetPairwiseSimilarity,
 )
+from monarch_py.service.curie_service import converter
 from monarch_py.service.ducksim import Ducksim
 
 
 class DucksimService:
     """Semantic-similarity service computed in DuckDB (semsimian-equivalent)."""
 
-    def __init__(self, engine: Ducksim, entity_implementation: Any):
+    def __init__(self, engine: Ducksim, entity_implementation: Any = None):
         self.engine = engine
-        self.entity_implementation = entity_implementation  # for hydrating search-result entities
+        # Retained for interface parity with SemsimianService; the DuckDB backend hydrates result
+        # entities from the KG `nodes` table itself (see `_hydrate`), so it needs no external store.
+        self.entity_implementation = entity_implementation
 
     # ---- compare --------------------------------------------------------
 
@@ -33,7 +36,8 @@ class DucksimService:
         metric: SemsimMetric = SemsimMetric.ANCESTOR_INFORMATION_CONTENT,
     ) -> TermSetPairwiseSimilarity:
         result = self.engine.termset_pairwise_similarity(subjects, objects, str(metric))
-        return self._to_model(result)
+        lab = self.engine.labels(self._referenced_ids(result))
+        return self._to_model(result, lab)
 
     def multi_compare(self, request: SemsimMultiCompareRequest) -> List[SemsimSearchResult]:
         results = []
@@ -57,32 +61,53 @@ class DucksimService:
         limit: int = 10,
     ) -> List[SemsimSearchResult]:
         # Hybrid mode matches the semsimian server; full_search would be more accurate (see engine).
+        # The engine ranks and enriches the whole page in a constant number of DuckDB queries (no
+        # per-result round-trips); the loop below is pure in-memory model shaping.
         direction = directionality.value if hasattr(directionality, "value") else str(directionality)
-        ranked = self.engine.hybrid_search(
+        page = self.engine.search(
             termset, limit=limit, metric=str(metric), prefix=prefix, direction=direction)
-        results = []
-        for entity_id, score in ranked:
-            # entity phenotypes are the subjects, the query termset the objects — same orientation as
-            # the ranking, so `direction` makes similarity.average_score match the ranked `score`.
-            comparison = self.engine.termset_pairwise_similarity(
-                self.engine.entity_phenotypes(entity_id), termset, str(metric), direction=direction)
-            results.append(SemsimSearchResult(
-                subject=self.entity_implementation.get_entity(entity_id, extra=False),
+        if not page:
+            return []
+        # all-DuckDB hydration of result entities from the KG `nodes` table — no external entity store
+        entities = self.engine.entities([entity_id for entity_id, _, _ in page])
+        # one label lookup for every id the whole page references
+        ids = set()
+        for _, _, comparison in page:
+            ids |= self._referenced_ids(comparison)
+        lab = self.engine.labels(ids)
+        return [
+            SemsimSearchResult(
+                subject=self._hydrate(entities.get(entity_id), entity_id),
                 score=score,
-                similarity=self._to_model(comparison),
-            ))
-        return results
+                similarity=self._to_model(comparison, lab),
+            )
+            for entity_id, score, comparison in page
+        ]
 
     # ---- model shaping --------------------------------------------------
 
-    def _to_model(self, r: dict) -> TermSetPairwiseSimilarity:
-        # one label lookup for every id the model references
+    def _hydrate(self, row: dict, entity_id: str) -> Entity:
+        """Build a result Entity straight from the KG `nodes` row (all-DuckDB; no external store).
+        Mirrors solr `parse_entity`: expand the curie to a uri and drop bulky descendant lists.
+        Falls back to a bare id if the entity is somehow absent from `nodes`."""
+        if not row:
+            return Entity(id=entity_id)
+        entity = Entity(**row)
+        entity.uri = converter.expand(entity.id)
+        entity.has_descendant = None
+        entity.has_descendant_label = None
+        return entity
+
+    @staticmethod
+    def _referenced_ids(r: dict) -> set:
+        """Every term/entity id a comparison's model will reference (for one batched label lookup)."""
         ids = set(r["subject_termset"]) | set(r["object_termset"])
         for bm in list(r["subject_best_matches"].values()) + list(r["object_best_matches"].values()):
             ids.update([bm["match_target"], bm["match_subsumer"],
                         bm["similarity"]["subject_id"], bm["similarity"]["object_id"]])
-        lab = self.engine.labels(ids)
+        return {i for i in ids if i}
 
+    def _to_model(self, r: dict, lab: dict) -> TermSetPairwiseSimilarity:
         def best_match(source: str, bm: dict) -> BestMatch:
             sim = bm["similarity"]
             return BestMatch(

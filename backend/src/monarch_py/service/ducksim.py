@@ -146,6 +146,36 @@ class Ducksim:
         return [r[0] for r in self._read(
             "SELECT DISTINCT phenotype FROM _assoc WHERE entity = ?", [entity_id]).fetchall()]
 
+    def entity_phenotypes_batch(self, entity_ids) -> dict:
+        """{entity -> [phenotype, ...]} for many entities in one query. Lets a whole search page be
+        enriched without a per-entity round-trip (the batched form of `entity_phenotypes`)."""
+        ids = _dedupe(e for e in entity_ids if e)
+        if not ids:
+            return {}
+        # ORDER BY for a deterministic, reproducible best-match tie-break (the per-entity
+        # `entity_phenotypes` left phenotype order unspecified, so ties resolved arbitrarily).
+        rows = self._read(
+            f"SELECT DISTINCT entity, phenotype FROM _assoc "
+            f"WHERE entity IN (SELECT unnest([{_quote_list(ids)}]::VARCHAR[])) "
+            f"ORDER BY entity, phenotype").fetchall()
+        out = {}
+        for e, p in rows:
+            out.setdefault(e, []).append(p)
+        return out
+
+    def entities(self, entity_ids) -> dict:
+        """{id -> column->value row dict} from the KG `nodes` table — all-DuckDB entity hydration of
+        search results, so the similarity backend needs no external entity store. One query."""
+        ids = _dedupe(e for e in entity_ids if e)
+        if not ids:
+            return {}
+        cur = self._read(
+            f"SELECT * FROM src.nodes "
+            f"WHERE id IN (SELECT unnest([{_quote_list(ids)}]::VARCHAR[]))")
+        cols = [d[0] for d in cur.description]
+        rows = (dict(zip(cols, row)) for row in cur.fetchall())
+        return {r["id"]: r for r in rows}
+
     # ---- pairwise detail ------------------------------------------------
 
     def _all_pairs_detail(self, subjects, objects) -> dict:
@@ -225,6 +255,14 @@ class Ducksim:
             raise ValueError(f"unknown metric {metric!r}")
         subj, obj = _dedupe(subjects), _dedupe(objects)
         pairs = self._all_pairs_detail(subj, obj)
+        return self._shape_comparison(subj, obj, pairs, mk, metric, direction)
+
+    def _shape_comparison(self, subj, obj, pairs, mk, metric, direction) -> dict:
+        """Collapse a prefetched (subject×object) `pairs` detail map into the
+        TermSetPairwiseSimilarity shape. Split out from `termset_pairwise_similarity` so search can
+        compute `pairs` once for an entire result page (one DuckDB query) and shape every entity from
+        it in memory — no per-entity round-trips. `subj`/`obj` must be pre-deduped, `mk` a resolved
+        metric key; `pairs` may cover more terms than this one entity (extra keys are ignored)."""
         subject_bm = self._best_matches(subj, obj, pairs, mk, swapped=False)
         object_bm = self._best_matches(obj, subj, pairs, mk, swapped=True)
         s_scores = [bm["score"] for bm in subject_bm.values()]
@@ -338,3 +376,34 @@ class Ducksim:
             FROM inter i JOIN _esize e ON e.entity = i.entity
             WHERE true {pfilter} ORDER BY jaccard DESC, i.entity
         """).fetchall()
+
+    # ---- search with full per-result detail -----------------------------
+
+    def search(self, query_terms, *, limit=10, metric="ancestor_information_content",
+               prefix=None, direction="bidirectional", mode="hybrid"):
+        """All-DuckDB search: rank entities (Hybrid by default; Full when `mode="full"`), then enrich
+        the whole page with full termset detail in a constant number of queries — independent of
+        `limit`, no per-result round-trips. Returns [(entity_id, score, comparison)] where
+        `comparison` matches `termset_pairwise_similarity`'s shape (the entity's phenotypes are the
+        subjects, the query terms the objects — so `comparison["average_score"]` equals `score`).
+        Labels and entity hydration are added by the caller (also batched)."""
+        mk = _METRIC_ALIASES.get(metric.lower())
+        if mk is None:
+            raise ValueError(f"unknown metric {metric!r}")
+        ranker = self.full_search if mode == "full" else self.hybrid_search
+        ranked = ranker(query_terms, limit=limit, metric=metric, prefix=prefix, direction=direction)
+        if not ranked:
+            return []
+        entity_ids = [e for e, _ in ranked]
+        pheno_by_entity = self.entity_phenotypes_batch(entity_ids)
+        obj = _dedupe(query_terms)
+        # every phenotype across the page, scored against the query once (single DuckDB query); each
+        # entity then reuses the relevant slice of this `pairs` map when shaped below.
+        all_phenos = _dedupe(p for e in entity_ids for p in pheno_by_entity.get(e, []))
+        pairs = self._all_pairs_detail(all_phenos, obj)
+        out = []
+        for entity_id, score in ranked:
+            subj = _dedupe(pheno_by_entity.get(entity_id, []))
+            comparison = self._shape_comparison(subj, obj, pairs, mk, metric, direction)
+            out.append((entity_id, score, comparison))
+        return out

@@ -70,7 +70,8 @@ def ducksim():
         memory_limit=settings.ducksim_memory_limit,
         threads=settings.ducksim_threads,
     )
-    return DucksimService(engine=engine, entity_implementation=solr())
+    # No entity store needed: the DuckDB backend hydrates result entities from the KG `nodes` table.
+    return DucksimService(engine=engine)
 
 
 @lru_cache(maxsize=1)

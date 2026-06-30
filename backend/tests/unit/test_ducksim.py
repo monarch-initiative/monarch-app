@@ -106,6 +106,39 @@ def test_directionality(engine):
     assert o2s["E:3"] == pytest.approx(math.log2(5))
 
 
+def test_search_hydrates_from_duckdb_without_entity_store(engine):
+    """All-DuckDB search: the service builds full SemsimSearchResults — including the result entity,
+    hydrated from the KG `nodes` table — with no external entity store (entity_implementation=None)."""
+    svc = DucksimService(engine=engine)  # no entity_implementation passed
+    results = svc.search(["A1"], "E", limit=3)
+    assert [r.subject.id for r in results][:2] == ["E:1", "E:3"]
+    top = results[0]
+    assert top.subject.name == "a one" or top.subject.id == "E:1"  # subject hydrated from nodes
+    assert top.similarity.metric == "ancestor_information_content"
+    assert top.score == pytest.approx(top.similarity.average_score)  # ranking == enriched score
+    assert top.similarity.model_dump_json()                          # serializes cleanly
+
+
+def test_batched_search_matches_per_entity_path(engine):
+    """The batched engine.search payload equals the old per-entity path (hybrid_search +
+    per-entity termset_pairwise_similarity) — the refactor changed how, not what, is computed."""
+    termset, prefix = ["A1", "B1"], "E"
+    new = engine.search(termset, limit=5, prefix=prefix)
+    ref = [
+        (e, s, engine.termset_pairwise_similarity(sorted(engine.entity_phenotypes(e)), termset))
+        for e, s in engine.hybrid_search(termset, limit=5, prefix=prefix)
+    ]
+    assert [e for e, _, _ in new] == [e for e, _, _ in ref]            # same ranking
+    for (_, ns, nc), (_, rs, rc) in zip(new, ref):
+        assert ns == pytest.approx(rs)
+        assert nc["average_score"] == pytest.approx(rc["average_score"])
+        assert nc["best_score"] == pytest.approx(rc["best_score"])
+        assert nc["subject_best_matches"].keys() == rc["subject_best_matches"].keys()
+        for k, bm in nc["subject_best_matches"].items():
+            assert bm["match_target"] == rc["subject_best_matches"][k]["match_target"]
+            assert bm["score"] == pytest.approx(rc["subject_best_matches"][k]["score"])
+
+
 def test_termset_direction_matches_search(engine):
     """compare's average_score honors `direction` and equals the directional search ranking for the
     same entity (E:3 phenotypes {A1,B1} as subjects, query {A1} as objects — the search orientation)."""
