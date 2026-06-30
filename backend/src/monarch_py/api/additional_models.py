@@ -66,8 +66,8 @@ class SemsimSearchRequest(BaseModel):
     termset: List[str] = Field(..., title="Termset to search")
     group: SemsimSearchGroup = Field(..., title="Group of entities to search within (e.g. Human Genes)")
     metric: SemsimMetric = Field(SemsimMetric.ANCESTOR_INFORMATION_CONTENT, title="Similarity metric to use")
-    directionality: SemsimDirectionality = (
-        Query(SemsimDirectionality.BIDIRECTIONAL, title="Directionality of the search"),
+    directionality: SemsimDirectionality = Field(
+        SemsimDirectionality.BIDIRECTIONAL, title="Directionality of the search"
     )
     limit: Optional[int] = Field(10, title="Limit the number of results", ge=1, le=50)
 

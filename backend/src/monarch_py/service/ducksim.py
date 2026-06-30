@@ -102,7 +102,9 @@ class Ducksim:
             return self.con.execute(
                 "SELECT count(*) FROM duckdb_tables() WHERE database_name = 'src' AND table_name = ?",
                 [name]).fetchone()[0] > 0
-        except Exception:
+        except duckdb.Error:
+            # A genuinely absent table is reported as count 0, not an error; only swallow DuckDB-level
+            # failures (so a programming error surfaces instead of silently forcing the build path).
             return False
 
     def _define_closure(self, source_sql, predicates):

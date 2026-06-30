@@ -176,5 +176,6 @@ def _post_search(request: SemsimSearchRequest, engine: Optional[str] = EnginePar
         termset=request.termset,
         prefix=parse_similarity_prefix(request.group.value),
         metric=request.metric,
+        directionality=request.directionality,
         limit=request.limit,
     )
