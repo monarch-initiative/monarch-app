@@ -129,7 +129,10 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
     # Process-level cache of RO relation CURIE -> KG label. RO labels (loaded from
     # phenio) are stable for the lifetime of a server process, so resolving each
     # relation once avoids a per-page Solr round-trip. ClassVar keeps it off the
-    # dataclass field list.
+    # dataclass field list. The check-then-write below is intentionally lock-free:
+    # concurrent requests racing on the same uncached relation may each do one extra
+    # Solr lookup at startup, but the write is idempotent, so the cost is bounded and
+    # not worth a lock.
     _relation_label_cache: ClassVar[Dict[str, Optional[str]]] = {}
 
     def solr_is_available(self) -> bool:
@@ -289,12 +292,24 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         associations.sort(key=lambda a: relation_order[a.original_predicate or a.predicate])
 
         relationships: List[NodeRelationship] = []
-        seen: set = set()
+        seen: set[tuple[str, str]] = set()
         for association in associations:
             relation = association.original_predicate or association.predicate
-            if relation not in self._relation_label_cache:
-                relation_entity = self.get_entity(relation, extra=False)
-                self._relation_label_cache[relation] = relation_entity.name if relation_entity is not None else None
+            if relation in self._relation_label_cache:
+                relation_label = self._relation_label_cache[relation]
+            else:
+                # A failure resolving one RO term's label must not blank out the whole
+                # relationships block, so degrade to no label rather than propagating.
+                # Only memoize definitive results (resolved name or confirmed-missing);
+                # on a transient error leave the cache empty so a later request retries
+                # instead of being permanently poisoned with None.
+                try:
+                    relation_entity = self.get_entity(relation, extra=False)
+                    relation_label = relation_entity.name if relation_entity is not None else None
+                    self._relation_label_cache[relation] = relation_label
+                except Exception:
+                    logger.warning(f"Could not resolve label for relation {relation}", exc_info=True)
+                    relation_label = None
             counterpart = self._get_counterpart_entity(association, this_entity)
             # Mondo may assert the same relation->counterpart from multiple rows; show it once.
             if (relation, counterpart.id) in seen:
@@ -316,7 +331,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             relationships.append(
                 NodeRelationship(
                     relation=relation,
-                    relation_label=self._relation_label_cache[relation],
+                    relation_label=relation_label,
                     related_entity=counterpart,
                 )
             )

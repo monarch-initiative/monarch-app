@@ -157,6 +157,43 @@ def test_get_node_relationships_handles_missing_ro_label():
     assert relationships[0].related_entity.id == "NCBIGene:281783"
 
 
+def test_get_node_relationships_survives_label_lookup_error():
+    """If resolving an RO term raises, degrade to no label rather than blanking the block."""
+    disease = Entity(id="MONDO:1010417", name="d", category="biolink:Disease")
+    associations = AssociationResults(items=[_mondo_disease_gene_association()], limit=100, offset=0, total=1)
+
+    with (
+        patch.object(SolrImplementation, "get_associations", return_value=associations),
+        patch.object(SolrImplementation, "get_entity", side_effect=RuntimeError("solr down")),
+    ):
+        relationships = SolrImplementation()._get_node_relationships(disease)
+
+    assert len(relationships) == 1
+    assert relationships[0].relation == "RO:0004003"
+    assert relationships[0].relation_label is None
+    assert relationships[0].related_entity.id == "NCBIGene:281783"
+
+
+def test_get_node_relationships_does_not_cache_label_lookup_error():
+    """A transient lookup failure must not poison the cache; a later call retries and resolves."""
+    disease = Entity(id="MONDO:1010417", name="d", category="biolink:Disease")
+    associations = AssociationResults(items=[_mondo_disease_gene_association()], limit=100, offset=0, total=1)
+    ro_term = Entity(id="RO:0004003", name="has material basis in germline mutation in", category="biolink:NamedThing")
+
+    impl = SolrImplementation()
+    with patch.object(SolrImplementation, "get_associations", return_value=associations):
+        # First call: lookup raises -> no label, and nothing cached.
+        with patch.object(SolrImplementation, "get_entity", side_effect=RuntimeError("solr down")):
+            first = impl._get_node_relationships(disease)
+        assert first[0].relation_label is None
+        assert "RO:0004003" not in SolrImplementation._relation_label_cache
+
+        # Second call (Solr recovered): lookup retries and resolves the label.
+        with patch.object(SolrImplementation, "get_entity", return_value=ro_term):
+            second = impl._get_node_relationships(disease)
+        assert second[0].relation_label == "has material basis in germline mutation in"
+
+
 def test_get_node_relationships_filters_to_curated_relations():
     """Mondo related_to relations outside the curated allowlist are dropped from the header."""
     disease = Entity(id="MONDO:0018310", name="Langerhans cell histiocytosis", category="biolink:Disease")
