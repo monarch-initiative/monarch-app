@@ -348,7 +348,12 @@ class Ducksim:
                        FROM qterms qt JOIN _clo c ON c.s = qt.q JOIN _ic ic ON ic.term = c.o),
              qsize AS (SELECT q, count(*) AS sz FROM q_anc GROUP BY q),
              nq AS (SELECT count(*) AS n FROM qterms),
-             ent_ph AS (SELECT entity AS e, phenotype AS p FROM _assoc {entity_filter}),
+             -- DISTINCT: an entity may be annotated to the same phenotype via multiple association
+             -- rows (different evidence/sources). Without dedup, p_anc repeats that phenotype's
+             -- ancestors, inflating the count(*) intersection below past the union size -> a zero or
+             -- negative jaccard denominator (inf score; sqrt-of-negative for phenodigm). psize already
+             -- uses count(DISTINCT), so the two must agree.
+             ent_ph AS (SELECT DISTINCT entity AS e, phenotype AS p FROM _assoc {entity_filter}),
              np AS (SELECT e, count(DISTINCT p) AS n FROM ent_ph GROUP BY e),
              p_anc AS (SELECT ep.e, ep.p, c.o AS a FROM ent_ph ep JOIN _clo c ON c.s = ep.p),
              psize AS (SELECT e, p, count(DISTINCT a) AS sz FROM p_anc GROUP BY e, p),
