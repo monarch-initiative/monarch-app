@@ -116,6 +116,40 @@ describe("useClinicalResources", () => {
     expect(externalRefs.value.map((l) => l.id)).toEqual(["YDB:4"]);
   });
 
+  it("adds a ClinGen entry derived from a Mondo node id", () => {
+    const node = asNode({ id: "MONDO:0007947" });
+    const { clinicalResources } = useClinicalResources(node);
+
+    expect(clinicalResources.value).toHaveLength(1);
+    const clingen = clinicalResources.value[0];
+    expect(clingen).toMatchObject({
+      id: "MONDO:0007947",
+      url: "https://search.clinicalgenome.org/kb/conditions/MONDO:0007947",
+      label: "ClinGen",
+      source: "external",
+      brand: "clingen",
+    });
+    expect(clingen.tooltip!.toLowerCase()).toContain("clingen");
+  });
+
+  it("appends ClinGen after the prefix-based resources", () => {
+    const node = asNode({
+      id: "MONDO:0007947",
+      external_links: [{ id: "OMIM:123", url: "https://omim.org/entry/123" }],
+    });
+    const { clinicalResources } = useClinicalResources(node);
+    expect(clinicalResources.value.map((r) => r.label)).toEqual([
+      "OMIM",
+      "ClinGen",
+    ]);
+  });
+
+  it("omits ClinGen when the node id is not a Mondo id", () => {
+    const node = asNode({ id: "HP:0000001" });
+    const { clinicalResources } = useClinicalResources(node);
+    expect(clinicalResources.value).toEqual([]);
+  });
+
   it("handles duplicates across different clinical prefixes independently", () => {
     const node = asNode({
       external_links: [{ id: "OMIM:9" }],
