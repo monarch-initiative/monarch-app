@@ -11,8 +11,8 @@
         :tagline="item?.tagline"
       />
       <a
-        v-if="getGa4ghLogoUrl(props.id)"
-        :href="getGa4ghLogoUrl(props.id)!"
+        v-if="ga4ghLogoUrl"
+        :href="ga4ghLogoUrl"
         target="_blank"
         rel="noopener"
         class="endorsement-link"
@@ -185,6 +185,7 @@ function getGa4ghLogoUrl(id: string): string | null {
   }
   return null;
 }
+const ga4ghLogoUrl = computed(() => getGa4ghLogoUrl(props.id));
 
 // ------------------------------
 // 9. Resource Links Formatting
