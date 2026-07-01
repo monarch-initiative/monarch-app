@@ -15,7 +15,7 @@
             :aria-label="res.label || res.id"
           >
             <span>
-              {{ brandText(res.id, res.label) }}
+              {{ brandText(res) }}
             </span>
             <small class="brand-id">{{ res.id }}</small>
           </AppLink>
@@ -73,11 +73,10 @@ type Props = {
 };
 
 const { node, frequencyLabel } = defineProps<Props>();
-console.log("node in clinical resources", node);
 const clinicalResources = useClinicalResources(node)
   .clinicalResources as ComputedRef<ClinicalResourceEntry[]>;
 const chipStyle = (res: ClinicalResourceEntry) => {
-  const k = brandFromId(res.id);
+  const k = res.brand ?? brandFromId(res.id);
   const s = k ? BRAND_STYLES[k] : undefined;
   return {
     "--brand-bg": s?.bg ?? "#666",
@@ -87,9 +86,9 @@ const chipStyle = (res: ClinicalResourceEntry) => {
   } as Record<string, string>;
 };
 
-const brandText = (id: string, fallback?: string) => {
-  const k = brandFromId(id);
-  return k ? BRAND_STYLES[k].label : fallback || id.split(":")[0];
+const brandText = (res: ClinicalResourceEntry) => {
+  const k = res.brand ?? brandFromId(res.id);
+  return k ? BRAND_STYLES[k].label : res.label || res.id.split(":")[0];
 };
 </script>
 

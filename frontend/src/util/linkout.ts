@@ -1,4 +1,10 @@
-export type BrandKey = "gard" | "omim" | "orphanet" | "medgen" | "nord";
+export type BrandKey =
+  | "gard"
+  | "omim"
+  | "orphanet"
+  | "medgen"
+  | "nord"
+  | "clingen";
 
 export const BRAND_STYLES: Record<
   BrandKey,
@@ -45,6 +51,13 @@ export const BRAND_STYLES: Record<
     hover: "#F37D37",
     border: "#A94E17",
   },
+  clingen: {
+    label: "ClinGen",
+    bg: "#2E9B8E",
+    fg: "#FFFFFF",
+    hover: "#23867A",
+    border: "#145048",
+  },
 };
 
 export function brandFromId(id: string) {
@@ -61,6 +74,8 @@ export function brandFromId(id: string) {
       return "medgen";
     case "NORD":
       return "nord";
+    case "CLINGEN":
+      return "clingen";
     default:
       return null;
   }
