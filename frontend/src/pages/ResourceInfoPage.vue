@@ -14,7 +14,7 @@
         v-if="ga4ghLogoUrl"
         :href="ga4ghLogoUrl"
         target="_blank"
-        rel="noopener"
+        rel="noopener noreferrer"
         class="endorsement-link"
       >
         <img
