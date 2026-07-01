@@ -16,12 +16,9 @@
         target="_blank"
         rel="noopener noreferrer"
         class="endorsement-link"
+        aria-label="View GA4GH endorsement (opens in new tab)"
       >
-        <img
-          src="/icons/ga4gh-logo.png"
-          alt="GA4GH logo"
-          class="endorsement-logo"
-        />
+        <img src="/icons/ga4gh-logo.png" alt="" class="endorsement-logo" />
       </a>
       <!-- Tabs -->
       <div class="main-content">
