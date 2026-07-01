@@ -10,6 +10,16 @@
         :is-info-page="true"
         :tagline="item?.tagline"
       />
+      <a
+        v-if="ga4ghLogoUrl"
+        :href="ga4ghLogoUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="endorsement-link"
+        aria-label="View GA4GH endorsement (opens in new tab)"
+      >
+        <img src="/icons/ga4gh-logo.png" alt="" class="endorsement-logo" />
+      </a>
       <!-- Tabs -->
       <div class="main-content">
         <div class="tabs">
@@ -158,6 +168,22 @@ const externalLink = computed(() => {
   return ABOUT_PAGE_LINKS[title || ""];
 });
 
+/**
+ * Returns the URL the GA4GH endorsement logo should link to for a given
+ * resource page id, or null if that page should not display the logo. Add a new
+ * entry here to surface the logo on another resource page.
+ */
+function getGa4ghLogoUrl(id: string): string | null {
+  if (id === "phenopackets") {
+    return "https://www.ga4gh.org/product/phenopackets/";
+  }
+  if (id === "mondo") {
+    return "https://www.ga4gh.org/news_item/ga4gh-launches-formal-endorsement-programme-for-externally-developed-standards-mondo-disease-ontology-named-first-recognised-resource/";
+  }
+  return null;
+}
+const ga4ghLogoUrl = computed(() => getGa4ghLogoUrl(props.id));
+
 // ------------------------------
 // 9. Resource Links Formatting
 // ------------------------------
@@ -257,6 +283,18 @@ $wrap: 1000px;
 
 .main-content {
   flex: 1;
+}
+
+.endorsement-link {
+  display: block;
+  width: fit-content;
+  margin: -1em auto -0.5em;
+}
+
+.endorsement-logo {
+  display: block;
+  width: 200px;
+  height: auto;
 }
 
 .section {
