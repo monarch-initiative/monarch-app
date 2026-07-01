@@ -119,6 +119,28 @@ def test_search_ranking(engine):
     assert [e for e, _ in ranked][:2] == ["E:1", "E:3"]
 
 
+def test_duplicate_associations_dont_inflate_jaccard(tmp_path):
+    """An entity annotated to the same phenotype via multiple association rows (different evidence)
+    must not double-count that phenotype's ancestors: the count(*) intersection would exceed the
+    union, giving a zero/negative jaccard denominator — an inf score (JSON-unserializable -> API 500)
+    and sqrt-of-negative for phenodigm. Regression for the MGI/ZFIN cross-species search 500s."""
+    path = _mini_kg(tmp_path)
+    con = duckdb.connect(path)
+    # E:1 already has has_phenotype A1; add a duplicate association row for the same (E:1, A1).
+    con.execute(
+        "INSERT INTO edges VALUES ('E:1', 'A1', "
+        "'biolink:DiseaseToPhenotypicFeatureAssociation', 'biolink:has_phenotype', NULL)"
+    )
+    con.close()
+    eng = Ducksim.from_duckdb(_bake(path))
+    for metric in ("jaccard_similarity", "phenodigm_score"):
+        scores = [s for _, s in eng.hybrid_search(["A1"], prefix="E", metric=metric)]
+        assert scores, metric
+        assert all(math.isfinite(s) for s in scores), (metric, scores)
+    # de-duped, E:1 (phenotype {A1}) vs query {A1} is still a perfect jaccard match
+    assert dict(eng.hybrid_search(["A1"], prefix="E", metric="jaccard_similarity"))["E:1"] == pytest.approx(1.0)
+
+
 def test_directionality(engine):
     # E:3 phenotypes {A1,B1}, query {A1}; the entity is the subject.
     #   subject_to_object (entity->query): (IC(A1) + 0) / 2 = IC(A1)/2
