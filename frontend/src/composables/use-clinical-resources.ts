@@ -1,4 +1,5 @@
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
+import { hasClinGenDiseaseAssociation } from "@/api/associations";
 import type { ExpandedCurie, Node } from "@/api/model";
 import type { BrandKey } from "@/util/linkout";
 
@@ -60,6 +61,26 @@ export type ClinicalResourceEntry = {
 };
 
 export function useClinicalResources(node: Node) {
+  // ClinGen only has a populated condition page for a fraction of Mondo
+  // diseases, so only show the chip once we've confirmed it actually has
+  // gene-to-disease or variant-to-disease evidence for this exact id. Fails
+  // closed (chip hidden) if the check errors, since a bad linkout is worse
+  // than a missing chip.
+  const hasClinGenData = ref(false);
+  watch(
+    () => node.id,
+    (id) => {
+      hasClinGenData.value = false;
+      if (!id?.startsWith("MONDO:")) return;
+      hasClinGenDiseaseAssociation(id)
+        .then((has) => {
+          if (id === node.id) hasClinGenData.value = has;
+        })
+        .catch(() => {});
+    },
+    { immediate: true },
+  );
+
   const clinicalResources = computed<ClinicalResourceEntry[]>(() => {
     const out: ClinicalResourceEntry[] = [];
     for (const { prefix, label, tooltip } of RESOURCE_DEFS) {
@@ -90,8 +111,9 @@ export function useClinicalResources(node: Node) {
       }
     }
     // ClinGen link is derived from the disease's own Mondo id rather than from
-    // external_links/mappings, so add it for any Mondo disease node.
-    if (node.id?.startsWith("MONDO:")) {
+    // external_links/mappings, so add it once we've confirmed ClinGen has
+    // data for this id.
+    if (hasClinGenData.value) {
       out.push({
         id: node.id,
         url: `${CLINGEN_CONDITION_URL}${node.id}`,
