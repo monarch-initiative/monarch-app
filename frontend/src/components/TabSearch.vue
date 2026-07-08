@@ -130,7 +130,7 @@
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { groupBy, mapValues, sortBy, startCase, uniq, uniqBy } from "lodash";
-import { getCategoryIcon, getCategoryLabel } from "@/api/categories";
+import { getCategoryIcon } from "@/api/categories";
 import type { SearchResults } from "@/api/model";
 import { getAutocomplete, getSearch } from "@/api/search";
 import AppButton from "@/components/AppButton.vue";
@@ -147,6 +147,7 @@ import { useQuery } from "@/composables/use-query";
 import { deleteEntry, history } from "@/global/history";
 import { appTitle } from "@/global/meta";
 import { waitFor } from "@/util/dom";
+import { buildFacetOption } from "@/util/searchFacets";
 
 type Props = {
   /** whether to show pared down version with just search box */
@@ -339,23 +340,9 @@ const {
       const options: { [key: string]: MultiOptions } = {};
       for (const facet of facets.value) {
         options[facet.label || ""] =
-          facet.facet_values?.map((facet_value) => ({
-            id: facet_value.label,
-            label:
-              facet.label === "category"
-                ? getCategoryLabel(facet_value.label)
-                : facet.label === "in_taxon_label"
-                  ? /** scientific names come correctly cased; don't title-case */
-                    facet_value.label
-                  : startCase(facet_value.label),
-            icon:
-              facet.label === "category"
-                ? getCategoryIcon(facet_value.label)
-                : "",
-            /** italicize taxon scientific names */
-            italic: facet.label === "in_taxon_label",
-            count: facet_value.count,
-          })) || [];
+          facet.facet_values?.map((facet_value) =>
+            buildFacetOption(facet.label, facet_value),
+          ) || [];
       }
 
       dropdownsOptions.value = { ...options };
@@ -444,8 +431,8 @@ watch(from, () => runGetSearch(false));
 
 .title-taxon {
   color: $dark-gray;
-  font-size: 0.9rem;
   font-style: italic;
+  font-size: 0.9rem;
   text-align: left;
 }
 
