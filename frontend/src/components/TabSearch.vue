@@ -344,11 +344,16 @@ const {
             label:
               facet.label === "category"
                 ? getCategoryLabel(facet_value.label)
-                : startCase(facet_value.label),
+                : facet.label === "in_taxon_label"
+                  ? /** scientific names come correctly cased; don't title-case */
+                    facet_value.label
+                  : startCase(facet_value.label),
             icon:
               facet.label === "category"
                 ? getCategoryIcon(facet_value.label)
                 : "",
+            /** italicize taxon scientific names */
+            italic: facet.label === "in_taxon_label",
             count: facet_value.count,
           })) || [];
       }
@@ -440,6 +445,7 @@ watch(from, () => runGetSearch(false));
 .title-taxon {
   color: $dark-gray;
   font-size: 0.9rem;
+  font-style: italic;
   text-align: left;
 }
 
