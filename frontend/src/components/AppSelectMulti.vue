@@ -113,7 +113,10 @@
             class="option-check"
           />
           <AppIcon v-if="option.icon" :icon="option.icon" class="option-icon" />
-          <span class="option-label truncate" :class="{ italic: option.italic }">
+          <span
+            class="option-label truncate"
+            :class="{ italic: option.italic }"
+          >
             {{ option.label || option.id }}
           </span>
           <span
