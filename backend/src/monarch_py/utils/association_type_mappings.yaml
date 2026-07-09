@@ -115,3 +115,73 @@
   category: "biolink:CaseToGeneAssociation"
   subject_category: "biolink:Case"
   object_category: "biolink:Gene"
+# Clinical measurement (LOINC) sections. These edges all carry the generic
+# biolink:Association category, so each section is distinguished by predicate +
+# object category. The same mappings drive the reverse "... Clinical Measurements"
+# sections on the phenotype/chemical/anatomy/etc. pages via the object_label.
+- key: clinical_measurement_correlated_phenotypes
+  subject_label: Correlated Phenotypes
+  object_label: Correlated Clinical Measurements
+  category:
+  - "biolink:Association"
+  predicate:
+  - "biolink:correlated_with"
+  subject_category:
+  - "biolink:ClinicalMeasurement"
+  object_category:
+  - "biolink:PhenotypicFeature"
+- key: clinical_measurement_related_chemicals
+  subject_label: Related Chemicals
+  object_label: Related Clinical Measurements
+  category:
+  - "biolink:Association"
+  predicate:
+  - "biolink:related_to"
+  subject_category:
+  - "biolink:ClinicalMeasurement"
+  object_category:
+  - "biolink:ChemicalEntity"
+- key: clinical_measurement_related_anatomy
+  subject_label: Related Anatomy
+  object_label: Related Clinical Measurements
+  category:
+  - "biolink:Association"
+  predicate:
+  - "biolink:related_to"
+  subject_category:
+  - "biolink:ClinicalMeasurement"
+  object_category:
+  - "biolink:AnatomicalEntity"
+- key: clinical_measurement_related_organisms
+  subject_label: Related Organisms
+  object_label: Related Clinical Measurements
+  category:
+  - "biolink:Association"
+  predicate:
+  - "biolink:related_to"
+  subject_category:
+  - "biolink:ClinicalMeasurement"
+  object_category:
+  - "biolink:OrganismTaxon"
+- key: clinical_measurement_related_proteins
+  subject_label: Related Proteins
+  object_label: Related Clinical Measurements
+  category:
+  - "biolink:Association"
+  predicate:
+  - "biolink:related_to"
+  subject_category:
+  - "biolink:ClinicalMeasurement"
+  object_category:
+  - "biolink:Protein"
+- key: clinical_measurement_related_cells
+  subject_label: Related Cells
+  object_label: Related Clinical Measurements
+  category:
+  - "biolink:Association"
+  predicate:
+  - "biolink:related_to"
+  subject_category:
+  - "biolink:ClinicalMeasurement"
+  object_category:
+  - "biolink:Cell"

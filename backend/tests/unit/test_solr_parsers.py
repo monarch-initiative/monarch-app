@@ -23,6 +23,46 @@ from monarch_py.implementations.solr.solr_parsers import (
 from monarch_py.utils.utils import dict_diff
 
 
+def test_parse_association_counts_clinical_measurement():
+    """A clinical-measurement (LOINC) section surfaces with its key/label even
+    though its edges share the generic biolink:Association category."""
+    from monarch_py.implementations.solr.solr_query_utils import (
+        build_association_count_suffixes,
+        build_association_counts_query,
+    )
+
+    node = "LOINC:2345-7"
+    fragment = (
+        'category:"biolink:Association" AND predicate:"biolink:correlated_with" '
+        'AND subject_category:"biolink:ClinicalMeasurement" '
+        'AND object_category:"biolink:PhenotypicFeature"'
+    )
+    suffixes = build_association_count_suffixes([node]).all_suffixes
+    direct = f'({fragment}) {suffixes["direct_subject"]}'
+    closure = f'({fragment}) {suffixes["closure_subject"]}'
+
+    # sanity: these queries are actually part of the built counts query
+    built = build_association_counts_query([node]).facet_queries
+    assert direct in built and closure in built
+
+    response = {
+        "responseHeader": {"QTime": 1, "params": {}},
+        "response": {"numFound": 0, "start": 0, "docs": []},
+        "facet_counts": {"facet_fields": {}, "facet_queries": {direct: 12, closure: 30}},
+    }
+    parsed = parse_association_counts(SolrQueryResult(**response), entities=[node]).model_dump()
+    assert parsed["items"] == [
+        {
+            "key": "clinical_measurement_correlated_phenotypes",
+            "label": "Correlated Phenotypes",
+            "category": "biolink:Association",
+            "count": 30,
+            "count_direct": 12,
+            "count_with_orthologs": None,
+        }
+    ]
+
+
 def test_parse_associations(association_response, associations):
     association_response["response"]["numFound"] = association_response["response"].pop("num_found")
     solr_response = SolrQueryResult(**association_response)
