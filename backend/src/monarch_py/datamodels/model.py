@@ -278,14 +278,18 @@ class CompactAssociation(ConfiguredBaseModel):
 
 class AssociationTypeMapping(ConfiguredBaseModel):
     """
-    A data class to hold the necessary information to produce association type counts for given  entities with appropriate directional labels
+    A data class to hold the necessary information to produce association type counts for given entities with appropriate directional labels. Each match criterion (category, predicate, subject_category, object_category, primary_knowledge_source, provided_by) is an optional list; values within a single criterion are OR'd, and criteria are AND'd together. An omitted criterion places no constraint on that field.
     """
+    key: Optional[str] = Field(default=None, description="""A stable identifier for this association-type section, used to accumulate counts and as the table/section key. Defaults to the (single) category when not set.""")
     subject_label: Optional[str] = Field(default=None, description="""A label to describe the subjects of the association type as a whole for use in the UI""")
     object_label: Optional[str] = Field(default=None, description="""A label to describe the objects of the association type as a whole for use in the UI""")
     symmetric: bool = Field(default=False, description="""Whether the association type is symmetric, meaning that the subject and object labels should be interchangeable""")
-    category: str = Field(default=..., description="""The biolink category to use in queries for this association type""")
-    subject_category: Optional[str] = Field(default=None, description="""The biolink category of entities in the subject position of this association type""")
-    object_category: Optional[str] = Field(default=None, description="""The biolink category of entities in the object position of this association type""")
+    category: Optional[list[str]] = Field(default=None, description="""The biolink association category/categories to match (OR'd)""")
+    predicate: Optional[list[str]] = Field(default=None, description="""The predicate(s) to match (OR'd)""")
+    subject_category: Optional[list[str]] = Field(default=None, description="""The biolink category/categories of entities in the subject position of this association type (OR'd)""")
+    object_category: Optional[list[str]] = Field(default=None, description="""The biolink category/categories of entities in the object position of this association type (OR'd)""")
+    primary_knowledge_source: Optional[list[str]] = Field(default=None, description="""The primary knowledge source(s) to match (OR'd)""")
+    provided_by: Optional[list[str]] = Field(default=None, description="""The provided_by ingest source(s) to match (OR'd)""")
 
 
 class ExpandedAssociation(Association):
@@ -465,6 +469,7 @@ class FacetValue(ConfiguredBaseModel):
 
 
 class AssociationCount(FacetValue):
+    key: Optional[str] = Field(default=None, description="""Stable section identifier used as the frontend section key and the association-table key. Equals the category for plain single-category sections.""")
     category: Optional[str] = Field(default=None)
     count_direct: Optional[int] = Field(default=None, description="""Count of direct associations (no closure/descendants)""")
     count_with_orthologs: Optional[int] = Field(default=None, description="""Count including associations from orthologous genes""")

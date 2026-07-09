@@ -305,6 +305,8 @@ export interface Association {
 
 
 export interface AssociationCount extends FacetValue {
+    /** Stable section identifier used as the frontend section key and the association-table key. Equals the category for plain single-category sections. */
+    key?: string,
     category?: string,
     /** Count of direct associations (no closure/descendants) */
     count_direct?: number,
@@ -370,21 +372,29 @@ export interface AssociationTableResults extends Results {
 
 
 /**
- * A data class to hold the necessary information to produce association type counts for given  entities with appropriate directional labels
+ * A data class to hold the necessary information to produce association type counts for given entities with appropriate directional labels. Each match criterion (category, predicate, subject_category, object_category, primary_knowledge_source, provided_by) is an optional list; values within a single criterion are OR'd, and criteria are AND'd together. An omitted criterion places no constraint on that field.
  */
 export interface AssociationTypeMapping {
+    /** A stable identifier for this association-type section, used to accumulate counts and as the table/section key. Defaults to the (single) category when not set. */
+    key?: string,
     /** A label to describe the subjects of the association type as a whole for use in the UI */
     subject_label?: string,
     /** A label to describe the objects of the association type as a whole for use in the UI */
     object_label?: string,
     /** Whether the association type is symmetric, meaning that the subject and object labels should be interchangeable */
     symmetric: boolean,
-    /** The biolink category to use in queries for this association type */
-    category: string,
-    /** The biolink category of entities in the subject position of this association type */
-    subject_category?: string,
-    /** The biolink category of entities in the object position of this association type */
-    object_category?: string,
+    /** The biolink association category/categories to match (OR'd) */
+    category?: string[],
+    /** The predicate(s) to match (OR'd) */
+    predicate?: string[],
+    /** The biolink category/categories of entities in the subject position of this association type (OR'd) */
+    subject_category?: string[],
+    /** The biolink category/categories of entities in the object position of this association type (OR'd) */
+    object_category?: string[],
+    /** The primary knowledge source(s) to match (OR'd) */
+    primary_knowledge_source?: string[],
+    /** The provided_by ingest source(s) to match (OR'd) */
+    provided_by?: string[],
 }
 
 

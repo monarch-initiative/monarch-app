@@ -1,5 +1,4 @@
 import pkgutil
-import re
 from typing import List
 
 import yaml
@@ -26,10 +25,21 @@ class AssociationTypeMappings:
 
     @staticmethod
     def get_mapping(category: str):
+        """Get the first mapping that includes the given category."""
         if AssociationTypeMappings.__instance is None:
             AssociationTypeMappings()
         for mapping in AssociationTypeMappings.__instance.mappings:
-            if mapping.category == category:
+            if mapping.category and category in mapping.category:
+                return mapping
+        return None
+
+    @staticmethod
+    def get_mapping_by_key(key: str):
+        """Get the mapping for a given section key."""
+        if AssociationTypeMappings.__instance is None:
+            AssociationTypeMappings()
+        for mapping in AssociationTypeMappings.__instance.mappings:
+            if mapping.key == key:
                 return mapping
         return None
 
@@ -53,84 +63,110 @@ class AssociationTypeMappings:
         if AssociationTypeMappings.__instance is None:
             AssociationTypeMappings()
 
+        def _first(values):
+            return values[0] if values else None
+
         results = []
         for mapping in AssociationTypeMappings.__instance.mappings:
+            category = _first(mapping.category)
             # Check if entity can be the subject
-            if mapping.subject_category == entity_category:
+            if mapping.subject_category and entity_category in mapping.subject_category:
                 results.append(
                     {
-                        "category": mapping.category,
-                        "label": mapping.subject_label or mapping.category,
+                        "category": category,
+                        "label": mapping.subject_label or category,
                         "context_field": "subject",
-                        "target_category": mapping.object_category,
+                        "target_category": _first(mapping.object_category),
                     }
                 )
             # Check if entity can be the object (reverse traversal)
-            if mapping.object_category == entity_category:
+            if mapping.object_category and entity_category in mapping.object_category:
                 results.append(
                     {
-                        "category": mapping.category,
-                        "label": mapping.object_label or mapping.category,
+                        "category": category,
+                        "label": mapping.object_label or category,
                         "context_field": "object",
-                        "target_category": mapping.subject_category,
+                        "target_category": _first(mapping.subject_category),
                     }
                 )
         return results
 
+    # Match criteria that are declared as (optional) lists on AssociationTypeMapping.
+    # Values within a criterion are OR'd; criteria are AND'd together.
+    MULTIVALUED_CRITERIA = (
+        "category",
+        "predicate",
+        "subject_category",
+        "object_category",
+        "primary_knowledge_source",
+        "provided_by",
+    )
+
     def load_mappings(self):
         mapping_data = pkgutil.get_data(__package__, "./association_type_mappings.yaml")
         mapping_data = yaml.load(mapping_data, Loader=yaml.FullLoader)
+        for entry in mapping_data:
+            # allow scalar shorthand in the yaml for the multivalued criteria
+            for field in AssociationTypeMappings.MULTIVALUED_CRITERIA:
+                value = entry.get(field)
+                if value is not None and not isinstance(value, list):
+                    entry[field] = [value]
+            # default the section key to the (single) category when not set
+            if not entry.get("key"):
+                category = entry.get("category")
+                if category:
+                    entry["key"] = category[0]
         adapter = TypeAdapter(List[AssociationTypeMapping])
         self.mappings = adapter.validate_python(mapping_data)
 
 
-def get_association_type_mapping_by_query_string(
-    query_string: str,
-) -> AssociationTypeMapping:
+def _or_group(field: str, values) -> str:
+    """Build a Solr clause for one match criterion: OR within the field.
+
+    A single value renders without parentheses so single-category mappings
+    produce exactly the same query as before (e.g. `category:"biolink:X"`).
     """
-    Get the association type mapping for a given query string, splitting the category and predicate components apart
-    Args:
-        query_string: A solr query string to parse apart for category and predicate
-
-    Returns: An AssociationTypeMapping instance appropriate for the given query string
-    Raises: ValueError if no match is found
-    """
-
-    category = parse_query_string_for_category(query_string)
-
-    matching_types = [a_type for a_type in AssociationTypeMappings.get_mappings() if a_type.category == category]
-
-    if len(matching_types) == 0:
-        raise ValueError(f"No matching association type found for query string: [{query_string}]")
-    elif len(matching_types) > 1:
-        raise ValueError(f"Too many association types found for query string: [{query_string}]")
-    else:
-        return matching_types[0]
+    if not values:
+        return None
+    if isinstance(values, str):
+        values = [values]
+    if len(values) == 1:
+        return f'{field}:"{values[0]}"'
+    return "(" + " OR ".join(f'{field}:"{value}"' for value in values) + ")"
 
 
 def get_solr_query_fragment(agm: AssociationTypeMapping) -> str:
-    return f'category:"{agm.category}"'
+    """Build the Solr clause that selects this association type: AND across the
+    present criteria, each criterion OR'd internally."""
+    parts = [
+        _or_group("category", agm.category),
+        _or_group("predicate", agm.predicate),
+        _or_group("subject_category", agm.subject_category),
+        _or_group("object_category", agm.object_category),
+        _or_group("primary_knowledge_source", agm.primary_knowledge_source),
+        _or_group("provided_by", agm.provided_by),
+    ]
+    return " AND ".join(part for part in parts if part)
 
 
 def get_sql_query_fragment(agm: AssociationTypeMapping) -> str:
-    return f'category = "{agm.category}"'
+    """SQL equivalent of get_solr_query_fragment (AND across criteria, OR within)."""
 
+    def _or_group_sql(field, values):
+        if not values:
+            return None
+        if isinstance(values, str):
+            values = [values]
+        if len(values) == 1:
+            return f'{field} = "{values[0]}"'
+        return "(" + " OR ".join(f'{field} = "{value}"' for value in values) + ")"
 
-def parse_query_string_for_category(
-    query_string: str,
-) -> str:
-    categories = []
-
-    pattern = re.compile(r'(category):\s*"?([\w:]+)"?')
-    for match in re.findall(pattern, query_string):
-        if match[0] == "category":
-            categories.append(match[1])
-
-    # Check if both categories and predicates were found
-    if not categories:
-        raise ValueError("No categories or predicates found in query string")
-
-    if len(categories) > 1:
-        raise ValueError(f"Multiple categories found in query string: {query_string}")
-
-    return categories[0]
+    parts = [
+        _or_group_sql("category", agm.category),
+        _or_group_sql("predicate", agm.predicate),
+        _or_group_sql("subject_category", agm.subject_category),
+        _or_group_sql("object_category", agm.object_category),
+        _or_group_sql("primary_knowledge_source", agm.primary_knowledge_source),
+        _or_group_sql("provided_by", agm.provided_by),
+    ]
+    return " AND ".join(part for part in parts if part)
