@@ -9,6 +9,7 @@ from monarch_py.implementations.solr.solr_query_utils import (
     build_association_counts_query,
     build_association_query,
     build_autocomplete_query,
+    build_grounding_query,
     build_histopheno_query,
     build_mapping_query,
     build_search_query,
@@ -79,9 +80,9 @@ def test_build_association_multiple_predicates():
     )
     assert len(query.filter_queries) > 0, "filter_queries is empty"
     predicate_filter = [fq for fq in query.filter_queries if fq.startswith("predicate:")][0]
-    assert predicate_filter == "predicate:biolink\\:has_phenotype OR predicate:biolink\\:expressed_in", (
-        "multiple predicate filter is not as expected"
-    )
+    assert (
+        predicate_filter == "predicate:biolink\\:has_phenotype OR predicate:biolink\\:expressed_in"
+    ), "multiple predicate filter is not as expected"
 
 
 def test_build_association_multiple_entites():
@@ -450,3 +451,35 @@ def test_build_multi_category_row_query_single_row_category_in_list():
     assert "biolink:DiseaseToPhenotypicFeatureAssociation" in fq
     # Single category should still be wrapped in parens (from OR join)
     assert fq == '(category:"biolink:DiseaseToPhenotypicFeatureAssociation")'
+
+
+def test_build_grounding_query_no_filters():
+    """Without prefix/category filters, grounding query carries no filter queries."""
+    query = build_grounding_query("Marfan syndrome")
+    assert query.q == '"Marfan syndrome"'
+    assert query.filter_queries == []
+
+
+def test_build_grounding_query_with_prefix():
+    """A single CURIE prefix is filtered against the entity `namespace` field."""
+    query = build_grounding_query("Marfan syndrome", prefix=["MONDO"])
+    assert "namespace:MONDO" in query.filter_queries
+
+
+def test_build_grounding_query_with_multiple_prefixes():
+    """Multiple prefixes are OR'd within a single namespace filter query."""
+    query = build_grounding_query("kidney disease", prefix=["MONDO", "HP"])
+    assert any("namespace:MONDO" in fq and "namespace:HP" in fq and " OR " in fq for fq in query.filter_queries)
+
+
+def test_build_grounding_query_with_category():
+    """A biolink category is filtered against the entity `category` field (colon escaped)."""
+    query = build_grounding_query("Marfan syndrome", category=["biolink:Disease"])
+    assert r"category:biolink\:Disease" in query.filter_queries
+
+
+def test_build_grounding_query_with_prefix_and_category():
+    """Prefix and category produce two independent filter queries."""
+    query = build_grounding_query("Marfan syndrome", prefix=["MONDO"], category=["biolink:Disease"])
+    assert "namespace:MONDO" in query.filter_queries
+    assert r"category:biolink\:Disease" in query.filter_queries

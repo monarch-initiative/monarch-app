@@ -39,3 +39,38 @@ def test_ground_returns_empty_for_blank_input(client, blank):
     response = client.get("/v3/api/ground", params={"text": blank})
     assert response.status_code == 200
     assert response.json() == []
+
+
+@requires_solr
+def test_get_ground_prefix_filter_restricts_results(client):  # pragma: no cover
+    response = client.get("/v3/api/ground", params={"text": "Marfan syndrome", "prefix": "MONDO"})
+    assert response.status_code == 200
+    results = response.json()
+    assert results
+    assert all(r["id"].startswith("MONDO:") for r in results)
+
+
+@requires_solr
+def test_get_ground_category_filter_restricts_results(client):  # pragma: no cover
+    response = client.get("/v3/api/ground", params={"text": "Marfan syndrome", "category": "biolink:Disease"})
+    assert response.status_code == 200
+    results = response.json()
+    assert results
+    assert all(r["category"] == "biolink:Disease" for r in results)
+
+
+@requires_solr
+def test_post_ground_accepts_prefix_and_category_filters(client):  # pragma: no cover
+    response = client.post(
+        "/v3/api/ground",
+        json={"content": "Marfan syndrome", "prefix": ["MONDO"], "category": ["biolink:Disease"]},
+    )
+    assert response.status_code == 200
+    results = response.json()
+    assert results
+    assert all(r["id"].startswith("MONDO:") and r["category"] == "biolink:Disease" for r in results)
+
+
+def test_get_ground_rejects_invalid_category(client):
+    response = client.get("/v3/api/ground", params={"text": "Marfan syndrome", "category": "not-a-category"})
+    assert response.status_code == 422
