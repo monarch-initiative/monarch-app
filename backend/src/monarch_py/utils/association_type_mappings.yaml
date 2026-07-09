@@ -80,11 +80,11 @@
   category: "biolink:GenotypeToDiseaseAssociation"
   subject_category: "biolink:Genotype"
   object_category: "biolink:Disease"
-- subject_label: Medical Action
-  object_label: Medical Action
+- subject_label: Indications
+  object_label: Treatments
   category: "biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation"
-  # Note: subject_category/object_category omitted - this association uses disease_context_qualifier
-  # and requires special 1-hop handling that isn't yet implemented in the entity grid
+  subject_category: "biolink:ChemicalEntity"
+  object_category: "biolink:Disease"
 - subject_label: Variant to Phenotype
   object_label: Variant to Phenotype
   category: "biolink:VariantToPhenotypicFeatureAssociation"
