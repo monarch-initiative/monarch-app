@@ -842,17 +842,26 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
     # Implements: GroundingInterface #
     ##################################
 
-    def ground_entity(self, text: str) -> List[Entity]:
+    def ground_entity(
+        self,
+        text: str,
+        prefix: Optional[List[str]] = None,
+        category: Optional[List[str]] = None,
+    ) -> List[Entity]:
         """Grounds a single entity
 
         Args:
             text (str): Text to ground
+            prefix (List[str], optional): Restrict results to entities whose identifier
+                uses one of these CURIE prefixes (e.g. ["MONDO", "HP"]). Defaults to None.
+            category (List[str], optional): Restrict results to entities of one of these
+                biolink categories (e.g. ["biolink:Disease"]). Defaults to None.
 
         Returns:
             Entity: Dataclass representing a single entity
         """
         solr = SolrService(base_url=self.base_url, core=core.ENTITY)
-        query = build_grounding_query(text)
+        query = build_grounding_query(text, prefix=prefix, category=category)
         query_result = solr.query(query)
         search_result = parse_search(query_result)
         entities = [entity for entity in search_result.items[:3]]

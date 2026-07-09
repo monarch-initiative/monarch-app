@@ -4,6 +4,8 @@ from typing import List, Optional
 from fastapi import Query, Request
 from pydantic import BaseModel, Field
 
+from monarch_py.datamodels.category_enums import EntityCategory
+
 
 class PaginationParams(BaseModel):
     request: Request
@@ -74,6 +76,14 @@ class SemsimSearchRequest(BaseModel):
 
 class TextAnnotationRequest(BaseModel):
     content: str = Field(..., title="The text content to annotate")
+    prefix: Optional[List[str]] = Field(
+        default=None,
+        title="Restrict grounding results to entities using one of these CURIE prefixes (e.g. MONDO, HP)",
+    )
+    category: Optional[List[EntityCategory]] = Field(
+        default=None,
+        title="Restrict grounding results to entities of one of these biolink categories (e.g. biolink:Disease)",
+    )
 
 
 class PathographNode(BaseModel):
