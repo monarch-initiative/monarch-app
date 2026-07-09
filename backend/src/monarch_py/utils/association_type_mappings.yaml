@@ -152,17 +152,6 @@
   - "biolink:ClinicalMeasurement"
   object_category:
   - "biolink:AnatomicalEntity"
-- key: clinical_measurement_related_organisms
-  subject_label: Related Organisms
-  object_label: Related Clinical Measurements
-  category:
-  - "biolink:Association"
-  predicate:
-  - "biolink:related_to"
-  subject_category:
-  - "biolink:ClinicalMeasurement"
-  object_category:
-  - "biolink:OrganismTaxon"
 - key: clinical_measurement_related_proteins
   subject_label: Related Proteins
   object_label: Related Clinical Measurements
