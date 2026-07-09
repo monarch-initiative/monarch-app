@@ -74,3 +74,11 @@ def test_post_ground_accepts_prefix_and_category_filters(client):  # pragma: no 
 def test_get_ground_rejects_invalid_category(client):
     response = client.get("/v3/api/ground", params={"text": "Marfan syndrome", "category": "not-a-category"})
     assert response.status_code == 422
+
+
+def test_post_ground_rejects_invalid_category(client):
+    response = client.post(
+        "/v3/api/ground",
+        json={"content": "Marfan syndrome", "category": ["not-a-category"]},
+    )
+    assert response.status_code == 422

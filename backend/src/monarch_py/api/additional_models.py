@@ -4,6 +4,8 @@ from typing import List, Optional
 from fastapi import Query, Request
 from pydantic import BaseModel, Field
 
+from monarch_py.datamodels.category_enums import EntityCategory
+
 
 class PaginationParams(BaseModel):
     request: Request
@@ -78,7 +80,7 @@ class TextAnnotationRequest(BaseModel):
         default=None,
         title="Restrict grounding results to entities using one of these CURIE prefixes (e.g. MONDO, HP)",
     )
-    category: Optional[List[str]] = Field(
+    category: Optional[List[EntityCategory]] = Field(
         default=None,
         title="Restrict grounding results to entities of one of these biolink categories (e.g. biolink:Disease)",
     )

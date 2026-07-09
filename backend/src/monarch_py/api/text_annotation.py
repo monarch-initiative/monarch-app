@@ -61,4 +61,8 @@ def _ground(
 
 @router.post("/ground")
 def _post_ground(request: TextAnnotationRequest) -> List[Entity]:
-    return _ground_entity(request.content, prefix=request.prefix, category=request.category)
+    return _ground_entity(
+        request.content,
+        prefix=request.prefix,
+        category=[c.value for c in request.category] if request.category else None,
+    )
