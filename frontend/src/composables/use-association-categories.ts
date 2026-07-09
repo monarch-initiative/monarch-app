@@ -3,9 +3,8 @@ import { startCase } from "lodash";
 import { TRAVERSE_ORTHOLOG_CATEGORIES } from "@/api/associations";
 import type { Node } from "@/api/model";
 
-const HIDDEN_CATEGORIES = new Set([
-  "biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation",
-]);
+/** section keys (ac.key) to hide from node pages */
+const HIDDEN_CATEGORIES = new Set<string>([]);
 
 export function useAssociationCategories(node: Node) {
   const options = computed(() => {
