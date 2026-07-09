@@ -11,7 +11,13 @@ export function useAssociationCategories(node: Node) {
   const options = computed(() => {
     const opts =
       node.association_counts?.map((ac) => ({
-        id: ac.category || "",
+        /**
+         * stable section key; the backend defaults it to the category for plain
+         * single-category sections, so this stays category-compatible while
+         * also distinguishing sections that share one category (e.g.
+         * biolink:Association)
+         */
+        id: ac.key || ac.category || "",
         label: startCase(ac.label),
         count: TRAVERSE_ORTHOLOG_CATEGORIES.has(ac.category || "")
           ? (ac.count_with_orthologs ?? ac.count)

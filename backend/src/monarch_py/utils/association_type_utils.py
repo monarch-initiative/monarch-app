@@ -149,6 +149,26 @@ def get_solr_query_fragment(agm: AssociationTypeMapping) -> str:
     return " AND ".join(part for part in parts if part)
 
 
+def get_solr_criteria_filters(agm: AssociationTypeMapping) -> List[str]:
+    """The non-category match criteria as individual Solr filter-query clauses.
+
+    Used by the association table query, where the category list is applied
+    separately and predicate / subject / object / source criteria are added as
+    additional filters.
+    """
+    return [
+        clause
+        for clause in (
+            _or_group("predicate", agm.predicate),
+            _or_group("subject_category", agm.subject_category),
+            _or_group("object_category", agm.object_category),
+            _or_group("primary_knowledge_source", agm.primary_knowledge_source),
+            _or_group("provided_by", agm.provided_by),
+        )
+        if clause
+    ]
+
+
 def get_sql_query_fragment(agm: AssociationTypeMapping) -> str:
     """SQL equivalent of get_solr_query_fragment (AND across criteria, OR within)."""
 

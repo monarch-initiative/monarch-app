@@ -8,7 +8,6 @@ from monarch_py.api.additional_models import PaginationParams
 from monarch_py.api.config import solr
 from monarch_py.api.additional_models import OutputFormat
 from monarch_py.datamodels.model import AssociationTableResults, Node
-from monarch_py.datamodels.category_enums import AssociationCategory
 from monarch_py.utils.format_utils import to_json, to_tsv
 
 router = APIRouter(tags=["entity"], responses={404: {"description": "Not Found"}})
@@ -55,8 +54,9 @@ def _association_table(
         title="ID of the entity to retrieve association table data for",
         examples=["MONDO:0019391"],
     ),
-    category: AssociationCategory = Path(
-        title="Type of association to retrieve association table data for",
+    category: str = Path(
+        title="Association-type section key (an AssociationTypeMapping key). For plain "
+        "single-category sections this is the biolink association category.",
         examples=["biolink:DiseaseToPhenotypicFeatureAssociation"],
     ),
     query: str = Query(default=None, title="query string to limit results to a subset", examples=["thumb"]),

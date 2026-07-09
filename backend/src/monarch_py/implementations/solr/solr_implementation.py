@@ -30,7 +30,7 @@ from monarch_py.datamodels.category_enums import (
     EntityCategory,
     MappingPredicate,
 )
-from monarch_py.utils.association_type_utils import AssociationTypeMappings
+from monarch_py.utils.association_type_utils import AssociationTypeMappings, get_solr_criteria_filters
 from monarch_py.implementations.solr.solr_parsers import (
     convert_facet_fields,
     convert_facet_queries,
@@ -776,7 +776,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
     def get_association_table(
         self,
         entity: str,
-        category: AssociationCategory,
+        category: Union[AssociationCategory, str],
         traverse_orthologs: bool = False,
         direct: bool = False,
         q: Optional[str] = None,
@@ -787,6 +787,20 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         offset: int = 0,
         limit: int = 5,
     ) -> AssociationTableResults:
+        # `category` is really a section key: it resolves to an AssociationTypeMapping
+        # (whose criteria may combine several categories, a predicate, subject/object
+        # categories, etc.). An unknown key is treated as a literal category, which keeps
+        # backward compatibility for existing single-category sections and direct API use.
+        key = category.value if hasattr(category, "value") else category
+        mapping = AssociationTypeMappings.get_mapping_by_key(key)
+        if mapping and mapping.category:
+            categories = mapping.category
+            criteria_filters = get_solr_criteria_filters(mapping)
+        else:
+            categories = [key]
+            criteria_filters = []
+        table_filter_queries = (filter_queries or []) + criteria_filters
+
         entities = [entity]
         if traverse_orthologs:
             ortholog_associations = self.get_associations(
@@ -798,12 +812,12 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             entities.extend([ent.id for ent in orthologous_entities])
         query = build_association_table_query(
             entity=entities,
-            category=category.value,
+            category=categories,
             direct=direct,
             q=q,
             facet_fields=facet_fields,
             facet_queries=facet_queries,
-            filter_queries=filter_queries,
+            filter_queries=table_filter_queries,
             sort=sort,
             offset=offset,
             limit=limit,
