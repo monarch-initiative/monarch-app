@@ -9,7 +9,7 @@ type AssocCount = {
 };
 type TestNode = { association_counts?: AssocCount[] };
 
-const hidden =
+const drugIndications =
   "biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation";
 const causal = "biolink:CausalGeneToDiseaseAssociation";
 const genePh = "biolink:GeneToPhenotypicFeatureAssociation";
@@ -31,15 +31,20 @@ describe("useAssociationCategories", () => {
     ]);
   });
 
-  it("filters out hidden categories", () => {
+  it("no longer hides the drug-indication category (now shown, keyed on key)", () => {
     const node: TestNode = {
       association_counts: [
-        { category: hidden, label: "should hide", count: 1 },
+        {
+          key: "drug_indications",
+          category: drugIndications,
+          label: "Treatments",
+          count: 1,
+        },
         { category: "Y", label: "keep me", count: 2 },
       ],
     };
     const { options } = useAssociationCategories(node as any);
-    expect(options.value.map((o) => o.id)).toEqual(["Y"]);
+    expect(options.value.map((o) => o.id)).toEqual(["drug_indications", "Y"]);
   });
 
   it("keeps special order: causal before gene→phenotype", () => {
