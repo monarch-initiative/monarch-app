@@ -71,6 +71,24 @@
           @change="(value) => onTaxonFilterChange(String(category.id), value)"
         />
 
+        <AppSelectMulti
+          v-if="
+            isPredicateFilterable(String(category.id)) &&
+            (predicateOptionsByCategory[category.id]?.length ?? 0) > 1
+          "
+          :name="'Filter by Relationship'"
+          :options="predicateOptionsByCategory[category.id] ?? []"
+          :model-value="
+            selectedPredicatesByCategory[category.id] ??
+            predicateOptionsByCategory[category.id] ??
+            []
+          "
+          design="normal"
+          @change="
+            (value) => onPredicateFilterChange(String(category.id), value)
+          "
+        />
+
         <div class="search-wrapper">
           <AppTextbox
             v-model="searchValues[category.id]"
@@ -90,9 +108,13 @@
           :direct="getDirectProps(category.id)"
           :search="debouncedSearchValues[category.id]"
           :taxon-filters="selectedTaxonLabels(String(category.id))"
+          :predicate-filters="selectedPredicateIds(String(category.id))"
           @totals="(p) => onTotals({ categoryId: String(category.id), ...p })"
           @inferred-label="onInferredLabel"
           @taxon-options="(opts) => onTaxonOptions(String(category.id), opts)"
+          @predicate-options="
+            (opts) => onPredicateOptions(String(category.id), opts)
+          "
         />
       </template>
     </AppSection>
@@ -127,6 +149,7 @@ import { useAssociationCategories } from "@/composables/use-association-categori
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
 import SectionCasePhenotypeGrid from "@/pages/node/SectionCasePhenotypeGrid.vue";
 import SectionPathograph from "@/pages/node/SectionPathograph.vue";
+import { isPredicateFilterable } from "@/util/predicateFilterConfig";
 import { sectionTitle } from "@/util/sectionTitles";
 import { tabLabel } from "@/util/tabText";
 import { isTaxonFilterable } from "@/util/taxonFilterConfig";
@@ -175,6 +198,35 @@ const onTaxonFilterChange = (categoryId: string, value: MultiSelectOptions) => {
 const selectedTaxonLabels = (categoryId: string): string[] => {
   const selected = selectedTaxonsByCategory.value[categoryId];
   const allOptions = taxonOptionsByCategory.value[categoryId];
+  if (!selected || !allOptions || selected.length === 0) return [];
+  if (selected.length === allOptions.length) return [];
+  return selected.map((opt) => opt.id);
+};
+
+/** predicate filter state per category (mirrors the taxon filter) */
+const predicateOptionsByCategory = ref<Record<string, MultiSelectOptions>>({});
+const selectedPredicatesByCategory = ref<Record<string, MultiSelectOptions>>(
+  {},
+);
+
+const onPredicateOptions = (
+  categoryId: string,
+  options: { id: string; label: string; count: number }[],
+) => {
+  predicateOptionsByCategory.value[categoryId] = options;
+};
+
+const onPredicateFilterChange = (
+  categoryId: string,
+  value: MultiSelectOptions,
+) => {
+  selectedPredicatesByCategory.value[categoryId] = value;
+};
+
+/** selected predicate ids to pass to AssociationsTable (empty = no filter) */
+const selectedPredicateIds = (categoryId: string): string[] => {
+  const selected = selectedPredicatesByCategory.value[categoryId];
+  const allOptions = predicateOptionsByCategory.value[categoryId];
   if (!selected || !allOptions || selected.length === 0) return [];
   if (selected.length === allOptions.length) return [];
   return selected.map((opt) => opt.id);

@@ -232,6 +232,10 @@ import {
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
 import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
 import { getAgentTypeMeta } from "@/util/agentType";
+import {
+  formatPredicate,
+  isPredicateFilterable,
+} from "@/util/predicateFilterConfig";
 import { taxonFieldFor } from "@/util/taxonFilterConfig";
 import { fieldFor } from "@/util/typeConfig";
 
@@ -246,6 +250,8 @@ type Props = {
   search: string;
   /** selected taxon labels to filter by */
   taxonFilters?: string[];
+  /** selected predicates to filter by */
+  predicateFilters?: string[];
 };
 
 const props = defineProps<Props>();
@@ -264,6 +270,10 @@ const emit = defineEmits<{
     e: "taxon-options",
     options: { id: string; label: string; count: number }[],
   ): void;
+  (
+    e: "predicate-options",
+    options: { id: string; label: string; count: number }[],
+  ): void;
 }>();
 
 const shouldTraverseOrthologs = computed(() =>
@@ -273,16 +283,33 @@ const shouldTraverseOrthologs = computed(() =>
 /** the single taxon field to facet/filter on for this category */
 const taxonField = computed(() => taxonFieldFor(props.category.id));
 
-/** facet fields to request when taxon filtering is enabled */
-const facetFields = computed(() =>
-  taxonField.value ? [taxonField.value] : undefined,
+/** whether this section offers a predicate filter */
+const predicateFilterable = computed(() =>
+  isPredicateFilterable(props.category.id),
 );
 
-/** build filter queries from selected taxon labels */
+/** facet fields to request for the enabled filters */
+const facetFields = computed(() => {
+  const fields: string[] = [];
+  if (taxonField.value) fields.push(taxonField.value);
+  if (predicateFilterable.value) fields.push("predicate");
+  return fields.length ? fields : undefined;
+});
+
+/** build filter queries from the selected taxon and predicate filters */
 const filterQueries = computed(() => {
-  if (!props.taxonFilters?.length || !taxonField.value) return undefined;
-  const clauses = props.taxonFilters.map((t) => `${taxonField.value}:"${t}"`);
-  return [clauses.join(" OR ")];
+  const queries: string[] = [];
+  if (props.taxonFilters?.length && taxonField.value) {
+    queries.push(
+      props.taxonFilters.map((t) => `${taxonField.value}:"${t}"`).join(" OR "),
+    );
+  }
+  if (props.predicateFilters?.length) {
+    queries.push(
+      props.predicateFilters.map((p) => `predicate:"${p}"`).join(" OR "),
+    );
+  }
+  return queries.length ? queries : undefined;
 });
 
 /** track last emitted taxon options to avoid redundant emits */
@@ -311,6 +338,33 @@ function emitTaxonOptions(facetFieldsData?: FacetField[]) {
   lastTaxonOptionsKey = key;
 
   emit("taxon-options", options);
+}
+
+/** track last emitted predicate options to avoid redundant emits */
+let lastPredicateOptionsKey = "";
+
+/** extract predicate options from the predicate facet for this category */
+function emitPredicateOptions(facetFieldsData?: FacetField[]) {
+  if (!predicateFilterable.value || !facetFieldsData) return;
+
+  /** see emitTaxonOptions: only build options from unfiltered queries */
+  if (props.predicateFilters?.length) return;
+
+  const field = facetFieldsData.find((f) => f.label === "predicate");
+  const options = (field?.facet_values ?? [])
+    .filter((fv) => fv.label)
+    .map((fv) => ({
+      id: fv.label,
+      label: formatPredicate(fv.label),
+      count: fv.count ?? 0,
+    }))
+    .sort((a, b) => b.count - a.count);
+
+  const key = JSON.stringify(options);
+  if (key === lastPredicateOptionsKey) return;
+  lastPredicateOptionsKey = key;
+
+  emit("predicate-options", options);
 }
 
 function openModal(association: DirectionalAssociation) {
@@ -606,7 +660,10 @@ watch(
     props.direct.id === "true"
       ? directData.value?.facet_fields
       : allData.value?.facet_fields,
-  (facetFieldsData) => emitTaxonOptions(facetFieldsData),
+  (facetFieldsData) => {
+    emitTaxonOptions(facetFieldsData);
+    emitPredicateOptions(facetFieldsData);
+  },
   { immediate: true },
 );
 
