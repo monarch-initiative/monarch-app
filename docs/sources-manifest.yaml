@@ -45,6 +45,9 @@ sources:
   - repo: monarch-initiative/maxo-annotation-ingest
     branch: main
     filename: maxo.md
+  - repo: monarch-initiative/medic-ingest
+    branch: main
+    filename: medic.md
   - repo: monarch-initiative/mmrrc-ingest
     branch: main
     filename: mmrrc.md
