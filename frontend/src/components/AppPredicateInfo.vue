@@ -46,20 +46,15 @@
             </ul>
           </div>
 
-          <dl v-if="hasMeta" class="section meta">
-            <template v-if="info.domain">
-              <dt>Domain</dt>
-              <dd>{{ format(info.domain) }}</dd>
-            </template>
-            <template v-if="info.range">
-              <dt>Range</dt>
-              <dd>{{ format(info.range) }}</dd>
-            </template>
-            <template v-if="info.inverse">
-              <dt>Inverse</dt>
-              <dd>{{ format(info.inverse) }}</dd>
-            </template>
+          <dl v-if="info.inverse" class="section meta">
+            <dt>Inverse</dt>
+            <dd>{{ format(info.inverse) }}</dd>
           </dl>
+
+          <p class="attribution">
+            Definition from the
+            <AppLink :to="docsUrl">Biolink Model</AppLink>.
+          </p>
         </template>
 
         <AppStatus v-else code="warning">
@@ -101,15 +96,17 @@ const format = (value?: string): string =>
 
 const formatted = computed(() => format(props.predicate));
 
+/** link to this predicate's page in the biolink model docs */
+const docsUrl = computed(
+  () =>
+    `https://biolink.github.io/biolink-model/${props.predicate.replace(/^biolink:/, "")}/`,
+);
+
 /** ancestors (outermost first) followed by the predicate itself */
 const chain = computed(() => [
   ...[...ancestors.value].reverse(),
   { name: props.predicate } as PredicateInfo,
 ]);
-
-const hasMeta = computed(
-  () => !!(info.value?.domain || info.value?.range || info.value?.inverse),
-);
 
 /** load the definition lazily when the modal is opened */
 async function onOpen() {
@@ -178,5 +175,11 @@ async function onOpen() {
 }
 .meta dd {
   margin: 0;
+}
+
+.attribution {
+  margin: 1.5em 0 0;
+  color: $gray;
+  font-size: 0.85em;
 }
 </style>

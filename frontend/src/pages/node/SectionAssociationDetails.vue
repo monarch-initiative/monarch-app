@@ -30,6 +30,19 @@
     </div>
 
     <AppDetails>
+      <AppDetail
+        v-if="predicateInfo?.description"
+        title="Relationship"
+        icon="diagram-project"
+        :full="true"
+      >
+        <p class="predicate-definition">{{ predicateInfo.description }}</p>
+        <span class="predicate-attribution">
+          &mdash; from the
+          <AppLink :to="predicateDocsUrl">Biolink Model</AppLink>
+        </span>
+      </AppDetail>
+
       <AppDetail title="Evidence Codes" icon="flask" :full="true">
         <AppFlex gap="small" align-h="left">
           <AppLink
@@ -118,12 +131,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import type { DirectionalAssociation, Node } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
+import {
+  useBiolinkModel,
+  type PredicateInfo,
+} from "@/composables/use-biolink-model";
 import { useSourceVersions } from "@/composables/use-source-versions";
 import { scrollTo } from "@/router";
 import { getAgentTypeMeta } from "@/util/agentType";
@@ -146,6 +163,34 @@ const agentMeta = computed(() =>
 const { versionForEdge } = useSourceVersions();
 const sourceVersion = computed(() =>
   props.association ? versionForEdge(props.association) : null,
+);
+
+/** predicate definition from the biolink model */
+const { loadBiolinkModel, getPredicateInfo } = useBiolinkModel();
+const predicateInfo = ref<PredicateInfo | null>(null);
+
+const predicateValue = computed(() => {
+  const predicate = props.association?.predicate;
+  return (Array.isArray(predicate) ? predicate[0] : predicate) ?? "";
+});
+
+const predicateDocsUrl = computed(
+  () =>
+    `https://biolink.github.io/biolink-model/${predicateValue.value.replace(
+      /^biolink:/,
+      "",
+    )}/`,
+);
+
+watch(
+  predicateValue,
+  async (predicate) => {
+    predicateInfo.value = null;
+    if (!predicate) return;
+    await loadBiolinkModel();
+    predicateInfo.value = getPredicateInfo(predicate);
+  },
+  { immediate: true },
 );
 
 /** scroll details section into view */
@@ -183,6 +228,15 @@ onMounted(scrollIntoView);
 }
 
 .agent-description {
+  color: $gray;
+  font-size: 0.9em;
+}
+
+.predicate-definition {
+  margin: 0 0 0.4em;
+}
+
+.predicate-attribution {
   color: $gray;
   font-size: 0.9em;
 }
