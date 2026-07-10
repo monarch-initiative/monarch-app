@@ -28,7 +28,7 @@
           </p>
 
           <div v-if="chain.length > 1" class="section">
-            <h3>Hierarchy</h3>
+            <h3>Biolink Model Predicate Hierarchy</h3>
             <ul class="hierarchy">
               <li
                 v-for="(item, index) in chain"

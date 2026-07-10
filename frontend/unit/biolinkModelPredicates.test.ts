@@ -17,6 +17,8 @@ const fakeModel = {
 };
 
 beforeEach(() => {
+  // reset the module-level singleton so each test loads the fake model fresh
+  useBiolinkModel().clearCache();
   localStorage.setItem("biolink-model-cache", JSON.stringify(fakeModel));
   localStorage.setItem("biolink-model-cache-timestamp", Date.now().toString());
 });

@@ -8,11 +8,14 @@
     <span v-if="association.negated" class="negated-text">NOT</span>
 
     <span
+      class="predicate-label"
       :class="{ 'highlighted-text': highlight }"
       v-html="getFormattedPredicateLabel(predicate)"
+    /><AppPredicateInfo
+      v-if="predicateString"
+      :predicate="predicateString"
+      class="predicate-info-icon"
     />
-
-    <AppPredicateInfo v-if="predicateString" :predicate="predicateString" />
 
     <AppIcon v-if="arrows" class="arrow" :icon="`arrow-${arrowDirection}`" />
   </span>
@@ -72,8 +75,17 @@ const arrowDirection = computed(() =>
 .predicate {
   & > * {
     white-space: normal;
-    overflow-wrap: anywhere;
   }
+}
+
+/* only the label wraps; the info icon stays attached to it (no orphan icon
+   on a new line in constrained columns) */
+.predicate-label {
+  overflow-wrap: anywhere;
+}
+
+.predicate-info-icon {
+  white-space: nowrap;
 }
 
 .arrow {
