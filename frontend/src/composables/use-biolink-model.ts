@@ -155,6 +155,27 @@ export function useBiolinkModel() {
     };
   };
 
+  /**
+   * Walk the is_a chain upward to build a partial predicate hierarchy, from the
+   * immediate parent outward (most specific first).
+   */
+  const getPredicateAncestors = (
+    predicateName: string,
+    depth = 3,
+  ): PredicateInfo[] => {
+    const ancestors: PredicateInfo[] = [];
+    let current = getPredicateInfo(predicateName);
+    let steps = 0;
+    while (current?.is_a && steps < depth) {
+      const parent = getPredicateInfo(current.is_a);
+      if (!parent) break;
+      ancestors.push(parent);
+      current = parent;
+      steps++;
+    }
+    return ancestors;
+  };
+
   /** Clear the cache */
   const clearCache = (): void => {
     try {
@@ -171,6 +192,7 @@ export function useBiolinkModel() {
     model,
     loadBiolinkModel,
     getPredicateInfo,
+    getPredicateAncestors,
     clearCache,
   };
 }

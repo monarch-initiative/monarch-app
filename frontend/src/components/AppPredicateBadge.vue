@@ -12,6 +12,8 @@
       v-html="getFormattedPredicateLabel(predicate)"
     />
 
+    <AppPredicateInfo v-if="predicateString" :predicate="predicateString" />
+
     <AppIcon v-if="arrows" class="arrow" :icon="`arrow-${arrowDirection}`" />
   </span>
 </template>
@@ -19,6 +21,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { type DirectionalAssociation } from "@/api/model";
+import AppPredicateInfo from "@/components/AppPredicateInfo.vue";
 
 type Props = {
   /** current association */
@@ -39,6 +42,12 @@ const predicate = computed(
     props?.association?.highlighting?.predicate?.[0] ??
     props.association.predicate,
 );
+
+/** single predicate value for the explainer */
+const predicateString = computed(() => {
+  const value = predicate.value;
+  return (Array.isArray(value) ? value[0] : value) ?? "";
+});
 const getFormattedPredicateLabel = (category?: string | string[]) => {
   const raw = Array.isArray(category) ? category[0] : category;
   if (!raw) return "";
