@@ -1,0 +1,10 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 100 100"
+  fill="none"
+  stroke="currentColor"
+>
+  <path d="M40 20v44a10 10 0 0 0 20 0V20" />
+  <path d="M34 20h32" />
+  <path d="M40 50h20" />
+</svg>
