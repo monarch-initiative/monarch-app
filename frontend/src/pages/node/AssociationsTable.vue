@@ -649,6 +649,18 @@ watch(
   },
 );
 
+watch(
+  () => JSON.stringify(props.predicateFilters ?? []),
+  async () => {
+    start.value = 0;
+    if (props.direct.id === "true") {
+      await fetchDirect();
+    } else {
+      await fetchAll();
+    }
+  },
+);
+
 onMounted(async () => {
   // Trigger both queries
   await Promise.all([fetchDirect(), fetchAll()]);
