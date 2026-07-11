@@ -186,14 +186,24 @@ const getPredicateAncestors = (
   return ancestors;
 };
 
-/** Find the direct child predicates (slots whose is_a is this predicate). */
+/**
+ * Find the direct child predicates. Biolink attaches sub-predicates via `is_a`
+ * (single inheritance) and `mixins` (multiple inheritance) — e.g. "ameliorates
+ * condition" and "preventative for condition" have their own `is_a` but mix in
+ * "treats" — so both are considered here.
+ */
 const getPredicateChildren = (predicateName: string): PredicateInfo[] => {
   if (!model.value?.slots) return [];
   const cleanName = predicateName.replace(/^biolink:/, "");
   const targetNames = new Set([cleanName, cleanName.replace(/_/g, " ")]);
   const children: PredicateInfo[] = [];
   for (const [key, value] of Object.entries(model.value.slots)) {
-    if (value?.is_a && targetNames.has(value.is_a)) {
+    if (!value) continue;
+    const parents = [
+      value.is_a,
+      ...(Array.isArray(value.mixins) ? value.mixins : []),
+    ];
+    if (parents.some((parent) => parent && targetNames.has(parent))) {
       children.push({
         name: key,
         description: value.description,

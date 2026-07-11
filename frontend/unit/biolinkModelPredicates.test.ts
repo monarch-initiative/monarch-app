@@ -13,6 +13,17 @@ const fakeModel = {
       is_a: "related to",
     },
     "related to": { description: "a generic relationship" },
+    // biolink attaches these to "treats" via mixins, not is_a
+    "ameliorates condition": {
+      description: "improves a condition",
+      is_a: "affects",
+      mixins: ["treats"],
+    },
+    "preventative for condition": {
+      description: "reduces the likelihood of a condition",
+      is_a: "affects likelihood of",
+      mixins: ["treats"],
+    },
   },
 };
 
@@ -67,9 +78,18 @@ describe("getPredicateChildren", () => {
     ).toEqual(["treats"]);
   });
 
+  test("finds mixin children (e.g. treats -> ameliorates/preventative)", async () => {
+    const { loadBiolinkModel, getPredicateChildren } = useBiolinkModel();
+    await loadBiolinkModel();
+    expect(getPredicateChildren("biolink:treats").map((c) => c.name)).toEqual([
+      "ameliorates condition",
+      "preventative for condition",
+    ]);
+  });
+
   test("returns [] for a leaf predicate", async () => {
     const { loadBiolinkModel, getPredicateChildren } = useBiolinkModel();
     await loadBiolinkModel();
-    expect(getPredicateChildren("biolink:treats")).toEqual([]);
+    expect(getPredicateChildren("biolink:ameliorates_condition")).toEqual([]);
   });
 });

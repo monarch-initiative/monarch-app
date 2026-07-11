@@ -1,7 +1,8 @@
 <!--
   small info affordance that explains a predicate: its definition plus a
-  parents/current/children slice of the biolink predicate hierarchy, loaded on
-  demand from the biolink model
+  parents/current/children slice of the biolink predicate hierarchy, drawn as an
+  indented tree matching the node-page hierarchy, loaded on demand from the
+  biolink model
 -->
 
 <template>
@@ -28,32 +29,48 @@
             {{ info.description || "No description available." }}
           </p>
 
-          <div v-if="graphRows.length > 1" class="section">
+          <div v-if="parents.length || children.length" class="section">
             <h3>Biolink Model Predicate Hierarchy</h3>
-            <div class="hier-graph">
-              <div
-                v-for="row in graphRows"
-                :key="row.kind + row.name"
-                class="hier-row"
-                :class="row.kind"
-                :style="{ '--depth': row.depth }"
-              >
-                <span v-if="row.kind === 'current'" class="hier-label">{{
-                  format(row.name)
-                }}</span>
-                <AppLink v-else class="hier-label" :to="docsFor(row.name)">{{
-                  format(row.name)
-                }}</AppLink>
+            <div class="hier" role="group" aria-label="Predicate hierarchy">
+              <!-- PARENTS (general -> immediate parent) -->
+              <div class="parents">
+                <div v-for="p in parents" :key="p.name" class="parent-row">
+                  <AppLink
+                    v-tooltip="format(p.name)"
+                    :to="docsFor(p.name)"
+                    class="row-text"
+                  >
+                    {{ format(p.name) }}
+                  </AppLink>
+                </div>
               </div>
-              <button
-                v-if="moreChildren > 0"
-                type="button"
-                class="hier-more"
-                :style="{ '--depth': childDepth }"
-                @click="showAllChildren = true"
-              >
-                + {{ moreChildren }} more
-              </button>
+
+              <!-- CURRENT PREDICATE -->
+              <div class="current-row">
+                <strong class="row-text">{{ formatted }}</strong>
+              </div>
+
+              <!-- CHILDREN -->
+              <div class="children">
+                <div v-for="c in shownChildren" :key="c.name" class="child-row">
+                  <AppLink
+                    v-tooltip="format(c.name)"
+                    :to="docsFor(c.name)"
+                    class="row-text"
+                  >
+                    {{ format(c.name) }}
+                  </AppLink>
+                </div>
+
+                <button
+                  v-if="moreCount > 0"
+                  type="button"
+                  class="more"
+                  @click="showAllChildren = true"
+                >
+                  + {{ moreCount }} more…
+                </button>
+              </div>
             </div>
           </div>
 
@@ -107,7 +124,7 @@ const ancestors = ref<PredicateInfo[]>([]);
 const children = ref<PredicateInfo[]>([]);
 const showAllChildren = ref(false);
 
-const CHILD_LIMIT = 12;
+const CHILD_LIMIT = 6;
 
 /** human-readable predicate label */
 const format = (value?: string): string =>
@@ -121,36 +138,15 @@ const docsFor = (name: string): string =>
 
 const formatted = computed(() => format(props.predicate));
 
-const childDepth = computed(() => ancestors.value.length + 1);
+/** ancestor chain ordered most-general first, ending just above the current */
+const parents = computed(() => [...ancestors.value].reverse());
+
 const shownChildren = computed(() =>
   showAllChildren.value ? children.value : children.value.slice(0, CHILD_LIMIT),
 );
-const moreChildren = computed(
+const moreCount = computed(
   () => children.value.length - shownChildren.value.length,
 );
-
-type Row = {
-  name: string;
-  kind: "ancestor" | "current" | "child";
-  depth: number;
-};
-
-/** parents (general → specific), the current predicate, then its children */
-const graphRows = computed<Row[]>(() => {
-  const rows: Row[] = [];
-  [...ancestors.value].reverse().forEach((a, index) => {
-    rows.push({ name: a.name, kind: "ancestor", depth: index });
-  });
-  rows.push({
-    name: props.predicate,
-    kind: "current",
-    depth: ancestors.value.length,
-  });
-  shownChildren.value.forEach((child) => {
-    rows.push({ name: child.name, kind: "child", depth: childDepth.value });
-  });
-  return rows;
-});
 
 /** load the definition + hierarchy lazily when the modal is opened */
 async function onOpen() {
@@ -194,42 +190,99 @@ async function onOpen() {
   font-size: 0.9rem;
 }
 
-/* parents/current/children tree */
-.hier-graph {
-  margin-top: 0.2em;
+/* indented hierarchy tree, matching the node-page hierarchy preview */
+.hier {
+  --indent-parent: 1em;
+  --indent-current: 2em;
+  --indent-child: 3em;
+  --spine-w: 1px;
+  --tick-w: 8px;
+  --gap: 4px;
+  --tick-top: 0.7em;
+  font-size: 0.9em;
+  line-height: 1.5;
 }
-.hier-row {
+
+.parent-row,
+.current-row,
+.child-row {
+  margin: 4px 0;
+}
+.parent-row {
+  padding-left: var(--indent-parent);
+}
+.current-row,
+.child-row {
   position: relative;
-  margin-left: calc(var(--depth) * 1.2em);
-  padding: 3px 0 3px 1em;
-  border-left: 2px solid $light-gray;
 }
-.hier-row::before {
+.current-row {
+  padding-left: calc(var(--indent-current) + var(--tick-w) + var(--gap));
+}
+.child-row {
+  padding-left: calc(var(--indent-child) + var(--tick-w) + var(--gap));
+}
+
+/* vertical spine + a small tick before the current node and each child */
+.current-row::before,
+.child-row::before {
   position: absolute;
-  top: 0.85em;
-  left: 0;
-  width: 0.7em;
-  height: 2px;
-  background: $light-gray;
+  top: 0;
+  bottom: 0;
+  width: var(--spine-w);
+  background: $off-black;
   content: "";
 }
-.hier-row.current {
-  border-left-color: $off-black;
+.current-row::before {
+  left: var(--indent-current);
+}
+.child-row::before {
+  left: var(--indent-child);
+}
+
+.current-row::after,
+.child-row::after {
+  position: absolute;
+  top: var(--tick-top);
+  width: var(--tick-w);
+  height: 1px;
+  background: $off-black;
+  content: "";
+}
+.current-row::after {
+  left: var(--indent-current);
+}
+.child-row::after {
+  left: var(--indent-child);
+}
+
+.row-text {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  color: inherit;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+a.row-text:hover {
+  text-decoration: underline;
+}
+.current-row .row-text {
   font-weight: 600;
 }
-.hier-row.current::before {
-  background: $off-black;
-}
-.hier-more {
-  margin-left: calc(var(--depth) * 1.2em + 1em);
-  padding: 3px 0;
+
+.more {
+  display: inline-block;
+  margin: 0.5em 0;
+  margin-left: calc(var(--indent-child) + var(--tick-w) + var(--gap));
   border: 0;
   background: none;
   color: $gray;
-  font-size: 0.85em;
+  font-size: 0.95em;
   cursor: pointer;
 }
-.hier-more:hover {
+.more:hover {
   text-decoration: underline;
 }
 
