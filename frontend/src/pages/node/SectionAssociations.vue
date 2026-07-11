@@ -71,6 +71,16 @@
           @change="(value) => onTaxonFilterChange(String(category.id), value)"
         />
 
+        <AppCheckbox
+          v-if="showInvestigationalToggle(String(category.id))"
+          :model-value="includeInvestigationalByCategory[category.id] ?? false"
+          :text="expandLabelFor(String(category.id))"
+          @update:model-value="
+            (value: boolean) =>
+              (includeInvestigationalByCategory[category.id] = value)
+          "
+        />
+
         <div class="search-wrapper">
           <AppTextbox
             v-model="searchValues[category.id]"
@@ -90,9 +100,13 @@
           :direct="getDirectProps(category.id)"
           :search="debouncedSearchValues[category.id]"
           :taxon-filters="selectedTaxonLabels(String(category.id))"
+          :predicate-filters="selectedPredicateIds(String(category.id))"
           @totals="(p) => onTotals({ categoryId: String(category.id), ...p })"
           @inferred-label="onInferredLabel"
           @taxon-options="(opts) => onTaxonOptions(String(category.id), opts)"
+          @predicate-options="
+            (opts) => onPredicateOptions(String(category.id), opts)
+          "
         />
       </template>
     </AppSection>
@@ -119,6 +133,7 @@ import { computed, ref } from "vue";
 import type { Node } from "@/api/model";
 import AppAssociationTabs from "@/components/AppAssociationTabs.vue";
 import AppButton from "@/components/AppButton.vue";
+import AppCheckbox from "@/components/AppCheckbox.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppSelectMulti from "@/components/AppSelectMulti.vue";
 import type { Options as MultiSelectOptions } from "@/components/AppSelectMulti.vue";
@@ -127,6 +142,10 @@ import { useAssociationCategories } from "@/composables/use-association-categori
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
 import SectionCasePhenotypeGrid from "@/pages/node/SectionCasePhenotypeGrid.vue";
 import SectionPathograph from "@/pages/node/SectionPathograph.vue";
+import {
+  expandLabelFor,
+  predicateFilterState,
+} from "@/util/predicateFilterConfig";
 import { sectionTitle } from "@/util/sectionTitles";
 import { tabLabel } from "@/util/tabText";
 import { isTaxonFilterable } from "@/util/taxonFilterConfig";
@@ -179,6 +198,37 @@ const selectedTaxonLabels = (categoryId: string): string[] => {
   if (selected.length === allOptions.length) return [];
   return selected.map((opt) => opt.id);
 };
+
+/**
+ * predicate filter state per category. Filterable sections (e.g.
+ * drug_indications) default to their strong predicate and offer a checkbox to
+ * include the weaker, investigational relationship.
+ */
+const predicateOptionsByCategory = ref<Record<string, MultiSelectOptions>>({});
+const includeInvestigationalByCategory = ref<Record<string, boolean>>({});
+
+const onPredicateOptions = (
+  categoryId: string,
+  options: { id: string; label: string; count: number }[],
+) => {
+  predicateOptionsByCategory.value[categoryId] = options;
+};
+
+/** derive the predicate-filter state (toggle visibility + scoped predicates) */
+const predicateFilterFor = (categoryId: string) =>
+  predicateFilterState(
+    categoryId,
+    (predicateOptionsByCategory.value[categoryId] ?? []).map((opt) => opt.id),
+    includeInvestigationalByCategory.value[categoryId] ?? false,
+  );
+
+/** whether both the default predicate and a weaker one are present */
+const showInvestigationalToggle = (categoryId: string): boolean =>
+  predicateFilterFor(categoryId).showToggle;
+
+/** selected predicate ids to pass to AssociationsTable (empty = no filter) */
+const selectedPredicateIds = (categoryId: string): string[] =>
+  predicateFilterFor(categoryId).filterIds;
 
 const { options: categoryOptions } = useAssociationCategories(props.node);
 
