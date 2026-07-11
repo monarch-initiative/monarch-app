@@ -135,9 +135,28 @@ def _or_group(field: str, values) -> str:
     return "(" + " OR ".join(f'{field}:"{value}"' for value in values) + ")"
 
 
+def uses_full_criteria(agm: AssociationTypeMapping) -> bool:
+    """Whether a section matches on all its declared criteria (predicate /
+    subject_category / object_category / source), rather than category alone.
+
+    Sections authored with an explicit `key` in the yaml (e.g. drug_indications,
+    the clinical-measurement sections) opt into the full multi-criteria match.
+    Legacy single-category sections are keyed by their category (the key is
+    defaulted to category[0] at load) and declare subject/object_category only
+    as entity-grid direction metadata; matching on those as Solr criteria would
+    undercount edges whose node categories differ from the declared ones (e.g.
+    gene-expression edges to biolink:NamedThing). So they match on category
+    alone, exactly as before flexible matching was introduced.
+    """
+    return bool(agm.category) and agm.key not in agm.category
+
+
 def get_solr_query_fragment(agm: AssociationTypeMapping) -> str:
     """Build the Solr clause that selects this association type: AND across the
-    present criteria, each criterion OR'd internally."""
+    present criteria, each criterion OR'd internally. Legacy single-category
+    sections match on category alone (see uses_full_criteria)."""
+    if not uses_full_criteria(agm):
+        return _or_group("category", agm.category)
     parts = [
         _or_group("category", agm.category),
         _or_group("predicate", agm.predicate),
@@ -154,8 +173,11 @@ def get_solr_criteria_filters(agm: AssociationTypeMapping) -> List[str]:
 
     Used by the association table query, where the category list is applied
     separately and predicate / subject / object / source criteria are added as
-    additional filters.
+    additional filters. Legacy single-category sections contribute no extra
+    criteria (see uses_full_criteria).
     """
+    if not uses_full_criteria(agm):
+        return []
     return [
         clause
         for clause in (
@@ -170,7 +192,9 @@ def get_solr_criteria_filters(agm: AssociationTypeMapping) -> List[str]:
 
 
 def get_sql_query_fragment(agm: AssociationTypeMapping) -> str:
-    """SQL equivalent of get_solr_query_fragment (AND across criteria, OR within)."""
+    """SQL equivalent of get_solr_query_fragment (AND across criteria, OR within).
+    Legacy single-category sections match on category alone (see
+    uses_full_criteria)."""
 
     def _or_group_sql(field, values):
         if not values:
@@ -180,6 +204,9 @@ def get_sql_query_fragment(agm: AssociationTypeMapping) -> str:
         if len(values) == 1:
             return f'{field} = "{values[0]}"'
         return "(" + " OR ".join(f'{field} = "{value}"' for value in values) + ")"
+
+    if not uses_full_criteria(agm):
+        return _or_group_sql("category", agm.category)
 
     parts = [
         _or_group_sql("category", agm.category),

@@ -2,6 +2,7 @@ import pytest
 from monarch_py.datamodels.model import AssociationTypeMapping
 from monarch_py.utils.association_type_utils import (
     AssociationTypeMappings,
+    get_solr_criteria_filters,
     get_solr_query_fragment,
     get_sql_query_fragment,
 )
@@ -48,6 +49,23 @@ def test_solr_composite_mapping(composite_mapping):
         'AND subject_category:"biolink:ClinicalMeasurement" '
         'AND object_category:"biolink:PhenotypicFeature"'
     )
+
+
+def test_solr_legacy_mapping_matches_on_category_only():
+    """A legacy section (key defaulted to its category) declares subject/object
+    category only as direction metadata; it must NOT constrain the Solr query on
+    them, or it would undercount edges whose node categories differ from the
+    declared ones (e.g. gene-expression edges to biolink:NamedThing)."""
+    mapping = AssociationTypeMapping(
+        key="biolink:GeneToExpressionSiteAssociation",
+        subject_label="Gene Expression",
+        object_label="Gene Expression",
+        category=["biolink:GeneToExpressionSiteAssociation"],
+        subject_category=["biolink:Gene"],
+        object_category=["biolink:AnatomicalEntity"],
+    )
+    assert get_solr_query_fragment(mapping) == 'category:"biolink:GeneToExpressionSiteAssociation"'
+    assert get_solr_criteria_filters(mapping) == []
 
 
 def test_solr_or_within_criterion():
