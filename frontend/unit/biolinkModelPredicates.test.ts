@@ -52,3 +52,24 @@ describe("getPredicateAncestors", () => {
     expect(getPredicateAncestors("biolink:does_not_exist")).toEqual([]);
   });
 });
+
+describe("getPredicateChildren", () => {
+  test("finds direct children (slots whose is_a is this predicate)", async () => {
+    const { loadBiolinkModel, getPredicateChildren } = useBiolinkModel();
+    await loadBiolinkModel();
+    expect(
+      getPredicateChildren("biolink:related_to").map((c) => c.name),
+    ).toEqual(["treats or applied or studied to treat"]);
+    expect(
+      getPredicateChildren("biolink:treats_or_applied_or_studied_to_treat").map(
+        (c) => c.name,
+      ),
+    ).toEqual(["treats"]);
+  });
+
+  test("returns [] for a leaf predicate", async () => {
+    const { loadBiolinkModel, getPredicateChildren } = useBiolinkModel();
+    await loadBiolinkModel();
+    expect(getPredicateChildren("biolink:treats")).toEqual([]);
+  });
+});

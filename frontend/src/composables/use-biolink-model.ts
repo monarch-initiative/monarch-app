@@ -186,6 +186,24 @@ const getPredicateAncestors = (
   return ancestors;
 };
 
+/** Find the direct child predicates (slots whose is_a is this predicate). */
+const getPredicateChildren = (predicateName: string): PredicateInfo[] => {
+  if (!model.value?.slots) return [];
+  const cleanName = predicateName.replace(/^biolink:/, "");
+  const targetNames = new Set([cleanName, cleanName.replace(/_/g, " ")]);
+  const children: PredicateInfo[] = [];
+  for (const [key, value] of Object.entries(model.value.slots)) {
+    if (value?.is_a && targetNames.has(value.is_a)) {
+      children.push({
+        name: key,
+        description: value.description,
+        is_a: value.is_a,
+      });
+    }
+  }
+  return children.sort((a, b) => a.name.localeCompare(b.name));
+};
+
 /** Clear the cache (and the loaded model) */
 const clearCache = (): void => {
   try {
@@ -206,6 +224,7 @@ export function useBiolinkModel() {
     loadBiolinkModel,
     getPredicateInfo,
     getPredicateAncestors,
+    getPredicateChildren,
     clearCache,
   };
 }

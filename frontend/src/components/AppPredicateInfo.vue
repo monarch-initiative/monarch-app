@@ -1,6 +1,7 @@
 <!--
-  small info affordance that explains a predicate: definition + a partial
-  is_a hierarchy, loaded on demand from the biolink model
+  small info affordance that explains a predicate: its definition plus a
+  parents/current/children slice of the biolink predicate hierarchy, loaded on
+  demand from the biolink model
 -->
 
 <template>
@@ -27,23 +28,33 @@
             {{ info.description || "No description available." }}
           </p>
 
-          <div v-if="chain.length > 1" class="section">
+          <div v-if="graphRows.length > 1" class="section">
             <h3>Biolink Model Predicate Hierarchy</h3>
-            <ul class="hierarchy">
-              <li
-                v-for="(item, index) in chain"
-                :key="item.name"
-                :class="{ current: index === chain.length - 1 }"
-                :style="{ paddingLeft: index * 1.25 + 'em' }"
+            <div class="hier-graph">
+              <div
+                v-for="row in graphRows"
+                :key="row.kind + row.name"
+                class="hier-row"
+                :class="row.kind"
+                :style="{ '--depth': row.depth }"
               >
-                <AppIcon
-                  v-if="index > 0"
-                  icon="angle-right"
-                  class="branch-icon"
-                />
-                {{ format(item.name) }}
-              </li>
-            </ul>
+                <span v-if="row.kind === 'current'" class="hier-label">{{
+                  format(row.name)
+                }}</span>
+                <AppLink v-else class="hier-label" :to="docsFor(row.name)">{{
+                  format(row.name)
+                }}</AppLink>
+              </div>
+              <button
+                v-if="moreChildren > 0"
+                type="button"
+                class="hier-more"
+                :style="{ '--depth': childDepth }"
+                @click="showAllChildren = true"
+              >
+                + {{ moreChildren }} more
+              </button>
+            </div>
           </div>
 
           <dl v-if="info.inverse" class="section meta">
@@ -53,7 +64,7 @@
 
           <p class="attribution">
             Definition from the
-            <AppLink :to="docsUrl">Biolink Model</AppLink>.
+            <AppLink :to="docsFor(predicate)">Biolink Model</AppLink>.
           </p>
         </template>
 
@@ -68,7 +79,6 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import AppButton from "@/components/AppButton.vue";
-import AppIcon from "@/components/AppIcon.vue";
 import AppModal from "@/components/AppModal.vue";
 import AppStatus from "@/components/AppStatus.vue";
 import {
@@ -83,38 +93,73 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { isLoading, loadBiolinkModel, getPredicateInfo, getPredicateAncestors } =
-  useBiolinkModel();
+const {
+  isLoading,
+  loadBiolinkModel,
+  getPredicateInfo,
+  getPredicateAncestors,
+  getPredicateChildren,
+} = useBiolinkModel();
 
 const show = ref(false);
 const info = ref<PredicateInfo | null>(null);
 const ancestors = ref<PredicateInfo[]>([]);
+const children = ref<PredicateInfo[]>([]);
+const showAllChildren = ref(false);
+
+const CHILD_LIMIT = 12;
 
 /** human-readable predicate label */
 const format = (value?: string): string =>
   (value ?? "").replace(/^biolink:/, "").replace(/_/g, " ");
 
+/** link to a predicate's page in the biolink model docs */
+const docsFor = (name: string): string =>
+  `https://biolink.github.io/biolink-model/${name
+    .replace(/^biolink:/, "")
+    .replace(/ /g, "_")}/`;
+
 const formatted = computed(() => format(props.predicate));
 
-/** link to this predicate's page in the biolink model docs */
-const docsUrl = computed(
-  () =>
-    `https://biolink.github.io/biolink-model/${props.predicate.replace(/^biolink:/, "")}/`,
+const childDepth = computed(() => ancestors.value.length + 1);
+const shownChildren = computed(() =>
+  showAllChildren.value ? children.value : children.value.slice(0, CHILD_LIMIT),
+);
+const moreChildren = computed(
+  () => children.value.length - shownChildren.value.length,
 );
 
-/** ancestors (outermost first) followed by the predicate itself */
-const chain = computed(() => [
-  ...[...ancestors.value].reverse(),
-  { name: props.predicate } as PredicateInfo,
-]);
+type Row = {
+  name: string;
+  kind: "ancestor" | "current" | "child";
+  depth: number;
+};
 
-/** load the definition lazily when the modal is opened */
+/** parents (general → specific), the current predicate, then its children */
+const graphRows = computed<Row[]>(() => {
+  const rows: Row[] = [];
+  [...ancestors.value].reverse().forEach((a, index) => {
+    rows.push({ name: a.name, kind: "ancestor", depth: index });
+  });
+  rows.push({
+    name: props.predicate,
+    kind: "current",
+    depth: ancestors.value.length,
+  });
+  shownChildren.value.forEach((child) => {
+    rows.push({ name: child.name, kind: "child", depth: childDepth.value });
+  });
+  return rows;
+});
+
+/** load the definition + hierarchy lazily when the modal is opened */
 async function onOpen() {
   show.value = true;
   if (info.value) return;
   await loadBiolinkModel();
   info.value = getPredicateInfo(props.predicate);
   ancestors.value = getPredicateAncestors(props.predicate);
+  children.value = getPredicateChildren(props.predicate);
 }
 </script>
 
@@ -149,19 +194,43 @@ async function onOpen() {
   font-size: 0.9rem;
 }
 
-.hierarchy {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+/* parents/current/children tree */
+.hier-graph {
+  margin-top: 0.2em;
 }
-.hierarchy li {
-  padding: 2px 0;
+.hier-row {
+  position: relative;
+  margin-left: calc(var(--depth) * 1.2em);
+  padding: 3px 0 3px 1em;
+  border-left: 2px solid $light-gray;
 }
-.hierarchy li.current {
+.hier-row::before {
+  position: absolute;
+  top: 0.85em;
+  left: 0;
+  width: 0.7em;
+  height: 2px;
+  background: $light-gray;
+  content: "";
+}
+.hier-row.current {
+  border-left-color: $off-black;
   font-weight: 600;
 }
-.branch-icon {
+.hier-row.current::before {
+  background: $off-black;
+}
+.hier-more {
+  margin-left: calc(var(--depth) * 1.2em + 1em);
+  padding: 3px 0;
+  border: 0;
+  background: none;
   color: $gray;
+  font-size: 0.85em;
+  cursor: pointer;
+}
+.hier-more:hover {
+  text-decoration: underline;
 }
 
 .meta {
