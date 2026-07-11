@@ -1091,12 +1091,13 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         mapping = AssociationTypeMappings.get_mapping(first_col_cat)
 
         if mapping and mapping.subject_category and mapping.object_category:
-            # Use YAML metadata to determine direction
-            if context_category == mapping.subject_category:
+            # Use YAML metadata to determine direction. subject_category and
+            # object_category are multivalued (list[str]), so test membership.
+            if context_category in mapping.subject_category:
                 context_field = "subject"
                 column_field = "object"
                 context_closure_field = "subject_closure"
-            elif context_category == mapping.object_category:
+            elif context_category in mapping.object_category:
                 context_field = "object"
                 column_field = "subject"
                 context_closure_field = "object_closure"
