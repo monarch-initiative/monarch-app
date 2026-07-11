@@ -243,6 +243,7 @@ async function runGetAutocomplete(
         id: item.id,
         label: item.name || "",
         info: item.in_taxon_label || item.id,
+        infoItalic: !!item.in_taxon_label,
         icon: getCategoryIcon(item.category),
         tooltip: "",
       })),
