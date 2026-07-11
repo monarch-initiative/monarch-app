@@ -52,8 +52,3 @@ export function getKnowledgeLevelMeta(
 ): KnowledgeLevelMeta {
   return KNOWLEDGE_LEVEL_META[knowledgeLevel] ?? FALLBACK;
 }
-
-/** Format a knowledge_level value as a human-readable label. */
-export function formatKnowledgeLevel(knowledgeLevel: string): string {
-  return getKnowledgeLevelMeta(knowledgeLevel).label;
-}

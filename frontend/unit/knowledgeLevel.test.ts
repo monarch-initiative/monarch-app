@@ -1,6 +1,5 @@
 import { describe, expect, test } from "vitest";
 import {
-  formatKnowledgeLevel,
   getKnowledgeLevelMeta,
   KNOWLEDGE_LEVEL_KEYS,
   KNOWLEDGE_LEVEL_META,
@@ -25,13 +24,6 @@ describe("getKnowledgeLevelMeta", () => {
     expect(meta.icon).toBe("circle-question");
     expect(meta.label).toBe("Unknown");
     expect(meta.description).toBe("Unrecognized knowledge level");
-  });
-});
-
-describe("formatKnowledgeLevel", () => {
-  test("returns the human-readable label", () => {
-    expect(formatKnowledgeLevel("prediction")).toBe("Prediction");
-    expect(formatKnowledgeLevel("not_provided")).toBe("Not Provided");
   });
 });
 
