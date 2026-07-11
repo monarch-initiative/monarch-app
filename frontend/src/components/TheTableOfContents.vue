@@ -80,6 +80,7 @@ const CATEGORIES = [
   "biolink:Disease",
   "biolink:PhenotypicFeature",
   "biolink:AnatomicalEntity",
+  "biolink:ClinicalMeasurement",
 ];
 const { node } = defineProps<{ node: ApiNode | null }>();
 /** toc entries */
