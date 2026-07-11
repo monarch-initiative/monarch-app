@@ -232,10 +232,7 @@ import {
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
 import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
 import { getAgentTypeMeta } from "@/util/agentType";
-import {
-  formatPredicate,
-  isPredicateFilterable,
-} from "@/util/predicateFilterConfig";
+import { isPredicateFilterable } from "@/util/predicateFilterConfig";
 import { taxonFieldFor } from "@/util/taxonFilterConfig";
 import { fieldFor } from "@/util/typeConfig";
 
@@ -355,7 +352,7 @@ function emitPredicateOptions(facetFieldsData?: FacetField[]) {
     .filter((fv) => fv.label)
     .map((fv) => ({
       id: fv.label,
-      label: formatPredicate(fv.label),
+      label: fv.label,
       count: fv.count ?? 0,
     }))
     .sort((a, b) => b.count - a.count);

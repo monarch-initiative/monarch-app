@@ -143,9 +143,8 @@ import AssociationsTable from "@/pages/node/AssociationsTable.vue";
 import SectionCasePhenotypeGrid from "@/pages/node/SectionCasePhenotypeGrid.vue";
 import SectionPathograph from "@/pages/node/SectionPathograph.vue";
 import {
-  defaultPredicateFor,
   expandLabelFor,
-  isPredicateFilterable,
+  predicateFilterState,
 } from "@/util/predicateFilterConfig";
 import { sectionTitle } from "@/util/sectionTitles";
 import { tabLabel } from "@/util/tabText";
@@ -215,33 +214,21 @@ const onPredicateOptions = (
   predicateOptionsByCategory.value[categoryId] = options;
 };
 
+/** derive the predicate-filter state (toggle visibility + scoped predicates) */
+const predicateFilterFor = (categoryId: string) =>
+  predicateFilterState(
+    categoryId,
+    (predicateOptionsByCategory.value[categoryId] ?? []).map((opt) => opt.id),
+    includeInvestigationalByCategory.value[categoryId] ?? false,
+  );
+
 /** whether both the default predicate and a weaker one are present */
-const showInvestigationalToggle = (categoryId: string): boolean => {
-  if (!isPredicateFilterable(categoryId)) return false;
-  const options = predicateOptionsByCategory.value[categoryId] ?? [];
-  const defaultPredicate = defaultPredicateFor(categoryId);
-  const hasDefault = options.some((opt) => opt.id === defaultPredicate);
-  const hasOther = options.some((opt) => opt.id !== defaultPredicate);
-  return hasDefault && hasOther;
-};
+const showInvestigationalToggle = (categoryId: string): boolean =>
+  predicateFilterFor(categoryId).showToggle;
 
 /** selected predicate ids to pass to AssociationsTable (empty = no filter) */
-const selectedPredicateIds = (categoryId: string): string[] => {
-  const defaultPredicate = defaultPredicateFor(categoryId);
-  if (!defaultPredicate) return [];
-  const options = predicateOptionsByCategory.value[categoryId];
-  // before the predicate facet loads, don't filter — this first, unfiltered
-  // fetch is what lets us learn whether the weaker predicate is present
-  if (!options || options.length === 0) return [];
-  // if the default predicate isn't present, don't filter (avoid an empty table)
-  if (!options.some((opt) => opt.id === defaultPredicate)) return [];
-  // nothing beyond the default → no need to scope
-  if (!options.some((opt) => opt.id !== defaultPredicate)) return [];
-  // checked → show everything; unchecked → only the default (indications)
-  return includeInvestigationalByCategory.value[categoryId]
-    ? []
-    : [defaultPredicate];
-};
+const selectedPredicateIds = (categoryId: string): string[] =>
+  predicateFilterFor(categoryId).filterIds;
 
 const { options: categoryOptions } = useAssociationCategories(props.node);
 

@@ -31,11 +31,18 @@ test("returns empty for missing or empty sources", () => {
   expect(parseRetrievalSources([])).toEqual([]);
 });
 
-test("skips unparseable entries without throwing", () => {
+test("falls back to a bare resource_id for plain CURIE strings", () => {
+  /** if `sources` is delivered as plain CURIEs rather than JSON, keep them */
   const parsed = parseRetrievalSources([
-    "not json",
+    "infores:medic",
     JSON.stringify([{ resource_id: "infores:ctd" }]),
   ]);
-  expect(parsed).toHaveLength(1);
-  expect(parsed[0].resource_id).toBe("infores:ctd");
+  expect(parsed).toHaveLength(2);
+  expect(parsed[0].resource_id).toBe("infores:medic");
+  expect(parsed[1].resource_id).toBe("infores:ctd");
+});
+
+test("drops empty entries without throwing", () => {
+  const parsed = parseRetrievalSources(["", JSON.stringify(null)]);
+  expect(parsed).toEqual([]);
 });

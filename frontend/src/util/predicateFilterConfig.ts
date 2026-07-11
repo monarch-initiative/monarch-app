@@ -40,16 +40,43 @@ const EXPAND_LABEL: Record<string, string> = {
 export const expandLabelFor = (sectionKey: string): string =>
   EXPAND_LABEL[sectionKey] ?? "Include additional relationships";
 
-/** friendly labels for predicates shown in association tables */
-const PREDICATE_LABELS: Record<string, string> = {
-  "biolink:treats": "Indication",
-  "biolink:treats_or_applied_or_studied_to_treat": "Investigational",
+export type PredicateFilterState = {
+  /**
+   * whether to show the expand toggle (both default and a weaker predicate
+   * exist)
+   */
+  showToggle: boolean;
+  /** predicates to scope the table to; [] means no filter */
+  filterIds: string[];
 };
 
-/** human-readable label for a predicate value */
-export const formatPredicate = (predicate: string): string =>
-  PREDICATE_LABELS[predicate] ??
-  predicate
-    .replace("biolink:", "")
-    .replace(/_/g, " ")
-    .replace(/^./, (c) => c.toUpperCase());
+/**
+ * Derive a section's predicate-filter state from its available predicate
+ * options and the current toggle state.
+ *
+ * The first fetch is intentionally unfiltered (optionIds empty until the facet
+ * loads) so we can discover whether the weaker predicate is present. Once
+ * options are known: show the toggle only when both the default and a weaker
+ * predicate exist, and scope the table to the default predicate until the user
+ * opts in. When only one predicate is present (or the default is absent), don't
+ * filter — this avoids an empty table for nodes that carry only the weaker
+ * edge.
+ */
+export const predicateFilterState = (
+  sectionKey: string,
+  optionIds: string[],
+  includeInvestigational: boolean,
+): PredicateFilterState => {
+  const noFilter: PredicateFilterState = { showToggle: false, filterIds: [] };
+  const defaultPredicate = defaultPredicateFor(sectionKey);
+  if (!defaultPredicate || optionIds.length === 0) return noFilter;
+
+  const hasDefault = optionIds.includes(defaultPredicate);
+  const hasOther = optionIds.some((id) => id !== defaultPredicate);
+  if (!hasDefault || !hasOther) return noFilter;
+
+  return {
+    showToggle: true,
+    filterIds: includeInvestigational ? [] : [defaultPredicate],
+  };
+};
