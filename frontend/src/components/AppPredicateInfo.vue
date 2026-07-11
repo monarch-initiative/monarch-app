@@ -85,6 +85,10 @@
           </p>
         </template>
 
+        <AppStatus v-else-if="error" code="error">
+          Couldn't load the Biolink Model. Try again in a moment.
+        </AppStatus>
+
         <AppStatus v-else code="warning">
           No definition found for this relationship in the biolink model.
         </AppStatus>
@@ -112,6 +116,7 @@ const props = defineProps<Props>();
 
 const {
   isLoading,
+  error,
   loadBiolinkModel,
   getPredicateInfo,
   getPredicateAncestors,

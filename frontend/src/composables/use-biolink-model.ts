@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, shallowRef } from "vue";
 import yaml from "js-yaml";
 
 export interface PredicateInfo {
@@ -31,9 +31,10 @@ const CACHE_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours
  * Module-level shared state: the biolink model is large, so it is fetched and
  * parsed at most once per session and reused by every caller of
  * useBiolinkModel() (e.g. the predicate explainer on every association row),
- * rather than re-parsed per component instance.
+ * rather than re-parsed per component instance. shallowRef avoids deep-proxying
+ * the large model tree (nothing mutates it reactively; it's read-only lookup).
  */
-const model = ref<BiolinkModel | null>(null);
+const model = shallowRef<BiolinkModel | null>(null);
 const isLoading = ref(false);
 const error = ref<string | null>(null);
 /** in-flight load, so concurrent callers share a single fetch/parse */
@@ -137,7 +138,7 @@ const getPredicateInfo = (predicateName: string): PredicateInfo | null => {
   // Try to find by alias
   if (!slotData) {
     for (const value of Object.values(model.value.slots)) {
-      if (value.aliases && Array.isArray(value.aliases)) {
+      if (value?.aliases && Array.isArray(value.aliases)) {
         if (value.aliases.includes(cleanName)) {
           slotData = value;
           break;
@@ -174,11 +175,14 @@ const getPredicateAncestors = (
   depth = 3,
 ): PredicateInfo[] => {
   const ancestors: PredicateInfo[] = [];
+  const seen = new Set<string>();
   let current = getPredicateInfo(predicateName);
   let steps = 0;
   while (current?.is_a && steps < depth) {
     const parent = getPredicateInfo(current.is_a);
-    if (!parent) break;
+    // stop on a missing parent or an is_a cycle
+    if (!parent || seen.has(parent.name)) break;
+    seen.add(parent.name);
     ancestors.push(parent);
     current = parent;
     steps++;

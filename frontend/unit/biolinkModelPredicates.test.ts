@@ -7,6 +7,7 @@ const fakeModel = {
     treats: {
       description: "the subject treats the object",
       is_a: "treats or applied or studied to treat",
+      aliases: ["therapeutic"],
     },
     "treats or applied or studied to treat": {
       description: "broader treatment relationship",
@@ -61,6 +62,41 @@ describe("getPredicateAncestors", () => {
     const { loadBiolinkModel, getPredicateAncestors } = useBiolinkModel();
     await loadBiolinkModel();
     expect(getPredicateAncestors("biolink:does_not_exist")).toEqual([]);
+  });
+
+  test("terminates on an is_a cycle without looping", async () => {
+    const { clearCache, loadBiolinkModel, getPredicateAncestors } =
+      useBiolinkModel();
+    clearCache();
+    localStorage.setItem(
+      "biolink-model-cache",
+      JSON.stringify({
+        slots: {
+          a: { description: "a", is_a: "b" },
+          b: { description: "b", is_a: "a" },
+        },
+      }),
+    );
+    localStorage.setItem(
+      "biolink-model-cache-timestamp",
+      Date.now().toString(),
+    );
+    await loadBiolinkModel();
+    // b -> a, then a -> b is already seen, so it stops
+    expect(getPredicateAncestors("biolink:a").map((x) => x.name)).toEqual([
+      "b",
+      "a",
+    ]);
+  });
+});
+
+describe("getPredicateInfo", () => {
+  test("resolves a predicate by alias", async () => {
+    const { loadBiolinkModel, getPredicateInfo } = useBiolinkModel();
+    await loadBiolinkModel();
+    expect(getPredicateInfo("biolink:therapeutic")?.description).toBe(
+      "the subject treats the object",
+    );
   });
 });
 
