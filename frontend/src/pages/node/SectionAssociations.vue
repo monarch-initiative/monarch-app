@@ -71,21 +71,13 @@
           @change="(value) => onTaxonFilterChange(String(category.id), value)"
         />
 
-        <AppSelectMulti
-          v-if="
-            isPredicateFilterable(String(category.id)) &&
-            (predicateOptionsByCategory[category.id]?.length ?? 0) > 1
-          "
-          :name="'Filter by Relationship'"
-          :options="predicateOptionsByCategory[category.id] ?? []"
-          :model-value="
-            selectedPredicatesByCategory[category.id] ??
-            predicateOptionsByCategory[category.id] ??
-            []
-          "
-          design="normal"
-          @change="
-            (value) => onPredicateFilterChange(String(category.id), value)
+        <AppCheckbox
+          v-if="showInvestigationalToggle(String(category.id))"
+          :model-value="includeInvestigationalByCategory[category.id] ?? false"
+          :text="expandLabelFor(String(category.id))"
+          @update:model-value="
+            (value: boolean) =>
+              (includeInvestigationalByCategory[category.id] = value)
           "
         />
 
@@ -141,6 +133,7 @@ import { computed, ref } from "vue";
 import type { Node } from "@/api/model";
 import AppAssociationTabs from "@/components/AppAssociationTabs.vue";
 import AppButton from "@/components/AppButton.vue";
+import AppCheckbox from "@/components/AppCheckbox.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppSelectMulti from "@/components/AppSelectMulti.vue";
 import type { Options as MultiSelectOptions } from "@/components/AppSelectMulti.vue";
@@ -149,7 +142,11 @@ import { useAssociationCategories } from "@/composables/use-association-categori
 import AssociationsTable from "@/pages/node/AssociationsTable.vue";
 import SectionCasePhenotypeGrid from "@/pages/node/SectionCasePhenotypeGrid.vue";
 import SectionPathograph from "@/pages/node/SectionPathograph.vue";
-import { isPredicateFilterable } from "@/util/predicateFilterConfig";
+import {
+  defaultPredicateFor,
+  expandLabelFor,
+  isPredicateFilterable,
+} from "@/util/predicateFilterConfig";
 import { sectionTitle } from "@/util/sectionTitles";
 import { tabLabel } from "@/util/tabText";
 import { isTaxonFilterable } from "@/util/taxonFilterConfig";
@@ -203,11 +200,13 @@ const selectedTaxonLabels = (categoryId: string): string[] => {
   return selected.map((opt) => opt.id);
 };
 
-/** predicate filter state per category (mirrors the taxon filter) */
+/**
+ * predicate filter state per category. Filterable sections (e.g.
+ * drug_indications) default to their strong predicate and offer a checkbox to
+ * include the weaker, investigational relationship.
+ */
 const predicateOptionsByCategory = ref<Record<string, MultiSelectOptions>>({});
-const selectedPredicatesByCategory = ref<Record<string, MultiSelectOptions>>(
-  {},
-);
+const includeInvestigationalByCategory = ref<Record<string, boolean>>({});
 
 const onPredicateOptions = (
   categoryId: string,
@@ -216,20 +215,32 @@ const onPredicateOptions = (
   predicateOptionsByCategory.value[categoryId] = options;
 };
 
-const onPredicateFilterChange = (
-  categoryId: string,
-  value: MultiSelectOptions,
-) => {
-  selectedPredicatesByCategory.value[categoryId] = value;
+/** whether both the default predicate and a weaker one are present */
+const showInvestigationalToggle = (categoryId: string): boolean => {
+  if (!isPredicateFilterable(categoryId)) return false;
+  const options = predicateOptionsByCategory.value[categoryId] ?? [];
+  const defaultPredicate = defaultPredicateFor(categoryId);
+  const hasDefault = options.some((opt) => opt.id === defaultPredicate);
+  const hasOther = options.some((opt) => opt.id !== defaultPredicate);
+  return hasDefault && hasOther;
 };
 
 /** selected predicate ids to pass to AssociationsTable (empty = no filter) */
 const selectedPredicateIds = (categoryId: string): string[] => {
-  const selected = selectedPredicatesByCategory.value[categoryId];
-  const allOptions = predicateOptionsByCategory.value[categoryId];
-  if (!selected || !allOptions || selected.length === 0) return [];
-  if (selected.length === allOptions.length) return [];
-  return selected.map((opt) => opt.id);
+  const defaultPredicate = defaultPredicateFor(categoryId);
+  if (!defaultPredicate) return [];
+  const options = predicateOptionsByCategory.value[categoryId];
+  // before the predicate facet loads, don't filter — this first, unfiltered
+  // fetch is what lets us learn whether the weaker predicate is present
+  if (!options || options.length === 0) return [];
+  // if the default predicate isn't present, don't filter (avoid an empty table)
+  if (!options.some((opt) => opt.id === defaultPredicate)) return [];
+  // nothing beyond the default → no need to scope
+  if (!options.some((opt) => opt.id !== defaultPredicate)) return [];
+  // checked → show everything; unchecked → only the default (indications)
+  return includeInvestigationalByCategory.value[categoryId]
+    ? []
+    : [defaultPredicate];
 };
 
 const { options: categoryOptions } = useAssociationCategories(props.node);
