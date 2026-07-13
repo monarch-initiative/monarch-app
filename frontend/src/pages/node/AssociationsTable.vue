@@ -340,21 +340,32 @@ function emitTaxonOptions(facetFieldsData?: FacetField[]) {
 /** track last emitted predicate options to avoid redundant emits */
 let lastPredicateOptionsKey = "";
 
-/** extract predicate options from the predicate facet for this category */
-function emitPredicateOptions(facetFieldsData?: FacetField[]) {
-  if (!predicateFilterable.value || !facetFieldsData) return;
+/**
+ * Emit predicate options from the union of the direct and inferred datasets'
+ * predicate facets, so the filter toggle reflects the whole section regardless
+ * of the active tab. (A predicate can appear in one set but not the other —
+ * e.g. biolink:treats in the direct set while the weaker CTD predicate only
+ * shows up in the inferred/all set — and the checkbox must not depend on which
+ * tab loads first.)
+ */
+function emitPredicateOptions() {
+  if (!predicateFilterable.value) return;
 
   /** see emitTaxonOptions: only build options from unfiltered queries */
   if (props.predicateFilters?.length) return;
 
-  const field = facetFieldsData.find((f) => f.label === "predicate");
-  const options = (field?.facet_values ?? [])
-    .filter((fv) => fv.label)
-    .map((fv) => ({
-      id: fv.label,
-      label: fv.label,
-      count: fv.count ?? 0,
-    }))
+  const counts = new Map<string, number>();
+  for (const data of [directData.value, allData.value]) {
+    const field = data?.facet_fields?.find((f) => f.label === "predicate");
+    for (const fv of field?.facet_values ?? []) {
+      if (!fv.label) continue;
+      counts.set(fv.label, Math.max(counts.get(fv.label) ?? 0, fv.count ?? 0));
+    }
+  }
+  if (!counts.size) return;
+
+  const options = [...counts.entries()]
+    .map(([label, count]) => ({ id: label, label, count }))
     .sort((a, b) => b.count - a.count);
 
   const key = JSON.stringify(options);
@@ -661,7 +672,7 @@ onMounted(async () => {
   await Promise.all([fetchDirect(), fetchAll()]);
 });
 
-/** emit taxon options whenever data changes */
+/** emit taxon options from the active dataset whenever it changes */
 watch(
   () =>
     props.direct.id === "true"
@@ -669,8 +680,17 @@ watch(
       : allData.value?.facet_fields,
   (facetFieldsData) => {
     emitTaxonOptions(facetFieldsData);
-    emitPredicateOptions(facetFieldsData);
   },
+  { immediate: true },
+);
+
+/**
+ * emit predicate options from BOTH datasets (union) so the filter toggle is
+ * independent of which tab is active or loads first
+ */
+watch(
+  () => [directData.value?.facet_fields, allData.value?.facet_fields],
+  () => emitPredicateOptions(),
   { immediate: true },
 );
 
