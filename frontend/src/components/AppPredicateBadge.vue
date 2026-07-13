@@ -8,8 +8,13 @@
     <span v-if="association.negated" class="negated-text">NOT</span>
 
     <span
+      class="predicate-label"
       :class="{ 'highlighted-text': highlight }"
       v-html="getFormattedPredicateLabel(predicate)"
+    /><AppPredicateInfo
+      v-if="predicateString"
+      :predicate="predicateString"
+      class="predicate-info-icon"
     />
 
     <AppIcon v-if="arrows" class="arrow" :icon="`arrow-${arrowDirection}`" />
@@ -19,6 +24,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { type DirectionalAssociation } from "@/api/model";
+import AppPredicateInfo from "@/components/AppPredicateInfo.vue";
 
 type Props = {
   /** current association */
@@ -39,6 +45,12 @@ const predicate = computed(
     props?.association?.highlighting?.predicate?.[0] ??
     props.association.predicate,
 );
+
+/** single predicate value for the explainer */
+const predicateString = computed(() => {
+  const value = predicate.value;
+  return (Array.isArray(value) ? value[0] : value) ?? "";
+});
 const getFormattedPredicateLabel = (category?: string | string[]) => {
   const raw = Array.isArray(category) ? category[0] : category;
   if (!raw) return "";
@@ -63,8 +75,17 @@ const arrowDirection = computed(() =>
 .predicate {
   & > * {
     white-space: normal;
-    overflow-wrap: anywhere;
   }
+}
+
+/* only the label wraps; the info icon stays attached to it (no orphan icon
+   on a new line in constrained columns) */
+.predicate-label {
+  overflow-wrap: anywhere;
+}
+
+.predicate-info-icon {
+  white-space: nowrap;
 }
 
 .arrow {
