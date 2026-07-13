@@ -16,9 +16,9 @@
       @click.stop.prevent="onOpen"
     />
 
-    <AppModal v-model="show" :label="`Relationship: ${formatted}`">
+    <AppModal v-model="show" :label="`Predicate definition: ${formatted}`">
       <div class="explainer">
-        <h2 class="name">{{ formatted }}</h2>
+        <h2 class="name">Predicate definition: {{ formatted }}</h2>
 
         <AppStatus v-if="isLoading" code="loading">
           Loading definition

@@ -32,7 +32,7 @@
     <AppDetails>
       <AppDetail
         v-if="predicateInfo?.description"
-        title="Relationship"
+        :title="predicateDefinitionTitle"
         icon="diagram-project"
         :full="true"
       >
@@ -173,6 +173,19 @@ const predicateValue = computed(() => {
   const predicate = props.association?.predicate;
   return (Array.isArray(predicate) ? predicate[0] : predicate) ?? "";
 });
+
+/** human-readable predicate label, e.g. "treats" */
+const predicateLabel = computed(() =>
+  predicateValue.value.replace(/^biolink:/, "").replace(/_/g, " "),
+);
+
+/**
+ * title for the definition row, naming the predicate, e.g. "Predicate
+ * definition: treats"
+ */
+const predicateDefinitionTitle = computed(
+  () => `Predicate definition: ${predicateLabel.value}`,
+);
 
 const predicateDocsUrl = computed(
   () =>
