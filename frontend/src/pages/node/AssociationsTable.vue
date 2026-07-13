@@ -633,16 +633,18 @@ watch([perPage, sort, start], async () => {
   }
 });
 
-/** refetch when taxon filters change (compare by value, not reference) */
+/**
+ * refetch when a filter changes (compare by value, not reference). Both the
+ * direct and inferred/all datasets are refetched so either tab reflects the
+ * current filter — otherwise switching tabs would show the other dataset's
+ * mount-time, unfiltered result (e.g. the inferred treatments tab not matching
+ * the indications checkbox).
+ */
 watch(
   () => JSON.stringify(props.taxonFilters ?? []),
   async () => {
     start.value = 0;
-    if (props.direct.id === "true") {
-      await fetchDirect();
-    } else {
-      await fetchAll();
-    }
+    await Promise.all([fetchDirect(), fetchAll()]);
   },
 );
 
@@ -650,11 +652,7 @@ watch(
   () => JSON.stringify(props.predicateFilters ?? []),
   async () => {
     start.value = 0;
-    if (props.direct.id === "true") {
-      await fetchDirect();
-    } else {
-      await fetchAll();
-    }
+    await Promise.all([fetchDirect(), fetchAll()]);
   },
 );
 
