@@ -77,7 +77,7 @@
           :text="expandLabelFor(String(category.id))"
           @update:model-value="
             (value: boolean) =>
-              (includeInvestigationalByCategory[category.id] = value)
+              onIncludeInvestigationalChange(String(category.id), value)
           "
         />
 
@@ -206,6 +206,19 @@ const selectedTaxonLabels = (categoryId: string): string[] => {
  */
 const predicateOptionsByCategory = ref<Record<string, MultiSelectOptions>>({});
 const includeInvestigationalByCategory = ref<Record<string, boolean>>({});
+
+/**
+ * Toggle the investigational filter. Pin the currently-active tab first so the
+ * re-filter can't move it: including investigational edges changes the direct
+ * count, which would otherwise flip the default direct/inferred tab and jump
+ * the user's view. If the user has already picked a tab, it's pinned already.
+ */
+const onIncludeInvestigationalChange = (categoryId: string, value: boolean) => {
+  if (selectedTabs.value[categoryId] === undefined) {
+    selectedTabs.value[categoryId] = defaultTab(categoryId);
+  }
+  includeInvestigationalByCategory.value[categoryId] = value;
+};
 
 const onPredicateOptions = (
   categoryId: string,
