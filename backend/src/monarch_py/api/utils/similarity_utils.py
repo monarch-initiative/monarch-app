@@ -8,7 +8,7 @@ from fastapi import HTTPException
 from monarch_py.api.additional_models import SemsimSearchGroup
 
 IS_A = omd.slots.subClassOf.curie
-HP_DB_URL = "https://s3.amazonaws.com/bbop-sqlite/hp.db.gz"
+HP_DB_URL = "https://semanticsql.berkeleybop.io/hp.db.gz"
 
 
 def compare_termsets(
@@ -18,7 +18,7 @@ def compare_termsets(
     offset: int = 0,
     limit: int = 20,
 ):
-    hp_db = OAKLIB_MODULE.ensure_gunzip(url=HP_DB_URL, autoclean=False)
+    hp_db = OAKLIB_MODULE.ensure_gunzip(url=HP_DB_URL, autoclean=False, download_kwargs={"backend": "requests", "headers": {"User-Agent": "monarch-app"}})
     oi = SqlImplementation(OntologyResource(slug=hp_db))
     results = oi.termset_pairwise_similarity(subjects, objects, predicates)
     return results
