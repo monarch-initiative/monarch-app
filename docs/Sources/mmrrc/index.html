@@ -977,6 +977,63 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#genotype-to-gene" class="md-nav__link">
+    <span class="md-ellipsis">
+      Genotype to Gene
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Genotype to Gene">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#design-decision_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design Decision
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Design Decision">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-input_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Input
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-output_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Output
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#not-ingested-genotype-model_of-disease" class="md-nav__link">
+    <span class="md-ellipsis">
+      Not Ingested: Genotype model_of Disease
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#citation" class="md-nav__link">
     <span class="md-ellipsis">
       Citation
@@ -2200,6 +2257,63 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#genotype-to-gene" class="md-nav__link">
+    <span class="md-ellipsis">
+      Genotype to Gene
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Genotype to Gene">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#design-decision_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design Decision
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Design Decision">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-input_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Input
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-output_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Output
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#not-ingested-genotype-model_of-disease" class="md-nav__link">
+    <span class="md-ellipsis">
+      Not Ingested: Genotype model_of Disease
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#citation" class="md-nav__link">
     <span class="md-ellipsis">
       Citation
@@ -2230,7 +2344,7 @@
 <!-- Auto-generated from https://github.com/monarch-initiative/mmrrc-ingest — do not edit manually -->
 
 <h1 id="mmrrc-mutant-mouse-resource-research-centers">MMRRC (Mutant Mouse Resource &amp; Research Centers)</h1>
-<p>The MMRRC is a national resource that archives and distributes genetically engineered mouse strains to the research community. This ingest captures genotype information, allele-to-genotype associations, and genotype-to-phenotype associations from the MMRRC catalog data.</p>
+<p>The MMRRC is a national resource that archives and distributes genetically engineered mouse strains to the research community. This ingest captures genotype nodes and allele-to-genotype, genotype-to-gene, and genotype-to-phenotype associations from the MMRRC catalog data.</p>
 <ul>
 <li><a href="https://www.mmrrc.org">MMRRC Website</a></li>
 <li><a href="https://www.mmrrc.org/about/mmrrc_catalog_data.csv">MMRRC Data Catalog</a></li>
@@ -2240,13 +2354,15 @@
 <p><strong>Download</strong>: <a href="https://www.mmrrc.org/about/mmrrc_catalog_data.csv">https://www.mmrrc.org/about/mmrrc_catalog_data.csv</a></p>
 <p>The catalog is provided as a single denormalized CSV where each row represents a strain, but with one-to-many relationships embedded: a genotype (identified by STRAIN/STOCK_ID) can have multiple alleles and multiple associated genes, and phenotypes are stored as pipe-delimited lists of Mammalian Phenotype Ontology terms (e.g. <code>phenotype label [MP:XXXXXXX]</code>).</p>
 <h3 id="preprocessing">Preprocessing</h3>
-<p>The denormalized catalog is normalized into three datasets before transformation:</p>
+<p>The denormalized catalog is normalized into four datasets before transformation:</p>
 <ol>
 <li><strong>Genotypes</strong> — Deduplicated by strain ID to produce one row per unique genotype</li>
 <li><strong>Allele-to-genotype</strong> — Distinct pairs of MGI allele accession IDs and strain IDs, filtering out rows with no allele accession</li>
+<li><strong>Genotype-to-gene</strong> — Distinct pairs of strain IDs and MGI gene accession IDs, with the strain's PubMed IDs attached. MMRRC identifies most strains by target gene rather than allele accession, so this covers the large gene-trap/targeted set that carries no allele</li>
 <li><strong>Genotype-to-phenotype</strong> — The pipe-delimited phenotype lists are exploded into individual MP term associations per genotype, with phenotype labels extracted from the structured text</li>
 </ol>
 <p>Duplicate relationships in the original catalog (e.g. the same genotype-allele pair appearing multiple times) are deduplicated during this step.</p>
+<p><strong>Identifier normalization</strong>: MMRRC accession columns contain dirty values (tab-prefixed CURIEs like <code>\tMGI:5638932</code>, wrong-namespace values like <code>GeneID:23671</code>). Every allele and gene identifier is normalized by extracting a canonical <code>MGI:&lt;digits&gt;</code> CURIE; values with no valid MGI CURIE are dropped rather than emitted as broken edges. PubMed IDs (<code>PMID: 123</code>) are normalized to bare <code>PMID:123</code> CURIEs.</p>
 <h2 id="genotype">Genotype</h2>
 <p>Creates Genotype nodes for each unique mouse strain in the MMRRC catalog. All MMRRC strains are <em>Mus musculus</em>, so taxon is hardcoded.</p>
 <p><strong>Biolink Captured:</strong></p>
@@ -2254,7 +2370,6 @@
 <li><strong>biolink:Genotype</strong><ul>
 <li>id: <code>MMRRC:{strain_id}</code> (already in format <code>MMRRC:XXXXXX-XXX</code>)</li>
 <li>name: <code>strain_designation</code> - Full strain designation with genetic nomenclature</li>
-<li>description: Constructed from <code>strain_type</code> and genetic information</li>
 <li>xref: <code>other_names</code> - Includes RRID identifiers</li>
 <li>in_taxon: <code>["NCBITaxon:10090"]</code> (Mus musculus - hardcoded)</li>
 <li>in_taxon_label: <code>"Mus musculus"</code></li>
@@ -2344,6 +2459,44 @@ MGI:2152217,Esr2&lt;tm1Unc&gt;,&quot;estrogen receptor 2 (beta); targeted mutati
     <span class="n">agent_type</span><span class="o">=</span><span class="s2">&quot;manual_agent&quot;</span>
 <span class="p">)</span>
 </code></pre></div>
+<h2 id="genotype-to-gene">Genotype to Gene</h2>
+<p>Associations between MMRRC genotypes and the MGI genes they target. MMRRC records a target gene (<code>MGI_GENE_ACCESSION_ID</code>) for most strains — including the large gene-trap/targeted set that has no allele accession — so this transform is the primary way these strains connect to genes.</p>
+<p><strong>Biolink Captured:</strong></p>
+<ul>
+<li><strong>biolink:GenotypeToGeneAssociation</strong><ul>
+<li>id: Generated UUID</li>
+<li>subject: <code>strain_id</code> (Genotype ID, e.g., <code>MMRRC:000002-UNC</code>)</li>
+<li>predicate: <code>biolink:related_to</code> (deliberately vague, matching the Alliance genotype→gene convention)</li>
+<li>object: <code>gene_id</code> (MGI Gene ID, e.g., <code>MGI:109392</code>)</li>
+<li>publications: the strain's <code>PUBMED_IDS</code>, normalized to <code>PMID:</code> CURIEs</li>
+<li>aggregator_knowledge_source: <code>["infores:monarchinitiative"]</code></li>
+<li>primary_knowledge_source: <code>"infores:mmrrc"</code></li>
+<li>knowledge_level: <code>"knowledge_assertion"</code></li>
+<li>agent_type: <code>"manual_agent"</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="design-decision_1">Design Decision</h3>
+<p>We use <code>GenotypeToGeneAssociation</code> with <code>biolink:related_to</code>, following the Alliance ingest convention (<code>kozahub/alliance-ingest</code>), which keeps the predicate intentionally vague because the strain→gene relationship in these catalogs is not a specific molecular one. MMRRC's PubMed IDs are recorded at the strain level (not per allele or phenotype), so they are attached as <code>publications</code> here as the strain's defining references.</p>
+<h4 id="example-input_3">Example Input</h4>
+<div class="highlight"><pre><span></span><code>strain_id,gene_id,gene_symbol,gene_name,pubmed_ids
+MMRRC:000002-UNC,MGI:109392,Esr2,estrogen receptor 2 (beta),PMID:9861029
+</code></pre></div>
+<h4 id="example-output_3">Example Output</h4>
+<div class="highlight"><pre><span></span><code><span class="n">GenotypeToGeneAssociation</span><span class="p">(</span>
+    <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;uuid:...&quot;</span><span class="p">,</span>
+    <span class="n">subject</span><span class="o">=</span><span class="s2">&quot;MMRRC:000002-UNC&quot;</span><span class="p">,</span>
+    <span class="n">predicate</span><span class="o">=</span><span class="s2">&quot;biolink:related_to&quot;</span><span class="p">,</span>
+    <span class="nb">object</span><span class="o">=</span><span class="s2">&quot;MGI:109392&quot;</span><span class="p">,</span>
+    <span class="n">publications</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;PMID:9861029&quot;</span><span class="p">],</span>
+    <span class="n">aggregator_knowledge_source</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;infores:monarchinitiative&quot;</span><span class="p">],</span>
+    <span class="n">primary_knowledge_source</span><span class="o">=</span><span class="s2">&quot;infores:mmrrc&quot;</span><span class="p">,</span>
+    <span class="n">knowledge_level</span><span class="o">=</span><span class="s2">&quot;knowledge_assertion&quot;</span><span class="p">,</span>
+    <span class="n">agent_type</span><span class="o">=</span><span class="s2">&quot;manual_agent&quot;</span>
+<span class="p">)</span>
+</code></pre></div>
+<h2 id="not-ingested-genotype-model_of-disease">Not Ingested: Genotype model_of Disease</h2>
+<p>The per-strain <code>getSDS</code> API exposes DOID annotations under <code>alterations[].doid_ids</code>, which is tempting as a source of <code>model_of</code> disease edges. On inspection these are <strong>Disease Ontology gene→disease associations for the strain's target gene(s)</strong>, not curated strain-as-model annotations: multi-gene deletion strains accumulate the union of every deleted gene's disease associations (one strain reached 241 diseases across ~230 genes), and 87% of the ~548k candidate edges come from such multi-gene strains. This is redundant with the <code>genotype→gene</code> edges above plus Monarch's existing gene→disease sources (strain→gene→disease is reachable by traversal), and <code>model_of</code> would misrepresent the relationship, so these are deliberately not ingested.</p>
 <h2 id="citation">Citation</h2>
 <p>Mutant Mouse Resource &amp; Research Centers (MMRRC). <a href="https://www.mmrrc.org">https://www.mmrrc.org</a></p>
 
