@@ -147,7 +147,7 @@ def build_association_query(
 
 def build_association_table_query(
     entity: List[str],
-    category: str,
+    category: List[str],
     direct: bool = False,
     q: Optional[str] = None,
     facet_fields: List[str] = None,
@@ -169,7 +169,7 @@ def build_association_table_query(
 
     query = build_association_query(
         entity=entity,
-        category=[category],
+        category=category,
         q=q,
         sort=sort,
         offset=offset,

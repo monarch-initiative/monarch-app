@@ -26,7 +26,7 @@ from monarch_py.datamodels.model import (
 from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQueryResult
 from monarch_py.service.curie_service import converter
 from monarch_py.implementations.solr.solr_query_utils import build_association_count_suffixes
-from monarch_py.utils.association_type_utils import get_association_type_mapping_by_query_string
+from monarch_py.utils.association_type_utils import AssociationTypeMappings, get_solr_query_fragment
 from monarch_py.utils.utils import get_links_for_field, get_provided_by_link
 
 
@@ -187,55 +187,57 @@ def parse_association_counts(query_result: SolrQueryResult, entities: List[str])
         "orthologs_object": ("orthologs", False),
     }
 
-    # Collect counts into a dict keyed by (label, category)
-    # Each entry accumulates direct, closure, and ortholog counts
+    # Rebuild the exact facet query string for each (mapping, suffix) so each result
+    # can be attributed to its mapping directly, without re-parsing the Solr logic.
+    # This is robust when several mappings share a category (e.g. biolink:Association)
+    # and are distinguished only by predicate / subject / object category.
+    lookup = {}
+    for mapping in AssociationTypeMappings.get_mappings():
+        fragment = get_solr_query_fragment(mapping)
+        for suffix_key, suffix_str in suffixes.all_suffixes.items():
+            lookup[f"({fragment}) {suffix_str}"] = (mapping, *suffix_metadata[suffix_key])
+
+    # Accumulate counts keyed by the section key
     count_data: Dict[str, Dict] = {}
 
-    def _ensure_entry(label: str, category: str):
-        if label not in count_data:
-            count_data[label] = {"category": category, "direct": 0, "closure": 0, "orthologs": 0}
-
-    for k, v in query_result.facet_counts.facet_queries.items():
-        if v == 0:
+    for query_string, value in query_result.facet_counts.facet_queries.items():
+        if value == 0:
             continue
+        if query_string not in lookup:
+            raise ValueError(f"Unexpected facet query when building association counts: {query_string}")
 
-        # Determine which suffix matches and which count level it represents
-        count_level = None
-        is_subject_direction = None
-        original_query = None
-
-        for suffix_key, suffix_str in suffixes.all_suffixes.items():
-            if k.endswith(suffix_str):
-                original_query = k.replace(f" {suffix_str}", "").lstrip("(").rstrip(")")
-                count_level, is_subject_direction = suffix_metadata[suffix_key]
-                break
-
-        if count_level is None:
-            raise ValueError(f"Unexpected facet query when building association counts: {k}")
-
-        agm = get_association_type_mapping_by_query_string(original_query)
-        label = agm.subject_label if is_subject_direction else agm.object_label
-
-        _ensure_entry(label, agm.category)
+        mapping, count_level, is_subject_direction = lookup[query_string]
+        key = mapping.key
+        if key not in count_data:
+            count_data[key] = {
+                "key": key,
+                "category": mapping.category[0] if mapping.category else None,
+                "label": None,
+                "direct": 0,
+                "closure": 0,
+                "orthologs": 0,
+            }
+        entry = count_data[key]
+        entry["label"] = mapping.subject_label if is_subject_direction else mapping.object_label
 
         # For symmetric associations, sum both directions; otherwise set the value
-        if agm.symmetric and count_data[label][count_level] > 0:
-            count_data[label][count_level] += v
+        if mapping.symmetric and entry[count_level] > 0:
+            entry[count_level] += value
         else:
-            count_data[label][count_level] = v
+            entry[count_level] = value
 
     # Build AssociationCount objects
-    items = []
-    for label, data in count_data.items():
-        items.append(
-            AssociationCount(
-                label=label,
-                count=data["closure"],
-                count_direct=data["direct"],
-                count_with_orthologs=data["orthologs"] if has_orthologs else None,
-                category=data["category"],
-            )
+    items = [
+        AssociationCount(
+            key=data["key"],
+            label=data["label"],
+            count=data["closure"],
+            count_direct=data["direct"],
+            count_with_orthologs=data["orthologs"] if has_orthologs else None,
+            category=data["category"],
         )
+        for data in count_data.values()
+    ]
 
     return AssociationCountList(items=items)
 

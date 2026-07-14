@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { useAssociationCategories } from "@/composables/use-association-categories";
 
-type AssocCount = { category?: string; label: string; count: number };
+type AssocCount = {
+  key?: string;
+  category?: string;
+  label: string;
+  count: number;
+};
 type TestNode = { association_counts?: AssocCount[] };
 
 const hidden =
@@ -78,5 +83,31 @@ describe("useAssociationCategories", () => {
     };
     const { options } = useAssociationCategories(node as any);
     expect(options.value[0]).toMatchObject({ id: "", count: 1 });
+  });
+
+  it("prefers the section key over category for the id", () => {
+    // several sections can share one category (biolink:Association),
+    // distinguished by their key
+    const node: TestNode = {
+      association_counts: [
+        {
+          key: "clinical_measurement_correlated_phenotypes",
+          category: "biolink:Association",
+          label: "Correlated Phenotypes",
+          count: 4,
+        },
+        {
+          key: "clinical_measurement_related_chemicals",
+          category: "biolink:Association",
+          label: "Related Chemicals",
+          count: 7,
+        },
+      ],
+    };
+    const { options } = useAssociationCategories(node as any);
+    expect(options.value.map((o) => o.id)).toEqual([
+      "clinical_measurement_correlated_phenotypes",
+      "clinical_measurement_related_chemicals",
+    ]);
   });
 });

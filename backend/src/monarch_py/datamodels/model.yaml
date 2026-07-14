@@ -24,10 +24,14 @@ classes:
   AssociationCount:
     is_a: FacetValue
     slots:
+    - key
     - category
     - count_direct
     - count_with_orthologs
     slot_usage:
+      key:
+        description: Stable section identifier used as the frontend section key and the
+          association-table key. Equals the category for plain single-category sections.
       category:
         multivalued: false
   AssociationCountList:
@@ -75,15 +79,27 @@ classes:
         range: DirectionalAssociation
   AssociationTypeMapping:
     description: A data class to hold the necessary information to produce association
-      type counts for given  entities with appropriate directional labels
+      type counts for given entities with appropriate directional labels. Each match
+      criterion (category, predicate, subject_category, object_category,
+      primary_knowledge_source, provided_by) is an optional list; values within a
+      single criterion are OR'd, and criteria are AND'd together. An omitted criterion
+      places no constraint on that field.
     slots:
+    - key
     - subject_label
     - object_label
     - symmetric
     - category
+    - predicate
     - subject_category
     - object_category
+    - primary_knowledge_source
+    - provided_by
     slot_usage:
+      key:
+        description: A stable identifier for this association-type section, used to
+          accumulate counts and as the table/section key. Defaults to the (single)
+          category when not set.
       subject_label:
         description: A label to describe the subjects of the association type as a
           whole for use in the UI
@@ -96,15 +112,27 @@ classes:
         ifabsent: false
         required: true
       category:
-        description: The biolink category to use in queries for this association type
-        required: true
-        multivalued: false
+        description: The biolink association category/categories to match (OR'd)
+        required: false
+        multivalued: true
+      predicate:
+        description: The predicate(s) to match (OR'd)
+        required: false
+        multivalued: true
       subject_category:
-        description: The biolink category of entities in the subject position of this
-          association type
+        description: The biolink category/categories of entities in the subject position
+          of this association type (OR'd)
+        multivalued: true
       object_category:
-        description: The biolink category of entities in the object position of this
-          association type
+        description: The biolink category/categories of entities in the object position
+          of this association type (OR'd)
+        multivalued: true
+      primary_knowledge_source:
+        description: The primary knowledge source(s) to match (OR'd)
+        multivalued: true
+      provided_by:
+        description: The provided_by ingest source(s) to match (OR'd)
+        multivalued: true
   CategoryGroupedAssociationResults:
     is_a: Results
     slots:
@@ -554,6 +582,11 @@ slots:
     inlined_as_list: true
     required: true
   category:
+    multivalued: false
+  key:
+    description: A stable identifier for an association-type section, used to accumulate
+      counts and as the table/section key. Defaults to the category when not otherwise set.
+    range: string
     multivalued: false
   causal_gene:
     description: A list of genes that are known to be causally associated with a disease
