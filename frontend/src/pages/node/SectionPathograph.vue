@@ -117,7 +117,7 @@
             class="node-id"
             text-anchor="middle"
           >
-            {{ lnode.entityId }}
+            {{ idText(lnode.entityId) }}
           </text>
         </g>
       </svg>
@@ -190,7 +190,10 @@ const LABEL_LH = 15;
 const LABEL_LINES = 2;
 const LABEL_FONT = `${LABEL_FS}px "Poppins", sans-serif`;
 const ID_FS = 10;
+const ID_FONT = `${ID_FS}px monospace`;
 const ID_GAP = 3;
+/** usable text width inside the node box */
+const TEXT_W = NODE_W - PAD_X * 2;
 /** rough cap-height ratio, to turn a line's top edge into a text baseline */
 const BASELINE_RATIO = 0.8;
 
@@ -212,7 +215,7 @@ const ellipsize = (text: string, maxWidth: number, font: string): string => {
   return `${trimmed.trimEnd()}…`;
 };
 
-/** greedy word wrap, clamped to maxLines with the last line ellipsized */
+/** greedy word wrap, clamped to maxLines, ellipsizing whatever does not fit */
 const wrapLabel = (
   text: string,
   maxWidth: number,
@@ -229,11 +232,19 @@ const wrapLabel = (
     } else current = trial;
   }
   if (current) lines.push(current);
-  if (!lines.length) return [];
-  if (lines.length <= maxLines) return lines;
   const kept = lines.slice(0, maxLines);
-  kept[maxLines - 1] = ellipsize(kept[maxLines - 1]!, maxWidth, font);
-  return kept;
+  /**
+   * Two ways a line can still not fit: it is the last one we kept and the rest
+   * of the label was dropped, or it is a single word too long to have had any
+   * wrap point (hyphenated compounds are common here). Nothing clips svg text,
+   * so measure every kept line rather than assuming only the last overflows.
+   */
+  const dropped = lines.length > kept.length;
+  return kept.map((line, i) =>
+    (dropped && i === kept.length - 1) || measure(line, font) > maxWidth
+      ? ellipsize(line, maxWidth, font)
+      : line,
+  );
 };
 
 /**
@@ -245,6 +256,15 @@ const fontsReady = ref(false);
 onMounted(() => {
   document.fonts?.ready.then(() => (fontsReady.value = true));
 });
+
+/**
+ * The id line, truncated to the box. Curies are always short enough today, but
+ * meta.term_id is upstream data and svg text has no overflow of its own.
+ */
+const idText = (id?: string): string => {
+  if (!id) return "";
+  return measure(id, ID_FONT) > TEXT_W ? ellipsize(id, TEXT_W, ID_FONT) : id;
+};
 
 /** total height of a node's stacked label lines + optional id line */
 const textHeight = (lnode: LaidOutNode): number =>
@@ -380,7 +400,7 @@ const layout = computed(() => {
       x: (p?.x ?? 0) - NODE_W / 2,
       y: (p?.y ?? 0) - NODE_H / 2,
       shared: sharedNodes.has(n.id),
-      lines: wrapLabel(n.label, NODE_W - PAD_X * 2, LABEL_FONT, LABEL_LINES),
+      lines: wrapLabel(n.label, TEXT_W, LABEL_FONT, LABEL_LINES),
       ...nodeEntity(n),
     };
   });
