@@ -70,33 +70,56 @@
           </title>
         </path>
 
-        <!-- nodes -->
-        <foreignObject
+        <!--
+          Native svg text rather than html in a foreignObject: Safari lays
+          foreignObject content out in a different coordinate space than the
+          viewBox transform, so node text drifted further out of its box the
+          further the node sat from the origin. Svg text scales with the
+          viewBox, at the cost of wrapping the label ourselves.
+        -->
+        <g
           v-for="lnode in layout.nodes"
           :key="lnode.id"
-          :x="lnode.x"
-          :y="lnode.y"
-          :width="NODE_W"
-          :height="NODE_H"
+          v-tooltip="{
+            content: nodeTooltip(lnode),
+            allowHTML: true,
+            maxWidth: 360,
+            interactive: true,
+            appendTo: appendToBody,
+          }"
+          class="node"
+          :class="{ shared: lnode.shared, orphan: lnode.is_orphan }"
         >
-          <div
-            v-tooltip="{
-              content: nodeTooltip(lnode),
-              allowHTML: true,
-              maxWidth: 360,
-              interactive: true,
-              appendTo: appendToBody,
-            }"
-            class="node"
-            :class="{ shared: lnode.shared, orphan: lnode.is_orphan }"
-            :style="{ background: lnode.color || '#f3f4f6' }"
+          <rect
+            :x="lnode.x"
+            :y="lnode.y"
+            :width="NODE_W"
+            :height="NODE_H"
+            rx="6"
+            ry="6"
+            class="node-box"
+            :style="{ fill: lnode.color || '#f3f4f6' }"
+          />
+          <text
+            v-for="(line, i) in lnode.lines"
+            :key="i"
+            :x="lnode.x + NODE_W / 2"
+            :y="labelBaseline(lnode, i)"
+            class="node-label"
+            text-anchor="middle"
           >
-            <span class="node-label">{{ lnode.label }}</span>
-            <span v-if="lnode.entityId" class="node-id">{{
-              lnode.entityId
-            }}</span>
-          </div>
-        </foreignObject>
+            {{ line }}
+          </text>
+          <text
+            v-if="lnode.entityId"
+            :x="lnode.x + NODE_W / 2"
+            :y="idBaseline(lnode)"
+            class="node-id"
+            text-anchor="middle"
+          >
+            {{ idText(lnode.entityId) }}
+          </text>
+        </g>
       </svg>
     </div>
 
@@ -116,7 +139,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, getCurrentInstance, watch } from "vue";
+import { computed, getCurrentInstance, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import dagre from "@dagrejs/dagre";
 import type { Node } from "@/api/model";
@@ -156,6 +179,113 @@ const H_GAP = 28;
 const V_GAP = 52;
 const MARGIN = 20;
 
+/**
+ * Node text metrics. These are duplicated in the stylesheet below (svg text
+ * cannot be measured from its own css), so keep the two in step: the label font
+ * must match $sans, and the id font must match the .node-id rule.
+ */
+const PAD_X = 8;
+const LABEL_FS = 12.5;
+const LABEL_LH = 15;
+const LABEL_LINES = 2;
+const LABEL_FONT = `${LABEL_FS}px "Poppins", sans-serif`;
+const ID_FS = 10;
+const ID_FONT = `${ID_FS}px monospace`;
+const ID_GAP = 3;
+/** usable text width inside the node box */
+const TEXT_W = NODE_W - PAD_X * 2;
+/** rough cap-height ratio, to turn a line's top edge into a text baseline */
+const BASELINE_RATIO = 0.8;
+
+/** canvas text measurement, so label wrapping matches what actually renders */
+let measureCtx: CanvasRenderingContext2D | null | undefined;
+const measure = (text: string, font: string): number => {
+  if (measureCtx === undefined)
+    measureCtx = document.createElement("canvas").getContext("2d");
+  if (!measureCtx) return text.length * LABEL_FS * 0.55;
+  measureCtx.font = font;
+  return measureCtx.measureText(text).width;
+};
+
+/** trim a line until it fits inside max width with an ellipsis appended */
+const ellipsize = (text: string, maxWidth: number, font: string): string => {
+  let trimmed = text;
+  while (trimmed.length > 1 && measure(`${trimmed}…`, font) > maxWidth)
+    trimmed = trimmed.slice(0, -1);
+  return `${trimmed.trimEnd()}…`;
+};
+
+/** greedy word wrap, clamped to maxLines, ellipsizing whatever does not fit */
+const wrapLabel = (
+  text: string,
+  maxWidth: number,
+  font: string,
+  maxLines: number,
+): string[] => {
+  const lines: string[] = [];
+  let current = "";
+  for (const word of text.split(/\s+/).filter(Boolean)) {
+    const trial = current ? `${current} ${word}` : word;
+    if (current && measure(trial, font) > maxWidth) {
+      lines.push(current);
+      current = word;
+    } else current = trial;
+  }
+  if (current) lines.push(current);
+  const kept = lines.slice(0, maxLines);
+  /**
+   * Two ways a line can still not fit: it is the last one we kept and the rest
+   * of the label was dropped, or it is a single word too long to have had any
+   * wrap point (hyphenated compounds are common here). Nothing clips svg text,
+   * so measure every kept line rather than assuming only the last overflows.
+   */
+  const dropped = lines.length > kept.length;
+  return kept.map((line, i) =>
+    (dropped && i === kept.length - 1) || measure(line, font) > maxWidth
+      ? ellipsize(line, maxWidth, font)
+      : line,
+  );
+};
+
+/**
+ * Poppins is a webfont, so the first layout can measure against the fallback
+ * font and wrap slightly wrong. Flip once it loads to re-wrap against the real
+ * metrics.
+ */
+const fontsReady = ref(false);
+onMounted(() => {
+  document.fonts?.ready.then(() => (fontsReady.value = true));
+});
+
+/**
+ * The id line, truncated to the box. Curies are always short enough today, but
+ * meta.term_id is upstream data and svg text has no overflow of its own.
+ */
+const idText = (id?: string): string => {
+  if (!id) return "";
+  return measure(id, ID_FONT) > TEXT_W ? ellipsize(id, TEXT_W, ID_FONT) : id;
+};
+
+/** total height of a node's stacked label lines + optional id line */
+const textHeight = (lnode: LaidOutNode): number =>
+  lnode.lines.length * LABEL_LH + (lnode.entityId ? ID_GAP + ID_FS : 0);
+
+/** top edge of the centred text block within the node box */
+const textTop = (lnode: LaidOutNode): number =>
+  lnode.y + (NODE_H - textHeight(lnode)) / 2;
+
+const labelBaseline = (lnode: LaidOutNode, i: number): number =>
+  textTop(lnode) +
+  i * LABEL_LH +
+  (LABEL_LH - LABEL_FS) / 2 +
+  LABEL_FS * BASELINE_RATIO;
+
+const idBaseline = (lnode: LaidOutNode): number =>
+  textTop(lnode) +
+  lnode.lines.length * LABEL_LH +
+  ID_GAP +
+  ID_FS * BASELINE_RATIO;
+
 const { query: runGetPathograph, data: pathograph } = useQuery<
   Pathograph | null,
   []
@@ -179,6 +309,8 @@ type LaidOutNode = PathographNode & {
   x: number;
   y: number;
   shared: boolean;
+  /** label word-wrapped to fit the box, since svg text does not wrap itself */
+  lines: string[];
   /** ontology id displayed on the node, when it is itself an entity */
   entityId?: string;
   /** Monarch node route for that entity, when resolvable */
@@ -223,6 +355,8 @@ const smoothPath = (points: Point[]): string => {
 
 /** dagre layered DAG layout (rankdir left→right, crossing-minimized) */
 const layout = computed(() => {
+  /** re-wrap labels once the real font metrics are available */
+  void fontsReady.value;
   const data = pathograph.value;
   const empty = {
     nodes: [] as LaidOutNode[],
@@ -258,7 +392,7 @@ const layout = computed(() => {
     data.nodes.filter((n) => (n.sources?.length || 0) > 1).map((n) => n.id),
   );
 
-  /** dagre node coords are centers; convert to top-left for foreignObject */
+  /** dagre node coords are centers; convert to the box's top-left corner */
   const nodes: LaidOutNode[] = data.nodes.map((n) => {
     const p = g.node(n.id) as Point;
     return {
@@ -266,6 +400,7 @@ const layout = computed(() => {
       x: (p?.x ?? 0) - NODE_W / 2,
       y: (p?.y ?? 0) - NODE_H / 2,
       shared: sharedNodes.has(n.id),
+      lines: wrapLabel(n.label, TEXT_W, LABEL_FONT, LABEL_LINES),
       ...nodeEntity(n),
     };
   });
@@ -457,47 +592,34 @@ const nodeTooltip = (node: LaidOutNode): string => {
 }
 
 .node {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  padding: 4px 8px;
-  border: 1px solid rgba(0, 0, 0, 0.25);
-  border-radius: 6px;
-  text-align: center;
   cursor: default;
+}
 
-  &.shared {
-    border-width: 2px;
-    border-color: rgba(0, 0, 0, 0.7);
-    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
+.node-box {
+  stroke: rgba(0, 0, 0, 0.25);
+  stroke-width: 1;
+
+  .shared & {
+    stroke: rgba(0, 0, 0, 0.7);
+    stroke-width: 2;
   }
 
-  &.orphan {
-    border-style: dashed;
+  .orphan & {
+    stroke-dasharray: 4 3;
   }
 }
 
+/* font-size/family here must match the LABEL_* and ID_* metrics in the script,
+   which measure and wrap this text ahead of render. */
 .node-label {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  font-size: 0.78rem;
-  line-height: 1.15;
+  fill: currentColor;
+  font-size: 12.5px;
 }
 
 .node-id {
-  max-width: 100%;
-  margin-top: 2px;
-  overflow: hidden;
-  font-size: 0.6rem;
+  fill: currentColor;
+  font-size: 10px;
   font-family: monospace;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   opacity: 0.55;
 }
 
