@@ -1,13 +1,23 @@
 <!--
-  search tab on explore page
-
   search for nodes in knowledge graph
+
+  Two modes, both live: `minimal` is the search box on its own, used by the
+  header; otherwise this is the whole search page (box + facet filters +
+  results + pagination), wrapped by PageSearchResults.
 -->
 
 <template>
-  <AppWrapper tag="AppSection" :wrap="!minimal">
+  <!--
+    width only when wrapping: AppWrapper renders a bare fragment in minimal
+    mode, and an attr it cannot inherit warns on every header render.
+  -->
+  <AppWrapper
+    tag="AppSection"
+    :wrap="!minimal"
+    v-bind="minimal ? {} : { width: 'big' }"
+  >
     <!-- search box -->
-    <div class="help-icon-section">
+    <div class="search-row" :class="{ 'search-row-full': !minimal }">
       <AppSelectAutocomplete
         :model-value="search"
         name="Search"
@@ -17,15 +27,6 @@
         @focus="onFocus"
         @change="onChange"
         @delete="onDelete"
-      />
-      <AppButton
-        v-if="!minimal"
-        v-tooltip="'How to use'"
-        class="help-icon"
-        text="?"
-        design="circle"
-        color="secondary"
-        to="how-to"
       />
     </div>
 
@@ -46,7 +47,7 @@
     </AppFlex>
   </AppWrapper>
 
-  <AppSection v-if="!minimal">
+  <AppSection v-if="!minimal" width="big">
     <!-- status -->
     <AppStatus v-if="isLoading" code="loading">Loading results</AppStatus>
     <AppStatus v-else-if="isError" code="error"
@@ -65,9 +66,11 @@
       align-h="stretch"
     >
       <div class="title">
+        <!-- taxon has its own badge alongside, so keep it out of the name -->
         <AppNodeBadge
           :node="result"
           :state="{ fromSearch: search }"
+          :show-taxon="false"
           class="title-name"
         />
         <AppButton
@@ -493,16 +496,16 @@ watch(from, () => runGetSearch(false));
   font-weight: 600;
 }
 
-.help-icon {
-  margin-left: 10px;
-  font-weight: bolder;
-  font-size: 1.3em;
-}
-
-.help-icon-section {
+.search-row {
   display: flex;
   align-items: center;
   width: 100%;
+}
+
+/* full-page mode only; the header box sizes itself */
+.search-row-full {
+  max-width: 50em;
+  margin-top: 2em;
 }
 
 .search-input {
