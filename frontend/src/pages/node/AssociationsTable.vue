@@ -54,7 +54,8 @@
             id: row.subject,
             name: row.highlighting?.subject_label?.[0] || row.subject_label,
             category: row.subject_category,
-            info: row.subject === node.id ? undefined : row.subject_taxon_label,
+            in_taxon_label:
+              row.subject === node.id ? undefined : row.subject_taxon_label,
           }"
           :breadcrumbs="getBreadcrumbs(node, row, 'subject')"
           :highlight="true"
@@ -85,7 +86,8 @@
             id: row.object,
             name: row.highlighting?.object_label?.[0] || row.object_label,
             category: row.object_category,
-            info: row.object === node.id ? undefined : row.object_taxon_label,
+            in_taxon_label:
+              row.object === node.id ? undefined : row.object_taxon_label,
           }"
           :breadcrumbs="getBreadcrumbs(node, row, 'object')"
           :highlight="true"
