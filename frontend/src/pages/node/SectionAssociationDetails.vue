@@ -14,7 +14,7 @@
             id: association.subject,
             name: association.subject_label,
             category: association.subject_category,
-            info: association.subject_taxon_label,
+            in_taxon_label: association.subject_taxon_label,
           }"
         />
         <AppPredicateBadge :association="association" />
@@ -23,7 +23,7 @@
             id: association.object,
             name: association.object_label,
             category: association.object_category,
-            info: association.object_taxon_label,
+            in_taxon_label: association.object_taxon_label,
           }"
         />
       </div>

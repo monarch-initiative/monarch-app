@@ -41,7 +41,9 @@
               all selected
             </template>
             <template v-else-if="selected.length === 1">
-              {{ options[selected[0]]?.label || options[selected[0]]?.id }}
+              <span :class="{ italic: options[selected[0]]?.italic }">
+                {{ options[selected[0]]?.label || options[selected[0]]?.id }}
+              </span>
             </template>
             <template v-else>{{ selected.length }} selected</template>
           </span>
@@ -111,7 +113,10 @@
             class="option-check"
           />
           <AppIcon v-if="option.icon" :icon="option.icon" class="option-icon" />
-          <span class="option-label truncate">
+          <span
+            class="option-label truncate"
+            :class="{ italic: option.italic }"
+          >
             {{ option.label || option.id }}
           </span>
           <span
@@ -138,6 +143,8 @@ export type Option = {
   count?: number;
   /** tooltip on hover */
   tooltip?: string;
+  /** render label in italics (e.g. taxon scientific names) */
+  italic?: boolean;
 };
 
 export type Options = Option[];
@@ -438,5 +445,9 @@ watch(
 .option-count {
   justify-content: flex-end;
   color: $gray;
+}
+
+.italic {
+  font-style: italic;
 }
 </style>
