@@ -97,21 +97,20 @@
       </template>
     </AppSection>
 
-    <!-- dismech pathograph shown directly under the phenotype table -->
-    <SectionPathograph
-      v-if="
-        category.id === 'biolink:DiseaseToPhenotypicFeatureAssociation' ||
-        category.id === 'biolink:GeneToPhenotypicFeatureAssociation'
-      "
-      :node="node"
-    />
-
     <!-- Case-Phenotype Grid shown after Cases section -->
     <SectionCasePhenotypeGrid
       v-if="category.id === 'biolink:CaseToDiseaseAssociation'"
       :node="node"
     />
   </div>
+
+  <!--
+    dismech pathograph, below all association tables. Rendered once regardless of
+    which association categories exist (a disease/gene can have a pathograph but
+    no Monarch phenotype associations); self-gates to disease/gene and self-hides
+    when there is no pathograph.
+  -->
+  <SectionPathograph :node="node" />
 </template>
 
 <script setup lang="ts">
