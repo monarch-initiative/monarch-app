@@ -18,7 +18,11 @@ def compare_termsets(
     offset: int = 0,
     limit: int = 20,
 ):
-    hp_db = OAKLIB_MODULE.ensure_gunzip(url=HP_DB_URL, autoclean=False, download_kwargs={"backend": "requests", "headers": {"User-Agent": "monarch-app"}})
+    hp_db = OAKLIB_MODULE.ensure_gunzip(
+        url=HP_DB_URL,
+        autoclean=False,
+        download_kwargs={"backend": "requests", "headers": {"User-Agent": "monarch-app"}},
+    )
     oi = SqlImplementation(OntologyResource(slug=hp_db))
     results = oi.termset_pairwise_similarity(subjects, objects, predicates)
     return results

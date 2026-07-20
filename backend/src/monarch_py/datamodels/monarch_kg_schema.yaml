@@ -3,11 +3,11 @@ id: https://w3id.org/monarch-initiative/koza/graph-schema
 imports:
 - linkml:types
 prefixes:
-  biolink: https://w3id.org/biolink/vocab/
-  dct: http://purl.org/dc/terms/
   rdfs: http://www.w3.org/2000/01/rdf-schema#
-  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  dct: http://purl.org/dc/terms/
   linkml: https://w3id.org/linkml/
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  biolink: https://w3id.org/biolink/vocab/
 default_prefix: https://w3id.org/monarch-initiative/koza/graph-schema/
 default_range: string
 slots:
@@ -64,6 +64,12 @@ slots:
     exact_mappings:
     - biolink:symbol
     slot_uri: biolink:symbol
+  has_gene:
+    exact_mappings:
+    - biolink:has_gene
+    slot_uri: biolink:has_gene
+    range: uriorcurie
+    multivalued: true
   type:
     exact_mappings:
     - biolink:type
@@ -120,12 +126,6 @@ slots:
     slot_uri: biolink:subsets
     range: string
     multivalued: true
-  has_gene:
-    exact_mappings:
-    - biolink:has_gene
-    slot_uri: biolink:has_gene
-    range: uriorcurie
-    multivalued: true
   same_as:
     multivalued: true
   synonyms: {}
@@ -149,40 +149,31 @@ slots:
     - biolink:agent_type
     slot_uri: biolink:agent_type
     range: string
+  aggregator_knowledge_source:
+    exact_mappings:
+    - biolink:aggregator_knowledge_source
+    slot_uri: biolink:aggregator_knowledge_source
+    multivalued: true
   knowledge_level:
     exact_mappings:
     - biolink:knowledge_level
     slot_uri: biolink:knowledge_level
     range: string
-  negated:
-    exact_mappings:
-    - biolink:negated
-    slot_uri: biolink:negated
-    range: boolean
-  object_aspect_qualifier:
-    exact_mappings:
-    - biolink:object_aspect_qualifier
-    slot_uri: biolink:object_aspect_qualifier
-    range: string
-  onset_qualifier:
-    exact_mappings:
-    - biolink:onset_qualifier
-    slot_uri: biolink:onset_qualifier
-    range: uriorcurie
   primary_knowledge_source:
     exact_mappings:
     - biolink:primary_knowledge_source
     slot_uri: biolink:primary_knowledge_source
+  has_evidence:
+    exact_mappings:
+    - biolink:has_evidence
+    slot_uri: biolink:has_evidence
+    range: uriorcurie
+    multivalued: true
   publications:
     exact_mappings:
     - biolink:publications
     slot_uri: biolink:publications
     range: uriorcurie
-    multivalued: true
-  aggregator_knowledge_source:
-    exact_mappings:
-    - biolink:aggregator_knowledge_source
-    slot_uri: biolink:aggregator_knowledge_source
     multivalued: true
   qualifiers:
     exact_mappings:
@@ -190,17 +181,6 @@ slots:
     slot_uri: biolink:qualifiers
     range: uriorcurie
     multivalued: true
-  has_evidence:
-    exact_mappings:
-    - biolink:has_evidence
-    slot_uri: biolink:has_evidence
-    range: uriorcurie
-    multivalued: true
-  object_specialization_qualifier:
-    exact_mappings:
-    - biolink:object_specialization_qualifier
-    slot_uri: biolink:object_specialization_qualifier
-    range: uriorcurie
   FDA_adverse_event_level:
     exact_mappings:
     - biolink:FDA_adverse_event_level
@@ -211,15 +191,15 @@ slots:
     - biolink:disease_context_qualifier
     slot_uri: biolink:disease_context_qualifier
     range: uriorcurie
-  object_category:
-    exact_mappings:
-    - biolink:object_category
-    slot_uri: biolink:object_category
-    range: uriorcurie
   original_predicate:
     exact_mappings:
     - biolink:original_predicate
     slot_uri: biolink:original_predicate
+    range: uriorcurie
+  object_category:
+    exact_mappings:
+    - biolink:object_category
+    slot_uri: biolink:object_category
     range: uriorcurie
   subject_category:
     exact_mappings:
@@ -251,31 +231,26 @@ slots:
     - biolink:has_total
     slot_uri: biolink:has_total
     range: integer
+  negated:
+    exact_mappings:
+    - biolink:negated
+    slot_uri: biolink:negated
+    range: boolean
+  onset_qualifier:
+    exact_mappings:
+    - biolink:onset_qualifier
+    slot_uri: biolink:onset_qualifier
+    range: uriorcurie
   sex_qualifier:
     exact_mappings:
     - biolink:sex_qualifier
     slot_uri: biolink:sex_qualifier
     range: uriorcurie
-  sources:
+  object_aspect_qualifier:
     exact_mappings:
-    - biolink:sources
-    slot_uri: biolink:sources
-    range: uriorcurie
-    multivalued: true
-  supporting_text:
-    exact_mappings:
-    - biolink:supporting_text
-    slot_uri: biolink:supporting_text
+    - biolink:object_aspect_qualifier
+    slot_uri: biolink:object_aspect_qualifier
     range: string
-    multivalued: true
-  original_object:
-    exact_mappings:
-    - biolink:original_object
-    slot_uri: biolink:original_object
-  original_subject:
-    exact_mappings:
-    - biolink:original_subject
-    slot_uri: biolink:original_subject
   species_context_qualifier:
     exact_mappings:
     - biolink:species_context_qualifier
@@ -290,6 +265,19 @@ slots:
     exact_mappings:
     - biolink:qualifier
     slot_uri: biolink:qualifier
+  object_specialization_qualifier:
+    exact_mappings:
+    - biolink:object_specialization_qualifier
+    slot_uri: biolink:object_specialization_qualifier
+    range: uriorcurie
+  original_subject:
+    description: Subject ID before normalization (SSSOM-applied).
+    range: string
+    multivalued: false
+  original_object:
+    description: Object ID before normalization (SSSOM-applied).
+    range: string
+    multivalued: false
   namespace: {}
   has_phenotype:
     multivalued: true
@@ -364,6 +352,7 @@ classes:
     - symbol
     - file_source
     - provided_by
+    - has_gene
     - type
     - description
     - iri
@@ -377,7 +366,6 @@ classes:
     - same_as
     - subsets
     - synonyms
-    - has_gene
     - namespace
     - has_phenotype
     - has_phenotype_label
@@ -394,19 +382,14 @@ classes:
     - predicate
     - category
     - agent_type
-    - has_attribute
+    - aggregator_knowledge_source
     - knowledge_level
-    - negated
-    - object_aspect_qualifier
-    - onset_qualifier
     - primary_knowledge_source
-    - publications
     - file_source
     - provided_by
-    - aggregator_knowledge_source
-    - qualifiers
     - has_evidence
-    - object_specialization_qualifier
+    - publications
+    - qualifiers
     - FDA_adverse_event_level
     - disease_context_qualifier
     - original_predicate
@@ -415,12 +398,15 @@ classes:
     - has_percentage
     - has_quotient
     - has_total
+    - negated
+    - onset_qualifier
     - sex_qualifier
-    - sources
-    - supporting_text
+    - has_attribute
+    - object_aspect_qualifier
     - species_context_qualifier
     - stage_qualifier
     - qualifier
+    - object_specialization_qualifier
     - subject
     - object
     - original_subject
