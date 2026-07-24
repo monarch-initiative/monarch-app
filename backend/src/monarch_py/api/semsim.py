@@ -6,6 +6,7 @@ from monarch_py.api.additional_models import (
     SemsimCompareRequest,
     SemsimMetric,
     SemsimSearchRequest,
+    SemsimProfileSearchRequest,
     SemsimSearchGroup,
     SemsimMultiCompareRequest,
     SemsimDirectionality,
@@ -217,3 +218,43 @@ def _post_search(request: SemsimSearchRequest, engine: Optional[str] = EnginePar
         limit=request.limit,
         **request.resolved_filter(),
     )
+
+
+@router.post("/search-by-profile")
+def _post_search_by_profile(request: SemsimProfileSearchRequest, engine: Optional[str] = EngineParam):
+    """
+        Search using an entity's OWN phenotype profile as the query. <br>
+        <br>
+        Mouse models for a patient (phenopacket Case -> mouse genotypes): <br>
+    <pre>
+    {
+      "entity": "phenopacket.store:PMID_38991538_Individual_1",
+      "filter": {"category": ["biolink:Genotype"], "taxon": ["NCBITaxon:10090"]},
+      "metric": "phenodigm_score"
+    }
+    </pre>
+        Patients matching a mouse model (mouse genotype -> Cases): <br>
+    <pre>
+    {"entity": "MMRRC:000415-UCD", "filter": {"category": ["biolink:Case"]}}
+    </pre>
+        The likely diagnosis for a patient (Case -> diseases): <br>
+    <pre>
+    {"entity": "phenopacket.store:PMID_38991538_Individual_1", "filter": {"category": ["biolink:Disease"]}}
+    </pre>
+        Needs the ducksim backend (the entity's profile is read from the KG).
+    """
+    service = semsim_service(engine)
+    if not hasattr(service, "search_by_profile"):
+        raise HTTPException(
+            status_code=501, detail="search-by-profile requires the ducksim backend (?engine=ducksim)"
+        )
+    profile, results = service.search_by_profile(
+        entity_id=request.entity,
+        metric=request.metric,
+        directionality=request.directionality,
+        limit=request.limit,
+        **request.filter.as_kwargs(),
+    )
+    if not profile:
+        raise HTTPException(status_code=404, detail=f"no phenotype profile found for entity {request.entity!r}")
+    return {"entity": request.entity, "query_profile": profile, "results": results}

@@ -158,6 +158,23 @@ class SemsimSearchRequest(BaseModel):
         return {"categories": categories, "taxa": taxa, "prefixes": prefixes}
 
 
+class SemsimProfileSearchRequest(BaseModel):
+    """Search driven by an entity's own phenotype profile instead of a hand-typed termset.
+
+    `entity` is any phenotype-annotated node — a phenopacket Case, a MONDO disease, an MGI/MMRRC
+    mouse model — and `filter` says what to rank against it, so patient->model, model->patient and
+    disease->model are the same request with different filters.
+    """
+
+    entity: str = Field(..., title="Entity whose phenotype profile is the query (e.g. a Case id)")
+    filter: SemsimSearchFilter = Field(..., title="Explicit category / taxon / prefix filter for the targets")
+    metric: SemsimMetric = Field(SemsimMetric.ANCESTOR_INFORMATION_CONTENT, title="Similarity metric to use")
+    directionality: SemsimDirectionality = Field(
+        SemsimDirectionality.BIDIRECTIONAL, title="Directionality of the search"
+    )
+    limit: Optional[int] = Field(10, title="Limit the number of results", ge=1, le=50)
+
+
 class TextAnnotationRequest(BaseModel):
     content: str = Field(..., title="The text content to annotate")
     prefix: Optional[List[str]] = Field(

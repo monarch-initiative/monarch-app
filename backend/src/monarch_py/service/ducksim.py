@@ -250,6 +250,16 @@ class Ducksim:
         ).fetchall()
         return {i: name for i, name in rows}
 
+    def profile(self, entity_id) -> list:
+        """The phenotype termset an entity is annotated with — its similarity query profile.
+
+        Reads `_assoc`, so it is uniform across every entity type the association pool covers:
+        a disease's HPO terms, a mouse genotype's MP terms, a phenopacket Case's HPO terms. That
+        uniformity is the point — it lets one search primitive be driven by "this case", "this
+        disease" or "this mouse" interchangeably, which is what patient->model and model->patient
+        matching both need."""
+        return self.entity_phenotypes_batch([entity_id]).get(entity_id, [])
+
     def entity_phenotypes_batch(self, entity_ids) -> dict:
         """{entity -> [phenotype, ...]} for many entities in one query — enriches a whole search page
         without a per-entity round-trip."""
