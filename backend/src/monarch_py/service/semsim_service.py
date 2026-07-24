@@ -73,11 +73,32 @@ class SemsimianService(BaseModel):
     def search(
         self,
         termset: List[str],
-        prefix: str,
+        prefix: str = None,
         metric: SemsimMetric = SemsimMetric.ANCESTOR_INFORMATION_CONTENT,
         directionality: SemsimDirectionality = SemsimDirectionality.BIDIRECTIONAL,
         limit: int = 10,
+        categories: List[str] = None,
+        taxa: List[str] = None,
+        prefixes: List[str] = None,
     ) -> List[SemsimSearchResult]:
+        """The semsimian HTTP server indexes entities by a single CURIE prefix, so it can honor
+        only the prefix form of a filter.
+
+        When `prefix` is set the call is a legacy group search and any accompanying
+        category/taxon arguments merely restate what the prefix already encodes, so they are
+        redundant and ignored. When it is not, the caller has asked for something explicit that
+        this backend cannot express — anything but a single prefix is refused rather than
+        answered with a broader result set that looks filtered but is not.
+        """
+        if prefix is None:
+            if categories or taxa or (prefixes and len(prefixes) > 1):
+                raise NotImplementedError(
+                    "the semsimian backend cannot filter by category or taxon, or across multiple "
+                    "prefixes; use the ducksim backend (SEMSIM_BACKEND=ducksim or ?engine=ducksim)"
+                )
+            if not prefixes:
+                raise ValueError("semsimian search requires a prefix")
+            prefix = prefixes[0]
         host = f"http://{self.semsim_server_host}:{self.semsim_server_port}"
         path = f"search/{','.join(termset)}/{prefix}:/{metric}?limit={limit}&directionality={directionality.value} "
         url = f"{host}/{path}"

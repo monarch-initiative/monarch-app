@@ -59,16 +59,28 @@ class DucksimService:
     def search(
         self,
         termset: List[str],
-        prefix: str,
+        prefix: str = None,
         metric: SemsimMetric = SemsimMetric.ANCESTOR_INFORMATION_CONTENT,
         directionality: SemsimDirectionality = SemsimDirectionality.BIDIRECTIONAL,
         limit: int = 10,
+        categories: List[str] = None,
+        taxa: List[str] = None,
+        prefixes: List[str] = None,
     ) -> List[SemsimSearchResult]:
         # Hybrid mode matches the semsimian server; full_search would be more accurate (see engine).
         # The engine ranks and enriches the whole page in a constant number of DuckDB queries (no
         # per-result round-trips); the loop below is pure in-memory model shaping.
         direction = directionality.value if hasattr(directionality, "value") else str(directionality)
-        page = self.engine.search(termset, limit=limit, metric=str(metric), prefix=prefix, direction=direction)
+        page = self.engine.search(
+            termset,
+            limit=limit,
+            metric=str(metric),
+            prefix=prefix,
+            direction=direction,
+            categories=categories,
+            taxa=taxa,
+            prefixes=prefixes,
+        )
         if not page:
             return []
         # all-DuckDB hydration of result entities from the KG `nodes` table — no external entity store
