@@ -539,11 +539,15 @@ class Ducksim:
     def _flat(self, query_terms, entity_filter=""):
         """Cheap set-Jaccard ranking of the filtered entities vs the query — Hybrid's candidate gen.
 
-        `_esize` is the baked `closure_size` table, which covers only entities koza precomputed --
-        genes, diseases, and no genotypes at all. A plain inner join therefore drops every mouse
-        model silently, returning an empty candidate set with no error. Sizes are computed here for
-        anything the baked table is missing so filtering, not precompute coverage, decides what is
-        searchable.
+        `_esize` is koza's baked `closure_size`. It once covered only genes and diseases, so a
+        plain inner join dropped every genotype silently and returned an empty candidate set with
+        no error. koza now bakes a size for every entity carrying a has_phenotype edge
+        (monarch-initiative/koza `fix(information-content)`), which covers all 213,273 of them.
+
+        The LEFT JOIN and computed fallback stay as a compatibility shim: artifacts built before
+        that fix are still in circulation, and degrading to a slower correct answer is better than
+        silently returning none. Against a current artifact the fallback matches nothing and costs
+        nothing.
         """
         Q = _quote_list(set(query_terms))
         self._require_phenotype_tables()
