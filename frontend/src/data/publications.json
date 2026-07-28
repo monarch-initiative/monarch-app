@@ -1,29 +1,82 @@
 {
   "metadata": {
-    "total": 16398,
-    "num_publications": 167,
-    "last_5_yrs": 11861,
+    "total": 19505,
+    "num_publications": 177,
+    "last_5_yrs": 13725,
     "cites_per_year": {
-      "2013": 43,
-      "2014": 178,
-      "2015": 487,
-      "2016": 633,
-      "2017": 872,
-      "2018": 939,
-      "2019": 1233,
-      "2020": 1187,
-      "2021": 1451,
-      "2022": 1915,
-      "2023": 2041,
-      "2024": 2505,
-      "2025": 2710
+      "2014": 179,
+      "2015": 499,
+      "2016": 638,
+      "2017": 861,
+      "2018": 949,
+      "2019": 1212,
+      "2020": 1185,
+      "2021": 1428,
+      "2022": 1933,
+      "2023": 2113,
+      "2024": 2568,
+      "2025": 3337,
+      "2026": 2277
     },
-    "hindex": 57,
-    "hindex5y": 52,
-    "i10index": 114,
-    "i10index5y": 104
+    "hindex": 63,
+    "hindex5y": 54,
+    "i10index": 132,
+    "i10index5y": 120
   },
   "publications": [
+    {
+      "year": 2026,
+      "items": [
+        {
+          "title": "A Phenotypic Paradigm for Cerebral Palsy Genetics",
+          "authors": "Adam S Arterbery, Michael A Gargano, Anita M Bagley, Jagadish Chandrabose Sundaramurthi, Lauren Rekerle, Thania Ordaz-Robles, Daniel Danis, Adam SL Graefe, Leigh carmody, Hannah Blau, Jeremy P Bauer, Kristen l Carroll, Janice Davis, Anxhela Gjyshi Gustafson, Ana L Arenas-Diaz, Monserat Hernandez, Julius O.B. Jacobsen, Paige Lemhouse, David Millet, Philip F Giampietro, Shubhra Mukherjee, Patrick Nairne, Emily Nice, Talia Plotkin, Kenneth Powell, Ellen M Raney, Damian Smedley, Peter A Smith, Demiana A Soliman, David E Westberry, Jon R Davids, Peter N Robinson",
+          "year": 2026,
+          "journal": "medRxiv",
+          "issue": ":2026.01.13.25341946",
+          "link": "https://doi.org/10.64898/2026.01.13.25341946"
+        },
+        {
+          "title": "A practical introduction to wavelet analysis in electroretinography",
+          "authors": "Yousif J. Shwetar, David S. Lalush, Alice Y. Zhang, J. Jason McAnany, Brett G. Jeffrey, Melissa A. Haendel",
+          "year": 2026,
+          "journal": "Documenta Ophthalmologica",
+          "issue": "152(1):23-31",
+          "link": "https://doi.org/10.1007/s10633-025-10070-x"
+        },
+        {
+          "title": "Epilepsy disease classification: a community effort to enhance the Mondo Disease Ontology",
+          "authors": "Nicole Vasilevsky, Sarah Gehrke, Kathleen Mullen, Subit Barua, Ian Braun, Tobias Br\u00fcnger, Curtis Coughlin, Alina Ivaniuk, Daniel Korn, Dennis Lal, Stephanie Marsh, Elaine O\u2019Loughlin, Daniel Olson, Yousif Shwetar, Christalena Sofocleous, Vanessa Vogel-Farley, Heidi Grabenstatter, Melissa Haendel, Christopher Mungall, Sabrina Toro",
+          "year": 2026,
+          "journal": "Database",
+          "issue": "2026:baag004",
+          "link": "https://doi.org/10.1093/database/baag004"
+        },
+        {
+          "title": "LinkML: an open data modeling framework",
+          "authors": "Sierra A T Moxon, Harold Solbrig, Nomi L Harris, Patrick Kalita, Mark A Miller, Sujay Patil, Kevin Schaper, Chris Bizon, J Harry Caufield, Silvano Cirujano Cuesta, Corey Cox, Frank Dekervel, Damion M Dooley, William D Duncan, Tim Fliss, Sarah Gehrke, Adam S L Graefe, Harshad Hegde, A J Ireland, Julius O B Jacobsen, Madan Krishnamurthy, Carlo Kroll, David Linke, Ryan Ly, Nicolas Matentzoglu, James A Overton, Jonny L Saunders, Deepak R Unni, Gaurav Vaidya, Wouter-Michiel A M Vierdag, LinkML Community Contributors, Richard M Bruskiewich, Seth Carbon, Eric Cavanna, John-Marc Chandonia, Shreyas Cholia, Ben Dichter, Emiley A Eloe-Fadrosh, Vincent Emonet, Shahim Essaid, James A Fellows Yates, Joseph Flack, Satrajit S Ghosh, Damien Goutte-Gattat, Dorota Jarecka, Dazhi Jiao, Marcin P Joachimiak, Vlad Korolev, Volodymyr Lapkin, Noel McLoughlin, Sierra D Miller, Michael Milton, Josh Moore, Moni Munoz-Torres, B Nolan Nichols, Justin T Reese, Victoria Savage, Philip Stroemert, Jeremy Teoh, Anne Thessen, Isaac To, Puja Trivedi, Vincent Vialard, Trish Whetzel, Oliver Ruebel, Christopher G Chute, Matthew H Brush, Melissa A Haendel, Christopher J Mungall",
+          "year": 2026,
+          "journal": "GigaScience",
+          "issue": "15:giaf152",
+          "link": "https://doi.org/10.1093/gigascience/giaf152"
+        },
+        {
+          "title": "Wavelet-Based Pattern ERG Biomarkers Outperform Temporal Amplitude Measures for Functional Stratification in Optic Nerve Disease",
+          "authors": "Yousif J. Shwetar, Brett G. Jeffrey, Melissa A. Haendel",
+          "year": 2026,
+          "journal": "Translational Vision Science & Technology",
+          "issue": "15(3):13",
+          "link": "https://doi.org/10.1167/tvst.15.3.13"
+        },
+        {
+          "title": "Which Rare Diseases Are Best Suited to Diagnostic AI? A Systematic Selection Framework",
+          "authors": "Julie McMurry, Nicolas Matentzoglu, Kasie Bailey, Jonathan Berg, Colquitt Jason, Christopher Chute, Peter Fish, Michael Gambello, Ada Hamosh, Yueh Lee, Charisse Madlock-Brown, Richard Moffitt, Mee Sing Ngu, Arti Pandya, Emily Pfaff, Aleksandar Rajkovic, Kevin Schaper, Anjali Sharathkumar, Tracey Sikora, Damian Smedley, Charlene Son Rigby, Sabrina Toro, Nicole Vasilevsky, Tanner Zhang, Melissa Haendel, Bradford Powell",
+          "year": 2026,
+          "journal": "Zenodo",
+          "issue": "",
+          "link": "https://doi.org/10.5281/zenodo.20520796"
+        }
+      ]
+    },
     {
       "year": 2025,
       "items": [
@@ -154,6 +207,14 @@
           "journal": "arXiv preprint arXiv:2509.18050",
           "issue": "",
           "link": "https://arxiv.org/abs/2509.18050"
+        },
+        {
+          "title": "Performance of Information Theory Derived Semantic Similarity Algorithms for Differential Diagnosis and Clustering",
+          "authors": "Ben Coleman, Daniel Danis, Justin Reese, Peter Robinson",
+          "year": 2025,
+          "journal": "bioRxiv",
+          "issue": ":2025.11.17.688933",
+          "link": "https://doi.org/10.1101/2025.11.17.688933"
         }
       ]
     },
@@ -351,6 +412,14 @@
           "journal": "medRxiv",
           "issue": "",
           "link": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11302616/"
+        },
+        {
+          "title": "Dynamic Retrieval Augmented Generation of Ontologies using Artificial Intelligence (DRAGON-AI)",
+          "authors": "Sabrina Toro, Anna V. Anagnostopoulos, Susan M. Bello, Kai Blumberg, Rhiannon Cameron, Leigh Carmody, Alexander D. Diehl, Damion M. Dooley, William D. Duncan, Petra Fey, Pascale Gaudet, Nomi L. Harris, Marcin P. Joachimiak, Leila Kiani, Tiago Lubiana, Monica C. Munoz-Torres, Shawn O\u2018Neil, David Osumi-Sutherland, Aleix Puig-Barbe, Justin T. Reese, Leonore Reiser, Sofia MC. Robb, Troy Ruemping, James Seager, Eric Sid, Ray Stefancsik, Magalie Weber, Valerie Wood, Melissa A. Haendel, Christopher J. Mungall",
+          "year": 2024,
+          "journal": "Journal of Biomedical Semantics",
+          "issue": "15(1):19",
+          "link": "https://doi.org/10.1186/s13326-024-00320-3"
         }
       ]
     },
