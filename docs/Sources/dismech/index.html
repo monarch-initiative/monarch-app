@@ -724,6 +724,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#disclaimer-ai-curated-and-not-medical-advice" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⚠️ Disclaimer: AI-curated, and not medical advice
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#browse-the-knowledge-base" class="md-nav__link">
     <span class="md-ellipsis">
       Browse the Knowledge Base
@@ -2071,6 +2080,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#disclaimer-ai-curated-and-not-medical-advice" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⚠️ Disclaimer: AI-curated, and not medical advice
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#browse-the-knowledge-base" class="md-nav__link">
     <span class="md-ellipsis">
       Browse the Knowledge Base
@@ -2249,13 +2267,19 @@
 
 <h1 id="disorder-mechanisms-knowledge-base-dismech">Disorder Mechanisms Knowledge Base (dismech)</h1>
 <p>A curated knowledge base of disease pathophysiology, with structured evidence from the literature.</p>
+<h2 id="disclaimer-ai-curated-and-not-medical-advice">⚠️ Disclaimer: AI-curated, and not medical advice</h2>
+<ul>
+<li><strong>DisMech is AI-curated and AI-maintained.</strong> Most content is generated and maintained by AI curation agents, with human review as the pull-request gate. Automated validation guarantees that citations exist, quoted snippets are exact, and ontology terms are real — it does <strong>not</strong> guarantee scientific correctness.</li>
+<li><strong>DisMech is not medical advice.</strong> The contents of this resource are not intended to inform medical diagnosis or treatment. Inclusion of any statement or approach in a DisMech page is purely the result of generative methods and human review applied to publicly accessible literature, data, and other curated biomedical knowledge resources. If you have a health concern, consult a qualified healthcare professional.</li>
+</ul>
+<p>Full statement: <a href="docs/disclaimer.md">docs/disclaimer.md</a> · rationale: <a href="docs/explanation/design-decisions.md#11-reader-facing-disclaimers-ai-curation--not-medical-advice">Design Decisions §11</a></p>
 <h2 id="browse-the-knowledge-base">Browse the Knowledge Base</h2>
 <p><strong><a href="https://dismech.monarchinitiative.org/app/">View all disorders online</a></strong></p>
 <p>Each disorder page includes:
 - Disease mechanisms and pathophysiology
 - Clinical phenotypes with HPO term links
 - Genetic factors and variants
-- Treatment options with MAXO term links
+- Treatment options with NCIT term links
 - All claims backed by PubMed evidence</p>
 <h2 id="how-it-works">How It Works</h2>
 <h3 id="project-overview-slides">Project Overview Slides</h3>
@@ -2294,8 +2318,8 @@
 <span class="w">    </span><span class="nt">treatment_term</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">preferred_term</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">respiratory tract agent therapy</span>
 <span class="w">      </span><span class="nt">term</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MAXO:0000312</span>
-<span class="w">        </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">respiratory tract agent therapy</span>
+<span class="w">        </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NCIT:C15986</span>
+<span class="w">        </span><span class="nt">label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pharmacotherapy</span>
 </code></pre></div>
 <h3 id="ontology-bindings">Ontology Bindings</h3>
 <p>Entities are linked to authoritative ontologies:
@@ -2303,7 +2327,7 @@
 - <strong>Cell types</strong>: Cell Ontology (CL)
 - <strong>Biological processes</strong>: Gene Ontology (GO)
 - <strong>Diseases</strong>: Mondo Disease Ontology (MONDO)
-- <strong>Treatments</strong>: Medical Action Ontology (MAXO)
+- <strong>Treatments</strong>: NCI Thesaurus (NCIT)
 - <strong>Anatomy</strong>: Uberon (UBERON)</p>
 <h3 id="evidence-requirements">Evidence Requirements</h3>
 <p>All claims must cite PubMed references with exact quotes. This prevents misinformation and enables verification.</p>
@@ -2408,7 +2432,7 @@ claude
 </code></pre></div>
 <p>The <code>/curate</code> command triggers a full curation workflow: deep literature research, YAML generation, ontology term binding, evidence validation, and a ready-to-review PR.</p>
 <p>You can also ask the agent open-ended questions, request targeted edits, or run QC:</p>
-<div class="highlight"><pre><span></span><code>&gt; Add MAXO treatment terms to the Asthma entry
+<div class="highlight"><pre><span></span><code>&gt; Add NCIT treatment terms to the Asthma entry
 &gt; Validate references in kb/disorders/Lupus.yaml
 &gt; Which files have the lowest compliance scores?
 </code></pre></div>
