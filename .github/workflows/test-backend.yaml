@@ -94,8 +94,11 @@ jobs:
           uv lock --check
 
       - name: Install library
+        # --python is required: backend/.python-version pins the dev
+        # interpreter and would otherwise override the matrix, collapsing
+        # all legs to a single version.
         run: |
-          uv sync --extra dev
+          uv sync --extra dev --python ${{ matrix.python-version }}
 
       - name: Run tests
         run: |
