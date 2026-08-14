@@ -319,22 +319,32 @@ type LaidOutNode = PathographNode & {
 
 type Point = { x: number; y: number };
 
+/** A well-formed single CURIE (one colon, no whitespace) - excludes the
+ * `<mondo>::<name>` disorder-local pseudo-ids and bare free-text node ids. */
+const isCurie = (value: unknown): value is string =>
+  typeof value === "string" && /^[^:\s]+:[^:\s]+$/.test(value);
+
+/** Uppercase only the prefix so Monarch routes resolve (e.g. `hgnc:1956` ->
+ * `HGNC:1956`) without corrupting a local id that contains letters. */
+const normalizeCurie = (curie: string): string => {
+  const [prefix, local] = curie.split(":");
+  return `${prefix.toUpperCase()}:${local}`;
+};
+
 /**
- * The ontology id + Monarch route for nodes that are themselves a term: HP
- * phenotypes and HGNC genes (from the merged anchor id), or any node carrying a
- * meta.term_id (e.g. biochemical CHEBI terms).
+ * The ontology id + Monarch route for nodes that are themselves a term: any
+ * node carrying a real term CURIE (HP phenotype, MONDO disease-like phenotype,
+ * CHEBI biomarker, HGNC gene, …). Prefer the authoritative `meta.term_id`, then
+ * fall back to the merged anchor `node.id` when it is itself a CURIE.
  */
 const nodeEntity = (
   node: PathographNode,
 ): { entityId?: string; link?: string } => {
-  // Phenotype and single-gene nodes are anchored on their real curie (HP:…,
-  // HGNC:…), so they resolve directly to a Monarch node route.
-  if (node.id.startsWith("HP:") || node.id.startsWith("HGNC:"))
-    return { entityId: node.id, link: `/${node.id}` };
   const termId = (node.meta as Record<string, unknown> | undefined)?.term_id;
-  if (typeof termId === "string" && termId.includes(":"))
-    return { entityId: termId, link: `/${termId}` };
-  return {};
+  const raw = isCurie(termId) ? termId : isCurie(node.id) ? node.id : undefined;
+  if (!raw) return {};
+  const curie = normalizeCurie(raw);
+  return { entityId: curie, link: `/${curie}` };
 };
 
 /** smooth an edge polyline through its bend points with quadratic curves */
