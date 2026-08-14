@@ -207,11 +207,14 @@ def test_build_association_query_with_primary_knowledge_source():
 
 
 def test_build_association_query_with_q_parameter():
-    """Test that q param enables edismax search with highlighting."""
+    """Test that q param enables edismax search with unified-highlighter highlighting."""
     query = build_association_query(q="BRCA1")
     assert query.q == "BRCA1"
     assert query.def_type == "edismax"
     assert query.hl is True
+    # #1361: the unified highlighter reads postings offsets (storeOffsetsWithPositions,
+    # monarch-ingest #708) instead of term vectors. Guard against a silent revert.
+    assert query.hl_method == "unified"
 
 
 # =====================================================================
