@@ -8,6 +8,11 @@ anything asserted only there is effectively unverified — see #1382.)
 
 import pytest
 
+from monarch_py.api.additional_models import (
+    ALL_FACET_VALUES,
+    ALL_SEARCH_FACET_FIELDS,
+    DEFAULT_SEARCH_FACET_FIELDS,
+)
 from monarch_py.datamodels.search_scopes import SEARCH_SCOPES, SearchScope, resolve_scope
 from monarch_py.datamodels.solr import SolrQueryResult
 from monarch_py.implementations.solr.solr_parsers import match_provenance, parse_search
@@ -314,3 +319,41 @@ def test_search_query_adds_namespace_filter():
 def test_search_query_negates_the_whole_namespace_disjunction():
     query = build_search_query(q="x", exclude_namespace=["MPATH", "ZP"])
     assert '-(namespace:"MPATH" OR namespace:"ZP")' in query.filter_queries
+
+
+### Regressions from the second #1394 review ###
+
+
+def test_taxon_filters_are_escaped_like_the_namespace_ones():
+    """An unbalanced quote here reached Solr as a malformed fq -> 400 -> 500."""
+    query = build_search_query(q="x", in_taxon=['NCBITaxon:9606"'], in_taxon_label=['Homo "sapiens"'])
+    assert 'in_taxon:"NCBITaxon:9606\\""' in query.filter_queries
+    assert 'in_taxon_label:"Homo \\"sapiens\\""' in query.filter_queries
+
+
+def test_facet_limit_defaults_to_solr_behaviour():
+    assert build_search_query(q="x").facet_limit is None
+
+
+def test_facet_limit_is_forwarded_to_solr():
+    """Solr caps facet values at 100 by default, which truncates `subsets` (157 values)."""
+    query = build_search_query(q="x", facet_fields=["subsets"], facet_limit=-1)
+    assert query.facet_limit == -1
+    assert "facet.limit=-1" in query.query_string()
+
+
+def test_all_facet_values_is_unbounded():
+    assert ALL_FACET_VALUES == -1
+
+
+def test_facet_switch_covers_every_filterable_axis():
+    """`facets=true` promises "every field you can filter on"; if a filter is added without
+    a matching facet, the switch quietly stops answering the question it exists for."""
+    assert set(ALL_SEARCH_FACET_FIELDS) == {
+        "category",
+        "in_taxon",
+        "in_taxon_label",
+        "namespace",
+        "subsets",
+    }
+    assert set(DEFAULT_SEARCH_FACET_FIELDS) <= set(ALL_SEARCH_FACET_FIELDS)

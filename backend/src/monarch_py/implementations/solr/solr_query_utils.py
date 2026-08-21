@@ -304,12 +304,15 @@ def build_search_query(
     exclude_subset: List[str] = None,
     facet_fields: List[str] = None,
     facet_queries: List[str] = None,
+    facet_limit: Optional[int] = None,
     filter_queries: List[str] = None,
     highlighting: bool = False,
     exact: bool = False,
     sort: Optional[str] = None,
 ) -> SolrQuery:
     query = SolrQuery(start=offset, rows=limit, sort=sort)
+    if facet_limit is not None:
+        query.facet_limit = facet_limit
     query.q = q
     query.def_type = "edismax"
     query.query_fields = entity_query_fields()
@@ -326,9 +329,9 @@ def build_search_query(
         excluded = " OR ".join([f'namespace:"{escape_phrase(n)}"' for n in exclude_namespace])
         query.add_filter_query(f"-({excluded})")
     if in_taxon:
-        query.add_filter_query(" OR ".join([f'in_taxon:"{t}"' for t in in_taxon]))
+        query.add_filter_query(" OR ".join([f'in_taxon:"{escape_phrase(t)}"' for t in in_taxon]))
     if in_taxon_label:
-        query.add_filter_query(" OR ".join([f'in_taxon_label:"{t}"' for t in in_taxon_label]))
+        query.add_filter_query(" OR ".join([f'in_taxon_label:"{escape_phrase(t)}"' for t in in_taxon_label]))
     if subset:
         query.add_filter_query(subset_filter_query(subset))
     if exclude_subset:

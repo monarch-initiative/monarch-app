@@ -669,6 +669,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         scope: Union[str, None] = None,
         facet_fields: Union[List[str], None] = None,
         facet_queries: Union[List[str], None] = None,
+        facet_limit: Union[int, None] = None,
         filter_queries: Union[List[str], None] = None,
         sort: Optional[str] = None,
         highlighting: bool = False,
@@ -698,6 +699,8 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                 `subset`. Defaults to None.
             facet_fields (List[str]): List of fields to include facet counts for. Defaults to None.
             facet_queries (List[str]): List of queries to include facet counts for. Defaults to None.
+            facet_limit (int): Maximum facet values per field; -1 for all. Solr defaults to 100,
+                which silently truncates `subsets`. Defaults to None.
             filter_queries (List[str]): List of queries to filter results by. Defaults to None.
             sort (str): Sort results by the specified field. Defaults to None.
             exact (bool): Return only entities whose name or exact synonym equals `q` as a whole
@@ -740,6 +743,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             query = build_search_query(
                 q=q,
                 facet_fields=facet_fields,
+                facet_limit=facet_limit,
                 filter_queries=filter_queries,
                 offset=offset,
                 limit=limit,
@@ -786,9 +790,22 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         # scanning a large candidate set stays cheap. Faceting stays on because
         # SolrQueryResult requires facet_counts, but no facet fields are requested.
         scan.fl = "id,category,name,exact_synonym"
-        scanned = parse_search(solr.query(scan), q=q, exact=True)
+        # `fl` bounds the returned fields, not the highlighter, which would otherwise run
+        # over every candidate. The page query below re-derives highlighting for the rows
+        # actually returned.
+        scan.hl = False
+        scan_result = solr.query(scan)
+        scanned = parse_search(scan_result, q=q, exact=True)
         matching_ids = [item.id for item in scanned.items]
         total = len(matching_ids)
+        if scan_result.response.num_found > EXACT_MATCH_SCAN_ROWS:
+            # Past the cap this is the very failure the two-pass design exists to avoid, so
+            # say so rather than quietly reporting a short total.
+            logger.warning(
+                f"Exact search for {q!r} matched {scan_result.response.num_found} candidates, "
+                f"above the {EXACT_MATCH_SCAN_ROWS}-row scan cap; `total` is under-reported "
+                f"and matches beyond the cap are not returned."
+            )
 
         page_ids = matching_ids[offset : offset + limit]
         if not page_ids:
@@ -808,7 +825,9 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         results.items.sort(key=lambda item: order.get(item.id, len(order)))
         results.total = total
         # Solr's facet counts describe the candidate set, not the matches that survived the
-        # scope check, so reporting them would put nonzero counts next to an empty result set.
+        # scope check, so reporting them would put nonzero counts next to an empty result
+        # set. This is why `facets` is inert under match_type=exact — documented on the
+        # endpoint, since a caller asking for both deserves to know which one wins.
         results.facet_fields = None
         results.facet_queries = None
         return results

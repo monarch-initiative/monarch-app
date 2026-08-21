@@ -341,3 +341,27 @@ def test_facets_make_filter_values_discoverable():  # pragma: no cover
     assert {"subsets", "namespace"} <= faceted
     subsets = next(f for f in results.facet_fields if f.label == "subsets")
     assert any(value.label == "rare" for value in subsets.facet_values)
+
+
+@pytest.mark.skipif(
+    condition=not SolrImplementation().solr_is_available(),
+    reason="Solr is not available",
+)
+def test_facets_true_returns_every_value_not_solrs_first_hundred():  # pragma: no cover
+    """`subsets` has more than Solr's default facet.limit of 100, so the discovery call has
+    to lift the cap or it silently answers with a sample."""
+    results = SolrImplementation().search(q="*:*", limit=0, facet_fields=["subsets"], facet_limit=-1)
+    subsets = next(f for f in results.facet_fields if f.label == "subsets")
+    assert len(subsets.facet_values) > 100
+
+
+@pytest.mark.skipif(
+    condition=not SolrImplementation().solr_is_available(),
+    reason="Solr is not available",
+)
+def test_exact_search_scan_does_not_highlight():  # pragma: no cover
+    """The scan reads thousands of candidates it then throws away; highlighting them is
+    work nobody sees. The returned page still carries highlighting."""
+    si = SolrImplementation()
+    results = si.search(q="Ovarian Carcinoma", category=[EntityCategory.DISEASE], exact=True)
+    assert results.items  # the page query still runs with highlighting enabled

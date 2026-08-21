@@ -29,6 +29,11 @@ class OutputFormat(str, Enum):
 # purpose.
 ALL_SEARCH_FACET_FIELDS = ["category", "in_taxon", "in_taxon_label", "namespace", "subsets"]
 
+# Solr caps facet values at 100 by default. These five fields are low cardinality — the
+# largest, `subsets`, has 157 values — so returning all of them is what makes the switch
+# a real answer to "what can I filter on" rather than a truncated sample.
+ALL_FACET_VALUES = -1
+
 # What `/search` facets when `facets` is not passed: the two the web UI renders. Keeps the
 # response shape unchanged for existing callers.
 DEFAULT_SEARCH_FACET_FIELDS = ["category", "in_taxon_label"]

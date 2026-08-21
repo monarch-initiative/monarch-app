@@ -3,6 +3,7 @@ from typing import List, Union
 from fastapi import APIRouter, Depends, Query, Response
 
 from monarch_py.api.additional_models import (
+    ALL_FACET_VALUES,
     ALL_SEARCH_FACET_FIELDS,
     DEFAULT_SEARCH_FACET_FIELDS,
     OutputFormat,
@@ -62,7 +63,8 @@ async def search(
         title="`true` returns counts for every field you can filter on — category, taxon, "
         "namespace and subsets — which is how you discover what values those filters accept "
         "(try `?q=*:*&limit=0&facets=true`). `false` returns none. Omit for the category and "
-        "taxon counts the web UI uses",
+        "taxon counts the web UI uses. Ignored when `match_type=exact`, where Solr's counts "
+        "would describe the candidates rather than the matches that survived",
     ),
     match_type: SearchMatchType = Query(
         default=SearchMatchType.relevance,
@@ -85,9 +87,10 @@ async def search(
         scope (SearchScope, optional): A named filter bundle. Supplies category, namespace, subset,
             exclude_subset and in_taxon where they were not passed explicitly; an explicit value
             wins for that axis. The resolved filters are echoed on the response. Defaults to None.
-        facets (bool, optional): `True` facets every filterable field, which is how a caller
-            discovers what `namespace` and `subsets` accept. `False` disables faceting.
-            Omitted keeps the historical category + in_taxon_label counts. Defaults to None.
+        facets (bool, optional): `True` facets every filterable field with no cap on values,
+            which is how a caller discovers what `namespace` and `subsets` accept. `False`
+            disables faceting. Omitted keeps the historical category + in_taxon_label counts.
+            Ignored under `match_type=exact`. Defaults to None.
         match_type (SearchMatchType, optional): `relevance` (default) or `exact`. In `exact` mode
             a result is returned only when `q` equals the entity's name or one of its exact
             synonyms as a whole string, case-insensitively; otherwise the result set is empty.
@@ -101,8 +104,12 @@ async def search(
     """
     if facets is None:
         facet_fields = DEFAULT_SEARCH_FACET_FIELDS
+        facet_limit = None
     else:
         facet_fields = ALL_SEARCH_FACET_FIELDS if facets else []
+        # Solr caps facet values at 100 by default, which would hand back 100 of the 157
+        # subsets and quietly defeat the point of the switch.
+        facet_limit = ALL_FACET_VALUES if facets else None
     if category is None:
         category = []
     response = solr().search(
@@ -116,6 +123,7 @@ async def search(
         exclude_subset=exclude_subset,
         scope=scope,
         facet_fields=facet_fields,
+        facet_limit=facet_limit,
         offset=pagination.offset,
         limit=pagination.limit,
         highlighting=True,

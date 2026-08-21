@@ -46,6 +46,7 @@ def test_search_params(mock_search, search):
         "exclude_subset": None,
         "scope": None,
         "facet_fields": ["category", "in_taxon_label"],
+        "facet_limit": None,
         "highlighting": True,
         "exact": False,
     }
