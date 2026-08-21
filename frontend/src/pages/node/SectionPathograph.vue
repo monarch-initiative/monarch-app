@@ -319,13 +319,17 @@ type LaidOutNode = PathographNode & {
 
 type Point = { x: number; y: number };
 
-/** A well-formed single CURIE (one colon, no whitespace) - excludes the
- * `<mondo>::<name>` disorder-local pseudo-ids and bare free-text node ids. */
+/**
+ * A well-formed single CURIE (one colon, no whitespace) - excludes the
+ * `<mondo>::<name>` disorder-local pseudo-ids and bare free-text node ids.
+ */
 const isCurie = (value: unknown): value is string =>
   typeof value === "string" && /^[^:\s]+:[^:\s]+$/.test(value);
 
-/** Uppercase only the prefix so Monarch routes resolve (e.g. `hgnc:1956` ->
- * `HGNC:1956`) without corrupting a local id that contains letters. */
+/**
+ * Uppercase only the prefix so Monarch routes resolve (e.g. `hgnc:1956` ->
+ * `HGNC:1956`) without corrupting a local id that contains letters.
+ */
 const normalizeCurie = (curie: string): string => {
   const [prefix, local] = curie.split(":");
   return `${prefix.toUpperCase()}:${local}`;
