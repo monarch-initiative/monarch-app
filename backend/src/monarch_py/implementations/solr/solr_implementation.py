@@ -22,7 +22,9 @@ from monarch_py.datamodels.model import (
     NodeHierarchy,
     NodeRelationship,
     SearchResults,
+    SearchScopeResolution,
 )
+from monarch_py.datamodels.search_scopes import resolve_scope
 from monarch_py.datamodels.solr import core
 from monarch_py.datamodels.category_enums import (
     AssociationCategory,
@@ -658,10 +660,13 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         self,
         q: str = "*:*",
         category: Union[List[EntityCategory], None] = None,
+        namespace: Union[List[str], None] = None,
+        exclude_namespace: Union[List[str], None] = None,
         in_taxon: Union[List[str], None] = None,
         in_taxon_label: Union[List[str], None] = None,
         subset: Union[List[str], None] = None,
         exclude_subset: Union[List[str], None] = None,
+        scope: Union[str, None] = None,
         facet_fields: Union[List[str], None] = None,
         facet_queries: Union[List[str], None] = None,
         filter_queries: Union[List[str], None] = None,
@@ -678,6 +683,13 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             offset (int): Result offset, for pagination. Defaults to 0.
             limit (int): Limit results to specified number. Defaults to 20.
             category (List[str]): Filter to only entities matching the specified categories. Defaults to None.
+            namespace (List[str]): Filter to only entities whose CURIE uses one of these namespaces
+                (e.g. ["MONDO", "HP"]). Defaults to None.
+            exclude_namespace (List[str]): Drop entities whose CURIE uses one of these namespaces.
+                Defaults to None.
+            scope (str): A named filter bundle (see `search_scopes`). Supplies category, namespace,
+                subset, exclude_subset and in_taxon where they were not passed explicitly; an
+                explicit value wins for that axis. Defaults to None.
             in_taxon (List[str]): Filter to only entities matching the specified taxon CURIEs. Defaults to None.
             in_taxon_label (List[str]): Filter to only entities matching the specified taxon label. Defaults to None.
             subset (List[str]): Filter to only entities in the specified subsets, `venom_*` prefixes
@@ -694,35 +706,50 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         Returns:
             SearchResults: Dataclass representing results of a search.
         """
-        build_kwargs = dict(
+        # A scope only supplies axes the caller left unset, so `resolved` is what was
+        # actually applied and is safe to echo back verbatim.
+        resolved = resolve_scope(
+            scope,
             category=[c.value for c in category] if category else None,
-            in_taxon=in_taxon,
-            in_taxon_label=in_taxon_label,
+            namespace=namespace,
             subset=subset,
             exclude_subset=exclude_subset,
+            in_taxon=in_taxon,
+        )
+        build_kwargs = dict(
+            category=resolved.get("category"),
+            namespace=resolved.get("namespace"),
+            exclude_namespace=exclude_namespace,
+            in_taxon=resolved.get("in_taxon"),
+            in_taxon_label=in_taxon_label,
+            subset=resolved.get("subset"),
+            exclude_subset=resolved.get("exclude_subset"),
             facet_queries=facet_queries,
             highlighting=highlighting,
             sort=sort,
         )
         if exact:
-            return self._exact_search(
+            results = self._exact_search(
                 q=q,
                 filter_queries=filter_queries,
                 offset=offset,
                 limit=limit,
                 **build_kwargs,
             )
-        query = build_search_query(
-            q=q,
-            facet_fields=facet_fields,
-            filter_queries=filter_queries,
-            offset=offset,
-            limit=limit,
-            **build_kwargs,
-        )
-        solr = SolrService(base_url=self.base_url, core=core.ENTITY)
-        query_result = solr.query(query)
-        return parse_search(query_result, offset=offset, limit=limit, q=q)
+        else:
+            query = build_search_query(
+                q=q,
+                facet_fields=facet_fields,
+                filter_queries=filter_queries,
+                offset=offset,
+                limit=limit,
+                **build_kwargs,
+            )
+            solr = SolrService(base_url=self.base_url, core=core.ENTITY)
+            results = parse_search(solr.query(query), offset=offset, limit=limit, q=q)
+        if scope:
+            results.scope = SearchScopeResolution(name=str(scope), **resolved)
+        return results
 
     def _exact_search(
         self,

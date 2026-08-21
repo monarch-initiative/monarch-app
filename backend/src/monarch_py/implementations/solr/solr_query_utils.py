@@ -296,6 +296,8 @@ def build_search_query(
     offset: int = 0,
     limit: int = 20,
     category: List[str] = None,
+    namespace: List[str] = None,
+    exclude_namespace: List[str] = None,
     in_taxon: List[str] = None,
     in_taxon_label: List[str] = None,
     subset: List[str] = None,
@@ -318,6 +320,11 @@ def build_search_query(
     query.fl = "*,score"
     if category:
         query.add_filter_query(" OR ".join(f'category:"{cat}"' for cat in category))
+    if namespace:
+        query.add_filter_query(" OR ".join([f'namespace:"{escape_phrase(n)}"' for n in namespace]))
+    if exclude_namespace:
+        excluded = " OR ".join([f'namespace:"{escape_phrase(n)}"' for n in exclude_namespace])
+        query.add_filter_query(f"-({excluded})")
     if in_taxon:
         query.add_filter_query(" OR ".join([f'in_taxon:"{t}"' for t in in_taxon]))
     if in_taxon_label:

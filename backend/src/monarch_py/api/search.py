@@ -2,7 +2,14 @@ from typing import List, Union
 
 from fastapi import APIRouter, Depends, Query, Response
 
-from monarch_py.api.additional_models import OutputFormat, PaginationParams, SearchMatchType
+from monarch_py.api.additional_models import (
+    DEFAULT_SEARCH_FACET_FIELDS,
+    OutputFormat,
+    PaginationParams,
+    SearchFacetField,
+    SearchMatchType,
+)
+from monarch_py.datamodels.search_scopes import SearchScope
 from monarch_py.api.config import solr
 from monarch_py.datamodels.model import SearchResults, MappingResults
 from monarch_py.datamodels.category_enums import EntityCategory, MappingPredicate
@@ -24,6 +31,16 @@ async def search(
         examples=["NCBITaxon:9606"],
     ),
     in_taxon_label: Union[List[str], None] = Query(default=None),
+    namespace: Union[List[str], None] = Query(
+        default=None,
+        title="Restrict to entities whose CURIE uses one of these namespaces",
+        examples=["MONDO", "HP"],
+    ),
+    exclude_namespace: Union[List[str], None] = Query(
+        default=None,
+        title="Drop entities whose CURIE uses one of these namespaces",
+        examples=["MPATH"],
+    ),
     subset: Union[List[str], None] = Query(
         default=None,
         title="Restrict to entities in any of these ontology subsets, trailing `*` allowed",
@@ -33,6 +50,18 @@ async def search(
         default=None,
         title="Drop entities in any of these ontology subsets, trailing `*` allowed",
         examples=["venom_*"],
+    ),
+    scope: Union[SearchScope, None] = Query(
+        default=None,
+        title="A named filter bundle, e.g. `human_disease`. Fills in category/namespace/subset/"
+        "taxon where you did not pass them yourself; anything you do pass wins. The filters it "
+        "resolved to come back on the response as `scope`",
+    ),
+    facet_field: Union[List[SearchFacetField], None] = Query(
+        default=None,
+        title="Fields to return facet counts for. Defaults to category and in_taxon_label; "
+        "request `namespace` or `subsets` to discover what values those filters accept "
+        "(`?q=*:*&limit=0&facet_field=subsets` lists them all with counts)",
     ),
     match_type: SearchMatchType = Query(
         default=SearchMatchType.relevance,
@@ -48,8 +77,15 @@ async def search(
         category (str, optional): Filter by biolink model category. Defaults to None.
         in_taxon (str, optional): Filter by taxon CURIE. Defaults to None.
         in_taxon_label (str, optional): Filter by taxon label. Defaults to None.
+        namespace (str, optional): Restrict to these CURIE namespaces. Defaults to None.
+        exclude_namespace (str, optional): Drop these CURIE namespaces. Defaults to None.
         subset (str, optional): Restrict to entities in these ontology subsets. Defaults to None.
         exclude_subset (str, optional): Drop entities in these ontology subsets. Defaults to None.
+        scope (SearchScope, optional): A named filter bundle. Supplies category, namespace, subset,
+            exclude_subset and in_taxon where they were not passed explicitly; an explicit value
+            wins for that axis. The resolved filters are echoed on the response. Defaults to None.
+        facet_field (SearchFacetField, optional): Fields to facet on. Defaults to category and
+            in_taxon_label.
         match_type (SearchMatchType, optional): `relevance` (default) or `exact`. In `exact` mode
             a result is returned only when `q` equals the entity's name or one of its exact
             synonyms as a whole string, case-insensitively; otherwise the result set is empty.
@@ -61,16 +97,19 @@ async def search(
     Returns:
         EntityResults
     """
-    facet_fields = ["category", "in_taxon_label"]
+    facet_fields = [str(f) for f in (facet_field or DEFAULT_SEARCH_FACET_FIELDS)]
     if category is None:
         category = []
     response = solr().search(
         q=q or "*:*",
         category=category,
+        namespace=namespace,
+        exclude_namespace=exclude_namespace,
         in_taxon=in_taxon,
         in_taxon_label=in_taxon_label,
         subset=subset,
         exclude_subset=exclude_subset,
+        scope=scope,
         facet_fields=facet_fields,
         offset=pagination.offset,
         limit=pagination.limit,

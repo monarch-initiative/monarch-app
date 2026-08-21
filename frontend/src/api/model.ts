@@ -616,6 +616,25 @@ export interface Results {
 }
 
 
+/**
+ * The filters a named `scope` resolved to, echoed back so a caller can see what was filtered, log it, and reproduce or override it with the raw filter parameters. These are the filters actually applied, so an explicit parameter that overrode part of the scope is reflected here.
+ */
+export interface SearchScopeResolution {
+    /** The scope that was requested */
+    name?: string,
+    /** The biolink categories the search was restricted to */
+    category?: string[],
+    /** The CURIE namespaces the search was restricted to */
+    namespace?: string[],
+    /** An ontology subset that entities were restricted to */
+    subset?: string[],
+    /** An ontology subset that entities were excluded by */
+    exclude_subset?: string[],
+    /** The taxon CURIEs the search was restricted to */
+    in_taxon?: string[],
+}
+
+
 
 export interface SearchResult extends Entity {
     score?: number,
@@ -634,6 +653,8 @@ export interface SearchResults extends Results {
     facet_fields?: FacetField[],
     /** Collection of facet query responses with the query string values and counts */
     facet_queries?: FacetValue[],
+    /** The concrete filters a named search scope resolved to */
+    scope?: SearchScopeResolution,
 }
 
 

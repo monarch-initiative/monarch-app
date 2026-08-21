@@ -40,8 +40,11 @@ def test_search_params(mock_search, search):
     search_params = {
         **params,
         "in_taxon": None,
+        "namespace": None,
+        "exclude_namespace": None,
         "subset": None,
         "exclude_subset": None,
+        "scope": None,
         "facet_fields": ["category", "in_taxon_label"],
         "highlighting": True,
         "exact": False,
@@ -76,6 +79,46 @@ def test_search_defaults_to_relevance(mock_search, search):
     mock_search.return_value = SearchResults(**search)
     client.get("/search?q=septic+shock")
     assert mock_search.call_args.kwargs["exact"] is False
+
+
+@patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.search")
+def test_search_scope_and_namespace_params(mock_search, search):
+    mock_search.return_value = SearchResults(**search)
+    params = {"q": "septic shock", "scope": "human_disease", "namespace": ["MONDO"], "exclude_namespace": ["MPATH"]}
+    client.get(f"/search?{urllib.parse.urlencode(params, doseq=True)}")
+    kwargs = mock_search.call_args.kwargs
+    assert str(kwargs["scope"]) == "human_disease"
+    assert kwargs["namespace"] == ["MONDO"]
+    assert kwargs["exclude_namespace"] == ["MPATH"]
+
+
+@patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.search")
+def test_search_facet_fields_default_unchanged(mock_search, search):
+    """Existing callers keep the response shape they had before facet_field existed."""
+    mock_search.return_value = SearchResults(**search)
+    client.get("/search?q=heart")
+    assert mock_search.call_args.kwargs["facet_fields"] == ["category", "in_taxon_label"]
+
+
+@patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.search")
+def test_search_facet_fields_are_opt_in(mock_search, search):
+    mock_search.return_value = SearchResults(**search)
+    params = {"q": "heart", "facet_field": ["subsets", "namespace"]}
+    client.get(f"/search?{urllib.parse.urlencode(params, doseq=True)}")
+    assert mock_search.call_args.kwargs["facet_fields"] == ["subsets", "namespace"]
+
+
+def test_search_rejects_unknown_facet_field():
+    """Faceting an arbitrary field is a cheap way to ask Solr an expensive question."""
+    with pytest.raises(RequestValidationError) as excinfo:
+        client.get("/search?q=heart&facet_field=description")
+    assert excinfo.value.errors()[0]["loc"] == ("query", "facet_field", 0)
+
+
+def test_search_rejects_unknown_scope():
+    with pytest.raises(RequestValidationError) as excinfo:
+        client.get("/search?q=heart&scope=martian_disease")
+    assert excinfo.value.errors()[0]["loc"] == ("query", "scope")
 
 
 def test_search_rejects_unknown_match_type():

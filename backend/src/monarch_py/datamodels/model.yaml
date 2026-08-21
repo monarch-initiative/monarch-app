@@ -282,6 +282,31 @@ classes:
     - limit
     - offset
     - total
+  SearchScopeResolution:
+    description: >-
+      The filters a named `scope` resolved to, echoed back so a caller can see what was
+      filtered, log it, and reproduce or override it with the raw filter parameters. These
+      are the filters actually applied, so an explicit parameter that overrode part of the
+      scope is reflected here.
+    slots:
+    - name
+    - category
+    - namespace
+    - subset
+    - exclude_subset
+    - in_taxon
+    slot_usage:
+      name:
+        description: The scope that was requested
+      category:
+        description: The biolink categories the search was restricted to
+        multivalued: true
+      namespace:
+        description: The CURIE namespaces the search was restricted to
+        multivalued: true
+      in_taxon:
+        description: The taxon CURIEs the search was restricted to
+        multivalued: true
   SearchResult:
     is_a: Entity
     slots:
@@ -299,6 +324,7 @@ classes:
     - items
     - facet_fields
     - facet_queries
+    - scope
     slot_usage:
       items:
         range: SearchResult
@@ -897,6 +923,17 @@ slots:
     inlined_as_list: true
   score:
     range: float
+  subset:
+    description: An ontology subset that entities were restricted to
+    range: string
+    multivalued: true
+  exclude_subset:
+    description: An ontology subset that entities were excluded by
+    range: string
+    multivalued: true
+  scope:
+    description: The concrete filters a named search scope resolved to
+    range: SearchScopeResolution
   matched_field:
     description: Which field of the entity the search query matched as a whole string,
       or null when the hit came from a partial or tokenized match

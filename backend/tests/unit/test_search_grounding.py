@@ -8,6 +8,7 @@ anything asserted only there is effectively unverified — see #1382.)
 
 import pytest
 
+from monarch_py.datamodels.search_scopes import SEARCH_SCOPES, SearchScope, resolve_scope
 from monarch_py.datamodels.solr import SolrQueryResult
 from monarch_py.implementations.solr.solr_parsers import match_provenance, parse_search
 from monarch_py.implementations.solr.solr_query_utils import (
@@ -242,3 +243,74 @@ def test_exact_filter_and_provenance_agree_on_padding():
     padded = "  septic shock  "
     assert exact_match_filter_query(padded) == exact_match_filter_query(padded.strip())
     assert match_provenance(padded, {"name": "septic shock"}) == ("name", "exact")
+
+
+### Named scopes ###
+
+
+def test_scope_expands_to_its_filters():
+    assert resolve_scope(SearchScope.HUMAN_DISEASE) == {
+        "category": ["biolink:Disease"],
+        "namespace": ["MONDO"],
+        "exclude_subset": ["venom_*"],
+    }
+
+
+def test_human_disease_needs_both_namespace_and_subset_exclusion():
+    """VeNom terms are MONDO terms, so restricting the namespace does not drop them."""
+    scope = resolve_scope(SearchScope.HUMAN_DISEASE)
+    assert scope["namespace"] == ["MONDO"]
+    assert scope["exclude_subset"] == ["venom_*"]
+
+
+def test_human_gene_scopes_by_taxon_not_namespace():
+    """A human gene recorded under a namespace other than HGNC should still qualify."""
+    scope = resolve_scope(SearchScope.HUMAN_GENE)
+    assert scope["in_taxon"] == ["NCBITaxon:9606"]
+    assert "namespace" not in scope
+
+
+def test_scope_accepts_a_bare_string():
+    assert resolve_scope("human_phenotype")["namespace"] == ["HP"]
+
+
+def test_explicit_argument_overrides_one_axis_of_a_scope():
+    """Overriding should narrow the axis you named, not intersect into nothing."""
+    resolved = resolve_scope(SearchScope.HUMAN_DISEASE, namespace=["DOID"])
+    assert resolved["namespace"] == ["DOID"]
+    assert resolved["category"] == ["biolink:Disease"]
+    assert resolved["exclude_subset"] == ["venom_*"]
+
+
+def test_no_scope_passes_explicit_arguments_through():
+    assert resolve_scope(None, category=["biolink:Gene"]) == {"category": ["biolink:Gene"]}
+
+
+def test_no_scope_drops_empty_arguments():
+    assert resolve_scope(None, category=None, namespace=[]) == {}
+
+
+def test_every_scope_is_documented():
+    """The description is the contract; a scope without one can't be reasoned about."""
+    for scope in SearchScope:
+        assert SEARCH_SCOPES[scope].description
+
+
+def test_every_scope_constrains_something():
+    for scope, definition in SEARCH_SCOPES.items():
+        axes = definition.category + definition.namespace + definition.subset
+        axes += definition.exclude_subset + definition.in_taxon
+        assert axes, f"{scope} filters nothing"
+
+
+### namespace filters ###
+
+
+def test_search_query_adds_namespace_filter():
+    query = build_search_query(q="x", namespace=["MONDO", "HP"])
+    assert 'namespace:"MONDO" OR namespace:"HP"' in query.filter_queries
+
+
+def test_search_query_negates_the_whole_namespace_disjunction():
+    query = build_search_query(q="x", exclude_namespace=["MPATH", "ZP"])
+    assert '-(namespace:"MPATH" OR namespace:"ZP")' in query.filter_queries

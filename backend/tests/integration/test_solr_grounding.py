@@ -269,3 +269,75 @@ def test_subset_wildcard_with_a_space_does_not_error():  # pragma: no cover
     """Unescaped, this reached Solr as two clauses and came back a 400 -> 500."""
     results = SolrImplementation().search(q="glaucoma", subset=["gard rare*"], limit=5)
     assert results.items == []
+
+
+### Named scopes and facet discovery ###
+
+
+@pytest.mark.skipif(
+    condition=not SolrImplementation().solr_is_available(),
+    reason="Solr is not available",
+)
+def test_human_disease_scope_drops_veterinary_terms():  # pragma: no cover
+    results = SolrImplementation().search(q="septic shock", scope="human_disease", limit=5)
+    assert results.items
+    assert not any(item.id == "MONDO:1014822" for item in results.items)
+    assert all(item.namespace == "MONDO" for item in results.items)
+
+
+@pytest.mark.skipif(
+    condition=not SolrImplementation().solr_is_available(),
+    reason="Solr is not available",
+)
+def test_human_phenotype_scope_drops_the_other_species():  # pragma: no cover
+    """The phenotype category is ~88% non-human, so this is the scope that earns its keep."""
+    si = SolrImplementation()
+    unscoped = si.search(q="short stature", category=[EntityCategory.PHENOTYPIC_FEATURE], limit=5)
+    assert any(not item.id.startswith("HP:") for item in unscoped.items)
+
+    scoped = si.search(q="short stature", scope="human_phenotype", limit=5)
+    assert scoped.items
+    assert all(item.id.startswith("HP:") for item in scoped.items)
+
+
+@pytest.mark.skipif(
+    condition=not SolrImplementation().solr_is_available(),
+    reason="Solr is not available",
+)
+def test_scope_is_echoed_with_what_was_actually_applied():  # pragma: no cover
+    results = SolrImplementation().search(q="glaucoma", scope="human_phenotype", namespace=["MP"], limit=2)
+    assert results.scope.name == "human_phenotype"
+    assert results.scope.namespace == ["MP"]  # the override, not the scope's HP
+    assert results.scope.category == ["biolink:PhenotypicFeature"]
+    assert results.items and all(item.id.startswith("MP:") for item in results.items)
+
+
+@pytest.mark.skipif(
+    condition=not SolrImplementation().solr_is_available(),
+    reason="Solr is not available",
+)
+def test_no_scope_means_no_scope_on_the_response():  # pragma: no cover
+    assert SolrImplementation().search(q="glaucoma", limit=1).scope is None
+
+
+@pytest.mark.skipif(
+    condition=not SolrImplementation().solr_is_available(),
+    reason="Solr is not available",
+)
+def test_namespace_filter_restricts_results():  # pragma: no cover
+    results = SolrImplementation().search(q="short stature", namespace=["MP"], limit=5)
+    assert results.items
+    assert all(item.namespace == "MP" for item in results.items)
+
+
+@pytest.mark.skipif(
+    condition=not SolrImplementation().solr_is_available(),
+    reason="Solr is not available",
+)
+def test_facets_make_filter_values_discoverable():  # pragma: no cover
+    """Nobody can guess these: `subsets` has 157 distinct values including raw PURLs."""
+    results = SolrImplementation().search(q="*:*", limit=0, facet_fields=["subsets", "namespace"])
+    faceted = {facet.label for facet in results.facet_fields}
+    assert {"subsets", "namespace"} <= faceted
+    subsets = next(f for f in results.facet_fields if f.label == "subsets")
+    assert any(value.label == "rare" for value in subsets.facet_values)

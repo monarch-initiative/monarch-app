@@ -693,6 +693,18 @@ class MultiEntityAssociationResults(Results):
     total: int = Field(default=..., description="""total number of items matching a query""")
 
 
+class SearchScopeResolution(ConfiguredBaseModel):
+    """
+    The filters a named `scope` resolved to, echoed back so a caller can see what was filtered, log it, and reproduce or override it with the raw filter parameters. These are the filters actually applied, so an explicit parameter that overrode part of the scope is reflected here.
+    """
+    name: Optional[str] = Field(default=None, description="""The scope that was requested""")
+    category: Optional[list[str]] = Field(default=None, description="""The biolink categories the search was restricted to""")
+    namespace: Optional[list[str]] = Field(default=None, description="""The CURIE namespaces the search was restricted to""")
+    subset: Optional[list[str]] = Field(default=None, description="""An ontology subset that entities were restricted to""")
+    exclude_subset: Optional[list[str]] = Field(default=None, description="""An ontology subset that entities were excluded by""")
+    in_taxon: Optional[list[str]] = Field(default=None, description="""The taxon CURIEs the search was restricted to""")
+
+
 class SearchResult(Entity):
     score: Optional[float] = Field(default=None)
     matched_field: Optional[MatchedFieldEnum] = Field(default=None, description="""Which field of the entity the search query matched as a whole string, or null when the hit came from a partial or tokenized match""")
@@ -737,6 +749,7 @@ class SearchResults(Results):
     items: list[SearchResult] = Field(default=..., description="""A collection of items, with the type to be overriden by slot_usage""")
     facet_fields: Optional[list[FacetField]] = Field(default=None, description="""Collection of facet field responses with the field values and counts""")
     facet_queries: Optional[list[FacetValue]] = Field(default=None, description="""Collection of facet query responses with the query string values and counts""")
+    scope: Optional[SearchScopeResolution] = Field(default=None, description="""The concrete filters a named search scope resolved to""")
     limit: int = Field(default=..., description="""number of items to return in a response""")
     offset: int = Field(default=..., description="""offset into the total number of items""")
     total: int = Field(default=..., description="""total number of items matching a query""")
@@ -926,6 +939,7 @@ CategoryGroupedAssociationResults.model_rebuild()
 EntityResults.model_rebuild()
 MappingResults.model_rebuild()
 MultiEntityAssociationResults.model_rebuild()
+SearchScopeResolution.model_rebuild()
 SearchResult.model_rebuild()
 SearchResults.model_rebuild()
 TextAnnotationResult.model_rebuild()

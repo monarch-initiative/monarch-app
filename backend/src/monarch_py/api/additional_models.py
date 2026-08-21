@@ -21,6 +21,29 @@ class OutputFormat(str, Enum):
     tsv = "tsv"
 
 
+class SearchFacetField(str, Enum):
+    """Entity fields `/search` will return facet counts for.
+
+    An allow-list rather than free-form: faceting an arbitrary field is a cheap way to ask
+    Solr an expensive question, and these are the five that describe a filterable axis of
+    the endpoint. Facet counts are the only practical way to discover valid values —
+    `subsets` alone has 157 of them, including raw PURLs.
+    """
+
+    category = "category"
+    in_taxon = "in_taxon"
+    in_taxon_label = "in_taxon_label"
+    namespace = "namespace"
+    subsets = "subsets"
+
+    def __str__(self):
+        return self.value
+
+
+# Preserves the historical response shape for callers that don't ask for anything else.
+DEFAULT_SEARCH_FACET_FIELDS = [SearchFacetField.category, SearchFacetField.in_taxon_label]
+
+
 class SearchMatchType(str, Enum):
     """How strict `/search` should be about what counts as a hit.
 
