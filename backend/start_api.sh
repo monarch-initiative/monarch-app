@@ -8,4 +8,6 @@ uv run gunicorn src.monarch_py.api.main:app \
     --bind 0.0.0.0:8000 \
     --timeout ${WORKER_TIMEOUT:-300} \
     --worker-class uvicorn.workers.UvicornWorker \
-    --workers ${UVICORN_WORKERS}
+    --workers ${UVICORN_WORKERS} \
+    --max-requests ${MAX_REQUESTS:-2000} \
+    --max-requests-jitter ${MAX_REQUESTS_JITTER:-200}
