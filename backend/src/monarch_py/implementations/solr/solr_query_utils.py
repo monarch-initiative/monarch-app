@@ -240,6 +240,21 @@ def escape_phrase(value: str) -> str:
     return value.replace("\\", "\\\\").replace('"', '\\"')
 
 
+LUCENE_SPECIAL_CHARS = set('+-&|!(){}[]^"~*?:\\/ \t\n\r')
+
+
+def escape_term(value: str) -> str:
+    """Escape a value for use as a bare (unquoted) Lucene term.
+
+    A prefix query cannot be quoted — `subsets:"venom_*"` matches the literal string
+    `venom_*` — so the term has to carry its own escaping. Whitespace is in the escape set
+    because an unescaped space ends the term and hands the remainder to the query parser as
+    a clause against the default field, which the entity core does not define, so Solr
+    answers 400 and the endpoint 500s.
+    """
+    return "".join(f"\\{char}" if char in LUCENE_SPECIAL_CHARS else char for char in value)
+
+
 def subset_filter_query(subsets: List[str], exclude: bool = False) -> str:
     """Build a filter query over the multivalued `subsets` field.
 
@@ -250,7 +265,7 @@ def subset_filter_query(subsets: List[str], exclude: bool = False) -> str:
     clauses = []
     for subset in subsets:
         if subset.endswith("*"):
-            clauses.append(f"subsets:{escape(subset[:-1])}*")
+            clauses.append(f"subsets:{escape_term(subset[:-1])}*")
         else:
             clauses.append(f'subsets:"{escape_phrase(subset)}"')
     joined = " OR ".join(clauses)
@@ -266,8 +281,13 @@ def exact_match_filter_query(q: str) -> str:
     `exact_synonym_grounding` copy field in the KG's Solr schema, so this narrows to
     candidates cheaply and `parse_search` does the final scope check against
     `name`/`exact_synonym` — see `match_provenance`.
+
+    `q` is stripped to match what `match_provenance` compares against: on a
+    KeywordTokenizer field the padding is part of the term, so an unstripped query would
+    find no candidates at all for text the scope check would happily call an exact match.
+    Callers feeding NER spans are exactly the ones likely to pass padding.
     """
-    escaped = escape_phrase(q)
+    escaped = escape_phrase(q.strip())
     return f'name_grounding:"{escaped}" OR synonym_grounding:"{escaped}"'
 
 

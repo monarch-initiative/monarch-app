@@ -13,6 +13,7 @@ from monarch_py.implementations.solr.solr_parsers import match_provenance, parse
 from monarch_py.implementations.solr.solr_query_utils import (
     build_search_query,
     escape_phrase,
+    escape_term,
     exact_match_filter_query,
     subset_filter_query,
 )
@@ -90,7 +91,8 @@ def test_search_query_adds_exact_filter_only_when_asked():
 
 
 def test_search_query_skips_exact_filter_for_blank_search():
-    """`*:*` is a browse, not a claim that some entity is named `*:*`."""
+    """`*:*` is a browse, not a claim that some entity is named `*:*`. SolrImplementation
+    short-circuits this case before querying at all; the builder stays consistent with it."""
     query = build_search_query(q="*:*", exact=True)
     assert not any("name_grounding" in fq for fq in query.filter_queries)
 
@@ -205,3 +207,38 @@ def test_parse_search_exact_mode_totals_the_surviving_hits():
 def test_parse_search_populates_score_when_solr_returns_it():
     doc = {**NAMED, "score": 59.4}
     assert _parse([doc], q="septic shock").items[0].score == pytest.approx(59.4)
+
+
+### Regressions from the #1394 review ###
+
+
+def test_escape_term_escapes_whitespace_and_operators():
+    """An unescaped space ends the term and the remainder becomes a clause against the
+    default field, which the entity core doesn't define — Solr answers 400 and the
+    endpoint 500s."""
+    assert escape_term("gard rare") == "gard\\ rare"
+
+
+def test_subset_wildcard_cannot_inject_a_clause():
+    fq = subset_filter_query(["a) OR name:x*"])
+    assert fq == "(subsets:a\\)\\ OR\\ name\\:x*)"
+
+
+def test_subset_wildcard_still_works_for_ordinary_prefixes():
+    assert subset_filter_query(["venom_*"]) == "(subsets:venom_*)"
+
+
+def test_exact_match_filter_query_strips_the_query():
+    """`name_grounding` is a KeywordTokenizer field, so padding is part of the term: an
+    unstripped query finds no candidates at all for text match_provenance calls exact."""
+    assert exact_match_filter_query("  Septic shock ") == (
+        'name_grounding:"Septic shock" OR synonym_grounding:"Septic shock"'
+    )
+
+
+def test_exact_filter_and_provenance_agree_on_padding():
+    """The two halves of the exact contract have to normalise the same way, or the filter
+    excludes candidates the scope check would accept."""
+    padded = "  septic shock  "
+    assert exact_match_filter_query(padded) == exact_match_filter_query(padded.strip())
+    assert match_provenance(padded, {"name": "septic shock"}) == ("name", "exact")

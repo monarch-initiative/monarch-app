@@ -205,3 +205,67 @@ def test_subset_restricts_to_the_named_subset():  # pragma: no cover
     results = SolrImplementation().search(q="glaucoma", category=[EntityCategory.DISEASE], subset=["rare"], limit=10)
     assert results.items
     assert all("rare" in (item.subsets or []) for item in results.items)
+
+
+@pytest.mark.skipif(
+    condition=not SolrImplementation().solr_is_available(),
+    reason="Solr is not available",
+)
+def test_exact_search_pages_beyond_the_scan_window():  # pragma: no cover
+    """Short gene symbols are shared by well over a thousand entities, so exact mode has to
+    report and page the whole matching set rather than a fixed candidate window."""
+    si = SolrImplementation()
+    first = si.search(q="FP", exact=True, limit=5)
+    assert first.total > 1000
+    deep = si.search(q="FP", exact=True, limit=5, offset=first.total - 3)
+    assert deep.items
+    assert {item.id for item in deep.items}.isdisjoint({item.id for item in first.items})
+
+
+@pytest.mark.skipif(
+    condition=not SolrImplementation().solr_is_available(),
+    reason="Solr is not available",
+)
+def test_exact_search_tolerates_padded_query_text():  # pragma: no cover
+    """NER spans arrive with whitespace; `name_grounding` is a KeywordTokenizer field, so
+    the query side has to normalise the same way the scope check does."""
+    results = SolrImplementation().search(q="  Ovarian Carcinoma  ", category=[EntityCategory.DISEASE], exact=True)
+    assert [item.id for item in results.items] == ["MONDO:0005140"]
+
+
+@pytest.mark.parametrize("q", ["*:*", "", "   "])
+@pytest.mark.skipif(
+    condition=not SolrImplementation().solr_is_available(),
+    reason="Solr is not available",
+)
+def test_exact_search_abstains_on_a_blank_query(q):  # pragma: no cover
+    results = SolrImplementation().search(q=q, exact=True)
+    assert results.items == []
+    assert results.total == 0
+
+
+@pytest.mark.skipif(
+    condition=not SolrImplementation().solr_is_available(),
+    reason="Solr is not available",
+)
+def test_exact_search_does_not_report_facets_for_discarded_candidates():  # pragma: no cover
+    """Solr's counts describe the candidate set, so passing them through would show a
+    nonzero category count beside an empty result set."""
+    results = SolrImplementation().search(
+        q="acute appendicitis",
+        category=[EntityCategory.DISEASE],
+        exact=True,
+        facet_fields=["category"],
+    )
+    assert results.items == []
+    assert results.facet_fields is None
+
+
+@pytest.mark.skipif(
+    condition=not SolrImplementation().solr_is_available(),
+    reason="Solr is not available",
+)
+def test_subset_wildcard_with_a_space_does_not_error():  # pragma: no cover
+    """Unescaped, this reached Solr as two clauses and came back a 400 -> 500."""
+    results = SolrImplementation().search(q="glaucoma", subset=["gard rare*"], limit=5)
+    assert results.items == []

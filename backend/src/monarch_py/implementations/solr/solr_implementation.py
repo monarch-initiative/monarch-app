@@ -45,6 +45,7 @@ from monarch_py.implementations.solr.solr_parsers import (
     parse_search,
 )
 from monarch_py.implementations.solr.solr_query_utils import (
+    escape_phrase,
     build_association_counts_query,
     build_association_query,
     build_association_table_query,
@@ -73,10 +74,11 @@ from monarch_py.utils.utils import get_provided_by_link, get_links_for_field
 
 logger = logging.getLogger(__name__)
 
-# How many candidates exact-match search pulls back before the scope check in parse_search.
-# The Solr-side filter already restricts to whole-string hits, so this only needs to be
-# comfortably larger than the number of entities that can share one name.
-EXACT_MATCH_CANDIDATE_ROWS = 50
+# Upper bound on the candidate set exact-match search scans before the scope check in
+# parse_search. Whole-string collisions are usually a handful, but short gene symbols are
+# shared by well over a thousand entities, so this is sized for that tail rather than the
+# common case. The scan requests only the three fields match_provenance reads.
+EXACT_MATCH_SCAN_ROWS = 5000
 
 
 @dataclass
@@ -692,33 +694,96 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         Returns:
             SearchResults: Dataclass representing results of a search.
         """
-        # Exact mode filters twice: Solr narrows to whole-string hits on name or *any* synonym
-        # scope, then parse_search drops the broad/narrow/related ones it can't call exact. Fetch
-        # a fixed candidate window rather than `limit` rows so a tight limit can't starve that
-        # second pass, then page in Python. Exact matches are few, so the window is generous.
-        rows = max(limit, EXACT_MATCH_CANDIDATE_ROWS) if exact else limit
-        start = 0 if exact else offset
-        query = build_search_query(
-            q=q,
+        build_kwargs = dict(
             category=[c.value for c in category] if category else None,
             in_taxon=in_taxon,
             in_taxon_label=in_taxon_label,
             subset=subset,
             exclude_subset=exclude_subset,
-            facet_fields=facet_fields,
             facet_queries=facet_queries,
-            filter_queries=filter_queries,
             highlighting=highlighting,
-            exact=exact,
             sort=sort,
-            offset=start,
-            limit=rows,
+        )
+        if exact:
+            return self._exact_search(
+                q=q,
+                filter_queries=filter_queries,
+                offset=offset,
+                limit=limit,
+                **build_kwargs,
+            )
+        query = build_search_query(
+            q=q,
+            facet_fields=facet_fields,
+            filter_queries=filter_queries,
+            offset=offset,
+            limit=limit,
+            **build_kwargs,
         )
         solr = SolrService(base_url=self.base_url, core=core.ENTITY)
         query_result = solr.query(query)
-        results = parse_search(query_result, offset=offset, limit=limit, q=q, exact=exact)
-        if exact:
-            results.items = results.items[offset : offset + limit]
+        return parse_search(query_result, offset=offset, limit=limit, q=q)
+
+    def _exact_search(
+        self,
+        q: str,
+        filter_queries: Union[List[str], None] = None,
+        offset: int = 0,
+        limit: int = 20,
+        **build_kwargs,
+    ) -> SearchResults:
+        """Run `search` under the exact-match contract.
+
+        Solr narrows to whole-string hits on `name` or *any* synonym scope, but the final
+        "is this an identification?" check happens in `match_provenance`, which Solr cannot
+        do for us. That rules out letting Solr page: a page of candidates is not a page of
+        matches, and one entity name can be shared by well over a thousand entities (gene
+        symbols, mostly), so slicing a fixed window would both under-report `total` and drop
+        real matches that sorted below it.
+
+        So this scans the candidate set for ids first, cheaply, then re-runs the same query
+        restricted to the requested page so scores and highlighting stay those of the
+        original query rather than of an id lookup.
+        """
+        solr = SolrService(base_url=self.base_url, core=core.ENTITY)
+
+        if not q or q.strip() in ("", "*:*"):
+            # A blank search is a browse, not a claim that some entity is named "*:*". There
+            # is nothing here that could be an exact match, so don't ask Solr.
+            return SearchResults(items=[], limit=limit, offset=offset, total=0)
+
+        scan = build_search_query(
+            q=q, exact=True, filter_queries=filter_queries, offset=0, limit=EXACT_MATCH_SCAN_ROWS, **build_kwargs
+        )
+        # Only what match_provenance reads plus the two fields SearchResult requires, so
+        # scanning a large candidate set stays cheap. Faceting stays on because
+        # SolrQueryResult requires facet_counts, but no facet fields are requested.
+        scan.fl = "id,category,name,exact_synonym"
+        scanned = parse_search(solr.query(scan), q=q, exact=True)
+        matching_ids = [item.id for item in scanned.items]
+        total = len(matching_ids)
+
+        page_ids = matching_ids[offset : offset + limit]
+        if not page_ids:
+            return SearchResults(items=[], limit=limit, offset=offset, total=total)
+
+        id_filter = " OR ".join(f'id:"{escape_phrase(entity_id)}"' for entity_id in page_ids)
+        page = build_search_query(
+            q=q,
+            exact=True,
+            filter_queries=(filter_queries or []) + [id_filter],
+            offset=0,
+            limit=len(page_ids),
+            **build_kwargs,
+        )
+        results = parse_search(solr.query(page), offset=offset, limit=limit, q=q, exact=True)
+        order = {entity_id: index for index, entity_id in enumerate(page_ids)}
+        results.items.sort(key=lambda item: order.get(item.id, len(order)))
+        results.total = total
+        # Solr's facet counts describe the candidate set, not the matches that survived the
+        # scope check, so reporting them would put nonzero counts next to an empty result set.
+        results.facet_fields = None
+        results.facet_queries = None
         return results
 
     def autocomplete(
