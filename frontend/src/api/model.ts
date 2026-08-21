@@ -21,6 +21,32 @@ export type GridBinId = string;
 export type QualifierId = string;
 export type GridCellDataId = string;
 /**
+* The entity field that a search query matched as a whole string
+*/
+export enum MatchedFieldEnum {
+    
+    /** The query matched the entity's primary label */
+    name = "name",
+    /** The query matched a synonym asserted to mean the same thing as the entity's label */
+    exact_synonym = "exact_synonym",
+    /** The query matched a synonym broader than the entity */
+    broad_synonym = "broad_synonym",
+    /** The query matched a synonym narrower than the entity */
+    narrow_synonym = "narrow_synonym",
+    /** The query matched a synonym merely related to the entity */
+    related_synonym = "related_synonym",
+};
+/**
+* How defensible a search hit is as an identification of the query text
+*/
+export enum MatchTypeEnum {
+    
+    /** Whole-string, case-insensitive match on the entity's name or one of its exact synonyms — the query names this entity and no other reading is implied */
+    exact = "exact",
+    /** Whole-string match on a broad, narrow or related synonym — the query is adjacent to this entity but does not name it */
+    synonym = "synonym",
+};
+/**
 * The directionality of an association as it relates to a specified entity, with edges being categorized as incoming or outgoing
 */
 export enum AssociationDirectionEnum {
@@ -593,6 +619,10 @@ export interface Results {
 
 export interface SearchResult extends Entity {
     score?: number,
+    /** Which field of the entity the search query matched as a whole string, or null when the hit came from a partial or tokenized match */
+    matched_field?: string,
+    /** How the search query matched this entity, or null when the hit came from a partial or tokenized match. Solr does not report which clause of the query produced a hit, so this is populated only for matches the API can verify itself. */
+    match_type?: string,
 }
 
 

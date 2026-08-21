@@ -73,6 +73,11 @@ from monarch_py.utils.utils import get_provided_by_link, get_links_for_field
 
 logger = logging.getLogger(__name__)
 
+# How many candidates exact-match search pulls back before the scope check in parse_search.
+# The Solr-side filter already restricts to whole-string hits, so this only needs to be
+# comfortably larger than the number of entities that can share one name.
+EXACT_MATCH_CANDIDATE_ROWS = 50
+
 
 @dataclass
 class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface, GroundingInterface):
@@ -651,12 +656,16 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         self,
         q: str = "*:*",
         category: Union[List[EntityCategory], None] = None,
+        in_taxon: Union[List[str], None] = None,
         in_taxon_label: Union[List[str], None] = None,
+        subset: Union[List[str], None] = None,
+        exclude_subset: Union[List[str], None] = None,
         facet_fields: Union[List[str], None] = None,
         facet_queries: Union[List[str], None] = None,
         filter_queries: Union[List[str], None] = None,
         sort: Optional[str] = None,
         highlighting: bool = False,
+        exact: bool = False,
         offset: int = 0,
         limit: int = 20,
     ) -> SearchResults:
@@ -667,30 +676,49 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             offset (int): Result offset, for pagination. Defaults to 0.
             limit (int): Limit results to specified number. Defaults to 20.
             category (List[str]): Filter to only entities matching the specified categories. Defaults to None.
+            in_taxon (List[str]): Filter to only entities matching the specified taxon CURIEs. Defaults to None.
             in_taxon_label (List[str]): Filter to only entities matching the specified taxon label. Defaults to None.
+            subset (List[str]): Filter to only entities in the specified subsets, `venom_*` prefixes
+                allowed. Defaults to None.
+            exclude_subset (List[str]): Drop entities in the specified subsets, same syntax as
+                `subset`. Defaults to None.
             facet_fields (List[str]): List of fields to include facet counts for. Defaults to None.
             facet_queries (List[str]): List of queries to include facet counts for. Defaults to None.
             filter_queries (List[str]): List of queries to filter results by. Defaults to None.
             sort (str): Sort results by the specified field. Defaults to None.
+            exact (bool): Return only entities whose name or exact synonym equals `q` as a whole
+                string, and an empty result set when none does. Defaults to False.
 
         Returns:
             SearchResults: Dataclass representing results of a search.
         """
+        # Exact mode filters twice: Solr narrows to whole-string hits on name or *any* synonym
+        # scope, then parse_search drops the broad/narrow/related ones it can't call exact. Fetch
+        # a fixed candidate window rather than `limit` rows so a tight limit can't starve that
+        # second pass, then page in Python. Exact matches are few, so the window is generous.
+        rows = max(limit, EXACT_MATCH_CANDIDATE_ROWS) if exact else limit
+        start = 0 if exact else offset
         query = build_search_query(
             q=q,
             category=[c.value for c in category] if category else None,
+            in_taxon=in_taxon,
             in_taxon_label=in_taxon_label,
+            subset=subset,
+            exclude_subset=exclude_subset,
             facet_fields=facet_fields,
             facet_queries=facet_queries,
             filter_queries=filter_queries,
             highlighting=highlighting,
+            exact=exact,
             sort=sort,
-            offset=offset,
-            limit=limit,
+            offset=start,
+            limit=rows,
         )
         solr = SolrService(base_url=self.base_url, core=core.ENTITY)
         query_result = solr.query(query)
-        results = parse_search(query_result)
+        results = parse_search(query_result, offset=offset, limit=limit, q=q, exact=exact)
+        if exact:
+            results.items = results.items[offset : offset + limit]
         return results
 
     def autocomplete(

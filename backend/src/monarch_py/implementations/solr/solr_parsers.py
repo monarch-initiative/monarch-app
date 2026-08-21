@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Type, Union, get_args, get_origin, get_type_hints
+from typing import Any, Dict, List, Optional, Tuple, Type, Union, get_args, get_origin, get_type_hints
 
 from loguru import logger
 from pydantic import BaseModel, ValidationError
@@ -307,20 +307,59 @@ def parse_histopheno(query_result: SolrQueryResult, subject_closure: str) -> His
     return HistoPheno(id=subject_closure, items=bins)
 
 
+SYNONYM_SCOPES = ("exact_synonym", "broad_synonym", "narrow_synonym", "related_synonym")
+
+
+def match_provenance(q: Optional[str], doc: dict) -> Tuple[Optional[str], Optional[str]]:
+    """Work out which field of `doc` the query text matched as a whole string.
+
+    Returns `(matched_field, match_type)`, both None when the hit came from a partial or
+    tokenized match rather than a whole-string one — which is the honest answer, since
+    Solr does not tell us which clause of an edismax query produced a hit.
+
+    `match_type` is "exact" only for `name` and `exact_synonym`, the two scopes that mean
+    "this string *is* another name for me". A whole-string hit on a broad/narrow/related
+    synonym reports its scope with match_type "synonym", so a caller can apply its own
+    precision policy instead of string-comparing fields itself.
+    """
+    if not q or q == "*:*":
+        return None, None
+    needle = q.strip().casefold()
+    if not needle:
+        return None, None
+    if (doc.get("name") or "").strip().casefold() == needle:
+        return "name", "exact"
+    for field in SYNONYM_SCOPES:
+        values = doc.get(field) or []
+        if isinstance(values, str):
+            values = [values]
+        if any((value or "").strip().casefold() == needle for value in values):
+            return field, "exact" if field == "exact_synonym" else "synonym"
+    return None, None
+
+
 def parse_search(
     query_result: SolrQueryResult,
     offset: int = 0,
     limit: int = 20,
+    q: Optional[str] = None,
+    exact: bool = False,
 ) -> SearchResults:
     items = []
     for doc in query_result.response.docs:
         try:
             result = SearchResult(**doc)
-            items.append(result)
         except ValidationError:
             logger.error(f"Validation error for {doc}")
             raise
-    total = query_result.response.num_found
+        result.matched_field, result.match_type = match_provenance(q, doc)
+        if exact and result.match_type != "exact":
+            # The Solr-side filter narrows to whole-string hits on name or *any* synonym
+            # scope; drop the ones that turned out to be broad/narrow/related so that
+            # exact mode abstains rather than returning a near-miss.
+            continue
+        items.append(result)
+    total = len(items) if exact else query_result.response.num_found
     facet_fields = convert_facet_fields(query_result.facet_counts.facet_fields)
     facet_queries = convert_facet_queries(query_result.facet_counts.facet_queries)
     return SearchResults(

@@ -21,6 +21,21 @@ class OutputFormat(str, Enum):
     tsv = "tsv"
 
 
+class SearchMatchType(str, Enum):
+    """How strict `/search` should be about what counts as a hit.
+
+    `relevance` is the search contract: maximise recall and always return the best
+    available hit. `exact` is the grounding contract: return an entity only when the
+    query names it, and an empty result set otherwise.
+    """
+
+    relevance = "relevance"
+    exact = "exact"
+
+    def __str__(self):
+        return self.value
+
+
 class SemsimMetric(str, Enum):
     ANCESTOR_INFORMATION_CONTENT = "ancestor_information_content"
     # COSINE_SIMILARITY = "cosine_similarity"  # Not implemented

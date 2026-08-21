@@ -1,5 +1,6 @@
 import pytest
 
+from monarch_py.datamodels.category_enums import EntityCategory
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 
 
@@ -105,3 +106,102 @@ def test_grounding_does_not_rank_partial_match_first(text, unwanted_id):  # prag
     matching_results = SolrImplementation().ground_entity(text)
     assert matching_results
     assert matching_results[0].id != unwanted_id
+
+
+### Exact-match search mode (#1392) and subset filtering (#1391) ###
+
+
+@pytest.mark.parametrize(
+    "text,expected_id",
+    [
+        ("Open-angle glaucoma", "MONDO:0005338"),
+        ("Traumatic brain injury", "MONDO:0858950"),
+        ("Ovarian Carcinoma", "MONDO:0005140"),
+    ],
+)
+@pytest.mark.skipif(
+    condition=not SolrImplementation().solr_is_available(),
+    reason="Solr is not available",
+)
+def test_exact_search_grounds_named_diseases(text, expected_id):  # pragma: no cover
+    """Real SemMedDB disease mentions, mixed case, that a MONDO term genuinely names."""
+    results = SolrImplementation().search(q=text, category=[EntityCategory.DISEASE], exact=True)
+    assert [item.id for item in results.items] == [expected_id]
+    assert results.items[0].match_type == "exact"
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "Septic shock",  # only a `<x>, non-human animal` term is lexically close
+        "Androgen excess",
+        "Drug Resistant Epilepsy",  # relevance mode reaches for pyridoxine-dependent epilepsy
+        "Post-Operative Pain",
+        "Acute appendicitis",  # a *narrow* synonym of `appendicitis`, so not an identification
+    ],
+)
+@pytest.mark.skipif(
+    condition=not SolrImplementation().solr_is_available(),
+    reason="Solr is not available",
+)
+def test_exact_search_abstains_rather_than_guessing(text):  # pragma: no cover
+    """Each of these gets a confident, wrong top hit in relevance mode."""
+    results = SolrImplementation().search(q=text, category=[EntityCategory.DISEASE], exact=True)
+    assert results.items == []
+    assert results.total == 0
+
+
+@pytest.mark.skipif(
+    condition=not SolrImplementation().solr_is_available(),
+    reason="Solr is not available",
+)
+def test_relevance_mode_still_returns_a_best_effort_hit():  # pragma: no cover
+    """The default contract is unchanged — exact mode is opt-in, not a new default."""
+    results = SolrImplementation().search(q="Septic shock", category=[EntityCategory.DISEASE])
+    assert results.items
+
+
+@pytest.mark.skipif(
+    condition=not SolrImplementation().solr_is_available(),
+    reason="Solr is not available",
+)
+def test_relevance_mode_reports_why_a_hit_is_not_exact():  # pragma: no cover
+    """`acute appendicitis` is recorded as a narrow synonym of `appendicitis`; a caller
+    can see that without re-deriving it from the returned synonym lists."""
+    results = SolrImplementation().search(q="acute appendicitis", category=[EntityCategory.DISEASE])
+    appendicitis = next(item for item in results.items if item.id == "MONDO:0005649")
+    assert (appendicitis.matched_field, appendicitis.match_type) == ("narrow_synonym", "synonym")
+
+
+@pytest.mark.skipif(
+    condition=not SolrImplementation().solr_is_available(),
+    reason="Solr is not available",
+)
+def test_search_populates_score():  # pragma: no cover
+    results = SolrImplementation().search(q="glaucoma", category=[EntityCategory.DISEASE])
+    assert all(item.score is not None for item in results.items)
+
+
+@pytest.mark.skipif(
+    condition=not SolrImplementation().solr_is_available(),
+    reason="Solr is not available",
+)
+def test_exclude_subset_drops_veterinary_terms():  # pragma: no cover
+    """In relevance mode the VeNom term outranks every human disease for `septic shock`."""
+    si = SolrImplementation()
+    unfiltered = si.search(q="septic shock", category=[EntityCategory.DISEASE], limit=5)
+    assert any(item.id == "MONDO:1014822" for item in unfiltered.items)
+
+    filtered = si.search(q="septic shock", category=[EntityCategory.DISEASE], exclude_subset=["venom_*"], limit=5)
+    assert not any(item.id == "MONDO:1014822" for item in filtered.items)
+    assert not any(subset.startswith("venom_") for item in filtered.items for subset in (item.subsets or []))
+
+
+@pytest.mark.skipif(
+    condition=not SolrImplementation().solr_is_available(),
+    reason="Solr is not available",
+)
+def test_subset_restricts_to_the_named_subset():  # pragma: no cover
+    results = SolrImplementation().search(q="glaucoma", category=[EntityCategory.DISEASE], subset=["rare"], limit=10)
+    assert results.items
+    assert all("rare" in (item.subsets or []) for item in results.items)

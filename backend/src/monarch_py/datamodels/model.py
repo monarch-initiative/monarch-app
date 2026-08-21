@@ -63,6 +63,46 @@ class LinkMLMeta(RootModel):
 
 linkml_meta = None
 
+class MatchedFieldEnum(str, Enum):
+    """
+    The entity field that a search query matched as a whole string
+    """
+    name = "name"
+    """
+    The query matched the entity's primary label
+    """
+    exact_synonym = "exact_synonym"
+    """
+    The query matched a synonym asserted to mean the same thing as the entity's label
+    """
+    broad_synonym = "broad_synonym"
+    """
+    The query matched a synonym broader than the entity
+    """
+    narrow_synonym = "narrow_synonym"
+    """
+    The query matched a synonym narrower than the entity
+    """
+    related_synonym = "related_synonym"
+    """
+    The query matched a synonym merely related to the entity
+    """
+
+
+class MatchTypeEnum(str, Enum):
+    """
+    How defensible a search hit is as an identification of the query text
+    """
+    exact = "exact"
+    """
+    Whole-string, case-insensitive match on the entity's name or one of its exact synonyms — the query names this entity and no other reading is implied
+    """
+    synonym = "synonym"
+    """
+    Whole-string match on a broad, narrow or related synonym — the query is adjacent to this entity but does not name it
+    """
+
+
 class AssociationDirectionEnum(str, Enum):
     """
     The directionality of an association as it relates to a specified entity, with edges being categorized as incoming or outgoing
@@ -655,6 +695,8 @@ class MultiEntityAssociationResults(Results):
 
 class SearchResult(Entity):
     score: Optional[float] = Field(default=None)
+    matched_field: Optional[MatchedFieldEnum] = Field(default=None, description="""Which field of the entity the search query matched as a whole string, or null when the hit came from a partial or tokenized match""")
+    match_type: Optional[MatchTypeEnum] = Field(default=None, description="""How the search query matched this entity, or null when the hit came from a partial or tokenized match. Solr does not report which clause of the query produced a hit, so this is populated only for matches the API can verify itself.""")
     id: str = Field(default=...)
     category: str = Field(default=...)
     name: str = Field(default=...)

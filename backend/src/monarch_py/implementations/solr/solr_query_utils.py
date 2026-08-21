@@ -230,16 +230,61 @@ def build_multi_entity_association_query(
     return query
 
 
+def escape_phrase(value: str) -> str:
+    """Escape a value for use inside a Lucene quoted phrase.
+
+    Only backslashes and double quotes can terminate or corrupt a phrase; everything
+    else (including `:`) is literal once quoted, so this deliberately does less than
+    `utils.escape`.
+    """
+    return value.replace("\\", "\\\\").replace('"', '\\"')
+
+
+def subset_filter_query(subsets: List[str], exclude: bool = False) -> str:
+    """Build a filter query over the multivalued `subsets` field.
+
+    A trailing `*` is passed through to Solr as a prefix wildcard, so a caller can
+    exclude a whole family (`venom_*`) without enumerating its members. `subsets` is
+    a `string` field, so wildcards match the whole stored value rather than tokens.
+    """
+    clauses = []
+    for subset in subsets:
+        if subset.endswith("*"):
+            clauses.append(f"subsets:{escape(subset[:-1])}*")
+        else:
+            clauses.append(f'subsets:"{escape_phrase(subset)}"')
+    joined = " OR ".join(clauses)
+    return f"-({joined})" if exclude else f"({joined})"
+
+
+def exact_match_filter_query(q: str) -> str:
+    """Restrict a search to candidates that match `q` as a whole string.
+
+    `name_grounding` and `synonym_grounding` are KeywordTokenizer + LowerCase copies of
+    `name` and `synonym`, so this is a case-insensitive whole-string match rather than a
+    tokenized one. `synonym` is the union of all synonym scopes and there is no
+    `exact_synonym_grounding` copy field in the KG's Solr schema, so this narrows to
+    candidates cheaply and `parse_search` does the final scope check against
+    `name`/`exact_synonym` — see `match_provenance`.
+    """
+    escaped = escape_phrase(q)
+    return f'name_grounding:"{escaped}" OR synonym_grounding:"{escaped}"'
+
+
 def build_search_query(
     q: str = "*:*",
     offset: int = 0,
     limit: int = 20,
     category: List[str] = None,
+    in_taxon: List[str] = None,
     in_taxon_label: List[str] = None,
+    subset: List[str] = None,
+    exclude_subset: List[str] = None,
     facet_fields: List[str] = None,
     facet_queries: List[str] = None,
     filter_queries: List[str] = None,
     highlighting: bool = False,
+    exact: bool = False,
     sort: Optional[str] = None,
 ) -> SolrQuery:
     query = SolrQuery(start=offset, rows=limit, sort=sort)
@@ -248,10 +293,21 @@ def build_search_query(
     query.query_fields = entity_query_fields()
     query.hl = highlighting
     query.boost = entity_boost(text=q, empty_search=(q == "*:*"))
+    # Ask Solr for the relevance score, which is otherwise absent from the returned docs
+    # and left null on every SearchResult.
+    query.fl = "*,score"
     if category:
         query.add_filter_query(" OR ".join(f'category:"{cat}"' for cat in category))
+    if in_taxon:
+        query.add_filter_query(" OR ".join([f'in_taxon:"{t}"' for t in in_taxon]))
     if in_taxon_label:
         query.add_filter_query(" OR ".join([f'in_taxon_label:"{t}"' for t in in_taxon_label]))
+    if subset:
+        query.add_filter_query(subset_filter_query(subset))
+    if exclude_subset:
+        query.add_filter_query(subset_filter_query(exclude_subset, exclude=True))
+    if exact and q and q != "*:*":
+        query.add_filter_query(exact_match_filter_query(q))
     if facet_fields:
         query.facet_fields = facet_fields
     if facet_queries:

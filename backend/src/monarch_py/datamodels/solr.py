@@ -98,6 +98,7 @@ class SolrQuery(BaseModel):
     boost: Optional[str] = None
     sort: Optional[str] = None
     hl: bool = False
+    fl: Optional[str] = None  # field list; set to "*,score" to have Solr return relevance scores
 
     def add_field_filter_query(self, field: str, value: Union[list, str, None]):
         if not value or len(value) == 0:
