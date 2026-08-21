@@ -53,7 +53,6 @@ def test_grounding_should_not_match(text, unwanted_id):
         # word-order rearrangements (X of Y ↔ Y X)
         ("stenosis of larynx", "MONDO:0001305"),
         ("atrophy of tongue papillae", "MONDO:0001989"),
-        ("hypoplastic sternum", "UPHENO:0081193"),
     ],
 )
 @pytest.mark.skipif(
@@ -66,16 +65,27 @@ def test_grounding_ranks_exact_synonym_first(text, expected_id):  # pragma: no c
     assert matching_results[0].id == expected_id
 
 
+@pytest.mark.parametrize(
+    "text,owner_ids",
+    [
+        # Each of these is an exact synonym of two distinct terms that say the same thing:
+        # a uPheno cross-species class and its mouse-phenotype MP equivalent. They score
+        # identically, so which one lands first is decided by Lucene doc order and flips
+        # between KG builds — assert both are surfaced and that one of them leads, rather
+        # than pinning a winner. (Both are also word-order rearrangements of their labels,
+        # so these keep the "hypoplastic X" -> "X hypoplasia" coverage.)
+        ("hypoplastic mitral valve", {"UPHENO:0088546", "MP:0031523"}),
+        ("hypoplastic sternum", {"UPHENO:0081193", "MP:0004323"}),
+    ],
+)
 @pytest.mark.skipif(
     condition=not SolrImplementation().solr_is_available(),
     reason="Solr is not available",
 )
-def test_grounding_surfaces_all_exact_synonym_owners():  # pragma: no cover
-    # "hypoplastic mitral valve" is an exact synonym of two distinct "mitral valve hypoplasia" terms
-    # (a uPheno cross-species class and the mouse-phenotype MP term), so neither deterministically
-    # ranks first — assert grounding surfaces both rather than pinning a fragile order.
-    ids = {r.id for r in SolrImplementation().ground_entity("hypoplastic mitral valve")}
-    assert {"UPHENO:0088546", "MP:0031523"} <= ids
+def test_grounding_surfaces_all_exact_synonym_owners(text, owner_ids):  # pragma: no cover
+    ids = [r.id for r in SolrImplementation().ground_entity(text)]
+    assert owner_ids <= set(ids)
+    assert ids[0] in owner_ids
 
 
 @pytest.mark.parametrize(

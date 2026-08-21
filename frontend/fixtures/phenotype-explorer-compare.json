@@ -21,7 +21,7 @@
       "match_source_label": "integument phenotype",
       "match_target": "HP:0004325",
       "match_target_label": "Decreased body weight",
-      "score": 2.0645616988040345,
+      "score": 2.0655398059267633,
       "match_subsumer": "UPHENO:0002949",
       "match_subsumer_label": "multicellular organism phenotype",
       "similarity": {
@@ -36,11 +36,11 @@
         "ancestor_source": null,
         "object_information_content": null,
         "subject_information_content": null,
-        "ancestor_information_content": 2.0645616988040345,
+        "ancestor_information_content": 2.0655398059267633,
         "jaccard_similarity": 0.21621621621621623,
         "cosine_similarity": null,
         "dice_similarity": null,
-        "phenodigm_score": 0.668125526125392
+        "phenodigm_score": 0.6682837730197123
       }
     },
     "MP:0002169": {
@@ -48,7 +48,7 @@
       "match_source_label": "no abnormal phenotype detected",
       "match_target": "HP:0004325",
       "match_target_label": "Decreased body weight",
-      "score": 2.049643051112686,
+      "score": 2.047191337318941,
       "match_subsumer": "UPHENO:0001003",
       "match_subsumer_label": "taxon specific phenotype",
       "similarity": {
@@ -63,11 +63,11 @@
         "ancestor_source": null,
         "object_information_content": null,
         "subject_information_content": null,
-        "ancestor_information_content": 2.049643051112686,
+        "ancestor_information_content": 2.047191337318941,
         "jaccard_similarity": 0.06666666666666667,
         "cosine_similarity": null,
         "dice_similarity": null,
-        "phenodigm_score": 0.36965236381521904
+        "phenodigm_score": 0.369431214826156
       }
     }
   },
@@ -77,7 +77,7 @@
       "match_source_label": "Decreased body weight",
       "match_target": "MP:0010771",
       "match_target_label": "integument phenotype",
-      "score": 2.0645616988040345,
+      "score": 2.0655398059267633,
       "match_subsumer": "UPHENO:0002949",
       "match_subsumer_label": "multicellular organism phenotype",
       "similarity": {
@@ -92,15 +92,15 @@
         "ancestor_source": null,
         "object_information_content": null,
         "subject_information_content": null,
-        "ancestor_information_content": 2.0645616988040345,
+        "ancestor_information_content": 2.0655398059267633,
         "jaccard_similarity": 0.21621621621621623,
         "cosine_similarity": null,
         "dice_similarity": null,
-        "phenodigm_score": 0.668125526125392
+        "phenodigm_score": 0.6682837730197123
       }
     }
   },
-  "average_score": 2.060832036881197,
-  "best_score": 2.0645616988040345,
+  "average_score": 2.0609526887748078,
+  "best_score": 2.0655398059267633,
   "metric": "ancestor_information_content"
 }
