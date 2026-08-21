@@ -21,27 +21,17 @@ class OutputFormat(str, Enum):
     tsv = "tsv"
 
 
-class SearchFacetField(str, Enum):
-    """Entity fields `/search` will return facet counts for.
+# Every filterable axis of `/search`. Facet counts are the only practical way to discover
+# what these accept — `subsets` alone has 157 distinct values, including raw PURLs — so
+# `facets=true` returns all of them rather than making the caller name fields they would
+# have to already know about. Faceting the full set costs ~0.5ms over the default pair on a
+# filtered query; the expensive case is `q=*:*`, where the caller is asking for it on
+# purpose.
+ALL_SEARCH_FACET_FIELDS = ["category", "in_taxon", "in_taxon_label", "namespace", "subsets"]
 
-    An allow-list rather than free-form: faceting an arbitrary field is a cheap way to ask
-    Solr an expensive question, and these are the five that describe a filterable axis of
-    the endpoint. Facet counts are the only practical way to discover valid values —
-    `subsets` alone has 157 of them, including raw PURLs.
-    """
-
-    category = "category"
-    in_taxon = "in_taxon"
-    in_taxon_label = "in_taxon_label"
-    namespace = "namespace"
-    subsets = "subsets"
-
-    def __str__(self):
-        return self.value
-
-
-# Preserves the historical response shape for callers that don't ask for anything else.
-DEFAULT_SEARCH_FACET_FIELDS = [SearchFacetField.category, SearchFacetField.in_taxon_label]
+# What `/search` facets when `facets` is not passed: the two the web UI renders. Keeps the
+# response shape unchanged for existing callers.
+DEFAULT_SEARCH_FACET_FIELDS = ["category", "in_taxon_label"]
 
 
 class SearchMatchType(str, Enum):

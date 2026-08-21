@@ -3,10 +3,10 @@ from typing import List, Union
 from fastapi import APIRouter, Depends, Query, Response
 
 from monarch_py.api.additional_models import (
+    ALL_SEARCH_FACET_FIELDS,
     DEFAULT_SEARCH_FACET_FIELDS,
     OutputFormat,
     PaginationParams,
-    SearchFacetField,
     SearchMatchType,
 )
 from monarch_py.datamodels.search_scopes import SearchScope
@@ -57,11 +57,12 @@ async def search(
         "taxon where you did not pass them yourself; anything you do pass wins. The filters it "
         "resolved to come back on the response as `scope`",
     ),
-    facet_field: Union[List[SearchFacetField], None] = Query(
+    facets: Union[bool, None] = Query(
         default=None,
-        title="Fields to return facet counts for. Defaults to category and in_taxon_label; "
-        "request `namespace` or `subsets` to discover what values those filters accept "
-        "(`?q=*:*&limit=0&facet_field=subsets` lists them all with counts)",
+        title="`true` returns counts for every field you can filter on — category, taxon, "
+        "namespace and subsets — which is how you discover what values those filters accept "
+        "(try `?q=*:*&limit=0&facets=true`). `false` returns none. Omit for the category and "
+        "taxon counts the web UI uses",
     ),
     match_type: SearchMatchType = Query(
         default=SearchMatchType.relevance,
@@ -84,8 +85,9 @@ async def search(
         scope (SearchScope, optional): A named filter bundle. Supplies category, namespace, subset,
             exclude_subset and in_taxon where they were not passed explicitly; an explicit value
             wins for that axis. The resolved filters are echoed on the response. Defaults to None.
-        facet_field (SearchFacetField, optional): Fields to facet on. Defaults to category and
-            in_taxon_label.
+        facets (bool, optional): `True` facets every filterable field, which is how a caller
+            discovers what `namespace` and `subsets` accept. `False` disables faceting.
+            Omitted keeps the historical category + in_taxon_label counts. Defaults to None.
         match_type (SearchMatchType, optional): `relevance` (default) or `exact`. In `exact` mode
             a result is returned only when `q` equals the entity's name or one of its exact
             synonyms as a whole string, case-insensitively; otherwise the result set is empty.
@@ -97,7 +99,10 @@ async def search(
     Returns:
         EntityResults
     """
-    facet_fields = [str(f) for f in (facet_field or DEFAULT_SEARCH_FACET_FIELDS)]
+    if facets is None:
+        facet_fields = DEFAULT_SEARCH_FACET_FIELDS
+    else:
+        facet_fields = ALL_SEARCH_FACET_FIELDS if facets else []
     if category is None:
         category = []
     response = solr().search(

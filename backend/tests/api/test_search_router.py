@@ -94,25 +94,38 @@ def test_search_scope_and_namespace_params(mock_search, search):
 
 @patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.search")
 def test_search_facet_fields_default_unchanged(mock_search, search):
-    """Existing callers keep the response shape they had before facet_field existed."""
+    """Omitting `facets` entirely keeps the response shape existing callers already get."""
     mock_search.return_value = SearchResults(**search)
     client.get("/search?q=heart")
     assert mock_search.call_args.kwargs["facet_fields"] == ["category", "in_taxon_label"]
 
 
 @patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.search")
-def test_search_facet_fields_are_opt_in(mock_search, search):
+def test_facets_true_turns_on_every_filterable_field(mock_search, search):
+    """A caller who needs to discover valid `subsets` values doesn't know the field is
+    called `subsets` — so the switch is on/off, not a field list."""
     mock_search.return_value = SearchResults(**search)
-    params = {"q": "heart", "facet_field": ["subsets", "namespace"]}
-    client.get(f"/search?{urllib.parse.urlencode(params, doseq=True)}")
-    assert mock_search.call_args.kwargs["facet_fields"] == ["subsets", "namespace"]
+    client.get("/search?q=heart&facets=true")
+    assert mock_search.call_args.kwargs["facet_fields"] == [
+        "category",
+        "in_taxon",
+        "in_taxon_label",
+        "namespace",
+        "subsets",
+    ]
 
 
-def test_search_rejects_unknown_facet_field():
-    """Faceting an arbitrary field is a cheap way to ask Solr an expensive question."""
+@patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.search")
+def test_facets_false_turns_faceting_off(mock_search, search):
+    mock_search.return_value = SearchResults(**search)
+    client.get("/search?q=heart&facets=false")
+    assert mock_search.call_args.kwargs["facet_fields"] == []
+
+
+def test_search_rejects_non_boolean_facets():
     with pytest.raises(RequestValidationError) as excinfo:
-        client.get("/search?q=heart&facet_field=description")
-    assert excinfo.value.errors()[0]["loc"] == ("query", "facet_field", 0)
+        client.get("/search?q=heart&facets=subsets")
+    assert excinfo.value.errors()[0]["loc"] == ("query", "facets")
 
 
 def test_search_rejects_unknown_scope():
