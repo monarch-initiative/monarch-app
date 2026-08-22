@@ -393,7 +393,9 @@ let searchDebounce: ReturnType<typeof setTimeout> | null = null;
 const facetFields = [
   "category",
   "subject_category",
+  "subject_namespace",
   "object_category",
+  "object_namespace",
   "predicate",
   "subject_taxon_label",
   "object_taxon_label",
@@ -413,7 +415,13 @@ const categoryFacets = computed(() => getFacetValues("category"));
 const subjectCategoryFacets = computed(() =>
   getFacetValues("subject_category"),
 );
+const subjectNamespaceFacets = computed(() =>
+  getFacetValues("subject_namespace"),
+);
 const objectCategoryFacets = computed(() => getFacetValues("object_category"));
+const objectNamespaceFacets = computed(() =>
+  getFacetValues("object_namespace"),
+);
 const predicateFacets = computed(() => getFacetValues("predicate"));
 const subjectTaxonFacets = computed(() =>
   getFacetValues("subject_taxon_label"),
@@ -470,6 +478,12 @@ const facetConfigs = computed<FacetConfig[]>(() => {
       formatter: formatCategory,
     },
     {
+      filterKey: "subjectNamespace",
+      label: "Subject Namespace",
+      values: subjectNamespaceFacets,
+      formatter: identity,
+    },
+    {
       filterKey: "predicate",
       label: "Predicate",
       values: predicateFacets,
@@ -480,6 +494,12 @@ const facetConfigs = computed<FacetConfig[]>(() => {
       label: "Object Category",
       values: objectCategoryFacets,
       formatter: formatCategory,
+    },
+    {
+      filterKey: "objectNamespace",
+      label: "Object Namespace",
+      values: objectNamespaceFacets,
+      formatter: identity,
     },
     {
       filterKey: "subjectTaxonLabel",
