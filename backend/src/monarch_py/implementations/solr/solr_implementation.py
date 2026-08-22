@@ -22,7 +22,9 @@ from monarch_py.datamodels.model import (
     NodeHierarchy,
     NodeRelationship,
     SearchResults,
+    SearchScopeResolution,
 )
+from monarch_py.datamodels.search_scopes import resolve_scope
 from monarch_py.datamodels.solr import core
 from monarch_py.datamodels.category_enums import (
     AssociationCategory,
@@ -45,6 +47,9 @@ from monarch_py.implementations.solr.solr_parsers import (
     parse_search,
 )
 from monarch_py.implementations.solr.solr_query_utils import (
+    exact_name_filter_query,
+    exact_synonym_candidate_filter_query,
+    id_filter_query,
     build_association_counts_query,
     build_association_query,
     build_association_table_query,
@@ -72,6 +77,16 @@ from monarch_py.utils.entity_utils import get_expanded_curie, get_uri
 from monarch_py.utils.utils import get_provided_by_link, get_links_for_field
 
 logger = logging.getLogger(__name__)
+
+# Upper bound on the candidate set exact-match search scans before the scope check in
+# parse_search. Whole-string collisions are usually a handful, but short gene symbols are
+# shared by well over a thousand entities, so this is sized for that tail rather than the
+# common case. The scan requests only the three fields match_provenance reads.
+# Bound on the synonym-only candidates exact search inspects in Python. Only entities that
+# matched a synonym *and not* the name land here, which is a handful even for the worst
+# whole-string collisions in the index (15 rows against 1,744 name matches, for `FP`). Kept
+# well under Lucene's default 1,024-clause limit, since these ids become an id filter.
+EXACT_SYNONYM_SCAN_ROWS = 500
 
 
 @dataclass
@@ -651,12 +666,20 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         self,
         q: str = "*:*",
         category: Union[List[EntityCategory], None] = None,
+        namespace: Union[List[str], None] = None,
+        exclude_namespace: Union[List[str], None] = None,
+        in_taxon: Union[List[str], None] = None,
         in_taxon_label: Union[List[str], None] = None,
+        subset: Union[List[str], None] = None,
+        exclude_subset: Union[List[str], None] = None,
+        scope: Union[str, None] = None,
         facet_fields: Union[List[str], None] = None,
         facet_queries: Union[List[str], None] = None,
+        facet_limit: Union[int, None] = None,
         filter_queries: Union[List[str], None] = None,
         sort: Optional[str] = None,
         highlighting: bool = False,
+        exact: bool = False,
         offset: int = 0,
         limit: int = 20,
     ) -> SearchResults:
@@ -667,31 +690,166 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             offset (int): Result offset, for pagination. Defaults to 0.
             limit (int): Limit results to specified number. Defaults to 20.
             category (List[str]): Filter to only entities matching the specified categories. Defaults to None.
+            namespace (List[str]): Filter to only entities whose CURIE uses one of these namespaces
+                (e.g. ["MONDO", "HP"]). Defaults to None.
+            exclude_namespace (List[str]): Drop entities whose CURIE uses one of these namespaces.
+                Defaults to None.
+            scope (str): A named filter bundle (see `search_scopes`). Supplies category, namespace,
+                subset, exclude_subset and in_taxon where they were not passed explicitly; an
+                explicit value wins for that axis. Defaults to None.
+            in_taxon (List[str]): Filter to only entities matching the specified taxon CURIEs. Defaults to None.
             in_taxon_label (List[str]): Filter to only entities matching the specified taxon label. Defaults to None.
+            subset (List[str]): Filter to only entities in the specified subsets, `venom_*` prefixes
+                allowed. Defaults to None.
+            exclude_subset (List[str]): Drop entities in the specified subsets, same syntax as
+                `subset`. Defaults to None.
             facet_fields (List[str]): List of fields to include facet counts for. Defaults to None.
             facet_queries (List[str]): List of queries to include facet counts for. Defaults to None.
+            facet_limit (int): Maximum facet values per field; -1 for all. Solr defaults to 100,
+                which silently truncates `subsets`. Defaults to None.
             filter_queries (List[str]): List of queries to filter results by. Defaults to None.
             sort (str): Sort results by the specified field. Defaults to None.
+            exact (bool): Return only entities whose name or exact synonym equals `q` as a whole
+                string, and an empty result set when none does. Defaults to False.
 
         Returns:
             SearchResults: Dataclass representing results of a search.
         """
-        query = build_search_query(
-            q=q,
+        # A scope only supplies axes the caller left unset, so `resolved` is what was
+        # actually applied and is safe to echo back verbatim.
+        resolved = resolve_scope(
+            scope,
             category=[c.value for c in category] if category else None,
+            namespace=namespace,
+            exclude_namespace=exclude_namespace,
+            subset=subset,
+            exclude_subset=exclude_subset,
+            in_taxon=in_taxon,
             in_taxon_label=in_taxon_label,
-            facet_fields=facet_fields,
+        )
+        build_kwargs = dict(
+            category=resolved.get("category"),
+            namespace=resolved.get("namespace"),
+            exclude_namespace=resolved.get("exclude_namespace"),
+            in_taxon=resolved.get("in_taxon"),
+            in_taxon_label=resolved.get("in_taxon_label"),
+            subset=resolved.get("subset"),
+            exclude_subset=resolved.get("exclude_subset"),
             facet_queries=facet_queries,
-            filter_queries=filter_queries,
             highlighting=highlighting,
             sort=sort,
+        )
+        if exact:
+            results = self._exact_search(
+                q=q,
+                filter_queries=filter_queries,
+                facet_fields=facet_fields,
+                facet_limit=facet_limit,
+                offset=offset,
+                limit=limit,
+                **build_kwargs,
+            )
+        else:
+            query = build_search_query(
+                q=q,
+                facet_fields=facet_fields,
+                facet_limit=facet_limit,
+                filter_queries=filter_queries,
+                offset=offset,
+                limit=limit,
+                **build_kwargs,
+            )
+            solr = SolrService(base_url=self.base_url, core=core.ENTITY)
+            results = parse_search(solr.query(query), offset=offset, limit=limit, q=q)
+        if scope:
+            results.scope = SearchScopeResolution(name=str(scope), **resolved)
+        return results
+
+    def _exact_search(
+        self,
+        q: str,
+        filter_queries: Union[List[str], None] = None,
+        facet_fields: Union[List[str], None] = None,
+        facet_limit: Union[int, None] = None,
+        offset: int = 0,
+        limit: int = 20,
+        **build_kwargs,
+    ) -> SearchResults:
+        """Run `search` under the exact-match contract.
+
+        A hit on `name_grounding` *is* an exact name match, so Solr can decide those on its
+        own. The only rows that need inspecting here are the ones that matched some synonym
+        but not the name, because `synonym_grounding` copies the union `synonym` field and
+        cannot tell an exact synonym from a broad, narrow or related one.
+
+        That distinction is what keeps this cheap. For `q=FP` the index has 1,753 whole-string
+        candidates, of which 1,744 are name matches and 9 are synonym-only — so the set that
+        comes back to Python is the 9, and the 1,744 are left to Solr, which then does the
+        counting, ordering, paging and faceting natively.
+
+        (An `exact_synonym_grounding` copy field in the KG's Solr schema would remove the
+        second query entirely; this shape exists only because there isn't one.)
+        """
+        solr = SolrService(base_url=self.base_url, core=core.ENTITY)
+
+        if not q or q.strip() in ("", "*:*"):
+            # A blank search is a browse, not a claim that some entity is named "*:*". There
+            # is nothing here that could be an exact match, so don't ask Solr.
+            return SearchResults(items=[], limit=limit, offset=offset, total=0)
+
+        exact_filter = exact_name_filter_query(q)
+        synonym_ids = self._exact_synonym_ids(solr, q, filter_queries, build_kwargs)
+        if synonym_ids:
+            exact_filter = f"({exact_filter}) OR ({id_filter_query(synonym_ids, cache=False)})"
+
+        query = build_search_query(
+            q=q,
+            exact_filter=exact_filter,
+            facet_fields=facet_fields,
+            facet_limit=facet_limit,
+            filter_queries=filter_queries,
             offset=offset,
             limit=limit,
+            **build_kwargs,
         )
-        solr = SolrService(base_url=self.base_url, core=core.ENTITY)
-        query_result = solr.query(query)
-        results = parse_search(query_result)
-        return results
+        # Not `exact=True`: every row this returns is exact by construction, so re-deciding
+        # it here could only drop a row Solr counted, leaving `total` disagreeing with
+        # `items`. Provenance is still annotated.
+        return parse_search(solr.query(query), offset=offset, limit=limit, q=q)
+
+    def _exact_synonym_ids(
+        self,
+        solr: SolrService,
+        q: str,
+        filter_queries: Union[List[str], None],
+        build_kwargs: dict,
+    ) -> List[str]:
+        """Ids of entities whose *exact* synonym is `q`, among those whose name is not."""
+        scan = build_search_query(
+            q=q,
+            exact_filter=exact_synonym_candidate_filter_query(q),
+            filter_queries=filter_queries,
+            offset=0,
+            limit=EXACT_SYNONYM_SCAN_ROWS,
+            **build_kwargs,
+        )
+        # Only what match_provenance reads plus the two fields SearchResult requires. `fl`
+        # bounds the returned fields but not the highlighter, which would otherwise run over
+        # every candidate, so turn it off here — the page query re-derives it for the rows
+        # actually returned.
+        scan.fl = "id,category,name,exact_synonym"
+        scan.hl = False
+        scan.facet = True
+        scan.facet_fields = []
+        result = solr.query(scan)
+        if result.response.num_found > EXACT_SYNONYM_SCAN_ROWS:
+            logger.warning(
+                f"Exact search for {q!r} has {result.response.num_found} synonym-only "
+                f"candidates, above the {EXACT_SYNONYM_SCAN_ROWS}-row scan cap; entities "
+                f"whose exact synonym is {q!r} may be missing from the results."
+            )
+        scanned = parse_search(result, q=q, exact=True)
+        return [item.id for item in scanned.items]
 
     def autocomplete(
         self, q: str, category: List[EntityCategory] = None, prioritized_predicates: List[AssociationPredicate] = None

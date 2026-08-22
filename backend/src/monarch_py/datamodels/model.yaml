@@ -10,6 +10,29 @@ imports:
 - monarch_kg_schema
 default_range: string
 enums:
+  MatchedFieldEnum:
+    description: The entity field that a search query matched as a whole string
+    permissible_values:
+      name:
+        description: The query matched the entity's primary label
+      exact_synonym:
+        description: The query matched a synonym asserted to mean the same thing as the
+          entity's label
+      broad_synonym:
+        description: The query matched a synonym broader than the entity
+      narrow_synonym:
+        description: The query matched a synonym narrower than the entity
+      related_synonym:
+        description: The query matched a synonym merely related to the entity
+  MatchTypeEnum:
+    description: How defensible a search hit is as an identification of the query text
+    permissible_values:
+      exact:
+        description: Whole-string, case-insensitive match on the entity's name or one of
+          its exact synonyms — the query names this entity and no other reading is implied
+      synonym:
+        description: Whole-string match on a broad, narrow or related synonym — the query
+          is adjacent to this entity but does not name it
   AssociationDirectionEnum:
     description: The directionality of an association as it relates to a specified
       entity, with edges being categorized as incoming or outgoing
@@ -259,10 +282,42 @@ classes:
     - limit
     - offset
     - total
+  SearchScopeResolution:
+    description: >-
+      The filters a named `scope` resolved to, echoed back so a caller can see what was
+      filtered, log it, and reproduce or override it with the raw filter parameters. These
+      are the filters actually applied, so an explicit parameter that overrode part of the
+      scope is reflected here.
+    slots:
+    - name
+    - category
+    - namespace
+    - exclude_namespace
+    - subset
+    - exclude_subset
+    - in_taxon
+    - in_taxon_label
+    slot_usage:
+      name:
+        description: The scope that was requested
+      category:
+        description: The biolink categories the search was restricted to
+        multivalued: true
+      namespace:
+        description: The CURIE namespaces the search was restricted to
+        multivalued: true
+      in_taxon:
+        description: The taxon CURIEs the search was restricted to
+        multivalued: true
+      in_taxon_label:
+        description: The taxon labels the search was restricted to
+        multivalued: true
   SearchResult:
     is_a: Entity
     slots:
     - score
+    - matched_field
+    - match_type
     slot_usage:
       category:
         required: true
@@ -274,6 +329,7 @@ classes:
     - items
     - facet_fields
     - facet_queries
+    - scope
     slot_usage:
       items:
         range: SearchResult
@@ -872,6 +928,30 @@ slots:
     inlined_as_list: true
   score:
     range: float
+  subset:
+    description: An ontology subset that entities were restricted to
+    range: string
+    multivalued: true
+  exclude_subset:
+    description: An ontology subset that entities were excluded by
+    range: string
+    multivalued: true
+  exclude_namespace:
+    description: A CURIE namespace that entities were excluded by
+    range: string
+    multivalued: true
+  scope:
+    description: The concrete filters a named search scope resolved to
+    range: SearchScopeResolution
+  matched_field:
+    description: Which field of the entity the search query matched as a whole string,
+      or null when the hit came from a partial or tokenized match
+    range: MatchedFieldEnum
+  match_type:
+    description: How the search query matched this entity, or null when the hit came from
+      a partial or tokenized match. Solr does not report which clause of the query
+      produced a hit, so this is populated only for matches the API can verify itself.
+    range: MatchTypeEnum
   sex_qualifier:
     range: string
   stage_qualifier:

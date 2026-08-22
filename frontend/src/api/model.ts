@@ -21,6 +21,32 @@ export type GridBinId = string;
 export type QualifierId = string;
 export type GridCellDataId = string;
 /**
+* The entity field that a search query matched as a whole string
+*/
+export enum MatchedFieldEnum {
+    
+    /** The query matched the entity's primary label */
+    name = "name",
+    /** The query matched a synonym asserted to mean the same thing as the entity's label */
+    exact_synonym = "exact_synonym",
+    /** The query matched a synonym broader than the entity */
+    broad_synonym = "broad_synonym",
+    /** The query matched a synonym narrower than the entity */
+    narrow_synonym = "narrow_synonym",
+    /** The query matched a synonym merely related to the entity */
+    related_synonym = "related_synonym",
+};
+/**
+* How defensible a search hit is as an identification of the query text
+*/
+export enum MatchTypeEnum {
+    
+    /** Whole-string, case-insensitive match on the entity's name or one of its exact synonyms — the query names this entity and no other reading is implied */
+    exact = "exact",
+    /** Whole-string match on a broad, narrow or related synonym — the query is adjacent to this entity but does not name it */
+    synonym = "synonym",
+};
+/**
 * The directionality of an association as it relates to a specified entity, with edges being categorized as incoming or outgoing
 */
 export enum AssociationDirectionEnum {
@@ -590,9 +616,36 @@ export interface Results {
 }
 
 
+/**
+ * The filters a named `scope` resolved to, echoed back so a caller can see what was filtered, log it, and reproduce or override it with the raw filter parameters. These are the filters actually applied, so an explicit parameter that overrode part of the scope is reflected here.
+ */
+export interface SearchScopeResolution {
+    /** The scope that was requested */
+    name?: string,
+    /** The biolink categories the search was restricted to */
+    category?: string[],
+    /** The CURIE namespaces the search was restricted to */
+    namespace?: string[],
+    /** A CURIE namespace that entities were excluded by */
+    exclude_namespace?: string[],
+    /** An ontology subset that entities were restricted to */
+    subset?: string[],
+    /** An ontology subset that entities were excluded by */
+    exclude_subset?: string[],
+    /** The taxon CURIEs the search was restricted to */
+    in_taxon?: string[],
+    /** The taxon labels the search was restricted to */
+    in_taxon_label?: string[],
+}
+
+
 
 export interface SearchResult extends Entity {
     score?: number,
+    /** Which field of the entity the search query matched as a whole string, or null when the hit came from a partial or tokenized match */
+    matched_field?: string,
+    /** How the search query matched this entity, or null when the hit came from a partial or tokenized match. Solr does not report which clause of the query produced a hit, so this is populated only for matches the API can verify itself. */
+    match_type?: string,
 }
 
 
@@ -604,6 +657,8 @@ export interface SearchResults extends Results {
     facet_fields?: FacetField[],
     /** Collection of facet query responses with the query string values and counts */
     facet_queries?: FacetValue[],
+    /** The concrete filters a named search scope resolved to */
+    scope?: SearchScopeResolution,
 }
 
 

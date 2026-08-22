@@ -63,6 +63,46 @@ class LinkMLMeta(RootModel):
 
 linkml_meta = None
 
+class MatchedFieldEnum(str, Enum):
+    """
+    The entity field that a search query matched as a whole string
+    """
+    name = "name"
+    """
+    The query matched the entity's primary label
+    """
+    exact_synonym = "exact_synonym"
+    """
+    The query matched a synonym asserted to mean the same thing as the entity's label
+    """
+    broad_synonym = "broad_synonym"
+    """
+    The query matched a synonym broader than the entity
+    """
+    narrow_synonym = "narrow_synonym"
+    """
+    The query matched a synonym narrower than the entity
+    """
+    related_synonym = "related_synonym"
+    """
+    The query matched a synonym merely related to the entity
+    """
+
+
+class MatchTypeEnum(str, Enum):
+    """
+    How defensible a search hit is as an identification of the query text
+    """
+    exact = "exact"
+    """
+    Whole-string, case-insensitive match on the entity's name or one of its exact synonyms — the query names this entity and no other reading is implied
+    """
+    synonym = "synonym"
+    """
+    Whole-string match on a broad, narrow or related synonym — the query is adjacent to this entity but does not name it
+    """
+
+
 class AssociationDirectionEnum(str, Enum):
     """
     The directionality of an association as it relates to a specified entity, with edges being categorized as incoming or outgoing
@@ -653,8 +693,24 @@ class MultiEntityAssociationResults(Results):
     total: int = Field(default=..., description="""total number of items matching a query""")
 
 
+class SearchScopeResolution(ConfiguredBaseModel):
+    """
+    The filters a named `scope` resolved to, echoed back so a caller can see what was filtered, log it, and reproduce or override it with the raw filter parameters. These are the filters actually applied, so an explicit parameter that overrode part of the scope is reflected here.
+    """
+    name: Optional[str] = Field(default=None, description="""The scope that was requested""")
+    category: Optional[list[str]] = Field(default=None, description="""The biolink categories the search was restricted to""")
+    namespace: Optional[list[str]] = Field(default=None, description="""The CURIE namespaces the search was restricted to""")
+    exclude_namespace: Optional[list[str]] = Field(default=None, description="""A CURIE namespace that entities were excluded by""")
+    subset: Optional[list[str]] = Field(default=None, description="""An ontology subset that entities were restricted to""")
+    exclude_subset: Optional[list[str]] = Field(default=None, description="""An ontology subset that entities were excluded by""")
+    in_taxon: Optional[list[str]] = Field(default=None, description="""The taxon CURIEs the search was restricted to""")
+    in_taxon_label: Optional[list[str]] = Field(default=None, description="""The taxon labels the search was restricted to""")
+
+
 class SearchResult(Entity):
     score: Optional[float] = Field(default=None)
+    matched_field: Optional[MatchedFieldEnum] = Field(default=None, description="""Which field of the entity the search query matched as a whole string, or null when the hit came from a partial or tokenized match""")
+    match_type: Optional[MatchTypeEnum] = Field(default=None, description="""How the search query matched this entity, or null when the hit came from a partial or tokenized match. Solr does not report which clause of the query produced a hit, so this is populated only for matches the API can verify itself.""")
     id: str = Field(default=...)
     category: str = Field(default=...)
     name: str = Field(default=...)
@@ -695,6 +751,7 @@ class SearchResults(Results):
     items: list[SearchResult] = Field(default=..., description="""A collection of items, with the type to be overriden by slot_usage""")
     facet_fields: Optional[list[FacetField]] = Field(default=None, description="""Collection of facet field responses with the field values and counts""")
     facet_queries: Optional[list[FacetValue]] = Field(default=None, description="""Collection of facet query responses with the query string values and counts""")
+    scope: Optional[SearchScopeResolution] = Field(default=None, description="""The concrete filters a named search scope resolved to""")
     limit: int = Field(default=..., description="""number of items to return in a response""")
     offset: int = Field(default=..., description="""offset into the total number of items""")
     total: int = Field(default=..., description="""total number of items matching a query""")
@@ -884,6 +941,7 @@ CategoryGroupedAssociationResults.model_rebuild()
 EntityResults.model_rebuild()
 MappingResults.model_rebuild()
 MultiEntityAssociationResults.model_rebuild()
+SearchScopeResolution.model_rebuild()
 SearchResult.model_rebuild()
 SearchResults.model_rebuild()
 TextAnnotationResult.model_rebuild()
