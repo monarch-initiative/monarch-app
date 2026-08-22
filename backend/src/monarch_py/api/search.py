@@ -1,6 +1,8 @@
 from typing import List, Union
 
 from fastapi import APIRouter, Depends, Query, Response
+from pydantic import StringConstraints
+from typing_extensions import Annotated
 
 from monarch_py.api.additional_models import (
     ALL_FACET_VALUES,
@@ -10,11 +12,18 @@ from monarch_py.api.additional_models import (
     PaginationParams,
     SearchMatchType,
 )
-from monarch_py.datamodels.search_scopes import SearchScope
 from monarch_py.api.config import solr
 from monarch_py.datamodels.model import SearchResults, MappingResults
 from monarch_py.datamodels.category_enums import EntityCategory, MappingPredicate
+from monarch_py.datamodels.search_scopes import SearchScope
 from monarch_py.utils.format_utils import to_tsv
+
+# `subsets` is a Solr `string` field, so only a trailing `*` is a meaningful wildcard.
+# Anything else (`*rare`, `ven*om`) would be escaped to a literal and match nothing at
+# all — indistinguishable from "no such subset", so reject it instead.
+SUBSET_PATTERN = r"^[^*]*\*?$"
+# Constrain the list *items*: a pattern on List[str] would be applied to the list.
+SubsetName = Annotated[str, StringConstraints(pattern=SUBSET_PATTERN)]
 
 router = APIRouter(
     tags=["search"],
@@ -42,14 +51,16 @@ async def search(
         title="Drop entities whose CURIE uses one of these namespaces",
         examples=["MPATH"],
     ),
-    subset: Union[List[str], None] = Query(
+    subset: Union[List[SubsetName], None] = Query(
         default=None,
-        title="Restrict to entities in any of these ontology subsets, trailing `*` allowed",
+        title="Restrict to entities in any of these ontology subsets. A trailing `*` is a "
+        "prefix match; `*` anywhere else is rejected rather than matching nothing",
         examples=["rare", "venom_*"],
     ),
-    exclude_subset: Union[List[str], None] = Query(
+    exclude_subset: Union[List[SubsetName], None] = Query(
         default=None,
-        title="Drop entities in any of these ontology subsets, trailing `*` allowed",
+        title="Drop entities in any of these ontology subsets. A trailing `*` is a prefix "
+        "match; `*` anywhere else is rejected rather than matching nothing",
         examples=["venom_*"],
     ),
     scope: Union[SearchScope, None] = Query(

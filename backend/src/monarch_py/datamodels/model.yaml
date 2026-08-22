@@ -292,9 +292,11 @@ classes:
     - name
     - category
     - namespace
+    - exclude_namespace
     - subset
     - exclude_subset
     - in_taxon
+    - in_taxon_label
     slot_usage:
       name:
         description: The scope that was requested
@@ -306,6 +308,9 @@ classes:
         multivalued: true
       in_taxon:
         description: The taxon CURIEs the search was restricted to
+        multivalued: true
+      in_taxon_label:
+        description: The taxon labels the search was restricted to
         multivalued: true
   SearchResult:
     is_a: Entity
@@ -929,6 +934,10 @@ slots:
     multivalued: true
   exclude_subset:
     description: An ontology subset that entities were excluded by
+    range: string
+    multivalued: true
+  exclude_namespace:
+    description: A CURIE namespace that entities were excluded by
     range: string
     multivalued: true
   scope:

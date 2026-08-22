@@ -700,9 +700,11 @@ class SearchScopeResolution(ConfiguredBaseModel):
     name: Optional[str] = Field(default=None, description="""The scope that was requested""")
     category: Optional[list[str]] = Field(default=None, description="""The biolink categories the search was restricted to""")
     namespace: Optional[list[str]] = Field(default=None, description="""The CURIE namespaces the search was restricted to""")
+    exclude_namespace: Optional[list[str]] = Field(default=None, description="""A CURIE namespace that entities were excluded by""")
     subset: Optional[list[str]] = Field(default=None, description="""An ontology subset that entities were restricted to""")
     exclude_subset: Optional[list[str]] = Field(default=None, description="""An ontology subset that entities were excluded by""")
     in_taxon: Optional[list[str]] = Field(default=None, description="""The taxon CURIEs the search was restricted to""")
+    in_taxon_label: Optional[list[str]] = Field(default=None, description="""The taxon labels the search was restricted to""")
 
 
 class SearchResult(Entity):

@@ -28,6 +28,12 @@ class SearchScope(str, Enum):
         return self.value
 
 
+# The axes a scope can supply. `resolve_scope` also carries through axes no scope sets
+# (exclude_namespace, in_taxon_label) so that what is echoed to the caller is the complete
+# set of filters applied, not just the ones a scope had an opinion about.
+SCOPED_AXES = ("category", "namespace", "subset", "exclude_subset", "in_taxon")
+
+
 @dataclass(frozen=True)
 class ScopeDefinition:
     """The filters a scope expands to. Empty lists mean "this scope says nothing about
@@ -86,7 +92,7 @@ def resolve_scope(scope, **explicit) -> dict:
     if scope is None:
         return resolved
     definition = SEARCH_SCOPES[SearchScope(scope)]
-    for axis in ("category", "namespace", "subset", "exclude_subset", "in_taxon"):
+    for axis in SCOPED_AXES:
         if not resolved.get(axis):
             scoped = getattr(definition, axis)
             if scoped:

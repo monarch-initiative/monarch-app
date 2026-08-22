@@ -626,12 +626,16 @@ export interface SearchScopeResolution {
     category?: string[],
     /** The CURIE namespaces the search was restricted to */
     namespace?: string[],
+    /** A CURIE namespace that entities were excluded by */
+    exclude_namespace?: string[],
     /** An ontology subset that entities were restricted to */
     subset?: string[],
     /** An ontology subset that entities were excluded by */
     exclude_subset?: string[],
     /** The taxon CURIEs the search was restricted to */
     in_taxon?: string[],
+    /** The taxon labels the search was restricted to */
+    in_taxon_label?: string[],
 }
 
 

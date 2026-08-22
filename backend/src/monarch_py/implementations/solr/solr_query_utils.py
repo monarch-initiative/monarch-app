@@ -338,6 +338,14 @@ def build_search_query(
         query.add_filter_query(subset_filter_query(exclude_subset, exclude=True))
     if exact and q and q != "*:*":
         query.add_filter_query(exact_match_filter_query(q))
+        # The filter fully determines the candidate set, so leaving the raw text as the
+        # edismax `q` can only subtract from it — and with q.op=AND and mm=100%, text that
+        # parses as operators rather than terms vetoes a true whole-string match. Uppercased
+        # NER output is the realistic case: "…, NOT Otherwise Specified" reads `NOT` as an
+        # operator and matches nothing, so exact mode would abstain on a string that differs
+        # from a stored name only by case. The boost above still sees the original text, so
+        # ordering among several exact matches is unaffected.
+        query.q = "*:*"
     if facet_fields:
         query.facet_fields = facet_fields
     if facet_queries:

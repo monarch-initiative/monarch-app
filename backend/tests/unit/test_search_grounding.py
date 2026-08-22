@@ -13,7 +13,12 @@ from monarch_py.api.additional_models import (
     ALL_SEARCH_FACET_FIELDS,
     DEFAULT_SEARCH_FACET_FIELDS,
 )
-from monarch_py.datamodels.search_scopes import SEARCH_SCOPES, SearchScope, resolve_scope
+from monarch_py.datamodels.search_scopes import (
+    SCOPED_AXES,
+    SEARCH_SCOPES,
+    SearchScope,
+    resolve_scope,
+)
 from monarch_py.datamodels.solr import SolrQueryResult
 from monarch_py.implementations.solr.solr_parsers import match_provenance, parse_search
 from monarch_py.implementations.solr.solr_query_utils import (
@@ -357,3 +362,42 @@ def test_facet_switch_covers_every_filterable_axis():
         "subsets",
     }
     assert set(DEFAULT_SEARCH_FACET_FIELDS) <= set(ALL_SEARCH_FACET_FIELDS)
+
+
+### Regressions from the third #1394 review ###
+
+
+def test_exact_mode_neutralises_the_query_text():
+    """The filter already determines the candidate set, so leaving the raw text as the
+    edismax `q` can only subtract. With q.op=AND and mm=100%, uppercased NER output like
+    "…, NOT Otherwise Specified" parses `NOT` as an operator and vetoes a true whole-string
+    match — exact mode would abstain on a string differing from a stored name only by case."""
+    query = build_search_query(q="Lymphoma, NOT Otherwise Specified", exact=True)
+    assert query.q == "*:*"
+    assert any("name_grounding" in fq for fq in query.filter_queries)
+
+
+def test_exact_mode_still_boosts_from_the_original_text():
+    """Neutralising `q` must not cost the ordering among several exact matches."""
+    query = build_search_query(q="ovarian carcinoma", exact=True)
+    assert "ovarian carcinoma" in query.boost
+
+
+def test_relevance_mode_leaves_the_query_alone():
+    assert build_search_query(q="ovarian carcinoma").q == "ovarian carcinoma"
+
+
+def test_scope_resolution_carries_axes_no_scope_sets():
+    """The echo claims to be the filters actually applied. If it omits an axis the caller
+    passed, replaying it gives a different answer than the request that produced it."""
+    resolved = resolve_scope("human_phenotype", exclude_namespace=["HP"], in_taxon_label=["Homo sapiens"])
+    assert resolved["exclude_namespace"] == ["HP"]
+    assert resolved["in_taxon_label"] == ["Homo sapiens"]
+    assert resolved["category"] == ["biolink:PhenotypicFeature"]
+
+
+def test_scoped_axes_are_the_ones_a_scope_can_set():
+    for definition in SEARCH_SCOPES.values():
+        for axis in ("category", "namespace", "subset", "exclude_subset", "in_taxon"):
+            assert axis in SCOPED_AXES
+        assert not getattr(definition, "exclude_namespace", None)

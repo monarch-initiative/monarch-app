@@ -365,3 +365,35 @@ def test_exact_search_scan_does_not_highlight():  # pragma: no cover
     si = SolrImplementation()
     results = si.search(q="Ovarian Carcinoma", category=[EntityCategory.DISEASE], exact=True)
     assert results.items  # the page query still runs with highlighting enabled
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "peripheral T-cell lymphoma, not otherwise specified",
+        "Peripheral T-cell Lymphoma, NOT Otherwise Specified",
+        "PERIPHERAL T-CELL LYMPHOMA, NOT OTHERWISE SPECIFIED",
+    ],
+)
+@pytest.mark.skipif(
+    condition=not SolrImplementation().solr_is_available(),
+    reason="Solr is not available",
+)
+def test_exact_search_is_case_insensitive_even_around_lucene_operators(text):  # pragma: no cover
+    """Exact mode promises case-insensitivity. Uppercased NER output turns `not` into the
+    Lucene operator `NOT`, which used to veto the match and make the same string succeed or
+    abstain depending only on its case."""
+    results = SolrImplementation().search(q=text, category=[EntityCategory.DISEASE], exact=True)
+    assert [item.id for item in results.items] == ["MONDO:0004964"]
+
+
+@pytest.mark.skipif(
+    condition=not SolrImplementation().solr_is_available(),
+    reason="Solr is not available",
+)
+def test_scope_echo_reports_filters_the_scope_did_not_set():  # pragma: no cover
+    """`scope=human_phenotype&exclude_namespace=HP` returns nothing; the echo has to show
+    the exclusion rather than an `namespace: [HP]` that contradicts the result set."""
+    results = SolrImplementation().search(q="short stature", scope="human_phenotype", exclude_namespace=["HP"], limit=5)
+    assert results.scope.exclude_namespace == ["HP"]
+    assert not any(item.id.startswith("HP:") for item in results.items)

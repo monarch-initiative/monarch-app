@@ -82,6 +82,12 @@ logger = logging.getLogger(__name__)
 # common case. The scan requests only the three fields match_provenance reads.
 EXACT_MATCH_SCAN_ROWS = 5000
 
+# If the candidate set turns out to be larger than the first scan asked for, the scan is
+# re-run at its true size rather than answering with a short `total` and an unreachable
+# tail. This bounds that re-run: past it we warn instead, because something has gone wrong
+# with the query rather than with the cap.
+EXACT_MATCH_MAX_SCAN_ROWS = 100_000
+
 
 @dataclass
 class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface, GroundingInterface):
@@ -715,16 +721,18 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             scope,
             category=[c.value for c in category] if category else None,
             namespace=namespace,
+            exclude_namespace=exclude_namespace,
             subset=subset,
             exclude_subset=exclude_subset,
             in_taxon=in_taxon,
+            in_taxon_label=in_taxon_label,
         )
         build_kwargs = dict(
             category=resolved.get("category"),
             namespace=resolved.get("namespace"),
-            exclude_namespace=exclude_namespace,
+            exclude_namespace=resolved.get("exclude_namespace"),
             in_taxon=resolved.get("in_taxon"),
-            in_taxon_label=in_taxon_label,
+            in_taxon_label=resolved.get("in_taxon_label"),
             subset=resolved.get("subset"),
             exclude_subset=resolved.get("exclude_subset"),
             facet_queries=facet_queries,
@@ -795,23 +803,31 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         # actually returned.
         scan.hl = False
         scan_result = solr.query(scan)
+        candidates = scan_result.response.num_found
+        if candidates > EXACT_MATCH_SCAN_ROWS:
+            # A short `total` is indistinguishable from a true one once it reaches the
+            # caller, and the tail would be unreachable by paging, so widen and re-scan.
+            # The scan reads four fields and doesn't highlight, so this stays affordable.
+            if candidates <= EXACT_MATCH_MAX_SCAN_ROWS:
+                scan.rows = candidates
+                scan_result = solr.query(scan)
+            else:
+                logger.warning(
+                    f"Exact search for {q!r} matched {candidates} candidates, above the "
+                    f"{EXACT_MATCH_MAX_SCAN_ROWS}-row ceiling; `total` is under-reported and "
+                    f"matches beyond it are not returned."
+                )
         scanned = parse_search(scan_result, q=q, exact=True)
         matching_ids = [item.id for item in scanned.items]
         total = len(matching_ids)
-        if scan_result.response.num_found > EXACT_MATCH_SCAN_ROWS:
-            # Past the cap this is the very failure the two-pass design exists to avoid, so
-            # say so rather than quietly reporting a short total.
-            logger.warning(
-                f"Exact search for {q!r} matched {scan_result.response.num_found} candidates, "
-                f"above the {EXACT_MATCH_SCAN_ROWS}-row scan cap; `total` is under-reported "
-                f"and matches beyond the cap are not returned."
-            )
 
         page_ids = matching_ids[offset : offset + limit]
         if not page_ids:
             return SearchResults(items=[], limit=limit, offset=offset, total=total)
 
-        id_filter = " OR ".join(f'id:"{escape_phrase(entity_id)}"' for entity_id in page_ids)
+        # {!cache=false}: this filter is unique to one page of one query, so caching it
+        # would evict the genuinely reusable category/namespace entries.
+        id_filter = "{!cache=false}" + " OR ".join(f'id:"{escape_phrase(entity_id)}"' for entity_id in page_ids)
         page = build_search_query(
             q=q,
             exact=True,
