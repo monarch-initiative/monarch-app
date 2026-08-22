@@ -74,8 +74,7 @@ async def search(
         title="`true` returns counts for every field you can filter on — category, taxon, "
         "namespace and subsets — which is how you discover what values those filters accept "
         "(try `?q=*:*&limit=0&facets=true`). `false` returns none. Omit for the category and "
-        "taxon counts the web UI uses. Ignored when `match_type=exact`, where Solr's counts "
-        "would describe the candidates rather than the matches that survived",
+        "taxon counts the web UI uses",
     ),
     match_type: SearchMatchType = Query(
         default=SearchMatchType.relevance,
@@ -101,7 +100,7 @@ async def search(
         facets (bool, optional): `True` facets every filterable field with no cap on values,
             which is how a caller discovers what `namespace` and `subsets` accept. `False`
             disables faceting. Omitted keeps the historical category + in_taxon_label counts.
-            Ignored under `match_type=exact`. Defaults to None.
+            Defaults to None.
         match_type (SearchMatchType, optional): `relevance` (default) or `exact`. In `exact` mode
             a result is returned only when `q` equals the entity's name or one of its exact
             synonyms as a whole string, case-insensitively; otherwise the result set is empty.

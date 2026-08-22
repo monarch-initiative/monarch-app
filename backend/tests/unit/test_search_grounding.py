@@ -25,7 +25,9 @@ from monarch_py.implementations.solr.solr_query_utils import (
     build_search_query,
     escape_phrase,
     escape_term,
-    exact_match_filter_query,
+    exact_name_filter_query,
+    exact_synonym_candidate_filter_query,
+    id_filter_query,
     subset_filter_query,
 )
 
@@ -57,9 +59,25 @@ def test_subset_filter_query_excludes_the_whole_disjunction():
     )
 
 
-def test_exact_match_filter_query_targets_the_grounding_copy_fields():
-    fq = exact_match_filter_query("septic shock")
-    assert fq == 'name_grounding:"septic shock" OR synonym_grounding:"septic shock"'
+def test_exact_name_filter_targets_the_grounding_copy_field():
+    """A hit here *is* an exact name match, so nothing needs to re-check it in Python."""
+    assert exact_name_filter_query("septic shock") == 'name_grounding:"septic shock"'
+
+
+def test_exact_synonym_candidates_exclude_the_name_matches():
+    """Excluding them is what keeps the set Python inspects small — 15 rows against 1,744
+    name matches for the worst collision in the index."""
+    fq = exact_synonym_candidate_filter_query("FP")
+    assert fq == 'synonym_grounding:"FP" AND -name_grounding:"FP"'
+
+
+def test_id_filter_query_can_opt_out_of_the_filter_cache():
+    assert id_filter_query(["MONDO:1"], cache=False) == '{!cache=false}id:"MONDO:1"'
+    assert id_filter_query(["MONDO:1"]) == 'id:"MONDO:1"'
+
+
+def test_id_filter_query_escapes_ids():
+    assert id_filter_query(['MONDO:1"']) == 'id:"MONDO:1\\""'
 
 
 @pytest.mark.parametrize(
@@ -94,17 +112,17 @@ def test_search_query_adds_taxon_curie_filter():
     assert 'in_taxon:"NCBITaxon:9606"' in query.filter_queries
 
 
-def test_search_query_adds_exact_filter_only_when_asked():
+def test_search_query_adds_exact_filter_only_when_given_one():
     plain = build_search_query(q="septic shock")
-    exact = build_search_query(q="septic shock", exact=True)
+    exact = build_search_query(q="septic shock", exact_filter=exact_name_filter_query("septic shock"))
     assert not any("name_grounding" in fq for fq in plain.filter_queries)
     assert any("name_grounding" in fq for fq in exact.filter_queries)
 
 
-def test_search_query_skips_exact_filter_for_blank_search():
-    """`*:*` is a browse, not a claim that some entity is named `*:*`. SolrImplementation
-    short-circuits this case before querying at all; the builder stays consistent with it."""
-    query = build_search_query(q="*:*", exact=True)
+def test_search_query_leaves_a_blank_search_alone():
+    """`*:*` is a browse, not a claim that some entity is named `*:*`; SolrImplementation
+    short-circuits it before ever building an exact filter."""
+    query = build_search_query(q="*:*")
     assert not any("name_grounding" in fq for fq in query.filter_queries)
 
 
@@ -242,16 +260,14 @@ def test_subset_wildcard_still_works_for_ordinary_prefixes():
 def test_exact_match_filter_query_strips_the_query():
     """`name_grounding` is a KeywordTokenizer field, so padding is part of the term: an
     unstripped query finds no candidates at all for text match_provenance calls exact."""
-    assert exact_match_filter_query("  Septic shock ") == (
-        'name_grounding:"Septic shock" OR synonym_grounding:"Septic shock"'
-    )
+    assert exact_name_filter_query("  Septic shock ") == 'name_grounding:"Septic shock"'
 
 
 def test_exact_filter_and_provenance_agree_on_padding():
     """The two halves of the exact contract have to normalise the same way, or the filter
     excludes candidates the scope check would accept."""
     padded = "  septic shock  "
-    assert exact_match_filter_query(padded) == exact_match_filter_query(padded.strip())
+    assert exact_name_filter_query(padded) == exact_name_filter_query(padded.strip())
     assert match_provenance(padded, {"name": "septic shock"}) == ("name", "exact")
 
 
@@ -372,14 +388,17 @@ def test_exact_mode_neutralises_the_query_text():
     edismax `q` can only subtract. With q.op=AND and mm=100%, uppercased NER output like
     "…, NOT Otherwise Specified" parses `NOT` as an operator and vetoes a true whole-string
     match — exact mode would abstain on a string differing from a stored name only by case."""
-    query = build_search_query(q="Lymphoma, NOT Otherwise Specified", exact=True)
+    query = build_search_query(
+        q="Lymphoma, NOT Otherwise Specified",
+        exact_filter=exact_name_filter_query("Lymphoma, NOT Otherwise Specified"),
+    )
     assert query.q == "*:*"
     assert any("name_grounding" in fq for fq in query.filter_queries)
 
 
 def test_exact_mode_still_boosts_from_the_original_text():
     """Neutralising `q` must not cost the ordering among several exact matches."""
-    query = build_search_query(q="ovarian carcinoma", exact=True)
+    query = build_search_query(q="ovarian carcinoma", exact_filter=exact_name_filter_query("ovarian carcinoma"))
     assert "ovarian carcinoma" in query.boost
 
 
@@ -401,3 +420,12 @@ def test_scoped_axes_are_the_ones_a_scope_can_set():
         for axis in ("category", "namespace", "subset", "exclude_subset", "in_taxon"):
             assert axis in SCOPED_AXES
         assert not getattr(definition, "exclude_namespace", None)
+
+
+def test_exact_search_splits_name_matches_from_synonym_candidates():
+    """The two halves must not overlap: if the synonym scan re-scanned the name matches,
+    the set Python inspects would be the whole candidate set again (1,753 rows for `FP`
+    rather than 9), which is the shape this design exists to avoid."""
+    name_fq = exact_name_filter_query("FP")
+    synonym_fq = exact_synonym_candidate_filter_query("FP")
+    assert f"-{name_fq}" in synonym_fq

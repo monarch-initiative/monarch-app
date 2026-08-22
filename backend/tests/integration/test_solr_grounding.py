@@ -248,17 +248,22 @@ def test_exact_search_abstains_on_a_blank_query(q):  # pragma: no cover
     condition=not SolrImplementation().solr_is_available(),
     reason="Solr is not available",
 )
-def test_exact_search_does_not_report_facets_for_discarded_candidates():  # pragma: no cover
-    """Solr's counts describe the candidate set, so passing them through would show a
-    nonzero category count beside an empty result set."""
-    results = SolrImplementation().search(
+def test_exact_search_facets_describe_the_matches():  # pragma: no cover
+    """Once Solr decides the exact set itself, its counts describe the rows returned, so an
+    abstention reports no counts rather than counts for candidates it discarded."""
+    si = SolrImplementation()
+    abstained = si.search(
         q="acute appendicitis",
         category=[EntityCategory.DISEASE],
         exact=True,
         facet_fields=["category"],
     )
-    assert results.items == []
-    assert results.facet_fields is None
+    assert abstained.items == []
+    assert not any(v.count for f in (abstained.facet_fields or []) for v in f.facet_values)
+
+    matched = si.search(q="FP", exact=True, limit=0, facet_fields=["category"], facet_limit=-1)
+    counts = {v.label: v.count for f in matched.facet_fields for v in f.facet_values}
+    assert sum(counts.values()) == matched.total
 
 
 @pytest.mark.skipif(

@@ -272,23 +272,43 @@ def subset_filter_query(subsets: List[str], exclude: bool = False) -> str:
     return f"-({joined})" if exclude else f"({joined})"
 
 
-def exact_match_filter_query(q: str) -> str:
-    """Restrict a search to candidates that match `q` as a whole string.
+def exact_name_filter_query(q: str) -> str:
+    """Entities whose `name` is `q`, case-insensitively.
 
-    `name_grounding` and `synonym_grounding` are KeywordTokenizer + LowerCase copies of
-    `name` and `synonym`, so this is a case-insensitive whole-string match rather than a
-    tokenized one. `synonym` is the union of all synonym scopes and there is no
-    `exact_synonym_grounding` copy field in the KG's Solr schema, so this narrows to
-    candidates cheaply and `parse_search` does the final scope check against
-    `name`/`exact_synonym` — see `match_provenance`.
+    `name_grounding` is a KeywordTokenizer + LowerCase copy of `name`, so a hit here *is* an
+    exact name match — Solr has already decided it, and nothing needs to re-check it.
 
-    `q` is stripped to match what `match_provenance` compares against: on a
-    KeywordTokenizer field the padding is part of the term, so an unstripped query would
-    find no candidates at all for text the scope check would happily call an exact match.
-    Callers feeding NER spans are exactly the ones likely to pass padding.
+    `q` is stripped to match what `match_provenance` compares against: on a KeywordTokenizer
+    field the padding is part of the term, so an unstripped query would find no candidates at
+    all for text the scope check would happily call an exact match. Callers feeding NER spans
+    are exactly the ones likely to pass padding.
+    """
+    return f'name_grounding:"{escape_phrase(q.strip())}"'
+
+
+def exact_synonym_candidate_filter_query(q: str) -> str:
+    """Entities that match `q` on some synonym but not on their name.
+
+    This is the only set that needs inspecting in Python. `synonym_grounding` copies the
+    union `synonym` field, which mixes exact, broad, narrow and related scopes, and the KG's
+    Solr schema has no `exact_synonym_grounding` copy field to narrow it — while raw
+    `exact_synonym` is a case-sensitive `string`, so matching it directly would miss every
+    Title Case input. Excluding the name matches keeps this small: across the queries with
+    the largest candidate sets in the 2026-08-20 index it never exceeded 15 rows, against
+    1,744 name matches for the worst of them.
     """
     escaped = escape_phrase(q.strip())
-    return f'name_grounding:"{escaped}" OR synonym_grounding:"{escaped}"'
+    return f'synonym_grounding:"{escaped}" AND -name_grounding:"{escaped}"'
+
+
+def id_filter_query(ids: List[str], cache: bool = True) -> str:
+    """Restrict to a known set of entity ids.
+
+    `cache=False` for filters unique to a single query, which would otherwise evict the
+    genuinely reusable category/namespace entries from Solr's filterCache.
+    """
+    prefix = "" if cache else "{!cache=false}"
+    return prefix + " OR ".join(f'id:"{escape_phrase(entity_id)}"' for entity_id in ids)
 
 
 def build_search_query(
@@ -307,7 +327,7 @@ def build_search_query(
     facet_limit: Optional[int] = None,
     filter_queries: List[str] = None,
     highlighting: bool = False,
-    exact: bool = False,
+    exact_filter: Optional[str] = None,
     sort: Optional[str] = None,
 ) -> SolrQuery:
     query = SolrQuery(start=offset, rows=limit, sort=sort)
@@ -336,15 +356,15 @@ def build_search_query(
         query.add_filter_query(subset_filter_query(subset))
     if exclude_subset:
         query.add_filter_query(subset_filter_query(exclude_subset, exclude=True))
-    if exact and q and q != "*:*":
-        query.add_filter_query(exact_match_filter_query(q))
-        # The filter fully determines the candidate set, so leaving the raw text as the
-        # edismax `q` can only subtract from it — and with q.op=AND and mm=100%, text that
-        # parses as operators rather than terms vetoes a true whole-string match. Uppercased
-        # NER output is the realistic case: "…, NOT Otherwise Specified" reads `NOT` as an
-        # operator and matches nothing, so exact mode would abstain on a string that differs
-        # from a stored name only by case. The boost above still sees the original text, so
-        # ordering among several exact matches is unaffected.
+    if exact_filter:
+        query.add_filter_query(exact_filter)
+        # The filter fully determines the result set, so leaving the raw text as the edismax
+        # `q` can only subtract from it — and with q.op=AND and mm=100%, text that parses as
+        # operators rather than terms vetoes a true whole-string match. Uppercased NER output
+        # is the realistic case: "…, NOT Otherwise Specified" reads `NOT` as an operator and
+        # matches nothing, so exact mode would abstain on a string that differs from a stored
+        # name only by case. The boost above still sees the original text, so ordering among
+        # several exact matches is unaffected.
         query.q = "*:*"
     if facet_fields:
         query.facet_fields = facet_fields

@@ -47,7 +47,9 @@ from monarch_py.implementations.solr.solr_parsers import (
     parse_search,
 )
 from monarch_py.implementations.solr.solr_query_utils import (
-    escape_phrase,
+    exact_name_filter_query,
+    exact_synonym_candidate_filter_query,
+    id_filter_query,
     build_association_counts_query,
     build_association_query,
     build_association_table_query,
@@ -80,13 +82,11 @@ logger = logging.getLogger(__name__)
 # parse_search. Whole-string collisions are usually a handful, but short gene symbols are
 # shared by well over a thousand entities, so this is sized for that tail rather than the
 # common case. The scan requests only the three fields match_provenance reads.
-EXACT_MATCH_SCAN_ROWS = 5000
-
-# If the candidate set turns out to be larger than the first scan asked for, the scan is
-# re-run at its true size rather than answering with a short `total` and an unreachable
-# tail. This bounds that re-run: past it we warn instead, because something has gone wrong
-# with the query rather than with the cap.
-EXACT_MATCH_MAX_SCAN_ROWS = 100_000
+# Bound on the synonym-only candidates exact search inspects in Python. Only entities that
+# matched a synonym *and not* the name land here, which is a handful even for the worst
+# whole-string collisions in the index (15 rows against 1,744 name matches, for `FP`). Kept
+# well under Lucene's default 1,024-clause limit, since these ids become an id filter.
+EXACT_SYNONYM_SCAN_ROWS = 500
 
 
 @dataclass
@@ -743,6 +743,8 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             results = self._exact_search(
                 q=q,
                 filter_queries=filter_queries,
+                facet_fields=facet_fields,
+                facet_limit=facet_limit,
                 offset=offset,
                 limit=limit,
                 **build_kwargs,
@@ -767,22 +769,26 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         self,
         q: str,
         filter_queries: Union[List[str], None] = None,
+        facet_fields: Union[List[str], None] = None,
+        facet_limit: Union[int, None] = None,
         offset: int = 0,
         limit: int = 20,
         **build_kwargs,
     ) -> SearchResults:
         """Run `search` under the exact-match contract.
 
-        Solr narrows to whole-string hits on `name` or *any* synonym scope, but the final
-        "is this an identification?" check happens in `match_provenance`, which Solr cannot
-        do for us. That rules out letting Solr page: a page of candidates is not a page of
-        matches, and one entity name can be shared by well over a thousand entities (gene
-        symbols, mostly), so slicing a fixed window would both under-report `total` and drop
-        real matches that sorted below it.
+        A hit on `name_grounding` *is* an exact name match, so Solr can decide those on its
+        own. The only rows that need inspecting here are the ones that matched some synonym
+        but not the name, because `synonym_grounding` copies the union `synonym` field and
+        cannot tell an exact synonym from a broad, narrow or related one.
 
-        So this scans the candidate set for ids first, cheaply, then re-runs the same query
-        restricted to the requested page so scores and highlighting stay those of the
-        original query rather than of an id lookup.
+        That distinction is what keeps this cheap. For `q=FP` the index has 1,753 whole-string
+        candidates, of which 1,744 are name matches and 9 are synonym-only — so the set that
+        comes back to Python is the 9, and the 1,744 are left to Solr, which then does the
+        counting, ordering, paging and faceting natively.
+
+        (An `exact_synonym_grounding` copy field in the KG's Solr schema would remove the
+        second query entirely; this shape exists only because there isn't one.)
         """
         solr = SolrService(base_url=self.base_url, core=core.ENTITY)
 
@@ -791,62 +797,59 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             # is nothing here that could be an exact match, so don't ask Solr.
             return SearchResults(items=[], limit=limit, offset=offset, total=0)
 
-        scan = build_search_query(
-            q=q, exact=True, filter_queries=filter_queries, offset=0, limit=EXACT_MATCH_SCAN_ROWS, **build_kwargs
-        )
-        # Only what match_provenance reads plus the two fields SearchResult requires, so
-        # scanning a large candidate set stays cheap. Faceting stays on because
-        # SolrQueryResult requires facet_counts, but no facet fields are requested.
-        scan.fl = "id,category,name,exact_synonym"
-        # `fl` bounds the returned fields, not the highlighter, which would otherwise run
-        # over every candidate. The page query below re-derives highlighting for the rows
-        # actually returned.
-        scan.hl = False
-        scan_result = solr.query(scan)
-        candidates = scan_result.response.num_found
-        if candidates > EXACT_MATCH_SCAN_ROWS:
-            # A short `total` is indistinguishable from a true one once it reaches the
-            # caller, and the tail would be unreachable by paging, so widen and re-scan.
-            # The scan reads four fields and doesn't highlight, so this stays affordable.
-            if candidates <= EXACT_MATCH_MAX_SCAN_ROWS:
-                scan.rows = candidates
-                scan_result = solr.query(scan)
-            else:
-                logger.warning(
-                    f"Exact search for {q!r} matched {candidates} candidates, above the "
-                    f"{EXACT_MATCH_MAX_SCAN_ROWS}-row ceiling; `total` is under-reported and "
-                    f"matches beyond it are not returned."
-                )
-        scanned = parse_search(scan_result, q=q, exact=True)
-        matching_ids = [item.id for item in scanned.items]
-        total = len(matching_ids)
+        exact_filter = exact_name_filter_query(q)
+        synonym_ids = self._exact_synonym_ids(solr, q, filter_queries, build_kwargs)
+        if synonym_ids:
+            exact_filter = f"({exact_filter}) OR ({id_filter_query(synonym_ids, cache=False)})"
 
-        page_ids = matching_ids[offset : offset + limit]
-        if not page_ids:
-            return SearchResults(items=[], limit=limit, offset=offset, total=total)
-
-        # {!cache=false}: this filter is unique to one page of one query, so caching it
-        # would evict the genuinely reusable category/namespace entries.
-        id_filter = "{!cache=false}" + " OR ".join(f'id:"{escape_phrase(entity_id)}"' for entity_id in page_ids)
-        page = build_search_query(
+        query = build_search_query(
             q=q,
-            exact=True,
-            filter_queries=(filter_queries or []) + [id_filter],
-            offset=0,
-            limit=len(page_ids),
+            exact_filter=exact_filter,
+            facet_fields=facet_fields,
+            facet_limit=facet_limit,
+            filter_queries=filter_queries,
+            offset=offset,
+            limit=limit,
             **build_kwargs,
         )
-        results = parse_search(solr.query(page), offset=offset, limit=limit, q=q, exact=True)
-        order = {entity_id: index for index, entity_id in enumerate(page_ids)}
-        results.items.sort(key=lambda item: order.get(item.id, len(order)))
-        results.total = total
-        # Solr's facet counts describe the candidate set, not the matches that survived the
-        # scope check, so reporting them would put nonzero counts next to an empty result
-        # set. This is why `facets` is inert under match_type=exact — documented on the
-        # endpoint, since a caller asking for both deserves to know which one wins.
-        results.facet_fields = None
-        results.facet_queries = None
-        return results
+        # Not `exact=True`: every row this returns is exact by construction, so re-deciding
+        # it here could only drop a row Solr counted, leaving `total` disagreeing with
+        # `items`. Provenance is still annotated.
+        return parse_search(solr.query(query), offset=offset, limit=limit, q=q)
+
+    def _exact_synonym_ids(
+        self,
+        solr: SolrService,
+        q: str,
+        filter_queries: Union[List[str], None],
+        build_kwargs: dict,
+    ) -> List[str]:
+        """Ids of entities whose *exact* synonym is `q`, among those whose name is not."""
+        scan = build_search_query(
+            q=q,
+            exact_filter=exact_synonym_candidate_filter_query(q),
+            filter_queries=filter_queries,
+            offset=0,
+            limit=EXACT_SYNONYM_SCAN_ROWS,
+            **build_kwargs,
+        )
+        # Only what match_provenance reads plus the two fields SearchResult requires. `fl`
+        # bounds the returned fields but not the highlighter, which would otherwise run over
+        # every candidate, so turn it off here — the page query re-derives it for the rows
+        # actually returned.
+        scan.fl = "id,category,name,exact_synonym"
+        scan.hl = False
+        scan.facet = True
+        scan.facet_fields = []
+        result = solr.query(scan)
+        if result.response.num_found > EXACT_SYNONYM_SCAN_ROWS:
+            logger.warning(
+                f"Exact search for {q!r} has {result.response.num_found} synonym-only "
+                f"candidates, above the {EXACT_SYNONYM_SCAN_ROWS}-row scan cap; entities "
+                f"whose exact synonym is {q!r} may be missing from the results."
+            )
+        scanned = parse_search(result, q=q, exact=True)
+        return [item.id for item in scanned.items]
 
     def autocomplete(
         self, q: str, category: List[EntityCategory] = None, prioritized_predicates: List[AssociationPredicate] = None
