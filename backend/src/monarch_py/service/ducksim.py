@@ -53,12 +53,21 @@ def _dedupe(seq):
 class Ducksim:
     """Semantic-similarity engine over `monarch-kg.duckdb` (closure + edges), computed in DuckDB."""
 
-    # entity->phenotype associations for search, from the KG `edges` table
+    # entity->phenotype associations for search, from the KG `edges` table.
+    #
+    # Selected by PREDICATE rather than by association category, so every kind of phenotype-bearing
+    # entity is searchable and the caller decides what to include via explicit category/taxon
+    # filters. The previous category allowlist (gene + disease only) structurally hid the 589,030
+    # GenotypeToPhenotypicFeature edges -- every MGI and MMRRC mouse model -- along with variants
+    # and cases, with no way for a caller to opt in.
+    #
+    # Because the pool is now heterogeneous, an unfiltered search mixes categories. Callers that
+    # mean "mouse genes" must say so (category=Gene, taxon=NCBITaxon:10090); a bare prefix no
+    # longer implies a category. `SemsimSearchGroup` expands to exactly that, so the legacy API
+    # keeps its old meaning.
     DEFAULT_ASSOCIATIONS = (
         "SELECT subject AS entity, object AS phenotype FROM src.edges "
-        "WHERE category IN ('biolink:GeneToPhenotypicFeatureAssociation',"
-        "'biolink:DiseaseToPhenotypicFeatureAssociation') "
-        "AND predicate = 'biolink:has_phenotype' "
+        "WHERE predicate = 'biolink:has_phenotype' "
         # keep everything that isn't explicitly negated. `negated` is a VARCHAR today ('True'/'False'/
         # NULL), but try_cast-to-BOOLEAN keeps this correct across casing and a future boolean column;
         # NULL (and any unparseable value) coalesces to false so the row is kept, never silently dropped.
@@ -152,7 +161,82 @@ class Ducksim:
         self.con.execute(f"CREATE VIEW _assoc AS {assoc_sql}")
         self._require_baked("closure_size")
         self.con.execute("CREATE VIEW _esize AS SELECT entity, size AS pn FROM src.closure_size")
+        self._define_entity_metadata()
         self.has_search = True
+
+    def _define_entity_metadata(self):
+        """`_emeta`: (entity, category, taxon) for every searchable entity — what explicit
+        category/taxon filtering resolves against.
+
+        Materialized rather than left as a view over `src.nodes`: it is small (one row per
+        phenotype-annotated entity, ~200K) and every filtered search probes it, so paying the join
+        once at startup beats re-joining a 1.58M-row table per query.
+
+        A `nodes` table lacking `category`/`in_taxon` (minimal or older artifacts) is tolerated
+        rather than fatal, but the missing dimension is recorded so `entity_filter` can refuse a
+        filter it cannot honor. Filtering on an absent column would otherwise match nothing and
+        look like a legitimately empty result — the same silent-empty failure `closure_size`
+        already causes for genotypes in `_flat`.
+        """
+        cols = {
+            r[0]
+            for r in self.con.execute(
+                "SELECT column_name FROM duckdb_columns() WHERE database_name = 'src' AND table_name = 'nodes'"
+            ).fetchall()
+        }
+        self.entity_metadata = {d for d in ("category", "in_taxon") if d in cols}
+        cat = "n.category" if "category" in cols else "CAST(NULL AS VARCHAR)"
+        tax = "n.in_taxon" if "in_taxon" in cols else "CAST(NULL AS VARCHAR)"
+        taxl = "n.in_taxon_label" if "in_taxon_label" in cols else "CAST(NULL AS VARCHAR)"
+        self.con.execute(f"""
+            CREATE OR REPLACE TABLE _emeta AS
+            SELECT DISTINCT n.id AS entity, {cat} AS category,
+                   {tax} AS taxon, {taxl} AS taxon_label
+            FROM (SELECT DISTINCT entity FROM _assoc) a JOIN src.nodes n ON n.id = a.entity
+        """)
+        self.con.execute("CREATE INDEX IF NOT EXISTS _ix_emeta ON _emeta(entity)")
+
+    # ---- explicit filtering ---------------------------------------------
+
+    def entity_filter(self, *, prefixes=None, categories=None, taxa=None, entities=None) -> str:
+        """Build the SQL WHERE clause selecting which entities a search may return.
+
+        Every argument is an optional list and they AND together; passing none searches everything.
+        This is the explicit replacement for the old single-`prefix` argument, which conflated
+        category and taxon into a data-source proxy and so could express "Mouse Genes" but not
+        "mouse models" (MGI and MMRRC genotypes live under two different prefixes) nor "any
+        genotype in any species".
+
+        `taxa` accepts either a CURIE ('NCBITaxon:10090') or a label ('Mus musculus'); labels are
+        matched case-insensitively so callers need not know which form the KG stores.
+        """
+        for requested, dimension in ((categories, "category"), (taxa, "in_taxon")):
+            if requested and dimension not in getattr(self, "entity_metadata", set()):
+                raise RuntimeError(
+                    f"cannot filter by {dimension}: the attached KG's `nodes` table has no "
+                    f"'{dimension}' column, so this filter would match nothing"
+                )
+        clauses = []
+        if entities:
+            clauses.append(f"entity IN (SELECT unnest([{_quote_list(entities)}]::VARCHAR[]))")
+        if prefixes:
+            clauses.append(f"split_part(entity, ':', 1) IN ({_quote_list(prefixes)})")
+        meta = []
+        if categories:
+            meta.append(f"category IN ({_quote_list(categories)})")
+        if taxa:
+            meta.append(f"(taxon IN ({_quote_list(taxa)}) OR lower(taxon_label) IN ({_quote_list(t.lower() for t in taxa)}))")
+        if meta:
+            clauses.append(f"entity IN (SELECT entity FROM _emeta WHERE {' AND '.join(meta)})")
+        return f"WHERE {' AND '.join(clauses)}" if clauses else ""
+
+    def categories(self) -> list:
+        """Distinct (category, taxon, taxon_label, count) available to search — lets a caller (or
+        an API docs page) discover valid filter values instead of guessing them."""
+        return self._read(
+            "SELECT category, taxon, taxon_label, count(*) AS n FROM _emeta "
+            "GROUP BY 1, 2, 3 ORDER BY n DESC"
+        ).fetchall()
 
     # ---- labels ---------------------------------------------------------
 
@@ -165,6 +249,16 @@ class Ducksim:
             f"SELECT id, name FROM src.nodes WHERE id IN (SELECT unnest([{_quote_list(ids)}]::VARCHAR[]))"
         ).fetchall()
         return {i: name for i, name in rows}
+
+    def profile(self, entity_id) -> list:
+        """The phenotype termset an entity is annotated with — its similarity query profile.
+
+        Reads `_assoc`, so it is uniform across every entity type the association pool covers:
+        a disease's HPO terms, a mouse genotype's MP terms, a phenopacket Case's HPO terms. That
+        uniformity is the point — it lets one search primitive be driven by "this case", "this
+        disease" or "this mouse" interchangeably, which is what patient->model and model->patient
+        matching both need."""
+        return self.entity_phenotypes_batch([entity_id]).get(entity_id, [])
 
     def entity_phenotypes_batch(self, entity_ids) -> dict:
         """{entity -> [phenotype, ...]} for many entities in one query — enriches a whole search page
@@ -339,6 +433,7 @@ class Ducksim:
         }.get(direction)
         if score_combiner is None:
             raise ValueError(f"unknown direction {direction!r}")
+        self._require_phenotype_tables()
         Q = _quote_list(set(query_terms))
         score_expr = spec.sql_rank
         lim = "" if limit is None else f"LIMIT {int(limit)}"
@@ -348,77 +443,142 @@ class Ducksim:
                        FROM qterms qt JOIN _clo c ON c.s = qt.q JOIN _ic ic ON ic.term = c.o),
              qsize AS (SELECT q, count(*) AS sz FROM q_anc GROUP BY q),
              nq AS (SELECT count(*) AS n FROM qterms),
-             -- DISTINCT: an entity may be annotated to the same phenotype via multiple association
-             -- rows (different evidence/sources). Without dedup, p_anc repeats that phenotype's
-             -- ancestors, inflating the count(*) intersection below past the union size -> a zero or
-             -- negative jaccard denominator (inf score; sqrt-of-negative for phenodigm). psize already
-             -- uses count(DISTINCT), so the two must agree.
-             ent_ph AS (SELECT DISTINCT entity AS e, phenotype AS p FROM _assoc {entity_filter}),
-             np AS (SELECT e, count(DISTINCT p) AS n FROM ent_ph GROUP BY e),
-             p_anc AS (SELECT ep.e, ep.p, c.o AS a FROM ent_ph ep JOIN _clo c ON c.s = ep.p),
-             psize AS (SELECT e, p, count(DISTINCT a) AS sz FROM p_anc GROUP BY e, p),
-             pair AS (
-               SELECT pa.e, pa.p, qa.q, count(*) AS inter, max(qa.ic) AS resnik
-               FROM p_anc pa JOIN q_anc qa ON qa.a = pa.a GROUP BY pa.e, pa.p, qa.q
-             ),
-             scored AS (
-               SELECT pr.e, pr.p, pr.q, pr.resnik,
-                      pr.inter::DOUBLE / (ps.sz + qs.sz - pr.inter) AS jaccard
-               FROM pair pr JOIN psize ps ON ps.e = pr.e AND ps.p = pr.p
-                            JOIN qsize qs ON qs.q = pr.q
-             ),
-             ranked AS (SELECT e, p, q, {score_expr} AS score FROM scored),
-             dir1 AS (SELECT bm.e, sum(bm.best) / np.n AS avg1
-                      FROM (SELECT e, p, max(score) AS best FROM ranked GROUP BY e, p) bm
-                      JOIN np ON np.e = bm.e GROUP BY bm.e, np.n),
-             dir2 AS (SELECT bm.e, sum(bm.best) / (SELECT n FROM nq) AS avg2
-                      FROM (SELECT e, q, max(score) AS best FROM ranked GROUP BY e, q) bm
-                      GROUP BY bm.e)
+             -- Scoring happens at the PHENOTYPE level, not per (entity, phenotype). A phenotype's
+             -- similarity to a query term does not depend on which entity carries it, so expanding
+             -- ancestors per association row recomputes the same ancestor set once per annotated
+             -- entity. Across mouse genotypes that is 447,110 rows covering 11,530 distinct MP
+             -- terms -- ~39x redundant, and the dominant cost of the whole query.
+             pair AS (SELECT pa.p, qa.q, count(*) AS inter, max(qa.ic) AS resnik
+                      FROM _ph_anc pa JOIN q_anc qa ON qa.a = pa.a GROUP BY pa.p, qa.q),
+             ranked AS (SELECT s.p, s.q, {score_expr} AS score FROM
+                        (SELECT pr.p, pr.q, pr.resnik,
+                                pr.inter::DOUBLE / (ps.sz + qs.sz - pr.inter) AS jaccard
+                         FROM pair pr JOIN _psize ps ON ps.p = pr.p
+                                      JOIN qsize qs ON qs.q = pr.q) s),
+             -- entities enter only here, by joining the per-phenotype scores onto their annotations
+             ent_ph AS (SELECT entity AS e, phenotype AS p FROM _ent_ph {entity_filter}),
+             dir1 AS (SELECT ep.e, sum(bp.best) / any_value(np.n) AS avg1
+                      FROM ent_ph ep
+                      JOIN (SELECT p, max(score) AS best FROM ranked GROUP BY p) bp ON bp.p = ep.p
+                      JOIN _np np ON np.e = ep.e GROUP BY ep.e),
+             dir2 AS (SELECT e, sum(best) / (SELECT n FROM nq) AS avg2 FROM
+                      (SELECT ep.e, r.q, max(r.score) AS best
+                       FROM ent_ph ep JOIN ranked r ON r.p = ep.p GROUP BY ep.e, r.q) GROUP BY e)
         SELECT coalesce(d1.e, d2.e) AS entity, {score_combiner} AS score
         FROM dir1 d1 FULL OUTER JOIN dir2 d2 ON d1.e = d2.e
         ORDER BY score DESC, entity {lim}
         """
         return self._read(sql).fetchall()
 
+    def _require_phenotype_tables(self):
+        """Materialize the phenotype-level tables `_termset_search` scores against. Built once on
+        first search (a few seconds), reused by every later query.
+
+        `_ent_ph` is deduped here because an entity may be annotated to the same phenotype through
+        several association rows (different evidence or sources). Left undeduped, an entity's
+        matched phenotype would be counted once per row and `dir1` would over-sum. `_np` is derived
+        from the same deduped table so the two necessarily agree.
+        """
+        if getattr(self, "_pheno_ready", False):
+            return
+        self.con.execute("CREATE OR REPLACE TABLE _ent_ph AS SELECT DISTINCT entity, phenotype FROM _assoc")
+        self.con.execute("CREATE OR REPLACE TABLE _np AS SELECT entity AS e, count(*) AS n FROM _ent_ph GROUP BY 1")
+        self.con.execute("""
+            CREATE OR REPLACE TABLE _ph_anc AS
+            SELECT DISTINCT ep.phenotype AS p, c.o AS a
+            FROM (SELECT DISTINCT phenotype FROM _ent_ph) ep JOIN _clo c ON c.s = ep.phenotype
+        """)
+        self.con.execute("CREATE OR REPLACE TABLE _psize AS SELECT p, count(*) AS sz FROM _ph_anc GROUP BY p")
+        self.con.execute("CREATE INDEX IF NOT EXISTS _ix_ph_anc_a ON _ph_anc(a)")
+        self.con.execute("CREATE INDEX IF NOT EXISTS _ix_ent_ph_p ON _ent_ph(phenotype)")
+        self._pheno_ready = True
+
     def full_search(
-        self, query_terms, *, limit=10, metric="ancestor_information_content", prefix=None, direction="bidirectional"
+        self,
+        query_terms,
+        *,
+        limit=10,
+        metric="ancestor_information_content",
+        prefix=None,
+        direction="bidirectional",
+        categories=None,
+        taxa=None,
+        prefixes=None,
     ):
-        """Score every entity (optionally restricted to CURIE `prefix`) by the termset
-        best-match-average — one DuckDB query. Matches semsimian's Full mode; more accurate than
-        Hybrid (no Jaccard prefilter dropping true-top entities)."""
-        ef = f"WHERE split_part(entity, ':', 1) = {_quote_list([prefix])}" if prefix else ""
+        """Score every entity passing the filters by the termset best-match-average — one DuckDB
+        query. Matches semsimian's Full mode; more accurate than Hybrid (no Jaccard prefilter
+        dropping true-top entities).
+
+        `categories`/`taxa`/`prefixes` are the explicit filters and AND together. `prefix` is the
+        legacy single-value form, kept working for existing callers.
+        """
+        ef = self.entity_filter(
+            prefixes=prefixes or ([prefix] if prefix else None), categories=categories, taxa=taxa
+        )
         return self._termset_search(query_terms, metric, ef, limit, direction)
 
     def hybrid_search(
-        self, query_terms, *, limit=10, metric="ancestor_information_content", prefix=None, direction="bidirectional"
+        self,
+        query_terms,
+        *,
+        limit=10,
+        metric="ancestor_information_content",
+        prefix=None,
+        direction="bidirectional",
+        categories=None,
+        taxa=None,
+        prefixes=None,
     ):
         """Hybrid search — semsimian's production mode: cheap Jaccard prefilter then termset rerank,
         as one query over the candidate set. (The Jaccard prefilter is direction-agnostic; the
         rerank honors `direction`.)"""
-        flat = self._flat(query_terms, prefix)
+        ef = self.entity_filter(
+            prefixes=prefixes or ([prefix] if prefix else None), categories=categories, taxa=taxa
+        )
+        flat = self._flat(query_terms, ef)
         if not flat:
             return []
         scores = sorted({j for _, j in flat}, reverse=True)
         k = max(math.ceil((limit / 1000.0) * len(scores)), limit)
         cutoff = scores[k] if k < len(scores) else scores[-1]
         candidates = [e for e, j in flat if j >= cutoff]
-        ef = f"WHERE entity IN (SELECT unnest([{_quote_list(candidates)}]::VARCHAR[]))"
-        return self._termset_search(query_terms, metric, ef, limit, direction)
+        return self._termset_search(
+            query_terms, metric, self.entity_filter(entities=candidates), limit, direction
+        )
 
-    def _flat(self, query_terms, prefix):
-        """Cheap set-Jaccard ranking of all (prefix) entities vs the query — Hybrid's candidate gen."""
+    def _flat(self, query_terms, entity_filter=""):
+        """Cheap set-Jaccard ranking of the filtered entities vs the query — Hybrid's candidate gen.
+
+        `_esize` is koza's baked `closure_size`. It once covered only genes and diseases, so a
+        plain inner join dropped every genotype silently and returned an empty candidate set with
+        no error. koza now bakes a size for every entity carrying a has_phenotype edge
+        (monarch-initiative/koza `fix(information-content)`), which covers all 213,273 of them.
+
+        The LEFT JOIN and computed fallback stay as a compatibility shim: artifacts built before
+        that fix are still in circulation, and degrading to a slower correct answer is better than
+        silently returning none. Against a current artifact the fallback matches nothing and costs
+        nothing.
+        """
         Q = _quote_list(set(query_terms))
-        pfilter = f"AND split_part(i.entity, ':', 1) = {_quote_list([prefix])}" if prefix else ""
+        self._require_phenotype_tables()
         return self._read(f"""
             WITH qt(t) AS (SELECT unnest([{Q}]::VARCHAR[])),
                  q_anc AS (SELECT DISTINCT c.o AS a FROM _clo c JOIN qt ON c.s = qt.t),
                  qn AS (SELECT count(*) AS n FROM q_anc),
+                 ent AS (SELECT entity, phenotype FROM _ent_ph {entity_filter}),
                  inter AS (SELECT a.entity, count(DISTINCT c.o) AS inter
-                           FROM _assoc a JOIN _clo c ON c.s = a.phenotype JOIN q_anc q ON q.a = c.o
-                           GROUP BY a.entity)
-            SELECT i.entity, i.inter::DOUBLE / ((SELECT n FROM qn) + e.pn - i.inter) AS jaccard
-            FROM inter i JOIN _esize e ON e.entity = i.entity
-            WHERE true {pfilter} ORDER BY jaccard DESC, i.entity
+                           FROM ent a JOIN _clo c ON c.s = a.phenotype JOIN q_anc q ON q.a = c.o
+                           GROUP BY a.entity),
+                 -- baked sizes where present, computed for the entities koza did not precompute
+                 sz AS (SELECT i.entity, coalesce(e.pn, f.pn) AS pn
+                        FROM inter i
+                        LEFT JOIN _esize e ON e.entity = i.entity
+                        LEFT JOIN (SELECT ep.entity, count(DISTINCT pa.a) AS pn
+                                   FROM ent ep JOIN _ph_anc pa ON pa.p = ep.phenotype
+                                   GROUP BY ep.entity) f ON f.entity = i.entity)
+            SELECT i.entity, i.inter::DOUBLE / ((SELECT n FROM qn) + sz.pn - i.inter) AS jaccard
+            FROM inter i JOIN sz ON sz.entity = i.entity
+            ORDER BY jaccard DESC, i.entity
         """).fetchall()
 
     # ---- search with full per-result detail -----------------------------
@@ -432,6 +592,9 @@ class Ducksim:
         prefix=None,
         direction="bidirectional",
         mode="hybrid",
+        categories=None,
+        taxa=None,
+        prefixes=None,
     ):
         """All-DuckDB search: rank entities (Hybrid by default; Full when `mode="full"`), then enrich
         the whole page with full termset detail in a constant number of queries — independent of
@@ -443,7 +606,16 @@ class Ducksim:
         if spec is None:
             raise ValueError(f"unknown metric {metric!r}")
         ranker = self.full_search if mode == "full" else self.hybrid_search
-        ranked = ranker(query_terms, limit=limit, metric=metric, prefix=prefix, direction=direction)
+        ranked = ranker(
+            query_terms,
+            limit=limit,
+            metric=metric,
+            prefix=prefix,
+            direction=direction,
+            categories=categories,
+            taxa=taxa,
+            prefixes=prefixes,
+        )
         if not ranked:
             return []
         entity_ids = [e for e, _ in ranked]
