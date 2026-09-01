@@ -9,8 +9,9 @@
       align-v="top"
       :class="['toc', { expanded }]"
       :style="{
-        top: nudge - footerOverlap + 'px',
+        top: nudge + 'px',
         '--nudge': nudge + 'px',
+        '--footer-overlap': footerOverlap + 'px',
       }"
       role="doc-toc"
       aria-label="Page table of contents"
@@ -89,13 +90,35 @@ const entries = ref<Entries>([]);
 const expanded = ref(window.innerWidth > 1240);
 /** how much to push downward to make room for header if in view */
 const nudge = ref(0);
-/** how much the footer has intruded into the viewport from below */
+/**
+ * How much the footer has intruded into the viewport from below. The panel
+ * shrinks by this much rather than sliding up by it: on a short page the footer
+ * can intrude further than the panel is tall, and subtracting that from `top`
+ * used to push the whole thing off the top of the screen. LOINC pages hit this
+ * routinely because clinical measurements have few sections — the hierarchy
+ * widget was rendering correctly and sitting at y=-190.
+ */
 const footerOverlap = ref(0);
 /** whether to only show one section at a time */
 const oneAtATime = ref(false);
 /** active (in view or selected) section */
 const active = ref(0);
-const showHierarchy = computed(() => CATEGORIES.includes(node?.category ?? ""));
+/**
+ * Only render the widget when there is actually a hierarchy to draw. Without
+ * this it shows a box containing nothing but the current node, which reads as
+ * "this term has no parents or children" when it usually means the ontology
+ * behind it isn't in phenio yet. It matters most for clinical measurements:
+ * 86-90% of diseases, phenotypes and anatomy terms have a parent, but only
+ * 12.6% of LOINC terms do.
+ */
+const hasHierarchy = computed(
+  () =>
+    !!node?.node_hierarchy?.super_classes?.length ||
+    !!node?.node_hierarchy?.sub_classes?.length,
+);
+const showHierarchy = computed(
+  () => CATEGORIES.includes(node?.category ?? "") && hasHierarchy.value,
+);
 /** table of contents panel element */
 const toc = ref<InstanceType<typeof AppFlex>>();
 /** listen for close event */
@@ -202,7 +225,7 @@ useMutationObserver(
   top: 0;
   width: $toc-width;
   max-width: calc(100vw - 40px);
-  height: calc(100vh - var(--nudge, 0px));
+  height: calc(100vh - var(--nudge, 0px) - var(--footer-overlap, 0px));
   min-height: 0;
   overflow-y: auto;
   background: $white;
