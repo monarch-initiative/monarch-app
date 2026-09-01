@@ -28,8 +28,19 @@ def _baked_kg(path, assoc_rows):
     con.execute("CREATE TABLE closure(subject_id VARCHAR, predicate_id VARCHAR, object_id VARCHAR)")
     con.executemany(
         "INSERT INTO closure VALUES (?, 'rdfs:subClassOf', ?)",
-        [("R", "R"), ("A", "A"), ("A", "R"), ("B", "B"), ("B", "R"),
-         ("A1", "A1"), ("A1", "A"), ("A1", "R"), ("B1", "B1"), ("B1", "B"), ("B1", "R")],
+        [
+            ("R", "R"),
+            ("A", "A"),
+            ("A", "R"),
+            ("B", "B"),
+            ("B", "R"),
+            ("A1", "A1"),
+            ("A1", "A"),
+            ("A1", "R"),
+            ("B1", "B1"),
+            ("B1", "B"),
+            ("B1", "R"),
+        ],
     )
     con.execute(
         "CREATE TABLE edges(subject VARCHAR, object VARCHAR, category VARCHAR, predicate VARCHAR, negated VARCHAR)"

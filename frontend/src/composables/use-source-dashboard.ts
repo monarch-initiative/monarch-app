@@ -13,7 +13,9 @@ const defaultNumberParam = (defaultValue: number): Param<number> => ({
 export interface SourceFilters {
   category: string;
   subjectCategory: string;
+  subjectNamespace: string;
   objectCategory: string;
+  objectNamespace: string;
   predicate: string;
   subjectTaxonLabel: string;
   objectTaxonLabel: string;
@@ -28,7 +30,9 @@ export interface SourceFilters {
 const filterKeys: (keyof SourceFilters)[] = [
   "category",
   "subjectCategory",
+  "subjectNamespace",
   "objectCategory",
+  "objectNamespace",
   "predicate",
   "subjectTaxonLabel",
   "objectTaxonLabel",
@@ -43,7 +47,9 @@ const filterKeys: (keyof SourceFilters)[] = [
 export const emptyFilters = (): SourceFilters => ({
   category: "",
   subjectCategory: "",
+  subjectNamespace: "",
   objectCategory: "",
+  objectNamespace: "",
   predicate: "",
   subjectTaxonLabel: "",
   objectTaxonLabel: "",
@@ -61,8 +67,12 @@ const buildFilterQueries = (filters: SourceFilters): string[] => {
   if (filters.category) fqs.push(`category:"${filters.category}"`);
   if (filters.subjectCategory)
     fqs.push(`subject_category:"${filters.subjectCategory}"`);
+  if (filters.subjectNamespace)
+    fqs.push(`subject_namespace:"${filters.subjectNamespace}"`);
   if (filters.objectCategory)
     fqs.push(`object_category:"${filters.objectCategory}"`);
+  if (filters.objectNamespace)
+    fqs.push(`object_namespace:"${filters.objectNamespace}"`);
   if (filters.predicate) fqs.push(`predicate:"${filters.predicate}"`);
   if (filters.subjectTaxonLabel)
     fqs.push(`subject_taxon_label:"${filters.subjectTaxonLabel}"`);

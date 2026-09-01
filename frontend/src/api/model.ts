@@ -197,9 +197,14 @@ export interface Association {
     /** Source file stem injected by koza at load time. */
     file_source?: string,
     provided_by?: string,
+    has_evidence?: string[],
     publications?: string[],
     qualifiers?: string[],
-    has_evidence?: string[],
+    negated?: boolean,
+    /** The level of FDA adverse event reporting for a drug-condition association. */
+    FDA_adverse_event_level?: string,
+    /** A context qualifier representing a disease or condition in which a relationship expressed in an association took place. */
+    disease_context_qualifier?: string,
     frequency_qualifier?: string,
     /** count of out of has_total representing a frequency */
     has_count?: number,
@@ -209,25 +214,17 @@ export interface Association {
     has_quotient?: number,
     /** total, devided by has_count, representing a frequency */
     has_total?: number,
-    negated?: boolean,
     onset_qualifier?: string,
     sex_qualifier?: string,
-    /** A context qualifier representing a disease or condition in which a relationship expressed in an association took place. */
-    disease_context_qualifier?: string,
     has_attribute?: string[],
     /** Composes with the core concept (+ qualifier) to describe new concepts of a more specific kind. The aspect qualifier represents an attribute of the object that is the focus of the relationship (e.g. for an association where the object is a gene, this might be the expression, abundance, activity, or stability of the gene). */
     object_aspect_qualifier?: string,
-    sources?: string[],
-    /** The text in a publication that supports the assertion in the association. */
-    supporting_text?: string[],
     /** A context qualifier representing a species in which a relationship expressed in an association took place. */
     species_context_qualifier?: string,
     stage_qualifier?: string,
     qualifier?: string,
     /** A qualifier that composes with a core subject/object concept to define a more specific version of the object concept, specifically using an ontology term that is not a subclass or descendant of the core concept and in the vast majority of cases, is of a different ontological namespace than the category or namespace of the object identifier. */
     object_specialization_qualifier?: string,
-    /** The level of FDA adverse event reporting for a drug-condition association. */
-    FDA_adverse_event_level?: string,
     subject: string,
     object: string,
     original_subject?: string,

@@ -132,6 +132,9 @@ def build_association_query(
         query.q = q
         query.def_type = "edismax"
         query.hl = True
+        # Unified highlighter reads offsets from the postings (storeOffsetsWithPositions),
+        # so highlighting no longer needs term vectors on the _t fields.
+        query.hl_method = "unified"
         query.query_fields = association_search_query_fields()
     if sort:
         query.sort = ", ".join(sort)
@@ -304,7 +307,20 @@ def build_mapping_query(
     return query
 
 
-def build_grounding_query(text: str) -> SolrQuery:
+def build_grounding_query(
+    text: str,
+    prefix: Optional[List[str]] = None,
+    category: Optional[List[str]] = None,
+) -> SolrQuery:
+    """Build the Solr query used to ground free text to an entity.
+
+    Args:
+        text: The text to ground.
+        prefix: Optional list of CURIE prefixes (e.g. ["MONDO", "HP"]) to restrict
+            results to, matched against the entity `namespace` field.
+        category: Optional list of biolink categories (e.g. ["biolink:Disease"]) to
+            restrict results to, matched against the entity `category` field.
+    """
     query = SolrQuery(q=text, rows=10, start=0)
     query.q = f'"{text}"'  # quoting so that the complete text is matched as a unit
     # Prefer keyword/string fields over tokenized fields, and prefer exact_synonym
@@ -316,6 +332,8 @@ def build_grounding_query(text: str) -> SolrQuery:
     )
     query.def_type = "edismax"
     query.boost = obsolete_unboost(multiplier=0.001)
+    query.add_field_filter_query("namespace", prefix)
+    query.add_field_filter_query("category", category)
     return query
 
 

@@ -1,5 +1,5 @@
 import { apiUrl, request } from "@/api";
-import type { AssociationTableResults } from "@/api/model";
+import type { AssociationResults, AssociationTableResults } from "@/api/model";
 import type { Sort } from "@/components/AppTable.vue";
 
 /** categories where the association query traverses orthologs */
@@ -8,6 +8,29 @@ export const TRAVERSE_ORTHOLOG_CATEGORIES = new Set([
   "biolink:CausalGeneToDiseaseAssociation",
   "biolink:CorrelatedGeneToDiseaseAssociation",
 ]);
+
+/** categories that ClinGen curates gene/variant-to-disease evidence under */
+const CLINGEN_DISEASE_CATEGORIES = [
+  "biolink:CausalGeneToDiseaseAssociation",
+  "biolink:VariantToDiseaseAssociation",
+];
+
+/**
+ * whether ClinGen has curated any gene-to-disease or variant-to-disease
+ * association for exactly this Mondo id (not descendants), matching what its
+ * condition page at that id would actually show
+ */
+export const hasClinGenDiseaseAssociation = async (mondoId: string) => {
+  const url = `${apiUrl}/association`;
+  const { total } = await request<AssociationResults>(url, {
+    entity: mondoId,
+    category: CLINGEN_DISEASE_CATEGORIES,
+    primary_knowledge_source: "infores:clingen",
+    direct: true,
+    limit: 0,
+  });
+  return total > 0;
+};
 
 /** get associations between a node and a category */
 export const getAssociations = async (
