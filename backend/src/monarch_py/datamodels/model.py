@@ -63,6 +63,20 @@ class LinkMLMeta(RootModel):
 
 linkml_meta = None
 
+class MatchCriteriaEnum(str, Enum):
+    """
+    Which of an association-type section's declared fields are enforced as Solr filters.
+    """
+    category = "category"
+    """
+    Match on `category` alone. `subject_category`/`object_category` are read as entity-grid direction metadata, not query criteria — constraining on them undercounts edges whose node categories differ from the declared ones (e.g. gene-expression edges whose object is biolink:NamedThing).
+    """
+    full = "full"
+    """
+    Match on every declared criterion. Required for sections that cannot be identified by category alone, such as the LOINC sections (whose edges all share biolink:Association) or sections spanning several categories.
+    """
+
+
 class AssociationDirectionEnum(str, Enum):
     """
     The directionality of an association as it relates to a specified entity, with edges being categorized as incoming or outgoing
@@ -196,27 +210,25 @@ class Association(ConfiguredBaseModel):
     primary_knowledge_source: Optional[str] = Field(default=None)
     file_source: Optional[str] = Field(default=None, description="""Source file stem injected by koza at load time.""")
     provided_by: Optional[str] = Field(default=None)
+    has_evidence: Optional[list[str]] = Field(default=None)
     publications: Optional[list[str]] = Field(default=None)
     qualifiers: Optional[list[str]] = Field(default=None)
-    has_evidence: Optional[list[str]] = Field(default=None)
+    negated: Optional[bool] = Field(default=None)
+    FDA_adverse_event_level: Optional[str] = Field(default=None, description="""The level of FDA adverse event reporting for a drug-condition association.""")
+    disease_context_qualifier: Optional[str] = Field(default=None, description="""A context qualifier representing a disease or condition in which a relationship expressed in an association took place.""")
     frequency_qualifier: Optional[str] = Field(default=None)
     has_count: Optional[int] = Field(default=None, description="""count of out of has_total representing a frequency""")
     has_percentage: Optional[float] = Field(default=None, description="""percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly, rounded to the integer level""")
     has_quotient: Optional[float] = Field(default=None, description="""quotient, which should be 1/100 of has_percentage""")
     has_total: Optional[int] = Field(default=None, description="""total, devided by has_count, representing a frequency""")
-    negated: Optional[bool] = Field(default=None)
     onset_qualifier: Optional[str] = Field(default=None)
     sex_qualifier: Optional[str] = Field(default=None)
-    disease_context_qualifier: Optional[str] = Field(default=None, description="""A context qualifier representing a disease or condition in which a relationship expressed in an association took place.""")
     has_attribute: Optional[list[str]] = Field(default=None)
     object_aspect_qualifier: Optional[str] = Field(default=None, description="""Composes with the core concept (+ qualifier) to describe new concepts of a more specific kind. The aspect qualifier represents an attribute of the object that is the focus of the relationship (e.g. for an association where the object is a gene, this might be the expression, abundance, activity, or stability of the gene).""")
-    sources: Optional[list[str]] = Field(default=None)
-    supporting_text: Optional[list[str]] = Field(default=None, description="""The text in a publication that supports the assertion in the association.""")
     species_context_qualifier: Optional[str] = Field(default=None, description="""A context qualifier representing a species in which a relationship expressed in an association took place.""")
     stage_qualifier: Optional[str] = Field(default=None)
     qualifier: Optional[str] = Field(default=None)
     object_specialization_qualifier: Optional[str] = Field(default=None, description="""A qualifier that composes with a core subject/object concept to define a more specific version of the object concept, specifically using an ontology term that is not a subclass or descendant of the core concept and in the vast majority of cases, is of a different ontological namespace than the category or namespace of the object identifier.""")
-    FDA_adverse_event_level: Optional[str] = Field(default=None, description="""The level of FDA adverse event reporting for a drug-condition association.""")
     subject: str = Field(default=...)
     object: str = Field(default=...)
     original_subject: Optional[str] = Field(default=None)
@@ -281,6 +293,7 @@ class AssociationTypeMapping(ConfiguredBaseModel):
     A data class to hold the necessary information to produce association type counts for given entities with appropriate directional labels. Each match criterion (category, predicate, subject_category, object_category, primary_knowledge_source, provided_by) is an optional list; values within a single criterion are OR'd, and criteria are AND'd together. An omitted criterion places no constraint on that field.
     """
     key: Optional[str] = Field(default=None, description="""A stable identifier for this association-type section, used to accumulate counts and as the table/section key. Defaults to the (single) category when not set.""")
+    match_criteria: Optional[MatchCriteriaEnum] = Field(default=None, description="""Which declared fields are enforced as Solr filters when selecting an association type. Defaults to `category`, the behaviour every legacy section relies on. Set explicitly rather than inferred from the presence of a key, so that adding a key for URL or UI reasons cannot silently change which edges a section counts.""")
     subject_label: Optional[str] = Field(default=None, description="""A label to describe the subjects of the association type as a whole for use in the UI""")
     object_label: Optional[str] = Field(default=None, description="""A label to describe the objects of the association type as a whole for use in the UI""")
     symmetric: bool = Field(default=False, description="""Whether the association type is symmetric, meaning that the subject and object labels should be interchangeable""")
@@ -311,26 +324,25 @@ class ExpandedAssociation(Association):
     primary_knowledge_source: Optional[str] = Field(default=None)
     file_source: Optional[str] = Field(default=None, description="""Source file stem injected by koza at load time.""")
     provided_by: Optional[str] = Field(default=None)
+    has_evidence: Optional[list[str]] = Field(default=None)
     publications: Optional[list[str]] = Field(default=None)
     qualifiers: Optional[list[str]] = Field(default=None)
-    has_evidence: Optional[list[str]] = Field(default=None)
+    negated: Optional[bool] = Field(default=None)
+    FDA_adverse_event_level: Optional[str] = Field(default=None, description="""The level of FDA adverse event reporting for a drug-condition association.""")
+    disease_context_qualifier: Optional[str] = Field(default=None, description="""A context qualifier representing a disease or condition in which a relationship expressed in an association took place.""")
     frequency_qualifier: Optional[str] = Field(default=None)
     has_count: Optional[int] = Field(default=None, description="""count of out of has_total representing a frequency""")
     has_percentage: Optional[float] = Field(default=None, description="""percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly, rounded to the integer level""")
     has_quotient: Optional[float] = Field(default=None, description="""quotient, which should be 1/100 of has_percentage""")
     has_total: Optional[int] = Field(default=None, description="""total, devided by has_count, representing a frequency""")
-    negated: Optional[bool] = Field(default=None)
     onset_qualifier: Optional[str] = Field(default=None)
     sex_qualifier: Optional[str] = Field(default=None)
-    disease_context_qualifier: Optional[str] = Field(default=None, description="""A context qualifier representing a disease or condition in which a relationship expressed in an association took place.""")
     has_attribute: Optional[list[str]] = Field(default=None)
     object_aspect_qualifier: Optional[str] = Field(default=None, description="""Composes with the core concept (+ qualifier) to describe new concepts of a more specific kind. The aspect qualifier represents an attribute of the object that is the focus of the relationship (e.g. for an association where the object is a gene, this might be the expression, abundance, activity, or stability of the gene).""")
-    sources: Optional[list[str]] = Field(default=None)
     species_context_qualifier: Optional[str] = Field(default=None, description="""A context qualifier representing a species in which a relationship expressed in an association took place.""")
     stage_qualifier: Optional[str] = Field(default=None)
     qualifier: Optional[str] = Field(default=None)
     object_specialization_qualifier: Optional[str] = Field(default=None, description="""A qualifier that composes with a core subject/object concept to define a more specific version of the object concept, specifically using an ontology term that is not a subclass or descendant of the core concept and in the vast majority of cases, is of a different ontological namespace than the category or namespace of the object identifier.""")
-    FDA_adverse_event_level: Optional[str] = Field(default=None, description="""The level of FDA adverse event reporting for a drug-condition association.""")
     subject: str = Field(default=...)
     object: str = Field(default=...)
     original_subject: Optional[str] = Field(default=None)
@@ -393,26 +405,25 @@ class DirectionalAssociation(ExpandedAssociation):
     primary_knowledge_source: Optional[str] = Field(default=None)
     file_source: Optional[str] = Field(default=None, description="""Source file stem injected by koza at load time.""")
     provided_by: Optional[str] = Field(default=None)
+    has_evidence: Optional[list[str]] = Field(default=None)
     publications: Optional[list[str]] = Field(default=None)
     qualifiers: Optional[list[str]] = Field(default=None)
-    has_evidence: Optional[list[str]] = Field(default=None)
+    negated: Optional[bool] = Field(default=None)
+    FDA_adverse_event_level: Optional[str] = Field(default=None, description="""The level of FDA adverse event reporting for a drug-condition association.""")
+    disease_context_qualifier: Optional[str] = Field(default=None, description="""A context qualifier representing a disease or condition in which a relationship expressed in an association took place.""")
     frequency_qualifier: Optional[str] = Field(default=None)
     has_count: Optional[int] = Field(default=None, description="""count of out of has_total representing a frequency""")
     has_percentage: Optional[float] = Field(default=None, description="""percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly, rounded to the integer level""")
     has_quotient: Optional[float] = Field(default=None, description="""quotient, which should be 1/100 of has_percentage""")
     has_total: Optional[int] = Field(default=None, description="""total, devided by has_count, representing a frequency""")
-    negated: Optional[bool] = Field(default=None)
     onset_qualifier: Optional[str] = Field(default=None)
     sex_qualifier: Optional[str] = Field(default=None)
-    disease_context_qualifier: Optional[str] = Field(default=None, description="""A context qualifier representing a disease or condition in which a relationship expressed in an association took place.""")
     has_attribute: Optional[list[str]] = Field(default=None)
     object_aspect_qualifier: Optional[str] = Field(default=None, description="""Composes with the core concept (+ qualifier) to describe new concepts of a more specific kind. The aspect qualifier represents an attribute of the object that is the focus of the relationship (e.g. for an association where the object is a gene, this might be the expression, abundance, activity, or stability of the gene).""")
-    sources: Optional[list[str]] = Field(default=None)
     species_context_qualifier: Optional[str] = Field(default=None, description="""A context qualifier representing a species in which a relationship expressed in an association took place.""")
     stage_qualifier: Optional[str] = Field(default=None)
     qualifier: Optional[str] = Field(default=None)
     object_specialization_qualifier: Optional[str] = Field(default=None, description="""A qualifier that composes with a core subject/object concept to define a more specific version of the object concept, specifically using an ontology term that is not a subclass or descendant of the core concept and in the vast majority of cases, is of a different ontological namespace than the category or namespace of the object identifier.""")
-    FDA_adverse_event_level: Optional[str] = Field(default=None, description="""The level of FDA adverse event reporting for a drug-condition association.""")
     subject: str = Field(default=...)
     object: str = Field(default=...)
     original_subject: Optional[str] = Field(default=None)

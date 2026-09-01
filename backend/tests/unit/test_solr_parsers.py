@@ -38,8 +38,8 @@ def test_parse_association_counts_clinical_measurement():
         'AND object_category:"biolink:PhenotypicFeature"'
     )
     suffixes = build_association_count_suffixes([node]).all_suffixes
-    direct = f'({fragment}) {suffixes["direct_subject"]}'
-    closure = f'({fragment}) {suffixes["closure_subject"]}'
+    direct = f"({fragment}) {suffixes['direct_subject']}"
+    closure = f"({fragment}) {suffixes['closure_subject']}"
 
     # sanity: these queries are actually part of the built counts query
     built = build_association_counts_query([node]).facet_queries

@@ -120,6 +120,7 @@
 # object category. The same mappings drive the reverse "... Clinical Measurements"
 # sections on the phenotype/chemical/anatomy/etc. pages via the object_label.
 - key: clinical_measurement_correlated_phenotypes
+  match_criteria: full
   subject_label: Correlated Phenotypes
   object_label: Correlated Clinical Measurements
   category:
@@ -131,6 +132,7 @@
   object_category:
   - "biolink:PhenotypicFeature"
 - key: clinical_measurement_related_chemicals
+  match_criteria: full
   subject_label: Related Chemicals
   object_label: Related Clinical Measurements
   category:
@@ -142,6 +144,7 @@
   object_category:
   - "biolink:ChemicalEntity"
 - key: clinical_measurement_related_anatomy
+  match_criteria: full
   subject_label: Related Anatomy
   object_label: Related Clinical Measurements
   category:
@@ -153,6 +156,7 @@
   object_category:
   - "biolink:AnatomicalEntity"
 - key: clinical_measurement_related_proteins
+  match_criteria: full
   subject_label: Related Proteins
   object_label: Related Clinical Measurements
   category:
@@ -164,6 +168,7 @@
   object_category:
   - "biolink:Protein"
 - key: clinical_measurement_related_cells
+  match_criteria: full
   subject_label: Related Cells
   object_label: Related Clinical Measurements
   category:

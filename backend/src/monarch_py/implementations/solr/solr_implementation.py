@@ -856,17 +856,26 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
     # Implements: GroundingInterface #
     ##################################
 
-    def ground_entity(self, text: str) -> List[Entity]:
+    def ground_entity(
+        self,
+        text: str,
+        prefix: Optional[List[str]] = None,
+        category: Optional[List[str]] = None,
+    ) -> List[Entity]:
         """Grounds a single entity
 
         Args:
             text (str): Text to ground
+            prefix (List[str], optional): Restrict results to entities whose identifier
+                uses one of these CURIE prefixes (e.g. ["MONDO", "HP"]). Defaults to None.
+            category (List[str], optional): Restrict results to entities of one of these
+                biolink categories (e.g. ["biolink:Disease"]). Defaults to None.
 
         Returns:
             Entity: Dataclass representing a single entity
         """
         solr = SolrService(base_url=self.base_url, core=core.ENTITY)
-        query = build_grounding_query(text)
+        query = build_grounding_query(text, prefix=prefix, category=category)
         query_result = solr.query(query)
         search_result = parse_search(query_result)
         entities = [entity for entity in search_result.items[:3]]
@@ -1091,12 +1100,13 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         mapping = AssociationTypeMappings.get_mapping(first_col_cat)
 
         if mapping and mapping.subject_category and mapping.object_category:
-            # Use YAML metadata to determine direction
-            if context_category == mapping.subject_category:
+            # Use YAML metadata to determine direction. subject_category and
+            # object_category are multivalued (list[str]), so test membership.
+            if context_category in mapping.subject_category:
                 context_field = "subject"
                 column_field = "object"
                 context_closure_field = "subject_closure"
-            elif context_category == mapping.object_category:
+            elif context_category in mapping.object_category:
                 context_field = "object"
                 column_field = "subject"
                 context_closure_field = "object_closure"
