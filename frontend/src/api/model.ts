@@ -21,6 +21,16 @@ export type GridBinId = string;
 export type QualifierId = string;
 export type GridCellDataId = string;
 /**
+* Which of an association-type section's declared fields are enforced as Solr filters.
+*/
+export enum MatchCriteriaEnum {
+    
+    /** Match on `category` alone. `subject_category`/`object_category` are read as entity-grid direction metadata, not query criteria — constraining on them undercounts edges whose node categories differ from the declared ones (e.g. gene-expression edges whose object is biolink:NamedThing). */
+    category = "category",
+    /** Match on every declared criterion. Required for sections that cannot be identified by category alone, such as the LOINC sections (whose edges all share biolink:Association) or sections spanning several categories. */
+    full = "full",
+};
+/**
 * The directionality of an association as it relates to a specified entity, with edges being categorized as incoming or outgoing
 */
 export enum AssociationDirectionEnum {
@@ -374,6 +384,8 @@ export interface AssociationTableResults extends Results {
 export interface AssociationTypeMapping {
     /** A stable identifier for this association-type section, used to accumulate counts and as the table/section key. Defaults to the (single) category when not set. */
     key?: string,
+    /** Which declared fields are enforced as Solr filters when selecting an association type. Defaults to `category`, the behaviour every legacy section relies on. Set explicitly rather than inferred from the presence of a key, so that adding a key for URL or UI reasons cannot silently change which edges a section counts. */
+    match_criteria?: string,
     /** A label to describe the subjects of the association type as a whole for use in the UI */
     subject_label?: string,
     /** A label to describe the objects of the association type as a whole for use in the UI */
