@@ -14,7 +14,7 @@
             id: association.subject,
             name: association.subject_label,
             category: association.subject_category,
-            info: association.subject_taxon_label,
+            in_taxon_label: association.subject_taxon_label,
           }"
         />
         <AppPredicateBadge :association="association" />
@@ -23,7 +23,7 @@
             id: association.object,
             name: association.object_label,
             category: association.object_category,
-            info: association.object_taxon_label,
+            in_taxon_label: association.object_taxon_label,
           }"
         />
       </div>
@@ -249,9 +249,19 @@ const sourceVersion = computed(() =>
   props.association ? versionForEdge(props.association) : null,
 );
 
-/** parse the nested retrieval-source provenance chain (JSON-encoded) */
+/**
+ * Parse the nested retrieval-source provenance chain (JSON-encoded).
+ *
+ * `sources` was dropped from the KG between the 2026-07-08 and 2026-07-14
+ * builds and is no longer on the generated model or in the Solr schema, so this
+ * panel renders empty today. Read defensively rather than deleting the panel:
+ * the model allows extra fields, so if the ingest restores `sources` this
+ * starts working again without a code change.
+ */
 const retrievalSources = computed(() =>
-  parseRetrievalSources(props.association?.sources),
+  parseRetrievalSources(
+    (props.association as { sources?: string[] } | null)?.sources,
+  ),
 );
 
 /** humanize a retrieval-source role, e.g. "primary_knowledge_source" */

@@ -78,3 +78,25 @@ test("Selects all by click", async () => {
   await option.trigger("click");
   expect(emitted<Emitted>(wrapper)[0].length).toEqual(0);
 });
+
+test("Italicizes option labels when option.italic is set", async () => {
+  const wrapper = mount(
+    AppSelectMulti,
+    {
+      props: {
+        name: "Taxon",
+        options: [
+          { id: "Homo sapiens", label: "Homo sapiens", italic: true },
+          { id: "colors", label: "Colors" },
+        ],
+      },
+    },
+    { modelValue: [] },
+  );
+  await wrapper.find("button").trigger("click");
+  const labels = wrapper.findAll(".option-label");
+  const italicLabel = labels.find((l) => l.text() === "Homo sapiens");
+  const plainLabel = labels.find((l) => l.text() === "Colors");
+  expect(italicLabel?.classes()).toContain("italic");
+  expect(plainLabel?.classes()).not.toContain("italic");
+});

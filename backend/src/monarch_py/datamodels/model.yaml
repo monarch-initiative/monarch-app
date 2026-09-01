@@ -10,6 +10,19 @@ imports:
 - monarch_kg_schema
 default_range: string
 enums:
+  MatchCriteriaEnum:
+    description: >-
+      Which of an association-type section's declared fields are enforced as Solr filters.
+    permissible_values:
+      category:
+        description: Match on `category` alone. `subject_category`/`object_category` are
+          read as entity-grid direction metadata, not query criteria — constraining on them
+          undercounts edges whose node categories differ from the declared ones (e.g.
+          gene-expression edges whose object is biolink:NamedThing).
+      full:
+        description: Match on every declared criterion. Required for sections that cannot
+          be identified by category alone, such as the LOINC sections (whose edges all
+          share biolink:Association) or sections spanning several categories.
   AssociationDirectionEnum:
     description: The directionality of an association as it relates to a specified
       entity, with edges being categorized as incoming or outgoing
@@ -86,6 +99,7 @@ classes:
       places no constraint on that field.
     slots:
     - key
+    - match_criteria
     - subject_label
     - object_label
     - symmetric
@@ -587,6 +601,13 @@ slots:
     description: A stable identifier for an association-type section, used to accumulate
       counts and as the table/section key. Defaults to the category when not otherwise set.
     range: string
+    multivalued: false
+  match_criteria:
+    description: Which declared fields are enforced as Solr filters when selecting an
+      association type. Defaults to `category`, the behaviour every legacy section relies
+      on. Set explicitly rather than inferred from the presence of a key, so that adding a
+      key for URL or UI reasons cannot silently change which edges a section counts.
+    range: MatchCriteriaEnum
     multivalued: false
   causal_gene:
     description: A list of genes that are known to be causally associated with a disease

@@ -22,7 +22,12 @@ def test_association_table(mock_get_assoc_table):
     client.get("/MONDO:0019391/biolink:DiseaseToPhenotypicFeatureAssociation")
     mock_get_assoc_table.assert_called_with(
         entity="MONDO:0019391",
-        category=AssociationCategory.DISEASE_TO_PHENOTYPIC_FEATURE_ASSOCIATION,
+        # The path param is a section *key*, not an AssociationCategory: a section can
+        # combine several categories (LOINC) or span them (MEDIC+CTD), so it reaches the
+        # implementation as a plain string. Legacy sections key on their category, which is
+        # why this value is unchanged. This assertion was passing an enum until now only
+        # because the API suite could not be collected when that change was made.
+        category=AssociationCategory.DISEASE_TO_PHENOTYPIC_FEATURE_ASSOCIATION.value,
         q=None,
         traverse_orthologs=False,
         direct=False,

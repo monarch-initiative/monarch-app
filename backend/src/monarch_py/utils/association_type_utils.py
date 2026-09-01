@@ -2,7 +2,7 @@ import pkgutil
 from typing import List
 
 import yaml
-from monarch_py.datamodels.model import AssociationTypeMapping
+from monarch_py.datamodels.model import AssociationTypeMapping, MatchCriteriaEnum
 from pydantic import TypeAdapter
 
 
@@ -116,8 +116,19 @@ class AssociationTypeMappings:
                 category = entry.get("category")
                 if category:
                     entry["key"] = category[0]
+            # default to category-only matching, which is what every legacy section needs
+            if not entry.get("match_criteria"):
+                entry["match_criteria"] = MatchCriteriaEnum.category.value
         adapter = TypeAdapter(List[AssociationTypeMapping])
         self.mappings = adapter.validate_python(mapping_data)
+        duplicate_keys = {
+            key for key in (m.key for m in self.mappings) if [m.key for m in self.mappings].count(key) > 1
+        }
+        if duplicate_keys:
+            # Two sections sharing a key silently merge their counts (and one wins the
+            # table lookup), which is easy to introduce now that `key` defaults to the
+            # first category of a multi-category mapping.
+            raise ValueError(f"Duplicate association-type section keys in yaml: {sorted(duplicate_keys)}")
 
 
 def _or_group(field: str, values) -> str:
@@ -135,9 +146,32 @@ def _or_group(field: str, values) -> str:
     return "(" + " OR ".join(f'{field}:"{value}"' for value in values) + ")"
 
 
+def uses_full_criteria(agm: AssociationTypeMapping) -> bool:
+    """Whether a section matches on all its declared criteria (predicate /
+    subject_category / object_category / source), rather than category alone.
+
+    Read from the mapping's explicit `match_criteria`, which defaults to `category`.
+    Legacy single-category sections declare subject/object_category only as entity-grid
+    direction metadata; matching on those as Solr criteria would undercount edges whose
+    node categories differ from the declared ones (e.g. gene-expression edges whose object
+    is biolink:NamedThing, which cost GeneToExpressionSite -83% when this was briefly the
+    default). Sections that cannot be identified by category alone — the LOINC sections,
+    whose edges all share biolink:Association — set `match_criteria: full`.
+
+    This used to be inferred from `agm.key not in agm.category`, i.e. from whether the
+    author happened to give the section a key. That made an invisible behavioural switch
+    out of a field people set for URL and UI reasons, and a section could lose the opt-in
+    simply by being merged from a branch that predated it.
+    """
+    return agm.match_criteria == MatchCriteriaEnum.full
+
+
 def get_solr_query_fragment(agm: AssociationTypeMapping) -> str:
     """Build the Solr clause that selects this association type: AND across the
-    present criteria, each criterion OR'd internally."""
+    present criteria, each criterion OR'd internally. Legacy single-category
+    sections match on category alone (see uses_full_criteria)."""
+    if not uses_full_criteria(agm):
+        return _or_group("category", agm.category)
     parts = [
         _or_group("category", agm.category),
         _or_group("predicate", agm.predicate),
@@ -154,8 +188,11 @@ def get_solr_criteria_filters(agm: AssociationTypeMapping) -> List[str]:
 
     Used by the association table query, where the category list is applied
     separately and predicate / subject / object / source criteria are added as
-    additional filters.
+    additional filters. Legacy single-category sections contribute no extra
+    criteria (see uses_full_criteria).
     """
+    if not uses_full_criteria(agm):
+        return []
     return [
         clause
         for clause in (
@@ -170,7 +207,9 @@ def get_solr_criteria_filters(agm: AssociationTypeMapping) -> List[str]:
 
 
 def get_sql_query_fragment(agm: AssociationTypeMapping) -> str:
-    """SQL equivalent of get_solr_query_fragment (AND across criteria, OR within)."""
+    """SQL equivalent of get_solr_query_fragment (AND across criteria, OR within).
+    Legacy single-category sections match on category alone (see
+    uses_full_criteria)."""
 
     def _or_group_sql(field, values):
         if not values:
@@ -180,6 +219,9 @@ def get_sql_query_fragment(agm: AssociationTypeMapping) -> str:
         if len(values) == 1:
             return f'{field} = "{values[0]}"'
         return "(" + " OR ".join(f'{field} = "{value}"' for value in values) + ")"
+
+    if not uses_full_criteria(agm):
+        return _or_group_sql("category", agm.category)
 
     parts = [
         _or_group_sql("category", agm.category),

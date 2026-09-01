@@ -98,6 +98,7 @@ class SolrQuery(BaseModel):
     boost: Optional[str] = None
     sort: Optional[str] = None
     hl: bool = False
+    hl_method: Optional[str] = None  # e.g. "unified" — reads offsets from postings (storeOffsetsWithPositions)
 
     def add_field_filter_query(self, field: str, value: Union[list, str, None]):
         if not value or len(value) == 0:
@@ -141,6 +142,8 @@ class SolrQuery(BaseModel):
             return "defType"
         elif value == "q_op":
             return "q.op"
+        elif value == "hl_method":
+            return "hl.method"
         elif value is True:
             return "true"
         elif value is False:

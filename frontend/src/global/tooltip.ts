@@ -3,8 +3,15 @@ import type { Instance } from "tippy.js";
 /** when tippy instances attached to element */
 const update = (instance: Instance): void => {
   if (
-    /** element has no text */
-    !(instance.reference as HTMLElement).innerText?.trim() &&
+    /**
+     * element has no text. innerText is html-only, so fall back to textContent
+     * for svg references (<g>, <path>, …) — without it they read as textless
+     * and get the raw html tooltip content stamped into their aria label.
+     */
+    !(
+      (instance.reference as HTMLElement).innerText ??
+      instance.reference.textContent
+    )?.trim() &&
     /** element has no aria label already */
     !instance.reference.getAttribute("aria-label") &&
     /** tooltip content is plain string */

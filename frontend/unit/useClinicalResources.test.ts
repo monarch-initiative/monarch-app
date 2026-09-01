@@ -1,8 +1,23 @@
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Node } from "@/api/model";
 import { useClinicalResources } from "@/composables/use-clinical-resources";
 
+/** mock the ClinGen existence check; individual tests override its resolution */
+const mockHasClinGenDiseaseAssociation = vi.fn().mockResolvedValue(false);
+vi.mock("@/api/associations", () => ({
+  hasClinGenDiseaseAssociation: (...args: unknown[]) =>
+    mockHasClinGenDiseaseAssociation(...args),
+}));
+
 const asNode = (n: Partial<Node>) => n as Node;
+
+/** flush the microtask queue so the async ClinGen check resolves */
+const flush = () => new Promise((resolve) => setTimeout(resolve));
+
+beforeEach(() => {
+  vi.clearAllMocks();
+  mockHasClinGenDiseaseAssociation.mockResolvedValue(false);
+});
 
 describe("useClinicalResources", () => {
   it("returns empty arrays when node has no external_links or mappings", () => {
@@ -114,6 +129,67 @@ describe("useClinicalResources", () => {
     const { otherMappings, externalRefs } = useClinicalResources(node);
     expect(otherMappings.value.map((m) => m.id)).toEqual(["XDB:2"]);
     expect(externalRefs.value.map((l) => l.id)).toEqual(["YDB:4"]);
+  });
+
+  it("adds a ClinGen entry once the existence check confirms ClinGen data", async () => {
+    mockHasClinGenDiseaseAssociation.mockResolvedValue(true);
+    const node = asNode({ id: "MONDO:0007947" });
+    const { clinicalResources } = useClinicalResources(node);
+
+    expect(clinicalResources.value).toEqual([]); // not yet resolved
+    await flush();
+
+    expect(mockHasClinGenDiseaseAssociation).toHaveBeenCalledWith(
+      "MONDO:0007947",
+    );
+    expect(clinicalResources.value).toHaveLength(1);
+    const clingen = clinicalResources.value[0];
+    expect(clingen).toMatchObject({
+      id: "MONDO:0007947",
+      url: "https://search.clinicalgenome.org/kb/conditions/MONDO:0007947",
+      label: "ClinGen",
+      source: "external",
+      brand: "clingen",
+    });
+    expect(clingen.tooltip!.toLowerCase()).toContain("clingen");
+  });
+
+  it("omits ClinGen when the existence check finds no ClinGen data", async () => {
+    mockHasClinGenDiseaseAssociation.mockResolvedValue(false);
+    const node = asNode({ id: "MONDO:0007947" });
+    const { clinicalResources } = useClinicalResources(node);
+    await flush();
+    expect(clinicalResources.value).toEqual([]);
+  });
+
+  it("omits ClinGen when the existence check errors (fails closed)", async () => {
+    mockHasClinGenDiseaseAssociation.mockRejectedValue(new Error("boom"));
+    const node = asNode({ id: "MONDO:0007947" });
+    const { clinicalResources } = useClinicalResources(node);
+    await flush();
+    expect(clinicalResources.value).toEqual([]);
+  });
+
+  it("appends ClinGen after the prefix-based resources", async () => {
+    mockHasClinGenDiseaseAssociation.mockResolvedValue(true);
+    const node = asNode({
+      id: "MONDO:0007947",
+      external_links: [{ id: "OMIM:123", url: "https://omim.org/entry/123" }],
+    });
+    const { clinicalResources } = useClinicalResources(node);
+    await flush();
+    expect(clinicalResources.value.map((r) => r.label)).toEqual([
+      "OMIM",
+      "ClinGen",
+    ]);
+  });
+
+  it("omits ClinGen when the node id is not a Mondo id, without calling the check", async () => {
+    const node = asNode({ id: "HP:0000001" });
+    const { clinicalResources } = useClinicalResources(node);
+    await flush();
+    expect(clinicalResources.value).toEqual([]);
+    expect(mockHasClinGenDiseaseAssociation).not.toHaveBeenCalled();
   });
 
   it("handles duplicates across different clinical prefixes independently", () => {
