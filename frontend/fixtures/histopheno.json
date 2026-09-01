@@ -3,12 +3,12 @@
   "items": [
     {
       "label": "musculature",
-      "count": 2186,
+      "count": 2182,
       "id": "UPHENO:0002816"
     },
     {
       "label": "nervous_system",
-      "count": 1067,
+      "count": 1066,
       "id": "UPHENO:0004523"
     },
     {
@@ -28,17 +28,17 @@
     },
     {
       "label": "metabolism_homeostasis",
-      "count": 233,
+      "count": 232,
       "id": "HP:0001939"
     },
     {
       "label": "blood",
-      "count": 208,
+      "count": 207,
       "id": "UPHENO:0004459"
     },
     {
       "label": "connective_tissue",
-      "count": 191,
+      "count": 190,
       "id": "UPHENO:0002712"
     },
     {

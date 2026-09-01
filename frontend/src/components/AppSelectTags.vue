@@ -116,9 +116,12 @@
             v-html="option.highlight || option.label || option.id"
           >
           </span>
-          <span v-if="option.info" class="option-info truncate">{{
-            option.info
-          }}</span>
+          <span
+            v-if="option.info"
+            class="option-info truncate"
+            :class="{ italic: option.infoItalic }"
+            >{{ option.info }}</span
+          >
         </div>
       </div>
     </Teleport>
@@ -156,6 +159,8 @@ export type Option = {
   highlight?: string;
   /** info col */
   info?: string;
+  /** render the info col in italics (e.g. taxon scientific names) */
+  infoItalic?: boolean;
   /** tooltip on hover */
   tooltip?: string;
   /**
@@ -484,6 +489,10 @@ defineExpose({ runSearch });
 .option-info {
   justify-content: flex-end;
   color: $gray;
+}
+
+.option-info.italic {
+  font-style: italic;
 }
 
 .description {

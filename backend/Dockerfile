@@ -41,6 +41,9 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 FROM builder-base AS production
 ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 # ENV UVICORN_WORKERS=8
+# ENV WORKER_TIMEOUT=300
+# ENV MAX_REQUESTS=2000
+# ENV MAX_REQUESTS_JITTER=200
 WORKDIR /opt/monarch-app/backend
 
 RUN ls -l . && \

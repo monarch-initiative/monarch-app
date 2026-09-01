@@ -43,7 +43,7 @@
       "has_descendant_count": null,
       "uri": "https://identifiers.org/zfin/ZDB-GENE-050706-97"
     },
-    "score": 5.210825158571578,
+    "score": 5.213336299144207,
     "similarity": {
       "subject_termset": {
         "ZP:0003960": {
@@ -69,7 +69,7 @@
           "match_source_label": "endochondral ossification decreased process quality, abnormal",
           "match_target": "HP:0012378",
           "match_target_label": "Fatigue",
-          "score": 6.159607407217203,
+          "score": 6.162924369371526,
           "match_subsumer": "UPHENO:0050106",
           "match_subsumer_label": "multicellular organismal process phenotype",
           "similarity": {
@@ -84,11 +84,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 6.159607407217203,
+            "ancestor_information_content": 6.162924369371526,
             "jaccard_similarity": 0.125,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.8774684757312655
+            "phenodigm_score": 0.8777047032866127
           }
         },
         "ZP:0006539": {
@@ -96,7 +96,7 @@
           "match_source_label": "ossification decreased process quality, abnormal",
           "match_target": "HP:0012378",
           "match_target_label": "Fatigue",
-          "score": 6.159607407217203,
+          "score": 6.162924369371526,
           "match_subsumer": "UPHENO:0050106",
           "match_subsumer_label": "multicellular organismal process phenotype",
           "similarity": {
@@ -111,11 +111,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 6.159607407217203,
+            "ancestor_information_content": 6.162924369371526,
             "jaccard_similarity": 0.13513513513513514,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9123482774432559
+            "phenodigm_score": 0.9125938951596371
           }
         },
         "ZP:0010842": {
@@ -123,7 +123,7 @@
           "match_source_label": "dermal bone decreased process quality ossification, abnormal",
           "match_target": "HP:0012378",
           "match_target_label": "Fatigue",
-          "score": 6.159607407217203,
+          "score": 6.162924369371526,
           "match_subsumer": "UPHENO:0050106",
           "match_subsumer_label": "multicellular organismal process phenotype",
           "similarity": {
@@ -138,11 +138,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 6.159607407217203,
+            "ancestor_information_content": 6.162924369371526,
             "jaccard_similarity": 0.13157894736842105,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9002636607374358
+            "phenodigm_score": 0.9005060250953879
           }
         }
       },
@@ -152,7 +152,7 @@
           "match_source_label": "Apnea",
           "match_target": "ZP:0003960",
           "match_target_label": "endochondral ossification decreased process quality, abnormal",
-          "score": 2.3644784126347,
+          "score": 2.3645720884622494,
           "match_subsumer": "UPHENO:0002963",
           "match_subsumer_label": "anatomical system phenotype",
           "similarity": {
@@ -167,11 +167,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3644784126347,
+            "ancestor_information_content": 2.3645720884622494,
             "jaccard_similarity": 0.2653061224489796,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.7920294181849754
+            "phenodigm_score": 0.792045107327231
           }
         },
         "HP:0012378": {
@@ -179,7 +179,7 @@
           "match_source_label": "Fatigue",
           "match_target": "ZP:0003960",
           "match_target_label": "endochondral ossification decreased process quality, abnormal",
-          "score": 6.159607407217203,
+          "score": 6.162924369371526,
           "match_subsumer": "UPHENO:0050106",
           "match_subsumer_label": "multicellular organismal process phenotype",
           "similarity": {
@@ -194,16 +194,16 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 6.159607407217203,
+            "ancestor_information_content": 6.162924369371526,
             "jaccard_similarity": 0.125,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.8774684757312655
+            "phenodigm_score": 0.8777047032866127
           }
         }
       },
-      "average_score": 5.210825158571577,
-      "best_score": 6.159607407217203,
+      "average_score": 5.213336299144206,
+      "best_score": 6.162924369371526,
       "metric": "ancestor_information_content"
     }
   },
@@ -253,7 +253,7 @@
       "has_descendant_count": null,
       "uri": "https://identifiers.org/zfin/ZDB-GENE-030131-4265"
     },
-    "score": 5.210825158571577,
+    "score": 5.213336299144206,
     "similarity": {
       "subject_termset": {
         "ZP:0000335": {
@@ -271,7 +271,7 @@
           "match_source_label": "blood circulation disrupted, abnormal",
           "match_target": "HP:0012378",
           "match_target_label": "Fatigue",
-          "score": 6.159607407217203,
+          "score": 6.162924369371526,
           "match_subsumer": "UPHENO:0050106",
           "match_subsumer_label": "multicellular organismal process phenotype",
           "similarity": {
@@ -286,11 +286,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 6.159607407217203,
+            "ancestor_information_content": 6.162924369371526,
             "jaccard_similarity": 0.15151515151515152,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9660609968207826
+            "phenodigm_score": 0.9663210747995442
           }
         }
       },
@@ -300,7 +300,7 @@
           "match_source_label": "Apnea",
           "match_target": "ZP:0000335",
           "match_target_label": "blood circulation disrupted, abnormal",
-          "score": 2.3644784126347,
+          "score": 2.3645720884622494,
           "match_subsumer": "UPHENO:0002963",
           "match_subsumer_label": "anatomical system phenotype",
           "similarity": {
@@ -315,11 +315,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3644784126347,
+            "ancestor_information_content": 2.3645720884622494,
             "jaccard_similarity": 0.30952380952380953,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.855489547461278
+            "phenodigm_score": 0.8555064936717347
           }
         },
         "HP:0012378": {
@@ -327,7 +327,7 @@
           "match_source_label": "Fatigue",
           "match_target": "ZP:0000335",
           "match_target_label": "blood circulation disrupted, abnormal",
-          "score": 6.159607407217203,
+          "score": 6.162924369371526,
           "match_subsumer": "UPHENO:0050106",
           "match_subsumer_label": "multicellular organismal process phenotype",
           "similarity": {
@@ -342,16 +342,16 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 6.159607407217203,
+            "ancestor_information_content": 6.162924369371526,
             "jaccard_similarity": 0.15151515151515152,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9660609968207826
+            "phenodigm_score": 0.9663210747995442
           }
         }
       },
-      "average_score": 5.210825158571577,
-      "best_score": 6.159607407217203,
+      "average_score": 5.213336299144206,
+      "best_score": 6.162924369371526,
       "metric": "ancestor_information_content"
     }
   },
@@ -401,7 +401,7 @@
       "has_descendant_count": null,
       "uri": "https://identifiers.org/zfin/ZDB-GENE-031118-55"
     },
-    "score": 5.210825158571577,
+    "score": 5.213336299144206,
     "similarity": {
       "subject_termset": {
         "ZP:0001534": {
@@ -419,7 +419,7 @@
           "match_source_label": "heart contraction increased rate, abnormal",
           "match_target": "HP:0012378",
           "match_target_label": "Fatigue",
-          "score": 6.159607407217203,
+          "score": 6.162924369371526,
           "match_subsumer": "UPHENO:0050106",
           "match_subsumer_label": "multicellular organismal process phenotype",
           "similarity": {
@@ -434,11 +434,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 6.159607407217203,
+            "ancestor_information_content": 6.162924369371526,
             "jaccard_similarity": 0.11363636363636363,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.8366333648521155
+            "phenodigm_score": 0.836858598988688
           }
         }
       },
@@ -448,7 +448,7 @@
           "match_source_label": "Apnea",
           "match_target": "ZP:0001534",
           "match_target_label": "heart contraction increased rate, abnormal",
-          "score": 2.3644784126347,
+          "score": 2.3645720884622494,
           "match_subsumer": "UPHENO:0002963",
           "match_subsumer_label": "anatomical system phenotype",
           "similarity": {
@@ -463,11 +463,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3644784126347,
+            "ancestor_information_content": 2.3645720884622494,
             "jaccard_similarity": 0.24528301886792453,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.7615552528208819
+            "phenodigm_score": 0.7615703383068787
           }
         },
         "HP:0012378": {
@@ -475,7 +475,7 @@
           "match_source_label": "Fatigue",
           "match_target": "ZP:0001534",
           "match_target_label": "heart contraction increased rate, abnormal",
-          "score": 6.159607407217203,
+          "score": 6.162924369371526,
           "match_subsumer": "UPHENO:0050106",
           "match_subsumer_label": "multicellular organismal process phenotype",
           "similarity": {
@@ -490,16 +490,16 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 6.159607407217203,
+            "ancestor_information_content": 6.162924369371526,
             "jaccard_similarity": 0.11363636363636363,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.8366333648521155
+            "phenodigm_score": 0.836858598988688
           }
         }
       },
-      "average_score": 5.210825158571577,
-      "best_score": 6.159607407217203,
+      "average_score": 5.213336299144206,
+      "best_score": 6.162924369371526,
       "metric": "ancestor_information_content"
     }
   },
@@ -548,7 +548,7 @@
       "has_descendant_count": null,
       "uri": "https://identifiers.org/zfin/ZDB-GENE-041010-51"
     },
-    "score": 5.210825158571577,
+    "score": 5.213336299144206,
     "similarity": {
       "subject_termset": {
         "ZP:0000335": {
@@ -566,7 +566,7 @@
           "match_source_label": "blood circulation disrupted, abnormal",
           "match_target": "HP:0012378",
           "match_target_label": "Fatigue",
-          "score": 6.159607407217203,
+          "score": 6.162924369371526,
           "match_subsumer": "UPHENO:0050106",
           "match_subsumer_label": "multicellular organismal process phenotype",
           "similarity": {
@@ -581,11 +581,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 6.159607407217203,
+            "ancestor_information_content": 6.162924369371526,
             "jaccard_similarity": 0.15151515151515152,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9660609968207826
+            "phenodigm_score": 0.9663210747995442
           }
         }
       },
@@ -595,7 +595,7 @@
           "match_source_label": "Apnea",
           "match_target": "ZP:0000335",
           "match_target_label": "blood circulation disrupted, abnormal",
-          "score": 2.3644784126347,
+          "score": 2.3645720884622494,
           "match_subsumer": "UPHENO:0002963",
           "match_subsumer_label": "anatomical system phenotype",
           "similarity": {
@@ -610,11 +610,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3644784126347,
+            "ancestor_information_content": 2.3645720884622494,
             "jaccard_similarity": 0.30952380952380953,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.855489547461278
+            "phenodigm_score": 0.8555064936717347
           }
         },
         "HP:0012378": {
@@ -622,7 +622,7 @@
           "match_source_label": "Fatigue",
           "match_target": "ZP:0000335",
           "match_target_label": "blood circulation disrupted, abnormal",
-          "score": 6.159607407217203,
+          "score": 6.162924369371526,
           "match_subsumer": "UPHENO:0050106",
           "match_subsumer_label": "multicellular organismal process phenotype",
           "similarity": {
@@ -637,16 +637,16 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 6.159607407217203,
+            "ancestor_information_content": 6.162924369371526,
             "jaccard_similarity": 0.15151515151515152,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9660609968207826
+            "phenodigm_score": 0.9663210747995442
           }
         }
       },
-      "average_score": 5.210825158571577,
-      "best_score": 6.159607407217203,
+      "average_score": 5.213336299144206,
+      "best_score": 6.162924369371526,
       "metric": "ancestor_information_content"
     }
   },
@@ -694,7 +694,7 @@
       "has_descendant_count": null,
       "uri": "https://identifiers.org/zfin/ZDB-GENE-050309-24"
     },
-    "score": 5.210825158571577,
+    "score": 5.213336299144206,
     "similarity": {
       "subject_termset": {
         "ZP:0147296": {
@@ -712,7 +712,7 @@
           "match_source_label": "cardiac ventricle irregular rhythm cardiac muscle contraction, abnormal",
           "match_target": "HP:0012378",
           "match_target_label": "Fatigue",
-          "score": 6.159607407217203,
+          "score": 6.162924369371526,
           "match_subsumer": "UPHENO:0050106",
           "match_subsumer_label": "multicellular organismal process phenotype",
           "similarity": {
@@ -727,11 +727,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 6.159607407217203,
+            "ancestor_information_content": 6.162924369371526,
             "jaccard_similarity": 0.1111111111111111,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.8272852126226684
+            "phenodigm_score": 0.8275079300977205
           }
         }
       },
@@ -741,7 +741,7 @@
           "match_source_label": "Apnea",
           "match_target": "ZP:0147296",
           "match_target_label": "cardiac ventricle irregular rhythm cardiac muscle contraction, abnormal",
-          "score": 2.3644784126347,
+          "score": 2.3645720884622494,
           "match_subsumer": "UPHENO:0002963",
           "match_subsumer_label": "anatomical system phenotype",
           "similarity": {
@@ -756,11 +756,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3644784126347,
+            "ancestor_information_content": 2.3645720884622494,
             "jaccard_similarity": 0.24074074074074073,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.7544708639325766
+            "phenodigm_score": 0.7544858090854208
           }
         },
         "HP:0012378": {
@@ -768,7 +768,7 @@
           "match_source_label": "Fatigue",
           "match_target": "ZP:0147296",
           "match_target_label": "cardiac ventricle irregular rhythm cardiac muscle contraction, abnormal",
-          "score": 6.159607407217203,
+          "score": 6.162924369371526,
           "match_subsumer": "UPHENO:0050106",
           "match_subsumer_label": "multicellular organismal process phenotype",
           "similarity": {
@@ -783,16 +783,16 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 6.159607407217203,
+            "ancestor_information_content": 6.162924369371526,
             "jaccard_similarity": 0.1111111111111111,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.8272852126226684
+            "phenodigm_score": 0.8275079300977205
           }
         }
       },
-      "average_score": 5.210825158571577,
-      "best_score": 6.159607407217203,
+      "average_score": 5.213336299144206,
+      "best_score": 6.162924369371526,
       "metric": "ancestor_information_content"
     }
   },
@@ -848,7 +848,7 @@
       "has_descendant_count": null,
       "uri": "https://identifiers.org/zfin/ZDB-GENE-070206-11"
     },
-    "score": 5.210825158571577,
+    "score": 5.213336299144206,
     "similarity": {
       "subject_termset": {
         "ZP:0000335": {
@@ -866,7 +866,7 @@
           "match_source_label": "blood circulation disrupted, abnormal",
           "match_target": "HP:0012378",
           "match_target_label": "Fatigue",
-          "score": 6.159607407217203,
+          "score": 6.162924369371526,
           "match_subsumer": "UPHENO:0050106",
           "match_subsumer_label": "multicellular organismal process phenotype",
           "similarity": {
@@ -881,11 +881,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 6.159607407217203,
+            "ancestor_information_content": 6.162924369371526,
             "jaccard_similarity": 0.15151515151515152,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9660609968207826
+            "phenodigm_score": 0.9663210747995442
           }
         }
       },
@@ -895,7 +895,7 @@
           "match_source_label": "Apnea",
           "match_target": "ZP:0000335",
           "match_target_label": "blood circulation disrupted, abnormal",
-          "score": 2.3644784126347,
+          "score": 2.3645720884622494,
           "match_subsumer": "UPHENO:0002963",
           "match_subsumer_label": "anatomical system phenotype",
           "similarity": {
@@ -910,11 +910,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3644784126347,
+            "ancestor_information_content": 2.3645720884622494,
             "jaccard_similarity": 0.30952380952380953,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.855489547461278
+            "phenodigm_score": 0.8555064936717347
           }
         },
         "HP:0012378": {
@@ -922,7 +922,7 @@
           "match_source_label": "Fatigue",
           "match_target": "ZP:0000335",
           "match_target_label": "blood circulation disrupted, abnormal",
-          "score": 6.159607407217203,
+          "score": 6.162924369371526,
           "match_subsumer": "UPHENO:0050106",
           "match_subsumer_label": "multicellular organismal process phenotype",
           "similarity": {
@@ -937,16 +937,16 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 6.159607407217203,
+            "ancestor_information_content": 6.162924369371526,
             "jaccard_similarity": 0.15151515151515152,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9660609968207826
+            "phenodigm_score": 0.9663210747995442
           }
         }
       },
-      "average_score": 5.210825158571577,
-      "best_score": 6.159607407217203,
+      "average_score": 5.213336299144206,
+      "best_score": 6.162924369371526,
       "metric": "ancestor_information_content"
     }
   },
@@ -996,7 +996,7 @@
       "has_descendant_count": null,
       "uri": "https://identifiers.org/zfin/ZDB-GENE-130530-682"
     },
-    "score": 5.210825158571577,
+    "score": 5.213336299144206,
     "similarity": {
       "subject_termset": {
         "ZP:0004485": {
@@ -1014,7 +1014,7 @@
           "match_source_label": "blood circulation decreased process quality, abnormal",
           "match_target": "HP:0012378",
           "match_target_label": "Fatigue",
-          "score": 6.159607407217203,
+          "score": 6.162924369371526,
           "match_subsumer": "UPHENO:0050106",
           "match_subsumer_label": "multicellular organismal process phenotype",
           "similarity": {
@@ -1029,11 +1029,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 6.159607407217203,
+            "ancestor_information_content": 6.162924369371526,
             "jaccard_similarity": 0.1388888888888889,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9249329861023269
+            "phenodigm_score": 0.9251819918093237
           }
         }
       },
@@ -1043,7 +1043,7 @@
           "match_source_label": "Apnea",
           "match_target": "ZP:0004485",
           "match_target_label": "blood circulation decreased process quality, abnormal",
-          "score": 2.3644784126347,
+          "score": 2.3645720884622494,
           "match_subsumer": "UPHENO:0002963",
           "match_subsumer_label": "anatomical system phenotype",
           "similarity": {
@@ -1058,11 +1058,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3644784126347,
+            "ancestor_information_content": 2.3645720884622494,
             "jaccard_similarity": 0.28888888888888886,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.826481422312566
+            "phenodigm_score": 0.8264977939072424
           }
         },
         "HP:0012378": {
@@ -1070,7 +1070,7 @@
           "match_source_label": "Fatigue",
           "match_target": "ZP:0004485",
           "match_target_label": "blood circulation decreased process quality, abnormal",
-          "score": 6.159607407217203,
+          "score": 6.162924369371526,
           "match_subsumer": "UPHENO:0050106",
           "match_subsumer_label": "multicellular organismal process phenotype",
           "similarity": {
@@ -1085,16 +1085,16 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 6.159607407217203,
+            "ancestor_information_content": 6.162924369371526,
             "jaccard_similarity": 0.1388888888888889,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9249329861023269
+            "phenodigm_score": 0.9251819918093237
           }
         }
       },
-      "average_score": 5.210825158571577,
-      "best_score": 6.159607407217203,
+      "average_score": 5.213336299144206,
+      "best_score": 6.162924369371526,
       "metric": "ancestor_information_content"
     }
   },
@@ -1143,7 +1143,7 @@
       "has_descendant_count": null,
       "uri": "https://identifiers.org/zfin/ZDB-GENE-030131-7091"
     },
-    "score": 4.817257707695273,
+    "score": 4.819825808957901,
     "similarity": {
       "subject_termset": {
         "ZP:0001211": {
@@ -1165,7 +1165,7 @@
           "match_source_label": "swim bladder uninflated, abnormal",
           "match_target": "HP:0002104",
           "match_target_label": "Apnea",
-          "score": 2.3644784126347,
+          "score": 2.3645720884622494,
           "match_subsumer": "UPHENO:0002963",
           "match_subsumer_label": "anatomical system phenotype",
           "similarity": {
@@ -1180,11 +1180,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3644784126347,
+            "ancestor_information_content": 2.3645720884622494,
             "jaccard_similarity": 0.325,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.8766159273628774
+            "phenodigm_score": 0.8766332920612993
           }
         },
         "ZP:0003323": {
@@ -1192,7 +1192,7 @@
           "match_source_label": "swimming behavior process quality, abnormal",
           "match_target": "HP:0012378",
           "match_target_label": "Fatigue",
-          "score": 7.2700370027558465,
+          "score": 7.275079529453554,
           "match_subsumer": "UPHENO:0049622",
           "match_subsumer_label": "behavior phenotype",
           "similarity": {
@@ -1207,11 +1207,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 7.2700370027558465,
+            "ancestor_information_content": 7.275079529453554,
             "jaccard_similarity": 0.3157894736842105,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 1.5151901394759022
+            "phenodigm_score": 1.5157155193560934
           }
         }
       },
@@ -1221,7 +1221,7 @@
           "match_source_label": "Apnea",
           "match_target": "ZP:0001211",
           "match_target_label": "swim bladder uninflated, abnormal",
-          "score": 2.3644784126347,
+          "score": 2.3645720884622494,
           "match_subsumer": "UPHENO:0002963",
           "match_subsumer_label": "anatomical system phenotype",
           "similarity": {
@@ -1236,11 +1236,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3644784126347,
+            "ancestor_information_content": 2.3645720884622494,
             "jaccard_similarity": 0.325,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.8766159273628774
+            "phenodigm_score": 0.8766332920612993
           }
         },
         "HP:0012378": {
@@ -1248,7 +1248,7 @@
           "match_source_label": "Fatigue",
           "match_target": "ZP:0003323",
           "match_target_label": "swimming behavior process quality, abnormal",
-          "score": 7.2700370027558465,
+          "score": 7.275079529453554,
           "match_subsumer": "UPHENO:0049622",
           "match_subsumer_label": "behavior phenotype",
           "similarity": {
@@ -1263,16 +1263,16 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 7.2700370027558465,
+            "ancestor_information_content": 7.275079529453554,
             "jaccard_similarity": 0.3157894736842105,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 1.5151901394759022
+            "phenodigm_score": 1.5157155193560934
           }
         }
       },
-      "average_score": 4.817257707695273,
-      "best_score": 7.2700370027558465,
+      "average_score": 4.819825808957901,
+      "best_score": 7.275079529453554,
       "metric": "ancestor_information_content"
     }
   },
@@ -1320,7 +1320,7 @@
       "has_descendant_count": null,
       "uri": "https://identifiers.org/zfin/ZDB-GENE-041010-125"
     },
-    "score": 4.183334069545449,
+    "score": 4.184403041131061,
     "similarity": {
       "subject_termset": {
         "ZP:0000335": {
@@ -1342,7 +1342,7 @@
           "match_source_label": "blood circulation disrupted, abnormal",
           "match_target": "HP:0012378",
           "match_target_label": "Fatigue",
-          "score": 6.159607407217203,
+          "score": 6.162924369371526,
           "match_subsumer": "UPHENO:0050106",
           "match_subsumer_label": "multicellular organismal process phenotype",
           "similarity": {
@@ -1357,11 +1357,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 6.159607407217203,
+            "ancestor_information_content": 6.162924369371526,
             "jaccard_similarity": 0.15151515151515152,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9660609968207826
+            "phenodigm_score": 0.9663210747995442
           }
         },
         "ZP:0001540": {
@@ -1369,7 +1369,7 @@
           "match_source_label": "hemoglobin complex nucleate erythrocyte decreased amount, abnormal",
           "match_target": "HP:0002104",
           "match_target_label": "Apnea",
-          "score": 2.049643051112686,
+          "score": 2.047191337318941,
           "match_subsumer": "UPHENO:0001003",
           "match_subsumer_label": "taxon specific phenotype",
           "similarity": {
@@ -1384,11 +1384,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.049643051112686,
+            "ancestor_information_content": 2.047191337318941,
             "jaccard_similarity": 0.15,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.5544785457228286
+            "phenodigm_score": 0.554146822239234
           }
         }
       },
@@ -1398,7 +1398,7 @@
           "match_source_label": "Apnea",
           "match_target": "ZP:0000335",
           "match_target_label": "blood circulation disrupted, abnormal",
-          "score": 2.3644784126347,
+          "score": 2.3645720884622494,
           "match_subsumer": "UPHENO:0002963",
           "match_subsumer_label": "anatomical system phenotype",
           "similarity": {
@@ -1413,11 +1413,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3644784126347,
+            "ancestor_information_content": 2.3645720884622494,
             "jaccard_similarity": 0.30952380952380953,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.855489547461278
+            "phenodigm_score": 0.8555064936717347
           }
         },
         "HP:0012378": {
@@ -1425,7 +1425,7 @@
           "match_source_label": "Fatigue",
           "match_target": "ZP:0000335",
           "match_target_label": "blood circulation disrupted, abnormal",
-          "score": 6.159607407217203,
+          "score": 6.162924369371526,
           "match_subsumer": "UPHENO:0050106",
           "match_subsumer_label": "multicellular organismal process phenotype",
           "similarity": {
@@ -1440,16 +1440,16 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 6.159607407217203,
+            "ancestor_information_content": 6.162924369371526,
             "jaccard_similarity": 0.15151515151515152,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.9660609968207826
+            "phenodigm_score": 0.9663210747995442
           }
         }
       },
-      "average_score": 4.183334069545449,
-      "best_score": 6.159607407217203,
+      "average_score": 4.184403041131061,
+      "best_score": 6.162924369371526,
       "metric": "ancestor_information_content"
     }
   },
@@ -1499,7 +1499,7 @@
       "has_descendant_count": null,
       "uri": "https://identifiers.org/zfin/ZDB-GENE-041212-57"
     },
-    "score": 3.01009762095378,
+    "score": 3.010302918866818,
     "similarity": {
       "subject_termset": {
         "ZP:0019797": {
@@ -1517,7 +1517,7 @@
           "match_source_label": "atrium process quality cardiac muscle cell action potential, abnormal",
           "match_target": "HP:0012378",
           "match_target_label": "Fatigue",
-          "score": 3.2253040237268062,
+          "score": 3.225546529001674,
           "match_subsumer": "UPHENO:0049587",
           "match_subsumer_label": "biological_process phenotype",
           "similarity": {
@@ -1532,11 +1532,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 3.2253040237268062,
+            "ancestor_information_content": 3.225546529001674,
             "jaccard_similarity": 0.10256410256410256,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.5751525125476971
+            "phenodigm_score": 0.5751741345243305
           }
         }
       },
@@ -1546,7 +1546,7 @@
           "match_source_label": "Apnea",
           "match_target": "ZP:0019797",
           "match_target_label": "atrium process quality cardiac muscle cell action potential, abnormal",
-          "score": 2.3644784126347,
+          "score": 2.3645720884622494,
           "match_subsumer": "UPHENO:0002963",
           "match_subsumer_label": "anatomical system phenotype",
           "similarity": {
@@ -1561,11 +1561,11 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 2.3644784126347,
+            "ancestor_information_content": 2.3645720884622494,
             "jaccard_similarity": 0.2765957446808511,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.8087055504474366
+            "phenodigm_score": 0.8087215699236487
           }
         },
         "HP:0012378": {
@@ -1573,7 +1573,7 @@
           "match_source_label": "Fatigue",
           "match_target": "ZP:0019797",
           "match_target_label": "atrium process quality cardiac muscle cell action potential, abnormal",
-          "score": 3.2253040237268062,
+          "score": 3.225546529001674,
           "match_subsumer": "UPHENO:0049587",
           "match_subsumer_label": "biological_process phenotype",
           "similarity": {
@@ -1588,16 +1588,16 @@
             "ancestor_source": null,
             "object_information_content": null,
             "subject_information_content": null,
-            "ancestor_information_content": 3.2253040237268062,
+            "ancestor_information_content": 3.225546529001674,
             "jaccard_similarity": 0.10256410256410256,
             "cosine_similarity": null,
             "dice_similarity": null,
-            "phenodigm_score": 0.5751525125476971
+            "phenodigm_score": 0.5751741345243305
           }
         }
       },
-      "average_score": 3.01009762095378,
-      "best_score": 3.2253040237268062,
+      "average_score": 3.010302918866818,
+      "best_score": 3.225546529001674,
       "metric": "ancestor_information_content"
     }
   }

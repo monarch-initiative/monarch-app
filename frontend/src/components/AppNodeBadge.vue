@@ -20,13 +20,27 @@
       "
     >
       <AppNodeText :text="name" :highlight="highlight" />
-      <span v-if="info" class="info">({{ info }})</span>
+      <span v-if="infoParts.length" class="info"
+        >(<template v-for="(part, index) in infoParts" :key="index"
+          ><span v-if="index > 0"> | </span
+          ><span :class="{ italic: part.italic }">{{
+            part.text
+          }}</span></template
+        >)</span
+      >
     </AppLink>
     <span v-else>
       <span class="name">
         <AppNodeText :text="name" :highlight="highlight" />
       </span>
-      <span v-if="info" class="info">({{ info }})</span>
+      <span v-if="infoParts.length" class="info"
+        >(<template v-for="(part, index) in infoParts" :key="index"
+          ><span v-if="index > 0"> | </span
+          ><span :class="{ italic: part.italic }">{{
+            part.text
+          }}</span></template
+        >)</span
+      >
     </span>
   </span>
 </template>
@@ -65,6 +79,8 @@ type Props = {
   absolute?: boolean;
   /** whether to show id. not shown by default, unless name/label empty. */
   showId?: boolean;
+  /** whether to show the node's taxon. shown by default. */
+  showTaxon?: boolean;
   /** boolen to use for highlighting */
   highlight?: boolean;
 };
@@ -76,6 +92,7 @@ const props = withDefaults(defineProps<Props>(), {
   state: undefined,
   absolute: false,
   showId: false,
+  showTaxon: true,
   highlight: false,
 });
 
@@ -84,15 +101,24 @@ const name = computed(
   () => props.node.name || props.node.label || props.node.id,
 );
 
-/** extra info */
-const info = computed(() =>
+/**
+ * Extra info shown in parens after the name, as parts rather than one joined
+ * string: the taxon is a scientific name and renders italic, while the id and
+ * anything else stay roman. Callers that show the taxon elsewhere (the search
+ * results rows) can drop it here with :show-taxon="false".
+ */
+const infoParts = computed(() =>
   [
-    props.showId && name.value !== props.node.id ? props.node.id : "",
-    props.node.in_taxon_label,
-    props.node.info,
-  ]
-    .filter(Boolean)
-    .join(" | "),
+    {
+      text: props.showId && name.value !== props.node.id ? props.node.id : "",
+      italic: false,
+    },
+    {
+      text: props.showTaxon ? props.node.in_taxon_label : "",
+      italic: true,
+    },
+    { text: props.node.info, italic: false },
+  ].filter((part) => !!part.text),
 );
 
 /** whether to make a link or plain text */
@@ -126,5 +152,14 @@ const isLink = computed(() => {
 
 .name {
   font-weight: 500;
+}
+
+/* vue condenses the whitespace between the name and this, so space it here */
+.info {
+  margin-left: 0.35em;
+}
+
+.italic {
+  font-style: italic;
 }
 </style>
