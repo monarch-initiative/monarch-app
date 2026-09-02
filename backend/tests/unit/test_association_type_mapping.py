@@ -231,3 +231,69 @@ def test_duplicate_section_keys_are_rejected_at_load():
         association_type_utils.yaml.load = original
         instance.load_mappings()
     assert len(instance.mappings) > 1  # the real yaml is restored
+
+
+# =====================================================================
+# Loader validation rejects configurations that fail silently at runtime
+# =====================================================================
+
+
+@pytest.fixture()
+def load_yaml(monkeypatch):
+    """Load arbitrary entries as if they were the shipped yaml, through the singleton.
+
+    monkeypatch restores `yaml.load` itself — patching and then reassigning from a fresh
+    `import yaml` does not, since it is the same module object.
+    """
+    from monarch_py.utils import association_type_utils as atu
+
+    def _load(entries):
+        monkeypatch.setattr(atu.yaml, "load", lambda *args, **kwargs: entries)
+        atu.AssociationTypeMappings._AssociationTypeMappings__instance = None
+
+    yield _load
+    atu.AssociationTypeMappings._AssociationTypeMappings__instance = None
+
+
+@pytest.mark.parametrize(
+    "entries,expected",
+    [
+        (
+            [
+                {"key": "a", "subject_label": "A", "object_label": "A", "category": ["biolink:X"]},
+                {"key": "a", "subject_label": "B", "object_label": "B", "category": ["biolink:Y"]},
+            ],
+            "Duplicate association-type section keys",
+        ),
+        (
+            [
+                {"key": "legacy", "subject_label": "L", "object_label": "L", "category": ["biolink:X"]},
+                {"key": "medic", "subject_label": "M", "object_label": "M", "category": ["biolink:X"]},
+            ],
+            "produce the same Solr query",
+        ),
+        (
+            [{"key": "src_only", "subject_label": "S", "object_label": "O", "provided_by": ["x_nodes"]}],
+            "declares no match criteria",
+        ),
+    ],
+    ids=["duplicate-keys", "identical-fragments", "no-criteria"],
+)
+def test_invalid_mapping_config_raises_every_time(load_yaml, entries, expected):
+    """The guard has to survive the singleton. `__init__` publishes `__instance` before
+    loading, so validating after assigning `self.mappings` meant the first call raised and
+    every call after it served the invalid config for the life of the process."""
+    load_yaml(entries)
+    for _ in range(2):
+        with pytest.raises(ValueError, match=expected):
+            AssociationTypeMappings.get_mappings()
+
+
+def test_shipped_mappings_pass_validation():
+    """Every configured section must be individually addressable and distinguishable."""
+    mappings = AssociationTypeMappings.get_mappings()
+    keys = [m.key for m in mappings]
+    fragments = [get_solr_query_fragment(m) for m in mappings]
+    assert len(set(keys)) == len(keys)
+    assert len(set(fragments)) == len(fragments)
+    assert all(fragments)

@@ -21,13 +21,15 @@ describe("useAssociationCategories", () => {
     expect(options.value).toEqual([]);
   });
 
-  it("maps to {id,label,count} and startCases the label", () => {
+  it("maps to {id,category,label,count} and startCases the label", () => {
     const node: TestNode = {
       association_counts: [{ category: "X", label: "hello world", count: 3 }],
     };
     const { options } = useAssociationCategories(node as any);
+    // `category` rides alongside `id` because the two diverge once a section has its own
+    // key; anything keyed on a biolink category must read `category`, not `id`.
     expect(options.value).toEqual([
-      { id: "X", label: "Hello World", count: 3 },
+      { id: "X", category: "X", label: "Hello World", count: 3 },
     ]);
   });
 
@@ -110,4 +112,42 @@ describe("useAssociationCategories", () => {
       "clinical_measurement_related_chemicals",
     ]);
   });
+});
+
+test("hides a section by its category even when its key differs", () => {
+  /**
+   * HIDDEN_CATEGORIES holds biolink categories, but the option id is now a
+   * section key. Checking the hidden set against the id worked only while every
+   * key equalled its category — the first section with a distinct key (LOINC,
+   * MEDIC+CTD) would have silently reappeared.
+   */
+  const node = {
+    association_counts: [
+      {
+        key: "drug_indications",
+        category:
+          "biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation",
+        label: "Medical Action",
+        count: 7,
+      },
+    ],
+  } as never;
+  expect(useAssociationCategories(node).options.value).toEqual([]);
+});
+
+test("keeps a visible section whose key differs from its category", () => {
+  const node = {
+    association_counts: [
+      {
+        key: "clinical_measurement_related_anatomy",
+        category: "biolink:Association",
+        label: "Related Anatomy",
+        count: 3,
+      },
+    ],
+  } as never;
+  const options = useAssociationCategories(node).options.value;
+  expect(options).toHaveLength(1);
+  expect(options[0].id).toBe("clinical_measurement_related_anatomy");
+  expect(options[0].category).toBe("biolink:Association");
 });

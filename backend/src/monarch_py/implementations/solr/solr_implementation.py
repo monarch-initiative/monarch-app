@@ -793,10 +793,17 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         # backward compatibility for existing single-category sections and direct API use.
         key = category.value if hasattr(category, "value") else category
         mapping = AssociationTypeMappings.get_mapping_by_key(key)
-        if mapping and mapping.category:
-            categories = mapping.category
+        if mapping:
+            # Gate on the mapping, not on `mapping.category`: `category` is optional now, so
+            # a section can be defined purely by predicate or source. Falling through here
+            # would filter on `category:"<section-key>"` and drop the section's real
+            # criteria, giving an empty table under a non-zero count badge — counts resolve
+            # such a mapping correctly, so the two would disagree.
+            categories = mapping.category or []
             criteria_filters = get_solr_criteria_filters(mapping)
         else:
+            # Unknown key: treat it as a literal category, which keeps direct API use and
+            # existing single-category sections working.
             categories = [key]
             criteria_filters = []
         table_filter_queries = (filter_queries or []) + criteria_filters
