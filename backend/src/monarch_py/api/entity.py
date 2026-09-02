@@ -7,8 +7,9 @@ from fastapi.responses import StreamingResponse
 from monarch_py.api.additional_models import PaginationParams
 from monarch_py.api.config import solr
 from monarch_py.api.additional_models import OutputFormat
-from monarch_py.datamodels.model import AssociationTableResults, Node
 from monarch_py.datamodels.category_enums import AssociationCategory
+from monarch_py.datamodels.model import AssociationTableResults, Node
+from monarch_py.utils.association_type_utils import AssociationTypeMappings
 from monarch_py.utils.format_utils import to_json, to_tsv
 
 router = APIRouter(tags=["entity"], responses={404: {"description": "Not Found"}})
@@ -49,14 +50,40 @@ async def _get_entity(
         return Response(content=tsv, media_type="text/tab-separated-values")
 
 
+def _validated_section_key(category: str) -> str:
+    """Reject a section key that names neither a configured section nor a biolink category.
+
+    The path param can no longer be the `AssociationCategory` enum, because a section key
+    may be a free-form string (`drug_indications`) rather than a category. Validating
+    against the known keys restores what the enum used to give us: an unknown value fails
+    loudly instead of reaching Solr. Without this, `category` is interpolated into a filter
+    query where `escape()` only escapes `:` — so `/entity/{id}/*` becomes `category:*` and
+    returns the entity's associations across every category, and a value containing a space
+    or quote produces a malformed fq and a 500.
+    """
+    if AssociationTypeMappings.get_mapping_by_key(category):
+        return category
+    try:
+        return AssociationCategory(category).value
+    except ValueError:
+        raise HTTPException(
+            status_code=422,
+            detail=(
+                f"Unknown association-type section key {category!r}. Expected a configured "
+                f"section key or a biolink association category."
+            ),
+        )
+
+
 @router.get("/{id}/{category}")
 def _association_table(
     id: str = Path(
         title="ID of the entity to retrieve association table data for",
         examples=["MONDO:0019391"],
     ),
-    category: AssociationCategory = Path(
-        title="Type of association to retrieve association table data for",
+    category: str = Path(
+        title="Association-type section key (an AssociationTypeMapping key). For plain "
+        "single-category sections this is the biolink association category.",
         examples=["biolink:DiseaseToPhenotypicFeatureAssociation"],
     ),
     query: str = Query(default=None, title="query string to limit results to a subset", examples=["thumb"]),
@@ -112,7 +139,7 @@ def _association_table(
     """
     response = solr().get_association_table(
         entity=id,
-        category=category,
+        category=_validated_section_key(category),
         q=query,
         traverse_orthologs=traverse_orthologs,
         direct=direct,

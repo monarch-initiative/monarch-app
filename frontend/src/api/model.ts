@@ -21,6 +21,16 @@ export type GridBinId = string;
 export type QualifierId = string;
 export type GridCellDataId = string;
 /**
+* Which of an association-type section's declared fields are enforced as Solr filters.
+*/
+export enum MatchCriteriaEnum {
+    
+    /** Match on `category` alone. `subject_category`/`object_category` are read as entity-grid direction metadata, not query criteria — constraining on them undercounts edges whose node categories differ from the declared ones (e.g. gene-expression edges whose object is biolink:NamedThing). */
+    category = "category",
+    /** Match on every declared criterion. Required for sections that cannot be identified by category alone, such as the LOINC sections (whose edges all share biolink:Association) or sections spanning several categories. */
+    full = "full",
+};
+/**
 * The directionality of an association as it relates to a specified entity, with edges being categorized as incoming or outgoing
 */
 export enum AssociationDirectionEnum {
@@ -302,6 +312,8 @@ export interface Association {
 
 
 export interface AssociationCount extends FacetValue {
+    /** Stable section identifier used as the frontend section key and the association-table key. Equals the category for plain single-category sections. */
+    key?: string,
     category?: string,
     /** Count of direct associations (no closure/descendants) */
     count_direct?: number,
@@ -367,21 +379,31 @@ export interface AssociationTableResults extends Results {
 
 
 /**
- * A data class to hold the necessary information to produce association type counts for given  entities with appropriate directional labels
+ * A data class to hold the necessary information to produce association type counts for given entities with appropriate directional labels. Each match criterion (category, predicate, subject_category, object_category, primary_knowledge_source, provided_by) is an optional list; values within a single criterion are OR'd, and criteria are AND'd together. An omitted criterion places no constraint on that field.
  */
 export interface AssociationTypeMapping {
+    /** A stable identifier for this association-type section, used to accumulate counts and as the table/section key. Defaults to the (single) category when not set. */
+    key?: string,
+    /** Which declared fields are enforced as Solr filters when selecting an association type. Defaults to `category`, the behaviour every legacy section relies on. Set explicitly rather than inferred from the presence of a key, so that adding a key for URL or UI reasons cannot silently change which edges a section counts. */
+    match_criteria?: string,
     /** A label to describe the subjects of the association type as a whole for use in the UI */
     subject_label?: string,
     /** A label to describe the objects of the association type as a whole for use in the UI */
     object_label?: string,
     /** Whether the association type is symmetric, meaning that the subject and object labels should be interchangeable */
     symmetric: boolean,
-    /** The biolink category to use in queries for this association type */
-    category: string,
-    /** The biolink category of entities in the subject position of this association type */
-    subject_category?: string,
-    /** The biolink category of entities in the object position of this association type */
-    object_category?: string,
+    /** The biolink association category/categories to match (OR'd) */
+    category?: string[],
+    /** The predicate(s) to match (OR'd) */
+    predicate?: string[],
+    /** The biolink category/categories of entities in the subject position of this association type (OR'd) */
+    subject_category?: string[],
+    /** The biolink category/categories of entities in the object position of this association type (OR'd) */
+    object_category?: string[],
+    /** The primary knowledge source(s) to match (OR'd) */
+    primary_knowledge_source?: string[],
+    /** The provided_by ingest source(s) to match (OR'd) */
+    provided_by?: string[],
 }
 
 
