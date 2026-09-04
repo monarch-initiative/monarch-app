@@ -80,11 +80,22 @@
   category: "biolink:GenotypeToDiseaseAssociation"
   subject_category: "biolink:Genotype"
   object_category: "biolink:Disease"
-- subject_label: Medical Action
-  object_label: Medical Action
-  category: "biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation"
-  # Note: subject_category/object_category omitted - this association uses disease_context_qualifier
-  # and requires special 1-hop handling that isn't yet implemented in the entity grid
+# Drug indications / treatments. Combines MEDIC (biolink:treats, FDA-approved,
+# text-mined) and CTD (biolink:treats_or_applied_or_studied_to_treat, curated),
+# which carry different association categories, into one section via the
+# multivalued category criterion. Shown as "Indications" on a drug/chemical page
+# and "Treatments" on a disease/phenotype page.
+- key: drug_indications
+  subject_label: Indications
+  object_label: Treatments
+  category:
+  - "biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation"
+  - "biolink:ChemicalEntityToDiseaseOrPhenotypicFeatureAssociation"
+  subject_category:
+  - "biolink:ChemicalEntity"
+  object_category:
+  - "biolink:Disease"
+  - "biolink:PhenotypicFeature"
 - subject_label: Variant to Phenotype
   object_label: Variant to Phenotype
   category: "biolink:VariantToPhenotypicFeatureAssociation"

@@ -124,7 +124,10 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
     if (isDirect) {
       if (
         categoryId === "biolink:CorrelatedGeneToDiseaseAssociation" ||
-        categoryId === "biolink:GenotypeToDiseaseAssociation"
+        categoryId === "biolink:GenotypeToDiseaseAssociation" ||
+        // drug indications: the disease is the object, so drop it and keep the
+        // chemical/treatment (subject) rather than showing the page node itself
+        categoryId === "drug_indications"
       ) {
         baseCols = baseCols.filter((col) => col.key !== "object_label");
       } else if (
