@@ -124,6 +124,8 @@ const colorMap: { [key: string]: string } = mapKeys(
 
     "biolink:Disease": colors.pink.dark,
 
+    "biolink:ClinicalMeasurement": colors.teal.dark,
+
     "biolink:MolecularEntity": colors.lime.dark,
     "biolink:CellularComponent": colors.lime.dark,
     "biolink:BiologicalProcess": colors.lime.dark,

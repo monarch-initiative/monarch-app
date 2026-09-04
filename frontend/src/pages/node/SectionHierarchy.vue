@@ -61,6 +61,7 @@ const LABELS = new Map<string, string>([
   ["biolink:Disease", "Disease"],
   ["biolink:PhenotypicFeature", "Phenotype"],
   ["biolink:AnatomicalEntity", "Anatomical entity"],
+  ["biolink:ClinicalMeasurement", "Clinical measurement"],
 ]);
 
 const typeNoun = computed(

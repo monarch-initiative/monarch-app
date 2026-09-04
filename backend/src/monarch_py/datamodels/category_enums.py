@@ -7,6 +7,12 @@ class EntityCategory(Enum):
     GENE = "biolink:Gene"
     SEQUENCE_VARIANT = "biolink:SequenceVariant"
     PHENOTYPIC_FEATURE = "biolink:PhenotypicFeature"
+    # Added by hand rather than by regenerating this file: a full regeneration
+    # against the 2026-08-20 KG also drops
+    # ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation, which the
+    # "Medical Action" section still maps to, and pulls in ~30 unrelated predicate
+    # changes. That catch-up belongs on main, not in the LOINC PR.
+    CLINICAL_MEASUREMENT = "biolink:ClinicalMeasurement"
     GENOTYPE = "biolink:Genotype"
     ANATOMICAL_ENTITY = "biolink:AnatomicalEntity"
     NAMED_THING = "biolink:NamedThing"
