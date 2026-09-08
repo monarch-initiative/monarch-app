@@ -68,6 +68,7 @@ import type { Node as ApiNode } from "@/api/model";
 import AppBackToTopButton from "@/components/AppBackToTopButton.vue";
 import SectionHierarchy from "@/pages/node/SectionHierarchy.vue";
 import { firstInView } from "@/util/dom";
+import { HIERARCHY_LABELS } from "@/util/hierarchy";
 import type AppFlex from "./AppFlex.vue";
 
 type Entries = {
@@ -77,12 +78,6 @@ type Entries = {
   text: string;
 }[];
 
-const CATEGORIES = [
-  "biolink:Disease",
-  "biolink:PhenotypicFeature",
-  "biolink:AnatomicalEntity",
-  "biolink:ClinicalMeasurement",
-];
 const { node } = defineProps<{ node: ApiNode | null }>();
 /** toc entries */
 const entries = ref<Entries>([]);
@@ -94,9 +89,7 @@ const nudge = ref(0);
  * How much the footer has intruded into the viewport from below. The panel
  * shrinks by this much rather than sliding up by it: on a short page the footer
  * can intrude further than the panel is tall, and subtracting that from `top`
- * used to push the whole thing off the top of the screen. LOINC pages hit this
- * routinely because clinical measurements have few sections — the hierarchy
- * widget was rendering correctly and sitting at y=-190.
+ * used to push the whole thing off the top of the screen.
  */
 const footerOverlap = ref(0);
 /** whether to only show one section at a time */
@@ -107,9 +100,8 @@ const active = ref(0);
  * Only render the widget when there is actually a hierarchy to draw. Without
  * this it shows a box containing nothing but the current node, which reads as
  * "this term has no parents or children" when it usually means the ontology
- * behind it isn't in phenio yet. It matters most for clinical measurements:
- * 86-90% of diseases, phenotypes and anatomy terms have a parent, but only
- * 12.6% of LOINC terms do.
+ * behind it isn't in phenio yet. Terms from ontologies outside phenio — LOINC,
+ * for instance — frequently have neither.
  */
 const hasHierarchy = computed(
   () =>
@@ -117,7 +109,7 @@ const hasHierarchy = computed(
     !!node?.node_hierarchy?.sub_classes?.length,
 );
 const showHierarchy = computed(
-  () => CATEGORIES.includes(node?.category ?? "") && hasHierarchy.value,
+  () => HIERARCHY_LABELS.has(node?.category ?? "") && hasHierarchy.value,
 );
 /** table of contents panel element */
 const toc = ref<InstanceType<typeof AppFlex>>();

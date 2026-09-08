@@ -4,11 +4,7 @@ import { mount } from "./setup";
 
 /**
  * The hierarchy widget is gated on a term actually having parents or children,
- * not just on its category. Without that it renders a box containing only the
- * current node, which reads as "this term has no parents or children" when it
- * usually means the ontology isn't in phenio yet. Clinical measurements are the
- * case that forced this: only ~12.6% of LOINC terms have a subclass_of parent,
- * against 86-90% for diseases, phenotypes and anatomy.
+ * not just on its category.
  */
 const node = (
   category: string,

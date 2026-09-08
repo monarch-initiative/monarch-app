@@ -41,7 +41,6 @@ def test_parse_association_counts_clinical_measurement():
     direct = f"({fragment}) {suffixes['direct_subject']}"
     closure = f"({fragment}) {suffixes['closure_subject']}"
 
-    # sanity: these queries are actually part of the built counts query
     built = build_association_counts_query([node]).facet_queries
     assert direct in built and closure in built
 
