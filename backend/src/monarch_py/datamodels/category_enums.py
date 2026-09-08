@@ -7,14 +7,6 @@ class EntityCategory(Enum):
     GENE = "biolink:Gene"
     SEQUENCE_VARIANT = "biolink:SequenceVariant"
     PHENOTYPIC_FEATURE = "biolink:PhenotypicFeature"
-    # Added by hand rather than by regenerating this file. A full regeneration against
-    # the current KG also drops ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeature-
-    # Association, which the "Medical Action" section still maps to, and pulls in ~30
-    # unrelated predicate changes — too much to carry in this PR. Without this entry the
-    # KG's 107,791 LOINC entities cannot be filtered in search at all
-    # (/search?category=biolink:ClinicalMeasurement returns 422), which would make the
-    # icon, colour and hierarchy label this PR adds unreachable from search.
-    CLINICAL_MEASUREMENT = "biolink:ClinicalMeasurement"
     GENOTYPE = "biolink:Genotype"
     ANATOMICAL_ENTITY = "biolink:AnatomicalEntity"
     NAMED_THING = "biolink:NamedThing"
