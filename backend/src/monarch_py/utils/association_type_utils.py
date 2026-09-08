@@ -55,10 +55,15 @@ class AssociationTypeMappings:
 
         Returns:
             List of dicts with:
-            - category: association category string
+            - key: the section key, which identifies the section unambiguously
+            - category: the section's first association category, for callers that still
+              key on a single category. Prefer `key`: several sections can share a category
+              (every LOINC section is biolink:Association), so this does not identify one.
+            - categories: every category the section matches
             - label: display label for UI
             - context_field: "subject" or "object" (where context entity appears)
             - target_category: what entity type the other end is
+            - target_categories: every category the other end may be
         """
         if AssociationTypeMappings.__instance is None:
             AssociationTypeMappings()
@@ -68,25 +73,32 @@ class AssociationTypeMappings:
 
         results = []
         for mapping in AssociationTypeMappings.__instance.mappings:
-            category = _first(mapping.category)
+            categories = list(mapping.category or [])
+            category = _first(categories)
             # Check if entity can be the subject
             if mapping.subject_category and entity_category in mapping.subject_category:
                 results.append(
                     {
+                        "key": mapping.key,
                         "category": category,
+                        "categories": categories,
                         "label": mapping.subject_label or category,
                         "context_field": "subject",
                         "target_category": _first(mapping.object_category),
+                        "target_categories": list(mapping.object_category or []),
                     }
                 )
             # Check if entity can be the object (reverse traversal)
             if mapping.object_category and entity_category in mapping.object_category:
                 results.append(
                     {
+                        "key": mapping.key,
                         "category": category,
+                        "categories": categories,
                         "label": mapping.object_label or category,
                         "context_field": "object",
                         "target_category": _first(mapping.subject_category),
+                        "target_categories": list(mapping.subject_category or []),
                     }
                 )
         return results
@@ -120,15 +132,46 @@ class AssociationTypeMappings:
             if not entry.get("match_criteria"):
                 entry["match_criteria"] = MatchCriteriaEnum.category.value
         adapter = TypeAdapter(List[AssociationTypeMapping])
-        self.mappings = adapter.validate_python(mapping_data)
-        duplicate_keys = {
-            key for key in (m.key for m in self.mappings) if [m.key for m in self.mappings].count(key) > 1
-        }
+        mappings = adapter.validate_python(mapping_data)
+        try:
+            self._validate(mappings)
+        except ValueError:
+            # Drop the singleton so a later get_mappings() re-runs this and raises again.
+            # Publishing self.mappings first would mean the very next call sailed past the
+            # check and served the invalid config for the life of the process.
+            AssociationTypeMappings.__instance = None
+            raise
+        self.mappings = mappings
+
+    @staticmethod
+    def _validate(mappings: List[AssociationTypeMapping]) -> None:
+        """Reject configurations that fail silently at runtime rather than loudly here."""
+        keys = [m.key for m in mappings]
+        duplicate_keys = sorted({key for key in keys if keys.count(key) > 1})
         if duplicate_keys:
-            # Two sections sharing a key silently merge their counts (and one wins the
-            # table lookup), which is easy to introduce now that `key` defaults to the
-            # first category of a multi-category mapping.
-            raise ValueError(f"Duplicate association-type section keys in yaml: {sorted(duplicate_keys)}")
+            # Two sections sharing a key merge their counts, and one wins the table lookup.
+            # Easy to introduce now that `key` defaults to the first of several categories.
+            raise ValueError(f"Duplicate association-type section keys in yaml: {duplicate_keys}")
+
+        fragments = {}
+        for mapping in mappings:
+            fragment = get_solr_query_fragment(mapping)
+            if not fragment:
+                # `category` is no longer required, so a mapping can declare no criteria at
+                # all. Its fragment is empty, which would be interpolated into every
+                # entity's counts query as `(None) AND subject:"..."` and break the whole
+                # request, not just that section.
+                raise ValueError(f"Association-type section {mapping.key!r} declares no match criteria")
+            if fragment in fragments:
+                # Counts are attributed by rebuilding each mapping's fragment and looking it
+                # up in the Solr response, which is keyed by query string. Two sections with
+                # identical fragments collapse to one and the other silently vanishes from
+                # the node page.
+                raise ValueError(
+                    f"Association-type sections {fragments[fragment]!r} and {mapping.key!r} "
+                    f"produce the same Solr query: {fragment}"
+                )
+            fragments[fragment] = mapping.key
 
 
 def _or_group(field: str, values) -> str:
