@@ -9,7 +9,7 @@ type AssocCount = {
 };
 type TestNode = { association_counts?: AssocCount[] };
 
-const hidden =
+const drugIndications =
   "biolink:ChemicalOrDrugOrTreatmentToDiseaseOrPhenotypicFeatureAssociation";
 const causal = "biolink:CausalGeneToDiseaseAssociation";
 const genePh = "biolink:GeneToPhenotypicFeatureAssociation";
@@ -33,15 +33,20 @@ describe("useAssociationCategories", () => {
     ]);
   });
 
-  it("filters out hidden categories", () => {
+  it("no longer hides the drug-indication category (now shown, keyed on key)", () => {
     const node: TestNode = {
       association_counts: [
-        { category: hidden, label: "should hide", count: 1 },
+        {
+          key: "drug_indications",
+          category: drugIndications,
+          label: "Treatments",
+          count: 1,
+        },
         { category: "Y", label: "keep me", count: 2 },
       ],
     };
     const { options } = useAssociationCategories(node as any);
-    expect(options.value.map((o) => o.id)).toEqual(["Y"]);
+    expect(options.value.map((o) => o.id)).toEqual(["drug_indications", "Y"]);
   });
 
   it("keeps special order: causal before gene→phenotype", () => {
@@ -113,12 +118,14 @@ describe("useAssociationCategories", () => {
     ]);
   });
 
-  it("hides a section by its category even when its key differs", () => {
+  it("no longer hides the drug-indications category", () => {
     /**
-     * HIDDEN_CATEGORIES holds biolink categories, but the option id is now a
-     * section key. Checking the hidden set against the id worked only while
-     * every key equalled its category — the first section with a distinct key
-     * (LOINC, MEDIC+CTD) would have silently reappeared.
+     * On main this category is in HIDDEN_CATEGORIES and the section is
+     * suppressed. This branch surfaces it as the merged `drug_indications`
+     * section, so HIDDEN_CATEGORIES is empty here and the section must come
+     * through. The hidden-set lookup still has to read `category` rather than
+     * `id` — see the sibling test — or it would stop matching for any section
+     * whose key differs, which is every section this branch adds.
      */
     const node = {
       association_counts: [
@@ -131,7 +138,9 @@ describe("useAssociationCategories", () => {
         },
       ],
     } as never;
-    expect(useAssociationCategories(node).options.value).toEqual([]);
+    const options = useAssociationCategories(node).options.value;
+    expect(options).toHaveLength(1);
+    expect(options[0].id).toBe("drug_indications");
   });
 
   it("keeps a visible section whose key differs from its category", () => {

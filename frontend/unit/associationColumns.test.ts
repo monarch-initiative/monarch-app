@@ -119,6 +119,29 @@ describe("buildAssociationCols", () => {
     expect(k).toContain("object_label");
   });
 
+  it("drug_indications (Disease, Direct): drops the disease (object), keeps the chemical (subject) + predicate", () => {
+    const cols = buildAssociationCols(
+      makeCtx({
+        nodeCategory: "biolink:Disease",
+        isDirect: true,
+        categoryId: "drug_indications",
+        items: [
+          makeRow({
+            subject_category: "biolink:ChemicalEntity",
+            object_category: "biolink:Disease",
+            predicate: "biolink:treats",
+          }),
+        ],
+      }),
+    );
+    const k = keys(cols);
+    // the disease is the object here; showing it would just restate the page node
+    expect(k).not.toContain("object_label");
+    // the chemical/treatment (subject) and the relationship are kept
+    expect(k).toContain("subject_label");
+    expect(k).toContain("predicate");
+  });
+
   it("GenotypeToDiseaseAssociation: removes predicate, ensures Taxon before Subject; adds Source before Details on Direct", () => {
     const cols = buildAssociationCols(
       makeCtx({
