@@ -11,7 +11,21 @@ export function useAssociationCategories(node: Node) {
   const options = computed(() => {
     const opts =
       node.association_counts?.map((ac) => ({
-        id: ac.category || "",
+        /**
+         * stable section key; the backend defaults it to the category for plain
+         * single-category sections, so this stays category-compatible while
+         * also distinguishing sections that share one category (e.g.
+         * biolink:Association)
+         */
+        id: ac.key || ac.category || "",
+        /**
+         * The section's biolink category, kept alongside the id because the two
+         * are no longer the same thing. Anything keyed on a category — hidden
+         * sections, ortholog traversal — has to consult this rather than `id`,
+         * which may be a section key like
+         * `clinical_measurement_related_anatomy`.
+         */
+        category: ac.category || "",
         label: startCase(ac.label),
         count: TRAVERSE_ORTHOLOG_CATEGORIES.has(ac.category || "")
           ? (ac.count_with_orthologs ?? ac.count)
@@ -19,7 +33,7 @@ export function useAssociationCategories(node: Node) {
       })) ?? [];
 
     const ordered = opts.filter(
-      (o) => !HIDDEN_CATEGORIES.has(o.id) && (o.count ?? 0) > 0,
+      (o) => !HIDDEN_CATEGORIES.has(o.category) && (o.count ?? 0) > 0,
     );
 
     // keep current special-order rule exactly
