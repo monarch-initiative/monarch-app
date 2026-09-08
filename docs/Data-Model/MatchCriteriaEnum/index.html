@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://monarch-app.monarchinitiative.org/docs/Data-Model/sex_qualifier/">
+        <link rel="canonical" href="https://monarch-app.monarchinitiative.org/docs/Data-Model/MatchCriteriaEnum/">
       
       
       
@@ -18,7 +18,7 @@
     
     
       
-        <title>Slot: sex_qualifier - Monarch KG Documentation</title>
+        <title>Enum: MatchCriteriaEnum - Monarch KG Documentation</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#slot-sex_qualifier" class="md-skip">
+        <a href="#enum-matchcriteriaenum" class="md-skip">
           Skip to content
         </a>
       
@@ -107,7 +107,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Slot: sex_qualifier
+              Enum: MatchCriteriaEnum
             
           </span>
         </div>
@@ -1864,18 +1864,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#applicable-classes" class="md-nav__link">
+  <a href="#permissible-values" class="md-nav__link">
     <span class="md-ellipsis">
-      Applicable Classes
+      Permissible Values
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#properties" class="md-nav__link">
+  <a href="#slots" class="md-nav__link">
     <span class="md-ellipsis">
-      Properties
+      Slots
     </span>
   </a>
   
@@ -1902,15 +1902,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#mappings" class="md-nav__link">
-    <span class="md-ellipsis">
-      Mappings
-    </span>
-  </a>
   
 </li>
       
@@ -1942,75 +1933,70 @@
   
 
 
-<h1 id="slot-sex_qualifier">Slot: sex_qualifier</h1>
-<p>URI: <a href="https://w3id.org/monarch/monarch-py/sex_qualifier">https://w3id.org/monarch/monarch-py/sex_qualifier</a>
-Alias: sex_qualifier</p>
-<!-- no inheritance hierarchy -->
-
-<h2 id="applicable-classes">Applicable Classes</h2>
+<h1 id="enum-matchcriteriaenum">Enum: MatchCriteriaEnum</h1>
+<p><em>Which of an association-type section's declared fields are enforced as Solr filters.</em></p>
+<p>URI: <a href="https://w3id.org/monarch/monarch-py/MatchCriteriaEnum">https://w3id.org/monarch/monarch-py/MatchCriteriaEnum</a></p>
+<h2 id="permissible-values">Permissible Values</h2>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Meaning</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>category</td>
+<td>None</td>
+<td>Match on <code>category</code> alone</td>
+</tr>
+<tr>
+<td>full</td>
+<td>None</td>
+<td>Match on every declared criterion</td>
+</tr>
+</tbody>
+</table>
+<h2 id="slots">Slots</h2>
 <table>
 <thead>
 <tr>
 <th>Name</th>
 <th>Description</th>
-<th>Modifies Slot</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><a href="../DirectionalAssociation/">DirectionalAssociation</a></td>
-<td>An association that gives it's direction relative to a specified entity</td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../ExpandedAssociation/">ExpandedAssociation</a></td>
-<td>Association decorated with app-computed expansions returned by the API: Expan...</td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../Association/">Association</a></td>
-<td>Post-closurize edge shape (association + subject/object closure expansion)</td>
-<td>no</td>
+<td><a href="../match_criteria/">match_criteria</a></td>
+<td>Which declared fields are enforced as Solr filters when selecting an associat...</td>
 </tr>
 </tbody>
 </table>
-<h2 id="properties">Properties</h2>
-<ul>
-<li>Range: <a href="../String/">String</a></li>
-</ul>
 <h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
 <h3 id="schema-source">Schema Source</h3>
 <ul>
 <li>from schema: <a href="https://w3id.org/monarch/monarch-py">https://w3id.org/monarch/monarch-py</a></li>
 </ul>
-<h2 id="mappings">Mappings</h2>
-<table>
-<thead>
-<tr>
-<th>Mapping Type</th>
-<th>Mapped Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>self</td>
-<td><a href="https://w3id.org/monarch/monarch-py/sex_qualifier">https://w3id.org/monarch/monarch-py/sex_qualifier</a></td>
-</tr>
-<tr>
-<td>native</td>
-<td><a href="https://w3id.org/monarch/monarch-py/sex_qualifier">https://w3id.org/monarch/monarch-py/sex_qualifier</a></td>
-</tr>
-</tbody>
-</table>
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
-<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sex_qualifier</span>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MatchCriteriaEnum</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Which of an association-type section&#39;s declared fields are enforced as</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">Solr filters.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sex_qualifier</span>
-<span class="nt">domain_of</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
-<span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="nt">permissible_values</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">category</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">category</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Match on `category` alone. `subject_category`/`object_category` are</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">read as entity-grid direction metadata, not query criteria — constraining on</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">them undercounts edges whose node categories differ from the declared ones (e.g.</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">gene-expression edges whose object is biolink:NamedThing).</span>
+<span class="w">  </span><span class="nt">full</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">full</span>
+<span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Match on every declared criterion. Required for sections that cannot</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">be identified by category alone, such as the LOINC sections (whose edges all</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">share biolink:Association) or sections spanning several categories.</span>
 </code></pre></div>
 </details>
 

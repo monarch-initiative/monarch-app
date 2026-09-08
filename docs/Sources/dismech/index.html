@@ -2345,8 +2345,11 @@ just<span class="w"> </span>qc
 <span class="c1"># Validate a single file</span>
 just<span class="w"> </span>validate<span class="w"> </span>kb/disorders/Asthma.yaml
 
-<span class="c1"># Validate references against PubMed abstracts</span>
-just<span class="w"> </span>validate-references<span class="w"> </span>kb/disorders/Asthma.yaml
+<span class="c1"># Validate a KB entry&#39;s evidence snippets against the cited abstracts</span>
+just<span class="w"> </span>validate-kb-references<span class="w"> </span>kb/disorders/Asthma.yaml
+
+<span class="c1"># Check a deep-research report&#39;s citations (a different question -- see docs)</span>
+just<span class="w"> </span>validate-research-reference<span class="w"> </span>research/Asthma-deep-research-falcon.md
 
 <span class="c1"># Analyze compliance with recommended field coverage</span>
 just<span class="w"> </span>compliance-all
@@ -2412,7 +2415,9 @@ just<span class="w"> </span>upload-cx2-test-all
 and applies a deterministic layout so the uploaded network is immediately viewable in
 NDEx. Add <code>--dot-layout</code> if Graphviz and <code>pydot</code> are available and you want a Graphviz
 layout instead of the built-in layered layout. The default NDEx upload visibility is
-<code>PUBLIC</code>, and the <code>just</code> upload targets default the host to <code>https://test.ndexbio.org</code>.</p>
+<code>PRIVATE</code>, and the <code>just</code> upload targets default the host to <code>https://test.ndexbio.org</code>.
+Production releases use the protected, manually triggered <code>Publish NDEx release</code>
+GitHub Actions workflow described in the operator documentation.</p>
 <h2 id="agentic-curation-guide">Agentic Curation Guide</h2>
 <p>This knowledge base is curated with <strong>Claude Code</strong> — an AI agent that knows the schema, validates ontology terms, and checks evidence against PubMed abstracts. There are two ways to start curating:</p>
 <h3 id="route-1-clone-the-repo-and-use-claude-code-cli">Route 1: Clone the repo and use Claude Code CLI</h3>

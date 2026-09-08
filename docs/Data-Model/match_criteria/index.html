@@ -8,7 +8,7 @@
       
       
       
-        <link rel="canonical" href="https://monarch-app.monarchinitiative.org/docs/Data-Model/sex_qualifier/">
+        <link rel="canonical" href="https://monarch-app.monarchinitiative.org/docs/Data-Model/match_criteria/">
       
       
       
@@ -18,7 +18,7 @@
     
     
       
-        <title>Slot: sex_qualifier - Monarch KG Documentation</title>
+        <title>Slot: match_criteria - Monarch KG Documentation</title>
       
     
     
@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#slot-sex_qualifier" class="md-skip">
+        <a href="#slot-match_criteria" class="md-skip">
           Skip to content
         </a>
       
@@ -107,7 +107,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Slot: sex_qualifier
+              Slot: match_criteria
             
           </span>
         </div>
@@ -1942,9 +1942,10 @@
   
 
 
-<h1 id="slot-sex_qualifier">Slot: sex_qualifier</h1>
-<p>URI: <a href="https://w3id.org/monarch/monarch-py/sex_qualifier">https://w3id.org/monarch/monarch-py/sex_qualifier</a>
-Alias: sex_qualifier</p>
+<h1 id="slot-match_criteria">Slot: match_criteria</h1>
+<p><em>Which declared fields are enforced as Solr filters when selecting an association type. Defaults to <code>category</code>, the behaviour every legacy section relies on. Set explicitly rather than inferred from the presence of a key, so that adding a key for URL or UI reasons cannot silently change which edges a section counts.</em></p>
+<p>URI: <a href="https://w3id.org/monarch/monarch-py/match_criteria">https://w3id.org/monarch/monarch-py/match_criteria</a>
+Alias: match_criteria</p>
 <!-- no inheritance hierarchy -->
 
 <h2 id="applicable-classes">Applicable Classes</h2>
@@ -1958,25 +1959,15 @@ Alias: sex_qualifier</p>
 </thead>
 <tbody>
 <tr>
-<td><a href="../DirectionalAssociation/">DirectionalAssociation</a></td>
-<td>An association that gives it's direction relative to a specified entity</td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../ExpandedAssociation/">ExpandedAssociation</a></td>
-<td>Association decorated with app-computed expansions returned by the API: Expan...</td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../Association/">Association</a></td>
-<td>Post-closurize edge shape (association + subject/object closure expansion)</td>
+<td><a href="../AssociationTypeMapping/">AssociationTypeMapping</a></td>
+<td>A data class to hold the necessary information to produce association type co...</td>
 <td>no</td>
 </tr>
 </tbody>
 </table>
 <h2 id="properties">Properties</h2>
 <ul>
-<li>Range: <a href="../String/">String</a></li>
+<li>Range: <a href="../MatchCriteriaEnum/">MatchCriteriaEnum</a></li>
 </ul>
 <h2 id="identifier-and-mapping-information">Identifier and Mapping Information</h2>
 <h3 id="schema-source">Schema Source</h3>
@@ -1994,23 +1985,28 @@ Alias: sex_qualifier</p>
 <tbody>
 <tr>
 <td>self</td>
-<td><a href="https://w3id.org/monarch/monarch-py/sex_qualifier">https://w3id.org/monarch/monarch-py/sex_qualifier</a></td>
+<td><a href="https://w3id.org/monarch/monarch-py/match_criteria">https://w3id.org/monarch/monarch-py/match_criteria</a></td>
 </tr>
 <tr>
 <td>native</td>
-<td><a href="https://w3id.org/monarch/monarch-py/sex_qualifier">https://w3id.org/monarch/monarch-py/sex_qualifier</a></td>
+<td><a href="https://w3id.org/monarch/monarch-py/match_criteria">https://w3id.org/monarch/monarch-py/match_criteria</a></td>
 </tr>
 </tbody>
 </table>
 <h2 id="linkml-source">LinkML Source</h2>
 <details>
-<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sex_qualifier</span>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">match_criteria</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Which declared fields are enforced as Solr filters when selecting an</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">association type. Defaults to `category`, the behaviour every legacy section relies</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">on. Set explicitly rather than inferred from the presence of a key, so that adding</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">a key for URL or UI reasons cannot silently change which edges a section counts.</span>
 <span class="nt">from_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://w3id.org/monarch/monarch-py</span>
 <span class="nt">rank</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sex_qualifier</span>
+<span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">match_criteria</span>
 <span class="nt">domain_of</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Association</span>
-<span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationTypeMapping</span>
+<span class="nt">range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MatchCriteriaEnum</span>
+<span class="nt">multivalued</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
 </details>
 
