@@ -150,6 +150,15 @@
         >
           <AppIcon :icon="getAgentTypeMeta(row.agent_type).icon" />
         </span>
+        <span
+          v-if="row.knowledge_level"
+          v-tooltip="
+            `<b>${getKnowledgeLevelMeta(row.knowledge_level).label}</b><br>${getKnowledgeLevelMeta(row.knowledge_level).description}`
+          "
+          :aria-label="`${getKnowledgeLevelMeta(row.knowledge_level).label}: ${getKnowledgeLevelMeta(row.knowledge_level).description}`"
+        >
+          <AppIcon :icon="getKnowledgeLevelMeta(row.knowledge_level).icon" />
+        </span>
         <AppButton
           v-tooltip="'View association details'"
           design="small"
@@ -234,6 +243,7 @@ import {
 import { getBreadcrumbs } from "@/pages/node/AssociationsSummary.vue";
 import SectionAssociationDetails from "@/pages/node/SectionAssociationDetails.vue";
 import { getAgentTypeMeta } from "@/util/agentType";
+import { getKnowledgeLevelMeta } from "@/util/knowledgeLevel";
 import { taxonFieldFor } from "@/util/taxonFilterConfig";
 import { fieldFor } from "@/util/typeConfig";
 
