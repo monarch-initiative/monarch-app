@@ -23,11 +23,8 @@ from monarch_py.datamodels.solr import SolrQueryResult
 from monarch_py.implementations.solr.solr_parsers import match_provenance, parse_search
 from monarch_py.implementations.solr.solr_query_utils import (
     build_search_query,
-    escape_phrase,
     escape_term,
-    exact_name_filter_query,
-    exact_synonym_candidate_filter_query,
-    id_filter_query,
+    exact_match_filter_query,
     subset_filter_query,
 )
 
@@ -59,40 +56,12 @@ def test_subset_filter_query_excludes_the_whole_disjunction():
     )
 
 
-def test_exact_name_filter_targets_the_grounding_copy_field():
-    """A hit here *is* an exact name match, so nothing needs to re-check it in Python."""
-    assert exact_name_filter_query("septic shock") == 'name_grounding:"septic shock"'
-
-
-def test_exact_synonym_candidates_exclude_the_name_matches():
-    """Excluding them is what keeps the set Python inspects small — 15 rows against 1,744
-    name matches for the worst collision in the index."""
-    fq = exact_synonym_candidate_filter_query("FP")
-    assert fq == 'synonym_grounding:"FP" AND -name_grounding:"FP"'
-
-
-def test_id_filter_query_can_opt_out_of_the_filter_cache():
-    assert id_filter_query(["MONDO:1"], cache=False) == '{!cache=false}id:"MONDO:1"'
-    assert id_filter_query(["MONDO:1"]) == 'id:"MONDO:1"'
-
-
-def test_id_filter_query_escapes_ids():
-    assert id_filter_query(['MONDO:1"']) == 'id:"MONDO:1\\""'
-
-
-@pytest.mark.parametrize(
-    "value,expected",
-    [
-        ('say "what"', 'say \\"what\\"'),
-        ("back\\slash", "back\\\\slash"),
-        ("colons: are fine", "colons: are fine"),
-    ],
-)
-def test_escape_phrase_escapes_only_what_can_break_a_phrase(value, expected):
-    assert escape_phrase(value) == expected
-
-
-### build_search_query ###
+def test_exact_match_filter_targets_both_grounding_copy_fields():
+    """A hit on either is an exact match by construction, so nothing re-checks it in Python.
+    Matching raw `exact_synonym` instead would be case-sensitive and miss Title Case input."""
+    assert exact_match_filter_query("septic shock") == (
+        'name_grounding:"septic shock" OR exact_synonym_grounding:"septic shock"'
+    )
 
 
 def test_search_query_requests_the_score():
@@ -114,7 +83,7 @@ def test_search_query_adds_taxon_curie_filter():
 
 def test_search_query_adds_exact_filter_only_when_given_one():
     plain = build_search_query(q="septic shock")
-    exact = build_search_query(q="septic shock", exact_filter=exact_name_filter_query("septic shock"))
+    exact = build_search_query(q="septic shock", exact_filter=exact_match_filter_query("septic shock"))
     assert not any("name_grounding" in fq for fq in plain.filter_queries)
     assert any("name_grounding" in fq for fq in exact.filter_queries)
 
@@ -238,9 +207,6 @@ def test_parse_search_populates_score_when_solr_returns_it():
     assert _parse([doc], q="septic shock").items[0].score == pytest.approx(59.4)
 
 
-### Regressions from the #1394 review ###
-
-
 def test_escape_term_escapes_whitespace_and_operators():
     """An unescaped space ends the term and the remainder becomes a clause against the
     default field, which the entity core doesn't define — Solr answers 400 and the
@@ -260,14 +226,16 @@ def test_subset_wildcard_still_works_for_ordinary_prefixes():
 def test_exact_match_filter_query_strips_the_query():
     """`name_grounding` is a KeywordTokenizer field, so padding is part of the term: an
     unstripped query finds no candidates at all for text match_provenance calls exact."""
-    assert exact_name_filter_query("  Septic shock ") == 'name_grounding:"Septic shock"'
+    assert exact_match_filter_query("  Septic shock ") == (
+        'name_grounding:"Septic shock" OR exact_synonym_grounding:"Septic shock"'
+    )
 
 
 def test_exact_filter_and_provenance_agree_on_padding():
     """The two halves of the exact contract have to normalise the same way, or the filter
     excludes candidates the scope check would accept."""
     padded = "  septic shock  "
-    assert exact_name_filter_query(padded) == exact_name_filter_query(padded.strip())
+    assert exact_match_filter_query(padded) == exact_match_filter_query(padded.strip())
     assert match_provenance(padded, {"name": "septic shock"}) == ("name", "exact")
 
 
@@ -342,9 +310,6 @@ def test_search_query_negates_the_whole_namespace_disjunction():
     assert '-(namespace:"MPATH" OR namespace:"ZP")' in query.filter_queries
 
 
-### Regressions from the second #1394 review ###
-
-
 def test_taxon_filters_are_escaped_like_the_namespace_ones():
     """An unbalanced quote here reached Solr as a malformed fq -> 400 -> 500."""
     query = build_search_query(q="x", in_taxon=['NCBITaxon:9606"'], in_taxon_label=['Homo "sapiens"'])
@@ -357,7 +322,7 @@ def test_facet_limit_defaults_to_solr_behaviour():
 
 
 def test_facet_limit_is_forwarded_to_solr():
-    """Solr caps facet values at 100 by default, which truncates `subsets` (157 values)."""
+    """Solr caps facet values at 100 by default, which silently truncates `subsets`."""
     query = build_search_query(q="x", facet_fields=["subsets"], facet_limit=-1)
     assert query.facet_limit == -1
     assert "facet.limit=-1" in query.query_string()
@@ -380,9 +345,6 @@ def test_facet_switch_covers_every_filterable_axis():
     assert set(DEFAULT_SEARCH_FACET_FIELDS) <= set(ALL_SEARCH_FACET_FIELDS)
 
 
-### Regressions from the third #1394 review ###
-
-
 def test_exact_mode_neutralises_the_query_text():
     """The filter already determines the candidate set, so leaving the raw text as the
     edismax `q` can only subtract. With q.op=AND and mm=100%, uppercased NER output like
@@ -390,7 +352,7 @@ def test_exact_mode_neutralises_the_query_text():
     match — exact mode would abstain on a string differing from a stored name only by case."""
     query = build_search_query(
         q="Lymphoma, NOT Otherwise Specified",
-        exact_filter=exact_name_filter_query("Lymphoma, NOT Otherwise Specified"),
+        exact_filter=exact_match_filter_query("Lymphoma, NOT Otherwise Specified"),
     )
     assert query.q == "*:*"
     assert any("name_grounding" in fq for fq in query.filter_queries)
@@ -398,7 +360,7 @@ def test_exact_mode_neutralises_the_query_text():
 
 def test_exact_mode_still_boosts_from_the_original_text():
     """Neutralising `q` must not cost the ordering among several exact matches."""
-    query = build_search_query(q="ovarian carcinoma", exact_filter=exact_name_filter_query("ovarian carcinoma"))
+    query = build_search_query(q="ovarian carcinoma", exact_filter=exact_match_filter_query("ovarian carcinoma"))
     assert "ovarian carcinoma" in query.boost
 
 
@@ -420,12 +382,3 @@ def test_scoped_axes_are_the_ones_a_scope_can_set():
         for axis in ("category", "namespace", "subset", "exclude_subset", "in_taxon"):
             assert axis in SCOPED_AXES
         assert not getattr(definition, "exclude_namespace", None)
-
-
-def test_exact_search_splits_name_matches_from_synonym_candidates():
-    """The two halves must not overlap: if the synonym scan re-scanned the name matches,
-    the set Python inspects would be the whole candidate set again (1,753 rows for `FP`
-    rather than 9), which is the shape this design exists to avoid."""
-    name_fq = exact_name_filter_query("FP")
-    synonym_fq = exact_synonym_candidate_filter_query("FP")
-    assert f"-{name_fq}" in synonym_fq

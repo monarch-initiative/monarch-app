@@ -2,9 +2,9 @@
 
 A scope is a shorthand for the filters a caller would otherwise have to assemble from
 knowledge of biolink categories, ontology namespaces and subset names. Grounding human
-clinical text is the motivating case: `category=biolink:PhenotypicFeature` alone searches a
-pool that is ~88% non-human (ZP, XPO, MP, FYPO...), and `category=biolink:Disease` alone
-includes the VeNom veterinary terms.
+clinical text is the motivating case: `category=biolink:PhenotypicFeature` alone searches a pool
+that is overwhelmingly non-human (ZP, XPO, MP, FYPO...), and `category=biolink:Disease`
+alone includes the VeNom veterinary terms.
 
 Each scope is a promise about meaning, so changing what one covers is a silent behaviour
 change for every caller using it. Keep the vocabulary small, and prefer adding a new scope
@@ -48,9 +48,8 @@ class ScopeDefinition:
     in_taxon: List[str] = field(default_factory=list)
 
 
-# VeNom terms are MONDO terms, so `namespace=MONDO` does not exclude them and both filters
-# are needed: category:Disease is 36,082 MONDO + 180 MPATH, and dropping venom_* takes the
-# MONDO side to 31,037.
+# VeNom terms are MONDO terms, so `namespace=MONDO` does not exclude them; both filters are
+# needed.
 SEARCH_SCOPES: Dict[SearchScope, ScopeDefinition] = {
     SearchScope.HUMAN_DISEASE: ScopeDefinition(
         description="Human diseases: MONDO, minus the VeNom veterinary subsets.",

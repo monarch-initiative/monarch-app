@@ -275,43 +275,19 @@ def subset_filter_query(subsets: List[str], exclude: bool = False) -> str:
     return f"-({joined})" if exclude else f"({joined})"
 
 
-def exact_name_filter_query(q: str) -> str:
-    """Entities whose `name` is `q`, case-insensitively.
+def exact_match_filter_query(q: str) -> str:
+    """Entities that `q` names: its `name` or one of its `exact_synonym`s, case-insensitively.
 
-    `name_grounding` is a KeywordTokenizer + LowerCase copy of `name`, so a hit here *is* an
-    exact name match — Solr has already decided it, and nothing needs to re-check it.
+    Both fields have a `*_grounding` copy (KeywordTokenizer + LowerCase), so a hit here *is*
+    an exact match and nothing needs to re-check it. Matching the raw `exact_synonym` field
+    instead would not do: it is a `string`, so comparison is case-sensitive and would miss
+    the Title Case text that grounding callers actually send.
 
-    `q` is stripped to match what `match_provenance` compares against: on a KeywordTokenizer
-    field the padding is part of the term, so an unstripped query would find no candidates at
-    all for text the scope check would happily call an exact match. Callers feeding NER spans
-    are exactly the ones likely to pass padding.
-    """
-    return f'name_grounding:"{escape_phrase(q.strip())}"'
-
-
-def exact_synonym_candidate_filter_query(q: str) -> str:
-    """Entities that match `q` on some synonym but not on their name.
-
-    This is the only set that needs inspecting in Python. `synonym_grounding` copies the
-    union `synonym` field, which mixes exact, broad, narrow and related scopes, and the KG's
-    Solr schema has no `exact_synonym_grounding` copy field to narrow it — while raw
-    `exact_synonym` is a case-sensitive `string`, so matching it directly would miss every
-    Title Case input. Excluding the name matches keeps this small: across the queries with
-    the largest candidate sets in the 2026-08-20 index it never exceeded 15 rows, against
-    1,744 name matches for the worst of them.
+    `q` is stripped because on a KeywordTokenizer field the padding is part of the term, and
+    callers feeding NER spans are the ones most likely to pass it.
     """
     escaped = escape_phrase(q.strip())
-    return f'synonym_grounding:"{escaped}" AND -name_grounding:"{escaped}"'
-
-
-def id_filter_query(ids: List[str], cache: bool = True) -> str:
-    """Restrict to a known set of entity ids.
-
-    `cache=False` for filters unique to a single query, which would otherwise evict the
-    genuinely reusable category/namespace entries from Solr's filterCache.
-    """
-    prefix = "" if cache else "{!cache=false}"
-    return prefix + " OR ".join(f'id:"{escape_phrase(entity_id)}"' for entity_id in ids)
+    return f'name_grounding:"{escaped}" OR exact_synonym_grounding:"{escaped}"'
 
 
 def build_search_query(

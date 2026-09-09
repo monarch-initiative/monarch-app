@@ -117,8 +117,8 @@ async def search(
         facet_limit = None
     else:
         facet_fields = ALL_SEARCH_FACET_FIELDS if facets else []
-        # Solr caps facet values at 100 by default, which would hand back 100 of the 157
-        # subsets and quietly defeat the point of the switch.
+        # Solr caps facet values at 100 by default, which would silently truncate `subsets`
+        # and defeat the point of the switch.
         facet_limit = ALL_FACET_VALUES if facets else None
     if category is None:
         category = []
