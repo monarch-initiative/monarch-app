@@ -8,8 +8,8 @@ Monarch-Py is a Python library for interfacing with the Monarch Initiative Knowl
 
 If you are running the whole monarch-app suite locally you will want to review the [README.md](../README.md) or [CONTRIBUTING.md](../CONTRIBUTING.md) files in the repository root for information on the requirements for monarch-app at large. If you intend to run just the backend for end-user usage or testing you will only need the following prerequisites.
 
-- Python >= 3.10 recommended for development.
-- [uv](https://docs.astral.sh/uv/) - For managing dependencies in monarch-py.
+- [uv](https://docs.astral.sh/uv/) - For managing dependencies in monarch-py, and for provisioning the Python interpreter itself.
+- Python >= 3.10 - Only needed if you are installing `monarch-py` as an end user via `pip`. For development, `uv` provisions the interpreter from `.python-version` and no system Python is required.
 - [Docker](https://docs.docker.com/get-docker/) - For running the Solr instance locally.
 - [Rust](https://www.rust-lang.org/tools/install) - For running the semsimian server locally.
 

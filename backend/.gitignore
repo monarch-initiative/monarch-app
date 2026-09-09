@@ -84,7 +84,9 @@ profile_default/
 ipython_config.py
 
 # pyenv
-.python-version
+#   .python-version is intentionally tracked here: backend/ is its own uv
+#   project root, and this file is how uv learns which interpreter to
+#   provision for backend/.venv. Do not ignore it.
 
 # pipenv
 #   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.

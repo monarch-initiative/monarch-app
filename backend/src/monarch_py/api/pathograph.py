@@ -88,20 +88,39 @@ async def _load_index(client: httpx.AsyncClient, name: str) -> dict:
     return data
 
 
+def _normalize_curie(curie: str) -> str:
+    """Return a CURIE with an uppercased *prefix*, local id untouched.
+
+    e.g. ``hgnc:1956`` -> ``HGNC:1956``; ``MONDO:0100471`` -> ``MONDO:0100471``.
+    Only the prefix is uppercased, so a local id containing letters (e.g.
+    ``ensembl:ENSG00000...``) is not corrupted. A string without a ``:`` is
+    returned unchanged.
+    """
+    prefix, sep, local = curie.partition(":")
+    if not sep:
+        return curie
+    return f"{prefix.upper()}:{local}"
+
+
 def _anchor_id(node: dict[str, Any]) -> str | None:
     """Stable cross-disorder id for nodes that should be boxed when merging.
 
-    Phenotypes box on their HP term id; single-gene genetic nodes box on the
-    HGNC id. Everything else (free-text mechanism nodes) stays disorder-local.
+    Phenotypes box on their term id (any ontology - HP, MONDO, CHEBI, ...);
+    single-gene genetic nodes box on the HGNC id. Everything else (free-text
+    mechanism nodes) stays disorder-local. The anchor is the node's *real*
+    CURIE - never a prefix-forced one - so it (a) resolves to the right Monarch
+    entity and (b) does not collide across ontologies that share a local id
+    (e.g. HP:0001250 vs MONDO:0001250).
     """
     meta = node.get("meta") or {}
-    if node.get("node_type") == "phenotype" and meta.get("term_id"):
-        return f"HP:{str(meta['term_id']).split(':')[-1]}"
+    term_id = meta.get("term_id")
+    if node.get("node_type") == "phenotype" and term_id and ":" in str(term_id):
+        return _normalize_curie(str(term_id))
     gene_ids = [gt["id"] for gt in (meta.get("gene_terms") or []) if gt.get("id")]
     # Anchor single-gene nodes on the real HGNC curie (e.g. "hgnc:1956" ->
     # "HGNC:1956") so the id is a resolvable Monarch entity, not a pseudo-curie.
     if node.get("node_type") == "genetic" and len(gene_ids) == 1 and gene_ids[0].lower().startswith("hgnc:"):
-        return gene_ids[0].upper()
+        return _normalize_curie(gene_ids[0])
     return None
 
 

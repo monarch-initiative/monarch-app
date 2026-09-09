@@ -47,6 +47,12 @@ To install Bun with an existing Node.js environment (currently recommended for v
 npm install -g bun
 ```
 
+On macOS, Homebrew is the simplest option:
+
+```
+brew install oven-sh/bun/bun
+```
+
 If you don't have an existing Node.js implementation and want to install Bun globally on your system (requires curl):
 
 ```

@@ -31,7 +31,9 @@ describe("emptyFilters", () => {
     const expectedKeys: (keyof SourceFilters)[] = [
       "category",
       "subjectCategory",
+      "subjectNamespace",
       "objectCategory",
+      "objectNamespace",
       "predicate",
       "subjectTaxonLabel",
       "objectTaxonLabel",
@@ -108,6 +110,16 @@ describe("useAssociationFilters", () => {
     const { filterQueries, setFilter } = useAssociationFilters();
     setFilter("predicate", "biolink:has_phenotype");
     expect(filterQueries.value).toHaveLength(1);
+  });
+
+  it("namespace filters build quoted Solr fq entries", () => {
+    const { filterQueries, setFilter } = useAssociationFilters();
+
+    setFilter("subjectNamespace", "HGNC");
+    setFilter("objectNamespace", "HP");
+
+    expect(filterQueries.value).toContain('subject_namespace:"HGNC"');
+    expect(filterQueries.value).toContain('object_namespace:"HP"');
   });
 
   it("negated filter omits quotes around value", () => {

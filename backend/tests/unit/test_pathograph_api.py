@@ -137,3 +137,43 @@ def test_malformed_artifact_json_returns_502(client, artifact_dir):
     (artifact_dir / "index.json").write_text("{not valid json")
     r = client.get("/v3/api/pathograph/MONDO:0000001")
     assert r.status_code == 502
+
+
+def test_normalize_curie_uppercases_only_prefix():
+    assert route._normalize_curie("hgnc:111") == "HGNC:111"
+    assert route._normalize_curie("MONDO:0100471") == "MONDO:0100471"
+    # local id containing letters must not be corrupted
+    assert route._normalize_curie("ensembl:ENSG001") == "ENSEMBL:ENSG001"
+    assert route._normalize_curie("nocolon") == "nocolon"
+
+
+def test_anchor_id_preserves_non_hp_phenotype_curie():
+    # A phenotype carrying a MONDO term_id must anchor on that real curie, not a
+    # prefix-forced "HP:0100471".
+    node = {"node_type": "phenotype", "meta": {"term_id": "MONDO:0100471"}}
+    assert route._anchor_id(node) == "MONDO:0100471"
+
+
+def test_anchor_id_no_cross_ontology_collision():
+    # HP:0001250 and MONDO:0001250 share a local id but must not collide.
+    hp = {"node_type": "phenotype", "meta": {"term_id": "HP:0001250"}}
+    mondo = {"node_type": "phenotype", "meta": {"term_id": "MONDO:0001250"}}
+    assert route._anchor_id(hp) == "HP:0001250"
+    assert route._anchor_id(mondo) == "MONDO:0001250"
+    assert route._anchor_id(hp) != route._anchor_id(mondo)
+
+
+def test_non_hp_phenotypes_with_shared_local_id_do_not_merge(client, artifact_dir, monkeypatch):
+    # Disorder A has an HP phenotype, B has a MONDO phenotype with the SAME local
+    # id; anchor-merged via a shared gene they must remain two separate nodes.
+    disorder_a = json.loads(json.dumps(DISORDER_A))
+    disorder_b = json.loads(json.dumps(DISORDER_B))
+    disorder_b["nodes"][2]["meta"]["term_id"] = "MONDO:0001250"
+    (artifact_dir / "MONDO_0000001.json").write_text(json.dumps(disorder_a))
+    (artifact_dir / "MONDO_0000002.json").write_text(json.dumps(disorder_b))
+    route._index_cache.clear()
+
+    body = client.get("/v3/api/pathograph/HGNC:111").json()
+    ids = {n["id"] for n in body["nodes"]}
+    assert "HP:0001250" in ids
+    assert "MONDO:0001250" in ids  # distinct anchor, not folded into HP:0001250

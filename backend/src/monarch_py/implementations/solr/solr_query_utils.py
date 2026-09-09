@@ -132,6 +132,9 @@ def build_association_query(
         query.q = q
         query.def_type = "edismax"
         query.hl = True
+        # Unified highlighter reads offsets from the postings (storeOffsetsWithPositions),
+        # so highlighting no longer needs term vectors on the _t fields.
+        query.hl_method = "unified"
         query.query_fields = association_search_query_fields()
     if sort:
         query.sort = ", ".join(sort)
@@ -147,7 +150,7 @@ def build_association_query(
 
 def build_association_table_query(
     entity: List[str],
-    category: str,
+    category: List[str],
     direct: bool = False,
     q: Optional[str] = None,
     facet_fields: List[str] = None,
@@ -169,7 +172,7 @@ def build_association_table_query(
 
     query = build_association_query(
         entity=entity,
-        category=[category],
+        category=category,
         q=q,
         sort=sort,
         offset=offset,

@@ -43,13 +43,22 @@ The Monarch Initiative website tool chain has a few requirements that you may ne
 
 ### Backend Requirements
 
-- Python - Most of us use Python version 3.10.12 for development and try to be compatible with versions 3.10 - 3.12.
-- [uv](https://docs.astral.sh/uv/) - We use `uv` to manage dependencies in `monarch-py`
-- [pyenv](https://github.com/pyenv/pyenv?tab=readme-ov-file#installation) (suggested) - I recommend using pyenv to manage your Python version within different projects
+- [uv](https://docs.astral.sh/uv/) - We use `uv` to manage both dependencies and the Python interpreter for `monarch-py`
+- Python - You do **not** need to install Python yourself. `uv` downloads and manages the interpreter for you, using the version pinned in `backend/.python-version` (currently 3.10). We develop against the oldest supported version and test for compatibility with 3.10 - 3.12.
 
 ### Frontend Requirements
 
-- [Bun](https://bun.sh/docs/installation) - Bun is used as a drop-in replacement for Node (non-browser JavaScript runtime environment) and Yarn (package manager). If you already have Node.js installed you Bun will not conflict with your Node.js environment and can be installed as a module. The frontend/CONTRIBUTING.md has simple instructions on how to install Bun.
+- [Bun](https://bun.sh/docs/installation) - Bun is used as a drop-in replacement for Node (non-browser JavaScript runtime environment) and Yarn (package manager). Bun will not conflict with an existing Node.js environment.
+
+Install it with whichever of these suits your setup:
+
+```shell
+brew install oven-sh/bun/bun     # macOS
+npm install -g bun               # if you already have Node.js
+curl -fsSL https://bun.sh/install | bash
+```
+
+See [frontend/CONTRIBUTING.md](./frontend/CONTRIBUTING.md) for more detail on how Bun is used in this project.
 
 ### Other Requirements
 
@@ -61,38 +70,56 @@ The Monarch Initiative website tool chain has a few requirements that you may ne
 To get started with development in monarch-app clone the repo and navigate to the directory.
 
 ```shell
-git clone git@github.com:monarch-initiative/monarch-app.git
+gh repo clone monarch-initiative/monarch-app
 cd monarch-app
 ```
 
-In order to maintain a clean system environment you may want to create a local python environment. I also recommend setting a local python version of 3.10 with pyenv. You can do both with the following commands.
+You do not need to create a virtual environment or install a Python version by hand. `make install` (below) delegates to `uv`, which reads the pinned version from `backend/.python-version`, downloads that interpreter if you don't already have it, and creates `backend/.venv` from it.
 
-```shell
-pyenv install 3.10.12
-pyenv local 3.10.12
-python -m venv .venv
-```
-
-When the new virtual environment is created, you may want to do some peronal modifications to the envoronment. I edit the `activate` script to name the virtual environment more meaningfully and also install `uv` locally (my preference, `activate` then run `pip install uv`). After the virtual environment is set up you will want to start it before each development session by running `activate` (or in your IDE). To exit the environment run `deactivate`.
+To run a backend command inside that environment, prefix it with `uv run` from the `backend` directory — for example `uv run pytest tests`. This resolves the environment for you, so there is no `activate` step.
 
 ### Makefile
 
 The monarch-app repo uses a Makefile system to facilitate and simplify some of the development setup and deployment tasks. For detailed information on the build targets and details of implementation please refer to the [Makefile](Makefile) in the monarch-app directory.
 
 ### Quick Start
-For a quick-start, once the requirements above are met you can install and launch a working local version of the Monarch App with the following commands.
+
+Once the requirements above are met, you can install and launch a working local version of the Monarch App with the following steps.
+
+Install the backend and frontend:
 
 ```shell
 cd monarch-app
 make install
-monarch solr download
-monarch solr start
-cd frontend
+```
+
+_Note_: During `make install`, the Playwright browser download step prints `Download failed: server returned code 400` once per browser. This is expected — Playwright's primary CDN has been retired, and it automatically retries against a working mirror. The install succeeded as long as each browser ends with `... downloaded to /Users/<you>/Library/Caches/ms-playwright/...`. See [#1380](https://github.com/monarch-initiative/monarch-app/issues/1380) for the upgrade that removes these retries.
+
+Download and start Solr. The `monarch` CLI is installed into `backend/.venv`, so run it with `uv run`:
+
+```shell
+cd backend
+uv run monarch solr download
+uv run monarch solr start
+```
+
+_Note_: `monarch solr download` may end with a message that the Solr container requires write access to its data directory. The container runs as group 8983, so the directory on your machine needs to be group-writable. The CLI prints the exact commands for your path, which look like this:
+
+```shell
+sudo chgrp -R 8983 ~/.data/monarch
+sudo chmod -R g+w ~/.data/monarch
+```
+
+Run those, then re-run the download.
+
+Start the frontend:
+
+```shell
+cd ../frontend
 bun run dev
 ```
 
-Once these commands are run you should have a working version of the Monarch App running from your local system.
-_Note_: You may have to resolve some permissions issues with solr in order to download and start monarch solr.
+You should now have a working version of the Monarch App running from your local system, accessible via http://localhost:5173/
 
 # Testing and Development
 
