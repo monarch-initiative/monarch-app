@@ -54,17 +54,12 @@
 import { computed, ref } from "vue";
 import type { Node } from "@/api/model";
 import AppModal from "@/components/AppModal.vue";
+import { HIERARCHY_LABELS } from "@/util/hierarchy";
 
 const props = defineProps<{ node: Node; childLimit?: number }>();
 
-const LABELS = new Map<string, string>([
-  ["biolink:Disease", "Disease"],
-  ["biolink:PhenotypicFeature", "Phenotype"],
-  ["biolink:AnatomicalEntity", "Anatomical entity"],
-]);
-
 const typeNoun = computed(
-  () => LABELS.get(props.node?.category ?? "") ?? "Hierarchy",
+  () => HIERARCHY_LABELS.get(props.node?.category ?? "") ?? "Hierarchy",
 );
 const title = computed(() => `${typeNoun.value} hierarchy`);
 

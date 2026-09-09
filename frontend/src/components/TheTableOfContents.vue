@@ -9,8 +9,9 @@
       align-v="top"
       :class="['toc', { expanded }]"
       :style="{
-        top: nudge - footerOverlap + 'px',
+        top: nudge + 'px',
         '--nudge': nudge + 'px',
+        '--footer-overlap': footerOverlap + 'px',
       }"
       role="doc-toc"
       aria-label="Page table of contents"
@@ -67,6 +68,7 @@ import type { Node as ApiNode } from "@/api/model";
 import AppBackToTopButton from "@/components/AppBackToTopButton.vue";
 import SectionHierarchy from "@/pages/node/SectionHierarchy.vue";
 import { firstInView } from "@/util/dom";
+import { HIERARCHY_LABELS } from "@/util/hierarchy";
 import type AppFlex from "./AppFlex.vue";
 
 type Entries = {
@@ -76,11 +78,6 @@ type Entries = {
   text: string;
 }[];
 
-const CATEGORIES = [
-  "biolink:Disease",
-  "biolink:PhenotypicFeature",
-  "biolink:AnatomicalEntity",
-];
 const { node } = defineProps<{ node: ApiNode | null }>();
 /** toc entries */
 const entries = ref<Entries>([]);
@@ -88,13 +85,32 @@ const entries = ref<Entries>([]);
 const expanded = ref(window.innerWidth > 1240);
 /** how much to push downward to make room for header if in view */
 const nudge = ref(0);
-/** how much the footer has intruded into the viewport from below */
+/**
+ * How much the footer has intruded into the viewport from below. The panel
+ * shrinks by this much rather than sliding up by it: on a short page the footer
+ * can intrude further than the panel is tall, and subtracting that from `top`
+ * used to push the whole thing off the top of the screen.
+ */
 const footerOverlap = ref(0);
 /** whether to only show one section at a time */
 const oneAtATime = ref(false);
 /** active (in view or selected) section */
 const active = ref(0);
-const showHierarchy = computed(() => CATEGORIES.includes(node?.category ?? ""));
+/**
+ * Only render the widget when there is actually a hierarchy to draw. Without
+ * this it shows a box containing nothing but the current node, which reads as
+ * "this term has no parents or children" when it usually means the ontology
+ * behind it isn't in phenio yet. Terms from ontologies outside phenio — LOINC,
+ * for instance — frequently have neither.
+ */
+const hasHierarchy = computed(
+  () =>
+    !!node?.node_hierarchy?.super_classes?.length ||
+    !!node?.node_hierarchy?.sub_classes?.length,
+);
+const showHierarchy = computed(
+  () => HIERARCHY_LABELS.has(node?.category ?? "") && hasHierarchy.value,
+);
 /** table of contents panel element */
 const toc = ref<InstanceType<typeof AppFlex>>();
 /** listen for close event */
@@ -201,7 +217,7 @@ useMutationObserver(
   top: 0;
   width: $toc-width;
   max-width: calc(100vw - 40px);
-  height: calc(100vh - var(--nudge, 0px));
+  height: calc(100vh - var(--nudge, 0px) - var(--footer-overlap, 0px));
   min-height: 0;
   overflow-y: auto;
   background: $white;
