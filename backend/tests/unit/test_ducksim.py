@@ -161,6 +161,26 @@ def test_negated_associations_excluded(engine):
     assert engine.entity_phenotypes_batch(["E:1"]) == {"E:1": ["A1"]}
 
 
+def test_profile_reads_entity_termset(engine):
+    """`profile` returns an entity's own phenotype termset — the query source for search-by-profile.
+    Uniform across entity types because it reads `_assoc`; here E:3 carries two phenotypes."""
+    assert engine.profile("E:3") == ["A1", "B1"]
+    assert engine.profile("E:1") == ["A1"]
+    assert engine.profile("E:4") == []  # only edge negated
+    assert engine.profile("NOPE:0") == []  # unknown entity
+
+
+def test_search_by_profile_uses_entity_as_query(engine):
+    """search_by_profile pulls the entity's profile, then searches — E:3 (phenotypes {A1,B1})
+    should retrieve itself first, and returns the driving profile so a caller can weight by it."""
+    svc = DucksimService(engine=engine)
+    profile, results = svc.search_by_profile("E:3", limit=3, categories=None, prefixes=["E"])
+    assert profile == ["A1", "B1"]
+    assert results[0].subject.id == "E:3"  # an entity is most similar to itself
+    # an entity with no profile yields no query and no results, rather than searching on nothing
+    assert svc.search_by_profile("E:4", prefixes=["E"]) == ([], [])
+
+
 def test_search_hydrates_from_duckdb_without_entity_store(engine):
     """All-DuckDB search: the service builds full SemsimSearchResults — including the result entity,
     hydrated from the KG `nodes` table — with no external entity store (entity_implementation=None)."""

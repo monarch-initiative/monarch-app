@@ -1,14 +1,16 @@
 from typing import Optional
 
-from fastapi import APIRouter, Path, Query
+from fastapi import APIRouter, HTTPException, Path, Query
 
 from monarch_py.api.additional_models import (
     SemsimCompareRequest,
     SemsimMetric,
     SemsimSearchRequest,
+    SemsimProfileSearchRequest,
     SemsimSearchGroup,
     SemsimMultiCompareRequest,
     SemsimDirectionality,
+    expand_search_group,
 )
 from monarch_py.api.config import semsim_service, solr
 from monarch_py.api.utils.similarity_utils import parse_similarity_prefix
@@ -137,7 +139,11 @@ def _search(
     limit: int = Query(default=10, ge=1, le=50),
     engine: Optional[str] = EngineParam,
 ):
-    """Search for terms in a termset
+    """Search for terms in a termset, within one of the legacy entity groups.
+
+    Superseded by `POST /search`, which takes explicit category/taxon filters and can express
+    targets no group can name — notably "all mouse models", which spans the MGI and MMRRC
+    prefixes. This route expands the group to those same explicit filters.
 
     <b>Args:</b> <br>
         termset (str): Comma separated list of term IDs to find matches for. <br>
@@ -149,31 +155,106 @@ def _search(
         List[str]: List of matching terms
     """
     terms = [term.strip() for term in termset.split(",")]
+    categories, taxa, prefixes = expand_search_group(group)
     results = semsim_service(engine).search(
-        termset=terms, prefix=parse_similarity_prefix(group), metric=metric, directionality=directionality, limit=limit
+        termset=terms,
+        prefix=parse_similarity_prefix(group),
+        metric=metric,
+        directionality=directionality,
+        limit=limit,
+        categories=categories,
+        taxa=taxa,
+        prefixes=prefixes,
     )
     return results
+
+
+@router.get("/filters")
+def _filters(engine: Optional[str] = EngineParam):
+    """The (category, taxon) combinations available to search, with entity counts.
+
+    Explicit filters are only usable if callers can find out what to pass, so this enumerates the
+    valid values from the KG itself rather than from a hand-maintained enum that drifts.
+    """
+    service = semsim_service(engine)
+    if not hasattr(service, "engine"):
+        return {"detail": "filter discovery requires the ducksim backend"}
+    return [
+        {"category": cat, "taxon": tax, "taxon_label": lab, "count": n}
+        for cat, tax, lab, n in service.engine.categories()
+    ]
 
 
 @router.post("/search")
 def _post_search(request: SemsimSearchRequest, engine: Optional[str] = EngineParam):
     """
-        Search for terms in a termset <br>
+        Search for entities whose phenotype profile matches a termset. <br>
         <br>
-        Example: <br>
+        Every mouse model, across MGI *and* MMRRC — not expressible with the legacy `group`: <br>
     <pre>
     {
-      "termset": ["HP:0002104", "HP:0012378", "HP:0012378", "HP:0012378"],
-      "group": "Human Diseases",
-      "metric": "ancestor_information_content",
+      "termset": ["HP:0002104", "HP:0012378"],
+      "filter": {"category": ["biolink:Genotype"], "taxon": ["NCBITaxon:10090"]},
+      "metric": "phenodigm_score",
       "limit": 5
     }
     </pre>
+        Only orderable MMRRC strains: <br>
+    <pre>
+    {"termset": ["HP:0002104"], "filter": {"category": ["biolink:Genotype"], "prefix": ["MMRRC"]}}
+    </pre>
+        Legacy form, still supported: <br>
+    <pre>
+    {"termset": ["HP:0002104"], "group": "Human Diseases", "limit": 5}
+    </pre>
+        Call <code>GET /semsim/filters</code> for the category/taxon values this KG supports.
     """
+    if request.filter is None and request.group is None:
+        raise HTTPException(status_code=422, detail="provide either `filter` (preferred) or `group`")
     return semsim_service(engine).search(
         termset=request.termset,
-        prefix=parse_similarity_prefix(request.group.value),
         metric=request.metric,
         directionality=request.directionality,
         limit=request.limit,
+        **request.resolved_filter(),
     )
+
+
+@router.post("/search-by-profile")
+def _post_search_by_profile(request: SemsimProfileSearchRequest, engine: Optional[str] = EngineParam):
+    """
+        Search using an entity's OWN phenotype profile as the query. <br>
+        <br>
+        Mouse models for a patient (phenopacket Case -> mouse genotypes): <br>
+    <pre>
+    {
+      "entity": "phenopacket.store:PMID_38991538_Individual_1",
+      "filter": {"category": ["biolink:Genotype"], "taxon": ["NCBITaxon:10090"]},
+      "metric": "phenodigm_score"
+    }
+    </pre>
+        Patients matching a mouse model (mouse genotype -> Cases): <br>
+    <pre>
+    {"entity": "MMRRC:000415-UCD", "filter": {"category": ["biolink:Case"]}}
+    </pre>
+        The likely diagnosis for a patient (Case -> diseases): <br>
+    <pre>
+    {"entity": "phenopacket.store:PMID_38991538_Individual_1", "filter": {"category": ["biolink:Disease"]}}
+    </pre>
+        Needs the ducksim backend (the entity's profile is read from the KG).
+    """
+    service = semsim_service(engine)
+    if not hasattr(service, "search_by_profile"):
+        raise HTTPException(
+            status_code=501, detail="search-by-profile requires the ducksim backend (?engine=ducksim)"
+        )
+    profile, results = service.search_by_profile(
+        entity_id=request.entity,
+        metric=request.metric,
+        directionality=request.directionality,
+        limit=request.limit,
+        **request.filter.as_kwargs(),
+    )
+    if not profile:
+        raise HTTPException(status_code=404, detail=f"no phenotype profile found for entity {request.entity!r}")
+    return {"entity": request.entity, "query_profile": profile, "results": results}
