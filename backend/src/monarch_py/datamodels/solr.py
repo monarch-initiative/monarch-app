@@ -91,6 +91,7 @@ class SolrQuery(BaseModel):
     facet_queries: Optional[List[str]] = Field(default_factory=list)
     filter_queries: Optional[List[str]] = Field(default_factory=list)
     facet_mincount: int = 1
+    facet_limit: Optional[int] = None  # -1 for every value; Solr defaults to 100
     query_fields: Optional[str] = None
     def_type: str = "edismax"
     q_op: str = "AND"  # See SOLR-8812, need this plus mm=100% to allow boolean operators in queries
@@ -99,6 +100,7 @@ class SolrQuery(BaseModel):
     sort: Optional[str] = None
     hl: bool = False
     hl_method: Optional[str] = None  # e.g. "unified" — reads offsets from postings (storeOffsetsWithPositions)
+    fl: Optional[str] = None  # field list; set to "*,score" to have Solr return relevance scores
 
     def add_field_filter_query(self, field: str, value: Union[list, str, None]):
         if not value or len(value) == 0:
@@ -136,6 +138,8 @@ class SolrQuery(BaseModel):
             return "fq"
         elif value == "facet_mincount":
             return "facet.mincount"
+        elif value == "facet_limit":
+            return "facet.limit"
         elif value == "query_fields":
             return "qf"
         elif value == "def_type":

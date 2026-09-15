@@ -233,28 +233,118 @@ def build_multi_entity_association_query(
     return query
 
 
+def escape_phrase(value: str) -> str:
+    """Escape a value for use inside a Lucene quoted phrase.
+
+    Only backslashes and double quotes can terminate or corrupt a phrase; everything
+    else (including `:`) is literal once quoted, so this deliberately does less than
+    `utils.escape`.
+    """
+    return value.replace("\\", "\\\\").replace('"', '\\"')
+
+
+LUCENE_SPECIAL_CHARS = set('+-&|!(){}[]^"~*?:\\/ \t\n\r')
+
+
+def escape_term(value: str) -> str:
+    """Escape a value for use as a bare (unquoted) Lucene term.
+
+    A prefix query cannot be quoted — `subsets:"venom_*"` matches the literal string
+    `venom_*` — so the term has to carry its own escaping. Whitespace is in the escape set
+    because an unescaped space ends the term and hands the remainder to the query parser as
+    a clause against the default field, which the entity core does not define, so Solr
+    answers 400 and the endpoint 500s.
+    """
+    return "".join(f"\\{char}" if char in LUCENE_SPECIAL_CHARS else char for char in value)
+
+
+def subset_filter_query(subsets: List[str], exclude: bool = False) -> str:
+    """Build a filter query over the multivalued `subsets` field.
+
+    A trailing `*` is passed through to Solr as a prefix wildcard, so a caller can
+    exclude a whole family (`venom_*`) without enumerating its members. `subsets` is
+    a `string` field, so wildcards match the whole stored value rather than tokens.
+    """
+    clauses = []
+    for subset in subsets:
+        if subset.endswith("*"):
+            clauses.append(f"subsets:{escape_term(subset[:-1])}*")
+        else:
+            clauses.append(f'subsets:"{escape_phrase(subset)}"')
+    joined = " OR ".join(clauses)
+    return f"-({joined})" if exclude else f"({joined})"
+
+
+def exact_match_filter_query(q: str) -> str:
+    """Entities that `q` names: its `name` or one of its `exact_synonym`s, case-insensitively.
+
+    Both fields have a `*_grounding` copy (KeywordTokenizer + LowerCase), so a hit here *is*
+    an exact match and nothing needs to re-check it. Matching the raw `exact_synonym` field
+    instead would not do: it is a `string`, so comparison is case-sensitive and would miss
+    the Title Case text that grounding callers actually send.
+
+    `q` is stripped because on a KeywordTokenizer field the padding is part of the term, and
+    callers feeding NER spans are the ones most likely to pass it.
+    """
+    escaped = escape_phrase(q.strip())
+    return f'name_grounding:"{escaped}" OR exact_synonym_grounding:"{escaped}"'
+
+
 def build_search_query(
     q: str = "*:*",
     offset: int = 0,
     limit: int = 20,
     category: List[str] = None,
+    namespace: List[str] = None,
+    exclude_namespace: List[str] = None,
+    in_taxon: List[str] = None,
     in_taxon_label: List[str] = None,
+    subset: List[str] = None,
+    exclude_subset: List[str] = None,
     facet_fields: List[str] = None,
     facet_queries: List[str] = None,
+    facet_limit: Optional[int] = None,
     filter_queries: List[str] = None,
     highlighting: bool = False,
+    exact_filter: Optional[str] = None,
     sort: Optional[str] = None,
 ) -> SolrQuery:
     query = SolrQuery(start=offset, rows=limit, sort=sort)
+    if facet_limit is not None:
+        query.facet_limit = facet_limit
     query.q = q
     query.def_type = "edismax"
     query.query_fields = entity_query_fields()
     query.hl = highlighting
     query.boost = entity_boost(text=q, empty_search=(q == "*:*"))
+    # Ask Solr for the relevance score, which is otherwise absent from the returned docs
+    # and left null on every SearchResult.
+    query.fl = "*,score"
     if category:
         query.add_filter_query(" OR ".join(f'category:"{cat}"' for cat in category))
+    if namespace:
+        query.add_filter_query(" OR ".join([f'namespace:"{escape_phrase(n)}"' for n in namespace]))
+    if exclude_namespace:
+        excluded = " OR ".join([f'namespace:"{escape_phrase(n)}"' for n in exclude_namespace])
+        query.add_filter_query(f"-({excluded})")
+    if in_taxon:
+        query.add_filter_query(" OR ".join([f'in_taxon:"{escape_phrase(t)}"' for t in in_taxon]))
     if in_taxon_label:
-        query.add_filter_query(" OR ".join([f'in_taxon_label:"{t}"' for t in in_taxon_label]))
+        query.add_filter_query(" OR ".join([f'in_taxon_label:"{escape_phrase(t)}"' for t in in_taxon_label]))
+    if subset:
+        query.add_filter_query(subset_filter_query(subset))
+    if exclude_subset:
+        query.add_filter_query(subset_filter_query(exclude_subset, exclude=True))
+    if exact_filter:
+        query.add_filter_query(exact_filter)
+        # The filter fully determines the result set, so leaving the raw text as the edismax
+        # `q` can only subtract from it — and with q.op=AND and mm=100%, text that parses as
+        # operators rather than terms vetoes a true whole-string match. Uppercased NER output
+        # is the realistic case: "…, NOT Otherwise Specified" reads `NOT` as an operator and
+        # matches nothing, so exact mode would abstain on a string that differs from a stored
+        # name only by case. The boost above still sees the original text, so ordering among
+        # several exact matches is unaffected.
+        query.q = "*:*"
     if facet_fields:
         query.facet_fields = facet_fields
     if facet_queries:

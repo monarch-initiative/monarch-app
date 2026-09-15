@@ -1,6 +1,9 @@
 import urllib
 from unittest.mock import MagicMock, patch
 
+import pytest
+from fastapi.exceptions import RequestValidationError
+
 from fastapi.testclient import TestClient
 from httpx import Response
 
@@ -34,10 +37,112 @@ def test_search_params(mock_search, search):
 
     query_string = urllib.parse.urlencode(params, doseq=True)
     client.get(f"/search?{query_string}")
-    search_params = {**params, "facet_fields": ["category", "in_taxon_label"], "highlighting": True}
+    search_params = {
+        **params,
+        "in_taxon": None,
+        "namespace": None,
+        "exclude_namespace": None,
+        "subset": None,
+        "exclude_subset": None,
+        "scope": None,
+        "facet_fields": ["category", "in_taxon_label"],
+        "facet_limit": None,
+        "highlighting": True,
+        "exact": False,
+    }
     search_params["category"] = [EntityCategory(c) for c in search_params["category"]]
     search_params["category"] = [EntityCategory.DISEASE, EntityCategory.PHENOTYPIC_FEATURE]
     mock_search.assert_called_with(**search_params)
+
+
+@patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.search")
+def test_search_grounding_params(mock_search, search):
+    """The grounding-oriented params reach the implementation as typed values."""
+    mock_search.return_value = SearchResults(**search)
+    params = {
+        "q": "septic shock",
+        "match_type": "exact",
+        "subset": ["rare"],
+        "exclude_subset": ["venom_*"],
+        "in_taxon": ["NCBITaxon:9606"],
+    }
+    client.get(f"/search?{urllib.parse.urlencode(params, doseq=True)}")
+    kwargs = mock_search.call_args.kwargs
+    assert kwargs["exact"] is True
+    assert kwargs["subset"] == ["rare"]
+    assert kwargs["exclude_subset"] == ["venom_*"]
+    assert kwargs["in_taxon"] == ["NCBITaxon:9606"]
+
+
+@patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.search")
+def test_search_defaults_to_relevance(mock_search, search):
+    """Omitting match_type keeps the recall-oriented search contract."""
+    mock_search.return_value = SearchResults(**search)
+    client.get("/search?q=septic+shock")
+    assert mock_search.call_args.kwargs["exact"] is False
+
+
+@patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.search")
+def test_search_scope_and_namespace_params(mock_search, search):
+    mock_search.return_value = SearchResults(**search)
+    params = {"q": "septic shock", "scope": "human_disease", "namespace": ["MONDO"], "exclude_namespace": ["MPATH"]}
+    client.get(f"/search?{urllib.parse.urlencode(params, doseq=True)}")
+    kwargs = mock_search.call_args.kwargs
+    assert str(kwargs["scope"]) == "human_disease"
+    assert kwargs["namespace"] == ["MONDO"]
+    assert kwargs["exclude_namespace"] == ["MPATH"]
+
+
+@patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.search")
+def test_search_facet_fields_default_unchanged(mock_search, search):
+    """Omitting `facets` entirely keeps the response shape existing callers already get."""
+    mock_search.return_value = SearchResults(**search)
+    client.get("/search?q=heart")
+    assert mock_search.call_args.kwargs["facet_fields"] == ["category", "in_taxon_label"]
+
+
+@patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.search")
+def test_facets_true_turns_on_every_filterable_field(mock_search, search):
+    """A caller who needs to discover valid `subsets` values doesn't know the field is
+    called `subsets` — so the switch is on/off, not a field list."""
+    mock_search.return_value = SearchResults(**search)
+    client.get("/search?q=heart&facets=true")
+    assert mock_search.call_args.kwargs["facet_fields"] == [
+        "category",
+        "in_taxon",
+        "in_taxon_label",
+        "namespace",
+        "subsets",
+    ]
+
+
+@patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.search")
+def test_facets_false_turns_faceting_off(mock_search, search):
+    mock_search.return_value = SearchResults(**search)
+    client.get("/search?q=heart&facets=false")
+    assert mock_search.call_args.kwargs["facet_fields"] == []
+
+
+def test_search_rejects_non_boolean_facets():
+    with pytest.raises(RequestValidationError) as excinfo:
+        client.get("/search?q=heart&facets=subsets")
+    assert excinfo.value.errors()[0]["loc"] == ("query", "facets")
+
+
+def test_search_rejects_unknown_scope():
+    with pytest.raises(RequestValidationError) as excinfo:
+        client.get("/search?q=heart&scope=martian_disease")
+    assert excinfo.value.errors()[0]["loc"] == ("query", "scope")
+
+
+def test_search_rejects_unknown_match_type():
+    """match_type is a closed enum, so a typo fails validation rather than silently
+    falling back to relevance. TestClient is built on the bare router here, which has no
+    exception handler mounted, so the validation error surfaces as a raise rather than
+    the 422 the mounted app would return."""
+    with pytest.raises(RequestValidationError) as excinfo:
+        client.get("/search?q=heart&match_type=fuzzy")
+    assert excinfo.value.errors()[0]["loc"] == ("query", "match_type")
 
 
 @patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.autocomplete")
