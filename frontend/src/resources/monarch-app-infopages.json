@@ -536,6 +536,28 @@
       "title_short": "OntoGPT",
       "visual_explainer": "https://www.youtube.com/watch?v=ezFIgY0LE4A"
     },
+    "openscientist": {
+      "about": "<p>Given a research question and a dataset, OpenScientist plans an analysis, writes and executes code, searches the literature, and iterates towards testable hypotheses — producing a report with the reasoning trace and provenance behind every finding.</p> <p>Over successive iterations the agent can - </p> <ul> <li>profile a dataset and select appropriate statistical methods</li> <li>write and execute analysis code in an isolated per-job container</li> <li>search PubMed and ground claims in the published literature</li> <li>generate, score and prioritise candidate hypotheses</li> <li>revise its approach in light of intermediate results</li> <li>produce a final report with figures, citations and full provenance</li> </ul> <p>It runs against hosted or locally served models, and supports an air-gapped mode for sensitive data: literature search comes from a local copy of PubMed, tool calls cannot reach the internet, and inference is restricted to a local open-weight model — or, optionally, a single carve-out for a remote LLM endpoint.</p>",
+      "citation": "Roberts, K., Abrams, Z., Cappelletti, L., Moqri, M., Heugel, N., Caufield, J. H., Mungall, C. J., Haendel, M. A., & Reese, J. T. (2026). OpenScientist: evaluating an open agentic AI co-scientist to accelerate biomedical discovery. medRxiv. https://doi.org/10.64898/2026.03.15.26348338",
+      "contact": {
+        "email": "JustinReese@lbl.gov",
+        "github": "@justaddcoffee",
+        "name": "Justin Reese",
+        "orcid": "https://orcid.org/0000-0002-2170-2250"
+      },
+      "icon": "resource-openscientist",
+      "license": "Apache-2.0",
+      "see_also": {
+        "documentation": "https://github.com/openscientist-io/openscientist#readme",
+        "other": "https://doi.org/10.64898/2026.03.15.26348338",
+        "repository": "https://github.com/openscientist-io/openscientist",
+        "website": "https://openscientist.io"
+      },
+      "tagline": "An agentic AI co-scientist for biomedical discovery",
+      "title": "OpenScientist",
+      "title_short": "OpenScientist",
+      "visual_explainer": null
+    },
     "pheval": {
       "about": "<p>The absence of standardised benchmarks and data standardisation for Variant and Gene Prioritisation Algorithms (VGPAs) presents a significant challenge in the field of genomic research. PhEval addresses this gap. It is a novel framework designed to streamline the evaluation of VGPAs that incorporate phenotypic data.</p> <p>PhEval offers several key benefits - </p> <ul> <li><strong>Automated Processes</strong> — Reduces manual effort by automating various evaluation tasks, thus enhancing efficiency.</li> <li><strong>Standardisation</strong> — Ensures consistency and comparability in evaluation methodologies, leading to more reliable and standardised assessments.</li> <li><strong>Reproducibility</strong> — Facilitates reproducibility in research by providing a standardised platform, allowing for consistent validation of algorithms.</li> <li><strong>Comprehensive Benchmarking</strong> — Enables thorough benchmarking of algorithms, providing well-founded comparisons and deeper insights into their performance.</li> </ul> <p>PhEval is a valuable tool for researchers looking to improve the accuracy and reliability of VGPA evaluations through a structured and standardised approach.</p>",
       "citation": "Bridges, Y., Souza, V., Cortes, K. G., Haendel, M., Harris, N. L., Korn, D. R., Marinakis, N. M., Matentzoglu, N., McLaughlin, J. A., Mungall, C. J., Odell, A., Osumi-Sutherland, D., Robinson, P. N., Smedley, D., & Jacobsen, J. O. B. (2025). Towards a standard benchmark for phenotype-driven variant and gene prioritisation algorithms: PhEval – Phenotypic inference evaluation framework. BMC Bioinformatics, 26(1), 87. https://doi.org/10.1186/s12859-025-06105-4.",
