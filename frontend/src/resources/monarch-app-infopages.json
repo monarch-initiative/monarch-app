@@ -548,7 +548,7 @@
       "icon": "resource-openscientist",
       "license": "Apache-2.0",
       "see_also": {
-        "documentation": null,
+        "documentation": "https://github.com/openscientist-io/openscientist#readme",
         "other": null,
         "repository": "https://github.com/openscientist-io/openscientist",
         "website": "https://openscientist.io"
