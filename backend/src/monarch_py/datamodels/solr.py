@@ -86,11 +86,16 @@ class SolrQuery(BaseModel):
     rows: int = 20
     start: int = 0
     facet: bool = True
-    facet_min_count: int = 1
     facet_fields: Optional[List[str]] = Field(default_factory=list)
     facet_queries: Optional[List[str]] = Field(default_factory=list)
     filter_queries: Optional[List[str]] = Field(default_factory=list)
     facet_mincount: int = 1
+    # Solr's facet.method for `facet_fields`, emitted per field as
+    # `f.<field>.facet.method` rather than globally: the right method depends on the
+    # field's cardinality, so one setting cannot be correct for every facet a caller
+    # might ask for.
+    facet_method: Optional[str] = None
+    fields: Optional[str] = None
     query_fields: Optional[str] = None
     def_type: str = "edismax"
     q_op: str = "AND"  # See SOLR-8812, need this plus mm=100% to allow boolean operators in queries
@@ -119,10 +124,14 @@ class SolrQuery(BaseModel):
         return self
 
     def query_string(self):
-        return urlencode(
-            {self._solrize(k): self._solrize(v) for k, v in self.model_dump().items() if v is not None},
-            doseq=True,
-        )
+        params = {self._solrize(k): self._solrize(v) for k, v in self.model_dump().items() if v is not None}
+        # facet.method is per-field, so it does not round-trip through _solrize like
+        # the flat parameters do.
+        method = params.pop("facet_method", None)
+        if method:
+            for field in self.facet_fields or []:
+                params[f"f.{field}.facet.method"] = method
+        return urlencode(params, doseq=True)
 
     def _solrize(self, value):
         """
@@ -136,6 +145,8 @@ class SolrQuery(BaseModel):
             return "fq"
         elif value == "facet_mincount":
             return "facet.mincount"
+        elif value == "fields":
+            return "fl"
         elif value == "query_fields":
             return "qf"
         elif value == "def_type":

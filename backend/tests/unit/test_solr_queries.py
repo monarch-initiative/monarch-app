@@ -1,3 +1,5 @@
+import urllib.parse
+
 import pytest
 
 from monarch_py.datamodels.category_enums import (
@@ -486,3 +488,53 @@ def test_build_grounding_query_with_prefix_and_category():
     query = build_grounding_query("Marfan syndrome", prefix=["MONDO"], category=["biolink:Disease"])
     assert "namespace:MONDO" in query.filter_queries
     assert r"category:biolink\:Disease" in query.filter_queries
+
+
+def test_empty_search_skips_highlighting():
+    """An empty search matches everything and has no terms to mark up, so asking Solr
+    to highlight is work with no output. A real query still highlights."""
+    assert build_search_query(q="*:*", highlighting=True).hl is False
+    assert build_search_query(q="fanconi", highlighting=True).hl is True
+
+
+def test_search_highlighting_stays_off_when_not_requested():
+    assert build_search_query(q="fanconi", highlighting=False).hl is False
+
+
+def test_facet_method_is_emitted_per_field():
+    """Per field, not globally: `enum` is much cheaper than the default for a
+    low-cardinality field against a warm filterCache, and wrong for a large one."""
+    query = build_search_query(q="*:*", facet_fields=["category", "in_taxon_label"], facet_method="enum")
+    params = dict(urllib.parse.parse_qsl(query.query_string()))
+    assert params["f.category.facet.method"] == "enum"
+    assert params["f.in_taxon_label.facet.method"] == "enum"
+    assert "facet.method" not in params
+
+
+def test_no_facet_method_by_default():
+    """Callers that do not opt in keep Solr's default method."""
+    query = build_search_query(q="*:*", facet_fields=["category"])
+    params = dict(urllib.parse.parse_qsl(query.query_string()))
+    assert not [key for key in params if key.endswith("facet.method")]
+
+
+def test_field_list_is_passed_through_as_fl():
+    query = build_search_query(q="*:*", fields="id,name,category")
+    params = dict(urllib.parse.parse_qsl(query.query_string()))
+    assert params["fl"] == "id,name,category"
+
+
+def test_no_field_list_by_default():
+    """The CLI dumps whole records, so an unrestricted search must stay unrestricted."""
+    query = build_search_query(q="*:*")
+    params = dict(urllib.parse.parse_qsl(query.query_string()))
+    assert "fl" not in params
+
+
+def test_misspelled_facet_mincount_is_not_sent():
+    """`facet_min_count` serialized to a parameter Solr does not recognise and silently
+    ignored; `facet_mincount` -> `facet.mincount` is the one that does the work. Both
+    were being sent, so every query carried a junk parameter."""
+    params = dict(urllib.parse.parse_qsl(build_search_query(q="*:*").query_string()))
+    assert "facet_min_count" not in params
+    assert params["facet.mincount"] == "1"

@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, patch
 from fastapi.testclient import TestClient
 from httpx import Response
 
-from monarch_py.api.search import router
+from monarch_py.api.search import SEARCH_FACET_METHOD, SEARCH_RESULT_FIELDS, router
 from monarch_py.datamodels.category_enums import EntityCategory
 from monarch_py.datamodels.model import SearchResults
 
@@ -34,7 +34,15 @@ def test_search_params(mock_search, search):
 
     query_string = urllib.parse.urlencode(params, doseq=True)
     client.get(f"/search?{query_string}")
-    search_params = {**params, "facet_fields": ["category", "in_taxon_label"], "highlighting": True}
+    search_params = {
+        **params,
+        "facet_fields": ["category", "in_taxon_label"],
+        "highlighting": True,
+        # The endpoint restricts both of these; the CLI path deliberately does not, so
+        # they have to be passed here rather than defaulted in the query builder.
+        "facet_method": SEARCH_FACET_METHOD,
+        "fields": SEARCH_RESULT_FIELDS,
+    }
     search_params["category"] = [EntityCategory(c) for c in search_params["category"]]
     search_params["category"] = [EntityCategory.DISEASE, EntityCategory.PHENOTYPIC_FEATURE]
     mock_search.assert_called_with(**search_params)

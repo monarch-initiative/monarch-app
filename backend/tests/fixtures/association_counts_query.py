@@ -8,8 +8,7 @@ def association_counts_query():
         "rows": 20,
         "start": 0,
         "facet": True,
-        "facet_min_count": 1,
-        "facet_fields": [],
+                "facet_fields": [],
         "facet_queries": [
             '(category:"biolink:DiseaseToPhenotypicFeatureAssociation") AND subject:"MONDO:0020121"',
             '(category:"biolink:GeneToPhenotypicFeatureAssociation") AND subject:"MONDO:0020121"',
@@ -127,7 +126,7 @@ def association_counts_query():
         "filter_queries": [
             'subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121" OR object:"MONDO:0020121" OR object_closure:"MONDO:0020121" OR disease_context_qualifier:"MONDO:0020121" OR disease_context_qualifier_closure:"MONDO:0020121"'
         ],
-        "facet_mincount": 1,
+        "facet_mincount": 1, "facet_method": None, "fields": None,
         "query_fields": None,
         "def_type": "edismax",
         "q_op": "AND",
