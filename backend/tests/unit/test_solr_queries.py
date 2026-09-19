@@ -538,3 +538,26 @@ def test_misspelled_facet_mincount_is_not_sent():
     params = dict(urllib.parse.parse_qsl(build_search_query(q="*:*").query_string()))
     assert "facet_min_count" not in params
     assert params["facet.mincount"] == "1"
+
+
+@pytest.mark.parametrize(
+    "term",
+    ["fields", "boost", "sort", "q_op", "def_type", "hl_method", "filter_queries", "facet_mincount"],
+)
+def test_query_text_is_never_rewritten_as_a_parameter_name(term):
+    """A user searching for one of these words must search for that word.
+
+    The python-attribute-to-Solr-parameter map used to be applied to values as well as
+    keys, so `q=fields` reached Solr as `q=fl` and `q=def_type` as `q=defType` -- an
+    ordinary search silently returning results for something else.
+    """
+    params = dict(urllib.parse.parse_qsl(build_search_query(q=term).query_string()))
+    assert params["q"] == term
+
+
+def test_boolean_values_are_still_rendered_for_solr():
+    """Booleans are the one thing a value does need rewriting for."""
+    params = dict(urllib.parse.parse_qsl(build_search_query(q="x", highlighting=True).query_string()))
+    assert params["facet"] == "true"
+    assert params["hl"] == "true"
+    assert dict(urllib.parse.parse_qsl(build_search_query(q="x").query_string()))["hl"] == "false"
