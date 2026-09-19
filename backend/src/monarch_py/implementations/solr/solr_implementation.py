@@ -58,6 +58,7 @@ from monarch_py.implementations.solr.solr_query_utils import (
     build_multi_entity_association_query,
     build_search_query,
     build_grounding_query,
+    MAX_ROW_ASSOCIATIONS,
 )
 from monarch_py.interfaces.association_interface import AssociationInterface
 from monarch_py.interfaces.entity_interface import EntityInterface
@@ -72,14 +73,6 @@ from monarch_py.utils.entity_utils import get_expanded_curie, get_uri
 from monarch_py.utils.utils import get_provided_by_link, get_links_for_field
 
 logger = logging.getLogger(__name__)
-
-
-# Upper bound on row associations fetched for a grid, stated at the call site rather
-# than inherited from a query-builder default. Grids are capped at a few hundred
-# columns and the largest grid in the KG needs ~7.6k rows, so this is not expected to
-# bind; `_warn_if_row_query_truncated` exists so that if it ever does, the grid does
-# not just quietly lose cells.
-MAX_ROW_ASSOCIATIONS = 50000
 
 
 def _warn_if_row_query_truncated(context_id: str, row_result: dict, row_docs: list) -> None:

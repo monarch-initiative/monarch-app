@@ -1,5 +1,7 @@
 """Unit tests for entity grid utilities."""
 
+import logging
+
 from monarch_py.utils.entity_grid_utils import (
     _build_columns,
     _build_rows,
@@ -16,14 +18,15 @@ from monarch_py.datamodels.grid_groupings import RowGroupingConfig, GroupingType
 from monarch_py.datamodels.model import GridColumnEntity, EntityGridResponse
 
 
-def facets_for(bins: dict, ordered_bin_ids: list, counts: dict = None) -> dict:
+def facets_for(bins: dict, ordered_bin_ids: list, counts: dict = None, num_buckets: dict = None) -> dict:
     """A `facets` response block: {bin_id: [row entity ids]} in `ordered_bin_ids` order.
 
     Mirrors what Solr's JSON Facet API returns for `build_bin_facet`, including the
     `count` per bin and the omission of `entities` for a bin with no matches.
 
     A bin's `count` is its *association* count, independent of how many distinct row
-    entities it holds. Pass `counts` to set it; it defaults to one per entity.
+    entities it holds. Pass `counts` to set it; it defaults to one per entity. Pass
+    `num_buckets` above the number of members to simulate a truncated bucket list.
     """
     counts = counts or {}
     out = {}
@@ -31,7 +34,10 @@ def facets_for(bins: dict, ordered_bin_ids: list, counts: dict = None) -> dict:
         members = bins.get(bin_id, [])
         facet = {"count": counts.get(bin_id, len(members))}
         if members:
-            facet["entities"] = {"buckets": [{"val": m, "count": 1} for m in members]}
+            facet["entities"] = {
+                "buckets": [{"val": m, "count": 1} for m in members],
+                "numBuckets": (num_buckets or {}).get(bin_id, len(members)),
+            }
         out[bin_facet_key(index)] = facet
     return out
 
@@ -380,14 +386,7 @@ def test_build_entity_grid_complete():
     column_docs = [
         {"subject": "CASE:001", "subject_label": "Case 1", "object": "MONDO:0007078", "object_label": "Achondroplasia"}
     ]
-    row_docs = [
-        {
-            "subject": "CASE:001",
-            "object": "HP:001",
-            "object_label": "Phenotype 1",
-            "object_closure": ["BIN:001", "HP:001"],
-        }
-    ]
+    row_docs = [{"subject": "CASE:001", "object": "HP:001", "object_label": "Phenotype 1"}]
 
     grid = build_entity_grid(
         context_id="MONDO:0007078",
@@ -428,3 +427,20 @@ def test_build_entity_grid_empty():
     assert grid.total_columns == 0
     assert grid.total_rows == 0
     assert len(grid.cells) == 0
+
+
+def test_parse_bin_facets_warns_when_a_bin_is_truncated(caplog):
+    """An entity cut from its bin's bucket list silently lands in a later bin or
+    vanishes from the grid, and the grid still looks complete."""
+    facets = facets_for({"BIN:001": ["HP:001"]}, ["BIN:001"], num_buckets={"BIN:001": 12345})
+    with caplog.at_level(logging.WARNING):
+        parse_bin_facets(facets, ["BIN:001"])
+    assert "truncated" in caplog.text
+    assert "12345" in caplog.text
+
+
+def test_parse_bin_facets_silent_when_not_truncated(caplog):
+    facets = facets_for({"BIN:001": ["HP:001", "HP:002"]}, ["BIN:001"])
+    with caplog.at_level(logging.WARNING):
+        parse_bin_facets(facets, ["BIN:001"])
+    assert caplog.text == ""

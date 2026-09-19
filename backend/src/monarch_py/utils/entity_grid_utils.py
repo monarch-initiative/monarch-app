@@ -1,5 +1,7 @@
 """Utilities for building generic entity grids."""
 
+import logging
+
 from typing import Any, Dict, List, Optional
 
 from monarch_py.datamodels.model import (
@@ -12,6 +14,8 @@ from monarch_py.datamodels.model import (
 )
 from monarch_py.datamodels.grid_configs import GridTypeConfig
 from monarch_py.datamodels.grid_groupings import RowGroupingConfig, bin_facet_key
+
+logger = logging.getLogger(__name__)
 
 
 def parse_bin_facets(
@@ -36,7 +40,10 @@ def parse_bin_facets(
     for index, bin_id in enumerate(ordered_bin_ids):
         facet = facets.get(bin_facet_key(index)) or {}
         counts[bin_id] = facet.get("count", 0)
-        for bucket in facet.get("entities", {}).get("buckets", []):
+        entities = facet.get("entities", {})
+        buckets = entities.get("buckets", [])
+        _warn_if_bin_truncated(bin_id, entities, buckets)
+        for bucket in buckets:
             entity_id = bucket.get("val")
             # Bins are checked in grouping order and the first match wins, so an entity
             # under several bins lands in the same one the closure scan used to pick.
@@ -44,6 +51,24 @@ def parse_bin_facets(
                 entity_bins[entity_id] = bin_id
 
     return counts, entity_bins
+
+
+def _warn_if_bin_truncated(bin_id: str, entities: Dict[str, Any], buckets: List[dict]) -> None:
+    """Log when a bin held more row entities than the facet returned.
+
+    An entity cut from its own bin's bucket list either lands in a later bin it also
+    matches -- moving it to the wrong place in the grid -- or, if it matches no other,
+    disappears from the grid entirely. Both look like a complete grid.
+    """
+    total = entities.get("numBuckets")
+    if total is not None and total > len(buckets):
+        logger.warning(
+            "Bin %s truncated: %d row entities matched but only %d returned "
+            "(BIN_FACET_ENTITY_LIMIT). Entities past the limit are misbinned or missing.",
+            bin_id,
+            total,
+            len(buckets),
+        )
 
 
 def bin_members(facets: Dict[str, Any], ordered_bin_ids: List[str]) -> Dict[str, List[str]]:
