@@ -458,6 +458,32 @@ def test_case_phenotype_matrix_limit_exceeded():
             SolrImplementation().get_case_phenotype_matrix("MONDO:0007078", limit=10)
 
 
+def HistoPhenoKeys_first():
+    """The first HistoPheno bin, which `_bin_facets(0, ...)` populates."""
+    from monarch_py.datamodels.solr import HistoPhenoKeys
+
+    return next(iter(HistoPhenoKeys)).value
+
+
+def _bin_facets(bin_index: int, entity_ids: list, count: int = None):
+    """A `facets` block placing `entity_ids` in the bin at `bin_index`.
+
+    The row query no longer returns `<field>_closure` per association, so bin
+    membership reaches the builders through this rather than through the docs.
+    """
+    from monarch_py.datamodels.grid_groupings import bin_facet_key
+
+    return {
+        bin_facet_key(bin_index): {
+            "count": len(entity_ids) if count is None else count,
+            "entities": {
+                "buckets": [{"val": e, "count": 1} for e in entity_ids],
+                "numBuckets": len(entity_ids),
+            },
+        }
+    }
+
+
 def test_case_phenotype_matrix_complete_flow():
     responses = [
         {
@@ -468,17 +494,8 @@ def test_case_phenotype_matrix_complete_flow():
             }
         },
         {
-            "response": {
-                "docs": [
-                    {
-                        "subject": "CASE:001",
-                        "object": "HP:001",
-                        "object_label": "P1",
-                        "object_closure": ["HP:001", "UPHENO:0001001"],
-                    }
-                ]
-            },
-            "facet_counts": {"facet_queries": {}},
+            "response": {"docs": [{"subject": "CASE:001", "object": "HP:001", "object_label": "P1"}]},
+            "facets": _bin_facets(0, ["HP:001"]),
         },
     ]
     call_idx = [0]
@@ -495,6 +512,12 @@ def test_case_phenotype_matrix_complete_flow():
         result = SolrImplementation().get_case_phenotype_matrix("MONDO:0007078")
         assert result.total_cases == 1
         assert result.disease_id == "MONDO:0007078"
+        # The facet is what binning now depends on, so the flow has to carry it through
+        # to a binned phenotype rather than stopping at the case count.
+        assert result.total_phenotypes == 1
+        assert result.phenotypes[0].id == "HP:001"
+        assert result.phenotypes[0].bin_id == HistoPhenoKeys_first()
+        assert result.cells["CASE:001:HP:001"].present is True
 
 
 # =====================================================================
@@ -531,17 +554,8 @@ def test_entity_grid_complete_flow():
     responses = [
         {"response": {"docs": [{"subject": "CASE:001", "subject_label": "Case 1", "object": "MONDO:0007078"}]}},
         {
-            "response": {
-                "docs": [
-                    {
-                        "subject": "CASE:001",
-                        "object": "HP:001",
-                        "object_label": "P1",
-                        "object_closure": ["HP:001", "UPHENO:0001001"],
-                    }
-                ]
-            },
-            "facet_counts": {"facet_queries": {}},
+            "response": {"docs": [{"subject": "CASE:001", "object": "HP:001", "object_label": "P1"}]},
+            "facets": _bin_facets(0, ["HP:001"]),
         },
     ]
     call_idx = [0]
@@ -558,6 +572,10 @@ def test_entity_grid_complete_flow():
         result = SolrImplementation().get_entity_grid(context_id="MONDO:0007078", grid_type="case-phenotype")
         assert result.total_columns == 1
         assert result.context_id == "MONDO:0007078"
+        assert result.total_rows == 1
+        assert result.rows[0].id == "HP:001"
+        assert result.rows[0].bin_id == HistoPhenoKeys_first()
+        assert result.cells["CASE:001:HP:001"].present is True
 
 
 # =====================================================================
@@ -655,7 +673,7 @@ def test_generic_grid_column_sorting():
             ]
         }
     }
-    row_result = {"response": {"docs": []}, "facet_counts": {"facet_queries": {}}}
+    row_result = {"response": {"docs": []}, "facets": {}}
     call_idx = [0]
 
     def side_effect(params):
