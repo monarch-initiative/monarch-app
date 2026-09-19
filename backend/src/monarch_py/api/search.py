@@ -8,6 +8,33 @@ from monarch_py.datamodels.model import SearchResults, MappingResults
 from monarch_py.datamodels.category_enums import EntityCategory, MappingPredicate
 from monarch_py.utils.format_utils import to_tsv
 
+# Fields the search results list renders, plus `id`, which SolrService needs to attach
+# highlighting to each doc. Left unrestricted, Solr returns every stored field: the
+# `has_phenotype_closure*` arrays alone are ~69KB per document and ~94% of the response,
+# none of which a results list displays.
+#
+# Set here rather than in `build_search_query` so the CLI's `monarch search`, which
+# dumps whole records, keeps returning every field.
+SEARCH_RESULT_FIELDS = ",".join(
+    [
+        "id",
+        "category",
+        "name",
+        "description",
+        "synonym",
+        "xref",
+        "in_taxon_label",
+    ]
+)
+
+# `category` and `in_taxon_label` have tens of distinct values, not thousands. Solr's
+# default facet.method (`fc`) recomputes counts by walking the whole match set -- 1.6M
+# docs for an empty search -- with no facet cache to fall back on. `enum` instead does
+# one filterCache lookup per term, and that cache runs at a ~99.8% hit ratio. This is
+# set per field because it would be the wrong choice for a high-cardinality field.
+SEARCH_FACET_METHOD = "enum"
+
+
 router = APIRouter(
     tags=["search"],
     responses={404: {"description": "Not Found"}},
@@ -44,6 +71,8 @@ async def search(
         offset=pagination.offset,
         limit=pagination.limit,
         highlighting=True,
+        facet_method=SEARCH_FACET_METHOD,
+        fields=SEARCH_RESULT_FIELDS,
     )
 
     return response

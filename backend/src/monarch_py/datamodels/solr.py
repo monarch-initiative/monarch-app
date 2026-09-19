@@ -1,6 +1,6 @@
 from urllib.parse import urlencode
 from enum import Enum
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, ClassVar, Dict, List, Optional, Union
 
 from monarch_py.utils.utils import escape
 from pydantic import BaseModel, Field
@@ -86,11 +86,16 @@ class SolrQuery(BaseModel):
     rows: int = 20
     start: int = 0
     facet: bool = True
-    facet_min_count: int = 1
     facet_fields: Optional[List[str]] = Field(default_factory=list)
     facet_queries: Optional[List[str]] = Field(default_factory=list)
     filter_queries: Optional[List[str]] = Field(default_factory=list)
     facet_mincount: int = 1
+    # Solr's facet.method for `facet_fields`, emitted per field as
+    # `f.<field>.facet.method` rather than globally: the right method depends on the
+    # field's cardinality, so one setting cannot be correct for every facet a caller
+    # might ask for.
+    facet_method: Optional[str] = None
+    fields: Optional[str] = None
     query_fields: Optional[str] = None
     def_type: str = "edismax"
     q_op: str = "AND"  # See SOLR-8812, need this plus mm=100% to allow boolean operators in queries
@@ -118,38 +123,49 @@ class SolrQuery(BaseModel):
         self.filter_queries.append(filter_query)
         return self
 
-    def query_string(self):
-        return urlencode(
-            {self._solrize(k): self._solrize(v) for k, v in self.model_dump().items() if v is not None},
-            doseq=True,
-        )
+    # Python attribute name -> Solr parameter name. Applied to keys only: these are
+    # parameter names, and several of them ("fields", "boost", "sort") are also words a
+    # user might search for. Renaming values as well meant a search for `fields` was
+    # rewritten to a search for `fl`.
+    SOLR_PARAM_NAMES: ClassVar[Dict[str, str]] = {
+        "facet_fields": "facet.field",
+        "facet_queries": "facet.query",
+        "filter_queries": "fq",
+        "facet_mincount": "facet.mincount",
+        "fields": "fl",
+        "query_fields": "qf",
+        "def_type": "defType",
+        "q_op": "q.op",
+        "hl_method": "hl.method",
+    }
 
-    def _solrize(self, value):
+    def query_string(self):
+        params = {self._solr_param_name(k): self._solr_value(v) for k, v in self.model_dump().items() if v is not None}
+        # facet.method is per-field, so it is emitted here rather than renamed above.
+        method = params.pop("facet_method", None)
+        if method:
+            for field in self.facet_fields or []:
+                params[f"f.{field}.facet.method"] = method
+        return urlencode(params, doseq=True)
+
+    @classmethod
+    def _solr_param_name(cls, name):
+        """Solr's name for a query parameter, given the python attribute name."""
+        return cls.SOLR_PARAM_NAMES.get(name, name)
+
+    @staticmethod
+    def _solr_value(value):
+        """Render a parameter value the way Solr expects it.
+
+        Only booleans need rewriting. Nothing here may depend on what the value *says* --
+        values include the user's query text, so any content-based rewrite corrupts a
+        search for that text.
         """
-        Rename fields and values as necessary to go from the python API to solr query syntax
-        """
-        if value == "facet_fields":
-            return "facet.field"
-        elif value == "facet_queries":
-            return "facet.query"
-        elif value == "filter_queries":
-            return "fq"
-        elif value == "facet_mincount":
-            return "facet.mincount"
-        elif value == "query_fields":
-            return "qf"
-        elif value == "def_type":
-            return "defType"
-        elif value == "q_op":
-            return "q.op"
-        elif value == "hl_method":
-            return "hl.method"
-        elif value is True:
+        if value is True:
             return "true"
-        elif value is False:
+        if value is False:
             return "false"
-        else:
-            return value
+        return value
 
 
 class SolrQueryResponseHeader(BaseModel):

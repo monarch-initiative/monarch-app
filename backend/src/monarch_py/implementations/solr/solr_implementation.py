@@ -659,6 +659,8 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         highlighting: bool = False,
         offset: int = 0,
         limit: int = 20,
+        facet_method: Optional[str] = None,
+        fields: Optional[str] = None,
     ) -> SearchResults:
         """Search for entities by label, with optional filters
 
@@ -672,6 +674,10 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             facet_queries (List[str]): List of queries to include facet counts for. Defaults to None.
             filter_queries (List[str]): List of queries to filter results by. Defaults to None.
             sort (str): Sort results by the specified field. Defaults to None.
+            facet_method (str): Solr facet.method for `facet_fields`, applied per field.
+                Defaults to None, which leaves Solr's default (`fc`) in place.
+            fields (str): Solr field list to return. Defaults to None, meaning every
+                stored field, which is what CLI and other non-browse callers expect.
 
         Returns:
             SearchResults: Dataclass representing results of a search.
@@ -687,6 +693,8 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             sort=sort,
             offset=offset,
             limit=limit,
+            facet_method=facet_method,
+            fields=fields,
         )
         solr = SolrService(base_url=self.base_url, core=core.ENTITY)
         query_result = solr.query(query)
