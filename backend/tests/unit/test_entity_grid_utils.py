@@ -5,14 +5,35 @@ from monarch_py.utils.entity_grid_utils import (
     _build_rows,
     _build_cells,
     _build_bins,
-    _find_bin_for_entity,
+    bin_members,
     build_entity_grid,
+    parse_bin_facets,
     make_cell_key,
     sort_columns_by_category,
 )
 from monarch_py.datamodels.grid_configs import get_grid_config
-from monarch_py.datamodels.grid_groupings import RowGroupingConfig, GroupingType
+from monarch_py.datamodels.grid_groupings import RowGroupingConfig, GroupingType, bin_facet_key
 from monarch_py.datamodels.model import GridColumnEntity, EntityGridResponse
+
+
+def facets_for(bins: dict, ordered_bin_ids: list, counts: dict = None) -> dict:
+    """A `facets` response block: {bin_id: [row entity ids]} in `ordered_bin_ids` order.
+
+    Mirrors what Solr's JSON Facet API returns for `build_bin_facet`, including the
+    `count` per bin and the omission of `entities` for a bin with no matches.
+
+    A bin's `count` is its *association* count, independent of how many distinct row
+    entities it holds. Pass `counts` to set it; it defaults to one per entity.
+    """
+    counts = counts or {}
+    out = {}
+    for index, bin_id in enumerate(ordered_bin_ids):
+        members = bins.get(bin_id, [])
+        facet = {"count": counts.get(bin_id, len(members))}
+        if members:
+            facet["entities"] = {"buckets": [{"val": m, "count": 1} for m in members]}
+        out[bin_facet_key(index)] = facet
+    return out
 
 
 # =====================================================================
@@ -153,31 +174,46 @@ def test_make_cell_key_with_different_ids():
 
 
 # =====================================================================
-# Tests for _find_bin_for_entity
+# Tests for parse_bin_facets
 # =====================================================================
 
 
-def test_find_bin_returns_matching():
-    assert (
-        _find_bin_for_entity(["HP:root", "BIN:001", "HP:child"], {"BIN:001", "BIN:002"}, ["BIN:001", "BIN:002"])
-        == "BIN:001"
-    )
+def test_parse_bin_facets_assigns_entities_to_bins():
+    facets = facets_for({"BIN:001": ["HP:001"], "BIN:002": ["HP:002"]}, ["BIN:001", "BIN:002"])
+    counts, entity_bins = parse_bin_facets(facets, ["BIN:001", "BIN:002"])
+    assert counts == {"BIN:001": 1, "BIN:002": 1}
+    assert entity_bins == {"HP:001": "BIN:001", "HP:002": "BIN:002"}
 
 
-def test_find_bin_returns_none_when_no_match():
-    assert _find_bin_for_entity(["HP:root", "HP:child"], {"BIN:001", "BIN:002"}, ["BIN:001", "BIN:002"]) is None
+def test_parse_bin_facets_first_bin_in_order_wins():
+    """An entity under several bins lands in the earliest one, which is what the
+    closure scan this replaced did via its ordered bin list."""
+    facets = facets_for({"BIN:002": ["HP:001"], "BIN:001": ["HP:001"]}, ["BIN:002", "BIN:001"])
+    _, entity_bins = parse_bin_facets(facets, ["BIN:002", "BIN:001"])
+    assert entity_bins == {"HP:001": "BIN:002"}
 
 
-def test_find_bin_returns_first_ordered_when_multiple():
-    assert _find_bin_for_entity(["BIN:002", "BIN:001"], {"BIN:001", "BIN:002"}, ["BIN:002", "BIN:001"]) == "BIN:002"
+def test_parse_bin_facets_empty_bin_has_no_entities_key():
+    """Solr omits the sub-facet for a bin with no matches; that is not an error."""
+    facets = facets_for({"BIN:001": []}, ["BIN:001"])
+    counts, entity_bins = parse_bin_facets(facets, ["BIN:001"])
+    assert counts == {"BIN:001": 0}
+    assert entity_bins == {}
 
 
-def test_find_bin_empty_closure():
-    assert _find_bin_for_entity([], {"BIN:001"}, ["BIN:001"]) is None
+def test_parse_bin_facets_missing_bin_counts_zero():
+    counts, entity_bins = parse_bin_facets({}, ["BIN:001", "BIN:002"])
+    assert counts == {"BIN:001": 0, "BIN:002": 0}
+    assert entity_bins == {}
 
 
-def test_find_bin_empty_bin_ids():
-    assert _find_bin_for_entity(["HP:root", "BIN:001"], set(), []) is None
+def test_bin_members_keeps_an_entity_in_every_bin_it_matches():
+    """Unlike the row's own `bin_id`, per-bin membership is not exclusive."""
+    facets = facets_for({"BIN:001": ["HP:001"], "BIN:002": ["HP:001", "HP:002"]}, ["BIN:001", "BIN:002"])
+    assert bin_members(facets, ["BIN:001", "BIN:002"]) == {
+        "BIN:001": ["HP:001"],
+        "BIN:002": ["HP:001", "HP:002"],
+    }
 
 
 # =====================================================================
@@ -187,26 +223,11 @@ def test_find_bin_empty_bin_ids():
 
 def test_build_rows_from_docs():
     config = get_grid_config("case-phenotype")
-    grouping = RowGroupingConfig(
-        grouping_type=GroupingType.CLOSURE_ROOTS,
-        bin_ids=["BIN:001", "BIN:002"],
-        bin_labels={"BIN:001": "Bin 1", "BIN:002": "Bin 2"},
-    )
     docs = [
-        {
-            "object": "HP:001",
-            "object_label": "Phenotype 1",
-            "object_closure": ["HP:root", "BIN:001", "HP:001"],
-            "subject": "CASE:001",
-        },
-        {
-            "object": "HP:002",
-            "object_label": "Phenotype 2",
-            "object_closure": ["HP:root", "BIN:002", "HP:002"],
-            "subject": "CASE:001",
-        },
+        {"object": "HP:001", "object_label": "Phenotype 1", "subject": "CASE:001"},
+        {"object": "HP:002", "object_label": "Phenotype 2", "subject": "CASE:001"},
     ]
-    rows = _build_rows(docs, config, grouping)
+    rows = _build_rows(docs, config, {"HP:001": "BIN:001", "HP:002": "BIN:002"})
     assert len(rows) == 2
     assert rows[0].id == "HP:001"
     assert rows[0].bin_id == "BIN:001"
@@ -216,34 +237,27 @@ def test_build_rows_from_docs():
 
 def test_build_rows_deduplicates():
     config = get_grid_config("case-phenotype")
-    grouping = RowGroupingConfig(
-        grouping_type=GroupingType.CLOSURE_ROOTS, bin_ids=["BIN:001"], bin_labels={"BIN:001": "Bin 1"}
-    )
     docs = [
-        {"object": "HP:001", "object_label": "P1", "object_closure": ["BIN:001"], "subject": "CASE:001"},
-        {"object": "HP:001", "object_label": "P1", "object_closure": ["BIN:001"], "subject": "CASE:002"},
+        {"object": "HP:001", "object_label": "P1", "subject": "CASE:001"},
+        {"object": "HP:001", "object_label": "P1", "subject": "CASE:002"},
     ]
-    rows = _build_rows(docs, config, grouping)
+    rows = _build_rows(docs, config, {"HP:001": "BIN:001"})
     assert len(rows) == 1
 
 
 def test_build_rows_skips_no_bin_match():
+    """An entity in no bin has nowhere to render, so it is dropped rather than shown
+    unbinned -- the same thing that happened when its closure hit no bin."""
     config = get_grid_config("case-phenotype")
-    grouping = RowGroupingConfig(
-        grouping_type=GroupingType.CLOSURE_ROOTS, bin_ids=["BIN:001"], bin_labels={"BIN:001": "Bin 1"}
-    )
-    docs = [{"object": "HP:001", "object_label": "P1", "object_closure": ["HP:root"], "subject": "CASE:001"}]
-    rows = _build_rows(docs, config, grouping)
+    docs = [{"object": "HP:001", "object_label": "P1", "subject": "CASE:001"}]
+    rows = _build_rows(docs, config, {})
     assert len(rows) == 0
 
 
 def test_build_rows_skips_missing_row_id():
     config = get_grid_config("case-phenotype")
-    grouping = RowGroupingConfig(
-        grouping_type=GroupingType.CLOSURE_ROOTS, bin_ids=["BIN:001"], bin_labels={"BIN:001": "Bin 1"}
-    )
-    docs = [{"subject": "CASE:001", "object_closure": ["BIN:001"]}]
-    rows = _build_rows(docs, config, grouping)
+    docs = [{"subject": "CASE:001"}]
+    rows = _build_rows(docs, config, {"HP:001": "BIN:001"})
     assert len(rows) == 0
 
 
@@ -324,14 +338,12 @@ def test_build_cells_skips_unknown_column():
 
 
 def test_build_bins_from_facet_counts():
-    config = get_grid_config("case-phenotype")
     grouping = RowGroupingConfig(
         grouping_type=GroupingType.CLOSURE_ROOTS,
         bin_ids=["BIN:001", "BIN:002"],
         bin_labels={"BIN:001": "Bin One", "BIN:002": "Bin Two"},
     )
-    facet_counts = {'object_closure:"BIN:001"': 5, 'object_closure:"BIN:002"': 3}
-    bins = _build_bins(facet_counts, grouping, config)
+    bins = _build_bins({"BIN:001": 5, "BIN:002": 3}, grouping)
     assert len(bins) == 2
     assert bins[0].id == "BIN:001"
     assert bins[0].label == "Bin One"
@@ -340,19 +352,17 @@ def test_build_bins_from_facet_counts():
 
 
 def test_build_bins_zero_counts():
-    config = get_grid_config("case-phenotype")
     grouping = RowGroupingConfig(
         grouping_type=GroupingType.CLOSURE_ROOTS, bin_ids=["BIN:001"], bin_labels={"BIN:001": "Bin 1"}
     )
-    bins = _build_bins({}, grouping, config)
+    bins = _build_bins({}, grouping)
     assert len(bins) == 1
     assert bins[0].count == 0
 
 
 def test_build_bins_id_as_label_fallback():
-    config = get_grid_config("case-phenotype")
     grouping = RowGroupingConfig(grouping_type=GroupingType.CLOSURE_ROOTS, bin_ids=["BIN:001"], bin_labels={})
-    bins = _build_bins({'object_closure:"BIN:001"': 1}, grouping, config)
+    bins = _build_bins({"BIN:001": 1}, grouping)
     assert bins[0].label == "BIN:001"
 
 
@@ -378,7 +388,6 @@ def test_build_entity_grid_complete():
             "object_closure": ["BIN:001", "HP:001"],
         }
     ]
-    facet_counts = {'object_closure:"BIN:001"': 1}
 
     grid = build_entity_grid(
         context_id="MONDO:0007078",
@@ -388,7 +397,7 @@ def test_build_entity_grid_complete():
         grouping=grouping,
         column_docs=column_docs,
         row_docs=row_docs,
-        facet_counts=facet_counts,
+        facets=facets_for({"BIN:001": ["HP:001"]}, grouping.bin_ids),
     )
 
     assert isinstance(grid, EntityGridResponse)
@@ -413,7 +422,7 @@ def test_build_entity_grid_empty():
         grouping=grouping,
         column_docs=[],
         row_docs=[],
-        facet_counts={},
+        facets={},
     )
 
     assert grid.total_columns == 0

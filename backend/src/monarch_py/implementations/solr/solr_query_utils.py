@@ -1,7 +1,9 @@
+import json
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
 
 from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQuery
+from monarch_py.datamodels.grid_groupings import bin_facet_key
 from monarch_py.datamodels.category_enums import AssociationPredicate
 from monarch_py.utils.association_type_utils import AssociationTypeMappings, get_solr_query_fragment
 from monarch_py.utils.utils import escape
@@ -457,11 +459,11 @@ def build_case_phenotype_query(
     for cases that have a specific disease association.
 
     The query structure:
-    1. Main query: JOIN from CaseToDiseaseAssociation to CaseToPhenotypicFeatureAssociation
+    1. Filter query: JOIN from CaseToDiseaseAssociation to CaseToPhenotypicFeatureAssociation
        - Joins on `subject` field (the case ID)
        - Inner query filters diseases by object (direct) or object_closure (indirect)
     2. Filter query: Restrict results to phenotype associations only
-    3. Facet queries: Count phenotypes per HistoPheno bin
+    3. JSON facet: per HistoPheno bin, its count and the phenotypes it contains
 
     Args:
         disease_id: MONDO disease ID to query
@@ -492,11 +494,16 @@ def build_case_phenotype_query(
         f'AND {disease_field}:"{escape(disease_id)}")'
     )
 
-    facet_queries = [f'object_closure:"{bin_key.value}"' for bin_key in HistoPhenoKeys]
+    bin_ids = [bin_key.value for bin_key in HistoPhenoKeys]
 
+    # The join goes in `fq`, not `q`. A join in `q` is re-executed on every request:
+    # it is not filterCache-eligible, and these result sets (1k-6k docs) exceed
+    # solrconfig's queryResultMaxDocsCached of 200, so no cache tier retains it. As an
+    # `fq` the joined docset is cached and reused, which is the difference between
+    # ~1.6s and ~4ms of Solr time per request.
     return {
-        "q": join_query,
-        "fq": 'category:"biolink:CaseToPhenotypicFeatureAssociation"',
+        "q": "*:*",
+        "fq": [join_query, 'category:"biolink:CaseToPhenotypicFeatureAssociation"'],
         "rows": rows,
         "fl": ",".join(
             [
@@ -504,15 +511,13 @@ def build_case_phenotype_query(
                 "subject_label",  # Case label
                 "object",  # Phenotype ID
                 "object_label",  # Phenotype label
-                "object_closure",  # For bin assignment
                 "negated",  # Explicit absence
                 "publications",  # Supporting evidence
                 "onset_qualifier",  # Age of onset (ISO8601)
                 "onset_qualifier_label",
             ]
         ),
-        "facet": "true",
-        "facet.query": facet_queries,
+        "json.facet": json.dumps(build_bin_facet("object", bin_ids)),
     }
 
 
@@ -543,6 +548,42 @@ def build_case_disease_query(
         "fq": 'category:"biolink:CaseToDiseaseAssociation"',
         "rows": rows,
         "fl": "subject,subject_label,object,object_label",
+    }
+
+
+# Row-entity IDs returned per bin by the grid bin facet. Grids are capped at a few
+# hundred columns, so a bin can never legitimately hold more distinct row entities
+# than this; the cap only exists so a misconfigured grid cannot ask Solr for an
+# unbounded terms facet.
+BIN_FACET_ENTITY_LIMIT = 10000
+
+
+def build_bin_facet(row_entity_field: str, bin_ids: List[str]) -> Dict[str, Any]:
+    """JSON facet giving, per bin, its association count and the row entities in it.
+
+    This replaces fetching `{row_entity_field}_closure` on every row association. The
+    closure is a property of the row entity, not of the association, so requesting it
+    per association re-sent the same ancestor lists once per edge -- 355,837 closure
+    terms to bin 90 distinct phenotypes on MONDO:0014198, and ~94% of the response body.
+
+    `dvhash` keeps the sub-facet off the global ordinal map, which costs more to build
+    than the facet saves at these domain sizes. It requires docValues on
+    `row_entity_field`; our `string`/`strings` field types set docValues="true".
+    """
+    return {
+        bin_facet_key(index): {
+            "type": "query",
+            "q": f'{row_entity_field}_closure:"{bin_id}"',
+            "facet": {
+                "entities": {
+                    "type": "terms",
+                    "field": row_entity_field,
+                    "limit": BIN_FACET_ENTITY_LIMIT,
+                    "method": "dvhash",
+                }
+            },
+        }
+        for index, bin_id in enumerate(bin_ids)
     }
 
 
@@ -588,8 +629,14 @@ def build_grid_column_query(
             f"{{!join from={config.row_context_field} to={config.column_field}}}"
             f'category:"{config.row_assoc_category.value}"'
         )
-        q = existence_join
-        # Add context filter to fq instead of q
+        # The join goes in `fq`, not `q`. A join in `q` is re-executed on every
+        # request: it is not filterCache-eligible, and grid result sets (1k-6k docs)
+        # exceed solrconfig's queryResultMaxDocsCached of 200, so no cache tier
+        # retains it. As an `fq` the joined docset is cached and reused, which is the
+        # difference between ~1.6s and ~4ms of Solr time per request. This particular
+        # join carries no context term, so one cached entry serves every entity.
+        q = "*:*"
+        fq.append(existence_join)
         fq.append(f'{context_field}:"{context_id}"')
     else:
         q = f'{context_field}:"{context_id}"'
@@ -658,8 +705,14 @@ def build_multi_category_column_query(
         # appears in row associations. This filters out columns with no rows.
         row_category_filter = " OR ".join(f'category:"{cat}"' for cat in row_assoc_categories)
         existence_join = f"{{!join from={row_context_field} to={column_field}}}({row_category_filter})"
-        q = existence_join
-        # Add context filter to fq instead of q
+        # The join goes in `fq`, not `q`. A join in `q` is re-executed on every
+        # request: it is not filterCache-eligible, and grid result sets (1k-6k docs)
+        # exceed solrconfig's queryResultMaxDocsCached of 200, so no cache tier
+        # retains it. As an `fq` the joined docset is cached and reused, which is the
+        # difference between ~1.6s and ~4ms of Solr time per request. This particular
+        # join carries no context term, so one cached entry serves every entity.
+        q = "*:*"
+        fq.append(existence_join)
         fq.append(f'{ctx_field}:"{context_id}"')
     else:
         q = f'{ctx_field}:"{context_id}"'
@@ -733,15 +786,17 @@ def build_multi_category_row_query(
         f'{{!join from={column_field} to={row_context_field}}}(({category_filter}) AND {ctx_field}:"{context_id}")'
     )
 
-    # Build facet queries for bin counts
-    facet_queries = [f'{row_entity_field}_closure:"{bin_id}"' for bin_id in grouping.bin_ids]
-
     # Build OR query for multiple row categories
     row_category_filter = " OR ".join(f'category:"{cat}"' for cat in row_assoc_categories)
 
+    # The join goes in `fq`, not `q`. A join in `q` is re-executed on every request:
+    # it is not filterCache-eligible, and grid result sets (1k-6k docs) exceed
+    # solrconfig's queryResultMaxDocsCached of 200, so no cache tier retains it. As an
+    # `fq` the joined docset is cached and reused, which is the difference between
+    # ~1.6s and ~4ms of Solr time per request.
     return {
-        "q": join_query,
-        "fq": f"({row_category_filter})",
+        "q": "*:*",
+        "fq": [join_query, f"({row_category_filter})"],
         "rows": rows,
         "fl": ",".join(
             [
@@ -749,15 +804,13 @@ def build_multi_category_row_query(
                 f"{row_context_field}_label",  # Column entity label
                 row_entity_field,  # Row entity ID
                 f"{row_entity_field}_label",  # Row entity label
-                f"{row_entity_field}_closure",  # For bin assignment
                 "negated",
                 "publications",
                 "onset_qualifier",
                 "onset_qualifier_label",
             ]
         ),
-        "facet": "true",
-        "facet.query": facet_queries,
+        "json.facet": json.dumps(build_bin_facet(row_entity_field, grouping.bin_ids)),
     }
 
 
@@ -802,12 +855,14 @@ def build_grid_row_query(
         f'AND {context_field}:"{context_id}")'
     )
 
-    # Build facet queries for bin counts
-    facet_queries = [f'{config.row_entity_field}_closure:"{bin_id}"' for bin_id in grouping.bin_ids]
-
+    # The join goes in `fq`, not `q`. A join in `q` is re-executed on every request:
+    # it is not filterCache-eligible, and grid result sets (1k-6k docs) exceed
+    # solrconfig's queryResultMaxDocsCached of 200, so no cache tier retains it. As an
+    # `fq` the joined docset is cached and reused, which is the difference between
+    # ~1.6s and ~4ms of Solr time per request.
     return {
-        "q": join_query,
-        "fq": f'category:"{config.row_assoc_category.value}"',
+        "q": "*:*",
+        "fq": [join_query, f'category:"{config.row_assoc_category.value}"'],
         "rows": rows,
         "fl": ",".join(
             [
@@ -815,13 +870,11 @@ def build_grid_row_query(
                 f"{config.row_context_field}_label",  # Column entity label
                 config.row_entity_field,  # Row entity ID
                 f"{config.row_entity_field}_label",  # Row entity label
-                f"{config.row_entity_field}_closure",  # For bin assignment
                 "negated",
                 "publications",
                 "onset_qualifier",
                 "onset_qualifier_label",
             ]
         ),
-        "facet": "true",
-        "facet.query": facet_queries,
+        "json.facet": json.dumps(build_bin_facet(config.row_entity_field, grouping.bin_ids)),
     }
