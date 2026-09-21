@@ -3,6 +3,7 @@ from typing import List, Optional, Union
 
 from monarch_py.api.additional_models import TextAnnotationRequest
 from monarch_py.api.config import solr, spacyner
+from monarch_py.api.utils.entity_fields import entity_fields
 from monarch_py.datamodels.category_enums import EntityCategory
 from monarch_py.datamodels.model import Entity, TextAnnotationResult
 
@@ -33,11 +34,22 @@ def _ground_entity(
     text: str,
     prefix: Optional[List[str]] = None,
     category: Optional[List[str]] = None,
+    include_phenotypes: bool = False,
+    include_descendants: bool = False,
 ) -> List[Entity]:
     """Shared grounding logic for the GET and POST endpoints."""
     if not text.strip():
         return []
-    return solr().ground_entity(text, prefix=prefix, category=category)
+    return solr().ground_entity(
+        text,
+        prefix=prefix,
+        category=category,
+        # Grounding resolves text to an entity, so it returns at most three matches and
+        # the caller wants their identity. Unrestricted, one phenotype-rich match can
+        # carry tens of thousands of closure terms: grounding "Marfan syndrome" returned
+        # 229KB for two entities.
+        fields=entity_fields(include_phenotypes, include_descendants),
+    )
 
 
 @router.get("/ground")
@@ -51,11 +63,22 @@ def _ground(
         default=None,
         title="Restrict results to entities of one of these biolink categories (e.g. biolink:Disease)",
     ),
+    include_phenotypes: bool = Query(
+        default=False,
+        description="Include each match's phenotype annotations and their closures. "
+        "Large: these are most of the response when present.",
+    ),
+    include_descendants: bool = Query(
+        default=False,
+        description="Include each match's ontology descendants. Large: these are most of the response when present.",
+    ),
 ) -> List[Entity]:
     return _ground_entity(
         text,
         prefix=prefix,
         category=[c.value for c in category] if category else None,
+        include_phenotypes=include_phenotypes,
+        include_descendants=include_descendants,
     )
 
 
@@ -65,4 +88,6 @@ def _post_ground(request: TextAnnotationRequest) -> List[Entity]:
         request.content,
         prefix=request.prefix,
         category=[c.value for c in request.category] if request.category else None,
+        include_phenotypes=request.include_phenotypes,
+        include_descendants=request.include_descendants,
     )

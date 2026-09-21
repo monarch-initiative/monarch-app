@@ -561,3 +561,50 @@ def test_boolean_values_are_still_rendered_for_solr():
     assert params["facet"] == "true"
     assert params["hl"] == "true"
     assert dict(urllib.parse.parse_qsl(build_search_query(q="x").query_string()))["hl"] == "false"
+
+
+# =====================================================================
+# Search field groups
+# =====================================================================
+
+
+def test_bulk_field_groups_are_opt_in():
+    """Phenotype annotations and descendants are ~69% and ~33% of a search response.
+    Everything else in the model is about 1%, so only these two are withheld."""
+    from monarch_py.api.utils.entity_fields import DESCENDANT_FIELDS, PHENOTYPE_FIELDS, entity_fields
+
+    from monarch_py.datamodels.model import Entity
+
+    default = entity_fields(include_phenotypes=False, include_descendants=False).split(",")
+    assert not set(default) & set(PHENOTYPE_FIELDS + DESCENDANT_FIELDS)
+    # ...and nothing else is dropped: a caller loses only the bulk groups.
+    expected = [f for f in Entity.model_fields if f not in set(PHENOTYPE_FIELDS + DESCENDANT_FIELDS + ["score"])]
+    assert default == expected
+
+
+@pytest.mark.parametrize(
+    "phenotypes,descendants",
+    [(True, False), (False, True), (True, True)],
+)
+def test_opting_in_restores_each_group(phenotypes, descendants):
+    from monarch_py.api.utils.entity_fields import DESCENDANT_FIELDS, PHENOTYPE_FIELDS, entity_fields
+
+    fields = set(entity_fields(phenotypes, descendants).split(","))
+    assert set(PHENOTYPE_FIELDS).issubset(fields) == phenotypes
+    assert set(DESCENDANT_FIELDS).issubset(fields) == descendants
+
+
+def test_score_is_never_requested():
+    """`score` is a Solr pseudo-field; an unrestricted `fl` does not return it today, so
+    listing it would start populating a field that has always been null."""
+    from monarch_py.api.utils.entity_fields import entity_fields
+
+    assert "score" not in entity_fields(True, True).split(",")
+
+
+def test_grounding_and_search_share_one_field_definition():
+    """`Entity` and `SearchResult` declare the same fields, so the two endpoints must
+    not drift into disagreeing about what counts as bulk."""
+    from monarch_py.datamodels.model import Entity, SearchResult
+
+    assert set(Entity.model_fields) == set(SearchResult.model_fields) - {"score"}

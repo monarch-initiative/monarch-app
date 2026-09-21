@@ -876,6 +876,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         text: str,
         prefix: Optional[List[str]] = None,
         category: Optional[List[str]] = None,
+        fields: Optional[str] = None,
     ) -> List[Entity]:
         """Grounds a single entity
 
@@ -885,12 +886,15 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                 uses one of these CURIE prefixes (e.g. ["MONDO", "HP"]). Defaults to None.
             category (List[str], optional): Restrict results to entities of one of these
                 biolink categories (e.g. ["biolink:Disease"]). Defaults to None.
+            fields (str, optional): Solr field list to return. Defaults to None, meaning
+                every stored field, which is what the CLI expects.
 
         Returns:
             Entity: Dataclass representing a single entity
         """
         solr = SolrService(base_url=self.base_url, core=core.ENTITY)
         query = build_grounding_query(text, prefix=prefix, category=category)
+        query.fields = fields
         query_result = solr.query(query)
         search_result = parse_search(query_result)
         entities = [entity for entity in search_result.items[:3]]
