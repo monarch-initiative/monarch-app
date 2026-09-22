@@ -18,11 +18,11 @@ const OVERRIDES: Record<string, Entry> = {
     direct: () => "Directly associated causal genes",
     inferred: () => "Inferred associated causal genes",
   },
-  "biolink:CorrelatedGeneToDiseaseAssociation": {
+  correlated_gene_to_disease: {
     direct: () => "Directly associated correlated genes",
     inferred: () => "Inferred associated correlated genes",
   },
-  "biolink:GenotypeToDiseaseAssociation": {
+  "biolink:GenotypeAsAModelOfDiseaseAssociation": {
     direct: () => "Directly associated disease models",
     inferred: () => "Inferred associated disease models",
   },

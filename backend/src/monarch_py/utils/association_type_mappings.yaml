@@ -55,9 +55,19 @@
   category: "biolink:CausalGeneToDiseaseAssociation"
   subject_category: "biolink:Gene"
   object_category: "biolink:Disease"
-- subject_label: Correlated Disease
+# Non-causal gene-to-disease edges. Monarch's sources (OMIM, HPOA) emit these on the
+# parent biolink:GeneToDiseaseAssociation with contributes_to / associated_with, because
+# biolink 4.4+ closes CorrelatedGeneToDiseaseAssociation to the correlated_with
+# predicate family. The section is therefore selected by category + predicate rather
+# than by a dedicated category; causal edges keep their own category above.
+- key: correlated_gene_to_disease
+  match_criteria: full
+  subject_label: Correlated Disease
   object_label: Correlated Gene
-  category: "biolink:CorrelatedGeneToDiseaseAssociation"
+  category: "biolink:GeneToDiseaseAssociation"
+  predicate:
+  - "biolink:contributes_to"
+  - "biolink:associated_with"
   subject_category: "biolink:Gene"
   object_category: "biolink:Disease"
 - subject_label: Variant to Gene
@@ -77,7 +87,7 @@
   object_category: "biolink:PhenotypicFeature"
 - subject_label: Disease Model
   object_label: Disease Model
-  category: "biolink:GenotypeToDiseaseAssociation"
+  category: "biolink:GenotypeAsAModelOfDiseaseAssociation"
   subject_category: "biolink:Genotype"
   object_category: "biolink:Disease"
 - subject_label: Medical Action

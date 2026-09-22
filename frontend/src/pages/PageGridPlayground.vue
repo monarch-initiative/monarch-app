@@ -198,7 +198,7 @@ const examples: Example[] = [
     entityName: "BRCA1",
     columnCategories: [
       "biolink:CausalGeneToDiseaseAssociation",
-      "biolink:CorrelatedGeneToDiseaseAssociation",
+      "biolink:GeneToDiseaseAssociation",
     ],
     rowCategories: ["biolink:DiseaseToPhenotypicFeatureAssociation"],
     groupByCategory: true,
@@ -468,7 +468,7 @@ const playgroundMatrix = ref<EntityGridMatrix | null>(null);
 /** All possible column category options (with friendly labels) */
 const allColumnCategoryOptions: Record<string, string> = {
   "biolink:CausalGeneToDiseaseAssociation": "Causal Gene-Disease",
-  "biolink:CorrelatedGeneToDiseaseAssociation": "Correlated Gene-Disease",
+  "biolink:GeneToDiseaseAssociation": "Correlated Gene-Disease",
   "biolink:CaseToDiseaseAssociation": "Case-Disease",
   "biolink:GeneToGeneHomologyAssociation": "Gene Homology (Orthologs)",
 };

@@ -10,7 +10,7 @@
     {
       "label": "Disease Model",
       "count": 246,
-      "category": "biolink:GenotypeToDiseaseAssociation",
+      "category": "biolink:GenotypeAsAModelOfDiseaseAssociation",
       "count_direct": 14,
       "count_with_orthologs": null
     },
@@ -31,7 +31,8 @@
     {
       "label": "Correlated Gene",
       "count": 156,
-      "category": "biolink:CorrelatedGeneToDiseaseAssociation",
+      "key": "correlated_gene_to_disease",
+      "category": "biolink:GeneToDiseaseAssociation",
       "count_direct": 0,
       "count_with_orthologs": null
     },

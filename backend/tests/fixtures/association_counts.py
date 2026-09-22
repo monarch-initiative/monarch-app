@@ -16,8 +16,8 @@ def association_counts():
             {
                 "label": "Disease Model",
                 "count": 246,
-                "key": "biolink:GenotypeToDiseaseAssociation",
-                "category": "biolink:GenotypeToDiseaseAssociation",
+                "key": "biolink:GenotypeAsAModelOfDiseaseAssociation",
+                "category": "biolink:GenotypeAsAModelOfDiseaseAssociation",
                 "count_direct": 14,
                 "count_with_orthologs": None,
             },
@@ -40,8 +40,8 @@ def association_counts():
             {
                 "label": "Correlated Gene",
                 "count": 156,
-                "key": "biolink:CorrelatedGeneToDiseaseAssociation",
-                "category": "biolink:CorrelatedGeneToDiseaseAssociation",
+                "key": "correlated_gene_to_disease",
+                "category": "biolink:GeneToDiseaseAssociation",
                 "count_direct": 0,
                 "count_with_orthologs": None,
             },

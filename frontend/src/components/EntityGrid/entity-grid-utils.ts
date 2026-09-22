@@ -129,7 +129,7 @@ export function getColumnsWithData(
 /** Human-readable labels for association categories */
 const ASSOCIATION_CATEGORY_LABELS: Record<string, string> = {
   "biolink:CausalGeneToDiseaseAssociation": "Causal",
-  "biolink:CorrelatedGeneToDiseaseAssociation": "Correlated",
+  "biolink:GeneToDiseaseAssociation": "Correlated",
   "biolink:CaseToDiseaseAssociation": "Cases",
   "biolink:GeneToGeneHomologyAssociation": "Orthologs",
   "biolink:DiseaseToPhenotypicFeatureAssociation": "Disease-Phenotype",

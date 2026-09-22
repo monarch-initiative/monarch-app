@@ -123,8 +123,8 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
     // Direct tab for Disease node: hide “object” or “subject+predicate” depending on category
     if (isDirect) {
       if (
-        categoryId === "biolink:CorrelatedGeneToDiseaseAssociation" ||
-        categoryId === "biolink:GenotypeToDiseaseAssociation"
+        categoryId === "correlated_gene_to_disease" ||
+        categoryId === "biolink:GenotypeAsAModelOfDiseaseAssociation"
       ) {
         baseCols = baseCols.filter((col) => col.key !== "object_label");
       } else if (
@@ -139,7 +139,7 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
     }
 
     // Genotype→Disease tweaks: drop "Association"; add "Taxon"; add "Source" on Direct
-    if (categoryId === "biolink:GenotypeToDiseaseAssociation") {
+    if (categoryId === "biolink:GenotypeAsAModelOfDiseaseAssociation") {
       baseCols = baseCols.filter((c) => c.key !== "predicate"); // remove "Association"
       ensureTaxonColumn();
 
