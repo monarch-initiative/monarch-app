@@ -55,6 +55,7 @@ class AssociationCategory(Enum):
         "biolink:ChemicalEntityToDiseaseOrPhenotypicFeatureAssociation"
     )
     GENOTYPE_TO_DISEASE_ASSOCIATION = "biolink:GenotypeToDiseaseAssociation"
+    GENOTYPE_AS_A_MODEL_OF_DISEASE_ASSOCIATION = "biolink:GenotypeAsAModelOfDiseaseAssociation"
     DISEASE_OR_PHENOTYPIC_FEATURE_TO_GENETIC_INHERITANCE_ASSOCIATION = (
         "biolink:DiseaseOrPhenotypicFeatureToGeneticInheritanceAssociation"
     )

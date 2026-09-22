@@ -18,7 +18,7 @@ export const TYPE_CONFIG: Record<string, TypeCfg> = {
     label: "Correlated Genes",
     side: "object",
   },
-  "biolink:GenotypeToDiseaseAssociation": {
+  "biolink:GenotypeAsAModelOfDiseaseAssociation": {
     label: "Genotype to disease",
     side: "object",
   },

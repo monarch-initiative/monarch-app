@@ -172,7 +172,7 @@
     {
       "label": "Disease Model",
       "count": 246,
-      "category": "biolink:GenotypeToDiseaseAssociation",
+      "category": "biolink:GenotypeAsAModelOfDiseaseAssociation",
       "count_direct": 14,
       "count_with_orthologs": null
     },

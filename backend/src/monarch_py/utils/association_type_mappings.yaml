@@ -87,7 +87,7 @@
   object_category: "biolink:PhenotypicFeature"
 - subject_label: Disease Model
   object_label: Disease Model
-  category: "biolink:GenotypeToDiseaseAssociation"
+  category: "biolink:GenotypeAsAModelOfDiseaseAssociation"
   subject_category: "biolink:Genotype"
   object_category: "biolink:Disease"
 - subject_label: Medical Action

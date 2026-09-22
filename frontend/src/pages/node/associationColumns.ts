@@ -124,7 +124,7 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
     if (isDirect) {
       if (
         categoryId === "correlated_gene_to_disease" ||
-        categoryId === "biolink:GenotypeToDiseaseAssociation"
+        categoryId === "biolink:GenotypeAsAModelOfDiseaseAssociation"
       ) {
         baseCols = baseCols.filter((col) => col.key !== "object_label");
       } else if (
@@ -139,7 +139,7 @@ export function buildAssociationCols(ctx: ColumnContext): Cols<Datum> {
     }
 
     // Genotype→Disease tweaks: drop "Association"; add "Taxon"; add "Source" on Direct
-    if (categoryId === "biolink:GenotypeToDiseaseAssociation") {
+    if (categoryId === "biolink:GenotypeAsAModelOfDiseaseAssociation") {
       baseCols = baseCols.filter((c) => c.key !== "predicate"); // remove "Association"
       ensureTaxonColumn();
 

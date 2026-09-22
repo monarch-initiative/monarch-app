@@ -124,7 +124,7 @@ describe("buildAssociationCols", () => {
       makeCtx({
         nodeCategory: "biolink:Disease",
         isDirect: true,
-        categoryId: "biolink:GenotypeToDiseaseAssociation",
+        categoryId: "biolink:GenotypeAsAModelOfDiseaseAssociation",
       }),
     );
     const k = keys(cols);

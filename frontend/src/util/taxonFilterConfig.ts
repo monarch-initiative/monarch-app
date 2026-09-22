@@ -15,7 +15,7 @@ const TAXON_FILTER_FIELD: Record<string, TaxonField> = {
   /** Gene-phenotype on disease pages — filter by the gene's species */
   "biolink:GeneToPhenotypicFeatureAssociation": "subject_taxon_label",
   /** Genotype-disease — filter by the genotype's species */
-  "biolink:GenotypeToDiseaseAssociation": "subject_taxon_label",
+  "biolink:GenotypeAsAModelOfDiseaseAssociation": "subject_taxon_label",
 };
 
 /** Get the taxon field for a category, or undefined if not filterable */

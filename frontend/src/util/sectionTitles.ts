@@ -4,7 +4,7 @@ const TITLES_BY_ID: Record<string, string> = {
   "biolink:CausalGeneToDiseaseAssociation": "Causal Genes",
   "biolink:GeneToPhenotypicFeatureAssociation": "Causal Gene Phenotypes",
   correlated_gene_to_disease: "Correlated Genes",
-  "biolink:GenotypeToDiseaseAssociation": "Disease Models",
+  "biolink:GenotypeAsAModelOfDiseaseAssociation": "Disease Models",
   "biolink:VariantToDiseaseAssociation": "Disease Variants",
 };
 
