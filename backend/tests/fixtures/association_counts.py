@@ -40,8 +40,8 @@ def association_counts():
             {
                 "label": "Correlated Gene",
                 "count": 156,
-                "key": "biolink:CorrelatedGeneToDiseaseAssociation",
-                "category": "biolink:CorrelatedGeneToDiseaseAssociation",
+                "key": "correlated_gene_to_disease",
+                "category": "biolink:GeneToDiseaseAssociation",
                 "count_direct": 0,
                 "count_with_orthologs": None,
             },

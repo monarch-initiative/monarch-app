@@ -6,7 +6,9 @@ import type { Sort } from "@/components/AppTable.vue";
 export const TRAVERSE_ORTHOLOG_CATEGORIES = new Set([
   "biolink:GeneToPhenotypicFeatureAssociation",
   "biolink:CausalGeneToDiseaseAssociation",
-  "biolink:CorrelatedGeneToDiseaseAssociation",
+  // correlated genes: consulted by section key (table) and by category (counts)
+  "correlated_gene_to_disease",
+  "biolink:GeneToDiseaseAssociation",
 ]);
 
 /** categories that ClinGen curates gene/variant-to-disease evidence under */

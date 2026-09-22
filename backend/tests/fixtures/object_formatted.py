@@ -199,7 +199,7 @@ def node_json():
         {
             "label": "Correlated Gene",
             "count": 156,
-            "category": "biolink:CorrelatedGeneToDiseaseAssociation",
+            "category": "biolink:GeneToDiseaseAssociation",
             "count_direct": 0,
             "count_with_orthologs": null
         },
@@ -756,7 +756,7 @@ association_counts:
   count_direct: 0
   count_with_orthologs: null
   label: Causal Gene
-- category: biolink:CorrelatedGeneToDiseaseAssociation
+- category: biolink:GeneToDiseaseAssociation
   count: 156
   count_direct: 0
   count_with_orthologs: null

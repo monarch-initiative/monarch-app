@@ -261,7 +261,7 @@ async def get_ortholog_phenotype_grid(
     Example: To get a grid of diseases (causal + correlated) and their phenotypes for a gene:
     ```
     GET /entity-grid/HGNC:4851?column_association_category=biolink:CausalGeneToDiseaseAssociation
-        &column_association_category=biolink:CorrelatedGeneToDiseaseAssociation
+        &column_association_category=biolink:GeneToDiseaseAssociation
         &row_association_category=biolink:DiseaseToPhenotypicFeatureAssociation
         &group_columns_by_category=true
     ```

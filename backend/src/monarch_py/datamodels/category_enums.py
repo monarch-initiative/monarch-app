@@ -59,6 +59,7 @@ class AssociationCategory(Enum):
         "biolink:DiseaseOrPhenotypicFeatureToGeneticInheritanceAssociation"
     )
     CORRELATED_GENE_TO_DISEASE_ASSOCIATION = "biolink:CorrelatedGeneToDiseaseAssociation"
+    GENE_TO_DISEASE_ASSOCIATION = "biolink:GeneToDiseaseAssociation"
     CASE_TO_DISEASE_ASSOCIATION = "biolink:CaseToDiseaseAssociation"
     CASE_TO_GENE_ASSOCIATION = "biolink:CaseToGeneAssociation"
     CAUSAL_GENE_TO_DISEASE_ASSOCIATION = "biolink:CausalGeneToDiseaseAssociation"

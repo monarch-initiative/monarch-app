@@ -39,7 +39,7 @@ const DIRECT: Record<string, Fmt> = {
   "biolink:CausalGeneToDiseaseAssociation": ({ n, node }) =>
     `${fmtCount(n)} ${pluralWord(n, "causal gene", "causal genes")} that causes ${node}`,
 
-  "biolink:CorrelatedGeneToDiseaseAssociation": ({ n, node }) =>
+  correlated_gene_to_disease: ({ n, node }) =>
     `${fmtCount(n)} ${pluralWord(n, "correlated gene", "correlated genes")} for ${node}`,
 
   "biolink:GenotypeToDiseaseAssociation": ({ n, node }) =>
@@ -81,13 +81,7 @@ const INFERRED: Record<string, Fmt> = {
     (n ?? 0) > 0
       ? ` ${pluralize(n, "gene", "genes")} that causes ${node} as well as ${pluralize(diff, "subclass", "subclasses")} such as  ${example ? ` (e.g., ${q(example)})` : ""}`
       : `${pluralize(all, "gene", "genes")} that cause subtypes of ${node} such as ${q(example)}`,
-  "biolink:CorrelatedGeneToDiseaseAssociation": ({
-    all,
-    n,
-    diff,
-    node,
-    example,
-  }) =>
+  correlated_gene_to_disease: ({ all, n, diff, node, example }) =>
     (n ?? 0) > 0
       ? `  ${pluralize(n, "correlated gene", "correlated genes")} for ${node} as wells as  ${pluralize(diff, "subclass", "subclasses")} such as ${example ? `${q(example)}` : ""}`
       : ` ${pluralize(all, "correlated gene", "correlated genes")} associated with ${node}`,
