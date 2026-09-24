@@ -8,7 +8,6 @@ def histopheno_query():
         "rows": 0,
         "start": 0,
         "facet": True,
-        "facet_min_count": 1,
         "facet_fields": [],
         "facet_queries": [
             'object_closure:"UPHENO:0002964"',
@@ -35,6 +34,8 @@ def histopheno_query():
         "filter_queries": ['subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121"'],
         "facet_mincount": 1,
         "facet_limit": None,
+        "facet_method": None,
+        "fields": None,
         "query_fields": None,
         "def_type": "edismax",
         "q_op": "AND",
@@ -43,5 +44,4 @@ def histopheno_query():
         "sort": None,
         "hl": False,
         "hl_method": None,
-        "fl": None,
     }

@@ -61,6 +61,7 @@ from monarch_py.implementations.solr.solr_query_utils import (
     build_multi_entity_association_query,
     build_search_query,
     build_grounding_query,
+    MAX_ROW_ASSOCIATIONS,
 )
 from monarch_py.interfaces.association_interface import AssociationInterface
 from monarch_py.interfaces.entity_interface import EntityInterface
@@ -80,6 +81,24 @@ logger = logging.getLogger(__name__)
 # parse_search. Whole-string collisions are usually a handful, but short gene symbols are
 # shared by well over a thousand entities, so this is sized for that tail rather than the
 # common case. The scan requests only the three fields match_provenance reads.
+
+
+def _warn_if_row_query_truncated(context_id: str, row_result: dict, row_docs: list) -> None:
+    """Log when Solr had more row associations than we asked for.
+
+    Cells come from these documents one association at a time, so a truncated fetch
+    renders a grid that looks complete but is missing observations.
+    """
+    found = row_result.get("response", {}).get("numFound", 0)
+    if found > len(row_docs):
+        logger.warning(
+            "Grid for %s truncated: %d row associations matched but only %d fetched "
+            "(MAX_ROW_ASSOCIATIONS=%d). The grid is missing cells.",
+            context_id,
+            found,
+            len(row_docs),
+            MAX_ROW_ASSOCIATIONS,
+        )
 
 
 @dataclass
@@ -675,6 +694,8 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         exact: bool = False,
         offset: int = 0,
         limit: int = 20,
+        facet_method: Optional[str] = None,
+        fields: Optional[str] = None,
     ) -> SearchResults:
         """Search for entities by label, with optional filters
 
@@ -704,6 +725,11 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             sort (str): Sort results by the specified field. Defaults to None.
             exact (bool): Return only entities whose name or exact synonym equals `q` as a whole
                 string, and an empty result set when none does. Defaults to False.
+            facet_method (str): Solr facet.method for `facet_fields`, applied per field.
+                Defaults to None, which leaves Solr's default (`fc`) in place.
+            fields (str): Solr field list to return. Defaults to None, meaning every
+                stored field plus the score, which is what CLI and other non-browse
+                callers expect.
 
         Returns:
             SearchResults: Dataclass representing results of a search.
@@ -731,6 +757,8 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             facet_queries=facet_queries,
             highlighting=highlighting,
             sort=sort,
+            facet_method=facet_method,
+            fields=fields,
         )
         if exact:
             results = self._exact_search(
@@ -971,6 +999,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         text: str,
         prefix: Optional[List[str]] = None,
         category: Optional[List[str]] = None,
+        fields: Optional[str] = None,
     ) -> List[Entity]:
         """Grounds a single entity
 
@@ -980,12 +1009,15 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
                 uses one of these CURIE prefixes (e.g. ["MONDO", "HP"]). Defaults to None.
             category (List[str], optional): Restrict results to entities of one of these
                 biolink categories (e.g. ["biolink:Disease"]). Defaults to None.
+            fields (str, optional): Solr field list to return. Defaults to None, meaning
+                every stored field, which is what the CLI expects.
 
         Returns:
             Entity: Dataclass representing a single entity
         """
         solr = SolrService(base_url=self.base_url, core=core.ENTITY)
         query = build_grounding_query(text, prefix=prefix, category=category)
+        query.fields = fields
         query_result = solr.query(query)
         search_result = parse_search(query_result)
         entities = [entity for entity in search_result.items[:3]]
@@ -1052,10 +1084,12 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         phenotype_query_params = build_case_phenotype_query(
             disease_id=disease_id,
             direct_only=direct_only,
+            rows=MAX_ROW_ASSOCIATIONS,
         )
         phenotype_result = self._raw_solr_query(phenotype_query_params)
         phenotype_docs = phenotype_result.get("response", {}).get("docs", [])
-        facet_counts = phenotype_result.get("facet_counts", {}).get("facet_queries", {})
+        _warn_if_row_query_truncated(disease_id, phenotype_result, phenotype_docs)
+        facets = phenotype_result.get("facets", {})
 
         # Step 4: Build matrix
         return build_matrix(
@@ -1063,7 +1097,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             disease_name=self._get_entity_name(disease_id),
             case_docs=case_docs,
             phenotype_docs=phenotype_docs,
-            facet_counts=facet_counts,
+            facets=facets,
         )
 
     def get_entity_grid(
@@ -1140,10 +1174,12 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             config=config,
             grouping=grouping,
             direct_only=direct_only,
+            rows=MAX_ROW_ASSOCIATIONS,
         )
         row_result = self._raw_solr_query(row_params)
         row_docs = row_result.get("response", {}).get("docs", [])
-        facet_counts = row_result.get("facet_counts", {}).get("facet_queries", {})
+        _warn_if_row_query_truncated(context_id, row_result, row_docs)
+        facets = row_result.get("facets", {})
 
         # Step 5: Build grid
         return build_entity_grid(
@@ -1154,7 +1190,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             grouping=grouping,
             column_docs=col_docs,
             row_docs=row_docs,
-            facet_counts=facet_counts,
+            facets=facets,
         )
 
     def get_generic_entity_grid(
@@ -1312,10 +1348,12 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             row_entity_field=row_entity_field,
             grouping=grouping,
             direct_only=direct_only,
+            rows=MAX_ROW_ASSOCIATIONS,
         )
         row_result = self._raw_solr_query(row_params)
         row_docs = row_result.get("response", {}).get("docs", [])
-        facet_counts = row_result.get("facet_counts", {}).get("facet_queries", {})
+        _warn_if_row_query_truncated(context_id, row_result, row_docs)
+        facets = row_result.get("facets", {})
 
         # Create a dynamic config for build_entity_grid
         # Determine column entity category from association type
@@ -1359,7 +1397,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             grouping=grouping,
             column_docs=col_docs,
             row_docs=row_docs,
-            facet_counts=facet_counts,
+            facets=facets,
         )
 
         # Step 6: Optionally sort columns by category

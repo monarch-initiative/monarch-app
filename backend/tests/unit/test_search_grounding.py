@@ -67,7 +67,7 @@ def test_exact_match_filter_targets_both_grounding_copy_fields():
 def test_search_query_requests_the_score():
     """`score` is a pseudo-field: without an explicit fl Solr omits it and every
     SearchResult comes back with score=None."""
-    assert build_search_query(q="fanconi").fl == "*,score"
+    assert build_search_query(q="fanconi").fields == "*,score"
 
 
 def test_search_query_adds_subset_filters():

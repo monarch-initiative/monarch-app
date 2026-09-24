@@ -13,10 +13,18 @@ from monarch_py.api.additional_models import (
     SearchMatchType,
 )
 from monarch_py.api.config import solr
+from monarch_py.api.utils.entity_fields import entity_fields
 from monarch_py.datamodels.model import SearchResults, MappingResults
 from monarch_py.datamodels.category_enums import EntityCategory, MappingPredicate
 from monarch_py.datamodels.search_scopes import SearchScope
 from monarch_py.utils.format_utils import to_tsv
+
+# `category` and `in_taxon_label` have tens of distinct values, not thousands. Solr's
+# default facet.method (`fc`) recomputes counts by walking the whole match set -- 1.6M
+# docs for an empty search -- with no facet cache to fall back on. `enum` instead does
+# one filterCache lookup per term, and that cache runs at a ~99.8% hit ratio. This is
+# set per field because it would be the wrong choice for a high-cardinality field.
+SEARCH_FACET_METHOD = "enum"
 
 # `subsets` is a Solr `string` field, so only a trailing `*` is a meaningful wildcard.
 # Anything else (`*rare`, `ven*om`) would be escaped to a literal and match nothing at
@@ -81,6 +89,15 @@ async def search(
         title="`relevance` returns the best available hits; `exact` returns only entities the "
         "query names outright, and nothing at all when there is no such entity",
     ),
+    include_phenotypes: bool = Query(
+        default=False,
+        description="Include the entity's phenotype annotations and their closures. "
+        "Large: these are most of the response when present.",
+    ),
+    include_descendants: bool = Query(
+        default=False,
+        description="Include the entity's ontology descendants. Large: these are most of the response when present.",
+    ),
     pagination: PaginationParams = Depends(),
 ) -> SearchResults:
     """Search for entities by label, with optional filters
@@ -106,6 +123,10 @@ async def search(
             synonyms as a whole string, case-insensitively; otherwise the result set is empty.
             Items carry `matched_field` and `match_type` so callers can apply their own precision
             policy. Defaults to `relevance`.
+        include_phenotypes (bool, optional): Include phenotype annotations and closures.
+            Defaults to False.
+        include_descendants (bool, optional): Include ontology descendants. Defaults to
+            False.
         offset (int, optional): Offset for pagination. Defaults to 0.
         limit (int, optional): Limit results. Defaults to 20.
 
@@ -138,6 +159,10 @@ async def search(
         limit=pagination.limit,
         highlighting=True,
         exact=match_type == SearchMatchType.exact,
+        facet_method=SEARCH_FACET_METHOD,
+        # `score` is a Solr pseudo-field: an explicit field list must name it or every
+        # SearchResult comes back with score null.
+        fields=entity_fields(include_phenotypes, include_descendants, include_score=True),
     )
 
     return response

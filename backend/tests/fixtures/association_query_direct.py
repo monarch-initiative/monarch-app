@@ -8,7 +8,6 @@ def association_query_direct():
         "rows": 100,
         "start": 100,
         "facet": True,
-        "facet_min_count": 1,
         "facet_fields": [],
         "facet_queries": [],
         "filter_queries": [
@@ -28,6 +27,8 @@ def association_query_direct():
         ],
         "facet_mincount": 1,
         "facet_limit": None,
+        "facet_method": None,
+        "fields": None,
         "query_fields": "subject subject_label^2 subject_label_t subject_closure subject_closure_label subject_closure_label_t predicate predicate_t object object_label^2 object_label_t object_closure object_closure_label object_closure_label_t publications has_evidence primary_knowledge_source aggregator_knowledge_source provided_by ",
         "def_type": "edismax",
         "q_op": "AND",
@@ -36,5 +37,4 @@ def association_query_direct():
         "sort": None,
         "hl": True,
         "hl_method": "unified",
-        "fl": None,
     }
