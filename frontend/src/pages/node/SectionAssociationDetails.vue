@@ -17,7 +17,7 @@
             in_taxon_label: association.subject_taxon_label,
           }"
         />
-        <AppPredicateBadge :association="association" />
+        <AppPredicateBadge :association="association" :explain="false" />
         <AppNodeBadge
           :node="{
             id: association.object,

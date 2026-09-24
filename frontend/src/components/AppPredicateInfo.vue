@@ -247,9 +247,15 @@ useEventListener(popover, "keydown", (event: KeyboardEvent) => {
 }
 
 .explainer {
-  z-index: 10;
-  max-width: 500px;
-  max-height: 70vh;
+  /* Above AppModal (1101): the badge appears inside association-detail modals, and at
+     a lower layer the popover renders behind the overlay, where it is invisible and
+     cannot be clicked. */
+  z-index: 1200;
+  /* Fit whatever is actually there. floating-ui shifts the popover to stay on screen
+     but does not constrain its size, so on a short viewport an unbounded box simply
+     runs off the bottom. dvh rather than vh so mobile browser chrome counts. */
+  max-width: min(500px, calc(100vw - 20px));
+  max-height: min(60dvh, calc(100dvh - 40px));
   padding: 20px;
   overflow-y: auto;
   border-radius: $rounded;

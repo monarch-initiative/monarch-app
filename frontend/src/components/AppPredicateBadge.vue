@@ -12,7 +12,7 @@
       :class="{ 'highlighted-text': highlight }"
       v-html="getFormattedPredicateLabel(predicate)"
     /><AppPredicateInfo
-      v-if="predicateString"
+      v-if="predicateString && explain"
       :predicate="predicateString"
       class="predicate-info-icon"
     />
@@ -34,11 +34,18 @@ type Props = {
   /** whether to display arrows vertically */
   vertical?: boolean;
   arrows?: boolean;
+  /**
+   * Whether to offer the definition popover. Views that already spell the
+   * definition out set this false: a second route to the same text is noise,
+   * and those views are modals, where a popover would have to out-stack the
+   * modal to be usable at all.
+   */
+  explain?: boolean;
   /** boolean to use for hightlighting */
   highlight?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), { explain: true });
 
 const predicate = computed(
   () =>

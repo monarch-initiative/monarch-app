@@ -139,3 +139,24 @@ describe("predicate explainer is a popover, not a nested modal", () => {
     wrapper.unmount();
   });
 });
+
+describe("views that spell out the definition do not also offer the popover", () => {
+  test("the icon is suppressed when explain is false", () => {
+    // The node-page and dashboard detail modals render the definition inline. A second
+    // route to the same text is noise, and inside a modal the popover has to out-stack
+    // the overlay to be clickable at all.
+    const wrapper = mount(AppPredicateBadge, {
+      props: { association: association("biolink:treats"), explain: false },
+      global: { stubs },
+    });
+    expect(wrapper.find("button[aria-label]").exists()).toBe(false);
+  });
+
+  test("the icon is offered by default", () => {
+    const wrapper = mount(AppPredicateBadge, {
+      props: { association: association("biolink:treats") },
+      global: { stubs },
+    });
+    expect(wrapper.find("button[aria-label]").exists()).toBe(true);
+  });
+});
