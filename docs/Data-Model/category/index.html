@@ -1981,17 +1981,37 @@ Alias: category</p>
 </thead>
 <tbody>
 <tr>
+<td><a href="../GridColumnEntity/">GridColumnEntity</a></td>
+<td>A column entity in the grid (case, disease, ortholog, etc</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><a href="../SearchScopeResolution/">SearchScopeResolution</a></td>
+<td>The filters a named <code>scope</code> resolved to, echoed back so a caller can see what...</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><a href="../Node/">Node</a></td>
+<td>UI container class extending Entity with additional information</td>
+<td>no</td>
+</tr>
+<tr>
+<td><a href="../Entity/">Entity</a></td>
+<td>Post-closurize node shape (entity + closure expansion + per-predicate aggrega...</td>
+<td>no</td>
+</tr>
+<tr>
+<td><a href="../CompactAssociation/">CompactAssociation</a></td>
+<td></td>
+<td>no</td>
+</tr>
+<tr>
 <td><a href="../Association/">Association</a></td>
 <td>Post-closurize edge shape (association + subject/object closure expansion)</td>
 <td>no</td>
 </tr>
 <tr>
-<td><a href="../ExpandedAssociation/">ExpandedAssociation</a></td>
-<td>Association decorated with app-computed expansions returned by the API: Expan...</td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../SearchResult/">SearchResult</a></td>
+<td><a href="../AssociationCount/">AssociationCount</a></td>
 <td></td>
 <td>yes</td>
 </tr>
@@ -2001,14 +2021,14 @@ Alias: category</p>
 <td>yes</td>
 </tr>
 <tr>
-<td><a href="../AssociationCount/">AssociationCount</a></td>
+<td><a href="../SearchResult/">SearchResult</a></td>
 <td></td>
 <td>yes</td>
 </tr>
 <tr>
-<td><a href="../GridColumnEntity/">GridColumnEntity</a></td>
-<td>A column entity in the grid (case, disease, ortholog, etc</td>
-<td>yes</td>
+<td><a href="../ExpandedAssociation/">ExpandedAssociation</a></td>
+<td>Association decorated with app-computed expansions returned by the API: Expan...</td>
+<td>no</td>
 </tr>
 <tr>
 <td><a href="../DirectionalAssociation/">DirectionalAssociation</a></td>
@@ -2019,21 +2039,6 @@ Alias: category</p>
 <td><a href="../AssociationTypeMapping/">AssociationTypeMapping</a></td>
 <td>A data class to hold the necessary information to produce association type co...</td>
 <td>yes</td>
-</tr>
-<tr>
-<td><a href="../Node/">Node</a></td>
-<td>UI container class extending Entity with additional information</td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../CompactAssociation/">CompactAssociation</a></td>
-<td></td>
-<td>no</td>
-</tr>
-<tr>
-<td><a href="../Entity/">Entity</a></td>
-<td>Post-closurize node shape (entity + closure expansion + per-predicate aggrega...</td>
-<td>no</td>
 </tr>
 </tbody>
 </table>
@@ -2075,6 +2080,7 @@ Alias: category</p>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationCount</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CompactAssociation</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AssociationTypeMapping</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SearchScopeResolution</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GridColumnEntity</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GridRowEntity</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Entity</span>

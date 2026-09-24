@@ -3620,6 +3620,74 @@ every stored field, which is what the CLI expects.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
+                <code>namespace</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/builtins/stdtypes.html#str">str</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Filter to only entities whose CURIE uses one of these namespaces
+(e.g. ["MONDO", "HP"]). Defaults to None.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>exclude_namespace</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/builtins/stdtypes.html#str">str</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Drop entities whose CURIE uses one of these namespaces.
+Defaults to None.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>scope</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/builtins/stdtypes.html#str">str</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A named filter bundle (see <code>search_scopes</code>). Supplies category, namespace,
+subset, exclude_subset and in_taxon where they were not passed explicitly; an
+explicit value wins for that axis. Defaults to None.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>in_taxon</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/builtins/stdtypes.html#str">str</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Filter to only entities matching the specified taxon CURIEs. Defaults to None.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
                 <code>in_taxon_label</code>
             </td>
             <td>
@@ -3628,6 +3696,40 @@ every stored field, which is what the CLI expects.</p>
             <td>
               <div class="doc-md-description">
                 <p>Filter to only entities matching the specified taxon label. Defaults to None.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>subset</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/builtins/stdtypes.html#str">str</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Filter to only entities in the specified subsets, <code>venom_*</code> prefixes
+allowed. Defaults to None.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>exclude_subset</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-external" title="typing.List" href="https://docs.python.org/3/library/typing.html#typing.List">List</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/builtins/stdtypes.html#str">str</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Drop entities in the specified subsets, same syntax as
+<code>subset</code>. Defaults to None.</p>
               </div>
             </td>
             <td>
@@ -3668,6 +3770,23 @@ every stored field, which is what the CLI expects.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
+                <code>facet_limit</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/builtins/functions.html#int">int</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Maximum facet values per field; -1 for all. Solr defaults to 100,
+which silently truncates <code>subsets</code>. Defaults to None.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
                 <code>filter_queries</code>
             </td>
             <td>
@@ -3700,6 +3819,23 @@ every stored field, which is what the CLI expects.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
+                <code>exact</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/builtins/functions.html#bool">bool</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Return only entities whose name or exact synonym equals <code>q</code> as a whole
+string, and an empty result set when none does. Defaults to False.</p>
+              </div>
+            </td>
+            <td>
+                  <code>False</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
                 <code>facet_method</code>
             </td>
             <td>
@@ -3725,7 +3861,8 @@ Defaults to None, which leaves Solr's default (<code>fc</code>) in place.</p>
             <td>
               <div class="doc-md-description">
                 <p>Solr field list to return. Defaults to None, meaning every
-stored field, which is what CLI and other non-browse callers expect.</p>
+stored field plus the score, which is what CLI and other non-browse
+callers expect.</p>
               </div>
             </td>
             <td>

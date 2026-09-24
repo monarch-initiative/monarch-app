@@ -217,6 +217,14 @@
          <lastmod>2026-09-24</lastmod>
     </url>
     <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/MatchTypeEnum/</loc>
+         <lastmod>2026-09-24</lastmod>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/MatchedFieldEnum/</loc>
+         <lastmod>2026-09-24</lastmod>
+    </url>
+    <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/MultiEntityAssociationResults/</loc>
          <lastmod>2026-09-24</lastmod>
     </url>
@@ -274,6 +282,10 @@
     </url>
     <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/SearchResults/</loc>
+         <lastmod>2026-09-24</lastmod>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/SearchScopeResolution/</loc>
          <lastmod>2026-09-24</lastmod>
     </url>
     <url>
@@ -501,6 +513,14 @@
          <lastmod>2026-09-24</lastmod>
     </url>
     <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/exclude_namespace/</loc>
+         <lastmod>2026-09-24</lastmod>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/exclude_subset/</loc>
+         <lastmod>2026-09-24</lastmod>
+    </url>
+    <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/external_links/</loc>
          <lastmod>2026-09-24</lastmod>
     </url>
@@ -722,6 +742,14 @@
     </url>
     <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/match_target_label/</loc>
+         <lastmod>2026-09-24</lastmod>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/match_type/</loc>
+         <lastmod>2026-09-24</lastmod>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/matched_field/</loc>
          <lastmod>2026-09-24</lastmod>
     </url>
     <url>
@@ -1005,6 +1033,10 @@
          <lastmod>2026-09-24</lastmod>
     </url>
     <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/scope/</loc>
+         <lastmod>2026-09-24</lastmod>
+    </url>
+    <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/score/</loc>
          <lastmod>2026-09-24</lastmod>
     </url>
@@ -1186,6 +1218,10 @@
     </url>
     <url>
          <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/subject_termset/</loc>
+         <lastmod>2026-09-24</lastmod>
+    </url>
+    <url>
+         <loc>https://monarch-app.monarchinitiative.org/docs/Data-Model/subset/</loc>
          <lastmod>2026-09-24</lastmod>
     </url>
     <url>
