@@ -153,10 +153,20 @@ const moreCount = computed(
   () => children.value.length - shownChildren.value.length,
 );
 
-/** load the definition + hierarchy lazily when the modal is opened */
+/**
+ * Load the definition + hierarchy lazily when the modal is opened.
+ *
+ * Recomputed on every open rather than cached on first use. AppTable keys its
+ * rows by index, so paging, sorting or filtering an association table hands
+ * this component a new `predicate` on an instance that already has state —
+ * caching meant the heading showed the new predicate while the definition,
+ * hierarchy and inverse under it still described the old one. The lookups are
+ * dictionary hits against an already-loaded model, so repeating them costs
+ * nothing worth saving.
+ */
 async function onOpen() {
   show.value = true;
-  if (info.value) return;
+  showAllChildren.value = false;
   await loadBiolinkModel();
   info.value = getPredicateInfo(props.predicate);
   ancestors.value = getPredicateAncestors(props.predicate);

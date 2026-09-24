@@ -46,9 +46,18 @@ const predicate = computed(
     props.association.predicate,
 );
 
-/** single predicate value for the explainer */
+/**
+ * Single predicate value for the explainer.
+ *
+ * Deliberately not `predicate`, which prefers the search highlight: Solr wraps
+ * matches in markup, so a row matching a search returns
+ * `biolink:applied_to_<em>treat</em>`. That is right for the label, which
+ * renders as HTML, but as an identifier it finds nothing in the biolink model
+ * and leaks tags into the button's accessible name and the modal's title.
+ * Highlighting is for display only.
+ */
 const predicateString = computed(() => {
-  const value = predicate.value;
+  const value = props.association.predicate;
   return (Array.isArray(value) ? value[0] : value) ?? "";
 });
 const getFormattedPredicateLabel = (category?: string | string[]) => {
