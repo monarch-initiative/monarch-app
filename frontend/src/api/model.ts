@@ -227,20 +227,13 @@ export interface Association {
     aggregator_knowledge_source?: string[],
     /** Describes the level of knowledge expressed in a statement, based on the reasoning or analysis methods used to generate the statement, or the scope or specificity of what the statement expresses to be true. */
     knowledge_level: string,
-    /** used to hold the original relation/predicate that an external knowledge source uses before transformation to match the biolink-model specification. */
-    original_predicate?: string,
     primary_knowledge_source?: string,
     /** Source file stem injected by koza at load time. */
     file_source?: string,
     provided_by?: string,
-    has_evidence?: string[],
     publications?: string[],
     qualifiers?: string[],
-    negated?: boolean,
-    /** The level of FDA adverse event reporting for a drug-condition association. */
-    FDA_adverse_event_level?: string,
-    /** A context qualifier representing a disease or condition in which a relationship expressed in an association took place. */
-    disease_context_qualifier?: string,
+    has_evidence?: string[],
     frequency_qualifier?: string,
     /** count of out of has_total representing a frequency */
     has_count?: number,
@@ -250,11 +243,18 @@ export interface Association {
     has_quotient?: number,
     /** total, devided by has_count, representing a frequency */
     has_total?: number,
+    negated?: boolean,
     onset_qualifier?: string,
     sex_qualifier?: string,
+    /** used to hold the original relation/predicate that an external knowledge source uses before transformation to match the biolink-model specification. */
+    original_predicate?: string,
+    /** A context qualifier representing a disease or condition in which a relationship expressed in an association took place. */
+    disease_context_qualifier?: string,
     has_attribute?: string[],
     /** Composes with the core concept (+ qualifier) to describe new concepts of a more specific kind. The aspect qualifier represents an attribute of the object that is the focus of the relationship (e.g. for an association where the object is a gene, this might be the expression, abundance, activity, or stability of the gene). */
     object_aspect_qualifier?: string,
+    /** The level of FDA adverse event reporting for a drug-condition association. */
+    FDA_adverse_event_level?: string,
     /** A context qualifier representing a species in which a relationship expressed in an association took place. */
     species_context_qualifier?: string,
     stage_qualifier?: string,
