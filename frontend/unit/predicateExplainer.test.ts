@@ -1,6 +1,14 @@
-import { beforeEach, describe, expect, test } from "vitest";
-import { mount } from "@vue/test-utils";
+import { beforeEach, describe, expect, test, vi } from "vitest";
+import { flushPromises, mount } from "@vue/test-utils";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
+import AppPredicateInfo from "@/components/AppPredicateInfo.vue";
+
+/** AppButton renders a real button so `$el` is the element the popover anchors to */
+const buttonStub = {
+  name: "AppButton",
+  props: ["ariaLabel"],
+  template: `<button v-bind="$attrs"><slot /></button>`,
+};
 
 /**
  * Two ways the explainer described the wrong relationship.
@@ -71,5 +79,63 @@ describe("predicate explainer identity", () => {
     expect(wrapper.find("button[aria-label]").attributes("aria-label")).toBe(
       "Explain biolink:causes",
     );
+  });
+});
+
+describe("predicate explainer is a popover, not a nested modal", () => {
+  beforeEach(() => localStorage.clear());
+
+  test("Escape closes the explainer without reaching an enclosing modal", async () => {
+    // AppModal listens for Escape on window and is always attached, so an explainer
+    // opened inside the association-details modal must stop the event or both close.
+    const onWindowEscape = vi.fn();
+    window.addEventListener("keydown", onWindowEscape);
+
+    const wrapper = mount(AppPredicateInfo, {
+      props: { predicate: "biolink:treats" },
+      attachTo: document.body,
+      global: { stubs: { AppButton: buttonStub, AppStatus: true, AppLink: true } },
+    });
+
+    await wrapper.find("button").trigger("click");
+    await flushPromises();
+    const popover = document.querySelector<HTMLElement>('[role="dialog"]');
+    expect(popover).not.toBeNull();
+
+    popover!.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "Escape", bubbles: true }),
+    );
+    await flushPromises();
+
+    expect(document.querySelector('[role="dialog"]')).toBeNull();
+    expect(onWindowEscape).not.toHaveBeenCalled();
+
+    window.removeEventListener("keydown", onWindowEscape);
+    wrapper.unmount();
+  });
+
+  test("opening marks the trigger expanded and closing restores focus to it", async () => {
+    const wrapper = mount(AppPredicateInfo, {
+      props: { predicate: "biolink:treats" },
+      attachTo: document.body,
+      global: { stubs: { AppButton: buttonStub, AppStatus: true, AppLink: true } },
+    });
+
+    const trigger = wrapper.find("button");
+    expect(trigger.attributes("aria-expanded")).toBe("false");
+
+    await trigger.trigger("click");
+    await flushPromises();
+    expect(trigger.attributes("aria-expanded")).toBe("true");
+
+    const popover = document.querySelector<HTMLElement>('[role="dialog"]');
+    popover!.dispatchEvent(
+      new KeyboardEvent("keydown", { key: "Escape", bubbles: true }),
+    );
+    await flushPromises();
+
+    expect(trigger.attributes("aria-expanded")).toBe("false");
+    expect(document.activeElement).toBe(trigger.element);
+    wrapper.unmount();
   });
 });

@@ -3,21 +3,41 @@
   parents/current/children slice of the biolink predicate hierarchy, drawn as an
   indented tree matching the node-page hierarchy, loaded on demand from the
   biolink model
+
+  A popover rather than a modal. These badges appear inside the association-details
+  modal, and AppModal assumes it is the only one open: its Escape handler is always
+  attached, and its close path clears inert/aria-hidden from #app outright, so a nested
+  modal would close both at once and hand the background back to keyboard and screen
+  readers while the outer modal was still up. A definition also does not warrant taking
+  over the page.
 -->
 
 <template>
   <span class="predicate-info">
     <AppButton
+      ref="trigger"
       v-tooltip="'What does this relationship mean?'"
       class="info-button"
       design="small"
       icon="circle-info"
       :aria-label="`Explain ${formatted}`"
-      @click.stop.prevent="onOpen"
+      :aria-expanded="show"
+      :aria-controls="`predicate-info-${id}`"
+      aria-haspopup="dialog"
+      @click.stop.prevent="onToggle"
     />
 
-    <AppModal v-model="show" :label="`Predicate definition: ${formatted}`">
-      <div class="explainer">
+    <Teleport to="body">
+      <div
+        v-if="show"
+        :id="`predicate-info-${id}`"
+        ref="popover"
+        class="explainer"
+        role="dialog"
+        :aria-label="`Predicate definition: ${formatted}`"
+        tabindex="-1"
+        :style="style"
+      >
         <h2 class="name">Predicate definition: {{ formatted }}</h2>
 
         <AppStatus v-if="isLoading" code="loading">
@@ -93,19 +113,20 @@
           No definition found for this relationship in the biolink model.
         </AppStatus>
       </div>
-    </AppModal>
+    </Teleport>
   </span>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, nextTick, ref, useId } from "vue";
+import { onClickOutside, useEventListener } from "@vueuse/core";
 import AppButton from "@/components/AppButton.vue";
-import AppModal from "@/components/AppModal.vue";
 import AppStatus from "@/components/AppStatus.vue";
 import {
   useBiolinkModel,
   type PredicateInfo,
 } from "@/composables/use-biolink-model";
+import { useFloating } from "@/composables/use-floating";
 
 type Props = {
   /** predicate curie/name, e.g. "biolink:treats" */
@@ -123,7 +144,14 @@ const {
   getPredicateChildren,
 } = useBiolinkModel();
 
+const id = useId();
 const show = ref(false);
+// AppButton renders a single root element, so `$el` is the button itself. Both
+// positioning and focus restoration need the DOM node, not the component instance.
+const trigger = ref<{ $el: HTMLElement } | null>(null);
+const anchor = computed(() => trigger.value?.$el);
+const popover = ref<HTMLElement>();
+const { calculate, style } = useFloating(anchor, popover);
 const info = ref<PredicateInfo | null>(null);
 const ancestors = ref<PredicateInfo[]>([]);
 const children = ref<PredicateInfo[]>([]);
@@ -167,11 +195,46 @@ const moreCount = computed(
 async function onOpen() {
   show.value = true;
   showAllChildren.value = false;
+
+  // Position before the content lands so it does not open off-screen, then again
+  // afterwards because the height changes once the definition renders.
+  await nextTick();
+  calculate();
+  popover.value?.focus();
+
   await loadBiolinkModel();
   info.value = getPredicateInfo(props.predicate);
   ancestors.value = getPredicateAncestors(props.predicate);
   children.value = getPredicateChildren(props.predicate);
+
+  await nextTick();
+  calculate();
 }
+
+/** close and hand focus back to the trigger, which is where it came from */
+function onClose() {
+  if (!show.value) return;
+  show.value = false;
+  anchor.value?.focus();
+}
+
+function onToggle() {
+  if (show.value) onClose();
+  else onOpen();
+}
+
+// Dismiss on an outside click rather than on blur: the popover holds links and a
+// "more" button, so focus legitimately moves into it.
+onClickOutside(popover, onClose, { ignore: [anchor] });
+
+// Escape is handled on the popover and stopped there. These badges sit inside the
+// association-details AppModal, whose Escape listener is on `window` and always
+// attached; letting the event bubble would close the modal out from under the popover.
+useEventListener(popover, "keydown", (event: KeyboardEvent) => {
+  if (event.key !== "Escape") return;
+  event.stopPropagation();
+  onClose();
+});
 </script>
 
 <style lang="scss" scoped>
@@ -184,7 +247,14 @@ async function onOpen() {
 }
 
 .explainer {
+  z-index: 10;
   max-width: 500px;
+  max-height: 70vh;
+  padding: 20px;
+  overflow-y: auto;
+  border-radius: $rounded;
+  background: $white;
+  box-shadow: $shadow;
 }
 
 .name {
