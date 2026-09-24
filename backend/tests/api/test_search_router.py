@@ -1,4 +1,6 @@
 import urllib
+
+import pytest
 from unittest.mock import MagicMock, patch
 
 from fastapi.testclient import TestClient
@@ -54,3 +56,52 @@ def test_autocomplete_params(mock_autocomplete, autocomplete):
     mock_autocomplete.return_value = autocomplete
     client.get(f"/autocomplete?q=heart")
     mock_autocomplete.assert_called_with(q="heart")
+
+
+@pytest.mark.parametrize(
+    "include_phenotypes,include_descendants",
+    [(False, False), (True, False), (False, True), (True, True)],
+    ids=["neither", "phenotypes", "descendants", "both"],
+)
+@patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.search")
+def test_search_passes_each_include_flag_through(mock_search, search, include_phenotypes, include_descendants):
+    """Both flags reach `fields` on the right axis.
+
+    Asserting only the default would let a refactor that swapped these two arguments
+    pass, since either ordering produces the same field list when both are off.
+    """
+    mock_search.return_value = SearchResults(**search)
+    client.get(
+        f"/search?q=heart&include_phenotypes={str(include_phenotypes).lower()}"
+        f"&include_descendants={str(include_descendants).lower()}"
+    )
+    assert mock_search.call_args.kwargs["fields"] == entity_fields(include_phenotypes, include_descendants)
+
+
+@pytest.mark.parametrize(
+    "include_phenotypes,include_descendants",
+    [(False, False), (True, False), (False, True), (True, True)],
+    ids=["neither", "phenotypes", "descendants", "both"],
+)
+@patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.ground_entity")
+def test_ground_passes_each_include_flag_through(mock_ground, include_phenotypes, include_descendants):
+    """Grounding shares the field definition, so it has to share the wiring too."""
+    from monarch_py.api.text_annotation import router as annotation_router
+
+    mock_ground.return_value = []
+    ground_client = TestClient(annotation_router)
+    ground_client.get(
+        f"/ground?text=heart&include_phenotypes={str(include_phenotypes).lower()}"
+        f"&include_descendants={str(include_descendants).lower()}"
+    )
+    assert mock_ground.call_args.kwargs["fields"] == entity_fields(include_phenotypes, include_descendants)
+
+
+@patch("monarch_py.implementations.solr.solr_implementation.SolrImplementation.ground_entity")
+def test_ground_post_passes_include_flags_through(mock_ground):
+    from monarch_py.api.text_annotation import router as annotation_router
+
+    mock_ground.return_value = []
+    ground_client = TestClient(annotation_router)
+    ground_client.post("/ground", json={"content": "heart", "include_phenotypes": True})
+    assert mock_ground.call_args.kwargs["fields"] == entity_fields(include_phenotypes=True, include_descendants=False)
