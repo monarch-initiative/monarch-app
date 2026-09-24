@@ -1,10 +1,19 @@
+import json
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
 
 from monarch_py.datamodels.solr import HistoPhenoKeys, SolrQuery
+from monarch_py.datamodels.grid_groupings import bin_facet_key
 from monarch_py.datamodels.category_enums import AssociationPredicate
 from monarch_py.utils.association_type_utils import AssociationTypeMappings, get_solr_query_fragment
 from monarch_py.utils.utils import escape
+
+# Upper bound on row associations fetched for a grid. Cells are built one association
+# at a time, so a truncated fetch renders a grid that looks complete but is missing
+# observations; `_warn_if_row_query_truncated` reports it when that happens. The
+# largest grid currently needs well under this, so it is a backstop, not a working
+# limit.
+MAX_ROW_ASSOCIATIONS = 50000
 
 
 @dataclass
@@ -456,7 +465,7 @@ def association_search_query_fields():
 def build_case_phenotype_query(
     disease_id: str,
     direct_only: bool,
-    rows: int = 50000,
+    rows: int = MAX_ROW_ASSOCIATIONS,
 ) -> Dict[str, Any]:
     """Build Solr query for case-phenotype matrix.
 
@@ -464,11 +473,11 @@ def build_case_phenotype_query(
     for cases that have a specific disease association.
 
     The query structure:
-    1. Main query: JOIN from CaseToDiseaseAssociation to CaseToPhenotypicFeatureAssociation
+    1. Filter query: JOIN from CaseToDiseaseAssociation to CaseToPhenotypicFeatureAssociation
        - Joins on `subject` field (the case ID)
        - Inner query filters diseases by object (direct) or object_closure (indirect)
     2. Filter query: Restrict results to phenotype associations only
-    3. Facet queries: Count phenotypes per HistoPheno bin
+    3. JSON facet: per HistoPheno bin, its count and the phenotypes it contains
 
     Args:
         disease_id: MONDO disease ID to query
@@ -499,11 +508,14 @@ def build_case_phenotype_query(
         f'AND {disease_field}:"{escape(disease_id)}")'
     )
 
-    facet_queries = [f'object_closure:"{bin_key.value}"' for bin_key in HistoPhenoKeys]
+    bin_ids = [bin_key.value for bin_key in HistoPhenoKeys]
 
+    # `fq`, not `q`: only filter queries are filterCache-eligible, and these result sets
+    # are larger than solrconfig's queryResultMaxDocsCached, so a join in `q` is
+    # re-executed on every request instead of being cached and reused.
     return {
-        "q": join_query,
-        "fq": 'category:"biolink:CaseToPhenotypicFeatureAssociation"',
+        "q": "*:*",
+        "fq": [join_query, 'category:"biolink:CaseToPhenotypicFeatureAssociation"'],
         "rows": rows,
         "fl": ",".join(
             [
@@ -511,15 +523,13 @@ def build_case_phenotype_query(
                 "subject_label",  # Case label
                 "object",  # Phenotype ID
                 "object_label",  # Phenotype label
-                "object_closure",  # For bin assignment
                 "negated",  # Explicit absence
                 "publications",  # Supporting evidence
                 "onset_qualifier",  # Age of onset (ISO8601)
                 "onset_qualifier_label",
             ]
         ),
-        "facet": "true",
-        "facet.query": facet_queries,
+        "json.facet": json.dumps(build_bin_facet("object", bin_ids)),
     }
 
 
@@ -550,6 +560,47 @@ def build_case_disease_query(
         "fq": 'category:"biolink:CaseToDiseaseAssociation"',
         "rows": rows,
         "fl": "subject,subject_label,object,object_label",
+    }
+
+
+# Row-entity IDs returned per bin by the grid bin facet. A bin's membership is the
+# union of row entities across every column, which the grid's column cap does not
+# bound, so this is a real ceiling rather than a formality: the largest bin across all
+# association categories a grid can use currently holds ~8.6k distinct entities. The
+# facet asks for `numBuckets` so `parse_bin_facets` can tell when the cap was hit
+# instead of silently reassigning or dropping the entities beyond it.
+BIN_FACET_ENTITY_LIMIT = 10000
+
+
+def build_bin_facet(row_entity_field: str, bin_ids: List[str]) -> Dict[str, Any]:
+    """JSON facet giving, per bin, its association count and the row entities in it.
+
+    This replaces fetching `{row_entity_field}_closure` on every row association. The
+    closure is a property of the row entity, not of the association, so requesting it
+    per association re-sent the same ancestor list once per edge, which dominated the
+    response body.
+
+    `dvhash` keeps the sub-facet off the global ordinal map, which costs more to build
+    than the facet saves at these domain sizes. Solr treats it as a hint and falls back
+    if the field is unsuitable, so it cannot make the counts wrong.
+    """
+    return {
+        bin_facet_key(index): {
+            "type": "query",
+            "q": f'{row_entity_field}_closure:"{bin_id}"',
+            "facet": {
+                "entities": {
+                    "type": "terms",
+                    "field": row_entity_field,
+                    "limit": BIN_FACET_ENTITY_LIMIT,
+                    "method": "dvhash",
+                    # So a caller can distinguish "this bin holds N entities" from
+                    # "this bin holds at least N and the rest were cut".
+                    "numBuckets": True,
+                }
+            },
+        }
+        for index, bin_id in enumerate(bin_ids)
     }
 
 
@@ -595,8 +646,12 @@ def build_grid_column_query(
             f"{{!join from={config.row_context_field} to={config.column_field}}}"
             f'category:"{config.row_assoc_category.value}"'
         )
-        q = existence_join
-        # Add context filter to fq instead of q
+        # `fq`, not `q`: only filter queries are filterCache-eligible, and these result
+        # sets are larger than solrconfig's queryResultMaxDocsCached, so a join in `q`
+        # is re-executed on every request. This one carries no context term, so a
+        # single cached entry serves every entity.
+        q = "*:*"
+        fq.append(existence_join)
         fq.append(f'{context_field}:"{context_id}"')
     else:
         q = f'{context_field}:"{context_id}"'
@@ -665,8 +720,12 @@ def build_multi_category_column_query(
         # appears in row associations. This filters out columns with no rows.
         row_category_filter = " OR ".join(f'category:"{cat}"' for cat in row_assoc_categories)
         existence_join = f"{{!join from={row_context_field} to={column_field}}}({row_category_filter})"
-        q = existence_join
-        # Add context filter to fq instead of q
+        # `fq`, not `q`: only filter queries are filterCache-eligible, and these result
+        # sets are larger than solrconfig's queryResultMaxDocsCached, so a join in `q`
+        # is re-executed on every request. This one carries no context term, so a
+        # single cached entry serves every entity.
+        q = "*:*"
+        fq.append(existence_join)
         fq.append(f'{ctx_field}:"{context_id}"')
     else:
         q = f'{ctx_field}:"{context_id}"'
@@ -707,7 +766,7 @@ def build_multi_category_row_query(
     row_entity_field: str,
     grouping: "RowGroupingConfig",
     direct_only: bool,
-    rows: int = 50000,
+    rows: int = MAX_ROW_ASSOCIATIONS,
 ) -> Dict[str, Any]:
     """Build Solr query for grid row entities using JOIN with multiple column categories.
 
@@ -740,15 +799,15 @@ def build_multi_category_row_query(
         f'{{!join from={column_field} to={row_context_field}}}(({category_filter}) AND {ctx_field}:"{context_id}")'
     )
 
-    # Build facet queries for bin counts
-    facet_queries = [f'{row_entity_field}_closure:"{bin_id}"' for bin_id in grouping.bin_ids]
-
     # Build OR query for multiple row categories
     row_category_filter = " OR ".join(f'category:"{cat}"' for cat in row_assoc_categories)
 
+    # `fq`, not `q`: only filter queries are filterCache-eligible, and these result sets
+    # are larger than solrconfig's queryResultMaxDocsCached, so a join in `q` is
+    # re-executed on every request instead of being cached and reused.
     return {
-        "q": join_query,
-        "fq": f"({row_category_filter})",
+        "q": "*:*",
+        "fq": [join_query, f"({row_category_filter})"],
         "rows": rows,
         "fl": ",".join(
             [
@@ -756,15 +815,13 @@ def build_multi_category_row_query(
                 f"{row_context_field}_label",  # Column entity label
                 row_entity_field,  # Row entity ID
                 f"{row_entity_field}_label",  # Row entity label
-                f"{row_entity_field}_closure",  # For bin assignment
                 "negated",
                 "publications",
                 "onset_qualifier",
                 "onset_qualifier_label",
             ]
         ),
-        "facet": "true",
-        "facet.query": facet_queries,
+        "json.facet": json.dumps(build_bin_facet(row_entity_field, grouping.bin_ids)),
     }
 
 
@@ -773,7 +830,7 @@ def build_grid_row_query(
     config: "GridTypeConfig",
     grouping: "RowGroupingConfig",
     direct_only: bool,
-    rows: int = 50000,
+    rows: int = MAX_ROW_ASSOCIATIONS,
 ) -> Dict[str, Any]:
     """Build Solr query for grid row entities using JOIN.
 
@@ -809,12 +866,12 @@ def build_grid_row_query(
         f'AND {context_field}:"{context_id}")'
     )
 
-    # Build facet queries for bin counts
-    facet_queries = [f'{config.row_entity_field}_closure:"{bin_id}"' for bin_id in grouping.bin_ids]
-
+    # `fq`, not `q`: only filter queries are filterCache-eligible, and these result sets
+    # are larger than solrconfig's queryResultMaxDocsCached, so a join in `q` is
+    # re-executed on every request instead of being cached and reused.
     return {
-        "q": join_query,
-        "fq": f'category:"{config.row_assoc_category.value}"',
+        "q": "*:*",
+        "fq": [join_query, f'category:"{config.row_assoc_category.value}"'],
         "rows": rows,
         "fl": ",".join(
             [
@@ -822,13 +879,11 @@ def build_grid_row_query(
                 f"{config.row_context_field}_label",  # Column entity label
                 config.row_entity_field,  # Row entity ID
                 f"{config.row_entity_field}_label",  # Row entity label
-                f"{config.row_entity_field}_closure",  # For bin assignment
                 "negated",
                 "publications",
                 "onset_qualifier",
                 "onset_qualifier_label",
             ]
         ),
-        "facet": "true",
-        "facet.query": facet_queries,
+        "json.facet": json.dumps(build_bin_facet(config.row_entity_field, grouping.bin_ids)),
     }

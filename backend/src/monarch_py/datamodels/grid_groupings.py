@@ -11,6 +11,16 @@ from typing import Dict, List
 from monarch_py.datamodels.solr import HistoPhenoKeys, HISTOPHENO_BIN_LABELS
 
 
+def bin_facet_key(index: int) -> str:
+    """Facet key for the bin at `index` in a grouping's ordered `bin_ids`.
+
+    Keyed by position rather than by bin ID because bin IDs are CURIEs and the JSON
+    Facet API treats some punctuation in keys specially. Query building and response
+    parsing both go through here so the two cannot drift apart.
+    """
+    return f"bin_{index}"
+
+
 class GroupingType(Enum):
     """Type of grouping mechanism for row entities."""
 

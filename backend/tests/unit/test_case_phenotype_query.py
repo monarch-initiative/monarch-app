@@ -1,6 +1,9 @@
 """Tests for case-phenotype Solr query construction."""
 
+import json
+
 import pytest
+from monarch_py.datamodels.grid_groupings import bin_facet_key
 from monarch_py.datamodels.solr import HistoPhenoKeys
 from monarch_py.implementations.solr.solr_query_utils import (
     build_case_phenotype_query,
@@ -25,10 +28,11 @@ class TestBuildCasePhenotypeQuery:
             disease_id="MONDO:0007078",
             direct_only=direct_only,
         )
-        assert expected_field in params["q"]
-        assert "{!join from=subject to=subject}" in params["q"]
+        fq = " ".join(params["fq"])
+        assert expected_field in fq
+        assert "{!join from=subject to=subject}" in fq
         if unexpected_field:
-            assert unexpected_field not in params["q"]
+            assert unexpected_field not in fq
 
     @pytest.mark.parametrize(
         "disease_id",
@@ -41,7 +45,7 @@ class TestBuildCasePhenotypeQuery:
     def test_disease_id_in_query(self, disease_id):
         """Query should include the escaped disease ID."""
         params = build_case_phenotype_query(disease_id=disease_id, direct_only=True)
-        assert escape(disease_id) in params["q"]
+        assert escape(disease_id) in " ".join(params["fq"])
 
     def test_filter_query_present(self):
         """Should filter to CaseToPhenotypicFeatureAssociation."""
@@ -51,16 +55,16 @@ class TestBuildCasePhenotypeQuery:
         )
         assert 'category:"biolink:CaseToPhenotypicFeatureAssociation"' in params["fq"]
 
-    def test_facet_queries_for_all_bins(self):
-        """Should include facet.query for all HistoPheno bins."""
+    def test_bin_facet_for_all_bins(self):
+        """Should include a bin facet for every HistoPheno bin."""
         params = build_case_phenotype_query(
             disease_id="MONDO:0007078",
             direct_only=True,
         )
-        assert params["facet"] == "true"
-        assert "facet.query" in params
-        # Should have one facet query per HistoPhenoKeys enum value
-        assert len(params["facet.query"]) == len(HistoPhenoKeys)
+        facet = json.loads(params["json.facet"])
+        assert len(facet) == len(HistoPhenoKeys)
+        for index, key in enumerate(HistoPhenoKeys):
+            assert facet[bin_facet_key(index)]["q"] == f'object_closure:"{key.value}"'
 
     def test_high_row_limit(self):
         """Should request many rows since cases are pre-bounded."""
@@ -91,20 +95,29 @@ class TestBuildCasePhenotypeQuery:
             "subject_label",
             "object",
             "object_label",
-            "object_closure",
             "negated",
         ]
         for field in required_fields:
             assert field in fl, f"Missing required field: {field}"
 
-    def test_facet_queries_use_object_closure(self):
-        """Facet queries should use object_closure for bin assignment."""
+    def test_closure_not_requested_per_association(self):
+        """The closure describes the phenotype, not the edge. Requesting it per
+        association re-sent the same ancestor lists once per edge and was ~94% of the
+        response body; bins come from a JSON facet instead."""
+        params = build_case_phenotype_query(disease_id="MONDO:0007078", direct_only=True)
+        assert "object_closure" not in params["fl"]
+
+    def test_bin_facet_returns_the_phenotypes_in_each_bin(self):
+        """Each bin facet carries the phenotypes it contains, which is what replaced
+        scanning `object_closure` on every association."""
         params = build_case_phenotype_query(
             disease_id="MONDO:0007078",
             direct_only=True,
         )
-        for facet_query in params["facet.query"]:
-            assert "object_closure:" in facet_query
+        facet = json.loads(params["json.facet"])
+        for bin_facet in facet.values():
+            assert "object_closure:" in bin_facet["q"]
+            assert bin_facet["facet"]["entities"]["field"] == "object"
 
     def test_join_query_structure(self):
         """Query should have proper JOIN structure."""
@@ -112,11 +125,15 @@ class TestBuildCasePhenotypeQuery:
             disease_id="MONDO:0007078",
             direct_only=True,
         )
-        q = params["q"]
+        # The join is an `fq`, not the `q`. Only in `fq` is it filterCache-eligible;
+        # in `q` it was re-executed on every request, since these result sets exceed
+        # solrconfig's queryResultMaxDocsCached.
+        assert params["q"] == "*:*"
+        fq = " ".join(params["fq"])
         # Should have join from subject to subject
-        assert "{!join from=subject to=subject}" in q
+        assert "{!join from=subject to=subject}" in fq
         # Should filter to CaseToDiseaseAssociation in the inner query
-        assert 'category:"biolink:CaseToDiseaseAssociation"' in q
+        assert 'category:"biolink:CaseToDiseaseAssociation"' in fq
 
 
 class TestBuildCaseDiseaseQuery:

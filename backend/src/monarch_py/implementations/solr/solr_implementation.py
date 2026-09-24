@@ -58,6 +58,7 @@ from monarch_py.implementations.solr.solr_query_utils import (
     build_multi_entity_association_query,
     build_search_query,
     build_grounding_query,
+    MAX_ROW_ASSOCIATIONS,
 )
 from monarch_py.interfaces.association_interface import AssociationInterface
 from monarch_py.interfaces.entity_interface import EntityInterface
@@ -72,6 +73,24 @@ from monarch_py.utils.entity_utils import get_expanded_curie, get_uri
 from monarch_py.utils.utils import get_provided_by_link, get_links_for_field
 
 logger = logging.getLogger(__name__)
+
+
+def _warn_if_row_query_truncated(context_id: str, row_result: dict, row_docs: list) -> None:
+    """Log when Solr had more row associations than we asked for.
+
+    Cells come from these documents one association at a time, so a truncated fetch
+    renders a grid that looks complete but is missing observations.
+    """
+    found = row_result.get("response", {}).get("numFound", 0)
+    if found > len(row_docs):
+        logger.warning(
+            "Grid for %s truncated: %d row associations matched but only %d fetched "
+            "(MAX_ROW_ASSOCIATIONS=%d). The grid is missing cells.",
+            context_id,
+            found,
+            len(row_docs),
+            MAX_ROW_ASSOCIATIONS,
+        )
 
 
 @dataclass
@@ -961,10 +980,12 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         phenotype_query_params = build_case_phenotype_query(
             disease_id=disease_id,
             direct_only=direct_only,
+            rows=MAX_ROW_ASSOCIATIONS,
         )
         phenotype_result = self._raw_solr_query(phenotype_query_params)
         phenotype_docs = phenotype_result.get("response", {}).get("docs", [])
-        facet_counts = phenotype_result.get("facet_counts", {}).get("facet_queries", {})
+        _warn_if_row_query_truncated(disease_id, phenotype_result, phenotype_docs)
+        facets = phenotype_result.get("facets", {})
 
         # Step 4: Build matrix
         return build_matrix(
@@ -972,7 +993,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             disease_name=self._get_entity_name(disease_id),
             case_docs=case_docs,
             phenotype_docs=phenotype_docs,
-            facet_counts=facet_counts,
+            facets=facets,
         )
 
     def get_entity_grid(
@@ -1049,10 +1070,12 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             config=config,
             grouping=grouping,
             direct_only=direct_only,
+            rows=MAX_ROW_ASSOCIATIONS,
         )
         row_result = self._raw_solr_query(row_params)
         row_docs = row_result.get("response", {}).get("docs", [])
-        facet_counts = row_result.get("facet_counts", {}).get("facet_queries", {})
+        _warn_if_row_query_truncated(context_id, row_result, row_docs)
+        facets = row_result.get("facets", {})
 
         # Step 5: Build grid
         return build_entity_grid(
@@ -1063,7 +1086,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             grouping=grouping,
             column_docs=col_docs,
             row_docs=row_docs,
-            facet_counts=facet_counts,
+            facets=facets,
         )
 
     def get_generic_entity_grid(
@@ -1221,10 +1244,12 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             row_entity_field=row_entity_field,
             grouping=grouping,
             direct_only=direct_only,
+            rows=MAX_ROW_ASSOCIATIONS,
         )
         row_result = self._raw_solr_query(row_params)
         row_docs = row_result.get("response", {}).get("docs", [])
-        facet_counts = row_result.get("facet_counts", {}).get("facet_queries", {})
+        _warn_if_row_query_truncated(context_id, row_result, row_docs)
+        facets = row_result.get("facets", {})
 
         # Create a dynamic config for build_entity_grid
         # Determine column entity category from association type
@@ -1268,7 +1293,7 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             grouping=grouping,
             column_docs=col_docs,
             row_docs=row_docs,
-            facet_counts=facet_counts,
+            facets=facets,
         )
 
         # Step 6: Optionally sort columns by category

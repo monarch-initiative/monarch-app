@@ -1,3 +1,4 @@
+import json
 import urllib.parse
 
 import pytest
@@ -26,7 +27,7 @@ from monarch_py.implementations.solr.solr_query_utils import (
     build_multi_category_row_query,
 )
 from monarch_py.datamodels.grid_configs import get_grid_config
-from monarch_py.datamodels.grid_groupings import RowGroupingConfig, GroupingType
+from monarch_py.datamodels.grid_groupings import RowGroupingConfig, GroupingType, bin_facet_key
 from monarch_py.utils.utils import compare_dicts, dict_diff
 
 
@@ -278,7 +279,7 @@ def test_column_query_direct_vs_indirect(direct_only, expected_field):
         config=config,
         direct_only=direct_only,
     )
-    fq_str = str(params.get("fq", ""))
+    fq_str = " ".join(params.get("fq", []))
     assert expected_field in fq_str
 
 
@@ -295,7 +296,10 @@ def test_column_query_join_filtering(filter_empty, expect_join):
         direct_only=True,
         filter_empty_columns=filter_empty,
     )
-    assert ("{!join" in params["q"]) == expect_join
+    # The join is an `fq`, not the `q`: only there is it filterCache-eligible, and
+    # without caching it is re-executed on every grid request.
+    assert ("{!join" in " ".join(params["fq"])) == expect_join
+    assert "{!join" not in params["q"]
 
 
 # =====================================================================
@@ -316,10 +320,15 @@ def test_row_query_structure():
         grouping=grouping,
         direct_only=True,
     )
-    assert "{!join" in params["q"]
+    assert params["q"] == "*:*"
+    assert any("{!join" in clause for clause in params["fq"])
     assert 'category:"biolink:CaseToPhenotypicFeatureAssociation"' in params["fq"]
-    assert params["facet"] == "true"
-    assert 'object_closure:"BIN:001"' in params["facet.query"]
+    # Bins come from a JSON facet rather than `object_closure` on every association;
+    # the closure describes the phenotype, so per-association it was re-sent per edge.
+    assert "object_closure" not in params["fl"]
+    facet = json.loads(params["json.facet"])
+    assert facet[bin_facet_key(0)]["q"] == 'object_closure:"BIN:001"'
+    assert facet[bin_facet_key(0)]["facet"]["entities"]["field"] == "object"
 
 
 def test_row_query_indirect():
@@ -335,7 +344,7 @@ def test_row_query_indirect():
         grouping=grouping,
         direct_only=False,
     )
-    assert "object_closure" in params["q"]
+    assert "object_closure" in " ".join(params["fq"])
 
 
 # =====================================================================
@@ -355,7 +364,7 @@ def test_multi_category_column_query_multiple_categories():
         column_field="object",
         direct_only=True,
     )
-    fq_str = str(params.get("fq", ""))
+    fq_str = " ".join(params.get("fq", []))
     assert "CausalGeneToDiseaseAssociation" in fq_str
     assert "CorrelatedGeneToDiseaseAssociation" in fq_str
     assert " OR " in fq_str
@@ -381,7 +390,10 @@ def test_multi_category_column_query_join_filtering(filter_empty, expect_join):
         filter_empty_columns=filter_empty,
         **extra_kwargs,
     )
-    assert ("{!join" in params["q"]) == expect_join
+    # The join is an `fq`, not the `q`: only there is it filterCache-eligible, and
+    # without caching it is re-executed on every grid request.
+    assert ("{!join" in " ".join(params["fq"])) == expect_join
+    assert "{!join" not in params["q"]
 
 
 def test_multi_category_column_query_includes_source_fields():
@@ -425,7 +437,7 @@ def test_build_multi_category_row_query_multiple_row_categories():
     )
 
     # Should build OR filter for multiple categories
-    fq = query_params.get("fq", "")
+    fq = " ".join(query_params.get("fq", []))
     assert "biolink:DiseaseToPhenotypicFeatureAssociation" in fq
     assert "biolink:CaseToPhenotypicFeatureAssociation" in fq
     assert " OR " in fq
@@ -452,10 +464,12 @@ def test_build_multi_category_row_query_single_row_category_in_list():
         direct_only=True,
     )
 
-    fq = query_params.get("fq", "")
-    assert "biolink:DiseaseToPhenotypicFeatureAssociation" in fq
+    fq = query_params["fq"]
+    # The join and the row-category filter are separate `fq` clauses so Solr can cache
+    # and reuse each independently.
+    assert any("{!join" in clause for clause in fq)
     # Single category should still be wrapped in parens (from OR join)
-    assert fq == '(category:"biolink:DiseaseToPhenotypicFeatureAssociation")'
+    assert '(category:"biolink:DiseaseToPhenotypicFeatureAssociation")' in fq
 
 
 def test_build_grounding_query_no_filters():
