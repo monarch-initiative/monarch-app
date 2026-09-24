@@ -559,7 +559,7 @@ def build_case_disease_query(
 # Row-entity IDs returned per bin by the grid bin facet. A bin's membership is the
 # union of row entities across every column, which the grid's column cap does not
 # bound, so this is a real ceiling rather than a formality: the largest bin across all
-# association categories a grid can use currently holds ~8.1k distinct entities. The
+# association categories a grid can use currently holds ~8.6k distinct entities. The
 # facet asks for `numBuckets` so `parse_bin_facets` can tell when the cap was hit
 # instead of silently reassigning or dropping the entities beyond it.
 BIN_FACET_ENTITY_LIMIT = 10000
