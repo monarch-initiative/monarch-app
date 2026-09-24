@@ -253,13 +253,20 @@ def build_search_query(
     filter_queries: List[str] = None,
     highlighting: bool = False,
     sort: Optional[str] = None,
+    facet_method: Optional[str] = None,
+    fields: Optional[str] = None,
 ) -> SolrQuery:
+    empty_search = q == "*:*"
     query = SolrQuery(start=offset, rows=limit, sort=sort)
     query.q = q
     query.def_type = "edismax"
     query.query_fields = entity_query_fields()
-    query.hl = highlighting
-    query.boost = entity_boost(text=q, empty_search=(q == "*:*"))
+    # An empty search matches everything and has no terms, so there is nothing for the
+    # highlighter to mark up. Asking for it anyway makes Solr do the work regardless.
+    query.hl = highlighting and not empty_search
+    query.facet_method = facet_method
+    query.fields = fields
+    query.boost = entity_boost(text=q, empty_search=empty_search)
     if category:
         query.add_filter_query(" OR ".join(f'category:"{cat}"' for cat in category))
     if in_taxon_label:

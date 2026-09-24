@@ -84,6 +84,16 @@ class TextAnnotationRequest(BaseModel):
         default=None,
         title="Restrict grounding results to entities of one of these biolink categories (e.g. biolink:Disease)",
     )
+    include_phenotypes: bool = Field(
+        default=False,
+        title="Include each grounding match's phenotype annotations and their closures "
+        "(large: these are most of the response when present)",
+    )
+    include_descendants: bool = Field(
+        default=False,
+        title="Include each grounding match's ontology descendants "
+        "(large: these are most of the response when present)",
+    )
 
 
 class PathographNode(BaseModel):
