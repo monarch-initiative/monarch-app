@@ -90,6 +90,7 @@ class SolrQuery(BaseModel):
     facet_queries: Optional[List[str]] = Field(default_factory=list)
     filter_queries: Optional[List[str]] = Field(default_factory=list)
     facet_mincount: int = 1
+    facet_limit: Optional[int] = None  # -1 for every value; Solr defaults to 100
     # Solr's facet.method for `facet_fields`, emitted per field as
     # `f.<field>.facet.method` rather than globally: the right method depends on the
     # field's cardinality, so one setting cannot be correct for every facet a caller
@@ -132,6 +133,7 @@ class SolrQuery(BaseModel):
         "facet_queries": "facet.query",
         "filter_queries": "fq",
         "facet_mincount": "facet.mincount",
+        "facet_limit": "facet.limit",
         "fields": "fl",
         "query_fields": "qf",
         "def_type": "defType",

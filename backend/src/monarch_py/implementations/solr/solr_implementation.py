@@ -22,7 +22,9 @@ from monarch_py.datamodels.model import (
     NodeHierarchy,
     NodeRelationship,
     SearchResults,
+    SearchScopeResolution,
 )
+from monarch_py.datamodels.search_scopes import resolve_scope
 from monarch_py.datamodels.solr import core
 from monarch_py.datamodels.category_enums import (
     AssociationCategory,
@@ -45,6 +47,7 @@ from monarch_py.implementations.solr.solr_parsers import (
     parse_search,
 )
 from monarch_py.implementations.solr.solr_query_utils import (
+    exact_match_filter_query,
     build_association_counts_query,
     build_association_query,
     build_association_table_query,
@@ -73,6 +76,11 @@ from monarch_py.utils.entity_utils import get_expanded_curie, get_uri
 from monarch_py.utils.utils import get_provided_by_link, get_links_for_field
 
 logger = logging.getLogger(__name__)
+
+# Upper bound on the candidate set exact-match search scans before the scope check in
+# parse_search. Whole-string collisions are usually a handful, but short gene symbols are
+# shared by well over a thousand entities, so this is sized for that tail rather than the
+# common case. The scan requests only the three fields match_provenance reads.
 
 
 def _warn_if_row_query_truncated(context_id: str, row_result: dict, row_docs: list) -> None:
@@ -670,12 +678,20 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
         self,
         q: str = "*:*",
         category: Union[List[EntityCategory], None] = None,
+        namespace: Union[List[str], None] = None,
+        exclude_namespace: Union[List[str], None] = None,
+        in_taxon: Union[List[str], None] = None,
         in_taxon_label: Union[List[str], None] = None,
+        subset: Union[List[str], None] = None,
+        exclude_subset: Union[List[str], None] = None,
+        scope: Union[str, None] = None,
         facet_fields: Union[List[str], None] = None,
         facet_queries: Union[List[str], None] = None,
+        facet_limit: Union[int, None] = None,
         filter_queries: Union[List[str], None] = None,
         sort: Optional[str] = None,
         highlighting: bool = False,
+        exact: bool = False,
         offset: int = 0,
         limit: int = 20,
         facet_method: Optional[str] = None,
@@ -688,37 +704,125 @@ class SolrImplementation(EntityInterface, AssociationInterface, SearchInterface,
             offset (int): Result offset, for pagination. Defaults to 0.
             limit (int): Limit results to specified number. Defaults to 20.
             category (List[str]): Filter to only entities matching the specified categories. Defaults to None.
+            namespace (List[str]): Filter to only entities whose CURIE uses one of these namespaces
+                (e.g. ["MONDO", "HP"]). Defaults to None.
+            exclude_namespace (List[str]): Drop entities whose CURIE uses one of these namespaces.
+                Defaults to None.
+            scope (str): A named filter bundle (see `search_scopes`). Supplies category, namespace,
+                subset, exclude_subset and in_taxon where they were not passed explicitly; an
+                explicit value wins for that axis. Defaults to None.
+            in_taxon (List[str]): Filter to only entities matching the specified taxon CURIEs. Defaults to None.
             in_taxon_label (List[str]): Filter to only entities matching the specified taxon label. Defaults to None.
+            subset (List[str]): Filter to only entities in the specified subsets, `venom_*` prefixes
+                allowed. Defaults to None.
+            exclude_subset (List[str]): Drop entities in the specified subsets, same syntax as
+                `subset`. Defaults to None.
             facet_fields (List[str]): List of fields to include facet counts for. Defaults to None.
             facet_queries (List[str]): List of queries to include facet counts for. Defaults to None.
+            facet_limit (int): Maximum facet values per field; -1 for all. Solr defaults to 100,
+                which silently truncates `subsets`. Defaults to None.
             filter_queries (List[str]): List of queries to filter results by. Defaults to None.
             sort (str): Sort results by the specified field. Defaults to None.
+            exact (bool): Return only entities whose name or exact synonym equals `q` as a whole
+                string, and an empty result set when none does. Defaults to False.
             facet_method (str): Solr facet.method for `facet_fields`, applied per field.
                 Defaults to None, which leaves Solr's default (`fc`) in place.
             fields (str): Solr field list to return. Defaults to None, meaning every
-                stored field, which is what CLI and other non-browse callers expect.
+                stored field plus the score, which is what CLI and other non-browse
+                callers expect.
 
         Returns:
             SearchResults: Dataclass representing results of a search.
         """
-        query = build_search_query(
-            q=q,
+        # A scope only supplies axes the caller left unset, so `resolved` is what was
+        # actually applied and is safe to echo back verbatim.
+        resolved = resolve_scope(
+            scope,
             category=[c.value for c in category] if category else None,
+            namespace=namespace,
+            exclude_namespace=exclude_namespace,
+            subset=subset,
+            exclude_subset=exclude_subset,
+            in_taxon=in_taxon,
             in_taxon_label=in_taxon_label,
-            facet_fields=facet_fields,
+        )
+        build_kwargs = dict(
+            category=resolved.get("category"),
+            namespace=resolved.get("namespace"),
+            exclude_namespace=resolved.get("exclude_namespace"),
+            in_taxon=resolved.get("in_taxon"),
+            in_taxon_label=resolved.get("in_taxon_label"),
+            subset=resolved.get("subset"),
+            exclude_subset=resolved.get("exclude_subset"),
             facet_queries=facet_queries,
-            filter_queries=filter_queries,
             highlighting=highlighting,
             sort=sort,
-            offset=offset,
-            limit=limit,
             facet_method=facet_method,
             fields=fields,
         )
-        solr = SolrService(base_url=self.base_url, core=core.ENTITY)
-        query_result = solr.query(query)
-        results = parse_search(query_result)
+        if exact:
+            results = self._exact_search(
+                q=q,
+                filter_queries=filter_queries,
+                facet_fields=facet_fields,
+                facet_limit=facet_limit,
+                offset=offset,
+                limit=limit,
+                **build_kwargs,
+            )
+        else:
+            query = build_search_query(
+                q=q,
+                facet_fields=facet_fields,
+                facet_limit=facet_limit,
+                filter_queries=filter_queries,
+                offset=offset,
+                limit=limit,
+                **build_kwargs,
+            )
+            solr = SolrService(base_url=self.base_url, core=core.ENTITY)
+            results = parse_search(solr.query(query), offset=offset, limit=limit, q=q)
+        if scope:
+            results.scope = SearchScopeResolution(name=str(scope), **resolved)
         return results
+
+    def _exact_search(
+        self,
+        q: str,
+        filter_queries: Union[List[str], None] = None,
+        facet_fields: Union[List[str], None] = None,
+        facet_limit: Union[int, None] = None,
+        offset: int = 0,
+        limit: int = 20,
+        **build_kwargs,
+    ) -> SearchResults:
+        """Run `search` under the exact-match contract.
+
+        `name` and `exact_synonym` both have a `*_grounding` copy, so Solr can decide the
+        whole thing: one filter, and it does the counting, ordering, paging and faceting
+        natively. Nothing needs re-checking in Python.
+        """
+        solr = SolrService(base_url=self.base_url, core=core.ENTITY)
+
+        if not q or q.strip() in ("", "*:*"):
+            # A blank search is a browse, not a claim that some entity is named "*:*". There
+            # is nothing here that could be an exact match, so don't ask Solr.
+            return SearchResults(items=[], limit=limit, offset=offset, total=0)
+
+        query = build_search_query(
+            q=q,
+            exact_filter=exact_match_filter_query(q),
+            facet_fields=facet_fields,
+            facet_limit=facet_limit,
+            filter_queries=filter_queries,
+            offset=offset,
+            limit=limit,
+            **build_kwargs,
+        )
+        # Not `exact=True`: every row this returns is exact by construction, so re-deciding
+        # it here could only drop a row Solr counted, leaving `total` disagreeing with
+        # `items`. Provenance is still annotated.
+        return parse_search(solr.query(query), offset=offset, limit=limit, q=q)
 
     def autocomplete(
         self, q: str, category: List[EntityCategory] = None, prioritized_predicates: List[AssociationPredicate] = None

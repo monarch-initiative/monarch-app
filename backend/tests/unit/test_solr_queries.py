@@ -539,10 +539,11 @@ def test_field_list_is_passed_through_as_fl():
 
 
 def test_no_field_list_by_default():
-    """The CLI dumps whole records, so an unrestricted search must stay unrestricted."""
+    """The CLI dumps whole records, so an unrestricted search must stay unrestricted --
+    plus `score`, which Solr omits unless the field list names it."""
     query = build_search_query(q="*:*")
     params = dict(urllib.parse.parse_qsl(query.query_string()))
-    assert "fl" not in params
+    assert params["fl"] == "*,score"
 
 
 def test_misspelled_facet_mincount_is_not_sent():
@@ -617,8 +618,27 @@ def test_score_is_never_requested():
 
 
 def test_grounding_and_search_share_one_field_definition():
-    """`Entity` and `SearchResult` declare the same fields, so the two endpoints must
-    not drift into disagreeing about what counts as bulk."""
+    """`Entity` and `SearchResult` declare the same stored fields, so the two endpoints
+    must not drift into disagreeing about what counts as bulk.
+
+    `SearchResult` additionally carries `score` (a Solr pseudo-field) and the two
+    match-provenance fields, which `parse_search` computes rather than reading from the
+    index -- none of them are things `entity_fields` can or should derive.
+    """
     from monarch_py.datamodels.model import Entity, SearchResult
 
-    assert set(Entity.model_fields) == set(SearchResult.model_fields) - {"score"}
+    computed = {"score", "matched_field", "match_type"}
+    assert set(Entity.model_fields) == set(SearchResult.model_fields) - computed
+
+
+def test_default_fields_cover_match_provenance():
+    """`match_provenance` decides `matched_field`/`match_type`, and exact mode drops
+    anything not "exact", by reading these off the returned doc. If the field list stops
+    requesting them every hit silently becomes a non-exact match and exact search
+    returns nothing."""
+    from monarch_py.api.utils.entity_fields import entity_fields
+    from monarch_py.implementations.solr.solr_parsers import SYNONYM_SCOPES
+
+    fields = set(entity_fields().split(","))
+    assert "name" in fields
+    assert set(SYNONYM_SCOPES).issubset(fields)

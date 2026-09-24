@@ -127,6 +127,7 @@ def association_counts_query():
             'subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121" OR object:"MONDO:0020121" OR object_closure:"MONDO:0020121" OR disease_context_qualifier:"MONDO:0020121" OR disease_context_qualifier_closure:"MONDO:0020121"'
         ],
         "facet_mincount": 1,
+        "facet_limit": None,
         "facet_method": None,
         "fields": None,
         "query_fields": None,

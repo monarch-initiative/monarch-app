@@ -24,7 +24,11 @@ DESCENDANT_FIELDS = [
 ]
 
 
-def entity_fields(include_phenotypes: bool = False, include_descendants: bool = False) -> str:
+def entity_fields(
+    include_phenotypes: bool = False,
+    include_descendants: bool = False,
+    include_score: bool = False,
+) -> str:
     """The Solr field list for an entity result, as a comma-separated string.
 
     Derived from the model rather than hard-coded so a field added to it is returned by
@@ -40,7 +44,10 @@ def entity_fields(include_phenotypes: bool = False, include_descendants: bool = 
         excluded.update(PHENOTYPE_FIELDS)
     if not include_descendants:
         excluded.update(DESCENDANT_FIELDS)
-    # `score` is a Solr pseudo-field rather than a stored one, and an unrestricted `fl`
-    # does not return it today; listing it would start populating it.
-    excluded.add("score")
-    return ",".join(field for field in Entity.model_fields if field not in excluded)
+    fields = [field for field in Entity.model_fields if field not in excluded]
+    # `score` is a Solr pseudo-field rather than a stored one, and not on the model, so
+    # it has to be named explicitly. Search wants it; grounding returns `Entity`, which
+    # has no score to put it in.
+    if include_score:
+        fields.append("score")
+    return ",".join(fields)
