@@ -880,6 +880,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#evidence-recuration-reports" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evidence recuration reports
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#schema-documentation" class="md-nav__link">
     <span class="md-ellipsis">
       Schema Documentation
@@ -2236,6 +2245,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#evidence-recuration-reports" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evidence recuration reports
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#schema-documentation" class="md-nav__link">
     <span class="md-ellipsis">
       Schema Documentation
@@ -2281,6 +2299,11 @@
 - Genetic factors and variants
 - Treatment options with NCIT term links
 - All claims backed by PubMed evidence</p>
+<p>Related browsers:</p>
+<ul>
+<li><a href="https://monarch-initiative.github.io/dismech-history/">Curation history dashboard</a> — explore curation, review, and audit activity by date, agent tool, model, and section.</li>
+<li><a href="https://monarch-initiative.github.io/monarch-nams/">Monarch NAMs browser</a> — explore New Approach Methodologies (NAMs) and research datasets represented in DisMech.</li>
+</ul>
 <h2 id="how-it-works">How It Works</h2>
 <h3 id="project-overview-slides">Project Overview Slides</h3>
 <ul>
@@ -2474,6 +2497,11 @@ they prioritize relevant papers, summaries, snippets, and metadata such as PMID/
 <li><strong>Submit</strong> — commits changes and opens a pull request for human review</li>
 </ol>
 <p>For detailed contribution guidelines, see <a href="CONTRIBUTING.md">CONTRIBUTING.md</a>.</p>
+<h2 id="evidence-recuration-reports">Evidence recuration reports</h2>
+<p>Run <code>just jev-audit</code> to assess disease assertion/snippet pairs with Jev and produce
+CSV reports for recuration. Corpus assessment history and the weekly workflow live in
+<a href="https://github.com/monarch-initiative/dismech-evals">dismech-evals</a>. See <a href="docs/jev-evidence-audit.md">the audit guide</a> for
+inventory, cached reruns, report columns and the weekly GitHub Action.</p>
 <h2 id="schema-documentation">Schema Documentation</h2>
 <ul>
 <li><a href="https://dismech.monarchinitiative.org/elements/">LinkML Schema Docs</a></li>

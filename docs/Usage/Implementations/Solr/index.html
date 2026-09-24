@@ -3481,6 +3481,23 @@ biolink categories (e.g. ["biolink:Disease"]). Defaults to None.</p>
                   <code>None</code>
             </td>
           </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>fields</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/builtins/stdtypes.html#str">str</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Solr field list to return. Defaults to None, meaning
+every stored field, which is what the CLI expects.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
       </tbody>
     </table>
 
@@ -3675,6 +3692,40 @@ biolink categories (e.g. ["biolink:Disease"]). Defaults to None.</p>
             <td>
               <div class="doc-md-description">
                 <p>Sort results by the specified field. Defaults to None.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>facet_method</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/builtins/stdtypes.html#str">str</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Solr facet.method for <code>facet_fields</code>, applied per field.
+Defaults to None, which leaves Solr's default (<code>fc</code>) in place.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>fields</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/builtins/stdtypes.html#str">str</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Solr field list to return. Defaults to None, meaning every
+stored field, which is what CLI and other non-browse callers expect.</p>
               </div>
             </td>
             <td>
