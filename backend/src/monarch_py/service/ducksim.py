@@ -17,13 +17,71 @@ shared ancestors; Phenodigm = sqrt(Resnik·Jaccard); termset score = bidirection
 
 from __future__ import annotations
 
+import atexit
+import errno
 import math
+import os
+import re
+import shutil
+import tempfile
+from pathlib import Path
 from statistics import mean
 from typing import NamedTuple
 
 import duckdb
 
 DEFAULT_PREDICATES = ("rdfs:subClassOf",)
+
+# DuckDB spills to `temp_directory` when a query exceeds `memory_limit`, which is expected
+# under load. Its default is the *relative* path ".tmp", and its spill filenames are keyed by
+# allocation-size class rather than by process — duckdb_temp_storage_S64K-0.tmp and friends.
+# Every gunicorn worker shares a working directory, so without an explicit setting all of them
+# write to the same handful of files and corrupt each other's spills the moment two spill at
+# once. Give each process its own absolute directory instead.
+_TEMP_ROOT_ENV = "DUCKSIM_TEMP_ROOT"
+_WORKER_DIR_PREFIX = "worker-"
+_WORKER_DIR_RE = re.compile(rf"^{_WORKER_DIR_PREFIX}(\d+)-")
+
+
+def _process_alive(pid: int) -> bool:
+    """Whether `pid` is still running. A live process we don't own raises EPERM, not ESRCH."""
+    try:
+        os.kill(pid, 0)
+    except OSError as exc:
+        return exc.errno == errno.EPERM
+    return True
+
+
+def _sweep_abandoned(root: Path) -> None:
+    """Remove spill directories whose owning worker is gone.
+
+    Workers are recycled frequently (gunicorn --max-requests), and atexit does not run on
+    SIGKILL or OOM-kill, so cleanup cannot rely on the owner tidying up after itself. Sweeping
+    on the way in keeps the root from accumulating a directory per recycled worker, and clears
+    the orphaned spill files a previous crash left behind.
+    """
+    for child in root.iterdir():
+        match = _WORKER_DIR_RE.match(child.name)
+        if not match or not child.is_dir():
+            continue
+        if not _process_alive(int(match.group(1))):
+            shutil.rmtree(child, ignore_errors=True)
+
+
+def worker_temp_directory() -> str:
+    """An absolute, per-process directory for DuckDB to spill into."""
+    root = Path(os.getenv(_TEMP_ROOT_ENV) or Path(tempfile.gettempdir()) / "monarch-ducksim")
+    root.mkdir(parents=True, exist_ok=True)
+    try:
+        _sweep_abandoned(root)
+    except OSError:
+        # Cleanup is best-effort: a sweep failure must not stop this worker from starting.
+        pass
+    # mkdtemp rather than a bare pid path, so a recycled worker that reuses a pid cannot land
+    # on a directory the sweep has not reached yet. The pid stays in the name for the sweep.
+    path = tempfile.mkdtemp(prefix=f"{_WORKER_DIR_PREFIX}{os.getpid()}-", dir=root)
+    atexit.register(shutil.rmtree, path, True)
+    return path
 
 
 class _Metric(NamedTuple):
@@ -106,6 +164,9 @@ class Ducksim:
         safe_path = str(path).replace("'", "''")
         con.execute(f"SET memory_limit = '{safe_mem}'")
         con.execute(f"SET threads = {int(threads)}")
+        # Spills go to a directory owned by this process alone; see worker_temp_directory.
+        safe_tmp = worker_temp_directory().replace("'", "''")
+        con.execute(f"SET temp_directory = '{safe_tmp}'")
         con.execute(f"ATTACH '{safe_path}' AS src (READ_ONLY)")
         self = cls(con)
         self._define_closure(

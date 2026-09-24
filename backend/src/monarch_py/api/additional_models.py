@@ -21,6 +21,38 @@ class OutputFormat(str, Enum):
     tsv = "tsv"
 
 
+# Every filterable axis of `/search`. Facet counts are the only practical way to discover
+# what these accept — `subsets` in particular runs to many values, including raw PURLs — so
+# `facets=true` returns all of them rather than making the caller name fields they would
+# have to already know about. The expensive case is `q=*:*`, where the caller is asking for
+# it on purpose.
+ALL_SEARCH_FACET_FIELDS = ["category", "in_taxon", "in_taxon_label", "namespace", "subsets"]
+
+# Solr caps facet values at 100 by default. These five fields are low cardinality, so
+# returning all of them is what makes the switch a real answer to "what can I filter on"
+# rather than a truncated sample.
+ALL_FACET_VALUES = -1
+
+# What `/search` facets when `facets` is not passed: the two the web UI renders. Keeps the
+# response shape unchanged for existing callers.
+DEFAULT_SEARCH_FACET_FIELDS = ["category", "in_taxon_label"]
+
+
+class SearchMatchType(str, Enum):
+    """How strict `/search` should be about what counts as a hit.
+
+    `relevance` is the search contract: maximise recall and always return the best
+    available hit. `exact` is the grounding contract: return an entity only when the
+    query names it, and an empty result set otherwise.
+    """
+
+    relevance = "relevance"
+    exact = "exact"
+
+    def __str__(self):
+        return self.value
+
+
 class SemsimMetric(str, Enum):
     ANCESTOR_INFORMATION_CONTENT = "ancestor_information_content"
     # COSINE_SIMILARITY = "cosine_similarity"  # Not implemented
@@ -83,6 +115,16 @@ class TextAnnotationRequest(BaseModel):
     category: Optional[List[EntityCategory]] = Field(
         default=None,
         title="Restrict grounding results to entities of one of these biolink categories (e.g. biolink:Disease)",
+    )
+    include_phenotypes: bool = Field(
+        default=False,
+        title="Include each grounding match's phenotype annotations and their closures "
+        "(large: these are most of the response when present)",
+    )
+    include_descendants: bool = Field(
+        default=False,
+        title="Include each grounding match's ontology descendants "
+        "(large: these are most of the response when present)",
     )
 
 
