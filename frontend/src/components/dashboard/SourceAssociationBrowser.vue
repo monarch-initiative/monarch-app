@@ -243,6 +243,7 @@
                 <AppPredicateBadge
                   :association="selectedAssociation"
                   :arrows="true"
+                  :explain="false"
                 />
                 <AppNodeBadge
                   :node="{
@@ -258,6 +259,14 @@
                   :icon="true"
                 />
               </div>
+
+              <!-- Predicate definition, so the modal explains the relationship it
+                   is showing rather than sending the reader elsewhere for it -->
+              <p v-if="predicateInfo?.description" class="predicate-definition">
+                <strong>{{ predicateLabel }}</strong>
+                &mdash; {{ predicateInfo.description }}
+                <AppLink :to="predicateDocsUrl">Biolink Model</AppLink>
+              </p>
 
               <!-- Properties table -->
               <table class="detail-table">
@@ -324,6 +333,7 @@ import type {
 } from "@/api/model";
 import { getSourceAssociations } from "@/api/source-associations";
 import AppIcon from "@/components/AppIcon.vue";
+import AppLink from "@/components/AppLink.vue";
 import AppModal from "@/components/AppModal.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppNodeText from "@/components/AppNodeText.vue";
@@ -331,6 +341,7 @@ import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
 import AppStatus from "@/components/AppStatus.vue";
 import AppTable, { type Cols, type Sort } from "@/components/AppTable.vue";
 import TheTableControls from "@/components/TheTableContols.vue";
+import { usePredicateDefinition } from "@/composables/use-predicate-definition";
 import type { SourceFilters } from "@/composables/use-source-dashboard";
 import { formatAgentType, getAgentTypeMeta } from "@/util/agentType";
 
@@ -592,6 +603,11 @@ const selectedAssociation = ref<ExpandedAssociation | null>(null);
 const openDetails = (row: ExpandedAssociation) => {
   selectedAssociation.value = row;
   showModal.value = true;
+  // Also load here, not just from the composable's watch: reopening the same
+  // association after a failed model fetch does not change the predicate, so the watch
+  // would not fire and the definition would stay missing until a different one is
+  // opened.
+  void loadPredicateDefinition();
 };
 
 type DetailProperty = {
@@ -604,6 +620,17 @@ type DetailProperty = {
 };
 
 /** extract displayable properties from the selected association */
+/** predicate definition from the biolink model, for the detail modal */
+const {
+  label: predicateLabel,
+  docsUrl: predicateDocsUrl,
+  info: predicateInfo,
+  load: loadPredicateDefinition,
+} = usePredicateDefinition(() => {
+  const predicate = selectedAssociation.value?.predicate;
+  return (Array.isArray(predicate) ? predicate[0] : predicate) ?? "";
+});
+
 const associationProperties = computed((): DetailProperty[] => {
   const a = selectedAssociation.value;
   if (!a) return [];
@@ -1045,6 +1072,13 @@ watch(
   gap: 10px 20px;
   border-radius: $rounded;
   background: $off-white;
+}
+
+.predicate-definition {
+  margin: 0 0 15px;
+  color: $off-black;
+  font-size: 0.95em;
+  line-height: 1.5;
 }
 
 .detail-table {

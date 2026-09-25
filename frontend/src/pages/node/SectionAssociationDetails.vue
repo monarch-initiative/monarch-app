@@ -17,7 +17,7 @@
             in_taxon_label: association.subject_taxon_label,
           }"
         />
-        <AppPredicateBadge :association="association" />
+        <AppPredicateBadge :association="association" :explain="false" />
         <AppNodeBadge
           :node="{
             id: association.object,
@@ -30,6 +30,19 @@
     </div>
 
     <AppDetails>
+      <AppDetail
+        v-if="predicateInfo?.description"
+        :title="predicateDefinitionTitle"
+        icon="diagram-project"
+        :full="true"
+      >
+        <p class="predicate-definition">{{ predicateInfo.description }}</p>
+        <span class="predicate-attribution">
+          &mdash; from the
+          <AppLink :to="predicateDocsUrl">Biolink Model</AppLink>
+        </span>
+      </AppDetail>
+
       <AppDetail title="Evidence Codes" icon="flask" :full="true">
         <AppFlex gap="small" align-h="left">
           <AppLink
@@ -124,6 +137,7 @@ import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
+import { usePredicateDefinition } from "@/composables/use-predicate-definition";
 import { useSourceVersions } from "@/composables/use-source-versions";
 import { scrollTo } from "@/router";
 import { getAgentTypeMeta } from "@/util/agentType";
@@ -146,6 +160,21 @@ const agentMeta = computed(() =>
 const { versionForEdge } = useSourceVersions();
 const sourceVersion = computed(() =>
   props.association ? versionForEdge(props.association) : null,
+);
+
+/** predicate definition from the biolink model */
+const {
+  label: predicateLabel,
+  docsUrl: predicateDocsUrl,
+  info: predicateInfo,
+} = usePredicateDefinition(() => {
+  const predicate = props.association?.predicate;
+  return (Array.isArray(predicate) ? predicate[0] : predicate) ?? "";
+});
+
+/** title for the definition row, e.g. "Predicate definition: treats" */
+const predicateDefinitionTitle = computed(
+  () => `Predicate definition: ${predicateLabel.value}`,
 );
 
 /** scroll details section into view */
@@ -183,6 +212,15 @@ onMounted(scrollIntoView);
 }
 
 .agent-description {
+  color: $gray;
+  font-size: 0.9em;
+}
+
+.predicate-definition {
+  margin: 0 0 0.4em;
+}
+
+.predicate-attribution {
   color: $gray;
   font-size: 0.9em;
 }
