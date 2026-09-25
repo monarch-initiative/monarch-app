@@ -24,7 +24,11 @@ export const getBlogPosts = async (): Promise<BlogItems> => {
 
   return items.map((item) => ({
     title: item.title || "",
-    date: new Date(item.pubDate?.split(/\s/)[0] || "") || new Date(),
+    // The time is deliberately dropped, leaving a date-only string -- which parses as
+    // UTC midnight and then renders as the previous day for viewers west of UTC. The
+    // `T00:00:00` makes it local midnight instead, so the date a post is labelled with
+    // is the date it shows. Publications reach AppPost already parsed this way.
+    date: new Date(`${item.pubDate?.split(/\s/)[0]}T00:00:00`) || new Date(),
     link: item.link || "",
     thumbnail: item.thumbnail || "",
     description: stripHtml(item.description),
