@@ -243,6 +243,7 @@
                 <AppPredicateBadge
                   :association="selectedAssociation"
                   :arrows="true"
+                  :explain="false"
                 />
                 <AppNodeBadge
                   :node="{
@@ -258,6 +259,14 @@
                   :icon="true"
                 />
               </div>
+
+              <!-- Predicate definition, so the modal explains the relationship it
+                   is showing rather than sending the reader elsewhere for it -->
+              <p v-if="predicateInfo?.description" class="predicate-definition">
+                <strong>{{ predicateLabel }}</strong>
+                &mdash; {{ predicateInfo.description }}
+                <AppLink :to="predicateDocsUrl">Biolink Model</AppLink>
+              </p>
 
               <!-- Properties table -->
               <table class="detail-table">
@@ -324,6 +333,7 @@ import type {
 } from "@/api/model";
 import { getSourceAssociations } from "@/api/source-associations";
 import AppIcon from "@/components/AppIcon.vue";
+import AppLink from "@/components/AppLink.vue";
 import AppModal from "@/components/AppModal.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppNodeText from "@/components/AppNodeText.vue";
@@ -331,6 +341,10 @@ import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
 import AppStatus from "@/components/AppStatus.vue";
 import AppTable, { type Cols, type Sort } from "@/components/AppTable.vue";
 import TheTableControls from "@/components/TheTableContols.vue";
+import {
+  useBiolinkModel,
+  type PredicateInfo,
+} from "@/composables/use-biolink-model";
 import type { SourceFilters } from "@/composables/use-source-dashboard";
 import { formatAgentType, getAgentTypeMeta } from "@/util/agentType";
 
@@ -604,6 +618,41 @@ type DetailProperty = {
 };
 
 /** extract displayable properties from the selected association */
+/** predicate definition from the biolink model, for the detail modal */
+const { loadBiolinkModel, getPredicateInfo } = useBiolinkModel();
+const predicateInfo = ref<PredicateInfo | null>(null);
+
+const predicateValue = computed(() => {
+  const predicate = selectedAssociation.value?.predicate;
+  return (Array.isArray(predicate) ? predicate[0] : predicate) ?? "";
+});
+
+/** human-readable predicate label, e.g. "treats" */
+const predicateLabel = computed(() =>
+  predicateValue.value.replace(/^biolink:/, "").replace(/_/g, " "),
+);
+
+const predicateDocsUrl = computed(
+  () =>
+    `https://biolink.github.io/biolink-model/${predicateValue.value.replace(
+      /^biolink:/,
+      "",
+    )}/`,
+);
+
+// Loaded when a row is opened rather than with the table: the model is ~1.5MB and most
+// visits to the browser never open a detail modal.
+watch(
+  predicateValue,
+  async (predicate) => {
+    predicateInfo.value = null;
+    if (!predicate) return;
+    await loadBiolinkModel();
+    predicateInfo.value = getPredicateInfo(predicate);
+  },
+  { immediate: true },
+);
+
 const associationProperties = computed((): DetailProperty[] => {
   const a = selectedAssociation.value;
   if (!a) return [];
@@ -1045,6 +1094,13 @@ watch(
   gap: 10px 20px;
   border-radius: $rounded;
   background: $off-white;
+}
+
+.predicate-definition {
+  margin: 0 0 15px;
+  color: $off-black;
+  font-size: 0.95em;
+  line-height: 1.5;
 }
 
 .detail-table {
