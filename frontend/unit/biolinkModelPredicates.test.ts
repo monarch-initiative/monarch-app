@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, test } from "vitest";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import { useBiolinkModel } from "@/composables/use-biolink-model";
 
 /** biolink slots are keyed by space-separated names, with is_a naming the parent */
@@ -127,5 +127,45 @@ describe("getPredicateChildren", () => {
     const { loadBiolinkModel, getPredicateChildren } = useBiolinkModel();
     await loadBiolinkModel();
     expect(getPredicateChildren("biolink:ameliorates_condition")).toEqual([]);
+  });
+});
+
+describe("a response that is not the biolink model", () => {
+  beforeEach(() => {
+    localStorage.clear();
+    useBiolinkModel().clearCache();
+  });
+
+  test("a parseable non-model is rejected rather than cached", async () => {
+    // A captive portal or moved-resource notice arrives as a 200 and yaml.load
+    // accepts it. Accepting it poisoned the cache for 24h: every predicate reported
+    // "no definition found", and nothing retried in this session or the next.
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      new Response("<html><body>Sign in to continue</body></html>", {
+        status: 200,
+      }),
+    );
+
+    const { loadBiolinkModel, error } = useBiolinkModel();
+    await loadBiolinkModel();
+
+    expect(error.value).toBeTruthy();
+    expect(localStorage.getItem("biolink-model-cache")).toBeNull();
+    fetchMock.mockRestore();
+  });
+
+  test("a poisoned cache entry is ignored so the next load can retry", () => {
+    localStorage.setItem(
+      "biolink-model-cache",
+      JSON.stringify("just a string"),
+    );
+    localStorage.setItem(
+      "biolink-model-cache-timestamp",
+      Date.now().toString(),
+    );
+
+    const { getPredicateInfo } = useBiolinkModel();
+    // no slots means no model; the entry must not be adopted
+    expect(getPredicateInfo("biolink:treats")).toBeNull();
   });
 });

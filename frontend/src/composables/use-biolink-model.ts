@@ -52,12 +52,27 @@ const isCacheValid = (): boolean => {
   }
 };
 
+/**
+ * Whether a parsed document is actually the biolink model.
+ *
+ * `yaml.load` accepts anything: a captive-portal page or a moved-resource
+ * notice arrives as a 200 and parses to a truthy string or object. Without this
+ * check that became `model.value`, was cached for 24h, and every predicate
+ * reported "no definition found" with no retry in this session or the next.
+ */
+const isBiolinkModel = (parsed: unknown): parsed is BiolinkModel =>
+  !!parsed &&
+  typeof parsed === "object" &&
+  typeof (parsed as BiolinkModel).slots === "object" &&
+  (parsed as BiolinkModel).slots !== null;
+
 /** Load model from cache */
 const loadFromCache = (): BiolinkModel | null => {
   try {
     const cached = localStorage.getItem(CACHE_KEY);
     if (!cached) return null;
-    return JSON.parse(cached) as BiolinkModel;
+    const parsed = JSON.parse(cached);
+    return isBiolinkModel(parsed) ? parsed : null;
   } catch {
     return null;
   }
@@ -98,7 +113,10 @@ const loadBiolinkModel = async (): Promise<void> => {
         );
       }
       const yamlText = await response.text();
-      const parsed = yaml.load(yamlText) as BiolinkModel;
+      const parsed = yaml.load(yamlText);
+      if (!isBiolinkModel(parsed)) {
+        throw new Error("Response was not the biolink model");
+      }
       model.value = parsed;
       saveToCache(parsed);
     } catch (err) {

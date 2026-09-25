@@ -265,9 +265,7 @@
               <p v-if="predicateInfo?.description" class="predicate-definition">
                 <strong>{{ predicateLabel }}</strong>
                 &mdash; {{ predicateInfo.description }}
-                <a :href="predicateDocsUrl" target="_blank" rel="noopener">
-                  Biolink Model
-                </a>
+                <AppLink :to="predicateDocsUrl">Biolink Model</AppLink>
               </p>
 
               <!-- Properties table -->
@@ -335,6 +333,7 @@ import type {
 } from "@/api/model";
 import { getSourceAssociations } from "@/api/source-associations";
 import AppIcon from "@/components/AppIcon.vue";
+import AppLink from "@/components/AppLink.vue";
 import AppModal from "@/components/AppModal.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppNodeText from "@/components/AppNodeText.vue";
