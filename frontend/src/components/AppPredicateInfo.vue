@@ -106,6 +106,10 @@ import {
   useBiolinkModel,
   type PredicateInfo,
 } from "@/composables/use-biolink-model";
+import {
+  predicateDocsUrl as docsFor,
+  predicateLabel as format,
+} from "@/composables/use-predicate-definition";
 
 type Props = {
   /** predicate curie/name, e.g. "biolink:treats" */
@@ -132,14 +136,6 @@ const showAllChildren = ref(false);
 const CHILD_LIMIT = 6;
 
 /** human-readable predicate label */
-const format = (value?: string): string =>
-  (value ?? "").replace(/^biolink:/, "").replace(/_/g, " ");
-
-/** link to a predicate's page in the biolink model docs */
-const docsFor = (name: string): string =>
-  `https://biolink.github.io/biolink-model/${name
-    .replace(/^biolink:/, "")
-    .replace(/ /g, "_")}/`;
 
 const formatted = computed(() => format(props.predicate));
 

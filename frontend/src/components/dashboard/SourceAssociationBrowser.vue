@@ -341,10 +341,7 @@ import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
 import AppStatus from "@/components/AppStatus.vue";
 import AppTable, { type Cols, type Sort } from "@/components/AppTable.vue";
 import TheTableControls from "@/components/TheTableContols.vue";
-import {
-  useBiolinkModel,
-  type PredicateInfo,
-} from "@/composables/use-biolink-model";
+import { usePredicateDefinition } from "@/composables/use-predicate-definition";
 import type { SourceFilters } from "@/composables/use-source-dashboard";
 import { formatAgentType, getAgentTypeMeta } from "@/util/agentType";
 
@@ -606,6 +603,11 @@ const selectedAssociation = ref<ExpandedAssociation | null>(null);
 const openDetails = (row: ExpandedAssociation) => {
   selectedAssociation.value = row;
   showModal.value = true;
+  // Also load here, not just from the composable's watch: reopening the same
+  // association after a failed model fetch does not change the predicate, so the watch
+  // would not fire and the definition would stay missing until a different one is
+  // opened.
+  void loadPredicateDefinition();
 };
 
 type DetailProperty = {
@@ -619,39 +621,15 @@ type DetailProperty = {
 
 /** extract displayable properties from the selected association */
 /** predicate definition from the biolink model, for the detail modal */
-const { loadBiolinkModel, getPredicateInfo } = useBiolinkModel();
-const predicateInfo = ref<PredicateInfo | null>(null);
-
-const predicateValue = computed(() => {
+const {
+  label: predicateLabel,
+  docsUrl: predicateDocsUrl,
+  info: predicateInfo,
+  load: loadPredicateDefinition,
+} = usePredicateDefinition(() => {
   const predicate = selectedAssociation.value?.predicate;
   return (Array.isArray(predicate) ? predicate[0] : predicate) ?? "";
 });
-
-/** human-readable predicate label, e.g. "treats" */
-const predicateLabel = computed(() =>
-  predicateValue.value.replace(/^biolink:/, "").replace(/_/g, " "),
-);
-
-const predicateDocsUrl = computed(
-  () =>
-    `https://biolink.github.io/biolink-model/${predicateValue.value.replace(
-      /^biolink:/,
-      "",
-    )}/`,
-);
-
-// Loaded when a row is opened rather than with the table: the model is ~1.5MB and most
-// visits to the browser never open a detail modal.
-watch(
-  predicateValue,
-  async (predicate) => {
-    predicateInfo.value = null;
-    if (!predicate) return;
-    await loadBiolinkModel();
-    predicateInfo.value = getPredicateInfo(predicate);
-  },
-  { immediate: true },
-);
 
 const associationProperties = computed((): DetailProperty[] => {
   const a = selectedAssociation.value;

@@ -131,16 +131,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, watch } from "vue";
 import type { DirectionalAssociation, Node } from "@/api/model";
 import AppDetail from "@/components/AppDetail.vue";
 import AppDetails from "@/components/AppDetails.vue";
 import AppNodeBadge from "@/components/AppNodeBadge.vue";
 import AppPredicateBadge from "@/components/AppPredicateBadge.vue";
-import {
-  useBiolinkModel,
-  type PredicateInfo,
-} from "@/composables/use-biolink-model";
+import { usePredicateDefinition } from "@/composables/use-predicate-definition";
 import { useSourceVersions } from "@/composables/use-source-versions";
 import { scrollTo } from "@/router";
 import { getAgentTypeMeta } from "@/util/agentType";
@@ -166,44 +163,18 @@ const sourceVersion = computed(() =>
 );
 
 /** predicate definition from the biolink model */
-const { loadBiolinkModel, getPredicateInfo } = useBiolinkModel();
-const predicateInfo = ref<PredicateInfo | null>(null);
-
-const predicateValue = computed(() => {
+const {
+  label: predicateLabel,
+  docsUrl: predicateDocsUrl,
+  info: predicateInfo,
+} = usePredicateDefinition(() => {
   const predicate = props.association?.predicate;
   return (Array.isArray(predicate) ? predicate[0] : predicate) ?? "";
 });
 
-/** human-readable predicate label, e.g. "treats" */
-const predicateLabel = computed(() =>
-  predicateValue.value.replace(/^biolink:/, "").replace(/_/g, " "),
-);
-
-/**
- * title for the definition row, naming the predicate, e.g. "Predicate
- * definition: treats"
- */
+/** title for the definition row, e.g. "Predicate definition: treats" */
 const predicateDefinitionTitle = computed(
   () => `Predicate definition: ${predicateLabel.value}`,
-);
-
-const predicateDocsUrl = computed(
-  () =>
-    `https://biolink.github.io/biolink-model/${predicateValue.value.replace(
-      /^biolink:/,
-      "",
-    )}/`,
-);
-
-watch(
-  predicateValue,
-  async (predicate) => {
-    predicateInfo.value = null;
-    if (!predicate) return;
-    await loadBiolinkModel();
-    predicateInfo.value = getPredicateInfo(predicate);
-  },
-  { immediate: true },
 );
 
 /** scroll details section into view */
