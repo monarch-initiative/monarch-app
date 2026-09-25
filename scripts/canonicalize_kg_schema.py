@@ -10,10 +10,13 @@ diff is a real change. Identity fields keep their position at the front because 
 order reaches users as column order in the CLI's table and TSV output -- a plain
 alphabetical sort would lead `Entity` with `broad_synonym` and bury `id`.
 
+Needs `linkml_runtime` for validation, which the backend environment provides.
+
 Usage:
     canonicalize_kg_schema.py FETCHED.yaml COMMITTED.yaml
         Writes the canonical form of FETCHED to COMMITTED.
-        Exit 0 if COMMITTED changed meaning, 1 if it did not (or did not exist).
+        Exit 0 if COMMITTED changed meaning, 1 if it did not (or did not exist),
+        2 if FETCHED is not a valid LinkML schema.
 """
 
 import sys
@@ -64,11 +67,37 @@ def canonicalize(doc):
     return result
 
 
+def validate(path: Path) -> None:
+    """Fail unless the file parses as a LinkML schema, not merely as YAML.
+
+    `SchemaView` builds a `SchemaDefinition`, so this rejects a 404 page, a stray
+    list, and a document that is valid YAML but carries keys the metamodel does not
+    define -- none of which a "does it have a `classes` key" check would catch.
+
+    Imported here rather than at module scope so the import cost, and the dependency,
+    belong to the one function that needs them. It comes from `linkml_runtime`, not
+    the `linkml` codegen package: oaklib depends on it directly, so it stays available
+    even if `linkml` is ever demoted to a dev-only dependency.
+    """
+    from linkml_runtime.utils.schemaview import SchemaView
+
+    SchemaView(str(path)).all_classes()
+
+
 def main(fetched: Path, committed: Path) -> int:
-    doc = yaml.safe_load(fetched.read_text())
-    if not isinstance(doc, dict) or "classes" not in doc:
-        print(f"{fetched} does not look like a LinkML schema", file=sys.stderr)
+    try:
+        validate(fetched)
+    except ImportError:
+        print(
+            "linkml_runtime is required to validate the fetched schema; run this with the backend environment",
+            file=sys.stderr,
+        )
         return 2
+    except Exception as err:
+        print(f"{fetched} is not a valid LinkML schema: {err}", file=sys.stderr)
+        return 2
+
+    doc = yaml.safe_load(fetched.read_text())
 
     # Compare canonical forms, not raw ones. Slot lists compare order-sensitively, so
     # comparing as-fetched would report a change for exactly the reordering this is

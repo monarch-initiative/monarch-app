@@ -18,7 +18,10 @@ on:
 env:
   SCHEMA_URL: "https://data.monarchinitiative.org/monarch-kg-dev/latest/monarch-kg-schema.yaml"
   SCHEMA_PATH: "backend/src/monarch_py/datamodels/monarch_kg_schema.yaml"
-  # The canonicalizer only needs PyYAML, which the backend env already has.
+  # The canonicalizer needs PyYAML and linkml_runtime; the `make install-backend` step
+  # below provides both. linkml_runtime specifically, not the `linkml` codegen package
+  # -- oaklib depends on it directly, so it is there regardless of how `linkml` is
+  # classified.
   RUN_PYTHON: "uv run --project backend python"
   UV_VERSION: "0.7.x"
 

@@ -19,9 +19,12 @@ spec.loader.exec_module(canon)
 
 
 def schema(entity_slots, association_slots=("id", "subject"), name_range="string"):
+    """A minimal but genuine LinkML schema -- validation now builds a
+    SchemaDefinition from it, so a hand-waved dict would be rejected."""
     return {
         "name": "monarch-kg",
         "id": "https://monarch/kg",
+        "default_range": "string",
         "prefixes": {"biolink": "b", "dct": "d"},
         "slots": {"name": {"range": name_range}, "id": {"range": "uriorcurie"}},
         "classes": {
@@ -93,7 +96,18 @@ def test_missing_committed_file_counts_as_a_change(tmp_path):
     assert out.exists()
 
 
-@pytest.mark.parametrize("content", ["<html>404</html>", "", "- just\n- a\n- list\n"])
+@pytest.mark.parametrize(
+    "content",
+    [
+        "<html>404</html>",
+        "",
+        "- just\n- a\n- list\n",
+        # valid YAML, and it even has a `classes` key -- but `bogus_key` is not in the
+        # metamodel, which only building a SchemaDefinition catches
+        "id: https://x\nname: x\nclasses:\n  A:\n    bogus_key: 1\n",
+    ],
+    ids=["html", "empty", "list", "not-the-metamodel"],
+)
 def test_non_schema_input_is_rejected(tmp_path, content):
     """A 404 page written over the schema would otherwise regenerate the model from
     nothing."""
