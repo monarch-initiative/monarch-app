@@ -1,29 +1,13 @@
-from __future__ import annotations 
+from __future__ import annotations
 
 import re
 import sys
-from datetime import (
-    date,
-    datetime,
-    time
-)
-from decimal import Decimal 
-from enum import Enum 
-from typing import (
-    Any,
-    ClassVar,
-    Literal,
-    Optional,
-    Union
-)
+from datetime import date, datetime, time
+from decimal import Decimal
+from enum import Enum
+from typing import Any, ClassVar, Literal, Optional, Union
 
-from pydantic import (
-    BaseModel,
-    ConfigDict,
-    Field,
-    RootModel,
-    field_validator
-)
+from pydantic import BaseModel, ConfigDict, Field, RootModel, field_validator
 
 
 metamodel_version = "None"
@@ -32,41 +16,41 @@ version = "None"
 
 class ConfiguredBaseModel(BaseModel):
     model_config = ConfigDict(
-        validate_assignment = True,
-        validate_default = True,
-        extra = "allow",
-        arbitrary_types_allowed = True,
-        use_enum_values = True,
-        strict = False,
+        validate_assignment=True,
+        validate_default=True,
+        extra="allow",
+        arbitrary_types_allowed=True,
+        use_enum_values=True,
+        strict=False,
     )
     pass
-
-
 
 
 class LinkMLMeta(RootModel):
     root: dict[str, Any] = {}
     model_config = ConfigDict(frozen=True)
 
-    def __getattr__(self, key:str):
+    def __getattr__(self, key: str):
         return getattr(self.root, key)
 
-    def __getitem__(self, key:str):
+    def __getitem__(self, key: str):
         return self.root[key]
 
-    def __setitem__(self, key:str, value):
+    def __setitem__(self, key: str, value):
         self.root[key] = value
 
-    def __contains__(self, key:str) -> bool:
+    def __contains__(self, key: str) -> bool:
         return key in self.root
 
 
 linkml_meta = None
 
+
 class MatchCriteriaEnum(str, Enum):
     """
     Which of an association-type section's declared fields are enforced as Solr filters.
     """
+
     category = "category"
     """
     Match on `category` alone. `subject_category`/`object_category` are read as entity-grid direction metadata, not query criteria — constraining on them undercounts edges whose node categories differ from the declared ones (e.g. gene-expression edges whose object is biolink:NamedThing).
@@ -81,6 +65,7 @@ class MatchedFieldEnum(str, Enum):
     """
     The entity field that a search query matched as a whole string
     """
+
     name = "name"
     """
     The query matched the entity's primary label
@@ -107,6 +92,7 @@ class MatchTypeEnum(str, Enum):
     """
     How defensible a search hit is as an identification of the query text
     """
+
     exact = "exact"
     """
     Whole-string, case-insensitive match on the entity's name or one of its exact synonyms — the query names this entity and no other reading is implied
@@ -121,6 +107,7 @@ class AssociationDirectionEnum(str, Enum):
     """
     The directionality of an association as it relates to a specified entity, with edges being categorized as incoming or outgoing
     """
+
     incoming = "incoming"
     """
     An association for which a specified entity is the object or part of the object closure
@@ -131,11 +118,11 @@ class AssociationDirectionEnum(str, Enum):
     """
 
 
-
 class PairwiseSimilarity(ConfiguredBaseModel):
     """
     Abstract grouping for representing individual pairwise similarities
     """
+
     pass
 
 
@@ -143,28 +130,39 @@ class TermPairwiseSimilarity(PairwiseSimilarity):
     """
     A simple pairwise similarity between two atomic concepts/terms
     """
+
     subject_id: str = Field(default=...)
     subject_label: Optional[str] = Field(default=None, description="""The name of the subject entity""")
     subject_source: Optional[str] = Field(default=None, description="""the source for the first entity""")
     object_id: str = Field(default=...)
     object_label: Optional[str] = Field(default=None, description="""The name of the object entity""")
     object_source: Optional[str] = Field(default=None, description="""the source for the second entity""")
-    ancestor_id: Optional[str] = Field(default=None, description="""the most recent common ancestor of the two compared entities. If there are multiple MRCAs then the most informative one is selected""")
+    ancestor_id: Optional[str] = Field(
+        default=None,
+        description="""the most recent common ancestor of the two compared entities. If there are multiple MRCAs then the most informative one is selected""",
+    )
     ancestor_label: Optional[str] = Field(default=None, description="""the name or label of the ancestor concept""")
     ancestor_source: Optional[str] = Field(default=None)
     object_information_content: Optional[float] = Field(default=None, description="""The IC of the object""")
     subject_information_content: Optional[float] = Field(default=None, description="""The IC of the subject""")
     ancestor_information_content: Optional[float] = Field(default=None, description="""The IC of the object""")
-    jaccard_similarity: Optional[float] = Field(default=None, description="""The number of concepts in the intersection divided by the number in the union""")
-    cosine_similarity: Optional[float] = Field(default=None, description="""the dot product of two node embeddings divided by the product of their lengths""")
+    jaccard_similarity: Optional[float] = Field(
+        default=None, description="""The number of concepts in the intersection divided by the number in the union"""
+    )
+    cosine_similarity: Optional[float] = Field(
+        default=None, description="""the dot product of two node embeddings divided by the product of their lengths"""
+    )
     dice_similarity: Optional[float] = Field(default=None)
-    phenodigm_score: Optional[float] = Field(default=None, description="""the geometric mean of the jaccard similarity and the information content""")
+    phenodigm_score: Optional[float] = Field(
+        default=None, description="""the geometric mean of the jaccard similarity and the information content"""
+    )
 
 
 class TermSetPairwiseSimilarity(PairwiseSimilarity):
     """
     A simple pairwise similarity between two sets of concepts/terms
     """
+
     subject_termset: Optional[dict[str, Union[str, TermInfo]]] = Field(default=None)
     object_termset: Optional[dict[str, Union[str, TermInfo]]] = Field(default=None)
     subject_best_matches: Optional[dict[str, BestMatch]] = Field(default=None)
@@ -196,126 +194,243 @@ class SemsimSearchResult(ConfiguredBaseModel):
     similarity: Optional[TermSetPairwiseSimilarity] = Field(default=None)
 
 
-class Entity(ConfiguredBaseModel):
-    """
-    Post-closurize node shape (entity + closure expansion + per-predicate aggregations).
-    """
-    id: str = Field(default=...)
-    category: Optional[str] = Field(default=None)
-    name: Optional[str] = Field(default=None)
-    description: Optional[str] = Field(default=None)
-    xref: Optional[list[str]] = Field(default=None)
-    synonym: Optional[list[str]] = Field(default=None)
-    exact_synonym: Optional[list[str]] = Field(default=None, description="""An exact synonym for the entity""")
-    broad_synonym: Optional[list[str]] = Field(default=None, description="""A broader synonym for the entity""")
-    narrow_synonym: Optional[list[str]] = Field(default=None, description="""A narrower synonym for the entity""")
-    related_synonym: Optional[list[str]] = Field(default=None, description="""A related synonym for the entity""")
-    deprecated: Optional[bool] = Field(default=None, description="""A boolean flag indicating that an entity is no longer considered current or valid.""")
-    in_taxon: Optional[str] = Field(default=None, description="""The biolink taxon that the entity is in the closure of.""")
-    in_taxon_label: Optional[str] = Field(default=None, description="""The label of the biolink taxon that the entity is in the closure of.""")
-    iri: Optional[str] = Field(default=None)
-    same_as: Optional[list[str]] = Field(default=None)
-    subsets: Optional[list[str]] = Field(default=None, description="""A list of subsets that the entity belongs to""")
-    file_source: Optional[str] = Field(default=None, description="""Source file stem injected by koza at load time.""")
-    provided_by: Optional[str] = Field(default=None)
-    full_name: Optional[str] = Field(default=None, description="""The long form name of an entity""")
-    symbol: Optional[str] = Field(default=None)
-    has_gene: Optional[list[str]] = Field(default=None)
-    type: Optional[str] = Field(default=None, description="""The type of the entity (e.g. sequence onotology type for genes etc)""")
-    has_attribute: Optional[list[str]] = Field(default=None)
-    has_biological_sex: Optional[str] = Field(default=None, description="""The biological sex of an individual entity.""")
-    synonyms: Optional[str] = Field(default=None)
-    namespace: Optional[str] = Field(default=None, description="""The namespace/prefix portion of this entity's identifier""")
-    has_phenotype: Optional[list[str]] = Field(default=None, description="""A list of phenotype identifiers that are known to be associated with this entity""")
-    has_phenotype_label: Optional[list[str]] = Field(default=None, description="""A list of phenotype labels that are known to be associated with this entity""")
-    has_phenotype_count: Optional[int] = Field(default=None, description="""A count of the number of phenotypes that are known to be associated with this entity""")
-    has_phenotype_closure: Optional[list[str]] = Field(default=None, description="""A list of phenotype identifiers that are known to be associated with this entity expanded to include all ancestors""")
-    has_phenotype_closure_label: Optional[list[str]] = Field(default=None, description="""A list of phenotype labels that are known to be associated with this entity expanded to include all ancestors""")
-    has_descendant: Optional[list[str]] = Field(default=None, description="""A list of entity identifiers that are known to be descendants of this entity""")
-    has_descendant_label: Optional[list[str]] = Field(default=None, description="""A list of entity labels that are known to be descendants of this entity""")
-    has_descendant_count: Optional[int] = Field(default=None, description="""A count of the number of entities that are known to be descendants of this entity""")
-
-
 class Association(ConfiguredBaseModel):
     """
     Post-closurize edge shape (association + subject/object closure expansion).
     """
+
     id: str = Field(default=...)
-    predicate: str = Field(default=...)
     category: Optional[str] = Field(default=None)
-    agent_type: str = Field(default=..., description="""Describes the high-level category of agent who originally generated a  statement of knowledge or other type of information.""")
-    aggregator_knowledge_source: Optional[list[str]] = Field(default=None)
-    knowledge_level: str = Field(default=..., description="""Describes the level of knowledge expressed in a statement, based on the reasoning or analysis methods used to generate the statement, or the scope or specificity of what the statement expresses to be true.""")
-    primary_knowledge_source: Optional[str] = Field(default=None)
-    file_source: Optional[str] = Field(default=None, description="""Source file stem injected by koza at load time.""")
-    provided_by: Optional[str] = Field(default=None)
-    publications: Optional[list[str]] = Field(default=None)
-    qualifiers: Optional[list[str]] = Field(default=None)
-    has_evidence: Optional[list[str]] = Field(default=None)
-    frequency_qualifier: Optional[str] = Field(default=None)
-    has_count: Optional[int] = Field(default=None, description="""count of out of has_total representing a frequency""")
-    has_percentage: Optional[float] = Field(default=None, description="""percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly, rounded to the integer level""")
-    has_quotient: Optional[float] = Field(default=None, description="""quotient, which should be 1/100 of has_percentage""")
-    has_total: Optional[int] = Field(default=None, description="""total, devided by has_count, representing a frequency""")
-    negated: Optional[bool] = Field(default=None)
-    onset_qualifier: Optional[str] = Field(default=None)
-    sex_qualifier: Optional[str] = Field(default=None)
-    original_predicate: Optional[str] = Field(default=None, description="""used to hold the original relation/predicate that an external knowledge source uses before transformation to match the biolink-model specification.""")
-    disease_context_qualifier: Optional[str] = Field(default=None, description="""A context qualifier representing a disease or condition in which a relationship expressed in an association took place.""")
-    has_attribute: Optional[list[str]] = Field(default=None)
-    object_aspect_qualifier: Optional[str] = Field(default=None, description="""Composes with the core concept (+ qualifier) to describe new concepts of a more specific kind. The aspect qualifier represents an attribute of the object that is the focus of the relationship (e.g. for an association where the object is a gene, this might be the expression, abundance, activity, or stability of the gene).""")
-    FDA_adverse_event_level: Optional[str] = Field(default=None, description="""The level of FDA adverse event reporting for a drug-condition association.""")
-    species_context_qualifier: Optional[str] = Field(default=None, description="""A context qualifier representing a species in which a relationship expressed in an association took place.""")
-    stage_qualifier: Optional[str] = Field(default=None)
-    qualifier: Optional[str] = Field(default=None)
-    object_specialization_qualifier: Optional[str] = Field(default=None, description="""A qualifier that composes with a core subject/object concept to define a more specific version of the object concept, specifically using an ontology term that is not a subclass or descendant of the core concept and in the vast majority of cases, is of a different ontological namespace than the category or namespace of the object identifier.""")
     subject: str = Field(default=...)
+    predicate: str = Field(default=...)
     object: str = Field(default=...)
-    original_subject: Optional[str] = Field(default=None)
-    original_object: Optional[str] = Field(default=None)
-    evidence_count: Optional[int] = Field(default=None, description="""count of supporting documents, evidence codes, and sources supplying evidence""")
-    grouping_key: Optional[str] = Field(default=None, description="""A concatenation of fields used to group associations with the same essential/defining properties""")
-    subject_label: Optional[str] = Field(default=None, description="""The name of the subject entity""")
-    subject_category: Optional[str] = Field(default=None, description="""The category of the subject entity""")
-    subject_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the subject entity""")
-    subject_closure: Optional[list[str]] = Field(default=None, description="""Field containing subject id and the ids of all of it's ancestors""")
-    subject_closure_label: Optional[list[str]] = Field(default=None, description="""Field containing subject name and the names of all of it's ancestors""")
-    subject_taxon: Optional[str] = Field(default=None)
-    subject_taxon_label: Optional[str] = Field(default=None)
-    object_label: Optional[str] = Field(default=None, description="""The name of the object entity""")
+    FDA_adverse_event_level: Optional[str] = Field(
+        default=None, description="""The level of FDA adverse event reporting for a drug-condition association."""
+    )
+    agent_type: str = Field(
+        default=...,
+        description="""Describes the high-level category of agent who originally generated a  statement of knowledge or other type of information.""",
+    )
+    aggregator_knowledge_source: Optional[list[str]] = Field(default=None)
+    disease_context_qualifier: Optional[str] = Field(
+        default=None,
+        description="""A context qualifier representing a disease or condition in which a relationship expressed in an association took place.""",
+    )
+    disease_context_qualifier_category: Optional[str] = Field(
+        default=None, description="""The category of the disease_context_qualifier entity"""
+    )
+    disease_context_qualifier_closure: Optional[list[str]] = Field(
+        default=None,
+        description="""Field containing disease_context_qualifier id and the ids of all of it's ancestors""",
+    )
+    disease_context_qualifier_closure_label: Optional[list[str]] = Field(
+        default=None,
+        description="""Field containing disease_context_qualifier name and the names of all of it's ancestors""",
+    )
+    disease_context_qualifier_label: Optional[str] = Field(
+        default=None, description="""The name of the disease_context_qualifier entity"""
+    )
+    disease_context_qualifier_namespace: Optional[str] = Field(
+        default=None, description="""The namespace/prefix of the disease_context_qualifier entity"""
+    )
+    evidence_count: Optional[int] = Field(
+        default=None, description="""count of supporting documents, evidence codes, and sources supplying evidence"""
+    )
+    file_source: Optional[str] = Field(default=None, description="""Source file stem injected by koza at load time.""")
+    frequency_qualifier: Optional[str] = Field(default=None)
+    frequency_qualifier_category: Optional[str] = Field(
+        default=None, description="""The category of the frequency_qualifier entity"""
+    )
+    frequency_qualifier_label: Optional[str] = Field(
+        default=None, description="""The name of the frequency_qualifier entity"""
+    )
+    frequency_qualifier_namespace: Optional[str] = Field(
+        default=None, description="""The namespace/prefix of the frequency_qualifier entity"""
+    )
+    grouping_key: Optional[str] = Field(
+        default=None,
+        description="""A concatenation of fields used to group associations with the same essential/defining properties""",
+    )
+    has_attribute: Optional[list[str]] = Field(default=None)
+    has_count: Optional[int] = Field(default=None, description="""count of out of has_total representing a frequency""")
+    has_evidence: Optional[list[str]] = Field(default=None)
+    has_percentage: Optional[float] = Field(
+        default=None,
+        description="""percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly, rounded to the integer level""",
+    )
+    has_quotient: Optional[float] = Field(
+        default=None, description="""quotient, which should be 1/100 of has_percentage"""
+    )
+    has_total: Optional[int] = Field(
+        default=None, description="""total, devided by has_count, representing a frequency"""
+    )
+    knowledge_level: str = Field(
+        default=...,
+        description="""Describes the level of knowledge expressed in a statement, based on the reasoning or analysis methods used to generate the statement, or the scope or specificity of what the statement expresses to be true.""",
+    )
+    negated: Optional[bool] = Field(default=None)
+    object_aspect_qualifier: Optional[str] = Field(
+        default=None,
+        description="""Composes with the core concept (+ qualifier) to describe new concepts of a more specific kind. The aspect qualifier represents an attribute of the object that is the focus of the relationship (e.g. for an association where the object is a gene, this might be the expression, abundance, activity, or stability of the gene).""",
+    )
     object_category: Optional[str] = Field(default=None, description="""The category of the object entity""")
+    object_closure: Optional[list[str]] = Field(
+        default=None, description="""Field containing object id and the ids of all of it's ancestors"""
+    )
+    object_closure_label: Optional[list[str]] = Field(
+        default=None, description="""Field containing object name and the names of all of it's ancestors"""
+    )
+    object_label: Optional[str] = Field(default=None, description="""The name of the object entity""")
     object_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the object entity""")
-    object_closure: Optional[list[str]] = Field(default=None, description="""Field containing object id and the ids of all of it's ancestors""")
-    object_closure_label: Optional[list[str]] = Field(default=None, description="""Field containing object name and the names of all of it's ancestors""")
+    object_specialization_qualifier: Optional[str] = Field(
+        default=None,
+        description="""A qualifier that composes with a core subject/object concept to define a more specific version of the object concept, specifically using an ontology term that is not a subclass or descendant of the core concept and in the vast majority of cases, is of a different ontological namespace than the category or namespace of the object identifier.""",
+    )
     object_taxon: Optional[str] = Field(default=None)
     object_taxon_label: Optional[str] = Field(default=None)
-    disease_context_qualifier_label: Optional[str] = Field(default=None, description="""The name of the disease_context_qualifier entity""")
-    disease_context_qualifier_category: Optional[str] = Field(default=None, description="""The category of the disease_context_qualifier entity""")
-    disease_context_qualifier_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the disease_context_qualifier entity""")
-    disease_context_qualifier_closure: Optional[list[str]] = Field(default=None, description="""Field containing disease_context_qualifier id and the ids of all of it's ancestors""")
-    disease_context_qualifier_closure_label: Optional[list[str]] = Field(default=None, description="""Field containing disease_context_qualifier name and the names of all of it's ancestors""")
-    species_context_qualifier_label: Optional[str] = Field(default=None, description="""The name of the species_context_qualifier entity""")
-    species_context_qualifier_category: Optional[str] = Field(default=None, description="""The category of the species_context_qualifier entity""")
-    species_context_qualifier_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the species_context_qualifier entity""")
-    stage_qualifier_label: Optional[str] = Field(default=None, description="""The name of the stage_qualifier entity""")
-    stage_qualifier_category: Optional[str] = Field(default=None, description="""The category of the stage_qualifier entity""")
-    stage_qualifier_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the stage_qualifier entity""")
-    sex_qualifier_label: Optional[str] = Field(default=None, description="""The name of the sex_qualifier entity""")
-    sex_qualifier_category: Optional[str] = Field(default=None, description="""The category of the sex_qualifier entity""")
-    sex_qualifier_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the sex_qualifier entity""")
+    onset_qualifier: Optional[str] = Field(default=None)
+    onset_qualifier_category: Optional[str] = Field(
+        default=None, description="""The category of the onset_qualifier entity"""
+    )
     onset_qualifier_label: Optional[str] = Field(default=None, description="""The name of the onset_qualifier entity""")
-    onset_qualifier_category: Optional[str] = Field(default=None, description="""The category of the onset_qualifier entity""")
-    onset_qualifier_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the onset_qualifier entity""")
-    frequency_qualifier_label: Optional[str] = Field(default=None, description="""The name of the frequency_qualifier entity""")
-    frequency_qualifier_category: Optional[str] = Field(default=None, description="""The category of the frequency_qualifier entity""")
-    frequency_qualifier_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the frequency_qualifier entity""")
+    onset_qualifier_namespace: Optional[str] = Field(
+        default=None, description="""The namespace/prefix of the onset_qualifier entity"""
+    )
+    original_object: Optional[str] = Field(default=None)
+    original_predicate: Optional[str] = Field(
+        default=None,
+        description="""used to hold the original relation/predicate that an external knowledge source uses before transformation to match the biolink-model specification.""",
+    )
+    original_subject: Optional[str] = Field(default=None)
+    primary_knowledge_source: Optional[str] = Field(default=None)
+    provided_by: Optional[str] = Field(default=None)
+    publications: Optional[list[str]] = Field(default=None)
+    qualifier: Optional[str] = Field(default=None)
+    qualifiers: Optional[list[str]] = Field(default=None)
+    sex_qualifier: Optional[str] = Field(default=None)
+    sex_qualifier_category: Optional[str] = Field(
+        default=None, description="""The category of the sex_qualifier entity"""
+    )
+    sex_qualifier_label: Optional[str] = Field(default=None, description="""The name of the sex_qualifier entity""")
+    sex_qualifier_namespace: Optional[str] = Field(
+        default=None, description="""The namespace/prefix of the sex_qualifier entity"""
+    )
+    species_context_qualifier: Optional[str] = Field(
+        default=None,
+        description="""A context qualifier representing a species in which a relationship expressed in an association took place.""",
+    )
+    species_context_qualifier_category: Optional[str] = Field(
+        default=None, description="""The category of the species_context_qualifier entity"""
+    )
+    species_context_qualifier_label: Optional[str] = Field(
+        default=None, description="""The name of the species_context_qualifier entity"""
+    )
+    species_context_qualifier_namespace: Optional[str] = Field(
+        default=None, description="""The namespace/prefix of the species_context_qualifier entity"""
+    )
+    stage_qualifier: Optional[str] = Field(default=None)
+    stage_qualifier_category: Optional[str] = Field(
+        default=None, description="""The category of the stage_qualifier entity"""
+    )
+    stage_qualifier_label: Optional[str] = Field(default=None, description="""The name of the stage_qualifier entity""")
+    stage_qualifier_namespace: Optional[str] = Field(
+        default=None, description="""The namespace/prefix of the stage_qualifier entity"""
+    )
+    subject_category: Optional[str] = Field(default=None, description="""The category of the subject entity""")
+    subject_closure: Optional[list[str]] = Field(
+        default=None, description="""Field containing subject id and the ids of all of it's ancestors"""
+    )
+    subject_closure_label: Optional[list[str]] = Field(
+        default=None, description="""Field containing subject name and the names of all of it's ancestors"""
+    )
+    subject_label: Optional[str] = Field(default=None, description="""The name of the subject entity""")
+    subject_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the subject entity""")
+    subject_taxon: Optional[str] = Field(default=None)
+    subject_taxon_label: Optional[str] = Field(default=None)
+
+
+class Entity(ConfiguredBaseModel):
+    """
+    Post-closurize node shape (entity + closure expansion + per-predicate aggregations).
+    """
+
+    id: str = Field(default=...)
+    category: Optional[str] = Field(default=None)
+    name: Optional[str] = Field(default=None)
+    full_name: Optional[str] = Field(default=None, description="""The long form name of an entity""")
+    symbol: Optional[str] = Field(default=None)
+    description: Optional[str] = Field(default=None)
+    broad_synonym: Optional[list[str]] = Field(default=None, description="""A broader synonym for the entity""")
+    deprecated: Optional[bool] = Field(
+        default=None,
+        description="""A boolean flag indicating that an entity is no longer considered current or valid.""",
+    )
+    exact_synonym: Optional[list[str]] = Field(default=None, description="""An exact synonym for the entity""")
+    file_source: Optional[str] = Field(default=None, description="""Source file stem injected by koza at load time.""")
+    has_attribute: Optional[list[str]] = Field(default=None)
+    has_biological_sex: Optional[str] = Field(
+        default=None, description="""The biological sex of an individual entity."""
+    )
+    has_descendant: Optional[list[str]] = Field(
+        default=None, description="""A list of entity identifiers that are known to be descendants of this entity"""
+    )
+    has_descendant_count: Optional[int] = Field(
+        default=None,
+        description="""A count of the number of entities that are known to be descendants of this entity""",
+    )
+    has_descendant_label: Optional[list[str]] = Field(
+        default=None, description="""A list of entity labels that are known to be descendants of this entity"""
+    )
+    has_gene: Optional[list[str]] = Field(default=None)
+    has_phenotype: Optional[list[str]] = Field(
+        default=None, description="""A list of phenotype identifiers that are known to be associated with this entity"""
+    )
+    has_phenotype_closure: Optional[list[str]] = Field(
+        default=None,
+        description="""A list of phenotype identifiers that are known to be associated with this entity expanded to include all ancestors""",
+    )
+    has_phenotype_closure_label: Optional[list[str]] = Field(
+        default=None,
+        description="""A list of phenotype labels that are known to be associated with this entity expanded to include all ancestors""",
+    )
+    has_phenotype_count: Optional[int] = Field(
+        default=None,
+        description="""A count of the number of phenotypes that are known to be associated with this entity""",
+    )
+    has_phenotype_label: Optional[list[str]] = Field(
+        default=None, description="""A list of phenotype labels that are known to be associated with this entity"""
+    )
+    in_taxon: Optional[str] = Field(
+        default=None, description="""The biolink taxon that the entity is in the closure of."""
+    )
+    in_taxon_label: Optional[str] = Field(
+        default=None, description="""The label of the biolink taxon that the entity is in the closure of."""
+    )
+    iri: Optional[str] = Field(default=None)
+    namespace: Optional[str] = Field(
+        default=None, description="""The namespace/prefix portion of this entity's identifier"""
+    )
+    narrow_synonym: Optional[list[str]] = Field(default=None, description="""A narrower synonym for the entity""")
+    provided_by: Optional[str] = Field(default=None)
+    related_synonym: Optional[list[str]] = Field(default=None, description="""A related synonym for the entity""")
+    same_as: Optional[list[str]] = Field(default=None)
+    subsets: Optional[list[str]] = Field(default=None, description="""A list of subsets that the entity belongs to""")
+    synonym: Optional[list[str]] = Field(default=None)
+    synonyms: Optional[str] = Field(default=None)
+    type: Optional[str] = Field(
+        default=None, description="""The type of the entity (e.g. sequence onotology type for genes etc)"""
+    )
+    xref: Optional[list[str]] = Field(default=None)
 
 
 class AssociationCountList(ConfiguredBaseModel):
     """
     Container class for a list of association counts
     """
-    items: list[AssociationCount] = Field(default=..., description="""A collection of items, with the type to be overriden by slot_usage""")
+
+    items: list[AssociationCount] = Field(
+        default=..., description="""A collection of items, with the type to be overriden by slot_usage"""
+    )
 
 
 class CompactAssociation(ConfiguredBaseModel):
@@ -332,184 +447,396 @@ class AssociationTypeMapping(ConfiguredBaseModel):
     """
     A data class to hold the necessary information to produce association type counts for given entities with appropriate directional labels. Each match criterion (category, predicate, subject_category, object_category, primary_knowledge_source, provided_by) is an optional list; values within a single criterion are OR'd, and criteria are AND'd together. An omitted criterion places no constraint on that field.
     """
-    key: Optional[str] = Field(default=None, description="""A stable identifier for this association-type section, used to accumulate counts and as the table/section key. Defaults to the (single) category when not set.""")
-    match_criteria: Optional[MatchCriteriaEnum] = Field(default=None, description="""Which declared fields are enforced as Solr filters when selecting an association type. Defaults to `category`, the behaviour every legacy section relies on. Set explicitly rather than inferred from the presence of a key, so that adding a key for URL or UI reasons cannot silently change which edges a section counts.""")
-    subject_label: Optional[str] = Field(default=None, description="""A label to describe the subjects of the association type as a whole for use in the UI""")
-    object_label: Optional[str] = Field(default=None, description="""A label to describe the objects of the association type as a whole for use in the UI""")
-    symmetric: bool = Field(default=False, description="""Whether the association type is symmetric, meaning that the subject and object labels should be interchangeable""")
-    category: Optional[list[str]] = Field(default=None, description="""The biolink association category/categories to match (OR'd)""")
+
+    key: Optional[str] = Field(
+        default=None,
+        description="""A stable identifier for this association-type section, used to accumulate counts and as the table/section key. Defaults to the (single) category when not set.""",
+    )
+    match_criteria: Optional[MatchCriteriaEnum] = Field(
+        default=None,
+        description="""Which declared fields are enforced as Solr filters when selecting an association type. Defaults to `category`, the behaviour every legacy section relies on. Set explicitly rather than inferred from the presence of a key, so that adding a key for URL or UI reasons cannot silently change which edges a section counts.""",
+    )
+    subject_label: Optional[str] = Field(
+        default=None,
+        description="""A label to describe the subjects of the association type as a whole for use in the UI""",
+    )
+    object_label: Optional[str] = Field(
+        default=None,
+        description="""A label to describe the objects of the association type as a whole for use in the UI""",
+    )
+    symmetric: bool = Field(
+        default=False,
+        description="""Whether the association type is symmetric, meaning that the subject and object labels should be interchangeable""",
+    )
+    category: Optional[list[str]] = Field(
+        default=None, description="""The biolink association category/categories to match (OR'd)"""
+    )
     predicate: Optional[list[str]] = Field(default=None, description="""The predicate(s) to match (OR'd)""")
-    subject_category: Optional[list[str]] = Field(default=None, description="""The biolink category/categories of entities in the subject position of this association type (OR'd)""")
-    object_category: Optional[list[str]] = Field(default=None, description="""The biolink category/categories of entities in the object position of this association type (OR'd)""")
-    primary_knowledge_source: Optional[list[str]] = Field(default=None, description="""The primary knowledge source(s) to match (OR'd)""")
-    provided_by: Optional[list[str]] = Field(default=None, description="""The provided_by ingest source(s) to match (OR'd)""")
+    subject_category: Optional[list[str]] = Field(
+        default=None,
+        description="""The biolink category/categories of entities in the subject position of this association type (OR'd)""",
+    )
+    object_category: Optional[list[str]] = Field(
+        default=None,
+        description="""The biolink category/categories of entities in the object position of this association type (OR'd)""",
+    )
+    primary_knowledge_source: Optional[list[str]] = Field(
+        default=None, description="""The primary knowledge source(s) to match (OR'd)"""
+    )
+    provided_by: Optional[list[str]] = Field(
+        default=None, description="""The provided_by ingest source(s) to match (OR'd)"""
+    )
 
 
 class ExpandedAssociation(Association):
     """
     Association decorated with app-computed expansions returned by the API: ExpandedCurie links for provided_by/has_evidence/publications, optional Solr search-result highlighting, and other app-only fields that aren't stored in the KG. The bare imported `Association` represents only what's in Solr; every endpoint returns at least an ExpandedAssociation. Further context-specific decorations live on subclasses (e.g. DirectionalAssociation adds direction relative to an anchor entity).
     """
-    provided_by_link: Optional[ExpandedCurie] = Field(default=None, description="""A link to the docs for the knowledge source that provided the node/edge.""")
-    has_evidence_links: Optional[list[ExpandedCurie]] = Field(default=None, description="""List of ExpandedCuries with id and url for evidence""")
-    publications_links: Optional[list[ExpandedCurie]] = Field(default=None, description="""List of ExpandedCuries with id and url for publications""")
-    supporting_text: Optional[list[str]] = Field(default=None, description="""The text in a publication that supports the assertion in the association.""")
-    highlighting: Optional[AssociationHighlighting] = Field(default=None, description="""Optional highlighting information for search results""")
+
+    provided_by_link: Optional[ExpandedCurie] = Field(
+        default=None, description="""A link to the docs for the knowledge source that provided the node/edge."""
+    )
+    has_evidence_links: Optional[list[ExpandedCurie]] = Field(
+        default=None, description="""List of ExpandedCuries with id and url for evidence"""
+    )
+    publications_links: Optional[list[ExpandedCurie]] = Field(
+        default=None, description="""List of ExpandedCuries with id and url for publications"""
+    )
+    supporting_text: Optional[list[str]] = Field(
+        default=None, description="""The text in a publication that supports the assertion in the association."""
+    )
+    highlighting: Optional[AssociationHighlighting] = Field(
+        default=None, description="""Optional highlighting information for search results"""
+    )
     id: str = Field(default=...)
-    predicate: str = Field(default=...)
     category: Optional[str] = Field(default=None)
-    agent_type: str = Field(default=..., description="""Describes the high-level category of agent who originally generated a  statement of knowledge or other type of information.""")
-    aggregator_knowledge_source: Optional[list[str]] = Field(default=None)
-    knowledge_level: str = Field(default=..., description="""Describes the level of knowledge expressed in a statement, based on the reasoning or analysis methods used to generate the statement, or the scope or specificity of what the statement expresses to be true.""")
-    primary_knowledge_source: Optional[str] = Field(default=None)
-    file_source: Optional[str] = Field(default=None, description="""Source file stem injected by koza at load time.""")
-    provided_by: Optional[str] = Field(default=None)
-    publications: Optional[list[str]] = Field(default=None)
-    qualifiers: Optional[list[str]] = Field(default=None)
-    has_evidence: Optional[list[str]] = Field(default=None)
-    frequency_qualifier: Optional[str] = Field(default=None)
-    has_count: Optional[int] = Field(default=None, description="""count of out of has_total representing a frequency""")
-    has_percentage: Optional[float] = Field(default=None, description="""percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly, rounded to the integer level""")
-    has_quotient: Optional[float] = Field(default=None, description="""quotient, which should be 1/100 of has_percentage""")
-    has_total: Optional[int] = Field(default=None, description="""total, devided by has_count, representing a frequency""")
-    negated: Optional[bool] = Field(default=None)
-    onset_qualifier: Optional[str] = Field(default=None)
-    sex_qualifier: Optional[str] = Field(default=None)
-    original_predicate: Optional[str] = Field(default=None, description="""used to hold the original relation/predicate that an external knowledge source uses before transformation to match the biolink-model specification.""")
-    disease_context_qualifier: Optional[str] = Field(default=None, description="""A context qualifier representing a disease or condition in which a relationship expressed in an association took place.""")
-    has_attribute: Optional[list[str]] = Field(default=None)
-    object_aspect_qualifier: Optional[str] = Field(default=None, description="""Composes with the core concept (+ qualifier) to describe new concepts of a more specific kind. The aspect qualifier represents an attribute of the object that is the focus of the relationship (e.g. for an association where the object is a gene, this might be the expression, abundance, activity, or stability of the gene).""")
-    FDA_adverse_event_level: Optional[str] = Field(default=None, description="""The level of FDA adverse event reporting for a drug-condition association.""")
-    species_context_qualifier: Optional[str] = Field(default=None, description="""A context qualifier representing a species in which a relationship expressed in an association took place.""")
-    stage_qualifier: Optional[str] = Field(default=None)
-    qualifier: Optional[str] = Field(default=None)
-    object_specialization_qualifier: Optional[str] = Field(default=None, description="""A qualifier that composes with a core subject/object concept to define a more specific version of the object concept, specifically using an ontology term that is not a subclass or descendant of the core concept and in the vast majority of cases, is of a different ontological namespace than the category or namespace of the object identifier.""")
     subject: str = Field(default=...)
+    predicate: str = Field(default=...)
     object: str = Field(default=...)
-    original_subject: Optional[str] = Field(default=None)
-    original_object: Optional[str] = Field(default=None)
-    evidence_count: Optional[int] = Field(default=None, description="""count of supporting documents, evidence codes, and sources supplying evidence""")
-    grouping_key: Optional[str] = Field(default=None, description="""A concatenation of fields used to group associations with the same essential/defining properties""")
-    subject_label: Optional[str] = Field(default=None, description="""The name of the subject entity""")
-    subject_category: Optional[str] = Field(default=None, description="""The category of the subject entity""")
-    subject_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the subject entity""")
-    subject_closure: Optional[list[str]] = Field(default=None, description="""Field containing subject id and the ids of all of it's ancestors""")
-    subject_closure_label: Optional[list[str]] = Field(default=None, description="""Field containing subject name and the names of all of it's ancestors""")
-    subject_taxon: Optional[str] = Field(default=None)
-    subject_taxon_label: Optional[str] = Field(default=None)
-    object_label: Optional[str] = Field(default=None, description="""The name of the object entity""")
+    FDA_adverse_event_level: Optional[str] = Field(
+        default=None, description="""The level of FDA adverse event reporting for a drug-condition association."""
+    )
+    agent_type: str = Field(
+        default=...,
+        description="""Describes the high-level category of agent who originally generated a  statement of knowledge or other type of information.""",
+    )
+    aggregator_knowledge_source: Optional[list[str]] = Field(default=None)
+    disease_context_qualifier: Optional[str] = Field(
+        default=None,
+        description="""A context qualifier representing a disease or condition in which a relationship expressed in an association took place.""",
+    )
+    disease_context_qualifier_category: Optional[str] = Field(
+        default=None, description="""The category of the disease_context_qualifier entity"""
+    )
+    disease_context_qualifier_closure: Optional[list[str]] = Field(
+        default=None,
+        description="""Field containing disease_context_qualifier id and the ids of all of it's ancestors""",
+    )
+    disease_context_qualifier_closure_label: Optional[list[str]] = Field(
+        default=None,
+        description="""Field containing disease_context_qualifier name and the names of all of it's ancestors""",
+    )
+    disease_context_qualifier_label: Optional[str] = Field(
+        default=None, description="""The name of the disease_context_qualifier entity"""
+    )
+    disease_context_qualifier_namespace: Optional[str] = Field(
+        default=None, description="""The namespace/prefix of the disease_context_qualifier entity"""
+    )
+    evidence_count: Optional[int] = Field(
+        default=None, description="""count of supporting documents, evidence codes, and sources supplying evidence"""
+    )
+    file_source: Optional[str] = Field(default=None, description="""Source file stem injected by koza at load time.""")
+    frequency_qualifier: Optional[str] = Field(default=None)
+    frequency_qualifier_category: Optional[str] = Field(
+        default=None, description="""The category of the frequency_qualifier entity"""
+    )
+    frequency_qualifier_label: Optional[str] = Field(
+        default=None, description="""The name of the frequency_qualifier entity"""
+    )
+    frequency_qualifier_namespace: Optional[str] = Field(
+        default=None, description="""The namespace/prefix of the frequency_qualifier entity"""
+    )
+    grouping_key: Optional[str] = Field(
+        default=None,
+        description="""A concatenation of fields used to group associations with the same essential/defining properties""",
+    )
+    has_attribute: Optional[list[str]] = Field(default=None)
+    has_count: Optional[int] = Field(default=None, description="""count of out of has_total representing a frequency""")
+    has_evidence: Optional[list[str]] = Field(default=None)
+    has_percentage: Optional[float] = Field(
+        default=None,
+        description="""percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly, rounded to the integer level""",
+    )
+    has_quotient: Optional[float] = Field(
+        default=None, description="""quotient, which should be 1/100 of has_percentage"""
+    )
+    has_total: Optional[int] = Field(
+        default=None, description="""total, devided by has_count, representing a frequency"""
+    )
+    knowledge_level: str = Field(
+        default=...,
+        description="""Describes the level of knowledge expressed in a statement, based on the reasoning or analysis methods used to generate the statement, or the scope or specificity of what the statement expresses to be true.""",
+    )
+    negated: Optional[bool] = Field(default=None)
+    object_aspect_qualifier: Optional[str] = Field(
+        default=None,
+        description="""Composes with the core concept (+ qualifier) to describe new concepts of a more specific kind. The aspect qualifier represents an attribute of the object that is the focus of the relationship (e.g. for an association where the object is a gene, this might be the expression, abundance, activity, or stability of the gene).""",
+    )
     object_category: Optional[str] = Field(default=None, description="""The category of the object entity""")
+    object_closure: Optional[list[str]] = Field(
+        default=None, description="""Field containing object id and the ids of all of it's ancestors"""
+    )
+    object_closure_label: Optional[list[str]] = Field(
+        default=None, description="""Field containing object name and the names of all of it's ancestors"""
+    )
+    object_label: Optional[str] = Field(default=None, description="""The name of the object entity""")
     object_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the object entity""")
-    object_closure: Optional[list[str]] = Field(default=None, description="""Field containing object id and the ids of all of it's ancestors""")
-    object_closure_label: Optional[list[str]] = Field(default=None, description="""Field containing object name and the names of all of it's ancestors""")
+    object_specialization_qualifier: Optional[str] = Field(
+        default=None,
+        description="""A qualifier that composes with a core subject/object concept to define a more specific version of the object concept, specifically using an ontology term that is not a subclass or descendant of the core concept and in the vast majority of cases, is of a different ontological namespace than the category or namespace of the object identifier.""",
+    )
     object_taxon: Optional[str] = Field(default=None)
     object_taxon_label: Optional[str] = Field(default=None)
-    disease_context_qualifier_label: Optional[str] = Field(default=None, description="""The name of the disease_context_qualifier entity""")
-    disease_context_qualifier_category: Optional[str] = Field(default=None, description="""The category of the disease_context_qualifier entity""")
-    disease_context_qualifier_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the disease_context_qualifier entity""")
-    disease_context_qualifier_closure: Optional[list[str]] = Field(default=None, description="""Field containing disease_context_qualifier id and the ids of all of it's ancestors""")
-    disease_context_qualifier_closure_label: Optional[list[str]] = Field(default=None, description="""Field containing disease_context_qualifier name and the names of all of it's ancestors""")
-    species_context_qualifier_label: Optional[str] = Field(default=None, description="""The name of the species_context_qualifier entity""")
-    species_context_qualifier_category: Optional[str] = Field(default=None, description="""The category of the species_context_qualifier entity""")
-    species_context_qualifier_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the species_context_qualifier entity""")
-    stage_qualifier_label: Optional[str] = Field(default=None, description="""The name of the stage_qualifier entity""")
-    stage_qualifier_category: Optional[str] = Field(default=None, description="""The category of the stage_qualifier entity""")
-    stage_qualifier_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the stage_qualifier entity""")
-    sex_qualifier_label: Optional[str] = Field(default=None, description="""The name of the sex_qualifier entity""")
-    sex_qualifier_category: Optional[str] = Field(default=None, description="""The category of the sex_qualifier entity""")
-    sex_qualifier_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the sex_qualifier entity""")
+    onset_qualifier: Optional[str] = Field(default=None)
+    onset_qualifier_category: Optional[str] = Field(
+        default=None, description="""The category of the onset_qualifier entity"""
+    )
     onset_qualifier_label: Optional[str] = Field(default=None, description="""The name of the onset_qualifier entity""")
-    onset_qualifier_category: Optional[str] = Field(default=None, description="""The category of the onset_qualifier entity""")
-    onset_qualifier_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the onset_qualifier entity""")
-    frequency_qualifier_label: Optional[str] = Field(default=None, description="""The name of the frequency_qualifier entity""")
-    frequency_qualifier_category: Optional[str] = Field(default=None, description="""The category of the frequency_qualifier entity""")
-    frequency_qualifier_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the frequency_qualifier entity""")
+    onset_qualifier_namespace: Optional[str] = Field(
+        default=None, description="""The namespace/prefix of the onset_qualifier entity"""
+    )
+    original_object: Optional[str] = Field(default=None)
+    original_predicate: Optional[str] = Field(
+        default=None,
+        description="""used to hold the original relation/predicate that an external knowledge source uses before transformation to match the biolink-model specification.""",
+    )
+    original_subject: Optional[str] = Field(default=None)
+    primary_knowledge_source: Optional[str] = Field(default=None)
+    provided_by: Optional[str] = Field(default=None)
+    publications: Optional[list[str]] = Field(default=None)
+    qualifier: Optional[str] = Field(default=None)
+    qualifiers: Optional[list[str]] = Field(default=None)
+    sex_qualifier: Optional[str] = Field(default=None)
+    sex_qualifier_category: Optional[str] = Field(
+        default=None, description="""The category of the sex_qualifier entity"""
+    )
+    sex_qualifier_label: Optional[str] = Field(default=None, description="""The name of the sex_qualifier entity""")
+    sex_qualifier_namespace: Optional[str] = Field(
+        default=None, description="""The namespace/prefix of the sex_qualifier entity"""
+    )
+    species_context_qualifier: Optional[str] = Field(
+        default=None,
+        description="""A context qualifier representing a species in which a relationship expressed in an association took place.""",
+    )
+    species_context_qualifier_category: Optional[str] = Field(
+        default=None, description="""The category of the species_context_qualifier entity"""
+    )
+    species_context_qualifier_label: Optional[str] = Field(
+        default=None, description="""The name of the species_context_qualifier entity"""
+    )
+    species_context_qualifier_namespace: Optional[str] = Field(
+        default=None, description="""The namespace/prefix of the species_context_qualifier entity"""
+    )
+    stage_qualifier: Optional[str] = Field(default=None)
+    stage_qualifier_category: Optional[str] = Field(
+        default=None, description="""The category of the stage_qualifier entity"""
+    )
+    stage_qualifier_label: Optional[str] = Field(default=None, description="""The name of the stage_qualifier entity""")
+    stage_qualifier_namespace: Optional[str] = Field(
+        default=None, description="""The namespace/prefix of the stage_qualifier entity"""
+    )
+    subject_category: Optional[str] = Field(default=None, description="""The category of the subject entity""")
+    subject_closure: Optional[list[str]] = Field(
+        default=None, description="""Field containing subject id and the ids of all of it's ancestors"""
+    )
+    subject_closure_label: Optional[list[str]] = Field(
+        default=None, description="""Field containing subject name and the names of all of it's ancestors"""
+    )
+    subject_label: Optional[str] = Field(default=None, description="""The name of the subject entity""")
+    subject_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the subject entity""")
+    subject_taxon: Optional[str] = Field(default=None)
+    subject_taxon_label: Optional[str] = Field(default=None)
 
 
 class DirectionalAssociation(ExpandedAssociation):
     """
     An association that gives it's direction relative to a specified entity
     """
-    direction: AssociationDirectionEnum = Field(default=..., description="""The directionality of the association relative to a given entity for an association_count. If the entity is the subject or in the subject closure, the direction is forwards, if it is the object or in the object closure, the direction is backwards.""")
-    provided_by_link: Optional[ExpandedCurie] = Field(default=None, description="""A link to the docs for the knowledge source that provided the node/edge.""")
-    has_evidence_links: Optional[list[ExpandedCurie]] = Field(default=None, description="""List of ExpandedCuries with id and url for evidence""")
-    publications_links: Optional[list[ExpandedCurie]] = Field(default=None, description="""List of ExpandedCuries with id and url for publications""")
-    supporting_text: Optional[list[str]] = Field(default=None, description="""The text in a publication that supports the assertion in the association.""")
-    highlighting: Optional[AssociationHighlighting] = Field(default=None, description="""Optional highlighting information for search results""")
+
+    direction: AssociationDirectionEnum = Field(
+        default=...,
+        description="""The directionality of the association relative to a given entity for an association_count. If the entity is the subject or in the subject closure, the direction is forwards, if it is the object or in the object closure, the direction is backwards.""",
+    )
+    provided_by_link: Optional[ExpandedCurie] = Field(
+        default=None, description="""A link to the docs for the knowledge source that provided the node/edge."""
+    )
+    has_evidence_links: Optional[list[ExpandedCurie]] = Field(
+        default=None, description="""List of ExpandedCuries with id and url for evidence"""
+    )
+    publications_links: Optional[list[ExpandedCurie]] = Field(
+        default=None, description="""List of ExpandedCuries with id and url for publications"""
+    )
+    supporting_text: Optional[list[str]] = Field(
+        default=None, description="""The text in a publication that supports the assertion in the association."""
+    )
+    highlighting: Optional[AssociationHighlighting] = Field(
+        default=None, description="""Optional highlighting information for search results"""
+    )
     id: str = Field(default=...)
-    predicate: str = Field(default=...)
     category: Optional[str] = Field(default=None)
-    agent_type: str = Field(default=..., description="""Describes the high-level category of agent who originally generated a  statement of knowledge or other type of information.""")
-    aggregator_knowledge_source: Optional[list[str]] = Field(default=None)
-    knowledge_level: str = Field(default=..., description="""Describes the level of knowledge expressed in a statement, based on the reasoning or analysis methods used to generate the statement, or the scope or specificity of what the statement expresses to be true.""")
-    primary_knowledge_source: Optional[str] = Field(default=None)
-    file_source: Optional[str] = Field(default=None, description="""Source file stem injected by koza at load time.""")
-    provided_by: Optional[str] = Field(default=None)
-    publications: Optional[list[str]] = Field(default=None)
-    qualifiers: Optional[list[str]] = Field(default=None)
-    has_evidence: Optional[list[str]] = Field(default=None)
-    frequency_qualifier: Optional[str] = Field(default=None)
-    has_count: Optional[int] = Field(default=None, description="""count of out of has_total representing a frequency""")
-    has_percentage: Optional[float] = Field(default=None, description="""percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly, rounded to the integer level""")
-    has_quotient: Optional[float] = Field(default=None, description="""quotient, which should be 1/100 of has_percentage""")
-    has_total: Optional[int] = Field(default=None, description="""total, devided by has_count, representing a frequency""")
-    negated: Optional[bool] = Field(default=None)
-    onset_qualifier: Optional[str] = Field(default=None)
-    sex_qualifier: Optional[str] = Field(default=None)
-    original_predicate: Optional[str] = Field(default=None, description="""used to hold the original relation/predicate that an external knowledge source uses before transformation to match the biolink-model specification.""")
-    disease_context_qualifier: Optional[str] = Field(default=None, description="""A context qualifier representing a disease or condition in which a relationship expressed in an association took place.""")
-    has_attribute: Optional[list[str]] = Field(default=None)
-    object_aspect_qualifier: Optional[str] = Field(default=None, description="""Composes with the core concept (+ qualifier) to describe new concepts of a more specific kind. The aspect qualifier represents an attribute of the object that is the focus of the relationship (e.g. for an association where the object is a gene, this might be the expression, abundance, activity, or stability of the gene).""")
-    FDA_adverse_event_level: Optional[str] = Field(default=None, description="""The level of FDA adverse event reporting for a drug-condition association.""")
-    species_context_qualifier: Optional[str] = Field(default=None, description="""A context qualifier representing a species in which a relationship expressed in an association took place.""")
-    stage_qualifier: Optional[str] = Field(default=None)
-    qualifier: Optional[str] = Field(default=None)
-    object_specialization_qualifier: Optional[str] = Field(default=None, description="""A qualifier that composes with a core subject/object concept to define a more specific version of the object concept, specifically using an ontology term that is not a subclass or descendant of the core concept and in the vast majority of cases, is of a different ontological namespace than the category or namespace of the object identifier.""")
     subject: str = Field(default=...)
+    predicate: str = Field(default=...)
     object: str = Field(default=...)
-    original_subject: Optional[str] = Field(default=None)
-    original_object: Optional[str] = Field(default=None)
-    evidence_count: Optional[int] = Field(default=None, description="""count of supporting documents, evidence codes, and sources supplying evidence""")
-    grouping_key: Optional[str] = Field(default=None, description="""A concatenation of fields used to group associations with the same essential/defining properties""")
-    subject_label: Optional[str] = Field(default=None, description="""The name of the subject entity""")
-    subject_category: Optional[str] = Field(default=None, description="""The category of the subject entity""")
-    subject_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the subject entity""")
-    subject_closure: Optional[list[str]] = Field(default=None, description="""Field containing subject id and the ids of all of it's ancestors""")
-    subject_closure_label: Optional[list[str]] = Field(default=None, description="""Field containing subject name and the names of all of it's ancestors""")
-    subject_taxon: Optional[str] = Field(default=None)
-    subject_taxon_label: Optional[str] = Field(default=None)
-    object_label: Optional[str] = Field(default=None, description="""The name of the object entity""")
+    FDA_adverse_event_level: Optional[str] = Field(
+        default=None, description="""The level of FDA adverse event reporting for a drug-condition association."""
+    )
+    agent_type: str = Field(
+        default=...,
+        description="""Describes the high-level category of agent who originally generated a  statement of knowledge or other type of information.""",
+    )
+    aggregator_knowledge_source: Optional[list[str]] = Field(default=None)
+    disease_context_qualifier: Optional[str] = Field(
+        default=None,
+        description="""A context qualifier representing a disease or condition in which a relationship expressed in an association took place.""",
+    )
+    disease_context_qualifier_category: Optional[str] = Field(
+        default=None, description="""The category of the disease_context_qualifier entity"""
+    )
+    disease_context_qualifier_closure: Optional[list[str]] = Field(
+        default=None,
+        description="""Field containing disease_context_qualifier id and the ids of all of it's ancestors""",
+    )
+    disease_context_qualifier_closure_label: Optional[list[str]] = Field(
+        default=None,
+        description="""Field containing disease_context_qualifier name and the names of all of it's ancestors""",
+    )
+    disease_context_qualifier_label: Optional[str] = Field(
+        default=None, description="""The name of the disease_context_qualifier entity"""
+    )
+    disease_context_qualifier_namespace: Optional[str] = Field(
+        default=None, description="""The namespace/prefix of the disease_context_qualifier entity"""
+    )
+    evidence_count: Optional[int] = Field(
+        default=None, description="""count of supporting documents, evidence codes, and sources supplying evidence"""
+    )
+    file_source: Optional[str] = Field(default=None, description="""Source file stem injected by koza at load time.""")
+    frequency_qualifier: Optional[str] = Field(default=None)
+    frequency_qualifier_category: Optional[str] = Field(
+        default=None, description="""The category of the frequency_qualifier entity"""
+    )
+    frequency_qualifier_label: Optional[str] = Field(
+        default=None, description="""The name of the frequency_qualifier entity"""
+    )
+    frequency_qualifier_namespace: Optional[str] = Field(
+        default=None, description="""The namespace/prefix of the frequency_qualifier entity"""
+    )
+    grouping_key: Optional[str] = Field(
+        default=None,
+        description="""A concatenation of fields used to group associations with the same essential/defining properties""",
+    )
+    has_attribute: Optional[list[str]] = Field(default=None)
+    has_count: Optional[int] = Field(default=None, description="""count of out of has_total representing a frequency""")
+    has_evidence: Optional[list[str]] = Field(default=None)
+    has_percentage: Optional[float] = Field(
+        default=None,
+        description="""percentage, which may be calculated from has_count and has_total, as 100 * quotient or provided directly, rounded to the integer level""",
+    )
+    has_quotient: Optional[float] = Field(
+        default=None, description="""quotient, which should be 1/100 of has_percentage"""
+    )
+    has_total: Optional[int] = Field(
+        default=None, description="""total, devided by has_count, representing a frequency"""
+    )
+    knowledge_level: str = Field(
+        default=...,
+        description="""Describes the level of knowledge expressed in a statement, based on the reasoning or analysis methods used to generate the statement, or the scope or specificity of what the statement expresses to be true.""",
+    )
+    negated: Optional[bool] = Field(default=None)
+    object_aspect_qualifier: Optional[str] = Field(
+        default=None,
+        description="""Composes with the core concept (+ qualifier) to describe new concepts of a more specific kind. The aspect qualifier represents an attribute of the object that is the focus of the relationship (e.g. for an association where the object is a gene, this might be the expression, abundance, activity, or stability of the gene).""",
+    )
     object_category: Optional[str] = Field(default=None, description="""The category of the object entity""")
+    object_closure: Optional[list[str]] = Field(
+        default=None, description="""Field containing object id and the ids of all of it's ancestors"""
+    )
+    object_closure_label: Optional[list[str]] = Field(
+        default=None, description="""Field containing object name and the names of all of it's ancestors"""
+    )
+    object_label: Optional[str] = Field(default=None, description="""The name of the object entity""")
     object_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the object entity""")
-    object_closure: Optional[list[str]] = Field(default=None, description="""Field containing object id and the ids of all of it's ancestors""")
-    object_closure_label: Optional[list[str]] = Field(default=None, description="""Field containing object name and the names of all of it's ancestors""")
+    object_specialization_qualifier: Optional[str] = Field(
+        default=None,
+        description="""A qualifier that composes with a core subject/object concept to define a more specific version of the object concept, specifically using an ontology term that is not a subclass or descendant of the core concept and in the vast majority of cases, is of a different ontological namespace than the category or namespace of the object identifier.""",
+    )
     object_taxon: Optional[str] = Field(default=None)
     object_taxon_label: Optional[str] = Field(default=None)
-    disease_context_qualifier_label: Optional[str] = Field(default=None, description="""The name of the disease_context_qualifier entity""")
-    disease_context_qualifier_category: Optional[str] = Field(default=None, description="""The category of the disease_context_qualifier entity""")
-    disease_context_qualifier_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the disease_context_qualifier entity""")
-    disease_context_qualifier_closure: Optional[list[str]] = Field(default=None, description="""Field containing disease_context_qualifier id and the ids of all of it's ancestors""")
-    disease_context_qualifier_closure_label: Optional[list[str]] = Field(default=None, description="""Field containing disease_context_qualifier name and the names of all of it's ancestors""")
-    species_context_qualifier_label: Optional[str] = Field(default=None, description="""The name of the species_context_qualifier entity""")
-    species_context_qualifier_category: Optional[str] = Field(default=None, description="""The category of the species_context_qualifier entity""")
-    species_context_qualifier_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the species_context_qualifier entity""")
-    stage_qualifier_label: Optional[str] = Field(default=None, description="""The name of the stage_qualifier entity""")
-    stage_qualifier_category: Optional[str] = Field(default=None, description="""The category of the stage_qualifier entity""")
-    stage_qualifier_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the stage_qualifier entity""")
-    sex_qualifier_label: Optional[str] = Field(default=None, description="""The name of the sex_qualifier entity""")
-    sex_qualifier_category: Optional[str] = Field(default=None, description="""The category of the sex_qualifier entity""")
-    sex_qualifier_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the sex_qualifier entity""")
+    onset_qualifier: Optional[str] = Field(default=None)
+    onset_qualifier_category: Optional[str] = Field(
+        default=None, description="""The category of the onset_qualifier entity"""
+    )
     onset_qualifier_label: Optional[str] = Field(default=None, description="""The name of the onset_qualifier entity""")
-    onset_qualifier_category: Optional[str] = Field(default=None, description="""The category of the onset_qualifier entity""")
-    onset_qualifier_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the onset_qualifier entity""")
-    frequency_qualifier_label: Optional[str] = Field(default=None, description="""The name of the frequency_qualifier entity""")
-    frequency_qualifier_category: Optional[str] = Field(default=None, description="""The category of the frequency_qualifier entity""")
-    frequency_qualifier_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the frequency_qualifier entity""")
+    onset_qualifier_namespace: Optional[str] = Field(
+        default=None, description="""The namespace/prefix of the onset_qualifier entity"""
+    )
+    original_object: Optional[str] = Field(default=None)
+    original_predicate: Optional[str] = Field(
+        default=None,
+        description="""used to hold the original relation/predicate that an external knowledge source uses before transformation to match the biolink-model specification.""",
+    )
+    original_subject: Optional[str] = Field(default=None)
+    primary_knowledge_source: Optional[str] = Field(default=None)
+    provided_by: Optional[str] = Field(default=None)
+    publications: Optional[list[str]] = Field(default=None)
+    qualifier: Optional[str] = Field(default=None)
+    qualifiers: Optional[list[str]] = Field(default=None)
+    sex_qualifier: Optional[str] = Field(default=None)
+    sex_qualifier_category: Optional[str] = Field(
+        default=None, description="""The category of the sex_qualifier entity"""
+    )
+    sex_qualifier_label: Optional[str] = Field(default=None, description="""The name of the sex_qualifier entity""")
+    sex_qualifier_namespace: Optional[str] = Field(
+        default=None, description="""The namespace/prefix of the sex_qualifier entity"""
+    )
+    species_context_qualifier: Optional[str] = Field(
+        default=None,
+        description="""A context qualifier representing a species in which a relationship expressed in an association took place.""",
+    )
+    species_context_qualifier_category: Optional[str] = Field(
+        default=None, description="""The category of the species_context_qualifier entity"""
+    )
+    species_context_qualifier_label: Optional[str] = Field(
+        default=None, description="""The name of the species_context_qualifier entity"""
+    )
+    species_context_qualifier_namespace: Optional[str] = Field(
+        default=None, description="""The namespace/prefix of the species_context_qualifier entity"""
+    )
+    stage_qualifier: Optional[str] = Field(default=None)
+    stage_qualifier_category: Optional[str] = Field(
+        default=None, description="""The category of the stage_qualifier entity"""
+    )
+    stage_qualifier_label: Optional[str] = Field(default=None, description="""The name of the stage_qualifier entity""")
+    stage_qualifier_namespace: Optional[str] = Field(
+        default=None, description="""The namespace/prefix of the stage_qualifier entity"""
+    )
+    subject_category: Optional[str] = Field(default=None, description="""The category of the subject entity""")
+    subject_closure: Optional[list[str]] = Field(
+        default=None, description="""Field containing subject id and the ids of all of it's ancestors"""
+    )
+    subject_closure_label: Optional[list[str]] = Field(
+        default=None, description="""Field containing subject name and the names of all of it's ancestors"""
+    )
+    subject_label: Optional[str] = Field(default=None, description="""The name of the subject entity""")
+    subject_namespace: Optional[str] = Field(default=None, description="""The namespace/prefix of the subject entity""")
+    subject_taxon: Optional[str] = Field(default=None)
+    subject_taxon_label: Optional[str] = Field(default=None)
 
 
 class ExpandedCurie(ConfiguredBaseModel):
     """
     A curie bundled along with its expanded url
     """
+
     id: str = Field(default=...)
     url: Optional[str] = Field(default=None)
 
@@ -520,22 +847,33 @@ class FacetValue(ConfiguredBaseModel):
 
 
 class AssociationCount(FacetValue):
-    key: Optional[str] = Field(default=None, description="""Stable section identifier used as the frontend section key and the association-table key. Equals the category for plain single-category sections.""")
+    key: Optional[str] = Field(
+        default=None,
+        description="""Stable section identifier used as the frontend section key and the association-table key. Equals the category for plain single-category sections.""",
+    )
     category: Optional[str] = Field(default=None)
-    count_direct: Optional[int] = Field(default=None, description="""Count of direct associations (no closure/descendants)""")
-    count_with_orthologs: Optional[int] = Field(default=None, description="""Count including associations from orthologous genes""")
+    count_direct: Optional[int] = Field(
+        default=None, description="""Count of direct associations (no closure/descendants)"""
+    )
+    count_with_orthologs: Optional[int] = Field(
+        default=None, description="""Count including associations from orthologous genes"""
+    )
     label: str = Field(default=...)
     count: Optional[int] = Field(default=None, description="""count of documents""")
 
 
 class FacetField(ConfiguredBaseModel):
     label: str = Field(default=...)
-    facet_values: Optional[list[FacetValue]] = Field(default=None, description="""Collection of FacetValue label/value instances belonging to a FacetField""")
+    facet_values: Optional[list[FacetValue]] = Field(
+        default=None, description="""Collection of FacetValue label/value instances belonging to a FacetField"""
+    )
 
 
 class HistoPheno(ConfiguredBaseModel):
     id: str = Field(default=...)
-    items: list[HistoBin] = Field(default=..., description="""A collection of items, with the type to be overriden by slot_usage""")
+    items: list[HistoBin] = Field(
+        default=..., description="""A collection of items, with the type to be overriden by slot_usage"""
+    )
 
 
 class HistoBin(FacetValue):
@@ -548,6 +886,7 @@ class Mapping(ConfiguredBaseModel):
     """
     A minimal class to hold a SSSOM mapping
     """
+
     subject_id: str = Field(default=...)
     subject_label: Optional[str] = Field(default=None, description="""The name of the subject entity""")
     predicate_id: str = Field(default=...)
@@ -561,59 +900,112 @@ class Node(Entity):
     """
     UI container class extending Entity with additional information
     """
+
     uri: Optional[str] = Field(default=None, description="""The URI of the entity""")
-    in_taxon: Optional[str] = Field(default=None, description="""The biolink taxon that the entity is in the closure of.""")
-    in_taxon_label: Optional[str] = Field(default=None, description="""The label of the biolink taxon that the entity is in the closure of.""")
+    in_taxon: Optional[str] = Field(
+        default=None, description="""The biolink taxon that the entity is in the closure of."""
+    )
+    in_taxon_label: Optional[str] = Field(
+        default=None, description="""The label of the biolink taxon that the entity is in the closure of."""
+    )
     inheritance: Optional[Entity] = Field(default=None)
-    has_biological_sex: Optional[str] = Field(default=None, description="""The biological sex of an individual entity.""")
-    causal_gene: Optional[list[Entity]] = Field(default=None, description="""A list of genes that are known to be causally associated with a disease""")
-    causes_disease: Optional[list[Entity]] = Field(default=None, description="""A list of diseases that are known to be causally associated with a gene""")
-    node_relationships: Optional[list[NodeRelationship]] = Field(default=None, description="""A list of relationships from this node to counterpart entities, each retaining its original relation (e.g. an RO term) and that relation's human-readable label. Used for Mondo disease<->gene related_to associations.""")
-    mappings: Optional[list[ExpandedCurie]] = Field(default=None, description="""List of ExpandedCuries with id and url for mapped entities""")
-    external_links: Optional[list[ExpandedCurie]] = Field(default=None, description="""ExpandedCurie with id and url for xrefs""")
-    provided_by_link: Optional[ExpandedCurie] = Field(default=None, description="""A link to the docs for the knowledge source that provided the node/edge.""")
+    has_biological_sex: Optional[str] = Field(
+        default=None, description="""The biological sex of an individual entity."""
+    )
+    causal_gene: Optional[list[Entity]] = Field(
+        default=None, description="""A list of genes that are known to be causally associated with a disease"""
+    )
+    causes_disease: Optional[list[Entity]] = Field(
+        default=None, description="""A list of diseases that are known to be causally associated with a gene"""
+    )
+    node_relationships: Optional[list[NodeRelationship]] = Field(
+        default=None,
+        description="""A list of relationships from this node to counterpart entities, each retaining its original relation (e.g. an RO term) and that relation's human-readable label. Used for Mondo disease<->gene related_to associations.""",
+    )
+    mappings: Optional[list[ExpandedCurie]] = Field(
+        default=None, description="""List of ExpandedCuries with id and url for mapped entities"""
+    )
+    external_links: Optional[list[ExpandedCurie]] = Field(
+        default=None, description="""ExpandedCurie with id and url for xrefs"""
+    )
+    provided_by_link: Optional[ExpandedCurie] = Field(
+        default=None, description="""A link to the docs for the knowledge source that provided the node/edge."""
+    )
     association_counts: list[AssociationCount] = Field(default=...)
     cross_species_term_clique: Optional[CrossSpeciesTermClique] = Field(default=None)
     node_hierarchy: Optional[NodeHierarchy] = Field(default=None)
     id: str = Field(default=...)
     category: Optional[str] = Field(default=None)
     name: Optional[str] = Field(default=None)
-    description: Optional[str] = Field(default=None)
-    xref: Optional[list[str]] = Field(default=None)
-    synonym: Optional[list[str]] = Field(default=None)
-    exact_synonym: Optional[list[str]] = Field(default=None, description="""An exact synonym for the entity""")
-    broad_synonym: Optional[list[str]] = Field(default=None, description="""A broader synonym for the entity""")
-    narrow_synonym: Optional[list[str]] = Field(default=None, description="""A narrower synonym for the entity""")
-    related_synonym: Optional[list[str]] = Field(default=None, description="""A related synonym for the entity""")
-    deprecated: Optional[bool] = Field(default=None, description="""A boolean flag indicating that an entity is no longer considered current or valid.""")
-    iri: Optional[str] = Field(default=None)
-    same_as: Optional[list[str]] = Field(default=None)
-    subsets: Optional[list[str]] = Field(default=None, description="""A list of subsets that the entity belongs to""")
-    file_source: Optional[str] = Field(default=None, description="""Source file stem injected by koza at load time.""")
-    provided_by: Optional[str] = Field(default=None)
     full_name: Optional[str] = Field(default=None, description="""The long form name of an entity""")
     symbol: Optional[str] = Field(default=None)
-    has_gene: Optional[list[str]] = Field(default=None)
-    type: Optional[str] = Field(default=None, description="""The type of the entity (e.g. sequence onotology type for genes etc)""")
+    description: Optional[str] = Field(default=None)
+    broad_synonym: Optional[list[str]] = Field(default=None, description="""A broader synonym for the entity""")
+    deprecated: Optional[bool] = Field(
+        default=None,
+        description="""A boolean flag indicating that an entity is no longer considered current or valid.""",
+    )
+    exact_synonym: Optional[list[str]] = Field(default=None, description="""An exact synonym for the entity""")
+    file_source: Optional[str] = Field(default=None, description="""Source file stem injected by koza at load time.""")
     has_attribute: Optional[list[str]] = Field(default=None)
+    has_descendant: Optional[list[str]] = Field(
+        default=None, description="""A list of entity identifiers that are known to be descendants of this entity"""
+    )
+    has_descendant_count: Optional[int] = Field(
+        default=None,
+        description="""A count of the number of entities that are known to be descendants of this entity""",
+    )
+    has_descendant_label: Optional[list[str]] = Field(
+        default=None, description="""A list of entity labels that are known to be descendants of this entity"""
+    )
+    has_gene: Optional[list[str]] = Field(default=None)
+    has_phenotype: Optional[list[str]] = Field(
+        default=None, description="""A list of phenotype identifiers that are known to be associated with this entity"""
+    )
+    has_phenotype_closure: Optional[list[str]] = Field(
+        default=None,
+        description="""A list of phenotype identifiers that are known to be associated with this entity expanded to include all ancestors""",
+    )
+    has_phenotype_closure_label: Optional[list[str]] = Field(
+        default=None,
+        description="""A list of phenotype labels that are known to be associated with this entity expanded to include all ancestors""",
+    )
+    has_phenotype_count: Optional[int] = Field(
+        default=None,
+        description="""A count of the number of phenotypes that are known to be associated with this entity""",
+    )
+    has_phenotype_label: Optional[list[str]] = Field(
+        default=None, description="""A list of phenotype labels that are known to be associated with this entity"""
+    )
+    iri: Optional[str] = Field(default=None)
+    namespace: Optional[str] = Field(
+        default=None, description="""The namespace/prefix portion of this entity's identifier"""
+    )
+    narrow_synonym: Optional[list[str]] = Field(default=None, description="""A narrower synonym for the entity""")
+    provided_by: Optional[str] = Field(default=None)
+    related_synonym: Optional[list[str]] = Field(default=None, description="""A related synonym for the entity""")
+    same_as: Optional[list[str]] = Field(default=None)
+    subsets: Optional[list[str]] = Field(default=None, description="""A list of subsets that the entity belongs to""")
+    synonym: Optional[list[str]] = Field(default=None)
     synonyms: Optional[str] = Field(default=None)
-    namespace: Optional[str] = Field(default=None, description="""The namespace/prefix portion of this entity's identifier""")
-    has_phenotype: Optional[list[str]] = Field(default=None, description="""A list of phenotype identifiers that are known to be associated with this entity""")
-    has_phenotype_label: Optional[list[str]] = Field(default=None, description="""A list of phenotype labels that are known to be associated with this entity""")
-    has_phenotype_count: Optional[int] = Field(default=None, description="""A count of the number of phenotypes that are known to be associated with this entity""")
-    has_phenotype_closure: Optional[list[str]] = Field(default=None, description="""A list of phenotype identifiers that are known to be associated with this entity expanded to include all ancestors""")
-    has_phenotype_closure_label: Optional[list[str]] = Field(default=None, description="""A list of phenotype labels that are known to be associated with this entity expanded to include all ancestors""")
-    has_descendant: Optional[list[str]] = Field(default=None, description="""A list of entity identifiers that are known to be descendants of this entity""")
-    has_descendant_label: Optional[list[str]] = Field(default=None, description="""A list of entity labels that are known to be descendants of this entity""")
-    has_descendant_count: Optional[int] = Field(default=None, description="""A count of the number of entities that are known to be descendants of this entity""")
+    type: Optional[str] = Field(
+        default=None, description="""The type of the entity (e.g. sequence onotology type for genes etc)"""
+    )
+    xref: Optional[list[str]] = Field(default=None)
 
 
 class NodeRelationship(ConfiguredBaseModel):
     """
     A relationship from a Node to a counterpart Entity that retains the original relation/predicate (e.g. an RO term) and its human-readable label, resolved from the KG. Used to surface Mondo disease<->gene related_to associations whose original_predicate is an RO term.
     """
-    relation: Optional[str] = Field(default=None, description="""The original relation/predicate CURIE connecting a node to a related entity (e.g. an RO term such as RO:0004003)""")
-    relation_label: Optional[str] = Field(default=None, description="""The human-readable label of the relation, resolved from the KG""")
+
+    relation: Optional[str] = Field(
+        default=None,
+        description="""The original relation/predicate CURIE connecting a node to a related entity (e.g. an RO term such as RO:0004003)""",
+    )
+    relation_label: Optional[str] = Field(
+        default=None, description="""The human-readable label of the relation, resolved from the KG"""
+    )
     related_entity: Entity = Field(default=..., description="""The counterpart entity in the relationship""")
 
 
@@ -621,9 +1013,19 @@ class CrossSpeciesTermClique(ConfiguredBaseModel):
     """
     A grouping of species-specific terms (HP, MP, ZP) under a common cross-species parent (UPHENO/UBERON), with associations between them.
     """
-    root_term: Entity = Field(default=..., description="""The species-independent grouping term (UPHENO/UBERON) that serves as the cross-species bridge""")
-    clique_entities: list[Entity] = Field(default=..., description="""Species-specific child terms (HP, MP, ZP, etc.) that are subclasses of the root term""")
-    clique_associations: list[ExpandedAssociation] = Field(default=..., description="""All associations within this clique: vertical (subclass_of from children to root) and horizontal (same_as, homologous_to between children)""")
+
+    root_term: Entity = Field(
+        default=...,
+        description="""The species-independent grouping term (UPHENO/UBERON) that serves as the cross-species bridge""",
+    )
+    clique_entities: list[Entity] = Field(
+        default=...,
+        description="""Species-specific child terms (HP, MP, ZP, etc.) that are subclasses of the root term""",
+    )
+    clique_associations: list[ExpandedAssociation] = Field(
+        default=...,
+        description="""All associations within this clique: vertical (subclass_of from children to root) and horizontal (same_as, homologous_to between children)""",
+    )
 
 
 class NodeHierarchy(ConfiguredBaseModel):
@@ -635,6 +1037,7 @@ class Release(ConfiguredBaseModel):
     """
     A class to hold information about a release of the Monarch KG
     """
+
     version: Optional[str] = Field(default=None)
     url: Optional[str] = Field(default=None)
     kg: Optional[str] = Field(default=None)
@@ -653,42 +1056,67 @@ class Results(ConfiguredBaseModel):
 
 
 class AssociationResults(Results):
-    items: list[ExpandedAssociation] = Field(default=..., description="""A collection of items, with the type to be overriden by slot_usage""")
-    facet_fields: Optional[list[FacetField]] = Field(default=None, description="""Collection of facet field responses with the field values and counts""")
-    facet_queries: Optional[list[FacetValue]] = Field(default=None, description="""Collection of facet query responses with the query string values and counts""")
+    items: list[ExpandedAssociation] = Field(
+        default=..., description="""A collection of items, with the type to be overriden by slot_usage"""
+    )
+    facet_fields: Optional[list[FacetField]] = Field(
+        default=None, description="""Collection of facet field responses with the field values and counts"""
+    )
+    facet_queries: Optional[list[FacetValue]] = Field(
+        default=None, description="""Collection of facet query responses with the query string values and counts"""
+    )
     limit: int = Field(default=..., description="""number of items to return in a response""")
     offset: int = Field(default=..., description="""offset into the total number of items""")
     total: int = Field(default=..., description="""total number of items matching a query""")
 
 
 class CompactAssociationResults(Results):
-    items: list[CompactAssociation] = Field(default=..., description="""A collection of items, with the type to be overriden by slot_usage""")
-    facet_fields: Optional[list[FacetField]] = Field(default=None, description="""Collection of facet field responses with the field values and counts""")
-    facet_queries: Optional[list[FacetValue]] = Field(default=None, description="""Collection of facet query responses with the query string values and counts""")
+    items: list[CompactAssociation] = Field(
+        default=..., description="""A collection of items, with the type to be overriden by slot_usage"""
+    )
+    facet_fields: Optional[list[FacetField]] = Field(
+        default=None, description="""Collection of facet field responses with the field values and counts"""
+    )
+    facet_queries: Optional[list[FacetValue]] = Field(
+        default=None, description="""Collection of facet query responses with the query string values and counts"""
+    )
     limit: int = Field(default=..., description="""number of items to return in a response""")
     offset: int = Field(default=..., description="""offset into the total number of items""")
     total: int = Field(default=..., description="""total number of items matching a query""")
 
 
 class AssociationTableResults(Results):
-    items: list[DirectionalAssociation] = Field(default=..., description="""A collection of items, with the type to be overriden by slot_usage""")
-    facet_fields: Optional[list[FacetField]] = Field(default=None, description="""Collection of facet field responses with the field values and counts""")
-    facet_queries: Optional[list[FacetValue]] = Field(default=None, description="""Collection of facet query responses with the query string values and counts""")
+    items: list[DirectionalAssociation] = Field(
+        default=..., description="""A collection of items, with the type to be overriden by slot_usage"""
+    )
+    facet_fields: Optional[list[FacetField]] = Field(
+        default=None, description="""Collection of facet field responses with the field values and counts"""
+    )
+    facet_queries: Optional[list[FacetValue]] = Field(
+        default=None, description="""Collection of facet query responses with the query string values and counts"""
+    )
     limit: int = Field(default=..., description="""number of items to return in a response""")
     offset: int = Field(default=..., description="""offset into the total number of items""")
     total: int = Field(default=..., description="""total number of items matching a query""")
 
 
 class CategoryGroupedAssociationResults(Results):
-    counterpart_category: Optional[str] = Field(default=None, description="""The category of the counterpart entity in a given association,  eg. the category of the entity that is not the subject""")
-    items: list[ExpandedAssociation] = Field(default=..., description="""A collection of items, with the type to be overriden by slot_usage""")
+    counterpart_category: Optional[str] = Field(
+        default=None,
+        description="""The category of the counterpart entity in a given association,  eg. the category of the entity that is not the subject""",
+    )
+    items: list[ExpandedAssociation] = Field(
+        default=..., description="""A collection of items, with the type to be overriden by slot_usage"""
+    )
     limit: int = Field(default=..., description="""number of items to return in a response""")
     offset: int = Field(default=..., description="""offset into the total number of items""")
     total: int = Field(default=..., description="""total number of items matching a query""")
 
 
 class EntityResults(Results):
-    items: list[Entity] = Field(default=..., description="""A collection of items, with the type to be overriden by slot_usage""")
+    items: list[Entity] = Field(
+        default=..., description="""A collection of items, with the type to be overriden by slot_usage"""
+    )
     limit: int = Field(default=..., description="""number of items to return in a response""")
     offset: int = Field(default=..., description="""offset into the total number of items""")
     total: int = Field(default=..., description="""total number of items matching a query""")
@@ -698,7 +1126,10 @@ class MappingResults(Results):
     """
     SSSOM Mappings returned as a results collection
     """
-    items: list[Mapping] = Field(default=..., description="""A collection of items, with the type to be overriden by slot_usage""")
+
+    items: list[Mapping] = Field(
+        default=..., description="""A collection of items, with the type to be overriden by slot_usage"""
+    )
     limit: int = Field(default=..., description="""number of items to return in a response""")
     offset: int = Field(default=..., description="""offset into the total number of items""")
     total: int = Field(default=..., description="""total number of items matching a query""")
@@ -717,61 +1148,121 @@ class SearchScopeResolution(ConfiguredBaseModel):
     """
     The filters a named `scope` resolved to, echoed back so a caller can see what was filtered, log it, and reproduce or override it with the raw filter parameters. These are the filters actually applied, so an explicit parameter that overrode part of the scope is reflected here.
     """
+
     name: Optional[str] = Field(default=None, description="""The scope that was requested""")
-    category: Optional[list[str]] = Field(default=None, description="""The biolink categories the search was restricted to""")
-    namespace: Optional[list[str]] = Field(default=None, description="""The CURIE namespaces the search was restricted to""")
-    exclude_namespace: Optional[list[str]] = Field(default=None, description="""A CURIE namespace that entities were excluded by""")
-    subset: Optional[list[str]] = Field(default=None, description="""An ontology subset that entities were restricted to""")
-    exclude_subset: Optional[list[str]] = Field(default=None, description="""An ontology subset that entities were excluded by""")
+    category: Optional[list[str]] = Field(
+        default=None, description="""The biolink categories the search was restricted to"""
+    )
+    namespace: Optional[list[str]] = Field(
+        default=None, description="""The CURIE namespaces the search was restricted to"""
+    )
+    exclude_namespace: Optional[list[str]] = Field(
+        default=None, description="""A CURIE namespace that entities were excluded by"""
+    )
+    subset: Optional[list[str]] = Field(
+        default=None, description="""An ontology subset that entities were restricted to"""
+    )
+    exclude_subset: Optional[list[str]] = Field(
+        default=None, description="""An ontology subset that entities were excluded by"""
+    )
     in_taxon: Optional[list[str]] = Field(default=None, description="""The taxon CURIEs the search was restricted to""")
-    in_taxon_label: Optional[list[str]] = Field(default=None, description="""The taxon labels the search was restricted to""")
+    in_taxon_label: Optional[list[str]] = Field(
+        default=None, description="""The taxon labels the search was restricted to"""
+    )
 
 
 class SearchResult(Entity):
     score: Optional[float] = Field(default=None)
-    matched_field: Optional[MatchedFieldEnum] = Field(default=None, description="""Which field of the entity the search query matched as a whole string, or null when the hit came from a partial or tokenized match""")
-    match_type: Optional[MatchTypeEnum] = Field(default=None, description="""How the search query matched this entity, or null when the hit came from a partial or tokenized match. Solr does not report which clause of the query produced a hit, so this is populated only for matches the API can verify itself.""")
+    matched_field: Optional[MatchedFieldEnum] = Field(
+        default=None,
+        description="""Which field of the entity the search query matched as a whole string, or null when the hit came from a partial or tokenized match""",
+    )
+    match_type: Optional[MatchTypeEnum] = Field(
+        default=None,
+        description="""How the search query matched this entity, or null when the hit came from a partial or tokenized match. Solr does not report which clause of the query produced a hit, so this is populated only for matches the API can verify itself.""",
+    )
     id: str = Field(default=...)
     category: str = Field(default=...)
     name: str = Field(default=...)
-    description: Optional[str] = Field(default=None)
-    xref: Optional[list[str]] = Field(default=None)
-    synonym: Optional[list[str]] = Field(default=None)
-    exact_synonym: Optional[list[str]] = Field(default=None, description="""An exact synonym for the entity""")
-    broad_synonym: Optional[list[str]] = Field(default=None, description="""A broader synonym for the entity""")
-    narrow_synonym: Optional[list[str]] = Field(default=None, description="""A narrower synonym for the entity""")
-    related_synonym: Optional[list[str]] = Field(default=None, description="""A related synonym for the entity""")
-    deprecated: Optional[bool] = Field(default=None, description="""A boolean flag indicating that an entity is no longer considered current or valid.""")
-    in_taxon: Optional[str] = Field(default=None, description="""The biolink taxon that the entity is in the closure of.""")
-    in_taxon_label: Optional[str] = Field(default=None, description="""The label of the biolink taxon that the entity is in the closure of.""")
-    iri: Optional[str] = Field(default=None)
-    same_as: Optional[list[str]] = Field(default=None)
-    subsets: Optional[list[str]] = Field(default=None, description="""A list of subsets that the entity belongs to""")
-    file_source: Optional[str] = Field(default=None, description="""Source file stem injected by koza at load time.""")
-    provided_by: Optional[str] = Field(default=None)
     full_name: Optional[str] = Field(default=None, description="""The long form name of an entity""")
     symbol: Optional[str] = Field(default=None)
-    has_gene: Optional[list[str]] = Field(default=None)
-    type: Optional[str] = Field(default=None, description="""The type of the entity (e.g. sequence onotology type for genes etc)""")
+    description: Optional[str] = Field(default=None)
+    broad_synonym: Optional[list[str]] = Field(default=None, description="""A broader synonym for the entity""")
+    deprecated: Optional[bool] = Field(
+        default=None,
+        description="""A boolean flag indicating that an entity is no longer considered current or valid.""",
+    )
+    exact_synonym: Optional[list[str]] = Field(default=None, description="""An exact synonym for the entity""")
+    file_source: Optional[str] = Field(default=None, description="""Source file stem injected by koza at load time.""")
     has_attribute: Optional[list[str]] = Field(default=None)
-    has_biological_sex: Optional[str] = Field(default=None, description="""The biological sex of an individual entity.""")
+    has_biological_sex: Optional[str] = Field(
+        default=None, description="""The biological sex of an individual entity."""
+    )
+    has_descendant: Optional[list[str]] = Field(
+        default=None, description="""A list of entity identifiers that are known to be descendants of this entity"""
+    )
+    has_descendant_count: Optional[int] = Field(
+        default=None,
+        description="""A count of the number of entities that are known to be descendants of this entity""",
+    )
+    has_descendant_label: Optional[list[str]] = Field(
+        default=None, description="""A list of entity labels that are known to be descendants of this entity"""
+    )
+    has_gene: Optional[list[str]] = Field(default=None)
+    has_phenotype: Optional[list[str]] = Field(
+        default=None, description="""A list of phenotype identifiers that are known to be associated with this entity"""
+    )
+    has_phenotype_closure: Optional[list[str]] = Field(
+        default=None,
+        description="""A list of phenotype identifiers that are known to be associated with this entity expanded to include all ancestors""",
+    )
+    has_phenotype_closure_label: Optional[list[str]] = Field(
+        default=None,
+        description="""A list of phenotype labels that are known to be associated with this entity expanded to include all ancestors""",
+    )
+    has_phenotype_count: Optional[int] = Field(
+        default=None,
+        description="""A count of the number of phenotypes that are known to be associated with this entity""",
+    )
+    has_phenotype_label: Optional[list[str]] = Field(
+        default=None, description="""A list of phenotype labels that are known to be associated with this entity"""
+    )
+    in_taxon: Optional[str] = Field(
+        default=None, description="""The biolink taxon that the entity is in the closure of."""
+    )
+    in_taxon_label: Optional[str] = Field(
+        default=None, description="""The label of the biolink taxon that the entity is in the closure of."""
+    )
+    iri: Optional[str] = Field(default=None)
+    namespace: Optional[str] = Field(
+        default=None, description="""The namespace/prefix portion of this entity's identifier"""
+    )
+    narrow_synonym: Optional[list[str]] = Field(default=None, description="""A narrower synonym for the entity""")
+    provided_by: Optional[str] = Field(default=None)
+    related_synonym: Optional[list[str]] = Field(default=None, description="""A related synonym for the entity""")
+    same_as: Optional[list[str]] = Field(default=None)
+    subsets: Optional[list[str]] = Field(default=None, description="""A list of subsets that the entity belongs to""")
+    synonym: Optional[list[str]] = Field(default=None)
     synonyms: Optional[str] = Field(default=None)
-    namespace: Optional[str] = Field(default=None, description="""The namespace/prefix portion of this entity's identifier""")
-    has_phenotype: Optional[list[str]] = Field(default=None, description="""A list of phenotype identifiers that are known to be associated with this entity""")
-    has_phenotype_label: Optional[list[str]] = Field(default=None, description="""A list of phenotype labels that are known to be associated with this entity""")
-    has_phenotype_count: Optional[int] = Field(default=None, description="""A count of the number of phenotypes that are known to be associated with this entity""")
-    has_phenotype_closure: Optional[list[str]] = Field(default=None, description="""A list of phenotype identifiers that are known to be associated with this entity expanded to include all ancestors""")
-    has_phenotype_closure_label: Optional[list[str]] = Field(default=None, description="""A list of phenotype labels that are known to be associated with this entity expanded to include all ancestors""")
-    has_descendant: Optional[list[str]] = Field(default=None, description="""A list of entity identifiers that are known to be descendants of this entity""")
-    has_descendant_label: Optional[list[str]] = Field(default=None, description="""A list of entity labels that are known to be descendants of this entity""")
-    has_descendant_count: Optional[int] = Field(default=None, description="""A count of the number of entities that are known to be descendants of this entity""")
+    type: Optional[str] = Field(
+        default=None, description="""The type of the entity (e.g. sequence onotology type for genes etc)"""
+    )
+    xref: Optional[list[str]] = Field(default=None)
 
 
 class SearchResults(Results):
-    items: list[SearchResult] = Field(default=..., description="""A collection of items, with the type to be overriden by slot_usage""")
-    facet_fields: Optional[list[FacetField]] = Field(default=None, description="""Collection of facet field responses with the field values and counts""")
-    facet_queries: Optional[list[FacetValue]] = Field(default=None, description="""Collection of facet query responses with the query string values and counts""")
-    scope: Optional[SearchScopeResolution] = Field(default=None, description="""The concrete filters a named search scope resolved to""")
+    items: list[SearchResult] = Field(
+        default=..., description="""A collection of items, with the type to be overriden by slot_usage"""
+    )
+    facet_fields: Optional[list[FacetField]] = Field(
+        default=None, description="""Collection of facet field responses with the field values and counts"""
+    )
+    facet_queries: Optional[list[FacetValue]] = Field(
+        default=None, description="""Collection of facet query responses with the query string values and counts"""
+    )
+    scope: Optional[SearchScopeResolution] = Field(
+        default=None, description="""The concrete filters a named search scope resolved to"""
+    )
     limit: int = Field(default=..., description="""number of items to return in a response""")
     offset: int = Field(default=..., description="""offset into the total number of items""")
     total: int = Field(default=..., description="""total number of items matching a query""")
@@ -788,10 +1279,15 @@ class AssociationHighlighting(ConfiguredBaseModel):
     """
     Optional highlighting information for search results
     """
+
     object_label: Optional[list[str]] = Field(default=None, description="""The name of the object entity""")
-    object_closure_label: Optional[list[str]] = Field(default=None, description="""Field containing object name and the names of all of it's ancestors""")
+    object_closure_label: Optional[list[str]] = Field(
+        default=None, description="""Field containing object name and the names of all of it's ancestors"""
+    )
     subject_label: Optional[list[str]] = Field(default=None, description="""The name of the subject entity""")
-    subject_closure_label: Optional[list[str]] = Field(default=None, description="""Field containing subject name and the names of all of it's ancestors""")
+    subject_closure_label: Optional[list[str]] = Field(
+        default=None, description="""Field containing subject name and the names of all of it's ancestors"""
+    )
     predicate: Optional[list[str]] = Field(default=None)
 
 
@@ -799,32 +1295,48 @@ class CasePhenotypeMatrixResponse(ConfiguredBaseModel):
     """
     Complete case-phenotype matrix for a disease
     """
+
     disease_id: str = Field(default=..., description="""The identifier for a disease entity""")
     disease_name: Optional[str] = Field(default=None, description="""The name of a disease entity""")
     total_cases: int = Field(default=..., description="""Total number of cases in the matrix""")
     total_phenotypes: int = Field(default=..., description="""Total number of phenotypes in the matrix""")
     cases: Optional[list[CaseEntity]] = Field(default=None, description="""List of case entities in the matrix""")
-    phenotypes: Optional[list[CasePhenotype]] = Field(default=None, description="""List of phenotype entities in the matrix""")
-    bins: Optional[list[HistoPhenoBin]] = Field(default=None, description="""List of histopheno bins for grouping phenotypes""")
-    cells: Optional[dict[str, CasePhenotypeCellData]] = Field(default=None, description="""Map of case-phenotype cell data keyed by case_id:phenotype_id""")
+    phenotypes: Optional[list[CasePhenotype]] = Field(
+        default=None, description="""List of phenotype entities in the matrix"""
+    )
+    bins: Optional[list[HistoPhenoBin]] = Field(
+        default=None, description="""List of histopheno bins for grouping phenotypes"""
+    )
+    cells: Optional[dict[str, CasePhenotypeCellData]] = Field(
+        default=None, description="""Map of case-phenotype cell data keyed by case_id:phenotype_id"""
+    )
 
 
 class CaseEntity(ConfiguredBaseModel):
     """
     A case (patient) in the matrix
     """
+
     id: str = Field(default=...)
     label: Optional[str] = Field(default=None)
     full_id: Optional[str] = Field(default=None, description="""The full identifier for an entity""")
-    source_disease_id: Optional[str] = Field(default=None, description="""The disease ID that a case is indirectly associated with (for descendant diseases)""")
-    source_disease_label: Optional[str] = Field(default=None, description="""The label of the source disease for indirect case associations""")
-    is_direct: bool = Field(default=..., description="""Whether the case is directly associated with the disease or via a descendant""")
+    source_disease_id: Optional[str] = Field(
+        default=None,
+        description="""The disease ID that a case is indirectly associated with (for descendant diseases)""",
+    )
+    source_disease_label: Optional[str] = Field(
+        default=None, description="""The label of the source disease for indirect case associations"""
+    )
+    is_direct: bool = Field(
+        default=..., description="""Whether the case is directly associated with the disease or via a descendant"""
+    )
 
 
 class CasePhenotype(ConfiguredBaseModel):
     """
     A phenotype observed in at least one case
     """
+
     id: str = Field(default=...)
     label: Optional[str] = Field(default=None)
     bin_id: str = Field(default=..., description="""The identifier for the histopheno bin a phenotype belongs to""")
@@ -834,16 +1346,20 @@ class HistoPhenoBin(ConfiguredBaseModel):
     """
     A body system category for grouping phenotypes
     """
+
     id: str = Field(default=...)
     label: str = Field(default=...)
     phenotype_count: int = Field(default=..., description="""Number of phenotypes in a bin""")
-    phenotype_ids: Optional[list[str]] = Field(default=None, description="""List of phenotype identifiers belonging to a bin""")
+    phenotype_ids: Optional[list[str]] = Field(
+        default=None, description="""List of phenotype identifiers belonging to a bin"""
+    )
 
 
 class CasePhenotypeCellData(ConfiguredBaseModel):
     """
     Data for a single case-phenotype cell in the matrix
     """
+
     id: str = Field(default=...)
     present: bool = Field(default=..., description="""Whether the phenotype is present for a case""")
     negated: Optional[bool] = Field(default=None)
@@ -856,25 +1372,43 @@ class GridColumnEntity(ConfiguredBaseModel):
     """
     A column entity in the grid (case, disease, ortholog, etc.)
     """
+
     id: str = Field(default=...)
     label: Optional[str] = Field(default=None)
     category: str = Field(default=...)
-    is_direct: Optional[bool] = Field(default=None, description="""Whether the case is directly associated with the disease or via a descendant""")
-    source_id: Optional[str] = Field(default=None, description="""For indirect associations, the ID of the direct entity""")
-    source_label: Optional[str] = Field(default=None, description="""For indirect associations, the label of the direct entity""")
+    is_direct: Optional[bool] = Field(
+        default=None, description="""Whether the case is directly associated with the disease or via a descendant"""
+    )
+    source_id: Optional[str] = Field(
+        default=None, description="""For indirect associations, the ID of the direct entity"""
+    )
+    source_label: Optional[str] = Field(
+        default=None, description="""For indirect associations, the label of the direct entity"""
+    )
     taxon: Optional[str] = Field(default=None, description="""The taxon ID of the entity""")
     taxon_label: Optional[str] = Field(default=None, description="""The taxon label of the entity""")
-    source_association_category: Optional[str] = Field(default=None, description="""The biolink category of the source association""")
-    source_association_predicate: Optional[str] = Field(default=None, description="""The predicate of the source association""")
-    source_association_publications: Optional[list[str]] = Field(default=None, description="""Publication CURIEs supporting the source association""")
-    source_association_evidence_count: Optional[int] = Field(default=None, description="""Number of evidence items supporting the source association""")
-    source_association_primary_knowledge_source: Optional[str] = Field(default=None, description="""Primary knowledge source for the source association""")
+    source_association_category: Optional[str] = Field(
+        default=None, description="""The biolink category of the source association"""
+    )
+    source_association_predicate: Optional[str] = Field(
+        default=None, description="""The predicate of the source association"""
+    )
+    source_association_publications: Optional[list[str]] = Field(
+        default=None, description="""Publication CURIEs supporting the source association"""
+    )
+    source_association_evidence_count: Optional[int] = Field(
+        default=None, description="""Number of evidence items supporting the source association"""
+    )
+    source_association_primary_knowledge_source: Optional[str] = Field(
+        default=None, description="""Primary knowledge source for the source association"""
+    )
 
 
 class GridRowEntity(ConfiguredBaseModel):
     """
     A row entity in the grid (phenotype, GO term, anatomy, etc.)
     """
+
     id: str = Field(default=...)
     label: Optional[str] = Field(default=None)
     category: str = Field(default=...)
@@ -885,6 +1419,7 @@ class GridBin(ConfiguredBaseModel):
     """
     A grouping bin for row entities
     """
+
     id: str = Field(default=...)
     label: str = Field(default=...)
     count: int = Field(default=..., description="""count of documents""")
@@ -894,6 +1429,7 @@ class Qualifier(ConfiguredBaseModel):
     """
     A qualifier key-value pair for an association
     """
+
     id: str = Field(default=...)
     value: Optional[str] = Field(default=None, description="""The value of a qualifier""")
     label: Optional[str] = Field(default=None)
@@ -903,18 +1439,24 @@ class GridCellData(ConfiguredBaseModel):
     """
     Data for a cell in the grid
     """
+
     id: str = Field(default=...)
     present: bool = Field(default=..., description="""Whether the phenotype is present for a case""")
     negated: Optional[bool] = Field(default=None)
-    qualifiers: Optional[dict[str, Qualifier]] = Field(default=None, description="""Additional qualifiers for the association""")
+    qualifiers: Optional[dict[str, Qualifier]] = Field(
+        default=None, description="""Additional qualifiers for the association"""
+    )
     publications: Optional[list[str]] = Field(default=None)
-    evidence_count: Optional[int] = Field(default=None, description="""count of supporting documents, evidence codes, and sources supplying evidence""")
+    evidence_count: Optional[int] = Field(
+        default=None, description="""count of supporting documents, evidence codes, and sources supplying evidence"""
+    )
 
 
 class EntityGridResponse(ConfiguredBaseModel):
     """
     Generic entity x entity grid response
     """
+
     context_id: str = Field(default=..., description="""The identifier of the context entity (e.g., disease, gene)""")
     context_name: Optional[str] = Field(default=None, description="""The name of the context entity""")
     context_category: str = Field(default=..., description="""The biolink category of the context entity""")
@@ -934,8 +1476,8 @@ TermSetPairwiseSimilarity.model_rebuild()
 TermInfo.model_rebuild()
 BestMatch.model_rebuild()
 SemsimSearchResult.model_rebuild()
-Entity.model_rebuild()
 Association.model_rebuild()
+Entity.model_rebuild()
 AssociationCountList.model_rebuild()
 CompactAssociation.model_rebuild()
 AssociationTypeMapping.model_rebuild()
@@ -977,4 +1519,3 @@ GridBin.model_rebuild()
 Qualifier.model_rebuild()
 GridCellData.model_rebuild()
 EntityGridResponse.model_rebuild()
-
