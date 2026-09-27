@@ -15,8 +15,8 @@ Needs `linkml_runtime` for validation, which the backend environment provides.
 Usage:
     canonicalize_kg_schema.py FETCHED.yaml COMMITTED.yaml
         Writes the canonical form of FETCHED to COMMITTED.
-        Exit 0 if COMMITTED changed meaning, 1 if it did not (or did not exist),
-        2 if FETCHED is not a valid LinkML schema.
+        Exit 0 if COMMITTED changed meaning, or did not exist; 1 if it did not
+        change; 2 on any failure.
 """
 
 import sys
@@ -67,6 +67,10 @@ def canonicalize(doc):
     return result
 
 
+class _MissingDependency(Exception):
+    """linkml_runtime is not importable, as opposed to the schema being bad."""
+
+
 def validate(path: Path) -> None:
     """Fail unless the file parses as a LinkML schema, not merely as YAML.
 
@@ -79,7 +83,12 @@ def validate(path: Path) -> None:
     the `linkml` codegen package: oaklib depends on it directly, so it stays available
     even if `linkml` is ever demoted to a dev-only dependency.
     """
-    from linkml_runtime.utils.schemaview import SchemaView
+    try:
+        from linkml_runtime.utils.schemaview import SchemaView
+    except ImportError as err:  # pragma: no cover - environment, not logic
+        # Narrow to this import: catching it around SchemaView(...) as well would
+        # report a missing dependency when the real fault was inside linkml_runtime.
+        raise _MissingDependency(str(err)) from err
 
     SchemaView(str(path)).all_classes()
 
@@ -118,4 +127,13 @@ if __name__ == "__main__":
     if len(sys.argv) != 3:
         print(__doc__, file=sys.stderr)
         raise SystemExit(2)
-    raise SystemExit(main(Path(sys.argv[1]), Path(sys.argv[2])))
+    try:
+        raise SystemExit(main(Path(sys.argv[1]), Path(sys.argv[2])))
+    except SystemExit:
+        raise
+    except Exception as err:  # pragma: no cover - guards the exit-code contract
+        # Exit 2, not Python's default 1. The workflow reads 1 as "nothing changed"
+        # and greens the job, so an unexpected failure here -- a corrupt committed
+        # file, say -- would silently skip regenerating the model and ship a stale one.
+        print(f"canonicalization failed: {err}", file=sys.stderr)
+        raise SystemExit(2) from err

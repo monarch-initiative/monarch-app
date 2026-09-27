@@ -117,3 +117,29 @@ def test_non_schema_input_is_rejected(tmp_path, content):
     before = committed.read_text()
     assert canon.main(bad, committed) == 2
     assert committed.read_text() == before, "a rejected fetch must not overwrite the schema"
+
+
+def test_a_corrupt_committed_file_fails_rather_than_reporting_no_change(tmp_path):
+    """Exit 1 means "nothing changed", which the workflow greens and skips
+    regeneration on. An unexpected failure must not borrow that code, or a stale model
+    ships silently -- the exact outcome the change detection exists to prevent."""
+    import subprocess
+    import sys
+
+    committed = tmp_path / "committed.yaml"
+    committed.write_text("a: [1,\n")  # unterminated flow sequence
+    fetched = write(tmp_path, schema(["id"]), "fetched.yaml")
+
+    result = subprocess.run(
+        [sys.executable, str(SCRIPT), str(fetched), str(committed)],
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 2, f"exit {result.returncode}: {result.stderr}"
+
+
+def test_the_docstring_matches_the_first_run_behaviour():
+    """The usage text used to say a missing committed file exits 1; it exits 0, and
+    must, or the very first run would skip generating the model."""
+    assert "did not exist" in canon.__doc__
+    assert "or did not exist; 1 if it did not" in " ".join(canon.__doc__.split())
