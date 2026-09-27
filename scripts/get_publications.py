@@ -42,7 +42,9 @@ KNOWN_LINKS = {
 script_dir = Path(__file__).parent
 default_metadata_file = script_dir / "metadata.json"
 default_scholarly_data = script_dir / "scholarly_output.json"
-default_publications_file = script_dir.parent / "frontend/src/data/publications.json"
+default_publications_file = (
+    script_dir.parent / "frontend/src/data/publications.json"
+)
 
 
 @dataclass
@@ -242,7 +244,9 @@ def extend_current_pubs(
         # If the year has been updated in Google Scholar, use that year.
         if existing_pub:
             if pub.year > existing_pub.year:
-                logger.info(f"Updating publication year for {pub.title} from {existing_pub.year} to {pub.year}")
+                logger.info(
+                    f"Updating publication year for {pub.title} from {existing_pub.year} to {pub.year}"
+                )
                 existing_pub.year = pub.year
                 updated_pubs_ct += 1
             else:
@@ -274,7 +278,11 @@ def add_scholarly_publications(
     if existing_publications_file is not None:
         with open(existing_publications_file) as fd:
             current_data = json.load(fd)
-            current_pubs = [MonarchPublication(**pub) for year in current_data["publications"] for pub in year["items"]]
+            current_pubs = [
+                MonarchPublication(**pub)
+                for year in current_data["publications"]
+                for pub in year["items"]
+            ]
     else:
         current_pubs = []
 
