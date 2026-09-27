@@ -280,9 +280,11 @@ def load_yaml(monkeypatch):
     ids=["duplicate-keys", "identical-fragments", "no-criteria"],
 )
 def test_invalid_mapping_config_raises_every_time(load_yaml, entries, expected):
-    """The guard has to survive the singleton. `__init__` publishes `__instance` before
-    loading, so validating after assigning `self.mappings` meant the first call raised and
-    every call after it served the invalid config for the life of the process."""
+    """The guard has to survive the singleton. `__init__` used to publish `__instance`
+    before loading, so validating after assigning `self.mappings` meant the first call
+    raised and every call after it served the invalid config for the life of the
+    process. Construction now publishes last, but the guard still has to hold across
+    repeated calls, which is what this checks."""
     load_yaml(entries)
     for _ in range(2):
         with pytest.raises(ValueError, match=expected):

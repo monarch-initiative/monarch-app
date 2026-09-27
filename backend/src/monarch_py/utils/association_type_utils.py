@@ -15,7 +15,11 @@ class AssociationTypeMappings:
 
     def __init__(self):
         if AssociationTypeMappings.__instance is not None:
-            raise Exception("AssociationTypeMappings is a singleton class, use getInstance() to get the instance.")
+            raise Exception(
+                "AssociationTypeMappings is a singleton class; reach it through the static "
+                "accessors (get_mappings, get_mapping, get_mapping_by_key, "
+                "get_traversable_associations) rather than constructing it."
+            )
         self.mappings = None
         self.load_mappings()
         # Published only once `mappings` is populated. Publishing first left a window
