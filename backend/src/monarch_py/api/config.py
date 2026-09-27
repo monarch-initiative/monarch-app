@@ -36,6 +36,12 @@ class Settings(BaseModel):
     ducksim_memory_limit: str = os.getenv("DUCKSIM_MEMORY_LIMIT", "2GB")
     ducksim_threads: int = _int_env("DUCKSIM_THREADS", 2)
 
+    # INFO rather than loguru's default. The API never set a level, so it logged at
+    # DEBUG in production: ~3.5M lines/day, dominated by one line per Solr query, which
+    # rotated the logs down to under three hours and took incident triage with it.
+    # DEBUG remains one env var away for an investigation.
+    log_level: str = os.getenv("MONARCH_LOG_LEVEL", "INFO").upper()
+
     monarch_kg_version: str = os.getenv("MONARCH_KG_VERSION", "unknown")
     monarch_api_version: str = os.getenv("MONARCH_API_VERSION", "unknown")
     monarch_kg_source: str = os.getenv("MONARCH_KG_SOURCE", "unknown")

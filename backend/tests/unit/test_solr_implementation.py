@@ -985,3 +985,38 @@ def test_cross_species_clique_singleton_no_sideways():
         assert len(result.clique_entities) == 1
         # Only vertical query, no sideways query
         assert mock_assocs.call_count == 1
+
+
+# =====================================================================
+# API log level (#1450)
+# =====================================================================
+
+
+def test_api_defaults_to_info_not_debug():
+    """The API never set a level, leaving loguru's default DEBUG sink in place: ~3.5M
+    lines a day in production, which rotated 24h of logs down to under three hours and
+    took incident triage with it."""
+    import importlib
+    import os
+    from unittest.mock import patch
+
+    from monarch_py.api import config
+
+    with patch.dict(os.environ, {}, clear=False):
+        os.environ.pop("MONARCH_LOG_LEVEL", None)
+        importlib.reload(config)
+        assert config.Settings().log_level == "INFO"
+
+
+def test_log_level_is_overridable_for_an_investigation():
+    import importlib
+    import os
+    from unittest.mock import patch
+
+    from monarch_py.api import config
+
+    with patch.dict(os.environ, {"MONARCH_LOG_LEVEL": "debug"}):
+        importlib.reload(config)
+        # accepted case-insensitively: loguru only knows the upper-case names
+        assert config.Settings().log_level == "DEBUG"
+    importlib.reload(config)

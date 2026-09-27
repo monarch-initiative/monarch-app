@@ -1,4 +1,5 @@
 import json
+import time
 from typing import Dict, List
 
 import requests
@@ -27,10 +28,14 @@ class SolrService(BaseModel):
 
     def query(self, q: SolrQuery) -> SolrQueryResult:
         url = f"{self.base_url}/{self.core.value}/select"
+        started = time.perf_counter()
         response = requests.post(
             url, data=q.query_string(), headers={"Content-Type": "application/x-www-form-urlencoded"}
         )
-        logger.debug(f"SolrService.query: {url}")
+        # Timing rather than bare existence: one association-table request fans out to
+        # several of these, so "a query happened" says nothing you could act on, while
+        # "this one took 1.4s" points at the slow leg.
+        logger.debug(f"SolrService.query: {url} took {(time.perf_counter() - started) * 1000:.0f}ms")
         data = json.loads(response.text)
         if "error" in data:
             logger.error("Solr error message: " + data["error"]["msg"])
