@@ -1,4 +1,5 @@
 import pkgutil
+import threading
 from typing import List
 
 import yaml
@@ -8,27 +9,43 @@ from pydantic import TypeAdapter
 
 class AssociationTypeMappings:
     __instance = None
+    # Guards construction. FastAPI runs these sync endpoints in a threadpool, so
+    # several threads share one process and reach the accessors at once.
+    __lock = threading.Lock()
 
     def __init__(self):
         if AssociationTypeMappings.__instance is not None:
             raise Exception("AssociationTypeMappings is a singleton class, use getInstance() to get the instance.")
-        else:
-            AssociationTypeMappings.__instance = self
-            self.mappings = None
-            self.load_mappings()
+        self.mappings = None
+        self.load_mappings()
+        # Published only once `mappings` is populated. Publishing first left a window
+        # in which another thread saw a non-None instance whose `mappings` was still
+        # None and iterated it -- a TypeError, and an HTTP 500 on association tables.
+        AssociationTypeMappings.__instance = self
+
+    @classmethod
+    def _get_instance(cls):
+        """The singleton, constructing it once if needed.
+
+        Double-checked under a lock: the fast path stays a plain attribute read, and
+        the slow path cannot run twice. Two threads both finding it None used to mean
+        the second hit `__init__`'s "is a singleton class" raise, which is the same
+        500 by a different route.
+        """
+        if cls.__instance is None:
+            with cls.__lock:
+                if cls.__instance is None:
+                    cls()
+        return cls.__instance
 
     @staticmethod
     def get_mappings():
-        if AssociationTypeMappings.__instance is None:
-            AssociationTypeMappings()
-        return AssociationTypeMappings.__instance.mappings
+        return AssociationTypeMappings._get_instance().mappings
 
     @staticmethod
     def get_mapping(category: str):
         """Get the first mapping that includes the given category."""
-        if AssociationTypeMappings.__instance is None:
-            AssociationTypeMappings()
-        for mapping in AssociationTypeMappings.__instance.mappings:
+        for mapping in AssociationTypeMappings._get_instance().mappings:
             if mapping.category and category in mapping.category:
                 return mapping
         return None
@@ -36,9 +53,7 @@ class AssociationTypeMappings:
     @staticmethod
     def get_mapping_by_key(key: str):
         """Get the mapping for a given section key."""
-        if AssociationTypeMappings.__instance is None:
-            AssociationTypeMappings()
-        for mapping in AssociationTypeMappings.__instance.mappings:
+        for mapping in AssociationTypeMappings._get_instance().mappings:
             if mapping.key == key:
                 return mapping
         return None
@@ -65,14 +80,12 @@ class AssociationTypeMappings:
             - target_category: what entity type the other end is
             - target_categories: every category the other end may be
         """
-        if AssociationTypeMappings.__instance is None:
-            AssociationTypeMappings()
 
         def _first(values):
             return values[0] if values else None
 
         results = []
-        for mapping in AssociationTypeMappings.__instance.mappings:
+        for mapping in AssociationTypeMappings._get_instance().mappings:
             categories = list(mapping.category or [])
             category = _first(categories)
             # Check if entity can be the subject
@@ -136,9 +149,11 @@ class AssociationTypeMappings:
         try:
             self._validate(mappings)
         except ValueError:
-            # Drop the singleton so a later get_mappings() re-runs this and raises again.
-            # Publishing self.mappings first would mean the very next call sailed past the
-            # check and served the invalid config for the life of the process.
+            # Unpublish, so a later accessor reconstructs and raises again rather than
+            # serving an invalid config for the life of the process. During initial
+            # construction there is nothing published yet -- `__init__` only publishes
+            # after this returns -- but `load_mappings` is also called to reload an
+            # instance that is already the singleton, and that case still needs it.
             AssociationTypeMappings.__instance = None
             raise
         self.mappings = mappings

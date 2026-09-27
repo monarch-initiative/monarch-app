@@ -297,3 +297,84 @@ def test_shipped_mappings_pass_validation():
     assert len(set(keys)) == len(keys)
     assert len(set(fragments)) == len(fragments)
     assert all(fragments)
+
+
+# =====================================================================
+# Concurrent construction (#1449)
+# =====================================================================
+
+
+def test_concurrent_access_never_sees_a_half_built_singleton():
+    """The production failure: ~42 HTTP 500s a day on association tables.
+
+    The instance was published to the class attribute before `load_mappings` filled
+    `mappings`, so a second thread could see a non-None instance and iterate None.
+    FastAPI serves these sync endpoints from a threadpool, so concurrent access within
+    one process is the normal case.
+
+    Loading is slow enough to lose the race in reality -- pkgutil read, YAML parse and
+    pydantic validation of every mapping -- so this drives it with real threads rather
+    than simulating an interleaving.
+    """
+    import threading
+
+    from monarch_py.utils import association_type_utils as atu
+
+    atu.AssociationTypeMappings._AssociationTypeMappings__instance = None
+
+    errors: list[BaseException] = []
+    start = threading.Barrier(8)
+
+    def hammer():
+        start.wait()
+        try:
+            for _ in range(20):
+                assert AssociationTypeMappings.get_mappings()
+                AssociationTypeMappings.get_mapping_by_key("biolink:DiseaseToPhenotypicFeatureAssociation")
+                AssociationTypeMappings.get_mapping("biolink:DiseaseToPhenotypicFeatureAssociation")
+                AssociationTypeMappings.get_traversable_associations("biolink:Gene")
+        except BaseException as err:  # noqa: BLE001 - re-raised on the main thread below
+            errors.append(err)
+
+    threads = [threading.Thread(target=hammer) for _ in range(8)]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
+
+    assert not errors, f"concurrent access raised: {errors[:3]}"
+
+
+def test_construction_happens_once_under_concurrency():
+    """Two threads both finding the instance None used to mean the second reached
+    `__init__`'s "is a singleton class" raise -- the same 500 by another route."""
+    import threading
+
+    from monarch_py.utils import association_type_utils as atu
+
+    atu.AssociationTypeMappings._AssociationTypeMappings__instance = None
+
+    loads = []
+    original = AssociationTypeMappings.load_mappings
+
+    def counting_load(self):
+        loads.append(1)
+        return original(self)
+
+    atu.AssociationTypeMappings.load_mappings = counting_load
+    try:
+        start = threading.Barrier(8)
+
+        def build():
+            start.wait()
+            AssociationTypeMappings.get_mappings()
+
+        threads = [threading.Thread(target=build) for _ in range(8)]
+        for thread in threads:
+            thread.start()
+        for thread in threads:
+            thread.join()
+    finally:
+        atu.AssociationTypeMappings.load_mappings = original
+
+    assert len(loads) == 1, f"expected one construction, got {len(loads)}"
