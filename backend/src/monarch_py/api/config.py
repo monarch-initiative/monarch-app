@@ -1,4 +1,6 @@
 import os
+
+from loguru import logger
 from functools import lru_cache
 
 from pydantic import BaseModel
@@ -6,6 +8,21 @@ from pydantic import BaseModel
 from monarch_py.implementations.solr.solr_implementation import SolrImplementation
 from monarch_py.implementations.spacy.spacy_implementation import SpacyImplementation
 from monarch_py.service.semsim_service import SemsimianService
+
+
+def _log_level_env(name: str, default: str) -> str:
+    """Parse a log-level env var, falling back to `default` on an unknown name.
+
+    Same reasoning as `_int_env`: an unrecognised level makes loguru raise at import,
+    which takes every gunicorn worker down and leaves the master crash-looping. This
+    knob exists to be flipped in a hurry during an incident, so a typo must degrade to
+    the default rather than take the API with it.
+    """
+    level = os.getenv(name, default).strip().upper()
+    if level not in logger._core.levels:  # noqa: SLF001 - loguru exposes no public list
+        logger.warning(f"Unknown {name}={level!r}; falling back to {default}")
+        return default
+    return level
 
 
 def _int_env(name: str, default: int) -> int:
@@ -40,7 +57,7 @@ class Settings(BaseModel):
     # DEBUG in production: ~3.5M lines/day, dominated by one line per Solr query, which
     # rotated the logs down to under three hours and took incident triage with it.
     # DEBUG remains one env var away for an investigation.
-    log_level: str = os.getenv("MONARCH_LOG_LEVEL", "INFO").upper()
+    log_level: str = _log_level_env("MONARCH_LOG_LEVEL", "INFO")
 
     monarch_kg_version: str = os.getenv("MONARCH_KG_VERSION", "unknown")
     monarch_api_version: str = os.getenv("MONARCH_API_VERSION", "unknown")
