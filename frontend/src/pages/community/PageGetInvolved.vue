@@ -173,6 +173,16 @@
             .
           </span>
         </div>
+        <div class="info-line">
+          <AppIcon icon="social-slack" />
+          <span>
+            Join OBO Slack by submitting
+            <AppLink
+              to="https://docs.google.com/forms/d/e/1FAIpQLScJbdW0QcCS3432mHkTiir9D-HwT5g2iaXYiiy2aOOiCFS3RQ/viewform?usp=dialog"
+              >this form</AppLink
+            >.
+          </span>
+        </div>
       </PageInfoCard>
     </div>
   </AppSection>
