@@ -24,7 +24,7 @@ class AssociationTypeMappings:
         self.load_mappings()
         # Published only once `mappings` is populated. Publishing first left a window
         # in which another thread saw a non-None instance whose `mappings` was still
-        # None and iterated it -- a TypeError, and an HTTP 500 on association tables.
+        # None and iterated it (#1449).
         AssociationTypeMappings.__instance = self
 
     @classmethod
@@ -33,8 +33,7 @@ class AssociationTypeMappings:
 
         Double-checked under a lock: the fast path stays a plain attribute read, and
         the slow path cannot run twice. Two threads both finding it None used to mean
-        the second hit `__init__`'s "is a singleton class" raise, which is the same
-        500 by a different route.
+        the second hit `__init__`'s "is a singleton class" raise.
         """
         if cls.__instance is None:
             with cls.__lock:
@@ -154,10 +153,9 @@ class AssociationTypeMappings:
             self._validate(mappings)
         except ValueError:
             # Unpublish, so a later accessor reconstructs and raises again rather than
-            # serving an invalid config for the life of the process. During initial
-            # construction there is nothing published yet -- `__init__` only publishes
-            # after this returns -- but `load_mappings` is also called to reload an
-            # instance that is already the singleton, and that case still needs it.
+            # serving an invalid config for the life of the process. Redundant during
+            # initial construction, which publishes only after this returns, but
+            # `load_mappings` also reloads an instance that is already the singleton.
             AssociationTypeMappings.__instance = None
             raise
         self.mappings = mappings

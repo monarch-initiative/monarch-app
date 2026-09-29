@@ -280,11 +280,9 @@ def load_yaml(monkeypatch):
     ids=["duplicate-keys", "identical-fragments", "no-criteria"],
 )
 def test_invalid_mapping_config_raises_every_time(load_yaml, entries, expected):
-    """The guard has to survive the singleton. `__init__` used to publish `__instance`
-    before loading, so validating after assigning `self.mappings` meant the first call
-    raised and every call after it served the invalid config for the life of the
-    process. Construction now publishes last, but the guard still has to hold across
-    repeated calls, which is what this checks."""
+    """The guard has to survive the singleton: validating after assigning
+    `self.mappings` meant the first call raised and every call after it served the
+    invalid config for the life of the process. Repeated calls must keep raising."""
     load_yaml(entries)
     for _ in range(2):
         with pytest.raises(ValueError, match=expected):
@@ -307,7 +305,7 @@ def test_shipped_mappings_pass_validation():
 
 
 def test_concurrent_access_never_sees_a_half_built_singleton():
-    """The production failure: ~42 HTTP 500s a day on association tables.
+    """The failure reported in #1449, as 500s on association tables.
 
     The instance was published to the class attribute before `load_mappings` filled
     `mappings`, so a second thread could see a non-None instance and iterate None.
@@ -349,7 +347,7 @@ def test_concurrent_access_never_sees_a_half_built_singleton():
 
 def test_construction_happens_once_under_concurrency():
     """Two threads both finding the instance None used to mean the second reached
-    `__init__`'s "is a singleton class" raise -- the same 500 by another route."""
+    `__init__`'s "is a singleton class" raise, the other route to #1449."""
     import threading
 
     from monarch_py.utils import association_type_utils as atu
