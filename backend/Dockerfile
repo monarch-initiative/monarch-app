@@ -44,7 +44,7 @@ ENV SKLEARN_ALLOW_DEPRECATED_SKLEARN_PACKAGE_INSTALL=True
 # ENV WORKER_TIMEOUT=300
 # ENV MAX_REQUESTS=2000
 # ENV MAX_REQUESTS_JITTER=200
-# ENV MONARCH_LOG_LEVEL=INFO   # DEBUG logs every Solr query; ~3.5M lines/day in prod
+# ENV MONARCH_LOG_LEVEL=INFO   # DEBUG logs a line per Solr query
 WORKDIR /opt/monarch-app/backend
 
 RUN ls -l . && \

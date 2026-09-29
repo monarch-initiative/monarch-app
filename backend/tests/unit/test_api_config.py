@@ -14,10 +14,9 @@ from monarch_py.api import config
 def restore_config():
     """Reload the module afterwards either way.
 
-    `log_level`'s default is evaluated when the class body runs, i.e. at import, so
-    these tests have to reload to see a different environment -- and have to reload
-    again on the way out, or a failure leaves the changed default in place for every
-    test after it.
+    `log_level`'s default is evaluated at import, so these tests reload to see a
+    different environment, and reload again on the way out so a failure does not leave
+    the changed default in place for everything after it.
     """
     yield
     with patch.dict(os.environ, {}, clear=False):
@@ -36,8 +35,7 @@ def reload_with(value=None):
 
 
 def test_defaults_to_info_not_debug():
-    """The API never set a level, leaving loguru's default DEBUG sink in place: ~3.5M
-    lines a day in production, which rotated 24h of logs down to under three hours."""
+    """Without an explicit level the API falls back to loguru's DEBUG sink."""
     assert reload_with() == "INFO"
 
 
@@ -51,9 +49,7 @@ def test_override_is_accepted_however_it_is_typed(value, expected):
 
 @pytest.mark.parametrize("value", ["INFOO", "", "verbose"])
 def test_an_unusable_level_falls_back_rather_than_crashing(value):
-    """loguru raises on an unknown level name. At import that kills every gunicorn
-    worker and leaves the master crash-looping -- from a typo in a knob whose whole
-    purpose is being flipped in a hurry during an incident."""
+    """loguru raises on an unknown level name, and at import that kills every worker."""
     assert reload_with(value) == "INFO"
 
 
@@ -61,7 +57,7 @@ def test_importing_the_api_actually_sets_the_sink_level():
     """The setting existing is not the fix; the sink being at that level is.
 
     Without this, deleting the `set_log_level` call from `api/main.py` leaves every
-    other test in this file passing.
+    other test here passing.
     """
     reload_with()
     import monarch_py.api.main  # noqa: F401 - imported for its side effect

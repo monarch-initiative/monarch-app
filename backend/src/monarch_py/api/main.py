@@ -21,9 +21,8 @@ from monarch_py.api.config import semsimian, spacyner, settings
 from monarch_py.api.middleware.logging_middleware import LoggingMiddleware
 from monarch_py.utils.utils import get_release_metadata, get_release_versions, set_log_level
 
-# Applied at import so it covers module-level and startup logging too, not just
-# request handling. The CLI sets its own level; the API had never set one, which left
-# loguru's default DEBUG sink in place.
+# At import, so startup logging is covered too and not just request handling. The CLI
+# sets its own level; without this the API keeps loguru's default DEBUG sink.
 set_log_level(settings.log_level)
 
 PREFIX = "/v3/api"

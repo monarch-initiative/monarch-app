@@ -32,9 +32,8 @@ class SolrService(BaseModel):
         response = requests.post(
             url, data=q.query_string(), headers={"Content-Type": "application/x-www-form-urlencoded"}
         )
-        # Timing rather than bare existence: one association-table request fans out to
-        # several of these, so "a query happened" says nothing you could act on, while
-        # "this one took 1.4s" points at the slow leg.
+        # One request fans out to several queries, so the timing is what identifies
+        # the slow leg.
         logger.debug(f"SolrService.query: {url} took {(time.perf_counter() - started) * 1000:.0f}ms")
         data = json.loads(response.text)
         if "error" in data:

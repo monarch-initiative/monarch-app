@@ -13,10 +13,8 @@ from monarch_py.service.semsim_service import SemsimianService
 def _log_level_env(name: str, default: str) -> str:
     """Parse a log-level env var, falling back to `default` on an unknown name.
 
-    Same reasoning as `_int_env`: an unrecognised level makes loguru raise at import,
-    which takes every gunicorn worker down and leaves the master crash-looping. This
-    knob exists to be flipped in a hurry during an incident, so a typo must degrade to
-    the default rather than take the API with it.
+    Same reasoning as `_int_env`: loguru raises on an unrecognised level, and at import
+    time that takes down every worker. A typo here should degrade, not crash.
     """
     level = os.getenv(name, default).strip().upper()
     if level not in logger._core.levels:  # noqa: SLF001 - loguru exposes no public list
@@ -53,10 +51,8 @@ class Settings(BaseModel):
     ducksim_memory_limit: str = os.getenv("DUCKSIM_MEMORY_LIMIT", "2GB")
     ducksim_threads: int = _int_env("DUCKSIM_THREADS", 2)
 
-    # INFO rather than loguru's default. The API never set a level, so it logged at
-    # DEBUG in production: ~3.5M lines/day, dominated by one line per Solr query, which
-    # rotated the logs down to under three hours and took incident triage with it.
-    # DEBUG remains one env var away for an investigation.
+    # INFO rather than loguru's DEBUG default, which logs a line per Solr query and
+    # rotates production logs away in hours. Set MONARCH_LOG_LEVEL=DEBUG to get it back.
     log_level: str = _log_level_env("MONARCH_LOG_LEVEL", "INFO")
 
     monarch_kg_version: str = os.getenv("MONARCH_KG_VERSION", "unknown")
