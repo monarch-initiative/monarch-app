@@ -1,7 +1,9 @@
 <template>
   <div class="info-card">
     <h2>{{ title }}</h2>
-    <p>{{ description }}</p>
+    <p>
+      <slot name="description">{{ description }}</slot>
+    </p>
     <div class="info-box">
       <slot />
     </div>
@@ -11,7 +13,8 @@
 <script setup lang="ts">
 defineProps<{
   title: string;
-  description: string;
+  /** plain text description; use the "description" slot for rich content */
+  description?: string;
 }>();
 </script>
 

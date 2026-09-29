@@ -50,6 +50,58 @@
         </div>
       </PageInfoCard>
 
+      <PageInfoCard title="LinkML: Monthly Community Call">
+        <template #description>
+          Join the LinkML community for regular sessions featuring presentations
+          on LinkML applications, best practices, and community projects. The
+          community meeting is hosted on the third Thursday of the month 8:00 AM
+          PT / 4:00 PM UTC. Learn more ways to get involved in LinkML
+          <AppLink to="https://linkml.io/linkml/get-involved/index.html"
+            >here</AppLink
+          >.
+        </template>
+        <div class="info-line">
+          <AppIcon icon="calendar-week" />
+          <span>
+            These calls are scheduled monthly. Explore details on the
+            <AppLink
+              to="https://linkml.io/linkml/get-involved/Community-Meetings.html"
+              >LinkML Community Call page</AppLink
+            >.
+          </span>
+        </div>
+        <div class="info-line">
+          <AppIcon icon="youtube" />
+          <span>
+            Watch recorded Community calls on the
+            <AppLink to="https://www.youtube.com/@LinkML-org"
+              >LinkML YouTube channel</AppLink
+            >.
+          </span>
+        </div>
+        <div class="info-line">
+          <AppIcon icon="envelope" />
+          <span>
+            Subscribe to the
+            <AppLink to="https://groups.google.com/g/linkml-community"
+              >LinkML user mailing list</AppLink
+            >
+            to get notifications about scheduled community calls and latest
+            release information for LinkML.
+          </span>
+        </div>
+        <div class="info-line">
+          <AppIcon icon="social-slack" />
+          <span>
+            Join LinkML Slack by submitting
+            <AppLink
+              to="https://docs.google.com/forms/d/e/1FAIpQLScJbdW0QcCS3432mHkTiir9D-HwT5g2iaXYiiy2aOOiCFS3RQ/viewform?usp=dialog"
+              >this form</AppLink
+            >.
+          </span>
+        </div>
+      </PageInfoCard>
+
       <PageInfoCard
         title="Monarch Seminar Series"
         description="A monthly forum where we explore topics central to the Monarch Initiative."
@@ -119,6 +171,16 @@
               >Monarch Tutorials and Learning mailing list</AppLink
             >
             .
+          </span>
+        </div>
+        <div class="info-line">
+          <AppIcon icon="social-slack" />
+          <span>
+            Join OBO Slack by submitting
+            <AppLink
+              to="https://docs.google.com/forms/d/e/1FAIpQLScJbdW0QcCS3432mHkTiir9D-HwT5g2iaXYiiy2aOOiCFS3RQ/viewform?usp=dialog"
+              >this form</AppLink
+            >.
           </span>
         </div>
       </PageInfoCard>
