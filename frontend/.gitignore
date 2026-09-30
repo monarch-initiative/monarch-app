@@ -30,3 +30,10 @@ playwright-report/
 
 # DuckDB WASM files (auto-generated during build)
 public/duckdb/
+
+# TypeScript incremental build artifact
+tsconfig.tsbuildinfo
+
+# local-only dev server configs (may contain LAN addresses)
+vite.*.config.mjs
+!vite.config.mjs
