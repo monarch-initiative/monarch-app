@@ -86,8 +86,18 @@ def test_get_search(mock_search, termset: str, metric: SemsimMetric):
     response = client.get(f"/search/{termset}/{group.value}?metric={metric}&limit={limit}")
     directionality = SemsimDirectionality.BIDIRECTIONAL
     assert response.status_code == status.HTTP_200_OK
+    # The legacy group still sends its prefix, and additionally the explicit filters it expands
+    # to. The category is what keeps "Mouse Genes" meaning genes now that the association pool
+    # also holds genotypes and variants under the MGI prefix.
     mock_search.assert_called_once_with(
-        termset=["HP:123", "HP:456"], prefix=group.name, metric=metric, directionality=directionality, limit=limit
+        termset=["HP:123", "HP:456"],
+        prefix=group.name,
+        metric=metric,
+        directionality=directionality,
+        limit=limit,
+        categories=["biolink:Gene"],
+        taxa=["NCBITaxon:9606"],
+        prefixes=["HGNC"],
     )
 
 
@@ -115,11 +125,68 @@ def test_post_search(mock_search):
     assert response.status_code == status.HTTP_200_OK
     mock_search.assert_called_once_with(
         termset=["HP:123", "HP:456"],
-        prefix=group.name,
         metric=metric,
         directionality=directionality,
         limit=limit,
+        categories=["biolink:Gene"],
+        taxa=["NCBITaxon:9606"],
+        prefixes=["HGNC"],
     )
+
+
+@patch("monarch_py.service.semsim_service.SemsimianService.search")
+def test_post_search_explicit_filter(mock_search):
+    """An explicit filter reaches the backend as category/taxon, with no prefix — the form no
+    legacy group can produce, since mouse models span the MGI and MMRRC prefixes."""
+    mock_search.return_value = MagicMock()
+
+    response = client.post(
+        "/search/",
+        json={
+            "termset": ["HP:123"],
+            "filter": {"category": ["biolink:Genotype"], "taxon": ["NCBITaxon:10090"]},
+            "limit": 5,
+        },
+    )
+
+    assert response.status_code == status.HTTP_200_OK
+    kwargs = mock_search.call_args.kwargs
+    assert kwargs["categories"] == ["biolink:Genotype"]
+    assert kwargs["taxa"] == ["NCBITaxon:10090"]
+    assert kwargs["prefixes"] is None
+    assert "prefix" not in kwargs
+
+
+def test_post_search_explicit_filter_beats_group():
+    """When both are sent the explicit filter wins outright rather than intersecting with the
+    group's implied category, so the result set is never narrower than what was asked for."""
+    from monarch_py.api.additional_models import SemsimSearchRequest
+
+    request = SemsimSearchRequest(
+        termset=["HP:123"],
+        group=SemsimSearchGroup.HGNC,
+        filter={"category": ["biolink:Genotype"], "taxon": ["NCBITaxon:10090"]},
+    )
+    assert request.resolved_filter() == {
+        "categories": ["biolink:Genotype"],
+        "taxa": ["NCBITaxon:10090"],
+        "prefixes": None,
+    }
+
+
+def test_post_search_requires_a_filter():
+    """Neither `filter` nor `group` is a client bug, not a request to search all 200k entities.
+
+    Mounted on a real app rather than the bare router `client` used above, because FastAPI's
+    HTTPException-to-response handling lives at the app level: against a bare router the
+    exception would propagate and the status code never be exercised.
+    """
+    from fastapi import FastAPI
+
+    app = FastAPI()
+    app.include_router(router)
+    response = TestClient(app).post("/search/", json={"termset": ["HP:123"], "limit": 5})
+    assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
 
 @patch("monarch_py.service.semsim_service.SemsimianService.multi_compare")

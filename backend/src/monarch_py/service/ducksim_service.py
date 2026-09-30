@@ -59,16 +59,28 @@ class DucksimService:
     def search(
         self,
         termset: List[str],
-        prefix: str,
+        prefix: str = None,
         metric: SemsimMetric = SemsimMetric.ANCESTOR_INFORMATION_CONTENT,
         directionality: SemsimDirectionality = SemsimDirectionality.BIDIRECTIONAL,
         limit: int = 10,
+        categories: List[str] = None,
+        taxa: List[str] = None,
+        prefixes: List[str] = None,
     ) -> List[SemsimSearchResult]:
         # Hybrid mode matches the semsimian server; full_search would be more accurate (see engine).
         # The engine ranks and enriches the whole page in a constant number of DuckDB queries (no
         # per-result round-trips); the loop below is pure in-memory model shaping.
         direction = directionality.value if hasattr(directionality, "value") else str(directionality)
-        page = self.engine.search(termset, limit=limit, metric=str(metric), prefix=prefix, direction=direction)
+        page = self.engine.search(
+            termset,
+            limit=limit,
+            metric=str(metric),
+            prefix=prefix,
+            direction=direction,
+            categories=categories,
+            taxa=taxa,
+            prefixes=prefixes,
+        )
         if not page:
             return []
         # all-DuckDB hydration of result entities from the KG `nodes` table — no external entity store
@@ -86,6 +98,42 @@ class DucksimService:
             )
             for entity_id, score, comparison in page
         ]
+
+    def search_by_profile(
+        self,
+        entity_id: str,
+        metric: SemsimMetric = SemsimMetric.ANCESTOR_INFORMATION_CONTENT,
+        directionality: SemsimDirectionality = SemsimDirectionality.BIDIRECTIONAL,
+        limit: int = 10,
+        categories: List[str] = None,
+        taxa: List[str] = None,
+        prefixes: List[str] = None,
+    ):
+        """Search using an entity's OWN phenotype profile as the query termset.
+
+        The half of Case support that a termset search alone does not give you: a phenopacket Case
+        is a query source, not something you would retype 20 HPO ids for. Pull `entity_id`'s
+        profile from the KG, then search — so "diseases like this patient" (filter to Disease),
+        "mouse models for this patient" (Genotype + mouse taxon) and "patients like this mouse"
+        (Case) are one call each, differing only in the target filter.
+
+        Returns (query_profile, results). The profile is returned because a caller ranking many
+        entities wants to know how many terms drove each search — a 2-term case and a 40-term case
+        are not equally trustworthy, and hiding the count hides that.
+        """
+        profile = self.engine.profile(entity_id)
+        if not profile:
+            return [], []
+        results = self.search(
+            termset=profile,
+            metric=metric,
+            directionality=directionality,
+            limit=limit,
+            categories=categories,
+            taxa=taxa,
+            prefixes=prefixes,
+        )
+        return profile, results
 
     # ---- model shaping --------------------------------------------------
 
