@@ -10,6 +10,25 @@ from pydantic import BaseModel
 
 FIELD_TYPE_SUFFIXES = ["_t", "_ac", "_grounding", "_sortable_float"]
 
+# Solr echoes the rejected query back in its error message, and the queries that get
+# rejected are the long ones -- the clause-limit failures in #1458 ran past 50,000
+# characters. Enough to identify the problem, not enough to return a query as a
+# response body.
+SOLR_ERROR_MESSAGE_LIMIT = 500
+
+
+class SolrQueryError(Exception):
+    """Solr rejected the query, as opposed to failing to answer it.
+
+    Worth distinguishing because the two want different handling: a rejected query is
+    the caller's or our query builder's problem and should say so, while a Solr that is
+    down or overloaded is ours and should stay a 500.
+    """
+
+    def __init__(self, message: str):
+        self.message = message[:SOLR_ERROR_MESSAGE_LIMIT]
+        super().__init__(self.message)
+
 
 class SolrService(BaseModel):
     base_url: str
@@ -37,7 +56,11 @@ class SolrService(BaseModel):
         logger.debug(f"SolrService.query: {url} took {(time.perf_counter() - started) * 1000:.0f}ms")
         data = json.loads(response.text)
         if "error" in data:
+            # The full message, however long, goes to the log; `SolrQueryError` carries
+            # the truncated one that may reach a caller.
             logger.error("Solr error message: " + data["error"]["msg"])
+            if 400 <= response.status_code < 500:
+                raise SolrQueryError(data["error"]["msg"])
         response.raise_for_status()
         solr_query_result = SolrQueryResult.model_validate(data, from_attributes=True)
         solr_query_result.highlighting = SolrService._consolidate_highlights(
