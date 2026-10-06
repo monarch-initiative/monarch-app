@@ -65,6 +65,16 @@
 
       <li>
         <strong>
+          <AppLink to="https://www.herox.com/dataworks_2022/teams">
+            DataWorks! Distinguished Achievement Award for Data Reuse: Using All
+            Organisms for Diagnostics and Discovery
+          </AppLink> </strong
+        ><span class="award-badge">Award</span><br />
+        National Institutes of Health 2022 DataWorks! Challenge
+      </li>
+
+      <li>
+        <strong>
           <AppLink
             to="https://reporter.nih.gov/search/rGHPmb-5YkCYcrKTFLK0Sw/project-details/10843159"
           >
@@ -135,7 +145,8 @@ import ThePageTitle from "@/components/ThePageTitle.vue";
   line-height: 1.6;
 }
 
-.past-badge {
+.past-badge,
+.award-badge {
   margin-left: 0.5rem;
   padding: 0.1rem 0.5rem;
   border-radius: 5px;
@@ -143,5 +154,10 @@ import ThePageTitle from "@/components/ThePageTitle.vue";
   color: #404040;
   font-size: 0.8rem;
   white-space: nowrap;
+}
+
+.award-badge {
+  background: #d6f1f3;
+  color: #005f66;
 }
 </style>
