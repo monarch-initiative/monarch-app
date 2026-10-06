@@ -49,7 +49,7 @@
       </li>
 
       <li>
-        <strong>
+        <strong class="grant-title">
           Are all diseases n-of-1? Meaningful classification and
           characterization within and across rare diseases </strong
         ><br />
@@ -58,7 +58,9 @@
       </li>
 
       <li>
-        <strong>LinkML: an open data modeling framework</strong><br />
+        <strong class="grant-title"
+          >LinkML: an open data modeling framework</strong
+        ><br />
         Wellcome Trust<br />
         Grant ID: 313291/Z/24/Z
       </li>
@@ -143,6 +145,10 @@ import ThePageTitle from "@/components/ThePageTitle.vue";
   color: #444;
   font-size: 1rem;
   line-height: 1.6;
+}
+
+.grant-title {
+  color: hsl(185, 100%, 30%);
 }
 
 .past-badge,
