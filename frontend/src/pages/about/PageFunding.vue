@@ -49,6 +49,20 @@
       </li>
 
       <li>
+        <strong>
+          <AppLink
+            to="https://reporter.nih.gov/search/rGHPmb-5YkCYcrKTFLK0Sw/project-details/10843159"
+          >
+            Increasing the Yield and Utility of Pediatric Genomic Medicine with
+            Exomiser
+          </AppLink> </strong
+        ><br />
+        Eunice Kennedy Shriver National Institute of Child Health and Human
+        Development<br />
+        Grant ID: 5R01HD103805
+      </li>
+
+      <li>
         <strong class="grant-title">
           Are all diseases n-of-1? Meaningful classification and
           characterization within and across rare diseases </strong
@@ -73,20 +87,6 @@
           </AppLink> </strong
         ><span class="award-badge">Award</span><br />
         National Institutes of Health 2022 DataWorks! Challenge
-      </li>
-
-      <li>
-        <strong>
-          <AppLink
-            to="https://reporter.nih.gov/search/rGHPmb-5YkCYcrKTFLK0Sw/project-details/10843159"
-          >
-            Increasing the Yield and Utility of Pediatric Genomic Medicine with
-            Exomiser
-          </AppLink> </strong
-        ><br />
-        Eunice Kennedy Shriver National Institute of Child Health and Human
-        Development<br />
-        Grant ID: 5R01HD103805
       </li>
 
       <li>
