@@ -197,16 +197,6 @@
         "name": "Arwa Ibrahim",
         "role": "Ontology Editor",
         "link": "https://www.ebi.ac.uk/people/person/arwa-ibrahim/"
-      },
-      {
-        "name": "Ray Stefancsik",
-        "role": "Biomedical Ontology Developer/Editor",
-        "link": "https://www.ebi.ac.uk/people/person/raymund-stefancsik/"
-      },
-      {
-        "name": "Vinícius de Souza",
-        "role": "Semantic/Ontology Developer",
-        "link": "https://www.ebi.ac.uk/people/person/vinicius-de-souza/"
       }
     ]
   },
@@ -247,11 +237,6 @@
     "link": "https://medschool.cuanschutz.edu/",
     "members": [
       {
-        "name": "Katherina Cortes",
-        "role": "PhD Student",
-        "link": "https://github.com/kcortes133"
-      },
-      {
         "name": "Megan Kraus",
         "role": "PhD Student",
         "link": "https://tislab.org/members/megan-kraus.html"
@@ -271,11 +256,6 @@
         "name": "Ada Hamosh",
         "role": "Clinical Director DGM, Scientific Director OMIM",
         "link": "https://www.hopkinsmedicine.org/profiles/details/ada-hamosh"
-      },
-      {
-        "name": "Joseph E Flack",
-        "role": "Software Engineer",
-        "link": "https://josephflack.com/"
       }
     ]
   },
@@ -373,6 +353,22 @@
   {
     "name": "Alumni Members",
     "members": [
+      {
+        "name": "Joseph E Flack",
+        "role": "Software Engineer"
+      },
+      {
+        "name": "Katherina Cortes",
+        "role": "PhD Student"
+      },
+      {
+        "name": "Vinícius de Souza",
+        "role": "Semantic/Ontology Developer"
+      },
+      {
+        "name": "Ray Stefancsik",
+        "role": "Biomedical Ontology Developer/Editor"
+      },
       {
         "name": "Trish Whetzel",
         "role": "Semantic Curation Engineer"
