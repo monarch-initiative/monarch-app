@@ -91,31 +91,33 @@ def test_build_association_multiple_predicates():
 def test_build_association_multiple_entites():
     query = build_association_query(entity=["MONDO:0020121", "HP:0000006"])
     assert len(query.filter_queries) > 0, "filter_queries is empty"
-    entity_filter = [fq for fq in query.filter_queries if fq.startswith("subject:")][0]
-    assert (
-        entity_filter
-        == 'subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121" OR object:"MONDO:0020121" OR object_closure:"MONDO:0020121" OR disease_context_qualifier:"MONDO:0020121" OR disease_context_qualifier_closure:"MONDO:0020121" OR subject:"HP:0000006" OR subject_closure:"HP:0000006" OR object:"HP:0000006" OR object_closure:"HP:0000006" OR disease_context_qualifier:"HP:0000006" OR disease_context_qualifier_closure:"HP:0000006"'
+    entity_filter = [fq for fq in query.filter_queries if "f=subject}" in fq][0]
+    assert entity_filter == (
+        '_query_:"{!terms f=subject}MONDO:0020121,HP:0000006"'
+        ' OR _query_:"{!terms f=subject_closure}MONDO:0020121,HP:0000006"'
+        ' OR _query_:"{!terms f=object}MONDO:0020121,HP:0000006"'
+        ' OR _query_:"{!terms f=object_closure}MONDO:0020121,HP:0000006"'
+        ' OR _query_:"{!terms f=disease_context_qualifier}MONDO:0020121,HP:0000006"'
+        ' OR _query_:"{!terms f=disease_context_qualifier_closure}MONDO:0020121,HP:0000006"'
     )
 
 
 def test_build_association_multiple_subjects():
     query = build_association_query(subject=["MONDO:0020121", "MONDO:0007915"])
     assert len(query.filter_queries) > 0, "filter_queries is empty"
-    subject_filter = [fq for fq in query.filter_queries if fq.startswith("subject:")][0]
-    assert (
-        subject_filter
-        == 'subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121" OR subject:"MONDO:0007915" OR subject_closure:"MONDO:0007915"'
+    subject_filter = [fq for fq in query.filter_queries if "f=subject}" in fq][0]
+    assert subject_filter == (
+        '_query_:"{!terms f=subject}MONDO:0020121,MONDO:0007915"'
+        ' OR _query_:"{!terms f=subject_closure}MONDO:0020121,MONDO:0007915"'
     ), "multiple subject filter is not as expected"
 
 
 def test_build_association_multiple_objects():
     query = build_association_query(object=["HP:0000006", "HP:0000007"])
     assert len(query.filter_queries) > 0, "filter_queries is empty"
-    object_filter = [fq for fq in query.filter_queries if fq.startswith("object:")][0]
-    print(object_filter)
-    assert (
-        object_filter
-        == 'object:"HP:0000006" OR object_closure:"HP:0000006" OR object:"HP:0000007" OR object_closure:"HP:0000007"'
+    object_filter = [fq for fq in query.filter_queries if "f=object}" in fq][0]
+    assert object_filter == (
+        '_query_:"{!terms f=object}HP:0000006,HP:0000007" OR _query_:"{!terms f=object_closure}HP:0000006,HP:0000007"'
     ), "multiple object filter is not as expected"
 
 

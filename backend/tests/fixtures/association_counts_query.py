@@ -124,7 +124,7 @@ def association_counts_query():
             '(category:"biolink:Association" AND predicate:"biolink:related_to" AND subject_category:"biolink:ClinicalMeasurement" AND object_category:"biolink:Cell") AND (object:"MONDO:0020121" OR object_closure:"MONDO:0020121" OR disease_context_qualifier:"MONDO:0020121" OR disease_context_qualifier_closure:"MONDO:0020121")',
         ],
         "filter_queries": [
-            'subject:"MONDO:0020121" OR subject_closure:"MONDO:0020121" OR object:"MONDO:0020121" OR object_closure:"MONDO:0020121" OR disease_context_qualifier:"MONDO:0020121" OR disease_context_qualifier_closure:"MONDO:0020121"'
+            '_query_:"{!terms f=subject}MONDO:0020121" OR _query_:"{!terms f=subject_closure}MONDO:0020121" OR _query_:"{!terms f=object}MONDO:0020121" OR _query_:"{!terms f=object_closure}MONDO:0020121" OR _query_:"{!terms f=disease_context_qualifier}MONDO:0020121" OR _query_:"{!terms f=disease_context_qualifier_closure}MONDO:0020121"'
         ],
         "facet_mincount": 1,
         "facet_limit": None,

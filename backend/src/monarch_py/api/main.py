@@ -1,8 +1,8 @@
 from contextlib import asynccontextmanager
 import uvicorn
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import RedirectResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 
 from monarch_py.api import (
     association,
@@ -19,6 +19,7 @@ from monarch_py.api import (
 )
 from monarch_py.api.config import semsimian, spacyner, settings
 from monarch_py.api.middleware.logging_middleware import LoggingMiddleware
+from monarch_py.service.solr_service import SolrQueryError
 from monarch_py.utils.utils import get_release_metadata, get_release_versions, set_log_level
 
 # At import, so startup logging is covered too and not just request handling. The CLI
@@ -62,6 +63,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.add_middleware(LoggingMiddleware)
+
+
+@app.exception_handler(SolrQueryError)
+async def solr_query_error_handler(request: Request, exc: SolrQueryError) -> JSONResponse:
+    """Report a query Solr refused as a bad request rather than a server error.
+
+    A 500 says the server broke, which sends the reader looking at the server. These
+    come from the query, which is often something the caller can act on -- too many
+    IDs, bad filter syntax -- and when it isn't, the status still points at the right
+    place. A Solr that is down or overloaded does not come through here and stays a 500.
+    """
+    return JSONResponse(status_code=400, content={"detail": f"Solr rejected the query: {exc.message}"})
+
 
 app.description = """
 
