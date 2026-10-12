@@ -160,9 +160,28 @@ export interface Entity {
     id: string,
     category?: string,
     name?: string,
-    description?: string,
     xref?: string[],
     synonym?: string[],
+    /** The long form name of an entity */
+    full_name?: string,
+    /** The biolink taxon that the entity is in the closure of. */
+    in_taxon?: string,
+    /** The label of the biolink taxon that the entity is in the closure of. */
+    in_taxon_label?: string,
+    symbol?: string,
+    /** Source file stem injected by koza at load time. */
+    file_source?: string,
+    provided_by?: string,
+    iri?: string,
+    has_gene?: string[],
+    /** The type of the entity (e.g. sequence onotology type for genes etc) */
+    type?: string,
+    description?: string,
+    has_attribute?: string[],
+    /** The biological sex of an individual entity. */
+    has_biological_sex?: string,
+    /** A boolean flag indicating that an entity is no longer considered current or valid. */
+    deprecated?: boolean,
     /** An exact synonym for the entity */
     exact_synonym?: string[],
     /** A broader synonym for the entity */
@@ -171,28 +190,9 @@ export interface Entity {
     narrow_synonym?: string[],
     /** A related synonym for the entity */
     related_synonym?: string[],
-    /** A boolean flag indicating that an entity is no longer considered current or valid. */
-    deprecated?: boolean,
-    /** The biolink taxon that the entity is in the closure of. */
-    in_taxon?: string,
-    /** The label of the biolink taxon that the entity is in the closure of. */
-    in_taxon_label?: string,
-    iri?: string,
     same_as?: string[],
     /** A list of subsets that the entity belongs to */
     subsets?: string[],
-    /** Source file stem injected by koza at load time. */
-    file_source?: string,
-    provided_by?: string,
-    /** The long form name of an entity */
-    full_name?: string,
-    symbol?: string,
-    has_gene?: string[],
-    /** The type of the entity (e.g. sequence onotology type for genes etc) */
-    type?: string,
-    has_attribute?: string[],
-    /** The biological sex of an individual entity. */
-    has_biological_sex?: string,
     synonyms?: string,
     /** The namespace/prefix portion of this entity's identifier */
     namespace?: string,
@@ -231,9 +231,16 @@ export interface Association {
     /** Source file stem injected by koza at load time. */
     file_source?: string,
     provided_by?: string,
+    has_evidence?: string[],
     publications?: string[],
     qualifiers?: string[],
-    has_evidence?: string[],
+    negated?: boolean,
+    /** used to hold the original relation/predicate that an external knowledge source uses before transformation to match the biolink-model specification. */
+    original_predicate?: string,
+    /** The level of FDA adverse event reporting for a drug-condition association. */
+    FDA_adverse_event_level?: string,
+    /** A context qualifier representing a disease or condition in which a relationship expressed in an association took place. */
+    disease_context_qualifier?: string,
     frequency_qualifier?: string,
     /** count of out of has_total representing a frequency */
     has_count?: number,
@@ -243,18 +250,11 @@ export interface Association {
     has_quotient?: number,
     /** total, devided by has_count, representing a frequency */
     has_total?: number,
-    negated?: boolean,
     onset_qualifier?: string,
     sex_qualifier?: string,
-    /** used to hold the original relation/predicate that an external knowledge source uses before transformation to match the biolink-model specification. */
-    original_predicate?: string,
-    /** A context qualifier representing a disease or condition in which a relationship expressed in an association took place. */
-    disease_context_qualifier?: string,
     has_attribute?: string[],
     /** Composes with the core concept (+ qualifier) to describe new concepts of a more specific kind. The aspect qualifier represents an attribute of the object that is the focus of the relationship (e.g. for an association where the object is a gene, this might be the expression, abundance, activity, or stability of the gene). */
     object_aspect_qualifier?: string,
-    /** The level of FDA adverse event reporting for a drug-condition association. */
-    FDA_adverse_event_level?: string,
     /** A context qualifier representing a species in which a relationship expressed in an association took place. */
     species_context_qualifier?: string,
     stage_qualifier?: string,

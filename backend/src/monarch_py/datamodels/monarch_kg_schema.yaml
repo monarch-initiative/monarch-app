@@ -33,11 +33,6 @@ slots:
     - biolink:name
     slot_uri: rdfs:label
     range: string
-  description:
-    exact_mappings:
-    - biolink:description
-    slot_uri: dct:description
-    range: string
   xref:
     exact_mappings:
     - biolink:xref
@@ -50,6 +45,61 @@ slots:
     slot_uri: biolink:synonym
     range: string
     multivalued: true
+  full_name:
+    exact_mappings:
+    - biolink:full_name
+    slot_uri: biolink:full_name
+    range: string
+  in_taxon:
+    exact_mappings:
+    - biolink:in_taxon
+    slot_uri: biolink:in_taxon
+    range: uriorcurie
+  in_taxon_label:
+    exact_mappings:
+    - biolink:in_taxon_label
+    slot_uri: biolink:in_taxon_label
+    range: string
+  symbol:
+    exact_mappings:
+    - biolink:symbol
+    slot_uri: biolink:symbol
+  iri:
+    exact_mappings:
+    - biolink:iri
+    slot_uri: biolink:iri
+    range: uriorcurie
+  has_gene:
+    exact_mappings:
+    - biolink:has_gene
+    slot_uri: biolink:has_gene
+    range: uriorcurie
+    multivalued: true
+  type:
+    exact_mappings:
+    - biolink:type
+    slot_uri: rdf:type
+  description:
+    exact_mappings:
+    - biolink:description
+    slot_uri: dct:description
+    range: string
+  has_attribute:
+    exact_mappings:
+    - biolink:has_attribute
+    slot_uri: biolink:has_attribute
+    range: uriorcurie
+    multivalued: true
+  has_biological_sex:
+    exact_mappings:
+    - biolink:has_biological_sex
+    slot_uri: biolink:has_biological_sex
+    range: uriorcurie
+  deprecated:
+    exact_mappings:
+    - biolink:deprecated
+    slot_uri: biolink:deprecated
+    range: boolean
   exact_synonym:
     exact_mappings:
     - biolink:exact_synonym
@@ -70,62 +120,12 @@ slots:
     - biolink:related_synonym
     slot_uri: biolink:related_synonym
     multivalued: true
-  deprecated:
-    exact_mappings:
-    - biolink:deprecated
-    slot_uri: biolink:deprecated
-    range: boolean
-  in_taxon:
-    exact_mappings:
-    - biolink:in_taxon
-    slot_uri: biolink:in_taxon
-    range: uriorcurie
-  in_taxon_label:
-    exact_mappings:
-    - biolink:in_taxon_label
-    slot_uri: biolink:in_taxon_label
-    range: string
-  iri:
-    exact_mappings:
-    - biolink:iri
-    slot_uri: biolink:iri
-    range: uriorcurie
   subsets:
     exact_mappings:
     - biolink:subsets
     slot_uri: biolink:subsets
     range: string
     multivalued: true
-  full_name:
-    exact_mappings:
-    - biolink:full_name
-    slot_uri: biolink:full_name
-    range: string
-  symbol:
-    exact_mappings:
-    - biolink:symbol
-    slot_uri: biolink:symbol
-  has_gene:
-    exact_mappings:
-    - biolink:has_gene
-    slot_uri: biolink:has_gene
-    range: uriorcurie
-    multivalued: true
-  type:
-    exact_mappings:
-    - biolink:type
-    slot_uri: rdf:type
-  has_attribute:
-    exact_mappings:
-    - biolink:has_attribute
-    slot_uri: biolink:has_attribute
-    range: uriorcurie
-    multivalued: true
-  has_biological_sex:
-    exact_mappings:
-    - biolink:has_biological_sex
-    slot_uri: biolink:has_biological_sex
-    range: uriorcurie
   same_as:
     multivalued: true
   synonyms: {}
@@ -163,6 +163,12 @@ slots:
     exact_mappings:
     - biolink:primary_knowledge_source
     slot_uri: biolink:primary_knowledge_source
+  has_evidence:
+    exact_mappings:
+    - biolink:has_evidence
+    slot_uri: biolink:has_evidence
+    range: uriorcurie
+    multivalued: true
   publications:
     exact_mappings:
     - biolink:publications
@@ -175,12 +181,26 @@ slots:
     slot_uri: biolink:qualifiers
     range: uriorcurie
     multivalued: true
-  has_evidence:
+  negated:
     exact_mappings:
-    - biolink:has_evidence
-    slot_uri: biolink:has_evidence
+    - biolink:negated
+    slot_uri: biolink:negated
+    range: boolean
+  original_predicate:
+    exact_mappings:
+    - biolink:original_predicate
+    slot_uri: biolink:original_predicate
     range: uriorcurie
-    multivalued: true
+  FDA_adverse_event_level:
+    exact_mappings:
+    - biolink:FDA_adverse_event_level
+    slot_uri: biolink:FDA_adverse_event_level
+    range: string
+  disease_context_qualifier:
+    exact_mappings:
+    - biolink:disease_context_qualifier
+    slot_uri: biolink:disease_context_qualifier
+    range: uriorcurie
   frequency_qualifier:
     exact_mappings:
     - biolink:frequency_qualifier
@@ -206,11 +226,6 @@ slots:
     - biolink:has_total
     slot_uri: biolink:has_total
     range: integer
-  negated:
-    exact_mappings:
-    - biolink:negated
-    slot_uri: biolink:negated
-    range: boolean
   onset_qualifier:
     exact_mappings:
     - biolink:onset_qualifier
@@ -226,30 +241,15 @@ slots:
     - biolink:object_category
     slot_uri: biolink:object_category
     range: uriorcurie
-  original_predicate:
-    exact_mappings:
-    - biolink:original_predicate
-    slot_uri: biolink:original_predicate
-    range: uriorcurie
   subject_category:
     exact_mappings:
     - biolink:subject_category
     slot_uri: biolink:subject_category
     range: uriorcurie
-  disease_context_qualifier:
-    exact_mappings:
-    - biolink:disease_context_qualifier
-    slot_uri: biolink:disease_context_qualifier
-    range: uriorcurie
   object_aspect_qualifier:
     exact_mappings:
     - biolink:object_aspect_qualifier
     slot_uri: biolink:object_aspect_qualifier
-    range: string
-  FDA_adverse_event_level:
-    exact_mappings:
-    - biolink:FDA_adverse_event_level
-    slot_uri: biolink:FDA_adverse_event_level
     range: string
   species_context_qualifier:
     exact_mappings:
@@ -344,27 +344,27 @@ classes:
     - id
     - category
     - name
-    - description
     - xref
     - synonym
+    - full_name
+    - in_taxon
+    - in_taxon_label
+    - symbol
+    - file_source
+    - provided_by
+    - iri
+    - has_gene
+    - type
+    - description
+    - has_attribute
+    - has_biological_sex
+    - deprecated
     - exact_synonym
     - broad_synonym
     - narrow_synonym
     - related_synonym
-    - deprecated
-    - in_taxon
-    - in_taxon_label
-    - iri
     - same_as
     - subsets
-    - file_source
-    - provided_by
-    - full_name
-    - symbol
-    - has_gene
-    - type
-    - has_attribute
-    - has_biological_sex
     - synonyms
     - namespace
     - has_phenotype
@@ -387,22 +387,22 @@ classes:
     - primary_knowledge_source
     - file_source
     - provided_by
+    - has_evidence
     - publications
     - qualifiers
-    - has_evidence
+    - negated
+    - original_predicate
+    - FDA_adverse_event_level
+    - disease_context_qualifier
     - frequency_qualifier
     - has_count
     - has_percentage
     - has_quotient
     - has_total
-    - negated
     - onset_qualifier
     - sex_qualifier
-    - original_predicate
-    - disease_context_qualifier
     - has_attribute
     - object_aspect_qualifier
-    - FDA_adverse_event_level
     - species_context_qualifier
     - stage_qualifier
     - qualifier
