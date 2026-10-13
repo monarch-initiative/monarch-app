@@ -17,7 +17,7 @@ from monarch_py.utils.utils import (
     get_provided_by_link,
     strip_json,
 )
-from monarch_py.utils.format_utils import get_headers_from_obj, to_json, to_tsv, to_yaml
+from monarch_py.utils.format_utils import get_headers_from_obj, to_json, to_table, to_tsv, to_yaml
 
 ### Test basic utility methods ###
 
@@ -142,3 +142,48 @@ def test_convert_to_tsv(obj, expected, format, request):
         result = to_yaml(node, print_output=False)
     expected = request.getfixturevalue(expected)
     assert result == expected  # type: ignore
+
+
+def test_to_tsv_prints_tsv_to_stdout(associations, capsys):
+    """TSV printed without a file goes to stdout unchanged, so it can be piped or redirected."""
+    obj = AssociationResults(**associations)
+    tsv = to_tsv(obj)
+    captured = capsys.readouterr()
+    assert captured.out == tsv + "\n"
+    assert captured.err == ""
+    lines = captured.out.rstrip("\n").split("\n")
+    assert len(lines) == len(obj.items) + 1
+    headers = get_headers_from_obj(obj)
+    assert all(len(line.split("\t")) == len(headers) for line in lines)
+    assert "\x1b" not in captured.out
+
+
+def test_to_tsv_writes_file(associations, capsys, tmp_path):
+    """TSV written to a file leaves stdout empty and reports the file on stderr."""
+    obj = AssociationResults(**associations)
+    output = tmp_path / "out.tsv"
+    tsv = to_tsv(obj, file=str(output))
+    captured = capsys.readouterr()
+    assert output.read_text() == tsv
+    assert captured.out == ""
+    assert "Output written to" in captured.err
+
+
+def test_to_table_prints_title(associations, capsys):
+    """The table title is shown to the user on stderr, not mixed into stdout."""
+    obj = AssociationResults(**associations)
+    to_table(obj)
+    captured = capsys.readouterr()
+    assert "AssociationResults" in captured.err
+    assert captured.out == ""
+
+
+def test_to_tsv_empty_results_prints_headers_only(associations, capsys):
+    """An empty result still yields the header row, taken from the model's schema."""
+    obj = AssociationResults(**{**associations, "items": [], "total": 0})
+    tsv = to_tsv(obj)
+    captured = capsys.readouterr()
+    assert captured.out == tsv + "\n"
+    assert "\n" not in tsv
+    headers = tsv.split("\t")
+    assert headers == list(AssociationResults(**associations).items[0].model_dump().keys())

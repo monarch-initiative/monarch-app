@@ -40,7 +40,7 @@ def get_headers_from_obj(obj: ConfiguredBaseModel) -> list:
             headers = obj.items[0].model_dump().keys()
         else:
             schema = type(obj).model_json_schema()
-            definitions = schema["definitions"]
+            definitions = schema["$defs"]
             this_ref = schema["properties"]["items"]["items"]["$ref"].split("/")[-1]
             headers = definitions[this_ref]["properties"].keys()
     else:
@@ -103,7 +103,7 @@ def to_tsv(obj: ConfiguredBaseModel, file: str = None, print_output: bool = True
             f.write(tsv)
         console.print(f"\nOutput written to {file}\n")
     elif print_output:
-        console.print(tsv)
+        print(tsv)
     return tsv
 
 
