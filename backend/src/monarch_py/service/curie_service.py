@@ -10,7 +10,9 @@ __all__ = [
 # with kg-phenio's normalize step
 # (https://github.com/linkml/prefixmaps/blob/main/src/prefixmaps/data/merged.monarch.csv)
 converter = load_converter("merged.monarch")
-converter.add_prefix("GARD", "https://rarediseases.info.nih.gov/diseases/")
+# GARD's old /diseases/<id>/index URLs don't accept zero-padded IDs, which is
+# how Mondo records them. Use the gard_id query form, which expects them.
+converter.add_prefix("GARD", "https://rarediseases.info.nih.gov/?gard_id=")
 converter.add_prefix("NORD", "https://rarediseases.org/?p=")
 converter.add_prefix("Orphanet", "https://www.orpha.net/en/disease/detail/", merge=True)
 # icd.codes is dead/returning 403s, override to use icd10data.com search

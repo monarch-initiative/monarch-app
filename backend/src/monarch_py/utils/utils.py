@@ -73,10 +73,10 @@ def get_links_for_field(field: List[str]) -> List[ExpandedCurie]:
 
 
 def get_link_for_curie(curie: str) -> ExpandedCurie:
-    url = converter.expand(curie.replace("PMID", "PUBMED"))
     if curie.startswith("GARD:"):
-        url += "/index"
-    return url
+        # gard_id expects a 7-digit zero-padded ID
+        curie = "GARD:" + curie.split(":", 1)[1].zfill(7)
+    return converter.expand(curie.replace("PMID", "PUBMED"))
 
 
 def get_provided_by_link(provided_by: str) -> ExpandedCurie:
