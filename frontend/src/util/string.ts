@@ -34,3 +34,9 @@ export const copyToClipboard = async (
     console.error(error);
   }
 };
+
+/** format a 0-1 frequency for display, e.g. 0.17 -> "17%". empty if unknown. */
+export const formatFrequency = (frequency?: number | null) =>
+  frequency === undefined || frequency === null
+    ? ""
+    : `${Math.round(frequency * 100)}%`;
