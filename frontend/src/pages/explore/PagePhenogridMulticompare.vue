@@ -24,7 +24,11 @@ import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { isEmpty } from "lodash";
 import { useEventListener } from "@vueuse/core";
-import { compareSetToSets, metricOptions } from "@/api/phenotype-explorer";
+import {
+  compareSetToSets,
+  metricOptions,
+  type CompareSettings,
+} from "@/api/phenotype-explorer";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
 import TheSnackbar from "@/components/TheSnackbar.vue";
 import { useQuery } from "@/composables/use-query";
@@ -36,6 +40,8 @@ const route = useRoute();
 const aPhenotypes = ref<Parameters<typeof compareSetToSets>[0]>([]);
 const bPhenotypes = ref<Parameters<typeof compareSetToSets>[1]>([]);
 const similarityMetric = ref(metricOptions[0]);
+/** compare settings from url params; omitted ones take the API defaults */
+const settings = ref<CompareSettings>({});
 const stylesheetHref = ref("");
 
 /** comparison analysis */
@@ -50,6 +56,7 @@ const {
       aPhenotypes.value,
       bPhenotypes.value,
       similarityMetric.value.id,
+      settings.value,
     );
   },
 
@@ -58,7 +65,9 @@ const {
 );
 
 /** re-rerun analysis when inputs change */
-watch([aPhenotypes, bPhenotypes, similarityMetric], runAnalysis);
+watch([aPhenotypes, bPhenotypes, similarityMetric, settings], runAnalysis, {
+  deep: true,
+});
 
 /** get input url params */
 watch(
@@ -69,7 +78,19 @@ watch(
       "object-sets": objectSets = "",
       metric = "",
       stylesheet = "",
+      directionality = "",
+      "information-content": informationContent = "",
+      group = "",
     } = route.query;
+    const text = (value: unknown) =>
+      value && typeof value === "string" ? value : undefined;
+    settings.value = Object.fromEntries(
+      Object.entries({
+        directionality: text(directionality),
+        information_content: text(informationContent),
+        group: text(group),
+      }).filter(([, value]) => value),
+    );
 
     if (stylesheet && typeof stylesheet === "string")
       stylesheetHref.value = window.decodeURIComponent(stylesheet);

@@ -28,6 +28,7 @@ import {
   compareSetToGroup,
   metricOptions,
   type Group,
+  type SearchSettings,
 } from "@/api/phenotype-explorer";
 import ThePhenogrid from "@/components/ThePhenogrid.vue";
 import TheSnackbar from "@/components/TheSnackbar.vue";
@@ -40,6 +41,8 @@ const route = useRoute();
 const aPhenotypes = ref<Parameters<typeof compareSetToGroup>[0]>([]);
 const bGroup = ref<Parameters<typeof compareSetToGroup>[1]>("Human Diseases");
 const similarityMetric = ref(metricOptions[0]);
+/** ranking settings from url params; omitted ones take the API defaults */
+const settings = ref<SearchSettings>({});
 const stylesheetHref = ref("");
 
 /** comparison analysis */
@@ -54,6 +57,7 @@ const {
       aPhenotypes.value,
       bGroup.value,
       similarityMetric.value.id,
+      settings.value,
     );
   },
 
@@ -62,7 +66,9 @@ const {
 );
 
 /** re-rerun analysis when inputs change */
-watch([aPhenotypes, bGroup, similarityMetric], runAnalysis);
+watch([aPhenotypes, bGroup, similarityMetric, settings], runAnalysis, {
+  deep: true,
+});
 
 /** get input url params */
 watch(
@@ -73,7 +79,21 @@ watch(
       "object-group": objectGroup = "",
       metric = "",
       stylesheet = "",
+      directionality = "",
+      "search-mode": searchMode = "",
+      "information-content": informationContent = "",
+      "tie-break": tieBreak = "",
     } = route.query;
+    const text = (value: unknown) =>
+      value && typeof value === "string" ? value : undefined;
+    settings.value = Object.fromEntries(
+      Object.entries({
+        directionality: text(directionality),
+        search_mode: text(searchMode),
+        information_content: text(informationContent),
+        tie_break: text(tieBreak),
+      }).filter(([, value]) => value),
+    );
 
     if (stylesheet && typeof stylesheet === "string")
       stylesheetHref.value = window.decodeURIComponent(stylesheet);
