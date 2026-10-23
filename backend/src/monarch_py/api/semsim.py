@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 
 from fastapi import APIRouter, Path, Query
 
@@ -9,14 +9,58 @@ from monarch_py.api.additional_models import (
     SemsimSearchGroup,
     SemsimMultiCompareRequest,
     SemsimDirectionality,
+    SemsimSearchMode,
 )
-from monarch_py.api.config import semsim_service, solr
+from monarch_py.api.config import resolve_engine, semsim_service, solr
 from monarch_py.api.utils.similarity_utils import parse_similarity_prefix
 from monarch_py.datamodels.category_enums import AssociationPredicate, EntityCategory
-from monarch_py.datamodels.model import SearchResults
+from monarch_py.datamodels.model import SearchResults, SemsimSearchResult, SemsimSearchSettings
+from monarch_py.service.semsim_results import annotate_search_results
 
 # Hidden A/B-testing param: ?engine=ducksim|semsimian overrides the default similarity backend.
 EngineParam = Query(default=None, include_in_schema=False, title="Similarity backend override")
+
+# Search settings only ducksim implements, with the value that reproduces today's behaviour.
+# A request that sets any of them to something else is served by ducksim, whatever the backend.
+DUCKSIM_SEARCH_SETTINGS = {
+    "search_mode": SemsimSearchMode.HYBRID,
+}
+
+
+def _run_search(
+    *,
+    termset: List[str],
+    group: str,
+    metric: SemsimMetric,
+    directionality: SemsimDirectionality,
+    limit: int,
+    engine: Optional[str],
+    **ducksim_settings,
+) -> List[SemsimSearchResult]:
+    """Run a search on the right backend and attach direction scores and the settings used.
+
+    Ducksim-only settings are passed to the backend only when they differ from their defaults, so
+    a request that sets none of them calls either backend exactly as before.
+    """
+    requested = {name: ducksim_settings.get(name, default) for name, default in DUCKSIM_SEARCH_SETTINGS.items()}
+    non_default = {name: value for name, value in requested.items() if value != DUCKSIM_SEARCH_SETTINGS[name]}
+    engine_name = "ducksim" if non_default else resolve_engine(engine)
+    results = semsim_service(engine_name).search(
+        termset=termset,
+        prefix=parse_similarity_prefix(group),
+        metric=metric,
+        directionality=directionality,
+        limit=limit,
+        **non_default,
+    )
+    search_settings = SemsimSearchSettings(
+        engine=engine_name,
+        metric=str(metric),
+        directionality=str(SemsimDirectionality(directionality).value),
+        **{name: str(value) for name, value in requested.items()},
+    )
+    return annotate_search_results(results, search_settings)
+
 
 router = APIRouter(tags=["semsim"], responses={404: {"description": "Not Found"}})
 
@@ -135,6 +179,9 @@ def _search(
         SemsimDirectionality.BIDIRECTIONAL, title="Directionality of the search"
     ),
     limit: int = Query(default=10, ge=1, le=50),
+    search_mode: SemsimSearchMode = Query(
+        SemsimSearchMode.HYBRID, title="Score a Jaccard-prefiltered candidate set (hybrid) or every entity (full)"
+    ),
     engine: Optional[str] = EngineParam,
 ):
     """Search for terms in a termset
@@ -143,16 +190,23 @@ def _search(
         termset (str): Comma separated list of term IDs to find matches for. <br>
         group (str): Group of entities to search within (e.g. Human Genes) <br>
         metric: (str, optional): Similarity metric to use. Defaults to "ancestor_information_content". <br>
-        limit (int, optional): Limit the number of results. Defaults to 10.
+        directionality (str, optional): How per-term best matches are averaged. Defaults to "bidirectional". <br>
+        limit (int, optional): Limit the number of results. Defaults to 10. <br>
+        search_mode (str, optional): "hybrid" or "full". Defaults to "hybrid". "full" is served by the DuckDB backend.
 
     <b>Returns:</b> <br>
-        List[str]: List of matching terms
+        List[SemsimSearchResult]: Ranked entities, each with both direction scores and the settings used
     """
     terms = [term.strip() for term in termset.split(",")]
-    results = semsim_service(engine).search(
-        termset=terms, prefix=parse_similarity_prefix(group), metric=metric, directionality=directionality, limit=limit
+    return _run_search(
+        termset=terms,
+        group=group,
+        metric=metric,
+        directionality=directionality,
+        limit=limit,
+        engine=engine,
+        search_mode=search_mode,
     )
-    return results
 
 
 @router.post("/search")
@@ -170,10 +224,12 @@ def _post_search(request: SemsimSearchRequest, engine: Optional[str] = EnginePar
     }
     </pre>
     """
-    return semsim_service(engine).search(
+    return _run_search(
         termset=request.termset,
-        prefix=parse_similarity_prefix(request.group.value),
+        group=request.group.value,
         metric=request.metric,
         directionality=request.directionality,
         limit=request.limit,
+        engine=engine,
+        search_mode=request.search_mode,
     )

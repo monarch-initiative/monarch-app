@@ -7,7 +7,12 @@ semsimian HTTP server. See `monarch_py/service/ducksim.py` for the engine.
 
 from typing import Any, List
 
-from monarch_py.api.additional_models import SemsimDirectionality, SemsimMetric, SemsimMultiCompareRequest
+from monarch_py.api.additional_models import (
+    SemsimDirectionality,
+    SemsimMetric,
+    SemsimMultiCompareRequest,
+    SemsimSearchMode,
+)
 from monarch_py.datamodels.model import (
     BestMatch,
     Entity,
@@ -63,12 +68,16 @@ class DucksimService:
         metric: SemsimMetric = SemsimMetric.ANCESTOR_INFORMATION_CONTENT,
         directionality: SemsimDirectionality = SemsimDirectionality.BIDIRECTIONAL,
         limit: int = 10,
+        search_mode: SemsimSearchMode = SemsimSearchMode.HYBRID,
     ) -> List[SemsimSearchResult]:
-        # Hybrid mode matches the semsimian server; full_search would be more accurate (see engine).
+        # Hybrid (the default) matches the semsimian server. Full scores every entity in the group,
+        # so a richly annotated entity can't be dropped by hybrid's Jaccard prefilter (see engine).
         # The engine ranks and enriches the whole page in a constant number of DuckDB queries (no
         # per-result round-trips); the loop below is pure in-memory model shaping.
         direction = directionality.value if hasattr(directionality, "value") else str(directionality)
-        page = self.engine.search(termset, limit=limit, metric=str(metric), prefix=prefix, direction=direction)
+        page = self.engine.search(
+            termset, limit=limit, metric=str(metric), prefix=prefix, direction=direction, mode=str(search_mode)
+        )
         if not page:
             return []
         # all-DuckDB hydration of result entities from the KG `nodes` table — no external entity store

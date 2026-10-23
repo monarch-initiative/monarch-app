@@ -193,7 +193,20 @@ class BestMatch(ConfiguredBaseModel):
 class SemsimSearchResult(ConfiguredBaseModel):
     subject: Entity = Field(default=...)
     score: Optional[float] = Field(default=None)
+    subject_to_object_score: Optional[float] = Field(default=None, description="""The mean of the subject's best-match scores against the object termset. In a search the subject is the result entity, so this is how much of the entity's profile the query covers.""")
+    object_to_subject_score: Optional[float] = Field(default=None, description="""The mean of the object's best-match scores against the subject termset. In a search the object is the query, so this is how much of the query the entity covers.""")
     similarity: Optional[TermSetPairwiseSimilarity] = Field(default=None)
+    search_settings: Optional[SemsimSearchSettings] = Field(default=None)
+
+
+class SemsimSearchSettings(ConfiguredBaseModel):
+    """
+    The settings a phenotype search actually ran with, after defaults and backend routing. Every result of one search carries the same settings, so a saved response or a shared link can be reproduced.
+    """
+    engine: Optional[str] = Field(default=None, description="""The similarity backend that served the request, ducksim or semsimian.""")
+    metric: Optional[str] = Field(default=None, description="""The pairwise similarity metric.""")
+    directionality: Optional[str] = Field(default=None, description="""How the per-term best matches were averaged into `score`: subject_to_object, object_to_subject or bidirectional.""")
+    search_mode: Optional[str] = Field(default=None, description="""hybrid prefilters candidates by set Jaccard before scoring; full scores every entity in the group.""")
 
 
 class Entity(ConfiguredBaseModel):
@@ -934,6 +947,7 @@ TermSetPairwiseSimilarity.model_rebuild()
 TermInfo.model_rebuild()
 BestMatch.model_rebuild()
 SemsimSearchResult.model_rebuild()
+SemsimSearchSettings.model_rebuild()
 Entity.model_rebuild()
 Association.model_rebuild()
 AssociationCountList.model_rebuild()
