@@ -8,7 +8,7 @@ of failure the engine-only tests can miss.
 
 import duckdb
 import pytest
-from fastapi import status
+from fastapi import FastAPI, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.testclient import TestClient
 
@@ -139,3 +139,31 @@ def test_unknown_search_mode_is_rejected(ducksim_client):
     # A bare router (no app exception handlers) raises the validation error the app turns into a 422.
     with pytest.raises(RequestValidationError, match="search_mode"):
         ducksim_client.get("/search/A1/Human Diseases?search_mode=exhaustive")
+
+
+@pytest.fixture
+def ducksim_app_client(ducksim_client):
+    app = FastAPI()  # an app, not a bare router, so HTTPExceptions become responses
+    app.include_router(router)
+    return TestClient(app)
+
+
+@pytest.mark.parametrize("directionality", DIRECTIONS)
+def test_compare_average_follows_directionality(ducksim_app_client, directionality):
+    """A1 vs {A1, B1}: A1's best match is itself, B1 shares only the root (IC 0). So
+    subject_to_object = IC(A1), object_to_subject = IC(A1) / 2, bidirectional = their mean."""
+    get = ducksim_app_client.get(f"/compare/A1/A1,B1?directionality={directionality}").json()
+    post = ducksim_app_client.post(
+        "/compare/", json={"subjects": ["A1"], "objects": ["A1", "B1"], "directionality": directionality}
+    ).json()
+    ic_a1 = get["subject_best_matches"]["A1"]["score"]
+    expected = {"subject_to_object": ic_a1, "object_to_subject": ic_a1 / 2, "bidirectional": 0.75 * ic_a1}
+    assert get["average_score"] == pytest.approx(expected[directionality])
+    assert post["average_score"] == pytest.approx(expected[directionality])
+
+
+def test_multicompare_scores_follow_directionality(ducksim_app_client):
+    body = {"subjects": ["A1"], "object_sets": [{"id": "X", "label": "x", "phenotypes": ["A1", "B1"]}]}
+    bidirectional = ducksim_app_client.post("/multicompare/", json=body).json()[0]["score"]
+    s2o = ducksim_app_client.post("/multicompare/", json={**body, "directionality": "subject_to_object"}).json()[0]
+    assert s2o["score"] == pytest.approx(bidirectional / 0.75)
