@@ -115,11 +115,16 @@ def semsimian_http():
     )
 
 
-def semsim_service(engine: str = None):
-    """Resolve the similarity backend. A per-request `engine` ("ducksim" | "semsimian") overrides
-    the SEMSIM_BACKEND default — exposed via a hidden ?engine= API param for A/B comparison."""
+def resolve_engine(engine: str = None) -> str:
+    """The backend name a request resolves to: "ducksim" or "semsimian". A per-request `engine`
+    overrides the SEMSIM_BACKEND default (the hidden ?engine= API param, for A/B comparison)."""
     chosen = (engine or settings.semsim_backend or "semsimian").lower()
-    return ducksim() if chosen == "ducksim" else semsimian_http()
+    return "ducksim" if chosen == "ducksim" else "semsimian"
+
+
+def semsim_service(engine: str = None):
+    """Resolve the similarity backend service for `engine` (see `resolve_engine`)."""
+    return ducksim() if resolve_engine(engine) == "ducksim" else semsimian_http()
 
 
 def semsimian():

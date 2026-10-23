@@ -8,6 +8,7 @@ from monarch_py.api.additional_models import (
     SemsimSearchGroup,
     SemsimMultiCompareRequest,
     SemsimDirectionality,
+    SemsimSearchMode,
 )
 from monarch_py.api.semsim import router
 from monarch_py.datamodels.category_enums import AssociationPredicate, EntityCategory
@@ -142,3 +143,29 @@ def test_get_multi_compare(mock_multi_compare):
 
     assert response.status_code == status.HTTP_200_OK
     mock_multi_compare.assert_called_once_with(SemsimMultiCompareRequest(subjects=subjects, object_sets=object_sets))
+
+
+@patch("monarch_py.api.semsim.semsim_service")
+def test_ducksim_only_setting_routes_to_ducksim(mock_semsim_service):
+    """semsimian can't run a full search, so a request for one is served by ducksim even when the
+    default backend is semsimian, and the response says so."""
+    mock_semsim_service.return_value.search.return_value = []
+    response = client.get("/search/HP:123/Human Genes?search_mode=full&engine=semsimian")
+    assert response.status_code == status.HTTP_200_OK
+    mock_semsim_service.assert_called_once_with("ducksim")
+    mock_semsim_service.return_value.search.assert_called_once_with(
+        termset=["HP:123"],
+        prefix="HGNC",
+        metric=SemsimMetric.ANCESTOR_INFORMATION_CONTENT,
+        directionality=SemsimDirectionality.BIDIRECTIONAL,
+        limit=10,
+        search_mode=SemsimSearchMode.FULL,
+    )
+
+
+@patch("monarch_py.api.semsim.semsim_service")
+def test_default_settings_keep_the_configured_backend(mock_semsim_service):
+    mock_semsim_service.return_value.search.return_value = []
+    client.get("/search/HP:123/Human Genes?engine=semsimian&search_mode=hybrid")
+    mock_semsim_service.assert_called_once_with("semsimian")
+    assert "search_mode" not in mock_semsim_service.return_value.search.call_args.kwargs

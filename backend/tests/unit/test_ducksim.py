@@ -210,3 +210,11 @@ def test_termset_direction_matches_search(engine):
     assert o2s["average_score"] == pytest.approx(
         dict(engine.full_search(["A1"], prefix="E", direction="object_to_subject"))["E:3"]
     )
+
+
+def test_service_search_mode_full_matches_full_search(engine):
+    """search_mode="full" scores every entity, so its ranking is exactly the engine's full_search."""
+    svc = DucksimService(engine=engine)
+    results = svc.search(["A1"], prefix="E", limit=10, search_mode="full")
+    expected = engine.full_search(["A1"], prefix="E", limit=10)
+    assert [(r.subject.id, r.score) for r in results] == [(e, pytest.approx(s)) for e, s in expected]
