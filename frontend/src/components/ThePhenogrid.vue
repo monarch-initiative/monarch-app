@@ -233,6 +233,12 @@
                   Jaccard
                 </AppLink>
                 <span>{{ cell.jaccard_similarity?.toFixed(3) }}</span>
+                <template
+                  v-if="cell.frequency !== undefined && cell.frequency !== null"
+                >
+                  <span>Frequency</span>
+                  <span>{{ formatFrequency(cell.frequency) }}</span>
+                </template>
               </div>
             </template>
           </tooltip>
@@ -340,6 +346,8 @@ export type Phenogrid = {
       strength: number;
       phenotype?: string;
       phenotypeLabel?: string;
+      /** recorded frequency of the matched phenotype in the column entity, 0-1 */
+      frequency?: number;
     } & Pick<
       TermPairwiseSimilarity,
       | "ancestor_id"
@@ -369,7 +377,7 @@ import { appendToBody } from "@/global/tooltip";
 import { frame } from "@/util/debug";
 import { screenToSvgCoords, truncateBySize } from "@/util/dom";
 import { downloadSvg } from "@/util/download";
-import { copyToClipboard } from "@/util/string";
+import { copyToClipboard, formatFrequency } from "@/util/string";
 import type AppFlex from "./AppFlex.vue";
 
 type Props = {
