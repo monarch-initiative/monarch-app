@@ -142,6 +142,8 @@ export interface BestMatch {
     match_subsumer?: string,
     match_subsumer_label?: string,
     similarity: TermPairwiseSimilarity,
+    /** In a search, the recorded frequency of the result entity's matched phenotype: the share of patients or individuals with the entity who show it, from OMIM counts or HPO frequency categories. Absent when the annotation records none. */
+    frequency?: number,
 }
 
 
@@ -172,6 +174,10 @@ export interface SemsimSearchSettings {
     search_mode?: string,
     /** ontology (IC from the ontology's structure) or annotation (IC from how many entities in the searched group are annotated to the term). */
     information_content?: string,
+    /** none, or frequency (equal scores ordered by how frequent the matched phenotypes are in each entity). */
+    tie_break?: string,
+    /** The frequency assumed for annotations that record none, used by the frequency tie-break. */
+    default_frequency?: number,
 }
 
 
