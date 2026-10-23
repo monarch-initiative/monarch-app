@@ -94,10 +94,37 @@ class SemsimSearchMode(str, Enum):
         return self.value
 
 
+class SemsimInformationContent(str, Enum):
+    """Where a term's information content comes from.
+
+    `ontology` counts the term's descendants in the ontology, so every leaf term gets the same
+    maximum IC however many entities carry it. `annotation` counts the entities annotated to the
+    term or a descendant within one corpus, such as human diseases or mouse genes, which makes a
+    rarely annotated term worth more: inverse document frequency. Only ducksim supports
+    `annotation`, and only for corpora the KG has an annotation-IC table for.
+    """
+
+    ONTOLOGY = "ontology"
+    ANNOTATION = "annotation"
+
+    def __str__(self):
+        return self.value
+
+
+INFORMATION_CONTENT_TITLE = (
+    "Information content from ontology structure (ontology) or annotation frequency (annotation)"
+)
+COMPARE_GROUP_TITLE = "Annotation corpus for information_content=annotation (e.g. Human Diseases)"
+
+
 class SemsimCompareRequest(BaseModel):
     subjects: List[str] = Field(..., title="List of subjects for comparison")
     objects: List[str] = Field(..., title="List of objects for comparison")
     metric: SemsimMetric = Field(SemsimMetric.ANCESTOR_INFORMATION_CONTENT, title="Similarity metric to use")
+    information_content: SemsimInformationContent = Field(
+        SemsimInformationContent.ONTOLOGY, title=INFORMATION_CONTENT_TITLE
+    )
+    group: Optional[SemsimSearchGroup] = Field(None, title=COMPARE_GROUP_TITLE)
 
 
 class SemsimMultiCompareObject(BaseModel):
@@ -110,6 +137,10 @@ class SemsimMultiCompareRequest(BaseModel):
     subjects: List[str] = Field(..., title="List of subjects for comparison")
     object_sets: List[SemsimMultiCompareObject] = Field(..., title="List of object sets for comparison")
     metric: SemsimMetric = Field(SemsimMetric.ANCESTOR_INFORMATION_CONTENT, title="Similarity metric to use")
+    information_content: SemsimInformationContent = Field(
+        SemsimInformationContent.ONTOLOGY, title=INFORMATION_CONTENT_TITLE
+    )
+    group: Optional[SemsimSearchGroup] = Field(None, title=COMPARE_GROUP_TITLE)
 
 
 class SemsimSearchRequest(BaseModel):
@@ -121,6 +152,9 @@ class SemsimSearchRequest(BaseModel):
     )
     search_mode: SemsimSearchMode = Field(
         SemsimSearchMode.HYBRID, title="Score a Jaccard-prefiltered candidate set (hybrid) or every entity (full)"
+    )
+    information_content: SemsimInformationContent = Field(
+        SemsimInformationContent.ONTOLOGY, title=INFORMATION_CONTENT_TITLE
     )
     limit: Optional[int] = Field(10, title="Limit the number of results", ge=1, le=50)
 

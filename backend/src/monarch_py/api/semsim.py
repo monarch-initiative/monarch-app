@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from fastapi import APIRouter, Path, Query
+from fastapi import APIRouter, HTTPException, Path, Query
 
 from monarch_py.api.additional_models import (
     SemsimCompareRequest,
@@ -10,11 +10,15 @@ from monarch_py.api.additional_models import (
     SemsimMultiCompareRequest,
     SemsimDirectionality,
     SemsimSearchMode,
+    SemsimInformationContent,
+    INFORMATION_CONTENT_TITLE,
+    COMPARE_GROUP_TITLE,
 )
 from monarch_py.api.config import resolve_engine, semsim_service, solr
 from monarch_py.api.utils.similarity_utils import parse_similarity_prefix
 from monarch_py.datamodels.category_enums import AssociationPredicate, EntityCategory
 from monarch_py.datamodels.model import SearchResults, SemsimSearchResult, SemsimSearchSettings
+from monarch_py.service.ducksim import AnnotationICUnavailable
 from monarch_py.service.semsim_results import annotate_search_results
 
 # Hidden A/B-testing param: ?engine=ducksim|semsimian overrides the default similarity backend.
@@ -24,7 +28,32 @@ EngineParam = Query(default=None, include_in_schema=False, title="Similarity bac
 # A request that sets any of them to something else is served by ducksim, whatever the backend.
 DUCKSIM_SEARCH_SETTINGS = {
     "search_mode": SemsimSearchMode.HYBRID,
+    "information_content": SemsimInformationContent.ONTOLOGY,
 }
+
+
+def _bad_request_if_unavailable(call):
+    """Run a backend call, turning a request the attached KG can't serve into a 400."""
+    try:
+        return call()
+    except AnnotationICUnavailable as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+def _compare_backend(engine, information_content, group):
+    """(service, extra compare kwargs). Ontology IC keeps the configured backend and today's call;
+    annotation IC is ducksim-only and needs a group to pick its annotation corpus."""
+    if SemsimInformationContent(information_content) == SemsimInformationContent.ONTOLOGY:
+        return semsim_service(engine), {}
+    if group is None:
+        raise HTTPException(
+            status_code=400, detail="information_content=annotation needs a group, e.g. group=Human Diseases"
+        )
+    group_value = group.value if hasattr(group, "value") else group
+    return semsim_service("ducksim"), {
+        "information_content": SemsimInformationContent.ANNOTATION,
+        "group_prefix": parse_similarity_prefix(group_value),
+    }
 
 
 def _run_search(
@@ -45,13 +74,15 @@ def _run_search(
     requested = {name: ducksim_settings.get(name, default) for name, default in DUCKSIM_SEARCH_SETTINGS.items()}
     non_default = {name: value for name, value in requested.items() if value != DUCKSIM_SEARCH_SETTINGS[name]}
     engine_name = "ducksim" if non_default else resolve_engine(engine)
-    results = semsim_service(engine_name).search(
-        termset=termset,
-        prefix=parse_similarity_prefix(group),
-        metric=metric,
-        directionality=directionality,
-        limit=limit,
-        **non_default,
+    results = _bad_request_if_unavailable(
+        lambda: semsim_service(engine_name).search(
+            termset=termset,
+            prefix=parse_similarity_prefix(group),
+            metric=metric,
+            directionality=directionality,
+            limit=limit,
+            **non_default,
+        )
     )
     search_settings = SemsimSearchSettings(
         engine=engine_name,
@@ -96,6 +127,10 @@ def _compare(
     subjects: str = Path(..., title="List of subjects for comparison"),
     objects: str = Path(..., title="List of objects for comparison"),
     metric: SemsimMetric = Query(SemsimMetric.ANCESTOR_INFORMATION_CONTENT, title="Similarity metric to use"),
+    information_content: SemsimInformationContent = Query(
+        SemsimInformationContent.ONTOLOGY, title=INFORMATION_CONTENT_TITLE
+    ),
+    group: Optional[SemsimSearchGroup] = Query(None, title=COMPARE_GROUP_TITLE),
     engine: Optional[str] = EngineParam,
 ):
     """Get pairwise similarity between two sets of terms
@@ -103,7 +138,9 @@ def _compare(
     <b>Args:</b> <br>
         subjects (str, optional): List of subjects for comparison. Defaults to "". <br>
         objects (str, optional): List of objects for comparison. Defaults to "". <br>
-        metric (str, optional): Similarity metric to use. Defaults to "ancestor_information_content".
+        metric (str, optional): Similarity metric to use. Defaults to "ancestor_information_content". <br>
+        information_content (str, optional): "ontology" or "annotation". Defaults to "ontology". <br>
+        group (str, optional): The annotation corpus, such as "Human Diseases". Required for annotation IC.
 
     <b>Returns:</b> <br>
         TermSetPairwiseSimilarity: Pairwise similarity between subjects and objects
@@ -116,12 +153,10 @@ def _compare(
         metric: {metric}
     """
     )
-    results = semsim_service(engine).compare(
-        subjects=subjects.split(","),
-        objects=objects.split(","),
-        metric=metric,
+    service, extra = _compare_backend(engine, information_content, group)
+    return _bad_request_if_unavailable(
+        lambda: service.compare(subjects=subjects.split(","), objects=objects.split(","), metric=metric, **extra)
     )
-    return results
 
 
 @router.post("/compare")
@@ -138,7 +173,10 @@ def _post_compare(request: SemsimCompareRequest, engine: Optional[str] = EngineP
     }
     </pre>
     """
-    return semsim_service(engine).compare(subjects=request.subjects, objects=request.objects, metric=request.metric)
+    service, extra = _compare_backend(engine, request.information_content, request.group)
+    return _bad_request_if_unavailable(
+        lambda: service.compare(subjects=request.subjects, objects=request.objects, metric=request.metric, **extra)
+    )
 
 
 # add a multicompare post endpoint
@@ -167,7 +205,9 @@ def _post_multicompare(request: SemsimMultiCompareRequest, engine: Optional[str]
     }
     </pre>
     """
-    return semsim_service(engine).multi_compare(request)
+    service, extra = _compare_backend(engine, request.information_content, request.group)
+    extra.pop("information_content", None)  # multi_compare reads it from the request
+    return _bad_request_if_unavailable(lambda: service.multi_compare(request, **extra))
 
 
 @router.get("/search/{termset}/{group}")
@@ -182,6 +222,9 @@ def _search(
     search_mode: SemsimSearchMode = Query(
         SemsimSearchMode.HYBRID, title="Score a Jaccard-prefiltered candidate set (hybrid) or every entity (full)"
     ),
+    information_content: SemsimInformationContent = Query(
+        SemsimInformationContent.ONTOLOGY, title=INFORMATION_CONTENT_TITLE
+    ),
     engine: Optional[str] = EngineParam,
 ):
     """Search for terms in a termset
@@ -192,7 +235,9 @@ def _search(
         metric: (str, optional): Similarity metric to use. Defaults to "ancestor_information_content". <br>
         directionality (str, optional): How per-term best matches are averaged. Defaults to "bidirectional". <br>
         limit (int, optional): Limit the number of results. Defaults to 10. <br>
-        search_mode (str, optional): "hybrid" or "full". Defaults to "hybrid". "full" is served by the DuckDB backend.
+        search_mode (str, optional): "hybrid" or "full". Defaults to "hybrid". "full" is served by the DuckDB backend. <br>
+        information_content (str, optional): "ontology" or "annotation". Defaults to "ontology". "annotation" uses the
+        searched group's annotations as the corpus and is served by the DuckDB backend.
 
     <b>Returns:</b> <br>
         List[SemsimSearchResult]: Ranked entities, each with both direction scores and the settings used
@@ -206,6 +251,7 @@ def _search(
         limit=limit,
         engine=engine,
         search_mode=search_mode,
+        information_content=information_content,
     )
 
 
@@ -232,4 +278,5 @@ def _post_search(request: SemsimSearchRequest, engine: Optional[str] = EnginePar
         limit=request.limit,
         engine=engine,
         search_mode=request.search_mode,
+        information_content=request.information_content,
     )

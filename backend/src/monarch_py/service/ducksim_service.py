@@ -5,11 +5,12 @@ models, but computes everything against the read-only monarch-kg.duckdb instead 
 semsimian HTTP server. See `monarch_py/service/ducksim.py` for the engine.
 """
 
-from typing import Any, List
+from typing import Any, List, Optional
 
 from monarch_py.api.additional_models import (
     SemsimDirectionality,
     SemsimMetric,
+    SemsimInformationContent,
     SemsimMultiCompareRequest,
     SemsimSearchMode,
 )
@@ -41,15 +42,33 @@ class DucksimService:
         subjects: List[str],
         objects: List[str],
         metric: SemsimMetric = SemsimMetric.ANCESTOR_INFORMATION_CONTENT,
+        information_content: SemsimInformationContent = SemsimInformationContent.ONTOLOGY,
+        group_prefix: Optional[str] = None,
     ) -> TermSetPairwiseSimilarity:
-        result = self.engine.termset_pairwise_similarity(subjects, objects, str(metric))
+        """`group_prefix` (e.g. "MONDO") picks the annotation corpus when information_content is
+        annotation; ontology IC ignores it."""
+        result = self.engine.termset_pairwise_similarity(
+            subjects,
+            objects,
+            str(metric),
+            information_content=str(information_content),
+            corpus_prefix=group_prefix,
+        )
         lab = self.engine.labels(self._referenced_ids(result))
         return self._to_model(result, lab)
 
-    def multi_compare(self, request: SemsimMultiCompareRequest) -> List[SemsimSearchResult]:
+    def multi_compare(
+        self, request: SemsimMultiCompareRequest, group_prefix: Optional[str] = None
+    ) -> List[SemsimSearchResult]:
         results = []
         for object_set in request.object_sets:
-            comparison = self.compare(request.subjects, object_set.phenotypes, request.metric)
+            comparison = self.compare(
+                request.subjects,
+                object_set.phenotypes,
+                request.metric,
+                information_content=request.information_content,
+                group_prefix=group_prefix,
+            )
             results.append(
                 SemsimSearchResult(
                     subject=Entity(id=object_set.id, name=object_set.label),
@@ -69,6 +88,7 @@ class DucksimService:
         directionality: SemsimDirectionality = SemsimDirectionality.BIDIRECTIONAL,
         limit: int = 10,
         search_mode: SemsimSearchMode = SemsimSearchMode.HYBRID,
+        information_content: SemsimInformationContent = SemsimInformationContent.ONTOLOGY,
     ) -> List[SemsimSearchResult]:
         # Hybrid (the default) matches the semsimian server. Full scores every entity in the group,
         # so a richly annotated entity can't be dropped by hybrid's Jaccard prefilter (see engine).
@@ -76,7 +96,13 @@ class DucksimService:
         # per-result round-trips); the loop below is pure in-memory model shaping.
         direction = directionality.value if hasattr(directionality, "value") else str(directionality)
         page = self.engine.search(
-            termset, limit=limit, metric=str(metric), prefix=prefix, direction=direction, mode=str(search_mode)
+            termset,
+            limit=limit,
+            metric=str(metric),
+            prefix=prefix,
+            direction=direction,
+            mode=str(search_mode),
+            information_content=str(information_content),
         )
         if not page:
             return []

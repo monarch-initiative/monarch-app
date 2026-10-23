@@ -170,6 +170,8 @@ export interface SemsimSearchSettings {
     directionality?: string,
     /** hybrid prefilters candidates by set Jaccard before scoring; full scores every entity in the group. */
     search_mode?: string,
+    /** ontology (IC from the ontology's structure) or annotation (IC from how many entities in the searched group are annotated to the term). */
+    information_content?: string,
 }
 
 
