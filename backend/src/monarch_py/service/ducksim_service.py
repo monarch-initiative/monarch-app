@@ -46,13 +46,16 @@ class DucksimService:
         metric: SemsimMetric = SemsimMetric.ANCESTOR_INFORMATION_CONTENT,
         information_content: SemsimInformationContent = SemsimInformationContent.ONTOLOGY,
         group_prefix: Optional[str] = None,
+        directionality: SemsimDirectionality = SemsimDirectionality.BIDIRECTIONAL,
     ) -> TermSetPairwiseSimilarity:
         """`group_prefix` (e.g. "MONDO") picks the annotation corpus when information_content is
-        annotation; ontology IC ignores it."""
+        annotation; ontology IC ignores it. `directionality` picks which best matches
+        `average_score` averages."""
         result = self.engine.termset_pairwise_similarity(
             subjects,
             objects,
             str(metric),
+            direction=SemsimDirectionality(directionality).value,
             information_content=str(information_content),
             corpus_prefix=group_prefix,
         )
@@ -70,6 +73,7 @@ class DucksimService:
                 request.metric,
                 information_content=request.information_content,
                 group_prefix=group_prefix,
+                directionality=request.directionality,
             )
             results.append(
                 SemsimSearchResult(

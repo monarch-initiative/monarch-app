@@ -18,6 +18,7 @@ from monarch_py.api.additional_models import (
     TIE_BREAK_TITLE,
     INFORMATION_CONTENT_TITLE,
     COMPARE_GROUP_TITLE,
+    COMPARE_DIRECTIONALITY_TITLE,
 )
 from monarch_py.api.config import resolve_engine, semsim_service, solr
 from monarch_py.api.utils.similarity_utils import parse_similarity_prefix
@@ -47,20 +48,22 @@ def _bad_request_if_unavailable(call):
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
-def _compare_backend(engine, information_content, group):
-    """(service, extra compare kwargs). Ontology IC keeps the configured backend and today's call;
-    annotation IC is ducksim-only and needs a group to pick its annotation corpus."""
-    if SemsimInformationContent(information_content) == SemsimInformationContent.ONTOLOGY:
-        return semsim_service(engine), {}
-    if group is None:
-        raise HTTPException(
-            status_code=400, detail="information_content=annotation needs a group, e.g. group=Human Diseases"
-        )
-    group_value = group.value if hasattr(group, "value") else group
-    return semsim_service("ducksim"), {
-        "information_content": SemsimInformationContent.ANNOTATION,
-        "group_prefix": parse_similarity_prefix(group_value),
-    }
+def _compare_backend(engine, information_content, group, directionality=SemsimDirectionality.BIDIRECTIONAL):
+    """(service, extra compare kwargs). With default settings this is the configured backend and
+    today's call. Annotation IC and a non-bidirectional average are ducksim-only; annotation IC
+    also needs a group to pick its annotation corpus."""
+    extra = {}
+    if SemsimDirectionality(directionality) != SemsimDirectionality.BIDIRECTIONAL:
+        extra["directionality"] = SemsimDirectionality(directionality)
+    if SemsimInformationContent(information_content) != SemsimInformationContent.ONTOLOGY:
+        if group is None:
+            raise HTTPException(
+                status_code=400, detail="information_content=annotation needs a group, e.g. group=Human Diseases"
+            )
+        group_value = group.value if hasattr(group, "value") else group
+        extra["information_content"] = SemsimInformationContent.ANNOTATION
+        extra["group_prefix"] = parse_similarity_prefix(group_value)
+    return (semsim_service("ducksim") if extra else semsim_service(engine)), extra
 
 
 def _run_search(
@@ -138,6 +141,9 @@ def _compare(
         SemsimInformationContent.ONTOLOGY, title=INFORMATION_CONTENT_TITLE
     ),
     group: Optional[SemsimSearchGroup] = Query(None, title=COMPARE_GROUP_TITLE),
+    directionality: SemsimDirectionality = Query(
+        SemsimDirectionality.BIDIRECTIONAL, title=COMPARE_DIRECTIONALITY_TITLE
+    ),
     engine: Optional[str] = EngineParam,
 ):
     """Get pairwise similarity between two sets of terms
@@ -147,7 +153,9 @@ def _compare(
         objects (str, optional): List of objects for comparison. Defaults to "". <br>
         metric (str, optional): Similarity metric to use. Defaults to "ancestor_information_content". <br>
         information_content (str, optional): "ontology" or "annotation". Defaults to "ontology". <br>
-        group (str, optional): The annotation corpus, such as "Human Diseases". Required for annotation IC.
+        group (str, optional): The annotation corpus, such as "Human Diseases". Required for annotation IC. <br>
+        directionality (str, optional): Which best matches `average_score` averages: "subject_to_object",
+        "object_to_subject" or "bidirectional" (the mean of both). Defaults to "bidirectional".
 
     <b>Returns:</b> <br>
         TermSetPairwiseSimilarity: Pairwise similarity between subjects and objects
@@ -160,7 +168,7 @@ def _compare(
         metric: {metric}
     """
     )
-    service, extra = _compare_backend(engine, information_content, group)
+    service, extra = _compare_backend(engine, information_content, group, directionality)
     return _bad_request_if_unavailable(
         lambda: service.compare(subjects=subjects.split(","), objects=objects.split(","), metric=metric, **extra)
     )
@@ -180,7 +188,7 @@ def _post_compare(request: SemsimCompareRequest, engine: Optional[str] = EngineP
     }
     </pre>
     """
-    service, extra = _compare_backend(engine, request.information_content, request.group)
+    service, extra = _compare_backend(engine, request.information_content, request.group, request.directionality)
     return _bad_request_if_unavailable(
         lambda: service.compare(subjects=request.subjects, objects=request.objects, metric=request.metric, **extra)
     )
@@ -212,8 +220,10 @@ def _post_multicompare(request: SemsimMultiCompareRequest, engine: Optional[str]
     }
     </pre>
     """
-    service, extra = _compare_backend(engine, request.information_content, request.group)
-    extra.pop("information_content", None)  # multi_compare reads it from the request
+    service, extra = _compare_backend(engine, request.information_content, request.group, request.directionality)
+    # multi_compare reads these from the request
+    extra.pop("information_content", None)
+    extra.pop("directionality", None)
     return _bad_request_if_unavailable(lambda: service.multi_compare(request, **extra))
 
 
