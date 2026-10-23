@@ -122,6 +122,8 @@ def test_search_returns_direction_scores_and_settings(ducksim_client, search_mod
             "directionality": directionality,
             "search_mode": search_mode,
             "information_content": "ontology",
+            "tie_break": "none",
+            "default_frequency": 0.5,
         }
 
 

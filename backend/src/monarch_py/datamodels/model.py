@@ -188,6 +188,7 @@ class BestMatch(ConfiguredBaseModel):
     match_subsumer: Optional[str] = Field(default=None)
     match_subsumer_label: Optional[str] = Field(default=None)
     similarity: TermPairwiseSimilarity = Field(default=...)
+    frequency: Optional[float] = Field(default=None, description="""In a search, the recorded frequency of the result entity's matched phenotype: the share of patients or individuals with the entity who show it, from OMIM counts or HPO frequency categories. Absent when the annotation records none.""")
 
 
 class SemsimSearchResult(ConfiguredBaseModel):
@@ -208,6 +209,8 @@ class SemsimSearchSettings(ConfiguredBaseModel):
     directionality: Optional[str] = Field(default=None, description="""How the per-term best matches were averaged into `score`: subject_to_object, object_to_subject or bidirectional.""")
     search_mode: Optional[str] = Field(default=None, description="""hybrid prefilters candidates by set Jaccard before scoring; full scores every entity in the group.""")
     information_content: Optional[str] = Field(default=None, description="""ontology (IC from the ontology's structure) or annotation (IC from how many entities in the searched group are annotated to the term).""")
+    tie_break: Optional[str] = Field(default=None, description="""none, or frequency (equal scores ordered by how frequent the matched phenotypes are in each entity).""")
+    default_frequency: Optional[float] = Field(default=None, description="""The frequency assumed for annotations that record none, used by the frequency tie-break.""")
 
 
 class Entity(ConfiguredBaseModel):
