@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import List, Optional
 
 from fastapi import APIRouter, HTTPException, Path, Query
@@ -11,6 +12,10 @@ from monarch_py.api.additional_models import (
     SemsimDirectionality,
     SemsimSearchMode,
     SemsimInformationContent,
+    SemsimTieBreak,
+    DEFAULT_FREQUENCY,
+    DEFAULT_FREQUENCY_TITLE,
+    TIE_BREAK_TITLE,
     INFORMATION_CONTENT_TITLE,
     COMPARE_GROUP_TITLE,
 )
@@ -29,6 +34,8 @@ EngineParam = Query(default=None, include_in_schema=False, title="Similarity bac
 DUCKSIM_SEARCH_SETTINGS = {
     "search_mode": SemsimSearchMode.HYBRID,
     "information_content": SemsimInformationContent.ONTOLOGY,
+    "tie_break": SemsimTieBreak.NONE,
+    "default_frequency": DEFAULT_FREQUENCY,
 }
 
 
@@ -88,7 +95,7 @@ def _run_search(
         engine=engine_name,
         metric=str(metric),
         directionality=str(SemsimDirectionality(directionality).value),
-        **{name: str(value) for name, value in requested.items()},
+        **{name: str(value) if isinstance(value, Enum) else value for name, value in requested.items()},
     )
     return annotate_search_results(results, search_settings)
 
@@ -225,6 +232,8 @@ def _search(
     information_content: SemsimInformationContent = Query(
         SemsimInformationContent.ONTOLOGY, title=INFORMATION_CONTENT_TITLE
     ),
+    tie_break: SemsimTieBreak = Query(SemsimTieBreak.NONE, title=TIE_BREAK_TITLE),
+    default_frequency: float = Query(DEFAULT_FREQUENCY, title=DEFAULT_FREQUENCY_TITLE, ge=0.01, le=1.0),
     engine: Optional[str] = EngineParam,
 ):
     """Search for terms in a termset
@@ -237,7 +246,10 @@ def _search(
         limit (int, optional): Limit the number of results. Defaults to 10. <br>
         search_mode (str, optional): "hybrid" or "full". Defaults to "hybrid". "full" is served by the DuckDB backend. <br>
         information_content (str, optional): "ontology" or "annotation". Defaults to "ontology". "annotation" uses the
-        searched group's annotations as the corpus and is served by the DuckDB backend.
+        searched group's annotations as the corpus and is served by the DuckDB backend. <br>
+        tie_break (str, optional): "none" or "frequency". Defaults to "none". "frequency" orders equal scores by
+        how frequent the matched phenotypes are in each entity, and is served by the DuckDB backend. <br>
+        default_frequency (float, optional): The frequency assumed where an annotation records none. Defaults to 0.5.
 
     <b>Returns:</b> <br>
         List[SemsimSearchResult]: Ranked entities, each with both direction scores and the settings used
@@ -252,6 +264,8 @@ def _search(
         engine=engine,
         search_mode=search_mode,
         information_content=information_content,
+        tie_break=tie_break,
+        default_frequency=default_frequency,
     )
 
 
@@ -279,4 +293,6 @@ def _post_search(request: SemsimSearchRequest, engine: Optional[str] = EnginePar
         engine=engine,
         search_mode=request.search_mode,
         information_content=request.information_content,
+        tie_break=request.tie_break,
+        default_frequency=request.default_frequency,
     )
