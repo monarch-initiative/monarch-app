@@ -121,6 +121,7 @@ def test_search_returns_direction_scores_and_settings(ducksim_client, search_mod
             "metric": "ancestor_information_content",
             "directionality": directionality,
             "search_mode": search_mode,
+            "information_content": "ontology",
         }
 
 

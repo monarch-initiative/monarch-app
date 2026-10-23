@@ -10,6 +10,13 @@ ducksim is a pure reader of the precompute tables koza's `information-content` o
 the artifact during the KG build (monarch-ingest): `information_content` (term, ic) and
 `closure_size` (entity, size). It does not recompute them — a db missing them fails loud.
 
+Annotation IC (optional): monarch-ingest also bakes one annotation-based IC table per annotation
+corpus (koza's `annotation-information-content`: IC(t) = log2(N / n(t)), n(t) = distinct entities
+annotated to t or a descendant, N = distinct annotated entities), listed in the
+`pheno_comparison_corpora` table. ducksim exposes each as an IC view keyed by the corpus's subject
+prefix. These tables are optional: a KG without them serves ontology IC as before, and a request for
+annotation IC gets `AnnotationICUnavailable`.
+
 Metric definitions:  IC(t) = -log2(freq/N) (freq = #closure triples with t as object, N = #distinct
 objects); closure is reflexive; Jaccard = |anc(a)∩anc(b)| / |anc(a)∪anc(b)|; Resnik = max IC over
 shared ancestors; Phenodigm = sqrt(Resnik·Jaccard); termset score = bidirectional best-match-average.
@@ -31,6 +38,17 @@ from typing import NamedTuple
 import duckdb
 
 DEFAULT_PREDICATES = ("rdfs:subClassOf",)
+
+# The KG table listing the annotation-IC tables monarch-ingest bakes (one row per corpus).
+ANNOTATION_IC_CORPUS_TABLE = "pheno_comparison_corpora"
+ONTOLOGY_IC = "ontology"
+ANNOTATION_IC = "annotation"
+_SQL_IDENTIFIER = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+
+
+class AnnotationICUnavailable(LookupError):
+    """Annotation IC was requested for a corpus the attached KG has no annotation-IC table for."""
+
 
 # DuckDB spills to `temp_directory` when a query exceeds `memory_limit`, which is expected
 # under load. Its default is the *relative* path ".tmp", and its spill filenames are keyed by
@@ -207,7 +225,46 @@ class Ducksim:
         self.con.execute(f"CREATE VIEW _clo AS SELECT s, o FROM ({source_sql}) WHERE p IN ({preds})")
         self._require_baked("information_content")
         self.con.execute("CREATE VIEW _ic AS SELECT term, ic FROM src.information_content")
+        self.annotation_ic_views = self._define_annotation_ic()
         self.has_search = False
+
+    def _define_annotation_ic(self) -> dict:
+        """{subject prefix -> IC view} for every annotation-IC table the KG lists. View definitions
+        only: the tables are baked in the KG build, so nothing is computed here. Missing or malformed
+        metadata leaves annotation IC unavailable rather than failing the worker."""
+        if not self._baked(ANNOTATION_IC_CORPUS_TABLE):
+            return {}
+        rows = self.con.execute(
+            f"SELECT ic_table, subject_prefixes FROM src.{ANNOTATION_IC_CORPUS_TABLE} ORDER BY ic_table"
+        ).fetchall()
+        views = {}
+        for ic_table, subject_prefixes in rows:
+            if not ic_table or not _SQL_IDENTIFIER.match(ic_table) or not self._baked(ic_table):
+                continue
+            view = f"_ic_{ic_table}"
+            self.con.execute(f"CREATE VIEW {view} AS SELECT term, ic FROM src.{ic_table}")
+            for prefix in subject_prefixes or []:
+                views.setdefault(prefix, view)
+        return views
+
+    def ic_view(self, information_content=ONTOLOGY_IC, prefix=None) -> str:
+        """The IC view a request scores with. Annotation IC comes from the corpus whose annotated
+        entities have CURIE prefix `prefix` (the search group, or the compare `group`)."""
+        source = str(information_content or ONTOLOGY_IC).lower()
+        if source == ONTOLOGY_IC:
+            return "_ic"
+        if source != ANNOTATION_IC:
+            raise ValueError(f"unknown information_content {information_content!r}")
+        if not prefix:
+            raise AnnotationICUnavailable("annotation information content needs a group to choose its corpus")
+        view = self.annotation_ic_views.get(prefix)
+        if view is None:
+            available = ", ".join(sorted(self.annotation_ic_views)) or "none"
+            raise AnnotationICUnavailable(
+                f"this KG has no annotation information content table for {prefix} entities "
+                f"(available: {available}). It is built by monarch-ingest; see #1475."
+            )
+        return view
 
     def _define_associations(self, assoc_sql):
         self.con.execute(f"CREATE VIEW _assoc AS {assoc_sql}")
@@ -257,9 +314,13 @@ class Ducksim:
 
     # ---- pairwise detail ------------------------------------------------
 
-    def _all_pairs_detail(self, subjects, objects) -> dict:
+    def _all_pairs_detail(self, subjects, objects, ic_view="_ic") -> dict:
         """For every (subject term × object term): jaccard, resnik, phenodigm, and the MICA
-        (max-IC shared ancestor). One DuckDB query. Pairs with no shared ancestor are omitted."""
+        (max-IC shared ancestor). One DuckDB query. Pairs with no shared ancestor are omitted.
+
+        `ic_view` is the IC to score with (see `ic_view()`). A shared ancestor with no row in it
+        (possible with annotation IC, which has no rows for terms no annotation reaches) still
+        counts toward Jaccard, with IC 0."""
         subj_q, obj_q = _quote_list(subjects), _quote_list(objects)
         rows = self._read(f"""
             WITH s_terms(t) AS (SELECT unnest([{subj_q}]::VARCHAR[])),
@@ -269,11 +330,11 @@ class Ducksim:
                  sizes AS (SELECT t, count(*) AS sz FROM qanc GROUP BY t),
                  -- one row per shared ancestor of each (s, o) pair, carrying its IC
                  common AS (
-                   SELECT s.t AS s, o.t AS o, sa.a AS a, _ic.ic AS ic
+                   SELECT s.t AS s, o.t AS o, sa.a AS a, coalesce(icv.ic, 0.0) AS ic
                    FROM s_terms s JOIN o_terms o ON true
                    JOIN qanc sa ON sa.t = s.t
                    JOIN qanc oa ON oa.t = o.t AND oa.a = sa.a
-                   JOIN _ic ON _ic.term = sa.a
+                   LEFT JOIN {ic_view} icv ON icv.term = sa.a
                  )
             SELECT c.s, c.o,
                    count(*) AS inter,            -- |shared ancestors|
@@ -333,7 +394,13 @@ class Ducksim:
         return result
 
     def termset_pairwise_similarity(
-        self, subjects, objects, metric="ancestor_information_content", direction="bidirectional"
+        self,
+        subjects,
+        objects,
+        metric="ancestor_information_content",
+        direction="bidirectional",
+        information_content=ONTOLOGY_IC,
+        corpus_prefix=None,
     ) -> dict:
         """Full pairwise-similarity result (matches semsimian's TermSetPairwiseSimilarity shape):
         per-term best matches with subsumer + similarity detail, the average_score, and best_score.
@@ -345,8 +412,9 @@ class Ducksim:
         spec = _METRICS.get(metric.lower())
         if spec is None:
             raise ValueError(f"unknown metric {metric!r}")
+        ic_view = self.ic_view(information_content, corpus_prefix)
         subj, obj = _dedupe(subjects), _dedupe(objects)
-        pairs = self._all_pairs_detail(subj, obj)
+        pairs = self._all_pairs_detail(subj, obj, ic_view)
         return self._shape_comparison(subj, obj, pairs, spec.detail_key, metric, direction)
 
     def _shape_comparison(self, subj, obj, pairs, detail_key, metric, direction) -> dict:
@@ -383,7 +451,7 @@ class Ducksim:
 
     # ---- search ---------------------------------------------------------
 
-    def _termset_search(self, query_terms, metric, entity_filter, limit, direction="bidirectional"):
+    def _termset_search(self, query_terms, metric, entity_filter, limit, direction="bidirectional", ic_view="_ic"):
         """Score entities passing `entity_filter` by termset best-match-average — one DuckDB query.
         Shared by full_search (filter = prefix) and hybrid_search (Flat candidates). `direction`:
         the entity is the subject, so subject_to_object = entity->query (dir1), object_to_subject =
@@ -405,8 +473,8 @@ class Ducksim:
         lim = "" if limit is None else f"LIMIT {int(limit)}"
         sql = f"""
         WITH qterms(q) AS (SELECT unnest([{Q}]::VARCHAR[])),
-             q_anc AS (SELECT qt.q AS q, c.o AS a, ic.ic AS ic
-                       FROM qterms qt JOIN _clo c ON c.s = qt.q JOIN _ic ic ON ic.term = c.o),
+             q_anc AS (SELECT qt.q AS q, c.o AS a, coalesce(ic.ic, 0.0) AS ic
+                       FROM qterms qt JOIN _clo c ON c.s = qt.q LEFT JOIN {ic_view} ic ON ic.term = c.o),
              qsize AS (SELECT q, count(*) AS sz FROM q_anc GROUP BY q),
              nq AS (SELECT count(*) AS n FROM qterms),
              -- DISTINCT: an entity may be annotated to the same phenotype via multiple association
@@ -442,20 +510,36 @@ class Ducksim:
         return self._read(sql).fetchall()
 
     def full_search(
-        self, query_terms, *, limit=10, metric="ancestor_information_content", prefix=None, direction="bidirectional"
+        self,
+        query_terms,
+        *,
+        limit=10,
+        metric="ancestor_information_content",
+        prefix=None,
+        direction="bidirectional",
+        information_content=ONTOLOGY_IC,
     ):
         """Score every entity (optionally restricted to CURIE `prefix`) by the termset
         best-match-average — one DuckDB query. Matches semsimian's Full mode; more accurate than
         Hybrid (no Jaccard prefilter dropping true-top entities)."""
+        ic_view = self.ic_view(information_content, prefix)
         ef = f"WHERE split_part(entity, ':', 1) = {_quote_list([prefix])}" if prefix else ""
-        return self._termset_search(query_terms, metric, ef, limit, direction)
+        return self._termset_search(query_terms, metric, ef, limit, direction, ic_view)
 
     def hybrid_search(
-        self, query_terms, *, limit=10, metric="ancestor_information_content", prefix=None, direction="bidirectional"
+        self,
+        query_terms,
+        *,
+        limit=10,
+        metric="ancestor_information_content",
+        prefix=None,
+        direction="bidirectional",
+        information_content=ONTOLOGY_IC,
     ):
         """Hybrid search — semsimian's production mode: cheap Jaccard prefilter then termset rerank,
         as one query over the candidate set. (The Jaccard prefilter is direction-agnostic; the
         rerank honors `direction`.)"""
+        ic_view = self.ic_view(information_content, prefix)  # validate before the prefilter runs
         flat = self._flat(query_terms, prefix)
         if not flat:
             return []
@@ -464,7 +548,7 @@ class Ducksim:
         cutoff = scores[k] if k < len(scores) else scores[-1]
         candidates = [e for e, j in flat if j >= cutoff]
         ef = f"WHERE entity IN (SELECT unnest([{_quote_list(candidates)}]::VARCHAR[]))"
-        return self._termset_search(query_terms, metric, ef, limit, direction)
+        return self._termset_search(query_terms, metric, ef, limit, direction, ic_view)
 
     def _flat(self, query_terms, prefix):
         """Cheap set-Jaccard ranking of all (prefix) entities vs the query — Hybrid's candidate gen."""
@@ -493,18 +577,28 @@ class Ducksim:
         prefix=None,
         direction="bidirectional",
         mode="hybrid",
+        information_content=ONTOLOGY_IC,
     ):
         """All-DuckDB search: rank entities (Hybrid by default; Full when `mode="full"`), then enrich
         the whole page with full termset detail in a constant number of queries — independent of
         `limit`, no per-result round-trips. Returns [(entity_id, score, comparison)] where
         `comparison` matches `termset_pairwise_similarity`'s shape (the entity's phenotypes are the
         subjects, the query terms the objects — so `comparison["average_score"]` equals `score`).
-        Labels and entity hydration are added by the caller (also batched)."""
+        Labels and entity hydration are added by the caller (also batched). `information_content`
+        is "ontology" or "annotation"; annotation IC uses the corpus of `prefix` entities."""
         spec = _METRICS.get(metric.lower())
         if spec is None:
             raise ValueError(f"unknown metric {metric!r}")
+        ic_view = self.ic_view(information_content, prefix)
         ranker = self.full_search if mode == "full" else self.hybrid_search
-        ranked = ranker(query_terms, limit=limit, metric=metric, prefix=prefix, direction=direction)
+        ranked = ranker(
+            query_terms,
+            limit=limit,
+            metric=metric,
+            prefix=prefix,
+            direction=direction,
+            information_content=information_content,
+        )
         if not ranked:
             return []
         entity_ids = [e for e, _ in ranked]
@@ -513,7 +607,7 @@ class Ducksim:
         # every phenotype across the page, scored against the query once (single DuckDB query); each
         # entity then reuses the relevant slice of this `pairs` map when shaped below.
         all_phenos = _dedupe(p for e in entity_ids for p in pheno_by_entity.get(e, []))
-        pairs = self._all_pairs_detail(all_phenos, obj)
+        pairs = self._all_pairs_detail(all_phenos, obj, ic_view)
         out = []
         for entity_id, score in ranked:
             subj = _dedupe(pheno_by_entity.get(entity_id, []))
