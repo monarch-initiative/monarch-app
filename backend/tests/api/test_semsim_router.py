@@ -169,3 +169,22 @@ def test_default_settings_keep_the_configured_backend(mock_semsim_service):
     client.get("/search/HP:123/Human Genes?engine=semsimian&search_mode=hybrid")
     mock_semsim_service.assert_called_once_with("semsimian")
     assert "search_mode" not in mock_semsim_service.return_value.search.call_args.kwargs
+
+
+@patch("monarch_py.api.semsim.semsim_service")
+def test_compare_directionality_routes_to_ducksim(mock_semsim_service):
+    client.get("/compare/HP:1/HP:2?directionality=object_to_subject&engine=semsimian")
+    mock_semsim_service.assert_called_once_with("ducksim")
+    mock_semsim_service.return_value.compare.assert_called_once_with(
+        subjects=["HP:1"],
+        objects=["HP:2"],
+        metric=SemsimMetric.ANCESTOR_INFORMATION_CONTENT,
+        directionality=SemsimDirectionality.OBJECT_TO_SUBJECT,
+    )
+
+
+@patch("monarch_py.api.semsim.semsim_service")
+def test_bidirectional_compare_keeps_the_configured_backend(mock_semsim_service):
+    client.get("/compare/HP:1/HP:2?directionality=bidirectional&engine=semsimian")
+    mock_semsim_service.assert_called_once_with("semsimian")
+    assert "directionality" not in mock_semsim_service.return_value.compare.call_args.kwargs
